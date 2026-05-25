@@ -235,3 +235,12 @@ button { cursor: pointer; }
 .mono { font-family: 'IBM Plex Mono', monospace; }
 .condensed { font-family: 'Barlow Condensed', sans-serif; }
 .bebas { font-family: 'Bebas Neue', cursive; }
+
+/* Hover cards — replaces inline onMouseEnter/Leave */
+.news-hover-card {
+  transition: border-color 0.2s, background 0.2s;
+}
+.news-hover-card:hover {
+  background: #1C2028 !important;
+  border-left-color: #C8922A !important;
+}

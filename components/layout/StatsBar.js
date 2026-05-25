@@ -1,3 +1,4 @@
+'use client'
 export default function StatsBar({ stats = {} }) {
   const items = [
     { label: 'NICS TODAY', val: stats.nicsToday ? stats.nicsToday.toLocaleString() : '247,832' },
