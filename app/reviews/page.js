@@ -147,7 +147,7 @@ export default async function ReviewsPage({ searchParams }) {
           )}
 
           {reviews.length === 0 && (
-            <div style={{ padding: '60px', textAlign: 'center', color: '#6B7280', fontFamily: "'IBM Plex Mono', monospace' }}>
+            <div style={{ padding: '60px', textAlign: 'center', color: '#6B7280', fontFamily: "'IBM Plex Mono', monospace" }}>
               Reviews are added by DownRange staff. Check back soon.
             </div>
           )}
