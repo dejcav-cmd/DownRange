@@ -60,11 +60,19 @@ function timeAgo(date) {
 }
 
 export default async function ArticlePage({ params }) {
-  const [article, related, alerts] = await Promise.all([
-    getArticleBySlug(params.slug).catch(() => null),
-    getRecentArticles(8).catch(() => []),
-    fetchBreakingAlerts(5).catch(() => []),
-  ])
+  let article, related, alerts
+
+  try {
+    ;[article, related, alerts] = await Promise.all([
+      getArticleBySlug(params.slug).catch(() => null),
+      getRecentArticles(8).catch(() => []),
+      fetchBreakingAlerts(5).catch(() => []),
+    ])
+  } catch {
+    article = null
+    related = []
+    alerts  = []
+  }
 
   if (!article) notFound()
 
@@ -221,8 +229,7 @@ export default async function ArticlePage({ params }) {
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
                   style={{ color: '#4B5563', textDecoration: 'none', fontFamily: 'monospace', fontSize: '0.68rem', padding: '4px 8px', border: '1px solid #1F2428', transition: 'color 0.2s, border-color 0.2s' }}
-                  onMouseEnter={e => { e.target.style.color = '#C8922A'; e.target.style.borderColor = '#C8922A' }}
-                  onMouseLeave={e => { e.target.style.color = '#4B5563'; e.target.style.borderColor = '#1F2428' }}>
+>
                   {s.label}
                 </a>
               ))}
