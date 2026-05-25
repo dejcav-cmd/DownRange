@@ -96,7 +96,7 @@ export default async function HomePage() {
               ]).map((article, i) => (
                 <a key={article._id || i} href={article.externalUrl || `/news/${article.slug?.current || ''}`}
                   target={article.externalUrl?.startsWith('http') ? '_blank' : '_self'} rel="noreferrer"
-                  className="news-hover-card" style={{ flex: 1, background: '#16191F', padding: '20px', cursor: 'pointer', borderLeft: '3px solid transparent', transition: 'border-color 0.2s, background 0.2s', textDecoration: 'none', display: 'block' }}
+                  className="news-hover-card" style={{ flex: 1, background: '#16191F', padding: '20px', cursor: 'pointer', borderLeft: '3px solid transparent', transition: 'border-color 0.2s, background 0.2s', textDecoration: 'none', display: 'block' }}>
                   <div style={{ color: CAT_COLOR[article.category] || '#9CA3AF', fontFamily: "'Barlow Condensed',sans-serif", fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
                     {article.category?.toUpperCase() || 'NEWS'}
                   </div>
