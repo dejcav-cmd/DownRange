@@ -3,7 +3,13 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
+import ShareBar from '../../../components/ui/ShareBar'
 import { getArticleBySlug, getRecentArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
+
+function readingTime(text) {
+  if (!text) return '1 min read'
+  return Math.max(1, Math.round(text.trim().split(/\s+/).length / 200)) + ' min read'
+}
 
 export const revalidate = 300
 
@@ -130,6 +136,8 @@ export default async function ArticlePage({ params }) {
               <span>{formatDate(article.publishedAt)}</span>
               <span style={{ color: '#2D3748' }}>|</span>
               <span style={{ color: '#C8922A' }}>{timeAgo(article.publishedAt)}</span>
+              <span style={{ color: '#2D3748' }}>|</span>
+              <span style={{ fontFamily: 'monospace' }}>{readingTime(article.summary || article.excerpt)}</span>
               {article.externalUrl && (
                 <>
                   <span style={{ color: '#2D3748' }}>|</span>

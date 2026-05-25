@@ -1,3 +1,5 @@
+import { priceAlert }    from './priceAlert'
+import { billTracker }   from './billTracker'    from './priceAlert'
 import newsArticle           from './newsArticle'
 import { breakingAlert }     from './breakingAlert'
 import { legislation }       from './legislation'
@@ -10,6 +12,6 @@ import { author }            from './author'
 import { globalStats }       from './globalStats'
 
 export const schemaTypes = [
-  newsArticle, breakingAlert, legislation, review,
+  newsArticle, breakingAlert, priceAlert, billTracker,, legislation, review,
   firearmRelease, stateProfile, ammoPrice, video, author, globalStats
 ]

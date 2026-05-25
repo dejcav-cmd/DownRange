@@ -1,3 +1,4 @@
+import PriceAlertSignup from '../../components/ui/PriceAlertSignup'
 import Masthead from '../../components/layout/Masthead'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'

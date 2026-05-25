@@ -1,4 +1,5 @@
 'use client'
+import NewsletterSignup from '../sections/NewsletterSignup'
 import Link from 'next/link'
 
 const FOOTER_COLS = [
@@ -10,6 +11,8 @@ const FOOTER_COLS = [
 
 export default function Footer() {
   return (
+    <>
+    <NewsletterSignup variant="compact" />
     <footer style={{ background: '#07080A', borderTop: '1px solid #1F2428', padding: '48px 0 24px' }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: '280px repeat(4, 1fr)', gap: '40px', marginBottom: '40px' }}>
@@ -59,5 +62,6 @@ export default function Footer() {
         </div>
       </div>
     </footer>
+  </>
   )
 }

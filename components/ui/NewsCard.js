@@ -1,11 +1,5 @@
 'use client'
 
-function resolveImage(article) {
-  if (article?.heroImage?.asset?.url) return article.heroImage.asset.url
-  if (article?.imageUrl) return article.imageUrl
-  return null
-}
-
 
 const CAT_COLORS = {
   breaking: '#EF4444', news: '#9CA3AF', law: '#60A5FA',
@@ -106,6 +100,12 @@ export default function NewsCard({ article, featured = false }) {
 
         {/* Image area — always 180px tall */}
         <div style={{ width: '100%', height: '180px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+          {article.urgencyScore >= 8 && (
+            <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 2, display: 'flex', alignItems: 'center', gap: 4, background: '#B91C1C', padding: '3px 8px' }}>
+              <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', display: 'inline-block', animation: 'pulse 1.2s infinite' }} />
+              <span style={{ color: '#fff', fontSize: '9px', fontWeight: 700, letterSpacing: '0.12em', fontFamily: 'monospace' }}>BREAKING</span>
+            </div>
+          )}
           {imageUrl ? (
             <img
               src={imageUrl}
@@ -141,9 +141,14 @@ export default function NewsCard({ article, featured = false }) {
             <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
               {article.source || article.author?.name || 'Staff'}
             </span>
-            <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
-              {timeAgo(article.publishedAt)}
-            </span>
+            <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
+              <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
+                {readingTime(article.summary || article.excerpt)}
+              </span>
+              <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
+                {timeAgo(article.publishedAt)}
+              </span>
+            </div>
           </div>
         </div>
       </div>

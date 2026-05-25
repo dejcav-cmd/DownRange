@@ -4,15 +4,18 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
-  { label: 'Home', href: '/', exact: true },
-  { label: 'News', href: '/news' },
-  { label: 'Breaking', href: '/news?cat=breaking', hot: true },
-  { label: 'Laws', href: '/laws' },
-  { label: 'Reviews', href: '/reviews' },
-  { label: 'New Releases', href: '/releases' },
-  { label: 'State Hub', href: '/state-hub' },
-  { label: 'Market Watch', href: '/market' },
-  { label: 'Video', href: '/video' },
+  { label: 'Home',         href: '/', exact: true },
+  { label: 'News',         href: '/news' },
+  { label: 'Breaking',     href: '/news?cat=breaking', hot: true },
+  { label: 'Laws',         href: '/laws' },
+  { label: 'Deals',        href: '/deals', hot: false },
+  { label: 'Reviews',      href: '/reviews' },
+  { label: 'Releases',     href: '/releases' },
+  { label: 'State Hub',    href: '/state-hub' },
+  { label: 'Market',       href: '/market' },
+  { label: 'Video',        href: '/video' },
+  { label: 'Ranges',       href: '/ranges' },
+  { label: 'Encyclopedia', href: '/guns' },
 ]
 
 export default function Masthead() {
@@ -29,6 +32,19 @@ export default function Masthead() {
 
   return (
     <header style={{ background: '#111318', borderBottom: '1px solid #1F2428', position: 'sticky', top: 0, zIndex: 50 }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .nav-desktop { display: none !important; }
+          .nav-mobile { display: flex !important; }
+          .masthead-title { font-size: 48px !important; }
+          .masthead-right { display: none !important; }
+        }
+        @media (min-width: 769px) {
+          .nav-mobile { display: none !important; }
+          .nav-mobile-menu { display: none !important; }
+        }
+        .nav-mobile-menu.open { display: flex !important; }
+      `}</style>
       <div className="container">
         {/* Masthead top */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '20px 0 16px' }}>
@@ -41,7 +57,7 @@ export default function Masthead() {
               AMERICA'S FIREARMS INTELLIGENCE HUB · EST. 2026
             </div>
           </div>
-          <div style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+          <div className="masthead-right" style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
             <span style={{ background: '#C8922A', color: '#09090B', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', padding: '3px 10px' }}>
               DAILY EDITION
             </span>
@@ -51,7 +67,7 @@ export default function Masthead() {
         </div>
 
         {/* Nav */}
-        <nav style={{ borderTop: '1px solid #1F2428', display: 'flex', alignItems: 'center' }}>
+        <nav className="nav-desktop" style={{ borderTop: '1px solid #1F2428', display: 'flex', alignItems: 'center' }}>
           <ul style={{ display: 'flex', listStyle: 'none', flex: 1, flexWrap: 'wrap' }}>
             {NAV_ITEMS.map(item => {
               const isActive = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(item.href.split('?')[0] + '/')
@@ -77,6 +93,24 @@ export default function Masthead() {
             <Link href="/search" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#6B7280' }}>Search</Link>
           </div>
         </nav>
+
+        {/* Mobile menu */}
+        <div className="nav-mobile" style={{ display: 'none', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderTop: '1px solid #1F2428' }}>
+          <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#C8922A', letterSpacing: '0.1em' }}>DOWNRANGE</span>
+          <button onClick={() => setMenuOpen(!menuOpen)}
+            style={{ background: 'none', border: '1px solid #1F2428', color: '#9CA3AF', padding: '6px 12px', cursor: 'pointer', fontFamily: 'monospace', fontSize: '11px' }}>
+            {menuOpen ? '✕ CLOSE' : '☰ MENU'}
+          </button>
+        </div>
+        <div className={`nav-mobile-menu${menuOpen ? ' open' : ''}`}
+          style={{ display: 'none', flexDirection: 'column', borderTop: '1px solid #1F2428', paddingBottom: '12px' }}>
+          {NAV_ITEMS.map(item => (
+            <a key={item.href} href={item.href} onClick={() => setMenuOpen(false)}
+              style={{ display: 'block', fontFamily: 'monospace', fontSize: '13px', padding: '12px 0', color: item.hot ? '#EF4444' : '#9CA3AF', borderBottom: '1px solid #1F2428', letterSpacing: '0.08em' }}>
+              {item.label}
+            </a>
+          ))}
+        </div>
       </div>
     </header>
   )
