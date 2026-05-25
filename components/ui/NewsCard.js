@@ -1,5 +1,11 @@
 'use client'
-import { resolveImage } from '../../sanity/lib/client'
+
+function resolveImage(article) {
+  if (article?.heroImage?.asset?.url) return article.heroImage.asset.url
+  if (article?.imageUrl) return article.imageUrl
+  return null
+}
+
 
 const CAT_COLORS = {
   breaking: '#EF4444', news: '#9CA3AF', law: '#60A5FA',
