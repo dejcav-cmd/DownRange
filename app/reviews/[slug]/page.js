@@ -1,7 +1,7 @@
 // ─── app/site/reviews/[slug]/page.js ─────────────────────────────────────────
 import { notFound } from 'next/navigation';
-import { getReviewBySlug } from '@/sanity/lib/client';
-import { formatDate, timeAgo, truncate } from '@/lib/utils';
+import { getReviewBySlug } from '../../../sanity/lib/client';
+import { formatDate, timeAgo, truncate } from '../../../lib/utils';
 import Link from 'next/link';
 
 export const revalidate = 600;

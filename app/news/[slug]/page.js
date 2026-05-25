@@ -1,9 +1,9 @@
 import { notFound }        from 'next/navigation'
-import Masthead            from '../../components/layout/Masthead'
-import Footer              from '../../components/layout/Footer'
-import BreakingTicker      from '../../components/layout/BreakingTicker'
-import NewsCard            from '../../components/ui/NewsCard'
-import { getArticleBySlug, getRecentArticles, fetchBreakingAlerts, resolveImage } from '../../sanity/lib/client'
+import Masthead            from '../../../components/layout/Masthead'
+import Footer              from '../../../components/layout/Footer'
+import BreakingTicker      from '../../../components/layout/BreakingTicker'
+import NewsCard            from '../../../components/ui/NewsCard'
+import { getArticleBySlug, getRecentArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 
 export const revalidate = 300
 

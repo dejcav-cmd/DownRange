@@ -1,7 +1,7 @@
 // ─── app/site/state-hub/[state]/page.js ──────────────────────────────────────
 import { notFound } from 'next/navigation';
-import { getStateProfile } from '@/sanity/lib/client';
-import { formatDateShort, getBillStatus } from '@/lib/utils';
+import { getStateProfile } from '../../../sanity/lib/client';
+import { formatDateShort, getBillStatus } from '../../../lib/utils';
 import Link from 'next/link';
 
 export const revalidate = 3600;
