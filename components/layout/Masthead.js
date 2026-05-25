@@ -1,4 +1,5 @@
 'use client'
+import ThemeToggle from '../ui/ThemeToggle'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -88,9 +89,11 @@ export default function Masthead() {
               )
             })}
           </ul>
-          <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', gap: '8px', borderLeft: '1px solid #1F2428' }}>
-            <span style={{ color: '#6B7280', fontSize: '14px' }}>⌕</span>
-            <Link href="/search" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#6B7280' }}>Search</Link>
+          <div style={{ padding: '0 16px', display: 'flex', alignItems: 'center', gap: '12px', borderLeft: '1px solid #1F2428' }}>
+            <Link href="/search" style={{ display: 'flex', alignItems: 'center', gap: '6px', fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#6B7280' }}>
+              <span style={{ fontSize: '14px' }}>⌕</span> Search
+            </Link>
+            <ThemeToggle />
           </div>
         </nav>
 
