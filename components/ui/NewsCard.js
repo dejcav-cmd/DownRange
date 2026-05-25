@@ -1,5 +1,15 @@
 'use client'
 
+function resolveImage(article) {
+  if (article?.heroImage?.asset?.url) return article.heroImage.asset.url
+  if (article?.imageUrl) return article.imageUrl
+  return null
+}
+
+function readingTime(text) {
+  if (!text) return '1 min'
+  return Math.max(1, Math.round(text.trim().split(/\s+/).length / 200)) + ' min read'
+}
 
 const CAT_COLORS = {
   breaking: '#EF4444', news: '#9CA3AF', law: '#60A5FA',
