@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 /**
  * On-demand revalidation for ISR pages
  * Called by Sanity webhook on content publish

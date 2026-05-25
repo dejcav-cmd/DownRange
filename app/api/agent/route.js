@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic'
 /**
  * Agent API Route — triggered by Vercel cron jobs
  * Also accepts POST with secret for manual triggering

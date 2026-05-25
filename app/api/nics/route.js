@@ -1,7 +1,8 @@
+export const dynamic = 'force-dynamic'
 import { createClient } from '@sanity/client'
 
 const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   token:     process.env.SANITY_API_TOKEN,

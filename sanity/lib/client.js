@@ -165,3 +165,23 @@ export async function fetchVideos(limit = 10, category = null) {
 export async function fetchGlobalStats() {
   return client.fetch(`*[_type == "globalStats"][0]`)
 }
+
+// Aliases for pages that use these names
+export async function getReviewBySlug(slug) {
+  return client.fetch(`
+    *[_type == "review" && slug.current == $slug][0] {
+      _id, title, slug, score, verdict, category, publishedAt, featured,
+      brand, model, caliber, msrp, testRounds,
+      heroImage { asset->{url}, alt },
+      imageUrl,
+      pros[], cons[],
+      specs[]{ label, value },
+      body,
+      author->{name, slug}
+    }
+  `, { slug })
+}
+
+export async function getStateProfile(abbr) {
+  return fetchStateProfile(abbr)
+}

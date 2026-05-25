@@ -1,9 +1,10 @@
+export const dynamic = 'force-dynamic'
 import { Resend } from 'resend'
 import { createClient } from '@sanity/client'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
   apiVersion: '2024-01-01',
   token:     process.env.SANITY_API_TOKEN,
