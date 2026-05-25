@@ -1,15 +1,19 @@
 export const dynamic = 'force-dynamic'
-import { Resend } from 'resend'
 import { createClient } from '@sanity/client'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET   || 'production',
   apiVersion: '2024-01-01',
   token:     process.env.SANITY_API_TOKEN,
   useCdn:    false,
 })
+
+function getResend() {
+  // Lazy init — only called at runtime, not at build time
+  const { Resend } = require('resend')
+  return new Resend(process.env.RESEND_API_KEY || 'placeholder')
+}
 
 export async function POST(req) {
   try {
@@ -17,20 +21,23 @@ export async function POST(req) {
     if (!email || !email.includes('@')) {
       return Response.json({ error: 'Valid email required' }, { status: 400 })
     }
+    const resend = getResend()
     const audienceId = process.env.RESEND_AUDIENCE_ID
-    if (audienceId) {
-      await resend.contacts.create({ email, firstName: name || '', audienceId })
+    if (audienceId && process.env.RESEND_API_KEY) {
+      await resend.contacts.create({ email, firstName: name || '', audienceId }).catch(() => {})
     }
-    await resend.emails.send({
-      from: 'DownRange <news@downrangeco.com>',
-      to: email,
-      subject: 'Welcome to DownRange',
-      html: `<div style="background:#0A0B0C;color:#F5F5F3;font-family:Arial;padding:40px;max-width:600px;margin:auto;">
-        <h1 style="color:#C8922A;letter-spacing:4px;font-size:42px;">DOWNRANGE</h1>
-        <p style="color:#94A3B8;">You're locked and loaded, ${name || 'operator'}. Daily briefings hit your inbox every morning.</p>
-        <a href="https://downrangeco.com" style="color:#C8922A;">Visit DownRange &rarr;</a>
-      </div>`
-    })
+    if (process.env.RESEND_API_KEY) {
+      await resend.emails.send({
+        from: 'DownRange <news@downrangeco.com>',
+        to: email,
+        subject: 'Welcome to DownRange',
+        html: `<div style="background:#0A0B0C;color:#F5F5F3;font-family:Arial;padding:40px;max-width:600px;margin:auto;">
+          <h1 style="color:#C8922A;letter-spacing:4px;font-size:42px;">DOWNRANGE</h1>
+          <p style="color:#94A3B8;">You're locked and loaded, ${name || 'operator'}. Daily briefings hit your inbox every morning.</p>
+          <a href="https://downrangeco.com" style="color:#C8922A;">Visit DownRange &rarr;</a>
+        </div>`
+      }).catch(err => console.error('Email send error:', err.message))
+    }
     return Response.json({ success: true })
   } catch (err) {
     console.error(err)
@@ -45,8 +52,14 @@ export async function GET(req) {
   }
   try {
     const stories = await sanity.fetch(
-      `*[_type == "newsArticle"] | order(urgencyScore desc) [0...5] { title, slug, summary, category }`
-    )
+      `*[_type == "newsArticle" && approved == true] | order(urgencyScore desc) [0...5] { title, slug, summary, category }`
+    ).catch(() => [])
+
+    if (!process.env.RESEND_API_KEY) {
+      return Response.json({ message: 'RESEND_API_KEY not configured', stories: stories.length })
+    }
+
+    const resend = getResend()
     const testEmails = (process.env.NEWSLETTER_TEST_EMAILS || '').split(',').filter(Boolean)
     for (const email of testEmails) {
       await resend.emails.send({
@@ -61,7 +74,7 @@ export async function GET(req) {
             <p style="color:#94A3B8;font-size:14px;margin:0;">${s.summary || ''}</p>
           </div>`).join('')}
         </div>`
-      })
+      }).catch(err => console.error('Digest send error:', err.message))
     }
     return Response.json({ success: true, sent: testEmails.length })
   } catch (err) {

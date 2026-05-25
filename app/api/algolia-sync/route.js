@@ -1,11 +1,13 @@
 export const dynamic = 'force-dynamic'
-import algoliasearch from 'algoliasearch'
 import { createClient } from '@sanity/client'
 
-const algolia = algoliasearch(
-  process.env.ALGOLIA_APP_ID,
-  process.env.ALGOLIA_ADMIN_KEY
-)
+function getAlgolia() {
+  const algoliasearch = require('algoliasearch')
+  return algoliasearch(
+    process.env.ALGOLIA_APP_ID || 'placeholder',
+    process.env.ALGOLIA_ADMIN_KEY || 'placeholder'
+  )
+}
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -61,7 +63,7 @@ export async function POST(req) {
       return Response.json({ message: `Type ${_type} not indexed` })
     }
 
-    const index = algolia.initIndex(indexName)
+    const index = getAlgolia().initIndex(indexName)
 
     // Handle delete
     if (operation === 'delete') {
@@ -94,7 +96,7 @@ export async function GET(req) {
   const results = {}
   for (const [sanityType, indexName] of Object.entries(INDEX_MAP)) {
     const docs = await sanity.fetch(`*[_type == "${sanityType}"][0...500]`)
-    const index = algolia.initIndex(indexName)
+    const index = getAlgolia().initIndex(indexName)
     await index.saveObjects(docs.map(flattenDoc))
     results[indexName] = docs.length
   }
