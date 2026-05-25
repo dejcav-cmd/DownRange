@@ -10,7 +10,13 @@ const nextConfig = {
     ],
   },
   experimental: {
-    serverComponentsExternalPackages: ['@sanity/client'],
+    serverComponentsExternalPackages: [
+      '@sanity/client',
+      '@sanity/ui',
+      '@sanity/vision',
+      'sanity',
+      'styled-components',
+    ],
   },
 }
 
