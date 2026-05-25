@@ -13,9 +13,7 @@ const nextConfig = {
       { protocol: 'https', hostname: '**.glock.com' },
     ],
   },
-  experimental: {
-    serverComponentsExternalPackages: ['@sanity/client'],
-  },
+  serverExternalPackages: ['@sanity/client'],
 }
 
 module.exports = nextConfig
