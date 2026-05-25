@@ -1,6 +1,6 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
 
 export const metadata = { title: 'Search — DownRange' }
 

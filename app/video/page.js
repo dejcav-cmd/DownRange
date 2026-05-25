@@ -1,7 +1,7 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
-import { fetchVideos, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
+import { fetchVideos, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'Video — DownRange', description: 'Firearms video reviews, training, news, and interviews from trusted channels.' }
 export const revalidate = 7200

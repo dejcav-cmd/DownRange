@@ -1,7 +1,7 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
-import { fetchLegislation, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
+import { fetchLegislation, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'Laws & Legislation — DownRange' }
 export const revalidate = 3600

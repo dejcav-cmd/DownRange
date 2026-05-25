@@ -1,8 +1,8 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
-import StateHub from '../../../components/sections/StateHub'
-import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
+import StateHub from '../../components/sections/StateHub'
+import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'State Hub — DownRange', description: 'Firearms laws for all 50 states. Constitutional carry status, CCW, magazine limits, and more.' }
 export const revalidate = 86400 // daily

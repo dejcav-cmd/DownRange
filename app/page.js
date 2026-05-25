@@ -1,14 +1,14 @@
-import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
-import StatsBar from '../../components/layout/StatsBar'
-import Footer from '../../components/layout/Footer'
-import NewsCard from '../../components/ui/NewsCard'
-import StateHub from '../../components/sections/StateHub'
+import Masthead from '../components/layout/Masthead'
+import BreakingTicker from '../components/layout/BreakingTicker'
+import StatsBar from '../components/layout/StatsBar'
+import Footer from '../components/layout/Footer'
+import NewsCard from '../components/ui/NewsCard'
+import StateHub from '../components/sections/StateHub'
 import {
   fetchArticles, fetchBreakingAlerts, fetchLegislation,
   fetchReleases, fetchReviews, fetchAmmoPrices,
   fetchVideos, fetchGlobalStats, fetchAllStateProfiles
-} from '../../sanity/lib/client'
+} from '../sanity/lib/client'
 
 export const revalidate = 300
 

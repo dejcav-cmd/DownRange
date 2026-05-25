@@ -1,5 +1,5 @@
-import Masthead from '../../../components/layout/Masthead'
-import Footer   from '../../../components/layout/Footer'
+import Masthead from '../../components/layout/Masthead'
+import Footer   from '../../components/layout/Footer'
 
 export const metadata = {
   title: 'About | DownRange',

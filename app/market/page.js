@@ -1,7 +1,7 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
-import { fetchAmmoPrices, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
+import { fetchAmmoPrices, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'Market Watch — DownRange', description: 'Live ammo price index, availability tracking, and market trends for US firearms enthusiasts.' }
 export const revalidate = 1800 // 30 min

@@ -1,7 +1,7 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
-import { fetchReleases, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
+import { fetchReleases, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'New Releases — DownRange', description: 'Latest new firearm model announcements, releases, and product launches.' }
 export const revalidate = 3600

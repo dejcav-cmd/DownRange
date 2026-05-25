@@ -1,7 +1,7 @@
-import Masthead from '../../../components/layout/Masthead'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
-import Footer from '../../../components/layout/Footer'
-import { fetchReviews, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import Footer from '../../components/layout/Footer'
+import { fetchReviews, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'Reviews — DownRange', description: 'Expert field-tested reviews of pistols, rifles, shotguns, suppressors, optics, and accessories.' }
 export const revalidate = 3600
