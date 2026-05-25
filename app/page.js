@@ -66,7 +66,7 @@ export default async function HomePage() {
                       <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                         {featuredArticle.author?.name || featuredArticle.source} · Just now
                       </span>
-                      <a href={featuredArticle.externalUrl || `/news/${featuredArticle.slug?.current}`} target={featuredArticle.externalUrl ? '_blank' : '_self'} className="btn-gold">Read Full Story →</a>
+                      <a href={`/news/${featuredArticle.slug?.current}`} className="btn-gold">Read Full Story →</a>
                     </div>
                   </>
                 ) : (
@@ -94,8 +94,8 @@ export default async function HomePage() {
                 { title: 'HK VP9 Match Edition — Best Out-of-Box Trigger Under $900?', category: 'review', externalUrl: '/reviews' },
                 { title: '9mm FMJ Drops Below $0.19/rd — Cheapest Since January 2024', category: 'market', externalUrl: '/market' },
               ]).map((article, i) => (
-                <a key={article._id || i} href={article.externalUrl || `/news/${article.slug?.current || ''}`}
-                  target={article.externalUrl?.startsWith('http') ? '_blank' : '_self'} rel="noreferrer"
+                <a key={article._id || i} href={`/news/${article.slug?.current || article._id || ''}`}
+                  rel="noreferrer"
                   className="news-hover-card" style={{ flex: 1, background: '#16191F', padding: '20px', cursor: 'pointer', borderLeft: '3px solid transparent', transition: 'border-color 0.2s, background 0.2s', textDecoration: 'none', display: 'block' }}>
                   <div style={{ color: CAT_COLOR[article.category] || '#9CA3AF', fontFamily: "'Barlow Condensed',sans-serif", fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: '8px' }}>
                     {article.category?.toUpperCase() || 'NEWS'}

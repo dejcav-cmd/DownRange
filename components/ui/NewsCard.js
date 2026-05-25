@@ -38,8 +38,9 @@ const CAT_GRADIENTS = {
 }
 
 export default function NewsCard({ article, featured = false }) {
-  const href       = article.externalUrl || `/news/${article.slug?.current || article._id}`
-  const isExternal = !!article.externalUrl
+  // Always route to internal DownRange article page
+  // externalUrl is shown as "Read original source" inside the article page
+  const href = `/news/${article.slug?.current || article._id}`
   const catColor   = CAT_COLORS[article.category]  || '#9CA3AF'
   const catLabel   = CAT_LABELS[article.category]  || (article.category?.toUpperCase() || 'NEWS')
   const catGrad    = CAT_GRADIENTS[article.category] || CAT_GRADIENTS.news
@@ -48,7 +49,7 @@ export default function NewsCard({ article, featured = false }) {
 
   if (featured) {
     return (
-      <a href={href} target={isExternal ? '_blank' : '_self'} rel="noreferrer"
+      <a href={href} rel="noreferrer"
         style={{ display: 'block', textDecoration: 'none' }}>
         <div style={{ position: 'relative', minHeight: '420px', overflow: 'hidden', background: '#0d1117' }}>
           {/* Background image */}
@@ -97,7 +98,7 @@ export default function NewsCard({ article, featured = false }) {
 
   // Standard card
   return (
-    <a href={href} target={isExternal ? '_blank' : '_self'} rel="noreferrer"
+    <a href={href} rel="noreferrer"
       style={{ display: 'block', textDecoration: 'none' }}>
       <div style={{ background: '#111318', border: '1px solid #1F2428', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'border-color 0.2s' }}
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}

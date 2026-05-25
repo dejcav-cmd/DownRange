@@ -153,15 +153,37 @@ export default async function ArticlePage({ params }) {
                 dangerouslySetInnerHTML={{ __html: article.body }} />
             ) : (
               <div style={{ fontSize: '1.05rem', lineHeight: 1.85, color: '#D1D5DB' }}>
-                <p>{article.summary || article.excerpt}</p>
+                {/* AI-generated summary — full editorial DownRange take */}
+                <p style={{ fontSize: '1.1rem', lineHeight: 1.9, color: '#CBD5E1', marginBottom: '1.5rem' }}>
+                  {article.summary || article.excerpt}
+                </p>
+
+                {/* Tags inline */}
+                {article.tags?.length > 0 && (
+                  <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '2rem', fontFamily: 'monospace' }}>
+                    {article.tags.map(t => `#${t}`).join('  ')}
+                  </p>
+                )}
+
+                {/* Source attribution block */}
                 {article.externalUrl && (
-                  <div style={{ marginTop: '2rem', padding: '1.5rem', background: '#111318', border: '1px solid #1F2428' }}>
-                    <p style={{ color: '#6B7280', marginBottom: '0.75rem', fontSize: '0.875rem' }}>
-                      Full article published by {article.source || 'an external source'}.
+                  <div style={{ marginTop: '2rem', padding: '1.5rem 2rem', background: '#0D1117', border: '1px solid #C8922A30', borderLeft: '4px solid #C8922A' }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
+                      <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700 }}>
+                        ORIGINAL SOURCE
+                      </span>
+                      <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#374151' }}>—</span>
+                      <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#4B5563' }}>
+                        {article.source || 'External Publisher'}
+                      </span>
+                    </div>
+                    <p style={{ color: '#6B7280', marginBottom: '1rem', fontSize: '0.875rem', lineHeight: 1.6 }}>
+                      This story was sourced and editorially summarized by DownRange.
+                      Read the full original report at {article.source || 'the source'}.
                     </p>
                     <a href={article.externalUrl} target="_blank" rel="noopener noreferrer"
-                      style={{ display: 'inline-block', background: '#C8922A', color: '#000', padding: '0.65rem 1.5rem', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none', letterSpacing: '0.05em' }}>
-                      READ FULL ARTICLE ↗
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#C8922A', color: '#000', padding: '0.65rem 1.5rem', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none', letterSpacing: '0.05em' }}>
+                      READ ORIGINAL ARTICLE ↗
                     </a>
                   </div>
                 )}
