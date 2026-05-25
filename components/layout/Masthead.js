@@ -4,6 +4,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
+  { label: 'Home', href: '/', exact: true },
   { label: 'News', href: '/news' },
   { label: 'Breaking', href: '/news?cat=breaking', hot: true },
   { label: 'Laws', href: '/laws' },
@@ -53,7 +54,7 @@ export default function Masthead() {
         <nav style={{ borderTop: '1px solid #1F2428', display: 'flex', alignItems: 'center' }}>
           <ul style={{ display: 'flex', listStyle: 'none', flex: 1, flexWrap: 'wrap' }}>
             {NAV_ITEMS.map(item => {
-              const isActive = pathname === item.href || pathname.startsWith(item.href.split('?')[0] + '/')
+              const isActive = item.exact ? pathname === item.href : pathname === item.href || pathname.startsWith(item.href.split('?')[0] + '/')
               return (
                 <li key={item.href}>
                   <Link href={item.href} style={{
