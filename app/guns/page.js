@@ -1,7 +1,6 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
-import { client } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Firearm Encyclopedia — DownRange',
@@ -167,6 +166,7 @@ export default async function GunsPage({ searchParams }) {
         <div className="container">
 
           <style>{`
+            .tool-link:hover { border-color: var(--gold) !important; }
             .learn-card-img:hover { transform: scale(1.04); }
             .gun-card:hover .learn-card-img { transform: scale(1.04); }
           `}</style>
@@ -248,10 +248,8 @@ export default async function GunsPage({ searchParams }) {
               { label:'🔖 New Releases',     href:'/releases',                     desc:'Latest launches' },
               { label:'📚 Ammo Guide',       href:'/ammo/9mm',                     desc:'9mm, 5.56, .308 & more' },
             ].map(t => (
-              <Link key={t.href} href={t.href}
-                style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'18px 20px', textDecoration:'none', display:'block', transition:'border-color 0.2s' }}
-                onMouseEnter={e=>e.currentTarget.style.borderColor='var(--gold)'}
-                onMouseLeave={e=>e.currentTarget.style.borderColor='var(--border)'}>
+              <Link key={t.href} href={t.href} className="tool-link"
+                style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'18px 20px', textDecoration:'none', display:'block', transition:'border-color 0.2s' }}>
                 <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'16px', fontWeight:700, color:'var(--text)', marginBottom:4 }}>{t.label}</div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>{t.desc}</div>
               </Link>
