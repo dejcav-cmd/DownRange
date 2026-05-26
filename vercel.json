@@ -147,6 +147,9 @@
     },
     "app/api/outreach/send/direct/route.js": {
       "maxDuration": 30
+    },
+    "app/api/outreach/dealers/route.js": {
+      "maxDuration": 60
     }
   }
 }

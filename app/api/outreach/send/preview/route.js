@@ -30,6 +30,7 @@ function personalize(template, contact) {
     '{{portalUrl}}':      'https://www.downrangeco.com',
     '{{unsubscribeUrl}}': `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email || '')}`,
     '{{currentYear}}':    new Date().getFullYear().toString(),
+    '{{pressUrl}}':       'https://www.downrangeco.com/press',
     '{{currentMonth}}':   new Date().toLocaleString('default', { month: 'long' }),
   }
   let subject = template.subject || ''

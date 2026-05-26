@@ -501,6 +501,14 @@ export default function OutreachPortal({ adminKey }) {
     else flash(d.error||'Error',false)
   }
 
+  const seedDealers = async () => {
+    flash('Seeding dealers...')
+    const res = await fetch('/api/outreach/dealers',{method:'POST',headers:h})
+    const d = await res.json()
+    if (d.ok) { flash(`${d.created} dealers added (${d.skipped} already existed)`); loadContacts() }
+    else flash(d.error||'Error',false)
+  }
+
   const runScrape = async (save=false) => {
     setScrapeRunning(true); setScrapeResult(null)
     const res = await fetch('/api/outreach/scrape',{method:'POST',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify({source:scrapeSource,params:{state:scrapeState,limit:100},saveToDatabase:save})})
@@ -601,6 +609,7 @@ export default function OutreachPortal({ adminKey }) {
       <div style={{display:'flex',gap:8,marginBottom:16,flexWrap:'wrap'}}>
         <button className="op-btn-ghost op-btn-sm" onClick={seedTemplates}>🌱 Seed Templates + YouTubers</button>
         <button className="op-btn-ghost op-btn-sm" onClick={seedManufacturers}>🏭 Seed 70+ Manufacturers</button>
+        <button className="op-btn-ghost op-btn-sm" onClick={seedDealers}>🛒 Seed 30+ Dealers & Retailers</button>
       </div>
 
       {/* Sub-tabs */}

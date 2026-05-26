@@ -207,9 +207,39 @@ const MANUFACTURER_INTRO = {
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
+
+const DEALER_INTRO = {
+  name: 'Dealer & Retailer — Introduction',
+  type: 'ffl_dealer',
+  subject: 'DownRange — a resource worth knowing about for {{businessName}}',
+  previewText: 'Free firearms intelligence platform. Your customers are already using it.',
+  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I run <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms intelligence portal that covers new releases, ATF updates, state laws, and market data for gun owners across the country.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'm reaching out to {{businessName}} specifically because your customers are the exact audience we serve every day. The kind of person who buys from you is the kind of person who wants to know what dropped from Glock this week, what changed in their state's carry laws, and what ammo is cheapest right now.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">A few things that might be useful:</p>
+
+<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
+  <li>Mention DownRange to customers looking for ongoing firearms information — it's something they'll actually use</li>
+  <li>If you have deals, new inventory, or announcements worth covering, we're open to hearing about them</li>
+  <li>Our press page has more information on how we work with dealers and industry partners</li>
+</ul>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Take a look: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">For partnership or press inquiries, our media kit is at: <a href="https://www.downrangeco.com/press" style="color:#C8922A;text-decoration:none;">downrangeco.com/press</a></p>
+
+<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks for your time,</p>
+<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
+<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
+  variables: ['{{firstName}}','{{businessName}}','{{state}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
+}
+
 const ALL_TEMPLATES = [
   YOUTUBER_INTRO, YOUTUBER_FOLLOWUP, YOUTUBER_COLLAB,
-  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, MANUFACTURER_INTRO, GENERIC_FOLLOWUP,
+  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, MANUFACTURER_INTRO, DEALER_INTRO, GENERIC_FOLLOWUP,
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
