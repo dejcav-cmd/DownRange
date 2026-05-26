@@ -58,7 +58,12 @@ const CAT_COLORS = {
 }
 
 function GuideCard({ guide, featured = false }) {
-  const href = `/${guide.category === 'Precision' ? 'precision' : guide.category === 'Training' ? 'training' : guide.category === 'Home Defense' || guide.category === 'Preparedness' || guide.category === 'Storage' ? 'preparedness' : 'hunting'}/${guide.slug}`
+  // Route guide slugs to parent page with query param (no [slug] sub-routes exist)
+  const baseRoute = guide.category === 'Precision' ? 'precision'
+    : guide.category === 'Training' ? 'training'
+    : (guide.category === 'Home Defense' || guide.category === 'Preparedness' || guide.category === 'Storage') ? 'preparedness'
+    : 'hunting'
+  const href = `/${baseRoute}?guide=${guide.slug}`
   const dotColor = CAT_COLORS[guide.category] || 'var(--gold)'
 
   if (featured) {

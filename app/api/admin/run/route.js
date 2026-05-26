@@ -1,33 +1,33 @@
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
+import { logPull, STATUS } from '@/lib/pullLogger'
+
 /**
  * POST /api/admin/run?feed=news
- * Admin-only manual feed trigger.
- * Uses ADMIN_KEY env var (separate from CRON_SECRET).
- * If ADMIN_KEY is not set, falls back to accepting any request from same origin.
- * This route is only exposed to the admin UI — not in vercel.json crons.
+ * Manual feed trigger — no CRON_SECRET needed from admin UI.
+ * Writes to pull log so dashboard shows activity.
  */
 export async function POST(req) {
-  const adminKey  = process.env.ADMIN_KEY
+  const adminKey   = process.env.ADMIN_KEY
   const authHeader = req.headers.get('authorization')
-  const origin     = req.headers.get('origin') || req.headers.get('referer') || ''
-  const host       = req.headers.get('host') || ''
 
-  // If ADMIN_KEY is set, require it
-  if (adminKey) {
-    if (authHeader !== `Bearer ${adminKey}`) {
-      return Response.json({ error: 'Unauthorized — ADMIN_KEY mismatch' }, { status: 401 })
-    }
+  if (adminKey && authHeader !== `Bearer ${adminKey}`) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
-  // If no ADMIN_KEY set, only allow same-origin requests (from own admin UI)
-  // In production, set ADMIN_KEY for security
 
   const { searchParams } = new URL(req.url)
   const feed = searchParams.get('feed') || 'news'
   const t    = Date.now()
 
-  console.log(`[ADMIN/RUN] ▶ feed=${feed} | host=${host}`)
+  console.log(`[ADMIN/RUN] ▶ feed=${feed}`)
+
+  // Log as pending immediately so dashboard shows activity
+  await logPull({
+    sourceId:  feed,
+    status:    STATUS.PENDING,
+    meta:      { triggeredBy: 'manual', feed },
+  })
 
   try {
     let result
@@ -40,12 +40,51 @@ export async function POST(req) {
       case 'state':    { const { runStateFeed }    = await import('../../../../agent/feeds/state.js');    result = await runStateFeed();    break }
       default: return Response.json({ error: `Unknown feed: ${feed}` }, { status: 400 })
     }
-    const ms = Date.now() - t
-    console.log(`[ADMIN/RUN] ✓ feed=${feed} done in ${ms}ms`)
-    return Response.json({ success: true, feed, result, ms })
+
+    const ms      = Date.now() - t
+    const done    = result?.done ?? result?.published ?? result?.processed ?? 0
+    const total   = result?.total ?? result?.items ?? done
+    const withAI  = result?.withAI ?? 0
+
+    // Log success to pull log
+    await logPull({
+      sourceId:  feed,
+      status:    done > 0 ? STATUS.SUCCESS : STATUS.PARTIAL,
+      itemCount: total,
+      newItems:  done,
+      duration:  ms,
+      meta:      { triggeredBy: 'manual', feed, withAI, claudeUp: result?.claudeUp },
+      headlines: result?.headlines || [],
+    })
+
+    console.log(`[ADMIN/RUN] ✓ feed=${feed} done=${done} total=${total} ms=${ms}`)
+    return Response.json({
+      success: true, feed,
+      result: { done, total, withAI, claudeUp: result?.claudeUp, ...result },
+      ms,
+    })
   } catch (err) {
-    console.error(`[ADMIN/RUN] ✗ ${feed}:`, err.message)
-    return Response.json({ error: err.message, feed, ms: Date.now() - t }, { status: 500 })
+    const ms = Date.now() - t
+    console.error(`[ADMIN/RUN] ✗ ${feed}: ${err.message}`)
+
+    // Log failure
+    await logPull({
+      sourceId: feed,
+      status:   STATUS.FAILED,
+      duration: ms,
+      error:    err.message,
+      meta:     { triggeredBy: 'manual', feed },
+    })
+
+    return Response.json({
+      error: err.message,
+      hint: err.message.includes('Cannot find module')
+        ? `Agent file for '${feed}' feed threw an import error. Check agent/feeds/${feed}.js exists.`
+        : err.message.includes('SANITY_API_TOKEN')
+        ? 'SANITY_API_TOKEN not set in Vercel env vars — articles cannot be saved.'
+        : null,
+      feed, ms,
+    }, { status: 500 })
   }
 }
 

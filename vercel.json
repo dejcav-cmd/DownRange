@@ -31,6 +31,18 @@
     {
       "path": "/api/nics",
       "schedule": "0 10 1 * *"
+    },
+    {
+      "path": "/api/site-health",
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/site-health",
+      "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/site-health",
+      "schedule": "0 20 * * *"
     }
   ],
   "headers": [
@@ -77,6 +89,9 @@
     },
     "app/api/ranges/route.js": {
       "maxDuration": 30
+    },
+    "app/api/site-health/route.js": {
+      "maxDuration": 300
     }
   }
 }
