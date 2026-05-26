@@ -47,6 +47,10 @@
     {
       "path": "/api/cron/releases",
       "schedule": "0 12 * * *"
+    },
+    {
+      "path": "/api/outreach/queue/digest",
+      "schedule": "0 13 * * *"
     }
   ],
   "headers": [
@@ -153,6 +157,9 @@
     },
     "app/api/outreach/holsters/route.js": {
       "maxDuration": 60
+    },
+    "app/api/outreach/queue/route.js": {
+      "maxDuration": 300
     }
   }
 }
