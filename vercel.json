@@ -108,6 +108,9 @@
     },
     "app/api/admin/scrape-releases/route.js": {
       "maxDuration": 300
+    },
+    "app/api/system/alert/route.js": {
+      "maxDuration": 30
     }
   }
 }

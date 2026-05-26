@@ -29,6 +29,13 @@ export async function GET(request) {
 
     console.log('[releases-cron] Done:', results)
 
+    const status = results.added.length > 0 ? 'success' : results.failed.length > 0 ? 'failed' : 'partial'
+    fetch('https://www.downrangeco.com/api/system/alert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: 'prn_scraper', sourceLabel: 'PRN Releases Scraper', status, error: results.failed.map(f=>f.error).join('; ') || null }),
+    }).catch(() => {})
+
     return Response.json({
       success: true,
       timestamp: new Date().toISOString(),
@@ -39,6 +46,11 @@ export async function GET(request) {
     })
   } catch (err) {
     console.error('[releases-cron] Error:', err)
+    fetch('https://www.downrangeco.com/api/system/alert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: 'prn_scraper', sourceLabel: 'PRN Releases Scraper', status: 'failed', error: err.message }),
+    }).catch(() => {})
     return Response.json(
       { success: false, error: err.message },
       { status: 500 }

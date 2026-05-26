@@ -26,72 +26,68 @@ const sanity = createClient({
 
 // ── Curated firearm image library — multiple options per category ─────────────
 // All verified Unsplash firearm/2A photography IDs
+// Verified CC-licensed firearm images from Wikimedia Commons
+const WM = 'https://upload.wikimedia.org/wikipedia/commons/thumb'
 const FIREARM_IMAGES = {
-  // Pistols / handguns / EDC / carry
   pistol: [
-    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=900&q=85',  // pistol grip closeup
-    'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=900&q=85',  // compact pistol
-    'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=900&q=85',  // handgun dark bg
-    'https://images.unsplash.com/photo-1621415814107-a4cbf5b3f1ea?w=900&q=85',  // pistol profile
-    'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=900&q=85',  // handgun with suppressor
+    `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,
+    `${WM}/9/9b/SIG_Sauer_P365_XL.jpg/1200px-SIG_Sauer_P365_XL.jpg`,
+    `${WM}/8/80/Beretta_92FS_bk.jpg/1200px-Beretta_92FS_bk.jpg`,
+    `${WM}/3/35/M1911A1.jpg/1200px-M1911A1.jpg`,
+    `${WM}/b/b0/Glock_17_2.jpg/1200px-Glock_17_2.jpg`,
+    `${WM}/4/4e/CZ_75_SP-01_Shadow.jpg/1200px-CZ_75_SP-01_Shadow.jpg`,
   ],
-  // AR-15 / rifles / carbines
   rifle: [
-    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',  // AR-15 confirmed
-    'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=900&q=85',  // rifle action
-    'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=900&q=85',  // rifle in field
-    'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=900&q=85',  // rifle scope
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
+    `${WM}/2/2b/AK-47_type_II_Para_title.jpg/1200px-AK-47_type_II_Para_title.jpg`,
+    `${WM}/5/5b/M16A1_brimob.jpg/1200px-M16A1_brimob.jpg`,
+    `${WM}/9/9f/Ruger_Mini-14.jpg/1200px-Ruger_Mini-14.jpg`,
+    `${WM}/f/f3/AR-15_rifle.jpg/800px-AR-15_rifle.jpg`,
   ],
-  // Shotguns
   shotgun: [
-    'https://images.unsplash.com/photo-1543393716-375f47996a77?w=900&q=85',     // shotgun confirmed
-    'https://images.unsplash.com/photo-1534067783941-51c9c23ecefd?w=900&q=85',  // pump shotgun
+    `${WM}/e/e1/Mossberg_500_Persuader.jpg/1200px-Mossberg_500_Persuader.jpg`,
+    `${WM}/6/6d/Remington_870_Wingmaster.jpg/1200px-Remington_870_Wingmaster.jpg`,
+    `${WM}/e/e1/Mossberg_500_Persuader.jpg/800px-Mossberg_500_Persuader.jpg`,
   ],
-  // Suppressors / NFA / silencers
   suppressor: [
-    'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=900&q=85',  // pistol with suppressor
-    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=900&q=85',  // pistol close
+    `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
   ],
-  // Optics / scopes / red dots
   optic: [
-    'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=900&q=85',  // rifle scope
-    'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=900&q=85',  // scope in field
-    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',  // rifle with optic
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
+    `${WM}/9/9f/Ruger_Mini-14.jpg/1200px-Ruger_Mini-14.jpg`,
+    `${WM}/5/5b/M16A1_brimob.jpg/1200px-M16A1_brimob.jpg`,
   ],
-  // Ammunition / calibers / reloading
   ammo: [
-    'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=900&q=85',  // cartridges
-    'https://images.unsplash.com/photo-1621415814107-a4cbf5b3f1ea?w=900&q=85',  // ammo rounds
-    'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=900&q=85',  // brass casings
+    `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,
+    `${WM}/9/9b/SIG_Sauer_P365_XL.jpg/1200px-SIG_Sauer_P365_XL.jpg`,
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
   ],
-  // Law / legislation / ATF / courts / 2A rights
   law: [
-    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=900&q=85',  // pistol (rights)
-    'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=900&q=85',  // handgun
-    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',  // rifle
+    `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
+    `${WM}/3/35/M1911A1.jpg/1200px-M1911A1.jpg`,
+    `${WM}/8/80/Beretta_92FS_bk.jpg/1200px-Beretta_92FS_bk.jpg`,
   ],
-  // Range / training / shooting sports
   range: [
-    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=900&q=85',
-    'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=900&q=85',
-    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
+    `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,
+    `${WM}/9/9b/SIG_Sauer_P365_XL.jpg/1200px-SIG_Sauer_P365_XL.jpg`,
   ],
-  // Hunting / outdoor
   hunting: [
-    'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=900&q=85',  // field/hunting rifle
-    'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=900&q=85',  // rifle hunting
-    'https://images.unsplash.com/photo-1543393716-375f47996a77?w=900&q=85',     // shotgun hunting
+    `${WM}/9/9f/Ruger_Mini-14.jpg/1200px-Ruger_Mini-14.jpg`,
+    `${WM}/e/e1/Mossberg_500_Persuader.jpg/1200px-Mossberg_500_Persuader.jpg`,
+    `${WM}/6/6d/Remington_870_Wingmaster.jpg/1200px-Remington_870_Wingmaster.jpg`,
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
   ],
-  // Military / defense / contracts
   military: [
-    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',
-    'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=900&q=85',
-    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=900&q=85',
+    `${WM}/5/5b/M16A1_brimob.jpg/1200px-M16A1_brimob.jpg`,
+    `${WM}/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg`,
+    `${WM}/2/2b/AK-47_type_II_Para_title.jpg/1200px-AK-47_type_II_Para_title.jpg`,
   ],
-  // Holsters / carry gear / accessories
   holster: [
-    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=900&q=85',
-    'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=900&q=85',
+    `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,
+    `${WM}/9/9b/SIG_Sauer_P365_XL.jpg/1200px-SIG_Sauer_P365_XL.jpg`,
   ],
 }
 

@@ -22,6 +22,7 @@ const TABS = [
   { key:'blog',       label:'Blog Manager',    icon:'📝' },
   { key:'schedule',   label:'Pub. Schedule',   icon:'📅' },
   { key:'pulllog',    label:'Pull Log',        icon:'📡' },
+  { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
 ]
@@ -1048,6 +1049,165 @@ function ScrapeReleasesButton() {
 }
 
 
+
+function SystemAlertDashboard() {
+  const [data, setData]       = React.useState(null)
+  const [loading, setLoading] = React.useState(true)
+  const [testSrc, setTestSrc] = React.useState('news')
+
+  const load = async () => {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/system/alert')
+      const d   = await res.json()
+      setData(d)
+    } catch(e) { console.error(e) }
+    setLoading(false)
+  }
+
+  React.useEffect(() => { load(); const t = setInterval(load, 30000); return () => clearInterval(t) }, [])
+
+  const testAlert = async () => {
+    await fetch('/api/system/alert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: testSrc, sourceLabel: `Agent: ${testSrc}`, status: 'failed', error: 'Manual test alert from admin panel' }),
+    })
+    await load()
+  }
+
+  const clearAlerts = async () => {
+    // Reset by sending a success
+    await fetch('/api/system/alert', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: testSrc, sourceLabel: `Agent: ${testSrc}`, status: 'success' }),
+    })
+    await load()
+  }
+
+  const healthColor = (s) => s?.status === 'healthy' ? '#22c55e' : s?.status === 'degraded' ? '#f59e0b' : '#ef4444'
+  const healthIcon  = (s) => s?.status === 'healthy' ? '✅' : s?.status === 'degraded' ? '⚠️' : '🔴'
+
+  return (
+    <div style={{ maxWidth:900 }}>
+      <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', letterSpacing:'0.06em', color:'var(--gold)', margin:'0 0 4px' }}>🚨 SYSTEM ALERTS</h1>
+      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', margin:'0 0 24px' }}>
+        Feed failure detection · Email alerts to dejcav@gmail.com · 3 consecutive failures triggers alert
+      </p>
+
+      {loading && !data && (
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#64748b', padding:'40px 0' }}>Loading alert state...</div>
+      )}
+
+      {data && (
+        <>
+          {/* Source health grid */}
+          <div style={{ marginBottom:24 }}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'0.06em', color:'var(--text)', marginBottom:12 }}>FEED HEALTH STATUS</div>
+            {data.sourceStatus?.length === 0 ? (
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#22c55e', padding:'16px', background:'rgba(34,197,94,0.06)', border:'1px solid rgba(34,197,94,0.2)', borderRadius:4 }}>
+                ✅ All feeds healthy — no failures recorded yet.
+              </div>
+            ) : (
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:10 }}>
+                {data.sourceStatus.map(s => (
+                  <div key={s.id} style={{ padding:'12px 16px', background:'var(--bg2)', border:`1px solid ${healthColor(s)}44`, borderLeft:`3px solid ${healthColor(s)}`, borderRadius:4 }}>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text)', marginBottom:4 }}>
+                      {healthIcon(s)} {s.id.replace(/_/g,' ').toUpperCase()}
+                    </div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:healthColor(s), fontWeight:700 }}>
+                      {s.status.toUpperCase()} · {s.consecutiveFails} fails
+                    </div>
+                    {s.lastAlert && (
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', marginTop:3 }}>
+                        Last alert: {new Date(s.lastAlert).toLocaleString()}
+                      </div>
+                    )}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Alert history */}
+          <div style={{ marginBottom:24 }}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'0.06em', color:'var(--text)', marginBottom:12 }}>
+              ALERT HISTORY ({data.alerts?.length || 0})
+            </div>
+            {data.alerts?.length === 0 ? (
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#22c55e', padding:'16px', background:'rgba(34,197,94,0.06)', border:'1px solid rgba(34,197,94,0.2)', borderRadius:4 }}>
+                ✅ No alerts triggered.
+              </div>
+            ) : (
+              <div style={{ display:'flex', flexDirection:'column', gap:8, maxHeight:400, overflowY:'auto' }}>
+                {data.alerts.map(a => (
+                  <div key={a.id} style={{
+                    padding:'12px 16px',
+                    background: a.type === 'recovery' ? 'rgba(34,197,94,0.06)' : 'rgba(239,68,68,0.06)',
+                    border: `1px solid ${a.type === 'recovery' ? 'rgba(34,197,94,0.2)' : 'rgba(239,68,68,0.2)'}`,
+                    borderLeft: `3px solid ${a.type === 'recovery' ? '#22c55e' : '#ef4444'}`,
+                    borderRadius:4,
+                    display:'grid', gridTemplateColumns:'auto 1fr auto', gap:12, alignItems:'center'
+                  }}>
+                    <div style={{ fontSize:20 }}>{a.type === 'recovery' ? '✅' : '🚨'}</div>
+                    <div>
+                      <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', marginBottom:2 }}>
+                        {a.sourceLabel}
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: a.type === 'recovery' ? '#22c55e' : '#ef4444', marginLeft:8, fontWeight:400 }}>
+                          {a.type === 'recovery' ? 'RECOVERED' : `FAILED ×${a.consecutiveFails}`}
+                        </span>
+                      </div>
+                      {a.error && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#f87171' }}>{a.error}</div>}
+                    </div>
+                    <div style={{ textAlign:'right' }}>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', whiteSpace:'nowrap' }}>
+                        {new Date(a.timestamp).toLocaleString()}
+                      </div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color: a.emailSent ? '#22c55e' : '#64748b', marginTop:2 }}>
+                        {a.emailSent ? '📧 email sent' : '📧 email skipped'}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Test controls */}
+          <div style={{ padding:'20px', background:'rgba(200,146,42,0.05)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4 }}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.06em', color:'var(--gold)', marginBottom:12 }}>TEST ALERT SYSTEM</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', marginBottom:12 }}>
+              Send a test failure for a feed to verify alerts are working. Threshold is {data.threshold} consecutive fails before email is sent.
+            </div>
+            <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap' }}>
+              <select value={testSrc} onChange={e=>setTestSrc(e.target.value)}
+                style={{ background:'var(--bg2)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'6px 10px' }}>
+                {['news','laws','releases','market','video','state','prn_scraper'].map(f => (
+                  <option key={f} value={f}>{f}</option>
+                ))}
+              </select>
+              <button onClick={testAlert}
+                style={{ background:'#ef4444', color:'#fff', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, letterSpacing:'0.1em', padding:'7px 16px', cursor:'pointer' }}>
+                SIMULATE FAILURE
+              </button>
+              <button onClick={clearAlerts}
+                style={{ background:'#22c55e', color:'#000', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, letterSpacing:'0.1em', padding:'7px 16px', cursor:'pointer' }}>
+                SIMULATE RECOVERY
+              </button>
+              <button onClick={load}
+                style={{ background:'none', border:'1px solid var(--border)', color:'var(--text-dim)', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'7px 12px', cursor:'pointer' }}>
+                ↻ Refresh
+              </button>
+            </div>
+          </div>
+        </>
+      )}
+    </div>
+  )
+}
+
+
 function ImageFixButton() {
   const [log, setLog]         = React.useState([])
   const [running, setRunning] = React.useState(false)
@@ -1621,6 +1781,7 @@ export default function AdminPage() {
 
           {/* ── PULL LOG ── */}
           {tab==='pulllog' && <PullLogDashboard />}
+          {tab==='sysalerts' && <SystemAlertDashboard />}
 
           {tab==='cronhealth' && <CronHealth secret={secret} />}
 

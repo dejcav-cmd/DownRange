@@ -46,9 +46,21 @@ export async function GET(req) {
       default: return Response.json({ error: `Unknown feed: ${feed}` }, { status: 400 })
     }
     console.log(`[AGENT] ✓ feed=${feed} done in ${Date.now()-t}ms`)
+    // Notify alert system of success (resets consecutive fail counter)
+    fetch(`${req.nextUrl?.origin || 'https://www.downrangeco.com'}/api/system/alert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'success' }),
+    }).catch(() => {})
     return Response.json({ success: true, feed, result, ms: Date.now()-t })
   } catch (err) {
     console.error(`[AGENT] ✗ feed=${feed} error:`, err.message)
+    // Notify alert system of failure
+    fetch(`${req.nextUrl?.origin || 'https://www.downrangeco.com'}/api/system/alert`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'failed', error: err.message }),
+    }).catch(() => {})
     return Response.json({ error: err.message, feed, ms: Date.now()-t }, { status: 500 })
   }
 }
