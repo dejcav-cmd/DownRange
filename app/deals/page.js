@@ -2,6 +2,7 @@
 import { useState, useEffect, useCallback } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import { sendGAEvent } from '@next/third-parties/google'
 
 // ── FLAIR CONFIG ──────────────────────────────────────────────────────────────
 const FLAIR_META = {
@@ -83,6 +84,14 @@ function DealCard({ deal }) {
   return (
     <a href={deal.url} target="_blank" rel="noopener noreferrer"
       style={{ textDecoration:'none', display:'block' }}
+      onClick={() => sendGAEvent('event', 'deal_click', {
+        deal_title:  deal.title?.slice(0, 100),
+        deal_flair:  deal.flair,
+        deal_source: deal.source,
+        deal_domain: deal.domain,
+        deal_price:  deal.price,
+        deal_score:  deal.score,
+      })}
       onMouseEnter={e => e.currentTarget.querySelector('.deal-card-inner').style.borderColor = fm.color}
       onMouseLeave={e => e.currentTarget.querySelector('.deal-card-inner').style.borderColor = 'var(--border)'}>
       <div className="deal-card-inner" style={{

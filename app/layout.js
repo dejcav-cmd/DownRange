@@ -1,6 +1,10 @@
 import '../styles/globals.css'
 import MobileTabBar from '../components/ui/MobileTabBar'
 import { ThemeProvider } from '../components/ui/ThemeProvider'
+import { GoogleAnalytics } from '@next/third-parties/google'
+import PageViewTracker from '../components/ui/PageViewTracker'
+
+const GA_ID = process.env.NEXT_PUBLIC_GA_ID || ''
 
 export const viewport = {
   width: 'device-width',
@@ -49,8 +53,12 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider>
           {children}
-        <MobileTabBar />
-      </ThemeProvider>
+          <MobileTabBar />
+        </ThemeProvider>
+        {/* GA4 — only loads when NEXT_PUBLIC_GA_ID is set */}
+        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
+        {/* SPA page-view tracker — fires on every client-side route change */}
+        {GA_ID && <PageViewTracker />}
       </body>
     </html>
   )
