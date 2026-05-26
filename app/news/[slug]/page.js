@@ -5,6 +5,31 @@ import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
 import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 
+// Server-side firearm image fallback — same logic as NewsCard client-side
+const ARTICLE_FALLBACKS = {
+  pistol:     'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=1200&q=85',
+  rifle:      'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1200&q=85',
+  shotgun:    'https://images.unsplash.com/photo-1543393716-375f47996a77?w=1200&q=85',
+  suppressor: 'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=1200&q=85',
+  optic:      'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=1200&q=85',
+  ammo:       'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=1200&q=85',
+  law:        'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=1200&q=85',
+  breaking:   'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=1200&q=85',
+  news:       'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=1200&q=85',
+  industry:   'https://images.unsplash.com/photo-1621415814107-a4cbf5b3f1ea?w=1200&q=85',
+}
+
+function getArticleFallback(article) {
+  const t = (article?.title || '').toLowerCase()
+  if (/ar-?15|ar15|5\.56|\.223|rifle|carbine|m4|m16|ak|bolt|308|6\.5/.test(t))   return ARTICLE_FALLBACKS.rifle
+  if (/shotgun|12.?gauge|mossberg|remington|benelli|pump/.test(t))                   return ARTICLE_FALLBACKS.shotgun
+  if (/suppressor|silencer|nfa|form.?4|silencerco/.test(t))                         return ARTICLE_FALLBACKS.suppressor
+  if (/optic|scope|red dot|eotech|aimpoint|vortex|trijicon|holosun/.test(t))        return ARTICLE_FALLBACKS.optic
+  if (/ammo|ammunition|grain|fmj|jhp|caliber|bullet/.test(t))                       return ARTICLE_FALLBACKS.ammo
+  if (/law|legislation|atf|scotus|court|ban|bill|rights|2a/.test(t))               return ARTICLE_FALLBACKS.law
+  return ARTICLE_FALLBACKS[article?.category] || ARTICLE_FALLBACKS.news
+}
+
 function readingTime(text) {
   if (!text) return '1 min read'
   return Math.max(1, Math.round(text.trim().split(/\s+/).length / 200)) + ' min read'
@@ -76,7 +101,7 @@ export default async function ArticlePage({ params }) {
   if (!article) notFound()
 
   const cat      = CAT_STYLE[article.category] || CAT_STYLE.news
-  const imageUrl = resolveImage(article)
+  const imageUrl = resolveImage(article) || getArticleFallback(article)
   const imageAlt = article.imageAlt || article.heroImage?.alt || article.title
 
   return (
@@ -86,21 +111,19 @@ export default async function ArticlePage({ params }) {
 
       <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-        {/* ── HERO IMAGE ── */}
-        {imageUrl && (
-          <div style={{ width: '100%', height: 'clamp(280px, 45vw, 520px)', overflow: 'hidden', position: 'relative' }}>
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-            {/* bottom fade */}
-            <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(0deg, #0A0B0C 0%, transparent 100%)' }} />
-          </div>
-        )}
+        {/* ── HERO IMAGE — always shown ── */}
+        <div style={{ width: '100%', height: 'clamp(280px, 45vw, 520px)', overflow: 'hidden', position: 'relative' }}>
+          <img
+            src={imageUrl}
+            alt={imageAlt}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+            onError={`this.src='${ARTICLE_FALLBACKS.news}'`}
+          />
+          <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(0deg, #0A0B0C 0%, transparent 100%)' }} />
+        </div>
 
         {/* ── HEADER ── */}
-        <div style={{ background: imageUrl ? 'transparent' : 'linear-gradient(180deg, #111318 0%, #0A0B0C 100%)', borderBottom: '1px solid var(--border)', marginTop: imageUrl ? '-80px' : 0, position: 'relative', zIndex: 1 }}>
+        <div style={{ background: 'transparent', borderBottom: '1px solid var(--border)', marginTop: '-80px', position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem 2.5rem' }}>
 
             {/* Breadcrumb */}

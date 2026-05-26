@@ -95,6 +95,9 @@
     },
     "app/api/admin/backfill-articles/route.js": {
       "maxDuration": 300
+    },
+    "app/api/admin/fix-images/route.js": {
+      "maxDuration": 300
     }
   }
 }

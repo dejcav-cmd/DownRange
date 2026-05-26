@@ -1,9 +1,39 @@
 'use client'
 
+// Curated fallback images — shown client-side when Sanity has no image
+const FALLBACK_IMAGES = {
+  pistol:     'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
+  rifle:      'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+  shotgun:    'https://images.unsplash.com/photo-1543393716-375f47996a77?w=800&q=80',
+  suppressor: 'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=800&q=80',
+  optic:      'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=800&q=80',
+  ammo:       'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=800&q=80',
+  law:        'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
+  breaking:   'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=800&q=80',
+  industry:   'https://images.unsplash.com/photo-1621415814107-a4cbf5b3f1ea?w=800&q=80',
+  training:   'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+  news:       'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
+}
+
+function getFallbackImage(article) {
+  const t = (article.title || '').toLowerCase()
+  // Keyword-first matching
+  if (/ar-?15|ar15|5\.56|223|rifle|carbine|m4|m16|ak|bolt.?action|308|6\.5/.test(t)) return FALLBACK_IMAGES.rifle
+  if (/shotgun|12.?gauge|mossberg|remington|benelli|pump/.test(t))                    return FALLBACK_IMAGES.shotgun
+  if (/suppressor|silencer|nfa|form.?4|silencerco/.test(t))                           return FALLBACK_IMAGES.suppressor
+  if (/optic|scope|red dot|eotech|aimpoint|vortex|trijicon|holosun/.test(t))          return FALLBACK_IMAGES.optic
+  if (/ammo|ammunition|grain|fmj|jhp|caliber|bullet|brass/.test(t))                   return FALLBACK_IMAGES.ammo
+  if (/law|legislation|atf|scotus|court|ban|bill|congress|rights|2a/.test(t))         return FALLBACK_IMAGES.law
+  // Category fallback
+  return FALLBACK_IMAGES[article.category] || FALLBACK_IMAGES.news
+}
+
+
 function resolveImage(article) {
   if (article?.heroImage?.asset?.url) return article.heroImage.asset.url
   if (article?.imageUrl) return article.imageUrl
-  return null
+  // Always return a fallback — never show a blank card
+  return getFallbackImage(article)
 }
 
 function readingTime(text) {
@@ -57,17 +87,17 @@ export default function NewsCard({ article, featured = false }) {
       <a href={href} rel="noreferrer"
         style={{ display: 'block', textDecoration: 'none' }}>
         <div style={{ position: 'relative', minHeight: '420px', overflow: 'hidden', background: '#0d1117' }}>
-          {/* Background image */}
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.4 }}
-              onError={e => { e.target.style.display = 'none' }}
-            />
-          ) : (
-            <div style={{ position: 'absolute', inset: 0, background: catGrad }} />
-          )}
+          {/* Background image — always shown (resolveImage always returns a fallback) */}
+          <img
+            src={imageUrl}
+            alt={imageAlt}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', opacity: 0.45 }}
+            onError={e => {
+              const fallback = getFallbackImage(article)
+              if (e.target.src !== fallback) { e.target.src = fallback }
+              else { e.target.style.display = 'none' }
+            }}
+          />
           {/* Gradient overlay */}
           <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, rgba(9,9,11,0.97) 0%, rgba(9,9,11,0.6) 50%, rgba(9,9,11,0.2) 100%)' }} />
           {/* Content */}
@@ -117,21 +147,17 @@ export default function NewsCard({ article, featured = false }) {
               <span style={{ color: '#fff', fontSize: '9px', fontWeight: 700, letterSpacing: '0.12em', fontFamily: "'IBM Plex Mono',monospace" }}>BREAKING</span>
             </div>
           )}
-          {imageUrl ? (
-            <img
-              src={imageUrl}
-              alt={imageAlt}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'opacity 0.3s' }}
-              onError={e => {
-                e.target.style.display = 'none'
-                e.target.parentElement.style.background = catGrad
-              }}
-            />
-          ) : (
-            <div style={{ width: '100%', height: '100%', background: catGrad, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <span style={{ color: catColor, fontSize: '28px', opacity: 0.3 }}>◈</span>
-            </div>
-          )}
+          <img
+            src={imageUrl}
+            alt={imageAlt}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block', transition: 'opacity 0.3s' }}
+            onError={e => {
+              // Image failed to load — swap to category fallback
+              const fallback = getFallbackImage(article)
+              if (e.target.src !== fallback) { e.target.src = fallback }
+              else { e.target.style.display = 'none'; e.target.parentElement.style.background = catGrad }
+            }}
+          />
           {/* Category pill overlay */}
           <div style={{ position: 'absolute', top: 10, left: 10, background: 'rgba(0,0,0,0.75)', padding: '3px 8px', backdropFilter: 'blur(4px)' }}>
             <span style={{ color: catColor, fontSize: '10px', fontWeight: 700, letterSpacing: '0.12em' }}>{catLabel}</span>

@@ -971,6 +971,95 @@ function CronHealth({ secret }) {
 }
 
 
+
+function ImageFixButton() {
+  const [log, setLog]         = React.useState([])
+  const [running, setRunning] = React.useState(false)
+  const [stats, setStats]     = React.useState(null)
+
+  function addLog(msg, color) {
+    setLog(l => [...l.slice(-50), { msg, color: color || '#94a3b8', t: new Date().toLocaleTimeString() }])
+  }
+
+  async function run(force) {
+    setRunning(true)
+    setLog([])
+    setStats(null)
+    addLog(`Starting image fix${force ? ' (force — all articles)' : ' (missing only)'}...`, '#22c55e')
+    let totalFixed = 0, totalFailed = 0, batch = 0
+
+    try {
+      while (true) {
+        batch++
+        addLog(`Batch ${batch}: scanning articles...`, '#64748b')
+        const res  = await fetch(`/api/admin/fix-images?batch=50${force ? '&force=true' : ''}`, { method: 'POST' })
+        const data = await res.json()
+        if (!res.ok) { addLog(`Error: ${data.error || res.statusText}`, '#ef4444'); break }
+
+        totalFixed  += data.fixed  || 0
+        totalFailed += data.failed || 0
+
+        if (data.results) {
+          const fixed = data.results.filter(r => r.status === 'fixed')
+          fixed.forEach(r => addLog(`✓ ${r.method} · "${r.title}"`, '#22c55e'))
+          const failed = data.results.filter(r => r.status === 'failed')
+          failed.forEach(r => addLog(`✗ FAILED: "${r.title}" — ${r.error}`, '#ef4444'))
+          const skipped = data.results.filter(r => r.status === 'skip' || r.status === 'ok').length
+          if (skipped > 0) addLog(`  ${skipped} already had images (skipped)`, '#334155')
+        }
+
+        if (data.byMethod) {
+          const methods = Object.entries(data.byMethod).map(([k,v]) => `${k}:${v}`).join(', ')
+          if (methods) addLog(`  Methods: ${methods}`, '#475569')
+        }
+
+        setStats({ fixed: totalFixed, failed: totalFailed, remaining: data.remaining })
+        addLog(data.message, data.remaining === 0 ? '#22c55e' : '#C8922A')
+
+        if (!data.remaining || data.remaining === 0 || data.fixed === 0) break
+        if (batch >= 20) { addLog('Hit 20-batch limit — click again to continue.', '#f59e0b'); break }
+        await new Promise(r => setTimeout(r, 500))
+      }
+    } catch(e) {
+      addLog('Request error: ' + e.message, '#ef4444')
+    }
+
+    addLog(`Done. ${totalFixed} fixed, ${totalFailed} failed.`, totalFailed > 0 ? '#f59e0b' : '#22c55e')
+    setRunning(false)
+  }
+
+  return (
+    <div style={{ width: '100%' }}>
+      <div style={{ display:'flex', gap:8, marginBottom:8, flexWrap:'wrap' }}>
+        <button onClick={() => run(false)} disabled={running}
+          style={{ background: running ? 'rgba(34,197,94,0.1)' : '#22c55e', color: running ? '#22c55e' : '#000', border:'1px solid #22c55e', padding:'9px 18px', cursor: running ? 'not-allowed' : 'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', borderRadius:3 }}>
+          {running ? '⚡ FIXING...' : '▶ FIX MISSING IMAGES'}
+        </button>
+        <button onClick={() => run(true)} disabled={running}
+          style={{ background:'none', color:'#f59e0b', border:'1px solid #f59e0b', padding:'9px 14px', cursor: running ? 'not-allowed' : 'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, borderRadius:3 }}>
+          SCAN + FIX ALL IMAGES
+        </button>
+        {stats && (
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569', display:'flex', gap:12, alignItems:'center' }}>
+            <span style={{ color:'#22c55e' }}>✓ {stats.fixed} fixed</span>
+            {stats.failed > 0 && <span style={{ color:'#ef4444' }}>✗ {stats.failed} failed</span>}
+            {stats.remaining > 0 && <span style={{ color:'#f59e0b' }}>{stats.remaining} remaining</span>}
+          </div>
+        )}
+      </div>
+      {log.length > 0 && (
+        <div style={{ background:'#0a0b0d', border:'1px solid var(--border)', borderRadius:4, padding:'8px 10px', maxHeight:200, overflowY:'auto', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>
+          {log.map((l, i) => (
+            <div key={i} style={{ color: l.color, marginBottom:2, lineHeight:1.4 }}>
+              <span style={{ color:'#334155', marginRight:6 }}>{l.t}</span>{l.msg}
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
 function BackfillButton() {
   const [log, setLog]         = React.useState([])
   const [running, setRunning] = React.useState(false)
@@ -1286,6 +1375,20 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <BackfillButton />
+              </div>
+
+              {/* Image fixer panel */}
+              <div style={{ padding:'20px', background:'rgba(34,197,94,0.05)', border:'1px solid rgba(34,197,94,0.2)', borderRadius:4, marginBottom:16 }}>
+                <div style={{ marginBottom:12 }}>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'0.05em', color:'#22c55e', marginBottom:4 }}>
+                    🖼 FIX ALL ARTICLE IMAGES
+                  </div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.6 }}>
+                    Scans every article for missing or broken images. Tries to pull the original source photo first (OG image from article URL),
+                    then assigns a firearm-relevant photo matched to the article topic. 50 articles per batch.
+                  </div>
+                </div>
+                <ImageFixButton />
               </div>
 
               <div style={{ padding:'12px 16px', background:'rgba(200,146,42,0.06)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.6 }}>
