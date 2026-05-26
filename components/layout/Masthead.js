@@ -234,7 +234,17 @@ export default function Masthead() {
         </Link>
 
         {NAV.slice(1).map(item => {
+          const hasChildren = item.children?.length > 0
           const exp = mobileExpanded === item.label
+          // Items with no children = direct link, no expand button, no "View All"
+          if (!hasChildren) {
+            return (
+              <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="mob-child"
+                style={{ padding:'14px 16px', fontSize:'14px', fontWeight:700, color:'var(--text)', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center' }}>
+                {item.label}
+              </Link>
+            )
+          }
           return (
             <div key={item.label}>
               <button className={`mob-section-btn${exp ? ' expanded' : ''}`}
@@ -244,12 +254,7 @@ export default function Masthead() {
               </button>
               {exp && (
                 <div style={{ background:'var(--bg2)' }}>
-                  {/* Section root link */}
-                  <Link href={item.href} onClick={() => setMenuOpen(false)} className="mob-child"
-                    style={{ color:'var(--text)', fontWeight:700, paddingLeft:'16px' }}>
-                    View All {item.label} →
-                  </Link>
-                  {item.children?.map(child => (
+                  {item.children.map(child => (
                     <Link key={child.href} href={child.href} onClick={() => setMenuOpen(false)} className="mob-child">
                       {child.label}
                     </Link>
