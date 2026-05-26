@@ -123,7 +123,7 @@ export default function Masthead() {
         .nav-top-link:hover { color:#fff !important; }
         .nav-top-link.active { border-bottom-color:var(--gold) !important; color:var(--text) !important; }
         /* Responsive */
-        @media(max-width:900px) { .nav-desktop{display:none!important} .nav-mob-bar{display:flex!important} .masthead-dateline{display:none!important} }
+        @media(max-width:900px) { .nav-desktop{display:none!important} .nav-mob-bar{display:flex!important} .masthead-dateline{display:none!important} .nav-mob-backdrop{display:block!important} }
         @media(min-width:901px) { .nav-mob-bar{display:none!important} .nav-mob-sheet{display:none!important} }
         .nav-mob-sheet.open { display:flex!important; }
         /* Mobile sheet */
@@ -131,7 +131,7 @@ export default function Masthead() {
         .mob-section-btn .mob-label { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
         .mob-section-btn .mob-arrow { font-size:10px; color:var(--text-dim); transition:transform 0.2s; }
         .mob-section-btn.expanded .mob-arrow { transform:rotate(180deg); }
-        .mob-child { display:block; padding:9px 16px 9px 28px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(31,36,40,0.5); }
+        .mob-child { display:flex; align-items:center; min-height:48px; padding:10px 16px 10px 28px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(31,36,40,0.5); -webkit-tap-highlight-color:transparent; }
         .mob-child:hover { color:var(--gold); background:var(--bg3); }
         /* Bottom safe area */
         .mob-safe-bottom { height:env(safe-area-inset-bottom, 0px); }
@@ -223,9 +223,23 @@ export default function Masthead() {
         </div>
       </div>
 
-      {/* ── Mobile sheet (full-screen drawer) ── */}
+      {/* ── Mobile backdrop ── */}
+      {menuOpen && (
+        <div onClick={() => setMenuOpen(false)}
+          style={{ position:'fixed', inset:0, background:'rgba(0,0,0,0.6)', zIndex:48, display:'none' }}
+          className="nav-mob-backdrop" />
+      )}
+
+      {/* ── Mobile sheet — bottom drawer with swipe-to-close ── */}
       <div className={`nav-mob-sheet${menuOpen ? ' open' : ''}`}
-        style={{ display:'none', flexDirection:'column', background:'var(--bg)', borderTop:'2px solid var(--gold)', maxHeight:'85vh', overflowY:'auto', position:'fixed', top:'auto', left:0, right:0, zIndex:49, boxShadow:'0 20px 60px rgba(0,0,0,0.9)' }}>
+        style={{ display:'none', flexDirection:'column', background:'var(--bg)', borderTop:'2px solid var(--gold)', maxHeight:'82vh', overflowY:'auto', position:'fixed', bottom:0, left:0, right:0, zIndex:49, boxShadow:'0 -8px 60px rgba(0,0,0,0.95)', borderRadius:'16px 16px 0 0' }}
+        onTouchStart={e => { touchStartY.current = e.touches[0].clientY }}
+        onTouchEnd={e => { if (e.changedTouches[0].clientY - touchStartY.current > 60) setMenuOpen(false) }}>
+
+        {/* Drag handle */}
+        <div style={{ display:'flex', justifyContent:'center', padding:'10px 0 2px', flexShrink:0 }}>
+          <div style={{ width:36, height:4, borderRadius:2, background:'rgba(255,255,255,0.15)' }} />
+        </div>
 
         {/* Home row */}
         <Link href="/" onClick={() => setMenuOpen(false)} className="mob-child"

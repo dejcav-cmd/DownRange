@@ -1,0 +1,248 @@
+/* ============================================================
+   DOWNRANGE — MOBILE EXPERIENCE OVERRIDES
+   max-width: 900px = tablet/mobile
+   max-width: 640px = phone only
+   
+   RULE: Never touch page files. All mobile fixes live here.
+   ============================================================ */
+
+/* ── Body clearance for fixed bottom tab bar ── */
+@media (max-width: 900px) {
+  body {
+    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
+/* ── Hero rotator: stack on mobile ── */
+@media (max-width: 900px) {
+  .hero-split {
+    grid-template-columns: 1fr !important;
+    min-height: unset !important;
+  }
+  .hero-list-panel {
+    display: none !important; /* hide scrollable list, hero image takes full width */
+  }
+  .hero-main-panel {
+    min-height: 300px !important;
+  }
+}
+
+/* ── Ammo market: 2 cols on mobile, 3 on tablet ── */
+@media (max-width: 900px) {
+  .ammo-grid-6 {
+    grid-template-columns: repeat(3, 1fr) !important;
+  }
+}
+@media (max-width: 600px) {
+  .ammo-grid-6 {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── LiveNewsGrid magazine grid: responsive ── */
+@media (max-width: 900px) {
+  .story-card[style*="span 6"] {
+    grid-column: span 12 !important;
+  }
+  .story-card[style*="span 4"] {
+    grid-column: span 6 !important;
+  }
+}
+@media (max-width: 600px) {
+  .story-card[style*="span 6"],
+  .story-card[style*="span 4"] {
+    grid-column: span 12 !important;
+  }
+}
+
+/* ── Newsletter section: stack on mobile ── */
+@media (max-width: 640px) {
+  .newsletter-split {
+    grid-template-columns: 1fr !important;
+    gap: 24px !important;
+  }
+  .newsletter-stats {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+
+/* ── Blog featured article: stack on mobile ── */
+@media (max-width: 768px) {
+  .blog-featured-split {
+    grid-template-columns: 1fr !important;
+  }
+  .blog-featured-img {
+    min-height: 240px !important;
+    height: 240px !important;
+  }
+}
+
+/* ── Blog article: no sidebar on mobile ── */
+@media (max-width: 768px) {
+  .blog-article-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .blog-article-sidebar {
+    display: none !important;
+  }
+}
+
+/* ── News article: sidebar hidden on mobile ── */
+@media (max-width: 768px) {
+  .news-article-layout {
+    grid-template-columns: 1fr !important;
+  }
+  .news-article-sidebar {
+    display: none !important;
+  }
+}
+
+/* ── Market page caliber cards: 2-col on mobile ── */
+@media (max-width: 768px) {
+  .market-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+}
+@media (max-width: 480px) {
+  .market-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Reviews grid: 1-col on phone ── */
+@media (max-width: 640px) {
+  .reviews-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── State hub map: full width on mobile ── */
+@media (max-width: 768px) {
+  .state-hub-split {
+    grid-template-columns: 1fr !important;
+  }
+  .state-map-panel {
+    display: none !important;
+  }
+}
+
+/* ── Breaking ticker: smaller text ── */
+@media (max-width: 640px) {
+  .breaking-ticker-text {
+    font-size: 10px !important;
+  }
+}
+
+/* ── Page heroes: smaller on mobile ── */
+@media (max-width: 640px) {
+  .page-hero {
+    padding: 24px 0 20px !important;
+  }
+  .page-hero-title {
+    font-size: clamp(2rem, 8vw, 3rem) !important;
+  }
+}
+
+/* ── Card hover effects: disable on touch ── */
+@media (hover: none) {
+  .story-card:hover {
+    transform: none !important;
+    border-color: var(--border) !important;
+  }
+  .story-card:hover .story-img {
+    transform: none !important;
+  }
+  .dr-card:hover {
+    border-color: var(--border) !important;
+  }
+}
+
+/* ── Containers: tighter padding on phone ── */
+@media (max-width: 480px) {
+  .container,
+  .container-narrow {
+    padding: 0 12px !important;
+  }
+}
+
+/* ── Tables: horizontal scroll ── */
+@media (max-width: 640px) {
+  .dr-table,
+  .overflow-table {
+    overflow-x: auto !important;
+    display: block !important;
+  }
+}
+
+/* ── Bottom tab bar: active state ── */
+.mobile-tab-bar a.tab-active {
+  color: var(--gold) !important;
+}
+.mobile-tab-bar a {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── Nav drawer improvements ── */
+.nav-mob-sheet {
+  border-radius: 16px 16px 0 0 !important;
+  overflow: hidden !important;
+}
+.mob-section-btn {
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+  min-height: 48px; /* WCAG touch target */
+}
+.mob-child {
+  min-height: 44px !important;
+  display: flex !important;
+  align-items: center !important;
+  -webkit-tap-highlight-color: transparent;
+  touch-action: manipulation;
+}
+
+/* ── Article body: readable on phone ── */
+@media (max-width: 640px) {
+  .dr-article-body p,
+  .blog-article-body p {
+    font-size: 1rem !important;
+    line-height: 1.8 !important;
+  }
+  .dr-article-body h2,
+  .blog-article-body h2 {
+    font-size: 1.3rem !important;
+  }
+}
+
+/* ── Search input: full width on mobile ── */
+@media (max-width: 640px) {
+  .search-bar-wrap {
+    flex-direction: column !important;
+  }
+  .search-bar-wrap button {
+    width: 100% !important;
+  }
+}
+
+/* ── Video page: 1-col grid on mobile ── */
+@media (max-width: 640px) {
+  .video-grid {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ── Prevent horizontal scroll globally ── */
+@media (max-width: 900px) {
+  html, body {
+    overflow-x: hidden !important;
+    max-width: 100vw !important;
+  }
+}
+
+/* ── Image galleries: prevent overflow ── */
+@media (max-width: 900px) {
+  img {
+    max-width: 100% !important;
+    height: auto;
+  }
+}
