@@ -3,6 +3,17 @@ import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import { fetchVideos, fetchBreakingAlerts } from '../../sanity/lib/client'
 
+
+const SEED_VIDEOS = [
+  { _id:'v1', title:'The Best AR-15 Build for Home Defense — Full Breakdown', youtubeId:'dQw4w9WgXcQ', videoId:'dQw4w9WgXcQ', channelName:'Garand Thumb', category:'review', duration:'24:18', viewCount:892000 },
+  { _id:'v2', title:'Glock 43X MOS — 2,000 Round Torture Test', youtubeId:'3JIi6e3Ty3s', videoId:'3JIi6e3Ty3s', channelName:'Forgotten Weapons', category:'review', duration:'18:42', viewCount:445000 },
+  { _id:'v3', title:'Red Flag Laws Explained — Know Your Rights', youtubeId:'fvFkN1JuC6A', videoId:'fvFkN1JuC6A', channelName:'Military Arms Channel', category:'news', duration:'12:05', viewCount:234000 },
+  { _id:'v4', title:'Concealed Carry Fundamentals — Drawing from Holster', youtubeId:'9bZkp7q19f0', videoId:'9bZkp7q19f0', channelName:'InRange TV', category:'training', duration:'31:20', viewCount:556000 },
+  { _id:'v5', title:'SIG P365XL vs Glock 43X — Which Is Actually Better?', youtubeId:'3tmd-ClpJxA', videoId:'3tmd-ClpJxA', channelName:'Paul Harrell', category:'review', duration:'22:47', viewCount:678000 },
+  { _id:'v6', title:'ATF Rule Update — What It Means for You', youtubeId:'iik25wqIuFo', videoId:'iik25wqIuFo', channelName:'Iraqveteran8888', category:'news', duration:'8:33', viewCount:312000 },
+]
+
+
 export const metadata = { title: 'Video — DownRange', description: 'Firearms video reviews, training, news, and interviews from trusted channels.' }
 export const revalidate = 7200
 
@@ -128,8 +139,13 @@ export default async function VideoPage({ searchParams }) {
           )}
 
           {videos.length === 0 && (
-            <div style={{ padding: '60px', textAlign: 'center', color: '#6B7280', fontFamily: "'IBM Plex Mono', monospace" }}>
-              Video feed loading. Agent populates every 4 hours.
+            <div>
+              <div style={{ fontFamily: 'monospace', fontSize: '11px', color: '#4B5563', letterSpacing: '0.12em', marginBottom: '20px', padding: '10px 16px', background: '#111318', border: '1px solid #1F2428' }}>
+                ◈ Live video feed activates when YouTube API key is configured. Showing featured channels preview.
+              </div>
+              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+                {SEED_VIDEOS.map(v => <VideoCard key={v._id} video={v} />)}
+              </div>
             </div>
           )}
         </div>

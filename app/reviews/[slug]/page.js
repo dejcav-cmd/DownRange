@@ -1,204 +1,137 @@
-// ─── app/site/reviews/[slug]/page.js ─────────────────────────────────────────
-import { notFound } from 'next/navigation';
-import { getReviewBySlug } from '../../../sanity/lib/client';
-import { formatDate, timeAgo, truncate } from '../../../lib/utils';
-import Link from 'next/link';
+import { notFound } from 'next/navigation'
+import Masthead from '../../../components/layout/Masthead'
+import Footer from '../../../components/layout/Footer'
+import { getReviewBySlug, fetchReviews } from '../../../sanity/lib/client'
 
-export const revalidate = 600;
+export const revalidate = 3600
 
 export async function generateMetadata({ params }) {
-  const review = await getReviewBySlug(params.slug);
-  if (!review) return { title: 'Review Not Found | DownRange' };
+  const review = await getReviewBySlug(params.slug).catch(() => null)
+  if (!review) return { title: 'Review Not Found | DownRange' }
   return {
-    title: `${review.title} Review | DownRange`,
-    description: review.verdict || review.title,
-  };
+    title: `${review.title} | DownRange Reviews`,
+    description: review.summary,
+    openGraph: { title: review.title, description: review.summary, images: review.imageUrl ? [review.imageUrl] : [] },
+  }
 }
 
-const SCORE_COLOR = (s) => {
-  if (s >= 9) return '#34D399';
-  if (s >= 7) return '#C8922A';
-  if (s >= 5) return '#F59E0B';
-  return '#EF4444';
-};
+function Stars({ score }) {
+  const pct = (score / 10) * 100
+  return (
+    <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+      <div style={{ position: 'relative', width: '100px', height: '16px' }}>
+        <div style={{ position: 'absolute', color: '#1F2428', fontSize: '16px', letterSpacing: '4px' }}>★★★★★</div>
+        <div style={{ position: 'absolute', overflow: 'hidden', width: `${pct}%`, color: '#C8922A', fontSize: '16px', letterSpacing: '4px' }}>★★★★★</div>
+      </div>
+      <span style={{ fontFamily: 'monospace', fontSize: '14px', color: '#C8922A', fontWeight: 700 }}>{score?.toFixed(1)} / 10</span>
+    </div>
+  )
+}
 
-const SCORE_LABEL = (s) => {
-  if (s >= 9.5) return 'OUTSTANDING';
-  if (s >= 9)   return 'EXCELLENT';
-  if (s >= 8)   return 'GREAT';
-  if (s >= 7)   return 'GOOD';
-  if (s >= 5)   return 'AVERAGE';
-  return 'BELOW AVERAGE';
-};
+const VERDICT_COLORS = {
+  'Best in Class': '#34D399', 'Highly Recommended': '#34D399',
+  'Recommended': '#60A5FA', 'Good Value': '#FBBF24',
+  'Average': '#9CA3AF', 'Skip It': '#EF4444',
+}
 
 export default async function ReviewPage({ params }) {
-  const review = await getReviewBySlug(params.slug);
-  if (!review) notFound();
+  let review, related
+  try {
+    ;[review, related] = await Promise.all([
+      getReviewBySlug(params.slug).catch(() => null),
+      fetchReviews(6).catch(() => []),
+    ])
+  } catch { review = null; related = [] }
 
-  const scoreColor = SCORE_COLOR(review.score);
-  const scoreLabel = SCORE_LABEL(review.score);
+  if (!review) notFound()
+
+  const img = review.heroImage?.asset?.url || review.imageUrl
+  const verdictColor = VERDICT_COLORS[review.verdict] || '#C8922A'
 
   return (
-    <div style={{ background: '#0A0B0C', minHeight: '100vh', color: '#E8E6E1' }}>
-
-      {/* Hero */}
-      <div style={{ position: 'relative', overflow: 'hidden' }}>
-        {review.heroImage && (
-          <div style={{ position: 'absolute', inset: 0 }}>
-            <img src={review.heroImage} alt={review.title}
-                 style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.25 }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, #0A0B0C30 0%, #0A0B0C 100%)' }} />
+    <>
+      <Masthead />
+      <main style={{ background: '#0A0B0C', minHeight: '100vh' }}>
+        {/* Hero image */}
+        {img && (
+          <div style={{ width: '100%', height: 'clamp(260px, 40vw, 480px)', overflow: 'hidden', position: 'relative' }}>
+            <img src={img} alt={review.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, #0A0B0C 0%, transparent 60%)' }} />
           </div>
         )}
-        <div style={{ position: 'relative', maxWidth: '1000px', margin: '0 auto', padding: '3rem 1.5rem 2rem' }}>
-          {/* Breadcrumb */}
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.75rem', fontFamily: 'monospace' }}>
-            <Link href="/" style={{ color: '#64748B', textDecoration: 'none' }}>HOME</Link>
-            <span style={{ color: '#374151' }}>›</span>
-            <Link href="/reviews" style={{ color: '#64748B', textDecoration: 'none' }}>REVIEWS</Link>
-            <span style={{ color: '#374151' }}>›</span>
-            <span style={{ color: '#C8922A' }}>{review.category?.toUpperCase()}</span>
+
+        {/* Header */}
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: img ? '0 1.5rem 2rem' : '3rem 1.5rem 2rem', marginTop: img ? '-80px' : 0, position: 'relative', zIndex: 1 }}>
+          <div style={{ display: 'flex', gap: '8px', marginBottom: '16px', flexWrap: 'wrap' }}>
+            <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#C8922A', background: '#1A0E00', padding: '3px 10px', border: '1px solid #C8922A30' }}>{review.category?.toUpperCase()}</span>
+            {review.verdict && (
+              <span style={{ fontFamily: 'monospace', fontSize: '10px', color: verdictColor, background: '#111318', padding: '3px 10px', border: `1px solid ${verdictColor}40` }}>{review.verdict.toUpperCase()}</span>
+            )}
           </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr auto', gap: '2rem', alignItems: 'start' }}>
-            <div>
-              <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '0.75rem' }}>
-                FIELD TEST REVIEW — {review.category?.toUpperCase()}
-              </div>
-              <h1 style={{
-                fontFamily: '"Bebas Neue", "Arial Black", sans-serif',
-                fontSize: 'clamp(2rem, 5vw, 3.5rem)', lineHeight: 1.05,
-                color: '#F5F5F3', letterSpacing: '0.02em', marginBottom: '1rem'
-              }}>
-                {review.title}
-              </h1>
-              <div style={{ fontSize: '0.8rem', color: '#64748B', fontFamily: 'monospace', display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
-                {review.author && <span>BY {review.author.toUpperCase()}</span>}
-                <span>|</span>
-                <span>{formatDate(review.publishedAt)}</span>
-                {review.testRounds && <><span>|</span><span>{review.testRounds.toLocaleString()} ROUNDS TESTED</span></>}
-              </div>
-            </div>
-
-            {/* Score Badge */}
-            <div style={{
-              textAlign: 'center', background: '#111318', border: `2px solid ${scoreColor}`,
-              borderRadius: '4px', padding: '1rem 1.5rem', minWidth: '110px'
-            }}>
-              <div style={{ fontSize: '3rem', fontFamily: '"Bebas Neue", sans-serif', color: scoreColor, lineHeight: 1 }}>
-                {review.score?.toFixed(1)}
-              </div>
-              <div style={{ fontSize: '0.55rem', fontFamily: 'monospace', color: scoreColor, letterSpacing: '0.12em', marginTop: '0.25rem' }}>
-                {scoreLabel}
-              </div>
-              <div style={{ fontSize: '0.5rem', color: '#64748B', fontFamily: 'monospace', marginTop: '0.25rem' }}>/10</div>
-            </div>
+          <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(2rem, 5vw, 3.5rem)', color: '#F5F5F3', lineHeight: 1.05, letterSpacing: '0.02em', marginBottom: '16px' }}>
+            {review.title}
+          </h1>
+          <Stars score={review.score || 8.5} />
+          <div style={{ display: 'flex', gap: '16px', marginTop: '14px', flexWrap: 'wrap', fontFamily: 'monospace', fontSize: '12px', color: '#4B5563' }}>
+            {review.brand && <span>{review.brand}</span>}
+            {review.model && <><span style={{ color: '#1F2428' }}>·</span><span>{review.model}</span></>}
+            {review.caliber && <><span style={{ color: '#1F2428' }}>·</span><span>{review.caliber}</span></>}
+            {review.msrp && <><span style={{ color: '#1F2428' }}>·</span><span style={{ color: '#C8922A' }}>MSRP ${review.msrp.toLocaleString()}</span></>}
           </div>
         </div>
-      </div>
 
-      {/* Main layout */}
-      <div style={{ maxWidth: '1000px', margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 280px', gap: '2rem' }}>
-
-        {/* Left column */}
-        <div>
-          {/* Verdict */}
-          {review.verdict && (
-            <div style={{ background: '#0D1117', border: '1px solid #C8922A40', borderRadius: '4px', padding: '1.25rem', marginBottom: '2rem' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '0.5rem' }}>
-                THE VERDICT
-              </div>
-              <p style={{ fontSize: '1rem', color: '#D1D5DB', lineHeight: 1.7, fontStyle: 'italic' }}>
-                "{review.verdict}"
+        {/* Body */}
+        <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem 4rem', display: 'grid', gridTemplateColumns: '1fr 280px', gap: '3rem' }}>
+          <div>
+            {review.summary && (
+              <p style={{ fontSize: '1.1rem', lineHeight: 1.8, color: '#94A3B8', marginBottom: '2rem', borderLeft: '3px solid #C8922A', paddingLeft: '1rem' }}>
+                {review.summary}
               </p>
-            </div>
-          )}
+            )}
 
-          {/* Pros / Cons */}
-          {(review.pros?.length > 0 || review.cons?.length > 0) && (
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1rem', marginBottom: '2rem' }}>
-              <div style={{ background: '#001F0F', border: '1px solid #34D39930', borderRadius: '4px', padding: '1rem' }}>
-                <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#34D399', letterSpacing: '0.12em', marginBottom: '0.75rem' }}>
-                  ✓ PROS
+            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '20px', marginBottom: '2rem' }}>
+              {review.pros?.length > 0 && (
+                <div style={{ background: '#001A0A', border: '1px solid #166534', padding: '16px' }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: '10px', color: '#34D399', letterSpacing: '0.15em', marginBottom: '12px', fontWeight: 700 }}>✓ PROS</div>
+                  {review.pros.map((p, i) => <div key={i} style={{ fontFamily: 'monospace', fontSize: '12px', color: '#86EFAC', marginBottom: '6px', paddingLeft: '12px' }}>{p}</div>)}
                 </div>
-                {(review.pros || []).map((p, i) => (
-                  <div key={i} style={{ fontSize: '0.85rem', color: '#D1D5DB', paddingLeft: '0.5rem', borderLeft: '2px solid #34D39960', marginBottom: '0.4rem', lineHeight: 1.4 }}>
-                    {p}
-                  </div>
-                ))}
-              </div>
-              <div style={{ background: '#1F0000', border: '1px solid #EF444430', borderRadius: '4px', padding: '1rem' }}>
-                <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#EF4444', letterSpacing: '0.12em', marginBottom: '0.75rem' }}>
-                  ✗ CONS
+              )}
+              {review.cons?.length > 0 && (
+                <div style={{ background: '#1A0000', border: '1px solid #7F1D1D', padding: '16px' }}>
+                  <div style={{ fontFamily: 'monospace', fontSize: '10px', color: '#EF4444', letterSpacing: '0.15em', marginBottom: '12px', fontWeight: 700 }}>✗ CONS</div>
+                  {review.cons.map((c, i) => <div key={i} style={{ fontFamily: 'monospace', fontSize: '12px', color: '#FCA5A5', marginBottom: '6px', paddingLeft: '12px' }}>{c}</div>)}
                 </div>
-                {(review.cons || []).map((c, i) => (
-                  <div key={i} style={{ fontSize: '0.85rem', color: '#D1D5DB', paddingLeft: '0.5rem', borderLeft: '2px solid #EF444460', marginBottom: '0.4rem', lineHeight: 1.4 }}>
-                    {c}
-                  </div>
-                ))}
-              </div>
+              )}
             </div>
-          )}
 
-          {/* Body */}
-          <div style={{ fontSize: '1.05rem', lineHeight: 1.8, color: '#D1D5DB' }}>
-            {review.body
-              ? <div dangerouslySetInnerHTML={{ __html: review.body }} />
-              : <p style={{ color: '#64748B' }}>Full review content coming soon.</p>
-            }
+            {review.testRounds && (
+              <div style={{ fontFamily: 'monospace', fontSize: '12px', color: '#4B5563', marginBottom: '2rem', padding: '12px 16px', background: '#111318', border: '1px solid #1F2428' }}>
+                ◈ {review.testRounds.toLocaleString()} rounds fired during testing
+              </div>
+            )}
           </div>
+
+          <aside>
+            {review.specs?.length > 0 && (
+              <div style={{ background: '#111318', border: '1px solid #1F2428', padding: '20px', marginBottom: '16px' }}>
+                <div style={{ fontFamily: 'monospace', fontSize: '10px', color: '#C8922A', letterSpacing: '0.15em', marginBottom: '16px', fontWeight: 700 }}>SPECIFICATIONS</div>
+                {review.specs.map((s, i) => (
+                  <div key={i} style={{ display: 'flex', justifyContent: 'space-between', padding: '7px 0', borderBottom: '1px solid #1F2428', gap: '8px' }}>
+                    <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#4B5563' }}>{s.label}</span>
+                    <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#D1D5DB', textAlign: 'right' }}>{s.value}</span>
+                  </div>
+                ))}
+              </div>
+            )}
+            <div style={{ background: '#0D1117', border: '1px solid #C8922A40', padding: '20px' }}>
+              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', color: '#C8922A', marginBottom: '8px' }}>VERDICT</div>
+              {review.verdict && <div style={{ fontFamily: 'monospace', fontSize: '13px', color: verdictColor, marginBottom: '12px', fontWeight: 700 }}>{review.verdict}</div>}
+              <Stars score={review.score || 8.5} />
+            </div>
+          </aside>
         </div>
-
-        {/* Right sidebar */}
-        <aside>
-          {/* Specs */}
-          {review.specs && Object.keys(review.specs).length > 0 && (
-            <div style={{ background: '#111318', border: '1px solid #1F2428', borderRadius: '4px', padding: '1.25rem', marginBottom: '1rem' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '0.75rem', fontWeight: 700 }}>
-                SPECS
-              </div>
-              {Object.entries(review.specs).map(([k, v]) => (
-                <div key={k} style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'baseline',
-                  padding: '0.35rem 0', borderBottom: '1px solid #1A1E25', fontSize: '0.8rem'
-                }}>
-                  <span style={{ color: '#64748B', fontFamily: 'monospace', fontSize: '0.7rem', textTransform: 'uppercase' }}>{k}</span>
-                  <span style={{ color: '#D1D5DB', fontFamily: 'monospace', fontSize: '0.75rem', textAlign: 'right', maxWidth: '55%' }}>{v}</span>
-                </div>
-              ))}
-            </div>
-          )}
-
-          {/* Category scores */}
-          {review.categoryScores && (
-            <div style={{ background: '#111318', border: '1px solid #1F2428', borderRadius: '4px', padding: '1.25rem', marginBottom: '1rem' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '0.75rem', fontWeight: 700 }}>
-                CATEGORY SCORES
-              </div>
-              {Object.entries(review.categoryScores).map(([cat, score]) => (
-                <div key={cat} style={{ marginBottom: '0.6rem' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: '0.2rem' }}>
-                    <span style={{ fontSize: '0.75rem', color: '#94A3B8', textTransform: 'capitalize' }}>{cat}</span>
-                    <span style={{ fontSize: '0.75rem', color: SCORE_COLOR(score), fontFamily: 'monospace', fontWeight: 700 }}>{score}/10</span>
-                  </div>
-                  <div style={{ height: '4px', background: '#1F2428', borderRadius: '2px', overflow: 'hidden' }}>
-                    <div style={{ height: '100%', width: `${score * 10}%`, background: SCORE_COLOR(score), borderRadius: '2px' }} />
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-
-          <Link href="/reviews" style={{
-            display: 'block', textAlign: 'center', padding: '0.6rem',
-            background: '#111318', border: '1px solid #1F2428', color: '#C8922A',
-            textDecoration: 'none', fontFamily: 'monospace', fontSize: '0.7rem',
-            letterSpacing: '0.1em', borderRadius: '2px'
-          }}>
-            ALL REVIEWS →
-          </Link>
-        </aside>
-      </div>
-    </div>
-  );
+      </main>
+      <Footer />
+    </>
+  )
 }

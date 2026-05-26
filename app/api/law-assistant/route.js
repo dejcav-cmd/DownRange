@@ -13,6 +13,12 @@ export async function POST(req) {
     const { question } = await req.json()
     if (!question) return Response.json({ error: 'No question' }, { status: 400 })
 
+    if (!process.env.ANTHROPIC_API_KEY) {
+      return Response.json({
+        answer: "The AI law assistant requires an Anthropic API key. Please add ANTHROPIC_API_KEY to your Vercel environment variables, then redeploy. The key starts with 'sk-ant-...' and is available at console.anthropic.com."
+      })
+    }
+
     // Fetch all state profiles for context
     const states = await sanity.fetch(`
       *[_type=="stateProfile"] {
