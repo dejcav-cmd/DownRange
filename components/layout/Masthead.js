@@ -50,13 +50,32 @@ export default function Masthead() {
         {/* Masthead top */}
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '20px 0 16px' }}>
           <div>
-            <Link href="/" style={{
-              fontFamily: "'Bebas Neue', cursive", fontSize: '72px',
-              lineHeight: 0.85, color: '#C8922A', letterSpacing: '0.02em', display: 'block'
-            }}>DOWNRANGE</Link>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#6B7280', letterSpacing: '0.18em', marginTop: '6px' }}>
-              AMERICA'S FIREARMS INTELLIGENCE HUB · EST. 2026
-            </div>
+            <Link href="/" style={{ display: 'block', lineHeight: 1 }} aria-label="DownRange — Home">
+              <svg width="320" height="80" viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+                {/* Scope reticle */}
+                <g transform="translate(8,45)">
+                  <circle cx="36" cy="0" r="32" fill="none" stroke="#C8922A" strokeWidth="2"/>
+                  <circle cx="36" cy="0" r="22" fill="none" stroke="#C8922A" strokeWidth="0.75"/>
+                  <circle cx="36" cy="0" r="4" fill="#C8922A"/>
+                  <line x1="36" y1="-32" x2="36" y2="-24" stroke="#C8922A" strokeWidth="2"/>
+                  <line x1="36" y1="24" x2="36" y2="32" stroke="#C8922A" strokeWidth="2"/>
+                  <line x1="4" y1="0" x2="14" y2="0" stroke="#C8922A" strokeWidth="2"/>
+                  <line x1="58" y1="0" x2="68" y2="0" stroke="#C8922A" strokeWidth="2"/>
+                  <line x1="36" y1="-22" x2="36" y2="-10" stroke="#C8922A" strokeWidth="0.75"/>
+                  <line x1="36" y1="10" x2="36" y2="22" stroke="#C8922A" strokeWidth="0.75"/>
+                  <line x1="14" y1="0" x2="26" y2="0" stroke="#C8922A" strokeWidth="0.75"/>
+                  <line x1="46" y1="0" x2="58" y2="0" stroke="#C8922A" strokeWidth="0.75"/>
+                  <line x1="20" y1="-12" x2="20" y2="12" stroke="#C8922A" strokeWidth="0.5" opacity="0.4"/>
+                  <line x1="52" y1="-12" x2="52" y2="12" stroke="#C8922A" strokeWidth="0.5" opacity="0.4"/>
+                </g>
+                {/* Wordmark */}
+                <g transform="translate(84,12)">
+                  <text x="0" y="46" fontFamily="Georgia, serif" fontSize="46" fontWeight="900" fill="#C8922A" letterSpacing="4">DOWNRANGE</text>
+                  <text x="2" y="64" fontFamily="monospace" fontSize="11" fill="#6B7280" letterSpacing="8">INTELLIGENCE HUB</text>
+                  <line x1="0" y1="72" x2="252" y2="72" stroke="#C8922A" strokeWidth="0.75" opacity="0.5"/>
+                </g>
+              </svg>
+            </Link>
           </div>
           <div className="masthead-right" style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
             <span style={{ background: '#C8922A', color: '#09090B', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', padding: '3px 10px' }}>
@@ -99,7 +118,18 @@ export default function Masthead() {
 
         {/* Mobile menu */}
         <div className="nav-mobile" style={{ display: 'none', alignItems: 'center', justifyContent: 'space-between', padding: '12px 0', borderTop: '1px solid #1F2428' }}>
-          <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#C8922A', letterSpacing: '0.1em' }}>DOWNRANGE</span>
+          <svg width="120" height="30" viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <g transform="translate(8,45)">
+              <circle cx="36" cy="0" r="32" fill="none" stroke="#C8922A" strokeWidth="2"/>
+              <circle cx="36" cy="0" r="22" fill="none" stroke="#C8922A" strokeWidth="0.75"/>
+              <circle cx="36" cy="0" r="4" fill="#C8922A"/>
+              <line x1="36" y1="-32" x2="36" y2="-24" stroke="#C8922A" strokeWidth="2"/>
+              <line x1="36" y1="24" x2="36" y2="32" stroke="#C8922A" strokeWidth="2"/>
+              <line x1="4" y1="0" x2="14" y2="0" stroke="#C8922A" strokeWidth="2"/>
+              <line x1="58" y1="0" x2="68" y2="0" stroke="#C8922A" strokeWidth="2"/>
+            </g>
+            <text x="84" y="52" fontFamily="Georgia, serif" fontSize="46" fontWeight="900" fill="#C8922A" letterSpacing="4">DOWNRANGE</text>
+          </svg>
           <button onClick={() => setMenuOpen(!menuOpen)}
             style={{ background: 'none', border: '1px solid #1F2428', color: '#9CA3AF', padding: '6px 12px', cursor: 'pointer', fontFamily: 'monospace', fontSize: '11px' }}>
             {menuOpen ? '✕ CLOSE' : '☰ MENU'}
