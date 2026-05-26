@@ -18,6 +18,7 @@ const TABS = [
   { key:'keys',      label:'API Keys',       icon:'🔑' },
   { key:'blog',      label:'Blog Manager',    icon:'📝' },
   { key:'schedule',  label:'Pub. Schedule',   icon:'📅' },
+  { key:'pulllog',   label:'Pull Log',        icon:'📡' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
 ]
 
@@ -785,6 +786,19 @@ export default function AdminPage() {
               <div className="dr-alert-info">
                 SEO metadata is defined per-page via Next.js <code style={{ color:'var(--gold)' }}>export const metadata</code>. Global defaults are in <code style={{ color:'var(--gold)' }}>app/layout.js</code>.
               </div>
+            </div>
+          )}
+
+
+
+          {/* ── PULL LOG ── */}
+          {tab==='pulllog' && (
+            <div style={{ margin: '-32px' }}>
+              <iframe
+                src="/admin/pull-log"
+                style={{ width: '100%', height: 'calc(100vh - 57px)', border: 'none', display: 'block' }}
+                title="Pull Log Dashboard"
+              />
             </div>
           )}
 
