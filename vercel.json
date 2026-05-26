@@ -135,6 +135,18 @@
     },
     "app/api/outreach/templates/seed/route.js": {
       "maxDuration": 30
+    },
+    "app/api/outreach/history/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/manufacturers/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/send/preview/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/send/direct/route.js": {
+      "maxDuration": 30
     }
   }
 }

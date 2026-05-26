@@ -177,9 +177,39 @@ const GENERIC_FOLLOWUP = {
   variables: ['{{firstName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
+
+const MANUFACTURER_INTRO = {
+  name: 'Manufacturer — Partnership & Press Coverage',
+  type: 'organization',
+  subject: 'DownRange — covering {{businessName}} releases to gun owners nationwide',
+  previewText: 'We cover your new releases. Wanted to introduce ourselves.',
+  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I run <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms intelligence portal that covers new releases, industry news, legislation, and market data for gun owners across the country.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">We're already covering {{businessName}} releases through our automated press feed, but I wanted to reach out directly because I think there's more we can do together.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">A few things that might be useful:</p>
+
+<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
+  <li>If you have press releases, new product launches, or announcements you want covered, send them directly to us — we'll publish them to our audience of gun owners and dealers</li>
+  <li>We can feature {{businessName}} in our Releases section with photos, full specs, and a link back to your product page</li>
+  <li>If you have a media contact or PR rep we should be in touch with, I'd appreciate the introduction</li>
+</ul>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">No paid placement, no strings attached — we cover what's relevant to gun owners and dealers, and that means covering what you build.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Take a look at what we've built and let me know if there's a conversation worth having: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
+
+<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks for your time,</p>
+<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
+<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
+  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
+}
+
 const ALL_TEMPLATES = [
   YOUTUBER_INTRO, YOUTUBER_FOLLOWUP, YOUTUBER_COLLAB,
-  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, GENERIC_FOLLOWUP,
+  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, MANUFACTURER_INTRO, GENERIC_FOLLOWUP,
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
