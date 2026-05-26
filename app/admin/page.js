@@ -3,21 +3,22 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
 const TABS = [
-  { key:'dashboard', label:'Dashboard',      icon:'◈' },
-  { key:'feeds',     label:'AI Agent',       icon:'⚡' },
-  { key:'content',   label:'Content',        icon:'📰' },
-  { key:'alerts',    label:'Breaking Alerts',icon:'🔴' },
-  { key:'channels',  label:'Video',          icon:'▶' },
-  { key:'rss',       label:'RSS Sources',    icon:'📡' },
-  { key:'deals',     label:'Deals Config',   icon:'🔥' },
-  { key:'ranges',    label:'Range Database', icon:'◎' },
-  { key:'newsletter',label:'Newsletter',     icon:'📧' },
-  { key:'seo',       label:'SEO & Meta',     icon:'🔍' },
-  { key:'identity',  label:'Site Identity',  icon:'🎨' },
-  { key:'openclaw',  label:'OpenClaw Agent', icon:'🤖' },
-  { key:'keys',      label:'API Keys',       icon:'🔑' },
-  { key:'blog',      label:'Blog Manager',    icon:'📝' },
-  { key:'schedule',  label:'Pub. Schedule',   icon:'📅' },
+  { key:'dashboard',  label:'Dashboard',       icon:'◈' },
+  { key:'mission',    label:'Mission Control', icon:'🛰' },
+  { key:'feeds',      label:'AI Agent',        icon:'⚡' },
+  { key:'content',    label:'Content',         icon:'📰' },
+  { key:'alerts',     label:'Breaking Alerts', icon:'🔴' },
+  { key:'channels',   label:'Video',           icon:'▶' },
+  { key:'rss',        label:'RSS Sources',     icon:'📡' },
+  { key:'deals',      label:'Deals Config',    icon:'🔥' },
+  { key:'ranges',     label:'Range Database',  icon:'◎' },
+  { key:'newsletter', label:'Newsletter',      icon:'📧' },
+  { key:'seo',        label:'SEO & Meta',      icon:'🔍' },
+  { key:'identity',   label:'Site Identity',   icon:'🎨' },
+  { key:'openclaw',   label:'OpenClaw Agent',  icon:'🤖' },
+  { key:'keys',       label:'API Keys',        icon:'🔑' },
+  { key:'blog',       label:'Blog Manager',    icon:'📝' },
+  { key:'schedule',   label:'Pub. Schedule',   icon:'📅' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
 ]
 
@@ -44,24 +45,29 @@ const RSS_FEEDS = [
 ]
 
 const API_KEYS_CONFIG = [
-  { group:'Required', keys:[
-    { key:'ANTHROPIC_API_KEY',    label:'Claude AI',              hint:'console.anthropic.com',     required:true },
-    { key:'SANITY_API_TOKEN',     label:'Sanity CMS Token',       hint:'sanity.io/manage',           required:true },
-    { key:'RESEND_API_KEY',       label:'Resend Email API',       hint:'resend.com/api-keys',        required:true },
-    { key:'CRON_SECRET',          label:'Cron Job Secret',        hint:'Random secure string',       required:true },
+  { group:'Required (Core)', keys:[
+    { key:'ANTHROPIC_API_KEY',    label:'Claude AI (Full rewrites)', hint:'console.anthropic.com',     required:true,  url:'https://console.anthropic.com' },
+    { key:'SANITY_API_TOKEN',     label:'Sanity CMS Token',          hint:'sanity.io/manage',           required:true,  url:'https://www.sanity.io/manage' },
+    { key:'RESEND_API_KEY',       label:'Resend Email API',          hint:'resend.com/api-keys',        required:true,  url:'https://resend.com/api-keys' },
+    { key:'CRON_SECRET',          label:'Cron Job Secret',           hint:'Random secure string',       required:true,  url:null },
   ]},
-  { group:'Integrations', keys:[
-    { key:'YOUTUBE_API_KEY',      label:'YouTube Data API',       hint:'Google Cloud Console',       required:false },
-    { key:'GOOGLE_PLACES_API_KEY',label:'Google Places (Ranges)', hint:'console.cloud.google.com',   required:false },
-    { key:'ALGOLIA_ADMIN_KEY',    label:'Algolia Search',         hint:'algolia.com',                required:false },
-    { key:'CONGRESS_GOV_KEY',     label:'Congress.gov API',       hint:'api.congress.gov',           required:false },
-    { key:'LEGISCAN_KEY',         label:'LegiScan State Bills',   hint:'legiscan.com',               required:false },
-    { key:'NEWSAPI_KEY',          label:'NewsAPI',                hint:'newsapi.org',                required:false },
+  { group:'Tier 2 — Free APIs (High Priority)', keys:[
+    { key:'YOUTUBE_API_KEY',      label:'YouTube Data API v3',       hint:'console.cloud.google.com → YouTube Data API v3', required:false, url:'https://console.cloud.google.com' },
+    { key:'CONGRESS_GOV_KEY',     label:'Congress.gov Legislation',  hint:'api.congress.gov/sign-up',  required:false, url:'https://api.congress.gov/sign-up/' },
+    { key:'LEGISCAN_KEY',         label:'LegiScan 50-State Bills',   hint:'legiscan.com/legiscan',     required:false, url:'https://legiscan.com/legiscan' },
+    { key:'NEWSAPI_KEY',          label:'NewsAPI.org',               hint:'newsapi.org/register',      required:false, url:'https://newsapi.org/register' },
+    { key:'GNEWS_KEY',            label:'GNews API',                 hint:'gnews.io/#register',        required:false, url:'https://gnews.io/#register' },
+    { key:'GOOGLE_PLACES_API_KEY',label:'Google Places (Ranges)',    hint:'console.cloud.google.com',  required:false, url:'https://console.cloud.google.com' },
+  ]},
+  { group:'Tier 3 — Paid/Subscription APIs', keys:[
+    { key:'GUNBROKER_API_KEY',    label:'GunBroker REST API',        hint:'gunbroker.com — request developer key', required:false, url:'https://support.gunbroker.com/hc/en-us/articles/221711267' },
+    { key:'GUN_DEALS_API_KEY',    label:'gun.deals Dealer API',      hint:'gun.deals/content/dealers-api-access',  required:false, url:'https://gun.deals/content/dealers-api-access' },
+    { key:'ALGOLIA_ADMIN_KEY',    label:'Algolia Search',            hint:'algolia.com',               required:false, url:'https://www.algolia.com' },
   ]},
   { group:'Notifications', keys:[
-    { key:'DISCORD_WEBHOOK_URL',      label:'Discord #agent-status',  hint:'Discord server settings',    required:false },
-    { key:'DISCORD_ERRORS_WEBHOOK',   label:'Discord #errors',        hint:'Discord server settings',    required:false },
-    { key:'DISCORD_BREAKING_WEBHOOK', label:'Discord #breaking',      hint:'Discord server settings',    required:false },
+    { key:'DISCORD_WEBHOOK_URL',       label:'Discord #agent-status', hint:'Discord server settings', required:false, url:null },
+    { key:'DISCORD_ERRORS_WEBHOOK',    label:'Discord #errors',       hint:'Discord server settings', required:false, url:null },
+    { key:'DISCORD_BREAKING_WEBHOOK',  label:'Discord #breaking',     hint:'Discord server settings', required:false, url:null },
   ]},
 ]
 
@@ -109,6 +115,292 @@ const STATUS_META = {
 }
 
 // ── BLOG MANAGER COMPONENT ────────────────────────────────────────────────────
+// ── MISSION CONTROL ────────────────────────────────────────────────────────────
+function MissionControl({ secret, setMsg }) {
+  const [activeSection, setActiveSection] = useState('overview')
+  const [editingSource, setEditingSource] = useState(null)
+
+  // ── ALL DATA SOURCES CATALOG ──────────────────────────────────────────────
+  const MANUFACTURER_SOURCES = [
+    // Press release pages — scraped via agent/feeds/releases.js
+    { id:'glock',        name:'GLOCK Inc.',           type:'HTML_SCRAPE',  url:'https://us.glock.com/en/press-release/news-page', cat:'releases', status:'active',   schedule:'Every 4h', notes:'No RSS. Scrape press release page. Each PR has date + title + slug. Gen6 launches, mag releases, LE contracts.', keyRequired:false },
+    { id:'sig',          name:'SIG Sauer',             type:'HTML_SCRAPE',  url:'https://www.sigsauer.com/news/',                  cat:'releases', status:'active',   schedule:'Every 4h', notes:'No public RSS. Scrape /news/ page. Covers P365, MCX, ROMEO optics, ammo launches.', keyRequired:false },
+    { id:'ruger',        name:'Sturm, Ruger & Co.',    type:'HTML_SCRAPE',  url:'https://ruger.com/news/',                         cat:'releases', status:'active',   schedule:'Every 4h', notes:'News at ruger.com/news/YYYY-MM-DD.html format. RXM, Marlin lever guns, American Gen II. Also SEC (RGR) filings for financial.', keyRequired:false },
+    { id:'sw',           name:'Smith & Wesson',        type:'HTML_SCRAPE',  url:'https://www.smith-wesson.com/news',               cat:'releases', status:'pending',  schedule:'Every 6h', notes:'S&W press releases. M&P Shield Plus EZ, Model 940-3. IR feed at ir.smith-wesson.com for SEC filings.', keyRequired:false },
+    { id:'springfield',  name:'Springfield Armory',    type:'HTML_SCRAPE',  url:'https://www.springfield-armory.com/news/',        cat:'releases', status:'active',   schedule:'Every 6h', notes:'Hellcat, Echelon, 1911 DS Prodigy. Product announcement page. No RSS detected.', keyRequired:false },
+    { id:'beretta',      name:'Beretta USA',            type:'HTML_SCRAPE',  url:'https://www.berettausa.com/en-us/news/',          cat:'releases', status:'pending',  schedule:'Every 6h', notes:'APX A1, CX4 Storm. Beretta Holding now 9.95% of Ruger — watch for acquisition news.', keyRequired:false },
+    { id:'cz',           name:'CZ-USA',                type:'HTML_SCRAPE',  url:'https://cz-usa.com/news/',                       cat:'releases', status:'active',   schedule:'Every 6h', notes:'P-10 F Competition, Scorpion EVO, 457 rifles.', keyRequired:false },
+    { id:'walther',      name:'Walther Arms',           type:'HTML_SCRAPE',  url:'https://waltherarms.com/press-releases/',         cat:'releases', status:'active',   schedule:'Every 6h', notes:'PDP series, PPS M2, CCP M2+. Press release archive.', keyRequired:false },
+    { id:'hhk',          name:'Heckler & Koch',        type:'HTML_SCRAPE',  url:'https://www.heckler-koch.com/en/newsroom/',       cat:'releases', status:'pending',  schedule:'Every 12h', notes:'VP9, P30, SP5. International newsroom.', keyRequired:false },
+    { id:'ddarms',       name:'Daniel Defense',        type:'HTML_SCRAPE',  url:'https://danieldefense.com/blogs/news',            cat:'releases', status:'active',   schedule:'Every 6h', notes:'Shopify-based blog RSS available at /blogs/news.atom — USE THIS.', keyRequired:false, rssUrl:'https://danieldefense.com/blogs/news.atom' },
+    { id:'bcm',          name:'Bravo Company MFG',     type:'HTML_SCRAPE',  url:'https://www.bravocompanymfg.com/news/',           cat:'releases', status:'pending',  schedule:'Every 12h', notes:'BCM Recon, MCMR rails, AR components.', keyRequired:false },
+    { id:'mossberg',     name:'Mossberg',              type:'HTML_SCRAPE',  url:'https://www.mossberg.com/news/',                  cat:'releases', status:'active',   schedule:'Every 6h', notes:'590A1, Maverick 88, Patriot rifles.', keyRequired:false },
+    { id:'winchester',   name:'Winchester Firearms',   type:'HTML_SCRAPE',  url:'https://www.winchesterguns.com/news/',            cat:'releases', status:'pending',  schedule:'Every 12h', notes:'Model 70, XPR, SXP. Olin Corp subsidiary.', keyRequired:false },
+    { id:'browning',     name:'Browning',              type:'HTML_SCRAPE',  url:'https://www.browning.com/news/',                  cat:'releases', status:'pending',  schedule:'Every 12h', notes:'Citori, X-Bolt, Hi-Power. FN Holding subsidiary.', keyRequired:false },
+    { id:'silencerco',   name:'SilencerCo',            type:'HTML_SCRAPE',  url:'https://silencerco.com/news/',                   cat:'releases', status:'active',   schedule:'Every 6h', notes:'Omega 9K, Omega 36M, Hybrid 46M. Critical post-NFA-reform coverage.', keyRequired:false },
+    { id:'deadair',      name:'Dead Air Silencers',    type:'HTML_SCRAPE',  url:'https://deadairsilencers.com/news/',              cat:'releases', status:'pending',  schedule:'Every 12h', notes:'Sandman-S, Ghost-M, Primal. Key suppressor competitor to SilencerCo.', keyRequired:false },
+  ]
+
+  const NEWS_SOURCES = [
+    { id:'tfb',       name:'The Firearm Blog',       type:'RSS',   url:'https://www.thefirearmblog.com/blog/feed/', cat:'industry', status:'active',  schedule:'Every 15m', keyRequired:false },
+    { id:'ttag',      name:'TTAG',                   type:'RSS',   url:'https://www.thetruthaboutguns.com/feed/',  cat:'news',     status:'active',  schedule:'Every 15m', keyRequired:false },
+    { id:'gunscom',   name:'Guns.com',               type:'RSS',   url:'https://www.guns.com/feed',               cat:'industry', status:'active',  schedule:'Every 15m', keyRequired:false },
+    { id:'ganma',     name:'Guns & Ammo',            type:'RSS',   url:'https://www.gunsandammo.com/feed/',       cat:'industry', status:'active',  schedule:'Every 15m', keyRequired:false },
+    { id:'ammoland', name:'AmmoLand',                type:'RSS',   url:'https://www.ammoland.com/feed/',          cat:'deals',    status:'active',  schedule:'Every 15m', notes:'LOCKED to deals — never routes to news', keyRequired:false },
+    { id:'concnation',name:'Concealed Nation',       type:'RSS',   url:'https://concealednation.org/feed/',       cat:'news',     status:'active',  schedule:'Every 15m', keyRequired:false },
+    { id:'recoil',    name:'RECOIL Magazine',        type:'RSS',   url:'https://recoilweb.com/news/feed/',        cat:'industry', status:'pending', schedule:'Every 1h',  keyRequired:false },
+    { id:'shootwire', name:'Shooting Wire',          type:'RSS',   url:'https://www.shootingwire.com/feed',       cat:'industry', status:'active',  schedule:'Every 1h',  keyRequired:false },
+    { id:'firearmsn', name:'Firearms News',          type:'RSS',   url:'https://www.firearmsnews.com/feed/',      cat:'industry', status:'active',  schedule:'Every 1h',  keyRequired:false },
+    { id:'luckygn',   name:'Lucky Gunner Lounge',    type:'RSS',   url:'https://www.luckygunner.com/lounge/feed/',cat:'training', status:'pending', schedule:'Every 4h',  keyRequired:false },
+    { id:'shotshow',  name:'SHOT Show / NSSF Blog',  type:'RSS',   url:'https://shotshow.org/feed/',              cat:'releases', status:'pending', schedule:'Every 4h',  notes:'NSSF official — new product announcements at SHOT Show', keyRequired:false },
+    { id:'newsapi',   name:'NewsAPI.org',            type:'API',   url:'https://newsapi.org/v2/everything',       cat:'news',     status:'active',  schedule:'Every 15m', keyRequired:true,  keyName:'NEWSAPI_KEY', keyUrl:'https://newsapi.org/register' },
+    { id:'gnews',     name:'GNews API',              type:'API',   url:'https://gnews.io/api/v4/search',          cat:'news',     status:'active',  schedule:'Every 15m', keyRequired:true,  keyName:'GNEWS_KEY',   keyUrl:'https://gnews.io/#register' },
+  ]
+
+  const LAW_SOURCES = [
+    { id:'nraila',   name:'NRA-ILA',              type:'RSS',  url:'https://www.nraila.org/rss/',                            cat:'law', status:'active', schedule:'Every 1h', keyRequired:false },
+    { id:'saf',      name:'Second Amendment Foundation', type:'RSS', url:'https://www.saf.org/feed/',                       cat:'law', status:'active', schedule:'Every 1h', keyRequired:false },
+    { id:'goa',      name:'Gun Owners of America',type:'RSS',  url:'https://gunowners.org/feed/',                            cat:'law', status:'active', schedule:'Every 1h', keyRequired:false },
+    { id:'cleanatf', name:'CleanUpATF',           type:'RSS',  url:'https://www.cleanupatf.org/feed/',                       cat:'law', status:'active', schedule:'Every 2h', keyRequired:false },
+    { id:'dukefirms',name:'Duke Firearms Law',    type:'RSS',  url:'https://firearmslaw.duke.edu/feed/',                     cat:'law', status:'active', schedule:'Every 2h', notes:'Duke Center for Firearms Law — academic case tracking' },
+    { id:'atf',      name:'ATF Official News',    type:'RSS',  url:'https://www.atf.gov/rss/news_whats-new.xml',             cat:'law', status:'active', schedule:'Every 2h', keyRequired:false },
+    { id:'scotusblog',name:'SCOTUSblog',          type:'RSS',  url:'https://www.scotusblog.com/feed/',                       cat:'law', status:'pending',schedule:'Every 4h', notes:'Supreme Court case tracking — filter for 2A keywords' },
+    { id:'congress', name:'Congress.gov Bills',   type:'API',  url:'https://api.congress.gov/v3/bill',                       cat:'law', status:'active', schedule:'Every 2h', keyRequired:true,  keyName:'CONGRESS_GOV_KEY', keyUrl:'https://api.congress.gov/sign-up/' },
+    { id:'legiscan', name:'LegiScan State Bills', type:'API',  url:'https://api.legiscan.com/',                              cat:'law', status:'active', schedule:'Daily 8am',keyRequired:true,  keyName:'LEGISCAN_KEY',      keyUrl:'https://legiscan.com/legiscan' },
+    { id:'fpc',      name:'FPC Action Foundation', type:'RSS', url:'https://www.firearmspolicy.org/feed/',                   cat:'law', status:'pending',schedule:'Every 4h', notes:'Firearms Policy Coalition litigation updates' },
+    { id:'crpa',     name:'CRPA (California)',    type:'RSS',  url:'https://crpa.org/feed/',                                 cat:'law', status:'pending',schedule:'Every 4h', notes:'California Rifle & Pistol Association — CA-specific 2A litigation' },
+  ]
+
+  const MARKET_SOURCES = [
+    { id:'reddit_gd', name:'r/gundeals',          type:'JSON', url:'https://www.reddit.com/r/gundeals/hot.json?limit=50',   cat:'deals',  status:'active', schedule:'Every 30m', keyRequired:false, notes:'Free JSON endpoint. No auth needed. Returns hot posts with flair, score, URL.' },
+    { id:'gundeals',  name:'gun.deals',            type:'RSS',  url:'https://gun.deals/feed/json',                          cat:'deals',  status:'active', schedule:'Every 30m', keyRequired:false },
+    { id:'gundeals_api',name:'gun.deals Dealer API',type:'API', url:'https://gun.deals/api/prices',                        cat:'deals',  status:'pending',schedule:'On demand', keyRequired:true, keyName:'GUN_DEALS_API_KEY', keyUrl:'https://gun.deals/content/dealers-api-access', notes:'Paid subscription — price optimization data for top products' },
+    { id:'gunbroker', name:'GunBroker REST API',  type:'API',  url:'https://api.gunbroker.com',                             cat:'market', status:'pending',schedule:'On demand', keyRequired:true, keyName:'GUNBROKER_API_KEY', keyUrl:'https://www.gunbroker.com/user/settings/myprofile', notes:'Full REST API. GET /Items, /Categories, /ItemsCompleted for sold prices. Dev sandbox available.' },
+    { id:'ammoseek',  name:'AmmoSeek XML Feed',   type:'XML',  url:'https://ammoseek.com/xml/',                             cat:'market', status:'pending',schedule:'Every 5m',  keyRequired:false, notes:'Retailer-submitted XML feeds. DownRange can subscribe to receive price data from 300+ calibers in real time.' },
+    { id:'wikiarms',  name:'WikiArms AmmoEngine',  type:'HTML_SCRAPE', url:'https://www.wikiarms.com/deals/ammo',           cat:'market', status:'pending',schedule:'Every 1h',  keyRequired:false, notes:'HTML scrape — lowest prices by caliber. No official API.' },
+    { id:'nics',      name:'FBI NICS Background Checks', type:'CSV', url:'https://github.com/data-liberation-project/nics-firearm-background-checks', cat:'market', status:'active', schedule:'Monthly 1st', keyRequired:false, notes:'Monthly CSV from GitHub pipeline of FBI PDF data. Covers state-by-state check volume back to 1998. Critical market indicator.' },
+  ]
+
+  const VIDEO_SOURCES = [
+    { id:'yt_garand',  name:'Garand Thumb',          type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'2.5M', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY' },
+    { id:'yt_hickok',  name:'hickok45',              type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'8.1M', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY' },
+    { id:'yt_mac',     name:'Military Arms Channel',  type:'YOUTUBE', channelId:'UCv0KAWX2xO3wQgFiGnLwXcw', subs:'860K', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY' },
+    { id:'yt_lucky',   name:'Lucky Gunner',           type:'YOUTUBE', channelId:'UCcRrsfqUHWBfTU_lcB9nVwg', subs:'600K', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY' },
+    { id:'yt_iv8888',  name:'IraqVeteran8888',        type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'2.6M', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY' },
+    { id:'yt_mrgng',   name:'Mr. Guns N Gear',        type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'1.3M', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY' },
+    { id:'yt_colion',  name:'Colion Noir',            type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'1.8M', status:'pending', cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY', notes:'NRA TV alumni. Legal/constitutional commentary.' },
+    { id:'yt_paul',    name:'Paul Harrell',           type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'1.1M', status:'pending', cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY', notes:'Practical demonstrations. Extremely credible terminal ballistics content.' },
+    { id:'yt_brownell',name:'Brownells',              type:'YOUTUBE', channelId:'UCvB3solmh5NXa0VmCnWCMWg', subs:'260K', status:'active',  cat:'video', keyRequired:true, keyName:'YOUTUBE_API_KEY', notes:'Industry retailer channel. Parts, builds, upgrades.' },
+  ]
+
+  const SEC_SOURCES = [
+    { id:'sec_rgr',   name:'Ruger (RGR) SEC EDGAR',   type:'SEC_EDGAR', cik:'0000095029', ticker:'RGR',  status:'active',  schedule:'On filing', notes:'8-K press releases include quarterly earnings, new product launches, dividend announcements. RSS at https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=0000095029&type=8-K&dateb=&owner=include&count=10&search_text=&output=atom' },
+    { id:'sec_swbi',  name:'S&W Brands (SWBI) EDGAR',  type:'SEC_EDGAR', cik:'0001585583', ticker:'SWBI', status:'active',  schedule:'On filing', notes:'Smith & Wesson parent. Quarterly results and new product press releases.' },
+    { id:'sec_vsto',  name:'Vista Outdoor (VSTO)',     type:'SEC_EDGAR', cik:'0001616862', ticker:'VSTO', status:'pending', schedule:'On filing', notes:'Federal Premium, CCI, Speer, Alliant Powder. Ammo market data.' },
+    { id:'sec_aout',  name:'American Outdoor Brands',  type:'SEC_EDGAR', cik:'0001776197', ticker:'AOUT', status:'pending', schedule:'On filing', notes:'Outdoor survival, not firearms, but good market indicator.' },
+  ]
+
+  const ALL_SECTIONS = [
+    { key:'overview',       label:'📡 Overview',              count: MANUFACTURER_SOURCES.length + NEWS_SOURCES.length + LAW_SOURCES.length + MARKET_SOURCES.length + VIDEO_SOURCES.length + SEC_SOURCES.length },
+    { key:'manufacturers',  label:'🏭 Manufacturer Feeds',    count: MANUFACTURER_SOURCES.length },
+    { key:'news',           label:'📰 News & Media',          count: NEWS_SOURCES.length },
+    { key:'laws',           label:'⚖ Legal & Legislation',   count: LAW_SOURCES.length },
+    { key:'market',         label:'📊 Market & Deals',        count: MARKET_SOURCES.length },
+    { key:'video',          label:'▶ Video Channels',         count: VIDEO_SOURCES.length },
+    { key:'sec',            label:'📈 Public Company Feeds',  count: SEC_SOURCES.length },
+  ]
+
+  const TYPE_COLORS = { RSS:'#22C55E', API:'#60A5FA', HTML_SCRAPE:'#C8922A', JSON:'#FBBF24', XML:'#F97316', CSV:'#8B5CF6', YOUTUBE:'#EF4444', SEC_EDGAR:'#9CA3AF' }
+  const STATUS_COLORS = { active:'#22C55E', pending:'#FBBF24', disabled:'#EF4444' }
+
+  function SourceRow({ src }) {
+    const typeColor = TYPE_COLORS[src.type] || '#9CA3AF'
+    const statColor = STATUS_COLORS[src.status] || '#9CA3AF'
+    return (
+      <div style={{ display:'grid', gridTemplateColumns:'180px 70px 70px 140px 1fr auto', gap:10, alignItems:'start', padding:'12px 16px', borderBottom:'1px solid var(--border)', background:'var(--bg)' }}>
+        <div>
+          <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'var(--text)', lineHeight:1.2, marginBottom:2 }}>{src.name}</div>
+          {src.channelId && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>{src.subs} subscribers</div>}
+          {src.ticker && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--gold)' }}>NYSE: {src.ticker}</div>}
+        </div>
+        <span style={{ display:'inline-flex', alignItems:'center', height:'fit-content', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', fontWeight:700, color:typeColor, background:`${typeColor}18`, padding:'2px 7px', border:`1px solid ${typeColor}30`, letterSpacing:'0.05em', whiteSpace:'nowrap' }}>{src.type}</span>
+        <div style={{ display:'flex', alignItems:'center', gap:4 }}>
+          <span style={{ width:6, height:6, borderRadius:'50%', background:statColor, flexShrink:0 }} />
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:statColor, letterSpacing:'0.05em' }}>{src.status?.toUpperCase()}</span>
+        </div>
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{src.schedule}</div>
+        <div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', wordBreak:'break-all', marginBottom:src.notes?4:0 }}>{src.rssUrl || src.url}</div>
+          {src.notes && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#6B7280', lineHeight:1.5 }}>{src.notes}</div>}
+          {src.keyRequired && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', marginTop:3 }}>🔑 Requires: <code style={{ color:'var(--gold)' }}>{src.keyName}</code></div>}
+        </div>
+        <div style={{ display:'flex', gap:4, flexShrink:0 }}>
+          {src.keyUrl && <a href={src.keyUrl} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#60A5FA', textDecoration:'none', padding:'3px 7px', border:'1px solid #60A5FA30', whiteSpace:'nowrap' }}>GET KEY ↗</a>}
+          {(src.rssUrl || src.url) && <a href={src.rssUrl || src.url} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', textDecoration:'none', padding:'3px 7px', border:'1px solid var(--border)', whiteSpace:'nowrap' }}>TEST ↗</a>}
+        </div>
+      </div>
+    )
+  }
+
+  function SourceTable({ sources, title }) {
+    const active  = sources.filter(s=>s.status==='active').length
+    const pending = sources.filter(s=>s.status==='pending').length
+    return (
+      <div style={{ marginBottom:32 }}>
+        <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12, paddingBottom:8, borderBottom:'1px solid var(--border)' }}>
+          <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'var(--gold)', letterSpacing:'0.05em', margin:0 }}>{title}</h2>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#22C55E' }}>{active} ACTIVE</span>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#FBBF24' }}>{pending} PENDING</span>
+        </div>
+        <div style={{ border:'1px solid var(--border)', overflow:'hidden' }}>
+          <div style={{ display:'grid', gridTemplateColumns:'180px 70px 70px 140px 1fr auto', gap:10, padding:'8px 16px', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
+            {['Source','Type','Status','Schedule','URL / Notes',''].map(h=>(
+              <div key={h} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', letterSpacing:'0.1em', fontWeight:700 }}>{h}</div>
+            ))}
+          </div>
+          {sources.map(s => <SourceRow key={s.id} src={s} />)}
+        </div>
+      </div>
+    )
+  }
+
+  const allSources = [...MANUFACTURER_SOURCES, ...NEWS_SOURCES, ...LAW_SOURCES, ...MARKET_SOURCES, ...VIDEO_SOURCES, ...SEC_SOURCES]
+  const totalActive = allSources.filter(s=>s.status==='active').length
+  const totalPending = allSources.filter(s=>s.status==='pending').length
+  const apiRequired = allSources.filter(s=>s.keyRequired).length
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:24, flexWrap:'wrap', gap:12 }}>
+        <div>
+          <h1 className="dr-section-title" style={{ margin:0, marginBottom:4 }}>🛰 Mission Control</h1>
+          <p className="dr-section-sub" style={{ margin:0 }}>Complete inventory of all data sources — manufacturer feeds, news APIs, legal trackers, market data, and video channels.</p>
+        </div>
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:8 }}>
+          {[
+            { n:allSources.length, l:'Total Sources',   c:'var(--gold)' },
+            { n:totalActive,       l:'Active',           c:'#22C55E' },
+            { n:totalPending,      l:'Pending Config',   c:'#FBBF24' },
+            { n:apiRequired,       l:'API Keys Needed',  c:'#60A5FA' },
+          ].map(s=>(
+            <div key={s.l} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'10px 14px', textAlign:'center', minWidth:80 }}>
+              <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:s.c, lineHeight:1 }}>{s.n}</div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', marginTop:2 }}>{s.l}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Section nav */}
+      <div style={{ display:'flex', gap:0, borderBottom:'1px solid var(--border)', marginBottom:24, overflowX:'auto' }}>
+        {ALL_SECTIONS.map(s=>(
+          <button key={s.key} onClick={()=>setActiveSection(s.key)}
+            style={{ display:'flex', alignItems:'center', gap:6, padding:'10px 16px', background:'none', border:'none', borderBottom:`2px solid ${activeSection===s.key?'var(--gold)':'transparent'}`, color:activeSection===s.key?'var(--gold)':'var(--text-dim)', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', whiteSpace:'nowrap', letterSpacing:'0.04em', transition:'color 0.15s' }}>
+            {s.label}
+            <span style={{ background:'var(--bg3)', color:'#4B5563', padding:'1px 5px', fontSize:'8px' }}>{s.count}</span>
+          </button>
+        ))}
+      </div>
+
+      {/* Overview */}
+      {activeSection==='overview' && (
+        <div>
+          {/* Priority implementation guide */}
+          <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:'3px solid var(--gold)', padding:'20px 24px', marginBottom:24 }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', letterSpacing:'0.15em', marginBottom:12, fontWeight:700 }}>IMPLEMENTATION PRIORITY GUIDE</div>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:16 }}>
+              {[
+                { tier:'TIER 1 — Free, Zero Config', color:'#22C55E', items:[
+                  'GLOCK / SIG / Ruger press pages (scrape)',
+                  'Daniel Defense Atom feed (already RSS)',
+                  'r/gundeals JSON endpoint',
+                  'ATF / NRA-ILA / GOA / SAF RSS',
+                  'FBI NICS CSV via GitHub pipeline',
+                  'SCOTUSblog RSS + Duke Firearms Law RSS',
+                ]},
+                { tier:'TIER 2 — Free API Key Required', color:'#FBBF24', items:[
+                  'YouTube Data API v3 (video feeds)',
+                  'Congress.gov API (federal bills)',
+                  'LegiScan API (all 50 state bills)',
+                  'NewsAPI.org (broader news coverage)',
+                  'SEC EDGAR RSS (RGR + SWBI 8-K filings)',
+                  'GNews API (backup news source)',
+                ]},
+                { tier:'TIER 3 — Paid API or Subscription', color:'#60A5FA', items:[
+                  'GunBroker REST API (market pricing, dev key)',
+                  'gun.deals Dealer API (price optimization)',
+                  'AmmoSeek XML feed (retailer pricing data)',
+                  'WikiArms data (price scrape, no official API)',
+                  'NSSF Industry data (membership required)',
+                  'Vista Outdoor MSRP data (contact required)',
+                ]},
+              ].map(t=>(
+                <div key={t.tier}>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:t.color, fontWeight:700, letterSpacing:'0.08em', marginBottom:8 }}>{t.tier}</div>
+                  {t.items.map(i=>(
+                    <div key={i} style={{ display:'flex', gap:6, marginBottom:4 }}>
+                      <span style={{ color:t.color, fontSize:'10px', flexShrink:0, marginTop:1 }}>▸</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-muted)', lineHeight:1.4 }}>{i}</span>
+                    </div>
+                  ))}
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Status grid by category */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12, marginBottom:24 }}>
+            {[
+              { label:'Manufacturer Feeds', sources:MANUFACTURER_SOURCES, icon:'🏭' },
+              { label:'News & Media',       sources:NEWS_SOURCES,        icon:'📰' },
+              { label:'Legal & Law',        sources:LAW_SOURCES,         icon:'⚖' },
+              { label:'Market & Deals',     sources:MARKET_SOURCES,      icon:'📊' },
+              { label:'Video Channels',     sources:VIDEO_SOURCES,       icon:'▶' },
+              { label:'Public Companies',   sources:SEC_SOURCES,         icon:'📈' },
+            ].map(cat=>{
+              const a = cat.sources.filter(s=>s.status==='active').length
+              const p = cat.sources.filter(s=>s.status==='pending').length
+              return (
+                <div key={cat.label} className="dr-card" style={{ padding:'16px 18px' }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
+                    <span style={{ fontSize:'18px' }}>{cat.icon}</span>
+                    <div className="dr-card-title" style={{ margin:0, fontSize:'0.9rem' }}>{cat.label}</div>
+                  </div>
+                  <div style={{ display:'flex', gap:12 }}>
+                    <div><div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'#22C55E', lineHeight:1 }}>{a}</div><div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#22C55E' }}>ACTIVE</div></div>
+                    <div><div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'#FBBF24', lineHeight:1 }}>{p}</div><div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#FBBF24' }}>PENDING</div></div>
+                    <div><div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'var(--text-dim)', lineHeight:1 }}>{cat.sources.length}</div><div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'var(--text-dim)' }}>TOTAL</div></div>
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Deployment note */}
+          <div className="dr-alert-info">
+            <strong>⚠ Push to GitHub to Deploy:</strong> This environment cannot push to GitHub directly — it requires your credentials. Run <code style={{ color:'var(--gold)' }}>git push origin main</code> from your local machine, or push via GitHub Desktop. Vercel auto-deploys on every push to main. Check deployment status at <a href="https://vercel.com/dashboard" target="_blank" rel="noreferrer" style={{ color:'#60A5FA' }}>vercel.com/dashboard ↗</a>
+          </div>
+        </div>
+      )}
+
+      {activeSection==='manufacturers' && <SourceTable sources={MANUFACTURER_SOURCES} title="Manufacturer Press Release Feeds" />}
+      {activeSection==='news'          && <SourceTable sources={NEWS_SOURCES}         title="News & Media Sources" />}
+      {activeSection==='laws'          && <SourceTable sources={LAW_SOURCES}          title="Legal & Legislation Sources" />}
+      {activeSection==='market'        && <SourceTable sources={MARKET_SOURCES}       title="Market & Deals Sources" />}
+      {activeSection==='video'         && <SourceTable sources={VIDEO_SOURCES}        title="YouTube Channels" />}
+      {activeSection==='sec'           && (
+        <div>
+          <SourceTable sources={SEC_SOURCES} title="Public Company SEC Filings" />
+          <div className="dr-alert-info">
+            <strong>SEC EDGAR RSS pattern:</strong> Each public company has a free RSS feed for 8-K filings at <code style={{ color:'var(--gold)' }}>https://www.sec.gov/cgi-bin/browse-edgar?action=getcompany&CIK=&#123;CIK&#125;&type=8-K&dateb=&owner=include&count=10&search_text=&output=atom</code>. These cover quarterly earnings, product launches, and major corporate announcements. No API key required.
+          </div>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function BlogManager({ secret, setMsg }) {
   const [view, setView] = useState('list')         // list | editor | preview
   const [editing, setEditing] = useState(null)     // slug being edited
@@ -636,6 +928,9 @@ export default function AdminPage() {
             </div>
           )}
 
+          {/* ── MISSION CONTROL ── */}
+          {tab==='mission' && <MissionControl secret={secret} setMsg={setMsg} />}
+
           {/* ── AI AGENT ── */}
           {tab==='feeds' && (
             <div>
@@ -744,13 +1039,14 @@ export default function AdminPage() {
                   <h2 className="dr-section-title" style={{ fontSize:'1.3rem', marginBottom:'10px' }}>{group.group}</h2>
                   <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
                     {group.keys.map(k => (
-                      <div key={k.key} className="dr-card" style={{ display:'grid', gridTemplateColumns:'220px 1fr 120px', gap:12, alignItems:'center' }}>
+                      <div key={k.key} className="dr-card" style={{ display:'grid', gridTemplateColumns:'220px 1fr 100px auto', gap:12, alignItems:'center' }}>
                         <div>
-                          <div className="dr-card-title" style={{ fontSize:'0.9rem' }}>{k.label}</div>
+                          <div className="dr-card-title" style={{ fontSize:'0.9rem', marginBottom:2 }}>{k.label}</div>
                           <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>{k.key}</code>
                         </div>
                         <div className="t-label-sm">{k.hint}</div>
                         <span className={`dr-badge ${k.required?'dr-badge-red':'dr-badge-dim'}`}>{k.required?'REQUIRED':'OPTIONAL'}</span>
+                        {k.url && <a href={k.url} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#60A5FA', textDecoration:'none', padding:'4px 10px', border:'1px solid #60A5FA30', whiteSpace:'nowrap' }}>GET KEY ↗</a>}
                       </div>
                     ))}
                   </div>
