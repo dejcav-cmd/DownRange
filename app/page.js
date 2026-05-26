@@ -1,5 +1,4 @@
 import Masthead from '../components/layout/Masthead'
-import NewsletterSignup from '../components/sections/NewsletterSignup'
 import BreakingTicker from '../components/layout/BreakingTicker'
 import StatsBar from '../components/layout/StatsBar'
 import Footer from '../components/layout/Footer'

@@ -45,6 +45,9 @@ export default function AdminPage() {
   const [authed, setAuthed]             = useState(false)
   const [activeTab, setActiveTab]       = useState('feeds')
   const [feedResults, setFeedResults]   = useState({})
+  const [newsArticles, setNewsArticles]   = useState([])
+  const [loadingNews, setLoadingNews]     = useState(false)
+  const [catUpdating, setCatUpdating]     = useState(null)
   const [loadingFeed, setLoadingFeed]   = useState(null)
   const [apiStatus, setApiStatus]       = useState({})
   const [siteOk, setSiteOk]             = useState(null)
@@ -95,6 +98,24 @@ export default function AdminPage() {
     try { await fetch('/'); setSiteOk({ ok: true, ms: Date.now() - start }) }
     catch { setSiteOk({ ok: false, ms: 0 }) }
     setSiteOk({ ok: true, ms: Date.now() - start })
+  }
+
+  async function loadNews() {
+    setLoadingNews(true)
+    const res = await fetch('/api/admin/categorize', { headers: { Authorization: `Bearer ${secret}` } }).catch(() => null)
+    if (res?.ok) { const d = await res.json(); setNewsArticles(d.articles || []) }
+    setLoadingNews(false)
+  }
+
+  async function updateCategory(id, category) {
+    setCatUpdating(id)
+    await fetch('/api/admin/categorize', {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${secret}` },
+      body: JSON.stringify({ id, category })
+    }).catch(() => null)
+    setNewsArticles(p => p.map(a => a._id === id ? { ...a, category } : a))
+    setCatUpdating(null)
   }
 
   async function runFeed(key) {
@@ -166,6 +187,7 @@ export default function AdminPage() {
 
   const tabs = [
     { key: 'feeds',    label: '⚡ Feeds' },
+    { key: 'news',     label: '📰 News Manager' },
     { key: 'channels', label: '▶ Video Channels' },
     { key: 'rss',      label: '📰 RSS Sources' },
     { key: 'keys',     label: '🔑 API Keys' },
@@ -354,6 +376,54 @@ export default function AdminPage() {
             <button onClick={checkStatus} style={{ marginTop: 12, background: 'none', border: `1px solid ${C.border}`, color: C.muted, padding: '10px 20px', fontFamily: 'monospace', fontSize: '11px', cursor: 'pointer' }}>
               REFRESH STATUS
             </button>
+          </div>
+        )}
+
+        {/* ── NEWS MANAGER TAB ── */}
+        {activeTab === 'news' && (
+          <div>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 20 }}>
+              <div style={{ fontFamily: 'monospace', fontSize: '11px', color: C.gold, letterSpacing: '0.15em' }}>NEWS CATEGORIZATION</div>
+              <button onClick={loadNews} disabled={loadingNews}
+                style={{ background: C.gold, color: '#000', border: 'none', padding: '8px 20px', fontFamily: 'monospace', fontWeight: 700, fontSize: '11px', cursor: 'pointer' }}>
+                {loadingNews ? 'LOADING...' : newsArticles.length > 0 ? `REFRESH (${newsArticles.length})` : 'LOAD ARTICLES →'}
+              </button>
+            </div>
+            <p style={{ fontFamily: 'monospace', fontSize: '11px', color: C.muted, marginBottom: 20, lineHeight: 1.7 }}>
+              View and recategorize articles pulled by the news agent. Changes save to Sanity immediately.
+            </p>
+            {newsArticles.length === 0 && !loadingNews && (
+              <div style={{ textAlign: 'center', padding: '40px', color: C.muted, fontFamily: 'monospace', fontSize: '12px' }}>
+                Click "Load Articles" to fetch the latest 50 articles from Sanity.
+              </div>
+            )}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
+              {newsArticles.map(a => {
+                const catColor = { breaking:'#EF4444', news:'#9CA3AF', law:'#60A5FA', industry:'#C8922A', opinion:'#C084FC', training:'#34D399' }[a.category] || '#9CA3AF'
+                const cats = ['breaking','news','law','industry','opinion','training','review']
+                return (
+                  <div key={a._id} style={{ background: C.bg2, border: `1px solid ${C.border}`, padding: '12px 16px', display: 'grid', gridTemplateColumns: '1fr 200px 80px', gap: 12, alignItems: 'center' }}>
+                    <div>
+                      <div style={{ fontSize: '13px', color: C.text, fontWeight: 600, lineHeight: 1.3, marginBottom: 4 }}>{a.title}</div>
+                      <div style={{ display: 'flex', gap: 10, fontFamily: 'monospace', fontSize: '10px', color: C.muted }}>
+                        <span>{a.source}</span>
+                        <span style={{ color: '#374151' }}>·</span>
+                        <span>{a.publishedAt ? new Date(a.publishedAt).toLocaleDateString() : ''}</span>
+                        {a.externalUrl && <a href={a.externalUrl} target="_blank" rel="noreferrer" style={{ color: '#60A5FA', textDecoration: 'none' }}>SOURCE →</a>}
+                      </div>
+                    </div>
+                    <select value={a.category || 'news'} onChange={e => updateCategory(a._id, e.target.value)}
+                      disabled={catUpdating === a._id}
+                      style={{ background: C.bg, border: `1px solid ${catColor}60`, color: catColor, padding: '6px 10px', fontFamily: 'monospace', fontSize: '11px', cursor: 'pointer' }}>
+                      {cats.map(cat => <option key={cat} value={cat}>{cat}</option>)}
+                    </select>
+                    <div style={{ fontFamily: 'monospace', fontSize: '10px', color: catUpdating === a._id ? C.gold : '#374151', textAlign: 'center' }}>
+                      {catUpdating === a._id ? 'SAVING...' : `${a.urgencyScore || 3}/10`}
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
           </div>
         )}
 

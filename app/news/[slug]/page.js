@@ -268,27 +268,11 @@ export default async function ArticlePage({ params }) {
               <a href="/news" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', color: '#C8922A', textDecoration: 'none', fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.1em' }}>
                 ALL NEWS →
               </a>
-            </div>
-
-            {/* Newsletter */}
-            <div style={{ background: '#0D1117', border: '1px solid #C8922A30', padding: '1.25rem' }}>
-              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.3rem', color: '#C8922A', marginBottom: '0.5rem' }}>STAY LOCKED IN</div>
-              <p style={{ fontSize: '0.8rem', color: '#4B5563', marginBottom: '1rem', lineHeight: 1.5 }}>
-                Breaking alerts, law changes, new releases — straight to your inbox.
-              </p>
-              <input type="email" placeholder="your@email.com" style={{ width: '100%', background: '#111318', border: '1px solid #1F2428', color: '#E8E6E1', padding: '8px 10px', fontFamily: 'monospace', fontSize: '0.78rem', marginBottom: '8px', boxSizing: 'border-box' }} />
-              <button style={{ width: '100%', background: '#C8922A', color: '#000', border: 'none', padding: '8px', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.78rem', cursor: 'pointer', letterSpacing: '0.05em' }}>
-                GET THE DAILY →
-              </button>
-            </div>
-          </aside>
+            </div></aside>
         </div>
 
         {/* ── RELATED GRID ── */}
         <div style={{ maxWidth: 900, margin: '0 auto', padding: '0 1.5rem 4rem' }}>
-          <div style={{ paddingTop: '2rem', borderTop: '1px solid #1F2428', marginBottom: '1.5rem' }}>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.6rem', color: '#C8922A', letterSpacing: '0.05em' }}>RELATED STORIES</h2>
-          </div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '1rem' }}>
             {related.filter(a => a.slug?.current !== params.slug).slice(0, 3).map(a => (
               <NewsCard key={a._id} article={a} />
