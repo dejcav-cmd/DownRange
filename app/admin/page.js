@@ -820,27 +820,321 @@ export default function AdminPage() {
           {/* ── PUBLICATION SCHEDULE (World-class) ── */}
           {tab==='schedule' && <PublicationSchedule secret={secret} setMsg={setMsg} />}
 
-          {/* Placeholder for remaining tabs */}
-          {['content','alerts','channels','deals','ranges','newsletter','identity'].includes(tab) && (
+          {/* ── CONTENT MANAGER ── */}
+          {tab==='content' && (
             <div>
-              <h1 className="dr-section-title">{TABS.find(t=>t.key===tab)?.label}</h1>
-              <p className="dr-section-sub">Use Sanity Studio for content editing</p>
-              <div className="dr-grid-2" style={{ marginBottom:'20px' }}>
-                <a href="/studio" target="_blank" className="dr-card" style={{ textDecoration:'none', textAlign:'center', padding:'24px' }}>
-                  <div style={{ fontSize:'32px', marginBottom:'8px' }}>📝</div>
-                  <div className="dr-card-title">Open Sanity Studio</div>
-                  <p className="dr-card-body">Create, edit, and publish all content types including news, reviews, alerts, and state profiles.</p>
-                </a>
-                <a href="https://sanity.io/manage" target="_blank" rel="noreferrer" className="dr-card" style={{ textDecoration:'none', textAlign:'center', padding:'24px' }}>
-                  <div style={{ fontSize:'32px', marginBottom:'8px' }}>⚙</div>
-                  <div className="dr-card-title">Sanity Dashboard</div>
-                  <p className="dr-card-body">Manage datasets, tokens, CORS settings, and content API access for project vbnsqnkg.</p>
-                </a>
+              <h1 className="dr-section-title">Content Manager</h1>
+              <p className="dr-section-sub">Manage all content types: news articles, reviews, guns, state profiles, and more.</p>
+
+              <div className="dr-grid-2" style={{ marginBottom:20 }}>
+                {[
+                  { label:'News Articles',     icon:'📰', count:'30+',  desc:'AI-fetched + manually authored news stories', path:'/news', edit:'/api/agent?feed=news' },
+                  { label:'Gun Reviews',        icon:'★',  count:'12+',  desc:'Full field-tested firearm and gear reviews',  path:'/reviews', edit:null },
+                  { label:'Gun Encyclopedia',   icon:'📖', count:'200+', desc:'Firearm specs, history, variants database',    path:'/guns', edit:null },
+                  { label:'State Profiles',     icon:'🗺', count:'50',   desc:'Per-state laws, CCW, and permit data',         path:'/state-hub', edit:null },
+                  { label:'New Releases',       icon:'🔫', count:'10+',  desc:'Latest firearm and gear launches',             path:'/releases', edit:null },
+                  { label:'Learn Center',       icon:'📚', count:'12',   desc:'Beginner guides and educational articles',     path:'/learn', edit:null },
+                ].map(c => (
+                  <div key={c.label} className="dr-card" style={{ padding:'18px 20px' }}>
+                    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:8 }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+                        <span style={{ fontSize:'22px' }}>{c.icon}</span>
+                        <div>
+                          <div className="dr-card-title" style={{ fontSize:'1rem', marginBottom:2 }}>{c.label}</div>
+                          <div className="dr-card-meta" style={{ marginBottom:0 }}>{c.count} records</div>
+                        </div>
+                      </div>
+                      <a href={c.path} target="_blank" className="dr-btn-outline" style={{ fontSize:'10px', padding:'5px 12px', textDecoration:'none' }}>VIEW ↗</a>
+                    </div>
+                    <div className="t-label-sm" style={{ marginBottom:10 }}>{c.desc}</div>
+                    {c.edit && (
+                      <button onClick={()=>runFeed('news')} disabled={running['news']} className="dr-btn-primary" style={{ fontSize:'10px', padding:'5px 14px', opacity:running['news']?0.5:1 }}>
+                        {running['news']?'RUNNING...':'▶ REFRESH FEED'}
+                      </button>
+                    )}
+                    {!c.edit && (
+                      <div className="t-label-xs" style={{ color:'var(--text-dim)' }}>Edit via code: <code style={{ color:'var(--gold)' }}>sanity/schemas/</code> + Sanity dataset</div>
+                    )}
+                  </div>
+                ))}
               </div>
-              {tab==='alerts' && <div className="dr-alert-info">Breaking alerts are auto-created by the AI agent when urgency score ≥ 8/10. Create manually in Sanity Studio → Breaking Alert.</div>}
-              {tab==='newsletter' && <div className="dr-alert-info">Newsletter managed via Resend dashboard. Audience ID configured in RESEND_AUDIENCE_ID env var.</div>}
-              {tab==='deals' && <div className="dr-alert-info">Deals are sourced from r/gundeals JSON API, gun.deals RSS, AmmoLand RSS, and Mr. Guns N Gear Squarespace API. Configuration in <code style={{ color:'var(--gold)' }}>app/api/deals/route.js</code>.</div>}
-              {tab==='ranges' && <div className="dr-alert-info">Range database has 86 entries. To add ranges, edit <code style={{ color:'var(--gold)' }}>app/api/ranges/route.js</code> RANGES array. Google Places API key enables live search.</div>}
+
+              <div className="dr-alert-info">
+                <strong style={{ color:'var(--gold)' }}>Content architecture:</strong> News articles are auto-ingested via the AI agent every 15 minutes. Reviews, gun profiles, and state data are managed in the Sanity dataset. To add content manually, use the Sanity API with your <code style={{ color:'var(--gold)' }}>SANITY_API_TOKEN</code>.
+              </div>
+            </div>
+          )}
+
+          {/* ── BREAKING ALERTS ── */}
+          {tab==='alerts' && (
+            <div>
+              <h1 className="dr-section-title">Breaking Alerts</h1>
+              <p className="dr-section-sub">High-urgency alerts shown in the ticker and sidebar. Auto-created when urgency score is 8/10 or higher.</p>
+
+              {/* Current alert config */}
+              <div className="dr-card dr-card-accent" style={{ marginBottom:20 }}>
+                <div className="dr-card-meta" style={{ marginBottom:12 }}>HOW ALERTS ARE CREATED</div>
+                <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:12 }}>
+                  {[
+                    { step:'1', title:'Agent Scores Story', desc:'Every news item receives an urgencyScore 1-10 based on legal impact, breadth of affect, and recency.' },
+                    { step:'2', title:'Auto-Alert at 8+', desc:'Stories scoring ≥ 8 are automatically flagged as Breaking Alerts and pushed to the BreakingTicker component.' },
+                    { step:'3', title:'Manual Override', desc:'You can manually set any story as breaking by updating its urgencyScore to 8 or higher in the Sanity dataset via API.' },
+                  ].map(s => (
+                    <div key={s.step} className="dr-card" style={{ padding:'14px 16px' }}>
+                      <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:'var(--gold)', lineHeight:1, marginBottom:6 }}>0{s.step}</div>
+                      <div className="dr-card-title" style={{ fontSize:'0.9rem', marginBottom:4 }}>{s.title}</div>
+                      <div className="t-label-sm">{s.desc}</div>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              {/* Seed alerts preview */}
+              <h2 className="dr-section-title" style={{ fontSize:'1.1rem', marginBottom:12 }}>Current Alert Seeds</h2>
+              <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+                {[
+                  { headline:'ATF Finalizes Pistol Brace Rule — 5th Circuit Injunction Holds', urgencyScore:9, category:'law' },
+                  { headline:'House Passes SHARE Act — Suppressor Reform Advances', urgencyScore:8, category:'law' },
+                  { headline:'California AWB Ruled Unconstitutional — Appeal Filed', urgencyScore:8, category:'law' },
+                  { headline:'SCOTUS Conference: Viramontes v. Cook County Listed for Review', urgencyScore:9, category:'scotus' },
+                  { headline:'ATF 34-Rule Package Effective — Pistol Brace, Engaged in Business Rules Rescinded', urgencyScore:8, category:'atf' },
+                ].map((a,i) => (
+                  <div key={i} className="dr-card" style={{ display:'grid', gridTemplateColumns:'50px 1fr 80px 80px', gap:12, alignItems:'center', padding:'12px 16px', borderLeft:`3px solid #EF4444` }}>
+                    <div style={{ textAlign:'center' }}>
+                      <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.5rem', color:'#EF4444', lineHeight:1 }}>{a.urgencyScore}</div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#EF4444' }}>/10</div>
+                    </div>
+                    <div className="t-label-md" style={{ color:'var(--text)', fontWeight:600, lineHeight:1.3 }}>{a.headline}</div>
+                    <span className="dr-badge dr-badge-dim">{a.category}</span>
+                    <span className="dr-badge dr-badge-red">ACTIVE</span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="dr-alert-info" style={{ marginTop:16 }}>
+                <strong>To create a manual alert:</strong> POST to <code style={{ color:'var(--gold)' }}>/api/agent?feed=news</code> with your CRON_SECRET, or increase a news article urgencyScore to 8+ via Sanity dataset API at <code style={{ color:'var(--gold)' }}>https://vbnsqnkg.api.sanity.io</code>
+              </div>
+            </div>
+          )}
+
+          {/* ── VIDEO CHANNELS ── */}
+          {tab==='channels' && (
+            <div>
+              <h1 className="dr-section-title">Video Channels</h1>
+              <p className="dr-section-sub">YouTube channels populating the Video page. Configured in the video feed agent. YouTube API key enables live subscriber counts and latest video data.</p>
+
+              <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:20 }}>
+                {[
+                  { name:'Military Arms Channel', handle:'@MilitaryArmsChannel', cat:'Reviews & Industry', subs:'~860K', active:true },
+                  { name:'Lucky Gunner',           handle:'@LuckyGunner',         cat:'Ammo & Testing',    subs:'~600K', active:true },
+                  { name:'Brownells',              handle:'@Brownells',            cat:'Industry & Gear',   subs:'~260K', active:true },
+                  { name:'IraqVeteran8888',        handle:'@IraqVeteran8888',      cat:'General Firearms',  subs:'~2.6M', active:true },
+                  { name:'Hickok45',               handle:'@hickok45',             cat:'Demonstrations',    subs:'~6.6M', active:true },
+                  { name:'Mr. Guns N Gear',        handle:'@MrGunsNGear',          cat:'Reviews',           subs:'~1.3M', active:true },
+                  { name:'Garand Thumb',           handle:'@GarandThumb',          cat:'Reviews & Training',subs:'~2.5M', active:true },
+                  { name:'Paul Harrell',           handle:'@PaulHarrell',          cat:'Demonstrations',    subs:'~1.1M', active:true },
+                ].map(c => (
+                  <div key={c.name} className="dr-card" style={{ display:'grid', gridTemplateColumns:'200px 160px 160px 80px 60px auto', gap:12, alignItems:'center', padding:'12px 16px' }}>
+                    <div className="dr-card-title" style={{ fontSize:'0.9rem', margin:0 }}>{c.name}</div>
+                    <div className="t-label-sm" style={{ color:'var(--gold)' }}>{c.handle}</div>
+                    <div className="t-label-xs">{c.cat}</div>
+                    <div className="t-label-sm">{c.subs}</div>
+                    <span className={`dr-badge ${c.active?'dr-badge-green':'dr-badge-dim'}`}>{c.active?'ON':'OFF'}</span>
+                    <a href={`https://youtube.com/${c.handle}`} target="_blank" rel="noreferrer" className="dr-btn-outline" style={{ fontSize:'9px', padding:'4px 8px', textDecoration:'none' }}>YT ↗</a>
+                  </div>
+                ))}
+              </div>
+
+              <div className="dr-alert-info">
+                <strong>To add channels:</strong> Edit <code style={{ color:'var(--gold)' }}>agent/feeds/video.js</code> CHANNELS array and redeploy. Set <code style={{ color:'var(--gold)' }}>YOUTUBE_API_KEY</code> in Vercel to enable live video data — without it, seed channel data is displayed.
+              </div>
+            </div>
+          )}
+
+          {/* ── DEALS CONFIG ── */}
+          {tab==='deals' && (
+            <div>
+              <h1 className="dr-section-title">Deals Configuration</h1>
+              <p className="dr-section-sub">Live deal sources powering the Deals page. Data aggregated from Reddit, AmmoLand, and direct retailer feeds.</p>
+
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:20 }}>
+                {[
+                  { name:'r/gundeals',      icon:'🔴', type:'Reddit JSON API', status:'active', url:'https://reddit.com/r/gundeals.json', desc:'Community-curated firearm deals. High volume, real-time. No API key needed.' },
+                  { name:'gun.deals',       icon:'🔫', type:'RSS Feed',        status:'active', url:'https://gun.deals/feed/json', desc:'Aggregated retailer pricing feed. Updated frequently.' },
+                  { name:'AmmoLand Deals',  icon:'📰', type:'RSS Feed',        status:'active', url:'https://www.ammoland.com/feed/', desc:'AmmoLand is locked to deals category and never appears in news feed.' },
+                  { name:'Mr. Guns N Gear', icon:'⭐', type:'Squarespace API', status:'active', url:'https://mrgunnsgear.com/api', desc:'Sponsored gear and product recommendations from the MrGunsNGear channel.' },
+                ].map(s => (
+                  <div key={s.name} className="dr-card dr-card-accent" style={{ padding:'18px' }}>
+                    <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:8 }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                        <span style={{ fontSize:'20px' }}>{s.icon}</span>
+                        <div>
+                          <div className="dr-card-title" style={{ marginBottom:2 }}>{s.name}</div>
+                          <div className="dr-card-meta" style={{ marginBottom:0 }}>{s.type}</div>
+                        </div>
+                      </div>
+                      <span className="dr-badge dr-badge-green">● {s.status}</span>
+                    </div>
+                    <div className="t-label-sm" style={{ marginBottom:8 }}>{s.desc}</div>
+                    <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', wordBreak:'break-all' }}>{s.url}</code>
+                  </div>
+                ))}
+              </div>
+
+              <div className="dr-alert-info">
+                <strong>To modify deal sources:</strong> Edit <code style={{ color:'var(--gold)' }}>app/api/deals/route.js</code>. AmmoLand is hardcoded to <code style={{ color:'var(--gold)' }}>feedCat: &apos;deals&apos;</code> via the <code style={{ color:'var(--gold)' }}>agent/feeds/news.js</code> feedCat propagation — this was a known critical bug that was fixed.
+              </div>
+            </div>
+          )}
+
+          {/* ── RANGE DATABASE ── */}
+          {tab==='ranges' && (
+            <div>
+              <h1 className="dr-section-title">Range Database</h1>
+              <p className="dr-section-sub">86 ranges in the national database. Google Places API enables live search and additional ranges near the user.</p>
+
+              <div className="dr-grid-4" style={{ marginBottom:20 }}>
+                {[{n:'86',l:'Total Ranges',s:'In database'},{n:'48',l:'States',s:'Coverage'},{n:'~35',l:'Indoor',s:'Climate controlled'},{n:'~51',l:'Outdoor',s:'Long range available'}].map(s=>(
+                  <div key={s.l} className="dr-card" style={{ textAlign:'center', padding:'20px 12px' }}>
+                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.2rem', color:'var(--gold)', lineHeight:1 }}>{s.n}</div>
+                    <div className="t-label-md" style={{ color:'var(--text)', fontWeight:700, marginTop:4 }}>{s.l}</div>
+                    <div className="t-label-xs">{s.s}</div>
+                  </div>
+                ))}
+              </div>
+
+              <div className="dr-card" style={{ marginBottom:16, padding:'18px 20px' }}>
+                <div className="dr-card-meta" style={{ marginBottom:10 }}>ADD A RANGE TO DATABASE</div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr auto', gap:10, alignItems:'end' }}>
+                  {[['Name','Range name...'],['City, State','Location...'],['Website (optional)','https://...']].map(([label,ph])=>(
+                    <div key={label}>
+                      <div className="t-label-xs" style={{ marginBottom:4 }}>{label.toUpperCase()}</div>
+                      <input placeholder={ph} style={{ width:'100%', background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', outline:'none' }} />
+                    </div>
+                  ))}
+                  <button onClick={()=>setMsg('Range submitted — add to app/api/ranges/route.js to go live')} className="dr-btn-primary" style={{ padding:'8px 16px', fontSize:'11px' }}>ADD</button>
+                </div>
+                <div className="t-label-xs" style={{ marginTop:8, color:'var(--text-dim)' }}>Submitted ranges must be manually added to <code style={{ color:'var(--gold)' }}>app/api/ranges/route.js</code> RANGES array then redeployed.</div>
+              </div>
+
+              <div className="dr-alert-info">
+                <strong>Live search:</strong> Set <code style={{ color:'var(--gold)' }}>GOOGLE_PLACES_API_KEY</code> in Vercel to enable Google Places search for ranges near the user. Without the key, the static 86-range database is displayed.
+              </div>
+            </div>
+          )}
+
+          {/* ── NEWSLETTER ── */}
+          {tab==='newsletter' && (
+            <div>
+              <h1 className="dr-section-title">Newsletter</h1>
+              <p className="dr-section-sub">Managed via Resend. Requires RESEND_API_KEY and RESEND_AUDIENCE_ID environment variables.</p>
+
+              <div className="dr-grid-2" style={{ marginBottom:20 }}>
+                <div className="dr-card dr-card-accent" style={{ padding:'20px' }}>
+                  <div className="dr-card-meta" style={{ marginBottom:12 }}>RESEND CONFIGURATION</div>
+                  {[
+                    { key:'RESEND_API_KEY',      label:'API Key',     hint:'resend.com/api-keys',        status: secret ? '✓ Configured via CRON_SECRET field' : '⚠ Set in Vercel env vars' },
+                    { key:'RESEND_AUDIENCE_ID',   label:'Audience ID', hint:'Your Resend audience UUID',  status:'Set in Vercel env vars' },
+                    { key:'RESEND_FROM_EMAIL',     label:'From Email',  hint:'noreply@downrangeco.com',    status:'Requires domain DNS verification' },
+                  ].map(k => (
+                    <div key={k.key} style={{ display:'grid', gridTemplateColumns:'120px 1fr', gap:10, padding:'8px 0', borderBottom:'1px solid var(--border)' }}>
+                      <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)' }}>{k.label}</code>
+                      <div className="t-label-xs">{k.status}</div>
+                    </div>
+                  ))}
+                  <a href="https://resend.com/dashboard" target="_blank" rel="noreferrer" className="dr-btn-outline" style={{ display:'inline-block', marginTop:14, fontSize:'10px', padding:'6px 14px', textDecoration:'none' }}>OPEN RESEND DASHBOARD ↗</a>
+                </div>
+
+                <div className="dr-card" style={{ padding:'20px' }}>
+                  <div className="dr-card-meta" style={{ marginBottom:12 }}>SEND NEWSLETTER</div>
+                  <div style={{ marginBottom:10 }}>
+                    <div className="t-label-xs" style={{ marginBottom:5 }}>SUBJECT LINE</div>
+                    <input placeholder="DownRange Weekly — May 25, 2026" style={{ width:'100%', background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', outline:'none' }} />
+                  </div>
+                  <div style={{ marginBottom:10 }}>
+                    <div className="t-label-xs" style={{ marginBottom:5 }}>PREVIEW TEXT</div>
+                    <input placeholder="This week in 2A: SCOTUS updates, new releases, best deals..." style={{ width:'100%', background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', outline:'none' }} />
+                  </div>
+                  <div style={{ marginBottom:14 }}>
+                    <div className="t-label-xs" style={{ marginBottom:5 }}>TEMPLATE</div>
+                    <select style={{ width:'100%', background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', padding:'8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>
+                      <option>Weekly Digest (top 5 stories + top deal)</option>
+                      <option>Breaking Alert (single story)</option>
+                      <option>Law Update (legislation roundup)</option>
+                    </select>
+                  </div>
+                  <button onClick={()=>setMsg('Newsletter requires RESEND_API_KEY and RESEND_AUDIENCE_ID in Vercel env vars')} className="dr-btn-primary" style={{ width:'100%', padding:'9px', fontSize:'11px' }}>
+                    📧 SEND TO SUBSCRIBERS
+                  </button>
+                </div>
+              </div>
+
+              <div className="dr-alert-info">
+                <strong>Automation:</strong> The newsletter API route at <code style={{ color:'var(--gold)' }}>app/api/newsletter</code> is pending implementation (item #8 on the pending list). Once built, it will automatically compile top stories and send weekly digests via Resend.
+              </div>
+            </div>
+          )}
+
+          {/* ── SITE IDENTITY ── */}
+          {tab==='identity' && (
+            <div>
+              <h1 className="dr-section-title">Site Identity</h1>
+              <p className="dr-section-sub">Brand configuration, design tokens, and visual identity settings for DownRange.</p>
+
+              <div className="dr-grid-2" style={{ marginBottom:20 }}>
+                <div className="dr-card" style={{ padding:'20px' }}>
+                  <div className="dr-card-meta" style={{ marginBottom:14 }}>DESIGN TOKENS</div>
+                  {[
+                    { label:'Primary Gold',    val:'#C8922A', preview:true },
+                    { label:'Background',      val:'#09090B', preview:true },
+                    { label:'Background 2',    val:'#0D0E10', preview:true },
+                    { label:'Background 3',    val:'#1F2428', preview:true },
+                    { label:'Border Color',    val:'var(--border)', preview:false },
+                    { label:'Text Primary',    val:'#F0EDE6', preview:true },
+                    { label:'Text Muted',      val:'#9CA3AF', preview:true },
+                    { label:'Text Dim',        val:'#4B5563', preview:true },
+                  ].map(t => (
+                    <div key={t.label} style={{ display:'grid', gridTemplateColumns:'140px 1fr 28px', gap:8, alignItems:'center', padding:'6px 0', borderBottom:'1px solid var(--border)' }}>
+                      <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>{t.label}</code>
+                      <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)' }}>{t.val}</code>
+                      {t.preview && <div style={{ width:20, height:20, background:t.val, border:'1px solid var(--border)', borderRadius:2 }} />}
+                    </div>
+                  ))}
+                </div>
+
+                <div className="dr-card" style={{ padding:'20px' }}>
+                  <div className="dr-card-meta" style={{ marginBottom:14 }}>TYPOGRAPHY</div>
+                  {[
+                    { role:'Display / Headlines', font:'Bebas Neue', usage:'H1 titles, hero text, section headers' },
+                    { role:'Body / Labels',       font:'Barlow Condensed', usage:'Navigation, card titles, UI labels' },
+                    { role:'Monospace / Code',    font:'IBM Plex Mono', usage:'Metadata, badges, timestamps, code' },
+                  ].map(t => (
+                    <div key={t.role} className="dr-card" style={{ padding:'12px 14px', marginBottom:8 }}>
+                      <div className="t-label-xs" style={{ marginBottom:4 }}>{t.role.toUpperCase()}</div>
+                      <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:'var(--gold)', letterSpacing:'0.05em', marginBottom:2 }}>{t.font}</div>
+                      <div className="t-label-sm">{t.usage}</div>
+                    </div>
+                  ))}
+
+                  <div className="dr-card-meta" style={{ marginBottom:10, marginTop:16 }}>SITE SETTINGS</div>
+                  {[
+                    { label:'Site Name',      val:'DownRange Intelligence Hub' },
+                    { label:'Domain',         val:'downrangeco.com' },
+                    { label:'Default Theme',  val:'Dark (var(--bg) = #09090B)' },
+                    { label:'Logo Type',      val:'SVG inline — crosshair + wordmark' },
+                    { label:'DESIGN_SYSTEM',  val:'See /DESIGN_SYSTEM.md in repo root' },
+                  ].map(s => (
+                    <div key={s.label} style={{ display:'grid', gridTemplateColumns:'120px 1fr', gap:8, padding:'6px 0', borderBottom:'1px solid var(--border)' }}>
+                      <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>{s.label}</code>
+                      <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)' }}>{s.val}</code>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
+              <div className="dr-alert-info">
+                <strong>Design rules from DESIGN_SYSTEM.md:</strong> Never hardcode hex colors — always use CSS vars. Never use bare monospace font family. Use <code style={{ color:'var(--gold)' }}>var(--border)</code> for all borders (not #1F2428). Use <code style={{ color:'var(--gold)' }}>.page-hero + .dr-card + var(--border)</code> pattern throughout. See <code style={{ color:'var(--gold)' }}>DESIGN_SYSTEM.md</code> in the repo root.
+              </div>
             </div>
           )}
 

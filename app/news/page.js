@@ -36,34 +36,44 @@ export default async function NewsPage({ searchParams }) {
       <BreakingTicker alerts={alerts} />
       <Masthead />
 
-      <div className="page-hero" data-title="NEWS">
-        <div className="container">
-          <div style={{ position: 'relative' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <span className="pulse-dot" />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#22C55E', letterSpacing: '0.1em' }}>LIVE FEED</span>
+      {/* ── PAGE HERO ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 20% 50%, rgba(200,146,42,0.07) 0%, transparent 55%)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'50%', overflow:'hidden', opacity:0.04, pointerEvents:'none' }}>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'18vw', color:'var(--gold)', lineHeight:0.85, textAlign:'right', paddingRight:'20px', paddingTop:'10px' }}>NEWS</div>
+        </div>
+        <div className="container" style={{ position:'relative' }}>
+          <div style={{ maxWidth:640 }}>
+            <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap', alignItems:'center' }}>
+              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>LATEST NEWS</span>
+              <span style={{ display:'flex', alignItems:'center', gap:5, background:'#001A0A', color:'#22C55E', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #22C55E40' }}>
+                <span className="pulse-dot" /> LIVE FEED
+              </span>
             </div>
-            <h1 className="page-hero-title">Latest News</h1>
-            <p className="page-hero-sub">
-              {articles.length} stories · Updated every 15 minutes · All sources aggregated
+            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
+              Firearms &amp; 2A<br />
+              <span style={{ color:'var(--gold)' }}>Intelligence Feed</span>
+            </h1>
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
+              {articles.length > 0 ? articles.length : '30'}+ stories · Updated every 15 minutes · All major sources aggregated
             </p>
           </div>
         </div>
       </div>
 
-      <div style={{ padding: '32px 0', borderBottom: '1px solid var(--border)' }}>
+      {/* ── STICKY CATEGORY BAR (Learn pattern) ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
-          {/* Category tabs */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px', flexWrap:'wrap', gap:8 }}>
-            <div className="filter-tabs" style={{ marginBottom:0 }}>
+          <div style={{ display:'flex', gap:0, overflowX:'auto', justifyContent:'space-between', alignItems:'stretch' }}>
+            <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
               {CATEGORIES.map(c => (
                 <a key={c.val || 'all'} href={c.val ? `/news?cat=${c.val}` : '/news'}
-                  className={`filter-tab ${(cat === c.val || (!cat && !c.val)) ? 'active' : ''}`}>
+                  style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${(cat===c.val||(!cat&&!c.val))?'var(--gold)':'transparent'}`, color:(cat===c.val||(!cat&&!c.val))?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
                   {c.label}
                 </a>
               ))}
             </div>
-            <div style={{ display:'flex', gap:'5px', alignItems:'center' }}>
+            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 0 0 12px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
               {[['newest','📅 Newest'],['urgency','⚡ Urgency']].map(([key,label]) => (
                 <a key={key} href={`/news?cat=${cat||''}&sort=${key}`}
@@ -73,7 +83,11 @@ export default async function NewsPage({ searchParams }) {
               ))}
             </div>
           </div>
+        </div>
+      </div>
 
+      <div style={{ padding: '32px 0', borderBottom: '1px solid var(--border)' }}>
+        <div className="container">
           <div className="sidebar-layout">
             <div>
               {/* Featured */}

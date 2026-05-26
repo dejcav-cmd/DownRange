@@ -3,7 +3,7 @@ import BreakingTicker from '../components/layout/BreakingTicker'
 import StatsBar from '../components/layout/StatsBar'
 import Footer from '../components/layout/Footer'
 import NewsCard from '../components/ui/NewsCard'
-import AmmoPriceTicker from '../components/ui/AmmoPriceTicker'
+
 import WhatsHot from '../components/ui/WhatsHot'
 import StateHub from '../components/sections/StateHub'
 import {
@@ -38,7 +38,7 @@ export default async function HomePage() {
     <>
       <BreakingTicker alerts={alerts} />
       <Masthead />
-      <AmmoPriceTicker />
+
 
       {/* HERO */}
       <section style={{ padding: '32px 0', borderBottom: '1px solid var(--border)' }}>

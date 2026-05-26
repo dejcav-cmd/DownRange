@@ -7,30 +7,8 @@ import { usePathname } from 'next/navigation'
 
 const NAV = [
   { label: 'Home', href: '/', icon: '◉', exact: true },
-  {
-    label: 'News', href: '/news',
-    children: [
-      { label: 'Latest News',      href: '/news',              desc: 'All stories, every 15 min' },
-      { label: '⚡ Breaking',      href: '/news?cat=breaking', desc: 'Urgency 8+ alerts' },
-      { label: '⚖ Law & Courts',  href: '/news?cat=law',      desc: 'Legislation & rulings' },
-      { label: '◈ Industry',       href: '/news?cat=industry', desc: 'Manufacturers & market' },
-      { label: '🗺 State News',    href: '/state-news',        desc: '50-state news feeds' },
-      { label: '▶ Video',          href: '/video',             desc: 'Top 2A channels' },
-      { label: '🔥 Live Deals',    href: '/deals',             desc: 'r/gundeals + retailers' },
-    ]
-  },
-  {
-    label: 'Laws', href: '/laws',
-    children: [
-      { label: '🏛 Federal Bills', href: '/laws?tab=federal',     desc: 'Congress tracked bills' },
-      { label: '🗺 State Laws',    href: '/laws?tab=state',       desc: 'All 50 states' },
-      { label: '📋 ATF Rules',     href: '/laws?tab=atf',         desc: '2026 reform package' },
-      { label: '⚖ SCOTUS Cases',  href: '/laws?tab=scotus',      desc: 'Active decisions' },
-      { label: '🤖 AI Assistant',  href: '/laws?tab=assistant',   desc: 'Ask any law question' },
-      { label: '🗺 CCW Reciprocity',href: '/laws?tab=reciprocity',desc: 'Where your permit works' },
-      { label: '🗺 State Hub Map', href: '/state-hub',            desc: 'Interactive 50-state map' },
-    ]
-  },
+  { label: 'News', href: '/news' },
+  { label: 'Laws', href: '/laws' },
   {
     label: 'Reviews', href: '/reviews',
     children: [
