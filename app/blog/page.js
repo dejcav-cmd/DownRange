@@ -72,7 +72,7 @@ export const BLOG_POSTS = [
     category:    'ANALYSIS',
     catColor:    '#C8922A',
     featured:    false,
-    img:         'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=1400&q=90',
+    img:         'https://images.unsplash.com/photo-amXQTiylIDM?w=1400&q=90',
     excerpt:     'The Sig P365 changed everything when it launched in 2018. Eight years later, every major manufacturer has a micro-compact answer, the technology has matured, and the market is more competitive than any category in firearms history.',
     tags:        ['Pistols', 'EDC', 'Micro-Compact', 'Market Analysis'],
     body: `
@@ -162,7 +162,7 @@ export const BLOG_POSTS = [
     category:    'LAW',
     catColor:    '#3b82f6',
     featured:    false,
-    img:         'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=1400&q=90',
+    img:         'https://images.unsplash.com/photo-0UZ87N7br8M?w=1400&q=90',
     excerpt:     'The Supreme Court\'s 2022 Bruen decision established a text-and-history standard for evaluating gun laws. But the lower courts are still brawling over what that standard requires — and the outcomes of these fights will determine the practical scope of your Second Amendment rights for decades.',
     tags:        ['2A', 'Bruen', 'SCOTUS', 'Legal', 'Constitutional'],
     body: `
