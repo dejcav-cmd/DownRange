@@ -71,17 +71,7 @@ const NAV = [
       { label: '🇨🇦 Canada', href: '/canada', desc: 'PAL, C-21, province laws' },
     ]
   },
-  {
-    label: 'Blog', href: '/blog',
-    children: [
-      { label: '📝 The Range Report',      href: '/blog',                                        desc: 'DJ Cavalcanti editorial column' },
-      { label: '🔇 Suppressor Revolution', href: '/blog/suppressor-revolution-2026',             desc: 'NFA tax gone — what it means' },
-      { label: '🔫 Micro-Compact Guide',   href: '/blog/micro-compact-pistol-market-2026',       desc: 'EDC pistol market analysis 2026' },
-      { label: '💰 Prices & Tariffs',      href: '/blog/gun-prices-tariffs-2026',                desc: 'Buy before prices rise' },
-      { label: '⚖ Bruen Battles 2026',    href: '/blog/bruen-standard-state-battles-2026',      desc: 'Every 2A court fight that matters' },
-      { label: '🔴 Red Dot Carry',         href: '/blog/red-dot-carry-guide-2026',               desc: 'How to actually run a carry optic' },
-    ]
-  },
+  { label: 'Blog', href: '/blog' },
 ]
 
 export default function Masthead() {
