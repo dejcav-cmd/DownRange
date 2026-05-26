@@ -1,6 +1,8 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import dynamic from 'next/dynamic'
+const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
 
 const TABS = [
   { key:'dashboard',  label:'Dashboard',       icon:'◈' },
@@ -1088,15 +1090,7 @@ export default function AdminPage() {
 
 
           {/* ── PULL LOG ── */}
-          {tab==='pulllog' && (
-            <div style={{ margin: '-32px' }}>
-              <iframe
-                src="/admin/pull-log"
-                style={{ width: '100%', height: 'calc(100vh - 57px)', border: 'none', display: 'block' }}
-                title="Pull Log Dashboard"
-              />
-            </div>
-          )}
+          {tab==='pulllog' && <PullLogDashboard />}
 
           {/* ── SETTINGS ── */}
           {tab==='settings' && (
