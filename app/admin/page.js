@@ -1255,10 +1255,9 @@ export default function AdminPage() {
 
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:20 }}>
                 {[
-                  { name:'r/gundeals',      icon:'🔴', type:'Reddit JSON API', status:'active', url:'https://reddit.com/r/gundeals.json', desc:'Community-curated firearm deals. High volume, real-time. No API key needed.' },
-                  { name:'gun.deals',       icon:'🔫', type:'RSS Feed',        status:'active', url:'https://gun.deals/feed/json', desc:'Aggregated retailer pricing feed. Updated frequently.' },
-                  { name:'AmmoLand Deals',  icon:'📰', type:'RSS Feed',        status:'active', url:'https://www.ammoland.com/feed/', desc:'AmmoLand is locked to deals category and never appears in news feed.' },
-                  { name:'Mr. Guns N Gear', icon:'⭐', type:'Squarespace API', status:'active', url:'https://mrgunnsgear.com/api', desc:'Sponsored gear and product recommendations from the MrGunsNGear channel.' },
+                  { name:'r/gundeals',      icon:'🔴', type:'Reddit JSON API', status:'active', url:'https://old.reddit.com/r/gundeals/hot.json?limit=50&raw_json=1', desc:'Community-curated firearm deals. Hot + New feeds. Score, comments, images from post previews. No API key needed.' },
+                  { name:'gun.deals',       icon:'🔫', type:'RSS Feed',        status:'active', url:'https://gun.deals/feed/snap', desc:'Aggregated retailer pricing feed. Tries /feed/snap then /feed as fallback. Images extracted from enclosure tags.' },
+                  { name:'AmmoLand',        icon:'📰', type:'RSS Feed',        status:'active', url:'https://www.ammoland.com/feed/', desc:'AmmoLand is locked to deals category — never routes to news feed. Images from media:content tags.' },
                 ].map(s => (
                   <div key={s.name} className="dr-card dr-card-accent" style={{ padding:'18px' }}>
                     <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:8 }}>
