@@ -144,7 +144,7 @@ export default async function ArticlePage({ params }) {
               <span style={{ color: '#2D3748' }}>|</span>
               <span style={{ color: '#C8922A' }}>{timeAgo(article.publishedAt)}</span>
               <span style={{ color: '#2D3748' }}>|</span>
-              <span style={{ fontFamily: "'IBM Plex Mono',monospace" }}>{readingTime(article.summary || article.excerpt)}</span>
+              <span style={{ fontFamily: "'IBM Plex Mono',monospace" }}>{readingTime(article.body || article.summary || article.excerpt)}</span>
               {article.externalUrl && (
                 <>
                   <span style={{ color: '#2D3748' }}>|</span>
@@ -209,6 +209,29 @@ export default async function ArticlePage({ params }) {
                   className="dr-article-body"
                   dangerouslySetInnerHTML={{ __html: article.body }}
                 />
+
+                {/* Source attribution — always shown when we have a body */}
+                {article.externalUrl && (
+                  <div style={{ margin: '2.5rem 0 0', padding: '1.25rem 1.5rem', background: 'rgba(200,146,42,0.06)', border: '1px solid rgba(200,146,42,0.25)', borderLeft: '4px solid #C8922A', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
+                    <div>
+                      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700, marginBottom: 4 }}>
+                        ORIGINAL SOURCE · {article.source || 'EXTERNAL PUBLISHER'}
+                      </div>
+                      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem', color: '#6B7280', lineHeight: 1.5 }}>
+                        This editorial was written by DownRange AI based on reporting from <strong style={{ color: '#94a3b8' }}>{article.source || 'the original publisher'}</strong>.
+                        Read the primary source for additional detail.
+                      </div>
+                    </div>
+                    <a
+                      href={article.externalUrl}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: 8, background: '#C8922A', color: '#000', padding: '0.6rem 1.4rem', fontFamily: "'IBM Plex Mono', monospace", fontWeight: 700, fontSize: '0.75rem', textDecoration: 'none', letterSpacing: '0.06em', whiteSpace: 'nowrap', flexShrink: 0 }}
+                    >
+                      READ ORIGINAL ↗
+                    </a>
+                  </div>
+                )}
               </>
             ) : (
               <div style={{ fontSize: '1.05rem', lineHeight: 1.85, color: '#D1D5DB' }}>

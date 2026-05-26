@@ -972,37 +972,86 @@ function CronHealth({ secret }) {
 
 
 function BackfillButton() {
-  const [status, setStatus] = React.useState(null)
+  const [log, setLog]         = React.useState([])
   const [running, setRunning] = React.useState(false)
+  const [stats, setStats]     = React.useState(null)
 
-  async function run() {
+  function addLog(msg, color) {
+    setLog(l => [...l.slice(-40), { msg, color: color||'#94a3b8', t: new Date().toLocaleTimeString() }])
+  }
+
+  async function run(force) {
     setRunning(true)
-    setStatus('Running...')
+    setLog([])
+    setStats(null)
+    addLog('Starting backfill...', '#C8922A')
+    let totalDone = 0, totalFailed = 0, batch = 0
+
     try {
-      let totalDone = 0, batch = 0
       while (true) {
         batch++
-        const res  = await fetch('/api/admin/backfill-articles', { method: 'POST' })
+        addLog(`Batch ${batch}: calling Claude API...`, '#64748b')
+        const res  = await fetch(`/api/admin/backfill-articles?batch=10${force?'&force=true':''}`, { method:'POST' })
         const data = await res.json()
-        totalDone += data.done || 0
-        setStatus(`Batch ${batch}: ${totalDone} articles written. ${data.remaining || 0} remaining. ${data.failed || 0} failed.`)
+
+        if (!res.ok) { addLog(`Error: ${data.error || res.statusText}`, '#ef4444'); break }
+
+        totalDone   += data.done   || 0
+        totalFailed += data.failed || 0
+
+        if (data.results) {
+          data.results.forEach(r => {
+            if (r.status === 'done')
+              addLog(`✓ ${r.words}w · "${r.title}"`, '#22c55e')
+            else
+              addLog(`✗ FAILED: "${r.title}" — ${r.error}`, '#ef4444')
+          })
+        }
+
+        setStats({ done: totalDone, failed: totalFailed, remaining: data.remaining, avgWords: data.avgWords })
+        addLog(data.message, data.remaining === 0 ? '#22c55e' : '#C8922A')
+
         if (!data.remaining || data.remaining === 0 || data.done === 0) break
-        if (batch >= 20) { setStatus(s => s + ' (hit 20 batch limit — click again to continue)'); break }
-        await new Promise(r => setTimeout(r, 1000))
+        if (batch >= 30) { addLog('Hit 30-batch limit — click again to continue remaining articles.', '#f59e0b'); break }
+        await new Promise(r => setTimeout(r, 800))
       }
     } catch(e) {
-      setStatus('Error: ' + e.message)
+      addLog('Request error: ' + e.message, '#ef4444')
     }
+
+    addLog(`Done. ${totalDone} rewritten, ${totalFailed} failed.`, totalFailed > 0 ? '#f59e0b' : '#22c55e')
     setRunning(false)
   }
 
   return (
-    <div style={{ display:'flex', flexDirection:'column', gap:6, alignItems:'flex-end' }}>
-      <button onClick={run} disabled={running}
-        style={{ background: running ? 'rgba(239,68,68,0.2)' : '#ef4444', color: running ? '#ef4444' : '#fff', border:`1px solid #ef4444`, padding:'9px 18px', cursor: running ? 'not-allowed' : 'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', borderRadius:3, whiteSpace:'nowrap' }}>
-        {running ? '⚡ REWRITING...' : '▶ BACKFILL ALL ARTICLES'}
-      </button>
-      {status && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: status.includes('Error') ? '#ef4444' : '#22c55e', maxWidth:300, textAlign:'right' }}>{status}</div>}
+    <div style={{ width:'100%' }}>
+      <div style={{ display:'flex', gap:8, marginBottom:8, flexWrap:'wrap' }}>
+        <button onClick={() => run(false)} disabled={running}
+          style={{ background: running?'rgba(239,68,68,0.1)':'#ef4444', color: running?'#ef4444':'#fff', border:'1px solid #ef4444', padding:'9px 18px', cursor:running?'not-allowed':'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', borderRadius:3 }}>
+          {running ? '⚡ REWRITING...' : '▶ BACKFILL MISSING'}
+        </button>
+        <button onClick={() => run(true)} disabled={running}
+          style={{ background:'none', color:'#f59e0b', border:'1px solid #f59e0b', padding:'9px 14px', cursor:running?'not-allowed':'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, borderRadius:3 }}>
+          FORCE REWRITE ALL
+        </button>
+        {stats && (
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569', display:'flex', gap:12, alignItems:'center' }}>
+            <span style={{ color:'#22c55e' }}>✓ {stats.done}</span>
+            {stats.failed > 0 && <span style={{ color:'#ef4444' }}>✗ {stats.failed}</span>}
+            {stats.remaining > 0 && <span style={{ color:'#f59e0b' }}>{stats.remaining} left</span>}
+            {stats.avgWords > 0 && <span>avg {stats.avgWords}w</span>}
+          </div>
+        )}
+      </div>
+      {log.length > 0 && (
+        <div style={{ background:'#0a0b0d', border:'1px solid var(--border)', borderRadius:4, padding:'8px 10px', maxHeight:200, overflowY:'auto', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>
+          {log.map((l,i) => (
+            <div key={i} style={{ color:l.color, marginBottom:2, lineHeight:1.4 }}>
+              <span style={{ color:'#334155', marginRight:6 }}>{l.t}</span>{l.msg}
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -1224,19 +1273,19 @@ export default function AdminPage() {
               </div>
 
               {/* Backfill articles */}
-              <div style={{ padding:'16px 20px', background:'rgba(239,68,68,0.06)', border:'1px solid rgba(239,68,68,0.2)', borderRadius:4, marginBottom:12 }}>
-                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:10 }}>
-                  <div>
-                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', color:'#ef4444', marginBottom:4 }}>
-                      📝 BACKFILL FULL ARTICLE BODIES
-                    </div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.5 }}>
-                      Rewrites all existing articles that only have a summary — writes full 900-1100 word editorial.<br />
-                      Processes 10 at a time. Click repeatedly until remaining = 0.
-                    </div>
+              <div style={{ padding:'20px', background:'rgba(239,68,68,0.05)', border:'1px solid rgba(239,68,68,0.2)', borderRadius:4, marginBottom:16 }}>
+                <div style={{ marginBottom:12 }}>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'0.05em', color:'#ef4444', marginBottom:4 }}>
+                    📝 BACKFILL FULL ARTICLE BODIES
                   </div>
-                  <BackfillButton />
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.6 }}>
+                    Rewrites articles missing full bodies (no <code style={{color:'#C8922A'}}>&lt;h2&gt;</code> sections or under 500 chars). 
+                    Writes complete 900-1100 word editorials with 5 sections. 
+                    <strong style={{color:'#94a3b8'}}>FORCE REWRITE ALL</strong> rewrites every article regardless.
+                    Logs each article in real-time below.
+                  </div>
                 </div>
+                <BackfillButton />
               </div>
 
               <div style={{ padding:'12px 16px', background:'rgba(200,146,42,0.06)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.6 }}>
