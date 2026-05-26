@@ -72,6 +72,7 @@ const NAV = [
     ]
   },
   { label: 'Blog', href: '/blog' },
+  { label: 'Video', href: '/video' },
 ]
 
 export default function Masthead() {
