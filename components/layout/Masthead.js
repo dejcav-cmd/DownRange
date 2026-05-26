@@ -1,6 +1,7 @@
 'use client'
 import DottedSurface from '../ui/DottedSurface'
 import ThemeToggle from '../ui/ThemeToggle'
+import FeedbackModal from '../ui/FeedbackModal'
 import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
@@ -81,6 +82,7 @@ export default function Masthead() {
   const [menuOpen, setMenuOpen] = useState(false)
   const [openDrop, setOpenDrop] = useState(null)
   const [mobileExpanded, setMobileExpanded] = useState(null)
+  const [feedbackOpen, setFeedbackOpen] = useState(false)
   const closeTimer = useRef(null)
 
   useEffect(() => {
@@ -205,6 +207,12 @@ export default function Masthead() {
             })}
           </ul>
           <div style={{ padding:'0 12px', display:'flex', alignItems:'center', gap:'10px', borderLeft:'1px solid var(--border)' }}>
+            <button
+              onClick={() => setFeedbackOpen(true)}
+              style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', padding:'6px 14px', cursor:'pointer', whiteSpace:'nowrap' }}
+              title="Send Feedback">
+              Feedback
+            </button>
             <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'16px' }} title="Search">⌕</Link>
             <ThemeToggle />
           </div>
@@ -214,6 +222,11 @@ export default function Masthead() {
         <div className="nav-mob-bar" style={{ display:'none', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderTop:'1px solid var(--border)' }}>
           <Link href="/" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--gold)', letterSpacing:'0.05em', textDecoration:'none', lineHeight:1 }}>DOWNRANGE</Link>
           <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
+            <button
+              onClick={() => setFeedbackOpen(true)}
+              style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', padding:'6px 10px', cursor:'pointer' }}>
+              Feedback
+            </button>
             <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'18px', padding:'4px 8px' }}>⌕</Link>
             <ThemeToggle />
             <button onClick={() => setMenuOpen(!menuOpen)}
@@ -291,6 +304,10 @@ export default function Masthead() {
         </div>
         <div className="mob-safe-bottom" />
       </div>
+
+      {/* ── Feedback Modal ── */}
+      <FeedbackModal isOpen={feedbackOpen} onClose={() => setFeedbackOpen(false)} />
+
     </header>
   )
 }
