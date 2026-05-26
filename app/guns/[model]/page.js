@@ -208,7 +208,7 @@ export default async function GunPage({ params }) {
 
             {/* Main content */}
             <div>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'10px', marginBottom:'32px' }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'10px', marginBottom:'32px' }}>
                 {[['Capacity',g.capacity],['Barrel',g.barrel],['Weight',g.weight],['MSRP',g.msrp]].map(([k,v])=>(
                   <div key={k} style={{ background:'#111318', border:'1px solid var(--border)', padding:'14px', textAlign:'center' }}>
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.1rem', color:'#C8922A', lineHeight:1.2 }}>{v}</div>
@@ -288,7 +288,7 @@ export default async function GunPage({ params }) {
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>
                 MORE {g.type?.toUpperCase()}S
               </h2>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'12px' }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'12px' }}>
                 {RELATED.map(([k,r])=>(
                   <Link key={k} href={`/guns/${k}`} style={{ background:'#111318', border:'1px solid var(--border)', padding:'16px', textDecoration:'none', display:'block' }}>
                     <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', marginBottom:'4px' }}>{r.type} · {r.caliber}</div>

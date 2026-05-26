@@ -3,6 +3,8 @@ import BreakingTicker from '../components/layout/BreakingTicker'
 import StatsBar from '../components/layout/StatsBar'
 import Footer from '../components/layout/Footer'
 import NewsCard from '../components/ui/NewsCard'
+import AmmoPriceTicker from '../components/ui/AmmoPriceTicker'
+import WhatsHot from '../components/ui/WhatsHot'
 import StateHub from '../components/sections/StateHub'
 import {
   fetchArticles, fetchBreakingAlerts, fetchLegislation,
@@ -36,11 +38,12 @@ export default async function HomePage() {
     <>
       <BreakingTicker alerts={alerts} />
       <Masthead />
+      <AmmoPriceTicker />
 
       {/* HERO */}
       <section style={{ padding: '32px 0', borderBottom: '1px solid var(--border)' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '2px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns: 'clamp(1fr, 60%, 1fr) 380px', gap: '2px' }}>
             {/* Featured story */}
             <div style={{ position: 'relative', overflow: 'hidden', background: '#16191F', minHeight: '480px', cursor: 'pointer' }}>
               <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, #1a1f2e 0%, #0d1117 40%, #1a120a 100%)' }} />
@@ -121,7 +124,7 @@ export default async function HomePage() {
                 <div className="section-rule" />
                 <div className="section-badge">Updated 4 min ago</div>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
+              <div className="dr-grid-3" style={{ gap:'16px' }}>
                 {(newsGrid.length > 0 ? newsGrid : Array(6).fill(null)).map((article, i) => (
                   article ? <NewsCard key={article._id} article={article} /> : (
                     <div key={i} className="card" style={{ height: '280px', background: '#16191F', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
@@ -135,6 +138,7 @@ export default async function HomePage() {
 
             {/* Sidebar */}
             <div className="sidebar">
+                <WhatsHot articles={articles} />
               <div>
                 <div className="widget-title"><div className="widget-accent" />Laws & Legislation</div>
                 {(legislation.length > 0 ? legislation.slice(0,5) : [

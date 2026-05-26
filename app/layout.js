@@ -1,5 +1,13 @@
 import '../styles/globals.css'
+import MobileTabBar from '../components/ui/MobileTabBar'
 import { ThemeProvider } from '../components/ui/ThemeProvider'
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#C8922A',
+}
 
 export const metadata = {
   title: { default: "DownRange — America's Firearms Intelligence Hub", template: '%s | DownRange' },
@@ -41,7 +49,8 @@ export default function RootLayout({ children }) {
       <body>
         <ThemeProvider>
           {children}
-        </ThemeProvider>
+        <MobileTabBar />
+      </ThemeProvider>
       </body>
     </html>
   )

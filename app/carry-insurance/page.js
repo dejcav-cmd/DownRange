@@ -27,7 +27,7 @@ export default function CarryInsurancePage() {
             ⚠ These are legal service plans, not traditional insurance. The most critical factor is whether attorney fees are paid <strong>upfront vs reimbursed</strong> — in a self-defense situation, you may not be able to pay out of pocket first.
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'16px', marginBottom:'40px' }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'16px', marginBottom:'40px' }}>
             {PLANS.map((p,i)=>(
               <div key={p.name} style={{ background:'#111318', border:`1px solid ${i===0?'#C8922A':'#1F2428'}`, padding:'20px', position:'relative' }}>
                 {i===0&&<div style={{ position:'absolute', top:-10, left:'50%', transform:'translateX(-50%)', background:'#C8922A', color:'#000', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', fontWeight:700, padding:'3px 10px', whiteSpace:'nowrap' }}>EDITOR'S PICK</div>}

@@ -29,7 +29,7 @@ export default function GunsPage() {
       <div style={{ padding: '40px 0' }}>
         <div className="container">
           <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#C8922A', letterSpacing: '0.15em', marginBottom: '20px' }}>POPULAR PLATFORMS</div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
             {POPULAR.map(g => (
               <a key={g.slug} href={`/guns/${g.slug}`}
                 style={{ background: '#111318', border: '1px solid var(--border)', padding: '20px', textDecoration: 'none', display: 'block', transition: 'border-color 0.2s' }}>

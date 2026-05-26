@@ -38,7 +38,7 @@ export default async function StateHubPage({ searchParams }) {
       {/* National stats */}
       <div style={{ background: '#111318', borderBottom: '1px solid var(--border)', padding: '24px 0' }}>
         <div className="container">
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
+          <div style={{ display: 'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap: '12px' }}>
             {[
               { num: ccStates.length, label: 'Constitutional Carry States', color: '#4ADE80' },
               { num: 50 - ccStates.length, label: 'Permit Required States', color: '#EF4444' },

@@ -647,3 +647,131 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
 
 /* Focus visible for keyboard nav */
 :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   MOBILE-FIRST RESPONSIVE SYSTEM
+   Breakpoints: 900px (tablet/desktop split), 640px (large phone), 400px (small phone)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Container padding */
+@media (max-width: 900px) {
+  .container, .container-narrow { padding: 0 16px; }
+}
+
+/* Page hero — smaller on mobile */
+@media (max-width: 640px) {
+  .page-hero { padding: 28px 0 20px; }
+  .page-hero::before { font-size: 80px; opacity: 0.03; }
+  .page-hero-title { font-size: 42px !important; }
+  .page-hero-sub { font-size: 10px; }
+}
+
+/* dr-page padding */
+@media (max-width: 640px) {
+  .dr-page { padding: 24px 0; }
+  .dr-section { padding: 24px 0; }
+  .dr-section-title { font-size: 1.6rem; }
+}
+
+/* Sidebar layout — stack on mobile */
+@media (max-width: 900px) {
+  .sidebar-layout { grid-template-columns: 1fr !important; }
+  .sidebar { display: none; } /* hide sidebar on mobile */
+}
+
+/* Tables — horizontal scroll on mobile */
+@media (max-width: 640px) {
+  .dr-table { overflow-x: auto; }
+  .dr-table-head, .dr-table-row {
+    min-width: 600px;
+    font-size: 9px !important;
+    padding: 8px 10px;
+  }
+}
+
+/* Cards — full width on small screens */
+@media (max-width: 640px) {
+  .dr-card { padding: 14px; }
+  .dr-card-title { font-size: 1rem !important; }
+}
+
+/* Grids already covered by 768/500 breakpoints */
+
+/* Hide non-essential columns in grid layouts */
+@media (max-width: 400px) {
+  .dr-grid-2 { grid-template-columns: 1fr !important; }
+}
+
+/* Article / reading pages */
+@media (max-width: 640px) {
+  .article-body { font-size: 15px; line-height: 1.8; }
+  .article-body h2 { font-size: 1.6rem; }
+  .article-body h3 { font-size: 1.2rem; }
+}
+
+/* Laws page tabs — scroll on mobile */
+@media (max-width: 768px) {
+  .laws-tabs { overflow-x: auto; flex-wrap: nowrap !important; }
+  .filter-tabs { overflow-x: auto; flex-wrap: nowrap !important; white-space: nowrap; }
+}
+
+/* Market/deals/ranges pages */
+@media (max-width: 640px) {
+  .deals-grid { grid-template-columns: 1fr !important; }
+}
+
+/* Forms — full width on mobile */
+@media (max-width: 640px) {
+  input, textarea, select {
+    font-size: 16px !important; /* prevent iOS zoom */
+  }
+}
+
+/* State hub map */
+@media (max-width: 640px) {
+  .state-map-wrapper { overflow-x: auto; }
+}
+
+/* Breaking ticker — smaller text on mobile */
+@media (max-width: 640px) {
+  .breaking-ticker-text { font-size: 11px !important; }
+}
+
+/* Admin page — no sidebar on mobile */
+@media (max-width: 768px) {
+  .admin-sidebar { display: none !important; }
+  .admin-main { padding: 16px !important; }
+}
+
+/* Safe area insets for iPhone notch */
+@supports (padding: max(0px)) {
+  .container {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+  }
+}
+
+/* Touch targets — minimum 44px */
+@media (max-width: 900px) {
+  a, button { min-height: 36px; }
+  .dr-btn-primary, .dr-btn-outline { min-height: 44px; padding: 10px 18px !important; }
+  .dr-badge { min-height: 28px; padding: 4px 10px; }
+}
+
+/* Remove hover effects on touch */
+@media (hover: none) {
+  .dr-card:hover { transform: none; border-color: var(--border) !important; }
+  .nav-top-link:hover { color: var(--text-muted) !important; }
+}
+
+/* Sticky bottom CTA strip on mobile article pages */
+.mobile-read-cta {
+  display: none;
+  position: fixed; bottom: 0; left: 0; right: 0;
+  background: var(--bg2); border-top: 1px solid var(--border);
+  padding: 10px 16px; z-index: 40;
+  padding-bottom: max(10px, env(safe-area-inset-bottom));
+}
+@media (max-width: 640px) {
+  .mobile-read-cta { display: flex; }
+}

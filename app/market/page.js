@@ -139,7 +139,7 @@ export default async function MarketPage() {
               <span style={{ color:'#EF4444' }}>↑ = RISING</span>
             </div>
           </div>
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'10px', marginBottom:'40px' }}>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'10px', marginBottom:'40px' }}>
             {displayPrices.map(a=><PriceCard key={a._id} ammo={a} />)}
           </div>
 

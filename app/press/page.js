@@ -47,7 +47,7 @@ export default function PressPage() {
         {/* Stats */}
         <div style={{ padding:'48px 0', borderBottom:'1px solid var(--border)' }}>
           <div className="container" style={{ maxWidth:900 }}>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'24px' }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'24px' }}>
               {STATS.map(s=>(
                 <div key={s.num} style={{ textAlign:'center' }}>
                   <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#C8922A', letterSpacing:'0.05em', lineHeight:1 }}>{s.num}</div>
@@ -108,7 +108,7 @@ export default function PressPage() {
         <div style={{ padding:'48px 0', borderBottom:'1px solid var(--border)' }}>
           <div className="container" style={{ maxWidth:900 }}>
             <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'24px' }}>BRAND IDENTITY</h2>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'16px', marginBottom:'32px' }}>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:'16px', marginBottom:'32px' }}>
               {[
                 { name:'Brass Gold', hex:'#C8922A', on:'Primary brand color — CTAs, headlines, accents' },
                 { name:'Obsidian', hex:'var(--bg)', on:'Primary background' },
