@@ -13,19 +13,36 @@ export const revalidate = 900
 
 // ── STATIC SEED DATA ────────────────────────────────────────────
 const SCOTUS_CASES = [
-  { id:'bruen', name:'NY State Rifle & Pistol Assn v. Bruen', year:2022, outcome:'WON', summary:'Established text-and-history test. Struck NY "proper cause" requirement. Landmark 6-3 ruling.', significance:'HIGH', url:'https://www.supremecourt.gov/opinions/21pdf/20-843_7j80.pdf' },
-  { id:'heller', name:'DC v. Heller', year:2008, outcome:'WON', summary:'2A protects individual right to keep arms for self-defense. Struck DC handgun ban.', significance:'HIGH', url:'https://supreme.justia.com/cases/federal/us/554/570/' },
-  { id:'mcdonald', name:'McDonald v. City of Chicago', year:2010, outcome:'WON', summary:'Incorporated 2A against states via 14th Amendment. Struck Chicago handgun ban.', significance:'HIGH', url:'https://supreme.justia.com/cases/federal/us/561/742/' },
-  { id:'rahimi', name:'US v. Rahimi', year:2024, outcome:'LOST', summary:'8-1 ruling upheld federal law disarming those under domestic violence restraining orders.', significance:'MED', url:'https://www.supremecourt.gov/opinions/23pdf/22-915_9ok0.pdf' },
-  { id:'cargill', name:'Garland v. Cargill', year:2024, outcome:'WON', summary:'6-3 ruling: bump stocks are NOT machine guns under federal law. ATF rule struck down.', significance:'HIGH', url:'https://www.supremecourt.gov/opinions/23pdf/22-976_1b82.pdf' },
+  // ── ACTIVE 2025-26 TERM ────────────────────────────────────────────────
+  { id:'hemani', name:'United States v. Hemani', year:2026, outcome:'PENDING', summary:'Can Congress disarm someone who habitually uses controlled substances (marijuana/cocaine)? Tests §922(g)(3). Trump DOJ supports conviction. Decision expected June/July 2026.', significance:'HIGH', status:'Oral arguments 2026', url:'https://www.scotusblog.com/case-files/cases/united-states-v-hemani/' },
+  { id:'wolford', name:'Wolford v. Lopez', year:2026, outcome:'PENDING', summary:'Hawaii law barring concealed carry permit holders from carrying on private property without explicit owner permission. Tests public carry rights after Bruen. Oral arguments Jan 20, 2026.', significance:'HIGH', status:'Argued Jan 2026', url:'https://www.scotusblog.com/case-files/cases/wolford-v-lopez/' },
+  { id:'viramontes', name:'Viramontes v. Cook County', year:2026, outcome:'PENDING', summary:'Challenge to Illinois/Cook County semi-automatic weapons ban. AWB constitutionality under Bruen text-and-history test. Under conference review.', significance:'HIGH', status:'Under conference', url:'https://firearmslaw.duke.edu' },
+  { id:'duncan', name:'Duncan v. Bonta', year:2026, outcome:'PENDING', summary:'California magazine capacity law — 10-round limit. Relisted multiple times for conference. Whether large-capacity magazines are constitutionally protected arms.', significance:'HIGH', status:'Under conference', url:'https://firearmslaw.duke.edu' },
+  { id:'nagr', name:'National Assn for Gun Rights v. Lamont', year:2026, outcome:'PENDING', summary:'Connecticut assault weapon ban challenge. Second major AWB case alongside Viramontes. Under conference consideration for cert grant.', significance:'HIGH', status:'Under conference', url:'https://firearmslaw.duke.edu' },
+  // ── DECIDED 2024 ────────────────────────────────────────────────────────
+  { id:'cargill', name:'Garland v. Cargill', year:2024, outcome:'WON', summary:'6-3 ruling: bump stocks are NOT machine guns under federal law. ATF's 2019 rule struck down as exceeding statutory authority. Semi-auto fire regardless of rate is not "automatic."', significance:'HIGH', status:'Decided June 2024', url:'https://www.supremecourt.gov/opinions/23pdf/22-976_1b82.pdf' },
+  { id:'rahimi', name:'United States v. Rahimi', year:2024, outcome:'LOST', summary:'8-1 ruling upheld disarming individuals under domestic violence restraining orders. Coercive abusers may be temporarily disarmed consistent with historical tradition. Thomas dissented alone.', significance:'MED', status:'Decided June 2024', url:'https://www.supremecourt.gov/opinions/23pdf/22-915_9ok0.pdf' },
+  { id:'vanderstock', name:'Bondi v. VanDerStok', year:2025, outcome:'LOST', summary:'7-2 ruling upheld ATF's ghost gun rule as not facially invalid. ATF can regulate kits that are "readily convertible" to functional firearms under GCA. Gorsuch and Thomas dissented.', significance:'MED', status:'Decided 2025', url:'https://www.supremecourt.gov' },
+  // ── LANDMARK PRECEDENTS ─────────────────────────────────────────────────
+  { id:'bruen', name:'NY State Rifle & Pistol Assn v. Bruen', year:2022, outcome:'WON', summary:'Landmark 6-3 ruling established text-and-history test for 2A cases. Struck NY "proper cause" requirement for carry permits. Every subsequent 2A case is analyzed under the Bruen framework.', significance:'HIGH', status:'Decided June 2022', url:'https://www.supremecourt.gov/opinions/21pdf/20-843_7j80.pdf' },
+  { id:'mcdonald', name:'McDonald v. City of Chicago', year:2010, outcome:'WON', summary:'Incorporated 2A against states via 14th Amendment. Struck Chicago handgun ban. Established 2A as a fundamental right binding on all 50 states.', significance:'HIGH', status:'Decided June 2010', url:'https://supreme.justia.com/cases/federal/us/561/742/' },
+  { id:'heller', name:'DC v. Heller', year:2008, outcome:'WON', summary:'2A protects individual right to keep arms for self-defense independent of militia service. Struck DC handgun ban. The foundational modern 2A case.', significance:'HIGH', status:'Decided June 2008', url:'https://supreme.justia.com/cases/federal/us/554/570/' },
+  // ── CERT DENIED ─────────────────────────────────────────────────────────
+  { id:'gardner', name:'Gardner v. Maryland (AR-15 Ban)', year:2025, outcome:'CERT DENIED', summary:'SCOTUS declined to hear challenge to Maryland AR-15 ban after 15 relistings. Cert denied June 2, 2025. Maryland ban stands. Kavanaugh noted Court should address AR-15 question "soon."', significance:'HIGH', status:'Cert Denied Jun 2025', url:'https://scotus2a.com' },
 ]
 
+
 const ATF_RULES = [
-  { id:'pistol-brace', title:'Pistol Brace Rule (Final Rule 2023-06)', status:'challenged', date:'2023-01-13', summary:'ATF reclassified pistols with stabilizing braces as SBRs. Nationwide injunction in effect — not currently enforced.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations/docs/ruling/final-rule-short-barreled-rifle-stabilizing-brace' },
-  { id:'frames-receivers', title:'Frames & Receivers Rule', status:'challenged', date:'2022-08-24', summary:'Updated definition of "firearm" to include polymer80-style kits. Partially struck by courts.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations/definition-frame-or-receiver' },
-  { id:'dealer-records', title:'Dealer Records Retention', status:'passed', date:'2022-08-31', summary:'FFLs must retain 4473 records permanently instead of 20 years.', impact:'MED', url:'https://www.atf.gov' },
-  { id:'export-rules', title:'Export Control Pause on Pistols', status:'pending', date:'2024-05-01', summary:'Ongoing 90-day pause on certain firearm exports for national security review.', impact:'MED', url:'https://www.atf.gov' },
+  { id:'34rules', title:'ATF Historic Regulatory Reform Package — 34 Rules', status:'advancing', date:'2026-04-29', summary:'DOJ/ATF released 34 notices of final and proposed rulemaking on April 29, 2026. Most significant regulatory reform in US history. Covers FFL operations, recordkeeping modernization, NFA compliance, import/export, and aligns regulations with Bruen and recent court precedents.', impact:'HIGH', url:'https://www.atf.gov/news/press-releases/doj-and-atf-announce-regulatory-reforms-to-reduce-burdens-law-abiding-gun-owners-and-businesses' },
+  { id:'nfa-tax', title:'NFA Tax Stamp Eliminated — One Big Beautiful Bill Act', status:'passed', date:'2026-01-01', summary:'President Trump signed H.R. 1 on July 4, 2025 eliminating the $200 NFA tax stamp for suppressors, SBRs, SBSs, and AOWs effective January 1, 2026. Registration and Form 4 requirements remain. Machine guns and destructive devices still require $200 stamp.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations' },
+  { id:'pistol-brace-rescinded', title:'Pistol Brace Rule Rescinded', status:'passed', date:'2025-06-01', summary:'ATF rescinded the 2023 pistol brace final rule (1140-AA98). Brace-equipped pistols are no longer classified as SBRs. Removes threat of felony prosecution for existing owners. Acknowledges courts that vacated the rule.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations/atf-launches-new-era-reform' },
+  { id:'bump-stock-revised', title:'Bump Stock Definition Revised Post-Cargill', status:'passed', date:'2025-07-01', summary:'Following Garland v. Cargill (2024, 6-3), ATF revised machine gun definition to exclude bump stocks. Semi-auto rate of fire regardless of method does not constitute machine gun fire.', impact:'HIGH', url:'https://www.atf.gov' },
+  { id:'80pct-vander', title:'Frames & Receivers Rule (Bondi v. VanDerStok)', status:'challenged', date:'2022-08-24', summary:'80% lower kit rule upheld 7-2 by SCOTUS in 2025 (Bondi v. VanDerStok) as not facially invalid under GCA. ATF can regulate kits that are readily convertible. Standalone 80% lowers without kits treated differently. State laws vary.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations/definition-frame-or-receiver' },
+  { id:'engaged-business', title:'"Engaged in the Business" Rule Rescinded', status:'passed', date:'2025-08-01', summary:'ATF rescinded broad regulatory expansions of "engaged in the business" definition. Standard reverts to specific definitions codified in the Bipartisan Safer Communities Act (BSCA). Reduces enforcement risk for private sellers.', impact:'MED', url:'https://www.atf.gov/rules-and-regulations/atf-launches-new-era-reform' },
+  { id:'forced-reset', title:'Forced Reset Triggers — Legal Federally', status:'passed', date:'2025-03-15', summary:'DOJ settlement restored federal legality of forced reset triggers (FRTs). State laws still apply and vary. FRTs remain prohibited in some states.', impact:'MED', url:'https://www.atf.gov' },
+  { id:'dealer-records', title:'Dealer Records Retention Update', status:'passed', date:'2022-08-31', summary:'Part of 34-rule package revisit. ATF proposing modernized digital recordkeeping standards for 4473s. Permanent retention requirement under review as part of April 2026 reform package.', impact:'MED', url:'https://www.atf.gov' },
 ]
+
 
 const SEED_FEDERAL = [
   { _id:'f1', title:'Firearm Safety Act of 2024', billNumber:'H.R. 7910', status:'committee', level:'federal', summary:'Universal background checks on all firearm sales and transfers including private sales.', lastActionDate:'2024-09-15', impact:'HIGH', url:'https://www.congress.gov' },
@@ -170,8 +187,17 @@ export default async function LawsPage({ searchParams }) {
             <div>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:12 }}>
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em' }}>FEDERAL FIREARMS LEGISLATION</h2>
-                <a href="https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%2C%22search%22%3A%22firearms%22%7D" target="_blank" rel="noreferrer"
-                  style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>VIEW ON CONGRESS.GOV ↗</a>
+                <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
+                  <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+                  {['newest','status','impact'].map(s=>(
+                    <a key={s} href={`/laws?tab=federal&sort=${s}`}
+                      style={{ fontFamily:'monospace', fontSize:'10px', padding:'3px 10px', border:'1px solid #1F2428', color: searchParams?.sort===s||(s==='newest'&&!searchParams?.sort)?'#C8922A':'#4B5563', textDecoration:'none', background: searchParams?.sort===s||(s==='newest'&&!searchParams?.sort)?'#C8922A20':'transparent' }}>
+                      {s.toUpperCase()}
+                    </a>
+                  ))}
+                  <a href="https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%2C%22search%22%3A%22firearms%22%7D" target="_blank" rel="noreferrer"
+                    style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>CONGRESS.GOV ↗</a>
+                </div>
               </div>
 
               {/* Status filter pills */}

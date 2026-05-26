@@ -13,6 +13,7 @@ const NAV_ITEMS = [
   { href: '/reviews',         label: 'Reviews' },
   { href: '/releases',        label: 'Releases' },
   { href: '/state-hub',       label: 'State Hub' },
+  { href: '/state-news',      label: 'State News' },
   { href: '/market',          label: 'Market' },
   { href: '/nfa-tracker',     label: 'NFA Tracker' },
   { href: '/video',           label: 'Video' },

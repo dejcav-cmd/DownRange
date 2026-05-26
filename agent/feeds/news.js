@@ -17,12 +17,25 @@ const parser = new Parser({
 })
 
 const RSS_FEEDS = [
-  { name: 'The Firearm Blog', url: 'https://www.thefirearmblog.com/blog/feed/' },
-  // AmmoLand moved to deals feed only
-  { name: 'TTAG',             url: 'https://www.thetruthaboutguns.com/feed/' },
-  { name: 'NRA-ILA',          url: 'https://www.nraila.org/rss/' },
-  { name: 'Guns.com',         url: 'https://www.guns.com/feed' },
-  { name: 'CleanUpATF',       url: 'https://www.cleanupatf.org/feed/' },
+  // ── FIREARMS NEWS ─────────────────────────────────────────────────────
+  { name: 'The Firearm Blog',    url: 'https://www.thefirearmblog.com/blog/feed/', cat: 'industry' },
+  { name: 'TTAG',                url: 'https://www.thetruthaboutguns.com/feed/',   cat: 'news' },
+  { name: 'Guns.com',            url: 'https://www.guns.com/feed',                 cat: 'industry' },
+  { name: 'Guns & Ammo',         url: 'https://www.gunsandammo.com/feed/',         cat: 'industry' },
+  { name: 'Shooting Wire',       url: 'https://www.shootingwire.com/feed',         cat: 'industry' },
+  { name: 'Firearms News',       url: 'https://www.firearmsnews.com/feed/',        cat: 'industry' },
+  { name: 'Concealed Nation',    url: 'https://concealednation.org/feed/',         cat: 'news' },
+  // ── LEGAL & RIGHTS ────────────────────────────────────────────────────
+  { name: 'NRA-ILA',             url: 'https://www.nraila.org/rss/',              cat: 'law' },
+  { name: 'SAF',                 url: 'https://www.saf.org/feed/',                cat: 'law' },
+  { name: 'GOA',                 url: 'https://gunowners.org/feed/',              cat: 'law' },
+  { name: 'CleanUpATF',          url: 'https://www.cleanupatf.org/feed/',         cat: 'law' },
+  { name: 'Duke Firearms Law',   url: 'https://firearmslaw.duke.edu/feed/',       cat: 'law' },
+  // ── GOVERNMENT / OFFICIAL ─────────────────────────────────────────────
+  { name: 'ATF News',            url: 'https://www.atf.gov/rss/news_whats-new.xml', cat: 'law' },
+  { name: 'Congress.gov 2A',     url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law' },
+  // ── DEALS (routed to deals page, not news) ────────────────────────────
+  { name: 'AmmoLand',            url: 'https://www.ammoland.com/feed/',           cat: 'deals' },
 ]
 
 // ── IMAGE EXTRACTION ──────────────────────────────────────────────────────────

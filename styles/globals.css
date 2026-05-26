@@ -112,7 +112,7 @@ button { cursor: pointer; }
 .live-badge {
   display: flex; align-items: center; gap: 5px;
   font-family: 'IBM Plex Mono', monospace;
-  font-size: 10px; color: var(--red-bright);
+  font-size: 10px; color: var(--green);
   letter-spacing: 0.1em; text-transform: uppercase;
 }
 .pulse-dot {
