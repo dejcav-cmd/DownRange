@@ -192,7 +192,17 @@ export default async function MarketPage() {
     fetchBreakingAlerts(3).catch(() => []),
     fetchDailyAnalysis().catch(() => null),
   ])
-  const prices  = rawPrices.length > 0 ? rawPrices : SEED_PRICES
+  // Normalize Sanity field names to match seed data schema
+  const normalize = (a) => ({
+    ...a,
+    ppr:   a.ppr   ?? a.pricePerRound ?? 0,
+    trend: a.trend ?? a.trendPercent  ?? 0,
+    dir:   a.dir   ?? a.trendDirection ?? 'flat',
+    avail: a.avail ?? a.availabilityIndex ?? 75,
+    wLow:  a.wLow  ?? a.weekLow  ?? 0,
+    wHigh: a.wHigh ?? a.weekHigh ?? 0,
+  })
+  const prices  = (rawPrices.length > 0 ? rawPrices : SEED_PRICES).map(normalize)
   const today   = new Date().toLocaleDateString('en-US', { weekday:'long', month:'long', day:'numeric', year:'numeric' })
   const nicsMax = Math.max(...NICS_DATA.map(d => d.checks))
 
