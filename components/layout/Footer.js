@@ -1,5 +1,4 @@
 'use client'
-import NewsletterSignup from '../sections/NewsletterSignup'
 import Link from 'next/link'
 
 const FOOTER_COLS = [
@@ -60,6 +59,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  </>
   )
 }
