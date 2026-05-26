@@ -162,6 +162,7 @@ async function fetchRSS() {
           description: i.contentSnippet || i.summary || i.content?.slice(0, 400),
           url:         i.link,
           source:      feed.name,
+          feedCat:     feed.cat,          // always carry the feed's category override
           publishedAt: i.pubDate || i.isoDate,
           imageUrl,
           imageAlt:    i.title,
@@ -200,7 +201,7 @@ async function processNewsItem(item) {
     },
     excerpt:      ai.summary || item.description?.slice(0, 300),
     summary:      ai.summary || item.description?.slice(0, 300),
-    category:     ai.category || 'news',
+    category:     item.feedCat === 'deals' ? 'deals' : (ai.category || item.feedCat || 'news'),
     urgencyScore: ai.urgencyScore || 3,
     tags:         ai.tags || [],
     relatedStates:ai.relatedStates || [],
@@ -218,7 +219,7 @@ async function processNewsItem(item) {
   await publishToSanity(doc)
   console.log(`[NEWS] Published: "${item.title.slice(0, 60)}" | image: ${item.imageUrl ? '✓' : '✗'}`)
 
-  if (ai.isBreaking || ai.urgencyScore >= 8) {
+  if (!item.feedCat || item.feedCat !== 'deals') if (ai.isBreaking || ai.urgencyScore >= 8) {
     await publishToSanity({
       _id:          'alert-' + hash,
       _type:        'breakingAlert',
