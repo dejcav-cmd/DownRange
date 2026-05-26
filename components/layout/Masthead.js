@@ -53,7 +53,7 @@ export default function Masthead() {
         <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '20px 0 16px', position: 'relative' }}>
           <div style={{ position: 'relative', zIndex: 1 }}>
             <Link href="/" style={{ display: 'block', lineHeight: 1 }} aria-label="DownRange — Home">
-              <svg width="380" height="80" viewBox="0 0 400 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <svg width="460" height="80" viewBox="0 0 520 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 {/* Scope reticle */}
                 <g transform="translate(8,45)">
                   <circle cx="36" cy="0" r="32" fill="none" stroke="#C8922A" strokeWidth="2"/>
@@ -74,7 +74,7 @@ export default function Masthead() {
                 <g transform="translate(84,12)">
                   <text x="0" y="46" fontFamily="Georgia, serif" fontSize="46" fontWeight="900" fill="#C8922A" letterSpacing="4">DOWNRANGE</text>
                   <text x="2" y="64" fontFamily="monospace" fontSize="11" fill="#6B7280" letterSpacing="8">INTELLIGENCE HUB</text>
-                  <line x1="0" y1="72" x2="310" y2="72" stroke="#C8922A" strokeWidth="0.75" opacity="0.5"/>
+                  <line x1="0" y1="72" x2="420" y2="72" stroke="#C8922A" strokeWidth="0.75" opacity="0.5"/>
                 </g>
               </svg>
             </Link>

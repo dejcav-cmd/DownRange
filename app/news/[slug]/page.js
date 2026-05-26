@@ -3,7 +3,6 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
-import ShareBar from '../../../components/ui/ShareBar'
 import { getArticleBySlug, getRecentArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 
 function readingTime(text) {
@@ -250,8 +249,7 @@ export default async function ArticlePage({ params }) {
                       {/* Thumbnail */}
                       <div style={{ width: 54, height: 40, flexShrink: 0, overflow: 'hidden', background: cs.bg }}>
                         {aImg && (
-                          <img src={aImg} alt={a.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }}
-                            onError={e => e.target.style.display='none'} />
+                          <img src={aImg} alt={a.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.8 }} />
                         )}
                       </div>
                       <div style={{ flex: 1 }}>
