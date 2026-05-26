@@ -51,7 +51,7 @@ export default async function ReviewPage({ params }) {
   return (
     <>
       <Masthead />
-      <main style={{ background: '#0A0B0C', minHeight: '100vh' }}>
+      <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
         {/* Hero image */}
         {img && (
           <div style={{ width: '100%', height: 'clamp(260px, 40vw, 480px)', overflow: 'hidden', position: 'relative' }}>

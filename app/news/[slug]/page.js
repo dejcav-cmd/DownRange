@@ -84,7 +84,7 @@ export default async function ArticlePage({ params }) {
       <BreakingTicker alerts={alerts} />
       <Masthead />
 
-      <main style={{ background: '#0A0B0C', minHeight: '100vh' }}>
+      <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
         {/* ── HERO IMAGE ── */}
         {imageUrl && (

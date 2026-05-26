@@ -102,14 +102,43 @@ export async function GET() {
     }
   } catch {}
 
-  // ── Source 4: Mr. Guns N Gear (scrape shop page titles) ──────────────────
-  // We add this as a fixed featured link since their shop isn't RSS-enabled
+  // ── Source 4: Mr. Guns N Gear — Squarespace Commerce product feed ──────────
+  try {
+    // Squarespace commerce API endpoint (public product data)
+    const mggRes = await fetch('https://www.mrgunsngear.com/api/2/products?limit=20&sortBy=createdOn&sortOrder=desc', {
+      headers: { 'User-Agent': 'DownRange/2.0', 'Accept': 'application/json' },
+      next: { revalidate: 0 },
+    })
+    if (mggRes.ok) {
+      const mggData = await mggRes.json()
+      const products = mggData?.products || mggData?.items || []
+      for (const p of products.slice(0, 10)) {
+        const title = p.title || p.name || p.fullTitle || ''
+        const url = `https://www.mrgunsngear.com/shop/${p.urlSlug || p.id || ''}`
+        const price = p.variants?.[0]?.priceMoney?.value || p.price || p.defaultPrice || null
+        const priceStr = price ? ` — $${(price/100).toFixed(2)}` : ''
+        if (!title) continue
+        deals.push({
+          id: 'mgg-' + (p.id || title.slice(0,8)),
+          title: `[Gear] ${title}${priceStr}`,
+          url,
+          score: null, comments: null,
+          created: Date.now() - Math.random() * 86400000,
+          flair: 'Gear',
+          source: 'Mr. Guns N Gear',
+          domain: 'mrgunsngear.com',
+          imageUrl: p.mainImage?.url || null,
+        })
+      }
+    }
+  } catch {}
+
+  // Always add pinned MrGunsNGear store link
   deals.push({
-    id: 'mgg-1',
+    id: 'mgg-store',
     title: '🎯 Mr. Guns N Gear Official Store — Tactical Gear, Apparel & Accessories',
     url: 'https://www.mrgunsngear.com/shop/',
-    score: null,
-    comments: null,
+    score: null, comments: null,
     created: Date.now(),
     flair: 'Gear',
     source: 'Mr. Guns N Gear',

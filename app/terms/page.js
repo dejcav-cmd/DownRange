@@ -12,7 +12,7 @@ export default function Terms() {
   return (
     <>
       <Masthead />
-      <div style={{ padding:'60px 0', background:'#0A0B0C' }}>
+      <div style={{ padding:'60px 0', background:'var(--bg)' }}>
         <div className="container" style={{ maxWidth:720 }}>
           <h1 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'32px' }}>TERMS OF SERVICE</h1>
           {sections.map(([h,t]) => (

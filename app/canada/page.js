@@ -1,145 +1,273 @@
+'use client'
+import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 
-export const metadata = { title: 'Canadian Firearms — DownRange', description: 'Canadian firearms laws, news, pricing, and legal updates. PAL, prohibited classes, and provincial regulations.' }
+const TABS = [
+  { key:'overview', label:'Overview' },
+  { key:'federal',  label:'Federal Laws' },
+  { key:'provinces',label:'Provinces' },
+  { key:'ammo',     label:'Ammo Prices' },
+  { key:'news',     label:'News & Sources' },
+  { key:'resources',label:'Resources' },
+]
+
+const FEDERAL_LAWS = [
+  { name:'Bill C-21 — Handgun Freeze', status:'In force', date:'Aug 2023', impact:'CRITICAL',
+    summary:'Froze all civilian handgun purchases, sales, transfers, and imports. Existing owners keep their firearms. No new handgun acquisitions permitted. CCFR court challenge ongoing.',
+    url:'https://www.parl.ca/legisinfo/en/bill/44-1/c-21', source:'Parliament of Canada' },
+  { name:'Order in Council — AWB', status:'In force', date:'May 2020', impact:'CRITICAL',
+    summary:'Banned 1,500+ rifle models by Order in Council including AR-15, Mini-14, and similar platforms. Mandatory buyback (confiscation) program stalled — owners currently retain.',
+    url:'https://www.canada.ca/en/public-safety-canada/news/2020/05/government-of-canada-takes-action-to-protect-canadians-from-gun-violence.html', source:'Public Safety Canada' },
+  { name:'PAL — Possession and Acquisition Licence', status:'Required', date:'Ongoing', impact:'HIGH',
+    summary:'All firearms require a PAL. Non-restricted (hunting rifles/shotguns), Restricted (handguns, certain semi-autos), Prohibited (full-auto). RPAL adds restricted access.',
+    url:'https://www.rcmp-grc.gc.ca/en/firearms/obtaining-firearms-licence', source:'RCMP Firearms Program' },
+  { name:'Magazine Capacity Limits', status:'In force', date:'Ongoing', impact:'HIGH',
+    summary:'5 rounds for semi-auto centrefire. 10 rounds for handguns. Magazines must be pinned or blocked. Rimfire (.22 LR) exempt from capacity limits.',
+    url:'https://www.rcmp-grc.gc.ca/en/firearms/firearm-types', source:'RCMP Firearms Program' },
+  { name:'Safe Storage Regulations', status:'Required', date:'Ongoing', impact:'MED',
+    summary:'Firearms must be stored trigger-locked and unloaded, ammunition stored separately. R v Montague: warrantless compliance inspections permitted under CFSA.',
+    url:'https://laws-lois.justice.gc.ca/eng/regulations/sor-98-209/', source:'Justice Canada' },
+  { name:'Pistol Brace — No Canadian Equivalent', status:'N/A', date:'N/A', impact:'LOW',
+    summary:'Canada never had a pistol brace classification issue — stabilizing braces are irrelevant under Canadian law which classifies by receiver type.',
+    url:'https://www.rcmp-grc.gc.ca/en/firearms', source:'RCMP' },
+]
 
 const PROVINCES = [
-  { abbr:'AB', name:'Alberta', rating:'B+', handguns:'Restricted (PAL-R)', longGuns:'Non-restricted + Restricted', notes:'Most gun-friendly province. Strong opposition to C-21.' },
-  { abbr:'BC', name:'British Columbia', rating:'C', handguns:'Restricted', longGuns:'All classes', notes:'Metro areas less friendly. Registry concerns ongoing.' },
-  { abbr:'ON', name:'Ontario', rating:'C', handguns:'Restricted (transport rules strict)', longGuns:'Non-restricted + Restricted', notes:'Strict CFO enforcement. Toronto handgun permit de facto impossible.' },
-  { abbr:'QC', name:'Quebec', rating:'D', handguns:'Restricted', longGuns:'Provincial registry (Bill 64)', notes:'Provincial long-gun registry reinstated. Most restrictive province.' },
-  { abbr:'SK', name:'Saskatchewan', rating:'B', handguns:'Restricted', longGuns:'All classes', notes:'Provincial legislation protects legal owners from federal overreach.' },
-  { abbr:'MB', name:'Manitoba', rating:'C+', handguns:'Restricted', longGuns:'All classes', notes:'Average enforcement. Rural-friendly policies.' },
+  { abbr:'AB', name:'Alberta', rating:'B+', note:'Most gun-friendly province. Strong provincial opposition to C-21. Alberta Firearms Advisory Committee. Rural majority protective.' },
+  { abbr:'BC', name:'British Columbia', rating:'C', note:'Metro areas restrictive. CFO enforcement strict. Provincial data sharing with RCMP. Urban/rural divide significant.' },
+  { abbr:'ON', name:'Ontario', rating:'C', note:'Strict CFO enforcement. Toronto handgun transfer de facto impossible even pre-C-21. Rural ON more accessible.' },
+  { abbr:'QC', name:'Quebec', rating:'D', note:'Provincial long-gun registry (Bill 64) reinstated. Most restrictive province. Separate provincial firearms database.' },
+  { abbr:'SK', name:'Saskatchewan', rating:'B', note:'Provincial legislation (Firearms Act) protects lawful owners from overreach. Strong industry and sport shooting community.' },
+  { abbr:'MB', name:'Manitoba', rating:'C+', note:'Average enforcement. Rural-friendly policies. CFO offices accessible. Limited provincial restrictions beyond federal.' },
+  { abbr:'NS', name:'Nova Scotia', rating:'C', note:'Rural hunting tradition strong. Urban areas follow federal restrictions closely. RCMP primary enforcement.' },
+  { abbr:'NB', name:'New Brunswick', rating:'C+', note:'Strong rural hunting culture. RCMP jurisdiction. Above-average compliance and processing times for PAL.' },
 ]
 
-const KEY_LAWS = [
-  { name:'Bill C-21 (2023)', status:'In force', impact:'HIGH', summary:'Froze handgun transfers — no new purchases, sales, or imports. Existing owners keep theirs. Introduced "assault weapon" model list by Order in Council.' },
-  { name:'Order in Council (May 2020)', status:'In force', impact:'HIGH', summary:'Banned 1,500+ models including AR-15, mini-14, and many others. Confiscation (buyback) program stalled — owners retain currently.' },
-  { name:'PAL — Possession and Acquisition Licence', status:'Required', impact:'HIGH', summary:'All firearms require PAL. Non-restricted (hunting rifles/shotguns), Restricted (handguns, AR-15s), Prohibited (full-auto, certain magazines). RPAL adds restricted access.' },
-  { name:'Safe Storage (R vs Montague)', status:'Required', impact:'MED', summary:'Firearms must be stored trigger-locked and unloaded. Ammunition stored separately. Inspections allowed without warrant under CFSA.' },
-  { name:'Magazine Limits', status:'In force', impact:'MED', summary:'5 rounds for semi-auto centrefire. 10 rounds for handguns. Magazines pinned or blocked. Rimfire (.22 LR) exempt.' },
+const AMMO = [
+  { caliber:'9mm',       cad:'C$0.42/rd', usd:'~US$0.31', availability:'High',    note:'Import-dependent. Weaker CAD raises cost vs US market.' },
+  { caliber:'.223/5.56', cad:'C$0.85/rd', usd:'~US$0.63', availability:'Moderate',note:'Owners of C-21-banned rifles stockpiling. Supply constrained.' },
+  { caliber:'.308 WIN',  cad:'C$1.65/rd', usd:'~US$1.22', availability:'Moderate',note:'Still popular for non-prohibited bolt-action rifles.' },
+  { caliber:'.22 LR',    cad:'C$0.14/rd', usd:'~US$0.10', availability:'High',    note:'No import restrictions. Widely available nationally.' },
+  { caliber:'12 GA',     cad:'C$0.85/rd', usd:'~US$0.63', availability:'High',    note:'Hunting-oriented. Plentiful across all provinces.' },
+  { caliber:'7.62x39',   cad:'C$0.65/rd', usd:'~US$0.48', availability:'Low',     note:'AR-platform banned, demand dropped. Limited import channels.' },
 ]
 
-const AMMO_PRICES = [
-  { caliber:'9mm', price:'C$0.42', us:'~US$0.31', availability:'High', note:'Import-dependent — weaker CAD raises cost vs US' },
-  { caliber:'.223 / 5.56', price:'C$0.85', us:'~US$0.63', availability:'Moderate', note:'Many AR-15 owners stockpiling pre-C-21 enforcement' },
-  { caliber:'.308 WIN', price:'C$1.65', us:'~US$1.22', availability:'Moderate', note:'Still popular for non-prohibited rifles' },
-  { caliber:'.22 LR', price:'C$0.14', us:'~US$0.10', availability:'High', note:'No import restrictions, widely available' },
-  { caliber:'12 GA', price:'C$0.85', us:'~US$0.63', availability:'High', note:'Hunting-oriented — plentiful across Canada' },
+const NEWS_SOURCES = [
+  { name:'TheGunBlog.ca', url:'https://www.thegunblog.ca', type:'News', desc:'Best independent Canadian firearms news. Daily updates. No paywall.', rss:'https://www.thegunblog.ca/feed/' },
+  { name:'CCFR — Canadian Coalition for Firearms Rights', url:'https://www.ccfr.ca', type:'Advocacy', desc:'Primary court challenge organization. C-21 challenges, legal updates, lobbying.', rss:null },
+  { name:'National Firearms Association', url:'https://www.nfa.ca', type:'Advocacy', desc:'NFA Canada — advocacy and education. Different from US NRA.', rss:'https://www.nfa.ca/feed/' },
+  { name:'Canadian Shooting Sports Assn', url:'https://www.cdnshootingsports.org', type:'Sport', desc:'Competition, training, and legislative advocacy for sport shooters.', rss:null },
+  { name:'RCMP Firearms Program', url:'https://www.rcmp-grc.gc.ca/en/firearms', type:'Official', desc:'Official PAL applications, regulations, class lookup, and compliance.', rss:null },
+  { name:'Parliament of Canada — Bill Tracker', url:'https://www.parl.ca/legisinfo/en/bills', type:'Official', desc:'Track all federal firearms-related legislation in real time.', rss:null },
+  { name:'Public Safety Canada — Firearms', url:'https://www.canada.ca/en/public-safety-canada/services/firearms.html', type:'Official', desc:'Federal policy, OIC updates, and official press releases.', rss:null },
 ]
 
-const NEWS = [
-  { title:'Federal Court Challenge to C-21 Handgun Freeze Advances — CCFR Files', date:'Apr 2025', category:'law', url:'https://www.thegunblog.ca' },
-  { title:'Saskatchewan First Responders Act Exempts Peace Officers from Handgun Freeze', date:'Mar 2025', category:'law', url:'https://www.thegunblog.ca' },
-  { title:'CCFR Reports 120,000+ Members — Largest Canadian Firearms Advocacy Milestone', date:'Feb 2025', category:'industry', url:'https://www.thegunblog.ca' },
-  { title:'Alberta Government Challenges Federal Buyback Authority — Province Takes Ottawa to Court', date:'Jan 2025', category:'law', url:'https://www.thegunblog.ca' },
-]
+const IMPACT_COLORS = { CRITICAL:'#EF4444', HIGH:'#F97316', MED:'#FBBF24', LOW:'#9CA3AF' }
 
 export default function CanadaPage() {
+  const [tab, setTab] = useState('overview')
+
   return (
     <>
       <Masthead />
       <div className="page-hero" data-title="CANADA">
         <div className="container">
-          <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'8px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'10px' }}>
             <span style={{ fontSize:'28px' }}>🇨🇦</span>
-            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)' }}>INTERNATIONAL COVERAGE</span>
+            <span className="t-label-xs" style={{ color:'var(--text-dim)' }}>INTERNATIONAL COVERAGE</span>
           </div>
           <h1 className="page-hero-title">Canadian Firearms</h1>
-          <p className="page-hero-sub">PAL/RPAL · Bill C-21 · Province-by-province laws · Ammo prices · Legal news</p>
+          <p className="page-hero-sub">PAL · Bill C-21 · Province ratings · Ammo prices · Legal news · Sources</p>
         </div>
       </div>
 
-      <div style={{ padding:'40px 0' }}>
+      {/* Alert banner */}
+      <div className="dr-alert-warn" style={{ borderRadius:0, borderLeft:'none', borderRight:'none' }}>
+        🇨🇦 <strong>CRITICAL (Aug 2023):</strong> Bill C-21 froze all civilian handgun purchases. No new handgun acquisitions permitted. CCFR court challenge ongoing.{' '}
+        <a href="https://www.thegunblog.ca" target="_blank" rel="noreferrer" style={{ color:'#60A5FA', textDecoration:'none' }}>Latest: TheGunBlog.ca ↗</a>
+      </div>
+
+      {/* Tab nav */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
+        <div className="container">
+          <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
+            {TABS.map(t => (
+              <button key={t.key} onClick={() => setTab(t.key)}
+                style={{ background:'none', border:'none', borderBottom:`2px solid ${tab===t.key?'var(--gold)':'transparent'}`, color:tab===t.key?'var(--gold)':'var(--text-dim)', padding:'12px 18px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+                {t.label}
+              </button>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      <div className="dr-page">
         <div className="container">
 
-          {/* Alert banner */}
-          <div style={{ background:'#1A0000', border:'1px solid #7F1D1D', padding:'16px 20px', marginBottom:'32px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#FCA5A5', lineHeight:1.7 }}>
-            🇨🇦 <strong style={{ color:'#EF4444' }}>CRITICAL:</strong> Canada's Bill C-21 froze all handgun purchases effective August 2023. No new handgun purchases, transfers, or imports permitted for civilians. Existing owners may keep their handguns. CCFR court challenge ongoing. <a href="https://www.thegunblog.ca" target="_blank" rel="noreferrer" style={{ color:'#60A5FA' }}>Latest: thegunblog.ca ↗</a>
-          </div>
-
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px', marginBottom:'48px' }}>
-
-            {/* Key laws */}
+          {/* ── OVERVIEW ── */}
+          {tab === 'overview' && (
             <div>
-              <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>KEY FEDERAL LAWS</h2>
-              <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
-                {KEY_LAWS.map(l=>{
-                  const impColor = l.impact==='HIGH'?'#EF4444':l.impact==='MED'?'#FBBF24':'#9CA3AF'
-                  const statColor = l.status==='In force'?'#EF4444':l.status==='Required'?'#FBBF24':'#34D399'
-                  return (
-                    <div key={l.name} style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:`3px solid ${impColor}`, padding:'14px 16px' }}>
-                      <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap' }}>
-                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, color:'var(--text)' }}>{l.name}</span>
-                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:statColor, background:`${statColor}20`, padding:'2px 7px' }}>{l.status.toUpperCase()}</span>
-                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:impColor }}>IMPACT: {l.impact}</span>
+              <div className="dr-grid-2" style={{ gap:'32px', marginBottom:'32px' }}>
+                <div>
+                  <h2 className="dr-section-title">At a Glance</h2>
+                  <p className="t-body-md" style={{ marginBottom:'16px' }}>
+                    Canada has some of the most restrictive firearms laws in the Western world, significantly tightened under Bill C-21 (2023). Constitutional protections for firearms ownership do not exist in Canada — all firearms rights are statutory and can be modified by Order in Council without Parliamentary debate.
+                  </p>
+                  <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+                    {[
+                      ['PAL Required', 'All classes — no exceptions'],
+                      ['Handgun Freeze', 'No new purchases since Aug 2023'],
+                      ['Semi-Auto AWB', '1,500+ models banned (OIC 2020)'],
+                      ['Mag Limit', '5rd centrefire / 10rd handgun'],
+                      ['Safe Storage', 'Mandatory — inspections permitted'],
+                      ['Most Restrictive', 'Quebec (provincial registry)'],
+                      ['Most Permissive', 'Alberta, Saskatchewan, Manitoba'],
+                    ].map(([k,v]) => (
+                      <div key={k} className="dr-spec-row">
+                        <span className="dr-spec-key">{k}</span>
+                        <span className="dr-spec-val">{v}</span>
                       </div>
-                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', lineHeight:1.6 }}>{l.summary}</p>
-                    </div>
-                  )
-                })}
+                    ))}
+                  </div>
+                </div>
+                <div>
+                  <h2 className="dr-section-title">Quick Province Map</h2>
+                  <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
+                    {PROVINCES.map(p => {
+                      const rc = {'A+':'#16A34A','A':'#22C55E','B+':'#65A30D','B':'#84CC16','C+':'#BEF264','C':'#EAB308','D':'#EF4444'}[p.rating]||'#9CA3AF'
+                      return (
+                        <div key={p.abbr} className="dr-card" style={{ padding:'10px 14px', display:'grid', gridTemplateColumns:'36px 60px 1fr', gap:10, alignItems:'center' }}>
+                          <span className="t-display-xs text-gold">{p.abbr}</span>
+                          <span className="dr-badge" style={{ color:rc, background:`${rc}18`, border:`1px solid ${rc}40` }}>{p.rating}</span>
+                          <span className="t-label-sm" style={{ fontSize:'10px' }}>{p.note.split('.')[0]}.</span>
+                        </div>
+                      )
+                    })}
+                  </div>
+                </div>
               </div>
             </div>
+          )}
 
-            {/* Provinces + ammo */}
+          {/* ── FEDERAL LAWS ── */}
+          {tab === 'federal' && (
             <div>
-              <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>PROVINCE OVERVIEW</h2>
-              <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'24px' }}>
-                {PROVINCES.map(p=>{
-                  const rc = {'A+':'#16A34A','A':'#22C55E','B+':'#65A30D','B':'#84CC16','C+':'#A3A300','C':'#EAB308','D':'#EF4444','F':'#DC2626'}[p.rating]||'#9CA3AF'
-                  return (
-                    <div key={p.abbr} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'12px 14px', display:'grid', gridTemplateColumns:'40px 80px 1fr', gap:10, alignItems:'center' }}>
-                      <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.1rem', color:'#C8922A' }}>{p.abbr}</span>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:rc, background:`${rc}20`, padding:'2px 8px', textAlign:'center' }}>{p.rating}</span>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', lineHeight:1.5 }}>{p.notes}</span>
+              <h2 className="dr-section-title">Federal Firearms Laws</h2>
+              <p className="dr-section-sub">All laws include direct links to official government sources</p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+                {FEDERAL_LAWS.map(law => (
+                  <div key={law.name} className="dr-card" style={{ borderLeft:`3px solid ${IMPACT_COLORS[law.impact]}` }}>
+                    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:'12px', marginBottom:'8px', flexWrap:'wrap' }}>
+                      <div style={{ flex:1 }}>
+                        <h3 className="dr-card-title">{law.name}</h3>
+                        <div style={{ display:'flex', gap:'8px', flexWrap:'wrap', marginTop:'4px' }}>
+                          <span className="dr-badge" style={{ color:IMPACT_COLORS[law.impact], background:`${IMPACT_COLORS[law.impact]}15`, border:`1px solid ${IMPACT_COLORS[law.impact]}40` }}>{law.impact} IMPACT</span>
+                          <span className="dr-badge dr-badge-dim">{law.status}</span>
+                          <span className="dr-badge dr-badge-dim">{law.date}</span>
+                        </div>
+                      </div>
+                      <a href={law.url} target="_blank" rel="noreferrer" className="dr-btn-outline" style={{ padding:'5px 12px', fontSize:'10px', flexShrink:0 }}>
+                        {law.source} ↗
+                      </a>
                     </div>
-                  )
-                })}
-              </div>
-
-              <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'12px' }}>AMMO PRICES (CAD)</h2>
-              <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
-                {AMMO_PRICES.map(a=>(
-                  <div key={a.caliber} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'10px 14px', display:'grid', gridTemplateColumns:'100px 70px 60px 1fr', gap:10, alignItems:'center' }}>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text)', fontWeight:700 }}>{a.caliber}</span>
-                    <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1rem', color:'#C8922A' }}>{a.price}</span>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>{a.us}</span>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#374151' }}>{a.note}</span>
+                    <p className="dr-card-body">{law.summary}</p>
                   </div>
                 ))}
               </div>
             </div>
-          </div>
+          )}
 
-          {/* News */}
-          <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>RECENT CANADIAN FIREARMS NEWS</h2>
-          <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'32px' }}>
-            {NEWS.map((n,i)=>(
-              <a key={i} href={n.url} target="_blank" rel="noreferrer" style={{ textDecoration:'none', background:'var(--bg2)', border:'1px solid var(--border)', padding:'14px 18px', display:'flex', gap:'16px', alignItems:'center' }}>
-                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:n.category==='law'?'#60A5FA':'#C8922A', background:n.category==='law'?'#001020':'#1A0E00', padding:'3px 8px', flexShrink:0 }}>{n.category.toUpperCase()}</span>
-                <span style={{ fontSize:'14px', color:'var(--text)', fontWeight:600, flex:1 }}>{n.title}</span>
-                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', flexShrink:0 }}>{n.date}</span>
-              </a>
-            ))}
-          </div>
-
-          {/* Resources */}
-          <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'24px' }}>
-            <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>CANADIAN FIREARMS RESOURCES</h2>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'12px' }}>
-              {[
-                { name:'CCFR — Canadian Coalition for Firearms Rights', url:'https://www.ccfr.ca', desc:'Primary advocacy organization. Court challenges, lobbying, education.' },
-                { name:'TheGunBlog.ca', url:'https://www.thegunblog.ca', desc:'Best Canadian firearms news coverage. Daily updates.' },
-                { name:'RCMP Firearms Program', url:'https://www.rcmp-grc.gc.ca/en/firearms', desc:'Official PAL applications, regulations, class lookup.' },
-              ].map(r=>(
-                <a key={r.name} href={r.url} target="_blank" rel="noreferrer" style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'14px', textDecoration:'none' }}>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)', marginBottom:'6px', lineHeight:1.3 }}>{r.name}</div>
-                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', lineHeight:1.5 }}>{r.desc}</p>
-                </a>
-              ))}
+          {/* ── PROVINCES ── */}
+          {tab === 'provinces' && (
+            <div>
+              <h2 className="dr-section-title">Province-by-Province Overview</h2>
+              <p className="dr-section-sub">Federal law is the floor — provinces can add restrictions, not remove them</p>
+              <div className="dr-grid-2">
+                {PROVINCES.map(p => {
+                  const rc = {'A+':'#16A34A','A':'#22C55E','B+':'#65A30D','B':'#84CC16','C+':'#BEF264','C':'#EAB308','D':'#EF4444'}[p.rating]||'#9CA3AF'
+                  return (
+                    <div key={p.abbr} className="dr-card dr-card-accent">
+                      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'8px' }}>
+                        <div className="dr-card-title">{p.abbr} — {p.name}</div>
+                        <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:rc }}>{p.rating}</div>
+                      </div>
+                      <p className="dr-card-body">{p.note}</p>
+                    </div>
+                  )
+                })}
+              </div>
             </div>
-          </div>
+          )}
+
+          {/* ── AMMO ── */}
+          {tab === 'ammo' && (
+            <div>
+              <h2 className="dr-section-title">Canadian Ammo Prices (CAD)</h2>
+              <p className="dr-section-sub">Current market prices — significantly higher than US due to import duties and weaker CAD</p>
+              <div className="dr-table">
+                <div className="dr-table-head" style={{ gridTemplateColumns:'120px 100px 80px 80px 1fr' }}>
+                  {['Caliber','Price (CAD)','US Equiv.','Availability','Notes'].map(h=><span key={h}>{h}</span>)}
+                </div>
+                {AMMO.map(a => (
+                  <div key={a.caliber} className="dr-table-row" style={{ gridTemplateColumns:'120px 100px 80px 80px 1fr' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>{a.caliber}</span>
+                    <span className="dr-card-price" style={{ fontSize:'1.1rem' }}>{a.cad}</span>
+                    <span className="t-label-md">{a.usd}</span>
+                    <span className={`dr-badge ${a.availability==='High'?'dr-badge-green':a.availability==='Low'?'dr-badge-red':'dr-badge-gold'}`}>{a.availability}</span>
+                    <span className="t-label-sm">{a.note}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── NEWS SOURCES ── */}
+          {tab === 'news' && (
+            <div>
+              <h2 className="dr-section-title">Canadian Firearms News Sources</h2>
+              <p className="dr-section-sub">Every source includes direct links — click to open</p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+                {NEWS_SOURCES.map(s => (
+                  <div key={s.name} className="dr-card" style={{ display:'grid', gridTemplateColumns:'240px 1fr auto', gap:'16px', alignItems:'center' }}>
+                    <div>
+                      <div className="dr-card-title" style={{ fontSize:'0.95rem' }}>{s.name}</div>
+                      <span className="dr-badge dr-badge-dim" style={{ marginTop:'4px', display:'inline-flex' }}>{s.type}</span>
+                    </div>
+                    <p className="dr-card-body">{s.desc}</p>
+                    <div style={{ display:'flex', flexDirection:'column', gap:'6px', flexShrink:0 }}>
+                      <a href={s.url} target="_blank" rel="noreferrer" className="dr-btn-primary" style={{ padding:'6px 14px', fontSize:'11px' }}>VISIT ↗</a>
+                      {s.rss && <a href={s.rss} target="_blank" rel="noreferrer" className="dr-btn-outline" style={{ padding:'5px 14px', fontSize:'10px' }}>RSS FEED ↗</a>}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── RESOURCES ── */}
+          {tab === 'resources' && (
+            <div>
+              <h2 className="dr-section-title">Canadian Firearms Resources</h2>
+              <div className="dr-grid-2">
+                {[
+                  { title:'Apply for Your PAL', url:'https://www.rcmp-grc.gc.ca/en/firearms/obtaining-firearms-licence', desc:'RCMP official PAL application process. Safety courses, forms, fees, and timelines. Start here if you are new.' },
+                  { title:'CCFR Court Challenge Tracker', url:'https://www.ccfr.ca/legal', desc:'Track ongoing legal challenges to Bill C-21, the OIC, and handgun freeze. Donate to support litigation.' },
+                  { title:'Canadian Firearms Safety Course', url:'https://www.rcmp-grc.gc.ca/en/firearms/firearms-safety-courses', desc:'CFSC and CRFSC are mandatory prerequisites for PAL. Find approved instructors in your province.' },
+                  { title:'CFO by Province', url:'https://www.rcmp-grc.gc.ca/en/firearms/chief-firearms-officers', desc:'Find your Chief Firearms Officer for permits, transfers, ATT (Authorization to Transport) applications.' },
+                  { title:'Prohibited Weapons List (OIC)', url:'https://www.canada.ca/en/public-safety-canada/news/2020/05/government-of-canada-takes-action-to-protect-canadians-from-gun-violence.html', desc:'Full text of the 2020 Order in Council listing all prohibited models.' },
+                  { title:'TheGunBlog.ca — Daily News', url:'https://www.thegunblog.ca', desc:'The most reliable independent daily firearms news coverage in Canada. Bookmark it.' },
+                ].map(r => (
+                  <a key={r.title} href={r.url} target="_blank" rel="noreferrer" className="dr-card" style={{ textDecoration:'none', borderLeft:'3px solid var(--gold)' }}>
+                    <div className="dr-card-title" style={{ marginBottom:'6px' }}>{r.title} ↗</div>
+                    <p className="dr-card-body">{r.desc}</p>
+                  </a>
+                ))}
+              </div>
+            </div>
+          )}
+
         </div>
       </div>
       <Footer />

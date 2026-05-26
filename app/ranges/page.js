@@ -91,7 +91,7 @@ export default function RangesPage() {
         </div>
       </div>
 
-      <div style={{ padding:'28px 0', background:'#0A0B0C', minHeight:'80vh' }}>
+      <div style={{ padding:'28px 0', background:'var(--bg)', minHeight:'80vh' }}>
         <div className="container">
 
           {/* Search panel */}

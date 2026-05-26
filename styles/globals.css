@@ -590,3 +590,60 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
 .dr-breadcrumb a:hover { color: var(--gold); }
 .dr-breadcrumb-sep { color: var(--border-mid); }
 .dr-breadcrumb-cur { color: var(--gold); }
+
+/* ── ENGAGEMENT IMPROVEMENTS ─────────────────────────────────────────────── */
+
+/* Reading progress bar */
+.reading-progress-bar {
+  position: fixed; top: 0; left: 0; height: 2px; z-index: 9999;
+  background: linear-gradient(90deg, var(--gold), var(--gold-light));
+  transition: width 0.1s linear;
+  box-shadow: 0 0 8px rgba(200,146,42,0.5);
+}
+
+/* Card hover — consistent lift */
+.dr-card:hover { border-color: var(--gold) !important; }
+
+/* Breaking news pulse */
+@keyframes breakingPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(239,68,68,0.4); }
+  50% { box-shadow: 0 0 0 6px rgba(239,68,68,0); }
+}
+.breaking-card { animation: breakingPulse 2s ease-in-out infinite; }
+
+/* Score bar fill animation */
+@keyframes scoreBarFill { from { width: 0; } }
+.score-bar-fill { animation: scoreBarFill 0.8s ease-out; }
+
+/* Stagger appear */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(12px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.fade-in-1 { animation: fadeInUp 0.4s ease both; }
+.fade-in-2 { animation: fadeInUp 0.4s ease 0.1s both; }
+.fade-in-3 { animation: fadeInUp 0.4s ease 0.2s both; }
+
+/* Shimmer loading skeleton */
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position: 400px 0; }
+}
+.skeleton {
+  background: linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%);
+  background-size: 800px 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+/* Hover underline for links */
+.hover-underline { text-underline-offset: 3px; }
+.hover-underline:hover { text-decoration: underline; }
+
+/* Category color bars */
+.cat-bar-breaking  { border-left: 3px solid var(--red-bright); }
+.cat-bar-law       { border-left: 3px solid var(--blue); }
+.cat-bar-industry  { border-left: 3px solid var(--gold); }
+.cat-bar-training  { border-left: 3px solid #22C55E; }
+
+/* Focus visible for keyboard nav */
+:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }

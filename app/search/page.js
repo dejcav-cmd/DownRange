@@ -72,7 +72,7 @@ export default function SearchPage() {
   return (
     <>
       <Masthead />
-      <div style={{ background:'#0A0B0C', minHeight:'100vh', padding:'48px 0' }}>
+      <div style={{ background:'var(--bg)', minHeight:'100vh', padding:'48px 0' }}>
         <div className="container" style={{ maxWidth:800 }}>
           <h1 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'8px' }}>SEARCH</h1>
           <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', marginBottom:'32px' }}>Search news, laws, reviews, releases, and encyclopedia entries</p>

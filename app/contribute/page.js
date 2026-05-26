@@ -44,7 +44,7 @@ export default function ContributePage() {
   return (
     <>
       <Masthead />
-      <div style={{ background:'#0A0B0C', minHeight:'100vh' }}>
+      <div style={{ background:'var(--bg)', minHeight:'100vh' }}>
         <div className="page-hero" data-title="CONTRIBUTE">
           <div className="container">
             <h1 className="page-hero-title">Write For DownRange</h1>

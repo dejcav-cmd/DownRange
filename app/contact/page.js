@@ -34,7 +34,7 @@ export default function ContactPage() {
           <p className="page-hero-sub">Tips, corrections, press inquiries, advertising — we read everything</p>
         </div>
       </div>
-      <div style={{ padding:'60px 0', background:'#0A0B0C' }}>
+      <div style={{ padding:'60px 0', background:'var(--bg)' }}>
         <div className="container" style={{ maxWidth:800 }}>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 280px', gap:'48px' }}>
             <div>

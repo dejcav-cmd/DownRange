@@ -202,7 +202,7 @@ export default async function GunPage({ params }) {
         </div>
       </div>
 
-      <div style={{ padding:'40px 0', background:'#0A0B0C' }}>
+      <div style={{ padding:'40px 0', background:'var(--bg)' }}>
         <div className="container">
           <div style={{ display:'grid', gridTemplateColumns:'1fr 300px', gap:'48px' }}>
 

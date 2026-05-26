@@ -111,7 +111,7 @@ export default function PressPage() {
             <div style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:'16px', marginBottom:'32px' }}>
               {[
                 { name:'Brass Gold', hex:'#C8922A', on:'Primary brand color — CTAs, headlines, accents' },
-                { name:'Obsidian', hex:'#0A0B0C', on:'Primary background' },
+                { name:'Obsidian', hex:'var(--bg)', on:'Primary background' },
                 { name:'Charcoal', hex:'#111318', on:'Card backgrounds' },
                 { name:'Field Gray', hex:'#6B7280', on:'Secondary text, metadata' },
               ].map(c=>(

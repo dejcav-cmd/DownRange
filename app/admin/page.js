@@ -2,485 +2,393 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 
-const DEFAULT_CHANNELS = [
-  { id:'UC5Gwxl2DmAZkdiuoWsLcRhg', name:'Garand Thumb', enabled:true },
-  { id:'UCIRgR4iANHI2taJdz8hjwLw', name:'Paul Harrell', enabled:true },
-  { id:'UCwIHnIpEIbyzmL9cB2l5Elw', name:'Military Arms Channel', enabled:true },
-  { id:'UCz8b2iV8CJxBNs3fP4jjRMg', name:'Iraqveteran8888', enabled:true },
-  { id:'UCDpNK2b8NlJSfMl_k4p_fJg', name:'InRange TV', enabled:true },
-  { id:'UC_GOthrJTq5EFrPNsHhJJBQ', name:'Forgotten Weapons', enabled:true },
+const TABS = [
+  { key:'dashboard', label:'Dashboard',      icon:'◈' },
+  { key:'feeds',     label:'AI Agent',       icon:'⚡' },
+  { key:'content',   label:'Content',        icon:'📰' },
+  { key:'alerts',    label:'Breaking Alerts',icon:'🔴' },
+  { key:'channels',  label:'Video',          icon:'▶' },
+  { key:'rss',       label:'RSS Sources',    icon:'📡' },
+  { key:'deals',     label:'Deals Config',   icon:'🔥' },
+  { key:'ranges',    label:'Range Database', icon:'◎' },
+  { key:'newsletter',label:'Newsletter',     icon:'📧' },
+  { key:'seo',       label:'SEO & Meta',     icon:'🔍' },
+  { key:'identity',  label:'Site Identity',  icon:'🎨' },
+  { key:'openclaw',  label:'OpenClaw Agent', icon:'🤖' },
+  { key:'keys',      label:'API Keys',       icon:'🔑' },
+  { key:'settings',  label:'Settings',       icon:'⚙' },
 ]
 
 const FEEDS = [
-  { key:'news', label:'News Feed', schedule:'Every 15 min', icon:'📰' },
-  { key:'laws', label:'Laws Feed', schedule:'Every 2 hrs', icon:'⚖' },
-  { key:'releases', label:'Releases Feed', schedule:'Every 1 hr', icon:'🔫' },
-  { key:'market', label:'Market Feed', schedule:'Every 30 min', icon:'📊' },
-  { key:'video', label:'Video Feed', schedule:'Every 4 hrs', icon:'▶' },
-  { key:'state', label:'State Feed', schedule:'Daily 8am', icon:'🗺' },
+  { key:'news',    label:'News Feed',     schedule:'Every 15 min', icon:'📰', status:'active' },
+  { key:'laws',    label:'Laws Feed',     schedule:'Every 2 hrs',  icon:'⚖', status:'active' },
+  { key:'releases',label:'Releases Feed', schedule:'Every 1 hr',   icon:'🔫', status:'active' },
+  { key:'market',  label:'Market Feed',   schedule:'Every 30 min', icon:'📊', status:'active' },
+  { key:'video',   label:'Video Feed',    schedule:'Every 4 hrs',  icon:'▶', status:'active' },
+  { key:'state',   label:'State Feed',    schedule:'Daily 8am',    icon:'🗺', status:'active' },
 ]
 
-const API_KEYS = [
-  { key:'ANTHROPIC_API_KEY', label:'Claude AI (Law Assistant)', required:true, hint:'console.anthropic.com' },
-  { key:'SANITY_API_TOKEN', label:'Sanity CMS Write Token', required:true, hint:'sanity.io/manage' },
-  { key:'RESEND_API_KEY', label:'Resend Email', required:true, hint:'resend.com' },
-  { key:'CRON_SECRET', label:'Cron Secret', required:true, hint:'Random string' },
-  { key:'YOUTUBE_API_KEY', label:'YouTube Data API', required:false, hint:'Google Cloud Console' },
-  { key:'ALGOLIA_ADMIN_KEY', label:'Algolia Search', required:false, hint:'algolia.com' },
-  { key:'GOOGLE_PLACES_API_KEY', label:'Google Places (Ranges/FFL)', required:false, hint:'console.cloud.google.com' },
-  { key:'CONGRESS_GOV_KEY', label:'Congress.gov API', required:false, hint:'api.congress.gov' },
-  { key:'DISCORD_WEBHOOK_URL', label:'Discord #agent-status', required:false, hint:'Discord webhooks' },
-  { key:'DISCORD_ERRORS_WEBHOOK', label:'Discord #errors', required:false, hint:'Discord webhooks' },
-  { key:'DISCORD_BREAKING_WEBHOOK', label:'Discord #breaking-alerts', required:false, hint:'Discord webhooks' },
-  { key:'LEGISCAN_KEY', label:'LegiScan (State Bills)', required:false, hint:'legiscan.com' },
-  { key:'NEWSAPI_KEY', label:'NewsAPI', required:false, hint:'newsapi.org' },
+const RSS_FEEDS = [
+  { name:'The Firearm Blog',  url:'https://www.thefirearmblog.com/blog/feed/', cat:'industry', active:true },
+  { name:'TTAG',              url:'https://www.thetruthaboutguns.com/feed/',   cat:'news',     active:true },
+  { name:'NRA-ILA',           url:'https://www.nraila.org/rss/',               cat:'law',      active:true },
+  { name:'SAF',               url:'https://www.saf.org/feed/',                  cat:'law',      active:true },
+  { name:'GOA',               url:'https://gunowners.org/feed/',                cat:'law',      active:true },
+  { name:'Concealed Nation',  url:'https://concealednation.org/feed/',          cat:'news',     active:true },
+  { name:'Duke Firearms Law', url:'https://firearmslaw.duke.edu/feed/',         cat:'law',      active:true },
+  { name:'ATF News',          url:'https://www.atf.gov/rss/news_whats-new.xml', cat:'law',      active:true },
+  { name:'AmmoLand',          url:'https://www.ammoland.com/feed/',             cat:'deals',    active:true },
+  { name:'Firearms News',     url:'https://www.firearmsnews.com/feed/',         cat:'industry', active:true },
 ]
 
-const C = { bg:'#0A0B0C', bg2:'#111318', bg3:'#16191F', border:'#1F2428', text:'#F5F5F3', muted:'#6B7280', gold:'#C8922A', red:'#EF4444', green:'#34D399', blue:'#60A5FA' }
+const API_KEYS_CONFIG = [
+  { group:'Required', keys:[
+    { key:'ANTHROPIC_API_KEY',    label:'Claude AI',              hint:'console.anthropic.com',     required:true },
+    { key:'SANITY_API_TOKEN',     label:'Sanity CMS Token',       hint:'sanity.io/manage',           required:true },
+    { key:'RESEND_API_KEY',       label:'Resend Email API',       hint:'resend.com/api-keys',        required:true },
+    { key:'CRON_SECRET',          label:'Cron Job Secret',        hint:'Random secure string',       required:true },
+  ]},
+  { group:'Integrations', keys:[
+    { key:'YOUTUBE_API_KEY',      label:'YouTube Data API',       hint:'Google Cloud Console',       required:false },
+    { key:'GOOGLE_PLACES_API_KEY',label:'Google Places (Ranges)', hint:'console.cloud.google.com',   required:false },
+    { key:'ALGOLIA_ADMIN_KEY',    label:'Algolia Search',         hint:'algolia.com',                required:false },
+    { key:'CONGRESS_GOV_KEY',     label:'Congress.gov API',       hint:'api.congress.gov',           required:false },
+    { key:'LEGISCAN_KEY',         label:'LegiScan State Bills',   hint:'legiscan.com',               required:false },
+    { key:'NEWSAPI_KEY',          label:'NewsAPI',                hint:'newsapi.org',                required:false },
+  ]},
+  { group:'Notifications', keys:[
+    { key:'DISCORD_WEBHOOK_URL',      label:'Discord #agent-status',  hint:'Discord server settings',    required:false },
+    { key:'DISCORD_ERRORS_WEBHOOK',   label:'Discord #errors',        hint:'Discord server settings',    required:false },
+    { key:'DISCORD_BREAKING_WEBHOOK', label:'Discord #breaking',      hint:'Discord server settings',    required:false },
+  ]},
+]
 
-const TABS = [
-  { key:'feeds', label:'⚡ Feeds' },
-  { key:'news', label:'📰 News Manager' },
-  { key:'breaking', label:'🔴 Breaking Alerts' },
-  { key:'channels', label:'▶ Video Channels' },
-  { key:'rss', label:'📡 RSS Sources' },
-  { key:'newsletter', label:'📧 Newsletter' },
-  { key:'identity', label:'🎨 Site Identity' },
-  { key:'keys', label:'🔑 API Keys' },
-  { key:'settings', label:'⚙ Settings' },
+const QUICK_LINKS = [
+  { label:'Sanity Studio',   url:'/studio',                   icon:'📝', desc:'Edit content directly' },
+  { label:'Laws Page',       url:'/laws',                     icon:'⚖', desc:'Federal & state bills' },
+  { label:'Market Watch',    url:'/market',                   icon:'📊', desc:'Ammo price index' },
+  { label:'State Hub',       url:'/state-hub',                icon:'🗺', desc:'50-state map' },
+  { label:'Ranges',          url:'/ranges',                   icon:'◎', desc:'Range finder' },
+  { label:'Deals',           url:'/deals',                    icon:'🔥', desc:'Live deal feed' },
+  { label:'Reviews',         url:'/reviews',                  icon:'★', desc:'Gear reviews' },
+]
+
+const SITE_STATS = [
+  { num:'50', label:'States', sub:'Full legal database' },
+  { num:'15', label:'News Sources', sub:'RSS + API feeds' },
+  { num:'86', label:'Ranges', sub:'National database' },
+  { num:'15m', label:'Refresh', sub:'News update cycle' },
 ]
 
 export default function AdminPage() {
+  const [tab, setTab]       = useState('dashboard')
   const [secret, setSecret] = useState('')
-  const [authed, setAuthed] = useState(false)
-  const [tab, setTab] = useState('feeds')
-  const [feedResults, setFeedResults] = useState({})
-  const [loadingFeed, setLoadingFeed] = useState(null)
-  const [apiStatus, setApiStatus] = useState({})
-  const [channels, setChannels] = useState(DEFAULT_CHANNELS)
-  const [newChId, setNewChId] = useState('')
-  const [newChName, setNewChName] = useState('')
-  const [urgency, setUrgency] = useState(8)
-  const [rssFeeds, setRssFeeds] = useState(['https://www.ammoland.com/feed/','https://www.thefirearmblog.com/blog/feed/','https://www.thetruthaboutguns.com/feed/','https://www.nraila.org/rss/','https://www.guns.com/feed'])
-  const [newRss, setNewRss] = useState('')
-  const [saved, setSaved] = useState(false)
-  const [newsArticles, setNewsArticles] = useState([])
-  const [loadingNews, setLoadingNews] = useState(false)
-  const [catUpdating, setCatUpdating] = useState(null)
-  const [siteOk, setSiteOk] = useState(null)
-  // Breaking alerts
-  const [alerts, setAlerts] = useState([])
-  const [newAlert, setNewAlert] = useState({ headline:'', urgencyScore:8, url:'' })
-  const [savingAlert, setSavingAlert] = useState(false)
-  // Newsletter compose
-  const [newsletter, setNewsletter] = useState({ subject:'', body:'' })
-  const [sending, setSending] = useState(false)
-  const [sendResult, setSendResult] = useState(null)
-  // Site identity
-  const [identity, setIdentity] = useState({ siteName:'DownRange', tagline:"America's Firearms Intelligence Hub", footerText:'Proudly Independent · Pro-Second Amendment' })
-  // Subscriber count
-  const [subCount, setSubCount] = useState(null)
-
-  useEffect(() => {
-    const s = sessionStorage.getItem('dr_admin')
-    if (s) { setSecret(s); setAuthed(true) }
-  }, [])
-
-  useEffect(() => {
-    if (!authed) return
-    checkStatus()
-    checkSite()
-    const ch = localStorage.getItem('dr_channels')
-    if (ch) try { setChannels(JSON.parse(ch)) } catch {}
-    const rss = localStorage.getItem('dr_rss_feeds')
-    if (rss) try { setRssFeeds(JSON.parse(rss)) } catch {}
-    const u = localStorage.getItem('dr_urgency')
-    if (u) setUrgency(Number(u))
-    const id = localStorage.getItem('dr_identity')
-    if (id) try { setIdentity(JSON.parse(id)) } catch {}
-  }, [authed])
-
-  function login(e) { e.preventDefault(); sessionStorage.setItem('dr_admin', secret); setAuthed(true) }
-  function logout() { sessionStorage.removeItem('dr_admin'); setAuthed(false) }
-
-  async function checkStatus() {
-    const res = await fetch('/api/admin/status', { headers:{ Authorization:`Bearer ${secret}` } }).catch(()=>null)
-    if (res?.ok) { const d = await res.json(); setApiStatus(d.keys||{}) }
-  }
-
-  async function checkSite() {
-    const t = Date.now()
-    try { await fetch('/'); setSiteOk({ ok:true, ms:Date.now()-t }) } catch { setSiteOk({ ok:false, ms:0 }) }
-    setSiteOk({ ok:true, ms:Date.now()-t })
-  }
+  const [msg, setMsg]       = useState('')
+  const [running, setRunning] = useState({})
 
   async function runFeed(key) {
-    setLoadingFeed(key)
+    if (!secret) { setMsg('Enter CRON_SECRET first'); return }
+    setRunning(r => ({...r, [key]:true}))
     try {
-      const r = await fetch(`/api/agent?feed=${key}`, { headers:{ Authorization:`Bearer ${secret}` } })
-      const d = await r.json()
-      setFeedResults(p=>({ ...p, [key]:d }))
-    } catch (e) { setFeedResults(p=>({ ...p, [key]:{ error:e.message } })) }
-    setLoadingFeed(null)
+      const res = await fetch(`/api/agent?feed=${key}`, { headers:{ Authorization:`Bearer ${secret}` } })
+      const d = await res.json()
+      setMsg(`${key} feed: ${d.processed || d.message || JSON.stringify(d)}`)
+    } catch(e) { setMsg(`Error: ${e.message}`) }
+    setRunning(r => ({...r, [key]:false}))
   }
-
-  async function loadNews() {
-    setLoadingNews(true)
-    const res = await fetch('/api/admin/categorize', { headers:{ Authorization:`Bearer ${secret}` } }).catch(()=>null)
-    if (res?.ok) { const d = await res.json(); setNewsArticles(d.articles||[]) }
-    setLoadingNews(false)
-  }
-
-  async function updateCategory(id, category) {
-    setCatUpdating(id)
-    await fetch('/api/admin/categorize', { method:'PATCH', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${secret}` }, body:JSON.stringify({ id, category }) }).catch(()=>null)
-    setNewsArticles(p=>p.map(a=>a._id===id?{ ...a, category }:a))
-    setCatUpdating(null)
-  }
-
-  async function createAlert() {
-    if (!newAlert.headline) return
-    setSavingAlert(true)
-    await fetch('/api/admin/breaking', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${secret}` }, body:JSON.stringify(newAlert) }).catch(()=>null)
-    setAlerts(p=>[{ ...newAlert, _id:Date.now() }, ...p])
-    setNewAlert({ headline:'', urgencyScore:8, url:'' })
-    setSavingAlert(false)
-  }
-
-  async function sendNewsletter() {
-    if (!newsletter.subject || !newsletter.body) return
-    setSending(true)
-    const res = await fetch('/api/newsletter/send', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${secret}` }, body:JSON.stringify(newsletter) }).catch(()=>null)
-    const d = await res?.json().catch(()=>({}))
-    setSendResult(d?.sent ? `✓ Sent to ${d.sent} subscribers` : '✗ Send failed — check Resend API key')
-    setSending(false)
-  }
-
-  function saveAll() {
-    localStorage.setItem('dr_channels', JSON.stringify(channels))
-    localStorage.setItem('dr_urgency', String(urgency))
-    localStorage.setItem('dr_rss_feeds', JSON.stringify(rssFeeds))
-    localStorage.setItem('dr_identity', JSON.stringify(identity))
-    fetch('/api/admin/config', { method:'POST', headers:{ 'Content-Type':'application/json', Authorization:`Bearer ${secret}` }, body:JSON.stringify({ rssFeeds:rssFeeds.map(u=>({ url:u, enabled:true })), youtubeChannels:channels, breakingUrgencyThreshold:urgency }) }).catch(()=>null)
-    setSaved(true); setTimeout(()=>setSaved(false), 2000)
-  }
-
-  const Btn = ({ label, onClick, loading=false, variant='gold', small=false }) => (
-    <button onClick={onClick} disabled={loading} style={{ background:loading?C.bg3:variant==='gold'?C.gold:variant==='red'?'#7F1D1D':'transparent', color:loading?C.muted:variant==='gold'?'#000':variant==='red'?C.red:C.gold, border:`1px solid ${variant==='gold'?C.gold:variant==='red'?C.red:'#1F2428'}`, padding:small?'6px 12px':'9px 18px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:small?'10px':'11px', cursor:'pointer', opacity:loading?0.6:1, whiteSpace:'nowrap' }}>
-      {loading ? '...' : label}
-    </button>
-  )
-
-  if (!authed) return (
-    <div style={{ background:C.bg, minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center' }}>
-      <div style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'40px', width:360 }}>
-        <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2rem', color:C.gold, marginBottom:8, letterSpacing:'0.05em' }}>DOWNRANGE ADMIN</div>
-        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.muted, marginBottom:24 }}>Enter CRON_SECRET to access</p>
-        <form onSubmit={login} style={{ display:'flex', flexDirection:'column', gap:12 }}>
-          <input type="password" value={secret} onChange={e=>setSecret(e.target.value)} placeholder="CRON_SECRET value..."
-            style={{ background:C.bg, border:`1px solid ${C.border}`, color:C.text, padding:'12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:13 }} />
-          <button type="submit" style={{ background:C.gold, color:'#000', border:'none', padding:12, fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:14, cursor:'pointer' }}>ACCESS →</button>
-        </form>
-      </div>
-    </div>
-  )
 
   return (
-    <div style={{ background:C.bg, minHeight:'100vh', color:C.text }}>
-      {/* Top bar */}
-      <div style={{ background:C.bg2, borderBottom:`1px solid ${C.border}`, padding:'14px 32px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:16 }}>
-        <div style={{ display:'flex', alignItems:'center', gap:16 }}>
-          <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:C.gold, letterSpacing:'0.05em' }}>DOWNRANGE ADMIN</span>
-          {siteOk && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:siteOk.ok?C.green:C.red }}>● SITE {siteOk.ok?'ONLINE':'DOWN'} {siteOk.ok?`(${siteOk.ms}ms)`:''}</span>}
-        </div>
-        <div style={{ display:'flex', gap:12, alignItems:'center' }}>
-          <Link href="/" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, textDecoration:'none' }}>← SITE</Link>
-          <Link href="/studio" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, textDecoration:'none' }}>SANITY STUDIO →</Link>
-          <button onClick={logout} style={{ background:'none', border:`1px solid ${C.border}`, color:C.muted, padding:'5px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}>LOGOUT</button>
+    <div style={{ minHeight:'100vh', background:'var(--bg)', display:'flex', flexDirection:'column' }}>
+      {/* Admin header */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'14px 0', position:'sticky', top:0, zIndex:50 }}>
+        <div className="container" style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:'16px' }}>
+            <Link href="/" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'var(--gold)', letterSpacing:'0.05em', textDecoration:'none' }}>DOWNRANGE</Link>
+            <span className="dr-badge dr-badge-dim">ADMIN CONSOLE</span>
+          </div>
+          <div style={{ display:'flex', gap:'10px', alignItems:'center' }}>
+            <input value={secret} onChange={e=>setSecret(e.target.value)} type="password" placeholder="CRON_SECRET for agent triggers"
+              style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', padding:'6px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', width:'240px' }} />
+            <Link href="/" className="dr-btn-outline" style={{ padding:'6px 14px', fontSize:'11px' }}>← Site</Link>
+          </div>
         </div>
       </div>
 
-      {/* Tab bar */}
-      <div style={{ background:C.bg2, borderBottom:`1px solid ${C.border}`, padding:'0 32px', display:'flex', gap:0, overflowX:'auto' }}>
-        {TABS.map(t=>(
-          <button key={t.key} onClick={()=>setTab(t.key)}
-            style={{ background:'none', border:'none', borderBottom:`2px solid ${tab===t.key?C.gold:'transparent'}`, color:tab===t.key?C.gold:C.muted, padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer', whiteSpace:'nowrap', letterSpacing:'0.03em' }}>
-            {t.label}
-          </button>
-        ))}
-      </div>
+      <div style={{ display:'flex', flex:1 }}>
+        {/* Sidebar */}
+        <div style={{ width:200, background:'var(--bg2)', borderRight:'1px solid var(--border)', flexShrink:0, position:'sticky', top:'57px', height:'calc(100vh - 57px)', overflowY:'auto' }}>
+          {TABS.map(t => (
+            <button key={t.key} onClick={()=>setTab(t.key)}
+              style={{ width:'100%', display:'flex', alignItems:'center', gap:'10px', padding:'11px 16px', background:tab===t.key?'var(--bg3)':'none', border:'none', borderLeft:`3px solid ${tab===t.key?'var(--gold)':'transparent'}`, color:tab===t.key?'var(--gold)':'var(--text-dim)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer', textAlign:'left', letterSpacing:'0.03em', transition:'all 0.12s' }}>
+              <span>{t.icon}</span> {t.label}
+            </button>
+          ))}
+        </div>
 
-      <div style={{ padding:'28px 32px', maxWidth:1100 }}>
+        {/* Main content */}
+        <div style={{ flex:1, padding:'32px', overflowY:'auto', maxHeight:'calc(100vh - 57px)' }}>
 
-        {/* FEEDS */}
-        {tab==='feeds' && (
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:32 }}>
-            <div>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:14 }}>FEED CONTROLS</div>
-              {FEEDS.map(f=>(
-                <div key={f.key} style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'12px 16px', marginBottom:8, display:'flex', alignItems:'center', justifyContent:'space-between', gap:12 }}>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.text, fontWeight:600 }}>{f.icon} {f.label}</div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, marginTop:2 }}>{f.schedule}</div>
-                    {feedResults[f.key] && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', marginTop:4, color:feedResults[f.key].error?C.red:C.green }}>
-                      {feedResults[f.key].error?`✗ ${feedResults[f.key].error}`:`✓ Done`}
-                    </div>}
-                  </div>
-                  <Btn label="RUN →" onClick={()=>runFeed(f.key)} loading={loadingFeed===f.key} small />
-                </div>
-              ))}
-              <div style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'12px 16px', display:'flex', alignItems:'center', justifyContent:'space-between', gap:12 }}>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.text, fontWeight:600 }}>🔍 Algolia Reindex</div>
-                <Btn label="REINDEX" onClick={()=>runFeed('algolia')} loading={loadingFeed==='algolia'} variant='outline' small />
-              </div>
+          {/* Status message */}
+          {msg && (
+            <div className="dr-alert-info" style={{ marginBottom:'20px', display:'flex', justifyContent:'space-between' }}>
+              <span>{msg}</span>
+              <button onClick={()=>setMsg('')} style={{ background:'none', border:'none', color:'var(--gold)', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px' }}>✕</button>
             </div>
+          )}
+
+          {/* ── DASHBOARD ── */}
+          {tab==='dashboard' && (
             <div>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:14 }}>QUICK LINKS</div>
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8 }}>
-                {['/news','/laws','/deals','/market','/ranges','/guns','/reviews','/nfa-tracker','/compare/glock-19-vs-sig-p320','/training','/ffl-finder','/studio'].map(l=>(
-                  <Link key={l} href={l} style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, textDecoration:'none', display:'block' }}>
-                    {l.slice(1).toUpperCase()||'HOME'} →
-                  </Link>
+              <h1 className="dr-section-title">Site Dashboard</h1>
+              <p className="dr-section-sub">DownRange Control Center — Configure everything from here</p>
+
+              {/* Stats */}
+              <div className="dr-grid-4" style={{ marginBottom:'28px' }}>
+                {SITE_STATS.map(s => (
+                  <div key={s.num} className="dr-stat">
+                    <div className="dr-stat-num">{s.num}</div>
+                    <div className="dr-stat-label">{s.label}</div>
+                    <div className="dr-stat-sub">{s.sub}</div>
+                  </div>
                 ))}
               </div>
-            </div>
-          </div>
-        )}
 
-        {/* NEWS MANAGER */}
-        {tab==='news' && (
-          <div>
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em' }}>NEWS CATEGORIZATION</div>
-              <Btn label={loadingNews?'LOADING...':newsArticles.length>0?`REFRESH (${newsArticles.length})`:'LOAD ARTICLES →'} onClick={loadNews} loading={loadingNews} />
-            </div>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, marginBottom:20, lineHeight:1.7 }}>View and recategorize the last 50 published articles. Changes save to Sanity immediately.</p>
-            {newsArticles.length===0&&!loadingNews&&<div style={{ textAlign:'center', padding:'40px', color:C.muted, fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>Click "Load Articles" to start.</div>}
-            <div style={{ display:'flex', flexDirection:'column', gap:5 }}>
-              {newsArticles.map(a=>{
-                const catColor = { breaking:'#EF4444',news:'#9CA3AF',law:'#60A5FA',industry:'#C8922A',opinion:'#C084FC',training:'#34D399' }[a.category]||'#9CA3AF'
-                return (
-                  <div key={a._id} style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'10px 14px', display:'grid', gridTemplateColumns:'1fr 180px 60px', gap:10, alignItems:'center' }}>
+              {/* Quick links */}
+              <h2 className="dr-section-title" style={{ marginBottom:'12px' }}>Quick Access</h2>
+              <div className="dr-grid-4" style={{ marginBottom:'28px' }}>
+                {QUICK_LINKS.map(l => (
+                  <a key={l.label} href={l.url} className="dr-card" style={{ textDecoration:'none', textAlign:'center', padding:'16px' }}>
+                    <div style={{ fontSize:'22px', marginBottom:'6px' }}>{l.icon}</div>
+                    <div className="dr-card-title" style={{ fontSize:'0.9rem' }}>{l.label}</div>
+                    <div className="dr-card-body" style={{ fontSize:'10px' }}>{l.desc}</div>
+                  </a>
+                ))}
+              </div>
+
+              {/* Feed status */}
+              <h2 className="dr-section-title" style={{ marginBottom:'12px' }}>Agent Feed Status</h2>
+              <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+                {FEEDS.map(f => (
+                  <div key={f.key} className="dr-card" style={{ display:'grid', gridTemplateColumns:'32px 1fr 120px 100px auto', gap:12, alignItems:'center', padding:'12px 16px' }}>
+                    <span style={{ fontSize:'16px' }}>{f.icon}</span>
                     <div>
-                      <div style={{ fontSize:'12px', color:C.text, fontWeight:600, lineHeight:1.3, marginBottom:3 }}>{a.title}</div>
-                      <div style={{ display:'flex', gap:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted }}>
-                        <span>{a.source}</span>
-                        <span style={{ color:'#374151' }}>·</span>
-                        <span>{a.publishedAt?new Date(a.publishedAt).toLocaleDateString():''}</span>
-                        {a.externalUrl&&<a href={a.externalUrl} target="_blank" rel="noreferrer" style={{ color:C.blue, textDecoration:'none' }}>SOURCE ↗</a>}
-                      </div>
+                      <div className="t-label-md" style={{ color:'var(--text)', fontWeight:700 }}>{f.label}</div>
+                      <div className="t-label-xs">{f.schedule}</div>
                     </div>
-                    <select value={a.category||'news'} onChange={e=>updateCategory(a._id,e.target.value)} disabled={catUpdating===a._id}
-                      style={{ background:C.bg, border:`1px solid ${catColor}60`, color:catColor, padding:'5px 8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}>
-                      {['breaking','news','law','industry','opinion','training','review'].map(c=><option key={c} value={c}>{c}</option>)}
-                    </select>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:catUpdating===a._id?C.gold:'#374151', textAlign:'center' }}>
-                      {catUpdating===a._id?'SAVING':a.urgencyScore||3}
-                    </div>
-                  </div>
-                )
-              })}
-            </div>
-          </div>
-        )}
-
-        {/* BREAKING ALERTS */}
-        {tab==='breaking' && (
-          <div style={{ maxWidth:700 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:16 }}>BREAKING ALERT MANAGER</div>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, marginBottom:20, lineHeight:1.7 }}>Create breaking alerts that appear in the red ticker at the top of every page. These are automatically created when the news agent scores an article 8+/10.</p>
-            <div style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'20px', marginBottom:20 }}>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, marginBottom:12 }}>CREATE MANUAL ALERT</div>
-              <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-                <input value={newAlert.headline} onChange={e=>setNewAlert(p=>({...p,headline:e.target.value}))} placeholder="Alert headline..."
-                  style={{ background:C.bg, border:`1px solid ${C.border}`, color:C.text, padding:'10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }} />
-                <div style={{ display:'flex', gap:10 }}>
-                  <div style={{ flex:1 }}>
-                    <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:C.muted, display:'block', marginBottom:4 }}>URGENCY (1-10)</label>
-                    <input type="number" min="1" max="10" value={newAlert.urgencyScore} onChange={e=>setNewAlert(p=>({...p,urgencyScore:Number(e.target.value)}))}
-                      style={{ width:'100%', background:C.bg, border:`1px solid ${C.border}`, color:C.red, padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'14px', fontWeight:700 }} />
-                  </div>
-                  <div style={{ flex:2 }}>
-                    <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:C.muted, display:'block', marginBottom:4 }}>LINK URL (optional)</label>
-                    <input value={newAlert.url} onChange={e=>setNewAlert(p=>({...p,url:e.target.value}))} placeholder="https://..."
-                      style={{ width:'100%', background:C.bg, border:`1px solid ${C.border}`, color:C.text, padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }} />
-                  </div>
-                </div>
-                <Btn label={savingAlert?'CREATING...':'CREATE ALERT →'} onClick={createAlert} loading={savingAlert} />
-              </div>
-            </div>
-            {alerts.length>0 && (
-              <div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, marginBottom:10 }}>RECENT ALERTS</div>
-                {alerts.map((a,i)=>(
-                  <div key={a._id||i} style={{ background:C.bg2, border:`1px solid #7F1D1D`, padding:'10px 14px', marginBottom:6, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.red }}>● {a.headline}</span>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted }}>{a.urgencyScore}/10</span>
+                    <span className="dr-badge dr-badge-green">● {f.status}</span>
+                    <div className="t-label-xs">Vercel Cron</div>
+                    <button onClick={()=>runFeed(f.key)} disabled={running[f.key]}
+                      className="dr-btn-outline" style={{ padding:'5px 12px', fontSize:'10px', opacity:running[f.key]?0.5:1 }}>
+                      {running[f.key]?'RUNNING...':'RUN NOW'}
+                    </button>
                   </div>
                 ))}
               </div>
-            )}
-          </div>
-        )}
-
-        {/* CHANNELS */}
-        {tab==='channels' && (
-          <div style={{ maxWidth:700 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:14 }}>YOUTUBE CHANNELS</div>
-            {channels.map(ch=>(
-              <div key={ch.id} style={{ background:C.bg2, border:`1px solid ${ch.enabled?C.border:'#1A1A1A'}`, padding:'12px 14px', marginBottom:8, display:'flex', alignItems:'center', gap:12, opacity:ch.enabled?1:0.5 }}>
-                <button onClick={()=>setChannels(p=>p.map(c=>c.id===ch.id?{...c,enabled:!c.enabled}:c))}
-                  style={{ width:34, height:18, borderRadius:9, background:ch.enabled?C.gold:C.bg3, border:'none', cursor:'pointer', position:'relative', flexShrink:0 }}>
-                  <div style={{ position:'absolute', top:2, left:ch.enabled?17:2, width:14, height:14, borderRadius:'50%', background:ch.enabled?'#000':C.muted, transition:'left 0.2s' }} />
-                </button>
-                <div style={{ flex:1 }}>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.text, fontWeight:600 }}>{ch.name}</div>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:C.muted }}>ID: {ch.id}</div>
-                </div>
-                <button onClick={()=>setChannels(p=>p.filter(c=>c.id!==ch.id))}
-                  style={{ background:'none', border:'none', color:C.red, cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'3px 6px' }}>✕</button>
-              </div>
-            ))}
-            <div style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'16px', marginTop:12, marginBottom:16 }}>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, marginBottom:10 }}>ADD CHANNEL</div>
-              <div style={{ display:'flex', gap:8 }}>
-                <input value={newChId} onChange={e=>setNewChId(e.target.value)} placeholder="UCxxxxxxxxxx (Channel ID)"
-                  style={{ flex:2, background:C.bg, border:`1px solid ${C.border}`, color:C.text, padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }} />
-                <input value={newChName} onChange={e=>setNewChName(e.target.value)} placeholder="Name"
-                  style={{ flex:1, background:C.bg, border:`1px solid ${C.border}`, color:C.text, padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }} />
-                <button onClick={()=>{ if(!newChId||!newChName)return; setChannels(p=>[...p,{id:newChId.trim(),name:newChName.trim(),enabled:true}]); setNewChId(''); setNewChName('') }}
-                  style={{ background:C.gold, color:'#000', border:'none', padding:'8px 14px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'11px', cursor:'pointer' }}>ADD</button>
-              </div>
             </div>
-            <Btn label={saved?'✓ SAVED':'SAVE CHANNELS'} onClick={saveAll} />
-          </div>
-        )}
+          )}
 
-        {/* RSS */}
-        {tab==='rss' && (
-          <div style={{ maxWidth:700 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:14 }}>NEWS RSS FEEDS</div>
-            {rssFeeds.map((url,i)=>(
-              <div key={i} style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'10px 14px', marginBottom:6, display:'flex', alignItems:'center', gap:10 }}>
-                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.text, flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{url}</span>
-                <a href={url} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:C.blue, textDecoration:'none', flexShrink:0 }}>TEST ↗</a>
-                <button onClick={()=>setRssFeeds(p=>p.filter((_,j)=>j!==i))} style={{ background:'none', border:'none', color:C.red, cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>✕</button>
-              </div>
-            ))}
-            <div style={{ display:'flex', gap:8, marginTop:12, marginBottom:16 }}>
-              <input value={newRss} onChange={e=>setNewRss(e.target.value)} placeholder="https://example.com/feed.xml"
-                style={{ flex:1, background:C.bg2, border:`1px solid ${C.border}`, color:C.text, padding:'9px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }} />
-              <button onClick={()=>{ if(!newRss)return; setRssFeeds(p=>[...p,newRss.trim()]); setNewRss('') }}
-                style={{ background:C.gold, color:'#000', border:'none', padding:'9px 16px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'11px', cursor:'pointer' }}>ADD</button>
-            </div>
-            <Btn label={saved?'✓ SAVED':'SAVE RSS FEEDS'} onClick={saveAll} />
-          </div>
-        )}
-
-        {/* NEWSLETTER */}
-        {tab==='newsletter' && (
-          <div style={{ maxWidth:700 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:14 }}>NEWSLETTER COMPOSE</div>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, marginBottom:20, lineHeight:1.7 }}>Compose and send newsletters to all subscribers. Requires RESEND_API_KEY and RESEND_AUDIENCE_ID.</p>
-            <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
-              <div>
-                <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, display:'block', marginBottom:6 }}>SUBJECT LINE</label>
-                <input value={newsletter.subject} onChange={e=>setNewsletter(p=>({...p,subject:e.target.value}))} placeholder="DownRange Weekly Brief — This Week in 2A"
-                  style={{ width:'100%', background:C.bg2, border:`1px solid ${C.border}`, color:C.text, padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
-              </div>
-              <div>
-                <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, display:'block', marginBottom:6 }}>BODY (Markdown or plain text)</label>
-                <textarea value={newsletter.body} onChange={e=>setNewsletter(p=>({...p,body:e.target.value}))} rows={12} placeholder="Write your newsletter content here..."
-                  style={{ width:'100%', background:C.bg2, border:`1px solid ${C.border}`, color:C.text, padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box', resize:'vertical' }} />
-              </div>
-              <div style={{ display:'flex', gap:12 }}>
-                <Btn label={sending?'SENDING...':'SEND NEWSLETTER →'} onClick={sendNewsletter} loading={sending} />
-                <Btn label="PREVIEW" onClick={()=>alert('Preview:\n\n'+newsletter.subject+'\n\n'+newsletter.body)} variant='outline' />
-              </div>
-              {sendResult && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:sendResult.startsWith('✓')?C.green:C.red, padding:'10px', background:C.bg2, border:`1px solid ${C.border}` }}>{sendResult}</div>}
-            </div>
-          </div>
-        )}
-
-        {/* SITE IDENTITY */}
-        {tab==='identity' && (
-          <div style={{ maxWidth:600 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:14 }}>SITE IDENTITY</div>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, marginBottom:20, lineHeight:1.7 }}>Configure site-wide text and branding. Changes saved to localStorage and Sanity siteConfig.</p>
-            {[['Site Name','siteName','DownRange'],['Tagline','tagline',"America's Firearms Intelligence Hub"],['Footer Text','footerText','Proudly Independent · Pro-Second Amendment']].map(([label,key,placeholder])=>(
-              <div key={key} style={{ marginBottom:14 }}>
-                <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, display:'block', marginBottom:6 }}>{label.toUpperCase()}</label>
-                <input value={identity[key]||''} onChange={e=>setIdentity(p=>({...p,[key]:e.target.value}))} placeholder={placeholder}
-                  style={{ width:'100%', background:C.bg2, border:`1px solid ${C.border}`, color:C.text, padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
-              </div>
-            ))}
-            <div style={{ marginBottom:14 }}>
-              <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, display:'block', marginBottom:6 }}>BRAND COLOR (Gold)</label>
-              <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-                <div style={{ width:40, height:40, background:'#C8922A', border:`1px solid ${C.border}` }} />
-                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.muted }}>#C8922A (hardcoded in globals.css — edit CSS var --gold)</span>
-              </div>
-            </div>
-            <div style={{ marginTop:20 }}>
-              <Btn label={saved?'✓ SAVED':'SAVE IDENTITY'} onClick={saveAll} />
-            </div>
-          </div>
-        )}
-
-        {/* API KEYS */}
-        {tab==='keys' && (
-          <div style={{ maxWidth:700 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:8 }}>API KEY STATUS</div>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted, marginBottom:18, lineHeight:1.7 }}>All keys are set in Vercel → Settings → Environment Variables. Status is read from the live server.</p>
-            {API_KEYS.map(k=>{
-              const ok = apiStatus[k.key]
-              return (
-                <div key={k.key} style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'10px 14px', marginBottom:7, display:'flex', alignItems:'center', gap:12 }}>
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.text, fontWeight:600 }}>{k.label}</div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:C.muted, marginTop:2 }}>{k.hint}</div>
+          {/* ── AI AGENT ── */}
+          {tab==='feeds' && (
+            <div>
+              <h1 className="dr-section-title">AI Agent Control</h1>
+              <p className="dr-section-sub">Trigger feeds manually or view schedule</p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'28px' }}>
+                {FEEDS.map(f => (
+                  <div key={f.key} className="dr-card" style={{ display:'grid', gridTemplateColumns:'40px 1fr 150px 1fr auto', gap:16, alignItems:'center' }}>
+                    <span style={{ fontSize:'20px' }}>{f.icon}</span>
+                    <div>
+                      <div className="dr-card-title" style={{ fontSize:'1rem' }}>{f.label}</div>
+                      <div className="dr-card-meta" style={{ marginBottom:0 }}>Schedule: {f.schedule}</div>
+                    </div>
+                    <span className="dr-badge dr-badge-green" style={{ justifyContent:'center' }}>● ACTIVE</span>
+                    <div className="t-label-sm">Runs automatically via Vercel Cron. API key required.</div>
+                    <button onClick={()=>runFeed(f.key)} disabled={running[f.key]} className="dr-btn-primary" style={{ padding:'8px 16px', fontSize:'11px', opacity:running[f.key]?0.5:1 }}>
+                      {running[f.key]?'⚡ RUNNING...':'▶ RUN NOW'}
+                    </button>
                   </div>
-                  <div style={{ display:'flex', alignItems:'center', gap:8, flexShrink:0 }}>
-                    {k.required&&<span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:C.red, background:'#1A0000', padding:'2px 6px' }}>REQUIRED</span>}
-                    <span style={{ width:7, height:7, borderRadius:'50%', background:ok==null?'#374151':ok?C.green:C.red, display:'inline-block' }} />
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:ok==null?'#374151':ok?C.green:C.red, minWidth:60 }}>{ok==null?'—':ok?'SET ✓':'MISSING ✗'}</span>
-                  </div>
-                </div>
-              )
-            })}
-            <button onClick={checkStatus} style={{ marginTop:10, background:'none', border:`1px solid ${C.border}`, color:C.muted, padding:'8px 18px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}>REFRESH STATUS</button>
-          </div>
-        )}
-
-        {/* SETTINGS */}
-        {tab==='settings' && (
-          <div style={{ maxWidth:600 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.gold, letterSpacing:'0.15em', marginBottom:20 }}>SITE SETTINGS</div>
-            <div style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'20px', marginBottom:14 }}>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.text, marginBottom:10, fontWeight:600 }}>Breaking Alert Urgency Threshold</div>
-              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, marginBottom:12, lineHeight:1.6 }}>Articles scored ≥ this value trigger a breaking alert and Discord ping.</p>
-              <div style={{ display:'flex', alignItems:'center', gap:14 }}>
-                <input type="range" min="5" max="10" value={urgency} onChange={e=>setUrgency(Number(e.target.value))} style={{ flex:1 }} />
-                <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2rem', color:C.red, minWidth:28 }}>{urgency}</span>
-                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted }}>/ 10</span>
+                ))}
               </div>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:C.muted, marginTop:8 }}>
-                {urgency<=7?'⚠ Low — many articles will alert':urgency===8?'✓ Recommended: SCOTUS/ATF/major legislation':'◈ High — only the most critical stories'}
+              <div className="dr-alert-info">
+                <strong style={{ color:'var(--gold)' }}>How to trigger manually:</strong> Enter your CRON_SECRET in the header field, then click RUN NOW. All feeds run automatically via vercel.json cron configuration — manual triggers are for debugging only.
               </div>
             </div>
-            <div style={{ background:C.bg2, border:`1px solid ${C.border}`, padding:'20px', marginBottom:14 }}>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:C.text, marginBottom:14, fontWeight:600 }}>System Information</div>
-              {[['URL','downrangeco.com'],['Framework','Next.js 14.2.29'],['CMS','Sanity v3 (vbnsqnkg)'],['Hosting','Vercel Pro'],['Search','Algolia (SUIVKKC7FX)'],['AI','Claude Sonnet 4 (claude-sonnet-4-20250514)']].map(([k,v])=>(
-                <div key={k} style={{ display:'flex', justifyContent:'space-between', padding:'6px 0', borderBottom:`1px solid ${C.border}` }}>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.muted }}>{k}</span>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:C.text }}>{v}</span>
+          )}
+
+          {/* ── RSS SOURCES ── */}
+          {tab==='rss' && (
+            <div>
+              <h1 className="dr-section-title">RSS Sources</h1>
+              <p className="dr-section-sub">These feeds are parsed by the AI agent every cycle. Category controls where articles appear.</p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+                {RSS_FEEDS.map(f => (
+                  <div key={f.name} className="dr-card" style={{ display:'grid', gridTemplateColumns:'180px 1fr 80px 60px', gap:12, alignItems:'center' }}>
+                    <div className="dr-card-title" style={{ fontSize:'0.9rem' }}>{f.name}</div>
+                    <div className="t-label-sm" style={{ overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', opacity:0.6 }}>{f.url}</div>
+                    <span className={`dr-badge ${f.cat==='law'?'dr-badge-blue':f.cat==='deals'?'dr-badge-gold':'dr-badge-dim'}`}>{f.cat}</span>
+                    <span className={`dr-badge ${f.active?'dr-badge-green':'dr-badge-red'}`}>{f.active?'ON':'OFF'}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="dr-alert-info" style={{ marginTop:'16px' }}>
+                To add/remove feeds, edit <code style={{ color:'var(--gold)' }}>agent/feeds/news.js</code> RSS_FEEDS array and redeploy. AmmoLand is locked to <code style={{ color:'var(--gold)' }}>cat: 'deals'</code> and will never appear in news.
+              </div>
+            </div>
+          )}
+
+          {/* ── OPENCLAW ── */}
+          {tab==='openclaw' && (
+            <div>
+              <h1 className="dr-section-title">OpenClaw Agent</h1>
+              <p className="dr-section-sub">Your local Ollama/Hermes 3 Mac Mini agent — setup and configuration</p>
+
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'20px', marginBottom:'24px' }}>
+                {[
+                  { title:'Market Analysis', schedule:'Daily 6:00 AM', status:'Manual setup', endpoint:'/api/market-analysis', desc:'Posts daily ammo price analysis to Market Watch page' },
+                  { title:'News Enrichment', schedule:'On demand', status:'Available', endpoint:'/api/agent?feed=news', desc:'Run news feed enrichment locally using Hermes 3' },
+                ].map(c => (
+                  <div key={c.title} className="dr-card dr-card-accent">
+                    <div className="dr-card-meta">{c.schedule}</div>
+                    <div className="dr-card-title">{c.title}</div>
+                    <div className="dr-badge dr-badge-gold" style={{ margin:'6px 0 8px' }}>{c.status}</div>
+                    <p className="dr-card-body">{c.desc}</p>
+                    <div className="dr-spec-row" style={{ marginTop:'8px' }}>
+                      <span className="dr-spec-key">Endpoint</span>
+                      <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)' }}>{c.endpoint}</code>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <h2 className="dr-section-title" style={{ fontSize:'1.4rem', marginBottom:'12px' }}>Mac Mini Setup</h2>
+              {[
+                { step:'1', title:'Install Ollama', cmd:'curl -fsSL https://ollama.com/install.sh | sh' },
+                { step:'2', title:'Pull Hermes 3 model', cmd:'ollama pull hermes3' },
+                { step:'3', title:'Clone agent script', cmd:'# See docs/openclaw-market-analysis.md' },
+                { step:'4', title:'Add to crontab', cmd:'0 6 * * * /usr/local/bin/node /path/to/market-analysis.js' },
+              ].map(s => (
+                <div key={s.step} className="dr-card" style={{ display:'grid', gridTemplateColumns:'32px 1fr', gap:'12px', marginBottom:'8px' }}>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.5rem', color:'var(--gold)', textAlign:'center' }}>{s.step}</div>
+                  <div>
+                    <div className="dr-infoblock-title">{s.title}</div>
+                    <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--green)', background:'var(--bg)', padding:'4px 8px', display:'block', marginTop:'4px' }}>{s.cmd}</code>
+                  </div>
                 </div>
               ))}
+              <div style={{ marginTop:'12px' }}>
+                <a href="/docs/openclaw-market-analysis.md" target="_blank" className="dr-btn-outline" style={{ fontSize:'11px' }}>
+                  View Full Setup Guide ↗
+                </a>
+              </div>
             </div>
-            <Btn label={saved?'✓ ALL SETTINGS SAVED':'SAVE ALL SETTINGS'} onClick={saveAll} />
-          </div>
-        )}
+          )}
 
+          {/* ── API KEYS ── */}
+          {tab==='keys' && (
+            <div>
+              <h1 className="dr-section-title">API Keys</h1>
+              <p className="dr-section-sub">All secrets are stored in Vercel Environment Variables — never in code</p>
+              <div className="dr-alert-warn" style={{ marginBottom:'20px' }}>
+                🔒 API keys are managed in your Vercel dashboard → Settings → Environment Variables. They are never stored client-side. Use the links below to obtain each key.
+              </div>
+              {API_KEYS_CONFIG.map(group => (
+                <div key={group.group} style={{ marginBottom:'24px' }}>
+                  <h2 className="dr-section-title" style={{ fontSize:'1.3rem', marginBottom:'10px' }}>{group.group}</h2>
+                  <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
+                    {group.keys.map(k => (
+                      <div key={k.key} className="dr-card" style={{ display:'grid', gridTemplateColumns:'220px 1fr 120px', gap:12, alignItems:'center' }}>
+                        <div>
+                          <div className="dr-card-title" style={{ fontSize:'0.9rem' }}>{k.label}</div>
+                          <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>{k.key}</code>
+                        </div>
+                        <div className="t-label-sm">{k.hint}</div>
+                        <span className={`dr-badge ${k.required?'dr-badge-red':'dr-badge-dim'}`}>{k.required?'REQUIRED':'OPTIONAL'}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+              <a href="https://vercel.com/dashboard" target="_blank" rel="noreferrer" className="dr-btn-primary">
+                Open Vercel Dashboard ↗
+              </a>
+            </div>
+          )}
+
+          {/* ── SEO ── */}
+          {tab==='seo' && (
+            <div>
+              <h1 className="dr-section-title">SEO & Metadata</h1>
+              <p className="dr-section-sub">Current SEO configuration overview</p>
+              <div className="dr-grid-2" style={{ marginBottom:'24px' }}>
+                {[
+                  { label:'Site Name', val:'DownRange — America\'s Firearms Intelligence Hub' },
+                  { label:'Base URL', val:'https://downrangeco.com' },
+                  { label:'Twitter Card', val:'summary_large_image' },
+                  { label:'OG Type', val:'website' },
+                  { label:'Sitemap', val:'/sitemap.xml (auto-generated)' },
+                  { label:'Robots.txt', val:'/robots.txt (allows all)' },
+                ].map(s => (
+                  <div key={s.label} className="dr-spec-row">
+                    <span className="dr-spec-key">{s.label}</span>
+                    <span className="dr-spec-val" style={{ fontSize:'11px' }}>{s.val}</span>
+                  </div>
+                ))}
+              </div>
+              <div className="dr-alert-info">
+                SEO metadata is defined per-page via Next.js <code style={{ color:'var(--gold)' }}>export const metadata</code>. Global defaults are in <code style={{ color:'var(--gold)' }}>app/layout.js</code>.
+              </div>
+            </div>
+          )}
+
+          {/* ── SETTINGS ── */}
+          {tab==='settings' && (
+            <div>
+              <h1 className="dr-section-title">Site Settings</h1>
+              <p className="dr-section-sub">Runtime configuration overview</p>
+              <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                {[
+                  { label:'News Revalidation',  val:'300 seconds (5 min)',    desc:'How often Next.js refreshes news pages' },
+                  { label:'State Hub Cache',     val:'1800 seconds (30 min)', desc:'State law data refresh interval' },
+                  { label:'Market Data Cache',   val:'1800 seconds (30 min)', desc:'Ammo price data refresh' },
+                  { label:'Deals Page',          val:'Client-side (no cache)', desc:'Browser fetches Reddit on every load' },
+                  { label:'Range Finder',        val:'No cache (dynamic)',     desc:'Always fetches fresh from all sources' },
+                  { label:'Laws Page',           val:'3600 seconds (1 hr)',    desc:'Federal/state bill data refresh' },
+                  { label:'Theme Toggle',        val:'Dark/Light (CSS vars)',  desc:'User preference stored in localStorage' },
+                ].map(s => (
+                  <div key={s.label} className="dr-card" style={{ display:'grid', gridTemplateColumns:'200px 200px 1fr', gap:16, alignItems:'center' }}>
+                    <div className="dr-infoblock-title" style={{ margin:0 }}>{s.label}</div>
+                    <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--gold)' }}>{s.val}</code>
+                    <div className="t-label-sm">{s.desc}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Placeholder for remaining tabs */}
+          {['content','alerts','channels','deals','ranges','newsletter','identity'].includes(tab) && (
+            <div>
+              <h1 className="dr-section-title">{TABS.find(t=>t.key===tab)?.label}</h1>
+              <p className="dr-section-sub">Use Sanity Studio for content editing</p>
+              <div className="dr-grid-2" style={{ marginBottom:'20px' }}>
+                <a href="/studio" target="_blank" className="dr-card" style={{ textDecoration:'none', textAlign:'center', padding:'24px' }}>
+                  <div style={{ fontSize:'32px', marginBottom:'8px' }}>📝</div>
+                  <div className="dr-card-title">Open Sanity Studio</div>
+                  <p className="dr-card-body">Create, edit, and publish all content types including news, reviews, alerts, and state profiles.</p>
+                </a>
+                <a href="https://sanity.io/manage" target="_blank" rel="noreferrer" className="dr-card" style={{ textDecoration:'none', textAlign:'center', padding:'24px' }}>
+                  <div style={{ fontSize:'32px', marginBottom:'8px' }}>⚙</div>
+                  <div className="dr-card-title">Sanity Dashboard</div>
+                  <p className="dr-card-body">Manage datasets, tokens, CORS settings, and content API access for project vbnsqnkg.</p>
+                </a>
+              </div>
+              {tab==='alerts' && <div className="dr-alert-info">Breaking alerts are auto-created by the AI agent when urgency score ≥ 8/10. Create manually in Sanity Studio → Breaking Alert.</div>}
+              {tab==='newsletter' && <div className="dr-alert-info">Newsletter managed via Resend dashboard. Audience ID configured in RESEND_AUDIENCE_ID env var.</div>}
+              {tab==='deals' && <div className="dr-alert-info">Deals are sourced from r/gundeals JSON API, gun.deals RSS, AmmoLand RSS, and Mr. Guns N Gear Squarespace API. Configuration in <code style={{ color:'var(--gold)' }}>app/api/deals/route.js</code>.</div>}
+              {tab==='ranges' && <div className="dr-alert-info">Range database has 86 entries. To add ranges, edit <code style={{ color:'var(--gold)' }}>app/api/ranges/route.js</code> RANGES array. Google Places API key enables live search.</div>}
+            </div>
+          )}
+
+        </div>
       </div>
     </div>
   )
