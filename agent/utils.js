@@ -3,28 +3,53 @@ const axios = require('axios')
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
-  const prompt = `You are the editorial AI for DownRange, America's premier firearms and Second Amendment intelligence portal. Your voice is authoritative, factual, and direct — like a seasoned firearms journalist writing for a sophisticated 2A audience.
-
-Given this raw news item, produce a JSON response with these fields:
-- summary: A 2-3 sentence lede paragraph for the article. Hard-hitting, specific, no filler. Max 300 chars.
-- body: A full DownRange editorial rewrite of this story. Write 4-6 paragraphs as HTML using only <p>, <strong>, <em>, and <ul><li> tags. Structure: (1) Lead paragraph — what happened, why it matters; (2) Background context — history or legal framework relevant to 2A readers; (3) Impact paragraph — what this means for gun owners, dealers, or 2A rights specifically; (4) What to watch — next steps, court dates, legislative calendar, or action items for readers. Do NOT use any heading tags. Write for an audience that knows their guns and their rights. Be specific with names, case numbers, bill numbers, and states. Minimum 350 words.
-- category: one of: breaking, news, law, industry, opinion, training
-- urgencyScore: integer 1-10. (9-10=BREAKING SCOTUS/ATF ruling, 7-8=major legislation passed, 5-6=industry/product news, 1-4=opinion/training content)
-- tags: array of 3-6 relevant tags using kebab-case (e.g. ["atf","pistol-brace","5th-circuit","texas"])
-- relatedStates: array of US state abbreviations if any states are specifically mentioned (e.g. ["TX","FL"]) or empty array
-- isBreaking: boolean, true only if urgencyScore >= 8
-
-Raw item:
-Title: ${item.title}
-Source: ${item.source || 'Unknown'}
-Content: ${(item.description || item.content || '').slice(0, 1500)}
-
-Return ONLY valid JSON with no markdown fences, no explanation, no preamble. The body field must be valid HTML string.`
+  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 3000)
+  const prompt = [
+    `You are the senior editorial AI for DownRange — America's definitive firearms, Second Amendment, and tactical intelligence publication.`,
+    `Your audience: gun owners, dealers, collectors, hunters, competitive shooters, and 2A advocates who demand substance. They know their guns, their laws, and their rights.`,
+    ``,
+    `Transform the raw source material below into a COMPLETE, FULLY WRITTEN DownRange editorial article.`,
+    `This is NOT a summary. It is a full published article with sections, context, and editorial opinion.`,
+    ``,
+    `Return a JSON object with these exact fields:`,
+    ``,
+    `"summary": Sharp 2-3 sentence lede. States the key fact and immediate impact. Max 350 characters.`,
+    ``,
+    `"body": The full article as a single HTML string. MANDATORY STRUCTURE:`,
+    `<h2>[Title: What Happened — be specific]</h2>`,
+    `<p>[Opening: The hard news. Who, what, when, where. Names, agencies, bill numbers, case citations, calibers, models. 120-150 words.]</p>`,
+    `<h2>Background &amp; Context</h2>`,
+    `<p>[Why this matters in the broader 2A landscape. Reference Heller, Bruen, McDonald, prior legislation, agency history, industry trends as relevant. 130-160 words.]</p>`,
+    `<h2>What This Means for Gun Owners</h2>`,
+    `<p>[Specific impact on the reader. Which states, which platforms, which calibers, what dollar amounts. Concrete and actionable. 130-160 words.]</p>`,
+    `<h2>Industry &amp; Market Impact</h2>`,
+    `<p>[Manufacturer, retailer, dealer impact. Stock effects, production, imports, pricing. If purely legal/political, cover advocacy org responses. 110-140 words.]</p>`,
+    `<h2>What to Watch Next</h2>`,
+    `<p>[Forward-looking specifics: court dates, hearing schedules, legislative calendar, regulatory timelines. Give readers exactly what to monitor and when. 110-140 words.]</p>`,
+    `<p><strong>DownRange Bottom Line:</strong> [2-3 sentence direct editorial verdict. What should a serious gun owner DO with this information? Be opinionated — that is the DownRange voice.]</p>`,
+    ``,
+    `BODY LENGTH: Minimum 750 words. Target 900-1100 words. Non-negotiable.`,
+    `HTML TAGS ALLOWED: h2, p, strong, em, ul, li ONLY. No div, no span, no br, no other tags.`,
+    ``,
+    `"category": one of: breaking, news, law, industry, opinion, training`,
+    `"urgencyScore": 1-10 (10=SCOTUS ruling, 9=major court/ATF action, 8=landmark bill passed, 7=major product/legislation, 5-6=industry news, 1-4=soft news)`,
+    `"tags": 4-8 specific kebab-case tags`,
+    `"relatedStates": array of US state abbreviations mentioned, else []`,
+    `"isBreaking": true only if urgencyScore >= 8`,
+    ``,
+    `SOURCE MATERIAL:`,
+    `Title: ${item.title}`,
+    `Source: ${item.source || 'Unknown'}`,
+    `Published: ${item.publishedAt || new Date().toISOString()}`,
+    `Content: ${inputContent}`,
+    ``,
+    `CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the body HTML string properly.`,
+  ].join('\n')
 
   try {
     const res = await axios.post('https://api.anthropic.com/v1/messages', {
       model: 'claude-sonnet-4-20250514',
-      max_tokens: 2000,
+      max_tokens: 4000,
       messages: [{ role: 'user', content: prompt }]
     }, {
       headers: {

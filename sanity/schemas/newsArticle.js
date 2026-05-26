@@ -7,7 +7,8 @@ export default {
     { name: 'slug',       title: 'Slug',       type: 'slug', options: { source: 'title' }, validation: R => R.required() },
     { name: 'excerpt',    title: 'Excerpt',    type: 'text', rows: 3 },
     { name: 'summary',    title: 'Summary',    type: 'text', rows: 3 },
-    { name: 'body',       title: 'Body',       type: 'array', of: [{ type: 'block' }] },
+    { name: 'body',       title: 'Body (HTML)', type: 'text', rows: 20,
+      description: 'Full article body stored as HTML. Written by DownRange AI editor.' },
     // Uploaded Sanity image (for manually authored articles)
     { name: 'heroImage',  title: 'Hero Image (uploaded)', type: 'image', options: { hotspot: true },
       fields: [{ name: 'alt', title: 'Alt Text', type: 'string' }] },

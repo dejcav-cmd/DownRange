@@ -92,6 +92,9 @@
     },
     "app/api/site-health/route.js": {
       "maxDuration": 300
+    },
+    "app/api/admin/backfill-articles/route.js": {
+      "maxDuration": 300
     }
   }
 }

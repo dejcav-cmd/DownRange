@@ -1,5 +1,5 @@
 'use client'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
@@ -970,6 +970,43 @@ function CronHealth({ secret }) {
   )
 }
 
+
+function BackfillButton() {
+  const [status, setStatus] = React.useState(null)
+  const [running, setRunning] = React.useState(false)
+
+  async function run() {
+    setRunning(true)
+    setStatus('Running...')
+    try {
+      let totalDone = 0, batch = 0
+      while (true) {
+        batch++
+        const res  = await fetch('/api/admin/backfill-articles', { method: 'POST' })
+        const data = await res.json()
+        totalDone += data.done || 0
+        setStatus(`Batch ${batch}: ${totalDone} articles written. ${data.remaining || 0} remaining. ${data.failed || 0} failed.`)
+        if (!data.remaining || data.remaining === 0 || data.done === 0) break
+        if (batch >= 20) { setStatus(s => s + ' (hit 20 batch limit — click again to continue)'); break }
+        await new Promise(r => setTimeout(r, 1000))
+      }
+    } catch(e) {
+      setStatus('Error: ' + e.message)
+    }
+    setRunning(false)
+  }
+
+  return (
+    <div style={{ display:'flex', flexDirection:'column', gap:6, alignItems:'flex-end' }}>
+      <button onClick={run} disabled={running}
+        style={{ background: running ? 'rgba(239,68,68,0.2)' : '#ef4444', color: running ? '#ef4444' : '#fff', border:`1px solid #ef4444`, padding:'9px 18px', cursor: running ? 'not-allowed' : 'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', borderRadius:3, whiteSpace:'nowrap' }}>
+        {running ? '⚡ REWRITING...' : '▶ BACKFILL ALL ARTICLES'}
+      </button>
+      {status && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: status.includes('Error') ? '#ef4444' : '#22c55e', maxWidth:300, textAlign:'right' }}>{status}</div>}
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [tab, setTab]       = useState('dashboard')
   const [secret, setSecret] = useState('')
@@ -1184,6 +1221,22 @@ export default function AdminPage() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Backfill articles */}
+              <div style={{ padding:'16px 20px', background:'rgba(239,68,68,0.06)', border:'1px solid rgba(239,68,68,0.2)', borderRadius:4, marginBottom:12 }}>
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:10 }}>
+                  <div>
+                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', color:'#ef4444', marginBottom:4 }}>
+                      📝 BACKFILL FULL ARTICLE BODIES
+                    </div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.5 }}>
+                      Rewrites all existing articles that only have a summary — writes full 900-1100 word editorial.<br />
+                      Processes 10 at a time. Click repeatedly until remaining = 0.
+                    </div>
+                  </div>
+                  <BackfillButton />
+                </div>
               </div>
 
               <div style={{ padding:'12px 16px', background:'rgba(200,146,42,0.06)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.6 }}>

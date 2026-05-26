@@ -164,8 +164,52 @@ export default async function ArticlePage({ params }) {
           {/* Main */}
           <div>
             {article.body ? (
-              <div style={{ fontSize: '1.05rem', lineHeight: 1.85, color: '#D1D5DB', fontFamily: "'IBM Plex Sans', Arial, sans-serif" }}
-                dangerouslySetInnerHTML={{ __html: article.body }} />
+              <>
+                <style>{`
+                  .dr-article-body h2 {
+                    font-family: 'Bebas Neue', sans-serif;
+                    font-size: 1.5rem;
+                    letter-spacing: 0.04em;
+                    color: #F0EDE6;
+                    margin: 2.5rem 0 0.75rem;
+                    padding-bottom: 0.4rem;
+                    border-bottom: 2px solid #C8922A;
+                    line-height: 1.1;
+                  }
+                  .dr-article-body h2:first-child { margin-top: 0; }
+                  .dr-article-body p {
+                    font-size: 1.05rem;
+                    line-height: 1.85;
+                    color: #CBD5E1;
+                    margin-bottom: 1.4rem;
+                    font-family: 'IBM Plex Sans', Arial, sans-serif;
+                  }
+                  .dr-article-body strong { color: #F0EDE6; font-weight: 700; }
+                  .dr-article-body em { color: #C8922A; font-style: normal; font-weight: 600; }
+                  .dr-article-body ul { margin: 0.75rem 0 1.4rem 0; padding-left: 0; list-style: none; }
+                  .dr-article-body li {
+                    font-size: 1rem;
+                    line-height: 1.75;
+                    color: #CBD5E1;
+                    padding: 0.3rem 0 0.3rem 1.2rem;
+                    position: relative;
+                    font-family: 'IBM Plex Sans', Arial, sans-serif;
+                    border-bottom: 1px solid rgba(30,41,59,0.4);
+                  }
+                  .dr-article-body li:before {
+                    content: '◈';
+                    position: absolute;
+                    left: 0;
+                    color: #C8922A;
+                    font-size: 0.7rem;
+                    top: 0.45rem;
+                  }
+                `}</style>
+                <div
+                  className="dr-article-body"
+                  dangerouslySetInnerHTML={{ __html: article.body }}
+                />
+              </>
             ) : (
               <div style={{ fontSize: '1.05rem', lineHeight: 1.85, color: '#D1D5DB' }}>
                 {/* AI-generated summary — full editorial DownRange take */}
