@@ -38,7 +38,7 @@ export default async function HomePage() {
       <Masthead />
 
       {/* HERO */}
-      <section style={{ padding: '32px 0', borderBottom: '1px solid #1F2428' }}>
+      <section style={{ padding: '32px 0', borderBottom: '1px solid var(--border)' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 380px', gap: '2px' }}>
             {/* Featured story */}
@@ -143,7 +143,7 @@ export default async function HomePage() {
                   { title: 'Texas Firearms Freedom Act', billNumber: 'TX SB 214', status: 'passed', summary: 'Removes licensing for open carry.' },
                 ]).map((bill, i) => (
                   <a key={bill._id || i} href={bill.url || '/laws'} target={bill.url ? '_blank' : '_self'}
-                    style={{ display: 'flex', gap: '12px', padding: '12px 0', borderBottom: '1px solid #1F2428', textDecoration: 'none' }}>
+                    style={{ display: 'flex', gap: '12px', padding: '12px 0', borderBottom: '1px solid var(--border)', textDecoration: 'none' }}>
                     <div style={{ flexShrink: 0 }}>
                       <span className={`status-badge status-${bill.status}`}>{bill.status}</span>
                       <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', color: '#6B7280', marginTop: '3px' }}>{bill.billNumber}</div>
@@ -158,7 +158,7 @@ export default async function HomePage() {
               <div>
                 <div className="widget-title"><div className="widget-accent" />Quick Links</div>
                 {[['Find Your State Laws','/state-hub'],['CPL / CCW Lookup','/state-hub'],['Find FFL Dealers','/ffl-finder'],['ATF Rules Database','/laws?cat=atf'],['Ammo Price Tracker','/market']].map(([label,href]) => (
-                  <a key={href} href={href} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', background: '#16191F', border: '1px solid #1F2428', marginBottom: '6px', textDecoration: 'none', color: '#9CA3AF', fontFamily: "'Barlow Condensed',sans-serif", fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', transition: 'border-color 0.2s' }}>
+                  <a key={href} href={href} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', padding: '10px 12px', background: '#16191F', border: '1px solid var(--border)', marginBottom: '6px', textDecoration: 'none', color: '#9CA3AF', fontFamily: "'Barlow Condensed',sans-serif", fontSize: '13px', fontWeight: 600, letterSpacing: '0.08em', transition: 'border-color 0.2s' }}>
                     {label}<span style={{ color: '#C8922A' }}>→</span>
                   </a>
                 ))}
@@ -171,7 +171,7 @@ export default async function HomePage() {
       <div className="gold-divider" />
 
       {/* STATE HUB */}
-      <section style={{ padding: '48px 0', background: '#111318', borderBottom: '1px solid #1F2428' }}>
+      <section style={{ padding: '48px 0', background: '#111318', borderBottom: '1px solid var(--border)' }}>
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Your State · Your Rights</h2>
@@ -201,7 +201,7 @@ export default async function HomePage() {
               { _id:'5', brand:'Ruger', model:'LC Carbine', caliber:'.45 ACP', msrp:799, isNew:true },
               { _id:'6', brand:'Springfield', model:'Hellcat RDP', caliber:'9mm', msrp:599, isNew:false },
             ]).map(r => (
-              <div key={r._id} style={{ width: '200px', flexShrink: 0, background: '#111318', border: '1px solid #1F2428' }}>
+              <div key={r._id} style={{ width: '200px', flexShrink: 0, background: '#111318', border: '1px solid var(--border)' }}>
                 <div style={{ height: '130px', background: '#16191F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '36px', position: 'relative' }}>
                   🔫
                   {r.isNew && <div style={{ position: 'absolute', top: '8px', left: '8px', background: '#B91C1C', color: '#fff', fontFamily: "'Barlow Condensed',sans-serif", fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', padding: '2px 6px' }}>NEW</div>}
@@ -251,7 +251,7 @@ export default async function HomePage() {
                 { _id:'r2', firearmName:'Sig P320 AXG Legion', score:9.4, verdict:'The AXG chassis transforms the P320.' },
               ]).map(r => (
                 <a key={r._id} href={`/reviews/${r.slug?.current || r._id}`}
-                  style={{ flex: 1, display: 'flex', gap: '16px', background: '#111318', border: '1px solid #1F2428', padding: '20px', textDecoration: 'none', transition: 'border-color 0.2s' }}>
+                  style={{ flex: 1, display: 'flex', gap: '16px', background: '#111318', border: '1px solid var(--border)', padding: '20px', textDecoration: 'none', transition: 'border-color 0.2s' }}>
                   <div style={{ width: '80px', flexShrink: 0, height: '70px', background: '#16191F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>🔫</div>
                   <div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '6px' }}>
@@ -287,7 +287,7 @@ export default async function HomePage() {
               { _id:'5', caliber:'12 GA', pricePerRound:0.412, trendDirection:'down', trendPercent:1.3, availabilityIndex:90 },
               { _id:'6', caliber:'6.5 CM', pricePerRound:1.42, trendDirection:'up', trendPercent:3.4, availabilityIndex:50 },
             ]).map(a => (
-              <div key={a._id} style={{ background: '#111318', border: '1px solid #1F2428', padding: '16px', textAlign: 'center', borderBottom: `2px solid ${a.trendDirection==='down'?'#4ADE80':'#EF4444'}` }}>
+              <div key={a._id} style={{ background: '#111318', border: '1px solid var(--border)', padding: '16px', textAlign: 'center', borderBottom: `2px solid ${a.trendDirection==='down'?'#4ADE80':'#EF4444'}` }}>
                 <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px', fontWeight: 500, color: '#F0EDE6', marginBottom: '6px' }}>{a.caliber}</div>
                 <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '26px', color: '#C8922A', letterSpacing: '0.03em' }}>
                   {a.pricePerRound < 1 ? `${Math.round(a.pricePerRound*100)}¢` : `$${a.pricePerRound?.toFixed(2)}`}
@@ -303,7 +303,7 @@ export default async function HomePage() {
       </section>
 
       {/* NEWSLETTER */}
-      <section style={{ padding: '60px 0', background: '#111318', borderBottom: '1px solid #1F2428', position: 'relative', overflow: 'hidden' }}>
+      <section style={{ padding: '60px 0', background: '#111318', borderBottom: '1px solid var(--border)', position: 'relative', overflow: 'hidden' }}>
         <div style={{ position: 'absolute', fontFamily: "'Bebas Neue',cursive", fontSize: '220px', color: 'rgba(200,146,42,0.03)', top: '50%', left: '50%', transform: 'translate(-50%,-50%)', whiteSpace: 'nowrap', pointerEvents: 'none' }}>
           DOWNRANGE
         </div>
@@ -327,7 +327,7 @@ export default async function HomePage() {
             <div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3,1fr)', gap: '12px', marginBottom: '20px' }}>
                 {[['412K','Subscribers'],['50','State Guides'],['Daily','Briefings']].map(([num,label]) => (
-                  <div key={label} style={{ textAlign: 'center', padding: '20px 12px', background: '#16191F', border: '1px solid #1F2428' }}>
+                  <div key={label} style={{ textAlign: 'center', padding: '20px 12px', background: '#16191F', border: '1px solid var(--border)' }}>
                     <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '36px', color: '#C8922A', letterSpacing: '0.03em' }}>{num}</div>
                     <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', color: '#6B7280', letterSpacing: '0.1em', textTransform: 'uppercase' }}>{label}</div>
                   </div>

@@ -121,7 +121,7 @@ export default function Masthead() {
   }
 
   return (
-    <header style={{ background:'#111318', borderBottom:'1px solid #1F2428', position:'sticky', top:0, zIndex:50, overflow:'visible' }}>
+    <header style={{ background:'#111318', borderBottom:'1px solid var(--border)', position:'sticky', top:0, zIndex:50, overflow:'visible' }}>
       <DottedSurface style={{ position:'absolute', inset:0, width:'100%', height:'100%' }} />
 
       <style>{`
@@ -180,7 +180,7 @@ export default function Masthead() {
         </div>
 
         {/* Desktop nav with dropdowns */}
-        <nav className="nav-desktop" ref={navRef} style={{ borderTop:'1px solid #1F2428', display:'flex', alignItems:'stretch', position:'relative' }}>
+        <nav className="nav-desktop" ref={navRef} style={{ borderTop:'1px solid var(--border)', display:'flex', alignItems:'stretch', position:'relative' }}>
           <ul style={{ display:'flex', listStyle:'none', flex:1, margin:0, padding:0 }}>
             {NAV.map(item => {
               const active = isActive(item)
@@ -226,7 +226,7 @@ export default function Masthead() {
           </ul>
 
           {/* Search + theme */}
-          <div style={{ padding:'0 14px', display:'flex', alignItems:'center', gap:'10px', borderLeft:'1px solid #1F2428' }}>
+          <div style={{ padding:'0 14px', display:'flex', alignItems:'center', gap:'10px', borderLeft:'1px solid var(--border)' }}>
             <Link href="/search" style={{ display:'flex', alignItems:'center', gap:'5px', fontFamily:"'IBM Plex Mono', monospace", fontSize:'12px', color:'#6B7280', textDecoration:'none' }}>
               <span style={{ fontSize:'15px' }}>⌕</span>
             </Link>
@@ -235,7 +235,7 @@ export default function Masthead() {
         </nav>
 
         {/* Mobile nav */}
-        <div className="nav-mobile" style={{ display:'none', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderTop:'1px solid #1F2428' }}>
+        <div className="nav-mobile" style={{ display:'none', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderTop:'1px solid var(--border)' }}>
           <svg width="120" height="30" viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
             <g transform="translate(8,45)">
               <circle cx="36" cy="0" r="32" fill="none" stroke="#C8922A" strokeWidth="2"/>
@@ -251,7 +251,7 @@ export default function Masthead() {
           <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
             <Link href="/search" style={{ color:'#6B7280', textDecoration:'none', fontSize:'18px' }}>⌕</Link>
             <button onClick={() => setMenuOpen(!menuOpen)}
-              style={{ background:'none', border:'1px solid #1F2428', color:'#9CA3AF', padding:'6px 12px', cursor:'pointer', fontFamily:'monospace', fontSize:'11px' }}>
+              style={{ background:'none', border:'1px solid var(--border)', color:'#9CA3AF', padding:'6px 12px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>
               {menuOpen ? '✕' : '☰ MENU'}
             </button>
           </div>
@@ -259,16 +259,16 @@ export default function Masthead() {
 
         {/* Mobile dropdown menu */}
         <div className={`nav-mobile-menu${menuOpen ? ' open' : ''}`}
-          style={{ display:'none', flexDirection:'column', borderTop:'1px solid #1F2428', paddingBottom:'12px', maxHeight:'70vh', overflowY:'auto' }}>
+          style={{ display:'none', flexDirection:'column', borderTop:'1px solid var(--border)', paddingBottom:'12px', maxHeight:'70vh', overflowY:'auto' }}>
           {NAV.map(item => (
             <div key={item.label}>
               <a href={item.href} onClick={() => setMenuOpen(false)}
-                style={{ display:'block', fontFamily:"'Barlow Condensed', sans-serif", fontWeight:700, fontSize:'15px', padding:'12px 0', color:'#C8922A', borderBottom:'1px solid #1F2428', letterSpacing:'0.1em', textDecoration:'none', textTransform:'uppercase' }}>
+                style={{ display:'block', fontFamily:"'Barlow Condensed', sans-serif", fontWeight:700, fontSize:'15px', padding:'12px 0', color:'#C8922A', borderBottom:'1px solid var(--border)', letterSpacing:'0.1em', textDecoration:'none', textTransform:'uppercase' }}>
                 {item.label}
               </a>
               {item.children?.map(child => (
                 <a key={child.href} href={child.href} onClick={() => setMenuOpen(false)}
-                  style={{ display:'block', fontFamily:'monospace', fontSize:'12px', padding:'8px 0 8px 16px', color:'#9CA3AF', textDecoration:'none' }}>
+                  style={{ display:'block', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', padding:'8px 0 8px 16px', color:'#9CA3AF', textDecoration:'none' }}>
                   {child.label}
                 </a>
               ))}

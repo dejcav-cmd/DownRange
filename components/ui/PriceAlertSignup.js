@@ -28,30 +28,30 @@ export default function PriceAlertSignup() {
       <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.3rem', color: '#C8922A', marginBottom: '6px', letterSpacing: '0.05em' }}>
         PRICE DROP ALERTS
       </div>
-      <p style={{ fontFamily: 'monospace', fontSize: '11px', color: '#4B5563', marginBottom: '16px' }}>
+      <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#4B5563', marginBottom: '16px' }}>
         Email me when ammo drops below my price target
       </p>
       {status === 'success' ? (
-        <div style={{ color: '#34D399', fontFamily: 'monospace', fontSize: '12px' }}>✓ Alert set. You'll hear from us when {caliber} drops below ${threshold}/rd.</div>
+        <div style={{ color: '#34D399', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }}>✓ Alert set. You'll hear from us when {caliber} drops below ${threshold}/rd.</div>
       ) : (
         <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
           <select value={caliber} onChange={e=>setCaliber(e.target.value)} required
-            style={{ background: '#111318', border: '1px solid #1F2428', color: caliber ? '#F5F5F3' : '#4B5563', padding: '8px 10px', fontFamily: 'monospace', fontSize: '12px' }}>
+            style={{ background: '#111318', border: '1px solid var(--border)', color: caliber ? '#F5F5F3' : '#4B5563', padding: '8px 10px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }}>
             <option value="">Select caliber...</option>
             {CALIBERS.map(c => <option key={c} value={c}>{c}</option>)}
           </select>
           <div style={{ display: 'flex', gap: '8px' }}>
             <div style={{ position: 'relative', flex: 1 }}>
-              <span style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#4B5563', fontFamily: 'monospace', fontSize: '12px' }}>$</span>
+              <span style={{ position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)', color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }}>$</span>
               <input type="number" value={threshold} onChange={e=>setThreshold(e.target.value)} placeholder="0.20" step="0.01" min="0.01" max="5.00" required
-                style={{ width: '100%', background: '#111318', border: '1px solid #1F2428', color: '#F5F5F3', padding: '8px 10px 8px 22px', fontFamily: 'monospace', fontSize: '12px' }} />
+                style={{ width: '100%', background: '#111318', border: '1px solid var(--border)', color: '#F5F5F3', padding: '8px 10px 8px 22px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }} />
             </div>
-            <span style={{ color: '#4B5563', fontFamily: 'monospace', fontSize: '11px', alignSelf: 'center', whiteSpace: 'nowrap' }}>per round</span>
+            <span style={{ color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', alignSelf: 'center', whiteSpace: 'nowrap' }}>per round</span>
           </div>
           <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="your@email.com" required
-            style={{ background: '#111318', border: '1px solid #1F2428', color: '#F5F5F3', padding: '8px 10px', fontFamily: 'monospace', fontSize: '12px' }} />
+            style={{ background: '#111318', border: '1px solid var(--border)', color: '#F5F5F3', padding: '8px 10px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }} />
           <button type="submit" disabled={status==='loading'}
-            style={{ background: '#C8922A', color: '#000', border: 'none', padding: '10px', fontFamily: 'monospace', fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>
+            style={{ background: '#C8922A', color: '#000', border: 'none', padding: '10px', fontFamily: "'IBM Plex Mono',monospace", fontWeight: 700, fontSize: '12px', cursor: 'pointer' }}>
             {status==='loading' ? 'SETTING ALERT...' : 'SET ALERT →'}
           </button>
         </form>

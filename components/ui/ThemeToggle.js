@@ -46,7 +46,7 @@ export default function ThemeToggle() {
       </div>
       {/* Icon + label */}
       <span style={{
-        fontFamily: 'monospace',
+        fontFamily: "'IBM Plex Mono',monospace",
         fontSize: '10px',
         letterSpacing: '0.08em',
         color: 'var(--text-dim)',

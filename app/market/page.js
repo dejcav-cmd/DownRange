@@ -34,15 +34,15 @@ function PriceCard({ ammo }) {
   const pct = ammo.availabilityIndex || 75
 
   return (
-    <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px 16px', position:'relative', overflow:'hidden', borderBottom:`2px solid ${tc}` }}>
+    <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px 16px', position:'relative', overflow:'hidden', borderBottom:`2px solid ${tc}` }}>
       <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.1rem', color:'#F0EDE6', marginBottom:'4px', letterSpacing:'0.03em' }}>{ammo.caliber}</div>
-      <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', marginBottom:'10px' }}>{ammo.unit} · {ammo.brand}</div>
+      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', marginBottom:'10px' }}>{ammo.unit} · {ammo.brand}</div>
       <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2rem', color:'#C8922A', letterSpacing:'0.03em', lineHeight:1 }}>
         {ammo.pricePerRound < 1 ? `${Math.round(ammo.pricePerRound * 100)}¢` : `$${ammo.pricePerRound.toFixed(2)}`}
       </div>
-      <div style={{ fontFamily:'monospace', fontSize:'8px', color:'#4B5563', marginBottom:'8px' }}>per round</div>
+      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#4B5563', marginBottom:'8px' }}>per round</div>
 
-      <div style={{ display:'flex', justifyContent:'space-between', fontFamily:'monospace', fontSize:'10px', marginBottom:'6px' }}>
+      <div style={{ display:'flex', justifyContent:'space-between', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', marginBottom:'6px' }}>
         <span style={{ color:tc, fontWeight:700 }}>{up?'↑':'↓'} {Math.abs(ammo.trendPercent).toFixed(1)}% <span style={{ color:'#4B5563', fontWeight:400 }}>30d</span></span>
         <span style={{ color:'#374151' }}>
           <span style={{ color:'#34D399' }}>{ammo.weekLow ? `${Math.round(ammo.weekLow*100)}¢` : '—'}</span>
@@ -54,7 +54,7 @@ function PriceCard({ ammo }) {
       <div style={{ height:'4px', background:'#1C2028', borderRadius:'2px', overflow:'hidden' }}>
         <div style={{ height:'100%', background: pct > 80 ? '#34D399' : pct > 50 ? '#FBBF24' : '#EF4444', width:`${pct}%`, transition:'width 0.5s' }} />
       </div>
-      <div style={{ fontFamily:'monospace', fontSize:'8px', color:'#4B5563', marginTop:'3px' }}>
+      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#4B5563', marginTop:'3px' }}>
         {pct}% availability · {pct > 80 ? 'IN STOCK' : pct > 50 ? 'LIMITED' : 'LOW STOCK'}
       </div>
     </div>
@@ -84,7 +84,7 @@ export default async function MarketPage() {
             </div>
             <div style={{ textAlign:'right' }}>
               <div className="live-badge"><span className="pulse-dot" />Live</div>
-              <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', marginTop:'4px' }}>{today}</div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', marginTop:'4px' }}>{today}</div>
             </div>
           </div>
         </div>
@@ -98,15 +98,15 @@ export default async function MarketPage() {
             <div style={{ background:'#0D1117', border:'1px solid #C8922A40', borderLeft:'4px solid #C8922A', padding:'24px 28px', marginBottom:'36px' }}>
               <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', gap:16, flexWrap:'wrap' }}>
                 <div style={{ flex:1 }}>
-                  <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:'6px' }}>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:'6px' }}>
                     📊 DAILY MARKET BRIEF · {analysis.publishedAt ? new Date(analysis.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : today}
                   </div>
                   <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#F0EDE6', letterSpacing:'0.03em', marginBottom:'8px' }}>{analysis.title}</h2>
-                  <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280', lineHeight:1.7 }}>{analysis.summary}</p>
+                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', lineHeight:1.7 }}>{analysis.summary}</p>
                   {analysis.bullets?.length > 0 && (
                     <ul style={{ marginTop:'12px', paddingLeft:0, listStyle:'none', display:'flex', flexDirection:'column', gap:'5px' }}>
                       {analysis.bullets.map((b,i)=>(
-                        <li key={i} style={{ fontFamily:'monospace', fontSize:'12px', color:'#94A3B8', paddingLeft:'12px', position:'relative' }}>
+                        <li key={i} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#94A3B8', paddingLeft:'12px', position:'relative' }}>
                           <span style={{ position:'absolute', left:0, color:'#C8922A' }}>◈</span> {b}
                         </li>
                       ))}
@@ -116,15 +116,15 @@ export default async function MarketPage() {
               </div>
             </div>
           ) : (
-            <div style={{ background:'#111318', border:'1px solid #1F2428', borderLeft:'4px solid #C8922A', padding:'20px 24px', marginBottom:'36px' }}>
-              <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:'8px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', borderLeft:'4px solid #C8922A', padding:'20px 24px', marginBottom:'36px' }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:'8px' }}>
                 📊 DAILY MARKET BRIEF · {today}
               </div>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.3rem', color:'#F0EDE6', marginBottom:'8px' }}>Market Analysis Loading</h2>
-              <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
                 Daily AI-generated market analysis runs at 6:00 AM EST. Highlights include price movement, availability shifts, and buying opportunities across all tracked calibers.
               </p>
-              <div style={{ marginTop:'12px', fontFamily:'monospace', fontSize:'11px', color:'#374151' }}>
+              <div style={{ marginTop:'12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#374151' }}>
                 → To enable: run OpenClaw agent with market analysis prompt template (<Link href="/admin" style={{ color:'#C8922A', textDecoration:'none' }}>see Admin → Settings</Link>)
               </div>
             </div>
@@ -132,8 +132,8 @@ export default async function MarketPage() {
 
           {/* Price grid */}
           <div style={{ marginBottom:'12px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-            <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700 }}>AMMO PRICE INDEX</div>
-            <div style={{ display:'flex', gap:'16px', fontFamily:'monospace', fontSize:'9px', color:'#4B5563' }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700 }}>AMMO PRICE INDEX</div>
+            <div style={{ display:'flex', gap:'16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>
               <span>WK RANGE: <span style={{ color:'#34D399' }}>LOW</span> / <span style={{ color:'#EF4444' }}>HIGH</span></span>
               <span style={{ color:'#34D399' }}>↓ = FALLING (good)</span>
               <span style={{ color:'#EF4444' }}>↑ = RISING</span>
@@ -145,7 +145,7 @@ export default async function MarketPage() {
 
           {/* Market Intel + links */}
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'24px' }}>
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px' }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.3rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>MARKET INTELLIGENCE</h2>
               {[
                 ['NICS Check Trend','↓ 3.2% MoM — Inventory building, slight buyer\'s market'],
@@ -153,16 +153,16 @@ export default async function MarketPage() {
                 ['Best Value Caliber','9mm at 18-19¢/rd — all-time low territory'],
                 ['Watch List','6.5CM and .300BLK tightening — buy before surge'],
               ].map(([k,v])=>(
-                <div key={k} style={{ padding:'10px 0', borderBottom:'1px solid #1F2428', display:'grid', gridTemplateColumns:'140px 1fr', gap:12 }}>
-                  <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>{k}</span>
-                  <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#D1D5DB', lineHeight:1.5 }}>{v}</span>
+                <div key={k} style={{ padding:'10px 0', borderBottom:'1px solid var(--border)', display:'grid', gridTemplateColumns:'140px 1fr', gap:12 }}>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>{k}</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#D1D5DB', lineHeight:1.5 }}>{v}</span>
                 </div>
               ))}
             </div>
 
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px' }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.3rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>LIVE DEALS</h2>
-              <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7, marginBottom:'16px' }}>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7, marginBottom:'16px' }}>
                 Best ammo prices sourced from major retailers updated every 30 minutes.
               </p>
               <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
@@ -173,14 +173,14 @@ export default async function MarketPage() {
                   { label:'Ammunition Depot Sales', href:'https://www.ammunitiondepot.com', badge:'RETAILER' },
                 ].map(d=>(
                   <a key={d.label} href={d.href} target="_blank" rel="noreferrer"
-                    style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 12px', background:'#0D1117', border:'1px solid #1F2428', textDecoration:'none' }}>
-                    <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#D1D5DB' }}>{d.label}</span>
-                    <span style={{ fontFamily:'monospace', fontSize:'8px', color:'#4B5563', background:'#1F2428', padding:'2px 6px' }}>{d.badge} ↗</span>
+                    style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'8px 12px', background:'#0D1117', border:'1px solid var(--border)', textDecoration:'none' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#D1D5DB' }}>{d.label}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#4B5563', background:'#1F2428', padding:'2px 6px' }}>{d.badge} ↗</span>
                   </a>
                 ))}
               </div>
               <div style={{ marginTop:'12px' }}>
-                <Link href="/deals" style={{ fontFamily:'monospace', fontSize:'11px', color:'#C8922A', textDecoration:'none' }}>
+                <Link href="/deals" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', textDecoration:'none' }}>
                   View All Live Deals →
                 </Link>
               </div>
@@ -189,8 +189,8 @@ export default async function MarketPage() {
 
           {/* OpenClaw agent instructions */}
           <div style={{ marginTop:'32px', background:'#0D1117', border:'1px solid #374151', padding:'20px 24px' }}>
-            <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#374151', letterSpacing:'0.12em', marginBottom:'8px', fontWeight:700 }}>OPENCLAW AGENT — MARKET ANALYSIS SETUP</div>
-            <p style={{ fontFamily:'monospace', fontSize:'11px', color:'#374151', lineHeight:1.7 }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#374151', letterSpacing:'0.12em', marginBottom:'8px', fontWeight:700 }}>OPENCLAW AGENT — MARKET ANALYSIS SETUP</div>
+            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#374151', lineHeight:1.7 }}>
               To enable daily AI market analysis: configure your OpenClaw/Ollama agent to POST to /api/market-analysis with the template below at 6:00 AM daily.
               See <Link href="/admin" style={{ color:'#4B5563' }}>Admin → Settings</Link> for full agent configuration guide.
             </p>

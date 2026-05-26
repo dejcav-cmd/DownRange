@@ -75,36 +75,36 @@ export default function SearchPage() {
       <div style={{ background:'#0A0B0C', minHeight:'100vh', padding:'48px 0' }}>
         <div className="container" style={{ maxWidth:800 }}>
           <h1 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'8px' }}>SEARCH</h1>
-          <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', marginBottom:'32px' }}>Search news, laws, reviews, releases, and encyclopedia entries</p>
+          <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', marginBottom:'32px' }}>Search news, laws, reviews, releases, and encyclopedia entries</p>
 
           {/* Search input */}
           <div style={{ position:'relative', marginBottom:'20px' }}>
             <span style={{ position:'absolute', left:'16px', top:'50%', transform:'translateY(-50%)', color:'#4B5563', fontSize:'18px' }}>⌕</span>
             <input value={q} onChange={handleInput} placeholder="Search DownRange..."
-              style={{ width:'100%', background:'#111318', border:'2px solid #C8922A', color:'#F5F5F3', padding:'16px 16px 16px 48px', fontFamily:'monospace', fontSize:'16px', boxSizing:'border-box' }} />
+              style={{ width:'100%', background:'#111318', border:'2px solid #C8922A', color:'#F5F5F3', padding:'16px 16px 16px 48px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'16px', boxSizing:'border-box' }} />
           </div>
 
           {/* Category filters */}
           <div style={{ display:'flex', gap:'6px', marginBottom:'28px', flexWrap:'wrap' }}>
             {CATS.map(c => (
               <button key={c} onClick={() => { setCat(c); search(q, c) }}
-                style={{ fontFamily:'monospace', fontSize:'11px', padding:'5px 14px', border:'1px solid #1F2428', background: cat===c ? '#C8922A20' : 'transparent', color: cat===c ? '#C8922A' : '#4B5563', cursor:'pointer', letterSpacing:'0.05em' }}>
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'5px 14px', border:'1px solid var(--border)', background: cat===c ? '#C8922A20' : 'transparent', color: cat===c ? '#C8922A' : '#4B5563', cursor:'pointer', letterSpacing:'0.05em' }}>
                 {c.toUpperCase()}
               </button>
             ))}
           </div>
 
           {/* Results */}
-          {loading && <div style={{ textAlign:'center', padding:'40px', fontFamily:'monospace', fontSize:'12px', color:'#4B5563' }}>SEARCHING...</div>}
+          {loading && <div style={{ textAlign:'center', padding:'40px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563' }}>SEARCHING...</div>}
 
           {!loading && q && results.length === 0 && (
-            <div style={{ textAlign:'center', padding:'60px', fontFamily:'monospace', fontSize:'13px', color:'#4B5563' }}>
+            <div style={{ textAlign:'center', padding:'60px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#4B5563' }}>
               No results for "{q}". Try different keywords.
             </div>
           )}
 
           {!loading && total > 0 && (
-            <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', marginBottom:'16px' }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', marginBottom:'16px' }}>
               {total} results for "{q}"
             </div>
           )}
@@ -114,11 +114,11 @@ export default function SearchPage() {
               const href = r.slug ? `/news/${r.slug}` : r.externalUrl || '#'
               const catColor = CAT_COLORS[r.category] || '#9CA3AF'
               return (
-                <a key={r.objectID || i} href={href} style={{ textDecoration:'none', display:'block', background:'#111318', border:'1px solid #1F2428', padding:'16px 20px' }}>
-                  {r.category && <span style={{ fontFamily:'monospace', fontSize:'9px', color:catColor, letterSpacing:'0.12em', display:'block', marginBottom:'6px' }}>{r.category.toUpperCase()}</span>}
+                <a key={r.objectID || i} href={href} style={{ textDecoration:'none', display:'block', background:'#111318', border:'1px solid var(--border)', padding:'16px 20px' }}>
+                  {r.category && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:catColor, letterSpacing:'0.12em', display:'block', marginBottom:'6px' }}>{r.category.toUpperCase()}</span>}
                   <div style={{ fontSize:'16px', fontWeight:600, color:'#F0EDE6', lineHeight:1.35, marginBottom:'6px' }}>{r.title}</div>
                   {(r.summary || r.excerpt) && <p style={{ fontSize:'13px', color:'#6B7280', lineHeight:1.6, marginBottom:'8px' }}>{(r.summary || r.excerpt)?.slice(0,200)}</p>}
-                  <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#374151' }}>{r.source || 'DownRange'} · {timeAgo(r.publishedAt)}</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151' }}>{r.source || 'DownRange'} · {timeAgo(r.publishedAt)}</div>
                 </a>
               )
             })}
@@ -127,7 +127,7 @@ export default function SearchPage() {
           {!ready || (!q && !loading) && (
             <div style={{ textAlign:'center', padding:'80px 0' }}>
               <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'5rem', color:'#1F2428', marginBottom:'16px', lineHeight:1 }}>⌕</div>
-              <p style={{ fontFamily:'monospace', fontSize:'13px', color:'#4B5563' }}>Type to search all DownRange content</p>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#4B5563' }}>Type to search all DownRange content</p>
             </div>
           )}
         </div>

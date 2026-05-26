@@ -41,13 +41,13 @@ export default function StateNewsIndex() {
           <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>ACTIVE STATES — HIGH LEGISLATIVE ACTIVITY</h2>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'10px', marginBottom:'40px' }}>
             {STATES_WITH_ACTIVITY.map(s=>(
-              <Link key={s.abbr} href={`/state-news/${s.abbr.toLowerCase()}`} style={{ background:'#111318', border:'1px solid #1F2428', padding:'14px 16px', textDecoration:'none', display:'block' }}>
+              <Link key={s.abbr} href={`/state-news/${s.abbr.toLowerCase()}`} style={{ background:'#111318', border:'1px solid var(--border)', padding:'14px 16px', textDecoration:'none', display:'block' }}>
                 <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'6px' }}>
                   <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.2rem', color:'#C8922A' }}>{s.abbr}</span>
-                  <span style={{ fontFamily:'monospace', fontSize:'9px', color:ACTIVITY_COLORS[s.activity], background:`${ACTIVITY_COLORS[s.activity]}20`, padding:'2px 8px', alignSelf:'center' }}>{s.activity}</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:ACTIVITY_COLORS[s.activity], background:`${ACTIVITY_COLORS[s.activity]}20`, padding:'2px 8px', alignSelf:'center' }}>{s.activity}</span>
                 </div>
-                <div style={{ fontFamily:'monospace', fontSize:'12px', color:'#F0EDE6', marginBottom:'4px' }}>{s.name}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', lineHeight:1.5 }}>{s.note}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#F0EDE6', marginBottom:'4px' }}>{s.name}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', lineHeight:1.5 }}>{s.note}</div>
               </Link>
             ))}
           </div>
@@ -55,7 +55,7 @@ export default function StateNewsIndex() {
           <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
             {ALL_STATES.map(s=>(
               <Link key={s} href={`/state-news/${s.toLowerCase()}`}
-                style={{ fontFamily:'monospace', fontSize:'11px', padding:'6px 14px', background:'#111318', border:'1px solid #1F2428', color:'#6B7280', textDecoration:'none', display:'flex', flexDirection:'column', alignItems:'center', minWidth:'60px' }}>
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'6px 14px', background:'#111318', border:'1px solid var(--border)', color:'#6B7280', textDecoration:'none', display:'flex', flexDirection:'column', alignItems:'center', minWidth:'60px' }}>
                 <span style={{ fontWeight:700, color:'#C8922A' }}>{s}</span>
                 <span style={{ fontSize:'9px', marginTop:'2px' }}>{STATE_NAMES[s]?.split(' ')[0]}</span>
               </Link>

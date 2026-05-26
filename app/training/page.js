@@ -45,17 +45,17 @@ export default function TrainingPage() {
             {DRILLS.map(d=>{
               const levelColor = { Beginner:'#34D399', Intermediate:'#FBBF24', Advanced:'#EF4444' }[d.level]
               return (
-                <div key={d.name} style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px', borderLeft:`3px solid ${levelColor}` }}>
+                <div key={d.name} style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px', borderLeft:`3px solid ${levelColor}` }}>
                   <div style={{ display:'flex', justifyContent:'space-between', marginBottom:'8px' }}>
                     <h3 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.3rem', color:'#F0EDE6', letterSpacing:'0.03em' }}>{d.name}</h3>
-                    <span style={{ fontFamily:'monospace', fontSize:'9px', color:levelColor, background:`${levelColor}20`, padding:'3px 8px', alignSelf:'flex-start' }}>{d.level.toUpperCase()}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:levelColor, background:`${levelColor}20`, padding:'3px 8px', alignSelf:'flex-start' }}>{d.level.toUpperCase()}</span>
                   </div>
-                  <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280', lineHeight:1.6, marginBottom:'12px' }}>{d.desc}</p>
+                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', lineHeight:1.6, marginBottom:'12px' }}>{d.desc}</p>
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'8px' }}>
                     {[['Rounds',d.rounds],['Distance',d.target],['Par',d.par]].map(([k,v])=>(
                       <div key={k} style={{ background:'#0D1117', padding:'8px', textAlign:'center' }}>
-                        <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', marginBottom:'3px' }}>{k.toUpperCase()}</div>
-                        <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#C8922A' }}>{v}</div>
+                        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', marginBottom:'3px' }}>{k.toUpperCase()}</div>
+                        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>{v}</div>
                       </div>
                     ))}
                   </div>
@@ -67,11 +67,11 @@ export default function TrainingPage() {
           <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>30-MINUTE WEEKLY DRY FIRE PLAN</h2>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(7,1fr)', gap:'8px', marginBottom:'48px' }}>
             {DRY_FIRE_PLAN.map(d=>(
-              <div key={d.day} style={{ background:'#111318', border:'1px solid #1F2428', padding:'14px 12px', textAlign:'center' }}>
+              <div key={d.day} style={{ background:'#111318', border:'1px solid var(--border)', padding:'14px 12px', textAlign:'center' }}>
                 <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', marginBottom:'6px' }}>{d.day}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#F0EDE6', fontWeight:700, marginBottom:'4px' }}>{d.focus}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', marginBottom:'8px' }}>{d.reps > 0 ? `${d.reps} reps` : 'Rest'}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', lineHeight:1.5 }}>{d.desc}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#F0EDE6', fontWeight:700, marginBottom:'4px' }}>{d.focus}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', marginBottom:'8px' }}>{d.reps > 0 ? `${d.reps} reps` : 'Rest'}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', lineHeight:1.5 }}>{d.desc}</div>
               </div>
             ))}
           </div>
@@ -79,11 +79,11 @@ export default function TrainingPage() {
           <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>PROFESSIONAL TRAINING RESOURCES</h2>
           <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:'12px' }}>
             {RESOURCES.map(r=>(
-              <a key={r.name} href={r.url} target="_blank" rel="noreferrer" style={{ textDecoration:'none', background:'#111318', border:'1px solid #1F2428', padding:'16px 20px', display:'flex', gap:'16px', alignItems:'flex-start' }}>
-                <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#C8922A', background:'#1A0E00', padding:'3px 8px', border:'1px solid #C8922A30', flexShrink:0, marginTop:'2px' }}>{r.type.toUpperCase()}</div>
+              <a key={r.name} href={r.url} target="_blank" rel="noreferrer" style={{ textDecoration:'none', background:'#111318', border:'1px solid var(--border)', padding:'16px 20px', display:'flex', gap:'16px', alignItems:'flex-start' }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', background:'#1A0E00', padding:'3px 8px', border:'1px solid #C8922A30', flexShrink:0, marginTop:'2px' }}>{r.type.toUpperCase()}</div>
                 <div>
                   <div style={{ fontSize:'14px', fontWeight:700, color:'#F0EDE6', marginBottom:'4px' }}>{r.name}</div>
-                  <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.5 }}>{r.desc}</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.5 }}>{r.desc}</div>
                 </div>
               </a>
             ))}

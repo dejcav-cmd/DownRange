@@ -36,7 +36,7 @@ export default async function StateHubPage({ searchParams }) {
       </div>
 
       {/* National stats */}
-      <div style={{ background: '#111318', borderBottom: '1px solid #1F2428', padding: '24px 0' }}>
+      <div style={{ background: '#111318', borderBottom: '1px solid var(--border)', padding: '24px 0' }}>
         <div className="container">
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
             {[
@@ -45,7 +45,7 @@ export default async function StateHubPage({ searchParams }) {
               { num: redFlagStates.length, label: 'Red Flag Law States', color: '#FCA5A5' },
               { num: magLimitStates.length, label: 'Magazine Limit States', color: '#FCD34D' },
             ].map(stat => (
-              <div key={stat.label} style={{ textAlign: 'center', padding: '20px', background: '#16191F', border: '1px solid #1F2428' }}>
+              <div key={stat.label} style={{ textAlign: 'center', padding: '20px', background: '#16191F', border: '1px solid var(--border)' }}>
                 <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '48px', color: stat.color, lineHeight: 1 }}>{stat.num}</div>
                 <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', color: '#6B7280', letterSpacing: '0.08em', textTransform: 'uppercase', marginTop: '4px' }}>{stat.label}</div>
               </div>
@@ -55,7 +55,7 @@ export default async function StateHubPage({ searchParams }) {
       </div>
 
       {/* Interactive selector */}
-      <div style={{ padding: '48px 0', borderBottom: '1px solid #1F2428' }}>
+      <div style={{ padding: '48px 0', borderBottom: '1px solid var(--border)' }}>
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Your State · Your Rights</h2>
@@ -63,10 +63,10 @@ export default async function StateHubPage({ searchParams }) {
             <div className="section-badge">All 50 States</div>
           </div>
           <div style={{ marginBottom:'24px' }}>
-          <div style={{ display:'flex', gap:0, borderBottom:'1px solid #1F2428', marginBottom:'32px' }}>
+          <div style={{ display:'flex', gap:0, borderBottom:'1px solid var(--border)', marginBottom:'32px' }}>
             {['Interactive Map','State Grid'].map((t,i) => (
               <a key={t} href={i===0?'/state-hub':'/state-hub?view=grid'}
-                style={{ padding:'10px 20px', fontFamily:'monospace', fontSize:'11px', textDecoration:'none',
+                style={{ padding:'10px 20px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', textDecoration:'none',
                   color: (!searchParams?.view&&i===0)||searchParams?.view==='grid'&&i===1 ? '#C8922A' : '#4B5563',
                   borderBottom:`2px solid ${(!searchParams?.view&&i===0)||searchParams?.view==='grid'&&i===1 ? '#C8922A' : 'transparent'}` }}>
                 {t}
@@ -100,7 +100,7 @@ export default async function StateHubPage({ searchParams }) {
               </thead>
               <tbody>
                 {profiles.sort((a,b) => a.name?.localeCompare(b.name)).map((p, i) => (
-                  <tr key={p._id} style={{ borderBottom: '1px solid #1F2428', background: i % 2 === 0 ? '#111318' : '#16191F' }}>
+                  <tr key={p._id} style={{ borderBottom: '1px solid var(--border)', background: i % 2 === 0 ? '#111318' : '#16191F' }}>
                     <td style={{ padding: '8px 12px' }}>
                       <a href={`/state-hub/${p.abbr?.toLowerCase()}`} style={{ color: '#F0EDE6', textDecoration: 'none', fontWeight: 500 }}>{p.name}</a>
                     </td>

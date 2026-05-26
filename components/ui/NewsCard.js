@@ -88,7 +88,7 @@ export default function NewsCard({ article, featured = false }) {
               </p>
             )}
             <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
-              <span style={{ fontFamily: 'monospace', fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
+              <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#6B7280', textTransform: 'uppercase', letterSpacing: '0.08em' }}>
                 {article.source || article.author?.name || 'Staff'} · {timeAgo(article.publishedAt)}
               </span>
               <span style={{ background: '#C8922A', color: '#000', fontSize: '11px', fontWeight: 700, padding: '4px 12px', letterSpacing: '0.08em' }}>
@@ -105,7 +105,7 @@ export default function NewsCard({ article, featured = false }) {
   return (
     <a href={href} rel="noreferrer"
       style={{ display: 'block', textDecoration: 'none' }}>
-      <div style={{ background: '#111318', border: '1px solid #1F2428', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'border-color 0.2s' }}
+      <div style={{ background: '#111318', border: '1px solid var(--border)', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'border-color 0.2s' }}
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
         onMouseLeave={e => e.currentTarget.style.borderColor = '#1F2428'}>
 
@@ -114,7 +114,7 @@ export default function NewsCard({ article, featured = false }) {
           {article.urgencyScore >= 8 && (
             <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 2, display: 'flex', alignItems: 'center', gap: 4, background: '#B91C1C', padding: '3px 8px' }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', display: 'inline-block', animation: 'pulse 1.2s infinite' }} />
-              <span style={{ color: '#fff', fontSize: '9px', fontWeight: 700, letterSpacing: '0.12em', fontFamily: 'monospace' }}>BREAKING</span>
+              <span style={{ color: '#fff', fontSize: '9px', fontWeight: 700, letterSpacing: '0.12em', fontFamily: "'IBM Plex Mono',monospace" }}>BREAKING</span>
             </div>
           )}
           {imageUrl ? (
@@ -149,14 +149,14 @@ export default function NewsCard({ article, featured = false }) {
             </p>
           )}
           <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #1A1E24', marginTop: 'auto' }}>
-            <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
+            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>
               {article.source || article.author?.name || 'Staff'}
             </span>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center' }}>
-              <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
+              <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>
                 {readingTime(article.summary || article.excerpt)}
               </span>
-              <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>
+              <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>
                 {timeAgo(article.publishedAt)}
               </span>
             </div>

@@ -10,7 +10,7 @@ const FOOTER_COLS = [
 
 export default function Footer() {
   return (
-    <footer style={{ background: '#07080A', borderTop: '1px solid #1F2428', padding: '48px 0 24px' }}>
+    <footer style={{ background: '#07080A', borderTop: '1px solid var(--border)', padding: '48px 0 24px' }}>
       <div className="container">
         <div style={{ display: 'grid', gridTemplateColumns: '280px repeat(4, 1fr)', gap: '40px', marginBottom: '40px' }}>
           {/* Brand */}
@@ -26,7 +26,7 @@ export default function Footer() {
 
           {FOOTER_COLS.map(col => (
             <div key={col.title}>
-              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: '16px', paddingBottom: '8px', borderBottom: '1px solid #1F2428' }}>
+              <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '12px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#9CA3AF', marginBottom: '16px', paddingBottom: '8px', borderBottom: '1px solid var(--border)' }}>
                 {col.title}
               </div>
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
@@ -44,7 +44,7 @@ export default function Footer() {
           ))}
         </div>
 
-        <div style={{ borderTop: '1px solid #1F2428', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
+        <div style={{ borderTop: '1px solid var(--border)', paddingTop: '20px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: '12px' }}>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>
             © 2026 DOWNRANGE MEDIA LLC · ALL RIGHTS RESERVED
           </div>

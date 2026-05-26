@@ -22,7 +22,7 @@ export async function generateMetadata({ params }) {
 
 export default async function CaliberPage({ params }) {
   const d = CALIBER_DATA[params.caliber]
-  if (!d) return <div style={{ padding:'100px', textAlign:'center', color:'#6B7280', fontFamily:'monospace' }}>Caliber not found. Try /ammo/9mm or /ammo/556</div>
+  if (!d) return <div style={{ padding:'100px', textAlign:'center', color:'#6B7280', fontFamily:"'IBM Plex Mono',monospace" }}>Caliber not found. Try /ammo/9mm or /ammo/556</div>
 
   const sanityAmmo = await fetchAmmoByType(params.caliber).catch(()=>[])
 
@@ -33,7 +33,7 @@ export default async function CaliberPage({ params }) {
         <img src={d.image} alt={d.name} style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.4 }} />
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, #0A0B0C, transparent 50%)' }} />
         <div className="container" style={{ position:'absolute', bottom:'24px', left:'50%', transform:'translateX(-50%)', width:'100%' }}>
-          <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'4px' }}>AMMO GUIDE</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'4px' }}>AMMO GUIDE</div>
           <h1 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'clamp(2rem,6vw,4rem)', color:'#F5F5F3', letterSpacing:'0.03em', lineHeight:1 }}>{d.name}</h1>
         </div>
       </div>
@@ -43,9 +43,9 @@ export default async function CaliberPage({ params }) {
             <div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'12px', marginBottom:'32px' }}>
                 {[['Bullet Weight',d.bullet],['Muzzle Velocity',d.velocity],['Avg Price/rd',`$${d.pricePer.toFixed(2)}`]].map(([k,v])=>(
-                  <div key={k} style={{ background:'#111318', border:'1px solid #1F2428', padding:'16px', textAlign:'center' }}>
+                  <div key={k} style={{ background:'#111318', border:'1px solid var(--border)', padding:'16px', textAlign:'center' }}>
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.5rem', color:'#C8922A' }}>{v}</div>
-                    <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', marginTop:'4px' }}>{k.toUpperCase()}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', marginTop:'4px' }}>{k.toUpperCase()}</div>
                   </div>
                 ))}
               </div>
@@ -56,35 +56,35 @@ export default async function CaliberPage({ params }) {
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'12px' }}>BEST FOR</h2>
               <div style={{ display:'flex', flexWrap:'wrap', gap:'8px', marginBottom:'24px' }}>
                 {d.bestFor.map(u=>(
-                  <span key={u} style={{ fontFamily:'monospace', fontSize:'12px', color:'#34D399', background:'#001A0A', border:'1px solid #16603440', padding:'6px 14px' }}>{u}</span>
+                  <span key={u} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#34D399', background:'#001A0A', border:'1px solid #16603440', padding:'6px 14px' }}>{u}</span>
                 ))}
               </div>
 
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'12px' }}>RECOMMENDED LOADS</h2>
               <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
                 {d.brands.map((b,i)=>(
-                  <div key={b} style={{ background:'#111318', border:'1px solid #1F2428', padding:'12px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                    <span style={{ fontFamily:'monospace', fontSize:'13px', color:'#F0EDE6' }}>{b}</span>
-                    {i===0 && <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#34D399', background:'#001A0A', padding:'2px 8px' }}>EDITOR'S PICK</span>}
+                  <div key={b} style={{ background:'#111318', border:'1px solid var(--border)', padding:'12px 16px', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#F0EDE6' }}>{b}</span>
+                    {i===0 && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#34D399', background:'#001A0A', padding:'2px 8px' }}>EDITOR'S PICK</span>}
                   </div>
                 ))}
               </div>
             </div>
 
             <aside>
-              <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px', marginBottom:'16px' }}>
-                <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'16px', fontWeight:700 }}>QUICK SPECS</div>
+              <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px', marginBottom:'16px' }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'16px', fontWeight:700 }}>QUICK SPECS</div>
                 {[['Also Known As',d.also],['Primary Use',d.use],['Availability',d.availability]].map(([k,v])=>(
-                  <div key={k} style={{ display:'flex', flexDirection:'column', padding:'8px 0', borderBottom:'1px solid #1F2428' }}>
-                    <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>{k}</span>
-                    <span style={{ fontFamily:'monospace', fontSize:'12px', color:'#F0EDE6', marginTop:'3px' }}>{v}</span>
+                  <div key={k} style={{ display:'flex', flexDirection:'column', padding:'8px 0', borderBottom:'1px solid var(--border)' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>{k}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#F0EDE6', marginTop:'3px' }}>{v}</span>
                   </div>
                 ))}
               </div>
-              <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px' }}>
-                <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'12px', fontWeight:700 }}>OTHER CALIBERS</div>
+              <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px' }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'12px', fontWeight:700 }}>OTHER CALIBERS</div>
                 {Object.entries(CALIBER_DATA).filter(([k])=>k!==params.caliber).map(([k,c])=>(
-                  <a key={k} href={`/ammo/${k}`} style={{ display:'block', fontFamily:'monospace', fontSize:'12px', color:'#6B7280', padding:'8px 0', borderBottom:'1px solid #1F2428', textDecoration:'none' }}>
+                  <a key={k} href={`/ammo/${k}`} style={{ display:'block', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', padding:'8px 0', borderBottom:'1px solid var(--border)', textDecoration:'none' }}>
                     {c.name} →
                   </a>
                 ))}

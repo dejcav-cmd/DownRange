@@ -53,12 +53,12 @@ export default function NFATracker() {
             <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>CURRENT ATF PROCESSING TIMES</h2>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'12px' }}>
               {WAIT_DATA.map(w => (
-                <div key={w.type} style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px', borderTop:`3px solid ${w.color}` }}>
+                <div key={w.type} style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px', borderTop:`3px solid ${w.color}` }}>
                   <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2.5rem', color:w.color, lineHeight:1 }}>{w.avg}</div>
-                  <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', marginBottom:'8px' }}>DAYS AVG</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', marginBottom:'8px' }}>DAYS AVG</div>
                   <div style={{ fontSize:'13px', fontWeight:600, color:'#F0EDE6', marginBottom:'4px' }}>{w.type}</div>
-                  <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', marginBottom:'8px' }}>{w.method}</div>
-                  <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#374151' }}>Range: {w.min}–{w.max} days</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', marginBottom:'8px' }}>{w.method}</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#374151' }}>Range: {w.min}–{w.max} days</div>
                   <div style={{ display:'flex', alignItems:'center', gap:'4px', marginTop:'6px' }}>
                     <span style={{ fontSize:'10px', color: w.trend==='down'?'#34D399':w.trend==='up'?'#EF4444':'#9CA3AF' }}>
                       {w.trend==='down'?'↓ Improving':w.trend==='up'?'↑ Getting longer':'→ Stable'}
@@ -67,7 +67,7 @@ export default function NFATracker() {
                 </div>
               ))}
             </div>
-            <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#374151', marginTop:'12px' }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', marginTop:'12px' }}>
               ⚠ Times are community estimates based on r/NFA data and official ATF eForms stats. Actual times vary. Last updated May 2026.
             </div>
           </div>
@@ -75,36 +75,36 @@ export default function NFATracker() {
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px' }}>
 
             {/* Approval estimator */}
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'28px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'28px' }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>MY WAIT ESTIMATOR</h2>
               <div style={{ display:'flex', flexDirection:'column', gap:'14px', marginBottom:'20px' }}>
                 <div>
-                  <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>ITEM NAME</label>
+                  <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>ITEM NAME</label>
                   <input value={form.item} onChange={e=>setForm(p=>({...p,item:e.target.value}))} placeholder="e.g. SilencerCo Omega 45K"
-                    style={{ width:'100%', background:'#0D1117', border:'1px solid #1F2428', color:'#F5F5F3', padding:'10px 12px', fontFamily:'monospace', fontSize:'12px', boxSizing:'border-box' }} />
+                    style={{ width:'100%', background:'#0D1117', border:'1px solid var(--border)', color:'#F5F5F3', padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
                 </div>
                 <div>
-                  <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>FORM TYPE</label>
+                  <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>FORM TYPE</label>
                   <select value={form.type} onChange={e=>setForm(p=>({...p,type:e.target.value}))}
-                    style={{ width:'100%', background:'#0D1117', border:'1px solid #1F2428', color:'#F5F5F3', padding:'10px 12px', fontFamily:'monospace', fontSize:'12px' }}>
+                    style={{ width:'100%', background:'#0D1117', border:'1px solid var(--border)', color:'#F5F5F3', padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>
                     {WAIT_DATA.map(w=><option key={w.type} value={w.type}>{w.type}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>SUBMISSION DATE</label>
+                  <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>SUBMISSION DATE</label>
                   <input type="date" value={form.submitted} onChange={e=>setForm(p=>({...p,submitted:e.target.value}))}
-                    style={{ width:'100%', background:'#0D1117', border:'1px solid #1F2428', color:'#F5F5F3', padding:'10px 12px', fontFamily:'monospace', fontSize:'12px', boxSizing:'border-box' }} />
+                    style={{ width:'100%', background:'#0D1117', border:'1px solid var(--border)', color:'#F5F5F3', padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
                 </div>
               </div>
-              <button onClick={calcEstimate} style={{ width:'100%', background:'#C8922A', color:'#000', border:'none', padding:'12px', fontFamily:'monospace', fontWeight:700, fontSize:'13px', cursor:'pointer' }}>
+              <button onClick={calcEstimate} style={{ width:'100%', background:'#C8922A', color:'#000', border:'none', padding:'12px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'13px', cursor:'pointer' }}>
                 ESTIMATE MY APPROVAL DATE →
               </button>
 
               {estimate && (
                 <div style={{ marginTop:'20px', padding:'16px', background:'#0D1117', border:'1px solid #C8922A40' }}>
-                  <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', marginBottom:'12px', letterSpacing:'0.1em' }}>YOUR ESTIMATE</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', marginBottom:'12px', letterSpacing:'0.1em' }}>YOUR ESTIMATE</div>
                   <div style={{ marginBottom:'12px' }}>
-                    <div style={{ display:'flex', justifyContent:'space-between', fontFamily:'monospace', fontSize:'11px', color:'#6B7280', marginBottom:'6px' }}>
+                    <div style={{ display:'flex', justifyContent:'space-between', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', marginBottom:'6px' }}>
                       <span>Progress</span><span>{estimate.elapsed} / {estimate.avg} days ({estimate.pct}%)</span>
                     </div>
                     <div style={{ height:'6px', background:'#1F2428', borderRadius:'3px', overflow:'hidden' }}>
@@ -116,7 +116,7 @@ export default function NFATracker() {
                     ['Average', estimate.avgDate],
                     ['Worst case', estimate.maxDate],
                   ].map(([label,date])=>(
-                    <div key={label} style={{ display:'flex', justifyContent:'space-between', padding:'6px 0', borderBottom:'1px solid #1F2428', fontFamily:'monospace', fontSize:'12px' }}>
+                    <div key={label} style={{ display:'flex', justifyContent:'space-between', padding:'6px 0', borderBottom:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>
                       <span style={{ color:'#6B7280' }}>{label}</span>
                       <span style={{ color: label==='Average'?'#C8922A':'#F0EDE6' }}>{date.toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}</span>
                     </div>
@@ -126,20 +126,20 @@ export default function NFATracker() {
             </div>
 
             {/* Recent community approvals */}
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'28px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'28px' }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>RECENT COMMUNITY APPROVALS</h2>
               <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
                 {RECENT_APPROVALS.map((r,i)=>(
-                  <div key={i} style={{ padding:'12px 14px', background:'#0D1117', border:'1px solid #1F2428', display:'grid', gridTemplateColumns:'1fr auto', gap:'8px', alignItems:'center' }}>
+                  <div key={i} style={{ padding:'12px 14px', background:'#0D1117', border:'1px solid var(--border)', display:'grid', gridTemplateColumns:'1fr auto', gap:'8px', alignItems:'center' }}>
                     <div>
-                      <div style={{ fontFamily:'monospace', fontSize:'12px', fontWeight:700, color:'#F0EDE6', marginBottom:'3px' }}>{r.item}</div>
-                      <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>{r.form} · {r.state} · {r.days} days</div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'#F0EDE6', marginBottom:'3px' }}>{r.item}</div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>{r.form} · {r.state} · {r.days} days</div>
                     </div>
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.5rem', color:'#34D399', textAlign:'right' }}>{r.days}d</div>
                   </div>
                 ))}
               </div>
-              <div style={{ marginTop:'16px', fontFamily:'monospace', fontSize:'10px', color:'#374151' }}>
+              <div style={{ marginTop:'16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151' }}>
                 Community-reported. Data from r/NFA and r/suppressors.
               </div>
             </div>

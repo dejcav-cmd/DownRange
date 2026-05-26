@@ -100,11 +100,11 @@ export default async function ArticlePage({ params }) {
         )}
 
         {/* ── HEADER ── */}
-        <div style={{ background: imageUrl ? 'transparent' : 'linear-gradient(180deg, #111318 0%, #0A0B0C 100%)', borderBottom: '1px solid #1F2428', marginTop: imageUrl ? '-80px' : 0, position: 'relative', zIndex: 1 }}>
+        <div style={{ background: imageUrl ? 'transparent' : 'linear-gradient(180deg, #111318 0%, #0A0B0C 100%)', borderBottom: '1px solid var(--border)', marginTop: imageUrl ? '-80px' : 0, position: 'relative', zIndex: 1 }}>
           <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem 2.5rem' }}>
 
             {/* Breadcrumb */}
-            <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.72rem', fontFamily: 'monospace' }}>
+            <div style={{ display: 'flex', gap: 6, alignItems: 'center', marginBottom: '1.5rem', fontSize: '0.72rem', fontFamily: "'IBM Plex Mono',monospace" }}>
               <a href="/"     style={{ color: '#4B5563', textDecoration: 'none' }}>HOME</a>
               <span style={{ color: '#2D3748' }}>›</span>
               <a href="/news" style={{ color: '#4B5563', textDecoration: 'none' }}>NEWS</a>
@@ -114,11 +114,11 @@ export default async function ArticlePage({ params }) {
 
             {/* Badges */}
             <div style={{ display: 'flex', gap: 8, marginBottom: '1.25rem', flexWrap: 'wrap' }}>
-              <span style={{ background: cat.bg, color: cat.color, padding: '3px 10px', fontFamily: 'monospace', fontSize: '0.7rem', fontWeight: 700, border: `1px solid ${cat.color}40`, letterSpacing: '0.1em' }}>
+              <span style={{ background: cat.bg, color: cat.color, padding: '3px 10px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.7rem', fontWeight: 700, border: `1px solid ${cat.color}40`, letterSpacing: '0.1em' }}>
                 {cat.label}
               </span>
               {article.urgencyScore >= 8 && (
-                <span style={{ background: '#2a0000', color: '#EF4444', padding: '3px 10px', fontFamily: 'monospace', fontSize: '0.7rem', fontWeight: 700, border: '1px solid #EF444440', letterSpacing: '0.1em' }}>
+                <span style={{ background: '#2a0000', color: '#EF4444', padding: '3px 10px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.7rem', fontWeight: 700, border: '1px solid #EF444440', letterSpacing: '0.1em' }}>
                   ⚡ BREAKING · {article.urgencyScore}/10
                 </span>
               )}
@@ -137,14 +137,14 @@ export default async function ArticlePage({ params }) {
             )}
 
             {/* Meta */}
-            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap', fontSize: '0.78rem', color: '#4B5563', fontFamily: 'monospace' }}>
+            <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'wrap', fontSize: '0.78rem', color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace" }}>
               <span>{article.source || article.author?.name || 'DownRange Staff'}</span>
               <span style={{ color: '#2D3748' }}>|</span>
               <span>{formatDate(article.publishedAt)}</span>
               <span style={{ color: '#2D3748' }}>|</span>
               <span style={{ color: '#C8922A' }}>{timeAgo(article.publishedAt)}</span>
               <span style={{ color: '#2D3748' }}>|</span>
-              <span style={{ fontFamily: 'monospace' }}>{readingTime(article.summary || article.excerpt)}</span>
+              <span style={{ fontFamily: "'IBM Plex Mono',monospace" }}>{readingTime(article.summary || article.excerpt)}</span>
               {article.externalUrl && (
                 <>
                   <span style={{ color: '#2D3748' }}>|</span>
@@ -175,7 +175,7 @@ export default async function ArticlePage({ params }) {
 
                 {/* Tags inline */}
                 {article.tags?.length > 0 && (
-                  <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '2rem', fontFamily: 'monospace' }}>
+                  <p style={{ fontSize: '0.85rem', color: '#475569', marginBottom: '2rem', fontFamily: "'IBM Plex Mono',monospace" }}>
                     {article.tags.map(t => `#${t}`).join('  ')}
                   </p>
                 )}
@@ -184,11 +184,11 @@ export default async function ArticlePage({ params }) {
                 {article.externalUrl && (
                   <div style={{ marginTop: '2rem', padding: '1.5rem 2rem', background: '#0D1117', border: '1px solid #C8922A30', borderLeft: '4px solid #C8922A' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                      <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700 }}>
+                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700 }}>
                         ORIGINAL SOURCE
                       </span>
-                      <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#374151' }}>—</span>
-                      <span style={{ fontFamily: 'monospace', fontSize: '0.65rem', color: '#4B5563' }}>
+                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#374151' }}>—</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#4B5563' }}>
                         {article.source || 'External Publisher'}
                       </span>
                     </div>
@@ -197,7 +197,7 @@ export default async function ArticlePage({ params }) {
                       Read the full original report at {article.source || 'the source'}.
                     </p>
                     <a href={article.externalUrl} target="_blank" rel="noopener noreferrer"
-                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#C8922A', color: '#000', padding: '0.65rem 1.5rem', fontFamily: 'monospace', fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none', letterSpacing: '0.05em' }}>
+                      style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#C8922A', color: '#000', padding: '0.65rem 1.5rem', fontFamily: "'IBM Plex Mono',monospace", fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none', letterSpacing: '0.05em' }}>
                       READ ORIGINAL ARTICLE ↗
                     </a>
                   </div>
@@ -207,11 +207,11 @@ export default async function ArticlePage({ params }) {
 
             {/* Tags */}
             {article.tags?.length > 0 && (
-              <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid #1F2428' }}>
-                <div style={{ fontSize: '0.68rem', color: '#4B5563', marginBottom: '0.5rem', fontFamily: 'monospace', letterSpacing: '0.1em' }}>TAGS</div>
+              <div style={{ marginTop: '2.5rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)' }}>
+                <div style={{ fontSize: '0.68rem', color: '#4B5563', marginBottom: '0.5rem', fontFamily: "'IBM Plex Mono',monospace", letterSpacing: '0.1em' }}>TAGS</div>
                 <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
                   {article.tags.map(tag => (
-                    <span key={tag} style={{ background: '#111318', color: '#6B7280', padding: '3px 8px', fontFamily: 'monospace', fontSize: '0.68rem', border: '1px solid #1F2428' }}>
+                    <span key={tag} style={{ background: '#111318', color: '#6B7280', padding: '3px 8px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', border: '1px solid var(--border)' }}>
                       {tag}
                     </span>
                   ))}
@@ -220,14 +220,14 @@ export default async function ArticlePage({ params }) {
             )}
 
             {/* Share */}
-            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid #1F2428', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
-              <span style={{ fontSize: '0.7rem', color: '#4B5563', fontFamily: 'monospace', letterSpacing: '0.1em' }}>SHARE:</span>
+            <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
+              <span style={{ fontSize: '0.7rem', color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace", letterSpacing: '0.1em' }}>SHARE:</span>
               {[
                 { label: 'X / TWITTER', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://downrangeco.com/news/' + params.slug)}` },
                 { label: 'FACEBOOK',    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://downrangeco.com/news/' + params.slug)}` },
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                  style={{ color: '#4B5563', textDecoration: 'none', fontFamily: 'monospace', fontSize: '0.68rem', padding: '4px 8px', border: '1px solid #1F2428', transition: 'color 0.2s, border-color 0.2s' }}
+                  style={{ color: '#4B5563', textDecoration: 'none', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', padding: '4px 8px', border: '1px solid var(--border)', transition: 'color 0.2s, border-color 0.2s' }}
 >
                   {s.label}
                 </a>
@@ -238,8 +238,8 @@ export default async function ArticlePage({ params }) {
           {/* Sidebar */}
           <aside style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             {/* Related stories */}
-            <div style={{ background: '#111318', border: '1px solid #1F2428', padding: '1.25rem' }}>
-              <div style={{ fontFamily: 'monospace', fontSize: '0.68rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '1rem', fontWeight: 700 }}>MORE STORIES</div>
+            <div style={{ background: '#111318', border: '1px solid var(--border)', padding: '1.25rem' }}>
+              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '1rem', fontWeight: 700 }}>MORE STORIES</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {related.filter(a => a.slug?.current !== params.slug).slice(0, 5).map(a => {
                   const cs   = CAT_STYLE[a.category] || CAT_STYLE.news
@@ -253,17 +253,17 @@ export default async function ArticlePage({ params }) {
                         )}
                       </div>
                       <div style={{ flex: 1 }}>
-                        <div style={{ fontFamily: 'monospace', fontSize: '0.6rem', color: cs.color, marginBottom: 3, letterSpacing: '0.1em' }}>{cs.label}</div>
+                        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.6rem', color: cs.color, marginBottom: 3, letterSpacing: '0.1em' }}>{cs.label}</div>
                         <div style={{ fontSize: '0.82rem', color: '#D1D5DB', lineHeight: 1.35, fontWeight: 600 }}>
                           {a.title?.length > 75 ? a.title.slice(0, 75) + '…' : a.title}
                         </div>
-                        <div style={{ fontSize: '0.68rem', color: '#4B5563', marginTop: 3, fontFamily: 'monospace' }}>{timeAgo(a.publishedAt)}</div>
+                        <div style={{ fontSize: '0.68rem', color: '#4B5563', marginTop: 3, fontFamily: "'IBM Plex Mono',monospace" }}>{timeAgo(a.publishedAt)}</div>
                       </div>
                     </a>
                   )
                 })}
               </div>
-              <a href="/news" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', color: '#C8922A', textDecoration: 'none', fontFamily: 'monospace', fontSize: '0.68rem', letterSpacing: '0.1em' }}>
+              <a href="/news" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', color: '#C8922A', textDecoration: 'none', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', letterSpacing: '0.1em' }}>
                 ALL NEWS →
               </a>
             </div></aside>

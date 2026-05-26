@@ -93,12 +93,12 @@ export default function DealsPage() {
       <div className="page-hero" data-title="DEALS">
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px' }}>
-            <span style={{ display:'flex', alignItems:'center', gap:'6px', fontFamily:'monospace', fontSize:'11px', color:sc.color, letterSpacing:'0.1em' }}>
+            <span style={{ display:'flex', alignItems:'center', gap:'6px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:sc.color, letterSpacing:'0.1em' }}>
               {sc.dot && <span style={{ width:7, height:7, borderRadius:'50%', background:'#22C55E', animation:'pulse 1.2s ease-in-out infinite', display:'inline-block' }} />}
               {sc.text}
             </span>
             {meta && (
-              <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563' }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563' }}>
                 {meta.sources?.reddit > 0 && `${meta.sources.reddit} from r/gundeals · `}
                 {meta.sources?.gunDeals > 0 && `${meta.sources.gunDeals} from gun.deals · `}
                 {meta.sources?.ammoland > 0 && `${meta.sources.ammoland} from AmmoLand`}
@@ -123,7 +123,7 @@ export default function DealsPage() {
                 const col = f === 'all' ? '#C8922A' : (FLAIR_COLORS[f] || '#9CA3AF')
                 return (
                   <button key={f} onClick={() => setFilter(f)}
-                    style={{ fontFamily:'monospace', fontSize:'10px', padding:'5px 12px', border:`1px solid ${filter===f ? col : '#1F2428'}`, background:filter===f?`${col}18`:'transparent', color:filter===f?col:'#4B5563', cursor:'pointer', letterSpacing:'0.05em', transition:'all 0.12s' }}>
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'5px 12px', border:`1px solid ${filter===f ? col : '#1F2428'}`, background:filter===f?`${col}18`:'transparent', color:filter===f?col:'#4B5563', cursor:'pointer', letterSpacing:'0.05em', transition:'all 0.12s' }}>
                     {f === 'all' ? 'All Deals' : f}
                   </button>
                 )
@@ -134,12 +134,12 @@ export default function DealsPage() {
             <div style={{ display:'flex', gap:'6px', alignItems:'center' }}>
               {[['hot','🔥 Hottest'],['new','🆕 Newest']].map(([k,l]) => (
                 <button key={k} onClick={() => setSort(k)}
-                  style={{ fontFamily:'monospace', fontSize:'10px', padding:'5px 12px', border:`1px solid ${sort===k?'#C8922A':'#1F2428'}`, background:sort===k?'#C8922A20':'transparent', color:sort===k?'#C8922A':'#4B5563', cursor:'pointer' }}>
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'5px 12px', border:`1px solid ${sort===k?'#C8922A':'#1F2428'}`, background:sort===k?'#C8922A20':'transparent', color:sort===k?'#C8922A':'#4B5563', cursor:'pointer' }}>
                   {l}
                 </button>
               ))}
               <button onClick={load}
-                style={{ fontFamily:'monospace', fontSize:'10px', padding:'5px 12px', border:'1px solid #1F2428', background:'transparent', color:'#6B7280', cursor:'pointer' }}>
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'5px 12px', border:'1px solid var(--border)', background:'transparent', color:'#6B7280', cursor:'pointer' }}>
                 ↺ Refresh
               </button>
             </div>
@@ -147,11 +147,11 @@ export default function DealsPage() {
 
           {/* Source legend */}
           <div style={{ display:'flex', gap:'14px', marginBottom:'16px', flexWrap:'wrap', alignItems:'center' }}>
-            <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#374151', letterSpacing:'0.1em' }}>SOURCES:</span>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#374151', letterSpacing:'0.1em' }}>SOURCES:</span>
             {Object.entries(SRC_COLORS).map(([src, col]) => (
               <div key={src} style={{ display:'flex', alignItems:'center', gap:'4px' }}>
                 <span style={{ width:6, height:6, borderRadius:'50%', background:col, display:'inline-block' }} />
-                <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563' }}>{src}</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{src}</span>
               </div>
             ))}
           </div>
@@ -183,10 +183,10 @@ export default function DealsPage() {
                         <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.35rem', lineHeight:1, color: deal.score > 600 ? '#EF4444' : deal.score > 200 ? '#C8922A' : '#6B7280' }}>
                           {deal.score > 999 ? `${(deal.score/1000).toFixed(1)}k` : deal.score}
                         </div>
-                        <div style={{ fontFamily:'monospace', fontSize:'7px', color:'#374151' }}>▲ HOT</div>
+                        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'7px', color:'#374151' }}>▲ HOT</div>
                       </>
                     ) : (
-                      <div style={{ fontFamily:'monospace', fontSize:'8px', color:srcCol, lineHeight:1.4, textAlign:'center' }}>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:srcCol, lineHeight:1.4, textAlign:'center' }}>
                         {deal.pinned ? '★\nFEAT' : '●'}
                       </div>
                     )}
@@ -196,17 +196,17 @@ export default function DealsPage() {
                   <div style={{ minWidth:0 }}>
                     <div style={{ display:'flex', gap:'5px', marginBottom:'4px', flexWrap:'wrap', alignItems:'center' }}>
                       {deal.flair && (
-                        <span style={{ fontFamily:'monospace', fontSize:'9px', color:catCol, background:`${catCol}18`, padding:'1px 7px', letterSpacing:'0.05em', flexShrink:0 }}>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:catCol, background:`${catCol}18`, padding:'1px 7px', letterSpacing:'0.05em', flexShrink:0 }}>
                           {deal.flair.toUpperCase()}
                         </span>
                       )}
-                      {hot && <span style={{ fontFamily:'monospace', fontSize:'8px', color:'#EF4444', background:'#1A0000', padding:'1px 6px' }}>🔥 HOT</span>}
-                      {deal.pinned && <span style={{ fontFamily:'monospace', fontSize:'8px', color:'#C8922A', background:'#1A0E00', padding:'1px 6px' }}>★ PARTNER</span>}
+                      {hot && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#EF4444', background:'#1A0000', padding:'1px 6px' }}>🔥 HOT</span>}
+                      {deal.pinned && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#C8922A', background:'#1A0E00', padding:'1px 6px' }}>★ PARTNER</span>}
                     </div>
                     <div style={{ fontSize:'14px', fontWeight:600, color:'#F0EDE6', lineHeight:1.35, marginBottom:'5px', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
                       {deal.title}
                     </div>
-                    <div style={{ display:'flex', gap:'10px', fontFamily:'monospace', fontSize:'10px', color:'#4B5563', flexWrap:'wrap' }}>
+                    <div style={{ display:'flex', gap:'10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', flexWrap:'wrap' }}>
                       <span style={{ color:srcCol, fontWeight:700 }}>● {deal.source}</span>
                       {deal.domain && deal.domain !== deal.source && <span>{deal.domain}</span>}
                       <span>{timeAgo(deal.created)}</span>
@@ -216,7 +216,7 @@ export default function DealsPage() {
                   {/* CTA */}
                   <div style={{ flexShrink:0 }}>
                     <span style={{
-                      fontFamily:'monospace', fontSize:'11px', padding:'6px 14px',
+                      fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'6px 14px',
                       display:'block', whiteSpace:'nowrap', letterSpacing:'0.03em',
                       border:`1px solid #C8922A`,
                       background: deal.pinned ? '#C8922A' : 'transparent',
@@ -231,14 +231,14 @@ export default function DealsPage() {
           </div>
 
           {/* Footer note */}
-          <div style={{ marginTop:'20px', padding:'14px 18px', background:'#111318', border:'1px solid #1F2428', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'8px' }}>
-            <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#374151', lineHeight:1.6 }}>
+          <div style={{ marginTop:'20px', padding:'14px 18px', background:'#111318', border:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:'8px' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', lineHeight:1.6 }}>
               Deals sourced from r/gundeals, gun.deals, AmmoLand, and retail partners. Always verify pricing at the retailer before purchasing. DownRange is not responsible for pricing errors.
             </span>
             <div style={{ display:'flex', gap:'12px', flexShrink:0 }}>
-              <a href="https://www.reddit.com/r/gundeals" target="_blank" rel="noreferrer" style={{ fontFamily:'monospace', fontSize:'10px', color:'#FF4500', textDecoration:'none' }}>r/gundeals ↗</a>
-              <a href="https://gun.deals" target="_blank" rel="noreferrer" style={{ fontFamily:'monospace', fontSize:'10px', color:'#FF6314', textDecoration:'none' }}>gun.deals ↗</a>
-              <a href="https://www.mrgunsngear.com/shop/" target="_blank" rel="noreferrer" style={{ fontFamily:'monospace', fontSize:'10px', color:'#EF4444', textDecoration:'none' }}>MrGunsNGear ↗</a>
+              <a href="https://www.reddit.com/r/gundeals" target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#FF4500', textDecoration:'none' }}>r/gundeals ↗</a>
+              <a href="https://gun.deals" target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#FF6314', textDecoration:'none' }}>gun.deals ↗</a>
+              <a href="https://www.mrgunsngear.com/shop/" target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#EF4444', textDecoration:'none' }}>MrGunsNGear ↗</a>
             </div>
           </div>
         </div>

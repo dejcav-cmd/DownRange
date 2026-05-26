@@ -34,13 +34,13 @@ function VideoCard({ video, large = false }) {
     return (
       <div>
         <a href={ytUrl} target="_blank" rel="noreferrer" style={{ display: 'block', textDecoration: 'none' }}>
-          <div style={{ background: '#16191F', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', border: '1px solid #1F2428', cursor: 'pointer' }}>
+          <div style={{ background: '#16191F', aspectRatio: '16/9', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden', border: '1px solid var(--border)', cursor: 'pointer' }}>
             <img src={thumb} alt={video.title} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} />
             <div style={{ position: 'absolute', inset: 0, background: 'rgba(0,0,0,0.3)' }} />
             <div style={{ position: 'absolute', width: '64px', height: '64px', background: 'rgba(200,146,42,0.9)', borderRadius: '50%', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '24px', color: '#09090B' }}>▶</div>
           </div>
         </a>
-        <div style={{ padding: '16px', background: '#111318', border: '1px solid #1F2428', borderTop: 'none' }}>
+        <div style={{ padding: '16px', background: '#111318', border: '1px solid var(--border)', borderTop: 'none' }}>
           <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '18px', fontWeight: 600, color: '#F0EDE6', lineHeight: 1.2, marginBottom: '6px' }}>{video.title}</div>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#6B7280' }}>
             {video.channelName} · {video.duration} · {video.viewCount?.toLocaleString()} views
@@ -52,7 +52,7 @@ function VideoCard({ video, large = false }) {
 
   return (
     <a href={ytUrl} target="_blank" rel="noreferrer"
-      style={{ display: 'flex', gap: '12px', background: '#111318', border: '1px solid #1F2428', padding: '12px', textDecoration: 'none', transition: 'border-color 0.2s' }}>
+      style={{ display: 'flex', gap: '12px', background: '#111318', border: '1px solid var(--border)', padding: '12px', textDecoration: 'none', transition: 'border-color 0.2s' }}>
       <div style={{ width: '80px', flexShrink: 0, height: '60px', background: '#16191F', display: 'flex', alignItems: 'center', justifyContent: 'center', position: 'relative', overflow: 'hidden' }}>
         <img src={thumb} alt={video.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
         {video.duration && (
@@ -140,7 +140,7 @@ export default async function VideoPage({ searchParams }) {
 
           {videos.length === 0 && (
             <div>
-              <div style={{ fontFamily: 'monospace', fontSize: '11px', color: '#4B5563', letterSpacing: '0.12em', marginBottom: '20px', padding: '10px 16px', background: '#111318', border: '1px solid #1F2428' }}>
+              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#4B5563', letterSpacing: '0.12em', marginBottom: '20px', padding: '10px 16px', background: '#111318', border: '1px solid var(--border)' }}>
                 ◈ Live video feed activates when YouTube API key is configured. Showing featured channels preview.
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>

@@ -126,14 +126,14 @@ export default function StateMap({ profiles = [] }) {
     <div style={{ position: 'relative', userSelect: 'none' }}>
       {/* Legend */}
       <div style={{ display:'flex', gap:'12px', marginBottom:'16px', flexWrap:'wrap', alignItems:'center' }}>
-        <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>2A FREEDOM RATING:</span>
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>2A FREEDOM RATING:</span>
         {Object.entries(RATING_COLORS).map(([r, c]) => (
           <div key={r} style={{ display:'flex', alignItems:'center', gap:'4px' }}>
             <div style={{ width:14, height:14, background:c, borderRadius:'2px', opacity:0.85 }} />
-            <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280' }}>{r}</span>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280' }}>{r}</span>
           </div>
         ))}
-        <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', marginLeft:'8px' }}>Click any state for full law details</span>
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', marginLeft:'8px' }}>Click any state for full law details</span>
       </div>
 
       {/* Tooltip */}
@@ -149,14 +149,14 @@ export default function StateMap({ profiles = [] }) {
             {hoverData.name || hovered}
           </div>
           <div style={{ display:'flex', gap:'8px', flexWrap:'wrap' }}>
-            <span style={{ fontFamily:'monospace', fontSize:'10px', color:getColor(hovered), background:`${getColor(hovered)}20`, padding:'1px 7px' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:getColor(hovered), background:`${getColor(hovered)}20`, padding:'1px 7px' }}>
               {getRating(hovered)} RATING
             </span>
-            <span style={{ fontFamily:'monospace', fontSize:'10px', color: getCC(hovered) ? '#34D399':'#EF4444' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: getCC(hovered) ? '#34D399':'#EF4444' }}>
               {getCC(hovered) ? '✓ CC' : '✗ Permit'}
             </span>
           </div>
-          <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#374151', marginTop:'5px' }}>Click for full details →</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#374151', marginTop:'5px' }}>Click for full details →</div>
         </div>
       )}
 

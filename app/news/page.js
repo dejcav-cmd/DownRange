@@ -51,7 +51,7 @@ export default async function NewsPage({ searchParams }) {
         </div>
       </div>
 
-      <div style={{ padding: '32px 0', borderBottom: '1px solid #1F2428' }}>
+      <div style={{ padding: '32px 0', borderBottom: '1px solid var(--border)' }}>
         <div className="container">
           {/* Category tabs */}
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px', flexWrap:'wrap', gap:8 }}>
@@ -64,10 +64,10 @@ export default async function NewsPage({ searchParams }) {
               ))}
             </div>
             <div style={{ display:'flex', gap:'5px', alignItems:'center' }}>
-              <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
               {[['newest','📅 Newest'],['urgency','⚡ Urgency']].map(([key,label]) => (
                 <a key={key} href={`/news?cat=${cat||''}&sort=${key}`}
-                  style={{ fontFamily:'monospace', fontSize:'10px', padding:'4px 10px', border:'1px solid #1F2428', color:sort===key?'#C8922A':'#4B5563', textDecoration:'none', background:sort===key?'#C8922A20':'transparent' }}>
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 10px', border:'1px solid var(--border)', color:sort===key?'#C8922A':'#4B5563', textDecoration:'none', background:sort===key?'#C8922A20':'transparent' }}>
                   {label}
                 </a>
               ))}
@@ -107,7 +107,7 @@ export default async function NewsPage({ searchParams }) {
                   { _id:'a3', headline:'California AWB Ruled Unconstitutional — Appeal Filed', urgencyScore:8, url:'/laws' },
                 ]).slice(0, 5).map(alert => (
                   <a key={alert._id} href={alert.url || '#'} target="_blank" rel="noreferrer"
-                    style={{ display: 'block', padding: '12px 0', borderBottom: '1px solid #1F2428', textDecoration: 'none' }}>
+                    style={{ display: 'block', padding: '12px 0', borderBottom: '1px solid var(--border)', textDecoration: 'none' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                       <span className="pulse-dot" />
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', color: '#EF4444' }}>{alert.urgencyScore}/10</span>
@@ -127,7 +127,7 @@ export default async function NewsPage({ searchParams }) {
                   { _id:'l3', title:'BSCA Implementation', billNumber:'S. 2938', status:'signed', summary:'Enhanced background checks for under-21 buyers.' },
                 ]).map(bill => (
                   <a key={bill._id} href={bill.url || '#'} target="_blank" rel="noreferrer"
-                    style={{ display: 'flex', gap: '10px', padding: '10px 0', borderBottom: '1px solid #1F2428', textDecoration: 'none' }}>
+                    style={{ display: 'flex', gap: '10px', padding: '10px 0', borderBottom: '1px solid var(--border)', textDecoration: 'none' }}>
                     <div style={{ flexShrink: 0 }}>
                       <span className={`status-badge status-${bill.status}`}>{bill.status}</span>
                       <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', color: '#6B7280', marginTop: '3px' }}>{bill.billNumber}</div>

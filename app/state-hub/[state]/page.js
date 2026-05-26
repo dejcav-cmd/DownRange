@@ -34,9 +34,9 @@ export async function generateMetadata({ params }) {
 function LawRow({ label, value, good }) {
   const color = good === true ? '#34D399' : good === false ? '#EF4444' : '#9CA3AF'
   return (
-    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 0', borderBottom:'1px solid #1F2428' }}>
-      <span style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280' }}>{label}</span>
-      <span style={{ fontFamily:'monospace', fontSize:'12px', color, fontWeight:600, textAlign:'right', maxWidth:'55%' }}>{value || 'Not specified'}</span>
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 0', borderBottom:'1px solid var(--border)' }}>
+      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280' }}>{label}</span>
+      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color, fontWeight:600, textAlign:'right', maxWidth:'55%' }}>{value || 'Not specified'}</span>
     </div>
   )
 }
@@ -65,7 +65,7 @@ export default async function StatePage({ params }) {
       <div className="page-hero" data-title={abbr}>
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'8px' }}>
-            <Link href="/state-hub" style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>← STATE HUB</Link>
+            <Link href="/state-hub" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>← STATE HUB</Link>
           </div>
           <div style={{ display:'flex', alignItems:'flex-end', gap:'20px' }}>
             <div>
@@ -75,7 +75,7 @@ export default async function StatePage({ params }) {
             {data.rating && (
               <div style={{ textAlign:'center', marginBottom:'8px' }}>
                 <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'4rem', color:ratingColor, lineHeight:1 }}>{data.rating}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', letterSpacing:'0.1em' }}>2A RATING</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', letterSpacing:'0.1em' }}>2A RATING</div>
               </div>
             )}
           </div>
@@ -87,7 +87,7 @@ export default async function StatePage({ params }) {
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px' }}>
 
             {/* Carry laws */}
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px' }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>CARRY LAWS</h2>
               <LawRow label="Constitutional Carry" value={data.constitutionalCarry ? '✓ YES — No permit required' : '✗ NO — Permit required'} good={data.constitutionalCarry} />
               <LawRow label="CCW Permit" value={data.ccwPermit} good={null} />
@@ -97,7 +97,7 @@ export default async function StatePage({ params }) {
             </div>
 
             {/* Restrictions */}
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px' }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>RESTRICTIONS</h2>
               <LawRow label="Red Flag Law (ERPO)" value={data.redFlagLaw ? '⚠ YES — In effect' : '✓ NO'} good={!data.redFlagLaw} />
               <LawRow label="Magazine Limit" value={data.magLimit ? `${data.magLimit} rounds max` : 'None'} good={!data.magLimit} />
@@ -107,14 +107,14 @@ export default async function StatePage({ params }) {
 
             {/* Reciprocity */}
             {data.reciprocityStates?.length > 0 && (
-              <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px', gridColumn:'1/-1' }}>
+              <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px', gridColumn:'1/-1' }}>
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>
                   CCW RECIPROCITY — {data.reciprocityStates.length} STATES HONOR YOUR {abbr} PERMIT
                 </h2>
                 <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
                   {data.reciprocityStates.map(s => (
                     <Link key={s} href={`/state-hub/${s.toLowerCase()}`}
-                      style={{ fontFamily:'monospace', fontSize:'11px', color:'#34D399', background:'#001A0A', border:'1px solid #16603440', padding:'4px 10px', textDecoration:'none' }}>
+                      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#34D399', background:'#001A0A', border:'1px solid #16603440', padding:'4px 10px', textDecoration:'none' }}>
                       {s}
                     </Link>
                   ))}
@@ -124,12 +124,12 @@ export default async function StatePage({ params }) {
 
             {/* Recent bills */}
             {data.recentBills?.length > 0 && (
-              <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px', gridColumn:'1/-1' }}>
+              <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px', gridColumn:'1/-1' }}>
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>RECENT LEGISLATION</h2>
                 <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
                   {data.recentBills.slice(0,5).map((b, i) => (
-                    <div key={i} style={{ padding:'12px 16px', background:'#0D1117', border:'1px solid #1F2428' }}>
-                      <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#C8922A', marginBottom:'4px' }}>{b.billNumber} · {b.status}</div>
+                    <div key={i} style={{ padding:'12px 16px', background:'#0D1117', border:'1px solid var(--border)' }}>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', marginBottom:'4px' }}>{b.billNumber} · {b.status}</div>
                       <div style={{ fontSize:'14px', color:'#F0EDE6', fontWeight:600 }}>{b.title}</div>
                       {b.summary && <div style={{ fontSize:'12px', color:'#6B7280', marginTop:'4px' }}>{b.summary}</div>}
                     </div>
@@ -139,7 +139,7 @@ export default async function StatePage({ params }) {
             )}
           </div>
 
-          <div style={{ marginTop:'24px', padding:'16px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+          <div style={{ marginTop:'24px', padding:'16px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
             ⚠ Laws change frequently. Always verify current statutes before carrying. This is general information, not legal advice. Consult a licensed attorney for legal decisions.
             {!profile && <span style={{ color:'#C8922A' }}> · Live data populates when LegiScan feed runs.</span>}
           </div>

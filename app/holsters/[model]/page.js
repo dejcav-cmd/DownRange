@@ -47,7 +47,7 @@ export default function HolsterPage({ params }) {
   if (!d) return (
     <>
       <Masthead />
-      <div style={{ padding:'100px', textAlign:'center', color:'#6B7280', fontFamily:'monospace' }}>
+      <div style={{ padding:'100px', textAlign:'center', color:'#6B7280', fontFamily:"'IBM Plex Mono',monospace" }}>
         Holster data not yet available for this model.<br/><br/>
         <a href="/holsters/glock-19" style={{ color:'#C8922A' }}>Try Glock 19 →</a>
       </div>
@@ -60,7 +60,7 @@ export default function HolsterPage({ params }) {
       <Masthead />
       <div className="page-hero" data-title="HOLSTERS">
         <div className="container">
-          <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', marginBottom:'6px' }}>HOLSTER GUIDE</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', marginBottom:'6px' }}>HOLSTER GUIDE</div>
           <h1 className="page-hero-title">Best Holsters for the {d.name}</h1>
           <p className="page-hero-sub">IWB · AIWB · OWB · Shoulder — expert-curated recommendations</p>
         </div>
@@ -70,7 +70,7 @@ export default function HolsterPage({ params }) {
           <div style={{ display:'flex', gap:'8px', marginBottom:'24px' }}>
             {Object.keys(HOLSTER_DB).map(m=>(
               <a key={m} href={`/holsters/${m}`}
-                style={{ fontFamily:'monospace', fontSize:'11px', padding:'5px 12px', border:'1px solid #1F2428', color: m===params.model?'#C8922A':'#4B5563', textDecoration:'none', background: m===params.model?'#C8922A20':'transparent' }}>
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'5px 12px', border:'1px solid var(--border)', color: m===params.model?'#C8922A':'#4B5563', textDecoration:'none', background: m===params.model?'#C8922A20':'transparent' }}>
                 {HOLSTER_DB[m].name}
               </a>
             ))}
@@ -80,24 +80,24 @@ export default function HolsterPage({ params }) {
             {d.holsters.sort((a,b)=>b.rating-a.rating).map((h,i)=>{
               const typeColor = TYPE_COLORS[h.type] || '#9CA3AF'
               return (
-                <div key={h.model} style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px 24px', display:'grid', gridTemplateColumns:'auto 1fr auto', gap:'20px', alignItems:'center' }}>
+                <div key={h.model} style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px 24px', display:'grid', gridTemplateColumns:'auto 1fr auto', gap:'20px', alignItems:'center' }}>
                   <div style={{ textAlign:'center', minWidth:'50px' }}>
-                    {i===0 && <div style={{ fontFamily:'monospace', fontSize:'8px', color:'#C8922A', marginBottom:'4px' }}>★ TOP</div>}
+                    {i===0 && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#C8922A', marginBottom:'4px' }}>★ TOP</div>}
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.8rem', color:'#C8922A', lineHeight:1 }}>{h.rating}</div>
-                    <div style={{ fontFamily:'monospace', fontSize:'8px', color:'#4B5563' }}>/10</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'#4B5563' }}>/10</div>
                   </div>
                   <div>
                     <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap', alignItems:'center' }}>
-                      <span style={{ fontFamily:'monospace', fontSize:'13px', fontWeight:700, color:'#F0EDE6' }}>{h.brand} {h.model}</span>
-                      <span style={{ fontFamily:'monospace', fontSize:'9px', color:typeColor, background:`${typeColor}20`, padding:'2px 8px' }}>{h.type}</span>
-                      <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563' }}>{h.material}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', fontWeight:700, color:'#F0EDE6' }}>{h.brand} {h.model}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:typeColor, background:`${typeColor}20`, padding:'2px 8px' }}>{h.type}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{h.material}</span>
                     </div>
-                    <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.6 }}>{h.notes}</p>
+                    <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.6 }}>{h.notes}</p>
                   </div>
                   <div style={{ textAlign:'right' }}>
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.5rem', color:'#C8922A', marginBottom:'6px' }}>${h.price}</div>
                     <a href={h.url} target="_blank" rel="noreferrer"
-                      style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', border:'1px solid #C8922A', padding:'5px 12px', textDecoration:'none', display:'block', textAlign:'center' }}>
+                      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', border:'1px solid #C8922A', padding:'5px 12px', textDecoration:'none', display:'block', textAlign:'center' }}>
                       SHOP →
                     </a>
                   </div>
@@ -106,7 +106,7 @@ export default function HolsterPage({ params }) {
             })}
           </div>
 
-          <div style={{ marginTop:'24px', padding:'16px 20px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+          <div style={{ marginTop:'24px', padding:'16px 20px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
             ⚠ Always test a new holster with an unloaded firearm before carrying. Verify trigger guard coverage before use. DownRange does not receive affiliate compensation on these recommendations.
           </div>
         </div>

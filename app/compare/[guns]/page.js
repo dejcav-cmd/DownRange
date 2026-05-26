@@ -69,23 +69,23 @@ export default async function ComparePage({ params }) {
           <div style={{ display:'flex', gap:'8px', marginBottom:'32px', flexWrap:'wrap' }}>
             {POPULAR.map(p=>(
               <a key={p.slug} href={`/compare/${p.slug}`}
-                style={{ fontFamily:'monospace', fontSize:'11px', padding:'6px 14px', border:'1px solid #1F2428', color:'#6B7280', textDecoration:'none', background: params.guns===p.slug?'#C8922A20':'transparent' }}>
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'6px 14px', border:'1px solid var(--border)', color:'#6B7280', textDecoration:'none', background: params.guns===p.slug?'#C8922A20':'transparent' }}>
                 {p.label}
               </a>
             ))}
           </div>
 
           {!g1 || !g2 ? (
-            <div style={{ textAlign:'center', padding:'80px', fontFamily:'monospace', fontSize:'13px', color:'#4B5563' }}>
+            <div style={{ textAlign:'center', padding:'80px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#4B5563' }}>
               Select a comparison above, or visit /compare/glock-17-vs-sig-p320
             </div>
           ) : (
             <>
               {/* Specs table */}
-              <div style={{ display:'grid', gridTemplateColumns:'1fr 200px 1fr', gap:'0', marginBottom:'32px', background:'#111318', border:'1px solid #1F2428', overflow:'hidden' }}>
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 200px 1fr', gap:'0', marginBottom:'32px', background:'#111318', border:'1px solid var(--border)', overflow:'hidden' }}>
                 {/* Headers */}
                 <div style={{ padding:'16px 20px', background:'#16191F', fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em' }}>{g1.name}</div>
-                <div style={{ padding:'16px 20px', background:'#1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', textAlign:'center', letterSpacing:'0.1em', display:'flex', alignItems:'center', justifyContent:'center' }}>VS</div>
+                <div style={{ padding:'16px 20px', background:'#1F2428', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', textAlign:'center', letterSpacing:'0.1em', display:'flex', alignItems:'center', justifyContent:'center' }}>VS</div>
                 <div style={{ padding:'16px 20px', background:'#16191F', fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', textAlign:'right' }}>{g2.name}</div>
 
                 {/* Spec rows */}
@@ -97,9 +97,9 @@ export default async function ComparePage({ params }) {
                   const v2 = key==='msrp'?`$${g2[key]}`:key==='score'?`${g2[key]}/10`:g2[key]
                   const winner = key==='msrp' ? (g1[key]<g2[key]?1:2) : key==='score'?(g1[key]>g2[key]?1:2):0
                   return [
-                    <div key={`${key}-1`} style={{ padding:'12px 20px', borderTop:'1px solid #1F2428', fontFamily:'monospace', fontSize:'13px', color: winner===1?'#34D399':'#F0EDE6', fontWeight:winner===1?700:400 }}>{v1}</div>,
-                    <div key={`${key}-m`} style={{ padding:'12px 20px', borderTop:'1px solid #1F2428', fontFamily:'monospace', fontSize:'10px', color:'#4B5563', textAlign:'center', background:'#0D1117', display:'flex', alignItems:'center', justifyContent:'center' }}>{label.toUpperCase()}</div>,
-                    <div key={`${key}-2`} style={{ padding:'12px 20px', borderTop:'1px solid #1F2428', fontFamily:'monospace', fontSize:'13px', color: winner===2?'#34D399':'#F0EDE6', fontWeight:winner===2?700:400, textAlign:'right' }}>{v2}</div>,
+                    <div key={`${key}-1`} style={{ padding:'12px 20px', borderTop:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color: winner===1?'#34D399':'#F0EDE6', fontWeight:winner===1?700:400 }}>{v1}</div>,
+                    <div key={`${key}-m`} style={{ padding:'12px 20px', borderTop:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', textAlign:'center', background:'#0D1117', display:'flex', alignItems:'center', justifyContent:'center' }}>{label.toUpperCase()}</div>,
+                    <div key={`${key}-2`} style={{ padding:'12px 20px', borderTop:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color: winner===2?'#34D399':'#F0EDE6', fontWeight:winner===2?700:400, textAlign:'right' }}>{v2}</div>,
                   ]
                 })}
               </div>
@@ -107,15 +107,15 @@ export default async function ComparePage({ params }) {
               {/* Pros/Cons */}
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'20px', marginBottom:'32px' }}>
                 {[g1,g2].map((g,i)=>(
-                  <div key={i} style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px' }}>
+                  <div key={i} style={{ background:'#111318', border:'1px solid var(--border)', padding:'20px' }}>
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.2rem', color:'#C8922A', marginBottom:'12px' }}>{g.name}</div>
                     <div style={{ marginBottom:'12px' }}>
-                      <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#34D399', letterSpacing:'0.12em', marginBottom:'6px' }}>PROS</div>
-                      {g.pros.map((p,j)=><div key={j} style={{ fontFamily:'monospace', fontSize:'11px', color:'#86EFAC', marginBottom:'4px', paddingLeft:'8px' }}>✓ {p}</div>)}
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#34D399', letterSpacing:'0.12em', marginBottom:'6px' }}>PROS</div>
+                      {g.pros.map((p,j)=><div key={j} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#86EFAC', marginBottom:'4px', paddingLeft:'8px' }}>✓ {p}</div>)}
                     </div>
                     <div>
-                      <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#EF4444', letterSpacing:'0.12em', marginBottom:'6px' }}>CONS</div>
-                      {g.cons.map((c,j)=><div key={j} style={{ fontFamily:'monospace', fontSize:'11px', color:'#FCA5A5', marginBottom:'4px', paddingLeft:'8px' }}>✗ {c}</div>)}
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#EF4444', letterSpacing:'0.12em', marginBottom:'6px' }}>CONS</div>
+                      {g.cons.map((c,j)=><div key={j} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#FCA5A5', marginBottom:'4px', paddingLeft:'8px' }}>✗ {c}</div>)}
                     </div>
                   </div>
                 ))}
@@ -124,7 +124,7 @@ export default async function ComparePage({ params }) {
               {/* AI Verdict */}
               {verdict && (
                 <div style={{ background:'#0D1117', border:'1px solid #C8922A40', borderLeft:'4px solid #C8922A', padding:'24px', marginBottom:'24px' }}>
-                  <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', marginBottom:'12px', fontWeight:700 }}>🤖 AI VERDICT — CLAUDE</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', marginBottom:'12px', fontWeight:700 }}>🤖 AI VERDICT — CLAUDE</div>
                   <p style={{ fontSize:'14px', color:'#94A3B8', lineHeight:1.8 }}>{verdict}</p>
                 </div>
               )}

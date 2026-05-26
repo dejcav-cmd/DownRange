@@ -56,10 +56,10 @@ export default function ContributePage() {
           <div className="container" style={{ maxWidth:900 }}>
 
             {/* Tab bar */}
-            <div style={{ display:'flex', gap:0, borderBottom:'1px solid #1F2428', marginBottom:'36px' }}>
+            <div style={{ display:'flex', gap:0, borderBottom:'1px solid var(--border)', marginBottom:'36px' }}>
               {tabs.map(t=>(
                 <button key={t.key} onClick={()=>setActive(t.key)}
-                  style={{ background:'none', border:'none', borderBottom:`2px solid ${active===t.key?'#C8922A':'transparent'}`, color:active===t.key?'#C8922A':'#4B5563', padding:'12px 24px', fontFamily:'monospace', fontSize:'12px', cursor:'pointer', letterSpacing:'0.05em' }}>
+                  style={{ background:'none', border:'none', borderBottom:`2px solid ${active===t.key?'#C8922A':'transparent'}`, color:active===t.key?'#C8922A':'#4B5563', padding:'12px 24px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', cursor:'pointer', letterSpacing:'0.05em' }}>
                   {t.label.toUpperCase()}
                 </button>
               ))}
@@ -69,7 +69,7 @@ export default function ContributePage() {
             {active==='guidelines' && (
               <div>
                 <div style={{ background:'#111318', border:'1px solid #C8922A40', borderLeft:'4px solid #C8922A', padding:'20px 24px', marginBottom:'32px' }}>
-                  <p style={{ fontFamily:'monospace', fontSize:'13px', color:'#94A3B8', lineHeight:1.8 }}>
+                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#94A3B8', lineHeight:1.8 }}>
                     DownRange reaches dedicated firearms owners, concealed carriers, legal professionals, and 2A advocates across all 50 states. We publish original, expert-driven content — not AI slop or recycled press releases. If you know firearms law, technique, or the industry from the inside, we want to hear from you.
                   </p>
                 </div>
@@ -77,12 +77,12 @@ export default function ContributePage() {
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>WHAT WE PUBLISH</h2>
                 <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginBottom:'36px' }}>
                   {WHAT_WE_PUBLISH.map(w=>(
-                    <div key={w.title} style={{ background:'#111318', border:'1px solid #1F2428', padding:'18px 20px', borderLeft:'3px solid #C8922A' }}>
+                    <div key={w.title} style={{ background:'#111318', border:'1px solid var(--border)', padding:'18px 20px', borderLeft:'3px solid #C8922A' }}>
                       <div style={{ display:'flex', gap:'10px', marginBottom:'8px' }}>
                         <span style={{ fontSize:'18px' }}>{w.icon}</span>
-                        <span style={{ fontFamily:'monospace', fontSize:'13px', fontWeight:700, color:'#F0EDE6' }}>{w.title}</span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', fontWeight:700, color:'#F0EDE6' }}>{w.title}</span>
                       </div>
-                      <p style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{w.desc}</p>
+                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{w.desc}</p>
                     </div>
                   ))}
                 </div>
@@ -96,13 +96,13 @@ export default function ContributePage() {
                     ['Disclosure','Disclose any manufacturer relationships, free samples, or financial interests related to reviewed products.'],
                     ['Rights','First digital rights for 90 days. Authors retain copyright. We may republish with credit after 90 days.'],
                   ].map(([k,v])=>(
-                    <div key={k} style={{ background:'#111318', border:'1px solid #1F2428', padding:'12px 16px', display:'grid', gridTemplateColumns:'120px 1fr', gap:16, alignItems:'start' }}>
-                      <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#C8922A', fontWeight:700 }}>{k.toUpperCase()}</span>
-                      <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#6B7280', lineHeight:1.6 }}>{v}</span>
+                    <div key={k} style={{ background:'#111318', border:'1px solid var(--border)', padding:'12px 16px', display:'grid', gridTemplateColumns:'120px 1fr', gap:16, alignItems:'start' }}>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', fontWeight:700 }}>{k.toUpperCase()}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', lineHeight:1.6 }}>{v}</span>
                     </div>
                   ))}
                 </div>
-                <button onClick={()=>setActive('submit')} style={{ background:'#C8922A', color:'#000', border:'none', padding:'13px 28px', fontFamily:'monospace', fontWeight:700, fontSize:'13px', cursor:'pointer' }}>
+                <button onClick={()=>setActive('submit')} style={{ background:'#C8922A', color:'#000', border:'none', padding:'13px 28px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'13px', cursor:'pointer' }}>
                   SUBMIT A PITCH →
                 </button>
               </div>
@@ -111,27 +111,27 @@ export default function ContributePage() {
             {/* RATES */}
             {active==='rates' && (
               <div>
-                <div style={{ background:'#111318', border:'1px solid #1F2428', borderLeft:'4px solid #C8922A', padding:'20px 24px', marginBottom:'28px' }}>
-                  <p style={{ fontFamily:'monospace', fontSize:'13px', color:'#94A3B8', lineHeight:1.8 }}>
+                <div style={{ background:'#111318', border:'1px solid var(--border)', borderLeft:'4px solid #C8922A', padding:'20px 24px', marginBottom:'28px' }}>
+                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#94A3B8', lineHeight:1.8 }}>
                     We pay for quality content. Rates are negotiable based on credentials, exclusivity, and publication slot. Payment via PayPal, Venmo, or check within 30 days of publication.
                   </p>
                 </div>
                 <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'32px' }}>
-                  <div style={{ display:'grid', gridTemplateColumns:'1fr 120px 180px', gap:12, padding:'8px 14px', fontFamily:'monospace', fontSize:'9px', color:'#4B5563', letterSpacing:'0.12em', borderBottom:'1px solid #1F2428' }}>
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 120px 180px', gap:12, padding:'8px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', letterSpacing:'0.12em', borderBottom:'1px solid var(--border)' }}>
                     <span>CONTENT TYPE</span><span>RATE</span><span>NOTES</span>
                   </div>
                   {RATES.map(r=>(
-                    <div key={r.type} style={{ background:'#111318', border:'1px solid #1F2428', padding:'14px', display:'grid', gridTemplateColumns:'1fr 120px 180px', gap:12, alignItems:'center' }}>
-                      <span style={{ fontFamily:'monospace', fontSize:'12px', color:'#F0EDE6' }}>{r.type}</span>
+                    <div key={r.type} style={{ background:'#111318', border:'1px solid var(--border)', padding:'14px', display:'grid', gridTemplateColumns:'1fr 120px 180px', gap:12, alignItems:'center' }}>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#F0EDE6' }}>{r.type}</span>
                       <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.2rem', color:'#C8922A' }}>{r.rate}</span>
-                      <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>{r.notes}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>{r.notes}</span>
                     </div>
                   ))}
                 </div>
-                <div style={{ padding:'16px 20px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+                <div style={{ padding:'16px 20px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
                   Rates listed are per-piece, for first-time contributors. Regular contributors may negotiate ongoing rates. All rates in USD.
                 </div>
-                <button onClick={()=>setActive('submit')} style={{ marginTop:'24px', background:'#C8922A', color:'#000', border:'none', padding:'13px 28px', fontFamily:'monospace', fontWeight:700, fontSize:'13px', cursor:'pointer' }}>
+                <button onClick={()=>setActive('submit')} style={{ marginTop:'24px', background:'#C8922A', color:'#000', border:'none', padding:'13px 28px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'13px', cursor:'pointer' }}>
                   SUBMIT A PITCH →
                 </button>
               </div>
@@ -143,7 +143,7 @@ export default function ContributePage() {
                 {state==='sent' ? (
                   <div style={{ background:'#001A0A', border:'1px solid #16603440', padding:'40px', textAlign:'center' }}>
                     <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2rem', color:'#34D399', marginBottom:'12px' }}>PITCH RECEIVED ✓</div>
-                    <p style={{ fontFamily:'monospace', fontSize:'13px', color:'#6B7280', lineHeight:1.7 }}>
+                    <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#6B7280', lineHeight:1.7 }}>
                       We review all pitches within 5 business days. If we're interested, we'll reach out to discuss the piece, timeline, and rate.
                     </p>
                   </div>
@@ -155,34 +155,34 @@ export default function ContributePage() {
                       { label:'EXPERTISE / CREDENTIALS', key:'expertise', placeholder:'e.g. FFL dealer, firearms attorney, USPSA GM, USMC veteran' },
                     ].map(f=>(
                       <div key={f.key}>
-                        <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>{f.label}</label>
+                        <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>{f.label}</label>
                         <input type={f.type||'text'} value={form[f.key]} onChange={e=>setForm(p=>({...p,[f.key]:e.target.value}))} placeholder={f.placeholder} required={f.label.includes('*')}
-                          style={{ width:'100%', background:'#111318', border:'1px solid #1F2428', color:'#F5F5F3', padding:'11px 13px', fontFamily:'monospace', fontSize:'12px', boxSizing:'border-box' }} />
+                          style={{ width:'100%', background:'#111318', border:'1px solid var(--border)', color:'#F5F5F3', padding:'11px 13px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
                       </div>
                     ))}
                     <div>
-                      <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>SHORT BIO (2-3 sentences)</label>
+                      <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>SHORT BIO (2-3 sentences)</label>
                       <textarea value={form.bio} onChange={e=>setForm(p=>({...p,bio:e.target.value}))} rows={3} placeholder="Who you are, your background, why you're qualified to write this piece"
-                        style={{ width:'100%', background:'#111318', border:'1px solid #1F2428', color:'#F5F5F3', padding:'11px 13px', fontFamily:'monospace', fontSize:'12px', resize:'vertical', boxSizing:'border-box' }} />
+                        style={{ width:'100%', background:'#111318', border:'1px solid var(--border)', color:'#F5F5F3', padding:'11px 13px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', resize:'vertical', boxSizing:'border-box' }} />
                     </div>
                     <div>
-                      <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>ARTICLE TOPIC / HEADLINE *</label>
+                      <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>ARTICLE TOPIC / HEADLINE *</label>
                       <input value={form.topic} onChange={e=>setForm(p=>({...p,topic:e.target.value}))} placeholder="e.g. How Bruen Changes the Standard for AWB Challenges" required
-                        style={{ width:'100%', background:'#111318', border:'1px solid #1F2428', color:'#F5F5F3', padding:'11px 13px', fontFamily:'monospace', fontSize:'12px', boxSizing:'border-box' }} />
+                        style={{ width:'100%', background:'#111318', border:'1px solid var(--border)', color:'#F5F5F3', padding:'11px 13px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
                     </div>
                     <div>
-                      <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>BRIEF OUTLINE *</label>
+                      <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>BRIEF OUTLINE *</label>
                       <textarea value={form.outline} onChange={e=>setForm(p=>({...p,outline:e.target.value}))} rows={6} required placeholder="3-5 sentences describing what you'll cover, your angle, what makes it timely/unique for DownRange readers"
-                        style={{ width:'100%', background:'#111318', border:'1px solid #1F2428', color:'#F5F5F3', padding:'11px 13px', fontFamily:'monospace', fontSize:'12px', resize:'vertical', boxSizing:'border-box' }} />
+                        style={{ width:'100%', background:'#111318', border:'1px solid var(--border)', color:'#F5F5F3', padding:'11px 13px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', resize:'vertical', boxSizing:'border-box' }} />
                     </div>
                     <div>
-                      <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>WRITING SAMPLE URL (optional)</label>
+                      <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>WRITING SAMPLE URL (optional)</label>
                       <input value={form.sampleUrl} onChange={e=>setForm(p=>({...p,sampleUrl:e.target.value}))} placeholder="https://..." type="url"
-                        style={{ width:'100%', background:'#111318', border:'1px solid #1F2428', color:'#F5F5F3', padding:'11px 13px', fontFamily:'monospace', fontSize:'12px', boxSizing:'border-box' }} />
+                        style={{ width:'100%', background:'#111318', border:'1px solid var(--border)', color:'#F5F5F3', padding:'11px 13px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
                     </div>
-                    {state==='error' && <div style={{ fontFamily:'monospace', fontSize:'12px', color:'#EF4444', padding:'10px', background:'#1A0000', border:'1px solid #7F1D1D' }}>✗ Submission failed. Please try again or email directly.</div>}
+                    {state==='error' && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#EF4444', padding:'10px', background:'#1A0000', border:'1px solid #7F1D1D' }}>✗ Submission failed. Please try again or email directly.</div>}
                     <button type="submit" disabled={state==='sending'}
-                      style={{ background:'#C8922A', color:'#000', border:'none', padding:'14px', fontFamily:'monospace', fontWeight:700, fontSize:'13px', cursor:'pointer', opacity:state==='sending'?0.6:1 }}>
+                      style={{ background:'#C8922A', color:'#000', border:'none', padding:'14px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'13px', cursor:'pointer', opacity:state==='sending'?0.6:1 }}>
                       {state==='sending' ? 'SUBMITTING...' : 'SUBMIT PITCH →'}
                     </button>
                   </form>

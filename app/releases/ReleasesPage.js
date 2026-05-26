@@ -23,7 +23,7 @@ function ReleaseCard({ release, size = 'normal' }) {
 
   return (
     <a href={release.sourceUrl || release.specUrl || '#'} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
-      <div style={{ background: '#111318', border: '1px solid #1F2428', overflow: 'hidden', width: isLarge ? '100%' : '220px', flexShrink: 0, transition: 'border-color 0.2s' }}
+      <div style={{ background: '#111318', border: '1px solid var(--border)', overflow: 'hidden', width: isLarge ? '100%' : '220px', flexShrink: 0, transition: 'border-color 0.2s' }}
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
         onMouseLeave={e => e.currentTarget.style.borderColor = '#1F2428'}>
 
@@ -41,10 +41,10 @@ function ReleaseCard({ release, size = 'normal' }) {
           {/* Badges */}
           <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 6 }}>
             {(release.isJustDropped || release.isNew) && (
-              <span style={{ background: '#B91C1C', color: '#fff', fontFamily: 'monospace', fontSize: '9px', fontWeight: 700, letterSpacing: '0.15em', padding: '3px 8px' }}>● NEW</span>
+              <span style={{ background: '#B91C1C', color: '#fff', fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', fontWeight: 700, letterSpacing: '0.15em', padding: '3px 8px' }}>● NEW</span>
             )}
             {release.category && (
-              <span style={{ background: 'rgba(0,0,0,0.7)', color: '#C8922A', fontFamily: 'monospace', fontSize: '9px', letterSpacing: '0.1em', padding: '3px 8px', backdropFilter: 'blur(4px)' }}>
+              <span style={{ background: 'rgba(0,0,0,0.7)', color: '#C8922A', fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', letterSpacing: '0.1em', padding: '3px 8px', backdropFilter: 'blur(4px)' }}>
                 {release.category.toUpperCase()}
               </span>
             )}
@@ -53,13 +53,13 @@ function ReleaseCard({ release, size = 'normal' }) {
 
         {/* Info */}
         <div style={{ padding: isLarge ? '20px' : '14px' }}>
-          <div style={{ fontFamily: 'monospace', fontSize: '10px', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '4px' }}>{release.brand}</div>
+          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '4px' }}>{release.brand}</div>
           <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: isLarge ? '28px' : '20px', color: '#F0EDE6', letterSpacing: '0.03em', lineHeight: 1, marginBottom: '8px' }}>
             {release.model || release.title}
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '4px', marginBottom: '10px' }}>
-            {release.caliber && <span style={{ fontFamily: 'monospace', fontSize: '9px', padding: '2px 7px', background: '#1C2028', border: '1px solid #2A2F38', color: '#6B7280' }}>{release.caliber}</span>}
-            {(release.action || release.actionType) && <span style={{ fontFamily: 'monospace', fontSize: '9px', padding: '2px 7px', background: '#1C2028', border: '1px solid #2A2F38', color: '#6B7280' }}>{release.action || release.actionType}</span>}
+            {release.caliber && <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', padding: '2px 7px', background: '#1C2028', border: '1px solid #2A2F38', color: '#6B7280' }}>{release.caliber}</span>}
+            {(release.action || release.actionType) && <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', padding: '2px 7px', background: '#1C2028', border: '1px solid #2A2F38', color: '#6B7280' }}>{release.action || release.actionType}</span>}
           </div>
           {release.summary && isLarge && (
             <p style={{ fontSize: '13px', color: '#6B7280', lineHeight: 1.6, marginBottom: '12px' }}>{release.summary}</p>
@@ -70,7 +70,7 @@ function ReleaseCard({ release, size = 'normal' }) {
                 ${release.msrp.toLocaleString()}
               </span>
             ) : <span />}
-            <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#4B5563' }}>VIEW →</span>
+            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>VIEW →</span>
           </div>
         </div>
       </div>
@@ -112,7 +112,7 @@ export default function ReleasesPage({ releases = [], alerts = [] }) {
             <div style={{ marginBottom: '48px' }}>
               <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
                 <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#EF4444', letterSpacing: '0.05em' }}>⚡ JUST DROPPED</h2>
-                <span style={{ fontFamily: 'monospace', fontSize: '10px', color: '#EF4444', background: '#1A0000', padding: '3px 10px', border: '1px solid #EF444440' }}>NEW THIS WEEK</span>
+                <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#EF4444', background: '#1A0000', padding: '3px 10px', border: '1px solid #EF444440' }}>NEW THIS WEEK</span>
               </div>
               <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
                 {justDropped.map(r => <ReleaseCard key={r._id} release={r} />)}

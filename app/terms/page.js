@@ -17,11 +17,11 @@ export default function Terms() {
           <h1 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'32px' }}>TERMS OF SERVICE</h1>
           {sections.map(([h,t]) => (
             <div key={h} style={{ marginBottom:'28px' }}>
-              <h2 style={{ fontFamily:'monospace', fontSize:'13px', color:'#C8922A', fontWeight:700, marginBottom:'10px' }}>{h.toUpperCase()}</h2>
+              <h2 style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#C8922A', fontWeight:700, marginBottom:'10px' }}>{h.toUpperCase()}</h2>
               <p style={{ fontSize:'14px', color:'#6B7280', lineHeight:1.8 }}>{t}</p>
             </div>
           ))}
-          <p style={{ fontFamily:'monospace', fontSize:'11px', color:'#374151', marginTop:'40px' }}>Last updated: May 2026</p>
+          <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#374151', marginTop:'40px' }}>Last updated: May 2026</p>
         </div>
       </div>
       <Footer />

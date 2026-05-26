@@ -41,7 +41,7 @@ function StatCard({ profile, abbr }) {
 
   return (
     <div style={{ background: '#16191F', border: '1px solid #2A2F38', borderTop: '3px solid #C8922A', padding: '28px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', paddingBottom: '20px', borderBottom: '1px solid #1F2428' }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '24px', paddingBottom: '20px', borderBottom: '1px solid var(--border)' }}>
         <div>
           <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '42px', color: '#F0EDE6', lineHeight: 1, letterSpacing: '0.04em' }}>
             {profile.name || STATE_NAMES[abbr]}
@@ -75,7 +75,7 @@ function StatCard({ profile, abbr }) {
             Recent Legislation
           </div>
           {profile.recentBills.slice(0, 3).map((bill, i) => (
-            <div key={i} style={{ display: 'flex', gap: '10px', padding: '8px 0', borderBottom: '1px solid #1F2428', fontSize: '13px', color: '#9CA3AF' }}>
+            <div key={i} style={{ display: 'flex', gap: '10px', padding: '8px 0', borderBottom: '1px solid var(--border)', fontSize: '13px', color: '#9CA3AF' }}>
               <span className={`status-badge status-${bill.status}`}>{bill.status?.toUpperCase()}</span>
               <span>{bill.billNumber} — {bill.title || bill.summary}</span>
             </div>
@@ -122,7 +122,7 @@ export default function StateHub({ profiles = {} }) {
         </div>
 
         {/* CC Status summary */}
-        <div style={{ background: '#16191F', border: '1px solid #1F2428', padding: '16px' }}>
+        <div style={{ background: '#16191F', border: '1px solid var(--border)', padding: '16px' }}>
           <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '11px', fontWeight: 700, letterSpacing: '0.15em', color: '#6B7280', textTransform: 'uppercase', marginBottom: '12px' }}>
             Constitutional Carry · National Status
           </div>

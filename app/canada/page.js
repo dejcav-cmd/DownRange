@@ -44,7 +44,7 @@ export default function CanadaPage() {
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'8px' }}>
             <span style={{ fontSize:'28px' }}>🇨🇦</span>
-            <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563' }}>INTERNATIONAL COVERAGE</span>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)' }}>INTERNATIONAL COVERAGE</span>
           </div>
           <h1 className="page-hero-title">Canadian Firearms</h1>
           <p className="page-hero-sub">PAL/RPAL · Bill C-21 · Province-by-province laws · Ammo prices · Legal news</p>
@@ -55,7 +55,7 @@ export default function CanadaPage() {
         <div className="container">
 
           {/* Alert banner */}
-          <div style={{ background:'#1A0000', border:'1px solid #7F1D1D', padding:'16px 20px', marginBottom:'32px', fontFamily:'monospace', fontSize:'13px', color:'#FCA5A5', lineHeight:1.7 }}>
+          <div style={{ background:'#1A0000', border:'1px solid #7F1D1D', padding:'16px 20px', marginBottom:'32px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#FCA5A5', lineHeight:1.7 }}>
             🇨🇦 <strong style={{ color:'#EF4444' }}>CRITICAL:</strong> Canada's Bill C-21 froze all handgun purchases effective August 2023. No new handgun purchases, transfers, or imports permitted for civilians. Existing owners may keep their handguns. CCFR court challenge ongoing. <a href="https://www.thegunblog.ca" target="_blank" rel="noreferrer" style={{ color:'#60A5FA' }}>Latest: thegunblog.ca ↗</a>
           </div>
 
@@ -69,13 +69,13 @@ export default function CanadaPage() {
                   const impColor = l.impact==='HIGH'?'#EF4444':l.impact==='MED'?'#FBBF24':'#9CA3AF'
                   const statColor = l.status==='In force'?'#EF4444':l.status==='Required'?'#FBBF24':'#34D399'
                   return (
-                    <div key={l.name} style={{ background:'#111318', border:'1px solid #1F2428', borderLeft:`3px solid ${impColor}`, padding:'14px 16px' }}>
+                    <div key={l.name} style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:`3px solid ${impColor}`, padding:'14px 16px' }}>
                       <div style={{ display:'flex', gap:'8px', marginBottom:'6px', flexWrap:'wrap' }}>
-                        <span style={{ fontFamily:'monospace', fontSize:'11px', fontWeight:700, color:'#F0EDE6' }}>{l.name}</span>
-                        <span style={{ fontFamily:'monospace', fontSize:'9px', color:statColor, background:`${statColor}20`, padding:'2px 7px' }}>{l.status.toUpperCase()}</span>
-                        <span style={{ fontFamily:'monospace', fontSize:'9px', color:impColor }}>IMPACT: {l.impact}</span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, color:'var(--text)' }}>{l.name}</span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:statColor, background:`${statColor}20`, padding:'2px 7px' }}>{l.status.toUpperCase()}</span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:impColor }}>IMPACT: {l.impact}</span>
                       </div>
-                      <p style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{l.summary}</p>
+                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', lineHeight:1.6 }}>{l.summary}</p>
                     </div>
                   )
                 })}
@@ -89,10 +89,10 @@ export default function CanadaPage() {
                 {PROVINCES.map(p=>{
                   const rc = {'A+':'#16A34A','A':'#22C55E','B+':'#65A30D','B':'#84CC16','C+':'#A3A300','C':'#EAB308','D':'#EF4444','F':'#DC2626'}[p.rating]||'#9CA3AF'
                   return (
-                    <div key={p.abbr} style={{ background:'#111318', border:'1px solid #1F2428', padding:'12px 14px', display:'grid', gridTemplateColumns:'40px 80px 1fr', gap:10, alignItems:'center' }}>
+                    <div key={p.abbr} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'12px 14px', display:'grid', gridTemplateColumns:'40px 80px 1fr', gap:10, alignItems:'center' }}>
                       <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.1rem', color:'#C8922A' }}>{p.abbr}</span>
-                      <span style={{ fontFamily:'monospace', fontSize:'11px', color:rc, background:`${rc}20`, padding:'2px 8px', textAlign:'center' }}>{p.rating}</span>
-                      <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', lineHeight:1.5 }}>{p.notes}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:rc, background:`${rc}20`, padding:'2px 8px', textAlign:'center' }}>{p.rating}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', lineHeight:1.5 }}>{p.notes}</span>
                     </div>
                   )
                 })}
@@ -101,11 +101,11 @@ export default function CanadaPage() {
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'12px' }}>AMMO PRICES (CAD)</h2>
               <div style={{ display:'flex', flexDirection:'column', gap:'6px' }}>
                 {AMMO_PRICES.map(a=>(
-                  <div key={a.caliber} style={{ background:'#111318', border:'1px solid #1F2428', padding:'10px 14px', display:'grid', gridTemplateColumns:'100px 70px 60px 1fr', gap:10, alignItems:'center' }}>
-                    <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#F0EDE6', fontWeight:700 }}>{a.caliber}</span>
+                  <div key={a.caliber} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'10px 14px', display:'grid', gridTemplateColumns:'100px 70px 60px 1fr', gap:10, alignItems:'center' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text)', fontWeight:700 }}>{a.caliber}</span>
                     <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1rem', color:'#C8922A' }}>{a.price}</span>
-                    <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563' }}>{a.us}</span>
-                    <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#374151' }}>{a.note}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>{a.us}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#374151' }}>{a.note}</span>
                   </div>
                 ))}
               </div>
@@ -116,16 +116,16 @@ export default function CanadaPage() {
           <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>RECENT CANADIAN FIREARMS NEWS</h2>
           <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'32px' }}>
             {NEWS.map((n,i)=>(
-              <a key={i} href={n.url} target="_blank" rel="noreferrer" style={{ textDecoration:'none', background:'#111318', border:'1px solid #1F2428', padding:'14px 18px', display:'flex', gap:'16px', alignItems:'center' }}>
-                <span style={{ fontFamily:'monospace', fontSize:'9px', color:n.category==='law'?'#60A5FA':'#C8922A', background:n.category==='law'?'#001020':'#1A0E00', padding:'3px 8px', flexShrink:0 }}>{n.category.toUpperCase()}</span>
-                <span style={{ fontSize:'14px', color:'#F0EDE6', fontWeight:600, flex:1 }}>{n.title}</span>
-                <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', flexShrink:0 }}>{n.date}</span>
+              <a key={i} href={n.url} target="_blank" rel="noreferrer" style={{ textDecoration:'none', background:'var(--bg2)', border:'1px solid var(--border)', padding:'14px 18px', display:'flex', gap:'16px', alignItems:'center' }}>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:n.category==='law'?'#60A5FA':'#C8922A', background:n.category==='law'?'#001020':'#1A0E00', padding:'3px 8px', flexShrink:0 }}>{n.category.toUpperCase()}</span>
+                <span style={{ fontSize:'14px', color:'var(--text)', fontWeight:600, flex:1 }}>{n.title}</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', flexShrink:0 }}>{n.date}</span>
               </a>
             ))}
           </div>
 
           {/* Resources */}
-          <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+          <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'24px' }}>
             <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>CANADIAN FIREARMS RESOURCES</h2>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'12px' }}>
               {[
@@ -133,9 +133,9 @@ export default function CanadaPage() {
                 { name:'TheGunBlog.ca', url:'https://www.thegunblog.ca', desc:'Best Canadian firearms news coverage. Daily updates.' },
                 { name:'RCMP Firearms Program', url:'https://www.rcmp-grc.gc.ca/en/firearms', desc:'Official PAL applications, regulations, class lookup.' },
               ].map(r=>(
-                <a key={r.name} href={r.url} target="_blank" rel="noreferrer" style={{ background:'#0D1117', border:'1px solid #1F2428', padding:'14px', textDecoration:'none' }}>
-                  <div style={{ fontFamily:'monospace', fontSize:'12px', fontWeight:700, color:'#F0EDE6', marginBottom:'6px', lineHeight:1.3 }}>{r.name}</div>
-                  <p style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', lineHeight:1.5 }}>{r.desc}</p>
+                <a key={r.name} href={r.url} target="_blank" rel="noreferrer" style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'14px', textDecoration:'none' }}>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)', marginBottom:'6px', lineHeight:1.3 }}>{r.name}</div>
+                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', lineHeight:1.5 }}>{r.desc}</p>
                 </a>
               ))}
             </div>

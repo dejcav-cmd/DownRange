@@ -13,7 +13,7 @@ export default function AboutPage() {
           <p className="page-hero-sub">America's Firearms Intelligence Hub · Live. Loaded. Lawful.</p>
         </div>
       </div>
-      <div style={{ padding:'60px 0', background:'#0A0B0C' }}>
+      <div style={{ padding:'60px 0', background:'var(--bg)' }}>
         <div className="container" style={{ maxWidth:800 }}>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'40px', marginBottom:'48px' }}>
             {[
@@ -22,10 +22,10 @@ export default function AboutPage() {
               { num:'10k+', label:'Articles Indexed', sub:'Growing daily' },
               { num:'Free', label:'Always Free', sub:'No paywalls' },
             ].map(s => (
-              <div key={s.num} style={{ background:'#111318', border:'1px solid #1F2428', padding:'28px', textAlign:'center' }}>
+              <div key={s.num} style={{ background:'#111318', border:'1px solid var(--border)', padding:'28px', textAlign:'center' }}>
                 <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#C8922A', letterSpacing:'0.05em', lineHeight:1 }}>{s.num}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#F0EDE6', letterSpacing:'0.1em', marginTop:'6px' }}>{s.label.toUpperCase()}</div>
-                <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', marginTop:'3px' }}>{s.sub}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#F0EDE6', letterSpacing:'0.1em', marginTop:'6px' }}>{s.label.toUpperCase()}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', marginTop:'3px' }}>{s.sub}</div>
               </div>
             ))}
           </div>
@@ -49,10 +49,10 @@ export default function AboutPage() {
                 { icon:'⚖', title:'Law Intelligence', desc:'Federal and state legislation tracked in real time. ATF rules, SCOTUS cases, and reciprocity data updated daily.' },
                 { icon:'📊', title:'Market Data', desc:'Ammo prices tracked across 7 calibers. New firearms releases monitored from 50+ manufacturers. Price alerts via email.' },
               ].map(f => (
-                <div key={f.title} style={{ background:'#111318', border:'1px solid #1F2428', borderLeft:'3px solid #C8922A', padding:'20px 24px', display:'flex', gap:'16px' }}>
+                <div key={f.title} style={{ background:'#111318', border:'1px solid var(--border)', borderLeft:'3px solid #C8922A', padding:'20px 24px', display:'flex', gap:'16px' }}>
                   <span style={{ fontSize:'24px', flexShrink:0 }}>{f.icon}</span>
                   <div>
-                    <div style={{ fontFamily:'monospace', fontSize:'13px', fontWeight:700, color:'#F0EDE6', marginBottom:'6px' }}>{f.title}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', fontWeight:700, color:'#F0EDE6', marginBottom:'6px' }}>{f.title}</div>
                     <p style={{ fontSize:'13px', color:'#6B7280', lineHeight:1.6 }}>{f.desc}</p>
                   </div>
                 </div>
@@ -62,7 +62,7 @@ export default function AboutPage() {
 
           <div style={{ padding:'24px', background:'#111318', border:'1px solid #C8922A40', textAlign:'center' }}>
             <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.8rem', color:'#C8922A', marginBottom:'8px' }}>BUILT BY GUN OWNERS, FOR GUN OWNERS</div>
-            <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
+            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
               DownRange is proudly independent. We are not funded by manufacturers, advertisers, or political organizations. Our only obligation is to you — the American gun owner.
             </p>
           </div>

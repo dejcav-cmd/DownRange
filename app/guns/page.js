@@ -28,12 +28,12 @@ export default function GunsPage() {
       </div>
       <div style={{ padding: '40px 0' }}>
         <div className="container">
-          <div style={{ fontFamily: 'monospace', fontSize: '11px', color: '#C8922A', letterSpacing: '0.15em', marginBottom: '20px' }}>POPULAR PLATFORMS</div>
+          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#C8922A', letterSpacing: '0.15em', marginBottom: '20px' }}>POPULAR PLATFORMS</div>
           <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: '12px' }}>
             {POPULAR.map(g => (
               <a key={g.slug} href={`/guns/${g.slug}`}
-                style={{ background: '#111318', border: '1px solid #1F2428', padding: '20px', textDecoration: 'none', display: 'block', transition: 'border-color 0.2s' }}>
-                <div style={{ fontFamily: 'monospace', fontSize: '10px', color: '#C8922A', marginBottom: '6px', letterSpacing: '0.1em' }}>{g.type?.toUpperCase()} · {g.caliber}</div>
+                style={{ background: '#111318', border: '1px solid var(--border)', padding: '20px', textDecoration: 'none', display: 'block', transition: 'border-color 0.2s' }}>
+                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#C8922A', marginBottom: '6px', letterSpacing: '0.1em' }}>{g.type?.toUpperCase()} · {g.caliber}</div>
                 <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '18px', fontWeight: 700, color: '#F0EDE6' }}>{g.name}</div>
               </a>
             ))}

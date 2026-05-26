@@ -64,35 +64,35 @@ export default function ValueEstimator() {
       <div style={{ padding:'40px 0' }}>
         <div className="container" style={{ maxWidth:800 }}>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px' }}>
-            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'28px' }}>
-              <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'18px', fontWeight:700 }}>APPRAISE YOUR FIREARM</div>
+            <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'28px' }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'18px', fontWeight:700 }}>APPRAISE YOUR FIREARM</div>
               <div style={{ display:'flex', flexDirection:'column', gap:'14px' }}>
                 <div>
-                  <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>MAKE & MODEL</label>
+                  <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>MAKE & MODEL</label>
                   <select value={form.model} onChange={e=>setForm(p=>({...p,model:e.target.value}))}
-                    style={{ width:'100%', background:'#0D1117', border:'1px solid #1F2428', color:'#F5F5F3', padding:'10px 12px', fontFamily:'monospace', fontSize:'12px' }}>
+                    style={{ width:'100%', background:'#0D1117', border:'1px solid var(--border)', color:'#F5F5F3', padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>
                     {Object.keys(GUN_VALS).map(m=><option key={m} value={m}>{m}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>CONDITION</label>
+                  <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>CONDITION</label>
                   <select value={form.condition} onChange={e=>setForm(p=>({...p,condition:e.target.value}))}
-                    style={{ width:'100%', background:'#0D1117', border:'1px solid #1F2428', color:'#F5F5F3', padding:'10px 12px', fontFamily:'monospace', fontSize:'12px' }}>
+                    style={{ width:'100%', background:'#0D1117', border:'1px solid var(--border)', color:'#F5F5F3', padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>
                     {CONDITIONS.map(c=><option key={c} value={c}>{c}</option>)}
                   </select>
                 </div>
                 <div>
-                  <label style={{ fontFamily:'monospace', fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>YEAR OF MANUFACTURE (optional)</label>
+                  <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', display:'block', marginBottom:'6px' }}>YEAR OF MANUFACTURE (optional)</label>
                   <input type="number" value={form.year} onChange={e=>setForm(p=>({...p,year:e.target.value}))} placeholder="e.g. 2019"
-                    style={{ width:'100%', background:'#0D1117', border:'1px solid #1F2428', color:'#F5F5F3', padding:'10px 12px', fontFamily:'monospace', fontSize:'12px', boxSizing:'border-box' }} />
+                    style={{ width:'100%', background:'#0D1117', border:'1px solid var(--border)', color:'#F5F5F3', padding:'10px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', boxSizing:'border-box' }} />
                 </div>
                 <div style={{ display:'flex', alignItems:'center', gap:'10px' }}>
                   <input type="checkbox" id="orig" checked={form.original} onChange={e=>setForm(p=>({...p,original:e.target.checked}))}
                     style={{ width:16, height:16, accentColor:'#C8922A' }} />
-                  <label htmlFor="orig" style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280', cursor:'pointer' }}>All original (no aftermarket mods)</label>
+                  <label htmlFor="orig" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', cursor:'pointer' }}>All original (no aftermarket mods)</label>
                 </div>
                 <button onClick={estimate} disabled={loading}
-                  style={{ background:'#C8922A', color:'#000', border:'none', padding:'13px', fontFamily:'monospace', fontWeight:700, fontSize:'13px', cursor:'pointer', opacity:loading?0.6:1 }}>
+                  style={{ background:'#C8922A', color:'#000', border:'none', padding:'13px', fontFamily:"'IBM Plex Mono',monospace", fontWeight:700, fontSize:'13px', cursor:'pointer', opacity:loading?0.6:1 }}>
                   {loading ? 'ESTIMATING...' : 'GET ESTIMATE →'}
                 </button>
               </div>
@@ -101,38 +101,38 @@ export default function ValueEstimator() {
             <div>
               {result ? (
                 <div>
-                  <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px', marginBottom:'16px' }}>
-                    <div style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'16px', fontWeight:700 }}>ESTIMATED MARKET VALUE</div>
+                  <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px', marginBottom:'16px' }}>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'16px', fontWeight:700 }}>ESTIMATED MARKET VALUE</div>
                     <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:'10px', marginBottom:'16px' }}>
                       {[['LOW',result.low,'#EF4444'],['MID RANGE',result.mid,'#C8922A'],['HIGH',result.high,'#34D399']].map(([l,v,c])=>(
                         <div key={l} style={{ textAlign:'center', background:'#0D1117', padding:'14px 8px' }}>
                           <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.8rem', color:c, lineHeight:1 }}>${v.toLocaleString()}</div>
-                          <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', marginTop:'4px' }}>{l}</div>
+                          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', marginTop:'4px' }}>{l}</div>
                         </div>
                       ))}
                     </div>
-                    <p style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{result.note}</p>
+                    <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{result.note}</p>
                   </div>
                   {result.aiNote && (
                     <div style={{ background:'#0D1117', border:'1px solid #C8922A40', borderLeft:'3px solid #C8922A', padding:'16px' }}>
-                      <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#C8922A', marginBottom:'8px', letterSpacing:'0.12em' }}>🤖 AI MARKET NOTE</div>
-                      <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280', lineHeight:1.7 }}>{result.aiNote}</p>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', marginBottom:'8px', letterSpacing:'0.12em' }}>🤖 AI MARKET NOTE</div>
+                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', lineHeight:1.7 }}>{result.aiNote}</p>
                     </div>
                   )}
-                  <div style={{ marginTop:'12px', fontFamily:'monospace', fontSize:'10px', color:'#374151', lineHeight:1.6 }}>
+                  <div style={{ marginTop:'12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', lineHeight:1.6 }}>
                     Estimates based on recent private party sales. Dealer trade-in offers typically 20–40% below market. Check GunBroker.com completed listings to verify.
                   </div>
                 </div>
               ) : (
-                <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'28px', height:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', minHeight:'300px' }}>
+                <div style={{ background:'#111318', border:'1px solid var(--border)', padding:'28px', height:'100%', display:'flex', flexDirection:'column', justifyContent:'center', alignItems:'center', textAlign:'center', minHeight:'300px' }}>
                   <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'3rem', color:'#1F2428', marginBottom:'12px' }}>$</div>
-                  <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>Select your firearm details and click "Get Estimate" to see fair market value</p>
+                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>Select your firearm details and click "Get Estimate" to see fair market value</p>
                 </div>
               )}
             </div>
           </div>
 
-          <div style={{ marginTop:'24px', padding:'16px 20px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+          <div style={{ marginTop:'24px', padding:'16px 20px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
             ⚠ Estimates are informational only. Actual values vary by location, market conditions, and specific configuration. Always verify with recent comparable sales on GunBroker, Armslist, or local gun shops.
           </div>
         </div>

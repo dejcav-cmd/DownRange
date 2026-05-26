@@ -21,10 +21,10 @@ const LAWS = [
 function SafeCard({ safe }) {
   const catColor = { 'Quick-Access':'#60A5FA','Biometric':'#34D399','Full Vault':'#C8922A' }[safe.category] || '#9CA3AF'
   return (
-    <div style={{ background:'#111318', border:'1px solid #1F2428', overflow:'hidden' }}>
+    <div style={{ background:'#111318', border:'1px solid var(--border)', overflow:'hidden' }}>
       <div style={{ height:'180px', overflow:'hidden', position:'relative' }}>
         <img src={safe.image} alt={safe.name} style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.6 }} />
-        <div style={{ position:'absolute', top:'10px', left:'10px', background:'rgba(0,0,0,0.8)', border:`1px solid ${catColor}`, color:catColor, fontFamily:'monospace', fontSize:'9px', padding:'3px 8px' }}>{safe.category.toUpperCase()}</div>
+        <div style={{ position:'absolute', top:'10px', left:'10px', background:'rgba(0,0,0,0.8)', border:`1px solid ${catColor}`, color:catColor, fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', padding:'3px 8px' }}>{safe.category.toUpperCase()}</div>
         <div style={{ position:'absolute', top:'10px', right:'10px', fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A' }}>{safe.rating}/10</div>
       </div>
       <div style={{ padding:'20px' }}>
@@ -32,15 +32,15 @@ function SafeCard({ safe }) {
         <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', marginBottom:'12px' }}>${safe.price}</div>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'8px', marginBottom:'14px' }}>
           <div>
-            <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#34D399', marginBottom:'4px' }}>PROS</div>
-            {safe.pros.slice(0,2).map((p,i)=><div key={i} style={{ fontFamily:'monospace', fontSize:'10px', color:'#86EFAC', marginBottom:'2px' }}>✓ {p}</div>)}
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#34D399', marginBottom:'4px' }}>PROS</div>
+            {safe.pros.slice(0,2).map((p,i)=><div key={i} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#86EFAC', marginBottom:'2px' }}>✓ {p}</div>)}
           </div>
           <div>
-            <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#EF4444', marginBottom:'4px' }}>CONS</div>
-            {safe.cons.map((c,i)=><div key={i} style={{ fontFamily:'monospace', fontSize:'10px', color:'#FCA5A5', marginBottom:'2px' }}>✗ {c}</div>)}
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#EF4444', marginBottom:'4px' }}>CONS</div>
+            {safe.cons.map((c,i)=><div key={i} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#FCA5A5', marginBottom:'2px' }}>✗ {c}</div>)}
           </div>
         </div>
-        <p style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{safe.verdict}</p>
+        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.6 }}>{safe.verdict}</p>
       </div>
     </div>
   )
@@ -65,14 +65,14 @@ export default function SafeStoragePage() {
           <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>STATE STORAGE LAWS</h2>
           <div style={{ display:'flex', flexDirection:'column', gap:'8px', marginBottom:'32px' }}>
             {LAWS.map(l=>(
-              <div key={l.state} style={{ background:'#111318', border:'1px solid #1F2428', padding:'14px 20px', display:'grid', gridTemplateColumns:'60px 1fr auto', gap:'16px', alignItems:'center' }}>
+              <div key={l.state} style={{ background:'#111318', border:'1px solid var(--border)', padding:'14px 20px', display:'grid', gridTemplateColumns:'60px 1fr auto', gap:'16px', alignItems:'center' }}>
                 <span style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.8rem', color:'#C8922A' }}>{l.state}</span>
-                <span style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280', lineHeight:1.6 }}>{l.req}</span>
-                <span style={{ fontFamily:'monospace', fontSize:'10px', color: l.ccw==='Required'?'#EF4444':'#34D399', background: l.ccw==='Required'?'#1A0000':'#001A0A', padding:'4px 10px', border:`1px solid ${l.ccw==='Required'?'#7F1D1D40':'#16603440'}`, whiteSpace:'nowrap' }}>{l.ccw === 'Required' ? 'SAFE REQUIRED' : 'RECOMMENDED'}</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', lineHeight:1.6 }}>{l.req}</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: l.ccw==='Required'?'#EF4444':'#34D399', background: l.ccw==='Required'?'#1A0000':'#001A0A', padding:'4px 10px', border:`1px solid ${l.ccw==='Required'?'#7F1D1D40':'#16603440'}`, whiteSpace:'nowrap' }}>{l.ccw === 'Required' ? 'SAFE REQUIRED' : 'RECOMMENDED'}</span>
               </div>
             ))}
           </div>
-          <div style={{ padding:'20px 24px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+          <div style={{ padding:'20px 24px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
             ⚠ Storage laws vary by state and municipality. Always check current local laws. This guide is for informational purposes only.
           </div>
         </div>

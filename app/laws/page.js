@@ -90,7 +90,7 @@ const IMPACT_COLORS = { HIGH:'#EF4444', MED:'#FBBF24', LOW:'#9CA3AF' }
 function StatusBadge({ status }) {
   const s = STATUS_CONFIG[status?.toLowerCase()] || STATUS_CONFIG.pending
   return (
-    <span style={{ fontFamily:'monospace', fontSize:'9px', fontWeight:700, letterSpacing:'0.12em', color:s.color, background:s.bg, padding:'3px 8px', border:`1px solid ${s.color}40`, whiteSpace:'nowrap' }}>
+    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', fontWeight:700, letterSpacing:'0.12em', color:s.color, background:s.bg, padding:'3px 8px', border:`1px solid ${s.color}40`, whiteSpace:'nowrap' }}>
       {s.label}
     </span>
   )
@@ -102,20 +102,20 @@ function BillCard({ bill }) {
     <div style={{ background:'#111318', border:`1px solid #1F2428`, borderLeft:`3px solid ${s.color}`, padding:'16px 20px' }}>
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:12, marginBottom:8 }}>
         <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
-          <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#C8922A', fontWeight:700 }}>{bill.billNumber}</span>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', fontWeight:700 }}>{bill.billNumber}</span>
           <StatusBadge status={bill.status} />
-          {bill.state && <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', background:'#1F2428', padding:'2px 6px' }}>{bill.state}</span>}
-          {bill.impact && <span style={{ fontFamily:'monospace', fontSize:'9px', color:IMPACT_COLORS[bill.impact] || '#9CA3AF' }}>{bill.impact} IMPACT</span>}
+          {bill.state && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', background:'#1F2428', padding:'2px 6px' }}>{bill.state}</span>}
+          {bill.impact && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:IMPACT_COLORS[bill.impact] || '#9CA3AF' }}>{bill.impact} IMPACT</span>}
         </div>
         {bill.lastActionDate && (
-          <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563', flexShrink:0 }}>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', flexShrink:0 }}>
             {new Date(bill.lastActionDate).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'})}
           </span>
         )}
       </div>
       <h3 style={{ fontSize:'15px', fontWeight:600, color:'#F0EDE6', lineHeight:1.35, marginBottom:6 }}>{bill.title}</h3>
       {bill.summary && <p style={{ fontSize:'13px', color:'#6B7280', lineHeight:1.6, marginBottom:10 }}>{bill.summary}</p>}
-      {bill.url && <a href={bill.url} target="_blank" rel="noopener noreferrer" style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>VIEW FULL TEXT ↗</a>}
+      {bill.url && <a href={bill.url} target="_blank" rel="noopener noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>VIEW FULL TEXT ↗</a>}
     </div>
   )
 }
@@ -168,7 +168,7 @@ export default async function LawsPage({ searchParams }) {
               {alerts.slice(0,3).map(a => (
                 <div key={a._id} style={{ display:'flex', alignItems:'center', gap:8 }}>
                   <span style={{ width:6, height:6, borderRadius:'50%', background:'#EF4444', display:'inline-block' }} />
-                  <span style={{ fontFamily:'monospace', fontSize:'11px', color:'#FCA5A5' }}>{a.headline}</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#FCA5A5' }}>{a.headline}</span>
                 </div>
               ))}
             </div>
@@ -180,13 +180,13 @@ export default async function LawsPage({ searchParams }) {
         <div className="container">
 
           {/* Tab nav */}
-          <div style={{ display:'flex', gap:0, borderBottom:'1px solid #1F2428', marginBottom:32, flexWrap:'wrap' }}>
+          <div style={{ display:'flex', gap:0, borderBottom:'1px solid var(--border)', marginBottom:32, flexWrap:'wrap' }}>
             {TABS.map(t => (
               <a key={t.key} href={`/laws?tab=${t.key}`}
-                style={{ display:'flex', alignItems:'center', gap:6, padding:'12px 20px', fontFamily:'monospace', fontSize:'12px', textDecoration:'none', letterSpacing:'0.05em', color: tab===t.key ? '#C8922A' : '#4B5563', borderBottom:`2px solid ${tab===t.key ? '#C8922A' : 'transparent'}`, transition:'color 0.15s', whiteSpace:'nowrap' }}>
+                style={{ display:'flex', alignItems:'center', gap:6, padding:'12px 20px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', textDecoration:'none', letterSpacing:'0.05em', color: tab===t.key ? '#C8922A' : '#4B5563', borderBottom:`2px solid ${tab===t.key ? '#C8922A' : 'transparent'}`, transition:'color 0.15s', whiteSpace:'nowrap' }}>
                 {t.label}
                 {t.count !== null && (
-                  <span style={{ background: tab===t.key ? '#C8922A20' : '#1F2428', color: tab===t.key ? '#C8922A' : '#4B5563', fontFamily:'monospace', fontSize:'9px', padding:'1px 6px', borderRadius:10 }}>
+                  <span style={{ background: tab===t.key ? '#C8922A20' : '#1F2428', color: tab===t.key ? '#C8922A' : '#4B5563', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', padding:'1px 6px', borderRadius:10 }}>
                     {t.count}
                   </span>
                 )}
@@ -200,15 +200,15 @@ export default async function LawsPage({ searchParams }) {
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:12 }}>
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em' }}>FEDERAL FIREARMS LEGISLATION</h2>
                 <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
-                  <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
                   {['newest','status','impact'].map(s=>(
                     <a key={s} href={`/laws?tab=federal&sort=${s}`}
-                      style={{ fontFamily:'monospace', fontSize:'10px', padding:'3px 10px', border:'1px solid #1F2428', color: searchParams?.sort===s||(s==='newest'&&!searchParams?.sort)?'#C8922A':'#4B5563', textDecoration:'none', background: searchParams?.sort===s||(s==='newest'&&!searchParams?.sort)?'#C8922A20':'transparent' }}>
+                      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'3px 10px', border:'1px solid var(--border)', color: searchParams?.sort===s||(s==='newest'&&!searchParams?.sort)?'#C8922A':'#4B5563', textDecoration:'none', background: searchParams?.sort===s||(s==='newest'&&!searchParams?.sort)?'#C8922A20':'transparent' }}>
                       {s.toUpperCase()}
                     </a>
                   ))}
                   <a href="https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%2C%22search%22%3A%22firearms+second+amendment%22%2C%22congress%22%3A%22119%22%7D" target="_blank" rel="noreferrer"
-                    style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>CONGRESS.GOV ↗</a>
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>CONGRESS.GOV ↗</a>
                 </div>
               </div>
 
@@ -216,7 +216,7 @@ export default async function LawsPage({ searchParams }) {
               <div style={{ display:'flex', gap:8, marginBottom:24, flexWrap:'wrap' }}>
                 {['All','Passed','Committee','Challenging','Failed'].map(f => (
                   <a key={f} href={`/laws?tab=federal${f!=='All'?`&status=${f.toLowerCase()}`:''}` }
-                    style={{ fontFamily:'monospace', fontSize:'10px', padding:'4px 12px', border:'1px solid #1F2428', color:'#6B7280', textDecoration:'none', background: searchParams?.status===f.toLowerCase()||(f==='All'&&!searchParams?.status) ? '#C8922A20' : 'transparent' }}>
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 12px', border:'1px solid var(--border)', color:'#6B7280', textDecoration:'none', background: searchParams?.status===f.toLowerCase()||(f==='All'&&!searchParams?.status) ? '#C8922A20' : 'transparent' }}>
                     {f}
                   </a>
                 ))}
@@ -228,7 +228,7 @@ export default async function LawsPage({ searchParams }) {
                   .map(b => <BillCard key={b._id} bill={b} />)}
               </div>
 
-              <div style={{ marginTop:24, padding:'16px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+              <div style={{ marginTop:24, padding:'16px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
                 📡 Data auto-updated via Congress.gov API every 2 hours when CONGRESS_GOV_KEY is configured.
                 Source: <a href="https://api.congress.gov" target="_blank" rel="noreferrer" style={{ color:'#60A5FA' }}>api.congress.gov</a>
               </div>
@@ -246,7 +246,7 @@ export default async function LawsPage({ searchParams }) {
               <div style={{ display:'flex', gap:6, marginBottom:24, flexWrap:'wrap' }}>
                 {['All',...new Set(state.map(b=>b.state).filter(Boolean))].map(s => (
                   <a key={s} href={`/laws?tab=state${s!=='All'?`&state=${s}`:''}`}
-                    style={{ fontFamily:'monospace', fontSize:'10px', padding:'4px 10px', border:'1px solid #1F2428', color: searchParams?.state===s||(s==='All'&&!searchParams?.state) ? '#C8922A' : '#6B7280', textDecoration:'none', background: searchParams?.state===s||(s==='All'&&!searchParams?.state) ? '#C8922A20' : 'transparent' }}>
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 10px', border:'1px solid var(--border)', color: searchParams?.state===s||(s==='All'&&!searchParams?.state) ? '#C8922A' : '#6B7280', textDecoration:'none', background: searchParams?.state===s||(s==='All'&&!searchParams?.state) ? '#C8922A20' : 'transparent' }}>
                     {s}
                   </a>
                 ))}
@@ -258,7 +258,7 @@ export default async function LawsPage({ searchParams }) {
                   .map(b => <BillCard key={b._id} bill={b} />)}
               </div>
 
-              <div style={{ marginTop:24, padding:'16px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+              <div style={{ marginTop:24, padding:'16px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
                 📡 State data auto-updated via LegiScan API (all 50 states) when LEGISCAN_KEY is configured.
                 Source: <a href="https://legiscan.com/legiscan" target="_blank" rel="noreferrer" style={{ color:'#60A5FA' }}>legiscan.com</a>
               </div>
@@ -270,7 +270,7 @@ export default async function LawsPage({ searchParams }) {
             <div>
               <div style={{ marginBottom:20 }}>
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:8 }}>ATF RULES & REGULATIONS</h2>
-                <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
+                <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
                   Current ATF rulemaking that affects lawful gun owners. Court challenge status updated by the news feed.
                 </p>
               </div>
@@ -283,14 +283,14 @@ export default async function LawsPage({ searchParams }) {
                         <div>
                           <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:8, flexWrap:'wrap' }}>
                             <StatusBadge status={rule.status} />
-                            <span style={{ fontFamily:'monospace', fontSize:'9px', color:IMPACT_COLORS[rule.impact], background:'#111318', padding:'2px 6px', border:`1px solid ${IMPACT_COLORS[rule.impact]}40` }}>{rule.impact} IMPACT</span>
-                            <span style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563' }}>{rule.date}</span>
+                            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:IMPACT_COLORS[rule.impact], background:'#111318', padding:'2px 6px', border:`1px solid ${IMPACT_COLORS[rule.impact]}40` }}>{rule.impact} IMPACT</span>
+                            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{rule.date}</span>
                           </div>
                           <h3 style={{ fontSize:'16px', fontWeight:700, color:'#F0EDE6', lineHeight:1.3, marginBottom:8 }}>{rule.title}</h3>
                           <p style={{ fontSize:'13px', color:'#6B7280', lineHeight:1.7 }}>{rule.summary}</p>
                         </div>
                       </div>
-                      <a href={rule.url} target="_blank" rel="noreferrer" style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>ATF SOURCE ↗</a>
+                      <a href={rule.url} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>ATF SOURCE ↗</a>
                     </div>
                   )
                 })}
@@ -303,7 +303,7 @@ export default async function LawsPage({ searchParams }) {
             <div>
               <div style={{ marginBottom:20 }}>
                 <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:8 }}>SUPREME COURT — 2A CASES</h2>
-                <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
+                <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7 }}>
                   Key Second Amendment decisions that shape the legal landscape for every gun owner in America.
                 </p>
               </div>
@@ -312,13 +312,13 @@ export default async function LawsPage({ searchParams }) {
                   <div key={cas.id} style={{ background:'#111318', border:`1px solid ${cas.outcome==='WON'?'#16603440':'#7F1D1D40'}`, padding:'24px', display:'grid', gridTemplateColumns:'80px 1fr', gap:20 }}>
                     <div style={{ textAlign:'center' }}>
                       <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2rem', color: cas.outcome==='WON' ? '#34D399' : '#EF4444', lineHeight:1 }}>{cas.year}</div>
-                      <div style={{ fontFamily:'monospace', fontSize:'9px', color: cas.outcome==='WON' ? '#34D399' : '#EF4444', marginTop:4, fontWeight:700 }}>{cas.outcome}</div>
-                      <div style={{ fontFamily:'monospace', fontSize:'9px', color:IMPACT_COLORS[cas.significance], marginTop:4 }}>{cas.significance}</div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color: cas.outcome==='WON' ? '#34D399' : '#EF4444', marginTop:4, fontWeight:700 }}>{cas.outcome}</div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:IMPACT_COLORS[cas.significance], marginTop:4 }}>{cas.significance}</div>
                     </div>
                     <div>
                       <h3 style={{ fontSize:'16px', fontWeight:700, color:'#F0EDE6', marginBottom:10, lineHeight:1.3 }}>{cas.name}</h3>
                       <p style={{ fontSize:'13px', color:'#94A3B8', lineHeight:1.7, marginBottom:10 }}>{cas.summary}</p>
-                      <a href={cas.url} target="_blank" rel="noreferrer" style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>READ OPINION ↗</a>
+                      <a href={cas.url} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>READ OPINION ↗</a>
                     </div>
                   </div>
                 ))}
@@ -330,7 +330,7 @@ export default async function LawsPage({ searchParams }) {
           {tab === 'assistant' && (
             <div style={{ maxWidth:720 }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:8 }}>AI LAW ASSISTANT</h2>
-              <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7, marginBottom:24 }}>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7, marginBottom:24 }}>
                 Ask anything about US firearms law. Powered by Claude AI + DownRange state database.
                 Requires ANTHROPIC_API_KEY in Vercel environment variables.
               </p>
@@ -342,7 +342,7 @@ export default async function LawsPage({ searchParams }) {
           {tab === 'reciprocity' && (
             <div style={{ maxWidth:720 }}>
               <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:8 }}>CCW RECIPROCITY PLANNER</h2>
-              <p style={{ fontFamily:'monospace', fontSize:'12px', color:'#4B5563', lineHeight:1.7, marginBottom:24 }}>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7, marginBottom:24 }}>
                 Select your home state to see where your permit is honored. Data from stateProfile database.
               </p>
               <ReciprocityPlanner stateProfiles={stateProfiles} />
