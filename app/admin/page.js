@@ -3,6 +3,7 @@ import React, { useState, useEffect } from 'react'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
+const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
 
 const TABS = [
   { key:'dashboard',  label:'Dashboard',       icon:'◈' },
@@ -22,6 +23,7 @@ const TABS = [
   { key:'blog',       label:'Blog Manager',    icon:'📝' },
   { key:'schedule',   label:'Pub. Schedule',   icon:'📅' },
   { key:'pulllog',    label:'Pull Log',        icon:'📡' },
+  { key:'outreach',   label:'Outreach',        icon:'📬' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
@@ -1781,6 +1783,7 @@ export default function AdminPage() {
 
           {/* ── PULL LOG ── */}
           {tab==='pulllog' && <PullLogDashboard />}
+          {tab==='outreach' && <OutreachPortal adminKey={secret} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 
           {tab==='cronhealth' && <CronHealth secret={secret} />}

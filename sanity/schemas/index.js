@@ -12,9 +12,14 @@ import { author }         from './author'
 import { globalStats }    from './globalStats'
 import { priceAlert }     from './priceAlert'
 import { billTracker }    from './billTracker'
+import { outreachContact }  from './outreachContact'
+import { outreachCampaign } from './outreachCampaign'
+import { outreachTemplate } from './outreachTemplate'
+import { outreachSendLog }  from './outreachSendLog'
 
 export const schemaTypes = [
   newsArticle, breakingAlert, legislation, review,
   firearmRelease, stateProfile, ammoPrice, video, author, globalStats,
   priceAlert, billTracker, siteConfig, marketAnalysis,
+  outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
 ]

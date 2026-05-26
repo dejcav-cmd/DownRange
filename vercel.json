@@ -111,6 +111,30 @@
     },
     "app/api/system/alert/route.js": {
       "maxDuration": 30
+    },
+    "app/api/outreach/contacts/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/campaigns/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/templates/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/send/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/outreach/scrape/route.js": {
+      "maxDuration": 60
+    },
+    "app/api/outreach/import/route.js": {
+      "maxDuration": 60
+    },
+    "app/api/outreach/unsubscribe/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/outreach/templates/seed/route.js": {
+      "maxDuration": 30
     }
   }
 }
