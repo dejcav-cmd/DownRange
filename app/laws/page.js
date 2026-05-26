@@ -99,12 +99,12 @@ function StatusBadge({ status }) {
 function BillCard({ bill }) {
   const s = STATUS_CONFIG[bill.status?.toLowerCase()] || STATUS_CONFIG.pending
   return (
-    <div style={{ background:'#111318', border:`1px solid #1F2428`, borderLeft:`3px solid ${s.color}`, padding:'20px 24px' }}>
+    <div style={{ background:'#111318', border:`1px solid var(--border)`, borderLeft:`3px solid ${s.color}`, padding:'20px 24px' }}>
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', gap:12, marginBottom:8 }}>
         <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
           <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', fontWeight:700 }}>{bill.billNumber}</span>
           <StatusBadge status={bill.status} />
-          {bill.state && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', background:'#1F2428', padding:'2px 6px' }}>{bill.state}</span>}
+          {bill.state && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', background:'var(--border)', padding:'2px 6px' }}>{bill.state}</span>}
           {bill.impact && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:IMPACT_COLORS[bill.impact] || '#9CA3AF' }}>{bill.impact} IMPACT</span>}
         </div>
         {bill.lastActionDate && (
@@ -161,7 +161,7 @@ export default async function LawsPage({ searchParams }) {
           <div style={{ maxWidth:680 }}>
             <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap' }}>
               <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>LAWS & LEGISLATION</span>
-              <span style={{ background:'#1F2428', color:'#34D399', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #34D39940' }}>LIVE TRACKER</span>
+              <span style={{ background:'var(--border)', color:'#34D399', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #34D39940' }}>LIVE TRACKER</span>
             </div>
             <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
               Second Amendment<br />
@@ -280,7 +280,7 @@ export default async function LawsPage({ searchParams }) {
                 {ATF_RULES.map(rule => {
                   const s = STATUS_CONFIG[rule.status] || STATUS_CONFIG.pending
                   return (
-                    <div key={rule.id} style={{ background:'#111318', border:`1px solid #1F2428`, borderLeft:`4px solid ${s.color}`, padding:'24px 28px' }}>
+                    <div key={rule.id} style={{ background:'#111318', border:`1px solid var(--border)`, borderLeft:`4px solid ${s.color}`, padding:'24px 28px' }}>
                       <div style={{ display:'flex', gap:8, alignItems:'center', marginBottom:10, flexWrap:'wrap' }}>
                         <StatusBadge status={rule.status} />
                         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:IMPACT_COLORS[rule.impact], background:'#111318', padding:'2px 6px', border:`1px solid ${IMPACT_COLORS[rule.impact]}40` }}>{rule.impact} IMPACT</span>
@@ -307,7 +307,7 @@ export default async function LawsPage({ searchParams }) {
               </div>
               <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
                 {SCOTUS_CASES.map(cas => (
-                  <div key={cas.id} style={{ background:'#111318', border:`1px solid ${cas.outcome==='WON'?'#16603440':cas.outcome==='PENDING'?'#1F2428':'#7F1D1D40'}`, padding:'24px', display:'grid', gridTemplateColumns:'80px 1fr', gap:24 }}>
+                  <div key={cas.id} style={{ background:'#111318', border:`1px solid ${cas.outcome==='WON'?'#16603440':cas.outcome==='PENDING'?'var(--border)':'#7F1D1D40'}`, padding:'24px', display:'grid', gridTemplateColumns:'80px 1fr', gap:24 }}>
                     <div style={{ textAlign:'center' }}>
                       <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'2rem', color: cas.outcome==='WON' ? '#34D399' : cas.outcome==='PENDING' ? '#9CA3AF' : '#EF4444', lineHeight:1 }}>{cas.year}</div>
                       <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color: cas.outcome==='WON' ? '#34D399' : cas.outcome==='PENDING' ? '#9CA3AF' : '#EF4444', marginTop:4, fontWeight:700 }}>{cas.outcome}</div>

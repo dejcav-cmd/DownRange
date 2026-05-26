@@ -21,7 +21,7 @@ export async function POST(req) {
       to:[process.env.CONTACT_EMAIL||'dejalma.cavalcanti@icloud.com'],
       replyTo: email,
       subject:`[DownRange Submission] ${topic}`,
-      html:`<div style="font-family:monospace;padding:24px;background:#0A0B0C;color:#F0EDE6"><h2 style="color:#C8922A">New Article Submission</h2><p><b>From:</b> ${name} (${email})</p><p><b>Expertise:</b> ${expertise||'Not specified'}</p><p><b>Topic:</b> ${topic}</p><p><b>Outline:</b><br>${outline.replace(/\n/g,'<br>')}</p>${sampleUrl?`<p><b>Sample:</b> <a href="${sampleUrl}">${sampleUrl}</a></p>`:''}</div>`
+      html:`<div style="font-family:monospace;padding:24px;background:var(--background);color:#F0EDE6"><h2 style="color:#C8922A">New Article Submission</h2><p><b>From:</b> ${name} (${email})</p><p><b>Expertise:</b> ${expertise||'Not specified'}</p><p><b>Topic:</b> ${topic}</p><p><b>Outline:</b><br>${outline.replace(/\n/g,'<br>')}</p>${sampleUrl?`<p><b>Sample:</b> <a href="${sampleUrl}">${sampleUrl}</a></p>`:''}</div>`
     })
   } catch {}
 

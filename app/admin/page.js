@@ -1397,7 +1397,7 @@ export default function AdminPage() {
                     { label:'Primary Gold',    val:'#C8922A', preview:true },
                     { label:'Background',      val:'#09090B', preview:true },
                     { label:'Background 2',    val:'#0D0E10', preview:true },
-                    { label:'Background 3',    val:'#1F2428', preview:true },
+                    { label:'Background 3',    val:'var(--border)', preview:true },
                     { label:'Border Color',    val:'var(--border)', preview:false },
                     { label:'Text Primary',    val:'#F0EDE6', preview:true },
                     { label:'Text Muted',      val:'#9CA3AF', preview:true },
@@ -1442,7 +1442,7 @@ export default function AdminPage() {
               </div>
 
               <div className="dr-alert-info">
-                <strong>Design rules from DESIGN_SYSTEM.md:</strong> Never hardcode hex colors — always use CSS vars. Never use bare monospace font family. Use <code style={{ color:'var(--gold)' }}>var(--border)</code> for all borders (not #1F2428). Use <code style={{ color:'var(--gold)' }}>.page-hero + .dr-card + var(--border)</code> pattern throughout. See <code style={{ color:'var(--gold)' }}>DESIGN_SYSTEM.md</code> in the repo root.
+                <strong>Design rules from DESIGN_SYSTEM.md:</strong> Never hardcode hex colors — always use CSS vars. Never use bare monospace font family. Use <code style={{ color:'var(--gold)' }}>var(--border)</code> for all borders (not var(--border)). Use <code style={{ color:'var(--gold)' }}>.page-hero + .dr-card + var(--border)</code> pattern throughout. See <code style={{ color:'var(--gold)' }}>DESIGN_SYSTEM.md</code> in the repo root.
               </div>
             </div>
           )}

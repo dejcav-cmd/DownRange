@@ -17,7 +17,7 @@ export async function POST(req) {
       replyTo: email,
       subject: `[DownRange Contact] ${subject || 'New message from ' + name}`,
       html: `
-        <div style="font-family:monospace;max-width:600px;margin:0 auto;background:#0A0B0C;color:#F0EDE6;padding:32px">
+        <div style="font-family:monospace;max-width:600px;margin:0 auto;background:var(--background);color:#F0EDE6;padding:32px">
           <div style="font-family:Georgia,serif;font-size:24px;color:#C8922A;letter-spacing:2px;margin-bottom:20px;border-bottom:1px solid #1F2428;padding-bottom:16px">
             DOWNRANGE — New Contact
           </div>

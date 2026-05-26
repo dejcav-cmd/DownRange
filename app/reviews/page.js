@@ -211,7 +211,7 @@ export default async function ReviewsPage({ searchParams }) {
           <div style={{ maxWidth:640 }}>
             <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap' }}>
               <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>REVIEWS</span>
-              <span style={{ background:'#1F2428', color:'#9CA3AF', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #4B556340' }}>FIELD TESTED</span>
+              <span style={{ background:'var(--border)', color:'#9CA3AF', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #4B556340' }}>FIELD TESTED</span>
               <span style={{ background:'#001A0A', color:'#22C55E', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #22C55E40' }}>ROUND COUNTS DOCUMENTED</span>
             </div>
             <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>

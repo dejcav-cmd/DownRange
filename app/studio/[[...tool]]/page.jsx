@@ -10,7 +10,7 @@ const Studio = dynamic(
       <div style={{
         background: '#0A0B0C', minHeight: '100vh',
         display: 'flex', alignItems: 'center', justifyContent: 'center',
-        color: '#C8922A', fontFamily: 'monospace', fontSize: '14px', letterSpacing: '0.1em'
+        color: '#C8922A', fontFamily: "'IBM Plex Mono', monospace", fontSize: '14px', letterSpacing: '0.1em'
       }}>
         LOADING STUDIO...
       </div>

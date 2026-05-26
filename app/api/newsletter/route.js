@@ -31,7 +31,7 @@ export async function POST(req) {
         from: 'DownRange <news@downrangeco.com>',
         to: email,
         subject: 'Welcome to DownRange',
-        html: `<div style="background:#0A0B0C;color:#F5F5F3;font-family:Arial;padding:40px;max-width:600px;margin:auto;">
+        html: `<div style="background:var(--background);color:#F5F5F3;font-family:Arial;padding:40px;max-width:600px;margin:auto;">
           <h1 style="color:#C8922A;letter-spacing:4px;font-size:42px;">DOWNRANGE</h1>
           <p style="color:#94A3B8;">You're locked and loaded, ${name || 'operator'}. Daily briefings hit your inbox every morning.</p>
           <a href="https://downrangeco.com" style="color:#C8922A;">Visit DownRange &rarr;</a>
@@ -66,7 +66,7 @@ export async function GET(req) {
         from: 'DownRange Daily <news@downrangeco.com>',
         to: email,
         subject: `DownRange Daily — ${new Date().toLocaleDateString()}`,
-        html: `<div style="background:#0A0B0C;color:#F5F5F3;font-family:Arial;padding:40px;max-width:600px;margin:auto;">
+        html: `<div style="background:var(--background);color:#F5F5F3;font-family:Arial;padding:40px;max-width:600px;margin:auto;">
           <h1 style="color:#C8922A;font-size:36px;letter-spacing:4px;">DOWNRANGE</h1>
           ${stories.map(s => `<div style="border-bottom:1px solid #1F2428;padding:16px 0;">
             <p style="color:#C8922A;font-size:11px;margin:0;">${s.category || 'NEWS'}</p>

@@ -25,7 +25,7 @@ function ReleaseCard({ release, size = 'normal' }) {
     <a href={release.sourceUrl || release.specUrl || '#'} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
       <div style={{ background: '#111318', border: '1px solid var(--border)', overflow: 'hidden', width: isLarge ? '100%' : '220px', flexShrink: 0, transition: 'border-color 0.2s' }}
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
-        onMouseLeave={e => e.currentTarget.style.borderColor = '#1F2428'}>
+        onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}>
 
         {/* Image */}
         <div style={{ width: '100%', height: isLarge ? '240px' : '150px', background: '#0D1117', position: 'relative', overflow: 'hidden' }}>

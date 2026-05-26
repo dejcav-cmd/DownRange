@@ -20,7 +20,7 @@ function Stars({ score }) {
   return (
     <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
       <div style={{ position: 'relative', width: '100px', height: '16px' }}>
-        <div style={{ position: 'absolute', color: '#1F2428', fontSize: '16px', letterSpacing: '4px' }}>★★★★★</div>
+        <div style={{ position: 'absolute', color: 'var(--border)', fontSize: '16px', letterSpacing: '4px' }}>★★★★★</div>
         <div style={{ position: 'absolute', overflow: 'hidden', width: `${pct}%`, color: '#C8922A', fontSize: '16px', letterSpacing: '4px' }}>★★★★★</div>
       </div>
       <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '14px', color: '#C8922A', fontWeight: 700 }}>{score?.toFixed(1)} / 10</span>
@@ -56,7 +56,7 @@ export default async function ReviewPage({ params }) {
         {img && (
           <div style={{ width: '100%', height: 'clamp(260px, 40vw, 480px)', overflow: 'hidden', position: 'relative' }}>
             <img src={img} alt={review.title} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, #0A0B0C 0%, transparent 60%)' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(0deg, var(--background) 0%, transparent 60%)' }} />
           </div>
         )}
 
@@ -74,9 +74,9 @@ export default async function ReviewPage({ params }) {
           <Stars score={review.score || 8.5} />
           <div style={{ display: 'flex', gap: '16px', marginTop: '14px', flexWrap: 'wrap', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px', color: '#4B5563' }}>
             {review.brand && <span>{review.brand}</span>}
-            {review.model && <><span style={{ color: '#1F2428' }}>·</span><span>{review.model}</span></>}
-            {review.caliber && <><span style={{ color: '#1F2428' }}>·</span><span>{review.caliber}</span></>}
-            {review.msrp && <><span style={{ color: '#1F2428' }}>·</span><span style={{ color: '#C8922A' }}>MSRP ${review.msrp.toLocaleString()}</span></>}
+            {review.model && <><span style={{ color: 'var(--border)' }}>·</span><span>{review.model}</span></>}
+            {review.caliber && <><span style={{ color: 'var(--border)' }}>·</span><span>{review.caliber}</span></>}
+            {review.msrp && <><span style={{ color: 'var(--border)' }}>·</span><span style={{ color: '#C8922A' }}>MSRP ${review.msrp.toLocaleString()}</span></>}
           </div>
         </div>
 
