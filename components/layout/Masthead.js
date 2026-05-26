@@ -1,4 +1,5 @@
 'use client'
+import DottedSurface from '../ui/DottedSurface'
 import ThemeToggle from '../ui/ThemeToggle'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
@@ -48,8 +49,9 @@ export default function Masthead() {
       `}</style>
       <div className="container">
         {/* Masthead top */}
-        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '20px 0 16px' }}>
-          <div>
+        <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', padding: '20px 0 16px', position: 'relative' }}>
+          <DottedSurface />
+          <div style={{ position: 'relative', zIndex: 1 }}>
             <Link href="/" style={{ display: 'block', lineHeight: 1 }} aria-label="DownRange — Home">
               <svg width="320" height="80" viewBox="0 0 340 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
                 {/* Scope reticle */}
@@ -77,7 +79,7 @@ export default function Masthead() {
               </svg>
             </Link>
           </div>
-          <div className="masthead-right" style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px' }}>
+          <div className="masthead-right" style={{ textAlign: 'right', display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '4px', position: 'relative', zIndex: 1 }}>
             <span style={{ background: '#C8922A', color: '#09090B', fontFamily: "'Barlow Condensed', sans-serif", fontSize: '10px', fontWeight: 700, letterSpacing: '0.15em', padding: '3px 10px' }}>
               DAILY EDITION
             </span>
