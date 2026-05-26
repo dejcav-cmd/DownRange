@@ -1,10 +1,10 @@
 import '../styles/globals.css'
 import MobileTabBar from '../components/ui/MobileTabBar'
 import { ThemeProvider } from '../components/ui/ThemeProvider'
-import { GoogleAnalytics } from '@next/third-parties/google'
+import Script from 'next/script'
 import PageViewTracker from '../components/ui/PageViewTracker'
 
-const GA_ID = process.env.NEXT_PUBLIC_GA_ID || ''
+const GA_ID = 'G-KDGZX3CLEC'
 
 export const viewport = {
   width: 'device-width',
@@ -49,16 +49,30 @@ export default function RootLayout({ children }) {
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA) }} />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
+
+        {/* ── Google Analytics GA4 — G-KDGZX3CLEC ── */}
+        <Script
+          src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}
+          strategy="afterInteractive"
+        />
+        <Script id="ga4-init" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', '${GA_ID}', {
+              page_path: window.location.pathname,
+            });
+          `}
+        </Script>
       </head>
       <body>
         <ThemeProvider>
           {children}
           <MobileTabBar />
         </ThemeProvider>
-        {/* GA4 — only loads when NEXT_PUBLIC_GA_ID is set */}
-        {GA_ID && <GoogleAnalytics gaId={GA_ID} />}
-        {/* SPA page-view tracker — fires on every client-side route change */}
-        {GA_ID && <PageViewTracker />}
+        {/* SPA route tracker — fires gtag on every client-side navigation */}
+        <PageViewTracker />
       </body>
     </html>
   )
