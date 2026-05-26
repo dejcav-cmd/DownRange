@@ -4,194 +4,86 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Firearms Learning Center — DownRange',
-  description: 'Beginner-friendly guides on buying your first gun, CCW licensing, safe storage, firearms safety, and more. Written for new gun owners.',
+  description: 'Beginner-friendly guides on buying your first gun, CCW licensing, safe storage, and more. Written by DJ Cavalcanti.',
 }
-
-const AUTHOR = { name: 'DJ Cavalcanti', title: 'DownRange Founder', avatar: '🎯' }
 
 const ARTICLES = [
-  {
-    slug: 'buying-your-first-gun',
-    title: 'Buying Your First Gun: The Complete Beginner\'s Guide',
-    subtitle: 'Everything you need to know before walking into a gun store — from caliber selection to the background check process.',
-    category: 'Getting Started',
-    readTime: '12 min read',
-    date: 'May 2026',
-    featured: true,
-    image: '🔫',
-    tags: ['First Gun', 'Beginner', 'Handgun', 'Budget'],
-    excerpt: 'Most first-time buyers make the same mistake: they walk into a gun store with no plan and let a salesperson decide for them. Here\'s what to know before you go.',
-  },
-  {
-    slug: 'how-to-get-ccw-license',
-    title: 'How to Get Your CCW License (State-by-State Guide)',
-    subtitle: 'Concealed carry permits explained: requirements, costs, training, and exactly what to expect in your state.',
-    category: 'CCW & Carry',
-    readTime: '15 min read',
-    date: 'May 2026',
-    featured: true,
-    image: '🪪',
-    tags: ['CCW', 'Carry Permit', 'Legal', 'Training'],
-    excerpt: 'A CCW license lets you legally carry a concealed firearm in public. But the process varies wildly by state — here\'s a complete breakdown.',
-  },
-  {
-    slug: 'firearms-safety-four-rules',
-    title: 'The Four Rules of Firearms Safety (And Why They Save Lives)',
-    subtitle: 'These four rules are not suggestions. Every accident with a firearm traces back to violating at least one of them.',
-    category: 'Safety',
-    readTime: '8 min read',
-    date: 'May 2026',
-    featured: true,
-    image: '🛡',
-    tags: ['Safety', 'Fundamentals', 'Beginner', 'Rules'],
-    excerpt: 'Colonel Jeff Cooper codified these four rules decades ago. Every serious instructor teaches them. Learn them before you touch a firearm.',
-  },
-  {
-    slug: 'home-defense-basics',
-    title: 'Home Defense Basics: What You Actually Need',
-    subtitle: 'A practical guide to protecting your home — the right gun, storage, lighting, plan, and what the movies get wrong.',
-    category: 'Home Defense',
-    readTime: '11 min read',
-    date: 'May 2026',
-    image: '🏠',
-    tags: ['Home Defense', 'Shotgun', 'Pistol', 'Plan'],
-    excerpt: 'Most people buy a gun for home defense, then put it in a drawer and never think about it again. That\'s not a plan — it\'s a liability.',
-  },
-  {
-    slug: 'safe-storage-guide-beginners',
-    title: 'Safe Storage 101: Keeping Your Guns Secure and Accessible',
-    subtitle: 'How to prevent theft and unauthorized access while keeping your defensive firearm ready when you need it.',
-    category: 'Safe Storage',
-    readTime: '9 min read',
-    date: 'May 2026',
-    image: '🔒',
-    tags: ['Storage', 'Safe', 'Biometric', 'Children'],
-    excerpt: 'You have a moral and often legal obligation to secure your firearms. Here\'s how to do it without sacrificing defensive access.',
-  },
-  {
-    slug: 'ammo-guide-beginners',
-    title: 'Ammunition Explained: What to Buy and Why',
-    subtitle: 'Calibers, grain weights, hollow points vs. FMJ — everything a beginner needs to know about buying the right ammo.',
-    category: 'Ammunition',
-    readTime: '10 min read',
-    date: 'May 2026',
-    image: '🔶',
-    tags: ['Ammo', '9mm', 'Caliber', 'Hollow Point'],
-    excerpt: 'Walk into any gun store and you\'ll see hundreds of ammo choices. Here\'s what actually matters — and what\'s marketing.',
-  },
-  {
-    slug: 'shooting-range-first-visit',
-    title: 'Your First Time at a Shooting Range: What to Expect',
-    subtitle: 'Range rules, etiquette, what to bring, what to wear, and how to not embarrass yourself your first time out.',
-    category: 'Getting Started',
-    readTime: '7 min read',
-    date: 'May 2026',
-    image: '◎',
-    tags: ['Range', 'Beginner', 'Etiquette', 'Tips'],
-    excerpt: 'Shooting ranges have specific rules and culture. Breaking them ranges from embarrassing to dangerous. Here\'s what to know.',
-  },
-  {
-    slug: 'cleaning-maintaining-your-gun',
-    title: 'How to Clean and Maintain Your Firearm',
-    subtitle: 'A dirty gun is an unreliable gun. This beginner-friendly guide covers field strip, cleaning, and lubrication for common pistols.',
-    category: 'Maintenance',
-    readTime: '10 min read',
-    date: 'May 2026',
-    image: '🔧',
-    tags: ['Cleaning', 'Maintenance', 'Reliability', 'Tools'],
-    excerpt: 'You don\'t need to be a gunsmith. But you do need to know how to keep your firearm running reliably. Start here.',
-  },
-  {
-    slug: 'understanding-gun-laws',
-    title: 'Understanding Gun Laws: A Beginner\'s Legal Overview',
-    subtitle: 'Federal laws, state laws, and how they interact — what new gun owners need to know to stay legal.',
-    category: 'Legal',
-    readTime: '13 min read',
-    date: 'May 2026',
-    image: '⚖',
-    tags: ['Legal', 'Laws', 'Federal', 'State', 'Compliance'],
-    excerpt: 'Gun laws are a patchwork of federal, state, and local regulations that interact in non-obvious ways. Here\'s the framework you need.',
-  },
-  {
-    slug: 'choosing-holster-beginners',
-    title: 'How to Choose a Holster for Concealed Carry',
-    subtitle: 'IWB, OWB, appendix, shoulder — the different types of holsters and how to choose the right one for your lifestyle.',
-    category: 'CCW & Carry',
-    readTime: '11 min read',
-    date: 'May 2026',
-    image: '🔫',
-    tags: ['Holster', 'IWB', 'Appendix', 'Carry'],
-    excerpt: 'Buying a carry gun without buying a good holster is like buying a car without seatbelts. The holster is half the system.',
-  },
-  {
-    slug: 'dry-fire-training-beginners',
-    title: 'Dry Fire Training: How to Get Better Without Spending on Ammo',
-    subtitle: 'Dry fire practice builds the fundamentals faster than live fire — and it\'s free. Here\'s how to do it safely and effectively.',
-    category: 'Training',
-    readTime: '9 min read',
-    date: 'May 2026',
-    image: '🎯',
-    tags: ['Training', 'Dry Fire', 'Free', 'Fundamentals'],
-    excerpt: 'Professional shooters spend more time dry firing than live firing. You should too — especially as a beginner.',
-  },
-  {
-    slug: 'what-is-nfa',
-    title: 'What Is the NFA? Suppressors, SBRs, and Machine Guns Explained',
-    subtitle: 'The National Firearms Act regulates some of the most interesting (and legal) items available. Here\'s how it works in 2026.',
-    category: 'Legal',
-    readTime: '12 min read',
-    date: 'May 2026',
-    image: '📋',
-    tags: ['NFA', 'Suppressor', 'SBR', 'Tax Stamp'],
-    excerpt: 'After the NFA tax stamp was eliminated in January 2026, interest in suppressors and SBRs exploded. Here\'s what you need to know.',
-  },
+  { slug:'buying-your-first-gun',       title:"Buying Your First Gun: The Complete Beginner's Guide",     subtitle:'Everything you need to know before walking into a gun store.',                       category:'Getting Started', readTime:'12 min', date:'May 15', img:'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=800&q=80', featured:true },
+  { slug:'how-to-get-ccw-license',      title:'How to Get Your CCW License (State-by-State Guide)',        subtitle:'Concealed carry permits explained: requirements, costs, and training.',              category:'CCW & Carry',     readTime:'15 min', date:'May 18', img:'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=800&q=80', featured:true },
+  { slug:'firearms-safety-four-rules',  title:'The Four Rules of Firearms Safety (And Why They Save Lives)', subtitle:'These rules are not suggestions. Every accident violates at least one.',           category:'Safety',          readTime:'8 min',  date:'May 20', img:'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80', featured:true },
+  { slug:'home-defense-basics',         title:'Home Defense Basics: What You Actually Need',               subtitle:'The right firearm, a workable plan, the right storage.',                          category:'Home Defense',    readTime:'11 min', date:'Jun 2',  img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80' },
+  { slug:'safe-storage-guide-beginners',title:'Safe Storage 101: Keeping Your Guns Secure and Accessible', subtitle:'Prevent theft and accidents without sacrificing defensive access.',                 category:'Safe Storage',    readTime:'9 min',  date:'Jun 5',  img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80' },
+  { slug:'ammo-guide-beginners',        title:'Ammunition Explained: What to Buy and Why',                 subtitle:'Calibers, grain weights, hollow points vs FMJ — simplified.',                     category:'Ammunition',      readTime:'10 min', date:'Jun 9',  img:'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80' },
+  { slug:'shooting-range-first-visit',  title:'Your First Time at a Shooting Range: What to Expect',       subtitle:'Rules, etiquette, and how to make the most of your first session.',                category:'Getting Started',  readTime:'7 min',  date:'Jun 12', img:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80' },
+  { slug:'cleaning-maintaining-your-gun',title:'How to Clean and Maintain Your Firearm',                   subtitle:'Field strip, clean, and lubricate your pistol in 20 minutes.',                   category:'Maintenance',     readTime:'10 min', date:'Jun 16', img:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=800&q=80' },
+  { slug:'understanding-gun-laws',      title:'Understanding Gun Laws: A Beginner\'s Legal Overview',       subtitle:'Federal law, state law, and how they interact — what you need to know.',          category:'Legal',           readTime:'13 min', date:'Jun 19', img:'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=800&q=80' },
+  { slug:'choosing-holster-beginners',  title:'How to Choose a Holster for Concealed Carry',               subtitle:'IWB, OWB, appendix — how to choose the right carry method.',                     category:'CCW & Carry',     readTime:'11 min', date:'Jun 23', img:'https://images.unsplash.com/photo-1521133573892-e44906baee46?w=800&q=80' },
+  { slug:'dry-fire-training-beginners', title:'Dry Fire Training: Get Better Without Spending on Ammo',    subtitle:'Professional shooters spend more time dry firing than live firing.',               category:'Training',        readTime:'9 min',  date:'Jun 27', img:'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80' },
+  { slug:'what-is-nfa',                 title:'What Is the NFA? Suppressors, SBRs, and More Explained',    subtitle:'After the 2026 tax stamp elimination, NFA item interest exploded. Here\'s the guide.', category:'Legal',       readTime:'12 min', date:'Jul 1',  img:'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=800&q=80' },
 ]
 
-const CATEGORIES = [...new Set(ARTICLES.map(a => a.category))]
-const CAT_ICONS = {
-  'Getting Started': '🚀',
-  'CCW & Carry': '🪪',
-  'Safety': '🛡',
-  'Home Defense': '🏠',
-  'Safe Storage': '🔒',
-  'Ammunition': '🔶',
-  'Maintenance': '🔧',
-  'Legal': '⚖',
-  'Training': '🎯',
+const CAT_COLORS = {
+  'Getting Started':'#C8922A', 'CCW & Carry':'#3B82F6', 'Safety':'#22C55E',
+  'Home Defense':'#EF4444', 'Safe Storage':'#F97316', 'Ammunition':'#FBBF24',
+  'Maintenance':'#8B5CF6', 'Legal':'#60A5FA', 'Training':'#34D399',
 }
+const CATEGORIES = [...new Set(ARTICLES.map(a => a.category))]
 
 export default function LearnPage({ searchParams }) {
-  const catFilter = searchParams?.cat || null
-  const filtered = catFilter ? ARTICLES.filter(a => a.category === catFilter) : ARTICLES
+  const cat = searchParams?.cat || null
+  const filtered = cat ? ARTICLES.filter(a => a.category === cat) : ARTICLES
   const featured = ARTICLES.filter(a => a.featured)
-  const rest = filtered.filter(a => !a.featured || catFilter)
+  const grid = cat ? filtered : ARTICLES.filter(a => !a.featured)
 
   return (
     <>
       <Masthead />
 
-      {/* Hero */}
-      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'48px 0 32px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 30% 50%, rgba(200,146,42,0.06), transparent 60%)', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', right:'-20px', top:'-20px', fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(80px,15vw,180px)', color:'rgba(200,146,42,0.04)', lineHeight:1, pointerEvents:'none', userSelect:'none' }}>LEARN</div>
-        <div className="container" style={{ position:'relative', zIndex:1 }}>
-          <div className="dr-breadcrumb" style={{ marginBottom:'12px' }}>
-            <Link href="/" style={{ color:'var(--text-dim)', textDecoration:'none' }}>Home</Link>
-            <span className="dr-breadcrumb-sep">›</span>
-            <span className="dr-breadcrumb-cur">Learning Center</span>
-          </div>
-          <h1 className="page-hero-title" style={{ marginBottom:'8px' }}>Learning Center</h1>
-          <p className="page-hero-sub" style={{ marginBottom:'16px' }}>Beginner-friendly guides written by firearms owners, for firearms owners</p>
-          <div style={{ display:'flex', alignItems:'center', gap:'12px', flexWrap:'wrap' }}>
-            <div style={{ display:'flex', alignItems:'center', gap:'8px', background:'var(--bg3)', border:'1px solid var(--border)', padding:'8px 14px' }}>
-              <span style={{ fontSize:'16px' }}>🎯</span>
+      {/* ── HERO ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 25% 60%, rgba(200,146,42,0.07) 0%, transparent 55%)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'50%', overflow:'hidden', opacity:0.04, pointerEvents:'none' }}>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'18vw', color:'var(--gold)', lineHeight:0.85, textAlign:'right', paddingRight:'20px', paddingTop:'10px' }}>LEARN</div>
+        </div>
+        <div className="container" style={{ position:'relative' }}>
+          <div style={{ maxWidth:680 }}>
+            <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap' }}>
+              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>LEARNING CENTER</span>
+              <span className="dr-badge dr-badge-green" style={{ padding:'3px 10px' }}>{ARTICLES.length} ARTICLES</span>
+              <span className="dr-badge dr-badge-dim" style={{ padding:'3px 10px' }}>BEGINNER FRIENDLY</span>
+            </div>
+            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
+              Everything a New Gun Owner<br />
+              <span style={{ color:'var(--gold)' }}>Needs to Know</span>
+            </h1>
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'17px', color:'var(--text-muted)', lineHeight:1.7, marginBottom:'24px', maxWidth:560 }}>
+              Practical guides written for Americans buying their first gun, getting a carry permit, or learning the laws. No fluff, no lectures — just the information you actually need.
+            </p>
+            <div style={{ display:'flex', alignItems:'center', gap:'14px', padding:'14px 18px', background:'var(--bg3)', border:'1px solid var(--border)', borderLeft:'3px solid var(--gold)', width:'fit-content' }}>
+              <div style={{ width:36, height:36, background:'linear-gradient(135deg,var(--gold),#8A6320)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'16px' }}>🎯</div>
               <div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, color:'var(--text)' }}>DJ Cavalcanti</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>DownRange Founder · All articles</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>Written by DJ Cavalcanti</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>DownRange Founder · All {ARTICLES.length} articles</div>
               </div>
             </div>
-            <span className="dr-badge dr-badge-gold">{ARTICLES.length} Articles</span>
-            <span className="dr-badge dr-badge-green">Beginner Friendly</span>
+          </div>
+        </div>
+      </div>
+
+      {/* ── CATEGORY FILTER ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
+        <div className="container">
+          <div style={{ display:'flex', gap:0, overflowX:'auto', paddingRight:'8px' }}>
+            <a href="/learn" style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${!cat?'var(--gold)':'transparent'}`, color:!cat?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+              All ({ARTICLES.length})
+            </a>
+            {CATEGORIES.map(c => (
+              <a key={c} href={`/learn?cat=${encodeURIComponent(c)}`}
+                style={{ display:'inline-flex', alignItems:'center', gap:'6px', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${cat===c?CAT_COLORS[c]||'var(--gold)':'transparent'}`, color:cat===c?(CAT_COLORS[c]||'var(--gold)'):'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+                <span style={{ width:6, height:6, borderRadius:'50%', background:CAT_COLORS[c]||'var(--text-dim)', flexShrink:0 }} />
+                {c}
+              </a>
+            ))}
           </div>
         </div>
       </div>
@@ -199,73 +91,98 @@ export default function LearnPage({ searchParams }) {
       <div className="dr-page">
         <div className="container">
 
-          {/* Category filters */}
-          <div style={{ display:'flex', gap:'6px', flexWrap:'wrap', marginBottom:'32px', paddingBottom:'16px', borderBottom:'1px solid var(--border)' }}>
-            <a href="/learn" className={`dr-badge ${!catFilter ? 'dr-badge-gold' : 'dr-badge-dim'}`} style={{ textDecoration:'none', padding:'6px 14px', fontSize:'10px' }}>
-              All Topics
-            </a>
-            {CATEGORIES.map(cat => (
-              <a key={cat} href={`/learn?cat=${encodeURIComponent(cat)}`}
-                className={`dr-badge ${catFilter===cat ? 'dr-badge-gold' : 'dr-badge-dim'}`}
-                style={{ textDecoration:'none', padding:'6px 14px', fontSize:'10px' }}>
-                {CAT_ICONS[cat]} {cat}
-              </a>
-            ))}
-          </div>
-
-          {/* Featured 3 articles */}
-          {!catFilter && (
-            <div style={{ marginBottom:'40px' }}>
-              <h2 className="dr-section-title">Start Here</h2>
-              <p className="dr-section-sub">The three most important guides for anyone new to firearms</p>
-              <div className="dr-grid-3" style={{ gap:'16px' }}>
-                {featured.map(article => (
-                  <Link key={article.slug} href={`/learn/${article.slug}`} style={{ textDecoration:'none' }}>
-                    <div className="dr-card" style={{ height:'100%', borderTop:`3px solid var(--gold)`, padding:0, overflow:'hidden' }}>
-                      {/* Category + icon bar */}
-                      <div style={{ background:'var(--bg3)', padding:'20px', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-                        <span className="dr-badge dr-badge-gold">{article.category}</span>
-                        <span style={{ fontSize:'28px' }}>{article.image}</span>
-                      </div>
-                      <div style={{ padding:'20px' }}>
-                        <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:'var(--text)', letterSpacing:'0.03em', lineHeight:1.2, marginBottom:'8px' }}>{article.title}</h3>
-                        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', lineHeight:1.6, marginBottom:'12px' }}>{article.excerpt}</p>
-                        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between' }}>
-                          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)' }}>{article.readTime}</span>
-                          <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, color:'var(--gold)', letterSpacing:'0.08em' }}>READ →</span>
-                        </div>
+          {/* ── FEATURED 3 (only on all-articles view) ── */}
+          {!cat && (
+            <div style={{ marginBottom:'48px' }}>
+              <div style={{ display:'flex', alignItems:'baseline', gap:'12px', marginBottom:'20px' }}>
+                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'var(--text)', letterSpacing:'0.04em' }}>Start Here</h2>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.1em' }}>THE ESSENTIALS</span>
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:'3px' }}>
+                {/* Large featured left */}
+                <Link href={`/learn/${featured[0].slug}`} style={{ textDecoration:'none', display:'block', position:'relative', overflow:'hidden' }}>
+                  <div style={{ height:'440px', position:'relative', overflow:'hidden' }}>
+                    <img src={featured[0].img} alt={featured[0].title}
+                         className='learn-card-img' style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s ease' }} />
+                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,11,0.95) 0%, rgba(9,9,11,0.3) 60%, transparent 100%)' }} />
+                    <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'24px' }}>
+                      <span style={{ background:CAT_COLORS[featured[0].category]||'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'2px 10px', display:'inline-block', marginBottom:'10px' }}>{featured[0].category.toUpperCase()}</span>
+                      <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'#F0EDE6', letterSpacing:'0.02em', lineHeight:1.1, marginBottom:'8px' }}>{featured[0].title}</h3>
+                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'rgba(240,237,230,0.65)', lineHeight:1.5 }}>{featured[0].subtitle}</p>
+                      <div style={{ display:'flex', alignItems:'center', gap:'8px', marginTop:'12px' }}>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.45)' }}>{featured[0].readTime} read</span>
+                        <span style={{ color:'var(--gold)', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em' }}>READ →</span>
                       </div>
                     </div>
-                  </Link>
-                ))}
+                  </div>
+                </Link>
+                {/* Two stacked on right */}
+                <div style={{ display:'flex', flexDirection:'column', gap:'3px', gridColumn:'2 / span 2' }}>
+                  {featured.slice(1,3).map(a => (
+                    <Link key={a.slug} href={`/learn/${a.slug}`} style={{ textDecoration:'none', display:'block', flex:1, position:'relative', overflow:'hidden' }}>
+                      <div style={{ height:'218px', position:'relative', overflow:'hidden' }}>
+                        <img src={a.img} alt={a.title}
+                             className='learn-card-img' style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s ease' }} />
+                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,11,0.92) 0%, rgba(9,9,11,0.2) 60%, transparent 100%)' }} />
+                        <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'16px 18px' }}>
+                          <span style={{ background:CAT_COLORS[a.category]||'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'9px', fontWeight:700, letterSpacing:'0.15em', padding:'2px 8px', display:'inline-block', marginBottom:'7px' }}>{a.category.toUpperCase()}</span>
+                          <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'#F0EDE6', letterSpacing:'0.02em', lineHeight:1.15, marginBottom:'4px' }}>{a.title}</h3>
+                          <div style={{ display:'flex', alignItems:'center', gap:'8px' }}>
+                            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.45)' }}>{a.readTime} read</span>
+                            <span style={{ color:'var(--gold)', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.1em' }}>READ →</span>
+                          </div>
+                        </div>
+                      </div>
+                    </Link>
+                  ))}
+                </div>
               </div>
             </div>
           )}
 
-          {/* All articles grid */}
+          {/* ── ARTICLE GRID ── */}
           <div>
-            <h2 className="dr-section-title">{catFilter ? `${CAT_ICONS[catFilter]} ${catFilter}` : 'All Articles'}</h2>
-            <p className="dr-section-sub">{filtered.length} guides · Written by DJ Cavalcanti</p>
-            <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
-              {(catFilter ? filtered : rest).map(article => (
-                <Link key={article.slug} href={`/learn/${article.slug}`} style={{ textDecoration:'none' }}>
-                  <div className="dr-card" style={{ display:'grid', gridTemplateColumns:'56px 1fr auto', gap:'16px', alignItems:'center' }}>
-                    <div style={{ width:56, height:56, background:'var(--bg3)', border:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'22px', flexShrink:0 }}>
-                      {article.image}
-                    </div>
-                    <div>
-                      <div style={{ display:'flex', gap:'6px', marginBottom:'4px', flexWrap:'wrap' }}>
-                        <span className="dr-badge dr-badge-dim">{article.category}</span>
-                        <span className="dr-badge dr-badge-dim">{article.readTime}</span>
+            <div style={{ display:'flex', alignItems:'baseline', gap:'12px', marginBottom:'20px' }}>
+              <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'var(--text)', letterSpacing:'0.04em' }}>
+                {cat || 'All Articles'}
+              </h2>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.1em' }}>{filtered.length} GUIDES</span>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))', gap:'2px' }}>
+              {(cat ? filtered : grid).map(a => (
+                <Link key={a.slug} href={`/learn/${a.slug}`} style={{ textDecoration:'none', display:'block', position:'relative', overflow:'hidden' }}>
+                  <div style={{ height:'260px', position:'relative', overflow:'hidden' }}>
+                    <img src={a.img} alt={a.title}
+                         className='learn-card-img' style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s ease' }} />
+                    <div className='learn-card-overlay' style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,11,0.92) 0%, rgba(9,9,11,0.3) 60%, transparent 100%)', transition:'background 0.3s' }} />
+                    <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'16px' }}>
+                      <div style={{ display:'flex', alignItems:'center', gap:'6px', marginBottom:'6px' }}>
+                        <span style={{ width:6, height:6, borderRadius:'50%', background:CAT_COLORS[a.category]||'var(--gold)', flexShrink:0 }} />
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.55)', letterSpacing:'0.1em' }}>{a.category.toUpperCase()} · {a.readTime}</span>
                       </div>
-                      <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'16px', fontWeight:700, color:'var(--text)', lineHeight:1.2, marginBottom:'3px' }}>{article.title}</h3>
-                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', lineHeight:1.5 }}>{article.subtitle}</p>
+                      <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'16px', fontWeight:700, color:'#F0EDE6', lineHeight:1.25, marginBottom:'4px' }}>{a.title}</h3>
+                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'rgba(240,237,230,0.5)', lineHeight:1.4, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>{a.subtitle}</p>
                     </div>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--gold)', flexShrink:0 }}>→</span>
+                    {/* Date badge */}
+                    <div style={{ position:'absolute', top:'10px', right:'10px', background:'rgba(9,9,11,0.7)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.5)', padding:'3px 8px', border:'1px solid rgba(255,255,255,0.08)' }}>{a.date}</div>
                   </div>
                 </Link>
               ))}
             </div>
+          </div>
+
+          {/* ── BOTTOM CTA ── */}
+          <div style={{ marginTop:'48px', padding:'32px', background:'var(--bg2)', border:'1px solid var(--border)', display:'grid', gridTemplateColumns:'1fr auto', gap:'24px', alignItems:'center' }}>
+            <div>
+              <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--text)', letterSpacing:'0.04em', marginBottom:'6px' }}>More guides are on the way</h3>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', lineHeight:1.6 }}>
+                New beginner articles publish weekly. Topics include: red dot vs. iron sights, 9mm vs. 45 ACP, CCW in constitutional carry states, and more.
+              </p>
+            </div>
+            <Link href="/contribute" className="dr-btn-primary" style={{ whiteSpace:'nowrap', flexShrink:0 }}>
+              Suggest a Topic →
+            </Link>
           </div>
 
         </div>

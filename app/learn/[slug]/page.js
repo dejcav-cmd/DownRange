@@ -209,6 +209,23 @@ const ARTICLES = {
 }
 
 
+
+// ── UNIQUE HERO IMAGES PER ARTICLE ──────────────────────────────────────────
+const HERO_IMAGES = {
+  'buying-your-first-gun':        'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=1400&q=85',
+  'how-to-get-ccw-license':       'https://images.unsplash.com/photo-1633265486064-086b219458ec?w=1400&q=85',
+  'firearms-safety-four-rules':   'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1400&q=85',
+  'home-defense-basics':          'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=1400&q=85',
+  'safe-storage-guide-beginners': 'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=1400&q=85',
+  'ammo-guide-beginners':         'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=1400&q=85',
+  'shooting-range-first-visit':   'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=1400&q=85',
+  'cleaning-maintaining-your-gun':'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1400&q=85',
+  'understanding-gun-laws':       'https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1400&q=85',
+  'choosing-holster-beginners':   'https://images.unsplash.com/photo-1521133573892-e44906baee46?w=1400&q=85',
+  'dry-fire-training-beginners':  'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=1400&q=85',
+  'what-is-nfa':                  'https://images.unsplash.com/photo-1531572753322-ad063cecc140?w=1400&q=85',
+}
+
 export async function generateStaticParams() {
   return Object.keys(ARTICLES).map(s => ({ slug: s }))
 }
@@ -216,144 +233,305 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const a = ARTICLES[params.slug]
   if (!a) return { title: 'Article — DownRange Learning Center' }
+  const img = HERO_IMAGES[params.slug] || a.heroImage
   return {
     title: `${a.title} — DownRange`,
     description: a.subtitle,
-    openGraph: { title: a.title, description: a.subtitle }
+    openGraph: {
+      title: a.title,
+      description: a.subtitle,
+      images: img ? [{ url: img, width: 1400, alt: a.title }] : [],
+    }
   }
 }
 
 export default async function ArticlePage({ params }) {
-  let article = ARTICLES[params.slug]
+  const article = ARTICLES[params.slug]
+  if (!article) notFound()
 
-  // For articles not in static data, generate with Claude
-  if (!article) {
-    article = await generateArticle(params.slug)
-    if (!article) notFound()
-  }
-
-  const otherLinks = Object.entries(ARTICLES)
+  const heroImg = HERO_IMAGES[params.slug] || article.heroImage
+  const allSlugs = Object.keys(ARTICLES)
+  const currentIdx = allSlugs.indexOf(params.slug)
+  const prevSlug = currentIdx > 0 ? allSlugs[currentIdx - 1] : null
+  const nextSlug = currentIdx < allSlugs.length - 1 ? allSlugs[currentIdx + 1] : null
+  const relatedArticles = Object.entries(ARTICLES)
+    .filter(([s]) => s !== params.slug && ARTICLES[s].category === article.category)
+    .slice(0, 3)
+  const moreArticles = Object.entries(ARTICLES)
     .filter(([s]) => s !== params.slug)
-    .slice(0, 4)
-    .map(([s, a]) => ({ href: `/learn/${s}`, label: a.title }))
+    .slice(0, 6)
 
   return (
     <>
       <Masthead />
-      <div className="dr-page" style={{ paddingTop:0 }}>
 
-        {/* Article hero */}
-        <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'40px 0 28px', position:'relative', overflow:'hidden' }}>
-          {article.heroImage && <div style={{ position:'absolute', inset:0, backgroundImage:`url(${article.heroImage})`, backgroundSize:'cover', backgroundPosition:'center', opacity:0.08 }} />}
-          <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 20% 80%, rgba(200,146,42,0.05), transparent 60%)', pointerEvents:'none' }} />
-          <div className="container" style={{ maxWidth:800, position:'relative' }}>
-            <div className="dr-breadcrumb" style={{ marginBottom:'12px' }}>
-              <Link href="/" style={{ color:'var(--text-dim)', textDecoration:'none' }}>Home</Link>
-              <span className="dr-breadcrumb-sep">›</span>
-              <Link href="/learn" style={{ color:'var(--text-dim)', textDecoration:'none' }}>Learning Center</Link>
-              <span className="dr-breadcrumb-sep">›</span>
-              <span className="dr-breadcrumb-cur">{article.category}</span>
+      {/* ── FULL-BLEED HERO IMAGE ── */}
+      <div style={{ position:'relative', height:'clamp(300px,50vw,520px)', overflow:'hidden' }}>
+        {heroImg && (
+          <>
+            <img
+              src={heroImg}
+              alt={article.title}
+              style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', objectPosition:'center' }}
+            />
+            {/* Dark gradient overlay — stronger at bottom for text legibility */}
+            <div style={{ position:'absolute', inset:0, background:'linear-gradient(to bottom, rgba(9,9,11,0.2) 0%, rgba(9,9,11,0.5) 50%, rgba(9,9,11,0.95) 100%)' }} />
+            {/* Subtle gold vignette */}
+            <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at 30% 60%, rgba(200,146,42,0.08) 0%, transparent 70%)' }} />
+          </>
+        )}
+
+        {/* Hero content — positioned at bottom over image */}
+        <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'32px 0 28px' }}>
+          <div className="container" style={{ maxWidth:900 }}>
+            {/* Breadcrumb */}
+            <div style={{ display:'flex', alignItems:'center', gap:'6px', marginBottom:'14px' }}>
+              <Link href="/" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'rgba(240,237,230,0.5)', textDecoration:'none', letterSpacing:'0.08em' }}>HOME</Link>
+              <span style={{ color:'rgba(200,146,42,0.6)', fontSize:'10px' }}>›</span>
+              <Link href="/learn" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'rgba(240,237,230,0.5)', textDecoration:'none', letterSpacing:'0.08em' }}>LEARNING CENTER</Link>
+              <span style={{ color:'rgba(200,146,42,0.6)', fontSize:'10px' }}>›</span>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', letterSpacing:'0.08em' }}>{article.category.toUpperCase()}</span>
             </div>
+
+            {/* Category + read time pills */}
             <div style={{ display:'flex', gap:'8px', marginBottom:'14px', flexWrap:'wrap' }}>
-              <span className="dr-badge dr-badge-gold">{article.category}</span>
-              <span className="dr-badge dr-badge-dim">{article.readTime}</span>
-              <span className="dr-badge dr-badge-dim">{article.date}</span>
+              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 12px', textTransform:'uppercase' }}>{article.category}</span>
+              <span style={{ background:'rgba(9,9,11,0.6)', color:'rgba(240,237,230,0.7)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'3px 12px', border:'1px solid rgba(255,255,255,0.1)' }}>{article.readTime}</span>
+              <span style={{ background:'rgba(9,9,11,0.6)', color:'rgba(240,237,230,0.7)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'3px 12px', border:'1px solid rgba(255,255,255,0.1)' }}>{article.date}</span>
             </div>
-            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2rem,5vw,3rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:1.1, marginBottom:'10px' }}>{article.title}</h1>
-            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7, marginBottom:'20px' }}>{article.subtitle}</p>
-            {/* Author */}
-            <div style={{ display:'flex', alignItems:'center', gap:'12px', padding:'12px 16px', background:'var(--bg3)', border:'1px solid var(--border)', borderLeft:'3px solid var(--gold)', width:'fit-content' }}>
-              <span style={{ fontSize:'24px' }}>🎯</span>
+
+            {/* Title */}
+            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.2rem,5vw,3.8rem)', color:'#F0EDE6', letterSpacing:'0.02em', lineHeight:1.05, marginBottom:'10px', textShadow:'0 2px 20px rgba(0,0,0,0.5)' }}>
+              {article.title}
+            </h1>
+
+            {/* Subtitle */}
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'clamp(14px,2vw,17px)', color:'rgba(240,237,230,0.75)', lineHeight:1.6, maxWidth:640, textShadow:'0 1px 8px rgba(0,0,0,0.8)' }}>
+              {article.subtitle}
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* ── AUTHOR BAR ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'14px 0' }}>
+        <div className="container" style={{ maxWidth:900 }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>
+            <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
+              <div style={{ width:40, height:40, background:'linear-gradient(135deg,var(--gold),var(--gold-dim))', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'18px', flexShrink:0 }}>🎯</div>
               <div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>{AUTHOR.name}</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>{AUTHOR.title} · {article.date}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>DJ Cavalcanti</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>DownRange Founder · {article.date}</div>
               </div>
+            </div>
+            <div style={{ display:'flex', gap:'6px' }}>
+              {article.tags?.slice(0,4).map(t => (
+                <span key={t} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', background:'var(--bg3)', border:'1px solid var(--border)', padding:'3px 8px', letterSpacing:'0.06em' }}>{t}</span>
+              ))}
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="container" style={{ maxWidth:800 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 220px', gap:'40px', paddingTop:'32px' }}>
+      {/* ── ARTICLE BODY ── */}
+      <div style={{ background:'var(--bg)', paddingBottom:'60px' }}>
+        <div className="container" style={{ maxWidth:900 }}>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 260px', gap:'48px', paddingTop:'40px' }}
+               className="article-layout">
+            <style>{`@media(max-width:768px){.article-layout{grid-template-columns:1fr!important} .article-aside{display:none!important}}`}</style>
 
-            {/* Article body */}
+            {/* Main content */}
             <article>
-              {/* Intro */}
+
+              {/* Lead paragraph */}
               {article.intro && (
-                <div style={{ borderLeft:'3px solid var(--gold)', paddingLeft:'20px', marginBottom:'32px' }}>
+                <div style={{ marginBottom:'40px' }}>
                   {article.intro.split('\n\n').map((p, i) => (
-                    <p key={i} style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.8, marginBottom: i < article.intro.split('\n\n').length-1 ? '16px' : 0 }}>{p}</p>
+                    <p key={i} style={{
+                      fontFamily:"'IBM Plex Sans',sans-serif",
+                      fontSize: i === 0 ? '19px' : '16px',
+                      fontWeight: i === 0 ? 400 : 400,
+                      color: i === 0 ? 'var(--text)' : 'var(--text-muted)',
+                      lineHeight: 1.85,
+                      marginBottom:'18px',
+                      borderLeft: i === 0 ? '3px solid var(--gold)' : 'none',
+                      paddingLeft: i === 0 ? '20px' : '0',
+                    }}>{p}</p>
                   ))}
                 </div>
               )}
 
               {/* Sections */}
-              {article.sections?.map((s, i) => (
-                <div key={i} style={{ marginBottom:'32px' }}>
-                  <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--gold)', letterSpacing:'0.04em', marginBottom:'12px', lineHeight:1 }}>{s.h}</h2>
-                  {s.body.split('\n\n').map((p, pi) => (
-                    <p key={pi} style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'15px', color:'var(--text-muted)', lineHeight:1.8, marginBottom:'14px' }} dangerouslySetInnerHTML={{ __html: p.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:var(--text)">$1</strong>').replace(/\n/g, '<br>') }} />
-                  ))}
-                  {i < (article.sections?.length || 0) - 1 && <div style={{ height:'1px', background:'var(--border)', margin:'24px 0 0' }} />}
+              {article.sections?.map((section, i) => (
+                <div key={i} style={{ marginBottom:'48px' }}>
+                  {/* Section image if present */}
+                  {section.image && i > 0 && (
+                    <div style={{ margin:'0 0 24px', borderRadius:0, overflow:'hidden', border:'1px solid var(--border)' }}>
+                      <img
+                        src={section.image}
+                        alt={section.h}
+                        style={{ width:'100%', height:'220px', objectFit:'cover', display:'block', opacity:0.85 }}
+                      />
+                    </div>
+                  )}
+
+                  {/* Section heading with number accent */}
+                  <div style={{ display:'flex', alignItems:'flex-start', gap:'14px', marginBottom:'16px' }}>
+                    <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.2rem', color:'rgba(200,146,42,0.25)', lineHeight:1, flexShrink:0, minWidth:'32px', textAlign:'right' }}>{String(i+1).padStart(2,'0')}</span>
+                    <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.7rem', color:'var(--text)', letterSpacing:'0.03em', lineHeight:1.1, paddingTop:'4px' }}>{section.h}</h2>
+                  </div>
+
+                  {/* Section body */}
+                  <div style={{ paddingLeft:'46px' }}>
+                    {section.body.split('\n\n').map((para, pi) => {
+                      // Detect bullet/numbered lists
+                      const lines = para.split('\n')
+                      const isList = lines.some(l => l.match(/^[•\-\d][\.\s]/))
+
+                      if (isList) {
+                        return (
+                          <div key={pi} style={{ margin:'0 0 16px', background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:'3px solid var(--gold)', padding:'16px 20px' }}>
+                            {lines.map((line, li) => {
+                              const isBullet = line.match(/^[•\-]/)
+                              const isNum = line.match(/^\d+\./)
+                              const isHeader = line.match(/^\*\*[^*]+\*\*:/)
+                              if (!line.trim()) return null
+                              return (
+                                <div key={li} style={{ display:'flex', gap:'10px', marginBottom: li < lines.length-1 ? '8px' : 0, alignItems:'flex-start' }}>
+                                  {(isBullet || isNum) && (
+                                    <span style={{ color:'var(--gold)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', flexShrink:0, paddingTop:'3px', minWidth:'16px' }}>
+                                      {isNum ? line.match(/^(\d+)\./)[1] + '.' : '▸'}
+                                    </span>
+                                  )}
+                                  <span
+                                    style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'15px', color:'var(--text-muted)', lineHeight:1.7 }}
+                                    dangerouslySetInnerHTML={{ __html: line.replace(/^[•\-]\s*/, '').replace(/^\d+\.\s*/, '').replace(/\*\*([^*]+)\*\*/g, '<strong style="color:var(--text)">$1</strong>') }}
+                                  />
+                                </div>
+                              )
+                            })}
+                          </div>
+                        )
+                      }
+
+                      return (
+                        <p key={pi}
+                          style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'15px', color:'var(--text-muted)', lineHeight:1.85, marginBottom:'16px' }}
+                          dangerouslySetInnerHTML={{ __html: para.replace(/\*\*([^*]+)\*\*/g, '<strong style="color:var(--text);font-weight:600">$1</strong>').replace(/\n/g, '<br>') }}
+                        />
+                      )
+                    })}
+                  </div>
+
+                  {/* Section divider */}
+                  {i < (article.sections?.length || 0) - 1 && (
+                    <div style={{ height:'1px', background:`linear-gradient(to right, var(--gold), transparent)`, margin:'32px 0 0', opacity:0.3 }} />
+                  )}
                 </div>
               ))}
 
-              {/* Key takeaways */}
+              {/* ── KEY TAKEAWAYS ── */}
               {article.keyTakeaways?.length > 0 && (
-                <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderTop:'3px solid var(--gold)', padding:'20px 24px', marginTop:'32px', marginBottom:'32px' }}>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', letterSpacing:'0.15em', fontWeight:700, marginBottom:'14px' }}>KEY TAKEAWAYS</div>
-                  {article.keyTakeaways.map((t, i) => (
-                    <div key={i} style={{ display:'flex', gap:'10px', marginBottom:'8px', alignItems:'flex-start' }}>
-                      <span style={{ color:'var(--gold)', flexShrink:0, fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', marginTop:'2px' }}>✓</span>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'var(--text-muted)', lineHeight:1.6 }}>{t}</span>
-                    </div>
-                  ))}
+                <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'28px 32px', margin:'40px 0', position:'relative', overflow:'hidden' }}>
+                  <div style={{ position:'absolute', top:0, left:0, right:0, height:'3px', background:'linear-gradient(to right, var(--gold), var(--gold-light), transparent)' }} />
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:'var(--gold)', letterSpacing:'0.1em', marginBottom:'18px' }}>KEY TAKEAWAYS</div>
+                  <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
+                    {article.keyTakeaways.map((t, i) => (
+                      <div key={i} style={{ display:'flex', gap:'12px', alignItems:'flex-start' }}>
+                        <div style={{ width:24, height:24, background:'var(--gold)', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center', marginTop:'1px' }}>
+                          <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'12px', color:'#09090B', fontWeight:700 }}>{i+1}</span>
+                        </div>
+                        <span style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'15px', color:'var(--text-muted)', lineHeight:1.7 }}>{t}</span>
+                      </div>
+                    ))}
+                  </div>
                 </div>
               )}
 
-              {/* Author bio */}
-              <div style={{ background:'var(--bg3)', border:'1px solid var(--border)', padding:'20px', marginBottom:'24px' }}>
-                <div style={{ display:'flex', gap:'14px', alignItems:'flex-start' }}>
-                  <span style={{ fontSize:'32px', flexShrink:0 }}>🎯</span>
-                  <div>
-                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', color:'var(--text)', letterSpacing:'0.05em', marginBottom:'4px' }}>{AUTHOR.name}</div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', marginBottom:'8px' }}>{AUTHOR.title}</div>
-                    <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'var(--text-dim)', lineHeight:1.7 }}>{AUTHOR.bio}</p>
-                  </div>
+              {/* ── AUTHOR BIO ── */}
+              <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'24px', margin:'40px 0', display:'flex', gap:'20px', alignItems:'flex-start' }}>
+                <div style={{ width:56, height:56, background:'linear-gradient(135deg,var(--gold),#8A6320)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'24px', flexShrink:0 }}>🎯</div>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'var(--text)', letterSpacing:'0.05em' }}>DJ Cavalcanti</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', marginBottom:'10px', letterSpacing:'0.08em' }}>DOWNRANGE FOUNDER</div>
+                  <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'var(--text-dim)', lineHeight:1.7 }}>
+                    DJ Cavalcanti is the founder of DownRange, America's Firearms Intelligence Hub. A lifelong 2A advocate and Washington State resident, he built DownRange to give every American gun owner access to the legal intelligence and practical knowledge they need — all in one place.
+                  </p>
                 </div>
               </div>
+
+              {/* ── PREV / NEXT NAVIGATION ── */}
+              <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginTop:'32px' }}>
+                {prevSlug && ARTICLES[prevSlug] && (
+                  <Link href={`/learn/${prevSlug}`} style={{ textDecoration:'none', display:'block' }}>
+                    <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'16px', height:'100%', transition:'border-color 0.15s' }}>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', letterSpacing:'0.12em', marginBottom:'6px' }}>← PREVIOUS</div>
+                      <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'var(--text)', lineHeight:1.3 }}>{ARTICLES[prevSlug].title}</div>
+                    </div>
+                  </Link>
+                )}
+                {nextSlug && ARTICLES[nextSlug] && (
+                  <Link href={`/learn/${nextSlug}`} style={{ textDecoration:'none', display:'block', gridColumn: !prevSlug ? '1/-1' : 'auto' }}>
+                    <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'16px', height:'100%', textAlign:'right', transition:'border-color 0.15s' }}>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', letterSpacing:'0.12em', marginBottom:'6px' }}>NEXT →</div>
+                      <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'var(--text)', lineHeight:1.3 }}>{ARTICLES[nextSlug].title}</div>
+                    </div>
+                  </Link>
+                )}
+              </div>
+
             </article>
 
-            {/* Sidebar */}
-            <aside style={{ position:'sticky', top:'70px', alignSelf:'flex-start' }}>
+            {/* ── SIDEBAR ── */}
+            <aside className="article-aside" style={{ position:'sticky', top:'70px', alignSelf:'flex-start', display:'flex', flexDirection:'column', gap:'16px' }}>
+
+              {/* Progress / TOC */}
+              <div style={{ background:'var(--bg2)', border:'1px solid var(--border)' }}>
+                <div style={{ padding:'12px 14px', borderBottom:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', letterSpacing:'0.12em' }}>IN THIS ARTICLE</div>
+                {article.sections?.map((s, i) => (
+                  <div key={i} style={{ display:'flex', gap:'10px', padding:'8px 14px', borderBottom: i < article.sections.length-1 ? '1px solid rgba(31,36,40,0.5)' : 'none', alignItems:'center' }}>
+                    <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', color:'rgba(200,146,42,0.4)', minWidth:'20px' }}>{String(i+1).padStart(2,'0')}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', lineHeight:1.4 }}>{s.h}</span>
+                  </div>
+                ))}
+              </div>
+
               {/* Tags */}
               {article.tags?.length > 0 && (
-                <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'16px', marginBottom:'12px' }}>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.12em', marginBottom:'10px' }}>TOPICS</div>
+                <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'14px' }}>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', letterSpacing:'0.12em', marginBottom:'10px' }}>TOPICS</div>
                   <div style={{ display:'flex', flexWrap:'wrap', gap:'4px' }}>
                     {article.tags.map(t => <span key={t} className="dr-pill">{t}</span>)}
                   </div>
                 </div>
               )}
 
-              {/* Related articles */}
-              <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'16px', marginBottom:'12px' }}>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.12em', marginBottom:'12px' }}>RELATED READING</div>
-                {(article.relatedLinks?.length > 0 ? article.relatedLinks : otherLinks).map(l => (
-                  <Link key={l.href} href={l.href}
-                    style={{ display:'block', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-muted)', textDecoration:'none', padding:'7px 0', borderBottom:'1px solid var(--border)', lineHeight:1.4 }}>
-                    → {l.label}
-                  </Link>
-                ))}
-              </div>
+              {/* Related in same category */}
+              {(relatedArticles.length > 0 ? relatedArticles : moreArticles.slice(0,3)).map(([slug, a]) => (
+                <Link key={slug} href={`/learn/${slug}`} style={{ textDecoration:'none', display:'block' }}>
+                  <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', overflow:'hidden', transition:'border-color 0.15s' }}>
+                    <div style={{ height:'80px', overflow:'hidden' }}>
+                      <img src={HERO_IMAGES[slug] || a.heroImage || 'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=400&q=70'} alt={a.title}
+                           style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.75 }} />
+                    </div>
+                    <div style={{ padding:'10px 12px' }}>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'8px', color:'var(--gold)', letterSpacing:'0.1em', marginBottom:'4px' }}>{a.category.toUpperCase()}</div>
+                      <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, color:'var(--text)', lineHeight:1.3 }}>{a.title}</div>
+                    </div>
+                  </div>
+                </Link>
+              ))}
 
-              {/* Back to Learning Center */}
-              <Link href="/learn" className="dr-btn-outline" style={{ display:'block', textAlign:'center', fontSize:'11px' }}>
-                ← All Articles
+              {/* Back link */}
+              <Link href="/learn" style={{ display:'block', textAlign:'center', padding:'10px', background:'var(--bg2)', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', textDecoration:'none', letterSpacing:'0.08em' }}>
+                ← ALL ARTICLES
               </Link>
+
             </aside>
           </div>
         </div>
       </div>
+
       <Footer />
     </>
   )

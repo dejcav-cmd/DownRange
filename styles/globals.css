@@ -775,3 +775,15 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
 @media (max-width: 640px) {
   .mobile-read-cta { display: flex; }
 }
+
+
+/* ── LEARN CENTER HOVER EFFECTS ─────────────────────────────────────────── */
+.learn-card:hover .learn-card-img { transform: scale(1.04); }
+.learn-card:hover .learn-card-overlay {
+  background: linear-gradient(to top, rgba(9,9,11,0.98) 0%, rgba(9,9,11,0.5) 60%, transparent 100%) !important;
+}
+.learn-card-img { transition: transform 0.4s ease; }
+.dr-article-prev:hover, .dr-article-next:hover { border-color: var(--gold) !important; }
+.dr-related-card:hover { border-color: var(--gold) !important; }
+.learn-feat:hover .learn-feat-img { transform: scale(1.03); }
+.learn-feat-img { transition: transform 0.4s ease; }
