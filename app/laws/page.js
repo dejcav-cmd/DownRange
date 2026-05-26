@@ -34,7 +34,7 @@ const SCOTUS_CASES = [
 
 const ATF_RULES = [
   { id:'34rules', title:'ATF Historic Regulatory Reform Package — 34 Rules', status:'advancing', date:'2026-04-29', summary:'DOJ/ATF released 34 notices of final and proposed rulemaking on April 29, 2026. Most significant regulatory reform in US history. Covers FFL operations, recordkeeping modernization, NFA compliance, import/export, and aligns regulations with Bruen and recent court precedents.', impact:'HIGH', url:'https://www.atf.gov/news/press-releases/doj-and-atf-announce-regulatory-reforms-to-reduce-burdens-law-abiding-gun-owners-and-businesses' },
-  { id:'nfa-tax', title:'NFA Tax Stamp Eliminated — One Big Beautiful Bill Act', status:'passed', date:'2026-01-01', summary:'President Trump signed H.R. 1 on July 4, 2025 eliminating the $200 NFA tax stamp for suppressors, SBRs, SBSs, and AOWs effective January 1, 2026. Registration and Form 4 requirements remain. Machine guns and destructive devices still require $200 stamp.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations' },
+  { id:'nfa-tax', title:'NFA Tax Stamp Eliminated — One Big Beautiful Bill Act', status:'passed', date:'2026-01-01', summary:'President Trump signed H.R. 1 on July 4, 2025 eliminating the $200 NFA tax stamp for suppressors, SBRs, SBSs, and AOWs effective January 1, 2026. Registration and Form 4 requirements remain. Machine guns and destructive devices still require $200 stamp.', impact:'HIGH', url:'https://www.congress.gov/bill/119th-congress/house-bill/1' },
   { id:'pistol-brace-rescinded', title:'Pistol Brace Rule Rescinded', status:'passed', date:'2025-06-01', summary:'ATF rescinded the 2023 pistol brace final rule (1140-AA98). Brace-equipped pistols are no longer classified as SBRs. Removes threat of felony prosecution for existing owners. Acknowledges courts that vacated the rule.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations/atf-launches-new-era-reform' },
   { id:'bump-stock-revised', title:'Bump Stock Definition Revised Post-Cargill', status:'passed', date:'2025-07-01', summary:'Following Garland v. Cargill (2024, 6-3), ATF revised machine gun definition to exclude bump stocks. Semi-auto rate of fire regardless of method does not constitute machine gun fire.', impact:'HIGH', url:'https://www.atf.gov' },
   { id:'80pct-vander', title:'Frames & Receivers Rule (Bondi v. VanDerStok)', status:'challenged', date:'2022-08-24', summary:'80% lower kit rule upheld 7-2 by SCOTUS in 2025 (Bondi v. VanDerStok) as not facially invalid under GCA. ATF can regulate kits that are readily convertible. Standalone 80% lowers without kits treated differently. State laws vary.', impact:'HIGH', url:'https://www.atf.gov/rules-and-regulations/definition-frame-or-receiver' },
@@ -44,13 +44,25 @@ const ATF_RULES = [
 ]
 
 
+
+// Build exact Congress.gov bill URLs
+function billUrl(number, type, congress) {
+  const chamberMap = { 'H.R.':'house-bill', 'S.':'senate-bill', 'H.J.Res.':'house-joint-resolution', 'S.J.Res.':'senate-joint-resolution', 'H.Con.Res.':'house-concurrent-resolution' }
+  const parts = (type || number || '').split(' ')
+  const prefix = parts.length > 1 ? parts[0] : 'H.R.'
+  const num = parts.length > 1 ? parts[1] : parts[0]
+  const chamber = chamberMap[prefix] || 'house-bill'
+  const cong = congress || '118th'
+  return `https://www.congress.gov/bill/${cong}-congress/${chamber}/${num}`
+}
+
 const SEED_FEDERAL = [
-  { _id:'f1', title:'Firearm Safety Act of 2024', billNumber:'H.R. 7910', status:'committee', level:'federal', summary:'Universal background checks on all firearm sales and transfers including private sales.', lastActionDate:'2024-09-15', impact:'HIGH', url:'https://www.congress.gov' },
-  { _id:'f2', title:'National Concealed Carry Reciprocity Act', billNumber:'H.R. 38', status:'passed', level:'federal', summary:'Requires all states to recognize valid concealed carry permits from other states.', lastActionDate:'2024-07-20', impact:'HIGH', url:'https://www.congress.gov' },
-  { _id:'f3', title:'Hearing Protection Act', billNumber:'H.R. 2296', status:'committee', level:'federal', summary:'Removes suppressors from NFA regulation. Treats them like regular firearms.', lastActionDate:'2024-06-10', impact:'HIGH', url:'https://www.congress.gov' },
-  { _id:'f4', title:'BSCA — Bipartisan Safer Communities Act', billNumber:'S. 2938', status:'passed', level:'federal', summary:'Enhanced background checks for under-21 buyers. Closes boyfriend loophole. $15B mental health funding.', lastActionDate:'2022-06-25', impact:'HIGH', url:'https://www.congress.gov' },
-  { _id:'f5', title:'Equal Access to Justice for Victims of Gun Violence', billNumber:'S. 1223', status:'failed', level:'federal', summary:'Would repeal PLCAA liability protections for gun manufacturers.', lastActionDate:'2024-03-12', impact:'HIGH', url:'https://www.congress.gov' },
-  { _id:'f6', title:'Assault Weapons Ban of 2023', billNumber:'H.R. 698', status:'committee', level:'federal', summary:'Would ban sale and manufacture of semi-automatic rifles with certain features.', lastActionDate:'2023-11-30', impact:'HIGH', url:'https://www.congress.gov' },
+  { _id:'f1', title:'Firearm Safety Act of 2024', billNumber:'H.R. 7910', status:'committee', level:'federal', summary:'Universal background checks on all firearm sales and transfers including private sales.', lastActionDate:'2024-09-15', impact:'HIGH', url:'https://www.congress.gov/bill/118th-congress/house-bill/7910' },
+  { _id:'f2', title:'National Concealed Carry Reciprocity Act', billNumber:'H.R. 38', status:'passed', level:'federal', summary:'Requires all states to recognize valid concealed carry permits from other states.', lastActionDate:'2024-07-20', impact:'HIGH', url:'https://www.congress.gov/bill/118th-congress/house-bill/38' },
+  { _id:'f3', title:'Hearing Protection Act', billNumber:'H.R. 2296', status:'committee', level:'federal', summary:'Removes suppressors from NFA regulation. Treats them like regular firearms.', lastActionDate:'2024-06-10', impact:'HIGH', url:'https://www.congress.gov/bill/118th-congress/house-bill/2296' },
+  { _id:'f4', title:'BSCA — Bipartisan Safer Communities Act', billNumber:'S. 2938', status:'passed', level:'federal', summary:'Enhanced background checks for under-21 buyers. Closes boyfriend loophole. $15B mental health funding.', lastActionDate:'2022-06-25', impact:'HIGH', url:'https://www.congress.gov/bill/117th-congress/senate-bill/2938' },
+  { _id:'f5', title:'Equal Access to Justice for Victims of Gun Violence', billNumber:'S. 1223', status:'failed', level:'federal', summary:'Would repeal PLCAA liability protections for gun manufacturers.', lastActionDate:'2024-03-12', impact:'HIGH', url:'https://www.congress.gov/bill/118th-congress/senate-bill/1223' },
+  { _id:'f6', title:'Assault Weapons Ban of 2023', billNumber:'H.R. 698', status:'committee', level:'federal', summary:'Would ban sale and manufacture of semi-automatic rifles with certain features.', lastActionDate:'2023-11-30', impact:'HIGH', url:'https://www.congress.gov/bill/118th-congress/house-bill/698' },
 ]
 
 const SEED_STATE = [
@@ -195,7 +207,7 @@ export default async function LawsPage({ searchParams }) {
                       {s.toUpperCase()}
                     </a>
                   ))}
-                  <a href="https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%2C%22search%22%3A%22firearms%22%7D" target="_blank" rel="noreferrer"
+                  <a href="https://www.congress.gov/search?q=%7B%22source%22%3A%22legislation%22%2C%22search%22%3A%22firearms+second+amendment%22%2C%22congress%22%3A%22119%22%7D" target="_blank" rel="noreferrer"
                     style={{ fontFamily:'monospace', fontSize:'10px', color:'#60A5FA', textDecoration:'none' }}>CONGRESS.GOV ↗</a>
                 </div>
               </div>

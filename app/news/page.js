@@ -40,8 +40,8 @@ export default async function NewsPage({ searchParams }) {
         <div className="container">
           <div style={{ position: 'relative' }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '8px' }}>
-              <span className="pulse-dot" style={{ background: '#EF4444', width: '8px', height: '8px' }} />
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#EF4444', letterSpacing: '0.1em' }}>LIVE FEED</span>
+              <span className="pulse-dot" />
+              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#22C55E', letterSpacing: '0.1em' }}>LIVE FEED</span>
             </div>
             <h1 className="page-hero-title">Latest News</h1>
             <p className="page-hero-sub">
@@ -99,7 +99,7 @@ export default async function NewsPage({ searchParams }) {
                   <a key={alert._id} href={alert.url || '#'} target="_blank" rel="noreferrer"
                     style={{ display: 'block', padding: '12px 0', borderBottom: '1px solid #1F2428', textDecoration: 'none' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
-                      <span className="pulse-dot" style={{ background: '#EF4444' }} />
+                      <span className="pulse-dot" />
                       <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', color: '#EF4444' }}>{alert.urgencyScore}/10</span>
                     </div>
                     <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '14px', fontWeight: 600, color: '#F0EDE6', lineHeight: 1.3 }}>
