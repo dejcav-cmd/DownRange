@@ -3,64 +3,155 @@ import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Hunting Hub — DownRange',
-  description: 'Season dates, cartridge guide, rifle recommendations, field dressing, scouting, and hunting license resources for all 50 states.',
+  title: 'Outdoors — DownRange',
+  description: 'Hunting season dates, cartridge guides, rifle selection, field skills, precision shooting, training, and preparedness for outdoors Americans.',
 }
 
-const RIFLES = [
-  { name:'Tikka T3x Lite', calibers:'6.5 CM / .308 / .300 Win Mag', use:'Best overall value. Sub-MOA guarantee. Lightest in class. Used by guides worldwide.', price:'$699–$849', rating:'9.4', pros:['Sub-MOA factory guarantee','Lightest bolt-action in class','Exceptional trigger'] },
-  { name:'Remington 700', calibers:'Available in every hunting cartridge', use:'The 60-year benchmark. US Marine Corps sniper platform. Enormous aftermarket.', price:'$699–$899', rating:'9.2', pros:['60-year proven record','Most customizable bolt-action','Iconic design'] },
-  { name:'Winchester Model 70', calibers:'.30-06 / .308 / .300 WM / .375 H&H', use:'The Rifleman\'s Rifle. Controlled round feed for dangerous game. Classic craft.', price:'$899–$1,100', rating:'9.0', pros:['Controlled round feed','Classic aesthetics','Superb trigger'] },
-  { name:'Savage 110 Apex Hunter XP', calibers:'Multiple calibers', use:'Best value complete package. AccuTrigger AND Vortex Crossfire scope included.', price:'$549–$699', rating:'8.9', pros:['Scope included','Factory AccuTrigger','Threaded barrel'] },
-  { name:'Browning X-Bolt Max', calibers:'Multiple calibers', use:'Adjustable comb, integrated muzzle brake, detachable mag. Long-range ready.', price:'$1,099–$1,399', rating:'9.1', pros:['Adjustable stock','Integrated brake','Detachable magazine'] },
+// ── DATA ─────────────────────────────────────────────────────────────────────
+
+const HUNTING_GUIDES = [
+  { slug:'whitetail-hunting-guide',     title:'Whitetail Deer Hunting: The Complete System', subtitle:'Scouting, stand placement, scent control, shot placement. Every variable that closes the gap between hunter and deer.', category:'Hunting', readTime:'18 min', img:'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=80', featured:true, date:'Sep 2026' },
+  { slug:'elk-hunting-guide',           title:'Elk Hunting: Public Land Strategy',           subtitle:'DIY elk without an outfitter. Unit selection, OTC tags, calling during the rut, physical preparation, and meat care.', category:'Hunting', readTime:'22 min', img:'https://images.unsplash.com/photo-1472214103451-9374bd1c798e?w=800&q=80', featured:true, date:'Aug 2026' },
+  { slug:'turkey-hunting-basics',       title:'Turkey Hunting from Scratch',                 subtitle:'Pre-season scouting, decoy setups, call selection, and the timing edge that fills your tag every spring.', category:'Hunting', readTime:'14 min', img:'https://images.unsplash.com/photo-1448375240586-882707db888b?w=800&q=80', featured:true, date:'Mar 2026' },
+  { slug:'cartridge-selection-guide',   title:'Choosing the Right Hunting Cartridge',       subtitle:'From .243 Win for deer to .300 Win Mag for elk — match the cartridge to the animal, the range, and your recoil tolerance.', category:'Ammunition', readTime:'16 min', img:'https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?w=800&q=80', date:'Jul 2026' },
+  { slug:'field-dressing-deer',         title:'Field Dressing Your Deer: Step-by-Step',     subtitle:'From shot to cooler in under an hour. Proper technique prevents contamination and preserves meat quality.', category:'Skills', readTime:'10 min', img:'https://images.unsplash.com/photo-1447752875215-b2761acb3c5d?w=800&q=80', date:'Oct 2026' },
+  { slug:'hunting-rifle-selection',     title:'Best Hunting Rifles for Every Budget',        subtitle:'From the $549 Savage 110 to the $1,999 Tikka T3x — the right bolt gun for your game and your budget.', category:'Gear', readTime:'13 min', img:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80', date:'Aug 2026' },
 ]
 
-const CARTRIDGES = [
-  { name:'.308 WIN',       use:'Whitetail, black bear, elk (close)',  range:'500 yds', energy:'2,600 ft-lbs', recoil:'Moderate',       note:'The all-around standard. Affordable, effective on most NA game.', popular:true },
-  { name:'.30-06 Springfield', use:'Everything in North America',    range:'600 yds', energy:'2,900 ft-lbs', recoil:'Moderate',       note:'100+ years proven. Handles anything from deer to moose.', popular:true },
-  { name:'6.5 Creedmoor',  use:'Deer, antelope, moderate elk',       range:'800 yds', energy:'2,500 ft-lbs', recoil:'Light-Moderate', note:'Best BC-to-recoil ratio. Ideal for long-range hunting.', popular:true },
-  { name:'.300 Win Mag',   use:'Elk, moose, bear, long range',        range:'800 yds', energy:'3,500 ft-lbs', recoil:'Heavy',         note:'Go-to elk cartridge. Hits hard at any distance.', popular:true },
-  { name:'7mm Rem Mag',    use:'Everything deer to elk',              range:'700 yds', energy:'3,000 ft-lbs', recoil:'Moderate-Heavy',note:'Flat-shooting, high BC bullets. Popular for mountain hunts.', popular:false },
-  { name:'.243 Winchester',use:'Varmints, whitetail deer',            range:'500 yds', energy:'1,800 ft-lbs', recoil:'Light',         note:'Perfect youth or recoil-sensitive cartridge. Low cost.', popular:false },
-  { name:'.350 Legend',    use:'Deer in straight-wall states',        range:'200 yds', energy:'1,800 ft-lbs', recoil:'Light',         note:'SAAMI straight-wall for MI, OH, IA, IN zones.', popular:false },
+const PRECISION_GUIDES = [
+  { slug:'prs-beginners-guide',          title:'PRS Practical Rifle: Getting Started',          subtitle:'Your first PRS match — gear requirements, positional shooting, reading wind, and the mental game.', category:'Precision', readTime:'17 min', img:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80', featured:true, date:'Jun 2026' },
+  { slug:'long-range-ballistics',        title:'Long Range Ballistics Without the Guesswork',   subtitle:'BC, velocity, drop, and wind drift explained. How to build a DOPE card and trust your data at 800 yards.', category:'Precision', readTime:'20 min', img:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80', featured:true, date:'May 2026' },
+  { slug:'6-5-creedmoor-deep-dive',      title:'6.5 Creedmoor: Why It Won',                    subtitle:'The ballistics case for 6.5 CM. BC comparison to .308, recoil numbers, factory ammo performance, and when to choose something else.', category:'Ammunition', readTime:'12 min', img:'https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?w=800&q=80', date:'Apr 2026' },
+  { slug:'rifle-scope-guide',            title:'Scope Selection: MRAD vs MOA, Magnification',   subtitle:'First vs second focal plane, turret quality, glass clarity at price tiers, and the scopes worth your money.', category:'Gear', readTime:'15 min', img:'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80', date:'Mar 2026' },
 ]
 
-const SKILLS = [
-  { title:'Scouting Whitetail',  icon:'🦌', desc:'Find south-facing slopes for morning sun. Look for rubs on 2–4" saplings and scrapes near travel corridors. Hunt the wind — deer scent you from 300 yards.' },
-  { title:'Elk Calling',         icon:'🦌', desc:'Bull elk vocalize aggressively during the September rut. Cow calls (estrus mews) draw bulls from half a mile. Location bugling from ridgelines at dawn finds vocal bulls.' },
-  { title:'Turkey Hunting',      icon:'🦃', desc:'Scout the roost tree the night before. Set up 100–150 yards away pre-dawn. Use soft tree yelps at legal light. Gobblers come to sound — patience, no overcalling.' },
-  { title:'Field Dressing',      icon:'🔪', desc:'Body temp must drop below 40°F within 2 hours. Use a clean knife, avoid puncturing intestines. Remove all organs including esophagus. Pack cavity with ice in warm weather.' },
-  { title:'Shot Placement',      icon:'🎯', desc:'Broadside: aim the crease directly behind the front leg, one-third up the body. Targets both lungs and often the heart. Avoid neck and head shots — high wound rate.' },
-  { title:'Meat Care in Field',  icon:'🥩', desc:'Quarter immediately in warm weather. Use breathable game bags — plastic traps heat and bacteria. Hang quarters in shade with airflow. When in doubt, cool it out.' },
+const TRAINING_GUIDES = [
+  { slug:'30-day-dry-fire-plan',         title:'30-Day Dry Fire Plan: Zero Ammo Required',     subtitle:'A progressive dry fire curriculum that builds trigger control, sight picture, and presentation in one month flat.', category:'Training', readTime:'11 min', img:'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80', featured:true, date:'Jun 2026' },
+  { slug:'first-shooting-lesson',        title:'Teaching Someone to Shoot for the First Time',  subtitle:'Safety briefing, grip, stance, trigger press, and the mental approach that turns a nervous first-timer into a confident shooter.', category:'Training', readTime:'9 min',  img:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80', featured:true, date:'May 2026' },
+  { slug:'one-handed-shooting',          title:'One-Handed Shooting Technique',                 subtitle:'Strong hand and support hand shooting. Why you train it, how to build accuracy, and the drills that transfer to real-world retention.', category:'Training', readTime:'8 min',  img:'https://images.unsplash.com/photo-1596394516093-501ba68a0ba6?w=800&q=80', date:'Jul 2026' },
+  { slug:'home-defense-drill-plan',      title:'Home Defense: Training for the Real Scenario',  subtitle:'Low light, hallway geometry, door stacking, family communication protocols, and the drills that actually matter at 3 AM.', category:'Training', readTime:'13 min', img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80', date:'Aug 2026' },
 ]
 
-const SEASONS = [
-  { abbr:'TX', whitetail:'Oct 5 – Jan 19',    elk:'N/A',              turkey:'Mar 29 – May 11', dove:'Sep 1 – Nov 12',  notes:'Year-round hog hunting' },
-  { abbr:'CO', whitetail:'Oct 18 – Nov 3',    elk:'Rifle Oct 18–Nov 3', turkey:'Apr 12 – May 25', dove:'Sep 1 – Nov 14',  notes:'Draw system for premium units' },
-  { abbr:'WA', whitetail:'Oct 12 – Nov 24',   elk:'Unit dependent',   turkey:'Apr 15 – May 31', dove:'Sep 1 – Oct 31',  notes:'Three-point restriction many units' },
-  { abbr:'WY', whitetail:'Oct 1 – Nov 30',    elk:'Sep 15 – Oct 31',  turkey:'Apr 15 – May 31', dove:'Sep 1 – Nov 5',   notes:'Excellent public land access' },
-  { abbr:'MT', whitetail:'Oct 26 – Nov 24',   elk:'Oct 26 – Nov 24',  turkey:'May only',        dove:'Sep 1 – Nov 9',   notes:'Best elk hunting in lower 48' },
-  { abbr:'ID', whitetail:'Oct 10 – Nov 20',   elk:'Aug 30 – Nov 20',  turkey:'Apr 15 – May 31', dove:'Sep 1 – Nov 10',  notes:'General elk tag OTC most zones' },
+const PREPAREDNESS_GUIDES = [
+  { slug:'home-defense-setup',           title:'Home Defense Setup: Every Room, Every Scenario', subtitle:'Room-by-room planning, safe storage accessible under pressure, communication with family, and the equipment list that actually matters.', category:'Home Defense', readTime:'16 min', img:'https://images.unsplash.com/photo-1558618047-3c8c76ca7d13?w=800&q=80', featured:true, date:'May 2026' },
+  { slug:'go-bag-essentials',            title:'The Real Go-Bag: What Actually Matters',          subtitle:'72-hour kit built around actual threats: power outage, evacuation, and shelter-in-place. No fantasy prepper nonsense.', category:'Preparedness', readTime:'14 min', img:'https://images.unsplash.com/photo-1527004013197-933b19a4e2a7?w=800&q=80', date:'Jun 2026' },
+  { slug:'firearm-safe-storage-guide',   title:'Gun Safe Selection: What Protects Your Guns',   subtitle:'Fire rating realities, pry resistance, biometric reliability, and the safes that actually pass the test when seconds count.', category:'Storage', readTime:'11 min', img:'https://images.unsplash.com/photo-1585771724684-38269d6639fd?w=800&q=80', date:'Jul 2026' },
 ]
 
-export default function HuntingPage() {
+const SUB_SECTIONS = [
+  { key:'hunting',      label:'🦌 Hunting',      guides: HUNTING_GUIDES,     href:'/hunting',      color:'#22C55E', count: HUNTING_GUIDES.length },
+  { key:'precision',    label:'🎯 Precision',    guides: PRECISION_GUIDES,   href:'/precision',    color:'#60A5FA', count: PRECISION_GUIDES.length },
+  { key:'training',     label:'▲ Training',      guides: TRAINING_GUIDES,    href:'/training',     color:'#C8922A', count: TRAINING_GUIDES.length },
+  { key:'preparedness', label:'🎒 Preparedness', guides: PREPAREDNESS_GUIDES,href:'/preparedness', color:'#EF4444', count: PREPAREDNESS_GUIDES.length },
+]
+
+const ALL_GUIDES = [
+  ...HUNTING_GUIDES,
+  ...PRECISION_GUIDES,
+  ...TRAINING_GUIDES,
+  ...PREPAREDNESS_GUIDES,
+]
+
+const CAT_COLORS = {
+  'Hunting':'#22C55E', 'Precision':'#60A5FA', 'Ammunition':'#C8922A', 'Skills':'#F97316',
+  'Gear':'#FBBF24', 'Training':'#C8922A', 'Home Defense':'#EF4444', 'Preparedness':'#EF4444', 'Storage':'#8B5CF6',
+}
+
+function GuideCard({ guide, featured = false }) {
+  const href = `/${guide.category === 'Precision' ? 'precision' : guide.category === 'Training' ? 'training' : guide.category === 'Home Defense' || guide.category === 'Preparedness' || guide.category === 'Storage' ? 'preparedness' : 'hunting'}/${guide.slug}`
+  const dotColor = CAT_COLORS[guide.category] || 'var(--gold)'
+
+  if (featured) {
+    return (
+      <Link href={href} style={{ textDecoration:'none', display:'block', position:'relative', overflow:'hidden' }}>
+        <div style={{ height:'440px', position:'relative', overflow:'hidden' }}>
+          <img src={guide.img} alt={guide.title}
+            className="learn-card-img"
+            style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s ease' }} />
+          <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,11,0.96) 0%, rgba(9,9,11,0.3) 60%, transparent 100%)' }} />
+          <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'24px' }}>
+            <span style={{ background:dotColor, color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'2px 10px', display:'inline-block', marginBottom:'10px' }}>{guide.category.toUpperCase()}</span>
+            <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'#F0EDE6', letterSpacing:'0.02em', lineHeight:1.1, marginBottom:'8px' }}>{guide.title}</h3>
+            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'rgba(240,237,230,0.65)', lineHeight:1.5 }}>{guide.subtitle}</p>
+            <div style={{ display:'flex', alignItems:'center', gap:'8px', marginTop:'12px' }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.45)' }}>{guide.readTime} read</span>
+              <span style={{ color:'var(--gold)', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em' }}>READ →</span>
+            </div>
+          </div>
+        </div>
+      </Link>
+    )
+  }
+
+  return (
+    <Link href={href} style={{ textDecoration:'none', display:'block', position:'relative', overflow:'hidden' }}>
+      <div style={{ height:'260px', position:'relative', overflow:'hidden' }}>
+        <img src={guide.img} alt={guide.title}
+          className="learn-card-img"
+          style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s ease' }} />
+        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,11,0.92) 0%, rgba(9,9,11,0.3) 60%, transparent 100%)' }} />
+        <div style={{ position:'absolute', bottom:0, left:0, right:0, padding:'16px' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:6, marginBottom:6 }}>
+            <span style={{ width:6, height:6, borderRadius:'50%', background:dotColor, flexShrink:0 }} />
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.55)', letterSpacing:'0.1em' }}>{guide.category.toUpperCase()} · {guide.readTime}</span>
+          </div>
+          <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'16px', fontWeight:700, color:'#F0EDE6', lineHeight:1.25, marginBottom:'4px' }}>{guide.title}</h3>
+          <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'rgba(240,237,230,0.5)', lineHeight:1.4, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>{guide.subtitle}</p>
+        </div>
+        <div style={{ position:'absolute', top:'10px', right:'10px', background:'rgba(9,9,11,0.7)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'rgba(240,237,230,0.5)', padding:'3px 8px', border:'1px solid rgba(255,255,255,0.08)' }}>{guide.date}</div>
+      </div>
+    </Link>
+  )
+}
+
+export default function OutdoorsPage({ searchParams }) {
+  const section = searchParams?.section || null
+  const currentSection = SUB_SECTIONS.find(s => s.key === section)
+  const displayGuides  = currentSection ? currentSection.guides : []
+  const featuredGuides = ALL_GUIDES.filter(g => g.featured).slice(0, 3)
+  const allGrid        = ALL_GUIDES.filter(g => !g.featured)
+
   return (
     <>
       <Masthead />
 
-      {/* ── Hero ── */}
-      <div className="page-hero" data-title="HUNTING">
-        <div className="container">
-          <div className="dr-breadcrumb" style={{ marginBottom:'14px' }}>
-            <span className="dr-breadcrumb-cur">Outdoors</span>
-            <span className="dr-breadcrumb-sep">›</span>
-            <span className="dr-breadcrumb-cur">Hunting Hub</span>
+      {/* ── HERO ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 20% 50%, rgba(200,146,42,0.07) 0%, transparent 55%)', pointerEvents:'none' }} />
+        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'50%', overflow:'hidden', opacity:0.04, pointerEvents:'none' }}>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'18vw', color:'var(--gold)', lineHeight:0.85, textAlign:'right', paddingRight:'20px', paddingTop:'10px' }}>FIELD</div>
+        </div>
+        <div className="container" style={{ position:'relative' }}>
+          <div style={{ maxWidth:680 }}>
+            <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap' }}>
+              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>OUTDOORS</span>
+              <span style={{ background:'#001A0A', color:'#22C55E', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #22C55E40' }}>{ALL_GUIDES.length} GUIDES</span>
+            </div>
+            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
+              Hunting, Precision &amp;<br />
+              <span style={{ color:'var(--gold)' }}>Field Craft</span>
+            </h1>
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7, maxWidth:560 }}>
+              Season data, cartridge guides, precision rifle skills, dry-fire training plans, and home defense preparation. Built for serious outdoors Americans.
+            </p>
           </div>
-          <h1 className="page-hero-title">Hunters Hub</h1>
-          <p className="page-hero-sub">Season dates · Rifle selection · Cartridge guide · Field skills · Licensing</p>
-          <div style={{ display:'flex', gap:'8px', marginTop:'16px', flexWrap:'wrap' }}>
-            {[['Precision Shooting','/precision'],['Training & Drills','/training'],['Preparedness','/preparedness'],['Safe Storage','/safe-storage']].map(([l,h])=>(
-              <Link key={h} href={h} className="dr-btn-outline" style={{ padding:'5px 14px', fontSize:'11px' }}>{l} →</Link>
+        </div>
+      </div>
+
+      {/* ── STICKY SECTION BAR ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
+        <div className="container">
+          <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
+            <a href="/hunting"
+              style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${!section?'var(--gold)':'transparent'}`, color:!section?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+              All ({ALL_GUIDES.length})
+            </a>
+            {SUB_SECTIONS.map(s => (
+              <a key={s.key} href={`/hunting?section=${s.key}`}
+                style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${section===s.key?s.color:'transparent'}`, color:section===s.key?s.color:'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+                <span style={{ width:6, height:6, borderRadius:'50%', background:s.color, flexShrink:0 }} />
+                {s.label}
+              </a>
             ))}
           </div>
         </div>
@@ -69,83 +160,145 @@ export default function HuntingPage() {
       <div className="dr-page">
         <div className="container">
 
-          {/* ── Rifles ── */}
-          <div className="dr-section">
-            <h2 className="dr-section-title">Top Hunting Rifles</h2>
-            <p className="dr-section-sub">Field-tested platforms recommended by guides and competitive hunters</p>
-            <div className="dr-grid-3" style={{ gap:'12px' }}>
-              {RIFLES.map(r => (
-                <div key={r.name} className="dr-card dr-card-accent">
-                  <div className="dr-card-meta">{r.calibers}</div>
-                  <div className="dr-card-title">{r.name}</div>
-                  <p className="dr-card-body" style={{ marginBottom:'10px' }}>{r.use}</p>
-                  <div style={{ display:'flex', flexWrap:'wrap', gap:'4px', marginBottom:'10px' }}>
-                    {r.pros.map(p => <span key={p} className="dr-pill dr-pill-green">✓ {p}</span>)}
+          <style>{`
+            .learn-card-img { transition: transform 0.4s ease; }
+            .learn-card-img:hover { transform: scale(1.04); }
+          `}</style>
+
+          {/* ── ALL VIEW ── */}
+          {!section && (
+            <>
+              {/* Featured mosaic */}
+              <div style={{ marginBottom:52 }}>
+                <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:20 }}>
+                  <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'var(--text)', letterSpacing:'0.04em' }}>Essential Guides</h2>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.1em' }}>START HERE</span>
+                </div>
+                <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:3 }}>
+                  <GuideCard guide={featuredGuides[0]} featured />
+                  <div style={{ display:'flex', flexDirection:'column', gap:3, gridColumn:'2 / span 2' }}>
+                    {featuredGuides.slice(1, 3).map(g => (
+                      <div key={g.slug} style={{ flex:1 }}>
+                        <GuideCard guide={g} featured />
+                      </div>
+                    ))}
                   </div>
-                  <div className="dr-card-price">{r.price}</div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* ── Cartridge guide ── */}
-          <div className="dr-section">
-            <h2 className="dr-section-title">Hunting Cartridge Selector</h2>
-            <p className="dr-section-sub">Match your cartridge to your quarry, terrain, and maximum ethical range</p>
-            <div className="dr-table">
-              <div className="dr-table-head" style={{ gridTemplateColumns:'130px 170px 80px 110px 110px 1fr' }}>
-                {['Cartridge','Best For','Max Range','Energy','Recoil','Notes'].map(h=><span key={h}>{h}</span>)}
               </div>
-              {CARTRIDGES.map(c => (
-                <div key={c.name} className="dr-table-row" style={{ gridTemplateColumns:'130px 170px 80px 110px 110px 1fr', background: c.popular ? 'var(--bg2)' : 'var(--bg)' }}>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>{c.name}</span>
-                  <span className="t-label-md">{c.use}</span>
-                  <span className="t-label-md text-gold">{c.range}</span>
-                  <span className="t-label-md">{c.energy}</span>
-                  <span className="t-label-md">{c.recoil}</span>
-                  <span className="t-label-sm">{c.note}</span>
-                </div>
-              ))}
-            </div>
-          </div>
 
-          {/* ── Skills ── */}
-          <div className="dr-section">
-            <h2 className="dr-section-title">Essential Hunting Skills</h2>
-            <p className="dr-section-sub">Practical knowledge from experienced hunters and professional guides</p>
-            <div className="dr-grid-3">
-              {SKILLS.map(s => (
-                <div key={s.title} className="dr-infoblock">
-                  <div style={{ display:'flex', gap:'10px', alignItems:'center', marginBottom:'8px' }}>
-                    <span style={{ fontSize:'18px' }}>{s.icon}</span>
-                    <div className="dr-infoblock-title" style={{ margin:0 }}>{s.title}</div>
+              {/* Section preview grids */}
+              {SUB_SECTIONS.map(sub => (
+                <div key={sub.key} style={{ marginBottom:48 }}>
+                  <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
+                    <div style={{ display:'flex', alignItems:'baseline', gap:12 }}>
+                      <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'var(--text)', letterSpacing:'0.04em' }}>{sub.label}</h2>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.1em' }}>{sub.count} GUIDES</span>
+                    </div>
+                    <a href={`/hunting?section=${sub.key}`} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', textDecoration:'none', letterSpacing:'0.05em' }}>VIEW ALL →</a>
                   </div>
-                  <div className="dr-infoblock-body">{s.desc}</div>
+                  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:3 }}>
+                    {sub.guides.slice(0, 4).map(g => <GuideCard key={g.slug} guide={g} />)}
+                  </div>
                 </div>
               ))}
-            </div>
-          </div>
+            </>
+          )}
 
-          {/* ── Season dates ── */}
-          <div className="dr-section">
-            <h2 className="dr-section-title">2024–2025 Season Dates</h2>
-            <p className="dr-section-sub">Selected states — always verify with your state wildlife agency</p>
-            <div className="dr-table" style={{ marginBottom:'12px' }}>
-              <div className="dr-table-head" style={{ gridTemplateColumns:'58px 1fr 1fr 1fr 1fr 1fr' }}>
-                {['State','Whitetail','Elk','Turkey','Dove','Notes'].map(h=><span key={h}>{h}</span>)}
-              </div>
-              {SEASONS.map(s => (
-                <div key={s.abbr} className="dr-table-row" style={{ gridTemplateColumns:'58px 1fr 1fr 1fr 1fr 1fr' }}>
-                  <Link href={`/state-hub/${s.abbr.toLowerCase()}`} className="t-display-sm text-gold" style={{ textDecoration:'none' }}>{s.abbr}</Link>
-                  <span className="t-label-md">{s.whitetail}</span>
-                  <span className="t-label-md">{s.elk}</span>
-                  <span className="t-label-md">{s.turkey}</span>
-                  <span className="t-label-md">{s.dove}</span>
-                  <span className="t-label-xs">{s.notes}</span>
+          {/* ── SECTION VIEW ── */}
+          {section && currentSection && (
+            <>
+              <div style={{ marginBottom:32 }}>
+                <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:20 }}>
+                  <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'var(--text)', letterSpacing:'0.04em' }}>{currentSection.label}</h2>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)', letterSpacing:'0.1em' }}>{currentSection.guides.length} GUIDES</span>
                 </div>
-              ))}
+
+                {/* Featured first */}
+                {currentSection.guides.filter(g => g.featured).length > 0 && (
+                  <div style={{ display:'grid', gridTemplateColumns:'2fr 1fr 1fr', gap:3, marginBottom:3 }}>
+                    {(() => {
+                      const feat = currentSection.guides.filter(g => g.featured)
+                      return (
+                        <>
+                          <GuideCard guide={feat[0]} featured />
+                          {feat.length > 1 && (
+                            <div style={{ display:'flex', flexDirection:'column', gap:3, gridColumn:'2 / span 2' }}>
+                              {feat.slice(1, 3).map(g => (
+                                <div key={g.slug} style={{ flex:1 }}>
+                                  <GuideCard guide={g} featured />
+                                </div>
+                              ))}
+                            </div>
+                          )}
+                        </>
+                      )
+                    })()}
+                  </div>
+                )}
+
+                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:3 }}>
+                  {currentSection.guides.filter(g => !g.featured).map(g => <GuideCard key={g.slug} guide={g} />)}
+                </div>
+              </div>
+            </>
+          )}
+
+          {/* ── SEASON QUICK-REFERENCE ── */}
+          {!section && (
+            <div style={{ marginTop:48, background:'var(--bg2)', border:'1px solid var(--border)', padding:'28px 32px' }}>
+              <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:20 }}>
+                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--text)', letterSpacing:'0.04em' }}>2025–2026 Season Overview</h2>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>VERIFY WITH YOUR STATE AGENCY</span>
+              </div>
+              <div style={{ overflowX:'auto' }}>
+                <table style={{ width:'100%', borderCollapse:'collapse', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>
+                  <thead>
+                    <tr>
+                      {['State','Whitetail','Elk','Turkey','Dove','Notes'].map(h => (
+                        <th key={h} style={{ textAlign:'left', padding:'8px 12px', color:'var(--gold)', letterSpacing:'0.08em', borderBottom:'1px solid var(--border)', whiteSpace:'nowrap' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { abbr:'TX', state:'Texas',      whitetail:'Oct 5 – Jan 19',   elk:'N/A',               turkey:'Mar 29–May 11', dove:'Sep 1–Nov 12',  notes:'Year-round hog' },
+                      { abbr:'CO', state:'Colorado',   whitetail:'Oct 18 – Nov 3',   elk:'Rifle Oct 18–Nov 3', turkey:'Apr 12–May 25', dove:'Sep 1–Nov 14',  notes:'Draw system premium units' },
+                      { abbr:'WA', state:'Washington', whitetail:'Oct 12 – Nov 24',  elk:'Unit dependent',    turkey:'Apr 15–May 31', dove:'Sep 1–Oct 31',   notes:'3-pt restriction many units' },
+                      { abbr:'MT', state:'Montana',    whitetail:'Oct 26 – Nov 24',  elk:'Oct 26–Nov 24',     turkey:'May only',      dove:'Sep 1–Nov 9',    notes:'Best elk lower 48' },
+                      { abbr:'ID', state:'Idaho',      whitetail:'Oct 10 – Nov 20',  elk:'Aug 30–Nov 20',     turkey:'Apr 15–May 31', dove:'Sep 1–Nov 10',   notes:'OTC elk most zones' },
+                      { abbr:'FL', state:'Florida',    whitetail:'Jul 31 – Feb 16',  elk:'N/A',               turkey:'Mar 6–Apr 12',  dove:'Oct 18–Nov 23',  notes:'Archery opens July' },
+                    ].map(s => (
+                      <tr key={s.abbr} style={{ borderBottom:'1px solid var(--border)' }}>
+                        <td style={{ padding:'10px 12px' }}>
+                          <Link href={`/state-hub/${s.abbr.toLowerCase()}`} style={{ color:'var(--gold)', textDecoration:'none', fontWeight:700 }}>{s.abbr}</Link>
+                        </td>
+                        <td style={{ padding:'10px 12px', color:'var(--text-muted)' }}>{s.whitetail}</td>
+                        <td style={{ padding:'10px 12px', color:'var(--text-muted)' }}>{s.elk}</td>
+                        <td style={{ padding:'10px 12px', color:'var(--text-muted)' }}>{s.turkey}</td>
+                        <td style={{ padding:'10px 12px', color:'var(--text-muted)' }}>{s.dove}</td>
+                        <td style={{ padding:'10px 12px', color:'#4B5563', fontSize:'10px' }}>{s.notes}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', marginTop:12 }}>
+                ⚠ Always verify exact dates and regulations with your state wildlife agency before hunting.
+              </p>
             </div>
-            <p className="t-label-xs" style={{ opacity:0.6 }}>⚠ Verify exact dates with your state wildlife agency before hunting. Regulations change annually.</p>
+          )}
+
+          {/* ── BOTTOM CTA ── */}
+          <div style={{ marginTop:48, padding:'32px', background:'var(--bg2)', border:'1px solid var(--border)', display:'grid', gridTemplateColumns:'1fr auto', gap:24, alignItems:'center' }}>
+            <div>
+              <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--text)', letterSpacing:'0.04em', marginBottom:6 }}>More field guides coming</h3>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', lineHeight:1.6 }}>
+                Bear hunting, waterfowl, mule deer, pronghorn, and backcountry elk. New content weekly.
+              </p>
+            </div>
+            <Link href="/contribute" className="dr-btn-primary" style={{ whiteSpace:'nowrap', flexShrink:0 }}>
+              Suggest a Topic →
+            </Link>
           </div>
 
         </div>

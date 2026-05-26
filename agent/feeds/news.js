@@ -201,6 +201,7 @@ async function processNewsItem(item) {
     },
     excerpt:      ai.summary || item.description?.slice(0, 300),
     summary:      ai.summary || item.description?.slice(0, 300),
+    body:         ai.body   || null,
     category:     item.feedCat === 'deals' ? 'deals' : (ai.category || item.feedCat || 'news'),
     urgencyScore: ai.urgencyScore || 3,
     tags:         ai.tags || [],

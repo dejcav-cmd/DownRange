@@ -1,6 +1,6 @@
 require('dotenv').config()
 const axios = require('axios')
-const { publishToSanity, notifyError, sleep } = require('../utils')
+const { enrichLawWithClaude, publishToSanity, notifyError, sleep } = require('../utils')
 
 const STATUS_MAP = {
   'Introduced': 'pending',
@@ -110,6 +110,18 @@ async function runLawsFeed() {
   const federal = await fetchCongressBills()
   for (const bill of federal) {
     try {
+      // Enrich with Claude extended summary + analysis
+      if (process.env.ANTHROPIC_API_KEY) {
+        try {
+          const enriched = await enrichLawWithClaude(bill)
+          if (enriched.summary) bill.summary = enriched.summary
+          if (enriched.analysis) bill.analysis = enriched.analysis
+          if (enriched.impact) bill.impact = enriched.impact
+        } catch (enrichErr) {
+          console.error('[LAWS] Enrichment error:', enrichErr.message)
+        }
+        await sleep(400)
+      }
       await publishToSanity(bill)
       done++
     } catch (err) { failed++; console.error(err.message) }
@@ -128,6 +140,18 @@ async function runLawsFeed() {
     for (const bills of results) {
       for (const bill of bills) {
         try {
+          // Enrich with Claude extended summary
+          if (process.env.ANTHROPIC_API_KEY) {
+            try {
+              const enriched = await enrichLawWithClaude(bill)
+              if (enriched.summary) bill.summary = enriched.summary
+              if (enriched.analysis) bill.analysis = enriched.analysis
+              if (enriched.impact) bill.impact = enriched.impact
+            } catch (enrichErr) {
+              console.error('[LAWS] State enrichment error:', enrichErr.message)
+            }
+            await sleep(400)
+          }
           await publishToSanity(bill)
           done++
         } catch (err) { failed++ }
