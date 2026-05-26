@@ -278,3 +278,54 @@ button { cursor: pointer; }
   background: #1C2028 !important;
   border-left-color: #C8922A !important;
 }
+
+/* ── ENGAGEMENT MICRO-INTERACTIONS ─────────────────────────────────── */
+/* Smooth card hover lift */
+.card-hover {
+  transition: transform 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+}
+.card-hover:hover {
+  transform: translateY(-2px);
+  border-color: var(--gold) !important;
+  box-shadow: 0 4px 20px rgba(200,146,42,0.12);
+}
+
+/* Pulsing NEW badge */
+@keyframes newPulse { 0%,100%{opacity:1} 50%{opacity:0.6} }
+.badge-new { animation: newPulse 2s ease-in-out infinite; }
+
+/* Reading progress bar */
+.reading-progress {
+  position: fixed; top: 0; left: 0; height: 2px;
+  background: var(--gold); z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* Urgency bar */
+.urgency-bar {
+  height: 2px;
+  background: linear-gradient(90deg, #C8922A, #EF4444);
+  border-radius: 1px;
+  margin-bottom: 6px;
+}
+
+/* Better link underline on hover */
+a.link-underline:hover { text-decoration: underline; text-underline-offset: 3px; }
+
+/* Nav top item hover */
+.nav-top-item:hover { color: #FFFFFF !important; }
+
+/* Focus visible for accessibility */
+a:focus-visible, button:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* Better table styles */
+table.data-table { border-collapse: collapse; width: 100%; }
+table.data-table th { background: #16191F; color: #C8922A; font-family: monospace; font-size: 10px; letter-spacing: 0.12em; padding: 8px 12px; text-align: left; border-bottom: 1px solid #2A2F38; }
+table.data-table td { padding: 8px 12px; border-bottom: 1px solid #1F2428; font-family: monospace; font-size: 12px; color: #9CA3AF; }
+table.data-table tr:hover td { background: #111318; color: #F0EDE6; }

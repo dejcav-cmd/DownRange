@@ -79,6 +79,7 @@ const NAV = [
       { label: '▲ Training & Drills', href: '/training', desc: '30-day dry fire program' },
       { label: '🔒 Safe Storage', href: '/safe-storage', desc: 'Biometric and vault reviews' },
       { label: '◎ Ranges Near Me', href: '/ranges', desc: 'Find a range to shoot' },
+      { label: '🎒 Preparedness', href: '/preparedness', desc: 'Home defense, grid-down, go-bag' },
     ]
   },
   {
@@ -128,6 +129,9 @@ export default function Masthead() {
         .nav-drop.visible { display:block; }
         .nav-drop-item { display:block; padding:8px 12px; text-decoration:none; border-radius:3px; transition:background 0.12s; }
         .nav-drop-item:hover { background:#1F2428; }
+        .nav-top-item { transition: color 0.15s; }
+        .nav-top-item:hover { color: #FFFFFF !important; }
+        .nav-top-item:hover .nav-arrow { color: #C8922A !important; }
         .nav-drop-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; color:#F0EDE6; letter-spacing:0.05em; display:block; }
         .nav-drop-desc { font-family:monospace; font-size:10px; color:#4B5563; display:block; margin-top:1px; }
         .nav-item-wrap { position:relative; }
@@ -186,6 +190,7 @@ export default function Masthead() {
                   onMouseEnter={() => openDrop(item.label)}
                   onMouseLeave={closeDrop}>
                   <Link href={item.href}
+                    className="nav-top-item"
                     style={{
                       display:'flex', alignItems:'center', gap:'4px',
                       fontFamily:"'Barlow Condensed', sans-serif",
@@ -198,7 +203,7 @@ export default function Masthead() {
                     }}>
                     {item.label}
                     {item.children && (
-                      <span style={{ fontSize:'8px', color: active ? '#C8922A' : '#4B5563', marginTop:'1px' }}>▼</span>
+                      <span className="nav-arrow" style={{ fontSize:'8px', color: active ? '#C8922A' : '#4B5563', marginTop:'1px' }}>▼</span>
                     )}
                   </Link>
 

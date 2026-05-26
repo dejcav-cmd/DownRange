@@ -18,7 +18,8 @@ const CATEGORIES = [
 ]
 
 export default async function NewsPage({ searchParams }) {
-  const cat = searchParams?.cat || null
+  const cat  = searchParams?.cat  || null
+  const sort = searchParams?.sort || 'newest'
 
   // Fetch data
   const [articles, alerts, legislation] = await Promise.all([
@@ -53,7 +54,8 @@ export default async function NewsPage({ searchParams }) {
       <div style={{ padding: '32px 0', borderBottom: '1px solid #1F2428' }}>
         <div className="container">
           {/* Category tabs */}
-          <div className="filter-tabs">
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'8px', flexWrap:'wrap', gap:8 }}>
+            <div className="filter-tabs" style={{ marginBottom:0 }}>
             {CATEGORIES.map(c => (
               <a key={c.val || 'all'} href={c.val ? `/news?cat=${c.val}` : '/news'}
                 className={`filter-tab ${(cat === c.val || (!cat && !c.val)) ? 'active' : ''}`}>
