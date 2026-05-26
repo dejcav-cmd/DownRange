@@ -22,6 +22,7 @@ const TABS = [
   { key:'blog',       label:'Blog Manager',    icon:'📝' },
   { key:'schedule',   label:'Pub. Schedule',   icon:'📅' },
   { key:'pulllog',    label:'Pull Log',        icon:'📡' },
+  { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
 ]
 
@@ -824,6 +825,151 @@ function PublicationSchedule({ secret, setMsg }) {
   )
 }
 
+
+// ── CRON HEALTH COMPONENT ──────────────────────────────────────────────────────
+function CronHealth({ secret }) {
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [triggering, setTriggering] = useState({})
+
+  useEffect(() => {
+    fetch('/api/admin/cron-health')
+      .then(r => r.json())
+      .then(d => { setData(d); setLoading(false) })
+      .catch(() => setLoading(false))
+  }, [])
+
+  async function triggerFeed(feed) {
+    if (!secret) { alert('Enter CRON_SECRET in the header field first'); return }
+    setTriggering(t => ({...t, [feed]: true}))
+    try {
+      const res = await fetch(`/api/agent?feed=${feed}`, { headers: { Authorization: `Bearer ${secret}` } })
+      const d = await res.json()
+      alert(`${feed}: ${JSON.stringify(d).slice(0, 200)}`)
+    } catch(e) { alert(`Error: ${e.message}`) }
+    setTriggering(t => ({...t, [feed]: false}))
+  }
+
+  const SCOLOR = { HEALTHY:'#22c55e', WARNING:'#f59e0b', DEGRADED:'#ef4444', BROKEN:'#ef4444' }
+  const ICOLOR = { CRITICAL:'#ef4444', HIGH:'#f59e0b', MEDIUM:'#C8922A' }
+
+  if (loading) return <div style={{padding:40, fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#64748b'}}>Loading diagnostics...</div>
+  if (!data)   return <div style={{padding:40, fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#ef4444'}}>Failed to load — check console</div>
+
+  return (
+    <div>
+      <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:24, flexWrap:'wrap', gap:12 }}>
+        <div>
+          <h1 className="dr-section-title" style={{ margin:0 }}>🩺 Cron Health</h1>
+          <p className="dr-section-sub" style={{ margin:'4px 0 0' }}>Feed agent diagnostics, env var status, and manual triggers</p>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+          <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color: SCOLOR[data.status] || '#94a3b8', letterSpacing:'0.05em' }}>{data.status}</span>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569' }}>{new Date(data.timestamp).toLocaleTimeString()}</span>
+        </div>
+      </div>
+
+      {/* Issues */}
+      {data.issues?.length > 0 && (
+        <div style={{ marginBottom:24 }}>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#ef4444', letterSpacing:'0.1em', marginBottom:8, fontWeight:700 }}>⚠ ISSUES FOUND</div>
+          {data.issues.map((issue, i) => (
+            <div key={i} style={{ padding:'10px 14px', background: ICOLOR[issue.severity] + '11', borderLeft:`3px solid ${ICOLOR[issue.severity]}`, marginBottom:6, borderRadius:3 }}>
+              <div style={{ display:'flex', gap:10, alignItems:'flex-start' }}>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color: ICOLOR[issue.severity], flexShrink:0 }}>{issue.severity}</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#d1d5db', lineHeight:1.5 }}>{issue.msg}</span>
+              </div>
+            </div>
+          ))}
+          {data.fix && (
+            <div style={{ marginTop:12, padding:'12px 16px', background:'rgba(200,146,42,0.08)', border:'1px solid rgba(200,146,42,0.3)', borderRadius:4 }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', fontWeight:700, marginBottom:8 }}>FIX STEPS</div>
+              {data.fix.steps.map((s, i) => (
+                <div key={i} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#94a3b8', marginBottom:3 }}>{s}</div>
+              ))}
+              <a href={data.fix.url} target="_blank" rel="noreferrer" style={{ display:'inline-block', marginTop:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#C8922A', textDecoration:'none', border:'1px solid rgba(200,146,42,0.4)', padding:'4px 12px', borderRadius:3 }}>
+                Open Vercel Dashboard ↗
+              </a>
+            </div>
+          )}
+        </div>
+      )}
+
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:20 }}>
+
+        {/* Env vars */}
+        <div className="dr-card" style={{ padding:16 }}>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', color:'#C8922A', marginBottom:12 }}>ENVIRONMENT VARIABLES</div>
+          {Object.entries(data.env || {}).map(([key, val]) => (
+            <div key={key} style={{ display:'grid', gridTemplateColumns:'1fr 60px', gap:8, padding:'6px 0', borderBottom:'1px solid rgba(30,41,59,0.5)', alignItems:'start' }}>
+              <div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: val.set ? '#94a3b8' : val.critical ? '#ef4444' : '#475569' }}>{key}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155', lineHeight:1.4, marginTop:1 }}>{val.note}</div>
+              </div>
+              <div style={{ textAlign:'right' }}>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color: val.set ? '#22c55e' : val.critical ? '#ef4444' : '#475569', background: val.set ? '#14532d' : val.critical ? '#7f1d1d' : '#1e293b', padding:'2px 6px', borderRadius:2 }}>
+                  {val.set ? '✓ SET' : val.critical ? '✗ MISSING' : '— NOT SET'}
+                </span>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Sanity + Cron status */}
+        <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
+
+          {/* Sanity */}
+          <div className="dr-card" style={{ padding:16 }}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', color:'#C8922A', marginBottom:12 }}>SANITY CMS STATUS</div>
+            {data.sanity?.connected ? (
+              <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
+                {[
+                  ['Status',        '✓ Connected',                                    '#22c55e'],
+                  ['Articles',      String(data.sanity.counts?.articles || 0),         '#C8922A'],
+                  ['Active Alerts', String(data.sanity.counts?.activeAlerts || 0),     '#ef4444'],
+                  ['Last Article',  data.sanity.minutesSinceLastArticle != null ? `${data.sanity.minutesSinceLastArticle}min ago` : 'Unknown',
+                    data.sanity.minutesSinceLastArticle > 60 ? '#ef4444' : '#22c55e'],
+                  ['Latest Source', data.sanity.latest?.source || '—',                '#94a3b8'],
+                ].map(([k, v, c]) => (
+                  <div key={k} style={{ display:'flex', justifyContent:'space-between' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569' }}>{k}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: c }}>{v}</span>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#ef4444' }}>✗ {data.sanity?.error || 'Connection failed'}</div>
+            )}
+          </div>
+
+          {/* Cron schedule + triggers */}
+          <div className="dr-card" style={{ padding:16 }}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', color:'#C8922A', marginBottom:12 }}>CRON SCHEDULE & TRIGGERS</div>
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {(data.crons || []).map(c => (
+                <div key={c.feed} style={{ display:'grid', gridTemplateColumns:'1fr auto', gap:8, alignItems:'center', padding:'8px 10px', background:'rgba(0,0,0,0.2)', borderRadius:3, borderLeft:`3px solid ${c.critical ? '#C8922A' : '#334155'}` }}>
+                  <div>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--foreground)' }}>{c.feed.toUpperCase()}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{c.label} · {c.desc}</div>
+                  </div>
+                  <button
+                    disabled={triggering[c.feed]}
+                    onClick={() => triggerFeed(c.feed)}
+                    style={{ background:'none', border:`1px solid ${triggering[c.feed] ? '#334155' : '#C8922A'}`, color: triggering[c.feed] ? '#475569' : '#C8922A', padding:'4px 10px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, borderRadius:3, whiteSpace:'nowrap' }}
+                  >
+                    {triggering[c.feed] ? 'Running...' : '▶ Run'}
+                  </button>
+                </div>
+              ))}
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [tab, setTab]       = useState('dashboard')
   const [secret, setSecret] = useState('')
@@ -1091,6 +1237,8 @@ export default function AdminPage() {
 
           {/* ── PULL LOG ── */}
           {tab==='pulllog' && <PullLogDashboard />}
+
+          {tab==='cronhealth' && <CronHealth secret={secret} />}
 
           {/* ── SETTINGS ── */}
           {tab==='settings' && (

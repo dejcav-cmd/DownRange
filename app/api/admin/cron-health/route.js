@@ -1,0 +1,118 @@
+export const dynamic = 'force-dynamic'
+export const maxDuration = 30
+
+/**
+ * GET /api/admin/cron-health
+ * Returns complete diagnostic — env vars, cron schedule, last run times, feed status.
+ * No auth required (values are booleans only, no secrets exposed).
+ */
+import { createClient } from '@sanity/client'
+
+const sanity = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET    || 'production',
+  apiVersion:'2024-01-01',
+  useCdn:    false,
+  token:     process.env.SANITY_API_TOKEN,
+})
+
+export async function GET() {
+  const now = new Date().toISOString()
+
+  // ── ENV VAR HEALTH ────────────────────────────────────────────────────
+  const env = {
+    CRON_SECRET:                   { set: !!process.env.CRON_SECRET,                   critical: true,  note: 'Required for all cron jobs to authenticate' },
+    ANTHROPIC_API_KEY:             { set: !!process.env.ANTHROPIC_API_KEY,             critical: true,  note: 'Required for AI article rewrites. Without it, raw RSS data is used.' },
+    SANITY_API_TOKEN:              { set: !!process.env.SANITY_API_TOKEN,              critical: true,  note: 'Required for writing articles to Sanity CMS' },
+    NEXT_PUBLIC_SANITY_PROJECT_ID: { set: !!process.env.NEXT_PUBLIC_SANITY_PROJECT_ID, critical: true,  note: 'Required for all Sanity reads/writes' },
+    RESEND_API_KEY:                { set: !!process.env.RESEND_API_KEY,                critical: false, note: 'Required for newsletter and email alerts' },
+    NEWSAPI_KEY:                   { set: !!process.env.NEWSAPI_KEY,                   critical: false, note: 'Optional — adds NewsAPI.org articles to news feed' },
+    GNEWS_KEY:                     { set: !!process.env.GNEWS_KEY,                     critical: false, note: 'Optional — adds GNews articles to news feed' },
+    YOUTUBE_API_KEY:               { set: !!process.env.YOUTUBE_API_KEY,               critical: false, note: 'Required for live YouTube video feed' },
+    GOOGLE_PLACES_API_KEY:         { set: !!process.env.GOOGLE_PLACES_API_KEY,         critical: false, note: 'Required for live range search' },
+    ALGOLIA_APP_ID:                { set: !!process.env.ALGOLIA_APP_ID,                critical: false, note: 'Required for search indexing' },
+    DISCORD_WEBHOOK_URL:           { set: !!process.env.DISCORD_WEBHOOK_URL,           critical: false, note: 'Optional — Discord status notifications' },
+    LEGISCAN_KEY:                  { set: !!process.env.LEGISCAN_KEY,                  critical: false, note: 'Required for state legislation feed' },
+  }
+
+  const missingCritical = Object.entries(env)
+    .filter(([, v]) => v.critical && !v.set)
+    .map(([k]) => k)
+
+  // ── SANITY DATA FRESHNESS ─────────────────────────────────────────────
+  let sanityStatus = { connected: false, error: null, counts: {}, latest: null }
+  try {
+    const [articleCount, latestArticle, alertCount] = await Promise.all([
+      sanity.fetch(`count(*[_type == "newsArticle"])`),
+      sanity.fetch(`*[_type == "newsArticle"] | order(publishedAt desc) [0] { title, publishedAt, source, category }`),
+      sanity.fetch(`count(*[_type == "breakingAlert" && active == true])`),
+    ])
+    sanityStatus = {
+      connected:    true,
+      counts:       { articles: articleCount, activeAlerts: alertCount },
+      latest:       latestArticle,
+      minutesSinceLastArticle: latestArticle?.publishedAt
+        ? Math.round((Date.now() - new Date(latestArticle.publishedAt).getTime()) / 60000)
+        : null,
+    }
+  } catch (err) {
+    sanityStatus.error = err.message
+  }
+
+  // ── CRON SCHEDULE ─────────────────────────────────────────────────────
+  const crons = [
+    { feed: 'news',     schedule: '*/15 * * * *', label: 'Every 15 min',  critical: true,  desc: 'RSS + NewsAPI + GNews → Sanity articles' },
+    { feed: 'laws',     schedule: '0 */2 * * *',  label: 'Every 2 hrs',   critical: true,  desc: 'Congress.gov + LegiScan → legislation feed' },
+    { feed: 'releases', schedule: '0 * * * *',    label: 'Every hour',    critical: false, desc: 'Manufacturer RSS → new product releases' },
+    { feed: 'market',   schedule: '*/30 * * * *', label: 'Every 30 min',  critical: false, desc: 'AmmoSeek + Reddit → ammo price index' },
+    { feed: 'video',    schedule: '0 */4 * * *',  label: 'Every 4 hrs',   critical: false, desc: 'YouTube API → video feed' },
+    { feed: 'state',    schedule: '0 8 * * *',    label: 'Daily 8am',     critical: false, desc: 'LegiScan → per-state bill updates' },
+    { feed: 'newsletter',schedule:'0 7 * * *',    label: 'Daily 7am',     critical: false, desc: 'Resend → weekly digest email' },
+  ]
+
+  // ── DIAGNOSIS ─────────────────────────────────────────────────────────
+  const issues = []
+
+  if (!env.CRON_SECRET.set)
+    issues.push({ severity: 'CRITICAL', msg: 'CRON_SECRET not set — ALL cron jobs return 401 Unauthorized. No data will ever update.' })
+
+  if (!env.ANTHROPIC_API_KEY.set)
+    issues.push({ severity: 'HIGH', msg: 'ANTHROPIC_API_KEY not set — articles publish as raw RSS text, no AI rewrite. Content quality degraded.' })
+
+  if (!env.SANITY_API_TOKEN.set)
+    issues.push({ severity: 'CRITICAL', msg: 'SANITY_API_TOKEN not set — feed agents cannot write to Sanity. No articles will save.' })
+
+  if (!sanityStatus.connected)
+    issues.push({ severity: 'CRITICAL', msg: `Sanity connection failed: ${sanityStatus.error}` })
+
+  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 60)
+    issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago. News feed may not be running.` })
+
+  if (!env.NEWSAPI_KEY.set && !env.GNEWS_KEY.set)
+    issues.push({ severity: 'MEDIUM', msg: 'Neither NEWSAPI_KEY nor GNEWS_KEY set — news feed relies on RSS only (no API articles).' })
+
+  const overallStatus = issues.some(i => i.severity === 'CRITICAL') ? 'BROKEN'
+    : issues.some(i => i.severity === 'HIGH') ? 'DEGRADED'
+    : issues.length > 0 ? 'WARNING'
+    : 'HEALTHY'
+
+  return Response.json({
+    status: overallStatus,
+    timestamp: now,
+    issues,
+    env: Object.fromEntries(Object.entries(env).map(([k, v]) => [k, { set: v.set, critical: v.critical, note: v.note }])),
+    missingCritical,
+    sanity: sanityStatus,
+    crons,
+    fix: missingCritical.length > 0 ? {
+      url: 'https://vercel.com/dashboard',
+      steps: [
+        '1. Go to Vercel Dashboard → your DownRange project',
+        '2. Click Settings → Environment Variables',
+        '3. Add each missing critical variable',
+        '4. Redeploy for env vars to take effect',
+        `5. Missing: ${missingCritical.join(', ')}`,
+      ]
+    } : null,
+  })
+}

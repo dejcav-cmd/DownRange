@@ -61,5 +61,22 @@
       "source": "/studio/(.*)",
       "destination": "/studio/$1"
     }
-  ]
+  ],
+  "functions": {
+    "app/api/agent/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/admin/trigger/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/admin/status/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/deals/route.js": {
+      "maxDuration": 30
+    },
+    "app/api/ranges/route.js": {
+      "maxDuration": 30
+    }
+  }
 }
