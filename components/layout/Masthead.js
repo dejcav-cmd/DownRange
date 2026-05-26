@@ -76,6 +76,18 @@ const NAV = [
     ]
   },
   {
+    label: 'Learn', href: '/learn',
+    children: [
+      { label: '📚 Learning Center',  href: '/learn',                              desc: 'All beginner guides' },
+      { label: '🔫 First Gun Guide',  href: '/learn/buying-your-first-gun',        desc: 'How to buy your first firearm' },
+      { label: '🪪 CCW License Guide',href: '/learn/how-to-get-ccw-license',       desc: 'State-by-state carry permit guide' },
+      { label: '🛡 Safety Rules',      href: '/learn/firearms-safety-four-rules',   desc: 'The four rules that prevent accidents' },
+      { label: '🏠 Home Defense',      href: '/learn/home-defense-basics',          desc: 'Practical home protection guide' },
+      { label: '🎯 Training at Home',  href: '/learn/dry-fire-training-beginners',  desc: 'Free practice without ammo' },
+      { label: '⚖ Gun Laws Explained',href: '/learn/understanding-gun-laws',        desc: 'Federal & state law for beginners' },
+    ]
+  },
+  {
     label: '🇨🇦 International', href: '/canada',
     children: [
       { label: '🇨🇦 Canada', href: '/canada', desc: 'PAL, C-21, province laws' },
@@ -124,11 +136,11 @@ export default function Masthead() {
         .nav-drop.open { display:block; }
         .nav-drop-item { display:block; padding:8px 12px; text-decoration:none; transition:background 0.1s; }
         .nav-drop-item:hover { background:var(--bg3); }
-        .ndi-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; color:var(--text); letter-spacing:0.04em; display:block; }
-        .ndi-desc { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text-dim); display:block; margin-top:1px; }
+        .ndi-label { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:var(--text); letter-spacing:0.04em; display:block; }
+        .ndi-desc { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-dim); display:block; margin-top:1px; }
         /* Nav item */
         .nav-item-wrap { position:relative; }
-        .nav-top-link { display:flex; align-items:center; gap:4px; font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:13px 13px; white-space:nowrap; text-decoration:none; border-bottom:2px solid transparent; transition:color 0.15s, border-color 0.15s; }
+        .nav-top-link { display:flex; align-items:center; gap:4px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:13px 13px; white-space:nowrap; text-decoration:none; border-bottom:2px solid transparent; transition:color 0.15s, border-color 0.15s; }
         .nav-top-link:hover { color:#fff !important; }
         .nav-top-link.active { border-bottom-color:var(--gold) !important; color:var(--text) !important; }
         /* Responsive */
@@ -137,10 +149,10 @@ export default function Masthead() {
         .nav-mob-sheet.open { display:flex!important; }
         /* Mobile sheet */
         .mob-section-btn { width:100%; display:flex; align-items:center; justify-content:space-between; padding:13px 16px; background:none; border:none; border-bottom:1px solid var(--border); cursor:pointer; text-align:left; }
-        .mob-section-btn .mob-label { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
+        .mob-section-btn .mob-label { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:var(--gold); }
         .mob-section-btn .mob-arrow { font-size:10px; color:var(--text-dim); transition:transform 0.2s; }
         .mob-section-btn.expanded .mob-arrow { transform:rotate(180deg); }
-        .mob-child { display:block; padding:9px 16px 9px 28px; font-family:'IBM Plex Mono',monospace; font-size:12px; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(31,36,40,0.5); }
+        .mob-child { display:block; padding:9px 16px 9px 28px; font-family:'IBM Plex Mono',monospace; font-size:13px; color:var(--text-muted); text-decoration:none; border-bottom:1px solid rgba(31,36,40,0.5); }
         .mob-child:hover { color:var(--gold); background:var(--bg3); }
         /* Bottom safe area */
         .mob-safe-bottom { height:env(safe-area-inset-bottom, 0px); }

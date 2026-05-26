@@ -8,6 +8,7 @@ const TABS = [
   { href: '/laws',   icon: '⚖', label: 'Laws'   },
   { href: '/deals',  icon: '🔥', label: 'Deals'  },
   { href: '/market', icon: '📊', label: 'Market' },
+  { href: '/learn',  icon: '📚', label: 'Learn' },
 ]
 
 export default function MobileTabBar() {

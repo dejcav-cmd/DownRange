@@ -74,9 +74,12 @@ export default async function VideoPage({ searchParams }) {
     fetchBreakingAlerts(5).catch(() => []),
   ])
 
-  const featured = videos.find(v => v.featured) || videos[0]
-  const queue = videos.filter(v => v._id !== featured?._id).slice(0, 4)
-  const rest = videos.filter(v => v._id !== featured?._id).slice(4)
+  // Use live videos from Sanity, fall back to seed data
+  const displayVideos = videos.length > 0 ? videos : SEED_VIDEOS
+  const featured = displayVideos.find(v => v.featured) || displayVideos[0]
+  const queue = displayVideos.filter(v => v._id !== featured?._id).slice(0, 4)
+  const rest = displayVideos.filter(v => v._id !== featured?._id).slice(4)
+  const isLive = videos.length > 0
 
   return (
     <>
@@ -102,6 +105,7 @@ export default async function VideoPage({ searchParams }) {
           </div>
 
           {/* Featured + queue */}
+          {/* Always shows — live from Sanity or seed data */}
           {featured && (
             <div style={{ display: 'grid', gridTemplateColumns: '1fr 320px', gap: '2px', marginBottom: '48px' }}>
               <VideoCard video={featured} large />
@@ -138,14 +142,9 @@ export default async function VideoPage({ searchParams }) {
             </>
           )}
 
-          {videos.length === 0 && (
-            <div>
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', color: '#4B5563', letterSpacing: '0.12em', marginBottom: '20px', padding: '10px 16px', background: '#111318', border: '1px solid var(--border)' }}>
-                ◈ Live video feed activates when YouTube API key is configured. Showing featured channels preview.
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
-                {SEED_VIDEOS.map(v => <VideoCard key={v._id} video={v} />)}
-              </div>
+          {!isLive && (
+            <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: 'var(--text-dim)', padding: '8px 14px', background: 'var(--bg2)', border: '1px solid var(--border)', marginTop: '24px' }}>
+              ◈ Live video feed activates when YouTube API key is configured in Vercel env vars.
             </div>
           )}
         </div>

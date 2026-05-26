@@ -16,7 +16,9 @@ const TABS = [
   { key:'identity',  label:'Site Identity',  icon:'🎨' },
   { key:'openclaw',  label:'OpenClaw Agent', icon:'🤖' },
   { key:'keys',      label:'API Keys',       icon:'🔑' },
-  { key:'settings',  label:'Settings',       icon:'⚙' },
+  { key:'blog',      label:'Blog Manager',    icon:'📝' },
+  { key:'schedule',  label:'Pub. Schedule',   icon:'📅' },
+  { key:'settings',  label:'Settings',        icon:'⚙' },
 ]
 
 const FEEDS = [
@@ -360,6 +362,94 @@ export default function AdminPage() {
                     <div className="t-label-sm">{s.desc}</div>
                   </div>
                 ))}
+              </div>
+            </div>
+          )}
+
+          {/* ── BLOG MANAGER ── */}
+          {tab==='blog' && (
+            <div>
+              <h1 className="dr-section-title">Blog Manager</h1>
+              <p className="dr-section-sub">Manage Learning Center articles — beginner guides authored by DJ Cavalcanti</p>
+
+              <div className="dr-grid-2" style={{ marginBottom:'24px' }}>
+                <div className="dr-stat"><div className="dr-stat-num">12</div><div className="dr-stat-label">Published Articles</div><div className="dr-stat-sub">Learning Center</div></div>
+                <div className="dr-stat"><div className="dr-stat-num">4</div><div className="dr-stat-label">In Queue</div><div className="dr-stat-sub">Ready to publish</div></div>
+              </div>
+
+              <h2 className="dr-section-title" style={{ fontSize:'1.3rem', marginBottom:'12px' }}>Published Articles</h2>
+              <div style={{ display:'flex', flexDirection:'column', gap:'6px', marginBottom:'24px' }}>
+                {[
+                  { title:'Buying Your First Gun: The Complete Beginners Guide', cat:'Getting Started', date:'May 15', views:'—', slug:'buying-your-first-gun' },
+                  { title:'How to Get Your CCW License (State-by-State Guide)', cat:'CCW & Carry', date:'May 18', views:'—', slug:'how-to-get-ccw-license' },
+                  { title:'The Four Rules of Firearms Safety', cat:'Safety', date:'May 20', views:'—', slug:'firearms-safety-four-rules' },
+                ].map(a => (
+                  <div key={a.slug} className="dr-card" style={{ display:'grid', gridTemplateColumns:'1fr 120px 80px auto', gap:12, alignItems:'center', padding:'12px 16px' }}>
+                    <div>
+                      <div className="dr-card-title" style={{ fontSize:'0.9rem' }}>{a.title}</div>
+                      <div className="dr-card-meta" style={{ marginBottom:0 }}>{a.cat}</div>
+                    </div>
+                    <div className="t-label-sm">{a.date} 2026</div>
+                    <span className="dr-badge dr-badge-green">LIVE</span>
+                    <a href={`/learn/${a.slug}`} target="_blank" className="dr-btn-outline" style={{ padding:'5px 10px', fontSize:'10px' }}>VIEW ↗</a>
+                  </div>
+                ))}
+              </div>
+
+              <h2 className="dr-section-title" style={{ fontSize:'1.3rem', marginBottom:'12px' }}>OpenClaw — Publish New Article</h2>
+              <div className="dr-alert-info" style={{ marginBottom:'16px' }}>
+                Use the prompt templates in <code style={{ color:'var(--gold)' }}>docs/openclaw-blog-prompts.md</code> to generate articles with your Hermes 3 agent, then POST to the publish endpoint below.
+              </div>
+              <div className="dr-card dr-card-accent" style={{ marginBottom:'16px' }}>
+                <div className="dr-card-meta">PUBLISH ENDPOINT</div>
+                <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'var(--green)', display:'block', padding:'8px 0' }}>
+                  POST https://downrangeco.com/api/blog-publish
+                </code>
+                <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', display:'block' }}>
+                  Authorization: Bearer {CRON_SECRET}
+                </code>
+              </div>
+              <a href="/docs/openclaw-blog-prompts.md" target="_blank" className="dr-btn-primary" style={{ marginRight:'10px' }}>View Prompt Templates ↗</a>
+              <a href="/learn" target="_blank" className="dr-btn-outline">View Learning Center ↗</a>
+            </div>
+          )}
+
+          {/* ── PUBLICATION SCHEDULE ── */}
+          {tab==='schedule' && (
+            <div>
+              <h1 className="dr-section-title">Publication Schedule</h1>
+              <p className="dr-section-sub">Editorial calendar — plan and track blog content</p>
+
+              <div className="dr-table" style={{ marginBottom:'24px' }}>
+                <div className="dr-table-head" style={{ gridTemplateColumns:'100px 1fr 150px 100px 80px' }}>
+                  {['Pub Date','Title','Category','Author','Status'].map(h=><span key={h}>{h}</span>)}
+                </div>
+                {[
+                  { date:'May 15', title:'Buying Your First Gun', cat:'Getting Started', author:'DJ Cavalcanti', status:'live' },
+                  { date:'May 18', title:'How to Get Your CCW License', cat:'CCW & Carry', author:'DJ Cavalcanti', status:'live' },
+                  { date:'May 20', title:'The Four Rules of Firearms Safety', cat:'Safety', author:'DJ Cavalcanti', status:'live' },
+                  { date:'Jun 1', title:'9mm vs .45 ACP — Which Should You Choose?', cat:'Ammunition', author:'DJ Cavalcanti', status:'queue' },
+                  { date:'Jun 5', title:'Red Dot vs Iron Sights for Beginners', cat:'Getting Started', author:'DJ Cavalcanti', status:'queue' },
+                  { date:'Jun 10', title:'Safe Storage With Kids in the Home', cat:'Safe Storage', author:'DJ Cavalcanti', status:'planned' },
+                  { date:'Jun 15', title:'Constitutional Carry Explained (2026)', cat:'Legal', author:'DJ Cavalcanti', status:'planned' },
+                  { date:'Jun 22', title:'Hollow Point vs FMJ: Which Ammo for Defense?', cat:'Ammunition', author:'DJ Cavalcanti', status:'planned' },
+                  { date:'Jul 1', title:'Women and Firearms: Fit and Ergonomics', cat:'Getting Started', author:'DJ Cavalcanti', status:'planned' },
+                  { date:'Jul 8', title:'Apartment Home Defense: Penetration Concerns', cat:'Home Defense', author:'DJ Cavalcanti', status:'planned' },
+                ].map((a, i) => (
+                  <div key={i} className="dr-table-row" style={{ gridTemplateColumns:'100px 1fr 150px 100px 80px' }}>
+                    <span className="t-label-sm">{a.date} 2026</span>
+                    <span className="t-label-md" style={{ color:'var(--text)' }}>{a.title}</span>
+                    <span className="t-label-sm">{a.cat}</span>
+                    <span className="t-label-sm">{a.author}</span>
+                    <span className={`dr-badge ${a.status==='live'?'dr-badge-green':a.status==='queue'?'dr-badge-gold':'dr-badge-dim'}`}>
+                      {a.status==='live'?'LIVE':a.status==='queue'?'QUEUE':'PLANNED'}
+                    </span>
+                  </div>
+                ))}
+              </div>
+
+              <div className="dr-alert-info">
+                📅 Publishing frequency: 2 articles per week · All articles authored by DJ Cavalcanti · Use OpenClaw prompts at <code style={{ color:'var(--gold)' }}>docs/openclaw-blog-prompts.md</code> to generate content with Hermes 3.
               </div>
             </div>
           )}
