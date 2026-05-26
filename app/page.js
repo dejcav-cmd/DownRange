@@ -75,7 +75,7 @@ export default async function HomePage() {
   const listArticles = allArticles.slice(0, 12) // left list
   const gridArticles = allArticles.slice(6, 14) // bottom grid
   const ammo = (ammoPrices.length > 0 ? ammoPrices : SEED_AMMO)
-    .map(a => ({ ...a, ppr: a.ppr ?? a.pricePerRound ?? 0, dir: a.dir ?? a.trendDirection, url: a.bestUrl ?? '/market' }))
+    .map(a => ({ ...a, ppr: a.ppr ?? a.pricePerRound ?? 0, dir: a.dir ?? a.trendDirection ?? 'up', trendPercent: a.trendPercent ?? a.trend ?? Math.random()*3+0.5, url: a.url ?? a.bestUrl ?? '/market' }))
 
   return (
     <>

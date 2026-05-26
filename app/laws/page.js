@@ -9,7 +9,7 @@ export const metadata = {
   title: 'Laws & Legislation — DownRange',
   description: '2A law tracker: Federal bills, ATF rules, SCOTUS cases, state legislation. AI law assistant.'
 }
-export const revalidate = 900
+export const revalidate = 120
 
 // ── STATIC SEED DATA ────────────────────────────────────────────
 const SCOTUS_CASES = [

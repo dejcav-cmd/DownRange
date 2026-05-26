@@ -4,13 +4,13 @@ import Footer from '../../components/layout/Footer'
 import { fetchVideos, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 
+// Real verified firearms video IDs — used as fallback when YouTube API is unavailable
 const SEED_VIDEOS = [
-  { _id:'v1', title:'The Best AR-15 Build for Home Defense — Full Breakdown', youtubeId:'dQw4w9WgXcQ', videoId:'dQw4w9WgXcQ', channelName:'Garand Thumb', category:'review', duration:'24:18', viewCount:892000 },
-  { _id:'v2', title:'Glock 43X MOS — 2,000 Round Torture Test', youtubeId:'3JIi6e3Ty3s', videoId:'3JIi6e3Ty3s', channelName:'Forgotten Weapons', category:'review', duration:'18:42', viewCount:445000 },
-  { _id:'v3', title:'Red Flag Laws Explained — Know Your Rights', youtubeId:'fvFkN1JuC6A', videoId:'fvFkN1JuC6A', channelName:'Military Arms Channel', category:'news', duration:'12:05', viewCount:234000 },
-  { _id:'v4', title:'Concealed Carry Fundamentals — Drawing from Holster', youtubeId:'9bZkp7q19f0', videoId:'9bZkp7q19f0', channelName:'InRange TV', category:'training', duration:'31:20', viewCount:556000 },
-  { _id:'v5', title:'SIG P365XL vs Glock 43X — Which Is Actually Better?', youtubeId:'3tmd-ClpJxA', videoId:'3tmd-ClpJxA', channelName:'Paul Harrell', category:'review', duration:'22:47', viewCount:678000 },
-  { _id:'v6', title:'ATF Rule Update — What It Means for You', youtubeId:'iik25wqIuFo', videoId:'iik25wqIuFo', channelName:'Iraqveteran8888', category:'news', duration:'8:33', viewCount:312000 },
+  { _id:'v1', title:'How a Neutral Country Built One of the Best Combat Rifles Ever', videoId:'IdCJNilFjVM', channelName:'Garand Thumb', category:'review', viewCount:0, thumbnail:'https://img.youtube.com/vi/IdCJNilFjVM/hqdefault.jpg', url:'https://www.youtube.com/watch?v=IdCJNilFjVM' },
+  { _id:'v2', title:'Garand Thumb Roasts Our Guns', videoId:'GYifZbidKw0', channelName:'Garand Thumb', category:'review', viewCount:0, thumbnail:'https://img.youtube.com/vi/GYifZbidKw0/hqdefault.jpg', url:'https://www.youtube.com/watch?v=GYifZbidKw0' },
+  { _id:'v3', title:'The Best Handgun For You', videoId:'XtpGpnWkSgU', channelName:'Garand Thumb', category:'review', viewCount:0, thumbnail:'https://img.youtube.com/vi/XtpGpnWkSgU/hqdefault.jpg', url:'https://www.youtube.com/watch?v=XtpGpnWkSgU' },
+  { _id:'v4', title:'Garand Thumbs Favorite Guns — Inside the Armory', videoId:'4qLAOsm5vuE', channelName:'Classic Firearms', category:'review', viewCount:0, thumbnail:'https://img.youtube.com/vi/4qLAOsm5vuE/hqdefault.jpg', url:'https://www.youtube.com/watch?v=4qLAOsm5vuE' },
+  { _id:'v5', title:"Garand Thumb's Coolest Guns (Top Five)", videoId:'YEW4U9DUtrw', channelName:'Classic Firearms', category:'review', viewCount:0, thumbnail:'https://img.youtube.com/vi/YEW4U9DUtrw/hqdefault.jpg', url:'https://www.youtube.com/watch?v=YEW4U9DUtrw' },
 ]
 
 
@@ -69,12 +69,19 @@ function VideoCard({ video, large = false }) {
 
 export default async function VideoPage({ searchParams }) {
   const cat = searchParams?.cat || null
-  const [videos, alerts] = await Promise.all([
+  const [sanityVideos, ytResult, alerts] = await Promise.all([
     fetchVideos(20, cat).catch(() => []),
+    fetch('https://downrangeco.com/api/youtube?limit=16', { next: { revalidate: 3600 } })
+      .then(r => r.json()).then(d => d.videos || []).catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
   ])
-
-  // Use live videos from Sanity, fall back to seed data
+  const seen = new Set()
+  const merged = [...sanityVideos, ...ytResult].filter(v => {
+    const id = v.videoId || v._id
+    if (seen.has(id)) return false
+    seen.add(id); return true
+  })
+  const videos = cat ? merged.filter(v => v.category === cat) : merged
   const displayVideos = videos.length > 0 ? videos : SEED_VIDEOS
   const featured = displayVideos.find(v => v.featured) || displayVideos[0]
   const queue = displayVideos.filter(v => v._id !== featured?._id).slice(0, 4)

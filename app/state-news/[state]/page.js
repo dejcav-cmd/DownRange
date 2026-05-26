@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { notFound } from 'next/navigation'
 
-export const revalidate = 900 // 15 min
+export const revalidate = 180 // 3 min
 
 // Curated RSS feeds per state — actual firearms/political news sources
 const STATE_FEEDS = {

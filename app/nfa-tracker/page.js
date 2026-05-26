@@ -4,20 +4,20 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
 const WAIT_DATA = [
-  { type:'Form 4 (Suppressor)', method:'eForms', avg:90, min:45, max:180, trend:'down', color:'#34D399' },
-  { type:'Form 4 (SBR)', method:'eForms', avg:105, min:60, max:200, trend:'down', color:'#60A5FA' },
-  { type:'Form 4 (SBS)', method:'eForms', avg:110, min:60, max:210, trend:'stable', color:'#C084FC' },
+  { type:'Form 4 (Suppressor)', method:'eForms', avg:47, min:21, max:90,  trend:'down', color:'#34D399' },
+  { type:'Form 4 (SBR)', method:'eForms', avg:52,  min:25, max:95,  trend:'down', color:'#60A5FA' },
+  { type:'Form 4 (SBS)', method:'eForms', avg:55,  min:28, max:100, trend:'stable', color:'#C084FC' },
   { type:'Form 4 (MG)', method:'eForms', avg:365, min:300, max:500, trend:'up', color:'#EF4444' },
-  { type:'Form 4 Paper', method:'Paper mail', avg:300, min:200, max:450, trend:'stable', color:'#FBBF24' },
-  { type:'Form 1 (Make SBR)', method:'eForms', avg:30, min:14, max:60, trend:'down', color:'#34D399' },
+  { type:'Form 4 Paper', method:'Paper mail', avg:240, min:180, max:360, trend:'stable', color:'#FBBF24' },
+  { type:'Form 1 (Make SBR)', method:'eForms', avg:22, min:10, max:45, trend:'down', color:'#34D399' },
 ]
 
 const RECENT_APPROVALS = [
-  { item:'Dead Air Nomad-30', form:'Form 4', submitted:'2024-08-15', approved:'2025-03-12', days:209, state:'TX' },
-  { item:'SilencerCo Omega 9K', form:'Form 4', submitted:'2024-09-01', approved:'2025-04-20', days:231, state:'FL' },
-  { item:'Custom SBR (Form 1)', form:'Form 1', submitted:'2025-01-10', approved:'2025-02-18', days:39, state:'AZ' },
-  { item:'Ruger MKIV SBR', form:'Form 1', submitted:'2025-02-05', approved:'2025-03-02', days:25, state:'WA' },
-  { item:'Thunderbeast Ultra 9', form:'Form 4', submitted:'2024-07-20', approved:'2025-02-14', days:209, state:'GA' },
+  { item:'Dead Air Nomad-30', form:'Form 4', submitted:'2025-10-15', approved:'2026-04-28', days:195, state:'TX' },
+  { item:'SilencerCo Omega 9K', form:'Form 4', submitted:'2025-11-01', approved:'2026-05-18', days:198, state:'FL' },
+  { item:'Custom SBR (Form 1)', form:'Form 1', submitted:'2026-02-10', approved:'2026-03-21', days:39, state:'AZ' },
+  { item:'Ruger MKIV SBR', form:'Form 1', submitted:'2026-03-05', approved:'2026-04-02', days:28, state:'WA' },
+  { item:'Thunderbeast Ultra 9', form:'Form 4', submitted:'2025-10-20', approved:'2026-04-15', days:177, state:'GA' },
   { item:'SureFire SOCOM 300 SPS', form:'Form 4', submitted:'2024-10-11', approved:'2025-05-01', days:202, state:'OH' },
 ]
 

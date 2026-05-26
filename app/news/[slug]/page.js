@@ -35,7 +35,7 @@ function readingTime(text) {
   return Math.max(1, Math.round(text.trim().split(/\s+/).length / 200)) + ' min read'
 }
 
-export const revalidate = 300
+export const revalidate = 120
 
 export async function generateMetadata({ params }) {
   const article = await getArticleBySlug(params.slug).catch(() => null)
