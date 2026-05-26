@@ -972,6 +972,82 @@ function CronHealth({ secret }) {
 
 
 
+
+function ScrapeReleasesButton() {
+  const [log, setLog]     = React.useState([])
+  const [running, setRunning] = React.useState(false)
+  const [stats, setStats] = React.useState(null)
+  const [limit, setLimit] = React.useState(10)
+  const [force, setForce] = React.useState(false)
+  const adminKey = process.env.NEXT_PUBLIC_ADMIN_KEY || ''
+
+  function addLog(msg, color) {
+    setLog(prev => [...prev, { msg, color, t: new Date().toLocaleTimeString() }])
+  }
+
+  async function run() {
+    setRunning(true)
+    setLog([])
+    setStats(null)
+    addLog('Starting releases scraper...', '#C8922A')
+    try {
+      const res = await fetch('/api/admin/scrape-releases', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': localStorage.getItem('dr_admin_key') || '' },
+        body: JSON.stringify({ limit, force }),
+      })
+      const data = await res.json()
+      if (!res.ok) { addLog('Error: ' + (data.error || 'Unknown'), '#ef4444'); setRunning(false); return }
+      setStats(data)
+      addLog(`Done — Added: ${data.added} | Skipped: ${data.skipped} | Failed: ${data.failed}`, '#22c55e')
+      if (data.details?.added) data.details.added.forEach(r => addLog(`✓ ${r.brand} ${r.title}`, '#C8922A'))
+      if (data.details?.failed) data.details.failed.forEach(r => addLog(`✗ ${r.title}: ${r.error}`, '#ef4444'))
+    } catch (err) {
+      addLog('Network error: ' + err.message, '#ef4444')
+    }
+    setRunning(false)
+  }
+
+  return (
+    <div>
+      <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap', marginBottom:12 }}>
+        <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text-dim)', display:'flex', alignItems:'center', gap:6 }}>
+          Limit:
+          <select value={limit} onChange={e=>setLimit(Number(e.target.value))}
+            style={{ background:'var(--bg2)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'3px 6px' }}>
+            {[5,10,20,50].map(n=><option key={n} value={n}>{n} releases</option>)}
+          </select>
+        </label>
+        <label style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text-dim)', display:'flex', alignItems:'center', gap:6 }}>
+          <input type="checkbox" checked={force} onChange={e=>setForce(e.target.checked)} />
+          Force (re-process duplicates)
+        </label>
+        <button onClick={run} disabled={running}
+          style={{ background:running?'#1f2428':'var(--gold)', color:running?'var(--text-dim)':'#000', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, letterSpacing:'0.1em', padding:'8px 18px', cursor:running?'not-allowed':'pointer' }}>
+          {running ? '⏳ SCRAPING...' : '🔫 SCRAPE RELEASES'}
+        </button>
+      </div>
+      {stats && (
+        <div style={{ display:'flex', gap:12, marginBottom:10 }}>
+          {[['Added',stats.added,'#22c55e'],['Skipped',stats.skipped,'#C8922A'],['Failed',stats.failed,'#ef4444']].map(([l,v,c])=>(
+            <div key={l} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11 }}>
+              <span style={{color:'#64748b'}}>{l}: </span><span style={{color:c,fontWeight:700}}>{v}</span>
+            </div>
+          ))}
+        </div>
+      )}
+      {log.length > 0 && (
+        <div style={{ background:'#0A0B0C', border:'1px solid var(--border)', padding:'10px 14px', maxHeight:200, overflowY:'auto', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, lineHeight:1.8 }}>
+          {log.map((l,i)=>(
+            <div key={i}><span style={{color:'#374151'}}>[{l.t}] </span><span style={{color:l.color}}>{l.msg}</span></div>
+          ))}
+        </div>
+      )}
+    </div>
+  )
+}
+
+
 function ImageFixButton() {
   const [log, setLog]         = React.useState([])
   const [running, setRunning] = React.useState(false)
@@ -1375,6 +1451,22 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <BackfillButton />
+              </div>
+
+
+              {/* Releases scraper panel */}
+              <div style={{ padding:'20px', background:'rgba(200,146,42,0.05)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, marginBottom:16 }}>
+                <div style={{ marginBottom:12 }}>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'0.05em', color:'#C8922A', marginBottom:4 }}>
+                    🔫 SCRAPE MANUFACTURER RELEASES
+                  </div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.6 }}>
+                    Pulls new product press releases from PRNewswire for 30+ manufacturers (Glock, SIG, Ruger, S&W, Daniel Defense, and more).
+                    Claude AI extracts structured data — title, caliber, MSRP, specs, image — and saves directly to Sanity as firearmRelease documents.
+                    Runs automatically daily at 8am ET via Vercel cron. Use this to trigger manually.
+                  </div>
+                </div>
+                <ScrapeReleasesButton />
               </div>
 
               {/* Image fixer panel */}
