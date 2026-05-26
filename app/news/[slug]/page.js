@@ -41,12 +41,20 @@ export async function generateMetadata({ params }) {
   const article = await getArticleBySlug(params.slug).catch(() => null)
   if (!article) return { title: 'Article Not Found | DownRange' }
   const img = resolveImage(article)
+  const url = `https://downrangeco.com/news/${params.slug}`
   return {
     title:       `${article.title} | DownRange`,
     description: article.summary || article.excerpt || article.title,
+    alternates:  { canonical: url },
     openGraph: {
+      type:        'article',
+      url,
       title:       article.title,
       description: article.summary || article.excerpt,
+      publishedTime: article.publishedAt,
+      modifiedTime:  article._updatedAt || article.publishedAt,
+      section:     article.category,
+      tags:        article.tags || [],
       images:      img ? [{ url: img, width: 1200, height: 630, alt: article.imageAlt || article.title }] : [],
     },
     twitter: {
@@ -108,6 +116,35 @@ export default async function ArticlePage({ params }) {
     <>
       <BreakingTicker alerts={alerts} />
       <Masthead />
+
+      {/* ── NewsArticle structured data (JSON-LD) ── */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type':    'NewsArticle',
+        headline:   article.title,
+        description: article.summary || article.excerpt,
+        image:      imageUrl ? [imageUrl] : [],
+        datePublished: article.publishedAt,
+        dateModified:  article._updatedAt || article.publishedAt,
+        author: [{
+          '@type': 'Organization',
+          name:    article.source || 'DownRange',
+          url:     'https://downrangeco.com',
+        }],
+        publisher: {
+          '@type': 'Organization',
+          name:    'DownRange',
+          url:     'https://downrangeco.com',
+          logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/favicon.svg' },
+        },
+        mainEntityOfPage: {
+          '@type': 'WebPage',
+          '@id':   `https://downrangeco.com/news/${params.slug}`,
+        },
+        articleSection: article.category,
+        keywords: (article.tags || []).join(', '),
+        url: `https://downrangeco.com/news/${params.slug}`,
+      }) }} />
 
       <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
