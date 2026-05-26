@@ -13,6 +13,7 @@ import { globalStats }    from './globalStats'
 import { priceAlert }     from './priceAlert'
 import { billTracker }    from './billTracker'
 import { outreachContact }  from './outreachContact'
+import { dailyBriefing }    from './dailyBriefing'
 import { outreachCampaign } from './outreachCampaign'
 import { outreachTemplate } from './outreachTemplate'
 import { outreachSendLog }  from './outreachSendLog'
@@ -22,4 +23,5 @@ export const schemaTypes = [
   firearmRelease, stateProfile, ammoPrice, video, author, globalStats,
   priceAlert, billTracker, siteConfig, marketAnalysis,
   outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
+  dailyBriefing,
 ]

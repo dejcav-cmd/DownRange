@@ -4,7 +4,8 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
 const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
-const ApprovalQueue  = dynamic(() => import('../../components/admin/ApprovalQueue'),  { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Approval Queue...</div> })
+const ApprovalQueue        = dynamic(() => import('../../components/admin/ApprovalQueue'),        { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Approval Queue...</div> })
+const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
 
 const TABS = [
   { key:'dashboard',  label:'Dashboard',       icon:'◈' },
@@ -26,6 +27,7 @@ const TABS = [
   { key:'pulllog',    label:'Pull Log',        icon:'📡' },
   { key:'outreach',   label:'Outreach',        icon:'📬' },
   { key:'approvalq',  label:'Approval Queue',  icon:'⚡' },
+  { key:'intel',       label:'Intelligence',     icon:'🧠' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
@@ -1787,6 +1789,7 @@ export default function AdminPage() {
           {tab==='pulllog' && <PullLogDashboard />}
           {tab==='outreach' && <OutreachPortal adminKey={secret} />}
           {tab==='approvalq' && <ApprovalQueue adminKey={secret} />}
+          {tab==='intel' && <IntelligenceDashboard adminKey={secret} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 
           {tab==='cronhealth' && <CronHealth secret={secret} />}
