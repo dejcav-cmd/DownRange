@@ -124,7 +124,7 @@ const RANGES = [
   { name:'Alaska Aces — Anchorage', city:'Anchorage', state:'AK', zip:'99503', lat:61.190, lng:-149.881, type:'Indoor', rating:4.4, phone:'(907) 561-5145', website:'https://www.alaskaaces.com', features:['Indoor','Classes','FFL'] },
 
   // ─── KENTUCKY ────────────────────────────────────────────────────────────
-  { name:'The Sportsman's Range', city:'Louisville', state:'KY', zip:'40218', lat:38.187, lng:-85.664, type:'Indoor', rating:4.4, phone:'(502) 491-1040', website:'https://www.thesportsmansrange.com', features:['Indoor','Classes','FFL'] },
+  { name:'The Sportsmans Range', city:'Louisville', state:'KY', zip:'40218', lat:38.187, lng:-85.664, type:'Indoor', rating:4.4, phone:'(502) 491-1040', website:'https://www.thesportsmansrange.com', features:['Indoor','Classes','FFL'] },
   // ─── CONNECTICUT ─────────────────────────────────────────────────────────
   { name:'H&H Shooters Club', city:'Waterbury', state:'CT', zip:'06705', lat:41.567, lng:-73.024, type:'Indoor', rating:4.2, phone:'(203) 756-0888', website:'https://www.hhshooters.com', features:['Indoor','Pistol range','Classes'] },
   // ─── WEST VIRGINIA ───────────────────────────────────────────────────────
@@ -134,7 +134,7 @@ const RANGES = [
   // ─── MAINE ────────────────────────────────────────────────────────────────
   { name:'Maine Military & Outdoor Supply Range', city:'Lewiston', state:'ME', zip:'04240', lat:44.100, lng:-70.215, type:'Outdoor', rating:4.2, phone:'(207) 786-4224', website:'https://www.maineoutdoor.com', features:['Outdoor','Rifle/pistol'] },
   // ─── DELAWARE ─────────────────────────────────────────────────────────────
-  { name:'Christiana Sportsmen's Club', city:'Newark', state:'DE', zip:'19711', lat:39.680, lng:-75.756, type:'Outdoor', rating:4.3, phone:'(302) 453-9700', website:'https://www.christianasportsmen.org', features:['Outdoor','Rifle/pistol','Trap','Members'] },
+  { name:'Christiana Sportsmens Club', city:'Newark', state:'DE', zip:'19711', lat:39.680, lng:-75.756, type:'Outdoor', rating:4.3, phone:'(302) 453-9700', website:'https://www.christianasportsmen.org', features:['Outdoor','Rifle/pistol','Trap','Members'] },
 ]
 
 function distMiles(lat1, lng1, lat2, lng2) {

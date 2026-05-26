@@ -54,14 +54,24 @@ export default async function NewsPage({ searchParams }) {
       <div style={{ padding: '32px 0', borderBottom: '1px solid #1F2428' }}>
         <div className="container">
           {/* Category tabs */}
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'8px', flexWrap:'wrap', gap:8 }}>
+          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px', flexWrap:'wrap', gap:8 }}>
             <div className="filter-tabs" style={{ marginBottom:0 }}>
-            {CATEGORIES.map(c => (
-              <a key={c.val || 'all'} href={c.val ? `/news?cat=${c.val}` : '/news'}
-                className={`filter-tab ${(cat === c.val || (!cat && !c.val)) ? 'active' : ''}`}>
-                {c.label}
-              </a>
-            ))}
+              {CATEGORIES.map(c => (
+                <a key={c.val || 'all'} href={c.val ? `/news?cat=${c.val}` : '/news'}
+                  className={`filter-tab ${(cat === c.val || (!cat && !c.val)) ? 'active' : ''}`}>
+                  {c.label}
+                </a>
+              ))}
+            </div>
+            <div style={{ display:'flex', gap:'5px', alignItems:'center' }}>
+              <span style={{ fontFamily:'monospace', fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+              {[['newest','📅 Newest'],['urgency','⚡ Urgency']].map(([key,label]) => (
+                <a key={key} href={`/news?cat=${cat||''}&sort=${key}`}
+                  style={{ fontFamily:'monospace', fontSize:'10px', padding:'4px 10px', border:'1px solid #1F2428', color:sort===key?'#C8922A':'#4B5563', textDecoration:'none', background:sort===key?'#C8922A20':'transparent' }}>
+                  {label}
+                </a>
+              ))}
+            </div>
           </div>
 
           <div className="sidebar-layout">
