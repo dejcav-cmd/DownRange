@@ -18,7 +18,7 @@ const SEED_REVIEWS = [
     brand:'Glock', model:'G43X MOS', caliber:'9mm', category:'pistol',
     msrp:549, score:9.2, verdict:'Best Slim-Line EDC Available',
     featured:true, date:'May 12, 2026',
-    img:'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=800&q=80',
+    img:'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
     summary:'After 2,000 rounds of Federal HST and Speer Gold Dot through a G43X MOS, the results are clear: zero malfunctions, sub-2-inch groups at 15 yards, and an optic system that actually works out of the box. The MOS plate accepts every major micro red dot without shimming. At 1.1 inches wide it disappears in an appendix holster.',
     roundCount:'2,000+', tags:['EDC','9mm','Glock','slim-line','optic-ready'],
     pros:['Zero malfunctions in 2,000+ rounds','MOS plate accepts all major micro red dots','1.1" width — genuinely disappears IWB','Grip texture aggressive but not pants-shredding'],
@@ -30,7 +30,7 @@ const SEED_REVIEWS = [
     brand:'SIG Sauer', model:'P365XL', caliber:'9mm', category:'pistol',
     msrp:699, score:9.5, verdict:'Best Factory Trigger in the Price Class',
     featured:true, date:'May 20, 2026',
-    img:'https://images.unsplash.com/photo-1621415814107-a4cbf5b3f1ea?w=800&q=80',
+    img:'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=800&q=80',
     summary:'The P365XL has the best factory trigger of any striker-fired pistol under $800 — by a margin that is immediately obvious in the first magazine. Twelve rounds flush, ROMEO Zero optic cut standard, and a sight radius that turns an EDC into a range gun.',
     roundCount:'1,500+', tags:['EDC','9mm','SIG','P365','optic-ready','best-buy'],
     pros:['Best factory striker trigger in its price class','12+1 flush capacity in a true compact package','ROMEO Zero optic cut standard on all models','Excellent point-of-aim accuracy out of the box'],
@@ -54,7 +54,7 @@ const SEED_REVIEWS = [
     brand:'Mossberg', model:'590A1',  caliber:'12 Gauge', category:'shotgun',
     msrp:649, score:9.1, verdict:'Military-Grade Home Defense Standard',
     featured:false, date:'Apr 10, 2026',
-    img:'https://images.unsplash.com/photo-1634192566538-37bcf8e9aabc?w=800&q=80',
+    img:'https://images.unsplash.com/photo-1543393716-375f47996a77?w=800&q=80',
     summary:'The 590A1 is the only pump shotgun to pass US military MIL-SPEC testing. The tang safety is ambidextrous and faster than any crossbolt design under stress. Dual extractors where the 870 runs one. Heavy-wall barrel. Nine-round capacity.',
     roundCount:'500+', tags:['shotgun','home-defense','pump','military-spec','Mossberg'],
     pros:['Passes US MIL-SPEC testing — documented','Tang safety is ambidextrous and positive','Dual extractors for reliability under fouling','Heavy-wall barrel handles +P loads and slugs'],
@@ -66,7 +66,7 @@ const SEED_REVIEWS = [
     brand:'Vortex', model:'Viper PST Gen II 1-6×24', caliber:'N/A', category:'optic',
     msrp:599, score:8.9, verdict:'Best Value LPVO Under $600',
     featured:false, date:'Mar 18, 2026',
-    img:'https://images.unsplash.com/photo-1572442388796-11668a67e53d?w=800&q=80',
+    img:'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=800&q=80',
     summary:'True 1x magnification confirmed with a straight-line test. The EBR-8 reticle with illuminated center dot is one of the better LPVO reticles at this price. Sub-MOA tracking verified over 60 MOA of travel. Vortex VIP warranty means lifetime no-fault replacement.',
     roundCount:'N/A', tags:['optic','LPVO','Vortex','AR-15','precision'],
     pros:['True 1x — zero parallax distortion at 1x','Illuminated EBR-8 reticle is practical not cluttered','Sub-MOA tracking over full adjustment range','VIP warranty: no-fault, no-questions lifetime replacement'],
@@ -78,7 +78,7 @@ const SEED_REVIEWS = [
     brand:'SilencerCo', model:'Omega 9K', caliber:'9mm / .300 BLK', category:'suppressor',
     msrp:799, score:9.3, verdict:'The Compact Suppressor That Doesn\'t Compromise',
     featured:false, date:'Mar 1, 2026',
-    img:'https://images.unsplash.com/photo-1574180566232-aaad1b5b8450?w=800&q=80',
+    img:'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=800&q=80',
     summary:'With the NFA tax stamp eliminated as of January 1, 2026, the Omega 9K is the most compelling entry into suppressor ownership. At 5.08 inches it barely extends a Glock 19. Titanium and Inconel construction handles +P loads all day. Rated for .300 BLK subsonic, which makes it a two-gun solution.',
     roundCount:'1,000+', tags:['suppressor','NFA','9mm','300BLK','SilencerCo','no-tax-stamp'],
     pros:['5.08" barely affects holster compatibility','Multi-cal rated to .300 BLK subsonic','Titanium/Inconel — runs +P without baffles degrading','No $200 tax stamp since Jan 1, 2026 (Form 4 still required)'],
@@ -110,16 +110,29 @@ function ScoreRing({ score }) {
   )
 }
 
+
+// Category fallback images — every review always has a photo
+const CATEGORY_FALLBACKS = {
+  pistol:     'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
+  rifle:      'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+  shotgun:    'https://images.unsplash.com/photo-1543393716-375f47996a77?w=800&q=80',
+  optic:      'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=800&q=80',
+  suppressor: 'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=800&q=80',
+  holster:    'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
+  ammo:       'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=800&q=80',
+  default:    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+}
+
 function ReviewCard({ r, featured = false }) {
   const href       = `/reviews/${r.slug?.current || r._id}`
   const catColor   = CAT_COLORS[r.category] || '#9CA3AF'
-  const imageUrl   = r.img || r.heroImage?.asset?.url || r.imageUrl
+  const imageUrl   = r.img || r.heroImage?.asset?.url || r.imageUrl || CATEGORY_FALLBACKS[r.category] || CATEGORY_FALLBACKS.default
 
   if (featured) {
     return (
       <Link href={href} style={{ textDecoration:'none', display:'block', position:'relative', overflow:'hidden' }}>
         <div style={{ height:'440px', position:'relative', overflow:'hidden' }}>
-          {imageUrl && (
+          {true && (
             <img src={imageUrl} alt={r.model}
               className="learn-card-img"
               style={{ width:'100%', height:'100%', objectFit:'cover', transition:'transform 0.4s ease' }} />

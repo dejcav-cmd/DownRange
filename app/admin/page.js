@@ -977,12 +977,17 @@ export default function AdminPage() {
   const [running, setRunning] = useState({})
 
   async function runFeed(key) {
-    if (!secret) { setMsg('Enter CRON_SECRET first'); return }
     setRunning(r => ({...r, [key]:true}))
+    setMsg(`Running ${key} feed...`)
     try {
-      const res = await fetch(`/api/agent?feed=${key}`, { headers:{ Authorization:`Bearer ${secret}` } })
+      const res = await fetch(`/api/admin/run?feed=${key}`, { method:'POST' })
       const d = await res.json()
-      setMsg(`${key} feed: ${d.processed || d.message || JSON.stringify(d)}`)
+      if (d.success) {
+        const r = d.result || {}
+        setMsg(`✓ ${key}: ${r.done ?? r.published ?? '?'} published, ${r.total ?? r.items ?? '?'} total. ${d.ms}ms`)
+      } else {
+        setMsg(`✗ ${key} error: ${d.error}`)
+      }
     } catch(e) { setMsg(`Error: ${e.message}`) }
     setRunning(r => ({...r, [key]:false}))
   }
@@ -997,8 +1002,7 @@ export default function AdminPage() {
             <span className="dr-badge dr-badge-dim">ADMIN CONSOLE</span>
           </div>
           <div style={{ display:'flex', gap:'10px', alignItems:'center' }}>
-            <input value={secret} onChange={e=>setSecret(e.target.value)} type="password" placeholder="CRON_SECRET for agent triggers"
-              style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', padding:'6px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', width:'240px' }} />
+
             <Link href="/" className="dr-btn-outline" style={{ padding:'6px 14px', fontSize:'11px' }}>← Site</Link>
           </div>
         </div>
@@ -1083,26 +1087,109 @@ export default function AdminPage() {
           {/* ── AI AGENT ── */}
           {tab==='feeds' && (
             <div>
-              <h1 className="dr-section-title">AI Agent Control</h1>
-              <p className="dr-section-sub">Trigger feeds manually or view schedule</p>
-              <div style={{ display:'flex', flexDirection:'column', gap:'10px', marginBottom:'28px' }}>
-                {FEEDS.map(f => (
-                  <div key={f.key} className="dr-card" style={{ display:'grid', gridTemplateColumns:'40px 1fr 150px 1fr auto', gap:16, alignItems:'center' }}>
-                    <span style={{ fontSize:'20px' }}>{f.icon}</span>
-                    <div>
-                      <div className="dr-card-title" style={{ fontSize:'1rem' }}>{f.label}</div>
-                      <div className="dr-card-meta" style={{ marginBottom:0 }}>Schedule: {f.schedule}</div>
+              <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:24, flexWrap:'wrap', gap:12 }}>
+                <div>
+                  <h1 className="dr-section-title" style={{ margin:0 }}>⚡ AI Agent Control</h1>
+                  <p className="dr-section-sub" style={{ margin:'4px 0 0' }}>Trigger any feed instantly — no keys needed. All feeds also run on automatic Vercel cron schedule.</p>
+                </div>
+                <button
+                  onClick={async () => {
+                    for (const f of FEEDS) { await runFeed(f.key); await new Promise(r => setTimeout(r, 800)) }
+                  }}
+                  style={{ background:'var(--gold)', color:'#000', border:'none', padding:'10px 20px', cursor:'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'0.05em' }}
+                >
+                  ▶▶ RUN ALL FEEDS
+                </button>
+              </div>
+
+              {/* Feed cards */}
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px,1fr))', gap:12, marginBottom:24 }}>
+                {[
+                  { key:'news',     label:'News Feed',       icon:'📰', schedule:'Every 15 min', desc:'RSS from 15 sources + NewsAPI + GNews → Sanity articles', color:'#22c55e' },
+                  { key:'laws',     label:'Laws Feed',       icon:'⚖',  schedule:'Every 2 hrs',  desc:'Congress.gov + LegiScan → federal and state legislation', color:'#3b82f6' },
+                  { key:'releases', label:'Releases Feed',   icon:'🔫', schedule:'Every 1 hr',   desc:'Manufacturer RSS feeds → new product releases', color:'#C8922A' },
+                  { key:'market',   label:'Market Feed',     icon:'📊', schedule:'Every 30 min', desc:'AmmoSeek + r/gundeals → ammo prices and deals', color:'#f59e0b' },
+                  { key:'video',    label:'Video Feed',      icon:'▶',  schedule:'Every 4 hrs',  desc:'YouTube API → channel videos and thumbnails', color:'#ef4444' },
+                  { key:'state',    label:'State Feed',      icon:'🗺', schedule:'Daily 8am',    desc:'LegiScan → per-state firearms legislation updates', color:'#a855f7' },
+                ].map(f => (
+                  <div key={f.key} className="dr-card" style={{ padding:'18px 20px', borderLeft:`3px solid ${f.color}`, position:'relative', overflow:'hidden' }}>
+                    <div style={{ position:'absolute', right:16, top:14, fontSize:28, opacity:0.08 }}>{f.icon}</div>
+                    <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:10 }}>
+                      <div>
+                        <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.05em', color:'var(--text)', lineHeight:1 }}>{f.label}</div>
+                        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:f.color, marginTop:2, letterSpacing:'0.06em' }}>{f.schedule}</div>
+                      </div>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, background:'#14532d', color:'#4ade80', padding:'2px 7px', borderRadius:2 }}>● AUTO</span>
                     </div>
-                    <span className="dr-badge dr-badge-green" style={{ justifyContent:'center' }}>● ACTIVE</span>
-                    <div className="t-label-sm">Runs automatically via Vercel Cron. API key required.</div>
-                    <button onClick={()=>runFeed(f.key)} disabled={running[f.key]} className="dr-btn-primary" style={{ padding:'8px 16px', fontSize:'11px', opacity:running[f.key]?0.5:1 }}>
-                      {running[f.key]?'⚡ RUNNING...':'▶ RUN NOW'}
+                    <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569', lineHeight:1.5, margin:'0 0 14px' }}>{f.desc}</p>
+                    <button
+                      onClick={() => runFeed(f.key)}
+                      disabled={running[f.key]}
+                      style={{
+                        width:'100%', background: running[f.key] ? 'rgba(200,146,42,0.1)' : f.color,
+                        color: running[f.key] ? f.color : (f.color === '#C8922A' || f.color === '#f59e0b') ? '#000' : '#fff',
+                        border:`1px solid ${f.color}`, padding:'9px', cursor: running[f.key] ? 'not-allowed' : 'pointer',
+                        fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.06em',
+                        transition:'all 0.15s', display:'flex', alignItems:'center', justifyContent:'center', gap:6
+                      }}
+                    >
+                      {running[f.key] ? (
+                        <>
+                          <span style={{ display:'inline-block', width:8, height:8, borderRadius:'50%', background:f.color, animation:'pulse 1s infinite' }} />
+                          RUNNING...
+                        </>
+                      ) : `▶ RUN ${f.label.split(' ')[0].toUpperCase()} NOW`}
                     </button>
                   </div>
                 ))}
               </div>
-              <div className="dr-alert-info">
-                <strong style={{ color:'var(--gold)' }}>How to trigger manually:</strong> Enter your CRON_SECRET in the header field, then click RUN NOW. All feeds run automatically via vercel.json cron configuration — manual triggers are for debugging only.
+
+              {/* Result message */}
+              {msg && (
+                <div style={{ padding:'12px 16px', background: msg.startsWith('✓') ? 'rgba(34,197,94,0.08)' : msg.startsWith('✗') ? 'rgba(239,68,68,0.08)' : 'rgba(200,146,42,0.08)', border:`1px solid ${msg.startsWith('✓') ? '#22c55e44' : msg.startsWith('✗') ? '#ef444444' : '#C8922A44'}`, borderRadius:4, marginBottom:20 }}>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color: msg.startsWith('✓') ? '#4ade80' : msg.startsWith('✗') ? '#f87171' : '#C8922A' }}>{msg}</div>
+                </div>
+              )}
+
+              {/* Status table */}
+              <div className="dr-card" style={{ overflow:'hidden', marginBottom:16 }}>
+                <div style={{ padding:'10px 16px', borderBottom:'1px solid var(--border)', background:'rgba(0,0,0,0.3)' }}>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569', letterSpacing:'0.1em' }}>CRON SCHEDULE — vercel.json</div>
+                </div>
+                <table style={{ width:'100%', borderCollapse:'collapse' }}>
+                  <thead>
+                    <tr>
+                      {['Feed','Schedule','Cron Expression','Max Duration','Description'].map(h => (
+                        <th key={h} style={{ textAlign:'left', padding:'8px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155', letterSpacing:'0.1em', borderBottom:'1px solid var(--border)' }}>{h}</th>
+                      ))}
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {[
+                      { feed:'news',       schedule:'Every 15 min', cron:'*/15 * * * *', duration:'300s', desc:'News articles from RSS + APIs' },
+                      { feed:'laws',       schedule:'Every 2 hrs',  cron:'0 */2 * * *',  duration:'300s', desc:'Federal + state legislation' },
+                      { feed:'releases',   schedule:'Every 1 hr',   cron:'0 * * * *',    duration:'300s', desc:'Manufacturer press releases' },
+                      { feed:'market',     schedule:'Every 30 min', cron:'*/30 * * * *', duration:'300s', desc:'Ammo prices + deals' },
+                      { feed:'video',      schedule:'Every 4 hrs',  cron:'0 */4 * * *',  duration:'300s', desc:'YouTube video feed' },
+                      { feed:'state',      schedule:'Daily 8am',    cron:'0 8 * * *',    duration:'300s', desc:'State bill updates' },
+                      { feed:'newsletter', schedule:'Daily 7am',    cron:'0 7 * * *',    duration:'60s',  desc:'Email digest via Resend' },
+                    ].map((r, i) => (
+                      <tr key={r.feed} style={{ background: i % 2 === 0 ? 'rgba(255,255,255,0.01)' : 'transparent' }}>
+                        <td style={{ padding:'9px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--foreground)' }}>{r.feed.toUpperCase()}</td>
+                        <td style={{ padding:'9px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A' }}>{r.schedule}</td>
+                        <td style={{ padding:'9px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569' }}>{r.cron}</td>
+                        <td style={{ padding:'9px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4ade80' }}>{r.duration}</td>
+                        <td style={{ padding:'9px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#334155' }}>{r.desc}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+
+              <div style={{ padding:'12px 16px', background:'rgba(200,146,42,0.06)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.6 }}>
+                <strong style={{ color:'#C8922A' }}>No secrets needed.</strong> Manual triggers use <code style={{ color:'#C8922A' }}>/api/admin/run</code> which requires no CRON_SECRET.
+                Automated crons use <code style={{ color:'#C8922A' }}>/api/agent</code> with Vercel auth headers.
+                Check <strong>🩺 Cron Health</strong> tab to verify env vars and see last publish times.
               </div>
             </div>
           )}
