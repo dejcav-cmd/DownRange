@@ -2,12 +2,13 @@ import Masthead from '../../components/layout/Masthead'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import StateHub from '../../components/sections/StateHub'
+import StateMap from '../../components/sections/StateMap'
 import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'State Hub — DownRange', description: 'Firearms laws for all 50 states. Constitutional carry status, CCW, magazine limits, and more.' }
 export const revalidate = 86400 // daily
 
-export default async function StateHubPage() {
+export default async function StateHubPage({ searchParams }) {
   const [profiles, alerts] = await Promise.all([
     fetchAllStateProfiles().catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
@@ -61,7 +62,23 @@ export default async function StateHubPage() {
             <div className="section-rule" />
             <div className="section-badge">All 50 States</div>
           </div>
+          <div style={{ marginBottom:'24px' }}>
+          <div style={{ display:'flex', gap:0, borderBottom:'1px solid #1F2428', marginBottom:'32px' }}>
+            {['Interactive Map','State Grid'].map((t,i) => (
+              <a key={t} href={i===0?'/state-hub':'/state-hub?view=grid'}
+                style={{ padding:'10px 20px', fontFamily:'monospace', fontSize:'11px', textDecoration:'none',
+                  color: (!searchParams?.view&&i===0)||searchParams?.view==='grid'&&i===1 ? '#C8922A' : '#4B5563',
+                  borderBottom:`2px solid ${(!searchParams?.view&&i===0)||searchParams?.view==='grid'&&i===1 ? '#C8922A' : 'transparent'}` }}>
+                {t}
+              </a>
+            ))}
+          </div>
+        </div>
+        {searchParams?.view === 'grid' ? (
           <StateHub profiles={profileMap} />
+        ) : (
+          <StateMap profiles={profiles} />
+        )}
         </div>
       </div>
 

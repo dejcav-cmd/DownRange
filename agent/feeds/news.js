@@ -18,7 +18,7 @@ const parser = new Parser({
 
 const RSS_FEEDS = [
   { name: 'The Firearm Blog', url: 'https://www.thefirearmblog.com/blog/feed/' },
-  { name: 'AmmoLand',         url: 'https://www.ammoland.com/feed/' },
+  // AmmoLand moved to deals feed only
   { name: 'TTAG',             url: 'https://www.thetruthaboutguns.com/feed/' },
   { name: 'NRA-ILA',          url: 'https://www.nraila.org/rss/' },
   { name: 'Guns.com',         url: 'https://www.guns.com/feed' },

@@ -1,4 +1,5 @@
 import { siteConfig }    from './siteConfig'
+import { marketAnalysis } from './marketAnalysis'
 import newsArticle        from './newsArticle'
 import { breakingAlert }  from './breakingAlert'
 import { legislation }    from './legislation'
@@ -15,5 +16,5 @@ import { billTracker }    from './billTracker'
 export const schemaTypes = [
   newsArticle, breakingAlert, legislation, review,
   firearmRelease, stateProfile, ammoPrice, video, author, globalStats,
-  priceAlert, billTracker, siteConfig,
+  priceAlert, billTracker, siteConfig, marketAnalysis,
 ]

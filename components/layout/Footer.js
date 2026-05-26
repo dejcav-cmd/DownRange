@@ -2,10 +2,10 @@
 import Link from 'next/link'
 
 const FOOTER_COLS = [
-  { title: 'News & Deals', links: [['Latest News','/news'],['Live Deals','/deals'],['Releases','/releases'],['Market Prices','/market'],['Video','/video']] },
-  { title: 'Tools', links: [['NFA Tracker','/nfa-tracker'],['Value Estimator','/value-estimator'],['CCW Insurance','/carry-insurance'],['FFL Finder','/ffl-finder'],['Range Finder','/ranges'],['Gun Comparison','/compare/glock-19-vs-sig-p320']] },
-  { title: 'Laws & States', links: [['Federal Bills','/laws?tab=federal'],['State Laws','/laws?tab=state'],['ATF Rules','/laws?tab=atf'],['SCOTUS Cases','/laws?tab=scotus'],['State Hub','/state-hub'],['CCW Reciprocity','/laws?tab=reciprocity']] },
-  { title: 'Guides', links: [['Ammo Guide','/ammo/9mm'],['Holster Guide','/holsters/glock-19'],['Safe Storage','/safe-storage'],['Training','/training'],['About','/about'],['Privacy','/privacy']] },
+  { title: 'News & Intel', links: [['Latest News','/news'],['Live Deals','/deals'],['Market Watch','/market'],['Video','/video'],['Canada','/canada']] },
+  { title: 'Tools', links: [['NFA Tracker','/nfa-tracker'],['Value Estimator','/value-estimator'],['CCW Insurance','/carry-insurance'],['FFL Finder','/ffl-finder'],['Gun Compare','/compare/glock-19-vs-sig-p320'],['Range Finder','/ranges']] },
+  { title: 'Laws & States', links: [['Federal Bills','/laws?tab=federal'],['State Laws','/laws?tab=state'],['ATF Rules','/laws?tab=atf'],['SCOTUS Cases','/laws?tab=scotus'],['State Map','/state-hub'],['AI Law Assistant','/laws?tab=assistant']] },
+  { title: 'Community', links: [['Write For Us','/contribute'],['Contact','/contact'],['Press Kit','/press'],['Hunting','/hunting'],['Precision','/precision'],['About','/about']] },
 ]
 
 export default function Footer() {

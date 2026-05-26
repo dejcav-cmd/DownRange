@@ -32,7 +32,7 @@ export function resolveImage(article) {
 // ── ARTICLES ──────────────────────────────────────────────────────────────────
 
 export async function fetchArticles(limit = 20, category = null) {
-  const filter = category ? `&& category == "${category}"` : ''
+  const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
   return client.fetch(`
     *[_type == "newsArticle" && approved == true ${filter}] | order(publishedAt desc) [0...${limit}] {
       _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
@@ -91,7 +91,7 @@ export async function fetchLegislation(limit = 20, level = null) {
 // ── REVIEWS ───────────────────────────────────────────────────────────────────
 
 export async function fetchReviews(limit = 12, category = null) {
-  const filter = category ? `&& category == "${category}"` : ''
+  const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
   return client.fetch(`
     *[_type == "review" ${filter}] | order(publishedAt desc) [0...${limit}] {
       _id, title, slug, score, verdict, category, publishedAt, featured,
@@ -152,7 +152,7 @@ export async function fetchAmmoPrices() {
 // ── VIDEOS ────────────────────────────────────────────────────────────────────
 
 export async function fetchVideos(limit = 10, category = null) {
-  const filter = category ? `&& category == "${category}"` : ''
+  const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
   return client.fetch(`
     *[_type == "video" ${filter}] | order(publishedAt desc) [0...${limit}] {
       _id, title, youtubeId, channelName, thumbnail, category, publishedAt, featured, duration

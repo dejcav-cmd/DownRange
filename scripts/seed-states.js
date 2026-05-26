@@ -1,94 +1,74 @@
-/**
- * Seed all 50 state profiles into Sanity
- * Run: node scripts/seed-states.js
- */
 require('dotenv').config({ path: '.env.local' })
 const { createClient } = require('@sanity/client')
+const client = createClient({ projectId:'vbnsqnkg', dataset:'production', apiVersion:'2024-01-01', token:process.env.SANITY_API_TOKEN, useCdn:false })
 
-const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-  apiVersion: '2024-01-01',
-  token:     process.env.SANITY_API_TOKEN,
-  useCdn:    false,
-})
-
-const states = [
-  // name, abbr, rating, constitutionalCarry, redFlagLaw, magLimit, waitPeriod, awbStatus, suppressors, openCarry, bgcPrivate
-  ['Alabama',        'AL', 'A',  true,  false, null, null, 'None',    true,  'Legal',           false],
-  ['Alaska',         'AK', 'A+', true,  false, null, null, 'None',    true,  'Legal',           false],
-  ['Arizona',        'AZ', 'A',  true,  false, null, null, 'None',    true,  'Legal',           false],
-  ['Arkansas',       'AR', 'A',  true,  false, null, null, 'None',    true,  'Legal',           false],
-  ['California',     'CA', 'F',  false, true,  10,   10,  'Full',    false, 'Permit Required', true],
-  ['Colorado',       'CO', 'C',  false, true,  15,   3,   'None',    true,  'Legal',           true],
-  ['Connecticut',    'CT', 'D',  false, true,  10,   14,  'Full',    true,  'Permit Required', true],
-  ['Delaware',       'DE', 'D',  false, true,  17,   null,'Partial', true,  'Permit Required', false],
-  ['Florida',        'FL', 'B+', false, false, null, 3,   'None',    true,  'Prohibited',      false],
-  ['Georgia',        'GA', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Hawaii',         'HI', 'F',  false, true,  10,   14,  'Full',    false, 'Prohibited',      true],
-  ['Idaho',          'ID', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Illinois',       'IL', 'D',  false, true,  null, 72,  'Partial', true,  'Permit Required', true],
-  ['Indiana',        'IN', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Iowa',           'IA', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Kansas',         'KS', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Kentucky',       'KY', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Louisiana',      'LA', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Maine',          'ME', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Maryland',       'MD', 'D',  false, true,  10,   7,   'Full',    true,  'Prohibited',      true],
-  ['Massachusetts',  'MA', 'F',  false, true,  10,   null,'Full',    false, 'Permit Required', true],
-  ['Michigan',       'MI', 'B',  false, false, null, null,'None',    true,  'Legal',           true],
-  ['Minnesota',      'MN', 'C',  false, true,  null, null,'None',    true,  'Permit Required', false],
-  ['Mississippi',    'MS', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Missouri',       'MO', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Montana',        'MT', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Nebraska',       'NE', 'B',  false, false, null, null,'None',    true,  'Legal',           false],
-  ['Nevada',         'NV', 'C',  false, true,  null, null,'None',    true,  'Legal',           true],
-  ['New Hampshire',  'NH', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['New Jersey',     'NJ', 'F',  false, true,  10,   7,   'Full',    false, 'Prohibited',      true],
-  ['New Mexico',     'NM', 'C',  false, true,  null, null,'None',    true,  'Legal',           false],
-  ['New York',       'NY', 'F',  false, true,  10,   null,'Full',    false, 'Prohibited',      true],
-  ['North Carolina', 'NC', 'B',  false, false, null, null,'None',    true,  'Legal',           false],
-  ['North Dakota',   'ND', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Ohio',           'OH', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Oklahoma',       'OK', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Oregon',         'OR', 'D',  false, true,  10,   null,'Partial', true,  'Legal',           true],
-  ['Pennsylvania',   'PA', 'B',  false, false, null, null,'None',    true,  'Legal',           false],
-  ['Rhode Island',   'RI', 'D',  false, false, 10,   7,   'None',    true,  'Permit Required', false],
-  ['South Carolina', 'SC', 'B+', false, false, null, null,'None',    true,  'Legal',           false],
-  ['South Dakota',   'SD', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Tennessee',      'TN', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Texas',          'TX', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Utah',           'UT', 'A',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Vermont',        'VT', 'B',  true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Virginia',       'VA', 'C',  false, true,  null, null,'None',    true,  'Legal',           true],
-  ['Washington',     'WA', 'D',  false, true,  null, 10,  'Partial', true,  'Permit Required', true],
-  ['West Virginia',  'WV', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
-  ['Wisconsin',      'WI', 'B',  false, false, null, 48,  'None',    true,  'Legal',           false],
-  ['Wyoming',        'WY', 'A+', true,  false, null, null,'None',    true,  'Legal',           false],
+const STATES = [
+  { abbr:'AL', name:'Alabama', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CCHP', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WV','WI','WY'] },
+  { abbr:'AK', name:'Alaska', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'AZ', name:'Arizona', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional AZCCW', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'AR', name:'Arkansas', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CHCL', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'CA', name:'California', rating:'F', constitutionalCarry:false, ccwPermit:'CCW License (post-Bruen more accessible)', redFlagLaw:true, magLimit:10, waitPeriod:10, awbStatus:'Full ban', suppressors:false, openCarry:'Prohibited', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'CO', name:'Colorado', rating:'C', constitutionalCarry:false, ccwPermit:'Concealed Handgun Permit', redFlagLaw:true, magLimit:15, waitPeriod:3, awbStatus:'Partial (SB23-279)', suppressors:true, openCarry:'Legal (except Denver)', bgcPrivate:true, reciprocityStates:['AL','AK','AZ','AR','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WV','WI','WY'] },
+  { abbr:'CT', name:'Connecticut', rating:'D', constitutionalCarry:false, ccwPermit:'State Permit to Carry', redFlagLaw:true, magLimit:10, waitPeriod:14, awbStatus:'Full ban', suppressors:false, openCarry:'Permit required', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'DE', name:'Delaware', rating:'D', constitutionalCarry:false, ccwPermit:'License to Carry Concealed Deadly Weapons', redFlagLaw:true, magLimit:17, waitPeriod:null, awbStatus:'Partial', suppressors:true, openCarry:'Legal', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'FL', name:'Florida', rating:'B+', constitutionalCarry:true, ccwPermit:'Optional CWL', redFlagLaw:true, magLimit:null, waitPeriod:3, awbStatus:'None', suppressors:true, openCarry:'Prohibited', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WV','WI','WY'] },
+  { abbr:'GA', name:'Georgia', rating:'A', constitutionalCarry:true, ccwPermit:'Optional GWL', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'HI', name:'Hawaii', rating:'F', constitutionalCarry:false, ccwPermit:'License to Carry (extremely difficult)', redFlagLaw:true, magLimit:10, waitPeriod:14, awbStatus:'Full ban', suppressors:false, openCarry:'Prohibited', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'ID', name:'Idaho', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional CWL', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'IL', name:'Illinois', rating:'D-', constitutionalCarry:false, ccwPermit:'Concealed Carry License (difficult)', redFlagLaw:true, magLimit:null, waitPeriod:72, awbStatus:'Full ban (PICA 2023)', suppressors:false, openCarry:'Prohibited', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'IN', name:'Indiana', rating:'A', constitutionalCarry:true, ccwPermit:'Optional LTCH', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'IA', name:'Iowa', rating:'A', constitutionalCarry:true, ccwPermit:'Optional Permit to Carry', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'KS', name:'Kansas', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CCH License', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'KY', name:'Kentucky', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CCDW', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'LA', name:'Louisiana', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CCH Permit', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'ME', name:'Maine', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CCP', redFlagLaw:true, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'MD', name:'Maryland', rating:'D', constitutionalCarry:false, ccwPermit:'Wear/Carry Permit (difficult)', redFlagLaw:true, magLimit:10, waitPeriod:7, awbStatus:'Full ban', suppressors:false, openCarry:'Permit required', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'MA', name:'Massachusetts', rating:'F', constitutionalCarry:false, ccwPermit:'LTC License to Carry (discretionary)', redFlagLaw:true, magLimit:10, waitPeriod:null, awbStatus:'Full ban (strict interpretation)', suppressors:false, openCarry:'Permit required', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'MI', name:'Michigan', rating:'B', constitutionalCarry:false, ccwPermit:'Concealed Pistol License (CPL)', redFlagLaw:true, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'MN', name:'Minnesota', rating:'C', constitutionalCarry:false, ccwPermit:'Permit to Carry (Shall-Issue)', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Permit required', bgcPrivate:true, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'MS', name:'Mississippi', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional Enhanced Carry Permit', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'MO', name:'Missouri', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional CCW Permit', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'MT', name:'Montana', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional Permit', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'NE', name:'Nebraska', rating:'B+', constitutionalCarry:true, ccwPermit:'Optional CHP', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'NV', name:'Nevada', rating:'C', constitutionalCarry:false, ccwPermit:'CCW Permit (Shall-Issue)', redFlagLaw:true, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:true, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'NH', name:'New Hampshire', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional License', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'NJ', name:'New Jersey', rating:'F', constitutionalCarry:false, ccwPermit:'Permit to Carry (post-Bruen, still difficult)', redFlagLaw:true, magLimit:10, waitPeriod:null, awbStatus:'Full ban', suppressors:false, openCarry:'Prohibited', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'NM', name:'New Mexico', rating:'C', constitutionalCarry:false, ccwPermit:'Concealed Handgun License', redFlagLaw:true, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:true, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'NY', name:'New York', rating:'F', constitutionalCarry:false, ccwPermit:'Pistol License (extremely difficult)', redFlagLaw:true, magLimit:10, waitPeriod:null, awbStatus:'Full ban (SAFE Act)', suppressors:false, openCarry:'Prohibited', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'NC', name:'North Carolina', rating:'B', constitutionalCarry:false, ccwPermit:'Concealed Handgun Permit', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'ND', name:'North Dakota', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional Class 1/2 License', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'OH', name:'Ohio', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CHL', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'OK', name:'Oklahoma', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional SDA License', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'OR', name:'Oregon', rating:'D', constitutionalCarry:false, ccwPermit:'CHL (Measure 114 blocked)', redFlagLaw:true, magLimit:10, waitPeriod:null, awbStatus:'Partial', suppressors:true, openCarry:'Legal (permit in cities)', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'PA', name:'Pennsylvania', rating:'B', constitutionalCarry:false, ccwPermit:'License to Carry Firearms', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal (no permit outside Philly)', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'RI', name:'Rhode Island', rating:'D', constitutionalCarry:false, ccwPermit:'License to Carry', redFlagLaw:true, magLimit:10, waitPeriod:7, awbStatus:'None (but bans coming)', suppressors:false, openCarry:'Legal (with permit)', bgcPrivate:true, reciprocityStates:[] },
+  { abbr:'SC', name:'South Carolina', rating:'B+', constitutionalCarry:true, ccwPermit:'Optional CWP', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal (with permit)', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'SD', name:'South Dakota', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional Gold/Enhanced', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','TN','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'TN', name:'Tennessee', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CCPH/ECPH', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal (with permit for concealed)', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TX','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'TX', name:'Texas', rating:'A', constitutionalCarry:true, ccwPermit:'Optional LTC', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','UT','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'UT', name:'Utah', rating:'A', constitutionalCarry:true, ccwPermit:'Optional CFP', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','VT','VA','WA','WV','WI','WY'] },
+  { abbr:'VT', name:'Vermont', rating:'A', constitutionalCarry:true, ccwPermit:'None required', redFlagLaw:true, magLimit:10, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VA','WA','WV','WI','WY'] },
+  { abbr:'VA', name:'Virginia', rating:'B', constitutionalCarry:false, ccwPermit:'Concealed Handgun Permit', redFlagLaw:true, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:true, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','WA','WV','WI','WY'] },
+  { abbr:'WA', name:'Washington', rating:'D', constitutionalCarry:false, ccwPermit:'Concealed Pistol License (CPL)', redFlagLaw:true, magLimit:10, waitPeriod:10, awbStatus:'Partial ban (HB 1240 2023)', suppressors:true, openCarry:'Legal', bgcPrivate:true, reciprocityStates:['AK','AZ','ID','MT'] },
+  { abbr:'WV', name:'West Virginia', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional CCHL', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WI','WY'] },
+  { abbr:'WI', name:'Wisconsin', rating:'B', constitutionalCarry:false, ccwPermit:'Concealed Carry Weapon License', redFlagLaw:false, magLimit:null, waitPeriod:48, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WY'] },
+  { abbr:'WY', name:'Wyoming', rating:'A+', constitutionalCarry:true, ccwPermit:'Optional CCP', redFlagLaw:false, magLimit:null, waitPeriod:null, awbStatus:'None', suppressors:true, openCarry:'Legal', bgcPrivate:false, reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WA','WV','WI'] },
 ]
 
 async function seed() {
-  console.log(`Seeding ${states.length} states...`)
-  const tx = sanity.transaction()
-  for (const [name, abbr, rating, cc, rfl, magLimit, wait, awb, suppressors, openCarry, bgc] of states) {
-    tx.createOrReplace({
-      _id:   `state-${abbr.toLowerCase()}`,
-      _type: 'stateProfile',
-      name, abbr, rating,
-      slug: { current: abbr.toLowerCase() },
-      constitutionalCarry: cc,
-      redFlagLaw: rfl,
-      magLimit:   magLimit,
-      waitPeriod: wait,
-      awbStatus:  awb,
-      suppressors,
-      openCarry,
-      bgcPrivate: bgc,
-      lastUpdated: new Date().toISOString(),
-    })
+  console.log(`Seeding ${STATES.length} state profiles...`)
+  for (const s of STATES) {
+    try {
+      await client.createOrReplace({
+        _id: `state-${s.abbr.toLowerCase()}`,
+        _type: 'stateProfile',
+        ...s,
+        lastUpdated: new Date().toISOString(),
+        summary: `${s.name} ${s.constitutionalCarry ? 'is a constitutional carry state' : 'requires a permit to carry'}.${s.redFlagLaw ? ' Red flag (ERPO) law in effect.' : ''} Freedom rating: ${s.rating}.`,
+      })
+      console.log(`✓ ${s.abbr}: ${s.name} (${s.rating})`)
+    } catch (err) { console.error(`✗ ${s.abbr}: ${err.message}`) }
   }
-  await tx.commit()
-  console.log('Done. All 50 states seeded.')
+  console.log('Done!')
 }
-
-seed().catch(err => { console.error(err); process.exit(1) })
+seed().catch(console.error)

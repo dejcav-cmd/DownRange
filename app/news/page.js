@@ -8,12 +8,13 @@ export const metadata = { title: 'News — DownRange', description: 'Latest fire
 export const revalidate = 300 // revalidate every 5 min
 
 const CATEGORIES = [
-  { label: 'All', val: null },
-  { label: 'Breaking', val: 'breaking' },
-  { label: 'Federal Law', val: 'law' },
-  { label: 'Industry', val: 'industry' },
-  { label: 'Opinion', val: 'opinion' },
-  { label: 'Training', val: 'training' },
+  { label: 'All News', val: null },
+  { label: '⚡ Breaking', val: 'breaking' },
+  { label: '⚖ Law', val: 'law' },
+  { label: '◈ Industry', val: 'industry' },
+  { label: '◇ Opinion', val: 'opinion' },
+  { label: '▲ Training', val: 'training' },
+  { label: '★ Reviews', val: 'review' },
 ]
 
 export default async function NewsPage({ searchParams }) {
