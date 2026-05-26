@@ -2,10 +2,11 @@ import Masthead from '../../components/layout/Masthead'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import NewsCard from '../../components/ui/NewsCard'
+import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
 import { fetchArticles, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
 
 export const metadata = { title: 'News — DownRange', description: 'Latest firearms and Second Amendment news from across the United States.' }
-export const revalidate = 300 // revalidate every 5 min
+export const revalidate = 60 // revalidate every 60s for fresher content
 
 const CATEGORIES = [
   { label: 'All News', val: null },
@@ -97,12 +98,8 @@ export default async function NewsPage({ searchParams }) {
                 </div>
               )}
 
-              {/* Grid */}
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '16px' }}>
-                {grid.map(article => (
-                  <NewsCard key={article._id} article={article} />
-                ))}
-              </div>
+              {/* Grid — live refresh every 2 min */}
+              <LiveNewsRefresher initialArticles={grid} category={cat} />
 
               {articles.length === 0 && (
                 <div style={{ padding: '60px', textAlign: 'center', color: '#6B7280', fontFamily: "'IBM Plex Mono', monospace" }}>

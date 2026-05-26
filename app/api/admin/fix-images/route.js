@@ -182,10 +182,10 @@ async function imageIsReachable(url) {
 
 // ── Main handler ───────────────────────────────────────────────────────────────
 export async function POST(req) {
+  // Uses ADMIN_KEY only — CRON_SECRET is for cron jobs, not admin UI calls
+  const adminKey   = process.env.ADMIN_KEY
   const authHeader = req.headers.get('authorization')
-  const cronHeader = req.headers.get('x-vercel-cron')
-  const secret     = process.env.CRON_SECRET || process.env.ADMIN_KEY
-  if (secret && authHeader !== `Bearer ${secret}` && cronHeader !== '1') {
+  if (adminKey && authHeader !== `Bearer ${adminKey}`) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
