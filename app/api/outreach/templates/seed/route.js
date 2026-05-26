@@ -237,9 +237,39 @@ const DEALER_INTRO = {
   variables: ['{{firstName}}','{{businessName}}','{{state}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
 }
 
+
+const HOLSTER_INTRO = {
+  name: 'Holster Company — Introduction & Coverage',
+  type: 'organization',
+  subject: 'DownRange covers {{businessName}} — wanted to introduce myself',
+  previewText: 'Gun owners reading DownRange are your customers. Worth knowing about.',
+  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I run <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms and Second Amendment intelligence platform for gun owners across the country.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">The people reading DownRange every day are active gun owners — they're researching new carry guns, looking up their state's CCW laws, and deciding what holster goes with their new EDC. {{businessName}} is exactly the kind of brand they're looking for.</p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I wanted to reach out directly to let you know about the platform and to open a conversation:</p>
+
+<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
+  <li>If you have new product launches, we cover gear releases and would be happy to feature {{businessName}}</li>
+  <li>If you want to reach gun owners who are actively buying holsters, our audience is a direct fit</li>
+  <li>If there's a partnership angle — content, editorial coverage, or advertising — I'm open to a conversation</li>
+</ul>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">For full details on how we work with brands and manufacturers, our press and partnership page is at: <a href="https://www.downrangeco.com/press" style="color:#C8922A;text-decoration:none;">downrangeco.com/press</a></p>
+
+<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Happy to send you more information or jump on a call if that's easier.</p>
+
+<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks,</p>
+<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
+<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a> · <a href="https://www.downrangeco.com/press" style="color:#C8922A;text-decoration:none;">Press & Partnerships</a></span></p>`,
+  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
+}
+
 const ALL_TEMPLATES = [
   YOUTUBER_INTRO, YOUTUBER_FOLLOWUP, YOUTUBER_COLLAB,
-  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, MANUFACTURER_INTRO, DEALER_INTRO, GENERIC_FOLLOWUP,
+  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, MANUFACTURER_INTRO, DEALER_INTRO, HOLSTER_INTRO, GENERIC_FOLLOWUP,
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────

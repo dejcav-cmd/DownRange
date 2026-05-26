@@ -150,6 +150,9 @@
     },
     "app/api/outreach/dealers/route.js": {
       "maxDuration": 60
+    },
+    "app/api/outreach/holsters/route.js": {
+      "maxDuration": 60
     }
   }
 }

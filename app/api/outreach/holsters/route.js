@@ -1,0 +1,468 @@
+export const dynamic = 'force-dynamic'
+
+import { createClient } from '@sanity/client'
+
+const sanity = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+  dataset:   'production',
+  apiVersion: '2024-01-01',
+  useCdn:    false,
+  token:     process.env.SANITY_API_TOKEN,
+})
+
+function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN_KEY }
+
+const HOLSTERS = [
+
+  // ── TIER 1 — MAJOR / HOUSEHOLD NAMES ────────────────────────────────────────
+  {
+    name:       'Safariland',
+    firstName:  'Media',
+    website:    'https://www.safariland.com',
+    email:      'media@safariland.com',
+    phone:      '800-347-1200',
+    city:       'Jacksonville', state: 'FL',
+    tags:       ['duty','retention','law-enforcement','military','OWB','major'],
+    notes:      'Gold standard for duty/retention holsters. LE and military contracts. Press: media@safariland.com. HQ: 13386 International Pkwy, Jacksonville FL 32218. Also owns ALS, SLS retention systems.',
+    contactUrl: 'https://safariland.com/pages/contact-us',
+  },
+  {
+    name:       'Blackhawk',
+    firstName:  'Media',
+    website:    'https://www.blackhawk.com',
+    email:      'media@blackhawk.com',
+    phone:      '800-694-5263',
+    city:       'Norfolk', state: 'VA',
+    tags:       ['duty','SERPA','tactical','military','LE','OWB','major'],
+    notes:      'Known for SERPA retention system. Military and LE focus. Owned by Vista Outdoor. Media via blackhawk.com.',
+    contactUrl: 'https://www.blackhawk.com/customer-service/contact-us.html',
+  },
+  {
+    name:       'Galco Gunleather',
+    firstName:  'Media',
+    website:    'https://www.galcogunleather.com',
+    email:      'info@galcogunleather.com',
+    phone:      '800-874-2526',
+    city:       'Phoenix', state: 'AZ',
+    tags:       ['leather','IWB','OWB','shoulder','premium','CCW','classic'],
+    notes:      'Premium leather holster manufacturer since 1969. Family-owned. Wide range from CCW to shoulder rigs. info@galcogunleather.com.',
+  },
+  {
+    name:       'DeSantis Gunhide',
+    firstName:  'Gene',
+    website:    'https://www.desantisholster.com',
+    email:      'info@desantisholster.com',
+    phone:      '516-474-4401',
+    city:       'Amityville', state: 'NY',
+    tags:       ['leather','kydex','IWB','OWB','CCW','LE','family-owned'],
+    notes:      'Family-owned since 1972. Gene DeSantis founded. NY-based. Both leather and kydex. LE and civilian. info@desantisholster.com.',
+    contactUrl: 'https://www.desantisholster.com/contact-us/',
+  },
+  {
+    name:       'Alien Gear Holsters',
+    firstName:  'Media',
+    website:    'https://aliengearholsters.com',
+    email:      'support@aliengearholsters.com',
+    phone:      '208-215-2046',
+    city:       'Hayden', state: 'ID',
+    tags:       ['hybrid','IWB','OWB','CCW','modular','made-in-usa','popular'],
+    notes:      'Idaho-based. One of the largest CCW holster brands. Hybrid holster specialty. Strong social media. 700+ gun models. support@aliengearholsters.com.',
+  },
+  {
+    name:       'CrossBreed Holsters',
+    firstName:  'Media',
+    website:    'https://www.crossbreedholsters.com',
+    email:      'info@crossbreedholsters.com',
+    phone:      '888-732-5011',
+    city:       'Springfield', state: 'MO',
+    tags:       ['hybrid','IWB','SuperTuck','leather','kydex','CCW','popular'],
+    notes:      'Missouri-based. Famous for SuperTuck hybrid IWB. Also owns N8 Tactical brand. info@crossbreedholsters.com.',
+  },
+  {
+    name:       'Vedder Holsters',
+    firstName:  'Media',
+    website:    'https://www.vedderholsters.com',
+    email:      'info@vedderholsters.com',
+    phone:      '800-506-3005',
+    city:       'Spring Hill', state: 'FL',
+    tags:       ['kydex','IWB','OWB','CCW','450-models','lifetime-warranty','popular'],
+    notes:      'Florida-based. 450+ gun models, 75+ colors. Lifetime warranty. Strong customer reputation. info@vedderholsters.com.',
+  },
+  {
+    name:       'Fobus Holsters',
+    firstName:  'Media',
+    website:    'https://www.fobusholster.com',
+    email:      'usa@fobusholster.com',
+    city:       'Roanoke', state: 'VA',
+    tags:       ['paddle','polymer','value','OWB','IWB','budget'],
+    notes:      'Israeli-origin, US operations. Paddle holsters are their specialty. Value-priced, widely distributed. usa@fobusholster.com.',
+  },
+
+  // ── TIER 2 — PREMIUM / ENTHUSIAST BRANDS ────────────────────────────────────
+  {
+    name:       'Tier 1 Concealed',
+    firstName:  'Media',
+    website:    'https://www.tier1concealed.com',
+    email:      'support@tier1concealed.com',
+    city:       'Phoenix', state: 'AZ',
+    tags:       ['kydex','AIWB','IWB','minimalist','premium','CCW','competition'],
+    notes:      'Premium minimalist kydex. T1C brand is highly regarded in CCW community. Arizona-based. support@tier1concealed.com.',
+  },
+  {
+    name:       'Tenicor',
+    firstName:  'Media',
+    website:    'https://www.tenicor.com',
+    email:      'support@tenicor.com',
+    city:       'Boise', state: 'ID',
+    tags:       ['AIWB','kydex','premium','competition','law-enforcement','minimalist'],
+    notes:      'Idaho-based. Premium AIWB/IWB. Certum and Velo series. Highly regarded among serious CCW carriers and competition shooters. support@tenicor.com.',
+  },
+  {
+    name:       'Tulster',
+    firstName:  'Media',
+    website:    'https://tulster.com',
+    email:      'support@tulster.com',
+    city:       'Boise', state: 'ID',
+    tags:       ['kydex','IWB','OWB','minimalist','optics-compatible','popular'],
+    notes:      'Idaho-based. Profile series is community favorite. Light-compatible models. support@tulster.com.',
+  },
+  {
+    name:       'Dara Holsters',
+    firstName:  'Media',
+    website:    'https://www.daraholsters.com',
+    email:      'sales@daraholsters.com',
+    city:       'Chesapeake', state: 'VA',
+    tags:       ['kydex','IWB','OWB','competition','AIWB','duty','wide-selection'],
+    notes:      'Virginia-based. Wide range including competition, duty, and EDC. sales@daraholsters.com.',
+  },
+  {
+    name:       'Raven Concealment Systems',
+    firstName:  'Media',
+    website:    'https://www.ravenconcealment.com',
+    email:      'support@ravenconcealment.com',
+    city:       'Suffield', state: 'CT',
+    tags:       ['kydex','modular','OWB','IWB','military','LE','premium'],
+    notes:      'Connecticut-based. Military/LE background. Eidolon ambidextrous holster is well-known. support@ravenconcealment.com.',
+  },
+  {
+    name:       'Bravo Concealment',
+    firstName:  'Media',
+    website:    'https://www.bravoconcealment.com',
+    email:      'info@bravoconcealment.com',
+    city:       'San Antonio', state: 'TX',
+    tags:       ['kydex','IWB','OWB','value','CCW','Torsion'],
+    notes:      'Texas-based. Torsion 3.0 is popular budget kydex. Good value positioning. info@bravoconcealment.com.',
+  },
+  {
+    name:       'Concealment Express',
+    firstName:  'Media',
+    website:    'https://www.concealmentexpress.com',
+    email:      'support@concealmentexpress.com',
+    city:       'Hauppauge', state: 'NY',
+    tags:       ['kydex','IWB','OWB','budget','value','Rounded'],
+    notes:      'Also sells as "Rounded by Concealment Express." Budget-friendly. NY-based. Large Amazon presence.',
+  },
+  {
+    name:       'We The People Holsters',
+    firstName:  'Media',
+    website:    'https://wethepeopleholsters.com',
+    email:      'info@wethepeopleholsters.com',
+    city:       'Las Vegas', state: 'NV',
+    tags:       ['kydex','IWB','OWB','budget','prints','patriotic','CCW'],
+    notes:      'Nevada-based. Known for patriotic and decorative kydex patterns. Budget segment. Huge SKU range.',
+  },
+  {
+    name:       'Blade-Tech Industries',
+    firstName:  'Media',
+    website:    'https://www.blade-tech.com',
+    email:      'service@blade-tech.com',
+    phone:      '877-331-5793',
+    city:       'Puyallup', state: 'WA',
+    tags:       ['kydex','competition','USPSA','IDPA','duty','OWB','WA-based'],
+    notes:      'PRIORITY — Washington State based. Puyallup WA. Competition holster specialists. USPSA/IDPA dominant. Local partnership angle strong. service@blade-tech.com.',
+  },
+  {
+    name:       'G-Code Holsters',
+    firstName:  'Media',
+    website:    'https://www.gcode-inc.com',
+    email:      'sales@gcode-inc.com',
+    city:       'Jacksonville', state: 'FL',
+    tags:       ['kydex','military','LE','modular','RTI','duty','competition'],
+    notes:      'Florida-based. RTI (Rotary Tactical Interface) system is industry-standard for modular carry. Military/LE contracts.',
+  },
+  {
+    name:       'C&G Holsters',
+    firstName:  'Media',
+    website:    'https://www.cngholsters.com',
+    email:      'sales@cngholsters.com',
+    city:       'Manhattan', state: 'KS',
+    tags:       ['kydex','IWB','OWB','custom','optics','light-compatible','quality'],
+    notes:      'Kansas-based. C&G Covert is highly rated. 150+ gun models. Optics and light compatible. sales@cngholsters.com.',
+  },
+  {
+    name:       'Black Arch Holsters',
+    firstName:  'Media',
+    website:    'https://blackarchholsters.com',
+    email:      'support@blackarchholsters.com',
+    city:       'Omaha', state: 'NE',
+    tags:       ['hybrid','IWB','OWB','Protos-M','modular'],
+    notes:      'Nebraska-based. Protos-M hybrid system with patented 3/4 hybrid design.',
+  },
+  {
+    name:       'Sticky Holsters',
+    firstName:  'Media',
+    website:    'https://stickyholsters.com',
+    email:      'info@stickyholsters.com',
+    city:       'Fort Myers', state: 'FL',
+    tags:       ['no-clip','pocket','belly-band','friction','innovative','CCW'],
+    notes:      'Florida-based. Unique no-clip friction design. Very popular for pocket carry and minimal-print applications.',
+  },
+  {
+    name:       'Stealthgear USA',
+    firstName:  'Media',
+    website:    'https://www.stealthgearusa.com',
+    email:      'info@stealthgearusa.com',
+    city:       'Winder', state: 'GA',
+    tags:       ['ventilated','hybrid','AIWB','IWB','breathable','premium'],
+    notes:      'Georgia-based. Ventcore breathable backing is their differentiator. VentiCore AIWB is popular.',
+  },
+  {
+    name:       'T.Rex Arms',
+    firstName:  'Lucas',
+    website:    'https://www.trex-arms.com',
+    email:      'info@trex-arms.com',
+    city:       'Conway', state: 'SC',
+    tags:       ['kydex','AIWB','competition','YouTube','direct-to-consumer','premium'],
+    notes:      'Lucas Botkin is founder and runs YouTube channel. Dual approach — manufacturer + YouTuber. AIWB specialist. Strong community following. info@trex-arms.com.',
+  },
+  {
+    name:       'Dark Star Gear',
+    firstName:  'Media',
+    website:    'https://www.darkstargear.com',
+    email:      'support@darkstargear.com',
+    city:       'Portland', state: 'OR',
+    tags:       ['kydex','AIWB','minimalist','optics-compatible','competition','PNW'],
+    notes:      'PRIORITY — Oregon/PNW-based. Pacific Northwest company. Strong competition community. support@darkstargear.com.',
+  },
+  {
+    name:       'PHLster',
+    firstName:  'Jon',
+    website:    'https://www.phlsterholsters.com',
+    email:      'support@phlsterholsters.com',
+    city:       'Philadelphia', state: 'PA',
+    tags:       ['AIWB','Enigma','no-belt','innovative','premium','flat-pack'],
+    notes:      'Jon Hauptman is founder. Enigma system (no-belt AIWB carry) is genuinely innovative and community-famous. support@phlsterholsters.com.',
+  },
+  {
+    name:       'Harry\'s Holsters',
+    firstName:  'Harry',
+    website:    'https://harrysholsters.com',
+    email:      'info@harrysholsters.com',
+    city:       'Charlotte', state: 'NC',
+    tags:       ['kydex','IWB','AIWB','quick-ship','value','USA'],
+    notes:      'North Carolina. Quick-ship inventory model. Community reputation for fast delivery and value.',
+  },
+  {
+    name:       'N82 Tactical (N8 Tactical)',
+    firstName:  'Media',
+    website:    'https://www.n82tactical.com',
+    email:      'info@n82tactical.com',
+    city:       'Springfield', state: 'MO',
+    tags:       ['hybrid','IWB','leather','comfortable','tuckable'],
+    notes:      'Now owned by CrossBreed. Nate Squared original design. Comfortable tuckable hybrid.',
+  },
+
+  // ── LEATHER SPECIALISTS ──────────────────────────────────────────────────────
+  {
+    name:       'Mitch Rosen Gunleather',
+    firstName:  'Mitch',
+    website:    'https://mitchrosen.com',
+    email:      'mitch@mitchrosen.com',
+    city:       'Manchester', state: 'NH',
+    tags:       ['leather','premium','custom','IWB','OWB','artisan'],
+    notes:      'Mitch Rosen personally involved. Considered among the highest quality leather holster makers in the US. Custom work, longer lead times. mitch@mitchrosen.com.',
+  },
+  {
+    name:       'Milt Sparks Leather',
+    firstName:  'Media',
+    website:    'https://miltsparks.com',
+    email:      'orders@miltsparks.com',
+    city:       'Eagle', state: 'ID',
+    tags:       ['leather','premium','custom','IWB','Versa-Max','long-wait'],
+    notes:      'Idaho-based. Versa-Max 2 IWB is legendary. 30-35 week backlog means demand is very strong. Premium leather only. orders@miltsparks.com.',
+  },
+  {
+    name:       'Kramer Handgun Leather',
+    firstName:  'Greg',
+    website:    'https://kramerleather.com',
+    email:      'info@kramerleather.com',
+    city:       'Tacoma', state: 'WA',
+    tags:       ['leather','premium','IWB','OWB','WA-based'],
+    notes:      'PRIORITY — Tacoma WA based. Greg Kramer. Premium leather holsters. Pacific Northwest local partnership angle. info@kramerleather.com.',
+  },
+  {
+    name:       'Bianchi International',
+    firstName:  'Media',
+    website:    'https://www.bianchi-intl.com',
+    email:      'info@bianchi-intl.com',
+    phone:      '951-682-5534',
+    city:       'Temecula', state: 'CA',
+    tags:       ['leather','duty','military','LE','classic','OWB','shoulder'],
+    notes:      'California-based. Founded 1958. Classic leather duty and carry. Military/LE heritage. info@bianchi-intl.com.',
+  },
+  {
+    name:       'El Paso Saddlery',
+    firstName:  'Media',
+    website:    'https://epsaddlery.com',
+    email:      'sales@epsaddlery.com',
+    phone:      '915-544-2233',
+    city:       'El Paso', state: 'TX',
+    tags:       ['leather','Western','classic','cowboy','OWB','heritage'],
+    notes:      'Texas-based. Heritage Western leather holsters since 1898. Unique positioning in the market.',
+  },
+
+  // ── COMPETITION SPECIALISTS ──────────────────────────────────────────────────
+  {
+    name:       'CR Speed',
+    firstName:  'Media',
+    website:    'https://www.crspeed.com',
+    email:      'info@crspeed.com',
+    city:       'Columbia Falls', state: 'MT',
+    tags:       ['competition','IPSC','USPSA','speed','race-holster','OWB'],
+    notes:      'Montana-based. Competition race holsters. IPSC/USPSA dominant.',
+  },
+  {
+    name:       'DAA (Double Alpha Academy)',
+    firstName:  'Media',
+    website:    'https://www.doublealpha.biz',
+    email:      'info@doublealpha.biz',
+    city:       'Fredericksburg', state: 'TX',
+    tags:       ['competition','IPSC','USPSA','race-holster','Israeli-origin'],
+    notes:      'Israeli-origin, US operations in TX. Premium competition gear. info@doublealpha.biz.',
+  },
+  {
+    name:       'Ghost International',
+    firstName:  'Media',
+    website:    'https://www.ghostholsters.com',
+    email:      'info@ghostholsters.com',
+    city:       'Boca Raton', state: 'FL',
+    tags:       ['competition','IPSC','polymer','speed','innovative'],
+    notes:      'Florida operations. Competition focused. Ghost Civilian series.',
+  },
+
+  // ── DUTY / LAW ENFORCEMENT SPECIALISTS ──────────────────────────────────────
+  {
+    name:       'Gould & Goodrich',
+    firstName:  'Media',
+    website:    'https://www.gouldusa.com',
+    email:      'info@gouldusa.com',
+    phone:      '800-277-0732',
+    city:       'Lillington', state: 'NC',
+    tags:       ['duty','leather','LE','OWB','retention','NC-based'],
+    notes:      'North Carolina. Premium duty leather for law enforcement. info@gouldusa.com.',
+  },
+  {
+    name:       'Uncle Mike\'s Law Enforcement',
+    firstName:  'Media',
+    website:    'https://www.unclemikes.com',
+    email:      'info@unclemikes.com',
+    city:       'Starkville', state: 'MS',
+    tags:       ['duty','nylon','value','LE','wide-distribution'],
+    notes:      'Widely distributed. Value-price duty and carry gear.',
+  },
+  {
+    name:       'Aker Leather Products',
+    firstName:  'Media',
+    website:    'https://www.akerleather.com',
+    email:      'sales@akerleather.com',
+    phone:      '800-253-2537',
+    city:       'Clovis', state: 'CA',
+    tags:       ['leather','duty','LE','shoulder','IWB','OWB'],
+    notes:      'California-based leather duty gear manufacturer since 1950.',
+  },
+  {
+    name:       'Streamlight (holster accessories)',
+    firstName:  'Media',
+    website:    'https://www.streamlight.com',
+    email:      'media@streamlight.com',
+    city:       'Eagleville', state: 'PA',
+    tags:       ['lights','holster-accessories','duty','LE','weapon-lights'],
+    notes:      'Not a holster company per se, but light-bearing holsters require Streamlight compatibility. Strong LE relationship. media@streamlight.com.',
+  },
+
+  // ── BELLY BANDS / SPECIALTY CARRY ────────────────────────────────────────────
+  {
+    name:       'ComfortTac',
+    firstName:  'Media',
+    website:    'https://www.comforttac.com',
+    email:      'support@comforttac.com',
+    city:       'Henderson', state: 'NV',
+    tags:       ['belly-band','CCW','elastic','women','plus-size','flexible'],
+    notes:      'Belly band specialist. Strong Amazon presence. Women\'s carry segment.',
+  },
+  {
+    name:       'Tactica Defense Fashion',
+    firstName:  'Media',
+    website:    'https://www.tacticadefensefashion.com',
+    email:      'info@tacticadefensefashion.com',
+    city:       'Denver', state: 'CO',
+    tags:       ['women','CCW','fashion','purse','appendix','female-market'],
+    notes:      'Women\'s carry clothing and holsters. Growing segment.',
+  },
+  {
+    name:       'Kushnapup / Kydex Market',
+    firstName:  'Media',
+    website:    'https://www.kydexmarket.com',
+    email:      'info@kydexmarket.com',
+    tags:       ['kydex','bulk','custom','small-maker'],
+    notes:      'Kydex materials supplier and small custom maker. Useful for connecting with the maker/custom community.',
+  },
+]
+
+export async function POST(req) {
+  if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+
+  const results = { created: 0, skipped: 0, errors: [] }
+
+  for (const holster of HOLSTERS) {
+    try {
+      const exists = await sanity.fetch(
+        `*[_type == "outreachContact" && website == $url][0]._id`,
+        { url: holster.website }
+      )
+      if (exists) { results.skipped++; continue }
+
+      await sanity.create({
+        _type:         'outreachContact',
+        type:          'organization',
+        status:        'active',
+        source:        'manual',
+        country:       'USA',
+        emailPermission: false,
+        addedAt:       new Date().toISOString(),
+        specialties:   ['holster', 'CCW'],
+        ...holster,
+      })
+      results.created++
+    } catch (err) {
+      results.errors.push({ name: holster.name, error: err.message })
+    }
+    await new Promise(r => setTimeout(r, 120))
+  }
+
+  return Response.json({
+    ok:      true,
+    total:   HOLSTERS.length,
+    created: results.created,
+    skipped: results.skipped,
+    errors:  results.errors.slice(0, 10),
+    breakdown: {
+      majorBrands:         ['Safariland','Blackhawk','Galco','DeSantis','Alien Gear','CrossBreed','Vedder','Fobus'],
+      premiumKydex:        ['Tier 1 Concealed','Tenicor','Tulster','Dara','Raven Concealment','C&G','T.Rex Arms','PHLster'],
+      washingtonStatePNW:  ['Blade-Tech (Puyallup WA)','Kramer Leather (Tacoma WA)','Dark Star Gear (Portland OR)'],
+      leatherSpecialists:  ['Mitch Rosen','Milt Sparks','Kramer','Bianchi','El Paso Saddlery'],
+      competitionFocus:    ['CR Speed','Double Alpha Academy','Ghost International','Blade-Tech'],
+      dutyLE:              ['Safariland','Blackhawk','Gould & Goodrich','Uncle Mikes','Aker'],
+    }
+  })
+}

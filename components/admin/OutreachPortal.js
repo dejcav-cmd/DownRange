@@ -501,6 +501,14 @@ export default function OutreachPortal({ adminKey }) {
     else flash(d.error||'Error',false)
   }
 
+  const seedHolsters = async () => {
+    flash('Seeding holster companies...')
+    const res = await fetch('/api/outreach/holsters',{method:'POST',headers:h})
+    const d = await res.json()
+    if (d.ok) { flash(`${d.created} holster companies added (${d.skipped} already existed)`); loadContacts() }
+    else flash(d.error||'Error',false)
+  }
+
   const seedDealers = async () => {
     flash('Seeding dealers...')
     const res = await fetch('/api/outreach/dealers',{method:'POST',headers:h})
@@ -610,6 +618,7 @@ export default function OutreachPortal({ adminKey }) {
         <button className="op-btn-ghost op-btn-sm" onClick={seedTemplates}>🌱 Seed Templates + YouTubers</button>
         <button className="op-btn-ghost op-btn-sm" onClick={seedManufacturers}>🏭 Seed 70+ Manufacturers</button>
         <button className="op-btn-ghost op-btn-sm" onClick={seedDealers}>🛒 Seed 30+ Dealers & Retailers</button>
+        <button className="op-btn-ghost op-btn-sm" onClick={seedHolsters}>🔒 Seed 40+ Holster Companies</button>
       </div>
 
       {/* Sub-tabs */}
