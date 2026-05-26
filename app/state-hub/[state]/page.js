@@ -1,10 +1,11 @@
-// ─── app/site/state-hub/[state]/page.js ──────────────────────────────────────
-import { notFound } from 'next/navigation';
-import { getStateProfile } from '../../../sanity/lib/client';
-import { formatDateShort, getBillStatus } from '../../../lib/utils';
-import Link from 'next/link';
+import { notFound } from 'next/navigation'
+import Masthead from '../../../components/layout/Masthead'
+import Footer from '../../../components/layout/Footer'
+import BreakingTicker from '../../../components/layout/BreakingTicker'
+import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import Link from 'next/link'
 
-export const revalidate = 3600;
+export const revalidate = 3600
 
 const STATE_NAMES = {
   AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',
@@ -16,202 +17,135 @@ const STATE_NAMES = {
   OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',
   SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',
   WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'
-};
+}
 
-const LawBadge = ({ active, trueLabel, falseLabel, trueColor = '#34D399', falseColor = '#EF4444' }) => (
-  <span style={{
-    display: 'inline-block',
-    background: active ? '#001F0F' : '#1F0000',
-    color: active ? trueColor : falseColor,
-    border: `1px solid ${active ? trueColor : falseColor}40`,
-    padding: '0.2rem 0.6rem', fontFamily: 'monospace', fontSize: '0.7rem',
-    letterSpacing: '0.08em', borderRadius: '2px'
-  }}>
-    {active ? trueLabel : falseLabel}
-  </span>
-);
+const SEED_PROFILES = {
+  WA: { name:'Washington', abbr:'WA', constitutionalCarry:false, ccwPermit:'Concealed Pistol License (CPL)', redFlagLaw:true, magLimit:10, waitPeriod:'10 days (handguns)', awbStatus:'Banned (2023)', suppressors:'Legal (NFA rules)', openCarry:'Legal (no permit)', bgcPrivate:true, rating:'D', reciprocityStates:['AK','AZ','ID','MT'] },
+  TX: { name:'Texas', abbr:'TX', constitutionalCarry:true, ccwPermit:'License To Carry (LTC) — optional', redFlagLaw:false, magLimit:null, waitPeriod:'None', awbStatus:'None', suppressors:'Legal (NFA rules)', openCarry:'Legal (no permit)', bgcPrivate:false, rating:'A', reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NV','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','UT','VT','VA','WV','WI','WY'] },
+  FL: { name:'Florida', abbr:'FL', constitutionalCarry:true, ccwPermit:'Concealed Weapon License (CWL) — optional', redFlagLaw:true, magLimit:null, waitPeriod:'3 days (handguns)', awbStatus:'None', suppressors:'Legal (NFA rules)', openCarry:'Prohibited', bgcPrivate:false, rating:'B+', reciprocityStates:['AL','AK','AZ','AR','CO','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NV','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WV','WI','WY'] },
+}
+
+export async function generateMetadata({ params }) {
+  const abbr = params.state?.toUpperCase()
+  const name = STATE_NAMES[abbr] || abbr
+  return { title: `${name} Gun Laws — DownRange`, description: `Firearms laws, CCW requirements, and reciprocity for ${name}.` }
+}
+
+function LawRow({ label, value, good }) {
+  const color = good === true ? '#34D399' : good === false ? '#EF4444' : '#9CA3AF'
+  return (
+    <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', padding:'10px 0', borderBottom:'1px solid #1F2428' }}>
+      <span style={{ fontFamily:'monospace', fontSize:'12px', color:'#6B7280' }}>{label}</span>
+      <span style={{ fontFamily:'monospace', fontSize:'12px', color, fontWeight:600, textAlign:'right', maxWidth:'55%' }}>{value || 'Not specified'}</span>
+    </div>
+  )
+}
 
 export default async function StatePage({ params }) {
-  const abbr = params.state.toUpperCase();
-  const stateName = STATE_NAMES[abbr];
-  if (!stateName) notFound();
+  const abbr = params.state?.toUpperCase()
+  if (!STATE_NAMES[abbr]) notFound()
 
-  const profile = await getStateProfile(abbr);
+  let profile, alerts
+  try {
+    ;[profile, alerts] = await Promise.all([
+      fetchStateProfile(abbr).catch(() => null),
+      fetchBreakingAlerts(3).catch(() => []),
+    ])
+  } catch { profile = null; alerts = [] }
 
-  // Fallback data if not in Sanity yet
-  const data = profile || {
-    cc_status: false, ccw_permit: 'Required', red_flag_law: false,
-    mag_limit: null, wait_period: null, awb_status: 'none',
-    reciprocity: [], recent_bills: [], nics_monthly: null,
-    rating: null, notes: null
-  };
+  const data = profile || SEED_PROFILES[abbr] || { name: STATE_NAMES[abbr], abbr }
+  const stateName = data.name || STATE_NAMES[abbr]
+
+  const ratingColor = { 'A':'#34D399','A+':'#34D399','B':'#60A5FA','B+':'#60A5FA','C':'#FBBF24','D':'#EF4444','D-':'#EF4444','F':'#B91C1C' }[data.rating] || '#9CA3AF'
 
   return (
-    <div style={{ background: '#0A0B0C', minHeight: '100vh', color: '#E8E6E1' }}>
-
-      {/* Header */}
-      <div style={{ background: '#111318', borderBottom: '1px solid #1F2428', padding: '2rem 1.5rem' }}>
-        <div style={{ maxWidth: '1100px', margin: '0 auto' }}>
-          {/* Breadcrumb */}
-          <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', marginBottom: '1rem', fontSize: '0.75rem', fontFamily: 'monospace' }}>
-            <Link href="/" style={{ color: '#64748B', textDecoration: 'none' }}>HOME</Link>
-            <span style={{ color: '#374151' }}>›</span>
-            <Link href="/state-hub" style={{ color: '#64748B', textDecoration: 'none' }}>STATE HUB</Link>
-            <span style={{ color: '#374151' }}>›</span>
-            <span style={{ color: '#C8922A' }}>{abbr}</span>
+    <>
+      <BreakingTicker alerts={alerts} />
+      <Masthead />
+      <div className="page-hero" data-title={abbr}>
+        <div className="container">
+          <div style={{ display:'flex', alignItems:'center', gap:'12px', marginBottom:'8px' }}>
+            <Link href="/state-hub" style={{ fontFamily:'monospace', fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>← STATE HUB</Link>
           </div>
-
-          <div style={{ display: 'grid', gridTemplateColumns: 'auto 1fr auto', gap: '1.5rem', alignItems: 'center' }}>
-            <div style={{
-              width: '70px', height: '70px', background: '#1A1E25',
-              border: '2px solid #C8922A40', borderRadius: '4px',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontFamily: '"Bebas Neue", sans-serif', fontSize: '1.8rem', color: '#C8922A'
-            }}>
-              {abbr}
-            </div>
+          <div style={{ display:'flex', alignItems:'flex-end', gap:'20px' }}>
             <div>
-              <h1 style={{
-                fontFamily: '"Bebas Neue", "Arial Black", sans-serif',
-                fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#F5F5F3',
-                letterSpacing: '0.03em', marginBottom: '0.5rem'
-              }}>
-                {stateName}
-              </h1>
-              <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                <LawBadge active={data.cc_status} trueLabel="CONSTITUTIONAL CARRY" falseLabel="PERMIT REQUIRED" />
-                <LawBadge active={!data.red_flag_law} trueLabel="NO RED FLAG" falseLabel="RED FLAG LAW" />
-                <LawBadge
-                  active={data.awb_status === 'none'}
-                  trueLabel="NO AWB"
-                  falseLabel={data.awb_status === 'full' ? 'ASSAULT WEAPONS BAN' : 'PARTIAL AWB'}
-                  falseColor={data.awb_status === 'full' ? '#EF4444' : '#F59E0B'}
-                />
-              </div>
+              <h1 className="page-hero-title">{stateName}</h1>
+              <p className="page-hero-sub">Firearms laws, CCW requirements, and reciprocity guide</p>
             </div>
             {data.rating && (
-              <div style={{ textAlign: 'center' }}>
-                <div style={{ fontFamily: '"Bebas Neue", sans-serif', fontSize: '3rem', color: '#C8922A', lineHeight: 1 }}>
-                  {data.rating}
-                </div>
-                <div style={{ fontFamily: 'monospace', fontSize: '0.6rem', color: '#64748B' }}>2A SCORE</div>
+              <div style={{ textAlign:'center', marginBottom:'8px' }}>
+                <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'4rem', color:ratingColor, lineHeight:1 }}>{data.rating}</div>
+                <div style={{ fontFamily:'monospace', fontSize:'9px', color:'#4B5563', letterSpacing:'0.1em' }}>2A RATING</div>
               </div>
             )}
           </div>
         </div>
       </div>
 
-      {/* Body */}
-      <div style={{ maxWidth: '1100px', margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1.5rem' }}>
+      <div style={{ padding:'40px 0' }}>
+        <div className="container">
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px' }}>
 
-        {/* Carry Laws */}
-        <div style={{ background: '#111318', border: '1px solid #1F2428', borderRadius: '4px', padding: '1.25rem' }}>
-          <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>
-            CARRY LAWS
-          </div>
-          {[
-            ['Constitutional Carry', data.cc_status ? 'YES — No permit required' : 'NO — Permit required'],
-            ['CCW Permit',           data.ccw_permit || 'N/A'],
-            ['Open Carry',           data.open_carry || 'N/A'],
-            ['Mag Limit',            data.mag_limit ? `${data.mag_limit} rounds max` : 'No limit'],
-            ['Wait Period',          data.wait_period ? `${data.wait_period} days` : 'None'],
-          ].map(([label, value]) => (
-            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: '1px solid #1A1E25', fontSize: '0.85rem' }}>
-              <span style={{ color: '#64748B', fontFamily: 'monospace', fontSize: '0.75rem' }}>{label}</span>
-              <span style={{ color: '#D1D5DB', fontFamily: 'monospace', fontSize: '0.75rem', textAlign: 'right', maxWidth: '55%' }}>{value}</span>
+            {/* Carry laws */}
+            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+              <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>CARRY LAWS</h2>
+              <LawRow label="Constitutional Carry" value={data.constitutionalCarry ? '✓ YES — No permit required' : '✗ NO — Permit required'} good={data.constitutionalCarry} />
+              <LawRow label="CCW Permit" value={data.ccwPermit} good={null} />
+              <LawRow label="Open Carry" value={data.openCarry} good={data.openCarry?.includes('Legal')} />
+              <LawRow label="Wait Period" value={data.waitPeriod || 'None'} good={!data.waitPeriod || data.waitPeriod === 'None'} />
+              <LawRow label="Private Sale BGC" value={data.bgcPrivate ? 'Required' : 'Not required'} good={!data.bgcPrivate} />
             </div>
-          ))}
-        </div>
 
-        {/* Restrictions */}
-        <div style={{ background: '#111318', border: '1px solid #1F2428', borderRadius: '4px', padding: '1.25rem' }}>
-          <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>
-            RESTRICTIONS
-          </div>
-          {[
-            ['Assault Weapons Ban',   data.awb_status === 'full' ? 'FULL BAN' : data.awb_status === 'partial' ? 'PARTIAL BAN' : 'None'],
-            ['Red Flag / ERPO',       data.red_flag_law ? 'YES — Active law' : 'NO'],
-            ['Suppressor Legal',      data.suppressor_legal ? 'YES' : data.suppressor_legal === false ? 'NO' : 'Check state law'],
-            ['NFA Items',             data.nfa_legal ? 'Allowed' : data.nfa_legal === false ? 'Restricted' : 'Check ATF'],
-            ['Background Check',      data.private_sale_bgc ? 'Required (private sales)' : 'FFL transfers only'],
-          ].map(([label, value]) => (
-            <div key={label} style={{ display: 'flex', justifyContent: 'space-between', padding: '0.4rem 0', borderBottom: '1px solid #1A1E25', fontSize: '0.85rem' }}>
-              <span style={{ color: '#64748B', fontFamily: 'monospace', fontSize: '0.75rem' }}>{label}</span>
-              <span style={{ color: '#D1D5DB', fontFamily: 'monospace', fontSize: '0.75rem', textAlign: 'right', maxWidth: '55%' }}>{value}</span>
+            {/* Restrictions */}
+            <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px' }}>
+              <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>RESTRICTIONS</h2>
+              <LawRow label="Red Flag Law (ERPO)" value={data.redFlagLaw ? '⚠ YES — In effect' : '✓ NO'} good={!data.redFlagLaw} />
+              <LawRow label="Magazine Limit" value={data.magLimit ? `${data.magLimit} rounds max` : 'None'} good={!data.magLimit} />
+              <LawRow label="AWB Status" value={data.awbStatus || 'None'} good={!data.awbStatus || data.awbStatus === 'None'} />
+              <LawRow label="Suppressors" value={data.suppressors || 'Legal (NFA rules apply)'} good={null} />
             </div>
-          ))}
-        </div>
 
-        {/* Reciprocity */}
-        <div style={{ background: '#111318', border: '1px solid #1F2428', borderRadius: '4px', padding: '1.25rem' }}>
-          <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>
-            CCW RECIPROCITY — HONORS PERMITS FROM
-          </div>
-          {data.reciprocity?.length > 0 ? (
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: '0.4rem' }}>
-              {data.reciprocity.map(st => (
-                <Link key={st} href={`/state-hub/${st.toLowerCase()}`} style={{ textDecoration: 'none' }}>
-                  <span style={{
-                    background: '#0A1F3A', color: '#60A5FA', border: '1px solid #60A5FA30',
-                    padding: '0.2rem 0.5rem', fontFamily: 'monospace', fontSize: '0.7rem',
-                    borderRadius: '2px', cursor: 'pointer'
-                  }}>{st}</span>
-                </Link>
-              ))}
-            </div>
-          ) : (
-            <p style={{ color: '#64748B', fontSize: '0.85rem' }}>No reciprocity agreements or data unavailable.</p>
-          )}
-        </div>
-
-        {/* Recent legislation */}
-        <div style={{ background: '#111318', border: '1px solid #1F2428', borderRadius: '4px', padding: '1.25rem' }}>
-          <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '1rem', fontWeight: 700 }}>
-            RECENT LEGISLATION
-          </div>
-          {data.recent_bills?.length > 0 ? (
-            data.recent_bills.slice(0, 5).map((bill, i) => {
-              const status = getBillStatus(bill.status);
-              return (
-                <div key={i} style={{ paddingBottom: '0.75rem', marginBottom: '0.75rem', borderBottom: '1px solid #1A1E25' }}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '0.5rem', marginBottom: '0.25rem' }}>
-                    <span style={{ fontSize: '0.8rem', color: '#D1D5DB', lineHeight: 1.4, flex: 1 }}>{bill.title}</span>
-                    <span style={{
-                      background: status.bg, color: status.color,
-                      padding: '0.15rem 0.4rem', fontFamily: 'monospace', fontSize: '0.6rem',
-                      border: `1px solid ${status.color}40`, borderRadius: '2px', whiteSpace: 'nowrap'
-                    }}>{status.label}</span>
-                  </div>
-                  <div style={{ fontSize: '0.7rem', color: '#64748B', fontFamily: 'monospace' }}>
-                    {bill.number} · {formatDateShort(bill.actionDate)}
-                  </div>
+            {/* Reciprocity */}
+            {data.reciprocityStates?.length > 0 && (
+              <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px', gridColumn:'1/-1' }}>
+                <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>
+                  CCW RECIPROCITY — {data.reciprocityStates.length} STATES HONOR YOUR {abbr} PERMIT
+                </h2>
+                <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
+                  {data.reciprocityStates.map(s => (
+                    <Link key={s} href={`/state-hub/${s.toLowerCase()}`}
+                      style={{ fontFamily:'monospace', fontSize:'11px', color:'#34D399', background:'#001A0A', border:'1px solid #16603440', padding:'4px 10px', textDecoration:'none' }}>
+                      {s}
+                    </Link>
+                  ))}
                 </div>
-              );
-            })
-          ) : (
-            <p style={{ color: '#64748B', fontSize: '0.85rem' }}>No recent bills tracked. Data updates daily.</p>
-          )}
-        </div>
+              </div>
+            )}
 
-        {/* Notes */}
-        {data.notes && (
-          <div style={{ gridColumn: '1 / -1', background: '#0D1117', border: '1px solid #C8922A30', borderRadius: '4px', padding: '1.25rem' }}>
-            <div style={{ fontFamily: 'monospace', fontSize: '0.7rem', color: '#C8922A', letterSpacing: '0.1em', marginBottom: '0.5rem' }}>
-              EDITOR NOTES
-            </div>
-            <p style={{ fontSize: '0.9rem', color: '#9CA3AF', lineHeight: 1.7 }}>{data.notes}</p>
+            {/* Recent bills */}
+            {data.recentBills?.length > 0 && (
+              <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'24px', gridColumn:'1/-1' }}>
+                <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.4rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'16px' }}>RECENT LEGISLATION</h2>
+                <div style={{ display:'flex', flexDirection:'column', gap:'10px' }}>
+                  {data.recentBills.slice(0,5).map((b, i) => (
+                    <div key={i} style={{ padding:'12px 16px', background:'#0D1117', border:'1px solid #1F2428' }}>
+                      <div style={{ fontFamily:'monospace', fontSize:'11px', color:'#C8922A', marginBottom:'4px' }}>{b.billNumber} · {b.status}</div>
+                      <div style={{ fontSize:'14px', color:'#F0EDE6', fontWeight:600 }}>{b.title}</div>
+                      {b.summary && <div style={{ fontSize:'12px', color:'#6B7280', marginTop:'4px' }}>{b.summary}</div>}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
           </div>
-        )}
 
-        {/* Disclaimer */}
-        <div style={{ gridColumn: '1 / -1', background: '#111318', border: '1px solid #374151', borderRadius: '4px', padding: '1rem' }}>
-          <p style={{ fontSize: '0.75rem', color: '#64748B', lineHeight: 1.6 }}>
-            <strong style={{ color: '#94A3B8' }}>DISCLAIMER:</strong> This information is provided for educational purposes only and may not reflect recent law changes.
-            Always consult a licensed attorney in your jurisdiction before making any decisions regarding firearms laws.
-            DownRange is not responsible for inaccuracies. Laws change — verify current status with official state sources.
-          </p>
+          <div style={{ marginTop:'24px', padding:'16px', background:'#111318', border:'1px solid #1F2428', fontFamily:'monospace', fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
+            ⚠ Laws change frequently. Always verify current statutes before carrying. This is general information, not legal advice. Consult a licensed attorney for legal decisions.
+            {!profile && <span style={{ color:'#C8922A' }}> · Live data populates when LegiScan feed runs.</span>}
+          </div>
         </div>
       </div>
-    </div>
-  );
+      <Footer />
+    </>
+  )
 }

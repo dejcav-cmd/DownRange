@@ -185,3 +185,16 @@ export async function getReviewBySlug(slug) {
 export async function getStateProfile(abbr) {
   return fetchStateProfile(abbr)
 }
+
+export async function getRelatedArticles(category, excludeSlug, limit = 6) {
+  return client.fetch(`
+    *[_type=="newsArticle"&&approved==true&&category==$cat&&slug.current!=$slug]|order(publishedAt desc)[0...$limit]{
+      _id, title, slug, category, urgencyScore, publishedAt,
+      heroImage{asset->{url},alt}, imageUrl, source
+    }
+  `, { cat: category, slug: excludeSlug, limit })
+}
+
+export async function fetchAmmoByType(caliber) {
+  return client.fetch(`*[_type=="ammoPrice"&&caliber==$cal]|order(updatedAt desc)[0...10]`, { cal: caliber })
+}

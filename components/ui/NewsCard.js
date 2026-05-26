@@ -44,7 +44,8 @@ const CAT_GRADIENTS = {
 export default function NewsCard({ article, featured = false }) {
   // Always route to internal DownRange article page
   // externalUrl is shown as "Read original source" inside the article page
-  const href = `/news/${article.slug?.current || article._id}`
+  const slug = article.slug?.current || article._id || ''
+  const href = `/news/${encodeURIComponent(slug)}`
   const catColor   = CAT_COLORS[article.category]  || '#9CA3AF'
   const catLabel   = CAT_LABELS[article.category]  || (article.category?.toUpperCase() || 'NEWS')
   const catGrad    = CAT_GRADIENTS[article.category] || CAT_GRADIENTS.news

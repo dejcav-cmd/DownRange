@@ -1,3 +1,7 @@
+export async function generateStaticParams() {
+  return ['glock-17','glock-43x','ar-15','ak-47','sig-p320','sig-p365','ruger-10-22','mossberg-500','remington-870','smith-wesson-mp9'].map(m=>({model:m}))
+}
+
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'

@@ -90,6 +90,7 @@ const SOURCE_COLORS = {
   'Firearms':   '#34D399',
 }
 
+// CSS injected via style tag in JSX
 export default async function DealsPage() {
   const [reddit, ammoland, gunscom, alerts] = await Promise.all([
     fetchRedditDeals(),
@@ -106,6 +107,7 @@ export default async function DealsPage() {
 
   return (
     <>
+      <style>{'.deal-card:hover { border-color: #C8922A !important; }'}</style>
       <BreakingTicker alerts={alerts} />
       <Masthead />
       <div className="page-hero" data-title="DEALS">
@@ -136,8 +138,7 @@ export default async function DealsPage() {
               {all.map((deal, i) => (
                 <a key={deal.id || i} href={deal.url} target="_blank" rel="noopener noreferrer"
                   style={{ display: 'grid', gridTemplateColumns: '56px 1fr auto', gap: '16px', alignItems: 'center', background: '#111318', border: '1px solid #1F2428', padding: '14px 20px', textDecoration: 'none', transition: 'border-color 0.15s' }}
-                  onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
-                  onMouseLeave={e => e.currentTarget.style.borderColor = '#1F2428'}>
+                  className="deal-card">
 
                   {/* Score / rank */}
                   <div style={{ textAlign: 'center' }}>

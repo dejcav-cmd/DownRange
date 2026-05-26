@@ -26,12 +26,12 @@ function ReviewCard({ review, featured = false }) {
         <div className="card" style={{ overflow: 'hidden' }}>
           <div style={{ width: '100%', height: '240px', background: '#16191F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '60px', color: '#8A6320', position: 'relative' }}>
             {review.heroImage?.asset?.url ? (
-              <img src={review.heroImage.asset.url} alt={review.firearmName} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} />
+              <img src={review.heroImage.asset.url} alt={review.model || review.title || `${review.brand} ${review.model}`} style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.7 }} />
             ) : '🔫'}
           </div>
           <div style={{ padding: '24px' }}>
             <Stars score={review.score || 8.5} />
-            <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '32px', color: '#F0EDE6', letterSpacing: '0.03em', margin: '8px 0 6px' }}>{review.firearmName}</div>
+            <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '32px', color: '#F0EDE6', letterSpacing: '0.03em', margin: '8px 0 6px' }}>{review.model || review.title || `${review.brand} ${review.model}`}</div>
             <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#6B7280', marginBottom: '12px', letterSpacing: '0.08em' }}>
               {review.caliber} · {review.category?.toUpperCase()} · MSRP ${review.msrp?.toLocaleString()}
             </div>
@@ -54,12 +54,12 @@ function ReviewCard({ review, featured = false }) {
       <div className="card" style={{ display: 'flex', gap: '16px', padding: '20px' }}>
         <div style={{ width: '80px', flexShrink: 0, height: '70px', background: '#16191F', display: 'flex', alignItems: 'center', justifyContent: 'center', fontSize: '28px' }}>
           {review.heroImage?.asset?.url ? (
-            <img src={review.heroImage.asset.url} alt={review.firearmName} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+            <img src={review.heroImage.asset.url} alt={review.model || review.title || `${review.brand} ${review.model}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
           ) : '🔫'}
         </div>
         <div style={{ flex: 1 }}>
           <Stars score={review.score || 8} />
-          <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '22px', color: '#F0EDE6', letterSpacing: '0.03em', lineHeight: 1, margin: '6px 0 4px' }}>{review.firearmName}</div>
+          <div style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '22px', color: '#F0EDE6', letterSpacing: '0.03em', lineHeight: 1, margin: '6px 0 4px' }}>{review.model || review.title || `${review.brand} ${review.model}`}</div>
           {review.verdict && (
             <div style={{ fontSize: '12px', color: '#9CA3AF', lineHeight: 1.4 }}>{review.verdict.slice(0, 100)}</div>
           )}

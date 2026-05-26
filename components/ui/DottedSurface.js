@@ -12,7 +12,7 @@ export default function DottedSurface({ className = '' }) {
     if (typeof window === 'undefined') return
 
     let THREE
-    try { THREE = require('three') } catch { return }
+    try { THREE = require('three') } catch (e) { console.warn('Three.js unavailable:', e.message); return }
 
     const el = containerRef.current
     const SEPARATION = 150

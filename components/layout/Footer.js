@@ -2,10 +2,10 @@
 import Link from 'next/link'
 
 const FOOTER_COLS = [
-  { title: 'News', links: [['Latest News','/news'],['Breaking','/news?cat=breaking'],['Opinion','/news?cat=opinion'],['Industry','/news?cat=industry'],['Training','/news?cat=training']] },
-  { title: 'Reviews', links: [['Pistols','/reviews?cat=pistol'],['Rifles','/reviews?cat=rifle'],['Shotguns','/reviews?cat=shotgun'],['Optics','/reviews?cat=optic'],['Suppressors','/reviews?cat=suppressor'],['Accessories','/reviews?cat=accessory']] },
-  { title: 'Laws & Hub', links: [['Federal Law','/laws?level=federal'],['State Laws','/laws?level=state'],['ATF Rules','/laws?cat=atf'],['State Hub','/state-hub'],['SCOTUS Tracker','/laws?cat=scotus'],['Find FFLs','/ffl-finder']] },
-  { title: 'Company', links: [['About DownRange','/about'],['Advertise','/advertise'],['Write For Us','/contribute'],['Press Kit','/press'],['Contact','/contact'],['RSS Feeds','/rss']] },
+  { title: 'News & Deals', links: [['Latest News','/news'],['Live Deals','/deals'],['Releases','/releases'],['Market Prices','/market'],['Video','/video']] },
+  { title: 'Tools', links: [['NFA Tracker','/nfa-tracker'],['Value Estimator','/value-estimator'],['CCW Insurance','/carry-insurance'],['FFL Finder','/ffl-finder'],['Range Finder','/ranges'],['Gun Comparison','/compare/glock-19-vs-sig-p320']] },
+  { title: 'Laws & States', links: [['Federal Bills','/laws?tab=federal'],['State Laws','/laws?tab=state'],['ATF Rules','/laws?tab=atf'],['SCOTUS Cases','/laws?tab=scotus'],['State Hub','/state-hub'],['CCW Reciprocity','/laws?tab=reciprocity']] },
+  { title: 'Guides', links: [['Ammo Guide','/ammo/9mm'],['Holster Guide','/holsters/glock-19'],['Safe Storage','/safe-storage'],['Training','/training'],['About','/about'],['Privacy','/privacy']] },
 ]
 
 export default function Footer() {

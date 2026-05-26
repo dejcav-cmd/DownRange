@@ -6,18 +6,18 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV_ITEMS = [
-  { label: 'Home',         href: '/', exact: true },
-  { label: 'News',         href: '/news' },
-  { label: 'Breaking',     href: '/news?cat=breaking', hot: true },
-  { label: 'Laws',         href: '/laws' },
-  { label: 'Deals',        href: '/deals', hot: false },
-  { label: 'Reviews',      href: '/reviews' },
-  { label: 'Releases',     href: '/releases' },
-  { label: 'State Hub',    href: '/state-hub' },
-  { label: 'Market',       href: '/market' },
-  { label: 'Video',        href: '/video' },
-  { label: 'Ranges',       href: '/ranges' },
-  { label: 'Encyclopedia', href: '/guns' },
+  { href: '/',                label: 'Home',       exact: true },
+  { href: '/news',            label: 'News' },
+  { href: '/deals',           label: 'Deals' },
+  { href: '/laws',            label: 'Laws' },
+  { href: '/reviews',         label: 'Reviews' },
+  { href: '/releases',        label: 'Releases' },
+  { href: '/state-hub',       label: 'State Hub' },
+  { href: '/market',          label: 'Market' },
+  { href: '/nfa-tracker',     label: 'NFA Tracker' },
+  { href: '/video',           label: 'Video' },
+  { href: '/ranges',          label: 'Ranges' },
+  { href: '/guns',            label: 'Guns' },
 ]
 
 export default function Masthead() {

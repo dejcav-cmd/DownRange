@@ -3,7 +3,7 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
-import { getArticleBySlug, getRecentArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
+import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 
 function readingTime(text) {
   if (!text) return '1 min read'
@@ -64,7 +64,7 @@ export default async function ArticlePage({ params }) {
   try {
     ;[article, related, alerts] = await Promise.all([
       getArticleBySlug(params.slug).catch(() => null),
-      getRecentArticles(8).catch(() => []),
+      (article ? getRelatedArticles(article?.category || 'news', params.slug, 8) : getRecentArticles(8)).catch(() => []),
       fetchBreakingAlerts(5).catch(() => []),
     ])
   } catch {
