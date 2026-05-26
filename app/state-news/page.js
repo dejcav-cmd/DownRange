@@ -33,7 +33,7 @@ export default function StateNewsIndex() {
       <div className="page-hero" data-title="STATE NEWS">
         <div className="container">
           <h1 className="page-hero-title">State Firearms News</h1>
-          <p className="page-hero-sub">Real-time firearms news for all 50 states · Filter by category · Sort by urgency or date</p>
+          <p className="page-hero-sub">State-by-state firearms news, legislation, and legal updates — sorted by urgency, not clicks</p>
         </div>
       </div>
       <div style={{ padding:'40px 0' }}>

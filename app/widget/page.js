@@ -10,7 +10,7 @@ export default function WidgetPage() {
       <div className="page-hero">
         <div className="container">
           <h1 className="page-hero-title">Free Embeddable Law Widget</h1>
-          <p className="page-hero-sub">Add a live state gun law summary to your gun store website — free, always current</p>
+          <p className="page-hero-sub">Free embed for gun shops and instructors — live state carry law summary, always current</p>
         </div>
       </div>
       <div style={{ padding: '40px 0' }}>

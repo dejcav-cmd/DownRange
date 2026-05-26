@@ -6,7 +6,7 @@ import { fetchReviews, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Firearms & Gear Reviews — DownRange',
-  description: 'Field-tested reviews with documented round counts. Pistols, rifles, shotguns, optics, and suppressors. No manufacturer sponsorship.'
+  description: 'Field-tested firearm and gear reviews. Round counts documented, no paid placements, no manufacturer samples that affect the outcome.'
 }
 export const revalidate = 3600
 

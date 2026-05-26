@@ -1,6 +1,6 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-export const metadata = { title: 'Firearms Training & Drills — DownRange' }
+export const metadata = { title: 'Firearms Training & Drills — DownRange', description: 'Dry fire plans, live fire drills, and training resources. No theory — just the drills that build real skill.' }
 
 const DRILLS = [
   { name:'1-Reload-1', level:'Beginner', time:'10 min', rounds:10, desc:'Draw, fire 1 round, emergency reload, fire 1 more. Builds reload speed under mild pressure.', target:'7 yards', par:'6 seconds' },

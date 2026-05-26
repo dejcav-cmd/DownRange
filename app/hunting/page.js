@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Outdoors — DownRange',
-  description: 'Hunting season dates, cartridge guides, rifle selection, field skills, precision shooting, training, and preparedness for outdoors Americans.',
+  description: 'Hunting season dates, cartridge selection, rifle guides, and field skills. Built for hunters who also carry.',
 }
 
 // ── DATA ─────────────────────────────────────────────────────────────────────

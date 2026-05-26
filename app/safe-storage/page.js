@@ -53,7 +53,7 @@ export default function SafeStoragePage() {
       <div className="page-hero" data-title="STORAGE">
         <div className="container">
           <h1 className="page-hero-title">Safe Storage Guide</h1>
-          <p className="page-hero-sub">Secure your firearms. Reviews and recommendations for every budget and use case.</p>
+          <p className="page-hero-sub">Gun safes, quick-access vaults, and trigger locks — what actually works and what just looks like it does.</p>
         </div>
       </div>
       <div style={{ padding:'40px 0' }}>

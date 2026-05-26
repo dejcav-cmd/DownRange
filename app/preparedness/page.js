@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Firearms Preparedness & Survival Guide — DownRange',
-  description: 'Home defense planning, emergency ammo storage, grid-down protocols, go-bag and vehicle kit. The complete firearms preparedness guide.',
+  description: 'Home defense planning, ammo storage, grid-down basics, and go-bag essentials. No fantasy prepper content — just what actually works.',
 }
 
 const SECTIONS = [

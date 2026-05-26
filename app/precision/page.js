@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Precision Shooting Hub — DownRange',
-  description: 'PRS competition, long-range ballistics, precision rifle recommendations, optics guide, and training drills.',
+  description: 'Long-range ballistics, PRS competition, optics, and precision rifle. Data-driven and written by people who actually shoot past 500 yards.',
 }
 
 const RIFLES = [

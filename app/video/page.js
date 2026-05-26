@@ -96,7 +96,7 @@ export default async function VideoPage({ searchParams }) {
       <div className="page-hero" data-title="WATCH">
         <div className="container">
           <h1 className="page-hero-title">Watch</h1>
-          <p className="page-hero-sub">Curated video from trusted firearms channels · Updated every 4 hours</p>
+          <p className="page-hero-sub">YouTube suppresses firearm content. We surface it. Updated every 4 hours.</p>
         </div>
       </div>
 

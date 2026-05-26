@@ -4,7 +4,7 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Firearms Learning Center — DownRange',
-  description: 'Beginner-friendly guides on buying your first gun, CCW licensing, safe storage, and more. Written by DJ Cavalcanti.',
+  description: 'Guides on buying your first gun, getting a carry permit, safe storage, and understanding gun laws. Written for new gun owners, not gun writers.',
 }
 
 const ARTICLES = [
@@ -57,13 +57,13 @@ export default function LearnPage({ searchParams }) {
               <span style={{ color:'var(--gold)' }}>Needs to Know</span>
             </h1>
             <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'17px', color:'var(--text-muted)', lineHeight:1.7, marginBottom:'24px', maxWidth:560 }}>
-              Practical guides written for Americans buying their first gun, getting a carry permit, or learning the laws. No fluff, no lectures — just the information you actually need.
+              You searched for something, ended up here, and want a straight answer. That's what this section is. No preamble, no disclaimers beyond what's legally required, no talking down to you.
             </p>
             <div style={{ display:'flex', alignItems:'center', gap:'14px', padding:'14px 18px', background:'var(--bg3)', border:'1px solid var(--border)', borderLeft:'3px solid var(--gold)', width:'fit-content' }}>
               <div style={{ width:36, height:36, background:'linear-gradient(135deg,var(--gold),#8A6320)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'16px' }}>🎯</div>
               <div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>Written by DJ Cavalcanti</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>DownRange Founder · All {ARTICLES.length} articles</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>Founder, DownRange · Washington State</div>
               </div>
             </div>
           </div>
