@@ -22,6 +22,11 @@ const MANUAL_PATCHES = [
     imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
     reason:   'legislation/bills article → law image',
   },
+  {
+    slug:     'saf-files-lawsuit-challenging-newly-signed-maryland-glock-ban',
+    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+    reason:   'SAF lawsuit / Maryland Glock ban → law image',
+  },
 ]
 
 export async function POST(req) {
