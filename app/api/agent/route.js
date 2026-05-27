@@ -39,7 +39,7 @@ export async function GET(req) {
   const feed = searchParams.get('feed') || 'news'
   const t    = Date.now()
 
-  console.log(`[AGENT] ▶ feed=${feed} | cron=${isVercelCron} | manual=${isValidBearer}`)
+  console.log(`[AGENT] ▶ feed=${feed} | cron=${isVercelCron} | admin=${isValidAdmin}`)
 
   try {
     let result
