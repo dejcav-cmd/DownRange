@@ -107,7 +107,7 @@ export async function POST(req) {
     }
 
     const url       = new URL(req.url)
-    const batchSize = Math.min(20, Math.max(1, parseInt(url.searchParams.get('batch') || '5')))
+    const batchSize = Math.min(3, Math.max(1, parseInt(url.searchParams.get('batch') || '1')))
     const force     = url.searchParams.get('force') === 'true'
     const t0        = Date.now()
 

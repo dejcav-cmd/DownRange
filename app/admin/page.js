@@ -1376,7 +1376,7 @@ function BackfillButton({ adminKey }) {
       while (true) {
         batch++
         addLog(`Batch ${batch}: calling Claude API...`, '#64748b')
-        const res  = await fetch(`/api/admin/backfill-articles?batch=10${force?'&force=true':''}`, { method:'POST', headers:{ 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
+        const res  = await fetch(`/api/admin/backfill-articles?batch=1${force?'&force=true':''}`, { method:'POST', headers:{ 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
         const rawText = await res.text()
         if (!rawText || rawText.trim() === '') {
           addLog(`Error: Empty response from server (status ${res.status}). Check Vercel function logs.`, '#ef4444')
@@ -1405,8 +1405,8 @@ function BackfillButton({ adminKey }) {
         addLog(data.message, data.remaining === 0 ? '#22c55e' : '#C8922A')
 
         if (!data.remaining || data.remaining === 0 || data.done === 0) break
-        if (batch >= 30) { addLog('Hit 30-batch limit — click again to continue remaining articles.', '#f59e0b'); break }
-        await new Promise(r => setTimeout(r, 800))
+        if (batch >= 200) { addLog('Hit 200-article limit — click again to continue.', '#f59e0b'); break }
+        await new Promise(r => setTimeout(r, 200))
       }
     } catch(e) {
       addLog('Request error: ' + e.message, '#ef4444')
