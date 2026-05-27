@@ -1742,20 +1742,30 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <ImageFixButton adminKey={adminKey} />
-                <div style={{marginTop:8}}>
+                <div style={{marginTop:8, display:'flex', gap:8, flexWrap:'wrap'}}>
                   <button
                     onClick={async () => {
-                      setMsg('⏳ Patching all articles missing images...')
-                      const r = await fetch('/api/admin/patch-article', {
-                        method:'POST', headers:{'x-admin-key': adminKey}
-                      })
-                      const raw = await r.text()
-                      const d = raw ? JSON.parse(raw) : {}
-                      if (d.ok) setMsg('✅ Fixed ' + d.fixed + ' articles with missing images')
-                      else setMsg('❌ ' + (d.error || 'Error — check admin key'))
+                      setMsg('⏳ Patching all articles...')
+                      const r = await fetch('/api/admin/patch-article', { method:'POST', headers:{'x-admin-key': adminKey} })
+                      const d = await r.json().catch(()=>({error:'Empty response'}))
+                      if (d.ok) setMsg('✅ Fixed ' + d.fixed + ' of ' + d.total + ' articles')
+                      else setMsg('❌ ' + (d.error || 'Error'))
                     }}
                     className="dr-btn-outline" style={{fontSize:11,padding:'6px 14px'}}>
-                    🖼 Patch All Missing Images
+                    🖼 Patch All Images
+                  </button>
+                  <button
+                    onClick={async () => {
+                      setMsg('⏳ Patching specific broken articles...')
+                      const r = await fetch('/api/admin/patch-specific', { method:'POST', headers:{'x-admin-key': adminKey} })
+                      const d = await r.json().catch(()=>({error:'Empty response'}))
+                      if (d.ok) {
+                        const patched = d.results.filter(r=>r.status==='patched')
+                        setMsg('✅ Patched: ' + patched.map(r=>r.slug.slice(0,30)).join(', '))
+                      } else setMsg('❌ ' + (d.error || 'Error'))
+                    }}
+                    className="dr-btn-outline" style={{fontSize:11,padding:'6px 14px',borderColor:'var(--gold)',color:'var(--gold)'}}>
+                    🎯 Fix Specific Articles
                   </button>
                 </div>
               </div>

@@ -421,13 +421,14 @@ export default function OutreachPortal({ adminKey }) {
   const PAGE_SIZE = 50
 
   const LIST_GROUPS = [
-    { key:'youtuber',     label:'YouTubers',            icon:'▶' },
-    { key:'gun_shop',     label:'Gun Shops & FFLs',     icon:'🏪' },
-    { key:'ffl_dealer',   label:'Online Dealers',       icon:'🛒' },
-    { key:'organization', label:'Manufacturers & Orgs', icon:'🏭' },
-    { key:'instructor',   label:'Instructors',          icon:'🎯' },
-    { key:'range',        label:'Ranges',               icon:'🎳' },
-    { key:'all',          label:'All Contacts',         icon:'👥' },
+    { key:'youtuber',     label:'YouTubers',             icon:'▶' },
+    { key:'gun_shop',     label:'Gun Shops & FFLs',      icon:'🏪' },
+    { key:'ffl_dealer',   label:'National FFL Dealers',  icon:'🛒' },
+    { key:'organization', label:'Manufacturers & Orgs',  icon:'🏭' },
+    { key:'instructor',   label:'Instructors & Trainers',icon:'🎯' },
+    { key:'holster',      label:'Holster Companies',     icon:'🔫' },
+    { key:'range',        label:'Ranges',                icon:'🎳' },
+    { key:'all',          label:'All Contacts',          icon:'👥' },
   ]
 
   const loadListGroup = async (group) => {
@@ -658,6 +659,8 @@ export default function OutreachPortal({ adminKey }) {
       { url:'/api/outreach/manufacturers',  label:'70+ Manufacturers' },
       { url:'/api/outreach/dealers',        label:'30+ Dealers' },
       { url:'/api/outreach/holsters',       label:'40+ Holster Companies' },
+      { url:'/api/outreach/ffl-national',   label:'30+ National FFL Dealers' },
+      { url:'/api/outreach/instructors',    label:'30+ Firearms Instructors' },
     ]
     let totalCreated = 0
     for (const step of steps) {
