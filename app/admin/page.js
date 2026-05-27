@@ -2308,6 +2308,7 @@ export default function AdminPage() {
               <div className="dr-alert-info">
                 <strong>Automation:</strong> The newsletter API route at <code style={{ color:'var(--gold)' }}>app/api/newsletter</code> is pending implementation (item #8 on the pending list). Once built, it will automatically compile top stories and send weekly digests via Resend.
               </div>
+              </div>
             </div>
           )}
 
