@@ -67,6 +67,7 @@ const NAV = [
       { id:'overview',     label:'Overview',         icon:'◈',  badge:null },
       { id:'crons',        label:'Cron Jobs',        icon:'⏱', badge:null },
       { id:'sysalerts',    label:'Alerts',           icon:'🚨', badge:null },
+      { id:'agents',       label:'Content Agents',   icon:'🤖', badge:null },
       { id:'rss',          label:'RSS Sources',      icon:'📡', badge:null },
       { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
     ]
@@ -713,6 +714,179 @@ function DealsPanel() {
 }
 
 // ── Inline: Ranges panel ──────────────────────────────────────────────────────
+function ContentAgentsPanel({ adminKey, setMsg }) {
+  const [running, setRunning] = useState({})
+  const [results, setResults] = useState({})
+
+  async function run(key, path, method='POST', params='') {
+    setRunning(r => ({...r, [key]: true}))
+    setResults(r => ({...r, [key]: null}))
+    setMsg('⏳ Running ' + key + '...')
+    try {
+      const res = await fetch('/api/admin/' + path + params, {
+        method,
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+      })
+      const d = await res.json()
+      setResults(r => ({...r, [key]: d}))
+      if (d.ok !== false) setMsg('✅ ' + key + ' complete')
+      else setMsg('❌ ' + (d.error || 'Error'))
+    } catch(e) {
+      setResults(r => ({...r, [key]: { ok: false, error: e.message }}))
+      setMsg('❌ ' + e.message)
+    }
+    setRunning(r => ({...r, [key]: false}))
+  }
+
+  const AGENTS = [
+    {
+      key: 'fix-images',
+      label: '🖼 Fix Article Images',
+      desc: 'Scans all news articles and patches missing or broken images. Tries source OG image first, falls back to keyword-matched firearm photo from image library.',
+      color: '#3b82f6',
+      actions: [
+        { label: 'Fix Missing (batch 50)', params: '?batch=50&force=false' },
+        { label: 'Force Re-patch All (batch 50)', params: '?batch=50&force=true' },
+        { label: 'Large Batch (100)', params: '?batch=100&force=false' },
+      ]
+    },
+    {
+      key: 'backfill-articles',
+      label: '✍ AI Rewrite / Backfill Articles',
+      desc: 'Finds news articles with missing or stub body text and rewrites them using Claude AI. Produces full 900–1100 word articles in DownRange voice.',
+      color: '#C8922A',
+      actions: [
+        { label: 'Backfill 5 Articles', params: '?limit=5' },
+        { label: 'Backfill 10 Articles', params: '?limit=10' },
+        { label: 'Backfill 25 Articles', params: '?limit=25' },
+      ]
+    },
+    {
+      key: 'write-blog-articles',
+      label: '📝 Write Blog Articles (AI)',
+      desc: 'Generates new blog posts using Claude AI based on recent firearms news. Each post is 600–900 words, opinionated, written in DownRange voice.',
+      color: '#22c55e',
+      actions: [
+        { label: 'Write 3 Blog Posts', params: '' },
+      ]
+    },
+    {
+      key: 'write-canada-articles',
+      label: '🇨🇦 Write Canada Articles (AI)',
+      desc: 'Generates Canadian firearms law analysis articles based on current C-21, PAL, and provincial legislation.',
+      color: '#ef4444',
+      actions: [
+        { label: 'Write Canada Articles', params: '' },
+      ]
+    },
+    {
+      key: 'fetch-article-images',
+      label: '📷 Fetch OG Images from Sources',
+      desc: 'For articles missing images, fetches the og:image from each article source URL and uploads to Sanity CDN. Runs automatically every 30min via cron.',
+      color: '#a855f7',
+      actions: [
+        { label: 'Fetch Now (batch 30)', params: '?limit=30' },
+      ]
+    },
+    {
+      key: 'patch-article',
+      label: '🔧 Patch All Article Images',
+      desc: 'Assigns SVG fallback images to articles based on keyword matching: law/ban/ATF → ⚖ law.svg, pistol/Glock → 🔫 pistol.svg, rifle/AR → rifle.svg, etc.',
+      color: '#f59e0b',
+      actions: [
+        { label: 'Patch All Articles', params: '' },
+      ]
+    },
+  ]
+
+  return (
+    <div>
+      <div className="panel-title">🤖 Content Agents</div>
+      <div className="panel-sub">
+        AI-powered content operations. Each agent runs on demand or via cron. Results show below each card after running.
+      </div>
+
+      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))', gap:16}}>
+        {AGENTS.map(agent => {
+          const res = results[agent.key]
+          const busy = running[agent.key]
+          return (
+            <div key={agent.key} className="adm-card" style={{borderLeft:`3px solid ${agent.color}`, display:'flex', flexDirection:'column', gap:12}}>
+              <div>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:16, fontWeight:700, color:'var(--text)', marginBottom:4}}>
+                  {agent.label}
+                </div>
+                <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.7}}>
+                  {agent.desc}
+                </div>
+              </div>
+
+              {/* Action buttons */}
+              <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+                {agent.actions.map(action => (
+                  <button key={action.label} className="btn-primary"
+                    style={{fontSize:11, padding:'6px 14px', background: busy ? '#374151' : agent.color, opacity: busy ? 0.6 : 1}}
+                    disabled={busy}
+                    onClick={() => run(agent.key, agent.key, 'POST', action.params)}>
+                    {busy ? '⏳ Running...' : action.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Result */}
+              {res && (
+                <div style={{
+                  fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'10px 12px',
+                  background: res.ok === false ? 'rgba(239,68,68,.08)' : 'rgba(34,197,94,.08)',
+                  border: `1px solid ${res.ok === false ? 'rgba(239,68,68,.3)' : 'rgba(34,197,94,.3)'}`,
+                  color: res.ok === false ? '#f87171' : '#4ade80',
+                  lineHeight: 1.7
+                }}>
+                  {res.ok === false ? '❌ ' + (res.error || 'Error') : (
+                    <div>
+                      ✅ Done
+                      {res.patched != null && <span style={{color:'var(--text-dim)'}}> · {res.patched} patched</span>}
+                      {res.published != null && <span style={{color:'var(--text-dim)'}}> · {res.published} published</span>}
+                      {res.done != null && <span style={{color:'var(--text-dim)'}}> · {res.done} done</span>}
+                      {res.written != null && <span style={{color:'var(--text-dim)'}}> · {res.written} written</span>}
+                      {res.saved != null && <span style={{color:'var(--text-dim)'}}> · {res.saved} saved</span>}
+                      {res.skipped != null && <span style={{color:'#64748b'}}> · {res.skipped} skipped</span>}
+                      {res.failed != null && res.failed > 0 && <span style={{color:'#f59e0b'}}> · {res.failed} failed</span>}
+                      {res.message && <div style={{color:'var(--text-dim)', marginTop:4}}>{res.message}</div>}
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+
+      {/* Per-content-type rewrite section */}
+      <div style={{marginTop:32}}>
+        <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', letterSpacing:'.05em', textTransform:'uppercase', marginBottom:16, paddingBottom:8, borderBottom:'1px solid var(--border)'}}>
+          Per-Content-Type AI Rewrite
+        </div>
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:12}}>
+          {[
+            { key:'reviews-ai',     label:'★ Rewrite Reviews',    route:'reviews-manager',    action:'ai-rewrite', desc:'AI rewrites selected review body with pros/cons from the reviews panel.' },
+            { key:'releases-ai',    label:'🔫 Rewrite Releases',   route:'releases-manager',   action:'ai-rewrite', desc:'AI rewrites gun release articles. Use the Gun Releases panel to trigger per-item rewrites.' },
+            { key:'blog-ai',        label:'📝 Rewrite Blog Posts',  route:'blog-posts',         action:'ai-write',   desc:'AI rewrites blog post body. Trigger per-post via the Blog panel.' },
+          ].map(item => (
+            <div key={item.key} className="adm-card" style={{padding:'14px 18px'}}>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', marginBottom:4}}>{item.label}</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.7, marginBottom:10}}>{item.desc}</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', padding:'6px 8px', background:'rgba(0,0,0,.3)', border:'1px solid var(--border)'}}>
+                Available in: <span style={{color:'var(--gold)'}}>Content → {item.label.split(' ').slice(1).join(' ')} panel → 🤖 AI Write button</span>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 function RangesPanel() {
   return (
     <div>
@@ -899,8 +1073,9 @@ export default function AdminPage() {
                 </div>
               </div>
             )}
-            {panel==='rss'    && <RSSSourcesPanel />}
-            {panel==='ranges' && <RangesPanel />}
+            {panel==='rss'     && <RSSSourcesPanel />}
+            {panel==='ranges'  && <RangesPanel />}
+            {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
 
             {/* ── OUTREACH ── */}
             {panel==='outreach' && <OutreachPortal adminKey={adminKey} />}
