@@ -46,9 +46,9 @@ import crypto from 'crypto'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
-const CONCURRENCY    = 5    // process N items in parallel (was 1)
-const ITEMS_PER_FEED = 10   // cap per RSS feed (was 15)
-const MAX_ITEMS      = 60   // hard cap total items to process per run
+const CONCURRENCY    = 3    // COST: was 5
+const ITEMS_PER_FEED = 5    // COST: was 10 — enough for 15-min cadence
+const MAX_ITEMS      = 20   // COST: was 60 — runs every 15min, 20 is plenty
 const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────

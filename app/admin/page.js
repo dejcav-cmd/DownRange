@@ -12,6 +12,7 @@ const NewsArticleManager    = dynamic(() => import('../../components/admin/NewsA
 const ReleaseManager        = dynamic(() => import('../../components/admin/ReleaseManager'),        { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CanadaManager         = dynamic(() => import('../../components/admin/CanadaManager'),         { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CompetitionManager    = dynamic(() => import('../../components/admin/CompetitionManager'),    { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
+const AICostDashboard       = dynamic(() => import('../../components/admin/AICostDashboard'),       { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const EnvChecker            = dynamic(() => import('../../components/admin/EnvChecker'),            { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
@@ -41,6 +42,7 @@ const TABS = [
   { key:'releases',    label:'Release Manager',  icon:'◈'  },
   { key:'canada',      label:'Canada',           icon:'🇨🇦' },
   { key:'competitions',label:'Competitions',     icon:'🏆' },
+  { key:'costs',       label:'AI Cost Center',   icon:'💰' },
   { key:'envcheck',    label:'Env Variables',    icon:'🔧' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
@@ -1987,6 +1989,7 @@ export default function AdminPage() {
           {tab==='releases' && <ReleaseManager adminKey={adminKey} />}
           {tab==='canada' && <CanadaManager adminKey={adminKey} />}
           {tab==='competitions' && <CompetitionManager adminKey={adminKey} />}
+          {tab==='costs' && <AICostDashboard adminKey={adminKey} />}
           {tab==='envcheck' && <EnvChecker adminKey={adminKey} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 

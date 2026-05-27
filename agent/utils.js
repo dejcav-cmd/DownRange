@@ -4,7 +4,7 @@ import axios from 'axios'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
-  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 3000)
+  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 1500)  // COST: trimmed from 3000
   const prompt = `Write a DownRange article. DownRange is a firearms and Second Amendment portal run by DJ Cavalcanti, a gun owner based in Washington State.
 
 WRITING RULES — violating these ruins the article:
@@ -63,7 +63,7 @@ Content: ${inputContent}
 CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the HTML.`
 
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 4000 })
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1200 })  // COST: 1200 vs 4000
     // Strip any accidental markdown fences
     const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim()
     const parsed = JSON.parse(clean)
@@ -105,7 +105,7 @@ Last action: ${bill.lastActionText || bill.lastActionDate || 'Unknown'}
 Return ONLY valid JSON, no markdown, no explanation.`
 
   try {
-    const text = await callAIText({ prompt, useCase: 'law', maxTokens: 600 })
+    const text = await callAIText({ prompt, useCase: 'laws', maxTokens: 400 })  // COST: laws tier
     const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim()
     return JSON.parse(clean)
   } catch (err) {
