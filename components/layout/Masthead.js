@@ -209,7 +209,7 @@ export default function Masthead() {
 
         {/* ── Mobile bar ── */}
         <div className="nav-mob-bar" style={{ display:'none', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderTop:'1px solid var(--border)' }}>
-          <Link href="/" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--gold)', letterSpacing:'0.05em', textDecoration:'none', lineHeight:1 }}>DOWNRANGE</Link>
+          
           <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
             <button
               onClick={() => setFeedbackOpen(true)}
