@@ -1741,6 +1741,22 @@ export default function AdminPage() {
                   </div>
                 </div>
                 <ImageFixButton adminKey={adminKey} />
+                <div style={{marginTop:8}}>
+                  <button
+                    onClick={async () => {
+                      setMsg('⏳ Patching all articles missing images...')
+                      const r = await fetch('/api/admin/patch-article', {
+                        method:'POST', headers:{'x-admin-key': adminKey}
+                      })
+                      const raw = await r.text()
+                      const d = raw ? JSON.parse(raw) : {}
+                      if (d.ok) setMsg('✅ Fixed ' + d.fixed + ' articles with missing images')
+                      else setMsg('❌ ' + (d.error || 'Error — check admin key'))
+                    }}
+                    className="dr-btn-outline" style={{fontSize:11,padding:'6px 14px'}}>
+                    🖼 Patch All Missing Images
+                  </button>
+                </div>
               </div>
 
               <div style={{ padding:'12px 16px', background:'rgba(200,146,42,0.06)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.6 }}>
