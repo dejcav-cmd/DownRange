@@ -1,51 +1,70 @@
+import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-const CLERK_PUB  = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
-const CLERK_SEC  = process.env.CLERK_SECRET_KEY || ''
-const ADMIN_KEY  = process.env.ADMIN_KEY || ''
+// Routes that require authentication
+const isAdminRoute = createRouteMatcher(['/admin'])
 
-const hasClerk = !!(
-  CLERK_PUB && CLERK_PUB !== 'pk_test_placeholder' &&
-  CLERK_SEC && CLERK_SEC !== 'sk_test_placeholder'
-)
+// Routes that are always public — NEVER redirect these
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/admin-login(.*)',
+  '/api/admin/auth(.*)',
+  '/api/(.*)',
+  '/news(.*)',
+  '/laws(.*)',
+  '/learn(.*)',
+  '/reviews(.*)',
+  '/releases(.*)',
+  '/market(.*)',
+  '/video(.*)',
+  '/state-hub(.*)',
+  '/state-news(.*)',
+  '/hunting(.*)',
+  '/training(.*)',
+  '/precision(.*)',
+  '/preparedness(.*)',
+  '/safe-storage(.*)',
+  '/carry-insurance(.*)',
+  '/ranges(.*)',
+  '/ffl-finder(.*)',
+  '/nfa-tracker(.*)',
+  '/guns(.*)',
+  '/ammo(.*)',
+  '/holsters(.*)',
+  '/compare(.*)',
+  '/deals(.*)',
+  '/search(.*)',
+  '/blog(.*)',
+  '/about(.*)',
+  '/press(.*)',
+  '/contact(.*)',
+  '/contribute(.*)',
+  '/privacy(.*)',
+  '/terms(.*)',
+  '/widget(.*)',
+  '/value-estimator(.*)',
+  '/canada(.*)',
+])
 
-function isProtected(pathname: string) {
-  return (
-    pathname.startsWith('/admin') &&
-    !pathname.startsWith('/admin-login') &&
-    !pathname.startsWith('/admin/sign-in')
-  )
-}
+export default clerkMiddleware(async (auth, req: NextRequest) => {
+  // Never touch public routes
+  if (isPublicRoute(req)) return NextResponse.next()
 
-// Password-cookie middleware (no Clerk)
-function passwordGuard(req: NextRequest) {
-  if (!isProtected(req.nextUrl.pathname)) return NextResponse.next()
-  const session = req.cookies.get('dr_admin_session')?.value
-  if (!ADMIN_KEY || session !== ADMIN_KEY) {
-    return NextResponse.redirect(new URL('/admin-login', req.url))
-  }
-  return NextResponse.next()
-}
-
-export default hasClerk
-  ? async function middleware(req: NextRequest) {
-      // Dynamically import Clerk only when keys exist
-      const { clerkMiddleware, createRouteMatcher } = await import('@clerk/nextjs/server')
-      const isAdmin = createRouteMatcher(['/admin((?!/login).*)'])
-      return clerkMiddleware(async (auth: any, request: NextRequest) => {
-        if (isAdmin(request)) {
-          const { userId } = await auth()
-          if (!userId) return NextResponse.redirect(new URL('/admin-login', request.url))
-        }
-        return NextResponse.next()
-      })(req, {} as any)
+  // Protect /admin — redirect to login if not signed in
+  if (isAdminRoute(req)) {
+    const { userId } = await auth()
+    if (!userId) {
+      return NextResponse.redirect(new URL('/admin-login', req.url))
     }
-  : passwordGuard
+  }
+
+  return NextResponse.next()
+})
 
 export const config = {
   matcher: [
-    '/((?!_next|[^?]*\\.(?:html?|css|js(?!on)|jpe?g|webp|png|gif|svg|ttf|woff2?|ico|csv|docx?|xlsx?|zip|webmanifest)).*)',
-    '/(api|trpc)(.*)',
+    // Match everything except static files
+    '/((?!_next/static|_next/image|favicon|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff|woff2|ttf)).*)',
   ],
 }
