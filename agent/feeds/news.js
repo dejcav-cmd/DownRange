@@ -16,13 +16,26 @@ const FIREARM_IMAGES = {
 
 function pickImage(title, category) {
   const t = (title || '').toLowerCase()
-  if (/glock|pistol|handgun|ccw|carry|9mm|45|sig|smith|ruger|springfield/.test(t)) return FIREARM_IMAGES.pistol
-  if (/ar.?15|rifle|carbine|5\.56|\.223|ak|308|6\.5/.test(t)) return FIREARM_IMAGES.rifle
-  if (/shotgun|12.?gauge|mossberg|pump/.test(t)) return FIREARM_IMAGES.shotgun
-  if (/suppressor|silencer|nfa|form.?4/.test(t)) return FIREARM_IMAGES.suppressor
-  if (/ammo|ammunition|grain|bullet|caliber/.test(t)) return FIREARM_IMAGES.ammo
-  if (/law|legislation|atf|scotus|court|ban|bill|rights|2a|constitution/.test(t)) return FIREARM_IMAGES.law
-  return FIREARM_IMAGES[category] || FIREARM_IMAGES.news
+  // LAW first — must precede pistol to avoid carry/rights/SAF false matches
+  if (/constitutional.carry|gun.control|preemption|second.amend|2a.rights/.test(t)) return LAW_IMAGE
+  if (/legislat|bill|congress|senate|most.viewed.bill|week.of/.test(t)) return LAW_IMAGE
+  if (/atf|scotus|supreme.court|circuit.court|federal.court|injunction/.test(t)) return LAW_IMAGE
+  if (/feds|federal.agent|doj|fbi|indicted|prosecut|charged with/.test(t)) return LAW_IMAGE
+  if (/ban|lawsuit|legal.challenge|unconstitutional|bruen|heller|mcdonald/.test(t)) return LAW_IMAGE
+  if (/saf|nra|goa|fpc|second.amendment.foundation/.test(t)) return LAW_IMAGE
+  // PISTOL
+  if (/pistols?|handguns?|glock|sig.sauer|bodyguard|shield|hellcat|p365|p320/.test(t)) return PISTOL_IMAGE
+  if (/9mm|45.acp|40.s&w|380.acp|10mm|concealed.carry|edc|ccw|carry.gun/.test(t)) return PISTOL_IMAGE
+  if (/smith.wesson|s&w|ruger|kimber|springfield.armory|walther|beretta|fn.509/.test(t)) return PISTOL_IMAGE
+  if (/iron.sight|trigger.upgrade|holster|magazine|mag.release/.test(t)) return PISTOL_IMAGE
+  // RIFLE
+  if (/ar.?15|ar15|m4|m16|ak.?47|rifle|carbine|bolt.action/.test(t)) return RIFLE_IMAGE
+  if (/5\.56|6\.5.creedmoor|\.308|\.223|300.blackout|suppressor|silencer|nfa/.test(t)) return RIFLE_IMAGE
+  if (/shotgun|12.gauge|mossberg|benelli/.test(t)) return RIFLE_IMAGE
+  if (/optic|scope|red.dot|eotech|aimpoint|trijicon|vortex/.test(t)) return RIFLE_IMAGE
+  if (/ammo|ammunition|cartridge|grain|fmj|jhp/.test(t)) return PISTOL_IMAGE
+  const catMap = { law: LAW_IMAGE, breaking: LAW_IMAGE, opinion: LAW_IMAGE, industry: RIFLE_IMAGE, training: PISTOL_IMAGE, news: PISTOL_IMAGE }
+  return catMap[category] || PISTOL_IMAGE
 }
 const Parser = require('rss-parser')
 const crypto = require('crypto')

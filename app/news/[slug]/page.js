@@ -21,14 +21,24 @@ const ARTICLE_FALLBACKS = {
 
 function getArticleFallback(article) {
   const t = (article?.title || '').toLowerCase()
-  if (/ar-?15|ar15|5\.56|\.223|rifle|carbine|m4|m16|ak|bolt|308|6\.5/.test(t))   return ARTICLE_FALLBACKS.rifle
-  if (/shotgun|12.?gauge|mossberg|remington|benelli|pump/.test(t))                   return ARTICLE_FALLBACKS.shotgun
-  if (/suppressor|silencer|nfa|form.?4|silencerco/.test(t))                         return ARTICLE_FALLBACKS.suppressor
-  if (/optic|scope|red dot|eotech|aimpoint|vortex|trijicon|holosun/.test(t))        return ARTICLE_FALLBACKS.optic
-  if (/ammo|ammunition|grain|fmj|jhp|caliber|bullet/.test(t))                       return ARTICLE_FALLBACKS.ammo
-  if (/glock|pistol|handgun|9mm|45|ccw|carry|sig|ruger|springfield|kimber/.test(t)) return ARTICLE_FALLBACKS.pistol
-  if (/congress|senate|house|h\.r\.|most.viewed.bill|week.of/.test(t)) return ARTICLE_FALLBACKS.law
-  if (/law|legislation|atf|scotus|court|ban|bill|rights|2a|saf|nra|lawsuit|challenge/.test(t)) return ARTICLE_FALLBACKS.law
+  // LAW first
+  if (/constitutional.carry|gun.control|preemption|second.amend|2a.rights/.test(t)) return ARTICLE_FALLBACKS.law
+  if (/\blegislat|\bbill\b|congress|senate|most.viewed.bill|week.of/.test(t)) return ARTICLE_FALLBACKS.law
+  if (/atf\b|scotus|supreme.court|circuit.court|federal.court|injunction/.test(t)) return ARTICLE_FALLBACKS.law
+  if (/\bfeds\b|federal.agent|\bdoj\b|\bfbi\b|indicted|prosecut|charged with/.test(t)) return ARTICLE_FALLBACKS.law
+  if (/\bban\b|lawsuit|legal.challenge|unconstitutional|bruen|heller|mcdonald/.test(t)) return ARTICLE_FALLBACKS.law
+  if (/\bsaf\b|\bnra\b|\bgoa\b|\bfpc\b|second.amendment.foundation/.test(t)) return ARTICLE_FALLBACKS.law
+  // PISTOL
+  if (/pistols?|handguns?|glock|sig.sauer|bodyguard|shield|hellcat|p365|p320/.test(t)) return ARTICLE_FALLBACKS.pistol
+  if (/9mm|45.acp|40.s&w|380.acp|10mm|concealed.carry|edc|ccw|carry.gun/.test(t)) return ARTICLE_FALLBACKS.pistol
+  if (/smith.wesson|s&w|ruger|kimber|springfield.armory|walther|beretta|fn.509/.test(t)) return ARTICLE_FALLBACKS.pistol
+  if (/iron.sight|trigger.upgrade|holster|magazine|mag.release/.test(t)) return ARTICLE_FALLBACKS.pistol
+  // RIFLE
+  if (/ar.?15|ar15|m4\b|m16|ak.?47|rifle|carbine|bolt.action/.test(t)) return ARTICLE_FALLBACKS.rifle
+  if (/5\.56|6\.5.creedmoor|\.308|\.223|300.blackout|suppressor|silencer|nfa/.test(t)) return ARTICLE_FALLBACKS.rifle
+  if (/shotgun|12.gauge|mossberg|benelli/.test(t)) return ARTICLE_FALLBACKS.rifle
+  if (/optic|scope|red.dot|eotech|aimpoint|trijicon|vortex/.test(t)) return ARTICLE_FALLBACKS.rifle
+  if (/ammo|ammunition|cartridge|\bgrain\b|fmj|jhp/.test(t)) return ARTICLE_FALLBACKS.ammo
   return ARTICLE_FALLBACKS[article?.category] || ARTICLE_FALLBACKS.news
 }
 
