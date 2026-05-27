@@ -19,6 +19,7 @@ import { competition }      from './competition'
 import { outreachCampaign } from './outreachCampaign'
 import { outreachTemplate } from './outreachTemplate'
 import { outreachSendLog }  from './outreachSendLog'
+import { cronRunStore }     from './cronRunStore'
 
 export const schemaTypes = [
   newsArticle,
@@ -29,4 +30,5 @@ export const schemaTypes = [
   dailyBriefing,
   canadaContent,
   competition,
+  cronRunStore,
 ]

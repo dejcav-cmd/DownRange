@@ -7,16 +7,34 @@ export const dynamic = 'force-dynamic'
  */
 
 import { Redis } from '@upstash/redis'
+import { createClient } from '@sanity/client'
 
 const REDIS_KEY = 'dr:cron-runs-v2'
 const TTL = 30 * 86400  // 30 days
+const SANITY_DOC_ID   = 'cron-run-store'
+const SANITY_DOC_TYPE = 'cronRunStore'
 
 let _redis = null
+let _sanity = null
+
 function getRedis() {
   if (_redis) return _redis
   if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) return null
   _redis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN })
   return _redis
+}
+
+function getSanity() {
+  if (_sanity) return _sanity
+  if (!process.env.SANITY_API_TOKEN) return null
+  _sanity = createClient({
+    projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+    dataset:    'production',
+    apiVersion: '2024-01-01',
+    useCdn:     false,
+    token:      process.env.SANITY_API_TOKEN,
+  })
+  return _sanity
 }
 
 // In-memory fallback
@@ -89,8 +107,21 @@ async function readRuns() {
   if (redis) {
     try {
       const d = await redis.get(REDIS_KEY)
-      if (typeof d === 'object' && d !== null) return d
-      if (typeof d === 'string') return JSON.parse(d)
+      if (d) return typeof d === 'string' ? JSON.parse(d) : d
+    } catch {}
+  }
+  // Sanity fallback
+  const sanity = getSanity()
+  if (sanity) {
+    try {
+      const doc = await sanity.fetch(
+        `*[_type == "${SANITY_DOC_TYPE}" && _id == "${SANITY_DOC_ID}"][0]{ data }`
+      )
+      if (doc?.data) {
+        const parsed = typeof doc.data === 'string' ? JSON.parse(doc.data) : doc.data
+        _mem = parsed
+        return parsed
+      }
     } catch {}
   }
   return _mem
@@ -100,7 +131,21 @@ async function writeRuns(data) {
   _mem = data
   const redis = getRedis()
   if (redis) {
-    try { await redis.set(REDIS_KEY, JSON.stringify(data), { ex: TTL }) } catch {}
+    try {
+      await redis.set(REDIS_KEY, JSON.stringify(data), { ex: TTL })
+      return
+    } catch {}
+  }
+  // Sanity fallback
+  const sanity = getSanity()
+  if (sanity) {
+    try {
+      await sanity.createOrReplace({
+        _id:   SANITY_DOC_ID,
+        _type: SANITY_DOC_TYPE,
+        data:  JSON.stringify(data),
+      })
+    } catch {}
   }
 }
 
