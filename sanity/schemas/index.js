@@ -14,6 +14,8 @@ import { priceAlert }     from './priceAlert'
 import { billTracker }    from './billTracker'
 import { outreachContact }  from './outreachContact'
 import { dailyBriefing }    from './dailyBriefing'
+import { canadaContent }    from './canadaContent'
+import { competition }      from './competition'
 import { outreachCampaign } from './outreachCampaign'
 import { outreachTemplate } from './outreachTemplate'
 import { outreachSendLog }  from './outreachSendLog'
@@ -24,4 +26,6 @@ export const schemaTypes = [
   priceAlert, billTracker, siteConfig, marketAnalysis,
   outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
   dailyBriefing,
+  canadaContent,
+  competition,
 ]

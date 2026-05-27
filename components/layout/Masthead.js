@@ -47,6 +47,7 @@ const NAV = [
     label: 'Outdoors', href: '/hunting',
     children: [
       { label: '🦌 Hunting',       href: '/hunting',       desc: 'Season dates & cartridges' },
+      { label: '🏆 Competitions',   href: '/competitions',  desc: 'NRA, USPSA, IDPA, PRS calendar' },
       { label: '🎯 Precision',     href: '/precision',     desc: 'PRS, long range, ballistics' },
       { label: '▲ Training',       href: '/training',      desc: '30-day dry fire plan' },
       { label: '🔒 Safe Storage',  href: '/safe-storage',  desc: 'Biometric & vault reviews' },

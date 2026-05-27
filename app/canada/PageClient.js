@@ -161,7 +161,12 @@ const IMPACT_C = { CRITICAL:'#ef4444', HIGH:'#f97316', MED:'#f59e0b', REQUIRED:'
 
 // ── COMPONENT ────────────────────────────────────────────────────────────────
 
-export default function CanadaPage() {
+export default function CanadaPage({ laws=[], provinces=[], articles=[], ammo=[], alerts=[], stats=[] }) {
+  // Merge Sanity data with static fallbacks
+  const activeLaws      = laws.length      > 0 ? laws      : FEDERAL_LAWS
+  const activeProvinces = provinces.length > 0 ? provinces : PROVINCES
+  const activeArticles  = articles.length  > 0 ? articles  : ARTICLES
+  const activeAmmo      = ammo.length      > 0 ? ammo      : AMMO_DATA
   const [tab,      setTab]      = useState('overview')
   const [expanded, setExpanded] = useState(null)
   const [palStep,  setPalStep]  = useState(null)
@@ -283,11 +288,11 @@ export default function CanadaPage() {
               {/* Top 3 Laws */}
               <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:'var(--text)',letterSpacing:'.04em',marginBottom:16}}>Critical Laws Right Now</h2>
               <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:12,marginBottom:40}}>
-                {FEDERAL_LAWS.slice(0,3).map(law=>(
+                {activeLaws.slice(0,3).map(law=>(
                   <div key={law.name} style={{background:'var(--bg2)',border:'1px solid '+(IMPACT_C[law.impact]||'var(--border)')+'44',padding:'16px 20px'}}>
                     <div style={{display:'flex',justifyContent:'space-between',marginBottom:8}}>
                       <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:IMPACT_C[law.impact]||'#9ca3af',letterSpacing:'.08em'}}>{law.impact}</span>
-                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>{law.date}</span>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>{law.effectiveDate || law.date}</span>
                     </div>
                     <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:16,fontWeight:700,color:'var(--text)',marginBottom:8,lineHeight:1.2}}>{law.name}</div>
                     <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#9ca3af',lineHeight:1.7,margin:0}}>{law.summary}</p>
@@ -323,12 +328,12 @@ export default function CanadaPage() {
               <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.8rem',color:'var(--text)',letterSpacing:'.04em',marginBottom:8}}>Federal Firearms Laws</h2>
               <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:24}}>Click any law to expand full detail and source links.</p>
               <div style={{display:'flex',flexDirection:'column',gap:8}}>
-                {FEDERAL_LAWS.map((law,i)=>(
+                {activeLaws.map((law,i)=>(
                   <div key={i} style={{border:'1px solid '+(expanded===i?IMPACT_C[law.impact]||'var(--gold)':'var(--border)'),background:'var(--bg2)',transition:'all .15s'}}>
                     <div onClick={()=>setExpanded(expanded===i?null:i)} style={{padding:'16px 20px',cursor:'pointer',display:'flex',gap:12,alignItems:'flex-start'}}>
                       <div style={{flexShrink:0,width:80,textAlign:'center'}}>
-                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'3px 8px',background:(IMPACT_C[law.impact]||'#374151')+'22',color:IMPACT_C[law.impact]||'#9ca3af',letterSpacing:'.06em'}}>{law.impact||law.status}</div>
-                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:4}}>{law.date}</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'3px 8px',background:(IMPACT_C[law.impact]||'#374151')+'22',color:IMPACT_C[law.impact]||'#9ca3af',letterSpacing:'.06em'}}>{law.impact || law.status}</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:4}}>{law.effectiveDate || law.date}</div>
                       </div>
                       <div style={{flex:1}}>
                         <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:17,fontWeight:700,color:'var(--text)',marginBottom:6,lineHeight:1.2}}>{law.name}</div>
@@ -365,17 +370,17 @@ export default function CanadaPage() {
               </div>
 
               <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))',gap:10}}>
-                {PROVINCES.map((p,i)=>(
-                  <div key={p.abbr} style={{border:'1px solid '+(expanded===('p'+i)?p.color:'var(--border)'),background:'var(--bg2)',transition:'all .15s'}}>
+                {activeProvinces.map((p,i)=>(
+                  <div key={p.abbr} style={{border:'1px solid '+(expanded===('p'+i)?(p.color || (p.rating>='B'?'#22c55e':p.rating>='C'?'#f59e0b':p.rating==='D'?'#dc2626':'#ef4444')):'var(--border)'),background:'var(--bg2)',transition:'all .15s'}}>
                     <div onClick={()=>setExpanded(expanded===('p'+i)?null:('p'+i))} style={{padding:'14px 16px',cursor:'pointer',display:'flex',gap:12,alignItems:'center'}}>
-                      <div style={{width:42,height:42,background:p.color+'22',border:'1px solid '+p.color+'44',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
-                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:700,color:p.color}}>{p.abbr}</span>
+                      <div style={{width:42,height:42,background:(p.color || (p.rating>='B'?'#22c55e':p.rating>='C'?'#f59e0b':p.rating==='D'?'#dc2626':'#ef4444'))+'22',border:'1px solid '+(p.color || (p.rating>='B'?'#22c55e':p.rating>='C'?'#f59e0b':p.rating==='D'?'#dc2626':'#ef4444'))+'44',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:13,fontWeight:700,color:(p.color || (p.rating>='B'?'#22c55e':p.rating>='C'?'#f59e0b':p.rating==='D'?'#dc2626':'#ef4444'))}}>{p.abbr}</span>
                       </div>
                       <div style={{flex:1}}>
                         <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)'}}>{p.name}</div>
                         <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>{p.summary.slice(0,60)}...</div>
                       </div>
-                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:p.color,letterSpacing:'.04em',flexShrink:0}}>{p.rating}</div>
+                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:(p.color || (p.rating>='B'?'#22c55e':p.rating>='C'?'#f59e0b':p.rating==='D'?'#dc2626':'#ef4444')),letterSpacing:'.04em',flexShrink:0}}>{p.rating}</div>
                     </div>
                     {expanded===('p'+i) && (
                       <div style={{borderTop:'1px solid var(--border)',padding:'14px 16px',background:'rgba(0,0,0,.15)'}}>
@@ -383,7 +388,7 @@ export default function CanadaPage() {
                         <div style={{display:'flex',flexDirection:'column',gap:4}}>
                           {p.highlights.map((h,j)=>(
                             <div key={j} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',display:'flex',gap:6}}>
-                              <span style={{color:p.color,flexShrink:0}}>›</span>{h}
+                              <span style={{color:(p.color || (p.rating>='B'?'#22c55e':p.rating>='C'?'#f59e0b':p.rating==='D'?'#dc2626':'#ef4444')),flexShrink:0}}>›</span>{h}
                             </div>
                           ))}
                         </div>
@@ -448,10 +453,10 @@ export default function CanadaPage() {
               <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.8rem',color:'var(--text)',letterSpacing:'.04em',marginBottom:8}}>Canadian Firearms Analysis</h2>
               <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:28}}>Written by the DownRange team. No press release rewriting.</p>
               <div style={{display:'flex',flexDirection:'column',gap:32}}>
-                {ARTICLES.map((a,i)=>(
+                {activeArticles.map((a,i)=>(
                   <article key={i} style={{border:'1px solid var(--border)',background:'var(--bg2)',overflow:'hidden'}}>
                     <div style={{height:200,overflow:'hidden',position:'relative'}}>
-                      <img src={a.img} alt={a.title} style={{width:'100%',height:'100%',objectFit:'cover',opacity:.7}} />
+                      <img src={a.imageUrl || a.img} alt={a.title} style={{width:'100%',height:'100%',objectFit:'cover',opacity:.7}} />
                       <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,#111318 0%,transparent 60%)'}} />
                       <div style={{position:'absolute',bottom:12,left:16,display:'flex',gap:8}}>
                         <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'3px 8px',background:'#C8922A',color:'#000'}}>{a.tag}</span>
@@ -482,10 +487,10 @@ export default function CanadaPage() {
                     <div key={i} style={{padding:'10px 14px',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',fontWeight:700}}>{h}</div>
                   ))}
                 </div>
-                {AMMO_DATA.map((a,i)=>(
-                  <div key={i} style={{display:'grid',gridTemplateColumns:'140px 110px 110px 90px 1fr',borderBottom:i<AMMO_DATA.length-1?'1px solid var(--border)':'none',background:i%2?'rgba(0,0,0,.1)':'transparent'}}>
+                {activeAmmo.map((a,i)=>(
+                  <div key={i} style={{display:'grid',gridTemplateColumns:'140px 110px 110px 90px 1fr',borderBottom:i<activeAmmo.length-1?'1px solid var(--border)':'none',background:i%2?'rgba(0,0,0,.1)':'transparent'}}>
                     <div style={{padding:'12px 14px',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,fontWeight:700,color:'var(--text)'}}>{a.caliber}</div>
-                    <div style={{padding:'12px 14px',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,fontWeight:700,color:'#C8922A'}}>{a.cadPrice}</div>
+                    <div style={{padding:'12px 14px',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,fontWeight:700,color:'#C8922A'}}>{a.cadPrice || a.cad}</div>
                     <div style={{padding:'12px 14px',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#6b7280'}}>{a.usdEq}</div>
                     <div style={{padding:'12px 14px'}}>
                       <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'2px 7px',background:a.avail==='High'?'rgba(34,197,94,.15)':a.avail==='Moderate'?'rgba(245,158,11,.15)':'rgba(239,68,68,.15)',color:a.avail==='High'?'#22c55e':a.avail==='Moderate'?'#f59e0b':'#ef4444'}}>{a.avail}</span>
