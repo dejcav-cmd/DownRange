@@ -1391,9 +1391,21 @@ function BackfillButton() {
 
 export default function AdminPage() {
   const [tab, setTab]       = useState('dashboard')
-  const [secret, setSecret] = useState('')
-  const [msg, setMsg]       = useState('')
+  const [secret, setSecret]   = useState('')
+  const [adminKey, setAdminKeyState] = useState('')
+  const [msg, setMsg]         = useState('')
   const [running, setRunning] = useState({})
+
+  // Load admin key from localStorage on mount
+  React.useEffect(() => {
+    const stored = localStorage.getItem('dr_admin_key') || ''
+    setAdminKeyState(stored)
+  }, [])
+
+  const setAdminKey = (v) => {
+    setAdminKeyState(v)
+    localStorage.setItem('dr_admin_key', v)
+  }
 
   async function runFeed(key) {
     setRunning(r => ({...r, [key]:true}))
@@ -1423,6 +1435,13 @@ export default function AdminPage() {
           <div style={{ display:'flex', gap:'10px', alignItems:'center' }}>
 
             <Link href="/" className="dr-btn-outline" style={{ padding:'6px 14px', fontSize:'11px' }}>← Site</Link>
+            <input
+              type="password"
+              placeholder="Admin Key"
+              value={adminKey}
+              onChange={e=>setAdminKey(e.target.value)}
+              style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'6px 10px', width:130, outline:'none' }}
+            />
           </div>
         </div>
       </div>
@@ -1789,10 +1808,10 @@ export default function AdminPage() {
 
           {/* ── PULL LOG ── */}
           {tab==='pulllog' && <PullLogDashboard />}
-          {tab==='outreach' && <OutreachPortal adminKey={secret} />}
-          {tab==='approvalq' && <ApprovalQueue adminKey={secret} />}
-          {tab==='intel' && <IntelligenceDashboard adminKey={secret} />}
-          {tab==='crons' && <CronDashboard adminKey={secret} />}
+          {tab==='outreach' && <OutreachPortal adminKey={adminKey} />}
+          {tab==='approvalq' && <ApprovalQueue adminKey={adminKey} />}
+          {tab==='intel' && <IntelligenceDashboard adminKey={adminKey} />}
+          {tab==='crons' && <CronDashboard adminKey={adminKey} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 
           {tab==='cronhealth' && <CronHealth secret={secret} />}

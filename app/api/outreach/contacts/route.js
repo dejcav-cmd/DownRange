@@ -47,6 +47,7 @@ export async function GET(req) {
     "dealers":    count(*[_type == "outreachContact" && type == "ffl_dealer"]),
     "withEmail":  count(*[_type == "outreachContact" && defined(email) && email != ""]),
     "permitted":  count(*[_type == "outreachContact" && emailPermission == true]),
+    "orgs":       count(*[_type == "outreachContact" && type == "organization"]),
   }`)
 
   return Response.json({ ok: true, contacts, stats, count: contacts.length })

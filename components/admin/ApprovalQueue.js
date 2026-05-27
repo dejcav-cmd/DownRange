@@ -252,6 +252,21 @@ export default function ApprovalQueue({ adminKey }) {
   const TABS = ['draft','snoozed','sent','skipped','replied']
   const TYPES = ['youtuber','gun_shop','ffl_dealer','instructor','organization','range']
 
+  if (!adminKey) {
+    return (
+      <div style={{maxWidth:600}}>
+        <style>{AQ_S}</style>
+        <div style={{padding:'40px 32px',background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'3px solid var(--gold)',textAlign:'center'}}>
+          <div style={{fontSize:40,marginBottom:12}}>🔑</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--gold)',letterSpacing:'.05em',marginBottom:8}}>Admin Key Required</div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b',lineHeight:1.7}}>
+            Enter your ADMIN_KEY in the password field in the admin header (top-right).
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{maxWidth:1200,height:'100%'}}>
       <style>{AQ_S}</style>
@@ -324,15 +339,23 @@ export default function ApprovalQueue({ adminKey }) {
       {loading ? (
         <div style={{padding:40,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>Loading queue...</div>
       ) : filtered.length===0 ? (
-        <div style={{padding:40,textAlign:'center',border:'1px solid var(--border)',background:'var(--bg2)'}}>
+        <div style={{padding:'40px 32px',textAlign:'center',border:'1px solid var(--border)',background:'var(--bg2)'}}>
           <div style={{fontSize:40,marginBottom:12}}>{tab==='draft'?'✉️':'📭'}</div>
-          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.2rem',color:'var(--text)',letterSpacing:'.05em',marginBottom:8}}>
-            {tab==='draft'?'Queue is empty':'Nothing here'}
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:'var(--text)',letterSpacing:'.05em',marginBottom:8}}>
+            {tab==='draft'?'No Drafts Yet':'Nothing here'}
           </div>
-          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:16}}>
-            {tab==='draft'?'Hit Generate Drafts to auto-create personalized emails for your contacts.':'No entries in this status.'}
-          </div>
-          {tab==='draft'&&<button className="aq-btn" onClick={()=>setShowGenerate(true)}>⚡ Generate Drafts</button>}
+          {tab==='draft'&&<>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:6,lineHeight:1.7}}>
+              To generate approval drafts you need contacts and templates loaded first.
+            </div>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#94a3b8',marginBottom:20,lineHeight:1.8,maxWidth:480,margin:'0 auto 20px',padding:'12px 16px',background:'rgba(0,0,0,.3)',border:'1px solid var(--border)',textAlign:'left'}}>
+              <strong style={{color:'var(--gold)'}}>Step 1:</strong> Go to the <strong>Outreach</strong> tab → hit <strong>SEED EVERYTHING</strong> (loads 140+ contacts + 10 templates)<br/>
+              <strong style={{color:'var(--gold)'}}>Step 2:</strong> Come back here → hit <strong>⚡ Generate Drafts</strong><br/>
+              <strong style={{color:'var(--gold)'}}>Step 3:</strong> Review each email live → hit <strong>✅ Approve &amp; Send</strong>
+            </div>
+            <button className="aq-btn" onClick={()=>setShowGenerate(true)}>⚡ Generate Drafts</button>
+          </>}
+          {tab!=='draft'&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b'}}>No entries in this status.</div>}
         </div>
       ) : (
         <div className="aq-split">

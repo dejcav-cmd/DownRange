@@ -517,6 +517,35 @@ export default function OutreachPortal({ adminKey }) {
     else flash(d.error||'Error',false)
   }
 
+  // ── Seed everything at once ──────────────────────────────────────────────────
+  const seedAll = async () => {
+    setLoading(true)
+    flash('Seeding all lists — this takes about 60 seconds...')
+    const steps = [
+      { url:'/api/outreach/templates/seed', label:'Templates + YouTubers' },
+      { url:'/api/outreach/manufacturers',  label:'70+ Manufacturers' },
+      { url:'/api/outreach/dealers',        label:'30+ Dealers' },
+      { url:'/api/outreach/holsters',       label:'40+ Holster Companies' },
+    ]
+    let totalCreated = 0
+    for (const step of steps) {
+      try {
+        const res = await fetch(step.url, {method:'POST', headers:h})
+        const d = await res.json()
+        const n = d.created || d.templates?.created || 0
+        totalCreated += n
+        flash(`✓ ${step.label}: ${n} created`)
+      } catch(e) {
+        flash(`✗ ${step.label}: ${e.message}`, false)
+      }
+      await new Promise(r => setTimeout(r, 800))
+    }
+    flash(`🎉 Done! ${totalCreated} total records created. Loading your contacts...`)
+    await loadContacts()
+    await loadTemplates()
+    setLoading(false)
+  }
+
   const runScrape = async (save=false) => {
     setScrapeRunning(true); setScrapeResult(null)
     const res = await fetch('/api/outreach/scrape',{method:'POST',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify({source:scrapeSource,params:{state:scrapeState,limit:100},saveToDatabase:save})})
@@ -577,6 +606,26 @@ export default function OutreachPortal({ adminKey }) {
     ['scrape','🔍 Scrape'],['import','📥 Import'],
   ]
 
+  // ── Key gate ────────────────────────────────────────────────────────────────
+  if (!adminKey) {
+    return (
+      <div style={{maxWidth:600}}>
+        <style>{S}</style>
+        <div style={{padding:'40px 32px',background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'3px solid var(--gold)',textAlign:'center'}}>
+          <div style={{fontSize:40,marginBottom:12}}>🔑</div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--gold)',letterSpacing:'.05em',marginBottom:8}}>Admin Key Required</div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b',marginBottom:20,lineHeight:1.7}}>
+            Enter your ADMIN_KEY in the password field in the top-right of the admin header to unlock the Outreach Portal.
+          </div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#475569',padding:'10px 16px',background:'rgba(0,0,0,.3)',border:'1px solid var(--border)',textAlign:'left',lineHeight:2}}>
+            The ADMIN_KEY is set as a Vercel environment variable.<br/>
+            Find it in: Vercel → Project → Settings → Environment Variables → ADMIN_KEY
+          </div>
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div style={{maxWidth:1100}}>
       <style>{S}</style>
@@ -620,6 +669,59 @@ export default function OutreachPortal({ adminKey }) {
         <button className="op-btn-ghost op-btn-sm" onClick={seedDealers}>🛒 Seed 30+ Dealers & Retailers</button>
         <button className="op-btn-ghost op-btn-sm" onClick={seedHolsters}>🔒 Seed 40+ Holster Companies</button>
       </div>
+
+      {/* ── SETUP BANNER — shows when database is empty ── */}
+      {stats && stats.total === 0 && (
+        <div style={{marginBottom:20,padding:'20px 24px',background:'rgba(200,146,42,.06)',border:'2px solid rgba(200,146,42,.4)',borderRadius:2}}>
+          <div style={{display:'flex',alignItems:'flex-start',gap:16,flexWrap:'wrap'}}>
+            <div style={{flex:1}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.3rem',color:'var(--gold)',letterSpacing:'.05em',marginBottom:6}}>
+                🚀 First Time Setup — No Contacts Yet
+              </div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#94a3b8',lineHeight:1.8,marginBottom:12}}>
+                Your outreach database is empty. Hit <strong style={{color:'var(--gold)'}}>Seed Everything</strong> to load:<br/>
+                10 email templates · 25 YouTubers (hickok45, Garand Thumb, Colion Noir + more) · 70+ manufacturers · 30+ dealers · 40+ holster companies.<br/>
+                This takes ~60 seconds. Do it once and your contact lists are ready.
+              </div>
+              <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+                <button className="op-btn" onClick={seedAll} disabled={loading} style={{fontSize:14,padding:'10px 24px'}}>
+                  {loading ? '⏳ Seeding...' : '🚀 SEED EVERYTHING — ONE CLICK'}
+                </button>
+              </div>
+            </div>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#475569',background:'rgba(0,0,0,.4)',padding:'12px 16px',minWidth:180}}>
+              <div style={{color:'#64748b',marginBottom:6,letterSpacing:'.08em'}}>WHAT GETS LOADED</div>
+              {[
+                ['Templates','10 email templates'],
+                ['YouTubers','25 top gun channels'],
+                ['Manufacturers','70+ brands'],
+                ['Dealers','30+ retailers'],
+                ['Holsters','40+ companies'],
+              ].map(([l,v])=>(
+                <div key={l} style={{display:'flex',justifyContent:'space-between',gap:12,marginBottom:2}}>
+                  <span style={{color:'#64748b'}}>{l}</span>
+                  <span style={{color:'var(--text-dim)'}}>{v}</span>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ── QUICK STATS when populated ── */}
+      {stats && stats.total > 0 && (
+        <div style={{marginBottom:16,padding:'10px 16px',background:'rgba(34,197,94,.05)',border:'1px solid rgba(34,197,94,.2)',display:'flex',gap:16,flexWrap:'wrap',alignItems:'center'}}>
+          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#22c55e',fontWeight:700}}>✓ DATABASE LOADED</span>
+          {[
+            [`${stats.total} contacts`,'var(--text-dim)'],
+            [`${stats.withEmail||0} with email`,'#3b82f6'],
+            [`${stats.youtubers||0} YouTubers`,'#a855f7'],
+            [`${stats.orgs||0} manufacturers/orgs`,'#f59e0b'],
+          ].map(([l,col])=>(
+            <span key={l} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:col}}>{l}</span>
+          ))}
+        </div>
+      )}
 
       {/* Sub-tabs */}
       <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:24,overflowX:'auto',gap:0}}>
