@@ -988,7 +988,6 @@ function ScrapeReleasesButton({ adminKey }) {
   const [stats, setStats] = React.useState(null)
   const [limit, setLimit] = React.useState(10)
   const [force, setForce] = React.useState(false)
-  const adminKey = process.env.NEXT_PUBLIC_ADMIN_KEY || ''
 
   function addLog(msg, color) {
     setLog(prev => [...prev, { msg, color, t: new Date().toLocaleTimeString() }])
@@ -1894,7 +1893,45 @@ export default function AdminPage() {
           {tab==='settings' && (
             <div>
               <h1 className="dr-section-title">Site Settings</h1>
-              <p className="dr-section-sub">Runtime configuration overview</p>
+              <p className="dr-section-sub">Admin access and runtime configuration</p>
+
+              {/* ── ADMIN KEY CONFIG ── */}
+              <div className="dr-card" style={{ marginBottom:24, borderLeft:'3px solid var(--gold)' }}>
+                <div className="dr-card-title" style={{ marginBottom:6 }}>🔑 Admin Key</div>
+                <p className="t-label-sm" style={{ marginBottom:14, lineHeight:1.7 }}>
+                  This key authenticates all admin actions — backfill, fix images, outreach, and cron triggers.
+                  It must match the <code style={{ color:'var(--gold)' }}>ADMIN_KEY</code> environment variable set in Vercel.
+                  The key is saved in your browser's localStorage and persists across sessions.
+                </p>
+                <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap' }}>
+                  <input
+                    type="password"
+                    placeholder="Paste your ADMIN_KEY from Vercel"
+                    defaultValue={adminKey}
+                    id="settings-admin-key-input"
+                    style={{ background:'var(--bg3)', border:`1px solid ${adminKey?'#22c55e':'var(--border)'}`, color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', padding:'10px 14px', width:280, outline:'none' }}
+                  />
+                  <button
+                    onClick={() => {
+                      const val = document.getElementById('settings-admin-key-input').value.trim()
+                      if (!val) return
+                      localStorage.setItem('dr_admin_key', val)
+                      setAdminKey(val)
+                      setMsg('✅ Admin key saved — all admin features are now unlocked')
+                    }}
+                    className="dr-btn-primary" style={{ padding:'10px 20px' }}>
+                    Save Key
+                  </button>
+                  {adminKey && (
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#22c55e' }}>
+                      ✅ Key active ({adminKey.slice(0,4)}{'*'.repeat(Math.min(8, adminKey.length-4))})
+                    </span>
+                  )}
+                </div>
+                <div style={{ marginTop:12, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569', lineHeight:1.8 }}>
+                  To find your key: <strong style={{ color:'#64748b' }}>vercel.com → Project: down-range-indol → Settings → Environment Variables → ADMIN_KEY → 👁 reveal</strong>
+                </div>
+              </div>
               <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
                 {[
                   { label:'News Revalidation',  val:'300 seconds (5 min)',    desc:'How often Next.js refreshes news pages' },
