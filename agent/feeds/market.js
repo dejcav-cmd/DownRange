@@ -1,7 +1,6 @@
-require('dotenv').config()
-const axios = require('axios')
-const Parser = require('rss-parser')
-const { publishToSanity, sleep } = require('../utils')
+import axios from 'axios'
+import Parser from 'rss-parser'
+import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const parser = new Parser()
 
@@ -153,8 +152,7 @@ async function runVideoFeed() {
   console.log(`[VIDEO] Done. ${done} videos`)
 }
 
-module.exports = { runMarketFeed, runVideoFeed }
-if (require.main === module) {
+export { runMarketFeed, runVideoFeed }
   runMarketFeed()
     .then(() => runVideoFeed())
     .catch(console.error)

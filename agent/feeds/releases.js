@@ -1,8 +1,7 @@
-require('dotenv').config()
-const axios = require('axios')
-const Parser = require('rss-parser')
-const { rewriteWithClaude, isDuplicate, publishToSanity, sleep } = require('../utils')
-const crypto = require('crypto')
+import axios from 'axios'
+import Parser from 'rss-parser'
+import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
+import crypto from 'crypto'
 
 const parser = new Parser()
 
@@ -132,5 +131,4 @@ async function runReleasesFeed() {
   return { done, failed }
 }
 
-module.exports = { runReleasesFeed }
-if (require.main === module) runReleasesFeed().catch(console.error)
+export { runReleasesFeed }

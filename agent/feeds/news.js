@@ -1,5 +1,4 @@
-require('dotenv').config()
-const axios  = require('axios')
+import axios from 'axios'
 
 // Wikimedia verified firearm images — assigned when RSS has no image
 const FIREARM_IMAGES = {
@@ -13,6 +12,11 @@ const FIREARM_IMAGES = {
   industry:   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
   breaking:   'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
 }
+
+// Named aliases used by pickImage() below
+const LAW_IMAGE    = FIREARM_IMAGES.law
+const PISTOL_IMAGE = FIREARM_IMAGES.pistol
+const RIFLE_IMAGE  = FIREARM_IMAGES.rifle
 
 function pickImage(title, category) {
   const t = (title || '').toLowerCase()
@@ -37,9 +41,9 @@ function pickImage(title, category) {
   const catMap = { law: LAW_IMAGE, breaking: LAW_IMAGE, opinion: LAW_IMAGE, industry: RIFLE_IMAGE, training: PISTOL_IMAGE, news: PISTOL_IMAGE }
   return catMap[category] || PISTOL_IMAGE
 }
-const Parser = require('rss-parser')
-const crypto = require('crypto')
-const { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } = require('../utils')
+import Parser from 'rss-parser'
+import crypto from 'crypto'
+import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 5    // process N items in parallel (was 1)
@@ -360,5 +364,4 @@ async function runNewsFeed() {
   return summary
 }
 
-module.exports = { runNewsFeed }
-if (require.main === module) runNewsFeed().catch(console.error)
+export { runNewsFeed }

@@ -3,7 +3,7 @@
  * Fetches latest videos from whitelisted YouTube channels
  * Runs every 4 hours via cron
  */
-const { sanityWrite, discordNotify, rateLimiter } = require('../utils')
+import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const CHANNELS = [
   { id: 'UC5Gwxl2DmAZkdiuoWsLcRhg', name: 'Garand Thumb' },
@@ -80,9 +80,8 @@ async function runVideoFeed() {
   return total
 }
 
-module.exports = { runVideoFeed }
+export { runVideoFeed }
 
-if (require.main === module) {
   runVideoFeed().then(n => {
     console.log(`Done: ${n} videos`)
     process.exit(0)

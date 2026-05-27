@@ -1,6 +1,5 @@
-require('dotenv').config()
-const axios = require('axios')
-const { enrichLawWithClaude, publishToSanity, notifyError, sleep } = require('../utils')
+import axios from 'axios'
+import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const STATUS_MAP = {
   'Introduced': 'pending',
@@ -164,5 +163,4 @@ async function runLawsFeed() {
   return { done, failed }
 }
 
-module.exports = { runLawsFeed }
-if (require.main === module) runLawsFeed().catch(console.error)
+export { runLawsFeed }

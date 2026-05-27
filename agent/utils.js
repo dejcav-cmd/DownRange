@@ -1,5 +1,5 @@
-const crypto = require('crypto')
-const axios = require('axios')
+import crypto from 'crypto'
+import axios from 'axios'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
@@ -237,11 +237,4 @@ async function rateLimitedBatch(items, fn, delayMs = 1000) {
   return results
 }
 
-module.exports = {
-  rewriteWithClaude,
-  enrichLawWithClaude,
-  hashUrl, isDuplicate, resetDedup,
-  discordNotify, notifyStatus, notifyBreaking, notifyError,
-  publishToSanity,
-  sleep, rateLimitedBatch
-}
+export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch }
