@@ -1816,14 +1816,14 @@ export default function AdminPage() {
                 <div style={{marginTop:8, display:'flex', gap:8, flexWrap:'wrap'}}>
                   <button
                     onClick={async () => {
-                      setMsg('⏳ Patching all articles...')
+                      setMsg('⏳ Patching ALL articles with correct Wikimedia images...')
                       const r = await fetch('/api/admin/patch-article', { method:'POST', headers:{'x-admin-key': adminKey} })
                       const d = await r.json().catch(()=>({error:'Empty response'}))
-                      if (d.ok) setMsg('✅ Fixed ' + d.fixed + ' of ' + d.total + ' articles')
-                      else setMsg('❌ ' + (d.error || 'Error'))
+                      if (d.ok) setMsg('✅ Done — fixed ' + d.fixed + ' broken images out of ' + d.total + ' total articles')
+                      else setMsg('❌ ' + (d.error || 'Error — check admin key'))
                     }}
-                    className="dr-btn-outline" style={{fontSize:11,padding:'6px 14px'}}>
-                    🖼 Patch All Images
+                    className="dr-btn-primary" style={{fontSize:12,padding:'10px 18px',background:'#ef4444',color:'#fff',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,letterSpacing:'.06em',cursor:'pointer'}}>
+                    🔧 FIX ALL ARTICLE IMAGES NOW
                   </button>
                   <button
                     onClick={async () => {
