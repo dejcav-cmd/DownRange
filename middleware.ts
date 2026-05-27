@@ -2,56 +2,24 @@ import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
-// Routes that require authentication
+// Only /admin (exact path) requires auth — everything else is public
 const isAdminRoute = createRouteMatcher(['/admin'])
 
-// Routes that are always public — NEVER redirect these
-const isPublicRoute = createRouteMatcher([
-  '/',
-  '/admin-login(.*)',
-  '/api/admin/auth(.*)',
-  '/api/(.*)',
-  '/news(.*)',
-  '/laws(.*)',
-  '/learn(.*)',
-  '/reviews(.*)',
-  '/releases(.*)',
-  '/market(.*)',
-  '/video(.*)',
-  '/state-hub(.*)',
-  '/state-news(.*)',
-  '/hunting(.*)',
-  '/training(.*)',
-  '/precision(.*)',
-  '/preparedness(.*)',
-  '/safe-storage(.*)',
-  '/carry-insurance(.*)',
-  '/ranges(.*)',
-  '/ffl-finder(.*)',
-  '/nfa-tracker(.*)',
-  '/guns(.*)',
-  '/ammo(.*)',
-  '/holsters(.*)',
-  '/compare(.*)',
-  '/deals(.*)',
-  '/search(.*)',
-  '/blog(.*)',
-  '/about(.*)',
-  '/press(.*)',
-  '/contact(.*)',
-  '/contribute(.*)',
-  '/privacy(.*)',
-  '/terms(.*)',
-  '/widget(.*)',
-  '/value-estimator(.*)',
-  '/canada(.*)',
-])
-
 export default clerkMiddleware(async (auth, req: NextRequest) => {
-  // Never touch public routes
-  if (isPublicRoute(req)) return NextResponse.next()
+  const { pathname } = req.nextUrl
 
-  // Protect /admin — redirect to login if not signed in
+  // Always allow these through — never redirect
+  const alwaysPublic = [
+    '/admin-login',
+    '/api/',
+    '/_next/',
+    '/favicon',
+  ]
+  if (alwaysPublic.some(p => pathname.startsWith(p))) {
+    return NextResponse.next()
+  }
+
+  // Protect only the exact /admin route
   if (isAdminRoute(req)) {
     const { userId } = await auth()
     if (!userId) {
@@ -64,7 +32,8 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
 export const config = {
   matcher: [
-    // Match everything except static files
-    '/((?!_next/static|_next/image|favicon|.*\\.(?:svg|png|jpg|jpeg|gif|webp|ico|css|js|woff|woff2|ttf)).*)',
+    // Only run middleware on /admin and /admin-login — nothing else
+    '/admin',
+    '/admin-login(.*)',
   ],
 }

@@ -1,5 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  // Tell Clerk where the sign-in page lives — prevents 404 redirects to /sign-in
+  env: {
+    NEXT_PUBLIC_CLERK_SIGN_IN_URL: '/admin-login',
+    NEXT_PUBLIC_CLERK_SIGN_UP_URL: '/admin-login',
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL: '/admin',
+    NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL: '/admin',
+  },
   images: {
     remotePatterns: [
       { protocol: 'https', hostname: 'cdn.sanity.io' },

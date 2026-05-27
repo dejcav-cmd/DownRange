@@ -236,7 +236,9 @@ function ClerkLogin() {
 
   return (
     <SignIn
-      afterSignInUrl="/admin"
+      fallbackRedirectUrl="/admin"
+      forceRedirectUrl="/admin"
+      signUpUrl="/admin-login"
       appearance={{
         layout: { logoPlacement: 'none' },
         variables: {
