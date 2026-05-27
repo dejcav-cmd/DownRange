@@ -71,6 +71,7 @@ const NAV = [
     label: '🇨🇦 International', href: '/canada',
     children: [
       { label: '🇨🇦 Canada', href: '/canada', desc: 'PAL, C-21, province laws' },
+      { label: '📡 RSS Feeds', href: '/rss', desc: 'Subscribe to all DownRange feeds' },
     ]
   },
   { label: 'Blog', href: '/blog' },
