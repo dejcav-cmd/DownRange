@@ -24,7 +24,7 @@ export async function GET() {
     const dedicated = await client.fetch(`
       *[_type == "breakingAlert" && active == true]
       | order(publishedAt desc) [0...8] {
-        _id, headline, url, urgencyScore, publishedAt
+        _id, headline, "url": sourceUrl, urgencyScore, publishedAt
       }
     `).catch(() => [])
 
