@@ -1,57 +1,47 @@
 import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
+const CLERK_PUB  = process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY || ''
+const CLERK_SEC  = process.env.CLERK_SECRET_KEY || ''
+const ADMIN_KEY  = process.env.ADMIN_KEY || ''
+
 const hasClerk = !!(
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY &&
-  process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY !== 'pk_test_placeholder' &&
-  process.env.CLERK_SECRET_KEY &&
-  process.env.CLERK_SECRET_KEY !== 'sk_test_placeholder'
+  CLERK_PUB && CLERK_PUB !== 'pk_test_placeholder' &&
+  CLERK_SEC && CLERK_SEC !== 'sk_test_placeholder'
 )
 
-// ── Password session middleware (no Clerk) ────────────────────────────────────
-function passwordMiddleware(req: NextRequest) {
-  const { pathname } = req.nextUrl
-
-  // Only protect /admin routes, not /admin-login or /api/admin/auth
-  if (
+function isProtected(pathname: string) {
+  return (
     pathname.startsWith('/admin') &&
     !pathname.startsWith('/admin-login') &&
-    !pathname.startsWith('/api/admin/auth')
-  ) {
-    const session = req.cookies.get('dr_admin_session')?.value
-    const adminKey = process.env.ADMIN_KEY || ''
+    !pathname.startsWith('/admin/sign-in')
+  )
+}
 
-    if (!adminKey || session !== adminKey) {
-      const loginUrl = new URL('/admin-login', req.url)
-      return NextResponse.redirect(loginUrl)
-    }
+// Password-cookie middleware (no Clerk)
+function passwordGuard(req: NextRequest) {
+  if (!isProtected(req.nextUrl.pathname)) return NextResponse.next()
+  const session = req.cookies.get('dr_admin_session')?.value
+  if (!ADMIN_KEY || session !== ADMIN_KEY) {
+    return NextResponse.redirect(new URL('/admin-login', req.url))
   }
-
   return NextResponse.next()
 }
 
-// Export — Clerk when configured, password gate otherwise
-let middleware: (req: NextRequest) => Promise<NextResponse> | NextResponse
-
-if (hasClerk) {
-  const { clerkMiddleware, createRouteMatcher } = require('@clerk/nextjs/server')
-  const isAdminRoute = createRouteMatcher(['/admin((?!/login).*)'])
-
-  middleware = clerkMiddleware(async (auth: any, req: NextRequest) => {
-    if (isAdminRoute(req) && !req.nextUrl.pathname.startsWith('/admin-login')) {
-      const { userId } = await auth()
-      if (!userId) {
-        const loginUrl = new URL('/admin-login', req.url)
-        return NextResponse.redirect(loginUrl)
-      }
+export default hasClerk
+  ? async function middleware(req: NextRequest) {
+      // Dynamically import Clerk only when keys exist
+      const { clerkMiddleware, createRouteMatcher } = await import('@clerk/nextjs/server')
+      const isAdmin = createRouteMatcher(['/admin((?!/login).*)'])
+      return clerkMiddleware(async (auth: any, request: NextRequest) => {
+        if (isAdmin(request)) {
+          const { userId } = await auth()
+          if (!userId) return NextResponse.redirect(new URL('/admin-login', request.url))
+        }
+        return NextResponse.next()
+      })(req, {} as any)
     }
-    return NextResponse.next()
-  })
-} else {
-  middleware = passwordMiddleware
-}
-
-export default middleware
+  : passwordGuard
 
 export const config = {
   matcher: [

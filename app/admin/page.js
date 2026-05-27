@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
 const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
 const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
+const EnvChecker            = dynamic(() => import('../../components/admin/EnvChecker'),            { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
 const TABS = [
@@ -28,6 +29,7 @@ const TABS = [
   { key:'outreach',   label:'Outreach + Queue', icon:'📬' },
   { key:'intel',       label:'Intelligence',     icon:'🧠' },
   { key:'crons',       label:'Cron Jobs',        icon:'⚙' },
+  { key:'envcheck',    label:'Env Variables',    icon:'🔧' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
@@ -1810,6 +1812,7 @@ export default function AdminPage() {
           {tab==='outreach' && <OutreachPortal adminKey={adminKey} />}
           {tab==='intel' && <IntelligenceDashboard adminKey={adminKey} />}
           {tab==='crons' && <CronDashboard adminKey={adminKey} />}
+          {tab==='envcheck' && <EnvChecker adminKey={adminKey} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 
           {tab==='cronhealth' && <CronHealth secret={secret} />}
