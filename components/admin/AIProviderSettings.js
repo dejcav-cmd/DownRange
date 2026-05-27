@@ -71,6 +71,7 @@ export default function AIProviderSettings({ adminKey }) {
   const [keys,     setKeys]     = useState({ openai:'', glm:'' })
   const [saved,    setSaved]    = useState(false)
   const [saving,   setSaving]   = useState(false)
+  const [vercelResult, setVercelResult] = useState(null)
   const [testing,  setTesting]  = useState(false)
   const [testLog,  setTestLog]  = useState([])
   const [testRes,  setTestRes]  = useState('')
@@ -95,16 +96,26 @@ export default function AIProviderSettings({ adminKey }) {
   }
 
   async function pushToVercel() {
-    setSaving(true)
+    setSaving(true); setVercelResult(null)
     const vars = {}
     for (const u of USE_CASES) { if (chains[u.key]?.length > 0) vars[u.env] = chainStr(chains[u.key]) }
     if (keys.openai) vars.OPENAI_API_KEY = keys.openai
     if (keys.glm)    vars.GLM_API_KEY    = keys.glm
     try {
-      const res = await fetch('/api/admin/set-env', { method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'}, body:JSON.stringify({vars}) })
+      const res = await fetch('/api/admin/set-env', {
+        method:'POST',
+        headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
+        body:JSON.stringify({vars})
+      })
       const d = await res.json()
-      flash(d.ok ? '✅ Pushed to Vercel — redeploy to activate' : '❌ '+(d.error||'Error'))
-    } catch(e) { flash('❌ '+e.message) }
+      setVercelResult(d)
+      if (d.ok) flash('✅ Pushed to Vercel — trigger a redeploy to activate')
+      else if (d.manual) flash('⚠ VERCEL_TOKEN not set — see manual instructions below')
+      else flash('❌ ' + (d.error || d.message || 'Push failed — see details below'))
+    } catch(e) {
+      setVercelResult({ ok:false, error: e.message, httpError: true })
+      flash('❌ Network error: ' + e.message)
+    }
     setSaving(false)
   }
 
@@ -269,6 +280,50 @@ export default function AIProviderSettings({ adminKey }) {
         <button className="cp-btn" onClick={saveLocal}>{saved?'✅ Saved':'💾 Save Locally'}</button>
         <button className="cp-btn" style={{background:saving?'#374151':'#1e3a5f',color:'#fff'}} onClick={pushToVercel} disabled={saving}>{saving?'Pushing...':'🚀 Push to Vercel'}</button>
       </div>
+
+      {/* ── VERCEL PUSH RESULT ── */}
+      {vercelResult && (
+        <div style={{marginTop:14,padding:'12px 16px',background:'var(--bg2)',border:`1px solid ${vercelResult.ok?'rgba(34,197,94,.3)':vercelResult.manual?'rgba(245,158,11,.3)':'rgba(239,68,68,.3)'}`,fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
+          <div style={{fontWeight:700,color:vercelResult.ok?'#22c55e':vercelResult.manual?'#f59e0b':'#f87171',marginBottom:8}}>
+            {vercelResult.ok ? '✅ Pushed successfully' : vercelResult.manual ? '⚠ Manual setup required' : '❌ Push failed'}
+          </div>
+          <div style={{color:'#6b7280',marginBottom:vercelResult.manual||vercelResult.results?8:0}}>{vercelResult.message}</div>
+
+          {/* Manual env var instructions */}
+          {vercelResult.manual && vercelResult.envLines && (
+            <div style={{marginTop:8}}>
+              <div style={{color:'#f59e0b',marginBottom:6}}>Add these to Vercel → Project → Settings → Environment Variables:</div>
+              <div style={{background:'rgba(0,0,0,.4)',padding:'10px 12px',borderLeft:'3px solid #f59e0b',overflowX:'auto'}}>
+                {vercelResult.envLines.split('
+').map((line,i) => (
+                  <div key={i} style={{display:'flex',justifyContent:'space-between',gap:16,marginBottom:3}}>
+                    <code style={{color:'#C8922A'}}>{line.split('=')[0]}</code>
+                    <code style={{color:'#9ca3af',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:320}}>{line.split('=').slice(1).join('=')}</code>
+                  </div>
+                ))}
+              </div>
+              <div style={{marginTop:8,color:'#4b5563',fontSize:10}}>
+                To enable auto-push: add <code style={{color:'var(--gold)'}}>VERCEL_TOKEN</code> to Vercel env vars.
+                Get a token at <a href="https://vercel.com/account/tokens" target="_blank" rel="noreferrer" style={{color:'var(--gold)'}}>vercel.com/account/tokens</a>.
+              </div>
+            </div>
+          )}
+
+          {/* Per-var results when token is set */}
+          {vercelResult.results?.length > 0 && (
+            <div style={{marginTop:8,display:'flex',flexDirection:'column',gap:3}}>
+              {vercelResult.results.map((r,i) => (
+                <div key={i} style={{display:'flex',gap:10,alignItems:'center'}}>
+                  <span style={{color:r.ok?'#22c55e':'#f87171',flexShrink:0}}>{r.ok?'✅':'❌'}</span>
+                  <code style={{color:'#C8922A',flexShrink:0}}>{r.name}</code>
+                  {r.error && <span style={{color:'#f87171',flex:1}}>{r.error}</span>}
+                  {r.status && !r.ok && <span style={{color:'#6b7280'}}>HTTP {r.status}</span>}
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      )}
 
       <div style={{marginTop:12,fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#374151',lineHeight:1.9}}>
         <strong style={{color:'var(--gold)'}}>How fallback works:</strong> Slot 1 is always tried first. If it fails (rate limit, quota, API error, timeout), the next slot runs automatically. All failures are logged to the cron dashboard.

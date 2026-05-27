@@ -254,13 +254,23 @@ export default function NewsArticleManager({ adminKey }) {
             const broken = isBrokenImage(a.imageUrl)
             return (
               <div key={a._id} className={'nam-row' + (selected===a._id ? ' selected' : '')} onClick={() => setSelected(selected===a._id ? null : a._id)}>
-                {/* Thumb */}
+                {/* Thumb + inline fix */}
                 <div style={{ position:'relative', width:80, height:50, flexShrink:0 }}>
                   {a.imageUrl
                     ? <img src={a.imageUrl} alt="" className="nam-img" onError={e => { e.target.style.background='#1a0000'; e.target.src='' }} />
                     : <div style={{ width:80, height:50, background:'#1a0000', display:'flex', alignItems:'center', justifyContent:'center', fontSize:18 }}>⚠</div>
                   }
-                  {broken && <div style={{ position:'absolute', top:2, right:2, width:8, height:8, borderRadius:'50%', background:'#ef4444' }} title="Broken image" />}
+                  {broken && (
+                    <button
+                      onClick={e => { e.stopPropagation(); fixImage(a) }}
+                      disabled={busy}
+                      title="Fix image"
+                      style={{ position:'absolute', bottom:2, right:2, background:'#f59e0b', border:'none', color:'#000',
+                        fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, padding:'2px 4px',
+                        cursor:'pointer', lineHeight:1, zIndex:1 }}>
+                      FIX
+                    </button>
+                  )}
                 </div>
                 {/* Title */}
                 <div className="nam-cell" style={{ overflow:'visible', whiteSpace:'normal' }}>
@@ -315,7 +325,10 @@ export default function NewsArticleManager({ adminKey }) {
                 )}
               </div>
               <div style={{ display:'flex', gap:6, marginBottom:8, flexWrap:'wrap' }}>
-                <button className="nam-btn-sm" onClick={() => fixImage(selectedArticle)} disabled={busy}>🔧 Auto-Fix</button>
+                <button className="nam-btn" onClick={() => fixImage(selectedArticle)} disabled={busy}
+                  style={{ background:'#f59e0b', color:'#000', fontSize:11, padding:'7px 12px' }}>
+                  🔧 Auto-Fix Image
+                </button>
                 <button className="nam-btn-sm" onClick={() => aiFixImage(selectedArticle)} disabled={busy}>🤖 AI Pick</button>
                 <button className="nam-btn-sm" onClick={() => {
                   const url = prompt('Paste new image URL:')
