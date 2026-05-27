@@ -1,3 +1,4 @@
+import { reportCronRun } from '@/lib/cronReporter'
 export const dynamic = 'force-dynamic'
 import { createClient } from '@sanity/client'
 

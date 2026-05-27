@@ -1,3 +1,4 @@
+import { reportCronRun } from '@/lib/cronReporter'
 export const dynamic = 'force-dynamic'
 // GET /api/outreach/queue/digest — called by Vercel cron daily
 // Sends DJ an email summary of pending approvals

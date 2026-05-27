@@ -6,6 +6,7 @@ const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, 
 const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
 const ApprovalQueue        = dynamic(() => import('../../components/admin/ApprovalQueue'),        { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Approval Queue...</div> })
 const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
+const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
 const TABS = [
   { key:'dashboard',  label:'Dashboard',       icon:'◈' },
@@ -28,6 +29,7 @@ const TABS = [
   { key:'outreach',   label:'Outreach',        icon:'📬' },
   { key:'approvalq',  label:'Approval Queue',  icon:'⚡' },
   { key:'intel',       label:'Intelligence',     icon:'🧠' },
+  { key:'crons',       label:'Cron Jobs',        icon:'⚙' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
   { key:'settings',  label:'Settings',        icon:'⚙' },
@@ -1790,6 +1792,7 @@ export default function AdminPage() {
           {tab==='outreach' && <OutreachPortal adminKey={secret} />}
           {tab==='approvalq' && <ApprovalQueue adminKey={secret} />}
           {tab==='intel' && <IntelligenceDashboard adminKey={secret} />}
+          {tab==='crons' && <CronDashboard adminKey={secret} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 
           {tab==='cronhealth' && <CronHealth secret={secret} />}

@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+import { reportCronRun } from '@/lib/cronReporter'
 export const maxDuration = 300  // 5 minutes — required for feed processing
 
 /**
@@ -52,6 +53,7 @@ export async function GET(req) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'success' }),
     }).catch(() => {})
+    await reportCronRun(feed, { status:'success', ms:Date.now()-t, details: result ? JSON.stringify(result).slice(0,100) : undefined })
     return Response.json({ success: true, feed, result, ms: Date.now()-t })
   } catch (err) {
     console.error(`[AGENT] ✗ feed=${feed} error:`, err.message)
@@ -61,6 +63,7 @@ export async function GET(req) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'failed', error: err.message }),
     }).catch(() => {})
+    await reportCronRun(feed, { status:'failed', ms:Date.now()-t, error:err.message })
     return Response.json({ error: err.message, feed, ms: Date.now()-t }, { status: 500 })
   }
 }

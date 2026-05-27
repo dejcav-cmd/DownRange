@@ -1,3 +1,4 @@
+import { reportCronRun } from '@/lib/cronReporter'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
@@ -221,6 +222,7 @@ export async function GET(req) {
   })
 
   await notifyDiscord(report)
+  await reportCronRun('site_health', { status: totalIssues === 0 ? 'success' : 'success', ms, details:`issues:${totalIssues} fixed:${totalFixed}` })
 
   console.log(`[site-health] Done. ${totalIssues} issues, ${totalFixed} fixed. ${ms}ms`)
   return Response.json(report)

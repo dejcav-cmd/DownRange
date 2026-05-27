@@ -170,6 +170,9 @@
     },
     "app/api/admin/briefings/route.js": {
       "maxDuration": 30
+    },
+    "app/api/admin/cron-status/route.js": {
+      "maxDuration": 60
     }
   }
 }

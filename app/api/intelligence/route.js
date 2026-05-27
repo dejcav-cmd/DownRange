@@ -1,3 +1,4 @@
+import { reportCronRun } from '@/lib/cronReporter'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
 
@@ -396,6 +397,9 @@ export async function GET(req) {
 
     console.log('[intelligence] Briefing complete. Score:', analysis.score)
 
+    const elapsed = Date.now() - new Date(initial.runAt).getTime()
+    await reportCronRun('intelligence', { status:'success', ms:elapsed, details:`score:${analysis.score} recs:${(analysis.recommendations||[]).length}` })
+
     return Response.json({
       ok:        true,
       date:      today,
@@ -410,6 +414,7 @@ export async function GET(req) {
 
   } catch (err) {
     console.error('[intelligence] Fatal error:', err)
+    await reportCronRun('intelligence', { status:'failed', error:err.message })
     if (briefingId) {
       await sanity.patch(briefingId).set({
         status:   'failed',
