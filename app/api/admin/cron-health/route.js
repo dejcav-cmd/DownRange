@@ -7,6 +7,7 @@ export const maxDuration = 30
  * No auth required (values are booleans only, no secrets exposed).
  */
 import { createClient } from '@sanity/client'
+import { reportCronRun } from '@/lib/cronReporter'
 
 const ALERT_EMAIL = 'dejcav@gmail.com'
 const ALERT_KEY   = 'dr:cron-health-last-status'
@@ -59,6 +60,7 @@ const sanity = createClient({
 })
 
 export async function GET() {
+  const t0 = Date.now()
   const now = new Date().toISOString()
 
   // ── ENV VAR HEALTH ────────────────────────────────────────────────────
@@ -142,6 +144,14 @@ export async function GET() {
   if (overallStatus === 'BROKEN' || overallStatus === 'DEGRADED') {
     sendHealthAlert(issues, overallStatus).catch(() => {})
   }
+
+  // Log the health check run itself
+  await reportCronRun('cron-health', {
+    status: overallStatus === 'HEALTHY' ? 'success' : overallStatus === 'BROKEN' ? 'failed' : 'warning',
+    ms: Date.now() - t0,
+    details: overallStatus + ' — ' + issues.length + ' issue(s)',
+    error: issues.length > 0 ? issues[0].msg : null,
+  }).catch(() => {})
 
   return Response.json({
     status: overallStatus,

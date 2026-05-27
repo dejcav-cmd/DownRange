@@ -292,6 +292,12 @@ export async function POST(req) {
     return acc
   }, {})
 
+  await reportCronRun('fix-images', {
+    status: failed > 0 && fixed === 0 ? 'failed' : 'success',
+    ms: Date.now() - t,
+    details: fixed + ' fixed, ' + failed + ' failed, ' + remaining + ' remaining',
+    error: failed > 0 ? failed + ' articles failed to get images' : null,
+  })
   return Response.json({
     fixed, failed, skipped, total, remaining,
     ms:       Date.now() - t,

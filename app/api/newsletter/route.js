@@ -77,6 +77,7 @@ export async function GET(req) {
         </div>`
       }).catch(err => console.error('Digest send error:', err.message))
     }
+    await reportCronRun('newsletter', { status: 'success', ms: 0, details: 'completed' }).catch(()=>{})
     return Response.json({ success: true, sent: testEmails.length })
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 })

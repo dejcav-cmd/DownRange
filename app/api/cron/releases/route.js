@@ -37,6 +37,7 @@ export async function GET(request) {
       body: JSON.stringify({ source: 'prn_scraper', sourceLabel: 'PRN Releases Scraper', status, error: results.failed.map(f=>f.error).join('; ') || null }),
     }).catch(() => {})
 
+    await reportCronRun('prn_releases', { status:'success', ms:Date.now()-start, details: results.added.length+' added, '+results.failed.length+' failed' }).catch(()=>{})
     return Response.json({
       success: true,
       timestamp: new Date().toISOString(),
@@ -46,6 +47,7 @@ export async function GET(request) {
       details: results,
     })
   } catch (err) {
+    await reportCronRun('prn_releases', { status:'failed', ms:Date.now()-start, error:err.message }).catch(()=>{})
     console.error('[releases-cron] Error:', err)
     fetch('https://www.downrangeco.com/api/system/alert', {
       method: 'POST',

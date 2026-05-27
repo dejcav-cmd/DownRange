@@ -30,6 +30,7 @@ export async function GET(req) {
       _id: 'globalStats', _type: 'globalStats',
       nicsMonthlyTotal: totalChecks, nicsLastUpdated: new Date().toISOString(),
     })
+    await reportCronRun('nics', { status: 'success', ms: 0, details: 'completed' }).catch(()=>{})
     return Response.json({ success: true, totalChecks })
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 })

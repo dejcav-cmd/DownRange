@@ -284,6 +284,61 @@ export default function CronDashboard({ adminKey }) {
         <div style={{ padding:40, textAlign:'center', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#64748b' }}>Loading cron status...</div>
       ) : (
         <>
+          {/* ── FAILURE ALERT PANEL ── */}
+          {data?.jobs?.filter(j => j.status === 'failed' || j.status === 'overdue').length > 0 && (
+            <div style={{ marginBottom:20, border:'1px solid rgba(239,68,68,.4)', background:'rgba(239,68,68,.06)' }}>
+              <div style={{ padding:'10px 16px', borderBottom:'1px solid rgba(239,68,68,.2)', display:'flex', alignItems:'center', gap:10 }}>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, fontWeight:700, color:'#ef4444', letterSpacing:'.06em' }}>
+                  🔴 {data.jobs.filter(j=>j.status==='failed'||j.status==='overdue').length} JOB{data.jobs.filter(j=>j.status==='failed'||j.status==='overdue').length>1?'S':''} FAILING
+                </span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b' }}>
+                  Email alert sent to dejcav@gmail.com
+                </span>
+              </div>
+              {data.jobs.filter(j=>j.status==='failed'||j.status==='overdue').map(job => (
+                <div key={job.id} style={{ padding:'10px 16px', borderBottom:'1px solid rgba(239,68,68,.1)', display:'flex', gap:12, alignItems:'flex-start', flexWrap:'wrap' }}>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, fontWeight:700, color:'#f87171', flexShrink:0 }}>{job.icon} {job.label}</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#ef4444', flexShrink:0 }}>
+                    {(STATUS[job.status]||STATUS.never).label}
+                  </span>
+                  {job.lastRun?.error && (
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#fca5a5', flex:1 }}>{job.lastRun.error}</span>
+                  )}
+                  {job.lastRun?.at && (
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', flexShrink:0 }}>last: {relTime(job.lastRun.at)}</span>
+                  )}
+                  <button className="cd-ghost" style={{ fontSize:9, padding:'3px 8px' }}
+                    onClick={() => setExpanded(job.id)}>
+                    Details
+                  </button>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* ── RECENT FAILURES LOG ── */}
+          {(() => {
+            const allFails = (data?.jobs || []).flatMap(j =>
+              (j.history || []).filter(r => r.status === 'failed').map(r => ({ ...r, jobId:j.id, jobLabel:j.label, icon:j.icon }))
+            ).sort((a,b) => new Date(b.at) - new Date(a.at)).slice(0, 5)
+            if (!allFails.length) return null
+            return (
+              <div style={{ marginBottom:20, border:'1px solid var(--border)', background:'var(--bg2)' }}>
+                <div style={{ padding:'8px 16px', borderBottom:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', letterSpacing:'.08em', textTransform:'uppercase', fontWeight:700 }}>
+                  Recent Failures
+                </div>
+                {allFails.map((r, i) => (
+                  <div key={i} style={{ padding:'8px 16px', borderBottom:'1px solid rgba(30,41,59,.4)', display:'flex', gap:12, alignItems:'center', flexWrap:'wrap' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#f87171', flexShrink:0 }}>{r.icon} {r.jobLabel}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', flexShrink:0 }}>{new Date(r.at).toLocaleString()}</span>
+                    {r.error && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#fca5a5', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{r.error}</span>}
+                    {r.ms > 0 && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', flexShrink:0 }}>{fmtMs(r.ms)}</span>}
+                  </div>
+                ))}
+              </div>
+            )
+          })()}
+
           {/* Summary stats */}
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(140px, 1fr))', gap:10, marginBottom:20 }}>
             {[

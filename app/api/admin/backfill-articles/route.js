@@ -160,6 +160,7 @@ export async function POST(req) {
       ? done + ' rewritten (' + avgWords + ' avg words). ' + (failed > 0 ? failed + ' failed. ' : '') + left + ' remaining.'
       : 'Backfill complete! ' + done + ' rewritten (' + avgWords + ' avg words).'
 
+    await reportCronRun('backfill', { status: 'success', ms: 0, details: 'completed' }).catch(()=>{})
     return Response.json({ done, failed, total: remaining, remaining: left, avgWords, ms: Date.now() - t0, results, message: msg })
 
   } catch (e) {

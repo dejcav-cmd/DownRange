@@ -15,5 +15,6 @@ export async function GET(req) {
     body: JSON.stringify({ action: 'digest' }),
   })
   const d = await res.json()
+  await reportCronRun('queue_digest', { status: res.ok ? 'success' : 'failed', ms: 0, details: JSON.stringify(d).slice(0,100) }).catch(()=>{})
   return Response.json(d)
 }
