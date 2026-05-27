@@ -153,6 +153,11 @@ async function sendAlertEmail({ type, source, error, consecutiveFails, recovered
 
 // ── POST — record a pull result and trigger alert if needed ───────────────────
 export async function POST(request) {
+  // Internal-only: require ADMIN_KEY
+  const key = request.headers.get('x-admin-key')
+  if (!process.env.ADMIN_KEY || key !== process.env.ADMIN_KEY) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const { source, sourceLabel, status, error } = await request.json()
     if (!source) return Response.json({ error: 'source required' }, { status: 400 })

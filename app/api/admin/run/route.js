@@ -9,12 +9,11 @@ import { logPull, STATUS } from '@/lib/pullLogger'
  * Writes to pull log so dashboard shows activity.
  */
 export async function POST(req) {
-  const adminKey   = process.env.ADMIN_KEY
-  const authHeader = req.headers.get('authorization')
+  const adminKey = process.env.ADMIN_KEY
+  const key      = req.headers.get('x-admin-key')
 
-  if (adminKey && authHeader !== `Bearer ${adminKey}`) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
+  if (!adminKey) return Response.json({ error: 'Server misconfigured' }, { status: 500 })
+  if (key !== adminKey) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(req.url)
   const feed = searchParams.get('feed') || 'news'

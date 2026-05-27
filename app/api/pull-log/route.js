@@ -4,6 +4,10 @@ import { NextResponse } from 'next/server'
 import { getPullLog, getPullStats, logPull, STATUS, PULL_SOURCES } from '@/lib/pullLogger'
 
 export async function GET(req) {
+  const key = req.headers.get('x-admin-key')
+  if (!process.env.ADMIN_KEY || key !== process.env.ADMIN_KEY) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  }
   try {
     const { searchParams } = new URL(req.url)
     const limit    = parseInt(searchParams.get('limit') || '200')

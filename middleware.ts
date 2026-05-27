@@ -3,7 +3,7 @@ import { NextResponse } from 'next/server'
 import type { NextRequest } from 'next/server'
 
 // Only /admin (exact path) requires auth — everything else is public
-const isAdminRoute = createRouteMatcher(['/admin'])
+const isAdminRoute = createRouteMatcher(['/admin(.*)'])
 
 export default clerkMiddleware(async (auth, req: NextRequest) => {
   const { pathname } = req.nextUrl
@@ -32,8 +32,8 @@ export default clerkMiddleware(async (auth, req: NextRequest) => {
 
 export const config = {
   matcher: [
-    // Only run middleware on /admin and /admin-login — nothing else
-    '/admin',
+    // Protect all /admin sub-routes and /admin-login
+    '/admin(.*)',
     '/admin-login(.*)',
   ],
 }

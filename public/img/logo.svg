@@ -1,0 +1,248 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 680 200" width="680" height="200">
+  <defs>
+
+    <!-- Gold gradient for bevel/text -->
+    <linearGradient id="goldBevel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#E8C96A"/>
+      <stop offset="30%"  stop-color="#C8922A"/>
+      <stop offset="70%"  stop-color="#9A6E1A"/>
+      <stop offset="100%" stop-color="#C8922A"/>
+    </linearGradient>
+
+    <!-- Olive green fill gradient (3D top-light effect) -->
+    <linearGradient id="greenFill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#5A7035"/>
+      <stop offset="40%"  stop-color="#4A5C28"/>
+      <stop offset="100%" stop-color="#2E3A18"/>
+    </linearGradient>
+
+    <!-- Gold stroke for mark outline -->
+    <linearGradient id="goldStroke" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#D4A840"/>
+      <stop offset="100%" stop-color="#8A6010"/>
+    </linearGradient>
+
+    <!-- Brass cartridge body gradient -->
+    <linearGradient id="brassBody" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#D4A035"/>
+      <stop offset="25%"  stop-color="#C8922A"/>
+      <stop offset="50%"  stop-color="#E8B840"/>
+      <stop offset="75%"  stop-color="#B07820"/>
+      <stop offset="100%" stop-color="#8A5E10"/>
+    </linearGradient>
+
+    <!-- Copper bullet tip gradient -->
+    <linearGradient id="copperTip" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%"   stop-color="#C87040"/>
+      <stop offset="40%"  stop-color="#E09050"/>
+      <stop offset="100%" stop-color="#7A4020"/>
+    </linearGradient>
+
+    <!-- Cartridge case neck taper -->
+    <linearGradient id="brassNeck" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%"   stop-color="#C89030"/>
+      <stop offset="100%" stop-color="#9A6818"/>
+    </linearGradient>
+
+    <!-- Drop shadow filter -->
+    <filter id="dropShadow" x="-5%" y="-5%" width="115%" height="120%">
+      <feDropShadow dx="0" dy="3" stdDeviation="4" flood-color="#000000" flood-opacity="0.6"/>
+    </filter>
+
+    <!-- Subtle inner glow for text on dark bg -->
+    <filter id="textGlow" x="-2%" y="-5%" width="110%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-color="#C8922A" flood-opacity="0.4"/>
+    </filter>
+
+    <!-- Clip path for chevron mark area -->
+    <clipPath id="markClip">
+      <rect x="0" y="0" width="210" height="200"/>
+    </clipPath>
+
+  </defs>
+
+  <!-- ═══════════════════════════════════════════════════
+       CHEVRON / DOUBLE-ARROW MARK
+       Two stacked rightward chevrons forming a "D" motif
+       ═══════════════════════════════════════════════════ -->
+
+  <g filter="url(#dropShadow)">
+
+    <!-- OUTER CHEVRON (larger, bottom-left) -->
+    <!-- Gold border layer (drawn slightly larger) -->
+    <polygon points="
+      28,185  58,185  138,100  58,15  28,15
+      65,15   148,100  65,185
+    " fill="url(#goldBevel)" />
+    <!-- Green fill layer (inset) -->
+    <polygon points="
+      35,178  60,178  135,100  60,22  35,22
+      62,22   140,100  62,178
+    " fill="url(#greenFill)" />
+
+    <!-- INNER CHEVRON (smaller, offset right) -->
+    <!-- Gold border -->
+    <polygon points="
+      72,170  98,170  168,100  98,30  72,30
+      105,30  178,100  105,170
+    " fill="url(#goldBevel)" />
+    <!-- Green fill -->
+    <polygon points="
+      79,163  100,163  164,100  100,37  79,37
+      107,37  172,100  107,163
+    " fill="url(#greenFill)" />
+
+    <!-- NEGATIVE SPACE CUT — inner hollow of outer chevron -->
+    <!-- Creates the "open D" look from the reference -->
+    <polygon points="
+      62,155  85,155  148,100  85,45  62,45
+      70,45   140,100  70,155
+    " fill="#0A0B0C" />
+
+  </g>
+
+  <!-- ═══════════════════════════════════════════════
+       BULLET / CARTRIDGE
+       Positioned through the chevrons, pointing right
+       ═══════════════════════════════════════════════ -->
+
+  <g filter="url(#dropShadow)">
+
+    <!-- Cartridge case base (flat end, left) -->
+    <rect x="8" y="91" width="12" height="18" rx="1.5"
+          fill="url(#brassBody)" />
+
+    <!-- Extractor groove ring -->
+    <rect x="18" y="92" width="4" height="16"
+          fill="#7A5010" />
+
+    <!-- Main cartridge body -->
+    <rect x="22" y="90" width="95" height="20" rx="1"
+          fill="url(#brassBody)" />
+
+    <!-- Highlight stripe on case -->
+    <rect x="22" y="91" width="95" height="4" rx="1"
+          fill="#E8C060" opacity="0.5" />
+
+    <!-- Case flutes (decorative lines on body) -->
+    <line x1="45" y1="90" x2="45" y2="110" stroke="#9A6818" stroke-width="0.8" opacity="0.6"/>
+    <line x1="65" y1="90" x2="65" y2="110" stroke="#9A6818" stroke-width="0.8" opacity="0.6"/>
+    <line x1="85" y1="90" x2="85" y2="110" stroke="#9A6818" stroke-width="0.8" opacity="0.6"/>
+
+    <!-- Neck taper (case to bullet transition) -->
+    <path d="M 117,90 L 127,93 L 127,107 L 117,110 Z"
+          fill="url(#brassNeck)" />
+
+    <!-- Copper bullet ogive (pointed tip, pointing right) -->
+    <path d="M 127,93 C 127,93 175,97 186,100 C 175,103 127,107 127,107 Z"
+          fill="url(#copperTip)" />
+
+    <!-- Bullet highlight -->
+    <path d="M 127,94 C 127,94 168,97 182,100 C 168,98 127,97 127,94 Z"
+          fill="#E8A060" opacity="0.4" />
+
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TEXT — "DOWN" (large, top line)
+       ═══════════════════════════════════════════════════════ -->
+
+  <!-- Text uses a layered approach: gold stroke behind, green fill on top -->
+  <!-- This gives the bevel/emboss effect from the reference -->
+
+  <g filter="url(#textGlow)">
+
+    <!-- DOWN — gold shadow/bevel layer (offset slightly) -->
+    <text x="228" y="95"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="92"
+          letter-spacing="2"
+          fill="url(#goldBevel)"
+          transform="translate(1.5, 2)">DOWN</text>
+
+    <!-- DOWN — green fill layer -->
+    <text x="228" y="95"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="92"
+          letter-spacing="2"
+          fill="url(#greenFill)">DOWN</text>
+
+    <!-- DOWN — gold outline stroke -->
+    <text x="228" y="95"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="92"
+          letter-spacing="2"
+          fill="none"
+          stroke="url(#goldBevel)"
+          stroke-width="1.5">DOWN</text>
+
+  </g>
+
+  <!-- ═══════════════════════════════════════════════════════
+       TEXT — "RANGE" (large, bottom line)
+       ═══════════════════════════════════════════════════════ -->
+
+  <g filter="url(#textGlow)">
+
+    <!-- RANGE — gold bevel layer -->
+    <text x="228" y="183"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="88"
+          letter-spacing="2"
+          fill="url(#goldBevel)"
+          transform="translate(1.5, 2)">RANGE</text>
+
+    <!-- RANGE — green fill -->
+    <text x="228" y="183"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="88"
+          letter-spacing="2"
+          fill="url(#greenFill)">RANGE</text>
+
+    <!-- RANGE — gold stroke -->
+    <text x="228" y="183"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="88"
+          letter-spacing="2"
+          fill="none"
+          stroke="url(#goldBevel)"
+          stroke-width="1.5">RANGE</text>
+
+  </g>
+
+  <!-- ═══════════════════════════════════════════════
+       TEXT — "CO." (smaller, bottom right)
+       ═══════════════════════════════════════════════ -->
+
+  <g filter="url(#textGlow)">
+
+    <text x="616" y="183"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="52"
+          fill="url(#goldBevel)"
+          transform="translate(1.5, 2)">CO.</text>
+
+    <text x="616" y="183"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="52"
+          fill="url(#goldBevel)">CO.</text>
+
+    <text x="616" y="183"
+          font-family="'Barlow Condensed', 'Arial Narrow', sans-serif"
+          font-weight="900"
+          font-size="52"
+          fill="none"
+          stroke="url(#goldStroke)"
+          stroke-width="1">CO.</text>
+
+  </g>
+
+</svg>
