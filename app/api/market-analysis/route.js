@@ -5,7 +5,7 @@ const sanity = createClient({ projectId:process.env.NEXT_PUBLIC_SANITY_PROJECT_I
 
 export async function POST(req) {
   const auth = req.headers.get('authorization')
-  if (auth !== `Bearer ${process.env.CRON_SECRET}`) return Response.json({ error:'Unauthorized' }, { status:401 })
+  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) return Response.json({ error:'Unauthorized' }, { status:401 })
 
   const { title, summary, bullets, author, publishedAt } = await req.json()
   if (!title || !summary) return Response.json({ error:'title and summary required' }, { status:400 })

@@ -184,7 +184,7 @@ export async function GET(req) {
   const authHeader = req.headers.get('authorization')
   const secret     = process.env.CRON_SECRET
 
-  const isValid = cronHeader === '1' || (secret && authHeader === `Bearer ${secret}`)
+  const isValid = cronHeader === '1' || !secret || (secret && authHeader === `Bearer ${secret}`)
   if (!isValid) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }

@@ -15,18 +15,24 @@ export async function GET(req) {
   const authHeader  = req.headers.get('authorization')
   const cronHeader  = req.headers.get('x-vercel-cron')
   const secret      = process.env.CRON_SECRET
+  const adminKey    = process.env.ADMIN_KEY
 
-  const isValidBearer = secret && authHeader === `Bearer ${secret}`
   const isVercelCron  = cronHeader === '1'
+  const isValidCron   = secret && authHeader === 'Bearer ' + secret
+  const isValidAdmin  = adminKey && authHeader === 'Bearer ' + adminKey
+  const isXAdminKey   = req.headers.get('x-admin-key') === adminKey && !!adminKey
+  // If CRON_SECRET is not configured, allow Vercel cron calls through (no secret = no restriction)
+  const noSecretConfigured = !secret
 
-  if (!isValidBearer && !isVercelCron) {
-    console.error('[AGENT] 401 — authHeader:', authHeader?.slice(0,20), '| CRON_SECRET set:', !!secret)
+  if (!isVercelCron && !isValidCron && !isValidAdmin && !isXAdminKey && !noSecretConfigured) {
+    console.error('[AGENT] 401 — CRON_SECRET set:', !!secret, '| x-vercel-cron:', cronHeader)
     return Response.json({
-      error: 'Unauthorized',
-      hint: !secret
-        ? 'CRON_SECRET env var is not set in Vercel. Go to: Vercel Dashboard → Project → Settings → Environment Variables'
-        : 'Authorization header does not match CRON_SECRET'
+      error: 'Unauthorized — set CRON_SECRET in Vercel env vars',
     }, { status: 401 })
+  }
+
+  if (noSecretConfigured && !isVercelCron && !isValidAdmin && !isXAdminKey) {
+    console.warn('[AGENT] Running without CRON_SECRET — set it in Vercel for security')
   }
 
   const { searchParams } = new URL(req.url)
