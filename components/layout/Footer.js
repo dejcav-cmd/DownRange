@@ -15,7 +15,13 @@ export default function Footer() {
         <div style={{ display: 'grid', gridTemplateColumns: '280px repeat(4, 1fr)', gap: '40px', marginBottom: '40px' }}>
           {/* Brand */}
           <div>
-            <Link href="/" style={{ fontFamily: "'Bebas Neue', cursive", fontSize: '48px', color: '#C8922A', letterSpacing: '0.02em', lineHeight: 1, display: 'block', marginBottom: '12px' }}>DOWNRANGE</Link>
+            <Link href="/" style={{ display: 'block', marginBottom: '12px' }}>
+              <img
+                src="/img/logo-footer.png"
+                alt="DownRange Co."
+                style={{ width: '220px', height: 'auto', display: 'block' }}
+              />
+            </Link>
             <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#6B7280', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
               Proudly Independent · Pro-Second Amendment
             </div>
