@@ -1322,6 +1322,50 @@ function BackfillButton() {
     setLog(l => [...l.slice(-40), { msg, color: color||'#94a3b8', t: new Date().toLocaleTimeString() }])
   }
 
+  async function runDiag() {
+    setRunning(true)
+    setLog([])
+    addLog('Running diagnostics...', '#C8922A')
+    try {
+      const res = await fetch('/api/admin/backfill-test', { headers: { 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
+      const rawText = await res.text()
+      if (!rawText) { addLog('Empty response — function crashed at startup', '#ef4444'); setRunning(false); return }
+      const d = JSON.parse(rawText)
+      if (!d.ok) { addLog(`Auth failed: ${d.error}`, '#ef4444'); setRunning(false); return }
+      const r = d.results
+      addLog(`ENV: ANTHROPIC_KEY=${r.env.ANTHROPIC_API_KEY} SANITY_TOKEN=${r.env.SANITY_API_TOKEN} PROJECT_ID=${r.env.SANITY_PROJECT_ID}`, r.env.ANTHROPIC_API_KEY && r.env.SANITY_API_TOKEN ? '#22c55e' : '#ef4444')
+      addLog(`Sanity import: ${r.sanityImport}`, r.sanityImport==='ok'?'#22c55e':'#ef4444')
+      addLog(`Sanity query: ${r.sanityQuery}`, r.sanityQuery?.startsWith('ok')?'#22c55e':'#ef4444')
+      addLog(`Anthropic API: ${r.anthropicApi}`, r.anthropicApi?.startsWith('ok')?'#22c55e':'#ef4444')
+    } catch(e) {
+      addLog(`Diagnostic error: ${e.message}`, '#ef4444')
+    }
+    setRunning(false)
+  }
+
+  async function runDiag() {
+    setRunning(true)
+    setLog([])
+    addLog('🔍 Running diagnostics...', '#C8922A')
+    try {
+      const res = await fetch('/api/admin/backfill-test', { headers: { 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
+      const rawText = await res.text()
+      if (!rawText || rawText.trim() === '') { addLog('❌ Empty response — function crashed on startup. Check Vercel logs.', '#ef4444'); setRunning(false); return }
+      let d
+      try { d = JSON.parse(rawText) } catch(e) { addLog(`❌ Non-JSON response (${res.status}): ${rawText.slice(0,300)}`, '#ef4444'); setRunning(false); return }
+      if (!d.ok) { addLog(`❌ Auth failed: ${d.error}`, '#ef4444'); setRunning(false); return }
+      const r = d.results
+      addLog(`ENV VARS: ANTHROPIC_KEY=${r.env.ANTHROPIC_API_KEY?'✅':'❌ MISSING'} | SANITY_TOKEN=${r.env.SANITY_API_TOKEN?'✅':'❌ MISSING'} | PROJECT_ID=${r.env.SANITY_PROJECT_ID?'✅':'❌ MISSING'}`, r.env.ANTHROPIC_API_KEY && r.env.SANITY_API_TOKEN ? '#22c55e' : '#ef4444')
+      addLog(`Sanity import: ${r.sanityImport}`, r.sanityImport==='ok'?'#22c55e':'#ef4444')
+      addLog(`Sanity query: ${r.sanityQuery}`, r.sanityQuery?.startsWith('ok')?'#22c55e':'#ef4444')
+      addLog(`Anthropic API: ${r.anthropicApi}`, r.anthropicApi?.startsWith('ok')?'#22c55e':'#ef4444')
+      if (r.env.ANTHROPIC_API_KEY && r.sanityQuery?.startsWith('ok') && r.anthropicApi?.startsWith('ok')) {
+        addLog('✅ All systems OK — backfill should work. Try clicking BACKFILL MISSING.', '#22c55e')
+      }
+    } catch(e) { addLog(`❌ Diagnostic error: ${e.message}`, '#ef4444') }
+    setRunning(false)
+  }
+
   async function run(force) {
     setRunning(true)
     setLog([])
@@ -1376,6 +1420,10 @@ function BackfillButton() {
   return (
     <div style={{ width:'100%' }}>
       <div style={{ display:'flex', gap:8, marginBottom:8, flexWrap:'wrap' }}>
+        <button onClick={() => runDiag()} disabled={running}
+          style={{ background:'none', color:'#3b82f6', border:'1px solid #3b82f6', padding:'9px 14px', cursor:running?'not-allowed':'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, borderRadius:3 }}>
+          🔍 DIAGNOSE
+        </button>
         <button onClick={() => run(false)} disabled={running}
           style={{ background: running?'rgba(239,68,68,0.1)':'#ef4444', color: running?'#ef4444':'#fff', border:'1px solid #ef4444', padding:'9px 18px', cursor:running?'not-allowed':'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', borderRadius:3 }}>
           {running ? '⚡ REWRITING...' : '▶ BACKFILL MISSING'}
