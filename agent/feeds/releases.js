@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Parser from 'rss-parser'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 import crypto from 'crypto'
@@ -69,13 +68,13 @@ async function fetchMfrRSS() {
 async function fetchGunBrokerNew() {
   if (!process.env.GUNBROKER_KEY) return []
   try {
-    const res = await axios.get('https://api.gunbroker.com/Items', {
+    const res = await (async()=>{ const _r=await fetch('https://api.gunbroker.com/Items', {
       params: { Keywords: 'new release 2026', Sort: 13, PageSize: 20 },
       headers: {
         'X-DevKey': process.env.GUNBROKER_KEY,
         'X-AccessToken': process.env.GUNBROKER_TOKEN || ''
       }
-    })
+    },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
     return (res.data.results || []).map(item => ({
       brand: item.manufacturer || 'Unknown',
       model: item.manufacturerModelName || item.title,

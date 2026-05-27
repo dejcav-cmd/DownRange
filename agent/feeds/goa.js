@@ -87,7 +87,7 @@ urgencyScore 1-10: court rulings/ATF actions=8-9, legislation=6-7, statements=4-
   let ai = null
   try {
     const text = await callAIText({ prompt, useCase: 'laws', maxTokens: 200 })
-    const clean = text.replace(/```json|```/g, '').trim()
+    const clean = text.split('```json').join('').split('```').join('').trim()
     ai = JSON.parse(clean)
   } catch {
     ai = { summary: item.description?.slice(0, 200) || item.title, urgencyScore: 5 }

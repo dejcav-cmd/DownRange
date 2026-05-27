@@ -1,4 +1,3 @@
-import axios from 'axios'
 
 // Wikimedia verified firearm images — assigned when RSS has no image
 const FIREARM_IMAGES = {
@@ -154,10 +153,10 @@ function cleanImageUrl(url) {
 async function fetchNewsAPI() {
   if (!process.env.NEWSAPI_KEY) return []
   try {
-    const res = await axios.get('https://newsapi.org/v2/everything', {
+    const res = await (async()=>{ const _r=await fetch('https://newsapi.org/v2/everything', {
       timeout: 10000,
       params: {
-        q: '(firearms OR "Second Amendment" OR "gun control" OR ATF OR "gun rights" OR "concealed carry" OR Glock OR "pistol brace" OR NRA OR "gun law" OR suppressor OR "Gun Rights" OR gunrights.org) AND -"video game"',
+        q: '(firearms OR "Second Amendment" OR "gun control" OR ATF OR "gun rights" OR "concealed carry" OR Glock OR "pistol brace" OR NRA OR "gun law" OR suppressor OR "Gun Rights" OR gunrights.org,{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })() AND -"video game"',
         language: 'en',
         sortBy: 'publishedAt', pageSize: 30, language: 'en',
         apiKey: process.env.NEWSAPI_KEY
@@ -179,10 +178,10 @@ async function fetchNewsAPI() {
 async function fetchGNews() {
   if (!process.env.GNEWS_KEY) return []
   try {
-    const res = await axios.get('https://gnews.io/api/v4/search', {
+    const res = await (async()=>{ const _r=await fetch('https://gnews.io/api/v4/search', {
       timeout: 10000,
       params: { q: 'firearms OR "gun law" OR "Second Amendment"', lang: 'en', max: 20, token: process.env.GNEWS_KEY }
-    })
+    },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
     return res.data.articles.map(a => ({
       title: a.title, description: a.description, url: a.url,
       source: a.source?.name, publishedAt: a.publishedAt,
@@ -198,7 +197,7 @@ async function fetchOneFeed(feed) {
   try {
     // Reddit JSON feeds use different format
     if (feed.isReddit) {
-      const res = await axios.get(feed.url, { headers: { 'User-Agent': 'DownRange/1.0' }, timeout: 8000 })
+      const res = await (async()=>{ const _r=await fetch(feed.url, { headers: { 'User-Agent': 'DownRange/1.0' }, timeout: 8000 },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
       const posts = (res.data?.data?.children || [])
         .filter(p => p.data && !p.data.is_self && p.data.score > 10)
         .slice(0, 5)

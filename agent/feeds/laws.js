@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const STATUS_MAP = {
@@ -27,13 +26,13 @@ async function fetchCongressBills() {
     return []
   }
   try {
-    const res = await axios.get('https://api.congress.gov/v3/bill', {
+    const res = await (async()=>{ const _r=await fetch('https://api.congress.gov/v3/bill', {
       params: {
         query: 'firearms OR gun OR "Second Amendment" OR ATF',
         sort: 'updateDate+desc', limit: 20, format: 'json',
         api_key: process.env.CONGRESS_GOV_KEY
       }
-    })
+    },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
     return (res.data.bills || []).map(b => ({
       _id: `law-federal-${b.congress}-${b.type}-${b.number}`,
       _type: 'legislation',
@@ -58,14 +57,14 @@ async function fetchCongressBills() {
 async function fetchLegiScanState(stateAbbr) {
   if (!process.env.LEGISCAN_KEY) return []
   try {
-    const res = await axios.get('https://api.legiscan.com/', {
+    const res = await (async()=>{ const _r=await fetch('https://api.legiscan.com/', {
       params: {
         key: process.env.LEGISCAN_KEY,
         op: 'getSearch',
         query: 'firearms OR gun OR "concealed carry" OR ATF',
         state: stateAbbr
       }
-    })
+    },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
     const results = res.data?.searchresult
     if (!results) return []
     return Object.values(results)

@@ -43,6 +43,21 @@ export default function ReleaseManager({ adminKey }) {
 
   const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''), 5000) }
 
+  async function seedReleases() {
+    setBusy(true)
+    flash('⏳ Seeding gun releases with AI-written articles...')
+    try {
+      const res = await fetch('/api/admin/seed-releases', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey }
+      })
+      const d = await res.json()
+      if (d.ok) { flash(`✅ Seeded ${d.created} releases`); await load() }
+      else flash('❌ ' + (d.error || 'Seed failed'))
+    } catch(e) { flash('❌ ' + e.message) }
+    setBusy(false)
+  }
+
   async function runFeed() {
     setFeedRunning(true)
     flash('⏳ Running releases feed — pulling PRNewswire + manufacturer RSS...')
@@ -157,7 +172,10 @@ export default function ReleaseManager({ adminKey }) {
         </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           {missingBody > 0 && <button className="rm-btn" onClick={rewriteAll} disabled={busy}>✦ Write All {missingBody} Articles</button>}
-          <button className="rm-btn" onClick={runFeed} disabled={feedRunning} style={{background:'#3b82f6',color:'#fff'}}>
+          <button className="rm-btn" onClick={seedReleases} disabled={busy || feedRunning} style={{background:'var(--gold)',color:'#000'}}>
+            📥 Seed Releases
+          </button>
+          <button className="rm-btn" onClick={runFeed} disabled={feedRunning || busy} style={{background:'#3b82f6',color:'#fff'}}>
             {feedRunning ? '⏳ Running...' : '▶ Run Releases Feed'}
           </button>
           <button className="rm-ghost" onClick={()=>setTab(tab==='add'?'list':'add')}>{tab==='add'?'← Back':'+ Add Release'}</button>
@@ -214,11 +232,14 @@ export default function ReleaseManager({ adminKey }) {
                   <div style={{fontSize:32,marginBottom:12}}>🔫</div>
                   <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:'var(--text)',letterSpacing:'.05em',marginBottom:8}}>No Gun Releases Yet</div>
                   <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#4b5563',marginBottom:20,lineHeight:1.8}}>
-                    Run the Releases Feed to pull from PRNewswire + manufacturer RSS, or add a release manually.
+                    Seed 10 curated releases with AI-written articles, or run the live feed to pull from manufacturer RSS.
                   </div>
                   <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
+                    <button className="rm-btn" onClick={seedReleases} disabled={busy} style={{background:'var(--gold)',color:'#000'}}>
+                      📥 Seed Releases (10 guns)
+                    </button>
                     <button className="rm-btn" onClick={runFeed} disabled={feedRunning} style={{background:'#3b82f6',color:'#fff'}}>
-                      {feedRunning ? '⏳ Running...' : '▶ Run Releases Feed'}
+                      {feedRunning ? '⏳ Running...' : '▶ Run Live Feed'}
                     </button>
                     <button className="rm-ghost" onClick={()=>setTab('add')}>+ Add Manually</button>
                   </div>

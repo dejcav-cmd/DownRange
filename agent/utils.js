@@ -1,6 +1,5 @@
 import { callAIText } from '@/lib/aiClient.js'
 import crypto from 'crypto'
-import axios from 'axios'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
@@ -65,7 +64,7 @@ CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown,
   try {
     const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1200 })  // COST: 1200 vs 4000
     // Strip any accidental markdown fences
-    const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim()
+    const clean = text.split('```json').join('').split('```').join('').trim()
     const parsed = JSON.parse(clean)
     // Ensure body is a string
     if (typeof parsed.body !== 'string') parsed.body = ''
@@ -106,7 +105,7 @@ Return ONLY valid JSON, no markdown, no explanation.`
 
   try {
     const text = await callAIText({ prompt, useCase: 'laws', maxTokens: 400 })  // COST: laws tier
-    const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim()
+    const clean = text.split('```json').join('').split('```').join('').trim()
     return JSON.parse(clean)
   } catch (err) {
     console.error('Claude law enrichment error:', err.message)
@@ -134,7 +133,7 @@ function resetDedup() { seenHashes.clear() }
 async function discordNotify(webhookUrl, embed) {
   if (!webhookUrl) return
   try {
-    await axios.post(webhookUrl, { embeds: [embed] })
+    await fetch(webhookUrl, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ embeds: [embed] })})
   } catch (err) {
     console.error('Discord notify error:', err.message)
   }
@@ -279,17 +278,19 @@ async function publishToSanity(doc) {
         ]
       : [{ createOrReplace: doc }]
 
-    const res = await axios.post(
+    const _sanityRes = await fetch(
       `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'}`,
-      { mutations },
       {
+        method: 'POST',
         headers: {
           Authorization: `Bearer ${process.env.SANITY_API_TOKEN}`,
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ mutations })
       }
     )
-    return res.data
+    if (!_sanityRes.ok) { const e = await _sanityRes.text(); throw new Error(e) }
+    return await _sanityRes.json()
   } catch (err) {
     console.error('Sanity write error:', err.response?.data || err.message)
     throw err

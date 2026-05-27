@@ -1,4 +1,3 @@
-import axios from 'axios'
 import Parser from 'rss-parser'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
@@ -122,13 +121,13 @@ async function runVideoFeed() {
 
   for (const channel of YT_CHANNELS) {
     try {
-      const res = await axios.get('https://www.googleapis.com/youtube/v3/search', {
+      const res = await (async()=>{ const _r=await fetch('https://www.googleapis.com/youtube/v3/search', {
         params: {
           part: 'snippet', channelId: channel.id,
           order: 'date', maxResults: 5, type: 'video',
           key: process.env.YOUTUBE_API_KEY
         }
-      })
+      },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
       for (const item of res.data.items || []) {
         const sn = item.snippet
         await publishToSanity({
