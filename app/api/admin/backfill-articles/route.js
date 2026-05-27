@@ -154,19 +154,22 @@ export async function POST(req) {
     ? `_type == "newsArticle" && approved == true`
     : `_type == "newsArticle" && approved == true && (
         !defined(body) ||
-        body == null ||
         body == "" ||
-        length(body) < 500 ||
-        !defined(body) ||
-        !contains(body, "<h2>")
+        length(body) < 500
       )`
 
-  const [articles, remaining] = await Promise.all([
-    sanity.fetch(`*[${filter}] | order(publishedAt desc) [0...${batchSize}] {
-      _id, title, summary, excerpt, body, source, category, publishedAt, externalUrl, tags
-    }`),
-    sanity.fetch(`count(*[${filter}])`),
-  ])
+  let articles, remaining
+  try {
+    ;[articles, remaining] = await Promise.all([
+      sanity.fetch(`*[${filter}] | order(publishedAt desc) [0...${batchSize}] {
+        _id, title, summary, excerpt, body, source, category, publishedAt, externalUrl, tags
+      }`),
+      sanity.fetch(`count(*[${filter}])`),
+    ])
+  } catch (sanityErr) {
+    console.error('[BACKFILL] Sanity query error:', sanityErr.message)
+    return Response.json({ error: `Sanity query failed: ${sanityErr.message}` }, { status: 500 })
+  }
 
   if (!articles.length) {
     return Response.json({
@@ -243,6 +246,10 @@ export async function POST(req) {
       ? `✓ ${done} rewritten (avg ${avgWords} words). ${failed > 0 ? `${failed} failed. ` : ''}${newRemaining} remaining — POST again to continue.`
       : `✓ Backfill complete! ${done} articles rewritten (avg ${avgWords} words).`,
   })
+  } catch (topErr) {
+    console.error('[BACKFILL] Unhandled error:', topErr.message, topErr.stack)
+    return Response.json({ error: `Backfill crashed: ${topErr.message}` }, { status: 500 })
+  }
 }
 
 export async function GET(req) { return POST(req) }
