@@ -54,7 +54,7 @@
     },
     {
       "path": "/api/intelligence",
-      "schedule": "0 5 * * *"
+      "schedule": "0 1 * * *"
     },
     {
       "path": "/api/admin/fix-images?batch=500&force=false&cron=1",

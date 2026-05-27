@@ -31,16 +31,18 @@ export const ALL_JOBS = [
   { id:'laws',          path:'/api/agent?feed=laws',          schedule:'0 */2 * * *',  label:'Laws Feed',            group:'Content',    icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },
   { id:'video',         path:'/api/agent?feed=video',         schedule:'0 */4 * * *',  label:'Video Feed',           group:'Content',    icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
   { id:'state',         path:'/api/agent?feed=state',         schedule:'0 8 * * *',    label:'State Feed',           group:'Content',    icon:'🗺',  critical:false, desc:'LegiScan → per-state bill updates daily 8am' },
+  { id:'goa',           path:'/api/agent?feed=goa',           schedule:'0 */2 * * *',  label:'GOA Feed',             group:'Content',    icon:'🦅', critical:false, desc:'Gun Owners of America press feed every 2 hrs' },
   // System jobs
   { id:'site_health',   path:'/api/site-health',              schedule:'0 8,14,20 * * *', label:'Site Health',       group:'System',     icon:'🩺', critical:true,  desc:'Broken links, missing images, feed health — 3×/day' },
-  { id:'intelligence',  path:'/api/intelligence',             schedule:'0 5 * * *',    label:'Intelligence Briefing',group:'System',     icon:'🧠', critical:false, desc:'Competitor research + Claude analysis midnight daily' },
+  { id:'intelligence',  path:'/api/intelligence',             schedule:'0 1 * * *',    label:'Intelligence Briefing',group:'System',     icon:'🧠', critical:true,  desc:'Competitor research + Claude analysis — 1am UTC daily. Emails digest + alerts on failure.' },
   { id:'nics',          path:'/api/nics',                     schedule:'0 10 1 * *',   label:'NICS Data',            group:'System',     icon:'📈', critical:false, desc:'FBI NICS background check data — 1st of month' },
   // Outreach
   { id:'newsletter',    path:'/api/newsletter',               schedule:'0 7 * * *',    label:'Newsletter',           group:'Outreach',   icon:'📧', critical:false, desc:'Resend daily newsletter digest — 7am' },
   { id:'queue_digest',  path:'/api/outreach/queue/digest',    schedule:'0 13 * * *',   label:'Outreach Queue Digest',group:'Outreach',   icon:'📬', critical:false, desc:'Email pending approval queue summary — 1pm' },
   { id:'prn_releases',  path:'/api/cron/releases',            schedule:'0 12 * * *',   label:'PRN Scraper',          group:'Outreach',   icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases — noon' },
-  { id:'fix-images',    path:'/api/admin/fix-images',         schedule:'0 13 * * *',   label:'Image Patcher',        group:'System',     icon:'🖼',  critical:false, desc:'Patch missing article images daily 1pm' },
-  { id:'backfill',      path:'/api/admin/backfill-articles',  schedule:'0 15 * * *',   label:'Article Backfill',     group:'Content',    icon:'✍',  critical:false, desc:'Backfill missing article bodies via Claude — 7am Pacific' },
+  { id:'fix-images',    path:'/api/admin/fix-images',         schedule:'0 12-23,0-3 * * *', label:'Image Patcher',   group:'System',     icon:'🖼',  critical:false, desc:'Patch missing article images — hourly 12pm-3am UTC' },
+  { id:'backfill',      path:'/api/admin/backfill-articles',  schedule:'0 12-23,0-3 * * *', label:'Article Backfill',group:'Content',    icon:'✍',  critical:false, desc:'Backfill missing article bodies via Claude — hourly 12pm-3am UTC' },
+  { id:'fetch-images',  path:'/api/admin/fetch-article-images', schedule:'*/30 * * * *', label:'Fetch Article Images', group:'System',   icon:'📷', critical:false, desc:'Fetch og:image from source URLs → Sanity CDN every 30 min' },
   { id:'cron-health',   path:'/api/admin/cron-health',        schedule:'*/30 * * * *', label:'Cron Health Check',    group:'System',     icon:'🩺', critical:true,  desc:'System health check + email alerts every 30 min' },
 ]
 
