@@ -146,26 +146,13 @@ export default function Masthead() {
         {/* ── Logo row ── */}
         <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', padding:'16px 0 12px' }}>
           <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none' }} aria-label="DownRange Home">
-            <svg width="320" height="56" viewBox="0 0 520 90" xmlns="http://www.w3.org/2000/svg">
-              <g transform="translate(8,45)">
-                <circle cx="36" cy="0" r="32" fill="none" stroke="#C8922A" strokeWidth="2"/>
-                <circle cx="36" cy="0" r="22" fill="none" stroke="#C8922A" strokeWidth="0.75"/>
-                <circle cx="36" cy="0" r="4" fill="#C8922A"/>
-                <line x1="36" y1="-32" x2="36" y2="-24" stroke="#C8922A" strokeWidth="2"/>
-                <line x1="36" y1="24" x2="36" y2="32" stroke="#C8922A" strokeWidth="2"/>
-                <line x1="4" y1="0" x2="14" y2="0" stroke="#C8922A" strokeWidth="2"/>
-                <line x1="58" y1="0" x2="68" y2="0" stroke="#C8922A" strokeWidth="2"/>
-                <line x1="36" y1="-22" x2="36" y2="-10" stroke="#C8922A" strokeWidth="0.75"/>
-                <line x1="36" y1="10" x2="36" y2="22" stroke="#C8922A" strokeWidth="0.75"/>
-                <line x1="14" y1="0" x2="26" y2="0" stroke="#C8922A" strokeWidth="0.75"/>
-                <line x1="46" y1="0" x2="58" y2="0" stroke="#C8922A" strokeWidth="0.75"/>
-              </g>
-              <g transform="translate(84,12)">
-                <text x="0" y="46" fontFamily="Georgia, serif" fontSize="46" fontWeight="900" fill="#C8922A" letterSpacing="4">DOWNRANGE</text>
-                <text x="2" y="64" fontFamily="monospace" fontSize="11" fill="#6B7280" letterSpacing="8">INTELLIGENCE HUB</text>
-                <line x1="0" y1="72" x2="420" y2="72" stroke="#C8922A" strokeWidth="0.75" opacity="0.4"/>
-              </g>
-            </svg>
+            <img
+              src="/img/logo.png"
+              alt="DownRange Co."
+              width={280}
+              height={95}
+              style={{ display:'block', height:'auto', maxHeight:64, width:'auto' }}
+            />
           </Link>
 
           <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'3px' }}>
