@@ -18,7 +18,8 @@ function pickImage(title, category) {
   const t = (title || '').toLowerCase()
   if (/glock|pistol|handgun|9mm|45acp|sig|ruger|carry|ccw|springfield|kimber/.test(t)) return PISTOL_IMAGE
   if (/ar.?15|rifle|carbine|5\.56|\.223|ak-?47|308|6\.5/.test(t))                      return RIFLE_IMAGE
-  if (/law|legislation|atf|scotus|court|ban|bill|2a|saf|nra|lawsuit|challenge|rights/.test(t)) return LAW_IMAGE
+  if (/congress|bill|senate|house|vote|legislation|legis|amendment|act |h\.r\.|s\.|most.viewed/.test(t)) return LAW_IMAGE
+  if (/law|atf|scotus|court|ban|2a|saf|nra|lawsuit|challenge|rights/.test(t)) return LAW_IMAGE
   const catMap = { law: LAW_IMAGE, breaking: LAW_IMAGE, industry: RIFLE_IMAGE }
   return catMap[category] || PISTOL_IMAGE
 }

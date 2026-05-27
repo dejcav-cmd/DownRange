@@ -27,6 +27,7 @@ function getArticleFallback(article) {
   if (/optic|scope|red dot|eotech|aimpoint|vortex|trijicon|holosun/.test(t))        return ARTICLE_FALLBACKS.optic
   if (/ammo|ammunition|grain|fmj|jhp|caliber|bullet/.test(t))                       return ARTICLE_FALLBACKS.ammo
   if (/glock|pistol|handgun|9mm|45|ccw|carry|sig|ruger|springfield|kimber/.test(t)) return ARTICLE_FALLBACKS.pistol
+  if (/congress|senate|house|h\.r\.|most.viewed.bill|week.of/.test(t)) return ARTICLE_FALLBACKS.law
   if (/law|legislation|atf|scotus|court|ban|bill|rights|2a|saf|nra|lawsuit|challenge/.test(t)) return ARTICLE_FALLBACKS.law
   return ARTICLE_FALLBACKS[article?.category] || ARTICLE_FALLBACKS.news
 }
