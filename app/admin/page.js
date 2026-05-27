@@ -244,13 +244,30 @@ const STYLES = `
 
 // ── Inline: Overview Dashboard ───────────────────────────────────────────────
 function OverviewDashboard({ adminKey, setPanel, setSection }) {
-  const [health, setHealth] = useState(null)
+  const [health, setHealth]         = useState(null)
   const [migrateResult, setMigrateResult] = useState(null)
-  const [migrating, setMigrating] = useState(false)
+  const [migrating, setMigrating]   = useState(false)
+  const [feedRunning, setFeedRunning] = useState(false)
+  const [feedResult, setFeedResult]   = useState(null)
 
   useEffect(() => {
     fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
   }, [])
+
+  async function runNewsFeed() {
+    setFeedRunning(true); setFeedResult(null)
+    try {
+      const res = await fetch('/api/admin/cron-status?trigger=true', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId: 'news' }),
+      })
+      const d = await res.json()
+      setFeedResult({ ok: d.ok, msg: d.ok ? `✓ News feed ran in ${d.ms}ms` : '✕ ' + (d.error || d.response || 'Failed') })
+      fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
+    } catch(e) { setFeedResult({ ok: false, msg: 'Error: ' + e.message }) }
+    setFeedRunning(false)
+  }
 
   async function migrateAmmoland() {
     setMigrating(true); setMigrateResult(null)
@@ -345,20 +362,26 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
       <div style={{marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>System Status</div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(180px,1fr))',gap:10}}>
         {[
-          {label:'News Feed',     status: health?.status==='ok'?'Healthy':'Check required', ok:health?.status==='ok', icon:'📰'},
+          {label:'News Feed', status: health?.status==='ok'?'Healthy': health?.issues?.[0]?.msg?.slice(0,40)||'Check required', ok:health?.status==='ok', icon:'📰', action: runNewsFeed, actionLabel: feedRunning?'Running…':'▶ Run Now'},
           {label:'Cron Jobs',     status:'Running',     ok:true,  icon:'⏱'},
           {label:'AI Pipeline',   status:'Active',      ok:true,  icon:'🤖'},
           {label:'Sanity CMS',    status:'Connected',   ok:true,  icon:'📦'},
         ].map(s=>(
-          <div key={s.label} className="adm-card" style={{display:'flex',gap:10,alignItems:'center'}}>
+          <div key={s.label} className="adm-card" style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
             <span style={{fontSize:18}}>{s.icon}</span>
-            <div>
+            <div style={{flex:1,minWidth:0}}>
               <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--text)',marginBottom:2}}>{s.label}</div>
               <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:s.ok?'#22c55e':'#f59e0b'}}>{s.ok?'●':''} {s.status}</div>
+              {s.action && <button className="btn-primary" style={{marginTop:6,fontSize:9,padding:'3px 8px'}} onClick={s.action} disabled={feedRunning}>{s.actionLabel}</button>}
             </div>
           </div>
         ))}
       </div>
+      {feedResult && (
+        <div style={{marginTop:10,padding:'8px 14px',background:feedResult.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)',border:`1px solid ${feedResult.ok?'#22c55e':'#ef4444'}`,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:feedResult.ok?'#22c55e':'#f87171'}}>
+          {feedResult.msg}
+        </div>
+      )}
     </div>
   )
 }

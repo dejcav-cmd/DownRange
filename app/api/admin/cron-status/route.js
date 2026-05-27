@@ -190,16 +190,19 @@ export async function POST(req) {
     const job = ALL_JOBS.find(j => j.id === jobId)
     if (!job) return Response.json({ error: 'Unknown job' }, { status: 404 })
 
-    const origin = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'https://www.downrangeco.com'
+    // Always use production domain — VERCEL_URL is a preview URL, not production
+    const origin = 'https://www.downrangeco.com'
 
     const start = Date.now()
     try {
+      // Agent/feed jobs use GET; admin action jobs use POST
+      const isGetJob = job.path.startsWith('/api/agent') || job.path.startsWith('/api/intelligence') || job.path.startsWith('/api/newsletter') || job.path.startsWith('/api/nics') || job.path.startsWith('/api/site-health')
       const res = await fetch(`${origin}${job.path}`, {
+        method: isGetJob ? 'GET' : 'POST',
         headers: {
-          'authorization': `Bearer ${process.env.CRON_SECRET || ''}`,
+          'authorization': `Bearer ${process.env.CRON_SECRET || process.env.ADMIN_KEY || ''}`,
           'x-admin-key':   process.env.ADMIN_KEY || '',
+          'x-vercel-cron': '1',
         },
       })
       const ms = Date.now() - start
