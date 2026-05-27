@@ -40,7 +40,7 @@ export async function POST(req) {
   for (const patch of MANUAL_PATCHES) {
     try {
       const article = await sanity.fetch(
-        '*[_type=="newsArticle" && slug.current==$slug][0]{_id, title, imageUrl}',
+        '*[_type=="newsArticle" && slug.current==$slug][0]{_id, title, imageUrl, approved}',
         { slug: patch.slug }
       )
 

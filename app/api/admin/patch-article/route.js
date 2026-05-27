@@ -41,7 +41,7 @@ export async function POST(req) {
 
   // Fetch ALL articles
   const articles = await sanity.fetch(
-    '*[_type=="newsArticle" && approved==true][0...500]{_id,title,category,slug,imageUrl}'
+    '*[_type=="newsArticle"][0...500]{_id,title,category,slug,imageUrl}'
   )
 
   let fixed = 0

@@ -60,7 +60,7 @@ export async function GET(req) {
       lng:      p.geometry?.location?.lng,
     }))
 
-    return Response.json({ dealers, location: locationName, lat, lng, total: dealers.length })
+    return Response.json({ dealers, location: locationName, lat, lng, total: dealers.length, mapsKey: apiKey })
 
   } catch (err) {
     return Response.json({ error: 'Search failed: ' + err.message }, { status: 500 })

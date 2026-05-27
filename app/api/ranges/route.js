@@ -304,5 +304,6 @@ export async function GET(req) {
     location: coords.name||query, radiusMiles: radius,
     sources: { curated:curated.length, google:google.length, osm:osm.length },
     mapsUrl: `https://www.google.com/maps/search/shooting+range/@${lat},${lng},12z`,
+    mapsKey: apiKey || null,
   })
 }
