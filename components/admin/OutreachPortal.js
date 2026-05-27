@@ -1944,29 +1944,33 @@ export default function OutreachPortal({ adminKey }) {
             )}
           </div>
           <div style={{marginBottom:28}}>
-            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12,borderBottom:'1px solid var(--border)',paddingBottom:8}}>
-              Step 1 — Find Duplicates
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:6,borderBottom:'1px solid var(--border)',paddingBottom:8}}>
+              Step 1 — Find &amp; Remove Duplicates
             </div>
-            <div style={{display:'flex',gap:10,marginBottom:16,flexWrap:'wrap'}}>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginBottom:14,lineHeight:1.8}}>
+              Scores each contact by data completeness (email +10, phone +4, website +3, notes +2, etc). Keeps the highest-scoring version and removes the rest.
+            </div>
+            <div style={{display:'flex',gap:10,marginBottom:16,flexWrap:'wrap',alignItems:'center'}}>
               <button className="op-btn" onClick={runDedup} disabled={dedupLoading}>
                 {dedupLoading ? '⏳ Scanning...' : '🔍 Scan for Duplicates'}
               </button>
               {dedupResult && dedupResult.duplicateCount > 0 && (
-                <button className="op-btn-red" onClick={runDeleteDups} disabled={dedupLoading}>
-                  🗑 Auto-Remove All {dedupResult.duplicateCount} Duplicates
+                <button onClick={runDeleteDups} disabled={dedupLoading}
+                  style={{background:'#22c55e',color:'#000',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,letterSpacing:'.08em',textTransform:'uppercase',padding:'8px 18px',cursor:'pointer',opacity:dedupLoading?.4:1}}>
+                  ✓ Keep Best, Remove {dedupResult.duplicateCount} Duplicate{dedupResult.duplicateCount !== 1 ? 's' : ''}
                 </button>
               )}
             </div>
 
             {dedupResult && (
               <div>
-                <div style={{display:'flex',gap:12,marginBottom:12,flexWrap:'wrap'}}>
+                <div style={{display:'flex',gap:10,marginBottom:12,flexWrap:'wrap'}}>
                   {[
-                    ['Total Contacts', dedupResult.total, 'var(--gold)'],
-                    ['Duplicate Groups', dedupResult.duplicateGroups?.length || 0, '#f59e0b'],
-                    ['Duplicates to Remove', dedupResult.duplicateCount, '#ef4444'],
+                    ['Total Contacts',     dedupResult.total,           'var(--gold)'],
+                    ['Duplicate Groups',   dedupResult.duplicateGroups?.length || 0, '#f59e0b'],
+                    ['Will Be Removed',    dedupResult.duplicateCount,  '#ef4444'],
                   ].map(([l,v,c]) => (
-                    <div key={l} style={{background:'var(--bg2)',border:`1px solid var(--border)`,padding:'10px 16px',textAlign:'center',minWidth:120}}>
+                    <div key={l} style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'10px 16px',textAlign:'center',minWidth:120}}>
                       <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:c,lineHeight:1}}>{v}</div>
                       <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#64748b',marginTop:2,textTransform:'uppercase',letterSpacing:'.06em'}}>{l}</div>
                     </div>
@@ -1974,32 +1978,79 @@ export default function OutreachPortal({ adminKey }) {
                 </div>
 
                 {dedupResult.duplicateGroups?.length === 0 ? (
-                  <div style={{padding:'20px 24px',background:'rgba(34,197,94,.06)',border:'1px solid rgba(34,197,94,.2)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#22c55e'}}>
+                  <div style={{padding:'16px 20px',background:'rgba(34,197,94,.06)',border:'1px solid rgba(34,197,94,.2)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#22c55e'}}>
                     ✓ No duplicates found — contact list is clean.
                   </div>
                 ) : (
                   <div style={{border:'1px solid var(--border)',overflow:'hidden'}}>
-                    <div style={{padding:'8px 14px',background:'var(--bg2)',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em'}}>
-                      DUPLICATE GROUPS — click "Keep & Remove" to merge, or use Auto-Remove All above
+                    {/* Header */}
+                    <div style={{padding:'8px 14px',background:'var(--bg2)',borderBottom:'1px solid var(--border)',display:'flex',gap:16,alignItems:'center'}}>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em'}}>
+                        {dedupResult.duplicateGroups.length} DUPLICATE GROUPS · Score = data completeness
+                      </span>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#22c55e'}}>■ KEEP (highest score)</span>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#ef4444'}}>■ REMOVE</span>
                     </div>
-                    {dedupResult.duplicateGroups.map((group, gi) => (
-                      <div key={gi} style={{padding:'12px 16px',borderBottom:'1px solid rgba(30,41,59,.4)',display:'flex',gap:12,alignItems:'flex-start',flexWrap:'wrap'}}>
-                        <div style={{flex:1,display:'flex',gap:8,flexWrap:'wrap',alignItems:'flex-start'}}>
-                          {group.map((c, ci) => (
-                            <div key={c._id} style={{background:ci===0?'rgba(34,197,94,.08)':'rgba(239,68,68,.05)',border:`1px solid ${ci===0?'rgba(34,197,94,.3)':'rgba(239,68,68,.2)'}`,padding:'8px 12px',minWidth:180}}>
-                              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:ci===0?'#22c55e':'#f87171'}}>{c.name}</div>
-                              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',marginTop:2}}>{c.email || 'no email'}</div>
-                              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#374151',marginTop:1}}>{c.type} · {c.status}</div>
-                              {ci === 0 && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#22c55e',marginTop:2}}>KEEP</div>}
-                            </div>
-                          ))}
+
+                    {dedupResult.duplicateGroups.map((group, gi) => {
+                      const contacts = group.contacts || group  // handle both shapes
+                      const keepId   = group.keepId   || contacts[0]?._id
+                      const delIds   = group.deleteIds || contacts.slice(1).map(c => c._id)
+                      const scoreMap = (group.scores || []).reduce((m, s) => { m[s._id] = s.score; return m }, {})
+
+                      return (
+                        <div key={gi} style={{padding:'12px 16px',borderBottom:'1px solid rgba(30,41,59,.4)',display:'flex',gap:12,alignItems:'flex-start',flexWrap:'wrap'}}>
+                          <div style={{flex:1,display:'flex',gap:8,flexWrap:'wrap',alignItems:'stretch'}}>
+                            {contacts.map((c, ci) => {
+                              const isKeep = c._id === keepId
+                              const sc = scoreMap[c._id] ?? 0
+                              return (
+                                <div key={c._id} style={{
+                                  background: isKeep ? 'rgba(34,197,94,.07)' : 'rgba(239,68,68,.05)',
+                                  border: `1px solid ${isKeep ? 'rgba(34,197,94,.3)' : 'rgba(239,68,68,.2)'}`,
+                                  padding:'10px 12px', minWidth:190, flex:1,
+                                }}>
+                                  {/* Status badge */}
+                                  <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:4}}>
+                                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,fontWeight:700,
+                                      color: isKeep ? '#22c55e' : '#ef4444',
+                                      background: isKeep ? 'rgba(34,197,94,.12)' : 'rgba(239,68,68,.12)',
+                                      padding:'1px 6px',letterSpacing:'.06em'}}>
+                                      {isKeep ? '✓ KEEP' : '✕ REMOVE'}
+                                    </span>
+                                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,
+                                      color: sc >= 8 ? '#22c55e' : sc >= 4 ? '#f59e0b' : '#64748b',
+                                      fontWeight:700}}>
+                                      score: {sc}
+                                    </span>
+                                  </div>
+                                  {/* Name */}
+                                  <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',marginBottom:4}}>{c.name}</div>
+                                  {/* Fields */}
+                                  {[
+                                    ['✉', c.email,    '#C8922A'],
+                                    ['📞', c.phone,   '#94a3b8'],
+                                    ['🌐', c.website?.replace(/^https?:\/\/(www\.)?/,'').slice(0,30), '#64748b'],
+                                    ['📍', [c.city, c.state].filter(Boolean).join(', '), '#4b5563'],
+                                    ['📝', c.notes?.slice(0,50), '#374151'],
+                                  ].filter(([,v]) => v).map(([icon, val, col]) => (
+                                    <div key={icon} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:col,marginBottom:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                                      {icon} {val}
+                                    </div>
+                                  ))}
+                                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#374151',marginTop:3}}>{c.type} · {c.status}</div>
+                                </div>
+                              )
+                            })}
+                          </div>
+                          {/* Per-group action */}
+                          <button className="op-btn-ghost" style={{fontSize:9,padding:'5px 12px',flexShrink:0,color:'#22c55e',borderColor:'rgba(34,197,94,.3)',alignSelf:'center'}}
+                            onClick={() => runMergeGroup(keepId, delIds)}>
+                            Keep Best, Remove {delIds.length}
+                          </button>
                         </div>
-                        <button className="op-btn-ghost" style={{fontSize:9,padding:'4px 10px',flexShrink:0,color:'#22c55e',borderColor:'rgba(34,197,94,.3)'}}
-                          onClick={() => runMergeGroup(group[0]._id, group.slice(1).map(c => c._id))}>
-                          Keep First, Remove {group.length - 1}
-                        </button>
-                      </div>
-                    ))}
+                      )
+                    })}
                   </div>
                 )}
               </div>
