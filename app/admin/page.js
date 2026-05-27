@@ -9,6 +9,7 @@ const AIProviderSettings    = dynamic(() => import('../../components/admin/AIPro
 const VideoManager          = dynamic(() => import('../../components/admin/VideoManager'),          { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const NewsletterManager     = dynamic(() => import('../../components/admin/NewsletterManager'),     { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const NewsArticleManager    = dynamic(() => import('../../components/admin/NewsArticleManager'),    { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
+const ReleaseManager        = dynamic(() => import('../../components/admin/ReleaseManager'),        { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const EnvChecker            = dynamic(() => import('../../components/admin/EnvChecker'),            { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
@@ -35,6 +36,7 @@ const TABS = [
   { key:'crons',       label:'Cron Jobs',        icon:'⚙' },
   { key:'videos',      label:'Video Manager',    icon:'▶' },
   { key:'articles',    label:'Article Manager',  icon:'📰' },
+  { key:'releases',    label:'Release Manager',  icon:'◈'  },
   { key:'envcheck',    label:'Env Variables',    icon:'🔧' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
@@ -1963,6 +1965,7 @@ export default function AdminPage() {
           {tab==='crons' && <CronDashboard adminKey={adminKey} />}
           {tab==='videos' && <VideoManager adminKey={adminKey} />}
           {tab==='articles' && <NewsArticleManager adminKey={adminKey} />}
+          {tab==='releases' && <ReleaseManager adminKey={adminKey} />}
           {tab==='envcheck' && <EnvChecker adminKey={adminKey} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 

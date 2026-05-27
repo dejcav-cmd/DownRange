@@ -26,7 +26,7 @@ function ReleaseCard({ release, size = 'normal' }) {
   const isLarge = size === 'large'
 
   return (
-    <a href={release.sourceUrl || release.specUrl || '#'} target="_blank" rel="noreferrer" style={{ textDecoration: 'none', display: 'block' }}>
+    <a href={release.slug?.current ? '/releases/'+release.slug.current : (release.sourceUrl || '#')} style={{ textDecoration: 'none', display: 'block' }}>
       <div style={{ background: '#111318', border: '1px solid var(--border)', overflow: 'hidden', width: isLarge ? '100%' : '220px', flexShrink: 0, transition: 'border-color 0.2s' }}
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
         onMouseLeave={e => e.currentTarget.style.borderColor = 'var(--border)'}>
@@ -74,7 +74,7 @@ function ReleaseCard({ release, size = 'normal' }) {
                 ${release.msrp.toLocaleString()}
               </span>
             ) : <span />}
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>VIEW →</span>
+            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>READ →</span>
           </div>
         </div>
       </div>
