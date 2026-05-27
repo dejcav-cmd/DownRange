@@ -1463,11 +1463,26 @@ export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
   const [msg, setMsg]         = useState('')
   const [running, setRunning] = useState({})
+  const [healthStatus, setHealthStatus] = useState(null)
+  const [healthIssues, setHealthIssues] = useState([])
 
   // Load admin key from localStorage on mount
   React.useEffect(() => {
     const stored = adminKey || localStorage.getItem('dr_admin_key') || ''
     setAdminKeyState(stored)
+  }, [])
+
+  // Poll system health every 2 minutes — shows banner on degraded/broken
+  React.useEffect(() => {
+    function checkHealth() {
+      fetch('/api/admin/cron-health')
+        .then(r => r.json())
+        .then(d => { setHealthStatus(d.status); setHealthIssues(d.issues || []) })
+        .catch(() => {})
+    }
+    checkHealth()
+    const iv = setInterval(checkHealth, 120000)
+    return () => clearInterval(iv)
   }, [])
 
   const setAdminKey = (v) => {
@@ -1522,6 +1537,36 @@ export default function AdminPage() {
           </div>
         </div>
       </div>
+
+      {/* ── SYSTEM HEALTH ALERT BANNER ── */}
+      {healthStatus && healthStatus !== 'HEALTHY' && (
+        <div style={{
+          background: healthStatus === 'BROKEN' ? 'rgba(239,68,68,.12)' : 'rgba(245,158,11,.12)',
+          borderBottom: '1px solid ' + (healthStatus === 'BROKEN' ? 'rgba(239,68,68,.4)' : 'rgba(245,158,11,.4)'),
+          padding: '10px 24px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: 16,
+          flexWrap: 'wrap',
+        }}>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, fontWeight:700,
+            color: healthStatus === 'BROKEN' ? '#ef4444' : '#f59e0b', letterSpacing:'.06em' }}>
+            {healthStatus === 'BROKEN' ? '🔴 SYSTEM BROKEN' : '🟡 SYSTEM DEGRADED'}
+          </span>
+          <div style={{ display:'flex', gap:12, flex:1, flexWrap:'wrap' }}>
+            {healthIssues.slice(0,3).map((issue, i) => (
+              <span key={i} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#94a3b8' }}>
+                [{issue.severity}] {issue.msg.slice(0,80)}{issue.msg.length > 80 ? '...' : ''}
+              </span>
+            ))}
+          </div>
+          <button onClick={() => setTab('cronhealth')}
+            style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, background:'none',
+              border:'1px solid rgba(245,158,11,.4)', color:'#f59e0b', padding:'4px 10px', cursor:'pointer', flexShrink:0 }}>
+            View Details →
+          </button>
+        </div>
+      )}
 
       <div style={{ display:'flex', flex:1 }}>
         {/* Sidebar */}

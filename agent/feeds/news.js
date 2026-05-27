@@ -62,24 +62,43 @@ const parser = new Parser({
 
 const RSS_FEEDS = [
   // ── FIREARMS NEWS ─────────────────────────────────────────────────────
-  { name: 'The Firearm Blog',    url: 'https://www.thefirearmblog.com/blog/feed/', cat: 'industry' },
-  { name: 'TTAG',                url: 'https://www.thetruthaboutguns.com/feed/',   cat: 'news' },
-  { name: 'Guns.com',            url: 'https://www.guns.com/feed',                 cat: 'industry' },
-  { name: 'Guns & Ammo',         url: 'https://www.gunsandammo.com/feed/',         cat: 'industry' },
-  { name: 'Shooting Wire',       url: 'https://www.shootingwire.com/feed',         cat: 'industry' },
-  { name: 'Firearms News',       url: 'https://www.firearmsnews.com/feed/',        cat: 'industry' },
-  { name: 'Concealed Nation',    url: 'https://concealednation.org/feed/',         cat: 'news' },
+  { name: 'The Firearm Blog',        url: 'https://www.thefirearmblog.com/blog/feed/',         cat: 'industry' },
+  { name: 'TTAG',                    url: 'https://www.thetruthaboutguns.com/feed/',            cat: 'news'     },
+  { name: 'Guns.com News',           url: 'https://www.guns.com/feed',                          cat: 'industry' },
+  { name: 'Guns & Ammo',             url: 'https://www.gunsandammo.com/feed/',                  cat: 'industry' },
+  { name: 'Shooting Wire',           url: 'https://www.shootingwire.com/feed',                  cat: 'industry' },
+  { name: 'Firearms News',           url: 'https://www.firearmsnews.com/feed/',                 cat: 'industry' },
+  { name: 'Concealed Nation',        url: 'https://concealednation.org/feed/',                  cat: 'news'     },
+  { name: 'Outdoor Life Guns',       url: 'https://www.outdoorlife.com/category/guns/feed/',    cat: 'industry' },
+  { name: 'Field & Stream Guns',     url: 'https://www.fieldandstream.com/category/guns/feed/',cat: 'industry' },
+  { name: 'Tactical Life',           url: 'https://www.tactical-life.com/feed/',                cat: 'industry' },
+  { name: 'Personal Defense World',  url: 'https://www.personaldefenseworld.com/feed/',         cat: 'news'     },
+  { name: 'Combat Handguns',         url: 'https://www.combathandguns.com/feed/',               cat: 'industry' },
+  { name: 'Handguns Magazine',       url: 'https://www.handgunsmag.com/feed/',                  cat: 'industry' },
+  { name: 'Rifle Shooter',           url: 'https://www.rifleshootermag.com/feed/',              cat: 'industry' },
+  { name: 'American Rifleman',       url: 'https://www.americanrifleman.org/feed/',             cat: 'industry' },
+  { name: 'American Hunter',         url: 'https://www.americanhunter.org/feed/',               cat: 'industry' },
+  { name: 'Shooting Illustrated',    url: 'https://www.shootingillustrated.com/feed/',          cat: 'industry' },
   // ── LEGAL & RIGHTS ────────────────────────────────────────────────────
-  { name: 'NRA-ILA',             url: 'https://www.nraila.org/rss/',               cat: 'law' },
-  { name: 'SAF',                 url: 'https://www.saf.org/feed/',                 cat: 'law' },
-  { name: 'GOA',                 url: 'https://gunowners.org/feed/',               cat: 'law' },
-  { name: 'CleanUpATF',          url: 'https://www.cleanupatf.org/feed/',          cat: 'law' },
-  { name: 'Duke Firearms Law',   url: 'https://firearmslaw.duke.edu/feed/',        cat: 'law' },
+  { name: 'NRA-ILA',                 url: 'https://www.nraila.org/rss/',                       cat: 'law'      },
+  { name: 'SAF',                     url: 'https://www.saf.org/feed/',                          cat: 'law'      },
+  { name: 'GOA',                     url: 'https://gunowners.org/feed/',                        cat: 'law'      },
+  { name: 'FPC',                     url: 'https://www.firearmspolicy.org/feed/',               cat: 'law'      },
+  { name: 'Firearms Policy Coalition',url: 'https://fpclaw.org/feed/',                          cat: 'law'      },
+  { name: 'CleanUpATF',              url: 'https://www.cleanupatf.org/feed/',                   cat: 'law'      },
+  { name: 'Duke Firearms Law',       url: 'https://firearmslaw.duke.edu/feed/',                 cat: 'law'      },
+  { name: 'Bearing Arms',            url: 'https://bearingarms.com/feed/',                      cat: 'law'      },
+  { name: 'Guns & Patriots',         url: 'https://www.newsmax.com/rss/Guns-And-Patriots/1/',   cat: 'law'      },
   // ── GOVERNMENT ────────────────────────────────────────────────────────
-  { name: 'ATF News',            url: 'https://www.atf.gov/rss/news_whats-new.xml', cat: 'law' },
-  { name: 'Congress.gov 2A',     url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law' },
-  // ── DEALS ─────────────────────────────────────────────────────────────
-  { name: 'AmmoLand',            url: 'https://www.ammoland.com/feed/',            cat: 'deals' },
+  { name: 'ATF News',                url: 'https://www.atf.gov/rss/news_whats-new.xml',         cat: 'law'      },
+  { name: 'Congress.gov 2A',         url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law'      },
+  // ── AMMO & MARKET ─────────────────────────────────────────────────────
+  { name: 'AmmoLand',                url: 'https://www.ammoland.com/feed/',                     cat: 'industry' },
+  { name: 'GunsAmerica Digest',      url: 'https://www.gunsamerica.com/blog/feed/',             cat: 'industry' },
+  // ── REDDIT ────────────────────────────────────────────────────────────
+  { name: 'r/guns',                  url: 'https://www.reddit.com/r/guns/hot.json?limit=10',    cat: 'news',    isReddit: true },
+  { name: 'r/firearms',              url: 'https://www.reddit.com/r/firearms/hot.json?limit=10',cat: 'news',    isReddit: true },
+  { name: 'r/CCW',                   url: 'https://www.reddit.com/r/CCW/hot.json?limit=10',     cat: 'news',    isReddit: true },
 ]
 
 // ── IMAGE EXTRACTION ──────────────────────────────────────────────────────────
@@ -127,7 +146,8 @@ async function fetchNewsAPI() {
     const res = await axios.get('https://newsapi.org/v2/everything', {
       timeout: 10000,
       params: {
-        q: 'firearms OR "Second Amendment" OR ATF OR "gun rights" OR "concealed carry"',
+        q: '(firearms OR "Second Amendment" OR "gun control" OR ATF OR "gun rights" OR "concealed carry" OR Glock OR "pistol brace" OR NRA OR "gun law" OR suppressor) AND -"video game"',
+        language: 'en',
         sortBy: 'publishedAt', pageSize: 30, language: 'en',
         apiKey: process.env.NEWSAPI_KEY
       }
@@ -165,6 +185,26 @@ async function fetchGNews() {
 
 async function fetchOneFeed(feed) {
   try {
+    // Reddit JSON feeds use different format
+    if (feed.isReddit) {
+      const res = await axios.get(feed.url, { headers: { 'User-Agent': 'DownRange/1.0' }, timeout: 8000 })
+      const posts = (res.data?.data?.children || [])
+        .filter(p => p.data && !p.data.is_self && p.data.score > 10)
+        .slice(0, 5)
+        .map(p => ({
+          title:       p.data.title,
+          description: p.data.selftext?.slice(0, 400) || p.data.title,
+          url:         p.data.url?.startsWith('http') ? p.data.url : 'https://reddit.com' + p.data.permalink,
+          source:      feed.name,
+          feedCat:     feed.cat,
+          publishedAt: new Date(p.data.created_utc * 1000).toISOString(),
+          imageUrl:    p.data.thumbnail?.startsWith('http') ? p.data.thumbnail : null,
+          imageAlt:    p.data.title,
+        }))
+      console.log('[NEWS] Reddit ' + feed.name + ': ' + posts.length + ' items')
+      return posts
+    }
+
     const result = await parser.parseURL(feed.url)
     const items = result.items.slice(0, ITEMS_PER_FEED).map(i => ({
       title:       i.title,
@@ -176,10 +216,10 @@ async function fetchOneFeed(feed) {
       imageUrl:    cleanImageUrl(extractRSSImage(i)),
       imageAlt:    i.title,
     }))
-    console.log(`[NEWS] RSS ${feed.name}: ${items.length} items`)
+    console.log('[NEWS] RSS ' + feed.name + ': ' + items.length + ' items')
     return items
   } catch (err) {
-    console.error(`[NEWS] RSS error (${feed.name}): ${err.message}`)
+    console.error('[NEWS] Feed error (' + feed.name + '): ' + err.message)
     return []
   }
 }

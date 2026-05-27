@@ -8,6 +8,48 @@ export const maxDuration = 30
  */
 import { createClient } from '@sanity/client'
 
+const ALERT_EMAIL = 'dejcav@gmail.com'
+const ALERT_KEY   = 'dr:cron-health-last-status'
+
+async function sendHealthAlert(issues, status) {
+  if (!process.env.RESEND_API_KEY) return
+  if (!issues.length) return
+
+  // Use Redis to avoid spamming — only send if status changed
+  let redis = null
+  try {
+    if (process.env.UPSTASH_REDIS_REST_URL && process.env.UPSTASH_REDIS_REST_TOKEN) {
+      const { Redis } = await import('@upstash/redis')
+      redis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN })
+      const lastStatus = await redis.get(ALERT_KEY)
+      // Don't re-alert if same status persists (suppress for 2 hours)
+      if (lastStatus === status) return
+      await redis.setex(ALERT_KEY, 7200, status)  // expire after 2h so it re-alerts
+    }
+  } catch {}
+
+  const { Resend } = await import('resend')
+  const resend = new Resend(process.env.RESEND_API_KEY)
+
+  const color = status === 'BROKEN' ? '#ef4444' : status === 'DEGRADED' ? '#f59e0b' : '#f59e0b'
+  const issueList = issues.map(i =>
+    '<li style="margin-bottom:8px"><strong style="color:' + (i.severity==='CRITICAL'?'#ef4444':'#f59e0b') + '">[' + i.severity + ']</strong> ' + i.msg + '</li>'
+  ).join('')
+
+  await resend.emails.send({
+    from: 'DownRange System <dj@downrangeco.com>',
+    to:   [ALERT_EMAIL],
+    subject: '[DownRange Alert] ' + status + ' — ' + issues.length + ' issue' + (issues.length>1?'s':'') + ' detected',
+    html: '<div style="font-family:monospace;max-width:600px;background:#09090B;color:#F0EDE6;padding:32px">'
+      + '<div style="font-size:24px;font-weight:900;color:' + color + ';letter-spacing:4px;margin-bottom:8px">DOWNRANGE ALERT</div>'
+      + '<div style="font-size:12px;color:#64748b;margin-bottom:24px">System status: <strong style="color:' + color + '">' + status + '</strong></div>'
+      + '<ul style="padding-left:20px;line-height:2">' + issueList + '</ul>'
+      + '<div style="margin-top:24px;padding:12px 16px;background:#111;border-left:3px solid #C8922A;font-size:11px;color:#94a3b8">'
+      + 'Check the admin dashboard at <a href="https://downrangeco.com/admin" style="color:#C8922A">downrangeco.com/admin</a>'
+      + '</div></div>',
+  }).catch(e => console.error('[CRON-HEALTH] Email alert failed:', e.message))
+}
+
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET    || 'production',
@@ -95,6 +137,11 @@ export async function GET() {
     : issues.some(i => i.severity === 'HIGH') ? 'DEGRADED'
     : issues.length > 0 ? 'WARNING'
     : 'HEALTHY'
+
+  // Send email alert if degraded or broken (rate-limited via Redis)
+  if (overallStatus === 'BROKEN' || overallStatus === 'DEGRADED') {
+    sendHealthAlert(issues, overallStatus).catch(() => {})
+  }
 
   return Response.json({
     status: overallStatus,
