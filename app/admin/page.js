@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect } from 'react'
+import { UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
@@ -1433,6 +1434,7 @@ export default function AdminPage() {
           <div style={{ display:'flex', gap:'10px', alignItems:'center' }}>
 
             <Link href="/" className="dr-btn-outline" style={{ padding:'6px 14px', fontSize:'11px' }}>← Site</Link>
+            <UserButton afterSignOutUrl="/admin-login" appearance={{ variables:{ colorPrimary:'#C8922A' } }} />
             <input
               type="password"
               placeholder="Admin Key"

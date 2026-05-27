@@ -410,6 +410,65 @@ export default function OutreachPortal({ adminKey }) {
   const [filterStatus, setFilterStatus] = useState('active')
   const [searchQ, setSearchQ]           = useState('')
 
+  // ── Lists tab state ───────────────────────────────────────────────────────────
+  const [listGroup, setListGroup]         = useState('youtuber')
+  const [listContacts, setListContacts]   = useState([])
+  const [listLoading, setListLoading]     = useState(false)
+  const [editingContact, setEditingContact] = useState(null)   // _id being edited inline
+  const [editRow, setEditRow]             = useState({})        // draft edits for that row
+  const [listSearch, setListSearch]       = useState('')
+  const [listPage, setListPage]           = useState(0)
+  const PAGE_SIZE = 50
+
+  const LIST_GROUPS = [
+    { key:'youtuber',     label:'YouTubers',            icon:'▶' },
+    { key:'gun_shop',     label:'Gun Shops & FFLs',     icon:'🏪' },
+    { key:'ffl_dealer',   label:'Online Dealers',       icon:'🛒' },
+    { key:'organization', label:'Manufacturers & Orgs', icon:'🏭' },
+    { key:'instructor',   label:'Instructors',          icon:'🎯' },
+    { key:'range',        label:'Ranges',               icon:'🎳' },
+    { key:'all',          label:'All Contacts',         icon:'👥' },
+  ]
+
+  const loadListGroup = async (group) => {
+    setListLoading(true); setListPage(0); setListSearch('')
+    let url = `/api/outreach/contacts?limit=500&status=active`
+    if (group !== 'all') url += `&type=${group}`
+    try {
+      const res = await fetch(url, {headers: h})
+      const d = await res.json()
+      setListContacts(d.contacts || [])
+    } catch{}
+    setListLoading(false)
+  }
+
+  useEffect(() => { if (tab === 'lists') loadListGroup(listGroup) }, [tab, listGroup, adminKey])
+
+  const saveContactEdit = async (id) => {
+    const res = await fetch('/api/outreach/contacts', {
+      method:'PATCH', headers: {...h, 'Content-Type':'application/json'},
+      body: JSON.stringify({_id:id, ...editRow})
+    })
+    const d = await res.json()
+    if (d.ok) {
+      setListContacts(prev => prev.map(c => c._id === id ? {...c, ...editRow} : c))
+      setEditingContact(null); setEditRow({})
+      flash('Saved')
+    } else flash(d.error || 'Save failed', false)
+  }
+
+  const deleteListContact = async (id) => {
+    if (!confirm('Delete this contact?')) return
+    const res = await fetch('/api/outreach/contacts', {
+      method:'DELETE', headers: {...h, 'Content-Type':'application/json'},
+      body: JSON.stringify({id})
+    })
+    if ((await res.json()).ok) {
+      setListContacts(prev => prev.filter(c => c._id !== id))
+      flash('Deleted')
+    }
+  }
+
   // ── Approval Queue state ────────────────────────────────────────────────────
   const [queueEntries, setQueueEntries]     = useState([])
   const [queueStats, setQueueStats]         = useState({})
@@ -674,7 +733,7 @@ export default function OutreachPortal({ adminKey }) {
   const toggleAll = () => setSelectedIds(p=>p.size===displayed.length?new Set():new Set(displayed.map(c=>c._id)))
 
   const TABS = [
-    ['contacts','👥 Contacts'],['queue','⚡ Approval Queue'],['history','📋 History'],
+    ['contacts','👥 Contacts'],['lists','📋 Lists'],['queue','⚡ Approval Queue'],['history','📬 History'],
     ['send','📤 Bulk Send'],['templates','✉ Templates'],
     ['campaigns','🗂 Campaigns'],['scrape','🔍 Scrape'],['import','📥 Import'],
   ]
@@ -932,6 +991,201 @@ export default function OutreachPortal({ adminKey }) {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── LISTS TAB ── */}
+      {tab==='lists' && (
+        <div>
+          {/* Header + group selector */}
+          <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:12}}>
+            <div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--gold)',letterSpacing:'.06em',lineHeight:1}}>Contact Lists</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginTop:3}}>
+                View, search, and edit every contact in each list. Click any row to edit inline.
+              </div>
+            </div>
+            <div style={{display:'flex',gap:8,alignItems:'center',flexWrap:'wrap'}}>
+              <input className="op-input" placeholder="Search this list..." value={listSearch}
+                onChange={e=>setListSearch(e.target.value)} style={{width:200}} />
+              <button className="op-btn-ghost op-btn-sm" onClick={()=>loadListGroup(listGroup)}>↻</button>
+            </div>
+          </div>
+
+          {/* Group dropdown + pill row */}
+          <div style={{marginBottom:16}}>
+            <label className="op-label">Select List</label>
+            <div style={{display:'flex',gap:8,flexWrap:'wrap',alignItems:'center'}}>
+              <select className="op-select" value={listGroup}
+                onChange={e=>{ setListGroup(e.target.value); setEditingContact(null) }}
+                style={{minWidth:220,fontSize:13,padding:'8px 14px'}}>
+                {LIST_GROUPS.map(g=>(
+                  <option key={g.key} value={g.key}>{g.icon} {g.label}</option>
+                ))}
+              </select>
+              <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                {LIST_GROUPS.map(g=>(
+                  <button key={g.key} onClick={()=>{ setListGroup(g.key); setEditingContact(null) }}
+                    style={{background:listGroup===g.key?'var(--gold)':'var(--bg2)',
+                      color:listGroup===g.key?'#000':'var(--text-dim)',
+                      border:`1px solid ${listGroup===g.key?'var(--gold)':'var(--border)'}`,
+                      fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'4px 10px',cursor:'pointer',transition:'all .15s'}}>
+                    {g.icon} {g.label}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* Table */}
+          {listLoading ? (
+            <div style={{padding:32,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>Loading...</div>
+          ) : (() => {
+            const filtered = listContacts.filter(c => {
+              if (!listSearch) return true
+              const q = listSearch.toLowerCase()
+              return (c.name||'').toLowerCase().includes(q) ||
+                     (c.email||'').toLowerCase().includes(q) ||
+                     (c.city||'').toLowerCase().includes(q) ||
+                     (c.state||'').toLowerCase().includes(q) ||
+                     (c.notes||'').toLowerCase().includes(q)
+            })
+            const totalPages = Math.ceil(filtered.length / PAGE_SIZE)
+            const paged = filtered.slice(listPage * PAGE_SIZE, (listPage+1) * PAGE_SIZE)
+            const group = LIST_GROUPS.find(g=>g.key===listGroup)
+
+            return (
+              <div>
+                {/* Table stats */}
+                <div style={{display:'flex',gap:12,marginBottom:10,alignItems:'center',flexWrap:'wrap'}}>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--gold)',fontWeight:700}}>
+                    {group?.icon} {group?.label}
+                  </span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>
+                    {filtered.length} contacts {listSearch && `(filtered from ${listContacts.length})`}
+                  </span>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#3b82f6'}}>
+                    {filtered.filter(c=>c.email).length} with email
+                  </span>
+                  {totalPages > 1 && (
+                    <div style={{display:'flex',gap:4,marginLeft:'auto',alignItems:'center'}}>
+                      <button className="op-btn-ghost op-btn-sm" onClick={()=>setListPage(p=>Math.max(0,p-1))} disabled={listPage===0}>←</button>
+                      <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>Page {listPage+1}/{totalPages}</span>
+                      <button className="op-btn-ghost op-btn-sm" onClick={()=>setListPage(p=>Math.min(totalPages-1,p+1))} disabled={listPage===totalPages-1}>→</button>
+                    </div>
+                  )}
+                </div>
+
+                <div style={{overflowX:'auto',border:'1px solid var(--border)'}}>
+                  <table className="op-table" style={{minWidth:900}}>
+                    <thead>
+                      <tr>
+                        <th style={{minWidth:160}}>Name</th>
+                        <th style={{minWidth:80}}>Type</th>
+                        <th style={{minWidth:200}}>Email</th>
+                        <th style={{minWidth:100}}>Phone</th>
+                        <th style={{minWidth:90}}>State</th>
+                        <th style={{minWidth:160}}>Website</th>
+                        <th style={{minWidth:80}}>Last Contact</th>
+                        <th style={{minWidth:90}}>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {paged.length === 0 && (
+                        <tr><td colSpan={8} style={{textAlign:'center',padding:32,fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>
+                          {listSearch ? 'No contacts match your search.' : 'No contacts in this list. Go to Contacts tab → Seed Everything.'}
+                        </td></tr>
+                      )}
+                      {paged.map(contact => {
+                        const isEditing = editingContact === contact._id
+                        return (
+                          <tr key={contact._id} className="op-row-hover"
+                            style={{background: isEditing ? 'rgba(200,146,42,.08)' : undefined}}>
+                            <td>
+                              {isEditing ? (
+                                <input className="op-input" value={editRow.name ?? contact.name ?? ''} onChange={e=>setEditRow(r=>({...r,name:e.target.value}))} style={{fontSize:11}} />
+                              ) : (
+                                <div>
+                                  <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)'}}>{contact.name}</div>
+                                  {contact.firstName && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#475569'}}>{contact.firstName}</div>}
+                                </div>
+                              )}
+                            </td>
+                            <td><Bdg type={contact.type} /></td>
+                            <td>
+                              {isEditing ? (
+                                <input className="op-input" value={editRow.email ?? contact.email ?? ''} onChange={e=>setEditRow(r=>({...r,email:e.target.value}))} style={{fontSize:11}} />
+                              ) : (
+                                contact.email
+                                  ? <a href={`mailto:${contact.email}`} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--gold)',textDecoration:'none'}}>{contact.email}</a>
+                                  : <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#ef4444'}}>⚠ no email</span>
+                              )}
+                            </td>
+                            <td>
+                              {isEditing ? (
+                                <input className="op-input" value={editRow.phone ?? contact.phone ?? ''} onChange={e=>setEditRow(r=>({...r,phone:e.target.value}))} style={{fontSize:11}} />
+                              ) : (
+                                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--text-dim)'}}>{contact.phone || '—'}</span>
+                              )}
+                            </td>
+                            <td>
+                              {isEditing ? (
+                                <input className="op-input" value={editRow.state ?? contact.state ?? ''} onChange={e=>setEditRow(r=>({...r,state:e.target.value}))} style={{fontSize:11,width:60}} />
+                              ) : (
+                                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>
+                                  {contact.city ? `${contact.city}, ` : ''}{contact.state || '—'}
+                                </span>
+                              )}
+                            </td>
+                            <td>
+                              {isEditing ? (
+                                <input className="op-input" value={editRow.website ?? contact.website ?? ''} onChange={e=>setEditRow(r=>({...r,website:e.target.value}))} style={{fontSize:10}} />
+                              ) : (
+                                contact.website
+                                  ? <a href={contact.website} target="_blank" rel="noreferrer" style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#3b82f6',textDecoration:'none',overflow:'hidden',display:'block',maxWidth:150,textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{contact.website.replace(/^https?:\/\//,'')}</a>
+                                  : <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#374151'}}>—</span>
+                              )}
+                            </td>
+                            <td>
+                              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color: !contact.lastContactedAt?'#f59e0b':'#64748b'}}>
+                                {contact.lastContactedAt ? fmt(contact.lastContactedAt) : '⚠ never'}
+                              </span>
+                            </td>
+                            <td>
+                              <div style={{display:'flex',gap:3}}>
+                                {isEditing ? (
+                                  <>
+                                    <button className="op-btn op-btn-sm" style={{fontSize:9,padding:'3px 8px',background:'#22c55e',color:'#000'}} onClick={()=>saveContactEdit(contact._id)}>Save</button>
+                                    <button className="op-btn-ghost op-btn-sm" style={{fontSize:9,padding:'3px 8px'}} onClick={()=>{setEditingContact(null);setEditRow({})}}>✕</button>
+                                  </>
+                                ) : (
+                                  <>
+                                    <button className="op-send-btn" style={{fontSize:9,padding:'3px 8px'}} onClick={()=>setSendContact(contact)} disabled={!contact.email} title="Send email">✉</button>
+                                    <button className="op-btn-ghost op-btn-sm" style={{fontSize:9,padding:'3px 8px'}} onClick={()=>{setEditingContact(contact._id);setEditRow({})}} title="Edit">✏</button>
+                                    <button className="op-btn-ghost op-btn-sm" style={{fontSize:9,padding:'3px 7px',color:'#ef4444',borderColor:'rgba(239,68,68,.3)'}} onClick={()=>deleteListContact(contact._id)} title="Delete">×</button>
+                                  </>
+                                )}
+                              </div>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+                </div>
+
+                {/* Notes column for expanded view */}
+                {paged.filter(c=>c.notes).length > 0 && (
+                  <div style={{marginTop:12,fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#475569',padding:'8px 12px',background:'var(--bg2)',border:'1px solid var(--border)'}}>
+                    <strong style={{color:'#64748b'}}>NOTES — </strong>
+                    {paged.filter(c=>c.notes).slice(0,3).map(c=>(
+                      <span key={c._id} style={{marginRight:16}}><span style={{color:'var(--gold)'}}>{c.name}:</span> {c.notes?.slice(0,80)}{c.notes?.length>80?'...':''}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )
+          })()}
         </div>
       )}
 
