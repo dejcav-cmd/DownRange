@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
+import { reportCronRun } from '@/lib/cronReporter'
 
 import { createClient } from '@sanity/client'
 
@@ -99,10 +100,14 @@ async function rewriteArticle(article) {
 
 export async function POST(req) {
   try {
-    const adminKey = process.env.ADMIN_KEY
-    const xKey     = req.headers.get('x-admin-key') || ''
-    const bearer   = req.headers.get('authorization') || ''
-    if (adminKey && xKey !== adminKey && bearer !== ('Bearer ' + adminKey)) {
+    const adminKey   = process.env.ADMIN_KEY
+    const cronSecret = process.env.CRON_SECRET
+    const xKey       = req.headers.get('x-admin-key') || ''
+    const bearer     = req.headers.get('authorization') || ''
+    const validAdmin = adminKey && (xKey === adminKey || bearer === 'Bearer ' + adminKey)
+    const validCron  = cronSecret && bearer === 'Bearer ' + cronSecret
+    const isCronCall = req.headers.get('x-vercel-cron') === '1'
+    if (adminKey && !validAdmin && !validCron && !isCronCall) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 

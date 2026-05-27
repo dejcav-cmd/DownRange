@@ -8,7 +8,7 @@ export const dynamic = 'force-dynamic'
 
 import { Redis } from '@upstash/redis'
 
-const REDIS_KEY = 'dr:cron-runs'
+const REDIS_KEY = 'dr:cron-runs-v2'
 const TTL = 30 * 86400  // 30 days
 
 let _redis = null
@@ -39,6 +39,9 @@ export const ALL_JOBS = [
   { id:'newsletter',    path:'/api/newsletter',               schedule:'0 7 * * *',    label:'Newsletter',           group:'Outreach',   icon:'📧', critical:false, desc:'Resend daily newsletter digest — 7am' },
   { id:'queue_digest',  path:'/api/outreach/queue/digest',    schedule:'0 13 * * *',   label:'Outreach Queue Digest',group:'Outreach',   icon:'📬', critical:false, desc:'Email pending approval queue summary — 1pm' },
   { id:'prn_releases',  path:'/api/cron/releases',            schedule:'0 12 * * *',   label:'PRN Scraper',          group:'Outreach',   icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases — noon' },
+  { id:'fix-images',    path:'/api/admin/fix-images',         schedule:'0 13 * * *',   label:'Image Patcher',        group:'System',     icon:'🖼',  critical:false, desc:'Patch missing article images daily 1pm' },
+  { id:'backfill',      path:'/api/admin/backfill-articles',  schedule:'0 15 * * *',   label:'Article Backfill',     group:'Content',    icon:'✍',  critical:false, desc:'Backfill missing article bodies via Claude — 7am Pacific' },
+  { id:'cron-health',   path:'/api/admin/cron-health',        schedule:'*/30 * * * *', label:'Cron Health Check',    group:'System',     icon:'🩺', critical:true,  desc:'System health check + email alerts every 30 min' },
 ]
 
 function parseSchedule(cron) {
@@ -107,7 +110,7 @@ function auth(req) {
 
 // ── GET ──────────────────────────────────────────────────────────────────────
 export async function GET(req) {
-  if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  // GET is intentionally public — returns only run metadata, no secrets
 
   const runs  = await readRuns()
   const now   = Date.now()

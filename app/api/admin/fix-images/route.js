@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+import { reportCronRun } from '@/lib/cronReporter'
 export const maxDuration = 60
 
 /**
