@@ -129,10 +129,12 @@ CRITICAL: Return ONLY a valid JSON object with fields: summary, body, category, 
 
 export async function POST(req) {
   // Auth
-  // Uses ADMIN_KEY only — CRON_SECRET is for cron jobs, not admin UI calls
-  const adminKey   = process.env.ADMIN_KEY
-  const authHeader = req.headers.get('authorization')
-  if (adminKey && authHeader !== `Bearer ${adminKey}`) {
+  // Accept both x-admin-key header and Bearer token for backwards compat
+  const adminKey = process.env.ADMIN_KEY
+  const xKey     = req.headers.get('x-admin-key')
+  const bearer   = req.headers.get('authorization')
+  const authed   = !adminKey || xKey === adminKey || bearer === `Bearer ${adminKey}`
+  if (!authed) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 

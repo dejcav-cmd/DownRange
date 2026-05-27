@@ -1236,7 +1236,7 @@ function ImageFixButton() {
       while (true) {
         batch++
         addLog(`Batch ${batch}: scanning articles...`, '#64748b')
-        const res  = await fetch(`/api/admin/fix-images?batch=50${force ? '&force=true' : ''}`, { method: 'POST' })
+        const res  = await fetch(`/api/admin/fix-images?batch=50${force ? '&force=true' : ''}`, { method: 'POST', headers: { 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
         const data = await res.json()
         if (!res.ok) { addLog(`Error: ${data.error || res.statusText}`, '#ef4444'); break }
 
@@ -1324,7 +1324,7 @@ function BackfillButton() {
       while (true) {
         batch++
         addLog(`Batch ${batch}: calling Claude API...`, '#64748b')
-        const res  = await fetch(`/api/admin/backfill-articles?batch=10${force?'&force=true':''}`, { method:'POST' })
+        const res  = await fetch(`/api/admin/backfill-articles?batch=10${force?'&force=true':''}`, { method:'POST', headers:{ 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
         const data = await res.json()
 
         if (!res.ok) { addLog(`Error: ${data.error || res.statusText}`, '#ef4444'); break }
