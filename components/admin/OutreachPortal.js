@@ -506,6 +506,10 @@ export default function OutreachPortal({ adminKey }) {
   const [emailLimit,    setEmailLimit]    = useState(30)
   const [selectedEmails, setSelectedEmails] = useState(new Set())
 
+  // Internet scan
+  const [scanRunning,  setScanRunning]  = useState(false)
+  const [scanResult,   setScanResult]   = useState(null)
+
   // Import
   const fileRef = useRef(null)
   const [importType, setImportType]       = useState('gun_shop')
@@ -817,6 +821,23 @@ export default function OutreachPortal({ adminKey }) {
     setEmailApplying(false)
   }
 
+  const runInternetScan = async () => {
+    setScanRunning(true); setScanResult(null)
+    flash('⏳ Importing contacts from internet scan...')
+    try {
+      const res = await fetch('/api/outreach/internet-scan', {
+        method: 'POST', headers: {...h, 'Content-Type': 'application/json'}
+      })
+      const d = await res.json()
+      setScanResult(d)
+      if (d.ok) {
+        flash(`✅ Added ${d.created} new contacts (${d.skipped} already existed)`)
+        loadContacts()
+      } else flash('❌ ' + d.error, false)
+    } catch(e) { flash('❌ ' + e.message, false) }
+    setScanRunning(false)
+  }
+
   const runScrape = async (save=false) => {
     setScrapeRunning(true); setScrapeResult(null)
     const res = await fetch('/api/outreach/scrape',{method:'POST',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify({source:scrapeSource,params:{state:scrapeState,limit:100},saveToDatabase:save})})
@@ -939,6 +960,10 @@ export default function OutreachPortal({ adminKey }) {
         <button className="op-btn-ghost op-btn-sm" onClick={seedManufacturers}>🏭 Seed 70+ Manufacturers</button>
         <button className="op-btn-ghost op-btn-sm" onClick={seedDealers}>🛒 Seed 30+ Dealers & Retailers</button>
         <button className="op-btn-ghost op-btn-sm" onClick={seedHolsters}>🔒 Seed 40+ Holster Companies</button>
+        <button className="op-btn op-btn-sm" onClick={runInternetScan} disabled={scanRunning}
+          style={{background:'#3b82f6',borderColor:'#3b82f6'}}>
+          {scanRunning ? '⏳ Scanning...' : '🌐 Internet Scan (200+ contacts)'}
+        </button>
       </div>
 
       {/* ── SETUP BANNER — shows when database is empty ── */}
@@ -1886,7 +1911,38 @@ export default function OutreachPortal({ adminKey }) {
             Find and remove duplicate contacts, then research emails from websites.
           </div>
 
-          {/* ── DEDUP SECTION ── */}
+          {/* ── INTERNET SCAN SECTION ── */}
+          <div style={{marginBottom:28}}>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12,borderBottom:'1px solid var(--border)',paddingBottom:8}}>
+              Step 0 — Internet Scan (New Contacts)
+            </div>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginBottom:12,lineHeight:1.8}}>
+              Imports 200+ researched contacts with verified emails: YouTubers (27), Manufacturers (24), Optics (13), Ammo companies (13), Accessories/Gear (20), Media/Publications (18), Suppressors (5), 2A Orgs (8), Retail (9), CCW/Legal (4) and more. Emails sourced from official contact/press pages. Skips any contact already in your database.
+            </div>
+            <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:12,flexWrap:'wrap'}}>
+              <button className="op-btn" style={{background:'#3b82f6'}} onClick={runInternetScan} disabled={scanRunning}>
+                {scanRunning ? '⏳ Importing...' : '🌐 Run Internet Scan'}
+              </button>
+              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>
+                Scans: YouTubers · Manufacturers · Optics · Ammo · Gear · Media · 2A Orgs · Retail · CCW
+              </span>
+            </div>
+            {scanResult && (
+              <div style={{padding:'12px 16px',background:scanResult.ok?'rgba(59,130,246,.08)':'rgba(239,68,68,.08)',border:`1px solid ${scanResult.ok?'rgba(59,130,246,.3)':'rgba(239,68,68,.3)'}`,fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
+                {scanResult.ok ? (
+                  <div style={{display:'flex',gap:20,flexWrap:'wrap'}}>
+                    <span style={{color:'#22c55e',fontWeight:700}}>✅ Scan Complete</span>
+                    <span style={{color:'var(--text-dim)'}}>Added: <strong style={{color:'#22c55e'}}>{scanResult.created}</strong></span>
+                    <span style={{color:'var(--text-dim)'}}>Skipped (existing): <strong style={{color:'#64748b'}}>{scanResult.skipped}</strong></span>
+                    <span style={{color:'var(--text-dim)'}}>Total in scan: <strong style={{color:'var(--gold)'}}>{scanResult.total}</strong></span>
+                    {scanResult.errors?.length > 0 && <span style={{color:'#f87171'}}>Errors: {scanResult.errors.length}</span>}
+                  </div>
+                ) : (
+                  <span style={{color:'#f87171'}}>❌ {scanResult.error}</span>
+                )}
+              </div>
+            )}
+          </div>
           <div style={{marginBottom:28}}>
             <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12,borderBottom:'1px solid var(--border)',paddingBottom:8}}>
               Step 1 — Find Duplicates
