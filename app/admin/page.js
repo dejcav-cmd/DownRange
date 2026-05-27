@@ -982,7 +982,7 @@ function CronHealth({ secret }) {
 
 
 
-function ScrapeReleasesButton() {
+function ScrapeReleasesButton({ adminKey }) {
   const [log, setLog]     = React.useState([])
   const [running, setRunning] = React.useState(false)
   const [stats, setStats] = React.useState(null)
@@ -1002,7 +1002,7 @@ function ScrapeReleasesButton() {
     try {
       const res = await fetch('/api/admin/scrape-releases', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'x-admin-key': localStorage.getItem('dr_admin_key') || '' },
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey || localStorage.getItem('dr_admin_key') || '' },
         body: JSON.stringify({ limit, force }),
       })
       const data = await res.json()
@@ -1216,7 +1216,7 @@ function SystemAlertDashboard() {
 }
 
 
-function ImageFixButton() {
+function ImageFixButton({ adminKey }) {
   const [log, setLog]         = React.useState([])
   const [running, setRunning] = React.useState(false)
   const [stats, setStats]     = React.useState(null)
@@ -1313,7 +1313,7 @@ function ImageFixButton() {
   )
 }
 
-function BackfillButton() {
+function BackfillButton({ adminKey }) {
   const [log, setLog]         = React.useState([])
   const [running, setRunning] = React.useState(false)
   const [stats, setStats]     = React.useState(null)
@@ -1463,7 +1463,7 @@ export default function AdminPage() {
 
   // Load admin key from localStorage on mount
   React.useEffect(() => {
-    const stored = localStorage.getItem('dr_admin_key') || ''
+    const stored = adminKey || localStorage.getItem('dr_admin_key') || ''
     setAdminKeyState(stored)
   }, [])
 
@@ -1501,13 +1501,21 @@ export default function AdminPage() {
 
             <Link href="/" className="dr-btn-outline" style={{ padding:'6px 14px', fontSize:'11px' }}>← Site</Link>
             <button onClick={async()=>{ await fetch('/api/admin/auth/signout',{method:'POST'}); window.location='/admin-login' }} style={{background:'none',border:'1px solid var(--border)',color:'var(--text-dim)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'5px 10px',cursor:'pointer'}}>Sign Out</button>
-            <input
-              type="password"
-              placeholder="Admin Key"
-              value={adminKey}
-              onChange={e=>setAdminKey(e.target.value)}
-              style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'6px 10px', width:130, outline:'none' }}
-            />
+            <div style={{display:'flex',gap:4,alignItems:'center'}}>
+              <input
+                type="password"
+                placeholder="Admin Key"
+                value={adminKey}
+                onChange={e=>setAdminKey(e.target.value)}
+                onKeyDown={e=>{ if(e.key==='Enter') { setAdminKey(e.target.value); setMsg('✅ Admin key saved') } }}
+                style={{ background:'var(--bg3)', border:`1px solid ${adminKey?'#22c55e':'var(--border)'}`, color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', padding:'6px 10px', width:150, outline:'none' }}
+              />
+              <button
+                onClick={()=>{ localStorage.setItem('dr_admin_key', adminKey); setMsg('✅ Admin key saved — ready') }}
+                style={{background:'#22c55e',color:'#000',border:'none',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,fontWeight:700,padding:'6px 10px',cursor:'pointer',whiteSpace:'nowrap'}}>
+                SAVE
+              </button>
+            </div>
           </div>
         </div>
       </div>
@@ -1703,7 +1711,7 @@ export default function AdminPage() {
                     Logs each article in real-time below.
                   </div>
                 </div>
-                <BackfillButton />
+                {adminKey && <BackfillButton adminKey={adminKey} />}{!adminKey && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:"#ef4444",padding:"12px 16px",background:"rgba(239,68,68,.08)",border:"1px solid rgba(239,68,68,.2)"}}>⚠ Enter your Admin Key in the field top-right to use this feature.</div>}
               </div>
 
 
@@ -1719,7 +1727,7 @@ export default function AdminPage() {
                     Runs automatically daily at 8am ET via Vercel cron. Use this to trigger manually.
                   </div>
                 </div>
-                <ScrapeReleasesButton />
+                <ScrapeReleasesButton adminKey={adminKey} />
               </div>
 
               {/* Image fixer panel */}
@@ -1733,7 +1741,7 @@ export default function AdminPage() {
                     then assigns a firearm-relevant photo matched to the article topic. 50 articles per batch.
                   </div>
                 </div>
-                <ImageFixButton />
+                <ImageFixButton adminKey={adminKey} />
               </div>
 
               <div style={{ padding:'12px 16px', background:'rgba(200,146,42,0.06)', border:'1px solid rgba(200,146,42,0.2)', borderRadius:4, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.6 }}>
