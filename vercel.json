@@ -74,7 +74,7 @@
     },
     {
       "path": "/api/admin/fetch-article-images",
-      "schedule": "0 2 * * *"
+      "schedule": "*/30 * * * *"
     }
   ],
   "headers": [

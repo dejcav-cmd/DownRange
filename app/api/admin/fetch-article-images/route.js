@@ -122,8 +122,12 @@ async function uploadImageToSanity(imageUrl, filename) {
 }
 
 export async function POST(req) {
-  const key = req.headers.get('x-admin-key')
-  if (key !== process.env.ADMIN_KEY) return Response.json({ error:'Unauthorized' }, { status:401 })
+  const key       = req.headers.get('x-admin-key')
+  const cronAuth  = req.headers.get('authorization')
+  const cronSecret= process.env.CRON_SECRET
+  const isCron    = cronSecret && cronAuth === `Bearer ${cronSecret}`
+  const isAdmin   = key === process.env.ADMIN_KEY
+  if (!isCron && !isAdmin) return Response.json({ error:'Unauthorized' }, { status:401 })
 
   const { limit = 30, force = false } = await req.json().catch(() => ({}))
 
@@ -188,4 +192,7 @@ export async function POST(req) {
   return Response.json({ ok: true, total: articles.length, ...results })
 }
 
-export async function GET(req) { return POST(req) }
+export async function GET(req) {
+  // Cron trigger — Vercel sends Authorization: Bearer <CRON_SECRET>
+  return POST(req)
+}

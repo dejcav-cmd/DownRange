@@ -79,6 +79,33 @@ export async function POST(req) {
 
   const { force } = await req.json().catch(() => ({}))
   
+  // Load image repo for fallback (grouped by category)
+  let repoByCategory = {}
+  try {
+    const repoImages = await sanity.fetch(
+      `*[_type == "imageAsset" && approved == true]{_id, category, cdnUrl, imageUrl, usageCount} | order(usageCount asc)`
+    )
+    repoByCategory = repoImages.reduce((acc, img) => {
+      const url = img.cdnUrl || img.imageUrl
+      if (url && url.includes('cdn.sanity.io')) {
+        if (!acc[img.category]) acc[img.category] = []
+        acc[img.category].push({ id: img._id, url })
+      }
+      return acc
+    }, {})
+    const total_repo = Object.values(repoByCategory).reduce((s,v) => s+v.length, 0)
+    console.log(`[PATCH] Image repo loaded: ${total_repo} images across ${Object.keys(repoByCategory).length} categories`)
+  } catch { /* non-critical */ }
+
+  function pickFromRepo(category) {
+    const pool = repoByCategory[category] || repoByCategory['news'] || []
+    if (!pool.length) return null
+    // Round-robin: pick least used
+    const img = pool[0]
+    pool.push(pool.shift()) // rotate
+    return img.url
+  }
+
   let total = 0, fixed = 0, skipped = 0
   const samples = []
 
@@ -100,7 +127,9 @@ export async function POST(req) {
       const effectiveUrl = a.heroImage?.asset?.url || a.imageUrl
       if (effectiveUrl?.includes('cdn.sanity.io')) { skipped++; continue }
 
-      const correct = pickImage(a.title, a.category)
+      // Try image repo first (real photos), fall back to SVG
+      const repoImg = pickFromRepo(a.category) || pickFromRepo('news')
+      const correct = repoImg || pickImage(a.title, a.category)
 
       if (force || needsFix(a.imageUrl, a.title, a.category)) {
         mutations.push({ patch: { id: a._id, set: { imageUrl: correct } } })

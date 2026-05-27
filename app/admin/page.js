@@ -19,6 +19,7 @@ const CompetitionManager    = L(() => import('../../components/admin/Competition
 const AICostDashboard       = L(() => import('../../components/admin/AICostDashboard'))
 const EnvChecker            = L(() => import('../../components/admin/EnvChecker'))
 const CronDashboard         = L(() => import('../../components/admin/CronDashboard'))
+const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -79,6 +80,7 @@ const NAV = [
     panels: [
       { id:'videos',       label:'Video Manager',    icon:'▶',  badge:null },
       { id:'channels',     label:'Channels',         icon:'📺', badge:null },
+      { id:'imglib',       label:'Image Library',     icon:'📸', badge:null },
     ]
   },
   {
@@ -962,6 +964,7 @@ export default function AdminPage() {
             {/* ── MEDIA ── */}
             {panel==='videos'   && <VideoManager adminKey={adminKey} />}
             {panel==='channels' && <ChannelsPanel />}
+            {panel==='imglib'   && <ImageRepository adminKey={adminKey} />}
 
             {/* ── SETTINGS ── */}
             {panel==='ai'       && <AIProviderSettings adminKey={adminKey} />}
