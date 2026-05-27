@@ -14,12 +14,21 @@ const LAW_IMAGE    = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/
 const PISTOL_IMAGE = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg'
 const RIFLE_IMAGE  = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg'
 
-// All known fallback images that may be wrong — re-evaluate any article using these
-const FALLBACK_URLS = [LAW_IMAGE, PISTOL_IMAGE, RIFLE_IMAGE]
+// Any URL containing these strings is a generic placeholder — always re-evaluate
+const PLACEHOLDER_PATTERNS = [
+  'upload.wikimedia.org',
+  'images.unsplash.com',
+  'wikimedia.org/wikipedia/commons',
+]
+
+function isPlaceholder(url) {
+  if (!url) return true
+  return PLACEHOLDER_PATTERNS.some(p => url.includes(p))
+}
 
 function pickImage(title, category) {
   const t = (title || '').toLowerCase()
-  // LAW first — must precede pistol patterns to avoid carry/rights/SAF false matches
+  // LAW first — must precede pistol patterns
   if (/constitutional.carry|gun.control|preemption|second.amend|2a.rights/.test(t)) return LAW_IMAGE
   if (/\blegislat|\bbill\b|congress|senate|most.viewed.bill|week.of/.test(t)) return LAW_IMAGE
   if (/atf\b|scotus|supreme.court|circuit.court|federal.court|injunction/.test(t)) return LAW_IMAGE
@@ -45,7 +54,7 @@ export async function POST(req) {
   const key = req.headers.get('x-admin-key')
   if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Fetch ALL approved articles — including those with fallback images that may be wrong
+  // Fetch ALL approved articles — no filter, patch everything
   const articles = await sanity.fetch(
     '*[_type=="newsArticle" && approved==true][0...500]{_id,title,category,slug,imageUrl}'
   )
@@ -58,18 +67,37 @@ export async function POST(req) {
     const correct = pickImage(a.title, a.category)
     const current = a.imageUrl || ''
 
-    // Patch if: no image, empty, OR currently has a fallback that doesn't match what we'd pick
-    const isFallback = FALLBACK_URLS.includes(current)
-    const isWrong    = isFallback && current !== correct
-    const isMissing  = !current
-
-    if (isMissing || isWrong) {
-      await sanity.patch(a._id).set({ imageUrl: correct }).commit()
-      results.push({ slug: a.slug?.current, title: a.title?.slice(0, 60), old: current ? current.split('/').pop() : 'none', new: correct.split('/').pop() })
-      fixed++
+    // Always re-evaluate if:
+    // 1. No image at all
+    // 2. Has a generic placeholder (Unsplash, Wikimedia) that might be wrong
+    if (!current || isPlaceholder(current)) {
+      // Only write if it would actually change
+      if (current !== correct) {
+        await sanity.patch(a._id).set({ imageUrl: correct }).commit()
+        results.push({
+          slug:  a.slug?.current,
+          title: (a.title || '').slice(0, 60),
+          old:   current ? current.split('/').pop().slice(0, 30) : 'none',
+          new:   correct.split('/').pop(),
+        })
+        fixed++
+      } else {
+        skipped++
+      }
     } else {
+      // Has a real non-placeholder image (from RSS/source) — leave it alone
       skipped++
     }
+  }
+
+  // Trigger revalidation for patched articles so they serve fresh images immediately
+  if (fixed > 0 && process.env.REVALIDATE_SECRET) {
+    const baseUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://www.downrangeco.com'
+    await Promise.allSettled(
+      results.slice(0, 20).map(r =>
+        r.slug ? fetch(baseUrl + '/api/revalidate?secret=' + process.env.REVALIDATE_SECRET + '&path=/news/' + r.slug) : null
+      ).filter(Boolean)
+    )
   }
 
   return Response.json({ ok: true, total: articles.length, fixed, skipped, results })
