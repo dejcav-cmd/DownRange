@@ -181,6 +181,74 @@ async function notifyError(message, context = '') {
 
 // ── SANITY WRITER ─────────────────────────────────────────────────────
 const TRUSTED_IMAGE_DOMAINS = ['/img/','cdn.sanity.io','img.youtube.com','i.ytimg.com']
+
+// Extract og:image from article source page and upload to Sanity CDN
+// Returns cdn.sanity.io URL or null
+async function fetchAndUploadOgImage(pageUrl, articleId) {
+  if (!pageUrl || !process.env.SANITY_API_TOKEN) return null
+  try {
+    const res = await fetch(pageUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept': 'text/html',
+      },
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!res.ok) return null
+    const html = await res.text()
+
+    // Extract og:image
+    const patterns = [
+      html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i),
+      html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i),
+      html.match(/<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i),
+    ]
+
+    let imgUrl = null
+    for (const m of patterns) {
+      if (m?.[1]) {
+        let u = m[1].trim()
+        if (u.startsWith('//')) u = 'https:' + u
+        if (u.startsWith('/')) { const b = new URL(pageUrl); u = b.origin + u }
+        // Skip SVGs, logos, tiny images
+        if (u.match(/\.(jpg|jpeg|png|webp)/i) && !u.includes('.svg') && !u.includes('logo')) {
+          imgUrl = u; break
+        }
+      }
+    }
+    if (!imgUrl) return null
+
+    // Fetch image and upload to Sanity
+    const imgRes = await fetch(imgUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0', 'Referer': pageUrl },
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!imgRes.ok) return null
+    const buf = await imgRes.arrayBuffer()
+    if (buf.byteLength < 8000) return null // skip tiny placeholders
+
+    // Upload to Sanity CDN
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
+    const filename = `article-${articleId.slice(-8)}.jpg`
+    const uploadRes = await fetch(
+      `https://${projectId}.api.sanity.io/v2024-01-01/assets/images/production?filename=${filename}`,
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.SANITY_API_TOKEN}`,
+          'Content-Type': imgRes.headers.get('content-type') || 'image/jpeg',
+        },
+        body: buf,
+      }
+    )
+    if (!uploadRes.ok) return null
+    const asset = await uploadRes.json()
+    return asset?.document?.url || asset?.url || null
+  } catch {
+    return null
+  }
+}
+export { fetchAndUploadOgImage }
 function isTrustedImage(url) {
   if (!url) return false
   return TRUSTED_IMAGE_DOMAINS.some(d => url.includes(d))

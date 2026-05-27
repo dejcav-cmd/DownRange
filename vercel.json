@@ -71,6 +71,10 @@
     {
       "path": "/api/agent?feed=goa",
       "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/admin/fetch-article-images",
+      "schedule": "0 2 * * *"
     }
   ],
   "headers": [

@@ -117,6 +117,23 @@ export default function NewsArticleManager({ adminKey }) {
     setBusy(false)
   }
 
+
+  async function fetchRealImages(limit = 30) {
+    setBusy(true)
+    flash(`⏳ Fetching real og:images from ${limit} article sources → Sanity CDN...`)
+    try {
+      const res = await fetch('/api/admin/fetch-article-images', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ limit }),
+      })
+      const d = await res.json()
+      await load()
+      if (d.ok) flash(`✅ ${d.uploaded} real images → Sanity CDN · ${d.skipped} no image found · ${d.failed} failed`)
+      else flash('❌ ' + (d.error || 'Failed'))
+    } catch(e) { flash('❌ ' + e.message) }
+    setBusy(false)
+  }
   async function aiFixImage(article) {
     setBusy(true)
     flash('⏳ Asking Claude for best image...')
@@ -202,9 +219,16 @@ export default function NewsArticleManager({ adminKey }) {
         </div>
         <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
           <button className="nam-btn-sm" onClick={load}>↺ Refresh</button>
+          <button className="nam-btn" onClick={() => fetchRealImages(30)} disabled={busy}
+            style={{ background:'#C8922A', color:'#000', fontWeight:700, fontSize:11 }}>
+            📷 Fetch Real Images (30)
+          </button>
+          <button className="nam-btn-sm" onClick={() => fetchRealImages(100)} disabled={busy}>
+            📷 Fetch All (100)
+          </button>
           <button className="nam-btn" onClick={fixAllBroken} disabled={busy}
-            style={{ background:'#ef4444', color:'#fff', fontSize:11 }}>
-            🔧 Fix ALL Images ({brokenCount > 0 ? brokenCount + ' broken' : 'run anyway'})
+            style={{ background:'#374151', color:'#fff', fontSize:11 }}>
+            🔧 Fix SVG Placeholders
           </button>
         </div>
       </div>
