@@ -4,7 +4,6 @@ import Link from 'next/link'
 import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
 const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
-const ApprovalQueue        = dynamic(() => import('../../components/admin/ApprovalQueue'),        { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Approval Queue...</div> })
 const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
@@ -26,8 +25,7 @@ const TABS = [
   { key:'blog',       label:'Blog Manager',    icon:'📝' },
   { key:'schedule',   label:'Pub. Schedule',   icon:'📅' },
   { key:'pulllog',    label:'Pull Log',        icon:'📡' },
-  { key:'outreach',   label:'Outreach',        icon:'📬' },
-  { key:'approvalq',  label:'Approval Queue',  icon:'⚡' },
+  { key:'outreach',   label:'Outreach + Queue', icon:'📬' },
   { key:'intel',       label:'Intelligence',     icon:'🧠' },
   { key:'crons',       label:'Cron Jobs',        icon:'⚙' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
@@ -1809,7 +1807,6 @@ export default function AdminPage() {
           {/* ── PULL LOG ── */}
           {tab==='pulllog' && <PullLogDashboard />}
           {tab==='outreach' && <OutreachPortal adminKey={adminKey} />}
-          {tab==='approvalq' && <ApprovalQueue adminKey={adminKey} />}
           {tab==='intel' && <IntelligenceDashboard adminKey={adminKey} />}
           {tab==='crons' && <CronDashboard adminKey={adminKey} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}

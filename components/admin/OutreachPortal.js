@@ -410,6 +410,27 @@ export default function OutreachPortal({ adminKey }) {
   const [filterStatus, setFilterStatus] = useState('active')
   const [searchQ, setSearchQ]           = useState('')
 
+  // ── Approval Queue state ────────────────────────────────────────────────────
+  const [queueEntries, setQueueEntries]     = useState([])
+  const [queueStats, setQueueStats]         = useState({})
+  const [queueTab, setQueueTab]             = useState('draft')
+  const [queueSelected, setQueueSelected]   = useState(null)
+  const [queueLoading, setQueueLoading]     = useState(false)
+  const [queueSending, setQueueSending]     = useState(false)
+  const [queueFilter, setQueueFilter]       = useState('all')
+  const [showGenerate, setShowGenerate]     = useState(false)
+  const [genFilterType, setGenFilterType]   = useState('')
+  const [genFilterState, setGenFilterState] = useState('')
+  const [genTemplateId, setGenTemplateId]   = useState('')
+  const [genLimit, setGenLimit]             = useState(25)
+  const [genSkip, setGenSkip]               = useState(true)
+  const [genRunning, setGenRunning]         = useState(false)
+  const [genResult, setGenResult]           = useState(null)
+  const [queueEditMode, setQueueEditMode]   = useState(false)
+  const [queueEditSubj, setQueueEditSubj]   = useState('')
+  const [queueEditTid, setQueueEditTid]     = useState('')
+  const [selectedQueueIds, setSelectedQueueIds] = useState(new Set())
+
   // Scraper
   const [scrapeSource, setScrapeSource] = useState('ffl')
   const [scrapeState, setScrapeState]   = useState('WA')
@@ -471,6 +492,58 @@ export default function OutreachPortal({ adminKey }) {
   useEffect(()=>{loadContacts()},[loadContacts])
   useEffect(()=>{loadTemplates();loadCampaigns();loadSendStats()},[adminKey])
   useEffect(()=>{if(tab==='history')loadHistory()},[tab,adminKey])
+
+  const loadQueue = useCallback(async (silent=false) => {
+    if (!silent) setQueueLoading(true)
+    try {
+      const [qRes, sRes] = await Promise.all([
+        fetch(`/api/outreach/queue?status=${queueTab}&limit=100`,{headers:{'x-admin-key':adminKey||''}}),
+        fetch('/api/outreach/queue?status=draft&limit=1',{headers:{'x-admin-key':adminKey||''}}),
+      ])
+      const [q, s] = await Promise.all([qRes.json(), sRes.json()])
+      setQueueEntries(q.entries||[])
+      setQueueStats(q.stats||{})
+    } catch{}
+    setQueueLoading(false)
+  }, [queueTab, adminKey])
+
+  useEffect(()=>{ if(tab==='queue') loadQueue() },[tab, loadQueue])
+
+  const queueAction = async (action, extra={}) => {
+    setQueueSending(true)
+    try {
+      const res = await fetch('/api/outreach/queue',{method:'POST',headers:h,body:JSON.stringify({action,...extra})})
+      const d = await res.json()
+      if (d.ok) {
+        if (action==='approve') flash(`✅ ${d.sent} email${d.sent!==1?'s':''} sent!`)
+        else if (action==='skip') flash(`Skipped`)
+        else if (action==='snooze') flash(`Snoozed ${extra.days||7} days`)
+        else if (action==='edit') { flash('Saved'); setQueueEditMode(false) }
+        else if (action==='digest') flash('Digest sent to dejcav@gmail.com')
+        if (['approve','skip','snooze'].includes(action)) {
+          const removed = new Set(extra.ids||[extra.id])
+          setQueueEntries(p=>p.filter(e=>!removed.has(e._id)))
+          setSelectedQueueIds(new Set())
+          setQueueSelected(s => removed.has(s) ? null : s)
+        }
+        if (action==='edit') loadQueue(true)
+      } else flash(d.error||'Error', false)
+    } catch(e){ flash(e.message, false) }
+    setQueueSending(false)
+  }
+
+  const generateDrafts = async () => {
+    setGenRunning(true); setGenResult(null)
+    const res = await fetch('/api/outreach/queue',{method:'POST',headers:h,body:JSON.stringify({
+      action:'generate', filterType:genFilterType||undefined, filterState:genFilterState||undefined,
+      templateId:genTemplateId||undefined, limit:genLimit, skipContacted:genSkip
+    })})
+    const d = await res.json()
+    setGenResult(d)
+    if (d.ok) { flash(`✅ ${d.created} drafts created`); loadQueue(true) }
+    else flash(d.error||'Error', false)
+    setGenRunning(false)
+  }
 
   const saveContact = async (form) => {
     const isEdit = !!form._id
@@ -601,9 +674,9 @@ export default function OutreachPortal({ adminKey }) {
   const toggleAll = () => setSelectedIds(p=>p.size===displayed.length?new Set():new Set(displayed.map(c=>c._id)))
 
   const TABS = [
-    ['contacts','👥 Contacts'],['send','📤 Send'],['history','📋 History'],
-    ['campaigns','🗂 Campaigns'],['templates','✉ Templates'],
-    ['scrape','🔍 Scrape'],['import','📥 Import'],
+    ['contacts','👥 Contacts'],['queue','⚡ Approval Queue'],['history','📋 History'],
+    ['send','📤 Bulk Send'],['templates','✉ Templates'],
+    ['campaigns','🗂 Campaigns'],['scrape','🔍 Scrape'],['import','📥 Import'],
   ]
 
   // ── Key gate ────────────────────────────────────────────────────────────────
@@ -859,6 +932,237 @@ export default function OutreachPortal({ adminKey }) {
               </div>
             </div>
           </div>
+        </div>
+      )}
+
+      {/* ── APPROVAL QUEUE TAB ── */}
+      {tab==='queue' && (
+        <div>
+          {/* Queue header */}
+          <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:16,flexWrap:'wrap',gap:10}}>
+            <div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--gold)',letterSpacing:'.06em',lineHeight:1}}>⚡ Approval Queue</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginTop:3}}>
+                Personalized drafts waiting for your review. Nothing sends without your approval.
+              </div>
+            </div>
+            <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+              <button className="op-btn-ghost op-btn-sm" onClick={()=>queueAction('digest')}>📧 Email Me Queue</button>
+              <button className="op-btn-ghost op-btn-sm" onClick={()=>loadQueue()}>↻ Refresh</button>
+              <button className="op-btn" onClick={()=>setShowGenerate(p=>!p)}>⚡ Generate Drafts</button>
+            </div>
+          </div>
+
+          {/* Queue stats strip */}
+          <div style={{display:'flex',gap:10,marginBottom:16,flexWrap:'wrap'}}>
+            {[['Draft',queueStats.draft,'#3b82f6'],['Snoozed',queueStats.snoozed,'#f59e0b'],['Sent',queueStats.sent,'#22c55e'],['Replied',queueStats.replied,'#a855f7'],['Skipped',queueStats.skipped,'#6b7280']].map(([l,v,col])=>(
+              <div key={l} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,padding:'4px 12px',background:'var(--bg2)',border:`1px solid ${col}44`}}>
+                <span style={{color:'#64748b'}}>{l}: </span><span style={{color:col,fontWeight:700}}>{v||0}</span>
+              </div>
+            ))}
+          </div>
+
+          {/* Generate drafts panel */}
+          {showGenerate && (
+            <div style={{marginBottom:16,padding:'16px 20px',background:'rgba(200,146,42,.06)',border:'1px solid rgba(200,146,42,.3)'}}>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',fontWeight:700,letterSpacing:'.08em',marginBottom:12}}>GENERATE DRAFT EMAILS</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginBottom:12,lineHeight:1.7}}>
+                Auto-drafts personalized emails for your contacts. Templates matched by contact type automatically. Nothing sends — everything goes to the queue for your review first.
+              </div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(180px,1fr))',gap:10,marginBottom:12}}>
+                <div>
+                  <label className="op-label">Contact Type</label>
+                  <select className="op-select" value={genFilterType} onChange={e=>setGenFilterType(e.target.value)} style={{width:'100%'}}>
+                    <option value="">All types</option>
+                    {Object.entries(TYPE_L).map(([k,v])=><option key={k} value={k}>{v}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="op-label">State Filter</label>
+                  <select className="op-select" value={genFilterState} onChange={e=>setGenFilterState(e.target.value)} style={{width:'100%'}}>
+                    <option value="">All states</option>
+                    {['WA','OR','ID','CA','TX','FL','AZ','CO','MT','GA','TN','KY','OH','PA','NC','VA'].map(s=><option key={s} value={s}>{s}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="op-label">Template Override</label>
+                  <select className="op-select" value={genTemplateId} onChange={e=>setGenTemplateId(e.target.value)} style={{width:'100%'}}>
+                    <option value="">Auto-match by type</option>
+                    {templates.map(t=><option key={t._id} value={t._id}>{t.name}</option>)}
+                  </select>
+                </div>
+                <div>
+                  <label className="op-label">Max Drafts</label>
+                  <select className="op-select" value={genLimit} onChange={e=>setGenLimit(Number(e.target.value))} style={{width:'100%'}}>
+                    {[10,25,50,100,200].map(n=><option key={n} value={n}>{n} contacts</option>)}
+                  </select>
+                </div>
+              </div>
+              <label style={{display:'flex',alignItems:'center',gap:8,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'var(--text-dim)',marginBottom:12,cursor:'pointer'}}>
+                <input type="checkbox" checked={genSkip} onChange={e=>setGenSkip(e.target.checked)} />
+                Skip contacts already emailed
+              </label>
+              {genResult&&(
+                <div style={{marginBottom:10,padding:'8px 12px',background:genResult.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)',border:`1px solid ${genResult.ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'}`,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:genResult.ok?'#4ade80':'#f87171'}}>
+                  {genResult.ok ? `✅ ${genResult.created} drafts created · ${genResult.skipped} skipped` : `❌ ${genResult.error}`}
+                </div>
+              )}
+              <div style={{display:'flex',gap:8}}>
+                <button className="op-btn" onClick={generateDrafts} disabled={genRunning}>
+                  {genRunning?'⏳ Generating...':'⚡ Generate Now'}
+                </button>
+                <button className="op-btn-ghost op-btn-sm" onClick={()=>setShowGenerate(false)}>Close</button>
+              </div>
+            </div>
+          )}
+
+          {/* Queue sub-tabs */}
+          <div style={{display:'flex',gap:0,borderBottom:'1px solid var(--border)',marginBottom:12,overflowX:'auto'}}>
+            {['draft','snoozed','sent','replied','skipped'].map(t=>(
+              <button key={t} className={`op-tab${queueTab===t?' active':''}`} onClick={()=>{setQueueTab(t);setQueueSelected(null)}}
+                style={{fontSize:12,padding:'8px 14px'}}>
+                {t.charAt(0).toUpperCase()+t.slice(1)}
+                {t==='draft'&&queueStats.draft>0&&<span style={{marginLeft:4,background:'#3b82f6',color:'#fff',fontFamily:"'IBM Plex Mono',monospace",fontSize:8,padding:'1px 4px',borderRadius:8}}>{queueStats.draft}</span>}
+              </button>
+            ))}
+          </div>
+
+          {/* Bulk actions bar */}
+          {selectedQueueIds.size>0&&(
+            <div style={{display:'flex',gap:8,padding:'8px 14px',background:'rgba(200,146,42,.08)',border:'1px solid rgba(200,146,42,.3)',marginBottom:10,flexWrap:'wrap',alignItems:'center'}}>
+              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'var(--gold)'}}>{selectedQueueIds.size} selected</span>
+              {queueTab==='draft'&&<button className="op-btn op-btn-sm" style={{background:'#22c55e',color:'#000'}} onClick={()=>{if(confirm(`Send ${selectedQueueIds.size} emails?`))queueAction('approve',{ids:[...selectedQueueIds]})}} disabled={queueSending}>✅ Approve All</button>}
+              <button className="op-btn-ghost op-btn-sm" style={{color:'#ef4444',borderColor:'rgba(239,68,68,.3)'}} onClick={()=>queueAction('skip',{ids:[...selectedQueueIds]})} disabled={queueSending}>Skip All</button>
+              <button className="op-btn-ghost op-btn-sm" onClick={()=>setSelectedQueueIds(new Set())}>Clear</button>
+              {queueTab==='draft'&&<button className="op-btn op-btn-sm" style={{background:'#22c55e',color:'#000',marginLeft:'auto'}} onClick={()=>{const ids=queueEntries.map(e=>e._id);if(confirm(`Send ALL ${ids.length} emails?`))queueAction('approve',{ids})}} disabled={queueSending}>✅ Approve All {queueEntries.length}</button>}
+            </div>
+          )}
+
+          {queueLoading ? (
+            <div style={{padding:32,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>Loading queue...</div>
+          ) : queueEntries.length===0 ? (
+            <div style={{padding:'32px 24px',border:'1px solid var(--border)',background:'var(--bg2)',textAlign:'center'}}>
+              <div style={{fontSize:36,marginBottom:10}}>{queueTab==='draft'?'✉️':'📭'}</div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.2rem',color:'var(--text)',letterSpacing:'.05em',marginBottom:8}}>
+                {queueTab==='draft'?'No drafts yet':'Nothing here'}
+              </div>
+              {queueTab==='draft'&&(
+                <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',lineHeight:1.8,maxWidth:440,margin:'0 auto 16px',padding:'12px 16px',background:'rgba(0,0,0,.3)',border:'1px solid var(--border)',textAlign:'left'}}>
+                  <strong style={{color:'var(--gold)'}}>Step 1:</strong> Make sure contacts are seeded (Contacts tab shows data)<br/>
+                  <strong style={{color:'var(--gold)'}}>Step 2:</strong> Make sure templates are seeded (Templates tab shows 10 templates)<br/>
+                  <strong style={{color:'var(--gold)'}}>Step 3:</strong> Hit <strong>⚡ Generate Drafts</strong> above
+                </div>
+              )}
+              {queueTab==='draft'&&<button className="op-btn op-btn-sm" onClick={()=>setShowGenerate(true)}>⚡ Generate Drafts</button>}
+            </div>
+          ) : (
+            <div style={{display:'grid',gridTemplateColumns:'320px 1fr',gap:0,border:'1px solid var(--border)',height:'calc(100vh - 400px)',minHeight:400}}>
+              {/* Left list */}
+              <div style={{overflowY:'auto',borderRight:'1px solid var(--border)'}}>
+                <div style={{padding:'8px 14px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',gap:8,background:'var(--bg)'}}>
+                  <input type="checkbox" checked={selectedQueueIds.size===queueEntries.length&&queueEntries.length>0}
+                    onChange={()=>setSelectedQueueIds(p=>p.size===queueEntries.length?new Set():new Set(queueEntries.map(e=>e._id)))} />
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em'}}>SELECT ALL {queueEntries.length}</span>
+                </div>
+                {queueEntries.map(e=>(
+                  <div key={e._id}
+                    onClick={()=>{setQueueSelected(e._id);setQueueEditMode(false)}}
+                    style={{padding:'12px 14px',borderBottom:'1px solid rgba(30,41,59,.4)',cursor:'pointer',
+                      background:queueSelected===e._id?'rgba(200,146,42,.08)':'transparent',
+                      borderLeft:queueSelected===e._id?'3px solid var(--gold)':'3px solid transparent'}}>
+                    <div style={{display:'flex',alignItems:'flex-start',gap:8}}>
+                      <input type="checkbox" checked={selectedQueueIds.has(e._id)}
+                        onClick={ev=>ev.stopPropagation()}
+                        onChange={()=>setSelectedQueueIds(p=>{const n=new Set(p);n.has(e._id)?n.delete(e._id):n.add(e._id);return n})}
+                        style={{marginTop:2,flexShrink:0}} />
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{display:'flex',gap:6,marginBottom:3,alignItems:'center',flexWrap:'wrap'}}>
+                          <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:queueSelected===e._id?'var(--gold)':'var(--text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>{e.toName}</span>
+                          {e.contact?.type&&<Bdg type={e.contact.type} />}
+                        </div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{e.toEmail}</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#475569',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',opacity:.8}}>{e.subject}</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#374151',marginTop:2}}>
+                          {e.draftedAt?`drafted ${fmt(e.draftedAt)}`:''}
+                          {e.contact?.state?` · ${e.contact.state}`:''}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              {/* Right preview */}
+              <div style={{display:'flex',flexDirection:'column',overflow:'hidden'}}>
+                {!queueSelected ? (
+                  <div style={{display:'flex',alignItems:'center',justifyContent:'center',flex:1,fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#475569'}}>
+                    ← Select a draft to preview
+                  </div>
+                ) : (() => {
+                  const entry = queueEntries.find(e=>e._id===queueSelected)
+                  if (!entry) return null
+                  return (
+                    <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+                      {/* Toolbar */}
+                      <div style={{padding:'10px 14px',borderBottom:'1px solid var(--border)',display:'flex',gap:8,flexWrap:'wrap',alignItems:'center',background:'var(--bg)',flexShrink:0}}>
+                        {queueTab==='draft'&&<>
+                          <button className="op-btn op-btn-sm" style={{background:'#22c55e',color:'#000',fontSize:11}} onClick={()=>queueAction('approve',{ids:[entry._id]})} disabled={queueSending}>
+                            {queueSending?'Sending...':'✅ Approve & Send'}
+                          </button>
+                          <button className="op-btn-ghost op-btn-sm" style={{color:'#f59e0b',borderColor:'rgba(245,158,11,.3)',fontSize:10}} onClick={()=>queueAction('snooze',{id:entry._id,days:7})} disabled={queueSending}>💤 7d</button>
+                          <button className="op-btn-ghost op-btn-sm" style={{color:'#f59e0b',borderColor:'rgba(245,158,11,.3)',fontSize:10}} onClick={()=>queueAction('snooze',{id:entry._id,days:14})} disabled={queueSending}>💤 14d</button>
+                          <button className="op-btn-ghost op-btn-sm" style={{color:'#ef4444',borderColor:'rgba(239,68,68,.3)',fontSize:10}} onClick={()=>queueAction('skip',{ids:[entry._id]})} disabled={queueSending}>✕ Skip</button>
+                          <button className="op-btn-ghost op-btn-sm" style={{fontSize:10,marginLeft:'auto'}} onClick={()=>{setQueueEditMode(m=>!m);setQueueEditSubj(entry.subject);setQueueEditTid('')}}>
+                            {queueEditMode?'Cancel':'✏ Edit'}
+                          </button>
+                        </>}
+                      </div>
+                      {/* Edit bar */}
+                      {queueEditMode&&queueTab==='draft'&&(
+                        <div style={{padding:'10px 14px',borderBottom:'1px solid var(--border)',background:'rgba(200,146,42,.04)',flexShrink:0}}>
+                          <div style={{display:'flex',gap:8,flexWrap:'wrap',marginBottom:8}}>
+                            <div style={{flex:2,minWidth:160}}>
+                              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'var(--text-dim)',marginBottom:3}}>SUBJECT</div>
+                              <input className="op-input" value={queueEditSubj} onChange={e=>setQueueEditSubj(e.target.value)} style={{fontSize:11}} />
+                            </div>
+                            <div style={{flex:1,minWidth:140}}>
+                              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'var(--text-dim)',marginBottom:3}}>SWAP TEMPLATE</div>
+                              <select className="op-select" value={queueEditTid} onChange={e=>setQueueEditTid(e.target.value)} style={{width:'100%'}}>
+                                <option value="">Keep current</option>
+                                {templates.map(t=><option key={t._id} value={t._id}>{t.name}</option>)}
+                              </select>
+                            </div>
+                          </div>
+                          <button className="op-btn op-btn-sm" onClick={()=>queueAction('edit',{id:entry._id,subject:queueEditSubj||undefined,templateId:queueEditTid||undefined})} disabled={queueSending}>Save Changes</button>
+                        </div>
+                      )}
+                      {/* Contact strip */}
+                      <div style={{padding:'8px 14px',borderBottom:'1px solid var(--border)',background:'var(--bg2)',display:'flex',gap:12,flexWrap:'wrap',alignItems:'center',flexShrink:0}}>
+                        <div>
+                          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',lineHeight:1}}>{entry.toName}</div>
+                          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--gold)',marginTop:1}}>{entry.toEmail}</div>
+                        </div>
+                        {entry.contact?.type&&<Bdg type={entry.contact.type} />}
+                        {entry.contact?.state&&<span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>{entry.contact.city?`${entry.contact.city}, `:''}{entry.contact.state}</span>}
+                        {entry.template&&<span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#475569',marginLeft:'auto'}}>Template: {entry.template.name}</span>}
+                      </div>
+                      {/* Subject */}
+                      <div style={{padding:'6px 14px',borderBottom:'1px solid var(--border)',background:'var(--bg)',flexShrink:0}}>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em'}}>SUBJECT: </span>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'var(--text)'}}>{entry.subject}</span>
+                      </div>
+                      {/* Email iframe */}
+                      {entry.bodyHtml ? (
+                        <iframe srcDoc={entry.bodyHtml} style={{flex:1,width:'100%',border:'none',display:'block'}} title={`Preview: ${entry.toName}`} />
+                      ) : (
+                        <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#475569'}}>No preview available</div>
+                      )}
+                    </div>
+                  )
+                })()}
+              </div>
+            </div>
+          )}
         </div>
       )}
 
