@@ -152,6 +152,7 @@ export default function VideoPageClient({ videos = [], alerts = [] }) {
                     allowFullScreen
                     style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none' }}
                   />
+                  {/* Fallback overlay — YouTube itself shows an error inside the iframe for bad IDs, this just styles the container */}
                 </div>
 
                 {/* Video info bar */}
