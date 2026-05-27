@@ -6,6 +6,8 @@ const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, 
 const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
 const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
 const AIProviderSettings    = dynamic(() => import('../../components/admin/AIProviderSettings'), { ssr: false, loading: () => null })
+const VideoManager          = dynamic(() => import('../../components/admin/VideoManager'),          { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
+const NewsletterManager     = dynamic(() => import('../../components/admin/NewsletterManager'),     { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const EnvChecker            = dynamic(() => import('../../components/admin/EnvChecker'),            { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
@@ -30,6 +32,7 @@ const TABS = [
   { key:'outreach',   label:'Outreach + Queue', icon:'📬' },
   { key:'intel',       label:'Intelligence',     icon:'🧠' },
   { key:'crons',       label:'Cron Jobs',        icon:'⚙' },
+  { key:'videos',      label:'Video Manager',    icon:'▶' },
   { key:'envcheck',    label:'Env Variables',    icon:'🔧' },
   { key:'sysalerts',  label:'System Alerts',   icon:'🚨' },
   { key:'cronhealth', label:'Cron Health',     icon:'🩺' },
@@ -1911,6 +1914,7 @@ export default function AdminPage() {
           {tab==='outreach' && <OutreachPortal adminKey={adminKey} />}
           {tab==='intel' && <IntelligenceDashboard adminKey={adminKey} />}
           {tab==='crons' && <CronDashboard adminKey={adminKey} />}
+          {tab==='videos' && <VideoManager adminKey={adminKey} />}
           {tab==='envcheck' && <EnvChecker adminKey={adminKey} />}
           {tab==='sysalerts' && <SystemAlertDashboard />}
 
@@ -1983,7 +1987,25 @@ export default function AdminPage() {
 
           {/* ── BLOG MANAGER ── */}
           {/* ── BLOG MANAGER (World-class) ── */}
-          {tab==='blog' && <BlogManager secret={secret} setMsg={setMsg} />}
+          {tab==='blog' && (
+            <div>
+              <div style={{marginBottom:16,padding:'12px 16px',background:'rgba(200,146,42,.06)',border:'1px solid rgba(200,146,42,.3)',display:'flex',gap:12,alignItems:'center',flexWrap:'wrap'}}>
+                <div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'var(--gold)',fontWeight:700,marginBottom:2}}>✍ Write All Blog Articles with AI</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>Writes all 9 pending articles as DJ Cavalcanti · human voice · adds photos · saves as drafts for your approval</div>
+                </div>
+                <button onClick={async()=>{
+                  setMsg('⏳ Writing all blog articles... this takes ~2 minutes')
+                  const r = await fetch('/api/admin/write-blog-articles',{method:'POST',headers:{'x-admin-key':adminKey}})
+                  const d = await r.json().catch(()=>({error:'Empty response'}))
+                  setMsg(d.ok ? '✅ '+d.message : '❌ '+(d.error||'Error'))
+                }} className="dr-btn-primary" style={{flexShrink:0,padding:'10px 20px'}}>
+                  ✦ Write All Articles Now
+                </button>
+              </div>
+              <BlogManager secret={secret} setMsg={setMsg} />
+            </div>
+          )}
 
           {/* ── PUBLICATION SCHEDULE (World-class) ── */}
           {tab==='schedule' && <PublicationSchedule secret={secret} setMsg={setMsg} />}
@@ -2193,7 +2215,9 @@ export default function AdminPage() {
           {/* ── NEWSLETTER ── */}
           {tab==='newsletter' && (
             <div>
-              <h1 className="dr-section-title">Newsletter</h1>
+              <NewsletterManager adminKey={adminKey} />
+              <div style={{marginTop:32}}>
+              <h1 className="dr-section-title">Newsletter Config</h1>
               <p className="dr-section-sub">Managed via Resend. Requires RESEND_API_KEY and RESEND_AUDIENCE_ID environment variables.</p>
 
               <div className="dr-grid-2" style={{ marginBottom:20 }}>
