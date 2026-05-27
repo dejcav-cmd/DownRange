@@ -1,6 +1,5 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { UserButton, useUser } from '@clerk/nextjs'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
@@ -1434,7 +1433,7 @@ export default function AdminPage() {
           <div style={{ display:'flex', gap:'10px', alignItems:'center' }}>
 
             <Link href="/" className="dr-btn-outline" style={{ padding:'6px 14px', fontSize:'11px' }}>← Site</Link>
-            <UserButton afterSignOutUrl="/admin-login" appearance={{ variables:{ colorPrimary:'#C8922A' } }} />
+            <button onClick={async()=>{ await fetch('/api/admin/auth/signout',{method:'POST'}); window.location='/admin-login' }} style={{background:'none',border:'1px solid var(--border)',color:'var(--text-dim)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'5px 10px',cursor:'pointer'}}>Sign Out</button>
             <input
               type="password"
               placeholder="Admin Key"

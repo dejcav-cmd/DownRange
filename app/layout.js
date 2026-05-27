@@ -1,5 +1,6 @@
 import '../styles/globals.css'
-import { ClerkProvider } from '@clerk/nextjs'
+import ClerkWrapper from '../components/ui/ClerkWrapper'
+
 import MobileTabBar from '../components/ui/MobileTabBar'
 import { ThemeProvider } from '../components/ui/ThemeProvider'
 import Script from 'next/script'
@@ -72,7 +73,7 @@ export default function RootLayout({ children }) {
           `}
         </Script>
       </head>
-      <ClerkProvider>
+      <ClerkWrapper>
       <body>
         <ThemeProvider>
           {children}
@@ -81,7 +82,7 @@ export default function RootLayout({ children }) {
         {/* SPA route tracker — fires gtag on every client-side navigation */}
         <PageViewTracker />
       </body>
-      </ClerkProvider>
+      </ClerkWrapper>
     </html>
   )
 }
