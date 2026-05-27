@@ -4,47 +4,62 @@ const axios = require('axios')
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
   const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 3000)
-  const prompt = [
-    `You are the senior editorial AI for DownRange — America's definitive firearms, Second Amendment, and tactical intelligence publication.`,
-    `Your audience: gun owners, dealers, collectors, hunters, competitive shooters, and 2A advocates who demand substance. They know their guns, their laws, and their rights.`,
-    ``,
-    `Transform the raw source material below into a COMPLETE, FULLY WRITTEN DownRange editorial article.`,
-    `This is NOT a summary. It is a full published article with sections, context, and editorial opinion.`,
-    ``,
-    `Return a JSON object with these exact fields:`,
-    ``,
-    `"summary": Sharp 2-3 sentence lede. States the key fact and immediate impact. Max 350 characters.`,
-    ``,
-    `"body": The full article as a single HTML string. MANDATORY STRUCTURE:`,
-    `<h2>[Title: What Happened — be specific]</h2>`,
-    `<p>[Opening: The hard news. Who, what, when, where. Names, agencies, bill numbers, case citations, calibers, models. 120-150 words.]</p>`,
-    `<h2>Background &amp; Context</h2>`,
-    `<p>[Why this matters in the broader 2A landscape. Reference Heller, Bruen, McDonald, prior legislation, agency history, industry trends as relevant. 130-160 words.]</p>`,
-    `<h2>What This Means for Gun Owners</h2>`,
-    `<p>[Specific impact on the reader. Which states, which platforms, which calibers, what dollar amounts. Concrete and actionable. 130-160 words.]</p>`,
-    `<h2>Industry &amp; Market Impact</h2>`,
-    `<p>[Manufacturer, retailer, dealer impact. Stock effects, production, imports, pricing. If purely legal/political, cover advocacy org responses. 110-140 words.]</p>`,
-    `<h2>What to Watch Next</h2>`,
-    `<p>[Forward-looking specifics: court dates, hearing schedules, legislative calendar, regulatory timelines. Give readers exactly what to monitor and when. 110-140 words.]</p>`,
-    `<p><strong>DownRange Bottom Line:</strong> [2-3 sentence direct editorial verdict. What should a serious gun owner DO with this information? Be opinionated — that is the DownRange voice.]</p>`,
-    ``,
-    `BODY LENGTH: Minimum 750 words. Target 900-1100 words. Non-negotiable.`,
-    `HTML TAGS ALLOWED: h2, p, strong, em, ul, li ONLY. No div, no span, no br, no other tags.`,
-    ``,
-    `"category": one of: breaking, news, law, industry, opinion, training`,
-    `"urgencyScore": 1-10 (10=SCOTUS ruling, 9=major court/ATF action, 8=landmark bill passed, 7=major product/legislation, 5-6=industry news, 1-4=soft news)`,
-    `"tags": 4-8 specific kebab-case tags`,
-    `"relatedStates": array of US state abbreviations mentioned, else []`,
-    `"isBreaking": true only if urgencyScore >= 8`,
-    ``,
-    `SOURCE MATERIAL:`,
-    `Title: ${item.title}`,
-    `Source: ${item.source || 'Unknown'}`,
-    `Published: ${item.publishedAt || new Date().toISOString()}`,
-    `Content: ${inputContent}`,
-    ``,
-    `CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the body HTML string properly.`,
-  ].join('\n')
+  const prompt = `Write a DownRange article. DownRange is a firearms and Second Amendment portal run by DJ Cavalcanti, a gun owner based in Washington State.
+
+WRITING RULES — violating these ruins the article:
+- Write like a person, not a content generator. Direct sentences. Active voice. Specific facts.
+- BANNED WORDS: comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower, game-changer, landscape, navigate, delve, utilize, innovative, unprecedented, paradigm, synergy, moving forward, shed light on, it remains to be seen, stakeholders, holistic, takeaway, unpack, explore
+- NO padded openings. Start with the hardest fact. First sentence names who did what.
+- NO hedging: "may potentially", "could possibly", "appears to suggest". State facts as facts.
+- NO passive when active works. The governor signed the bill — not the bill was signed.
+- NO empty transitions: Furthermore, Additionally, Moreover, In light of this.
+- Short sentences that land. Specific over vague. Named people, numbered laws, dollar amounts, calibers.
+- Opinions go in Bottom Line only. State them plainly.
+
+GOOD OPENING: "The ATF reversed course on pistol braces Thursday, rescinding the rule that reclassified millions of pistols as short-barreled rifles."
+BAD OPENING: "In a significant development with far-reaching implications for the firearms community..."
+
+Return ONLY a valid JSON object:
+
+"summary": 2-3 sentences. Key facts and why it matters to gun owners. Max 350 characters. No AI phrases.
+
+"body": Complete article as HTML. MANDATORY STRUCTURE:
+
+<h2>[Specific factual headline — what happened, who did it]</h2>
+<p>[Opening: hard news. Names, agencies, bill numbers, calibers, dollar amounts. First sentence is the full story. 120-150 words.]</p>
+
+<h2>Background and Context</h2>
+<p>[Why this matters in the broader 2A landscape. Reference Heller, Bruen, McDonald, prior laws, agency history, market context as relevant. 130-160 words.]</p>
+
+<h2>What This Means for Gun Owners</h2>
+<p>[Direct, specific impact. Which states, which products, what dollar amounts, what they can do. Concrete. 130-160 words.]</p>
+
+<h2>Industry Impact</h2>
+<p>[Manufacturer, dealer, retailer effects. Or advocacy group positions from NRA, GOA, SAF, FPC — their actual stated positions. 110-140 words.]</p>
+
+<h2>What to Watch Next</h2>
+<p>[Forward-looking specifics: court dates, hearing dates, comment periods, bill markups. Name the judges, circuits, committees. 110-140 words.]</p>
+
+<p><strong>DownRange Bottom Line:</strong> [2-3 sentences. Direct editorial verdict. What should a serious gun owner do right now? State an opinion plainly.]</p>
+
+REQUIREMENTS:
+- Minimum 750 words. Target 900-1100 words.
+- HTML ONLY: h2, p, strong, em, ul, li. No div, span, br, or other tags.
+- strong = names, bill numbers, key facts. em = key terms, used sparingly.
+
+"category": one of: breaking, news, law, industry, opinion, training
+"urgencyScore": 1-10 integer
+"tags": 4-8 specific kebab-case tags
+"relatedStates": array of affected US state abbreviations, else []
+"isBreaking": true only if urgencyScore >= 8
+
+SOURCE MATERIAL:
+Title: ${item.title}
+Source: ${item.source || 'Unknown'}
+Published: ${item.publishedAt || new Date().toISOString()}
+Content: ${inputContent}
+
+CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the HTML.`
 
   try {
     const res = await axios.post('https://api.anthropic.com/v1/messages', {
@@ -81,12 +96,12 @@ async function rewriteWithClaude(item) {
 
 // ── CLAUDE LAW ENRICHER ────────────────────────────────────────────────
 async function enrichLawWithClaude(bill) {
-  const prompt = `You are the legal intelligence AI for DownRange, a premier Second Amendment news portal. Write a detailed analysis of this firearms legislation for a knowledgeable 2A audience.
+  const prompt = `Analyze this firearms bill or law for DownRange gun owners. No AI phrases. No "comprehensive", "landmark", "significant development", "it remains to be seen", or padded language. Write like a gun owner who reads case law.
 
 Produce a JSON response with:
-- summary: A comprehensive 4-6 sentence summary of this bill or law. Include: what it does specifically, who introduced it and when, current status, what legal standard it would have to survive (use Bruen if relevant), and what it means for gun owners in practical terms. Be specific — include bill numbers, sponsor names, committee names, vote counts if known, and affected regulations.
+- summary: 4-6 direct sentences. What the bill does, who sponsored it, current status, what it means for gun owners in plain terms. Include bill number, sponsor name, committee, vote counts if known. First sentence states the bottom line.
 - impact: one of: HIGH, MED, LOW
-- analysis: A 2-3 sentence legal analysis: does this law face constitutional challenges under Bruen/Heller? What circuit is handling it? What's the likely timeline to resolution?
+- analysis: 2-3 sentences. Does this survive Bruen/Heller scrutiny? What circuit, what timeline? State a conclusion — do not hedge.
 
 Bill data:
 Title: ${bill.title}

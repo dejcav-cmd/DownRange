@@ -38,52 +38,59 @@ async function rewriteArticle(article) {
     article.excerpt ? `Excerpt: ${article.excerpt}` : '',
   ].filter(Boolean).join('\n\n').slice(0, 3000)
 
-  const prompt = `You are the senior editorial AI for DownRange — America's definitive firearms, Second Amendment, and tactical intelligence publication. Your readers are gun owners, dealers, hunters, competitive shooters, and 2A advocates who demand specifics and expertise.
+  const prompt = `Write a DownRange article. DownRange is a firearms and Second Amendment portal run by DJ Cavalcanti, a gun owner based in Washington State.
 
-Write a COMPLETE, FULLY WRITTEN DownRange editorial article — not a summary, not a brief. A real published piece.
+WRITING RULES — violating these ruins the article:
+- Write like a person, not a content generator. Direct sentences. Active voice. Specific facts.
+- BANNED WORDS: comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower, game-changer, landscape, navigate, delve, utilize, innovative, unprecedented, paradigm, synergy, moving forward, shed light on, it remains to be seen, stakeholders, holistic, takeaway, unpack, explore
+- NO padded openings. Start with the hardest fact. First sentence names who did what.
+- NO hedging: may potentially, could possibly, appears to suggest. State facts as facts.
+- NO passive when active works. The governor signed the bill — not the bill was signed.
+- NO empty transitions: Furthermore, Additionally, Moreover, In light of this.
+- Short sentences that land. Named people, numbered laws, dollar amounts, calibers.
+- Opinions go in Bottom Line only. State them plainly.
 
-Return ONLY a valid JSON object with these fields:
+GOOD OPENING: "The ATF reversed course on pistol braces Thursday, rescinding the rule that reclassified millions of pistols as short-barreled rifles."
+BAD OPENING: "In a significant development with far-reaching implications for the firearms community..."
 
-"summary": Sharp 2-3 sentence lede. Hard-hitting, specific, states the key fact and why it matters to gun owners. Max 350 characters.
+Return ONLY a valid JSON object:
 
-"body": The complete article as a single HTML string. Follow this EXACT structure:
+"summary": 2-3 sentences. Key facts and why it matters to gun owners. Max 350 characters. No AI phrases.
+
+"body": Complete article as HTML. MANDATORY STRUCTURE:
 
 <h2>${article.title}</h2>
-<p>[Opening paragraph: 120-150 words. The hard news. Names, agencies, bill numbers, case citations, calibers, models, dollar amounts. Be specific — no vague references.]</p>
+<p>[Opening: hard news. Names, agencies, bill numbers, calibers, dollar amounts. First sentence is the full story. 120-150 words.]</p>
 
 <h2>Background and Context</h2>
-<p>[130-160 words. Why this matters in the broader 2A and firearms landscape. Reference Heller, Bruen, McDonald, prior laws, agency history, or market trends as appropriate. Give readers the framework to understand the significance.]</p>
+<p>[Why this matters in the broader 2A landscape. Reference Heller, Bruen, McDonald, prior laws, agency history as relevant. 130-160 words.]</p>
 
 <h2>What This Means for Gun Owners</h2>
-<p>[130-160 words. Direct, specific reader impact. Which states are affected, which platforms, which calibers, which dealers, what dollar amounts. What can they do, buy, or avoid. Concrete and actionable.]</p>
+<p>[Direct, specific impact. Which states, which products, what dollar amounts, what they can do. 130-160 words.]</p>
 
-<h2>Industry and Market Impact</h2>
-<p>[110-140 words. Manufacturer, retailer, importer, dealer impact. Price effects, supply chain, stock changes, market position. If purely legal/political, cover advocacy group responses from NRA, GOA, SAF, FPC — be specific about their positions.]</p>
+<h2>Industry Impact</h2>
+<p>[Manufacturer, dealer, retailer effects. Or advocacy group positions from NRA, GOA, SAF, FPC — their actual stated positions. 110-140 words.]</p>
 
 <h2>What to Watch Next</h2>
-<p>[110-140 words. Specific forward-looking intelligence: court dates, committee hearing schedules, bill markup dates, regulatory comment periods, expected ruling timelines. Name the judges, the circuits, the committees. Give readers exactly what to monitor and when.]</p>
+<p>[Forward-looking specifics: court dates, hearing dates, comment periods, bill markups. Name the judges, circuits, committees. 110-140 words.]</p>
 
-<p><strong>DownRange Bottom Line:</strong> [2-3 sentences. Direct editorial verdict. What should a serious gun owner do with this information right now? Be direct and opinionated — that is the DownRange voice.]</p>
+<p><strong>DownRange Bottom Line:</strong> [2-3 sentences. Direct editorial verdict. What should a serious gun owner do right now? State an opinion plainly.]</p>
 
 REQUIREMENTS:
-- Minimum 750 words in the body. Target 900-1100 words. This is non-negotiable.
-- Use ONLY these HTML tags: h2, p, strong, em, ul, li
-- No div, span, br, or any other tags
-- strong = important facts/names. em = key terms in gold (used sparingly)
-- Do NOT include source attribution in the body — that is handled separately by the page
-- Write with authority. No hedging, no "it remains to be seen"
+- Minimum 750 words. Target 900-1100 words.
+- HTML ONLY: h2, p, strong, em, ul, li. No div, span, br.
 
 SOURCE MATERIAL:
 Title: ${article.title}
-Source Publication: ${article.source || 'Unknown'}
-Category: ${article.category || 'news'}
-Published: ${article.publishedAt || 'Recent'}
-External URL: ${article.externalUrl || 'N/A'}
-Tags: ${(article.tags || []).join(', ') || 'none'}
+Source Publication: ${article.source || "Unknown"}
+Category: ${article.category || "news"}
+Published: ${article.publishedAt || "Recent"}
+Tags: ${(article.tags || []).join(", ") || "none"}
 
 ${inputContent}
 
-CRITICAL: Return ONLY the JSON object. Start with { and end with }. No markdown fences. No text before or after. Properly escape all double quotes within the HTML body string.`
+CRITICAL: Return ONLY a valid JSON object with fields: summary, body, category, urgencyScore (1-10), tags (array), relatedStates (array), isBreaking (bool). Start with { end with }. No markdown fences. Escape all quotes in the HTML body string.
+`
 
   const res = await axios.post('https://api.anthropic.com/v1/messages', {
     model:      'claude-sonnet-4-20250514',
