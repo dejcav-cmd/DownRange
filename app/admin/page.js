@@ -16,6 +16,8 @@ const NewsArticleManager    = L(() => import('../../components/admin/NewsArticle
 const ReleaseManager        = L(() => import('../../components/admin/ReleaseManager'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
 const CompetitionManager    = L(() => import('../../components/admin/CompetitionManager'))
+const ReviewManager         = L(() => import('../../components/admin/ReviewManager'))
+const BlogManagerFull       = L(() => import('../../components/admin/BlogManager'))
 const AICostDashboard       = L(() => import('../../components/admin/AICostDashboard'))
 const EnvChecker            = L(() => import('../../components/admin/EnvChecker'))
 const CronDashboard         = L(() => import('../../components/admin/CronDashboard'))
@@ -642,38 +644,6 @@ function IdentityPanel({ adminKey }) {
   )
 }
 
-// ── Inline: Blog panel ────────────────────────────────────────────────────────
-function BlogPanel({ adminKey, setMsg }) {
-  const [busy, setBusy] = useState(false)
-
-  async function writeArticles(type) {
-    setBusy(true)
-    const url = type === 'canada' ? '/api/admin/write-canada-articles' : '/api/admin/write-blog-articles'
-    setMsg('⏳ Writing articles with AI...')
-    const r = await fetch(url, { method:'POST', headers:{'x-admin-key':adminKey} })
-    const d = await r.json().catch(()=>({error:'Empty response'}))
-    setMsg(d.ok ? '✅ ' + d.message : '❌ ' + (d.error||'Error'))
-    setBusy(false)
-  }
-
-  return (
-    <div>
-      <div style={{display:'flex',alignItems:'flex-end',justifyContent:'space-between',marginBottom:20,flexWrap:'wrap',gap:10}}>
-        <div>
-          <div className="panel-title">Blog Manager</div>
-          <div className="panel-sub">Write, edit, and publish blog posts. Drafts saved for your approval before going live.</div>
-        </div>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-          <a href="/blog" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>View Blog ↗</a>
-          <button className="btn-primary" onClick={()=>writeArticles('blog')} disabled={busy}>✦ Write All Articles</button>
-          <button className="btn-outline" style={{borderColor:'#ef4444',color:'#ef4444',fontSize:10}} onClick={()=>writeArticles('canada')} disabled={busy}>🇨🇦 Canada Articles</button>
-        </div>
-      </div>
-      <BlogManager secret={adminKey} setMsg={setMsg} />
-    </div>
-  )
-}
-
 // ── Inline: Feeds panel ───────────────────────────────────────────────────────
 function FeedsPanel({ adminKey, setMsg }) {
   const [running, setRunning] = useState({})
@@ -757,72 +727,6 @@ function RangesPanel() {
           Range and FFL data is pulled live from Google Places API on each request. No database storage required. Set <code style={{color:'#C8922A'}}>GOOGLE_PLACES_API_KEY</code> in Vercel. The key is passed server-side only — never exposed to the client.
         </div>
       </div>
-    </div>
-  )
-}
-
-// ── Inline functions preserved from original ──────────────────────────────────
-function BlogManager({ secret, setMsg }) {
-  const [posts, setPosts] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [busy, setBusy] = useState(false)
-
-  const load = useCallback(async () => {
-    setLoading(true)
-    try {
-      const r = await fetch('/api/admin/blog-posts', { headers:{'x-admin-key':secret||''} })
-      const d = await r.json()
-      if (d.ok) setPosts(d.posts || [])
-    } catch {}
-    setLoading(false)
-  }, [secret])
-
-  useEffect(() => { load() }, [load])
-
-  async function togglePublish(post) {
-    setBusy(true)
-    const newStatus = post.status === 'published' ? 'draft' : 'published'
-    await fetch('/api/admin/blog-posts', { method:'POST', headers:{'x-admin-key':secret||'','Content-Type':'application/json'}, body:JSON.stringify({action:'patch',id:post._id,fields:{status:newStatus,publishedAt:newStatus==='published'?new Date().toISOString():null}}) })
-    await load(); setBusy(false)
-  }
-
-  async function deletePost(id) {
-    if (!confirm('Delete this post?')) return
-    setBusy(true)
-    await fetch('/api/admin/blog-posts', { method:'POST', headers:{'x-admin-key':secret||'','Content-Type':'application/json'}, body:JSON.stringify({action:'delete',id}) })
-    await load(); setBusy(false)
-  }
-
-  if (loading) return <PanelLoader />
-  if (posts.length === 0) return (
-    <div className="adm-card" style={{textAlign:'center',padding:40}}>
-      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',marginBottom:12}}>No blog posts yet.</div>
-      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#374151'}}>Click "Write All Articles" above to generate posts with AI.</div>
-    </div>
-  )
-
-  return (
-    <div className="adm-card" style={{padding:0,overflow:'hidden'}}>
-      <table className="adm-table">
-        <thead><tr><th>Title</th><th>Category</th><th>Status</th><th>Date</th><th>Actions</th></tr></thead>
-        <tbody>{posts.map(p=>(
-          <tr key={p._id}>
-            <td style={{maxWidth:300}}>
-              <div style={{fontWeight:700,marginBottom:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</div>
-              {p.slug?.current && <a href={`/blog/${p.slug.current}`} target="_blank" rel="noreferrer" style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',textDecoration:'none'}}>↗ /blog/{p.slug.current}</a>}
-            </td>
-            <td>{p.category && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'2px 6px',background:'rgba(200,146,42,.1)',color:'#C8922A'}}>{p.category}</span>}</td>
-            <td><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.status==='published'?'#22c55e':'#6b7280'}}>{p.status==='published'?'● Live':'○ Draft'}</span></td>
-            <td style={{color:'#4b5563',fontSize:10}}>{p.publishedAt?.slice(0,10)||'—'}</td>
-            <td>
-              <div style={{display:'flex',gap:6}}>
-                <button className="btn-outline" style={{padding:'3px 8px',fontSize:9}} onClick={()=>togglePublish(p)} disabled={busy}>{p.status==='published'?'Unpublish':'Publish'}</button>
-                <button className="btn-danger" style={{padding:'3px 8px',fontSize:9}} onClick={()=>deletePost(p._id)} disabled={busy}>Del</button>
-              </div>
-            </td>
-          </tr>
-        ))}</tbody>
-      </table>
     </div>
   )
 }
@@ -964,24 +868,10 @@ export default function AdminPage() {
             {/* ── CONTENT ── */}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
-            {panel==='blog'         && <BlogPanel           adminKey={adminKey} setMsg={flash} />}
+            {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
             {panel==='canada'       && <CanadaManager       adminKey={adminKey} />}
             {panel==='competitions' && <CompetitionManager  adminKey={adminKey} />}
-            {panel==='reviews'      && (
-              <div>
-                <div className="panel-title">Reviews</div>
-                <div className="panel-sub">Gun and gear reviews. Managed via Sanity dataset or seed data in <code style={{color:'#C8922A'}}>app/reviews/[slug]/page.js</code>.</div>
-                <div style={{display:'flex',gap:8,marginBottom:20}}>
-                  <a href="/reviews" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>View Reviews ↗</a>
-                  <a href="/studio" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>Edit in Sanity Studio ↗</a>
-                </div>
-                <div className="adm-card">
-                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#6b7280',lineHeight:1.9}}>
-                    Reviews are stored in Sanity as <code style={{color:'#C8922A'}}>review</code> documents. Add/edit via Sanity Studio or use the <code style={{color:'#C8922A'}}>SANITY_API_TOKEN</code> API directly. Each review requires: title, slug, body (HTML), score (0-10), brand, model, caliber, pros/cons arrays, and verdict.
-                  </div>
-                </div>
-              </div>
-            )}
+            {panel==='reviews'      && <ReviewManager       adminKey={adminKey} />}
 
             {/* ── PUBLISHING ── */}
             {panel==='schedule'   && <PublicationSchedule secret={adminKey} setMsg={flash} />}
