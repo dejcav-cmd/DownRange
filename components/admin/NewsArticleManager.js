@@ -202,12 +202,10 @@ export default function NewsArticleManager({ adminKey }) {
         </div>
         <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
           <button className="nam-btn-sm" onClick={load}>↺ Refresh</button>
-          {brokenCount > 0 && (
-            <button className="nam-btn" onClick={fixAllBroken} disabled={busy}
-              style={{ background:'#ef4444', color:'#fff', fontSize:11 }}>
-              🔧 Fix All {brokenCount} Broken Images
-            </button>
-          )}
+          <button className="nam-btn" onClick={fixAllBroken} disabled={busy}
+            style={{ background:'#ef4444', color:'#fff', fontSize:11 }}>
+            🔧 Fix ALL Images ({brokenCount > 0 ? brokenCount + ' broken' : 'run anyway'})
+          </button>
         </div>
       </div>
 

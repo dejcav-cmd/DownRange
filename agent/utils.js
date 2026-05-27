@@ -201,11 +201,40 @@ async function notifyError(message, context = '') {
 }
 
 // ── SANITY WRITER ─────────────────────────────────────────────────────
+const TRUSTED_IMAGE_DOMAINS = ['upload.wikimedia.org','cdn.sanity.io','img.youtube.com','i.ytimg.com','images.unsplash.com']
+function isTrustedImage(url) {
+  if (!url) return false
+  return TRUSTED_IMAGE_DOMAINS.some(d => url.includes(d))
+}
+
 async function publishToSanity(doc) {
   try {
+    // For news articles: use createIfNotExists + patch to avoid overwriting
+    // good imageUrls that were manually set by the patch-article job.
+    // For other doc types (breakingAlert, etc.): still use createOrReplace.
+    const mutations = doc._type === 'newsArticle'
+      ? [
+          // Create if new (preserves imageUrl from doc)
+          { createIfNotExists: doc },
+          // Patch all fields EXCEPT imageUrl if the stored one is already trusted
+          { patch: {
+              id: doc._id,
+              ifRevisionID: undefined,  // unconditional
+              set: Object.fromEntries(
+                Object.entries(doc)
+                  .filter(([k]) => !['_id','_type','imageUrl'].includes(k))
+              ),
+              // Only overwrite imageUrl if new one is trusted OR stored one isn't
+              setIfMissing: { imageUrl: doc.imageUrl },
+          }},
+          // Force-overwrite imageUrl ONLY if new value is trusted (Wikimedia/CDN)
+          ...(isTrustedImage(doc.imageUrl) ? [{ patch: { id: doc._id, set: { imageUrl: doc.imageUrl } } }] : []),
+        ]
+      : [{ createOrReplace: doc }]
+
     const res = await axios.post(
       `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'}`,
-      { mutations: [{ createOrReplace: doc }] },
+      { mutations },
       {
         headers: {
           Authorization: `Bearer ${process.env.SANITY_API_TOKEN}`,
