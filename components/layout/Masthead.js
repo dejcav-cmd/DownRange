@@ -144,7 +144,7 @@ export default function Masthead() {
 
       <div className="container" style={{ position:'relative', zIndex:1 }}>
         {/* ── Logo row ── */}
-        <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', padding:'16px 0 12px' }}>
+        <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', padding:'8px 0 12px' }}>
           <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none' }} aria-label="DownRange Home">
             <img
               src="/img/logo.png"
