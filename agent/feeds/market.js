@@ -153,7 +153,3 @@ async function runVideoFeed() {
 }
 
 export { runMarketFeed, runVideoFeed }
-  runMarketFeed()
-    .then(() => runVideoFeed())
-    .catch(console.error)
-}

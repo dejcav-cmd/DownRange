@@ -23,7 +23,13 @@ const nextConfig = {
       '@sanity/vision',
       'sanity',
       'styled-components',
+      'rss-parser',
+      'axios',
     ],
+  },
+  // Ensure agent/ files are included in Vercel deployment bundle
+  outputFileTracingIncludes: {
+    '/api/agent': ['./agent/**/*'],
   },
 }
 

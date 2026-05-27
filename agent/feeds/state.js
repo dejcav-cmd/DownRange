@@ -3,7 +3,18 @@
  * Updates recent bills per state from LegiScan
  * Runs daily at 8am via cron
  */
-const { sanityWrite, discordNotify, rateLimiter } = require('../utils')
+import { discordNotify, sleep } from '../utils.js'
+import { createClient } from '@sanity/client'
+
+
+const sanity = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
+  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
+  apiVersion: '2024-01-01',
+  token:     process.env.SANITY_API_TOKEN,
+  useCdn:    false,
+})
+
 
 const STATE_ABBRS = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA','HI','ID','IL','IN','IA',
@@ -51,18 +62,11 @@ async function runStateFeed() {
 
     for (const abbr of batch) {
       try {
-        await rateLimiter(800)
+        await sleep(800)
         const bills = await fetchStateBills(abbr)
 
         // Patch the stateProfile document — only update recentBills array
-        const { createClient } = require('@sanity/client')
-        const sanity = createClient({
-          projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID,
-          dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET || 'production',
-          apiVersion: '2024-01-01',
-          token:     process.env.SANITY_API_TOKEN,
-          useCdn:    false,
-        })
+        // sanity client defined at module level above
 
         await sanity.patch(`state-${abbr.toLowerCase()}`)
           .set({ recentBills: bills, lastUpdated: new Date().toISOString() })
@@ -86,14 +90,4 @@ async function runStateFeed() {
   return updated
 }
 
-module.exports = { runStateFeed }
-
-if (require.main === module) {
-  runStateFeed().then(n => {
-    console.log(`Done: ${n} states`)
-    process.exit(0)
-  }).catch(err => {
-    console.error(err)
-    process.exit(1)
-  })
-}
+export { runStateFeed }

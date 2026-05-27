@@ -81,12 +81,3 @@ async function runVideoFeed() {
 }
 
 export { runVideoFeed }
-
-  runVideoFeed().then(n => {
-    console.log(`Done: ${n} videos`)
-    process.exit(0)
-  }).catch(err => {
-    console.error(err)
-    process.exit(1)
-  })
-}
