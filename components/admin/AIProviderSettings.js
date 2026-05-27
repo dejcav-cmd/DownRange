@@ -294,8 +294,7 @@ export default function AIProviderSettings({ adminKey }) {
             <div style={{marginTop:8}}>
               <div style={{color:'#f59e0b',marginBottom:6}}>Add these to Vercel → Project → Settings → Environment Variables:</div>
               <div style={{background:'rgba(0,0,0,.4)',padding:'10px 12px',borderLeft:'3px solid #f59e0b',overflowX:'auto'}}>
-                {vercelResult.envLines.split('
-').map((line,i) => (
+                {vercelResult.envLines.split('\n').map((line,i) => (
                   <div key={i} style={{display:'flex',justifyContent:'space-between',gap:16,marginBottom:3}}>
                     <code style={{color:'#C8922A'}}>{line.split('=')[0]}</code>
                     <code style={{color:'#9ca3af',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:320}}>{line.split('=').slice(1).join('=')}</code>
