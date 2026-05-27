@@ -236,10 +236,10 @@ export default function PullLogPage() {
       if (!search) return true
       const q = search.toLowerCase()
       return (
-        e.sourceLabel?.toLowerCase().includes(q) ||
-        e.source?.toLowerCase().includes(q) ||
-        e.category?.toLowerCase().includes(q) ||
-        e.headlines?.some(h => h.toLowerCase().includes(q)) ||
+        (e.sourceLabel && e.sourceLabel.toLowerCase().includes(q)) ||
+        (e.source && e.source.toLowerCase().includes(q)) ||
+        (e.category && e.category.toLowerCase().includes(q)) ||
+        e.headlines?.some(h => h && typeof h === 'string' && h.toLowerCase().includes(q)) ||
         e.error?.toLowerCase().includes(q)
       )
     })

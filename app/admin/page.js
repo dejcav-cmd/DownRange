@@ -1467,6 +1467,7 @@ function BackfillButton({ adminKey }) {
 
 export default function AdminPage() {
   const [tab, setTab]       = useState('dashboard')
+  const [tabOrder, setTabOrder] = useState(null)
   const [secret, setSecret]   = useState('')
   const [adminKey, setAdminKeyState] = useState('')
   const [msg, setMsg]         = useState('')
@@ -1478,6 +1479,11 @@ export default function AdminPage() {
   React.useEffect(() => {
     const stored = adminKey || localStorage.getItem('dr_admin_key') || ''
     setAdminKeyState(stored)
+    // Load tab order from localStorage
+    try {
+      const order = localStorage.getItem('dr_tab_order')
+      if (order) setTabOrder(JSON.parse(order))
+    } catch {}
   }, [])
 
   // Poll system health every 2 minutes — shows banner on degraded/broken
@@ -1579,11 +1585,20 @@ export default function AdminPage() {
       <div style={{ display:'flex', flex:1 }}>
         {/* Sidebar */}
         <div style={{ width:200, background:'var(--bg2)', borderRight:'1px solid var(--border)', flexShrink:0, position:'sticky', top:'57px', height:'calc(100vh - 57px)', overflowY:'auto' }}>
-          {TABS.map(t => (
-            <button key={t.key} onClick={()=>setTab(t.key)}
-              style={{ width:'100%', display:'flex', alignItems:'center', gap:'10px', padding:'11px 16px', background:tab===t.key?'var(--bg3)':'none', border:'none', borderLeft:`3px solid ${tab===t.key?'var(--gold)':'transparent'}`, color:tab===t.key?'var(--gold)':'var(--text-dim)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer', textAlign:'left', letterSpacing:'0.03em', transition:'all 0.12s' }}>
-              <span>{t.icon}</span> {t.label}
-            </button>
+          {(tabOrder ? [...TABS].sort((a,b) => (tabOrder.indexOf(a.key)+999)-(tabOrder.indexOf(b.key)+999)) : TABS).map((t, idx, arr) => (
+            <div key={t.key} style={{display:'flex',alignItems:'center',borderLeft:`3px solid ${tab===t.key?'var(--gold)':'transparent'}`}}>
+              <button onClick={()=>setTab(t.key)}
+                style={{ flex:1, display:'flex', alignItems:'center', gap:'10px', padding:'10px 14px', background:tab===t.key?'rgba(200,146,42,.1)':'none', border:'none', color:tab===t.key?'var(--gold)':'var(--text-dim)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer', textAlign:'left', letterSpacing:'0.03em', transition:'all 0.12s', overflow:'hidden', whiteSpace:'nowrap', textOverflow:'ellipsis' }}>
+                <span style={{flexShrink:0}}>{t.icon}</span> {t.label}
+              </button>
+              <div style={{display:'flex',flexDirection:'column',paddingRight:4,opacity:0,transition:'opacity .15s'}}
+                onMouseEnter={e=>e.currentTarget.style.opacity=1} onMouseLeave={e=>e.currentTarget.style.opacity=0}>
+                <button onClick={e=>{e.stopPropagation();const base=tabOrder||TABS.map(x=>x.key);const i=base.indexOf(t.key);if(i>0){const n=[...base];[n[i-1],n[i]]=[n[i],n[i-1]];setTabOrder(n);localStorage.setItem('dr_tab_order',JSON.stringify(n))}}}
+                  style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',padding:'2px 3px',fontSize:9,lineHeight:1}}>{'▲'}</button>
+                <button onClick={e=>{e.stopPropagation();const base=tabOrder||TABS.map(x=>x.key);const i=base.indexOf(t.key);if(i<base.length-1){const n=[...base];[n[i],n[i+1]]=[n[i+1],n[i]];setTabOrder(n);localStorage.setItem('dr_tab_order',JSON.stringify(n))}}}
+                  style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',padding:'2px 3px',fontSize:9,lineHeight:1}}>{'▼'}</button>
+              </div>
+            </div>
           ))}
         </div>
 
@@ -2067,6 +2082,10 @@ export default function AdminPage() {
                 }} className="dr-btn-outline" style={{flexShrink:0,padding:'10px 20px',borderColor:'#ef4444',color:'#ef4444'}}>
                   🇨🇦 Write Canada Articles
                 </button>
+              </div>
+              <div style={{marginBottom:12,padding:'10px 16px',background:'var(--bg2)',border:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',display:'flex',gap:16,alignItems:'center',flexWrap:'wrap'}}>
+                <span>Blog articles: drafts must be approved before they go live at <strong style={{color:'var(--gold)'}}>downrangeco.com/blog/[slug]</strong></span>
+                <a href="/blog" target="_blank" rel="noreferrer" style={{color:'var(--gold)',textDecoration:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase'}}>View Blog ↗</a>
               </div>
               <BlogManager secret={secret} setMsg={setMsg} />
             </div>

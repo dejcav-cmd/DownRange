@@ -122,7 +122,12 @@ function JobRow({ job, onTrigger, triggering }) {
         {/* Last run */}
         <td style={{ padding:'12px 16px', verticalAlign:'middle' }}>
           <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: job.lastRun?.status==='failed'?'#ef4444':'var(--text-dim)' }}>
-            {job.lastRun ? fmtAgo(job.lastRun.at) : '—'}
+            {job.lastRun ? (
+                <span title={new Date(job.lastRun.at).toLocaleString()}>
+                  {fmtAgo(job.lastRun.at)}
+                  {job.lastRun.details && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginLeft:6}}>{job.lastRun.details.slice(0,40)}</span>}
+                </span>
+              ) : '—'}
           </div>
           {job.lastRun?.ms && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{fmtMs(job.lastRun.ms)}</div>}
         </td>
@@ -166,19 +171,24 @@ function JobRow({ job, onTrigger, triggering }) {
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text-dim)', lineHeight:1.65 }}>{job.desc}</div>
                 </div>
                 <div>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', letterSpacing:'.1em', marginBottom:6 }}>LAST 10 RUNS</div>
-                  <div style={{ display:'flex', flexDirection:'column', gap:3 }}>
-                    {(job.history || []).slice(0,5).map((r,i) => (
-                      <div key={i} style={{ display:'flex', gap:10, alignItems:'center', fontFamily:"'IBM Plex Mono',monospace", fontSize:9 }}>
-                        <span style={{ color: r.status==='success'?'#22c55e':'#ef4444', width:8 }}>{r.status==='success'?'✓':'✕'}</span>
-                        <span style={{ color:'#475569', width:80 }}>{fmtAgo(r.at)}</span>
-                        <span style={{ color:'#6b7280', width:40 }}>{fmtMs(r.ms)}</span>
-                        <span style={{ color:'#374151' }}>{r.trigger==='manual'?'manual':'cron'}</span>
-                        {r.error && <span style={{ color:'#f87171', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{r.error}</span>}
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', letterSpacing:'.1em', marginBottom:6 }}>EXECUTION LOG — LAST 20 RUNS</div>
+                  <div style={{ display:'flex', flexDirection:'column', gap:0, border:'1px solid var(--border)' }}>
+                    {(job.history || []).slice(0,20).map((r,i) => (
+                      <div key={i} style={{ display:'flex', gap:8, alignItems:'flex-start', fontFamily:"'IBM Plex Mono',monospace", fontSize:9,
+                        padding:'5px 8px', background:i%2===0?'rgba(0,0,0,.2)':'rgba(0,0,0,.05)',
+                        borderBottom: i < Math.min(job.history.length,20)-1 ? '1px solid rgba(30,41,59,.4)' : 'none' }}>
+                        <span style={{ color: r.status==='success'?'#22c55e':r.status==='warning'?'#f59e0b':'#ef4444', width:10, flexShrink:0, paddingTop:1 }}>
+                          {r.status==='success'?'✓':r.status==='warning'?'⚠':'✕'}
+                        </span>
+                        <span style={{ color:'#475569', flexShrink:0, minWidth:72 }}>{fmtAgo(r.at)}</span>
+                        <span style={{ color:'#374151', flexShrink:0, minWidth:38 }}>{r.ms>0?fmtMs(r.ms):'—'}</span>
+                        <span style={{ color:'#4b5563', flexShrink:0, width:36 }}>{r.trigger==='manual'?'🖱 man':'⏰ auto'}</span>
+                        {r.details && !r.error && <span style={{ color:'#6b7280', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{r.details}</span>}
+                        {r.error && <span style={{ color:'#fca5a5', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{'✗ '+r.error}</span>}
                       </div>
                     ))}
                     {(!job.history || job.history.length === 0) && (
-                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#374151' }}>No run history yet</div>
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#374151', padding:'8px 10px' }}>No executions logged yet. Will appear after next run.</div>
                     )}
                   </div>
                 </div>

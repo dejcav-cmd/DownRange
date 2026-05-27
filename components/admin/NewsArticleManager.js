@@ -104,20 +104,16 @@ export default function NewsArticleManager({ adminKey }) {
 
   async function fixAllBroken() {
     setBusy(true)
-    flash('⏳ Fixing all broken images...')
-    const broken = articles.filter(a => !a.imageUrl || a.imageUrl.includes('thetruthaboutguns') || a.imageUrl.includes('ammoland') || a.imageUrl.includes('thefirearmblog'))
-    let fixed = 0
-    for (const a of broken) {
-      const correct = pickImageForArticle(a.title, a.category)
-      await fetch('/api/admin/articles-list', {
+    flash('⏳ Calling patch-all endpoint — fixing ALL broken images...')
+    try {
+      const res = await fetch('/api/admin/patch-article', {
         method: 'POST',
-        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'patch', id: a._id, fields: { imageUrl: correct } }),
+        headers: { 'x-admin-key': adminKey },
       })
-      fixed++
-    }
-    await load()
-    flash('✅ Fixed ' + fixed + ' broken images')
+      const d = await res.json()
+      await load()
+      flash('✅ ' + (d.fixed||0) + ' fixed out of ' + (d.total||0) + ' total articles')
+    } catch(e) { flash('❌ ' + e.message) }
     setBusy(false)
   }
 

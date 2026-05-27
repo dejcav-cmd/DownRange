@@ -35,42 +35,53 @@ function pickImage(title, category) {
   return catMap[category] || PISTOL_IMAGE
 }
 
+function isBrokenUrl(url) {
+  if (!url) return true
+  const trusted = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com', 'images.unsplash.com']
+  return !trusted.some(d => url.includes(d))
+}
+
 export async function POST(req) {
   const key = req.headers.get('x-admin-key')
   if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Fetch ALL articles
-  const articles = await sanity.fetch(
-    '*[_type=="newsArticle"][0...500]{_id,title,category,slug,imageUrl}'
-  )
-
-  let fixed = 0
-  let skipped = 0
+  let total = 0, fixed = 0, skipped = 0
   const results = []
 
-  for (const a of articles) {
-    const correct = pickImage(a.title, a.category)
-    const current = a.imageUrl || ''
+  // Paginate through ALL articles — 200 at a time
+  let offset = 0
+  const PAGE = 200
+  while (true) {
+    const batch = await sanity.fetch(
+      `*[_type == "newsArticle"][${offset}...${offset + PAGE}]{_id, title, category, slug, imageUrl, heroImage{asset->{url}}}`
+    )
+    if (!batch.length) break
+    total += batch.length
 
-    // ALWAYS overwrite with our curated image UNLESS the article has a real
-    // Sanity-hosted image (cdn.sanity.io) — those come from manual uploads
-    const hasSanityImage = current.includes('cdn.sanity.io')
-
-    if (!hasSanityImage) {
-      // Always set our curated image — no conditionals, no exceptions
-      await sanity.patch(a._id).set({ imageUrl: correct }).commit()
-      if (current !== correct) {
-        results.push({ slug: a.slug?.current, title: (a.title||'').slice(0,60), new: correct.split('/').pop() })
+    // Build mutation array for this batch
+    const mutations = []
+    for (const a of batch) {
+      const current = a.heroImage?.asset?.url || a.imageUrl
+      if (isBrokenUrl(current)) {
+        const correct = pickImage(a.title, a.category)
+        mutations.push({ patch: { id: a._id, set: { imageUrl: correct } } })
         fixed++
+        if (results.length < 20) results.push({ slug: a.slug?.current, was: (a.imageUrl || 'null').slice(0, 40), now: correct.split('/').pop() })
       } else {
         skipped++
       }
-    } else {
-      skipped++
     }
+
+    // Commit batch mutations in one request
+    if (mutations.length > 0) {
+      await sanity.mutate(mutations)
+    }
+
+    offset += PAGE
+    if (batch.length < PAGE) break
   }
 
-  return Response.json({ ok: true, total: articles.length, fixed, skipped, results })
+  return Response.json({ ok: true, total, fixed, skipped, results })
 }
 
 export async function GET(req) { return POST(req) }
