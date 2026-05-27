@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic'
 import { Resend } from 'resend'
 import { Redis } from '@upstash/redis'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
 const ALERT_EMAIL  = 'dejcav@gmail.com'
 const ALERT_KEY    = 'dr:system-alerts'
@@ -138,7 +138,7 @@ async function sendAlertEmail({ type, source, error, consecutiveFails, recovered
   `
 
   try {
-    await resend.emails.send({
+    await getResend().emails.send({
       from: 'DownRange System <alerts@downrangeco.com>',
       to: [ALERT_EMAIL],
       subject,

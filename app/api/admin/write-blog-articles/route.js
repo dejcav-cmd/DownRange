@@ -1,3 +1,4 @@
+import { callAIText } from '@/lib/aiClient.js'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 

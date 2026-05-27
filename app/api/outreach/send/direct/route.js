@@ -8,7 +8,7 @@ const sanity = createClient({
   dataset: 'production', apiVersion: '2024-01-01',
   useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
 function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN_KEY }
 
@@ -83,7 +83,7 @@ export async function POST(req) {
   const html = wrapEmail(body, contact)
 
   try {
-    const { data, error } = await resend.emails.send({
+    const { data, error } = await getResend().emails.send({
       from:    'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
       to:      [contact.email],
       replyTo: 'dj@downrangeco.com',

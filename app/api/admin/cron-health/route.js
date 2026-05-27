@@ -30,14 +30,14 @@ async function sendHealthAlert(issues, status) {
   } catch {}
 
   const { Resend } = await import('resend')
-  const resend = new Resend(process.env.RESEND_API_KEY)
+  const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
   const color = status === 'BROKEN' ? '#ef4444' : status === 'DEGRADED' ? '#f59e0b' : '#f59e0b'
   const issueList = issues.map(i =>
     '<li style="margin-bottom:8px"><strong style="color:' + (i.severity==='CRITICAL'?'#ef4444':'#f59e0b') + '">[' + i.severity + ']</strong> ' + i.msg + '</li>'
   ).join('')
 
-  await resend.emails.send({
+  await getResend().emails.send({
     from: 'DownRange System <dj@downrangeco.com>',
     to:   [ALERT_EMAIL],
     subject: '[DownRange Alert] ' + status + ' — ' + issues.length + ' issue' + (issues.length>1?'s':'') + ' detected',

@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 
 import { Resend } from 'resend'
 
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
 export async function POST(request) {
   try {
@@ -21,7 +21,7 @@ export async function POST(request) {
       return Response.json({ error: 'Message too long (max 2000 characters).' }, { status: 400 })
     }
 
-    const { error } = await resend.emails.send({
+    const { error } = await getResend().emails.send({
       from: 'DownRange Feedback <feedback@downrangeco.com>',
       to: ['dejcav@gmail.com'],
       replyTo: email,

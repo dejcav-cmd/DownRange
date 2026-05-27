@@ -27,11 +27,15 @@ const PROV_META = {
 }
 
 const USE_CASES = [
-  { key: 'default',  label: 'Default',        env: 'AI_CHAIN',          desc: 'All tasks unless overridden' },
-  { key: 'article',  label: 'Articles',        env: 'AI_CHAIN_ARTICLE',  desc: 'News backfill, blog posts' },
-  { key: 'intel',    label: 'Intelligence',    env: 'AI_CHAIN_INTEL',    desc: 'Nightly briefings' },
-  { key: 'fast',     label: 'Fast / Cheap',    env: 'AI_CHAIN_FAST',     desc: 'High-volume tasks' },
-  { key: 'outreach', label: 'Outreach',         env: 'AI_CHAIN_OUTREACH', desc: 'Email drafts' },
+  { key: 'default',    label: 'Default',         env: 'AI_CHAIN',             desc: 'Fallback for unspecified tasks', tier: 'mid' },
+  { key: 'news',       label: 'News Feed ×96/day',env: 'AI_CHAIN_NEWS',       desc: '🔥 Highest volume — use cheapest model', tier: 'cheap' },
+  { key: 'backfill',   label: 'Backfill ×12/day', env: 'AI_CHAIN_BACKFILL',   desc: 'Hourly article backfill — cheap tier', tier: 'cheap' },
+  { key: 'law',        label: 'Laws ×12/day',     env: 'AI_CHAIN_LAW',        desc: 'Bill analysis every 2h — mid tier', tier: 'mid' },
+  { key: 'article',    label: 'Articles',          env: 'AI_CHAIN_ARTICLE',    desc: 'Blog posts, releases — mid tier', tier: 'mid' },
+  { key: 'intel',      label: 'Intel ×1/day',      env: 'AI_CHAIN_INTEL',      desc: '✨ Daily briefing — use best model', tier: 'best' },
+  { key: 'newsletter', label: 'Newsletter ×1/day', env: 'AI_CHAIN_NEWSLETTER', desc: '✨ Goes to subscribers — use best', tier: 'best' },
+  { key: 'outreach',   label: 'Outreach',           env: 'AI_CHAIN_OUTREACH',   desc: 'Email drafts — mid tier', tier: 'mid' },
+  { key: 'fast',       label: 'Fast / Bulk',        env: 'AI_CHAIN_FAST',       desc: 'Bulk ops — absolute cheapest', tier: 'cheap' },
 ]
 
 const PRESETS = {
@@ -67,7 +71,17 @@ const S = `
 
 export default function AIProviderSettings({ adminKey }) {
   const [activeUC, setActiveUC] = useState('default')
-  const [chains,   setChains]   = useState({ default:[{provider:'anthropic',model:'claude-sonnet-4-5'}], article:[], intel:[], fast:[], outreach:[] })
+  const [chains,   setChains]   = useState({
+    default:    [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
+    news:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
+    backfill:   [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
+    law:        [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
+    article:    [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
+    intel:      [{provider:'anthropic',model:'claude-sonnet-4-5'},{provider:'glm',model:'glm-4.7'}],
+    newsletter: [{provider:'anthropic',model:'claude-sonnet-4-5'},{provider:'glm',model:'glm-4.7'}],
+    outreach:   [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
+    fast:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
+  })
   const [keys,     setKeys]     = useState({ openai:'', glm:'' })
   const [saved,    setSaved]    = useState(false)
   const [saving,   setSaving]   = useState(false)
@@ -186,7 +200,7 @@ export default function AIProviderSettings({ adminKey }) {
       <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:14,overflowX:'auto'}}>
         {USE_CASES.map(u=>(
           <button key={u.key} className={'cp-tab'+(activeUC===u.key?' on':'')} onClick={()=>setActiveUC(u.key)}>
-            {u.label}
+            <span style={{color: u.tier==='cheap'?'#22c55e':u.tier==='best'?'#C8922A':'var(--text-dim)'}}>{u.label}</span>
             {chains[u.key]?.length>0&&<span style={{marginLeft:4,fontFamily:"'IBM Plex Mono',monospace",fontSize:8,background:'rgba(200,146,42,.15)',color:'var(--gold)',padding:'1px 4px'}}>{chains[u.key].length}</span>}
           </button>
         ))}

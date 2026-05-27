@@ -1,3 +1,4 @@
+import { callAIText } from '@/lib/aiClient.js'
 import crypto from 'crypto'
 import axios from 'axios'
 
@@ -62,18 +63,7 @@ Content: ${inputContent}
 CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the HTML.`
 
   try {
-    const res = await axios.post('https://api.anthropic.com/v1/messages', {
-      model: 'claude-sonnet-4-5',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: prompt }]
-    }, {
-      headers: {
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json'
-      }
-    })
-    const text = res.data.content[0].text.trim()
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 4000 })
     // Strip any accidental markdown fences
     const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim()
     const parsed = JSON.parse(clean)
@@ -115,18 +105,7 @@ Last action: ${bill.lastActionText || bill.lastActionDate || 'Unknown'}
 Return ONLY valid JSON, no markdown, no explanation.`
 
   try {
-    const res = await axios.post('https://api.anthropic.com/v1/messages', {
-      model: 'claude-sonnet-4-5',
-      max_tokens: 600,
-      messages: [{ role: 'user', content: prompt }]
-    }, {
-      headers: {
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-        'content-type': 'application/json'
-      }
-    })
-    const text = res.data.content[0].text.trim()
+    const text = await callAIText({ prompt, useCase: 'law', maxTokens: 600 })
     const clean = text.replace(/^```json\s*/i, '').replace(/```\s*$/i, '').trim()
     return JSON.parse(clean)
   } catch (err) {

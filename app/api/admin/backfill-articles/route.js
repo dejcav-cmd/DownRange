@@ -1,3 +1,4 @@
+import { callAIText } from '@/lib/aiClient.js'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 import { reportCronRun } from '@/lib/cronReporter'
@@ -12,27 +13,7 @@ const sanity = createClient({
   token:     process.env.SANITY_API_TOKEN,
 })
 
-async function callClaude(prompt) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key':         process.env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'content-type':      'application/json',
-    },
-    body: JSON.stringify({
-      model:      'claude-sonnet-4-5',
-      max_tokens: 4000,
-      messages:   [{ role: 'user', content: prompt }],
-    }),
-  })
-  if (!res.ok) {
-    const t = await res.text()
-    throw new Error('Anthropic ' + res.status + ': ' + t.slice(0, 200))
-  }
-  const d = await res.json()
-  return d.content[0].text
-}
+async function callClaude(prompt) { return callAIText({ prompt, useCase: "backfill", maxTokens: 4000 }) }
 
 async function rewriteArticle(article) {
   if (!process.env.ANTHROPIC_API_KEY) throw new Error('ANTHROPIC_API_KEY not set')

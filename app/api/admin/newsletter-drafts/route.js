@@ -1,3 +1,4 @@
+import { callAIText } from '@/lib/aiClient.js'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
@@ -143,7 +144,7 @@ export async function POST(req) {
     if (!process.env.RESEND_API_KEY) return Response.json({ error: 'RESEND_API_KEY not configured' }, { status: 400 })
 
     const { Resend } = await import('resend')
-    const resend = new Resend(process.env.RESEND_API_KEY)
+    const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
     const html = `
       <div style="max-width:600px;margin:0 auto;background:#09090B;color:#F0EDE6;font-family:Georgia,serif">
@@ -161,7 +162,7 @@ export async function POST(req) {
       </div>`
 
     if (action === 'test') {
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
         to: [body.testEmail || 'dj@downrangeco.com'],
         subject: '[TEST] ' + draft.subject,
@@ -182,7 +183,7 @@ export async function POST(req) {
     let sent = 0
     for (let i = 0; i < emails.length; i += 50) {
       const batch = emails.slice(i, i+50)
-      await resend.emails.send({
+      await getResend().emails.send({
         from: 'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
         to: batch,
         subject: draft.subject,

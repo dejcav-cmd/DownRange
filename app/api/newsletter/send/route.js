@@ -12,8 +12,8 @@ export async function POST(req) {
 
   try {
     const { Resend } = await import('resend')
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    const result = await resend.emails.send({
+    const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
+    const result = await getResend().emails.send({
       from: 'DownRange <newsletter@downrangeco.com>',
       to: [`audience:${process.env.RESEND_AUDIENCE_ID}`],
       subject,

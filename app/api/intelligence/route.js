@@ -1,3 +1,4 @@
+import { callAIText } from '@/lib/aiClient.js'
 import { reportCronRun } from '@/lib/cronReporter'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 300
@@ -26,7 +27,7 @@ const sanity = createClient({
   dataset: 'production', apiVersion: '2024-01-01',
   useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
 // ── Auth ──────────────────────────────────────────────────────────────────────
 function isAuthorized(req) {
@@ -306,7 +307,7 @@ async function sendDigestEmail(briefing, today) {
 </body>
 </html>`
 
-  return resend.emails.send({
+  return getResend().emails.send({
     from:    'DownRange Intelligence <intelligence@downrangeco.com>',
     to:      ['dejcav@gmail.com'],
     subject: `[DownRange] Daily Briefing — ${today} · Score: ${briefing.score}/100`,

@@ -23,7 +23,7 @@ const sanity = createClient({
   dataset: 'production', apiVersion: '2024-01-01',
   useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
-const resend = new Resend(process.env.RESEND_API_KEY)
+const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
 
 function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN_KEY }
 
@@ -223,7 +223,7 @@ export async function POST(req) {
       if (!entry?.toEmail) { results.failed++; continue }
 
       try {
-        const { data, error } = await resend.emails.send({
+        const { data, error } = await getResend().emails.send({
           from:    'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
           to:      [entry.toEmail],
           replyTo: 'dj@downrangeco.com',
@@ -343,7 +343,7 @@ export async function POST(req) {
       </div>
     </body></html>`
 
-    await resend.emails.send({
+    await getResend().emails.send({
       from: 'DownRange Outreach <outreach@downrangeco.com>',
       to:   ['dejcav@gmail.com'],
       subject: `[DownRange] ${pending.length} emails pending approval`,

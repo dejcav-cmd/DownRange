@@ -15,8 +15,8 @@ export async function POST(req) {
   // Email notification via Resend
   try {
     const { Resend } = await import('resend')
-    const resend = new Resend(process.env.RESEND_API_KEY)
-    await resend.emails.send({
+    const getResend = () => new Resend(process.env.RESEND_API_KEY || "re_placeholder")
+    await getResend().emails.send({
       from:'DownRange <noreply@downrangeco.com>',
       to:[process.env.CONTACT_EMAIL||'dejalma.cavalcanti@icloud.com'],
       replyTo: email,
