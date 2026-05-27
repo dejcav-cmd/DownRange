@@ -146,6 +146,7 @@ export async function POST(req) {
 
   } catch (e) {
     console.error('[BACKFILL] crash:', e.message)
+    await reportCronRun('backfill', { status: 'failed', ms: Date.now() - t0, error: e.message }).catch(() => {})
     return Response.json({ error: 'Crashed: ' + e.message }, { status: 500 })
   }
 }

@@ -33,6 +33,7 @@ export async function GET(req) {
     await reportCronRun('nics', { status: 'success', ms: 0, details: 'completed' }).catch(()=>{})
     return Response.json({ success: true, totalChecks })
   } catch (err) {
+    await reportCronRun('nics', { status: 'failed', ms: 0, error: err.message }).catch(() => {})
     return Response.json({ error: err.message }, { status: 500 })
   }
 }

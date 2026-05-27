@@ -80,6 +80,7 @@ export async function GET(req) {
     await reportCronRun('newsletter', { status: 'success', ms: 0, details: 'completed' }).catch(()=>{})
     return Response.json({ success: true, sent: testEmails.length })
   } catch (err) {
+    await reportCronRun('newsletter', { status: 'failed', ms: 0, error: err.message }).catch(() => {})
     return Response.json({ error: err.message }, { status: 500 })
   }
 }

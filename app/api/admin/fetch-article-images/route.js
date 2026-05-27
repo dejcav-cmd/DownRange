@@ -2,7 +2,7 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
 import { createClient } from '@sanity/client'
-
+import { reportCronRun } from '@/lib/cronReporter'
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   'production',
@@ -129,6 +129,8 @@ export async function POST(req) {
   const isAdmin   = key === process.env.ADMIN_KEY
   if (!isCron && !isAdmin) return Response.json({ error:'Unauthorized' }, { status:401 })
 
+  const t0 = Date.now()
+  try {
   const { limit = 30, force = false } = await req.json().catch(() => ({}))
 
   // Get articles that still have SVG placeholder images
@@ -189,7 +191,13 @@ export async function POST(req) {
     await sanity.mutate(mutations)
   }
 
+  await reportCronRun('fetch-images', { status: 'success', ms: Date.now() - t0, details: `fetched:${results.fetched} uploaded:${results.uploaded} failed:${results.failed}` }).catch(() => {})
   return Response.json({ ok: true, total: articles.length, ...results })
+  } catch (err) {
+    console.error('[IMG-FETCH] crash:', err.message)
+    await reportCronRun('fetch-images', { status: 'failed', ms: Date.now() - t0, error: err.message }).catch(() => {})
+    return Response.json({ ok: false, error: err.message }, { status: 500 })
+  }
 }
 
 export async function GET(req) {
