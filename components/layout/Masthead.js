@@ -149,9 +149,9 @@ export default function Masthead() {
             <img
               src="/img/logo.png"
               alt="DownRange Co."
-              width={480}
-              height={160}
-              style={{ display:'block', height:'auto', maxHeight:162, width:'auto' }}
+              width={560}
+              height={65}
+              style={{ display:'block', height:'auto', maxHeight:162, width:'auto', maxWidth:'100%' }}
             />
           </Link>
 
