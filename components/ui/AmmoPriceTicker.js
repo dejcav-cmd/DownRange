@@ -20,7 +20,7 @@ export default function AmmoPriceTicker() {
         AMMO INDEX
       </div>
       <div style={{ overflow:'hidden', flex:1 }}>
-        <div style={{ display:'flex', gap:'0', animation:'ticker 30s linear infinite', width:'max-content' }}>
+        <div style={{ display:'flex', gap:'0', animation:'ticker 15s linear infinite', width:'max-content' }}>
           {items.map((p, i) => (
             <div key={i} style={{ display:'flex', alignItems:'center', gap:'6px', padding:'0 20px', borderRight:'1px solid var(--border)', height:'32px', flexShrink:0 }}>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'var(--text-dim)', letterSpacing:'0.08em' }}>{p.cal}</span>

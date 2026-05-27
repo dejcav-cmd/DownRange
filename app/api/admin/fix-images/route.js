@@ -178,11 +178,17 @@ async function imageIsReachable(url) {
 
 // ── Main handler ───────────────────────────────────────────────────────────────
 export async function POST(req) {
-  // Accept both x-admin-key header and Bearer token for backwards compat
-  const adminKey = process.env.ADMIN_KEY
-  const xKey     = req.headers.get('x-admin-key')
-  const bearer   = req.headers.get('authorization')
-  const authed   = !adminKey || xKey === adminKey || bearer === `Bearer ${adminKey}`
+  // Accept admin key, bearer token, or cron secret
+  const adminKey  = process.env.ADMIN_KEY
+  const cronSecret = process.env.CRON_SECRET
+  const xKey      = req.headers.get('x-admin-key')
+  const bearer    = req.headers.get('authorization')
+  const isCron    = new URL(req.url).searchParams.get('cron') === '1'
+  const authed    = !adminKey
+    || xKey === adminKey
+    || bearer === ('Bearer ' + adminKey)
+    || (isCron && cronSecret && bearer === ('Bearer ' + cronSecret))
+    || (isCron && !cronSecret)  // allow if no cron secret configured
   if (!authed) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }

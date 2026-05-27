@@ -164,6 +164,33 @@ export default function RangesPage() {
             </div>
           )}
 
+          {/* Google Maps embed */}
+          {results && results.length > 0 && process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY && (
+            <div style={{ marginBottom: 16, border: '1px solid var(--border)', overflow: 'hidden', height: 320 }}>
+              <iframe
+                width="100%" height="320" style={{ border: 0, display: 'block' }}
+                loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"
+                src={"https://www.google.com/maps/embed/v1/search?key=" + process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY + "&q=shooting+range+near+" + encodeURIComponent(meta?.location || query) + "&zoom=10"}
+              />
+            </div>
+          )}
+          {results && results.length > 0 && !process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY && (
+            <div style={{ marginBottom: 16, border: '1px solid var(--border)', overflow: 'hidden', height: 320, background: '#0f172a', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+              <div style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: 32, marginBottom: 8 }}>🗺</div>
+                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#64748b' }}>
+                  Add NEXT_PUBLIC_GOOGLE_PLACES_API_KEY to Vercel to enable map
+                </div>
+                {meta?.mapsSearchUrl && (
+                  <a href={meta.mapsSearchUrl} target="_blank" rel="noreferrer"
+                    style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#3b82f6', display: 'block', marginTop: 8 }}>
+                    Open in Google Maps ↗
+                  </a>
+                )}
+              </div>
+            </div>
+          )}
+
           {/* Results header */}
           {results && (
             <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:'16px', flexWrap:'wrap', gap:'8px' }}>

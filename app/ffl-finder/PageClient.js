@@ -52,6 +52,13 @@ export default function FFLFinder() {
 
           {results && results.length > 0 && (
             <>
+              <div style={{ marginBottom: 16, border: '1px solid var(--border)', overflow: 'hidden', height: 300 }}>
+                <iframe
+                  width="100%" height="300" style={{ border: 0, display: 'block' }}
+                  loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"
+                  src={"https://www.google.com/maps/embed/v1/search?key=" + (process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || '') + "&q=FFL+gun+dealer+near+" + encodeURIComponent(zip) + "&zoom=11"}
+                />
+              </div>
               <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'16px' }}>
                 {results.length} LICENSED DEALERS NEAR {zip.toUpperCase()}
               </div>

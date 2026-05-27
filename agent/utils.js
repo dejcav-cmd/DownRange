@@ -63,7 +63,7 @@ CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown,
 
   try {
     const res = await axios.post('https://api.anthropic.com/v1/messages', {
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-5',
       max_tokens: 4000,
       messages: [{ role: 'user', content: prompt }]
     }, {
@@ -116,7 +116,7 @@ Return ONLY valid JSON, no markdown, no explanation.`
 
   try {
     const res = await axios.post('https://api.anthropic.com/v1/messages', {
-      model: 'claude-sonnet-4-20250514',
+      model: 'claude-sonnet-4-5',
       max_tokens: 600,
       messages: [{ role: 'user', content: prompt }]
     }, {

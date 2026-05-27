@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 const PullLogDashboard = dynamic(() => import('./pull-log/page'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Pull Log...</div> })
 const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPortal'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Outreach Portal...</div> })
 const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
+const AIProviderSettings    = dynamic(() => import('../../components/admin/AIProviderSettings'), { ssr: false, loading: () => null })
 const EnvChecker            = dynamic(() => import('../../components/admin/EnvChecker'),            { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
@@ -1909,8 +1910,10 @@ export default function AdminPage() {
           {tab==='settings' && (
             <div>
               <h1 className="dr-section-title">Site Settings</h1>
-              <p className="dr-section-sub">Admin access and runtime configuration</p>
+              <p className="dr-section-sub">Admin access, AI provider, and runtime configuration</p>
 
+              {/* ── AI PROVIDER CONFIG ── */}
+              <AIProviderSettings adminKey={adminKey} />
               {/* ── ADMIN KEY CONFIG ── */}
               <div className="dr-card" style={{ marginBottom:24, borderLeft:'3px solid var(--gold)' }}>
                 <div className="dr-card-title" style={{ marginBottom:6 }}>🔑 Admin Key</div>
