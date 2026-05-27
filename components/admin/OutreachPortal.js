@@ -508,6 +508,65 @@ export default function OutreachPortal({ adminKey }) {
   const [bulkRunning, setBulkRunning]         = useState(false)
   const [bulkResult, setBulkResult]           = useState(null)
 
+  // Template editor
+  const [tplSelected, setTplSelected]   = useState(null)
+  const [tplEdit, setTplEdit]           = useState(null)
+  const [tplSaving, setTplSaving]       = useState(false)
+  const [tplPreview, setTplPreview]     = useState('')
+  const [tplPreviewLoading, setTplPreviewLoading] = useState(false)
+  const [tplView, setTplView]           = useState('edit')
+
+  const TEMPLATE_TYPES = [
+    {k:'generic',l:'Generic'},{k:'gun_shop',l:'Gun Shop'},{k:'youtuber',l:'YouTuber'},
+    {k:'instructor',l:'Instructor'},{k:'ffl_dealer',l:'FFL Dealer'},{k:'organization',l:'Manufacturer / Org'},
+    {k:'range',l:'Range'},{k:'influencer',l:'Influencer'},{k:'press',l:'Press'},
+  ]
+
+  const TEMPLATE_VARS = [
+    '{{firstName}}','{{name}}','{{city}}','{{state}}','{{website}}',
+    '{{pressUrl}}','{{siteUrl}}','{{channelName}}','{{subscriberCount}}',
+  ]
+
+  const newTemplate = () => { setTplEdit({name:'',type:'generic',subject:'',body:'',previewText:'',isActive:true}); setTplSelected(null); setTplView('edit'); setTplPreview('') }
+  const editTemplate = (t) => { setTplEdit({...t}); setTplSelected(t._id); setTplView('edit'); setTplPreview('') }
+
+  const saveTpl = async () => {
+    if (!tplEdit) return
+    setTplSaving(true)
+    try {
+      const isNew = !tplEdit._id
+      const body = isNew ? tplEdit : { id: tplEdit._id, ...tplEdit }
+      const res = await fetch('/api/outreach/templates', { method: isNew ? 'POST' : 'PATCH', headers:{...h,'Content-Type':'application/json'}, body: JSON.stringify(body) })
+      const d = await res.json()
+      if (d.ok) { flash(isNew ? '✅ Template created' : '✅ Template saved'); await loadTemplates(); if (isNew && d.template?._id) { setTplSelected(d.template._id); setTplEdit(d.template) } }
+      else flash(d.error || 'Save failed', false)
+    } catch(e) { flash(e.message, false) }
+    setTplSaving(false)
+  }
+
+  const deleteTpl = async (id) => {
+    if (!confirm('Delete this template?')) return
+    await fetch('/api/outreach/templates', { method:'DELETE', headers:{...h,'Content-Type':'application/json'}, body: JSON.stringify({id}) })
+    flash('Deleted'); if (tplSelected === id) { setTplSelected(null); setTplEdit(null) }; loadTemplates()
+  }
+
+  const previewTpl = () => {
+    if (!tplEdit?.body) return
+    setTplPreviewLoading(true)
+    const SAMPLE = { firstName:'John', name:'John Smith', city:'Nashville', state:'TN', website:'https://example.com', pressUrl:'https://downrangeco.com/press', siteUrl:'https://downrangeco.com', channelName:'Smith Firearms', subscriberCount:'42,000' }
+    let html = tplEdit.body
+    Object.entries(SAMPLE).forEach(([k,v]) => { html = html.replaceAll(`{{${k}}}`, v) })
+    if (!html.trim().startsWith('<')) html = `<div style="font-family:Georgia,serif;padding:32px;max-width:600px;color:#111;line-height:1.8;font-size:15px;">${html.replace(/\n\n/g,'</p><p>').replace(/\n/g,'<br/>')}</div>`
+    setTplPreview(html); setTplPreviewLoading(false); setTplView('preview')
+  }
+
+  const insertVar = (v) => {
+    if (!tplEdit) return
+    const ta = document.getElementById('tpl-body-editor')
+    if (ta) { const s = ta.selectionStart, e = ta.selectionEnd, val = tplEdit.body||''; setTplEdit(p=>({...p,body:val.slice(0,s)+v+val.slice(e)})); setTimeout(()=>{ta.selectionStart=ta.selectionEnd=s+v.length;ta.focus()},0) }
+    else setTplEdit(p=>({...p,body:(p.body||'')+v}))
+  }
+
   const h = {'x-admin-key':adminKey||''}
   const flash = (m, ok=true) => { setMsg({m,ok}); setTimeout(()=>setMsg(null),3500) }
 
@@ -1503,36 +1562,196 @@ export default function OutreachPortal({ adminKey }) {
         </div>
       )}
 
-      {/* ── TEMPLATES ── */}
+      {/* ── TEMPLATES — full publishing tool ── */}
       {tab==='templates' && (
-        <div>
-          <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:16}}>
-            <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.3rem',color:'var(--gold)',letterSpacing:'.05em'}}>Email Templates</div>
-            <button className="op-btn-ghost op-btn-sm" onClick={seedTemplates}>🌱 Seed / Refresh Defaults</button>
-          </div>
-          {templates.length===0?(
-            <div style={{padding:40,textAlign:'center'}}>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b',marginBottom:12}}>No templates yet.</div>
-              <button className="op-btn" onClick={seedTemplates}>Seed Default Templates</button>
+        <div style={{display:'grid',gridTemplateColumns:'260px 1fr',gap:0,border:'1px solid var(--border)',height:'calc(100vh - 360px)',minHeight:540}}>
+
+          {/* ── Left sidebar: template list ── */}
+          <div style={{borderRight:'1px solid var(--border)',display:'flex',flexDirection:'column',overflow:'hidden',background:'var(--bg2)'}}>
+            {/* Sidebar header */}
+            <div style={{padding:'12px 14px',borderBottom:'1px solid var(--border)',display:'flex',gap:8,alignItems:'center',flexShrink:0}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1rem',color:'var(--gold)',letterSpacing:'.05em',flex:1}}>
+                Templates <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>({templates.length})</span>
+              </div>
+              <button className="op-btn op-btn-sm" style={{fontSize:10,padding:'4px 10px'}} onClick={newTemplate}>+ New</button>
             </div>
-          ):(
-            <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:12}}>
-              {templates.map(t=>(
-                <div key={t._id} className="op-card" style={{borderLeft:`3px solid ${TYPE_C[t.type]||'var(--gold)'}`}}>
-                  <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',marginBottom:4}}>{t.name}</div>
-                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginBottom:8}}>
-                    {t.type} · {t.isActive?'✅ active':'⏸ off'}
-                  </div>
-                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--text-dim)',background:'var(--bg)',padding:'6px 8px',marginBottom:8}}>
-                    {t.subject}
-                  </div>
-                  <div style={{display:'flex',gap:6}}>
-                    <button className="op-btn-ghost op-btn-sm" onClick={async()=>{if(!confirm('Delete?'))return;await fetch('/api/outreach/templates',{method:'DELETE',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify({id:t._id})});loadTemplates()}}>Delete</button>
+            {/* Template list */}
+            <div style={{overflowY:'auto',flex:1}}>
+              {templates.length===0 && (
+                <div style={{padding:'24px 16px',textAlign:'center'}}>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:10}}>No templates yet.</div>
+                  <button className="op-btn op-btn-sm" style={{fontSize:10}} onClick={seedTemplates}>🌱 Seed Defaults</button>
+                </div>
+              )}
+              {templates.map(t => (
+                <div key={t._id}
+                  onClick={() => editTemplate(t)}
+                  style={{padding:'10px 14px',borderBottom:'1px solid rgba(30,41,59,.4)',cursor:'pointer',
+                    background: tplSelected===t._id ? 'rgba(200,146,42,.08)' : 'transparent',
+                    borderLeft: tplSelected===t._id ? '3px solid var(--gold)' : '3px solid transparent'}}>
+                  <div style={{display:'flex',gap:6,alignItems:'flex-start',justifyContent:'space-between'}}>
+                    <div style={{flex:1,minWidth:0}}>
+                      <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:tplSelected===t._id?'var(--gold)':'var(--text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.name||'Untitled'}</div>
+                      <div style={{display:'flex',gap:6,marginTop:2,alignItems:'center'}}>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,padding:'1px 5px',background:(TYPE_C[t.type]||'#C8922A')+'22',color:TYPE_C[t.type]||'#C8922A',borderRadius:2}}>{t.type}</span>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:t.isActive?'#22c55e':'#64748b'}}>{t.isActive?'● live':'○ off'}</span>
+                      </div>
+                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#475569',marginTop:3,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',opacity:.8}}>{t.subject}</div>
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
-          )}
+            {/* Sidebar footer */}
+            <div style={{padding:'10px 14px',borderTop:'1px solid var(--border)',flexShrink:0}}>
+              <button className="op-btn-ghost op-btn-sm" style={{width:'100%',fontSize:10}} onClick={seedTemplates}>🌱 Seed / Refresh Defaults</button>
+            </div>
+          </div>
+
+          {/* ── Right: editor / preview ── */}
+          <div style={{display:'flex',flexDirection:'column',overflow:'hidden',background:'var(--bg)'}}>
+            {!tplEdit ? (
+              <div style={{display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',flex:1,gap:12,opacity:.5}}>
+                <div style={{fontSize:40}}>✉</div>
+                <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>Select a template to edit, or create a new one</div>
+                <button className="op-btn" onClick={newTemplate}>+ New Template</button>
+              </div>
+            ) : (
+              <>
+                {/* Editor toolbar */}
+                <div style={{padding:'10px 16px',borderBottom:'1px solid var(--border)',display:'flex',gap:8,alignItems:'center',flexWrap:'wrap',flexShrink:0,background:'var(--bg2)'}}>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1rem',color:'var(--gold)',letterSpacing:'.05em',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+                    {tplEdit._id ? tplEdit.name || 'Edit Template' : '✦ New Template'}
+                  </div>
+                  {/* View toggle */}
+                  <div style={{display:'flex',border:'1px solid var(--border)',overflow:'hidden'}}>
+                    {['edit','preview'].map(v=>(
+                      <button key={v} onClick={v==='preview'?previewTpl:()=>setTplView('edit')}
+                        style={{background:tplView===v?'var(--gold)':'transparent',color:tplView===v?'#000':'var(--text-dim)',
+                          border:'none',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'5px 12px',cursor:'pointer',transition:'all .15s',textTransform:'uppercase',letterSpacing:'.04em'}}>
+                        {v==='edit'?'✏ Edit':'👁 Preview'}
+                      </button>
+                    ))}
+                  </div>
+                  <button className="op-btn" style={{fontSize:11,padding:'6px 16px'}} onClick={saveTpl} disabled={tplSaving}>
+                    {tplSaving ? 'Saving...' : '💾 Save'}
+                  </button>
+                  {tplEdit._id && (
+                    <button className="op-btn-red" style={{fontSize:10,padding:'5px 10px'}} onClick={()=>deleteTpl(tplEdit._id)}>Delete</button>
+                  )}
+                  <button onClick={()=>{setTplEdit(null);setTplSelected(null)}} style={{background:'none',border:'none',color:'var(--text-dim)',fontSize:16,cursor:'pointer',padding:'0 4px'}}>✕</button>
+                </div>
+
+                {/* Edit mode */}
+                {tplView==='edit' && (
+                  <div style={{flex:1,overflowY:'auto',padding:'16px 20px',display:'flex',flexDirection:'column',gap:12}}>
+
+                    {/* Row 1: Name + Type + Active */}
+                    <div style={{display:'grid',gridTemplateColumns:'1fr 160px auto',gap:10,alignItems:'end'}}>
+                      <div>
+                        <label className="op-label">Template Name *</label>
+                        <input className="op-input" value={tplEdit.name||''} onChange={e=>setTplEdit(p=>({...p,name:e.target.value}))} placeholder="e.g. YouTuber Intro Pitch" />
+                      </div>
+                      <div>
+                        <label className="op-label">Audience Type</label>
+                        <select className="op-select" value={tplEdit.type||'generic'} onChange={e=>setTplEdit(p=>({...p,type:e.target.value}))} style={{width:'100%'}}>
+                          {TEMPLATE_TYPES.map(({k,l})=><option key={k} value={k}>{l}</option>)}
+                        </select>
+                      </div>
+                      <div style={{display:'flex',alignItems:'center',gap:8,paddingBottom:2}}>
+                        <label style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--text-dim)',display:'flex',alignItems:'center',gap:6,cursor:'pointer'}}>
+                          <input type="checkbox" checked={!!tplEdit.isActive} onChange={e=>setTplEdit(p=>({...p,isActive:e.target.checked}))} />
+                          Active
+                        </label>
+                      </div>
+                    </div>
+
+                    {/* Row 2: Subject */}
+                    <div>
+                      <label className="op-label">Subject Line *</label>
+                      <input className="op-input" value={tplEdit.subject||''} onChange={e=>setTplEdit(p=>({...p,subject:e.target.value}))} placeholder="e.g. Quick question about {{channelName}}" />
+                    </div>
+
+                    {/* Row 3: Preview text */}
+                    <div>
+                      <label className="op-label">Preview Text <span style={{color:'#475569'}}>(shown in inbox preview)</span></label>
+                      <input className="op-input" value={tplEdit.previewText||''} onChange={e=>setTplEdit(p=>({...p,previewText:e.target.value}))} placeholder="One line that appears under the subject in the inbox..." />
+                    </div>
+
+                    {/* Row 4: Variable chips */}
+                    <div>
+                      <label className="op-label">Insert Variable <span style={{color:'#475569'}}>(click to insert at cursor)</span></label>
+                      <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                        {TEMPLATE_VARS.map(v=>(
+                          <button key={v} onClick={()=>insertVar(v)}
+                            style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'3px 8px',background:'rgba(200,146,42,.12)',color:'var(--gold)',border:'1px solid rgba(200,146,42,.3)',cursor:'pointer',transition:'all .15s'}}
+                            onMouseEnter={e=>{e.currentTarget.style.background='rgba(200,146,42,.25)'}}
+                            onMouseLeave={e=>{e.currentTarget.style.background='rgba(200,146,42,.12)'}}>
+                            {v}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Row 5: Body editor */}
+                    <div style={{flex:1,display:'flex',flexDirection:'column'}}>
+                      <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:5}}>
+                        <label className="op-label" style={{margin:0}}>Email Body *</label>
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#475569'}}>
+                          Plain text or HTML · {(tplEdit.body||'').length} chars
+                        </span>
+                      </div>
+                      <textarea
+                        id="tpl-body-editor"
+                        className="op-textarea"
+                        value={tplEdit.body||''}
+                        onChange={e=>setTplEdit(p=>({...p,body:e.target.value}))}
+                        placeholder={"Hi {{firstName}},\n\nI run DownRange Co, a firearms news and reviews portal at downrangeco.com. I wanted to reach out because...\n\nBest,\nDJ\nDownRangeCo.com"}
+                        style={{minHeight:280,resize:'vertical',lineHeight:1.8,fontSize:12,flex:1}}
+                      />
+                    </div>
+
+                    {/* Row 6: Tags */}
+                    <div>
+                      <label className="op-label">Tags <span style={{color:'#475569'}}>(comma-separated)</span></label>
+                      <input className="op-input" value={Array.isArray(tplEdit.tags)?tplEdit.tags.join(', '):(tplEdit.tags||'')}
+                        onChange={e=>setTplEdit(p=>({...p,tags:e.target.value.split(',').map(t=>t.trim()).filter(Boolean)}))}
+                        placeholder="partnership, collab, intro" />
+                    </div>
+
+                    {/* Save bar */}
+                    <div style={{display:'flex',gap:10,paddingTop:4}}>
+                      <button className="op-btn" onClick={saveTpl} disabled={tplSaving} style={{flex:1}}>
+                        {tplSaving ? '⏳ Saving...' : tplEdit._id ? '💾 Save Changes' : '✦ Create Template'}
+                      </button>
+                      <button className="op-btn-ghost op-btn-sm" onClick={previewTpl} disabled={!tplEdit.body}>👁 Preview</button>
+                      {tplEdit._id && <button className="op-btn-ghost op-btn-sm" style={{color:'#ef4444',borderColor:'rgba(239,68,68,.3)'}} onClick={()=>deleteTpl(tplEdit._id)}>Delete</button>}
+                    </div>
+                  </div>
+                )}
+
+                {/* Preview mode */}
+                {tplView==='preview' && (
+                  <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+                    <div style={{padding:'8px 16px',borderBottom:'1px solid var(--border)',background:'var(--bg2)',display:'flex',gap:12,alignItems:'center',flexShrink:0,flexWrap:'wrap'}}>
+                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>
+                        <span style={{color:'var(--text-dim)'}}>Subject: </span>{tplEdit.subject?.replace('{{firstName}}','John').replace('{{channelName}}','Smith Firearms')||'(no subject)'}
+                      </div>
+                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#475569',marginLeft:'auto'}}>Sample data: John Smith, Nashville TN</div>
+                      <button className="op-btn-ghost op-btn-sm" style={{fontSize:9}} onClick={()=>setTplView('edit')}>← Back to Edit</button>
+                    </div>
+                    {tplPreviewLoading ? (
+                      <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>Rendering preview...</div>
+                    ) : tplPreview ? (
+                      <iframe srcDoc={tplPreview} style={{flex:1,width:'100%',border:'none',background:'#fff'}} title="Template Preview" />
+                    ) : (
+                      <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#64748b'}}>Click 👁 Preview to render</div>
+                    )}
+                  </div>
+                )}
+              </>
+            )}
+          </div>
         </div>
       )}
 

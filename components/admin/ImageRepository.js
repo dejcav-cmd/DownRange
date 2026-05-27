@@ -60,8 +60,18 @@ export default function ImageRepository({ adminKey }) {
   const [filter,   setFilter]   = useState('')
   const [search,   setSearch]   = useState('')
   const [selected, setSelected] = useState(null)
-  const [modal,    setModal]    = useState(null) // 'add' | 'assign'
+  const [modal,    setModal]    = useState(null) // 'add' | 'assign' | 'config'
   const [addForm,  setAddForm]  = useState({ title:'', category:'pistol', url:'', tags:'', source:'' })
+
+  // Seed config — persisted to localStorage
+  const [seedLimit,   setSeedLimit]   = useState(() => { try { return parseInt(localStorage.getItem('dr_img_seed_limit') || '200') } catch { return 200 } })
+  const [seedForce,   setSeedForce]   = useState(false)
+  const [seedCat,     setSeedCat]     = useState('')
+
+  function saveSeedConfig(limit) {
+    try { localStorage.setItem('dr_img_seed_limit', String(limit)) } catch {}
+    setSeedLimit(limit)
+  }
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -83,9 +93,10 @@ export default function ImageRepository({ adminKey }) {
 
   async function seedRepo(category = null) {
     setBusy(true)
-    flash('⏳ Seeding image repository — downloading & uploading to Sanity CDN...')
+    flash(`⏳ Seeding up to ${seedLimit} images — downloading & uploading to Sanity CDN...`)
     try {
-      const body = category ? { category } : {}
+      const body = { force: seedForce, limit: seedLimit }
+      if (category || seedCat) body.category = category || seedCat
       const r = await fetch('/api/admin/seed-image-repo', {
         method: 'POST',
         headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
@@ -93,7 +104,7 @@ export default function ImageRepository({ adminKey }) {
       })
       const d = await r.json()
       if (d.ok) {
-        flash(`✅ Seeded ${d.seeded} images · ${d.skipped} already existed · ${d.failed} failed`, 'ok')
+        flash(`✅ Seeded ${d.seeded} images · ${d.skipped} already existed · ${d.failed} failed (of ${d.total} total)`, 'ok')
         await load()
       } else flash('❌ ' + (d.error || 'Failed'), 'err')
     } catch(e) { flash('❌ ' + e.message, 'err') }
@@ -166,8 +177,9 @@ export default function ImageRepository({ adminKey }) {
         <input value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search images..."
           style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'6px 10px', width:180, outline:'none' }} />
         <button className="ir-btn-primary" onClick={() => seedRepo()} disabled={busy}>
-          ⬇ Seed All ({images.length === 0 ? '~50 images' : 'update'})
+          ⬇ Seed {seedLimit} Images
         </button>
+        <button className="ir-btn" onClick={() => setModal('config')} disabled={busy}>⚙ Seed Config</button>
         <button className="ir-btn" onClick={() => setModal('add')} disabled={busy}>+ Add Image</button>
         <button className="ir-btn" onClick={load}>↺ Refresh</button>
         <div style={{ marginLeft:'auto', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#374151' }}>
@@ -175,6 +187,33 @@ export default function ImageRepository({ adminKey }) {
             <span key={cat} style={{ marginLeft:8, color: CAT_COLORS[cat] || '#4b5563' }}>{cat}:{n}</span>
           ))}
         </div>
+      </div>
+
+      {/* Seed config inline strip */}
+      <div style={{ display:'flex', gap:10, alignItems:'center', marginBottom:10, padding:'8px 12px', background:'rgba(200,146,42,.04)', border:'1px solid rgba(200,146,42,.15)', flexWrap:'wrap' }}>
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', letterSpacing:'.08em', flexShrink:0 }}>SEED CONFIG</span>
+        <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b' }}>Limit:</span>
+          <select value={seedLimit} onChange={e => saveSeedConfig(Number(e.target.value))}
+            style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'3px 6px', outline:'none' }}>
+            {[25,50,75,100,150,200].map(n => <option key={n} value={n}>{n} images</option>)}
+          </select>
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b' }}>Category:</span>
+          <select value={seedCat} onChange={e => setSeedCat(e.target.value)}
+            style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'3px 6px', outline:'none' }}>
+            <option value="">All</option>
+            {CATEGORIES.filter(c=>c.value).map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+          </select>
+        </div>
+        <label style={{ display:'flex', alignItems:'center', gap:5, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', cursor:'pointer' }}>
+          <input type="checkbox" checked={seedForce} onChange={e => setSeedForce(e.target.checked)} />
+          Force re-seed (overwrite existing)
+        </label>
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', marginLeft:'auto' }}>
+          Pool: 200 curated public domain images
+        </span>
       </div>
 
       {/* Category filters */}
@@ -194,9 +233,9 @@ export default function ImageRepository({ adminKey }) {
         <div className="ir-empty">
           <div style={{ marginBottom:12 }}>No images yet.</div>
           <button className="ir-btn-primary" onClick={() => seedRepo()} disabled={busy}>
-            ⬇ Seed Repository Now
+            ⬇ Seed {seedLimit} Images Now
           </button>
-          <div style={{ marginTop:8, fontSize:10, color:'#374151' }}>Downloads ~50 curated 2A firearm images to Sanity CDN</div>
+          <div style={{ marginTop:8, fontSize:10, color:'#374151' }}>Downloads up to 200 curated 2A firearm images to Sanity CDN</div>
         </div>
       ) : (
         <div className="ir-grid">
@@ -263,6 +302,65 @@ export default function ImageRepository({ adminKey }) {
             <div style={{ display:'flex', gap:8 }}>
               <button className="ir-btn-primary" onClick={addImage} disabled={busy}>Add to Repository</button>
               <button className="ir-btn" onClick={() => setModal(null)}>Cancel</button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Seed Config Modal */}
+      {modal === 'config' && (
+        <div className="ir-modal-overlay" onClick={() => setModal(null)}>
+          <div className="ir-modal" onClick={e => e.stopPropagation()}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.5rem', color:'var(--gold)', letterSpacing:'.06em', marginBottom:4 }}>⚙ Seed Configuration</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', marginBottom:20, lineHeight:1.8 }}>
+              Configure how many images to pull from the 200-image pool. Settings are saved to your browser and persist across sessions.
+            </div>
+
+            <div style={{ marginBottom:16 }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:6 }}>Image Limit (max to seed)</div>
+              <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+                {[25,50,75,100,150,200].map(n => (
+                  <button key={n} onClick={() => saveSeedConfig(n)}
+                    style={{ padding:'7px 16px', background:seedLimit===n?'var(--gold)':'var(--bg3)', color:seedLimit===n?'#000':'var(--text-dim)', border:`1px solid ${seedLimit===n?'var(--gold)':'var(--border)'}`, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, cursor:'pointer', transition:'all .15s' }}>
+                    {n}
+                  </button>
+                ))}
+              </div>
+              <div style={{ marginTop:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'var(--gold)' }}>
+                Currently: <strong>{seedLimit} images</strong> — saved to browser
+              </div>
+            </div>
+
+            <div style={{ marginBottom:16 }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', letterSpacing:'.1em', textTransform:'uppercase', marginBottom:6 }}>Category Filter (optional)</div>
+              <select value={seedCat} onChange={e => setSeedCat(e.target.value)}
+                style={{ background:'var(--bg3)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 12px', width:'100%', outline:'none' }}>
+                <option value="">All Categories</option>
+                {CATEGORIES.filter(c=>c.value).map(c => <option key={c.value} value={c.value}>{c.label}</option>)}
+              </select>
+            </div>
+
+            <div style={{ marginBottom:20 }}>
+              <label style={{ display:'flex', alignItems:'center', gap:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text-dim)', cursor:'pointer' }}>
+                <input type="checkbox" checked={seedForce} onChange={e => setSeedForce(e.target.checked)} />
+                Force re-seed (overwrite images that already exist)
+              </label>
+            </div>
+
+            <div style={{ padding:'10px 14px', background:'rgba(0,0,0,.3)', border:'1px solid var(--border)', marginBottom:16, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:2 }}>
+              <div style={{ color:'var(--text-dim)', marginBottom:4, fontSize:9, letterSpacing:'.08em', textTransform:'uppercase' }}>Seed pool breakdown (200 total)</div>
+              {[['Pistols','30'],['Rifles','40'],['Shotguns','15'],['Suppressors','10'],['Ammunition','20'],['Law / 2A','15'],['Training','15'],['Competition','10'],['Hunting','15'],['Gear','15'],['Home Defense','10'],['Industry','10']].map(([cat,n])=>(
+                <div key={cat} style={{ display:'flex', justifyContent:'space-between', maxWidth:260 }}>
+                  <span>{cat}</span><span style={{ color:'var(--gold)' }}>{n} images</span>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display:'flex', gap:8 }}>
+              <button className="ir-btn-primary" onClick={() => { setModal(null); seedRepo() }} disabled={busy}>
+                ⬇ Run Seed Now ({seedLimit} images)
+              </button>
+              <button className="ir-btn" onClick={() => setModal(null)}>Close</button>
             </div>
           </div>
         </div>
