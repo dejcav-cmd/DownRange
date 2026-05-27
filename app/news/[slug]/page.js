@@ -4,6 +4,19 @@ import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
 import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
+import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
+
+// Only trust image URLs from known-reliable CDNs
+// RSS source images (ammoland, thetruthaboutguns, etc) often 404 after a few days
+function getReliableImage(article) {
+  const raw = resolveImage(article)
+  if (!raw) return null
+  // Trust: our own Wikimedia fallbacks, Sanity CDN, YouTube thumbnails
+  const trusted = ['cdn.sanity.io', 'upload.wikimedia.org', 'img.youtube.com', 'i.ytimg.com', 'images.unsplash.com']
+  if (trusted.some(d => raw.includes(d))) return raw
+  // Don't trust external RSS source images — they go 404 frequently
+  return null
+}
 
 // Server-side firearm image fallback — same logic as NewsCard client-side
 const ARTICLE_FALLBACKS = {
@@ -121,7 +134,7 @@ export default async function ArticlePage({ params }) {
   if (!article) notFound()
 
   const cat      = CAT_STYLE[article.category] || CAT_STYLE.news
-  const imageUrl = resolveImage(article) || getArticleFallback(article)
+  const imageUrl = getReliableImage(article) || getArticleFallback(article)
   const imageAlt = article.imageAlt || article.heroImage?.alt || article.title
 
   return (
@@ -162,12 +175,7 @@ export default async function ArticlePage({ params }) {
 
         {/* ── HERO IMAGE — always shown ── */}
         <div style={{ width: '100%', height: 'clamp(280px, 45vw, 520px)', overflow: 'hidden', position: 'relative' }}>
-          <img
-            src={imageUrl}
-            alt={imageAlt}
-            style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            onError={`this.src='${ARTICLE_FALLBACKS.news}'`}
-          />
+          <ArticleHeroImage src={imageUrl} alt={imageAlt} fallback={ARTICLE_FALLBACKS.news} />
           <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '50%', background: 'linear-gradient(0deg, #0A0B0C 0%, transparent 100%)' }} />
         </div>
 
