@@ -89,7 +89,7 @@ Return JSON only:
       })
       const d = await res.json()
       const text = d.content?.[0]?.text || ''
-      const ai = JSON.parse(text.replace(/```json|```/g,'').trim())
+      const ai = JSON.parse(text.split('```json').join('').split('```').join('').trim())
       const patchFields = {}
       if (ai.body) patchFields.body = ai.body
       if (ai.excerpt) patchFields.excerpt = ai.excerpt

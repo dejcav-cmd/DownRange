@@ -20,6 +20,7 @@ import { outreachCampaign } from './outreachCampaign'
 import { outreachTemplate } from './outreachTemplate'
 import { outreachSendLog }  from './outreachSendLog'
 import { cronRunStore }     from './cronRunStore'
+import { blogPost }         from './blogPost'
 
 export const schemaTypes = [
   newsArticle,
@@ -31,4 +32,5 @@ export const schemaTypes = [
   canadaContent,
   competition,
   cronRunStore,
+  blogPost,
 ]

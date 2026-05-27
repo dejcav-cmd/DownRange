@@ -84,7 +84,7 @@ async function writeArticle(article) {
   const d = await res.json()
   if (!res.ok) throw new Error('Claude error ' + res.status + ': ' + JSON.stringify(d).slice(0,200))
   const raw = d.content?.[0]?.text || '{}'
-  const clean = raw.replace(/^```json\s*/i,'').replace(/\s*```$/i,'').trim()
+  const clean = raw.split('```json').join('').split('```').join('').trim()
   return JSON.parse(clean)
 }
 

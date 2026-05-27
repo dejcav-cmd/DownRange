@@ -102,7 +102,7 @@ Return JSON only:
       })
       const d = await res.json()
       const text = d.content?.[0]?.text || ''
-      const clean = text.replace(/```json|```/g,'').trim()
+      const clean = text.split('```json').join('').split('```').join('').trim()
       const ai = JSON.parse(clean)
       const fields = {}
       if (ai.body) fields.body = ai.body

@@ -1,7 +1,7 @@
-import { callAIText } from '@/lib/aiClient.js'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
+import { callAIText } from '@/lib/aiClient.js'
 import { createClient } from '@sanity/client'
 
 const sanity = createClient({

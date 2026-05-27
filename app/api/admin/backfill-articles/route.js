@@ -63,7 +63,7 @@ async function rewriteArticle(article) {
   ]
 
   const raw   = await callClaude(lines.join('\n'))
-  const clean = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim()
+  const clean = raw.split('```json').join('').split('```').join('').trim()
 
   let parsed
   try {

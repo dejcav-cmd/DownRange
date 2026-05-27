@@ -77,7 +77,7 @@ async function generateWithClaude(articles) {
 
   const d = await res.json()
   const raw = d.content?.[0]?.text || '{}'
-  const clean = raw.replace(/^```json\s*/i,'').replace(/\s*```$/i,'').trim()
+  const clean = raw.split('```json').join('').split('```').join('').trim()
   return JSON.parse(clean)
 }
 
