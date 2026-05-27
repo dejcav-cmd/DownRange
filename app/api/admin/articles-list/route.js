@@ -18,10 +18,10 @@ function auth(req) {
 }
 
 const WIKIMEDIA = {
-  law:      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  rifle:    'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  pistol:   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  ammo:     'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
+  law:      '/img/law.svg',
+  rifle:    '/img/rifle.svg',
+  pistol:   '/img/pistol.svg',
+  ammo:     '/img/ammo.svg',
 }
 
 function autoPickImage(title, category) {

@@ -180,7 +180,7 @@ async function notifyError(message, context = '') {
 }
 
 // ── SANITY WRITER ─────────────────────────────────────────────────────
-const TRUSTED_IMAGE_DOMAINS = ['upload.wikimedia.org','cdn.sanity.io','img.youtube.com','i.ytimg.com','images.unsplash.com']
+const TRUSTED_IMAGE_DOMAINS = ['/img/','cdn.sanity.io','img.youtube.com','i.ytimg.com']
 function isTrustedImage(url) {
   if (!url) return false
   return TRUSTED_IMAGE_DOMAINS.some(d => url.includes(d))

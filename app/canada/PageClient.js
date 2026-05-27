@@ -96,7 +96,7 @@ const ARTICLES = [
   {
     title: "Bill C-21's Handgun Freeze: What It Actually Means for Canadian Gun Owners",
     date: 'Updated May 2026',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+    img: '/img/law.svg',
     tag: 'LAW',
     mins: '8 min read',
     body: `<p>When Bill C-21 came into force in August 2023, it didn't just change Canadian firearms law — it effectively ended the legal handgun market in Canada. No new handgun purchases. No transfers. No imports. Existing owners keep what they have, but that's where it stops.</p>
@@ -118,7 +118,7 @@ const ARTICLES = [
   {
     title: "Getting Your PAL in Canada: The Realistic Timeline Nobody Tells You",
     date: 'Updated April 2026',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+    img: '/img/pistol.svg',
     tag: 'GUIDE',
     mins: '6 min read',
     body: `<p>The RCMP says PAL processing takes "45 business days." That's the official number. The actual number varies from 6 weeks in Alberta on a good month to 6+ months in Quebec during any backlog period. Here's what the process actually looks like.</p>
@@ -138,7 +138,7 @@ const ARTICLES = [
   {
     title: "The OIC Assault Weapon Ban: What's Still on the Table in 2026",
     date: 'May 2026',
-    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
+    img: '/img/rifle.svg',
     tag: 'POLICY',
     mins: '7 min read',
     body: `<p>The 2020 Order in Council banned over 1,500 firearm models by name and description. The mandatory buyback program was announced, contracted, and then cancelled when the Conservative government took office. So where does that leave Canadian owners of AR-15s, Mini-14s, and the other prohibited models?</p>
@@ -200,7 +200,7 @@ export default function CanadaPage({ laws=[], provinces=[], articles=[], ammo=[]
 
       {/* ── HERO ── */}
       <div style={{background:'linear-gradient(180deg,#09090B 0%,#0d1117 100%)',borderBottom:'1px solid var(--border)',padding:'48px 0 32px',position:'relative',overflow:'hidden'}}>
-        <div style={{position:'absolute',inset:0,backgroundImage:'url(https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Flag_of_Canada_%28Pantone%29.svg/1200px-Flag_of_Canada_%28Pantone%29.svg.png)',backgroundPosition:'right center',backgroundSize:'600px',backgroundRepeat:'no-repeat',opacity:.04}} />
+        <div style={{position:'absolute',inset:0,backgroundImage:'url(/img/news.svg',backgroundPosition:'right center',backgroundSize:'600px',backgroundRepeat:'no-repeat',opacity:.04}} />
         <div className="container" style={{position:'relative'}}>
           <div style={{display:'flex',alignItems:'center',gap:12,marginBottom:12}}>
             <span style={{fontSize:36}}>🇨🇦</span>

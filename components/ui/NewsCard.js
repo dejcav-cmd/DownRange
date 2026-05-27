@@ -1,7 +1,7 @@
 'use client'
 
 // Curated fallback images — shown client-side when Sanity has no image
-const WM = 'https://upload.wikimedia.org/wikipedia/commons/thumb'
+const WM = '/img/news.svg'
 const FALLBACK_IMAGES = {
   pistol:     WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
   rifle:      WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',

@@ -292,12 +292,12 @@ export default async function HomePage() {
           </div>
           <div style={{ display:'flex', gap:10, overflowX:'auto', paddingBottom:4 }}>
             {(releases.length > 0 ? releases : [
-              { _id:'1', brand:'Glock',          model:'G47 MOS',          caliber:'9mm',       msrp:599,  isNew:true,  heroImage:{ asset:{ url:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg' } } },
-              { _id:'2', brand:'SIG Sauer',       model:'P365-XMACRO Comp', caliber:'9mm',       msrp:699,  isNew:true,  heroImage:{ asset:{ url:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9b/SIG_Sauer_P365_XL.jpg/1200px-SIG_Sauer_P365_XL.jpg' } } },
-              { _id:'3', brand:'Smith & Wesson',  model:'M&P15 Sport III',  caliber:'5.56 NATO', msrp:749,  isNew:false, heroImage:{ asset:{ url:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg' } } },
-              { _id:'4', brand:'Mossberg',        model:'590S Shockwave',   caliber:'12 Gauge',  msrp:549,  isNew:false, heroImage:{ asset:{ url:'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Mossberg_500_Persuader.jpg/1200px-Mossberg_500_Persuader.jpg' } } },
-              { _id:'5', brand:'Ruger',           model:'LC Carbine',       caliber:'5.7x28mm',  msrp:829,  isNew:true,  heroImage:{ asset:{ url:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f3/AR-15_rifle.jpg/1200px-AR-15_rifle.jpg' } } },
-              { _id:'6', brand:'Kimber',          model:'Rapide Black Ice', caliber:'9mm',       msrp:1599, isNew:false, heroImage:{ asset:{ url:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/M1911A1.jpg/1200px-M1911A1.jpg' } } },
+              { _id:'1', brand:'Glock',          model:'G47 MOS',          caliber:'9mm',       msrp:599,  isNew:true,  heroImage:{ asset:{ url:'/img/pistol.svg' } } },
+              { _id:'2', brand:'SIG Sauer',       model:'P365-XMACRO Comp', caliber:'9mm',       msrp:699,  isNew:true,  heroImage:{ asset:{ url:'/img/pistol.svg' } } },
+              { _id:'3', brand:'Smith & Wesson',  model:'M&P15 Sport III',  caliber:'5.56 NATO', msrp:749,  isNew:false, heroImage:{ asset:{ url:'/img/rifle.svg' } } },
+              { _id:'4', brand:'Mossberg',        model:'590S Shockwave',   caliber:'12 Gauge',  msrp:549,  isNew:false, heroImage:{ asset:{ url:'/img/shotgun.svg' } } },
+              { _id:'5', brand:'Ruger',           model:'LC Carbine',       caliber:'5.7x28mm',  msrp:829,  isNew:true,  heroImage:{ asset:{ url:'/img/rifle.svg' } } },
+              { _id:'6', brand:'Kimber',          model:'Rapide Black Ice', caliber:'9mm',       msrp:1599, isNew:false, heroImage:{ asset:{ url:'/img/pistol.svg' } } },
             ]).map(r => (
               <div key={r._id} className="release-card" style={{ width:190, flexShrink:0, background:'var(--bg2)', border:'1px solid var(--border)', transition:'border-color 0.15s', borderRadius:2 }}>
                 <div style={{ height:120, background:'var(--bg)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:40, position:'relative', overflow:'hidden' }}>

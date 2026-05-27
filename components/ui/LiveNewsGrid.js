@@ -3,16 +3,16 @@
 import React from 'react'
 
 const FALLBACKS = {
-  pistol:     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  rifle:      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  shotgun:    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Mossberg_500.jpg/1280px-Mossberg_500.jpg',
-  suppressor: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Silencer.jpg/1280px-Silencer.jpg',
-  optic:      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  ammo:       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  law:        'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  breaking:   'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  industry:   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  news:       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+  pistol:     '/img/pistol.svg',
+  rifle:      '/img/rifle.svg',
+  shotgun:    '/img/shotgun.svg',
+  suppressor: '/img/suppressor.svg',
+  optic:      '/img/rifle.svg',
+  ammo:       '/img/pistol.svg',
+  law:        '/img/law.svg',
+  breaking:   '/img/law.svg',
+  industry:   '/img/pistol.svg',
+  news:       '/img/pistol.svg',
 }
 
 const CAT_C = {

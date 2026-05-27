@@ -19,7 +19,7 @@ const CANADA_ARTICLES = [
     category: 'canada',
     tag:      'LAW',
     readMins: '9 min',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+    imageUrl: '/img/law.svg',
     prompt:   `Write a detailed blog post for DownRange titled "Canada's Handgun Freeze: What Every Gun Owner Actually Needs to Know" — written by DJ Cavalcanti as someone who covers Canadian firearms law closely.
 
 Cover these points thoroughly:
@@ -39,7 +39,7 @@ Format: HTML with h2 sections, p, ul, li, strong. No h1.`,
     category: 'canada',
     tag:      'POLICY',
     readMins: '8 min',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
+    imageUrl: '/img/rifle.svg',
     prompt:   `Write a detailed blog post for DownRange titled "The OIC Rifle Ban: Still Illegal to Sell, Still Legal to Own — Here's the Mess Explained" — by DJ Cavalcanti.
 
 Cover:
@@ -59,7 +59,7 @@ Format: HTML h2/p/ul/li/strong. No h1.`,
     category: 'canada',
     tag:      'GUIDE',
     readMins: '11 min',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+    imageUrl: '/img/pistol.svg',
     prompt:   `Write a comprehensive practical guide for DownRange titled "How to Get Your PAL in Canada: The Complete Realistic Guide" — by DJ Cavalcanti.
 
 Cover step by step:
@@ -82,7 +82,7 @@ Format: HTML h2/p/ul/li/strong. No h1.`,
     category: 'canada',
     tag:      'LAW',
     readMins: '7 min',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+    imageUrl: '/img/pistol.svg',
     prompt:   `Write a detailed explainer for DownRange titled "Canadian Magazine Laws: What You Can Own, What's Illegal, and the Pinning Trap" — by DJ Cavalcanti.
 
 Cover:
@@ -104,7 +104,7 @@ Format: HTML h2/p/ul/li/strong. No h1.`,
     category: 'canada',
     tag:      'GUIDE',
     readMins: '6 min',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+    imageUrl: '/img/pistol.svg',
     prompt:   `Write a practical safety and legal guide for DownRange titled "Canadian Safe Storage: The Criminal Offence You Might Not Know You're Committing" — by DJ Cavalcanti.
 
 Cover:

@@ -29,15 +29,15 @@ const S = `
 
 const CAT_C = { breaking:'#ef4444', law:'#3b82f6', industry:'#C8922A', news:'#9ca3af', deals:'#22c55e', training:'#a855f7', opinion:'#f97316' }
 const IMG_MAP = {
-  law:      'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  breaking: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  industry: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  news:     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  deals:    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  training: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  opinion:  'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+  law:      '/img/law.svg',
+  breaking: '/img/law.svg',
+  industry: '/img/rifle.svg',
+  news:     '/img/pistol.svg',
+  deals:    '/img/pistol.svg',
+  training: '/img/pistol.svg',
+  opinion:  '/img/law.svg',
 }
-const FALLBACK = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg'
+const FALLBACK = '/img/pistol.svg'
 
 function pickImageForArticle(title, category) {
   const t = (title||'').toLowerCase()
@@ -165,7 +165,7 @@ export default function NewsArticleManager({ adminKey }) {
 
   function isBrokenImage(url) {
     if (!url) return true
-    const trusted = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com']
+    const trusted = ['/img/', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com']
     return !trusted.some(d => url.includes(d))
   }
 

@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#0d1117"/><stop offset="100%" style="stop-color:#09090B"/></linearGradient>
+    <linearGradient id="brass" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#b45309"/><stop offset="40%" style="stop-color:#d97706"/><stop offset="70%" style="stop-color:#C8922A"/><stop offset="100%" style="stop-color:#92610a"/></linearGradient>
+    <linearGradient id="copper" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#7c3d12"/><stop offset="50%" style="stop-color:#b45309"/><stop offset="100%" style="stop-color:#7c3d12"/></linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#C8922A"/><stop offset="100%" style="stop-color:#92610a"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <g opacity="0.04" stroke="#C8922A" stroke-width="1">
+    <line x1="0" y1="126" x2="1200" y2="126"/><line x1="0" y1="252" x2="1200" y2="252"/><line x1="0" y1="378" x2="1200" y2="378"/><line x1="0" y1="504" x2="1200" y2="504"/>
+    <line x1="240" y1="0" x2="240" y2="630"/><line x1="480" y1="0" x2="480" y2="630"/><line x1="720" y1="0" x2="720" y2="630"/><line x1="960" y1="0" x2="960" y2="630"/>
+  </g>
+  <!-- Multiple cartridges standing up -->
+  <g filter="url(#glow)">
+    <!-- Cartridge 1 (9mm style) -->
+    <g transform="translate(280, 100)">
+      <ellipse cx="25" cy="10" rx="25" ry="8" fill="url(#copper)"/>
+      <rect x="0" y="8" width="50" height="160" fill="url(#copper)"/>
+      <rect x="0" y="168" width="50" height="130" fill="url(#brass)"/>
+      <ellipse cx="25" cy="298" rx="25" ry="8" fill="#7c3d12"/>
+      <circle cx="25" cy="298" r="8" fill="#374151"/>
+      <circle cx="25" cy="298" r="4" fill="#1f2937"/>
+      <rect x="5" y="280" width="40" height="4" rx="1" fill="rgba(0,0,0,0.3)"/>
+    </g>
+    <!-- Cartridge 2 -->
+    <g transform="translate(370, 80)">
+      <ellipse cx="22" cy="10" rx="22" ry="7" fill="url(#copper)"/>
+      <rect x="0" y="8" width="44" height="180" fill="url(#copper)"/>
+      <rect x="0" y="188" width="44" height="140" fill="url(#brass)"/>
+      <ellipse cx="22" cy="328" rx="22" ry="7" fill="#7c3d12"/>
+      <circle cx="22" cy="328" r="7" fill="#374151"/>
+      <circle cx="22" cy="328" r="3.5" fill="#1f2937"/>
+    </g>
+    <!-- Cartridge 3 (larger, .308 style) -->
+    <g transform="translate(460, 60)">
+      <ellipse cx="28" cy="12" rx="28" ry="9" fill="#b45309"/>
+      <path d="M 0 12 Q 0 0 28 0 Q 56 0 56 12 L 56 200 L 0 200 Z" fill="url(#copper)"/>
+      <rect x="0" y="198" width="56" height="155" fill="url(#brass)"/>
+      <ellipse cx="28" cy="353" rx="28" ry="9" fill="#7c3d12"/>
+      <circle cx="28" cy="353" r="9" fill="#374151"/>
+      <circle cx="28" cy="353" r="4.5" fill="#1f2937"/>
+    </g>
+    <!-- Cartridge 4 -->
+    <g transform="translate(560, 90)">
+      <ellipse cx="22" cy="10" rx="22" ry="7" fill="url(#copper)"/>
+      <rect x="0" y="8" width="44" height="170" fill="url(#copper)"/>
+      <rect x="0" y="178" width="44" height="135" fill="url(#brass)"/>
+      <ellipse cx="22" cy="313" rx="22" ry="7" fill="#7c3d12"/>
+      <circle cx="22" cy="313" r="7" fill="#374151"/>
+    </g>
+    <!-- Cartridge 5 (tilted) -->
+    <g transform="translate(650, 100) rotate(-8, 25, 200)">
+      <ellipse cx="25" cy="10" rx="25" ry="8" fill="url(#copper)"/>
+      <rect x="0" y="8" width="50" height="160" fill="url(#copper)"/>
+      <rect x="0" y="168" width="50" height="130" fill="url(#brass)"/>
+      <ellipse cx="25" cy="298" rx="25" ry="8" fill="#7c3d12"/>
+      <circle cx="25" cy="298" r="8" fill="#374151"/>
+    </g>
+    <!-- Cartridge 6 (tilted other way) -->
+    <g transform="translate(750, 85) rotate(6, 22, 200)">
+      <ellipse cx="22" cy="10" rx="22" ry="7" fill="url(#copper)"/>
+      <rect x="0" y="8" width="44" height="155" fill="url(#copper)"/>
+      <rect x="0" y="163" width="44" height="125" fill="url(#brass)"/>
+      <ellipse cx="22" cy="288" rx="22" ry="7" fill="#7c3d12"/>
+    </g>
+    <!-- Cartridge 7 -->
+    <g transform="translate(840, 95)">
+      <ellipse cx="25" cy="10" rx="25" ry="8" fill="url(#copper)"/>
+      <rect x="0" y="8" width="50" height="160" fill="url(#copper)"/>
+      <rect x="0" y="168" width="50" height="130" fill="url(#brass)"/>
+      <ellipse cx="25" cy="298" rx="25" ry="8" fill="#7c3d12"/>
+      <circle cx="25" cy="298" r="8" fill="#374151"/>
+    </g>
+  </g>
+  <rect x="0" y="580" width="1200" height="4" fill="url(#accent)"/>
+  <text x="600" y="545" font-family="Arial Black, sans-serif" font-size="18" font-weight="700" fill="#4b5563" text-anchor="middle" letter-spacing="6">DOWNRANGE · FIREARMS INTELLIGENCE</text>
+</svg>

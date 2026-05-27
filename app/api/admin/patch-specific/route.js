@@ -14,17 +14,17 @@ const sanity = createClient({
 const MANUAL_PATCHES = [
   {
     slug:     'iron-sights-for-handguns-are-they-on-the-way-out',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+    imageUrl: '/img/pistol.svg',
     reason:   'handguns article → pistol image',
   },
   {
     slug:     'most-viewed-bills-week-of-may-24-2026',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+    imageUrl: '/img/law.svg',
     reason:   'legislation/bills article → law image',
   },
   {
     slug:     'saf-files-lawsuit-challenging-newly-signed-maryland-glock-ban',
-    imageUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+    imageUrl: '/img/law.svg',
     reason:   'SAF lawsuit / Maryland Glock ban → law image',
   },
 ]

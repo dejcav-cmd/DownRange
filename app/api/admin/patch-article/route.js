@@ -11,11 +11,12 @@ const sanity = createClient({
 })
 
 // ── Curated Wikimedia images, verified accessible ───────────────────────────
+// Self-hosted SVGs served from Vercel CDN — zero external deps
 const IMAGES = {
-  LAW:    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  PISTOL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  RIFLE:  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  AMMO:   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
+  LAW:    '/img/law.svg',
+  PISTOL: '/img/pistol.svg',
+  RIFLE:  '/img/rifle.svg',
+  AMMO:   '/img/ammo.svg',
 }
 
 // Keyword → image mapping — checked in order, first match wins
@@ -56,7 +57,7 @@ function pickImage(title, category) {
 function needsFix(imageUrl, title, category) {
   if (!imageUrl) return true
 
-  const TRUSTED = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com']
+  const TRUSTED = ['/img/', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com']
   const isTrusted = TRUSTED.some(d => imageUrl.includes(d))
 
   // Not from trusted CDN = external RSS stock photo = replace it

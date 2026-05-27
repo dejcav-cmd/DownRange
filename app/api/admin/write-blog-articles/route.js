@@ -14,15 +14,15 @@ const sanity = createClient({
 
 // Curated images for each article topic — all verified Wikimedia URLs
 const BLOG_IMAGES = {
-  'home-defense-basics':          'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  'safe-storage-guide-beginners': 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  'ammo-guide-beginners':         'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
-  'shooting-range-first-visit':   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  'cleaning-maintaining-your-gun':'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  'understanding-gun-laws':       'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  'choosing-holster-beginners':   'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  'dry-fire-training-beginners':  'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  'what-is-nfa':                  'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+  'home-defense-basics':          '/img/rifle.svg',
+  'safe-storage-guide-beginners': '/img/pistol.svg',
+  'ammo-guide-beginners':         '/img/ammo.svg',
+  'shooting-range-first-visit':   '/img/pistol.svg',
+  'cleaning-maintaining-your-gun':'/img/pistol.svg',
+  'understanding-gun-laws':       '/img/law.svg',
+  'choosing-holster-beginners':   '/img/pistol.svg',
+  'dry-fire-training-beginners':  '/img/pistol.svg',
+  'what-is-nfa':                  '/img/law.svg',
 }
 
 const ARTICLES = [
@@ -119,7 +119,7 @@ export async function POST(req) {
         body:       ai.body || '',
         category:   article.category,
         readTime:   article.readTime,
-        imageUrl:   BLOG_IMAGES[article.slug] || 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+        imageUrl:   BLOG_IMAGES[article.slug] || '/img/pistol.svg',
         author:     'DJ Cavalcanti',
         seoTitle:   ai.seoTitle || ai.title || article.title,
         metaDesc:   ai.metaDesc || ai.excerpt || '',

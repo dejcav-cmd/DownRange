@@ -2,15 +2,15 @@ import axios from 'axios'
 
 // Wikimedia verified firearm images — assigned when RSS has no image
 const FIREARM_IMAGES = {
-  law:        'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  pistol:     'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  rifle:      'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  shotgun:    'https://upload.wikimedia.org/wikipedia/commons/thumb/2/24/Mossberg_500.jpg/1280px-Mossberg_500.jpg',
-  suppressor: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Silencer.jpg/1280px-Silencer.jpg',
-  ammo:       'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
-  news:       'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  industry:   'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  breaking:   'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+  law:        '/img/law.svg',
+  pistol:     '/img/pistol.svg',
+  rifle:      '/img/rifle.svg',
+  shotgun:    '/img/shotgun.svg',
+  suppressor: '/img/suppressor.svg',
+  ammo:       '/img/ammo.svg',
+  news:       '/img/pistol.svg',
+  industry:   '/img/rifle.svg',
+  breaking:   '/img/law.svg',
 }
 
 // Named aliases used by pickImage() below
