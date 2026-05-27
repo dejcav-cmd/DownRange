@@ -323,7 +323,7 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
       {health && health.status !== 'ok' && (
         <div style={{marginBottom:20,padding:'12px 18px',background:'rgba(239,68,68,.08)',border:'1px solid rgba(239,68,68,.3)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
           <span style={{color:'#ef4444',fontWeight:700,marginRight:10}}>⚠ SYSTEM DEGRADED</span>
-          {(health.issues||[]).map((i,x)=><span key={x} style={{color:'#fca5a5',marginRight:8}}>{i}</span>)}
+          {(health.issues||[]).map((i,x)=><span key={x} style={{color:'#fca5a5',marginRight:8}}>{typeof i==='object'?i.msg||i.severity||JSON.stringify(i):i}</span>)}
         </div>
       )}
 
