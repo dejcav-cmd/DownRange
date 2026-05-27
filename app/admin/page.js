@@ -7,8 +7,8 @@ const OutreachPortal = dynamic(() => import('../../components/admin/OutreachPort
 const IntelligenceDashboard = dynamic(() => import('../../components/admin/IntelligenceDashboard'), { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Intelligence...</div> })
 const AIProviderSettings    = dynamic(() => import('../../components/admin/AIProviderSettings'), { ssr: false, loading: () => null })
 const VideoManager          = dynamic(() => import('../../components/admin/VideoManager'),          { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
-const NewsletterManager     = dynamic(() => import('../../components/admin/NewsletterManager'),
-const NewsArticleManager    = dynamic(() => import('../../components/admin/NewsArticleManager'),    { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })     { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
+const NewsletterManager     = dynamic(() => import('../../components/admin/NewsletterManager'),     { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
+const NewsArticleManager    = dynamic(() => import('../../components/admin/NewsArticleManager'),    { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const EnvChecker            = dynamic(() => import('../../components/admin/EnvChecker'),            { ssr: false, loading: () => <div style={{padding:40,fontFamily:'IBM Plex Mono,monospace',fontSize:12,color:'#64748b'}}>Loading...</div> })
 const CronDashboard         = dynamic(() => import('../../components/admin/CronDashboard'),         { ssr: false, loading: () => <div style={{padding:40, fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b'}}>Loading Cron Dashboard...</div> })
 
