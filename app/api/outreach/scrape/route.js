@@ -11,7 +11,6 @@ export const maxDuration = 300
  */
 
 import { createClient } from '@sanity/client'
-import axios from 'axios'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -40,11 +39,11 @@ async function scrapeFFL({ state, licenseType = '01', limit = 200 }) {
     let csvText = null
     for (const url of urls) {
       try {
-        const { data } = await axios.get(url, {
+        const _r = await fetch(url, {
           timeout: 15000,
           headers: { 'User-Agent': 'Mozilla/5.0' },
           responseType: 'text',
-        })
+        }); const data = await _r.json()
         if (data && data.length > 100) { csvText = data; break }
       } catch {}
     }
@@ -122,19 +121,17 @@ async function scrapeNRA({ state, discipline, limit = 200 }) {
   try {
     // NRA instructor finder public API
     const url = 'https://apps.nra.org/apps/instructors/api/search'
-    const { data } = await axios.post(url, {
-      State: state || '',
-      Discipline: discipline || '',
-      Distance: 100,
-      ZipCode: '',
-    }, {
-      timeout: 10000,
+    const _nraRes = await fetch(url, {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
         'User-Agent': 'Mozilla/5.0',
         'Referer': 'https://apps.nra.org/apps/instructors/',
-      }
+      },
+      body: JSON.stringify({ State: state || '', Discipline: discipline || '', Distance: 100, ZipCode: '' }),
+      signal: AbortSignal.timeout(10000),
     })
+    const data = await _nraRes.json()
 
     const instructors = (data?.Instructors || data?.results || data || []).slice(0, limit)
     const contacts = instructors.map(inst => ({
@@ -192,7 +189,7 @@ async function enrichYouTube({ channels }) {
       if (!channelId && channel.handle) {
         const searchUrl = `https://www.googleapis.com/youtube/v3/search?part=snippet&type=channel&q=${encodeURIComponent(channel.handle)}&key=${apiKey}`
         if (apiKey) {
-          const { data } = await axios.get(searchUrl, { timeout: 5000 })
+          const _r = await fetch(searchUrl); const data = await _r.json()
           channelId = data.items?.[0]?.snippet?.channelId
         }
       }
@@ -202,7 +199,7 @@ async function enrichYouTube({ channels }) {
         : null
 
       if (url) {
-        const { data } = await axios.get(url, { timeout: 5000 })
+        const _r = await fetch(url); const data = await _r.json()
         const ch = data.items?.[0]
         if (ch) {
           contacts.push({

@@ -17,7 +17,6 @@ export const maxDuration = 60
  */
 
 import { createClient } from '@sanity/client'
-import axios from 'axios'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -92,20 +91,27 @@ ${inputContent}
 CRITICAL: Return ONLY a valid JSON object with fields: summary, body, category, urgencyScore (1-10), tags (array), relatedStates (array), isBreaking (bool). Start with { end with }. No markdown fences. Escape all quotes in the HTML body string.
 `
 
-  const res = await axios.post('https://api.anthropic.com/v1/messages', {
-    model:      'claude-sonnet-4-20250514',
-    max_tokens: 4000,
-    messages:   [{ role: 'user', content: prompt }],
-  }, {
+  const apiRes = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
     headers: {
       'x-api-key':         process.env.ANTHROPIC_API_KEY,
       'anthropic-version': '2023-06-01',
       'content-type':      'application/json',
     },
-    timeout: 90000,
+    body: JSON.stringify({
+      model:      'claude-sonnet-4-20250514',
+      max_tokens: 4000,
+      messages:   [{ role: 'user', content: prompt }],
+    }),
   })
 
-  const raw   = res.data.content?.[0]?.text || ''
+  if (!apiRes.ok) {
+    const errText = await apiRes.text()
+    throw new Error(`Anthropic API error ${apiRes.status}: ${errText.slice(0, 200)}`)
+  }
+
+  const apiData = await apiRes.json()
+  const raw   = apiData.content?.[0]?.text || ''
   const clean = raw.replace(/^```json\s*/i, '').replace(/^```\s*/i, '').replace(/\s*```$/i, '').trim()
 
   let parsed
