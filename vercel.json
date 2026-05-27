@@ -67,6 +67,10 @@
     {
       "path": "/api/admin/backfill-articles?batch=5",
       "schedule": "0 12-23,0-3 * * *"
+    },
+    {
+      "path": "/api/agent?feed=goa",
+      "schedule": "0 */2 * * *"
     }
   ],
   "headers": [

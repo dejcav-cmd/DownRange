@@ -345,6 +345,8 @@ function RSSSourcesPanel() {
     { name:'TheGunBlog.ca',         url:'https://www.thegunblog.ca/feed/',             cat:'law',      active:true },
     { name:'NFA Canada',            url:'https://www.nfa.ca/feed/',                    cat:'law',      active:true },
     { name:'CSSA',                  url:'https://www.cdnshootingsports.org/feed/',     cat:'law',      active:true },
+    { name:'Gun Owners of America', url:'https://www.gunowners.org/feed/',             cat:'law',      active:true },
+    { name:'Gun Owners of America', url:'https://www.gunowners.org/feed/',             cat:'law',      active:true },
     { name:'American Rifleman',     url:'https://www.americanrifleman.org/feed/',      cat:'industry', active:true },
     { name:'Concealed Nation',      url:'https://concealednation.org/feed/',           cat:'news',     active:true },
     { name:'r/guns',                url:'https://www.reddit.com/r/guns/.rss',          cat:'community',active:true },
@@ -626,6 +628,7 @@ function FeedsPanel({ adminKey, setMsg }) {
     { key:'market',   label:'Market Feed',   icon:'📊', schedule:'Every 30 min', desc:'Ammo prices + market data → market analysis', color:'#f59e0b' },
     { key:'video',    label:'Video Feed',    icon:'▶',  schedule:'Every 4 hrs',  desc:'YouTube API → channel videos + thumbnails', color:'#ef4444' },
     { key:'state',    label:'State Feed',    icon:'🗺', schedule:'Daily 8am',    desc:'State legislation + profiles → 50-state database', color:'#a855f7' },
+    { key:'goa',      label:'GOA Press',     icon:'⚖', schedule:'Every 2 hrs',  desc:'Gun Owners of America press center — no-compromise 2A advocacy', color:'#ef4444' },
   ]
 
   async function run(key) {

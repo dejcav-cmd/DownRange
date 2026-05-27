@@ -86,7 +86,6 @@ const RSS_FEEDS = [
   // ── LEGAL & RIGHTS ────────────────────────────────────────────────────
   { name: 'NRA-ILA',                 url: 'https://www.nraila.org/rss/',                       cat: 'law'      },
   { name: 'SAF',                     url: 'https://www.saf.org/feed/',                          cat: 'law'      },
-  { name: 'GOA',                     url: 'https://gunowners.org/feed/',                        cat: 'law'      },
   { name: 'FPC',                     url: 'https://www.firearmspolicy.org/feed/',               cat: 'law'      },
   { name: 'Firearms Policy Coalition',url: 'https://fpclaw.org/feed/',                          cat: 'law'      },
   { name: 'CleanUpATF',              url: 'https://www.cleanupatf.org/feed/',                   cat: 'law'      },
@@ -98,6 +97,8 @@ const RSS_FEEDS = [
   { name: 'Congress.gov 2A',         url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law'      },
   // ── GUN RIGHTS ───────────────────────────────────────────────────────────
   { name: 'TheGunFeed',     url: 'https://thegunfeed.com/feed/',                   cat: 'law'      },
+  { name: 'GOA',            url: 'https://www.gunowners.org/feed/',                 cat: 'law'      },
+  { name: 'GOA Press',      url: 'https://www.gunowners.org/category/press/feed/', cat: 'law'      },
   // ── CANADA ────────────────────────────────────────────────────────────────
   { name: 'TheGunBlog.ca',  url: 'https://www.thegunblog.ca/feed/',           cat: 'law'      },
   { name: 'NFA Canada',     url: 'https://www.nfa.ca/feed/',                  cat: 'law'      },
