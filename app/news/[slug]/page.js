@@ -1,4 +1,4 @@
-import { notFound }        from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
@@ -126,6 +126,15 @@ export default async function ArticlePage({ params }) {
   }
 
   if (!article) notFound()
+
+  // AmmoLand articles belong in /deals — redirect permanently
+  if (article.source && article.source.toLowerCase().includes('ammoland')) {
+    redirect('/deals')
+  }
+  // Also redirect any article explicitly categorized as deals
+  if (article.category === 'deals') {
+    redirect('/deals')
+  }
 
   const cat      = CAT_STYLE[article.category] || CAT_STYLE.news
   // heroImage is from Sanity CDN (manual uploads) — always trust

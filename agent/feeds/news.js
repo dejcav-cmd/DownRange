@@ -104,7 +104,7 @@ const RSS_FEEDS = [
   { name: 'NFA Canada',     url: 'https://www.nfa.ca/feed/',                  cat: 'law'      },
   { name: 'CSSA',           url: 'https://www.cdnshootingsports.org/feed/',   cat: 'law'      },
   // ── AMMO & MARKET ─────────────────────────────────────────────────────
-  { name: 'AmmoLand',                url: 'https://www.ammoland.com/feed/',                     cat: 'industry' },
+  // AmmoLand removed from news feed — all AmmoLand content routes to /deals only
   { name: 'GunsAmerica Digest',      url: 'https://www.gunsamerica.com/blog/feed/',             cat: 'industry' },
   // ── REDDIT ────────────────────────────────────────────────────────────
   { name: 'r/guns',                  url: 'https://www.reddit.com/r/guns/hot.json?limit=10',    cat: 'news',    isReddit: true },
@@ -265,7 +265,8 @@ async function processNewsItem(item) {
   }
 
   // Derive category from feed cat or AI result
-  const category = item.feedCat === 'deals'
+  // AmmoLand is always deals — never news
+  const category = item.feedCat === 'deals' || item.source === 'AmmoLand'
     ? 'deals'
     : (ai?.category || item.feedCat || 'news')
 

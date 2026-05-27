@@ -245,9 +245,28 @@ const STYLES = `
 // ── Inline: Overview Dashboard ───────────────────────────────────────────────
 function OverviewDashboard({ adminKey, setPanel, setSection }) {
   const [health, setHealth] = useState(null)
+  const [migrateResult, setMigrateResult] = useState(null)
+  const [migrating, setMigrating] = useState(false)
+
   useEffect(() => {
     fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
   }, [])
+
+  async function migrateAmmoland() {
+    setMigrating(true); setMigrateResult(null)
+    try {
+      const preview = await fetch('/api/admin/migrate-ammoland', { headers:{'x-admin-key':adminKey} })
+      const pd = await preview.json()
+      if (pd.wrongCategory === 0) {
+        setMigrateResult({ ok:true, msg:'Nothing to migrate — all AmmoLand articles already in deals ✓' })
+        setMigrating(false); return
+      }
+      const r = await fetch('/api/admin/migrate-ammoland', { method:'POST', headers:{'x-admin-key':adminKey} })
+      const d = await r.json()
+      setMigrateResult({ ok:d.ok, msg: d.ok ? `✓ Migrated ${d.migrated} AmmoLand articles → deals category` : '✕ ' + (d.errors?.[0] || 'Error') })
+    } catch(e) { setMigrateResult({ ok:false, msg:'Error: '+e.message }) }
+    setMigrating(false)
+  }
 
   const quickLinks = [
     { label:'View Site',    url:'https://downrangeco.com', icon:'🌐' },
@@ -270,6 +289,18 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
     <div>
       <div className="panel-title">DownRange Command Center</div>
       <div className="panel-sub">Enterprise firearms media management platform</div>
+
+      {/* AmmoLand migration */}
+      <div style={{marginBottom:16,padding:'12px 18px',background:'rgba(200,146,42,.05)',border:'1px solid rgba(200,146,42,.2)',display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
+        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',fontWeight:700}}>AMMOLAND FIX</span>
+        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',flex:1}}>Migrate AmmoLand articles from news → deals category. Run once to fix existing articles.</span>
+        <button className="btn-primary" style={{fontSize:10,padding:'5px 14px'}} onClick={migrateAmmoland} disabled={migrating}>
+          {migrating ? '⏳ Migrating...' : '▶ Run Migration'}
+        </button>
+        {migrateResult && (
+          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:migrateResult.ok?'#22c55e':'#ef4444'}}>{migrateResult.msg}</span>
+        )}
+      </div>
 
       {/* Health banner */}
       {health && health.status !== 'ok' && (
