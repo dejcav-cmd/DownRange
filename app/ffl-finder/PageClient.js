@@ -44,7 +44,22 @@ export default function FFLFinder() {
             </button>
           </form>
 
-          {error && <div style={{ background:'#1A0000', border:'1px solid #7F1D1D', padding:'16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#EF4444', marginBottom:'20px' }}>✗ {error}</div>}
+          {error && (
+            <div style={{ background:'#1A0000', border:'1px solid #7F1D1D', padding:'16px 20px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#EF4444', marginBottom:'20px', lineHeight:1.7 }}>
+              <div style={{ fontWeight:700, marginBottom:6 }}>✗ Search Error</div>
+              <div>{error}</div>
+              {error.includes('GOOGLE_PLACES_API_KEY') && (
+                <div style={{ marginTop:8, color:'#9CA3AF' }}>
+                  Add GOOGLE_PLACES_API_KEY to Vercel → Project → Settings → Environment Variables, then redeploy.
+                </div>
+              )}
+              {error.includes('Places API') && (
+                <div style={{ marginTop:8, color:'#9CA3AF' }}>
+                  Enable "Places API" in Google Cloud Console → APIs & Services → Enabled APIs.
+                </div>
+              )}
+            </div>
+          )}
 
           {results && results.length === 0 && (
             <div style={{ textAlign:'center', padding:'60px', color:'#4B5563', fontFamily:"'IBM Plex Mono',monospace" }}>No FFLs found near {zip}. Try a nearby city.</div>
@@ -73,6 +88,9 @@ export default function FFLFinder() {
                           <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A', background:'#1A0E00', padding:'2px 8px', border:'1px solid #C8922A30' }}>{TYPE_LABELS[d.type] || `Type ${d.type}`}</span>
                           <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>License: {d.license}</span>
                           {d.phone && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{d.phone}</span>}
+                          {d.rating && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#C8922A' }}>★ {d.rating} ({d.reviews})</span>}
+                          {d.open === true && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#22C55E' }}>● Open Now</span>}
+                          {d.open === false && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#EF4444' }}>● Closed</span>}
                         </div>
                       </div>
                       <a href={`https://www.google.com/maps/search/${encodeURIComponent(d.name+' '+d.address+' '+d.city)}`} target="_blank" rel="noreferrer"

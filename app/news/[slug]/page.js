@@ -3,20 +3,8 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
-import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
+import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
-
-// Only trust image URLs from known-reliable CDNs
-// RSS source images (ammoland, thetruthaboutguns, etc) often 404 after a few days
-function getReliableImage(article) {
-  const raw = resolveImage(article)
-  if (!raw) return null
-  // Trust: our own Wikimedia fallbacks, Sanity CDN, YouTube thumbnails
-  const trusted = ['cdn.sanity.io', 'upload.wikimedia.org', 'img.youtube.com', 'i.ytimg.com', 'images.unsplash.com']
-  if (trusted.some(d => raw.includes(d))) return raw
-  // Don't trust external RSS source images — they go 404 frequently
-  return null
-}
 
 // Server-side firearm image fallback — same logic as NewsCard client-side
 const ARTICLE_FALLBACKS = {
@@ -134,7 +122,10 @@ export default async function ArticlePage({ params }) {
   if (!article) notFound()
 
   const cat      = CAT_STYLE[article.category] || CAT_STYLE.news
-  const imageUrl = getReliableImage(article) || getArticleFallback(article)
+  // heroImage is from Sanity CDN (manual uploads) — always trust
+  // imageUrl is always our curated Wikimedia image (set by patch-article)
+  // If both null, use keyword-based fallback
+  const imageUrl = article?.heroImage?.asset?.url || article?.imageUrl || getArticleFallback(article)
   const imageAlt = article.imageAlt || article.heroImage?.alt || article.title
 
   return (
