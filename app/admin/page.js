@@ -2059,6 +2059,14 @@ export default function AdminPage() {
                 }} className="dr-btn-primary" style={{flexShrink:0,padding:'10px 20px'}}>
                   ✦ Write All Articles Now
                 </button>
+                <button onClick={async()=>{
+                  setMsg('⏳ Writing 5 Canada firearms articles... ~2 minutes')
+                  const r = await fetch('/api/admin/write-canada-articles',{method:'POST',headers:{'x-admin-key':adminKey}})
+                  const d = await r.json().catch(()=>({error:'Empty response'}))
+                  setMsg(d.ok ? '✅ '+d.message : '❌ '+(d.error||'Error'))
+                }} className="dr-btn-outline" style={{flexShrink:0,padding:'10px 20px',borderColor:'#ef4444',color:'#ef4444'}}>
+                  🇨🇦 Write Canada Articles
+                </button>
               </div>
               <BlogManager secret={secret} setMsg={setMsg} />
             </div>

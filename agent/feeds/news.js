@@ -92,6 +92,8 @@ const RSS_FEEDS = [
   // ── GOVERNMENT ────────────────────────────────────────────────────────
   { name: 'ATF News',                url: 'https://www.atf.gov/rss/news_whats-new.xml',         cat: 'law'      },
   { name: 'Congress.gov 2A',         url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law'      },
+  // ── GUN RIGHTS ───────────────────────────────────────────────────────────
+  { name: 'TheGunFeed',     url: 'https://thegunfeed.com/feed/',                   cat: 'law'      },
   // ── CANADA ────────────────────────────────────────────────────────────────
   { name: 'TheGunBlog.ca',  url: 'https://www.thegunblog.ca/feed/',           cat: 'law'      },
   { name: 'NFA Canada',     url: 'https://www.nfa.ca/feed/',                  cat: 'law'      },
@@ -150,7 +152,7 @@ async function fetchNewsAPI() {
     const res = await axios.get('https://newsapi.org/v2/everything', {
       timeout: 10000,
       params: {
-        q: '(firearms OR "Second Amendment" OR "gun control" OR ATF OR "gun rights" OR "concealed carry" OR Glock OR "pistol brace" OR NRA OR "gun law" OR suppressor) AND -"video game"',
+        q: '(firearms OR "Second Amendment" OR "gun control" OR ATF OR "gun rights" OR "concealed carry" OR Glock OR "pistol brace" OR NRA OR "gun law" OR suppressor OR "Gun Rights" OR gunrights.org) AND -"video game"',
         language: 'en',
         sortBy: 'publishedAt', pageSize: 30, language: 'en',
         apiKey: process.env.NEWSAPI_KEY
