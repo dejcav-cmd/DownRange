@@ -3,7 +3,7 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
-import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 
 // Server-side firearm image fallback — same logic as NewsCard client-side
@@ -53,7 +53,7 @@ export const revalidate = 120
 export async function generateMetadata({ params }) {
   const article = await getArticleBySlug(params.slug).catch(() => null)
   if (!article) return { title: 'Article Not Found | DownRange' }
-  const img = resolveImage(article)
+  const img = article?.heroImage?.asset?.url || article?.imageUrl || null
   const url = `https://downrangeco.com/news/${params.slug}`
   return {
     title:       `${article.title} | DownRange`,
@@ -381,7 +381,7 @@ export default async function ArticlePage({ params }) {
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
                 {related.filter(a => a.slug?.current !== params.slug).slice(0, 5).map(a => {
                   const cs   = CAT_STYLE[a.category] || CAT_STYLE.news
-                  const aImg = resolveImage(a)
+                  const aImg = a?.heroImage?.asset?.url || a?.imageUrl || null
                   return (
                     <a key={a._id} href={`/news/${a.slug?.current}`} style={{ textDecoration: 'none', display: 'flex', gap: 10, alignItems: 'flex-start' }}>
                       {/* Thumbnail */}
