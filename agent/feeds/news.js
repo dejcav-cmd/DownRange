@@ -92,6 +92,10 @@ const RSS_FEEDS = [
   // ── GOVERNMENT ────────────────────────────────────────────────────────
   { name: 'ATF News',                url: 'https://www.atf.gov/rss/news_whats-new.xml',         cat: 'law'      },
   { name: 'Congress.gov 2A',         url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law'      },
+  // ── CANADA ────────────────────────────────────────────────────────────────
+  { name: 'TheGunBlog.ca',  url: 'https://www.thegunblog.ca/feed/',           cat: 'law'      },
+  { name: 'NFA Canada',     url: 'https://www.nfa.ca/feed/',                  cat: 'law'      },
+  { name: 'CSSA',           url: 'https://www.cdnshootingsports.org/feed/',   cat: 'law'      },
   // ── AMMO & MARKET ─────────────────────────────────────────────────────
   { name: 'AmmoLand',                url: 'https://www.ammoland.com/feed/',                     cat: 'industry' },
   { name: 'GunsAmerica Digest',      url: 'https://www.gunsamerica.com/blog/feed/',             cat: 'industry' },
