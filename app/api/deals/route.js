@@ -57,7 +57,8 @@ export async function GET(request) {
   // ── Source 1: r/gundeals (hot + new for freshness) ────────────────────────
   const redditUrls = [
     'https://old.reddit.com/r/gundeals/hot.json?limit=50&raw_json=1',
-    'https://old.reddit.com/r/gundeals/new.json?limit=20&raw_json=1',
+    'https://old.reddit.com/r/gundeals/new.json?limit=25&raw_json=1',
+    'https://old.reddit.com/r/ammo/hot.json?limit=20&raw_json=1',
   ]
   for (const url of redditUrls) {
     try {
@@ -101,10 +102,12 @@ export async function GET(request) {
     if (sources.reddit > 0) break // if hot worked, skip new
   }
 
-  // ── Source 2: gun.deals RSS ───────────────────────────────────────────────
+  // ── Source 2: gun.deals via RSS proxy ────────────────────────────────────
+  // gun.deals uses Cloudflare which blocks direct server fetches.
+  // Use rss2json.com as a proxy — free tier, no auth needed, bypasses CF.
   const gunDealsUrls = [
-    'https://gun.deals/feed/snap',
-    'https://gun.deals/feed',
+    'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://gun.deals/rss.xml') + '&count=40',
+    'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://gun.deals/blog/feed') + '&count=40',
   ]
   for (const gdUrl of gunDealsUrls) {
     try {
@@ -113,7 +116,33 @@ export async function GET(request) {
         next: { revalidate: 0 },
       })
       if (!res.ok) continue
-      const xml = await res.text()
+      const json = await res.json()
+      // rss2json returns { status:'ok', items:[...] }
+      if (json.status === 'ok' && json.items?.length > 0) {
+        for (const item of json.items.slice(0, 30)) {
+          const title    = item.title || ''
+          const link     = item.link || item.guid || ''
+          const desc     = item.description || item.content || ''
+          const pubDate  = item.pubDate || ''
+          const imageUrl = item.enclosure?.link || item.thumbnail || null
+          const price    = extractPrice(title) || extractPrice(desc)
+          if (!title || !link) continue
+          let flair = 'Deals'
+          const tl = title.toLowerCase()
+          if (tl.includes('handgun')||tl.includes('pistol')||tl.includes('glock')||tl.includes('sig ')) flair='Handgun'
+          else if (tl.includes('rifle')||tl.includes('ar-15')||tl.includes('ar15')) flair='Rifle'
+          else if (tl.includes('shotgun')||tl.includes('mossberg')) flair='Shotgun'
+          else if (tl.includes('ammo')||tl.includes('9mm')||tl.includes('.223')||tl.includes('rounds')) flair='Ammo'
+          else if (tl.includes('suppressor')||tl.includes('silencer')||tl.includes('nfa')) flair='NFA'
+          else if (tl.includes('scope')||tl.includes('optic')||tl.includes('red dot')) flair='Optic'
+          else if (tl.includes('holster')||tl.includes('magazine')||tl.includes('pmag')) flair='Accessories'
+          deals.push({ id:'gd-'+Buffer.from(link).toString('base64').slice(0,10), title, url:link, permalink:link, score:null, comments:null, created:pubDate?new Date(pubDate).getTime():Date.now(), flair, flairMeta:FLAIR_META[flair]||FLAIR_META.Deals, source:'gun.deals', domain:'gun.deals', imageUrl, price })
+          sources.gunDeals++
+        }
+        if (sources.gunDeals > 0) break
+      }
+      // Fallback: try parsing as XML if JSON failed
+      const xml = ''
       const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
 
       for (const item of items.slice(0, 30)) {
