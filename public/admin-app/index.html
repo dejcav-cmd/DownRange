@@ -1,0 +1,1168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0A0A0A">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="DR Admin">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-192.png">
+<title>DownRange Admin</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0A0A0A;
+    --bg-card: #111111;
+    --bg-el: #1A1A1A;
+    --border: #222222;
+    --border-s: #333333;
+    --gold: #C8922A;
+    --gold-dim: #8a6018;
+    --text: #F0F0F0;
+    --muted: #888888;
+    --dim: #444444;
+    --ok: #22C55E;
+    --err: #EF4444;
+    --warn: #F59E0B;
+    --info: #3B82F6;
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bot: env(safe-area-inset-bottom, 0px);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  html, body {
+    height: 100%;
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Barlow Condensed', sans-serif;
+    overscroll-behavior: none;
+  }
+
+  /* ── APP SHELL ── */
+  #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+
+  /* ── TOPBAR ── */
+  #topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: calc(var(--safe-top) + 10px) 16px 10px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  #topbar .logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 4px; }
+  #topbar .screen-title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+  #topbar .menu-btn { background: none; border: none; color: var(--gold); font-size: 20px; cursor: pointer; padding: 4px 8px; }
+
+  /* ── CONTENT ── */
+  #content {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 0;
+  }
+
+  /* ── BOTTOM NAV ── */
+  #bottom-nav {
+    display: flex;
+    background: var(--bg-card);
+    border-top: 1px solid var(--border);
+    padding-bottom: var(--safe-bot);
+    flex-shrink: 0;
+    z-index: 100;
+  }
+  .nav-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 4px;
+    cursor: pointer;
+    border: none;
+    background: none;
+    gap: 3px;
+    transition: opacity 0.15s;
+  }
+  .nav-item .nav-icon { font-size: 18px; }
+  .nav-item .nav-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+  .nav-item.active .nav-label { color: var(--gold); }
+  .nav-item.active .nav-icon { filter: drop-shadow(0 0 4px var(--gold)); }
+
+  /* ── SLIDE DRAWER ── */
+  #drawer-overlay {
+    display: none;
+    position: fixed; inset: 0;
+    background: rgba(0,0,0,0.7);
+    z-index: 200;
+  }
+  #drawer-overlay.open { display: block; }
+  #drawer {
+    position: fixed;
+    top: 0; left: -280px; bottom: 0;
+    width: 280px;
+    background: var(--bg-card);
+    border-right: 1px solid var(--border);
+    z-index: 201;
+    transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
+    overflow-y: auto;
+    padding-top: var(--safe-top);
+  }
+  #drawer.open { left: 0; }
+  .drawer-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
+  .drawer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 5px; }
+  .drawer-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 3px; margin-top: 2px; }
+  .drawer-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
+  .drawer-section-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: 2px; padding: 4px 20px 8px; text-transform: uppercase; }
+  .drawer-item {
+    display: flex; align-items: center; gap: 12px;
+    padding: 12px 20px;
+    cursor: pointer;
+    transition: background 0.15s;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--muted);
+    border: none; background: none; width: 100%; text-align: left;
+  }
+  .drawer-item:active, .drawer-item.active { background: var(--bg-el); color: var(--text); }
+  .drawer-item.active { border-left: 2px solid var(--gold); color: var(--gold); }
+  .drawer-item .di-icon { font-size: 16px; width: 20px; text-align: center; }
+
+  /* ── SCREENS ── */
+  .screen { display: none; padding: 16px; animation: fadeIn 0.2s ease; }
+  .screen.active { display: block; }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+  /* ── AUTH SCREEN ── */
+  #screen-auth {
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    min-height: calc(100vh - 120px);
+    padding: 32px 24px;
+  }
+  .auth-logo { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--gold); letter-spacing: 10px; }
+  .auth-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 4px; margin-top: 4px; }
+  .auth-divider { width: 100%; max-width: 360px; height: 1px; background: var(--border); margin: 32px 0; }
+  .auth-box { width: 100%; max-width: 360px; }
+
+  /* ── CARDS ── */
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 14px;
+    margin-bottom: 8px;
+  }
+  .card-tight { padding: 10px 14px; }
+
+  /* ── SECTION TITLE ── */
+  .sec-title {
+    display: flex; align-items: center; gap: 8px;
+    margin: 16px 0 8px;
+  }
+  .sec-title-bar { width: 3px; height: 13px; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
+  .sec-title-text { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+
+  /* ── BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+  .badge-gold { background: rgba(200,146,42,0.15); color: var(--gold); }
+  .badge-ok { background: rgba(34,197,94,0.15); color: var(--ok); }
+  .badge-err { background: rgba(239,68,68,0.15); color: var(--err); }
+  .badge-warn { background: rgba(245,158,11,0.15); color: var(--warn); }
+  .badge-info { background: rgba(59,130,246,0.15); color: var(--info); }
+  .badge-muted { background: var(--bg-el); color: var(--muted); }
+
+  /* ── BUTTONS ── */
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    padding: 10px 16px;
+    border-radius: 4px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border: none;
+    transition: opacity 0.15s, transform 0.1s;
+    min-height: 40px;
+    text-transform: uppercase;
+  }
+  .btn:active { opacity: 0.75; transform: scale(0.98); }
+  .btn:disabled { opacity: 0.4; pointer-events: none; }
+  .btn-primary { background: var(--gold); color: #000; }
+  .btn-secondary { background: var(--bg-el); color: var(--text); border: 1px solid var(--border-s); }
+  .btn-danger { background: var(--err); color: #fff; }
+  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
+  .btn-sm { padding: 6px 12px; font-size: 10px; min-height: 30px; }
+  .btn-full { width: 100%; }
+  .btn-row { display: flex; gap: 8px; }
+  .btn-row .btn { flex: 1; }
+
+  /* ── INPUTS ── */
+  .input {
+    width: 100%;
+    background: var(--bg-el);
+    border: 1px solid var(--border-s);
+    border-radius: 4px;
+    color: var(--text);
+    padding: 10px 12px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .input:focus { border-color: var(--gold); }
+  .input::placeholder { color: var(--dim); }
+  .label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+
+  /* ── ROWS ── */
+  .row { display: flex; align-items: center; }
+  .row-between { display: flex; align-items: center; justify-content: space-between; }
+  .gap-sm { gap: 8px; }
+  .gap-md { gap: 16px; }
+  .flex1 { flex: 1; }
+
+  /* ── STAT BOXES ── */
+  .stat-row { display: flex; gap: 8px; margin-bottom: 8px; }
+  .stat-box {
+    flex: 1;
+    background: var(--bg-el);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+  }
+  .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; }
+  .stat-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+
+  /* ── GRID NAV ── */
+  .grid-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
+  .grid-nav-item {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 12px 4px;
+    display: flex; flex-direction: column; align-items: center; gap: 6px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s;
+    border: none; background: var(--bg-card); border: 1px solid var(--border);
+  }
+  .grid-nav-item:active { background: var(--bg-el); border-color: var(--gold); }
+  .gni-icon { font-size: 22px; }
+  .gni-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: var(--muted); text-align: center; letter-spacing: 0.5px; text-transform: uppercase; }
+
+  /* ── TAB BAR ── */
+  .tab-bar {
+    display: flex;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .tab-item {
+    flex: 1; padding: 12px 4px;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
+    color: var(--muted);
+    cursor: pointer;
+    border: none; background: none;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
+  }
+  .tab-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+
+  /* ── SEARCH BAR ── */
+  .search-bar {
+    padding: 8px 16px;
+    background: var(--bg-card);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 41px; z-index: 9;
+  }
+
+  /* ── ARTICLE CARD ── */
+  .art-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.35; margin: 6px 0 4px; }
+  .art-meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--dim); }
+
+  /* ── CRON BARS ── */
+  .cron-bars { display: flex; gap: 2px; align-items: flex-end; margin-top: 6px; }
+  .cron-bar { width: 8px; border-radius: 2px; }
+
+  /* ── ALERT CARD ── */
+  .alert-card { background: rgba(239,68,68,0.08); border-color: var(--err); }
+  .alert-title { color: var(--err); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
+  .alert-item { color: var(--err); font-size: 12px; margin-top: 3px; }
+
+  /* ── LOADING ── */
+  .loading {
+    display: flex; align-items: center; justify-content: center;
+    padding: 48px;
+  }
+  .spinner {
+    width: 32px; height: 32px;
+    border: 3px solid var(--border-s);
+    border-top-color: var(--gold);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── EMPTY STATE ── */
+  .empty { text-align: center; padding: 48px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--dim); }
+
+  /* ── MISC ── */
+  .text-gold { color: var(--gold); }
+  .text-muted { color: var(--muted); }
+  .text-err { color: var(--err); }
+  .text-ok { color: var(--ok); }
+  .text-mono { font-family: 'IBM Plex Mono', monospace; }
+  .text-sm { font-size: 12px; }
+  .text-xs { font-size: 10px; }
+  .mt-sm { margin-top: 8px; }
+  .mt-md { margin-top: 16px; }
+  .mb-sm { margin-bottom: 8px; }
+  .divider { height: 1px; background: var(--border); margin: 8px 0; }
+  .pb-safe { padding-bottom: calc(var(--safe-bot) + 80px); }
+
+  /* ── LINK ROW ── */
+  .link-row {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 12px 0;
+    cursor: pointer;
+    border-bottom: 1px solid var(--border);
+    text-decoration: none;
+  }
+  .link-row:last-child { border-bottom: none; }
+  .link-row-label { font-size: 14px; color: var(--text); }
+  .link-row-arrow { color: var(--gold); font-size: 16px; }
+
+  /* ── EXPAND ── */
+  .expand-hint { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1px; margin-top: 8px; text-transform: uppercase; }
+  .expanded-body { display: none; }
+  .expanded-body.open { display: block; }
+
+  /* ── PULL TO REFRESH INDICATOR ── */
+  #ptr { text-align: center; padding: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); display: none; }
+
+  /* ── TOAST ── */
+  #toast {
+    position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: var(--bg-el); border: 1px solid var(--border-s);
+    color: var(--text);
+    padding: 10px 20px; border-radius: 6px;
+    font-family: 'IBM Plex Mono', monospace; font-size: 12px;
+    opacity: 0; transition: all 0.25s; pointer-events: none;
+    white-space: nowrap; z-index: 999;
+    max-width: 90vw;
+  }
+  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+  #toast.toast-ok { border-color: var(--ok); color: var(--ok); }
+  #toast.toast-err { border-color: var(--err); color: var(--err); }
+</style>
+</head>
+<body>
+<div id="app">
+  <!-- TOPBAR -->
+  <div id="topbar">
+    <button class="menu-btn" onclick="toggleDrawer()">☰</button>
+    <span class="logo">DR</span>
+    <span class="screen-title" id="screen-title">DASHBOARD</span>
+  </div>
+
+  <!-- CONTENT -->
+  <div id="content">
+    <div id="ptr">↓ Release to refresh</div>
+
+    <!-- AUTH -->
+    <div id="screen-auth" style="display:none;">
+      <div class="auth-logo">DOWNRANGE</div>
+      <div class="auth-sub">ADMIN PORTAL</div>
+      <div class="auth-divider"></div>
+      <div class="auth-box">
+        <label class="label">Admin Key</label>
+        <div class="row gap-sm mb-sm" style="margin-bottom:10px;">
+          <input class="input flex1" type="password" id="auth-key-input" placeholder="Enter admin key..." autocomplete="off">
+          <button class="btn btn-ghost btn-sm" onclick="toggleAuthVis()" style="padding:10px;min-height:40px;">👁</button>
+        </div>
+        <button class="btn btn-primary btn-full" onclick="doAuth()">UNLOCK</button>
+        <div id="auth-err" style="color:var(--err);font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:8px;"></div>
+      </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="screen-dashboard" class="screen pb-safe">
+      <div style="text-align:center;padding:20px 0 12px;">
+        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);letter-spacing:8px;">DOWNRANGE</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:4px;margin-top:2px;">ADMIN PORTAL</div>
+      </div>
+      <div id="dash-alerts"></div>
+      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Quick Stats</div></div>
+      <div class="stat-row" id="dash-stats">
+        <div class="stat-box"><div class="stat-val text-gold" id="stat-pending">—</div><div class="stat-lbl">Pending</div></div>
+        <div class="stat-box"><div class="stat-val text-gold" id="stat-jobs">—</div><div class="stat-lbl">Cron Jobs</div></div>
+        <div class="stat-box"><div class="stat-val" id="stat-failed" style="color:var(--ok)">0</div><div class="stat-lbl">Failed</div></div>
+      </div>
+      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Sections</div></div>
+      <div class="grid-nav" id="dash-grid"></div>
+      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Cron Health</div></div>
+      <div id="dash-cron-list"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- ARTICLES -->
+    <div id="screen-articles" class="screen pb-safe">
+      <div class="btn-row mt-sm mb-sm">
+        <button class="btn btn-secondary" id="btn-backfill" onclick="runBackfill()">BACKFILL</button>
+        <button class="btn btn-secondary" id="btn-fix-img" onclick="runFixImages()">FIX IMAGES</button>
+      </div>
+      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text" id="articles-count">Articles</div></div>
+      <div id="articles-list"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- OUTREACH -->
+    <div id="screen-outreach" class="screen" style="padding:0;">
+      <div class="tab-bar">
+        <button class="tab-item active" onclick="setOutreachTab('queue',this)">QUEUE <span id="queue-count"></span></button>
+        <button class="tab-item" onclick="setOutreachTab('history',this)">HISTORY</button>
+        <button class="tab-item" onclick="setOutreachTab('contacts',this)">CONTACTS</button>
+      </div>
+      <div id="outreach-content" style="padding:16px;" class="pb-safe">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- CRON -->
+    <div id="screen-cron" class="screen pb-safe">
+      <div class="stat-row mt-sm">
+        <div class="stat-box"><div class="stat-val text-ok" id="cron-ok">—</div><div class="stat-lbl">OK</div></div>
+        <div class="stat-box"><div class="stat-val text-warn" id="cron-running">—</div><div class="stat-lbl">Running</div></div>
+        <div class="stat-box"><div class="stat-val text-err" id="cron-failed">—</div><div class="stat-lbl">Failed</div></div>
+      </div>
+      <div id="cron-list" class="mt-sm"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- INTELLIGENCE -->
+    <div id="screen-intelligence" class="screen pb-safe">
+      <button class="btn btn-primary btn-full mt-sm mb-sm" id="btn-gen-brief" onclick="generateBriefing()">GENERATE BRIEFING NOW</button>
+      <div id="intel-list"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- IMAGES -->
+    <div id="screen-images" class="screen pb-safe">
+      <div class="btn-row mt-sm mb-sm">
+        <button class="btn btn-secondary" id="btn-seed" onclick="seedImages()">SEED REPO</button>
+        <button class="btn btn-secondary" onclick="fetchOgImages()">FETCH OG:IMG</button>
+      </div>
+      <div id="images-count" class="text-mono text-xs text-muted mb-sm"></div>
+      <div id="images-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
+    </div>
+
+    <!-- CONTACTS -->
+    <div id="screen-contacts" class="screen" style="padding:0;">
+      <div class="tab-bar">
+        <button class="tab-item active" onclick="setContactTab('all',this)">ALL</button>
+        <button class="tab-item" onclick="setContactTab('manufacturer',this)">MFG</button>
+        <button class="tab-item" onclick="setContactTab('dealer',this)">DEALERS</button>
+        <button class="tab-item" onclick="setContactTab('holster',this)">HOLSTERS</button>
+      </div>
+      <div class="search-bar">
+        <input class="input" type="search" id="contact-search" placeholder="Search contacts..." oninput="filterContacts()">
+      </div>
+      <div id="contacts-list" style="padding:16px;" class="pb-safe">
+        <div class="loading"><div class="spinner"></div></div>
+      </div>
+    </div>
+
+    <!-- RELEASES -->
+    <div id="screen-releases" class="screen pb-safe">
+      <button class="btn btn-secondary btn-full mt-sm mb-sm" id="btn-scrape" onclick="scrapeNow()">SCRAPE PRN NOW</button>
+      <div id="releases-list"><div class="loading"><div class="spinner"></div></div></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div id="screen-settings" class="screen pb-safe">
+      <div class="sec-title mt-sm"><div class="sec-title-bar"></div><div class="sec-title-text">Admin Key</div></div>
+      <div class="card">
+        <label class="label">Admin Key</label>
+        <div class="row gap-sm" style="margin-bottom:8px;">
+          <input class="input flex1" type="password" id="settings-key" placeholder="Enter admin key..." autocomplete="off">
+          <button class="btn btn-ghost btn-sm" onclick="toggleSettingsVis()" style="padding:10px;min-height:40px;">👁</button>
+        </div>
+        <div id="key-saved-hint" style="color:var(--ok);font-family:'IBM Plex Mono',monospace;font-size:10px;margin-bottom:8px;display:none;">✓ KEY ACTIVE</div>
+        <div class="btn-row">
+          <button class="btn btn-primary" onclick="saveKey()">SAVE KEY</button>
+          <button class="btn btn-danger" onclick="clearKey()">CLEAR</button>
+        </div>
+      </div>
+
+      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Quick Links</div></div>
+      <div class="card">
+        <a class="link-row" href="https://downrangeco.com" target="_blank"><span class="link-row-label">DownRange Website</span><span class="link-row-arrow">→</span></a>
+        <a class="link-row" href="https://downrangeco.com/admin" target="_blank"><span class="link-row-label">Admin Panel (Web)</span><span class="link-row-arrow">→</span></a>
+        <a class="link-row" href="https://vercel.com/dashboard" target="_blank"><span class="link-row-label">Vercel Dashboard</span><span class="link-row-arrow">→</span></a>
+        <a class="link-row" href="https://downrangeco.sanity.studio" target="_blank"><span class="link-row-label">Sanity Studio</span><span class="link-row-arrow">→</span></a>
+        <a class="link-row" href="https://github.com/dejcav-cmd/DownRange" target="_blank"><span class="link-row-label">GitHub Repo</span><span class="link-row-arrow">→</span></a>
+      </div>
+
+      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">App Info</div></div>
+      <div class="card">
+        <div class="row-between" style="margin-bottom:8px;"><span class="text-mono text-sm text-muted">Version</span><span class="text-mono text-sm">1.0.0</span></div>
+        <div class="row-between" style="margin-bottom:8px;"><span class="text-mono text-sm text-muted">Base URL</span><span class="text-mono text-sm">downrangeco.com</span></div>
+        <div class="row-between"><span class="text-mono text-sm text-muted">Type</span><span class="text-mono text-sm">PWA</span></div>
+      </div>
+    </div>
+
+  </div><!-- /content -->
+
+  <!-- BOTTOM NAV -->
+  <nav id="bottom-nav">
+    <button class="nav-item active" onclick="nav('dashboard',this)"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
+    <button class="nav-item" onclick="nav('articles',this)"><span class="nav-icon">📰</span><span class="nav-label">Articles</span></button>
+    <button class="nav-item" onclick="nav('outreach',this)"><span class="nav-icon">📤</span><span class="nav-label">Outreach</span></button>
+    <button class="nav-item" onclick="nav('cron',this)"><span class="nav-icon">⚙️</span><span class="nav-label">Cron</span></button>
+    <button class="nav-item" onclick="nav('settings',this)"><span class="nav-icon">🔑</span><span class="nav-label">Settings</span></button>
+  </nav>
+</div>
+
+<!-- DRAWER -->
+<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<div id="drawer">
+  <div class="drawer-header">
+    <div class="drawer-logo">DOWNRANGE</div>
+    <div class="drawer-sub">ADMIN PORTAL</div>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-label">Content</div>
+    <button class="drawer-item" onclick="navDrawer('dashboard')"><span class="di-icon">🏠</span> Dashboard</button>
+    <button class="drawer-item" onclick="navDrawer('articles')"><span class="di-icon">📰</span> Articles</button>
+    <button class="drawer-item" onclick="navDrawer('releases')"><span class="di-icon">📣</span> Press Releases</button>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-label">Outreach</div>
+    <button class="drawer-item" onclick="navDrawer('outreach')"><span class="di-icon">📤</span> Outreach Queue</button>
+    <button class="drawer-item" onclick="navDrawer('contacts')"><span class="di-icon">👤</span> Contacts</button>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-label">Intelligence</div>
+    <button class="drawer-item" onclick="navDrawer('intelligence')"><span class="di-icon">🔍</span> Briefings</button>
+  </div>
+  <div class="drawer-section">
+    <div class="drawer-section-label">System</div>
+    <button class="drawer-item" onclick="navDrawer('cron')"><span class="di-icon">⚙️</span> Cron Jobs</button>
+    <button class="drawer-item" onclick="navDrawer('images')"><span class="di-icon">🖼️</span> Image Repo</button>
+  </div>
+  <div class="drawer-section">
+    <button class="drawer-item" onclick="navDrawer('settings')"><span class="di-icon">🔑</span> Settings</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<script>
+// ── CONFIG ──────────────────────────────────────────────────────────────────
+const BASE = 'https://downrangeco.com';
+let adminKey = localStorage.getItem('dr_admin_key') || '';
+let currentScreen = 'dashboard';
+let allContacts = [];
+let contactTypeFilter = 'all';
+let outreachTab = 'queue';
+let outreachData = { queue: [], history: [], contacts: [] };
+
+// ── INIT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  if (!adminKey) {
+    showAuth();
+  } else {
+    showApp();
+    loadDashboard();
+  }
+  buildDashGrid();
+  loadSettings();
+});
+
+// ── AUTH ─────────────────────────────────────────────────────────────────────
+function showAuth() {
+  document.getElementById('screen-auth').style.display = 'flex';
+  document.getElementById('bottom-nav').style.display = 'none';
+  document.querySelector('.menu-btn').style.display = 'none';
+}
+function showApp() {
+  document.getElementById('screen-auth').style.display = 'none';
+  document.getElementById('bottom-nav').style.display = 'flex';
+  document.querySelector('.menu-btn').style.display = '';
+  document.getElementById('screen-dashboard').classList.add('active');
+}
+function toggleAuthVis() {
+  const i = document.getElementById('auth-key-input');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+function doAuth() {
+  const val = document.getElementById('auth-key-input').value.trim();
+  if (!val) { document.getElementById('auth-err').textContent = 'Enter your admin key'; return; }
+  adminKey = val;
+  localStorage.setItem('dr_admin_key', val);
+  showApp();
+  loadDashboard();
+}
+
+// ── API ───────────────────────────────────────────────────────────────────────
+async function api(path, opts = {}) {
+  const headers = { 'Content-Type': 'application/json', 'x-admin-key': adminKey, ...(opts.headers || {}) };
+  const res = await fetch(BASE + path, { ...opts, headers });
+  if (!res.ok) throw new Error(res.status + ': ' + await res.text().catch(() => ''));
+  const ct = res.headers.get('content-type') || '';
+  return ct.includes('json') ? res.json() : res.text();
+}
+const apiGet = p => api(p);
+const apiPost = (p, b) => api(p, { method: 'POST', body: b ? JSON.stringify(b) : undefined });
+
+// ── TOAST ─────────────────────────────────────────────────────────────────────
+let toastTimer;
+function toast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = 'show' + (type ? ' toast-' + type : '');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.className = ''; }, 2800);
+}
+
+// ── NAVIGATION ───────────────────────────────────────────────────────────────
+const screenTitles = {
+  dashboard: 'DASHBOARD', articles: 'ARTICLES', outreach: 'OUTREACH',
+  cron: 'CRON JOBS', intelligence: 'INTELLIGENCE', images: 'IMAGE REPO',
+  contacts: 'CONTACTS', releases: 'RELEASES', settings: 'SETTINGS'
+};
+function nav(screen, btnEl) {
+  document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
+  document.getElementById('screen-' + screen).classList.add('active');
+  if (btnEl) btnEl.classList.add('active');
+  document.getElementById('screen-title').textContent = screenTitles[screen] || screen.toUpperCase();
+  currentScreen = screen;
+  loadScreen(screen);
+  document.getElementById('content').scrollTop = 0;
+}
+function navDrawer(screen) {
+  closeDrawer();
+  // find bottom nav btn or just switch
+  const btns = document.querySelectorAll('.nav-item');
+  let found = null;
+  btns.forEach(b => { if (b.getAttribute('onclick')?.includes("'" + screen + "'")) found = b; });
+  nav(screen, found);
+}
+function loadScreen(s) {
+  if (s === 'dashboard') loadDashboard();
+  else if (s === 'articles') loadArticles();
+  else if (s === 'outreach') loadOutreach();
+  else if (s === 'cron') loadCron();
+  else if (s === 'intelligence') loadIntelligence();
+  else if (s === 'images') loadImages();
+  else if (s === 'contacts') loadContacts();
+  else if (s === 'releases') loadReleases();
+}
+
+// ── DRAWER ───────────────────────────────────────────────────────────────────
+function toggleDrawer() {
+  document.getElementById('drawer').classList.toggle('open');
+  document.getElementById('drawer-overlay').classList.toggle('open');
+}
+function closeDrawer() {
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer-overlay').classList.remove('open');
+}
+
+// ── DASHBOARD ─────────────────────────────────────────────────────────────────
+function buildDashGrid() {
+  const items = [
+    { icon: '📰', label: 'Articles', screen: 'articles' },
+    { icon: '📤', label: 'Outreach', screen: 'outreach' },
+    { icon: '⚙️', label: 'Cron', screen: 'cron' },
+    { icon: '🔍', label: 'Intel', screen: 'intelligence' },
+    { icon: '🖼️', label: 'Images', screen: 'images' },
+    { icon: '👤', label: 'Contacts', screen: 'contacts' },
+    { icon: '📣', label: 'Releases', screen: 'releases' },
+    { icon: '🔑', label: 'Settings', screen: 'settings' },
+  ];
+  document.getElementById('dash-grid').innerHTML = items.map(i => `
+    <button class="grid-nav-item" onclick="navDrawer('${i.screen}')">
+      <span class="gni-icon">${i.icon}</span>
+      <span class="gni-label">${i.label}</span>
+    </button>`).join('');
+}
+
+async function loadDashboard() {
+  try {
+    const [cronRes, queueRes] = await Promise.allSettled([
+      apiGet('/api/admin/cron-status'),
+      apiGet('/api/outreach/queue'),
+    ]);
+
+    let jobs = [];
+    if (cronRes.status === 'fulfilled') {
+      jobs = Object.entries(cronRes.value?.jobs || {}).map(([name, d]) => ({ name, ...d }));
+    }
+    const failed = jobs.filter(j => j.status === 'error');
+    const running = jobs.filter(j => j.status === 'running');
+
+    document.getElementById('stat-jobs').textContent = jobs.length || '—';
+    document.getElementById('stat-failed').textContent = failed.length;
+    document.getElementById('stat-failed').style.color = failed.length > 0 ? 'var(--err)' : 'var(--ok)';
+
+    if (queueRes.status === 'fulfilled') {
+      const pending = queueRes.value?.pending?.length || 0;
+      document.getElementById('stat-pending').textContent = pending;
+      document.getElementById('queue-count').textContent = pending > 0 ? `(${pending})` : '';
+    }
+
+    // alerts
+    const alertsEl = document.getElementById('dash-alerts');
+    if (failed.length > 0) {
+      alertsEl.innerHTML = `<div class="card alert-card">
+        <div class="alert-title">⚠ SYSTEM ALERTS</div>
+        ${failed.map(j => `<div class="alert-item">• ${j.name} failed</div>`).join('')}
+      </div>`;
+    } else {
+      alertsEl.innerHTML = '';
+    }
+
+    // cron list (top 8)
+    const cronEl = document.getElementById('dash-cron-list');
+    if (jobs.length === 0) {
+      cronEl.innerHTML = '<div class="empty">No cron data</div>';
+    } else {
+      cronEl.innerHTML = jobs.slice(0, 8).map(j => cronCard(j, true)).join('');
+    }
+  } catch (e) {
+    document.getElementById('dash-cron-list').innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+// ── ARTICLES ──────────────────────────────────────────────────────────────────
+async function loadArticles() {
+  const el = document.getElementById('articles-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const data = await apiGet('/api/admin/articles?limit=30');
+    const arts = data?.articles || data || [];
+    document.getElementById('articles-count').textContent = `Articles (${arts.length})`;
+    if (arts.length === 0) { el.innerHTML = '<div class="empty">No articles found</div>'; return; }
+    el.innerHTML = arts.map(a => `
+      <div class="card card-tight">
+        <div class="row-between mb-sm">
+          <span class="badge badge-gold">${(a.category || 'NEWS').toUpperCase()}</span>
+          ${!a.hasImage ? '<span class="badge badge-warn">NO IMG</span>' : ''}
+        </div>
+        <div class="art-title">${esc(a.title || '')}</div>
+        <div class="art-meta mt-sm row gap-sm">
+          ${a.publishedAt ? `<span>${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
+          ${a.wordCount ? `<span>${a.wordCount}w</span>` : ''}
+        </div>
+      </div>`).join('');
+  } catch (e) {
+    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+async function runBackfill() {
+  const btn = document.getElementById('btn-backfill');
+  btn.disabled = true; btn.textContent = 'RUNNING...';
+  try {
+    await apiPost('/api/admin/backfill-articles');
+    toast('Backfill triggered', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'BACKFILL';
+}
+async function runFixImages() {
+  const btn = document.getElementById('btn-fix-img');
+  btn.disabled = true; btn.textContent = 'RUNNING...';
+  try {
+    await apiPost('/api/admin/fix-images');
+    toast('Fix images triggered', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'FIX IMAGES';
+}
+
+// ── OUTREACH ──────────────────────────────────────────────────────────────────
+async function loadOutreach() {
+  renderOutreachTab();
+  try {
+    const [q, h, m, d, hol] = await Promise.allSettled([
+      apiGet('/api/outreach/queue'),
+      apiGet('/api/outreach/history'),
+      apiGet('/api/outreach/manufacturers'),
+      apiGet('/api/outreach/dealers'),
+      apiGet('/api/outreach/holsters'),
+    ]);
+    outreachData.queue = q.status === 'fulfilled' ? (q.value?.pending || []) : [];
+    outreachData.history = h.status === 'fulfilled' ? (h.value?.history || h.value || []) : [];
+    outreachData.contacts = [
+      ...(m.status === 'fulfilled' ? (m.value?.manufacturers || []).map(c => ({ ...c, type: 'manufacturer' })) : []),
+      ...(d.status === 'fulfilled' ? (d.value?.dealers || []).map(c => ({ ...c, type: 'dealer' })) : []),
+      ...(hol.status === 'fulfilled' ? (hol.value?.companies || []).map(c => ({ ...c, type: 'holster' })) : []),
+    ];
+    document.getElementById('queue-count').textContent = outreachData.queue.length > 0 ? `(${outreachData.queue.length})` : '';
+    renderOutreachTab();
+  } catch (e) {
+    document.getElementById('outreach-content').innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+function setOutreachTab(tab, btn) {
+  outreachTab = tab;
+  document.querySelectorAll('#screen-outreach .tab-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderOutreachTab();
+}
+
+function renderOutreachTab() {
+  const el = document.getElementById('outreach-content');
+  if (outreachTab === 'queue') {
+    const q = outreachData.queue;
+    el.innerHTML = `
+      <button class="btn btn-primary btn-full mb-sm" id="btn-gen-out" onclick="generateOutreach()">GENERATE DRAFTS</button>
+      ${q.length === 0 ? '<div class="empty">Queue is empty</div>' : q.map(item => `
+        <div class="card" id="qitem-${esc(item.id)}">
+          <div class="row-between mb-sm">
+            <span class="badge badge-info">${(item.type || 'CONTACT').toUpperCase()}</span>
+            <span class="badge badge-muted">${(item.status || 'DRAFT').toUpperCase()}</span>
+          </div>
+          <div style="font-weight:700;font-size:14px;">${esc(item.contactName || item.companyName || 'Unknown')}</div>
+          ${item.subject ? `<div class="text-muted text-sm mt-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(item.subject)}</div>` : ''}
+          ${item.preview ? `<div style="font-size:12px;color:var(--dim);margin-top:6px;line-height:1.5;">${esc(item.preview)}</div>` : ''}
+          <div class="btn-row mt-sm">
+            <button class="btn btn-primary btn-sm" onclick="approveItem('${esc(item.id)}')">APPROVE & SEND</button>
+            <button class="btn btn-ghost btn-sm" onclick="skipItem('${esc(item.id)}')">SKIP</button>
+          </div>
+        </div>`).join('')}`;
+  } else if (outreachTab === 'history') {
+    const h = outreachData.history.slice(0, 50);
+    el.innerHTML = h.length === 0 ? '<div class="empty">No history</div>' : h.map(item => `
+      <div class="card card-tight">
+        <div class="row-between">
+          <span style="font-weight:700;font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(item.to || item.contactName || 'Unknown')}</span>
+          <span class="badge ${item.status === 'sent' ? 'badge-ok' : 'badge-err'}">${item.status === 'sent' ? 'SENT' : 'FAILED'}</span>
+        </div>
+        ${item.subject ? `<div class="text-sm text-muted mt-sm">${esc(item.subject)}</div>` : ''}
+        ${item.sentAt ? `<div class="art-meta mt-sm">${new Date(item.sentAt).toLocaleString()}</div>` : ''}
+      </div>`).join('');
+  } else {
+    const c = outreachData.contacts;
+    el.innerHTML = `<div class="text-mono text-xs text-muted mb-sm">${c.length} contacts</div>` +
+      (c.length === 0 ? '<div class="empty">No contacts</div>' : c.map(item => `
+        <div class="card card-tight">
+          <div class="row-between">
+            <span style="font-weight:700;font-size:14px;">${esc(item.name || item.company || 'Unknown')}</span>
+            <span class="badge ${item.type === 'manufacturer' ? 'badge-gold' : item.type === 'dealer' ? 'badge-info' : 'badge-muted'}">${item.type === 'manufacturer' ? 'MFG' : item.type === 'dealer' ? 'DEALER' : 'HOLSTER'}</span>
+          </div>
+          ${item.email ? `<div class="art-meta mt-sm">✉ ${esc(item.email)}</div>` : ''}
+          ${item.website ? `<div class="art-meta">🌐 ${esc(item.website)}</div>` : ''}
+        </div>`).join(''));
+  }
+}
+
+async function generateOutreach() {
+  const btn = document.getElementById('btn-gen-out');
+  if (btn) { btn.disabled = true; btn.textContent = 'GENERATING...'; }
+  try {
+    await apiPost('/api/outreach/queue', { action: 'generate' });
+    toast('Drafts generated', 'ok');
+    loadOutreach();
+  } catch (e) { toast(e.message, 'err'); if (btn) { btn.disabled = false; btn.textContent = 'GENERATE DRAFTS'; } }
+}
+async function approveItem(id) {
+  try {
+    await apiPost('/api/outreach/queue', { action: 'approve', id });
+    outreachData.queue = outreachData.queue.filter(i => i.id !== id);
+    renderOutreachTab();
+    toast('Sent via Resend', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+}
+async function skipItem(id) {
+  try {
+    await apiPost('/api/outreach/queue', { action: 'skip', id });
+    outreachData.queue = outreachData.queue.filter(i => i.id !== id);
+    renderOutreachTab();
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// ── CRON ──────────────────────────────────────────────────────────────────────
+async function loadCron() {
+  const el = document.getElementById('cron-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const data = await apiGet('/api/admin/cron-status');
+    const jobs = Object.entries(data?.jobs || {}).map(([name, d]) => ({ name, ...d }));
+    const failed = jobs.filter(j => j.status === 'error');
+    const running = jobs.filter(j => j.status === 'running');
+    const ok = jobs.filter(j => j.status !== 'error' && j.status !== 'running');
+    document.getElementById('cron-ok').textContent = ok.length;
+    document.getElementById('cron-running').textContent = running.length;
+    document.getElementById('cron-failed').textContent = failed.length;
+    let html = '';
+    if (failed.length) html += `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Failed</div></div>` + failed.map(j => cronCard(j)).join('');
+    if (running.length) html += `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Running</div></div>` + running.map(j => cronCard(j)).join('');
+    html += `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">All Jobs (${jobs.length})</div></div>` + ok.map(j => cronCard(j)).join('');
+    el.innerHTML = html || '<div class="empty">No cron data</div>';
+  } catch (e) {
+    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+function cronCard(job, compact = false) {
+  const st = job.status;
+  const badgeCls = st === 'error' ? 'badge-err' : st === 'running' ? 'badge-warn' : 'badge-ok';
+  const badgeLbl = st === 'error' ? 'FAILED' : st === 'running' ? 'RUNNING' : 'OK';
+  return `<div class="card card-tight" style="margin-bottom:6px;">
+    <div class="row-between">
+      <span class="text-mono text-sm" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(job.name)}</span>
+      <span class="badge ${badgeCls}">${badgeLbl}</span>
+    </div>
+    <div class="row gap-md mt-sm">
+      ${job.schedule ? `<span class="text-mono text-xs">${esc(job.schedule)}</span>` : ''}
+      ${job.streak ? `<span class="text-mono text-xs text-gold">🔥 ${job.streak}</span>` : ''}
+      ${job.totalRuns ? `<span class="text-mono text-xs">${job.totalRuns} runs</span>` : ''}
+    </div>
+    ${job.lastRun ? `<div class="art-meta mt-sm">Last: ${new Date(job.lastRun).toLocaleString()}</div>` : ''}
+    ${!compact ? `<button class="btn btn-secondary btn-sm mt-sm" onclick="triggerJob('${esc(job.name)}',this)">TRIGGER NOW</button>` : ''}
+  </div>`;
+}
+
+async function triggerJob(name, btn) {
+  btn.disabled = true; btn.textContent = 'TRIGGERING...';
+  try {
+    await apiPost('/api/admin/cron-trigger', { job: name });
+    toast(`${name} triggered`, 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'TRIGGER NOW';
+}
+
+// ── INTELLIGENCE ──────────────────────────────────────────────────────────────
+async function loadIntelligence() {
+  const el = document.getElementById('intel-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const data = await apiGet('/api/admin/intelligence?limit=20');
+    const briefs = data?.briefings || data || [];
+    if (briefs.length === 0) { el.innerHTML = '<div class="empty">No briefings yet</div>'; return; }
+    el.innerHTML = `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Briefings (${briefs.length})</div></div>` +
+      briefs.map((b, i) => `
+        <div class="card" onclick="toggleExpand('brief-${i}',this)" style="cursor:pointer;">
+          <div class="row-between mb-sm">
+            <span class="badge ${b.status === 'draft' ? 'badge-warn' : 'badge-ok'}">${(b.status || 'PUBLISHED').toUpperCase()}</span>
+            ${b.date ? `<span class="art-meta">${new Date(b.date).toLocaleDateString()}</span>` : ''}
+          </div>
+          <div style="font-weight:700;font-size:15px;line-height:1.35;">${esc(b.title || 'Intelligence Briefing')}</div>
+          <div class="expand-hint">▼ EXPAND</div>
+          <div class="expanded-body" id="brief-${i}">
+            <div class="divider"></div>
+            ${b.summary ? `<div style="font-size:13px;color:var(--muted);line-height:1.6;">${esc(b.summary)}</div>` : ''}
+            ${b.topics?.length ? `<div class="row gap-sm mt-sm" style="flex-wrap:wrap;">${b.topics.map(t => `<span class="badge badge-muted">${esc(t)}</span>`).join('')}</div>` : ''}
+          </div>
+        </div>`).join('');
+  } catch (e) {
+    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+async function generateBriefing() {
+  const btn = document.getElementById('btn-gen-brief');
+  btn.disabled = true; btn.textContent = 'GENERATING...';
+  try {
+    await apiPost('/api/admin/intelligence/generate');
+    toast('Briefing queued', 'ok');
+    loadIntelligence();
+  } catch (e) { toast(e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'GENERATE BRIEFING NOW';
+}
+
+// ── IMAGES ────────────────────────────────────────────────────────────────────
+async function loadImages() {
+  const el = document.getElementById('images-grid');
+  el.innerHTML = '<div class="loading" style="grid-column:span 3;"><div class="spinner"></div></div>';
+  try {
+    const data = await apiGet('/api/admin/image-repo?limit=50');
+    const imgs = data?.images || data || [];
+    document.getElementById('images-count').textContent = `${imgs.length} images in repo`;
+    if (imgs.length === 0) { el.innerHTML = '<div class="empty" style="grid-column:span 3;">No images</div>'; return; }
+    el.innerHTML = imgs.map(img => {
+      const url = img.cdnUrl || img.imageUrl;
+      return `<div style="position:relative;">
+        ${url ? `<img src="${esc(url)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;background:var(--bg-el);" loading="lazy">` :
+          `<div style="width:100%;aspect-ratio:1;background:var(--bg-el);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;">🖼️</div>`}
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(img.title || img.alt || 'Image')}</div>
+      </div>`;
+    }).join('');
+  } catch (e) {
+    el.innerHTML = `<div class="empty text-err" style="grid-column:span 3;">${e.message}</div>`;
+  }
+}
+
+async function seedImages() {
+  const btn = document.getElementById('btn-seed');
+  btn.disabled = true; btn.textContent = 'SEEDING...';
+  try {
+    await apiPost('/api/admin/seed-image-repo');
+    toast('Image repo seeded', 'ok');
+    loadImages();
+  } catch (e) { toast(e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'SEED REPO';
+}
+async function fetchOgImages() {
+  try {
+    await apiPost('/api/admin/fetch-article-images');
+    toast('OG image fetch triggered', 'ok');
+  } catch (e) { toast(e.message, 'err'); }
+}
+
+// ── CONTACTS ──────────────────────────────────────────────────────────────────
+async function loadContacts() {
+  const el = document.getElementById('contacts-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const [m, d, hol] = await Promise.allSettled([
+      apiGet('/api/outreach/manufacturers'),
+      apiGet('/api/outreach/dealers'),
+      apiGet('/api/outreach/holsters'),
+    ]);
+    allContacts = [
+      ...(m.status === 'fulfilled' ? (m.value?.manufacturers || []).map(c => ({ ...c, type: 'manufacturer' })) : []),
+      ...(d.status === 'fulfilled' ? (d.value?.dealers || []).map(c => ({ ...c, type: 'dealer' })) : []),
+      ...(hol.status === 'fulfilled' ? (hol.value?.companies || []).map(c => ({ ...c, type: 'holster' })) : []),
+    ];
+    renderContacts();
+  } catch (e) {
+    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+function setContactTab(type, btn) {
+  contactTypeFilter = type;
+  document.querySelectorAll('#screen-contacts .tab-item').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderContacts();
+}
+
+function filterContacts() { renderContacts(); }
+
+function renderContacts() {
+  const q = (document.getElementById('contact-search')?.value || '').toLowerCase();
+  let list = allContacts;
+  if (contactTypeFilter !== 'all') list = list.filter(c => c.type === contactTypeFilter);
+  if (q) list = list.filter(c => (c.name || '').toLowerCase().includes(q) || (c.company || '').toLowerCase().includes(q) || (c.email || '').toLowerCase().includes(q));
+  const el = document.getElementById('contacts-list');
+  if (list.length === 0) { el.innerHTML = '<div class="empty">No contacts found</div>'; return; }
+  el.innerHTML = `<div class="text-mono text-xs text-muted mb-sm">${list.length} contacts</div>` +
+    list.map(c => `
+      <div class="card card-tight">
+        <div class="row-between">
+          <span style="font-weight:700;font-size:14px;flex:1;">${esc(c.name || c.company || 'Unknown')}</span>
+          <span class="badge ${c.type === 'manufacturer' ? 'badge-gold' : c.type === 'dealer' ? 'badge-info' : 'badge-muted'}">${c.type === 'manufacturer' ? 'MFG' : c.type === 'dealer' ? 'DEALER' : 'HOLSTER'}</span>
+        </div>
+        ${c.email ? `<div class="art-meta mt-sm">✉ ${esc(c.email)}</div>` : ''}
+        ${c.website ? `<div class="art-meta">🌐 ${esc(c.website)}</div>` : ''}
+        ${c.state ? `<div class="art-meta">📍 ${esc(c.state)}</div>` : ''}
+      </div>`).join('');
+}
+
+// ── RELEASES ──────────────────────────────────────────────────────────────────
+async function loadReleases() {
+  const el = document.getElementById('releases-list');
+  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+  try {
+    const data = await apiGet('/api/admin/releases?limit=30');
+    const rels = data?.releases || data || [];
+    if (rels.length === 0) { el.innerHTML = '<div class="empty">No releases</div>'; return; }
+    el.innerHTML = `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Releases (${rels.length})</div></div>` +
+      rels.map((r, i) => `
+        <div class="card" onclick="toggleExpand('rel-${i}',this)" style="cursor:pointer;">
+          <div class="row-between mb-sm">
+            <span class="badge badge-gold">${(r.category || 'PRESS').toUpperCase()}</span>
+            ${r.publishedAt ? `<span class="art-meta">${new Date(r.publishedAt).toLocaleDateString()}</span>` : ''}
+          </div>
+          <div style="font-weight:700;font-size:14px;line-height:1.35;">${esc(r.title || '')}</div>
+          <div class="expand-hint">▼ EXPAND</div>
+          <div class="expanded-body" id="rel-${i}">
+            <div class="divider"></div>
+            ${r.summary ? `<div style="font-size:13px;color:var(--muted);line-height:1.6;">${esc(r.summary)}</div>` : ''}
+            ${r.source ? `<div class="art-meta mt-sm">Source: ${esc(r.source)}</div>` : ''}
+            ${r.url ? `<a href="${esc(r.url)}" target="_blank" style="color:var(--gold);font-size:13px;display:block;margin-top:6px;">🔗 View Original</a>` : ''}
+          </div>
+        </div>`).join('');
+  } catch (e) {
+    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
+  }
+}
+
+async function scrapeNow() {
+  const btn = document.getElementById('btn-scrape');
+  btn.disabled = true; btn.textContent = 'SCRAPING...';
+  try {
+    await apiPost('/api/agent/feeds/prn');
+    toast('PRN scraper triggered', 'ok');
+    loadReleases();
+  } catch (e) { toast(e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'SCRAPE PRN NOW';
+}
+
+// ── SETTINGS ──────────────────────────────────────────────────────────────────
+function loadSettings() {
+  if (adminKey) {
+    document.getElementById('settings-key').value = adminKey;
+    document.getElementById('key-saved-hint').style.display = 'block';
+  }
+}
+function toggleSettingsVis() {
+  const i = document.getElementById('settings-key');
+  i.type = i.type === 'password' ? 'text' : 'password';
+}
+function saveKey() {
+  const val = document.getElementById('settings-key').value.trim();
+  if (!val) { toast('Key cannot be empty', 'err'); return; }
+  adminKey = val;
+  localStorage.setItem('dr_admin_key', val);
+  document.getElementById('key-saved-hint').style.display = 'block';
+  toast('Admin key saved', 'ok');
+}
+function clearKey() {
+  if (!confirm('Clear admin key and log out?')) return;
+  adminKey = '';
+  localStorage.removeItem('dr_admin_key');
+  document.getElementById('settings-key').value = '';
+  document.getElementById('key-saved-hint').style.display = 'none';
+  toast('Logged out', '');
+  setTimeout(() => location.reload(), 1000);
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
+}
+function toggleExpand(id, cardEl) {
+  const body = document.getElementById(id);
+  const hint = cardEl.querySelector('.expand-hint');
+  if (!body) return;
+  body.classList.toggle('open');
+  if (hint) hint.textContent = body.classList.contains('open') ? '▲ COLLAPSE' : '▼ EXPAND';
+}
+
+// ── SERVICE WORKER ────────────────────────────────────────────────────────────
+if ('serviceWorker' in navigator) {
+  navigator.serviceWorker.register('sw.js').catch(() => {});
+}
+</script>
+</body>
+</html>
