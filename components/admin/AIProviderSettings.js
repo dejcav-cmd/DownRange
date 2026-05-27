@@ -86,6 +86,10 @@ export default function AIProviderSettings({ adminKey }) {
   const [saved,    setSaved]    = useState(false)
   const [saving,   setSaving]   = useState(false)
   const [vercelResult, setVercelResult] = useState(null)
+  const [srvStatus,   setSrvStatus]   = useState(null)
+  const [srvLoading,  setSrvLoading]  = useState(false)
+  const [serverStatus, setServerStatus] = useState(null)
+  const [statusLoading, setStatusLoading] = useState(false)
   const [testing,  setTesting]  = useState(false)
   const [testLog,  setTestLog]  = useState([])
   const [testRes,  setTestRes]  = useState('')
@@ -152,6 +156,17 @@ export default function AIProviderSettings({ adminKey }) {
     setTesting(false)
   }
 
+  async function checkServer() {
+    setSrvLoading(true); setSrvStatus(null)
+    try {
+      const r = await fetch('/api/admin/ai-status', {headers:{'x-admin-key':adminKey}})
+      const d = await r.json()
+      if (d.ok) setSrvStatus(d)
+      else flash('❌ ' + d.error)
+    } catch(e) { flash('❌ ' + e.message) }
+    setSrvLoading(false)
+  }
+
   function upd(uc, fn) { setChains(p=>({...p,[uc]:fn(p[uc]||[])})) }
   function addSlot(uc) {
     const cur = chains[uc]||[]
@@ -173,7 +188,165 @@ export default function AIProviderSettings({ adminKey }) {
 
       {msg && <div style={{padding:'9px 14px',marginBottom:14,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:msg.startsWith('✅')?'#22c55e':msg.startsWith('❌')?'#f87171':'#f59e0b',background:'var(--bg2)',border:'1px solid var(--border)'}}>{msg}</div>}
 
-      {/* API Keys */}
+      {/* ── SERVER STATUS PANEL ── */}
+      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:serverStatus?12:0}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>
+            🖥 Live Server Status
+          </div>
+          <button className="cp-ghost" onClick={checkServer} disabled={srvLoading} style={{fontSize:10}}>
+            {statusLoading ? '⏳ Checking...' : '🔍 Check Live Keys'}
+          </button>
+        </div>
+
+        {serverStatus && (
+          <div style={{display:'flex',flexDirection:'column',gap:8}}>
+            {/* Key presence */}
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+              {[
+                {label:'Anthropic',key:'ANTHROPIC_API_KEY',color:'#f97316',provider:'anthropic'},
+                {label:'Z.ai GLM', key:'GLM_API_KEY',       color:'#3b82f6',provider:'glm'},
+                {label:'OpenAI',   key:'OPENAI_API_KEY',    color:'#22c55e',provider:'openai'},
+              ].map(p=>{
+                const has   = serverStatus.status[p.key]
+                const test  = serverStatus.tests[p.provider]
+                const state = !has ? 'missing' : test?.ok ? 'live' : 'error'
+                return (
+                  <div key={p.key} style={{padding:'10px 12px',background:state==='live'?'rgba(34,197,94,.08)':state==='error'?'rgba(239,68,68,.08)':'rgba(0,0,0,.2)',border:`1px solid ${state==='live'?'rgba(34,197,94,.3)':state==='error'?'rgba(239,68,68,.3)':'var(--border)'}`}}>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.color,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:4}}>{p.label}</div>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,fontWeight:700,color:state==='live'?'#22c55e':state==='error'?'#ef4444':'#4b5563'}}>
+                      {state==='live'?'✅ LIVE':state==='error'?'❌ KEY ERROR':'— NOT SET'}
+                    </div>
+                    {test?.ok && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:2}}>tested: {test.model}</div>}
+                    {test?.error && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#f87171',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{test.error}</div>}
+                    {!has && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:2}}>Add to Vercel env vars</div>}
+                  </div>
+                )
+              })}
+            </div>
+            {/* Active routing */}
+            <div style={{padding:'10px 12px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)'}}>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6}}>Active Routing on This Server</div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:4}}>
+                {Object.entries(serverStatus.routing).map(([uc,model])=>(
+                  <div key={uc} style={{display:'flex',gap:6,alignItems:'baseline'}}>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',minWidth:70}}>{uc}:</span>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:model.includes('⚠')?'#f59e0b':model==='none'?'#ef4444':'#22c55e',fontWeight:700}}>{model}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {!serverStatus.status.VERCEL_TOKEN && (
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#f59e0b',padding:'8px 10px',background:'rgba(245,158,11,.08)',border:'1px solid rgba(245,158,11,.2)'}}>
+                ⚠ VERCEL_TOKEN not set — Push to Vercel button will show manual instructions instead of auto-pushing.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* ── LIVE SERVER STATUS ── */}
+      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>🖥 Live Server Status</div>
+          <button className="cp-ghost" onClick={checkServer} disabled={srvLoading} style={{fontSize:10}}>
+            {srvLoading ? '⏳ Checking...' : '🔍 Check Live Keys & Routing'}
+          </button>
+        </div>
+        {srvStatus && (
+          <div style={{marginTop:12,display:'flex',flexDirection:'column',gap:8}}>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+              {[
+                {label:'Anthropic', k:'ANTHROPIC_API_KEY', color:'#f97316', prov:'anthropic'},
+                {label:'Z.ai GLM',  k:'GLM_API_KEY',       color:'#3b82f6', prov:'glm'},
+                {label:'OpenAI',    k:'OPENAI_API_KEY',    color:'#22c55e', prov:'openai'},
+              ].map(p=>{
+                const has  = srvStatus.status[p.k]
+                const test = srvStatus.tests?.[p.prov]
+                const st   = !has ? 'none' : test?.ok ? 'ok' : 'err'
+                return (
+                  <div key={p.k} style={{padding:'10px 12px',background:st==='ok'?'rgba(34,197,94,.07)':st==='err'?'rgba(239,68,68,.07)':'rgba(0,0,0,.2)',border:`1px solid ${st==='ok'?'rgba(34,197,94,.3)':st==='err'?'rgba(239,68,68,.3)':'var(--border)'}`}}>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.color,letterSpacing:'.08em',marginBottom:4}}>{p.label}</div>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,fontWeight:700,color:st==='ok'?'#22c55e':st==='err'?'#ef4444':'#4b5563'}}>
+                      {st==='ok'?'✅ LIVE':st==='err'?'❌ BAD KEY':'— NOT SET'}
+                    </div>
+                    {test?.ok&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:2}}>tested: {test.model}</div>}
+                    {test?.error&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#f87171',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{test.error}</div>}
+                    {!has&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:2}}>Add {p.k} in Vercel</div>}
+                  </div>
+                )
+              })}
+            </div>
+            <div style={{padding:'10px 12px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)'}}>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6}}>Active Routing on This Server</div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:6}}>
+                {Object.entries(srvStatus.routing||{}).map(([uc,model])=>(
+                  <div key={uc} style={{display:'flex',gap:5,alignItems:'baseline'}}>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',minWidth:68,flexShrink:0}}>{uc}:</span>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:model==='none'?'#ef4444':model.includes('⚠')?'#f59e0b':'#22c55e'}}>{model}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {!srvStatus.status.VERCEL_TOKEN&&(
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#f59e0b',padding:'8px 10px',background:'rgba(245,158,11,.08)',border:'1px solid rgba(245,158,11,.2)'}}>
+                ⚠ VERCEL_TOKEN not set — "Push to Vercel" will show manual instructions. Add VERCEL_TOKEN to Vercel env vars to enable auto-push.
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* ── LIVE SERVER STATUS ── */}
+      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>🖥 Live Server Status</div>
+          <button className="cp-ghost" onClick={checkServer} disabled={srvLoading} style={{fontSize:10}}>
+            {srvLoading ? '⏳ Checking...' : '🔍 Check Live Keys'}
+          </button>
+        </div>
+        {srvStatus && (
+          <div style={{marginTop:12,display:'flex',flexDirection:'column',gap:8}}>
+            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
+              {[
+                {label:'Anthropic',k:'ANTHROPIC_API_KEY',color:'#f97316',prov:'anthropic'},
+                {label:'Z.ai GLM', k:'GLM_API_KEY',      color:'#3b82f6',prov:'glm'},
+                {label:'OpenAI',   k:'OPENAI_API_KEY',   color:'#22c55e',prov:'openai'},
+              ].map(p=>{
+                const has=srvStatus.status[p.k], test=srvStatus.tests?.[p.prov]
+                const st=!has?'none':test?.ok?'ok':'err'
+                return (
+                  <div key={p.k} style={{padding:'10px 12px',background:st==='ok'?'rgba(34,197,94,.07)':st==='err'?'rgba(239,68,68,.07)':'rgba(0,0,0,.2)',border:`1px solid ${st==='ok'?'rgba(34,197,94,.3)':st==='err'?'rgba(239,68,68,.3)':'var(--border)'}`}}>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.color,letterSpacing:'.08em',marginBottom:3}}>{p.label}</div>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,fontWeight:700,color:st==='ok'?'#22c55e':st==='err'?'#ef4444':'#4b5563'}}>
+                      {st==='ok'?'✅ LIVE':st==='err'?'❌ BAD KEY':'— NOT SET'}
+                    </div>
+                    {test?.ok&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:2}}>tested: {test.model}</div>}
+                    {test?.error&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#f87171',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{test.error}</div>}
+                    {!has&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:2}}>Add {p.k} to Vercel</div>}
+                  </div>
+                )
+              })}
+            </div>
+            <div style={{padding:'10px 12px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)'}}>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6}}>Active Routing on This Server</div>
+              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:6}}>
+                {Object.entries(srvStatus.routing||{}).map(([uc,model])=>(
+                  <div key={uc} style={{display:'flex',gap:5}}>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',minWidth:68,flexShrink:0}}>{uc}:</span>
+                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:model==='none'?'#ef4444':model.includes('warning')?'#f59e0b':'#22c55e'}}>{model}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+            {!srvStatus.status.VERCEL_TOKEN&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#f59e0b',padding:'8px 10px',background:'rgba(245,158,11,.08)',border:'1px solid rgba(245,158,11,.2)'}}>
+              ⚠ VERCEL_TOKEN not set — Push button will show manual instructions.
+            </div>}
+          </div>
+        )}
+      </div>
+
+    {/* API Keys */}
       <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:18}}>
         <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12}}>🔑 API Keys</div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12}}>
