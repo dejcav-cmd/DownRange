@@ -165,7 +165,7 @@ export default function NewsArticleManager({ adminKey }) {
 
   function isBrokenImage(url) {
     if (!url) return true
-    const trusted = ['upload.wikimedia.org', 'cdn.sanity.io', 'images.unsplash.com', 'img.youtube.com']
+    const trusted = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com']
     return !trusted.some(d => url.includes(d))
   }
 

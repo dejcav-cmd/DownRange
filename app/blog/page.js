@@ -23,7 +23,7 @@ export const BLOG_POSTS = [
     category:    'OPINION',
     catColor:    '#a855f7',
     featured:    true,
-    img:         'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=1400&q=90',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Silencer.jpg/1280px-Silencer.jpg',
     excerpt:     'When the One Big Beautiful Bill eliminated the $200 NFA tax on suppressors, SBRs, and SBSs, it removed the single biggest barrier to widespread suppressor ownership. Six months in, the numbers are staggering — and the industry is only beginning to catch up.',
     tags:        ['NFA', 'Suppressors', 'One Big Beautiful Bill', 'Industry'],
     body: `
@@ -72,7 +72,7 @@ export const BLOG_POSTS = [
     category:    'ANALYSIS',
     catColor:    '#C8922A',
     featured:    false,
-    img:         'https://images.unsplash.com/photo-amXQTiylIDM?w=1400&q=90',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
     excerpt:     'The Sig P365 changed everything when it launched in 2018. Eight years later, every major manufacturer has a micro-compact answer, the technology has matured, and the market is more competitive than any category in firearms history.',
     tags:        ['Pistols', 'EDC', 'Micro-Compact', 'Market Analysis'],
     body: `
@@ -119,7 +119,7 @@ export const BLOG_POSTS = [
     category:    'MARKET',
     catColor:    '#22c55e',
     featured:    false,
-    img:         'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1400&q=90',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
     excerpt:     'If you enjoyed the buyer\'s market of 2025, the window is closing. Steel tariffs, import restrictions, and rising manufacturing costs are converging to push firearms prices up across the board in the second half of 2026.',
     tags:        ['Market', 'Pricing', 'Tariffs', 'Buying Guide'],
     body: `
@@ -162,7 +162,7 @@ export const BLOG_POSTS = [
     category:    'LAW',
     catColor:    '#3b82f6',
     featured:    false,
-    img:         'https://images.unsplash.com/photo-0UZ87N7br8M?w=1400&q=90',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg?w=1400&q=90',
     excerpt:     'The Supreme Court\'s 2022 Bruen decision established a text-and-history standard for evaluating gun laws. But the lower courts are still brawling over what that standard requires — and the outcomes of these fights will determine the practical scope of your Second Amendment rights for decades.',
     tags:        ['2A', 'Bruen', 'SCOTUS', 'Legal', 'Constitutional'],
     body: `
@@ -204,7 +204,7 @@ export const BLOG_POSTS = [
     category:    'TRAINING',
     catColor:    '#22c55e',
     featured:    false,
-    img:         'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=1400&q=90',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
     excerpt:     'A pistol red dot is one of the most significant performance upgrades available to a defensive shooter. It is also one of the most commonly installed and least effectively used pieces of equipment in civilian carry today.',
     tags:        ['Training', 'Red Dot', 'Optics', 'EDC', 'Carry'],
     body: `

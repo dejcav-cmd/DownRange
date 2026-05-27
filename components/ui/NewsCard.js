@@ -1,18 +1,19 @@
 'use client'
 
 // Curated fallback images — shown client-side when Sanity has no image
+const WM = 'https://upload.wikimedia.org/wikipedia/commons/thumb'
 const FALLBACK_IMAGES = {
-  pistol:     'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
-  rifle:      'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
-  shotgun:    'https://images.unsplash.com/photo-1543393716-375f47996a77?w=800&q=80',
-  suppressor: 'https://images.unsplash.com/photo-1578674473215-9e07ee2e577d?w=800&q=80',
-  optic:      'https://images.unsplash.com/photo-1516223725307-6f76b9ec8742?w=800&q=80',
-  ammo:       'https://images.unsplash.com/photo-1609081144289-d74b6c2b4b73?w=800&q=80',
-  law:        'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
-  breaking:   'https://images.unsplash.com/photo-1584553391547-8ba39d3e3b51?w=800&q=80',
-  industry:   'https://images.unsplash.com/photo-1621415814107-a4cbf5b3f1ea?w=800&q=80',
-  training:   'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
-  news:       'https://images.unsplash.com/photo-1574180045827-681f8a1a9622?w=800&q=80',
+  pistol:     WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+  rifle:      WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
+  shotgun:    WM + '/2/24/Mossberg_500.jpg/1280px-Mossberg_500.jpg',
+  suppressor: WM + '/1/10/Silencer.jpg/1280px-Silencer.jpg',
+  optic:      WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
+  ammo:       WM + '/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
+  law:        WM + '/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+  breaking:   WM + '/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+  industry:   WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
+  training:   WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+  news:       WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
 }
 
 function getFallbackImage(article) {

@@ -56,7 +56,7 @@ function pickImage(title, category) {
 function needsFix(imageUrl, title, category) {
   if (!imageUrl) return true
 
-  const TRUSTED = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com', 'images.unsplash.com']
+  const TRUSTED = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com']
   const isTrusted = TRUSTED.some(d => imageUrl.includes(d))
 
   // Not from trusted CDN = external RSS stock photo = replace it
