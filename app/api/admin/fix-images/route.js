@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic'
-export const maxDuration = 300
+export const maxDuration = 60
 
 /**
  * POST /api/admin/fix-images?batch=50&force=false

@@ -1237,8 +1237,17 @@ function ImageFixButton() {
         batch++
         addLog(`Batch ${batch}: scanning articles...`, '#64748b')
         const res  = await fetch(`/api/admin/fix-images?batch=50${force ? '&force=true' : ''}`, { method: 'POST', headers: { 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
-        const data = await res.json()
-        if (!res.ok) { addLog(`Error: ${data.error || res.statusText}`, '#ef4444'); break }
+        const rawText2 = await res.text()
+        if (!rawText2 || rawText2.trim() === '') {
+          addLog(`Error: Empty response (status ${res.status}). Check Vercel function logs.`, '#ef4444')
+          break
+        }
+        let data
+        try { data = JSON.parse(rawText2) } catch(pe) {
+          addLog(`Error: Non-JSON response (${res.status}): ${rawText2.slice(0,200)}`, '#ef4444')
+          break
+        }
+        if (!res.ok) { addLog(`Error ${res.status}: ${data.error || res.statusText}`, '#ef4444'); break }
 
         totalFixed  += data.fixed  || 0
         totalFailed += data.failed || 0
@@ -1325,9 +1334,17 @@ function BackfillButton() {
         batch++
         addLog(`Batch ${batch}: calling Claude API...`, '#64748b')
         const res  = await fetch(`/api/admin/backfill-articles?batch=10${force?'&force=true':''}`, { method:'POST', headers:{ 'x-admin-key': localStorage.getItem('dr_admin_key')||'' } })
-        const data = await res.json()
-
-        if (!res.ok) { addLog(`Error: ${data.error || res.statusText}`, '#ef4444'); break }
+        const rawText = await res.text()
+        if (!rawText || rawText.trim() === '') {
+          addLog(`Error: Empty response from server (status ${res.status}). Check Vercel function logs.`, '#ef4444')
+          break
+        }
+        let data
+        try { data = JSON.parse(rawText) } catch(pe) {
+          addLog(`Error: Server returned non-JSON (${res.status}): ${rawText.slice(0,200)}`, '#ef4444')
+          break
+        }
+        if (!res.ok) { addLog(`Error ${res.status}: ${data.error || res.statusText}`, '#ef4444'); break }
 
         totalDone   += data.done   || 0
         totalFailed += data.failed || 0

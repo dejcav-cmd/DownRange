@@ -106,10 +106,10 @@
       "maxDuration": 300
     },
     "app/api/admin/backfill-articles/route.js": {
-      "maxDuration": 300
+      "maxDuration": 60
     },
     "app/api/admin/fix-images/route.js": {
-      "maxDuration": 300
+      "maxDuration": 60
     },
     "app/api/cron/releases/route.js": {
       "maxDuration": 300
