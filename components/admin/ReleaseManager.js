@@ -39,8 +39,25 @@ export default function ReleaseManager({ adminKey }) {
   const [search,   setSearch]   = useState('')
   const [tab,      setTab]      = useState('list')  // list | add
   const [form,     setForm]     = useState({ brand:'',model:'',category:'Pistol',caliber:'',action:'',msrp:'',sourceUrl:'',imageUrl:'',summary:'',body:'' })
+  const [feedRunning, setFeedRunning] = useState(false)
 
-  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''), 4000) }
+  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''), 5000) }
+
+  async function runFeed() {
+    setFeedRunning(true)
+    flash('⏳ Running releases feed — pulling PRNewswire + manufacturer RSS...')
+    try {
+      const res = await fetch('/api/admin/cron-status?trigger=true', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId: 'releases' }),
+      })
+      const d = await res.json()
+      if (d.ok) { flash('✅ Releases feed ran — refreshing...'); await load() }
+      else flash('❌ ' + (d.error || d.response || 'Feed failed'))
+    } catch(e) { flash('❌ ' + e.message) }
+    setFeedRunning(false)
+  }
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -140,6 +157,9 @@ export default function ReleaseManager({ adminKey }) {
         </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           {missingBody > 0 && <button className="rm-btn" onClick={rewriteAll} disabled={busy}>✦ Write All {missingBody} Articles</button>}
+          <button className="rm-btn" onClick={runFeed} disabled={feedRunning} style={{background:'#3b82f6',color:'#fff'}}>
+            {feedRunning ? '⏳ Running...' : '▶ Run Releases Feed'}
+          </button>
           <button className="rm-ghost" onClick={()=>setTab(tab==='add'?'list':'add')}>{tab==='add'?'← Back':'+ Add Release'}</button>
           <button className="rm-ghost" onClick={load}>↺ Refresh</button>
         </div>
@@ -189,6 +209,20 @@ export default function ReleaseManager({ adminKey }) {
 
               {loading ? (
                 <div style={{padding:40,textAlign:'center',color:'#4b5563',fontSize:12}}>Loading releases...</div>
+              ) : filtered.length === 0 ? (
+                <div style={{padding:48,textAlign:'center'}}>
+                  <div style={{fontSize:32,marginBottom:12}}>🔫</div>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:'var(--text)',letterSpacing:'.05em',marginBottom:8}}>No Gun Releases Yet</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#4b5563',marginBottom:20,lineHeight:1.8}}>
+                    Run the Releases Feed to pull from PRNewswire + manufacturer RSS, or add a release manually.
+                  </div>
+                  <div style={{display:'flex',gap:10,justifyContent:'center',flexWrap:'wrap'}}>
+                    <button className="rm-btn" onClick={runFeed} disabled={feedRunning} style={{background:'#3b82f6',color:'#fff'}}>
+                      {feedRunning ? '⏳ Running...' : '▶ Run Releases Feed'}
+                    </button>
+                    <button className="rm-ghost" onClick={()=>setTab('add')}>+ Add Manually</button>
+                  </div>
+                </div>
               ) : filtered.map(r => (
                 <div key={r._id} className={'rm-row'+(sel===r._id?' sel':'')} onClick={()=>setSel(sel===r._id?null:r._id)}>
                   <div style={{position:'relative',width:90,height:56,flexShrink:0}}>

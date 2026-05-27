@@ -208,7 +208,9 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
         </div>
         <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
           <a href="/blog" target="_blank" rel="noreferrer" className="bm-ghost" style={{textDecoration:'none',fontSize:10}}>View Blog ↗</a>
-          {missingBody > 0 && <button className="bm-btn" onClick={aiWriteAll} disabled={busy}>✦ AI Write All ({missingBody})</button>}
+          <button className="bm-btn" onClick={aiWriteAll} disabled={busy}>
+            {posts.length === 0 ? '✦ Generate Blog Posts' : (missingBody > 0 ? `✦ AI Write All (${missingBody})` : '✦ Write More Posts')}
+          </button>
           <button className="bm-ghost" onClick={()=>{setMode(mode==='add'?'list':'add');setSel(null)}}>{mode==='add'?'← List':'+ New Post'}</button>
           <button className="bm-ghost" onClick={load}>↺ Refresh</button>
         </div>

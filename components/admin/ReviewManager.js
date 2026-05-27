@@ -323,8 +323,15 @@ export default function ReviewManager({ adminKey }) {
               {loading ? (
                 <div style={{padding:40,textAlign:'center',color:'#4b5563',fontSize:12}}>Loading reviews...</div>
               ) : filtered.length === 0 ? (
-                <div style={{padding:40,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563'}}>
-                  No reviews yet. Click "+ New Review" to add your first.
+                <div style={{padding:48,textAlign:'center'}}>
+                  <div style={{fontSize:32,marginBottom:12}}>★</div>
+                  <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:'var(--text)',letterSpacing:'.05em',marginBottom:8}}>No Reviews Yet</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#4b5563',marginBottom:20,lineHeight:1.8}}>
+                    Add a gun or gear review. Once added, use the 🤖 AI Write button to generate the full review body.
+                  </div>
+                  <button className="rv-btn" onClick={()=>setMode('add')} style={{background:'var(--gold)',color:'#000',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,letterSpacing:'.06em',padding:'8px 20px',cursor:'pointer'}}>
+                    + Add First Review
+                  </button>
                 </div>
               ) : filtered.map(r => (
                 <div key={r._id} className={'rv-row'+(sel===r._id?' sel':'')} onClick={()=>setSel(sel===r._id?null:r._id)}>

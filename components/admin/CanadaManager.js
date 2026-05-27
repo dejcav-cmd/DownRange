@@ -144,6 +144,14 @@ export default function CanadaManager({ adminKey }) {
         </div>
         <div style={{ display: 'flex', gap: 8 }}>
           <button className="cm-ghost" onClick={seedFromStatic} disabled={busy}>📥 Seed Static Data</button>
+          <button className="cm-ghost" onClick={async () => {
+            setBusy(true); flash('⏳ Writing Canada articles with AI...')
+            const res = await fetch('/api/admin/write-canada-articles', { method:'POST', headers:{...H} })
+            const d = await res.json()
+            if (d.ok) { flash('✅ ' + (d.message || 'Canada articles written')); load() }
+            else flash('❌ ' + (d.error||'Error'))
+            setBusy(false)
+          }} disabled={busy}>🤖 AI Write Articles</button>
           <button className="cm-btn" onClick={() => setShowAdd(!showAdd)} disabled={busy}>+ Add {typeConf?.label.slice(0,-1)}</button>
         </div>
       </div>
