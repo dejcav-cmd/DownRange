@@ -151,7 +151,7 @@ export default function Masthead() {
               alt="DownRange Co."
               width={480}
               height={160}
-              style={{ display:'block', height:'auto', maxHeight:54, width:'auto' }}
+              style={{ display:'block', height:'auto', maxHeight:162, width:'auto' }}
             />
           </Link>
 
