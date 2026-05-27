@@ -10,78 +10,117 @@ const sanity = createClient({
   token:     process.env.SANITY_API_TOKEN,
 })
 
-const LAW_IMAGE    = 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg'
-const PISTOL_IMAGE = 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg'
-const RIFLE_IMAGE  = 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg'
+// ── Curated Wikimedia images, verified accessible ───────────────────────────
+const IMAGES = {
+  LAW:    'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
+  PISTOL: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+  RIFLE:  'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
+  AMMO:   'https://upload.wikimedia.org/wikipedia/commons/thumb/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
+}
+
+// Keyword → image mapping — checked in order, first match wins
+const RULES = [
+  // LAW / LEGAL
+  [/\bban\b|lawsuit|saf\b|nra-ila|ccfr|court|atf\b|scotus|supreme.court|circuit|injunction|unconstitutional|bruen|heller|mcdonald|legislation|\bbill\b|congress|senate|second.amend|2a.rights|constitutional.carry|gun.control|preemption|nra\b|goa\b|fpc\b|feds\b|doj\b|fbi\b|indicted|prosecut|charged with|federal.agent|legal.challenge/i, IMAGES.LAW],
+  // PISTOL / HANDGUN
+  [/pistol|handgun|glock|sig.sauer|sig p|p365|p320|hellcat|shield|bodyguard|9mm|45.acp|40.s&w|380.acp|10mm|concealed.carry|edc|ccw|carry.gun|smith.wesson|s&w|ruger|kimber|springfield.armory|walther|beretta|fn.509|fn5|iron.sight|trigger.upgrade|holster|magazine|mag.release|revolver/i, IMAGES.PISTOL],
+  // RIFLE / LONG GUN
+  [/ar.?15|ar15|m4\b|m16|ak.?47|rifle|carbine|bolt.action|5\.56|6\.5.creedmoor|\.308|\.223|300.blackout|suppressor|silencer|nfa|shotgun|12.gauge|mossberg|benelli|optic|scope|red.dot|eotech|aimpoint|trijicon|vortex|precision.rifle|prs|long.range/i, IMAGES.RIFLE],
+  // AMMO
+  [/ammo|ammunition|cartridge|\bgrain\b|fmj|jhp|hollow.point|9mm.ammo|bulk.ammo|rounds/i, IMAGES.AMMO],
+]
+
+// Category fallbacks
+const CAT_MAP = {
+  law:      IMAGES.LAW,
+  breaking: IMAGES.LAW,
+  opinion:  IMAGES.LAW,
+  industry: IMAGES.RIFLE,
+  training: IMAGES.PISTOL,
+  news:     IMAGES.PISTOL,
+  deals:    IMAGES.PISTOL,
+}
 
 function pickImage(title, category) {
   const t = (title || '').toLowerCase()
-  if (/constitutional.carry|gun.control|preemption|second.amend|2a.rights/.test(t)) return LAW_IMAGE
-  if (/\blegislat|\bbill\b|congress|senate|most.viewed.bill|week.of/.test(t)) return LAW_IMAGE
-  if (/atf\b|scotus|supreme.court|circuit.court|federal.court|injunction/.test(t)) return LAW_IMAGE
-  if (/\bfeds\b|federal.agent|\bdoj\b|\bfbi\b|indicted|prosecut|charged with/.test(t)) return LAW_IMAGE
-  if (/\bban\b|lawsuit|legal.challenge|unconstitutional|bruen|heller|mcdonald/.test(t)) return LAW_IMAGE
-  if (/\bsaf\b|\bnra\b|\bgoa\b|\bfpc\b|second.amendment.foundation/.test(t)) return LAW_IMAGE
-  if (/pistols?|handguns?|glock|sig.sauer|bodyguard|shield|hellcat|p365|p320/.test(t)) return PISTOL_IMAGE
-  if (/9mm|45.acp|40.s&w|380.acp|10mm|concealed.carry|edc|ccw|carry.gun/.test(t)) return PISTOL_IMAGE
-  if (/smith.wesson|s&w|ruger|kimber|springfield.armory|walther|beretta|fn.509/.test(t)) return PISTOL_IMAGE
-  if (/iron.sight|trigger.upgrade|holster|magazine|mag.release/.test(t)) return PISTOL_IMAGE
-  if (/ar.?15|ar15|m4\b|m16|ak.?47|rifle|carbine|bolt.action/.test(t)) return RIFLE_IMAGE
-  if (/5\.56|6\.5.creedmoor|\.308|\.223|300.blackout|suppressor|silencer|nfa/.test(t)) return RIFLE_IMAGE
-  if (/shotgun|12.gauge|mossberg|benelli/.test(t)) return RIFLE_IMAGE
-  if (/optic|scope|red.dot|eotech|aimpoint|trijicon|vortex/.test(t)) return RIFLE_IMAGE
-  if (/ammo|ammunition|cartridge|\bgrain\b|fmj|jhp/.test(t)) return PISTOL_IMAGE
-  const catMap = { law: LAW_IMAGE, breaking: LAW_IMAGE, opinion: LAW_IMAGE, industry: RIFLE_IMAGE, training: PISTOL_IMAGE, news: PISTOL_IMAGE }
-  return catMap[category] || PISTOL_IMAGE
+  for (const [pattern, img] of RULES) {
+    if (pattern.test(t)) return img
+  }
+  return CAT_MAP[category] || IMAGES.PISTOL
 }
 
-function isBrokenUrl(url) {
-  if (!url) return true
-  const trusted = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com', 'images.unsplash.com']
-  return !trusted.some(d => url.includes(d))
+// An imageUrl is "wrong" if:
+// 1. It's null/empty
+// 2. It's NOT from a trusted CDN (external RSS photo = likely unrelated stock image)
+// 3. It IS from Wikimedia BUT is the wrong image for the article topic
+function needsFix(imageUrl, title, category) {
+  if (!imageUrl) return true
+
+  const TRUSTED = ['upload.wikimedia.org', 'cdn.sanity.io', 'img.youtube.com', 'i.ytimg.com', 'images.unsplash.com']
+  const isTrusted = TRUSTED.some(d => imageUrl.includes(d))
+
+  // Not from trusted CDN = external RSS stock photo = replace it
+  if (!isTrusted) return true
+
+  // If it's a Sanity CDN upload, it was manually set — keep it
+  if (imageUrl.includes('cdn.sanity.io')) return false
+
+  // It's a Wikimedia URL — check it's the RIGHT one for this article
+  const correct = pickImage(title, category)
+  if (imageUrl !== correct) return true
+
+  return false
 }
 
 export async function POST(req) {
   const key = req.headers.get('x-admin-key')
   if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const { force } = await req.json().catch(() => ({}))
+  
   let total = 0, fixed = 0, skipped = 0
-  const results = []
+  const samples = []
 
-  // Paginate through ALL articles — 200 at a time
+  // Paginate ALL articles in batches of 200
   let offset = 0
-  const PAGE = 200
   while (true) {
     const batch = await sanity.fetch(
-      `*[_type == "newsArticle"][${offset}...${offset + PAGE}]{_id, title, category, slug, imageUrl, heroImage{asset->{url}}}`
+      `*[_type == "newsArticle"][${offset}...${offset + 200}] {
+        _id, title, category, slug, imageUrl,
+        heroImage { asset->{url} }
+      }`
     )
     if (!batch.length) break
     total += batch.length
 
-    // Build mutation array for this batch
     const mutations = []
     for (const a of batch) {
-      const current = a.heroImage?.asset?.url || a.imageUrl
-      if (isBrokenUrl(current)) {
-        const correct = pickImage(a.title, a.category)
+      // Don't touch manually-uploaded Sanity CDN images
+      const effectiveUrl = a.heroImage?.asset?.url || a.imageUrl
+      if (effectiveUrl?.includes('cdn.sanity.io')) { skipped++; continue }
+
+      const correct = pickImage(a.title, a.category)
+
+      if (force || needsFix(a.imageUrl, a.title, a.category)) {
         mutations.push({ patch: { id: a._id, set: { imageUrl: correct } } })
         fixed++
-        if (results.length < 20) results.push({ slug: a.slug?.current, was: (a.imageUrl || 'null').slice(0, 40), now: correct.split('/').pop() })
+        if (samples.length < 15) samples.push({
+          slug:    a.slug?.current || a._id,
+          title:   (a.title || '').slice(0, 55),
+          was:     (a.imageUrl || 'null').split('/').pop().slice(0, 30),
+          now:     correct.split('/').pop(),
+        })
       } else {
         skipped++
       }
     }
 
-    // Commit batch mutations in one request
-    if (mutations.length > 0) {
-      await sanity.mutate(mutations)
-    }
-
-    offset += PAGE
-    if (batch.length < PAGE) break
+    if (mutations.length) await sanity.mutate(mutations)
+    offset += 200
+    if (batch.length < 200) break
   }
 
-  return Response.json({ ok: true, total, fixed, skipped, results })
+  return Response.json({ ok: true, total, fixed, skipped, samples })
 }
 
 export async function GET(req) { return POST(req) }
