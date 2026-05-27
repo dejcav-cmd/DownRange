@@ -56,7 +56,7 @@ export default function CanadaManager({ adminKey }) {
     setLoading(false)
   }, [activeType, adminKey])
 
-  useEffect(() => { load(); setSel(null); setShowAdd(false) }, [activeType])
+  useEffect(() => { load(); setSel(null); setShowAdd(false) }, [load])
 
   const selItem = items.find(i => i._id === sel)
 

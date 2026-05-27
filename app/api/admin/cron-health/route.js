@@ -121,7 +121,7 @@ export async function GET() {
     issues.push({ severity: 'CRITICAL', msg: 'CRON_SECRET not set — ALL cron jobs return 401 Unauthorized. No data will ever update.' })
 
   if (!env.ANTHROPIC_API_KEY.set)
-    issues.push({ severity: 'HIGH', msg: 'ANTHROPIC_API_KEY not set — articles publish as raw RSS text, no AI rewrite. Content quality degraded.' })
+    issues.push({ severity: 'MEDIUM', msg: 'ANTHROPIC_API_KEY not set — articles publish as raw RSS text, no AI rewrite. Content quality reduced but feeds still run.' })
 
   if (!env.SANITY_API_TOKEN.set)
     issues.push({ severity: 'CRITICAL', msg: 'SANITY_API_TOKEN not set — feed agents cannot write to Sanity. No articles will save.' })
@@ -129,8 +129,8 @@ export async function GET() {
   if (!sanityStatus.connected)
     issues.push({ severity: 'CRITICAL', msg: `Sanity connection failed: ${sanityStatus.error}` })
 
-  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 60)
-    issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago. News feed may not be running.` })
+  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 240)
+    issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h). News feed may not be running.` })
 
   if (!env.NEWSAPI_KEY.set && !env.GNEWS_KEY.set)
     issues.push({ severity: 'MEDIUM', msg: 'Neither NEWSAPI_KEY nor GNEWS_KEY set — news feed relies on RSS only (no API articles).' })

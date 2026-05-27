@@ -497,6 +497,15 @@ export default function OutreachPortal({ adminKey }) {
   const [scrapeRunning, setScrapeRunning] = useState(false)
   const [scrapeResult, setScrapeResult] = useState(null)
 
+  // Dedup + email finder
+  const [dedupLoading,  setDedupLoading]  = useState(false)
+  const [dedupResult,   setDedupResult]   = useState(null)
+  const [emailLoading,  setEmailLoading]  = useState(false)
+  const [emailResults,  setEmailResults]  = useState([])
+  const [emailApplying, setEmailApplying] = useState(false)
+  const [emailLimit,    setEmailLimit]    = useState(30)
+  const [selectedEmails, setSelectedEmails] = useState(new Set())
+
   // Import
   const fileRef = useRef(null)
   const [importType, setImportType]       = useState('gun_shop')
@@ -740,6 +749,74 @@ export default function OutreachPortal({ adminKey }) {
     setLoading(false)
   }
 
+  const runDedup = async () => {
+    setDedupLoading(true); setDedupResult(null)
+    try {
+      const res = await fetch('/api/admin/dedup-contacts', { headers: h })
+      const d = await res.json()
+      setDedupResult(d)
+    } catch(e) { flash('❌ ' + e.message, false) }
+    setDedupLoading(false)
+  }
+
+  const runDeleteDups = async () => {
+    if (!confirm('Auto-delete all duplicates? Keeps the contact with the most data (email priority). Cannot be undone.')) return
+    setDedupLoading(true)
+    try {
+      const res = await fetch('/api/admin/dedup-contacts', {
+        method: 'POST', headers: {...h, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ action: 'delete-all-duplicates' })
+      })
+      const d = await res.json()
+      if (d.ok) { flash(`✅ Removed ${d.deleted} duplicate contacts`); await runDedup(); loadContacts() }
+      else flash('❌ ' + d.error, false)
+    } catch(e) { flash('❌ ' + e.message, false) }
+    setDedupLoading(false)
+  }
+
+  const runMergeGroup = async (keepId, deleteIds) => {
+    try {
+      const res = await fetch('/api/admin/dedup-contacts', {
+        method: 'POST', headers: {...h, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ action: 'merge', keepId, deleteIds })
+      })
+      const d = await res.json()
+      if (d.ok) { flash(`✅ Removed ${d.deleted} duplicate(s)`); runDedup(); loadContacts() }
+      else flash('❌ ' + d.error, false)
+    } catch(e) { flash('❌ ' + e.message, false) }
+  }
+
+  const runFindEmails = async () => {
+    setEmailLoading(true); setEmailResults([]); setSelectedEmails(new Set())
+    try {
+      const res = await fetch(`/api/admin/find-emails?limit=${emailLimit}`, { headers: h })
+      const d = await res.json()
+      if (d.ok) {
+        setEmailResults(d.results)
+        // Auto-select all found emails
+        setSelectedEmails(new Set(d.results.filter(r => r.email).map(r => r._id)))
+        flash(`✅ Found ${d.found} emails out of ${d.total} contacts searched`)
+      } else flash('❌ ' + d.error, false)
+    } catch(e) { flash('❌ ' + e.message, false) }
+    setEmailLoading(false)
+  }
+
+  const runApplyEmails = async () => {
+    const toApply = emailResults.filter(r => r.email && selectedEmails.has(r._id))
+    if (!toApply.length) { flash('No emails selected', false); return }
+    setEmailApplying(true)
+    try {
+      const res = await fetch('/api/admin/find-emails', {
+        method: 'POST', headers: {...h, 'Content-Type': 'application/json'},
+        body: JSON.stringify({ action: 'apply', results: toApply })
+      })
+      const d = await res.json()
+      if (d.ok) { flash(`✅ Saved ${d.saved} emails to contacts`); loadContacts(); setEmailResults([]) }
+      else flash('❌ ' + d.error, false)
+    } catch(e) { flash('❌ ' + e.message, false) }
+    setEmailApplying(false)
+  }
+
   const runScrape = async (save=false) => {
     setScrapeRunning(true); setScrapeResult(null)
     const res = await fetch('/api/outreach/scrape',{method:'POST',headers:{...h,'Content-Type':'application/json'},body:JSON.stringify({source:scrapeSource,params:{state:scrapeState,limit:100},saveToDatabase:save})})
@@ -797,7 +874,7 @@ export default function OutreachPortal({ adminKey }) {
   const TABS = [
     ['contacts','👥 Contacts'],['lists','📋 Lists'],['queue','⚡ Approval Queue'],['history','📬 History'],
     ['send','📤 Bulk Send'],['templates','✉ Templates'],
-    ['campaigns','🗂 Campaigns'],['scrape','🔍 Scrape'],['import','📥 Import'],
+    ['campaigns','🗂 Campaigns'],['dedup','🔍 Dedup & Emails'],['scrape','🔍 Scrape'],['import','📥 Import'],
   ]
 
   // ── Key gate ────────────────────────────────────────────────────────────────
@@ -1802,6 +1879,158 @@ export default function OutreachPortal({ adminKey }) {
       )}
 
       {/* ── IMPORT ── */}
+      {tab==='dedup' && (
+        <div>
+          <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--gold)',letterSpacing:'.06em',lineHeight:1,marginBottom:6}}>🔍 Dedup & Email Finder</div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginBottom:20}}>
+            Find and remove duplicate contacts, then research emails from websites.
+          </div>
+
+          {/* ── DEDUP SECTION ── */}
+          <div style={{marginBottom:28}}>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12,borderBottom:'1px solid var(--border)',paddingBottom:8}}>
+              Step 1 — Find Duplicates
+            </div>
+            <div style={{display:'flex',gap:10,marginBottom:16,flexWrap:'wrap'}}>
+              <button className="op-btn" onClick={runDedup} disabled={dedupLoading}>
+                {dedupLoading ? '⏳ Scanning...' : '🔍 Scan for Duplicates'}
+              </button>
+              {dedupResult && dedupResult.duplicateCount > 0 && (
+                <button className="op-btn-red" onClick={runDeleteDups} disabled={dedupLoading}>
+                  🗑 Auto-Remove All {dedupResult.duplicateCount} Duplicates
+                </button>
+              )}
+            </div>
+
+            {dedupResult && (
+              <div>
+                <div style={{display:'flex',gap:12,marginBottom:12,flexWrap:'wrap'}}>
+                  {[
+                    ['Total Contacts', dedupResult.total, 'var(--gold)'],
+                    ['Duplicate Groups', dedupResult.duplicateGroups?.length || 0, '#f59e0b'],
+                    ['Duplicates to Remove', dedupResult.duplicateCount, '#ef4444'],
+                  ].map(([l,v,c]) => (
+                    <div key={l} style={{background:'var(--bg2)',border:`1px solid var(--border)`,padding:'10px 16px',textAlign:'center',minWidth:120}}>
+                      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:c,lineHeight:1}}>{v}</div>
+                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#64748b',marginTop:2,textTransform:'uppercase',letterSpacing:'.06em'}}>{l}</div>
+                    </div>
+                  ))}
+                </div>
+
+                {dedupResult.duplicateGroups?.length === 0 ? (
+                  <div style={{padding:'20px 24px',background:'rgba(34,197,94,.06)',border:'1px solid rgba(34,197,94,.2)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#22c55e'}}>
+                    ✓ No duplicates found — contact list is clean.
+                  </div>
+                ) : (
+                  <div style={{border:'1px solid var(--border)',overflow:'hidden'}}>
+                    <div style={{padding:'8px 14px',background:'var(--bg2)',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em'}}>
+                      DUPLICATE GROUPS — click "Keep & Remove" to merge, or use Auto-Remove All above
+                    </div>
+                    {dedupResult.duplicateGroups.map((group, gi) => (
+                      <div key={gi} style={{padding:'12px 16px',borderBottom:'1px solid rgba(30,41,59,.4)',display:'flex',gap:12,alignItems:'flex-start',flexWrap:'wrap'}}>
+                        <div style={{flex:1,display:'flex',gap:8,flexWrap:'wrap',alignItems:'flex-start'}}>
+                          {group.map((c, ci) => (
+                            <div key={c._id} style={{background:ci===0?'rgba(34,197,94,.08)':'rgba(239,68,68,.05)',border:`1px solid ${ci===0?'rgba(34,197,94,.3)':'rgba(239,68,68,.2)'}`,padding:'8px 12px',minWidth:180}}>
+                              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:ci===0?'#22c55e':'#f87171'}}>{c.name}</div>
+                              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',marginTop:2}}>{c.email || 'no email'}</div>
+                              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#374151',marginTop:1}}>{c.type} · {c.status}</div>
+                              {ci === 0 && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#22c55e',marginTop:2}}>KEEP</div>}
+                            </div>
+                          ))}
+                        </div>
+                        <button className="op-btn-ghost" style={{fontSize:9,padding:'4px 10px',flexShrink:0,color:'#22c55e',borderColor:'rgba(34,197,94,.3)'}}
+                          onClick={() => runMergeGroup(group[0]._id, group.slice(1).map(c => c._id))}>
+                          Keep First, Remove {group.length - 1}
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* ── EMAIL FINDER SECTION ── */}
+          <div>
+            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12,borderBottom:'1px solid var(--border)',paddingBottom:8}}>
+              Step 2 — Find Missing Emails
+            </div>
+            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',marginBottom:12,lineHeight:1.8}}>
+              Looks up emails from known databases and scrapes contact pages. Covers 50+ major manufacturers, holster companies, and organizations.
+            </div>
+            <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:16,flexWrap:'wrap'}}>
+              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b'}}>Search up to:</span>
+                <select className="op-select" value={emailLimit} onChange={e=>setEmailLimit(Number(e.target.value))}>
+                  {[10,20,30,50].map(n=><option key={n} value={n}>{n} contacts</option>)}
+                </select>
+              </div>
+              <button className="op-btn" onClick={runFindEmails} disabled={emailLoading}>
+                {emailLoading ? '⏳ Searching...' : '📧 Find Emails'}
+              </button>
+              {emailResults.length > 0 && selectedEmails.size > 0 && (
+                <button className="op-btn" style={{background:'#22c55e'}} onClick={runApplyEmails} disabled={emailApplying}>
+                  {emailApplying ? '⏳ Saving...' : `💾 Save ${selectedEmails.size} Emails to Contacts`}
+                </button>
+              )}
+            </div>
+
+            {emailResults.length > 0 && (
+              <div style={{border:'1px solid var(--border)',overflow:'hidden'}}>
+                <div style={{padding:'8px 14px',background:'var(--bg2)',borderBottom:'1px solid var(--border)',display:'flex',gap:12,alignItems:'center'}}>
+                  <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em'}}>
+                    {emailResults.filter(r=>r.email).length} EMAILS FOUND · {emailResults.filter(r=>!r.email).length} NOT FOUND
+                  </span>
+                  <div style={{marginLeft:'auto',display:'flex',gap:8}}>
+                    <button className="op-btn-ghost" style={{fontSize:9,padding:'3px 8px'}}
+                      onClick={()=>setSelectedEmails(new Set(emailResults.filter(r=>r.email).map(r=>r._id)))}>
+                      Select All Found
+                    </button>
+                    <button className="op-btn-ghost" style={{fontSize:9,padding:'3px 8px'}}
+                      onClick={()=>setSelectedEmails(new Set())}>
+                      Deselect All
+                    </button>
+                  </div>
+                </div>
+                <div style={{maxHeight:480,overflowY:'auto'}}>
+                  {emailResults.map(r => (
+                    <div key={r._id} onClick={()=>{
+                      if (!r.email) return
+                      setSelectedEmails(prev => {
+                        const n = new Set(prev)
+                        n.has(r._id) ? n.delete(r._id) : n.add(r._id)
+                        return n
+                      })
+                    }} style={{display:'flex',gap:12,padding:'10px 14px',borderBottom:'1px solid rgba(30,41,59,.3)',alignItems:'center',
+                      cursor:r.email?'pointer':'default',background:selectedEmails.has(r._id)?'rgba(34,197,94,.06)':'transparent',
+                      transition:'background .1s'}}>
+                      <input type="checkbox" checked={selectedEmails.has(r._id)} disabled={!r.email}
+                        onChange={()=>{}} onClick={e=>e.stopPropagation()} style={{flexShrink:0}} />
+                      <div style={{flex:1,minWidth:0}}>
+                        <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.name}</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b'}}>{r.type} · {r.website?.replace(/^https?:\/\/(www\.)?/,'').slice(0,40)}</div>
+                      </div>
+                      {r.email ? (
+                        <div style={{display:'flex',gap:8,alignItems:'center',flexShrink:0}}>
+                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--gold)'}}>{r.email}</span>
+                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,padding:'1px 5px',
+                            background:r.source==='known'?'rgba(34,197,94,.15)':'rgba(200,146,42,.15)',
+                            color:r.source==='known'?'#22c55e':'#C8922A',borderRadius:2}}>
+                            {r.source === 'known' ? '✓ verified' : '↗ scraped'}
+                          </span>
+                        </div>
+                      ) : (
+                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',flexShrink:0}}>— not found</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
+
       {tab==='import' && (
         <div>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.3rem',color:'var(--gold)',letterSpacing:'.05em',marginBottom:16}}>CSV Import</div>
