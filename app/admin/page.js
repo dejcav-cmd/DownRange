@@ -126,36 +126,82 @@ const STYLES = `
   * { box-sizing:border-box; margin:0; padding:0; }
   body { background:var(--bg); color:var(--text); }
 
-  .adm-shell { display:flex; height:100vh; overflow:hidden; background:var(--bg); font-family:'IBM Plex Mono',monospace; }
-  
-  /* Top bar */
-  .adm-topbar { height:52px; background:var(--bg2); border-bottom:1px solid var(--border); display:flex; align-items:center; padding:0 20px; gap:16px; position:fixed; top:0; left:0; right:0; z-index:100; }
-  .adm-logo { font-family:'Bebas Neue',cursive; font-size:1.3rem; color:var(--gold); letter-spacing:.08em; flex-shrink:0; }
-  .adm-site-link { font-size:10px; color:#4b5563; text-decoration:none; padding:4px 10px; border:1px solid var(--border); transition:all .15s; }
-  .adm-site-link:hover { border-color:var(--gold); color:var(--gold); }
-  .adm-status-pill { display:flex; align-items:center; gap:5px; font-size:9px; color:#4b5563; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; background:rgba(0,0,0,.3); border:1px solid var(--border); }
-  .adm-msg { flex:1; font-size:10px; padding:5px 12px; }
-  .adm-msg.ok { color:#22c55e; background:rgba(34,197,94,.08); }
-  .adm-msg.err { color:#f87171; background:rgba(239,68,68,.08); }
-  .adm-msg.info { color:#C8922A; background:rgba(200,146,42,.08); }
+  /* ── Layout scaffold ── */
+  html, body { height:100%; overflow:hidden; }
 
-  /* Sidebar */
-  .adm-sidebar { width:200px; background:var(--bg2); border-right:1px solid var(--border); padding-top:52px; display:flex; flex-direction:column; flex-shrink:0; position:fixed; top:0; left:0; bottom:0; z-index:90; overflow-y:auto; }
-  .adm-section-btn { width:100%; background:none; border:none; border-left:3px solid transparent; color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px; padding:11px 16px; cursor:pointer; text-align:left; display:flex; align-items:center; gap:8px; transition:all .12s; letter-spacing:.03em; }
+  .adm-topbar {
+    position:fixed; top:0; left:0; right:0; height:52px; z-index:100;
+    background:var(--bg2); border-bottom:1px solid var(--border);
+    display:flex; align-items:center; padding:0 20px; gap:12px;
+  }
+  .adm-logo { font-family:'Bebas Neue',cursive; font-size:1.3rem; color:var(--gold); letter-spacing:.08em; flex-shrink:0; }
+  .adm-site-link { font-size:10px; color:#4b5563; text-decoration:none; padding:4px 10px; border:1px solid var(--border); transition:all .15s; white-space:nowrap; }
+  .adm-site-link:hover { border-color:var(--gold); color:var(--gold); }
+  .adm-status-pill { display:flex; align-items:center; gap:5px; font-size:9px; color:#4b5563; letter-spacing:.08em; text-transform:uppercase; padding:3px 8px; background:rgba(0,0,0,.3); border:1px solid var(--border); white-space:nowrap; }
+  .adm-msg { flex:1; font-size:10px; padding:5px 12px; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .adm-msg.ok  { color:#22c55e; background:rgba(34,197,94,.08); }
+  .adm-msg.err { color:#f87171; background:rgba(239,68,68,.08); }
+  .adm-msg.info{ color:#C8922A; background:rgba(200,146,42,.08); }
+
+  /* Shell sits below the topbar */
+  .adm-shell {
+    display:flex;
+    height:calc(100vh - 52px);
+    margin-top:52px;
+    overflow:hidden;
+    background:var(--bg);
+    font-family:'IBM Plex Mono',monospace;
+  }
+
+  /* Sidebar — full height of shell */
+  .adm-sidebar {
+    width:200px; flex-shrink:0;
+    background:var(--bg2); border-right:1px solid var(--border);
+    display:flex; flex-direction:column;
+    overflow-y:auto; overflow-x:hidden;
+  }
+  .adm-section-btn {
+    width:100%; background:none; border:none; border-left:3px solid transparent;
+    color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px;
+    padding:11px 16px; cursor:pointer; text-align:left;
+    display:flex; align-items:center; gap:8px;
+    transition:all .12s; letter-spacing:.03em;
+    white-space:nowrap; overflow:hidden;
+  }
   .adm-section-btn:hover { background:rgba(255,255,255,.03); color:var(--text); }
   .adm-section-btn.active { border-left-color:var(--gold); color:var(--gold); background:rgba(200,146,42,.08); }
-  .adm-section-btn .adm-count { margin-left:auto; font-size:8px; background:rgba(200,146,42,.2); color:var(--gold); padding:1px 5px; border-radius:2px; }
+  .adm-section-btn .adm-count { margin-left:auto; font-size:8px; background:rgba(200,146,42,.2); color:var(--gold); padding:1px 5px; border-radius:2px; flex-shrink:0; }
 
-  /* Sub-tabs */
-  .adm-subtabs { display:flex; gap:0; border-bottom:1px solid var(--border); padding:0 0 0 0; overflow-x:auto; background:var(--bg2); position:sticky; top:52px; z-index:80; margin-left:200px; }
-  .adm-subtab { background:none; border:none; border-bottom:2px solid transparent; color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px; padding:10px 16px; cursor:pointer; white-space:nowrap; letter-spacing:.03em; transition:all .12s; display:flex; align-items:center; gap:5px; }
-  .adm-subtab:hover { color:var(--text); }
+  /* Main column */
+  .adm-main {
+    flex:1; min-width:0;
+    display:flex; flex-direction:column;
+    overflow:hidden;
+  }
+
+  /* Sub-tabs — sticky at top of main column, NOT full-page fixed */
+  .adm-subtabs {
+    flex-shrink:0;
+    display:flex; gap:0;
+    border-bottom:1px solid var(--border);
+    background:var(--bg2);
+    overflow-x:auto; overflow-y:hidden;
+    scrollbar-width:none;
+  }
+  .adm-subtabs::-webkit-scrollbar { display:none; }
+  .adm-subtab {
+    background:none; border:none; border-bottom:2px solid transparent;
+    color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px;
+    padding:10px 16px; cursor:pointer; white-space:nowrap;
+    letter-spacing:.03em; transition:all .12s;
+    display:flex; align-items:center; gap:5px; flex-shrink:0;
+  }
+  .adm-subtab:hover { color:var(--text); background:rgba(255,255,255,.02); }
   .adm-subtab.active { border-bottom-color:var(--gold); color:var(--gold); }
   .adm-subtab .badge { background:#ef4444; color:#fff; font-size:7px; padding:1px 4px; border-radius:2px; font-weight:700; }
 
-  /* Main */
-  .adm-main { flex:1; margin-left:200px; padding-top:52px; display:flex; flex-direction:column; overflow:hidden; }
-  .adm-panel { flex:1; overflow-y:auto; padding:28px 32px; }
+  /* Scrollable panel area */
+  .adm-panel { flex:1; overflow-y:auto; overflow-x:hidden; padding:28px 32px; }
 
   /* Cards */
   .adm-card { background:var(--bg2); border:1px solid var(--border); padding:20px 24px; }
@@ -815,7 +861,7 @@ export default function AdminPage() {
         </div>
       </div>
 
-      <div className="adm-shell" style={{paddingTop:0}}>
+      <div className="adm-shell">
 
         {/* ── SIDEBAR ── */}
         <div className="adm-sidebar">
