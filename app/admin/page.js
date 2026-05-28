@@ -1488,6 +1488,24 @@ function ContentHub({ adminKey, setPanel, setSection }) {
   const [results,  setResults]  = useState({})
   const [aiRunning,setAiRunning]= useState({})
   const [aiResults,setAiResults]= useState({})
+  const [locking,  setLocking]  = useState({})
+  const [lockRes,  setLockRes]  = useState({})
+
+  async function lockAll(type, lock = true) {
+    setLocking(l => ({...l, [type]: lock ? 'locking' : 'unlocking'}))
+    setLockRes(r => ({...r, [type]: null}))
+    try {
+      const res = await fetch('/api/admin/lock-all', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ type, lock })
+      })
+      const d = await res.json()
+      setLockRes(r => ({...r, [type]: d}))
+    } catch(e) {
+      setLockRes(r => ({...r, [type]: { ok: false, error: e.message }}))
+    }
+    setLocking(l => ({...l, [type]: false}))
+  }
 
   useEffect(() => {
     fetchCounts()
@@ -1759,7 +1777,31 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                     {aiRunning[section.key] ? '⏳ Running...' : `🤖 ${section.aiAction.label}`}
                   </button>
                 )}
+
+                {/* Lock All / Unlock All */}
+                <button
+                  onClick={() => lockAll(section.key, true)}
+                  disabled={!!locking[section.key]}
+                  title="Lock all — prevents AI, cron, and image agents from modifying these items"
+                  style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,letterSpacing:'.04em',padding:'5px 10px',border:'1px solid #C8922A',background:'transparent',color:'#C8922A',cursor:'pointer',opacity:locking[section.key]?0.5:1,flexShrink:0}}>
+                  {locking[section.key]==='locking' ? '⏳' : '🔒'} Lock All
+                </button>
+                <button
+                  onClick={() => lockAll(section.key, false)}
+                  disabled={!!locking[section.key]}
+                  title="Unlock all — re-enables AI rewrites and image updates"
+                  style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,letterSpacing:'.04em',padding:'5px 10px',border:'1px solid var(--border)',background:'transparent',color:'#6b7280',cursor:'pointer',opacity:locking[section.key]?0.5:1,flexShrink:0}}>
+                  {locking[section.key]==='unlocking' ? '⏳' : '🔓'} Unlock All
+                </button>
               </div>
+
+              {lockRes[section.key] && (
+                <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,marginTop:4,padding:'4px 8px',color:lockRes[section.key].ok?'#C8922A':'#ef4444',background:lockRes[section.key].ok?'rgba(200,146,42,.08)':'rgba(239,68,68,.08)'}}>
+                  {lockRes[section.key].ok
+                    ? `${lockRes[section.key].lock?'🔒':'🔓'} ${lockRes[section.key].updated} items ${lockRes[section.key].lock?'locked':'unlocked'}`
+                    : `❌ ${lockRes[section.key].error}`}
+                </div>
+              )}
 
               {/* Result feedback */}
               {(sResult || aResult) && (() => {
