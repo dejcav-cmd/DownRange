@@ -623,7 +623,8 @@ export default function NewsArticleManager({ adminKey }) {
         adminKey={adminKey}
         item={imgSearch}
         onApply={(imageUrl) => {
-          // Update the item in local state
+          setEditImg(imageUrl)
+          setArticles(prev => prev.map(a => a._id === imgSearch._id ? { ...a, imageUrl } : a))
           setImgSearch(null)
         }}
         onClose={() => setImgSearch(null)}
