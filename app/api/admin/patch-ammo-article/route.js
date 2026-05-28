@@ -12,7 +12,7 @@ function pickPhoto(title = '', category = '') {
   if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen/.test(t)) return '/img/photos/law.jpg'
   if (/pistol|handgun|glock|sig|beretta|colt|revolver|1911|carry|edc|p365|hellcat|shield/.test(t)) return '/img/photos/pistol.jpg'
   if (/rifle|ar.?15|m4|carbine|ak|sbr/.test(t)) return '/img/photos/rifle.jpg'
-  if (/shotgun|mossberg|benelli|gauge|pump/.test(t)) return '/img/photos/shotgun.jpg'
+  if (/shotgun|mossberg|benelli|gauge|pump|dog.*shoot|shoot.*dog/.test(t)) return '/img/photos/shotgun.jpg'
   if (/suppressor|silencer|nfa/.test(t)) return '/img/photos/suppressor.jpg'
   if (/ammo|ammunition|cartridge|bullet|grain|ballistic|reload|press|powder|brass|cast/.test(t)) return '/img/photos/ammo.jpg'
   if (/hunt|deer|elk|game|waterfowl/.test(t)) return '/img/photos/hunting.jpg'
@@ -22,33 +22,35 @@ function pickPhoto(title = '', category = '') {
   return '/img/photos/news.jpg'
 }
 
-async function runPatch() {
-  const slug = 'missouri-bullet-company-hard-cast-bullets-and-the-frankford-arsenal-precision-press-a-reloader-s'
+// Articles stuck with bad/AI images that can't be fixed via og:image scraping
+const STUCK_SLUGS = [
+  'missouri-bullet-company-hard-cast-bullets-and-the-frankford-arsenal-precision-press-a-reloader-s',
+  'dog-fires-shotgun-in-parked-truck-injures-woman-in-nebraska',
+]
+
+async function patchSlug(slug) {
   const article = await sanity.fetch(
     `*[_type == "newsArticle" && slug.current == $slug][0]{ _id, title, imageUrl, category }`,
     { slug }
   )
-  if (!article) return { ok: false, error: 'Article not found' }
-
-  // Already has a real image — skip
+  if (!article) return { slug, ok: false, error: 'not found' }
   const current = article.imageUrl || ''
-  if (current.startsWith('https://cdn.sanity.io')) return { ok: true, skipped: true, reason: 'already has CDN image', imageUrl: current }
-
+  if (current.startsWith('https://cdn.sanity.io')) return { slug, ok: true, skipped: true, reason: 'already CDN image' }
   const imageUrl = pickPhoto(article.title, article.category)
   await sanity.patch(article._id).set({ imageUrl }).commit()
-  return { ok: true, _id: article._id, title: article.title, imageUrl }
+  return { slug, ok: true, _id: article._id, title: article.title, imageUrl }
 }
 
 export async function GET(req) {
-  // Allow Vercel cron OR admin key
   const cronSecret = process.env.CRON_SECRET
   const isCron = cronSecret && req.headers.get('authorization') === `Bearer ${cronSecret}`
   const isAdmin = req.headers.get('x-admin-key') === process.env.ADMIN_KEY
   if (!isCron && !isAdmin) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  const result = await runPatch()
-  return Response.json(result)
+
+  const results = await Promise.all(STUCK_SLUGS.map(patchSlug))
+  const done = results.filter(r => r.ok && !r.skipped).length
+  const skipped = results.filter(r => r.skipped).length
+  return Response.json({ ok: true, done, skipped, results })
 }
 
-export async function POST(req) {
-  return GET(req)
-}
+export async function POST(req) { return GET(req) }
