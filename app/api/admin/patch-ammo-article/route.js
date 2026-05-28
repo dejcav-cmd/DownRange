@@ -7,38 +7,29 @@ const sanity = createClient({
   token: process.env.SANITY_API_TOKEN,
 })
 
-function pickPhoto(title = '', category = '') {
-  const t = (title + ' ' + category).toLowerCase()
-  if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen/.test(t)) return '/img/photos/law.jpg'
-  if (/pistol|handgun|glock|sig|beretta|colt|revolver|1911|carry|edc|p365|hellcat|shield/.test(t)) return '/img/photos/pistol.jpg'
-  if (/rifle|ar.?15|m4|carbine|ak|sbr/.test(t)) return '/img/photos/rifle.jpg'
-  if (/shotgun|mossberg|benelli|gauge|pump|dog.*shoot|shoot.*dog/.test(t)) return '/img/photos/shotgun.jpg'
-  if (/suppressor|silencer|nfa/.test(t)) return '/img/photos/suppressor.jpg'
-  if (/ammo|ammunition|cartridge|bullet|grain|ballistic|reload|press|powder|brass|cast/.test(t)) return '/img/photos/ammo.jpg'
-  if (/hunt|deer|elk|game|waterfowl/.test(t)) return '/img/photos/hunting.jpg'
-  if (/competi|uspsa|idpa|ipsc|3.gun/.test(t)) return '/img/photos/competition.jpg'
-  if (/train|range|practice|marksmanship/.test(t)) return '/img/photos/training.jpg'
-  if (/gear|holster|optic|sight|scope|light|sling/.test(t)) return '/img/photos/gear.jpg'
-  return '/img/photos/news.jpg'
-}
-
-// Articles stuck with bad/AI images that can't be fixed via og:image scraping
-const STUCK_SLUGS = [
-  'missouri-bullet-company-hard-cast-bullets-and-the-frankford-arsenal-precision-press-a-reloader-s',
-  'dog-fires-shotgun-in-parked-truck-injures-woman-in-nebraska',
+// Articles stuck with bad images — source URLs block og:image scraping from Vercel
+const STUCK = [
+  { slug: 'missouri-bullet-company-hard-cast-bullets-and-the-frankford-arsenal-precision-press-a-reloader-s', photo: '/img/photos/ammo.jpg' },
+  { slug: 'dog-fires-shotgun-in-parked-truck-injures-woman-in-nebraska', photo: '/img/photos/shotgun.jpg' },
+  { slug: 'new-house-bill-by-rep-patronis-would-repeal-hughes-amendment-legalize-machine-guns', photo: '/img/photos/law.jpg' },
+  { slug: 'texans-dump-cornyn-over-gun-bill-betrayal', photo: '/img/photos/law.jpg' },
+  { slug: 'house-passes-veterans-second-amendment-protection-act-locking-in-va-fiduciary-reform', photo: '/img/photos/law.jpg' },
+  { slug: 'gun-rights-groups-sue-maryland-over-glock-ban', photo: '/img/photos/pistol.jpg' },
+  { slug: 'tell-president-trump-pardon-tate-adamiak', photo: '/img/photos/law.jpg' },
+  { slug: 'multiple-loaded-firearms-seized-after-traffic-stop-on-staten-island', photo: '/img/photos/law.jpg' }
 ]
 
-async function patchSlug(slug) {
+async function patchSlug({ slug, photo }) {
   const article = await sanity.fetch(
-    `*[_type == "newsArticle" && slug.current == $slug][0]{ _id, title, imageUrl, category }`,
+    `*[_type == "newsArticle" && slug.current == $slug][0]{ _id, title, imageUrl, editorLocked }`,
     { slug }
   )
   if (!article) return { slug, ok: false, error: 'not found' }
+  if (article.editorLocked) return { slug, ok: true, skipped: true, reason: 'editorLocked' }
   const current = article.imageUrl || ''
   if (current.startsWith('https://cdn.sanity.io')) return { slug, ok: true, skipped: true, reason: 'already CDN image' }
-  const imageUrl = pickPhoto(article.title, article.category)
-  await sanity.patch(article._id).set({ imageUrl }).commit()
-  return { slug, ok: true, _id: article._id, title: article.title, imageUrl }
+  await sanity.patch(article._id).set({ imageUrl: photo }).commit()
+  return { slug, ok: true, _id: article._id, was: current.slice(0,60), now: photo }
 }
 
 export async function GET(req) {
@@ -46,8 +37,7 @@ export async function GET(req) {
   const isCron = cronSecret && req.headers.get('authorization') === `Bearer ${cronSecret}`
   const isAdmin = req.headers.get('x-admin-key') === process.env.ADMIN_KEY
   if (!isCron && !isAdmin) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const results = await Promise.all(STUCK_SLUGS.map(patchSlug))
+  const results = await Promise.all(STUCK.map(patchSlug))
   const done = results.filter(r => r.ok && !r.skipped).length
   const skipped = results.filter(r => r.skipped).length
   return Response.json({ ok: true, done, skipped, results })
