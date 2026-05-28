@@ -253,6 +253,8 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
   const [migrating, setMigrating]   = useState(false)
   const [feedRunning, setFeedRunning] = useState(false)
   const [feedResult, setFeedResult]   = useState(null)
+  const [seeding, setSeeding]         = useState(false)
+  const [seedResult, setSeedResult]   = useState(null)
 
   useEffect(() => {
     fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
@@ -310,6 +312,42 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
     <div>
       <div className="panel-title">DownRange Command Center</div>
       <div className="panel-sub">Enterprise firearms media management platform</div>
+
+      {/* Seed All Content — prominent banner */}
+      <div style={{marginBottom:16,padding:'16px 20px',background:'rgba(34,197,94,.06)',border:'1px solid rgba(34,197,94,.25)',display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
+        <div style={{flex:1,minWidth:200}}>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'#22c55e',letterSpacing:'.05em',marginBottom:3}}>🌱 SEED ALL CONTENT PANELS</div>
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',lineHeight:1.7}}>
+            Populates Blog, Reviews, Canada, Competitions, and Gun Releases with real starter content. Run this once if any panel shows 0 items.
+          </div>
+        </div>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
+          <button style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1rem',letterSpacing:'.08em',padding:'10px 24px',background:seeding?'#374151':'#22c55e',color:seeding?'#6b7280':'#000',border:'none',cursor:seeding?'default':'pointer'}}
+            disabled={seeding} onClick={async () => {
+              setSeeding(true); setSeedResult(null)
+              try {
+                const r = await fetch('/api/admin/seed-all-content', {
+                  method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
+                  body: JSON.stringify({})
+                })
+                const d = await r.json()
+                setSeedResult(d)
+              } catch(e) { setSeedResult({ok:false, message:e.message}) }
+              setSeeding(false)
+            }}>
+            {seeding ? '⏳ SEEDING...' : '▶ SEED ALL PANELS'}
+          </button>
+          <button style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,padding:'10px 14px',background:'transparent',border:'1px solid rgba(34,197,94,.3)',color:'#22c55e',cursor:'pointer'}}
+            onClick={()=>{setSection('system');setPanel('agents')}}>
+            🤖 Content Agents →
+          </button>
+        </div>
+        {seedResult && (
+          <div style={{width:'100%',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:seedResult.ok?'#4ade80':'#f87171',paddingTop:8,borderTop:'1px solid rgba(34,197,94,.15)'}}>
+            {seedResult.ok ? `✅ ${seedResult.message}` : `❌ ${seedResult.message||'Error'}`}
+          </div>
+        )}
+      </div>
 
       {/* AmmoLand migration */}
       <div style={{marginBottom:16,padding:'12px 18px',background:'rgba(200,146,42,.05)',border:'1px solid rgba(200,146,42,.2)',display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
@@ -1106,6 +1144,14 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
             { key:'fetch-article-images',label:'📷 Fetch OG Images',            color:'#a855f7',  path:'fetch-article-images', actions:[{label:'Fetch Now (30)',params:'?limit=30'}] },
             { key:'patch-article',       label:'🔧 Patch SVG Fallbacks',        color:'#f59e0b',  path:'patch-article',        actions:[{label:'Patch All',params:''}] },
             { key:'seed-image-repo',     label:'🗃 Seed Image Repository',      color:'#64748b',  path:'seed-image-repo',      actions:[{label:'Seed Images',params:''}] },
+            { key:'seed-all-content',    label:'🌱 Seed All Content Panels',    color:'#22c55e',  path:'seed-all-content',     actions:[
+              {label:'Seed Everything (blog+reviews+canada+competitions+releases)', params:''},
+              {label:'Blog only', params:'?types=blog'},
+              {label:'Reviews only', params:'?types=reviews'},
+              {label:'Canada only', params:'?types=canada'},
+              {label:'Competitions only', params:'?types=competitions'},
+              {label:'Gun Releases only', params:'?types=releases'},
+            ]},
           ].map(agent => {
             const res  = agentResults[agent.key]
             const busy = agentRunning[agent.key]

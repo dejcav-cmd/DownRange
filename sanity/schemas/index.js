@@ -21,6 +21,7 @@ import { outreachTemplate } from './outreachTemplate'
 import { outreachSendLog }  from './outreachSendLog'
 import { cronRunStore }     from './cronRunStore'
 import { blogPost }         from './blogPost'
+import imageAsset           from './imageAsset'
 
 export const schemaTypes = [
   newsArticle,
