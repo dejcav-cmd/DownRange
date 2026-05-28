@@ -74,10 +74,7 @@ CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown,
       console.warn(`[REWRITE] Body too short (${wordCount} words) for "${(item.title||'').slice(0,50)}" — saving null so backfill can retry`)
       parsed.body = ''
     }
-    // Append attribution block if body is valid
-    if (parsed.body) {
-      parsed.body += `\n<div class="dr-source-attribution" style="margin:2.5rem 0 0;padding:1.25rem 1.5rem;background:rgba(200,146,42,0.06);border:1px solid rgba(200,146,42,0.25);border-left:4px solid #C8922A"><div style="font-family:monospace;font-size:0.65rem;color:#C8922A;letter-spacing:0.15em;font-weight:700;margin-bottom:6px">ORIGINAL SOURCE</div><p style="font-family:monospace;font-size:0.8rem;color:#6B7280;line-height:1.6;margin:0">This editorial was written by DownRange based on the original article. Read the primary source for additional detail.</p></div>`
-    }
+    // Attribution is rendered by the page component — not baked into body HTML
     return parsed
   } catch (err) {
     console.error('Claude rewrite error:', err.message)
