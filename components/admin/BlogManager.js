@@ -68,6 +68,18 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
     setTimeout(()=>setMsg(''),5000)
   }
 
+  const bulkLock = useBulkLock({
+    items:   posts,
+    setItems: setPosts,
+    patchFn: async (id, fields) => {
+      const r = await fetch('/api/admin/blog-posts', {
+        method:'POST', headers:{...H,'Content-Type':'application/json'},
+        body: JSON.stringify({ action:'patch', id, fields }),
+      })
+      return r.json()
+    },
+  })
+
   const load = useCallback(async () => {
     setLoading(true)
     try {
