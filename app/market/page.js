@@ -161,21 +161,6 @@ function fmt(ppr) {
   return ppr < 1 ? `${(ppr * 100).toFixed(1)}¢` : `$${ppr.toFixed(2)}`
 }
 
-const SIG_COLORS = { BUY:'#22c55e', HOLD:'#f59e0b', WATCH:'#60a5fa', SELL:'#ef4444' }
-const SIG_BG     = { BUY:'rgba(34,197,94,.12)', HOLD:'rgba(245,158,11,.12)', WATCH:'rgba(96,165,250,.12)', SELL:'rgba(239,68,68,.12)' }
-
-function SignalBadge({ signal }) {
-  const mono = "'IBM Plex Mono',monospace"
-  return (
-    <span style={{ fontFamily:mono, fontSize:9, fontWeight:700, padding:'3px 10px', letterSpacing:'.06em',
-      background: SIG_BG[signal] || SIG_BG.WATCH,
-      color: SIG_COLORS[signal] || '#60a5fa',
-      border: '1px solid currentColor' }}>
-      {signal}
-    </span>
-  )
-}
-
 function availColor(n) { return n >= 80 ? '#22c55e' : n >= 55 ? '#f59e0b' : '#ef4444' }
 function availLabel(n) { return n >= 80 ? 'IN STOCK' : n >= 55 ? 'LIMITED' : 'LOW' }
 
@@ -396,9 +381,7 @@ export default async function MarketPage() {
           {/* ── DAILY BRIEF ── */}
           {analysis ? (
             <div style={{ background:'rgba(200,146,42,0.05)', border:'1px solid rgba(200,146,42,0.3)', borderLeft:'4px solid #C8922A', padding:'22px 26px', marginBottom:28, borderRadius:4 }}>
-              <div style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:9, color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:8 }}>📊 DAILY AI MARKET BRIEF · {analysis.session === 'PM' ? '🌆 PM' : '🌅 AM'}</div>
-                {analysis.signal && <SignalBadge signal={analysis.signal} />}
-              </div>
+              <div style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:9, color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:8 }}>📊 DAILY AI MARKET BRIEF · {today}</div>
               <h2 style={{ fontFamily:'Bebas Neue, sans-serif', fontSize:'1.4rem', color:'var(--foreground)', marginBottom:8, letterSpacing:'0.04em' }}>{analysis.title}</h2>
               <p style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#94a3b8', lineHeight:1.7, marginBottom: analysis.bullets?.length ? 12 : 0 }}>{analysis.summary}</p>
               {analysis.bullets?.length > 0 && (
