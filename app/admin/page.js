@@ -1823,7 +1823,6 @@ function ContentHub({ adminKey, setPanel, setSection }) {
         })}
       </div>
     </div>
-  </div>
   )
 }
 
