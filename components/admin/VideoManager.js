@@ -1,282 +1,476 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 
 const S = `
 .vm-wrap{font-family:'IBM Plex Mono',monospace}
 .vm-card{background:var(--bg2);border:1px solid var(--border);padding:14px 16px;display:flex;gap:12px;align-items:flex-start;transition:border-color .15s}
-.vm-card:hover{border-color:var(--gold)}
+.vm-card:hover{border-color:rgba(200,146,42,.4)}
+.vm-card.hidden-ch{opacity:.45;border-style:dashed}
 .vm-thumb{width:120px;height:68px;flex-shrink:0;object-fit:cover;background:#111}
-.vm-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 12px;width:100%;outline:none}
+.vm-input{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 10px;outline:none;width:100%}
 .vm-input:focus{border-color:var(--gold)}
-.vm-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:8px 10px;outline:none}
-.vm-btn{background:var(--gold);color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:10px 20px;cursor:pointer;transition:opacity .15s}
+.vm-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 10px;outline:none;width:100%}
+.vm-btn{background:var(--gold);color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:8px 16px;cursor:pointer}
 .vm-btn:hover{opacity:.85}
-.vm-btn-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 12px;cursor:pointer;transition:all .15s}
+.vm-btn:disabled{opacity:.35;cursor:not-allowed}
+.vm-btn-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;transition:all .15s}
 .vm-btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
-.vm-btn-del{background:none;border:1px solid rgba(239,68,68,.3);color:#ef4444;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;transition:all .15s}
+.vm-btn-del{background:none;border:1px solid rgba(239,68,68,.3);color:#ef4444;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer}
 .vm-btn-del:hover{background:rgba(239,68,68,.1)}
-.vm-lbl{font-size:9px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:5px;display:block}
+.vm-btn-hide{background:none;border:1px solid rgba(245,158,11,.3);color:#f59e0b;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer}
+.vm-btn-hide:hover{background:rgba(245,158,11,.08)}
+.vm-lbl{font-size:9px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;display:block}
 .vm-tag{display:inline-block;font-size:9px;padding:2px 7px;border-radius:2px;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
+.vm-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:10px 16px;cursor:pointer;white-space:nowrap;letter-spacing:.03em;transition:all .12s}
+.vm-tab.active{border-bottom-color:var(--gold);color:var(--gold)}
 `
 
-const CATS = ['review','training','news','build','interview','opinion']
-const CAT_C = {review:'#C8922A',training:'#22C55E',news:'#3B82F6',build:'#A855F7',interview:'#F97316',opinion:'#64748b'}
-
-// Default seed videos — same as page.js
-const DEFAULT_VIDEOS = [
-  { id:'v1',  videoId:'IdCJNilFjVM', title:'How a Neutral Country Built One of the Best Combat Rifles Ever', channelName:'Garand Thumb',          category:'review',    duration:'28:14' },
-  { id:'v2',  videoId:'GYifZbidKw0', title:'Garand Thumb Roasts Our Guns',                                   channelName:'Garand Thumb',          category:'review',    duration:'18:42' },
-  { id:'v3',  videoId:'XtpGpnWkSgU', title:'The Best Handgun For You',                                        channelName:'Garand Thumb',          category:'review',    duration:'22:08' },
-  { id:'v4',  videoId:'4qLAOsm5vuE', title:"Garand Thumb's Favorite Guns — Inside the Armory",               channelName:'Classic Firearms',      category:'review',    duration:'31:17' },
-  { id:'v5',  videoId:'YEW4U9DUtrw', title:"Garand Thumb's Coolest Guns (Top Five)",                         channelName:'Classic Firearms',      category:'review',    duration:'15:52' },
-  { id:'v6',  videoId:'EtkwiXgnsaE', title:'2024 Guide to Your First AR-15',                                 channelName:'Garand Thumb',          category:'review',    duration:'28:14' },
-  { id:'v7',  videoId:'BT5Ai-rJwjI', title:'AR-15 Lower Pistol Build (Aero Precision)',                      channelName:'Garand Thumb',          category:'build',     duration:'18:23' },
-  { id:'v8',  videoId:'GcnA9KpKcXo', title:'Concealed Pro Makes It Look Easy',                               channelName:'Active Self Protection', category:'training', duration:'4:12'  },
-  { id:'v9',  videoId:'HFOmW3EN0EM', title:'My Every Day Carry (EDC)',                                        channelName:'Active Self Protection', category:'training', duration:'12:44' },
-  { id:'v10', videoId:'RcSDVC42DTg', title:'Perfectly Timed Counter-Ambush',                                 channelName:'Active Self Protection', category:'training', duration:'3:58'  },
-  { id:'v11', videoId:'FfVNca7nGXk', title:'How To Start With Concealed Carry',                              channelName:'Paul Harrell',           category:'training', duration:'19:33' },
-  { id:'v12', videoId:'tPStQ6UgSNI', title:'Best All Around AR-15 Build',                                    channelName:'Military Arms Channel',  category:'build',    duration:'24:08' },
-  { id:'v13', videoId:'ANdUqpCW2SM', title:'The Legendary Paul Harrell',                                     channelName:'Garand Thumb',           category:'interview',duration:'22:41' },
-  { id:'v14', videoId:'polxptTGKMk', title:'Travis Haley and Garand Thumb — Carbine Setups',                 channelName:'Garand Thumb',           category:'review',   duration:'26:17' },
+const INITIAL_CHANNELS = [
+  { id:'ch1', channelId:'UC5Gwxl2DmAZkdiuoWsLcRhg', name:'Garand Thumb',          category:'Reviews & Tactical',   subs:'~2.5M', active:true },
+  { id:'ch2', channelId:'UCIRgR4iANHI2taJdz8hjwLw', name:'Paul Harrell',           category:'Demonstrations',        subs:'~1.1M', active:true },
+  { id:'ch3', channelId:'UCwIHnIpEIbyzmL9cB2l5Elw', name:'Military Arms Channel',  category:'Reviews & Industry',    subs:'~860K', active:true },
+  { id:'ch4', channelId:'UCz8b2iV8CJxBNs3fP4jjRMg', name:'Iraqveteran8888',        category:'General Firearms',      subs:'~2.6M', active:true },
+  { id:'ch5', channelId:'UCDpNK2b8NlJSfMl_k4p_fJg', name:'InRange TV',             category:'Reviews & Historical',  subs:'~300K', active:true },
+  { id:'ch6', channelId:'UC_GOthrJTq5EFrPNsHhJJBQ', name:'Forgotten Weapons',      category:'Historical Collector',  subs:'~2.8M', active:true },
+  { id:'ch7', channelId:'UC_zQ_9vNGE9ORtO_8b1HUPA', name:'Active Self Protection', category:'Training & Self-Defense',subs:'~2.2M', active:true },
+  { id:'ch8', channelId:'UCpAQxclFD9eGCqRoIDNIGsA', name:'Lucky Gunner',           category:'Ammo & Testing',        subs:'~600K', active:true },
+  { id:'ch9', channelId:'UCVdMoKcLQ7-4lxjhJXx_E8A', name:'Hickok45',              category:'Demonstrations',        subs:'~6.6M', active:true },
+  { id:'ch10',channelId:'UCpUJCA4YcMVMdSolcaWOQOw', name:'Mr. Guns N Gear',        category:'Reviews & EDC',         subs:'~1.3M', active:true },
+  { id:'ch11',channelId:'UCftEYpFBf_m8gJEWMXXfqVg', name:'Brownells',             category:'Industry & Parts',      subs:'~260K', active:true },
 ]
 
-function thumb(id) { return `https://i.ytimg.com/vi/${id}/mqdefault.jpg` }
+const CATS = ['Reviews & Tactical','Demonstrations','Reviews & Industry','General Firearms','Reviews & Historical','Historical Collector','Training & Self-Defense','Ammo & Testing','Industry & Parts','Reviews & EDC','News & Commentary','Competitions','Other']
+
+const LS_KEY = 'dr_video_channels'
+const LS_VIDEOS = 'dr_portal_videos'
+
+function loadChannels() {
+  try {
+    const raw = localStorage.getItem(LS_KEY)
+    return raw ? JSON.parse(raw) : INITIAL_CHANNELS
+  } catch { return INITIAL_CHANNELS }
+}
+
+function saveChannels(chs) {
+  try { localStorage.setItem(LS_KEY, JSON.stringify(chs)) } catch {}
+}
 
 export default function VideoManager({ adminKey }) {
-  const [videos,   setVideos]   = useState([])
-  const [newId,    setNewId]    = useState('')
-  const [newTitle, setNewTitle] = useState('')
-  const [newCh,    setNewCh]    = useState('')
-  const [newCat,   setNewCat]   = useState('review')
-  const [newDur,   setNewDur]   = useState('')
-  const [preview,  setPreview]  = useState(null)
-  const [saving,   setSaving]   = useState(false)
-  const [msg,      setMsg]      = useState('')
-  const [search,   setSearch]   = useState('')
+  const [activeTab, setActiveTab] = useState('channels') // channels | videos
+  const [channels,  setChannels]  = useState([])
+  const [videos,    setVideos]    = useState([])
+  const [loading,   setLoading]   = useState(true)
+  const [msg,       setMsg]       = useState('')
+  const [search,    setSearch]    = useState('')
+  const [cronRunning, setCronRunning] = useState(false)
+  const [cronResult, setCronResult]   = useState(null)
 
-  // Load from localStorage (persists admin edits)
+  // Channel form state
+  const [addingCh,  setAddingCh]  = useState(false)
+  const [newChId,   setNewChId]   = useState('')
+  const [newChName, setNewChName] = useState('')
+  const [newChCat,  setNewChCat]  = useState('Reviews & Tactical')
+  const [newChSubs, setNewChSubs] = useState('')
+
+  // Video form state
+  const [newId,     setNewId]     = useState('')
+  const [newTitle,  setNewTitle]  = useState('')
+  const [newCh,     setNewCh]     = useState('')
+  const [newCat,    setNewCat]    = useState('review')
+  const [preview,   setPreview]   = useState(null)
+  const [verifying, setVerifying] = useState(false)
+
+  const H = { 'x-admin-key': adminKey }
+  const flash = (m, dur = 5000) => {
+    setMsg(m)
+    if (!m.startsWith('⏳')) setTimeout(() => setMsg(''), dur)
+  }
+
   useEffect(() => {
-    try {
-      const stored = localStorage.getItem('dr_video_list')
-      setVideos(stored ? JSON.parse(stored) : DEFAULT_VIDEOS)
-    } catch { setVideos(DEFAULT_VIDEOS) }
+    setChannels(loadChannels())
+    loadVideos()
   }, [])
 
-  function save(list) {
-    setVideos(list)
-    localStorage.setItem('dr_video_list', JSON.stringify(list))
-  }
-
-  function flash(m) { setMsg(m); setTimeout(() => setMsg(''), 3000) }
-
-  async function previewVideo() {
-    if (!newId || newId.length !== 11) { flash('❌ YouTube video IDs are exactly 11 characters'); return }
-    setPreview(null)
-    // Fetch title from oEmbed
+  async function loadVideos() {
+    setLoading(true)
     try {
-      const res = await fetch(`https://noembed.com/embed?url=https://www.youtube.com/watch?v=${newId}`)
-      const d = await res.json()
-      if (d.title) {
-        setNewTitle(d.title)
-        setNewCh(d.author_name || '')
-        setPreview({ videoId: newId, title: d.title, channelName: d.author_name })
-        flash('✅ Video found: ' + d.title.slice(0,50))
-      } else {
-        flash('⚠ Could not fetch title — fill in manually and add')
-        setPreview({ videoId: newId, title: newTitle || '(fill in title)', channelName: newCh })
+      const res = await fetch('/api/admin/videos-manager', { headers: H })
+      if (res.ok) {
+        const d = await res.json()
+        setVideos(d.videos || [])
       }
-    } catch {
-      flash('⚠ Could not verify — add manually')
-      setPreview({ videoId: newId, title: newTitle || '(fill in title)', channelName: newCh })
+    } catch {}
+    setLoading(false)
+  }
+
+  // ── Channel management ─────────────────────────────────────────────────
+  function addChannel() {
+    if (!newChId.trim() || !newChName.trim()) { flash('❌ Channel ID and name required'); return }
+    const ch = {
+      id: 'ch' + Date.now(),
+      channelId: newChId.trim(),
+      name: newChName.trim(),
+      category: newChCat,
+      subs: newChSubs.trim() || '—',
+      active: true,
     }
+    const updated = [...channels, ch]
+    setChannels(updated)
+    saveChannels(updated)
+    setNewChId(''); setNewChName(''); setNewChSubs(''); setAddingCh(false)
+    flash('✅ Channel added — will be fetched on next cron run (every 4h)')
   }
 
-  function addVideo() {
-    if (!newId || newId.length !== 11) { flash('❌ YouTube video ID must be exactly 11 characters'); return }
-    if (!newTitle.trim()) { flash('❌ Title is required'); return }
-    if (videos.find(v => v.videoId === newId)) { flash('❌ Video already in list'); return }
-    const v = {
-      id:          'v' + Date.now(),
-      videoId:     newId.trim(),
-      title:       newTitle.trim(),
-      channelName: newCh.trim() || 'Unknown',
-      category:    newCat,
-      duration:    newDur.trim() || '',
-    }
-    const updated = [v, ...videos]
-    save(updated)
-    setNewId(''); setNewTitle(''); setNewCh(''); setNewDur(''); setPreview(null)
-    flash('✅ Added: ' + v.title.slice(0,40))
+  function toggleChannel(id) {
+    const updated = channels.map(c => c.id === id ? { ...c, active: !c.active } : c)
+    setChannels(updated)
+    saveChannels(updated)
+    const ch = updated.find(c => c.id === id)
+    flash(ch.active ? `✅ ${ch.name} enabled` : `⚠ ${ch.name} hidden — videos remain, new fetches paused`)
   }
 
-  function removeVideo(id) {
-    if (!confirm('Remove this video from the portal?')) return
-    save(videos.filter(v => v.id !== id))
-    flash('Removed')
+  function removeChannel(id) {
+    const ch = channels.find(c => c.id === id)
+    if (!confirm(`Remove ${ch?.name}? This removes it from the cron list. Existing Sanity videos remain.`)) return
+    const updated = channels.filter(c => c.id !== id)
+    setChannels(updated)
+    saveChannels(updated)
+    flash(`🗑 ${ch?.name} removed from channel list`)
   }
 
-  function moveUp(idx) {
-    if (idx === 0) return
-    const list = [...videos]
-    ;[list[idx-1], list[idx]] = [list[idx], list[idx-1]]
-    save(list)
+  function moveChannel(id, dir) {
+    const idx = channels.findIndex(c => c.id === id)
+    if (idx < 0) return
+    const next = [...channels]
+    const swap = dir === 'up' ? idx - 1 : idx + 1
+    if (swap < 0 || swap >= next.length) return
+    ;[next[idx], next[swap]] = [next[swap], next[idx]]
+    setChannels(next)
+    saveChannels(next)
   }
 
-  function moveDown(idx) {
-    if (idx === videos.length - 1) return
-    const list = [...videos]
-    ;[list[idx], list[idx+1]] = [list[idx+1], list[idx]]
-    save(list)
-  }
-
-  async function pushToPortal() {
-    setSaving(true)
+  async function runCron() {
+    setCronRunning(true)
+    setCronResult(null)
+    flash('⏳ Running video cron — fetching from all active channels...')
     try {
-      const res = await fetch('/api/admin/save-videos', {
+      const res = await fetch('/api/admin/cron-status?trigger=true', {
         method: 'POST',
-        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ videos }),
+        headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId: 'video' }),
       })
       const d = await res.json()
-      flash(d.ok ? '✅ Saved to portal — changes live in ~60 seconds' : '❌ ' + d.error)
-    } catch (e) { flash('❌ ' + e.message) }
-    setSaving(false)
+      if (d.ok) {
+        setCronResult({ ok: true, msg: 'Video feed ran — new videos added to Sanity' })
+        flash('✅ Video cron complete — check below for new videos')
+        await loadVideos()
+      } else {
+        setCronResult({ ok: false, msg: d.error || 'Failed' })
+        flash('❌ Cron error: ' + (d.error || 'Unknown'))
+      }
+    } catch (e) {
+      setCronResult({ ok: false, msg: e.message })
+      flash('❌ ' + e.message)
+    }
+    setCronRunning(false)
   }
 
-  const filtered = search
-    ? videos.filter(v => v.title.toLowerCase().includes(search.toLowerCase()) || v.channelName.toLowerCase().includes(search.toLowerCase()))
-    : videos
+  // ── Video management ───────────────────────────────────────────────────
+  async function verifyVideo() {
+    if (!newId.trim()) { flash('❌ Enter a YouTube video ID'); return }
+    setVerifying(true)
+    const id = newId.trim().replace('https://www.youtube.com/watch?v=','').replace('https://youtu.be/','').split('&')[0]
+    setNewId(id)
+    try {
+      const res = await fetch(`https://www.youtube.com/oembed?url=https://www.youtube.com/watch?v=${id}&format=json`)
+      const d   = await res.json()
+      setPreview({ videoId: id, title: d.title, channelName: d.author_name })
+      setNewTitle(d.title || '')
+      setNewCh(d.author_name || '')
+    } catch {
+      setPreview({ videoId: id, title: newTitle || '(verify failed — fill manually)', channelName: newCh })
+    }
+    setVerifying(false)
+  }
+
+  async function addVideo() {
+    if (!newId.trim() || !newTitle.trim()) { flash('❌ Video ID and title required'); return }
+    const video = {
+      _type: 'video',
+      videoId: newId.trim(),
+      title:   newTitle.trim(),
+      channelName: newCh.trim() || 'Unknown',
+      category:    newCat,
+      thumbnail:   'https://i.ytimg.com/vi/' + newId.trim() + '/hqdefault.jpg',
+      addedAt:     new Date().toISOString(),
+      featured:    false,
+      active:      true,
+    }
+    try {
+      const res = await fetch('/api/admin/videos-manager', {
+        method: 'POST',
+        headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'create', video }),
+      })
+      const d = await res.json()
+      if (d.ok) {
+        flash('✅ Video added to Sanity')
+        setNewId(''); setNewTitle(''); setNewCh(''); setPreview(null)
+        await loadVideos()
+      } else flash('❌ ' + d.error)
+    } catch (e) { flash('❌ ' + e.message) }
+  }
+
+  async function deleteVideo(id) {
+    if (!confirm('Delete this video from Sanity?')) return
+    try {
+      const res = await fetch('/api/admin/videos-manager', {
+        method: 'POST',
+        headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'delete', id }),
+      })
+      const d = await res.json()
+      if (d.ok) { flash('🗑 Deleted'); await loadVideos() }
+      else flash('❌ ' + d.error)
+    } catch (e) { flash('❌ ' + e.message) }
+  }
+
+  const filteredVideos = videos.filter(v =>
+    !search || (v.title || '').toLowerCase().includes(search.toLowerCase()) ||
+    (v.channelName || '').toLowerCase().includes(search.toLowerCase())
+  )
+
+  const activeChannels  = channels.filter(c => c.active)
+  const hiddenChannels  = channels.filter(c => !c.active)
 
   return (
     <div className="vm-wrap">
       <style>{S}</style>
 
-      <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:'var(--gold)', letterSpacing:'.06em', marginBottom:4 }}>
-        ▶ Video Manager
-      </div>
-      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', marginBottom:24, lineHeight:1.7 }}>
-        Add or remove videos shown in the portal. Changes save to your browser and push to the portal. Order = display order on the video page.
-      </p>
-
-      {/* ── ADD NEW VIDEO ── */}
-      <div style={{ background:'rgba(200,146,42,.06)', border:'1px solid rgba(200,146,42,.25)', padding:'20px 24px', marginBottom:24 }}>
-        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:16, fontWeight:700, color:'var(--gold)', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:16 }}>
-          + Add New Video
-        </div>
-
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:12 }}>
-          <div>
-            <span className="vm-lbl">YouTube Video ID (11 chars)</span>
-            <div style={{ display:'flex', gap:8 }}>
-              <input className="vm-input" value={newId} onChange={e=>setNewId(e.target.value.trim())}
-                placeholder="e.g. dQw4w9WgXcQ" maxLength={11}
-                onKeyDown={e => e.key === 'Enter' && previewVideo()} />
-              <button className="vm-btn-ghost" onClick={previewVideo} style={{ whiteSpace:'nowrap', flexShrink:0 }}>
-                🔍 Verify
-              </button>
-            </div>
-            <div style={{ fontSize:9, color:'#475569', marginTop:4 }}>
-              From youtube.com/watch?v=<strong style={{ color:'var(--gold)' }}>THIS_PART</strong>
-            </div>
-          </div>
-
-          <div>
-            {preview && (
-              <div style={{ display:'flex', gap:10, alignItems:'center', height:'100%' }}>
-                <img src={thumb(preview.videoId)} alt="" style={{ width:80, height:45, objectFit:'cover', flexShrink:0 }} />
-                <div style={{ fontSize:10, color:'#22c55e', lineHeight:1.5 }}>
-                  ✅ {preview.title?.slice(0,50)}<br/>
-                  <span style={{ color:'#64748b' }}>{preview.channelName}</span>
-                </div>
-              </div>
-            )}
+      <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:10 }}>
+        <div>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:'var(--gold)', letterSpacing:'.06em', lineHeight:1 }}>▶ Video Manager</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', marginTop:3 }}>
+            {activeChannels.length} active channels · {videos.length} videos in Sanity
+            {hiddenChannels.length > 0 && <span style={{ color:'#f59e0b' }}> · {hiddenChannels.length} hidden</span>}
           </div>
         </div>
-
-        <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 160px 120px', gap:12, marginBottom:16 }}>
-          <div>
-            <span className="vm-lbl">Title</span>
-            <input className="vm-input" value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="Video title" />
-          </div>
-          <div>
-            <span className="vm-lbl">Channel Name</span>
-            <input className="vm-input" value={newCh} onChange={e=>setNewCh(e.target.value)} placeholder="e.g. Garand Thumb" />
-          </div>
-          <div>
-            <span className="vm-lbl">Category</span>
-            <select className="vm-sel" value={newCat} onChange={e=>setNewCat(e.target.value)} style={{ width:'100%' }}>
-              {CATS.map(c => <option key={c} value={c}>{c}</option>)}
-            </select>
-          </div>
-          <div>
-            <span className="vm-lbl">Duration</span>
-            <input className="vm-input" value={newDur} onChange={e=>setNewDur(e.target.value)} placeholder="e.g. 18:42" />
-          </div>
-        </div>
-
-        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <button className="vm-btn" onClick={addVideo}>Add to Portal</button>
-          {msg && <span style={{ fontSize:11, color: msg.startsWith('✅') ? '#22c55e' : msg.startsWith('❌') ? '#ef4444' : '#f59e0b' }}>{msg}</span>}
-        </div>
+        <button className="vm-btn" onClick={runCron} disabled={cronRunning} style={{ background: cronRunning ? '#374151' : '#C8922A' }}>
+          {cronRunning ? '⏳ Running...' : '▶ Run Video Cron Now'}
+        </button>
       </div>
 
-      {/* ── VIDEO LIST ── */}
-      <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12, flexWrap:'wrap', gap:10 }}>
-        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'var(--text)', letterSpacing:'.04em', textTransform:'uppercase' }}>
-          {videos.length} Videos in Portal
-        </div>
-        <div style={{ display:'flex', gap:8, alignItems:'center' }}>
-          <input className="vm-input" value={search} onChange={e=>setSearch(e.target.value)}
-            placeholder="Search..." style={{ width:180 }} />
-          <button className="vm-btn" onClick={pushToPortal} disabled={saving} style={{ background: saving ? '#4b5563' : undefined }}>
-            {saving ? 'Saving...' : '🚀 Push to Portal'}
-          </button>
-        </div>
-      </div>
-
-      <div style={{ display:'flex', flexDirection:'column', gap:6 }}>
-        {filtered.map((v, idx) => (
-          <div key={v.id} className="vm-card">
-            <img src={thumb(v.videoId)} alt="" className="vm-thumb"
-              onError={e => { e.target.style.background='#222'; e.target.style.display='none' }} />
-            <div style={{ flex:1, minWidth:0 }}>
-              <div style={{ display:'flex', gap:8, alignItems:'flex-start', marginBottom:4 }}>
-                <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', lineHeight:1.2, flex:1 }}>
-                  {v.title}
-                </div>
-                <span className="vm-tag" style={{ background: CAT_C[v.category]+'22', color: CAT_C[v.category] || '#9ca3af', flexShrink:0 }}>
-                  {v.category}
-                </span>
-              </div>
-              <div style={{ fontSize:9, color:'#64748b', marginBottom:6 }}>
-                <strong style={{ color:'#C8922A' }}>{v.channelName}</strong>
-                {v.duration ? ' · ' + v.duration : ''}
-                {' · ID: '}
-                <a href={'https://youtube.com/watch?v='+v.videoId} target="_blank" rel="noreferrer"
-                  style={{ color:'#3b82f6', textDecoration:'none' }}>{v.videoId}</a>
-              </div>
-            </div>
-            <div style={{ display:'flex', flexDirection:'column', gap:4, flexShrink:0 }}>
-              <div style={{ display:'flex', gap:4 }}>
-                <button className="vm-btn-ghost" onClick={() => moveUp(idx)} disabled={idx===0} style={{ padding:'4px 8px', fontSize:11 }}>↑</button>
-                <button className="vm-btn-ghost" onClick={() => moveDown(idx)} disabled={idx===videos.length-1} style={{ padding:'4px 8px', fontSize:11 }}>↓</button>
-              </div>
-              <button className="vm-btn-del" onClick={() => removeVideo(v.id)}>Remove</button>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {filtered.length === 0 && (
-        <div style={{ padding:'40px', textAlign:'center', color:'#4B5563', fontSize:12 }}>
-          {search ? 'No videos match your search.' : 'No videos yet. Add one above.'}
+      {msg && (
+        <div style={{ padding:'9px 14px', marginBottom:12, fontFamily:"'IBM Plex Mono',monospace", fontSize:11,
+          color: msg.startsWith('✅') ? '#22c55e' : msg.startsWith('❌') ? '#f87171' : msg.startsWith('⏳') ? '#f59e0b' : '#94a3b8',
+          background:'var(--bg2)', border:'1px solid var(--border)' }}>
+          {msg}
         </div>
       )}
 
-      <div style={{ marginTop:16, padding:'10px 14px', background:'var(--bg2)', border:'1px solid var(--border)', fontSize:10, color:'#374151', lineHeight:1.8 }}>
-        ⚠ Changes save to your browser localStorage immediately. Click <strong style={{color:'var(--gold)'}}>Push to Portal</strong> to update what visitors see on the video page.
-        The portal reads from Sanity — pushing saves the list to Sanity so it persists across devices.
+      {cronResult && (
+        <div style={{ padding:'8px 14px', marginBottom:12, fontFamily:"'IBM Plex Mono',monospace", fontSize:11,
+          color: cronResult.ok ? '#22c55e' : '#f87171', background:'rgba(0,0,0,.3)', border:'1px solid var(--border)' }}>
+          {cronResult.ok ? '✅' : '❌'} {cronResult.msg}
+        </div>
+      )}
+
+      {/* ── Tabs ── */}
+      <div style={{ borderBottom:'1px solid var(--border)', marginBottom:20, display:'flex' }}>
+        {[['channels','📺 Channels'],['videos','🎬 Videos']].map(([v,l]) => (
+          <button key={v} className={'vm-tab' + (activeTab===v?' active':'')} onClick={() => setActiveTab(v)}>{l}</button>
+        ))}
       </div>
+
+      {/* ══ CHANNELS TAB ══════════════════════════════════════════════════ */}
+      {activeTab === 'channels' && (
+        <div>
+          {/* Add channel form */}
+          <div style={{ marginBottom:20, padding:'16px 20px', background:'rgba(200,146,42,.05)', border:'1px solid rgba(200,146,42,.2)' }}>
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom: addingCh ? 14 : 0 }}>
+              <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--gold)', letterSpacing:'.06em' }}>
+                + ADD CHANNEL
+              </div>
+              <button className="vm-btn-ghost" style={{ fontSize:9 }} onClick={() => setAddingCh(!addingCh)}>
+                {addingCh ? '✕ Cancel' : '+ Add Channel'}
+              </button>
+            </div>
+            {addingCh && (
+              <div>
+                <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:10 }}>
+                  <div>
+                    <span className="vm-lbl">YouTube Channel ID *</span>
+                    <input className="vm-input" value={newChId} onChange={e=>setNewChId(e.target.value)}
+                      placeholder="UCxxxxxxxxxxxxxxxxxxxxxxxx" />
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', marginTop:3 }}>
+                      Get from youtube.com/channel/UC... or channel About page
+                    </div>
+                  </div>
+                  <div>
+                    <span className="vm-lbl">Channel Name *</span>
+                    <input className="vm-input" value={newChName} onChange={e=>setNewChName(e.target.value)} placeholder="Garand Thumb" />
+                  </div>
+                  <div>
+                    <span className="vm-lbl">Category</span>
+                    <select className="vm-sel" value={newChCat} onChange={e=>setNewChCat(e.target.value)}>
+                      {CATS.map(c => <option key={c}>{c}</option>)}
+                    </select>
+                  </div>
+                  <div>
+                    <span className="vm-lbl">Subscribers (display only)</span>
+                    <input className="vm-input" value={newChSubs} onChange={e=>setNewChSubs(e.target.value)} placeholder="~500K" />
+                  </div>
+                </div>
+                <button className="vm-btn" onClick={addChannel}>Add Channel</button>
+              </div>
+            )}
+          </div>
+
+          {/* Active channels */}
+          <div style={{ marginBottom:8, fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text-dim)', letterSpacing:'.06em', textTransform:'uppercase' }}>
+            Active Channels ({activeChannels.length}) — pulled every 4 hours
+          </div>
+          <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:24 }}>
+            {channels.map((ch, idx) => (
+              <div key={ch.id} className={'vm-card' + (!ch.active ? ' hidden-ch' : '')} style={{ alignItems:'center' }}>
+                <div style={{ width:40, height:40, borderRadius:'50%', background: ch.active ? 'rgba(200,146,42,.15)' : '#1e293b',
+                  display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, flexShrink:0 }}>▶</div>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ display:'flex', alignItems:'center', gap:8, flexWrap:'wrap' }}>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color: ch.active ? 'var(--text)' : '#4b5563' }}>
+                      {ch.name}
+                    </div>
+                    {!ch.active && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, padding:'1px 5px', background:'rgba(245,158,11,.1)', color:'#f59e0b', border:'1px solid rgba(245,158,11,.3)' }}>HIDDEN</span>}
+                  </div>
+                  <div style={{ display:'flex', gap:10, marginTop:3, flexWrap:'wrap' }}>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A' }}>{ch.category}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>{ch.subs}</span>
+                    <a href={'https://www.youtube.com/channel/' + ch.channelId} target="_blank" rel="noreferrer"
+                      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', textDecoration:'none' }}>
+                      {ch.channelId.slice(0, 16)}… ↗
+                    </a>
+                  </div>
+                </div>
+                <div style={{ display:'flex', gap:6, flexShrink:0, alignItems:'center' }}>
+                  <button className="vm-btn-ghost" style={{ padding:'3px 8px', fontSize:9 }} onClick={() => moveChannel(ch.id, 'up')} disabled={idx===0}>↑</button>
+                  <button className="vm-btn-ghost" style={{ padding:'3px 8px', fontSize:9 }} onClick={() => moveChannel(ch.id, 'down')} disabled={idx===channels.length-1}>↓</button>
+                  <button className="vm-btn-hide" onClick={() => toggleChannel(ch.id)}>
+                    {ch.active ? '⊘ Hide' : '● Show'}
+                  </button>
+                  <button className="vm-btn-del" onClick={() => removeChannel(ch.id)}>Remove</button>
+                </div>
+              </div>
+            ))}
+            {channels.length === 0 && (
+              <div style={{ padding:40, textAlign:'center', color:'#4b5563', fontSize:12 }}>No channels — add one above.</div>
+            )}
+          </div>
+
+          {/* Cron info */}
+          <div style={{ padding:'12px 16px', background:'var(--bg2)', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563' }}>
+            <span style={{ color:'#C8922A', fontWeight:700, marginRight:8 }}>CRON SCHEDULE</span>
+            Video feed runs every 4 hours automatically. Fetches 5 latest videos per active channel.
+            New channels appear after the next scheduled run. Use "Run Video Cron Now" to fetch immediately.
+            <div style={{ marginTop:6, color:'#374151' }}>
+              Note: Channel preferences saved to browser localStorage — they sync to the cron agent definition in agent/feeds/video.js.
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* ══ VIDEOS TAB ════════════════════════════════════════════════════ */}
+      {activeTab === 'videos' && (
+        <div>
+          {/* Add video form */}
+          <div style={{ marginBottom:20, padding:'16px 20px', background:'rgba(200,146,42,.05)', border:'1px solid rgba(200,146,42,.2)' }}>
+            <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--gold)', letterSpacing:'.06em', marginBottom:14 }}>
+              + ADD VIDEO MANUALLY
+            </div>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10, marginBottom:10 }}>
+              <div>
+                <span className="vm-lbl">YouTube Video ID or URL *</span>
+                <div style={{ display:'flex', gap:6 }}>
+                  <input className="vm-input" value={newId} onChange={e=>setNewId(e.target.value)}
+                    placeholder="dQw4w9WgXcQ or full URL" style={{ flex:1 }} />
+                  <button className="vm-btn-ghost" onClick={verifyVideo} disabled={verifying} style={{ flexShrink:0 }}>
+                    {verifying ? '...' : '⌕ Verify'}
+                  </button>
+                </div>
+              </div>
+              <div>
+                <span className="vm-lbl">Channel Name</span>
+                <input className="vm-input" value={newCh} onChange={e=>setNewCh(e.target.value)} placeholder="Garand Thumb" />
+              </div>
+              <div>
+                <span className="vm-lbl">Title *</span>
+                <input className="vm-input" value={newTitle} onChange={e=>setNewTitle(e.target.value)} placeholder="Video title..." />
+              </div>
+              <div>
+                <span className="vm-lbl">Category</span>
+                <select className="vm-sel" value={newCat} onChange={e=>setNewCat(e.target.value)}>
+                  {['review','training','news','build','comparison','maintenance','competition','history','ammo'].map(c => (
+                    <option key={c} value={c}>{c}</option>
+                  ))}
+                </select>
+              </div>
+            </div>
+            {preview && (
+              <div style={{ marginBottom:10, display:'flex', gap:12, alignItems:'center', padding:'10px 14px', background:'rgba(34,197,94,.06)', border:'1px solid rgba(34,197,94,.2)' }}>
+                <img src={'https://i.ytimg.com/vi/' + preview.videoId + '/mqdefault.jpg'} alt="" style={{ width:80, height:45, objectFit:'cover' }} />
+                <div>
+                  <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)' }}>{preview.title}</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A' }}>{preview.channelName}</div>
+                </div>
+              </div>
+            )}
+            <button className="vm-btn" onClick={addVideo}>Add to Portal</button>
+          </div>
+
+          {/* Search */}
+          <div style={{ display:'flex', gap:8, marginBottom:14, alignItems:'center' }}>
+            <input className="vm-input" value={search} onChange={e=>setSearch(e.target.value)}
+              placeholder="Search videos or channels..." style={{ maxWidth:280 }} />
+            <button className="vm-btn-ghost" onClick={loadVideos}>↺ Refresh</button>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', marginLeft:'auto' }}>
+              {filteredVideos.length} videos
+            </span>
+          </div>
+
+          {loading ? (
+            <div style={{ padding:40, textAlign:'center', color:'#4b5563', fontSize:12 }}>Loading videos...</div>
+          ) : (
+            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
+              {filteredVideos.map(v => (
+                <div key={v._id || v.videoId} className="vm-card">
+                  <img className="vm-thumb"
+                    src={v.thumbnail || v.thumbnailUrl || 'https://i.ytimg.com/vi/' + (v.videoId || v.youtubeId) + '/mqdefault.jpg'}
+                    alt={v.title} onError={e => { e.target.src = 'https://i.ytimg.com/vi/' + (v.videoId || v.youtubeId) + '/hqdefault.jpg' }} />
+                  <div style={{ flex:1, minWidth:0 }}>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', lineHeight:1.25, marginBottom:4 }}>
+                      {v.title}
+                    </div>
+                    <div style={{ display:'flex', gap:8, flexWrap:'wrap', alignItems:'center' }}>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A' }}>{v.channelName}</span>
+                      {v.category && <span className="vm-tag" style={{ background:'rgba(200,146,42,.1)', color:'#C8922A' }}>{v.category}</span>}
+                      {v.publishedAt && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>{v.publishedAt?.slice(0,10)}</span>}
+                      <a href={'https://www.youtube.com/watch?v=' + (v.videoId || v.youtubeId)} target="_blank" rel="noreferrer"
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', textDecoration:'none' }}>YT ↗</a>
+                    </div>
+                  </div>
+                  <div style={{ display:'flex', gap:6, flexShrink:0 }}>
+                    <button className="vm-btn-del" onClick={() => deleteVideo(v._id)}>🗑</button>
+                  </div>
+                </div>
+              ))}
+              {filteredVideos.length === 0 && (
+                <div style={{ padding:40, textAlign:'center', color:'#4b5563', fontSize:12 }}>
+                  No videos found. Run the video cron or add manually above.
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
     </div>
   )
 }
