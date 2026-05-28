@@ -285,6 +285,7 @@ export default function ReleaseManager({ adminKey }) {
                 </div>
               ))}
             </div>
+            </>
 
             {/* Detail Panel */}
             {selRelease && (
