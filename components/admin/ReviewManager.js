@@ -87,10 +87,8 @@ export default function ReviewManager({ adminKey }) {
         body:        selReview.body || '',
         msrp:        selReview.msrp != null ? String(selReview.msrp) : '',
         imageUrl:    selReview.heroImage?.asset?.url || '',
-        pros:        (selReview.pros || []).join('
-'),
-        cons:        (selReview.cons || []).join('
-'),
+        pros:        (selReview.pros || []).join('\n'),
+        cons:        (selReview.cons || []).join('\n'),
         testRounds:  selReview.testRounds != null ? String(selReview.testRounds) : '',
         featured:    selReview.featured || false,
       })
@@ -149,10 +147,8 @@ export default function ReviewManager({ adminKey }) {
       setEditDraft(p => ({
         ...p,
         body:    d.body    || p.body,
-        pros:    (d.pros   || []).join('
-') || p.pros,
-        cons:    (d.cons   || []).join('
-') || p.cons,
+        pros:    (d.pros   || []).join('\n') || p.pros,
+        cons:    (d.cons   || []).join('\n') || p.cons,
         verdict: d.verdict || p.verdict,
         summary: d.summary || p.summary,
       }))
