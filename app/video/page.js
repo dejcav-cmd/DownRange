@@ -22,17 +22,21 @@ const SEED_VIDEOS = [
   { _id:'v10', title:'Perfectly Timed Counter-Ambush',                                 videoId:'RcSDVC42DTg', channelName:'Active Self Protection', category:'training',  duration:'3:58',  thumbnail:'https://i.ytimg.com/vi/RcSDVC42DTg/hqdefault.jpg' },
   { _id:'v11', title:'How To Start With Concealed Carry',                              videoId:'FfVNca7nGXk', channelName:'Paul Harrell',           category:'training',  duration:'19:33', thumbnail:'https://i.ytimg.com/vi/FfVNca7nGXk/hqdefault.jpg' },
   { _id:'v12', title:'Best All Around AR-15 Build',                                    videoId:'tPStQ6UgSNI', channelName:'Military Arms Channel',  category:'build',     duration:'24:08', thumbnail:'https://i.ytimg.com/vi/tPStQ6UgSNI/hqdefault.jpg' },
-  { _id:'v13', title:'The Legendary Paul Harrell',                                     videoId:'ANdUqpCW2SM', channelName:'Garand Thumb',           category:'interview', duration:'22:41', thumbnail:'https://i.ytimg.com/vi/ANdUqpCW2SM/hqdefault.jpg' },
+  { _id:'v13', title:'The Legendary Paul Harrell',                                     videoId:'ANdUqpCW2SM', channelName:'Garand Thumb',           category:'review',    duration:'22:41', thumbnail:'https://i.ytimg.com/vi/ANdUqpCW2SM/hqdefault.jpg' },
   { _id:'v14', title:'Travis Haley and Garand Thumb — Carbine Setups',                 videoId:'polxptTGKMk', channelName:'Garand Thumb',           category:'review',    duration:'26:17', thumbnail:'https://i.ytimg.com/vi/polxptTGKMk/hqdefault.jpg' },
 ]
 
-export default async function VideoPage() {
+export default async function VideoPage({ searchParams }) {
+  const cat    = searchParams?.cat  || null
+  const sort   = searchParams?.sort || 'newest'
+  const search = searchParams?.q    || null
+
   const [sanityVideos, alerts] = await Promise.all([
-    fetchVideos(24).catch(() => []),
+    fetchVideos(80).catch(() => []),
     fetchBreakingAlerts(3).catch(() => []),
   ])
 
   const videos = sanityVideos.length > 0 ? sanityVideos : SEED_VIDEOS
 
-  return <VideoPageClient videos={videos} alerts={alerts} />
+  return <VideoPageClient videos={videos} alerts={alerts} initialCat={cat} initialSort={sort} initialSearch={search} />
 }
