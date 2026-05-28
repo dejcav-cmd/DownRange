@@ -301,11 +301,10 @@ export default async function ArticlePage({ params }) {
                   <div style={{ margin: '2.5rem 0 0', padding: '1.25rem 1.5rem', background: 'rgba(200,146,42,0.06)', border: '1px solid rgba(200,146,42,0.25)', borderLeft: '4px solid #C8922A', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>
                     <div>
                       <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700, marginBottom: 4 }}>
-                        ORIGINAL SOURCE · {article.source || 'EXTERNAL PUBLISHER'}
+                        ORIGINAL SOURCE
                       </div>
-                      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem', color: '#6B7280', lineHeight: 1.5 }}>
-                        This editorial was written by DownRange AI based on reporting from <strong style={{ color: '#94a3b8' }}>{article.source || 'the original publisher'}</strong>.
-                        Read the primary source for additional detail.
+                      <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '0.8rem', color: '#6B7280', lineHeight: 1.6 }}>
+                        This editorial was written by DownRange based on the original article. Read the primary source for additional detail.
                       </div>
                     </div>
                     <a
@@ -336,18 +335,11 @@ export default async function ArticlePage({ params }) {
                 {/* Source attribution block */}
                 {article.externalUrl && (
                   <div style={{ marginTop: '2rem', padding: '1.5rem 2rem', background: '#0D1117', border: '1px solid #C8922A30', borderLeft: '4px solid #C8922A' }}>
-                    <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '10px' }}>
-                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700 }}>
-                        ORIGINAL SOURCE
-                      </span>
-                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#374151' }}>—</span>
-                      <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#4B5563' }}>
-                        {article.source || 'External Publisher'}
-                      </span>
+                    <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.65rem', color: '#C8922A', letterSpacing: '0.15em', fontWeight: 700, marginBottom: 8 }}>
+                      ORIGINAL SOURCE
                     </div>
                     <p style={{ color: '#6B7280', marginBottom: '1rem', fontSize: '0.875rem', lineHeight: 1.6 }}>
-                      This story was sourced and editorially summarized by DownRange.
-                      Read the full original report at {article.source || 'the source'}.
+                      This editorial was written by DownRange based on the original article. Read the primary source for additional detail.
                     </p>
                     <a href={article.externalUrl} target="_blank" rel="noopener noreferrer"
                       style={{ display: 'inline-flex', alignItems: 'center', gap: '8px', background: '#C8922A', color: '#000', padding: '0.65rem 1.5rem', fontFamily: "'IBM Plex Mono',monospace", fontWeight: 700, fontSize: '0.8rem', textDecoration: 'none', letterSpacing: '0.05em' }}>
