@@ -332,6 +332,7 @@ export default function ReleaseManager({ adminKey }) {
                     <button className="rm-ghost" style={{fontSize:9}} onClick={()=>{
                       const url=prompt('Image URL:'); if(url) patch(selRelease._id,{imageUrl:url})
                     }}>✎ Paste URL</button>
+                    <button className="rm-ghost" style={{fontSize:9,background:'#8b5cf6',color:'#fff',border:'none'}} onClick={()=>setImgSearch(selRelease)}>🔍 Search Images</button>
                     <button className="rm-ghost" disabled={busy}
                       style={{fontSize:9,background:'var(--gold)',color:'#000',border:'none'}}
                       onClick={saveReleaseImage}>
