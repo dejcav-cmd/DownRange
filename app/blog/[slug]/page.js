@@ -1,5 +1,4 @@
 import { notFound }    from 'next/navigation'
-import Image           from 'next/image'
 import Masthead        from '../../../components/layout/Masthead'
 import Footer          from '../../../components/layout/Footer'
 import BreakingTicker  from '../../../components/layout/BreakingTicker'
@@ -154,13 +153,7 @@ export default async function BlogArticlePage({ params }) {
             {/* Author bar */}
             <div style={{ display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
               <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                <Image
-                  src="/img/dj-avatar.png"
-                  alt="DJ Cavalcanti"
-                  width={38}
-                  height={38}
-                  style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }}
-                />
+                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="38" height="38" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
                 <div>
                   <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'#F0EDE6' }}>{post.author}</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'rgba(203,213,225,0.6)' }}>{post.authorRole}</div>
@@ -213,13 +206,7 @@ export default async function BlogArticlePage({ params }) {
 
               {/* Author card */}
               <div style={{ marginTop:'2.5rem', padding:'1.5rem 1.75rem', background:'var(--bg2)', border:'1px solid var(--border)', borderRadius:4, display:'flex', gap:16, alignItems:'flex-start' }}>
-                <Image
-                  src="/img/dj-avatar.png"
-                  alt="DJ Cavalcanti"
-                  width={72}
-                  height={72}
-                  style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 3px rgba(200,146,42,.15)' }}
-                />
+                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="72" height="72" style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 3px rgba(200,146,42,.15)' }} />
                 <div>
                   <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.04em', color:'var(--foreground)', marginBottom:4 }}>DJ Cavalcanti</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:8 }}>Founder, DownRange · Washington State</div>
