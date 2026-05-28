@@ -207,6 +207,55 @@ export async function searchReviews(q, limit = 20) {
   ).catch(() => [])
 }
 
+export async function fetchBlogPosts(limit = 50, category = null) {
+  const filter = category ? `&& category == "${category}"` : ''
+  return client.fetch(
+    `*[_type == "blogPost" && status == "published" ${filter}] | order(_createdAt desc) [0...$lim] {
+       _id, title, slug, category, excerpt, body, imageUrl, author,
+       status, publishedAt, readTime, _createdAt, tags
+     }`, { lim: limit }
+  ).catch(() => [])
+}
+
+export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category = null, search = null, sort = 'newest' }) {
+  const offset = (page - 1) * perPage
+  const catFilter = category ? `&& category == "${category}"` : ''
+
+  let query, params
+  if (search) {
+    const safe = '*' + search.replace(/['"\\]/g,'').slice(0,80) + '*'
+    query = `{
+      "posts": *[_type == "blogPost" && status == "published" ${catFilter}
+        && (title match $q || excerpt match $q || body match $q || tags[] match $q)]
+        | order(_createdAt desc) [$offset...$end] {
+          _id, title, slug, category, excerpt, imageUrl, author,
+          status, publishedAt, readTime, _createdAt, tags
+        },
+      "total": count(*[_type == "blogPost" && status == "published" ${catFilter}
+        && (title match $q || excerpt match $q || body match $q || tags[] match $q)])
+    }`
+    params = { q: safe, offset, end: offset + perPage }
+  } else {
+    const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
+    query = `{
+      "posts": *[_type == "blogPost" && status == "published" ${catFilter}]
+        | order(${orderField}) [$offset...$end] {
+          _id, title, slug, category, excerpt, imageUrl, author,
+          status, publishedAt, readTime, _createdAt, tags
+        },
+      "total": count(*[_type == "blogPost" && status == "published" ${catFilter}])
+    }`
+    params = { offset, end: offset + perPage }
+  }
+  const result = await client.fetch(query, params).catch(() => ({ posts: [], total: 0 }))
+  return {
+    posts:  result.posts || [],
+    total:  result.total || 0,
+    pages:  Math.max(1, Math.ceil((result.total || 0) / perPage)),
+    page,
+  }
+}
+
 export async function searchBlogPosts(q, limit = 20) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
   return client.fetch(
