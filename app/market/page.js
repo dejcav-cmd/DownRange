@@ -381,7 +381,16 @@ export default async function MarketPage() {
           {/* ── DAILY BRIEF ── */}
           {analysis ? (
             <div style={{ background:'rgba(200,146,42,0.05)', border:'1px solid rgba(200,146,42,0.3)', borderLeft:'4px solid #C8922A', padding:'22px 26px', marginBottom:28, borderRadius:4 }}>
-              <div style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:9, color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:8 }}>📊 DAILY AI MARKET BRIEF · {today}</div>
+              <div style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:9, color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:8 }}>📊 DAILY AI MARKET BRIEF · {analysis.session === 'PM' ? '🌆 PM' : '🌅 AM'}</div>
+                {analysis.signal && (
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'3px 10px',
+                    background: analysis.signal==='BUY'?'rgba(34,197,94,.12)':analysis.signal==='SELL'?'rgba(239,68,68,.12)':'rgba(245,158,11,.12)',
+                    color: analysis.signal==='BUY'?'#22c55e':analysis.signal==='SELL'?'#ef4444':'#f59e0b',
+                    border: '1px solid currentColor', letterSpacing:'.06em' }}>
+                    {analysis.signal}
+                  </span>
+                )}
+              </div>
               <h2 style={{ fontFamily:'Bebas Neue, sans-serif', fontSize:'1.4rem', color:'var(--foreground)', marginBottom:8, letterSpacing:'0.04em' }}>{analysis.title}</h2>
               <p style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#94a3b8', lineHeight:1.7, marginBottom: analysis.bullets?.length ? 12 : 0 }}>{analysis.summary}</p>
               {analysis.bullets?.length > 0 && (
