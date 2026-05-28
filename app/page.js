@@ -280,43 +280,6 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* ════ NEW RELEASES ════ */}
-      <section style={{ padding:'32px 0', borderBottom:'1px solid var(--border)' }}>
-        <div className="container">
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
-            <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:0 }}>🔫 JUST DROPPED</h2>
-            <Link href="/releases" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>All Releases →</Link>
-          </div>
-          <div style={{ display:'flex', gap:10, overflowX:'auto', paddingBottom:4 }}>
-            {(releases.length > 0 ? releases : [
-              { _id:'1', brand:'Glock',          model:'G47 MOS',          caliber:'9mm',       msrp:599,  isNew:true,  heroImage:{ asset:{ url:'/img/photos/pistol.jpg' } } },
-              { _id:'2', brand:'SIG Sauer',       model:'P365-XMACRO Comp', caliber:'9mm',       msrp:699,  isNew:true,  heroImage:{ asset:{ url:'/img/photos/pistol.jpg' } } },
-              { _id:'3', brand:'Smith & Wesson',  model:'M&P15 Sport III',  caliber:'5.56 NATO', msrp:749,  isNew:false, heroImage:{ asset:{ url:'/img/photos/rifle.jpg' } } },
-              { _id:'4', brand:'Mossberg',        model:'590S Shockwave',   caliber:'12 Gauge',  msrp:549,  isNew:false, heroImage:{ asset:{ url:'/img/photos/shotgun.jpg' } } },
-              { _id:'5', brand:'Ruger',           model:'LC Carbine',       caliber:'5.7x28mm',  msrp:829,  isNew:true,  heroImage:{ asset:{ url:'/img/photos/rifle.jpg' } } },
-              { _id:'6', brand:'Kimber',          model:'Rapide Black Ice', caliber:'9mm',       msrp:1599, isNew:false, heroImage:{ asset:{ url:'/img/photos/pistol.jpg' } } },
-            ]).map(r => (
-              <div key={r._id} className="release-card" style={{ width:190, flexShrink:0, background:'var(--bg2)', border:'1px solid var(--border)', transition:'border-color 0.15s', borderRadius:2 }}>
-                <div style={{ height:120, background:'var(--bg)', display:'flex', alignItems:'center', justifyContent:'center', fontSize:40, position:'relative', overflow:'hidden' }}>
-                  {r.heroImage?.asset?.url
-                    ? <img src={r.heroImage.asset.url} alt={r.model} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
-                    : <span style={{ opacity:0.3 }}>🔫</span>}
-                  {r.isNew && <div style={{ position:'absolute', top:8, left:8, background:'#ef4444', color:'#fff', fontFamily:"'Barlow Condensed',sans-serif", fontSize:9, fontWeight:700, letterSpacing:'0.15em', padding:'2px 6px' }}>NEW</div>}
-                </div>
-                <div style={{ padding:'12px 14px' }}>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#C8922A', letterSpacing:'0.1em', marginBottom:2 }}>{r.brand}</div>
-                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:18, color:'var(--foreground)', letterSpacing:'0.03em', lineHeight:1, marginBottom:4 }}>{r.model}</div>
-                  <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                    {r.caliber && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#475569', background:'var(--bg)', border:'1px solid var(--border)', padding:'1px 5px' }}>{r.caliber}</span>}
-                    {r.msrp && <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:16, color:'#C8922A' }}>${r.msrp.toLocaleString()}</span>}
-                  </div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* ════ STATE HUB ════ */}
       <section style={{ padding:'40px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
         <div className="container">

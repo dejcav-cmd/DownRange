@@ -71,7 +71,6 @@ const NAV = [
     label: '🇨🇦 International', href: '/canada',
     children: [
       { label: '🇨🇦 Canada', href: '/canada', desc: 'PAL, C-21, province laws' },
-      { label: '📡 RSS Feeds', href: '/rss', desc: 'Subscribe to all DownRange feeds' },
     ]
   },
   { label: 'Blog', href: '/blog' },
@@ -171,7 +170,12 @@ export default function Masthead() {
           </Link>
 
           <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'3px' }}>
-            <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
+            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+              <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'var(--gold)', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
+                📡 RSS
+              </a>
+              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
+            </div>
             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)' }}>{dateStr}</div>
             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--gold)' }}>📍 DOWNRANGECO.COM</div>
           </div>

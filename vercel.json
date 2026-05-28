@@ -22,7 +22,7 @@
     },
     {
       "path": "/api/agent?feed=state",
-      "schedule": "0 8 * * *"
+      "schedule": "0 8 * * 0"
     },
     {
       "path": "/api/newsletter",

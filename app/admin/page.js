@@ -57,6 +57,7 @@ const NAV = [
     id: 'intelligence', label: 'Intelligence', icon: '🧠',
     panels: [
       { id:'intel',        label:'Briefings',        icon:'🧠', badge:null },
+      { id:'statelaws',    label:'State Laws',       icon:'🗺', badge:null },
       { id:'pulllog',      label:'Pull Log',         icon:'📡', badge:null },
       { id:'deals',        label:'Deals Feed',       icon:'🔥', badge:null },
       { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
@@ -1651,6 +1652,150 @@ function ContentHub({ adminKey, setPanel, setSection }) {
   )
 }
 
+function StateLawsPanel({ adminKey }) {
+  const [states, setStates]   = useState([])
+  const [loading, setLoading] = useState(true)
+  const [search, setSearch]   = useState('')
+  const [sortBy, setSortBy]   = useState('name')
+  const [running, setRunning] = useState(false)
+  const [runResult, setRunResult] = useState(null)
+  const H = { 'x-admin-key': adminKey }
+
+  useEffect(() => {
+    fetch('/api/admin/state-profiles', { headers: H })
+      .then(r => r.json())
+      .then(d => { if (d.ok) setStates(d.states || []) })
+      .catch(() => {})
+      .finally(() => setLoading(false))
+  }, [adminKey])
+
+  async function runFeed() {
+    setRunning(true); setRunResult(null)
+    try {
+      const res = await fetch('/api/admin/cron-status?trigger=true', {
+        method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ jobId: 'state' })
+      })
+      const d = await res.json()
+      setRunResult(d)
+    } catch (e) { setRunResult({ ok: false, error: e.message }) }
+    setRunning(false)
+  }
+
+  const RATING_C = { 'A': '#22c55e', 'B': '#84cc16', 'C': '#f59e0b', 'D': '#f97316', 'F': '#ef4444' }
+
+  const filtered = states
+    .filter(s => !search || s.name?.toLowerCase().includes(search.toLowerCase()) || s.abbr?.toLowerCase().includes(search.toLowerCase()))
+    .sort((a, b) => {
+      if (sortBy === 'name')   return (a.name||'').localeCompare(b.name||'')
+      if (sortBy === 'rating') return (a.rating||'F').localeCompare(b.rating||'F')
+      if (sortBy === 'carry')  return (b.constitutionalCarry ? 1 : 0) - (a.constitutionalCarry ? 1 : 0)
+      return 0
+    })
+
+  const constitutionalCarry = states.filter(s => s.constitutionalCarry).length
+  const redFlag = states.filter(s => s.redFlagLaw).length
+
+  return (
+    <div>
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12, marginBottom:20 }}>
+        <div>
+          <div className="panel-title">🗺 State Laws</div>
+          <div className="panel-sub">50-state firearms law database · Updated weekly every Sunday 8am UTC</div>
+        </div>
+        <div style={{ display:'flex', gap:8 }}>
+          <button className="adm-btn" onClick={runFeed} disabled={running} style={{ fontSize:11 }}>
+            {running ? '⏳ Updating...' : '↺ Run State Feed Now'}
+          </button>
+          <a href="/laws?tab=reciprocity" target="_blank" style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, padding:'6px 14px', background:'transparent', border:'1px solid var(--border)', color:'var(--text-dim)', textDecoration:'none', display:'flex', alignItems:'center' }}>
+            🗺 CCW Planner ↗
+          </a>
+        </div>
+      </div>
+
+      {runResult && (
+        <div style={{ marginBottom:16, padding:'8px 14px', background:runResult.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)', border:`1px solid ${runResult.ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'}`, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:runResult.ok?'#4ade80':'#f87171' }}>
+          {runResult.ok ? `✅ Feed triggered (${runResult.ms}ms)` : `❌ ${runResult.error}`}
+        </div>
+      )}
+
+      {/* Summary stats */}
+      {states.length > 0 && (
+        <div style={{ display:'flex', gap:12, marginBottom:20, flexWrap:'wrap' }}>
+          {[
+            { label:'States tracked',       val: states.length,         color:'var(--text)' },
+            { label:'Constitutional Carry', val: constitutionalCarry,   color:'#22c55e' },
+            { label:'Red Flag Laws',        val: redFlag,               color:'#ef4444' },
+            { label:'Last Updated',         val: 'Weekly',              color:'#C8922A' },
+          ].map(s => (
+            <div key={s.label} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'10px 18px', textAlign:'center', flex:1, minWidth:100 }}>
+              <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:s.color, lineHeight:1 }}>{s.val}</div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginTop:3, letterSpacing:'.06em', textTransform:'uppercase' }}>{s.label}</div>
+            </div>
+          ))}
+        </div>
+      )}
+
+      {/* Controls */}
+      <div style={{ display:'flex', gap:8, marginBottom:14, flexWrap:'wrap', alignItems:'center' }}>
+        <input value={search} onChange={e => setSearch(e.target.value)}
+          placeholder="Search state..." 
+          style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'6px 12px', background:'var(--bg2)', border:'1px solid var(--border)', color:'var(--text)', flex:1, minWidth:160 }} />
+        {[['name','A-Z'],['rating','Rating'],['carry','Carry']].map(([k,l]) => (
+          <button key={k} onClick={() => setSortBy(k)} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'5px 10px', background:sortBy===k?'var(--gold)':'transparent', color:sortBy===k?'#000':'#6b7280', border:`1px solid ${sortBy===k?'var(--gold)':'var(--border)'}`, cursor:'pointer' }}>
+            {l}
+          </button>
+        ))}
+      </div>
+
+      {loading ? (
+        <div style={{ padding:40, textAlign:'center', color:'#4b5563', fontFamily:"'IBM Plex Mono',monospace", fontSize:12 }}>Loading state profiles...</div>
+      ) : filtered.length === 0 ? (
+        <div style={{ padding:40, textAlign:'center', color:'#4b5563', fontFamily:"'IBM Plex Mono',monospace", fontSize:12 }}>
+          {states.length === 0 ? 'No state profiles loaded. Run the State Feed to populate.' : 'No states match your search.'}
+        </div>
+      ) : (
+        <div style={{ overflowX:'auto' }}>
+          <table style={{ width:'100%', borderCollapse:'collapse', fontSize:11 }}>
+            <thead>
+              <tr style={{ borderBottom:'2px solid var(--border)' }}>
+                {['State','Rating','Const. Carry','CCW Permit','Red Flag','Mag Limit','AWB','Suppressors','Open Carry'].map(h => (
+                  <th key={h} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:11, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase', color:'#4b5563', padding:'8px 10px', textAlign:'left', whiteSpace:'nowrap' }}>{h}</th>
+                ))}
+              </tr>
+            </thead>
+            <tbody>
+              {filtered.map(s => (
+                <tr key={s.abbr || s.name} style={{ borderBottom:'1px solid rgba(30,41,59,.4)' }}>
+                  <td style={{ padding:'8px 10px', fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:13, color:'var(--text)', whiteSpace:'nowrap' }}>
+                    <span style={{ color:'#4b5563', fontSize:10, marginRight:6 }}>{s.abbr}</span>{s.name}
+                  </td>
+                  <td style={{ padding:'8px 10px' }}>
+                    {s.rating ? <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:16, color:RATING_C[s.rating]||'#6b7280' }}>{s.rating}</span> : <span style={{ color:'#374151' }}>—</span>}
+                  </td>
+                  {[
+                    s.constitutionalCarry,
+                    s.ccwPermit,
+                    s.redFlagLaw,
+                  ].map((v, i) => (
+                    <td key={i} style={{ padding:'8px 10px' }}>
+                      <span style={{ color: v ? '#22c55e' : '#ef4444', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>{v ? '✓ YES' : '✗ NO'}</span>
+                    </td>
+                  ))}
+                  <td style={{ padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: s.magLimit ? '#f59e0b' : '#4b5563' }}>{s.magLimit || 'None'}</td>
+                  <td style={{ padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: s.awbStatus && s.awbStatus !== 'no' ? '#ef4444' : '#4b5563' }}>{s.awbStatus || 'None'}</td>
+                  <td style={{ padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280' }}>{s.suppressors || '—'}</td>
+                  <td style={{ padding:'8px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280' }}>{s.openCarry || '—'}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
   const [section,  setSection]  = useState('system')
@@ -1765,8 +1910,9 @@ export default function AdminPage() {
             {panel==='seo'        && <SEOPanel />}
 
             {/* ── INTELLIGENCE ── */}
-            {panel==='intel'   && <IntelligenceDashboard adminKey={adminKey} />}
-            {panel==='pulllog' && <PullLogDashboard />}
+            {panel==='intel'     && <IntelligenceDashboard adminKey={adminKey} />}
+            {panel==='statelaws' && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
+            {panel==='pulllog'   && <PullLogDashboard />}
             {panel==='deals'   && <DealsPanel />}
             {panel==='feeds'   && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
 
