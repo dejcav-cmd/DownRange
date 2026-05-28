@@ -152,10 +152,13 @@ export default async function BlogArticlePage({ params }) {
             </p>
             {/* Author bar */}
             <div style={{ display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
-              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                <div style={{ width:38, height:38, borderRadius:'50%', background:'#C8922A', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:15, color:'#000', flexShrink:0, border:'2px solid rgba(200,146,42,0.5)' }}>
-                  DJ
-                </div>
+                <Image
+                  src="/img/dj-avatar.png"
+                  alt="DJ Cavalcanti"
+                  width={38}
+                  height={38}
+                  style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }}
+                />
                 <div>
                   <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'#F0EDE6' }}>{post.author}</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'rgba(203,213,225,0.6)' }}>{post.authorRole}</div>
@@ -208,9 +211,13 @@ export default async function BlogArticlePage({ params }) {
 
               {/* Author card */}
               <div style={{ marginTop:'2.5rem', padding:'1.5rem 1.75rem', background:'var(--bg2)', border:'1px solid var(--border)', borderRadius:4, display:'flex', gap:16, alignItems:'flex-start' }}>
-                <div style={{ width:56, height:56, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:20, color:'#000', flexShrink:0 }}>DJ</div>
-                <div>
-                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.04em', color:'var(--foreground)', marginBottom:4 }}>DJ Cavalcanti</div>
+                <Image
+                  src="/img/dj-avatar.png"
+                  alt="DJ Cavalcanti"
+                  width={72}
+                  height={72}
+                  style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 2px rgba(200,146,42,.2)' }}
+                />
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:8 }}>Founder, DownRange · Washington State</div>
                   <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.65, margin:0 }}>
                     DJ Cavalcanti is the founder of DownRange Intelligence Hub, a firearms business developer, and a WA state CPL holder. He covers firearms industry trends, 2A legal developments, and tactical product intelligence.
