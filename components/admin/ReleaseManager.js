@@ -371,6 +371,12 @@ export default function ReleaseManager({ adminKey }) {
                       style={{display:'flex',alignItems:'center',padding:'8px 14px',border:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',textDecoration:'none'}}>
                       View ↗
                     </a>
+                    {selRelease.sourceUrl && (
+                      <a href={selRelease.sourceUrl} target="_blank" rel="noreferrer"
+                        style={{display:'flex',alignItems:'center',padding:'8px 14px',border:'1px solid rgba(200,146,42,.4)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',textDecoration:'none'}}>
+                        Source ↗
+                      </a>
+                    )}
                     <button className="rm-del" onClick={()=>deleteRelease(selRelease)} disabled={busy}>🗑</button>
                   </div>
                   {/* Lock flag */}
