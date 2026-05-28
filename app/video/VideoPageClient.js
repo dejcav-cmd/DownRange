@@ -14,6 +14,7 @@ const CATS = [
   { label: 'Competition', val: 'competition' },
   { label: 'History',     val: 'history' },
   { label: 'Ammo',        val: 'ammo' },
+  { label: '🦌 Hunting',  val: 'hunting' },
 ]
 
 const SORT_OPTS = [
@@ -22,7 +23,7 @@ const SORT_OPTS = [
   { label: '🔤 A–Z', val: 'alpha' },
 ]
 
-const CAT_C = { review:'#C8922A', training:'#22C55E', news:'#3B82F6', build:'#A855F7', interview:'#F97316', competition:'#06B6D4', history:'#84CC16', ammo:'#F59E0B', comparison:'#EC4899' }
+const CAT_C = { review:'#C8922A', training:'#22C55E', news:'#3B82F6', build:'#A855F7', interview:'#F97316', competition:'#06B6D4', history:'#84CC16', ammo:'#F59E0B', comparison:'#EC4899', hunting:'#65A30D' }
 
 function fmt(n) {
   if (!n) return ''
