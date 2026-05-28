@@ -490,8 +490,8 @@ export default function NewsArticleManager({ adminKey }) {
                 <input className="nam-input" value={editImg} onChange={e => setEditImg(e.target.value)}
                   placeholder="https://..." style={{ flex:1, fontSize:10 }} />
                 <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { imageUrl: editImg }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: editImg } : a)); flash('✅ Image URL saved') }}
-                  disabled={busy || !!selectedArticle.editorLocked || editImg === selectedArticle.imageUrl}
-                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap', opacity: editImg === selectedArticle.imageUrl ? 0.4 : 1 }}>
+                  disabled={busy || !!selectedArticle.editorLocked}
+                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap' }}>
                   💾 Save
                 </button>
               </div>
@@ -503,8 +503,8 @@ export default function NewsArticleManager({ adminKey }) {
               <div style={{ display:'flex', gap:6, marginBottom:12 }}>
                 <input className="nam-input" value={editTitle} onChange={e => setEditTitle(e.target.value)} style={{ flex:1 }} />
                 <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { title: editTitle }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, title: editTitle } : a)); flash('✅ Title saved') }}
-                  disabled={busy || !!selectedArticle.editorLocked || editTitle === selectedArticle.title}
-                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap', opacity: editTitle === selectedArticle.title ? 0.4 : 1 }}>
+                  disabled={busy || !!selectedArticle.editorLocked}
+                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap' }}>
                   💾 Save
                 </button>
               </div>
@@ -531,7 +531,7 @@ export default function NewsArticleManager({ adminKey }) {
                 rows={8} style={{ marginBottom:6 }} />
               <div style={{ display:'flex', gap:6, marginBottom:8 }}>
                 <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { body: editBody }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, body: editBody } : a)); flash('✅ Body saved') }}
-                  disabled={busy || !!selectedArticle.editorLocked || editBody === (selectedArticle.body || selectedArticle.summary)}
+                  disabled={busy || !!selectedArticle.editorLocked}
                   style={{ fontSize:10, padding:'6px 16px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', opacity: editBody === (selectedArticle.body || selectedArticle.summary) ? 0.4 : 1 }}>
                   💾 Save Body
                 </button>
