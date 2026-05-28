@@ -1696,14 +1696,20 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           </button>
           <button disabled={seeding.cleanAttr} onClick={async ()=>{
             setSeeding(s=>({...s,cleanAttr:true})); setResults(r=>({...r,cleanAttr:null}))
-            flash('⏳ Running bulk cleanup — stripping embedded attribution divs from all articles...')
+            flash('⏳ Running cleanup — batching patches, this should finish in under 30 seconds...')
             try {
-              const res = await fetch('/api/admin/one-time-cleanup', { headers:H })
+              const ctrl = new AbortController()
+              const timer = setTimeout(() => ctrl.abort(), 120000) // 2-min client timeout
+              const res = await fetch('/api/admin/one-time-cleanup', { headers:H, signal: ctrl.signal })
+              clearTimeout(timer)
               const d = await res.json()
               setResults(r=>({...r,cleanAttr:d}))
-              if (d.ok) flash('✅ Cleanup done — ' + d.cleaned + ' articles cleaned, genomics article fixed')
+              if (d.ok) flash('✅ Done in ' + (d.ms ? (d.ms/1000).toFixed(1)+'s' : '?') + ' — ' + (d.cleaned||0) + ' docs cleaned, ' + (d.skipped||0) + ' already clean')
               else flash('❌ Cleanup error: ' + (d.error||'Unknown'))
-            } catch(e){ setResults(r=>({...r,cleanAttr:{ok:false,message:e.message}})); flash('❌ '+e.message) }
+            } catch(e){
+              setResults(r=>({...r,cleanAttr:{ok:false,message:e.message}}))
+              flash(e.name==='AbortError' ? '⏱ Timed out — check Vercel logs for progress' : '❌ '+e.message)
+            }
             setSeeding(s=>({...s,cleanAttr:false}))
           }} title="Bulk cleanup: strips embedded ORIGINAL SOURCE divs + fixes genomics article image" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em', padding:'10px 20px', background:seeding.cleanAttr?'#374151':'#7c3aed', color:'#fff', border:'none', cursor:seeding.cleanAttr?'default':'pointer' }}>
             {seeding.cleanAttr ? '⏳ CLEANING...' : '🧹 CLEAN ATTRIBUTION'}
