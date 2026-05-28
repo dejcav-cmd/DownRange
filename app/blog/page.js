@@ -2,15 +2,14 @@ import Masthead    from '../../components/layout/Masthead'
 import Footer      from '../../components/layout/Footer'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import Link        from 'next/link'
-import { fetchBreakingAlerts } from '../../sanity/lib/client'
+import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'The Range Report — DownRange Blog',
   description: 'Expert analysis, industry commentary, and field intelligence from DJ Cavalcanti and the DownRange editorial team.',
 }
-export const revalidate = 3600
+export const revalidate = 600
 
-// ── Blog posts — authored by DJ Cavalcanti ────────────────────────────────────
 export const BLOG_POSTS = [
   {
     slug:        'suppressor-revolution-2026',
@@ -244,15 +243,98 @@ export const BLOG_POSTS = [
   },
 ]
 
+
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
 function readingMins(body) {
-  return Math.max(1, Math.round(body.replace(/<[^>]+>/g,'').split(/\s+/).length / 200))
+  return Math.max(1, Math.round((body || '').replace(/<[^>]+>/g,'').split(/\s+/).length / 200))
 }
 
-export default async function BlogPage() {
+const CATS = [
+  { label: 'All',        val: null },
+  { label: 'Opinion',    val: 'OPINION' },
+  { label: 'Analysis',   val: 'ANALYSIS' },
+  { label: 'Law',        val: 'LAW' },
+  { label: 'Training',   val: 'TRAINING' },
+  { label: 'Market',     val: 'MARKET' },
+  { label: 'Industry',   val: 'INDUSTRY' },
+]
+
+const SORT_OPTS = [
+  { label: '📅 Newest', val: 'newest' },
+  { label: '🕰 Oldest', val: 'oldest' },
+]
+
+const PER_PAGE = 12
+
+// Convert a Sanity blog post to the same shape as a static BLOG_POSTS entry
+function normalizeSanityPost(p) {
+  return {
+    slug:       p.slug?.current || p.slug || '',
+    title:      p.title || '',
+    subtitle:   p.excerpt || '',
+    author:     p.author || 'DJ Cavalcanti',
+    authorRole: 'DownRange Editorial',
+    date:       p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : (p._createdAt ? new Date(p._createdAt).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : ''),
+    readTime:   typeof p.readTime === 'number' ? p.readTime + ' min read' : (p.readTime || '8 min read'),
+    category:   (p.category || 'general').toUpperCase(),
+    catColor:   '#C8922A',
+    featured:   false,
+    img:        p.imageUrl || '/img/photos/pistol.jpg',
+    excerpt:    p.excerpt || '',
+    tags:       p.tags || [],
+    body:       p.body || '',
+    fromSanity: true,
+  }
+}
+
+export default async function BlogPage({ searchParams }) {
+  const cat    = searchParams?.cat   || null
+  const sort   = searchParams?.sort  || 'newest'
+  const search = searchParams?.q     || null
+  const page   = Math.max(1, parseInt(searchParams?.page || '1'))
+
+  // Fetch Sanity blog posts (published ones)
+  const { posts: sanityPosts, total, pages } = await fetchBlogPostsPaginated({
+    page, perPage: PER_PAGE, category: cat, search, sort
+  }).catch(() => ({ posts: [], total: 0, pages: 1 }))
+
+  const sanityNormalized = sanityPosts.map(normalizeSanityPost)
+
+  // Static posts as seed/fallback (filter by cat/search client-side for page 1 without Sanity results)
+  const staticFiltered = page === 1 && sanityNormalized.length === 0
+    ? BLOG_POSTS.filter(p => {
+        if (cat && p.category !== cat) return false
+        if (search) {
+          const q = search.toLowerCase()
+          return (p.title||'').toLowerCase().includes(q) ||
+                 (p.excerpt||'').toLowerCase().includes(q) ||
+                 (p.tags||[]).some(t => t.toLowerCase().includes(q))
+        }
+        return true
+      })
+    : []
+
+  // Merge: Sanity first, then static (deduplicated by slug)
+  const sanitySlugSet = new Set(sanityNormalized.map(p => p.slug))
+  const staticExtra   = staticFiltered.filter(p => !sanitySlugSet.has(p.slug))
+  const allPosts      = [...sanityNormalized, ...staticExtra]
+
+  const totalDisplay  = total > 0 ? total : allPosts.length
+  const pagesDisplay  = total > 0 ? pages : 1
+
+  const [featured, ...rest] = allPosts.length > 0 ? allPosts : BLOG_POSTS
   const alerts = await fetchBreakingAlerts(3).catch(() => [])
-  const [featured, ...rest] = BLOG_POSTS
+
+  function buildUrl(overrides) {
+    const merged = { ...(cat && { cat }), ...(sort !== 'newest' && { sort }), ...(search && { q: search }), page: String(page), ...overrides }
+    if (merged.page === '1') delete merged.page
+    if (!merged.sort || merged.sort === 'newest') delete merged.sort
+    if (!merged.cat) delete merged.cat
+    if (!merged.q) delete merged.q
+    const qs = new URLSearchParams(merged).toString()
+    return '/blog' + (qs ? '?' + qs : '')
+  }
 
   return (
     <>
@@ -281,102 +363,208 @@ export default async function BlogPage() {
             DownRange Blog<br /><span style={{ color:'var(--gold)' }}>By DJ Cavalcanti</span>
           </h1>
           <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#475569', lineHeight:1.7, maxWidth:520 }}>
-            {BLOG_POSTS.length} articles · Firearms industry analysis, legal intelligence, and buyer guidance from the DownRange founder
+            {totalDisplay > 0 ? totalDisplay : BLOG_POSTS.length} articles · Firearms industry analysis, legal intelligence, and buyer guidance
           </p>
         </div>
       </div>
 
+      {/* ── STICKY NAV BAR — matches News pattern ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
+        <div className="container">
+          <div style={{ display:'flex', alignItems:'stretch', overflowX:'auto' }}>
+            {/* Category tabs */}
+            <div style={{ display:'flex', gap:0, flex:1, overflowX:'auto' }}>
+              {CATS.map(c => (
+                <a key={c.val || 'all'} href={buildUrl({ cat: c.val || undefined, page: undefined })}
+                  style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px',
+                    fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px',
+                    borderBottom: '2px solid ' + ((cat === c.val || (!cat && !c.val)) ? 'var(--gold)' : 'transparent'),
+                    color: (cat === c.val || (!cat && !c.val)) ? 'var(--gold)' : 'var(--text-dim)',
+                    textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+                  {c.label}
+                </a>
+              ))}
+            </div>
+            {/* Sort */}
+            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+              {SORT_OPTS.map(({ val, label }) => (
+                <a key={val} href={buildUrl({ sort: val, page: undefined })}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 10px',
+                    border:'1px solid var(--border)',
+                    color: sort === val ? '#C8922A' : '#4B5563',
+                    textDecoration:'none',
+                    background: sort === val ? '#C8922A20' : 'transparent' }}>
+                  {label}
+                </a>
+              ))}
+            </div>
+            {/* Search */}
+            <form action="/blog" method="get" style={{ display:'flex', alignItems:'center', gap:6, padding:'0 0 0 8px', borderLeft:'1px solid var(--border)' }}>
+              {cat && <input type="hidden" name="cat" value={cat} />}
+              {sort && sort !== 'newest' && <input type="hidden" name="sort" value={sort} />}
+              <input
+                type="search" name="q"
+                defaultValue={search || ''}
+                placeholder="Search blog posts…"
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, background:'var(--bg)',
+                  border:'1px solid var(--border)', color:'var(--text)', padding:'5px 10px', width:180, outline:'none' }}
+              />
+              <button type="submit" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, background:'var(--gold)', color:'#000', border:'none', padding:'6px 12px', cursor:'pointer', fontWeight:700, flexShrink:0 }}>⌕</button>
+              {search && <a href={buildUrl({ q: undefined, page: undefined })} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', textDecoration:'none', flexShrink:0 }}>✕</a>}
+            </form>
+          </div>
+        </div>
+      </div>
+
+      {/* Search context */}
+      {search && (
+        <div style={{ background:'rgba(200,146,42,.05)', borderBottom:'1px solid var(--border)', padding:'10px 0' }}>
+          <div className="container" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#6b7280' }}>
+            {allPosts.length} result{allPosts.length !== 1 ? 's' : ''} for <span style={{ color:'var(--gold)' }}>"{search}"</span>
+            {' — '}<a href="/blog" style={{ color:'#6b7280' }}>Clear search</a>
+          </div>
+        </div>
+      )}
+
       <div style={{ padding:'40px 0 80px' }}>
         <div className="container">
 
-          {/* ── FEATURED ARTICLE ── */}
-          <Link href={`/blog/${featured.slug}`} style={{ textDecoration:'none', display:'block', marginBottom:40 }} className="blog-card" >
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 480px', gap:0, border:'1px solid var(--border)', overflow:'hidden', borderRadius:4 }}>
-              {/* Text */}
-              <div style={{ padding:'40px 44px', background:'var(--bg2)', display:'flex', flexDirection:'column', justifyContent:'center' }}>
-                <div style={{ display:'flex', gap:8, marginBottom:14, alignItems:'center' }}>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color: featured.catColor === '#C8922A' ? '#000' : '#fff', background:featured.catColor, padding:'2px 10px', letterSpacing:'0.08em' }}>
-                    {featured.category}
-                  </span>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>FEATURED</span>
-                </div>
-                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.4rem', color:'var(--foreground)', letterSpacing:'0.02em', lineHeight:1, marginBottom:14 }}>
-                  {featured.title}
-                </h2>
-                <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.7, marginBottom:20 }}>
-                  {featured.excerpt}
-                </p>
-                <div style={{ display:'flex', alignItems:'center', gap:16, flexWrap:'wrap' }}>
-                  <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                    <div style={{ width:32, height:32, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:14, color:'#000' }}>DJ</div>
-                    <div>
-                      <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--foreground)' }}>{featured.author}</div>
-                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{featured.authorRole}</div>
-                    </div>
-                  </div>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155' }}>·</span>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{featured.date}</span>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155' }}>·</span>
-                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A' }}>{featured.readTime}</span>
-                </div>
-                <div style={{ marginTop:20 }}>
-                  <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.08em', color:'#000', background:'var(--gold)', padding:'8px 20px', display:'inline-block' }}>
-                    READ ARTICLE →
-                  </span>
-                </div>
-              </div>
-              {/* Image */}
-              <div style={{ overflow:'hidden', position:'relative', minHeight:420 }}>
-                <img src={featured.img} alt={featured.title}
-                  className="blog-img"
-                  style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', minHeight:420 }} />
-                <div style={{ position:'absolute', inset:0, background:'linear-gradient(90deg, rgba(9,9,11,0.3) 0%, transparent 60%)' }} />
-              </div>
+          {allPosts.length === 0 && (
+            <div style={{ textAlign:'center', padding:'80px 0', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4b5563' }}>
+              {search ? 'No posts match "' + search + '"' : 'No posts yet.'}
             </div>
-          </Link>
+          )}
 
-          {/* ── ARTICLE GRID ── */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px,1fr))', gap:20 }}>
-            {rest.map(post => (
-              <Link key={post.slug} href={`/blog/${post.slug}`} style={{ textDecoration:'none' }} className="blog-card">
-                <div style={{ border:'1px solid var(--border)', borderRadius:4, overflow:'hidden', height:'100%', display:'flex', flexDirection:'column', background:'var(--bg2)' }}>
-                  {/* Image */}
-                  <div style={{ height:220, overflow:'hidden', position:'relative' }}>
-                    <img src={post.img} alt={post.title}
-                      className="blog-img"
-                      style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
-                    <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(9,9,11,0.7) 0%, transparent 60%)' }} />
-                    <div style={{ position:'absolute', top:12, left:12 }}>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, color: post.catColor === '#C8922A' || post.catColor === '#22c55e' ? '#000' : '#fff', background:post.catColor, padding:'2px 8px', letterSpacing:'0.08em' }}>
-                        {post.category}
-                      </span>
-                    </div>
-                    <div style={{ position:'absolute', bottom:12, left:12, right:12 }}>
-                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'rgba(255,255,255,0.5)' }}>
-                        {post.date} · {post.readTime}
+          {allPosts.length > 0 && (
+            <>
+              {/* ── FEATURED ARTICLE (only on page 1, no search) ── */}
+              {page === 1 && !search && featured && (
+                <Link href={'/blog/' + featured.slug} style={{ textDecoration:'none', display:'block', marginBottom:40 }} className="blog-card">
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 480px', gap:0, border:'1px solid var(--border)', overflow:'hidden', borderRadius:4 }}>
+                    <div style={{ padding:'40px 44px', background:'var(--bg2)', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+                      <div style={{ display:'flex', gap:8, marginBottom:14, alignItems:'center' }}>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color: featured.catColor === '#C8922A' ? '#000' : '#fff', background:featured.catColor, padding:'2px 10px', letterSpacing:'0.08em' }}>
+                          {featured.category}
+                        </span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>FEATURED</span>
                       </div>
+                      <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.4rem', color:'var(--foreground)', letterSpacing:'0.02em', lineHeight:1, marginBottom:14 }}>
+                        {featured.title}
+                      </h2>
+                      <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#64748b', lineHeight:1.7, marginBottom:20 }}>
+                        {(featured.excerpt || featured.subtitle || '').slice(0, 200)}
+                      </p>
+                      <div style={{ display:'flex', alignItems:'center', gap:16, flexWrap:'wrap' }}>
+                        <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+                          <div style={{ width:32, height:32, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:14, color:'#000' }}>DJ</div>
+                          <div>
+                            <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--foreground)' }}>{featured.author}</div>
+                            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{featured.authorRole}</div>
+                          </div>
+                        </div>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155' }}>·</span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{featured.date}</span>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A' }}>{featured.readTime}</span>
+                      </div>
+                      <div style={{ marginTop:20 }}>
+                        <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.08em', color:'#000', background:'var(--gold)', padding:'8px 20px', display:'inline-block' }}>
+                          READ ARTICLE →
+                        </span>
+                      </div>
+                    </div>
+                    <div style={{ overflow:'hidden', position:'relative', minHeight:420 }}>
+                      <img src={featured.img} alt={featured.title} className="blog-img"
+                        style={{ width:'100%', height:'100%', objectFit:'cover', display:'block', minHeight:420 }} />
+                      <div style={{ position:'absolute', inset:0, background:'linear-gradient(90deg, rgba(9,9,11,0.3) 0%, transparent 60%)' }} />
                     </div>
                   </div>
-                  {/* Content */}
-                  <div style={{ padding:'20px 22px', flex:1, display:'flex', flexDirection:'column' }}>
-                    <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'var(--foreground)', letterSpacing:'0.02em', lineHeight:1.05, marginBottom:10 }}>
-                      {post.title}
-                    </h3>
-                    <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.6, marginBottom:16, flex:1 }}>
-                      {post.excerpt.slice(0, 140)}…
-                    </p>
-                    <div style={{ display:'flex', alignItems:'center', gap:8, paddingTop:12, borderTop:'1px solid rgba(30,41,59,0.5)' }}>
-                      <div style={{ width:24, height:24, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:10, color:'#000', flexShrink:0 }}>DJ</div>
-                      <div style={{ flex:1, minWidth:0 }}>
-                        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--foreground)' }}>{post.author}</div>
+                </Link>
+              )}
+
+              {/* ── ARTICLE GRID ── */}
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px,1fr))', gap:20 }}>
+                {(page === 1 && !search ? rest : allPosts).map(post => (
+                  <Link key={post.slug} href={'/blog/' + post.slug} style={{ textDecoration:'none' }} className="blog-card">
+                    <div style={{ border:'1px solid var(--border)', borderRadius:4, overflow:'hidden', height:'100%', display:'flex', flexDirection:'column', background:'var(--bg2)' }}>
+                      <div style={{ height:220, overflow:'hidden', position:'relative' }}>
+                        <img src={post.img || post.imageUrl || '/img/photos/pistol.jpg'} alt={post.title}
+                          className="blog-img" style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(9,9,11,0.7) 0%, transparent 60%)' }} />
+                        <div style={{ position:'absolute', top:12, left:12 }}>
+                          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700,
+                            color: post.catColor === '#C8922A' || post.catColor === '#22c55e' ? '#000' : '#fff',
+                            background: post.catColor || '#C8922A', padding:'2px 8px', letterSpacing:'0.08em' }}>
+                            {post.category}
+                          </span>
+                        </div>
+                        <div style={{ position:'absolute', bottom:12, left:12, right:12 }}>
+                          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'rgba(255,255,255,0.5)' }}>
+                            {post.date} · {post.readTime}
+                          </div>
+                        </div>
                       </div>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A' }}>READ →</span>
+                      <div style={{ padding:'20px 22px', flex:1, display:'flex', flexDirection:'column' }}>
+                        <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'var(--foreground)', letterSpacing:'0.02em', lineHeight:1.05, marginBottom:10 }}>
+                          {post.title}
+                        </h3>
+                        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.6, marginBottom:16, flex:1 }}>
+                          {(post.excerpt || post.subtitle || '').slice(0, 140)}…
+                        </p>
+                        <div style={{ display:'flex', alignItems:'center', gap:8, paddingTop:12, borderTop:'1px solid rgba(30,41,59,0.5)' }}>
+                          <div style={{ width:24, height:24, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:10, color:'#000', flexShrink:0 }}>DJ</div>
+                          <div style={{ flex:1, minWidth:0 }}>
+                            <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--foreground)' }}>{post.author}</div>
+                          </div>
+                          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A' }}>READ →</span>
+                        </div>
+                      </div>
                     </div>
+                  </Link>
+                ))}
+              </div>
+
+              {/* ── PAGINATION ── */}
+              {pagesDisplay > 1 && (
+                <div style={{ padding:'40px 0 0', display:'flex', justifyContent:'center' }}>
+                  <div style={{ display:'flex', gap:6, alignItems:'center', flexWrap:'wrap' }}>
+                    {page > 1 && (
+                      <a href={buildUrl({ page: String(page - 1) })}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                        ← Prev
+                      </a>
+                    )}
+                    {Array.from({ length: pagesDisplay }, (_, i) => i + 1)
+                      .filter(p => p === 1 || p === pagesDisplay || Math.abs(p - page) <= 2)
+                      .reduce((acc, p, idx, arr) => {
+                        if (idx > 0 && p - arr[idx-1] > 1) acc.push('…')
+                        acc.push(p)
+                        return acc
+                      }, [])
+                      .map((p, i) => p === '…'
+                        ? <span key={'e'+i} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 6px', color:'#6b7280' }}>…</span>
+                        : <a key={p} href={buildUrl({ page: String(p) })}
+                            style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 14px', border:'1px solid var(--border)',
+                              color: p === page ? '#000' : 'var(--text)',
+                              background: p === page ? 'var(--gold)' : 'transparent',
+                              textDecoration:'none', fontWeight: p === page ? 700 : 400 }}>
+                            {p}
+                          </a>
+                      )}
+                    {page < pagesDisplay && (
+                      <a href={buildUrl({ page: String(page + 1) })}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                        Next →
+                      </a>
+                    )}
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', marginLeft:12 }}>
+                      Page {page} of {pagesDisplay} · {totalDisplay} posts
+                    </span>
                   </div>
                 </div>
-              </Link>
-            ))}
-          </div>
+              )}
+            </>
+          )}
 
         </div>
       </div>
