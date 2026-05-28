@@ -41,17 +41,12 @@ const INITIAL_CHANNELS = [
 
 const CATS = ['Reviews & Tactical','Demonstrations','Reviews & Industry','General Firearms','Reviews & Historical','Historical Collector','Training & Self-Defense','Ammo & Testing','Industry & Parts','Reviews & EDC','News & Commentary','Competitions','Other']
 
-const LS_KEY = 'dr_video_channels'
-const LS_VIDEOS = 'dr_portal_videos'
+const LS_KEY = 'dr_video_channels_cache'
 
-function loadChannels() {
-  try {
-    const raw = localStorage.getItem(LS_KEY)
-    return raw ? JSON.parse(raw) : INITIAL_CHANNELS
-  } catch { return INITIAL_CHANNELS }
+function loadChannelsLocal() {
+  try { const r = localStorage.getItem(LS_KEY); return r ? JSON.parse(r) : null } catch { return null }
 }
-
-function saveChannels(chs) {
+function cacheChannels(chs) {
   try { localStorage.setItem(LS_KEY, JSON.stringify(chs)) } catch {}
 }
 
@@ -87,9 +82,26 @@ export default function VideoManager({ adminKey }) {
   }
 
   useEffect(() => {
-    setChannels(loadChannels())
+    // Try cache first for fast render, then fetch from Sanity
+    const cached = loadChannelsLocal()
+    if (cached) setChannels(cached)
+    else setChannels(INITIAL_CHANNELS)
+    loadChannelsFromSanity()
     loadVideos()
   }, [])
+
+  async function loadChannelsFromSanity() {
+    try {
+      const res = await fetch('/api/admin/youtube-channels', { headers: H })
+      if (res.ok) {
+        const d = await res.json()
+        if (d.ok && d.channels?.length > 0) {
+          setChannels(d.channels)
+          cacheChannels(d.channels)
+        }
+      }
+    } catch {}
+  }
 
   async function loadVideos() {
     setLoading(true)
@@ -104,7 +116,7 @@ export default function VideoManager({ adminKey }) {
   }
 
   // ── Channel management ─────────────────────────────────────────────────
-  function addChannel() {
+  async function addChannel() {
     if (!newChId.trim() || !newChName.trim()) { flash('❌ Channel ID and name required'); return }
     const ch = {
       id: 'ch' + Date.now(),
@@ -116,29 +128,50 @@ export default function VideoManager({ adminKey }) {
     }
     const updated = [...channels, ch]
     setChannels(updated)
-    saveChannels(updated)
+    cacheChannels(updated)
     setNewChId(''); setNewChName(''); setNewChSubs(''); setAddingCh(false)
-    flash('✅ Channel added — will be fetched on next cron run (every 4h)')
+    flash('⏳ Saving channel to Sanity...')
+    try {
+      const res = await fetch('/api/admin/youtube-channels', {
+        method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', channels: updated }),
+      })
+      const d = await res.json()
+      if (d.ok) flash('✅ Channel added and saved — will be fetched on next cron run (every 4h)')
+      else flash('⚠ Channel added locally but Sanity save failed: ' + (d.error||''))
+    } catch (e) { flash('⚠ Channel added locally, Sanity save failed: ' + e.message) }
   }
 
-  function toggleChannel(id) {
+  async function toggleChannel(id) {
     const updated = channels.map(c => c.id === id ? { ...c, active: !c.active } : c)
     setChannels(updated)
-    saveChannels(updated)
+    cacheChannels(updated)
     const ch = updated.find(c => c.id === id)
-    flash(ch.active ? `✅ ${ch.name} enabled` : `⚠ ${ch.name} hidden — videos remain, new fetches paused`)
+    flash(ch.active ? '✅ ' + ch.name + ' enabled' : '⚠ ' + ch.name + ' paused — no new videos until re-enabled')
+    try {
+      await fetch('/api/admin/youtube-channels', {
+        method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', channels: updated }),
+      })
+    } catch {}
   }
 
-  function removeChannel(id) {
+  async function removeChannel(id) {
     const ch = channels.find(c => c.id === id)
-    if (!confirm(`Remove ${ch?.name}? This removes it from the cron list. Existing Sanity videos remain.`)) return
+    if (!confirm('Remove ' + (ch?.name || 'channel') + '? This stops future video fetches. Existing Sanity videos remain.')) return
     const updated = channels.filter(c => c.id !== id)
     setChannels(updated)
-    saveChannels(updated)
-    flash(`🗑 ${ch?.name} removed from channel list`)
+    cacheChannels(updated)
+    flash('🗑 ' + (ch?.name || 'Channel') + ' removed')
+    try {
+      await fetch('/api/admin/youtube-channels', {
+        method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', channels: updated }),
+      })
+    } catch {}
   }
 
-  function moveChannel(id, dir) {
+  async function moveChannel(id, dir) {
     const idx = channels.findIndex(c => c.id === id)
     if (idx < 0) return
     const next = [...channels]
@@ -146,7 +179,13 @@ export default function VideoManager({ adminKey }) {
     if (swap < 0 || swap >= next.length) return
     ;[next[idx], next[swap]] = [next[swap], next[idx]]
     setChannels(next)
-    saveChannels(next)
+    cacheChannels(next)
+    try {
+      await fetch('/api/admin/youtube-channels', {
+        method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', channels: next }),
+      })
+    } catch {}
   }
 
   async function runCron() {
