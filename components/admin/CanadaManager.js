@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import ImageSearchModal from './ImageSearchModal'
 import { useBulkLock, BulkLockBar, LockToggle } from './BulkLockBar'
 
 const TYPES = [
@@ -44,6 +45,8 @@ export default function CanadaManager({ adminKey }) {
   const [showAdd,    setShowAdd]    = useState(false)
   const [form,       setForm]       = useState({})
   const [aiTopic,    setAiTopic]    = useState('')
+
+  const [imgSearch, setImgSearch] = useState(null) // { item } | null
 
   const H = { 'x-admin-key': adminKey }
   const flash = m => { setMsg(m); setTimeout(() => setMsg(''), 4000) }
@@ -339,6 +342,19 @@ export default function CanadaManager({ adminKey }) {
           </div>
         )}
       </div>
+
+    {/* ── Image Search Modal ── */}
+    {imgSearch && (
+      <ImageSearchModal
+        adminKey={adminKey}
+        item={imgSearch}
+        onApply={(imageUrl) => {
+          // Update the item in local state
+          setImgSearch(null)
+        }}
+        onClose={() => setImgSearch(null)}
+      />
+    )}
     </div>
   )
 }
