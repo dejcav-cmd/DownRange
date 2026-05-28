@@ -3,7 +3,8 @@ import Footer from '../../components/layout/Footer'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import LawAssistant from '../../components/ui/LawAssistant'
 import ReciprocityPlanner from '../../components/ui/ReciprocityPlanner'
-import { fetchLegislation, fetchBreakingAlerts, fetchAllStateProfiles } from '../../sanity/lib/client'
+import { fetchLegislation, searchLegislation, fetchBreakingAlerts, fetchAllStateProfiles } from '../../sanity/lib/client'
+import SectionSearch from '../../components/ui/SectionSearch'
 
 export const metadata = {
   title: 'Laws & Legislation — DownRange',
@@ -131,9 +132,10 @@ const TABS = [
 
 export default async function LawsPage({ searchParams }) {
   const tab = searchParams?.tab || 'federal'
+  const q   = searchParams?.q   || null
 
   const [legislation, alerts, stateProfiles] = await Promise.all([
-    fetchLegislation(40).catch(()=>[]),
+    q ? searchLegislation(q, 50) : fetchLegislation(40).catch(()=>[]),
     fetchBreakingAlerts(5).catch(()=>[]),
     fetchAllStateProfiles().catch(()=>[]),
   ])
@@ -177,13 +179,18 @@ export default async function LawsPage({ searchParams }) {
       {/* ── STICKY TAB BAR (Learn pattern) ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
-          <div style={{ display:'flex', gap:0, overflowX:'auto', paddingRight:'8px' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
+            <div style={{ display:'flex', gap:0, overflowX:'auto', flex:1 }}>
             {TABS.map(t => (
               <a key={t.key} href={`/laws?tab=${t.key}`}
                 style={{ display:'inline-flex', alignItems:'center', padding:'12px 18px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${tab===t.key?'var(--gold)':'transparent'}`, color:tab===t.key?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
                 {t.label}
               </a>
             ))}
+            </div>
+            <div style={{ flexShrink:0, padding:'0 8px' }}>
+              <SectionSearch type="legislation" placeholder="Search bills, states, keywords…" defaultValue={q||''} compact />
+            </div>
           </div>
         </div>
       </div>
