@@ -22,6 +22,7 @@ const AICostDashboard       = L(() => import('../../components/admin/AICostDashb
 const EnvChecker            = L(() => import('../../components/admin/EnvChecker'))
 const CronDashboard         = L(() => import('../../components/admin/CronDashboard'))
 const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
+const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
 const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
 
 function PanelLoader() {
@@ -74,6 +75,7 @@ const NAV = [
       { id:'agents',       label:'Content Agents',   icon:'🤖', badge:null },
       { id:'rss',          label:'RSS Sources',      icon:'📡', badge:null },
       { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
+      { id:'sitemap',      label:'Site Map',          icon:'🗺️', badge:null },
     ]
   },
   {
