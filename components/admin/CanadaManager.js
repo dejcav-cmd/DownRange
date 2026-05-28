@@ -230,7 +230,13 @@ export default function CanadaManager({ adminKey }) {
           <div style={{ borderLeft: '1px solid var(--border)', overflowY: 'auto', maxHeight: 'calc(100vh - 350px)', background: 'var(--bg)' }}>
             <div style={{ padding: '12px 16px', borderBottom: '1px solid var(--border)', display: 'flex', justifyContent: 'space-between', alignItems: 'center', background: 'var(--bg2)' }}>
               <span style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: 'var(--gold)', letterSpacing: '.04em', textTransform: 'uppercase' }}>Edit</span>
-              <div style={{ display: 'flex', gap: 6 }}>
+              <div style={{ display: 'flex', gap: 6, alignItems: 'center' }}>
+                {selItem.sourceUrl && (
+                  <a href={selItem.sourceUrl} target="_blank" rel="noreferrer"
+                    style={{padding:'4px 10px',border:'1px solid rgba(200,146,42,.4)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',textDecoration:'none'}}>
+                    Source ↗
+                  </a>
+                )}
                 <button onClick={() => save(selItem._id, { active: !selItem.active })} className="cm-ghost" style={{ fontSize: 9 }}>{selItem.active ? 'Hide' : 'Show'}</button>
                 <button onClick={() => del(selItem._id)} className="cm-del">🗑</button>
                 <button onClick={() => setSel(null)} style={{ background: 'none', border: 'none', color: '#64748b', cursor: 'pointer', fontSize: 16 }}>✕</button>
