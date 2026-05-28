@@ -1694,6 +1694,17 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           }} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.fixImages?'#374151':'#3b82f6', color:'#fff', border:'none', cursor:seeding.fixImages?'default':'pointer' }}>
             {seeding.fixImages ? '⏳ FIXING...' : '🖼 FIX ALL SVG IMAGES'}
           </button>
+          <button disabled={seeding.cleanAttr} onClick={async ()=>{
+            setSeeding(s=>({...s,cleanAttr:true})); setResults(r=>({...r,cleanAttr:null}))
+            try {
+              const res = await fetch('/api/admin/clean-attribution', { method:'POST', headers:H, body:JSON.stringify({types:['newsArticle','blogPost']}) })
+              const d = await res.json()
+              setResults(r=>({...r,cleanAttr:d}))
+            } catch(e){ setResults(r=>({...r,cleanAttr:{ok:false,message:e.message}})) }
+            setSeeding(s=>({...s,cleanAttr:false}))
+          }} title="Removes duplicate ORIGINAL SOURCE blocks baked into body HTML" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em', padding:'10px 20px', background:seeding.cleanAttr?'#374151':'#7c3aed', color:'#fff', border:'none', cursor:seeding.cleanAttr?'default':'pointer' }}>
+            {seeding.cleanAttr ? '⏳ CLEANING...' : '🧹 CLEAN ATTRIBUTION'}
+          </button>
           <button onClick={()=>{setSection('system');setPanel('agents')}} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, padding:'10px 14px', background:'transparent', border:'1px solid rgba(34,197,94,.25)', color:'#22c55e', cursor:'pointer' }}>
             🤖 AI Agents →
           </button>
