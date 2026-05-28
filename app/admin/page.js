@@ -752,13 +752,18 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
     },
     {
       key: 'backfill-articles',
-      label: '✍ AI Rewrite / Backfill Articles',
-      desc: 'Finds news articles with missing or stub body text and rewrites them using Claude AI. Produces full 900–1100 word articles in DownRange voice.',
+      label: '✍ AI Rewrite — All Content Types',
+      desc: 'Rewrites ALL content (news, blog, gun releases, Canada) that is missing body text or sounds like AI. Strict human-voice rules: no banned phrases, direct sentences, specific facts. Covers newsArticle, blogPost, firearmRelease, canadaContent.',
       color: '#C8922A',
       actions: [
-        { label: 'Backfill 5 Articles', params: '?limit=5' },
-        { label: 'Backfill 10 Articles', params: '?limit=10' },
-        { label: 'Backfill 25 Articles', params: '?limit=25' },
+        { label: 'Rewrite 5 (all types)',  params: '?limit=5&types=newsArticle,blogPost,firearmRelease,canadaContent' },
+        { label: 'Rewrite 10 (all types)', params: '?limit=10&types=newsArticle,blogPost,firearmRelease,canadaContent' },
+        { label: 'Rewrite 25 (all types)', params: '?limit=25&types=newsArticle,blogPost,firearmRelease,canadaContent' },
+        { label: 'Force rewrite 10 (override existing)', params: '?limit=10&force=true&types=newsArticle,blogPost,firearmRelease,canadaContent' },
+        { label: 'News only (10)',     params: '?limit=10&types=newsArticle' },
+        { label: 'Blog only (10)',     params: '?limit=10&types=blogPost' },
+        { label: 'Gun Releases (10)', params: '?limit=10&types=firearmRelease' },
+        { label: 'Canada only (10)',  params: '?limit=10&types=canadaContent' },
       ]
     },
     {
