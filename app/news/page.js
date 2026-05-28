@@ -3,7 +3,7 @@ import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import NewsCard from '../../components/ui/NewsCard'
 import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
-import { fetchArticles, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
+import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
 
 export const metadata = { title: 'News — DownRange', description: 'Latest firearms and Second Amendment news from across the United States.' }
 export const revalidate = 60 // revalidate every 60s for fresher content
@@ -18,19 +18,24 @@ const CATEGORIES = [
   { label: '★ Reviews', val: 'review' },
 ]
 
+const PER_PAGE = 20
+
 export default async function NewsPage({ searchParams }) {
-  const cat  = searchParams?.cat  || null
-  const sort = searchParams?.sort || 'newest'
+  const cat    = searchParams?.cat    || null
+  const sort   = searchParams?.sort   || 'newest'
+  const page   = Math.max(1, parseInt(searchParams?.page || '1'))
+  const search = searchParams?.q || null
+  const days   = search ? null : 10  // 10-day window unless searching
 
   // Fetch data
-  const [articles, alerts, legislation] = await Promise.all([
-    fetchArticles(30, cat).catch(() => []),
+  const [{ articles, total, pages }, alerts, legislation] = await Promise.all([
+    fetchArticlesPaginated({ page, perPage: PER_PAGE, category: cat, days, search }).catch(() => ({ articles: [], total: 0, pages: 1, page: 1 })),
     fetchBreakingAlerts(8).catch(() => []),
     fetchLegislation(5).catch(() => []),
   ])
 
-  const featured = articles[0]
-  const grid = articles.slice(1)
+  const featured = page === 1 && !search ? articles[0] : null
+  const grid     = page === 1 && !search ? articles.slice(1) : articles
 
   return (
     <>
@@ -56,7 +61,7 @@ export default async function NewsPage({ searchParams }) {
               <span style={{ color:'var(--gold)' }}>Intelligence Feed</span>
             </h1>
             <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
-              {articles.length > 0 ? articles.length : '30'}+ stories · Updated every 15 minutes · All major sources aggregated
+              {total > 0 ? total : '—'} stories in last 10 days · Updated every 15 minutes · All sources aggregatedregated
             </p>
           </div>
         </div>
@@ -83,6 +88,19 @@ export default async function NewsPage({ searchParams }) {
                 </a>
               ))}
             </div>
+            {/* ── Search bar ── */}
+            <form action="/news" method="get" style={{ display:'flex', alignItems:'center', gap:6, padding:'0 0 0 12px', borderLeft:'1px solid var(--border)' }}>
+              {cat && <input type="hidden" name="cat" value={cat} />}
+              <input
+                type="search"
+                name="q"
+                defaultValue={search || ''}
+                placeholder="Search all articles…"
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', padding:'5px 10px', width:180, outline:'none' }}
+              />
+              <button type="submit" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, background:'var(--gold)', color:'#000', border:'none', padding:'6px 12px', cursor:'pointer', fontWeight:700, flexShrink:0 }}>⌕</button>
+              {search && <a href="/news" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', textDecoration:'none', flexShrink:0 }}>✕ Clear</a>}
+            </form>
           </div>
         </div>
       </div>
@@ -154,6 +172,58 @@ export default async function NewsPage({ searchParams }) {
           </div>
         </div>
       </div>
+
+      {/* ── Pagination ── */}
+      {pages > 1 && (
+        <div style={{ padding:'32px 0', display:'flex', justifyContent:'center' }}>
+          <div className="container">
+            <div style={{ display:'flex', gap:6, alignItems:'center', justifyContent:'center', flexWrap:'wrap' }}>
+              {/* Prev */}
+              {page > 1 && (
+                <a href={`/news?${new URLSearchParams({ ...(cat&&{cat}), ...(search&&{q:search}), page: page-1 }).toString()}`}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                  ← Prev
+                </a>
+              )}
+
+              {/* Page numbers — show up to 7 around current */}
+              {Array.from({ length: pages }, (_,i) => i+1)
+                .filter(p => p === 1 || p === pages || Math.abs(p - page) <= 2)
+                .reduce((acc, p, idx, arr) => {
+                  if (idx > 0 && p - arr[idx-1] > 1) acc.push('…')
+                  acc.push(p)
+                  return acc
+                }, [])
+                .map((p, i) => p === '…'
+                  ? <span key={`e${i}`} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 6px', color:'#6b7280' }}>…</span>
+                  : <a key={p} href={`/news?${new URLSearchParams({ ...(cat&&{cat}), ...(search&&{q:search}), page: p }).toString()}`}
+                      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 14px', border:'1px solid var(--border)', color: p===page ? '#000' : 'var(--text)', background: p===page ? 'var(--gold)' : 'transparent', textDecoration:'none', fontWeight: p===page ? 700 : 400 }}>
+                      {p}
+                    </a>
+                )}
+
+              {/* Next */}
+              {page < pages && (
+                <a href={`/news?${new URLSearchParams({ ...(cat&&{cat}), ...(search&&{q:search}), page: page+1 }).toString()}`}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                  Next →
+                </a>
+              )}
+
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', marginLeft:12 }}>
+                {(page-1)*PER_PAGE + 1}–{Math.min(page*PER_PAGE, total)} of {total}
+              </span>
+            </div>
+
+            {/* Search context label */}
+            {search && (
+              <div style={{ textAlign:'center', marginTop:12, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#6b7280' }}>
+                Showing results for <span style={{ color:'var(--gold)' }}>"{search}"</span>
+              </div>
+            )}
+          </div>
+        </div>
+      )}
 
       <Footer />
     </>
