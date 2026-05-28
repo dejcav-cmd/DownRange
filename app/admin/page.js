@@ -2106,6 +2106,7 @@ export default function AdminPage() {
               </div>
             )}
             {panel==='rss'     && <RSSSourcesPanel />}
+            {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
             {panel==='ranges'  && <RangesPanel />}
             {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
 
