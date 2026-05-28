@@ -47,7 +47,7 @@ export default async function ReleasePage({ params }) {
 
   if (!release) notFound()
 
-  const img = release.heroImage?.asset?.url || release.imageUrl || '/img/pistol.svg'
+  const img = release.heroImage?.asset?.url || release.imageUrl || '/img/photos/pistol.jpg'
 
   const specRows = release.specs?.length > 0 ? release.specs : [
     release.caliber     && { label:'Caliber',    value: release.caliber },
@@ -78,7 +78,7 @@ export default async function ReleasePage({ params }) {
           <div style={{ position:'relative', marginBottom:32 }}>
             <div style={{ width:'100%', height:'clamp(260px,40vw,480px)', overflow:'hidden', position:'relative' }}>
               <ArticleHeroImage src={img} alt={`${release.brand} ${release.model}`}
-                fallback="/img/pistol.svg" />
+                fallback="/img/photos/pistol.jpg" />
               <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #09090B 0%, transparent 60%)' }} />
             </div>
 

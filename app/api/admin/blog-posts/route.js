@@ -60,7 +60,7 @@ export async function POST(req) {
         category:   category || 'general',
         excerpt:    excerpt || '',
         body:       articleBody || '',
-        imageUrl:   imageUrl || '/img/news.svg',
+        imageUrl:   imageUrl || '/img/photos/news.jpg',
         readTime:   readTime || '5 min',
         author:     author || 'DownRange Editorial',
         status:     'draft',

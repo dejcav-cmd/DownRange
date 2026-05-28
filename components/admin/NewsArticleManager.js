@@ -29,15 +29,15 @@ const S = `
 
 const CAT_C = { breaking:'#ef4444', law:'#3b82f6', industry:'#C8922A', news:'#9ca3af', deals:'#22c55e', training:'#a855f7', opinion:'#f97316' }
 const IMG_MAP = {
-  law:      '/img/law.svg',
-  breaking: '/img/law.svg',
-  industry: '/img/rifle.svg',
-  news:     '/img/pistol.svg',
-  deals:    '/img/pistol.svg',
-  training: '/img/pistol.svg',
-  opinion:  '/img/law.svg',
+  law:      '/img/photos/law.jpg',
+  breaking: '/img/photos/law.jpg',
+  industry: '/img/photos/rifle.jpg',
+  news:     '/img/photos/pistol.jpg',
+  deals:    '/img/photos/pistol.jpg',
+  training: '/img/photos/pistol.jpg',
+  opinion:  '/img/photos/law.jpg',
 }
-const FALLBACK = '/img/pistol.svg'
+const FALLBACK = '/img/photos/pistol.jpg'
 
 function pickImageForArticle(title, category) {
   const t = (title||'').toLowerCase()
@@ -358,7 +358,9 @@ export default function NewsArticleManager({ adminKey }) {
                     const d = await res.json()
                     if (d.ok) {
                       setEditImg(d.imageUrl)
-                      flash(`✅ ${d.source === 'og:image' ? 'Fetched OG image from source' : d.source === 'existing' ? 'Already has real image' : 'Assigned photo from library'} — ${d.imageUrl.slice(0,60)}`)
+                      // Update articles state so selectedArticle reflects the new URL
+                      setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: d.imageUrl } : a))
+                      flash(`✅ ${d.source === 'og:image' ? 'Fetched OG image from source' : d.source === 'existing' ? 'Already has real image' : 'Assigned photo from library'} — saved`)
                     } else flash('❌ ' + (d.error || 'Error'))
                   } catch (e) { flash('❌ ' + e.message) }
                   setBusy(false)
@@ -368,20 +370,31 @@ export default function NewsArticleManager({ adminKey }) {
                 <button className="nam-btn-sm" onClick={() => fixImage(selectedArticle)} disabled={busy}>🔧 Auto-Fix</button>
                 <button className="nam-btn-sm" onClick={() => {
                   const url = prompt('Paste new image URL:')
-                  if (url) { setEditImg(url); patchField(selectedArticle._id, { imageUrl: url }) }
+                  if (url) { setEditImg(url); patchField(selectedArticle._id, { imageUrl: url }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: url } : a)) }
                 }}>✎ Paste URL</button>
               </div>
-              <input className="nam-input" value={editImg} onChange={e => setEditImg(e.target.value)}
-                onBlur={() => { if (editImg !== selectedArticle.imageUrl) patchField(selectedArticle._id, { imageUrl: editImg }) }}
-                placeholder="https://..." style={{ marginBottom:12, fontSize:10 }} />
+              <div style={{ display:'flex', gap:6, marginBottom:12, alignItems:'center' }}>
+                <input className="nam-input" value={editImg} onChange={e => setEditImg(e.target.value)}
+                  placeholder="https://..." style={{ flex:1, fontSize:10 }} />
+                <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { imageUrl: editImg }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: editImg } : a)); flash('✅ Image URL saved') }}
+                  disabled={busy || editImg === selectedArticle.imageUrl}
+                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap', opacity: editImg === selectedArticle.imageUrl ? 0.4 : 1 }}>
+                  💾 Save
+                </button>
+              </div>
 
               <div className="nam-sep" />
 
               {/* Title */}
               <span className="nam-lbl">Title</span>
-              <input className="nam-input" value={editTitle} onChange={e => setEditTitle(e.target.value)}
-                onBlur={() => { if (editTitle !== selectedArticle.title) patchField(selectedArticle._id, { title: editTitle }) }}
-                style={{ marginBottom:12 }} />
+              <div style={{ display:'flex', gap:6, marginBottom:12 }}>
+                <input className="nam-input" value={editTitle} onChange={e => setEditTitle(e.target.value)} style={{ flex:1 }} />
+                <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { title: editTitle }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, title: editTitle } : a)); flash('✅ Title saved') }}
+                  disabled={busy || editTitle === selectedArticle.title}
+                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap', opacity: editTitle === selectedArticle.title ? 0.4 : 1 }}>
+                  💾 Save
+                </button>
+              </div>
 
               {/* Source + Category */}
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginBottom:12 }}>
@@ -402,8 +415,14 @@ export default function NewsArticleManager({ adminKey }) {
               {/* Body preview */}
               <span className="nam-lbl">Body / Summary</span>
               <textarea className="nam-textarea" value={editBody} onChange={e => setEditBody(e.target.value)}
-                onBlur={() => { if (editBody !== (selectedArticle.body || selectedArticle.summary)) patchField(selectedArticle._id, { body: editBody }) }}
-                rows={8} style={{ marginBottom:8 }} />
+                rows={8} style={{ marginBottom:6 }} />
+              <div style={{ display:'flex', gap:6, marginBottom:8 }}>
+                <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { body: editBody }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, body: editBody } : a)); flash('✅ Body saved') }}
+                  disabled={busy || editBody === (selectedArticle.body || selectedArticle.summary)}
+                  style={{ fontSize:10, padding:'6px 16px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', opacity: editBody === (selectedArticle.body || selectedArticle.summary) ? 0.4 : 1 }}>
+                  💾 Save Body
+                </button>
+              </div>
               <button className="nam-btn-sm" onClick={() => aiRewrite(selectedArticle)} disabled={busy} style={{ marginBottom:12, width:'100%' }}>
                 🤖 Rewrite with Claude
               </button>

@@ -150,7 +150,7 @@ export async function POST(req) {
     const docId = `image-asset-${seed.id}`
     if (!force && existingIds.has(docId)) { results.skipped++; continue }
 
-    const svgUrl = CAT_SVG[seed.category] || '/img/news.svg'
+    const svgUrl = CAT_SVG[seed.category] || '/img/photos/news.jpg'
 
     // Try uploading the real image to Sanity CDN
     const uploadedUrl = await fetchAndUpload(seed)

@@ -240,13 +240,13 @@ export default function ImageRepository({ adminKey }) {
       ) : (
         <div className="ir-grid">
           {visible.map(img => {
-            const imgUrl = img.cdnUrl || img.imageUrl || '/img/news.svg'
+            const imgUrl = img.cdnUrl || img.imageUrl || '/img/photos/news.jpg'
             const color  = CAT_COLORS[img.category] || '#4b5563'
             return (
               <div key={img._id} className={`ir-card${selected?._id===img._id?' selected':''}`}
                 onClick={() => setSelected(selected?._id===img._id ? null : img)}>
                 <img src={imgUrl} alt={img.alt||img.title} className="ir-img"
-                  onError={e => { e.target.src='/img/news.svg' }} />
+                  onError={e => { e.target.src='/img/photos/news.jpg' }} />
                 <div className="ir-meta">
                   <div className="ir-cat-pill" style={{ background:`${color}22`, color }}>{img.category}</div>
                   <div className="ir-title">{img.title}</div>
@@ -416,7 +416,7 @@ function AssignModal({ image, adminKey, onClose, onSuccess }) {
     <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.8)', zIndex:200, display:'flex', alignItems:'center', justifyContent:'center', padding:20 }}>
       <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', width:'100%', maxWidth:600, maxHeight:'80vh', display:'flex', flexDirection:'column' }}>
         <div style={{ padding:'16px 20px', borderBottom:'1px solid var(--border)', display:'flex', gap:12, alignItems:'center' }}>
-          <img src={image.cdnUrl||image.imageUrl||'/img/news.svg'} style={{ width:60, height:40, objectFit:'cover', flexShrink:0 }} />
+          <img src={image.cdnUrl||image.imageUrl||'/img/photos/news.jpg'} style={{ width:60, height:40, objectFit:'cover', flexShrink:0 }} />
           <div style={{ flex:1 }}>
             <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', marginBottom:2 }}>Assign: {image.title}</div>
             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563' }}>Pick an article to assign this image to</div>
@@ -433,7 +433,7 @@ function AssignModal({ image, adminKey, onClose, onSuccess }) {
             <div key={a._id} style={{ display:'flex', gap:10, alignItems:'center', padding:'8px 16px', borderBottom:'1px solid rgba(255,255,255,.04)', cursor:'pointer', transition:'background .1s' }}
               onMouseEnter={e=>e.currentTarget.style.background='rgba(200,146,42,.06)'}
               onMouseLeave={e=>e.currentTarget.style.background='transparent'}>
-              <img src={a.imageUrl||'/img/news.svg'} style={{ width:48, height:32, objectFit:'cover', flexShrink:0, opacity:.6 }} />
+              <img src={a.imageUrl||'/img/photos/news.jpg'} style={{ width:48, height:32, objectFit:'cover', flexShrink:0, opacity:.6 }} />
               <div style={{ flex:1, minWidth:0 }}>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{a.title}</div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', marginTop:1 }}>{a.source} · {a.category}</div>

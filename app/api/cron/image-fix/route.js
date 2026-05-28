@@ -27,7 +27,7 @@ function pickFallback(title = '', category = '') {
   return '/img/photos/news.jpg'
 }
 
-const BAD = ['/img/news.svg','/img/pistol.svg','/img/rifle.svg','/img/shotgun.svg','/img/suppressor.svg','/img/ammo.svg','/img/law.svg']
+const BAD = ['/img/photos/news.jpg','/img/photos/pistol.jpg','/img/photos/rifle.jpg','/img/photos/shotgun.jpg','/img/photos/suppressor.jpg','/img/photos/ammo.jpg','/img/photos/law.jpg']
 function isBad(url = '') { return !url || BAD.some(p => url.endsWith(p)) }
 
 async function tryOgImage(sourceUrl) {

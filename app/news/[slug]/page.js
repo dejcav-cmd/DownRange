@@ -8,7 +8,7 @@ import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 
 // Server-side firearm image fallback — same logic as NewsCard client-side
 // Verified Wikimedia Commons firearm images — topic-accurate, stable URLs
-const WM = '/img/news.svg'
+const WM = '/img/photos/news.jpg'
 const ARTICLE_FALLBACKS = {
   pistol:     WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
   rifle:      WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',

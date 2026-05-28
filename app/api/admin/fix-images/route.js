@@ -28,7 +28,7 @@ const sanity = createClient({
 // ── Curated firearm image library — multiple options per category ─────────────
 // All verified Unsplash firearm/2A photography IDs
 // Verified CC-licensed firearm images from Wikimedia Commons
-const WM = '/img/news.svg'
+const WM = '/img/photos/news.jpg'
 const FIREARM_IMAGES = {
   pistol: [
     `${WM}/1/17/Glock_19_9_x_19.jpg/1200px-Glock_19_9_x_19.jpg`,

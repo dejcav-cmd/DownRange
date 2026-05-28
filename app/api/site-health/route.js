@@ -142,13 +142,13 @@ function getFirearmFallback(title) {
 }
 
 const DEFAULTS = {
-  pistol:     '/img/pistol.svg',
-  rifle:      '/img/rifle.svg',
-  shotgun:    '/img/shotgun.svg',
-  suppressor: '/img/suppressor.svg',
-  optic:      '/img/rifle.svg',
-  ammo:       '/img/pistol.svg',
-  law:        '/img/pistol.svg',
+  pistol:     '/img/photos/pistol.jpg',
+  rifle:      '/img/photos/rifle.jpg',
+  shotgun:    '/img/photos/shotgun.jpg',
+  suppressor: '/img/photos/suppressor.jpg',
+  optic:      '/img/photos/rifle.jpg',
+  ammo:       '/img/photos/pistol.jpg',
+  law:        '/img/photos/pistol.jpg',
 }
 
 async function notifyDiscord(report) {

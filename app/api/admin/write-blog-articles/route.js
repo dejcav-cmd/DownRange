@@ -14,15 +14,15 @@ const sanity = createClient({
 
 // Curated images for each article topic — all verified Wikimedia URLs
 const BLOG_IMAGES = {
-  'home-defense-basics':          '/img/rifle.svg',
-  'safe-storage-guide-beginners': '/img/pistol.svg',
-  'ammo-guide-beginners':         '/img/ammo.svg',
-  'shooting-range-first-visit':   '/img/pistol.svg',
-  'cleaning-maintaining-your-gun':'/img/pistol.svg',
-  'understanding-gun-laws':       '/img/law.svg',
-  'choosing-holster-beginners':   '/img/pistol.svg',
-  'dry-fire-training-beginners':  '/img/pistol.svg',
-  'what-is-nfa':                  '/img/law.svg',
+  'home-defense-basics':          '/img/photos/rifle.jpg',
+  'safe-storage-guide-beginners': '/img/photos/pistol.jpg',
+  'ammo-guide-beginners':         '/img/photos/ammo.jpg',
+  'shooting-range-first-visit':   '/img/photos/pistol.jpg',
+  'cleaning-maintaining-your-gun':'/img/photos/pistol.jpg',
+  'understanding-gun-laws':       '/img/photos/law.jpg',
+  'choosing-holster-beginners':   '/img/photos/pistol.jpg',
+  'dry-fire-training-beginners':  '/img/photos/pistol.jpg',
+  'what-is-nfa':                  '/img/photos/law.jpg',
 }
 
 const ARTICLES = [
@@ -119,7 +119,7 @@ export async function POST(req) {
         body:       ai.body || '',
         category:   article.category,
         readTime:   article.readTime,
-        imageUrl:   BLOG_IMAGES[article.slug] || '/img/pistol.svg',
+        imageUrl:   BLOG_IMAGES[article.slug] || '/img/photos/pistol.jpg',
         author:     'DJ Cavalcanti',
         seoTitle:   ai.seoTitle || ai.title || article.title,
         metaDesc:   ai.metaDesc || ai.excerpt || '',

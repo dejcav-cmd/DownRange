@@ -3,16 +3,16 @@
 import React from 'react'
 
 const FALLBACKS = {
-  pistol:     '/img/pistol.svg',
-  rifle:      '/img/rifle.svg',
-  shotgun:    '/img/shotgun.svg',
-  suppressor: '/img/suppressor.svg',
-  optic:      '/img/rifle.svg',
-  ammo:       '/img/pistol.svg',
-  law:        '/img/law.svg',
-  breaking:   '/img/law.svg',
-  industry:   '/img/pistol.svg',
-  news:       '/img/pistol.svg',
+  pistol:     '/img/photos/pistol.jpg',
+  rifle:      '/img/photos/rifle.jpg',
+  shotgun:    '/img/photos/shotgun.jpg',
+  suppressor: '/img/photos/suppressor.jpg',
+  optic:      '/img/photos/rifle.jpg',
+  ammo:       '/img/photos/pistol.jpg',
+  law:        '/img/photos/law.jpg',
+  breaking:   '/img/photos/law.jpg',
+  industry:   '/img/photos/pistol.jpg',
+  news:       '/img/photos/pistol.jpg',
 }
 
 const CAT_C = {

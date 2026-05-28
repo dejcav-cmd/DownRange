@@ -299,8 +299,10 @@ export default function ReleaseManager({ adminKey }) {
                             body: JSON.stringify({ id:selRelease._id, type:'firearmRelease', title:`${selRelease.brand} ${selRelease.model}`, category:selRelease.category, sourceUrl:selRelease.sourceUrl||'' })
                           })
                           const d = await res.json()
-                          if (d.ok) { await load(); flash(`✅ ${d.source==='og:image'?'OG image fetched':'Photo assigned'} — ${d.imageUrl.slice(0,50)}`) }
-                          else flash('❌ ' + (d.error||'Error'))
+                          if (d.ok) {
+                            setReleases(prev => prev.map(r => r._id === selRelease._id ? { ...r, imageUrl: d.imageUrl } : r))
+                            flash(`✅ ${d.source==='og:image'?'OG image fetched':'Photo assigned'} — saved`)
+                          } else flash('❌ ' + (d.error||'Error'))
                         } catch(e){ flash('❌ '+e.message) }
                         setBusy(false)
                       }}>🖼 Fetch Real Image</button>

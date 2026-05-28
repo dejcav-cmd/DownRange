@@ -238,7 +238,7 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
             </div>
             <div><span className="bm-lbl">Read Time (e.g. "8 min")</span><input className="bm-input" value={addForm.readTime||''} onChange={e=>setAddForm(p=>({...p,readTime:e.target.value}))} placeholder="8 min" /></div>
             <div><span className="bm-lbl">Author</span><input className="bm-input" value={addForm.author||''} onChange={e=>setAddForm(p=>({...p,author:e.target.value}))} placeholder="DownRange Editorial" /></div>
-            <div><span className="bm-lbl">Hero Image URL</span><input className="bm-input" value={addForm.imageUrl||''} onChange={e=>setAddForm(p=>({...p,imageUrl:e.target.value}))} placeholder="/img/pistol.svg" /></div>
+            <div><span className="bm-lbl">Hero Image URL</span><input className="bm-input" value={addForm.imageUrl||''} onChange={e=>setAddForm(p=>({...p,imageUrl:e.target.value}))} placeholder="/img/photos/pistol.jpg" /></div>
           </div>
           <div style={{marginBottom:12}}><span className="bm-lbl">Excerpt (SEO summary)</span><textarea className="bm-ta" rows={2} value={addForm.excerpt||''} onChange={e=>setAddForm(p=>({...p,excerpt:e.target.value}))} /></div>
           <div style={{marginBottom:16}}><span className="bm-lbl">Article Body (HTML — leave blank to AI-write after creating)</span><textarea className="bm-ta" rows={8} value={addForm.articleBody||''} onChange={e=>setAddForm(p=>({...p,articleBody:e.target.value}))} placeholder="<p>...</p>" /></div>
@@ -334,8 +334,11 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                               body: JSON.stringify({ id:editDraft._id, type:'blogPost', title:editDraft.title, category:editDraft.category||'general' })
                             })
                             const d = await res.json()
-                            if (d.ok) { setEditDraft(p=>({...p,imageUrl:d.imageUrl})); flash(`✅ ${d.source==='og:image'?'OG image fetched':'Photo assigned'}`) }
-                            else flash('❌ ' + (d.error||'Error'))
+                            if (d.ok) {
+                              setEditDraft(p=>({...p,imageUrl:d.imageUrl}))
+                              setPosts(prev => prev.map(p => p._id === editDraft._id ? { ...p, imageUrl: d.imageUrl } : p))
+                              flash(`✅ ${d.source==='og:image'?'OG image fetched':'Photo assigned'} — saved`)
+                            } else flash('❌ ' + (d.error||'Error'))
                           } catch(e){ flash('❌ '+e.message) }
                           setBusy(false)
                         }}>🖼 Fetch Real Image</button>

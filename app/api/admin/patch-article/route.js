@@ -13,10 +13,10 @@ const sanity = createClient({
 // ── Curated Wikimedia images, verified accessible ───────────────────────────
 // Self-hosted SVGs served from Vercel CDN — zero external deps
 const IMAGES = {
-  LAW:    '/img/law.svg',
-  PISTOL: '/img/pistol.svg',
-  RIFLE:  '/img/rifle.svg',
-  AMMO:   '/img/ammo.svg',
+  LAW:    '/img/photos/law.jpg',
+  PISTOL: '/img/photos/pistol.jpg',
+  RIFLE:  '/img/photos/rifle.jpg',
+  AMMO:   '/img/photos/ammo.jpg',
 }
 
 // Keyword → image mapping — checked in order, first match wins

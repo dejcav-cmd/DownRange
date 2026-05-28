@@ -18,10 +18,10 @@ function auth(req) {
 }
 
 const WIKIMEDIA = {
-  law:      '/img/law.svg',
-  rifle:    '/img/rifle.svg',
-  pistol:   '/img/pistol.svg',
-  ammo:     '/img/ammo.svg',
+  law:      '/img/photos/law.jpg',
+  rifle:    '/img/photos/rifle.jpg',
+  pistol:   '/img/photos/pistol.jpg',
+  ammo:     '/img/photos/ammo.jpg',
 }
 
 function autoPickImage(title, category) {
