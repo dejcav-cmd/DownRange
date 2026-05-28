@@ -22,6 +22,7 @@ import { outreachSendLog }  from './outreachSendLog'
 import { cronRunStore }     from './cronRunStore'
 import { blogPost }         from './blogPost'
 import imageAsset           from './imageAsset'
+import { nfaWaitTime }      from './nfaWaitTime'
 
 export const schemaTypes = [
   newsArticle,
@@ -34,4 +35,5 @@ export const schemaTypes = [
   competition,
   cronRunStore,
   blogPost,
+  nfaWaitTime,
 ]

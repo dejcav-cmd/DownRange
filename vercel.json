@@ -75,6 +75,10 @@
     {
       "path": "/api/admin/fetch-article-images",
       "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/nfa-wait-times",
+      "schedule": "0 6 * * *"
     }
   ],
   "headers": [
