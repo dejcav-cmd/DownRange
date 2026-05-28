@@ -1,6 +1,10 @@
 {
   "crons": [
     {
+      "path": "/api/admin/patch-ammo-article",
+      "schedule": "*/10 * * * *"
+    },
+    {
       "path": "/api/agent?feed=news",
       "schedule": "*/15 * * * *"
     },
