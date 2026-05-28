@@ -3,6 +3,8 @@ import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
+const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || ''
+
 const RADIUS_OPTIONS = [10, 25, 50, 75, 100]
 const TYPE_OPTIONS = [
   { val:'all', label:'All Ranges', icon:'◎' },

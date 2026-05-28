@@ -3,22 +3,29 @@ import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
+const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || ''
+
 export default function FFLFinder() {
   const [zip, setZip] = useState('')
   const [results, setResults] = useState(null)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState(null)
+  const [location, setLocation] = useState(null)
 
   async function search(e) {
     e.preventDefault()
     if (!zip.trim()) return
-    setLoading(true); setError(null); setResults(null)
+    setLoading(true); setError(null); setResults(null); setLocation(null)
     try {
       const res = await fetch(`/api/ffl?zip=${encodeURIComponent(zip.trim())}`)
       const d = await res.json()
-      if (d.error) throw new Error(d.error)
-      setResults(d.dealers || [])
-    } catch (e) { setError(e.message) }
+      if (d.error && !d.dealers?.length) {
+        setError(d.error)
+      } else {
+        setResults(d.dealers || [])
+        setLocation(d.location || zip)
+      }
+    } catch (err) { setError(err.message) }
     setLoading(false)
   }
 
@@ -67,15 +74,17 @@ export default function FFLFinder() {
 
           {results && results.length > 0 && (
             <>
-              <div style={{ marginBottom: 16, border: '1px solid var(--border)', overflow: 'hidden', height: 300 }}>
-                <iframe
-                  width="100%" height="300" style={{ border: 0, display: 'block' }}
-                  loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"
-                  src={"https://www.google.com/maps/embed/v1/search?key=" + (mapsKey || '') + "&q=FFL+gun+dealer+near+" + encodeURIComponent(zip) + "&zoom=11"}
-                />
-              </div>
+              {mapsKey && (
+                <div style={{ marginBottom: 16, border: '1px solid var(--border)', overflow: 'hidden', height: 300 }}>
+                  <iframe
+                    width="100%" height="300" style={{ border: 0, display: 'block' }}
+                    loading="lazy" allowFullScreen referrerPolicy="no-referrer-when-downgrade"
+                    src={"https://www.google.com/maps/embed/v1/search?key=" + mapsKey + "&q=FFL+gun+dealer+near+" + encodeURIComponent(zip) + "&zoom=11"}
+                  />
+                </div>
+              )}
               <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'16px' }}>
-                {results.length} LICENSED DEALERS NEAR {zip.toUpperCase()}
+                {results.length} LICENSED DEALERS NEAR {(location || zip).toUpperCase()}
               </div>
               <div style={{ display:'flex', flexDirection:'column', gap:'8px' }}>
                 {results.map((d,i) => (
