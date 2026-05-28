@@ -87,8 +87,10 @@ export default function ReviewManager({ adminKey }) {
         body:        selReview.body || '',
         msrp:        selReview.msrp != null ? String(selReview.msrp) : '',
         imageUrl:    selReview.heroImage?.asset?.url || '',
-        pros:        (selReview.pros || []).join('\n'),
-        cons:        (selReview.cons || []).join('\n'),
+        pros:        (selReview.pros || []).join('
+'),
+        cons:        (selReview.cons || []).join('
+'),
         testRounds:  selReview.testRounds != null ? String(selReview.testRounds) : '',
         featured:    selReview.featured || false,
       })
@@ -120,8 +122,10 @@ export default function ReviewManager({ adminKey }) {
       summary:    editDraft.summary,
       body:       editDraft.body,
       msrp:       editDraft.msrp ? parseFloat(editDraft.msrp) : null,
-      pros:       editDraft.pros.split('\n').map(s=>s.trim()).filter(Boolean),
-      cons:       editDraft.cons.split('\n').map(s=>s.trim()).filter(Boolean),
+      pros:       editDraft.pros.split('
+').map(s=>s.trim()).filter(Boolean),
+      cons:       editDraft.cons.split('
+').map(s=>s.trim()).filter(Boolean),
       testRounds: editDraft.testRounds ? parseInt(editDraft.testRounds) : null,
       featured:   editDraft.featured,
     }
@@ -145,8 +149,10 @@ export default function ReviewManager({ adminKey }) {
       setEditDraft(p => ({
         ...p,
         body:    d.body    || p.body,
-        pros:    (d.pros   || []).join('\n') || p.pros,
-        cons:    (d.cons   || []).join('\n') || p.cons,
+        pros:    (d.pros   || []).join('
+') || p.pros,
+        cons:    (d.cons   || []).join('
+') || p.cons,
         verdict: d.verdict || p.verdict,
         summary: d.summary || p.summary,
       }))
@@ -181,8 +187,10 @@ export default function ReviewManager({ adminKey }) {
         verdict:form.verdict, summary:form.summary,
         body:form.articleBody, msrp:form.msrp?parseFloat(form.msrp):null,
         imageUrl:form.imageUrl,
-        pros:form.pros.split('\n').map(s=>s.trim()).filter(Boolean),
-        cons:form.cons.split('\n').map(s=>s.trim()).filter(Boolean),
+        pros:form.pros.split('
+').map(s=>s.trim()).filter(Boolean),
+        cons:form.cons.split('
+').map(s=>s.trim()).filter(Boolean),
       }),
     })
     const d = await res.json()
@@ -294,8 +302,11 @@ export default function ReviewManager({ adminKey }) {
           </div>
           <div style={{marginBottom:12}}><span className="rv-lbl">Summary (2 sentences)</span><textarea className="rv-ta" rows={2} value={form.summary||''} onChange={e=>setForm(p=>({...p,summary:e.target.value}))} /></div>
           <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12,marginBottom:12}}>
-            <div><span className="rv-lbl">Pros (one per line)</span><textarea className="rv-ta" rows={4} value={form.pros||''} onChange={e=>setForm(p=>({...p,pros:e.target.value}))} placeholder={"Reliable action\nExcellent trigger\nGreat value"} /></div>
-            <div><span className="rv-lbl">Cons (one per line)</span><textarea className="rv-ta" rows={4} value={form.cons||''} onChange={e=>setForm(p=>({...p,cons:e.target.value}))} placeholder={"Grip texture rough\nNo optics cut"} /></div>
+            <div><span className="rv-lbl">Pros (one per line)</span><textarea className="rv-ta" rows={4} value={form.pros||''} onChange={e=>setForm(p=>({...p,pros:e.target.value}))} placeholder={"Reliable action
+Excellent trigger
+Great value"} /></div>
+            <div><span className="rv-lbl">Cons (one per line)</span><textarea className="rv-ta" rows={4} value={form.cons||''} onChange={e=>setForm(p=>({...p,cons:e.target.value}))} placeholder={"Grip texture rough
+No optics cut"} /></div>
           </div>
           <div style={{marginBottom:16}}><span className="rv-lbl">Full Review Body (HTML)</span><textarea className="rv-ta" rows={8} value={form.articleBody||''} onChange={e=>setForm(p=>({...p,articleBody:e.target.value}))} placeholder="<p>Full review HTML...</p>" /></div>
           <div style={{display:'flex',gap:8}}><button className="rv-btn" onClick={create} disabled={busy}>Create Review</button><button className="rv-ghost" onClick={()=>setMode('list')}>Cancel</button></div>
@@ -497,6 +508,7 @@ export default function ReviewManager({ adminKey }) {
               </div>
             )}
           </div>
+        </>
         </>
       )}
     </div>
