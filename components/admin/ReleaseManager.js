@@ -38,7 +38,6 @@ export default function ReleaseManager({ adminKey }) {
   const [sel,      setSel]      = useState(null)
   const [busy,     setBusy]     = useState(false)
   const [msg,      setMsg]      = useState('')
-  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
   const bulkLock = useBulkLock({ items:releases, setItems:setReleases, patchFn:(id,fields)=>patch(id,fields) })
   const [search,   setSearch]   = useState('')
   const [tab,      setTab]      = useState('list')  // list | add
