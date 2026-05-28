@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback, useRef } from 'react'
+import ImageSearchModal from './ImageSearchModal'
 
 const S = `
 .nam-wrap { font-family:'IBM Plex Mono',monospace; }
@@ -64,6 +65,8 @@ export default function NewsArticleManager({ adminKey }) {
   const [checkedIds,  setCheckedIds]= useState(new Set())
   const [bulkSaving,  setBulkSaving]= useState(false)
   const PER_PAGE = 50
+
+  const [imgSearch, setImgSearch] = useState(null) // { item } | null
 
   const flash = (m) => { setMsg(m); setTimeout(() => setMsg(''), 5000) }
 
@@ -613,6 +616,19 @@ export default function NewsArticleManager({ adminKey }) {
           </span>
         </div>
       )}
+
+    {/* ── Image Search Modal ── */}
+    {imgSearch && (
+      <ImageSearchModal
+        adminKey={adminKey}
+        item={imgSearch}
+        onApply={(imageUrl) => {
+          // Update the item in local state
+          setImgSearch(null)
+        }}
+        onClose={() => setImgSearch(null)}
+      />
+    )}
     </div>
   )
 }
