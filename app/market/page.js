@@ -395,14 +395,19 @@ export default async function MarketPage() {
               )}
             </div>
           ) : (
-            <div style={{ background:'rgba(200,146,42,0.04)', border:'1px solid rgba(200,146,42,0.2)', borderLeft:'4px solid #C8922A', padding:'16px 22px', marginBottom:28, borderRadius:4 }}>
-              <div style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:9, color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:6 }}>📊 DAILY AI MARKET BRIEF — PENDING</div>
-              <div style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:11, color:'#475569' }}>
-                AI analysis runs at 6:00 AM EST via OpenClaw. <Link href="/admin" style={{ color:'#C8922A', textDecoration:'none' }}>Configure agent →</Link>
+            <div style={{ background:'rgba(30,41,59,0.4)', border:'1px solid rgba(30,41,59,0.8)', borderLeft:'3px solid #374151',
+              padding:'16px 20px', display:'flex', alignItems:'center', gap:12 }}>
+              <span style={{ fontSize:20, opacity:0.4 }}>📊</span>
+              <div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', letterSpacing:'0.1em', marginBottom:4 }}>
+                  MARKET BRIEF
+                </div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#374151' }}>
+                  Next brief generates at 6am or 6pm UTC
+                </div>
               </div>
             </div>
           )}
-
           {/* ── MAIN GRID: caliber cards ── */}
           <div style={{ marginBottom:28 }}>
             <div style={{ display:'flex', alignItems:'baseline', gap:12, marginBottom:16 }}>
