@@ -92,6 +92,14 @@ export default function ReleaseManager({ adminKey }) {
 
   const selRelease = releases.find(r=>r._id===sel)
 
+  async function saveReleaseImage() {
+    const inp = document.querySelector('.rm-img-input')
+    if (inp && inp.value && selRelease) {
+      await patch(selRelease._id, { imageUrl: inp.value })
+      flash('💾 Image saved')
+    }
+  }
+
   async function patch(id, fields) {
     const res = await fetch('/api/admin/releases-manager',{
       method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
@@ -323,9 +331,9 @@ export default function ReleaseManager({ adminKey }) {
                     }}>✎ Paste URL</button>
                     <button className="rm-ghost" disabled={busy}
                       style={{fontSize:9,background:'var(--gold)',color:'#000',border:'none'}}
-                      onClick={()=>{
-                        const inp = document.querySelector('.rm-img-input'); if(inp&&inp.value) patch(selRelease._id,{imageUrl:inp.value})
-                      }}>💾 Save Image</button>
+                      onClick={saveReleaseImage}>
+                      💾 Save Image
+                    </button>
                   </div>
                   <input className="rm-input rm-img-input" defaultValue={selRelease.imageUrl||''} style={{marginBottom:12,fontSize:10}}
                     onBlur={e=>{ if(e.target.value!==selRelease.imageUrl) patch(selRelease._id,{imageUrl:e.target.value}) }} />
