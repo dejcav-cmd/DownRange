@@ -196,8 +196,9 @@ function ReviewCard({ r, featured = false }) {
 }
 
 export default async function ReviewsPage({ searchParams }) {
-  const cat = searchParams?.cat || null
-  const q   = searchParams?.q   || null
+  const cat  = searchParams?.cat  || null
+  const q    = searchParams?.q    || null
+  const sort = searchParams?.sort || 'score'
 
   const [sanityReviews, alerts] = await Promise.all([
     q ? searchReviews(q, 40) : fetchReviews(40, cat).catch(() => []),
@@ -208,8 +209,16 @@ export default async function ReviewsPage({ searchParams }) {
     ? sanityReviews
     : SEED_REVIEWS.filter(r => !cat || r.category === cat)
 
-  const featured = reviews.filter(r => r.featured || r.score >= 9.4)
-  const grid     = reviews.filter(r => !featured.includes(r))
+  // Sort
+  const sortedReviews = [...reviews].sort((a, b) => {
+    if (sort === 'score')  return (b.score || 0) - (a.score || 0)
+    if (sort === 'newest') return new Date(b.publishedAt || b.date || 0) - new Date(a.publishedAt || a.date || 0)
+    if (sort === 'alpha')  return (a.model || a.brand || '').localeCompare(b.model || b.brand || '')
+    return (b.score || 0) - (a.score || 0)
+  })
+
+  const featured = sortedReviews.filter(r => r.featured || r.score >= 9.4)
+  const grid     = sortedReviews.filter(r => !featured.includes(r))
 
   return (
     <>
@@ -253,7 +262,16 @@ export default async function ReviewsPage({ searchParams }) {
               </a>
             ))}
             </div>
-            <div style={{ flexShrink:0, padding:'0 8px' }}>
+            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+              {[['score','★ Rating'],['newest','📅 Newest'],['alpha','🔤 A–Z']].map(([key,label]) => (
+                <a key={key} href={'/reviews?' + new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), sort:key }).toString()}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 10px', border:'1px solid var(--border)', color:sort===key?'#C8922A':'#4B5563', textDecoration:'none', background:sort===key?'#C8922A20':'transparent' }}>
+                  {label}
+                </a>
+              ))}
+            </div>
+            <div style={{ flexShrink:0, padding:'0 0 0 8px', borderLeft:'1px solid var(--border)' }}>
               <SectionSearch type="review" placeholder="Search reviews…" defaultValue={q||''} compact />
             </div>
           </div>
