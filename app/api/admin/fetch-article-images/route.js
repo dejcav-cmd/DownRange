@@ -34,6 +34,23 @@ function isGoodImage(url) {
   return true
 }
 
+function pickPhoto(title = '', category = '') {
+  const t = (title + ' ' + category).toLowerCase()
+  if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen/.test(t)) return '/img/photos/law.jpg'
+  if (/pistol|handgun|glock|sig|beretta|colt|revolver|1911|carry|edc|p365|hellcat|shield|kimber|walther/.test(t)) return '/img/photos/pistol.jpg'
+  if (/rifle|ar.?15|m4|carbine|ak|sbr|ar.10|ddm4|scar|ruger.pc|m16|fn.*15|daniel|bcm/.test(t)) return '/img/photos/rifle.jpg'
+  if (/shotgun|mossberg|remington.*870|benelli|gauge|pump|590|870/.test(t)) return '/img/photos/shotgun.jpg'
+  if (/suppressor|silencer|nfa|omega|dead.air|surefire|thunder|obsidian/.test(t)) return '/img/photos/suppressor.jpg'
+  if (/ammo|ammunition|cartridge|bullet|grain|ballistic|hst|gold.dot|hornady|federal|speer|reload|press|powder|brass|case/.test(t)) return '/img/photos/ammo.jpg'
+  if (/hunt|deer|elk|game|waterfowl|turkey|bear|boar/.test(t)) return '/img/photos/hunting.jpg'
+  if (/competi|uspsa|idpa|ipsc|3.gun|steel.*match|bianchi/.test(t)) return '/img/photos/competition.jpg'
+  if (/train|range|practice|marksmanship|drill|dry.fire/.test(t)) return '/img/photos/training.jpg'
+  if (/gear|holster|optic|sight|scope|light|sling|magazine|accessory/.test(t)) return '/img/photos/gear.jpg'
+  if (/home.*defense|nightstand|self.defense/.test(t)) return '/img/photos/homedefense.jpg'
+  if (/military|army|marine|navy|soldier|combat|veteran/.test(t)) return '/img/photos/military.jpg'
+  return '/img/photos/news.jpg'
+}
+
 async function extractOgImage(pageUrl) {
   try {
     const res = await fetch(pageUrl, {
@@ -163,6 +180,9 @@ export async function POST(req) {
     results.fetched++
 
     if (!ogImage) {
+      // Source blocked scraping — assign a relevant local photo as fallback
+      const fallback = pickPhoto(article.title, article.category)
+      mutations.push({ patch: { id: article._id, set: { imageUrl: fallback } } })
       results.skipped++
       continue
     }
