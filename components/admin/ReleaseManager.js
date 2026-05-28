@@ -284,7 +284,7 @@ export default function ReleaseManager({ adminKey }) {
                   <div className="rm-cell" style={{textAlign:'center',color:sel===r._id?'var(--gold)':'#374151'}}>›</div>
                 </div>
               ))}
-            </>
+            </>)}
             </div>
 
             {/* Detail Panel */}
