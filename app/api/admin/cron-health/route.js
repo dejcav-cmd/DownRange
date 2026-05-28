@@ -86,17 +86,23 @@ export async function GET() {
   // ── SANITY DATA FRESHNESS ─────────────────────────────────────────────
   let sanityStatus = { connected: false, error: null, counts: {}, latest: null }
   try {
-    const [articleCount, latestArticle, alertCount] = await Promise.all([
+    const [articleCount, latestArticle, latestByCreated, alertCount] = await Promise.all([
       sanity.fetch(`count(*[_type == "newsArticle"])`),
       sanity.fetch(`*[_type == "newsArticle"] | order(publishedAt desc) [0] { title, publishedAt, source, category }`),
+      sanity.fetch(`*[_type == "newsArticle"] | order(_createdAt desc) [0] { title, _createdAt, source }`),
       sanity.fetch(`count(*[_type == "breakingAlert" && active == true])`),
     ])
+    // Use whichever is more recent: publishedAt of newest article OR _createdAt of newest doc
+    const latestPublished = latestArticle?.publishedAt ? new Date(latestArticle.publishedAt).getTime() : 0
+    const latestCreated   = latestByCreated?._createdAt  ? new Date(latestByCreated._createdAt).getTime()  : 0
+    const latestTimestamp = Math.max(latestPublished, latestCreated)
     sanityStatus = {
       connected:    true,
       counts:       { articles: articleCount, activeAlerts: alertCount },
       latest:       latestArticle,
-      minutesSinceLastArticle: latestArticle?.publishedAt
-        ? Math.round((Date.now() - new Date(latestArticle.publishedAt).getTime()) / 60000)
+      latestCreated: latestByCreated,
+      minutesSinceLastArticle: latestTimestamp > 0
+        ? Math.round((Date.now() - latestTimestamp) / 60000)
         : null,
     }
   } catch (err) {
@@ -129,8 +135,8 @@ export async function GET() {
   if (!sanityStatus.connected)
     issues.push({ severity: 'CRITICAL', msg: `Sanity connection failed: ${sanityStatus.error}` })
 
-  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 240)
-    issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h). News feed may not be running.` })
+  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 480)
+    issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h). News feed may not be running — check System → Cron Jobs.` })
 
   if (!env.NEWSAPI_KEY.set && !env.GNEWS_KEY.set)
     issues.push({ severity: 'MEDIUM', msg: 'Neither NEWSAPI_KEY nor GNEWS_KEY set — news feed relies on RSS only (no API articles).' })

@@ -266,20 +266,24 @@ async function publishToSanity(doc) {
     // For other doc types (breakingAlert, etc.): still use createOrReplace.
     const mutations = doc._type === 'newsArticle'
       ? [
-          // Create if new (preserves imageUrl from doc)
+          // Create if new (preserves all fields on first write)
           { createIfNotExists: doc },
-          // Patch all fields EXCEPT imageUrl if the stored one is already trusted
+          // Only update metadata fields — never overwrite body/summary if already written
           { patch: {
               id: doc._id,
-              ifRevisionID: undefined,  // unconditional
               set: Object.fromEntries(
                 Object.entries(doc)
-                  .filter(([k]) => !['_id','_type','imageUrl'].includes(k))
+                  .filter(([k]) => !['_id','_type','imageUrl','body','summary','excerpt'].includes(k))
               ),
-              // Only overwrite imageUrl if new one is trusted OR stored one isn't
-              setIfMissing: { imageUrl: doc.imageUrl },
+              // Fill in body/summary/excerpt ONLY if missing (don't destroy backfilled content)
+              setIfMissing: {
+                imageUrl: doc.imageUrl,
+                body:     doc.body,
+                summary:  doc.summary,
+                excerpt:  doc.excerpt,
+              },
           }},
-          // Force-overwrite imageUrl ONLY if new value is trusted (Wikimedia/CDN)
+          // Force-overwrite imageUrl ONLY if new value is trusted (CDN)
           ...(isTrustedImage(doc.imageUrl) ? [{ patch: { id: doc._id, set: { imageUrl: doc.imageUrl } } }] : []),
         ]
       : [{ createOrReplace: doc }]
