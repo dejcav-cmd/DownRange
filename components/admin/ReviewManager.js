@@ -474,7 +474,13 @@ export default function ReviewManager({ adminKey }) {
 
                     <div style={{marginBottom:10}}>
                       <span className="rv-lbl">Image URL</span>
-                      <input className="rv-input" value={editDraft.imageUrl||''} onChange={e=>setEditDraft(p=>({...p,imageUrl:e.target.value}))} />
+                      <div style={{display:'flex',gap:6}}>
+                        <input className="rv-input" value={editDraft.imageUrl||''} onChange={e=>setEditDraft(p=>({...p,imageUrl:e.target.value}))} style={{flex:1}} />
+                        <button onClick={()=>setImgSearch(selReview)} disabled={busy}
+                          style={{background:'#8b5cf6',color:'#fff',border:'none',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'0 10px',cursor:'pointer',flexShrink:0,whiteSpace:'nowrap'}}>
+                          🔍 Search
+                        </button>
+                      </div>
                     </div>
 
                     <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:14}}>
