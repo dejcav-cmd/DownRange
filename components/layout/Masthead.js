@@ -223,7 +223,7 @@ export default function Masthead() {
               title="Send Feedback">
               Feedback
             </button>
-            <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'16px' }} title="Search">⌕</Link>
+            <GlobalSearchBar />
             <ThemeToggle />
           </div>
         </nav>
@@ -237,7 +237,7 @@ export default function Masthead() {
               style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', padding:'6px 10px', cursor:'pointer' }}>
               Feedback
             </button>
-            <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'18px', padding:'4px 8px' }}>⌕</Link>
+            <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Search ⌘K">⌕</Link>
             <ThemeToggle />
             <button onClick={() => setMenuOpen(!menuOpen)}
               style={{ background:'none', border:'1px solid var(--border)', color:'var(--text-muted)', padding:'7px 14px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.05em' }}>
