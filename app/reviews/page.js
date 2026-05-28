@@ -2,7 +2,8 @@ import Masthead    from '../../components/layout/Masthead'
 import Footer      from '../../components/layout/Footer'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import Link        from 'next/link'
-import { fetchReviews, fetchBreakingAlerts } from '../../sanity/lib/client'
+import { fetchReviews, searchReviews, fetchBreakingAlerts } from '../../sanity/lib/client'
+import SectionSearch from '../../components/ui/SectionSearch'
 
 export const metadata = {
   title: 'Firearms & Gear Reviews — DownRange',
@@ -196,9 +197,10 @@ function ReviewCard({ r, featured = false }) {
 
 export default async function ReviewsPage({ searchParams }) {
   const cat = searchParams?.cat || null
+  const q   = searchParams?.q   || null
 
   const [sanityReviews, alerts] = await Promise.all([
-    fetchReviews(30, cat).catch(() => []),
+    q ? searchReviews(q, 40) : fetchReviews(40, cat).catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
   ])
 
@@ -241,7 +243,8 @@ export default async function ReviewsPage({ searchParams }) {
       {/* ── STICKY CATEGORY BAR ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
-          <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:8 }}>
+            <div style={{ display:'flex', gap:0, overflowX:'auto', flex:1 }}>
             {CATS.map(c => (
               <a key={c.val || 'all'} href={c.val ? `/reviews?cat=${c.val}` : '/reviews'}
                 style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${(cat===c.val||(c.val===null&&!cat))?(CAT_COLORS[c.val]||'var(--gold)'):'transparent'}`, color:(cat===c.val||(c.val===null&&!cat))?(CAT_COLORS[c.val]||'var(--gold)'):'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
@@ -249,6 +252,10 @@ export default async function ReviewsPage({ searchParams }) {
                 {c.label}
               </a>
             ))}
+            </div>
+            <div style={{ flexShrink:0, padding:'0 8px' }}>
+              <SectionSearch type="review" placeholder="Search reviews…" defaultValue={q||''} compact />
+            </div>
           </div>
         </div>
       </div>
