@@ -1,4 +1,5 @@
 import { notFound }    from 'next/navigation'
+import Image           from 'next/image'
 import Masthead        from '../../../components/layout/Masthead'
 import Footer          from '../../../components/layout/Footer'
 import BreakingTicker  from '../../../components/layout/BreakingTicker'
@@ -152,6 +153,7 @@ export default async function BlogArticlePage({ params }) {
             </p>
             {/* Author bar */}
             <div style={{ display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
+              <div style={{ display:'flex', alignItems:'center', gap:8 }}>
                 <Image
                   src="/img/dj-avatar.png"
                   alt="DJ Cavalcanti"
@@ -216,8 +218,10 @@ export default async function BlogArticlePage({ params }) {
                   alt="DJ Cavalcanti"
                   width={72}
                   height={72}
-                  style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 2px rgba(200,146,42,.2)' }}
+                  style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 3px rgba(200,146,42,.15)' }}
                 />
+                <div>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.04em', color:'var(--foreground)', marginBottom:4 }}>DJ Cavalcanti</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:8 }}>Founder, DownRange · Washington State</div>
                   <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.65, margin:0 }}>
                     DJ Cavalcanti is the founder of DownRange Intelligence Hub, a firearms business developer, and a WA state CPL holder. He covers firearms industry trends, 2A legal developments, and tactical product intelligence.
