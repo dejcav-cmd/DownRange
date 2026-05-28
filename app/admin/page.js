@@ -97,6 +97,7 @@ const NAV = [
       { id:'identity',     label:'Identity',         icon:'🎨', badge:null },
       { id:'envcheck',     label:'Env Vars',         icon:'🔧', badge:null },
       { id:'navvis',       label:'Nav Visibility',   icon:'👁', badge:null },
+      { id:'emails',       label:'Email Tests',       icon:'✉', badge:null },
     ]
   },
 ]
@@ -607,6 +608,73 @@ function SEOPanel() {
           ))}</tbody>
         </table>
       </div>
+    </div>
+  )
+}
+
+// ── Inline: Email Test Panel ─────────────────────────────────────────────────
+function EmailTestPanel({ adminKey }) {
+  const [results, setResults] = useState(null)
+  const [busy, setBusy] = useState(false)
+  const [msg, setMsg] = useState('')
+
+  const MAILBOXES = [
+    { from: 'noreply@downrangeco.com',       desc: 'Contact form sender' },
+    { from: 'feedback@downrangeco.com',      desc: 'Feedback modal sender' },
+    { from: 'news@downrangeco.com',          desc: 'Newsletter sender' },
+    { from: 'intelligence@downrangeco.com',  desc: 'Intelligence briefing sender' },
+    { from: 'dj@downrangeco.com',            desc: 'Outreach / founder direct' },
+    { from: 'outreach@downrangeco.com',      desc: 'Outreach queue digest' },
+  ]
+
+  async function sendTests() {
+    setBusy(true)
+    setMsg('Sending test emails to all mailboxes...')
+    setResults(null)
+    try {
+      const r = await fetch('/api/admin/test-emails', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey },
+      })
+      const d = await r.json()
+      setResults(d.results || [])
+      setMsg(d.ok ? `✅ ${d.sent}/${d.total} sent — check dj@downrangeco.com` : `❌ ${d.error}`)
+    } catch(e) {
+      setMsg(`❌ ${e.message}`)
+    }
+    setBusy(false)
+  }
+
+  return (
+    <div>
+      <div className="panel-title">Email Mailbox Tests</div>
+      <div className="panel-sub">Sends a test from each configured from-address to dj@downrangeco.com. Verifies Resend + Zoho SPF/DKIM are working.</div>
+      <div className="adm-card" style={{marginBottom:16}}>
+        <div style={{marginBottom:12,fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em'}}>CONFIGURED MAILBOXES</div>
+        {MAILBOXES.map(m => (
+          <div key={m.from} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
+            <span style={{color:'#C8922A'}}>{m.from}</span>
+            <span style={{color:'#6b7280',fontSize:10}}>{m.desc}</span>
+          </div>
+        ))}
+      </div>
+      <button onClick={sendTests} disabled={busy || !adminKey}
+        style={{background:'var(--gold)',color:'#000',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,letterSpacing:'.06em',padding:'10px 24px',cursor:busy?'not-allowed':'pointer',opacity:busy?0.6:1,marginBottom:16}}>
+        {busy ? '⏳ Sending...' : '✉ Send Test to All Mailboxes'}
+      </button>
+      {msg && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,padding:'8px 12px',background:msg.startsWith('✅')?'rgba(34,197,94,.1)':'rgba(239,68,68,.1)',color:msg.startsWith('✅')?'#22c55e':'#ef4444',marginBottom:16}}>{msg}</div>}
+      {results && (
+        <div className="adm-card">
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em',marginBottom:8}}>RESULTS</div>
+          {results.map((r,i) => (
+            <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10}}>
+              <span style={{color:r.status==='sent'?'#22c55e':'#ef4444'}}>{r.status==='sent'?'✓':'✗'}</span>
+              <span style={{flex:1,marginLeft:8,color:'#e5e7eb',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.mailbox}</span>
+              <span style={{color:r.status==='sent'?'#22c55e':'#ef4444',marginLeft:8}}>{r.status==='sent'?r.id?.slice(0,16)+'...':r.error?.slice(0,40)}</span>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   )
 }
@@ -1949,6 +2017,7 @@ export default function AdminPage() {
             {panel==='identity' && <IdentityPanel      adminKey={adminKey} />}
             {panel==='envcheck' && <EnvChecker         adminKey={adminKey} />}
             {panel==='navvis'   && <NavVisibilityPanel adminKey={adminKey} setMsg={flash} />}
+            {panel==='emails'   && <EmailTestPanel     adminKey={adminKey} />}
 
           </div>
         </div>
