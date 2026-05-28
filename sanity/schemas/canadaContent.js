@@ -23,6 +23,7 @@ export const canadaContent = defineType({
     defineField({ name: 'highlights', title: 'Highlights', type: 'array', of: [{ type: 'string' }] }),
     // Article fields
     defineField({ name: 'body', title: 'Article Body (HTML)', type: 'text', rows: 15 }),
+    defineField({ name: 'qualityReviewed', title: 'Quality Reviewed (AI standard met)', type: 'boolean', initialValue: false }),
     defineField({ name: 'imageUrl', title: 'Image URL', type: 'url' }),
     defineField({ name: 'tag', title: 'Tag (LAW/GUIDE/POLICY)', type: 'string' }),
     defineField({ name: 'readMins', title: 'Read Time (e.g. 7 min)', type: 'string' }),

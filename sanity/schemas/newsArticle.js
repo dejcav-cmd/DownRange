@@ -28,6 +28,7 @@ export default {
     { name: 'tags',       title: 'Tags', type: 'array', of: [{ type: 'string' }] },
     { name: 'relatedStates', title: 'Related States', type: 'array', of: [{ type: 'string' }] },
     { name: 'dedupHash',  title: 'Dedup Hash (internal)', type: 'string' },
+    { name: 'qualityReviewed', title: 'Quality Reviewed (AI standard met)', type: 'boolean', initialValue: false },
   ],
   orderings: [
     { title: 'Published Date, New', name: 'publishedAtDesc', by: [{ field: 'publishedAt', direction: 'desc' }] },

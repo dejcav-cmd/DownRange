@@ -20,6 +20,7 @@ export const firearmRelease = defineType({
     defineField({ name: 'body',  title: 'Full Article Body (HTML)', type: 'text', rows: 12 }),
     defineField({ name: 'pressReleaseExcerpt', title: 'Press Release Excerpt', type: 'text', rows: 3 }),
     defineField({ name: 'approved', title: 'Published', type: 'boolean', initialValue: false }),
+    defineField({ name: 'qualityReviewed', title: 'Quality Reviewed (AI standard met)', type: 'boolean', initialValue: false }),
     defineField({ name: 'specs', title: 'Specs', type: 'array',
       of: [{ type: 'object', fields: [
         { name: 'label', type: 'string', title: 'Label' },

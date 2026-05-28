@@ -282,7 +282,7 @@ export async function POST(req) {
       const label = item.title || `${item.brand || ''} ${item.model || ''}`.trim() || item._id
       try {
         const ai    = await rewriteItem(item, tc)
-        const patch = tc.patch(ai)
+        const patch = { ...tc.patch(ai), qualityReviewed: true }
         await sanity.patch(item._id).set(patch).commit()
         const words = ai.body.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
         results.push({ id: item._id, type: typeName, title: label.slice(0, 60), status: 'done', words, ms: Date.now() - ts })

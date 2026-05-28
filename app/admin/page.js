@@ -715,179 +715,421 @@ function DealsPanel() {
 
 // ── Inline: Ranges panel ──────────────────────────────────────────────────────
 function ContentAgentsPanel({ adminKey, setMsg }) {
-  const [running, setRunning] = useState({})
-  const [results, setResults] = useState({})
+  const [scanData,    setScanData]    = useState(null)
+  const [scanning,    setScanning]    = useState(false)
+  const [rewriting,   setRewriting]   = useState(false)
+  const [rewriteLog,  setRewriteLog]  = useState([])
+  const [progress,    setProgress]    = useState(null)   // {done,total,current}
+  const [activeTab,   setActiveTab]   = useState('scanner') // scanner | tools
+  const [filterType,  setFilterType]  = useState('all')
+  const [showPassing, setShowPassing] = useState(false)
+  const abortRef = React.useRef(false)
 
-  async function run(key, path, method='POST', params='') {
-    setRunning(r => ({...r, [key]: true}))
-    setResults(r => ({...r, [key]: null}))
-    setMsg('⏳ Running ' + key + '...')
+  const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+
+  const TYPE_COLOR = {
+    newsArticle:    '#3b82f6',
+    blogPost:       '#22c55e',
+    firearmRelease: '#C8922A',
+    canadaContent:  '#ef4444',
+  }
+  const TYPE_ICON = { newsArticle:'📰', blogPost:'📝', firearmRelease:'🔫', canadaContent:'🍁' }
+
+  async function runScan() {
+    setScanning(true); setScanData(null); setRewriteLog([])
+    setMsg('⏳ Scanning all content...')
     try {
-      const res = await fetch('/api/admin/' + path + params, {
-        method,
-        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
-      })
+      const res = await fetch('/api/admin/content-scan', { headers: H })
       const d = await res.json()
-      setResults(r => ({...r, [key]: d}))
-      if (d.ok !== false) setMsg('✅ ' + key + ' complete')
-      else setMsg('❌ ' + (d.error || 'Error'))
-    } catch(e) {
-      setResults(r => ({...r, [key]: { ok: false, error: e.message }}))
-      setMsg('❌ ' + e.message)
-    }
-    setRunning(r => ({...r, [key]: false}))
+      if (!d.ok) { setMsg('❌ Scan failed'); return }
+      setScanData(d)
+      setMsg(`✅ Scanned ${d.total} items — ${d.needsRewrite} need rewriting`)
+    } catch(e) { setMsg('❌ ' + e.message) }
+    setScanning(false)
   }
 
-  const AGENTS = [
-    {
-      key: 'fix-images',
-      label: '🖼 Fix Article Images',
-      desc: 'Scans all news articles and patches missing or broken images. Tries source OG image first, falls back to keyword-matched firearm photo from image library.',
-      color: '#3b82f6',
-      actions: [
-        { label: 'Fix Missing (batch 50)', params: '?batch=50&force=false' },
-        { label: 'Force Re-patch All (batch 50)', params: '?batch=50&force=true' },
-        { label: 'Large Batch (100)', params: '?batch=100&force=false' },
-      ]
-    },
-    {
-      key: 'backfill-articles',
-      label: '✍ AI Rewrite — All Content Types',
-      desc: 'Rewrites ALL content (news, blog, gun releases, Canada) that is missing body text or sounds like AI. Strict human-voice rules: no banned phrases, direct sentences, specific facts. Covers newsArticle, blogPost, firearmRelease, canadaContent.',
-      color: '#C8922A',
-      actions: [
-        { label: 'Rewrite 5 (all types)',  params: '?limit=5&types=newsArticle,blogPost,firearmRelease,canadaContent' },
-        { label: 'Rewrite 10 (all types)', params: '?limit=10&types=newsArticle,blogPost,firearmRelease,canadaContent' },
-        { label: 'Rewrite 25 (all types)', params: '?limit=25&types=newsArticle,blogPost,firearmRelease,canadaContent' },
-        { label: 'Force rewrite 10 (override existing)', params: '?limit=10&force=true&types=newsArticle,blogPost,firearmRelease,canadaContent' },
-        { label: 'News only (10)',     params: '?limit=10&types=newsArticle' },
-        { label: 'Blog only (10)',     params: '?limit=10&types=blogPost' },
-        { label: 'Gun Releases (10)', params: '?limit=10&types=firearmRelease' },
-        { label: 'Canada only (10)',  params: '?limit=10&types=canadaContent' },
-      ]
-    },
-    {
-      key: 'write-blog-articles',
-      label: '📝 Write Blog Articles (AI)',
-      desc: 'Generates new blog posts using Claude AI based on recent firearms news. Each post is 600–900 words, opinionated, written in DownRange voice.',
-      color: '#22c55e',
-      actions: [
-        { label: 'Write 3 Blog Posts', params: '' },
-      ]
-    },
-    {
-      key: 'write-canada-articles',
-      label: '🇨🇦 Write Canada Articles (AI)',
-      desc: 'Generates Canadian firearms law analysis articles based on current C-21, PAL, and provincial legislation.',
-      color: '#ef4444',
-      actions: [
-        { label: 'Write Canada Articles', params: '' },
-      ]
-    },
-    {
-      key: 'fetch-article-images',
-      label: '📷 Fetch OG Images from Sources',
-      desc: 'For articles missing images, fetches the og:image from each article source URL and uploads to Sanity CDN. Runs automatically every 30min via cron.',
-      color: '#a855f7',
-      actions: [
-        { label: 'Fetch Now (batch 30)', params: '?limit=30' },
-      ]
-    },
-    {
-      key: 'patch-article',
-      label: '🔧 Patch All Article Images',
-      desc: 'Assigns SVG fallback images to articles based on keyword matching: law/ban/ATF → ⚖ law.svg, pistol/Glock → 🔫 pistol.svg, rifle/AR → rifle.svg, etc.',
-      color: '#f59e0b',
-      actions: [
-        { label: 'Patch All Articles', params: '' },
-      ]
-    },
-  ]
+  async function rewriteAll() {
+    if (!scanData) return
+    const queue = scanData.items.filter(i => i.needsRewrite)
+    if (!queue.length) { setMsg('✅ Nothing to rewrite'); return }
+
+    abortRef.current = false
+    setRewriting(true)
+    setRewriteLog([])
+    setProgress({ done: 0, total: queue.length, current: null })
+    setMsg(`⏳ Rewriting ${queue.length} items...`)
+
+    // Process in batches of 5 per API call
+    const BATCH = 5
+    let done = 0
+    const typeGroups = {}
+    for (const item of queue) {
+      if (!typeGroups[item.type]) typeGroups[item.type] = []
+      typeGroups[item.type].push(item._id)
+    }
+
+    for (const [type, ids] of Object.entries(typeGroups)) {
+      if (abortRef.current) break
+      for (let i = 0; i < ids.length; i += BATCH) {
+        if (abortRef.current) break
+        const batch = ids.slice(i, i + BATCH)
+        const currentItem = queue.find(q => q._id === batch[0])
+        setProgress(p => ({ ...p, current: currentItem?.title || '...' }))
+
+        try {
+          const res = await fetch(`/api/admin/backfill-articles?limit=${BATCH}&force=true&types=${type}`, {
+            method: 'POST', headers: H
+          })
+          const d = await res.json()
+          done += d.done || 0
+          setProgress(p => ({ ...p, done }))
+          if (d.results) {
+            setRewriteLog(log => [...log, ...d.results.map(r => ({
+              ...r, typeColor: TYPE_COLOR[type], typeIcon: TYPE_ICON[type]
+            }))])
+          }
+          // Update scan data to mark rewrites
+          setScanData(prev => {
+            if (!prev) return prev
+            const updatedItems = prev.items.map(item =>
+              batch.includes(item._id) && d.results?.find(r => r.id === item._id && r.status === 'done')
+                ? { ...item, needsRewrite: false, qualityReviewed: true, score: 95 }
+                : item
+            )
+            return { ...prev, items: updatedItems, needsRewrite: updatedItems.filter(i => i.needsRewrite).length }
+          })
+        } catch(e) {
+          setRewriteLog(log => [...log, { title: `Batch failed (${type})`, status: 'failed', error: e.message }])
+        }
+      }
+    }
+
+    setRewriting(false)
+    setProgress(null)
+    setMsg(`✅ Rewrite complete — ${done} items updated`)
+  }
+
+  async function markReviewed(id, reviewed = true) {
+    await fetch('/api/admin/content-scan', {
+      method: 'PATCH', headers: H,
+      body: JSON.stringify({ id, reviewed })
+    })
+    setScanData(prev => {
+      if (!prev) return prev
+      const items = prev.items.map(i => i._id === id ? { ...i, qualityReviewed: reviewed, needsRewrite: reviewed ? false : i.score < 70 } : i)
+      return { ...prev, items, reviewed: items.filter(i => i.qualityReviewed).length, needsRewrite: items.filter(i => i.needsRewrite).length }
+    })
+  }
+
+  const scoreColor = (s) => s >= 80 ? '#22c55e' : s >= 60 ? '#f59e0b' : '#ef4444'
+  const displayItems = scanData?.items.filter(i => {
+    if (i.qualityReviewed && !showPassing) return false
+    if (!showPassing && i.score >= 70 && !i.needsRewrite) return false
+    if (filterType !== 'all' && i.type !== filterType) return false
+    return true
+  }) || []
+
+  // ── OTHER AGENTS (non-scanner) ──────────────────────────────────────────
+  const [agentRunning, setAgentRunning] = useState({})
+  const [agentResults, setAgentResults] = useState({})
+
+  async function runAgent(key, path, params='') {
+    setAgentRunning(r => ({...r, [key]: true}))
+    setAgentResults(r => ({...r, [key]: null}))
+    try {
+      const res = await fetch('/api/admin/' + path + params, { method:'POST', headers:H })
+      const d = await res.json()
+      setAgentResults(r => ({...r, [key]: d}))
+      setMsg(d.ok !== false ? '✅ Done' : '❌ ' + (d.error||'Error'))
+    } catch(e) {
+      setAgentResults(r => ({...r, [key]: { ok:false, error:e.message }}))
+    }
+    setAgentRunning(r => ({...r, [key]: false}))
+  }
 
   return (
     <div>
       <div className="panel-title">🤖 Content Agents</div>
-      <div className="panel-sub">
-        AI-powered content operations. Each agent runs on demand or via cron. Results show below each card after running.
+
+      {/* Tab bar */}
+      <div style={{display:'flex', gap:4, marginBottom:24, borderBottom:'1px solid var(--border)', paddingBottom:0}}>
+        {[['scanner','🎯 Quality Scanner'],['tools','🛠 Other Tools']].map(([id,label])=>(
+          <button key={id} onClick={()=>setActiveTab(id)} style={{
+            fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700,
+            letterSpacing:'.05em', padding:'8px 18px',
+            background:'transparent', border:'none', cursor:'pointer',
+            color: activeTab===id ? 'var(--gold)' : '#6b7280',
+            borderBottom: activeTab===id ? '2px solid var(--gold)' : '2px solid transparent',
+            marginBottom:-1,
+          }}>{label}</button>
+        ))}
       </div>
 
-      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))', gap:16}}>
-        {AGENTS.map(agent => {
-          const res = results[agent.key]
-          const busy = running[agent.key]
-          return (
-            <div key={agent.key} className="adm-card" style={{borderLeft:`3px solid ${agent.color}`, display:'flex', flexDirection:'column', gap:12}}>
-              <div>
-                <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:16, fontWeight:700, color:'var(--text)', marginBottom:4}}>
-                  {agent.label}
-                </div>
-                <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.7}}>
-                  {agent.desc}
-                </div>
+      {/* ── SCANNER TAB ── */}
+      {activeTab === 'scanner' && (
+        <div>
+          {/* Hero action */}
+          <div style={{
+            background:'linear-gradient(135deg, rgba(200,146,42,.08) 0%, rgba(200,146,42,.03) 100%)',
+            border:'1px solid rgba(200,146,42,.25)',
+            padding:'28px 32px', marginBottom:24,
+            display:'flex', alignItems:'center', gap:32, flexWrap:'wrap',
+          }}>
+            <div style={{flex:1, minWidth:260}}>
+              <div style={{fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:'var(--gold)', letterSpacing:'.06em', lineHeight:1, marginBottom:8}}>
+                Content Quality Scanner
               </div>
-
-              {/* Action buttons */}
-              <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
-                {agent.actions.map(action => (
-                  <button key={action.label} className="btn-primary"
-                    style={{fontSize:11, padding:'6px 14px', background: busy ? '#374151' : agent.color, opacity: busy ? 0.6 : 1}}
-                    disabled={busy}
-                    onClick={() => run(agent.key, agent.key, 'POST', action.params)}>
-                    {busy ? '⏳ Running...' : action.label}
-                  </button>
-                ))}
+              <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#9ca3af', lineHeight:1.8}}>
+                Scans every news article, blog post, gun release, and Canada article.<br/>
+                Flags AI phrases, short bodies, weak structure. Rewrites everything that fails.<br/>
+                Items marked ✓ Reviewed are skipped on future runs.
               </div>
-
-              {/* Result */}
-              {res && (
-                <div style={{
-                  fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'10px 12px',
-                  background: res.ok === false ? 'rgba(239,68,68,.08)' : 'rgba(34,197,94,.08)',
-                  border: `1px solid ${res.ok === false ? 'rgba(239,68,68,.3)' : 'rgba(34,197,94,.3)'}`,
-                  color: res.ok === false ? '#f87171' : '#4ade80',
-                  lineHeight: 1.7
+            </div>
+            <div style={{display:'flex', gap:10, flexWrap:'wrap', alignItems:'center'}}>
+              {!scanData && (
+                <button onClick={runScan} disabled={scanning} style={{
+                  fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'.08em',
+                  padding:'12px 28px', background:'var(--gold)', color:'#000',
+                  border:'none', cursor:'pointer', opacity: scanning ? 0.6 : 1,
                 }}>
-                  {res.ok === false ? '❌ ' + (res.error || 'Error') : (
-                    <div>
-                      ✅ Done
-                      {res.patched != null && <span style={{color:'var(--text-dim)'}}> · {res.patched} patched</span>}
-                      {res.published != null && <span style={{color:'var(--text-dim)'}}> · {res.published} published</span>}
-                      {res.done != null && <span style={{color:'var(--text-dim)'}}> · {res.done} done</span>}
-                      {res.written != null && <span style={{color:'var(--text-dim)'}}> · {res.written} written</span>}
-                      {res.saved != null && <span style={{color:'var(--text-dim)'}}> · {res.saved} saved</span>}
-                      {res.skipped != null && <span style={{color:'#64748b'}}> · {res.skipped} skipped</span>}
-                      {res.failed != null && res.failed > 0 && <span style={{color:'#f59e0b'}}> · {res.failed} failed</span>}
-                      {res.message && <div style={{color:'var(--text-dim)', marginTop:4}}>{res.message}</div>}
-                    </div>
-                  )}
-                </div>
+                  {scanning ? '⏳ SCANNING...' : '🔍 SCAN ALL CONTENT'}
+                </button>
+              )}
+              {scanData && !rewriting && (
+                <>
+                  <button onClick={runScan} disabled={scanning} style={{
+                    fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700,
+                    padding:'8px 16px', background:'transparent',
+                    border:'1px solid var(--border)', color:'var(--text-dim)', cursor:'pointer',
+                  }}>↺ Rescan</button>
+                  <button onClick={rewriteAll} disabled={!scanData?.needsRewrite} style={{
+                    fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'.08em',
+                    padding:'12px 28px', background: scanData?.needsRewrite ? '#ef4444' : '#374151',
+                    color:'#fff', border:'none', cursor: scanData?.needsRewrite ? 'pointer' : 'default',
+                  }}>
+                    ✍ REWRITE {scanData?.needsRewrite || 0} FAILING
+                  </button>
+                </>
+              )}
+              {rewriting && (
+                <button onClick={()=>{ abortRef.current=true }} style={{
+                  fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700,
+                  padding:'8px 16px', background:'rgba(239,68,68,.15)',
+                  border:'1px solid rgba(239,68,68,.4)', color:'#f87171', cursor:'pointer',
+                }}>⏹ Stop</button>
               )}
             </div>
-          )
-        })}
-      </div>
+          </div>
 
-      {/* Per-content-type rewrite section */}
-      <div style={{marginTop:32}}>
-        <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', letterSpacing:'.05em', textTransform:'uppercase', marginBottom:16, paddingBottom:8, borderBottom:'1px solid var(--border)'}}>
-          Per-Content-Type AI Rewrite
-        </div>
-        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:12}}>
-          {[
-            { key:'reviews-ai',     label:'★ Rewrite Reviews',    route:'reviews-manager',    action:'ai-rewrite', desc:'AI rewrites selected review body with pros/cons from the reviews panel.' },
-            { key:'releases-ai',    label:'🔫 Rewrite Releases',   route:'releases-manager',   action:'ai-rewrite', desc:'AI rewrites gun release articles. Use the Gun Releases panel to trigger per-item rewrites.' },
-            { key:'blog-ai',        label:'📝 Rewrite Blog Posts',  route:'blog-posts',         action:'ai-write',   desc:'AI rewrites blog post body. Trigger per-post via the Blog panel.' },
-          ].map(item => (
-            <div key={item.key} className="adm-card" style={{padding:'14px 18px'}}>
-              <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', marginBottom:4}}>{item.label}</div>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.7, marginBottom:10}}>{item.desc}</div>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', padding:'6px 8px', background:'rgba(0,0,0,.3)', border:'1px solid var(--border)'}}>
-                Available in: <span style={{color:'var(--gold)'}}>Content → {item.label.split(' ').slice(1).join(' ')} panel → 🤖 AI Write button</span>
+          {/* Progress bar */}
+          {rewriting && progress && (
+            <div style={{marginBottom:20}}>
+              <div style={{
+                fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--gold)',
+                marginBottom:8, display:'flex', justifyContent:'space-between',
+              }}>
+                <span>⏳ Rewriting... {progress.done}/{progress.total}</span>
+                <span style={{color:'#6b7280', overflow:'hidden', textOverflow:'ellipsis', maxWidth:400}}>
+                  {progress.current}
+                </span>
+              </div>
+              <div style={{height:6, background:'#1f2937', overflow:'hidden'}}>
+                <div style={{
+                  height:'100%', background:'var(--gold)',
+                  width: `${Math.round((progress.done/progress.total)*100)}%`,
+                  transition:'width .3s ease',
+                }}/>
               </div>
             </div>
-          ))}
+          )}
+
+          {/* Stats row */}
+          {scanData && (
+            <div style={{display:'flex', gap:12, marginBottom:20, flexWrap:'wrap'}}>
+              {[
+                { label:'Total Scanned', value:scanData.total, color:'var(--text)' },
+                { label:'Need Rewrite', value:scanData.needsRewrite, color:'#ef4444' },
+                { label:'Passing', value:scanData.passing, color:'#22c55e' },
+                { label:'Reviewed ✓', value:scanData.reviewed, color:'#C8922A' },
+              ].map(s=>(
+                <div key={s.label} style={{
+                  flex:1, minWidth:120,
+                  background:'var(--bg2)', border:'1px solid var(--border)',
+                  padding:'12px 16px', textAlign:'center',
+                }}>
+                  <div style={{fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:s.color, lineHeight:1}}>{s.value}</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginTop:4, letterSpacing:'.06em', textTransform:'uppercase'}}>{s.label}</div>
+                </div>
+              ))}
+              {/* Per-type breakdown */}
+              {Object.entries(scanData.summary).map(([type, s])=>(
+                <div key={type} style={{
+                  flex:1, minWidth:140,
+                  background:'var(--bg2)', border:`1px solid ${TYPE_COLOR[type]}44`,
+                  padding:'10px 14px',
+                }}>
+                  <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:TYPE_COLOR[type], marginBottom:6}}>
+                    {TYPE_ICON[type]} {s.label}
+                  </div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#9ca3af', lineHeight:1.9}}>
+                    {s.total} total · <span style={{color:'#ef4444'}}>{s.needsRewrite} failing</span> · <span style={{color:'#22c55e'}}>{s.passing} ok</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {/* Filter bar */}
+          {scanData && (
+            <div style={{display:'flex', gap:8, marginBottom:16, alignItems:'center', flexWrap:'wrap'}}>
+              <span style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280'}}>Filter:</span>
+              {['all','newsArticle','blogPost','firearmRelease','canadaContent'].map(t=>(
+                <button key={t} onClick={()=>setFilterType(t)} style={{
+                  fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'3px 10px',
+                  background: filterType===t ? (TYPE_COLOR[t]||'var(--gold)') : 'transparent',
+                  color: filterType===t ? '#000' : '#6b7280',
+                  border:`1px solid ${filterType===t ? (TYPE_COLOR[t]||'var(--gold)') : 'var(--border)'}`,
+                  cursor:'pointer',
+                }}>
+                  {t==='all' ? `All (${scanData.needsRewrite})` : `${TYPE_ICON[t]} ${t==='newsArticle'?'News':t==='blogPost'?'Blog':t==='firearmRelease'?'Releases':'Canada'}`}
+                </button>
+              ))}
+              <label style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', display:'flex', alignItems:'center', gap:6, marginLeft:'auto', cursor:'pointer'}}>
+                <input type="checkbox" checked={showPassing} onChange={e=>setShowPassing(e.target.checked)} />
+                Show passing items
+              </label>
+            </div>
+          )}
+
+          {/* Item list */}
+          {scanData && displayItems.length > 0 && (
+            <div style={{display:'flex', flexDirection:'column', gap:4, maxHeight:520, overflowY:'auto'}}>
+              {displayItems.map(item => (
+                <div key={item._id} style={{
+                  display:'flex', alignItems:'center', gap:12, padding:'10px 14px',
+                  background: item.qualityReviewed ? 'rgba(34,197,94,.04)' : item.score < 40 ? 'rgba(239,68,68,.06)' : 'var(--bg2)',
+                  border:`1px solid ${item.qualityReviewed ? 'rgba(34,197,94,.2)' : item.score < 40 ? 'rgba(239,68,68,.2)' : 'var(--border)'}`,
+                }}>
+                  {/* Score ring */}
+                  <div style={{
+                    width:36, height:36, flexShrink:0,
+                    borderRadius:'50%', border:`2.5px solid ${scoreColor(item.score)}`,
+                    display:'flex', alignItems:'center', justifyContent:'center',
+                    fontFamily:"'Bebas Neue',cursive", fontSize:14, color:scoreColor(item.score),
+                  }}>{item.score}</div>
+
+                  {/* Type badge */}
+                  <div style={{
+                    fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700,
+                    padding:'2px 6px', background:`${TYPE_COLOR[item.type]}22`,
+                    color:TYPE_COLOR[item.type], flexShrink:0,
+                    border:`1px solid ${TYPE_COLOR[item.type]}44`,
+                  }}>{TYPE_ICON[item.type]}</div>
+
+                  {/* Title + issues */}
+                  <div style={{flex:1, minWidth:0}}>
+                    <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text)', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>
+                      {item.title}
+                    </div>
+                    {item.issues?.length > 0 && (
+                      <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#f59e0b', marginTop:2}}>
+                        {item.issues.join(' · ')}
+                      </div>
+                    )}
+                  </div>
+
+                  {/* Word count */}
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', flexShrink:0}}>
+                    {item.words}w
+                  </div>
+
+                  {/* Reviewed badge / button */}
+                  {item.qualityReviewed ? (
+                    <button onClick={()=>markReviewed(item._id, false)} title="Click to unmark" style={{
+                      fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 8px',
+                      background:'rgba(34,197,94,.15)', border:'1px solid rgba(34,197,94,.3)',
+                      color:'#4ade80', cursor:'pointer', flexShrink:0,
+                    }}>✓ REVIEWED</button>
+                  ) : (
+                    <button onClick={()=>markReviewed(item._id, true)} title="Mark as reviewed — skip on future scans" style={{
+                      fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 8px',
+                      background:'transparent', border:'1px solid var(--border)',
+                      color:'#6b7280', cursor:'pointer', flexShrink:0,
+                    }}>Skip</button>
+                  )}
+                </div>
+              ))}
+            </div>
+          )}
+
+          {scanData && displayItems.length === 0 && (
+            <div style={{padding:40, textAlign:'center', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#22c55e'}}>
+              ✅ All scanned content is passing quality standards.
+            </div>
+          )}
+
+          {/* Rewrite log */}
+          {rewriteLog.length > 0 && (
+            <div style={{marginTop:20}}>
+              <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--text-dim)', letterSpacing:'.05em', textTransform:'uppercase', marginBottom:8}}>
+                Rewrite Log ({rewriteLog.length})
+              </div>
+              <div style={{maxHeight:200, overflowY:'auto', display:'flex', flexDirection:'column', gap:3}}>
+                {rewriteLog.map((r,i)=>(
+                  <div key={i} style={{
+                    fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'5px 10px',
+                    background: r.status==='done' ? 'rgba(34,197,94,.06)' : 'rgba(239,68,68,.06)',
+                    color: r.status==='done' ? '#4ade80' : '#f87171',
+                    display:'flex', gap:12, alignItems:'center',
+                  }}>
+                    <span>{r.status==='done' ? '✓' : '✗'}</span>
+                    <span style={{color: r.typeColor || 'var(--text-dim)'}}>{r.typeIcon}</span>
+                    <span style={{flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap'}}>{r.title}</span>
+                    {r.words && <span style={{color:'#4b5563'}}>{r.words}w</span>}
+                    {r.error && <span style={{color:'#f59e0b', fontSize:9}}>{r.error.slice(0,50)}</span>}
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
         </div>
-      </div>
+      )}
+
+      {/* ── TOOLS TAB ── */}
+      {activeTab === 'tools' && (
+        <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))', gap:16}}>
+          {[
+            { key:'fix-images',          label:'🖼 Fix Article Images',        color:'#3b82f6',  path:'fix-images',           actions:[{label:'Fix Missing (50)',params:'?batch=50&force=false'},{label:'Force All (50)',params:'?batch=50&force=true'}] },
+            { key:'write-blog-articles', label:'📝 Generate Blog Posts',        color:'#22c55e',  path:'write-blog-articles',  actions:[{label:'Write 3 Posts',params:''}] },
+            { key:'write-canada-articles',label:'🍁 Write Canada Articles',     color:'#ef4444',  path:'write-canada-articles',actions:[{label:'Write Articles',params:''}] },
+            { key:'fetch-article-images',label:'📷 Fetch OG Images',            color:'#a855f7',  path:'fetch-article-images', actions:[{label:'Fetch Now (30)',params:'?limit=30'}] },
+            { key:'patch-article',       label:'🔧 Patch SVG Fallbacks',        color:'#f59e0b',  path:'patch-article',        actions:[{label:'Patch All',params:''}] },
+            { key:'seed-image-repo',     label:'🗃 Seed Image Repository',      color:'#64748b',  path:'seed-image-repo',      actions:[{label:'Seed Images',params:''}] },
+          ].map(agent => {
+            const res  = agentResults[agent.key]
+            const busy = agentRunning[agent.key]
+            return (
+              <div key={agent.key} className="adm-card" style={{borderLeft:`3px solid ${agent.color}`, display:'flex', flexDirection:'column', gap:10}}>
+                <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'var(--text)'}}>{agent.label}</div>
+                <div style={{display:'flex', gap:8, flexWrap:'wrap'}}>
+                  {agent.actions.map(a=>(
+                    <button key={a.label} disabled={busy} onClick={()=>runAgent(agent.key, agent.path, a.params)} style={{
+                      fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, letterSpacing:'.04em',
+                      padding:'6px 14px', background: busy ? '#374151' : agent.color, color:busy?'#6b7280':'#000',
+                      border:'none', cursor: busy?'default':'pointer', opacity: busy?0.6:1,
+                    }}>{busy ? '⏳ Running...' : a.label}</button>
+                  ))}
+                </div>
+                {res && (
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: res.ok===false ? '#f87171':'#4ade80', padding:'6px 10px', background:'rgba(0,0,0,.3)', border:'1px solid var(--border)'}}>
+                    {res.ok===false ? '✗ '+(res.error||'Error') : '✓ '+(res.message||'Complete')+(res.done!=null?' · '+res.done+' done':'')+(res.patched!=null?' · '+res.patched+' patched':'')+(res.seeded!=null?' · '+res.seeded+' seeded':'')}
+                  </div>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
     </div>
   )
 }
