@@ -222,6 +222,7 @@ export default function CanadaManager({ adminKey }) {
               </div>
             </div>
           ))}
+          </>)}
         </div>
 
         {/* Detail panel */}
@@ -258,8 +259,7 @@ export default function CanadaManager({ adminKey }) {
                 <Field label="Summary" field="summary" item={selItem} rows={4} />
                 <div style={{ marginBottom: 10 }}>
                   <span className="cm-lbl">Highlights (one per line)</span>
-                  <textarea className="cm-ta" rows={5} defaultValue={(selItem.highlights || []).join('
-')}
+                  <textarea className="cm-ta" rows={5} defaultValue={(selItem.highlights || []).join('\n')}
                     onBlur={e => {
                       const h = e.target.value.split('
 ').map(s => s.trim()).filter(Boolean)
@@ -333,7 +333,6 @@ export default function CanadaManager({ adminKey }) {
             </div>
           </div>
         )}
-      </>
       </div>
     </div>
   )
