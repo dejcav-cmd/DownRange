@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useBulkLock, BulkLockBar, LockToggle } from './BulkLockBar'
 
 const ORGS       = ['NRA','USPSA/IPSC','IDPA','PRS','NRL','NSSF','3-Gun Nation','Other']
 const DISCS      = ['Practical Pistol','Precision Rifle','3-Gun','Shotgun','Rimfire','Long Range','Steel Challenge','Hunting','Cowboy Action','Other']
@@ -25,6 +26,8 @@ export default function CompetitionManager({ adminKey }) {
   const [items,   setItems]   = useState([])
   const [loading, setLoading] = useState(true)
   const [sel,     setSel]     = useState(null)
+  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
+  const bulkLock = useBulkLock({ items, setItems, patchFn:(id,fields)=>patch(id,fields) })
   const [busy,    setBusy]    = useState(false)
   const [msg,     setMsg]     = useState('')
   const [showAdd, setShowAdd] = useState(false)
@@ -144,9 +147,12 @@ export default function CompetitionManager({ adminKey }) {
             <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563',marginLeft:'auto'}}>{filtered.length} matches</span>
           </div>
           {loading ? <div style={{padding:40,textAlign:'center',color:'#4b5563',fontSize:12}}>Loading...</div>
-          : filtered.map(m => (
+          : (<>
+          <BulkLockBar checkedIds={bulkLock.checkedIds} bulkSaving={bulkLock.bulkSaving} onLock={()=>bulkLock.bulkSetLock(true,flash)} onUnlock={()=>bulkLock.bulkSetLock(false,flash)} onClear={bulkLock.clearChecked} />
+          {filtered.map(m => (
             <div key={m._id} onClick={()=>setSel(sel===m._id?null:m._id)}
-              style={{display:'flex',gap:10,padding:'10px 12px',borderBottom:'1px solid var(--border)',cursor:'pointer',background:sel===m._id?'rgba(200,146,42,.08)':'var(--bg2)',borderLeft:sel===m._id?'2px solid var(--gold)':'2px solid transparent',transition:'background .1s'}}>
+              style={{display:'flex',gap:10,padding:'10px 12px',borderBottom:'1px solid var(--border)',cursor:'pointer',background:bulkLock.checkedIds.has(m._id)?'rgba(200,146,42,.05)':sel===m._id?'rgba(200,146,42,.08)':'var(--bg2)',borderLeft:sel===m._id?'2px solid var(--gold)':'2px solid transparent',transition:'background .1s'}}>
+              <div style={{flexShrink:0,paddingTop:3,paddingRight:2}} onClick={e=>bulkLock.toggleCheck(m._id,e)}><input type="checkbox" checked={bulkLock.checkedIds.has(m._id)} onChange={()=>{}} style={{cursor:'pointer',accentColor:'var(--gold)',width:14,height:14}} /></div>
               <div style={{flexShrink:0,width:36,textAlign:'center',paddingTop:2}}>
                 <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.2rem',color:'var(--text)',lineHeight:1}}>{m.startDate?new Date(m.startDate).getDate():'?'}</div>
                 <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#4b5563'}}>{m.startDate?new Date(m.startDate).toLocaleDateString('en-US',{month:'short'}):''}</div>

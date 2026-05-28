@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useBulkLock, BulkLockBar, LockToggle } from './BulkLockBar'
 
 const TYPES = [
   { key:'law',      label:'Federal Laws',    icon:'⚖' },
@@ -29,6 +30,7 @@ const S = `
 .cm-row{display:flex;gap:10px;align-items:flex-start;padding:12px 14px;border-bottom:1px solid var(--border);background:var(--bg2);transition:background .1s;cursor:pointer}
 .cm-row:hover{background:rgba(200,146,42,.04)}
 .cm-row.sel{background:rgba(200,146,42,.08);border-left:2px solid var(--gold)}
+.cm-row.checked{background:rgba(200,146,42,.05)}
 .cm-lbl{font-size:9px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;display:block}
 `
 
@@ -197,8 +199,11 @@ export default function CanadaManager({ adminKey }) {
             <div style={{ padding: 40, textAlign: 'center', fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#4b5563' }}>
               No {typeConf?.label} yet. Click "Seed Static Data" to import the default content, or add items manually.
             </div>
-          ) : items.map(item => (
-            <div key={item._id} className={'cm-row' + (sel === item._id ? ' sel' : '')} onClick={() => setSel(sel === item._id ? null : item._id)}>
+          ) : (<>
+          <BulkLockBar checkedIds={bulkLock.checkedIds} bulkSaving={bulkLock.bulkSaving} onLock={()=>bulkLock.bulkSetLock(true)} onUnlock={()=>bulkLock.bulkSetLock(false)} onClear={bulkLock.clearChecked} />
+          {items.map(item => (
+            <div key={item._id} className={'cm-row' + (sel === item._id ? ' sel' : '') + (bulkLock.checkedIds.has(item._id) ? ' checked' : '')} onClick={() => setSel(sel === item._id ? null : item._id)}>
+              <div style={{flexShrink:0,paddingRight:6}} onClick={e=>bulkLock.toggleCheck(item._id,e)}><input type="checkbox" checked={bulkLock.checkedIds.has(item._id)} onChange={()=>{}} style={{cursor:'pointer',accentColor:'var(--gold)',width:14,height:14}} /></div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: 'var(--text)', marginBottom: 3 }}>
                   {item.abbr ? `[${item.abbr}] ` : ''}{item.title}
@@ -212,6 +217,7 @@ export default function CanadaManager({ adminKey }) {
               </div>
               <div style={{ display: 'flex', gap: 6, flexShrink: 0, alignItems: 'center' }}>
                 <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize:9, padding:'2px 6px', background: item.active ? 'rgba(34,197,94,.15)' : 'rgba(100,116,139,.15)', color: item.active ? '#22c55e' : '#64748b' }}>{item.active ? 'on' : 'off'}</span>
+                <LockToggle locked={item.editorLocked} onToggle={async(e)=>{ if(e)e.stopPropagation(); const v=!item.editorLocked; await fetch('/api/canada',{method:'POST',headers:H,body:JSON.stringify({action:'patch',id:item._id,fields:{editorLocked:v}})}); setItems(prev=>prev.map(x=>x._id===item._id?{...x,editorLocked:v}:x)) }} />
                 <span style={{ color: sel === item._id ? 'var(--gold)' : '#374151', fontSize: 12 }}>›</span>
               </div>
             </div>

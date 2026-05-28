@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useBulkLock, BulkLockBar, RowCheckbox, HeaderCheckbox, LockToggle } from './BulkLockBar'
 
 const BLOG_CATS = ['home-defense','safety','ammunition','beginner','maintenance','legal','carry','training','general','industry','gear','reviews']
 
@@ -257,7 +258,9 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
           <div style={{display:'grid',gridTemplateColumns:sel?'1fr 480px':'1fr',gap:0,border:'1px solid var(--border)',minHeight:400}}>
             {/* Table */}
             <div style={{overflowY:'auto',maxHeight:'calc(100vh - 300px)'}}>
-              <div style={{display:'grid',gridTemplateColumns:'1fr 110px 80px 70px 40px',borderBottom:'2px solid var(--border)',background:'var(--bg)'}}>
+              <BulkLockBar checkedIds={bulkLock.checkedIds} bulkSaving={bulkLock.bulkSaving} onLock={()=>bulkLock.bulkSetLock(true,flash)} onUnlock={()=>bulkLock.bulkSetLock(false,flash)} onClear={bulkLock.clearChecked} />
+              <div style={{display:'grid',gridTemplateColumns:'36px 1fr 110px 80px 70px 30px',borderBottom:'2px solid var(--border)',background:'var(--bg)',position:'sticky',top:0,zIndex:5}}>
+                <HeaderCheckbox visibleItems={filtered} isAllChecked={bulkLock.isAllChecked} isIndeterminate={bulkLock.isIndeterminate} toggleCheckAll={bulkLock.toggleCheckAll} />
                 {['Title','Category','Status','Date',''].map((h,i)=>(
                   <div key={i} style={{padding:'8px 12px',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',fontWeight:700}}>{h}</div>
                 ))}
@@ -270,8 +273,9 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                 </div>
               ) : filtered.map(p => (
                 <div key={p._id} onClick={()=>setSel(sel===p._id?null:p._id)}
-                  style={{display:'grid',gridTemplateColumns:'1fr 110px 80px 70px 40px',alignItems:'center',borderBottom:'1px solid var(--border)',cursor:'pointer',transition:'background .1s',
-                    background:sel===p._id?'rgba(200,146,42,.08)':'transparent',borderLeft:sel===p._id?'2px solid var(--gold)':'2px solid transparent'}}>
+                  style={{display:'grid',gridTemplateColumns:'36px 1fr 110px 80px 70px 30px',alignItems:'center',borderBottom:'1px solid var(--border)',cursor:'pointer',transition:'background .1s',
+                    background:bulkLock.checkedIds.has(p._id)?'rgba(200,146,42,.05)':sel===p._id?'rgba(200,146,42,.08)':'transparent',borderLeft:sel===p._id?'2px solid var(--gold)':'2px solid transparent'}}>
+                  <RowCheckbox id={p._id} checkedIds={bulkLock.checkedIds} toggleCheck={bulkLock.toggleCheck} />
                   <div style={{padding:'10px 12px',overflow:'hidden'}}>
                     <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</div>
                     <div style={{display:'flex',gap:6,marginTop:2,alignItems:'center'}}>
@@ -290,7 +294,7 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                   <div style={{padding:'10px 12px',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>
                     {p.publishedAt?.slice(0,10)||'—'}
                   </div>
-                  <div style={{padding:'10px 12px',textAlign:'center',color:sel===p._id?'var(--gold)':'#374151'}}>›</div>
+                  <div style={{padding:'6px 6px',display:'flex',alignItems:'center',justifyContent:'center'}}><LockToggle locked={p.editorLocked} onToggle={async()=>{ await patch(p._id,{editorLocked:!p.editorLocked}); setPosts(prev=>prev.map(x=>x._id===p._id?{...x,editorLocked:!x.editorLocked}:x)); flash(p.editorLocked?'🔓 Unlocked':'🔒 Locked') }} /></div>
                 </div>
               ))}
             </div>

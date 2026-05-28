@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useBulkLock, BulkLockBar, RowCheckbox, LockToggle } from './BulkLockBar'
 
 const CATS     = ['Pistol','Rifle','Shotgun','Optic','Suppressor','Accessory','Ammo']
 const VERDICTS = ['Best in Class','Highly Recommended','Recommended','Good Value','Average','Skip It']
@@ -20,9 +21,10 @@ const S = `
 .rv-del:hover{background:rgba(239,68,68,.1)}
 .rv-lbl{font-size:9px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;display:block}
 .rv-sep{height:1px;background:var(--border);margin:12px 0}
-.rv-row{display:grid;grid-template-columns:70px 1fr 100px 60px 100px 36px;align-items:center;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.rv-row{display:grid;grid-template-columns:36px 70px 1fr 100px 60px 100px 30px;align-items:center;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
 .rv-row:hover{background:rgba(200,146,42,.04)}
 .rv-row.sel{background:rgba(200,146,42,.08);border-left:2px solid var(--gold)}
+.rv-row.checked{background:rgba(200,146,42,.05)}
 .rv-cell{padding:9px 12px;font-size:11px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rv-score-ring{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',cursive;font-size:1.1rem;font-weight:700;flex-shrink:0}
 .rv-tab-btn{background:none;border:none;border-bottom:2px solid transparent;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:8px 14px;cursor:pointer;color:var(--text-dim);transition:all .15s;white-space:nowrap}
@@ -43,6 +45,8 @@ export default function ReviewManager({ adminKey }) {
   const [sel,      setSel]      = useState(null)
   const [busy,     setBusy]     = useState(false)
   const [msg,      setMsg]      = useState('')
+  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
+  const bulkLock = useBulkLock({ items:reviews, setItems:setReviews, patchFn:(id,fields)=>patch(id,fields) })
   const [search,   setSearch]   = useState('')
   const [catFilter,setCatFilter]= useState('all')
   const [mode,     setMode]     = useState('list') // list | add
@@ -333,8 +337,11 @@ export default function ReviewManager({ adminKey }) {
                     + Add First Review
                   </button>
                 </div>
-              ) : filtered.map(r => (
-                <div key={r._id} className={'rv-row'+(sel===r._id?' sel':'')} onClick={()=>setSel(sel===r._id?null:r._id)}>
+              ) : (<>
+                <BulkLockBar checkedIds={bulkLock.checkedIds} bulkSaving={bulkLock.bulkSaving} onLock={()=>bulkLock.bulkSetLock(true,flash)} onUnlock={()=>bulkLock.bulkSetLock(false,flash)} onClear={bulkLock.clearChecked} />
+                {filtered.map(r => (
+                <div key={r._id} className={'rv-row'+(sel===r._id?' sel':'')+(bulkLock.checkedIds.has(r._id)?' checked':'')} onClick={()=>setSel(sel===r._id?null:r._id)}>
+                  <RowCheckbox id={r._id} checkedIds={bulkLock.checkedIds} toggleCheck={bulkLock.toggleCheck} />
                   <div className="rv-cell" style={{display:'flex',alignItems:'center',justifyContent:'center'}}>
                     <div className="rv-score-ring" style={{background:scoreColor(r.score)+'22',color:scoreColor(r.score),border:`2px solid ${scoreColor(r.score)}`}}>
                       {r.score != null ? r.score : '—'}
@@ -352,7 +359,7 @@ export default function ReviewManager({ adminKey }) {
                   <div className="rv-cell">
                     {r.verdict && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:VERDICT_C[r.verdict]||'#9ca3af',padding:'2px 5px',background:(VERDICT_C[r.verdict]||'#9ca3af')+'15'}}>{r.verdict}</span>}
                   </div>
-                  <div className="rv-cell" style={{textAlign:'center',color:sel===r._id?'var(--gold)':'#374151'}}>›</div>
+                  <div className="rv-cell" style={{textAlign:'center',display:'flex',alignItems:'center',justifyContent:'center'}}><LockToggle locked={r.editorLocked} onToggle={async()=>{ await patch(r._id,{editorLocked:!r.editorLocked}); setReviews(prev=>prev.map(x=>x._id===r._id?{...x,editorLocked:!x.editorLocked}:x)); flash(r.editorLocked?'🔓 Unlocked':'🔒 Locked') }} /></div>
                 </div>
               ))}
             </div>

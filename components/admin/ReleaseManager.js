@@ -1,11 +1,13 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useBulkLock, BulkLockBar, RowCheckbox, HeaderCheckbox, LockToggle } from './BulkLockBar'
 
 const S = `
 .rm-wrap{font-family:'IBM Plex Mono',monospace}
-.rm-row{display:grid;grid-template-columns:90px 1fr 120px 80px 80px 44px;align-items:center;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
+.rm-row{display:grid;grid-template-columns:36px 90px 1fr 120px 80px 80px 30px;align-items:center;border-bottom:1px solid var(--border);cursor:pointer;transition:background .1s}
 .rm-row:hover{background:rgba(200,146,42,.04)}
 .rm-row.sel{background:rgba(200,146,42,.08);border-left:2px solid var(--gold)}
+.rm-row.checked{background:rgba(200,146,42,.05)}
 .rm-img{width:90px;height:56px;object-fit:cover;display:block;background:#111}
 .rm-cell{padding:10px 12px;font-size:11px;color:var(--text-dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .rm-title{font-size:12px;font-weight:600;color:var(--text);white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;line-height:1.3}
@@ -36,6 +38,8 @@ export default function ReleaseManager({ adminKey }) {
   const [sel,      setSel]      = useState(null)
   const [busy,     setBusy]     = useState(false)
   const [msg,      setMsg]      = useState('')
+  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
+  const bulkLock = useBulkLock({ items:releases, setItems:setReleases, patchFn:(id,fields)=>patch(id,fields) })
   const [search,   setSearch]   = useState('')
   const [tab,      setTab]      = useState('list')  // list | add
   const [form,     setForm]     = useState({ brand:'',model:'',category:'Pistol',caliber:'',action:'',msrp:'',sourceUrl:'',imageUrl:'',summary:'',body:'' })
@@ -244,8 +248,16 @@ export default function ReleaseManager({ adminKey }) {
                     <button className="rm-ghost" onClick={()=>setTab('add')}>+ Add Manually</button>
                   </div>
                 </div>
-              ) : filtered.map(r => (
-                <div key={r._id} className={'rm-row'+(sel===r._id?' sel':'')} onClick={()=>setSel(sel===r._id?null:r._id)}>
+              ) : (<>
+                <BulkLockBar checkedIds={bulkLock.checkedIds} bulkSaving={bulkLock.bulkSaving} onLock={()=>bulkLock.bulkSetLock(true,flash)} onUnlock={()=>bulkLock.bulkSetLock(false,flash)} onClear={bulkLock.clearChecked} />
+                <div style={{display:'grid',gridTemplateColumns:'36px 90px 1fr 120px 80px 80px 30px',borderBottom:'2px solid var(--border)',background:'var(--bg)',position:'sticky',top:0,zIndex:5}}>
+                  <HeaderCheckbox visibleItems={filtered} isAllChecked={bulkLock.isAllChecked} isIndeterminate={bulkLock.isIndeterminate} toggleCheckAll={bulkLock.toggleCheckAll} />
+                  {['Image','Gun','Category','Cal.','Status',''].map((h,i)=>(
+                    <div key={i} style={{padding:'7px 10px',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',fontWeight:700}}>{h}</div>
+                  ))}
+                </div>
+                {filtered.map(r => (
+                <div key={r._id} className={'rm-row'+(sel===r._id?' sel':'')+(bulkLock.checkedIds.has(r._id)?' checked':'')} onClick={()=>setSel(sel===r._id?null:r._id)}><RowCheckbox id={r._id} checkedIds={bulkLock.checkedIds} toggleCheck={bulkLock.toggleCheck} />
                   <div style={{position:'relative',width:90,height:56,flexShrink:0}}>
                     {r.imageUrl
                       ? <img src={r.imageUrl} alt="" className="rm-img" onError={e=>{e.target.style.display='none'}} />
