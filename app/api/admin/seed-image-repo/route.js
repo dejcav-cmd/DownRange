@@ -93,14 +93,18 @@ const IMAGE_SEEDS = [
 
 // These map to our local SVGs as final fallback if URL fails
 const CAT_SVG = {
-  pistol:      '/img/pistol.svg',
-  rifle:       '/img/rifle.svg',
-  shotgun:     '/img/shotgun.svg',
-  suppressor:  '/img/suppressor.svg',
-  ammo:        '/img/ammo.svg',
-  law:         '/img/law.svg',
-  homedefense: '/img/pistol.svg',
-  news:        '/img/news.svg',
+  pistol:      '/img/photos/pistol.jpg',
+  rifle:       '/img/photos/rifle.jpg',
+  shotgun:     '/img/photos/shotgun.jpg',
+  suppressor:  '/img/photos/suppressor.jpg',
+  ammo:        '/img/photos/ammo.jpg',
+  law:         '/img/photos/law.jpg',
+  homedefense: '/img/photos/homedefense.jpg',
+  news:        '/img/photos/news.jpg',
+  training:    '/img/photos/training.jpg',
+  competition: '/img/photos/competition.jpg',
+  hunting:     '/img/photos/hunting.jpg',
+  gear:        '/img/photos/gear.jpg',
 }
 
 async function fetchAndUpload(seed) {
