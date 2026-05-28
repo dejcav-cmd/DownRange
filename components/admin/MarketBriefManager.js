@@ -1,11 +1,5 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
-import { createClient } from '@sanity/client'
-
-const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-  dataset: 'production', apiVersion: '2024-01-01', useCdn: true,
-})
 
 const SIGNAL_COLORS = { BUY:'#22c55e', HOLD:'#f59e0b', WATCH:'#60a5fa', SELL:'#ef4444' }
 const SIGNAL_BG     = { BUY:'rgba(34,197,94,.12)', HOLD:'rgba(245,158,11,.12)', WATCH:'rgba(96,165,250,.12)', SELL:'rgba(239,68,68,.12)' }
@@ -41,21 +35,19 @@ export default function MarketBriefManager({ adminKey }) {
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const [b, p] = await Promise.all([
-        sanity.fetch(`*[_type=="marketAnalysis"] | order(publishedAt desc) [0...14] {
-          _id, title, summary, bullets, signal, signalReason, session, author, publishedAt
-        }`),
-        sanity.fetch(`*[_type=="ammoPrice"] | order(caliber asc) {
-          _id, caliber, pricePerRound, trendDir, trendPct, inStock, recordedAt
-        }`),
+      const [rb, rp] = await Promise.all([
+        fetch('/api/admin/market-brief-list', { headers: { 'x-admin-key': adminKey } }),
+        fetch('/api/admin/ammo-prices', { headers: { 'x-admin-key': adminKey } }),
       ])
-      setBriefs(b || [])
-      setPrices(p || [])
+      const db = await rb.json().catch(() => ({}))
+      const dp = await rp.json().catch(() => ({}))
+      setBriefs(db.briefs || [])
+      setPrices(dp.prices || [])
     } catch (e) {
       setMsg('⚠ Failed to load: ' + e.message)
     }
     setLoading(false)
-  }, [])
+  }, [adminKey])
 
   useEffect(() => { load() }, [load])
 
