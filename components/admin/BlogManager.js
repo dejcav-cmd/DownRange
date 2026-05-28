@@ -17,6 +17,9 @@ const S = `
 .bm-pub{background:#22c55e;color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:7px 14px;cursor:pointer;white-space:nowrap}
 .bm-del{background:none;border:1px solid rgba(239,68,68,.35);color:#ef4444;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer}
 .bm-del:hover{background:rgba(239,68,68,.1)}
+.bm-btn-sm{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:9px;padding:4px 9px;cursor:pointer;letter-spacing:.04em}
+.bm-btn-sm:hover{border-color:var(--gold);color:var(--gold)}
+.bm-btn-sm:disabled{opacity:.35;cursor:not-allowed}
 .bm-lbl{font-size:9px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;display:block}
 .bm-sep{height:1px;background:var(--border);margin:12px 0}
 .bm-tab{background:none;border:none;border-bottom:2px solid transparent;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:8px 14px;cursor:pointer;color:var(--text-dim);transition:all .15s;white-space:nowrap}
