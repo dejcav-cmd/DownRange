@@ -133,7 +133,7 @@ function resetDedup() { seenHashes.clear() }
 async function discordNotify(webhookUrl, embed) {
   if (!webhookUrl) return
   try {
-    await fetch(webhookUrl, {method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({ embeds: [embed] })})
+    await fetch(webhookUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ embeds: [embed] }) })
   } catch (err) {
     console.error('Discord notify error:', err.message)
   }
@@ -278,19 +278,16 @@ async function publishToSanity(doc) {
         ]
       : [{ createOrReplace: doc }]
 
-    const _sanityRes = await fetch(
+    const _sanityR = await fetch(
       `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/mutate/${process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'}`,
       {
         method: 'POST',
-        headers: {
-          Authorization: `Bearer ${process.env.SANITY_API_TOKEN}`,
-          'Content-Type': 'application/json'
-        },
+        headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ mutations })
       }
     )
-    if (!_sanityRes.ok) { const e = await _sanityRes.text(); throw new Error(e) }
-    return await _sanityRes.json()
+    if (!_sanityR.ok) { const e = await _sanityR.text(); throw new Error(e) }
+    return await _sanityR.json()
   } catch (err) {
     console.error('Sanity write error:', err.response?.data || err.message)
     throw err

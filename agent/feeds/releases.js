@@ -68,13 +68,13 @@ async function fetchMfrRSS() {
 async function fetchGunBrokerNew() {
   if (!process.env.GUNBROKER_KEY) return []
   try {
-    const res = await (async()=>{ const _r=await fetch('https://api.gunbroker.com/Items', {
-      params: { Keywords: 'new release 2026', Sort: 13, PageSize: 20 },
-      headers: {
-        'X-DevKey': process.env.GUNBROKER_KEY,
-        'X-AccessToken': process.env.GUNBROKER_TOKEN || ''
-      }
-    },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
+    const _gbParams = new URLSearchParams({ Keywords: 'new release 2026', Sort: '13', PageSize: '20' })
+    const _gbR = await fetch('https://api.gunbroker.com/Items?' + _gbParams, {
+      headers: { 'X-DevKey': process.env.GUNBROKER_KEY, 'X-AccessToken': process.env.GUNBROKER_TOKEN || '' },
+      signal: AbortSignal.timeout(15000)
+    })
+    if (!_gbR.ok) throw new Error(_gbR.statusText)
+    const res = { data: await _gbR.json() }
     return (res.data.results || []).map(item => ({
       brand: item.manufacturer || 'Unknown',
       model: item.manufacturerModelName || item.title,

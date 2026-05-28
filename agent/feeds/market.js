@@ -121,13 +121,10 @@ async function runVideoFeed() {
 
   for (const channel of YT_CHANNELS) {
     try {
-      const res = await (async()=>{ const _r=await fetch('https://www.googleapis.com/youtube/v3/search', {
-        params: {
-          part: 'snippet', channelId: channel.id,
-          order: 'date', maxResults: 5, type: 'video',
-          key: process.env.YOUTUBE_API_KEY
-        }
-      },{signal:AbortSignal.timeout(15000)}); return {data: await _r.json()} })()
+      const _ytParams = new URLSearchParams({ part: 'snippet', channelId: channel.id, order: 'date', maxResults: '5', type: 'video', key: process.env.YOUTUBE_API_KEY })
+      const _ytR = await fetch('https://www.googleapis.com/youtube/v3/search?' + _ytParams, { signal: AbortSignal.timeout(15000) })
+      if (!_ytR.ok) throw new Error(_ytR.statusText)
+      const res = { data: await _ytR.json() }
       for (const item of res.data.items || []) {
         const sn = item.snippet
         await publishToSanity({
