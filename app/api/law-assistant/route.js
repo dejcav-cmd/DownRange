@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { createClient } from '@sanity/client'
+import { callAIText }   from '@/lib/aiClient.js'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -13,9 +14,9 @@ export async function POST(req) {
     const { question } = await req.json()
     if (!question) return Response.json({ error: 'No question' }, { status: 400 })
 
-    if (!process.env.ANTHROPIC_API_KEY) {
+    if (!process.env.ANTHROPIC_API_KEY && !process.env.GLM_API_KEY) {
       return Response.json({
-        answer: "The AI law assistant requires an Anthropic API key. Please add ANTHROPIC_API_KEY to your Vercel environment variables, then redeploy. The key starts with 'sk-ant-...' and is available at console.anthropic.com."
+        answer: "The AI law assistant requires an API key. Please add ANTHROPIC_API_KEY or GLM_API_KEY to your Vercel environment variables."
       })
     }
 
@@ -51,23 +52,8 @@ User question: ${question}
 
 Provide a clear, helpful answer. End with: "⚠ Always verify current laws before carrying — laws change frequently."`
 
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
-        max_tokens: 400,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-    })
-
-    const data = await res.json()
-    const answer = data.content?.[0]?.text || 'Unable to answer right now.'
-    return Response.json({ answer })
+    const answer = await callAIText({ prompt, useCase: 'law-assistant', maxTokens: 400 })
+    return Response.json({ answer: answer || 'Unable to answer right now.' })
   } catch (err) {
     return Response.json({ error: err.message }, { status: 500 })
   }

@@ -27,15 +27,16 @@ const PROV_META = {
 }
 
 const USE_CASES = [
-  { key: 'default',    label: 'Default',         env: 'AI_CHAIN',             desc: 'Fallback for unspecified tasks', tier: 'mid' },
-  { key: 'news',       label: 'News Feed ×96/day',env: 'AI_CHAIN_NEWS',       desc: '🔥 Highest volume — use cheapest model', tier: 'cheap' },
-  { key: 'backfill',   label: 'Backfill ×12/day', env: 'AI_CHAIN_BACKFILL',   desc: 'Hourly article backfill — cheap tier', tier: 'cheap' },
-  { key: 'law',        label: 'Laws ×12/day',     env: 'AI_CHAIN_LAW',        desc: 'Bill analysis every 2h — mid tier', tier: 'mid' },
-  { key: 'article',    label: 'Articles',          env: 'AI_CHAIN_ARTICLE',    desc: 'Blog posts, releases — mid tier', tier: 'mid' },
-  { key: 'intel',      label: 'Intel ×1/day',      env: 'AI_CHAIN_INTEL',      desc: '✨ Daily briefing — use best model', tier: 'best' },
-  { key: 'newsletter', label: 'Newsletter ×1/day', env: 'AI_CHAIN_NEWSLETTER', desc: '✨ Goes to subscribers — use best', tier: 'best' },
-  { key: 'outreach',   label: 'Outreach',           env: 'AI_CHAIN_OUTREACH',   desc: 'Email drafts — mid tier', tier: 'mid' },
-  { key: 'fast',       label: 'Fast / Bulk',        env: 'AI_CHAIN_FAST',       desc: 'Bulk ops — absolute cheapest', tier: 'cheap' },
+  { key: 'default',       label: 'Default',              env: 'AI_CHAIN',                desc: 'Fallback for unspecified tasks', tier: 'mid' },
+  { key: 'news',          label: 'News Feed ×96/day',    env: 'AI_CHAIN_NEWS',           desc: '🔥 Highest volume — use cheapest model', tier: 'cheap' },
+  { key: 'backfill',      label: 'Backfill ×12/day',     env: 'AI_CHAIN_BACKFILL',       desc: 'Hourly article backfill — cheap tier', tier: 'cheap' },
+  { key: 'law',           label: 'Laws ×12/day',         env: 'AI_CHAIN_LAW',            desc: 'Bill analysis every 2h — mid tier', tier: 'mid' },
+  { key: 'law-assistant', label: '⚖ Law Assistant',     env: 'AI_CHAIN_LAW_ASSISTANT',  desc: 'Live Q&A on /laws page — GLM-4.5 Air by default (cheapest)', tier: 'cheap' },
+  { key: 'article',       label: 'Articles',              env: 'AI_CHAIN_ARTICLE',        desc: 'Blog posts, releases — mid tier', tier: 'mid' },
+  { key: 'intel',         label: 'Intel ×1/day',          env: 'AI_CHAIN_INTEL',          desc: '✨ Daily briefing — use best model', tier: 'best' },
+  { key: 'newsletter',    label: 'Newsletter ×1/day',     env: 'AI_CHAIN_NEWSLETTER',     desc: '✨ Goes to subscribers — use best', tier: 'best' },
+  { key: 'outreach',      label: 'Outreach',               env: 'AI_CHAIN_OUTREACH',       desc: 'Email drafts — mid tier', tier: 'mid' },
+  { key: 'fast',          label: 'Fast / Bulk',            env: 'AI_CHAIN_FAST',           desc: 'Bulk ops — absolute cheapest', tier: 'cheap' },
 ]
 
 const PRESETS = {
