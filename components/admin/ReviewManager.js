@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import ImageSearchModal from './ImageSearchModal'
 import { useBulkLock, BulkLockBar, RowCheckbox, LockToggle } from './BulkLockBar'
 
 const CATS     = ['Pistol','Rifle','Shotgun','Optic','Suppressor','Accessory','Ammo']
@@ -52,6 +53,8 @@ export default function ReviewManager({ adminKey }) {
   const [editView, setEditView] = useState('edit') // edit | preview
   const [form,     setForm]     = useState({ title:'',brand:'',model:'',caliber:'',category:'Pistol',score:'',verdict:'',summary:'',articleBody:'',msrp:'',imageUrl:'',pros:'',cons:'' })
   const [editDraft,setEditDraft]= useState({})
+
+  const [imgSearch, setImgSearch] = useState(null) // { item } | null
 
   const H = { 'x-admin-key': adminKey }
   const flash = m => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
@@ -499,6 +502,19 @@ export default function ReviewManager({ adminKey }) {
           </div>
         </>
       )}
+
+    {/* ── Image Search Modal ── */}
+    {imgSearch && (
+      <ImageSearchModal
+        adminKey={adminKey}
+        item={imgSearch}
+        onApply={(imageUrl) => {
+          // Update the item in local state
+          setImgSearch(null)
+        }}
+        onClose={() => setImgSearch(null)}
+      />
+    )}
     </div>
   )
 }
