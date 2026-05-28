@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import ImageSearchModal from './ImageSearchModal'
 import { useBulkLock, BulkLockBar, RowCheckbox, HeaderCheckbox, LockToggle } from './BulkLockBar'
 
 const S = `
@@ -43,6 +44,8 @@ export default function ReleaseManager({ adminKey }) {
   const [tab,      setTab]      = useState('list')  // list | add
   const [form,     setForm]     = useState({ brand:'',model:'',category:'Pistol',caliber:'',action:'',msrp:'',sourceUrl:'',imageUrl:'',summary:'',body:'' })
   const [feedRunning, setFeedRunning] = useState(false)
+
+  const [imgSearch, setImgSearch] = useState(null) // { item } | null
 
   const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''), 5000) }
 
@@ -415,6 +418,19 @@ export default function ReleaseManager({ adminKey }) {
           </div>
         </div>
       )}
+
+    {/* ── Image Search Modal ── */}
+    {imgSearch && (
+      <ImageSearchModal
+        adminKey={adminKey}
+        item={imgSearch}
+        onApply={(imageUrl) => {
+          // Update the item in local state
+          setImgSearch(null)
+        }}
+        onClose={() => setImgSearch(null)}
+      />
+    )}
     </div>
   )
 }
