@@ -20,7 +20,7 @@ const S = `
 .cd-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:4px 10px;cursor:pointer;transition:all .15s}
 .cd-ghost:hover{border-color:var(--gold);color:var(--gold)}
 .cd-log{background:#070b0f;border:1px solid #1f2937;padding:0;max-height:320px;overflow-y:auto}
-.cd-log-row{display:grid;grid-template-columns:140px 70px 70px 1fr;gap:0;border-bottom:1px solid #0d1117;padding:6px 12px;font-size:10px;transition:background .1s}
+.cd-log-row{display:grid;grid-template-columns:140px 70px 60px 1fr;gap:0;border-bottom:1px solid #0d1117;padding:5px 12px;font-size:10px;transition:background .1s;align-items:center}
 .cd-log-row:hover{background:#0d1117}
 .cd-log-row.fail{background:rgba(239,68,68,.04)}
 .cd-log-row.fail:hover{background:rgba(239,68,68,.08)}
@@ -89,17 +89,65 @@ function HistoryBars({ history, max=15 }) {
   )
 }
 
+function parseCountChips(details = '') {
+  // Parse patterns like "8 published", "5 rewrote", "3 skipped", "0 failed"
+  const chips = []
+  const patterns = [
+    { re: /(\d+)\s+published/i,      label: 'published', color: '#22c55e' },
+    { re: /(\d+)\s+(?:AI-rewritten|ai.rewritten)/i, label: 'AI rewritten', color: '#a78bfa' },
+    { re: /(\d+)\s+rewrote/i,        label: 'rewrote',   color: '#a78bfa' },
+    { re: /(\d+)\s+(?:of\s+)?\d*\s*fetched/i, label: 'fetched',  color: '#60a5fa' },
+    { re: /(\d+)\s+saved/i,          label: 'saved',     color: '#22c55e' },
+    { re: /(\d+)\s+(?:already\s+)?ok/i, label: 'ok',     color: '#22c55e' },
+    { re: /(\d+)\s+skipped/i,        label: 'skipped',   color: '#6b7280' },
+    { re: /(\d+)\s+(?:OG|og)\s*(?:fetched|images?)/i, label: 'OG imgs', color: '#60a5fa' },
+    { re: /(\d+)\s+(?:photo\s*)?fallback/i, label: 'fallback', color: '#f59e0b' },
+    { re: /(\d+)\s+failed/i,         label: 'failed',    color: '#ef4444' },
+    { re: /(\d+)\s+dupes?\s+skipped/i, label: 'dupes',   color: '#374151' },
+    { re: /(\d+)\s+(?:raw|unprocessed)/i, label: 'raw',  color: '#4b5563' },
+  ]
+  for (const { re, label, color } of patterns) {
+    const m = details.match(re)
+    if (m) {
+      const n = parseInt(m[1])
+      if (n > 0 || label === 'failed') chips.push({ n, label, color })
+    }
+  }
+  return chips
+}
+
 function LogRow({ run }) {
-  const s  = ST[run.status] || ST.never
-  const ts = fmtTime(run.at)
+  const s    = ST[run.status] || ST.never
+  const ts   = fmtTime(run.at)
+  const chips = parseCountChips(run.details || '')
   return (
     <div className={`cd-log-row${run.status==='failed'?' fail':''}`}>
-      <span style={{ color:'#64748b' }}>{ts}</span>
-      <span className="cd-badge" style={{ background:s.bg, color:s.color, fontSize:9 }}>{s.icon} {run.status}</span>
-      <span style={{ color:'#94a3b8' }}>{fmtMs(run.ms)}</span>
-      <span style={{ color: run.error ? '#f87171' : '#64748b', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
-        {run.trigger === 'manual' ? <span style={{color:'#C8922A',marginRight:6}}>[MANUAL]</span> : null}
-        {run.error ? '✕ ' + run.error.slice(0,120) : (run.details || '').slice(0,120)}
+      <span style={{ color:'#64748b', flexShrink:0 }}>{ts}</span>
+      <span className="cd-badge" style={{ background:s.bg, color:s.color, fontSize:9, flexShrink:0 }}>{s.icon} {run.status}</span>
+      <span style={{ color:'#94a3b8', flexShrink:0 }}>{fmtMs(run.ms)}</span>
+      <span style={{ color: run.error ? '#f87171' : '#64748b', overflow:'hidden', display:'flex', alignItems:'center', gap:6, flexWrap:'wrap' }}>
+        {run.trigger === 'manual' && <span style={{color:'#C8922A',fontSize:9,border:'1px solid rgba(200,146,42,.3)',padding:'0 4px',flexShrink:0}}>[MANUAL]</span>}
+        {run.error ? (
+          <span style={{color:'#f87171'}}>✕ {run.error.slice(0,120)}</span>
+        ) : chips.length > 0 ? (
+          <>
+            {chips.map((c, i) => (
+              <span key={i} style={{
+                fontSize:9, fontWeight:700, padding:'1px 6px',
+                background:`${c.color}18`, color:c.color,
+                border:`1px solid ${c.color}44`, borderRadius:2, flexShrink:0,
+              }}>{c.n} {c.label}</span>
+            ))}
+            {/* Show remainder of details not captured in chips */}
+            {run.details && !chips.length && (
+              <span style={{color:'#4b5563',fontSize:10}}>{run.details.slice(0,100)}</span>
+            )}
+          </>
+        ) : (
+          <span style={{color:'#4b5563',fontSize:10,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
+            {(run.details || '').slice(0, 120)}
+          </span>
+        )}
       </span>
     </div>
   )
@@ -366,7 +414,7 @@ export default function CronDashboard({ adminKey }) {
                             <div style={{margin:'12px 16px 0'}}>
                               <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:6}}>
                                 <div style={{fontSize:9,color:'#4b5563',letterSpacing:'.08em'}}>RUN LOG (last {job.history.length} runs)</div>
-                                <div style={{fontSize:9,color:'#374151'}}>time · status · duration · output</div>
+                                <div style={{fontSize:9,color:'#374151',fontFamily:"'IBM Plex Mono',monospace"}}>TIME · STATUS · DURATION · ITEMS PULLED</div>
                               </div>
                               <div className="cd-log">
                                 {job.history.length === 0 ? (

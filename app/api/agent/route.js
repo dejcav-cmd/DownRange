@@ -2,6 +2,29 @@ export const dynamic = 'force-dynamic'
 import { reportCronRun } from '@/lib/cronReporter'
 export const maxDuration = 300  // 5 minutes — required for feed processing
 
+function formatDetails(feed, result) {
+  if (!result) return `${feed} completed`
+  const r = result
+  // News feed
+  if (r.done != null && r.total != null && r.withAI != null)
+    return `${r.done} published (${r.withAI} AI-rewritten, ${r.done - r.withAI} raw) of ${r.total} fetched · ${r.dupes || 0} dupes skipped`
+  // Laws, releases
+  if (r.done != null && r.failed != null)
+    return `${r.done} saved · ${r.failed} failed`
+  // Market
+  if (r.done != null)
+    return `${r.done} items processed`
+  // GOA
+  if (r.saved != null)
+    return `${r.saved} articles saved`
+  // Fallback — readable JSON
+  return Object.entries(r)
+    .filter(([, v]) => typeof v === 'number' || typeof v === 'string')
+    .map(([k, v]) => `${k}: ${v}`)
+    .join(' · ')
+    .slice(0, 200)
+}
+
 /**
  * Agent API Route
  * Triggered by Vercel cron (x-vercel-cron: 1 header) or manually with Bearer token.
@@ -60,7 +83,11 @@ export async function GET(req) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'success' }),
     }).catch(() => {})
-    await reportCronRun(feed, { status:'success', ms:Date.now()-t, details: result ? JSON.stringify(result).slice(0,100) : undefined })
+    await reportCronRun(feed, {
+      status:  'success',
+      ms:      Date.now()-t,
+      details: result ? formatDetails(feed, result) : `${feed} completed`,
+    })
     return Response.json({ success: true, feed, result, ms: Date.now()-t })
   } catch (err) {
     console.error(`[AGENT] ✗ feed=${feed} error:`, err.message)
