@@ -192,6 +192,56 @@ export async function fetchGlobalStats() {
   return client.fetch(`*[_type == "globalStats"][0]`)
 }
 
+
+// ── SECTION SEARCH functions ─────────────────────────────────────────────────
+
+export async function searchReviews(q, limit = 20) {
+  const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
+  return client.fetch(
+    `*[_type=="review" && (title match $q || brand match $q || model match $q || summary match $q || caliber match $q)]
+     | score(boost(brand match $q,10), boost(model match $q,8), boost(title match $q,5), boost(summary match $q,1))
+     | order(_score desc) [0...$lim] {
+       _id, _score, "title": brand+" "+model, "slug": slug.current,
+       summary, category, score, publishedAt, imageUrl, brand, model, caliber, msrp
+     }`, { q: safe, lim: limit }
+  ).catch(() => [])
+}
+
+export async function searchBlogPosts(q, limit = 20) {
+  const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
+  return client.fetch(
+    `*[_type=="blogPost" && (title match $q || summary match $q || body match $q || tags[]match $q)]
+     | score(boost(title match $q,10), boost(summary match $q,3), boost(body match $q,1))
+     | order(_score desc) [0...$lim] {
+       _id, _score, title, "slug": slug.current,
+       summary, category, publishedAt, imageUrl
+     }`, { q: safe, lim: limit }
+  ).catch(() => [])
+}
+
+export async function searchReleases(q, limit = 20) {
+  const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
+  return client.fetch(
+    `*[_type=="firearmRelease" && (brand match $q || model match $q || caliber match $q || summary match $q)]
+     | score(boost(brand match $q,10), boost(model match $q,8), boost(caliber match $q,5), boost(summary match $q,1))
+     | order(_score desc) [0...$lim] {
+       _id, _score, "title": brand+" "+model, "slug": slug.current,
+       summary, category, publishedAt, imageUrl, brand, model, caliber, msrp, isJustDropped
+     }`, { q: safe, lim: limit }
+  ).catch(() => [])
+}
+
+export async function searchLegislation(q, limit = 30) {
+  const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
+  return client.fetch(
+    `*[_type=="legislation" && (title match $q || billNumber match $q || summary match $q || state match $q)]
+     | score(boost(title match $q,10), boost(billNumber match $q,8), boost(state match $q,5), boost(summary match $q,1))
+     | order(_score desc) [0...$lim] {
+       _id, _score, title, billNumber, status, level, state, summary, lastActionDate, url, impact
+     }`, { q: safe, lim: limit }
+  ).catch(() => [])
+}
+
 // Aliases for pages that use these names
 export async function getReviewBySlug(slug) {
   return client.fetch(`
