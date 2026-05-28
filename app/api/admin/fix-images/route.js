@@ -79,22 +79,14 @@ export async function POST(req) {
 
   // NOTE: newsArticle uses 'externalUrl' for source, others use 'sourceUrl'
   // We alias them all to 'sourceUrl' in the projection for uniform handling
+  // Build GROQ queries without JS interpolation inside string (Sanity treats $ as param)
+  const newsSlice = '[0...' + String(batch) + ']'
   const QUERIES = [
-    `*[_type == "newsArticle" && editorLocked != true] | order(publishedAt desc) [0...${batch}] {
-      _id, title, imageUrl, "sourceUrl": externalUrl, category
-    }`,
-    `*[_type == "blogPost" && editorLocked != true] | order(_createdAt desc) [0...30] {
-      _id, title, imageUrl, category
-    }`,
-    `*[_type == "firearmRelease" && editorLocked != true] | order(_createdAt desc) [0...50] {
-      _id, "title": brand + " " + model, imageUrl, sourceUrl, category
-    }`,
-    `*[_type == "review" && editorLocked != true] | order(_createdAt desc) [0...30] {
-      _id, "title": brand + " " + model, imageUrl, category
-    }`,
-    `*[_type == "canadaContent" && editorLocked != true] | order(_createdAt desc) [0...30] {
-      _id, title, imageUrl, category
-    }`,
+    '*[_type == "newsArticle" && editorLocked != true] | order(publishedAt desc) ' + newsSlice + ' { _id, title, imageUrl, "sourceUrl": externalUrl, category }',
+    '*[_type == "blogPost" && editorLocked != true] | order(_createdAt desc) [0...30] { _id, title, imageUrl, category }',
+    '*[_type == "firearmRelease" && editorLocked != true] | order(_createdAt desc) [0...50] { _id, "title": brand + " " + model, imageUrl, sourceUrl, category }',
+    '*[_type == "review" && editorLocked != true] | order(_createdAt desc) [0...30] { _id, "title": brand + " " + model, imageUrl, category }',
+    '*[_type == "canadaContent" && editorLocked != true] | order(_createdAt desc) [0...30] { _id, title, imageUrl, category }',
   ]
 
   const allDocs = []
