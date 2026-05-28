@@ -23,6 +23,29 @@ const S = `
 .bm-tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 `
 
+function buildPreviewHtml(draft, post) {
+  const imgTag    = draft.imageUrl ? '<img src="' + draft.imageUrl + '" alt="" style="width:100%;max-height:400px;object-fit:cover;border-radius:8px;margin-bottom:24px">' : ''
+  const catTag    = '<span style="background:#C8922A22;color:#C8922A;padding:2px 8px;border-radius:3px;font-weight:700;font-size:12px">' + (draft.category || '') + '</span>'
+  const timeTag   = draft.readTime ? '<span>&#9203; ' + draft.readTime + ' read</span>' : ''
+  const authorTag = draft.author   ? '<span>By ' + draft.author + '</span>'              : ''
+  const excerptTag= draft.excerpt  ? '<p style="font-size:1.1rem;color:#555;font-style:italic;margin-bottom:24px">' + draft.excerpt + '</p>' : ''
+  const body      = draft.body     || '<p style="color:#999">No content yet. Write article or use AI Write.</p>'
+  const title     = draft.title    || post.title || ''
+  return '<html><head><style>' +
+    'body{font-family:Georgia,serif;max-width:720px;margin:32px auto;padding:0 20px;color:#111;line-height:1.7}' +
+    'h1{font-size:2.2rem;margin-bottom:8px;line-height:1.2}' +
+    'h2{font-size:1.4rem;margin:28px 0 10px;color:#1a1a1a;border-bottom:2px solid #C8922A;padding-bottom:6px}' +
+    '.meta{font-size:13px;color:#666;margin-bottom:20px;display:flex;gap:16px;flex-wrap:wrap;border-bottom:1px solid #ddd;padding-bottom:12px}' +
+    'img{width:100%;max-height:400px;object-fit:cover}' +
+    'p{margin:0 0 16px}ul,ol{padding-left:24px;margin-bottom:16px}strong{font-weight:700}' +
+    '</style></head><body>' +
+    imgTag +
+    '<h1>' + title + '</h1>' +
+    '<div class="meta">' + catTag + timeTag + authorTag + '</div>' +
+    excerptTag + body +
+    '</body></html>'
+}
+
 export default function BlogManager({ adminKey, setMsg: parentMsg }) {
   const [posts,    setPosts]   = useState([])
   const [loading,  setLoading] = useState(true)
