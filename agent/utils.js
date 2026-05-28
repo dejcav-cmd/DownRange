@@ -3,7 +3,7 @@ import crypto from 'crypto'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
-  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 1500)  // COST: trimmed from 3000
+  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 3000)
   const prompt = `Write a DownRange article. DownRange is a firearms and Second Amendment portal run by DJ Cavalcanti, a gun owner based in Washington State.
 
 WRITING RULES — violating these ruins the article:
@@ -62,18 +62,24 @@ Content: ${inputContent}
 CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the HTML.`
 
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1200 })  // COST: 1200 vs 4000
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 4000 })
     // Strip any accidental markdown fences
     const clean = text.split('```json').join('').split('```').join('').trim()
     const parsed = JSON.parse(clean)
     // Ensure body is a string
     if (typeof parsed.body !== 'string') parsed.body = ''
+    // Reject short bodies so backfill picks them up later
+    const wordCount = parsed.body.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length
+    if (wordCount < 400) {
+      console.warn(`[REWRITE] Body too short (${wordCount} words) for "${(item.title||'').slice(0,50)}" — saving null so backfill can retry`)
+      parsed.body = ''
+    }
     return parsed
   } catch (err) {
     console.error('Claude rewrite error:', err.message)
     return {
       summary: item.description?.slice(0, 300) || item.title,
-      body: `<p>${item.description || item.title}</p>`,
+      body: '',
       category: 'news',
       urgencyScore: 3,
       tags: [],
