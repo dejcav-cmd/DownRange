@@ -72,7 +72,7 @@ export const BLOG_POSTS = [
     category:    'ANALYSIS',
     catColor:    '#C8922A',
     featured:    false,
-    img:         '/img/photos/ammo.jpg',
+    img:         '/img/photos/blog-edc-pistol.jpg',
     excerpt:     'The Sig P365 changed everything when it launched in 2018. Eight years later, every major manufacturer has a micro-compact answer, the technology has matured, and the market is more competitive than any category in firearms history.',
     tags:        ['Pistols', 'EDC', 'Micro-Compact', 'Market Analysis'],
     body: `
@@ -119,7 +119,7 @@ export const BLOG_POSTS = [
     category:    'MARKET',
     catColor:    '#22c55e',
     featured:    false,
-    img:         '/img/photos/rifle.jpg',
+    img:         '/img/photos/blog-red-dot.jpg',
     excerpt:     'If you enjoyed the buyer\'s market of 2025, the window is closing. Steel tariffs, import restrictions, and rising manufacturing costs are converging to push firearms prices up across the board in the second half of 2026.',
     tags:        ['Market', 'Pricing', 'Tariffs', 'Buying Guide'],
     body: `
