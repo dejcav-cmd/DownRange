@@ -131,8 +131,9 @@ const TABS = [
 ]
 
 export default async function LawsPage({ searchParams }) {
-  const tab = searchParams?.tab || 'federal'
-  const q   = searchParams?.q   || null
+  const tab  = searchParams?.tab  || 'federal'
+  const q    = searchParams?.q    || null
+  const sort = searchParams?.sort || 'date'
 
   const [legislation, alerts, stateProfiles] = await Promise.all([
     q ? searchLegislation(q, 50) : fetchLegislation(40).catch(()=>[]),
@@ -140,8 +141,15 @@ export default async function LawsPage({ searchParams }) {
     fetchAllStateProfiles().catch(()=>[]),
   ])
 
+  // Apply sort
+  function sortLeg(arr) {
+    if (sort === 'urgency') return [...arr].sort((a,b) => (b.urgency||0) - (a.urgency||0))
+    if (sort === 'alpha')   return [...arr].sort((a,b) => (a.title||'').localeCompare(b.title||''))
+    return [...arr].sort((a,b) => new Date(b.updatedAt||b.date||0) - new Date(a.updatedAt||a.date||0))
+  }
+
   const federal = legislation.filter(l=>l.level==='federal').length > 0
-    ? legislation.filter(l=>l.level==='federal')
+    ? sortLeg(legislation.filter(l=>l.level==='federal'))
     : SEED_FEDERAL
 
   const state = legislation.filter(l=>l.level==='state').length > 0
@@ -188,7 +196,16 @@ export default async function LawsPage({ searchParams }) {
               </a>
             ))}
             </div>
-            <div style={{ flexShrink:0, padding:'0 8px' }}>
+            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+              {[['date','📅 Date'],['urgency','⚡ Urgency'],['alpha','🔤 A–Z']].map(([key,label]) => (
+                <a key={key} href={'/laws?' + new URLSearchParams({ tab, ...(q&&{q}), sort:key }).toString()}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 10px', border:'1px solid var(--border)', color:sort===key?'#C8922A':'#4B5563', textDecoration:'none', background:sort===key?'#C8922A20':'transparent' }}>
+                  {label}
+                </a>
+              ))}
+            </div>
+            <div style={{ flexShrink:0, padding:'0 0 0 8px', borderLeft:'1px solid var(--border)' }}>
               <SectionSearch type="legislation" placeholder="Search bills, states, keywords…" defaultValue={q||''} compact />
             </div>
           </div>
