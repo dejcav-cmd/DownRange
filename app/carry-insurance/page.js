@@ -1,5 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+export const revalidate = 604800  // Weekly — updated by /api/cron/carry-insurance
+
 export const metadata = { title: 'CCW Insurance Comparison — DownRange', description: 'Compare USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance.' }
 
 const PLANS = [
