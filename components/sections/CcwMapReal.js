@@ -299,6 +299,26 @@ export default function CcwMapReal({ profiles = [] }) {
     setHovered(abbr)
   }, [])
 
+  function getLegendItems(sel, mode) {
+    if (!sel) return [['#1e40af','Constitutional Carry'],['#374151','Permit Required']]
+    const selName = CCW[sel]?.name || sel
+    const honored = mode === 'honored' ? ('Honors ' + selName + ' permit') : 'Permits accepted here'
+    return [['#C8922A','Selected state'],['#15803d', honored],['#1f2937','Does not honor']]
+  }
+
+  function getTipText(mode, sel, hov) {
+    if (!sel || !hov) return ''
+    const selName = CCW[sel]?.name || sel
+    const selData = CCW[sel]
+    if (mode === 'honored') {
+      const ok = Array.isArray(selData?.honored) && selData.honored.includes(hov)
+      return (ok ? '✓ Honors ' : '✗ Does NOT honor ') + selName + ' permit'
+    } else {
+      const ok = selData?.honors === 'ALL' || (Array.isArray(selData?.honors) && selData.honors.includes(hov))
+      return (ok ? '✓ ' : '✗ ') + selName + (ok ? ' accepts this permit' : ' does NOT accept')
+    }
+  }
+
   function getLabelFill(abbr, sel, mode) {
     if (sel === abbr) return '#000'
     const c = getColor(abbr, sel, mode)
@@ -343,14 +363,7 @@ export default function CcwMapReal({ profiles = [] }) {
 
       {/* Legend */}
       <div style={{ display:'flex', gap:12, marginBottom:10, flexWrap:'wrap' }}>
-        {selected ? [
-          ['#C8922A','Selected state'],
-          ['#15803d', mode==='honored'?`Honors ${CCW[selected]?.name} permit`:'Permits accepted here'],
-          ['#1f2937','Does not honor'],
-        ] : [
-          ['#1e40af','Constitutional Carry'],
-          ['#374151','Permit Required'],
-        ]}.map(([color,label]) => (
+{getLegendItems(selected, mode).map(([color,label]) => (
           <div key={label} style={{ display:'flex', alignItems:'center', gap:5 }}>
             <div style={{ width:12, height:12, background:color, borderRadius:2 }} />
             <span style={{ fontFamily:mono, fontSize:10, color:'#9ca3af' }}>{label}</span>
@@ -418,13 +431,7 @@ export default function CcwMapReal({ profiles = [] }) {
                 color: mode==='honored'
                   ? (Array.isArray(CCW[selected]?.honored)&&CCW[selected].honored.includes(hovered)?'#22c55e':'#ef4444')
                   : (CCW[selected]?.honors==='ALL'||Array.isArray(CCW[selected]?.honors)&&CCW[selected].honors.includes(hovered)?'#60a5fa':'#ef4444') }}>
-                {mode==='honored'
-                  ? (Array.isArray(CCW[selected]?.honored)&&CCW[selected].honored.includes(hovered)
-                      ? `✓ Honors ${CCW[selected]?.name} permit`
-                      : `✗ Does NOT honor ${CCW[selected]?.name} permit`)
-                  : (CCW[selected]?.honors==='ALL'||Array.isArray(CCW[selected]?.honors)&&CCW[selected].honors.includes(hovered)
-                      ? `✓ ${CCW[selected]?.name} accepts this permit`
-                      : `✗ ${CCW[selected]?.name} does NOT accept`)}
+                {getTipText(mode, selected, hovered)}
               </div>
             )}
             <div style={{ fontFamily:mono, fontSize:8, color:'#4b5563', marginTop:4 }}>Min age: {hov.minAge} · Click for details</div>
