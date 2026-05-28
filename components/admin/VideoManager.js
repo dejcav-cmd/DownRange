@@ -74,6 +74,10 @@ export default function VideoManager({ adminKey }) {
   const [newCat,    setNewCat]    = useState('review')
   const [preview,   setPreview]   = useState(null)
   const [verifying, setVerifying] = useState(false)
+  const [editingCh,  setEditingCh]  = useState(null) // channel id being edited
+  const [editChName, setEditChName] = useState('')
+  const [editChCat,  setEditChCat]  = useState('')
+  const [editChSubs, setEditChSubs] = useState('')
 
   const H = { 'x-admin-key': adminKey }
   const flash = (m, dur = 5000) => {
@@ -184,6 +188,30 @@ export default function VideoManager({ adminKey }) {
       await fetch('/api/admin/youtube-channels', {
         method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'save', channels: next }),
+      })
+    } catch {}
+  }
+
+  async function startEditCh(ch) {
+    setEditingCh(ch.id)
+    setEditChName(ch.name)
+    setEditChCat(ch.category)
+    setEditChSubs(ch.subs)
+  }
+
+  async function saveChannelEdit(id) {
+    const updated = channels.map(c => c.id === id
+      ? { ...c, name: editChName.trim() || c.name, category: editChCat, subs: editChSubs.trim() || c.subs }
+      : c
+    )
+    setChannels(updated)
+    cacheChannels(updated)
+    setEditingCh(null)
+    flash('✅ Channel updated')
+    try {
+      await fetch('/api/admin/youtube-channels', {
+        method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'save', channels: updated }),
       })
     } catch {}
   }
@@ -371,7 +399,8 @@ export default function VideoManager({ adminKey }) {
           </div>
           <div style={{ display:'flex', flexDirection:'column', gap:8, marginBottom:24 }}>
             {channels.map((ch, idx) => (
-              <div key={ch.id} className={'vm-card' + (!ch.active ? ' hidden-ch' : '')} style={{ alignItems:'center' }}>
+              <div key={ch.id}>
+              <div className={'vm-card' + (!ch.active ? ' hidden-ch' : '')} style={{ alignItems:'center' }}>
                 <div style={{ width:40, height:40, borderRadius:'50%', background: ch.active ? 'rgba(200,146,42,.15)' : '#1e293b',
                   display:'flex', alignItems:'center', justifyContent:'center', fontSize:18, flexShrink:0 }}>▶</div>
                 <div style={{ flex:1, minWidth:0 }}>
@@ -393,11 +422,38 @@ export default function VideoManager({ adminKey }) {
                 <div style={{ display:'flex', gap:6, flexShrink:0, alignItems:'center' }}>
                   <button className="vm-btn-ghost" style={{ padding:'3px 8px', fontSize:9 }} onClick={() => moveChannel(ch.id, 'up')} disabled={idx===0}>↑</button>
                   <button className="vm-btn-ghost" style={{ padding:'3px 8px', fontSize:9 }} onClick={() => moveChannel(ch.id, 'down')} disabled={idx===channels.length-1}>↓</button>
+                  <button className="vm-btn-ghost" style={{ padding:'3px 8px', fontSize:9 }} onClick={() => startEditCh(ch)}>✎ Edit</button>
                   <button className="vm-btn-hide" onClick={() => toggleChannel(ch.id)}>
                     {ch.active ? '⊘ Hide' : '● Show'}
                   </button>
                   <button className="vm-btn-del" onClick={() => removeChannel(ch.id)}>Remove</button>
                 </div>
+              </div>
+              {/* Inline edit form */}
+              {editingCh === ch.id && (
+                <div style={{ padding:'12px 16px', background:'rgba(200,146,42,.06)', border:'1px solid rgba(200,146,42,.3)', borderTop:'none' }}>
+                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr 1fr', gap:8, marginBottom:8 }}>
+                    <div>
+                      <span className="vm-lbl">Name</span>
+                      <input className="vm-input" value={editChName} onChange={e=>setEditChName(e.target.value)} />
+                    </div>
+                    <div>
+                      <span className="vm-lbl">Category</span>
+                      <select className="vm-sel" value={editChCat} onChange={e=>setEditChCat(e.target.value)}>
+                        {CATS.map(c => <option key={c}>{c}</option>)}
+                      </select>
+                    </div>
+                    <div>
+                      <span className="vm-lbl">Subscribers</span>
+                      <input className="vm-input" value={editChSubs} onChange={e=>setEditChSubs(e.target.value)} placeholder="~500K" />
+                    </div>
+                  </div>
+                  <div style={{ display:'flex', gap:6 }}>
+                    <button className="vm-btn" style={{ fontSize:11, padding:'5px 14px' }} onClick={()=>saveChannelEdit(ch.id)}>💾 Save</button>
+                    <button className="vm-btn-ghost" style={{ fontSize:10 }} onClick={()=>setEditingCh(null)}>Cancel</button>
+                  </div>
+                </div>
+              )}
               </div>
             ))}
             {channels.length === 0 && (
