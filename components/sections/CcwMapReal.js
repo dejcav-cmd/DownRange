@@ -168,31 +168,38 @@ function getLegendRows(sel, mode) {
     [C.noPermit,'No Permit Issued (VT)'],
   ]
   const selName = CCW[sel]?.name || sel
-  if (mode === 'honored') return [
-    [C.selected, `Selected: ${selName}`],
-    [C.honored,  `Honors ${selName} permit`],
-    [C.notHonored,'Does NOT honor'],
-  ]
+  const selLabel = 'Selected: ' + selName
+  if (mode === 'honored') {
+    const honoredLabel = 'Honors ' + selName + ' permit'
+    return [
+      [C.selected, selLabel],
+      [C.honored,  honoredLabel],
+      [C.notHonored,'Does NOT honor'],
+    ]
+  }
+  const honorsLabel = selName + ' honors this permit'
   return [
-    [C.selected, `Selected: ${selName}`],
-    [C.honored,  `${selName} honors this permit`],
+    [C.selected, selLabel],
+    [C.honored,  honorsLabel],
     [C.notHonored,'NOT honored here'],
   ]
 }
 
 function TipText({ mode, sel, hov }) {
+  const mono = "'IBM Plex Mono',monospace"
   if (!sel || !hov || sel === hov) return null
   const s = CCW[sel]; if (!s) return null
   const sName = s.name
   if (mode === 'honored') {
     const ok = Array.isArray(s.honored) && s.honored.includes(hov)
-    const label = ok ? `✓ Honors ${sName} permit` : `✗ Does NOT honor ${sName} permit`
-    return <div style={{color: ok?'#22c55e':'#ef4444', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, marginTop:3}}>{label}</div>
-  } else {
-    const ok = s.honors === 'ALL' || (Array.isArray(s.honors) && s.honors.includes(hov))
-    const label = ok ? `✓ ${sName} accepts this permit` : `✗ ${sName} does NOT accept`
-    return <div style={{color: ok?'#60a5fa':'#ef4444', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, marginTop:3}}>{label}</div>
+    const label = ok ? ('\u2713 Honors ' + sName + ' permit') : ('\u2717 Does NOT honor ' + sName + ' permit')
+    const tipColor = ok ? '#22c55e' : '#ef4444'
+    return <div style={{color:tipColor, fontFamily:mono, fontSize:9, marginTop:3}}>{label}</div>
   }
+  const ok = s.honors === 'ALL' || (Array.isArray(s.honors) && s.honors.includes(hov))
+  const label = ok ? ('\u2713 ' + sName + ' accepts this permit') : ('\u2717 ' + sName + ' does NOT accept')
+  const tipColor = ok ? '#60a5fa' : '#ef4444'
+  return <div style={{color:tipColor, fontFamily:mono, fontSize:9, marginTop:3}}>{label}</div>
 }
 
 export default function CcwMapReal() {
