@@ -372,6 +372,14 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                         <span className="bm-lbl">Image URL</span>
                         <input className="bm-input" value={editDraft.imageUrl||''} onChange={e=>setEditDraft(p=>({...p,imageUrl:e.target.value}))} />
                       </div>
+                      <div style={{display:'flex',gap:5,marginTop:4,flexWrap:'wrap'}}>
+                        <button disabled={busy} style={{ background:'#3b82f6',color:'#fff',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'4px 9px',border:'none',cursor:'pointer' }} onClick={async()=>{
+                          setBusy(true);try{const r2=await fetch('/api/admin/fetch-image',{method:'POST',headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},body:JSON.stringify({id:sel._id,type:'blogPost',title:sel.title,category:sel.category,sourceUrl:sel.sourceUrl})});const d2=await r2.json();
+                            if(d2.ok){setEditDraft(p=>({...p,imageUrl:d2.imageUrl}));setPosts(prev=>prev.map(x=>x._id===sel._id?{...x,imageUrl:d2.imageUrl}:x))}}}catch{}setBusy(false)}}>
+                          🖼 Fetch Image</button>
+                        <button disabled={busy} style={{ background:'var(--gold)',color:'#000',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'4px 9px',border:'none',cursor:'pointer' }} onClick={()=>patch(sel._id,{imageUrl:editDraft.imageUrl})}}>
+                          💾 Save Image</button>
+                      </div>
                     </div>
 
                     <div style={{marginBottom:10}}>
