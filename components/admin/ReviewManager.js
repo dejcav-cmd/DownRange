@@ -45,7 +45,6 @@ export default function ReviewManager({ adminKey }) {
   const [sel,      setSel]      = useState(null)
   const [busy,     setBusy]     = useState(false)
   const [msg,      setMsg]      = useState('')
-  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
   const bulkLock = useBulkLock({ items:reviews, setItems:setReviews, patchFn:(id,fields)=>patch(id,fields) })
   const [search,   setSearch]   = useState('')
   const [catFilter,setCatFilter]= useState('all')
