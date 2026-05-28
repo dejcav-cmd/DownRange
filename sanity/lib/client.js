@@ -44,6 +44,32 @@ export async function fetchArticles(limit = 20, category = null) {
   `)
 }
 
+
+// ── PAGINATED / SEARCH — for News page ──────────────────────────────────────
+export async function fetchArticlesPaginated({ page = 1, perPage = 20, category = null, days = null, search = null } = {}) {
+  const offset = (page - 1) * perPage
+  let filters = `_type == "newsArticle" && approved == true && category != "deals"`
+  if (category) filters += ` && category == "${category}"`
+  if (days) {
+    const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()
+    filters += ` && publishedAt >= "${since}"`
+  }
+  if (search) {
+    const q = search.replace(/"/g, '').slice(0, 80)
+    filters += ` && (title match "*${q}*" || summary match "*${q}*" || source match "*${q}*")`
+  }
+  const [articles, total] = await Promise.all([
+    client.fetch(`*[${filters}] | order(publishedAt desc) [${offset}...${offset + perPage}] {
+      _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
+      heroImage { asset->{url}, alt },
+      imageUrl, imageAlt,
+      source, externalUrl, tags
+    }`),
+    client.fetch(`count(*[${filters}])`),
+  ])
+  return { articles, total, pages: Math.ceil(total / perPage), page, perPage }
+}
+
 export async function getArticleBySlug(slug) {
   return client.fetch(`
     *[_type == "newsArticle" && slug.current == $slug][0] {
