@@ -151,8 +151,9 @@ export async function POST(req) {
   const { limit = 30, force = false } = await req.json().catch(() => ({}))
 
   // Get articles with missing, placeholder, or non-CDN external images (incl AI-generated)
-  const articles = await sanity.fetch(`
-    *[_type == "newsArticle" && approved == true
+  const fetchLimit = Math.min(limit, 50)
+  const articles = await sanity.fetch(
+    `*[_type == "newsArticle" && approved == true
       && editorLocked != true
       && defined(externalUrl) && externalUrl != null
       && (
@@ -165,10 +166,11 @@ export async function POST(req) {
           && !string::startsWith(imageUrl, "https://i.ytimg.com")
         )
       )
-    ] | order(publishedAt desc) [0...\${Math.min(limit, 50)}] {
+    ] | order(publishedAt desc) [0...$fetchLimit] {
       _id, title, externalUrl, imageUrl, source, category
-    }
-  `)
+    }`,
+    { fetchLimit }
+  )
 
   console.log(`[IMG-FETCH] ${articles.length} articles to process`)
 
