@@ -15,7 +15,7 @@ const NAV = [
       { label: '⚖️ Laws Home',          href: '/laws',                   desc: 'Bills, ATF rules, SCOTUS cases' },
       { label: '📋 Bill Tracker',        href: '/laws?tab=federal',       desc: 'Federal & state bills tracked live' },
       { label: '🗺️ Reciprocity Map',     href: '/laws?tab=reciprocity',   desc: 'Where your permit is honored' },
-      { label: '🪪 CCW Permit Map',      href: '/ccw',                    desc: 'Full interactive CCW reciprocity' },
+      { label: '🪪 CCW Reciprocity Map', href: '/ccw',                    desc: 'State laws, permit info & reciprocity' },
       { label: '🏛️ State Hub',           href: '/state-hub',              desc: '50-state firearms law profiles' },
       { label: '📜 SCOTUS & Cases',      href: '/laws?tab=scotus',        desc: 'Landmark rulings & pending cases' },
     ]
