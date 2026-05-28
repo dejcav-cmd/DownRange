@@ -99,6 +99,14 @@
     {
       "path": "/api/cron/carry-insurance",
       "schedule": "0 6 * * 1"
+    },
+    {
+      "path": "/api/cron/market-brief",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/cron/market-brief",
+      "schedule": "0 18 * * *"
     }
   ],
   "headers": [
