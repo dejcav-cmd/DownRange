@@ -113,30 +113,19 @@ export default function PressPage() {
               </p>
             </div>
             <div>
-              <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:'3px solid #C8922A', borderRadius:4, padding:'20px 24px', overflow:'hidden' }}>
-                <div style={{ display:'flex', gap:18, alignItems:'flex-start', marginBottom:16 }}>
-                  <Image
-                    src="/img/dj-avatar.png"
-                    alt="DJ Cavalcanti"
-                    width={72}
-                    height={72}
-                    style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 3px rgba(200,146,42,.15)' }}
-                  />
-                  <div style={{ flex:1 }}>
-                    <div style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.4rem', color:'var(--foreground)', letterSpacing:'.04em', lineHeight:1.1, marginBottom:2 }}>DJ Cavalcanti</div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'.08em' }}>FOUNDER · DOWNRANGE</div>
-                  </div>
-                </div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', marginBottom:'12px' }}>ABOUT THE FOUNDER</div>
+              <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:'3px solid #C8922A', padding:'24px' }}>
+                <div style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.6rem', color:'var(--foreground)', letterSpacing:'0.04em', lineHeight:1, marginBottom:'4px' }}>DJ CAVALCANTI</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.1em', marginBottom:'16px' }}>FOUNDER & PUBLISHER · DOWNRANGE</div>
                 <p style={{ fontSize:'14px', color:'var(--text-muted)', lineHeight:1.8, marginBottom:'12px' }}>
-                  DJ Cavalcanti is a Second Amendment advocate, firearms enthusiast, and entrepreneur based in Washington State.
+                  DJ Cavalcanti is a Second Amendment advocate, firearms enthusiast, and entrepreneur based in Washington State. He founded DownRange in 2026 with the conviction that the gun community deserves better media — more intelligent, more honest, and more useful than what existed.
                 </p>
                 <p style={{ fontSize:'14px', color:'var(--text-muted)', lineHeight:1.8 }}>
-                  Washington State is one of the most challenging legal environments for gun owners in the country. That friction is the core motivation behind DownRange.
+                  Washington State is one of the most challenging legal environments for gun owners in the country. That context shapes DownRange's editorial focus: real intelligence that helps you navigate your rights, understand what's changing, and stay ahead of legislation that affects you.
                 </p>
                 <div style={{ marginTop:'16px', display:'flex', gap:'10px', flexWrap:'wrap' }}>
-                  <a href="mailto:dj@downrangeco.com" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)', padding:'5px 12px' }}>dj@downrangeco.com</a>
+                  <a href="mailto:dj@downrangeco.com" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', textDecoration:'none' }}>dj@downrangeco.com</a>
                 </div>
-              </div>
               </div>
             </div>
           </div>
