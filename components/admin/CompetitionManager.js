@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import ImageSearchModal from './ImageSearchModal'
 import { useBulkLock, BulkLockBar, LockToggle } from './BulkLockBar'
 
 const ORGS       = ['NRA','USPSA/IPSC','IDPA','PRS','NRL','NSSF','3-Gun Nation','Other']
@@ -32,6 +33,8 @@ export default function CompetitionManager({ adminKey }) {
   const [showAdd, setShowAdd] = useState(false)
   const [search,  setSearch]  = useState('')
   const [form,    setForm]    = useState({})
+
+  const [imgSearch, setImgSearch] = useState(null) // { item } | null
 
   const H = { 'x-admin-key': adminKey }
   const flash = m => { setMsg(m); setTimeout(() => setMsg(''), 4000) }
@@ -213,6 +216,19 @@ export default function CompetitionManager({ adminKey }) {
           </div>
         )}
       </div>
+
+    {/* ── Image Search Modal ── */}
+    {imgSearch && (
+      <ImageSearchModal
+        adminKey={adminKey}
+        item={imgSearch}
+        onApply={(imageUrl) => {
+          // Update the item in local state
+          setImgSearch(null)
+        }}
+        onClose={() => setImgSearch(null)}
+      />
+    )}
     </div>
   )
 }
