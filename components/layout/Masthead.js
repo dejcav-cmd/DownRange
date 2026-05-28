@@ -77,6 +77,8 @@ const NAV = [
   { label: 'Video', href: '/video' },
 ]
 
+import GlobalSearchBar from '../ui/GlobalSearchBar'
+
 export default function Masthead() {
   const pathname = usePathname()
   const [dateStr, setDateStr] = useState('')
