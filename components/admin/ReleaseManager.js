@@ -321,8 +321,13 @@ export default function ReleaseManager({ adminKey }) {
                     <button className="rm-ghost" style={{fontSize:9}} onClick={()=>{
                       const url=prompt('Image URL:'); if(url) patch(selRelease._id,{imageUrl:url})
                     }}>✎ Paste URL</button>
+                    <button className="rm-ghost" disabled={busy}
+                      style={{fontSize:9,background:'var(--gold)',color:'#000',border:'none'}}
+                      onClick={()=>{
+                        const inp = document.querySelector('.rm-img-input'); if(inp&&inp.value) patch(selRelease._id,{imageUrl:inp.value})
+                      }}>💾 Save Image</button>
                   </div>
-                  <input className="rm-input" defaultValue={selRelease.imageUrl||''} style={{marginBottom:12,fontSize:10}}
+                  <input className="rm-input rm-img-input" defaultValue={selRelease.imageUrl||''} style={{marginBottom:12,fontSize:10}}
                     onBlur={e=>{ if(e.target.value!==selRelease.imageUrl) patch(selRelease._id,{imageUrl:e.target.value}) }} />
 
                   <div className="rm-sep" />
