@@ -5,6 +5,7 @@ export const review = defineType({
   title: 'Review',
   type: 'document',
   fields: [
+    { name: 'editorLocked', title: '🔒 Editor Locked (no AI changes)', type: 'boolean', initialValue: false },
     defineField({ name: 'title', title: 'Review Title', type: 'string', validation: R => R.required() }),
     defineField({ name: 'slug',  title: 'Slug', type: 'slug', options: { source: 'title' }, validation: R => R.required() }),
     defineField({ name: 'category', title: 'Category', type: 'string',

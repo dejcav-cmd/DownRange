@@ -384,6 +384,24 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                     </div>
 
                     <div className="bm-sep" />
+                    {/* Lock flag */}
+                    <div style={{marginBottom:10,padding:'10px 14px',background:editDraft.editorLocked?'rgba(200,146,42,.08)':'rgba(100,116,139,.06)',border:`2px solid ${editDraft.editorLocked?'#C8922A':'var(--border)'}`}}>
+                      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8}}>
+                        <div>
+                          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:12,color:editDraft.editorLocked?'#C8922A':'#6b7280'}}>{editDraft.editorLocked?'🔒 LOCKED — AI cannot modify':'🔓 UNLOCKED — AI may rewrite'}</div>
+                          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:1}}>When locked, this post is frozen. No cron or AI changes.</div>
+                        </div>
+                        <button onClick={async()=>{
+                          const v=!editDraft.editorLocked
+                          await patch(selPost._id,{editorLocked:v})
+                          setEditDraft(p=>({...p,editorLocked:v}))
+                          setPosts(prev=>prev.map(p=>p._id===selPost._id?{...p,editorLocked:v}:p))
+                          flash(v?'🔒 Post locked':'🔓 Post unlocked')
+                        }} disabled={busy} style={{fontFamily:"'Bebas Neue',cursive",fontSize:'0.85rem',letterSpacing:'.06em',padding:'6px 14px',border:'none',cursor:'pointer',background:editDraft.editorLocked?'#C8922A':'#374151',color:editDraft.editorLocked?'#000':'#9ca3af',whiteSpace:'nowrap'}}>
+                          {editDraft.editorLocked?'🔓 Unlock':'🔒 Lock'}
+                        </button>
+                      </div>
+                    </div>
                     <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
                       <button className="bm-btn" onClick={saveEditDraft} disabled={busy} style={{flex:1}}>💾 Save All Changes</button>
                       {selPost.slug?.current && <a href={`/blog/${selPost.slug.current}`} target="_blank" rel="noreferrer" className="bm-ghost" style={{textDecoration:'none',fontSize:10}}>View ↗</a>}

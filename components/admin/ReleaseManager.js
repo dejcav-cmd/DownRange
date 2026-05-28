@@ -361,6 +361,23 @@ export default function ReleaseManager({ adminKey }) {
                     </a>
                     <button className="rm-del" onClick={()=>deleteRelease(selRelease)} disabled={busy}>🗑</button>
                   </div>
+                  {/* Lock flag */}
+                  <div style={{marginTop:10,padding:'10px 14px',background:selRelease.editorLocked?'rgba(200,146,42,.08)':'rgba(100,116,139,.06)',border:`2px solid ${selRelease.editorLocked?'#C8922A':'var(--border)'}`}}>
+                    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',gap:8}}>
+                      <div>
+                        <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:12,color:selRelease.editorLocked?'#C8922A':'#6b7280'}}>{selRelease.editorLocked?'🔒 LOCKED — AI cannot modify':'🔓 UNLOCKED — AI may update'}</div>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:1}}>Lock to freeze this release. No cron or AI changes.</div>
+                      </div>
+                      <button onClick={async()=>{
+                        const v=!selRelease.editorLocked
+                        await patch(selRelease._id,{editorLocked:v})
+                        setReleases(prev=>prev.map(r=>r._id===selRelease._id?{...r,editorLocked:v}:r))
+                        flash(v?'🔒 Release locked':'🔓 Release unlocked')
+                      }} disabled={busy} style={{fontFamily:"'Bebas Neue',cursive",fontSize:'0.85rem',letterSpacing:'.06em',padding:'6px 14px',border:'none',cursor:'pointer',background:selRelease.editorLocked?'#C8922A':'#374151',color:selRelease.editorLocked?'#000':'#9ca3af',whiteSpace:'nowrap'}}>
+                        {selRelease.editorLocked?'🔓 Unlock':'🔒 Lock'}
+                      </button>
+                    </div>
+                  </div>
                 </div>
               </div>
             )}

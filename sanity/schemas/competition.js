@@ -5,6 +5,7 @@ export const competition = defineType({
   title: 'Competition / Match',
   type: 'document',
   fields: [
+    { name: 'editorLocked', title: '🔒 Editor Locked (no AI changes)', type: 'boolean', initialValue: false },
     defineField({ name: 'name', title: 'Match Name', type: 'string', validation: R => R.required() }),
     defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'name' } }),
     defineField({ name: 'org', title: 'Organization', type: 'string',

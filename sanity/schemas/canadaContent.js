@@ -5,6 +5,7 @@ export const canadaContent = defineType({
   title: 'Canada Page Content',
   type: 'document',
   fields: [
+    { name: 'editorLocked', title: '🔒 Editor Locked (no AI changes)', type: 'boolean', initialValue: false },
     defineField({ name: 'type', title: 'Content Type', type: 'string',
       options: { list: ['law','province','article','ammo','alert','stat'] }, validation: R => R.required() }),
     defineField({ name: 'title', title: 'Title / Name', type: 'string', validation: R => R.required() }),

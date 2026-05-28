@@ -15,7 +15,8 @@ export const blogPost = {
     { name: 'featured',    title: 'Featured',       type: 'boolean' },
     { name: 'publishedAt', title: 'Published At',   type: 'datetime' },
     { name: 'tags',        title: 'Tags',           type: 'array', of: [{ type: 'string' }] },
-    { name: 'qualityReviewed', title: 'Quality Reviewed (AI standard met)', type: 'boolean', initialValue: false },
+        { name: 'editorLocked', title: '🔒 Editor Locked (no AI changes)', type: 'boolean', initialValue: false },
+{ name: 'qualityReviewed', title: 'Quality Reviewed (AI standard met)', type: 'boolean', initialValue: false },
   ],
   preview: {
     select: { title: 'title', subtitle: 'category' },

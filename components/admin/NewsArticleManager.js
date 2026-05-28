@@ -314,6 +314,9 @@ export default function NewsArticleManager({ adminKey }) {
                   <span className="nam-badge" style={{ background: a.approved ? 'rgba(34,197,94,.15)' : 'rgba(100,116,139,.15)', color: a.approved ? '#22c55e' : '#64748b' }}>
                     {a.approved ? 'live' : 'hidden'}
                   </span>
+                  {a.editorLocked && (
+                    <span className="nam-badge" style={{ background:'rgba(200,146,42,.15)', color:'#C8922A', marginLeft:4 }}>🔒</span>
+                  )}
                 </div>
                 {/* Arrow */}
                 <div className="nam-cell" style={{ textAlign:'center', color: selected===a._id ? 'var(--gold)' : '#374151' }}>›</div>
@@ -428,6 +431,33 @@ export default function NewsArticleManager({ adminKey }) {
               </button>
 
               <div className="nam-sep" />
+
+              {/* Lock flag */}
+              <div style={{ marginBottom:10, padding:'10px 14px', background: selectedArticle.editorLocked ? 'rgba(200,146,42,.08)' : 'rgba(100,116,139,.06)', border:`2px solid ${selectedArticle.editorLocked ? '#C8922A' : 'var(--border)'}` }}>
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:10 }}>
+                  <div>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:13, color: selectedArticle.editorLocked ? '#C8922A' : 'var(--text-dim)', letterSpacing:'.04em' }}>
+                      {selectedArticle.editorLocked ? '🔒 EDITOR LOCKED' : '🔓 UNLOCKED'}
+                    </div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', marginTop:2 }}>
+                      {selectedArticle.editorLocked ? 'AI and cron jobs cannot modify this article' : 'AI may rewrite this article automatically'}
+                    </div>
+                  </div>
+                  <button onClick={async () => {
+                    const newVal = !selectedArticle.editorLocked
+                    await patchField(selectedArticle._id, { editorLocked: newVal })
+                    setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, editorLocked: newVal } : a))
+                    flash(newVal ? '🔒 Article locked — AI will skip this' : '🔓 Article unlocked')
+                  }} disabled={busy} style={{
+                    fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.08em',
+                    padding:'7px 18px', border:'none', cursor:'pointer',
+                    background: selectedArticle.editorLocked ? '#C8922A' : '#374151',
+                    color: selectedArticle.editorLocked ? '#000' : '#9ca3af',
+                  }}>
+                    {selectedArticle.editorLocked ? '🔓 UNLOCK' : '🔒 LOCK'}
+                  </button>
+                </div>
+              </div>
 
               {/* Actions */}
               <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
