@@ -22,19 +22,33 @@ function pickPhoto(title = '', category = '') {
   return '/img/photos/news.jpg'
 }
 
-export async function GET(req) {
-  const key = req.headers.get('x-admin-key')
-  if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
+async function runPatch() {
   const slug = 'missouri-bullet-company-hard-cast-bullets-and-the-frankford-arsenal-precision-press-a-reloader-s'
   const article = await sanity.fetch(
-    `*[_type == "newsArticle" && slug.current == $slug][0]{ _id, title, imageUrl, externalUrl, category }`,
+    `*[_type == "newsArticle" && slug.current == $slug][0]{ _id, title, imageUrl, category }`,
     { slug }
   )
-  if (!article) return Response.json({ error: 'Article not found' }, { status: 404 })
+  if (!article) return { ok: false, error: 'Article not found' }
+
+  // Already has a real image — skip
+  const current = article.imageUrl || ''
+  if (current.startsWith('https://cdn.sanity.io')) return { ok: true, skipped: true, reason: 'already has CDN image', imageUrl: current }
 
   const imageUrl = pickPhoto(article.title, article.category)
   await sanity.patch(article._id).set({ imageUrl }).commit()
+  return { ok: true, _id: article._id, title: article.title, imageUrl }
+}
 
-  return Response.json({ ok: true, _id: article._id, title: article.title, imageUrl })
+export async function GET(req) {
+  // Allow Vercel cron OR admin key
+  const cronSecret = process.env.CRON_SECRET
+  const isCron = cronSecret && req.headers.get('authorization') === `Bearer ${cronSecret}`
+  const isAdmin = req.headers.get('x-admin-key') === process.env.ADMIN_KEY
+  if (!isCron && !isAdmin) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const result = await runPatch()
+  return Response.json(result)
+}
+
+export async function POST(req) {
+  return GET(req)
 }
