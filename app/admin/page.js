@@ -1531,13 +1531,26 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           <button onClick={seedAll} disabled={seeding.all} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.all?'#374151':'#22c55e', color:seeding.all?'#6b7280':'#000', border:'none', cursor:seeding.all?'default':'pointer' }}>
             {seeding.all ? '⏳ SEEDING...' : '▶ SEED EVERYTHING'}
           </button>
+          <button disabled={seeding.fixImages} onClick={async ()=>{
+            setSeeding(s=>({...s,fixImages:true})); setResults(r=>({...r,fixImages:null}))
+            try {
+              const res = await fetch('/api/admin/fix-images?batch=100&force=true', { method:'POST', headers:H })
+              const d = await res.json()
+              setResults(r=>({...r,fixImages:d}))
+              await fetchCounts()
+            } catch(e){ setResults(r=>({...r,fixImages:{ok:false,message:e.message}})) }
+            setSeeding(s=>({...s,fixImages:false}))
+          }} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.fixImages?'#374151':'#3b82f6', color:'#fff', border:'none', cursor:seeding.fixImages?'default':'pointer' }}>
+            {seeding.fixImages ? '⏳ FIXING...' : '🖼 FIX ALL SVG IMAGES'}
+          </button>
           <button onClick={()=>{setSection('system');setPanel('agents')}} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, padding:'10px 14px', background:'transparent', border:'1px solid rgba(34,197,94,.25)', color:'#22c55e', cursor:'pointer' }}>
             🤖 AI Agents →
           </button>
         </div>
-        {results.all && (
-          <div style={{ width:'100%', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:results.all.ok?'#4ade80':'#f87171', paddingTop:8, borderTop:'1px solid rgba(34,197,94,.15)' }}>
-            {results.all.ok ? `✅ ${results.all.message}` : `❌ ${results.all.message||'Error'}`}
+        {(results.all || results.fixImages) && (
+          <div style={{ width:'100%', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, paddingTop:8, borderTop:'1px solid rgba(34,197,94,.15)' }}>
+            {results.all && <div style={{color:results.all.ok?'#4ade80':'#f87171'}}>{results.all.ok ? `✅ ${results.all.message}` : `❌ ${results.all.message||'Error'}`}</div>}
+            {results.fixImages && <div style={{color:results.fixImages.ok?'#60a5fa':'#f87171',marginTop:results.all?4:0}}>{results.fixImages.ok ? `🖼 ${results.fixImages.message}` : `❌ ${results.fixImages.message||'Error'}`}</div>}
           </div>
         )}
       </div>
