@@ -484,6 +484,10 @@ export default function NewsArticleManager({ adminKey }) {
                   🖼 Fetch Real Image
                 </button>
                 <button className="nam-btn-sm" onClick={() => fixImage(selectedArticle)} disabled={busy || !!selectedArticle.editorLocked}>🔧 Auto-Fix</button>
+                <button className="nam-btn-sm" onClick={() => setImgSearch(selectedArticle)}
+                  style={{background:'#8b5cf6',color:'#fff',border:'none'}}>
+                  🔍 Search Images
+                </button>
                 <button className="nam-btn-sm" onClick={() => {
                   const url = prompt('Paste new image URL:')
                   if (url) { setEditImg(url); patchField(selectedArticle._id, { imageUrl: url }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: url } : a)) }
