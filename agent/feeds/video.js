@@ -25,7 +25,8 @@ const CHANNELS = [
 ]
 
 function inferCategory(title) {
-  const t = title.toLowerCase()
+  const t = (title || '').toLowerCase()
+  if (t.includes('hunt') || t.includes('deer') || t.includes('elk') || t.includes('waterfowl') || t.includes('turkey')) return 'hunting'
   if (t.includes('review') || t.includes('tested') || t.includes('hands on')) return 'review'
   if (t.includes('training') || t.includes('drill') || t.includes('technique')) return 'training'
   if (t.includes('news') || t.includes('update') || t.includes('breaking'))     return 'news'
@@ -56,7 +57,7 @@ async function fetchChannelVideos(channelId, channelName) {
   }
 
   return data.items.map(item => ({
-    _id:         `yt-${item.id.videoId}`,
+    // No _id — let Sanity generate it. Dedup via youtubeId field check.
     _type:       'video',
     title:       item.snippet.title,
     videoId:     item.id.videoId,
@@ -90,13 +91,21 @@ async function runVideoFeed() {
 
       for (const video of videos) {
         try {
-          const dup = await isDuplicate(video.videoId, 'video')
-          if (!dup) {
-            await publishToSanity(video)
-            total++
-          }
+          // Check Sanity directly for existing video by youtubeId
+          const existsRes = await fetch(
+            'https://' + process.env.NEXT_PUBLIC_SANITY_PROJECT_ID + '.api.sanity.io/v2024-01-01/data/query/' +
+            (process.env.NEXT_PUBLIC_SANITY_DATASET || 'production') +
+            '?query=' + encodeURIComponent('count(*[_type=="video" && youtubeId==$id])') +
+            '&$id="' + video.videoId + '"',
+            { headers: { Authorization: 'Bearer ' + process.env.SANITY_API_TOKEN } }
+          )
+          const existsData = await existsRes.json()
+          if (existsData.result > 0) continue  // already in Sanity
+
+          await publishToSanity(video)
+          total++
         } catch (err) {
-          console.error(`[VIDEO] Failed to save ${video.videoId}:`, err.message)
+          console.error('[VIDEO] Failed to save ' + video.videoId + ':', err.message)
         }
       }
       channelsDone++
