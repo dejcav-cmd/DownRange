@@ -261,8 +261,7 @@ export default function CanadaManager({ adminKey }) {
                   <span className="cm-lbl">Highlights (one per line)</span>
                   <textarea className="cm-ta" rows={5} defaultValue={(selItem.highlights || []).join('\n')}
                     onBlur={e => {
-                      const h = e.target.value.split('
-').map(s => s.trim()).filter(Boolean)
+                      const h = e.target.value.split('\n').map(s => s.trim()).filter(Boolean)
                       save(selItem._id, { highlights: h })
                     }} />
                 </div>
