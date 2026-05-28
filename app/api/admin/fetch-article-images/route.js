@@ -133,12 +133,16 @@ export async function POST(req) {
   try {
   const { limit = 30, force = false } = await req.json().catch(() => ({}))
 
-  // Get articles that still have SVG placeholder images
+  // Get articles with missing, placeholder, or non-CDN external images (incl AI-generated)
   const articles = await sanity.fetch(`
     *[_type == "newsArticle" && approved == true
-      && (imageUrl match "/img/*" || imageUrl == null || !defined(imageUrl))
       && defined(externalUrl) && externalUrl != null
-    ] | order(publishedAt desc) [0...${Math.min(limit, 50)}] {
+      && (
+        !defined(imageUrl) || imageUrl == null
+        || string::startsWith(imageUrl, "/img/")
+        || (!string::startsWith(imageUrl, "https://cdn.sanity.io") && !string::startsWith(imageUrl, "/img/photos/"))
+      )
+    ] | order(publishedAt desc) [0...\${Math.min(limit, 50)}] {
       _id, title, externalUrl, imageUrl, source, category
     }
   `)
