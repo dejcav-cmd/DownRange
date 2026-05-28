@@ -236,6 +236,9 @@
     },
     "app/api/admin/backup/route.js": {
       "maxDuration": 300
+    },
+    "app/api/admin/one-time-cleanup/route.js": {
+      "maxDuration": 300
     }
   }
 }
