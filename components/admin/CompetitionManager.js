@@ -172,6 +172,7 @@ export default function CompetitionManager({ adminKey }) {
             </div>
           ))}
         </div>
+        </>
 
         {selI && (
           <div style={{borderLeft:'1px solid var(--border)',overflowY:'auto',maxHeight:'calc(100vh - 350px)',background:'var(--bg)'}}>
