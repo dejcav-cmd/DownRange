@@ -613,64 +613,122 @@ function SEOPanel() {
 }
 
 // ── Inline: Email Test Panel ─────────────────────────────────────────────────
-function EmailTestPanel({ adminKey }) {
-  const [results, setResults] = useState(null)
-  const [busy, setBusy] = useState(false)
-  const [msg, setMsg] = useState('')
+const DEFAULT_MAILBOXES = [
+  { from: 'noreply@downrangeco.com',       desc: 'Contact form submissions' },
+  { from: 'feedback@downrangeco.com',      desc: 'Feedback modal' },
+  { from: 'news@downrangeco.com',          desc: 'Newsletter sends + welcome emails' },
+  { from: 'intelligence@downrangeco.com',  desc: 'Daily intelligence briefing digest' },
+  { from: 'dj@downrangeco.com',            desc: 'Direct outreach sends + reply-to' },
+  { from: 'outreach@downrangeco.com',      desc: 'Outreach queue digest summary' },
+]
 
-  const MAILBOXES = [
-    { from: 'noreply@downrangeco.com',       desc: 'Contact form submissions' },
-    { from: 'feedback@downrangeco.com',      desc: 'Feedback modal' },
-    { from: 'news@downrangeco.com',          desc: 'Newsletter sends + welcome emails' },
-    { from: 'intelligence@downrangeco.com',  desc: 'Daily intelligence briefing digest' },
-    { from: 'dj@downrangeco.com',            desc: 'Direct outreach sends + reply-to' },
-    { from: 'outreach@downrangeco.com',      desc: 'Outreach queue digest summary' },
-  ]
+function EmailTestPanel({ adminKey }) {
+  const [mailboxes, setMailboxes] = useState(DEFAULT_MAILBOXES)
+  const [results, setResults]     = useState(null)
+  const [busy, setBusy]           = useState(false)
+  const [msg, setMsg]             = useState('')
+  const [newFrom, setNewFrom]     = useState('')
+  const [newDesc, setNewDesc]     = useState('')
+  const [addErr, setAddErr]       = useState('')
+
+  function addMailbox() {
+    setAddErr('')
+    const from = newFrom.trim().toLowerCase()
+    if (!from || !from.includes('@')) { setAddErr('Enter a valid email address.'); return }
+    if (mailboxes.some(m => m.from === from)) { setAddErr('Already in the list.'); return }
+    setMailboxes(prev => [...prev, { from, desc: newDesc.trim() || 'Custom' }])
+    setNewFrom('')
+    setNewDesc('')
+  }
+
+  function removeMailbox(from) {
+    setMailboxes(prev => prev.filter(m => m.from !== from))
+    setResults(prev => prev ? prev.filter(r => r.mailbox !== from) : null)
+  }
+
+  function resetToDefaults() {
+    setMailboxes(DEFAULT_MAILBOXES)
+    setResults(null)
+    setMsg('')
+  }
 
   async function sendTests() {
+    if (!mailboxes.length) { setMsg('❌ No mailboxes to test.'); return }
     setBusy(true)
-    setMsg('Sending test emails to all mailboxes...')
+    setMsg('Sending test emails...')
     setResults(null)
     try {
       const r = await fetch('/api/admin/test-emails', {
         method: 'POST',
-        headers: { 'x-admin-key': adminKey },
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ mailboxes: mailboxes.map(m => m.from) }),
       })
       const d = await r.json()
       setResults(d.results || [])
-      setMsg(d.ok ? `✅ ${d.sent}/${d.total} sent — check dj@downrangeco.com` : `❌ ${d.error}`)
+      setMsg(d.ok ? `✅ ${d.sent}/${d.total} sent — check your inbox` : `❌ ${d.error}`)
     } catch(e) {
       setMsg(`❌ ${e.message}`)
     }
     setBusy(false)
   }
 
+  const iS = { fontFamily:"'IBM Plex Mono',monospace", fontSize:11, background:'var(--bg2)', border:'1px solid var(--border)', color:'var(--text)', padding:'6px 10px', outline:'none' }
+
   return (
     <div>
       <div className="panel-title">Email Mailbox Tests</div>
-      <div className="panel-sub">Sends a test from each configured from-address to dj@downrangeco.com. Verifies Resend + Zoho SPF/DKIM are working.</div>
+      <div className="panel-sub">Send a test from each from-address to verify Resend + Zoho SPF/DKIM. Add or remove addresses as needed.</div>
+
+      {/* Mailbox list */}
       <div className="adm-card" style={{marginBottom:16}}>
-        <div style={{marginBottom:12,fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em'}}>CONFIGURED MAILBOXES</div>
-        {MAILBOXES.map(m => (
-          <div key={m.from} style={{display:'flex',justifyContent:'space-between',padding:'6px 0',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
-            <span style={{color:'#C8922A'}}>{m.from}</span>
-            <span style={{color:'#6b7280',fontSize:10}}>{m.desc}</span>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12}}>
+          <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em'}}>MAILBOXES ({mailboxes.length})</span>
+          <button onClick={resetToDefaults} style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,background:'none',border:'1px solid var(--border)',color:'#6b7280',padding:'3px 8px',cursor:'pointer'}}>Reset to defaults</button>
+        </div>
+        {mailboxes.length === 0 && (
+          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#4b5563',padding:'12px 0'}}>No mailboxes. Add one below or reset to defaults.</div>
+        )}
+        {mailboxes.map(m => (
+          <div key={m.from} style={{display:'flex',alignItems:'center',gap:8,padding:'6px 0',borderBottom:'1px solid var(--border)'}}>
+            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#C8922A',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{m.from}</span>
+            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#6b7280',flex:1,minWidth:0,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{m.desc}</span>
+            <button onClick={()=>removeMailbox(m.from)} style={{flexShrink:0,background:'none',border:'none',color:'#ef4444',cursor:'pointer',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,padding:'0 4px',lineHeight:1}} title="Remove">×</button>
           </div>
         ))}
       </div>
-      <button onClick={sendTests} disabled={busy || !adminKey}
-        style={{background:'var(--gold)',color:'#000',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,letterSpacing:'.06em',padding:'10px 24px',cursor:busy?'not-allowed':'pointer',opacity:busy?0.6:1,marginBottom:16}}>
-        {busy ? '⏳ Sending...' : '✉ Send Test to All Mailboxes'}
+
+      {/* Add mailbox */}
+      <div className="adm-card" style={{marginBottom:16}}>
+        <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em',marginBottom:10}}>ADD MAILBOX</div>
+        <div style={{display:'flex',gap:8,flexWrap:'wrap',alignItems:'flex-start'}}>
+          <input value={newFrom} onChange={e=>{setNewFrom(e.target.value);setAddErr('')}}
+            onKeyDown={e=>e.key==='Enter'&&addMailbox()}
+            placeholder="from@downrangeco.com" style={{...iS,flex:'2 1 180px'}} />
+          <input value={newDesc} onChange={e=>setNewDesc(e.target.value)}
+            onKeyDown={e=>e.key==='Enter'&&addMailbox()}
+            placeholder="Description (optional)" style={{...iS,flex:'3 1 200px'}} />
+          <button onClick={addMailbox} style={{flexShrink:0,background:'var(--gold)',color:'#000',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,letterSpacing:'.06em',padding:'6px 16px',cursor:'pointer'}}>+ Add</button>
+        </div>
+        {addErr && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#ef4444',marginTop:6}}>{addErr}</div>}
+      </div>
+
+      {/* Send button */}
+      <button onClick={sendTests} disabled={busy || !adminKey || !mailboxes.length}
+        style={{background:'var(--gold)',color:'#000',border:'none',fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,letterSpacing:'.06em',padding:'10px 24px',cursor:(busy||!mailboxes.length)?'not-allowed':'pointer',opacity:(busy||!mailboxes.length)?0.6:1,marginBottom:16}}>
+        {busy ? '⏳ Sending...' : `✉ Send Test to ${mailboxes.length} Mailbox${mailboxes.length!==1?'es':''}`}
       </button>
+
       {msg && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,padding:'8px 12px',background:msg.startsWith('✅')?'rgba(34,197,94,.1)':'rgba(239,68,68,.1)',color:msg.startsWith('✅')?'#22c55e':'#ef4444',marginBottom:16}}>{msg}</div>}
-      {results && (
+
+      {/* Results */}
+      {results && results.length > 0 && (
         <div className="adm-card">
           <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em',marginBottom:8}}>RESULTS</div>
           {results.map((r,i) => (
-            <div key={i} style={{display:'flex',justifyContent:'space-between',alignItems:'center',padding:'5px 0',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10}}>
-              <span style={{color:r.status==='sent'?'#22c55e':'#ef4444'}}>{r.status==='sent'?'✓':'✗'}</span>
-              <span style={{flex:1,marginLeft:8,color:'#e5e7eb',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.mailbox}</span>
-              <span style={{color:r.status==='sent'?'#22c55e':'#ef4444',marginLeft:8}}>{r.status==='sent'?r.id?.slice(0,16)+'...':r.error?.slice(0,40)}</span>
+            <div key={i} style={{display:'flex',alignItems:'center',gap:8,padding:'5px 0',borderBottom:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10}}>
+              <span style={{color:r.status==='sent'?'#22c55e':'#ef4444',flexShrink:0}}>{r.status==='sent'?'✓':'✗'}</span>
+              <span style={{flex:1,color:'#e5e7eb',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.mailbox}</span>
+              <span style={{color:r.status==='sent'?'#22c55e':'#ef4444',flexShrink:0}}>{r.status==='sent'?r.id?.slice(0,16)+'...':r.error?.slice(0,40)}</span>
             </div>
           ))}
         </div>
