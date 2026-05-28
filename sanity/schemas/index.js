@@ -23,6 +23,7 @@ import { cronRunStore }     from './cronRunStore'
 import { blogPost }         from './blogPost'
 import imageAsset           from './imageAsset'
 import { nfaWaitTime }      from './nfaWaitTime'
+import { cronRun }          from './cronRun'
 
 export const schemaTypes = [
   newsArticle,
@@ -36,4 +37,5 @@ export const schemaTypes = [
   cronRunStore,
   blogPost,
   nfaWaitTime,
+  cronRun,
 ]

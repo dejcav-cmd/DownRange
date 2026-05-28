@@ -1,155 +1,30 @@
 export const dynamic = 'force-dynamic'
 
-/**
- * GET  /api/admin/cron-status          — full status of all jobs
- * POST /api/admin/cron-status          — record a run result (called by each cron after running)
- * POST /api/admin/cron-status?trigger=true — manually trigger a job
- */
+import { getAllRuns, getAlertConfig, setAlertConfig, reportCronRun } from '@/lib/cronReporter'
 
-import { Redis } from '@upstash/redis'
-import { createClient } from '@sanity/client'
-
-const REDIS_KEY = 'dr:cron-runs-v2'
-const TTL = 30 * 86400  // 30 days
-const SANITY_DOC_ID   = 'cron-run-store'
-const SANITY_DOC_TYPE = 'cronRunStore'
-
-let _redis = null
-let _sanity = null
-
-function getRedis() {
-  if (_redis) return _redis
-  if (!process.env.UPSTASH_REDIS_REST_URL || !process.env.UPSTASH_REDIS_REST_TOKEN) return null
-  _redis = new Redis({ url: process.env.UPSTASH_REDIS_REST_URL, token: process.env.UPSTASH_REDIS_REST_TOKEN })
-  return _redis
-}
-
-function getSanity() {
-  if (_sanity) return _sanity
-  if (!process.env.SANITY_API_TOKEN) return null
-  _sanity = createClient({
-    projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-    dataset:    'production',
-    apiVersion: '2024-01-01',
-    useCdn:     false,
-    token:      process.env.SANITY_API_TOKEN,
-  })
-  return _sanity
-}
-
-// In-memory fallback
-let _mem = {}
-
-// ── All 15 cron jobs defined ─────────────────────────────────────────────────
+// ── All cron jobs registry ────────────────────────────────────────────────────
 export const ALL_JOBS = [
-  // Agent feeds
-  { id:'news',          path:'/api/agent?feed=news',          schedule:'*/15 * * * *', label:'News Feed',            group:'Content',    icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → Sanity articles every 15 min' },
-  { id:'market',        path:'/api/agent?feed=market',        schedule:'*/30 * * * *', label:'Market Feed',          group:'Content',    icon:'📊', critical:false, desc:'AmmoSeek + pricing data → ammo index every 30 min' },
-  { id:'releases',      path:'/api/agent?feed=releases',      schedule:'0 * * * *',    label:'Releases Feed',        group:'Content',    icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
-  { id:'laws',          path:'/api/agent?feed=laws',          schedule:'0 */2 * * *',  label:'Laws Feed',            group:'Content',    icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },
-  { id:'video',         path:'/api/agent?feed=video',         schedule:'0 */4 * * *',  label:'Video Feed',           group:'Content',    icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
-  { id:'state',         path:'/api/agent?feed=state',         schedule:'0 8 * * *',    label:'State Feed',           group:'Content',    icon:'🗺',  critical:false, desc:'LegiScan → per-state bill updates daily 8am' },
-  { id:'goa',           path:'/api/agent?feed=goa',           schedule:'0 */2 * * *',  label:'GOA Feed',             group:'Content',    icon:'🦅', critical:false, desc:'Gun Owners of America press feed every 2 hrs' },
-  // System jobs
-  { id:'site_health',   path:'/api/site-health',              schedule:'0 8,14,20 * * *', label:'Site Health',       group:'System',     icon:'🩺', critical:true,  desc:'Broken links, missing images, feed health — 3×/day' },
-  { id:'intelligence',  path:'/api/intelligence',             schedule:'0 1 * * *',    label:'Intelligence Briefing',group:'System',     icon:'🧠', critical:true,  desc:'Competitor research + Claude analysis — 1am UTC daily. Emails digest + alerts on failure.' },
-  { id:'nics',          path:'/api/nics',                     schedule:'0 10 1 * *',   label:'NICS Data',            group:'System',     icon:'📈', critical:false, desc:'FBI NICS background check data — 1st of month' },
-  // Outreach
-  { id:'newsletter',    path:'/api/newsletter',               schedule:'0 7 * * *',    label:'Newsletter',           group:'Outreach',   icon:'📧', critical:false, desc:'Resend daily newsletter digest — 7am' },
-  { id:'queue_digest',  path:'/api/outreach/queue/digest',    schedule:'0 13 * * *',   label:'Outreach Queue Digest',group:'Outreach',   icon:'📬', critical:false, desc:'Email pending approval queue summary — 1pm' },
-  { id:'prn_releases',  path:'/api/cron/releases',            schedule:'0 12 * * *',   label:'PRN Scraper',          group:'Outreach',   icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases — noon' },
-  { id:'fix-images',    path:'/api/admin/fix-images',         schedule:'0 12-23,0-3 * * *', label:'Image Patcher (legacy)',  group:'System',     icon:'🖼',  critical:false, desc:'Legacy: patch missing article images — hourly 12pm-3am UTC' },
-  { id:'backfill',      path:'/api/admin/backfill-articles',  schedule:'0 12-23,0-3 * * *', label:'Article Backfill (legacy)',group:'Content',    icon:'✍',  critical:false, desc:'Legacy: backfill missing article bodies via Claude — hourly 12pm-3am UTC' },
-  { id:'quality-rewrite', path:'/api/cron/quality-rewrite',  schedule:'0 * * * *',         label:'Quality Rewrite',         group:'Content',    icon:'✨',  critical:true,  desc:'Scans all content for AI phrases, short bodies, bad structure — rewrites failing items every hour. Marks qualityReviewed=true when passing.' },
-  { id:'image-fix',     path:'/api/cron/image-fix',          schedule:'0 * * * *',         label:'Image Fix',               group:'Content',    icon:'🖼',  critical:true,  desc:'Finds articles with missing/SVG images — tries OG image from source URL first, then assigns real photo fallback. Runs every hour.' },
-  { id:'fetch-images',  path:'/api/admin/fetch-article-images', schedule:'*/30 * * * *', label:'Fetch Article Images', group:'System',   icon:'📷', critical:false, desc:'Fetch og:image from source URLs → Sanity CDN every 30 min' },
-  { id:'cron-health',   path:'/api/admin/cron-health',        schedule:'*/30 * * * *', label:'Cron Health Check',    group:'System',     icon:'🩺', critical:true,  desc:'System health check + email alerts every 30 min' },
+  { id:'news',             path:'/api/agent?feed=news',             schedule:'*/15 * * * *',  label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 15 min' },
+  { id:'market',           path:'/api/agent?feed=market',           schedule:'*/30 * * * *',  label:'Market Feed',             group:'Content',  icon:'📊', critical:false, desc:'AmmoSeek + pricing data every 30 min' },
+  { id:'releases',         path:'/api/agent?feed=releases',         schedule:'0 * * * *',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
+  { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */2 * * *',   label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },
+  { id:'video',            path:'/api/agent?feed=video',            schedule:'0 */4 * * *',   label:'Video Feed',              group:'Content',  icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
+  { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * *',     label:'State Feed',              group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → per-state bill updates daily 8am UTC' },
+  { id:'goa',              path:'/api/agent?feed=goa',              schedule:'0 */2 * * *',   label:'GOA Feed',                group:'Content',  icon:'🦅', critical:false, desc:'Gun Owners of America press feed every 2 hrs' },
+  { id:'quality-rewrite',  path:'/api/cron/quality-rewrite',        schedule:'0 * * * *',     label:'Quality Rewrite',         group:'Content',  icon:'✨', critical:true,  desc:'Scans all content for AI phrases + short bodies → rewrites failing items. Every hour.' },
+  { id:'image-fix',        path:'/api/cron/image-fix',              schedule:'0 * * * *',     label:'Image Fix',               group:'Content',  icon:'🖼', critical:true,  desc:'Fetches OG images from source URLs, assigns real photo fallbacks. Every hour.' },
+  { id:'site_health',      path:'/api/site-health',                 schedule:'0 8,14,20 * * *', label:'Site Health',           group:'System',   icon:'🩺', critical:true,  desc:'Health checks 3x/day at 8am, 2pm, 8pm UTC' },
+  { id:'intelligence',     path:'/api/intelligence',                schedule:'0 1 * * *',     label:'Intelligence Briefing',   group:'System',   icon:'🧠', critical:true,  desc:'Daily AI briefing at 1am UTC → email digest' },
+  { id:'nics',             path:'/api/nics',                        schedule:'0 10 1 * *',    label:'NICS Data',               group:'System',   icon:'📈', critical:false, desc:'FBI NICS background check data — 1st of each month' },
+  { id:'nfa-wait-times',   path:'/api/nfa-wait-times',              schedule:'0 6 * * *',     label:'NFA Wait Times',          group:'System',   icon:'⏳', critical:false, desc:'Scrapes ATF + SilencerShop for NFA processing times daily 6am UTC' },
+  { id:'newsletter',       path:'/api/newsletter',                  schedule:'0 7 * * *',     label:'Newsletter',              group:'Outreach', icon:'📧', critical:false, desc:'Resend daily newsletter digest at 7am UTC' },
+  { id:'queue_digest',     path:'/api/outreach/queue/digest',       schedule:'0 13 * * *',    label:'Outreach Queue Digest',   group:'Outreach', icon:'📬', critical:false, desc:'Email pending approval queue summary at 1pm UTC' },
+  { id:'prn_releases',     path:'/api/cron/releases',               schedule:'0 12 * * *',    label:'PRN Scraper',             group:'Outreach', icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases at noon UTC' },
+  { id:'fetch-images',     path:'/api/admin/fetch-article-images',  schedule:'*/30 * * * *',  label:'Fetch Article Images',    group:'System',   icon:'📷', critical:false, desc:'Fetch og:image from source URLs → Sanity CDN every 30 min' },
+  { id:'cron-health',      path:'/api/admin/cron-health',           schedule:'*/30 * * * *',  label:'Cron Health Check',       group:'System',   icon:'❤', critical:true,  desc:'System health check + email alerts every 30 min' },
+  { id:'backfill',         path:'/api/admin/backfill-articles',     schedule:'0 12-23,0-3 * * *', label:'Article Backfill (legacy)', group:'Content', icon:'✍', critical:false, desc:'Legacy backfill — replaced by quality-rewrite' },
+  { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 12-23,0-3 * * *', label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
 ]
-
-function parseSchedule(cron) {
-  // Returns human-readable + next run Date
-  const parts = cron.trim().split(/\s+/)
-  if (parts.length !== 5) return { label: cron, next: null }
-  const [min, hour, dom, mon, dow] = parts
-
-  let label = cron
-  if (min.startsWith('*/') && hour === '*')  label = `Every ${min.slice(2)} min`
-  else if (hour.startsWith('*/'))             label = `Every ${hour.slice(2)} hrs`
-  else if (hour.includes(','))                label = `Daily at ${hour.split(',').map(h=>`${h.padStart(2,'0')}:${min.padStart(2,'0')} UTC`).join(', ')}`
-  else if (dom === '1' && mon === '*')        label = `Monthly (1st) at ${hour.padStart(2,'0')}:${min.padStart(2,'0')} UTC`
-  else                                        label = `Daily ${hour.padStart(2,'0')}:${min.padStart(2,'0')} UTC`
-
-  // Calculate next run (simplified)
-  const now = new Date()
-  let next = new Date(now)
-  try {
-    if (min.startsWith('*/')) {
-      const interval = parseInt(min.slice(2))
-      const elapsed = now.getMinutes() % interval
-      next = new Date(now.getTime() + (interval - elapsed) * 60000)
-      next.setSeconds(0, 0)
-    } else if (hour === '*') {
-      next = new Date(now.getTime() + (parseInt(min) - now.getMinutes()) * 60000)
-      if (next < now) next = new Date(next.getTime() + 3600000)
-      next.setSeconds(0, 0)
-    } else {
-      const h = parseInt(hour.split(',')[0])
-      const m = parseInt(min)
-      next = new Date(now)
-      next.setUTCHours(h, m, 0, 0)
-      if (next <= now) next.setUTCDate(next.getUTCDate() + 1)
-    }
-  } catch { next = null }
-
-  return { label, next: next?.toISOString() || null }
-}
-
-async function readRuns() {
-  const redis = getRedis()
-  if (redis) {
-    try {
-      const d = await redis.get(REDIS_KEY)
-      if (d) return typeof d === 'string' ? JSON.parse(d) : d
-    } catch {}
-  }
-  // Sanity fallback
-  const sanity = getSanity()
-  if (sanity) {
-    try {
-      const doc = await sanity.fetch(
-        `*[_type == "${SANITY_DOC_TYPE}" && _id == "${SANITY_DOC_ID}"][0]{ data }`
-      )
-      if (doc?.data) {
-        const parsed = typeof doc.data === 'string' ? JSON.parse(doc.data) : doc.data
-        _mem = parsed
-        return parsed
-      }
-    } catch {}
-  }
-  return _mem
-}
-
-async function writeRuns(data) {
-  _mem = data
-  const redis = getRedis()
-  if (redis) {
-    try {
-      await redis.set(REDIS_KEY, JSON.stringify(data), { ex: TTL })
-      return
-    } catch {}
-  }
-  // Sanity fallback
-  const sanity = getSanity()
-  if (sanity) {
-    try {
-      await sanity.createOrReplace({
-        _id:   SANITY_DOC_ID,
-        _type: SANITY_DOC_TYPE,
-        data:  JSON.stringify(data),
-      })
-    } catch {}
-  }
-}
 
 function auth(req) {
   return req.headers.get('x-admin-key') === process.env.ADMIN_KEY
@@ -157,127 +32,131 @@ function auth(req) {
     || (process.env.CRON_SECRET && req.headers.get('authorization') === `Bearer ${process.env.CRON_SECRET}`)
 }
 
-// ── GET ──────────────────────────────────────────────────────────────────────
+// ── GET: Full status of all jobs ──────────────────────────────────────────────
 export async function GET(req) {
-  // GET is intentionally public — returns only run metadata, no secrets
+  const allRuns = await getAllRuns(20)
 
-  const runs  = await readRuns()
-  const now   = Date.now()
-
+  const now = Date.now()
   const jobs = ALL_JOBS.map(job => {
-    const history   = (runs[job.id] || []).slice(0, 20)   // last 20 runs
-    const lastRun   = history[0] || null
-    const { label: schedLabel, next } = parseSchedule(job.schedule)
+    const history = allRuns[job.id] || []
+    const lastRun = history[0] || null
 
-    // Streak — consecutive successes
+    // Parse schedule to determine expected interval
+    const intervalMs = parseScheduleInterval(job.schedule)
+    const lastRunAge = lastRun ? now - new Date(lastRun.at).getTime() : Infinity
+    const isOverdue  = intervalMs && lastRunAge > intervalMs * 2.5
+
+    // Compute streak (consecutive successes from latest)
     let streak = 0
     for (const r of history) {
-      if (r.status === 'success') streak++
-      else break
+      if (r.status !== 'success') break
+      streak++
     }
 
-    // Success rate last 10
-    const last10 = history.slice(0, 10)
-    const successRate = last10.length > 0
-      ? Math.round((last10.filter(r => r.status === 'success').length / last10.length) * 100)
-      : null
+    // Success rate
+    const total    = history.length
+    const successes = history.filter(r => r.status === 'success').length
+    const rate     = total > 0 ? Math.round((successes / total) * 100) : null
 
-    // Overdue check — if next run was > 2 intervals ago
-    const sinceLastRun = lastRun ? now - new Date(lastRun.at).getTime() : null
-    const isOverdue = sinceLastRun !== null && next !== null
-      ? new Date(next).getTime() < now - 300000   // more than 5 min past next scheduled
-      : false
+    let status = 'never'
+    if (lastRun) {
+      if (lastRun.status === 'failed') status = 'failed'
+      else if (isOverdue) status = 'overdue'
+      else status = lastRun.status || 'success'
+    }
 
     return {
       ...job,
-      scheduleLabel: schedLabel,
-      nextRun:       next,
-      lastRun:       lastRun || null,
-      history:       history.slice(0, 10),
+      history,
+      lastRun,
+      status,
       streak,
-      successRate,
+      rate,
       isOverdue,
-      status: !lastRun ? 'never'
-            : isOverdue && lastRun.status !== 'success' ? 'overdue'
-            : lastRun.status,
+      lastRunAge: lastRun ? Math.round(lastRunAge / 60000) : null, // minutes
     }
   })
 
-  // Summary stats
-  const summary = {
-    total:     jobs.length,
-    healthy:   jobs.filter(j => j.status === 'success').length,
-    failing:   jobs.filter(j => j.status === 'failed' || j.status === 'overdue').length,
-    never:     jobs.filter(j => j.status === 'never').length,
-    critFailing: jobs.filter(j => j.critical && (j.status === 'failed' || j.status === 'overdue')).length,
-  }
+  const alertConfig = await getAlertConfig().catch(() => ({}))
 
-  // Env health
-  const env = {
-    CRON_SECRET:    !!process.env.CRON_SECRET,
-    ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
-    SANITY_API_TOKEN:  !!process.env.SANITY_API_TOKEN,
-    RESEND_API_KEY:    !!process.env.RESEND_API_KEY,
-    UPSTASH_REDIS_REST_URL: !!process.env.UPSTASH_REDIS_REST_URL,
-    ADMIN_KEY:         !!process.env.ADMIN_KEY,
-  }
-
-  return Response.json({ ok: true, jobs, summary, env, generatedAt: new Date().toISOString() })
+  return Response.json({
+    ok:      true,
+    jobs,
+    alerts:  alertConfig,
+    fetched: new Date().toISOString(),
+  })
 }
 
-// ── POST — record a run result ───────────────────────────────────────────────
+// ── POST: Record a run result OR manually trigger a job ───────────────────────
 export async function POST(req) {
-  if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const body = await req.json().catch(() => ({}))
+  const url = new URL(req.url)
 
   // Manual trigger
-  if (new URL(req.url).searchParams.get('trigger') === 'true') {
-    const { jobId } = body
+  if (url.searchParams.get('trigger') === 'true') {
+    if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+
+    const { jobId } = await req.json().catch(() => ({}))
+    if (!jobId) return Response.json({ error: 'jobId required' }, { status: 400 })
+
     const job = ALL_JOBS.find(j => j.id === jobId)
-    if (!job) return Response.json({ error: 'Unknown job' }, { status: 404 })
+    if (!job) return Response.json({ error: `Unknown job: ${jobId}` }, { status: 404 })
 
-    // Always use production domain — VERCEL_URL is a preview URL, not production
-    const origin = 'https://www.downrangeco.com'
+    const baseUrl = process.env.VERCEL_URL
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://www.downrangeco.com'
 
-    const start = Date.now()
+    const t0  = Date.now()
+    const isGet = job.path.includes('?feed=') || job.path === '/api/site-health' || job.path === '/api/nfa-wait-times'
+
     try {
-      // Agent/feed jobs use GET; admin action jobs use POST
-      const isGetJob = job.path.startsWith('/api/agent') || job.path.startsWith('/api/intelligence') || job.path.startsWith('/api/newsletter') || job.path.startsWith('/api/nics') || job.path.startsWith('/api/site-health')
-      const res = await fetch(`${origin}${job.path}`, {
-        method: isGetJob ? 'GET' : 'POST',
+      const res = await fetch(`${baseUrl}${job.path}`, {
+        method:  isGet ? 'GET' : 'POST',
         headers: {
-          'authorization': `Bearer ${process.env.CRON_SECRET || process.env.ADMIN_KEY || ''}`,
           'x-admin-key':   process.env.ADMIN_KEY || '',
-          'x-vercel-cron': '1',
+          'authorization': `Bearer ${process.env.CRON_SECRET || ''}`,
+          'Content-Type':  'application/json',
         },
+        signal: AbortSignal.timeout(270000), // 4.5 min
       })
-      const ms = Date.now() - start
-      const ok = res.ok
-      let responseText = ''
-      try { const d = await res.json(); responseText = JSON.stringify(d).slice(0, 200) } catch {}
+      const text = await res.text().catch(() => '')
+      const ms   = Date.now() - t0
+      const ok   = res.ok
 
-      // Record result
-      const runs = await readRuns()
-      runs[jobId] = [{ at: new Date().toISOString(), status: ok ? 'success' : 'failed', ms, trigger: 'manual', response: responseText }, ...(runs[jobId] || [])].slice(0, 50)
-      await writeRuns(runs)
+      // Record the manual trigger run
+      await reportCronRun(jobId, {
+        status:  ok ? 'success' : 'failed',
+        ms,
+        error:   ok ? null : `HTTP ${res.status}: ${text.slice(0, 200)}`,
+        details: ok ? text.slice(0, 300) : null,
+        trigger: 'manual',
+      })
 
-      return Response.json({ ok, jobId, ms, status: ok ? 'success' : 'failed', response: responseText })
-    } catch (err) {
-      return Response.json({ ok: false, error: err.message }, { status: 500 })
+      return Response.json({ ok, ms, status: res.status, response: text.slice(0, 500) })
+    } catch (e) {
+      const ms = Date.now() - t0
+      await reportCronRun(jobId, { status: 'failed', ms, error: e.message, trigger: 'manual' })
+      return Response.json({ ok: false, error: e.message, ms }, { status: 500 })
     }
   }
 
-  // Record a run result
-  const { jobId, status, ms, error: errMsg, details } = body
-  if (!jobId || !status) return Response.json({ error: 'jobId and status required' }, { status: 400 })
+  // Record a run result (called by each cron job via reportCronRun)
+  if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const runs = await readRuns()
-  runs[jobId] = [
-    { at: new Date().toISOString(), status, ms: ms || 0, trigger: 'cron', error: errMsg || null, details: details || null },
-    ...(runs[jobId] || [])
-  ].slice(0, 50)
-  await writeRuns(runs)
+  const { jobId, status, ms, error, details, trigger } = await req.json().catch(() => ({}))
+  if (!jobId) return Response.json({ error: 'jobId required' }, { status: 400 })
 
-  return Response.json({ ok: true, jobId, status })
+  await reportCronRun(jobId, { status, ms, error, details, trigger })
+  return Response.json({ ok: true })
+}
+
+// Parse cron schedule to approximate interval in ms
+function parseScheduleInterval(schedule) {
+  if (!schedule) return null
+  const parts = schedule.split(' ')
+  if (!parts[0] || parts[0] === '*') return null
+  if (parts[0].startsWith('*/')) return parseInt(parts[0].slice(2)) * 60000
+  if (parts[1]?.startsWith('*/')) return parseInt(parts[1].slice(2)) * 3600000
+  if (parts[1] === '*') return 3600000
+  if (parts[2] === '*' && parts[3] === '*' && parts[4] === '*') return 86400000
+  return null
 }
