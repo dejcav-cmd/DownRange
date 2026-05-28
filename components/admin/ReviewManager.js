@@ -362,6 +362,7 @@ export default function ReviewManager({ adminKey }) {
                   <div className="rv-cell" style={{textAlign:'center',display:'flex',alignItems:'center',justifyContent:'center'}}><LockToggle locked={r.editorLocked} onToggle={async()=>{ await patch(r._id,{editorLocked:!r.editorLocked}); setReviews(prev=>prev.map(x=>x._id===r._id?{...x,editorLocked:!x.editorLocked}:x)); flash(r.editorLocked?'🔓 Unlocked':'🔒 Locked') }} /></div>
                 </div>
               ))}
+            </>)}
             </div>
 
             {/* Detail / edit panel */}
@@ -497,7 +498,6 @@ export default function ReviewManager({ adminKey }) {
               </div>
             )}
           </div>
-        </>)}
         </>
       )}
     </div>
