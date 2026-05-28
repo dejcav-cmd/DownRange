@@ -1,4 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
+import SectionSearch from '../../components/ui/SectionSearch'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 
@@ -105,9 +106,29 @@ function GunCard({ g, featured = false }) {
 }
 
 export default async function GunsPage({ searchParams }) {
-  const cat = searchParams?.cat || null
+  const cat  = searchParams?.cat  || null
+  const sort = searchParams?.sort || 'rating'
+  const q    = searchParams?.q    || null
 
-  const currentItems = cat ? (ALL_ITEMS[cat] || []) : []
+  // Filter and sort items
+  function filterAndSort(items) {
+    let result = [...items]
+    if (q) {
+      const qL = q.toLowerCase()
+      result = result.filter(item =>
+        (item.name||'').toLowerCase().includes(qL) ||
+        (item.caliber||'').toLowerCase().includes(qL) ||
+        (item.tagline||'').toLowerCase().includes(qL) ||
+        (item.role||'').toLowerCase().includes(qL)
+      )
+    }
+    if (sort === 'rating') result.sort((a,b) => parseFloat(b.rating||0) - parseFloat(a.rating||0))
+    else if (sort === 'alpha') result.sort((a,b) => (a.name||'').localeCompare(b.name||''))
+    else if (sort === 'price') result.sort((a,b) => (parseInt((a.msrp||'0').replace(/[^0-9]/g,''))||0) - (parseInt((b.msrp||'0').replace(/[^0-9]/g,''))||0))
+    return result
+  }
+
+  const currentItems = filterAndSort(cat ? (ALL_ITEMS[cat] || []) : [])
   const allFeatured  = [...PISTOLS.slice(0,1), ...RIFLES.slice(0,1), ...SHOTGUNS.slice(0,1)]
 
   return (
@@ -139,25 +160,42 @@ export default async function GunsPage({ searchParams }) {
         </div>
       </div>
 
-      {/* ── STICKY CATEGORY BAR ── */}
+      {/* ── STICKY CATEGORY + SORT + SEARCH BAR ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
-          <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
-            <a href="/guns"
-              style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${!cat?'var(--gold)':'transparent'}`, color:!cat?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
-              All ({Object.values(ALL_ITEMS).reduce((s,a) => s + a.length, 0)})
-            </a>
-            {CATEGORIES.map(c => (
-              <a key={c.key} href={`/guns?cat=${c.key}`}
-                style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${cat===c.key?c.color:'transparent'}`, color:cat===c.key?c.color:'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
-                <span style={{ width:6, height:6, borderRadius:'50%', background:c.color, flexShrink:0 }} />
-                {c.label} <span style={{ fontSize:'9px', opacity:0.6 }}>({c.count})</span>
+          <div style={{ display:'flex', alignItems:'stretch', overflowX:'auto' }}>
+            {/* Category tabs */}
+            <div style={{ display:'flex', gap:0, flex:1, overflowX:'auto' }}>
+              <a href="/guns"
+                style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${!cat?'var(--gold)':'transparent'}`, color:!cat?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+                All ({Object.values(ALL_ITEMS).reduce((s,a) => s + a.length, 0)})
               </a>
-            ))}
-            <a href="/guns/compare"
-              style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:'2px solid transparent', color:'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', marginLeft:'auto' }}>
-              ⚖ Compare →
-            </a>
+              {CATEGORIES.map(c => (
+                <a key={c.key} href={'/guns?' + new URLSearchParams({ cat:c.key, ...(q&&{q}), ...(sort!=='rating'&&{sort}) }).toString()}
+                  style={{ display:'inline-flex', alignItems:'center', gap:6, padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${cat===c.key?c.color:'transparent'}`, color:cat===c.key?c.color:'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
+                  <span style={{ width:6, height:6, borderRadius:'50%', background:c.color, flexShrink:0 }} />
+                  {c.label}
+                </a>
+              ))}
+              <a href="/guns/compare"
+                style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:'2px solid transparent', color:'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em' }}>
+                ⚖ Compare →
+              </a>
+            </div>
+            {/* Sort */}
+            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
+              {[['rating','★ Rating'],['alpha','🔤 A–Z'],['price','💰 Price']].map(([key,label]) => (
+                <a key={key} href={'/guns?' + new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), sort:key }).toString()}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', padding:'4px 10px', border:'1px solid var(--border)', color:sort===key?'#C8922A':'#4B5563', textDecoration:'none', background:sort===key?'#C8922A20':'transparent' }}>
+                  {label}
+                </a>
+              ))}
+            </div>
+            {/* Search */}
+            <div style={{ flexShrink:0, padding:'0 0 0 8px', borderLeft:'1px solid var(--border)', display:'flex', alignItems:'center' }}>
+              <SectionSearch type="firearmRelease" placeholder="Search platforms…" defaultValue={q||''} compact />
+            </div>
           </div>
         </div>
       </div>
