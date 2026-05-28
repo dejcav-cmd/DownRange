@@ -26,7 +26,6 @@ export default function CompetitionManager({ adminKey }) {
   const [items,   setItems]   = useState([])
   const [loading, setLoading] = useState(true)
   const [sel,     setSel]     = useState(null)
-  const flash = (m) => { setMsg(m); setTimeout(()=>setMsg(''),5000) }
   const bulkLock = useBulkLock({ items, setItems, patchFn:(id,fields)=>patch(id,fields) })
   const [busy,    setBusy]    = useState(false)
   const [msg,     setMsg]     = useState('')
