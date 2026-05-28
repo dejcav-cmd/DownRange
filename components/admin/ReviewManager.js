@@ -509,7 +509,7 @@ export default function ReviewManager({ adminKey }) {
         adminKey={adminKey}
         item={imgSearch}
         onApply={(imageUrl) => {
-          // Update the item in local state
+          setReviews(prev => prev.map(r => r._id === imgSearch._id ? { ...r, imageUrl } : r))
           setImgSearch(null)
         }}
         onClose={() => setImgSearch(null)}
