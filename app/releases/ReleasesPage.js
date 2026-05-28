@@ -1,5 +1,6 @@
 'use client'
 import { useState } from 'react'
+import SectionSearch from '../../components/ui/SectionSearch'
 import Link from 'next/link'
 import Masthead from '../../components/layout/Masthead'
 import BreakingTicker from '../../components/layout/BreakingTicker'
@@ -82,7 +83,7 @@ function ReleaseCard({ release, size = 'normal' }) {
   )
 }
 
-export default function ReleasesPage({ releases = [], alerts = [] }) {
+export default function ReleasesPage({ releases = [], alerts = [], searchQ = null }) {
   const [activeCat, setActiveCat] = useState(null)
   const all = releases.length > 0 ? releases : SEED_RELEASES
   const filtered = activeCat ? all.filter(r => r.category === activeCat) : all
@@ -103,6 +104,11 @@ export default function ReleasesPage({ releases = [], alerts = [] }) {
 
       <div style={{ padding: '32px 0' }}>
         <div className="container">
+          {/* Search */}
+          <div style={{ marginBottom:16 }}>
+            <SectionSearch type="firearmRelease" placeholder="Search by brand, model, caliber…" defaultValue={searchQ||''} compact />
+          </div>
+
           {/* Category filter */}
           <div className="filter-tabs" style={{ marginBottom: '32px' }}>
             {[{ label: 'All', val: null }, ...cats.map(c => ({ label: c, val: c }))].map(c => (
