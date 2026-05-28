@@ -107,6 +107,14 @@
     {
       "path": "/api/cron/market-brief",
       "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/admin/backup",
+      "schedule": "0 10 * * *"
+    },
+    {
+      "path": "/api/admin/backup",
+      "schedule": "0 15 * * *"
     }
   ],
   "headers": [
@@ -225,6 +233,9 @@
     },
     "app/api/admin/cron-status/route.js": {
       "maxDuration": 60
+    },
+    "app/api/admin/backup/route.js": {
+      "maxDuration": 300
     }
   }
 }
