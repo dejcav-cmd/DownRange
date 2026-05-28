@@ -289,10 +289,24 @@ export default function ReleaseManager({ adminKey }) {
                     <img src={selRelease.imageUrl||''} alt="" style={{width:'100%',height:140,objectFit:'cover',background:'#111',display:'block'}}
                       onError={e=>{e.target.style.background='#1a0000'}} />
                   </div>
-                  <div style={{display:'flex',gap:6,marginBottom:8}}>
+                  <div style={{display:'flex',gap:6,marginBottom:8,flexWrap:'wrap'}}>
+                    <button className="rm-btn" style={{fontSize:10,padding:'6px 12px',background:'#3b82f6',color:'#fff',border:'none'}}
+                      disabled={busy} onClick={async ()=>{
+                        setBusy(true); flash('⏳ Fetching real image...')
+                        try {
+                          const res = await fetch('/api/admin/fetch-image', {
+                            method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
+                            body: JSON.stringify({ id:selRelease._id, type:'firearmRelease', title:`${selRelease.brand} ${selRelease.model}`, category:selRelease.category, sourceUrl:selRelease.sourceUrl||'' })
+                          })
+                          const d = await res.json()
+                          if (d.ok) { await load(); flash(`✅ ${d.source==='og:image'?'OG image fetched':'Photo assigned'} — ${d.imageUrl.slice(0,50)}`) }
+                          else flash('❌ ' + (d.error||'Error'))
+                        } catch(e){ flash('❌ '+e.message) }
+                        setBusy(false)
+                      }}>🖼 Fetch Real Image</button>
                     <button className="rm-ghost" style={{fontSize:9}} onClick={()=>{
                       const url=prompt('Image URL:'); if(url) patch(selRelease._id,{imageUrl:url})
-                    }}>✎ Change URL</button>
+                    }}>✎ Paste URL</button>
                   </div>
                   <input className="rm-input" defaultValue={selRelease.imageUrl||''} style={{marginBottom:12,fontSize:10}}
                     onBlur={e=>{ if(e.target.value!==selRelease.imageUrl) patch(selRelease._id,{imageUrl:e.target.value}) }} />

@@ -322,8 +322,24 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                 {editView==='edit' && (
                   <div style={{flex:1,overflowY:'auto',padding:14}}>
                     {editDraft.imageUrl && (
-                      <img src={editDraft.imageUrl} alt="" style={{width:'100%',height:100,objectFit:'cover',display:'block',background:'#111',marginBottom:10}} onError={e=>{e.target.style.display='none'}} />
+                      <img src={editDraft.imageUrl} alt="" style={{width:'100%',height:100,objectFit:'cover',display:'block',background:'#111',marginBottom:6}} onError={e=>{e.target.style.display='none'}} />
                     )}
+                    <div style={{display:'flex',gap:6,marginBottom:10}}>
+                      <button style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:11,letterSpacing:'.05em',padding:'5px 12px',background:'#3b82f6',color:'#fff',border:'none',cursor:'pointer'}}
+                        disabled={busy} onClick={async ()=>{
+                          setBusy(true); flash('⏳ Fetching real image...')
+                          try {
+                            const res = await fetch('/api/admin/fetch-image', {
+                              method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
+                              body: JSON.stringify({ id:editDraft._id, type:'blogPost', title:editDraft.title, category:editDraft.category||'general' })
+                            })
+                            const d = await res.json()
+                            if (d.ok) { setEditDraft(p=>({...p,imageUrl:d.imageUrl})); flash(`✅ ${d.source==='og:image'?'OG image fetched':'Photo assigned'}`) }
+                            else flash('❌ ' + (d.error||'Error'))
+                          } catch(e){ flash('❌ '+e.message) }
+                          setBusy(false)
+                        }}>🖼 Fetch Real Image</button>
+                    </div>
 
                     <div style={{marginBottom:10}}>
                       <span className="bm-lbl">Title</span>

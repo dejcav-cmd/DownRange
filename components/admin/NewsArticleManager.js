@@ -347,11 +347,25 @@ export default function NewsArticleManager({ adminKey }) {
                 )}
               </div>
               <div style={{ display:'flex', gap:6, marginBottom:8, flexWrap:'wrap' }}>
-                <button className="nam-btn" onClick={() => fixImage(selectedArticle)} disabled={busy}
-                  style={{ background:'#f59e0b', color:'#000', fontSize:11, padding:'7px 12px' }}>
-                  🔧 Auto-Fix Image
+                <button className="nam-btn" onClick={async () => {
+                  setBusy(true); flash('⏳ Fetching real image...')
+                  try {
+                    const res = await fetch('/api/admin/fetch-image', {
+                      method: 'POST',
+                      headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ id: selectedArticle._id, type: 'newsArticle', title: selectedArticle.title, category: selectedArticle.category, sourceUrl: selectedArticle.sourceUrl || '' }),
+                    })
+                    const d = await res.json()
+                    if (d.ok) {
+                      setEditImg(d.imageUrl)
+                      flash(`✅ ${d.source === 'og:image' ? 'Fetched OG image from source' : d.source === 'existing' ? 'Already has real image' : 'Assigned photo from library'} — ${d.imageUrl.slice(0,60)}`)
+                    } else flash('❌ ' + (d.error || 'Error'))
+                  } catch (e) { flash('❌ ' + e.message) }
+                  setBusy(false)
+                }} disabled={busy} style={{ background:'#3b82f6', color:'#fff', fontSize:11, padding:'7px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, letterSpacing:'.05em', border:'none', cursor:'pointer' }}>
+                  🖼 Fetch Real Image
                 </button>
-                <button className="nam-btn-sm" onClick={() => aiFixImage(selectedArticle)} disabled={busy}>🤖 AI Pick</button>
+                <button className="nam-btn-sm" onClick={() => fixImage(selectedArticle)} disabled={busy}>🔧 Auto-Fix</button>
                 <button className="nam-btn-sm" onClick={() => {
                   const url = prompt('Paste new image URL:')
                   if (url) { setEditImg(url); patchField(selectedArticle._id, { imageUrl: url }) }

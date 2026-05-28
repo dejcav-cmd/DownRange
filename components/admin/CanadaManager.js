@@ -265,6 +265,22 @@ export default function CanadaManager({ adminKey }) {
                 <Field label="Read Time" field="readMins" item={selItem} />
                 <Field label="Author" field="author" item={selItem} />
                 <Field label="Image URL" field="imageUrl" item={selItem} />
+                <div style={{display:'flex',gap:6,marginBottom:8}}>
+                  <button style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:11,letterSpacing:'.05em',padding:'5px 12px',background:'#3b82f6',color:'#fff',border:'none',cursor:busy?'default':'pointer',opacity:busy?.5:1}}
+                    disabled={busy} onClick={async ()=>{
+                      setBusy(true); flash('⏳ Fetching real image...')
+                      try {
+                        const res = await fetch('/api/admin/fetch-image', {
+                          method:'POST', headers:{...H},
+                          body: JSON.stringify({ id:selItem._id, type:'canadaContent', title:selItem.title, category:'law' })
+                        })
+                        const d = await res.json()
+                        if (d.ok) { save(selItem._id, { imageUrl: d.imageUrl }); flash(`✅ Photo assigned — ${d.imageUrl.slice(0,50)}`) }
+                        else flash('❌ ' + (d.error||'Error'))
+                      } catch(e){ flash('❌ '+e.message) }
+                      setBusy(false)
+                    }}>🖼 Fetch Real Image</button>
+                </div>
                 <Field label="Summary" field="summary" item={selItem} rows={2} />
                 <div style={{ marginBottom: 8 }}>
                   <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 4 }}>
