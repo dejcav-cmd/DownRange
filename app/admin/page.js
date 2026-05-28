@@ -35,6 +35,7 @@ const NAV = [
   {
     id: 'content', label: 'Content', icon: '📰',
     panels: [
+      { id:'hub',          label:'Content Hub',      icon:'◈',  badge:null },
       { id:'news',         label:'News Articles',    icon:'📰', badge:null },
       { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍',  badge:null },
@@ -253,8 +254,6 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
   const [migrating, setMigrating]   = useState(false)
   const [feedRunning, setFeedRunning] = useState(false)
   const [feedResult, setFeedResult]   = useState(null)
-  const [seeding, setSeeding]         = useState(false)
-  const [seedResult, setSeedResult]   = useState(null)
 
   useEffect(() => {
     fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
@@ -312,42 +311,6 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
     <div>
       <div className="panel-title">DownRange Command Center</div>
       <div className="panel-sub">Enterprise firearms media management platform</div>
-
-      {/* Seed All Content — prominent banner */}
-      <div style={{marginBottom:16,padding:'16px 20px',background:'rgba(34,197,94,.06)',border:'1px solid rgba(34,197,94,.25)',display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
-        <div style={{flex:1,minWidth:200}}>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'#22c55e',letterSpacing:'.05em',marginBottom:3}}>🌱 SEED ALL CONTENT PANELS</div>
-          <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',lineHeight:1.7}}>
-            Populates Blog, Reviews, Canada, Competitions, and Gun Releases with real starter content. Run this once if any panel shows 0 items.
-          </div>
-        </div>
-        <div style={{display:'flex',gap:8,flexWrap:'wrap'}}>
-          <button style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1rem',letterSpacing:'.08em',padding:'10px 24px',background:seeding?'#374151':'#22c55e',color:seeding?'#6b7280':'#000',border:'none',cursor:seeding?'default':'pointer'}}
-            disabled={seeding} onClick={async () => {
-              setSeeding(true); setSeedResult(null)
-              try {
-                const r = await fetch('/api/admin/seed-all-content', {
-                  method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
-                  body: JSON.stringify({})
-                })
-                const d = await r.json()
-                setSeedResult(d)
-              } catch(e) { setSeedResult({ok:false, message:e.message}) }
-              setSeeding(false)
-            }}>
-            {seeding ? '⏳ SEEDING...' : '▶ SEED ALL PANELS'}
-          </button>
-          <button style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:12,fontWeight:700,padding:'10px 14px',background:'transparent',border:'1px solid rgba(34,197,94,.3)',color:'#22c55e',cursor:'pointer'}}
-            onClick={()=>{setSection('system');setPanel('agents')}}>
-            🤖 Content Agents →
-          </button>
-        </div>
-        {seedResult && (
-          <div style={{width:'100%',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:seedResult.ok?'#4ade80':'#f87171',paddingTop:8,borderTop:'1px solid rgba(34,197,94,.15)'}}>
-            {seedResult.ok ? `✅ ${seedResult.message}` : `❌ ${seedResult.message||'Error'}`}
-          </div>
-        )}
-      </div>
 
       {/* AmmoLand migration */}
       <div style={{marginBottom:16,padding:'12px 18px',background:'rgba(200,146,42,.05)',border:'1px solid rgba(200,146,42,.2)',display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
@@ -1389,6 +1352,292 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
   )
 }
 
+function ContentHub({ adminKey, setPanel, setSection }) {
+  const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+
+  // Live counts per section
+  const [counts,   setCounts]   = useState(null)
+  const [seeding,  setSeeding]  = useState({})
+  const [results,  setResults]  = useState({})
+  const [aiRunning,setAiRunning]= useState({})
+  const [aiResults,setAiResults]= useState({})
+
+  useEffect(() => {
+    fetchCounts()
+  }, [])
+
+  async function fetchCounts() {
+    try {
+      const res = await fetch('/api/admin/content-scan', { headers: H })
+      const d   = await res.json()
+      if (d.ok) setCounts(d.summary)
+    } catch {}
+  }
+
+  async function seed(type) {
+    setSeeding(s => ({...s, [type]: true}))
+    setResults(r => ({...r, [type]: null}))
+    try {
+      const res = await fetch('/api/admin/seed-all-content', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ types: type })
+      })
+      const d = await res.json()
+      setResults(r => ({...r, [type]: d}))
+      await fetchCounts()
+    } catch (e) {
+      setResults(r => ({...r, [type]: { ok: false, message: e.message }}))
+    }
+    setSeeding(s => ({...s, [type]: false}))
+  }
+
+  async function seedAll() {
+    setSeeding(s => ({...s, all: true}))
+    setResults(r => ({...r, all: null}))
+    try {
+      const res = await fetch('/api/admin/seed-all-content', {
+        method: 'POST', headers: H, body: JSON.stringify({})
+      })
+      const d = await res.json()
+      setResults(r => ({...r, all: d}))
+      await fetchCounts()
+    } catch (e) {
+      setResults(r => ({...r, all: { ok: false, message: e.message }}))
+    }
+    setSeeding(s => ({...s, all: false}))
+  }
+
+  async function runAI(key, path, params = '') {
+    setAiRunning(a => ({...a, [key]: true}))
+    setAiResults(a => ({...a, [key]: null}))
+    try {
+      const res = await fetch(`/api/admin/${path}${params}`, { method: 'POST', headers: H })
+      const d   = await res.json()
+      setAiResults(a => ({...a, [key]: d}))
+      await fetchCounts()
+    } catch (e) {
+      setAiResults(a => ({...a, [key]: { ok: false, error: e.message }}))
+    }
+    setAiRunning(a => ({...a, [key]: false}))
+  }
+
+  const SECTIONS = [
+    {
+      key:      'newsArticle',
+      id:       'news',
+      label:    'News Articles',
+      icon:     '📰',
+      color:    '#3b82f6',
+      desc:     'Live RSS feed · AI rewritten · Updates every 15 min',
+      seedType: null,   // fed by cron, not seeded
+      aiAction: { label: 'Backfill Missing', path: 'backfill-articles', params: '?limit=10&types=newsArticle' },
+      liveIndicator: true,
+    },
+    {
+      key:      'firearmRelease',
+      id:       'releases',
+      label:    'Gun Releases',
+      icon:     '🔫',
+      color:    '#C8922A',
+      desc:     'New product announcements · Manufacturer RSS',
+      seedType: 'releases',
+      aiAction: { label: 'AI Write Articles', path: 'backfill-articles', params: '?limit=5&types=firearmRelease' },
+      seedAction: { label: 'Seed Releases', path: 'seed-releases' },
+    },
+    {
+      key:      'blogPost',
+      id:       'blog',
+      label:    'Blog Posts',
+      icon:     '✍',
+      color:    '#22c55e',
+      desc:     'Opinion · Analysis · Guides · First-person DJ voice',
+      seedType: 'blog',
+      aiAction: { label: 'Generate Posts', path: 'write-blog-articles' },
+    },
+    {
+      key:      'review',
+      id:       'reviews',
+      label:    'Reviews',
+      icon:     '★',
+      color:    '#f59e0b',
+      desc:     'Gear · Guns · Field-tested · Scored 0–10',
+      seedType: 'reviews',
+      aiAction: null,
+    },
+    {
+      key:      'canadaContent',
+      id:       'canada',
+      label:    'Canada',
+      icon:     '🍁',
+      color:    '#ef4444',
+      desc:     'C-21 · PAL · Provincial law · Restricted/prohibited',
+      seedType: 'canada',
+      aiAction: { label: 'AI Write Articles', path: 'write-canada-articles' },
+    },
+    {
+      key:      'competition',
+      id:       'competitions',
+      label:    'Competitions',
+      icon:     '🏆',
+      color:    '#a855f7',
+      desc:     'USPSA · IDPA · Steel Challenge · NRA · 3-Gun',
+      seedType: 'competitions',
+      aiAction: null,
+    },
+  ]
+
+  const totalItems   = counts ? Object.values(counts).reduce((s, c) => s + (c.total || 0), 0) : null
+  const totalFailing = counts ? Object.values(counts).reduce((s, c) => s + (c.needsRewrite || 0), 0) : null
+
+  return (
+    <div>
+      {/* ── Header ── */}
+      <div style={{ marginBottom: 28 }}>
+        <div className="panel-title">◈ Content Hub</div>
+        <div className="panel-sub">Manage, seed, and monitor every content section from one place.</div>
+      </div>
+
+      {/* ── Summary bar ── */}
+      {counts && (
+        <div style={{ display: 'flex', gap: 12, marginBottom: 28, flexWrap: 'wrap' }}>
+          {[
+            { label: 'Total Items',    val: totalItems,   color: 'var(--text)' },
+            { label: 'Need Rewrite',   val: totalFailing, color: totalFailing > 0 ? '#f59e0b' : '#22c55e' },
+            { label: 'Quality Passed', val: counts ? Object.values(counts).reduce((s,c) => s + (c.passing||0), 0) : 0, color: '#22c55e' },
+            { label: 'Reviewed ✓',    val: counts ? Object.values(counts).reduce((s,c) => s + (c.reviewed||0), 0) : 0, color: '#C8922A' },
+          ].map(s => (
+            <div key={s.label} style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'10px 20px', textAlign:'center', flex:1, minWidth:110 }}>
+              <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:s.color, lineHeight:1 }}>{s.val ?? '—'}</div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginTop:3, letterSpacing:'.08em', textTransform:'uppercase' }}>{s.label}</div>
+            </div>
+          ))}
+          <div style={{ display:'flex', alignItems:'center', gap:8, marginLeft:'auto' }}>
+            <button onClick={fetchCounts} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'6px 12px', background:'transparent', border:'1px solid var(--border)', color:'#6b7280', cursor:'pointer' }}>
+              ↺ Refresh
+            </button>
+          </div>
+        </div>
+      )}
+
+      {/* ── Seed All banner ── */}
+      <div style={{ marginBottom: 28, padding: '20px 24px', background: 'linear-gradient(135deg, rgba(34,197,94,.07) 0%, rgba(34,197,94,.03) 100%)', border: '1px solid rgba(34,197,94,.2)', display:'flex', alignItems:'center', gap:20, flexWrap:'wrap' }}>
+        <div style={{ flex:1, minWidth:240 }}>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'#22c55e', letterSpacing:'.06em', marginBottom:4 }}>🌱 SEED ALL CONTENT</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.8 }}>
+            Populates every empty section with curated starter content — blog posts, reviews, Canada articles, competitions, gun releases.
+          </div>
+        </div>
+        <div style={{ display:'flex', gap:10, alignItems:'center' }}>
+          <button onClick={seedAll} disabled={seeding.all} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.all?'#374151':'#22c55e', color:seeding.all?'#6b7280':'#000', border:'none', cursor:seeding.all?'default':'pointer' }}>
+            {seeding.all ? '⏳ SEEDING...' : '▶ SEED EVERYTHING'}
+          </button>
+          <button onClick={()=>{setSection('system');setPanel('agents')}} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, padding:'10px 14px', background:'transparent', border:'1px solid rgba(34,197,94,.25)', color:'#22c55e', cursor:'pointer' }}>
+            🤖 AI Agents →
+          </button>
+        </div>
+        {results.all && (
+          <div style={{ width:'100%', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:results.all.ok?'#4ade80':'#f87171', paddingTop:8, borderTop:'1px solid rgba(34,197,94,.15)' }}>
+            {results.all.ok ? `✅ ${results.all.message}` : `❌ ${results.all.message||'Error'}`}
+          </div>
+        )}
+      </div>
+
+      {/* ── Section cards ── */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))', gap:16 }}>
+        {SECTIONS.map(section => {
+          const cnt    = counts?.[section.key]
+          const isBusy = seeding[section.seedType] || aiRunning[section.key]
+          const sResult= results[section.seedType]
+          const aResult= aiResults[section.key]
+
+          return (
+            <div key={section.key} style={{ background:'var(--bg2)', border:`1px solid var(--border)`, borderTop:`3px solid ${section.color}`, padding:20, display:'flex', flexDirection:'column', gap:14 }}>
+
+              {/* Card header */}
+              <div style={{ display:'flex', alignItems:'flex-start', gap:10 }}>
+                <span style={{ fontSize:22, lineHeight:1 }}>{section.icon}</span>
+                <div style={{ flex:1 }}>
+                  <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:17, fontWeight:700, color:'var(--text)', letterSpacing:'.04em', lineHeight:1, display:'flex', alignItems:'center', gap:8 }}>
+                    {section.label}
+                    {section.liveIndicator && (
+                      <span style={{ fontSize:9, color:'#22c55e', fontFamily:"'IBM Plex Mono',monospace", display:'flex', alignItems:'center', gap:3 }}>
+                        <span style={{ width:6, height:6, borderRadius:'50%', background:'#22c55e', display:'inline-block', animation:'pulse-dot 2s ease-in-out infinite' }}/>
+                        LIVE
+                      </span>
+                    )}
+                  </div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', marginTop:3, lineHeight:1.6 }}>{section.desc}</div>
+                </div>
+                {/* Count pill */}
+                {cnt && (
+                  <div style={{ textAlign:'right', flexShrink:0 }}>
+                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', color:section.color, lineHeight:1 }}>{cnt.total ?? '—'}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#6b7280', letterSpacing:'.06em' }}>ITEMS</div>
+                  </div>
+                )}
+              </div>
+
+              {/* Quality bar */}
+              {cnt && cnt.total > 0 && (
+                <div>
+                  <div style={{ display:'flex', justifyContent:'space-between', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginBottom:4 }}>
+                    <span>Quality</span>
+                    <span style={{ color: cnt.needsRewrite > 0 ? '#f59e0b' : '#22c55e' }}>
+                      {cnt.passing}/{cnt.total} passing · {cnt.needsRewrite} need rewrite
+                    </span>
+                  </div>
+                  <div style={{ height:4, background:'#1f2937', overflow:'hidden' }}>
+                    <div style={{ height:'100%', width:`${Math.round(((cnt.passing||0)/cnt.total)*100)}%`, background: cnt.needsRewrite > 0 ? '#f59e0b' : '#22c55e', transition:'width .4s' }}/>
+                  </div>
+                </div>
+              )}
+
+              {/* Empty state alert */}
+              {cnt && cnt.total === 0 && (
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#f59e0b', padding:'6px 10px', background:'rgba(245,158,11,.08)', border:'1px solid rgba(245,158,11,.2)' }}>
+                  ⚠ Empty — use the buttons below to populate
+                </div>
+              )}
+
+              {/* Action buttons */}
+              <div style={{ display:'flex', gap:8, flexWrap:'wrap', marginTop:'auto' }}>
+                {/* Navigate button */}
+                <button onClick={() => { setSection('content'); setPanel(section.id) }} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, letterSpacing:'.05em', padding:'6px 14px', background:section.color, color: section.color === '#C8922A' || section.color === '#f59e0b' ? '#000' : '#fff', border:'none', cursor:'pointer' }}>
+                  ✏ Manage
+                </button>
+
+                {/* Seed button */}
+                {section.seedType && (
+                  <button onClick={() => seed(section.seedType)} disabled={isBusy} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, letterSpacing:'.05em', padding:'6px 14px', background:'transparent', border:`1px solid ${section.color}66`, color:section.color, cursor:isBusy?'default':'pointer', opacity:isBusy?.5:1 }}>
+                    {seeding[section.seedType] ? '⏳ Seeding...' : '🌱 Seed'}
+                  </button>
+                )}
+
+                {/* AI action */}
+                {section.aiAction && (
+                  <button onClick={() => runAI(section.key, section.aiAction.path, section.aiAction.params||'')} disabled={isBusy} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, letterSpacing:'.05em', padding:'6px 14px', background:'transparent', border:'1px solid rgba(168,139,250,.4)', color:'#a78bfa', cursor:isBusy?'default':'pointer', opacity:isBusy?.5:1 }}>
+                    {aiRunning[section.key] ? '⏳ Running...' : `🤖 ${section.aiAction.label}`}
+                  </button>
+                )}
+              </div>
+
+              {/* Result feedback */}
+              {(sResult || aResult) && (() => {
+                const r = sResult || aResult
+                return (
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:r.ok?'#4ade80':'#f87171', padding:'6px 10px', background:r.ok?'rgba(34,197,94,.06)':'rgba(239,68,68,.06)', border:`1px solid ${r.ok?'rgba(34,197,94,.2)':'rgba(239,68,68,.2)'}` }}>
+                    {r.ok ? `✅ ${r.message||'Done'}${r.done!=null?` · ${r.done} items`:''}${r.created!=null?` · ${r.created} created`:''}` : `❌ ${r.message||r.error||'Error'}`}
+                  </div>
+                )
+              })()}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
   const [section,  setSection]  = useState('system')
@@ -1488,6 +1737,7 @@ export default function AdminPage() {
           <div className="adm-panel">
 
             {/* ── CONTENT ── */}
+            {panel==='hub'          && <ContentHub         adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
