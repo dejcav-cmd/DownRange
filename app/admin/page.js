@@ -22,6 +22,7 @@ const AICostDashboard       = L(() => import('../../components/admin/AICostDashb
 const EnvChecker            = L(() => import('../../components/admin/EnvChecker'))
 const CronDashboard         = L(() => import('../../components/admin/CronDashboard'))
 const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
+const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -61,6 +62,7 @@ const NAV = [
       { id:'pulllog',      label:'Pull Log',         icon:'📡', badge:null },
       { id:'deals',        label:'Deals Feed',       icon:'🔥', badge:null },
       { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
+      { id:'marketbrief',  label:'Market Brief',     icon:'📊', badge:'live' },
     ]
   },
   {
@@ -2084,7 +2086,8 @@ export default function AdminPage() {
             {panel==='statelaws' && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='pulllog'   && <PullLogDashboard />}
             {panel==='deals'   && <DealsPanel />}
-            {panel==='feeds'   && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
+            {panel==='feeds'        && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
+            {panel==='marketbrief' && <MarketBriefManager adminKey={adminKey} />}
 
             {/* ── SYSTEM ── */}
             {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
