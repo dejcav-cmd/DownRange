@@ -41,8 +41,8 @@ export async function GET(req) {
   const articles = await sanity.fetch(
     `*[_type == "newsArticle"] | order(publishedAt desc) [0...500] {
       _id, title, slug, category, source, imageUrl, imageAlt,
-      approved, publishedAt, summary, body,
-      heroImage { asset->{url} }
+      approved, editorLocked, publishedAt, summary, body,
+      externalUrl, heroImage { asset->{url} }
     }`
   )
 
@@ -51,6 +51,7 @@ export async function GET(req) {
     ...a,
     slug: a.slug?.current || '',
     imageUrl: a.heroImage?.asset?.url || a.imageUrl || null,
+    sourceUrl: a.externalUrl || null,  // alias for manager components
   }))
 
   return Response.json({ ok: true, articles: normalized, total: normalized.length })

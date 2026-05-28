@@ -356,7 +356,7 @@ export default function NewsArticleManager({ adminKey }) {
                     const res = await fetch('/api/admin/fetch-image', {
                       method: 'POST',
                       headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ id: selectedArticle._id, type: 'newsArticle', title: selectedArticle.title, category: selectedArticle.category, sourceUrl: selectedArticle.sourceUrl || '' }),
+                      body: JSON.stringify({ id: selectedArticle._id, type: 'newsArticle', title: selectedArticle.title, category: selectedArticle.category, sourceUrl: selectedArticle.externalUrl || selectedArticle.sourceUrl || '' }),
                     })
                     const d = await res.json()
                     if (d.ok) {
