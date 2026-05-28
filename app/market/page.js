@@ -161,6 +161,21 @@ function fmt(ppr) {
   return ppr < 1 ? `${(ppr * 100).toFixed(1)}¢` : `$${ppr.toFixed(2)}`
 }
 
+const SIG_COLORS = { BUY:'#22c55e', HOLD:'#f59e0b', WATCH:'#60a5fa', SELL:'#ef4444' }
+const SIG_BG     = { BUY:'rgba(34,197,94,.12)', HOLD:'rgba(245,158,11,.12)', WATCH:'rgba(96,165,250,.12)', SELL:'rgba(239,68,68,.12)' }
+
+function SignalBadge({ signal }) {
+  const mono = "'IBM Plex Mono',monospace"
+  return (
+    <span style={{ fontFamily:mono, fontSize:9, fontWeight:700, padding:'3px 10px', letterSpacing:'.06em',
+      background: SIG_BG[signal] || SIG_BG.WATCH,
+      color: SIG_COLORS[signal] || '#60a5fa',
+      border: '1px solid currentColor' }}>
+      {signal}
+    </span>
+  )
+}
+
 function availColor(n) { return n >= 80 ? '#22c55e' : n >= 55 ? '#f59e0b' : '#ef4444' }
 function availLabel(n) { return n >= 80 ? 'IN STOCK' : n >= 55 ? 'LIMITED' : 'LOW' }
 
