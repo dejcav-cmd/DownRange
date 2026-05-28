@@ -3,9 +3,10 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 
 const S = `
 .nam-wrap { font-family:'IBM Plex Mono',monospace; }
-.nam-row { display:grid; grid-template-columns:80px 1fr 130px 100px 90px 44px; gap:0; align-items:center; border-bottom:1px solid var(--border); transition:background .1s; cursor:pointer; }
+.nam-row { display:grid; grid-template-columns:36px 80px 1fr 130px 100px 90px 28px; gap:0; align-items:center; border-bottom:1px solid var(--border); transition:background .1s; cursor:pointer; }
 .nam-row:hover { background:rgba(200,146,42,.04); }
 .nam-row.selected { background:rgba(200,146,42,.08); border-left:2px solid var(--gold); }
+.nam-row.checked { background:rgba(200,146,42,.06); }
 .nam-cell { padding:10px 12px; font-size:11px; color:var(--text-dim); overflow:hidden; white-space:nowrap; text-overflow:ellipsis; }
 .nam-img { width:80px; height:50px; object-fit:cover; display:block; background:#111; }
 .nam-title { font-size:12px; font-weight:600; color:var(--text); white-space:normal; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; line-height:1.3; }
@@ -48,21 +49,60 @@ function pickImageForArticle(title, category) {
 }
 
 export default function NewsArticleManager({ adminKey }) {
-  const [articles,  setArticles]  = useState([])
-  const [loading,   setLoading]   = useState(true)
-  const [selected,  setSelected]  = useState(null)
-  const [search,    setSearch]    = useState('')
-  const [catFilter, setCatFilter] = useState('all')
-  const [imgFilter, setImgFilter] = useState('all')  // all | broken | good
-  const [page,      setPage]      = useState(0)
-  const [msg,       setMsg]       = useState('')
-  const [busy,      setBusy]      = useState(false)
-  const [editImg,   setEditImg]   = useState('')
-  const [editTitle, setEditTitle] = useState('')
-  const [editBody,  setEditBody]  = useState('')
+  const [articles,    setArticles]  = useState([])
+  const [loading,     setLoading]   = useState(true)
+  const [selected,    setSelected]  = useState(null)
+  const [search,      setSearch]    = useState('')
+  const [catFilter,   setCatFilter] = useState('all')
+  const [imgFilter,   setImgFilter] = useState('all')  // all | broken | good
+  const [page,        setPage]      = useState(0)
+  const [msg,         setMsg]       = useState('')
+  const [busy,        setBusy]      = useState(false)
+  const [editImg,     setEditImg]   = useState('')
+  const [editTitle,   setEditTitle] = useState('')
+  const [editBody,    setEditBody]  = useState('')
+  const [checkedIds,  setCheckedIds]= useState(new Set())
+  const [bulkSaving,  setBulkSaving]= useState(false)
   const PER_PAGE = 50
 
   const flash = (m) => { setMsg(m); setTimeout(() => setMsg(''), 5000) }
+
+  // ── Bulk lock/unlock ─────────────────────────────────────────────────────
+  function toggleCheck(id, e) {
+    e.stopPropagation()
+    setCheckedIds(prev => {
+      const next = new Set(prev)
+      next.has(id) ? next.delete(id) : next.add(id)
+      return next
+    })
+  }
+
+  function toggleCheckAll() {
+    if (checkedIds.size === visible.length) {
+      setCheckedIds(new Set())
+    } else {
+      setCheckedIds(new Set(visible.map(a => a._id)))
+    }
+  }
+
+  async function bulkSetLock(lockValue) {
+    if (!checkedIds.size) return
+    setBulkSaving(true)
+    flash(`⏳ ${lockValue ? 'Locking' : 'Unlocking'} ${checkedIds.size} articles...`)
+    let done = 0, failed = 0
+    for (const id of checkedIds) {
+      try {
+        await patchField(id, { editorLocked: lockValue })
+        done++
+      } catch { failed++ }
+    }
+    setArticles(prev => prev.map(a =>
+      checkedIds.has(a._id) ? { ...a, editorLocked: lockValue } : a
+    ))
+    setCheckedIds(new Set())
+    setBulkSaving(false)
+    flash(`✅ ${lockValue ? '🔒 Locked' : '🔓 Unlocked'} ${done} articles${failed ? ` · ${failed} failed` : ''}`)
+  }
 
   const load = useCallback(async () => {
     setLoading(true)
@@ -262,9 +302,50 @@ export default function NewsArticleManager({ adminKey }) {
       <div style={{ display:'grid', gridTemplateColumns: selected ? '1fr 400px' : '1fr', gap:0, border:'1px solid var(--border)', minHeight:400 }}>
 
         {/* ── TABLE ── */}
+        {/* ── Bulk action bar — sticky at top when items checked ── */}
+        {checkedIds.size > 0 && (
+          <div style={{
+            position:'sticky', top:0, zIndex:10, marginBottom:4,
+            padding:'10px 16px', display:'flex', alignItems:'center', gap:10, flexWrap:'wrap',
+            background:'#0d1117', border:'1px solid var(--gold)',
+            borderLeft:'4px solid var(--gold)',
+          }}>
+            <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:14, color:'var(--gold)' }}>
+              {checkedIds.size} selected
+            </span>
+            <button onClick={() => bulkSetLock(true)} disabled={bulkSaving} style={{
+              fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em',
+              padding:'6px 18px', background:'#C8922A', color:'#000', border:'none', cursor:'pointer',
+            }}>
+              {bulkSaving ? '⏳' : '🔒 LOCK ALL'}
+            </button>
+            <button onClick={() => bulkSetLock(false)} disabled={bulkSaving} style={{
+              fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em',
+              padding:'6px 18px', background:'#374151', color:'#9ca3af', border:'1px solid #4b5563', cursor:'pointer',
+            }}>
+              {bulkSaving ? '⏳' : '🔓 UNLOCK ALL'}
+            </button>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563' }}>
+              · Locked articles are frozen — no AI or cron changes
+            </span>
+            <button onClick={() => setCheckedIds(new Set())} style={{
+              marginLeft:'auto', background:'none', border:'none', color:'#6b7280',
+              fontFamily:"'IBM Plex Mono',monospace", fontSize:11, cursor:'pointer',
+            }}>✕ Clear</button>
+          </div>
+        )}
+
         <div style={{ overflowX:'auto', overflowY:'auto', maxHeight:'calc(100vh - 320px)' }}>
-          {/* Header */}
-          <div style={{ display:'grid', gridTemplateColumns:'80px 1fr 130px 100px 90px 44px', borderBottom:'2px solid var(--border)', background:'var(--bg)' }}>
+          {/* Header row with select-all checkbox */}
+          <div style={{ display:'grid', gridTemplateColumns:'36px 80px 1fr 130px 100px 90px 28px', borderBottom:'2px solid var(--border)', background:'var(--bg)', position:'sticky', top:0, zIndex:5 }}>
+            <div style={{ padding:'8px 10px', display:'flex', alignItems:'center', justifyContent:'center' }}>
+              <input type="checkbox"
+                checked={visible.length > 0 && checkedIds.size === visible.length}
+                ref={el => { if (el) el.indeterminate = checkedIds.size > 0 && checkedIds.size < visible.length }}
+                onChange={toggleCheckAll}
+                style={{ cursor:'pointer', accentColor:'var(--gold)', width:14, height:14 }}
+              />
+            </div>
             {['Image','Title / Source','Category','Date','Status',''].map((h,i) => (
               <div key={i} style={{ padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', letterSpacing:'.08em', textTransform:'uppercase', fontWeight:700 }}>{h}</div>
             ))}
@@ -275,7 +356,17 @@ export default function NewsArticleManager({ adminKey }) {
           ) : visible.map(a => {
             const broken = isBrokenImage(a.imageUrl)
             return (
-              <div key={a._id} className={'nam-row' + (selected===a._id ? ' selected' : '')} onClick={() => setSelected(selected===a._id ? null : a._id)}>
+              <div key={a._id} className={'nam-row' + (selected===a._id ? ' selected' : '') + (checkedIds.has(a._id) ? ' checked' : '')}
+                onClick={() => setSelected(selected===a._id ? null : a._id)}>
+                {/* Checkbox */}
+                <div style={{ padding:'0 10px', display:'flex', alignItems:'center', justifyContent:'center' }}
+                  onClick={e => toggleCheck(a._id, e)}>
+                  <input type="checkbox"
+                    checked={checkedIds.has(a._id)}
+                    onChange={() => {}}
+                    style={{ cursor:'pointer', accentColor:'var(--gold)', width:14, height:14 }}
+                  />
+                </div>
                 {/* Thumb + inline fix */}
                 <div style={{ position:'relative', width:80, height:50, flexShrink:0 }}>
                   {a.imageUrl
@@ -309,14 +400,33 @@ export default function NewsArticleManager({ adminKey }) {
                 <div className="nam-cell" style={{ fontSize:10 }}>
                   {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric'}) : '—'}
                 </div>
-                {/* Status */}
-                <div className="nam-cell">
+                {/* Status + inline lock */}
+                <div className="nam-cell" style={{ display:'flex', alignItems:'center', gap:4, flexWrap:'wrap' }}>
                   <span className="nam-badge" style={{ background: a.approved ? 'rgba(34,197,94,.15)' : 'rgba(100,116,139,.15)', color: a.approved ? '#22c55e' : '#64748b' }}>
                     {a.approved ? 'live' : 'hidden'}
                   </span>
-                  {a.editorLocked && (
-                    <span className="nam-badge" style={{ background:'rgba(200,146,42,.15)', color:'#C8922A', marginLeft:4 }}>🔒</span>
-                  )}
+                  <span
+                    onClick={async e => {
+                      e.stopPropagation()
+                      const newVal = !a.editorLocked
+                      await patchField(a._id, { editorLocked: newVal })
+                      setArticles(prev => prev.map(x => x._id === a._id ? { ...x, editorLocked: newVal } : x))
+                      flash(newVal ? '🔒 Locked' : '🔓 Unlocked')
+                    }}
+                    title={a.editorLocked ? 'Click to unlock' : 'Click to lock'}
+                    style={{
+                      cursor: 'pointer',
+                      fontSize: 11,
+                      padding: '1px 5px',
+                      borderRadius: 2,
+                      background: a.editorLocked ? 'rgba(200,146,42,.2)' : 'rgba(100,116,139,.1)',
+                      color: a.editorLocked ? '#C8922A' : '#4b5563',
+                      border: `1px solid ${a.editorLocked ? 'rgba(200,146,42,.4)' : 'rgba(100,116,139,.2)'}`,
+                      transition: 'all .15s',
+                      userSelect: 'none',
+                    }}>
+                    {a.editorLocked ? '🔒' : '🔓'}
+                  </span>
                 </div>
                 {/* Arrow */}
                 <div className="nam-cell" style={{ textAlign:'center', color: selected===a._id ? 'var(--gold)' : '#374151' }}>›</div>
