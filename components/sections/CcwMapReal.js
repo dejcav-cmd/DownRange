@@ -299,6 +299,14 @@ export default function CcwMapReal({ profiles = [] }) {
     setHovered(abbr)
   }, [])
 
+  function getLabelFill(abbr, sel, mode) {
+    if (sel === abbr) return '#000'
+    const c = getColor(abbr, sel, mode)
+    if (c === '#15803d' || c === '#1e3a8a') return '#fff'
+    if (c === '#1e40af') return '#93c5fd'
+    return '#9ca3af'
+  }
+
   const sel = selected ? CCW[selected] : null
   const hov = hovered  ? CCW[hovered]  : null
   const mono   = "'IBM Plex Mono',monospace"
@@ -374,9 +382,7 @@ export default function CcwMapReal({ profiles = [] }) {
             <text key={abbr} x={x} y={y}
               textAnchor="middle" dominantBaseline="middle"
               style={{ fontFamily:mono, fontSize:['RI','DE','CT','NH','VT','NJ','MA','MD','DC'].includes(abbr)?5:6.5,
-                fontWeight:700, fill: selected===abbr?'#000':
-                  getColor(abbr,selected,mode)==='#15803d'||getColor(abbr,selected,mode)==='#1e3a8a'?'#fff':
-                  getColor(abbr,selected,mode)==='#1e40af'?'#93c5fd':'#9ca3af',
+                fontWeight:700, fill:getLabelFill(abbr, selected, mode),
                 pointerEvents:'none', userSelect:'none' }}>
               {abbr}
             </text>
