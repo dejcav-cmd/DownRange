@@ -9,72 +9,82 @@ import { usePathname } from 'next/navigation'
 const NAV = [
   { label: 'Home', href: '/', icon: '◉', exact: true },
   { label: 'News', href: '/news' },
-  { label: 'Laws', href: '/laws' },
+  {
+    label: 'Laws', href: '/laws',
+    children: [
+      { label: '⚖️ Laws Home',          href: '/laws',                   desc: 'Bills, ATF rules, SCOTUS cases' },
+      { label: '📋 Bill Tracker',        href: '/laws?tab=federal',       desc: 'Federal & state bills tracked live' },
+      { label: '🗺️ Reciprocity Map',     href: '/laws?tab=reciprocity',   desc: 'Where your permit is honored' },
+      { label: '🪪 CCW Permit Map',      href: '/ccw',                    desc: 'Full interactive CCW reciprocity' },
+      { label: '🏛️ State Hub',           href: '/state-hub',              desc: '50-state firearms law profiles' },
+      { label: '📜 SCOTUS & Cases',      href: '/laws?tab=scotus',        desc: 'Landmark rulings & pending cases' },
+    ]
+  },
   {
     label: 'Reviews', href: '/reviews',
     children: [
-      { label: '★ All Reviews',   href: '/reviews',              desc: 'Field-tested, documented' },
-      { label: '🔫 Pistols',      href: '/reviews?cat=pistol',   desc: 'Handguns & subcompacts' },
-      { label: '◈ Rifles',        href: '/reviews?cat=rifle',    desc: 'ARs, AKs, bolt guns' },
-      { label: '◈ Shotguns',      href: '/reviews?cat=shotgun',  desc: 'Defense & hunting' },
-      { label: '◉ Optics',        href: '/reviews?cat=optic',    desc: 'Scopes & red dots' },
-      { label: '◈ Suppressors',   href: '/reviews?cat=suppressor',desc: 'NFA items reviewed' },
+      { label: '★ All Reviews',        href: '/reviews',                desc: 'Field-tested, documented' },
+      { label: '🔫 Pistols',           href: '/reviews?cat=pistol',     desc: 'Handguns & subcompacts' },
+      { label: '🎯 Rifles',            href: '/reviews?cat=rifle',      desc: 'ARs, AKs, bolt guns' },
+      { label: '💥 Shotguns',          href: '/reviews?cat=shotgun',    desc: 'Defense & hunting' },
+      { label: '🔭 Optics',            href: '/reviews?cat=optic',      desc: 'Scopes & red dots' },
+      { label: '🔇 Suppressors',       href: '/reviews?cat=suppressor', desc: 'NFA items reviewed' },
     ]
   },
   {
     label: 'Guns', href: '/guns',
     children: [
-      { label: '📖 Encyclopedia', href: '/guns',                          desc: 'Specs, history, variants' },
-      { label: '🆕 Releases',     href: '/releases',                      desc: 'Latest launches' },
-      { label: '⚖ Compare',       href: '/compare/glock-19-vs-sig-p320', desc: 'Head-to-head with AI' },
-      { label: '$ Value Est.',     href: '/value-estimator',              desc: 'What is your gun worth?' },
-      { label: '🔫 Holsters',     href: '/holsters/glock-19',            desc: 'IWB/OWB by model' },
-      { label: '⚙ NFA Tracker',   href: '/nfa-tracker',                  desc: 'Form 4 wait times' },
+      { label: '📖 Encyclopedia',      href: '/guns',                          desc: 'Specs, history, variants' },
+      { label: '🆕 New Releases',      href: '/releases',                      desc: 'Latest manufacturer launches' },
+      { label: '⚖️ Compare Guns',      href: '/compare/glock-19-vs-sig-p320', desc: 'Head-to-head with AI' },
+      { label: '💰 Value Estimator',   href: '/value-estimator',              desc: 'What is your gun worth?' },
+      { label: '🔫 Holsters',          href: '/holsters/glock-19',            desc: 'IWB/OWB by model' },
+      { label: '⚙️ NFA Tracker',       href: '/nfa-tracker',                  desc: 'Form 4 wait times' },
     ]
   },
   {
     label: 'Market', href: '/market',
     children: [
-      { label: '📊 Market Watch', href: '/market',          desc: 'Daily ammo analysis' },
-      { label: '🔥 Deals',        href: '/deals',           desc: 'Best prices live' },
-      { label: '💊 Ammo Guide',   href: '/ammo/9mm',        desc: '9mm, 5.56, .308 & more' },
-      { label: '◎ Ranges',        href: '/ranges',          desc: 'Ranges near you' },
-      { label: '🔍 FFL Finder',   href: '/ffl-finder',      desc: 'Licensed dealers' },
-      { label: '🛡 CCW Insurance', href: '/carry-insurance', desc: 'USCCA vs CCW Safe' },
+      { label: '📊 Market Watch',      href: '/market',          desc: 'Daily ammo price analysis' },
+      { label: '🔥 Deals',             href: '/deals',           desc: 'Best prices live' },
+      { label: '🧪 Ammo Guide',        href: '/ammo/9mm',        desc: '9mm, 5.56, .308 & more' },
+      { label: '🎯 Find a Range',      href: '/ranges',          desc: 'Ranges near you' },
+      { label: '🔍 FFL Finder',        href: '/ffl-finder',      desc: 'Licensed dealers near you' },
+      { label: '🛡️ CCW Insurance',     href: '/carry-insurance', desc: 'USCCA vs CCW Safe compared' },
     ]
   },
   {
     label: 'Outdoors', href: '/hunting',
     children: [
-      { label: '🦌 Hunting',       href: '/hunting',       desc: 'Season dates & cartridges' },
-      { label: '🏆 Competitions',   href: '/competitions',  desc: 'NRA, USPSA, IDPA, PRS calendar' },
-      { label: '🎯 Precision',     href: '/precision',     desc: 'PRS, long range, ballistics' },
-      { label: '▲ Training',       href: '/training',      desc: '30-day dry fire plan' },
-      { label: '🔒 Safe Storage',  href: '/safe-storage',  desc: 'Biometric & vault reviews' },
-      { label: '◎ Ranges',         href: '/ranges',        desc: 'Find a range' },
-      { label: '🎒 Preparedness',  href: '/preparedness',  desc: 'Home defense & go-bag' },
+      { label: '🦌 Hunting',           href: '/hunting',       desc: 'Season dates & cartridges' },
+      { label: '🏆 Competitions',      href: '/competitions',  desc: 'NRA, USPSA, IDPA, PRS calendar' },
+      { label: '🎯 Precision Shooting',href: '/precision',     desc: 'PRS, long range, ballistics' },
+      { label: '🏋️ Training',          href: '/training',      desc: '30-day dry fire plan' },
+      { label: '🔒 Safe Storage',      href: '/safe-storage',  desc: 'Biometric & vault reviews' },
+      { label: '📍 Find a Range',      href: '/ranges',        desc: 'Shooting ranges near you' },
+      { label: '🎒 Preparedness',      href: '/preparedness',  desc: 'Home defense & go-bag guide' },
     ]
   },
   {
     label: 'Learn', href: '/learn',
     children: [
-      { label: '📚 Learning Center',  href: '/learn',                              desc: 'All beginner guides' },
-      { label: '🔫 First Gun Guide',  href: '/learn/buying-your-first-gun',        desc: 'How to buy your first firearm' },
-      { label: '🪪 CCW License Guide',href: '/learn/how-to-get-ccw-license',       desc: 'State-by-state carry permit guide' },
-      { label: '🛡 Safety Rules',      href: '/learn/firearms-safety-four-rules',   desc: 'The four rules that prevent accidents' },
+      { label: '📚 Learning Center',   href: '/learn',                              desc: 'All beginner guides' },
+      { label: '🔫 First Gun Guide',   href: '/learn/buying-your-first-gun',        desc: 'How to buy your first firearm' },
+      { label: '🪪 CCW License Guide', href: '/learn/how-to-get-ccw-license',       desc: 'State-by-state carry permit guide' },
+      { label: '🛡️ Safety Rules',      href: '/learn/firearms-safety-four-rules',   desc: 'The four rules that prevent accidents' },
       { label: '🏠 Home Defense',      href: '/learn/home-defense-basics',          desc: 'Practical home protection guide' },
-      { label: '🎯 Training at Home',  href: '/learn/dry-fire-training-beginners',  desc: 'Free practice without ammo' },
-      { label: '⚖ Gun Laws Explained',href: '/learn/understanding-gun-laws',        desc: 'Federal & state law for beginners' },
+      { label: '🎯 Dry Fire Training', href: '/learn/dry-fire-training-beginners',  desc: 'Free practice without ammo' },
+      { label: '⚖️ Gun Laws 101',      href: '/learn/understanding-gun-laws',        desc: 'Federal & state law for beginners' },
     ]
   },
   {
-    label: '🇨🇦 International', href: '/canada',
+    label: '🌎 International', href: '/canada',
     children: [
-      { label: '🇨🇦 Canada', href: '/canada', desc: 'PAL, C-21, province laws' },
+      { label: '🇨🇦 Canada',           href: '/canada', desc: 'PAL, C-21, province laws' },
     ]
   },
   { label: 'Blog', href: '/blog' },
-  { label: 'Video', href: '/video' },
+  { label: '📺 Video', href: '/video' },
 ]
 
 import GlobalSearchBar from '../ui/GlobalSearchBar'
