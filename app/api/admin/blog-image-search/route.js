@@ -15,46 +15,65 @@ function auth(req) {
   return k && k === process.env.ADMIN_KEY
 }
 
-// Keyword mapping for blog topics → high-quality stock/editorial image search terms
+// Map any content topic → good image search query
 function buildImageQuery(title, category) {
-  const t = (title + ' ' + (category||'')).toLowerCase()
+  const safe = String(title || category || '').toLowerCase()
+  const t = safe + ' ' + String(category || '').toLowerCase()
 
-  if (/home.?defense|self.?defense|defend|protect|home.?security/.test(t))
-    return 'home defense firearm setup'
-  if (/conceal|carry|edc|holster|ccw|iwb|owb/.test(t))
-    return 'concealed carry holster EDC'
-  if (/ammo|ammunition|cartridge|bullet|grain|ballistic/.test(t))
-    return 'firearm ammunition boxes'
-  if (/clean|maintain|mainten|lube|oil/.test(t))
-    return 'gun cleaning kit maintenance'
-  if (/train|drill|range|marksmanship|dry.fire|practice/.test(t))
-    return 'shooting range training firearms'
-  if (/law|legal|court|atf|bill|nfa|regulation|legislat/.test(t))
-    return 'law books Second Amendment'
-  if (/suppressor|silencer/.test(t))
-    return 'suppressor silencer firearm'
-  if (/storage|safe|lock|secure/.test(t))
-    return 'gun safe firearm storage'
-  if (/ar.?15|rifle|carbine/.test(t))
-    return 'AR-15 rifle range'
-  if (/pistol|handgun|9mm|glock|sig/.test(t))
-    return 'handgun pistol shooting range'
-  if (/shotgun|gauge/.test(t))
-    return 'shotgun clay shooting'
-  if (/first.?time|beginner|new.?gun|start/.test(t))
-    return 'first time gun owner firearm safety'
-  if (/nfa|sbr|sbs|machine.gun|title.ii/.test(t))
-    return 'NFA regulated firearms class 3'
+  if (/home.?defense|self.?defense|defend|protect|home.?security/.test(t)) return 'home defense firearm'
+  if (/conceal|carry|edc|holster|ccw|iwb|owb/.test(t))                     return 'concealed carry holster EDC'
+  if (/ammo|ammunition|cartridge|bullet|grain|ballistic/.test(t))           return 'firearm ammunition'
+  if (/clean|maintain|mainten|lube|oil/.test(t))                            return 'gun cleaning maintenance'
+  if (/train|drill|range|marksmanship|dry.fire|practice/.test(t))           return 'shooting range training'
+  if (/law|legal|court|atf|bill|nfa|regulation|legislat|bruen|heller/.test(t)) return 'Second Amendment law constitution'
+  if (/suppressor|silencer/.test(t))                                        return 'suppressor silencer firearm'
+  if (/storage|safe|lock|secure/.test(t))                                   return 'gun safe firearm storage'
+  if (/ar.?15|rifle|carbine|m4|5.56/.test(t))                               return 'AR-15 rifle range'
+  if (/pistol|handgun|9mm|glock|sig|beretta/.test(t))                       return 'handgun pistol shooting'
+  if (/shotgun|gauge|pump|mossberg/.test(t))                                 return 'shotgun shooting clay'
+  if (/first.?time|beginner|new.?gun|start/.test(t))                        return 'first time gun owner safety'
+  if (/suppressor|sbr|sbs|machine.gun|title.ii/.test(t))                    return 'NFA firearms class 3'
+  if (/red.dot|optic|sight|scope/.test(t))                                  return 'firearm optic red dot pistol'
+  if (/review|test|evaluation/.test(t))                                     return 'firearm review testing range'
+  if (/competition|uspsa|idpa|3.gun/.test(t))                               return 'shooting competition match'
+  if (/hunt|deer|elk|game|waterfowl/.test(t))                               return 'hunting rifle outdoors'
+  if (/canada|c-21|pal|restricted/.test(t))                                 return 'Canadian firearm law'
+  if (/video|youtube|channel/.test(t))                                      return 'firearms video content'
 
-  return title.slice(0, 50) + ' firearms'
+  // Generic fallback using first 40 chars of title + firearms
+  const slug = safe.replace(/[^a-z0-9 ]/g, '').trim().split(' ').slice(0, 5).join(' ')
+  return (slug || 'firearm') + ' firearms'
 }
 
-async function searchUnsplash(query) {
-  // Use Unsplash source API (no key needed for simple redirects, but for search we need key)
-  // Fall back to Pixabay which has a free tier
+// Curated local fallback photos
+function getFallbackPhotos(title, category) {
+  const t = String(title || '').toLowerCase() + ' ' + String(category || '').toLowerCase()
+  const map = [
+    [/home.?defense|protect|self.?defense/,    '/img/photos/homedefense.jpg'],
+    [/conceal|carry|edc|holster|ccw/,          '/img/photos/pistol.jpg'],
+    [/ammo|ammunition|cartridge|bullet/,       '/img/photos/ammo.jpg'],
+    [/clean|maintain|lube|oil/,                '/img/photos/pistol.jpg'],
+    [/train|drill|range|practice/,             '/img/photos/training.jpg'],
+    [/law|legal|court|atf|bill|bruen/,         '/img/photos/law.jpg'],
+    [/suppressor|silencer/,                    '/img/photos/suppressor.jpg'],
+    [/storage|safe|lock/,                      '/img/photos/pistol.jpg'],
+    [/ar.?15|rifle|carbine/,                   '/img/photos/rifle.jpg'],
+    [/shotgun/,                                '/img/photos/shotgun.jpg'],
+    [/hunt/,                                   '/img/photos/hunting.jpg'],
+    [/competi/,                                '/img/photos/competition.jpg'],
+    [/militar|vet/,                            '/img/photos/military.jpg'],
+    [/gear|optic|accessory|red.dot/,           '/img/photos/gear.jpg'],
+    [/canada/,                                 '/img/photos/law.jpg'],
+  ]
+  for (const [pat, img] of map) {
+    if (pat.test(t)) return [{ url: img, largeUrl: img, thumb: img, source: 'Local', author: 'DownRange' }]
+  }
+  return [{ url: '/img/photos/pistol.jpg', largeUrl: '/img/photos/pistol.jpg', thumb: '/img/photos/pistol.jpg', source: 'Local', author: 'DownRange' }]
+}
+
+async function searchPixabay(query) {
   const key = process.env.PIXABAY_API_KEY
   if (!key) return []
-
   try {
     const url = new URL('https://pixabay.com/api/')
     url.searchParams.set('key', key)
@@ -65,18 +84,11 @@ async function searchUnsplash(query) {
     url.searchParams.set('per_page', '6')
     url.searchParams.set('safesearch', 'true')
     url.searchParams.set('order', 'popular')
-
     const res = await fetch(url.toString())
     const data = await res.json()
     return (data.hits || []).map(h => ({
-      url:       h.webformatURL,
-      largeUrl:  h.largeImageURL,
-      thumb:     h.previewURL,
-      width:     h.webformatWidth,
-      height:    h.webformatHeight,
-      author:    h.user,
-      source:    'Pixabay',
-      tags:      h.tags,
+      url: h.webformatURL, largeUrl: h.largeImageURL, thumb: h.previewURL,
+      author: h.user, source: 'Pixabay', tags: h.tags || '',
     }))
   } catch { return [] }
 }
@@ -84,7 +96,6 @@ async function searchUnsplash(query) {
 async function searchPexels(query) {
   const key = process.env.PEXELS_API_KEY
   if (!key) return []
-
   try {
     const res = await fetch(
       'https://api.pexels.com/v1/search?' + new URLSearchParams({ query, per_page: 6, orientation: 'landscape' }),
@@ -92,71 +103,33 @@ async function searchPexels(query) {
     )
     const data = await res.json()
     return (data.photos || []).map(p => ({
-      url:      p.src.large,
-      largeUrl: p.src.original,
-      thumb:    p.src.medium,
-      width:    p.width,
-      height:   p.height,
-      author:   p.photographer,
-      source:   'Pexels',
-      tags:     '',
+      url: p.src.large, largeUrl: p.src.original, thumb: p.src.medium,
+      author: p.photographer, source: 'Pexels', tags: '',
     }))
   } catch { return [] }
-}
-
-// Fallback: curated local photos by topic
-function getFallbackPhotos(title, category) {
-  const t = (title + ' ' + (category||'')).toLowerCase()
-  const map = [
-    [/home.?defense|protect|self.?defense/, '/img/photos/homedefense.jpg'],
-    [/conceal|carry|edc|holster|ccw/,       '/img/photos/pistol.jpg'],
-    [/ammo|ammunition|cartridge|bullet/,    '/img/photos/ammo.jpg'],
-    [/clean|maintain|lube|oil/,             '/img/photos/pistol.jpg'],
-    [/train|drill|range|practice/,          '/img/photos/training.jpg'],
-    [/law|legal|court|atf|bill|nfa/,        '/img/photos/law.jpg'],
-    [/suppressor|silencer/,                 '/img/photos/suppressor.jpg'],
-    [/storage|safe|lock/,                   '/img/photos/pistol.jpg'],
-    [/ar.?15|rifle|carbine/,               '/img/photos/rifle.jpg'],
-    [/shotgun/,                             '/img/photos/shotgun.jpg'],
-    [/hunt/,                                '/img/photos/hunting.jpg'],
-    [/competi/,                             '/img/photos/competition.jpg'],
-    [/militar|vet/,                         '/img/photos/military.jpg'],
-    [/gear|optic|accessory/,               '/img/photos/gear.jpg'],
-  ]
-  for (const [pat, img] of map) {
-    if (pat.test(t)) return [{ url: img, largeUrl: img, thumb: img, source: 'Local', author: 'DownRange' }]
-  }
-  return [{ url: '/img/photos/pistol.jpg', largeUrl: '/img/photos/pistol.jpg', thumb: '/img/photos/pistol.jpg', source: 'Local', author: 'DownRange' }]
 }
 
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   try {
-    const body = await req.json()
+    const body = await req.json().catch(() => ({}))
     const { id, title, category, action } = body
 
     if (action === 'search') {
       const query = buildImageQuery(title, category)
-      console.log('[BLOG-IMG] searching:', query)
+      console.log('[IMG-SEARCH] query:', query, 'for:', title)
 
-      // Try paid APIs first, then fall back to local
-      let results = []
-      const [pixabay, pexels] = await Promise.all([
-        searchPixabay(query),
+      const [pexels, pixabay] = await Promise.all([
         searchPexels(query),
+        searchPixabay(query),
       ])
-      results = [...pexels, ...pixabay]
 
-      // Always include local fallback options
-      const locals = getFallbackPhotos(title, category)
-      results = [...results, ...locals]
-
-      return Response.json({ ok: true, query, results: results.slice(0, 8) })
+      const results = [...pexels, ...pixabay, ...getFallbackPhotos(title, category)]
+      return Response.json({ ok: true, query, results: results.slice(0, 10) })
     }
 
     if (action === 'apply') {
-      // Save selected image URL to Sanity
       const { imageUrl } = body
       if (!id || !imageUrl) return Response.json({ error: 'id and imageUrl required' }, { status: 400 })
       await sanity.patch(id).set({ imageUrl }).commit()
@@ -165,11 +138,7 @@ export async function POST(req) {
 
     return Response.json({ error: 'Unknown action' }, { status: 400 })
   } catch (e) {
+    console.error('[IMG-SEARCH] error:', e.message)
     return Response.json({ ok: false, error: e.message }, { status: 500 })
   }
-}
-
-// Note: named searchPixabay in the POST handler
-async function searchPixabay(query) {
-  return searchUnsplash(query)
 }
