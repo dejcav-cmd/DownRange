@@ -16,10 +16,20 @@ export async function POST(req) {
   const key = req.headers.get('x-admin-key')
   if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
+  // Accept custom mailbox list from body, fall back to defaults
+  const body = await req.json().catch(() => ({}))
+  const customList = Array.isArray(body.mailboxes) ? body.mailboxes : null
+  const activeList = customList
+    ? customList.map(from => {
+        const match = MAILBOXES.find(m => m.from === from)
+        return match || { from, desc: 'Custom', to: 'dj@downrangeco.com' }
+      })
+    : MAILBOXES
+
   const resend = getResend()
   const results = []
 
-  for (const mb of MAILBOXES) {
+  for (const mb of activeList) {
     try {
       const { data, error } = await resend.emails.send({
         from:    mb.from,
