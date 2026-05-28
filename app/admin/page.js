@@ -619,12 +619,12 @@ function EmailTestPanel({ adminKey }) {
   const [msg, setMsg] = useState('')
 
   const MAILBOXES = [
-    { from: 'noreply@downrangeco.com',       desc: 'Contact form sender' },
-    { from: 'feedback@downrangeco.com',      desc: 'Feedback modal sender' },
-    { from: 'news@downrangeco.com',          desc: 'Newsletter sender' },
-    { from: 'intelligence@downrangeco.com',  desc: 'Intelligence briefing sender' },
-    { from: 'dj@downrangeco.com',            desc: 'Outreach / founder direct' },
-    { from: 'outreach@downrangeco.com',      desc: 'Outreach queue digest' },
+    { from: 'noreply@downrangeco.com',       desc: 'Contact form submissions' },
+    { from: 'feedback@downrangeco.com',      desc: 'Feedback modal' },
+    { from: 'news@downrangeco.com',          desc: 'Newsletter sends + welcome emails' },
+    { from: 'intelligence@downrangeco.com',  desc: 'Daily intelligence briefing digest' },
+    { from: 'dj@downrangeco.com',            desc: 'Direct outreach sends + reply-to' },
+    { from: 'outreach@downrangeco.com',      desc: 'Outreach queue digest summary' },
   ]
 
   async function sendTests() {
