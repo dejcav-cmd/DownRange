@@ -22,10 +22,11 @@ export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     const posts = await sanity.fetch(`
-      *[_type == "blogPost"] | order(publishedAt desc) [0...200] {
+      *[_type == "blogPost"] | order(_createdAt desc) [0...500] {
         _id, title, slug, category, status, publishedAt, readTime,
-        excerpt, body, imageUrl, author, seoTitle, metaDesc,
-        heroImage { asset->{ url } }
+        excerpt, body, imageUrl, author, seoTitle, metaDesc, editorLocked,
+        heroImage { asset->{ url } },
+        _createdAt
       }
     `)
     return Response.json({ ok: true, posts })
