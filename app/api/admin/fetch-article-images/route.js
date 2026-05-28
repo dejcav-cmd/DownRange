@@ -153,11 +153,17 @@ export async function POST(req) {
   // Get articles with missing, placeholder, or non-CDN external images (incl AI-generated)
   const articles = await sanity.fetch(`
     *[_type == "newsArticle" && approved == true
+      && editorLocked != true
       && defined(externalUrl) && externalUrl != null
       && (
         !defined(imageUrl) || imageUrl == null
         || string::startsWith(imageUrl, "/img/")
-        || (!string::startsWith(imageUrl, "https://cdn.sanity.io") && !string::startsWith(imageUrl, "/img/photos/"))
+        || (
+          !string::startsWith(imageUrl, "https://cdn.sanity.io")
+          && !string::startsWith(imageUrl, "/img/photos/")
+          && !string::startsWith(imageUrl, "https://img.youtube.com")
+          && !string::startsWith(imageUrl, "https://i.ytimg.com")
+        )
       )
     ] | order(publishedAt desc) [0...\${Math.min(limit, 50)}] {
       _id, title, externalUrl, imageUrl, source, category
