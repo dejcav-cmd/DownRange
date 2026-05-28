@@ -177,7 +177,9 @@ export default function CompetitionManager({ adminKey }) {
           <div style={{borderLeft:'1px solid var(--border)',overflowY:'auto',maxHeight:'calc(100vh - 350px)',background:'var(--bg)'}}>
             <div style={{padding:'12px 14px',borderBottom:'1px solid var(--border)',display:'flex',justifyContent:'space-between',alignItems:'center',background:'var(--bg2)'}}>
               <span style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--gold)',letterSpacing:'.04em',textTransform:'uppercase'}}>Edit Match</span>
-              <div style={{display:'flex',gap:6}}>
+              <div style={{display:'flex',gap:6,alignItems:'center',flexWrap:'wrap'}}>
+                {selI.websiteUrl && <a href={selI.websiteUrl} target="_blank" rel="noreferrer" style={{padding:'4px 10px',border:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',textDecoration:'none'}}>Website ↗</a>}
+                {selI.registrationUrl && <a href={selI.registrationUrl} target="_blank" rel="noreferrer" style={{padding:'4px 10px',border:'1px solid rgba(200,146,42,.4)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',textDecoration:'none'}}>Register ↗</a>}
                 <button onClick={()=>patch(selI._id,{approved:!selI.approved})} className="cm2-ghost" style={{fontSize:9,color:selI.approved?'#6b7280':'#22c55e'}}>{selI.approved?'Unpublish':'Publish'}</button>
                 <button onClick={()=>del(selI._id)} className="cm2-del">🗑</button>
                 <button onClick={()=>setSel(null)} style={{background:'none',border:'none',color:'#64748b',cursor:'pointer',fontSize:16}}>✕</button>
