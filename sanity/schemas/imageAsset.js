@@ -6,10 +6,11 @@ export default {
     { name: 'title',    title: 'Title',    type: 'string', validation: R => R.required() },
     { name: 'alt',      title: 'Alt Text', type: 'string' },
     {
-      name: 'image', title: 'Image', type: 'image',
+      name: 'image', title: 'Image (optional — cdnUrl used for display)', type: 'image',
       options: { hotspot: true },
-      validation: R => R.required(),
     },
+    { name: 'cdnUrl',   title: 'CDN / Static URL', type: 'string' },
+    { name: 'imageUrl', title: 'Image URL (display)', type: 'string' },
     {
       name: 'category', title: 'Category', type: 'string',
       options: { list: [
