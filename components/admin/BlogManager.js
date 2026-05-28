@@ -60,6 +60,8 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
   const [editView, setEditView]= useState('edit') // edit | preview
   const [editDraft,setEditDraft]=useState({})
   const [addForm,  setAddForm] = useState({ title:'',category:'general',excerpt:'',articleBody:'',imageUrl:'',readTime:'',author:'' })
+  const [statusFilter, setStatusFilter] = useState('all') // all | draft | published
+  const [imgSearch,    setImgSearch]    = useState(null)  // null | { searching, results, postId, postTitle }
 
   const H = { 'x-admin-key': adminKey }
   const flash = m => {
@@ -206,6 +208,46 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
     setBusy(false)
   }
 
+  async function searchBlogImages(post) {
+    setImgSearch({ searching: true, results: [], postId: post._id, postTitle: post.title, postCat: post.category })
+    try {
+      const res = await fetch('/api/admin/blog-image-search', {
+        method: 'POST',
+        headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'search', id: post._id, title: post.title, category: post.category }),
+      })
+      const d = await res.json()
+      if (d.ok) {
+        setImgSearch({ searching: false, results: d.results || [], postId: post._id, postTitle: post.title, query: d.query })
+      } else {
+        flash('❌ Image search failed: ' + (d.error || 'Unknown'))
+        setImgSearch(null)
+      }
+    } catch (e) {
+      flash('❌ ' + e.message)
+      setImgSearch(null)
+    }
+  }
+
+  async function applyBlogImage(postId, imageUrl) {
+    setBusy(true)
+    try {
+      const res = await fetch('/api/admin/blog-image-search', {
+        method: 'POST',
+        headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ action: 'apply', id: postId, imageUrl }),
+      })
+      const d = await res.json()
+      if (d.ok) {
+        setPosts(prev => prev.map(p => p._id === postId ? { ...p, imageUrl } : p))
+        if (sel === postId) setEditDraft(prev => ({ ...prev, imageUrl }))
+        flash('✅ Image updated')
+        setImgSearch(null)
+      } else flash('❌ ' + (d.error || 'Failed'))
+    } catch (e) { flash('❌ ' + e.message) }
+    setBusy(false)
+  }
+
   async function createPost() {
     if (!addForm.title) { flash('❌ Title required'); return }
     setBusy(true)
@@ -224,7 +266,19 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
     setBusy(false)
   }
 
-  const filtered = posts.filter(p => !search || (p.title||'').toLowerCase().includes(search.toLowerCase()))
+  // Sort: drafts (no publishedAt) first, then by _createdAt desc
+  const sorted = [...posts].sort((a, b) => {
+    if (!a.publishedAt && b.publishedAt) return -1
+    if (a.publishedAt && !b.publishedAt) return 1
+    return new Date(b._createdAt || 0) - new Date(a._createdAt || 0)
+  })
+
+  const filtered = sorted.filter(p => {
+    if (statusFilter === 'draft'     && p.status !== 'draft')     return false
+    if (statusFilter === 'published' && p.status !== 'published') return false
+    if (search && !(p.title||'').toLowerCase().includes(search.toLowerCase())) return false
+    return true
+  })
   const missingBody = posts.filter(p => !p.body).length
 
   // Preview HTML computed via helper (avoids nested backtick SWC crash)
@@ -285,9 +339,23 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
       {/* List + detail */}
       {mode === 'list' && (
         <>
-          <div style={{display:'flex',gap:8,marginBottom:12,flexWrap:'wrap',alignItems:'center'}}>
-            <input className="bm-input" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search posts..." style={{width:220}} />
-            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563',marginLeft:'auto'}}>{filtered.length} posts</span>
+          {/* Status filter + search */}
+          <div style={{display:'flex',gap:0,marginBottom:4,borderBottom:'1px solid var(--border)',background:'var(--bg2)'}}>
+            {[['all','All'],['draft','Drafts'],['published','Published']].map(([v,l]) => (
+              <button key={v} onClick={()=>setStatusFilter(v)}
+                style={{background:'none',border:'none',borderBottom:'2px solid '+(statusFilter===v?'var(--gold)':'transparent'),
+                  color:statusFilter===v?'var(--gold)':'var(--text-dim)',fontFamily:"'IBM Plex Mono',monospace",
+                  fontSize:11,padding:'9px 16px',cursor:'pointer',whiteSpace:'nowrap',transition:'all .12s'}}>
+                {l} <span style={{fontSize:9,opacity:.7}}>({v==='all'?posts.length:v==='draft'?posts.filter(p=>p.status!=='published').length:posts.filter(p=>p.status==='published').length})</span>
+              </button>
+            ))}
+            <div style={{flex:1,display:'flex',alignItems:'center',padding:'0 10px',borderLeft:'1px solid var(--border)'}}>
+              <input className="bm-input" value={search} onChange={e=>setSearch(e.target.value)} placeholder="Search posts..."
+                style={{border:'none',background:'none',padding:'4px 0'}} />
+            </div>
+            <span style={{display:'flex',alignItems:'center',padding:'0 12px',borderLeft:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563',whiteSpace:'nowrap'}}>
+              {filtered.length} posts
+            </span>
           </div>
 
           <div style={{display:'grid',gridTemplateColumns:sel?'1fr 480px':'1fr',gap:0,border:'1px solid var(--border)',minHeight:400}}>
@@ -407,15 +475,15 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                         <span className="bm-lbl">Image URL</span>
                         <input className="bm-input" value={editDraft.imageUrl||''} onChange={e=>setEditDraft(p=>({...p,imageUrl:e.target.value}))} />
                       </div>
-                      <div style={{display:'flex',gap:6,marginTop:5}}>
+                      <div style={{display:'flex',gap:6,marginTop:5,flexWrap:'wrap'}}>
                         <button className="bm-btn-sm" disabled={busy}
-                          style={{background:'#3b82f6',color:'#fff',fontSize:9}}
-                          onClick={()=>fetchBlogImage(sel)}>
-                          🖼 Fetch Image
+                          style={{background:'#8b5cf6',color:'#fff',fontSize:9}}
+                          onClick={()=>searchBlogImages(sel)}>
+                          🔍 Search Web Images
                         </button>
-                        <button className="bm-btn-sm" disabled={busy||editDraft.imageUrl===sel.imageUrl}
+                        <button className="bm-btn-sm" disabled={busy||!!sel.editorLocked}
                           style={{background:'var(--gold)',color:'#000',fontSize:9}}
-                          onClick={()=>patch(sel._id,{imageUrl:editDraft.imageUrl})}>
+                          onClick={async()=>{setBusy(true);await patch(sel._id,{imageUrl:editDraft.imageUrl});setBusy(false)}}>
                           💾 Save Image
                         </button>
                       </div>
@@ -470,6 +538,79 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
           </div>
         </>
       )}
+    {/* ── Image Search Modal ────────────────────────────────────────────── */}
+    {imgSearch && (
+      <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.85)',zIndex:200,display:'flex',alignItems:'center',justifyContent:'center',padding:20}}>
+        <div style={{background:'var(--bg2)',border:'1px solid var(--border)',width:'100%',maxWidth:860,maxHeight:'85vh',display:'flex',flexDirection:'column',overflow:'hidden'}}>
+          {/* Header */}
+          <div style={{padding:'14px 20px',borderBottom:'1px solid var(--border)',display:'flex',alignItems:'center',justifyContent:'space-between',flexShrink:0}}>
+            <div>
+              <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.3rem',color:'var(--gold)',letterSpacing:'.06em'}}>🔍 BLOG IMAGE SEARCH</div>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563',marginTop:2}}>
+                {imgSearch.searching ? 'Searching...' : (imgSearch.results?.length || 0) + ' results'} for: <span style={{color:'#C8922A'}}>{imgSearch.postTitle}</span>
+                {imgSearch.query && <span style={{color:'#374151'}}> — query: "{imgSearch.query}"</span>}
+              </div>
+            </div>
+            <button onClick={()=>setImgSearch(null)} style={{background:'none',border:'none',color:'#6b7280',cursor:'pointer',fontSize:20,lineHeight:1}}>✕</button>
+          </div>
+
+          {/* Body */}
+          <div style={{flex:1,overflowY:'auto',padding:20}}>
+            {imgSearch.searching ? (
+              <div style={{textAlign:'center',padding:60,fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563'}}>
+                <span style={{display:'block',marginBottom:8,fontSize:24}}>⏳</span>
+                Searching for images…
+              </div>
+            ) : (
+              <>
+                {imgSearch.results?.length === 0 ? (
+                  <div style={{textAlign:'center',padding:40,fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563'}}>
+                    No external images found. Add PEXELS_API_KEY or PIXABAY_API_KEY in Vercel to enable web search. Local fallback images shown below.
+                  </div>
+                ) : (
+                  <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(240px,1fr))',gap:12}}>
+                    {imgSearch.results.map((img, idx) => (
+                      <div key={idx} style={{border:'1px solid var(--border)',cursor:'pointer',overflow:'hidden',transition:'border-color .15s'}}
+                        onMouseEnter={e=>e.currentTarget.style.borderColor='#C8922A'}
+                        onMouseLeave={e=>e.currentTarget.style.borderColor='var(--border)'}
+                        onClick={()=>applyBlogImage(imgSearch.postId, img.largeUrl||img.url)}>
+                        <div style={{position:'relative',aspectRatio:'16/9',background:'#111',overflow:'hidden'}}>
+                          <img src={img.thumb||img.url} alt=""
+                            style={{width:'100%',height:'100%',objectFit:'cover',opacity:.9}}
+                            onError={e=>{e.target.src=img.url}} />
+                          <div style={{position:'absolute',inset:0,background:'rgba(200,146,42,0)',display:'flex',alignItems:'center',justifyContent:'center',transition:'background .15s'}}
+                            onMouseEnter={e=>{e.currentTarget.style.background='rgba(200,146,42,.25)'}}
+                            onMouseLeave={e=>{e.currentTarget.style.background='rgba(200,146,42,0)'}}>
+                            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1rem',color:'#fff',letterSpacing:'.1em',opacity:0,transition:'opacity .15s'}}
+                              onMouseEnter={e=>e.target.style.opacity=1}
+                              onMouseLeave={e=>e.target.style.opacity=0}>
+                              ✓ USE THIS
+                            </span>
+                          </div>
+                        </div>
+                        <div style={{padding:'7px 10px',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+                          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>{img.source} · {img.author}</span>
+                          <button onClick={e=>{e.stopPropagation();applyBlogImage(imgSearch.postId, img.largeUrl||img.url)}}
+                            style={{fontFamily:"'Barlow Condensed',sans-serif",fontWeight:700,fontSize:11,letterSpacing:'.05em',padding:'4px 12px',background:'var(--gold)',color:'#000',border:'none',cursor:'pointer'}}>
+                            Apply
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                <div style={{marginTop:16,padding:'10px 14px',background:'rgba(0,0,0,.3)',border:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>
+                  <span style={{color:'#C8922A',fontWeight:700,marginRight:6}}>NOTE:</span>
+                  Click any image to apply it to this post. Web images require PEXELS_API_KEY or PIXABAY_API_KEY env vars in Vercel.
+                  Local DownRange photos are always available as fallback.
+                </div>
+              </>
+            )}
+          </div>
+        </div>
+      </div>
+    )}
     </div>
   )
 }
