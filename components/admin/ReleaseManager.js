@@ -425,7 +425,7 @@ export default function ReleaseManager({ adminKey }) {
         adminKey={adminKey}
         item={imgSearch}
         onApply={(imageUrl) => {
-          // Update the item in local state
+          setReleases(prev => prev.map(r => r._id === imgSearch._id ? { ...r, imageUrl } : r))
           setImgSearch(null)
         }}
         onClose={() => setImgSearch(null)}
