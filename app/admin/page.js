@@ -94,6 +94,7 @@ const NAV = [
       { id:'keys',         label:'API Keys',         icon:'🔑', badge:null },
       { id:'identity',     label:'Identity',         icon:'🎨', badge:null },
       { id:'envcheck',     label:'Env Vars',         icon:'🔧', badge:null },
+      { id:'navvis',       label:'Nav Visibility',   icon:'👁', badge:null },
     ]
   },
 ]
@@ -1188,6 +1189,160 @@ function PublicationSchedule({ secret, setMsg }) {
 }
 
 // ── Main Admin App ────────────────────────────────────────────────────────────
+function NavVisibilityPanel({ adminKey, setMsg }) {
+  const NAV_ITEMS = [
+    { label:'Home',     desc:'Homepage link',           always:true },
+    { label:'News',     desc:'News feed & articles' },
+    { label:'Laws',     desc:'Federal & state gun laws' },
+    { label:'Reviews',  desc:'Gear & gun reviews' },
+    { label:'Guns',     desc:'Encyclopedia, releases, compare' },
+    { label:'Market',   desc:'Deals, ammo guide, ranges' },
+    { label:'Outdoors', desc:'Hunting, competitions, training' },
+    { label:'Learn',    desc:'Guides & education' },
+    { label:'Canada',   desc:'Canadian firearms law' },
+    { label:'Community',desc:'Forum, outreach, press' },
+  ]
+
+  const [hidden, setHidden] = useState(() => {
+    try { return JSON.parse(localStorage.getItem('dr_hidden_nav') || '[]') } catch { return [] }
+  })
+  const [saved, setSaved] = useState(false)
+
+  function toggle(label) {
+    setHidden(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label])
+    setSaved(false)
+  }
+
+  function save() {
+    localStorage.setItem('dr_hidden_nav', JSON.stringify(hidden))
+    window.dispatchEvent(new Event('dr_nav_updated'))
+    setSaved(true)
+    setMsg('✅ Nav visibility saved — changes apply site-wide instantly')
+    setTimeout(() => setSaved(false), 3000)
+  }
+
+  function reset() {
+    setHidden([])
+    localStorage.setItem('dr_hidden_nav', '[]')
+    window.dispatchEvent(new Event('dr_nav_updated'))
+    setMsg('✅ All nav items restored')
+    setSaved(true)
+  }
+
+  const visible = NAV_ITEMS.filter(i => !hidden.includes(i.label))
+  const hiddenItems = NAV_ITEMS.filter(i => hidden.includes(i.label))
+
+  return (
+    <div>
+      <div className="panel-title">👁 Nav Visibility</div>
+      <div className="panel-sub">Show or hide top navigation tabs. Changes apply immediately without a deploy. Home is always visible.</div>
+
+      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, marginTop:20}}>
+        {/* Left: toggle list */}
+        <div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--text-dim)', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:12}}>
+            All Navigation Items
+          </div>
+          <div style={{display:'flex', flexDirection:'column', gap:8}}>
+            {NAV_ITEMS.map(item => {
+              const isHidden = hidden.includes(item.label)
+              const isAlways = item.always
+              return (
+                <div key={item.label} style={{
+                  display:'flex', alignItems:'center', gap:12, padding:'10px 14px',
+                  background: isHidden ? 'rgba(239,68,68,.06)' : 'rgba(34,197,94,.06)',
+                  border:`1px solid ${isHidden ? 'rgba(239,68,68,.2)' : 'rgba(34,197,94,.2)'}`,
+                  opacity: isAlways ? 0.5 : 1,
+                }}>
+                  {/* Toggle switch */}
+                  <div
+                    onClick={() => !isAlways && toggle(item.label)}
+                    style={{
+                      width:40, height:22, borderRadius:11, flexShrink:0,
+                      background: isHidden ? '#374151' : '#16a34a',
+                      position:'relative', cursor: isAlways ? 'default' : 'pointer',
+                      transition:'background .2s',
+                    }}>
+                    <div style={{
+                      position:'absolute', top:3,
+                      left: isHidden ? 3 : 21,
+                      width:16, height:16, borderRadius:'50%',
+                      background:'#fff', transition:'left .2s',
+                    }}/>
+                  </div>
+
+                  <div style={{flex:1}}>
+                    <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color: isHidden ? '#6b7280' : 'var(--text)'}}>
+                      {item.label} {isAlways && <span style={{fontSize:10, color:'#4b5563'}}>(always on)</span>}
+                    </div>
+                    <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563'}}>{item.desc}</div>
+                  </div>
+
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: isHidden ? '#ef4444' : '#22c55e', flexShrink:0}}>
+                    {isHidden ? 'HIDDEN' : 'VISIBLE'}
+                  </div>
+                </div>
+              )
+            })}
+          </div>
+        </div>
+
+        {/* Right: live preview */}
+        <div>
+          <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--text-dim)', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:12}}>
+            Nav Preview
+          </div>
+          <div style={{background:'var(--bg2)', border:'1px solid var(--border)', padding:'12px 0', marginBottom:20}}>
+            <div style={{display:'flex', gap:0, overflowX:'auto', padding:'0 8px'}}>
+              {visible.map(item => (
+                <div key={item.label} style={{
+                  fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700,
+                  letterSpacing:'.08em', textTransform:'uppercase', padding:'8px 12px',
+                  color:'var(--text)', borderBottom:'2px solid transparent', whiteSpace:'nowrap',
+                }}>{item.label}</div>
+              ))}
+            </div>
+          </div>
+
+          {hiddenItems.length > 0 && (
+            <div style={{marginBottom:20}}>
+              <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#ef4444', marginBottom:8}}>
+                {hiddenItems.length} item{hiddenItems.length > 1 ? 's' : ''} hidden from nav:
+              </div>
+              <div style={{display:'flex', gap:6, flexWrap:'wrap'}}>
+                {hiddenItems.map(item => (
+                  <div key={item.label} style={{
+                    fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'3px 8px',
+                    background:'rgba(239,68,68,.1)', border:'1px solid rgba(239,68,68,.3)',
+                    color:'#f87171',
+                  }}>{item.label}</div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          <div style={{display:'flex', gap:10}}>
+            <button onClick={save} style={{
+              fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em',
+              padding:'10px 24px', background: saved ? '#16a34a' : 'var(--gold)', color:'#000',
+              border:'none', cursor:'pointer', flex:1,
+            }}>{saved ? '✓ SAVED' : 'SAVE CHANGES'}</button>
+            <button onClick={reset} style={{
+              fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700,
+              padding:'10px 16px', background:'transparent',
+              border:'1px solid var(--border)', color:'var(--text-dim)', cursor:'pointer',
+            }}>Reset All</button>
+          </div>
+
+          <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', marginTop:12, lineHeight:1.8}}>
+            Changes are stored in the browser and applied instantly via localStorage. No deploy needed. All visitors on this device see the updated nav.
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
   const [section,  setSection]  = useState('system')
@@ -1338,6 +1493,7 @@ export default function AdminPage() {
             {panel==='keys'     && <APIKeysPanel       adminKey={adminKey} />}
             {panel==='identity' && <IdentityPanel      adminKey={adminKey} />}
             {panel==='envcheck' && <EnvChecker         adminKey={adminKey} />}
+            {panel==='navvis'   && <NavVisibilityPanel adminKey={adminKey} setMsg={flash} />}
 
           </div>
         </div>

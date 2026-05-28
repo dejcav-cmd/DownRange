@@ -111,16 +111,16 @@ function ScoreRing({ score }) {
 }
 
 
-// Category fallback images — every review always has a photo
+// Category fallback images — real gun photos
 const CATEGORY_FALLBACKS = {
-  pistol:     '/img/pistol.svg',
-  rifle:      '/img/rifle.svg',
-  shotgun:    '/img/shotgun.svg',
-  optic:      '/img/rifle.svg',
-  suppressor: '/img/suppressor.svg',
-  holster:    '/img/pistol.svg',
-  ammo:       '/img/pistol.svg',
-  default:    '/img/rifle.svg',
+  pistol:     '/img/photos/pistol.jpg',
+  rifle:      '/img/photos/rifle.jpg',
+  shotgun:    '/img/photos/shotgun.jpg',
+  optic:      '/img/photos/rifle.jpg',
+  suppressor: '/img/photos/suppressor.jpg',
+  holster:    '/img/photos/gear.jpg',
+  ammo:       '/img/photos/ammo.jpg',
+  default:    '/img/photos/rifle.jpg',
 }
 
 function ReviewCard({ r, featured = false }) {

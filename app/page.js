@@ -112,9 +112,6 @@ export default async function HomePage() {
               <span style={{ display:'flex', alignItems:'center', gap:5, color:'#22c55e', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>
                 <span className="pulse-dot" /> LIVE FEED
               </span>
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#334155' }}>
-                {allArticles.length} STORIES · UPDATED EVERY 15 MINUTES · ALL SOURCES AGGREGATED
-              </span>
             </div>
             <Link href="/news" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none', letterSpacing:'0.06em' }}>
               ALL NEWS →

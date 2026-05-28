@@ -85,6 +85,21 @@ export default function Masthead() {
   const [openDrop, setOpenDrop] = useState(null)
   const [mobileExpanded, setMobileExpanded] = useState(null)
   const [feedbackOpen, setFeedbackOpen] = useState(false)
+  const [hiddenNav, setHiddenNav] = useState([])
+
+  useEffect(() => {
+    // Load hidden nav items from localStorage (set by admin)
+    try {
+      const stored = localStorage.getItem('dr_hidden_nav')
+      if (stored) setHiddenNav(JSON.parse(stored))
+    } catch {}
+    // Also listen for changes (admin updates)
+    const handler = () => {
+      try { setHiddenNav(JSON.parse(localStorage.getItem('dr_hidden_nav') || '[]')) } catch {}
+    }
+    window.addEventListener('dr_nav_updated', handler)
+    return () => window.removeEventListener('dr_nav_updated', handler)
+  }, [])
   const closeTimer = useRef(null)
 
   useEffect(() => {
@@ -165,7 +180,7 @@ export default function Masthead() {
         {/* ── Desktop nav ── */}
         <nav className="nav-desktop" style={{ borderTop:'1px solid var(--border)', display:'flex', alignItems:'stretch' }}>
           <ul style={{ display:'flex', listStyle:'none', flex:1, margin:0, padding:0 }}>
-            {NAV.map(item => {
+            {NAV.filter(item => !hiddenNav.includes(item.label)).map(item => {
               const active = isActive(item)
               const hasChildren = item.children?.length > 0
               const isOpen = openDrop === item.label
@@ -250,7 +265,7 @@ export default function Masthead() {
           ◉ Home
         </Link>
 
-        {NAV.slice(1).map(item => {
+        {NAV.slice(1).filter(item => !hiddenNav.includes(item.label)).map(item => {
           const hasChildren = item.children?.length > 0
           const exp = mobileExpanded === item.label
           // Items with no children = direct link, no expand button, no "View All"
