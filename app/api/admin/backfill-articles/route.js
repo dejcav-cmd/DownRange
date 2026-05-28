@@ -45,14 +45,14 @@ const TYPES = {
     label: 'News Article',
     query: (force, limit) => {
       const f = force
-        ? '_type == "newsArticle" && defined(title)'
-        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 600)'
+        ? '_type == "newsArticle" && defined(title) && editorLocked != true'
+        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
       return `*[${f}] | order(publishedAt desc) [0...${limit}] { _id, title, summary, excerpt, body, source, category, publishedAt, tags }`
     },
     countQuery: (force) => {
       const f = force
-        ? '_type == "newsArticle" && defined(title)'
-        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 600)'
+        ? '_type == "newsArticle" && defined(title) && editorLocked != true'
+        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
@@ -88,14 +88,14 @@ Return ONLY valid JSON: { "summary": "2-3 sentence plain summary under 350 chars
     label: 'Blog Post',
     query: (force, limit) => {
       const f = force
-        ? '_type == "blogPost" && defined(title)'
-        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 600)'
+        ? '_type == "blogPost" && defined(title) && editorLocked != true'
+        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
       return `*[${f}] | order(publishedAt desc) [0...${limit}] { _id, title, excerpt, body, category, tags }`
     },
     countQuery: (force) => {
       const f = force
-        ? '_type == "blogPost" && defined(title)'
-        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 600)'
+        ? '_type == "blogPost" && defined(title) && editorLocked != true'
+        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
@@ -129,14 +129,14 @@ Return ONLY valid JSON: { "body": "<full HTML blog post>", "excerpt": "1 sentenc
     label: 'Gun Release',
     query: (force, limit) => {
       const f = force
-        ? '_type == "firearmRelease" && defined(brand)'
-        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 600)'
+        ? '_type == "firearmRelease" && defined(brand) && editorLocked != true'
+        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 600) && editorLocked != true'
       return `*[${f}] | order(_createdAt desc) [0...${limit}] { _id, brand, model, caliber, action, msrp, category, summary, body, description, pressReleaseExcerpt, specUrl }`
     },
     countQuery: (force) => {
       const f = force
-        ? '_type == "firearmRelease" && defined(brand)'
-        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 600)'
+        ? '_type == "firearmRelease" && defined(brand) && editorLocked != true'
+        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 600) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
@@ -174,14 +174,14 @@ Return ONLY valid JSON: { "body": "<full HTML article>", "summary": "1-2 sentenc
     label: 'Canada Article',
     query: (force, limit) => {
       const f = force
-        ? '_type == "canadaContent" && defined(title)'
-        : '_type == "canadaContent" && defined(title) && (!defined(body) || length(body) < 400)'
+        ? '_type == "canadaContent" && defined(title) && editorLocked != true'
+        : '_type == "canadaContent" && defined(title) && (!defined(body) || length(body) < 400) && editorLocked != true'
       return `*[${f}] | order(_createdAt desc) [0...${limit}] { _id, title, type, summary, detail, body, status, impact, effectiveDate }`
     },
     countQuery: (force) => {
       const f = force
-        ? '_type == "canadaContent" && defined(title)'
-        : '_type == "canadaContent" && defined(title) && (!defined(body) || length(body) < 400)'
+        ? '_type == "canadaContent" && defined(title) && editorLocked != true'
+        : '_type == "canadaContent" && defined(title) && (!defined(body) || length(body) < 400) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
