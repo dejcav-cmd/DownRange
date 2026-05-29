@@ -114,7 +114,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
   const [cat,      setCat]      = useState(initialCat)
   const [sort,     setSort]     = useState(initialSort)
   const [search,   setSearch]   = useState(initialSearch || '')
-  const [autoplay, setAutoplay] = useState(true)
+  const [autoplay, setAutoplay] = useState(false)
 
   // Set first video as active on mount
   useEffect(() => {
@@ -165,7 +165,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
   }
 
   const embedUrl = active
-    ? 'https://www.youtube.com/embed/' + active.videoId + '?autoplay=1&rel=0&modestbranding=1&color=white'
+    ? 'https://www.youtube.com/embed/' + active.videoId + '?autoplay=0&rel=0&modestbranding=1&color=white'
     : null
 
   return (
