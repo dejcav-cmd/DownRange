@@ -258,12 +258,12 @@ async function loadChannelsFromSanity() {
 }
 
 async function runVideoFeed() {
-  console.log('[VIDEO] ===== Video feed starting — mode:', process.env.YOUTUBE_API_KEY ? 'YouTube Data API v3' : 'RSS fallback', '| channels:', channelList.length, '=====')
-
   // Use Sanity-stored channels if available, else hardcoded list
   const sanityChannels = await loadChannelsFromSanity()
   const channelList    = sanityChannels || CHANNELS
-  console.log(`[VIDEO] Processing ${channelList.length} channels via YouTube RSS`)
+
+  console.log('[VIDEO] ===== Video feed starting — mode:', process.env.YOUTUBE_API_KEY ? 'YouTube Data API v3' : 'RSS fallback', '| channels:', channelList.length, '=====')
+  console.log(`[VIDEO] Processing ${channelList.length} channels`)
 
   let totalNew    = 0
   let totalSkipped= 0
