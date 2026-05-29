@@ -103,8 +103,9 @@ async function fetchChannelRSS(channelId, channelName, handle) {
       url.searchParams.set('part', 'snippet')
       url.searchParams.set('channelId', channelId)
       url.searchParams.set('order', 'date')
-      url.searchParams.set('maxResults', '5')
+      url.searchParams.set('maxResults', '10')   // fetch more to compensate after filtering Shorts
       url.searchParams.set('type', 'video')
+      url.searchParams.set('videoDuration', 'medium') // excludes Shorts (<60s) and very long (>20min); use 'any' + filter if needed
       url.searchParams.set('key', apiKey)
       const res  = await fetch(url.toString(), { signal: AbortSignal.timeout(10000) })
       const data = await res.json()
@@ -124,7 +125,15 @@ async function fetchChannelRSS(channelId, channelName, handle) {
         return []
       }
       const videos = data.items
-        .filter(item => item.id?.videoId && item.snippet)
+        .filter(item => {
+            if (!item.id?.videoId || !item.snippet) return false
+            const title = (item.snippet.title || '').toLowerCase()
+            const desc  = (item.snippet.description || '').toLowerCase()
+            // Exclude Shorts — tagged in title/description, or vertical-format indicators
+            if (title.includes('#shorts') || title.includes('#short')) return false
+            if (desc.includes('#shorts') || desc.startsWith('#short')) return false
+            return true
+          })
         .map(item => ({
           _type: 'video',
           title: item.snippet.title,
@@ -173,8 +182,16 @@ async function fetchChannelRSS(channelId, channelName, handle) {
   if (!xml.includes('<feed') && !xml.includes('<entry>')) {
     throw new Error(`YouTube RSS returned invalid XML for ${channelName}`)
   }
-  const videos = parseYouTubeRSS(xml, channelId, channelName)
-  console.log(`[VIDEO] ${channelName}: RSS returned ${videos.length} videos`)
+  const allVideos = parseYouTubeRSS(xml, channelId, channelName)
+  // Filter out YouTube Shorts — marked with #shorts/#short in title or description
+  const videos = allVideos.filter(v => {
+    const t = (v.title || '').toLowerCase()
+    const d = (v.description || '').toLowerCase()
+    if (t.includes('#shorts') || t.includes('#short')) return false
+    if (d.includes('#shorts')) return false
+    return true
+  })
+  console.log(`[VIDEO] ${channelName}: RSS ${allVideos.length} total → ${videos.length} after filtering Shorts`)
   return videos.slice(0, 5)
 }
 
