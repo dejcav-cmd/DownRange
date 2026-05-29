@@ -75,6 +75,11 @@ export default function RootLayout({ children }) {
       </head>
       <ClerkWrapper>
       <body>
+        {/* AvantLink affiliate verification — ID 1604521 */}
+        <Script
+          src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521"
+          strategy="afterInteractive"
+        />
         <ThemeProvider>
           {children}
           <MobileTabBar />
