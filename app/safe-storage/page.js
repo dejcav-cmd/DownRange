@@ -1,5 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
 export const metadata = { title: 'Gun Safe & Storage Guide — DownRange', description: 'Complete guide to firearms safe storage. Reviews and recommendations for quick-access, biometric, and full-vault safes.' }
 
 const SAFES = [
@@ -49,7 +51,8 @@ function SafeCard({ safe }) {
 export default function SafeStoragePage() {
   return (
     <>
-      <Masthead />
+      <BreakingTicker alerts={alerts || []} />
+      M />
       <div className="page-hero" data-title="STORAGE">
         <div className="container">
           <h1 className="page-hero-title">Safe Storage Guide</h1>
