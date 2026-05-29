@@ -94,36 +94,90 @@ function parseYouTubeRSS(xml, channelId, channelName) {
 }
 
 async function fetchChannelRSS(channelId, channelName, handle) {
-  // Try channel_id first (works for UC IDs that aren't rate-limited)
-  // @handle: YouTube supports channel_id=@handle directly since 2023
-  let url = channelId.startsWith('@')
-    ? `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
-    : `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
-  const res = await fetch(url, {
+  const apiKey = process.env.YOUTUBE_API_KEY
+
+  // ── Primary: YouTube Data API v3 (no IP blocking, full quota) ──────────────
+  if (apiKey && !channelId.startsWith('@')) {
+    try {
+      const url = new URL('https://www.googleapis.com/youtube/v3/search')
+      url.searchParams.set('part', 'snippet')
+      url.searchParams.set('channelId', channelId)
+      url.searchParams.set('order', 'date')
+      url.searchParams.set('maxResults', '5')
+      url.searchParams.set('type', 'video')
+      url.searchParams.set('key', apiKey)
+      const res  = await fetch(url.toString(), { signal: AbortSignal.timeout(10000) })
+      const data = await res.json()
+      if (data.error) {
+        const code = data.error.code
+        const msg  = data.error.message || data.error.errors?.[0]?.reason || 'unknown'
+        if (msg.includes('quota') || msg.includes('quotaExceeded')) {
+          throw new Error(`YouTube API quota exhausted — resets midnight Pacific`)
+        }
+        if (code === 403 && msg.includes('blocked')) {
+          throw new Error(`YouTube API key blocked for search.list — check API restrictions in Google Cloud Console`)
+        }
+        throw new Error(`YouTube API error ${code}: ${msg}`)
+      }
+      if (!data.items?.length) {
+        console.log(`[VIDEO] ${channelName}: API returned 0 items`)
+        return []
+      }
+      const videos = data.items
+        .filter(item => item.id?.videoId && item.snippet)
+        .map(item => ({
+          _type: 'video',
+          title: item.snippet.title,
+          videoId: item.id.videoId,
+          youtubeId: item.id.videoId,
+          channelName,
+          channelId,
+          thumbnail: item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || `https://i.ytimg.com/vi/${item.id.videoId}/hqdefault.jpg`,
+          description: (item.snippet.description || '').slice(0, 400),
+          category: inferCategory(item.snippet.title),
+          publishedAt: item.snippet.publishedAt,
+          addedAt: new Date().toISOString(),
+          featured: false,
+          active: true,
+        }))
+      console.log(`[VIDEO] ${channelName}: API returned ${videos.length} videos`)
+      return videos
+    } catch (apiErr) {
+      console.warn(`[VIDEO] ${channelName}: API failed (${apiErr.message}) — falling back to RSS`)
+      // Fall through to RSS below
+    }
+  }
+
+  // ── Fallback: YouTube RSS feed ──────────────────────────────────────────────
+  const rssId = channelId.startsWith('@') ? channelId : channelId
+  const url1  = `https://www.youtube.com/feeds/videos.xml?channel_id=${rssId}`
+  let res = await fetch(url1, {
     headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
     signal: AbortSignal.timeout(10000),
   })
+
+  // If UC ID fails, try @handle
   if (!res.ok && (res.status === 404 || res.status === 403) && handle && !channelId.startsWith('@')) {
-    // UC ID gave 404 — try @handle format which YouTube also supports
-    const handleUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${handle}`
-    const res2 = await fetch(handleUrl, {
+    console.log(`[VIDEO] ${channelName}: UCid ${res.status} → trying handle ${handle}`)
+    const url2 = `https://www.youtube.com/feeds/videos.xml?channel_id=${handle}`
+    res = await fetch(url2, {
       headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
       signal: AbortSignal.timeout(10000),
     })
-    if (!res2.ok) throw new Error(`YouTube RSS ${channelId}→${handle} both failed (${res.status}/${res2.status}) for ${channelName}`)
-    return parseYouTubeRSS(await res2.text(), channelId, channelName).slice(0, 5)
-  }
-  if (!res.ok) {
+    if (!res.ok) throw new Error(`YouTube RSS HTTP ${res.status} for ${channelName} (${channelId} + handle ${handle})`)
+  } else if (!res.ok) {
     throw new Error(`YouTube RSS HTTP ${res.status} for channel ${channelName} (${channelId})`)
   }
+
   const xml = await res.text()
   if (!xml.includes('<feed') && !xml.includes('<entry>')) {
-    throw new Error(`YouTube RSS returned invalid XML for ${channelName} — length ${xml.length}`)
+    throw new Error(`YouTube RSS returned invalid XML for ${channelName}`)
   }
   const videos = parseYouTubeRSS(xml, channelId, channelName)
   console.log(`[VIDEO] ${channelName}: RSS returned ${videos.length} videos`)
-  return videos.slice(0, 5) // latest 5 only
+  return videos.slice(0, 5)
 }
+
 
 async function checkExists(videoId) {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
@@ -158,7 +212,7 @@ async function loadChannelsFromSanity() {
 }
 
 async function runVideoFeed() {
-  console.log('[VIDEO] ===== Video feed starting (RSS mode — no API key needed) =====')
+  console.log('[VIDEO] ===== Video feed starting — mode:', process.env.YOUTUBE_API_KEY ? 'YouTube Data API v3' : 'RSS fallback', '| channels:', channelList.length, '=====')
 
   // Use Sanity-stored channels if available, else hardcoded list
   const sanityChannels = await loadChannelsFromSanity()
