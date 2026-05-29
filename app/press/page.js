@@ -2,6 +2,8 @@ import Masthead from '../../components/layout/Masthead'
 import Image from 'next/image'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Press & Media Kit — DownRange Intelligence Hub',
@@ -57,7 +59,8 @@ const PARTNERSHIP_TYPES = [
 export default function PressPage() {
   return (
     <>
-      <Masthead />
+      <BreakingTicker alerts={alerts || []} />
+      M />
 
       {/* Hero */}
       <div className="page-hero" data-title="PRESS">
