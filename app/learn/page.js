@@ -62,7 +62,7 @@ export default function LearnPage({ searchParams }) {
               You searched for something, ended up here, and want a straight answer. That's what this section is. No preamble, no disclaimers beyond what's legally required, no talking down to you.
             </p>
             <div style={{ display:'flex', alignItems:'center', gap:'14px', padding:'14px 18px', background:'var(--bg3)', border:'1px solid var(--border)', borderLeft:'3px solid var(--gold)', width:'fit-content' }}>
-              <div style={{ width:36, height:36, background:'linear-gradient(135deg,var(--gold),#8A6320)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'16px' }}>🎯</div>
+                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="36" height="36" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
               <div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>Written by DJ Cavalcanti</div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>Founder, DownRange · Washington State</div>
