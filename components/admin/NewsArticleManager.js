@@ -504,17 +504,26 @@ export default function NewsArticleManager({ adminKey }) {
                   <button className="nam-btn" onClick={async () => {
                     if (!editImg || !editImg.startsWith('http')) { flash('⚠ Enter a valid https:// URL'); return }
                     setBusy(true)
+                    flash('⏳ Downloading image to Sanity CDN...')
                     try {
-                      await patchField(selectedArticle._id, { imageUrl: editImg })
-                      setArticles(prev => prev.map(a => a._id === selectedArticle._id ? {...a, imageUrl: editImg} : a))
-                      flash('✅ Image URL saved')
+                      const res = await fetch('/api/admin/save-image-url', {
+                        method: 'POST',
+                        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: editImg, id: selectedArticle._id, type: 'newsArticle' }),
+                      })
+                      const d = await res.json()
+                      if (d.ok) {
+                        setEditImg(d.cdnUrl)
+                        setArticles(prev => prev.map(a => a._id === selectedArticle._id ? {...a, imageUrl: d.cdnUrl} : a))
+                        flash('✅ Image downloaded → saved to Sanity CDN')
+                      } else { flash('❌ ' + (d.error || 'Download failed')) }
                     } catch(e) { flash('❌ ' + e.message) }
                     setBusy(false)
                   }}
                     disabled={busy || !!selectedArticle.editorLocked}
                     style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap',
                       opacity:(selectedArticle.editorLocked) ? 0.35 : 1 }}>
-                    💾 Save URL
+                    📥 Download & Save
                   </button>
                 </div>
                 {editImg && editImg.startsWith('http') && (
