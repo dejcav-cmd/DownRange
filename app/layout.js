@@ -86,7 +86,8 @@ export default function RootLayout({ children }) {
         </ThemeProvider>
         {/* SPA route tracker — fires gtag on every client-side navigation */}
         <PageViewTracker />
-      </body>
+            <Script id="avantlink-verify" strategy="afterInteractive" src="https://www.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521" />
+    </body>
       </ClerkWrapper>
     </html>
   )
