@@ -1,6 +1,8 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'State Firearms News — DownRange', description: 'Firearms news for all 50 states. Real-time feeds from state-level sources.' }
 
@@ -29,7 +31,8 @@ const ACTIVITY_COLORS = { HIGH:'#EF4444', MED:'#FBBF24', LOW:'#34D399' }
 export default function StateNewsIndex() {
   return (
     <>
-      <Masthead />
+      <BreakingTicker alerts={alerts || []} />
+      M />
       <div className="page-hero" data-title="STATE NEWS">
         <div className="container">
           <h1 className="page-hero-title">State Firearms News</h1>
