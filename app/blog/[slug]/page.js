@@ -4,16 +4,48 @@ import Footer          from '../../../components/layout/Footer'
 import BreakingTicker  from '../../../components/layout/BreakingTicker'
 import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
-import { fetchBreakingAlerts } from '../../../sanity/lib/client'
+import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../../sanity/lib/client'
 
-export const revalidate = 86400
+export const revalidate = 3600
+
+// Merge static BLOG_POSTS with Sanity posts so all slugs resolve
+async function getAllPosts() {
+  try {
+    const sanityPosts = await fetchBlogPostsPaginated(50, 0)
+    // Map Sanity posts to same shape, static BLOG_POSTS take precedence
+    const sanityMapped = (sanityPosts || []).map(p => ({
+      slug:       p.slug?.current || p.slug,
+      title:      p.title || '',
+      subtitle:   p.excerpt || '',
+      author:     p.author || 'DJ Cavalcanti',
+      authorRole: 'Founder, DownRange',
+      date:       p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '',
+      readTime:   p.readTime || '8 min read',
+      category:   (p.category || 'general').toUpperCase(),
+      catColor:   '#C8922A',
+      featured:   false,
+      img:        p.imageUrl || '/img/photos/rifle.jpg',
+      excerpt:    p.excerpt || '',
+      tags:       p.tags || [],
+      body:       p.body || '',
+      _fromSanity: true,
+    }))
+    const staticSlugs = new Set(BLOG_POSTS.map(p => p.slug))
+    const merged = [...BLOG_POSTS, ...sanityMapped.filter(p => !staticSlugs.has(p.slug))]
+    return merged
+  } catch {
+    return BLOG_POSTS
+  }
+}
 
 export async function generateStaticParams() {
-  return BLOG_POSTS.map(p => ({ slug: p.slug }))
+  const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
+  return allPosts.map(p => ({ slug: p.slug }))
 }
 
 export async function generateMetadata({ params }) {
-  const post = BLOG_POSTS.find(p => p.slug === params.slug)
+  const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
+  const post = allPosts.find(p => p.slug === params.slug)
   if (!post) return { title: 'Article Not Found | DownRange' }
   const url = `https://downrangeco.com/blog/${params.slug}`
   return {
@@ -40,14 +72,15 @@ export async function generateMetadata({ params }) {
 }
 
 export default async function BlogArticlePage({ params }) {
-  const post  = BLOG_POSTS.find(p => p.slug === params.slug)
+  const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
+  const post  = allPosts.find(p => p.slug === params.slug)
   if (!post) notFound()
 
   const alerts      = await fetchBreakingAlerts(3).catch(() => [])
-  const postIndex   = BLOG_POSTS.findIndex(p => p.slug === params.slug)
-  const prevPost    = BLOG_POSTS[postIndex + 1] || null
-  const nextPost    = BLOG_POSTS[postIndex - 1] || null
-  const relatedPosts = BLOG_POSTS.filter(p => p.slug !== post.slug).slice(0, 3)
+  const postIndex   = allPosts.findIndex(p => p.slug === params.slug)
+  const prevPost    = allPosts[postIndex + 1] || null
+  const nextPost    = allPosts[postIndex - 1] || null
+  const relatedPosts = allPosts.filter(p => p.slug !== post.slug).slice(0, 3)
 
   return (
     <>
