@@ -99,14 +99,27 @@ export async function GET(req) {
   const t0   = Date.now()
   const today = new Date().toISOString().split('T')[0]
 
-  // Fetch articles from last 48 hours
-  const cutoff = new Date(Date.now() - 48 * 3600000).toISOString()
-  const articles = await sanity.fetch(
-    `*[_type == "newsArticle" && publishedAt > $cutoff && approved == true] | order(publishedAt desc) [0...200] {
-      _id, title, slug, body, source, externalUrl, publishedAt, category, wordCount
-    }`,
-    { cutoff }
-  )
+  // Sample strategy: pick 25 recent articles + 5 older articles for spot-check diversity
+  const cutoff48h = new Date(Date.now() - 48 * 3600000).toISOString()
+  const cutoff7d  = new Date(Date.now() - 7 * 24 * 3600000).toISOString()
+
+  const [recent, older] = await Promise.all([
+    // Last 48h — all of them (usually 10-30 articles)
+    sanity.fetch(
+      `*[_type == "newsArticle" && publishedAt > $cutoff && approved == true] | order(publishedAt desc) [0...50] {
+        _id, title, slug, body, source, externalUrl, publishedAt, category, wordCount
+      }`,
+      { cutoff: cutoff48h }
+    ),
+    // 7d-48h window — random sample of 10 for ongoing spot-checking
+    sanity.fetch(
+      `*[_type == "newsArticle" && publishedAt < $cutoffNew && publishedAt > $cutoffOld && approved == true] | order(_createdAt desc) [0...10] {
+        _id, title, slug, body, source, externalUrl, publishedAt, category, wordCount
+      }`,
+      { cutoffNew: cutoff48h, cutoffOld: cutoff7d }
+    ),
+  ])
+  const articles = [...recent, ...older]
 
   const results   = articles.map(analyzeArticle)
   const highRisk  = results.filter(r => r.riskLevel === 'HIGH')
