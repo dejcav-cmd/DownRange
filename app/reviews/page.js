@@ -195,13 +195,16 @@ function ReviewCard({ r, featured = false }) {
   )
 }
 
+const PER_PAGE_REVIEWS = 24
+
 export default async function ReviewsPage({ searchParams }) {
   const cat  = searchParams?.cat  || null
   const q    = searchParams?.q    || null
   const sort = searchParams?.sort || 'score'
+  const page = Math.max(1, parseInt(searchParams?.page || '1'))
 
   const [sanityReviews, alerts] = await Promise.all([
-    q ? searchReviews(q, 40) : fetchReviews(40, cat).catch(() => []),
+    q ? searchReviews(q, 200) : fetchReviews(200, cat).catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
   ])
 
@@ -217,8 +220,12 @@ export default async function ReviewsPage({ searchParams }) {
     return (b.score || 0) - (a.score || 0)
   })
 
-  const featured = sortedReviews.filter(r => r.featured || r.score >= 9.4)
-  const grid     = sortedReviews.filter(r => !featured.includes(r))
+  // Pagination — featured always shown, grid is paginated
+  const total    = sortedReviews.length
+  const pages    = Math.max(1, Math.ceil(total / PER_PAGE_REVIEWS))
+  const pagedAll = sortedReviews.slice((page - 1) * PER_PAGE_REVIEWS, page * PER_PAGE_REVIEWS)
+  const featured = page === 1 ? pagedAll.filter(r => r.featured || r.score >= 9.4) : []
+  const grid     = page === 1 ? pagedAll.filter(r => !featured.includes(r)) : pagedAll
 
   return (
     <>
@@ -354,6 +361,41 @@ export default async function ReviewsPage({ searchParams }) {
               </div>
             ))}
           </div>
+
+          {/* ── Pagination ── */}
+          {pages > 1 && (
+            <div style={{ padding:'32px 0 16px', display:'flex', justifyContent:'center' }}>
+              <div style={{ display:'flex', gap:6, alignItems:'center', flexWrap:'wrap' }}>
+                {page > 1 && (
+                  <a href={`/reviews?${new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), ...(sort&&{sort}), page: page-1 }).toString()}`}
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                    ← Prev
+                  </a>
+                )}
+                {Array.from({ length: pages }, (_,i) => i+1)
+                  .filter(p => p === 1 || p === pages || Math.abs(p - page) <= 2)
+                  .reduce((acc, p, idx, arr) => { if (idx > 0 && p - arr[idx-1] > 1) acc.push('…'); acc.push(p); return acc }, [])
+                  .map((p, i) => p === '…'
+                    ? <span key={`e${i}`} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 6px', color:'#6b7280' }}>…</span>
+                    : <a key={p} href={`/reviews?${new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), ...(sort&&{sort}), page: p }).toString()}`}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 14px', border:'1px solid var(--border)',
+                          color: p===page ? '#000' : 'var(--text)', background: p===page ? 'var(--gold)' : 'transparent',
+                          textDecoration:'none', fontWeight: p===page ? 700 : 400 }}>
+                        {p}
+                      </a>
+                  )}
+                {page < pages && (
+                  <a href={`/reviews?${new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), ...(sort&&{sort}), page: page+1 }).toString()}`}
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                    Next →
+                  </a>
+                )}
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', marginLeft:8 }}>
+                  Page {page} of {pages} · {total} reviews
+                </span>
+              </div>
+            </div>
+          )}
 
           {/* ── CTA ── */}
           <div style={{ marginTop:36, padding:'28px 32px', background:'var(--bg2)', border:'1px solid var(--border)', display:'grid', gridTemplateColumns:'1fr auto', gap:24, alignItems:'center' }}>
