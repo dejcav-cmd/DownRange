@@ -28,7 +28,7 @@ async function getAllPosts() {
       img:        p.imageUrl || '/img/photos/rifle.jpg',
       excerpt:    p.excerpt || '',
       tags:       p.tags || [],
-      body:       p.body || '',
+      body:       p.body || p.summary || p.excerpt || '',
       _fromSanity: true,
     }))
     const staticSlugs = new Set(BLOG_POSTS.map(p => p.slug))
@@ -224,7 +224,13 @@ export default async function BlogArticlePage({ params }) {
               </div>
 
               {/* Body HTML */}
-              <div className="blog-article-body" dangerouslySetInnerHTML={{ __html: post.body }} />
+              {post.body && post.body.trim().length > 20 ? (
+                <div className="blog-article-body" dangerouslySetInnerHTML={{ __html: post.body }} />
+              ) : (
+                <div className="blog-article-body" style={{ color:'var(--text-muted)', fontStyle:'italic', padding:'2rem 0' }}>
+                  <p>This article is being written. Check back shortly — it will be live soon.</p>
+                </div>
+              )}
 
               {/* Tags */}
               <div style={{ marginTop:'3rem', paddingTop:'1.5rem', borderTop:'1px solid rgba(30,41,59,0.5)' }}>
