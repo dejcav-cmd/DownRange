@@ -127,6 +127,10 @@
     {
       "path": "/api/agent?feed=outdoors",
       "schedule": "0 9 * * 1"
+    },
+    {
+      "path": "/api/agent?feed=blog",
+      "schedule": "0 10 * * 5"
     }
   ],
   "headers": [
