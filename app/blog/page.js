@@ -22,7 +22,7 @@ export const BLOG_POSTS = [
     category:    'OPINION',
     catColor:    '#a855f7',
     featured:    true,
-    img:         '/img/photos/suppressor.jpg',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/AK-47_and_M16A1_DD-ST-85-01269.jpg/1280px-AK-47_and_M16A1_DD-ST-85-01269.jpg',
     excerpt:     'When the One Big Beautiful Bill eliminated the $200 NFA tax on suppressors, SBRs, and SBSs, it removed the single biggest barrier to widespread suppressor ownership. Six months in, the numbers are staggering — and the industry is only beginning to catch up.',
     tags:        ['NFA', 'Suppressors', 'One Big Beautiful Bill', 'Industry'],
     body: `
@@ -71,7 +71,7 @@ export const BLOG_POSTS = [
     category:    'ANALYSIS',
     catColor:    '#C8922A',
     featured:    false,
-    img:         '/img/photos/blog-edc-pistol.jpg',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg',
     excerpt:     'The Sig P365 changed everything when it launched in 2018. Eight years later, every major manufacturer has a micro-compact answer, the technology has matured, and the market is more competitive than any category in firearms history.',
     tags:        ['Pistols', 'EDC', 'Micro-Compact', 'Market Analysis'],
     body: `
@@ -118,7 +118,7 @@ export const BLOG_POSTS = [
     category:    'MARKET',
     catColor:    '#22c55e',
     featured:    false,
-    img:         '/img/photos/blog-red-dot.jpg',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/AR15_Rifle.jpg/1280px-AR15_Rifle.jpg',
     excerpt:     'If you enjoyed the buyer\'s market of 2025, the window is closing. Steel tariffs, import restrictions, and rising manufacturing costs are converging to push firearms prices up across the board in the second half of 2026.',
     tags:        ['Market', 'Pricing', 'Tariffs', 'Buying Guide'],
     body: `
@@ -280,7 +280,7 @@ function normalizeSanityPost(p) {
     category:   (p.category || 'general').toUpperCase(),
     catColor:   '#C8922A',
     featured:   false,
-    img:        p.imageUrl || '/img/photos/pistol.jpg',
+    img:        p.imageUrl || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg',
     excerpt:    p.excerpt || '',
     tags:       p.tags || [],
     body:       p.body || '',
