@@ -58,7 +58,7 @@ Respond ONLY with valid JSON array. No markdown. No commentary. Example:
 
 If no real results found, respond with: []`
 
-      const raw = await callAIText(prompt, 'smart')
+      const raw = await callAIText({ prompt, useCase: 'article', maxTokens: 1500 })
       const clean = (raw || '').replace(/```json|```/g, '').trim()
       if (!clean || clean === '[]') continue
 
