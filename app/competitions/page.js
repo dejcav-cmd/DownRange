@@ -8,15 +8,18 @@ export const metadata = {
   alternates:  { canonical: 'https://downrangeco.com/competitions' },
   openGraph: {
     title:       'Shooting Competitions — DownRange',
-    description: 'NRA · USPSA · IDPA · PRS · 3-Gun · Steel Challenge. Find your next match.',
+    description: 'Live competition calendar and org guides for competitive shooters.',
     url:         'https://downrangeco.com/competitions',
-    type:        'website',
   },
 }
+export const revalidate = 3600
 
-export default function CompetitionsPage() {
+export default async function CompetitionsPage() {
   const alerts = await fetchBreakingAlerts(3).catch(() => [])
-  return <>
-    <BreakingTicker alerts={alerts} />
-    <CompetitionsClient />
+  return (
+    <>
+      <BreakingTicker alerts={alerts} />
+      <CompetitionsClient />
+    </>
+  )
 }
