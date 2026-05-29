@@ -7,40 +7,40 @@
 import { publishToSanity, notifyError, sleep } from '../utils.js'
 
 const CHANNELS = [
-  { id: 'UC0RBTQIYLEQbcahZWkmzeTQ', name: 'Garand Thumb',          tags: ['review','tactical','military'] },
-  { id: 'UCIRgR4iANHI2taJdz8hjwLw', name: 'Paul Harrell',           tags: ['review','demonstration','training'] },
-  { id: 'UCwIHnIpEIbyzmL9cB2l5Elw', name: 'Military Arms Channel',  tags: ['review','industry','ar15'] },
-  { id: 'UCa2OJa5n9oeQ_NRohmI8kVA', name: 'Iraqveteran8888',        tags: ['review','demonstration','historical'] },
-  { id: 'UCVp_8H_KAQL7dJT6fGfSLKQ', name: 'InRange TV',             tags: ['review','historical','competition'] },
-  { id: 'UCrfKGpvbEQXcbe68dzXgJuA', name: 'Forgotten Weapons',      tags: ['historical','collector','review'] },
-  { id: 'UCkKnVVYHmFYMgWJjJPzwHdw', name: 'Active Self Protection',  tags: ['training','self-defense','ccw'] },
-  { id: 'UCpAQxclFD9eGCqRoIDNIGsA', name: 'Lucky Gunner',            tags: ['ammo','testing','review'] },
-  { id: 'UCVdMoKcLQ7-4lxjhJXx_E8A', name: 'Hickok45',               tags: ['demonstration','review','entertainment'] },
-  { id: 'UCpUJCA4YcMVMdSolcaWOQOw', name: 'Mr. Guns N Gear',         tags: ['review','edc','carry'] },
-  { id: 'UCftEYpFBf_m8gJEWMXXfqVg', name: 'Brownells',              tags: ['industry','parts','build'] },
+  { id: 'UC0RBTQIYLEQbcahZWkmzeTQ', name: 'Garand Thumb',          tags: ['review','tactical','military'] , handle:'@GarandThumb'},
+  { id: 'UCIRgR4iANHI2taJdz8hjwLw', name: 'Paul Harrell',           tags: ['review','demonstration','training'] , handle:'@PaulHarrellGuns'},
+  { id: 'UCwIHnIpEIbyzmL9cB2l5Elw', name: 'Military Arms Channel',  tags: ['review','industry','ar15'] , handle:'@MACsuperstore'},
+  { id: 'UCa2OJa5n9oeQ_NRohmI8kVA', name: 'Iraqveteran8888',        tags: ['review','demonstration','historical'] , handle:'@Iraqveteran8888'},
+  { id: 'UCVp_8H_KAQL7dJT6fGfSLKQ', name: 'InRange TV',             tags: ['review','historical','competition'] , handle:'@InRangeTV'},
+  { id: 'UCrfKGpvbEQXcbe68dzXgJuA', name: 'Forgotten Weapons',      tags: ['historical','collector','review'] , handle:'@ForgottenWeapons'},
+  { id: 'UCkKnVVYHmFYMgWJjJPzwHdw', name: 'Active Self Protection',  tags: ['training','self-defense','ccw'] , handle:'@ActiveSelfProtection'},
+  { id: 'UCpAQxclFD9eGCqRoIDNIGsA', name: 'Lucky Gunner',            tags: ['ammo','testing','review'] , handle:'@LuckyGunner'},
+  { id: 'UCVdMoKcLQ7-4lxjhJXx_E8A', name: 'Hickok45',               tags: ['demonstration','review','entertainment'] , handle:'@hickok45'},
+  { id: 'UCpUJCA4YcMVMdSolcaWOQOw', name: 'Mr. Guns N Gear',         tags: ['review','edc','carry'] , handle:'@MrGunsNGear'},
+  { id: 'UCftEYpFBf_m8gJEWMXXfqVg', name: 'Brownells',              tags: ['industry','parts','build'] , handle:'@Brownells'},
   // ── DJ Added — May 2026 ───────────────────────────────────────────────────
   { id: 'UCR6jQ7mXz6zZx3DtCMzKWxQ', name: 'IMPACT SHOOTING',         tags: ['hunting','long-range','precision'] },
-  { id: 'UC-y0QNNNujtB2PLjrHDwnPg', name: 'Daniel Defense',           tags: ['manufacturer','ar15','industry'] },
+  { id: 'UC-y0QNNNujtB2PLjrHDwnPg', name: 'Daniel Defense',           tags: ['manufacturer','ar15','industry'] , handle:'@DanielDefense'},
   { id: 'UC9ZKDGCc5R67fVvLFSv-OLA', name: 'Warrior Poet Society',     tags: ['training','2a','self-defense','tactical'] },
   { id: 'UCFJ2K2gUJJ1ecBU6Sxc3bCA', name: 'Gun Owners of America',    tags: ['2a','advocacy','law'] },
-  { id: 'UC3CfC922pS8htNjW8yTPGRg', name: 'Washington Gun Law',       tags: ['law','2a','legal','ccw'] },
-  { id: 'UCHWRbypJau9R8lDCXqlWgUA', name: 'Backfire',                 tags: ['hunting','review','long-range'] },
+  { id: 'UC3CfC922pS8htNjW8yTPGRg', name: 'Washington Gun Law',       tags: ['law','2a','legal','ccw'] , handle:'@WashingtonGunLaw'},
+  { id: 'UCHWRbypJau9R8lDCXqlWgUA', name: 'Backfire',                 tags: ['hunting','review','long-range'] , handle:'@Backfire'},
   { id: 'UC0VQT2e75ejR-mUCuerugvA', name: 'Tactical Cowboy',          tags: ['training','tactics','self-defense'] },
   // ── DJ Added Batch 2 — May 2026 ──────────────────────────────────────────
-  { id: 'UCG1_A0jPBGZUpRW7XkaaBkg', name: 'Honest Outlaw',           tags: ['review','edc','budget','honest'] },
-  { id: 'UC7X2IY5-ZHKU83nyb6KejgQ', name: 'Dirty Civilian',          tags: ['training','family','self-defense','fitness'] },
-  { id: 'UCmBmZD1xOLIAmLe7wVKfUmA', name: 'Classic Firearms',        tags: ['industry','2a','review','historical'] },
-  { id: 'UC193r5YXcpQJV34N99ZbhzQ', name: 'Colion Noir',             tags: ['2a','law','advocacy','review'] },
-  { id: 'UCA_R_X4kk4P-ZUSrt2CXmng', name: 'Argali',                  tags: ['hunting','backcountry','gear','western'] },
-  { id: 'UC816lSSFUowW4NrA5WfSpNw', name: 'PNWild',                  tags: ['hunting','pnw','outdoor','washington'] },
+  { id: 'UCG1_A0jPBGZUpRW7XkaaBkg', name: 'Honest Outlaw',           tags: ['review','edc','budget','honest'] , handle:'@HonestOutlawReviews'},
+  { id: 'UC7X2IY5-ZHKU83nyb6KejgQ', name: 'Dirty Civilian',          tags: ['training','family','self-defense','fitness'] , handle:'@dirty-civilian'},
+  { id: 'UCmBmZD1xOLIAmLe7wVKfUmA', name: 'Classic Firearms',        tags: ['industry','2a','review','historical'] , handle:'@ClassicFirearms'},
+  { id: 'UC193r5YXcpQJV34N99ZbhzQ', name: 'Colion Noir',             tags: ['2a','law','advocacy','review'] , handle:'@ColionNoir'},
+  { id: 'UCA_R_X4kk4P-ZUSrt2CXmng', name: 'Argali',                  tags: ['hunting','backcountry','gear','western'] , handle:'@Argali'},
+  { id: 'UC816lSSFUowW4NrA5WfSpNw', name: 'PNWild',                  tags: ['hunting','pnw','outdoor','washington'] , handle:'@PNWild'},
   { id: '@gohunt',                   name: 'GoHUNT',                  tags: ['hunting','western','scouting','technology'] },
   { id: '@montanawild',              name: 'Montana Wild',            tags: ['hunting','montana','outdoor','film'] },
   { id: '@MountainsMulletsMerica',   name: 'Mountains Mullets Merica',tags: ['precision','long-range','review','prs'] },
   // ── DJ Added Batch 3 — May 2026 ──────────────────────────────────────────
-  { id: 'UCLDHTNcCXHlu2Z9XNBZ2gZg', name: 'xring',                   tags: ['competition','precision','pistol','training'] },
-  { id: 'UCCgbrWR2dh0jDSCToEymeaw', name: 'Clint Morgan (Magdump)',   tags: ['2a','training','marine','advocacy'] },
+  { id: 'UCLDHTNcCXHlu2Z9XNBZ2gZg', name: 'xring',                   tags: ['competition','precision','pistol','training'] , handle:'@xring'},
+  { id: 'UCCgbrWR2dh0jDSCToEymeaw', name: 'Clint Morgan (Magdump)',   tags: ['2a','training','marine','advocacy'] , handle:'@ClintMagdumpMorgan'},
   { id: 'UCJxCLIuutemQ2D71hD3c5ug', name: 'GBRS Group',              tags: ['training','tactics','tier1','special-ops'] },
-  { id: 'UCdqO3qjABeMfqdhErk-A7zg', name: 'Haley Strategic Partners',tags: ['training','tactics','mindset','travis-haley'] },
+  { id: 'UCdqO3qjABeMfqdhErk-A7zg', name: 'Haley Strategic Partners',tags: ['training','tactics','mindset','travis-haley'] , handle:'@haleystrategicpartners'},
 ]
 
 function inferCategory(title) {
@@ -93,17 +93,26 @@ function parseYouTubeRSS(xml, channelId, channelName) {
   return videos
 }
 
-async function fetchChannelRSS(channelId, channelName) {
-  // Some channels use legacy UCxxxx IDs that are now 404; try channel_id first, then c/user
-  let url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
-  // Handle @handle-style channel IDs (start with @)
-  if (channelId.startsWith('@')) {
-    url = `https://www.youtube.com/feeds/videos.xml?user=${channelId.slice(1)}`
-  }
+async function fetchChannelRSS(channelId, channelName, handle) {
+  // Try channel_id first (works for UC IDs that aren't rate-limited)
+  // @handle: YouTube supports channel_id=@handle directly since 2023
+  let url = channelId.startsWith('@')
+    ? `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
+    : `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
   const res = await fetch(url, {
     headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
     signal: AbortSignal.timeout(10000),
   })
+  if (!res.ok && res.status === 404 && handle && !channelId.startsWith('@')) {
+    // UC ID gave 404 — try @handle format which YouTube also supports
+    const handleUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${handle}`
+    const res2 = await fetch(handleUrl, {
+      headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!res2.ok) throw new Error(`YouTube RSS HTTP ${res.status}/${res2.status} for ${channelName} — try updating channel ID in Video Manager`)
+    return parseYouTubeRSS(await res2.text(), channelId, channelName).slice(0, 5)
+  }
   if (!res.ok) {
     throw new Error(`YouTube RSS HTTP ${res.status} for channel ${channelName} (${channelId})`)
   }
@@ -168,7 +177,7 @@ async function runVideoFeed() {
     try {
       await sleep(500) // small delay between channels
 
-      const videos = await fetchChannelRSS(channel.id, channel.name)
+      const videos = await fetchChannelRSS(channel.id, channel.name, channel.handle)
 
       if (!videos.length) {
         result.status = 'empty'
