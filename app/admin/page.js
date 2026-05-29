@@ -65,6 +65,7 @@ const NAV = [
       { id:'deals',        label:'Deals Feed',       icon:'🔥', badge:null },
       { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
       { id:'marketbrief',  label:'Market Brief',     icon:'📊', badge:'live' },
+      { id:'copyright',  label:'Copyright',       icon:'⚖',  badge:null },
     ]
   },
   {
