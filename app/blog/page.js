@@ -161,7 +161,7 @@ export const BLOG_POSTS = [
     category:    'LAW',
     catColor:    '#3b82f6',
     featured:    false,
-    img:         '/img/photos/rifle.jpg',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SCOTUS_3_2010.jpg/1280px-SCOTUS_3_2010.jpg',
     excerpt:     'The Supreme Court\'s 2022 Bruen decision established a text-and-history standard for evaluating gun laws. But the lower courts are still brawling over what that standard requires — and the outcomes of these fights will determine the practical scope of your Second Amendment rights for decades.',
     tags:        ['2A', 'Bruen', 'SCOTUS', 'Legal', 'Constitutional'],
     body: `
@@ -203,7 +203,7 @@ export const BLOG_POSTS = [
     category:    'TRAINING',
     catColor:    '#22c55e',
     featured:    false,
-    img:         '/img/photos/rifle.jpg',
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/AR15_Rifle.jpg/1280px-AR15_Rifle.jpg',
     excerpt:     'A pistol red dot is one of the most significant performance upgrades available to a defensive shooter. It is also one of the most commonly installed and least effectively used pieces of equipment in civilian carry today.',
     tags:        ['Training', 'Red Dot', 'Optics', 'EDC', 'Carry'],
     body: `
