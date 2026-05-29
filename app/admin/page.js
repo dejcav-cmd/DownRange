@@ -40,6 +40,7 @@ const NAV = [
     id: 'content', label: 'Content', icon: '📰',
     panels: [
       { id:'hub',          label:'Content Hub',      icon:'◈',  badge:null },
+      { id:'drafts',       label:'Draft Recovery',   icon:'🔍', badge:null },
       { id:'news',         label:'News Articles',    icon:'📰', badge:null },
       { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍',  badge:null },
@@ -2075,6 +2076,7 @@ export default function AdminPage() {
 
             {/* ── CONTENT ── */}
             {panel==='hub'          && <ContentHub         adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
+            {panel==='drafts'       && <DraftRecovery      adminKey={adminKey} />}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
