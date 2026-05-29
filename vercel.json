@@ -119,6 +119,10 @@
     {
       "path": "/api/cron/copyright-review",
       "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/agent?feed=giveaways",
+      "schedule": "0 8 * * *"
     }
   ],
   "headers": [
