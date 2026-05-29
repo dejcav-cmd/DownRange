@@ -12,7 +12,7 @@ const CHANNELS = [
   { id: 'UCwIHnIpEIbyzmL9cB2l5Elw', name: 'Military Arms Channel',  tags: ['review','industry','ar15'] },
   { id: 'UCa2OJa5n9oeQ_NRohmI8kVA', name: 'Iraqveteran8888',        tags: ['review','demonstration','historical'] },
   { id: 'UCVp_8H_KAQL7dJT6fGfSLKQ', name: 'InRange TV',             tags: ['review','historical','competition'] },
-  { id: 'UCrfKGpvbEwnJIGMBNxTm5dA', name: 'Forgotten Weapons',      tags: ['historical','collector','review'] },
+  { id: 'UCrfKGpvbEQXcbe68dzXgJuA', name: 'Forgotten Weapons',      tags: ['historical','collector','review'] },
   { id: 'UCkKnVVYHmFYMgWJjJPzwHdw', name: 'Active Self Protection',  tags: ['training','self-defense','ccw'] },
   { id: 'UCpAQxclFD9eGCqRoIDNIGsA', name: 'Lucky Gunner',            tags: ['ammo','testing','review'] },
   { id: 'UCVdMoKcLQ7-4lxjhJXx_E8A', name: 'Hickok45',               tags: ['demonstration','review','entertainment'] },
@@ -71,7 +71,12 @@ function parseYouTubeRSS(xml, channelId, channelName) {
 }
 
 async function fetchChannelRSS(channelId, channelName) {
-  const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
+  // Some channels use legacy UCxxxx IDs that are now 404; try channel_id first, then c/user
+  let url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
+  // Handle @handle-style channel IDs (start with @)
+  if (channelId.startsWith('@')) {
+    url = `https://www.youtube.com/feeds/videos.xml?user=${channelId.slice(1)}`
+  }
   const res = await fetch(url, {
     headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
     signal: AbortSignal.timeout(10000),
