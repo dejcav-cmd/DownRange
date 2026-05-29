@@ -245,6 +245,7 @@ export async function generateMetadata({ params }) {
   }
 }
 
+export const revalidate = 1
 export default async function ArticlePage({ params }) {
   const article = ARTICLES[params.slug]
   if (!article) notFound()
