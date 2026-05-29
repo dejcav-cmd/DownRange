@@ -382,7 +382,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
       )}
 
       {/* ── BROWSE SECTION ── */}
-      <div style={{ padding:'32px 0 60px', background:'var(--bg)' }}>
+      <div style={{ padding:'8px 0 60px', background:'var(--bg)' }}>
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:18 }}>
             <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'#F0EDE6', letterSpacing:'.05em' }}>
