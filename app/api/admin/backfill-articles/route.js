@@ -231,7 +231,7 @@ async function rewriteItem(item, typeConfig) {
 
   if (!parsed.body || typeof parsed.body !== 'string') throw new Error('No body in response')
   if (parsed.body.length < 300) throw new Error('Body too short: ' + parsed.body.length)
-  // Append attribution block  return parsed
+  return parsed
 }
 
 export async function POST(req) {
