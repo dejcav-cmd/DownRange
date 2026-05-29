@@ -313,7 +313,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
       {active && (
         <div style={{ background:'#09090B', borderBottom:'1px solid var(--border)' }}>
           <div className="container" style={{ maxWidth:1400, padding:'0 20px' }}>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:2, paddingTop:20 }}>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:0, paddingTop:0 }}>
               <div>
                 <div style={{ position:'relative', width:'100%', paddingTop:'56.25%', background:'#000', marginBottom:0 }}>
                   <iframe
@@ -382,7 +382,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
       )}
 
       {/* ── BROWSE SECTION ── */}
-      <div style={{ padding:'8px 0 60px', background:'var(--bg)' }}>
+      <div style={{ padding:'8px 0 20px', background:'var(--bg)' }}>
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:18 }}>
             <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'#F0EDE6', letterSpacing:'.05em' }}>
