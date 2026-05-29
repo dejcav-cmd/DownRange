@@ -1,9 +1,11 @@
 'use client'
-import { useState, useCallback, useEffect } from 'react'
+import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
+
+const PER_PAGE = 24  // videos per page in browse grid
 
 const CATS = [
   { label: 'All',         val: null },
@@ -66,6 +68,27 @@ function QueueItem({ video, active, onClick }) {
       </div>
     </div>
   )
+}
+
+// Format publish date for display
+function formatVideoDate(dateStr) {
+  if (!dateStr) return null
+  const d    = new Date(dateStr)
+  if (isNaN(d)) return null
+  const now  = Date.now()
+  const diff = now - d.getTime()
+  const hrs  = diff / 3600000
+  const days = diff / 86400000
+  if (hrs  < 1)   return 'Just now'
+  if (hrs  < 24)  return Math.floor(hrs)  + 'h ago'
+  if (days < 7)   return Math.floor(days) + 'd ago'
+  return d.toLocaleDateString('en-US', { month:'short', day:'numeric' })
+}
+
+// A video is NEW if published within the last 24 hours
+function isNewVideo(dateStr) {
+  if (!dateStr) return false
+  return (Date.now() - new Date(dateStr).getTime()) < 86400000
 }
 
 function VideoCard({ video, onClick }) {
@@ -343,14 +366,67 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
           </div>
 
           <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px, 1fr))', gap:12 }}>
-            {filtered.map(v => (
-              <VideoCard key={v._id} video={v} onClick={() => play(v)} />
+            {paged.map(v => (
+              <VideoCard key={v._id || v.videoId} video={v} onClick={() => play(v)} />
             ))}
           </div>
 
           {filtered.length === 0 && (
             <div style={{ textAlign:'center', padding:'60px 0', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4B5563' }}>
               {search ? 'No videos match "' + search + '"' : 'No videos in this category yet.'}
+            </div>
+          )}
+
+          {/* ── PAGINATION ── */}
+          {totalPages > 1 && (
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'center', gap:8, marginTop:36, paddingBottom:8 }}>
+              <button
+                onClick={() => { setPage(p => Math.max(1, p-1)); window.scrollTo({top:0,behavior:'smooth'}) }}
+                disabled={page === 1}
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px',
+                  background:'none', border:'1px solid var(--border)', color: page===1 ? '#374151' : '#F0EDE6',
+                  cursor: page===1 ? 'not-allowed' : 'pointer', transition:'border-color .15s' }}
+                onMouseEnter={e => { if(page>1) e.currentTarget.style.borderColor='#C8922A' }}
+                onMouseLeave={e => e.currentTarget.style.borderColor='var(--border)'}
+              >← Prev</button>
+
+              {Array.from({ length: Math.min(7, totalPages) }, (_, i) => {
+                // Show pages around current
+                let p
+                if (totalPages <= 7) {
+                  p = i + 1
+                } else if (page <= 4) {
+                  p = i + 1
+                } else if (page >= totalPages - 3) {
+                  p = totalPages - 6 + i
+                } else {
+                  p = page - 3 + i
+                }
+                return (
+                  <button key={p} onClick={() => { setPage(p); window.scrollTo({top:0,behavior:'smooth'}) }}
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, minWidth:36, padding:'8px',
+                      background: p===page ? '#C8922A' : 'none',
+                      border: p===page ? '1px solid #C8922A' : '1px solid var(--border)',
+                      color: p===page ? '#000' : '#F0EDE6',
+                      cursor:'pointer', fontWeight: p===page ? 700 : 400 }}>
+                    {p}
+                  </button>
+                )
+              })}
+
+              <button
+                onClick={() => { setPage(p => Math.min(totalPages, p+1)); window.scrollTo({top:0,behavior:'smooth'}) }}
+                disabled={page === totalPages}
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px',
+                  background:'none', border:'1px solid var(--border)', color: page===totalPages ? '#374151' : '#F0EDE6',
+                  cursor: page===totalPages ? 'not-allowed' : 'pointer', transition:'border-color .15s' }}
+                onMouseEnter={e => { if(page<totalPages) e.currentTarget.style.borderColor='#C8922A' }}
+                onMouseLeave={e => e.currentTarget.style.borderColor='var(--border)'}
+              >Next →</button>
+
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4B5563', marginLeft:8 }}>
+                {((page-1)*PER_PAGE)+1}–{Math.min(page*PER_PAGE, filtered.length)} of {filtered.length}
+              </span>
             </div>
           )}
         </div>
