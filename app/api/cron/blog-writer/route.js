@@ -275,6 +275,13 @@ export async function GET(req) {
         const article = await writeArticle(topics[i], i)
         if (!article) { stats.failed++; continue }
 
+        // CRITICAL: never save article without body — it shows as blank page
+        if (!article.body || article.body.trim().length < 200) {
+          console.error('[blog-writer] Article has no body, skipping:', article.title)
+          stats.failed++
+          continue
+        }
+
         // Save to Sanity as draft
         await sanity.create(article)
         stats.written++
