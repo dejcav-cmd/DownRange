@@ -21,11 +21,21 @@ const CHANNELS = [
   // ── DJ Added — May 2026 ───────────────────────────────────────────────────
   { id: 'UCR6jQ7mXz6zZx3DtCMzKWxQ', name: 'IMPACT SHOOTING',         tags: ['hunting','long-range','precision'] },
   { id: 'UC-y0QNNNujtB2PLjrHDwnPg', name: 'Daniel Defense',           tags: ['manufacturer','ar15','industry'] },
-  { id: 'UC9ZKDGCc5R67fVvLFSv-OLA', name: 'Firearms Channel',         tags: ['review','2a','firearms'] },
+  { id: 'UC9ZKDGCc5R67fVvLFSv-OLA', name: 'Warrior Poet Society',     tags: ['training','2a','self-defense','tactical'] },
   { id: 'UCFJ2K2gUJJ1ecBU6Sxc3bCA', name: 'Gun Owners of America',    tags: ['2a','advocacy','law'] },
   { id: 'UC3CfC922pS8htNjW8yTPGRg', name: 'Washington Gun Law',       tags: ['law','2a','legal','ccw'] },
   { id: 'UCHWRbypJau9R8lDCXqlWgUA', name: 'Backfire',                 tags: ['hunting','review','long-range'] },
   { id: 'UC0VQT2e75ejR-mUCuerugvA', name: 'Tactical Cowboy',          tags: ['training','tactics','self-defense'] },
+  // ── DJ Added Batch 2 — May 2026 ──────────────────────────────────────────
+  { id: 'UCG1_A0jPBGZUpRW7XkaaBkg', name: 'Honest Outlaw',           tags: ['review','edc','budget','honest'] },
+  { id: 'UC7X2IY5-ZHKU83nyb6KejgQ', name: 'Dirty Civilian',          tags: ['training','family','self-defense','fitness'] },
+  { id: 'UCmBmZD1xOLIAmLe7wVKfUmA', name: 'Classic Firearms',        tags: ['industry','2a','review','historical'] },
+  { id: 'UC193r5YXcpQJV34N99ZbhzQ', name: 'Colion Noir',             tags: ['2a','law','advocacy','review'] },
+  { id: 'UCA_R_X4kk4P-ZUSrt2CXmng', name: 'Argali',                  tags: ['hunting','backcountry','gear','western'] },
+  { id: 'UC816lSSFUowW4NrA5WfSpNw', name: 'PNWild',                  tags: ['hunting','pnw','outdoor','washington'] },
+  { id: '@gohunt',                   name: 'GoHUNT',                  tags: ['hunting','western','scouting','technology'] },
+  { id: '@montanawild',              name: 'Montana Wild',            tags: ['hunting','montana','outdoor','film'] },
+  { id: '@MountainsMulletsMerica',   name: 'Mountains Mullets Merica',tags: ['precision','long-range','review','prs'] },
 ]
 
 function inferCategory(title) {
