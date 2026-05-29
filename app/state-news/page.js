@@ -2,7 +2,7 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 import BreakingTicker from '../../components/layout/BreakingTicker'
-import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = { title: 'State Firearms News — DownRange', description: 'Firearms news for all 50 states. Real-time feeds from state-level sources.' }
 
