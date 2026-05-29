@@ -58,6 +58,7 @@ export default function VideoManager({ adminKey }) {
   const [msg,       setMsg]       = useState('')
   const [search,    setSearch]    = useState('')
   const [cronRunning, setCronRunning] = useState(false)
+  const [purging, setPurging]         = useState(false)
   const [cronResult, setCronResult]   = useState(null)
 
   // Channel form state
