@@ -46,7 +46,7 @@ BANNED WORDS: comprehensive, dive into, cutting-edge, robust, seamlessly, levera
 STYLE: Start with the hardest fact. Short sentences max 15 words avg. Active voice only. Specific names, calibers, dollar amounts, dates. No padded intros. No closing filler.`
 
 async function rewriteItem(item) {
-  const src = (item.body || item.summary || item.description || '').replace(/<[^>]+>/g, '').slice(0, 2000)
+  const src = (item.body || item.summary || item.description || '').replace(/<[^>]+>/g, '').slice(0, 400)
   const prompt = `${VOICE}
 
 Rewrite this ${item._stype === 'newsArticle' ? 'news article' : item._stype === 'blogPost' ? 'blog post' : item._stype === 'firearmRelease' ? 'gun release article' : 'Canada firearms article'} for DownRange. 
@@ -58,12 +58,12 @@ Source content: ${src}
 Respond ONLY with valid JSON — no markdown fences, no extra text:
 {"body":"<full HTML with h2 tags>","summary":"2-3 sentence plain text under 300 chars"}`
 
-  const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 4000 })
+  const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 2000 })
   const clean  = raw.split('```json').join('').split('```').join('').trim()
   const m      = clean.match(/\{[\s\S]*\}/)
   const parsed = JSON.parse(m ? m[0] : clean)
   const wordCount = (parsed.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
-  if (wordCount < 350) throw new Error(`Rewrite too short: ${wordCount} words`)
+  if (wordCount < 200) throw new Error(`Rewrite too short: ${wordCount} words`)
   return parsed
 }
 
