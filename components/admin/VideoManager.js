@@ -217,6 +217,24 @@ export default function VideoManager({ adminKey }) {
     } catch {}
   }
 
+  async function purgeShorts() {
+    if (!confirm('Delete all Shorts (≤60s or #shorts tagged) from Sanity? Cannot be undone.')) return
+    setPurging(true)
+    flash('⏳ Scanning all videos for Shorts...')
+    try {
+      const res = await fetch('/api/admin/purge-shorts', { method: 'POST', headers: H })
+      const d   = await res.json()
+      if (d.ok) {
+        const names = (d.shorts || []).slice(0,3).map(s => s.title?.slice(0,30)).join(', ')
+        flash(`✅ Purged ${d.deleted} Short${d.deleted !== 1 ? 's' : ''} of ${d.checked} checked` + (names ? ' — ' + names : ''))
+        if (d.deleted > 0) loadVideos()
+      } else {
+        flash('❌ Purge failed: ' + (d.error || 'unknown'))
+      }
+    } catch (e) { flash('❌ ' + e.message) }
+    setPurging(false)
+  }
+
   async function runCron() {
     setCronRunning(true)
     setCronResult(null)
