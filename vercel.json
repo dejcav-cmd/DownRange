@@ -139,6 +139,10 @@
     {
       "path": "/api/cron/giveaways",
       "schedule": "0 14 * * *"
+    },
+    {
+      "path": "/api/cron/blog-writer",
+      "schedule": "0 18 * * 5"
     }
   ],
   "headers": [
