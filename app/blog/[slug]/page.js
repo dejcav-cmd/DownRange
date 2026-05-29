@@ -7,6 +7,9 @@ import { BLOG_POSTS }  from '../page'
 import { fetchBreakingAlerts, fetchAllBlogSlugs, fetchBlogPostBySlug } from '../../../sanity/lib/client'
 
 export const revalidate = 3600
+// dynamicParams: true means any slug NOT in generateStaticParams renders on-demand
+// This is the key fix for 404s on Sanity blog post slugs
+export const dynamicParams = true
 
 // Convert a Sanity blog post to the same shape as BLOG_POSTS entries
 function sanityToPost(p) {
@@ -31,23 +34,10 @@ function sanityToPost(p) {
   }
 }
 
-// generateStaticParams: register ALL known slugs at build time
-// so /blog/[any-slug] never 404s from a missing static route
-export async function generateStaticParams() {
-  try {
-    const [staticSlugs, sanitySlugs] = await Promise.all([
-      Promise.resolve(BLOG_POSTS.map(p => ({ slug: p.slug }))),
-      fetchAllBlogSlugs().then(rows => rows.map(r => ({ slug: r.slug })))
-    ])
-    const seen = new Set()
-    const all = []
-    for (const s of [...staticSlugs, ...sanitySlugs]) {
-      if (s.slug && !seen.has(s.slug)) { seen.add(s.slug); all.push(s) }
-    }
-    return all
-  } catch {
-    return BLOG_POSTS.map(p => ({ slug: p.slug }))
-  }
+// Pre-generate static article slugs at build time.
+// dynamicParams = true above means unknown slugs render on-demand — no 404.
+export function generateStaticParams() {
+  return BLOG_POSTS.map(p => ({ slug: p.slug }))
 }
 
 // Resolve a post by slug: check static first, then Sanity
