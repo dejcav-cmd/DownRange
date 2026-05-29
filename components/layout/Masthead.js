@@ -56,13 +56,8 @@ const NAV = [
   {
     label: 'Outdoors', href: '/hunting',
     children: [
-      { label: '🦌 Hunting',           href: '/hunting',       desc: 'Season dates & cartridges' },
-      { label: '🏆 Competitions',      href: '/competitions',  desc: 'NRA, USPSA, IDPA, PRS calendar' },
-      { label: '🎯 Precision Shooting',href: '/precision',     desc: 'PRS, long range, ballistics' },
-      { label: '🏋️ Training',          href: '/training',      desc: '30-day dry fire plan' },
-      { label: '🔒 Safe Storage',      href: '/safe-storage',  desc: 'Biometric & vault reviews' },
-      { label: '📍 Find a Range',      href: '/ranges',        desc: 'Shooting ranges near you' },
-      { label: '🎒 Preparedness',      href: '/preparedness',  desc: 'Home defense & go-bag guide' },
+      { label: '🦌 Hunting',      href: '/hunting',      desc: 'Season dates, game by state, cartridge guides' },
+      { label: '🎒 Preparedness', href: '/preparedness', desc: 'Home defense, go-bag, grid-down protocols'     },
     ]
   },
   {
