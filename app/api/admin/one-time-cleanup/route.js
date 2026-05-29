@@ -75,7 +75,7 @@ export async function GET(req) {
 
       while (true) {
         const docs = await sanity.fetch(
-          '*[_type == $type && defined(body) && body match "*dr-source-attribution*"] | order(_createdAt desc) [$from...$to] { _id, body }',
+          '*[_type == $type && defined(body) && string::contains(body, \"dr-source-attribution\")] | order(_createdAt desc) [$from...$to] { _id, body }',
           { type, from: offset, to: offset + PAGE }
         )
 
