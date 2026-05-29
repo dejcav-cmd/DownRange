@@ -1,0 +1,19 @@
+User-agent: *
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 1
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 2
+
+# Block admin paths from indexing
+Disallow: /admin
+Disallow: /admin-app
+Disallow: /admin-login
+Disallow: /api/
+Disallow: /_next/
+
+Sitemap: https://downrangeco.com/sitemap.xml
