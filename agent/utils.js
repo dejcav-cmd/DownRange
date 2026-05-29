@@ -37,8 +37,6 @@ MANDATORY ARTICLE STRUCTURE — use this exact structure, not the source's:
 <h2>DownRange Analysis</h2>
 <p>[Original DownRange perspective. Does this survive Bruen scrutiny? Market implications? What should a gun owner actually do right now? 80-110 words. Pure original commentary.]</p>
 
-<p><em>Source: <a href="{{source_url}}" target="_blank" rel="noopener">{{source_name}}</a> — visit the original article for complete details.</em></p>
-
 REQUIREMENTS:
 - 500-800 words total. Concise, not padded to fill space.
 - HTML ONLY: h2, p, strong, em, ul, li, a. No div, span, br.
