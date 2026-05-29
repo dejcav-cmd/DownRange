@@ -1,4 +1,6 @@
 import CompetitionsClient from './PageClient'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title:       'Shooting Competitions — NRA, USPSA, IDPA, PRS Calendar | DownRange',
@@ -13,5 +15,8 @@ export const metadata = {
 }
 
 export default function CompetitionsPage() {
-  return <CompetitionsClient />
+  const alerts = await fetchBreakingAlerts(3).catch(() => [])
+  return <>
+    <BreakingTicker alerts={alerts} />
+    <CompetitionsClient />
 }
