@@ -493,14 +493,41 @@ export default function NewsArticleManager({ adminKey }) {
                   if (url) { setEditImg(url); patchField(selectedArticle._id, { imageUrl: url }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: url } : a)) }
                 }}>✎ Paste URL</button>
               </div>
-              <div style={{ display:'flex', gap:6, marginBottom:12, alignItems:'center' }}>
-                <input className="nam-input" value={editImg} onChange={e => setEditImg(e.target.value)}
-                  placeholder="https://..." style={{ flex:1, fontSize:10 }} />
-                <button className="nam-btn" onClick={() => { patchField(selectedArticle._id, { imageUrl: editImg }); setArticles(prev => prev.map(a => a._id === selectedArticle._id ? { ...a, imageUrl: editImg } : a)); flash('✅ Image URL saved') }}
-                  disabled={busy || !!selectedArticle.editorLocked}
-                  style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap' }}>
-                  💾 Save
-                </button>
+              {/* Image URL input with live preview */}
+              <div style={{ marginBottom:8 }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#64748b', marginBottom:4, textTransform:'uppercase', letterSpacing:'.08em' }}>
+                  Web Image URL — paste any https:// link and save
+                </div>
+                <div style={{ display:'flex', gap:6, marginBottom:6, alignItems:'center' }}>
+                  <input className="nam-input" value={editImg} onChange={e => setEditImg(e.target.value)}
+                    placeholder="https://example.com/photo.jpg" style={{ flex:1, fontSize:10 }} />
+                  <button className="nam-btn" onClick={async () => {
+                    if (!editImg || !editImg.startsWith('http')) { flash('⚠ Enter a valid https:// URL'); return }
+                    setBusy(true)
+                    try {
+                      await patchField(selectedArticle._id, { imageUrl: editImg })
+                      setArticles(prev => prev.map(a => a._id === selectedArticle._id ? {...a, imageUrl: editImg} : a))
+                      flash('✅ Image URL saved')
+                    } catch(e) { flash('❌ ' + e.message) }
+                    setBusy(false)
+                  }}
+                    disabled={busy || !!selectedArticle.editorLocked}
+                    style={{ fontSize:10, padding:'6px 12px', background:'var(--gold)', color:'#000', border:'none', cursor:'pointer', whiteSpace:'nowrap',
+                      opacity:(selectedArticle.editorLocked) ? 0.35 : 1 }}>
+                    💾 Save URL
+                  </button>
+                </div>
+                {editImg && editImg.startsWith('http') && (
+                  <div style={{ width:'100%', height:72, background:'#0f1117', borderRadius:3, overflow:'hidden', border:'1px solid var(--border)', position:'relative' }}>
+                    <img src={editImg} alt="url preview"
+                      onError={e => { e.currentTarget.style.display='none'; e.currentTarget.nextElementSibling.style.display='flex' }}
+                      style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                    <div style={{ display:'none', position:'absolute', inset:0, alignItems:'center', justifyContent:'center',
+                      fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>
+                      ✗ Image not found or blocked by CORS
+                    </div>
+                  </div>
+                )}
               </div>
 
               <div className="nam-sep" />
