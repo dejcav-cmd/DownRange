@@ -494,7 +494,7 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                         </button>
                         <button className="bm-btn-sm" disabled={busy||!!sel.editorLocked}
                           style={{background:'var(--gold)',color:'#000',fontSize:9}}
-                          onClick={async()=>{setBusy(true);await patch(sel._id,{imageUrl:editDraft.imageUrl});setBusy(false)}}>
+                          onClick={async()=>{if(!editDraft.imageUrl||!editDraft.imageUrl.startsWith('http')){flash('⚠ Enter a valid https:// URL');return}setBusy(true);flash('⏳ Downloading image...');try{const res=await fetch('/api/admin/save-image-url',{method:'POST',headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},body:JSON.stringify({url:editDraft.imageUrl,id:sel._id,type:'blogPost'})});const d=await res.json();if(d.ok){setEditDraft(p=>({...p,imageUrl:d.cdnUrl}));flash('✅ Downloaded → Sanity CDN');}else{flash('❌ '+(d.error||'Download failed'))}}catch(e){flash('❌ '+e.message)}setBusy(false)}}>
                           💾 Save Image
                         </button>
                       </div>
