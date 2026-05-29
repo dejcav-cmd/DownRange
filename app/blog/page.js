@@ -22,7 +22,7 @@ export const BLOG_POSTS = [
     category:    'OPINION',
     catColor:    '#a855f7',
     featured:    true,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/AK-47_and_M16A1_DD-ST-85-01269.jpg/1280px-AK-47_and_M16A1_DD-ST-85-01269.jpg',
+    img:         '/img/photos/suppressor.jpg',
     excerpt:     'When the One Big Beautiful Bill eliminated the $200 NFA tax on suppressors, SBRs, and SBSs, it removed the single biggest barrier to widespread suppressor ownership. Six months in, the numbers are staggering — and the industry is only beginning to catch up.',
     tags:        ['NFA', 'Suppressors', 'One Big Beautiful Bill', 'Industry'],
     body: `
@@ -71,7 +71,7 @@ export const BLOG_POSTS = [
     category:    'ANALYSIS',
     catColor:    '#C8922A',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg',
+    img:         '/img/photos/blog-edc-pistol.jpg',
     excerpt:     'The Sig P365 changed everything when it launched in 2018. Eight years later, every major manufacturer has a micro-compact answer, the technology has matured, and the market is more competitive than any category in firearms history.',
     tags:        ['Pistols', 'EDC', 'Micro-Compact', 'Market Analysis'],
     body: `
@@ -118,7 +118,7 @@ export const BLOG_POSTS = [
     category:    'MARKET',
     catColor:    '#22c55e',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/AR15_Rifle.jpg/1280px-AR15_Rifle.jpg',
+    img:         '/img/photos/rifle.jpg',
     excerpt:     'If you enjoyed the buyer\'s market of 2025, the window is closing. Steel tariffs, import restrictions, and rising manufacturing costs are converging to push firearms prices up across the board in the second half of 2026.',
     tags:        ['Market', 'Pricing', 'Tariffs', 'Buying Guide'],
     body: `
@@ -161,7 +161,7 @@ export const BLOG_POSTS = [
     category:    'LAW',
     catColor:    '#3b82f6',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SCOTUS_3_2010.jpg/1280px-SCOTUS_3_2010.jpg',
+    img:         '/img/photos/blog-bruen-law.jpg',
     excerpt:     'The Supreme Court\'s 2022 Bruen decision established a text-and-history standard for evaluating gun laws. But the lower courts are still brawling over what that standard requires — and the outcomes of these fights will determine the practical scope of your Second Amendment rights for decades.',
     tags:        ['2A', 'Bruen', 'SCOTUS', 'Legal', 'Constitutional'],
     body: `
@@ -203,7 +203,7 @@ export const BLOG_POSTS = [
     category:    'TRAINING',
     catColor:    '#22c55e',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/AR15_Rifle.jpg/1280px-AR15_Rifle.jpg',
+    img:         '/img/photos/rifle.jpg',
     excerpt:     'A pistol red dot is one of the most significant performance upgrades available to a defensive shooter. It is also one of the most commonly installed and least effectively used pieces of equipment in civilian carry today.',
     tags:        ['Training', 'Red Dot', 'Optics', 'EDC', 'Carry'],
     body: `
@@ -252,7 +252,7 @@ export const BLOG_POSTS = [
     category:    'LAW',
     catColor:    '#3b82f6',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SCOTUS_3_2010.jpg/1280px-SCOTUS_3_2010.jpg',
+    img:         '/img/photos/blog-bruen-law.jpg',
     excerpt:     'Two years after the ATF pistol brace rule dropped, enforcement is paralyzed, courts keep blocking it, and the post-Loper Bright landscape makes a revival unlikely.',
     tags:        ['ATF', 'Pistol Brace', 'NFA', 'Second Amendment', 'Legal'],
     body: `<h2>Where Things Actually Stand</h2>
@@ -284,7 +284,7 @@ export const BLOG_POSTS = [
     category:    'TRAINING',
     catColor:    '#22c55e',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Remington870.jpg/1280px-Remington870.jpg',
+    img:         '/img/photos/shotgun.jpg',
     excerpt:     'Most home defense advice is written by people who have never had to think through what happens at 2 AM when someone is in your house. The gun is the easy part.',
     tags:        ['Home Defense', 'Shotgun', 'Training', 'Storage', 'Ammunition'],
     body: `<h2>The Right Gun for Home Defense</h2>
@@ -318,7 +318,7 @@ export const BLOG_POSTS = [
     category:    'TRAINING',
     catColor:    '#22c55e',
     featured:    false,
-    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg',
+    img:         '/img/photos/blog-edc-pistol.jpg',
     excerpt:     'I carried OWB for four years before switching to AIWB. I thought it would be a quick adjustment — same gun, different holster. I was wrong.',
     tags:        ['AIWB', 'OWB', 'Concealed Carry', 'EDC', 'Holsters', 'Training'],
     body: `<h2>Why Most People Make the Switch</h2>
@@ -380,7 +380,7 @@ function normalizeSanityPost(p) {
     category:   (p.category || 'general').toUpperCase(),
     catColor:   '#C8922A',
     featured:   false,
-    img:        p.imageUrl || 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg',
+    img:        p.imageUrl || '/img/photos/blog-edc-pistol.jpg',
     excerpt:    p.excerpt || '',
     tags:       p.tags || [],
     body:       p.body || '',
