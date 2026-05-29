@@ -99,45 +99,62 @@ async function fetchChannelRSS(channelId, channelName, handle) {
   // ── Primary: YouTube Data API v3 (no IP blocking, full quota) ──────────────
   if (apiKey && !channelId.startsWith('@')) {
     try {
-      const url = new URL('https://www.googleapis.com/youtube/v3/search')
-      url.searchParams.set('part', 'snippet,contentDetails')
-      url.searchParams.set('channelId', channelId)
-      url.searchParams.set('order', 'date')
-      url.searchParams.set('maxResults', '15')  // fetch extra to compensate after filtering Shorts
-      url.searchParams.set('type', 'video')
-      url.searchParams.set('key', apiKey)
-      const res  = await fetch(url.toString(), { signal: AbortSignal.timeout(10000) })
-      const data = await res.json()
-      if (data.error) {
-        const code = data.error.code
-        const msg  = data.error.message || data.error.errors?.[0]?.reason || 'unknown'
-        if (msg.includes('quota') || msg.includes('quotaExceeded')) {
-          throw new Error(`YouTube API quota exhausted — resets midnight Pacific`)
-        }
-        if (code === 403 && msg.includes('blocked')) {
-          throw new Error(`YouTube API key blocked for search.list — check API restrictions in Google Cloud Console`)
-        }
+      // Step 1: search.list — get latest video IDs (fetch 10, we'll filter Shorts out)
+      const searchUrl = new URL('https://www.googleapis.com/youtube/v3/search')
+      searchUrl.searchParams.set('part', 'snippet')
+      searchUrl.searchParams.set('channelId', channelId)
+      searchUrl.searchParams.set('order', 'date')
+      searchUrl.searchParams.set('maxResults', '10')
+      searchUrl.searchParams.set('type', 'video')
+      searchUrl.searchParams.set('key', apiKey)
+      const searchRes  = await fetch(searchUrl.toString(), { signal: AbortSignal.timeout(10000) })
+      const searchData = await searchRes.json()
+      if (searchData.error) {
+        const code = searchData.error.code
+        const msg  = searchData.error.message || searchData.error.errors?.[0]?.reason || 'unknown'
+        if (msg.includes('quota') || msg.includes('quotaExceeded')) throw new Error(`YouTube API quota exhausted — resets midnight Pacific`)
+        if (code === 403) throw new Error(`YouTube API error 403: ${msg}`)
         throw new Error(`YouTube API error ${code}: ${msg}`)
       }
-      if (!data.items?.length) {
+      if (!searchData.items?.length) {
         console.log(`[VIDEO] ${channelName}: API returned 0 items`)
         return []
       }
-      const videos = data.items
+
+      // Step 2: videos.list — get contentDetails (actual duration) for those IDs
+      // This is the ONLY reliable way to filter Shorts — search.list doesn't return contentDetails
+      const videoIds = searchData.items.map(i => i.id?.videoId).filter(Boolean).join(',')
+      const detailUrl = new URL('https://www.googleapis.com/youtube/v3/videos')
+      detailUrl.searchParams.set('part', 'contentDetails,snippet')
+      detailUrl.searchParams.set('id', videoIds)
+      detailUrl.searchParams.set('key', apiKey)
+      const detailRes  = await fetch(detailUrl.toString(), { signal: AbortSignal.timeout(10000) })
+      const detailData = await detailRes.json()
+
+      // Build lookup by video ID
+      const detailMap = {}
+      for (const item of (detailData.items || [])) {
+        detailMap[item.id] = item.contentDetails
+      }
+
+      // Step 3: filter Shorts — anything <= 60s by duration OR tagged #shorts
+      const isoToSecs = iso => {
+        const m = (iso || '').match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+        if (!m) return 999
+        return (parseInt(m[1]||0)*3600) + (parseInt(m[2]||0)*60) + parseInt(m[3]||0)
+      }
+
+      const videos = searchData.items
         .filter(item => {
-            if (!item.id?.videoId || !item.snippet) return false
-            // Parse ISO 8601 duration (PT#M#S) to seconds — Shorts are <= 60s
-            const iso = item.contentDetails?.duration || ''
-            const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
-            if (m) {
-              const secs = (parseInt(m[1]||0)*3600) + (parseInt(m[2]||0)*60) + parseInt(m[3]||0)
-              if (secs <= 60) return false  // definitely a Short
-            }
-            // Also catch Shorts by title tag (in case contentDetails is missing)
-            const title = (item.snippet.title || '').toLowerCase()
-            if (title.includes('#shorts') || title.includes('#short')) return false
-            return true
-          })
+          if (!item.id?.videoId || !item.snippet) return false
+          const title = (item.snippet.title || '').toLowerCase()
+          if (title.includes('#shorts') || title.includes('#short')) return false
+          const detail  = detailMap[item.id.videoId]
+          const secs    = isoToSecs(detail?.duration)
+          if (secs <= 60) return false  // Short by duration
+          return true
+        })
+        .slice(0, 5)
         .map(item => ({
           _type: 'video',
           title: item.snippet.title,
