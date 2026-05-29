@@ -80,6 +80,7 @@ export async function GET(req) {
       case 'video':    { const { runVideoFeed }    = await import('../../../agent/feeds/video.js');    result = await runVideoFeed();    break }
       case 'state':    { const { runStateFeed }    = await import('../../../agent/feeds/state.js');    result = await runStateFeed();    break }
       case 'goa':      { const { runGOAFeed }      = await import('../../../agent/feeds/goa.js');      result = await runGOAFeed();      break }
+      case 'giveaways':{ const { runGiveawaysFeed } = await import('../../../agent/feeds/giveaways.js'); result = await runGiveawaysFeed(); break }
       default: return Response.json({ error: `Unknown feed: ${feed}` }, { status: 400 })
     }
     console.log(`[AGENT] ✓ feed=${feed} done in ${Date.now()-t}ms`)
