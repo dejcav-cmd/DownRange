@@ -3,7 +3,7 @@ import Image from 'next/image'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 import BreakingTicker from '../../components/layout/BreakingTicker'
-import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Press & Media Kit — DownRange Intelligence Hub',
