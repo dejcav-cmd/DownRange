@@ -100,7 +100,7 @@ export async function POST(req) {
           : title.toLowerCase().includes('rifle') || title.toLowerCase().includes('ar-15') ? 'rifle' : 'deal'
         mutations.push({ create: { _type:'newsArticle', title, externalUrl:link, source:'gun.deals', category:cat,
           approved:true, published:true, publishedAt:new Date().toISOString(),
-          imageUrl:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ammo_9mm_Glaser.jpg/1280px-Ammo_9mm_Glaser.jpg',
+          imageUrl:'/img/photos/blog-ammo-market.jpg',
           tags:['deals','gun.deals',cat] }})
         results.gundeals++
       }
