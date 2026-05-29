@@ -75,19 +75,14 @@ export default function RootLayout({ children }) {
       </head>
       <ClerkWrapper>
       <body>
-        {/* AvantLink affiliate verification — ID 1604521 */}
-        <Script
+        {/* AvantLink affiliate verification — application_id=1604521, delete after approval */}
           src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521"
-          strategy="afterInteractive"
-        />
         <ThemeProvider>
           {children}
           <MobileTabBar />
         </ThemeProvider>
         {/* SPA route tracker — fires gtag on every client-side navigation */}
         <PageViewTracker />
-      {/* AvantLink affiliate verification — delete after approval */}
-      <Script id="avantlink-verify" src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521" strategy="afterInteractive" />
       </body>
       </ClerkWrapper>
     </html>
