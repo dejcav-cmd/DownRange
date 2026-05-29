@@ -318,7 +318,7 @@ export default async function ArticlePage({ params }) {
         <div className="container" style={{ maxWidth:900 }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>
             <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
-              <div style={{ width:40, height:40, background:'linear-gradient(135deg,var(--gold),var(--gold-dim))', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'18px', flexShrink:0 }}>🎯</div>
+              <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="40" height="40" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
               <div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>DJ Cavalcanti</div>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>DownRange Founder · {article.date}</div>
@@ -450,7 +450,7 @@ export default async function ArticlePage({ params }) {
 
               {/* ── AUTHOR BIO ── */}
               <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'24px', margin:'40px 0', display:'flex', gap:'20px', alignItems:'flex-start' }}>
-                <div style={{ width:56, height:56, background:'linear-gradient(135deg,var(--gold),#8A6320)', borderRadius:'50%', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'24px', flexShrink:0 }}>🎯</div>
+                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="56" height="56" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
                 <div style={{ flex:1 }}>
                   <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'var(--text)', letterSpacing:'0.05em' }}>DJ Cavalcanti</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', marginBottom:'10px', letterSpacing:'0.08em' }}>DOWNRANGE FOUNDER</div>
