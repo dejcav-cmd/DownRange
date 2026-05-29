@@ -100,12 +100,11 @@ async function fetchChannelRSS(channelId, channelName, handle) {
   if (apiKey && !channelId.startsWith('@')) {
     try {
       const url = new URL('https://www.googleapis.com/youtube/v3/search')
-      url.searchParams.set('part', 'snippet')
+      url.searchParams.set('part', 'snippet,contentDetails')
       url.searchParams.set('channelId', channelId)
       url.searchParams.set('order', 'date')
-      url.searchParams.set('maxResults', '10')   // fetch more to compensate after filtering Shorts
+      url.searchParams.set('maxResults', '15')  // fetch extra to compensate after filtering Shorts
       url.searchParams.set('type', 'video')
-      url.searchParams.set('videoDuration', 'medium') // excludes Shorts (<60s) and very long (>20min); use 'any' + filter if needed
       url.searchParams.set('key', apiKey)
       const res  = await fetch(url.toString(), { signal: AbortSignal.timeout(10000) })
       const data = await res.json()
@@ -127,11 +126,16 @@ async function fetchChannelRSS(channelId, channelName, handle) {
       const videos = data.items
         .filter(item => {
             if (!item.id?.videoId || !item.snippet) return false
+            // Parse ISO 8601 duration (PT#M#S) to seconds — Shorts are <= 60s
+            const iso = item.contentDetails?.duration || ''
+            const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+            if (m) {
+              const secs = (parseInt(m[1]||0)*3600) + (parseInt(m[2]||0)*60) + parseInt(m[3]||0)
+              if (secs <= 60) return false  // definitely a Short
+            }
+            // Also catch Shorts by title tag (in case contentDetails is missing)
             const title = (item.snippet.title || '').toLowerCase()
-            const desc  = (item.snippet.description || '').toLowerCase()
-            // Exclude Shorts — tagged in title/description, or vertical-format indicators
             if (title.includes('#shorts') || title.includes('#short')) return false
-            if (desc.includes('#shorts') || desc.startsWith('#short')) return false
             return true
           })
         .map(item => ({
@@ -187,8 +191,13 @@ async function fetchChannelRSS(channelId, channelName, handle) {
   const videos = allVideos.filter(v => {
     const t = (v.title || '').toLowerCase()
     const d = (v.description || '').toLowerCase()
+    const u = (v.url || '').toLowerCase()
+    // Exclude Shorts by title tag
     if (t.includes('#shorts') || t.includes('#short')) return false
+    // Exclude Shorts by description tag
     if (d.includes('#shorts')) return false
+    // Exclude Shorts by URL path (/shorts/VIDEO_ID)
+    if (u.includes('/shorts/')) return false
     return true
   })
   console.log(`[VIDEO] ${channelName}: RSS ${allVideos.length} total → ${videos.length} after filtering Shorts`)
