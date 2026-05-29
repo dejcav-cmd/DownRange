@@ -1,4 +1,6 @@
 import CanadaClient from "./PageClient"
+import BreakingTicker from "../../components/layout/BreakingTicker"
+import { fetchBreakingAlerts } from "../../sanity/lib/client"
 import { createClient } from "@sanity/client"
 
 export const metadata = {
@@ -42,3 +44,4 @@ export default async function CanadaPage() {
     />
   )
 }
+  </>
