@@ -1,7 +1,9 @@
 import Masthead from '../../components/layout/Masthead'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 import SectionSearch from '../../components/ui/SectionSearch'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Firearm Encyclopedia — DownRange',
@@ -112,6 +114,7 @@ export default async function GunsPage({ searchParams }) {
   const sort = searchParams?.sort || 'rating'
   const q    = searchParams?.q    || null
   const page = Math.max(1, parseInt(searchParams?.page || '1'))
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
 
   // Filter and sort items
   function filterAndSort(items) {
@@ -139,6 +142,7 @@ export default async function GunsPage({ searchParams }) {
 
   return (
     <>
+      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── HERO ── */}
