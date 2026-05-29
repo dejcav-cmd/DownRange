@@ -3,64 +3,65 @@ import crypto from 'crypto'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 async function rewriteWithClaude(item) {
-  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 3000)
-  const prompt = `Write a DownRange article. DownRange is a firearms and Second Amendment portal run by DJ Cavalcanti, a gun owner based in Washington State.
+  // Copyright-safe: extract facts only, use max 400 chars of source to avoid derivative work
+  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 400)
+  const prompt = `You are writing a news summary for DownRange — a firearms and Second Amendment portal.
 
-WRITING RULES — violating these ruins the article:
-- Write like a person, not a content generator. Direct sentences. Active voice. Specific facts.
+COPYRIGHT RULES — MANDATORY:
+- This is a NEWS SUMMARY, not a rewrite of the source article.
+- Extract FACTS ONLY: who, what, when, where, numbers, names, dates, bill numbers, rulings.
+- DO NOT reproduce the source article's structure, flow, narrative, or wording.
+- DO NOT do a paragraph-by-paragraph rewrite of the source.
+- Build a NEW article in DownRange's own structure with original analysis.
+- The reader should still benefit from visiting the original source for full details.
+- Use the facts to create original commentary, not to reproduce the original reporting.
+
+VOICE & STYLE:
+- Write like a gun owner who carries daily and reads 2A case law. Direct. Specific. Active voice.
 - BANNED WORDS: comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower, game-changer, landscape, navigate, delve, utilize, innovative, unprecedented, paradigm, synergy, moving forward, shed light on, it remains to be seen, stakeholders, holistic, takeaway, unpack, explore
-- NO padded openings. Start with the hardest fact. First sentence names who did what.
-- NO hedging: "may potentially", "could possibly", "appears to suggest". State facts as facts.
-- NO passive when active works. The governor signed the bill — not the bill was signed.
-- NO empty transitions: Furthermore, Additionally, Moreover, In light of this.
-- Short sentences that land. Specific over vague. Named people, numbered laws, dollar amounts, calibers.
-- Opinions go in Bottom Line only. State them plainly.
+- Start with the hardest fact. First sentence names who did what.
+- No passive voice. No hedging. No padded openings.
+- Short sentences. Named people, specific numbers, calibers, dollar amounts.
 
-GOOD OPENING: "The ATF reversed course on pistol braces Thursday, rescinding the rule that reclassified millions of pistols as short-barreled rifles."
-BAD OPENING: "In a significant development with far-reaching implications for the firearms community..."
+MANDATORY ARTICLE STRUCTURE — use this exact structure, not the source's:
 
-Return ONLY a valid JSON object:
+<h2>[Original headline — state the key fact in DownRange's own words]</h2>
+<p>[Lead paragraph: the essential who/what/when/where in 80-100 words. Key facts only, original phrasing.]</p>
 
-"summary": 2-3 sentences. Key facts and why it matters to gun owners. Max 350 characters. No AI phrases.
+<h2>Key Details</h2>
+<p>[2-3 specific facts, numbers, or developments from the event. Bullet points allowed. 80-120 words.]</p>
 
-"body": Complete article as HTML. MANDATORY STRUCTURE:
+<h2>Why It Matters for Gun Owners</h2>
+<p>[Practical impact. What does this mean for someone who carries, competes, or collects? Which states, which guns, what to do. 100-130 words. ORIGINAL ANALYSIS — not from source.]</p>
 
-<h2>[Specific factual headline — what happened, who did it]</h2>
-<p>[Opening: hard news. Names, agencies, bill numbers, calibers, dollar amounts. First sentence is the full story. 120-150 words.]</p>
+<h2>DownRange Analysis</h2>
+<p>[Original DownRange perspective. Does this survive Bruen scrutiny? Market implications? What should a gun owner actually do right now? 80-110 words. Pure original commentary.]</p>
 
-<h2>Background and Context</h2>
-<p>[Why this matters in the broader 2A landscape. Reference Heller, Bruen, McDonald, prior laws, agency history, market context as relevant. 130-160 words.]</p>
-
-<h2>What This Means for Gun Owners</h2>
-<p>[Direct, specific impact. Which states, which products, what dollar amounts, what they can do. Concrete. 130-160 words.]</p>
-
-<h2>Industry Impact</h2>
-<p>[Manufacturer, dealer, retailer effects. Or advocacy group positions from NRA, GOA, SAF, FPC — their actual stated positions. 110-140 words.]</p>
-
-<h2>What to Watch Next</h2>
-<p>[Forward-looking specifics: court dates, hearing dates, comment periods, bill markups. Name the judges, circuits, committees. 110-140 words.]</p>
-
-<p><strong>DownRange Bottom Line:</strong> [2-3 sentences. Direct editorial verdict. What should a serious gun owner do right now? State an opinion plainly.]</p>
+<p><em>Source: <a href="{{source_url}}" target="_blank" rel="noopener">{{source_name}}</a> — visit the original article for complete details.</em></p>
 
 REQUIREMENTS:
-- Minimum 750 words. Target 900-1100 words.
-- HTML ONLY: h2, p, strong, em, ul, li. No div, span, br, or other tags.
-- strong = names, bill numbers, key facts. em = key terms, used sparingly.
+- 500-800 words total. Concise, not padded to fill space.
+- HTML ONLY: h2, p, strong, em, ul, li, a. No div, span, br.
+- strong = names, bill numbers, key facts only.
+- The article must read as ORIGINAL CONTENT, not a rephrasing of the source.
 
-"category": one of: breaking, news, law, industry, opinion, training
-"urgencyScore": 1-10 integer
-"tags": 4-8 specific kebab-case tags
-"relatedStates": array of affected US state abbreviations, else []
-"isBreaking": true only if urgencyScore >= 8
-
-SOURCE MATERIAL:
+SOURCE FACTS (extract facts from this — do NOT reproduce the writing):
 Title: ${item.title}
 Source: ${item.source || 'Unknown'}
 Published: ${item.publishedAt || new Date().toISOString()}
-Content: ${inputContent}
+Key facts to report: ${inputContent}
 
-CRITICAL: Return ONLY a valid JSON object. Start with { end with }. No markdown, no explanation. Escape all quotes in the HTML.`
-
+Return ONLY valid JSON:
+{
+  "summary": "2-3 sentences. Key facts in original language. Max 300 chars. No AI phrases.",
+  "body": "<full HTML article in the structure above>",
+  "category": "one of: breaking|news|law|industry|opinion|training",
+  "urgencyScore": 1-10,
+  "tags": ["4-8 kebab-case tags"],
+  "relatedStates": ["state abbreviations"],
+  "isBreaking": false
+}
+Start with { end with }. No markdown fences.`
   try {
     const text = await callAIText({ prompt, useCase: 'news', maxTokens: 4000 })
     // Strip any accidental markdown fences
