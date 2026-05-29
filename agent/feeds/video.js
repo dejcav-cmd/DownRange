@@ -103,14 +103,14 @@ async function fetchChannelRSS(channelId, channelName, handle) {
     headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
     signal: AbortSignal.timeout(10000),
   })
-  if (!res.ok && res.status === 404 && handle && !channelId.startsWith('@')) {
+  if (!res.ok && (res.status === 404 || res.status === 403) && handle && !channelId.startsWith('@')) {
     // UC ID gave 404 — try @handle format which YouTube also supports
     const handleUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${handle}`
     const res2 = await fetch(handleUrl, {
       headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
       signal: AbortSignal.timeout(10000),
     })
-    if (!res2.ok) throw new Error(`YouTube RSS HTTP ${res.status}/${res2.status} for ${channelName} — try updating channel ID in Video Manager`)
+    if (!res2.ok) throw new Error(`YouTube RSS ${channelId}→${handle} both failed (${res.status}/${res2.status}) for ${channelName}`)
     return parseYouTubeRSS(await res2.text(), channelId, channelName).slice(0, 5)
   }
   if (!res.ok) {
