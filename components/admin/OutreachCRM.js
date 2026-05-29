@@ -122,29 +122,37 @@ const EMAIL_TEMPLATES = [
     id: 'intro-youtuber',
     name: 'YouTuber — Introduction',
     category: 'youtuber',
-    subject: 'DownRange wants to feature your channel — quick question',
+    subject: 'Your videos are on DownRange — wanted to reach out personally',
     greeting: 'Hey {{firstName}},',
-    body: `I came across your channel while building out the video section of DownRange — we're an independent firearms and 2A news portal I launched out of Washington State.
+    body: `My name is DJ Cavalcanti, and I'm the founder of DownRange (downrangeco.com) — an independent firearms and Second Amendment intelligence portal I built because I believe gun owners deserve a serious, well-designed source of information that isn't watered down, politically compromised, or buried under affiliate spam.
 
-Your content stands out. The production quality and how you explain {{topic}} is exactly the kind of thing our readers (serious gun owners, CCW holders, competitors) actually want to see.
+I wanted to reach out personally because we've been embedding your public YouTube videos on our platform. We pull your content through YouTube's public API and display it to our audience — serious gun owners, daily carriers, competitive shooters, and 2A advocates who are actively looking for quality content exactly like yours.
 
-I'd love to embed some of your recent videos on our site and link your channel on our dedicated YouTuber directory. Zero cost, just exposure to a targeted 2A audience.
+I want to be completely transparent about this. If you have any concerns about how your content is featured, please reach out and I'll address it immediately. Our goal is to expand your reach, not take anything from you — every embed links directly back to your YouTube channel and sends viewers your way.
 
-Would you be open to that? Takes about 60 seconds to say yes.`,
-    ctaText: 'View DownRange',
-    ctaUrl: 'https://downrangeco.com',
+Here's why this matters to our community: DownRange exists to be the central hub for firearms intelligence. We cover legislation, new releases, market data, and curate the best video content from creators who actually know what they're talking about. You're on that list for a reason.
+
+One ask — if you ever find value in what we're building at DownRange, it would mean an enormous amount to us if you'd consider dropping our link (downrangeco.com) in a video description or community post. We're a small, bootstrapped operation and that kind of visibility is genuinely game-changing for us. No pressure at all — only if it feels right to you.
+
+Either way, thank you for the work you put out. It's making a difference.`,
+    ctaText: 'See Your Content on DownRange',
+    ctaUrl: 'https://downrangeco.com/video',
   },
   {
     id: 'intro-manufacturer',
     name: 'Manufacturer — Press Coverage',
     category: 'manufacturer',
-    subject: 'DownRange would like to cover {{businessName}}',
+    subject: 'DownRange — covering {{businessName}} for the 2A community',
     greeting: 'Hi {{firstName}},',
-    body: `I'm DJ Cavalcanti, founder of DownRange (downrangeco.com) — an independent firearms and Second Amendment news portal covering breaking legislation, new releases, market data, and gear for serious gun owners.
+    body: `My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform because the firearms industry deserves media coverage that treats manufacturers like partners, not liabilities — and because gun owners deserve accurate, timely information about the products they carry and depend on.
 
-I'd like to add {{businessName}} to our manufacturer profiles and cover your upcoming releases as they happen. We publish AI-powered articles daily and our audience skews toward active buyers: FFLs, competitive shooters, and daily carriers.
+DownRange is an independent firearms intelligence portal. We cover breaking legislation, new product releases, market data, and 2A news daily. Our audience isn't casual browsers — they're active buyers, FFLs, competitive shooters, and daily carriers who make purchasing decisions based on what they read.
 
-Our press page is at downrangeco.com/press. If you have a media contact or PR list you'd like us on, I'd appreciate being added.`,
+I'd like to add {{businessName}} to our manufacturer profiles and cover your releases as they happen. We're not here to spin narratives or push agendas — we publish what's true and what matters to people who take the Second Amendment seriously.
+
+What makes us different: we're not beholden to advertisers or industry gatekeepers. We built DownRange from the ground up to be the resource the community actually needs — and that means covering manufacturers who are doing the right things right.
+
+If you have a media contact, press releases, or a PR list you'd like us on, I'd genuinely appreciate being added. And if there's a product launch or announcement coming up that you'd like covered, I'm all ears.`,
     ctaText: 'Visit Our Press Page',
     ctaUrl: 'https://downrangeco.com/press',
   },
@@ -152,56 +160,90 @@ Our press page is at downrangeco.com/press. If you have a media contact or PR li
     id: 'intro-ffl',
     name: 'FFL Dealer — Directory Listing',
     category: 'ffl_dealer',
-    subject: 'Free listing on DownRange — 2A portal in your area',
+    subject: 'Free listing on DownRange — built for FFLs like {{businessName}}',
     greeting: 'Hi {{firstName}},',
-    body: `My name is DJ, and I run DownRange — a firearms news and resource portal at downrangeco.com. We're building the most comprehensive FFL dealer directory in the country, organized by state with maps, hours, and specialties.
+    body: `My name is DJ Cavalcanti, and I run DownRange — a firearms news and resource portal at downrangeco.com. I started this because gun owners in every state deserve a reliable, well-organized place to find their local FFL, understand their state's laws, and stay current on legislation that affects them directly.
 
-I'd like to add {{businessName}} to our directory at no cost. We drive traffic from readers looking for local transfer dealers, consignment sales, and NFA-capable FFLs.
+I'd like to add {{businessName}} to our FFL dealer directory — completely free, no strings attached. We're building the most comprehensive dealer directory in the country, organized by state, searchable by specialty: NFA-capable, consignment, transfers, gunsmithing, and more.
 
-If you'd like to be listed (or want to update an existing listing), just reply with your preferred contact details and I'll get it done.`,
-    ctaText: 'Find Your Listing',
+Here's why it matters: when someone in your area needs a transfer, wants to buy their first firearm, or is searching for an NFA dealer who actually knows the process — DownRange is where we want them to land. And we want them finding you, not a big-box retailer that treats them like a number.
+
+Gun shops are the backbone of the 2A community at the local level. They're where people get educated, ask real questions, and build a relationship with firearms ownership that lasts a lifetime. That's worth supporting — and that's why we built this directory.
+
+If you'd like to be listed, just reply with your preferred contact info and any specialties you want highlighted. Takes me about two minutes to add you.`,
+    ctaText: 'Find Your State Listing',
     ctaUrl: 'https://downrangeco.com/state-hub',
   },
   {
     id: 'intro-holster',
-    name: 'Holster Company — Coverage',
+    name: 'Holster Company — Partnership',
     category: 'holster',
-    subject: 'DownRange holster coverage opportunity',
+    subject: 'DownRange — featuring {{businessName}} for daily carriers',
     greeting: 'Hi {{firstName}},',
-    body: `I'm building out the holster section of DownRange, our firearms intelligence portal, and {{businessName}} came up as a brand worth covering.
+    body: `My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform for gun owners who carry every day — people who take their equipment seriously and want honest information, not glossy marketing copy.
 
-We have a dedicated holster directory and I write buyer guides for our CCW-focused readers — the kind of people who own 3+ holsters and care about retention levels, sweat guards, and ride height.
+A good holster isn't an accessory. For someone who carries daily, it's a piece of equipment they trust their life to. That's why we dedicated an entire section of DownRange to holster coverage — and why I'm reaching out to {{businessName}} specifically.
 
-Would you be open to sending a sample for an honest review? No manufacturer money — we call it like we see it — but we give real exposure to brands that deserve it.`,
-    ctaText: 'View Our Holster Coverage',
+I'd like to feature your brand in our holster directory and cover what makes your products worth carrying. We don't do pay-to-play coverage — if your holsters earn a spot, it's because our readers would genuinely benefit from knowing about them.
+
+Our audience skews heavily toward concealed carriers: people who've made the commitment to carry responsibly and are constantly looking for gear that holds up in real conditions, not just on a range. They read reviews, they compare options, and they remember brands that were recommended to them honestly.
+
+If you'd like to be featured, I'd love to learn more about what {{businessName}} is building and how we can cover it accurately. A sample or catalog would help, but even a quick conversation works.`,
+    ctaText: 'See Our Holster Coverage',
     ctaUrl: 'https://downrangeco.com/holsters',
   },
   {
     id: 'intro-range',
-    name: 'Range — Partnership',
+    name: 'Range — Directory Listing',
     category: 'range',
-    subject: 'DownRange wants to feature {{businessName}}',
-    greeting: 'Hey {{firstName}},',
-    body: `DJ Cavalcanti here, founder of DownRange — a firearms and 2A news portal covering the full spectrum of gun ownership.
+    subject: 'DownRange — adding {{businessName}} to our range directory',
+    greeting: 'Hi {{firstName}},',
+    body: `My name is DJ Cavalcanti, and I run DownRange — a firearms intelligence portal at downrangeco.com dedicated to the gun owner community across all 50 states.
 
-We have a Range Finder tool that helps readers locate ranges near them, and I'd like to add {{businessName}} to our database with your full details: hours, bays, rental programs, instruction availability.
+I'd like to add {{businessName}} to our shooting range directory. We're building a resource that helps gun owners find ranges near them that match their needs — whether that's steel targets, NFA-capable bays, long-range facilities, or beginner-friendly instruction programs.
 
-It's free and takes 5 minutes. Our readers are actively looking for quality ranges in your area.`,
-    ctaText: 'View Our Range Finder',
-    ctaUrl: 'https://downrangeco.com/ranges',
+Ranges matter more than most people realize. They're where new gun owners get their first instruction, where experienced shooters push their skills, and where communities form around a shared commitment to responsible firearms ownership. DownRange wants to make it easier for people to find places like yours.
+
+The listing is free and includes your hours, specialties, and contact information. If you offer training or memberships, we can highlight that too.
+
+Just reply with what you'd like included and I'll get you in the directory.`,
+    ctaText: 'View Our Range Directory',
+    ctaUrl: 'https://downrangeco.com/state-hub',
+  },
+  {
+    id: 'intro-organization',
+    name: 'Organization — Partnership',
+    category: 'organization',
+    subject: 'DownRange + {{businessName}} — working toward the same goal',
+    greeting: 'Hi {{firstName}},',
+    body: `My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform because the Second Amendment deserves a serious, independent media presence — one that covers legislation accurately, explains court decisions plainly, and gives gun owners the information they need to be effective advocates for their rights.
+
+I believe {{businessName}} and DownRange are working toward the same goal: an informed, engaged gun owner community that understands its rights and acts on them.
+
+DownRange covers 2A legislation across all 50 states, federal court decisions including Bruen and its progeny, ATF regulatory actions, and daily news that affects gun owners directly. We publish in plain language, without the political spin, and we treat our readers like adults who can handle the facts.
+
+I'd love to explore ways we can support each other's work — whether that's coverage of your campaigns, linking to your resources, or finding ways to get your message in front of our audience. We're not a massive publication, but our readers are exactly the people {{businessName}} is trying to reach: engaged, informed, and motivated.
+
+Would you be open to a conversation?`,
+    ctaText: 'Visit DownRange',
+    ctaUrl: 'https://downrangeco.com',
   },
   {
     id: 'followup',
-    name: 'Follow-Up (14 Days)',
-    category: 'all',
-    subject: 'Following up — DownRange coverage for {{businessName}}',
+    name: 'Follow-Up',
+    category: null,
+    subject: 'Following up — DownRange + {{businessName}}',
     greeting: 'Hey {{firstName}},',
-    body: `Just following up on my note from a couple weeks ago about featuring {{businessName}} on DownRange.
+    body: `I wanted to follow up on my previous note about DownRange (downrangeco.com).
 
-Totally understand if timing was off — wanted to leave the door open in case it's a better fit now. We're still building out coverage and would genuinely like to include you.
+I know your inbox is busy — I'll keep this short. DownRange is the independent firearms intelligence portal I'm building for gun owners who want serious, accurate information. We cover legislation, new releases, court decisions, and curate content from the best voices in the 2A space.
 
-No pressure either way. Let me know if you have any questions.`,
-    ctaText: 'Visit DownRange',
+Whatever category {{businessName}} falls into for us — whether it's coverage, a directory listing, a feature, or just getting on each other's radar — I genuinely think there's value in the connection.
+
+If now isn't the right time, no hard feelings at all. If you'd like to know more, I'm happy to send over whatever would be helpful.
+
+Either way, keep doing what you're doing.`,
+    ctaText: 'See What We\'re Building',
     ctaUrl: 'https://downrangeco.com',
   },
 ]
