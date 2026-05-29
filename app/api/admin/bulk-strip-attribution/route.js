@@ -16,10 +16,17 @@ function auth(req) {
 
 function strip(body) {
   if (!body) return body
-  return body
-    .replace(/<div[^>]+class="dr-source-attribution"[^>]*>[\s\S]*?<\/div>\s*/gi, '')
-    .replace(/<div[^>]+class='dr-source-attribution'[^>]*>[\s\S]*?<\/div>\s*/gi, '')
-    .trim()
+  let b = body
+  // 1. Full div with class dr-source-attribution (double or single quotes)
+  b = b.replace(/<div[^>]+class="dr-source-attribution"[^>]*>[\s\S]*?<\/div>\s*/gi, '')
+  b = b.replace(/<div[^>]+class='dr-source-attribution'[^>]*>[\s\S]*?<\/div>\s*/gi, '')
+  // 2. Orphaned <p> with monospace style containing the attribution text
+  b = b.replace(/<p[^>]+font-family:monospace[^>]*>\s*This editorial was written by DownRange[^<]*<\/p>\s*/gi, '')
+  // 3. Orphaned ORIGINAL SOURCE heading div left behind
+  b = b.replace(/<div[^>]*>\s*ORIGINAL SOURCE\s*<\/div>\s*/gi, '')
+  // 4. Dangling closing </div> at very end of body (after all real content)
+  b = b.replace(/(<\/p>|<\/ul>|<\/ol>|<\/h[1-6]>)\s*<\/div>\s*$/, '$1')
+  return b.trim()
 }
 
 export async function POST(req) {
@@ -28,32 +35,24 @@ export async function POST(req) {
   const { ids } = await req.json()
   if (!ids?.length) return Response.json({ error: 'ids array required' }, { status: 400 })
 
-  // Fetch all bodies in one GROQ query
   const idList = ids.map(id => '"' + id + '"').join(',')
-  const docs = await sanity.fetch(
-    '*[_id in [' + idList + ']] { _id, body }'
-  )
+  const docs = await sanity.fetch('*[_id in [' + idList + ']] { _id, body }')
 
   const mutations = []
-  let skipped = 0
-
   for (const doc of docs) {
-    if (!doc.body?.includes('dr-source-attribution')) { skipped++; continue }
+    if (!doc.body) continue
     const stripped = strip(doc.body)
-    if (stripped === doc.body) { skipped++; continue }
+    if (stripped === doc.body) continue
     mutations.push({ patch: { id: doc._id, set: { body: stripped } } })
   }
 
   if (!mutations.length) {
-    return Response.json({ ok: true, cleaned: 0, skipped, message: 'All already clean' })
+    return Response.json({ ok: true, cleaned: 0, total: docs.length, message: 'All already clean' })
   }
 
-  // One batched Sanity transaction
   const tx = sanity.transaction()
-  for (const m of mutations) {
-    tx.patch(m.patch.id, p => p.set(m.patch.set))
-  }
+  for (const m of mutations) tx.patch(m.patch.id, p => p.set(m.patch.set))
   await tx.commit()
 
-  return Response.json({ ok: true, cleaned: mutations.length, skipped, total: docs.length })
+  return Response.json({ ok: true, cleaned: mutations.length, total: docs.length })
 }
