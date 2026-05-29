@@ -178,10 +178,11 @@ export async function fetchAmmoPrices() {
 // ── VIDEOS ────────────────────────────────────────────────────────────────────
 
 export async function fetchVideos(limit = 10, category = null) {
-  const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
-  return client.fetch(`
-    *[_type == "video" ${filter}] | order(publishedAt desc) [0...${limit}] {
-      _id, title, youtubeId, channelName, thumbnail, category, publishedAt, featured, duration
+  const filter = category ? `&& category == "${category}"` : ''
+  // Use writeClient (no CDN) so newly-added videos appear immediately
+  return writeClient.fetch(`
+    *[_type == "video" && active != false ${filter}] | order(publishedAt desc, addedAt desc) [0...${limit}] {
+      _id, title, youtubeId, videoId, channelName, thumbnail, category, publishedAt, addedAt, featured, duration
     }
   `)
 }
