@@ -1,5 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'About DownRange — Built for Gun Owners',
@@ -9,7 +11,8 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <>
-      <Masthead />
+      <BreakingTicker alerts={alerts || []} />
+      M />
       <div className="page-hero" data-title="ABOUT">
         <div className="container">
           <h1 className="page-hero-title">About DownRange</h1>
