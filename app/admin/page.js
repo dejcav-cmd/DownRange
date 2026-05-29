@@ -2092,7 +2092,7 @@ export default function AdminPage() {
 
             {/* ── INTELLIGENCE ── */}
             {panel==='intel'     && <IntelligenceDashboard adminKey={adminKey} />}
-              {panel==='copyright' && <CopyrightPanel adminKey={adminKey} />}
+              {panel==='copyright' && <CopyrightReport adminKey={adminKey} />}
             {panel==='statelaws' && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='pulllog'   && <PullLogDashboard />}
             {panel==='deals'   && <DealsPanel />}
