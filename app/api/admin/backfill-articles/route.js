@@ -72,8 +72,6 @@ Build in DownRange's own structure — not based on the source article's structu
 <p>[100-130 words. Practical impact on carry, purchase, ownership, rights. Which states. What to do. ORIGINAL — not from source.]</p>
 <h2>DownRange Analysis</h2>
 <p>[80-110 words. Original DownRange perspective. Bruen/Heller implications, market impact, what a serious gun owner should do right now. Pure original commentary.]</p>
-<p><em>Source: visit the original article for complete details and additional reporting.</em></p>
-
 SOURCE MATERIAL:
 Title: ${item.title}
 Source: ${item.source || 'Unknown'}
