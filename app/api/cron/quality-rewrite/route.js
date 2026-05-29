@@ -35,15 +35,22 @@ function needsRewrite(body) {
 }
 
 const VOICE = `You write for DownRange — a firearms news site by a gun owner who carries daily.
+
+COPYRIGHT RULES — MANDATORY:
+- Create a NEW article using only FACTS from the source — not the source's words or structure.
+- Do NOT mirror the original article's structure, flow, or narrative sequence.
+- Do NOT do a paragraph-by-paragraph rewrite. Build an original DownRange article.
+- The reader should still benefit from visiting the original source for complete details.
+
 BANNED WORDS: comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower, game-changer, landscape, navigate, delve, utilize, innovative, unprecedented, paradigm, synergy, moving forward, it remains to be seen, stakeholders, holistic, takeaway, unpack, groundbreaking, pivotal, furthermore, in conclusion, in summary, at the end of the day.
-RULES: Start with the hardest fact. Short sentences max 15 words avg. Active voice only. Specific names, calibers, dollar amounts, dates. No padded intros. No closing filler.`
+STYLE: Start with the hardest fact. Short sentences max 15 words avg. Active voice only. Specific names, calibers, dollar amounts, dates. No padded intros. No closing filler.`
 
 async function rewriteItem(item) {
   const src = (item.body || item.summary || item.description || '').replace(/<[^>]+>/g, '').slice(0, 2000)
   const prompt = `${VOICE}
 
 Rewrite this ${item._stype === 'newsArticle' ? 'news article' : item._stype === 'blogPost' ? 'blog post' : item._stype === 'firearmRelease' ? 'gun release article' : 'Canada firearms article'} for DownRange. 
-${item._stype === 'newsArticle' ? '800-1100 words. 5 h2 sections: opener, Background and Context, What This Means for Gun Owners, Industry Impact, What to Watch Next + DownRange Bottom Line.' : '600-900 words. 4 h2 sections matching the content type.'}
+${item._stype === 'newsArticle' ? '500-750 words. Use DownRange copyright-compliant structure: Lead → Key Details → Why It Matters for Gun Owners → DownRange Analysis. Include source attribution link. No mirroring original article structure.' : '600-900 words. 4 h2 sections matching the content type.'}
 
 Title: ${item.title || ''}
 Source content: ${src}
