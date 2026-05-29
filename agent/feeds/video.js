@@ -154,7 +154,7 @@ async function fetchChannelRSS(channelId, channelName, handle) {
           if (title.includes('#shorts') || title.includes('#short')) return false
           const detail  = detailMap[item.id.videoId]
           const secs    = isoToSecs(detail?.duration)
-          if (secs <= 60) return false  // Short by duration
+          if (secs <= 100) return false  // Shorts filter: anything <= 100s is excluded
           return true
         })
         .slice(0, 5)
