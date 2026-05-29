@@ -59,7 +59,7 @@ Rules:
 
 Return ONLY the HTML body content. No markdown. No preamble.`
 
-  const body = await callAIText(prompt, 'smart')
+  const body = await callAIText({ prompt, useCase: 'article', maxTokens: 1500 })
   return body
 }
 
