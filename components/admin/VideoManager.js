@@ -325,6 +325,10 @@ export default function VideoManager({ adminKey }) {
         <button className="vm-btn" onClick={runCron} disabled={cronRunning} style={{ background: cronRunning ? '#374151' : '#C8922A' }}>
           {cronRunning ? '⏳ Running...' : '▶ Run Video Cron Now'}
         </button>
+        <button className="vm-btn" onClick={purgeShorts} disabled={purging}
+          style={{ background:'none', border:'1px solid #ef4444', color:'#ef4444', marginLeft:8 }}>
+          {purging ? '⏳ Scanning...' : '🗑 Purge Shorts'}
+        </button>
       </div>
 
       {msg && (
