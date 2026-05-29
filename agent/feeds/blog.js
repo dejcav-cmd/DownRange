@@ -145,7 +145,7 @@ Keywords to weave in naturally: ${keywords.join(', ')}
 
 Return ONLY the HTML body content. No markdown. No preamble. No closing note.`
 
-  const body = await callAIText(prompt, 'smart')
+  const body = await callAIText({ prompt, useCase: 'article', maxTokens: 2000 })
   return body
 }
 
