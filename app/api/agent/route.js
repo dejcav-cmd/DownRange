@@ -8,6 +8,12 @@ function formatDetails(feed, result) {
   // News feed
   if (r.done != null && r.total != null && r.withAI != null)
     return `${r.done} published (${r.withAI} AI-rewritten, ${r.done - r.withAI} raw) of ${r.total} fetched · ${r.dupes || 0} dupes skipped`
+  // Video feed
+  if (r.summary && r.channelLog != null) {
+    if (r.fatal) return `FATAL: ${r.fatal}`
+    const errSuffix = r.errors?.length ? ` | ${r.errors.length} errors: ${r.errors[0].slice(0,80)}` : ''
+    return r.summary + errSuffix
+  }
   // Laws, releases
   if (r.done != null && r.failed != null)
     return `${r.done} saved · ${r.failed} failed`
