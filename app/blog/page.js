@@ -8,7 +8,7 @@ export const metadata = {
   title: 'The Range Report — DownRange Blog',
   description: 'Expert analysis, industry commentary, and field intelligence from DJ Cavalcanti and the DownRange editorial team.',
 }
-export const revalidate = 600
+export const revalidate = 60
 
 export const BLOG_POSTS = [
   {
