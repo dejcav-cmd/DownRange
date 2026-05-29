@@ -56,7 +56,8 @@ Respond ONLY with valid JSON — no markdown fences, no extra text:
   const m      = clean.match(/\{[\s\S]*\}/)
   const parsed = JSON.parse(m ? m[0] : clean)
   const wordCount = (parsed.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
-  if (wordCount < 350) throw new Error(`Rewrite too short: ${wordCount} words`)  return parsed
+  if (wordCount < 350) throw new Error(`Rewrite too short: ${wordCount} words`)
+  return parsed
 }
 
 export async function GET(req)  { return handler(req) }
