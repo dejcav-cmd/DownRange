@@ -101,7 +101,7 @@ export async function GET(req) {
           approved:    true,
           published:   true,
           publishedAt: deal.date ? new Date(deal.date).toISOString() : new Date().toISOString(),
-          imageUrl:    'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ammo_9mm_Glaser.jpg/1280px-Ammo_9mm_Glaser.jpg',
+          imageUrl:    '/img/photos/blog-ammo-market.jpg',
           tags:        ['deals', 'gun.deals', detectCategory(deal.title)],
           price:       deal.price,
         }
