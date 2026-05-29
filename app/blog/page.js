@@ -241,6 +241,106 @@ export const BLOG_POSTS = [
 <p><strong>DownRange Bottom Line:</strong> A pistol red dot will make you a more accurate, faster shooter — but only after you have put in the dry fire reps to find the dot consistently and the live fire work to confirm your zero and build the presentation. Most people skip the work and wonder why the optic is not helping them. Do the work. The performance improvement is real and significant.</p>
     `,
   },
+  {
+    slug:        'atf-pistol-brace-rule-two-years',
+    title:       'The ATF Pistol Brace Rule: Two Years Later',
+    subtitle:    'Where the legal battles actually stand and what it means for brace owners today.',
+    author:      'DJ Cavalcanti',
+    authorRole:  'Founder, DownRange',
+    date:        'March 15, 2026',
+    readTime:    '8 min read',
+    category:    'LAW',
+    catColor:    '#3b82f6',
+    featured:    false,
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SCOTUS_3_2010.jpg/1280px-SCOTUS_3_2010.jpg',
+    excerpt:     'Two years after the ATF pistol brace rule dropped, enforcement is paralyzed, courts keep blocking it, and the post-Loper Bright landscape makes a revival unlikely.',
+    tags:        ['ATF', 'Pistol Brace', 'NFA', 'Second Amendment', 'Legal'],
+    body: `<h2>Where Things Actually Stand</h2>
+<p>Two years ago the ATF dropped the pistol brace rule and the firearms community lost its mind — some people registered, some didn't, and a whole lot of people got confused about what was actually legal. The rule classified pistols with stabilizing braces as SBRs under the NFA if they met length thresholds, giving owners four options: register, remove the brace, convert to a rifle, or surrender.</p>
+<p>The practical effect: millions of AR pistols, MPX pistols, B&amp;T APC9Ks, and similar firearms that had been legal for years were suddenly in a gray zone.</p>
+<h2>The Court Battles That Followed</h2>
+<p>The Fifth Circuit struck down the rule in <strong>Mock v. Garland</strong>, finding the ATF exceeded its statutory authority. The Supreme Court's <em>Loper Bright</em> decision in 2024 removed Chevron deference — courts no longer automatically defer to agency interpretations of ambiguous statutes. Federal enforcement has been paralyzed by multiple circuit splits and zero political appetite for pushing forward.</p>
+<h2>What This Means for Gun Owners Right Now</h2>
+<p>If you own a braced pistol, here's the honest read:</p>
+<ul>
+<li><strong>Registered SBRs from the amnesty window:</strong> Fully compliant. No issue.</li>
+<li><strong>Fifth Circuit states (TX, LA, MS):</strong> Mock v. Garland gives you strong legal protection.</li>
+<li><strong>Everywhere else:</strong> Rule technically on the books but enforcement is negligible.</li>
+<li><strong>New purchases:</strong> The market kept moving. PSA, SB Tactical, Gear Head Works never stopped.</li>
+</ul>
+<h2>The Bruen Complication</h2>
+<p>The Bruen text-and-history standard creates additional headwinds for ATF rules that impose NFA-style restrictions on previously lawful items. Multiple district courts have noted that brace regulations struggle under Bruen scrutiny. Combined with Loper Bright, the regulatory path for reviving aggressive brace enforcement is increasingly narrow.</p>
+<h2>DownRange Bottom Line</h2>
+<p>The ATF pistol brace rule is in effective legal limbo and has been for two years. Enforcement is minimal, courts keep blocking it, and the post-Loper Bright landscape makes this kind of agency overreach harder to sustain long-term. If you registered during the amnesty window, great. If you didn't and you're in the Fifth Circuit, you're in a defensible position. This legal battle isn't over, but the rule is functionally toothless right now — and the trend is moving in gun owners' favor.</p>`,
+  },
+  {
+    slug:        'home-defense-basics',
+    title:       'Home Defense Basics: The Setup That Actually Works',
+    subtitle:    'The gun is the easy part. The plan, the lighting, and the communication are what determine the outcome.',
+    author:      'DJ Cavalcanti',
+    authorRole:  'Founder, DownRange',
+    date:        'April 2, 2026',
+    readTime:    '9 min read',
+    category:    'TRAINING',
+    catColor:    '#22c55e',
+    featured:    false,
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Remington870.jpg/1280px-Remington870.jpg',
+    excerpt:     'Most home defense advice is written by people who have never had to think through what happens at 2 AM when someone is in your house. The gun is the easy part.',
+    tags:        ['Home Defense', 'Shotgun', 'Training', 'Storage', 'Ammunition'],
+    body: `<h2>The Right Gun for Home Defense</h2>
+<p>Most home defense advice online is written by people who've never thought through what happens at 2 AM with their heart rate at 160. The gun is the easy part. The plan, the communication, the lighting — that's what determines whether you come out of a home invasion scenario intact.</p>
+<p>The right home defense firearm is a <strong>12 gauge pump shotgun</strong> or a <strong>9mm pistol-caliber carbine</strong> — not your EDC pistol, and definitely not an AR with a 16-inch barrel you can't maneuver around a corner.</p>
+<ul>
+<li><strong>Mossberg 590 or Remington 870:</strong> Reliable, mechanically simple under stress, devastating with 00 buckshot. The Mossberg tang safety beats Remington's trigger guard placement for stressed manipulation.</li>
+<li><strong>Ruger PC Carbine or CZ Scorpion EVO:</strong> Lower recoil, 30-round capacity, easy light mounting, takes Glock mags if you're already in that ecosystem.</li>
+<li><strong>Dedicated handgun:</strong> If you use a pistol, attach a Streamlight TLR-1 or SureFire X300 permanently. Your off-hand needs to stay free for doors, phones, and kids.</li>
+</ul>
+<p>A weapon-mounted light is not optional. You cannot shoot what you cannot identify. This is non-negotiable.</p>
+<h2>The Plan Comes Before the Gun</h2>
+<p>Every person in your house needs to know what to do when something goes wrong. Write it down. Practice it. In most residential scenarios, the correct move is to fortify in your bedroom, call 911, and wait. You are not legally obligated to clear your house — and your exposure increases significantly when you leave a defensible position and move toward an unknown threat.</p>
+<p>Set up verbal communication signals so family members don't get shot rounding a corner unexpectedly. Something like "gun out, get behind me" eliminates the ambiguity.</p>
+<h2>Ammunition Selection</h2>
+<p>For shotgun: <strong>Federal FliteControl 00 Buck</strong> or Hornady Critical Defense 00 Buck. Federal FliteControl keeps patterns tight at hallway distances — relevant for 10-15 yard shots. For 9mm: <strong>Federal HST 147gr</strong> or Speer Gold Dot 147gr. Both have extensive ballistic test data showing consistent expansion and adequate penetration through heavy clothing.</p>
+<p>Avoid birdshot for home defense. It doesn't penetrate adequately through clothing at typical indoor distances, regardless of what you've heard on YouTube.</p>
+<h2>Staging and Storage With Kids in the House</h2>
+<p>The bedside gun needs to be accessible to you and inaccessible to children. A <strong>GunVault MiniVault</strong> or Hornady RAPiD Safe with biometric or RFID access gets you there. Not a combination lock. Not a trigger lock. Something you can open in under three seconds in the dark with your hands shaking.</p>
+<h2>DownRange Bottom Line</h2>
+<p>Get a weapon light if you don't have one — that's the single most impactful upgrade you can make right now. Run Federal HST or Speer Gold Dot. Build a plan your household has actually talked through. Lock it down from kids. The gun is the last tool in the chain. The plan, the communication, the awareness, the locked doors come first. Do the work that actually makes you safer rather than just buying more gear.</p>`,
+  },
+  {
+    slug:        'owb-to-aiwb-carry-switch',
+    title:       'OWB to AIWB: What Nobody Tells You About the Switch',
+    subtitle:    'I made the switch after four years of OWB carry. It took three months before AIWB felt natural.',
+    author:      'DJ Cavalcanti',
+    authorRole:  'Founder, DownRange',
+    date:        'May 10, 2026',
+    readTime:    '7 min read',
+    category:    'TRAINING',
+    catColor:    '#22c55e',
+    featured:    false,
+    img:         'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg',
+    excerpt:     'I carried OWB for four years before switching to AIWB. I thought it would be a quick adjustment — same gun, different holster. I was wrong.',
+    tags:        ['AIWB', 'OWB', 'Concealed Carry', 'EDC', 'Holsters', 'Training'],
+    body: `<h2>Why Most People Make the Switch</h2>
+<p>I carried OWB for four years before switching to AIWB. I thought it would be a quick adjustment — same gun, different holster. Three months later I was still adjusting. Five months in, my draw was finally faster than it had been at 4 o'clock. Here's what I wish someone had told me upfront.</p>
+<p>The primary driver for most people is concealment. OWB at 3-4 o'clock with a full-size gun requires a cover garment long enough to cover the entire holster. In warm weather or business environments, that's a real limitation. AIWB at the appendix puts the gun in front of your hip where your body's natural taper makes concealment easier under a shorter cover garment.</p>
+<p>The secondary reason is draw speed. Competition shooters figured this out a decade ago — a well-set-up AIWB position puts the gun where the draw arc is shorter and more mechanically efficient.</p>
+<h2>The Gear That Actually Works</h2>
+<p>Not all AIWB holsters are equal. I've run a <strong>Tenicor Certum3</strong>, a <strong>PHLster Floodlight</strong> with a TLR-7A on a Glock 19, and a <strong>JM Custom Kydex</strong> setup. Here's where I landed:</p>
+<ul>
+<li><strong>PHLster Enigma:</strong> For carrying without a belt — gym clothes, athletic wear — the Enigma chassis changes what's possible. A Shield Plus under jogger shorts disappears completely.</li>
+<li><strong>Tenicor Certum3:</strong> Best zero-drama option for Glock 19/17. Adjustable ride height, excellent retention, smooth re-holster.</li>
+<li><strong>JMCK holsters:</strong> Competitive quality at a lower price point. Good starting place if you're not sure you're committed to the position yet.</li>
+</ul>
+<p>The holster <strong>claw</strong> is non-negotiable. It levers the grip inward when your belt pulls the bottom of the holster away from your body. Without a claw, you're printing. With a claw, the gun disappears.</p>
+<h2>The Draw Stroke Is Different — Practice It</h2>
+<p>OWB is a lateral movement: hand sweeps back to the hip, establishes grip, draws forward. AIWB is different. The hand comes down to the front of the hip, you establish grip with the muzzle still angled down, then clear the holster with a push-forward motion before rotating up to target.</p>
+<p>The safety concern people raise — pointing the gun at yourself during the draw — is real but manageable with training. Keep your trigger finger outside the guard until the muzzle is on target. Use a holster with a solid trigger guard covering. Run 500 dry reps before going live in the new position.</p>
+<h2>What Actually Changes Day to Day</h2>
+<p>Sitting in a car at true 12 o'clock is uncomfortable for most people until they dial in position and ride height. Most AIWB carriers settle between 12 and 1:30 depending on body type. A quality 1.5-inch belt makes a significant difference — the Kore Essentials or Vedder ProDraw distribute weight better than a casual belt. Pants fit matters more than it did OWB. You may need to size up one in the waist or choose pants with more room in the front.</p>
+<h2>DownRange Bottom Line</h2>
+<p>AIWB is worth the transition for concealment and draw efficiency, but give yourself a realistic timeline: three months to comfortable, five to six before your draw exceeds your old OWB performance. Get a holster with a claw. Run a compact gun — Glock 19, Shield Plus, Hellcat. Get a quality belt. Do your dry fire reps before you carry live. The switch pays off, but it's a skill acquisition, not a gear swap.</p>`,
+  },
 ]
 
 
