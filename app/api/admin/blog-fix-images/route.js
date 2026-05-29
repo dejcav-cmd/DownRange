@@ -13,30 +13,30 @@ const sanity = createClient({
 // These load reliably on Vercel and browsers without any CORS issues
 const TOPIC_MAP = [
   { kw:['suppressor','silencer','nfa','sbr','sbs','can'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/AK-47_and_M16A1_DD-ST-85-01269.jpg/1280px-AK-47_and_M16A1_DD-ST-85-01269.jpg' },
+    url:'/img/photos/suppressor.jpg' },
   { kw:['bruen','scotus','supreme court','constitutional','amendment','court','legal','law','legislation','statute','senate','congress'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f9/US_Supreme_Court.jpg/1280px-US_Supreme_Court.jpg' },
+    url:'/img/photos/law.jpg' },
   { kw:['ar-15','ar15','m4','carbine','build','rifle','long gun','assault'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/00/AR15_Rifle.jpg/1280px-AR15_Rifle.jpg' },
+    url:'/img/photos/rifle.jpg' },
   { kw:['glock','pistol','handgun','edc','carry','concealed','ccw','sig','smith','shield','hellcat','p365'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b0/Glock_17_Generations_1-4.jpg/1280px-Glock_17_Generations_1-4.jpg' },
+    url:'/img/photos/blog-edc-pistol.jpg' },
   { kw:['ammo','ammunition','9mm','round','brass','bullet','cartridge','tariff','price','market','cost'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/32/Ammo_9mm_Glaser.jpg/1280px-Ammo_9mm_Glaser.jpg' },
+    url:'/img/photos/blog-ammo-market.jpg' },
   { kw:['red dot','optic','sight','scope','lpvo','eotech','aimpoint','trijicon','holosun'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Micro_Red_Dot_Sight.jpg/1280px-Micro_Red_Dot_Sight.jpg' },
+    url:'/img/photos/blog-red-dot.jpg' },
   { kw:['women','female','woman','lady','her','she'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/1/1e/Female_Marine_sniper_rifle.jpg/1280px-Female_Marine_sniper_rifle.jpg' },
+    url:'/img/photos/military.jpg' },
   { kw:['home defense','home','intruder','defend','shotgun','mossberg','remington'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0c/Remington870.jpg/1280px-Remington870.jpg' },
+    url:'/img/photos/shotgun.jpg' },
   { kw:['insurance','uscca','ccw safe','legal defense','self-defense insurance','liability'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SCOTUS_3_2010.jpg/1280px-SCOTUS_3_2010.jpg' },
+    url:'/img/photos/blog-bruen-law.jpg' },
   { kw:['constitutional carry','permitless','permit','reciprocity','state law','carry law'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/SCOTUS_3_2010.jpg/1280px-SCOTUS_3_2010.jpg' },
+    url:'/img/photos/blog-bruen-law.jpg' },
   { kw:['training','range','shoot','shooting','course','skill','drill','practice'],
-    url:'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c7/US_Navy_shooting_range.jpg/1280px-US_Navy_shooting_range.jpg' },
+    url:'/img/photos/training.jpg' },
 ]
 
-const DEFAULT_IMG = 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/39/AK-47_and_M16A1_DD-ST-85-01269.jpg/1280px-AK-47_and_M16A1_DD-ST-85-01269.jpg'
+const DEFAULT_IMG = '/img/photos/suppressor.jpg'
 
 function pickImage(title, category, body) {
   const text = ((title||'') + ' ' + (category||'') + ' ' + ((body||'').slice(0,400))).toLowerCase()
