@@ -257,6 +257,17 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
   }
 }
 
+// Get all blog post slugs for static generation (includes drafts so URLs don't 404)
+export async function fetchAllBlogSlugs() {
+  try {
+    return await client.fetch(
+      '*[_type == "blogPost" && defined(slug.current)] { "slug": slug.current }'
+    )
+  } catch {
+    return []
+  }
+}
+
 export async function searchBlogPosts(q, limit = 20) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
   return client.fetch(
