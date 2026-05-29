@@ -15,28 +15,30 @@ const sanity = createClient({
 // ── VOICE RULES injected into every prompt ────────────────────────────────
 const VOICE = `
 VOICE & STYLE — NON-NEGOTIABLE:
-You are a gun owner who carries daily, reads 2A case law, and has worked a gun counter.
-Write exactly like that person. Real. Direct. Specific.
+Write like a gun owner who carries daily, reads 2A case law, and worked a gun counter.
+Real. Direct. Specific. Active voice only.
 
-BANNED WORDS/PHRASES (instant failure if used):
+COPYRIGHT RULES — MANDATORY:
+- Create a NEW article using only FACTS from the source — not the source's words or structure.
+- Do NOT do a paragraph-by-paragraph rewrite of any single source.
+- Do NOT mirror the original article's structure, flow, or narrative sequence.
+- Keep the original article useful — don't replace it, summarize it and add DownRange analysis.
+- Source input is limited to key facts only. Build your own narrative around them.
+
+BANNED WORDS (instant failure):
 comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower,
 game-changer, landscape, navigate, delve, utilize, innovative, unprecedented,
 paradigm, synergy, moving forward, shed light on, it remains to be seen,
 stakeholders, holistic, takeaway, unpack, explore, groundbreaking, crucial,
-pivotal, significant development, notably, it's worth noting, furthermore,
-in conclusion, in summary, in the realm of, at the end of the day,
-when it comes to, a wide range of, it is important to note.
+pivotal, significant development, notably, it worth noting, furthermore,
+in conclusion, in summary, at the end of the day, a wide range of.
 
-RULES:
-- Start with the hardest fact. Not background. Not context. The news.
-- Short sentences. 15 words max per sentence on average.
+STYLE RULES:
+- Start with the hardest fact. Short sentences. Max 15 words avg.
 - Named people with full names first mention. Then last name only.
-- Dollar amounts, calibers, round counts, dates — always specific.
-- If you don't know a spec, leave it out. Never approximate.
-- Opinions are allowed and expected. State them plainly.
-- Active voice only. "ATF denied the permit." Not "The permit was denied."
-- No padded intro paragraph. No "In recent months..." or "There has been..."
-- No closing "stay tuned" or "time will tell" filler.
+- Dollar amounts, calibers, dates — always specific. Never approximate.
+- Opinions expected in the analysis section. State them plainly.
+- No padded intros. No "In recent months..." or "There has been..."
 `
 
 // ── CONTENT TYPE CONFIGS ──────────────────────────────────────────────────
@@ -59,25 +61,25 @@ const TYPES = {
 You are writing a news article for DownRange, a firearms and Second Amendment news site.
 ${VOICE}
 
-ARTICLE STRUCTURE (HTML, min 800 words):
-<h2>[Restate the headline as a declarative fact — not a question]</h2>
-<p>[Opening: 120-150 words. Lead with the single hardest fact. Who did what, where, when, what it means.]</p>
-<h2>Background and Context</h2>
-<p>[130-160 words. What led to this. Prior rulings, bills, incidents. Specific names and dates.]</p>
-<h2>What This Means for Gun Owners</h2>
-<p>[130-160 words. Practical impact on carry, purchase, ownership. Which states. Which guns. Be specific.]</p>
-<h2>Industry Impact</h2>
-<p>[110-140 words. Manufacturers, dealers, distributors affected. Any companies named in the news.]</p>
-<h2>What to Watch Next</h2>
-<p>[110-140 words. Upcoming court dates, votes, deadlines. Specific dates if known.]</p>
-<p><strong>DownRange Bottom Line:</strong> [2-3 sentences. Plain opinion. What gun owners should do or think about this.]</p>
+MANDATORY ARTICLE STRUCTURE (HTML, 500-750 words):
+Build in DownRange's own structure — not based on the source article's structure:
+
+<h2>[Original headline — key fact in DownRange's own words, not a copy of source title]</h2>
+<p>[Lead: 80-100 words. Essential facts: who, what, when, where. Original phrasing only.]</p>
+<h2>Key Details</h2>
+<p>[80-120 words. 3-4 specific facts or developments. Numbers, names, dates, outcomes. Use ul/li if listing.]</p>
+<h2>Why It Matters for Gun Owners</h2>
+<p>[100-130 words. Practical impact on carry, purchase, ownership, rights. Which states. What to do. ORIGINAL — not from source.]</p>
+<h2>DownRange Analysis</h2>
+<p>[80-110 words. Original DownRange perspective. Bruen/Heller implications, market impact, what a serious gun owner should do right now. Pure original commentary.]</p>
+<p><em>Source: visit the original article for complete details and additional reporting.</em></p>
 
 SOURCE MATERIAL:
 Title: ${item.title}
 Source: ${item.source || 'Unknown'}
 Category: ${item.category || 'news'}
 Summary: ${item.summary || 'N/A'}
-Existing body (may need full rewrite): ${(item.body || '').replace(/<[^>]+>/g, '').slice(0, 800)}
+Key facts from existing content (use only as fact source, not writing template): ${(item.body || item.summary || '').replace(/<[^>]+>/g, '').slice(0, 400)}
 
 Return ONLY valid JSON: { "summary": "2-3 sentence plain summary under 350 chars", "body": "<full HTML article>" }
 `,
