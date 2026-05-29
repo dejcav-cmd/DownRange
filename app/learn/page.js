@@ -2,7 +2,6 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 import BreakingTicker from '../../components/layout/BreakingTicker'
-import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Firearms Learning Center — DownRange',
@@ -39,8 +38,8 @@ export default function LearnPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts || []} />
-      M />
+      <BreakingTicker alerts={[]} />
+      <Masthead />
 
       {/* ── HERO ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
