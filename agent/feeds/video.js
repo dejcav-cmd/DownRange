@@ -151,7 +151,7 @@ async function loadChannelsFromSanity() {
     const data = await res.json()
     if (data.result?.channels?.length) {
       console.log(`[VIDEO] Loaded ${data.result.channels.length} channels from Sanity VideoManager`)
-      return data.result.channels.map(c => ({ id: c.channelId || c.id, name: c.name, tags: ['review'] }))
+      return data.result.channels.map(c => ({ id: c.channelId || c.id, name: c.name, handle: c.handle || null, tags: ['review'] }))
     }
   } catch {}
   return null
