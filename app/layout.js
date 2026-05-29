@@ -72,12 +72,9 @@ export default function RootLayout({ children }) {
             });
           `}
         </Script>
-        {/* AvantLink affiliate ownership verification — beforeInteractive puts it in raw HTML */}
-        <Script
-          id="avantlink-verify"
-          src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521"
-          strategy="beforeInteractive"
-        />
+        {/* AvantLink affiliate ownership verification — raw script tag (not Next/Script) */}
+        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
+        <script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521" />
       </head>
       <ClerkWrapper>
       <body>
