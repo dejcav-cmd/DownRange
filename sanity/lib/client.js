@@ -226,25 +226,25 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
   if (search) {
     const safe = '*' + search.replace(/['"\\]/g,'').slice(0,80) + '*'
     query = `{
-      "posts": *[_type == "blogPost" && status == "published" ${catFilter}
+      "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)]
         | order(_createdAt desc) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
           status, publishedAt, readTime, _createdAt, tags
         },
-      "total": count(*[_type == "blogPost" && status == "published" ${catFilter}
+      "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)])
     }`
     params = { q: safe, offset, end: offset + perPage }
   } else {
     const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
     query = `{
-      "posts": *[_type == "blogPost" && status == "published" ${catFilter}]
+      "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}]
         | order(${orderField}) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
           status, publishedAt, readTime, _createdAt, tags
         },
-      "total": count(*[_type == "blogPost" && status == "published" ${catFilter}])
+      "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}])
     }`
     params = { offset, end: offset + perPage }
   }
