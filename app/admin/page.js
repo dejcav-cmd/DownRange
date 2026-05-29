@@ -256,8 +256,7 @@ const STYLES = `
 
 // ── Inline: Overview Dashboard ───────────────────────────────────────────────
 function OverviewDashboard({ adminKey, setPanel, setSection }) {
-  const [health, setHealth,
-      { id:'copyright', label:'Copyright', icon:'⚖', badge:null },
+  const [health, setHealth
     ]         = useState(null)
   const [migrateResult, setMigrateResult] = useState(null)
   const [migrating, setMigrating]   = useState(false)
