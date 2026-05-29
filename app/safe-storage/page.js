@@ -1,7 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import BreakingTicker from '../../components/layout/BreakingTicker'
-import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 export const metadata = { title: 'Gun Safe & Storage Guide — DownRange', description: 'Complete guide to firearms safe storage. Reviews and recommendations for quick-access, biometric, and full-vault safes.' }
 
 const SAFES = [
