@@ -244,7 +244,7 @@ export default function Masthead() {
               Feedback
             </button>
             <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Searc{/* ThemeToggle hidden: <ThemeToggle>
- */}            <ThemeToggle />
+{/* ThemeToggle hidden: <ThemeToggle /> */}
             <button onClick={() => setMenuOpen(!menuOpen)}
               style={{ background:'none', border:'1px solid var(--border)', color:'var(--text-muted)', padding:'7px 14px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.05em' }}>
               {menuOpen ? '✕ CLOSE' : '☰ MENU'}
