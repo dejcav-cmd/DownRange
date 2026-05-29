@@ -7,7 +7,7 @@ import dynamic from 'next/dynamic'
 const L = (fn) => dynamic(fn, { ssr:false, loading: () => <PanelLoader /> })
 
 const PullLogDashboard      = L(() => import('./pull-log/page'))
-const OutreachPortal        = L(() => import('../../components/admin/OutreachPortal'))
+const OutreachCRM           = L(() => import('../../components/admin/OutreachCRM'))
 const IntelligenceDashboard = L(() => import('../../components/admin/IntelligenceDashboard'))
 const AIProviderSettings    = L(() => import('../../components/admin/AIProviderSettings'))
 const VideoManager          = L(() => import('../../components/admin/VideoManager'))
@@ -1694,26 +1694,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           }} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.fixImages?'#374151':'#3b82f6', color:'#fff', border:'none', cursor:seeding.fixImages?'default':'pointer' }}>
             {seeding.fixImages ? '⏳ FIXING...' : '🖼 FIX ALL SVG IMAGES'}
           </button>
-          <button disabled={seeding.cleanAttr} onClick={async ()=>{
-            setSeeding(s=>({...s,cleanAttr:true})); setResults(r=>({...r,cleanAttr:null}))
-            flash('⏳ Running cleanup — batching patches, this should finish in under 30 seconds...')
-            try {
-              const ctrl = new AbortController()
-              const timer = setTimeout(() => ctrl.abort(), 120000) // 2-min client timeout
-              const res = await fetch('/api/admin/one-time-cleanup', { headers:H, signal: ctrl.signal })
-              clearTimeout(timer)
-              const d = await res.json()
-              setResults(r=>({...r,cleanAttr:d}))
-              if (d.ok) flash('✅ Done in ' + (d.ms ? (d.ms/1000).toFixed(1)+'s' : '?') + ' — ' + (d.cleaned||0) + ' docs cleaned, ' + (d.skipped||0) + ' already clean')
-              else flash('❌ Cleanup error: ' + (d.error||'Unknown'))
-            } catch(e){
-              setResults(r=>({...r,cleanAttr:{ok:false,message:e.message}}))
-              flash(e.name==='AbortError' ? '⏱ Timed out — check Vercel logs for progress' : '❌ '+e.message)
-            }
-            setSeeding(s=>({...s,cleanAttr:false}))
-          }} title="Bulk cleanup: strips embedded ORIGINAL SOURCE divs + fixes genomics article image" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em', padding:'10px 20px', background:seeding.cleanAttr?'#374151':'#7c3aed', color:'#fff', border:'none', cursor:seeding.cleanAttr?'default':'pointer' }}>
-            {seeding.cleanAttr ? '⏳ CLEANING...' : '🧹 CLEAN ATTRIBUTION'}
-          </button>
+          
           <button onClick={()=>{setSection('system');setPanel('agents')}} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, padding:'10px 14px', background:'transparent', border:'1px solid rgba(34,197,94,.25)', color:'#22c55e', cursor:'pointer' }}>
             🤖 AI Agents →
           </button>
@@ -2131,7 +2112,7 @@ export default function AdminPage() {
             {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
 
             {/* ── OUTREACH ── */}
-            {panel==='outreach' && <OutreachPortal adminKey={adminKey} />}
+            {panel==='outreach' && <OutreachCRM adminKey={adminKey} />}
 
             {/* ── MEDIA ── */}
             {panel==='videos'   && <VideoManager adminKey={adminKey} />}
