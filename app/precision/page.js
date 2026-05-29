@@ -1,6 +1,8 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
+import BreakingTicker from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Precision Shooting Hub — DownRange',
@@ -38,7 +40,8 @@ const RESOURCES = [
 export default function PrecisionPage() {
   return (
     <>
-      <Masthead />
+      <BreakingTicker alerts={alerts || []} />
+      M />
 
       {/* ── Hero ── */}
       <div className="page-hero" data-title="PRECISION">
