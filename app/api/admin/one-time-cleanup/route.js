@@ -23,15 +23,16 @@ function auth(req) {
 function stripAttribution(body) {
   if (!body || typeof body !== 'string') return body
   return body
-    .replace(/<div[^>]+class=["'`]dr-source-attribution["'`][^>]*>[\s\S]*?<\/div>\s*/gi, '')
+    .replace(/<div[^>]+class="dr-source-attribution"[^>]*>[\s\S]*?<\/div>\s*/gi, '')
+    .replace(/<div[^>]+class='dr-source-attribution'[^>]*>[\s\S]*?<\/div>\s*/gi, '')
     .trim()
 }
 
-// Commit mutations in a single batched Sanity API call
 async function commitBatch(mutations) {
   if (!mutations.length) return
+  const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
   const res = await fetch(
-    'https://' + (process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg') + '.api.sanity.io/v2024-01-01/data/mutate/production',
+    'https://' + projectId + '.api.sanity.io/v2024-01-01/data/mutate/production',
     {
       method:  'POST',
       headers: { Authorization: 'Bearer ' + process.env.SANITY_API_TOKEN, 'Content-Type': 'application/json' },
@@ -67,15 +68,16 @@ export async function GET(req) {
       results.articleFixes.push({ slug: genomicsSlug, patched: Object.keys(patch) })
     }
 
-    // 2. Bulk strip — GROQ filters server-side to only matching docs
-    //    Then batch-commit up to 100 patches in ONE API call
+    // 2. Fetch ALL articles with a body — then JS-filter for the attribution string
+    //    GROQ match/contains is unreliable for hyphenated class names, so we pull all
+    //    bodies and filter in JS. Use pagination to avoid memory issues.
     for (const type of ['newsArticle', 'blogPost']) {
       let offset = 0
-      const PAGE = 100
+      const PAGE = 200
 
       while (true) {
         const docs = await sanity.fetch(
-          '*[_type == $type && defined(body) && string::contains(body, \"dr-source-attribution\")] | order(_createdAt desc) [$from...$to] { _id, body }',
+          '*[_type == $type && defined(body) && length(body) > 100] | order(_createdAt desc) [$from...$to] { _id, body }',
           { type, from: offset, to: offset + PAGE }
         )
 
@@ -83,7 +85,7 @@ export async function GET(req) {
 
         const mutations = []
         for (const doc of docs) {
-          if (!doc.body?.includes('dr-source-attribution')) { results.skipped++; continue }
+          if (!doc.body || !doc.body.includes('dr-source-attribution')) { results.skipped++; continue }
           const stripped = stripAttribution(doc.body)
           if (stripped === doc.body) { results.skipped++; continue }
           mutations.push({ patch: { id: doc._id, set: { body: stripped } } })
@@ -94,7 +96,7 @@ export async function GET(req) {
             await commitBatch(mutations)
             results.cleaned += mutations.length
             results.batches += 1
-            console.log('[CLEANUP] Batch ' + results.batches + ': ' + mutations.length + ' ' + type + ' docs at offset ' + offset)
+            console.log('[CLEANUP] Batch ' + results.batches + ': cleaned ' + mutations.length + ' ' + type + ' (offset ' + offset + ')')
           } catch (e) {
             console.error('[CLEANUP] Batch error:', e.message)
             results.errors += mutations.length
@@ -110,7 +112,7 @@ export async function GET(req) {
     }
 
     const ms  = Date.now() - t0
-    const msg = results.cleaned + ' docs cleaned in ' + results.batches + ' batch calls. ' + results.skipped + ' already clean. ' + results.errors + ' errors. ' + (ms/1000).toFixed(1) + 's'
+    const msg = results.cleaned + ' docs cleaned in ' + results.batches + ' batches. ' + results.skipped + ' already clean. ' + results.errors + ' errors. ' + (ms/1000).toFixed(1) + 's'
     console.log('[CLEANUP] Done:', msg)
     return Response.json({ ok: true, ...results, ms, message: msg })
 
