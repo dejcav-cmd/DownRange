@@ -1,0 +1,30 @@
+name: Video Pull (Manual)
+
+on:
+  workflow_dispatch:
+
+jobs:
+  pull-videos:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger DownRange Video Feed
+        run: |
+          response=$(curl -s -w "\n%{http_code}" -X GET \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "x-admin-key: ${{ secrets.ADMIN_KEY }}" \
+            "https://www.downrangeco.com/api/agent?feed=video")
+          
+          http_code=$(echo "$response" | tail -n1)
+          body=$(echo "$response" | head -n-1)
+          
+          echo "HTTP Status: $http_code"
+          echo "Response: $body"
+          
+          # Extract summary from JSON
+          summary=$(echo "$body" | python3 -c "import sys,json; d=json.load(sys.stdin); r=d.get('result',{}); print(r.get('summary','No summary'))" 2>/dev/null || echo "Could not parse response")
+          echo "Summary: $summary"
+          
+          if [ "$http_code" != "200" ]; then
+            echo "::error::Video feed failed with HTTP $http_code"
+            exit 1
+          fi
