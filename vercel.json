@@ -22,7 +22,7 @@
     },
     {
       "path": "/api/agent?feed=video",
-      "schedule": "*/5 * * * *"
+      "schedule": "0 */4 * * *"
     },
     {
       "path": "/api/agent?feed=state",
