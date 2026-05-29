@@ -36,6 +36,11 @@ const CHANNELS = [
   { id: '@gohunt',                   name: 'GoHUNT',                  tags: ['hunting','western','scouting','technology'] },
   { id: '@montanawild',              name: 'Montana Wild',            tags: ['hunting','montana','outdoor','film'] },
   { id: '@MountainsMulletsMerica',   name: 'Mountains Mullets Merica',tags: ['precision','long-range','review','prs'] },
+  // ── DJ Added Batch 3 — May 2026 ──────────────────────────────────────────
+  { id: 'UCLDHTNcCXHlu2Z9XNBZ2gZg', name: 'xring',                   tags: ['competition','precision','pistol','training'] },
+  { id: 'UCCgbrWR2dh0jDSCToEymeaw', name: 'Clint Morgan (Magdump)',   tags: ['2a','training','marine','advocacy'] },
+  { id: 'UCJxCLIuutemQ2D71hD3c5ug', name: 'GBRS Group',              tags: ['training','tactics','tier1','special-ops'] },
+  { id: 'UCdqO3qjABeMfqdhErk-A7zg', name: 'Haley Strategic Partners',tags: ['training','tactics','mindset','travis-haley'] },
 ]
 
 function inferCategory(title) {
