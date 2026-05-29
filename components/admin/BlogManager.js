@@ -475,6 +475,17 @@ export default function BlogManager({ adminKey, setMsg: parentMsg }) {
                         <span className="bm-lbl">Image URL</span>
                         <input className="bm-input" value={editDraft.imageUrl||''} onChange={e=>setEditDraft(p=>({...p,imageUrl:e.target.value}))} />
                       </div>
+                        {editDraft.imageUrl && editDraft.imageUrl.startsWith('http') && (
+                          <div style={{width:'100%',height:60,marginTop:5,background:'#0f1117',borderRadius:3,overflow:'hidden',border:'1px solid var(--border)',position:'relative'}}>
+                            <img src={editDraft.imageUrl} alt="preview"
+                              onError={e=>{e.currentTarget.style.display='none';e.currentTarget.nextElementSibling.style.display='flex'}}
+                              style={{width:'100%',height:'100%',objectFit:'cover'}}/>
+                            <div style={{display:'none',position:'absolute',inset:0,alignItems:'center',justifyContent:'center',
+                              fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#475569'}}>
+                              ✗ Cannot load image
+                            </div>
+                          </div>
+                        )}
                       <div style={{display:'flex',gap:6,marginTop:5,flexWrap:'wrap'}}>
                         <button className="bm-btn-sm" disabled={busy}
                           style={{background:'#8b5cf6',color:'#fff',fontSize:9}}
