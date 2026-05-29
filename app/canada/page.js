@@ -20,7 +20,7 @@ const sanity = createClient({
 })
 
 export default async function CanadaPage() {
-  const [items, alerts] = await Promise.all([
+  const [items, breakingAlerts] = await Promise.all([
     sanity.fetch(
       '*[_type=="canadaContent" && active==true] | order(order asc, publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, cadPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
     ).catch(() => []),
@@ -31,18 +31,18 @@ export default async function CanadaPage() {
   const provinces = items.filter(i => i.type === "province")
   const articles  = items.filter(i => i.type === "article")
   const ammo      = items.filter(i => i.type === "ammo")
-  const alerts2   = items.filter(i => i.type === "alert")
+  const alerts    = items.filter(i => i.type === "alert")
   const stats     = items.filter(i => i.type === "stat")
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
+      <BreakingTicker alerts={breakingAlerts} />
       <CanadaClient
         laws={laws}
         provinces={provinces}
         articles={articles}
         ammo={ammo}
-        alerts={alerts2}
+        alerts={alerts}
         stats={stats}
       />
     </>
