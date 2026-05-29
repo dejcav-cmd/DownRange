@@ -13,6 +13,16 @@ const CALIBERS = [
   { slug: '22-lr', display: '.22 LR', unit: '40gr', rssSeg: 'ammo/22-lr' },
 ]
 
+// gun.deals blog RSS — community-curated deals (free, no auth)
+const GUN_DEALS_RSS = 'https://gun.deals/rss.xml'
+
+// Reddit JSON API (more reliable than RSS, no auth needed)
+const REDDIT_DEALS_FEEDS = [
+  { url: 'https://www.reddit.com/r/gundeals/hot.json?limit=50',  source: 'r/gundeals' },
+  { url: 'https://www.reddit.com/r/ammo/hot.json?limit=25',      source: 'r/ammo'     },
+]
+
+// Legacy RSS fallback
 const REDDIT_AMMO_FEEDS = [
   'https://www.reddit.com/r/gundeals/.rss',
   'https://www.reddit.com/r/ammo/.rss',
@@ -46,6 +56,69 @@ async function fetchAmmoSeekRSS(caliber) {
     console.error(`[MARKET] AmmoSeek error (${caliber.slug}):`, err.message)
     return null
   }
+}
+
+async function fetchGunDealsRSS() {
+  const deals = []
+  try {
+    const feed = await parser.parseURL(GUN_DEALS_RSS)
+    for (const item of feed.items.slice(0, 30)) {
+      const price = parsePriceFromTitle(item.title || '')
+      const title = (item.title || '').trim()
+      if (!title) continue
+      // Parse category from title brackets e.g. [Rifle], [Ammo]
+      const catMatch = title.match(/^\[([^\]]+)\]/)
+      const flair = catMatch ? catMatch[1] : 'Other'
+      deals.push({
+        title,
+        price,
+        url: item.link || '',
+        source: 'gun.deals',
+        flair,
+        created: item.pubDate ? new Date(item.pubDate).getTime() : Date.now(),
+      })
+    }
+    console.log(`[MARKET] gun.deals RSS: ${deals.length} deals`)
+  } catch (err) {
+    console.error('[MARKET] gun.deals RSS error:', err.message)
+  }
+  return deals
+}
+
+async function fetchRedditJSON() {
+  const deals = []
+  for (const feed of REDDIT_DEALS_FEEDS) {
+    try {
+      const res = await fetch(feed.url, {
+        headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
+        signal: AbortSignal.timeout(8000),
+      })
+      if (!res.ok) throw new Error(`HTTP ${res.status}`)
+      const data = await res.json()
+      const posts = data?.data?.children || []
+      for (const post of posts) {
+        const p = post.data || {}
+        if (!p.title || p.is_self || p.over_18) continue
+        const price = parsePriceFromTitle(p.title)
+        const isOOS = p.link_flair_text?.includes('OOS') || p.title.toLowerCase().includes('[oos]')
+        if (isOOS) continue
+        deals.push({
+          title:   p.title,
+          price,
+          url:     p.url || '',
+          source:  feed.source,
+          flair:   p.link_flair_text || 'Other',
+          score:   p.score || 0,
+          created: (p.created_utc || 0) * 1000,
+        })
+      }
+      console.log(`[MARKET] Reddit JSON ${feed.source}: ${posts.length} posts`)
+      await sleep(500)
+    } catch (err) {
+      console.error(`[MARKET] Reddit JSON ${feed.source} error:`, err.message)
+    }
+  }
+  return deals
 }
 
 async function fetchRedditDeals() {
