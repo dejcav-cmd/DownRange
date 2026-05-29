@@ -72,9 +72,8 @@ export default function RootLayout({ children }) {
             });
           `}
         </Script>
-        {/* AvantLink affiliate ownership verification — raw script tag (not Next/Script) */}
-        {/* eslint-disable-next-line @next/next/no-sync-scripts */}
-        <script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521" />
+        {/* AvantLink affiliate ownership verification — dangerouslySetInnerHTML forces into raw HTML */}
+        <script dangerouslySetInnerHTML={{ __html: '' }} src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521" />
       </head>
       <ClerkWrapper>
       <body>
