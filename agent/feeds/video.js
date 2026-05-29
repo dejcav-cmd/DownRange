@@ -73,6 +73,9 @@ function parseYouTubeRSS(xml, channelId, channelName) {
     const thumbnail  = (entry.match(/url="(https:\/\/i\.ytimg\.com[^"]+)"/)  || [])[1] || ''
 
     if (!videoId || !title) continue
+    // Skip Shorts — filter by title tags (RSS has no duration data)
+    const titleLow = title.toLowerCase()
+    if (titleLow.includes('#shorts') || titleLow.includes('#short') || titleLow.includes('(shorts)') || titleLow.endsWith(' shorts')) continue
 
     videos.push({
       _type:       'video',
