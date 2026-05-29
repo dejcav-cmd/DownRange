@@ -52,6 +52,84 @@ function daysLeft(endDate) {
   return days === 1 ? '1 day left' : `${days} days left`
 }
 
+function GiveawayCard({ g, featured }) {
+  const catColor = CAT_COLOR[g.category] || '#9CA3AF'
+  const timeLeft = daysLeft(g.endDate)
+  const isExpiringSoon = g.endDate && daysLeft(g.endDate) !== 'Ended' &&
+    (new Date(g.endDate) - Date.now()) < 3 * 86400000
+
+  return (
+    <a href={g.entryUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none', display:'block' }}>
+      <div style={{ background:'#111318', border:`1px solid ${featured ? 'var(--gold)' : 'var(--border)'}`,
+        transition:'border-color .15s', cursor:'pointer', height:'100%', display:'flex', flexDirection:'column' }}>
+
+        {/* Category bar */}
+        <div style={{ height:3, background:catColor }} />
+
+        {/* Thumbnail placeholder */}
+        <div style={{ background:'rgba(200,146,42,.05)', borderBottom:'1px solid var(--border)', padding:'24px', display:'flex', alignItems:'center', justifyContent:'center', minHeight:100 }}>
+          {g.imageUrl
+            ? <img src={g.imageUrl} alt={g.title} style={{ maxHeight:80, maxWidth:'100%', objectFit:'contain' }} />
+            : <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.5rem', color: catColor + '44', letterSpacing:'.08em' }}>
+                {g.category?.toUpperCase() || 'GIVEAWAY'}
+              </div>
+          }
+        </div>
+
+        <div style={{ padding:'14px 16px', flex:1, display:'flex', flexDirection:'column', gap:8 }}>
+          {/* Badges */}
+          <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
+            {featured && (
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.1em',
+                background:'rgba(200,146,42,.15)', color:'var(--gold)', border:'1px solid rgba(200,146,42,.4)', padding:'2px 6px' }}>★ FEATURED</span>
+            )}
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase',
+              background: catColor + '22', color: catColor, padding:'2px 6px' }}>{g.category}</span>
+            {isExpiringSoon && (
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.08em',
+                background:'rgba(239,68,68,.15)', color:'#ef4444', border:'1px solid rgba(239,68,68,.4)', padding:'2px 6px' }}>⚡ ENDING SOON</span>
+            )}
+          </div>
+
+          {/* Title */}
+          <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:16, fontWeight:700, color:'var(--text)', lineHeight:1.25 }}>
+            {g.title}
+          </div>
+
+          {/* Prize */}
+          {g.prize && g.prize !== g.title && (
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'var(--gold)', lineHeight:1.4 }}>
+              🏆 {g.prize}
+            </div>
+          )}
+
+          {/* Sponsor + type */}
+          <div style={{ marginTop:'auto', display:'flex', alignItems:'center', justifyContent:'space-between', paddingTop:8, borderTop:'1px solid var(--border)' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'var(--text-dim)' }}>{g.sponsor}</span>
+            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+              {timeLeft && (
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color: timeLeft === 'Ended' ? '#ef4444' : isExpiringSoon ? '#ef4444' : '#6b7280' }}>
+                  {timeLeft}
+                </span>
+              )}
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#374151' }}>
+                {TYPE_LABEL[g.sourceType] || ''}
+              </span>
+            </div>
+          </div>
+        </div>
+
+        {/* CTA */}
+        <div style={{ margin:'0 16px 16px', background:'var(--gold)', color:'#000', fontFamily:"'Barlow Condensed',sans-serif",
+          fontSize:13, fontWeight:700, letterSpacing:'.08em', padding:'10px', textAlign:'center' }}>
+          ENTER GIVEAWAY →
+        </div>
+      </div>
+    </a>
+  )
+}
+
+
 export default async function GiveawaysPage({ searchParams }) {
   const cat = searchParams?.cat || null
 
@@ -193,84 +271,5 @@ export default async function GiveawaysPage({ searchParams }) {
       </div>
       <Footer />
     </>
-  )
-}
-
-function GiveawayCard({ g, featured }) {
-  const catColor = CAT_COLOR[g.category] || '#9CA3AF'
-  const timeLeft = daysLeft(g.endDate)
-  const isExpiringSoon = g.endDate && daysLeft(g.endDate) !== 'Ended' &&
-    (new Date(g.endDate) - Date.now()) < 3 * 86400000
-
-  return (
-    <a href={g.entryUrl} target="_blank" rel="noopener noreferrer" style={{ textDecoration:'none', display:'block' }}>
-      <div style={{ background:'#111318', border:`1px solid ${featured ? 'var(--gold)' : 'var(--border)'}`,
-        transition:'border-color .15s', cursor:'pointer', height:'100%', display:'flex', flexDirection:'column' }}
-        onMouseEnter={e => e.currentTarget.style.borderColor = featured ? '#FFD700' : '#C8922A'}
-        onMouseLeave={e => e.currentTarget.style.borderColor = featured ? 'var(--gold)' : 'var(--border)'}>
-
-        {/* Category bar */}
-        <div style={{ height:3, background:catColor }} />
-
-        {/* Thumbnail placeholder */}
-        <div style={{ background:'rgba(200,146,42,.05)', borderBottom:'1px solid var(--border)', padding:'24px', display:'flex', alignItems:'center', justifyContent:'center', minHeight:100 }}>
-          {g.imageUrl
-            ? <img src={g.imageUrl} alt={g.title} style={{ maxHeight:80, maxWidth:'100%', objectFit:'contain' }} />
-            : <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.5rem', color: catColor + '44', letterSpacing:'.08em' }}>
-                {g.category?.toUpperCase() || 'GIVEAWAY'}
-              </div>
-          }
-        </div>
-
-        <div style={{ padding:'14px 16px', flex:1, display:'flex', flexDirection:'column', gap:8 }}>
-          {/* Badges */}
-          <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
-            {featured && (
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.1em',
-                background:'rgba(200,146,42,.15)', color:'var(--gold)', border:'1px solid rgba(200,146,42,.4)', padding:'2px 6px' }}>★ FEATURED</span>
-            )}
-            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.08em', textTransform:'uppercase',
-              background: catColor + '22', color: catColor, padding:'2px 6px' }}>{g.category}</span>
-            {isExpiringSoon && (
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.08em',
-                background:'rgba(239,68,68,.15)', color:'#ef4444', border:'1px solid rgba(239,68,68,.4)', padding:'2px 6px' }}>⚡ ENDING SOON</span>
-            )}
-          </div>
-
-          {/* Title */}
-          <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:16, fontWeight:700, color:'var(--text)', lineHeight:1.25 }}>
-            {g.title}
-          </div>
-
-          {/* Prize */}
-          {g.prize && g.prize !== g.title && (
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'var(--gold)', lineHeight:1.4 }}>
-              🏆 {g.prize}
-            </div>
-          )}
-
-          {/* Sponsor + type */}
-          <div style={{ marginTop:'auto', display:'flex', alignItems:'center', justifyContent:'space-between', paddingTop:8, borderTop:'1px solid var(--border)' }}>
-            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'var(--text-dim)' }}>{g.sponsor}</span>
-            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-              {timeLeft && (
-                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color: timeLeft === 'Ended' ? '#ef4444' : isExpiringSoon ? '#ef4444' : '#6b7280' }}>
-                  {timeLeft}
-                </span>
-              )}
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#374151' }}>
-                {TYPE_LABEL[g.sourceType] || ''}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* CTA */}
-        <div style={{ margin:'0 16px 16px', background:'var(--gold)', color:'#000', fontFamily:"'Barlow Condensed',sans-serif",
-          fontSize:13, fontWeight:700, letterSpacing:'.08em', padding:'10px', textAlign:'center' }}>
-          ENTER GIVEAWAY →
-        </div>
-      </div>
-    </a>
   )
 }
