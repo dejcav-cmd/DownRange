@@ -8,6 +8,7 @@ const L = (fn) => dynamic(fn, { ssr:false, loading: () => <PanelLoader /> })
 
 const PullLogDashboard      = L(() => import('./pull-log/page'))
 const OutreachCRM           = L(() => import('../../components/admin/OutreachCRM'))
+const DraftRecovery         = L(() => import('../../components/admin/DraftRecovery'))
 const IntelligenceDashboard = L(() => import('../../components/admin/IntelligenceDashboard'))
 const CopyrightPanel       = L(() => import('../../components/admin/CopyrightPanel'))
 const AIProviderSettings    = L(() => import('../../components/admin/AIProviderSettings'))
