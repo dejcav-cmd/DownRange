@@ -7,13 +7,13 @@
 import { publishToSanity, notifyError, sleep } from '../utils.js'
 
 const CHANNELS = [
-  { id: 'UC5Gwxl2DmAZkdiuoWsLcRhg', name: 'Garand Thumb',          tags: ['review','tactical','military'] },
+  { id: 'UC0RBTQIYLEQbcahZWkmzeTQ', name: 'Garand Thumb',          tags: ['review','tactical','military'] },
   { id: 'UCIRgR4iANHI2taJdz8hjwLw', name: 'Paul Harrell',           tags: ['review','demonstration','training'] },
   { id: 'UCwIHnIpEIbyzmL9cB2l5Elw', name: 'Military Arms Channel',  tags: ['review','industry','ar15'] },
-  { id: 'UCz8b2iV8CJxBNs3fP4jjRMg', name: 'Iraqveteran8888',        tags: ['review','demonstration','historical'] },
-  { id: 'UCDpNK2b8NlJSfMl_k4p_fJg', name: 'InRange TV',             tags: ['review','historical','competition'] },
-  { id: 'UC_GOthrJTq5EFrPNsHhJJBQ', name: 'Forgotten Weapons',      tags: ['historical','collector','review'] },
-  { id: 'UC_zQ_9vNGE9ORtO_8b1HUPA', name: 'Active Self Protection',  tags: ['training','self-defense','ccw'] },
+  { id: 'UCa2OJa5n9oeQ_NRohmI8kVA', name: 'Iraqveteran8888',        tags: ['review','demonstration','historical'] },
+  { id: 'UCVp_8H_KAQL7dJT6fGfSLKQ', name: 'InRange TV',             tags: ['review','historical','competition'] },
+  { id: 'UCrfKGpvbEwnJIGMBNxTm5dA', name: 'Forgotten Weapons',      tags: ['historical','collector','review'] },
+  { id: 'UCkKnVVYHmFYMgWJjJPzwHdw', name: 'Active Self Protection',  tags: ['training','self-defense','ccw'] },
   { id: 'UCpAQxclFD9eGCqRoIDNIGsA', name: 'Lucky Gunner',            tags: ['ammo','testing','review'] },
   { id: 'UCVdMoKcLQ7-4lxjhJXx_E8A', name: 'Hickok45',               tags: ['demonstration','review','entertainment'] },
   { id: 'UCpUJCA4YcMVMdSolcaWOQOw', name: 'Mr. Guns N Gear',         tags: ['review','edc','carry'] },
