@@ -105,10 +105,13 @@ function GunCard({ g, featured = false }) {
   )
 }
 
+const PER_PAGE_GUNS = 24
+
 export default async function GunsPage({ searchParams }) {
   const cat  = searchParams?.cat  || null
   const sort = searchParams?.sort || 'rating'
   const q    = searchParams?.q    || null
+  const page = Math.max(1, parseInt(searchParams?.page || '1'))
 
   // Filter and sort items
   function filterAndSort(items) {
@@ -128,7 +131,10 @@ export default async function GunsPage({ searchParams }) {
     return result
   }
 
-  const currentItems = filterAndSort(cat ? (ALL_ITEMS[cat] || []) : [])
+  const allCurrentItems = filterAndSort(cat ? (ALL_ITEMS[cat] || []) : [])
+  const totalGuns    = allCurrentItems.length
+  const gunsPages    = Math.max(1, Math.ceil(totalGuns / PER_PAGE_GUNS))
+  const currentItems = allCurrentItems.slice((page - 1) * PER_PAGE_GUNS, page * PER_PAGE_GUNS)
   const allFeatured  = [...PISTOLS.slice(0,1), ...RIFLES.slice(0,1), ...SHOTGUNS.slice(0,1)]
 
   return (
@@ -274,6 +280,41 @@ export default async function GunsPage({ searchParams }) {
                 </div>
               )}
             </>
+          )}
+
+          {/* ── Pagination ── */}
+          {cat && gunsPages > 1 && (
+            <div style={{ padding:'32px 0 16px', display:'flex', justifyContent:'center' }}>
+              <div style={{ display:'flex', gap:6, alignItems:'center', flexWrap:'wrap' }}>
+                {page > 1 && (
+                  <a href={`/guns?${new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), ...(sort&&{sort}), page: page-1 }).toString()}`}
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                    ← Prev
+                  </a>
+                )}
+                {Array.from({ length: gunsPages }, (_,i) => i+1)
+                  .filter(p => p === 1 || p === gunsPages || Math.abs(p - page) <= 2)
+                  .reduce((acc, p, idx, arr) => { if (idx > 0 && p - arr[idx-1] > 1) acc.push('…'); acc.push(p); return acc }, [])
+                  .map((p, i) => p === '…'
+                    ? <span key={`e${i}`} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 6px', color:'#6b7280' }}>…</span>
+                    : <a key={p} href={`/guns?${new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), ...(sort&&{sort}), page: p }).toString()}`}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 14px', border:'1px solid var(--border)',
+                          color: p===page ? '#000' : 'var(--text)', background: p===page ? 'var(--gold)' : 'transparent',
+                          textDecoration:'none', fontWeight: p===page ? 700 : 400 }}>
+                        {p}
+                      </a>
+                  )}
+                {page < gunsPages && (
+                  <a href={`/guns?${new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), ...(sort&&{sort}), page: page+1 }).toString()}`}
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, padding:'8px 16px', border:'1px solid var(--border)', color:'var(--text)', textDecoration:'none' }}>
+                    Next →
+                  </a>
+                )}
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', marginLeft:8 }}>
+                  Page {page} of {gunsPages} · {totalGuns} firearms
+                </span>
+              </div>
+            </div>
           )}
 
           {/* ── QUICK-ACCESS TOOLS ── */}
