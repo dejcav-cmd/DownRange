@@ -135,6 +135,10 @@
     {
       "path": "/api/cron/sitemap",
       "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/giveaways",
+      "schedule": "0 14 * * *"
     }
   ],
   "headers": [
