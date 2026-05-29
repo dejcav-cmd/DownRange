@@ -268,6 +268,15 @@ export async function fetchAllBlogSlugs() {
   }
 }
 
+export async function fetchBlogPostBySlug(slug) {
+  try {
+    return await client.fetch(
+      '*[_type == "blogPost" && slug.current == $s][0] { _id, title, "slug": slug.current, category, excerpt, body, imageUrl, author, authorRole, authorImg, published, publishedAt, readTime, tags, status, _createdAt }',
+      { s: slug }
+    )
+  } catch { return null }
+}
+
 export async function searchBlogPosts(q, limit = 20) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
   return client.fetch(
