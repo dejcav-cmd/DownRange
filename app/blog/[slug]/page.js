@@ -6,7 +6,7 @@ import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../../sanity/lib/client'
 
-export const revalidate = 3600
+export const revalidate = 60
 export const dynamicParams = true // render unknown slugs on-demand, not 404
 
 // Merge static BLOG_POSTS with Sanity posts so all slugs resolve
