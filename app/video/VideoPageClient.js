@@ -65,6 +65,18 @@ function QueueItem({ video, active, onClick }) {
         <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6B7280' }}>
           {video.channelName}
         </div>
+        <div style={{ display:'flex', alignItems:'center', gap:6, marginTop:4 }}>
+          {isNewVideo(video.publishedAt || video.addedAt) && (
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.1em',
+              background:'rgba(34,197,94,.15)', color:'#22c55e', border:'1px solid rgba(34,197,94,.4)',
+              padding:'1px 5px', flexShrink:0 }}>NEW</span>
+          )}
+          {formatVideoDate(video.publishedAt || video.addedAt) && (
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151' }}>
+              {formatVideoDate(video.publishedAt || video.addedAt)}
+            </span>
+          )}
+        </div>
       </div>
     </div>
   )
@@ -162,7 +174,9 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
     return result
   }, [])
 
-  const filtered = applyFilters(videos, cat, sort, search)
+  const filtered   = applyFilters(videos, cat, sort, search)
+  const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE))
+  const paged      = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
   const queue    = active ? filtered.filter(v => v._id !== active._id) : filtered.slice(1)
 
   const play = useCallback((video) => {
