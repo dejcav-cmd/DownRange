@@ -103,9 +103,9 @@ export async function POST(req) {
     const job = ALL_JOBS.find(j => j.id === jobId)
     if (!job) return Response.json({ error: `Unknown job: ${jobId}` }, { status: 404 })
 
-    const baseUrl = process.env.VERCEL_URL
-      ? `https://${process.env.VERCEL_URL}`
-      : 'https://www.downrangeco.com'
+    // Always use the canonical production domain for internal triggers
+    // VERCEL_URL can point to preview deployments which have different auth
+    const baseUrl = 'https://www.downrangeco.com'
 
     const t0  = Date.now()
     const isGet = job.path.includes('?feed=') || job.path === '/api/site-health' || job.path === '/api/nfa-wait-times'
@@ -114,9 +114,10 @@ export async function POST(req) {
       const res = await fetch(`${baseUrl}${job.path}`, {
         method:  isGet ? 'GET' : 'POST',
         headers: {
-          'x-admin-key':   process.env.ADMIN_KEY || '',
-          'authorization': `Bearer ${process.env.CRON_SECRET || ''}`,
-          'Content-Type':  'application/json',
+          'x-admin-key':    process.env.ADMIN_KEY || '',
+          'authorization':  `Bearer ${process.env.CRON_SECRET || process.env.ADMIN_KEY || ''}`,
+          'x-vercel-cron':  '1',
+          'Content-Type':   'application/json',
         },
         signal: AbortSignal.timeout(270000), // 4.5 min
       })
