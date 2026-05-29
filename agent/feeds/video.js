@@ -1,7 +1,8 @@
 /**
  * Video Feed Agent — DownRange
- * Fetches latest videos from whitelisted YouTube channels
- * Runs every 4 hours via cron — all channel IDs verified
+ * Uses YouTube RSS feeds — no API key needed, no quota limits
+ * Falls back to Sanity-stored channel list if available
+ * Runs every 4 hours via cron
  */
 import { publishToSanity, notifyError, sleep } from '../utils.js'
 
@@ -34,6 +35,59 @@ function inferCategory(title) {
   return 'review'
 }
 
+// Parse YouTube RSS XML — no library needed, simple regex
+function parseYouTubeRSS(xml, channelId, channelName) {
+  const videos = []
+  // Match all <entry> blocks
+  const entryRx = /<entry>([\s\S]*?)<\/entry>/g
+  let match
+  while ((match = entryRx.exec(xml)) !== null) {
+    const entry = match[1]
+    const videoId    = (entry.match(/<yt:videoId>(.*?)<\/yt:videoId>/)    || [])[1]
+    const title      = (entry.match(/<title>(.*?)<\/title>/)               || [])[1]
+    const published  = (entry.match(/<published>(.*?)<\/published>/)       || [])[1]
+    const desc       = (entry.match(/<media:description>([\s\S]*?)<\/media:description>/) || [])[1] || ''
+    const thumbnail  = (entry.match(/url="(https:\/\/i\.ytimg\.com[^"]+)"/)  || [])[1] || ''
+
+    if (!videoId || !title) continue
+
+    videos.push({
+      _type:       'video',
+      title:       title.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"'),
+      videoId,
+      youtubeId:   videoId,
+      channelName,
+      channelId,
+      thumbnail:   thumbnail || `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`,
+      description: desc.replace(/<[^>]+>/g,'').trim().slice(0, 400),
+      category:    inferCategory(title),
+      publishedAt: published || new Date().toISOString(),
+      addedAt:     new Date().toISOString(),
+      featured:    false,
+      active:      true,
+    })
+  }
+  return videos
+}
+
+async function fetchChannelRSS(channelId, channelName) {
+  const url = `https://www.youtube.com/feeds/videos.xml?channel_id=${channelId}`
+  const res = await fetch(url, {
+    headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
+    signal: AbortSignal.timeout(10000),
+  })
+  if (!res.ok) {
+    throw new Error(`YouTube RSS HTTP ${res.status} for channel ${channelName} (${channelId})`)
+  }
+  const xml = await res.text()
+  if (!xml.includes('<feed') && !xml.includes('<entry>')) {
+    throw new Error(`YouTube RSS returned invalid XML for ${channelName} — length ${xml.length}`)
+  }
+  const videos = parseYouTubeRSS(xml, channelId, channelName)
+  console.log(`[VIDEO] ${channelName}: RSS returned ${videos.length} videos`)
+  return videos.slice(0, 5) // latest 5 only
+}
+
 async function checkExists(videoId) {
   const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
   const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET   || 'production'
@@ -42,80 +96,37 @@ async function checkExists(videoId) {
   const query = `count(*[_type=="video" && youtubeId=="${videoId}"])`
   const url = `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`
   const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } })
-  if (!res.ok) {
-    const err = await res.text()
-    throw new Error(`Sanity dedup check failed ${res.status}: ${err.slice(0, 120)}`)
-  }
+  if (!res.ok) throw new Error(`Sanity dedup check failed ${res.status}`)
   const data = await res.json()
   return (data.result || 0) > 0
 }
 
-async function fetchChannelVideos(channelId, channelName) {
-  const apiKey = process.env.YOUTUBE_API_KEY
-  if (!apiKey) throw new Error('YOUTUBE_API_KEY not set in Vercel env vars')
-
-  const url = new URL('https://www.googleapis.com/youtube/v3/search')
-  url.searchParams.set('part',       'snippet')
-  url.searchParams.set('channelId',  channelId)
-  url.searchParams.set('order',      'date')
-  url.searchParams.set('maxResults', '5')
-  url.searchParams.set('type',       'video')
-  url.searchParams.set('key',        apiKey)
-
-  const res  = await fetch(url.toString())
-  if (!res.ok) {
-    const body = await res.text()
-    throw new Error(`YouTube API HTTP ${res.status}: ${body.slice(0, 200)}`)
-  }
-  const data = await res.json()
-
-  if (data.error) {
-    const code = data.error.code
-    const msg  = data.error.message || data.error.errors?.[0]?.reason || 'unknown'
-    // Quota exhausted is a known recoverable issue — surface it clearly
-    if (code === 403 || msg.includes('quota') || msg.includes('quotaExceeded')) {
-      throw new Error(`YouTube quota exhausted (403) — reset at midnight Pacific. Channel: ${channelName}`)
+// Try to load channels from Sanity (VideoManager persists them there)
+async function loadChannelsFromSanity() {
+  try {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
+    const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET   || 'production'
+    const token     = process.env.SANITY_API_TOKEN
+    if (!token) return null
+    const query = `*[_type=="siteConfig" && _id=="youtube-channel-config"][0]{channels}`
+    const url = `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${encodeURIComponent(query)}`
+    const res = await fetch(url, { headers: { Authorization: `Bearer ${token}` } })
+    const data = await res.json()
+    if (data.result?.channels?.length) {
+      console.log(`[VIDEO] Loaded ${data.result.channels.length} channels from Sanity VideoManager`)
+      return data.result.channels.map(c => ({ id: c.channelId || c.id, name: c.name, tags: ['review'] }))
     }
-    throw new Error(`YouTube API error ${code}: ${msg} — Channel: ${channelName}`)
-  }
-
-  if (!data.items || !Array.isArray(data.items)) {
-    console.warn(`[VIDEO] ⚠ ${channelName}: no items array in response — ${JSON.stringify(data).slice(0, 200)}`)
-    return []
-  }
-
-  const videos = data.items
-    .filter(item => item.id?.videoId && item.snippet) // guard against malformed items
-    .map(item => ({
-      _type:       'video',
-      title:       item.snippet.title,
-      videoId:     item.id.videoId,
-      youtubeId:   item.id.videoId,
-      channelName,
-      channelId,
-      thumbnail:   item.snippet.thumbnails?.high?.url || item.snippet.thumbnails?.medium?.url || item.snippet.thumbnails?.default?.url || '',
-      description: (item.snippet.description || '').slice(0, 400),
-      category:    inferCategory(item.snippet.title),
-      publishedAt: item.snippet.publishedAt,
-      addedAt:     new Date().toISOString(),
-      featured:    false,
-      active:      true,
-    }))
-
-  console.log(`[VIDEO] ${channelName}: YouTube returned ${data.items.length} items, ${videos.length} valid videos`)
-  return videos
+  } catch {}
+  return null
 }
 
 async function runVideoFeed() {
-  console.log('[VIDEO] ===== Video feed starting =====')
+  console.log('[VIDEO] ===== Video feed starting (RSS mode — no API key needed) =====')
 
-  const apiKey = process.env.YOUTUBE_API_KEY
-  if (!apiKey) {
-    const msg = 'YOUTUBE_API_KEY not set in Vercel env vars — video feed cannot run'
-    console.error('[VIDEO] FATAL:', msg)
-    return { done: 0, channels: 0, skipped: 0, errors: [msg], fatal: msg }
-  }
-  console.log(`[VIDEO] API key present (length ${apiKey.length}), processing ${CHANNELS.length} channels`)
+  // Use Sanity-stored channels if available, else hardcoded list
+  const sanityChannels = await loadChannelsFromSanity()
+  const channelList    = sanityChannels || CHANNELS
+  console.log(`[VIDEO] Processing ${channelList.length} channels via YouTube RSS`)
 
   let totalNew    = 0
   let totalSkipped= 0
@@ -123,76 +134,65 @@ async function runVideoFeed() {
   const errors    = []
   const channelLog= []
 
-  for (const channel of CHANNELS) {
-    const channelResult = { name: channel.name, id: channel.id, status: 'pending', new: 0, skipped: 0, error: null }
+  for (const channel of channelList) {
+    const result = { name: channel.name, id: channel.id, status: 'pending', new: 0, skipped: 0, error: null }
 
     try {
-      await sleep(1200) // protect quota
+      await sleep(500) // small delay between channels
 
-      const videos = await fetchChannelVideos(channel.id, channel.name)
+      const videos = await fetchChannelRSS(channel.id, channel.name)
 
-      if (videos.length === 0) {
-        channelResult.status = 'no_videos'
-        console.log(`[VIDEO] ${channel.name}: 0 videos returned from YouTube`)
-        channelLog.push(channelResult)
+      if (!videos.length) {
+        result.status = 'empty'
+        console.log(`[VIDEO] ${channel.name}: 0 videos in RSS feed`)
+        channelLog.push(result)
         channelsDone++
         continue
       }
-
-      let newCount     = 0
-      let skippedCount = 0
 
       for (const video of videos) {
         try {
           const exists = await checkExists(video.youtubeId)
           if (exists) {
-            skippedCount++
-            console.log(`[VIDEO]   ↷ ${channel.name} — "${video.title.slice(0,50)}" already exists, skipping`)
+            result.skipped++
+            totalSkipped++
             continue
           }
           await publishToSanity(video)
-          newCount++
-          console.log(`[VIDEO]   ✓ ${channel.name} — NEW: "${video.title.slice(0,60)}"`)
-        } catch (vidErr) {
-          const errMsg = `${channel.name} / ${video.youtubeId}: ${vidErr.message}`
-          errors.push(errMsg)
-          console.error('[VIDEO]   ✗', errMsg)
+          result.new++
+          totalNew++
+          console.log(`[VIDEO]   ✓ NEW: "${video.title.slice(0,60)}" — ${channel.name}`)
+        } catch (err) {
+          const msg = `${channel.name}/${video.youtubeId}: ${err.message}`
+          errors.push(msg)
+          console.error('[VIDEO]   ✗', msg)
         }
       }
 
-      channelResult.status  = 'ok'
-      channelResult.new     = newCount
-      channelResult.skipped = skippedCount
-      totalNew     += newCount
-      totalSkipped += skippedCount
+      result.status  = 'ok'
       channelsDone++
-      console.log(`[VIDEO] ✓ ${channel.name}: ${newCount} new, ${skippedCount} already existed`)
-
-    } catch (channelErr) {
-      channelResult.status = 'error'
-      channelResult.error  = channelErr.message
-      errors.push(channelErr.message)
-      console.error(`[VIDEO] ✗ ${channel.name}:`, channelErr.message)
-      // Quota error is fatal — abort remaining channels to preserve quota
-      if (channelErr.message.includes('quota')) {
-        console.error('[VIDEO] QUOTA EXHAUSTED — stopping early to avoid wasting API calls')
-        channelLog.push(channelResult)
-        break
-      }
+      console.log(`[VIDEO] ✓ ${channel.name}: ${result.new} new, ${result.skipped} already existed`)
+    } catch (err) {
+      result.status = 'error'
+      result.error  = err.message
+      errors.push(`${channel.name}: ${err.message}`)
+      console.error(`[VIDEO] ✗ ${channel.name}: ${err.message}`)
     }
 
-    channelLog.push(channelResult)
+    channelLog.push(result)
   }
 
-  const summary = `${totalNew} new videos | ${totalSkipped} already existed | ${channelsDone}/${CHANNELS.length} channels | ${errors.length} errors`
+  const summary = `${totalNew} new videos | ${totalSkipped} already existed | ${channelsDone}/${channelList.length} channels | ${errors.length} errors`
   console.log(`[VIDEO] ===== DONE: ${summary} =====`)
-  if (errors.length) console.error('[VIDEO] ERRORS:\n' + errors.map(e => '  · ' + e).join('\n'))
+  if (errors.length) {
+    console.error('[VIDEO] ERRORS:\n' + errors.map(e => '  · ' + e).join('\n'))
+  }
 
   return {
-    done:        totalNew,
-    skipped:     totalSkipped,
-    channels:    channelsDone,
-    totalChannels: CHANNELS.length,
+    done:         totalNew,
+    skipped:      totalSkipped,
+    channels:     channelsDone,
+    totalChannels: channelList.length,
     errors,
     channelLog,
     summary,
