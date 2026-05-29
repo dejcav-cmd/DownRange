@@ -120,7 +120,7 @@ SOURCE MATERIAL:
 Title: ${item.title}
 Category: ${item.category || 'general'}
 Excerpt: ${item.excerpt || 'N/A'}
-Existing body: ${(item.body || '').replace(/<[^>]+>/g, '').slice(0, 600)}
+Existing body: ${(item.body || '').replace(/<[^>]+>/g, '').slice(0, 400)}
 
 Return ONLY valid JSON: { "body": "<full HTML blog post>", "excerpt": "1 sentence hook under 200 chars" }
 `,
@@ -219,7 +219,7 @@ Return ONLY valid JSON: { "body": "<full HTML article>", "summary": "2 sentence 
 
 async function rewriteItem(item, typeConfig) {
   const prompt = typeConfig.buildPrompt(item)
-  const raw = await callAIText({ prompt, useCase: 'backfill', maxTokens: 4000 })
+  const raw = await callAIText({ prompt, useCase: 'backfill', maxTokens: 2000 })
   const clean = raw.split('```json').join('').split('```').join('').trim()
 
   let parsed
