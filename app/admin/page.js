@@ -9,6 +9,7 @@ const L = (fn) => dynamic(fn, { ssr:false, loading: () => <PanelLoader /> })
 const PullLogDashboard      = L(() => import('./pull-log/page'))
 const OutreachCRM           = L(() => import('../../components/admin/OutreachCRM'))
 const IntelligenceDashboard = L(() => import('../../components/admin/IntelligenceDashboard'))
+const CopyrightPanel       = L(() => import('../../components/admin/CopyrightPanel'))
 const AIProviderSettings    = L(() => import('../../components/admin/AIProviderSettings'))
 const VideoManager          = L(() => import('../../components/admin/VideoManager'))
 const NewsletterManager     = L(() => import('../../components/admin/NewsletterManager'))
@@ -255,7 +256,9 @@ const STYLES = `
 
 // ── Inline: Overview Dashboard ───────────────────────────────────────────────
 function OverviewDashboard({ adminKey, setPanel, setSection }) {
-  const [health, setHealth]         = useState(null)
+  const [health, setHealth,
+      { id:'copyright', label:'Copyright', icon:'⚖', badge:null },
+    ]         = useState(null)
   const [migrateResult, setMigrateResult] = useState(null)
   const [migrating, setMigrating]   = useState(false)
   const [feedRunning, setFeedRunning] = useState(false)
@@ -2086,6 +2089,7 @@ export default function AdminPage() {
 
             {/* ── INTELLIGENCE ── */}
             {panel==='intel'     && <IntelligenceDashboard adminKey={adminKey} />}
+              {panel==='copyright' && <CopyrightPanel adminKey={adminKey} />}
             {panel==='statelaws' && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='pulllog'   && <PullLogDashboard />}
             {panel==='deals'   && <DealsPanel />}
