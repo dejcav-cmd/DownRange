@@ -1,7 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import BreakingTicker from '../../components/layout/BreakingTicker'
-import { fetchBreakingAlerts, fetchBreakingAlerts } from '../../sanity/lib/client'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 export const metadata = { title: 'Firearms Training & Drills — DownRange', description: 'Dry fire plans, live fire drills, and training resources. No theory — just the drills that build real skill.' }
 
 const DRILLS = [
