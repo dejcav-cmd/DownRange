@@ -84,7 +84,8 @@ const NAV = [
     ]
   },
   { label: 'Blog', href: '/blog' },
-  { label: '📺 Video', href: '/video' },
+  { label: '📺 Video',     href: '/video'     },
+  { label: '🏆 Giveaways', href: '/giveaways' },
 ]
 
 import GlobalSearchBar from '../ui/GlobalSearchBar'
