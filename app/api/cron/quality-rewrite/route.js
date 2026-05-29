@@ -56,9 +56,7 @@ Respond ONLY with valid JSON — no markdown fences, no extra text:
   const m      = clean.match(/\{[\s\S]*\}/)
   const parsed = JSON.parse(m ? m[0] : clean)
   const wordCount = (parsed.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
-  if (wordCount < 350) throw new Error(`Rewrite too short: ${wordCount} words`)
-  parsed.body += `\n<div class="dr-source-attribution" style="margin:2.5rem 0 0;padding:1.25rem 1.5rem;background:rgba(200,146,42,0.06);border:1px solid rgba(200,146,42,0.25);border-left:4px solid #C8922A"><div style="font-family:monospace;font-size:0.65rem;color:#C8922A;letter-spacing:0.15em;font-weight:700;margin-bottom:6px">ORIGINAL SOURCE</div><p style="font-family:monospace;font-size:0.8rem;color:#6B7280;line-height:1.6;margin:0">This editorial was written by DownRange based on the original article. Read the primary source for additional detail.</p></div>`
-  return parsed
+  if (wordCount < 350) throw new Error(`Rewrite too short: ${wordCount} words`)  return parsed
 }
 
 export async function GET(req)  { return handler(req) }
