@@ -222,7 +222,7 @@ export default function VideoManager({ adminKey }) {
     setPurging(true)
     flash('⏳ Scanning all videos for Shorts...')
     try {
-      const res = await fetch('/api/admin/purge-shorts', { method: 'POST', headers: H })
+      const res = await fetch('/api/admin/purge-shorts', { method: 'POST', headers: H, body: JSON.stringify({ action: 'delete-shorts' }) })
       const d   = await res.json()
       if (d.ok) {
         const names = (d.shorts || []).slice(0,3).map(s => s.title?.slice(0,30)).join(', ')
