@@ -12,6 +12,7 @@ const sanity = createClient({
 const auth = req => req.headers.get('x-admin-key') === process.env.ADMIN_KEY
 
 const VOICE = `You write for DownRange — a firearms news site by a gun owner who carries daily.
+TITLE RULE: Rewrite the title in DownRange's own words. NEVER keep the source title. Max 12 words. Active voice.
 COPYRIGHT: Use only FACTS from source. Do NOT mirror structure. Do NOT append any Source footer or attribution line.
 BANNED: comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower, game-changer.
 STYLE: Start with hardest fact. Short sentences. Active voice. Specific names, calibers, dates. No padded intros.`
@@ -34,7 +35,7 @@ Title: ${doc.title || ''}
 Source facts only: ${src}
 
 Respond ONLY valid JSON (no markdown):
-{"body":"<HTML with h2 tags>","summary":"2-3 sentence plain text"}`
+{"title":"Rewritten headline — DownRange phrasing, NOT source title, max 12 words","body":"<HTML with h2 tags>","summary":"2-3 sentence plain text"}`
 
   const raw = await callAIText({ prompt, useCase: 'article', maxTokens: 2000 })
   let parsed
@@ -49,6 +50,10 @@ Respond ONLY valid JSON (no markdown):
     catch { return Response.json({ error: 'AI parse error', raw: raw.slice(0,300) }, { status: 500 }) }
   }
 
-  await sanity.patch(id).set({ body: parsed.body, summary: parsed.summary }).commit()
+  await sanity.patch(id).set({
+    body: parsed.body,
+    summary: parsed.summary,
+    ...(parsed.title ? { title: parsed.title } : {}),
+  }).commit()
   return Response.json({ ok: true, id })
 }

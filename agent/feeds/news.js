@@ -272,7 +272,8 @@ async function processNewsItem(item) {
   const doc = {
     _id:           'news-' + hash,
     _type:         'newsArticle',
-    title:         item.title,
+    title:         ai?.title || item.title,
+    sourceTitle:   item.title,
     slug:          { _type: 'slug', current: slug },
     excerpt:       ai?.summary || item.description?.slice(0, 300) || item.title,
     summary:       ai?.summary || item.description?.slice(0, 300) || item.title,

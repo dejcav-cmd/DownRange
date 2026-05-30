@@ -36,6 +36,7 @@ function needsRewrite(body) {
 
 const VOICE = `You write for DownRange — a firearms news site by a gun owner who carries daily.
 
+TITLE RULE — MANDATORY: Rewrite the title in DownRange's own words. NEVER keep the source title. Max 12 words. Active voice.
 COPYRIGHT RULES — MANDATORY:
 - Create a NEW article using only FACTS from the source — not the source's words or structure.
 - Do NOT mirror the original article's structure, flow, or narrative sequence.
@@ -56,7 +57,7 @@ Title: ${item.title || ''}
 Source content: ${src}
 
 Respond ONLY with valid JSON — no markdown fences, no extra text:
-{"body":"<full HTML with h2 tags>","summary":"2-3 sentence plain text under 300 chars"}`
+{"title":"Rewritten headline — DownRange phrasing, NOT source title, max 12 words","body":"<full HTML with h2 tags>","summary":"2-3 sentence plain text under 300 chars"}`
 
   const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 2000 })
   const clean  = raw.split('```json').join('').split('```').join('').trim()
@@ -110,6 +111,7 @@ async function handler(req) {
         const ai = await rewriteItem(item)
         await sanity.patch(item._id).set({
           body:            ai.body,
+          ...(ai.title   ? { title: ai.title }     : {}),
           ...(ai.summary ? { summary: ai.summary } : {}),
           qualityReviewed: true,
         }).commit()

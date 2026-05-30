@@ -79,9 +79,9 @@ Category: ${item.category || 'news'}
 Summary: ${item.summary || 'N/A'}
 Key facts from existing content (use only as fact source, not writing template): ${(item.body || item.summary || '').replace(/<[^>]+>/g, '').slice(0, 400)}
 
-Return ONLY valid JSON: { "summary": "2-3 sentence plain summary under 350 chars", "body": "<full HTML article>" }
+Return ONLY valid JSON: { "title": "Rewritten headline — DownRange phrasing, max 12 words, NOT the source title", "summary": "2-3 sentence plain summary under 350 chars", "body": "<full HTML article>" }
 `,
-    patch: (ai) => ({ body: ai.body, summary: ai.summary }),
+    patch: (ai) => ({ ...(ai.title ? { title: ai.title } : {}), body: ai.body, summary: ai.summary }),
   },
 
   blogPost: {

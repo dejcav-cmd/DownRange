@@ -85,6 +85,29 @@ function analyzeArticle(article) {
     riskScore += 15
   }
 
+  // Check 7: Title matches or closely mirrors the source article title
+  if (article.title && article.sourceTitle) {
+    const normalize = s => s.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim()
+    const docTitle = normalize(article.title)
+    const srcTitle = normalize(article.sourceTitle)
+    // Exact match
+    if (docTitle === srcTitle) {
+      issues.push({ type: 'duplicate_title', severity: 'high', msg: 'Title is identical to source article title — must be rewritten' })
+      riskScore += 40
+    } else {
+      // Check word overlap — if > 70% of words match it's too close
+      const docWords = new Set(docTitle.split(' ').filter(w => w.length > 3))
+      const srcWords = srcTitle.split(' ').filter(w => w.length > 3)
+      if (srcWords.length > 0) {
+        const overlap = srcWords.filter(w => docWords.has(w)).length / srcWords.length
+        if (overlap >= 0.7) {
+          issues.push({ type: 'duplicate_title', severity: 'high', msg: `Title too similar to source (${Math.round(overlap*100)}% word overlap) — needs rewrite` })
+          riskScore += 30
+        }
+      }
+    }
+  }
+
   return {
     _id:        article._id,
     _type:      article._type || 'newsArticle',
@@ -118,7 +141,7 @@ export async function GET(req) {
     // Full scan: all approved content across all types
     const results = await Promise.all(TYPES_TO_SCAN.map(type =>
       sanity.fetch(
-        '*[_type == $type && (approved == true || status == "published" || published == true)] | order(_createdAt desc) [0...200] { _id, _type, title, slug, body, source, externalUrl, publishedAt, category, wordCount }',
+        '*[_type == $type && (approved == true || status == "published" || published == true)] | order(_createdAt desc) [0...200] { _id, _type, title, sourceTitle, slug, body, source, externalUrl, publishedAt, category, wordCount }',
         { type }
       )
     ))
@@ -127,11 +150,11 @@ export async function GET(req) {
     // Daily cron: last 48h newsArticles + spot-check older
     const [recent, older] = await Promise.all([
       sanity.fetch(
-        '*[_type == "newsArticle" && publishedAt > $cutoff && approved == true] | order(publishedAt desc) [0...50] { _id, _type, title, slug, body, source, externalUrl, publishedAt, category, wordCount }',
+        '*[_type == "newsArticle" && publishedAt > $cutoff && approved == true] | order(publishedAt desc) [0...50] { _id, _type, title, sourceTitle, slug, body, source, externalUrl, publishedAt, category, wordCount }',
         { cutoff: cutoff48h }
       ),
       sanity.fetch(
-        '*[_type == "newsArticle" && publishedAt < $cutoffNew && publishedAt > $cutoffOld && approved == true] | order(_createdAt desc) [0...10] { _id, _type, title, slug, body, source, externalUrl, publishedAt, category, wordCount }',
+        '*[_type == "newsArticle" && publishedAt < $cutoffNew && publishedAt > $cutoffOld && approved == true] | order(_createdAt desc) [0...10] { _id, _type, title, sourceTitle, slug, body, source, externalUrl, publishedAt, category, wordCount }',
         { cutoffNew: cutoff48h, cutoffOld: cutoff7d }
       ),
     ])

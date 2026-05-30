@@ -13,12 +13,13 @@ const RISK_COLOR = {
 }
 
 const ISSUE_ICON = {
-  old_structure:        '🏗',
-  no_analysis:          '🔬',
-  no_source:            '🔗',
-  derivative_language:  '📋',
+  old_structure:          '🏗',
+  no_analysis:            '🔬',
+  no_source:              '🔗',
+  derivative_language:    '📋',
   no_source_link_in_body: '🔗',
-  excessive_length:     '📏',
+  excessive_length:       '📏',
+  duplicate_title:        '🔤',
 }
 
 const CSS = `

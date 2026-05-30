@@ -23,6 +23,11 @@ VOICE & STYLE:
 - No passive voice. No hedging. No padded openings.
 - Short sentences. Named people, specific numbers, calibers, dollar amounts.
 
+TITLE RULE — MANDATORY:
+- The article title MUST be rewritten in DownRange's own words. NEVER use the source article's exact title.
+- Write a new headline that states the key fact differently — same news, original phrasing.
+- Max 12 words. Active voice. No clickbait. No "Here's Why" or "What You Need to Know".
+
 MANDATORY ARTICLE STRUCTURE — use this exact structure, not the source's:
 
 <h2>[Original headline — state the key fact in DownRange's own words]</h2>
@@ -51,6 +56,7 @@ Key facts to report: ${inputContent}
 
 Return ONLY valid JSON:
 {
+  "title": "Rewritten headline — original DownRange phrasing, max 12 words",
   "summary": "2-3 sentences. Key facts in original language. Max 300 chars. No AI phrases.",
   "body": "<full HTML article in the structure above>",
   "category": "one of: breaking|news|law|industry|opinion|training",
