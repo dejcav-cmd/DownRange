@@ -132,6 +132,7 @@ export default async function BlogArticlePage({ params }) {
           color: #CBD5E1;
           margin-bottom: 1.5rem;
           font-family: 'IBM Plex Sans', Georgia, serif;
+          text-align: justify;
         }
         .blog-article-body strong { color: #F0EDE6; font-weight: 700; }
         .blog-article-body em { color: #C8922A; font-style: italic; }

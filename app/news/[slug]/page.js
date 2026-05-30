@@ -269,6 +269,7 @@ export default async function ArticlePage({ params }) {
                     color: #CBD5E1;
                     margin-bottom: 1.4rem;
                     font-family: 'IBM Plex Sans', Arial, sans-serif;
+                    text-align: justify;
                   }
                   .dr-article-body strong { color: #F0EDE6; font-weight: 700; }
                   .dr-article-body em { color: #C8922A; font-style: normal; font-weight: 600; }

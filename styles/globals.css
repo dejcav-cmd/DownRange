@@ -789,3 +789,15 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
 .dr-related-card:hover { border-color: var(--gold) !important; }
 .learn-feat:hover .learn-feat-img { transform: scale(1.03); }
 .learn-feat-img { transition: transform 0.4s ease; }
+
+/* ── JUSTIFIED BODY TEXT — mandatory on all article/blog/content pages ── */
+.dr-article-body p,
+.blog-article-body p,
+.article-body p,
+.dr-content-body p,
+.release-body p,
+.learn-body p {
+  text-align: justify;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
