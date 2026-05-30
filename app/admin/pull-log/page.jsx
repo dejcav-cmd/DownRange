@@ -157,6 +157,7 @@ function LivePulse({ active }) {
 // ─── Main page ────────────────────────────────────────────────────────────────
 
 export default function PullLogPage() {
+  const adminKey = typeof window !== 'undefined' ? localStorage.getItem('dr_admin_key') || '' : ''
   const [entries, setEntries]         = useState([])
   const [stats, setStats]             = useState(null)
   const [loading, setLoading]         = useState(true)
@@ -181,7 +182,8 @@ export default function PullLogPage() {
   const fetchData = useCallback(async (silent = false) => {
     if (!silent) setLoading(true)
     try {
-      const res  = await fetch('/api/pull-log?limit=500')
+      const key = typeof window !== 'undefined' ? localStorage.getItem('dr_admin_key') || '' : ''
+      const res  = await fetch('/api/pull-log?limit=500', { headers: { 'x-admin-key': key } })
       const data = await res.json()
       if (data.ok) {
         setEntries(data.entries || [])
@@ -216,7 +218,8 @@ export default function PullLogPage() {
   const seedData = async () => {
     setSeeding(true)
     try {
-      await fetch('/api/pull-log', { method: 'POST' })
+      const key = typeof window !== 'undefined' ? localStorage.getItem('dr_admin_key') || '' : ''
+      await fetch('/api/pull-log', { method: 'POST', headers: { 'x-admin-key': key } })
       await fetchData()
     } catch (e) {
       console.error(e)

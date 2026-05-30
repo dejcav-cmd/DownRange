@@ -311,8 +311,8 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
 
       {/* ── PLAYER SECTION ── */}
       {active && (
-        <div style={{ background:'#09090B', borderBottom:'none' }}>
-          <div className="container" style={{ maxWidth:1400, padding:'0 20px' }}>
+        <div style={{ background:'#09090B', lineHeight:0 }}>
+          <div className="container" style={{ maxWidth:1400, padding:'0 20px', lineHeight:'normal' }}>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:0, paddingTop:0 }}>
               <div>
                 <div style={{ position:'relative', width:'100%', paddingTop:'56.25%', background:'#000', marginBottom:0 }}>
@@ -366,7 +366,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
               </div>
 
               {/* Queue */}
-              <div style={{ background:'#111318', border:'1px solid var(--border)', overflowY:'auto', maxHeight:'calc(56.25vw * 0.75 + 60px)', minHeight:400 }}>
+              <div style={{ background:'#111318', border:'1px solid var(--border)', overflowY:'auto', maxHeight:'calc(56.25vw * 0.75 + 60px)' }}>
                 <div style={{ padding:'10px 14px', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', justifyContent:'space-between' }}>
                   <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', fontWeight:700, letterSpacing:'.08em' }}>
                     UP NEXT — {queue.length} VIDEOS

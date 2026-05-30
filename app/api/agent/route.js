@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { reportCronRun } from '@/lib/cronReporter'
+import { logPull, STATUS } from '@/lib/pullLogger'
 export const maxDuration = 300  // 5 minutes — required for feed processing
 
 function formatDetails(feed, result) {
@@ -97,6 +98,15 @@ export async function GET(req) {
       ms:      Date.now()-t,
       details: result ? formatDetails(feed, result) : `${feed} completed`,
     })
+    // Log to pull log dashboard
+    logPull({
+      sourceId:  feed,
+      status:    STATUS.SUCCESS,
+      itemCount: result?.done ?? result?.total ?? 0,
+      newItems:  result?.done ?? 0,
+      duration:  Date.now()-t,
+      headlines: result?.headlines || [],
+    }).catch(() => {})
     return Response.json({ success: true, feed, result, ms: Date.now()-t })
   } catch (err) {
     console.error(`[AGENT] ✗ feed=${feed} error:`, err.message)
@@ -107,6 +117,13 @@ export async function GET(req) {
       body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'failed', error: err.message }),
     }).catch(() => {})
     await reportCronRun(feed, { status:'failed', ms:Date.now()-t, error:err.message })
+    logPull({
+      sourceId: feed,
+      status:   STATUS.FAILED,
+      itemCount:0, newItems:0,
+      duration: Date.now()-t,
+      error:    err.message,
+    }).catch(() => {})
     return Response.json({ error: err.message, feed, ms: Date.now()-t }, { status: 500 })
   }
 }

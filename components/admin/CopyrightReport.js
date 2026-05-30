@@ -165,6 +165,12 @@ export default function CopyrightReport({ adminKey }) {
     return matchFilter && matchSearch
   })
 
+  // Pagination
+  const PAGE_SIZE = 25
+  const totalPages = Math.max(1, Math.ceil(articles.length / PAGE_SIZE))
+  const safePage   = Math.min(page, totalPages)
+  const pageArticles = articles.slice((safePage - 1) * PAGE_SIZE, safePage * PAGE_SIZE)
+
   const POLICY_RULES = [
     { icon:'🚫', rule:'Never copy or republish articles from third-party websites' },
     { icon:'📏', rule:'Never reproduce large portions — 400 char source limit enforced in AI prompts' },
@@ -415,7 +421,7 @@ export default function CopyrightReport({ adminKey }) {
                     <tbody>
                       {articles.length === 0 ? (
                         <tr><td colSpan={7}><div className="cr-empty">No articles match the current filter.</div></td></tr>
-                      ) : (tab === 'high-risk' ? articles.filter(a => a.riskLevel === 'HIGH') : articles).map(a => {
+                      ) : (tab === 'high-risk' ? articles.filter(a => a.riskLevel === 'HIGH') : pageArticles).map(a => {
                         const rc = RISK_COLOR[a.riskLevel] || RISK_COLOR.LOW
                         return (
                           <tr key={a._id}>
@@ -466,6 +472,26 @@ export default function CopyrightReport({ adminKey }) {
                       })}
                     </tbody>
                   </table>
+                </div>
+              )}
+
+              {/* Pagination */}
+              {tab !== 'high-risk' && totalPages > 1 && (
+                <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'12px 24px', borderTop:'1px solid var(--border)', background:'rgba(0,0,0,.15)' }}>
+                  <span style={{ fontFamily:MONO, fontSize:10, color:'#4b5563' }}>
+                    Page {safePage} of {totalPages} · {articles.length} articles
+                  </span>
+                  <div style={{ display:'flex', gap:4 }}>
+                    <button onClick={() => setPage(1)} disabled={safePage===1} style={{ fontFamily:MONO, fontSize:10, padding:'4px 10px', background:'none', border:'1px solid var(--border)', color:safePage===1?'#374151':'#9ca3af', cursor:safePage===1?'default':'pointer' }}>«</button>
+                    <button onClick={() => setPage(p => Math.max(1,p-1))} disabled={safePage===1} style={{ fontFamily:MONO, fontSize:10, padding:'4px 10px', background:'none', border:'1px solid var(--border)', color:safePage===1?'#374151':'#9ca3af', cursor:safePage===1?'default':'pointer' }}>‹ Prev</button>
+                    {Array.from({ length: Math.min(7, totalPages) }, (_,i) => {
+                      const p = safePage <= 4 ? i+1 : safePage+i-3
+                      if (p < 1 || p > totalPages) return null
+                      return <button key={p} onClick={() => setPage(p)} style={{ fontFamily:MONO, fontSize:10, padding:'4px 10px', background:p===safePage?'rgba(200,146,42,.15)':'none', border:`1px solid ${p===safePage?GOLD:'var(--border)'}`, color:p===safePage?GOLD:'#9ca3af', cursor:'pointer' }}>{p}</button>
+                    })}
+                    <button onClick={() => setPage(p => Math.min(totalPages,p+1))} disabled={safePage===totalPages} style={{ fontFamily:MONO, fontSize:10, padding:'4px 10px', background:'none', border:'1px solid var(--border)', color:safePage===totalPages?'#374151':'#9ca3af', cursor:safePage===totalPages?'default':'pointer' }}>Next ›</button>
+                    <button onClick={() => setPage(totalPages)} disabled={safePage===totalPages} style={{ fontFamily:MONO, fontSize:10, padding:'4px 10px', background:'none', border:'1px solid var(--border)', color:safePage===totalPages?'#374151':'#9ca3af', cursor:safePage===totalPages?'default':'pointer' }}>»</button>
+                  </div>
                 </div>
               )}
             </>
