@@ -218,7 +218,7 @@ export default function VideoManager({ adminKey }) {
   }
 
   async function purgeShorts() {
-    if (!confirm('Delete all Shorts (≤60s or #shorts tagged) from Sanity? Cannot be undone.')) return
+    if (!confirm('Delete all short videos (under 2 min / #shorts tagged) from Sanity? Cannot be undone.')) return
     setPurging(true)
     flash('⏳ Scanning all videos for Shorts...')
     try {

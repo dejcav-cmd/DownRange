@@ -11,31 +11,38 @@ function auth(req) {
   return req.headers.get('x-admin-key') === process.env.ADMIN_KEY
 }
 
+function isoToSecs(iso) {
+  if (!iso) return null
+  const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
+  if (!m) return null
+  return (parseInt(m[1]||0)*3600) + (parseInt(m[2]||0)*60) + parseInt(m[3]||0)
+}
+
 function isShort(video) {
   const title = (video.title || '').toLowerCase()
   const desc  = (video.description || '').toLowerCase()
   const url   = (video.url || video.videoId || video.youtubeId || '').toLowerCase()
 
-  // Definite Shorts markers
+  // Hashtag markers
   if (title.includes('#shorts') || title.includes('#short ') || title.endsWith('#short')) return true
   if (desc.includes('#shorts')) return true
   if (url.includes('/shorts/')) return true
 
-  // YouTube Shorts video IDs are the same format — we can't tell from ID alone
-  // But titles of Shorts are often very short (< 6 words) — don't use this heuristic
+  // Duration under 2 minutes
+  const secs = isoToSecs(video.duration)
+  if (secs !== null && secs <= 120) return true
+
   return false
 }
+
+const VIDEO_QUERY = `*[_type == "video"] | order(publishedAt desc) [0...1000] {
+  _id, title, description, videoId, youtubeId, channelName, publishedAt, duration
+}`
 
 export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  // Fetch all videos from Sanity
-  const videos = await sanity.fetch(
-    `*[_type == "video"] | order(publishedAt desc) [0...500] {
-      _id, title, description, videoId, youtubeId, channelName, publishedAt
-    }`
-  )
-
+  const videos    = await sanity.fetch(VIDEO_QUERY)
   const shorts    = videos.filter(v => isShort(v))
   const notShorts = videos.filter(v => !isShort(v))
 
@@ -43,7 +50,7 @@ export async function GET(req) {
     ok: true,
     total: videos.length,
     shortsFound: shorts.length,
-    shorts: shorts.map(v => ({ _id: v._id, title: v.title, channel: v.channelName })),
+    shorts: shorts.map(v => ({ _id: v._id, title: v.title, channel: v.channelName, duration: v.duration })),
     kept: notShorts.length,
   })
 }
@@ -53,18 +60,11 @@ export async function POST(req) {
 
   const { action } = await req.json().catch(() => ({}))
 
-  // Delete all Shorts from Sanity
   if (action === 'delete-shorts') {
-    const videos = await sanity.fetch(
-      `*[_type == "video"] | order(publishedAt desc) [0...500] {
-        _id, title, description, videoId, youtubeId
-      }`
-    )
-
+    const videos = await sanity.fetch(VIDEO_QUERY)
     const shorts = videos.filter(v => isShort(v))
-    if (!shorts.length) return Response.json({ ok: true, deleted: 0, msg: 'No Shorts found' })
+    if (!shorts.length) return Response.json({ ok: true, deleted: 0, msg: 'No short videos found' })
 
-    // Batch delete via transaction
     const tx = sanity.transaction()
     shorts.forEach(v => tx.delete(v._id))
     await tx.commit()
