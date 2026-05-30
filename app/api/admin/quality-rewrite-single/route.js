@@ -36,10 +36,18 @@ Source facts only: ${src}
 Respond ONLY valid JSON (no markdown):
 {"body":"<HTML with h2 tags>","summary":"2-3 sentence plain text"}`
 
-  const raw = await callAIText(prompt, { tier: 'mid', max_tokens: 2000 })
+  const raw = await callAIText({ prompt, useCase: 'article', maxTokens: 2000 })
   let parsed
-  try { parsed = JSON.parse(raw.replace(/^```json|```$/gm, '').trim()) }
-  catch { return Response.json({ error: 'AI parse error' }, { status: 500 }) }
+  try {
+    const clean = raw.replace(/```json\s*/gi, '').replace(/```\s*/g, '').trim()
+    parsed = JSON.parse(clean)
+  } catch {
+    // Try extracting first { ... } block
+    const match = raw.match(/\{[\s\S]*\}/)
+    if (!match) return Response.json({ error: 'AI returned unparseable response', raw: raw.slice(0,300) }, { status: 500 })
+    try { parsed = JSON.parse(match[0]) }
+    catch { return Response.json({ error: 'AI parse error', raw: raw.slice(0,300) }, { status: 500 }) }
+  }
 
   await sanity.patch(id).set({ body: parsed.body, summary: parsed.summary }).commit()
   return Response.json({ ok: true, id })
