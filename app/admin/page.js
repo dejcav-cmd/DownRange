@@ -1820,9 +1820,11 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                                   {(safeArtPage-1)*ART_PAGE_SIZE + idx + 1}
                                 </td>
                                 <td style={{ padding:'8px 12px', maxWidth:320 }}>
-                                  <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text)', lineHeight:1.3 }}>
+                                  <a href={a.type === 'blogPost' ? `/blog/${a._id}` : a.type === 'canadaContent' ? `/canada` : `/news/${a._id}`} target="_blank" rel="noopener noreferrer"
+                                    style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text)', lineHeight:1.3, textDecoration:'none', display:'block' }}>
                                     {a.title.slice(0,72)}{a.title.length>72?'…':''}
-                                  </div>
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#C8922A', marginLeft:5, opacity:.7 }}>↗</span>
+                                  </a>
                                 </td>
                                 <td style={{ padding:'8px 12px' }}>
                                   <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:typeColor, border:`1px solid ${typeColor}33`, padding:'2px 6px', letterSpacing:'.07em' }}>

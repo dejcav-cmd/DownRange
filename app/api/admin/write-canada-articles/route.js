@@ -1,6 +1,6 @@
 import { callAIText } from '@/lib/aiClient.js'
 export const dynamic = 'force-dynamic'
-export const maxDuration = 60
+export const maxDuration = 300
 
 import { createClient } from '@sanity/client'
 
@@ -12,192 +12,92 @@ const sanity = createClient({
   token:     process.env.SANITY_API_TOKEN,
 })
 
-const CANADA_ARTICLES = [
-  {
-    slug:     'canada-handgun-freeze-what-gun-owners-need-to-know',
-    title:    'Canada\'s Handgun Freeze: What Every Gun Owner Actually Needs to Know',
-    category: 'canada',
-    tag:      'LAW',
-    readMins: '9 min',
-    imageUrl: '/img/photos/law.jpg',
-    prompt:   `Write a detailed blog post for DownRange titled "Canada's Handgun Freeze: What Every Gun Owner Actually Needs to Know" — written by DJ Cavalcanti as someone who covers Canadian firearms law closely.
+const VOICE_RULES = `MANDATORY RULES:
+- Author is DJ Cavalcanti — write in first person where natural
+- Sound like a real gun owner who knows Canadian firearms law cold, not an AI
+- No "comprehensive", "dive into", "cutting-edge", "robust", "seamlessly", "leverage", "empower", "game-changer"
+- No padded intros. Start with the hardest fact or most important point
+- Active voice, specific numbers, real product names, real organization names
+- DO NOT append any Source footer, attribution line, or "visit the original article" text at the end
+- Title MUST be original DownRange phrasing`
 
-Cover these points thoroughly:
-1. What the freeze actually does (can't buy, sell, or transfer handguns — but can keep what you have)
-2. The practical impact on dealers (inventory frozen, businesses strangled)
-3. What happens when you die (bequeath to licensed heirs, but they can't sell either)
-4. The CCFR constitutional challenge — what's being argued, why it may or may not succeed
-5. What Canadian gun owners should do right now (keep PAL current, document everything, stay plugged into CCFR)
-6. The political context under the Conservative government — what may or may not change
-
-Voice: DJ Cavalcanti. Direct, informed, written for gun owners not law professors. 900-1100 words.
-Format: HTML with h2 sections, p, ul, li, strong. No h1.`,
-  },
-  {
-    slug:     'canada-oic-ban-legal-limbo-what-happens-next',
-    title:    'The OIC Rifle Ban: Still Illegal to Sell, Still Legal to Own — Here\'s the Mess Explained',
-    category: 'canada',
-    tag:      'POLICY',
-    readMins: '8 min',
-    imageUrl: '/img/photos/rifle.jpg',
-    prompt:   `Write a detailed blog post for DownRange titled "The OIC Rifle Ban: Still Illegal to Sell, Still Legal to Own — Here's the Mess Explained" — by DJ Cavalcanti.
-
-Cover:
-1. What the 2020 Order in Council actually banned (AR-15, Mini-14, Vz-58, etc.) and how classification works
-2. The ongoing amnesty — what it allows (storage) and what it doesn't (transport, sale, transfer)
-3. The cancelled buyback program — how C$756M+ was budgeted, contracted, then cancelled by Conservatives
-4. What the Conservative government has said about reversing the ban (what's been promised vs done)
-5. What owners of banned firearms should do: stay current on amnesty renewals, document ownership, watch CCFR
-6. Whether a reversal is realistic — legislative vs OIC, timelines, political obstacles
-
-Voice: DJ Cavalcanti. Frustrated but analytical. This is real money and real property at stake. 900-1100 words.
-Format: HTML h2/p/ul/li/strong. No h1.`,
-  },
-  {
-    slug:     'canada-pal-complete-guide-how-to-get-your-licence',
-    title:    'How to Get Your PAL in Canada: The Complete Realistic Guide',
-    category: 'canada',
-    tag:      'GUIDE',
-    readMins: '11 min',
-    imageUrl: '/img/photos/pistol.jpg',
-    prompt:   `Write a comprehensive practical guide for DownRange titled "How to Get Your PAL in Canada: The Complete Realistic Guide" — by DJ Cavalcanti.
-
-Cover step by step:
-1. The CFSC course — what to expect, how to find an instructor, practical vs written, pass rate
-2. The CRFSC — when you need it, how it differs from CFSC
-3. The application (form RCMP 3005) — what documents, the spousal notification requirement, references
-4. Processing: realistic timelines by province (AB 45-60 days, QC 90-180, others in between)
-5. What trips people up (references not answering, lapsed information, prior record)
-6. PAL vs RPAL vs POL — what each allows
-7. After you get it: ATT for restricted, storage rules, renewal every 5 years
-8. Specific advice for people with prior legal issues (not disqualifying by default)
-
-Be specific with real costs, timelines, and province differences. 1000-1200 words.
-Voice: DJ Cavalcanti. Helpful and direct, like a buddy who's been through the process.
-Format: HTML h2/p/ul/li/strong. No h1.`,
-  },
-  {
-    slug:     'canada-magazine-capacity-limits-what-you-can-and-cant-own',
-    title:    'Canadian Magazine Laws: What You Can Own, What\'s Illegal, and the Pinning Trap',
-    category: 'canada',
-    tag:      'LAW',
-    readMins: '7 min',
-    imageUrl: '/img/photos/pistol.jpg',
-    prompt:   `Write a detailed explainer for DownRange titled "Canadian Magazine Laws: What You Can Own, What's Illegal, and the Pinning Trap" — by DJ Cavalcanti.
-
-Cover:
-1. The baseline rules: 5-round limit for semi-auto centrefire, 10 for handguns, no limit for rimfire or manually-operated
-2. What "pinned" means legally and how it must be done to be compliant
-3. The criminal risk of removing pins — it's not a regulatory offence, it's a Criminal Code offence
-4. Grandfathered magazines — what qualifies, what proof you need (none — but document anyway)
-5. The 2023 amendment attempt and where it went
-6. Practical advice: what to buy, what magazines are legal on restricted vs non-restricted platforms
-7. The competition exemption — what it is, which IPSC divisions it applies to
-
-Be precise and practical. 800-1000 words.
-Voice: DJ Cavalcanti. 
-Format: HTML h2/p/ul/li/strong. No h1.`,
-  },
-  {
-    slug:     'canada-safe-storage-rules-criminal-offence-you-might-be-committing',
-    title:    'Canadian Safe Storage: The Criminal Offence You Might Not Know You\'re Committing',
-    category: 'canada',
-    tag:      'GUIDE',
-    readMins: '6 min',
-    imageUrl: '/img/photos/pistol.jpg',
-    prompt:   `Write a practical safety and legal guide for DownRange titled "Canadian Safe Storage: The Criminal Offence You Might Not Know You're Committing" — by DJ Cavalcanti.
-
-Cover:
-1. The baseline storage rules by class: non-restricted, restricted, prohibited
-2. The trigger lock requirement — what qualifies as a compliant lock
-3. The "readily accessible" concept and how it's interpreted
-4. Ammunition storage — the "separate" requirement and what that actually means
-5. The R v Montague case and warrantless compliance inspections
-6. What police look for during a welfare check that can turn into a storage charge
-7. Transport rules for restricted firearms — the ATT and when it's required
-8. Practical recommendations: gun safes, quick-access pistol vaults, what's compliant
-
-Be concrete and specific. This is criminal law — be accurate.
-800-1000 words. Voice: DJ Cavalcanti, serious and precise. 
-Format: HTML h2/p/ul/li/strong. No h1.`,
-  },
+const WEEKLY_TOPICS = [
+  { slug:'canada-handgun-freeze-2025-what-owners-must-know', title:"Canada's Handgun Transfer Freeze: What Every Owner Actually Needs to Know", tag:'LAW', readMins:'8 min', imageUrl:'/img/photos/law.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Canada handgun transfer freeze (Bill C-21). Cover: what is banned vs allowed, dealer impact, inheritance rules, CCFR constitutional challenge, Conservative government position, what owners must do now.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'canada-oic-rifle-ban-explained-2025', title:"The OIC Rifle Ban: Illegal to Sell, Legal to Own — The Full Mess Explained", tag:'POLICY', readMins:'9 min', imageUrl:'/img/photos/rifle.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Canada 2020 OIC rifle ban. Cover: what got banned (AR-15, Mini-14, Vz-58, etc.), ongoing amnesty details, cancelled C$756M buyback, Conservative reversal promises vs reality, what banned-firearm owners must do today.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'how-to-get-your-pal-canada-complete-guide', title:"How to Get Your PAL in Canada: The Realistic Step-by-Step Guide", tag:'GUIDE', readMins:'10 min', imageUrl:'/img/photos/training.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Getting your Possession and Acquisition Licence (PAL) in Canada. Cover: CFSC and CRFSC courses, application process, honest processing times (6-12 months), background checks, references, tips to avoid delays.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'canada-hunting-season-2025-province-guide', title:"2025 Canada Hunting Season: Province-by-Province Firearms Guide", tag:'GUIDE', readMins:'9 min', imageUrl:'/img/photos/hunting.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: 2025 hunting season across Canada. Cover: key provincial season dates (BC, AB, SK, MB, ON, QC), non-resident licensing, legal firearms for hunting, storage/transport on hunting trips, best cartridges for moose, deer, bear, elk.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'canada-restricted-firearm-rules-complete-guide', title:"Restricted Firearms in Canada: Storage, Transport, and Range Rules Explained", tag:'GUIDE', readMins:'8 min', imageUrl:'/img/photos/pistol.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Owning restricted firearms in Canada. Cover: RPAL requirements, approved storage, ATT rules for transport, range-only use, what happens at a traffic stop, common legal mistakes.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'bill-c21-conservative-government-future', title:"Bill C-21 Under a Conservative Government: What Could Actually Change", tag:'POLICY', readMins:'7 min', imageUrl:'/img/photos/law.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Conservative government impact on C-21 and Canadian gun laws. Cover: what has been promised, what is politically realistic, OIC reversal vs legislation process, CCFR legal challenges, realistic timelines.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'canada-ammo-prices-availability-2025', title:"Canadian Ammo Prices in 2025: What's Available, What It Costs, Where to Buy", tag:'GUIDE', readMins:'7 min', imageUrl:'/img/photos/ammo.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Ammunition availability and pricing in Canada 2025. Cover: real CAD price comparisons (9mm, .308, 12ga, .22LR), why Canadian ammo costs more, best Canadian online retailers (Wolverine Supplies, Ellwood Epps, P.A.L. Gun Shop), import rules, reloading economics.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'ccfr-nfa-canada-gun-rights-organizations', title:"The CCFR and NFA: Canada's Gun Rights Organizations and What They're Fighting For", tag:'LAW', readMins:'8 min', imageUrl:'/img/photos/law.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Canadian gun rights organizations — CCFR and NFA. Cover: what each does, legal victories and losses, Section 7 constitutional challenge to C-21, how Canadian advocacy differs from the US model, what gun owners can do.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'canada-safe-storage-requirements-complete-guide', title:"Canadian Safe Storage Laws: What You're Actually Required to Do", tag:'LAW', readMins:'7 min', imageUrl:'/img/photos/homedefense.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Canadian safe storage requirements under the Firearms Act. Cover: non-restricted vs restricted storage rules, ammo storage, home defense access problem, what safe storage charges look like, recommended safes at real Canadian prices.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
+  { slug:'canada-provinces-gun-friendly-ranked-2025', title:"Canada's Most Gun-Friendly Provinces Ranked for 2025", tag:'GUIDE', readMins:'8 min', imageUrl:'/img/photos/rifle.jpg', prompt:`${VOICE_RULES}\n\nWrite a 900-1100 word article for DownRange Canada, byline DJ Cavalcanti.\nTopic: Gun-friendly province ranking 2025. Rank and analyze: Alberta (best), Saskatchewan, Manitoba, BC, Ontario, Quebec (worst). Cover: provincial pushback on federal gun laws, rural hunting culture, local police attitudes, cost of living + gun ownership.\nFormat: HTML h2/p/ul/li/strong, text-align:justify on all p tags. No h1.` },
 ]
 
-async function writeArticle(article) {
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': process.env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model:      'claude-sonnet-4-5',
-      max_tokens: 4000,
-      messages: [{ role: 'user', content: article.prompt }],
-    }),
-  })
-  const d = await res.json()
-  if (!res.ok) throw new Error('Anthropic ' + res.status)
-  return d.content?.[0]?.text?.trim()
+export async function GET() {
+  return Response.json({ topics: WEEKLY_TOPICS.map(t => ({ slug: t.slug, title: t.title, tag: t.tag })) })
 }
 
 export async function POST(req) {
   const key = req.headers.get('x-admin-key')
   if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  if (!process.env.ANTHROPIC_API_KEY) return Response.json({ error: 'ANTHROPIC_API_KEY not set' }, { status: 400 })
 
+  const { limit = 10, force = false } = await req.json().catch(() => ({}))
+  const topics  = WEEKLY_TOPICS.slice(0, Math.min(limit, WEEKLY_TOPICS.length))
   const results = []
 
-  for (const article of CANADA_ARTICLES) {
+  for (const article of topics) {
     try {
       const existing = await sanity.fetch(
-        '*[_type=="blogPost" && slug.current==$slug][0]{_id,body}',
+        '*[_type == "canadaContent" && type == "article" && slug.current == $slug][0]{ _id }',
         { slug: article.slug }
       )
+      if (existing && !force) {
+        results.push({ slug: article.slug, status: 'skipped', reason: 'already exists' })
+        continue
+      }
 
-      const rawBody = await writeArticle(article)
-      if (!rawBody) throw new Error('Empty response from Claude')
+      const body = await callAIText({ prompt: article.prompt, useCase: 'canada', maxTokens: 2000 })
+      if (!body || body.length < 200) throw new Error('Empty AI response')
 
-      const ATTRIBUTION = `\n<div class="dr-source-attribution" style="margin:2.5rem 0 0;padding:1.25rem 1.5rem;background:rgba(200,146,42,0.06);border:1px solid rgba(200,146,42,0.25);border-left:4px solid #C8922A"><div style="font-family:monospace;font-size:0.65rem;color:#C8922A;letter-spacing:0.15em;font-weight:700;margin-bottom:6px">ORIGINAL SOURCE</div><p style="font-family:monospace;font-size:0.8rem;color:#6B7280;line-height:1.6;margin:0">This editorial was written by DownRange based on the original article. Read the primary source for additional detail.</p></div>`
-      const body = rawBody + ATTRIBUTION
+      const summary = body.replace(/<[^>]+>/g, '').slice(0, 220).trim() + '...'
 
-      const excerpt = rawBody.replace(/<[^>]+>/g, '').slice(0, 200).trim() + '...'
-
-      if (existing) {
-        await sanity.patch(existing._id).set({ body, excerpt }).commit()
-        results.push({ slug: article.slug, status: 'updated' })
+      if (existing && force) {
+        await sanity.patch(existing._id).set({ body, summary }).commit()
+        results.push({ slug: article.slug, status: 'updated', title: article.title })
       } else {
         await sanity.create({
-          _type:       'blogPost',
-          title:       article.title,
-          slug:        { _type: 'slug', current: article.slug },
-          category:    article.category,
-          excerpt,
+          _type:           'canadaContent',
+          type:            'article',
+          title:           article.title,
+          slug:            { _type: 'slug', current: article.slug },
+          tag:             article.tag,
+          readMins:        article.readMins,
+          imageUrl:        article.imageUrl,
           body,
-          imageUrl:    article.imageUrl,
-          author:      'DJ Cavalcanti',
-          readTime:    article.readMins,
-          status:      'draft',
-          publishedAt: null,
-          _createdAt:  new Date().toISOString(),
+          summary,
+          author:          'DJ Cavalcanti',
+          qualityReviewed: false,
+          publishedAt:     new Date().toISOString(),
+          order:           99,
         })
         results.push({ slug: article.slug, status: 'created', title: article.title })
       }
 
-      // Brief pause between Claude calls
-      await new Promise(r => setTimeout(r, 400))
+      await new Promise(r => setTimeout(r, 500))
     } catch (e) {
       results.push({ slug: article.slug, status: 'failed', error: e.message })
     }
   }
 
   const created = results.filter(r => r.status === 'created').length
+  const updated = results.filter(r => r.status === 'updated').length
   const failed  = results.filter(r => r.status === 'failed').length
+  const skipped = results.filter(r => r.status === 'skipped').length
 
   return Response.json({
     ok: true,
-    message: `${created} articles written. ${failed} failed. All saved as drafts — approve in Admin → Blog.`,
+    message: `${created} created · ${updated} updated · ${skipped} skipped · ${failed} failed. Signed as DJ Cavalcanti, marked for review.`,
     results,
   })
 }

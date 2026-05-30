@@ -22,7 +22,7 @@ const sanity = createClient({
 export default async function CanadaPage() {
   const [items, breakingAlerts] = await Promise.all([
     sanity.fetch(
-      '*[_type=="canadaContent" && active==true] | order(order asc, publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, cadPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
+      '*[_type=="canadaContent"] | order(order asc, publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, cadPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
     ).catch(() => []),
     fetchBreakingAlerts(3).catch(() => []),
   ])
