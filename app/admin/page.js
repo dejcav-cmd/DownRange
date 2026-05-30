@@ -1501,7 +1501,14 @@ function ContentHub({ adminKey, setPanel, setSection }) {
   const [aiResults,setAiResults]= useState({})
   const [locking,  setLocking]  = useState({})
   const [lockRes,  setLockRes]  = useState({})
-
+  const [allItems, setAllItems] = useState([])
+  const [itemsLoading, setItemsLoading] = useState(false)
+  const [activeType, setActiveType] = useState('ALL')
+  const [scoreFilter, setScoreFilter] = useState('ALL')
+  const [artSearch, setArtSearch] = useState('')
+  const [showArticles, setShowArticles] = useState(true)
+  const [artPage, setArtPage] = useState(1)
+  const ART_PAGE_SIZE = 30
   async function lockAll(type, lock = true) {
     setLocking(l => ({...l, [type]: lock ? 'locking' : 'unlocking'}))
     setLockRes(r => ({...r, [type]: null}))
@@ -1524,10 +1531,15 @@ function ContentHub({ adminKey, setPanel, setSection }) {
 
   async function fetchCounts() {
     try {
+      setItemsLoading(true)
       const res = await fetch('/api/admin/content-scan', { headers: H })
       const d   = await res.json()
-      if (d.ok) setCounts(d.summary)
+      if (d.ok) {
+        setCounts(d.summary)
+        setAllItems(d.items || [])
+      }
     } catch {}
+    setItemsLoading(false)
   }
 
   async function seed(type) {
@@ -1724,6 +1736,169 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           </div>
         )}
       </div>
+
+      {/* ── Article Intelligence Panel ── */}
+      {allItems.length > 0 && (
+        <div style={{ marginBottom:28, border:'1px solid var(--border)', background:'rgba(0,0,0,.2)' }}>
+          {/* Panel header */}
+          <div onClick={() => setShowArticles(v => !v)} style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 20px', borderBottom: showArticles ? '1px solid var(--border)' : 'none', cursor:'pointer', background:'rgba(0,0,0,.15)' }}>
+            <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', color:'#C8922A', letterSpacing:'.08em' }}>◈ ARTICLE INTELLIGENCE</span>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', letterSpacing:'.1em' }}>{allItems.length} ARTICLES INDEXED</span>
+            <div style={{ flex:1 }} />
+            {/* Mini score bars */}
+            {['100','70','50','0'].map((t,i,arr) => {
+              const from = parseInt(arr[i+1]||'0'), to = parseInt(t)
+              const n = allItems.filter(a => a.score > from && a.score <= to).length
+              const col = to >= 70 ? '#22c55e' : to >= 50 ? '#f59e0b' : '#ef4444'
+              return <span key={t} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:col }}>{n} {to>=70?'✓':to>=50?'~':'✗'}</span>
+            })}
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563' }}>{showArticles ? '▲' : '▼'}</span>
+          </div>
+
+          {showArticles && (
+            <>
+              {/* Filters row */}
+              <div style={{ display:'flex', gap:6, padding:'10px 20px', borderBottom:'1px solid var(--border)', flexWrap:'wrap', alignItems:'center', background:'rgba(0,0,0,.1)' }}>
+                {/* Type filter */}
+                {[['ALL','All'], ['newsArticle','News'], ['blogPost','Blog'], ['firearmRelease','Releases'], ['canadaContent','Canada']].map(([k,l]) => (
+                  <button key={k} onClick={() => { setActiveType(k); setArtPage(1) }}
+                    style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 9px', cursor:'pointer', letterSpacing:'.07em', textTransform:'uppercase', background: activeType===k ? 'rgba(200,146,42,.15)' : 'none', border:`1px solid ${activeType===k ? '#C8922A' : 'rgba(255,255,255,.08)'}`, color: activeType===k ? '#C8922A' : '#6b7280' }}>
+                    {l}
+                  </button>
+                ))}
+                <div style={{ width:1, height:16, background:'rgba(255,255,255,.08)', margin:'0 4px' }} />
+                {/* Score filter */}
+                {[['ALL','All'],['PASS','Passing (70+)'],['WARN','Warning (50-69)'],['FAIL','Failing (<50)']].map(([k,l]) => {
+                  const col = k==='PASS'?'#22c55e':k==='WARN'?'#f59e0b':k==='FAIL'?'#ef4444':'#6b7280'
+                  return (
+                    <button key={k} onClick={() => { setScoreFilter(k); setArtPage(1) }}
+                      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 9px', cursor:'pointer', letterSpacing:'.07em', textTransform:'uppercase', background: scoreFilter===k ? `${col}18` : 'none', border:`1px solid ${scoreFilter===k ? col : 'rgba(255,255,255,.08)'}`, color: scoreFilter===k ? col : '#6b7280' }}>
+                      {l}
+                    </button>
+                  )
+                })}
+                <div style={{ flex:1 }} />
+                {/* Search */}
+                <input value={artSearch} onChange={e => { setArtSearch(e.target.value); setArtPage(1) }}
+                  placeholder="Search articles…"
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, background:'rgba(0,0,0,.3)', border:'1px solid rgba(255,255,255,.08)', color:'var(--text)', padding:'4px 10px', outline:'none', width:180 }} />
+              </div>
+
+              {/* Table */}
+              {(() => {
+                const filtered = allItems.filter(a => {
+                  if (activeType !== 'ALL' && a.type !== activeType) return false
+                  if (scoreFilter === 'PASS' && a.score < 70) return false
+                  if (scoreFilter === 'WARN' && (a.score < 50 || a.score >= 70)) return false
+                  if (scoreFilter === 'FAIL' && a.score >= 50) return false
+                  if (artSearch && !a.title.toLowerCase().includes(artSearch.toLowerCase())) return false
+                  return true
+                })
+                const totalArtPages = Math.max(1, Math.ceil(filtered.length / ART_PAGE_SIZE))
+                const safeArtPage = Math.min(artPage, totalArtPages)
+                const pageItems = filtered.slice((safeArtPage-1)*ART_PAGE_SIZE, safeArtPage*ART_PAGE_SIZE)
+
+                return (
+                  <>
+                    <div style={{ overflowX:'auto' }}>
+                      <table style={{ width:'100%', borderCollapse:'collapse' }}>
+                        <thead>
+                          <tr style={{ background:'rgba(0,0,0,.25)' }}>
+                            {['#','Title','Type','Score','Words','Issues','Status'].map(h => (
+                              <th key={h} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', letterSpacing:'.1em', textTransform:'uppercase', padding:'8px 12px', borderBottom:'1px solid var(--border)', textAlign:'left', whiteSpace:'nowrap' }}>{h}</th>
+                            ))}
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {pageItems.map((a, idx) => {
+                            const scoreColor = a.score >= 70 ? '#22c55e' : a.score >= 50 ? '#f59e0b' : '#ef4444'
+                            const typeLabel = { newsArticle:'NEWS', blogPost:'BLOG', firearmRelease:'RELEASE', canadaContent:'CANADA' }[a.type] || a.type.toUpperCase()
+                            const typeColor = { newsArticle:'#3b82f6', blogPost:'#22c55e', firearmRelease:'#C8922A', canadaContent:'#ef4444' }[a.type] || '#6b7280'
+                            return (
+                              <tr key={a._id} style={{ borderBottom:'1px solid rgba(255,255,255,.03)' }}>
+                                <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', padding:'8px 12px', textAlign:'center', width:36 }}>
+                                  {(safeArtPage-1)*ART_PAGE_SIZE + idx + 1}
+                                </td>
+                                <td style={{ padding:'8px 12px', maxWidth:320 }}>
+                                  <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text)', lineHeight:1.3 }}>
+                                    {a.title.slice(0,72)}{a.title.length>72?'…':''}
+                                  </div>
+                                </td>
+                                <td style={{ padding:'8px 12px' }}>
+                                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:typeColor, border:`1px solid ${typeColor}33`, padding:'2px 6px', letterSpacing:'.07em' }}>
+                                    {typeLabel}
+                                  </span>
+                                </td>
+                                <td style={{ padding:'8px 12px' }}>
+                                  <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+                                    {/* Mini score bar */}
+                                    <div style={{ width:36, height:4, background:'rgba(255,255,255,.06)', overflow:'hidden' }}>
+                                      <div style={{ height:'100%', width:`${a.score}%`, background:scoreColor }} />
+                                    </div>
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:scoreColor, minWidth:26 }}>{a.score}</span>
+                                  </div>
+                                </td>
+                                <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: a.words < 400 ? '#ef4444' : '#6b7280', padding:'8px 12px', whiteSpace:'nowrap' }}>
+                                  {a.words}w
+                                </td>
+                                <td style={{ padding:'8px 12px', maxWidth:260 }}>
+                                  {a.issues.length === 0 ? (
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#22c55e' }}>✓ clean</span>
+                                  ) : (
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color: a.score < 50 ? '#ef4444' : '#f59e0b', lineHeight:1.4 }}>
+                                      {a.issues[0].slice(0,50)}{a.issues[0].length>50?'…':''}{a.issues.length>1?` +${a.issues.length-1}`:''}
+                                    </span>
+                                  )}
+                                </td>
+                                <td style={{ padding:'8px 12px' }}>
+                                  {a.qualityReviewed ? (
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A', letterSpacing:'.06em' }}>✓ REVIEWED</span>
+                                  ) : a.needsRewrite ? (
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#ef4444', letterSpacing:'.06em' }}>⚠ REWRITE</span>
+                                  ) : (
+                                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', letterSpacing:'.06em' }}>— OK</span>
+                                  )}
+                                </td>
+                              </tr>
+                            )
+                          })}
+                        </tbody>
+                      </table>
+                    </div>
+                    {/* Pagination */}
+                    {totalArtPages > 1 && (
+                      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 20px', borderTop:'1px solid var(--border)', background:'rgba(0,0,0,.1)' }}>
+                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>
+                          {filtered.length} articles · page {safeArtPage}/{totalArtPages}
+                        </span>
+                        <div style={{ display:'flex', gap:4 }}>
+                          {[['«',1],['‹',safeArtPage-1]].map(([l,p]) => (
+                            <button key={l} onClick={() => setArtPage(Math.max(1,p))} disabled={safeArtPage===1}
+                              style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 8px', background:'none', border:'1px solid rgba(255,255,255,.08)', color:safeArtPage===1?'#374151':'#9ca3af', cursor:safeArtPage===1?'default':'pointer' }}>{l}</button>
+                          ))}
+                          {Array.from({length:Math.min(5,totalArtPages)},(_,i) => {
+                            const p = safeArtPage <= 3 ? i+1 : safeArtPage+i-2
+                            if (p<1||p>totalArtPages) return null
+                            return <button key={p} onClick={() => setArtPage(p)} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 8px', background:p===safeArtPage?'rgba(200,146,42,.15)':'none', border:`1px solid ${p===safeArtPage?'#C8922A':'rgba(255,255,255,.08)'}`, color:p===safeArtPage?'#C8922A':'#9ca3af', cursor:'pointer' }}>{p}</button>
+                          })}
+                          {[['›',safeArtPage+1],['»',totalArtPages]].map(([l,p]) => (
+                            <button key={l} onClick={() => setArtPage(Math.min(totalArtPages,p))} disabled={safeArtPage===totalArtPages}
+                              style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 8px', background:'none', border:'1px solid rgba(255,255,255,.08)', color:safeArtPage===totalArtPages?'#374151':'#9ca3af', cursor:safeArtPage===totalArtPages?'default':'pointer' }}>{l}</button>
+                          ))}
+                        </div>
+                      </div>
+                    )}
+                  </>
+                )
+              })()}
+            </>
+          )}
+        </div>
+      )}
+
+      {itemsLoading && allItems.length === 0 && (
+        <div style={{ padding:'20px 0', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4b5563', textAlign:'center', marginBottom:28 }}>⏳ Scanning articles…</div>
+      )}
 
       {/* ── Section cards ── */}
       <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(340px,1fr))', gap:16 }}>
