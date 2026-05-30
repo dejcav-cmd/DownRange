@@ -76,14 +76,21 @@ export default function CopyrightPanel({ adminKey }) {
     setRewriting(r => ({ ...r, [article._id]: false }))
   }
 
-  // ── Rewrite all high-risk ───────────────────────────────────────────────
-  const rewriteAll = async (articles) => {
-    showFlash(`⏳ Queueing ${articles.length} rewrites…`, 5000)
-    for (const a of articles) {
+  const medRiskList  = filtered.filter(a => a.riskLevel === 'MEDIUM')
+
+  // ── Bulk rewrite with live progress ────────────────────────────────────
+  const [bulkProgress, setBulkProgress] = useState(null) // { done, total, current }
+
+  const rewriteAll = async (articles, label) => {
+    setBulkProgress({ done: 0, total: articles.length, current: articles[0]?.title?.slice(0,50) || '' })
+    for (let i = 0; i < articles.length; i++) {
+      const a = articles[i]
+      setBulkProgress({ done: i, total: articles.length, current: a.title?.slice(0,50) || '' })
       await rewriteArticle(a)
-      await new Promise(r => setTimeout(r, 800))
+      await new Promise(r => setTimeout(r, 600))
     }
-    showFlash(`✅ All ${articles.length} articles queued for rewrite`)
+    setBulkProgress(null)
+    showFlash(`✅ Bulk rewrite complete — ${articles.length} ${label} articles rewritten`)
   }
 
   // ── Filtering ───────────────────────────────────────────────────────────
@@ -94,8 +101,11 @@ export default function CopyrightPanel({ adminKey }) {
     return riskOk && typeOk
   })
 
+  const highRiskList = filtered.filter(a => a.riskLevel === 'HIGH')
+  const highRiskAll  = (report?.articles || []).filter(a => a.riskLevel === 'HIGH')
+  const medRiskAll   = (report?.articles || []).filter(a => a.riskLevel === 'MEDIUM')
+
   // ── Category stats ──────────────────────────────────────────────────────
-  const catStats = TYPES.map(t => {
     const arts = allArticles.filter(a => (a._type || 'newsArticle') === t.key)
     return {
       ...t,
@@ -143,6 +153,23 @@ export default function CopyrightPanel({ adminKey }) {
         </div>
       )}
 
+      {/* Bulk progress bar */}
+      {bulkProgress && (
+        <div style={{ background:'rgba(200,146,42,.06)', borderBottom:'2px solid rgba(200,146,42,.3)', padding:'12px 24px' }}>
+          <div style={{ display:'flex', gap:12, alignItems:'center', marginBottom:8 }}>
+            <div style={{ fontFamily:MONO, fontSize:11, color:GOLD }}>
+              ✍️ REWRITING {bulkProgress.done}/{bulkProgress.total}
+            </div>
+            <div style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+              → {bulkProgress.current}
+            </div>
+          </div>
+          <div style={{ height:4, background:'rgba(200,146,42,.15)', borderRadius:2, overflow:'hidden' }}>
+            <div style={{ height:'100%', background:GOLD, width:`${Math.round((bulkProgress.done / bulkProgress.total) * 100)}%`, transition:'width .3s' }} />
+          </div>
+        </div>
+      )}
+
       {/* Header */}
       <div style={{ padding:'16px 24px', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center', gap:16, flexWrap:'wrap', background:'rgba(0,0,0,.2)' }}>
         <div style={{ flex:1 }}>
@@ -156,12 +183,21 @@ export default function CopyrightPanel({ adminKey }) {
               <div style={{ fontFamily:MONO, fontSize:9, color:'#4b5563', letterSpacing:'.08em' }}>COMPLIANT</div>
             </div>
           )}
-          <button className="cp-btn" onClick={runReview} disabled={running}>
+          <button className="cp-btn" onClick={runReview} disabled={running || !!bulkProgress}>
             {running ? '⏳ SCANNING…' : '🔍 SCAN ALL ARTICLES'}
           </button>
-          {highRiskList.length > 0 && (
-            <button className="cp-btn" style={{ background:'#ef4444' }} onClick={() => rewriteAll(highRiskList)} disabled={running}>
-              ✍️ REWRITE ALL HIGH-RISK ({highRiskList.length})
+          {report && highRiskAll.length > 0 && (
+            <button className="cp-btn" style={{ background:'#ef4444' }}
+              onClick={() => rewriteAll(highRiskAll, 'HIGH-RISK')}
+              disabled={running || !!bulkProgress}>
+              ✍️ FIX ALL HIGH ({highRiskAll.length})
+            </button>
+          )}
+          {report && medRiskAll.length > 0 && (
+            <button className="cp-btn" style={{ background:'#d97706' }}
+              onClick={() => rewriteAll(medRiskAll, 'MEDIUM-RISK')}
+              disabled={running || !!bulkProgress}>
+              ✍️ FIX ALL MEDIUM ({medRiskAll.length})
             </button>
           )}
         </div>
