@@ -1,12 +1,24 @@
-import { createClient } from '@sanity/client'
+#!/usr/bin/env node
+const TOKEN = process.env.SANITY_TOKEN
+const PROJECT = 'vbnsqnkg'
+const BASE = `https://${PROJECT}.api.sanity.io/v2024-01-01/data`
 
-const sanity = createClient({
-  projectId: 'vbnsqnkg',
-  dataset: 'production',
-  apiVersion: '2024-01-01',
-  useCdn: false,
-  token: process.env.SANITY_TOKEN,
-})
+async function query(q) {
+  const url = `${BASE}/query/production?query=${encodeURIComponent(q)}`
+  const r = await fetch(url, { headers: { Authorization: `Bearer ${TOKEN}` } })
+  if (!r.ok) throw new Error(`GROQ ${r.status}: ${await r.text()}`)
+  return (await r.json()).result
+}
+
+async function mutate(mutations) {
+  const r = await fetch(`${BASE}/mutate/production?returnIds=false`, {
+    method: 'POST',
+    headers: { Authorization: `Bearer ${TOKEN}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify({ mutations })
+  })
+  if (!r.ok) throw new Error(`Mutate ${r.status}: ${await r.text()}`)
+  return r.json()
+}
 
 function strip(body) {
   if (!body) return { out: body, changed: false }
@@ -21,24 +33,29 @@ function strip(body) {
   return { out, changed: out !== body }
 }
 
-const docs = await sanity.fetch('*[_type == "newsArticle" && defined(body) && body != ""]{ _id, body }')
+const docs = await query('*[_type == "newsArticle" && defined(body) && body != ""]{ _id, body }')
 console.log('Total articles:', docs.length)
 
+// Print 3 sample tails
 for (let i = 0; i < Math.min(3, docs.length); i++) {
-  console.log('SAMPLE TAIL', i, ':', docs[i].body.slice(-300).replace(/\n/g, ' '))
+  console.log('SAMPLE', i, docs[i].body.slice(-250).replace(/\n/g,' '))
 }
 
 let patched = 0, skipped = 0
 const BATCH = 50
 for (let i = 0; i < docs.length; i += BATCH) {
   const batch = docs.slice(i, i + BATCH)
-  const tx = sanity.transaction()
-  let hasWork = false
+  const mutations = []
   for (const doc of batch) {
     const { out, changed } = strip(doc.body)
-    if (changed) { tx.patch(doc._id, p => p.set({ body: out })); hasWork = true; patched++ }
-    else skipped++
+    if (changed) {
+      mutations.push({ patch: { id: doc._id, set: { body: out } } })
+      patched++
+    } else skipped++
   }
-  if (hasWork) { await tx.commit(); console.log('Committed batch', i, '-', i + BATCH) }
+  if (mutations.length) {
+    await mutate(mutations)
+    console.log('Committed batch', i, '-', i + BATCH, '(', mutations.length, 'patches)')
+  }
 }
 console.log('DONE. Patched:', patched, '| Skipped:', skipped, '| Total:', docs.length)
