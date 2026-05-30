@@ -43,6 +43,14 @@ const CSS = `
 .cr-btn:disabled{opacity:.4;cursor:not-allowed}
 .cr-btn-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:${MONO};font-size:10px;padding:6px 12px;cursor:pointer;transition:all .12s}
 .cr-btn-ghost:hover{border-color:${GOLD};color:${GOLD}}
+.rw-btn{border:1px solid;font-family:${BARLOW};font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:5px 10px;cursor:pointer;white-space:nowrap;transition:all .12s;width:100%;display:block;margin-bottom:3px}
+.rw-idle{background:rgba(200,146,42,.1);color:${GOLD};border-color:rgba(200,146,42,.4)}
+.rw-idle:hover{background:rgba(200,146,42,.22)}
+.rw-running{background:rgba(245,158,11,.08);color:#f59e0b;border-color:rgba(245,158,11,.3);cursor:wait}
+.rw-success{background:rgba(34,197,94,.08);color:#22c55e;border-color:rgba(34,197,94,.3);cursor:default}
+.rw-error{background:rgba(239,68,68,.08);color:#ef4444;border-color:rgba(239,68,68,.3)}
+.fix-all-btn{border:1px solid;font-family:${BARLOW};font-size:10px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;padding:4px 8px;cursor:pointer;white-space:nowrap;transition:opacity .12s;margin-top:4px;display:block;width:100%}
+.fix-all-btn:disabled{opacity:.3;cursor:not-allowed}
 .cr-policy{background:var(--bg2);border:1px solid var(--border);padding:20px 24px}
 .cr-policy-item{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid rgba(30,41,59,.3)}
 .cr-policy-item:last-child{border-bottom:none}
@@ -64,6 +72,9 @@ export default function CopyrightReport({ adminKey }) {
   const [filter, setFilter]     = useState('ALL')
   const [search, setSearch]     = useState('')
   const [flash, setFlash]       = useState(null)
+  const [rewriting, setRewriting]     = useState({})  // { [_id]: true }
+  const [rwStatus, setRwStatus]       = useState({})  // { [_id]: 'success'|'error' }
+  const [bulkProgress, setBulkProgress] = useState(null)
 
   const loadLatest = useCallback(async () => {
     setLoading(true)
@@ -103,6 +114,44 @@ export default function CopyrightReport({ adminKey }) {
       setFlash({ type:'error', msg:'❌ ' + e.message })
     }
     setRunning(false)
+  }
+
+  // ── Single article rewrite ───────────────────────────────────────────────
+  const rewriteOne = async (article) => {
+    setRewriting(p => ({ ...p, [article._id]: true }))
+    setFlash({ type:'info', msg:`⏳ Rewriting: ${article.title?.slice(0,60)}…` })
+    try {
+      const res = await fetch('/api/admin/quality-rewrite-single', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: article._id, type: article._type || 'newsArticle' }),
+      })
+      const d = await res.json()
+      if (d.ok) {
+        setRwStatus(p => ({ ...p, [article._id]: 'success' }))
+        setFlash({ type:'success', msg:`✅ Rewritten: ${article.title?.slice(0,60)}` })
+      } else {
+        setRwStatus(p => ({ ...p, [article._id]: 'error' }))
+        setFlash({ type:'error', msg:`❌ Failed: ${d.error || 'unknown'}` })
+      }
+    } catch(e) {
+      setRwStatus(p => ({ ...p, [article._id]: 'error' }))
+      setFlash({ type:'error', msg:'❌ Error: ' + e.message })
+    }
+    setRewriting(p => ({ ...p, [article._id]: false }))
+  }
+
+  // ── Bulk rewrite ─────────────────────────────────────────────────────────
+  const rewriteBulk = async (list, label) => {
+    if (!list.length) return
+    setBulkProgress({ done:0, total:list.length, label, current:'' })
+    for (let i = 0; i < list.length; i++) {
+      setBulkProgress({ done:i, total:list.length, label, current:list[i].title?.slice(0,55)||'' })
+      await rewriteOne(list[i])
+      await new Promise(res => setTimeout(res, 700))
+    }
+    setBulkProgress(null)
+    setFlash({ type:'success', msg:`✅ Done — ${list.length} ${label} articles rewritten` })
   }
 
   const r = report
@@ -172,23 +221,51 @@ export default function CopyrightReport({ adminKey }) {
           </div>
         )}
 
-        {/* Stats */}
+        {/* Stats + FIX ALL buttons */}
         {r && (
-          <div className="cr-stats">
-            {[
-              { val:r.scanned,           label:'Scanned',        color:'#9ca3af' },
-              { val:r.clean,             label:'Clean',          color:'#22c55e' },
-              { val:r.highRisk,          label:'High Risk',      color: r.highRisk   > 0 ? '#ef4444' : '#374151' },
-              { val:r.medRisk,           label:'Med Risk',       color: r.medRisk    > 0 ? '#f59e0b' : '#374151' },
-              { val:r.oldStructureCount, label:'Old Structure',  color: r.oldStructureCount > 0 ? '#f97316' : '#374151' },
-              { val:r.noAnalysisCount,   label:'No DR Analysis', color: r.noAnalysisCount   > 0 ? '#a78bfa' : '#374151' },
-            ].map(s => (
-              <div key={s.label} className="cr-stat">
-                <div className="cr-stat-val" style={{ color:s.color }}>{s.val}</div>
-                <div className="cr-stat-label">{s.label}</div>
+          <>
+            {/* Bulk progress */}
+            {bulkProgress && (
+              <div style={{ padding:'10px 24px', background:'rgba(200,146,42,.05)', borderBottom:'1px solid rgba(200,146,42,.2)' }}>
+                <div style={{ display:'flex', gap:12, alignItems:'center', marginBottom:6 }}>
+                  <span style={{ fontFamily:MONO, fontSize:11, color:GOLD, whiteSpace:'nowrap' }}>
+                    REWRITING {bulkProgress.label} — {bulkProgress.done}/{bulkProgress.total}
+                  </span>
+                  <span style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap', flex:1 }}>
+                    → {bulkProgress.current}
+                  </span>
+                </div>
+                <div style={{ height:3, background:'rgba(200,146,42,.15)' }}>
+                  <div style={{ height:'100%', background:GOLD, width:`${Math.round((bulkProgress.done/bulkProgress.total)*100)}%`, transition:'width .4s' }} />
+                </div>
               </div>
-            ))}
-          </div>
+            )}
+            <div className="cr-stats">
+              {[
+                { val:r.scanned,           label:'Scanned',        color:'#9ca3af', list:null },
+                { val:r.clean,             label:'Clean',          color:'#22c55e', list:null },
+                { val:r.highRisk,          label:'High Risk',      color: r.highRisk   > 0 ? '#ef4444' : '#374151', level:'HIGH' },
+                { val:r.medRisk,           label:'Med Risk',       color: r.medRisk    > 0 ? '#f59e0b' : '#374151', level:'MEDIUM' },
+                { val:r.lowRisk,           label:'Low Risk',       color: r.lowRisk    > 0 ? '#22c55e' : '#374151', level:'LOW' },
+                { val:r.oldStructureCount, label:'Old Structure',  color: r.oldStructureCount > 0 ? '#f97316' : '#374151', list:null },
+              ].map(s => {
+                const list = s.level ? (r.articles||[]).filter(a => a.riskLevel === s.level) : null
+                return (
+                  <div key={s.label} className="cr-stat">
+                    <div className="cr-stat-val" style={{ color:s.color }}>{s.val}</div>
+                    <div className="cr-stat-label">{s.label}</div>
+                    {list && list.length > 0 && (
+                      <button className="fix-all-btn" disabled={!!bulkProgress || running}
+                        style={{ background:`${s.color}15`, color:s.color, borderColor:`${s.color}44` }}
+                        onClick={() => rewriteBulk(list, s.label)}>
+                        ✍ FIX ALL
+                      </button>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          </>
         )}
 
         {/* Tabs */}
@@ -331,7 +408,7 @@ export default function CopyrightReport({ adminKey }) {
                         <th>Words</th>
                         <th>Issues</th>
                         <th>Published</th>
-                        <th></th>
+                        <th style={{ minWidth:130 }}>Rewrite</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -371,9 +448,15 @@ export default function CopyrightReport({ adminKey }) {
                               {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString() : '—'}
                             </td>
                             <td>
+                              <button
+                                className={'rw-btn ' + (rewriting[a._id] ? 'rw-running' : rwStatus[a._id]==='success' ? 'rw-success' : rwStatus[a._id]==='error' ? 'rw-error' : 'rw-idle')}
+                                disabled={!!rewriting[a._id] || rwStatus[a._id]==='success'}
+                                onClick={() => rewriteOne(a)}>
+                                {rewriting[a._id] ? '⏳ REWRITING…' : rwStatus[a._id]==='success' ? '✅ DONE' : rwStatus[a._id]==='error' ? '❌ RETRY' : '✍️ REWRITE'}
+                              </button>
                               {a.slug && (
                                 <a href={`/news/${a.slug}`} target="_blank" rel="noopener noreferrer">
-                                  <button className="cr-btn-ghost" style={{ padding:'3px 8px', fontSize:10 }}>↗</button>
+                                  <button className="cr-btn-ghost" style={{ padding:'3px 8px', fontSize:9, width:'100%', marginTop:2 }}>VIEW ↗</button>
                                 </a>
                               )}
                             </td>
