@@ -76,6 +76,7 @@ export default function CopyrightReport({ adminKey }) {
   const [rewriting, setRewriting]     = useState({})  // { [_id]: true }
   const [rwStatus, setRwStatus]       = useState({})  // { [_id]: 'success'|'error' }
   const [bulkProgress, setBulkProgress] = useState(null)
+  const [page, setPage]               = useState(1)
 
   const loadLatest = useCallback(async () => {
     setLoading(true)
@@ -390,12 +391,12 @@ export default function CopyrightReport({ adminKey }) {
                   style={{ background:'var(--bg2)', border:'1px solid var(--border)', color:'var(--text)', fontFamily:MONO, fontSize:11, padding:'7px 12px', outline:'none', flex:1, maxWidth:280 }}
                   placeholder="Search article title…"
                   value={search}
-                  onChange={e => setSearch(e.target.value)}
+                  onChange={e => { setSearch(e.target.value); setPage(1) }}
                 />
                 {['ALL','HIGH','MEDIUM','LOW'].map(f => (
                   <button key={f} className={`cr-btn-ghost${filter===f?' active':''}`}
                     style={{ fontSize:10, padding:'5px 10px', ...(filter===f ? {borderColor:GOLD, color:GOLD} : {}) }}
-                    onClick={() => setFilter(f)}>
+                    onClick={() => { setFilter(f); setPage(1) }}>
                     {f}
                   </button>
                 ))}
