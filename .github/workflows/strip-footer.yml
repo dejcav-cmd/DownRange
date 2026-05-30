@@ -1,0 +1,21 @@
+name: Strip Source Footer
+on:
+  workflow_dispatch:
+    inputs:
+      admin_key:
+        description: 'Admin key'
+        required: true
+      sanity_token:
+        description: 'Sanity API token'
+        required: true
+
+jobs:
+  strip:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call strip-source-footer route
+        run: |
+          curl -s -X POST https://downrangeco.com/api/admin/strip-source-footer \
+            -H "x-admin-key: ${{ github.event.inputs.admin_key }}" \
+            -H "Content-Type: application/json" | tee result.json
+          cat result.json
