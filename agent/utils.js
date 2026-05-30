@@ -61,7 +61,7 @@ Return ONLY valid JSON:
 }
 Start with { end with }. No markdown fences.`
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 4000 })
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1800 })
     // Strip any accidental markdown fences
     const clean = text.split('```json').join('').split('```').join('').trim()
     const parsed = JSON.parse(clean)

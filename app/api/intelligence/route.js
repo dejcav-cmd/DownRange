@@ -339,30 +339,22 @@ export async function GET(req) {
     const siteData = await gatherSiteData()
     console.log('[intelligence] Site data gathered:', siteData)
 
-    // Step 2: Research competitors (parallel web searches)
+    // Step 2: Research competitors (parallel web searches — limited to 5 to control costs)
     console.log('[intelligence] Researching competitors...')
     const [
-      ttag, ammoland, pewpew, tfb, nra, gundigest, trending1, trending2, trending3
+      ttag, tfb, trending1, trending2, trending3
     ] = await Promise.allSettled([
       webSearch('The Truth About Guns site:thetruthaboutguns.com new features content 2025 2026'),
-      webSearch('AmmoLand News firearms coverage features 2025 2026'),
-      webSearch('Pew Pew Tactical website features tools gun reviews 2026'),
       webSearch('The Firearm Blog TFB features content coverage 2026'),
-      webSearch('NRA American Rifleman digital features new coverage 2026'),
-      webSearch('Gun Digest website features tools digital 2026'),
-      webSearch('trending firearms searches Second Amendment news June 2026'),
+      webSearch('trending firearms searches Second Amendment news 2026'),
       webSearch('new gun laws legislation 2026 most searched firearms topics'),
       webSearch('viral firearms YouTube content popular gun topics 2026'),
     ])
 
     const competitorData = [
       `TTAG: ${ttag.value || 'N/A'}`,
-      `AmmoLand: ${ammoland.value || 'N/A'}`,
-      `Pew Pew Tactical: ${pewpew.value || 'N/A'}`,
       `The Firearm Blog: ${tfb.value || 'N/A'}`,
-      `NRA/American Rifleman: ${nra.value || 'N/A'}`,
-      `Gun Digest: ${gundigest.value || 'N/A'}`,
-    ].join('\n\n---\n\n').slice(0, 8000)
+    ].join('\n\n---\n\n').slice(0, 4000)
 
     const trendingData = [
       trending1.value || '',

@@ -13,9 +13,15 @@ const sanity = createClient({
 const getResend = () => new Resend(process.env.RESEND_API_KEY)
 
 function auth(req) {
-  return req.headers.get('x-admin-key') === process.env.ADMIN_KEY
-    || req.headers.get('x-vercel-cron') === '1'
-    || (process.env.CRON_SECRET && req.headers.get('authorization') === 'Bearer ' + process.env.CRON_SECRET)
+  const adminKey   = req.headers.get('x-admin-key')
+  const authHeader = req.headers.get('authorization')
+  const cronHeader = req.headers.get('x-vercel-cron')
+  const secret     = process.env.CRON_SECRET
+  if (adminKey && adminKey === process.env.ADMIN_KEY) return true
+  if (secret && authHeader === 'Bearer ' + secret)    return true
+  if (!secret && cronHeader === '1')                  return true
+  if (!secret)                                        return true
+  return false
 }
 
 // Copyright risk signals
@@ -81,6 +87,7 @@ function analyzeArticle(article) {
 
   return {
     _id:        article._id,
+    _type:      article._type || 'newsArticle',
     slug:       article.slug?.current || '',
     title:      article.title || '',
     source:     article.source || '',
@@ -99,27 +106,37 @@ export async function GET(req) {
   const t0   = Date.now()
   const today = new Date().toISOString().split('T')[0]
 
-  // Sample strategy: pick 25 recent articles + 5 older articles for spot-check diversity
+  const url    = new URL(req.url)
+  const isFull = url.searchParams.get('full') === '1'
+
   const cutoff48h = new Date(Date.now() - 48 * 3600000).toISOString()
   const cutoff7d  = new Date(Date.now() - 7 * 24 * 3600000).toISOString()
+  const TYPES_TO_SCAN = ['newsArticle', 'blogPost', 'firearmRelease', 'review']
 
-  const [recent, older] = await Promise.all([
-    // Last 48h — all of them (usually 10-30 articles)
-    sanity.fetch(
-      `*[_type == "newsArticle" && publishedAt > $cutoff && approved == true] | order(publishedAt desc) [0...50] {
-        _id, title, slug, body, source, externalUrl, publishedAt, category, wordCount
-      }`,
-      { cutoff: cutoff48h }
-    ),
-    // 7d-48h window — random sample of 10 for ongoing spot-checking
-    sanity.fetch(
-      `*[_type == "newsArticle" && publishedAt < $cutoffNew && publishedAt > $cutoffOld && approved == true] | order(_createdAt desc) [0...10] {
-        _id, title, slug, body, source, externalUrl, publishedAt, category, wordCount
-      }`,
-      { cutoffNew: cutoff48h, cutoffOld: cutoff7d }
-    ),
-  ])
-  const articles = [...recent, ...older]
+  let articles = []
+  if (isFull) {
+    // Full scan: all approved content across all types
+    const results = await Promise.all(TYPES_TO_SCAN.map(type =>
+      sanity.fetch(
+        '*[_type == $type && (approved == true || status == "published" || published == true)] | order(_createdAt desc) [0...200] { _id, _type, title, slug, body, source, externalUrl, publishedAt, category, wordCount }',
+        { type }
+      )
+    ))
+    articles = results.flat()
+  } else {
+    // Daily cron: last 48h newsArticles + spot-check older
+    const [recent, older] = await Promise.all([
+      sanity.fetch(
+        '*[_type == "newsArticle" && publishedAt > $cutoff && approved == true] | order(publishedAt desc) [0...50] { _id, _type, title, slug, body, source, externalUrl, publishedAt, category, wordCount }',
+        { cutoff: cutoff48h }
+      ),
+      sanity.fetch(
+        '*[_type == "newsArticle" && publishedAt < $cutoffNew && publishedAt > $cutoffOld && approved == true] | order(_createdAt desc) [0...10] { _id, _type, title, slug, body, source, externalUrl, publishedAt, category, wordCount }',
+        { cutoffNew: cutoff48h, cutoffOld: cutoff7d }
+      ),
+    ])
+    articles = [...recent, ...older]
+  }
 
   const results   = articles.map(analyzeArticle)
   const highRisk  = results.filter(r => r.riskLevel === 'HIGH')
