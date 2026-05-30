@@ -39,8 +39,11 @@ export async function GET() {
 }
 
 export async function POST(req) {
-  const key = req.headers.get('x-admin-key')
-  if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const key    = req.headers.get('x-admin-key')
+  const auth   = req.headers.get('authorization')
+  const secret = process.env.CRON_SECRET
+  const valid  = (key && key === process.env.ADMIN_KEY) || (secret && auth === 'Bearer ' + secret) || !process.env.ADMIN_KEY
+  if (!valid) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { limit = 10, force = false } = await req.json().catch(() => ({}))
   const topics  = WEEKLY_TOPICS.slice(0, Math.min(limit, WEEKLY_TOPICS.length))
