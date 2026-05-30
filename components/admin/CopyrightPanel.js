@@ -21,7 +21,7 @@ export default function CopyrightPanel({ adminKey }) {
   const [report, setReport]       = useState(null)
   const [loading, setLoading]     = useState(false)
   const [running, setRunning]     = useState(false)
-  const [riskFilter, setRiskFilter] = useState('ALL')
+  const [riskFilter, setRiskFilter] = useState('HIGH')
   const [typeFilter, setTypeFilter] = useState('ALL')
   const [rewriting, setRewriting] = useState({})   // { [_id]: true }
   const [rewritten, setRewritten] = useState({})   // { [_id]: 'success'|'error' }
@@ -395,12 +395,10 @@ export default function CopyrightPanel({ adminKey }) {
                         {/* Actions */}
                         <td>
                           <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
-                            {article.issues?.length > 0 && (
-                              <button className={'cp-rewrite-btn ' + rwClass} disabled={isRW || rwState==='success'}
-                                onClick={() => rewriteArticle(article)}>
-                                {rwLabel}
-                              </button>
-                            )}
+                            <button className={'cp-rewrite-btn ' + rwClass} disabled={isRW || rwState==='success'}
+                              onClick={() => rewriteArticle(article)}>
+                              {rwLabel}
+                            </button>
                             {article.slug && (
                               <a href={`/news/${article.slug}`} target="_blank" rel="noopener noreferrer">
                                 <button className="cp-ghost" style={{ fontSize:9, padding:'3px 8px', width:'100%' }}>VIEW ↗</button>
