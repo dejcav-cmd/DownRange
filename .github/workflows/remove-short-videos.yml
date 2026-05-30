@@ -1,0 +1,10 @@
+name: Remove Short Videos
+on:
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/remove-short-videos.py
