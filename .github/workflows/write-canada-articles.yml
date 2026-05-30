@@ -1,0 +1,18 @@
+name: Write Canada Articles
+on:
+  workflow_dispatch:
+    inputs:
+      admin_key:
+        description: 'DownRange admin key'
+        required: true
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Generate 10 Canada articles
+        run: |
+          curl -s -X POST https://downrangeco.com/api/admin/write-canada-articles \
+            -H "x-admin-key: ${{ github.event.inputs.admin_key }}" \
+            -H "Content-Type: application/json" \
+            -d '{"limit":10}' | tee result.json
+          cat result.json
