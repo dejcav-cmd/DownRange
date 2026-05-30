@@ -1700,14 +1700,27 @@ function ContentHub({ adminKey, setPanel, setSection }) {
             {seeding.fixImages ? '⏳ FIXING...' : '🖼 FIX ALL SVG IMAGES'}
           </button>
           
+          <button disabled={seeding.stripFooter} onClick={async ()=>{
+            setSeeding(s=>({...s,stripFooter:true})); setResults(r=>({...r,stripFooter:null}))
+            try {
+              const res = await fetch('/api/admin/strip-source-footer', { method:'POST', headers:H })
+              const d = await res.json()
+              setResults(r=>({...r,stripFooter:d}))
+            } catch(e){ setResults(r=>({...r,stripFooter:{ok:false,error:e.message}})) }
+            setSeeding(s=>({...s,stripFooter:false}))
+          }} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.stripFooter?'#374151':'#b45309', color:'#fff', border:'none', cursor:seeding.stripFooter?'default':'pointer' }}>
+            {seeding.stripFooter ? '⏳ STRIPPING...' : '🧹 STRIP SOURCE FOOTER'}
+          </button>
+
           <button onClick={()=>{setSection('system');setPanel('agents')}} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, padding:'10px 14px', background:'transparent', border:'1px solid rgba(34,197,94,.25)', color:'#22c55e', cursor:'pointer' }}>
             🤖 AI Agents →
           </button>
         </div>
-        {(results.all || results.fixImages) && (
+        {(results.all || results.fixImages || results.stripFooter) && (
           <div style={{ width:'100%', fontFamily:"'IBM Plex Mono',monospace", fontSize:11, paddingTop:8, borderTop:'1px solid rgba(34,197,94,.15)' }}>
             {results.all && <div style={{color:results.all.ok?'#4ade80':'#f87171'}}>{results.all.ok ? `✅ ${results.all.message}` : `❌ ${results.all.message||'Error'}`}</div>}
             {results.fixImages && <div style={{color:results.fixImages.ok?'#60a5fa':'#f87171',marginTop:results.all?4:0}}>{results.fixImages.ok ? `🖼 ${results.fixImages.message}` : `❌ ${results.fixImages.message||'Error'}`}</div>}
+            {results.stripFooter && <div style={{color:results.stripFooter.ok?'#4ade80':'#f87171',marginTop:4}}>{results.stripFooter.ok ? `🧹 Stripped: ${results.stripFooter.patched} articles | Clean: ${results.stripFooter.skipped} | Total: ${results.stripFooter.total}` : `❌ ${results.stripFooter.error||'Error'}`}</div>}
           </div>
         )}
       </div>
