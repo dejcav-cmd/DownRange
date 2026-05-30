@@ -311,7 +311,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
 
       {/* ── PLAYER SECTION ── */}
       {active && (
-        <div style={{ background:'#09090B', borderBottom:'1px solid var(--border)' }}>
+        <div style={{ background:'#09090B', borderBottom:'none' }}>
           <div className="container" style={{ maxWidth:1400, padding:'0 20px' }}>
             <div style={{ display:'grid', gridTemplateColumns:'1fr 340px', gap:0, paddingTop:0 }}>
               <div>
@@ -382,9 +382,9 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
       )}
 
       {/* ── BROWSE SECTION ── */}
-      <div style={{ padding:'8px 0 20px', background:'var(--bg)' }}>
+      <div style={{ padding:'0 0 20px', background:'var(--bg)' }}>
         <div className="container">
-          <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:18 }}>
+          <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12, paddingTop:16 }}>
             <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'#F0EDE6', letterSpacing:'.05em' }}>
               {search ? 'Search Results' : cat ? cat.charAt(0).toUpperCase() + cat.slice(1) + ' Videos' : active ? 'More Videos' : 'All Videos'}
             </div>
