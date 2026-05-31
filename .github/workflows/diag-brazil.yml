@@ -1,0 +1,12 @@
+name: Diagnose Brazil Content
+on:
+  workflow_dispatch:
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/diag-brazil.py
