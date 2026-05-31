@@ -11,6 +11,7 @@ const ARTICLES = {
     title: 'Buying Your First Gun: The Complete Beginner\'s Guide',
     subtitle: 'Everything you need to know before walking into a gun store — from caliber selection to the background check process.',
     category: 'Getting Started', readTime: '12 min read', date: 'May 15, 2026',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Walther_P99Q.jpg/1920px-Walther_P99Q.jpg',
     tags: ['First Gun', 'Handgun', 'Budget', '9mm'],
     intro: 'Most first-time gun buyers make the same mistake: they walk into a gun store with no plan and let a salesperson decide for them. That\'s not necessarily bad — good salespeople at good stores provide real guidance. But you\'ll make a much better decision if you walk in knowing what you want and why.',
     sections: [
@@ -33,6 +34,7 @@ const ARTICLES = {
     title: 'How to Get Your CCW License (State-by-State Guide)',
     subtitle: 'Concealed carry permits explained: requirements, costs, training, and exactly what to expect in your state.',
     category: 'CCW & Carry', readTime: '15 min read', date: 'May 18, 2026',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Concealed_Carry_Holster_Handgun.jpg/1280px-Concealed_Carry_Holster_Handgun.jpg',
     tags: ['CCW', 'Carry Permit', 'Legal', 'Training'],
     intro: 'A Concealed Carry Weapon (CCW) license — also called a Concealed Handgun Permit (CHP), Carry of Concealed Deadly Weapon (CCDW), or License to Carry (LTC) depending on your state — allows you to legally carry a concealed firearm in public. As of 2026, 29 states are constitutional carry states, meaning no permit is required to carry concealed. But even in those states, a permit has significant advantages.',
     sections: [
@@ -54,6 +56,7 @@ const ARTICLES = {
     title: 'The Four Rules of Firearms Safety (And Why They Save Lives)',
     subtitle: 'These four rules are not suggestions. Every accident with a firearm traces back to violating at least one of them.',
     category: 'Safety', readTime: '8 min read', date: 'May 20, 2026',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Control_station_for_an_indoor_firing_range.jpg',
     tags: ['Safety', 'Fundamentals', 'Four Rules', 'Beginner'],
     intro: 'Colonel Jeff Cooper, founder of Gunsite Academy and one of the most influential firearms trainers of the 20th century, codified the Four Rules of Firearms Safety. They are not guidelines. They are not suggestions. They are the framework that prevents negligent discharges from becoming tragedies. Every single firearms accident can be traced to a violation of at least one of these rules.',
     sections: [
@@ -214,17 +217,17 @@ const ARTICLES = {
 // ── UNIQUE HERO IMAGES PER ARTICLE ──────────────────────────────────────────
 const HERO_IMAGES = {
   'buying-your-first-gun': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Walther_P99Q.jpg/1920px-Walther_P99Q.jpg',
-  'how-to-get-ccw-license':       '/img/photos/pistol.jpg',
+  'how-to-get-ccw-license': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Concealed_Carry_Holster_Handgun.jpg/1280px-Concealed_Carry_Holster_Handgun.jpg',
   'firearms-safety-four-rules': 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Control_station_for_an_indoor_firing_range.jpg',
-  'home-defense-basics':          '/img/photos/pistol.jpg',
-  'safe-storage-guide-beginners': '/img/photos/pistol.jpg',
-  'ammo-guide-beginners':         '/img/photos/pistol.jpg',
+  'home-defense-basics': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Mossberg_590A1.jpg/1280px-Mossberg_590A1.jpg',
+  'safe-storage-guide-beginners': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Cannon_Safe.jpg/1280px-Cannon_Safe.jpg',
+  'ammo-guide-beginners': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/9_mm_Parabellum.jpg/1280px-9_mm_Parabellum.jpg',
   'shooting-range-first-visit': 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Composite_Indoor_Shooting_Range_%28CISR%29_at_INS_Karna.jpg',
-  'cleaning-maintaining-your-gun':'/img/photos/pistol.jpg',
-  'understanding-gun-laws':       '/img/photos/law.jpg',
-  'choosing-holster-beginners':   '/img/photos/pistol.jpg',
-  'dry-fire-training-beginners':  '/img/photos/rifle.jpg',
-  'what-is-nfa':                  '/img/photos/rifle.jpg',
+  'cleaning-maintaining-your-gun': 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Glock_17_fieldstripped.jpg/1280px-Glock_17_fieldstripped.jpg',
+  'understanding-gun-laws': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/United_States_Supreme_Court_Building.jpg/1280px-United_States_Supreme_Court_Building.jpg',
+  'choosing-holster-beginners': 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Safariland_Level_III_Holster.jpg/1280px-Safariland_Level_III_Holster.jpg',
+  'dry-fire-training-beginners': 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/USMC_pistol_training.jpg/1280px-USMC_pistol_training.jpg',
+  'what-is-nfa': 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Silencer-Group.jpg/1280px-Silencer-Group.jpg',
 }
 
 export async function generateStaticParams() {
@@ -258,7 +261,7 @@ export default async function ArticlePage({ params }) {
     const article = ARTICLES[params.slug]
   if (!article) notFound()
 
-  const heroImg = HERO_IMAGES[params.slug] || article.heroImage
+  const heroImg = HERO_IMAGES[params.slug] || article.heroImage || '/img/photos/rifle.jpg'
   const allSlugs = Object.keys(ARTICLES)
   const currentIdx = allSlugs.indexOf(params.slug)
   const prevSlug = currentIdx > 0 ? allSlugs[currentIdx - 1] : null
