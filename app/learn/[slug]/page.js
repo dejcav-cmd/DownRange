@@ -76,7 +76,7 @@ const ARTICLES = {
     title: 'Home Defense Basics: What You Actually Need',
     subtitle: 'A practical guide to protecting your home — the right firearm, a workable plan, the right storage, and what Hollywood gets completely wrong.',
     category: 'Home Defense', readTime: '11 min read', date: 'June 2, 2026',
-    heroImage: '/img/photos/pistol.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Mossberg_590A1.jpg/1280px-Mossberg_590A1.jpg',
     tags: ['Home Defense', 'Shotgun', 'AR-15', 'Plan', 'Beginner'],
     intro: 'Most people buy a gun for home defense, put it in a nightstand drawer, and consider the problem solved. It isn\'t.\n\nA firearm is one component of a home defense system. Without a plan, without the right storage setup, without knowing your house\'s fatal funnels and safe rooms, the gun is as likely to create problems as solve them. This guide gives you the complete picture — from choosing the right platform to building a plan your whole household can execute under stress.',
     sections: [
@@ -92,7 +92,7 @@ const ARTICLES = {
     title: 'Safe Storage 101: Keeping Your Guns Secure and Accessible',
     subtitle: 'How to prevent theft, accidents, and unauthorized access while keeping your defensive firearm ready when seconds count.',
     category: 'Safe Storage', readTime: '9 min read', date: 'June 5, 2026',
-    heroImage: '/img/photos/pistol.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Cannon_Safe.jpg/1280px-Cannon_Safe.jpg',
     tags: ['Safe Storage', 'Gun Safe', 'Biometric', 'Children', 'Theft Prevention'],
     intro: 'Owning a firearm comes with a legal and moral obligation to store it responsibly. In most states, if a child accesses your unsecured firearm and causes harm, you face criminal liability. Even in states without storage laws, the moral weight is obvious.\n\nBut storage isn\'t just about preventing tragedy — it\'s about preventing theft. Guns stolen from homes are the primary source of illegal firearms on the street. Responsible storage keeps your firearms out of criminal hands and protects your family simultaneously. Here\'s how to do it without sacrificing access when you actually need the gun.',
     sections: [
@@ -107,7 +107,7 @@ const ARTICLES = {
     title: 'Ammunition Explained: What to Buy and Why',
     subtitle: 'Calibers, grain weights, hollow points vs FMJ, and how to stop overpaying at the gun counter.',
     category: 'Ammunition', readTime: '10 min read', date: 'June 9, 2026',
-    heroImage: '/img/photos/pistol.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/9_mm_Parabellum.jpg/1280px-9_mm_Parabellum.jpg',
     tags: ['Ammo', '9mm', 'Hollow Point', 'FMJ', 'Caliber Guide'],
     intro: 'Walk into any gun store and you\'ll face an entire wall of ammunition options. Same caliber, dozens of SKUs, prices ranging from 15 cents to $2 per round. The marketing language — \'Critical Defense\', \'Defender\', \'Gold Dot\', \'HST\' — tells you almost nothing useful.\n\nHere\'s the framework that makes it simple: two purposes, two ammo types. Training ammo is cheap, range-friendly full metal jacket (FMJ). Defensive ammo is hollowpoint, reliably expands on impact, and lives in your gun for actual use. The rest is details.',
     sections: [
@@ -122,7 +122,7 @@ const ARTICLES = {
     title: 'Your First Time at a Shooting Range: What to Expect',
     subtitle: 'Range rules, etiquette, what to bring, what not to do, and how to make the most of your first live-fire session.',
     category: 'Getting Started', readTime: '7 min read', date: 'June 12, 2026',
-    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Composite_Indoor_Shooting_Range_%28CISR%29_at_INS_Karna.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Composite_Indoor_Shooting_Range.jpg',
     tags: ['Range', 'Beginner', 'Safety', 'Etiquette', 'First Time'],
     intro: 'Shooting ranges have specific rules and culture. Violating them ranges from embarrassing to genuinely dangerous. The good news: the rules are simple, consistent across most ranges, and make complete sense once you understand why they exist.\n\nThis guide covers indoor range protocol, which applies to 90% of first visits. Outdoor ranges and gun clubs operate similarly with minor variations. If you\'re going to an outdoor range, read the posted rules when you arrive — they vary more widely.',
     sections: [
@@ -137,7 +137,7 @@ const ARTICLES = {
     title: 'How to Clean and Maintain Your Firearm',
     subtitle: 'A dirty gun is an unreliable gun. Field strip, clean, and lubricate your pistol in 20 minutes — step by step.',
     category: 'Maintenance', readTime: '10 min read', date: 'June 16, 2026',
-    heroImage: '/img/photos/rifle.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Glock_17_fieldstripped.jpg/1280px-Glock_17_fieldstripped.jpg',
     tags: ['Cleaning', 'Maintenance', 'Field Strip', 'CLP', 'Reliability'],
     intro: 'A firearm is a mechanical device. Like any mechanical device, it requires periodic cleaning and lubrication to function reliably. The good news: cleaning a modern semi-automatic pistol takes about 20 minutes once you\'ve done it a few times and requires $30–$50 in tools you\'ll use indefinitely.\n\nThe rule of thumb: clean your firearm after every range session. At minimum, clean it every 3 months if it\'s stored and not being used. A defensive firearm that sits in a holster or quick-access safe should be cleaned monthly — pocket lint, sweat, and humidity degrade lubricant and invite rust.',
     sections: [
@@ -152,7 +152,7 @@ const ARTICLES = {
     title: 'Understanding Gun Laws: A Beginner\'s Legal Overview',
     subtitle: 'Federal law, state law, and how they interact — what new gun owners need to know to stay legal in 2026.',
     category: 'Legal', readTime: '13 min read', date: 'June 19, 2026',
-    heroImage: '/img/photos/law.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/43/United_States_Supreme_Court_Building.jpg/1280px-United_States_Supreme_Court_Building.jpg',
     tags: ['Gun Laws', 'Federal', 'State Laws', 'Legal', 'NFA', '2026'],
     intro: 'US gun law is a patchwork of federal statutes, state laws, and local ordinances that interact in non-obvious ways. The federal framework sets a floor — states can only add restrictions, never remove federal requirements. But the variation between states is enormous: what\'s legal in Arizona may be a felony in New Jersey.\n\nThis guide gives you the legal framework every gun owner needs. It is not legal advice — if you have specific questions about your situation, consult an attorney. But this is the foundational knowledge that keeps you out of accidental legal trouble.',
     sections: [
@@ -167,7 +167,7 @@ const ARTICLES = {
     title: 'How to Choose a Holster for Concealed Carry',
     subtitle: 'IWB, OWB, appendix, shoulder — the types of holsters and how to choose the right one for your body, lifestyle, and firearm.',
     category: 'CCW & Carry', readTime: '11 min read', date: 'June 23, 2026',
-    heroImage: '/img/photos/pistol.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/Safariland_Level_III_Holster.jpg/1280px-Safariland_Level_III_Holster.jpg',
     tags: ['Holster', 'IWB', 'AIWB', 'Concealed Carry', 'EDC'],
     intro: 'Buying a carry gun without buying a quality holster is like buying a car without seatbelts. The holster is half the system — it determines how safely you carry, how comfortably you carry, and how quickly you can draw under stress.\n\nNew carriers almost universally make the same mistake: they buy a cheap universal holster from the sporting goods store, carry uncomfortably for a month, and then stop carrying. The solution isn\'t more willpower. It\'s a quality holster fitted to your specific gun in a position that works for your body.',
     sections: [
@@ -182,7 +182,7 @@ const ARTICLES = {
     title: 'Dry Fire Training: Get Better Without Spending on Ammo',
     subtitle: 'Professional shooters spend more time dry firing than live firing. Here\'s how to build real skill at home — safely and free.',
     category: 'Training', readTime: '9 min read', date: 'June 26, 2026',
-    heroImage: '/img/photos/rifle.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/USMC_pistol_training.jpg/1280px-USMC_pistol_training.jpg',
     tags: ['Dry Fire', 'Training', 'Free', 'Draw Stroke', 'Fundamentals'],
     intro: 'Ammunition costs money. Range time costs money. Dry fire costs nothing and can be done in your living room.\n\nDry fire practice — practicing your draw, trigger press, sight alignment, and movement with an unloaded firearm — is how professional competitive shooters stay sharp between matches. USPSA Grand Masters, military special operations snipers, and defensive shooting instructors all use dry fire as a primary training tool. The reason: it isolates the fundamentals without the distraction of noise, recoil, and range environment.',
     sections: [
@@ -196,7 +196,7 @@ const ARTICLES = {
     title: 'What Is the NFA? Suppressors, SBRs, and Machine Guns Explained',
     subtitle: 'After the NFA tax stamp was eliminated in January 2026, suppressor ownership exploded. Here\'s everything you need to know about NFA items.',
     category: 'Legal', readTime: '12 min read', date: 'June 30, 2026',
-    heroImage: '/img/photos/rifle.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Silencer-Group.jpg/1280px-Silencer-Group.jpg',
     tags: ['NFA', 'Suppressor', 'SBR', 'ATF', '2026 Reform', 'Tax Stamp'],
     intro: 'The National Firearms Act of 1934 created a regulated category of firearms and accessories that required registration with the federal government and payment of a $200 tax stamp. For 90 years, the process took 6–12 months and cost $200 plus the item price.\n\nIn January 2026, Congress eliminated the $200 NFA tax stamp requirement and streamlined the approval process to 30–60 days. The result: suppressor sales doubled in the first quarter. If you\'ve been curious about suppressors, SBRs, or other NFA items, now is the time to understand how it works.',
     sections: [
