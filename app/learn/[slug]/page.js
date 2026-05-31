@@ -3,7 +3,6 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 
-import { fetchAuthorBio } from '../../../lib/authorBio'
 
 const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange' }
 
@@ -249,7 +248,14 @@ export async function generateMetadata({ params }) {
 
 export const revalidate = 1
 export default async function ArticlePage({ params }) {
-  const article = ARTICLES[params.slug]
+  const DEFAULT_BIO = "DJ Cavalcanti is the founder of DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
+  let authorBio = DEFAULT_BIO
+  try {
+    const m = await import('../../../lib/authorBio')
+    authorBio = await m.fetchAuthorBio() || DEFAULT_BIO
+  } catch (e) { authorBio = DEFAULT_BIO }
+
+    const article = ARTICLES[params.slug]
   if (!article) notFound()
 
   const heroImg = HERO_IMAGES[params.slug] || article.heroImage

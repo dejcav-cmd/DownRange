@@ -5,7 +5,6 @@ import BreakingTicker  from '../../../components/layout/BreakingTicker'
 import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated, fetchBlogPostBySlug } from '../../../sanity/lib/client'
-import { fetchAuthorBio } from '../../../lib/authorBio'
 
 export const revalidate = 60
 export const dynamicParams = true // render unknown slugs on-demand, not 404
@@ -105,7 +104,12 @@ export default async function BlogArticlePage({ params }) {
   if (!post) notFound()
 
   const alerts      = await fetchBreakingAlerts(3).catch(() => [])
-  const authorBio   = await fetchAuthorBio()
+  const DEFAULT_BIO = "DJ Cavalcanti is the founder of DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
+  let authorBio = DEFAULT_BIO
+  try {
+    const m = await import('../../../lib/authorBio')
+    authorBio = await m.fetchAuthorBio() || DEFAULT_BIO
+  } catch (e) { authorBio = DEFAULT_BIO }
   const postIndex   = allPosts.findIndex(p => p.slug === params.slug)
   const prevPost    = allPosts[postIndex + 1] || null
   const nextPost    = allPosts[postIndex - 1] || null
