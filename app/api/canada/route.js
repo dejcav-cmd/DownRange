@@ -125,5 +125,14 @@ export async function POST(req) {
     return Response.json({ ok: true, created })
   }
 
+  if (action === 'fix-image') {
+    const { title, type: t } = body
+    const q = (title || '') + ' Canada firearms law'
+    const imageUrl = await fetchImage(q)
+    if (!imageUrl) return Response.json({ error: 'No image found' }, { status: 404 })
+    await sanity.patch(id).set({ imageUrl }).commit()
+    return Response.json({ ok: true, imageUrl })
+  }
+
   return Response.json({ error: 'Unknown action' }, { status: 400 })
 }

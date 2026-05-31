@@ -108,18 +108,29 @@ async function handler(req) {
   const stats = { scanned:0, ogFetched:0, photoFallback:0, alreadyOk:0, failed:0 }
 
   try {
-    const articles = await sanity.fetch(`*[_type=="newsArticle"] | order(publishedAt desc) [0...50] { _id, title, imageUrl, sourceUrl, category }`)
-    stats.scanned = articles.length
+    // Cover newsArticle + canadaContent articles + brazilContent artigos
+    const [newsArts, canadaArts, brazilArts] = await Promise.all([
+      sanity.fetch('*[_type=="newsArticle"] | order(publishedAt desc) [0...50] { _id, title, imageUrl, sourceUrl, category }'),
+      sanity.fetch('*[_type=="canadaContent" && type=="article"] | order(publishedAt desc) [0...20] { _id, title, imageUrl, sourceUrl }'),
+      sanity.fetch('*[_type=="brazilContent" && type=="artigo"] | order(publishedAt desc) [0...20] { _id, title, imageUrl, sourceUrl }'),
+    ])
 
-    for (const a of articles) {
+    const allItems = [
+      ...newsArts.map(a => ({...a, _country:'us'})),
+      ...canadaArts.map(a => ({...a, _country:'canada'})),
+      ...brazilArts.map(a => ({...a, _country:'brazil'})),
+    ]
+    stats.scanned = allItems.length
+
+    for (const a of allItems) {
       if (a.imageUrl && !isBad(a.imageUrl)) { stats.alreadyOk++; continue }
       let newUrl = null
+      // Country-specific query for intl articles
+      const catOrCountry = a._country !== 'us' ? a._country + ' firearms' : (a.category || '')
       if (a.sourceUrl) { newUrl = await tryOgImage(a.sourceUrl); if (newUrl) stats.ogFetched++ }
-      // Try Pixabay → Pexels for real topic-specific photos (no copyright)
-      if (!newUrl) { newUrl = await searchPixabay(a.title, a.category); if (newUrl) stats.ogFetched++ }
-      if (!newUrl) { newUrl = await searchPexels(a.title, a.category); if (newUrl) stats.ogFetched++ }
-      // Local fallback only as absolute last resort
-      if (!newUrl) { newUrl = pickFallback(a.title, a.category); stats.photoFallback++ }
+      if (!newUrl) { newUrl = await searchPixabay(a.title, catOrCountry); if (newUrl) stats.ogFetched++ }
+      if (!newUrl) { newUrl = await searchPexels(a.title, catOrCountry); if (newUrl) stats.ogFetched++ }
+      if (!newUrl) { newUrl = pickFallback(a.title, a.category || ''); stats.photoFallback++ }
       try { await sanity.patch(a._id).set({ imageUrl: newUrl }).commit() }
       catch (e) { stats.failed++; stats.photoFallback-- }
       await new Promise(r => setTimeout(r, 80))

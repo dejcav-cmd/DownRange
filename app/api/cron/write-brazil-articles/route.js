@@ -15,5 +15,8 @@ export async function GET(req) {
     body: JSON.stringify({ limit: 2 }),
   })
   const d = await res.json().catch(() => ({}))
+  const t1 = Date.now()
+  const created = (d.results||[]).filter(r=>r.status==='created').length
+  await reportCronRun('write-brazil-articles', { status: d.ok ? 'success' : 'failed', ms: t1, details: 'Created ' + created + ' articles' }).catch(()=>{})
   return Response.json({ ok: true, cron: 'write-brazil-articles', ...d })
 }

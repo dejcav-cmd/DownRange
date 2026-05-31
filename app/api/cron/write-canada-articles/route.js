@@ -1,6 +1,7 @@
 // Weekly cron: writes 10 Canada articles every Monday at 10am UTC
 // Calls the admin route with cron auth
 export const dynamic = 'force-dynamic'
+import { reportCronRun } from '@/lib/cronReporter'
 export const maxDuration = 300
 
 export async function GET(req) {
@@ -21,5 +22,8 @@ export async function GET(req) {
     body: JSON.stringify({ limit: 10 }),
   })
   const d = await res.json()
+  const t1 = Date.now()
+  const created = (d.results||[]).filter(r=>r.status==='created').length
+  await reportCronRun('write-canada-articles', { status: d.ok ? 'success' : 'failed', ms: t1, details: 'Created ' + created + ' articles' }).catch(()=>{})
   return Response.json({ ok: true, cron: 'write-canada-articles', ...d })
 }

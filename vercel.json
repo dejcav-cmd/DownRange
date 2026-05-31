@@ -150,11 +150,23 @@
     },
     {
       "path": "/api/cron/write-canada-articles",
-      "schedule": "0 10 * * 1"
+      "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/cron/write-canada-articles",
+      "schedule": "0 20 * * *"
     },
     {
       "path": "/api/cron/write-brazil-articles",
-      "schedule": "0 12 * * 1"
+      "schedule": "0 9 * * *"
+    },
+    {
+      "path": "/api/cron/write-brazil-articles",
+      "schedule": "0 21 * * *"
+    },
+    {
+      "path": "/api/admin/fix-images-intl",
+      "schedule": "0 11 * * *"
     }
   ],
   "headers": [

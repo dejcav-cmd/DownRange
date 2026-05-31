@@ -17,6 +17,7 @@ const NewsletterManager     = L(() => import('../../components/admin/NewsletterM
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
 const ReleaseManager        = L(() => import('../../components/admin/ReleaseManager'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
+const BrazilManager         = L(() => import('../../components/admin/BrazilManager'))
 const CompetitionManager    = L(() => import('../../components/admin/CompetitionManager'))
 const ReviewManager         = L(() => import('../../components/admin/ReviewManager'))
 const BlogManagerFull       = L(() => import('../../components/admin/BlogManager'))
@@ -46,6 +47,7 @@ const NAV = [
       { id:'blog',         label:'Blog',             icon:'✍',  badge:null },
       { id:'reviews',      label:'Reviews',          icon:'★',  badge:null },
       { id:'canada',       label:'Canada',           icon:'🇨🇦', badge:null },
+      { id:'brazil',       label:'Brasil',           icon:'🇧🇷', badge:null },
       { id:'competitions', label:'Competitions',     icon:'🏆', badge:null },
     ]
   },
@@ -315,6 +317,7 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
     { label:'Blog Posts',    icon:'✍',  url:'/blog',        editFn:()=>{ setSection('content'); setPanel('blog') } },
     { label:'Competitions',  icon:'🏆', url:'/competitions',editFn:()=>{ setSection('content'); setPanel('competitions') } },
     { label:'Canada',        icon:'🇨🇦', url:'/canada',      editFn:()=>{ setSection('content'); setPanel('canada') } },
+    { label:'Brasil',        icon:'🇧🇷', url:'/brazil',      editFn:()=>{ setSection('content'); setPanel('brazil') } },
     { label:'Videos',        icon:'▶',  url:'/video',       editFn:()=>{ setSection('media');   setPanel('videos') } },
   ]
 
@@ -871,7 +874,7 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
     firearmRelease: '#C8922A',
     canadaContent:  '#ef4444',
   }
-  const TYPE_ICON = { newsArticle:'📰', blogPost:'📝', firearmRelease:'🔫', canadaContent:'🍁' }
+  const TYPE_ICON = { newsArticle:'📰', blogPost:'📝', firearmRelease:'🔫', canadaContent:'🍁', brazilContent:'🇧🇷' }
 
   async function runScan() {
     setScanning(true); setScanData(null); setRewriteLog([])
@@ -1240,6 +1243,7 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
             { key:'fix-images',          label:'🖼 Fix Article Images',        color:'#3b82f6',  path:'fix-images',           actions:[{label:'Fix Missing (50)',params:'?batch=50&force=false'},{label:'Force All (50)',params:'?batch=50&force=true'}] },
             { key:'write-blog-articles', label:'📝 Generate Blog Posts',        color:'#22c55e',  path:'write-blog-articles',  actions:[{label:'Write 3 Posts',params:''}] },
             { key:'write-canada-articles',label:'🍁 Write Canada Articles',     color:'#ef4444',  path:'write-canada-articles',actions:[{label:'Write Articles',params:''}] },
+            { key:'write-brazil-articles',label:'🇧🇷 Write Brazil Articles',     color:'#009C3B',  path:'write-brazil-articles',actions:[{label:'Write Artigos',params:''}] },
             { key:'fetch-article-images',label:'📷 Fetch OG Images',            color:'#a855f7',  path:'fetch-article-images', actions:[{label:'Fetch Now (30)',params:'?limit=30'}] },
             { key:'patch-article',       label:'🔧 Patch SVG Fallbacks',        color:'#f59e0b',  path:'patch-article',        actions:[{label:'Patch All',params:''}] },
             { key:'seed-image-repo',     label:'🗃 Seed Image Repository',      color:'#64748b',  path:'seed-image-repo',      actions:[{label:'Seed Images',params:''}] },
@@ -2715,6 +2719,7 @@ export default function AdminPage() {
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
             {panel==='canada'       && <CanadaManager       adminKey={adminKey} />}
+            {panel==='brazil'       && <BrazilManager       adminKey={adminKey} />}
             {panel==='competitions' && <CompetitionManager  adminKey={adminKey} />}
             {panel==='reviews'      && <ReviewManager       adminKey={adminKey} />}
 

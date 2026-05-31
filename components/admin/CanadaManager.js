@@ -95,6 +95,41 @@ export default function CanadaManager({ adminKey }) {
     setBusy(false)
   }
 
+  async function fixImage(id, title) {
+    setBusy(true); flash('⏳ Searching Pexels/Pixabay...')
+    try {
+      const r = await fetch('/api/canada', { method:'POST', headers:{...H,'Content-Type':'application/json'},
+        body:JSON.stringify({action:'fix-image',id,title,type:activeType}) })
+      const d = await r.json()
+      if (d.ok) { await load(); flash('✅ Image: ' + d.imageUrl.slice(0,50)) }
+      else flash('❌ ' + (d.error||'Not found'))
+    } finally { setBusy(false) }
+  }
+
+  async function fixAllImages() {
+    setBusy(true); flash('⏳ Fixing all Canada images...')
+    try {
+      const r = await fetch('/api/admin/fix-images-intl', { method:'POST', headers:{...H,'Content-Type':'application/json'},
+        body:JSON.stringify({type:'canada'}) })
+      const d = await r.json()
+      flash('✅ Images fixed: ' + (d.fixed||0))
+      await load()
+    } catch { flash('❌ Error fixing images') } finally { setBusy(false) }
+  }
+
+  async function pullArticles() {
+    setBusy(true); flash('⏳ Writing Canada articles with AI + real images...')
+    try {
+      const r = await fetch('/api/admin/write-canada-articles', { method:'POST', headers:{...H,'Content-Type':'application/json'},
+        body:JSON.stringify({limit:5,force:false}) })
+      const d = await r.json()
+      const created = (d.results||[]).filter(x=>x.status==='created').length
+      const skipped = (d.results||[]).filter(x=>x.status==='skipped').length
+      flash('✅ ' + created + ' created · ' + skipped + ' already exist')
+      if (activeType === 'article') await load()
+    } finally { setBusy(false) }
+  }
+
   async function aiWrite(id) {
     if (!aiTopic) { flash('❌ Enter a topic first'); return }
     setBusy(true); flash('⏳ Claude is writing...')
