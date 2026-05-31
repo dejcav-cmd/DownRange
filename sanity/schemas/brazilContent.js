@@ -1,0 +1,47 @@
+import { defineType, defineField } from 'sanity'
+
+export const brazilContent = defineType({
+  name: 'brazilContent',
+  title: 'Brazil Page Content',
+  type: 'document',
+  fields: [
+    { name: 'editorLocked', title: '🔒 Editor Locked', type: 'boolean', initialValue: false },
+    defineField({ name: 'type', title: 'Content Type', type: 'string',
+      options: { list: ['lei','estado','artigo','municao','alerta','stat','cac_info'] },
+      validation: R => R.required() }),
+    defineField({ name: 'title', title: 'Título', type: 'string', validation: R => R.required() }),
+    defineField({ name: 'slug', title: 'Slug', type: 'slug', options: { source: 'title' } }),
+    defineField({ name: 'status', title: 'Status', type: 'string' }),
+    defineField({ name: 'impact', title: 'Impacto', type: 'string',
+      options: { list: ['CRÍTICO','ALTO','MÉDIO','BAIXO','EM VIGOR','REVOGADO'] } }),
+    defineField({ name: 'effectiveDate', title: 'Data Efetiva', type: 'string' }),
+    defineField({ name: 'summary', title: 'Resumo', type: 'text', rows: 3 }),
+    defineField({ name: 'detail', title: 'Detalhes', type: 'text', rows: 8 }),
+    defineField({ name: 'sourceUrl', title: 'URL da Fonte', type: 'url' }),
+    defineField({ name: 'abbr', title: 'Sigla do Estado (ex: SP, RJ)', type: 'string' }),
+    defineField({ name: 'rating', title: 'Classificação (A/B/C/D)', type: 'string' }),
+    defineField({ name: 'highlights', title: 'Destaques', type: 'array', of: [{ type: 'string' }] }),
+    defineField({ name: 'body', title: 'Corpo do Artigo (HTML)', type: 'text', rows: 15 }),
+    defineField({ name: 'qualityReviewed', title: 'Revisado', type: 'boolean', initialValue: false }),
+    defineField({ name: 'imageUrl', title: 'URL da Imagem', type: 'url' }),
+    defineField({ name: 'tag', title: 'Tag (LEI/GUIA/POLÍTICA/CAC)', type: 'string' }),
+    defineField({ name: 'readMins', title: 'Tempo de Leitura', type: 'string' }),
+    defineField({ name: 'author', title: 'Autor', type: 'string', initialValue: 'DJ Cavalcanti' }),
+    defineField({ name: 'brlPrice', title: 'Preço em BRL (ex: R$2,50/rd)', type: 'string' }),
+    defineField({ name: 'usdEquiv', title: 'Equivalente USD', type: 'string' }),
+    defineField({ name: 'availability', title: 'Disponibilidade', type: 'string',
+      options: { list: ['Alta','Moderada','Baixa'] } }),
+    defineField({ name: 'trend', title: 'Tendência de Preço', type: 'string',
+      options: { list: ['up','down','flat'] } }),
+    defineField({ name: 'note', title: 'Observações', type: 'text', rows: 2 }),
+    defineField({ name: 'value', title: 'Valor / Estatística', type: 'string' }),
+    defineField({ name: 'color', title: 'Cor (hex)', type: 'string' }),
+    defineField({ name: 'order', title: 'Ordem', type: 'number', initialValue: 99 }),
+    defineField({ name: 'active', title: 'Ativo / Visível', type: 'boolean', initialValue: true }),
+    defineField({ name: 'publishedAt', title: 'Publicado Em', type: 'datetime' }),
+  ],
+  preview: {
+    select: { title: 'title', subtitle: 'type', status: 'status' },
+    prepare: ({ title, subtitle, status }) => ({ title, subtitle: `[${subtitle}] ${status || ''}` })
+  }
+})

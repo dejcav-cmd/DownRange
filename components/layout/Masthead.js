@@ -76,6 +76,7 @@ const NAV = [
     label: '🌎 International', href: '/canada',
     children: [
       { label: '🇨🇦 Canada',           href: '/canada', desc: 'PAL, C-21, province laws' },
+      { label: '🇧🇷 Brasil',            href: '/brazil', desc: 'CAC, Estatuto, legislação BR' },
     ]
   },
   { label: 'Blog', href: '/blog' },

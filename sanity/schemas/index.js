@@ -16,6 +16,7 @@ import { billTracker }    from './billTracker'
 import { outreachContact }  from './outreachContact'
 import { dailyBriefing }    from './dailyBriefing'
 import { canadaContent }    from './canadaContent'
+import { brazilContent }     from './brazilContent'
 import { competition }      from './competition'
 import { outreachCampaign } from './outreachCampaign'
 import { outreachTemplate } from './outreachTemplate'
@@ -35,6 +36,7 @@ export const schemaTypes = [
   outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
   dailyBriefing,
   canadaContent,
+  brazilContent,
   competition,
   cronRunStore,
   blogPost,
