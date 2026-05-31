@@ -11,7 +11,7 @@ const ARTICLES = {
     title: 'Buying Your First Gun: The Complete Beginner\'s Guide',
     subtitle: 'Everything you need to know before walking into a gun store — from caliber selection to the background check process.',
     category: 'Getting Started', readTime: '12 min read', date: 'May 15, 2026',
-    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Walther_P99Q.jpg/1920px-Walther_P99Q.jpg',
+    heroImage: '/img/learn/buying-your-first-gun.jpg',
     tags: ['First Gun', 'Handgun', 'Budget', '9mm'],
     intro: 'Most first-time gun buyers make the same mistake: they walk into a gun store with no plan and let a salesperson decide for them. That\'s not necessarily bad — good salespeople at good stores provide real guidance. But you\'ll make a much better decision if you walk in knowing what you want and why.',
     sections: [
@@ -216,7 +216,7 @@ const ARTICLES = {
 
 // ── UNIQUE HERO IMAGES PER ARTICLE ──────────────────────────────────────────
 const HERO_IMAGES = {
-  'buying-your-first-gun': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Walther_P99Q.jpg/1920px-Walther_P99Q.jpg',
+  'buying-your-first-gun': '/img/learn/buying-your-first-gun.jpg',
   'how-to-get-ccw-license': 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b9/Concealed_Carry_Holster_Handgun.jpg/1280px-Concealed_Carry_Holster_Handgun.jpg',
   'firearms-safety-four-rules': 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Control_station_for_an_indoor_firing_range.jpg',
   'home-defense-basics': 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d7/Mossberg_590A1.jpg/1280px-Mossberg_590A1.jpg',
