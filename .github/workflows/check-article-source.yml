@@ -1,0 +1,12 @@
+name: Check Article Source
+on:
+  workflow_dispatch:
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check article source
+        run: python3 scripts/check-article-source.py
