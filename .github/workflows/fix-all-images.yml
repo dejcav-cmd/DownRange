@@ -7,6 +7,7 @@ jobs:
     env:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
       - name: Fix images - content API test, Wikimedia search, draft articles
