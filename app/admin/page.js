@@ -1491,6 +1491,133 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
 }
 
 
+
+// ── AuthorBioPanel — manage the author signature shown on all articles ─────────────────
+function AuthorBioPanel({ adminKey }) {
+  const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+  const [bio, setBio]         = useState('')
+  const [saved, setSaved]     = useState('')
+  const [editing, setEditing] = useState(false)
+  const [draft, setDraft]     = useState('')
+  const [saving, setSaving]   = useState(false)
+  const [msg, setMsg]         = useState(null)
+  const [updatedAt, setUpdatedAt] = useState(null)
+
+  useEffect(() => { loadBio() }, [])
+
+  async function loadBio() {
+    try {
+      const res = await fetch('/api/admin/site-config', { headers: H })
+      const d = await res.json()
+      if (d.ok) {
+        setBio(d.authorBio || '')
+        setSaved(d.authorBio || '')
+        setUpdatedAt(d.authorBioUpdatedAt)
+      }
+    } catch {}
+  }
+
+  async function saveBio() {
+    setSaving(true)
+    setMsg(null)
+    try {
+      const res = await fetch('/api/admin/site-config', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ authorBio: draft }),
+      })
+      const d = await res.json()
+      if (d.ok) {
+        setBio(draft)
+        setSaved(draft)
+        setEditing(false)
+        setMsg({ ok: true, text: '✅ Bio updated — all pages will reflect this within 60 seconds' })
+        await loadBio()
+      } else {
+        setMsg({ ok: false, text: '❌ ' + (d.error || 'Save failed') })
+      }
+    } catch (e) {
+      setMsg({ ok: false, text: '❌ ' + e.message })
+    }
+    setSaving(false)
+  }
+
+  const wordCount = (draft || bio).split(/\s+/).filter(Boolean).length
+
+  return (
+    <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', marginBottom:24 }}>
+      {/* Header */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'14px 20px', borderBottom:'1px solid var(--border)', background:'rgba(200,146,42,.04)' }}>
+        <div>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', letterSpacing:'.06em', color:'#C8922A' }}>✍ AUTHOR SIGNATURE</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginTop:2 }}>
+            Shown at the bottom of every article, blog post, and guide. One change updates the entire site.
+            {updatedAt && <span style={{ color:'#4b5563', marginLeft:8 }}>Last updated {new Date(updatedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}</span>}
+          </div>
+        </div>
+        {!editing && (
+          <button onClick={() => { setDraft(bio); setEditing(true); setMsg(null) }} style={{
+            fontFamily:"'IBM Plex Mono',monospace", fontSize:10, fontWeight:700,
+            padding:'7px 18px', background:'transparent', border:'1px solid #C8922A',
+            color:'#C8922A', cursor:'pointer', letterSpacing:'.04em'
+          }}>EDIT</button>
+        )}
+      </div>
+
+      {/* Current bio display / edit */}
+      <div style={{ padding:'18px 20px' }}>
+        {!editing ? (
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#9ca3af', lineHeight:1.75, padding:'12px 16px', background:'rgba(0,0,0,.2)', border:'1px solid var(--border)', borderLeft:'3px solid #C8922A' }}>
+            {bio || <span style={{ color:'#4b5563', fontStyle:'italic' }}>No bio set — default will be used</span>}
+          </div>
+        ) : (
+          <div>
+            <textarea
+              value={draft}
+              onChange={e => setDraft(e.target.value)}
+              rows={4}
+              style={{
+                width:'100%', padding:'12px 14px',
+                background:'var(--bg)', border:'1px solid #C8922A',
+                color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace",
+                fontSize:11, lineHeight:1.75, resize:'vertical',
+                outline:'none', boxSizing:'border-box',
+              }}
+              placeholder="Write the author bio that will appear on every article..."
+            />
+            <div style={{ display:'flex', alignItems:'center', gap:10, marginTop:10, flexWrap:'wrap' }}>
+              <button onClick={saveBio} disabled={saving || !draft.trim() || draft === saved} style={{
+                fontFamily:"'Bebas Neue',cursive", fontSize:'.95rem', letterSpacing:'.06em',
+                padding:'8px 24px',
+                background: (saving || !draft.trim() || draft === saved) ? '#374151' : '#22c55e',
+                color: (saving || !draft.trim() || draft === saved) ? '#6b7280' : '#000',
+                border:'none', cursor: (saving || draft === saved) ? 'default' : 'pointer',
+              }}>
+                {saving ? '⏳ Saving...' : '✓ Save & Publish'}
+              </button>
+              <button onClick={() => { setEditing(false); setDraft(bio); setMsg(null) }} style={{
+                fontFamily:"'IBM Plex Mono',monospace", fontSize:10,
+                padding:'8px 16px', background:'transparent',
+                border:'1px solid var(--border)', color:'#6b7280', cursor:'pointer'
+              }}>Cancel</button>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', marginLeft:'auto' }}>
+                {wordCount} words · changes propagate site-wide
+              </span>
+            </div>
+          </div>
+        )}
+        {msg && (
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, marginTop:10,
+            color: msg.ok ? '#4ade80' : '#f87171', padding:'6px 12px',
+            background: msg.ok ? 'rgba(34,197,94,.06)' : 'rgba(239,68,68,.06)',
+            border:`1px solid ${msg.ok ? 'rgba(34,197,94,.2)' : 'rgba(239,68,68,.2)'}` }}>
+            {msg.text}
+          </div>
+        )}
+      </div>
+    </div>
+  )
+}
+
 // ── ContentSourcesPanel — manage feed sources per tab ────────────────────────────────
 function ContentSourcesPanel({ adminKey }) {
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
@@ -1978,7 +2105,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
         </div>
       </div>
 
-      {hubView === 'sources' && <ContentSourcesPanel adminKey={adminKey} />}
+      {hubView === 'sources' && (<><AuthorBioPanel adminKey={adminKey} /><ContentSourcesPanel adminKey={adminKey} /></>)}
       {hubView !== 'sources' && (<>
 
       {/* ── Summary bar ── */}

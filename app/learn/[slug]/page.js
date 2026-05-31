@@ -3,7 +3,9 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 
-const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange', bio: 'DJ Cavalcanti is the founder of DownRange. He lives in Washington State, carries daily, and built this site because the information gun owners actually need was scattered across a dozen different sources.' }
+import { fetchAuthorBio } from '../../lib/authorBio'
+
+const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange', bio: '{authorBio}' }
 
 const ARTICLES = {
   'buying-your-first-gun': {
@@ -234,6 +236,7 @@ export async function generateMetadata({ params }) {
   const a = ARTICLES[params.slug]
   if (!a) return { title: 'Article — DownRange Learning Center' }
   const img = HERO_IMAGES[params.slug] || a.heroImage
+  const authorBio = await fetchAuthorBio()
   return {
     title: `${a.title} — DownRange`,
     description: a.subtitle,
@@ -456,7 +459,7 @@ export default async function ArticlePage({ params }) {
                   <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'var(--text)', letterSpacing:'0.05em' }}>DJ Cavalcanti</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', marginBottom:'10px', letterSpacing:'0.08em' }}>DOWNRANGE FOUNDER</div>
                   <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'var(--text-dim)', lineHeight:1.7 }}>
-                    DJ Cavalcanti is the founder of DownRange, America's Firearms Intelligence Hub. A lifelong 2A advocate and Washington State resident, he built DownRange to give every American gun owner access to the legal intelligence and practical knowledge they need — all in one place.
+                    {authorBio}
                   </p>
                 </div>
               </div>

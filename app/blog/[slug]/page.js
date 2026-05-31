@@ -5,6 +5,7 @@ import BreakingTicker  from '../../../components/layout/BreakingTicker'
 import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated, fetchBlogPostBySlug } from '../../../sanity/lib/client'
+import { fetchAuthorBio } from '../../../lib/authorBio'
 
 export const revalidate = 60
 export const dynamicParams = true // render unknown slugs on-demand, not 404
@@ -104,6 +105,7 @@ export default async function BlogArticlePage({ params }) {
   if (!post) notFound()
 
   const alerts      = await fetchBreakingAlerts(3).catch(() => [])
+  const authorBio   = await fetchAuthorBio()
   const postIndex   = allPosts.findIndex(p => p.slug === params.slug)
   const prevPost    = allPosts[postIndex + 1] || null
   const nextPost    = allPosts[postIndex - 1] || null
@@ -278,7 +280,7 @@ export default async function BlogArticlePage({ params }) {
                   <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.04em', color:'var(--foreground)', marginBottom:4 }}>DJ Cavalcanti</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:8 }}>Founder, DownRange · Washington State</div>
                   <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.65, margin:0 }}>
-                    DJ Cavalcanti is the founder of DownRange Intelligence Hub, a firearms business developer, and a WA state CPL holder. He covers firearms industry trends, 2A legal developments, and tactical product intelligence.
+                    {authorBio}
                   </p>
                 </div>
               </div>

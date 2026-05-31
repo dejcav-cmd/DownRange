@@ -19,5 +19,7 @@ export const siteConfig = {
       ]}
     ]},
     { name: 'breakingUrgencyThreshold', title: 'Breaking Alert Urgency Threshold', type: 'number', initialValue: 8 },
+    { name: 'authorBio', title: 'Author Bio (used site-wide in all articles)', type: 'text' },
+    { name: 'authorBioUpdatedAt', title: 'Bio Last Updated', type: 'datetime' },
   ],
 }
