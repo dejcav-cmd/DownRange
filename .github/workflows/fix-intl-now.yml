@@ -1,0 +1,13 @@
+name: Fix Intl Images + Pull Articles Now
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix images and pull fresh articles for Canada + Brazil
+        run: python3 scripts/fix-intl-now.py
