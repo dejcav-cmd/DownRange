@@ -7,10 +7,10 @@ jobs:
     env:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
       GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    timeout-minutes: 20
+    timeout-minutes: 25
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Fix images - content API test, Wikimedia search, draft articles
+      - name: Fix all images - Wikimedia search, Sanity patches, Learn source files
         run: python3 scripts/fix-learn-and-draft-images.py
-      - name: Patch Learn article source files with real images
-        run: python3 scripts/patch-learn-images.py
