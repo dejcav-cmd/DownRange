@@ -29,20 +29,30 @@ SECTION_DOWNLOADS = {
 os.makedirs("public/img/learn", exist_ok=True)
 
 def download(urls, filename):
+    import subprocess as sp
+    dest = f"public/img/learn/{filename}"
     for url in urls:
         try:
-            req = urllib.request.Request(url, headers={"User-Agent":"Mozilla/5.0 (compatible; Googlebot/2.1)"})
-            with urllib.request.urlopen(req, timeout=25) as r:
-                if r.status == 200:
-                    data = r.read()
-                    if len(data) > 8000:
-                        with open(f"public/img/learn/{filename}", "wb") as f:
-                            f.write(data)
-                        print(f"  ✅ {filename}: {len(data)//1024}KB from {url[:55]}", flush=True)
-                        return f"/img/learn/{filename}"
+            # Use curl with proper headers - more reliable for Wikimedia
+            result = sp.run([
+                "curl", "-L", "-s", "-o", dest,
+                "-H", "User-Agent: Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36",
+                "-H", "Referer: https://commons.wikimedia.org/",
+                "-H", "Accept: image/webp,image/apng,image/*,*/*;q=0.8",
+                "--max-time", "20",
+                url
+            ], capture_output=True)
+            if result.returncode == 0 and os.path.exists(dest):
+                size = os.path.getsize(dest)
+                if size > 8000:
+                    print(f"  ✅ {filename}: {size//1024}KB", flush=True)
+                    return f"/img/learn/{filename}"
+                else:
+                    print(f"  ⚠ Too small ({size}B): {url[:55]}", flush=True)
+                    os.remove(dest)
         except Exception as e:
             print(f"  ❌ {url[:55]}: {e}", flush=True)
-            time.sleep(0.5)
+        time.sleep(0.3)
     return None
 
 print("Downloading hero images...", flush=True)
