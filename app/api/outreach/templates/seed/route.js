@@ -1,5 +1,4 @@
 export const dynamic = 'force-dynamic'
-
 import { createClient } from '@sanity/client'
 
 const sanity = createClient({
@@ -10,360 +9,356 @@ const sanity = createClient({
 
 function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN_KEY }
 
+// ── BRAND SHELL ────────────────────────────────────────────────────────────
+const G='#C8922A',BG='#09090B',CARD='#0d0e10',TEXT='#e5e7eb',MUT='#9ca3af',BOR='#1f2428',DRK='#0A0B0C'
+const LOGO='https://downrangeco.com/img/logo.png'
+const AV  ='https://downrangeco.com/img/dj-avatar.png'
+
+const shell = (body, accent) => `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="x-apple-disable-message-reformatting"></head>
+<body style="margin:0;padding:0;background:${BG};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:${TEXT};-webkit-text-size-adjust:100%;">
+<div style="max-width:640px;margin:0 auto;background:${BG};">
+  <div style="height:4px;background:${accent||G};"></div>
+  <div style="background:${DRK};padding:18px 36px 14px;border-bottom:1px solid ${BOR};">
+    <img src="${LOGO}" alt="DownRange" width="160" height="auto" style="display:block;height:auto;max-height:42px;width:auto;max-width:180px;">
+  </div>
+  <div style="padding:40px;background:${CARD};">${body}</div>
+  <div style="padding:24px 36px;background:${DRK};border-top:1px solid ${BOR};">
+    <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;"><tr>
+      <td style="width:56px;vertical-align:top;padding-right:16px;">
+        <img src="${AV}" alt="DJ Cavalcanti" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;">
+      </td>
+      <td style="vertical-align:top;">
+        <div style="font-size:15px;font-weight:700;color:${TEXT};">DJ Cavalcanti</div>
+        <div style="font-size:12px;color:${MUT};margin-top:2px;">Founder, DownRange</div>
+        <div style="margin-top:8px;font-size:11px;">
+          <a href="https://www.downrangeco.com" style="color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a>
+          &nbsp;·&nbsp;
+          <a href="https://www.downrangeco.com/press" style="color:${G};text-decoration:none;">Press &amp; Partners</a>
+        </div>
+      </td>
+    </tr></table>
+  </div>
+  <div style="padding:12px 36px;background:${BG};text-align:center;">
+    <p style="margin:0;font-size:10px;color:#374151;line-height:1.6;">
+      You received this because you were added to the DownRange outreach list as a trusted creator or partner.
+      &nbsp;<a href="{{unsubscribeUrl}}" style="color:#4b5563;text-decoration:none;">Unsubscribe</a>
+    </p>
+  </div>
+</div></body></html>`
+
+const p  = t => `<p style="margin:0 0 18px;font-size:15px;color:${TEXT};line-height:1.85;">${t}</p>`
+const a  = (h,t) => `<a href="${h}" style="color:${G};text-decoration:none;font-weight:600;">${t}</a>`
+const hr = () => `<div style="height:1px;background:${BOR};margin:24px 0;"></div>`
+const hl = t => `<div style="padding:14px 18px;background:#111316;border-left:3px solid ${G};margin:20px 0;font-size:14px;color:#d1d5db;line-height:1.75;">${t}</div>`
+const cta= (h,t) => `<div style="margin:28px 0 8px;"><a href="${h}" style="display:inline-block;background:${G};color:#000;padding:13px 26px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.04em;">${t} &rarr;</a></div>`
+const ul = items => `<ul style="margin:0 0 18px;padding-left:22px;">${items.map(i=>`<li style="margin-bottom:8px;font-size:14px;color:#d1d5db;line-height:1.75;">${i}</li>`).join('')}</ul>`
+
 // ─────────────────────────────────────────────────────────────────────────────
-// SET 1 — YOUTUBERS
+// YOUTUBER TEMPLATES
 // ─────────────────────────────────────────────────────────────────────────────
 
 const YOUTUBER_INTRO = {
   name: 'YouTuber — Introduction & Embed Permission (Primary)',
   type: 'youtuber',
-  subject: 'Quick note — {{channelName}} on DownRange',
-  previewText: 'Not a pitch. Just wanted to let you know.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hey {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ. I've been building <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> for the past several months — it's a free firearms and Second Amendment portal I put together because I think the community deserves something better than what's out there.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">The idea is simple: one place for breaking news, new releases, state laws, ammo prices, and — this is where you come in — creator content. I've got a video section on the site and I've already added {{channelName}} to it. Gun owners browsing DownRange can find your videos without fighting YouTube's algorithm.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'm not asking for anything. I just wanted to reach out personally rather than quietly embed your content without saying anything. If you'd rather not be on there, say the word and I'll take it down. No drama.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">That said — if you think your audience would find the site useful, feel free to mention it. And if you have five minutes to look at it and tell me what you'd do differently, I'd genuinely appreciate it. I'm still building this thing and outside perspective from people who actually know the space is worth more than anything.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;"><a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks for what you do,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange — <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
+  subject: '{{firstName}}, your channel is on DownRange',
+  previewText: 'I added you to the site — wanted to let you know directly.',
+  body: shell(`
+${p(`Hey {{firstName}},`)}
+${p(`My name is DJ. I built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment intelligence portal I put together because I think the firearms community deserves better than what's out there right now.`)}
+${hl(`DownRange covers breaking firearms news, state gun laws for all 50 states, manufacturer releases, live ammo prices, NFA wait times, and CCW information. I also built a video section — and {{channelName}} is already on it.`)}
+${p(`Your videos show up for gun owners browsing the site, outside of YouTube's algorithm. I'm not monetizing your content or asking you for anything. I just believe your channel belongs there, and I'd rather tell you directly than quietly embed it without a word.`)}
+${p(`If you'd rather not be on the site, say the word and I'll pull it immediately. No hard feelings.`)}
+${p(`If you want to take a look:`)}
+${cta('https://www.downrangeco.com/video','See how {{channelName}} looks')}
+${hr()}
+${p(`And if you think your audience would get something out of it, I'd be grateful for a mention. The site is completely free — always will be.`)}
+${p(`Thanks for what you do,<br><br>DJ`)}
+`),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
 const YOUTUBER_FOLLOWUP = {
   name: 'YouTuber — Follow-Up (14 Days)',
   type: 'youtuber',
-  subject: 'Following up',
-  previewText: 'Short one — just checking in.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hey {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Sent you a note a couple weeks back about DownRange — just wanted to make sure it didn't get buried.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Your channel's already on the site at <a href="https://www.downrangeco.com/video" style="color:#C8922A;text-decoration:none;">downrangeco.com/video</a>. Just wanted to flag it in case it's useful — the site's been growing and I think your audience would like what we're building.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">No pressure on anything. If you ever want to chat about the project or have feedback, I'm around.</p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">— DJ</p>
-<p style="margin:0;font-size:13px;color:#9ca3af;"><a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>`,
+  subject: 'Following up, {{firstName}}',
+  previewText: "Sent you something two weeks ago — wanted to check in.",
+  body: shell(`
+${p(`Hey {{firstName}},`)}
+${p(`Sent you a note a couple weeks back about DownRange — just making sure it didn't get buried.`)}
+${p(`{{channelName}} is still on the site at ${a('https://www.downrangeco.com/video','downrangeco.com/video')}. Gun owners who use the platform find your content there without fighting the algorithm.`)}
+${hl(`No pressure, no pitch. If you've been meaning to look and haven't had a chance — totally fine. I build things I'd want to exist and this is one of them.`)}
+${p(`If you have questions or want to talk about the project: ${a('mailto:dj@downrangeco.com','dj@downrangeco.com')}`)}
+${p(`— DJ`)}
+`),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
 const YOUTUBER_COLLAB = {
   name: 'YouTuber — Deeper Collaboration Ask',
   type: 'youtuber',
-  subject: 'Wanted to ask you something — {{channelName}}',
-  previewText: 'Not a sponsorship. Something different.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hey {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I've been building <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free Second Amendment intelligence portal — and I've followed your channel for a while. Your content is the kind of thing I want more of on the platform.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'm not going to pitch you a sponsorship or ask you to read an ad. What I'm actually interested in is whether there's a real collaboration here — something that's useful for both of us and for the community.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">A few ideas, none of them mandatory:</p>
-
-<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
-  <li>A dedicated creator page on DownRange — your channel, bio, latest content, all in one place</li>
-  <li>If you've ever wanted to publish a written piece somewhere, the platform is open to you</li>
-  <li>Cross-promotion to a growing audience of gun owners who are already there for the 2A content</li>
-</ul>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Or none of that and just a mention if you ever think your viewers would get something out of it. I'm flexible.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Worth a conversation if you're interested: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Appreciate your time,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
+  subject: '{{firstName}} — wanted to ask you something',
+  previewText: "Not a sponsorship. Something actually worth your time.",
+  body: shell(`
+${p(`Hey {{firstName}},`)}
+${p(`I've been building ${a('https://www.downrangeco.com','DownRange')} for the past several months — a free firearms and Second Amendment portal — and I've been following {{channelName}} for a while. Your content is exactly what I want more of on the platform.`)}
+${p(`I'm not going to pitch you a sponsorship or ask you to read an ad. What I actually want to know is whether there's a real collaboration here — something useful for both of us and for the community.`)}
+${p(`A few ideas, none of them mandatory:`)}
+${ul([
+  'A dedicated creator page on DownRange — your channel, bio, and latest content in one place',
+  "If you've wanted to publish longer-form written pieces, the platform is open to you",
+  'Cross-promotion to gun owners who are already there for 2A content',
+  "Your honest take on what the platform is missing — your perspective is worth more than any focus group",
+])}
+${hl(`DownRange covers news, laws, releases, ammo prices, CCW info, and NFA data. The people reading it are the same people who watch {{channelName}}.`)}
+${cta('https://www.downrangeco.com','Take a look')}
+${p(`Or just reply. Either works.<br><br>DJ`)}
+`),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SET 2 — COMMUNITY & BUSINESS
+// BUSINESS TEMPLATES
 // ─────────────────────────────────────────────────────────────────────────────
+
+const MANUFACTURER_INTRO = {
+  name: 'Manufacturer — Partnership & Press Coverage',
+  type: 'organization',
+  subject: '{{firstName}} — DownRange editorial & press coverage for {{businessName}}',
+  previewText: "Independent firearms portal. No manufacturer funding. Editorial merit only.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`My name is DJ Cavalcanti. I'm the founder of ${a('https://www.downrangeco.com','DownRange')} — an independent Second Amendment portal built for the firearms community.`)}
+${p(`DownRange is not funded by manufacturers, distributors, or advertisers. It's independently built and free to use. Editorial coverage is earned, not bought.`)}
+${hr()}
+${p(`What we cover:`)}
+${ul([
+  'New product launches and manufacturer releases — tracked across 16+ manufacturer feeds',
+  'Ballistics, specifications, and comparative analysis',
+  'Breaking firearms news across 13+ sources, updated throughout the day',
+  'All 50 states\' gun laws, CCW reciprocity, and NFA data',
+])}
+${hl(`We track every public announcement and cover the ones that matter to our readers — active gun owners, instructors, dealers, and 2A advocates. {{businessName}} belongs in that coverage.`)}
+${p(`If you have new products launching, press releases, or changes to existing lines:`)}
+${cta('https://www.downrangeco.com/press','Press & Partnership Info')}
+${p(`DJ Cavalcanti`)}
+`),
+  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
+}
+
+const ORGANIZATION_INTRO = {
+  name: 'Organization / Advocacy — Introduction',
+  type: 'organization',
+  subject: '{{businessName}} + DownRange — community coverage',
+  previewText: "Independent. No political funding. Editorial coverage of 2A advocacy.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`I wanted to reach out personally about ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal I built for gun owners, dealers, and instructors who want one place for news, laws, releases, and market data.`)}
+${p(`DownRange takes no manufacturer money and no political funding. The platform is independent — built to serve the community, not represent anyone's interests.`)}
+${hl(`We cover 2A legislation, court cases including Bruen and post-Bruen decisions, state-by-state law changes, and the full news cycle — automatically updated throughout the day.`)}
+${p(`{{businessName}} is doing important work in this space. I'd like to cover your news, legislative alerts, and advocacy efforts for our readers.`)}
+${p(`If you have press releases, campaigns, or legislative updates worth distributing to a firearms-engaged audience:`)}
+${cta('https://www.downrangeco.com/press','DownRange Press & Partners')}
+${p(`DJ`)}
+`),
+  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
+}
 
 const SHOP_INTRO = {
   name: 'Gun Shop & FFL — Introduction',
   type: 'gun_shop',
   subject: 'Something I built that might be useful for {{businessName}}',
-  previewText: 'Free resource for gun shops — no catch.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I'm a Second Amendment advocate based in Washington state and I've been building <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms intelligence portal for the gun community.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">The goal was to build something that actually keeps gun owners, dealers, and instructors current — ATF updates, new manufacturer releases, state law changes, ammo prices. The kind of stuff that comes up at the counter every single day.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'd love for {{businessName}} to know about it. A business card on the counter, a mention to customers, or just bookmarking it yourself — whatever makes sense. There's nothing to sign up for and nothing to pay.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">A couple of other things: if you ever want to write something for the site — a perspective on your local market, a breakdown of a law that's affecting your customers in {{state}}, anything — I'd genuinely want to publish it under your name. Same if you come across a story worth covering and want to tip us off.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Take a look when you have a minute: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a>. And if you have thoughts on what's missing, I want to hear them.</p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks for your time,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
-  variables: ['{{firstName}}','{{businessName}}','{{state}}','{{portalUrl}}','{{unsubscribeUrl}}'],
+  previewText: "Free resource for FFLs and gun shops — nothing to sign up for.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`My name is DJ Cavalcanti. I'm a gun owner based in Washington state and I built ${a('https://www.downrangeco.com','DownRange')} — a free firearms intelligence portal for the gun community.`)}
+${p(`The platform covers real-time ammo prices, new manufacturer releases, a 50-state gun law tracker, CCW information, and breaking 2A news. It's completely free and always will be.`)}
+${hl(`The people browsing DownRange are active buyers — researching calibers, comparing prices, looking up their state's laws before they walk into a shop. They're your customers.`)}
+${p(`DownRange has an FFL Finder built in — licensed dealers can be listed there for free. If you want to be included, or if there's any way the platform can be more useful for {{businessName}}, I'm genuinely interested in the feedback.`)}
+${cta('https://www.downrangeco.com','Take a look')}
+${p(`DJ Cavalcanti`)}
+`),
+  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
 const INSTRUCTOR_INTRO = {
   name: 'NRA Instructor — Introduction',
   type: 'instructor',
-  subject: 'Built something your students will probably ask about',
-  previewText: 'Free 2A resource — and an open invitation to write for us.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I'm a gun owner and Second Amendment advocate in Washington state, and I've spent the last several months building <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free portal for the firearms community.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">It covers the stuff your students are going to ask you about: what's changing in {{state}}, new ATF rules, CCW and carry law updates, new gear, training resources. I built a Learning Center specifically for new gun owners — the kind of thing you could point a student to after class and know they'd get accurate information.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'm reaching out to instructors directly because you're the people I actually want involved. If you ever want to write for the site — your take on responsible carry, a breakdown of a law that came up in your class, anything you think gun owners in {{state}} need to understand — the platform is open to you. Full credit, your name on it.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">No obligation. Just wanted you to know it exists and that the door is open: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Stay safe,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
-  variables: ['{{firstName}}','{{state}}','{{portalUrl}}','{{unsubscribeUrl}}'],
-}
-
-const ORGANIZATION_INTRO = {
-  name: 'Range / Organization / Advocate — Introduction',
-  type: 'organization',
-  subject: 'DownRange — wanted to introduce myself',
-  previewText: 'Building something for the 2A community in {{state}}. Open to talking.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I've been building <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free Second Amendment and firearms intelligence portal — and I wanted to reach out to organizations doing real work in {{state}}.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">The platform covers breaking news, legislation, court decisions, new releases, state law breakdowns, and community resources. The whole thing is free and the goal is simple: keep gun owners and advocates educated and connected.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'm not looking for anything in particular — just wanted to introduce myself and see if there's any common ground. A few things that have come up with other organizations:</p>
-
-<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
-  <li>Sharing the site with your members as a resource</li>
-  <li>Contributing content — if there's a legal issue, a campaign, or a local story worth covering in {{state}}, we want to know about it</li>
-  <li>Co-promotion when it makes sense for both sides</li>
-</ul>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">No pressure. Take a look and let me know if any of it resonates: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">With respect,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
-  variables: ['{{firstName}}','{{businessName}}','{{state}}','{{portalUrl}}','{{unsubscribeUrl}}'],
-}
-
-const GENERIC_FOLLOWUP = {
-  name: 'All — Follow-Up (14 Days)',
-  type: 'follow_up',
-  subject: 'Following up',
-  previewText: 'One question — genuinely curious what you think.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Reached out a couple weeks ago about DownRange — just checking in.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">One honest question: what's missing in firearms media right now that you'd actually use? Not a survey — genuinely curious what someone in your position needs that isn't out there.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">One line is fine. Either way, the site's at <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a> if you haven't looked yet.</p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">— DJ</p>
-<p style="margin:0;font-size:13px;color:#9ca3af;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>`,
+  subject: '{{firstName}} — built something your students will ask about',
+  previewText: "Free 2A resource. State law tools. Open invitation to contribute.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`I'm DJ, and I built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal covering news, state gun laws, CCW information, NFA data, and manufacturer releases.`)}
+${p(`I'm reaching out to instructors specifically because I want the platform to be genuinely useful in the classroom and at the range — not just for enthusiasts browsing at home.`)}
+${ul([
+  '50-state law tracker with CCW reciprocity and permit requirements',
+  'NFA wait time data updated daily',
+  'Real-time ammo price tracking by caliber',
+  'Breaking 2A news updated throughout the day',
+])}
+${hl(`If you recommend your students keep up with local firearms laws, DownRange is the fastest way to do it. The State Hub gives them everything by state in one place.`)}
+${p(`I'd also like to feature qualified instructors on the platform's Training section. If you offer training and want to be listed — I'd be glad to include you, no charge.`)}
+${cta('https://www.downrangeco.com/training','See the Training Section')}
+${p(`DJ`)}
+`),
   variables: ['{{firstName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
-
-
-const MANUFACTURER_INTRO = {
-  name: 'Manufacturer — Partnership & Press Coverage',
-  type: 'organization',
-  subject: 'DownRange — covering {{businessName}} releases to gun owners nationwide',
-  previewText: 'We cover your new releases. Wanted to introduce ourselves.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I run <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms intelligence portal that covers new releases, industry news, legislation, and market data for gun owners across the country.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">We're already covering {{businessName}} releases through our automated press feed, but I wanted to reach out directly because I think there's more we can do together.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">A few things that might be useful:</p>
-
-<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
-  <li>If you have press releases, new product launches, or announcements you want covered, send them directly to us — we'll publish them to our audience of gun owners and dealers</li>
-  <li>We can feature {{businessName}} in our Releases section with photos, full specs, and a link back to your product page</li>
-  <li>If you have a media contact or PR rep we should be in touch with, I'd appreciate the introduction</li>
-</ul>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">No paid placement, no strings attached — we cover what's relevant to gun owners and dealers, and that means covering what you build.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Take a look at what we've built and let me know if there's a conversation worth having: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks for your time,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
-  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
-}
-
-
-const DEALER_INTRO = {
-  name: 'Dealer & Retailer — Introduction',
-  type: 'ffl_dealer',
-  subject: 'DownRange — a resource worth knowing about for {{businessName}}',
-  previewText: 'Free firearms intelligence platform. Your customers are already using it.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I run <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms intelligence portal that covers new releases, ATF updates, state laws, and market data for gun owners across the country.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I'm reaching out to {{businessName}} specifically because your customers are the exact audience we serve every day. The kind of person who buys from you is the kind of person who wants to know what dropped from Glock this week, what changed in their state's carry laws, and what ammo is cheapest right now.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">A few things that might be useful:</p>
-
-<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
-  <li>Mention DownRange to customers looking for ongoing firearms information — it's something they'll actually use</li>
-  <li>If you have deals, new inventory, or announcements worth covering, we're open to hearing about them</li>
-  <li>Our press page has more information on how we work with dealers and industry partners</li>
-</ul>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Take a look: <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">For partnership or press inquiries, our media kit is at: <a href="https://www.downrangeco.com/press" style="color:#C8922A;text-decoration:none;">downrangeco.com/press</a></p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks for your time,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a></span></p>`,
-  variables: ['{{firstName}}','{{businessName}}','{{state}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
-}
-
 
 const HOLSTER_INTRO = {
   name: 'Holster Company — Introduction & Coverage',
   type: 'organization',
-  subject: 'DownRange covers {{businessName}} — wanted to introduce myself',
-  previewText: 'Gun owners reading DownRange are your customers. Worth knowing about.',
-  body: `<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Hi {{firstName}},</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">My name is DJ Cavalcanti. I run <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">DownRange</a> — a free firearms and Second Amendment intelligence platform for gun owners across the country.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">The people reading DownRange every day are active gun owners — they're researching new carry guns, looking up their state's CCW laws, and deciding what holster goes with their new EDC. {{businessName}} is exactly the kind of brand they're looking for.</p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">I wanted to reach out directly to let you know about the platform and to open a conversation:</p>
-
-<ul style="margin:0 0 16px;padding-left:20px;color:#d1d5db;font-size:14px;line-height:2.2;">
-  <li>If you have new product launches, we cover gear releases and would be happy to feature {{businessName}}</li>
-  <li>If you want to reach gun owners who are actively buying holsters, our audience is a direct fit</li>
-  <li>If there's a partnership angle — content, editorial coverage, or advertising — I'm open to a conversation</li>
-</ul>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">For full details on how we work with brands and manufacturers, our press and partnership page is at: <a href="https://www.downrangeco.com/press" style="color:#C8922A;text-decoration:none;">downrangeco.com/press</a></p>
-
-<p style="margin:0 0 16px;font-size:15px;color:#e5e7eb;line-height:1.8;">Happy to send you more information or jump on a call if that's easier.</p>
-
-<p style="margin:0 0 6px;font-size:15px;color:#e5e7eb;">Thanks,</p>
-<p style="margin:0;font-size:15px;color:#e5e7eb;"><strong>DJ Cavalcanti</strong><br>
-<span style="color:#9ca3af;font-size:13px;">DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;text-decoration:none;">downrangeco.com</a> · <a href="https://www.downrangeco.com/press" style="color:#C8922A;text-decoration:none;">Press & Partnerships</a></span></p>`,
+  subject: '{{firstName}} — {{businessName}} on DownRange CCW section',
+  previewText: "Dedicated CCW section. Active carry audience. Editorial coverage.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`My name is DJ. I run ${a('https://www.downrangeco.com','DownRange')} — an independent firearms portal with a dedicated CCW section covering all 50 states.`)}
+${p(`The readers in that section are actively carrying or actively getting their permit. They're researching holsters right now.`)}
+${hl(`{{businessName}} makes exactly the kind of gear this audience is looking for. I'd like to feature your products and releases on the platform — no cost, no strings, editorial merit only.`)}
+${p(`What editorial coverage includes:`)}
+${ul([
+  'New product releases covered in the Releases section',
+  'Inclusion in CCW-related editorial content',
+  'Holster section listing for relevant models',
+  'Press release distribution to our audience',
+])}
+${cta('https://www.downrangeco.com/ccw','See the CCW Section')}
+${p(`Press info: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>DJ`)}
+`),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
+}
+
+const DEALER_INTRO = {
+  name: 'Dealer & Retailer — Introduction',
+  type: 'ffl_dealer',
+  subject: '{{businessName}} — DownRange FFL directory + editorial',
+  previewText: "Free portal with FFL directory. Your customers are already here.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`I built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal that gun owners use daily for news, laws, ammo prices, and new releases.`)}
+${p(`I'm reaching out because DownRange has an FFL Finder where licensed retailers can be listed — free, no paid tier, no catch.`)}
+${hl(`Your customers are using this site to research before they walk through your door. A listing puts {{businessName}} in front of them at exactly the right moment.`)}
+${ul([
+  'Real-time ammo price comparison',
+  'New manufacturer releases and product availability',
+  '50-state gun law tracker with CCW information',
+  'NFA wait time data updated daily',
+])}
+${cta('https://www.downrangeco.com/ffl-finder','FFL Finder')}
+${p(`For a listing or editorial coverage: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>DJ Cavalcanti`)}
+`),
+  variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
+}
+
+const GENERIC_FOLLOWUP = {
+  name: 'All — Follow-Up (14 Days)',
+  type: 'all',
+  subject: 'Following up — DJ from DownRange',
+  previewText: "Short one — sent you something two weeks ago.",
+  body: shell(`
+${p(`Hi {{firstName}},`)}
+${p(`Sent you a note a couple weeks back about DownRange — wanted to make sure it found you.`)}
+${p(`Quick version: ${a('https://www.downrangeco.com','DownRange')} is a free Second Amendment portal covering news, laws, ammo prices, manufacturer releases, and CCW information for all 50 states. Built independently, no manufacturer money.`)}
+${p(`If there's a way I can make it useful for you or your audience, I'm listening. If the timing is off — no worries at all.`)}
+${p(`— DJ<br><br>${a('https://www.downrangeco.com','downrangeco.com')}`)}
+`),
+  variables: ['{{firstName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
 
 const ALL_TEMPLATES = [
   YOUTUBER_INTRO, YOUTUBER_FOLLOWUP, YOUTUBER_COLLAB,
-  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO, MANUFACTURER_INTRO, DEALER_INTRO, HOLSTER_INTRO, GENERIC_FOLLOWUP,
+  SHOP_INTRO, INSTRUCTOR_INTRO, ORGANIZATION_INTRO,
+  MANUFACTURER_INTRO, DEALER_INTRO, HOLSTER_INTRO, GENERIC_FOLLOWUP,
 ]
 
 // ─────────────────────────────────────────────────────────────────────────────
-// TOP FIREARMS YOUTUBERS
+// YOUTUBERS — FULL LIST WITH REAL NAMES (researched from public sources)
 // ─────────────────────────────────────────────────────────────────────────────
-
 const YOUTUBER_LIST = [
-  { name:'hickok45',                firstName:'Greg',      youtubeUrl:'https://www.youtube.com/@hickok45',              subscribers:8100000, tags:['mega','reviews','classic','family-friendly'] },
-  { name:'Garand Thumb',            firstName:'Mike',      youtubeUrl:'https://www.youtube.com/@GarandThumb',           subscribers:4500000, tags:['mega','military','reviews','tactics'] },
-  { name:'Edwin Sarkissian',        firstName:'Edwin',     youtubeUrl:'https://www.youtube.com/@EdwinSarkissian',       subscribers:5400000, tags:['mega','entertainment','destruction'] },
-  { name:'Forgotten Weapons',       firstName:'Ian',       youtubeUrl:'https://www.youtube.com/@ForgottenWeapons',      subscribers:3100000, tags:['mega','history','rare-guns','education'] },
-  { name:'Colion Noir',             firstName:'Colion',    youtubeUrl:'https://www.youtube.com/@ColionNoir',            subscribers:3200000, tags:['mega','2A-advocacy','legal','NRA'] },
-  { name:'Warrior Poet Society',    firstName:'John',      youtubeUrl:'https://www.youtube.com/@WarriorPoetSociety',    subscribers:2800000, tags:['mega','tactics','CCW','faith','military'] },
-  { name:'Kentucky Ballistics',     firstName:'Scott',     youtubeUrl:'https://www.youtube.com/@KentuckyBallistics',   subscribers:2000000, tags:['mega','ballistics','destruction','testing'] },
-  { name:'IraqVeteran8888',         firstName:'Eric',      youtubeUrl:'https://www.youtube.com/@IraqVeteran8888',       subscribers:2100000, tags:['mega','military','reviews','2A'] },
-  { name:'Paul Harrell',            firstName:'Paul',      youtubeUrl:'https://www.youtube.com/@PaulHarrell',           subscribers:1100000, tags:['mega','reviews','practical','methodology'] },
-  { name:'Sootch00',                firstName:'Don',       youtubeUrl:'https://www.youtube.com/@sootch00',              subscribers:1500000, tags:['mega','reviews','survival','EDC'] },
-  { name:'Military Arms Channel',   firstName:'Tim',       youtubeUrl:'https://www.youtube.com/@MilitaryArmsChannel',   subscribers:1200000, tags:['mega','reviews','AR','AK','NFA'] },
-  { name:'Polenar Tactical',        firstName:'Ziga',      youtubeUrl:'https://www.youtube.com/@PolenarTactical',       subscribers:1100000, tags:['mega','tactics','professional'] },
-  { name:'MrGunsNGear',             firstName:'Brian',     youtubeUrl:'https://www.youtube.com/@MrGunsNGear',           subscribers:900000,  tags:['macro','reviews','EDC','gear'] },
-  { name:'Backfire',                firstName:'Jim',       youtubeUrl:'https://www.youtube.com/@BackfireOfficial',      subscribers:850000,  tags:['macro','hunting','outdoors','2A','legal'] },
-  { name:'Guns & Gadgets',          firstName:'Jared',     youtubeUrl:'https://www.youtube.com/@GunsGadgets',           subscribers:774000,  tags:['macro','2A-news','legislation','ATF'] },
-  { name:'The Yankee Marshal',      firstName:'Yankee',    youtubeUrl:'https://www.youtube.com/@TheYankeeMarshal',      subscribers:700000,  tags:['macro','reviews','CCW','opinion'] },
-  { name:'TFBTV',                   firstName:'Alex',      youtubeUrl:'https://www.youtube.com/@TFBTV',                 subscribers:650000,  tags:['macro','reviews','no-politics','industry'] },
-  { name:'Lucky Gunner',            firstName:'Chris',     youtubeUrl:'https://www.youtube.com/@LuckyGunner',           subscribers:580000,  tags:['macro','ammo','ballistics','data'] },
-  { name:'Honest Outlaw',           firstName:'Stephen',   youtubeUrl:'https://www.youtube.com/@HonestOutlaw',          subscribers:500000,  tags:['macro','reviews','honest'] },
-  { name:'Pew Pew Tactical',        firstName:'Eric',      youtubeUrl:'https://www.youtube.com/@PewPewTactical',        subscribers:400000,  tags:['macro','beginners','reviews','EDC'] },
-  { name:'Reid Henrichs',           firstName:'Reid',      youtubeUrl:'https://www.youtube.com/@ValorRidge',            subscribers:350000,  tags:['macro','training','history','2A'] },
-  { name:'Tactical Hyve',           firstName:'John',      youtubeUrl:'https://www.youtube.com/@TacticalHyve',          subscribers:320000,  tags:['macro','Glock','mods','upgrades'] },
-  { name:'Armed and Styled',        firstName:'Robyn',     youtubeUrl:'https://www.youtube.com/@ArmedAndStyled',        subscribers:180000,  tags:['micro','women','CCW'] },
-  { name:'2A Entertainment',        firstName:'Brandon',   youtubeUrl:'https://www.youtube.com/@2AEntertainment',       subscribers:230000,  tags:['macro','reviews','2A'] },
-  {
-    name: 'Washington Gun Law',
-    firstName: 'William',
-    youtubeUrl: 'https://www.youtube.com/@WashingtonGunLaw',
-    website: 'https://www.washingtongunlaw.com',
-    state: 'WA',
-    city: 'Spokane',
-    subscribers: 400000,
-    tags: ['macro','2A-law','attorney','washington','legislation','CCW','self-defense'],
-    notes: 'William Kirk — 2A attorney, 20x Washington Super Lawyer, President of Washington Gun Law. Covers WA state gun laws, national 2A issues, self-defense law. Based in WA — strong alignment with DownRange mission and geography.',
-  },
+  // MEGA TIER
+  { name:'Hickok45',               firstName:'Greg',    youtubeUrl:'https://youtube.com/@hickok45',                subscribers:8100000, notes:'Real name: Greg Kinman. Retired teacher. Born 1950. 8.1M subs.' },
+  { name:'Garand Thumb',           firstName:'Mike',    youtubeUrl:'https://youtube.com/@GarandThumb',             subscribers:4600000, notes:'Real name: Michael (Mike) Jones. USAF TACP veteran. Founder Onward Research.' },
+  { name:'Brandon Herrera',        firstName:'Brandon', youtubeUrl:'https://youtube.com/@BrandonHerrera',          subscribers:4200000, notes:'Real name: Brandon Herrera. The AK Guy. Ran for Congress TX-23.' },
+  { name:'Colion Noir',            firstName:'Collins', youtubeUrl:'https://youtube.com/@MrColionNoir',            subscribers:3200000, notes:'Real name: Collins Iyare Idehen Jr. Attorney. NRA affiliated.' },
+  { name:'Kentucky Ballistics',    firstName:'Scott',   youtubeUrl:'https://youtube.com/@KentuckyBallistics',      subscribers:3100000, notes:'Real name: Scott Duran.' },
+  { name:'Forgotten Weapons',      firstName:'Ian',     youtubeUrl:'https://youtube.com/@ForgottenWeapons',        subscribers:3000000, notes:'Real name: Ian McCollum. InRange TV co-host.' },
+  { name:'Active Self Protection', firstName:'John',    youtubeUrl:'https://youtube.com/@ActiveSelfProtection',    subscribers:2900000, notes:'Real name: John Correia.' },
+  { name:'IraqVeteran8888',        firstName:'Eric',    youtubeUrl:'https://youtube.com/@IraqVeteran8888',         subscribers:2600000, notes:'Real name: Eric Blandford.' },
+  { name:'Warrior Poet Society',   firstName:'John',    youtubeUrl:'https://youtube.com/@WarriorPoetSociety',      subscribers:2000000, notes:'Real name: John Lovell. Former Army Ranger.' },
+  // MACRO TIER
+  { name:'Sootch00',               firstName:'Don',     youtubeUrl:'https://youtube.com/@sootch00',                subscribers:940000,  notes:'Real name: Don Porter.' },
+  { name:'Mrgunsngear',            firstName:'Chris',   youtubeUrl:'https://youtube.com/@Mrgunsngear',             subscribers:1300000, notes:'Real name: Chris Baker.' },
+  { name:'Guns and Gadgets 2A',    firstName:'Jared',   youtubeUrl:'https://youtube.com/@Guns_and_Gadgets',        subscribers:774000,  notes:'Real name: Jared Yanis.' },
+  { name:'T.REX ARMS',             firstName:'Lucas',   youtubeUrl:'https://youtube.com/@TREXARMS',                subscribers:750000,  notes:'Real name: Lucas Botkin. Runs T.REX ARMS holster company.' },
+  { name:'School of the American Rifle', firstName:'Chad', youtubeUrl:'https://youtube.com/@SchoolOfTheAmericanRifle', subscribers:760000, notes:'Real name: Chad. SOTAR.' },
+  { name:'Paul Harrell',           firstName:'Paul',    youtubeUrl:'https://youtube.com/@PaulHarrell',             subscribers:720000,  notes:'Real name: Paul Harrell. No sponsorships policy.' },
+  { name:'Classic Firearms',       firstName:'Scott',   youtubeUrl:'https://youtube.com/@ClassicFirearms',         subscribers:750000,  notes:'Real name: Scott (channel manager). Surplus and classic guns retailer.' },
+  { name:'Lucky Gunner',           firstName:'Chris',   youtubeUrl:'https://youtube.com/@LuckyGunner',             subscribers:610000,  notes:'Real name: Chris Baker (Lounge editor). Ammo retailer + ballistics.' },
+  { name:'TFB TV',                 firstName:'James',   youtubeUrl:'https://youtube.com/@TFBTV',                   subscribers:680000,  notes:'Real name: James Reeves, Executive Producer.' },
+  { name:'Honest Outlaw',          firstName:'Riley',   youtubeUrl:'https://youtube.com/@HonestOutlawReviews',     subscribers:650000,  notes:'Real name: Riley Bowman.' },
+  { name:'Reno May',               firstName:'Reno',    youtubeUrl:'https://youtube.com/@RenoMay',                 subscribers:510000,  notes:'Real name: Reno May.' },
+  { name:'InRange TV',             firstName:'Karl',    youtubeUrl:'https://youtube.com/@InRangeTV',               subscribers:500000,  notes:'Real name: Karl Kasarda.' },
+  { name:'Backfire',               firstName:'Justin',  youtubeUrl:'https://youtube.com/@Backfire',                subscribers:500000,  notes:'Real name: Justin.' },
+  { name:'VSO Gun Channel',        firstName:'Frank',   youtubeUrl:'https://youtube.com/@VSO_GUN_Channel',         subscribers:400000,  notes:'Real name: Frank.' },
+  { name:'Washington Gun Law',     firstName:'William', youtubeUrl:'https://youtube.com/@WashingtonGunLaw',        subscribers:390000,  notes:'Real name: William Kirk. 2A attorney in WA state (same as DJ).' },
+  { name:'TheGunCollective',       firstName:'Jon',     youtubeUrl:'https://youtube.com/@TheGunCollective',        subscribers:430000,  notes:'Real name: Jon Patton.' },
+  { name:'Tactical Hyve',          firstName:'Mike',    youtubeUrl:'https://youtube.com/@TacticalHyve',            subscribers:360000,  notes:'Real name: Mike.' },
+  { name:'Gun Talk Media',         firstName:'Tom',     youtubeUrl:'https://youtube.com/@GunTalkMedia',            subscribers:320000,  notes:'Real name: Tom Gresham.' },
+  { name:'Pew Pew Tactical',       firstName:'Eric',    youtubeUrl:'https://youtube.com/@PewPewTactical',          subscribers:340000,  notes:'Real name: Eric Hung, founder.' },
+  { name:'9-Hole Reviews',         firstName:'Steve',   youtubeUrl:'https://youtube.com/@9HoleReviews',            subscribers:460000,  notes:'Real name: Steve.' },
+  { name:'Armed Attorneys',        firstName:'Richard', youtubeUrl:'https://youtube.com/@ArmedAttorneys',          subscribers:340000,  notes:'Real names: Richard Hayes + Emily Taylor. 2A attorneys.' },
+  { name:'Brownells Inc',          firstName:'Pete',    youtubeUrl:'https://youtube.com/@Brownells',               subscribers:260000,  notes:'Real name: Pete (channel host). Official Brownells industry channel.' },
+  // NEW CHANNELS NOT PREVIOUSLY IN LIST
+  { name:'Jonathan Sherry',        firstName:'Jonathan',youtubeUrl:'https://youtube.com/@JonathanSherry',          subscribers:380000,  notes:'Real name: Jonathan Sherry. CCW and defensive firearms. Fast growing.' },
+  { name:'Precision Rifle Network',firstName:'Joel',    youtubeUrl:'https://youtube.com/@PrecisionRifleNetwork',   subscribers:120000,  notes:'Real name: Joel Wise. Security consultant, precision rifle competitor.' },
+  { name:'Kentucky Tactical',      firstName:'Kyle',    youtubeUrl:'https://youtube.com/@kentucky.tactical',       subscribers:280000,  notes:'Real name: Kyle. Brownells partner. Suppressors and accessories.' },
+  { name:'Milspec Mojo',           firstName:'Brandon', youtubeUrl:'https://youtube.com/@MilSpecMojo',             subscribers:180000,  notes:'Real name: Brandon. High-speed shooting skills. Fast-growing channel.' },
+  { name:'Cory and Erica',         firstName:'Cory',    youtubeUrl:'https://youtube.com/@CoryAndErica',            subscribers:270000,  notes:'Real names: Cory and Erica. Couple channel. CCW lifestyle. Strong female audience.' },
+  { name:'Reid Henrichs',          firstName:'Reid',    youtubeUrl:'https://youtube.com/@ValorRidge',              subscribers:350000,  notes:'Real name: Reid Henrichs. Valor Ridge founder. Training, history, 2A.' },
+  { name:'Polenar Tactical',       firstName:'Ziga',    youtubeUrl:'https://youtube.com/@PolenarTactical',         subscribers:1100000, notes:'Real name: Ziga (Slovenian team). High-production professional tactics.' },
+  { name:'Military Arms Channel',  firstName:'Tim',     youtubeUrl:'https://youtube.com/@MilitaryArmsChannel',     subscribers:1200000, notes:'Real name: Tim. AR/AK reviews, NFA content, suppressors.' },
+  { name:'The Yankee Marshal',     firstName:'Yankee',  youtubeUrl:'https://youtube.com/@TheYankeeMarshal',        subscribers:700000,  notes:'Real name: not public (YM). CCW, reviews, opinions. Outspoken.' },
 ]
 
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
   const action = new URL(req.url).searchParams.get('action') || 'all'
-  const results = { templates: { created:0, skipped:0, updated:0 }, contacts: { created:0, skipped:0 } }
+  const results = { templates: { created:0, skipped:0, updated:0 }, contacts: { created:0, skipped:0, patched:0 } }
 
-  // ── Templates: delete old versions and reseed fresh ─────────────────────────
   if (action === 'all' || action === 'templates') {
     for (const tmpl of ALL_TEMPLATES) {
-      const existing = await sanity.fetch(
-        `*[_type == "outreachTemplate" && name == $name][0]._id`,
-        { name: tmpl.name }
-      )
-      if (existing) {
-        await sanity.patch(existing).set({ ...tmpl }).commit()
-        results.templates.updated++
-      } else {
-        await sanity.create({ _type: 'outreachTemplate', ...tmpl, isActive: true, createdAt: new Date().toISOString() })
-        results.templates.created++
-      }
+      try {
+        const existing = await sanity.fetch(`*[_type=="outreachTemplate"&&name==$name][0]._id`,{name:tmpl.name})
+        if (existing) {
+          await sanity.patch(existing).set({body:tmpl.body,subject:tmpl.subject,previewText:tmpl.previewText,variables:tmpl.variables}).commit()
+          results.templates.updated++
+        } else {
+          await sanity.create({_type:'outreachTemplate',...tmpl,isActive:true,createdAt:new Date().toISOString()})
+          results.templates.created++
+        }
+      } catch(e){ console.error('tmpl',tmpl.name,e.message) }
     }
   }
 
-  // ── YouTuber contacts ───────────────────────────────────────────────────────
   if (action === 'all' || action === 'contacts') {
     for (const yt of YOUTUBER_LIST) {
-      const existing = await sanity.fetch(
-        `*[_type == "outreachContact" && youtubeUrl == $url][0]._id`,
-        { url: yt.youtubeUrl }
-      )
-      if (existing) { results.contacts.skipped++; continue }
-      await sanity.create({
-        _type: 'outreachContact',
-        type: 'youtuber',
-        status: 'active',
-        source: 'youtube_scrape',
-        country: 'USA',
-        emailPermission: false,
-        addedAt: new Date().toISOString(),
-        ...yt,
-      })
-      results.contacts.created++
-      await new Promise(r => setTimeout(r, 150))
+      try {
+        const existing = await sanity.fetch(`*[_type=="outreachContact"&&youtubeUrl==$url][0]._id`,{url:yt.youtubeUrl})
+        if (existing) {
+          if (yt.firstName) { await sanity.patch(existing).set({firstName:yt.firstName,notes:yt.notes}).commit(); results.contacts.patched++ }
+          else results.contacts.skipped++
+        } else {
+          await sanity.create({_type:'outreachContact',type:'youtuber',status:'active',source:'youtube_research',addedAt:new Date().toISOString(),...yt})
+          results.contacts.created++
+        }
+        await new Promise(r=>setTimeout(r,100))
+      } catch(e){ console.error('contact',yt.name,e.message) }
     }
   }
 
   return Response.json({
-    ok: true,
-    templates: { ...results.templates, total: ALL_TEMPLATES.length },
-    contacts:  { ...results.contacts,  total: YOUTUBER_LIST.length },
-    message: `Templates: ${results.templates.created} created, ${results.templates.updated} updated. Contacts: ${results.contacts.created} added, ${results.contacts.skipped} skipped.`
+    ok:true,
+    templates:{...results.templates,total:ALL_TEMPLATES.length},
+    contacts:{...results.contacts,total:YOUTUBER_LIST.length},
+    message:`Templates: ${results.templates.created} created, ${results.templates.updated} updated. Contacts: ${results.contacts.created} new, ${results.contacts.patched} real-names patched, ${results.contacts.skipped} unchanged.`
   })
 }
