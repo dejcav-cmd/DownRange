@@ -126,14 +126,14 @@ export default function CanadaExtras({ laws=[], provinces=[], ammo=[] }) {
           <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
             {allLaws.map((law,i) => (
               <div key={law._id||i} style={{ background:'var(--bg2)', border:'1px solid var(--border)',
-                borderLeft:`4px solid ${impColor(law.impact)}` }}>
+                borderLeft:'4px solid '+impColor(law.impact) }}>
                 <button onClick={()=>setOpenLaw(openLaw===i?null:i)} style={{ width:'100%', background:'none', border:'none',
                   padding:'14px 18px', display:'flex', justifyContent:'space-between', alignItems:'center',
                   cursor:'pointer', gap:12 }}>
                   <div style={{ display:'flex', alignItems:'center', gap:12, flex:1, textAlign:'left' }}>
                     <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'var(--text)' }}>{law.title||law.name}</span>
                     <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:impColor(law.impact),
-                      background:impColor(law.impact)+'20', border:`1px solid ${impColor(law.impact)}40`,
+                      background:impColor(law.impact)+'20', border:'1px solid '+impColor(law.impact)+'40',
                       padding:'2px 8px', flexShrink:0 }}>{law.impact}</span>
                     <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', flexShrink:0 }}>{law.effectiveDate||law.date}</span>
                   </div>
@@ -187,7 +187,7 @@ export default function CanadaExtras({ laws=[], provinces=[], ammo=[] }) {
             {allProvinces.map((p,i) => {
               const rc = p.rating?.startsWith('A')?'#22c55e':p.rating?.startsWith('B')?'#86efac':p.rating?.startsWith('C')?'#f59e0b':'#ef4444'
               return (
-                <div key={p._id||i} style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:`4px solid ${p.color||rc}`, padding:'14px 16px' }}>
+                <div key={p._id||i} style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:'4px solid '+p.color||rc, padding:'14px 16px' }}>
                   <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8 }}>
                     <div>
                       <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:3 }}>{p.abbr}</div>
@@ -231,7 +231,7 @@ export default function CanadaExtras({ laws=[], provinces=[], ammo=[] }) {
                       <td style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'var(--text)', padding:'10px 14px' }}>{a.title||a.caliber}</td>
                       <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--gold)', padding:'10px 14px' }}>{a.cadPrice}</td>
                       <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', padding:'10px 14px' }}>{a.usdEquiv||a.usdEq}</td>
-                      <td style={{ padding:'10px 14px' }}><span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:dc, background:dc+'20', border:`1px solid ${dc}40`, padding:'2px 8px' }}>{a.availability||a.avail}</span></td>
+                      <td style={{ padding:'10px 14px' }}><span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:dc, background:dc+'20', border:'1px solid '+dc+'40', padding:'2px 8px' }}>{a.availability||a.avail}</span></td>
                       <td style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:tc, padding:'10px 14px' }}>{(a.trend)==='up'?'↑':(a.trend)==='down'?'↓':'→'}</td>
                       <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', padding:'10px 14px', maxWidth:260, lineHeight:1.5 }}>{a.note}</td>
                     </tr>

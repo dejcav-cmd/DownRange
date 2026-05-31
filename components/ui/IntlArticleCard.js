@@ -5,20 +5,20 @@ function timeAgo(date) {
   if (!date) return ''
   const d = Date.now() - new Date(date).getTime()
   const m = Math.floor(d / 60000)
-  if (m < 60) return `${m}m ago`
+  if (m < 60) return m+'m ago'
   const h = Math.floor(m / 60)
-  if (h < 24) return `${h}h ago`
-  return `${Math.floor(h / 24)}d ago`
+  if (h < 24) return h+'h ago'
+  return Math.floor(h / 24)+'d ago'
 }
 
 function timeAgoPt(date) {
   if (!date) return ''
   const d = Date.now() - new Date(date).getTime()
   const m = Math.floor(d / 60000)
-  if (m < 60) return `${m}min atrás`
+  if (m < 60) return m+'min atrás'
   const h = Math.floor(m / 60)
-  if (h < 24) return `${h}h atrás`
-  return `${Math.floor(h / 24)}d atrás`
+  if (h < 24) return h+'h atrás'
+  return Math.floor(h / 24)+'d atrás'
 }
 
 const TAG_COLORS = {

@@ -150,17 +150,17 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
           <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4b5563', marginBottom:24 }}>As principais leis e decretos que regulam armas no Brasil. Atualizados conforme mudanças políticas.</p>
           <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
             {allLeis.map((lei,i) => (
-              <div key={lei._id||i} style={{ background:BG2, border:`1px solid ${BDR}`, borderLeft:`4px solid ${impactColor(lei.impact)}` }}>
+              <div key={lei._id||i} style={{ background:BG2, border:'1px solid '+BDR, borderLeft:'4px solid '+impactColor(lei.impact) }}>
                 <button onClick={()=>setOpenLei(openLei===i?null:i)} style={{ width:'100%', background:'none', border:'none', padding:'14px 18px', display:'flex', justifyContent:'space-between', alignItems:'center', cursor:'pointer', gap:12 }}>
                   <div style={{ display:'flex', alignItems:'center', gap:12, flex:1, textAlign:'left', flexWrap:'wrap' }}>
                     <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'#F5F5F3' }}>{lei.title||lei.nome}</span>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:impactColor(lei.impact), background:impactColor(lei.impact)+'20', border:`1px solid ${impactColor(lei.impact)}40`, padding:'2px 8px', flexShrink:0 }}>{lei.impact||lei.impacto}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:impactColor(lei.impact), background:impactColor(lei.impact)+'20', border:'1px solid '+impactColor(lei.impact)+'40', padding:'2px 8px', flexShrink:0 }}>{lei.impact||lei.impacto}</span>
                     <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', flexShrink:0 }}>{lei.effectiveDate||lei.data}</span>
                   </div>
                   <span style={{ color:GOLD, fontSize:14 }}>{openLei===i?'▲':'▼'}</span>
                 </button>
                 {openLei===i && (
-                  <div style={{ padding:'0 18px 16px', borderTop:`1px solid ${BDR}` }}>
+                  <div style={{ padding:'0 18px 16px', borderTop:'1px solid '+BDR }}>
                     <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#9ca3af', lineHeight:1.7, margin:'12px 0', textAlign:'justify' }}>{lei.summary||lei.resumo}</p>
                     {(lei.detail||lei.detalhe) && <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.75, textAlign:'justify' }}>{lei.detail||lei.detalhe}</p>}
                     {(lei.sourceUrl||lei.url) && <a href={lei.sourceUrl||lei.url} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GOLD, textDecoration:'none', display:'inline-block', marginTop:8 }}>→ Texto oficial ↗</a>}
@@ -173,15 +173,15 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
       </div>
 
       {/* ── GUIA CAC ── */}
-      <div id="cac" style={{ padding:'48px 0', borderTop:`1px solid ${BDR}` }}>
+      <div id="cac" style={{ padding:'48px 0', borderTop:'1px solid '+BDR }}>
         <div className="container">
           <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:GOLD, marginBottom:6 }}>Como se Tornar CAC — Guia Completo</h2>
           <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4b5563', marginBottom:24 }}>Passo a passo para Atirador Desportivo, Colecionador ou Caçador. Custos e prazos reais.</p>
           <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
             {CAC_GUIDE.map((s,i) => (
-              <div key={i} style={{ background:BG2, border:`1px solid ${BDR}`, overflow:'hidden' }}>
+              <div key={i} style={{ background:BG2, border:'1px solid '+BDR, overflow:'hidden' }}>
                 <button onClick={()=>setOpenCac(openCac===i?null:i)} style={{ width:'100%', background:'none', border:'none', padding:'14px 18px', display:'flex', alignItems:'center', gap:14, cursor:'pointer', textAlign:'left' }}>
-                  <div style={{ minWidth:38, height:38, background:`rgba(200,146,42,.1)`, border:`2px solid ${GOLD}`, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:GOLD, flexShrink:0 }}>{s.passo||i+1}</div>
+                  <div style={{ minWidth:38, height:38, background:'rgba(200,146,42,.1)', border:'2px solid '+GOLD, display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:GOLD, flexShrink:0 }}>{s.passo||i+1}</div>
                   <div style={{ flex:1 }}>
                     <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'#F5F5F3' }}>{s.titulo}</div>
                     <div style={{ display:'flex', gap:10, marginTop:4 }}>
@@ -191,7 +191,7 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
                   </div>
                   <span style={{ color:GOLD, fontSize:14 }}>{openCac===i?'▲':'▼'}</span>
                 </button>
-                {openCac===i && <div style={{ padding:'0 18px 14px', borderTop:`1px solid ${BDR}` }}><p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#9ca3af', lineHeight:1.7, margin:'10px 0', textAlign:'justify' }}>{s.detalhe}</p></div>}
+                {openCac===i && <div style={{ padding:'0 18px 14px', borderTop:'1px solid '+BDR }}><p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#9ca3af', lineHeight:1.7, margin:'10px 0', textAlign:'justify' }}>{s.detalhe}</p></div>}
               </div>
             ))}
           </div>
@@ -199,7 +199,7 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
       </div>
 
       {/* ── ESTADOS ── */}
-      <div id="estados" style={{ padding:'48px 0', borderTop:`1px solid ${BDR}` }}>
+      <div id="estados" style={{ padding:'48px 0', borderTop:'1px solid '+BDR }}>
         <div className="container">
           <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:GOLD, marginBottom:6 }}>Análise por Estado</h2>
           <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4b5563', marginBottom:24 }}>O ambiente para atiradores varia muito entre estados. Burocracia local, postura da PF e cultura política fazem a diferença.</p>
@@ -207,7 +207,7 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
             {allEstados.map((e,i) => {
               const rc = e.rating?.startsWith('A')?GRN:e.rating?.startsWith('B')?'#86efac':e.rating?.startsWith('C')?YEL:RED
               return (
-                <div key={e._id||i} style={{ background:BG2, border:`1px solid ${BDR}`, borderLeft:`4px solid ${e.color||e.cor||rc}`, padding:'14px 16px' }}>
+                <div key={e._id||i} style={{ background:BG2, border:'1px solid '+BDR, borderLeft:'4px solid '+e.color||e.cor||rc, padding:'14px 16px' }}>
                   <div style={{ display:'flex', justifyContent:'space-between', marginBottom:8 }}>
                     <div>
                       <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GOLD, marginBottom:3 }}>{e.abbr}</div>
@@ -229,14 +229,14 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
       </div>
 
       {/* ── MUNIÇÃO ── */}
-      <div id="municao" style={{ padding:'48px 0', borderTop:`1px solid ${BDR}` }}>
+      <div id="municao" style={{ padding:'48px 0', borderTop:'1px solid '+BDR }}>
         <div className="container">
           <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:GOLD, marginBottom:6 }}>Preços de Munição no Brasil</h2>
           <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4b5563', marginBottom:24 }}>Mercado dominado pela CBC. Importação tributada em até 70% — tudo é mais caro que nos EUA.</p>
           <div style={{ overflowX:'auto' }}>
             <table style={{ width:'100%', borderCollapse:'collapse' }}>
               <thead>
-                <tr style={{ background:'rgba(255,255,255,.03)', borderBottom:`1px solid ${BDR}` }}>
+                <tr style={{ background:'rgba(255,255,255,.03)', borderBottom:'1px solid '+BDR }}>
                   {['Calibre','Preço BRL','Equiv. USD','Disponib.','Tendência','Observações'].map(h=>(
                     <th key={h} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color:'#4b5563', padding:'10px 14px', textAlign:'left', letterSpacing:'.06em' }}>{h}</th>
                   ))}
@@ -247,11 +247,11 @@ export default function BrazilExtras({ leis=[], estados=[], municao=[] }) {
                   const tc = (m.trend)==='up'?RED:(m.trend)==='down'?GRN:'#4b5563'
                   const dc = (m.availability||m.disp)==='Alta'?GRN:(m.availability||m.disp)==='Baixa'?RED:YEL
                   return (
-                    <tr key={m._id||i} style={{ borderBottom:`1px solid ${BDR}`, background:i%2?'rgba(255,255,255,.01)':'transparent' }}>
+                    <tr key={m._id||i} style={{ borderBottom:'1px solid '+BDR, background:i%2?'rgba(255,255,255,.01)':'transparent' }}>
                       <td style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'#F5F5F3', padding:'10px 14px' }}>{m.title||m.calibre}</td>
                       <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:GOLD, padding:'10px 14px' }}>{m.brlPrice||m.brlPreco}</td>
                       <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', padding:'10px 14px' }}>{m.usdEquiv||m.usdEq}</td>
-                      <td style={{ padding:'10px 14px' }}><span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:dc, background:dc+'20', border:`1px solid ${dc}40`, padding:'2px 8px' }}>{m.availability||m.disp}</span></td>
+                      <td style={{ padding:'10px 14px' }}><span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:dc, background:dc+'20', border:'1px solid '+dc+'40', padding:'2px 8px' }}>{m.availability||m.disp}</span></td>
                       <td style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:tc, padding:'10px 14px' }}>{(m.trend)==='up'?'↑':(m.trend)==='down'?'↓':'→'}</td>
                       <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', padding:'10px 14px', maxWidth:260, lineHeight:1.5 }}>{m.note||m.obs}</td>
                     </tr>
