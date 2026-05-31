@@ -89,7 +89,6 @@ const RSS_FEEDS = [
   { name: 'ATF News',                url: 'https://www.atf.gov/rss/news_whats-new.xml',         cat: 'law'      },
   { name: 'Congress.gov 2A',         url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law'      },
   // ── GUN RIGHTS ───────────────────────────────────────────────────────────
-  { name: 'TheGunFeed',     url: 'https://thegunfeed.com/feed/',                   cat: 'law'      },
   { name: 'GOA',            url: 'https://www.gunowners.org/feed/',                 cat: 'law'      },
   { name: 'GOA Press',      url: 'https://www.gunowners.org/category/press/feed/', cat: 'law'      },
   // ── CANADA ────────────────────────────────────────────────────────────────
@@ -295,6 +294,29 @@ async function processNewsItem(item) {
       console.log(`[NEWS] 📷 Got real image for "${item.title.slice(0,40)}"`)
     }
   } catch { /* non-critical */ }
+
+  // Skip non-US/international sources
+  const extUrl = (item.url || '').toLowerCase()
+  const intlDomains = ['thehindu.com','hindustantimes.com','timesofindia.com',
+    'ndtv.com','theguardian.com','bbc.com','bbc.co.uk','channelnewsasia.com',
+    'straitstimes.com','scmp.com','aljazeera.com','dawn.com','thenews.com.pk',
+    'smh.com.au','abc.net.au','news.com.au','stuff.co.nz','rnz.co.nz']
+  if (intlDomains.some(d => extUrl.includes(d))) {
+    console.log('[NEWS] Skipping non-US source: ' + (item.url || '').slice(0, 60))
+    return
+  }
+
+  // Skip articles with clearly non-US jurisdictional language
+  const lowerTitle = (item.title || '').toLowerCase()
+  const nonUSTerms = ['karnataka', 'belagavi', 'maharashtra', 'country-made guns',
+    'country made guns', 'desi katta', 'mumbai', 'delhi', 'bengaluru', 'chennai',
+    'pakistan', 'bangladesh', 'afghanistan', 'indian police', 'victoria police',
+    'new south wales', 'queensland police', 'ontario', 'british columbia',
+    'metropolitan police', 'scotland yard']
+  if (nonUSTerms.some(t => lowerTitle.includes(t))) {
+    console.log('[NEWS] Skipping non-US jurisdiction article: ' + item.title?.slice(0, 60))
+    return
+  }
 
   await publishToSanity(doc)
   console.log(`[NEWS] ✓ "${item.title.slice(0, 60)}" [${category}]${ai ? ' +AI' : ' +raw'}`)
