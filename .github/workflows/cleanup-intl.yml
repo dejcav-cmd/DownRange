@@ -1,0 +1,12 @@
+name: Cleanup International Articles
+on:
+  workflow_dispatch:
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Delete international articles from Sanity
+        run: python3 scripts/cleanup-intl-articles.py
