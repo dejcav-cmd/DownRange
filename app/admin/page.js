@@ -1490,6 +1490,302 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
   )
 }
 
+
+// ── ContentSourcesPanel — manage feed sources per tab ────────────────────────────────
+function ContentSourcesPanel({ adminKey }) {
+  const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+  const [sources, setSources] = useState(null)
+  const [counts,  setCounts]  = useState(null)
+  const [activeTab, setActiveTab] = useState('news')
+  const [loading, setLoading] = useState(true)
+  const [working, setWorking] = useState({})
+  const [msg, setMsg] = useState({})
+  const [showAdd, setShowAdd] = useState(false)
+  const [newSource, setNewSource] = useState({ name:'', url:'', type:'rss' })
+  const [addMsg, setAddMsg] = useState(null)
+  const [confirmDelete, setConfirmDelete] = useState(null) // { id, name, feedType }
+  const [deleteContent, setDeleteContent] = useState(false)
+
+  useEffect(() => { loadSources() }, [])
+
+  async function loadSources() {
+    setLoading(true)
+    try {
+      const res = await fetch('/api/admin/content-sources', { headers: H })
+      const d = await res.json()
+      if (d.ok) { setSources(d.sources); setCounts(d.counts) }
+    } catch {}
+    setLoading(false)
+  }
+
+  async function doAction(action, sourceId, feedType, extra = {}) {
+    const key = sourceId + '-' + action
+    setWorking(w => ({...w, [key]: true}))
+    setMsg(m => ({...m, [key]: null}))
+    try {
+      const res = await fetch('/api/admin/content-sources', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ action, sourceId, feedType, ...extra }),
+      })
+      const d = await res.json()
+      setMsg(m => ({...m, [key]: d}))
+      await loadSources()
+    } catch (e) {
+      setMsg(m => ({...m, [key]: { ok: false, error: e.message }}))
+    }
+    setWorking(w => ({...w, [key]: false}))
+    setConfirmDelete(null)
+  }
+
+  async function testSource(sourceId, url, feedType) {
+    const key = sourceId + '-test'
+    setWorking(w => ({...w, [key]: true}))
+    setMsg(m => ({...m, [key]: null}))
+    try {
+      const res = await fetch('/api/admin/content-sources', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ action: 'test', sourceId, feedType, url }),
+      })
+      const d = await res.json()
+      setMsg(m => ({...m, [key]: d}))
+    } catch (e) {
+      setMsg(m => ({...m, [key]: { ok: false, error: e.message }}))
+    }
+    setWorking(w => ({...w, [key]: false}))
+  }
+
+  async function addSource() {
+    if (!newSource.name || !newSource.url) { setAddMsg('Name and URL required'); return }
+    const sourceId = 'custom-' + Date.now()
+    try {
+      const res = await fetch('/api/admin/content-sources', {
+        method: 'POST', headers: H,
+        body: JSON.stringify({ action: 'add', sourceId, feedType: activeTab, ...newSource }),
+      })
+      const d = await res.json()
+      setAddMsg(d.ok ? '✅ Source added' : '❌ ' + (d.error || 'Error'))
+      if (d.ok) { setNewSource({ name:'', url:'', type:'rss' }); setShowAdd(false); await loadSources() }
+    } catch (e) { setAddMsg('❌ ' + e.message) }
+  }
+
+  const TAB_LABELS = {
+    news: '📰 News', laws: '⚖️ Laws', releases: '🔫 Releases',
+    market: '📊 Market', video: '📹 Video',
+  }
+
+  const TYPE_COLOR = { rss: '#3b82f6', api: '#a855f7', youtube: '#ef4444' }
+
+  if (loading) return (
+    <div style={{ padding:'40px 0', textAlign:'center', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4b5563' }}>
+      ⏳ Loading sources...
+    </div>
+  )
+
+  const currentSources = sources?.[activeTab] || []
+  const activeSrcs = currentSources.filter(s => s.status === 'active')
+  const pausedSrcs = currentSources.filter(s => s.status === 'paused')
+
+  return (
+    <div style={{ marginBottom: 32 }}>
+      {/* Panel header */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16, flexWrap:'wrap', gap:8 }}>
+        <div>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', letterSpacing:'.06em', color:'#C8922A' }}>📡 Content Sources</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginTop:2 }}>
+            Add, pause, or delete the feeds powering each content section. Deleting a source can optionally purge all its content.
+          </div>
+        </div>
+        <button onClick={() => setShowAdd(v => !v)} style={{
+          fontFamily:"'Bebas Neue',cursive", fontSize:'.95rem', letterSpacing:'.06em',
+          padding:'8px 20px', background:showAdd?'#374151':'#C8922A', color:showAdd?'#9ca3af':'#000',
+          border:'none', cursor:'pointer'
+        }}>
+          {showAdd ? '✕ Cancel' : '+ Add Source'}
+        </button>
+      </div>
+
+      {/* Add source form */}
+      {showAdd && (
+        <div style={{ background:'var(--bg2)', border:'1px solid #C8922A', padding:20, marginBottom:16 }}>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', fontWeight:700, marginBottom:12, letterSpacing:'.08em' }}>
+            NEW SOURCE — {activeTab.toUpperCase()}
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 2fr auto', gap:8, alignItems:'end' }}>
+            <div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginBottom:4 }}>NAME</div>
+              <input value={newSource.name} onChange={e => setNewSource(p => ({...p, name:e.target.value}))}
+                placeholder="e.g. Recoil Mag"
+                style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', padding:'7px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:11 }} />
+            </div>
+            <div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginBottom:4 }}>FEED URL</div>
+              <input value={newSource.url} onChange={e => setNewSource(p => ({...p, url:e.target.value}))}
+                placeholder="https://example.com/feed/"
+                style={{ width:'100%', background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', padding:'7px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:11 }} />
+            </div>
+            <div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6b7280', marginBottom:4 }}>TYPE</div>
+              <select value={newSource.type} onChange={e => setNewSource(p => ({...p, type:e.target.value}))}
+                style={{ background:'var(--bg)', border:'1px solid var(--border)', color:'var(--text)', padding:'7px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:11 }}>
+                <option value="rss">RSS</option>
+                <option value="api">API</option>
+                <option value="youtube">YouTube</option>
+              </select>
+            </div>
+          </div>
+          <div style={{ display:'flex', gap:8, marginTop:10 }}>
+            <button onClick={addSource} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'.9rem', letterSpacing:'.06em', padding:'7px 20px', background:'#22c55e', color:'#000', border:'none', cursor:'pointer' }}>
+              ✓ Add Source
+            </button>
+            {addMsg && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:addMsg.startsWith('✅')?'#4ade80':'#f87171', display:'flex', alignItems:'center' }}>{addMsg}</span>}
+          </div>
+        </div>
+      )}
+
+      {/* Feed tabs */}
+      <div style={{ display:'flex', gap:0, borderBottom:'2px solid var(--border)', marginBottom:16, overflowX:'auto' }}>
+        {Object.entries(TAB_LABELS).map(([k, l]) => {
+          const cnt = counts?.[k]
+          return (
+            <button key={k} onClick={() => setActiveTab(k)} style={{
+              fontFamily:"'IBM Plex Mono',monospace", fontSize:10, fontWeight:700,
+              padding:'8px 16px', border:'none', borderBottom: activeTab===k ? '2px solid #C8922A' : '2px solid transparent',
+              cursor:'pointer', background:'transparent', color: activeTab===k ? '#C8922A' : '#6b7280',
+              marginBottom:'-2px', whiteSpace:'nowrap',
+            }}>
+              {l}
+              {cnt && (
+                <span style={{ marginLeft:6, fontSize:9, background:cnt.paused>0?'rgba(245,158,11,.2)':'rgba(34,197,94,.1)', color:cnt.paused>0?'#f59e0b':'#4ade80', padding:'1px 5px', borderRadius:2 }}>
+                  {cnt.active}/{cnt.total}
+                </span>
+              )}
+            </button>
+          )
+        })}
+      </div>
+
+      {/* Confirm delete modal */}
+      {confirmDelete && (
+        <div style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.7)', display:'flex', alignItems:'center', justifyContent:'center', zIndex:9999 }}>
+          <div style={{ background:'#0d0e10', border:'2px solid #ef4444', padding:28, maxWidth:480, width:'90%' }}>
+            <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:'#ef4444', marginBottom:8 }}>⚠ DELETE SOURCE</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#e5e7eb', marginBottom:16, lineHeight:1.7 }}>
+              Are you sure you want to delete <strong style={{color:'#C8922A'}}>{confirmDelete.name}</strong>?
+            </div>
+            <label style={{ display:'flex', alignItems:'center', gap:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#f87171', cursor:'pointer', marginBottom:16 }}>
+              <input type="checkbox" checked={deleteContent} onChange={e => setDeleteContent(e.target.checked)} />
+              Also delete all content pulled from this source
+            </label>
+            <div style={{ display:'flex', gap:8 }}>
+              <button onClick={() => doAction('delete', confirmDelete.id, confirmDelete.feedType, { name: confirmDelete.name, deleteContent })}
+                style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'.9rem', letterSpacing:'.06em', padding:'8px 20px', background:'#ef4444', color:'#fff', border:'none', cursor:'pointer' }}>
+                Yes, Delete
+              </button>
+              <button onClick={() => { setConfirmDelete(null); setDeleteContent(false) }}
+                style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'.9rem', letterSpacing:'.06em', padding:'8px 20px', background:'transparent', color:'#6b7280', border:'1px solid var(--border)', cursor:'pointer' }}>
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Sources table */}
+      <div style={{ border:'1px solid var(--border)', overflow:'hidden' }}>
+        <table className="adm-table" style={{ width:'100%' }}>
+          <thead>
+            <tr>
+              <th>Source</th>
+              <th style={{ width:60 }}>Type</th>
+              <th style={{ width:70 }}>Status</th>
+              <th style={{ display:'none' }}>URL</th>
+              <th style={{ width:220, textAlign:'right' }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {currentSources.length === 0 && (
+              <tr><td colSpan={4} style={{ textAlign:'center', color:'#4b5563', padding:'20px', fontFamily:"'IBM Plex Mono',monospace", fontSize:11 }}>No sources configured</td></tr>
+            )}
+            {currentSources.map(src => {
+              const isPaused = src.status === 'paused'
+              const wPause = working[src.id + '-pause'] || working[src.id + '-resume']
+              const wDelete = working[src.id + '-delete']
+              const wTest   = working[src.id + '-test']
+              const mTest   = msg[src.id + '-test']
+              return (
+                <tr key={src.id} style={{ opacity: isPaused ? 0.5 : 1 }}>
+                  <td>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--text)', lineHeight:1 }}>
+                      {src._custom && <span style={{ fontSize:8, color:'#C8922A', marginRight:4, letterSpacing:'.08em' }}>CUSTOM</span>}
+                      {src.name}
+                    </div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', marginTop:2, wordBreak:'break-all', maxWidth:280 }}>
+                      {src.url?.length > 60 ? src.url.slice(0,60) + '…' : src.url}
+                    </div>
+                    {mTest && (
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, marginTop:3,
+                        color: mTest.ok ? '#4ade80' : '#f87171' }}>
+                        {mTest.ok ? '✓ Online · HTTP ' + mTest.status : '✗ ' + (mTest.error || 'Unreachable')}
+                      </div>
+                    )}
+                  </td>
+                  <td>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.06em',
+                      background: (TYPE_COLOR[src.type] || '#6b7280') + '22',
+                      color: TYPE_COLOR[src.type] || '#6b7280',
+                      padding:'2px 7px', textTransform:'uppercase' }}>
+                      {src.type}
+                    </span>
+                  </td>
+                  <td>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, letterSpacing:'.06em',
+                      color: isPaused ? '#f59e0b' : '#22c55e' }}>
+                      {isPaused ? '⏸ PAUSED' : '● ACTIVE'}
+                    </span>
+                    {src.pausedAt && (
+                      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#4b5563', marginTop:1 }}>
+                        since {new Date(src.pausedAt).toLocaleDateString()}
+                      </div>
+                    )}
+                  </td>
+                  <td style={{ textAlign:'right' }}>
+                    <div style={{ display:'flex', gap:4, justifyContent:'flex-end', flexWrap:'wrap' }}>
+                      <button disabled={wTest} onClick={() => testSource(src.id, src.url, activeTab)}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'4px 10px', background:'transparent', border:'1px solid rgba(255,255,255,.12)', color:'#6b7280', cursor:'pointer' }}>
+                        {wTest ? '...' : 'Test'}
+                      </button>
+                      <button disabled={wPause} onClick={() => doAction(isPaused ? 'resume' : 'pause', src.id, activeTab)}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'4px 10px',
+                          background: isPaused ? 'rgba(34,197,94,.1)' : 'rgba(245,158,11,.1)',
+                          border: `1px solid ${isPaused ? 'rgba(34,197,94,.3)' : 'rgba(245,158,11,.3)'}`,
+                          color: isPaused ? '#4ade80' : '#f59e0b', cursor:'pointer' }}>
+                        {wPause ? '...' : isPaused ? '▶ Resume' : '⏸ Pause'}
+                      </button>
+                      <button disabled={wDelete} onClick={() => setConfirmDelete({ id: src.id, name: src.name, feedType: activeTab })}
+                        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'4px 10px', background:'rgba(239,68,68,.08)', border:'1px solid rgba(239,68,68,.25)', color:'#f87171', cursor:'pointer' }}>
+                        {wDelete ? '...' : '✕ Delete'}
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </table>
+      </div>
+
+      {/* Footer stats */}
+      {counts?.[activeTab] && (
+        <div style={{ display:'flex', gap:16, padding:'10px 14px', background:'rgba(0,0,0,.2)', borderTop:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>
+          <span style={{ color:'#22c55e' }}>● {counts[activeTab].active} active</span>
+          {counts[activeTab].paused > 0 && <span style={{ color:'#f59e0b' }}>⏸ {counts[activeTab].paused} paused</span>}
+          <span>{counts[activeTab].total} total sources</span>
+        </div>
+      )}
+    </div>
+  )
+}
+
 function ContentHub({ adminKey, setPanel, setSection }) {
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
 
@@ -1509,6 +1805,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
   const [showArticles, setShowArticles] = useState(true)
   const [artPage, setArtPage] = useState(1)
   const ART_PAGE_SIZE = 30
+  const [hubView, setHubView] = useState('content') // 'content' | 'sources'
   async function lockAll(type, lock = true) {
     setLocking(l => ({...l, [type]: lock ? 'locking' : 'unlocking'}))
     setLockRes(r => ({...r, [type]: null}))
@@ -1660,10 +1957,29 @@ function ContentHub({ adminKey, setPanel, setSection }) {
   return (
     <div>
       {/* ── Header ── */}
-      <div style={{ marginBottom: 28 }}>
-        <div className="panel-title">◈ Content Hub</div>
-        <div className="panel-sub">Manage, seed, and monitor every content section from one place.</div>
+      <div style={{ marginBottom: 20 }}>
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12 }}>
+          <div>
+            <div className="panel-title">◈ Content Hub</div>
+            <div className="panel-sub">Manage, seed, and monitor every content section from one place.</div>
+          </div>
+          {/* View switcher */}
+          <div style={{ display:'flex', gap:0, border:'1px solid var(--border)', overflow:'hidden' }}>
+            {[['content','📊 Content'],['sources','📡 Sources']].map(([v,l]) => (
+              <button key={v} onClick={() => setHubView(v)} style={{
+                fontFamily:"'IBM Plex Mono',monospace", fontSize:11, fontWeight:600,
+                padding:'8px 20px', border:'none', cursor:'pointer', letterSpacing:'.04em',
+                background: hubView===v ? '#C8922A' : 'transparent',
+                color: hubView===v ? '#000' : '#6b7280',
+                borderRight: v==='content' ? '1px solid var(--border)' : 'none',
+              }}>{l}</button>
+            ))}
+          </div>
+        </div>
       </div>
+
+      {hubView === 'sources' && <ContentSourcesPanel adminKey={adminKey} />}
+      {hubView !== 'sources' && (
 
       {/* ── Summary bar ── */}
       {counts && (
@@ -2018,6 +2334,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           )
         })}
       </div>
+      )}
     </div>
   )
 }

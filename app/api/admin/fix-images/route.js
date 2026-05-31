@@ -64,6 +64,56 @@ async function tryOgImage(url) {
   return null
 }
 
+// Search Wikimedia Commons for CC0/public domain images
+async function searchWikimedia(query) {
+  try {
+    const q = encodeURIComponent(query)
+    const url = 'https://commons.wikimedia.org/w/api.php?action=query&list=search&srsearch=' + q + '&srnamespace=6&srlimit=3&format=json&origin=*'
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'DownRange/1.0 (downrangeco.com)' },
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    const pages = data?.query?.search || []
+    for (const page of pages) {
+      if (!page.title.match(/\.(jpg|jpeg|png|webp)/i)) continue
+      const enc = encodeURIComponent(page.title)
+      const thumbRes = await fetch('https://commons.wikimedia.org/w/api.php?action=query&titles=' + enc + '&prop=imageinfo&iiprop=url&iiurlwidth=1200&format=json&origin=*', {
+        headers: { 'User-Agent': 'DownRange/1.0 (downrangeco.com)' },
+        signal: AbortSignal.timeout(6000),
+      })
+      if (!thumbRes.ok) continue
+      const thumbData = await thumbRes.json()
+      const thumbPages = thumbData?.query?.pages || {}
+      for (const p of Object.values(thumbPages)) {
+        const url = p?.imageinfo?.[0]?.thumburl || p?.imageinfo?.[0]?.url
+        if (url) return url
+      }
+    }
+    return null
+  } catch { return null }
+}
+
+function buildWikimediaQuery(title) {
+  const t = (title || '').toLowerCase()
+  if (/glock|sig.sauer|p320|beretta|colt|smith.wesson|ruger|springfield|walther|kimber/.test(t)) {
+    const brand = (t.match(/glock|sig|beretta|colt|ruger|springfield|walther|kimber/)?.[0] || 'pistol')
+    return brand + ' pistol handgun'
+  }
+  if (/ar.?15|ar15|m16|m4\b/.test(t)) return 'AR-15 semi-automatic rifle'
+  if (/ak.?47|ak47/.test(t)) return 'AK-47 rifle'
+  if (/shotgun|12.gauge|mossberg/.test(t)) return 'shotgun firearm'
+  if (/suppressor|silencer/.test(t)) return 'firearm suppressor silencer'
+  if (/9mm|ammo|ammunition/.test(t)) return 'firearm ammunition cartridge'
+  if (/concealed|carry.permit|holster/.test(t)) return 'concealed carry holster firearm'
+  if (/atf|congress|senate|legislature|court/.test(t)) return 'united states congress capitol'
+  if (/police|law.enforcement|officer/.test(t)) return 'police law enforcement'
+  if (/military|soldier|combat/.test(t)) return 'military soldier'
+  return 'firearm handgun'
+}
+
+
 export async function POST(req) {
   const t0 = Date.now()
   const key = req.headers.get('x-admin-key')
@@ -113,7 +163,17 @@ export async function POST(req) {
       if (newUrl) stats.ogFetched++
     }
 
-    // Step 2: fall back to category-matched real photo
+    // Step 2: try Wikimedia Commons (CC0/public domain images)
+    if (!newUrl) {
+      const wmQuery = buildWikimediaQuery(doc.title || '')
+      const wmUrl = await searchWikimedia(wmQuery)
+      if (wmUrl) {
+        newUrl = wmUrl
+        stats.ogFetched++ // count as successful external image
+      }
+    }
+
+    // Step 3: final fall back to category-matched real photo
     if (!newUrl) {
       newUrl = pickPhoto(doc.title || '', doc.category || '')
       stats.photoAssigned++

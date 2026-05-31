@@ -1,3 +1,4 @@
+import { feedConfig } from './feedConfig'
 import { siteConfig }    from './siteConfig'
 import { marketAnalysis } from './marketAnalysis'
 import newsArticle        from './newsArticle'
@@ -26,6 +27,7 @@ import { nfaWaitTime }      from './nfaWaitTime'
 import { cronRun }          from './cronRun'
 
 export const schemaTypes = [
+  feedConfig,
   newsArticle,
   imageAsset, breakingAlert, legislation, review,
   firearmRelease, stateProfile, ammoPrice, video, author, globalStats,

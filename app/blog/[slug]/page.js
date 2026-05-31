@@ -4,7 +4,7 @@ import Footer          from '../../../components/layout/Footer'
 import BreakingTicker  from '../../../components/layout/BreakingTicker'
 import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
-import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../../sanity/lib/client'
+import { fetchBreakingAlerts, fetchBlogPostsPaginated, fetchBlogPostBySlug } from '../../../sanity/lib/client'
 
 export const revalidate = 60
 export const dynamicParams = true // render unknown slugs on-demand, not 404
@@ -74,7 +74,33 @@ export async function generateMetadata({ params }) {
 
 export default async function BlogArticlePage({ params }) {
   const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
-  const post  = allPosts.find(p => p.slug === params.slug)
+
+  // First try to get full post with body from Sanity directly (most reliable for body content)
+  let post = null
+  const sanityPost = await fetchBlogPostBySlug(params.slug).catch(() => null)
+  if (sanityPost) {
+    post = {
+      slug:       sanityPost.slug || params.slug,
+      title:      sanityPost.title || '',
+      subtitle:   sanityPost.excerpt || '',
+      author:     sanityPost.author || 'DJ Cavalcanti',
+      authorRole: sanityPost.authorRole || 'Founder, DownRange',
+      date:       sanityPost.publishedAt ? new Date(sanityPost.publishedAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '',
+      readTime:   sanityPost.readTime ? sanityPost.readTime + ' min read' : '8 min read',
+      category:   (sanityPost.category || 'general').toUpperCase(),
+      catColor:   '#C8922A',
+      featured:   false,
+      img:        sanityPost.imageUrl || '/img/photos/rifle.jpg',
+      excerpt:    sanityPost.excerpt || '',
+      tags:       sanityPost.tags || [],
+      body:       sanityPost.body || '',
+      _fromSanity: true,
+    }
+  } else {
+    // Fall back to static posts
+    post = allPosts.find(p => p.slug === params.slug)
+  }
+
   if (!post) notFound()
 
   const alerts      = await fetchBreakingAlerts(3).catch(() => [])

@@ -18,27 +18,21 @@ const PISTOL_IMAGE = FIREARM_IMAGES.pistol
 const RIFLE_IMAGE  = FIREARM_IMAGES.rifle
 
 function pickImage(title, category) {
+  // ALWAYS use real /img/photos/ — never SVGs
   const t = (title || '').toLowerCase()
-  // LAW first — must precede pistol to avoid carry/rights/SAF false matches
-  if (/constitutional.carry|gun.control|preemption|second.amend|2a.rights/.test(t)) return LAW_IMAGE
-  if (/legislat|bill|congress|senate|most.viewed.bill|week.of/.test(t)) return LAW_IMAGE
-  if (/atf|scotus|supreme.court|circuit.court|federal.court|injunction/.test(t)) return LAW_IMAGE
-  if (/feds|federal.agent|doj|fbi|indicted|prosecut|charged with/.test(t)) return LAW_IMAGE
-  if (/ban|lawsuit|legal.challenge|unconstitutional|bruen|heller|mcdonald/.test(t)) return LAW_IMAGE
-  if (/saf|nra|goa|fpc|second.amendment.foundation/.test(t)) return LAW_IMAGE
-  // PISTOL
-  if (/pistols?|handguns?|glock|sig.sauer|bodyguard|shield|hellcat|p365|p320/.test(t)) return PISTOL_IMAGE
-  if (/9mm|45.acp|40.s&w|380.acp|10mm|concealed.carry|edc|ccw|carry.gun/.test(t)) return PISTOL_IMAGE
-  if (/smith.wesson|s&w|ruger|kimber|springfield.armory|walther|beretta|fn.509/.test(t)) return PISTOL_IMAGE
-  if (/iron.sight|trigger.upgrade|holster|magazine|mag.release/.test(t)) return PISTOL_IMAGE
-  // RIFLE
-  if (/ar.?15|ar15|m4|m16|ak.?47|rifle|carbine|bolt.action/.test(t)) return RIFLE_IMAGE
-  if (/5\.56|6\.5.creedmoor|\.308|\.223|300.blackout|suppressor|silencer|nfa/.test(t)) return RIFLE_IMAGE
-  if (/shotgun|12.gauge|mossberg|benelli/.test(t)) return RIFLE_IMAGE
-  if (/optic|scope|red.dot|eotech|aimpoint|trijicon|vortex/.test(t)) return RIFLE_IMAGE
-  if (/ammo|ammunition|cartridge|grain|fmj|jhp/.test(t)) return PISTOL_IMAGE
-  const catMap = { law: LAW_IMAGE, breaking: LAW_IMAGE, opinion: LAW_IMAGE, industry: RIFLE_IMAGE, training: PISTOL_IMAGE, news: PISTOL_IMAGE }
-  return catMap[category] || PISTOL_IMAGE
+  if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen|legislature|senate|congress/.test(t)) return '/img/photos/law.jpg'
+  if (/pistol|handgun|glock|sig|beretta|colt|revolver|1911|carry|edc|p365|hellcat|shield|kimber|walther|p320|bodyguard/.test(t)) return '/img/photos/pistol.jpg'
+  if (/rifle|ar.?15|m4|carbine|ak|sbr|m16|fn.15|daniel|bcm|bolt.action|semi.auto/.test(t)) return '/img/photos/rifle.jpg'
+  if (/shotgun|mossberg|remington.*870|benelli|gauge|pump|590|870/.test(t)) return '/img/photos/shotgun.jpg'
+  if (/suppressor|silencer|nfa|omega|dead.air|surefire|thunder|obsidian/.test(t)) return '/img/photos/suppressor.jpg'
+  if (/ammo|ammunition|cartridge|bullet|grain|9mm|45.acp|ballistic/.test(t)) return '/img/photos/ammo.jpg'
+  if (/hunt|deer|elk|game|waterfowl|turkey|bear|boar/.test(t)) return '/img/photos/hunting.jpg'
+  if (/train|range|practice|marksmanship|drill|dry.fire/.test(t)) return '/img/photos/training.jpg'
+  if (/gear|holster|optic|scope|light|sling|magazine/.test(t)) return '/img/photos/gear.jpg'
+  if (/military|army|marine|navy|soldier|combat|veteran/.test(t)) return '/img/photos/military.jpg'
+  if (/home.defense|self.defense/.test(t)) return '/img/photos/homedefense.jpg'
+  const catMap = { law: '/img/photos/law.jpg', breaking: '/img/photos/news.jpg', opinion: '/img/photos/news.jpg', industry: '/img/photos/rifle.jpg', training: '/img/photos/pistol.jpg', news: '/img/photos/pistol.jpg' }
+  return catMap[category] || '/img/photos/news.jpg'
 }
 import Parser from 'rss-parser'
 import crypto from 'crypto'
