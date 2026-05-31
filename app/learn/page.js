@@ -9,7 +9,7 @@ export const metadata = {
 }
 
 const ARTICLES = [
-  { slug:'buying-your-first-gun',       title:"Buying Your First Gun: The Complete Beginner's Guide",     subtitle:'Everything you need to know before walking into a gun store.',                       category:'Getting Started', readTime:'12 min', date:'May 15', img: 'https://cdn.sanity.io/images/vbnsqnkg/production/a9b3c283cd6a9dbd49781fc7f108382356168999-1280x852.jpg', featured:true },
+  { slug:'buying-your-first-gun',       title:"Buying Your First Gun: The Complete Beginner's Guide",     subtitle:'Everything you need to know before walking into a gun store.',                       category:'Getting Started', readTime:'12 min', date:'May 15', img:'/img/learn/buying-your-first-gun.jpg', featured:true },
   { slug:'how-to-get-ccw-license',      title:'How to Get Your CCW License (State-by-State Guide)',        subtitle:'Concealed carry permits explained: requirements, costs, and training.',              category:'CCW & Carry',     readTime:'15 min', date:'May 18', img:'/img/photos/pistol.jpg', featured:true },
   { slug:'firearms-safety-four-rules',  title:'The Four Rules of Firearms Safety (And Why They Save Lives)', subtitle:'These rules are not suggestions. Every accident violates at least one.',           category:'Safety',          readTime:'8 min',  date:'May 20', img:'/img/photos/training.jpg', featured:true },
   { slug:'home-defense-basics',         title:'Home Defense Basics: What You Actually Need',               subtitle:'The right firearm, a workable plan, the right storage.',                          category:'Home Defense',    readTime:'11 min', date:'Jun 2',  img:'/img/photos/shotgun.jpg' },

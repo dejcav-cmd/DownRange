@@ -11,7 +11,7 @@ const ARTICLES = {
     title: 'Buying Your First Gun: The Complete Beginner\'s Guide',
     subtitle: 'Everything you need to know before walking into a gun store — from caliber selection to the background check process.',
     category: 'Getting Started', readTime: '12 min read', date: 'May 15, 2026',
-    heroImage: 'https://cdn.sanity.io/images/vbnsqnkg/production/a9b3c283cd6a9dbd49781fc7f108382356168999-1280x852.jpg',
+    heroImage: '/img/learn/buying-your-first-gun.jpg',
     tags: ['First Gun', 'Handgun', 'Budget', '9mm'],
     intro: 'Most first-time gun buyers make the same mistake: they walk into a gun store with no plan and let a salesperson decide for them. That\'s not necessarily bad — good salespeople at good stores provide real guidance. But you\'ll make a much better decision if you walk in knowing what you want and why.',
     sections: [
@@ -216,7 +216,7 @@ const ARTICLES = {
 
 // ── UNIQUE HERO IMAGES PER ARTICLE ──────────────────────────────────────────
 const HERO_IMAGES = {
-  'buying-your-first-gun': 'https://cdn.sanity.io/images/vbnsqnkg/production/a9b3c283cd6a9dbd49781fc7f108382356168999-1280x852.jpg',
+  'buying-your-first-gun': '/img/learn/buying-your-first-gun.jpg',
   'how-to-get-ccw-license': '/img/photos/pistol.jpg',
   'firearms-safety-four-rules': '/img/photos/training.jpg',
   'home-defense-basics': '/img/photos/shotgun.jpg',
