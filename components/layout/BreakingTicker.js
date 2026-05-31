@@ -14,7 +14,7 @@ export default function BreakingTicker({ alerts: initialAlerts = [] }) {
   const prevIds               = useRef(new Set(initialAlerts.map(a => a._id || a)))
 
   // Only render on homepage and /news — interior pages are reading mode, not scanning mode
-  const showTicker = TICKER_ROUTES.includes(pathname) || pathname === '/news'
+  const showTicker = TICKER_ROUTES.includes(pathname)
   
   // Self-poll /api/breaking-alerts every 3 minutes
   useEffect(() => {
