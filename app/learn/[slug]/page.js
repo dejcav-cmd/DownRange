@@ -214,9 +214,9 @@ const ARTICLES = {
 
 // ── UNIQUE HERO IMAGES PER ARTICLE ──────────────────────────────────────────
 const HERO_IMAGES = {
-  'buying-your-first-gun':        '/img/photos/pistol.jpg',
+  'buying-your-first-gun': 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/49/Walther_P99Q.jpg/1920px-Walther_P99Q.jpg',
   'how-to-get-ccw-license':       '/img/photos/pistol.jpg',
-  'firearms-safety-four-rules':   '/img/photos/rifle.jpg',
+  'firearms-safety-four-rules': 'https://upload.wikimedia.org/wikipedia/commons/e/ed/Control_station_for_an_indoor_firing_range.jpg',
   'home-defense-basics':          '/img/photos/pistol.jpg',
   'safe-storage-guide-beginners': '/img/photos/pistol.jpg',
   'ammo-guide-beginners':         '/img/photos/pistol.jpg',
