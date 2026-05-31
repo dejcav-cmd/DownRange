@@ -1,0 +1,12 @@
+name: Patch Brazil Active Flag
+on:
+  workflow_dispatch:
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/patch-brazil-active.py
