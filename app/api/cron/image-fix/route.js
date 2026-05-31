@@ -27,8 +27,59 @@ function pickFallback(title = '', category = '') {
   return '/img/photos/news.jpg'
 }
 
-const BAD = ['/img/photos/news.jpg','/img/photos/pistol.jpg','/img/photos/rifle.jpg','/img/photos/shotgun.jpg','/img/photos/suppressor.jpg','/img/photos/ammo.jpg','/img/photos/law.jpg']
-function isBad(url = '') { return !url || BAD.some(p => url.endsWith(p)) }
+const BAD = [
+  '/img/photos/', '/img/pistol', '/img/rifle', '/img/law', '/img/shotgun',
+  '/img/suppressor', '/img/ammo', '/img/news', '/img/gear', '/img/training',
+  '/img/hunting', '/img/military', '/img/homedefense', '/img/competition',
+]
+function isBad(url = '') {
+  if (!url) return true
+  return BAD.some(p => url.includes(p))
+}
+
+async function searchPixabay(title, category) {
+  const key = process.env.PIXABAY_API_KEY
+  if (!key) return null
+  try {
+    const query = buildImageQuery(title, category)
+    const url = `https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(query)}&image_type=photo&orientation=horizontal&min_width=800&per_page=3&safesearch=true`
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
+    const data = await res.json()
+    const hit = (data.hits || [])[0]
+    return hit?.largeImageURL || hit?.webformatURL || null
+  } catch { return null }
+}
+
+async function searchPexels(title, category) {
+  const key = process.env.PEXELS_API_KEY
+  if (!key) return null
+  try {
+    const query = buildImageQuery(title, category)
+    const res = await fetch(
+      `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=3&orientation=landscape`,
+      { headers: { Authorization: key }, signal: AbortSignal.timeout(8000) }
+    )
+    const data = await res.json()
+    return data.photos?.[0]?.src?.large || null
+  } catch { return null }
+}
+
+function buildImageQuery(title, category) {
+  const t = (title + ' ' + category).toLowerCase()
+  if (/home.?defense|self.?defense/.test(t)) return 'home defense firearm gun'
+  if (/conceal|carry|edc|holster|ccw/.test(t)) return 'concealed carry holster pistol'
+  if (/ammo|ammunition|cartridge|bullet/.test(t)) return 'firearm ammunition bullets'
+  if (/clean|maintain/.test(t)) return 'gun cleaning maintenance firearm'
+  if (/train|range|practice/.test(t)) return 'shooting range training firearms'
+  if (/law|court|atf|bill|bruen|legislat/.test(t)) return 'second amendment law constitution US'
+  if (/suppressor|silencer/.test(t)) return 'firearm suppressor NFA'
+  if (/storage|safe|lock/.test(t)) return 'gun safe firearm storage security'
+  if (/ar.?15|rifle|carbine/.test(t)) return 'AR-15 rifle firearms range'
+  if (/pistol|handgun|glock|sig/.test(t)) return 'handgun pistol shooting range'
+  if (/shotgun|mossberg|gauge/.test(t)) return 'shotgun firearms range'
+  if (/hunt/.test(t)) return 'hunting rifle outdoors'
+  return 'firearms gun second amendment'
+}
 
 async function tryOgImage(sourceUrl) {
   if (!sourceUrl?.startsWith('http')) return null
@@ -64,6 +115,10 @@ async function handler(req) {
       if (a.imageUrl && !isBad(a.imageUrl)) { stats.alreadyOk++; continue }
       let newUrl = null
       if (a.sourceUrl) { newUrl = await tryOgImage(a.sourceUrl); if (newUrl) stats.ogFetched++ }
+      // Try Pixabay → Pexels for real topic-specific photos (no copyright)
+      if (!newUrl) { newUrl = await searchPixabay(a.title, a.category); if (newUrl) stats.ogFetched++ }
+      if (!newUrl) { newUrl = await searchPexels(a.title, a.category); if (newUrl) stats.ogFetched++ }
+      // Local fallback only as absolute last resort
       if (!newUrl) { newUrl = pickFallback(a.title, a.category); stats.photoFallback++ }
       try { await sanity.patch(a._id).set({ imageUrl: newUrl }).commit() }
       catch (e) { stats.failed++; stats.photoFallback-- }
