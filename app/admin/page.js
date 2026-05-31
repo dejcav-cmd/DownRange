@@ -1609,7 +1609,7 @@ function AuthorBioPanel({ adminKey }) {
           <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, marginTop:10,
             color: msg.ok ? '#4ade80' : '#f87171', padding:'6px 12px',
             background: msg.ok ? 'rgba(34,197,94,.06)' : 'rgba(239,68,68,.06)',
-            border:`1px solid ${msg.ok ? 'rgba(34,197,94,.2)' : 'rgba(239,68,68,.2)'}` }}>
+            border:'1px solid ' + (msg.ok ? 'rgba(34,197,94,.2)' : 'rgba(239,68,68,.2)') }}>
             {msg.text}
           </div>
         )}
