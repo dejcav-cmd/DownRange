@@ -4,32 +4,9 @@ on:
 jobs:
   reseed:
     runs-on: ubuntu-latest
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
     steps:
-      - name: Reseed all templates via DownRange live API
-        run: |
-          echo "Calling live DownRange endpoint — this runs on Vercel with all secrets..."
-          RESPONSE=$(curl -s -w "\nHTTP_STATUS:%{http_code}" \
-            -X POST \
-            "https://downrangeco.com/api/outreach/templates/seed?action=all" \
-            -H "x-admin-key: ${{ secrets.ADMIN_KEY }}" \
-            -H "Content-Type: application/json" \
-            --max-time 120)
-          HTTP_STATUS=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
-          BODY=$(echo "$RESPONSE" | grep -v "HTTP_STATUS:")
-          echo "HTTP Status: $HTTP_STATUS"
-          echo "Response: $BODY"
-          if [ "$HTTP_STATUS" != "200" ]; then
-            echo "ERROR: API returned $HTTP_STATUS"
-            exit 1
-          fi
-          echo "$BODY" | python3 -c "
-import sys, json
-d = json.load(sys.stdin)
-print('ok:', d.get('ok'))
-t = d.get('templates', {})
-c = d.get('contacts', {})
-print('Templates:', t.get('created',0), 'created,', t.get('updated',0), 'updated')
-print('Contacts:', c.get('created',0), 'new,', c.get('patched',0), 'real-names patched')
-print('Message:', d.get('message',''))
-sys.exit(0 if d.get('ok') else 1)
-"
+      - uses: actions/checkout@v4
+      - name: Reseed all 10 templates via Sanity API
+        run: python3 scripts/reseed-templates.py
