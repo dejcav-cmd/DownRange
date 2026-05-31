@@ -140,8 +140,8 @@ export default function NewsCard({ article, featured = false }) {
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
         onMouseLeave={e => e.currentTarget.style.borderColor = '#1F2428'}>
 
-        {/* Image area — always 180px tall */}
-        <div style={{ width: '100%', height: '180px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
+        {/* Image area — 16:9 enforced, min 200px */}
+        <div style={{ width: '100%', aspectRatio: '16/9', minHeight: '200px', maxHeight: '220px', overflow: 'hidden', position: 'relative', flexShrink: 0 }}>
           {article.urgencyScore >= 8 && (
             <div style={{ position: 'absolute', top: 8, right: 8, zIndex: 2, display: 'flex', alignItems: 'center', gap: 4, background: '#B91C1C', padding: '3px 8px' }}>
               <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#fff', display: 'inline-block', animation: 'pulse 1.2s infinite' }} />
@@ -167,14 +167,9 @@ export default function NewsCard({ article, featured = false }) {
 
         {/* Text content */}
         <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', flex: 1 }}>
-          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#F0EDE6', lineHeight: 1.3, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+          <h3 style={{ fontSize: '15px', fontWeight: 600, color: '#E5E5E5', lineHeight: 1.3, marginBottom: '8px', display: '-webkit-box', WebkitLineClamp: 3, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
             {article.title}
           </h3>
-          {(article.excerpt || article.summary) && (
-            <p style={{ fontSize: '12px', color: '#6B7280', lineHeight: 1.5, marginBottom: '12px', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden', flex: 1 }}>
-              {article.excerpt || article.summary}
-            </p>
-          )}
           <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: '10px', borderTop: '1px solid #1A1E24', marginTop: 'auto' }}>
             <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#4B5563' }}>
               {article.source || article.author?.name || 'Staff'}

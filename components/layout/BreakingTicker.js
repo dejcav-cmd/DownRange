@@ -1,15 +1,24 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 
 const POLL_INTERVAL = 3 * 60 * 1000 // 3 minutes
 
+// Pages where the ticker adds value: scanning mode, not reading mode
+const TICKER_ROUTES = ['/', '/news']
+
 export default function BreakingTicker({ alerts: initialAlerts = [] }) {
+  const pathname = usePathname()
   const [alerts, setAlerts]   = useState(initialAlerts)
   const [flash, setFlash]     = useState(false)
   const prevIds               = useRef(new Set(initialAlerts.map(a => a._id || a)))
 
+  // Only render on homepage and /news — interior pages are reading mode, not scanning mode
+  const showTicker = TICKER_ROUTES.includes(pathname) || pathname === '/news'
+  
   // Self-poll /api/breaking-alerts every 3 minutes
   useEffect(() => {
+    if (!showTicker) return
     const fetchAlerts = async () => {
       try {
         const res  = await fetch('/api/breaking-alerts', { cache: 'no-store' })
@@ -32,7 +41,10 @@ export default function BreakingTicker({ alerts: initialAlerts = [] }) {
     fetchAlerts()
     const timer = setInterval(fetchAlerts, POLL_INTERVAL)
     return () => clearInterval(timer)
-  }, [])
+  }, [showTicker])
+
+  // Don't render on interior pages (article detail, law detail, CCW, reviews, etc.)
+  if (!showTicker) return null
 
   // Build display items — use fetched alerts or initial, with smart fallbacks
   const items = alerts.length > 0 ? alerts : initialAlerts
