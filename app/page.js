@@ -267,16 +267,25 @@ export default async function HomePage() {
               <Link href="/laws" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>All Laws →</Link>
             </div>
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px,1fr))', gap:10 }}>
-              {(legislation||[]).slice(0,6).map((b, i) => (
-                <div key={b._id||i} style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'14px 16px', borderLeft:`3px solid ${b.status==='passed'?'#22c55e':b.status==='advancing'?'#f59e0b':'#334155'}` }}>
+              {(legislation||[]).slice(0,6).map((b, i) => {
+                // Link to internal laws page — show detail there
+                // External URL only as fallback if no internal route
+                const href = b.slug?.current ? `/laws#${b.slug.current}` : '/laws'
+                return (
+                <Link key={b._id||i} href={href} style={{ textDecoration:'none', display:'block' }}>
+                <div style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'14px 16px', borderLeft:`3px solid ${b.status==='passed'?'#22c55e':b.status==='advancing'?'#f59e0b':b.status==='pending'?'#3b82f6':'#334155'}`, cursor:'pointer', transition:'border-color .15s' }}
+>
                   <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{b.billNumber || 'Bill'}</span>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, color: b.status==='passed'?'#22c55e':b.status==='advancing'?'#f59e0b':'#475569', background: (b.status==='passed'?'#14532d':b.status==='advancing'?'#713f12':'#1e293b'), padding:'1px 6px', borderRadius:2, textTransform:'uppercase' }}>{b.status}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{b.billNumber || b.level?.toUpperCase() || 'FEDERAL'}</span>
+                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, color: b.status==='passed'?'#22c55e':b.status==='advancing'?'#f59e0b':b.status==='pending'?'#60a5fa':'#475569', background: b.status==='passed'?'#14532d':b.status==='advancing'?'#713f12':b.status==='pending'?'#1e3a5f':'#1e293b', padding:'1px 6px', borderRadius:2, textTransform:'uppercase' }}>{b.status}</span>
                   </div>
                   <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--foreground)', lineHeight:1.25 }}>{b.title}</div>
-                  {b.summary && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', marginTop:4, lineHeight:1.5 }}>{b.summary.slice(0,80)}…</div>}
+                  {b.summary && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', marginTop:4, lineHeight:1.5 }}>{b.summary.slice(0,90)}…</div>}
+                  <div style={{ marginTop:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#C8922A' }}>View on Laws page →</div>
                 </div>
-              ))}
+                </Link>
+                )
+              })}
             </div>
           </div>
         </section>
