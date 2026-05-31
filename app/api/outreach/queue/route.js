@@ -301,56 +301,213 @@ export async function POST(req) {
 
   // ── DIGEST — email DJ pending queue summary ──────────────────────────────────
   if (action === 'digest') {
-    const pending = await sanity.fetch(
-      `*[_type == "outreachSendLog" && status == "draft"] | order(draftedAt desc) [0...100] {
-        toName, toEmail, subject, draftedAt,
-        contact->{ type }
-      }`
-    )
-    if (!pending.length) return Response.json({ ok: true, message: 'No pending drafts' })
+    const cutoff30d = new Date(Date.now() - 30 * 86400000).toISOString()
+    const cutoff7d  = new Date(Date.now() - 7 * 86400000).toISOString()
+    const today     = new Date().toISOString().split('T')[0]
 
-    const rows = pending.map(e =>
-      `<tr style="border-bottom:1px solid #1f2428;">
-        <td style="padding:8px 12px;font-size:13px;color:#e5e7eb;">${e.toName}</td>
-        <td style="padding:8px 12px;font-size:11px;color:#9ca3af;">${e.toEmail}</td>
-        <td style="padding:8px 12px;font-size:11px;color:#C8922A;">${e.contact?.type || ''}</td>
-        <td style="padding:8px 12px;font-size:11px;color:#d1d5db;">${e.subject}</td>
-      </tr>`
-    ).join('')
+    // Fetch pending drafts with full context
+    const [pending, sentHistory] = await Promise.all([
+      sanity.fetch(
+        `*[_type == "outreachSendLog" && status == "draft"] | order(draftedAt desc) [0...150] {
+          _id, toName, toEmail, subject, draftedAt, body,
+          contact->{ type, company, website }
+        }`
+      ),
+      sanity.fetch(
+        `*[_type == "outreachSendLog" && status == "sent" && sentAt > $c] | order(sentAt desc) [0...200] {
+          sentAt, contact->{ type }
+        }`,
+        { c: cutoff30d }
+      ).catch(() => []),
+    ])
 
-    const html = `<!DOCTYPE html><html><body style="background:#09090B;color:#e5e7eb;font-family:Arial,sans-serif;padding:32px;">
-      <div style="max-width:700px;margin:0 auto;background:#0A0B0C;border:1px solid #1f2428;border-top:3px solid #C8922A;padding:28px;">
-        <div style="font-family:Georgia,serif;font-size:22px;color:#C8922A;font-weight:900;margin-bottom:4px;">DOWNRANGE OUTREACH</div>
-        <div style="font-size:12px;color:#6b7280;margin-bottom:20px;">Daily Approval Queue — ${pending.length} emails pending your review</div>
-        <p style="font-size:14px;color:#9ca3af;margin-bottom:16px;">
-          These emails are drafted and personalized, waiting for your approval. 
-          <a href="https://www.downrangeco.com/admin" style="color:#C8922A;">Open Mission Control →</a>
-        </p>
-        <table style="width:100%;border-collapse:collapse;margin-bottom:20px;">
-          <thead>
-            <tr style="border-bottom:1px solid #C8922A;">
-              <th style="padding:8px 12px;text-align:left;font-size:10px;color:#C8922A;letter-spacing:.08em;">NAME</th>
-              <th style="padding:8px 12px;text-align:left;font-size:10px;color:#C8922A;letter-spacing:.08em;">EMAIL</th>
-              <th style="padding:8px 12px;text-align:left;font-size:10px;color:#C8922A;letter-spacing:.08em;">TYPE</th>
-              <th style="padding:8px 12px;text-align:left;font-size:10px;color:#C8922A;letter-spacing:.08em;">SUBJECT</th>
-            </tr>
-          </thead>
-          <tbody>${rows}</tbody>
-        </table>
-        <a href="https://www.downrangeco.com/admin" style="display:inline-block;background:#C8922A;color:#000;padding:12px 24px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.08em;">
-          REVIEW & APPROVE →
-        </a>
+    // Only email if 5+ pending — otherwise skip
+    if (pending.length < 5) return Response.json({ ok: true, message: `Only ${pending.length} pending drafts — skipping digest (min 5)` })
+
+    // Group by contact type
+    const TYPE_LABELS = {
+      manufacturer: 'Manufacturer', holster_company: 'Holster Company', gun_shop: 'Gun Shop / FFL',
+      ffl_dealer: 'FFL Dealer', youtuber: 'YouTuber / Creator', instructor: 'Instructor',
+      range: 'Range', organization: 'Organization', influencer: 'Influencer', other: 'Other',
+    }
+    const groups = {}
+    pending.forEach(e => {
+      const t = e.contact?.type || 'other'
+      if (!groups[t]) groups[t] = []
+      groups[t].push(e)
+    })
+
+    // Staleness threshold
+    const STALE_DAYS = 7
+    const isStale = d => d && (Date.now() - new Date(d).getTime()) > STALE_DAYS * 86400000
+    const staleCount = pending.filter(e => isStale(e.draftedAt)).length
+
+    // Sent stats
+    const sentThisMonth = sentHistory.length
+    const sentByType    = {}
+    sentHistory.forEach(s => { const t = s.contact?.type || 'other'; sentByType[t] = (sentByType[t] || 0) + 1 })
+
+    // Build group sections
+    const typeColor = t => ({
+      manufacturer: '#C8922A', holster_company: '#3b82f6', gun_shop: '#22c55e',
+      ffl_dealer: '#22c55e', youtuber: '#a855f7', instructor: '#06b6d4',
+      range: '#f59e0b', organization: '#f97316', influencer: '#ec4899', other: '#6b7280',
+    })[t] || '#6b7280'
+
+    const groupSections = Object.entries(groups).sort((a, b) => b[1].length - a[1].length).map(([type, items]) => {
+      const label = TYPE_LABELS[type] || type
+      const color = typeColor(type)
+      const sentCount = sentByType[type] || 0
+      const staleInGroup = items.filter(e => isStale(e.draftedAt)).length
+
+      const itemRows = items.slice(0, 8).map(e => {
+        const daysAgo = e.draftedAt ? Math.floor((Date.now() - new Date(e.draftedAt).getTime()) / 86400000) : null
+        const stale   = isStale(e.draftedAt)
+        // Preview: first 120 chars of body text
+        const preview = (e.body || '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim().slice(0, 120)
+        return `<tr style="border-bottom:1px solid #1a1c20;">
+          <td style="padding:10px 12px;">
+            <div style="font-size:12px;font-weight:700;color:#e5e7eb;">${e.toName}</div>
+            <div style="font-size:10px;color:#4b5563;">${e.toEmail}${e.contact?.company ? ` · ${e.contact.company}` : ''}</div>
+            ${preview ? `<div style="font-size:10px;color:#6b7280;margin-top:4px;font-style:italic;line-height:1.4;">"${preview}…"</div>` : ''}
+          </td>
+          <td style="padding:10px 12px;font-size:11px;color:#9ca3af;max-width:180px;">${e.subject}</td>
+          <td style="padding:10px 12px;text-align:center;white-space:nowrap;">
+            ${stale
+              ? `<span style="background:#451a03;color:#f97316;font-size:9px;font-weight:700;padding:2px 7px;letter-spacing:.06em;">STALE ${daysAgo}d</span>`
+              : `<span style="font-size:10px;color:#6b7280;">${daysAgo !== null ? daysAgo + 'd ago' : '—'}</span>`
+            }
+          </td>
+        </tr>`
+      }).join('')
+
+      const overflow = items.length > 8 ? `<tr><td colspan="3" style="padding:8px 12px;font-size:10px;color:#6b7280;font-style:italic;">…and ${items.length - 8} more ${label} drafts</td></tr>` : ''
+
+      return `
+        <!-- ${label} Group -->
+        <div style="margin-bottom:16px;border:1px solid #1f2428;">
+          <div style="padding:10px 16px;background:#0d0e10;border-bottom:1px solid #1f2428;display:flex;justify-content:space-between;align-items:center;">
+            <div style="display:flex;align-items:center;gap:10px;">
+              <span style="display:inline-block;width:3px;height:16px;background:${color};"></span>
+              <span style="font-size:12px;font-weight:700;color:${color};">${label}</span>
+              <span style="background:${color}22;color:${color};font-size:9px;font-weight:700;padding:2px 8px;letter-spacing:.06em;">${items.length} PENDING</span>
+              ${staleInGroup > 0 ? `<span style="background:#451a0322;color:#f97316;font-size:9px;font-weight:700;padding:2px 8px;letter-spacing:.06em;">${staleInGroup} STALE</span>` : ''}
+            </div>
+            <span style="font-size:10px;color:#4b5563;">${sentCount} sent this month</span>
+          </div>
+          <table style="width:100%;border-collapse:collapse;">
+            <thead>
+              <tr style="border-bottom:1px solid #1f2428;background:#0a0b0d;">
+                <th style="padding:7px 12px;text-align:left;font-size:9px;color:#6b7280;letter-spacing:.08em;">CONTACT + PREVIEW</th>
+                <th style="padding:7px 12px;text-align:left;font-size:9px;color:#6b7280;letter-spacing:.08em;">SUBJECT LINE</th>
+                <th style="padding:7px 12px;text-align:center;font-size:9px;color:#6b7280;letter-spacing:.08em;">AGE</th>
+              </tr>
+            </thead>
+            <tbody>${itemRows}${overflow}</tbody>
+          </table>
+        </div>`
+    }).join('')
+
+    const html = `<!DOCTYPE html>
+<html><head><meta charset="UTF-8"></head>
+<body style="margin:0;padding:0;background:#09090B;font-family:Arial,sans-serif;color:#e5e7eb;">
+<div style="max-width:760px;margin:0 auto;background:#09090B;">
+
+  <!-- MASTHEAD -->
+  <div style="background:#0A0B0C;border-bottom:3px solid #C8922A;padding:24px 36px;">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;">
+      <div>
+        <div style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:#C8922A;letter-spacing:0.12em;">DOWNRANGE</div>
+        <div style="font-size:9px;color:#4b5563;letter-spacing:0.24em;margin-top:3px;">OUTREACH QUEUE · ${today} · 1:00 PM</div>
       </div>
-    </body></html>`
+      <div style="text-align:center;background:#1c1108;border:2px solid #C8922A;padding:12px 18px;">
+        <div style="font-size:36px;font-weight:900;color:#C8922A;line-height:1;">${pending.length}</div>
+        <div style="font-size:8px;color:#C8922A;letter-spacing:.14em;margin-top:2px;">PENDING</div>
+      </div>
+    </div>
+    <!-- Stats bar -->
+    <div style="display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;">
+      ${[
+        ['Pending drafts',   pending.length,    '#C8922A'],
+        ['Stale (7d+)',      staleCount,         staleCount > 0 ? '#f97316' : '#22c55e'],
+        ['Sent this month',  sentThisMonth,     '#22c55e'],
+        ['Contact types',    Object.keys(groups).length, '#3b82f6'],
+      ].map(([l, v, c]) => `<div style="text-align:center;padding:8px 14px;background:#111;border:1px solid #1f2428;">
+        <div style="font-size:22px;font-weight:900;color:${c};">${v}</div>
+        <div style="font-size:8px;color:#4b5563;letter-spacing:.08em;">${l.toUpperCase()}</div>
+      </div>`).join('')}
+    </div>
+  </div>
+
+  <!-- STALE WARNING -->
+  ${staleCount > 0 ? `
+  <div style="background:#1c0e04;border-bottom:1px solid #1f2428;padding:14px 36px;border-left:4px solid #f97316;">
+    <div style="font-size:11px;color:#f97316;font-weight:700;margin-bottom:4px;">⚠ ${staleCount} drafts are ${STALE_DAYS}+ days old</div>
+    <div style="font-size:11px;color:#9ca3af;line-height:1.6;">
+      These drafts may reference outdated context. Consider refreshing them in the Outreach Portal before sending.
+      Stale emails often get lower response rates.
+    </div>
+  </div>` : ''}
+
+  <!-- QUICK DECISION GUIDE -->
+  <div style="background:#0d0e10;border-bottom:1px solid #1f2428;padding:16px 36px;">
+    <div style="font-size:9px;color:#C8922A;font-weight:700;letter-spacing:.2em;margin-bottom:10px;">DECISION GUIDE</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;">
+      <div style="padding:10px;background:#0a0b0d;border-left:3px solid #22c55e;">
+        <div style="font-size:10px;font-weight:700;color:#22c55e;margin-bottom:4px;">APPROVE</div>
+        <div style="font-size:10px;color:#9ca3af;line-height:1.5;">Fresh draft, strong subject, contact is relevant to current content</div>
+      </div>
+      <div style="padding:10px;background:#0a0b0d;border-left:3px solid #f59e0b;">
+        <div style="font-size:10px;font-weight:700;color:#f59e0b;margin-bottom:4px;">EDIT FIRST</div>
+        <div style="font-size:10px;color:#9ca3af;line-height:1.5;">Stale draft, generic subject, or contact needs personalization</div>
+      </div>
+      <div style="padding:10px;background:#0a0b0d;border-left:3px solid #ef4444;">
+        <div style="font-size:10px;font-weight:700;color:#ef4444;margin-bottom:4px;">SKIP</div>
+        <div style="font-size:10px;color:#9ca3af;line-height:1.5;">Contact not relevant, wrong timing, or already reached out recently</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- GROUPED DRAFTS -->
+  <div style="background:#0A0B0C;border-bottom:1px solid #1f2428;padding:20px 36px;">
+    <div style="font-size:9px;color:#C8922A;font-weight:700;letter-spacing:.2em;margin-bottom:16px;">
+      DRAFTS BY CONTACT TYPE (${Object.keys(groups).length} categories)
+    </div>
+    ${groupSections}
+  </div>
+
+  <!-- MONTHLY STATS BY TYPE -->
+  ${Object.keys(sentByType).length > 0 ? `
+  <div style="background:#0d0e10;border-bottom:1px solid #1f2428;padding:20px 36px;">
+    <div style="font-size:9px;color:#6b7280;font-weight:700;letter-spacing:.2em;margin-bottom:12px;">SENT THIS MONTH BY TYPE</div>
+    <div style="display:flex;flex-wrap:wrap;gap:8px;">
+      ${Object.entries(sentByType).sort((a,b) => b[1]-a[1]).map(([t, n]) =>
+        `<div style="padding:6px 12px;background:#0a0b0d;border:1px solid #1f2428;text-align:center;">
+          <div style="font-size:14px;font-weight:700;color:${typeColor(t)};">${n}</div>
+          <div style="font-size:9px;color:#4b5563;">${TYPE_LABELS[t] || t}</div>
+        </div>`
+      ).join('')}
+    </div>
+  </div>` : ''}
+
+  <!-- CTA -->
+  <div style="padding:20px 36px;background:#0d0e10;display:flex;gap:16px;align-items:center;">
+    <a href="https://downrangeco.com/admin" style="background:#C8922A;color:#000;padding:12px 24px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:.08em;">REVIEW & APPROVE →</a>
+    <span style="font-size:11px;color:#4b5563;">Open the Outreach Portal to approve, edit, skip, or snooze each draft.</span>
+  </div>
+
+  <div style="padding:12px 36px;font-size:10px;color:#374151;">DownRange Outreach System · ${today} · Sent daily at 1:00 PM</div>
+</div>
+</body></html>`
 
     await getResend().emails.send({
-      from: 'DownRange Outreach <outreach@downrangeco.com>',
-      to:   ['dejcav@gmail.com'],
-      subject: `[DownRange] ${pending.length} emails pending approval`,
+      from:    'DownRange Outreach <outreach@downrangeco.com>',
+      to:      ['dejcav@gmail.com'],
+      subject: `[DownRange] Outreach Queue ${today} · ${pending.length} pending · ${staleCount} stale · ${Object.keys(groups).length} types`,
       html,
     })
 
-    return Response.json({ ok: true, action: 'digest', sent: pending.length })
+    return Response.json({ ok: true, action: 'digest', pending: pending.length, stale: staleCount, groups: Object.keys(groups).length })
   }
 
   return Response.json({ error: `Unknown action: ${action}` }, { status: 400 })
