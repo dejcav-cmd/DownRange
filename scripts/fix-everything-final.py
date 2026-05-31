@@ -18,8 +18,8 @@ os.makedirs("public/img/guns", exist_ok=True)
 os.makedirs("public/img/learn", exist_ok=True)
 
 def pexels(query, fname):
+    """Pexels API - uses PEXELS_API_KEY env var if available"""
     if not PEXELS_KEY:
-        print(f"  ⚠ No PEXELS_API_KEY", flush=True)
         return None
     try:
         q = urllib.parse.urlencode({"query": query, "per_page": "5", "orientation": "landscape"})
@@ -30,10 +30,8 @@ def pexels(query, fname):
         with urllib.request.urlopen(req, timeout=10) as r:
             data = json.loads(r.read())
         photos = data.get("photos", [])
-        if not photos:
-            print(f"  ⚠ Pexels: no results for '{query}'", flush=True)
-            return None
-        url = photos[0]["src"]["large2x"] or photos[0]["src"]["large"]
+        if not photos: return None
+        url = photos[0]["src"].get("large2x") or photos[0]["src"].get("large")
         return download_url(url, fname)
     except Exception as e:
         print(f"  ⚠ Pexels error: {e}", flush=True)
@@ -52,13 +50,62 @@ def pixabay(query, fname):
         with urllib.request.urlopen(req, timeout=10) as r:
             data = json.loads(r.read())
         hits = data.get("hits", [])
-        if not hits:
-            return None
+        if not hits: return None
         url = hits[0].get("largeImageURL") or hits[0].get("webformatURL")
         return download_url(url, fname)
     except Exception as e:
-        print(f"  ⚠ Pixabay error: {e}", flush=True)
         return None
+
+def openverse(query, fname):
+    """OpenVerse (WordPress Foundation) - CC-licensed images, no API key needed"""
+    try:
+        q = urllib.parse.urlencode({"q": query, "page_size": "8", "license_type": "commercial"})
+        req = urllib.request.Request(
+            f"https://api.openverse.org/v1/images/?{q}",
+            headers={"User-Agent": "DownRange/1.0 (downrangeco.com; bot@downrangeco.com)"}
+        )
+        with urllib.request.urlopen(req, timeout=12) as r:
+            data = json.loads(r.read())
+        results = data.get("results", [])
+        if not results: return None
+        # Sort by resolution
+        results.sort(key=lambda x: (x.get("width",0) * x.get("height",0)), reverse=True)
+        for res in results[:3]:
+            url = res.get("url") or res.get("thumbnail")
+            if not url: continue
+            if download_url(url, fname):
+                return fname
+            time.sleep(0.3)
+    except Exception as e:
+        print(f"  OpenVerse: {str(e)[:50]}", flush=True)
+    return None
+
+def flickr_cc(query, fname):
+    """Flickr CC0 images via public API (no key needed for public search)"""
+    try:
+        q = urllib.parse.urlencode({
+            "method": "flickr.photos.search",
+            "api_key": "67fdfd2f4d3de9a9bb6ddde9f8f39e56",  # Flickr public demo key
+            "text": query, "license": "9,10",  # CC0 + Public Domain
+            "sort": "relevance", "per_page": "5",
+            "content_type": "1",  # photos only
+            "media": "photos",
+            "format": "json", "nojsoncallback": "1",
+            "extras": "url_l,url_o"
+        })
+        req = urllib.request.Request(f"https://api.flickr.com/services/rest/?{q}",
+            headers={"User-Agent": "DownRange/1.0"})
+        with urllib.request.urlopen(req, timeout=10) as r:
+            data = json.loads(r.read())
+        photos = data.get("photos", {}).get("photo", [])
+        for p in photos[:3]:
+            url = p.get("url_l") or p.get("url_o")
+            if url and download_url(url, fname):
+                return fname
+            time.sleep(0.2)
+    except Exception as e:
+        print(f"  Flickr: {str(e)[:40]}", flush=True)
+    return None
 
 def download_url(url, dest):
     """Download a URL to dest path, return path if successful."""
@@ -80,14 +127,21 @@ def download_url(url, dest):
     return None
 
 def get_image(queries, dest):
-    """Try Pexels then Pixabay with multiple queries."""
+    """Try all image sources: Pexels → Pixabay → OpenVerse → Flickr CC"""
     for q in queries:
-        r = pexels(q, dest)
+        # Paid APIs first (if keys available)
+        if PEXELS_KEY:
+            r = pexels(q, dest)
+            if r: return r
+        if PIXABAY_KEY:
+            r = pixabay(q, dest)
+            if r: return r
+        # Free sources
+        r = openverse(q, dest)
         if r: return r
-        time.sleep(0.3)
-        r = pixabay(q, dest)
+        r = flickr_cc(q, dest)
         if r: return r
-        time.sleep(0.3)
+        time.sleep(0.4)
     return None
 
 # ── IMAGE QUERIES ─────────────────────────────────────────────────────────────
