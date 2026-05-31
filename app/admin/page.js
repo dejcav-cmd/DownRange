@@ -1979,7 +1979,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       </div>
 
       {hubView === 'sources' && <ContentSourcesPanel adminKey={adminKey} />}
-      {hubView !== 'sources' && (
+      {hubView !== 'sources' && (<>
 
       {/* ── Summary bar ── */}
       {counts && (
@@ -2334,7 +2334,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
           )
         })}
       </div>
-      )}
+      </>)}
     </div>
   )
 }
