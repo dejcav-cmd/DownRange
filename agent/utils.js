@@ -363,4 +363,4 @@ async function rateLimitedBatch(items, fn, delayMs = 1000) {
   return results
 }
 
-export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, isSanityDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch }
+export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch }
