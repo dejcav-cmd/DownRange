@@ -24,7 +24,7 @@ function pickImage(title, category) {
 }
 import Parser from 'rss-parser'
 import crypto from 'crypto'
-import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage } from '../utils.js'
+import { rewriteWithClaude, isDuplicate, isSanityDuplicate, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage } from '../utils.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 3    // COST: was 5
@@ -229,7 +229,12 @@ async function fetchRSS() {
 
 async function processNewsItem(item) {
   if (!item.title || !item.url) return null
-  if (isDuplicate(item.url)) return null
+  if (isDuplicate(item.url)) return
+  // Cross-cycle Sanity dedup — prevents re-pulling articles seen in previous runs
+  if (await isSanityDuplicate(item.url, item.title)) {
+    console.log('[NEWS] Sanity-dup skip:', (item.title||'').slice(0,60))
+    return
+  } null
 
   const hash = crypto.createHash('md5').update(item.url).digest('hex')
   const slug = item.title

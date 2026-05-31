@@ -127,6 +127,39 @@ Return ONLY valid JSON, no markdown, no explanation.`
 
 // ── DEDUPLICATION ─────────────────────────────────────────────────────
 const seenHashes = new Set()
+// Sanity-backed dedup: titles and URLs we've seen across cron cycles
+const _sanityDedup = { urls: new Set(), titles: new Set(), loaded: false }
+
+async function loadSanityDedup() {
+  if (_sanityDedup.loaded) return
+  try {
+    const res = await fetch(
+      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=*[_type%3D%3D%22newsArticle%22]%20%7B%20%22u%22%3A%20externalUrl%2C%20%22t%22%3A%20title%20%7D`,
+      { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` } }
+    )
+    const data = await res.json()
+    for (const doc of (data.result || [])) {
+      if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
+      if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0,80))
+    }
+    _sanityDedup.loaded = true
+    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity`)
+  } catch (e) {
+    console.warn('[DEDUP] Could not load Sanity dedup cache:', e.message)
+  }
+}
+
+export async function isSanityDuplicate(url, title) {
+  await loadSanityDedup()
+  const normUrl = (url || '').toLowerCase().replace(/\/+$/, '')
+  const normTitle = (title || '').toLowerCase().slice(0,80)
+  if (normUrl && _sanityDedup.urls.has(normUrl)) return true
+  if (normTitle && _sanityDedup.titles.has(normTitle)) return true
+  // Add to cache so new items in same cycle are also deduped
+  if (normUrl) _sanityDedup.urls.add(normUrl)
+  if (normTitle) _sanityDedup.titles.add(normTitle)
+  return false
+}
 
 function hashUrl(url) {
   return crypto.createHash('md5').update(url || '').digest('hex')
@@ -330,4 +363,4 @@ async function rateLimitedBatch(items, fn, delayMs = 1000) {
   return results
 }
 
-export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch }
+export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, isSanityDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch }

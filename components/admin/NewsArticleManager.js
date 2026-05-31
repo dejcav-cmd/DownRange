@@ -88,6 +88,54 @@ export default function NewsArticleManager({ adminKey }) {
     }
   }
 
+  async function bulkDelete() {
+    if (!checkedIds.size) return
+    const count = checkedIds.size
+    if (!window.confirm(`Delete ${count} article${count>1?'s':''}? This cannot be undone.`)) return
+    setBulkSaving(true)
+    flash(`⏳ Deleting ${count} articles...`)
+    let deleted = 0
+    for (const id of checkedIds) {
+      try {
+        await fetch('/api/admin/articles-list', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+          body: JSON.stringify({ action: 'delete', id }),
+        })
+        deleted++
+      } catch {}
+    }
+    setArticles(prev => prev.filter(a => !checkedIds.has(a._id)))
+    setCheckedIds(new Set())
+    setSelected(null)
+    setBulkSaving(false)
+    flash(`✅ Deleted ${deleted} articles`)
+  }
+
+  async function deleteAllVisible() {
+    const visibleIds = visible.map(a => a._id)
+    if (!visibleIds.length) return
+    if (!window.confirm(`Delete ALL ${visibleIds.length} visible articles? This cannot be undone.`)) return
+    setBulkSaving(true)
+    flash(`⏳ Deleting ${visibleIds.length} articles...`)
+    let deleted = 0
+    for (const id of visibleIds) {
+      try {
+        await fetch('/api/admin/articles-list', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+          body: JSON.stringify({ action: 'delete', id }),
+        })
+        deleted++
+      } catch {}
+    }
+    setArticles(prev => prev.filter(a => !visibleIds.includes(a._id)))
+    setCheckedIds(new Set())
+    setSelected(null)
+    setBulkSaving(false)
+    flash(`✅ Deleted ${deleted} articles`)
+  }
+
   async function bulkSetLock(lockValue) {
     if (!checkedIds.size) return
     setBulkSaving(true)
@@ -327,6 +375,20 @@ export default function NewsArticleManager({ adminKey }) {
               padding:'6px 18px', background:'#374151', color:'#9ca3af', border:'1px solid #4b5563', cursor:'pointer',
             }}>
               {bulkSaving ? '⏳' : '🔓 UNLOCK ALL'}
+            </button>
+            <button onClick={bulkDelete} disabled={bulkSaving} style={{
+              fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em',
+              padding:'6px 18px', background:'rgba(239,68,68,.15)', color:'#ef4444',
+              border:'1px solid rgba(239,68,68,.4)', cursor:'pointer',
+            }}>
+              {bulkSaving ? '⏳' : `🗑 DELETE ${checkedIds.size}`}
+            </button>
+            <button onClick={deleteAllVisible} disabled={bulkSaving} style={{
+              fontFamily:"'Bebas Neue',cursive", fontSize:'0.9rem', letterSpacing:'.06em',
+              padding:'6px 18px', background:'rgba(239,68,68,.08)', color:'#f87171',
+              border:'1px solid rgba(239,68,68,.25)', cursor:'pointer',
+            }}>
+              {bulkSaving ? '⏳' : `🗑 DELETE ALL ${visible.length}`}
             </button>
             <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563' }}>
               · Locked articles are frozen — no AI or cron changes
