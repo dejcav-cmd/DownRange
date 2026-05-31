@@ -1,0 +1,13 @@
+name: Verify and Fix All Images
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+      - name: Verify every image URL and fix all broken ones
+        run: python3 scripts/verify-and-fix-all-images.py
