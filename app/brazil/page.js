@@ -83,9 +83,9 @@ export default async function BrazilPage({ searchParams }) {
         <div className="container">
           <div style={{ display:'flex', gap:0, overflowX:'auto', alignItems:'stretch' }}>
             {CATS.map(c => (
-              <a key={c.val||'all'} href={c.val ? `/brazil?cat=${c.val}` : '/brazil'}
+              <a key={c.val||'all'} href={c.val ? '/brazil?cat='+c.val : '/brazil'}
                 style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:11,
-                  borderBottom:`2px solid ${(cat===c.val||(!cat&&!c.val))?'var(--gold)':'transparent'}`,
+                  borderBottom:'2px solid '+((cat===c.val||(!cat&&!c.val))?'var(--gold)':'transparent'),
                   color:(cat===c.val||(!cat&&!c.val))?'var(--gold)':'var(--text-dim)',
                   textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'.05em' }}>
                 {c.label}
