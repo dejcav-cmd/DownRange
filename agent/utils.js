@@ -191,7 +191,7 @@ async function notifyError(message, context = '') {
 }
 
 // ── SANITY WRITER ─────────────────────────────────────────────────────
-const TRUSTED_IMAGE_DOMAINS = ['/img/','cdn.sanity.io','img.youtube.com','i.ytimg.com']
+const TRUSTED_IMAGE_DOMAINS = ['cdn.sanity.io','img.youtube.com','i.ytimg.com','upload.wikimedia.org','images.unsplash.com','pexels.com']
 
 // Extract og:image from article source page and upload to Sanity CDN
 // Returns cdn.sanity.io URL or null
@@ -283,14 +283,17 @@ async function publishToSanity(doc) {
               ),
               // Fill in body/summary/excerpt ONLY if missing (don't destroy backfilled content)
               setIfMissing: {
-                imageUrl: doc.imageUrl,
-                body:     doc.body,
-                summary:  doc.summary,
-                excerpt:  doc.excerpt,
+                // Only set imageUrl if not already set to a real external image
+                // (prevents overwriting Wikimedia/OG images with generic /img/photos/ fallbacks)
+                body:    doc.body,
+                summary: doc.summary,
+                excerpt: doc.excerpt,
               },
+              // Set imageUrl only if cron-provided value is a real external URL
+              ...(doc.imageUrl && doc.imageUrl.startsWith('http') ? { imageUrl: doc.imageUrl } : {}),
           }},
-          // Force-overwrite imageUrl ONLY if new value is trusted (CDN)
-          ...(isTrustedImage(doc.imageUrl) ? [{ patch: { id: doc._id, set: { imageUrl: doc.imageUrl } } }] : []),
+          // Force-overwrite imageUrl ONLY if it's a real CDN/Wikimedia URL (never for /img/photos/ local fallbacks)
+          ...(isTrustedImage(doc.imageUrl) && doc.imageUrl?.startsWith('http') ? [{ patch: { id: doc._id, set: { imageUrl: doc.imageUrl } } }] : []),
         ]
       : [{ createOrReplace: doc }]
 
