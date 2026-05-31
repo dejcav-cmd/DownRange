@@ -202,8 +202,8 @@ export default function CanadaManager({ adminKey }) {
       <div style={{ display: 'flex', gap: 0, borderBottom: '1px solid var(--border)', marginBottom: 16 }}>
         {TYPES.map(t => (
           <button key={t.key} onClick={() => setActiveType(t.key)}
-            style={{ background: 'none', border: 'none', borderBottom: `2px solid ${activeType === t.key ? 'var(--gold)' : 'transparent'}`, color: activeType === t.key ? 'var(--gold)' : 'var(--text-dim)', padding: '10px 16px', cursor: 'pointer', fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, letterSpacing: '.04em', transition: 'all .15s', whiteSpace: 'nowrap' }}>
-            {t.icon} {t.label} {items.length > 0 && activeType === t.key ? `(${items.length})` : ''}
+            style={{ background: 'none', border: 'none', borderBottom: '2px solid ' + (activeType === t.key ? 'var(--gold)' : 'transparent'), color: activeType === t.key ? 'var(--gold)' : 'var(--text-dim)', padding: '10px 16px', cursor: 'pointer', fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, letterSpacing: '.04em', transition: 'all .15s', whiteSpace: 'nowrap' }}>
+            {t.icon} {t.label} {items.length > 0 && activeType === t.key ? '(' + items.length + ')' : ''}
           </button>
         ))}
       </div>
@@ -244,7 +244,7 @@ export default function CanadaManager({ adminKey }) {
               <div style={{flexShrink:0,paddingRight:6}} onClick={e=>bulkLock.toggleCheck(item._id,e)}><input type="checkbox" checked={bulkLock.checkedIds.has(item._id)} onChange={()=>{}} style={{cursor:'pointer',accentColor:'var(--gold)',width:14,height:14}} /></div>
               <div style={{ flex: 1, minWidth: 0 }}>
                 <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: 'var(--text)', marginBottom: 3 }}>
-                  {item.abbr ? `[${item.abbr}] ` : ''}{item.title}
+                  {item.abbr ? '[' + item.abbr + '] ' : ''}{item.title}
                 </div>
                 <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#6b7280', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>
                   {item.impact && <span style={{ color: item.impact === 'CRITICAL' ? '#ef4444' : item.impact === 'HIGH' ? '#f97316' : '#f59e0b', marginRight: 8 }}>{item.impact}</span>}
@@ -326,7 +326,7 @@ export default function CanadaManager({ adminKey }) {
                           body: JSON.stringify({ id:selItem._id, type:'canadaContent', title:selItem.title, category:'law' })
                         })
                         const d = await res.json()
-                        if (d.ok) { save(selItem._id, { imageUrl: d.imageUrl }); flash(`✅ Photo assigned — ${d.imageUrl.slice(0,50)}`) }
+                        if (d.ok) { save(selItem._id, { imageUrl: d.imageUrl }); flash('✅ Photo assigned — ' + d.imageUrl.slice(0,50)) }
                         else flash('❌ ' + (d.error||'Error'))
                       } catch(e){ flash('❌ '+e.message) }
                       setBusy(false)

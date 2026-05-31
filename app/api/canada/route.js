@@ -22,9 +22,10 @@ export async function GET(req) {
   const type = searchParams.get('type')  // law|province|article|ammo|alert|stat
   const all  = searchParams.get('all')   // admin: fetch everything
 
+  const activeFilter = all ? '' : ' && active==true'
   const query = type
-    ? `*[_type=="canadaContent" && type==$type && active==true] | order(order asc, publishedAt desc)`
-    : `*[_type=="canadaContent"${all ? '' : ' && active==true'}] | order(type asc, order asc)`
+    ? '*[_type=="canadaContent" && type==$type' + activeFilter + '] | order(order asc, publishedAt desc)'
+    : '*[_type=="canadaContent"' + activeFilter + '] | order(type asc, order asc)'
 
   const items = await sanity.fetch(query, type ? { type } : {}).catch(() => [])
   return Response.json({ ok: true, items })

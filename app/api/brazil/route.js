@@ -38,9 +38,11 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url)
   const type = searchParams.get('type')
   const all  = searchParams.get('all')
+  // When all=1 (admin), skip active filter; otherwise only show active==true
+  const activeFilter = all ? '' : ' && active==true'
   const query = type
-    ? '*[_type=="brazilContent" && type==$type && active==true] | order(order asc, publishedAt desc)'
-    : `*[_type=="brazilContent"${all ? '' : ' && active==true'}] | order(type asc, order asc)`
+    ? '*[_type=="brazilContent" && type==$type' + activeFilter + '] | order(order asc, publishedAt desc)'
+    : '*[_type=="brazilContent"' + activeFilter + '] | order(type asc, order asc)'
   const items = await sanity.fetch(query, type ? { type } : {}).catch(() => [])
   return Response.json({ ok: true, items })
 }
