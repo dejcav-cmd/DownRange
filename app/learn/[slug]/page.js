@@ -34,7 +34,7 @@ const ARTICLES = {
     title: 'How to Get Your CCW License (State-by-State Guide)',
     subtitle: 'Concealed carry permits explained: requirements, costs, training, and exactly what to expect in your state.',
     category: 'CCW & Carry', readTime: '15 min read', date: 'May 18, 2026',
-    heroImage: '/img/photos/pistol.jpg',
+    heroImage: '/img/learn/how-to-get-ccw-license.jpg',
     tags: ['CCW', 'Carry Permit', 'Legal', 'Training'],
     intro: 'A Concealed Carry Weapon (CCW) license — also called a Concealed Handgun Permit (CHP), Carry of Concealed Deadly Weapon (CCDW), or License to Carry (LTC) depending on your state — allows you to legally carry a concealed firearm in public. As of 2026, 29 states are constitutional carry states, meaning no permit is required to carry concealed. But even in those states, a permit has significant advantages.',
     sections: [
@@ -56,7 +56,7 @@ const ARTICLES = {
     title: 'The Four Rules of Firearms Safety (And Why They Save Lives)',
     subtitle: 'These four rules are not suggestions. Every accident with a firearm traces back to violating at least one of them.',
     category: 'Safety', readTime: '8 min read', date: 'May 20, 2026',
-    heroImage: '/img/photos/training.jpg',
+    heroImage: '/img/learn/firearms-safety-four-rules.jpg',
     tags: ['Safety', 'Fundamentals', 'Four Rules', 'Beginner'],
     intro: 'Colonel Jeff Cooper, founder of Gunsite Academy and one of the most influential firearms trainers of the 20th century, codified the Four Rules of Firearms Safety. They are not guidelines. They are not suggestions. They are the framework that prevents negligent discharges from becoming tragedies. Every single firearms accident can be traced to a violation of at least one of these rules.',
     sections: [
@@ -79,7 +79,7 @@ const ARTICLES = {
     title: 'Home Defense Basics: What You Actually Need',
     subtitle: 'A practical guide to protecting your home — the right firearm, a workable plan, the right storage, and what Hollywood gets completely wrong.',
     category: 'Home Defense', readTime: '11 min read', date: 'June 2, 2026',
-    heroImage: '/img/photos/shotgun.jpg',
+    heroImage: '/img/learn/home-defense-basics.jpg',
     tags: ['Home Defense', 'Shotgun', 'AR-15', 'Plan', 'Beginner'],
     intro: 'Most people buy a gun for home defense, put it in a nightstand drawer, and consider the problem solved. It isn\'t.\n\nA firearm is one component of a home defense system. Without a plan, without the right storage setup, without knowing your house\'s fatal funnels and safe rooms, the gun is as likely to create problems as solve them. This guide gives you the complete picture — from choosing the right platform to building a plan your whole household can execute under stress.',
     sections: [
@@ -110,7 +110,7 @@ const ARTICLES = {
     title: 'Ammunition Explained: What to Buy and Why',
     subtitle: 'Calibers, grain weights, hollow points vs FMJ, and how to stop overpaying at the gun counter.',
     category: 'Ammunition', readTime: '10 min read', date: 'June 9, 2026',
-    heroImage: '/img/photos/ammo.jpg',
+    heroImage: '/img/learn/ammo-guide-beginners.jpg',
     tags: ['Ammo', '9mm', 'Hollow Point', 'FMJ', 'Caliber Guide'],
     intro: 'Walk into any gun store and you\'ll face an entire wall of ammunition options. Same caliber, dozens of SKUs, prices ranging from 15 cents to $2 per round. The marketing language — \'Critical Defense\', \'Defender\', \'Gold Dot\', \'HST\' — tells you almost nothing useful.\n\nHere\'s the framework that makes it simple: two purposes, two ammo types. Training ammo is cheap, range-friendly full metal jacket (FMJ). Defensive ammo is hollowpoint, reliably expands on impact, and lives in your gun for actual use. The rest is details.',
     sections: [
@@ -125,7 +125,7 @@ const ARTICLES = {
     title: 'Your First Time at a Shooting Range: What to Expect',
     subtitle: 'Range rules, etiquette, what to bring, what not to do, and how to make the most of your first live-fire session.',
     category: 'Getting Started', readTime: '7 min read', date: 'June 12, 2026',
-    heroImage: '/img/photos/training.jpg',
+    heroImage: '/img/learn/shooting-range-first-visit.jpg',
     tags: ['Range', 'Beginner', 'Safety', 'Etiquette', 'First Time'],
     intro: 'Shooting ranges have specific rules and culture. Violating them ranges from embarrassing to genuinely dangerous. The good news: the rules are simple, consistent across most ranges, and make complete sense once you understand why they exist.\n\nThis guide covers indoor range protocol, which applies to 90% of first visits. Outdoor ranges and gun clubs operate similarly with minor variations. If you\'re going to an outdoor range, read the posted rules when you arrive — they vary more widely.',
     sections: [
@@ -155,7 +155,7 @@ const ARTICLES = {
     title: 'Understanding Gun Laws: A Beginner\'s Legal Overview',
     subtitle: 'Federal law, state law, and how they interact — what new gun owners need to know to stay legal in 2026.',
     category: 'Legal', readTime: '13 min read', date: 'June 19, 2026',
-    heroImage: '/img/photos/law.jpg',
+    heroImage: '/img/learn/understanding-gun-laws.jpg',
     tags: ['Gun Laws', 'Federal', 'State Laws', 'Legal', 'NFA', '2026'],
     intro: 'US gun law is a patchwork of federal statutes, state laws, and local ordinances that interact in non-obvious ways. The federal framework sets a floor — states can only add restrictions, never remove federal requirements. But the variation between states is enormous: what\'s legal in Arizona may be a felony in New Jersey.\n\nThis guide gives you the legal framework every gun owner needs. It is not legal advice — if you have specific questions about your situation, consult an attorney. But this is the foundational knowledge that keeps you out of accidental legal trouble.',
     sections: [
@@ -170,7 +170,7 @@ const ARTICLES = {
     title: 'How to Choose a Holster for Concealed Carry',
     subtitle: 'IWB, OWB, appendix, shoulder — the types of holsters and how to choose the right one for your body, lifestyle, and firearm.',
     category: 'CCW & Carry', readTime: '11 min read', date: 'June 23, 2026',
-    heroImage: '/img/photos/gear.jpg',
+    heroImage: '/img/learn/choosing-holster-beginners.jpg',
     tags: ['Holster', 'IWB', 'AIWB', 'Concealed Carry', 'EDC'],
     intro: 'Buying a carry gun without buying a quality holster is like buying a car without seatbelts. The holster is half the system — it determines how safely you carry, how comfortably you carry, and how quickly you can draw under stress.\n\nNew carriers almost universally make the same mistake: they buy a cheap universal holster from the sporting goods store, carry uncomfortably for a month, and then stop carrying. The solution isn\'t more willpower. It\'s a quality holster fitted to your specific gun in a position that works for your body.',
     sections: [
@@ -185,7 +185,7 @@ const ARTICLES = {
     title: 'Dry Fire Training: Get Better Without Spending on Ammo',
     subtitle: 'Professional shooters spend more time dry firing than live firing. Here\'s how to build real skill at home — safely and free.',
     category: 'Training', readTime: '9 min read', date: 'June 26, 2026',
-    heroImage: '/img/photos/training.jpg',
+    heroImage: '/img/learn/dry-fire-training-beginners.jpg',
     tags: ['Dry Fire', 'Training', 'Free', 'Draw Stroke', 'Fundamentals'],
     intro: 'Ammunition costs money. Range time costs money. Dry fire costs nothing and can be done in your living room.\n\nDry fire practice — practicing your draw, trigger press, sight alignment, and movement with an unloaded firearm — is how professional competitive shooters stay sharp between matches. USPSA Grand Masters, military special operations snipers, and defensive shooting instructors all use dry fire as a primary training tool. The reason: it isolates the fundamentals without the distraction of noise, recoil, and range environment.',
     sections: [
@@ -217,16 +217,16 @@ const ARTICLES = {
 // ── UNIQUE HERO IMAGES PER ARTICLE ──────────────────────────────────────────
 const HERO_IMAGES = {
   'buying-your-first-gun': '/img/learn/buying-your-first-gun.jpg',
-  'how-to-get-ccw-license': '/img/photos/pistol.jpg',
-  'firearms-safety-four-rules': '/img/photos/training.jpg',
-  'home-defense-basics': '/img/photos/shotgun.jpg',
+  'how-to-get-ccw-license': '/img/learn/how-to-get-ccw-license.jpg',
+  'firearms-safety-four-rules': '/img/learn/firearms-safety-four-rules.jpg',
+  'home-defense-basics': '/img/learn/home-defense-basics.jpg',
   'safe-storage-guide-beginners': '/img/photos/homedefense.jpg',
-  'ammo-guide-beginners': '/img/photos/ammo.jpg',
-  'shooting-range-first-visit': '/img/photos/training.jpg',
+  'ammo-guide-beginners': '/img/learn/ammo-guide-beginners.jpg',
+  'shooting-range-first-visit': '/img/learn/shooting-range-first-visit.jpg',
   'cleaning-maintaining-your-gun': '/img/photos/pistol.jpg',
-  'understanding-gun-laws': '/img/photos/law.jpg',
-  'choosing-holster-beginners': '/img/photos/gear.jpg',
-  'dry-fire-training-beginners': '/img/photos/training.jpg',
+  'understanding-gun-laws': '/img/learn/understanding-gun-laws.jpg',
+  'choosing-holster-beginners': '/img/learn/choosing-holster-beginners.jpg',
+  'dry-fire-training-beginners': '/img/learn/dry-fire-training-beginners.jpg',
   'what-is-nfa': '/img/photos/suppressor.jpg',
 }
 
