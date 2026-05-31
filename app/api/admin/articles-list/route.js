@@ -1,4 +1,27 @@
 import { callAIText } from '@/lib/aiClient.js'
+
+async function fetchImageForItem(title, category) {
+  const pKey = process.env.PEXELS_API_KEY
+  if (pKey) {
+    try {
+      const r = await fetch('https://api.pexels.com/v1/search?query=' + encodeURIComponent((title||'') + ' ' + (category||'') + ' firearm') + '&per_page=5&orientation=landscape', { headers: { Authorization: pKey }, signal: AbortSignal.timeout(8000) })
+      const d = await r.json()
+      const p = d.photos?.[0]
+      if (p) return p.src.large2x || p.src.large
+    } catch {}
+  }
+  const xKey = process.env.PIXABAY_API_KEY
+  if (xKey) {
+    try {
+      const r = await fetch('https://pixabay.com/api/?key=' + xKey + '&q=' + encodeURIComponent((title||'') + ' ' + (category||'') + ' firearm') + '&image_type=photo&orientation=horizontal&per_page=5&safesearch=true', { signal: AbortSignal.timeout(8000) })
+      const d = await r.json()
+      const h = d.hits?.[0]
+      if (h) return h.largeImageURL || h.webformatURL
+    } catch {}
+  }
+  return null
+}
+
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
@@ -120,6 +143,14 @@ export async function POST(req) {
 
     if (id) await sanity.patch(id).set({ body: rewritten }).commit()
     return Response.json({ ok: true, body: rewritten })
+  }
+
+  
+  if (action === 'fix-image') {
+    const imageUrl = await fetchImageForItem(body.title, body.category || body.type)
+    if (!imageUrl) return Response.json({ error: 'No image found' }, { status: 404 })
+    await sanity.patch(id).set({ imageUrl }).commit()
+    return Response.json({ ok: true, imageUrl })
   }
 
   return Response.json({ error: 'Unknown action: ' + action }, { status: 400 })

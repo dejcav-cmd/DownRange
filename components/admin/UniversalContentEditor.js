@@ -98,9 +98,11 @@ export default function UniversalContentEditor({
   const load = useCallback(async () => {
     setLoading(true)
     try {
-      const r = await fetch(api + '?all=1&type=' + encodeURIComponent(type), { headers: H })
+      const qs = type ? '?all=1&type=' + encodeURIComponent(type) : '?all=1'
+      const r = await fetch(api + qs, { headers: H })
       const d = await r.json()
-      setItems(d.items || [])
+      const key = config.responseKey || 'items'
+      setItems(d[key] || d.items || d.posts || d.articles || d.releases || d.reviews || [])
     } catch { flash('Failed to load', 'error') } finally { setLoading(false) }
   }, [api, type, adminKey])
 
@@ -380,6 +382,10 @@ export default function UniversalContentEditor({
               </button>
             )}
             <button className="uce-ghost" onClick={fixAllImages} disabled={busy}>🖼 Fix All Images</button>
+            {(config.extraActions||[]).map((a,i) => (
+              <button key={i} className="uce-ghost" disabled={busy}
+                onClick={() => a.fn(flash, load)}>{a.label}</button>
+            ))}
             <button className="uce-ghost" onClick={() => setShowAdd(true)}>＋ New</button>
             <button className="uce-ghost" onClick={load} disabled={loading}>↺</button>
           </div>
