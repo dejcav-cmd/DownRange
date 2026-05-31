@@ -236,7 +236,6 @@ export async function generateMetadata({ params }) {
   const a = ARTICLES[params.slug]
   if (!a) return { title: 'Article — DownRange Learning Center' }
   const img = HERO_IMAGES[params.slug] || a.heroImage
-  const authorBio = await fetchAuthorBio()
   return {
     title: `${a.title} — DownRange`,
     description: a.subtitle,
