@@ -13,6 +13,8 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 5,
   themeColor: '#C8922A',
+  // Required for env(safe-area-inset-bottom) to work on iPhones (home indicator / notch)
+  viewportFit: 'cover',
 }
 
 export const metadata = {

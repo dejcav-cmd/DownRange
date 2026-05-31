@@ -6,6 +6,7 @@ import Footer from '../components/layout/Footer'
 import NewsCard from '../components/ui/NewsCard'
 import WhatsHot from '../components/ui/WhatsHot'
 import StateHub from '../components/sections/StateHub'
+import NewsletterSignup from '../components/sections/NewsletterSignup'
 import Link from 'next/link'
 import {
   fetchArticles, fetchBreakingAlerts, fetchLegislation,
@@ -122,10 +123,10 @@ export default async function HomePage() {
         </div>
 
         <div className="container" style={{ padding:'0' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'360px 1fr', minHeight:560 }}>
+          <div className="hero-grid-split" style={{ display:'grid', gridTemplateColumns:'minmax(280px,340px) 1fr', minHeight:560 }}>
 
             {/* LEFT — scrollable news list */}
-            <div style={{ borderRight:'1px solid var(--border)', overflowY:'auto', maxHeight:560 }}>
+            <div className="hero-list-col" style={{ borderRight:'1px solid var(--border)', overflowY:'auto', maxHeight:560 }}>
               {listArticles.map((a, i) => {
                 const slug = a.slug?.current || a._id
                 const cc   = CAT_COLOR[a.category] || '#9ca3af'
@@ -207,7 +208,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:8 }}>
+          <div className="ammo-grid-6" style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:8 }}>
             {ammo.slice(0,6).map(a => (
               <a key={a._id} href={a.url || '/market'} target={a.url?.startsWith('http') ? '_blank' : '_self'} rel="noreferrer"
                 className="ammo-card"
@@ -306,7 +307,7 @@ export default async function HomePage() {
       <section style={{ padding:'56px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', fontFamily:"'Bebas Neue',cursive", fontSize:'20vw', color:'rgba(200,146,42,0.03)', top:'50%', left:'50%', transform:'translate(-50%,-50%)', whiteSpace:'nowrap', pointerEvents:'none' }}>DOWNRANGE</div>
         <div className="container" style={{ position:'relative' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
+          <div className="newsletter-split" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
             <div>
               <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.5rem,5vw,3.8rem)', color:'var(--foreground)', lineHeight:0.95, letterSpacing:'0.02em', marginBottom:14 }}>
                 Stay <span style={{ color:'#C8922A' }}>Armed</span><br />& Informed
@@ -314,11 +315,7 @@ export default async function HomePage() {
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#475569', lineHeight:1.7, marginBottom:24 }}>
                 Join 400,000+ Americans getting the daily DownRange intelligence briefing — breaking news, new laws, gear releases, and ammo prices every morning.
               </p>
-              <form style={{ display:'flex', gap:0 }}>
-                <input type="email" placeholder="your@email.com" style={{ flex:1, background:'var(--bg2)', border:'1px solid var(--border)', borderRight:'none', color:'var(--foreground)', fontFamily:"'IBM Plex Mono',monospace", fontSize:13, padding:'13px 18px', outline:'none' }} />
-                <button type="submit" style={{ background:'#C8922A', color:'#000', border:'none', padding:'13px 22px', cursor:'pointer', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.06em', flexShrink:0 }}>Subscribe Free →</button>
-              </form>
-              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155', marginTop:8 }}>No spam. Unsubscribe anytime. Your data is never sold.</p>
+              <NewsletterSignup variant="compact" />
             </div>
             <div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:18 }}>
@@ -352,7 +349,7 @@ function HeroRotator({ articles }) {
   const a = articles[0] // Server renders first article; client JS handles rotation
   if (!a) return (
     <div style={{ display:'flex', flexDirection:'column', justifyContent:'flex-end', padding:40, height:'100%', minHeight:560, background:'linear-gradient(135deg,#1a1f2e,#0d1117)' }}>
-      <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:52, color:'#F0EDE6', letterSpacing:'0.02em', marginBottom:12 }}>
+      <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:52, color:'#E5E5E5', letterSpacing:'0.02em', marginBottom:12 }}>
         America&apos;s Firearms Intelligence Hub
       </h1>
       <Link href="/news" style={{ background:'#C8922A', color:'#000', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.08em', padding:'11px 22px', textDecoration:'none', display:'inline-block', width:'fit-content' }}>
@@ -407,7 +404,7 @@ function HeroRotator({ articles }) {
               </span>
             )}
           </div>
-          <h2 id="hero-title" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.2rem,4vw,3.4rem)', lineHeight:0.95, color:'#F0EDE6', letterSpacing:'0.02em', marginBottom:14, maxWidth:700 }}>
+          <h2 id="hero-title" style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.2rem,4vw,3.4rem)', lineHeight:0.95, color:'#E5E5E5', letterSpacing:'0.02em', marginBottom:14, maxWidth:700 }}>
             {a.title}
           </h2>
           <p id="hero-excerpt" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#9CA3AF', maxWidth:580, marginBottom:20, lineHeight:1.65, display: a.excerpt ? 'block' : 'none' }}>

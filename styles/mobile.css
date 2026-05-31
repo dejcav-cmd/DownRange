@@ -9,7 +9,7 @@
 /* ── Body clearance for fixed bottom tab bar ── */
 @media (max-width: 900px) {
   body {
-    padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
   }
 }
 
@@ -244,5 +244,58 @@
   img {
     max-width: 100% !important;
     height: auto;
+  }
+}
+
+/* ── Footer grid: collapse to 2-col on tablet, 1-col on phone ── */
+@media (max-width: 768px) {
+  .footer-grid {
+    grid-template-columns: 1fr 1fr !important;
+    gap: 24px !important;
+  }
+}
+@media (max-width: 480px) {
+  .footer-grid {
+    grid-template-columns: 1fr !important;
+    gap: 20px !important;
+  }
+}
+
+/* ── Masthead logo: smaller on small phones ── */
+@media (max-width: 480px) {
+  .masthead-logo {
+    max-height: 44px !important;
+  }
+}
+
+/* ── Hero split: fluid left panel for tablets ── */
+@media (max-width: 768px) {
+  .hero-grid-split {
+    grid-template-columns: 1fr !important;
+  }
+  .hero-grid-split .hero-list-col {
+    display: none !important;
+  }
+}
+
+/* ── Mobile card grid: 240px min-width on phones for 2-col layout ── */
+@media (max-width: 640px) {
+  .dr-grid-auto {
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)) !important;
+  }
+}
+
+/* ── Legislation grid: tighter gap on small phones ── */
+@media (max-width: 480px) {
+  .legislation-grid {
+    gap: 8px !important;
+  }
+}
+
+/* ── Share bar: stack on mobile ── */
+@media (max-width: 500px) {
+  .share-bar-row {
+    flex-direction: column !important;
+    align-items: flex-start !important;
   }
 }

@@ -36,7 +36,7 @@ export default function MobileTabBar() {
           padding: 8px 4px 6px;
           text-decoration: none;
           gap: 3px;
-          min-height: 54px;
+          min-height: 56px;
           position: relative;
           -webkit-tap-highlight-color: transparent;
           touch-action: manipulation;
@@ -56,7 +56,7 @@ export default function MobileTabBar() {
         }
         .mobile-tab-bar .tab-label {
           font-family: 'IBM Plex Mono', monospace;
-          font-size: 9px;
+          font-size: 10px;
           letter-spacing: 0.04em;
           font-weight: 500;
         }

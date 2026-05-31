@@ -107,7 +107,8 @@ export default function Masthead() {
     window.addEventListener('dr_nav_updated', handler)
     return () => window.removeEventListener('dr_nav_updated', handler)
   }, [])
-  const closeTimer = useRef(null)
+  const closeTimer    = useRef(null)
+  const touchStartY   = useRef(0)   // fix: was never declared — swipe-to-close was broken on all touch devices
 
   useEffect(() => {
     const days = ['SUNDAY','MONDAY','TUESDAY','WEDNESDAY','THURSDAY','FRIDAY','SATURDAY']
@@ -119,6 +120,11 @@ export default function Masthead() {
   // Close mobile menu on route change
   useEffect(() => { setMenuOpen(false); setMobileExpanded(null) }, [pathname])
 
+  // Body scroll lock — prevents page scrolling behind the open mobile nav sheet (iOS Safari issue)
+  useEffect(() => {
+    document.body.style.overflow = menuOpen ? 'hidden' : ''
+    return () => { document.body.style.overflow = '' }
+  }, [menuOpen])
   function openDropdown(label) {
     clearTimeout(closeTimer.current)
     setOpenDrop(label)
@@ -173,6 +179,7 @@ export default function Masthead() {
               alt="DownRange Co."
               width={560}
               height={65}
+              className="masthead-logo"
               style={{ display:'block', height:'auto', maxHeight:162, width:'auto', maxWidth:'100%' }}
             />
           </Link>
@@ -230,7 +237,7 @@ export default function Masthead() {
               Feedback
             </button>
             <GlobalSearchBar />
-            {/* ThemeToggle hidden: <ThemeToggle/> */}
+            <ThemeToggle />
           </div>
         </nav>
 
@@ -244,7 +251,7 @@ export default function Masthead() {
               Feedback
             </button>
             <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Search">⌕</Link>
-            {/* ThemeToggle hidden */}
+            <ThemeToggle />
             <button onClick={() => setMenuOpen(!menuOpen)}
               style={{ background:'none', border:'1px solid var(--border)', color:'var(--text-muted)', padding:'7px 14px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.05em' }}>
               {menuOpen ? '✕ CLOSE' : '☰ MENU'}
