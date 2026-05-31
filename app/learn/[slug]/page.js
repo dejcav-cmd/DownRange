@@ -3,7 +3,7 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 
-import { fetchAuthorBio } from '../../lib/authorBio'
+import { fetchAuthorBio } from '../../../lib/authorBio'
 
 const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange' }
 
