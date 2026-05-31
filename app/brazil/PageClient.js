@@ -473,50 +473,101 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
             </div>
           )}
 
-          {/* ── NOTÍCIAS ── */}
+          {/* ── NOTÍCIAS — Portal de Notícias ── */}
           {tab === 'noticias' && (
             <div>
-              <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:GOLD, marginBottom:6 }}>
-                Notícias — Armas no Brasil
-              </h2>
+              <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:8, flexWrap:'wrap', gap:8 }}>
+                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.8rem', color:GOLD }}>
+                  Notícias — Armas no Brasil
+                </h2>
+                {allArtigos.length > 0 && (
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563' }}>
+                    {allArtigos.length} artigos · DownRange Brasil
+                  </span>
+                )}
+              </div>
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4b5563', marginBottom:24 }}>
-                Artigos e análises sobre o cenário de armas no Brasil, em português.
+                Análises e notícias sobre armas no Brasil, em português. Sem nota de imprensa. Sem pauta governamental.
               </p>
+
               {allArtigos.length === 0 ? (
-                <div style={{ background:BG2, border:`1px solid ${BDR}`, padding:40, textAlign:'center' }}>
-                  <div style={{ fontSize:'2.5rem', marginBottom:12 }}>📰</div>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4b5563', marginBottom:8 }}>
-                    Carregando artigos...
+                <div style={{ background:BG2, border:`1px solid ${BDR}`, padding:48, textAlign:'center' }}>
+                  <div style={{ fontSize:'3rem', marginBottom:16 }}>📰</div>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:'#F5F5F3', marginBottom:8 }}>
+                    Artigos em Produção
                   </div>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#374151' }}>
-                    O sistema publica artigos automaticamente sobre armas no Brasil.
-                    Volte em breve para as últimas notícias.
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', maxWidth:400, margin:'0 auto', lineHeight:1.7 }}>
+                    A redação DownRange Brasil está produzindo conteúdo.
+                    Novos artigos são publicados automaticamente — volte em breve.
                   </div>
                 </div>
-              ) : (
-                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(300px,1fr))', gap:16 }}>
-                  {allArtigos.map((a, i) => (
-                    <div key={a._id||i} style={{ background:BG2, border:`1px solid ${BDR}` }}>
-                      {a.imageUrl && (
-                        <div style={{ height:180, overflow:'hidden' }}>
-                          <img src={a.imageUrl} alt={a.title} style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.8 }} />
+              ) : (<>
+
+                {/* ARTIGO DESTAQUE */}
+                {allArtigos[0] && (() => {
+                  const a = allArtigos[0]
+                  return (
+                    <div style={{ border:`1px solid ${BDR}`, background:BG2, overflow:'hidden', marginBottom:24, display:'grid', gridTemplateColumns:'1fr 1fr', gap:0 }}>
+                      <div style={{ height:'100%', minHeight:280, overflow:'hidden', position:'relative' }}>
+                        <img
+                          src={a.imageUrl || '/img/photos/law.jpg'}
+                          alt={a.title}
+                          style={{ width:'100%', height:'100%', objectFit:'cover' }}
+                          onError={e => { e.target.src='/img/photos/law.jpg' }}
+                        />
+                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to right, transparent 55%, ' + BG2 + ' 100%)' }} />
+                        <div style={{ position:'absolute', top:12, left:12 }}>
+                          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'3px 8px', background:'#009C3B', color:'#fff', letterSpacing:'.08em' }}>DESTAQUE</span>
                         </div>
-                      )}
-                      <div style={{ padding:16 }}>
-                        {a.tag && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GOLD, border:`1px solid ${GOLD}40`, padding:'2px 8px', marginBottom:8, display:'inline-block' }}>{a.tag}</span>}
-                        <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'#F5F5F3', marginTop:8, marginBottom:8, lineHeight:1.25 }}>{a.title}</h3>
-                        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.65, textAlign:'justify' }}>{a.summary}</p>
-                        {a.sourceUrl && (
-                          <a href={a.sourceUrl} target="_blank" rel="noopener noreferrer"
-                            style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GOLD, textDecoration:'none', display:'inline-block', marginTop:10 }}>
-                            → Ler mais ↗
-                          </a>
-                        )}
+                      </div>
+                      <div style={{ padding:'28px 28px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
+                        <div style={{ display:'flex', gap:8, marginBottom:12 }}>
+                          {a.tag && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'3px 10px', background:GOLD, color:'#000', letterSpacing:'.06em' }}>{a.tag}</span>}
+                          {a.readMins && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 10px', background:'rgba(255,255,255,.06)', color:'#4b5563', border:`1px solid ${BDR}` }}>⏱ {a.readMins}</span>}
+                        </div>
+                        <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(1.4rem,2.5vw,2rem)', color:'#F5F5F3', letterSpacing:'.03em', lineHeight:1.1, marginBottom:14 }}>{a.title}</h3>
+                        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#9ca3af', lineHeight:1.7, marginBottom:16, textAlign:'justify' }}>
+                          {a.summary || (a.body ? a.body.replace(/<[^>]+>/g,'').slice(0,220)+'...' : '')}
+                        </p>
+                        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>
+                          {a.author && <span>Por {a.author} · </span>}
+                          {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('pt-BR',{year:'numeric',month:'long',day:'numeric'}) : ''}
+                        </div>
                       </div>
                     </div>
+                  )
+                })()}
+
+                {/* GRADE DE ARTIGOS */}
+                <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:16 }}>
+                  {allArtigos.slice(1).map((a, i) => (
+                    <article key={a._id||i} style={{ background:BG2, border:`1px solid ${BDR}`, overflow:'hidden', display:'flex', flexDirection:'column' }}>
+                      <div style={{ height:185, overflow:'hidden', position:'relative', flexShrink:0 }}>
+                        <img
+                          src={a.imageUrl || '/img/photos/law.jpg'}
+                          alt={a.title}
+                          style={{ width:'100%', height:'100%', objectFit:'cover' }}
+                          onError={e => { e.target.src='/img/photos/law.jpg' }}
+                        />
+                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, rgba(9,9,11,.88) 0%, transparent 50%)' }} />
+                        <div style={{ position:'absolute', bottom:10, left:12, display:'flex', gap:6 }}>
+                          {a.tag && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'2px 8px', background:GOLD, color:'#000' }}>{a.tag}</span>}
+                          {a.readMins && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'2px 8px', background:'rgba(0,0,0,.7)', color:'#6b7280' }}>⏱ {a.readMins}</span>}
+                        </div>
+                      </div>
+                      <div style={{ padding:'16px 18px', display:'flex', flexDirection:'column', flex:1 }}>
+                        <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'#F5F5F3', letterSpacing:'.03em', lineHeight:1.15, marginBottom:10, flex:1 }}>{a.title}</h3>
+                        <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', lineHeight:1.65, marginBottom:12, textAlign:'justify' }}>
+                          {a.summary || (a.body ? a.body.replace(/<[^>]+>/g,'').slice(0,140)+'...' : '')}
+                        </p>
+                        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151' }}>
+                          {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('pt-BR',{month:'short',day:'numeric',year:'numeric'}) : ''}
+                        </div>
+                      </div>
+                    </article>
                   ))}
                 </div>
-              )}
+              </>)}
             </div>
           )}
 

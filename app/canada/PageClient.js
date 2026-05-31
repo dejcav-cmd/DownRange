@@ -447,31 +447,85 @@ export default function CanadaPage({ laws=[], provinces=[], articles=[], ammo=[]
             </div>
           )}
 
-          {/* ── ARTICLES ── */}
+          {/* ── ARTICLES — News Portal Grid ── */}
           {tab==='articles' && (
             <div>
-              <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.8rem',color:'var(--text)',letterSpacing:'.04em',marginBottom:8}}>Canadian Firearms Analysis</h2>
-              <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:28}}>Written by the DownRange team. No press release rewriting.</p>
-              <div style={{display:'flex',flexDirection:'column',gap:32}}>
-                {activeArticles.map((a,i)=>(
-                  <article key={i} style={{border:'1px solid var(--border)',background:'var(--bg2)',overflow:'hidden'}}>
-                    <div style={{height:200,overflow:'hidden',position:'relative'}}>
-                      <img src={a.imageUrl || a.img} alt={a.title} style={{width:'100%',height:'100%',objectFit:'cover',opacity:.7}} />
-                      <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,#111318 0%,transparent 60%)'}} />
-                      <div style={{position:'absolute',bottom:12,left:16,display:'flex',gap:8}}>
-                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'3px 8px',background:'#C8922A',color:'#000'}}>{a.tag}</span>
-                        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'3px 8px',background:'rgba(0,0,0,.7)',color:'#9ca3af'}}>{a.mins}</span>
+              <div style={{display:'flex',alignItems:'baseline',justifyContent:'space-between',marginBottom:8,flexWrap:'wrap',gap:8}}>
+                <h2 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.8rem',color:'var(--text)',letterSpacing:'.04em'}}>Canadian Firearms Analysis</h2>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>{activeArticles.length} articles · DownRange staff</span>
+              </div>
+              <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#4b5563',marginBottom:28}}>
+                Written by the DownRange team. No press release rewriting. No government talking points.
+              </p>
+
+              {activeArticles.length === 0 ? (
+                <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:48,textAlign:'center'}}>
+                  <div style={{fontSize:'2.5rem',marginBottom:12}}>📰</div>
+                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563'}}>Articles loading — check back shortly.</div>
+                </div>
+              ) : (<>
+                {/* ── FEATURED ARTICLE (first/largest) ── */}
+                {activeArticles[0] && (() => {
+                  const a = activeArticles[0]
+                  return (
+                    <div style={{border:'1px solid var(--border)',background:'var(--bg2)',overflow:'hidden',marginBottom:24,display:'grid',gridTemplateColumns:'1fr 1fr',gap:0}}>
+                      <div style={{height:'100%',minHeight:280,overflow:'hidden',position:'relative'}}>
+                        <img
+                          src={a.imageUrl || a.img || '/img/photos/law.jpg'}
+                          alt={a.title}
+                          style={{width:'100%',height:'100%',objectFit:'cover'}}
+                          onError={e => { e.target.src='/img/photos/law.jpg' }}
+                        />
+                        <div style={{position:'absolute',inset:0,background:'linear-gradient(to right,transparent 60%,var(--bg2) 100%)'}} />
+                      </div>
+                      <div style={{padding:'28px 28px',display:'flex',flexDirection:'column',justifyContent:'center'}}>
+                        <div style={{display:'flex',gap:8,marginBottom:12}}>
+                          {(a.tag||a.category) && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'3px 10px',background:'#C8922A',color:'#000',letterSpacing:'.06em'}}>{a.tag||a.category}</span>}
+                          {(a.readMins||a.mins) && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'3px 10px',background:'rgba(255,255,255,.06)',color:'#4b5563',border:'1px solid var(--border)'}}>⏱ {a.readMins||a.mins}</span>}
+                        </div>
+                        <h3 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'clamp(1.5rem,2.5vw,2.1rem)',color:'var(--text)',letterSpacing:'.03em',lineHeight:1.1,marginBottom:14}}>{a.title}</h3>
+                        <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#9ca3af',lineHeight:1.7,marginBottom:16,textAlign:'justify'}}>
+                          {a.summary || (a.body ? a.body.replace(/<[^>]+>/g,'').slice(0,220)+'...' : '')}
+                        </p>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>
+                          {a.author && <span>By {a.author} · </span>}
+                          {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-CA',{year:'numeric',month:'short',day:'numeric'}) : (a.date||'')}
+                        </div>
                       </div>
                     </div>
-                    <div style={{padding:'20px 24px'}}>
-                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginBottom:8}}>{a.date}</div>
-                      <h3 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--text)',letterSpacing:'.03em',lineHeight:1.1,marginBottom:16}}>{a.title}</h3>
-                      <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#9ca3af',lineHeight:1.9}} dangerouslySetInnerHTML={{__html:a.body}} />
-                      <a href={a.url} target="_blank" rel="noreferrer" style={{display:'inline-block',marginTop:16,fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',textDecoration:'none'}}>Source / Further Reading ↗</a>
-                    </div>
-                  </article>
-                ))}
-              </div>
+                  )
+                })()}
+
+                {/* ── ARTICLE GRID ── */}
+                <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))',gap:16}}>
+                  {activeArticles.slice(1).map((a,i)=>(
+                    <article key={i} style={{border:'1px solid var(--border)',background:'var(--bg2)',overflow:'hidden',display:'flex',flexDirection:'column'}}>
+                      <div style={{height:180,overflow:'hidden',position:'relative',flexShrink:0}}>
+                        <img
+                          src={a.imageUrl || a.img || '/img/photos/law.jpg'}
+                          alt={a.title}
+                          style={{width:'100%',height:'100%',objectFit:'cover',transition:'transform .3s'}}
+                          onError={e => { e.target.src='/img/photos/law.jpg' }}
+                        />
+                        <div style={{position:'absolute',inset:0,background:'linear-gradient(to top,rgba(9,9,11,.85) 0%,transparent 50%)'}} />
+                        <div style={{position:'absolute',bottom:10,left:12,display:'flex',gap:6}}>
+                          {(a.tag||a.category) && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'2px 8px',background:'#C8922A',color:'#000'}}>{a.tag||a.category}</span>}
+                          {(a.readMins||a.mins) && <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'2px 8px',background:'rgba(0,0,0,.7)',color:'#6b7280'}}>⏱ {a.readMins||a.mins}</span>}
+                        </div>
+                      </div>
+                      <div style={{padding:'16px 18px',display:'flex',flexDirection:'column',flex:1}}>
+                        <h3 style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.25rem',color:'var(--text)',letterSpacing:'.03em',lineHeight:1.15,marginBottom:10,flex:1}}>{a.title}</h3>
+                        <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#6b7280',lineHeight:1.65,marginBottom:12,textAlign:'justify'}}>
+                          {a.summary || (a.body ? a.body.replace(/<[^>]+>/g,'').slice(0,140)+'...' : '')}
+                        </p>
+                        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151'}}>
+                          {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-CA',{month:'short',day:'numeric',year:'numeric'}) : (a.date||'')}
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </>)}
             </div>
           )}
 
