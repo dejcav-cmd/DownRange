@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
 import json, urllib.request, urllib.parse, time, sys, hashlib, os
 
-TOKEN   = os.environ.get("SANITY_TOKEN", "")
+TOKEN = os.environ.get("SANITY_TOKEN", "")
 if not TOKEN:
-    print("ERROR: SANITY_TOKEN env var not set", flush=True)
+    print("ERROR: SANITY_TOKEN not set", flush=True)
     sys.exit(1)
 
 PROJECT = "vbnsqnkg"
@@ -19,57 +19,62 @@ def sanity_query(q, params=None):
         return json.loads(r.read())["result"]
 
 def sanity_mutate(mutations):
-    body = json.dumps({"mutations": mutations}).encode()
-    req = urllib.request.Request(BASE + "/mutate/production", data=body, method="POST",
-          headers={"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as r:
+    body = json.dumps({"mutations": mutations}, ensure_ascii=False).encode("utf-8")
+    req = urllib.request.Request(
+        BASE + "/mutate/production", data=body, method="POST",
+        headers={"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json; charset=utf-8"}
+    )
+    with urllib.request.urlopen(req, timeout=60) as r:
         return json.loads(r.read())
 
-print("Loading templates...", flush=True)
-with open("scripts/outreach-templates.json", "r", encoding="utf-8") as f:
-    TEMPLATES = json.load(f)
-print("Loaded " + str(len(TEMPLATES)) + " templates", flush=True)
-
+# Test connection
 print("Testing Sanity connection...", flush=True)
 try:
-    test = sanity_query('*[_type == "outreachTemplate"][0]._id')
-    print("Sanity OK: " + str(test)[:60], flush=True)
+    test = sanity_query('count(*[_type == "outreachTemplate"])')
+    print("OK - current template count:", test, flush=True)
 except Exception as e:
-    print("Sanity FAILED: " + str(e), flush=True)
+    print("FAILED:", str(e), flush=True)
     sys.exit(1)
+
+# Load templates
+print("Loading templates from JSON...", flush=True)
+with open("scripts/outreach-templates.json", "r", encoding="utf-8") as f:
+    TEMPLATES = json.load(f)
+print("Loaded", len(TEMPLATES), "templates", flush=True)
 
 created = updated = errors = 0
 
-for tmpl in TEMPLATES:
+for i, tmpl in enumerate(TEMPLATES):
     name = tmpl["name"]
+    print(f"[{i+1}/{len(TEMPLATES)}] Processing: {name[:55]}...", flush=True)
     try:
         existing = sanity_query('*[_type == "outreachTemplate" && name == $n][0]._id', {"n": name})
         doc = {
-            "_type": "outreachTemplate",
-            "name": name,
-            "type": tmpl["type"],
-            "subject": tmpl["subject"],
+            "_type":       "outreachTemplate",
+            "name":        name,
+            "type":        tmpl.get("type", "all"),
+            "subject":     tmpl.get("subject", ""),
             "previewText": tmpl.get("previewText", ""),
-            "body": tmpl["body"],
-            "variables": tmpl.get("variables", []),
-            "isActive": True,
+            "body":        tmpl.get("body", ""),
+            "variables":   tmpl.get("variables", []),
+            "isActive":    True,
         }
         if existing:
             sanity_mutate([{"patch": {"id": existing, "set": doc}}])
             updated += 1
-            print("  UPDATED: " + name[:60], flush=True)
+            print("  -> UPDATED", flush=True)
         else:
             doc_id = "template-" + hashlib.md5(name.encode()).hexdigest()[:16]
             doc["_id"] = doc_id
             sanity_mutate([{"createOrReplace": doc}])
             created += 1
-            print("  CREATED: " + name[:60], flush=True)
-        time.sleep(0.4)
+            print("  -> CREATED", flush=True)
+        time.sleep(0.5)
     except Exception as e:
         errors += 1
-        print("  ERROR " + name[:40] + ": " + str(e), flush=True)
+        print("  -> ERROR:", str(e)[:200], flush=True)
 
 print("", flush=True)
-print("DONE: " + str(created) + " created, " + str(updated) + " updated, " + str(errors) + " errors", flush=True)
+print(f"DONE: {created} created, {updated} updated, {errors} errors", flush=True)
 if errors > 0:
     sys.exit(1)
