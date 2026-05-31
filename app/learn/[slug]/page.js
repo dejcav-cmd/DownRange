@@ -5,7 +5,7 @@ import Link from 'next/link'
 
 import { fetchAuthorBio } from '../../lib/authorBio'
 
-const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange', bio: '{authorBio}' }
+const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange' }
 
 const ARTICLES = {
   'buying-your-first-gun': {
