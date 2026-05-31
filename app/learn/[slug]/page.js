@@ -122,7 +122,7 @@ const ARTICLES = {
     title: 'Your First Time at a Shooting Range: What to Expect',
     subtitle: 'Range rules, etiquette, what to bring, what not to do, and how to make the most of your first live-fire session.',
     category: 'Getting Started', readTime: '7 min read', date: 'June 12, 2026',
-    heroImage: '/img/photos/rifle.jpg',
+    heroImage: 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Composite_Indoor_Shooting_Range_%28CISR%29_at_INS_Karna.jpg',
     tags: ['Range', 'Beginner', 'Safety', 'Etiquette', 'First Time'],
     intro: 'Shooting ranges have specific rules and culture. Violating them ranges from embarrassing to genuinely dangerous. The good news: the rules are simple, consistent across most ranges, and make complete sense once you understand why they exist.\n\nThis guide covers indoor range protocol, which applies to 90% of first visits. Outdoor ranges and gun clubs operate similarly with minor variations. If you\'re going to an outdoor range, read the posted rules when you arrive — they vary more widely.',
     sections: [
@@ -219,7 +219,7 @@ const HERO_IMAGES = {
   'home-defense-basics':          '/img/photos/pistol.jpg',
   'safe-storage-guide-beginners': '/img/photos/pistol.jpg',
   'ammo-guide-beginners':         '/img/photos/pistol.jpg',
-  'shooting-range-first-visit':   '/img/photos/rifle.jpg',
+  'shooting-range-first-visit': 'https://upload.wikimedia.org/wikipedia/commons/8/8f/Composite_Indoor_Shooting_Range_%28CISR%29_at_INS_Karna.jpg',
   'cleaning-maintaining-your-gun':'/img/photos/pistol.jpg',
   'understanding-gun-laws':       '/img/photos/law.jpg',
   'choosing-holster-beginners':   '/img/photos/pistol.jpg',
