@@ -5,21 +5,6 @@ jobs:
   reseed:
     runs-on: ubuntu-latest
     steps:
-      - name: Trigger template reseed
-        env:
-          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-        run: |
-          echo "Triggering template reseed..."
-          RESPONSE=$(curl -s -X POST \
-            "https://downrangeco.com/api/outreach/templates/seed?action=all" \
-            -H "x-admin-key: ${ADMIN_KEY}" \
-            -H "Content-Type: application/json" \
-            --max-time 90)
-          echo "Response: $RESPONSE"
-          if echo "$RESPONSE" | grep -q '"ok":true'; then
-            echo "Templates reseeded successfully"
-            echo "$RESPONSE" | python3 -c "import json,sys; d=json.load(sys.stdin); print('Templates:', d.get('templates',{})); print('Contacts:', d.get('contacts',{}))"
-          else
-            echo "Reseed failed or ADMIN_KEY not in secrets"
-            exit 1
-          fi
+      - uses: actions/checkout@v4
+      - name: Reseed templates via Sanity API
+        run: python3 scripts/reseed-templates.py
