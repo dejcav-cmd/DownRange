@@ -1,0 +1,15 @@
+name: Download Learn Images + Fix Section Images
+on:
+  workflow_dispatch:
+jobs:
+  download:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Download CC0 images and patch source files
+        run: python3 scripts/download-learn-images.py
