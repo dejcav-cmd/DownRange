@@ -140,7 +140,15 @@ ${ul([
 ])}
 ${hl(`We track every public announcement and cover the ones that matter to our readers — active gun owners, instructors, dealers, and 2A advocates. {{businessName}} belongs in that coverage.`)}
 ${p(`If you have new products launching, press releases, or changes to existing lines:`)}
-${cta('https://www.downrangeco.com/press','Press & Partnership Info')}
+${hr()}
+${p(`<strong style="color:#C8922A;">One more thing — and this one is worth reading.</strong>`)}
+${p(`We just launched a <strong>written reviews section</strong> on DownRange, and we\'re building it the right way: hands-on testing, no pay-to-play, no sponsored content disguised as editorial. Every review we publish will be honest — the good, the bad, and what a real gun owner actually needs to know before buying.`)}
+${p(`The roadmap goes beyond written. We\'re expanding into video reviews on YouTube and other platforms as the audience grows. The goal is to become the independent review destination the firearms community has always deserved — not another outlet that praises everything it receives.`)}
+${p(`<strong>Here\'s the ask: ship us a product.</strong>`)}
+${p(`If {{businessName}} has something worth talking about — a new pistol, a rifle, an accessory — send it our way. We\'ll put real range time into it, photograph it, test it the way your customers actually use it, and publish a thorough honest review with full specs and our call on whether it\'s worth the money. Our readers are exactly who you want to reach: serious gun owners who research before they buy.`)}
+${hl(`We don\'t charge for reviews. We don\'t guarantee positive coverage. What we guarantee is that the review will be seen by people actively making purchase decisions — and that your product gets the same respect you put into building it.`)}
+${p(`To get {{businessName}} in our review queue, reply to this email. We\'ll coordinate details and send shipping info. No commitment needed on either side until we both agree it\'s a good fit.`)}
+${cta('https://www.downrangeco.com/reviews','See Our Reviews Section')}
 ${p(`DJ Cavalcanti`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
