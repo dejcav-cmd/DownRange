@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
-import json, urllib.request, urllib.parse, time, sys, hashlib
+import json, urllib.request, urllib.parse, time, sys, hashlib, os
 
-TOKEN   = "skbUvbYYIvf0Uwc43kqoHa7MX556BIABP7tNDQjW06yeBHY9ImiPeEjgMs87ZxlUafA5XRt6LXwn8d5Y9JcmDaZN13fvjxt6Tm3QgSAE8LqSvP6oU7zgF3W4dGb3jnjVIuBnZTICBsln2LHqgKjFIAybBohK6JCJWR8qHmP6CMhPVpsiPB79"
+TOKEN   = os.environ.get("SANITY_TOKEN", "")
+if not TOKEN:
+    print("ERROR: SANITY_TOKEN env var not set", flush=True)
+    sys.exit(1)
+
 PROJECT = "vbnsqnkg"
 BASE    = "https://" + PROJECT + ".api.sanity.io/v2024-01-01/data"
 
@@ -11,17 +15,17 @@ def sanity_query(q, params=None):
         for k, v in params.items():
             url += "&" + urllib.parse.quote("$" + k) + "=" + urllib.parse.quote(json.dumps(v))
     req = urllib.request.Request(url, headers={"Authorization": "Bearer " + TOKEN})
-    with urllib.request.urlopen(req) as r:
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())["result"]
 
 def sanity_mutate(mutations):
     body = json.dumps({"mutations": mutations}).encode()
     req = urllib.request.Request(BASE + "/mutate/production", data=body, method="POST",
           headers={"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json"})
-    with urllib.request.urlopen(req) as r:
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-print("Loading templates from scripts/outreach-templates.json", flush=True)
+print("Loading templates...", flush=True)
 with open("scripts/outreach-templates.json", "r", encoding="utf-8") as f:
     TEMPLATES = json.load(f)
 print("Loaded " + str(len(TEMPLATES)) + " templates", flush=True)
@@ -29,9 +33,9 @@ print("Loaded " + str(len(TEMPLATES)) + " templates", flush=True)
 print("Testing Sanity connection...", flush=True)
 try:
     test = sanity_query('*[_type == "outreachTemplate"][0]._id')
-    print("Sanity OK, existing doc: " + str(test)[:60], flush=True)
+    print("Sanity OK: " + str(test)[:60], flush=True)
 except Exception as e:
-    print("Sanity connection failed: " + str(e), flush=True)
+    print("Sanity FAILED: " + str(e), flush=True)
     sys.exit(1)
 
 created = updated = errors = 0
@@ -60,7 +64,7 @@ for tmpl in TEMPLATES:
             sanity_mutate([{"createOrReplace": doc}])
             created += 1
             print("  CREATED: " + name[:60], flush=True)
-        time.sleep(0.3)
+        time.sleep(0.4)
     except Exception as e:
         errors += 1
         print("  ERROR " + name[:40] + ": " + str(e), flush=True)
