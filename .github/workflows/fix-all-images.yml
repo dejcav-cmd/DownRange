@@ -1,0 +1,15 @@
+name: Fix All Article Images (Learn + Drafts + Test)
+on:
+  workflow_dispatch:
+jobs:
+  fix-images:
+    runs-on: ubuntu-latest
+    env:
+      SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix images - content API test, Wikimedia search, draft articles
+        run: python3 scripts/fix-learn-and-draft-images.py
+      - name: Patch Learn article source files with real images
+        run: python3 scripts/patch-learn-images.py
