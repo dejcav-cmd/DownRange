@@ -191,8 +191,12 @@ async function fetchOneFeed(feed) {
       const _feedR = await fetch(feed.url, { headers: { 'User-Agent': 'DownRange/1.0' }, signal: AbortSignal.timeout(8000) })
       if (!_feedR.ok) throw new Error(_feedR.statusText)
       const res = { data: await _feedR.json() }
+      // Only include Reddit posts clearly about firearms/2A
+      const FIREARMS_TERMS = /gun|firearm|pistol|rifle|shotgun|ammo|ammunition|carry|ccw|2a|second.amend|glock|sig|ar.?15|ak|suppressor|holster|caliber|bullet|trigger|magazine|nfa|atf|ruger|colt|smith/i
+      const NON_FIREARMS_TERMS = /reptile|snake|lizard|smuggl|crypto|bitcoin|nft|recipe|cooking|fashion|sports.team|nba|nfl|mlb|animal.smuggl/i
       const posts = (res.data?.data?.children || [])
         .filter(p => p.data && !p.data.is_self && p.data.score > 10)
+        .filter(p => FIREARMS_TERMS.test(p.data.title) && !NON_FIREARMS_TERMS.test(p.data.title))
         .slice(0, 5)
         .map(p => ({
           title:       p.data.title,
