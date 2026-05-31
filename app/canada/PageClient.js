@@ -99,7 +99,7 @@ const ARTICLES = [
     img: '/img/photos/law.jpg',
     tag: 'LAW',
     mins: '8 min read',
-    body: `<p>When Bill C-21 came into force in August 2023, it didn't just change Canadian firearms law — it effectively ended the legal handgun market in Canada. No new handgun purchases. No transfers. No imports. Existing owners keep what they have, but that's where it stops.</p>
+    body: '<p>When Bill C-21 came into force in August 2023, it didn't just change Canadian firearms law — it effectively ended the legal handgun market in Canada. No new handgun purchases. No transfers. No imports. Existing owners keep what they have, but that's where it stops.</p>
 
 <p>The practical effect is this: if you own a handgun in Canada right now, its value just became theoretical. You can shoot it at a range. You can pass it to a licensed heir when you die. You cannot sell it to another civilian. The secondary market for handguns in Canada is legally dead.</p>
 
@@ -112,7 +112,7 @@ const ARTICLES = [
 <h2>What Happens to Your Handguns When You Die</h2>
 <p>You can bequeath restricted firearms to a licensed heir. The heir must hold a valid RPAL. They cannot sell the inherited handguns either — the freeze applies to them too. Executor estates with no licensed heir face a complicated situation involving surrender to CFO or dealer consignment in legal grey areas.</p>
 
-<p><strong>Bottom line:</strong> If you're a Canadian handgun owner, your collection is effectively frozen assets. The CCFR challenge is the only realistic path to reversal, and it's a long shot.</p>`,
+<p><strong>Bottom line:</strong> If you're a Canadian handgun owner, your collection is effectively frozen assets. The CCFR challenge is the only realistic path to reversal, and it's a long shot.</p>',
     url: 'https://www.ccfr.ca'
   },
   {
@@ -121,7 +121,7 @@ const ARTICLES = [
     img: '/img/photos/pistol.jpg',
     tag: 'GUIDE',
     mins: '6 min read',
-    body: `<p>The RCMP says PAL processing takes "45 business days." That's the official number. The actual number varies from 6 weeks in Alberta on a good month to 6+ months in Quebec during any backlog period. Here's what the process actually looks like.</p>
+    body: '<p>The RCMP says PAL processing takes "45 business days." That's the official number. The actual number varies from 6 weeks in Alberta on a good month to 6+ months in Quebec during any backlog period. Here's what the process actually looks like.</p>
 
 <h2>The Course Weekend</h2>
 <p>CFSC is a two-day course — typically Saturday/Sunday. Day one covers safe handling, storage rules, and Canadian law. Day two is practical: you demonstrate safe handling of non-restricted firearms and fire some rounds. The written exam has a passing grade of 80%. Most people pass. If you want an RPAL too, the CRFSC is usually offered the same weekend for an extra half-day and fee.</p>
@@ -132,7 +132,7 @@ const ARTICLES = [
 <h2>Province Reality Check</h2>
 <p>Alberta: fastest. Typical non-restricted PAL in 45–60 days. Quebec: slowest. Budget 90–180 days. Ontario varies enormously by CFO office load. RCMP-jurisdiction provinces (Saskatchewan, New Brunswick, Nova Scotia, PEI, Manitoba) are generally faster than CFO provinces because the federal CFP processes applications directly.</p>
 
-<p><strong>Bottom line:</strong> Budget three months minimum, don't book range time based on the RCMP's advertised timeline, and make sure your references answer their phones.</p>`,
+<p><strong>Bottom line:</strong> Budget three months minimum, don't book range time based on the RCMP's advertised timeline, and make sure your references answer their phones.</p>',
     url: 'https://www.rcmp-grc.gc.ca/en/firearms/obtaining-firearms-licence'
   },
   {
@@ -141,7 +141,7 @@ const ARTICLES = [
     img: '/img/photos/rifle.jpg',
     tag: 'POLICY',
     mins: '7 min read',
-    body: `<p>The 2020 Order in Council banned over 1,500 firearm models by name and description. The mandatory buyback program was announced, contracted, and then cancelled when the Conservative government took office. So where does that leave Canadian owners of AR-15s, Mini-14s, and the other prohibited models?</p>
+    body: '<p>The 2020 Order in Council banned over 1,500 firearm models by name and description. The mandatory buyback program was announced, contracted, and then cancelled when the Conservative government took office. So where does that leave Canadian owners of AR-15s, Mini-14s, and the other prohibited models?</p>
 
 <h2>Current Legal Status</h2>
 <p>Prohibited. But you're not in immediate legal jeopardy — the amnesty order that was extended year after year remains in effect. You cannot sell, transfer, or transport the prohibited firearm (except to a licensed business for destruction or to comply with deactivation requirements). You can store it. That's it.</p>
@@ -152,7 +152,7 @@ const ARTICLES = [
 <h2>The Buyback That Wasn't</h2>
 <p>The Liberal government contracted a buyback program for an estimated C$756 million to C$1.5 billion. The contracts were cancelled. Taxpayers paid for program design, database work, and administration that produced nothing. The affected firearm owners — roughly 150,000 by some estimates — remain in regulatory limbo.</p>
 
-<p><strong>Bottom line:</strong> If you own a prohibited firearm under the OIC, stay current on amnesty renewals and don't hold your breath for quick resolution either way. The political situation is moving but slowly.</p>`,
+<p><strong>Bottom line:</strong> If you own a prohibited firearm under the OIC, stay current on amnesty renewals and don't hold your breath for quick resolution either way. The political situation is moving but slowly.</p>',
     url: 'https://www.thegunblog.ca'
   },
 ]
@@ -243,7 +243,7 @@ export default function CanadaPage({ laws=[], provinces=[], articles=[], ammo=[]
         <div className="container">
           <div style={{display:'flex',gap:0,overflowX:'auto',scrollbarWidth:'none'}}>
             {TABS.map(t=>(
-              <button key={t.key} onClick={()=>setTab(t.key)} style={{background:'none',border:'none',borderBottom:`2px solid ${tab===t.key?'var(--gold)':'transparent'}`,color:tab===t.key?'var(--gold)':'var(--text-dim)',padding:'12px 16px',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,cursor:'pointer',whiteSpace:'nowrap',letterSpacing:'.04em',transition:'color .15s'}}>
+              <button key={t.key} onClick={()=>setTab(t.key)} style={{background:'none',border:'none',borderBottom:'2px solid '+tab===t.key?'var(--gold)':'transparent',color:tab===t.key?'var(--gold)':'var(--text-dim)',padding:'12px 16px',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,cursor:'pointer',whiteSpace:'nowrap',letterSpacing:'.04em',transition:'color .15s'}}>
                 {t.label}
               </button>
             ))}

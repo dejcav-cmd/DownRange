@@ -161,8 +161,8 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
 
         {/* ── HERO SECTION ── */}
         <div style={{
-          background: `linear-gradient(135deg, ${BG} 0%, #0d1117 40%, #1a0a00 70%, #0d0500 100%)`,
-          borderBottom: `1px solid ${BDR}`,
+          background: 'linear-gradient(135deg, '+BG+' 0%, #0d1117 40%, #1a0a00 70%, #0d0500 100%)',
+          borderBottom: '1px solid '+BDR,
           padding: '48px 0 36px',
           position: 'relative',
           overflow: 'hidden',
@@ -185,7 +185,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                   <span style={{
                     fontFamily:"'IBM Plex Mono',monospace", fontSize:10, letterSpacing:'.12em',
                     color: GOLD, background:'rgba(200,146,42,.12)',
-                    border:`1px solid ${GOLD}40`, padding:'3px 12px'
+                    border:'1px solid '+GOLD+'40', padding:'3px 12px'
                   }}>SEÇÃO BRASIL</span>
                   <span style={{
                     fontFamily:"'IBM Plex Mono',monospace", fontSize:10, letterSpacing:'.08em',
@@ -215,7 +215,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                     { v:'2.5M+', l:'registros CAC' },
                     { v:'80%+', l:'crimes: armas ilegais' },
                   ].map(s => (
-                    <div key={s.l} style={{ background:'rgba(255,255,255,.04)', border:`1px solid ${BDR}`, padding:'8px 14px' }}>
+                    <div key={s.l} style={{ background:'rgba(255,255,255,.04)', border:'1px solid '+BDR, padding:'8px 14px' }}>
                       <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:GOLD, lineHeight:1 }}>{s.v}</div>
                       <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', textTransform:'uppercase' }}>{s.l}</div>
                     </div>
@@ -229,7 +229,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
         {/* ── NAV TABS ── */}
         <div style={{
           position:'sticky', top:60, zIndex:20,
-          background:BG2, borderBottom:`2px solid ${BDR}`,
+          background:BG2, borderBottom:'2px solid '+BDR,
           overflowX:'auto',
         }}>
           <div className="container" style={{ maxWidth:1100, display:'flex', gap:0 }}>
@@ -237,7 +237,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               <button key={t.id} onClick={() => setTab(t.id)} style={{
                 fontFamily:"'IBM Plex Mono',monospace", fontSize:11, letterSpacing:'.06em',
                 padding:'14px 20px', background:'none',
-                border:'none', borderBottom: tab===t.id ? `2px solid ${GOLD}` : '2px solid transparent',
+                border:'none', borderBottom: tab===t.id ? '2px solid '+GOLD : '2px solid transparent',
                 color: tab===t.id ? GOLD : '#6b7280',
                 cursor:'pointer', whiteSpace:'nowrap',
               }}>{t.label}</button>
@@ -259,10 +259,10 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               <div style={{ display:'flex', flexDirection:'column', gap:16 }}>
                 {allLeis.map((lei, i) => (
                   <div key={lei._id||i} style={{
-                    background:BG2, border:`1px solid ${BDR}`,
-                    borderLeft:`4px solid ${impactColor(lei.impact||lei.impacto)}`,
+                    background:BG2, border:'1px solid '+BDR,
+                    borderLeft:'4px solid '+impactColor(lei.impact||lei.impacto),
                   }}>
-                    <div style={{ padding:'16px 20px', borderBottom:`1px solid ${BDR}` }}>
+                    <div style={{ padding:'16px 20px', borderBottom:'1px solid '+BDR }}>
                       <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap', marginBottom:8 }}>
                         <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1.1rem', color:'#F5F5F3' }}>
                           {lei.title||lei.nome}
@@ -272,12 +272,12 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                             fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700,
                             color: impactColor(lei.impact||lei.impacto),
                             background: (impactColor(lei.impact||lei.impacto))+'20',
-                            border:`1px solid ${impactColor(lei.impact||lei.impacto)}40`,
+                            border:'1px solid '+impactColor(lei.impact||lei.impacto)+'40',
                             padding:'2px 8px', letterSpacing:'.06em'
                           }}>{lei.impact||lei.impacto}</span>
                           <span style={{
                             fontFamily:"'IBM Plex Mono',monospace", fontSize:9,
-                            color:'#4b5563', border:`1px solid ${BDR}`, padding:'2px 8px'
+                            color:'#4b5563', border:'1px solid '+BDR, padding:'2px 8px'
                           }}>{lei.effectiveDate||lei.data}</span>
                           {(lei.status) && <span style={{
                             fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GRN,
@@ -325,12 +325,12 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                   { emoji:'🏛️', cat:'Colecionador', sigla:'CAC-C', dif:'⭐⭐⭐', desc:'Foco em armas históricas, raras ou de interesse militar. Inspeção domiciliar obrigatória pelo Exército. Mais burocrático mas permite certas armas únicas.', cor:'#002776' },
                   { emoji:'🌿', cat:'Caçador', sigla:'CAC-CA', dif:'⭐⭐⭐⭐', desc:'Autorizado apenas para controle de espécies invasoras (javali, ratazana, etc.). Exige autorização específica por espécie, época e área. Muito restrito.', cor:'#FFDF00' },
                 ].map(c => (
-                  <div key={c.cat} style={{ background:BG2, border:`1px solid ${BDR}`, borderTop:`3px solid ${c.cor}`, padding:20 }}>
+                  <div key={c.cat} style={{ background:BG2, border:'1px solid '+BDR, borderTop:'3px solid '+c.cor, padding:20 }}>
                     <div style={{ fontSize:'2rem', marginBottom:8 }}>{c.emoji}</div>
                     <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', color:'#F5F5F3', marginBottom:4 }}>{c.cat}</div>
                     <div style={{ display:'flex', gap:8, marginBottom:10 }}>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:c.cor, border:`1px solid ${c.cor}40`, padding:'2px 8px' }}>{c.sigla}</span>
-                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', border:`1px solid ${BDR}`, padding:'2px 8px' }}>Dificuldade: {c.dif}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:c.cor, border:'1px solid '+c.cor+'40', padding:'2px 8px' }}>{c.sigla}</span>
+                      <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', border:'1px solid '+BDR, padding:'2px 8px' }}>Dificuldade: {c.dif}</span>
                     </div>
                     <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#9ca3af', lineHeight:1.65, textAlign:'justify' }}>{c.desc}</p>
                   </div>
@@ -343,18 +343,18 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               </h3>
               <div style={{ display:'flex', flexDirection:'column', gap:12 }}>
                 {CAC_GUIDE.map((c,i) => (
-                  <div key={i} style={{ display:'flex', gap:16, background:BG2, border:`1px solid ${BDR}`, padding:20 }}>
+                  <div key={i} style={{ display:'flex', gap:16, background:BG2, border:'1px solid '+BDR, padding:20 }}>
                     <div style={{
-                      minWidth:44, height:44, background:`rgba(200,146,42,.1)`,
-                      border:`2px solid ${GOLD}`, display:'flex', alignItems:'center', justifyContent:'center',
+                      minWidth:44, height:44, background:'rgba(200,146,42,.1)',
+                      border:'2px solid '+GOLD, display:'flex', alignItems:'center', justifyContent:'center',
                       fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:GOLD, flexShrink:0
                     }}>{c.passo||i+1}</div>
                     <div style={{ flex:1 }}>
                       <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', flexWrap:'wrap', gap:8, marginBottom:6 }}>
                         <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'#F5F5F3' }}>{c.titulo||c.title}</div>
                         <div style={{ display:'flex', gap:8 }}>
-                          {(c.tempo||c.time) && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', border:`1px solid ${BDR}`, padding:'2px 8px' }}>⏱ {c.tempo||c.time}</span>}
-                          {(c.custo||c.cost) && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GOLD, background:'rgba(200,146,42,.08)', border:`1px solid ${GOLD}30`, padding:'2px 8px' }}>💰 {c.custo||c.cost}</span>}
+                          {(c.tempo||c.time) && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', border:'1px solid '+BDR, padding:'2px 8px' }}>⏱ {c.tempo||c.time}</span>}
+                          {(c.custo||c.cost) && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:GOLD, background:'rgba(200,146,42,.08)', border:'1px solid '+GOLD+'30', padding:'2px 8px' }}>💰 {c.custo||c.cost}</span>}
                         </div>
                       </div>
                       <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#9ca3af', lineHeight:1.7, textAlign:'justify' }}>{c.detalhe||c.detail}</p>
@@ -388,12 +388,12 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                 {allEstados.map((e, i) => {
                   const ratingColor = e.rating?.startsWith('A') ? GRN : e.rating?.startsWith('B') ? '#86efac' : e.rating?.startsWith('C') ? YEL : RED
                   return (
-                    <div key={e._id||i} style={{ background:BG2, border:`1px solid ${BDR}`, borderLeft:`4px solid ${e.color||ratingColor}` }}>
-                      <div style={{ padding:'14px 16px', borderBottom:`1px solid ${BDR}`, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    <div key={e._id||i} style={{ background:BG2, border:'1px solid '+BDR, borderLeft:'4px solid '+e.color||ratingColor }}>
+                      <div style={{ padding:'14px 16px', borderBottom:'1px solid '+BDR, display:'flex', justifyContent:'space-between', alignItems:'center' }}>
                         <div style={{ display:'flex', alignItems:'center', gap:12 }}>
                           <div style={{
                             width:44, height:44, background:'rgba(255,255,255,.04)',
-                            border:`1px solid ${BDR}`, display:'flex', alignItems:'center', justifyContent:'center',
+                            border:'1px solid '+BDR, display:'flex', alignItems:'center', justifyContent:'center',
                             fontFamily:"'Bebas Neue',cursive", fontSize:'1.1rem', color:GOLD,
                           }}>{e.abbr}</div>
                           <div>
@@ -433,7 +433,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                 O mercado de munição no Brasil é dominado pela CBC (Companhia Brasileira de Cartuchos).
                 Importação é tributada pesadamente — impostos chegam a 70%+ sobre produtos importados.
               </p>
-              <div style={{ background:'rgba(200,146,42,.06)', border:`1px solid ${GOLD}30`, borderLeft:`3px solid ${GOLD}`, padding:'10px 16px', marginBottom:24 }}>
+              <div style={{ background:'rgba(200,146,42,.06)', border:'1px solid '+GOLD+'30', borderLeft:'3px solid '+GOLD, padding:'10px 16px', marginBottom:24 }}>
                 <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#9ca3af' }}>
                   💡 Preços estimados em reais (BRL) para referência. Variam conforme estado, loja e flutuação cambial.
                   CBC domina o mercado doméstico. Armas de uso restrito: munição só via canais oficiais.
@@ -442,7 +442,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               <div style={{ overflowX:'auto' }}>
                 <table style={{ width:'100%', borderCollapse:'collapse' }}>
                   <thead>
-                    <tr style={{ background:'rgba(255,255,255,.03)', borderBottom:`1px solid ${BDR}` }}>
+                    <tr style={{ background:'rgba(255,255,255,.03)', borderBottom:'1px solid '+BDR }}>
                       {['Calibre','Preço (BRL)','Equiv. USD','Disponib.','Tendência','Observações'].map(h => (
                         <th key={h} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700,
                           color:'#4b5563', padding:'10px 14px', textAlign:'left', letterSpacing:'.06em' }}>{h}</th>
@@ -455,12 +455,12 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                       const trendColor = (m.trend) === 'up' ? RED : (m.trend) === 'down' ? GRN : '#4b5563'
                       const dispColor = (m.availability||m.disp) === 'Alta' ? GRN : (m.availability||m.disp) === 'Baixa' ? RED : YEL
                       return (
-                        <tr key={m._id||i} style={{ borderBottom:`1px solid ${BDR}`, background: i%2===0?'transparent':'rgba(255,255,255,.01)' }}>
+                        <tr key={m._id||i} style={{ borderBottom:'1px solid '+BDR, background: i%2===0?'transparent':'rgba(255,255,255,.01)' }}>
                           <td style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:'1rem', color:'#F5F5F3', padding:'12px 14px' }}>{m.title||m.calibre}</td>
                           <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:GOLD, padding:'12px 14px' }}>{m.brlPrice||m.brlPreco}</td>
                           <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', padding:'12px 14px' }}>{m.usdEquiv||m.usdEq}</td>
                           <td style={{ padding:'12px 14px' }}>
-                            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:dispColor, background:dispColor+'20', border:`1px solid ${dispColor}40`, padding:'2px 8px' }}>{m.availability||m.disp}</span>
+                            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:dispColor, background:dispColor+'20', border:'1px solid '+dispColor+'40', padding:'2px 8px' }}>{m.availability||m.disp}</span>
                           </td>
                           <td style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:trendColor, padding:'12px 14px' }}>{trendIcon}</td>
                           <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', padding:'12px 14px', maxWidth:280, lineHeight:1.5 }}>{m.note||m.obs}</td>
@@ -491,7 +491,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               </p>
 
               {allArtigos.length === 0 ? (
-                <div style={{ background:BG2, border:`1px solid ${BDR}`, padding:48, textAlign:'center' }}>
+                <div style={{ background:BG2, border:'1px solid '+BDR, padding:48, textAlign:'center' }}>
                   <div style={{ fontSize:'3rem', marginBottom:16 }}>📰</div>
                   <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.3rem', color:'#F5F5F3', marginBottom:8 }}>
                     Artigos em Produção
@@ -507,7 +507,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                 {allArtigos[0] && (() => {
                   const a = allArtigos[0]
                   return (
-                    <div style={{ border:`1px solid ${BDR}`, background:BG2, overflow:'hidden', marginBottom:24, display:'grid', gridTemplateColumns:'1fr 1fr', gap:0 }}>
+                    <div style={{ border:'1px solid '+BDR, background:BG2, overflow:'hidden', marginBottom:24, display:'grid', gridTemplateColumns:'1fr 1fr', gap:0 }}>
                       <div style={{ height:'100%', minHeight:280, overflow:'hidden', position:'relative' }}>
                         <img
                           src={a.imageUrl || '/img/photos/law.jpg'}
@@ -523,7 +523,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                       <div style={{ padding:'28px 28px', display:'flex', flexDirection:'column', justifyContent:'center' }}>
                         <div style={{ display:'flex', gap:8, marginBottom:12 }}>
                           {a.tag && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'3px 10px', background:GOLD, color:'#000', letterSpacing:'.06em' }}>{a.tag}</span>}
-                          {a.readMins && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 10px', background:'rgba(255,255,255,.06)', color:'#4b5563', border:`1px solid ${BDR}` }}>⏱ {a.readMins}</span>}
+                          {a.readMins && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 10px', background:'rgba(255,255,255,.06)', color:'#4b5563', border:'1px solid '+BDR }}>⏱ {a.readMins}</span>}
                         </div>
                         <h3 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(1.4rem,2.5vw,2rem)', color:'#F5F5F3', letterSpacing:'.03em', lineHeight:1.1, marginBottom:14 }}>{a.title}</h3>
                         <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#9ca3af', lineHeight:1.7, marginBottom:16, textAlign:'justify' }}>
@@ -541,7 +541,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
                 {/* GRADE DE ARTIGOS */}
                 <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(280px,1fr))', gap:16 }}>
                   {allArtigos.slice(1).map((a, i) => (
-                    <article key={a._id||i} style={{ background:BG2, border:`1px solid ${BDR}`, overflow:'hidden', display:'flex', flexDirection:'column' }}>
+                    <article key={a._id||i} style={{ background:BG2, border:'1px solid '+BDR, overflow:'hidden', display:'flex', flexDirection:'column' }}>
                       <div style={{ height:185, overflow:'hidden', position:'relative', flexShrink:0 }}>
                         <img
                           src={a.imageUrl || '/img/photos/law.jpg'}
@@ -582,7 +582,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               </p>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(260px,1fr))', gap:16, marginBottom:32 }}>
                 {allStats.map((s, i) => (
-                  <div key={s._id||i} style={{ background:BG2, border:`1px solid ${BDR}`, borderTop:`3px solid ${s.color||GOLD}`, padding:24, textAlign:'center' }}>
+                  <div key={s._id||i} style={{ background:BG2, border:'1px solid '+BDR, borderTop:'3px solid '+s.color||GOLD, padding:24, textAlign:'center' }}>
                     <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.4rem', color:s.color||GOLD, lineHeight:1, marginBottom:8 }}>
                       {s.value||s.valor}
                     </div>
@@ -594,7 +594,7 @@ export default function BrazilClient({ leis=[], estados=[], artigos=[], municao=
               </div>
 
               {/* Context section */}
-              <div style={{ background:BG2, border:`1px solid ${BDR}`, borderLeft:`4px solid ${GOLD}`, padding:'20px 24px' }}>
+              <div style={{ background:BG2, border:'1px solid '+BDR, borderLeft:'4px solid '+GOLD, padding:'20px 24px' }}>
                 <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:GOLD, marginBottom:12 }}>
                   Contexto — O que os números não mostram
                 </div>
