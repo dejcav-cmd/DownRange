@@ -1,0 +1,43 @@
+name: Debug News Feed
+on:
+  workflow_dispatch:
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger news feed and check response
+        run: |
+          echo "=== Triggering news feed ==="
+          RESPONSE=$(curl -s -X GET \
+            "https://www.downrangeco.com/api/agent?feed=news" \
+            -H "x-vercel-cron: 1" \
+            -H "authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 60)
+          echo "Response: $RESPONSE"
+          
+          echo ""
+          echo "=== Checking cron health ==="
+          HEALTH=$(curl -s -X GET \
+            "https://www.downrangeco.com/api/admin/cron-health" \
+            -H "x-vercel-cron: 1" \
+            -H "authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 30)
+          echo "$HEALTH" | python3 -c "
+import json,sys
+try:
+  d=json.load(sys.stdin)
+  print('STATUS:', d.get('status'))
+  s=d.get('sanity',{})
+  print('Article count:', s.get('articleCount'))
+  newest = s.get('newestArticle',{})
+  print('Newest article:', newest.get('title','none'))
+  print('Published at:', newest.get('publishedAt','none'))
+  newest_doc = s.get('newestDoc',{})
+  print('Newest created:', newest_doc.get('_createdAt','none'))
+  print('ISSUES:')
+  for i in d.get('issues',[]):
+    print(' ', i['severity'], i['msg'])
+except Exception as e:
+  print('Parse error:', e)
+  print(sys.stdin.read()[:500])
+" || echo "$HEALTH"
