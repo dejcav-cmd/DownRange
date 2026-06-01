@@ -469,7 +469,9 @@ export default function UniversalContentEditor({
               </div>
             ) : visible.map(item => {
               const broken = isBad(item.imageUrl)
-              const published = item.status === 'published' || (item.approved !== undefined ? item.approved : (item.active !== false))
+              const published = item.status === 'published'
+                || item.approved === true
+                || (item.status === undefined && item.approved === undefined && item.active === true)
               return (
                 <div key={item._id} className={'uce-row' + (sel===item._id?' sel':'') + (checked.has(item._id)?' checked':'')}
                   onClick={() => setSel(sel===item._id ? null : item._id)}>
@@ -495,7 +497,7 @@ export default function UniversalContentEditor({
                     </div>
                     <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
                       {(item.tag||item.category||item.type) && <span style={{ fontSize:8, color:'#C8922A' }}>{item.tag||item.category}</span>}
-                      <span style={{ fontSize:8, color: published ? '#22c55e' : '#4b5563' }}>● {published?'live':'draft'}</span>
+                      <span style={{ fontSize:8, color: published ? '#22c55e' : '#ef4444' }}>● {published ? 'live' : 'draft'}</span>
                       {item.publishedAt && <span style={{ fontSize:8, color:'#374151' }}>{timeAgo(item.publishedAt)}</span>}
                     </div>
                   </div>
@@ -555,7 +557,9 @@ export default function UniversalContentEditor({
                     </button>
                     {/* Publish */}
                     {(() => {
-                      const isLive = selItem.status === 'published' || (selItem.approved ?? selItem.active)
+                      const isLive = selItem.status === 'published'
+                          || selItem.approved === true
+                          || (selItem.status === undefined && selItem.approved === undefined && selItem.active === true)
                       return (
                         <button onClick={() => togglePublish(selItem)} disabled={busy}
                           className="uce-ghost"
