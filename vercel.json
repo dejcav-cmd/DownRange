@@ -93,6 +93,10 @@
       "schedule": "0 * * * *"
     },
     {
+      "path": "/api/cron/fix-placeholder-images",
+      "schedule": "0 * * * *"
+    },
+    {
       "path": "/api/cron/ccw-update",
       "schedule": "0 5 * * 0"
     },
