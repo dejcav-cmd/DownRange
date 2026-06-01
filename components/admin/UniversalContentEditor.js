@@ -165,10 +165,17 @@ export default function UniversalContentEditor({
   }
 
   async function togglePublish(item) {
-    const field = 'approved' in item ? 'approved' : 'active'
-    const v = !(item[field])
-    await patch(item._id, { [field]: v })
-    flash(v ? '▶ Published' : '⏸ Unpublished')
+    // blogPost uses status:'published'/'draft'; newsArticle uses approved:bool; others use active:bool
+    if ('status' in item && (item.status === 'published' || item.status === 'draft')) {
+      const v = item.status !== 'published'
+      await patch(item._id, { status: v ? 'published' : 'draft' })
+      flash(v ? '▶ Published' : '⏸ Set to draft')
+    } else {
+      const field = 'approved' in item ? 'approved' : 'active'
+      const v = !(item[field])
+      await patch(item._id, { [field]: v })
+      flash(v ? '▶ Published' : '⏸ Unpublished')
+    }
   }
 
   async function bulkLock(v) {
@@ -177,6 +184,20 @@ export default function UniversalContentEditor({
     setChecked(new Set())
     setBusy(false)
     flash('✅ ' + (v ? 'Locked' : 'Unlocked') + ' ' + checked.size + ' items')
+  }
+
+  async function bulkPublish(v) {
+    setBusy(true)
+    const items = data.filter(d => checked.has(d._id))
+    for (const item of items) {
+      const field = 'approved' in item ? 'approved' : 'status' in item ? 'status' : 'active'
+      const val   = field === 'status' ? (v ? 'published' : 'draft') : v
+      await patch(item._id, { [field]: val })
+    }
+    setChecked(new Set())
+    await load()
+    setBusy(false)
+    flash('✅ ' + (v ? '▶ Published' : '⏸ Set to draft') + ' ' + items.length + ' items')
   }
 
   async function bulkDelete() {
@@ -421,6 +442,8 @@ export default function UniversalContentEditor({
             <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:14, color:'var(--gold)' }}>
               {checked.size} selected
             </span>
+            <button className="uce-btn" onClick={() => bulkPublish(true)} disabled={busy} style={{ fontSize:10, padding:'5px 12px', background:'#14532d', borderColor:'#22c55e', color:'#22c55e' }}>▶ Publish {checked.size}</button>
+            <button className="uce-ghost" onClick={() => bulkPublish(false)} disabled={busy} style={{ fontSize:10, padding:'5px 12px' }}>⏸ Unpublish {checked.size}</button>
             <button className="uce-btn" onClick={() => bulkLock(true)} disabled={busy} style={{ fontSize:10, padding:'5px 12px' }}>🔒 Lock All</button>
             <button className="uce-ghost" onClick={() => bulkLock(false)} disabled={busy}>🔓 Unlock All</button>
             <button className="uce-del" onClick={bulkDelete} disabled={busy}>🗑 Delete {checked.size}</button>
@@ -446,7 +469,7 @@ export default function UniversalContentEditor({
               </div>
             ) : visible.map(item => {
               const broken = isBad(item.imageUrl)
-              const published = item.approved !== undefined ? item.approved : (item.active !== false)
+              const published = item.status === 'published' || (item.approved !== undefined ? item.approved : (item.active !== false))
               return (
                 <div key={item._id} className={'uce-row' + (sel===item._id?' sel':'') + (checked.has(item._id)?' checked':'')}
                   onClick={() => setSel(sel===item._id ? null : item._id)}>
@@ -531,11 +554,16 @@ export default function UniversalContentEditor({
                       {selItem.editorLocked ? '🔒 Locked' : '🔓 Unlocked'}
                     </button>
                     {/* Publish */}
-                    <button onClick={() => togglePublish(selItem)} disabled={busy}
-                      className="uce-ghost"
-                      style={{ borderColor:'#22c55e', color: (selItem.approved ?? selItem.active) ? '#22c55e' : '#4b5563' }}>
-                      {(selItem.approved ?? selItem.active) ? '▶ Live' : '⏸ Draft'}
-                    </button>
+                    {(() => {
+                      const isLive = selItem.status === 'published' || (selItem.approved ?? selItem.active)
+                      return (
+                        <button onClick={() => togglePublish(selItem)} disabled={busy}
+                          className="uce-ghost"
+                          style={{ borderColor:'#22c55e', color: isLive ? '#22c55e' : '#4b5563' }}>
+                          {isLive ? '▶ Live' : '⏸ Draft'}
+                        </button>
+                      )
+                    })()}
                     {/* Fix image */}
                     <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy}>🖼 Image</button>
                     {/* Search image */}
