@@ -46,50 +46,44 @@ const parser = new Parser({
 })
 
 const RSS_FEEDS = [
-  // ── FIREARMS NEWS ─────────────────────────────────────────────────────
-  { name: 'The Firearm Blog',        url: 'https://www.thefirearmblog.com/blog/feed/',         cat: 'industry' },
-  { name: 'TTAG',                    url: 'https://www.thetruthaboutguns.com/feed/',            cat: 'news'     },
-  { name: 'Guns.com News',           url: 'https://www.guns.com/feed',                          cat: 'industry' },
-  { name: 'Guns & Ammo',             url: 'https://www.gunsandammo.com/feed/',                  cat: 'industry' },
-  { name: 'Shooting Wire',           url: 'https://www.shootingwire.com/feed',                  cat: 'industry' },
-  { name: 'Firearms News',           url: 'https://www.firearmsnews.com/feed/',                 cat: 'industry' },
-  { name: 'Concealed Nation',        url: 'https://concealednation.org/feed/',                  cat: 'news'     },
-  { name: 'Outdoor Life Guns',       url: 'https://www.outdoorlife.com/category/guns/feed/',    cat: 'industry' },
-  { name: 'Field & Stream Guns',     url: 'https://www.fieldandstream.com/category/guns/feed/',cat: 'industry' },
-  { name: 'Tactical Life',           url: 'https://www.tactical-life.com/feed/',                cat: 'industry' },
-  { name: 'Personal Defense World',  url: 'https://www.personaldefenseworld.com/feed/',         cat: 'news'     },
-  { name: 'Combat Handguns',         url: 'https://www.combathandguns.com/feed/',               cat: 'industry' },
-  { name: 'Handguns Magazine',       url: 'https://www.handgunsmag.com/feed/',                  cat: 'industry' },
-  { name: 'Rifle Shooter',           url: 'https://www.rifleshootermag.com/feed/',              cat: 'industry' },
-  { name: 'American Rifleman',       url: 'https://www.americanrifleman.org/feed/',             cat: 'industry' },
-  { name: 'American Hunter',         url: 'https://www.americanhunter.org/feed/',               cat: 'industry' },
-  { name: 'Shooting Illustrated',    url: 'https://www.shootingillustrated.com/feed/',          cat: 'industry' },
-  // ── LEGAL & RIGHTS ────────────────────────────────────────────────────
-  { name: 'NRA-ILA',                 url: 'https://www.nraila.org/rss/',                       cat: 'law'      },
-  { name: 'SAF',                     url: 'https://www.saf.org/feed/',                          cat: 'law'      },
-  { name: 'FPC',                     url: 'https://www.firearmspolicy.org/feed/',               cat: 'law'      },
-  { name: 'Firearms Policy Coalition',url: 'https://fpclaw.org/feed/',                          cat: 'law'      },
-  { name: 'CleanUpATF',              url: 'https://www.cleanupatf.org/feed/',                   cat: 'law'      },
-  { name: 'Duke Firearms Law',       url: 'https://firearmslaw.duke.edu/feed/',                 cat: 'law'      },
-  { name: 'Bearing Arms',            url: 'https://bearingarms.com/feed/',                      cat: 'law'      },
-  { name: 'Guns & Patriots',         url: 'https://www.newsmax.com/rss/Guns-And-Patriots/1/',   cat: 'law'      },
-  // ── GOVERNMENT ────────────────────────────────────────────────────────
-  { name: 'ATF News',                url: 'https://www.atf.gov/rss/news_whats-new.xml',         cat: 'law'      },
-  { name: 'Congress.gov 2A',         url: 'https://www.congress.gov/rss/most-viewed-bills.xml', cat: 'law'      },
-  // ── GUN RIGHTS ───────────────────────────────────────────────────────────
-  { name: 'GOA',            url: 'https://www.gunowners.org/feed/',                 cat: 'law'      },
-  { name: 'GOA Press',      url: 'https://www.gunowners.org/category/press/feed/', cat: 'law'      },
-  // ── CANADA ────────────────────────────────────────────────────────────────
-  { name: 'TheGunBlog.ca',  url: 'https://www.thegunblog.ca/feed/',           cat: 'law'      },
-  { name: 'NFA Canada',     url: 'https://www.nfa.ca/feed/',                  cat: 'law'      },
-  { name: 'CSSA',           url: 'https://www.cdnshootingsports.org/feed/',   cat: 'law'      },
-  // ── AMMO & MARKET ─────────────────────────────────────────────────────
-  // AmmoLand removed from news feed — all AmmoLand content routes to /deals only
-  { name: 'GunsAmerica Digest',      url: 'https://www.gunsamerica.com/blog/feed/',             cat: 'industry' },
-  // ── REDDIT ────────────────────────────────────────────────────────────
-  { name: 'r/guns',                  url: 'https://www.reddit.com/r/guns/hot.json?limit=10',    cat: 'news',    isReddit: true },
-  { name: 'r/firearms',              url: 'https://www.reddit.com/r/firearms/hot.json?limit=10',cat: 'news',    isReddit: true },
-  { name: 'r/CCW',                   url: 'https://www.reddit.com/r/CCW/hot.json?limit=10',     cat: 'news',    isReddit: true },
+  // ── US FIREARMS NEWS ──────────────────────────────────────────────────
+  { name: 'The Firearm Blog',       url: 'https://www.thefirearmblog.com/blog/feed/',          cat: 'industry' },
+  { name: 'TTAG',                   url: 'https://www.thetruthaboutguns.com/feed/',             cat: 'news'     },
+  { name: 'Guns.com News',          url: 'https://www.guns.com/feed',                           cat: 'industry' },
+  { name: 'Guns & Ammo',            url: 'https://www.gunsandammo.com/feed/',                   cat: 'industry' },
+  { name: 'Shooting Wire',          url: 'https://www.shootingwire.com/feed',                   cat: 'industry' },
+  { name: 'Firearms News',          url: 'https://www.firearmsnews.com/feed/',                  cat: 'industry' },
+  { name: 'Concealed Nation',       url: 'https://concealednation.org/feed/',                   cat: 'news'     },
+  { name: 'Outdoor Life Guns',      url: 'https://www.outdoorlife.com/category/guns/feed/',     cat: 'industry' },
+  { name: 'Field & Stream Guns',    url: 'https://www.fieldandstream.com/category/guns/feed/',  cat: 'industry' },
+  { name: 'Tactical Life',          url: 'https://www.tactical-life.com/feed/',                 cat: 'industry' },
+  { name: 'Personal Defense World', url: 'https://www.personaldefenseworld.com/feed/',          cat: 'news'     },
+  { name: 'Combat Handguns',        url: 'https://www.combathandguns.com/feed/',                cat: 'industry' },
+  { name: 'Handguns Magazine',      url: 'https://www.handgunsmag.com/feed/',                   cat: 'industry' },
+  { name: 'Rifle Shooter',          url: 'https://www.rifleshootermag.com/feed/',               cat: 'industry' },
+  { name: 'American Rifleman',      url: 'https://www.americanrifleman.org/feed/',              cat: 'industry' },
+  { name: 'American Hunter',        url: 'https://www.americanhunter.org/feed/',                cat: 'industry' },
+  { name: 'Shooting Illustrated',   url: 'https://www.shootingillustrated.com/feed/',           cat: 'industry' },
+  { name: 'GunsAmerica Digest',     url: 'https://www.gunsamerica.com/blog/feed/',              cat: 'industry' },
+  // ── US LEGAL & RIGHTS ─────────────────────────────────────────────────
+  { name: 'NRA-ILA',                url: 'https://www.nraila.org/rss/',                        cat: 'law'      },
+  { name: 'SAF',                    url: 'https://www.saf.org/feed/',                           cat: 'law'      },
+  { name: 'FPC',                    url: 'https://www.firearmspolicy.org/feed/',                cat: 'law'      },
+  { name: 'FPC Law',                url: 'https://fpclaw.org/feed/',                            cat: 'law'      },
+  { name: 'CleanUpATF',             url: 'https://www.cleanupatf.org/feed/',                    cat: 'law'      },
+  { name: 'Duke Firearms Law',      url: 'https://firearmslaw.duke.edu/feed/',                  cat: 'law'      },
+  { name: 'Bearing Arms',           url: 'https://bearingarms.com/feed/',                       cat: 'law'      },
+  { name: 'Guns & Patriots',        url: 'https://www.newsmax.com/rss/Guns-And-Patriots/1/',    cat: 'law'      },
+  // ── US GOVERNMENT ─────────────────────────────────────────────────────
+  { name: 'ATF News',               url: 'https://www.atf.gov/rss/news_whats-new.xml',          cat: 'law'      },
+  { name: 'Congress.gov 2A',        url: 'https://www.congress.gov/rss/most-viewed-bills.xml',  cat: 'law'      },
+  // ── US GUN RIGHTS ORGS ────────────────────────────────────────────────
+  { name: 'GOA',                    url: 'https://www.gunowners.org/feed/',                     cat: 'law'      },
+  { name: 'GOA Press',              url: 'https://www.gunowners.org/category/press/feed/',      cat: 'law'      },
+  // ── CANADA ONLY — routed to canadaContent, never newsArticle ──────────
+  { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law', region: 'canada' },
+  { name: 'NFA Canada',             url: 'https://www.nfa.ca/feed/',                            cat: 'law', region: 'canada' },
+  { name: 'CSSA',                   url: 'https://www.cdnshootingsports.org/feed/',              cat: 'law', region: 'canada' },
 ]
 
 // ── IMAGE EXTRACTION ──────────────────────────────────────────────────────────
@@ -134,19 +128,24 @@ function cleanImageUrl(url) {
 async function fetchNewsAPI() {
   if (!process.env.NEWSAPI_KEY) return []
   try {
+    // top-headlines with country=us guarantees US sources only
     const _newsParams = new URLSearchParams({
-      q: '(firearms OR "Second Amendment" OR "gun control" OR ATF OR "gun rights" OR "concealed carry" OR Glock OR "pistol brace" OR NRA OR "gun law" OR suppressor OR "Gun Rights" OR gunrights.org) AND -"video game"',
-      language: 'en', sortBy: 'publishedAt', pageSize: '30', apiKey: process.env.NEWSAPI_KEY
+      q: 'firearms OR "Second Amendment" OR ATF OR "gun rights" OR "gun law" OR NRA OR suppressor OR "concealed carry"',
+      language: 'en',
+      country:  'us',
+      pageSize: '20',
+      apiKey:   process.env.NEWSAPI_KEY,
     })
-    const _newsR = await fetch('https://newsapi.org/v2/everything?' + _newsParams, { signal: AbortSignal.timeout(10000) })
+    const _newsR = await fetch('https://newsapi.org/v2/top-headlines?' + _newsParams, { signal: AbortSignal.timeout(10000) })
     if (!_newsR.ok) throw new Error(_newsR.statusText)
     const res = { data: await _newsR.json() }
-    return res.data.articles
+    return (res.data.articles || [])
       .filter(a => a.title && a.url && !a.title.includes('[Removed]'))
       .map(a => ({
         title: a.title, description: a.description, url: a.url,
         source: a.source?.name, publishedAt: a.publishedAt,
-        imageUrl: pickImage(a.title, 'news'), imageAlt: a.title,
+        imageUrl: null, imageAlt: a.title,
+        feedCat: 'news', region: 'us',
       }))
   } catch (err) {
     console.error('[NEWS] NewsAPI error:', err.message)
@@ -154,52 +153,11 @@ async function fetchNewsAPI() {
   }
 }
 
-async function fetchGNews() {
-  if (!process.env.GNEWS_KEY) return []
-  try {
-    const _gnewsParams = new URLSearchParams({ q: 'firearms OR "gun law" OR "Second Amendment"', lang: 'en', max: '20', token: process.env.GNEWS_KEY })
-    const _gnewsR = await fetch('https://gnews.io/api/v4/search?' + _gnewsParams, { signal: AbortSignal.timeout(10000) })
-    if (!_gnewsR.ok) throw new Error(_gnewsR.statusText)
-    const res = { data: await _gnewsR.json() }
-    return res.data.articles.map(a => ({
-      title: a.title, description: a.description, url: a.url,
-      source: a.source?.name, publishedAt: a.publishedAt,
-      imageUrl: cleanImageUrl(a.image), imageAlt: a.title,
-    }))
-  } catch (err) {
-    console.error('[NEWS] GNews error:', err.message)
-    return []
-  }
-}
+// GNews disabled — no reliable US-only filter; pulls global sources
+async function fetchGNews() { return [] }
 
 async function fetchOneFeed(feed) {
   try {
-    // Reddit JSON feeds use different format
-    if (feed.isReddit) {
-      const _feedR = await fetch(feed.url, { headers: { 'User-Agent': 'DownRange/1.0' }, signal: AbortSignal.timeout(8000) })
-      if (!_feedR.ok) throw new Error(_feedR.statusText)
-      const res = { data: await _feedR.json() }
-      // Only include Reddit posts clearly about firearms/2A
-      const FIREARMS_TERMS = /gun|firearm|pistol|rifle|shotgun|ammo|ammunition|carry|ccw|2a|second.amend|glock|sig|ar.?15|ak|suppressor|holster|caliber|bullet|trigger|magazine|nfa|atf|ruger|colt|smith/i
-      const NON_FIREARMS_TERMS = /reptile|snake|lizard|smuggl|crypto|bitcoin|nft|recipe|cooking|fashion|sports.team|nba|nfl|mlb|animal.smuggl/i
-      const posts = (res.data?.data?.children || [])
-        .filter(p => p.data && !p.data.is_self && p.data.score > 10)
-        .filter(p => FIREARMS_TERMS.test(p.data.title) && !NON_FIREARMS_TERMS.test(p.data.title))
-        .slice(0, 5)
-        .map(p => ({
-          title:       p.data.title,
-          description: p.data.selftext?.slice(0, 400) || p.data.title,
-          url:         p.data.url?.startsWith('http') ? p.data.url : 'https://reddit.com' + p.data.permalink,
-          source:      feed.name,
-          feedCat:     feed.cat,
-          publishedAt: new Date(p.data.created_utc * 1000).toISOString(),
-          imageUrl:    p.data.thumbnail?.startsWith('http') ? p.data.thumbnail : null,
-          imageAlt:    p.data.title,
-        }))
-      console.log('[NEWS] Reddit ' + feed.name + ': ' + posts.length + ' items')
-      return posts
-    }
-
     const result = await parser.parseURL(feed.url)
     const items = result.items.slice(0, ITEMS_PER_FEED).map(i => ({
       title:       i.title,
@@ -207,6 +165,7 @@ async function fetchOneFeed(feed) {
       url:         i.link,
       source:      feed.name,
       feedCat:     feed.cat,
+      region:      feed.region || 'us',  // 'canada', 'brazil', or 'us' (default)
       publishedAt: i.pubDate || i.isoDate,
       imageUrl:    cleanImageUrl(extractRSSImage(i)),
       imageAlt:    i.title,
@@ -227,14 +186,85 @@ async function fetchRSS() {
 
 // ── PROCESS + PUBLISH ─────────────────────────────────────────────────────────
 
+// ── REGION GATE ───────────────────────────────────────────────────────────────
+// Allowlist approach: only US firearms sources pass to newsArticle.
+// Canada RSS feeds route to canadaContent. Everything else is dropped.
+// This is the primary enforcement — RSS_FEEDS is pre-filtered, but
+// NewsAPI can still return edge cases so we double-check here.
+
+const ALLOWED_US_DOMAINS = new Set([
+  'thefirearmblog.com','thetruthaboutguns.com','guns.com','gunsandammo.com',
+  'shootingwire.com','firearmsnews.com','concealednation.org','outdoorlife.com',
+  'fieldandstream.com','tactical-life.com','personaldefenseworld.com',
+  'combathandguns.com','handgunsmag.com','rifleshootermag.com',
+  'americanrifleman.org','americanhunter.org','shootingillustrated.com',
+  'gunsamerica.com','nraila.org','saf.org','firearmspolicy.org','fpclaw.org',
+  'cleanupatf.org','firearmslaw.duke.edu','bearingarms.com','newsmax.com',
+  'atf.gov','congress.gov','gunowners.org','pewpewtactical.com',
+  'outdoorhub.com','thearmorylife.com','gunnewsdaily.com',
+  'ammoland.com', // deals only but domain is legit
+])
+
+function isAllowedUSUrl(url) {
+  if (!url) return false
+  try {
+    const host = new URL(url).hostname.replace('www.', '')
+    // Exact match or subdomain of allowed domain
+    return [...ALLOWED_US_DOMAINS].some(d => host === d || host.endsWith('.' + d))
+  } catch { return false }
+}
+
 async function processNewsItem(item) {
   if (!item.title || !item.url) return null
   if (isDuplicate(item.url)) return
-  // Cross-cycle Sanity dedup — prevents re-pulling articles seen in previous runs
+
+  const region = item.region || 'us'
+
+  // ── GATE 1: Canada items route to canadaContent, not newsArticle ──────────
+  if (region === 'canada') {
+    // Canada content is handled by the dedicated write-canada-articles cron.
+    // RSS Canada feeds here are supplemental — save as canadaContent directly.
+    if (await isSanityDuplicate(item.url, item.title)) return
+    const hash = crypto.createHash('md5').update(item.url).digest('hex')
+    const slug = item.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,96)
+    await publishToSanity({
+      _id:           'ca-' + hash,
+      _type:         'canadaContent',
+      title:         item.title,
+      slug:          { _type: 'slug', current: slug },
+      excerpt:       item.description?.slice(0, 300) || item.title,
+      body:          item.description || null,
+      type:          'article',
+      source:        item.source,
+      sourceUrl:     item.url,
+      imageUrl:      item.imageUrl || null,
+      publishedAt:   item.publishedAt ? new Date(item.publishedAt).toISOString() : new Date().toISOString(),
+      autoGenerated: true,
+      qualityReviewed: false,
+    })
+    console.log(`[NEWS] 🇨🇦 Canada → canadaContent: "${item.title.slice(0,60)}"`)
+    return { id: 'ca-' + hash, title: item.title, category: 'canada', hasAI: false }
+  }
+
+  // ── GATE 2: Brazil items — handled by dedicated cron, skip here ───────────
+  if (region === 'brazil') return
+
+  // ── GATE 3: US only — must be from an allowed US firearms domain ──────────
+  // For RSS feeds (all pre-vetted in RSS_FEEDS), always allow.
+  // For NewsAPI items, enforce domain allowlist.
+  const isFromNewsAPI = !item.feedCat || item.feedCat === 'news'
+  const fromKnownRSS  = RSS_FEEDS.some(f => !f.region && item.source === f.name)
+
+  if (!fromKnownRSS && !isAllowedUSUrl(item.url)) {
+    console.log('[NEWS] BLOCKED non-US/unknown source:', item.source, item.url?.slice(0,60))
+    return
+  }
+
+  // Cross-cycle Sanity dedup
   if (await isSanityDuplicate(item.url, item.title)) {
     console.log('[NEWS] Sanity-dup skip:', (item.title||'').slice(0,60))
     return
-  } null
+  }
 
   const hash = crypto.createHash('md5').update(item.url).digest('hex')
   const slug = item.title
@@ -243,18 +273,13 @@ async function processNewsItem(item) {
     .replace(/^-+|-+$/g, '')
     .slice(0, 96)
 
-  // Attempt Claude rewrite — gracefully fall back to raw data if API unavailable
+  // AI rewrite
   let ai = null
   if (process.env.ANTHROPIC_API_KEY) {
-    try {
-      ai = await rewriteWithClaude(item)
-    } catch (err) {
-      console.warn(`[NEWS] Claude rewrite failed for "${item.title.slice(0,50)}": ${err.message}`)
-    }
+    try { ai = await rewriteWithClaude(item) }
+    catch (err) { console.warn(`[NEWS] Claude rewrite failed for "${item.title.slice(0,50)}": ${err.message}`) }
   }
 
-  // Derive category from feed cat or AI result
-  // AmmoLand is always deals — never news
   const category = item.feedCat === 'deals' || item.source === 'AmmoLand'
     ? 'deals'
     : (ai?.category || item.feedCat || 'news')
@@ -274,7 +299,6 @@ async function processNewsItem(item) {
     relatedStates: ai?.relatedStates || [],
     source:        item.source,
     externalUrl:   item.url,
-    // Try to get real og:image from source article; fall back to category SVG
     imageUrl:      item._cdnImageUrl || pickImage(item.title, category),
     imageAlt:      item.imageAlt || item.title,
     publishedAt:   item.publishedAt ? new Date(item.publishedAt).toISOString() : new Date().toISOString(),
@@ -283,88 +307,22 @@ async function processNewsItem(item) {
     dedupHash:     hash,
   }
 
-  // Attempt to fetch real image from source article (async, non-blocking)
+  // Fetch real OG image from source
   try {
     const cdnUrl = await fetchAndUploadOgImage(item.url, doc._id)
-    if (cdnUrl) {
-      doc.imageUrl = cdnUrl
-      console.log(`[NEWS] 📷 Got real image for "${item.title.slice(0,40)}"`)
-    }
+    if (cdnUrl) { doc.imageUrl = cdnUrl; console.log(`[NEWS] 📷 Got real image for "${item.title.slice(0,40)}"`) }
   } catch { /* non-critical */ }
-
-  // Skip non-US/international sources
-  const extUrl = (item.url || '').toLowerCase()
-  const intlDomains = [
-    // India
-    'thehindu.com','hindustantimes.com','timesofindia.com',
-    'ndtv.com','indianexpress.com','livemint.com','deccanherald.com',
-    'tribuneindia.com','moneycontrol.com','firstpost.com',
-    'devdiscourse.com','thestatesman.com','telegraphindia.com',
-    'newindianexpress.com','dnaindia.com','zeenews.india.com',
-    'indiatoday.in','news18.com','scroll.in','thewire.in',
-    'business-standard.com','financialexpress.com','asianage.com',
-    // Philippines
-    'sunstar.com.ph','inquirer.net','philstar.com','rappler.com',
-    'mb.com.ph','gmanetwork.com','cnn.ph','pna.gov.ph','abs-cbn.com',
-    'manilatimes.net','businessmirror.com.ph',
-    // Pakistan / Bangladesh / Others
-    'dawn.com','thenews.com.pk','geo.tv','thedailystar.net',
-    // UK / AU / NZ (non-US English that bleeds through)
-    'theguardian.com','bbc.com','bbc.co.uk','independent.co.uk',
-    'telegraph.co.uk','mirror.co.uk','smh.com.au','abc.net.au',
-    'news.com.au','stuff.co.nz','rnz.co.nz',
-    'canberratimes.com.au','theage.com.au','heraldsun.com.au',
-    'couriermail.com.au','thewest.com.au',
-    // Non-firearms / bogus
-    'fontsinuse.com',
-    // Other intl
-    'channelnewsasia.com','straitstimes.com','scmp.com',
-    'aljazeera.com',
-  ]
-  if (intlDomains.some(d => extUrl.includes(d))) {
-    console.log('[NEWS] Skipping non-US source: ' + (item.url || '').slice(0, 60))
-    return
-  }
-
-  // Skip articles with clearly non-US jurisdictional language
-  const lowerTitle = (item.title || '').toLowerCase()
-  const nonUSTerms = [
-    // India
-    'karnataka', 'belagavi', 'maharashtra', 'country-made guns',
-    'country made guns', 'desi katta', 'mumbai', 'delhi', 'bengaluru', 'chennai',
-    'kolkata', 'hyderabad', 'pune', 'ahmedabad', 'lucknow', 'jaipur',
-    'indian police', 'india police', 'uttar pradesh', 'bihar', 'rajasthan',
-    'odisha', 'assam', 'punjab police', 'haryana police',
-    // Philippines
-    'shabu', 'pnp', 'pro-7', 'pro 7', 'cebu', 'davao', 'manila',
-    'philippine national police', 'nbi philippines', 'peza',
-    'mindanao', 'quezon', 'makati', 'pasay', 'caloocan',
-    // Pakistan / Bangladesh
-    'pakistan', 'bangladesh', 'afghanistan', 'karachi', 'lahore', 'islamabad',
-    // UK / AU / NZ police
-    'victoria police', 'new south wales', 'queensland police',
-    'metropolitan police', 'scotland yard', 'ontario', 'british columbia',
-  ]
-  if (nonUSTerms.some(t => lowerTitle.includes(t))) {
-    console.log('[NEWS] Skipping non-US jurisdiction article: ' + item.title?.slice(0, 60))
-    return
-  }
 
   await publishToSanity(doc)
   console.log(`[NEWS] ✓ "${item.title.slice(0, 60)}" [${category}]${ai ? ' +AI' : ' +raw'}`)
 
-  // Breaking alert if high urgency
+  // Breaking alert
   if (category !== 'deals' && (ai?.isBreaking || (ai?.urgencyScore || 0) >= 8)) {
     await publishToSanity({
-      _id:          'alert-' + hash,
-      _type:        'breakingAlert',
-      headline:     item.title,
-      summary:      ai?.summary || item.description?.slice(0, 200),
-      url:          item.url,
-      source:       item.source,
-      urgencyScore: ai?.urgencyScore || 8,
-      active:       true,
-      publishedAt:  doc.publishedAt,
+      _id: 'alert-' + hash, _type: 'breakingAlert',
+      headline: item.title, summary: ai?.summary || item.description?.slice(0, 200),
+      url: item.url, source: item.source, urgencyScore: ai?.urgencyScore || 8,
+      active: true, publishedAt: doc.publishedAt,
     })
     if (process.env.DISCORD_BREAKING_WEBHOOK) {
       await notifyBreaking({ title: item.title, url: item.url, urgencyScore: ai?.urgencyScore })
@@ -397,8 +355,8 @@ async function runNewsFeed() {
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
 
   // Fetch all sources in parallel
-  const [newsapi, gnews, rss] = await Promise.all([fetchNewsAPI(), fetchGNews(), fetchRSS()])
-  const all = [...newsapi, ...gnews, ...rss]
+  const [newsapi, rss] = await Promise.all([fetchNewsAPI(), fetchRSS()])
+  const all = [...newsapi, ...rss]
     .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0))
     .slice(0, MAX_ITEMS) // hard cap
 
