@@ -5,6 +5,7 @@ import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = {
   title: 'About DownRange — Built for Gun Owners',
   description: 'DownRange covers Second Amendment news, state gun laws, new releases, and ammo prices for American gun owners. Independent, free, no manufacturer money.',
+  alternates: { canonical: 'https://downrangeco.com/about' },
 }
 
 export default function AboutPage() {

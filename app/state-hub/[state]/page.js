@@ -28,7 +28,7 @@ const SEED_PROFILES = {
 export async function generateMetadata({ params }) {
   const abbr = params.state?.toUpperCase()
   const name = STATE_NAMES[abbr] || abbr
-  return { title: `${name} Gun Laws — DownRange`, description: `Firearms laws, CCW requirements, and reciprocity for ${name}.` }
+  return { title: `${name} Gun Laws — DownRange`, description: `Firearms laws, CCW requirements, and reciprocity for ${name}.`, alternates: { canonical: `https://downrangeco.com/state-hub/${abbr}` } }
 }
 
 function LawRow({ label, value, good }) {

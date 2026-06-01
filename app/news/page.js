@@ -6,7 +6,7 @@ import NewsCard from '../../components/ui/NewsCard'
 import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
 import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
 
-export const metadata = { title: 'News — DownRange', description: 'Latest firearms and Second Amendment news from across the United States.' }
+export const metadata = { title: 'News — DownRange', description: 'Latest firearms and Second Amendment news from across the United States.', alternates: { canonical: 'https://downrangeco.com/news' } }
 export const revalidate = 60 // revalidate every 60s for fresher content
 
 const CATEGORIES = [

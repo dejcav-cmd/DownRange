@@ -3,7 +3,7 @@ import Footer from '../../components/layout/Footer'
 import BreakingTicker from '../../components/layout/BreakingTicker'
 export const revalidate = 604800  // Weekly — updated by /api/cron/carry-insurance
 
-export const metadata = { title: 'CCW Insurance Comparison — DownRange', description: 'Compare USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance.' }
+export const metadata = { title: 'CCW Insurance Comparison — DownRange', description: 'Compare USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance.', alternates: { canonical: 'https://downrangeco.com/carry-insurance' } }
 
 const PLANS = [
   { name:'USCCA', tier:'Elite', monthly:47, annual:497, coverage:'$2M civil', criminal:'Attorney fees paid upfront', bail:'$100K', training:'Included ($25 value)', verdict:'Best overall — upfront attorney payment is key. No reimbursement delays.', rating:9.4, url:'https://www.uscca.com', pros:['Pays attorney before trial','Best training resources','Established 2003','$2M civil coverage','Bail bond coverage'], cons:['Most expensive','Monthly cost adds up'] },

@@ -22,6 +22,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${review.title} | DownRange Reviews`,
     description: review.summary,
+    alternates: { canonical: `https://downrangeco.com/reviews/${params.slug}` },
     openGraph: { title: review.title, description: review.summary, images: review.imageUrl ? [review.imageUrl] : [] },
   }
 }

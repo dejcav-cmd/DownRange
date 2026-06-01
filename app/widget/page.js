@@ -1,7 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
-export const metadata = { title: 'Embed DownRange Widget — Free Gun Law Widget for Your Site', description: 'Free embeddable firearms law widget for gun stores and 2A websites.' }
+export const metadata = { title: 'Embed DownRange Widget — Free Gun Law Widget for Your Site', description: 'Free embeddable firearms law widget for gun stores and 2A websites.', alternates: { canonical: 'https://downrangeco.com/widget' } }
 
 export default function WidgetPage() {
   return (

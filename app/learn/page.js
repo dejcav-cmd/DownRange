@@ -6,6 +6,7 @@ import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = {
   title: 'Firearms Learning Center — DownRange',
   description: 'Guides on buying your first gun, getting a carry permit, safe storage, and understanding gun laws. Written for new gun owners, not gun writers.',
+  alternates: { canonical: 'https://downrangeco.com/learn' },
 }
 
 const ARTICLES = [

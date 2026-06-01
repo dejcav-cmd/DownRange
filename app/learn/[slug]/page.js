@@ -241,6 +241,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${a.title} — DownRange`,
     description: a.subtitle,
+    alternates: { canonical: `https://downrangeco.com/learn/${params.slug}` },
     openGraph: {
       title: a.title,
       description: a.subtitle,

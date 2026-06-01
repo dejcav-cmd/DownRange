@@ -6,6 +6,7 @@ import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = {
   title: 'Precision Shooting Hub — DownRange',
   description: 'Long-range ballistics, PRS competition, optics, and precision rifle. Data-driven and written by people who actually shoot past 500 yards.',
+  alternates: { canonical: 'https://downrangeco.com/precision' },
 }
 
 const RIFLES = [

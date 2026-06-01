@@ -27,7 +27,7 @@ export const metadata = {
     shortcut:   '/favicon.svg',
     apple:      '/favicon.svg',
   },
-  alternates: { canonical: 'https://downrangeco.com' },
+  // Note: per-page canonical tags are set individually on each page/route
   openGraph: {
     type:'website', locale:'en_US', url:'https://downrangeco.com',
     siteName:'DownRange', title:"DownRange — America's Firearms Intelligence Hub",

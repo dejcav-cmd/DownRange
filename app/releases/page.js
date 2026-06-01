@@ -1,7 +1,7 @@
 import ReleasesPage from './ReleasesPage'
 import { fetchReleases, searchReleases, fetchBreakingAlerts } from '../../sanity/lib/client'
 
-export const metadata = { title: 'New Releases — DownRange', description: 'Latest firearm announcements, new model releases, and product launches.' }
+export const metadata = { title: 'New Releases — DownRange', description: 'Latest firearm announcements, new model releases, and product launches.', alternates: { canonical: 'https://downrangeco.com/releases' } }
 export const revalidate = 3600
 
 export default async function Page({ searchParams }) {

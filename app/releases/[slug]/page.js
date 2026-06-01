@@ -24,6 +24,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${r.brand} ${r.model || r.title} — DownRange`,
     description: r.summary?.slice(0,155) || '',
+    alternates: { canonical: `https://downrangeco.com/releases/${params.slug}` },
     openGraph: { images: [r.heroImage?.asset?.url || r.imageUrl || ''] },
   }
 }

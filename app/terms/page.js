@@ -1,6 +1,6 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-export const metadata = { title: 'Terms of Service — DownRange' }
+export const metadata = { title: 'Terms of Service — DownRange', alternates: { canonical: 'https://downrangeco.com/terms' } }
 export default function Terms() {
   const sections = [
     ['Not Legal Advice','All content on DownRange is for informational purposes only and does not constitute legal advice. Always consult a licensed attorney regarding firearms laws.'],

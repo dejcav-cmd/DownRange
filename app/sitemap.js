@@ -64,10 +64,9 @@ export default async function sitemap() {
       changeFrequency: 'monthly',
     }))
 
-    const stateUrls = US_STATES.map(state => ([
-      { url: `${BASE}/state/${state}`,     priority: 0.75, changeFrequency: 'weekly' },
-      { url: `${BASE}/ccw/${state}`,       priority: 0.8,  changeFrequency: 'weekly' },
-    ])).flat()
+    const stateUrls = US_STATES.map(state => ({
+      url: `${BASE}/state-hub/${state.toUpperCase()}`, priority: 0.75, changeFrequency: 'weekly',
+    }))
 
     return [
       ...STATIC_PAGES,
