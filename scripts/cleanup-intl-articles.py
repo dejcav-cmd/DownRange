@@ -1,83 +1,116 @@
 #!/usr/bin/env python3
-import json, urllib.request, urllib.parse, os, sys
+import json, urllib.request, urllib.parse, os, time
 
-TOKEN = os.environ.get("SANITY_TOKEN","")
+TOKEN   = os.environ.get("SANITY_TOKEN", "")
 PROJECT = "vbnsqnkg"
-BASE = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data"
+BASE    = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data"
+HEADERS = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
 
-def sanity_query(q, params=None):
+def sanity_query(q):
     url = BASE + "/query/production?query=" + urllib.parse.quote(q)
-    if params:
-        for k, v in params.items():
-            url += "&" + urllib.parse.quote("$" + k) + "=" + urllib.parse.quote(json.dumps(v))
-    req = urllib.request.Request(url, headers={"Authorization": "Bearer " + TOKEN})
-    with urllib.request.urlopen(req, timeout=20) as r:
+    req = urllib.request.Request(url, headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())["result"]
 
 def sanity_mutate(mutations):
+    url  = BASE + "/mutate/production"
     body = json.dumps({"mutations": mutations}).encode()
-    req = urllib.request.Request(BASE + "/mutate/production", data=body, method="POST",
-        headers={"Authorization": "Bearer " + TOKEN, "Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=20) as r:
+    req  = urllib.request.Request(url, data=body, headers=HEADERS, method="POST")
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-# 1. Find and delete the Belagavi article
-print("Finding Belagavi article...", flush=True)
-articles = sanity_query(
-    '''*[_type == "newsArticle" && (
-      title match "*Belagavi*" || 
-      title match "*country-made guns*" || 
-      title match "*country made guns*" ||
-      externalUrl match "*thehindu*"
-    )] { _id, title, source, externalUrl }'''
-)
-print(f"Found {len(articles)} article(s):", flush=True)
+BLOCKED_DOMAINS = [
+    "sunstar.com.ph","inquirer.net","philstar.com","rappler.com",
+    "mb.com.ph","gmanetwork.com","cnn.ph","pna.gov.ph","abs-cbn.com",
+    "manilatimes.net","businessmirror.com.ph",
+    "thehindu.com","hindustantimes.com","timesofindia.com",
+    "ndtv.com","indianexpress.com","livemint.com","deccanherald.com",
+    "tribuneindia.com","firstpost.com",
+    "dawn.com","thenews.com.pk","geo.tv","thedailystar.net",
+]
+
+BLOCKED_KEYWORDS = [
+    "shabu","pnp","pro-7","pro 7","cebu","davao","manila",
+    "philippine national police","mindanao","quezon city",
+    "makati","pasay","caloocan","philipp",
+    "karnataka","belagavi","maharashtra","country-made guns","country made guns",
+    "desi katta","mumbai","delhi","bengaluru","chennai","kolkata","hyderabad",
+    "pune","ahmedabad","lucknow","jaipur","uttar pradesh",
+    "bihar","rajasthan","indian police","india police",
+    "pakistan","bangladesh","afghanistan","karachi","lahore","islamabad",
+]
+
+STOCK_DOMAINS = [
+    "pixabay.com","cdn.pixabay.com",
+    "images.pexels.com","pexels.com",
+    "images.unsplash.com","unsplash.com",
+    "lorempixel.com","picsum.photos","dummyimage.com",
+    "placeholder.com","via.placeholder.com","placehold.co","fakeimg.pl",
+]
+
+def is_stock(url):
+    if not url: return False
+    try:
+        from urllib.parse import urlparse
+        h = urlparse(url).hostname or ""
+        h = h.replace("www.", "")
+        return any(h == d or h.endswith("." + d) for d in STOCK_DOMAINS)
+    except:
+        return False
+
+def pick_photo(title, category=""):
+    t = (title + " " + category).lower()
+    if any(k in t for k in ["law","atf","bill","court","constitution","legal","2a","amendment","ban","rule","scotus","bruen"]): return "/img/photos/law.jpg"
+    if any(k in t for k in ["pistol","handgun","glock","sig","beretta","colt","revolver","1911","carry","edc"]): return "/img/photos/pistol.jpg"
+    if any(k in t for k in ["rifle","ar-15","ar 15","m4","carbine","ak","sbr"]): return "/img/photos/rifle.jpg"
+    if any(k in t for k in ["shotgun","mossberg","gauge","pump"]): return "/img/photos/shotgun.jpg"
+    if any(k in t for k in ["suppressor","silencer","nfa"]): return "/img/photos/suppressor.jpg"
+    if any(k in t for k in ["ammo","ammunition","cartridge","bullet"]): return "/img/photos/ammo.jpg"
+    if any(k in t for k in ["hunt","deer","elk","game"]): return "/img/photos/hunting.jpg"
+    if any(k in t for k in ["competi","uspsa","idpa"]): return "/img/photos/competition.jpg"
+    if any(k in t for k in ["train","range","practice"]): return "/img/photos/training.jpg"
+    if any(k in t for k in ["gear","holster","optic","scope"]): return "/img/photos/gear.jpg"
+    if any(k in t for k in ["home defense","self defense","self-defense"]): return "/img/photos/homedefense.jpg"
+    if any(k in t for k in ["military","army","marine","soldier"]): return "/img/photos/military.jpg"
+    return "/img/photos/news.jpg"
+
+print("Fetching articles...")
+articles = sanity_query('*[_type == "newsArticle"] | order(publishedAt desc) [0...500] { _id, title, imageUrl, "sourceUrl": externalUrl }')
+print(f"Got {len(articles)} articles")
+
+to_delete = []
+to_fix    = []
+
 for a in articles:
-    print(f"  [{a['_id']}] {a.get('title','')[:70]}", flush=True)
-    print(f"  Source: {a.get('source','?')} | URL: {a.get('externalUrl','')[:80]}", flush=True)
+    url   = (a.get("sourceUrl") or "").lower()
+    title = (a.get("title")     or "").lower()
 
-for a in articles:
-    try:
-        sanity_mutate([{"delete": {"id": a["_id"]}}])
-        print(f"  DELETED: {a['_id']}", flush=True)
-    except Exception as e:
-        print(f"  DELETE FAILED: {e}", flush=True)
+    domain_blocked  = any(d in url   for d in BLOCKED_DOMAINS)
+    keyword_blocked = any(k in title for k in BLOCKED_KEYWORDS)
 
-# 2. Find and delete all articles from TheGunFeed source
-print("\nFinding all TheGunFeed articles...", flush=True)
-gunfeed_articles = sanity_query(
-    '''*[_type == "newsArticle" && source == "TheGunFeed"] { _id, title }'''
-)
-print(f"Found {len(gunfeed_articles)} TheGunFeed articles", flush=True)
+    if domain_blocked or keyword_blocked:
+        to_delete.append(a["_id"])
+        print(f"  DELETE: {a.get('title','')[:70]}")
+    elif is_stock(a.get("imageUrl")):
+        to_fix.append({"id": a["_id"], "title": a.get("title","")})
+        print(f"  FIX IMG: {a.get('title','')[:60]}")
 
-import time
-for a in gunfeed_articles:
-    try:
-        sanity_mutate([{"delete": {"id": a["_id"]}}])
-        print(f"  DELETED: {a.get('title','')[:60]}", flush=True)
-        time.sleep(0.15)
-    except Exception as e:
-        print(f"  FAIL: {e}", flush=True)
+print(f"\nTo delete: {len(to_delete)} | To fix images: {len(to_fix)}")
 
-# 3. Also check for any other international articles that slipped through
-print("\nChecking for other non-US articles...", flush=True)
-intl_articles = sanity_query(
-    '''*[_type == "newsArticle" && (
-      externalUrl match "*thehindu*" ||
-      externalUrl match "*timesofindia*" ||
-      externalUrl match "*ndtv*" ||
-      title match "*karnataka*" ||
-      title match "*mumbai*" ||
-      title match "*bengaluru*"
-    )] { _id, title, source }'''
-)
-print(f"Found {len(intl_articles)} other international articles", flush=True)
-for a in intl_articles[:5]:
-    print(f"  {a.get('source','?')} | {a.get('title','')[:60]}", flush=True)
-    try:
-        sanity_mutate([{"delete": {"id": a["_id"]}}])
-        print(f"  DELETED", flush=True)
-    except Exception as e:
-        print(f"  FAIL: {e}", flush=True)
+deleted = 0
+for i in range(0, len(to_delete), 50):
+    batch     = to_delete[i:i+50]
+    mutations = [{"delete": {"id": _id}} for _id in batch]
+    sanity_mutate(mutations)
+    deleted  += len(batch)
+    print(f"Deleted {deleted} so far...")
+    time.sleep(0.3)
 
-print("\nCleanup complete!", flush=True)
+fixed = 0
+fix_mutations = [{"patch": {"id": a["id"], "set": {"imageUrl": pick_photo(a["title"])}}} for a in to_fix]
+for i in range(0, len(fix_mutations), 50):
+    sanity_mutate(fix_mutations[i:i+50])
+    fixed += min(50, len(fix_mutations) - i)
+    time.sleep(0.3)
+
+print(f"\nDONE: deleted={deleted}, images_fixed={fixed}")
