@@ -20,7 +20,7 @@ export async function GET(req) {
     const videos = await sanity.fetch(
       `*[_type == "video"] | order(publishedAt desc, addedAt desc) [0...200] {
         _id, title, videoId, youtubeId, channelName, category,
-        thumbnail, thumbnailUrl, description, publishedAt, addedAt, featured, active
+        thumbnail, thumbnailUrl, description, publishedAt, addedAt, featured, active, editorLocked
       }`
     )
     return Response.json({ ok: true, videos })

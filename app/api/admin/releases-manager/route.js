@@ -46,7 +46,7 @@ export async function GET(req) {
   const releases = await sanity.fetch(
     `*[_type=="firearmRelease"] | order(publishedAt desc, _createdAt desc) [0...200] {
       _id, title, slug, brand, model, category, caliber, action, msrp,
-      summary, body, sourceUrl, imageUrl, approved, isJustDropped,
+      summary, body, sourceUrl, imageUrl, approved, editorLocked, isJustDropped,
       publishedAt, availableDate, specs,
       heroImage { asset->{url} }
     }`

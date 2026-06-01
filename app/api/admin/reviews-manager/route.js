@@ -47,7 +47,7 @@ export async function GET(req) {
       *[_type == "review"] | order(publishedAt desc) [0...200] {
         _id, title, slug, brand, model, caliber, category,
         score, verdict, summary, msrp, testRounds, featured,
-        publishedAt, body,
+        publishedAt, body, approved, editorLocked,
         pros, cons,
         specs[] { label, value },
         heroImage { asset->{ url } }

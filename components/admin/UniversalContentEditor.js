@@ -138,10 +138,19 @@ export default function UniversalContentEditor({
   // ── CRUD ──────────────────────────────────────────────────────────────────
   async function patch(id, fields) {
     try {
-      await fetch(api, { method:'POST', headers:{...H,'Content-Type':'application/json'},
+      const r = await fetch(api, { method:'POST', headers:{...H,'Content-Type':'application/json'},
         body: JSON.stringify({ action:'patch', id, fields }) })
+      const d = await r.json().catch(() => ({}))
+      if (!r.ok || d.ok === false) {
+        flash('❌ Save failed: ' + (d.error || r.status), 'error')
+        return false
+      }
       setItems(prev => prev.map(x => x._id === id ? {...x,...fields} : x))
-    } catch { flash('Save failed', 'error') }
+      return true
+    } catch (e) {
+      flash('❌ Save failed: ' + e.message, 'error')
+      return false
+    }
   }
 
   async function saveField(key, value) {
@@ -187,8 +196,11 @@ export default function UniversalContentEditor({
     const val   = field === 'status'
       ? (item.status !== 'published' ? (pf?.publishedValue || 'published') : 'draft')
       : !(item[field])
-    await patch(item._id, { [field]: val })
-    flash(val === 'published' || val === true ? '▶ Published' : '⏸ Set to draft')
+    const ok = await patch(item._id, { [field]: val })
+    if (ok) {
+      flash(val === 'published' || val === true ? '▶ Published' : '⏸ Set to draft')
+      await load()
+    }
   }
 
   async function bulkLock(v) {
