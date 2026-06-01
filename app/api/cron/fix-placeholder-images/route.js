@@ -94,6 +94,38 @@ async function uploadToSanity(imageUrl, filename) {
   } catch { return null }
 }
 
+// ── PIXABAY FALLBACK ──────────────────────────────────────────────────────────
+
+function buildPixabayQuery(title = '', category = '') {
+  const t = (title + ' ' + category).toLowerCase()
+  if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen/.test(t)) return 'second amendment law constitution'
+  if (/pistol|handgun|glock|sig|carry|edc|revolver|1911/.test(t))  return 'handgun pistol shooting range'
+  if (/rifle|ar.?15|carbine|ak|sbr/.test(t))                        return 'rifle shooting range AR-15'
+  if (/shotgun|mossberg|gauge|pump/.test(t))                         return 'shotgun firearms range'
+  if (/suppressor|silencer|nfa/.test(t))                             return 'firearm suppressor'
+  if (/ammo|ammunition|bullet|cartridge/.test(t))                    return 'ammunition bullets firearm'
+  if (/hunt|deer|elk|game/.test(t))                                  return 'hunting rifle outdoors'
+  if (/competi|uspsa|idpa/.test(t))                                  return 'shooting competition sport'
+  if (/train|range|practice/.test(t))                                return 'shooting range training'
+  if (/gear|holster|optic|scope/.test(t))                            return 'gun holster tactical gear'
+  if (/home.*defense|self.defense/.test(t))                          return 'home defense firearm'
+  if (/military|army|marine|soldier/.test(t))                        return 'military soldier weapons'
+  return 'firearms gun second amendment'
+}
+
+async function fetchPixabay(title, category) {
+  const key = process.env.PIXABAY_API_KEY
+  if (!key) return null
+  try {
+    const q   = buildPixabayQuery(title, category)
+    const url = `https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(q)}&image_type=photo&orientation=horizontal&min_width=800&per_page=3&safesearch=true`
+    const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
+    if (!res.ok) return null
+    const data = await res.json()
+    return data.hits?.[0]?.largeImageURL || data.hits?.[0]?.webformatURL || null
+  } catch { return null }
+}
+
 // ── MAIN HANDLER ──────────────────────────────────────────────────────────────
 
 async function handler(req) {
@@ -148,7 +180,7 @@ async function handler(req) {
       const ogImage = await extractOgImage(article.externalUrl)
 
       if (ogImage) {
-        // Step 2: upload to Sanity CDN
+        // Step 2: upload real OG image to Sanity CDN
         const slug   = (article.title || 'article').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
         const cdnUrl = await uploadToSanity(ogImage, `${slug}-${article._id.slice(-6)}.jpg`)
 
@@ -158,23 +190,40 @@ async function handler(req) {
           if (stats.samples.length < 10) {
             stats.samples.push({ title: article.title?.slice(0, 50), was: article.imageUrl, now: cdnUrl.slice(0, 60) })
           }
-          console.log(`[FIX-PLACEHOLDERS] ✓ Upgraded to CDN: "${article.title?.slice(0, 40)}"`)
+          console.log(`[FIX-PLACEHOLDERS] ✓ CDN: "${article.title?.slice(0, 40)}"`)
         } else {
-          // Upload failed — assign best-match local photo (may already have one, pick better)
+          // CDN upload failed — try Pixabay
+          const pixUrl = await fetchPixabay(article.title, article.category)
+          if (pixUrl) {
+            const slug2    = (article.title || 'article').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
+            const pixCdn   = await uploadToSanity(pixUrl, `pix-${slug2}-${article._id.slice(-6)}.jpg`)
+            const finalUrl = pixCdn || pixUrl
+            mutations.push({ patch: { id: article._id, set: { imageUrl: finalUrl } } })
+            stats.fallback++
+            console.log(`[FIX-PLACEHOLDERS] ~ Pixabay: "${article.title?.slice(0, 40)}"`)
+          } else {
+            stats.skipped++
+          }
+        }
+      } else {
+        // Source blocked — try Pixabay first, then best-match local photo
+        const pixUrl = await fetchPixabay(article.title, article.category)
+        if (pixUrl) {
+          const slug2  = (article.title || 'article').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
+          const pixCdn = await uploadToSanity(pixUrl, `pix-${slug2}-${article._id.slice(-6)}.jpg`)
+          const finalUrl = pixCdn || pixUrl
+          mutations.push({ patch: { id: article._id, set: { imageUrl: finalUrl } } })
+          stats.fallback++
+          console.log(`[FIX-PLACEHOLDERS] ~ Pixabay (blocked source): "${article.title?.slice(0, 40)}"`)
+        } else {
+          // Last resort: best-match local photo (only patch if it's a different/better one)
           const better = pickPhoto(article.title, article.category)
           if (better !== article.imageUrl) {
             mutations.push({ patch: { id: article._id, set: { imageUrl: better } } })
+            stats.fallback++
+          } else {
+            stats.skipped++
           }
-          stats.fallback++
-        }
-      } else {
-        // Source blocked scraping — assign best-match local photo
-        const better = pickPhoto(article.title, article.category)
-        if (better !== article.imageUrl) {
-          mutations.push({ patch: { id: article._id, set: { imageUrl: better } } })
-          stats.fallback++
-        } else {
-          stats.skipped++ // already has the best local fallback
         }
       }
 

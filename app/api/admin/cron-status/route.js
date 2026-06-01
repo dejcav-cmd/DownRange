@@ -27,6 +27,17 @@ export const ALL_JOBS = [
   { id:'backup',           path:'/api/admin/backup',                schedule:'0 10,15 * * *', label:'Sanity Backup',           group:'System',   icon:'💾', critical:true,  desc:'Full Sanity export → GitHub backup repo at 10am & 3pm UTC. No AI cost.' },
   { id:'backfill',         path:'/api/admin/backfill-articles',     schedule:'0 12-23,0-3 * * *', label:'Article Backfill (legacy)', group:'Content', icon:'✍', critical:false, desc:'Legacy backfill — replaced by quality-rewrite' },
   { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 12-23,0-3 * * *', label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
+  { id:'patch-ammo-article', path:'/api/admin/patch-ammo-article',  schedule:'*/10 * * * *',      label:'Ammo Article Patcher',     group:'Content', icon:'🔩', critical:false, desc:'Patches ammo articles every 10 min' },
+  { id:'ccw-update',       path:'/api/cron/ccw-update',             schedule:'0 5 * * 0',         label:'CCW Update (Weekly)',       group:'Content', icon:'🪪', critical:false, desc:'Updates CCW reciprocity data every Sunday 5am UTC' },
+  { id:'carry-insurance',  path:'/api/cron/carry-insurance',        schedule:'0 6 * * 1',         label:'Carry Insurance Update',   group:'Content', icon:'🛡', critical:false, desc:'Updates carry insurance comparison data every Monday 6am UTC' },
+  { id:'market-brief',     path:'/api/cron/market-brief',           schedule:'0 14,21 * * *',     label:'Market Brief',             group:'Content', icon:'📉', critical:false, desc:'Market brief email at 2pm and 9pm UTC daily' },
+  { id:'sitemap',          path:'/api/cron/sitemap',                schedule:'0 2 * * *',         label:'Sitemap Generator',        group:'System',  icon:'🗺', critical:false, desc:'Regenerates sitemap.xml daily at 2am UTC' },
+  { id:'giveaways',        path:'/api/cron/giveaways',              schedule:'0 14 * * *',        label:'Giveaways Feed',           group:'Content', icon:'🎁', critical:false, desc:'Pulls active giveaways daily at 2pm UTC' },
+  { id:'blog-writer',      path:'/api/cron/blog-writer',            schedule:'0 18 * * 5',        label:'Blog Writer (Weekly)',     group:'Content', icon:'✏', critical:false, desc:'AI blog post writer every Friday 6pm UTC' },
+  { id:'gun-deals',        path:'/api/cron/gun-deals',              schedule:'0 */4 * * *',       label:'Gun Deals Feed',           group:'Content', icon:'💰', critical:false, desc:'Pulls gun.deals listings every 4 hrs' },
+  { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'0 8,20 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
+  { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'0 9,21 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
+  { id:'fix-images-intl',  path:'/api/admin/fix-images-intl',       schedule:'0 11 * * *',        label:'Intl Image Fixer',         group:'System',  icon:'🌐', critical:false, desc:'Fixes images on international content daily at 11am UTC' },
 ]
 
 function auth(req) {
