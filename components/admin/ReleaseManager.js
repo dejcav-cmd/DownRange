@@ -33,6 +33,7 @@ export default function ReleaseManager({ adminKey }) {
         icon: '🔫',
         api: '/api/admin/releases-manager',
         type: 'firearmRelease',
+        publishField: { field: 'approved', publishedValue: true },
         fields: FIELDS,
         responseKey: 'releases',
         urlFn: item => item?.slug?.current ? '/releases/' + item.slug.current : null,

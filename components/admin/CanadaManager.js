@@ -49,7 +49,7 @@ const FIELDS_GENERIC = [
 ]
 
 const TYPES = [
-  { key:'article',  label:'Articles',     icon:'✍', fields:FIELDS_ARTICLE,  baseUrl:'/canada' },
+  { key:'article', publishField: { field: 'active', publishedValue: true },  label:'Articles',     icon:'✍', fields:FIELDS_ARTICLE,  baseUrl:'/canada' },
   { key:'law',      label:'Laws',         icon:'⚖', fields:FIELDS_LAW,      baseUrl:null },
   { key:'province', label:'Provinces',    icon:'🗺', fields:FIELDS_PROVINCE, baseUrl:null },
   { key:'ammo',     label:'Ammo',         icon:'◎', fields:FIELDS_AMMO,     baseUrl:null },
@@ -95,6 +95,7 @@ export default function CanadaManager({ adminKey }) {
             label:  cfg.label,
             icon:   cfg.icon,
             api:    '/api/canada',
+            publishField: cfg.publishField,
             type:   activeType,
             fields: cfg.fields,
             baseUrl:cfg.baseUrl,

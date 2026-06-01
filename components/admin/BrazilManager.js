@@ -49,7 +49,7 @@ const FIELDS_GENERIC = [
 ]
 
 const TYPES = [
-  { key:'artigo',   label:'Artigos',      icon:'✍', fields:FIELDS_ARTIGO,  baseUrl:'/brazil' },
+  { key:'artigo', publishField: { field: 'active', publishedValue: true },   label:'Artigos',      icon:'✍', fields:FIELDS_ARTIGO,  baseUrl:'/brazil' },
   { key:'lei',      label:'Leis',         icon:'⚖', fields:FIELDS_LEI,     baseUrl:null },
   { key:'estado',   label:'Estados',      icon:'🗺', fields:FIELDS_ESTADO,  baseUrl:null },
   { key:'municao',  label:'Munição',      icon:'🔴', fields:FIELDS_MUNICAO, baseUrl:null },
@@ -96,6 +96,7 @@ export default function BrazilManager({ adminKey }) {
             label:  cfg.label,
             icon:   cfg.icon,
             api:    '/api/brazil',
+            publishField: cfg.publishField,
             type:   activeType,
             fields: cfg.fields,
             baseUrl:cfg.baseUrl,

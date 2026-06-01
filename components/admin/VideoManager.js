@@ -284,6 +284,7 @@ export default function VideoManager({ adminKey }) {
     if (!newId.trim() || !newTitle.trim()) { flash('❌ Video ID and title required'); return }
     const video = {
       _type: 'video',
+        publishField: { field: 'active',   publishedValue: true },
       videoId: newId.trim(),
       title:   newTitle.trim(),
       channelName: newCh.trim() || 'Unknown',

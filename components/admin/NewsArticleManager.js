@@ -43,6 +43,7 @@ export default function NewsArticleManager({ adminKey }) {
         icon: '📰',
         api: '/api/admin/articles-list',
         type: 'newsArticle',
+        publishField: { field: 'approved', publishedValue: true },
         fields: FIELDS,
         responseKey: 'articles',
         urlFn: item => item?.slug?.current ? '/news/' + item.slug.current : null,

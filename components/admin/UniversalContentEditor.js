@@ -63,6 +63,23 @@ function pageUrl(config, item) {
   return null
 }
 
+// Determines published state for any content type.
+// Explicit field declarations via config.publishField override auto-detection.
+//   config.publishField = { field: 'status',   publishedValue: 'published' }  → blogPost
+//   config.publishField = { field: 'approved', publishedValue: true }          → newsArticle, competition
+//   config.publishField = { field: 'active',   publishedValue: true }          → canada, brazil, video
+// If no config.publishField, falls back to safe explicit checks (no implicit defaults).
+function isPublished(item, config) {
+  if (!item) return false
+  const pf = config?.publishField
+  if (pf) return item[pf.field] === pf.publishedValue
+  // Auto-detect: check all three patterns explicitly
+  if ('status' in item)   return item.status === 'published'
+  if ('approved' in item) return item.approved === true
+  if ('active' in item)   return item.active === true
+  return false  // unknown type — default to draft, never assume live
+}
+
 // ── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function UniversalContentEditor({
   adminKey,
@@ -165,17 +182,13 @@ export default function UniversalContentEditor({
   }
 
   async function togglePublish(item) {
-    // blogPost uses status:'published'/'draft'; newsArticle uses approved:bool; others use active:bool
-    if ('status' in item && (item.status === 'published' || item.status === 'draft')) {
-      const v = item.status !== 'published'
-      await patch(item._id, { status: v ? 'published' : 'draft' })
-      flash(v ? '▶ Published' : '⏸ Set to draft')
-    } else {
-      const field = 'approved' in item ? 'approved' : 'active'
-      const v = !(item[field])
-      await patch(item._id, { [field]: v })
-      flash(v ? '▶ Published' : '⏸ Unpublished')
-    }
+    const pf    = config.publishField
+    const field = pf?.field || ('status' in item ? 'status' : 'approved' in item ? 'approved' : 'active')
+    const val   = field === 'status'
+      ? (item.status !== 'published' ? (pf?.publishedValue || 'published') : 'draft')
+      : !(item[field])
+    await patch(item._id, { [field]: val })
+    flash(val === 'published' || val === true ? '▶ Published' : '⏸ Set to draft')
   }
 
   async function bulkLock(v) {
@@ -189,9 +202,10 @@ export default function UniversalContentEditor({
   async function bulkPublish(v) {
     setBusy(true)
     const items = data.filter(d => checked.has(d._id))
+    const pf    = config.publishField
     for (const item of items) {
-      const field = 'approved' in item ? 'approved' : 'status' in item ? 'status' : 'active'
-      const val   = field === 'status' ? (v ? 'published' : 'draft') : v
+      const field = pf?.field || ('status' in item ? 'status' : 'approved' in item ? 'approved' : 'active')
+      const val   = field === 'status' ? (v ? (pf?.publishedValue || 'published') : 'draft') : v
       await patch(item._id, { [field]: val })
     }
     setChecked(new Set())
@@ -469,9 +483,7 @@ export default function UniversalContentEditor({
               </div>
             ) : visible.map(item => {
               const broken = isBad(item.imageUrl)
-              const published = item.status === 'published'
-                || item.approved === true
-                || (item.status === undefined && item.approved === undefined && item.active === true)
+              const published = isPublished(item, config)
               return (
                 <div key={item._id} className={'uce-row' + (sel===item._id?' sel':'') + (checked.has(item._id)?' checked':'')}
                   onClick={() => setSel(sel===item._id ? null : item._id)}>
@@ -557,9 +569,7 @@ export default function UniversalContentEditor({
                     </button>
                     {/* Publish */}
                     {(() => {
-                      const isLive = selItem.status === 'published'
-                          || selItem.approved === true
-                          || (selItem.status === undefined && selItem.approved === undefined && selItem.active === true)
+                      const isLive = isPublished(selItem, config)
                       return (
                         <button onClick={() => togglePublish(selItem)} disabled={busy}
                           className="uce-ghost"

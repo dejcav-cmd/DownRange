@@ -33,6 +33,7 @@ export default function BlogManager({ adminKey, setMsg }) {
         icon: '✍',
         api: '/api/admin/blog-posts',
         type: 'blogPost',
+        publishField: { field: 'status',   publishedValue: 'published' },
         fields: FIELDS,
         responseKey: 'posts',
         baseUrl: '/blog',

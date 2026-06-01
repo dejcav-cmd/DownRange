@@ -26,6 +26,7 @@ export default function ReviewManager({ adminKey }) {
         icon: '★',
         api: '/api/admin/reviews-manager',
         type: 'review',
+        publishField: { field: 'approved', publishedValue: true },
         fields: FIELDS,
         responseKey: 'reviews',
         urlFn: item => item?.slug?.current ? '/reviews/' + item.slug.current : null,
