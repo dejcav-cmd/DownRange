@@ -6,20 +6,15 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - name: Check news feed status
-        run: |
-          python3 scripts/debug-news-status.py > /tmp/news_status.txt 2>&1
-          cat /tmp/news_status.txt
+        run: python3 scripts/debug-news-status.py 2>&1 | tee /tmp/status.txt
       - name: Delete international articles from Sanity
         run: python3 scripts/cleanup-intl-articles.py
-      - name: Commit status report
-        run: |
-          cp /tmp/news_status.txt scripts/last-news-status.txt
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git add scripts/last-news-status.txt
-          git diff --cached --quiet || git commit -m "chore: news status report $(date -u +%Y-%m-%dT%H:%M:%SZ)"
-          git push
+      - name: Upload status artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: news-status
+          path: /tmp/status.txt
+          retention-days: 1
