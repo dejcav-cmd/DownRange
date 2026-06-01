@@ -561,14 +561,36 @@ export default function UniversalContentEditor({
                         </div>
                       )}
                     </div>
-                    <div style={{ display:'flex', gap:6 }}>
+                    <div style={{ display:'flex', gap:6, marginBottom:6 }}>
                       <input className="uce-input" style={{ flex:1 }} placeholder="Paste image URL..."
                         value={fieldVals.imageUrl || selItem.imageUrl || ''}
                         onChange={e => setFieldVals(prev => ({...prev, imageUrl: e.target.value}))}
                         onBlur={() => saveField('imageUrl', fieldVals.imageUrl)} />
-                      <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy}>Auto</button>
-                      <button className="uce-ghost" onClick={() => setImgSearch(selItem)}>Search</button>
+                      <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy} title="Auto-fetch from Pexels/Pixabay">Auto</button>
+                      <button className="uce-ghost" onClick={() => setImgSearch(selItem)} title="Search images">Search</button>
                     </div>
+                    <button className="uce-btn" disabled={busy}
+                      style={{ width:'100%', fontSize:11, padding:'7px 0', opacity: fieldVals.imageUrl && fieldVals.imageUrl.startsWith('http') ? 1 : 0.4 }}
+                      onClick={async () => {
+                        const url = fieldVals.imageUrl || selItem.imageUrl
+                        if (!url || !url.startsWith('http')) { flash('Paste an https:// URL first', 'error'); return }
+                        setBusy(true); flash('⏳ Downloading image to Sanity CDN...')
+                        try {
+                          const r = await fetch('/api/admin/save-image-url', {
+                            method:'POST', headers:{...H,'Content-Type':'application/json'},
+                            body: JSON.stringify({ url, id:selItem._id, type })
+                          })
+                          const d = await r.json()
+                          if (d.ok && d.cdnUrl) {
+                            setFieldVals(prev => ({...prev, imageUrl: d.cdnUrl}))
+                            setItems(prev => prev.map(x => x._id===selItem._id ? {...x, imageUrl:d.cdnUrl} : x))
+                            flash('✅ Image saved to Sanity CDN: ' + d.cdnUrl.slice(0,50))
+                          } else flash('❌ ' + (d.error||'Download failed'), 'error')
+                        } catch(e) { flash('❌ ' + e.message, 'error') }
+                        setBusy(false)
+                      }}>
+                      📥 Save Image to Article
+                    </button>
                   </div>
                 )}
 

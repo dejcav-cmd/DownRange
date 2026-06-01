@@ -1,1123 +1,623 @@
 'use client'
 import React, { useState, useEffect, useCallback, useRef } from 'react'
 
-// ─────────────────────────────────────────────────────────────────────────────
-// DownRange CRM — Full rebuild
-// Features:
-//   • Contact database with search, filters, dedup detection
-//   • Beautiful HTML email composer with DR branding (no raw code shown)
-//   • Template library with live visual preview
-//   • Queue / approval flow
-//   • Send history + analytics
-//   • Duplicate detector
-// ─────────────────────────────────────────────────────────────────────────────
-
 const GOLD   = '#C8922A'
 const MONO   = "'IBM Plex Mono',monospace"
 const BEBAS  = "'Bebas Neue',cursive"
 const BARLOW = "'Barlow Condensed',sans-serif"
 
 const TYPE_META = {
-  youtuber:     { label:'YouTuber',          color:'#ef4444', icon:'▶' },
-  gun_shop:     { label:'Gun Shop',          color:'#f59e0b', icon:'🏪' },
-  ffl_dealer:   { label:'FFL Dealer',        color:'#3b82f6', icon:'🛒' },
-  manufacturer: { label:'Manufacturer',      color:'#8b5cf6', icon:'🏭' },
-  organization: { label:'Organization',      color:'#06b6d4', icon:'🏛' },
-  instructor:   { label:'Instructor',        color:'#10b981', icon:'🎯' },
-  holster:      { label:'Holster Co',        color:'#f97316', icon:'🔫' },
-  range:        { label:'Range',             color:'#84cc16', icon:'🎳' },
-  press:        { label:'Press',             color:'#a78bfa', icon:'📰' },
-  other:        { label:'Other',             color:'#6b7280', icon:'👤' },
+  youtuber:     { label:'YouTuber',     color:'#ef4444', icon:'▶' },
+  gun_shop:     { label:'Gun Shop',     color:'#f59e0b', icon:'🏪' },
+  ffl_dealer:   { label:'FFL Dealer',   color:'#3b82f6', icon:'🛒' },
+  manufacturer: { label:'Manufacturer', color:'#8b5cf6', icon:'🏭' },
+  organization: { label:'Organization', color:'#06b6d4', icon:'🏛' },
+  instructor:   { label:'Instructor',   color:'#10b981', icon:'🎯' },
+  holster:      { label:'Holster Co',   color:'#f97316', icon:'🔫' },
+  range:        { label:'Range',        color:'#84cc16', icon:'🎳' },
+  press:        { label:'Press',        color:'#a78bfa', icon:'📰' },
+  other:        { label:'Other',        color:'#6b7280', icon:'👤' },
 }
 
 const STATUS_META = {
-  active:          { color:'#22c55e', label:'Active' },
-  unsubscribed:    { color:'#ef4444', label:'Unsubscribed' },
-  bounced:         { color:'#f97316', label:'Bounced' },
-  do_not_contact:  { color:'#7f1d1d', label:'DNC' },
-  pending:         { color:'#f59e0b', label:'Pending' },
+  active:         { color:'#22c55e', label:'Active' },
+  unsubscribed:   { color:'#ef4444', label:'Unsub' },
+  bounced:        { color:'#f97316', label:'Bounced' },
+  do_not_contact: { color:'#7f1d1d', label:'DNC' },
+  pending:        { color:'#f59e0b', label:'Pending' },
 }
 
-// ─── Reusable email HTML builder ─────────────────────────────────────────────
-function buildEmailHTML({ subject, greeting, body, ctaText, ctaUrl, contactName, senderName = 'DJ Cavalcanti' }) {
-  const firstName = contactName?.split(' ')[0] || 'there'
-  const finalGreeting = (greeting || 'Hi {{firstName}},').replace('{{firstName}}', firstName)
-  const finalBody = (body || '').replace(/{{firstName}}/g, firstName)
-
-  return `<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${subject || 'DownRange'}</title>
-</head>
-<body style="margin:0;padding:0;background:#09090B;font-family:Arial,Helvetica,sans-serif;color:#e5e7eb;">
-
-<table width="100%" cellpadding="0" cellspacing="0" style="background:#09090B;padding:40px 16px;">
-  <tr><td align="center">
-  <table width="600" cellpadding="0" cellspacing="0" style="background:#0A0B0C;border:1px solid #1f2428;max-width:600px;width:100%;">
-
-    <!-- HEADER -->
-    <tr><td style="background:#0A0B0C;border-bottom:3px solid ${GOLD};padding:28px 36px;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td>
-            <div style="font-family:Georgia,serif;font-size:28px;font-weight:900;color:${GOLD};letter-spacing:0.12em;line-height:1;">DOWNRANGE</div>
-            <div style="font-size:9px;color:#4b5563;letter-spacing:0.25em;margin-top:4px;text-transform:uppercase;">Firearms & 2A Intelligence Hub</div>
-          </td>
-          <td align="right" style="vertical-align:bottom;">
-            <div style="font-family:'Courier New',monospace;font-size:9px;color:#374151;letter-spacing:0.1em;">downrangeco.com</div>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-
-    <!-- BODY -->
-    <tr><td style="padding:36px 36px 28px;">
-      <p style="font-size:15px;color:#9ca3af;line-height:1.8;margin:0 0 20px;">${finalGreeting}</p>
-      <div style="font-size:15px;color:#d1d5db;line-height:1.85;white-space:pre-line;">${finalBody}</div>
-
-      ${ctaText && ctaUrl ? `
-      <table cellpadding="0" cellspacing="0" style="margin:32px 0 0;">
-        <tr><td style="background:${GOLD};padding:0;">
-          <a href="${ctaUrl}" style="display:inline-block;padding:14px 32px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#000;text-decoration:none;letter-spacing:0.08em;text-transform:uppercase;">${ctaText} →</a>
-        </td></tr>
-      </table>` : ''}
-
-      <div style="margin-top:36px;padding-top:24px;border-top:1px solid #1f2428;">
-        <p style="font-size:14px;color:#9ca3af;line-height:1.7;margin:0 0 4px;">— ${senderName}</p>
-        <p style="font-size:11px;color:#4b5563;margin:0;">Founder, DownRange · <a href="https://downrangeco.com" style="color:${GOLD};text-decoration:none;">downrangeco.com</a></p>
-      </div>
-    </td></tr>
-
-    <!-- GOLD DIVIDER -->
-    <tr><td style="padding:0 36px;"><div style="height:1px;background:linear-gradient(90deg,${GOLD}44,${GOLD},${GOLD}44);"></div></td></tr>
-
-    <!-- FOOTER -->
-    <tr><td style="padding:20px 36px 28px;background:#050506;">
-      <table width="100%" cellpadding="0" cellspacing="0">
-        <tr>
-          <td style="font-size:10px;color:#374151;line-height:1.7;">
-            DownRange Media LLC · America's Firearms Intelligence Hub<br>
-            <a href="https://downrangeco.com/press" style="color:${GOLD};text-decoration:none;">Press Kit</a> &nbsp;·&nbsp;
-            <a href="https://downrangeco.com" style="color:#4b5563;text-decoration:none;">downrangeco.com</a>
-          </td>
-          <td align="right" style="font-size:9px;color:#1f2937;letter-spacing:0.1em;vertical-align:bottom;">
-            <a href="{{unsubscribeUrl}}" style="color:#374151;text-decoration:none;font-size:9px;">Unsubscribe</a>
-          </td>
-        </tr>
-      </table>
-    </td></tr>
-
-  </table>
-  </td></tr>
-</table>
-</body>
-</html>`
+function buildEmailHTML({ subject, preheader, greeting, body, ctaText, ctaUrl, contactName, senderName='DJ Cavalcanti', signature='', accentColor=GOLD }) {
+  const fn = (contactName||'').split(' ')[0] || 'there'
+  const g  = (greeting||'Hi {{firstName}},').replace(/\{\{firstName\}\}/g, fn)
+  const b  = (body||'').replace(/\{\{firstName\}\}/g, fn)
+  const cta = ctaText && ctaUrl ? `<table cellpadding="0" cellspacing="0" style="margin:32px 0 0;"><tr><td style="background:${accentColor};padding:0;"><a href="${ctaUrl}" style="display:inline-block;padding:14px 36px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#000;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;">${ctaText} &rarr;</a></td></tr></table>` : ''
+  const sig = signature ? `<div style="margin-top:12px;font-size:13px;color:#9ca3af;line-height:1.7;white-space:pre-line;">${signature}</div>` : `<div style="margin-top:12px;"><p style="font-size:14px;color:#9ca3af;line-height:1.7;margin:0 0 2px;">&mdash; ${senderName}</p><p style="font-size:11px;color:#4b5563;margin:0;">Founder, DownRange &middot; <a href="https://downrangeco.com" style="color:${accentColor};text-decoration:none;">downrangeco.com</a></p></div>`
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject||'DownRange'}</title></head><body style="margin:0;padding:0;background:#09090B;font-family:Arial,Helvetica,sans-serif;">${preheader?`<div style="display:none;max-height:0;overflow:hidden;">${preheader}</div>`:''}<table width="100%" cellpadding="0" cellspacing="0" style="background:#09090B;padding:32px 16px;"><tr><td align="center"><table width="600" cellpadding="0" cellspacing="0" style="background:#0A0B0C;border:1px solid #1f2428;max-width:600px;width:100%;"><tr><td style="background:#0A0B0C;border-bottom:3px solid ${accentColor};padding:24px 36px;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td><div style="font-family:Georgia,serif;font-size:26px;font-weight:900;color:${accentColor};letter-spacing:0.12em;line-height:1;">DOWNRANGE</div><div style="font-size:9px;color:#4b5563;letter-spacing:0.25em;margin-top:3px;text-transform:uppercase;">Firearms &amp; 2A Intelligence Hub</div></td><td align="right" style="vertical-align:bottom;"><div style="font-family:'Courier New',monospace;font-size:9px;color:#374151;letter-spacing:0.1em;">downrangeco.com</div></td></tr></table></td></tr><tr><td style="padding:32px 36px 24px;"><p style="font-size:15px;color:#9ca3af;line-height:1.8;margin:0 0 18px;">${g}</p><div style="font-size:15px;color:#d1d5db;line-height:1.9;white-space:pre-line;">${b}</div>${cta}<div style="margin-top:32px;padding-top:20px;border-top:1px solid #1f2428;">${sig}</div></td></tr><tr><td style="padding:0 36px;"><div style="height:1px;background:linear-gradient(90deg,${accentColor}22,${accentColor},${accentColor}22);"></div></td></tr><tr><td style="padding:16px 36px 24px;background:#050506;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:10px;color:#374151;line-height:1.7;">DownRange Media LLC &middot; America's Firearms Intelligence Hub<br><a href="https://downrangeco.com/press" style="color:${accentColor};text-decoration:none;">Press Kit</a> &nbsp;&middot;&nbsp; <a href="https://downrangeco.com" style="color:#4b5563;text-decoration:none;">downrangeco.com</a></td><td align="right" style="vertical-align:bottom;"><a href="{{unsubscribeUrl}}" style="color:#374151;text-decoration:none;font-size:9px;letter-spacing:.08em;">Unsubscribe</a></td></tr></table></td></tr></table></td></tr></table></body></html>`
 }
 
-// ─── Email Template Presets ───────────────────────────────────────────────────
-const EMAIL_TEMPLATES = [
-  {
-    id: 'intro-youtuber',
-    name: 'YouTuber — Introduction',
-    category: 'youtuber',
-    subject: 'Your videos are on DownRange — wanted to reach out personally',
-    greeting: 'Hey {{firstName}},',
-    body: `My name is DJ Cavalcanti, and I'm the founder of DownRange (downrangeco.com) — an independent firearms and Second Amendment intelligence portal I built because I believe gun owners deserve a serious, well-designed source of information that isn't watered down, politically compromised, or buried under affiliate spam.
-
-I wanted to reach out personally because we've been embedding your public YouTube videos on our platform. We pull your content through YouTube's public API and display it to our audience — serious gun owners, daily carriers, competitive shooters, and 2A advocates who are actively looking for quality content exactly like yours.
-
-I want to be completely transparent about this. If you have any concerns about how your content is featured, please reach out and I'll address it immediately. Our goal is to expand your reach, not take anything from you — every embed links directly back to your YouTube channel and sends viewers your way.
-
-Here's why this matters to our community: DownRange exists to be the central hub for firearms intelligence. We cover legislation, new releases, market data, and curate the best video content from creators who actually know what they're talking about. You're on that list for a reason.
-
-One ask — if you ever find value in what we're building at DownRange, it would mean an enormous amount to us if you'd consider dropping our link (downrangeco.com) in a video description or community post. We're a small, bootstrapped operation and that kind of visibility is genuinely game-changing for us. No pressure at all — only if it feels right to you.
-
-Either way, thank you for the work you put out. It's making a difference.`,
-    ctaText: 'See Your Content on DownRange',
-    ctaUrl: 'https://downrangeco.com/video',
-  },
-  {
-    id: 'intro-manufacturer',
-    name: 'Manufacturer — Press Coverage',
-    category: 'manufacturer',
-    subject: 'DownRange — covering {{businessName}} for the 2A community',
-    greeting: 'Hi {{firstName}},',
-    body: `My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform because the firearms industry deserves media coverage that treats manufacturers like partners, not liabilities — and because gun owners deserve accurate, timely information about the products they carry and depend on.
-
-DownRange is an independent firearms intelligence portal. We cover breaking legislation, new product releases, market data, and 2A news daily. Our audience isn't casual browsers — they're active buyers, FFLs, competitive shooters, and daily carriers who make purchasing decisions based on what they read.
-
-I'd like to add {{businessName}} to our manufacturer profiles and cover your releases as they happen. We're not here to spin narratives or push agendas — we publish what's true and what matters to people who take the Second Amendment seriously.
-
-What makes us different: we're not beholden to advertisers or industry gatekeepers. We built DownRange from the ground up to be the resource the community actually needs — and that means covering manufacturers who are doing the right things right.
-
-If you have a media contact, press releases, or a PR list you'd like us on, I'd genuinely appreciate being added. And if there's a product launch or announcement coming up that you'd like covered, I'm all ears.`,
-    ctaText: 'Visit Our Press Page',
-    ctaUrl: 'https://downrangeco.com/press',
-  },
-  {
-    id: 'intro-ffl',
-    name: 'FFL Dealer — Directory Listing',
-    category: 'ffl_dealer',
-    subject: 'Free listing on DownRange — built for FFLs like {{businessName}}',
-    greeting: 'Hi {{firstName}},',
-    body: `My name is DJ Cavalcanti, and I run DownRange — a firearms news and resource portal at downrangeco.com. I started this because gun owners in every state deserve a reliable, well-organized place to find their local FFL, understand their state's laws, and stay current on legislation that affects them directly.
-
-I'd like to add {{businessName}} to our FFL dealer directory — completely free, no strings attached. We're building the most comprehensive dealer directory in the country, organized by state, searchable by specialty: NFA-capable, consignment, transfers, gunsmithing, and more.
-
-Here's why it matters: when someone in your area needs a transfer, wants to buy their first firearm, or is searching for an NFA dealer who actually knows the process — DownRange is where we want them to land. And we want them finding you, not a big-box retailer that treats them like a number.
-
-Gun shops are the backbone of the 2A community at the local level. They're where people get educated, ask real questions, and build a relationship with firearms ownership that lasts a lifetime. That's worth supporting — and that's why we built this directory.
-
-If you'd like to be listed, just reply with your preferred contact info and any specialties you want highlighted. Takes me about two minutes to add you.`,
-    ctaText: 'Find Your State Listing',
-    ctaUrl: 'https://downrangeco.com/state-hub',
-  },
-  {
-    id: 'intro-holster',
-    name: 'Holster Company — Partnership',
-    category: 'holster',
-    subject: 'DownRange — featuring {{businessName}} for daily carriers',
-    greeting: 'Hi {{firstName}},',
-    body: `My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform for gun owners who carry every day — people who take their equipment seriously and want honest information, not glossy marketing copy.
-
-A good holster isn't an accessory. For someone who carries daily, it's a piece of equipment they trust their life to. That's why we dedicated an entire section of DownRange to holster coverage — and why I'm reaching out to {{businessName}} specifically.
-
-I'd like to feature your brand in our holster directory and cover what makes your products worth carrying. We don't do pay-to-play coverage — if your holsters earn a spot, it's because our readers would genuinely benefit from knowing about them.
-
-Our audience skews heavily toward concealed carriers: people who've made the commitment to carry responsibly and are constantly looking for gear that holds up in real conditions, not just on a range. They read reviews, they compare options, and they remember brands that were recommended to them honestly.
-
-If you'd like to be featured, I'd love to learn more about what {{businessName}} is building and how we can cover it accurately. A sample or catalog would help, but even a quick conversation works.`,
-    ctaText: 'See Our Holster Coverage',
-    ctaUrl: 'https://downrangeco.com/holsters',
-  },
-  {
-    id: 'intro-range',
-    name: 'Range — Directory Listing',
-    category: 'range',
-    subject: 'DownRange — adding {{businessName}} to our range directory',
-    greeting: 'Hi {{firstName}},',
-    body: `My name is DJ Cavalcanti, and I run DownRange — a firearms intelligence portal at downrangeco.com dedicated to the gun owner community across all 50 states.
-
-I'd like to add {{businessName}} to our shooting range directory. We're building a resource that helps gun owners find ranges near them that match their needs — whether that's steel targets, NFA-capable bays, long-range facilities, or beginner-friendly instruction programs.
-
-Ranges matter more than most people realize. They're where new gun owners get their first instruction, where experienced shooters push their skills, and where communities form around a shared commitment to responsible firearms ownership. DownRange wants to make it easier for people to find places like yours.
-
-The listing is free and includes your hours, specialties, and contact information. If you offer training or memberships, we can highlight that too.
-
-Just reply with what you'd like included and I'll get you in the directory.`,
-    ctaText: 'View Our Range Directory',
-    ctaUrl: 'https://downrangeco.com/state-hub',
-  },
-  {
-    id: 'intro-organization',
-    name: 'Organization — Partnership',
-    category: 'organization',
-    subject: 'DownRange + {{businessName}} — working toward the same goal',
-    greeting: 'Hi {{firstName}},',
-    body: `My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform because the Second Amendment deserves a serious, independent media presence — one that covers legislation accurately, explains court decisions plainly, and gives gun owners the information they need to be effective advocates for their rights.
-
-I believe {{businessName}} and DownRange are working toward the same goal: an informed, engaged gun owner community that understands its rights and acts on them.
-
-DownRange covers 2A legislation across all 50 states, federal court decisions including Bruen and its progeny, ATF regulatory actions, and daily news that affects gun owners directly. We publish in plain language, without the political spin, and we treat our readers like adults who can handle the facts.
-
-I'd love to explore ways we can support each other's work — whether that's coverage of your campaigns, linking to your resources, or finding ways to get your message in front of our audience. We're not a massive publication, but our readers are exactly the people {{businessName}} is trying to reach: engaged, informed, and motivated.
-
-Would you be open to a conversation?`,
-    ctaText: 'Visit DownRange',
-    ctaUrl: 'https://downrangeco.com',
-  },
-  {
-    id: 'followup',
-    name: 'Follow-Up',
-    category: null,
-    subject: 'Following up — DownRange + {{businessName}}',
-    greeting: 'Hey {{firstName}},',
-    body: `I wanted to follow up on my previous note about DownRange (downrangeco.com).
-
-I know your inbox is busy — I'll keep this short. DownRange is the independent firearms intelligence portal I'm building for gun owners who want serious, accurate information. We cover legislation, new releases, court decisions, and curate content from the best voices in the 2A space.
-
-Whatever category {{businessName}} falls into for us — whether it's coverage, a directory listing, a feature, or just getting on each other's radar — I genuinely think there's value in the connection.
-
-If now isn't the right time, no hard feelings at all. If you'd like to know more, I'm happy to send over whatever would be helpful.
-
-Either way, keep doing what you're doing.`,
-    ctaText: 'See What We\'re Building',
-    ctaUrl: 'https://downrangeco.com',
-  },
+const TEMPLATES = [
+  { id:'intro-youtuber', name:'YouTuber — Intro', cat:'youtuber', subject:"Your videos are on DownRange — wanted to reach out personally", greeting:'Hey {{firstName}},', preheader:'Your content is already reaching a serious firearms audience.', body:`My name is DJ Cavalcanti, and I'm the founder of DownRange (downrangeco.com) — an independent firearms and Second Amendment intelligence portal built for gun owners who want real information, not watered-down content buried under affiliate spam.\n\nI wanted to reach out personally because we've been embedding your public YouTube videos on our platform. We display your content to our audience — serious gun owners, daily carriers, competitive shooters, and 2A advocates who are actively looking for quality content exactly like yours. Every embed links directly back to your channel and sends viewers your way.\n\nI'm being completely transparent about this. If you have any concerns about how your content is featured, reach out and I'll address it immediately.\n\nOne ask — if you ever find value in what we're building at DownRange, it would mean an enormous amount if you'd consider dropping our link (downrangeco.com) in a video description or community post. We're bootstrapped and that kind of visibility is game-changing for us. No pressure at all.\n\nEither way, thank you for the work you put out.`, ctaText:'See Your Content on DownRange', ctaUrl:'https://downrangeco.com/video' },
+  { id:'intro-manufacturer', name:'Manufacturer — Press', cat:'manufacturer', subject:'DownRange — covering your releases for the 2A community', greeting:'Hi {{firstName}},', preheader:'The firearms industry deserves media that treats manufacturers like partners.', body:`My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform because the firearms industry deserves media coverage that treats manufacturers like partners — and because gun owners deserve accurate, timely information about the products they carry.\n\nDownRange is an independent firearms intelligence portal. We cover breaking legislation, new product releases, market data, and 2A news daily. Our audience are active buyers, FFLs, competitive shooters, and daily carriers who make purchasing decisions based on what they read.\n\nI'd like to cover your releases as they happen. We publish what's true and what matters to people who take the Second Amendment seriously.\n\nIf you have a media contact, press releases, or a PR list, I'd genuinely appreciate being added.`, ctaText:'Visit Our Press Page', ctaUrl:'https://downrangeco.com/press' },
+  { id:'intro-ffl', name:'FFL Dealer — Free Listing', cat:'ffl_dealer', subject:'Free listing on DownRange — built for FFLs like yours', greeting:'Hi {{firstName}},', preheader:'Gun shops are the backbone of the 2A community.', body:`My name is DJ Cavalcanti, and I run DownRange — a firearms news and resource portal at downrangeco.com. I'd like to add your shop to our FFL dealer directory — completely free, no strings attached.\n\nWhen someone in your area needs a transfer, wants to buy their first firearm, or is searching for an NFA dealer who actually knows the process — DownRange is where we want them to land. And we want them finding you.\n\nThe listing includes your hours, specialties, and contact information. Just reply with what you'd like included.`, ctaText:'Find Your State Listing', ctaUrl:'https://downrangeco.com/state-hub' },
+  { id:'intro-holster', name:'Holster Company — Feature', cat:'holster', subject:'DownRange — featuring your brand for daily carriers', greeting:'Hi {{firstName}},', preheader:'Our audience carries every day. They want honest gear recommendations.', body:`My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform for gun owners who carry every day — people who take their equipment seriously.\n\nA good holster is something someone trusts their life to. That's why we dedicated an entire section to holster coverage — and why I'm reaching out specifically.\n\nI'd like to feature your brand. We don't do pay-to-play — if your holsters earn a spot, it's because our readers would genuinely benefit from knowing about them.\n\nIf you'd like to be featured, I'd love to learn more about what you're building.`, ctaText:'See Our Holster Coverage', ctaUrl:'https://downrangeco.com/holsters' },
+  { id:'intro-range', name:'Range — Directory', cat:'range', subject:'DownRange — adding your range to our directory', greeting:'Hi {{firstName}},', preheader:'Help shooters in your area find you.', body:`My name is DJ Cavalcanti, and I run DownRange — a firearms intelligence portal for gun owners across all 50 states.\n\nI'd like to add your range to our directory. We're building a resource that helps gun owners find ranges that match their needs — steel targets, NFA bays, long-range, instruction.\n\nThe listing is free. Just reply with what you'd like included.`, ctaText:'View Our Range Directory', ctaUrl:'https://downrangeco.com/state-hub' },
+  { id:'followup', name:'Follow-Up (Universal)', cat:null, subject:'Following up — DownRange', greeting:'Hey {{firstName}},', preheader:'Keeping this short.', body:`I wanted to follow up on my previous note about DownRange (downrangeco.com).\n\nI'll keep this brief. DownRange is the independent firearms intelligence portal I'm building for gun owners who want serious, accurate information.\n\nIf now isn't the right time, no hard feelings. Either way, keep doing what you're doing.`, ctaText:"See What We're Building", ctaUrl:'https://downrangeco.com' },
 ]
 
-// ─── Styles ──────────────────────────────────────────────────────────────────
+const TOOLBAR = [
+  { icon:'B', cmd:'bold', title:'Bold', style:{fontWeight:900} },
+  { icon:'I', cmd:'italic', title:'Italic', style:{fontStyle:'italic'} },
+  { icon:'U', cmd:'underline', title:'Underline', style:{textDecoration:'underline'} },
+  null,
+  { icon:'H1', cmd:'h1', title:'Heading' },
+  { icon:'¶', cmd:'p', title:'Paragraph' },
+  null,
+  { icon:'•', cmd:'ul', title:'Bullet List' },
+  { icon:'🔗', cmd:'link', title:'Insert Link' },
+  { icon:'—', cmd:'divider', title:'Horizontal Rule' },
+]
+
 const CSS = `
-.crm-wrap { display:flex; height:calc(100vh - 52px); overflow:hidden; background:#09090B; }
-.crm-sidebar { width:220px; min-width:220px; border-right:1px solid var(--border); display:flex; flex-direction:column; background:#0A0B0C; }
-.crm-sidebar-header { padding:16px 16px 12px; border-bottom:1px solid var(--border); }
-.crm-nav-item { display:flex; align-items:center; gap:10px; padding:9px 16px; cursor:pointer; font-family:${BARLOW}; font-size:13px; font-weight:700; letter-spacing:.04em; color:var(--text-dim); border-left:2px solid transparent; transition:all .12s; text-transform:uppercase; }
-.crm-nav-item:hover { background:rgba(200,146,42,.06); color:var(--text); }
-.crm-nav-item.active { border-left-color:${GOLD}; color:${GOLD}; background:rgba(200,146,42,.08); }
-.crm-nav-icon { font-size:14px; width:18px; text-align:center; }
-.crm-main { flex:1; overflow-y:auto; display:flex; flex-direction:column; }
-.crm-topbar { padding:14px 24px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:12px; flex-wrap:wrap; background:#0A0B0C; position:sticky; top:0; z-index:10; }
-.crm-search { background:var(--bg2); border:1px solid var(--border); color:var(--text); font-family:${MONO}; font-size:12px; padding:8px 12px 8px 34px; outline:none; flex:1; min-width:200px; max-width:320px; transition:border-color .15s; }
-.crm-search:focus { border-color:${GOLD}; }
-.crm-search-wrap { position:relative; flex:1; max-width:320px; }
-.crm-search-icon { position:absolute; left:10px; top:50%; transform:translateY(-50%); color:#4b5563; font-size:13px; pointer-events:none; }
-.crm-select { background:var(--bg2); border:1px solid var(--border); color:var(--text); font-family:${MONO}; font-size:11px; padding:7px 10px; outline:none; cursor:pointer; }
-.crm-select:focus { border-color:${GOLD}; }
-.crm-btn { background:${GOLD}; color:#000; border:none; font-family:${BARLOW}; font-size:12px; font-weight:700; letter-spacing:.08em; text-transform:uppercase; padding:8px 16px; cursor:pointer; transition:opacity .12s; white-space:nowrap; }
-.crm-btn:hover { opacity:.85; }
-.crm-btn:disabled { opacity:.4; cursor:not-allowed; }
-.crm-btn-ghost { background:none; border:1px solid var(--border); color:var(--text-dim); font-family:${MONO}; font-size:11px; padding:7px 12px; cursor:pointer; transition:all .12s; }
-.crm-btn-ghost:hover { border-color:${GOLD}; color:${GOLD}; }
-.crm-btn-danger { background:#ef4444; color:#fff; border:none; font-family:${BARLOW}; font-size:11px; font-weight:700; padding:6px 12px; cursor:pointer; }
-.crm-content { padding:24px; flex:1; }
-.crm-card { background:var(--bg2); border:1px solid var(--border); padding:20px; margin-bottom:16px; }
-.crm-table { width:100%; border-collapse:collapse; }
-.crm-table th { font-family:${MONO}; font-size:9px; color:#64748b; letter-spacing:.1em; text-transform:uppercase; padding:10px 12px; border-bottom:1px solid var(--border); text-align:left; background:var(--bg2); position:sticky; top:0; z-index:1; white-space:nowrap; }
-.crm-table td { padding:10px 12px; border-bottom:1px solid rgba(30,41,59,.4); vertical-align:middle; font-size:12px; }
-.crm-table tr:hover td { background:rgba(200,146,42,.03); }
-.crm-table tr.selected td { background:rgba(200,146,42,.07); }
-.crm-badge { display:inline-block; font-family:${MONO}; font-size:9px; font-weight:700; letter-spacing:.06em; padding:2px 7px; text-transform:uppercase; border-radius:2px; }
-.crm-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-family:${BEBAS}; font-size:13px; flex-shrink:0; }
-.crm-input { background:var(--bg2); border:1px solid var(--border); color:var(--text); font-family:${MONO}; font-size:12px; padding:9px 12px; outline:none; width:100%; box-sizing:border-box; transition:border-color .15s; }
-.crm-input:focus { border-color:${GOLD}; }
-.crm-textarea { background:var(--bg2); border:1px solid var(--border); color:var(--text); font-family:${MONO}; font-size:12px; padding:10px 12px; outline:none; width:100%; box-sizing:border-box; resize:vertical; transition:border-color .15s; line-height:1.6; }
-.crm-textarea:focus { border-color:${GOLD}; }
-.crm-label { font-family:${MONO}; font-size:10px; color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; display:block; margin-bottom:5px; }
-.crm-checkbox { width:15px; height:15px; accent-color:${GOLD}; cursor:pointer; }
-.crm-stat { background:var(--bg2); border:1px solid var(--border); padding:16px 20px; flex:1; min-width:120px; }
-.crm-stat-val { font-family:${BEBAS}; font-size:2rem; color:${GOLD}; line-height:1; }
-.crm-stat-label { font-family:${MONO}; font-size:9px; color:#6b7280; margin-top:2px; text-transform:uppercase; letter-spacing:.06em; }
-.email-preview { background:#09090B; border:1px solid var(--border); border-radius:4px; overflow:hidden; }
-.email-preview iframe { width:100%; height:520px; border:none; background:#fff; }
-.crm-tab { background:none; border:none; border-bottom:2px solid transparent; font-family:${BARLOW}; font-size:13px; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:9px 16px; cursor:pointer; color:var(--text-dim); transition:all .12s; white-space:nowrap; }
-.crm-tab.active { color:${GOLD}; border-bottom-color:${GOLD}; }
-.crm-tab:hover:not(.active) { color:var(--text); }
-.dedup-row { background:rgba(239,68,68,.06); border-left:3px solid #ef4444; }
-.template-card { background:var(--bg2); border:1px solid var(--border); padding:16px; cursor:pointer; transition:all .15s; }
-.template-card:hover, .template-card.selected { border-color:${GOLD}; background:rgba(200,146,42,.06); }
-.compose-field { margin-bottom:16px; }
+.crm-app{display:flex;height:calc(100vh - 52px);overflow:hidden;background:#09090B}
+.crm-rail{width:52px;background:#050506;border-right:1px solid #1a1f2e;display:flex;flex-direction:column;align-items:center;padding:8px 0;gap:2px;flex-shrink:0}
+.rail-btn{width:38px;height:38px;background:none;border:none;border-radius:6px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;position:relative;gap:2px}
+.rail-btn:hover{background:rgba(200,146,42,.1)}
+.rail-btn.on{background:rgba(200,146,42,.15)}
+.rail-icon{font-size:15px;line-height:1}
+.rail-lbl{font-size:7px;color:#374151;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.rail-btn.on .rail-lbl{color:${GOLD}}
+.rail-badge{position:absolute;top:2px;right:2px;background:${GOLD};color:#000;font-size:8px;font-weight:700;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 2px}
+.crm-left{width:260px;flex-shrink:0;border-right:1px solid #1a1f2e;display:flex;flex-direction:column;background:#0A0B0C}
+.crm-left-hdr{padding:10px 12px;border-bottom:1px solid #1a1f2e;display:flex;align-items:center;gap:8px;flex-shrink:0}
+.left-search{flex:1;background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:11px;padding:6px 9px;outline:none}
+.left-search:focus{border-color:${GOLD}}
+.c-row{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid #0d1117;cursor:pointer;transition:background .1s}
+.c-row:hover{background:rgba(200,146,42,.04)}
+.c-row.chk{background:rgba(200,146,42,.06)}
+.c-row.prev{border-left:2px solid ${GOLD}}
+.crm-avt{width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:${BEBAS};font-size:11px;flex-shrink:0}
+.compose{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
+.c-hdr{background:#0A0B0C;border-bottom:1px solid #1a1f2e;flex-shrink:0}
+.c-field{display:flex;align-items:center;border-bottom:1px solid #0d1117;padding:0 16px;min-height:40px}
+.c-lbl{font-size:10px;color:#4b5563;letter-spacing:.08em;text-transform:uppercase;width:76px;flex-shrink:0;font-family:${MONO}}
+.c-inp{flex:1;background:none;border:none;color:#e5e7eb;font-family:${MONO};font-size:12px;padding:9px 0;outline:none}
+.c-inp::placeholder{color:#374151}
+.toolbar{display:flex;gap:1px;padding:5px 10px;background:#050506;border-bottom:1px solid #1a1f2e;flex-wrap:wrap;flex-shrink:0}
+.t-btn{background:none;border:1px solid transparent;color:#6b7280;font-family:${MONO};font-size:11px;font-weight:700;padding:4px 8px;cursor:pointer;border-radius:3px;white-space:nowrap}
+.t-btn:hover{background:rgba(255,255,255,.06);color:#e5e7eb;border-color:#1a1f2e}
+.t-sep{width:1px;background:#1a1f2e;margin:2px 3px;align-self:stretch}
+.body-area{flex:1;overflow:hidden;display:flex}
+.editor{flex:1;background:#0d1117;color:#d1d5db;font-size:14px;line-height:1.9;padding:28px 32px;outline:none;overflow-y:auto;font-family:Arial,sans-serif}
+.editor:empty:before{content:attr(data-placeholder);color:#374151}
+.preview-pane{border-left:1px solid #1a1f2e;overflow-y:auto;background:#050506;display:flex;flex-direction:column}
+.preview-bar{padding:7px 12px;background:#050506;border-bottom:1px solid #1a1f2e;display:flex;align-items:center;gap:7px;flex-shrink:0}
+.send-bar{padding:9px 16px;background:#0A0B0C;border-top:1px solid #1a1f2e;display:flex;gap:8px;align-items:center;flex-shrink:0;flex-wrap:wrap}
+.crm-right{width:230px;flex-shrink:0;border-left:1px solid #1a1f2e;display:flex;flex-direction:column;background:#050506;overflow-y:auto}
+.r-sec{padding:12px 14px;border-bottom:1px solid #1a1f2e}
+.r-lbl{font-size:9px;color:#374151;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;display:block;font-family:${MONO}}
+.r-inp{background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:11px;padding:6px 9px;outline:none;width:100%;box-sizing:border-box;margin-bottom:6px}
+.r-inp:focus{border-color:${GOLD}}
+.r-sel{background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:11px;padding:6px 9px;outline:none;width:100%;cursor:pointer}
+.tpl-chip{padding:6px 10px;background:#111318;border:1px solid #1a1f2e;color:#9ca3af;font-family:${MONO};font-size:10px;cursor:pointer;margin-bottom:4px;display:block;text-align:left;width:100%}
+.tpl-chip:hover{border-color:${GOLD};color:${GOLD};background:rgba(200,146,42,.06)}
+.tpl-chip.on{border-color:${GOLD};color:${GOLD};background:rgba(200,146,42,.1)}
+.crm-btn{background:${GOLD};color:#000;border:none;font-family:${BARLOW};font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;cursor:pointer;white-space:nowrap}
+.crm-btn:hover{opacity:.85}
+.crm-btn:disabled{opacity:.4;cursor:not-allowed}
+.ghost{background:none;border:1px solid #1a1f2e;color:#6b7280;font-family:${MONO};font-size:11px;padding:7px 12px;cursor:pointer}
+.ghost:hover{border-color:${GOLD};color:${GOLD}}
+.ghost:disabled{opacity:.35;cursor:not-allowed}
+.crm-badge{display:inline-block;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:2px;text-transform:uppercase}
+.crm-table{width:100%;border-collapse:collapse}
+.crm-th{font-family:${MONO};font-size:9px;color:#4b5563;letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border-bottom:1px solid #1a1f2e;text-align:left;background:#050506;position:sticky;top:0;z-index:1}
+.crm-td{padding:9px 12px;border-bottom:1px solid #0d1117;font-size:12px;vertical-align:middle}
+.crm-tr:hover .crm-td{background:rgba(200,146,42,.02)}
+.stat-row{display:flex;gap:10px;padding:12px 20px;border-bottom:1px solid #1a1f2e;flex-wrap:wrap}
+.stat-box{background:#0A0B0C;border:1px solid #1a1f2e;padding:10px 14px;flex:1;min-width:90px}
+.stat-n{font-family:${BEBAS};font-size:1.7rem;color:${GOLD};line-height:1}
+.stat-l{font-size:9px;color:#4b5563;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;font-family:${MONO}}
+.q-item{border-bottom:1px solid #1a1f2e;padding:14px 22px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}
+.q-item:hover{background:rgba(200,146,42,.02)}
+.crm-toast{position:fixed;bottom:20px;right:20px;z-index:9999;padding:9px 16px;font-family:${MONO};font-size:11px;background:#0A0B0C;border:1px solid #1a1f2e;border-left:3px solid ${GOLD};max-width:320px;animation:slideIn .2s ease}
+@keyframes slideIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
 `
 
 export default function OutreachCRM({ adminKey }) {
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
-  const [view, setView] = useState('contacts')
+  const [view,         setView]         = useState('compose')
+  const [contacts,     setContacts]     = useState([])
+  const [loadingC,     setLoadingC]     = useState(false)
+  const [search,       setSearch]       = useState('')
+  const [fType,        setFType]        = useState('')
+  const [fStatus,      setFStatus]      = useState('active')
+  const [selIds,       setSelIds]       = useState(new Set())
+  const [prevId,       setPrevId]       = useState(null)
+  const [dupGroups,    setDupGroups]    = useState([])
+  const [activeTpl,    setActiveTpl]    = useState(TEMPLATES[0].id)
+  const [subject,      setSubject]      = useState(TEMPLATES[0].subject)
+  const [preheader,    setPreheader]    = useState(TEMPLATES[0].preheader||'')
+  const [greeting,     setGreeting]     = useState(TEMPLATES[0].greeting)
+  const [ctaText,      setCtaText]      = useState(TEMPLATES[0].ctaText||'')
+  const [ctaUrl,       setCtaUrl]       = useState(TEMPLATES[0].ctaUrl||'')
+  const [accent,       setAccent]       = useState(GOLD)
+  const [sig,          setSig]          = useState('')
+  const [splitPrev,    setSplitPrev]    = useState(true)
+  const [sending,      setSending]      = useState(false)
+  const [sendRes,      setSendRes]      = useState(null)
+  const [queue,        setQueue]        = useState([])
+  const [qTab,         setQTab]         = useState('draft')
+  const [qStats,       setQStats]       = useState({})
+  const [loadingQ,     setLoadingQ]     = useState(false)
+  const [history,      setHistory]      = useState([])
+  const [loadingH,     setLoadingH]     = useState(false)
+  const [toast,        setToast]        = useState(null)
+  const edRef = useRef(null)
 
-  // ── Contacts state ─────────────────────────────────────────────────────────
-  const [contacts, setContacts]       = useState([])
-  const [loadingC, setLoadingC]       = useState(false)
-  const [search, setSearch]           = useState('')
-  const [filterType, setFilterType]   = useState('')
-  const [filterStatus, setFilterStatus] = useState('active')
-  const [filterState, setFilterState] = useState('')
-  const [selectedIds, setSelectedIds] = useState(new Set())
-  const [dupGroups, setDupGroups]     = useState([])
-  const [editContact, setEditContact] = useState(null)
+  const flash = (msg, ok=true) => { setToast({msg,ok}); setTimeout(()=>setToast(null),4000) }
 
-  // ── Queue state ────────────────────────────────────────────────────────────
-  const [queue, setQueue]     = useState([])
-  const [queueStats, setQueueStats] = useState({})
-  const [queueTab, setQueueTab] = useState('draft')
-  const [loadingQ, setLoadingQ] = useState(false)
-
-  // ── Compose state ─────────────────────────────────────────────────────────
-  const [tplId, setTplId]         = useState('intro-youtuber')
-  const [emailSubject, setEmailSubject] = useState('')
-  const [emailGreeting, setEmailGreeting] = useState('')
-  const [emailBody, setEmailBody]   = useState('')
-  const [emailCTA, setEmailCTA]     = useState('')
-  const [emailCTAUrl, setEmailCTAUrl] = useState('')
-  const [previewContact, setPreviewContact] = useState(null)
-  const [sending, setSending]       = useState(false)
-  const [sendResult, setSendResult] = useState(null)
-
-  // ── History state ─────────────────────────────────────────────────────────
-  const [history, setHistory] = useState([])
-  const [loadingH, setLoadingH] = useState(false)
-
-  // Load template into compose fields
-  useEffect(() => {
-    const t = EMAIL_TEMPLATES.find(t => t.id === tplId)
-    if (t) {
-      setEmailSubject(t.subject)
-      setEmailGreeting(t.greeting)
-      setEmailBody(t.body)
-      setEmailCTA(t.ctaText || '')
-      setEmailCTAUrl(t.ctaUrl || '')
-    }
-  }, [tplId])
-
-  // Load contacts
   const loadContacts = useCallback(async () => {
     setLoadingC(true)
     try {
-      const params = new URLSearchParams({ limit: '500' })
-      if (filterType)   params.set('type', filterType)
-      if (filterStatus) params.set('status', filterStatus)
-      if (filterState)  params.set('state', filterState)
-      if (search)       params.set('search', search)
-      const res = await fetch('/api/outreach/contacts?' + params, { headers: H })
-      const d = await res.json()
-      setContacts(d.contacts || [])
-
-      // Detect duplicates by email
-      const emailMap = {}
-      for (const c of (d.contacts || [])) {
-        if (c.email) {
-          const key = c.email.toLowerCase().trim()
-          if (!emailMap[key]) emailMap[key] = []
-          emailMap[key].push(c)
-        }
-      }
-      setDupGroups(Object.values(emailMap).filter(g => g.length > 1))
-    } catch(e) { console.error(e) }
+      const p = new URLSearchParams({limit:'500'})
+      if (fType)   p.set('type',fType)
+      if (fStatus) p.set('status',fStatus)
+      if (search)  p.set('search',search)
+      const r = await fetch('/api/outreach/contacts?'+p, {headers:H})
+      const d = await r.json()
+      const list = d.contacts||[]
+      setContacts(list)
+      const em={}; list.forEach(c=>{if(c.email){const k=c.email.toLowerCase();em[k]=em[k]||[];em[k].push(c)}})
+      setDupGroups(Object.values(em).filter(g=>g.length>1))
+    } catch{}
     setLoadingC(false)
-  }, [filterType, filterStatus, filterState, search, adminKey])
+  }, [fType,fStatus,search,adminKey])
 
-  useEffect(() => { if (view === 'contacts' || view === 'duplicates') loadContacts() }, [view, filterType, filterStatus, filterState])
+  useEffect(()=>{ if(view==='contacts'||view==='dups') loadContacts() },[view])
 
-  // Load queue
-  const loadQueue = useCallback(async () => {
+  const loadQueue = useCallback(async ()=>{
     setLoadingQ(true)
     try {
-      const res = await fetch(`/api/outreach/queue?status=${queueTab}&limit=100`, { headers: H })
-      const d = await res.json()
-      setQueue(d.entries || [])
-      setQueueStats(d.stats || {})
-    } catch(e) {}
-    setLoadingQ(false)
-  }, [queueTab, adminKey])
+      const r=await fetch('/api/outreach/queue?status='+qTab+'&limit=100',{headers:H})
+      const d=await r.json(); setQueue(d.entries||[]); setQStats(d.stats||{})
+    } catch{} setLoadingQ(false)
+  },[qTab,adminKey])
 
-  useEffect(() => { if (view === 'queue') loadQueue() }, [view, queueTab])
+  useEffect(()=>{ if(view==='queue') loadQueue() },[view,qTab])
 
-  // Load history
-  const loadHistory = useCallback(async () => {
+  const loadHistory=useCallback(async()=>{
     setLoadingH(true)
-    try {
-      const res = await fetch('/api/outreach/history?limit=100', { headers: H })
-      const d = await res.json()
-      setHistory(d.history || d.entries || [])
-    } catch(e) {}
+    try { const r=await fetch('/api/outreach/history?limit=100',{headers:H}); const d=await r.json(); setHistory(d.history||d.entries||[]) } catch{}
     setLoadingH(false)
-  }, [adminKey])
+  },[adminKey])
 
-  useEffect(() => { if (view === 'history') loadHistory() }, [view])
+  useEffect(()=>{ if(view==='history') loadHistory() },[view])
 
-  // ── Preview HTML ──────────────────────────────────────────────────────────
-  const previewHTML = buildEmailHTML({
-    subject:  emailSubject,
-    greeting: emailGreeting,
-    body:     emailBody,
-    ctaText:  emailCTA,
-    ctaUrl:   emailCTAUrl,
-    contactName: previewContact?.name || previewContact?.firstName || 'John Smith',
-    senderName: 'DJ Cavalcanti',
-  })
+  function applyTpl(id) {
+    const t=TEMPLATES.find(x=>x.id===id); if(!t) return
+    setActiveTpl(id); setSubject(t.subject); setPreheader(t.preheader||''); setGreeting(t.greeting); setCtaText(t.ctaText||''); setCtaUrl(t.ctaUrl||'')
+    if(edRef.current) edRef.current.innerHTML=t.body.split('\n\n').map(p=>'<p>'+p.replace(/\n/g,'<br>')+'</p>').join('')
+  }
 
-  // ── Send emails to selected contacts ─────────────────────────────────────
-  const sendToSelected = async () => {
-    if (!selectedIds.size) return
-    setSending(true)
-    setSendResult(null)
-    const selectedContacts = contacts.filter(c => selectedIds.has(c._id) && c.email)
-    let sent = 0, failed = 0
+  function execCmd(cmd) {
+    if(cmd==='h1') document.execCommand('formatBlock',false,'h2')
+    else if(cmd==='p') document.execCommand('formatBlock',false,'p')
+    else if(cmd==='ul') document.execCommand('insertUnorderedList')
+    else if(cmd==='divider') document.execCommand('insertHTML',false,'<hr style="border:none;border-top:1px solid #444;margin:16px 0;"><p></p>')
+    else if(cmd==='link'){const u=prompt('URL:');if(u) document.execCommand('createLink',false,u)}
+    else document.execCommand(cmd)
+    edRef.current?.focus()
+  }
 
-    for (const contact of selectedContacts) {
-      const html = buildEmailHTML({
-        subject: emailSubject, greeting: emailGreeting,
-        body: emailBody, ctaText: emailCTA, ctaUrl: emailCTAUrl,
-        contactName: contact.firstName || contact.name,
-      }).replace('{{unsubscribeUrl}}', `https://downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email)}`)
+  function getBody() {
+    if(!edRef.current) return ''
+    return edRef.current.innerHTML
+      .replace(/<h[23][^>]*>/gi,'\n').replace(/<\/h[23]>/gi,'\n\n')
+      .replace(/<p[^>]*>/gi,'').replace(/<\/p>/gi,'\n\n')
+      .replace(/<br\s*\/?>/gi,'\n').replace(/<hr[^>]*>/gi,'\n---\n')
+      .replace(/<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/gi,'$2 ($1)')
+      .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').trim()
+  }
 
-      const subj = emailSubject
-        .replace('{{firstName}}', contact.firstName || contact.name?.split(' ')[0] || '')
-        .replace('{{businessName}}', contact.name || '')
-        .replace('{{topic}}', contact.specialties?.[0] || 'firearms')
+  const prevC = contacts.find(c=>c._id===prevId)
+  const prevHTML = buildEmailHTML({subject,preheader,greeting,body:getBody()||(TEMPLATES.find(t=>t.id===activeTpl)?.body||''),ctaText,ctaUrl,contactName:prevC?.name||'John Smith',accentColor:accent,signature:sig})
 
-      try {
-        const res = await fetch('/api/outreach/send/direct', {
-          method: 'POST',
-          headers: H,
-          body: JSON.stringify({ contactId: contact._id, subject: subj, html, toEmail: contact.email, toName: contact.name })
-        })
-        const data = await res.json()
-        if (data.ok || res.ok) sent++
-        else failed++
-      } catch { failed++ }
+  async function sendToSel() {
+    if(!selIds.size){flash('Select contacts first',false);return}
+    setSending(true); setSendRes(null)
+    const body=getBody()||(TEMPLATES.find(t=>t.id===activeTpl)?.body||'')
+    const targets=contacts.filter(c=>selIds.has(c._id)&&c.email)
+    let sent=0,failed=0
+    for(const c of targets){
+      const html=buildEmailHTML({subject,preheader,greeting,body,ctaText,ctaUrl,contactName:c.firstName||c.name,accentColor:accent,signature:sig}).replace('{{unsubscribeUrl}}','https://downrangeco.com/api/outreach/unsubscribe?email='+encodeURIComponent(c.email))
+      const subj=subject.replace(/\{\{firstName\}\}/g,c.firstName||c.name?.split(' ')[0]||'').replace(/\{\{businessName\}\}/g,c.name||'')
+      try{const r=await fetch('/api/outreach/send/direct',{method:'POST',headers:H,body:JSON.stringify({contactId:c._id,subject:subj,html,toEmail:c.email,toName:c.name})}); if((await r.json()).ok)sent++;else failed++}catch{failed++}
     }
-
-    setSendResult({ sent, failed })
-    setSending(false)
-    selectedIds.forEach(_ => {}) // trigger re-render
-    setSelectedIds(new Set())
+    setSendRes({sent,failed}); setSending(false); setSelIds(new Set())
+    flash('✅ '+sent+' sent'+(failed?' · ❌ '+failed+' failed':''))
   }
 
-  // ── Generate drafts for selected contacts ─────────────────────────────────
-  const generateDrafts = async () => {
-    if (!selectedIds.size) return
+  async function queueDrafts(){
+    if(!selIds.size){flash('Select contacts first',false);return}
     setSending(true)
-    try {
-      const res = await fetch('/api/outreach/queue', {
-        method: 'POST',
-        headers: H,
-        body: JSON.stringify({ action: 'generate', contactIds: [...selectedIds], limit: selectedIds.size })
-      })
-      const d = await res.json()
-      setSendResult({ drafts: d.created || 0, message: `${d.created} drafts created in queue` })
-    } catch(e) { setSendResult({ error: e.message }) }
+    try{const r=await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'generate',contactIds:[...selIds],limit:selIds.size})}); const d=await r.json(); flash('📬 '+(d.created||0)+' drafts queued'); setSelIds(new Set())}catch{flash('Queue failed',false)}
     setSending(false)
-    setSelectedIds(new Set())
   }
 
-  // ── Approve queue item ────────────────────────────────────────────────────
-  const approveItems = async (ids) => {
-    try {
-      await fetch('/api/outreach/queue', {
-        method: 'POST',
-        headers: H,
-        body: JSON.stringify({ action: 'approve', ids })
-      })
-      loadQueue()
-    } catch(e) {}
-  }
+  async function approve(ids){await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'approve',ids})}); loadQueue(); flash('✅ Approved & sending')}
+  async function skip(id){await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'skip',ids:[id]})}); loadQueue()}
+  async function delDup(id){if(!confirm('Delete this duplicate?'))return; await fetch('/api/outreach/contacts',{method:'DELETE',headers:H,body:JSON.stringify({id})}); loadContacts()}
+  async function seed(url,label){await fetch(url,{method:'POST',headers:H}); loadContacts(); flash('Seeded: '+label)}
 
-  // ── Skip queue item ───────────────────────────────────────────────────────
-  const skipItem = async (id) => {
-    await fetch('/api/outreach/queue', {
-      method: 'POST',
-      headers: H,
-      body: JSON.stringify({ action: 'skip', ids: [id] })
-    })
-    loadQueue()
-  }
+  const togSel=id=>setSelIds(p=>{const n=new Set(p);n.has(id)?n.delete(id):n.add(id);return n})
+  const selAll=()=>selIds.size===contacts.length?setSelIds(new Set()):setSelIds(new Set(contacts.map(c=>c._id)))
+  const stats={total:contacts.length,email:contacts.filter(c=>c.email).length,touched:contacts.filter(c=>c.lastContactedAt).length,fresh:contacts.filter(c=>!c.lastContactedAt).length}
 
-  // ── Delete duplicate ──────────────────────────────────────────────────────
-  const deleteDuplicate = async (id) => {
-    await fetch('/api/outreach/contacts', {
-      method: 'DELETE',
-      headers: H,
-      body: JSON.stringify({ id })
-    })
-    loadContacts()
-  }
+  const NAV=[
+    {id:'compose',  icon:'✉',  lbl:'New'},
+    {id:'contacts', icon:'👥', lbl:'People', badge:contacts.length||null},
+    {id:'queue',    icon:'📬', lbl:'Queue',  badge:qStats.draft||null},
+    {id:'history',  icon:'📜', lbl:'Sent'},
+    {id:'templates',icon:'📋', lbl:'Tpls'},
+    {id:'dups',     icon:'⚠',  lbl:'Dups',  badge:dupGroups.length||null},
+  ]
 
-  // ── Stats across contact list ─────────────────────────────────────────────
-  const stats = {
-    total:       contacts.length,
-    withEmail:   contacts.filter(c => c.email).length,
-    contacted:   contacts.filter(c => c.lastContactedAt).length,
-    neverTouched:contacts.filter(c => !c.lastContactedAt).length,
-  }
-
-  // ── Toggle select ─────────────────────────────────────────────────────────
-  const toggleSelect = (id) => {
-    setSelectedIds(prev => {
-      const n = new Set(prev)
-      n.has(id) ? n.delete(id) : n.add(id)
-      return n
-    })
-  }
-
-  const selectAll = () => {
-    if (selectedIds.size === contacts.length) setSelectedIds(new Set())
-    else setSelectedIds(new Set(contacts.map(c => c._id)))
-  }
-
-  // ─────────────────────────────────────────────────────────────────────────
-  // RENDER
-  // ─────────────────────────────────────────────────────────────────────────
-  return (
+  return(
     <>
-      <style>{CSS}</style>
-      <div className="crm-wrap">
+    <style>{CSS}</style>
+    <div className="crm-app">
 
-        {/* ── SIDEBAR ──────────────────────────────────────────────────── */}
-        <div className="crm-sidebar">
-          <div className="crm-sidebar-header">
-            <div style={{ fontFamily:BEBAS, fontSize:'1.2rem', color:GOLD, letterSpacing:'.08em' }}>OUTREACH CRM</div>
-            <div style={{ fontFamily:MONO, fontSize:9, color:'#374151', marginTop:2 }}>DownRange Intelligence</div>
+      {/* RAIL */}
+      <div className="crm-rail">
+        <div style={{fontFamily:BEBAS,fontSize:'1rem',color:GOLD,letterSpacing:'.1em',marginBottom:8}}>DR</div>
+        {NAV.map(n=>(
+          <button key={n.id} className={'rail-btn'+(view===n.id?' on':'')} onClick={()=>setView(n.id)} title={n.lbl}>
+            {n.badge?<div className="rail-badge">{n.badge>99?'99+':n.badge}</div>:null}
+            <div className="rail-icon">{n.icon}</div>
+            <div className="rail-lbl">{n.lbl}</div>
+          </button>
+        ))}
+        <div style={{flex:1}}/>
+        {[{url:'/api/outreach/manufacturers',icon:'🏭',t:'Manufacturers'},{url:'/api/outreach/dealers',icon:'🛒',t:'Dealers'},{url:'/api/outreach/holsters',icon:'🔫',t:'Holsters'}].map(s=>(
+          <button key={s.url} className="rail-btn" title={'Seed '+s.t} onClick={()=>seed(s.url,s.t)}>
+            <div className="rail-icon">{s.icon}</div>
+            <div className="rail-lbl">Seed</div>
+          </button>
+        ))}
+      </div>
+
+      {/* COMPOSE */}
+      {view==='compose'&&(<>
+        {/* Left contact list */}
+        <div className="crm-left">
+          <div className="crm-left-hdr">
+            <span style={{fontFamily:BARLOW,fontSize:11,fontWeight:700,color:'#4b5563',letterSpacing:'.06em',textTransform:'uppercase'}}>TO</span>
+            <input className="left-search" placeholder="Search contacts…" value={search} onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==='Enter'&&loadContacts()}/>
+            <button className="ghost" style={{padding:'3px 7px',fontSize:10}} onClick={loadContacts}>↺</button>
+          </div>
+          <div style={{padding:'5px 10px',borderBottom:'1px solid #1a1f2e',display:'flex',gap:5}}>
+            <select className="r-sel" style={{flex:1}} value={fType} onChange={e=>setFType(e.target.value)}>
+              <option value="">All Types</option>
+              {Object.entries(TYPE_META).map(([k,v])=><option key={k} value={k}>{v.icon} {v.label}</option>)}
+            </select>
+            <select className="r-sel" style={{flex:1}} value={fStatus} onChange={e=>setFStatus(e.target.value)}>
+              <option value="">All</option>
+              {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+            </select>
+          </div>
+          {selIds.size>0&&<div style={{padding:'5px 12px',background:'rgba(200,146,42,.08)',borderBottom:'1px solid rgba(200,146,42,.2)',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <span style={{fontSize:10,color:GOLD,fontFamily:MONO}}>{selIds.size} selected</span>
+            <button onClick={()=>setSelIds(new Set())} style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',fontSize:10}}>✕</button>
+          </div>}
+          <div style={{flex:1,overflowY:'auto'}}>
+            <div style={{display:'flex',alignItems:'center',gap:8,padding:'7px 12px',borderBottom:'1px solid #1a1f2e',cursor:'pointer'}} onClick={selAll}>
+              <input type="checkbox" checked={selIds.size===contacts.length&&contacts.length>0} readOnly style={{accentColor:GOLD,cursor:'pointer',width:13,height:13}}/>
+              <span style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>All ({contacts.length})</span>
+            </div>
+            {loadingC?<div style={{padding:20,textAlign:'center',fontFamily:MONO,fontSize:10,color:'#374151'}}>Loading…</div>
+            :contacts.length===0?<div style={{padding:20,textAlign:'center',fontFamily:MONO,fontSize:10,color:'#374151'}}>No contacts. Use seed buttons.</div>
+            :contacts.map(c=>{
+              const tm=TYPE_META[c.type]||TYPE_META.other
+              const ini=(c.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()
+              return(<div key={c._id} className={'c-row'+(selIds.has(c._id)?' chk':'')+(prevId===c._id?' prev':'')} onClick={()=>{togSel(c._id);setPrevId(c._id)}}>
+                <input type="checkbox" checked={selIds.has(c._id)} readOnly style={{accentColor:GOLD,cursor:'pointer',width:13,height:13,flexShrink:0}}/>
+                <div className="crm-avt" style={{background:tm.color+'22',color:tm.color}}>{ini}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontFamily:BARLOW,fontSize:12,fontWeight:700,color:'#e5e7eb',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{c.name}</div>
+                  <div style={{fontFamily:MONO,fontSize:9,color:'#4b5563',whiteSpace:'nowrap',overflow:'hidden',textOverflow:'ellipsis'}}>{c.email||<span style={{color:'#374151'}}>no email</span>}</div>
+                </div>
+                <span style={{fontSize:11}}>{tm.icon}</span>
+              </div>)
+            })}
+          </div>
+        </div>
+
+        {/* Center compose */}
+        <div className="compose">
+          <div className="c-hdr">
+            <div className="c-field">
+              <span className="c-lbl">To</span>
+              <div style={{flex:1,display:'flex',flexWrap:'wrap',gap:5,padding:'5px 0',minHeight:34,alignItems:'center'}}>
+                {selIds.size===0?<span style={{fontFamily:MONO,fontSize:11,color:'#374151'}}>Select contacts from left…</span>
+                :<><span style={{fontFamily:MONO,fontSize:11,color:GOLD}}>{selIds.size} recipient{selIds.size>1?'s':''}</span>
+                  {contacts.filter(c=>selIds.has(c._id)).slice(0,3).map(c=><span key={c._id} style={{fontFamily:MONO,fontSize:10,padding:'1px 7px',background:'rgba(200,146,42,.1)',color:GOLD,border:'1px solid rgba(200,146,42,.3)'}}>{c.name}</span>)}
+                  {selIds.size>3&&<span style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>+{selIds.size-3} more</span>}
+                </>}
+              </div>
+            </div>
+            <div className="c-field"><span className="c-lbl">Subject</span><input className="c-inp" value={subject} onChange={e=>setSubject(e.target.value)} placeholder="Subject… use {{firstName}}, {{businessName}}"/></div>
+            <div className="c-field"><span className="c-lbl">Preheader</span><input className="c-inp" value={preheader} onChange={e=>setPreheader(e.target.value)} placeholder="Inbox preview text…" style={{color:'#6b7280',fontSize:11}}/></div>
+            <div className="c-field"><span className="c-lbl">Greeting</span><input className="c-inp" value={greeting} onChange={e=>setGreeting(e.target.value)} placeholder="Hi {{firstName}},"/></div>
           </div>
 
-          {[
-            { id:'contacts',   icon:'👥', label:'Contacts',         badge: contacts.length || null },
-            { id:'compose',    icon:'✍',  label:'Compose & Send',   badge: null },
-            { id:'queue',      icon:'📬', label:'Approval Queue',   badge: queueStats.draft || null },
-            { id:'history',    icon:'📜', label:'Send History',     badge: null },
-            { id:'duplicates', icon:'⚠',  label:'Duplicates',       badge: dupGroups.length || null },
-            { id:'templates',  icon:'📋', label:'Templates',        badge: null },
-          ].map(item => (
-            <div key={item.id} className={`crm-nav-item${view === item.id ? ' active' : ''}`}
-              onClick={() => setView(item.id)}>
-              <span className="crm-nav-icon">{item.icon}</span>
-              <span style={{ flex:1 }}>{item.label}</span>
-              {item.badge ? (
-                <span style={{ background:GOLD, color:'#000', fontFamily:MONO, fontSize:9, fontWeight:700, padding:'1px 6px', borderRadius:2 }}>{item.badge}</span>
-              ) : null}
-            </div>
-          ))}
+          {/* Toolbar */}
+          <div className="toolbar">
+            {TOOLBAR.map((t,i)=>t===null?<div key={i} className="t-sep"/>
+              :<button key={t.cmd} className="t-btn" title={t.title} onMouseDown={e=>{e.preventDefault();execCmd(t.cmd)}}><span style={t.style||{}}>{t.icon}</span></button>
+            )}
+            <div className="t-sep"/>
+            <button className={'t-btn'+(splitPrev?' on':'')} onClick={()=>setSplitPrev(v=>!v)} style={splitPrev?{background:'rgba(200,146,42,.15)',color:GOLD,border:'1px solid rgba(200,146,42,.3)'}:{}}>⊞ Preview</button>
+          </div>
 
-          <div style={{ flex:1 }} />
+          {/* Editor + preview */}
+          <div className="body-area">
+            <div ref={edRef} className="editor" contentEditable suppressContentEditableWarning
+              data-placeholder={"Write your email here…\n\nUse {{firstName}} and {{businessName}} for personalization."}
+              style={{width:splitPrev?'50%':'100%'}}/>
+            {splitPrev&&<div className="preview-pane" style={{width:'50%'}}>
+              <div className="preview-bar">
+                {['#ef4444','#f59e0b','#22c55e'].map(c=><div key={c} style={{width:9,height:9,borderRadius:'50%',background:c}}/>)}
+                <span style={{fontFamily:MONO,fontSize:9,color:'#374151',marginLeft:4,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',flex:1}}>
+                  {(subject||'Email preview').replace(/\{\{firstName\}\}/g,prevC?.firstName||'John').replace(/\{\{businessName\}\}/g,prevC?.name||'Acme Arms')}
+                </span>
+                <select className="r-sel" style={{width:110,fontSize:10}} value={prevId||''} onChange={e=>setPrevId(e.target.value||null)}>
+                  <option value="">Generic</option>
+                  {contacts.filter(c=>c.email).slice(0,20).map(c=><option key={c._id} value={c._id}>{c.name}</option>)}
+                </select>
+              </div>
+              <iframe srcDoc={prevHTML} style={{flex:1,border:'none',background:'#fff'}} title="preview"/>
+            </div>}
+          </div>
 
-          {/* Quick seeds */}
-          <div style={{ padding:'12px 16px', borderTop:'1px solid var(--border)' }}>
-            <div style={{ fontFamily:MONO, fontSize:9, color:'#374151', letterSpacing:'.08em', marginBottom:8, textTransform:'uppercase' }}>Seed Contacts</div>
-            {[
-              { url:'/api/outreach/manufacturers', label:'70+ Manufacturers' },
-              { url:'/api/outreach/dealers',       label:'30+ Dealers' },
-              { url:'/api/outreach/holsters',      label:'40+ Holster Cos' },
-            ].map(s => (
-              <button key={s.url} className="crm-btn-ghost"
-                style={{ width:'100%', marginBottom:4, textAlign:'left', fontSize:10, padding:'5px 10px' }}
-                onClick={async () => {
-                  await fetch(s.url, { method:'POST', headers:H })
-                  loadContacts()
-                }}>
-                + {s.label}
-              </button>
+          {/* Send bar */}
+          <div className="send-bar">
+            <button className="crm-btn" onClick={sendToSel} disabled={sending||!selIds.size}>
+              {sending?'⏳ Sending…':selIds.size>0?'✉ Send to '+selIds.size:'✉ Send'}
+            </button>
+            <button className="ghost" onClick={queueDrafts} disabled={sending||!selIds.size}>📬 Queue for Approval</button>
+            <div style={{flex:1}}/>
+            {sendRes&&<div style={{fontFamily:MONO,fontSize:11,color:sendRes.failed?'#f59e0b':'#22c55e'}}>
+              {sendRes.sent>0&&'✅ '+sendRes.sent+' sent'}{sendRes.failed>0&&' · ❌ '+sendRes.failed+' failed'}
+            </div>}
+            <span style={{fontFamily:MONO,fontSize:10,color:'#374151'}}>{(getBody()||'').length} chars</span>
+          </div>
+        </div>
+
+        {/* Right panel */}
+        <div className="crm-right">
+          <div className="r-sec">
+            <span className="r-lbl">Templates</span>
+            {TEMPLATES.map(t=>(
+              <button key={t.id} className={'tpl-chip'+(activeTpl===t.id?' on':'')} onClick={()=>applyTpl(t.id)}>{t.name}</button>
             ))}
           </div>
+          <div className="r-sec">
+            <span className="r-lbl">CTA Button</span>
+            <input className="r-inp" placeholder="Button text" value={ctaText} onChange={e=>setCtaText(e.target.value)}/>
+            <input className="r-inp" placeholder="https://…" value={ctaUrl} onChange={e=>setCtaUrl(e.target.value)}/>
+          </div>
+          <div className="r-sec">
+            <span className="r-lbl">Accent Color</span>
+            <div style={{display:'flex',gap:6,alignItems:'center',marginBottom:6}}>
+              <input type="color" value={accent} onChange={e=>setAccent(e.target.value)} style={{width:32,height:26,border:'none',background:'none',cursor:'pointer',padding:2}}/>
+              <input className="r-inp" style={{flex:1,margin:0}} value={accent} onChange={e=>setAccent(e.target.value)}/>
+              <button className="ghost" style={{padding:'4px 7px',fontSize:10}} onClick={()=>setAccent(GOLD)}>↩</button>
+            </div>
+          </div>
+          <div className="r-sec">
+            <span className="r-lbl">Signature Override</span>
+            <textarea className="r-inp" rows={3} placeholder="Leave blank for default" value={sig} onChange={e=>setSig(e.target.value)} style={{resize:'vertical',lineHeight:1.6}}/>
+          </div>
+          <div className="r-sec">
+            <span className="r-lbl">Preview As</span>
+            <select className="r-sel" value={prevId||''} onChange={e=>setPrevId(e.target.value||null)}>
+              <option value="">— Generic —</option>
+              {contacts.filter(c=>c.email).slice(0,30).map(c=><option key={c._id} value={c._id}>{c.name}</option>)}
+            </select>
+          </div>
         </div>
+      </>)}
 
-        {/* ── MAIN ─────────────────────────────────────────────────────── */}
-        <div className="crm-main">
-
-          {/* ── CONTACTS VIEW ─────────────────────────────────────────── */}
-          {view === 'contacts' && (
-            <>
-              {/* Stats row */}
-              <div style={{ padding:'16px 24px', borderBottom:'1px solid var(--border)', display:'flex', gap:12, flexWrap:'wrap', background:'rgba(0,0,0,.2)' }}>
-                {[
-                  { val:stats.total,        label:'Total Contacts' },
-                  { val:stats.withEmail,    label:'Have Email' },
-                  { val:stats.contacted,    label:'Contacted' },
-                  { val:stats.neverTouched, label:'Never Touched', color:'#f59e0b' },
-                  { val:dupGroups.length,   label:'Duplicates', color: dupGroups.length > 0 ? '#ef4444' : '#22c55e' },
-                ].map(s => (
-                  <div key={s.label} className="crm-stat">
-                    <div className="crm-stat-val" style={{ color: s.color || GOLD }}>{s.val}</div>
-                    <div className="crm-stat-label">{s.label}</div>
-                  </div>
-                ))}
-              </div>
-
-              {/* Toolbar */}
-              <div className="crm-topbar">
-                <div className="crm-search-wrap">
-                  <span className="crm-search-icon">⌕</span>
-                  <input className="crm-search" placeholder="Search name, email, city…"
-                    value={search} onChange={e => setSearch(e.target.value)}
-                    onKeyDown={e => e.key === 'Enter' && loadContacts()} />
-                </div>
-                <select className="crm-select" value={filterType} onChange={e => setFilterType(e.target.value)}>
-                  <option value="">All Types</option>
-                  {Object.entries(TYPE_META).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
-                </select>
-                <select className="crm-select" value={filterStatus} onChange={e => setFilterStatus(e.target.value)}>
-                  <option value="">All Status</option>
-                  {Object.entries(STATUS_META).map(([k,v]) => <option key={k} value={k}>{v.label}</option>)}
-                </select>
-                <input className="crm-input" style={{ width:80 }} placeholder="State" value={filterState} onChange={e => setFilterState(e.target.value)} />
-                <button className="crm-btn" onClick={loadContacts}>Search</button>
-
-                {selectedIds.size > 0 && (
-                  <>
-                    <div style={{ fontFamily:MONO, fontSize:11, color:GOLD, padding:'0 4px' }}>{selectedIds.size} selected</div>
-                    <button className="crm-btn" onClick={() => { setView('compose'); setPreviewContact(contacts.find(c => selectedIds.has(c._id))) }}>
-                      ✉ Compose Email
-                    </button>
-                    <button className="crm-btn-ghost" onClick={generateDrafts} disabled={sending}>
-                      📬 Queue Drafts
-                    </button>
-                  </>
-                )}
-              </div>
-
-              {/* Table */}
-              <div style={{ overflow:'auto', flex:1 }}>
-                <table className="crm-table">
-                  <thead>
-                    <tr>
-                      <th><input type="checkbox" className="crm-checkbox" checked={selectedIds.size === contacts.length && contacts.length > 0} onChange={selectAll} /></th>
-                      <th>Contact</th>
-                      <th>Type</th>
-                      <th>Email</th>
-                      <th>Location</th>
-                      <th>Status</th>
-                      <th>Last Contact</th>
-                      <th>Actions</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loadingC ? (
-                      <tr><td colSpan={8} style={{ textAlign:'center', padding:40, fontFamily:MONO, fontSize:11, color:'#4b5563' }}>Loading contacts…</td></tr>
-                    ) : contacts.length === 0 ? (
-                      <tr><td colSpan={8} style={{ textAlign:'center', padding:40, fontFamily:MONO, fontSize:11, color:'#4b5563' }}>No contacts found. Use seeds in sidebar.</td></tr>
-                    ) : contacts.map(c => {
-                      const tm = TYPE_META[c.type] || TYPE_META.other
-                      const sm = STATUS_META[c.status] || STATUS_META.active
-                      const initials = (c.name || '?').split(' ').map(w => w[0]).slice(0,2).join('').toUpperCase()
-                      const isDup = dupGroups.some(g => g.find(x => x._id === c._id))
-                      return (
-                        <tr key={c._id} className={`${selectedIds.has(c._id) ? 'selected' : ''}`}>
-                          <td><input type="checkbox" className="crm-checkbox" checked={selectedIds.has(c._id)} onChange={() => toggleSelect(c._id)} /></td>
-                          <td>
-                            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-                              <div className="crm-avatar" style={{ background: tm.color + '22', color: tm.color }}>
-                                {initials}
-                              </div>
-                              <div>
-                                <div style={{ fontFamily:BARLOW, fontSize:13, fontWeight:700, color:'var(--text)' }}>
-                                  {c.name}
-                                  {isDup && <span style={{ marginLeft:6, fontFamily:MONO, fontSize:8, color:'#ef4444', padding:'1px 5px', border:'1px solid #ef4444' }}>DUP</span>}
-                                </div>
-                                {c.firstName && c.firstName !== c.name && (
-                                  <div style={{ fontFamily:MONO, fontSize:10, color:'#4b5563' }}>{c.firstName}</div>
-                                )}
-                              </div>
-                            </div>
-                          </td>
-                          <td>
-                            <span className="crm-badge" style={{ background: tm.color + '22', color: tm.color }}>
-                              {tm.icon} {tm.label}
-                            </span>
-                          </td>
-                          <td>
-                            {c.email ? (
-                              <a href={'mailto:' + c.email} style={{ fontFamily:MONO, fontSize:11, color:GOLD, textDecoration:'none' }}>{c.email}</a>
-                            ) : (
-                              <span style={{ fontFamily:MONO, fontSize:10, color:'#374151' }}>—</span>
-                            )}
-                          </td>
-                          <td style={{ fontFamily:MONO, fontSize:10, color:'#6b7280' }}>
-                            {[c.city, c.state].filter(Boolean).join(', ') || '—'}
-                          </td>
-                          <td>
-                            <span className="crm-badge" style={{ background: sm.color + '22', color: sm.color }}>{sm.label}</span>
-                          </td>
-                          <td style={{ fontFamily:MONO, fontSize:10, color:'#6b7280' }}>
-                            {c.lastContactedAt ? new Date(c.lastContactedAt).toLocaleDateString() : <span style={{ color:'#f59e0b' }}>Never</span>}
-                          </td>
-                          <td>
-                            <div style={{ display:'flex', gap:6 }}>
-                              {c.email && (
-                                <button className="crm-btn-ghost" style={{ padding:'4px 8px', fontSize:10 }}
-                                  onClick={() => { setSelectedIds(new Set([c._id])); setPreviewContact(c); setView('compose') }}>
-                                  ✉
-                                </button>
-                              )}
-                              {c.website && (
-                                <a href={c.website} target="_blank" rel="noopener noreferrer">
-                                  <button className="crm-btn-ghost" style={{ padding:'4px 8px', fontSize:10 }}>↗</button>
-                                </a>
-                              )}
-                            </div>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-
-          {/* ── COMPOSE VIEW ──────────────────────────────────────────── */}
-          {view === 'compose' && (
-            <>
-              <div className="crm-topbar">
-                <div style={{ fontFamily:BEBAS, fontSize:'1.1rem', color:GOLD, letterSpacing:'.06em' }}>COMPOSE EMAIL</div>
-                {selectedIds.size > 0 && (
-                  <div style={{ fontFamily:MONO, fontSize:11, color:'#9ca3af' }}>
-                    Sending to <span style={{ color:GOLD }}>{selectedIds.size} contacts</span>
-                  </div>
-                )}
-                {sendResult && (
-                  <div style={{ fontFamily:MONO, fontSize:11, color: sendResult.error ? '#ef4444' : '#22c55e', padding:'6px 12px', border:'1px solid', borderColor: sendResult.error ? '#ef4444' : '#22c55e', background: sendResult.error ? 'rgba(239,68,68,.08)' : 'rgba(34,197,94,.08)' }}>
-                    {sendResult.error ? '❌ ' + sendResult.error : sendResult.drafts ? `📬 ${sendResult.drafts} drafts queued` : `✅ ${sendResult.sent} sent${sendResult.failed ? `, ${sendResult.failed} failed` : ''}`}
-                  </div>
-                )}
-              </div>
-
-              <div style={{ display:'grid', gridTemplateColumns:'380px 1fr', height:'100%', overflow:'hidden' }}>
-                {/* Left: Compose form */}
-                <div style={{ borderRight:'1px solid var(--border)', padding:'20px', overflowY:'auto' }}>
-
-                  {/* Template picker */}
-                  <div className="compose-field">
-                    <label className="crm-label">Email Template</label>
-                    <div style={{ display:'grid', gap:6 }}>
-                      {EMAIL_TEMPLATES.map(t => {
-                        const tm = TYPE_META[t.category] || TYPE_META.other
-                        return (
-                          <div key={t.id} className={`template-card${tplId === t.id ? ' selected' : ''}`}
-                            onClick={() => setTplId(t.id)}>
-                            <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                              <div style={{ fontFamily:BARLOW, fontSize:12, fontWeight:700, color: tplId === t.id ? GOLD : 'var(--text)' }}>{t.name}</div>
-                              <span className="crm-badge" style={{ background: tm.color + '22', color: tm.color, fontSize:8 }}>{tm.icon} {t.category}</span>
-                            </div>
-                          </div>
-                        )
-                      })}
-                    </div>
-                  </div>
-
-                  {/* Subject */}
-                  <div className="compose-field">
-                    <label className="crm-label">Subject Line</label>
-                    <input className="crm-input" value={emailSubject} onChange={e => setEmailSubject(e.target.value)} placeholder="Subject…" />
-                  </div>
-
-                  {/* Greeting */}
-                  <div className="compose-field">
-                    <label className="crm-label">Greeting <span style={{ color:'#374151', fontSize:9 }}>use {'{{firstName}}'}</span></label>
-                    <input className="crm-input" value={emailGreeting} onChange={e => setEmailGreeting(e.target.value)} />
-                  </div>
-
-                  {/* Body */}
-                  <div className="compose-field">
-                    <label className="crm-label">Email Body <span style={{ color:'#374151', fontSize:9 }}>{'{{firstName}} {{businessName}} {{topic}}'}</span></label>
-                    <textarea className="crm-textarea" rows={10} value={emailBody} onChange={e => setEmailBody(e.target.value)} />
-                  </div>
-
-                  {/* CTA */}
-                  <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:8, marginBottom:16 }}>
-                    <div>
-                      <label className="crm-label">CTA Button Text</label>
-                      <input className="crm-input" value={emailCTA} onChange={e => setEmailCTA(e.target.value)} placeholder="Visit DownRange" />
-                    </div>
-                    <div>
-                      <label className="crm-label">CTA URL</label>
-                      <input className="crm-input" value={emailCTAUrl} onChange={e => setEmailCTAUrl(e.target.value)} placeholder="https://…" />
-                    </div>
-                  </div>
-
-                  {/* Preview contact */}
-                  <div className="compose-field">
-                    <label className="crm-label">Preview As Contact</label>
-                    <select className="crm-select" style={{ width:'100%' }}
-                      value={previewContact?._id || ''}
-                      onChange={e => setPreviewContact(contacts.find(c => c._id === e.target.value) || null)}>
-                      <option value="">— Generic Preview —</option>
-                      {contacts.filter(c => c.email).map(c => (
-                        <option key={c._id} value={c._id}>{c.name} ({c.email})</option>
-                      ))}
-                    </select>
-                  </div>
-
-                  {/* Actions */}
-                  <div style={{ display:'flex', gap:8, flexWrap:'wrap' }}>
-                    {selectedIds.size > 0 ? (
-                      <>
-                        <button className="crm-btn" onClick={sendToSelected} disabled={sending} style={{ flex:1 }}>
-                          {sending ? '⏳ Sending…' : `✉ Send to ${selectedIds.size} Contact${selectedIds.size > 1 ? 's' : ''}`}
-                        </button>
-                        <button className="crm-btn-ghost" onClick={generateDrafts} disabled={sending}>
-                          📬 Queue for Approval
-                        </button>
-                      </>
-                    ) : (
-                      <div style={{ fontFamily:MONO, fontSize:11, color:'#4b5563', padding:'10px 0' }}>
-                        ← Select contacts from the Contacts tab first
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                {/* Right: Live preview */}
-                <div style={{ overflowY:'auto', padding:'20px', background:'#050506' }}>
-                  <div style={{ fontFamily:MONO, fontSize:10, color:'#374151', letterSpacing:'.08em', textTransform:'uppercase', marginBottom:12 }}>
-                    Live Email Preview — {previewContact?.name || 'Generic'}
-                  </div>
-                  <div style={{ background:'#fff', borderRadius:4, overflow:'hidden', boxShadow:'0 4px 24px rgba(0,0,0,.4)' }}>
-                    <div style={{ background:'#f3f4f6', padding:'8px 16px', borderBottom:'1px solid #e5e7eb', display:'flex', gap:6, alignItems:'center' }}>
-                      <div style={{ width:10, height:10, borderRadius:'50%', background:'#ef4444' }} />
-                      <div style={{ width:10, height:10, borderRadius:'50%', background:'#f59e0b' }} />
-                      <div style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e' }} />
-                      <span style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', marginLeft:8 }}>
-                        {emailSubject.replace('{{firstName}}', previewContact?.firstName || 'John').replace('{{businessName}}', previewContact?.name || 'Acme Arms') || 'Email Preview'}
-                      </span>
-                    </div>
-                    <iframe
-                      srcDoc={previewHTML}
-                      style={{ width:'100%', height:'560px', border:'none' }}
-                      title="Email Preview"
-                    />
-                  </div>
-                </div>
-              </div>
-            </>
-          )}
-
-          {/* ── QUEUE VIEW ────────────────────────────────────────────── */}
-          {view === 'queue' && (
-            <>
-              <div className="crm-topbar">
-                <div style={{ display:'flex', borderBottom:'none', gap:0 }}>
-                  {['draft','approved','sent','skipped'].map(s => (
-                    <button key={s} className={`crm-tab${queueTab === s ? ' active' : ''}`} onClick={() => setQueueTab(s)}>
-                      {s.charAt(0).toUpperCase() + s.slice(1)}
-                      {queueStats[s] ? <span style={{ marginLeft:5, fontFamily:MONO, fontSize:9, color: queueTab===s ? GOLD : '#4b5563' }}>({queueStats[s]})</span> : null}
-                    </button>
-                  ))}
-                </div>
-                <div style={{ flex:1 }} />
-                <button className="crm-btn" onClick={loadQueue}>↻ Refresh</button>
-                {queueTab === 'draft' && queue.length > 0 && (
-                  <button className="crm-btn" onClick={() => approveItems(queue.map(q => q._id))}>
-                    ✅ Approve All ({queue.length})
-                  </button>
-                )}
-              </div>
-
-              <div style={{ overflow:'auto', flex:1 }}>
-                {loadingQ ? (
-                  <div style={{ textAlign:'center', padding:60, fontFamily:MONO, fontSize:11, color:'#4b5563' }}>Loading queue…</div>
-                ) : queue.length === 0 ? (
-                  <div style={{ textAlign:'center', padding:60, fontFamily:MONO, fontSize:11, color:'#4b5563' }}>No {queueTab} emails in queue.</div>
-                ) : queue.map(entry => {
-                  const contact = entry.contact
-                  const tm = TYPE_META[contact?.type] || TYPE_META.other
-                  return (
-                    <div key={entry._id} style={{ borderBottom:'1px solid var(--border)', padding:'16px 24px', display:'grid', gridTemplateColumns:'1fr auto', gap:16, alignItems:'start' }}>
-                      <div>
-                        {/* Contact info */}
-                        <div style={{ display:'flex', alignItems:'center', gap:10, marginBottom:8 }}>
-                          <div className="crm-avatar" style={{ background: tm.color + '22', color: tm.color, width:28, height:28, fontSize:11 }}>
-                            {(contact?.name || '?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}
-                          </div>
-                          <div>
-                            <span style={{ fontFamily:BARLOW, fontSize:13, fontWeight:700, color:'var(--text)' }}>{contact?.name}</span>
-                            <span style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', marginLeft:8 }}>{entry.toEmail}</span>
-                          </div>
-                          <span className="crm-badge" style={{ background: tm.color + '22', color: tm.color }}>{tm.icon} {tm.label}</span>
-                        </div>
-
-                        {/* Subject */}
-                        <div style={{ fontFamily:MONO, fontSize:11, color:GOLD, marginBottom:6 }}>📧 {entry.subject}</div>
-
-                        {/* Mini email preview */}
-                        <div style={{ background:'#fff', borderRadius:3, overflow:'hidden', maxHeight:180, border:'1px solid #1f2428' }}>
-                          <iframe srcDoc={entry.bodyHtml} style={{ width:'100%', height:180, border:'none', pointerEvents:'none' }} title="preview" />
-                        </div>
-
-                        <div style={{ fontFamily:MONO, fontSize:9, color:'#374151', marginTop:6 }}>
-                          Drafted {entry.draftedAt ? new Date(entry.draftedAt).toLocaleString() : '—'}
-                          {entry.campaign?.name && ` · Campaign: ${entry.campaign.name}`}
-                        </div>
-                      </div>
-
-                      {/* Actions */}
-                      <div style={{ display:'flex', flexDirection:'column', gap:6, minWidth:120 }}>
-                        {queueTab === 'draft' && (
-                          <>
-                            <button className="crm-btn" style={{ width:'100%' }} onClick={() => approveItems([entry._id])}>
-                              ✅ Approve & Send
-                            </button>
-                            <button className="crm-btn-ghost" style={{ width:'100%', fontSize:10 }} onClick={() => skipItem(entry._id)}>
-                              Skip
-                            </button>
-                          </>
-                        )}
-                        {queueTab === 'sent' && (
-                          <div style={{ fontFamily:MONO, fontSize:9, color:'#22c55e', textAlign:'center' }}>
-                            ✅ Sent<br />{entry.sentAt ? new Date(entry.sentAt).toLocaleDateString() : ''}
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            </>
-          )}
-
-          {/* ── HISTORY VIEW ──────────────────────────────────────────── */}
-          {view === 'history' && (
-            <>
-              <div className="crm-topbar">
-                <div style={{ fontFamily:BEBAS, fontSize:'1.1rem', color:GOLD, letterSpacing:'.06em' }}>SEND HISTORY</div>
-                <button className="crm-btn-ghost" onClick={loadHistory}>↻ Refresh</button>
-              </div>
-
-              <div style={{ overflow:'auto', flex:1 }}>
-                <table className="crm-table">
-                  <thead>
-                    <tr>
-                      <th>Contact</th>
-                      <th>Subject</th>
-                      <th>Sent</th>
-                      <th>Type</th>
-                      <th>Status</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {loadingH ? (
-                      <tr><td colSpan={5} style={{ textAlign:'center', padding:40, fontFamily:MONO, fontSize:11, color:'#4b5563' }}>Loading…</td></tr>
-                    ) : history.length === 0 ? (
-                      <tr><td colSpan={5} style={{ textAlign:'center', padding:40, fontFamily:MONO, fontSize:11, color:'#4b5563' }}>No send history yet.</td></tr>
-                    ) : history.map(h => {
-                      const tm = TYPE_META[h.contact?.type] || TYPE_META.other
-                      return (
-                        <tr key={h._id}>
-                          <td>
-                            <div style={{ fontFamily:BARLOW, fontSize:13, fontWeight:700 }}>{h.toName || h.contact?.name}</div>
-                            <div style={{ fontFamily:MONO, fontSize:10, color:'#4b5563' }}>{h.toEmail}</div>
-                          </td>
-                          <td style={{ fontFamily:MONO, fontSize:11, maxWidth:260, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
-                            {h.subject}
-                          </td>
-                          <td style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', whiteSpace:'nowrap' }}>
-                            {h.sentAt ? new Date(h.sentAt).toLocaleString() : '—'}
-                          </td>
-                          <td>
-                            <span className="crm-badge" style={{ background: tm.color + '22', color: tm.color }}>{tm.icon} {tm.label}</span>
-                          </td>
-                          <td>
-                            <span className="crm-badge" style={{ background:'rgba(34,197,94,.12)', color:'#22c55e' }}>Sent</span>
-                          </td>
-                        </tr>
-                      )
-                    })}
-                  </tbody>
-                </table>
-              </div>
-            </>
-          )}
-
-          {/* ── DUPLICATES VIEW ───────────────────────────────────────── */}
-          {view === 'duplicates' && (
-            <>
-              <div className="crm-topbar">
-                <div style={{ fontFamily:BEBAS, fontSize:'1.1rem', color:'#ef4444', letterSpacing:'.06em' }}>
-                  ⚠ DUPLICATE CONTACTS
-                </div>
-                <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280' }}>
-                  {dupGroups.length} duplicate email{dupGroups.length !== 1 ? 's' : ''} detected across {dupGroups.reduce((a, g) => a + g.length, 0)} contacts
-                </div>
-                <button className="crm-btn-ghost" onClick={loadContacts}>↻ Rescan</button>
-              </div>
-
-              <div style={{ padding:'20px 24px', overflow:'auto', flex:1 }}>
-                {dupGroups.length === 0 ? (
-                  <div style={{ textAlign:'center', padding:60, fontFamily:MONO, fontSize:12, color:'#22c55e' }}>
-                    ✅ No duplicates found in your contact database.
-                  </div>
-                ) : dupGroups.map((group, gi) => (
-                  <div key={gi} style={{ marginBottom:20, border:'1px solid rgba(239,68,68,.3)', background:'rgba(239,68,68,.04)' }}>
-                    <div style={{ padding:'8px 16px', background:'rgba(239,68,68,.1)', borderBottom:'1px solid rgba(239,68,68,.2)', fontFamily:MONO, fontSize:10, color:'#ef4444', letterSpacing:'.06em' }}>
-                      DUPLICATE EMAIL: {group[0]?.email}  ·  {group.length} records
-                    </div>
-                    <table className="crm-table" style={{ background:'transparent' }}>
-                      <thead>
-                        <tr>
-                          <th>Name</th><th>Type</th><th>Location</th><th>Added</th><th>Last Contacted</th><th>Action</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {group.map((c, ci) => {
-                          const tm = TYPE_META[c.type] || TYPE_META.other
-                          return (
-                            <tr key={c._id}>
-                              <td>
-                                <div style={{ fontFamily:BARLOW, fontSize:13, fontWeight:700 }}>
-                                  {c.name}
-                                  {ci === 0 && <span style={{ marginLeft:6, fontFamily:MONO, fontSize:8, color:'#22c55e', border:'1px solid #22c55e', padding:'1px 5px' }}>KEEP</span>}
-                                </div>
-                              </td>
-                              <td><span className="crm-badge" style={{ background: tm.color + '22', color: tm.color }}>{tm.label}</span></td>
-                              <td style={{ fontFamily:MONO, fontSize:10, color:'#6b7280' }}>{[c.city, c.state].filter(Boolean).join(', ') || '—'}</td>
-                              <td style={{ fontFamily:MONO, fontSize:10, color:'#4b5563' }}>{c.addedAt ? new Date(c.addedAt).toLocaleDateString() : '—'}</td>
-                              <td style={{ fontFamily:MONO, fontSize:10, color: c.lastContactedAt ? '#22c55e' : '#4b5563' }}>
-                                {c.lastContactedAt ? new Date(c.lastContactedAt).toLocaleDateString() : 'Never'}
-                              </td>
-                              <td>
-                                {ci > 0 && (
-                                  <button className="crm-btn-danger" style={{ fontSize:9, padding:'4px 8px' }}
-                                    onClick={() => { if(window.confirm('Delete this duplicate?')) deleteDuplicate(c._id) }}>
-                                    Delete Duplicate
-                                  </button>
-                                )}
-                              </td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-                ))}
-              </div>
-            </>
-          )}
-
-          {/* ── TEMPLATES VIEW ────────────────────────────────────────── */}
-          {view === 'templates' && (
-            <>
-              <div className="crm-topbar">
-                <div style={{ fontFamily:BEBAS, fontSize:'1.1rem', color:GOLD, letterSpacing:'.06em' }}>EMAIL TEMPLATES</div>
-                <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280' }}>{EMAIL_TEMPLATES.length} templates · Click to preview · Edit in Compose</div>
-              </div>
-
-              <div style={{ display:'grid', gridTemplateColumns:'300px 1fr', height:'100%', overflow:'hidden' }}>
-                {/* Template list */}
-                <div style={{ borderRight:'1px solid var(--border)', overflow:'auto', padding:'16px' }}>
-                  {EMAIL_TEMPLATES.map(t => {
-                    const tm = TYPE_META[t.category] || TYPE_META.other
-                    return (
-                      <div key={t.id} className={`template-card${tplId === t.id ? ' selected' : ''}`}
-                        style={{ marginBottom:8 }} onClick={() => setTplId(t.id)}>
-                        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:4 }}>
-                          <div style={{ fontFamily:BARLOW, fontSize:13, fontWeight:700, color: tplId === t.id ? GOLD : 'var(--text)' }}>{t.name}</div>
-                          <span className="crm-badge" style={{ background: tm.color + '22', color: tm.color, fontSize:8 }}>{tm.icon}</span>
-                        </div>
-                        <div style={{ fontFamily:MONO, fontSize:10, color:'#4b5563', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
-                          {t.subject}
-                        </div>
-                      </div>
-                    )
-                  })}
-                </div>
-
-                {/* Template preview */}
-                <div style={{ overflow:'auto', padding:'20px', background:'#050506' }}>
-                  {(() => {
-                    const t = EMAIL_TEMPLATES.find(x => x.id === tplId)
-                    if (!t) return null
-                    const html = buildEmailHTML({
-                      subject: t.subject, greeting: t.greeting, body: t.body,
-                      ctaText: t.ctaText, ctaUrl: t.ctaUrl,
-                      contactName: 'John Smith',
-                    })
-                    return (
-                      <>
-                        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center', marginBottom:12 }}>
-                          <div>
-                            <div style={{ fontFamily:BEBAS, fontSize:'1.1rem', color:GOLD }}>{t.name}</div>
-                            <div style={{ fontFamily:MONO, fontSize:10, color:'#4b5563' }}>Subject: {t.subject}</div>
-                          </div>
-                          <button className="crm-btn" onClick={() => { setView('compose') }}>
-                            ✍ Use This Template
-                          </button>
-                        </div>
-                        <div style={{ background:'#fff', borderRadius:4, overflow:'hidden', boxShadow:'0 4px 24px rgba(0,0,0,.4)' }}>
-                          <div style={{ background:'#f3f4f6', padding:'8px 16px', borderBottom:'1px solid #e5e7eb', display:'flex', gap:6, alignItems:'center' }}>
-                            <div style={{ width:10, height:10, borderRadius:'50%', background:'#ef4444' }} />
-                            <div style={{ width:10, height:10, borderRadius:'50%', background:'#f59e0b' }} />
-                            <div style={{ width:10, height:10, borderRadius:'50%', background:'#22c55e' }} />
-                            <span style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', marginLeft:8 }}>{t.subject}</span>
-                          </div>
-                          <iframe srcDoc={html} style={{ width:'100%', height:'580px', border:'none' }} title="template-preview" />
-                        </div>
-                      </>
-                    )
-                  })()}
-                </div>
-              </div>
-            </>
-          )}
-
+      {/* CONTACTS */}
+      {view==='contacts'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        <div className="stat-row">
+          {[{v:stats.total,l:'Total'},{v:stats.email,l:'With Email'},{v:stats.touched,l:'Contacted'},{v:stats.fresh,l:'Untouched',c:'#f59e0b'},{v:dupGroups.length,l:'Duplicates',c:dupGroups.length>0?'#ef4444':'#22c55e'}].map(s=>(
+            <div key={s.l} className="stat-box"><div className="stat-n" style={{color:s.c||GOLD}}>{s.v}</div><div className="stat-l">{s.l}</div></div>
+          ))}
         </div>
-      </div>
+        <div style={{padding:'9px 16px',borderBottom:'1px solid #1a1f2e',display:'flex',gap:8,flexWrap:'wrap',alignItems:'center'}}>
+          <input className="r-inp" style={{maxWidth:200,margin:0}} placeholder="Search…" value={search} onChange={e=>setSearch(e.target.value)} onKeyDown={e=>e.key==='Enter'&&loadContacts()}/>
+          <select className="r-sel" style={{maxWidth:130}} value={fType} onChange={e=>setFType(e.target.value)}>
+            <option value="">All Types</option>
+            {Object.entries(TYPE_META).map(([k,v])=><option key={k} value={k}>{v.icon} {v.label}</option>)}
+          </select>
+          <select className="r-sel" style={{maxWidth:110}} value={fStatus} onChange={e=>setFStatus(e.target.value)}>
+            <option value="">All Status</option>
+            {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+          </select>
+          <button className="crm-btn" style={{padding:'6px 14px'}} onClick={loadContacts}>Search</button>
+          {selIds.size>0&&<><span style={{fontFamily:MONO,fontSize:10,color:GOLD}}>{selIds.size} sel</span>
+            <button className="ghost" onClick={()=>setView('compose')}>✉ Compose</button>
+            <button className="ghost" onClick={queueDrafts} disabled={sending}>📬 Queue</button>
+          </>}
+        </div>
+        <div style={{flex:1,overflowY:'auto'}}>
+          <table className="crm-table">
+            <thead><tr>
+              <th className="crm-th"><input type="checkbox" style={{accentColor:GOLD,cursor:'pointer'}} checked={selIds.size===contacts.length&&contacts.length>0} onChange={selAll}/></th>
+              <th className="crm-th">Contact</th><th className="crm-th">Type</th><th className="crm-th">Email</th><th className="crm-th">Location</th><th className="crm-th">Status</th><th className="crm-th">Last Contacted</th><th className="crm-th"/>
+            </tr></thead>
+            <tbody>
+              {loadingC?<tr><td colSpan={8} className="crm-td" style={{textAlign:'center',color:'#374151',padding:40}}>Loading…</td></tr>
+              :contacts.map(c=>{
+                const tm=TYPE_META[c.type]||TYPE_META.other
+                const sm=STATUS_META[c.status]||STATUS_META.active
+                const ini=(c.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()
+                return(<tr key={c._id} className="crm-tr">
+                  <td className="crm-td"><input type="checkbox" style={{accentColor:GOLD,cursor:'pointer'}} checked={selIds.has(c._id)} onChange={()=>togSel(c._id)}/></td>
+                  <td className="crm-td"><div style={{display:'flex',alignItems:'center',gap:9}}>
+                    <div className="crm-avt" style={{background:tm.color+'22',color:tm.color}}>{ini}</div>
+                    <div><div style={{fontFamily:BARLOW,fontSize:13,fontWeight:700,color:'#e5e7eb'}}>{c.name}</div>
+                    {c.firstName&&c.firstName!==c.name&&<div style={{fontFamily:MONO,fontSize:9,color:'#4b5563'}}>{c.firstName}</div>}</div>
+                  </div></td>
+                  <td className="crm-td"><span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.icon} {tm.label}</span></td>
+                  <td className="crm-td" style={{fontFamily:MONO,fontSize:11}}>{c.email?<a href={'mailto:'+c.email} style={{color:GOLD,textDecoration:'none'}}>{c.email}</a>:<span style={{color:'#374151'}}>—</span>}</td>
+                  <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280'}}>{[c.city,c.state].filter(Boolean).join(', ')||'—'}</td>
+                  <td className="crm-td"><span className="crm-badge" style={{background:sm.color+'22',color:sm.color}}>{sm.label}</span></td>
+                  <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280'}}>{c.lastContactedAt?new Date(c.lastContactedAt).toLocaleDateString():<span style={{color:'#f59e0b'}}>Never</span>}</td>
+                  <td className="crm-td">{c.email&&<button className="ghost" style={{padding:'3px 7px',fontSize:10}} onClick={()=>{setSelIds(new Set([c._id]));setPrevId(c._id);setView('compose')}}>✉</button>}</td>
+                </tr>)
+              })}
+            </tbody>
+          </table>
+        </div>
+      </div>}
+
+      {/* QUEUE */}
+      {view==='queue'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',gap:0,alignItems:'center'}}>
+          {['draft','approved','sent','skipped'].map(s=>(
+            <button key={s} onClick={()=>setQTab(s)} style={{background:'none',border:'none',borderBottom:'2px solid',borderBottomColor:qTab===s?GOLD:'transparent',fontFamily:BARLOW,fontSize:12,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'8px 14px',cursor:'pointer',color:qTab===s?GOLD:'#4b5563'}}>
+              {s} {qStats[s]?<span style={{fontSize:10}}>({qStats[s]})</span>:null}
+            </button>
+          ))}
+          <div style={{flex:1}}/>
+          <button className="ghost" onClick={loadQueue}>↺</button>
+          {qTab==='draft'&&queue.length>0&&<button className="crm-btn" style={{marginLeft:8}} onClick={()=>approve(queue.map(q=>q._id))}>✅ Approve All ({queue.length})</button>}
+        </div>
+        <div style={{flex:1,overflowY:'auto'}}>
+          {loadingQ?<div style={{padding:60,textAlign:'center',fontFamily:MONO,fontSize:11,color:'#374151'}}>Loading…</div>
+          :queue.length===0?<div style={{padding:60,textAlign:'center',fontFamily:MONO,fontSize:11,color:'#374151'}}>No {qTab} emails.</div>
+          :queue.map(e=>{
+            const c=e.contact; const tm=TYPE_META[c?.type]||TYPE_META.other
+            return(<div key={e._id} className="q-item">
+              <div>
+                <div style={{display:'flex',alignItems:'center',gap:9,marginBottom:7}}>
+                  <div className="crm-avt" style={{width:24,height:24,background:tm.color+'22',color:tm.color,fontSize:9}}>{(c?.name||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}</div>
+                  <span style={{fontFamily:BARLOW,fontSize:13,fontWeight:700,color:'#e5e7eb'}}>{c?.name}</span>
+                  <span style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{e.toEmail}</span>
+                  <span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.icon}</span>
+                </div>
+                <div style={{fontFamily:MONO,fontSize:11,color:GOLD,marginBottom:7}}>📧 {e.subject}</div>
+                <div style={{background:'#fff',overflow:'hidden',maxHeight:150,border:'1px solid #1a1f2e'}}>
+                  <iframe srcDoc={e.bodyHtml} style={{width:'100%',height:150,border:'none',pointerEvents:'none'}} title="q"/>
+                </div>
+                <div style={{fontFamily:MONO,fontSize:9,color:'#374151',marginTop:5}}>Drafted {e.draftedAt?new Date(e.draftedAt).toLocaleString():'—'}</div>
+              </div>
+              <div style={{display:'flex',flexDirection:'column',gap:5,minWidth:120}}>
+                {qTab==='draft'&&<><button className="crm-btn" style={{width:'100%',fontSize:11}} onClick={()=>approve([e._id])}>✅ Approve</button>
+                  <button className="ghost" style={{width:'100%',fontSize:10}} onClick={()=>skip(e._id)}>Skip</button></>}
+                {qTab==='sent'&&<div style={{fontFamily:MONO,fontSize:9,color:'#22c55e',textAlign:'center'}}>✅ Sent<br/>{e.sentAt?new Date(e.sentAt).toLocaleDateString():''}</div>}
+              </div>
+            </div>)
+          })}
+        </div>
+      </div>}
+
+      {/* HISTORY */}
+      {view==='history'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:12}}>
+          <span style={{fontFamily:BEBAS,fontSize:'1.1rem',color:GOLD,letterSpacing:'.06em'}}>SEND HISTORY</span>
+          <button className="ghost" onClick={loadHistory}>↺</button>
+        </div>
+        <div style={{flex:1,overflowY:'auto'}}>
+          <table className="crm-table">
+            <thead><tr><th className="crm-th">Contact</th><th className="crm-th">Subject</th><th className="crm-th">Sent</th><th className="crm-th">Type</th><th className="crm-th">Status</th></tr></thead>
+            <tbody>
+              {loadingH?<tr><td colSpan={5} className="crm-td" style={{textAlign:'center',color:'#374151',padding:40}}>Loading…</td></tr>
+              :history.length===0?<tr><td colSpan={5} className="crm-td" style={{textAlign:'center',color:'#374151',padding:40}}>No history yet.</td></tr>
+              :history.map(h=>{const tm=TYPE_META[h.contact?.type]||TYPE_META.other;return(
+                <tr key={h._id} className="crm-tr">
+                  <td className="crm-td"><div style={{fontFamily:BARLOW,fontSize:13,fontWeight:700}}>{h.toName||h.contact?.name}</div><div style={{fontFamily:MONO,fontSize:9,color:'#4b5563'}}>{h.toEmail}</div></td>
+                  <td className="crm-td" style={{fontFamily:MONO,fontSize:11,maxWidth:260,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{h.subject}</td>
+                  <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280',whiteSpace:'nowrap'}}>{h.sentAt?new Date(h.sentAt).toLocaleString():'—'}</td>
+                  <td className="crm-td"><span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.icon} {tm.label}</span></td>
+                  <td className="crm-td"><span className="crm-badge" style={{background:'rgba(34,197,94,.12)',color:'#22c55e'}}>Sent</span></td>
+                </tr>
+              )})}
+            </tbody>
+          </table>
+        </div>
+      </div>}
+
+      {/* TEMPLATES */}
+      {view==='templates'&&<div style={{flex:1,display:'flex',overflow:'hidden'}}>
+        <div style={{width:260,borderRight:'1px solid #1a1f2e',overflowY:'auto',padding:12}}>
+          <div style={{fontFamily:BARLOW,fontSize:11,fontWeight:700,color:'#4b5563',letterSpacing:'.06em',textTransform:'uppercase',marginBottom:9}}>{TEMPLATES.length} Templates</div>
+          {TEMPLATES.map(t=>{const tm=TYPE_META[t.cat]||TYPE_META.other;return(
+            <div key={t.id} className={'tpl-chip'+(activeTpl===t.id?' on':'')} style={{marginBottom:6}} onClick={()=>{setActiveTpl(t.id);applyTpl(t.id)}}>
+              <div style={{display:'flex',justifyContent:'space-between',marginBottom:2}}>
+                <span style={{fontFamily:BARLOW,fontSize:12,fontWeight:700,color:activeTpl===t.id?GOLD:'#e5e7eb'}}>{t.name}</span>
+                <span style={{fontSize:11}}>{tm.icon}</span>
+              </div>
+              <div style={{fontFamily:MONO,fontSize:9,color:'#374151',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.subject}</div>
+            </div>
+          )})}
+        </div>
+        <div style={{flex:1,overflowY:'auto',padding:20,background:'#050506'}}>
+          {(()=>{const t=TEMPLATES.find(x=>x.id===activeTpl);if(!t)return null;const html=buildEmailHTML({subject:t.subject,preheader:t.preheader,greeting:t.greeting,body:t.body,ctaText:t.ctaText,ctaUrl:t.ctaUrl,contactName:'John Smith'});return(
+            <><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
+              <div><div style={{fontFamily:BEBAS,fontSize:'1.2rem',color:GOLD}}>{t.name}</div><div style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{t.subject}</div></div>
+              <button className="crm-btn" onClick={()=>{applyTpl(t.id);setView('compose')}}>✍ Use Template</button>
+            </div>
+            <div style={{background:'#fff',borderRadius:4,overflow:'hidden',boxShadow:'0 4px 24px rgba(0,0,0,.4)'}}>
+              <div style={{background:'#f3f4f6',padding:'7px 14px',borderBottom:'1px solid #e5e7eb',display:'flex',gap:5,alignItems:'center'}}>
+                {['#ef4444','#f59e0b','#22c55e'].map(c=><div key={c} style={{width:9,height:9,borderRadius:'50%',background:c}}/>)}
+                <span style={{fontFamily:MONO,fontSize:10,color:'#6b7280',marginLeft:7}}>{t.subject}</span>
+              </div>
+              <iframe srcDoc={html} style={{width:'100%',height:580,border:'none'}} title="tpl"/>
+            </div></>
+          )})()}
+        </div>
+      </div>}
+
+      {/* DUPS */}
+      {view==='dups'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+        <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:12}}>
+          <span style={{fontFamily:BEBAS,fontSize:'1.1rem',color:'#ef4444',letterSpacing:'.06em'}}>⚠ DUPLICATES</span>
+          <span style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{dupGroups.length} dup emails · {dupGroups.reduce((a,g)=>a+g.length,0)} records</span>
+          <button className="ghost" onClick={loadContacts}>↺ Rescan</button>
+        </div>
+        <div style={{flex:1,overflowY:'auto',padding:18}}>
+          {dupGroups.length===0?<div style={{textAlign:'center',padding:60,fontFamily:MONO,fontSize:12,color:'#22c55e'}}>✅ No duplicates.</div>
+          :dupGroups.map((grp,gi)=>(
+            <div key={gi} style={{marginBottom:18,border:'1px solid rgba(239,68,68,.25)',background:'rgba(239,68,68,.03)'}}>
+              <div style={{padding:'7px 14px',background:'rgba(239,68,68,.08)',borderBottom:'1px solid rgba(239,68,68,.2)',fontFamily:MONO,fontSize:10,color:'#ef4444'}}>{grp[0]?.email} — {grp.length} records</div>
+              <table className="crm-table">
+                <thead><tr><th className="crm-th">Name</th><th className="crm-th">Type</th><th className="crm-th">Added</th><th className="crm-th">Last Contacted</th><th className="crm-th"/></tr></thead>
+                <tbody>
+                  {grp.map((c,ci)=>{const tm=TYPE_META[c.type]||TYPE_META.other;return(
+                    <tr key={c._id} className="crm-tr">
+                      <td className="crm-td" style={{fontFamily:BARLOW,fontSize:13,fontWeight:700}}>
+                        {c.name} {ci===0&&<span style={{fontFamily:MONO,fontSize:8,color:'#22c55e',border:'1px solid #22c55e',padding:'1px 5px',marginLeft:6}}>KEEP</span>}
+                      </td>
+                      <td className="crm-td"><span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.label}</span></td>
+                      <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{c.addedAt?new Date(c.addedAt).toLocaleDateString():'—'}</td>
+                      <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:c.lastContactedAt?'#22c55e':'#4b5563'}}>{c.lastContactedAt?new Date(c.lastContactedAt).toLocaleDateString():'Never'}</td>
+                      <td className="crm-td">{ci>0&&<button style={{background:'none',border:'1px solid rgba(239,68,68,.4)',color:'#ef4444',fontFamily:MONO,fontSize:9,padding:'3px 8px',cursor:'pointer'}} onClick={()=>delDup(c._id)}>Delete</button>}</td>
+                    </tr>
+                  )})}
+                </tbody>
+              </table>
+            </div>
+          ))}
+        </div>
+      </div>}
+
+    </div>
+
+    {/* Toast */}
+    {toast&&<div className="crm-toast" style={{borderLeftColor:toast.ok?GOLD:'#ef4444'}}>{toast.msg}</div>}
     </>
   )
 }
