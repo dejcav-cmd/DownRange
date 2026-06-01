@@ -8,7 +8,8 @@ jobs:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Read news status from Sanity
-        run: python3 scripts/debug-news-status.py
+      - name: Check news feed status
+        run: |
+          python3 scripts/debug-news-status.py 2>&1 | tee $GITHUB_STEP_SUMMARY
       - name: Delete international articles from Sanity
-        run: python3 scripts/cleanup-intl-articles.py
+        run: python3 scripts/cleanup-intl-articles.py 2>&1 | tee -a $GITHUB_STEP_SUMMARY
