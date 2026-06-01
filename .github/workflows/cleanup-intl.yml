@@ -9,15 +9,16 @@ jobs:
       GH_PAT: ${{ secrets.GH_PAT }}
     steps:
       - uses: actions/checkout@v4
-      - name: Run fix-placeholder-images cron
+      - name: Run fix-placeholder-images
         run: |
+          echo 'Triggering fix-placeholder-images...'
           RESULT=$(curl -s -X POST \
             'https://www.downrangeco.com/api/cron/fix-placeholder-images' \
             -H 'authorization: Bearer ${{ secrets.CRON_SECRET }}' \
             -H 'x-vercel-cron: 1' \
             --max-time 290)
-          echo "$RESULT"
+          echo "Result: $RESULT"
       - name: Write status
         run: python3 scripts/read-news-status.py
-      - name: Delete international articles from Sanity
+      - name: Delete international articles
         run: python3 scripts/cleanup-intl-articles.py
