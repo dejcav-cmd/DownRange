@@ -147,10 +147,10 @@ async function handler(req) {
 
   try {
     // Find all articles still using a local /img/photos/ placeholder
+    // Note: intentionally ignores editorLocked — a locked article should still
+    // get a real image. The lock protects content/body edits, not broken images.
     const articles = await sanity.fetch(
       `*[_type == "newsArticle"
-        && approved == true
-        && editorLocked != true
         && defined(externalUrl)
         && string::startsWith(imageUrl, "/img/photos/")
       ] | order(publishedAt desc) [0...50] {
