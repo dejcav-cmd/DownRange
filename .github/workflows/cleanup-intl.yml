@@ -8,13 +8,7 @@ jobs:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
     steps:
       - uses: actions/checkout@v4
-      - name: Check news feed status
-        run: python3 scripts/debug-news-status.py 2>&1 | tee /tmp/status.txt
+      - name: Read news status from Sanity
+        run: python3 scripts/debug-news-status.py
       - name: Delete international articles from Sanity
         run: python3 scripts/cleanup-intl-articles.py
-      - name: Upload status artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: news-status
-          path: /tmp/status.txt
-          retention-days: 1
