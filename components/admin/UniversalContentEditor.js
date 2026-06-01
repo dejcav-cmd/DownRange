@@ -125,15 +125,23 @@ export default function UniversalContentEditor({
 
   useEffect(() => { load(); setSel(null); setChecked(new Set()); setPage(0) }, [load])
 
-  // Sync field values when selection changes
+  // Sync field values ONLY when selection changes — NOT on items updates.
+  // If we re-sync on items change, every save wipes the form mid-typing.
+  const seededSel = useRef(null)
   useEffect(() => {
+    if (sel === seededSel.current) return  // already seeded for this item
     const item = items.find(x => x._id === sel)
     if (item) {
       const vals = {}
       FIELDS.forEach(f => { vals[f.key] = item[f.key] ?? '' })
       setFieldVals(vals)
+      seededSel.current = sel
     }
   }, [sel, items])
+
+  // After a full reload (e.g. after publish toggle), re-seed the form
+  // by clearing seededSel so the effect picks up fresh Sanity data
+  function resetSeed() { seededSel.current = null }
 
   // ── CRUD ──────────────────────────────────────────────────────────────────
   async function patch(id, fields) {
@@ -199,6 +207,7 @@ export default function UniversalContentEditor({
     const ok = await patch(item._id, { [field]: val })
     if (ok) {
       flash(val === 'published' || val === true ? '▶ Published' : '⏸ Set to draft')
+      resetSeed()
       await load()
     }
   }
@@ -221,6 +230,7 @@ export default function UniversalContentEditor({
       await patch(item._id, { [field]: val })
     }
     setChecked(new Set())
+    resetSeed()
     await load()
     setBusy(false)
     flash('✅ ' + (v ? '▶ Published' : '⏸ Set to draft') + ' ' + items.length + ' items')
@@ -317,7 +327,7 @@ export default function UniversalContentEditor({
         ) : rows ? (
           <div style={{ position:'relative' }}>
             <textarea className="uce-ta" rows={rows} value={v} disabled={locked}
-              onChange={e => set(e.target.value)} onBlur={save} />
+              onChange={e => set(e.target.value)} />
             {!locked && (
               <button className="uce-btn" onClick={save}
                 style={{ position:'absolute', bottom:8, right:8, fontSize:10, padding:'4px 10px', opacity: v === (selItem?.[key]||'') ? 0.4 : 1 }}>
@@ -328,7 +338,7 @@ export default function UniversalContentEditor({
         ) : ftype === 'url' ? (
           <div style={{ display:'flex', gap:6 }}>
             <input className="uce-input" type="url" value={v} disabled={locked} style={{ flex:1 }}
-              onChange={e => set(e.target.value)} onBlur={save} />
+              onChange={e => set(e.target.value)} />
             {v && v.startsWith('http') && (
               <a href={v} target="_blank" rel="noreferrer"
                 style={{ padding:'7px 10px', border:'1px solid var(--border)', color:'var(--gold)', textDecoration:'none', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>↗</a>
@@ -337,7 +347,7 @@ export default function UniversalContentEditor({
         ) : (
           <div style={{ display:'flex', gap:6 }}>
             <input className="uce-input" type={ftype} value={v} disabled={locked} style={{ flex:1 }}
-              onChange={e => set(e.target.value)} onBlur={save} />
+              onChange={e => set(e.target.value)} />
             {!locked && <button className="uce-btn" onClick={save} style={{ fontSize:10, padding:'6px 10px', opacity: v === (selItem?.[key]||'') ? 0.4 : 1 }}>💾</button>}
           </div>
         )}
@@ -619,7 +629,7 @@ export default function UniversalContentEditor({
                       <input className="uce-input" style={{ flex:1 }} placeholder="Paste image URL..."
                         value={fieldVals.imageUrl || selItem.imageUrl || ''}
                         onChange={e => setFieldVals(prev => ({...prev, imageUrl: e.target.value}))}
-                        onBlur={() => saveField('imageUrl', fieldVals.imageUrl)} />
+                        />
                       <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy} title="Auto-fetch from Pexels/Pixabay">Auto</button>
                       <button className="uce-ghost" onClick={() => setImgSearch(selItem)} title="Search images">Search</button>
                     </div>
@@ -670,6 +680,18 @@ export default function UniversalContentEditor({
                 {/* ── EDIT TAB ── */}
                 {detailTab === 'edit' && (
                   <div>
+                    {/* Save All — primary explicit save action */}
+                    {!selItem?.editorLocked && (
+                      <div style={{ display:'flex', justifyContent:'flex-end', marginBottom:10 }}>
+                        <button className="uce-btn" onClick={() => {
+                          const dirty = FIELDS.filter(f => fieldVals[f.key] !== (selItem?.[f.key] ?? ''))
+                          dirty.forEach(f => saveField(f.key, fieldVals[f.key]))
+                          if (dirty.length === 0) flash('Nothing changed')
+                        }} style={{ fontSize:11, padding:'5px 16px', background:'#14532d', borderColor:'#22c55e', color:'#22c55e' }}>
+                          💾 Save All Fields
+                        </button>
+                      </div>
+                    )}
                     {FIELDS.map(f => <Field key={f.key} fieldCfg={f} />)}
 
                     {/* AI Writer section */}
