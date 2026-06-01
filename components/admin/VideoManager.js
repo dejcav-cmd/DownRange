@@ -37,6 +37,7 @@ const INITIAL_CHANNELS = [
   { id:'ch9', channelId:'UCVdMoKcLQ7-4lxjhJXx_E8A', name:'Hickok45',              category:'Demonstrations',        subs:'~6.6M', active:true },
   { id:'ch10',channelId:'UCpUJCA4YcMVMdSolcaWOQOw', name:'Mr. Guns N Gear',        category:'Reviews & EDC',         subs:'~1.3M', active:true },
   { id:'ch11',channelId:'UCftEYpFBf_m8gJEWMXXfqVg', name:'Brownells',             category:'Industry & Parts',      subs:'~260K', active:true },
+  { id:'ch12',channelId:'UC5fno9H5sK97fLg7RTdZpJg', name:'Guns & Gadgets 2A News', category:'News & Commentary',     subs:'~774K', active:true },
 ]
 
 const CATS = ['Reviews & Tactical','Demonstrations','Reviews & Industry','General Firearms','Reviews & Historical','Historical Collector','Training & Self-Defense','Ammo & Testing','Industry & Parts','Reviews & EDC','News & Commentary','Competitions','Other']

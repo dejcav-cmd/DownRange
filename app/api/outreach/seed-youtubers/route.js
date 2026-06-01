@@ -335,15 +335,15 @@ const NEW_YOUTUBERS = [
     notes: 'Real name: William Kirk. 2A law attorney based in WA. State and national legal analysis. 390K subs. Same state as DJ.',
   },
   {
-    name: 'Guns and Gadgets 2A',
-    firstName: 'Jared',         // Jared Yanis — uses real name
+    name: 'Guns & Gadgets 2nd Amendment News',
+    firstName: 'Jared',         // Jared Yanis — CEO & President, confirmed from channel About page
     type: 'youtuber',
-    email: 'business@gunsngadgets.com',
+    email: 'info@gunsngadgets.com',
     website: 'https://www.gunsngadgets.com',
-    youtubeUrl: 'https://youtube.com/@Guns_and_Gadgets',
+    youtubeUrl: 'https://youtube.com/@GunsGadgets',
     subscribers: 774000,
     city: '', state: '',
-    notes: 'Real name: Jared Yanis. 2A legislation news and alerts. 774K subs.',
+    notes: 'Real name: Jared Yanis, CEO & President. Business: info@gunsngadgets.com. Channel ID: UC5fno9H5sK97fLg7RTdZpJg. 2A legislation news and alerts. 774K subs.',
   },
   {
     name: 'Honest Outlaw',
