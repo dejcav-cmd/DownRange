@@ -70,8 +70,11 @@ function pickPhoto(title = '', category = '') {
 }
 
 export async function POST(req) {
-  const key = req.headers.get('x-admin-key')
-  if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const key      = req.headers.get('x-admin-key')
+  const cronAuth = req.headers.get('authorization')
+  const isCron   = process.env.CRON_SECRET && cronAuth === `Bearer ${process.env.CRON_SECRET}`
+  const isAdmin  = key === process.env.ADMIN_KEY
+  if (!isCron && !isAdmin) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const stats = { scanned: 0, deleted: 0, imageFixed: 0, errors: 0 }
 
