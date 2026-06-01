@@ -121,8 +121,12 @@ for a in articles:
     keyword_blocked = any(k in title for k in BLOCKED_KEYWORDS)
     # Also catch by source name field
     source_blocked  = any(d.split(".")[0] in src for d in BLOCKED_DOMAINS)
+    # Also block by explicit source name
+    BAD_SOURCE_NAMES = ["canberra times","fontsinuse","fonts in use",
+                        "the mirror","daily mail","the sun","freerepublic"]
+    source_name_blocked = any(b in src for b in BAD_SOURCE_NAMES)
 
-    if domain_blocked or keyword_blocked or source_blocked:
+    if domain_blocked or keyword_blocked or source_blocked or source_name_blocked:
         to_delete.append(a["_id"])
         print(f"  DELETE [{('domain' if domain_blocked else 'keyword' if keyword_blocked else 'source')}]: {a.get('title','')[:70]}")
     elif is_stock(a.get("imageUrl")):
