@@ -19,25 +19,45 @@ def sanity_mutate(mutations):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
+# ALL Indian, Philippine, and other non-US sources
 BLOCKED_DOMAINS = [
+    # India — comprehensive
+    "devdiscourse.com","thehindu.com","hindustantimes.com","timesofindia.com",
+    "ndtv.com","indianexpress.com","livemint.com","deccanherald.com",
+    "tribuneindia.com","firstpost.com","newindianexpress.com","dnaindia.com",
+    "zeenews.india.com","indiatoday.in","news18.com","scroll.in","thewire.in",
+    "business-standard.com","financialexpress.com","asianage.com",
+    "thestatesman.com","telegraphindia.com","moneycontrol.com",
+    "mid-day.com","freepressjournal.in","livehindustan.com",
+    "jagran.com","bhaskar.com","patrika.com",
+    # Philippines
     "sunstar.com.ph","inquirer.net","philstar.com","rappler.com",
     "mb.com.ph","gmanetwork.com","cnn.ph","pna.gov.ph","abs-cbn.com",
-    "manilatimes.net","businessmirror.com.ph",
-    "thehindu.com","hindustantimes.com","timesofindia.com",
-    "ndtv.com","indianexpress.com","livemint.com","deccanherald.com",
-    "tribuneindia.com","firstpost.com",
+    "manilatimes.net","businessmirror.com.ph","philnews.ph",
+    # Pakistan / Bangladesh / Sri Lanka
     "dawn.com","thenews.com.pk","geo.tv","thedailystar.net",
+    "dailymirror.lk","dailynews.lk",
+    # Other Asian / intl
+    "channelnewsasia.com","straitstimes.com","scmp.com","aljazeera.com",
 ]
 
+# Title/content keywords that signal non-US articles
 BLOCKED_KEYWORDS = [
+    # India cities/states/terms
+    "thane","navi mumbai","mumbai","delhi","bengaluru","chennai","kolkata",
+    "hyderabad","pune","ahmedabad","lucknow","jaipur","surat","kanpur",
+    "nagpur","indore","bhopal","visakhapatnam","patna","vadodara",
+    "karnataka","belagavi","maharashtra","uttar pradesh","bihar",
+    "rajasthan","odisha","assam","punjab police","haryana police",
+    "indian police","india police","country-made guns","country made guns",
+    "desi katta","mephedrone","mdma india","npa india",
+    # Philippines
     "shabu","pnp","pro-7","pro 7","cebu","davao","manila",
     "philippine national police","mindanao","quezon city",
-    "makati","pasay","caloocan","philipp",
-    "karnataka","belagavi","maharashtra","country-made guns","country made guns",
-    "desi katta","mumbai","delhi","bengaluru","chennai","kolkata","hyderabad",
-    "pune","ahmedabad","lucknow","jaipur","uttar pradesh",
-    "bihar","rajasthan","indian police","india police",
+    "makati","pasay","caloocan","philipp","pdea","nbi philippines",
+    # Pakistan / Bangladesh
     "pakistan","bangladesh","afghanistan","karachi","lahore","islamabad",
+    "peshawar","quetta","dhaka","chittagong",
 ]
 
 STOCK_DOMAINS = [
@@ -75,8 +95,9 @@ def pick_photo(title, category=""):
     return "/img/photos/news.jpg"
 
 print("Fetching articles...")
-articles = sanity_query('*[_type == "newsArticle"] | order(publishedAt desc) [0...500] { _id, title, imageUrl, "sourceUrl": externalUrl }')
-print(f"Got {len(articles)} articles")
+# Scan last 1000 to catch everything
+articles = sanity_query('*[_type == "newsArticle"] | order(publishedAt desc) [0...1000] { _id, title, imageUrl, "sourceUrl": externalUrl, source }')
+print(f"Got {len(articles)} articles to scan")
 
 to_delete = []
 to_fix    = []
@@ -84,13 +105,16 @@ to_fix    = []
 for a in articles:
     url   = (a.get("sourceUrl") or "").lower()
     title = (a.get("title")     or "").lower()
+    src   = (a.get("source")    or "").lower()
 
-    domain_blocked  = any(d in url   for d in BLOCKED_DOMAINS)
+    domain_blocked  = any(d in url for d in BLOCKED_DOMAINS)
     keyword_blocked = any(k in title for k in BLOCKED_KEYWORDS)
+    # Also catch by source name field
+    source_blocked  = any(d.split(".")[0] in src for d in BLOCKED_DOMAINS)
 
-    if domain_blocked or keyword_blocked:
+    if domain_blocked or keyword_blocked or source_blocked:
         to_delete.append(a["_id"])
-        print(f"  DELETE: {a.get('title','')[:70]}")
+        print(f"  DELETE [{('domain' if domain_blocked else 'keyword' if keyword_blocked else 'source')}]: {a.get('title','')[:70]}")
     elif is_stock(a.get("imageUrl")):
         to_fix.append({"id": a["_id"], "title": a.get("title","")})
         print(f"  FIX IMG: {a.get('title','')[:60]}")
