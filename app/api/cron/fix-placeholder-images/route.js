@@ -173,7 +173,7 @@ async function handler(req) {
     )
 
     stats.scanned = articles.length
-    console.log(\`[FIX-IMAGES] Found \${articles.length} articles with broken/missing/external images\`)
+    console.log(`[FIX-IMAGES] Found ${articles.length} articles with broken/missing/external images`)
 
     if (articles.length === 0) {
       await reportCronRun('fix-placeholder-images', {
