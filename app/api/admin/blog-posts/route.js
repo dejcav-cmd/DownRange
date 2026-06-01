@@ -115,7 +115,7 @@ Return JSON only:
       const text = d.content?.[0]?.text || ''
       const ai = JSON.parse(text.split('```json').join('').split('```').join('').trim())
       const patchFields = {}
-      if (ai.body) patchFields.body = ai.body
+      if (ai.body) patchFields.body = ai.body.replace(/^```[a-z]*\s*/i, '').replace(/\s*```\s*$/i, '').trim()
       if (ai.excerpt) patchFields.excerpt = ai.excerpt
       if (ai.readTime) patchFields.readTime = ai.readTime
       await sanity.patch(id).set(patchFields).commit()
