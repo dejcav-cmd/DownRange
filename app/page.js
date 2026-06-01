@@ -9,7 +9,7 @@ import StateHub from '../components/sections/StateHub'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
 import Link from 'next/link'
 import {
-  fetchArticles, fetchBreakingAlerts, fetchLegislation,
+  fetchArticles, fetchBreakingAlerts,
   fetchReleases, fetchReviews, fetchAmmoPrices,
   fetchVideos, fetchAllStateProfiles
 } from '../sanity/lib/client'
@@ -65,11 +65,11 @@ function timeAgo(iso) {
 
 export default async function HomePage() {
   const [
-    articles, alerts, legislation,
+    articles, alerts,
     releases, reviews, ammoPrices,
     videos, stateProfiles
   ] = await Promise.allSettled([
-    fetchArticles(20), fetchBreakingAlerts(10), fetchLegislation(6),
+    fetchArticles(20), fetchBreakingAlerts(10),
     fetchReleases(8), fetchReviews(4), fetchAmmoPrices(),
     fetchVideos(4), fetchAllStateProfiles()
   ]).then(r => r.map(p => p.status === 'fulfilled' ? p.value : []))
@@ -264,39 +264,6 @@ export default async function HomePage() {
 
       {/* ════ MORE STORIES — magazine grid with photos + live updates ════ */}
       <LiveNewsGrid articles={gridArticles} />
-
-      {/* ════ LEGISLATION ════ */}
-      {(legislation || []).length > 0 && (
-        <section style={{ padding:'32px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
-          <div className="container">
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:18 }}>
-              <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:0 }}>⚖ RECENT LEGISLATION</h2>
-              <Link href="/laws" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>All Laws →</Link>
-            </div>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(280px,1fr))', gap:10 }}>
-              {(legislation||[]).slice(0,6).map((b, i) => {
-                // Link to internal laws page — show detail there
-                // External URL only as fallback if no internal route
-                const href = b.slug?.current ? `/laws#${b.slug.current}` : '/laws'
-                return (
-                <Link key={b._id||i} href={href} style={{ textDecoration:'none', display:'block' }}>
-                <div style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'14px 16px', borderLeft:`3px solid ${b.status==='passed'?'#22c55e':b.status==='advancing'?'#f59e0b':b.status==='pending'?'#3b82f6':'#334155'}`, cursor:'pointer', transition:'border-color .15s' }}
->
-                  <div style={{ display:'flex', justifyContent:'space-between', marginBottom:6 }}>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{b.billNumber || b.level?.toUpperCase() || 'FEDERAL'}</span>
-                    <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, fontWeight:700, color: b.status==='passed'?'#22c55e':b.status==='advancing'?'#f59e0b':b.status==='pending'?'#60a5fa':'#475569', background: b.status==='passed'?'#14532d':b.status==='advancing'?'#713f12':b.status==='pending'?'#1e3a5f':'#1e293b', padding:'1px 6px', borderRadius:2, textTransform:'uppercase' }}>{b.status}</span>
-                  </div>
-                  <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:14, fontWeight:700, color:'var(--foreground)', lineHeight:1.25 }}>{b.title}</div>
-                  {b.summary && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', marginTop:4, lineHeight:1.5 }}>{b.summary.slice(0,90)}…</div>}
-                  <div style={{ marginTop:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#C8922A' }}>View on Laws page →</div>
-                </div>
-                </Link>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      )}
 
       {/* ════ STATE HUB ════ */}
       <section style={{ padding:'40px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
