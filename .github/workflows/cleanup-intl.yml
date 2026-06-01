@@ -9,7 +9,15 @@ jobs:
       GH_PAT: ${{ secrets.GH_PAT }}
     steps:
       - uses: actions/checkout@v4
-      - name: Check news feed status + write to branch
+      - name: Run fix-placeholder-images cron
+        run: |
+          RESULT=$(curl -s -X POST \
+            'https://www.downrangeco.com/api/cron/fix-placeholder-images' \
+            -H 'authorization: Bearer ${{ secrets.CRON_SECRET }}' \
+            -H 'x-vercel-cron: 1' \
+            --max-time 290)
+          echo "$RESULT"
+      - name: Write status
         run: python3 scripts/read-news-status.py
       - name: Delete international articles from Sanity
         run: python3 scripts/cleanup-intl-articles.py
