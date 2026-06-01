@@ -1,19 +1,23 @@
 'use client'
 
-// Curated fallback images — shown client-side when Sanity has no image
-const WM = '/img/photos/news.jpg'
+// Local photo fallbacks — no hotlink risk, always available
 const FALLBACK_IMAGES = {
-  pistol:     WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  rifle:      WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  shotgun:    WM + '/2/24/Mossberg_500.jpg/1280px-Mossberg_500.jpg',
-  suppressor: WM + '/1/10/Silencer.jpg/1280px-Silencer.jpg',
-  optic:      WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  ammo:       WM + '/8/86/Various_pistol_cartridges.jpg/1280px-Various_pistol_cartridges.jpg',
-  law:        WM + '/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  breaking:   WM + '/f/f5/US_Supreme_Court_Building.jpg/1280px-US_Supreme_Court_Building.jpg',
-  industry:   WM + '/9/9f/M4A1_SOPMOD_Block_II.jpg/1280px-M4A1_SOPMOD_Block_II.jpg',
-  training:   WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
-  news:       WM + '/2/2a/Glock17.jpg/1280px-Glock17.jpg',
+  pistol:     '/img/photos/pistol.jpg',
+  rifle:      '/img/photos/rifle.jpg',
+  shotgun:    '/img/photos/shotgun.jpg',
+  suppressor: '/img/photos/suppressor.jpg',
+  optic:      '/img/photos/gear.jpg',
+  ammo:       '/img/photos/ammo.jpg',
+  law:        '/img/photos/law.jpg',
+  breaking:   '/img/photos/law.jpg',
+  industry:   '/img/photos/rifle.jpg',
+  training:   '/img/photos/training.jpg',
+  military:   '/img/photos/military.jpg',
+  hunting:    '/img/photos/hunting.jpg',
+  competition:'/img/photos/competition.jpg',
+  homedefense:'/img/photos/homedefense.jpg',
+  gear:       '/img/photos/gear.jpg',
+  news:       '/img/photos/news.jpg',
 }
 
 function getFallbackImage(article) {

@@ -146,20 +146,34 @@ async function handler(req) {
   const stats = { scanned: 0, upgraded: 0, fallback: 0, skipped: 0, failed: 0, samples: [] }
 
   try {
-    // Find all articles still using a local /img/photos/ placeholder
-    // Note: intentionally ignores editorLocked — a locked article should still
-    // get a real image. The lock protects content/body edits, not broken images.
+    // Catch ALL broken image states:
+    //   1. null / undefined imageUrl  → <img src={null}> = broken tag
+    //   2. empty string               → <img src=""> = broken tag
+    //   3. /img/photos/*.jpg          → local placeholder fallback
+    //   4. /img/*.svg                 → legacy SVG, deleted from disk
+    //   5. external non-CDN URL       → hotlink that can 404 or get blocked
+    // Only cdn.sanity.io URLs are considered stable.
     const articles = await sanity.fetch(
       `*[_type == "newsArticle"
         && defined(externalUrl)
-        && string::startsWith(imageUrl, "/img/photos/")
+        && (
+          !defined(imageUrl)
+          || imageUrl == null
+          || imageUrl == ""
+          || string::startsWith(imageUrl, "/img/")
+          || (
+            !string::startsWith(imageUrl, "https://cdn.sanity.io")
+            && !string::startsWith(imageUrl, "https://img.youtube.com")
+            && !string::startsWith(imageUrl, "https://i.ytimg.com")
+          )
+        )
       ] | order(publishedAt desc) [0...50] {
         _id, title, externalUrl, imageUrl, category
       }`
     )
 
     stats.scanned = articles.length
-    console.log(`[FIX-PLACEHOLDERS] Found ${articles.length} articles with placeholder images`)
+    console.log(\`[FIX-IMAGES] Found \${articles.length} articles with broken/missing/external images\`)
 
     if (articles.length === 0) {
       await reportCronRun('fix-placeholder-images', {
@@ -174,7 +188,7 @@ async function handler(req) {
     for (const article of articles) {
       if (!article.externalUrl) { stats.skipped++; continue }
 
-      console.log(`[FIX-PLACEHOLDERS] Processing: "${article.title?.slice(0, 50)}" (${article.imageUrl})`)
+      console.log(`[FIX-IMAGES] Processing: "${article.title?.slice(0, 50)}" (${article.imageUrl})`)
 
       // Step 1: try to fetch real OG image from source article
       const ogImage = await extractOgImage(article.externalUrl)
@@ -190,7 +204,7 @@ async function handler(req) {
           if (stats.samples.length < 10) {
             stats.samples.push({ title: article.title?.slice(0, 50), was: article.imageUrl, now: cdnUrl.slice(0, 60) })
           }
-          console.log(`[FIX-PLACEHOLDERS] ✓ CDN: "${article.title?.slice(0, 40)}"`)
+          console.log(`[FIX-IMAGES] ✓ CDN: "${article.title?.slice(0, 40)}"`)
         } else {
           // CDN upload failed — try Pixabay
           const pixUrl = await fetchPixabay(article.title, article.category)
@@ -200,7 +214,7 @@ async function handler(req) {
             const finalUrl = pixCdn || pixUrl
             mutations.push({ patch: { id: article._id, set: { imageUrl: finalUrl } } })
             stats.fallback++
-            console.log(`[FIX-PLACEHOLDERS] ~ Pixabay: "${article.title?.slice(0, 40)}"`)
+            console.log(`[FIX-IMAGES] ~ Pixabay: "${article.title?.slice(0, 40)}"`)
           } else {
             stats.skipped++
           }
@@ -214,7 +228,7 @@ async function handler(req) {
           const finalUrl = pixCdn || pixUrl
           mutations.push({ patch: { id: article._id, set: { imageUrl: finalUrl } } })
           stats.fallback++
-          console.log(`[FIX-PLACEHOLDERS] ~ Pixabay (blocked source): "${article.title?.slice(0, 40)}"`)
+          console.log(`[FIX-IMAGES] ~ Pixabay (blocked source): "${article.title?.slice(0, 40)}"`)
         } else {
           // Last resort: best-match local photo (only patch if it's a different/better one)
           const better = pickPhoto(article.title, article.category)
@@ -234,7 +248,7 @@ async function handler(req) {
     // Batch write all patches to Sanity
     if (mutations.length) {
       await sanity.mutate(mutations)
-      console.log(`[FIX-PLACEHOLDERS] Wrote ${mutations.length} mutations to Sanity`)
+      console.log(`[FIX-IMAGES] Wrote ${mutations.length} mutations to Sanity`)
     }
 
     const ms      = Date.now() - t0
@@ -245,7 +259,7 @@ async function handler(req) {
     return Response.json({ ok: true, ...stats, ms, message: details })
 
   } catch (err) {
-    console.error('[FIX-PLACEHOLDERS] crash:', err.message)
+    console.error('[FIX-IMAGES] crash:', err.message)
     const ms = Date.now() - t0
     await reportCronRun('fix-placeholder-images', { status: 'failed', ms, error: err.message }).catch(() => {})
     return Response.json({ ok: false, error: err.message, ...stats, ms }, { status: 500 })
