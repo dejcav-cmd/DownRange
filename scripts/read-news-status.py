@@ -18,27 +18,26 @@ lines = []
 count = sq('count(*[_type == "newsArticle"])')
 lines.append(f'TOTAL_ARTICLES: {count}')
 
-recent = sq('*[_type=="newsArticle"]|order(publishedAt desc)[0...10]{publishedAt,source,_createdAt,title}')
+# Show mirror + freerepublic articles with their actual externalUrl
+lines.append('MIRROR/FREEREPUBLIC ARTICLES (with externalUrl):')
+suspect = sq('*[_type=="newsArticle" && (source match "Mirror" || source match "mirror" || source match "Freerepublic" || source match "freerepublic")]|order(publishedAt desc)[0...10]{_id,title,source,externalUrl}')
+for a in suspect:
+    lines.append(f'  ID: {a.get("_id","")} | src: {a.get("source","")} | url: {a.get("externalUrl","")[:70]}')
+if not suspect:
+    lines.append('  none found')
+
 lines.append('LAST_10:')
+recent = sq('*[_type=="newsArticle"]|order(publishedAt desc)[0...10]{publishedAt,source,_createdAt,title}')
 for a in recent:
     lines.append(f'  {str(a.get("publishedAt",""))[:16]} | {str(a.get("source",""))[:22]:<22} | {a.get("title","")[:50]}')
-
-crons = sq('*[_type=="cronRun"]|order(_createdAt desc)[0...10]{_createdAt,feed,status,details}')
-lines.append('CRON_RUNS:')
-if not crons:
-    lines.append('  NONE FOUND')
-for c in crons:
-    lines.append(f'  {str(c.get("_createdAt",""))[:16]} | {str(c.get("feed","")):<18} | {c.get("status","")} | {c.get("details","")[:55]}')
 
 output = chr(10).join(lines)
 print(output)
 
-# Get main SHA
 req = urllib.request.Request(f'https://api.github.com/repos/{REPO}/git/refs/heads/main', headers=GH_HDRS)
 with urllib.request.urlopen(req) as r:
     main_sha = json.loads(r.read())['object']['sha']
 
-# Create/update status-output branch
 branch_payload = json.dumps({'ref':'refs/heads/status-output','sha':main_sha}).encode()
 try:
     req2 = urllib.request.Request(f'https://api.github.com/repos/{REPO}/git/refs',
@@ -49,7 +48,6 @@ except:
         data=json.dumps({'sha':main_sha,'force':True}).encode(), headers=GH_HDRS, method='PATCH')
     with urllib.request.urlopen(req2b) as r: pass
 
-# Get existing file SHA if exists
 file_sha = None
 try:
     req3 = urllib.request.Request(f'https://api.github.com/repos/{REPO}/contents/STATUS.txt?ref=status-output', headers=GH_HDRS)
@@ -62,4 +60,4 @@ if file_sha: payload['sha'] = file_sha
 req4 = urllib.request.Request(f'https://api.github.com/repos/{REPO}/contents/STATUS.txt',
     data=json.dumps(payload).encode(), headers=GH_HDRS, method='PUT')
 with urllib.request.urlopen(req4) as r:
-    print('STATUS WRITTEN TO BRANCH status-output/STATUS.txt')
+    print('STATUS WRITTEN')
