@@ -294,10 +294,25 @@ async function processNewsItem(item) {
 
   // Skip non-US/international sources
   const extUrl = (item.url || '').toLowerCase()
-  const intlDomains = ['thehindu.com','hindustantimes.com','timesofindia.com',
-    'ndtv.com','theguardian.com','bbc.com','bbc.co.uk','channelnewsasia.com',
-    'straitstimes.com','scmp.com','aljazeera.com','dawn.com','thenews.com.pk',
-    'smh.com.au','abc.net.au','news.com.au','stuff.co.nz','rnz.co.nz']
+  const intlDomains = [
+    // India
+    'thehindu.com','hindustantimes.com','timesofindia.com',
+    'ndtv.com','indianexpress.com','livemint.com','deccanherald.com',
+    'tribuneindia.com','moneycontrol.com','firstpost.com',
+    // Philippines
+    'sunstar.com.ph','inquirer.net','philstar.com','rappler.com',
+    'mb.com.ph','gmanetwork.com','cnn.ph','pna.gov.ph','abs-cbn.com',
+    'manilatimes.net','businessmirror.com.ph',
+    // Pakistan / Bangladesh / Others
+    'dawn.com','thenews.com.pk','geo.tv','thedailystar.net',
+    // UK / AU / NZ (non-US English that bleeds through)
+    'theguardian.com','bbc.com','bbc.co.uk','independent.co.uk',
+    'telegraph.co.uk','mirror.co.uk','smh.com.au','abc.net.au',
+    'news.com.au','stuff.co.nz','rnz.co.nz',
+    // Other intl
+    'channelnewsasia.com','straitstimes.com','scmp.com',
+    'aljazeera.com',
+  ]
   if (intlDomains.some(d => extUrl.includes(d))) {
     console.log('[NEWS] Skipping non-US source: ' + (item.url || '').slice(0, 60))
     return
@@ -305,11 +320,23 @@ async function processNewsItem(item) {
 
   // Skip articles with clearly non-US jurisdictional language
   const lowerTitle = (item.title || '').toLowerCase()
-  const nonUSTerms = ['karnataka', 'belagavi', 'maharashtra', 'country-made guns',
+  const nonUSTerms = [
+    // India
+    'karnataka', 'belagavi', 'maharashtra', 'country-made guns',
     'country made guns', 'desi katta', 'mumbai', 'delhi', 'bengaluru', 'chennai',
-    'pakistan', 'bangladesh', 'afghanistan', 'indian police', 'victoria police',
-    'new south wales', 'queensland police', 'ontario', 'british columbia',
-    'metropolitan police', 'scotland yard']
+    'kolkata', 'hyderabad', 'pune', 'ahmedabad', 'lucknow', 'jaipur',
+    'indian police', 'india police', 'uttar pradesh', 'bihar', 'rajasthan',
+    'odisha', 'assam', 'punjab police', 'haryana police',
+    // Philippines
+    'shabu', 'pnp', 'pro-7', 'pro 7', 'cebu', 'davao', 'manila',
+    'philippine national police', 'nbi philippines', 'peza',
+    'mindanao', 'quezon', 'makati', 'pasay', 'caloocan',
+    // Pakistan / Bangladesh
+    'pakistan', 'bangladesh', 'afghanistan', 'karachi', 'lahore', 'islamabad',
+    // UK / AU / NZ police
+    'victoria police', 'new south wales', 'queensland police',
+    'metropolitan police', 'scotland yard', 'ontario', 'british columbia',
+  ]
   if (nonUSTerms.some(t => lowerTitle.includes(t))) {
     console.log('[NEWS] Skipping non-US jurisdiction article: ' + item.title?.slice(0, 60))
     return

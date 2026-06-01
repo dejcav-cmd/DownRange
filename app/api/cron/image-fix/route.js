@@ -27,14 +27,29 @@ function pickFallback(title = '', category = '') {
   return '/img/photos/news.jpg'
 }
 
-const BAD = [
+const BAD_PREFIXES = [
   '/img/photos/', '/img/pistol', '/img/rifle', '/img/law', '/img/shotgun',
   '/img/suppressor', '/img/ammo', '/img/news', '/img/gear', '/img/training',
   '/img/hunting', '/img/military', '/img/homedefense', '/img/competition',
 ]
+// Stock/demo image domains that are NOT real article photos
+const BAD_DOMAINS = [
+  'pixabay.com', 'cdn.pixabay.com',
+  'images.pexels.com', 'pexels.com',
+  'images.unsplash.com', 'unsplash.com',
+  'lorempixel.com', 'picsum.photos', 'dummyimage.com',
+  'placeholder.com', 'via.placeholder.com',
+  'placehold.co', 'fakeimg.pl',
+]
 function isBad(url = '') {
   if (!url) return true
-  return BAD.some(p => url.includes(p))
+  if (url.endsWith('.svg')) return true
+  if (BAD_PREFIXES.some(p => url.includes(p))) return true
+  try {
+    const hostname = new URL(url).hostname.replace('www.', '')
+    if (BAD_DOMAINS.some(d => hostname === d || hostname.endsWith('.' + d))) return true
+  } catch { /* not a valid URL, treat as bad */ return true }
+  return false
 }
 
 async function searchPixabay(title, category) {
@@ -110,7 +125,7 @@ async function handler(req) {
   try {
     // Cover newsArticle + canadaContent articles + brazilContent artigos
     const [newsArts, canadaArts, brazilArts] = await Promise.all([
-      sanity.fetch('*[_type=="newsArticle"] | order(publishedAt desc) [0...50] { _id, title, imageUrl, sourceUrl, category }'),
+      sanity.fetch('*[_type=="newsArticle"] | order(publishedAt desc) [0...50] { _id, title, imageUrl, "sourceUrl": externalUrl, category }'),
       sanity.fetch('*[_type=="canadaContent" && type=="article"] | order(publishedAt desc) [0...20] { _id, title, imageUrl, sourceUrl }'),
       sanity.fetch('*[_type=="brazilContent" && type=="artigo"] | order(publishedAt desc) [0...20] { _id, title, imageUrl, sourceUrl }'),
     ])
