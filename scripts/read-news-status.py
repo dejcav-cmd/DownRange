@@ -22,46 +22,44 @@ def mutate(mutations):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-def strip_fences(text):
-    if not text: return text
-    # Strip ```html, ```HTML, ```, etc. at start and end
-    cleaned = re.sub(r'^```[a-zA-Z]*\s*', '', text.strip())
-    cleaned = re.sub(r'\s*```\s*$', '', cleaned)
-    return cleaned.strip()
+def slugify(text):
+    text = text.lower().strip()
+    text = re.sub(r'[^\w\s-]', '', text)
+    text = re.sub(r'[\s_-]+', '-', text)
+    text = re.sub(r'^-+|-+$', '', text)
+    return text[:96]
 
-print("Fetching all blog posts...")
-posts = sq('*[_type == "blogPost"] { _id, title, body }')
-print(f"Total: {len(posts)}")
+lines = []
 
-to_fix = []
-for p in posts:
-    body = p.get("body") or ""
-    if body.strip().startswith("```"):
-        to_fix.append(p)
+# Check Canada articles missing slugs
+ca = sq('*[_type=="canadaContent" && type=="article" && (!defined(slug) || slug.current=="" || slug.current==null)] { _id, title }')
+br = sq('*[_type=="brazilContent" && type=="artigo" && (!defined(slug) || slug.current=="" || slug.current==null)] { _id, title }')
 
-print(f"Posts with ``` fences: {len(to_fix)}")
-for p in to_fix:
-    print(f"  {p['_id'][:30]} | {p.get('title','')[:50]}")
+lines.append(f"Canada articles missing slugs: {len(ca)}")
+lines.append(f"Brazil articles missing slugs: {len(br)}")
 
-if not to_fix:
-    print("Nothing to fix!")
+mutations = []
+for a in ca + br:
+    if a.get('title'):
+        slug = slugify(a['title'])
+        mutations.append({"patch": {"id": a["_id"], "set": {"slug": {"_type": "slug", "current": slug}}}})
+        lines.append(f"  Slugging: {a['_id']} → {slug}")
+
+if mutations:
+    mutate(mutations)
+    lines.append(f"Applied {len(mutations)} slug patches")
 else:
-    mutations = []
-    for p in to_fix:
-        cleaned = strip_fences(p.get("body", ""))
-        mutations.append({"patch": {"id": p["_id"], "set": {"body": cleaned}}})
-    
-    # Batch in groups of 50
-    fixed = 0
-    for i in range(0, len(mutations), 50):
-        result = mutate(mutations[i:i+50])
-        fixed += len(mutations[i:i+50])
-        print(f"Fixed {fixed}/{len(mutations)}...")
-        import time; time.sleep(0.3)
-    
-    print(f"\nDONE: fixed {fixed} blog posts")
+    lines.append("All articles already have slugs")
 
-output = f"Fixed {len(to_fix)} blog posts with code fence issue"
+# Count total
+ca_total = sq('count(*[_type=="canadaContent" && type=="article" && defined(slug) && slug.current!="" && slug.current!=null])')
+br_total = sq('count(*[_type=="brazilContent" && type=="artigo" && defined(slug) && slug.current!="" && slug.current!=null])')
+lines.append(f"\nCanada articles with slugs: {ca_total}")
+lines.append(f"Brazil articles with slugs: {br_total}")
+
+output = chr(10).join(lines)
+print(output)
+
 req = urllib.request.Request("https://api.github.com/repos/dejcav-cmd/DownRange/git/refs/heads/main", headers=GH_HDRS)
 with urllib.request.urlopen(req) as r:
     main_sha = json.loads(r.read())["object"]["sha"]
@@ -76,7 +74,7 @@ try:
     req3 = urllib.request.Request("https://api.github.com/repos/dejcav-cmd/DownRange/contents/STATUS.txt?ref=status-output", headers=GH_HDRS)
     with urllib.request.urlopen(req3) as r: file_sha = json.loads(r.read())["sha"]
 except: pass
-payload = {"message":"chore: blog fix result","content":base64.b64encode(output.encode()).decode(),"branch":"status-output","author":{"name":"DJ Cavalcanti","email":"dj@downrangeco.com"}}
+payload = {"message":"chore: slug patch result","content":base64.b64encode(output.encode()).decode(),"branch":"status-output","author":{"name":"DJ Cavalcanti","email":"dj@downrangeco.com"}}
 if file_sha: payload["sha"] = file_sha
 urllib.request.urlopen(urllib.request.Request("https://api.github.com/repos/dejcav-cmd/DownRange/contents/STATUS.txt",
     data=json.dumps(payload).encode(), headers=GH_HDRS, method="PUT"), timeout=10)
