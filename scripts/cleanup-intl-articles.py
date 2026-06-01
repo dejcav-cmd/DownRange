@@ -40,6 +40,11 @@ BLOCKED_DOMAINS = [
     # UK tabloids / non-2A sites
     "mirror.co.uk","thesun.co.uk","dailymail.co.uk","express.co.uk",
     "freerepublic.com",
+    # AU/NZ
+    "canberratimes.com.au","theage.com.au","heraldsun.com.au","couriermail.com.au",
+    "thewest.com.au","ntnews.com.au","themercury.com.au",
+    # Bogus/non-firearms sources
+    "fontsinuse.com","fonts.com","myfonts.com",
     # Other Asian / intl
     "channelnewsasia.com","straitstimes.com","scmp.com","aljazeera.com",
 ]
@@ -58,6 +63,8 @@ BLOCKED_KEYWORDS = [
     "shabu","pnp","pro-7","pro 7","cebu","davao","manila",
     "philippine national police","mindanao","quezon city",
     "makati","pasay","caloocan","philipp","pdea","nbi philippines",
+    # Bogus AI placeholder articles
+    "no firearms content available","no content available","placeholder",
     # Pakistan / Bangladesh
     "pakistan","bangladesh","afghanistan","karachi","lahore","islamabad",
     "peshawar","quetta","dhaka","chittagong",
