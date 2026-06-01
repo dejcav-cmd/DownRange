@@ -6,8 +6,36 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-      GH_PAT: ${{ secrets.GITHUB_TOKEN }}
     steps:
-      - uses: actions/checkout@v4
-      - name: Read and export news status
-        run: python3 scripts/read-news-status.py
+      - name: Check news status via Sanity
+        run: |
+          COUNT=$(curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=count(*[_type%3D%3D%22newsArticle%22])" \
+            -H "Authorization: Bearer $SANITY_TOKEN" | python3 -c "import json,sys; print(json.load(sys.stdin)['result'])")
+          echo "::notice title=Article Count::$COUNT total newsArticles"
+          echo "ARTICLE COUNT: $COUNT"
+
+          RECENT=$(curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=*%5B_type%3D%3D%22newsArticle%22%5D%7Corder(publishedAt+desc)%5B0...8%5D%7BpublishedAt%2Csource%2Ctitle%7D" \
+            -H "Authorization: Bearer $SANITY_TOKEN" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+for a in d['result']:
+  print(a.get('publishedAt','')[:16], '|', str(a.get('source',''))[:20], '|', a.get('title','')[:50])
+")
+          echo "RECENT ARTICLES:"
+          echo "$RECENT"
+          echo "::notice title=Recent Articles::$RECENT"
+
+          CRONS=$(curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=*%5B_type%3D%3D%22cronRun%22%5D%7Corder(_createdAt+desc)%5B0...6%5D%7B_createdAt%2Cfeed%2Cstatus%2Cdetails%7D" \
+            -H "Authorization: Bearer $SANITY_TOKEN" | python3 -c "
+import json,sys
+d=json.load(sys.stdin)
+results=d.get('result') or []
+if not results:
+  print('NO CRON RUNS FOUND')
+else:
+  for c in results:
+    print(c.get('_createdAt','')[:16], '|', str(c.get('feed',''))[:15], '|', c.get('status',''), '|', c.get('details','')[:50])
+")
+          echo "CRON RUNS:"
+          echo "$CRONS"
+          echo "::notice title=Cron Runs::$CRONS"
