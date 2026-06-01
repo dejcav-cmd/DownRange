@@ -299,6 +299,10 @@ async function processNewsItem(item) {
     'thehindu.com','hindustantimes.com','timesofindia.com',
     'ndtv.com','indianexpress.com','livemint.com','deccanherald.com',
     'tribuneindia.com','moneycontrol.com','firstpost.com',
+    'devdiscourse.com','thestatesman.com','telegraphindia.com',
+    'newindianexpress.com','dnaindia.com','zeenews.india.com',
+    'indiatoday.in','news18.com','scroll.in','thewire.in',
+    'business-standard.com','financialexpress.com','asianage.com',
     // Philippines
     'sunstar.com.ph','inquirer.net','philstar.com','rappler.com',
     'mb.com.ph','gmanetwork.com','cnn.ph','pna.gov.ph','abs-cbn.com',
