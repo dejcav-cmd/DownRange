@@ -313,6 +313,10 @@ async function processNewsItem(item) {
     'theguardian.com','bbc.com','bbc.co.uk','independent.co.uk',
     'telegraph.co.uk','mirror.co.uk','smh.com.au','abc.net.au',
     'news.com.au','stuff.co.nz','rnz.co.nz',
+    'canberratimes.com.au','theage.com.au','heraldsun.com.au',
+    'couriermail.com.au','thewest.com.au',
+    // Non-firearms / bogus
+    'fontsinuse.com',
     // Other intl
     'channelnewsasia.com','straitstimes.com','scmp.com',
     'aljazeera.com',
