@@ -37,6 +37,9 @@ BLOCKED_DOMAINS = [
     # Pakistan / Bangladesh / Sri Lanka
     "dawn.com","thenews.com.pk","geo.tv","thedailystar.net",
     "dailymirror.lk","dailynews.lk",
+    # UK tabloids / non-2A sites
+    "mirror.co.uk","thesun.co.uk","dailymail.co.uk","express.co.uk",
+    "freerepublic.com",
     # Other Asian / intl
     "channelnewsasia.com","straitstimes.com","scmp.com","aljazeera.com",
 ]
