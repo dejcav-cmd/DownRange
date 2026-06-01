@@ -81,6 +81,59 @@ function isPublished(item, config) {
 }
 
 // ── MAIN COMPONENT ───────────────────────────────────────────────────────────
+// ── UCEField — stable top-level component so React doesn't remount on every render ──
+// When Field was defined inside UCE, every fieldVals state change re-created the function
+// reference, causing React to unmount+remount every input on each keystroke (losing focus).
+function UCEField({ fieldCfg, fieldVals, setFieldVals, saveField, locked, savedItem }) {
+  const { key, label: lbl, type: ftype = 'text', opts, rows, hint } = fieldCfg
+  const v   = fieldVals[key] ?? ''
+  const set = val => setFieldVals(prev => ({...prev, [key]: val}))
+  const save = () => saveField(key, fieldVals[key])
+  const savedVal = savedItem?.[key] ?? ''
+
+  return (
+    <div className="uce-grp">
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:4 }}>
+        <span className="uce-lbl">{lbl}</span>
+        {hint && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>{hint}</span>}
+      </div>
+      {opts ? (
+        <select className="uce-input" value={v} disabled={locked}
+          onChange={e => { set(e.target.value); saveField(key, e.target.value) }}>
+          <option value="">— select —</option>
+          {opts.map(o => <option key={o}>{o}</option>)}
+        </select>
+      ) : rows ? (
+        <div style={{ position:'relative' }}>
+          <textarea className="uce-ta" rows={rows} value={v} disabled={locked}
+            onChange={e => set(e.target.value)} />
+          {!locked && (
+            <button className="uce-btn" onClick={save}
+              style={{ position:'absolute', bottom:8, right:8, fontSize:10, padding:'4px 10px', opacity: v === savedVal ? 0.4 : 1 }}>
+              💾
+            </button>
+          )}
+        </div>
+      ) : ftype === 'url' ? (
+        <div style={{ display:'flex', gap:6 }}>
+          <input className="uce-input" type="url" value={v} disabled={locked} style={{ flex:1 }}
+            onChange={e => set(e.target.value)} />
+          {v && v.startsWith('http') && (
+            <a href={v} target="_blank" rel="noreferrer"
+              style={{ padding:'7px 10px', border:'1px solid var(--border)', color:'var(--gold)', textDecoration:'none', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>↗</a>
+          )}
+        </div>
+      ) : (
+        <div style={{ display:'flex', gap:6 }}>
+          <input className="uce-input" type={ftype} value={v} disabled={locked} style={{ flex:1 }}
+            onChange={e => set(e.target.value)} />
+          {!locked && <button className="uce-btn" onClick={save} style={{ fontSize:10, padding:'6px 10px', opacity: v === savedVal ? 0.4 : 1 }}>💾</button>}
+        </div>
+      )}
+    </div>
+  )
+}
+
 export default function UniversalContentEditor({
   adminKey,
   config,        // { label, icon, api, type, fields[], perPage, urlFn, baseUrl, lang }
@@ -304,56 +357,9 @@ export default function UniversalContentEditor({
   const visible = filtered.slice(page * PER_PAGE, (page+1) * PER_PAGE)
   const selItem = items.find(x => x._id === sel)
 
-  // ── Field renderer ────────────────────────────────────────────────────────
-  function Field({ fieldCfg }) {
-    const { key, label: lbl, type: ftype = 'text', opts, rows, hint } = fieldCfg
-    const v = fieldVals[key] ?? ''
-    const set = val => setFieldVals(prev => ({...prev, [key]: val}))
-    const save = () => saveField(key, fieldVals[key])
-    const locked = selItem?.editorLocked
-
-    return (
-      <div className="uce-grp">
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:4 }}>
-          <span className="uce-lbl">{lbl}</span>
-          {hint && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>{hint}</span>}
-        </div>
-        {opts ? (
-          <select className="uce-input" value={v} disabled={locked}
-            onChange={e => { set(e.target.value); saveField(key, e.target.value) }}>
-            <option value="">— select —</option>
-            {opts.map(o => <option key={o}>{o}</option>)}
-          </select>
-        ) : rows ? (
-          <div style={{ position:'relative' }}>
-            <textarea className="uce-ta" rows={rows} value={v} disabled={locked}
-              onChange={e => set(e.target.value)} />
-            {!locked && (
-              <button className="uce-btn" onClick={save}
-                style={{ position:'absolute', bottom:8, right:8, fontSize:10, padding:'4px 10px', opacity: v === (selItem?.[key]||'') ? 0.4 : 1 }}>
-                💾
-              </button>
-            )}
-          </div>
-        ) : ftype === 'url' ? (
-          <div style={{ display:'flex', gap:6 }}>
-            <input className="uce-input" type="url" value={v} disabled={locked} style={{ flex:1 }}
-              onChange={e => set(e.target.value)} />
-            {v && v.startsWith('http') && (
-              <a href={v} target="_blank" rel="noreferrer"
-                style={{ padding:'7px 10px', border:'1px solid var(--border)', color:'var(--gold)', textDecoration:'none', fontFamily:"'IBM Plex Mono',monospace", fontSize:10 }}>↗</a>
-            )}
-          </div>
-        ) : (
-          <div style={{ display:'flex', gap:6 }}>
-            <input className="uce-input" type={ftype} value={v} disabled={locked} style={{ flex:1 }}
-              onChange={e => set(e.target.value)} />
-            {!locked && <button className="uce-btn" onClick={save} style={{ fontSize:10, padding:'6px 10px', opacity: v === (selItem?.[key]||'') ? 0.4 : 1 }}>💾</button>}
-          </div>
-        )}
-      </div>
-    )
-  }
+  // Field is a stable external component (see UCEField below) to prevent
+  // remounting on every parent render, which caused focus loss on each keystroke.
+  // Pass all needed state as props.
 
   // ── HTML preview renderer ─────────────────────────────────────────────────
   function HtmlPreview({ html, summary }) {
@@ -692,7 +698,7 @@ export default function UniversalContentEditor({
                         </button>
                       </div>
                     )}
-                    {FIELDS.map(f => <Field key={f.key} fieldCfg={f} />)}
+                    {FIELDS.map(f => <UCEField key={f.key} fieldCfg={f} fieldVals={fieldVals} setFieldVals={setFieldVals} saveField={saveField} locked={!!selItem?.editorLocked} savedItem={selItem} />)}
 
                     {/* AI Writer section */}
                     {FIELDS.some(f => f.key === 'body' || f.key === 'detail') && (
