@@ -26,12 +26,14 @@ import { blogPost }         from './blogPost'
 import imageAsset           from './imageAsset'
 import { nfaWaitTime }      from './nfaWaitTime'
 import { cronRun }          from './cronRun'
+import { youtubeInfluencer } from './youtubeInfluencer'
 
 export const schemaTypes = [
   feedConfig,
   newsArticle,
   imageAsset, breakingAlert, legislation, review,
   firearmRelease, stateProfile, ammoPrice, video, author, globalStats,
+  youtubeInfluencer,
   priceAlert, billTracker, siteConfig, marketAnalysis,
   outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
   dailyBriefing,

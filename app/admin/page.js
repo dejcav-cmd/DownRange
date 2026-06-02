@@ -8,6 +8,7 @@ const L = (fn) => dynamic(fn, { ssr:false, loading: () => <PanelLoader /> })
 
 const PullLogDashboard      = L(() => import('./pull-log/page'))
 const OutreachCRM           = L(() => import('../../components/admin/OutreachCRM'))
+const InfluencerManager     = L(() => import('../../components/admin/InfluencerManager'))
 const DraftRecovery         = L(() => import('../../components/admin/DraftRecovery'))
 const IntelligenceDashboard = L(() => import('../../components/admin/IntelligenceDashboard'))
 const CopyrightReport      = L(() => import('../../components/admin/CopyrightReport'))
@@ -88,6 +89,7 @@ const NAV = [
     id: 'outreach', label: 'Outreach', icon: '📬',
     panels: [
       { id:'outreach',     label:'Campaigns',        icon:'📬', badge:null },
+      { id:'influencers',  label:'YouTubers',         icon:'📺', badge:null },
     ]
   },
   {
@@ -2758,7 +2760,8 @@ export default function AdminPage() {
             {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
 
             {/* ── OUTREACH ── */}
-            {panel==='outreach' && <OutreachCRM adminKey={adminKey} />}
+            {panel==='outreach'     && <OutreachCRM adminKey={adminKey} />}
+            {panel==='influencers'  && <InfluencerManager adminKey={adminKey} />}
 
             {/* ── MEDIA ── */}
             {panel==='videos'   && <VideoManager adminKey={adminKey} />}
