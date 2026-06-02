@@ -7,7 +7,6 @@ import NewsCard from '../components/ui/NewsCard'
 import WhatsHot from '../components/ui/WhatsHot'
 import StateHub from '../components/sections/StateHub'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
-import ReleaseCard from '../components/ui/ReleaseCard'
 import Link from 'next/link'
 import {
   fetchArticles, fetchBreakingAlerts,
@@ -285,9 +284,44 @@ export default async function HomePage() {
             </div>
 
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:16 }}>
-              {releases.slice(0, 5).map(rel => (
-                <ReleaseCard key={rel._id} rel={rel} />
-              ))}
+              {releases.slice(0, 5).map(rel => {
+                const img      = rel?.heroImage?.asset?.url || rel?.imageUrl || '/img/photos/pistol.jpg'
+                const href     = rel?.slug?.current ? `/releases/${rel.slug.current}` : '/releases'
+                const catColor = { pistol:'#60A5FA', rifle:'#34D399', shotgun:'#F59E0B', revolver:'#C084FC', suppressor:'#9CA3AF' }[rel.category] || '#C8922A'
+                const msrpStr  = rel.msrp ? (typeof rel.msrp === 'number' ? `$${rel.msrp.toLocaleString()}` : String(rel.msrp)) : null
+                return (
+                  <a key={rel._id} href={href} style={{ textDecoration:'none', display:'block' }}>
+                    <div style={{ background:'#111318', border:'1px solid #1F2428', overflow:'hidden' }}>
+                      <div style={{ width:'100%', height:160, overflow:'hidden', position:'relative', background:'#0d1117' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img} alt={rel.model || rel.title || ''}
+                          style={{ width:'100%', height:'100%', objectFit:'cover', opacity:.85 }} />
+                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg,rgba(9,9,11,.7) 0%,transparent 60%)' }} />
+                        {rel.isJustDropped && (
+                          <span style={{ position:'absolute', top:8, right:8, background:'#C8922A', color:'#000', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'2px 7px', letterSpacing:'.08em' }}>
+                            JUST DROPPED
+                          </span>
+                        )}
+                        {rel.category && (
+                          <span style={{ position:'absolute', bottom:8, left:10, fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:catColor, fontWeight:700, letterSpacing:'.1em', textTransform:'uppercase' }}>
+                            {rel.category}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ padding:'12px 14px' }}>
+                        {rel.brand && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4B5563', marginBottom:4 }}>{rel.brand}</div>}
+                        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'#E5E5E5', lineHeight:1.25, marginBottom:8 }}>
+                          {rel.model || rel.title}
+                        </div>
+                        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                          {rel.caliber && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6B7280' }}>{rel.caliber}</span>}
+                          {msrpStr    && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', fontWeight:700 }}>{msrpStr}</span>}
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                )
+              })}
             </div>
           </div>
         </section>
