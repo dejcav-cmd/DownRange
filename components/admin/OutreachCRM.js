@@ -154,6 +154,11 @@ export default function OutreachCRM({ adminKey }) {
   const [loadingH,     setLoadingH]     = useState(false)
   const [toast,        setToast]        = useState(null)
   const edRef = useRef(null)
+  const tplEdRef = useRef(null)
+  const [tplEditing, setTplEditing] = useState(null)    // copy of template being edited
+  const [tplDirty,   setTplDirty]   = useState(false)
+  const [tplSaved,   setTplSaved]   = useState(false)
+  const [tplTemplates, setTplTemplates] = useState(TEMPLATES) // mutable in-session copy
 
   const flash = (msg, ok=true) => { setToast({msg,ok}); setTimeout(()=>setToast(null),4000) }
 
@@ -195,7 +200,7 @@ export default function OutreachCRM({ adminKey }) {
   useEffect(()=>{ if(view==='history') loadHistory() },[view])
 
   function applyTpl(id) {
-    const t=TEMPLATES.find(x=>x.id===id); if(!t) return
+    const t=tplTemplates.find(x=>x.id===id); if(!t) return
     setActiveTpl(id); setSubject(t.subject); setPreheader(t.preheader||''); setGreeting(t.greeting); setCtaText(t.ctaText||''); setCtaUrl(t.ctaUrl||'')
     if(edRef.current) edRef.current.innerHTML=t.body.split('\n\n').map(p=>'<p>'+p.replace(/\n/g,'<br>')+'</p>').join('')
   }
@@ -221,12 +226,12 @@ export default function OutreachCRM({ adminKey }) {
   }
 
   const prevC = contacts.find(c=>c._id===prevId)
-  const prevHTML = buildEmailHTML({subject,preheader,greeting,body:getBody()||(TEMPLATES.find(t=>t.id===activeTpl)?.body||''),ctaText,ctaUrl,contactName:prevC?.name||'John Smith',accentColor:accent,signature:sig})
+  const prevHTML = buildEmailHTML({subject,preheader,greeting,body:getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||''),ctaText,ctaUrl,contactName:prevC?.name||'John Smith',accentColor:accent,signature:sig})
 
   async function sendToSel() {
     if(!selIds.size){flash('Select contacts first',false);return}
     setSending(true); setSendRes(null)
-    const body=getBody()||(TEMPLATES.find(t=>t.id===activeTpl)?.body||'')
+    const body=getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||'')
     const targets=contacts.filter(c=>selIds.has(c._id)&&c.email)
     let sent=0,failed=0
     for(const c of targets){
@@ -553,33 +558,132 @@ export default function OutreachCRM({ adminKey }) {
 
       {/* TEMPLATES */}
       {view==='templates'&&<div style={{flex:1,display:'flex',overflow:'hidden'}}>
-        <div style={{width:260,borderRight:'1px solid #1a1f2e',overflowY:'auto',padding:12}}>
-          <div style={{fontFamily:BARLOW,fontSize:11,fontWeight:700,color:'#4b5563',letterSpacing:'.06em',textTransform:'uppercase',marginBottom:9}}>{TEMPLATES.length} Templates</div>
-          {TEMPLATES.map(t=>{const tm=TYPE_META[t.cat]||TYPE_META.other;return(
-            <div key={t.id} className={'tpl-chip'+(activeTpl===t.id?' on':'')} style={{marginBottom:6}} onClick={()=>{setActiveTpl(t.id);applyTpl(t.id)}}>
-              <div style={{display:'flex',justifyContent:'space-between',marginBottom:2}}>
-                <span style={{fontFamily:BARLOW,fontSize:12,fontWeight:700,color:activeTpl===t.id?GOLD:'#e5e7eb'}}>{t.name}</span>
-                <span style={{fontSize:11}}>{tm.icon}</span>
+
+        {/* ── LEFT: template list ── */}
+        <div style={{width:240,borderRight:'1px solid #1a1f2e',overflowY:'auto',background:'#0A0B0C',flexShrink:0}}>
+          <div style={{padding:'10px 14px 8px',borderBottom:'1px solid #1a1f2e',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+            <span style={{fontFamily:BARLOW,fontSize:11,fontWeight:700,color:'#4b5563',letterSpacing:'.06em',textTransform:'uppercase'}}>{tplTemplates.length} Templates</span>
+            {tplDirty&&<span style={{fontFamily:MONO,fontSize:9,color:'#f59e0b'}}>● unsaved</span>}
+          </div>
+          <div style={{padding:10}}>
+            {tplTemplates.map(t=>{const tm=TYPE_META[t.cat]||TYPE_META.other;const active=activeTpl===t.id;return(
+              <div key={t.id} onClick={()=>tplLoad(t.id)}
+                style={{padding:'8px 10px',marginBottom:4,border:'1px solid '+(active?GOLD:'#1a1f2e'),background:active?'rgba(200,146,42,.08)':'#111318',cursor:'pointer',transition:'all .1s'}}>
+                <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:3}}>
+                  <span style={{fontFamily:BARLOW,fontSize:12,fontWeight:700,color:active?GOLD:'#e5e7eb',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:160}}>{t.name}</span>
+                  <span style={{fontSize:12,flexShrink:0}}>{tm.icon}</span>
+                </div>
+                <div style={{fontFamily:MONO,fontSize:9,color:'#4b5563',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.subject}</div>
               </div>
-              <div style={{fontFamily:MONO,fontSize:9,color:'#374151',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{t.subject}</div>
-            </div>
-          )})}
+            )})}
+          </div>
         </div>
-        <div style={{flex:1,overflowY:'auto',padding:20,background:'#050506'}}>
-          {(()=>{const t=TEMPLATES.find(x=>x.id===activeTpl);if(!t)return null;const html=buildEmailHTML({subject:t.subject,preheader:t.preheader,greeting:t.greeting,body:t.body,ctaText:t.ctaText,ctaUrl:t.ctaUrl,contactName:'John Smith'});return(
-            <><div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:14}}>
-              <div><div style={{fontFamily:BEBAS,fontSize:'1.2rem',color:GOLD}}>{t.name}</div><div style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{t.subject}</div></div>
-              <button className="crm-btn" onClick={()=>{applyTpl(t.id);setView('compose')}}>✍ Use Template</button>
+
+        {/* ── RIGHT: editor + preview ── */}
+        {tplEditing ? (
+          <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden',minWidth:0}}>
+
+            {/* top bar */}
+            <div style={{padding:'8px 16px',background:'#0A0B0C',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:10,flexShrink:0,flexWrap:'wrap'}}>
+              <span style={{fontFamily:BEBAS,fontSize:'1.1rem',color:GOLD,letterSpacing:'.06em'}}>{tplEditing.name}</span>
+              <div style={{flex:1}}/>
+              {tplSaved&&<span style={{fontFamily:MONO,fontSize:10,color:'#22c55e'}}>✓ saved</span>}
+              {tplDirty&&<span style={{fontFamily:MONO,fontSize:10,color:'#f59e0b'}}>● unsaved changes</span>}
+              <button className="ghost" style={{fontSize:11,padding:'5px 12px'}} onClick={()=>{tplLoad(activeTpl);setTplDirty(false)}}>↺ Reset</button>
+              <button className="ghost" style={{fontSize:11,padding:'5px 12px'}} onClick={()=>{applyTpl(activeTpl);setView('compose')}}>✍ Use in Compose</button>
+              <button className="crm-btn" style={{fontSize:11,padding:'7px 16px'}} disabled={!tplDirty} onClick={tplSave}>💾 Save Template</button>
             </div>
-            <div style={{background:'#fff',borderRadius:4,overflow:'hidden',boxShadow:'0 4px 24px rgba(0,0,0,.4)'}}>
-              <div style={{background:'#f3f4f6',padding:'7px 14px',borderBottom:'1px solid #e5e7eb',display:'flex',gap:5,alignItems:'center'}}>
-                {['#ef4444','#f59e0b','#22c55e'].map(c=><div key={c} style={{width:9,height:9,borderRadius:'50%',background:c}}/>)}
-                <span style={{fontFamily:MONO,fontSize:10,color:'#6b7280',marginLeft:7}}>{t.subject}</span>
+
+            <div style={{flex:1,display:'flex',overflow:'hidden'}}>
+
+              {/* editor col */}
+              <div style={{flex:'0 0 50%',display:'flex',flexDirection:'column',borderRight:'1px solid #1a1f2e',overflow:'hidden'}}>
+
+                {/* metadata fields */}
+                <div style={{background:'#0A0B0C',borderBottom:'1px solid #1a1f2e',flexShrink:0}}>
+                  {[
+                    {lbl:'Subject',    key:'subject',   ph:'Email subject line'},
+                    {lbl:'Preview',    key:'preheader', ph:'Preview / preheader text'},
+                    {lbl:'Greeting',   key:'greeting',  ph:'e.g. Hey {{firstName}},'},
+                    {lbl:'CTA Text',   key:'ctaText',   ph:'Button label'},
+                    {lbl:'CTA URL',    key:'ctaUrl',    ph:'https://'},
+                  ].map(({lbl,key,ph})=>(
+                    <div key={key} style={{display:'flex',alignItems:'center',borderBottom:'1px solid #0d1117',padding:'0 14px',minHeight:36}}>
+                      <span style={{fontFamily:MONO,fontSize:9,color:'#4b5563',letterSpacing:'.1em',textTransform:'uppercase',width:72,flexShrink:0}}>{lbl}</span>
+                      <input
+                        value={tplEditing[key]||''}
+                        placeholder={ph}
+                        onChange={e=>{setTplEditing(p=>({...p,[key]:e.target.value}));setTplDirty(true)}}
+                        style={{flex:1,background:'none',border:'none',color:'#e5e7eb',fontFamily:MONO,fontSize:12,padding:'8px 0',outline:'none'}}
+                      />
+                    </div>
+                  ))}
+                </div>
+
+                {/* rich body toolbar */}
+                <div style={{display:'flex',gap:1,padding:'5px 10px',background:'#050506',borderBottom:'1px solid #1a1f2e',flexWrap:'wrap',flexShrink:0}}>
+                  {[
+                    {lbl:'B',      cmd:'bold',        title:'Bold'},
+                    {lbl:'I',      cmd:'italic',       title:'Italic'},
+                    {lbl:'U',      cmd:'underline',    title:'Underline'},
+                    null,
+                    {lbl:'H2',     cmd:'h2',           title:'Heading'},
+                    {lbl:'¶',      cmd:'formatBlock p',title:'Paragraph'},
+                    null,
+                    {lbl:'•',      cmd:'ul',           title:'Bullet list'},
+                    {lbl:'🔗',    cmd:'link',          title:'Link'},
+                    {lbl:'—',      cmd:'divider',      title:'Divider'},
+                    null,
+                    {lbl:'{{fn}}', cmd:'var_fn',       title:'Insert {{firstName}}'},
+                    {lbl:'{{ch}}', cmd:'var_ch',       title:'Insert {{channelName}}'},
+                  ].map((btn,i)=>btn===null
+                    ? <div key={i} style={{width:1,background:'#1a1f2e',margin:'2px 3px',alignSelf:'stretch'}}/>
+                    : <button key={btn.cmd} title={btn.title} onClick={()=>{
+                        if(btn.cmd==='var_fn') { tplEdRef.current?.focus(); document.execCommand('insertText',false,'{{firstName}}') }
+                        else if(btn.cmd==='var_ch') { tplEdRef.current?.focus(); document.execCommand('insertText',false,'{{channelName}}') }
+                        else tplCmd(btn.cmd)
+                        setTplDirty(true)
+                      }}
+                      style={{background:'none',border:'1px solid transparent',color:'#6b7280',fontFamily:MONO,fontSize:11,fontWeight:700,padding:'4px 8px',cursor:'pointer',borderRadius:3}}>
+                      {btn.lbl}
+                    </button>
+                  )}
+                </div>
+
+                {/* body editor */}
+                <div
+                  ref={tplEdRef}
+                  contentEditable
+                  suppressContentEditableWarning
+                  data-placeholder="Write email body here…"
+                  onInput={()=>setTplDirty(true)}
+                  style={{flex:1,background:'#0d1117',color:'#d1d5db',fontSize:14,lineHeight:1.85,padding:'20px 24px',outline:'none',overflowY:'auto',fontFamily:'Arial,sans-serif'}}
+                />
               </div>
-              <iframe srcDoc={html} style={{width:'100%',height:580,border:'none'}} title="tpl"/>
-            </div></>
-          )})()}
-        </div>
+
+              {/* live preview col */}
+              <div style={{flex:'0 0 50%',display:'flex',flexDirection:'column',overflow:'hidden',background:'#050506'}}>
+                <div style={{padding:'6px 14px',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:8,flexShrink:0}}>
+                  <span style={{fontFamily:MONO,fontSize:9,color:'#4b5563',letterSpacing:'.1em',textTransform:'uppercase'}}>Live Preview</span>
+                  <div style={{flex:1}}/>
+                  {['#ef4444','#f59e0b','#22c55e'].map(c=><div key={c} style={{width:8,height:8,borderRadius:'50%',background:c}}/>)}
+                </div>
+                <div style={{flex:1,overflow:'hidden',background:'#fff'}}>
+                  <iframe
+                    key={tplDirty?'dirty':'clean'}
+                    srcDoc={buildEmailHTML({subject:tplEditing.subject,preheader:tplEditing.preheader,greeting:tplEditing.greeting,body:tplEditing.body,ctaText:tplEditing.ctaText,ctaUrl:tplEditing.ctaUrl,contactName:'John Smith'})}
+                    style={{width:'100%',height:'100%',border:'none'}}
+                    title="preview"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div style={{flex:1,display:'flex',alignItems:'center',justifyContent:'center',color:'#374151',fontFamily:MONO,fontSize:12}}>
+            ← Select a template to edit
+          </div>
+        )}
       </div>}
 
       {/* DUPS */}
