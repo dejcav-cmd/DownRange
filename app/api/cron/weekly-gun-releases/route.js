@@ -66,19 +66,91 @@ async function uploadImageToSanity(imageUrl, filename) {
   } catch { return null }
 }
 
-async function getImageForGun(brand, model, category) {
-  const modelQuery = `${brand} ${model} firearm gun`
-  const catQuery   = {
-    pistol:    'pistol handgun semi-automatic firearm shooting',
-    rifle:     'rifle AR-15 tactical semi-automatic shooting range',
-    shotgun:   'shotgun 12 gauge tactical pump semi-auto',
-    revolver:  'revolver stainless handgun 357 magnum',
-    suppressor:'gun suppressor silencer titanium firearm',
-    carbine:   'carbine rifle tactical compact shooting',
-  }[category] || 'firearm gun shooting range tactical'
+// Try to get the exact manufacturer product page image first
+async function scrapeManufacturerImage(brand, model, sourceUrl) {
+  const candidates = []
+  if (sourceUrl) candidates.push(sourceUrl)
 
-  // Try model-specific search first, then category
-  for (const query of [modelQuery, `${brand} ${category} gun`, catQuery]) {
+  // Build likely manufacturer URLs
+  const brandSlug = brand.toLowerCase().replace(/\s+/g, '').replace(/[^a-z0-9]/g, '')
+  const modelSlug = model.toLowerCase().replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '')
+  const brandUrls = {
+    'glock':       `https://us.glock.com/en/find-your-glock`,
+    'sig sauer':   `https://www.sigsauer.com/firearms`,
+    'smith & wesson': `https://www.smith-wesson.com/firearms`,
+    'ruger':       `https://www.ruger.com/products`,
+    'springfield armory': `https://www.springfield-armory.com/firearms`,
+    'fn america':  `https://fnamerica.com/products`,
+    'heckler & koch': `https://www.heckler-koch.com`,
+    'staccato':    `https://staccato2011.com`,
+    'taurus':      `https://www.taurususa.com`,
+    'mossberg':    `https://www.mossberg.com`,
+    'kimber':      `https://www.kimberamerica.com`,
+    'cz':          `https://cz-usa.com`,
+    'walther':     `https://www.waltherarms.com`,
+    'beretta':     `https://www.beretta.com`,
+    'silencerco':  `https://silencerco.com`,
+    'dead air':    `https://www.deadairsilencers.com`,
+    'maxim defense': `https://maximdefense.com`,
+    'daniel defense': `https://danieldefense.com`,
+  }
+  const brandKey = Object.keys(brandUrls).find(k => brand.toLowerCase().includes(k))
+  if (brandKey) candidates.push(brandUrls[brandKey])
+
+  for (const url of candidates.slice(0, 2)) {
+    try {
+      const r = await fetch(url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' },
+        signal: AbortSignal.timeout(8000),
+      })
+      if (!r.ok) continue
+      const html = await r.text()
+
+      // Look for product images in various patterns
+      const patterns = [
+        /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']>/i,
+        /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']>/i,
+        /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']>/i,
+        new RegExp(`<img[^>]+(?:alt|title)=["'][^"']*${model.split(' ')[0]}[^"']*["'][^>]+src=["']([^"']+\.(?:jpg|jpeg|png|webp))["']`, 'i'),
+        /<img[^>]+class=["'][^"']*(?:product|hero|feature|main)[^"']*["'][^>]+src=["']([^"']+\.(?:jpg|jpeg|png|webp))["'][^>]*>/i,
+      ]
+
+      for (const pat of patterns) {
+        const m = html.match(pat)
+        if (m?.[1]) {
+          let imgUrl = m[1].trim()
+          if (imgUrl.startsWith('//'))  imgUrl = 'https:' + imgUrl
+          if (imgUrl.startsWith('/'))   imgUrl = new URL(url).origin + imgUrl
+          if (imgUrl.match(/\.(jpg|jpeg|png|webp)/i) && imgUrl.length > 20 &&
+              !imgUrl.includes('logo') && !imgUrl.includes('favicon') && !imgUrl.includes('1x1')) {
+            console.log(`[RELEASES-CRON] Got mfr image: ${imgUrl.slice(0, 70)}`)
+            return imgUrl
+          }
+        }
+      }
+    } catch (e) {
+      console.log(`[RELEASES-CRON] Scrape failed for ${url}: ${e.message}`)
+    }
+  }
+  return null
+}
+
+async function getImageForGun(brand, model, category, sourceUrl) {
+  // Priority: 1. Manufacturer page OG/product image 2. Model-specific Pexels/Pixabay 3. Category fallback
+  const mfrImage = await scrapeManufacturerImage(brand, model, sourceUrl)
+  if (mfrImage) return mfrImage
+
+  const modelQuery = `${brand} ${model} gun firearm`
+  const catQuery   = {
+    pistol:    'pistol handgun semi-automatic firearm',
+    rifle:     'rifle semi-automatic tactical firearm',
+    shotgun:   'shotgun 12 gauge pump semi-auto firearm',
+    revolver:  'revolver stainless handgun magnum',
+    suppressor:'gun suppressor silencer titanium',
+    carbine:   'carbine rifle compact tactical',
+  }[category] || 'firearm gun tactical'
+
+  for (const query of [modelQuery, `${brand} ${category}`, catQuery]) {
     const img = await fetchPexels(query) || await fetchPixabay(query)
     if (img) return img
   }
@@ -194,7 +266,7 @@ export async function GET(req) {
       if (!body || body.length < 200) { stats.failed++; continue }
 
       // Get real image
-      const rawImgUrl = await getImageForGun(rel.brand, rel.model, rel.category)
+      const rawImgUrl = await getImageForGun(rel.brand, rel.model, rel.category, rel.sourceUrl)
       let imageUrl    = rawImgUrl || null
       if (rawImgUrl) {
         const slug    = slugify(`${rel.brand}-${rel.model}`)

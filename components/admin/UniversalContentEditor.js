@@ -339,10 +339,33 @@ export default function UniversalContentEditor({
         body: JSON.stringify({ action:'ai-write', id:item._id, type, topic }) })
       const d = await r.json()
       if (d.ok) {
-        await load()
+        resetSeed(); await load()
         flash('✅ Written by AI' + (d.imageUrl ? ' + image' : ''))
       } else flash('❌ ' + (d.error || 'AI failed'), 'error')
     } finally { setBusy(false) }
+  }
+
+  async function bulkAiRewrite() {
+    if (!confirm(`Rewrite ${checked.size} articles with AI? This overwrites existing body text.`)) return
+    setBusy(true)
+    let done = 0, failed = 0
+    const ids = [...checked]
+    setChecked(new Set())
+    for (const id of ids) {
+      const item = items.find(x => x._id === id)
+      if (!item || item.editorLocked) { failed++; continue }
+      flash(`⏳ Rewriting ${done + 1}/${ids.length}...`)
+      try {
+        const r = await fetch(api, { method:'POST', headers:{...H,'Content-Type':'application/json'},
+          body: JSON.stringify({ action:'ai-write', id, type, topic: item.title || item.brand + ' ' + item.model }) })
+        const d = await r.json()
+        if (d.ok) done++; else failed++
+      } catch { failed++ }
+      await new Promise(r => setTimeout(r, 800)) // rate limit
+    }
+    resetSeed(); await load()
+    setBusy(false)
+    flash(`✅ Rewrote ${done} articles${failed ? ` (${failed} failed)` : ''}`)
   }
 
   // ── Filtering + pagination ────────────────────────────────────────────────
@@ -486,6 +509,7 @@ export default function UniversalContentEditor({
             </span>
             <button className="uce-btn" onClick={() => bulkPublish(true)} disabled={busy} style={{ fontSize:10, padding:'5px 12px', background:'#14532d', borderColor:'#22c55e', color:'#22c55e' }}>▶ Publish {checked.size}</button>
             <button className="uce-ghost" onClick={() => bulkPublish(false)} disabled={busy} style={{ fontSize:10, padding:'5px 12px' }}>⏸ Unpublish {checked.size}</button>
+            <button className="uce-btn" onClick={bulkAiRewrite} disabled={busy} style={{ fontSize:10, padding:'5px 12px', background:'rgba(200,146,42,.15)', borderColor:'#C8922A', color:'#C8922A' }}>🤖 Rewrite {checked.size} with AI</button>
             <button className="uce-btn" onClick={() => bulkLock(true)} disabled={busy} style={{ fontSize:10, padding:'5px 12px' }}>🔒 Lock All</button>
             <button className="uce-ghost" onClick={() => bulkLock(false)} disabled={busy}>🔓 Unlock All</button>
             <button className="uce-del" onClick={bulkDelete} disabled={busy}>🗑 Delete {checked.size}</button>

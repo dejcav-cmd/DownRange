@@ -85,7 +85,7 @@ async function handler(req) {
 
   try {
     const [articles, blogs, releases, canada] = await Promise.all([
-      sanity.fetch(`*[_type=="newsArticle"    && !qualityReviewed && defined(title) && editorLocked != true]      | order(publishedAt desc)  [0...${BATCH}] { _id, title, body, summary, description, source }`),
+      sanity.fetch(`*[_type=="newsArticle" && (!qualityReviewed || body == null || body == "") && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH}] { _id, title, body, summary, description, source, externalUrl }`),
       sanity.fetch(`*[_type=="blogPost"       && !qualityReviewed && defined(title) && editorLocked != true]      | order(publishedAt desc)  [0...2]        { _id, title, body, excerpt }`),
       sanity.fetch(`*[_type=="firearmRelease" && !qualityReviewed && defined(brand) && editorLocked != true]      | order(_createdAt desc)   [0...2]        { _id, "title": brand+" "+model, body, summary, brand, model, caliber, msrp, category }`),
       sanity.fetch(`*[_type=="canadaContent"  && !qualityReviewed && defined(title) && editorLocked != true]      | order(_createdAt desc)   [0...2]        { _id, title, body, summary, type, status }`),

@@ -4,6 +4,7 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import BreakingTicker from '../../../components/layout/BreakingTicker'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
+import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 
 export const revalidate = 3600
 
@@ -39,7 +40,7 @@ export default async function ReleasePage({ params }) {
       }`,
       { slug: params.slug }
     ).catch(() => null),
-    sanity.fetch('*[_type=="breakingAlert" && !(_id in path("drafts.**"))][0...3]{headline,url}').catch(() => []),
+    fetchBreakingAlerts(3).catch(() => []),
     sanity.fetch(
       '*[_type=="firearmRelease" && slug.current!=$slug && approved==true] | order(publishedAt desc) [0...4]{_id,title,brand,model,slug,imageUrl,category,caliber,heroImage{asset->{url}}}',
       { slug: params.slug }
