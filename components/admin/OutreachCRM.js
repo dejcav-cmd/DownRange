@@ -161,6 +161,8 @@ export default function OutreachCRM({ adminKey }) {
   const [previewModal, setPreviewModal] = useState(null)  // null | { subject, html }
   const [testResult,   setTestResult]   = useState(null)
   const [testRunning,  setTestRunning]  = useState(false)
+  const [debugResult,  setDebugResult]  = useState(null)
+  const [debugRunning, setDebugRunning] = useState(false)
   const [tplEditing, setTplEditing] = useState(null)    // copy of template being edited
   const [tplDirty,   setTplDirty]   = useState(false)
   const [tplSaved,   setTplSaved]   = useState(false)
@@ -243,6 +245,20 @@ export default function OutreachCRM({ adminKey }) {
       setTestResult({ ok: false, exception: e.message })
     }
     setTestRunning(false)
+  }
+
+  async function runDebugSend(id) {
+    setDebugRunning(true); setDebugResult(null)
+    try {
+      const r = await fetch('/api/outreach/debug-send', {
+        method: 'POST', headers: H,
+        body: JSON.stringify(id ? { id } : {})
+      })
+      const d = await r.json()
+      setDebugResult(d)
+      if (d.ok) { loadQueue(); loadHistory() }
+    } catch(e) { setDebugResult({ ok: false, exception: e.message }) }
+    setDebugRunning(false)
   }
 
   // ── Contact CRUD ─────────────────────────────────────────────────────────
@@ -627,9 +643,42 @@ export default function OutreachCRM({ adminKey }) {
           <button className="ghost" style={{fontSize:10,padding:'4px 10px',borderColor:'#1a3a1a',color:'#22c55e'}} disabled={testRunning} onClick={runTestSend}>
             {testRunning ? '⏳ Testing…' : '🧪 Test Send'}
           </button>
+          <button className="ghost" style={{fontSize:10,padding:'4px 10px',borderColor:'#1a2a3a',color:'#3b82f6'}} disabled={debugRunning} onClick={()=>runDebugSend(null)}>
+            {debugRunning ? '⏳ Debugging…' : '🔬 Debug Send'}
+          </button>
           <button className="ghost" onClick={loadQueue} style={{marginLeft:4}}>↺</button>
           {qTab==='draft'&&queue.length>0&&<button className="crm-btn" style={{marginLeft:8}} onClick={()=>approve(queue.map(q=>q._id))}>✅ Approve All ({queue.length})</button>}
         </div>
+        {debugResult&&<div style={{padding:'12px 18px',borderBottom:'1px solid #1a1f2e',background:debugResult.ok?'rgba(59,130,246,.04)':'rgba(239,68,68,.05)',flexShrink:0,maxHeight:320,overflowY:'auto'}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
+            <span style={{fontFamily:BEBAS,fontSize:'1rem',color:debugResult.ok?'#3b82f6':'#ef4444',letterSpacing:'.06em'}}>
+              🔬 DEBUG TRACE — {debugResult.ok?'✅ SUCCESS':'❌ FAILED'}
+            </span>
+            <button onClick={()=>setDebugResult(null)} style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',fontSize:12}}>✕</button>
+          </div>
+          {(debugResult.steps||[]).map((s,i)=>(
+            <div key={i} style={{marginBottom:6,padding:'6px 10px',background:'#0d0e10',border:'1px solid',borderColor:s.result==='FAILED'||s.step==='EXCEPTION'?'rgba(239,68,68,.3)':s.result==='SUCCESS'?'rgba(34,197,94,.2)':'#1a1f2e'}}>
+              <div style={{fontFamily:MONO,fontSize:10,fontWeight:700,color:s.result==='FAILED'||s.step==='EXCEPTION'?'#ef4444':s.result==='SUCCESS'?'#22c55e':GOLD,marginBottom:3}}>
+                Step {s.step}: {s.label||s.step}  {s.result?`→ ${s.result}`:''}
+              </div>
+              {s.entry&&<div style={{fontFamily:MONO,fontSize:9,color:'#6b7280',lineHeight:1.8}}>
+                {Object.entries(s.entry).map(([k,v])=>(
+                  <span key={k} style={{marginRight:14,color:v===true||v===0||v===null||v==='null'?'#ef4444':'#6b7280'}}>
+                    {k}: <span style={{color:!v&&v!==0?'#ef4444':'#9ca3af'}}>{String(v)}</span>
+                  </span>
+                ))}
+              </div>}
+              {s.issues?.length>0&&<div style={{fontFamily:MONO,fontSize:10,color:'#f59e0b',marginTop:3}}>⚠ {s.issues.join(' · ')}</div>}
+              {s.resend_response&&<div style={{fontFamily:MONO,fontSize:10,color:'#9ca3af',marginTop:3}}>
+                Resend: {JSON.stringify(s.resend_response).slice(0,200)}
+              </div>}
+              {s.error&&<div style={{fontFamily:MONO,fontSize:10,color:'#ef4444',marginTop:3}}>{s.error}</div>}
+            </div>
+          ))}
+          {debugResult.exception&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',padding:'6px 10px',background:'rgba(239,68,68,.08)'}}>EXCEPTION: {debugResult.exception}</div>}
+          {debugResult.resend_error&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',padding:'6px 10px',background:'rgba(239,68,68,.08)'}}>RESEND ERROR: {JSON.stringify(debugResult.resend_error)}</div>}
+          {debugResult.ok&&<div style={{fontFamily:MONO,fontSize:11,color:'#22c55e',marginTop:6}}>✅ Sent → {debugResult.to} · ID: {debugResult.resend_id}</div>}
+        </div>}
         {testResult&&<div style={{padding:'10px 18px',borderBottom:'1px solid #1a1f2e',background:testResult.ok?'rgba(34,197,94,.05)':'rgba(239,68,68,.05)',flexShrink:0}}>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:6}}>
             <span style={{fontFamily:MONO,fontSize:11,fontWeight:700,color:testResult.ok?'#22c55e':'#ef4444'}}>
@@ -672,8 +721,11 @@ export default function OutreachCRM({ adminKey }) {
                 </div>
               </div>
               <div style={{display:'flex',flexDirection:'column',gap:5,minWidth:120}}>
-                {qTab==='draft'&&<><button className="crm-btn" style={{width:'100%',fontSize:11}} onClick={()=>approve([e._id])}>✅ Approve</button>
-                  <button className="ghost" style={{width:'100%',fontSize:10}} onClick={()=>skip(e._id)}>Skip</button></>}
+                {qTab==='draft'&&<>
+                  <button className="crm-btn" style={{width:'100%',fontSize:11}} onClick={()=>approve([e._id])}>✅ Approve</button>
+                  <button className="ghost" style={{width:'100%',fontSize:10,color:'#3b82f6',borderColor:'rgba(59,130,246,.3)'}} onClick={()=>runDebugSend(e._id)}>🔬 Debug</button>
+                  <button className="ghost" style={{width:'100%',fontSize:10}} onClick={()=>skip(e._id)}>Skip</button>
+                </>}
                 {qTab==='sent'&&<div style={{fontFamily:MONO,fontSize:9,color:'#22c55e',textAlign:'center'}}>✅ Sent<br/>{e.sentAt?new Date(e.sentAt).toLocaleDateString():''}</div>}
               </div>
             </div>)
