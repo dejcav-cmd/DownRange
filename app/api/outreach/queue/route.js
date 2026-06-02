@@ -239,7 +239,10 @@ export async function POST(req) {
             'Precedence':            'bulk',
           },
         })
-        if (error) throw new Error(error.message)
+        if (error) {
+          console.error('[OUTREACH SEND] Resend error for', entry.toEmail, ':', JSON.stringify(error))
+          throw new Error(error.message || JSON.stringify(error))
+        }
 
         await sanity.patch(id).set({
           status:     'sent',
@@ -254,9 +257,15 @@ export async function POST(req) {
 
         results.sent++
       } catch (err) {
-        await sanity.patch(id).set({ status: 'failed', error: err.message }).commit()
+        const errMsg = err.message || String(err)
+        console.error('[OUTREACH SEND] Failed to send to', entry.toEmail, ':', errMsg)
+        await sanity.patch(id).set({
+          status: 'failed',
+          error:  errMsg,
+          sentAt: new Date().toISOString(),
+        }).commit()
         results.failed++
-        results.errors.push({ id, error: err.message })
+        results.errors.push({ id, to: entry.toEmail, error: errMsg })
       }
       await new Promise(r => setTimeout(r, 400))
     }

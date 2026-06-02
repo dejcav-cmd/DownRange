@@ -97,7 +97,10 @@ export async function POST(req) {
       },
     })
 
-    if (error) throw new Error(error.message)
+    if (error) {
+      console.error('[OUTREACH DIRECT] Resend error for', contact.email, ':', JSON.stringify(error))
+      throw new Error(error.message || JSON.stringify(error))
+    }
 
     // Log to Sanity
     await sanity.create({

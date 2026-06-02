@@ -197,7 +197,7 @@ export default function OutreachCRM({ adminKey }) {
 
   const loadHistory=useCallback(async()=>{
     setLoadingH(true)
-    try { const r=await fetch('/api/outreach/history?limit=100',{headers:H}); const d=await r.json(); setHistory(d.history||d.entries||[]) } catch{}
+    try { const r=await fetch('/api/outreach/history?limit=200',{headers:H}); const d=await r.json(); setHistory(d.logs||d.history||d.entries||[]) } catch(e){ console.error('loadHistory failed',e) }
     setLoadingH(false)
   },[adminKey])
 
