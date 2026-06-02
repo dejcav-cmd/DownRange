@@ -4,13 +4,15 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
       GH_PAT: ${{ secrets.GH_PAT }}
-      CRON_SECRET: ${{ secrets.CRON_SECRET }}
+      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
+      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
     steps:
       - uses: actions/checkout@v4
-      - name: Run fix-placeholder-images + verify
+      - name: Fetch real images for gun releases
         run: python3 scripts/read-news-status.py
       - name: Delete international articles
         run: python3 scripts/cleanup-intl-articles.py
