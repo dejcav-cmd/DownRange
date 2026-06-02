@@ -137,6 +137,27 @@ export async function POST(req) {
   const body   = await req.json()
   const action = body.action
 
+  // ── DRAFT — store a pre-built email as a draft from the composer ────────────
+  if (action === 'draft') {
+    const { contactId, subject, html, toEmail, toName } = body
+    if (!contactId) return Response.json({ error: 'contactId required' }, { status: 400 })
+    if (!toEmail)   return Response.json({ error: 'toEmail required — add email to contact first' }, { status: 400 })
+    if (!subject)   return Response.json({ error: 'subject required' }, { status: 400 })
+
+    const doc = await sanity.create({
+      _type:    'outreachSendLog',
+      contact:  { _type: 'reference', _ref: contactId },
+      toEmail,
+      toName:   toName || '',
+      subject,
+      bodyHtml: html || '',
+      status:   'draft',
+      draftedAt: new Date().toISOString(),
+    })
+
+    return Response.json({ ok: true, action: 'draft', id: doc._id, toEmail })
+  }
+
   // ── GENERATE — auto-draft for contacts ───────────────────────────────────────
   if (action === 'generate') {
     const { contactIds, templateId, filterType, filterState, limit = 50, skipContacted = true } = body

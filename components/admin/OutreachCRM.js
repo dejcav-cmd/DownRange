@@ -373,17 +373,34 @@ export default function OutreachCRM({ adminKey }) {
   async function queueDrafts(){
     if(!selIds.size){flash('Select contacts first',false);return}
     setSending(true)
-    try{
-      const r=await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'generate',contactIds:[...selIds],limit:selIds.size,skipContacted:false})})
-      const d=await r.json()
-      console.log('queueDrafts response',d)
-      if(!r.ok||d.error) { flash('Queue failed: '+(d.error||r.status), false); setSending(false); return }
-      if(d.created===0) flash('0 drafts created — contacts may already have pending drafts, or no template matched. Skipped: '+d.skipped, false)
-      else flash('📬 '+d.created+' draft'+(d.created!==1?'s':'')+' queued')
-      setSelIds(new Set())
-      loadQueue()
-    }catch(e){flash('Queue error: '+e.message,false)}
+    // Build the email from the currently composed subject/body/template — same as direct send
+    const body=getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||'')
+    const targets=contacts.filter(c=>selIds.has(c._id))
+    const noEmail=targets.filter(c=>!c.email)
+    if(noEmail.length) flash(`⚠ ${noEmail.length} contact${noEmail.length>1?'s':''} have no email: ${noEmail.map(c=>c.name).slice(0,3).join(', ')}`, false)
+    let created=0, failed=0, lastErr=''
+    for(const c of targets){
+      const html=buildEmailHTML({subject,preheader,greeting,body,ctaText,ctaUrl,contactName:c.firstName||c.name,accentColor:accent,signature:sig}).replace('{{unsubscribeUrl}}','https://downrangeco.com/api/outreach/unsubscribe?email='+encodeURIComponent(c.email||''))
+      const subj=subject.replace(/\{\{firstName\}\}/g,c.firstName||c.name?.split(' ')[0]||'').replace(/\{\{businessName\}\}/g,c.name||'').replace(/\{\{channelName\}\}/g,c.name||'')
+      try{
+        const r=await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({
+          action:'draft',
+          contactId:c._id,
+          subject:subj,
+          html,
+          toEmail:c.email||'',
+          toName:c.name||''
+        })})
+        const d=await r.json()
+        if(d.ok) created++
+        else { failed++; lastErr=d.error||'unknown'; }
+      }catch(e){failed++;lastErr=e.message}
+    }
     setSending(false)
+    setSelIds(new Set())
+    loadQueue()
+    if(failed>0) flash('❌ '+failed+' failed'+(lastErr?' — '+lastErr.slice(0,50):'')+(created?' · 📬 '+created+' queued':''), false)
+    else flash('📬 '+created+' draft'+(created!==1?'s':'')+' queued for approval')
   }
 
   async function approve(ids) {
