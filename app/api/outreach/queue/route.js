@@ -225,12 +225,19 @@ export async function POST(req) {
       if (!entry?.toEmail) { results.failed++; continue }
 
       try {
+        const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(entry.toEmail)}`
         const { data, error } = await getResend().emails.send({
-          from:    'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
+          from:    'DJ Cavalcanti <dj@downrangeco.com>',
           to:      [entry.toEmail],
           replyTo: 'dj@downrangeco.com',
           subject: entry.subject,
           html:    entry.bodyHtml,
+          headers: {
+            'List-Unsubscribe':      `<${unsubUrl}>, <mailto:dj@downrangeco.com?subject=unsubscribe>`,
+            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+            'X-Entity-Ref-ID':       entry._id || '',
+            'Precedence':            'bulk',
+          },
         })
         if (error) throw new Error(error.message)
 

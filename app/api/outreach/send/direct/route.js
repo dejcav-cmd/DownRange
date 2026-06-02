@@ -83,12 +83,18 @@ export async function POST(req) {
   const html = wrapEmail(body, contact)
 
   try {
+    const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email || '')}`
     const { data, error } = await getResend().emails.send({
-      from:    'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
+      from:    'DJ Cavalcanti <dj@downrangeco.com>',
       to:      [contact.email],
       replyTo: 'dj@downrangeco.com',
       subject,
       html,
+      headers: {
+        'List-Unsubscribe':      `<${unsubUrl}>, <mailto:dj@downrangeco.com?subject=unsubscribe>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+        'Precedence':            'bulk',
+      },
     })
 
     if (error) throw new Error(error.message)
