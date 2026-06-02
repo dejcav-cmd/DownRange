@@ -346,7 +346,7 @@ export default function OutreachCRM({ adminKey }) {
     {id:'compose',  icon:'✉',  lbl:'New'},
     {id:'contacts', icon:'👥', lbl:'People', badge:contacts.length||null},
     {id:'queue',    icon:'📬', lbl:'Queue',  badge:qStats.draft||null},
-    {id:'history',  icon:'📜', lbl:'Sent'},
+    {id:'history',  icon:'📜', lbl:'Sent',  badge: history.filter(h=>h.status==='failed').length||null, badgeColor:'#ef4444'},
     {id:'templates',icon:'📋', lbl:'Tpls'},
     {id:'dups',     icon:'⚠',  lbl:'Dups',  badge:dupGroups.length||null},
   ]
@@ -361,7 +361,7 @@ export default function OutreachCRM({ adminKey }) {
         <div style={{fontFamily:BEBAS,fontSize:'1rem',color:GOLD,letterSpacing:'.1em',marginBottom:8}}>DR</div>
         {NAV.map(n=>(
           <button key={n.id} className={'rail-btn'+(view===n.id?' on':'')} onClick={()=>setView(n.id)} title={n.lbl}>
-            {n.badge?<div className="rail-badge">{n.badge>99?'99+':n.badge}</div>:null}
+            {n.badge?<div className="rail-badge" style={{background:n.badgeColor||GOLD}}>{n.badge>99?'99+':n.badge}</div>:null}
             <div className="rail-icon">{n.icon}</div>
             <div className="rail-lbl">{n.lbl}</div>
           </button>
@@ -624,31 +624,127 @@ export default function OutreachCRM({ adminKey }) {
         </div>
       </div>}
 
-      {/* HISTORY */}
-      {view==='history'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-        <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:12}}>
-          <span style={{fontFamily:BEBAS,fontSize:'1.1rem',color:GOLD,letterSpacing:'.06em'}}>SEND HISTORY</span>
-          <button className="ghost" onClick={loadHistory}>↺</button>
+      {/* HISTORY / TRANSMISSION LOG */}
+      {view==='history'&&(()=>{
+        const LOG_STATUS = {
+          sent:      { color:'#22c55e',  label:'Sent',      icon:'✅' },
+          failed:    { color:'#ef4444',  label:'Failed',    icon:'❌' },
+          bounced:   { color:'#f97316',  label:'Bounced',   icon:'↩' },
+          opened:    { color:'#3b82f6',  label:'Opened',    icon:'👁' },
+          clicked:   { color:'#8b5cf6',  label:'Clicked',   icon:'🔗' },
+          replied:   { color:'#C8922A',  label:'Replied',   icon:'💬' },
+          skipped:   { color:'#6b7280',  label:'Skipped',   icon:'⏭' },
+          draft:     { color:'#4b5563',  label:'Draft',     icon:'📝' },
+          approved:  { color:'#f59e0b',  label:'Approved',  icon:'⏳' },
+        }
+        const hFailed  = history.filter(h=>h.status==='failed')
+        const hSent    = history.filter(h=>h.status==='sent')
+        const hOther   = history.filter(h=>!['sent','failed'].includes(h.status))
+        return(
+        <div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
+
+          {/* header bar */}
+          <div style={{padding:'9px 16px',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:10,flexWrap:'wrap',background:'#0A0B0C',flexShrink:0}}>
+            <span style={{fontFamily:BEBAS,fontSize:'1.1rem',color:GOLD,letterSpacing:'.06em'}}>TRANSMISSION LOG</span>
+            <div style={{flex:1}}/>
+            {hFailed.length>0&&<span style={{fontFamily:MONO,fontSize:10,color:'#ef4444',background:'rgba(239,68,68,.1)',border:'1px solid rgba(239,68,68,.3)',padding:'2px 8px'}}>❌ {hFailed.length} failed</span>}
+            <span style={{fontFamily:MONO,fontSize:10,color:'#22c55e'}}>✅ {hSent.length} sent</span>
+            <span style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{history.length} total</span>
+            <button className="ghost" style={{fontSize:10,padding:'4px 10px'}} onClick={loadHistory}>↺ Refresh</button>
+          </div>
+
+          {/* failed block — pinned at top if any */}
+          {hFailed.length>0&&<div style={{flexShrink:0,borderBottom:'1px solid rgba(239,68,68,.2)',background:'rgba(239,68,68,.03)'}}>
+            <div style={{padding:'6px 16px',background:'rgba(239,68,68,.08)',borderBottom:'1px solid rgba(239,68,68,.15)',display:'flex',alignItems:'center',gap:8}}>
+              <span style={{fontFamily:MONO,fontSize:9,fontWeight:700,color:'#ef4444',letterSpacing:'.1em',textTransform:'uppercase'}}>❌ Failed Transmissions ({hFailed.length})</span>
+            </div>
+            {hFailed.map(h=>{
+              const tm=TYPE_META[h.contact?.type]||TYPE_META.other
+              return(<div key={h._id} style={{padding:'10px 16px',borderBottom:'1px solid rgba(239,68,68,.1)',display:'grid',gridTemplateColumns:'1fr auto',gap:12,alignItems:'start'}}>
+                <div>
+                  <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}>
+                    <span style={{fontFamily:BARLOW,fontSize:13,fontWeight:700,color:'#e5e7eb'}}>{h.toName}</span>
+                    <span style={{fontFamily:MONO,fontSize:10,color:'#4b5563'}}>{h.toEmail}</span>
+                    <span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.icon} {tm.label}</span>
+                  </div>
+                  <div style={{fontFamily:MONO,fontSize:11,color:'#9ca3af',marginBottom:4}}>📧 {h.subject}</div>
+                  {h.error&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',background:'rgba(239,68,68,.08)',border:'1px solid rgba(239,68,68,.2)',padding:'6px 10px',marginTop:4}}>
+                    <span style={{color:'#6b7280'}}>ERROR: </span>{h.error}
+                  </div>}
+                  <div style={{fontFamily:MONO,fontSize:9,color:'#374151',marginTop:4}}>
+                    {h.sentAt?new Date(h.sentAt).toLocaleString():'—'}
+                    {h.resendId&&<span style={{marginLeft:8,color:'#4b5563'}}>Resend ID: {h.resendId}</span>}
+                  </div>
+                </div>
+                <button className="ghost" style={{fontSize:10,padding:'3px 8px',whiteSpace:'nowrap'}} onClick={()=>setPreviewModal({subject:h.subject,html:h.bodyHtml||'<p style="padding:20px;color:#999">No HTML body stored</p>'})}>👁 Preview</button>
+              </div>)
+            })}
+          </div>}
+
+          {/* all transmissions table */}
+          <div style={{flex:1,overflowY:'auto'}}>
+            {loadingH
+              ? <div style={{padding:60,textAlign:'center',fontFamily:MONO,fontSize:11,color:'#374151'}}>Loading…</div>
+              : history.length===0
+                ? <div style={{padding:60,textAlign:'center',fontFamily:MONO,fontSize:11,color:'#374151'}}>No transmission logs yet.</div>
+                : <table className="crm-table">
+                    <thead><tr>
+                      <th className="crm-th">Contact</th>
+                      <th className="crm-th">Subject</th>
+                      <th className="crm-th">Status</th>
+                      <th className="crm-th">Timestamp</th>
+                      <th className="crm-th">Error / ID</th>
+                      <th className="crm-th"/>
+                    </tr></thead>
+                    <tbody>
+                      {history.map(h=>{
+                        const tm=TYPE_META[h.contact?.type]||TYPE_META.other
+                        const ls=LOG_STATUS[h.status]||{color:'#6b7280',label:h.status,icon:'•'}
+                        const ts = h.sentAt||h.approvedAt||h.draftedAt
+                        return(
+                          <tr key={h._id} className="crm-tr" style={{background:h.status==='failed'?'rgba(239,68,68,.02)':''}}>
+                            <td className="crm-td">
+                              <div style={{display:'flex',alignItems:'center',gap:8}}>
+                                <div className="crm-avt" style={{width:24,height:24,background:tm.color+'22',color:tm.color,fontSize:9,flexShrink:0}}>
+                                  {(h.toName||'?').split(' ').map(w=>w[0]).slice(0,2).join('').toUpperCase()}
+                                </div>
+                                <div>
+                                  <div style={{fontFamily:BARLOW,fontSize:13,fontWeight:700,color:'#e5e7eb'}}>{h.toName||h.contact?.name}</div>
+                                  <div style={{fontFamily:MONO,fontSize:9,color:'#4b5563'}}>{h.toEmail}</div>
+                                </div>
+                              </div>
+                            </td>
+                            <td className="crm-td" style={{fontFamily:MONO,fontSize:11,color:'#9ca3af',maxWidth:220,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{h.subject}</td>
+                            <td className="crm-td">
+                              <span className="crm-badge" style={{background:ls.color+'22',color:ls.color}}>{ls.icon} {ls.label}</span>
+                            </td>
+                            <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280',whiteSpace:'nowrap'}}>
+                              {ts ? new Date(ts).toLocaleString() : '—'}
+                            </td>
+                            <td className="crm-td" style={{fontFamily:MONO,fontSize:10,maxWidth:200}}>
+                              {h.error
+                                ? <span style={{color:'#ef4444',fontSize:10}}>{h.error.slice(0,80)}{h.error.length>80?'…':''}</span>
+                                : h.resendId
+                                  ? <span style={{color:'#374151'}}>{h.resendId}</span>
+                                  : <span style={{color:'#1f2428'}}>—</span>
+                              }
+                            </td>
+                            <td className="crm-td">
+                              <button className="ghost" style={{fontSize:10,padding:'2px 7px'}}
+                                onClick={()=>setPreviewModal({subject:h.subject,html:h.bodyHtml||'<div style="padding:20px;color:#999;font-family:sans-serif">No HTML body stored for this entry.</div>'})}>
+                                👁
+                              </button>
+                            </td>
+                          </tr>
+                        )
+                      })}
+                    </tbody>
+                  </table>
+            }
+          </div>
         </div>
-        <div style={{flex:1,overflowY:'auto'}}>
-          <table className="crm-table">
-            <thead><tr><th className="crm-th">Contact</th><th className="crm-th">Subject</th><th className="crm-th">Sent</th><th className="crm-th">Type</th><th className="crm-th">Status</th></tr></thead>
-            <tbody>
-              {loadingH?<tr><td colSpan={5} className="crm-td" style={{textAlign:'center',color:'#374151',padding:40}}>Loading…</td></tr>
-              :history.length===0?<tr><td colSpan={5} className="crm-td" style={{textAlign:'center',color:'#374151',padding:40}}>No history yet.</td></tr>
-              :history.map(h=>{const tm=TYPE_META[h.contact?.type]||TYPE_META.other;return(
-                <tr key={h._id} className="crm-tr">
-                  <td className="crm-td"><div style={{fontFamily:BARLOW,fontSize:13,fontWeight:700}}>{h.toName||h.contact?.name}</div><div style={{fontFamily:MONO,fontSize:9,color:'#4b5563'}}>{h.toEmail}</div></td>
-                  <td className="crm-td" style={{fontFamily:MONO,fontSize:11,maxWidth:260,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{h.subject}</td>
-                  <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280',whiteSpace:'nowrap'}}>{h.sentAt?new Date(h.sentAt).toLocaleString():'—'}</td>
-                  <td className="crm-td"><span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.icon} {tm.label}</span></td>
-                  <td className="crm-td"><span className="crm-badge" style={{background:'rgba(34,197,94,.12)',color:'#22c55e'}}>Sent</span></td>
-                </tr>
-              )})}
-            </tbody>
-          </table>
-        </div>
-      </div>}
+        )
+      })()}
 
       {/* TEMPLATES */}
       {view==='templates'&&<div style={{flex:1,display:'flex',overflow:'hidden'}}>

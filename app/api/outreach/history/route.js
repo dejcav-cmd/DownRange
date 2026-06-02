@@ -48,8 +48,9 @@ export async function GET(req) {
   }
 
   const logs = await sanity.fetch(
-    `*[_type == "outreachSendLog"] | order(sentAt desc) [0...${limit}] {
-      _id, status, toEmail, toName, subject, sentAt, openedAt, clickedAt, repliedAt, error,
+    `*[_type == "outreachSendLog"] | order(_createdAt desc) [0...${limit}] {
+      _id, status, toEmail, toName, subject, bodyHtml, sentAt, draftedAt, approvedAt,
+      openedAt, clickedAt, repliedAt, error, resendId,
       contact->{ _id, name, type, youtubeUrl },
       campaign->{ _id, name, type }
     }`
