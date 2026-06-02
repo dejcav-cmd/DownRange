@@ -7,6 +7,7 @@ import NewsCard from '../components/ui/NewsCard'
 import WhatsHot from '../components/ui/WhatsHot'
 import StateHub from '../components/sections/StateHub'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
+import ReleaseCard from '../components/ui/ReleaseCard'
 import Link from 'next/link'
 import {
   fetchArticles, fetchBreakingAlerts,
@@ -264,6 +265,33 @@ export default async function HomePage() {
 
       {/* ════ MORE STORIES — magazine grid with photos + live updates ════ */}
       <LiveNewsGrid articles={gridArticles} />
+
+      {/* ════ LATEST GUN RELEASES ════ */}
+      {releases?.length > 0 && (
+        <section style={{ padding:'48px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)' }}>
+          <div className="container">
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:24 }}>
+              <div>
+                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:'0 0 4px' }}>
+                  🔫 LATEST GUN RELEASES
+                </h2>
+                <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.68rem', color:'#4B5563', margin:0 }}>
+                  New firearms · Just announced or shipping now
+                </p>
+              </div>
+              <a href="/releases" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.7rem', color:'#C8922A', textDecoration:'none', letterSpacing:'0.1em', border:'1px solid #C8922A40', padding:'6px 14px', whiteSpace:'nowrap' }}>
+                ALL RELEASES →
+              </a>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:16 }}>
+              {releases.slice(0, 5).map(rel => (
+                <ReleaseCard key={rel._id} rel={rel} />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       {/* ════ STATE HUB ════ */}
       <section style={{ padding:'40px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>

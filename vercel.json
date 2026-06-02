@@ -97,6 +97,10 @@
       "schedule": "0 * * * *"
     },
     {
+      "path": "/api/cron/weekly-gun-releases",
+      "schedule": "0 9 * * 1"
+    },
+    {
       "path": "/api/cron/ccw-update",
       "schedule": "0 5 * * 0"
     },

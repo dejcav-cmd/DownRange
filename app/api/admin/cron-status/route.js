@@ -37,6 +37,9 @@ export const ALL_JOBS = [
   { id:'gun-deals',        path:'/api/cron/gun-deals',              schedule:'0 */4 * * *',       label:'Gun Deals Feed',           group:'Content', icon:'💰', critical:false, desc:'Pulls gun.deals listings every 4 hrs' },
   { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'0 8,20 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
   { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'0 9,21 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
+  { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 9 * * 1',
+    label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
+    desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
   { id:'fix-images-intl',  path:'/api/admin/fix-images-intl',       schedule:'0 11 * * *',        label:'Intl Image Fixer',         group:'System',  icon:'🌐', critical:false, desc:'Fixes images on international content daily at 11am UTC' },
 ]
 

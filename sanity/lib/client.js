@@ -133,9 +133,9 @@ export async function fetchReviews(limit = 12, category = null) {
 
 export async function fetchReleases(limit = 20) {
   return client.fetch(`
-    *[_type == "firearmRelease"] | order(publishedAt desc) [0...${limit}] {
+    *[_type == "firearmRelease" && approved == true] | order(publishedAt desc) [0...${limit}] {
       _id, title, brand, model, caliber, action, category, msrp, publishedAt, isJustDropped,
-      heroImage { asset->{url}, alt },
+      slug, heroImage { asset->{url}, alt },
       imageUrl,
       summary, pressReleaseExcerpt, specs, sourceUrl, availableDate
     }
