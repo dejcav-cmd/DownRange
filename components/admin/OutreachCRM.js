@@ -7,7 +7,8 @@ const BEBAS  = "'Bebas Neue',cursive"
 const BARLOW = "'Barlow Condensed',sans-serif"
 
 const TYPE_META = {
-  youtuber:     { label:'YouTuber',     color:'#ef4444', icon:'▶' },
+  youtube_emerging: { label:'Emerging YouTuber (<150K)', color:'#f43f5e', icon:'📺' },
+  youtuber:         { label:'YouTuber',     color:'#ef4444', icon:'▶' },
   gun_shop:     { label:'Gun Shop',     color:'#f59e0b', icon:'🏪' },
   ffl_dealer:   { label:'FFL Dealer',   color:'#3b82f6', icon:'🛒' },
   manufacturer: { label:'Manufacturer', color:'#8b5cf6', icon:'🏭' },
