@@ -158,6 +158,7 @@ export default function OutreachCRM({ adminKey }) {
   const [contactModal, setContactModal] = useState(null)  // null | 'add' | contact-object (edit)
   const [cmForm, setCmForm] = useState({})
   const [cmSaving, setCmSaving] = useState(false)
+  const [previewModal, setPreviewModal] = useState(null)  // null | { subject, html }
   const [tplEditing, setTplEditing] = useState(null)    // copy of template being edited
   const [tplDirty,   setTplDirty]   = useState(false)
   const [tplSaved,   setTplSaved]   = useState(false)
@@ -604,10 +605,14 @@ export default function OutreachCRM({ adminKey }) {
                   <span className="crm-badge" style={{background:tm.color+'22',color:tm.color}}>{tm.icon}</span>
                 </div>
                 <div style={{fontFamily:MONO,fontSize:11,color:GOLD,marginBottom:7}}>📧 {e.subject}</div>
-                <div style={{background:'#fff',overflow:'hidden',maxHeight:150,border:'1px solid #1a1f2e'}}>
-                  <iframe srcDoc={e.bodyHtml} style={{width:'100%',height:150,border:'none',pointerEvents:'none'}} title="q"/>
+                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:4}}>
+                  <div style={{flex:1,fontFamily:MONO,fontSize:9,color:'#374151'}}>Drafted {e.draftedAt?new Date(e.draftedAt).toLocaleString():'—'}</div>
+                  <button className="ghost" style={{fontSize:10,padding:'3px 10px'}} onClick={()=>setPreviewModal({subject:e.subject,html:e.bodyHtml})}>👁 Full Preview</button>
                 </div>
-                <div style={{fontFamily:MONO,fontSize:9,color:'#374151',marginTop:5}}>Drafted {e.draftedAt?new Date(e.draftedAt).toLocaleString():'—'}</div>
+                <div style={{background:'#fff',overflow:'hidden',height:180,border:'1px solid #1a1f2e',position:'relative',cursor:'pointer'}} onClick={()=>setPreviewModal({subject:e.subject,html:e.bodyHtml})}>
+                  <iframe srcDoc={e.bodyHtml} style={{width:'100%',height:'100%',border:'none',pointerEvents:'none'}} title="q"/>
+                  <div style={{position:'absolute',inset:0,background:'transparent'}}/>
+                </div>
               </div>
               <div style={{display:'flex',flexDirection:'column',gap:5,minWidth:120}}>
                 {qTab==='draft'&&<><button className="crm-btn" style={{width:'100%',fontSize:11}} onClick={()=>approve([e._id])}>✅ Approve</button>
@@ -650,9 +655,20 @@ export default function OutreachCRM({ adminKey }) {
 
         {/* ── LEFT: template list ── */}
         <div style={{width:240,borderRight:'1px solid #1a1f2e',overflowY:'auto',background:'#0A0B0C',flexShrink:0}}>
-          <div style={{padding:'10px 14px 8px',borderBottom:'1px solid #1a1f2e',display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-            <span style={{fontFamily:BARLOW,fontSize:11,fontWeight:700,color:'#4b5563',letterSpacing:'.06em',textTransform:'uppercase'}}>{tplTemplates.length} Templates</span>
-            {tplDirty&&<span style={{fontFamily:MONO,fontSize:9,color:'#f59e0b'}}>● unsaved</span>}
+          <div style={{padding:'10px 14px 8px',borderBottom:'1px solid #1a1f2e',display:'flex',flexDirection:'column',gap:6}}>
+            <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
+              <span style={{fontFamily:BARLOW,fontSize:11,fontWeight:700,color:'#4b5563',letterSpacing:'.06em',textTransform:'uppercase'}}>{tplTemplates.length} Templates</span>
+              {tplDirty&&<span style={{fontFamily:MONO,fontSize:9,color:'#f59e0b'}}>● unsaved</span>}
+            </div>
+            <button className="ghost" style={{fontSize:10,padding:'4px 8px',width:'100%'}}
+              onClick={async()=>{
+                flash('Syncing templates to Sanity…')
+                const r=await fetch('/api/outreach/templates/seed?action=templates',{method:'POST',headers:H})
+                const d=await r.json()
+                flash(d.ok?`✅ ${d.templates?.updated||0} updated, ${d.templates?.created||0} created`:'Sync failed',d.ok)
+              }}>
+              ↑ Sync to Sanity
+            </button>
           </div>
           <div style={{padding:10}}>
             {tplTemplates.map(t=>{const tm=TYPE_META[t.cat]||TYPE_META.other;const active=activeTpl===t.id;return(
@@ -810,6 +826,17 @@ export default function OutreachCRM({ adminKey }) {
 
     {/* Toast */}
     {toast&&<div className="crm-toast" style={{borderLeftColor:toast.ok?GOLD:'#ef4444'}}>{toast.msg}</div>}
+
+    {/* ── Email Full Preview Modal ── */}
+    {previewModal&&<div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.85)',zIndex:1001,display:'flex',flexDirection:'column'}} onClick={e=>{if(e.target===e.currentTarget)setPreviewModal(null)}}>
+      <div style={{background:'#0A0B0C',borderBottom:'1px solid #1a1f2e',padding:'10px 20px',display:'flex',alignItems:'center',gap:12,flexShrink:0}}>
+        <span style={{fontFamily:MONO,fontSize:11,color:GOLD,flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>📧 {previewModal.subject}</span>
+        <button onClick={()=>setPreviewModal(null)} style={{background:'none',border:'1px solid #1a1f2e',color:'#9ca3af',cursor:'pointer',padding:'4px 12px',fontFamily:MONO,fontSize:11}}>✕ Close</button>
+      </div>
+      <div style={{flex:1,background:'#f3f4f6',overflow:'auto'}}>
+        <iframe srcDoc={previewModal.html} style={{width:'100%',height:'100%',border:'none'}} title="full-preview"/>
+      </div>
+    </div>}
 
     {/* ── Contact Add/Edit Modal ── */}
     {contactModal&&<div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.7)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={e=>{if(e.target===e.currentTarget)setContactModal(null)}}>

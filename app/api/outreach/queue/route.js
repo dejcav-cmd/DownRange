@@ -175,9 +175,11 @@ export async function POST(req) {
       let tmpl = templateId ? templateMap[templateId] : null
       if (!tmpl) {
         const preferredNames = TYPE_TO_TEMPLATE[contact.type] || TYPE_TO_TEMPLATE.other
-        tmpl = templates.find(t => preferredNames.some(n => t.name.includes(n.split(' — ')[0])))
+        // Match full name first, then partial, then type, then fallback
+        tmpl = templates.find(t => preferredNames.some(n => t.name === n))
+          || templates.find(t => preferredNames.some(n => t.name.startsWith(n.split(' — ')[0]) && t.name.includes('Introduction')))
+          || templates.find(t => t.type === contact.type && t.name.includes('Introduction'))
           || templates.find(t => t.type === contact.type)
-          || templates.find(t => t.type === 'generic')
           || templates[0]
       }
       if (!tmpl) { skipped++; continue }
