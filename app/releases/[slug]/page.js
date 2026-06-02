@@ -54,7 +54,7 @@ export default async function ReleasePage({ params }) {
   const specRows = release.specs?.length > 0 ? release.specs : [
     release.caliber     && { label:'Caliber',    value: release.caliber },
     release.action      && { label:'Action',     value: release.action },
-    release.msrp        && { label:'MSRP',       value: '$' + Number(release.msrp).toLocaleString() },
+    release.msrp        && { label:'MSRP',       value: typeof release.msrp === 'number' ? '$' + release.msrp.toLocaleString() : String(release.msrp) },
     release.category    && { label:'Category',   value: release.category },
     release.availableDate && { label:'Available', value: release.availableDate },
   ].filter(Boolean)
@@ -114,7 +114,7 @@ export default async function ReleasePage({ params }) {
             <div style={{ display:'flex', gap:16, flexWrap:'wrap', alignItems:'center' }}>
               {release.msrp && (
                 <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:'#C8922A', letterSpacing:'.05em' }}>
-                  ${Number(release.msrp).toLocaleString()}
+                  {typeof release.msrp === 'number' ? `$${release.msrp.toLocaleString()}` : release.msrp}
                 </span>
               )}
               {release.sourceUrl && (
@@ -193,9 +193,7 @@ export default async function ReleasePage({ params }) {
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))', gap:12 }}>
                 {related.map(r => (
                   <a key={r._id} href={'/releases/' + r.slug?.current}
-                    style={{ textDecoration:'none', display:'block', background:'var(--bg2)', border:'1px solid var(--border)', overflow:'hidden', transition:'border-color .15s' }}
-                    onMouseEnter={e => e.currentTarget.style.borderColor='#C8922A'}
-                    onMouseLeave={e => e.currentTarget.style.borderColor='var(--border)'}>
+                    style={{ textDecoration:'none', display:'block', background:'var(--bg2)', border:'1px solid var(--border)', overflow:'hidden' }}>
                     <div style={{ height:120, overflow:'hidden', background:'#111' }}>
                       <img src={r.heroImage?.asset?.url || r.imageUrl || ''} alt={r.model}
                         style={{ width:'100%', height:'100%', objectFit:'cover', opacity:.8 }} />
