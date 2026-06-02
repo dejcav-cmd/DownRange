@@ -159,6 +159,8 @@ export default function OutreachCRM({ adminKey }) {
   const [cmForm, setCmForm] = useState({})
   const [cmSaving, setCmSaving] = useState(false)
   const [previewModal, setPreviewModal] = useState(null)  // null | { subject, html }
+  const [testResult,   setTestResult]   = useState(null)
+  const [testRunning,  setTestRunning]  = useState(false)
   const [tplEditing, setTplEditing] = useState(null)    // copy of template being edited
   const [tplDirty,   setTplDirty]   = useState(false)
   const [tplSaved,   setTplSaved]   = useState(false)
@@ -227,6 +229,20 @@ export default function OutreachCRM({ adminKey }) {
       .replace(/<br\s*\/?>/gi,'\n').replace(/<hr[^>]*>/gi,'\n---\n')
       .replace(/<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/gi,'$2 ($1)')
       .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').trim()
+  }
+
+  // ── Test send ────────────────────────────────────────────────────────────
+  async function runTestSend() {
+    setTestRunning(true)
+    setTestResult(null)
+    try {
+      const r = await fetch('/api/outreach/test-send', { method:'POST', headers:H })
+      const d = await r.json()
+      setTestResult(d)
+    } catch(e) {
+      setTestResult({ ok: false, exception: e.message })
+    }
+    setTestRunning(false)
   }
 
   // ── Contact CRUD ─────────────────────────────────────────────────────────
@@ -601,16 +617,37 @@ export default function OutreachCRM({ adminKey }) {
 
       {/* QUEUE */}
       {view==='queue'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
-        <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',gap:0,alignItems:'center'}}>
+        <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',gap:0,alignItems:'center',flexWrap:'wrap'}}>
           {['draft','approved','sent','skipped'].map(s=>(
             <button key={s} onClick={()=>setQTab(s)} style={{background:'none',border:'none',borderBottom:'2px solid',borderBottomColor:qTab===s?GOLD:'transparent',fontFamily:BARLOW,fontSize:12,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'8px 14px',cursor:'pointer',color:qTab===s?GOLD:'#4b5563'}}>
               {s} {qStats[s]?<span style={{fontSize:10}}>({qStats[s]})</span>:null}
             </button>
           ))}
           <div style={{flex:1}}/>
-          <button className="ghost" onClick={loadQueue}>↺</button>
+          <button className="ghost" style={{fontSize:10,padding:'4px 10px',borderColor:'#1a3a1a',color:'#22c55e'}} disabled={testRunning} onClick={runTestSend}>
+            {testRunning ? '⏳ Testing…' : '🧪 Test Send'}
+          </button>
+          <button className="ghost" onClick={loadQueue} style={{marginLeft:4}}>↺</button>
           {qTab==='draft'&&queue.length>0&&<button className="crm-btn" style={{marginLeft:8}} onClick={()=>approve(queue.map(q=>q._id))}>✅ Approve All ({queue.length})</button>}
         </div>
+        {testResult&&<div style={{padding:'10px 18px',borderBottom:'1px solid #1a1f2e',background:testResult.ok?'rgba(34,197,94,.05)':'rgba(239,68,68,.05)',flexShrink:0}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:6}}>
+            <span style={{fontFamily:MONO,fontSize:11,fontWeight:700,color:testResult.ok?'#22c55e':'#ef4444'}}>
+              {testResult.ok ? '✅ Test send succeeded' : '❌ Test send failed'}
+            </span>
+            <button onClick={()=>setTestResult(null)} style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',fontSize:12}}>✕</button>
+          </div>
+          <div style={{fontFamily:MONO,fontSize:10,color:'#9ca3af',lineHeight:1.8}}>
+            {testResult.diag&&Object.entries(testResult.diag).map(([k,v])=>(
+              <span key={k} style={{marginRight:16,color:String(v).includes('MISSING')||v===false?'#ef4444':'#4b5563'}}>
+                {k}: <span style={{color:String(v).includes('MISSING')||v===false?'#ef4444':'#e5e7eb'}}>{String(v)}</span>
+              </span>
+            ))}
+          </div>
+          {testResult.resend_error&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',marginTop:6}}>Resend error: {JSON.stringify(testResult.resend_error)}</div>}
+          {testResult.exception&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',marginTop:6}}>Exception: {testResult.exception}</div>}
+          {testResult.ok&&<div style={{fontFamily:MONO,fontSize:11,color:'#22c55e',marginTop:4}}>Resend ID: {testResult.resend_id} — check dj@downrangeco.com</div>}
+        </div>}
         <div style={{flex:1,overflowY:'auto'}}>
           {loadingQ?<div style={{padding:60,textAlign:'center',fontFamily:MONO,fontSize:11,color:'#374151'}}>Loading…</div>
           :queue.length===0?<div style={{padding:60,textAlign:'center',fontFamily:MONO,fontSize:11,color:'#374151'}}>No {qTab} emails.</div>
