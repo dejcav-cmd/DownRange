@@ -348,20 +348,39 @@ export default function OutreachCRM({ adminKey }) {
     setSending(true); setSendRes(null)
     const body=getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||'')
     const targets=contacts.filter(c=>selIds.has(c._id)&&c.email)
-    let sent=0,failed=0
+    if(!targets.length){flash('No selected contacts have an email address',false);setSending(false);return}
+    let sent=0,failed=0,lastErr=''
     for(const c of targets){
       const html=buildEmailHTML({subject,preheader,greeting,body,ctaText,ctaUrl,contactName:c.firstName||c.name,accentColor:accent,signature:sig}).replace('{{unsubscribeUrl}}','https://downrangeco.com/api/outreach/unsubscribe?email='+encodeURIComponent(c.email))
       const subj=subject.replace(/\{\{firstName\}\}/g,c.firstName||c.name?.split(' ')[0]||'').replace(/\{\{businessName\}\}/g,c.name||'')
-      try{const r=await fetch('/api/outreach/send/direct',{method:'POST',headers:H,body:JSON.stringify({contactId:c._id,subject:subj,html,toEmail:c.email,toName:c.name})}); if((await r.json()).ok)sent++;else failed++}catch{failed++}
+      try{
+        const r=await fetch('/api/outreach/send/direct',{method:'POST',headers:H,body:JSON.stringify({contactId:c._id,subject:subj,html,toEmail:c.email,toName:c.name})})
+        const d=await r.json()
+        if(d.ok) sent++
+        else { failed++; lastErr=d.error||'unknown error'; console.error('send failed for',c.email,d) }
+      }catch(e){failed++;lastErr=e.message}
     }
-    setSendRes({sent,failed}); setSending(false); setSelIds(new Set())
-    flash('✅ '+sent+' sent'+(failed?' · ❌ '+failed+' failed':''))
+    setSendRes({sent,failed})
+    setSending(false)
+    setSelIds(new Set())
+    loadHistory()
+    if(failed>0) flash('❌ '+failed+' failed'+(lastErr?' — '+lastErr.slice(0,60):'')+(sent?' · ✅ '+sent+' sent':''), false)
+    else flash('✅ '+sent+' sent')
   }
 
   async function queueDrafts(){
     if(!selIds.size){flash('Select contacts first',false);return}
     setSending(true)
-    try{const r=await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'generate',contactIds:[...selIds],limit:selIds.size})}); const d=await r.json(); flash('📬 '+(d.created||0)+' drafts queued'); setSelIds(new Set())}catch{flash('Queue failed',false)}
+    try{
+      const r=await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'generate',contactIds:[...selIds],limit:selIds.size,skipContacted:false})})
+      const d=await r.json()
+      console.log('queueDrafts response',d)
+      if(!r.ok||d.error) { flash('Queue failed: '+(d.error||r.status), false); setSending(false); return }
+      if(d.created===0) flash('0 drafts created — contacts may already have pending drafts, or no template matched. Skipped: '+d.skipped, false)
+      else flash('📬 '+d.created+' draft'+(d.created!==1?'s':'')+' queued')
+      setSelIds(new Set())
+      loadQueue()
+    }catch(e){flash('Queue error: '+e.message,false)}
     setSending(false)
   }
 

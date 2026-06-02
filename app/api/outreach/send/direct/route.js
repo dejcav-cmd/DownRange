@@ -63,30 +63,48 @@ function wrapEmail(body, contact) {
 }
 
 // POST /api/outreach/send/direct
-// Body: { templateId, contactId }
+// Body: { contactId, subject, html, toEmail, toName } — pre-built from composer
+//   OR: { templateId, contactId } — legacy template-based
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { templateId, contactId } = await req.json()
-  if (!templateId || !contactId) return Response.json({ error: 'templateId and contactId required' }, { status: 400 })
+  const payload = await req.json()
+  const { contactId } = payload
 
-  const [template, contact] = await Promise.all([
-    sanity.fetch(`*[_type == "outreachTemplate" && _id == $id][0]`, { id: templateId }),
-    sanity.fetch(`*[_type == "outreachContact" && _id == $id][0]`, { id: contactId }),
-  ])
+  if (!contactId) return Response.json({ error: 'contactId required' }, { status: 400 })
 
-  if (!template) return Response.json({ error: 'Template not found' }, { status: 404 })
-  if (!contact)  return Response.json({ error: 'Contact not found' }, { status: 404 })
-  if (!contact.email) return Response.json({ error: 'Contact has no email address' }, { status: 400 })
+  // Fetch contact for logging (email/name fallback)
+  const contact = await sanity.fetch(`*[_type=="outreachContact" && _id==$id][0]`, { id: contactId })
+    .catch(() => null)
 
-  const { subject, body } = personalize(template, contact)
-  const html = wrapEmail(body, contact)
+  // Resolve email + name — prefer payload fields, fall back to contact doc
+  const toEmail = payload.toEmail || contact?.email
+  const toName  = payload.toName  || contact?.name  || ''
+
+  if (!toEmail) return Response.json({ error: 'No email address — contact has no email' }, { status: 400 })
+
+  // Resolve html + subject — prefer payload, fall back to template render
+  let subject = payload.subject || ''
+  let html    = payload.html    || ''
+
+  if ((!subject || !html) && payload.templateId) {
+    const template = await sanity.fetch(`*[_type=="outreachTemplate" && _id==$id][0]`, { id: payload.templateId })
+    if (template && contact) {
+      const p = personalize(template, contact)
+      subject = subject || p.subject
+      html    = html    || wrapEmail(p.body, contact)
+    }
+  }
+
+  if (!subject) return Response.json({ error: 'No subject — pass subject or templateId' }, { status: 400 })
+  if (!html)    html = '<p>No body provided.</p>'
 
   try {
     const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email || '')}`
+    const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(toEmail)}`
     const { data, error } = await getResend().emails.send({
       from:    'DJ Cavalcanti <dj@downrangeco.com>',
-      to:      [contact.email],
+      to:      [toEmail],
       replyTo: 'dj@downrangeco.com',
       subject,
       html,
@@ -98,37 +116,36 @@ export async function POST(req) {
     })
 
     if (error) {
-      console.error('[OUTREACH DIRECT] Resend error for', contact.email, ':', JSON.stringify(error))
+      console.error('[OUTREACH DIRECT] Resend error for', toEmail, ':', JSON.stringify(error))
       throw new Error(error.message || JSON.stringify(error))
     }
 
     // Log to Sanity
     await sanity.create({
-      _type: 'outreachSendLog',
+      _type:    'outreachSendLog',
       contact:  { _type: 'reference', _ref: contactId },
-      toEmail:  contact.email,
-      toName:   contact.name,
+      toEmail,
+      toName,
       subject,
+      bodyHtml: html,
       status:   'sent',
       resendId: data?.id || null,
       sentAt:   new Date().toISOString(),
     })
 
-    // Update last contacted
     await sanity.patch(contactId).set({ lastContactedAt: new Date().toISOString() }).commit()
 
-    return Response.json({ ok: true, resendId: data?.id, toEmail: contact.email })
+    return Response.json({ ok: true, resendId: data?.id, toEmail })
+
   } catch (err) {
-    // Log failed attempt
+    console.error('[OUTREACH DIRECT] Exception for', toEmail, ':', err.message)
     await sanity.create({
-      _type: 'outreachSendLog',
-      contact:  { _type: 'reference', _ref: contactId },
-      toEmail:  contact.email,
-      toName:   contact.name,
-      subject,
-      status:   'failed',
-      error:    err.message,
-      sentAt:   new Date().toISOString(),
+      _type:   'outreachSendLog',
+      contact: { _type: 'reference', _ref: contactId },
+      toEmail, toName, subject, bodyHtml: html,
+      status:  'failed',
+      error:   err.message,
+      sentAt:  new Date().toISOString(),
     }).catch(() => {})
 
     return Response.json({ ok: false, error: err.message }, { status: 500 })
