@@ -225,6 +225,51 @@ export default function OutreachCRM({ adminKey }) {
       .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').trim()
   }
 
+  // ── Template editor functions ─────────────────────────────────────────────
+  function tplLoad(id) {
+    const t = tplTemplates.find(x => x.id === id)
+    if (!t) return
+    setActiveTpl(id)
+    setTplEditing({ ...t })
+    setTplDirty(false)
+    setTplSaved(false)
+  }
+
+  function tplSave() {
+    if (!tplEditing) return
+    setTplTemplates(prev => prev.map(t => t.id === tplEditing.id ? { ...tplEditing } : t))
+    setTplDirty(false)
+    setTplSaved(true)
+    setTimeout(() => setTplSaved(false), 2500)
+    flash('Template saved for this session')
+  }
+
+  function tplCmd(cmd) {
+    if (!tplEditing) return
+    const sel = window.getSelection()
+    const selectedText = sel && !sel.isCollapsed ? sel.toString() : ''
+    let insert = ''
+    if (cmd === 'bold') insert = selectedText ? '**' + selectedText + '**' : '**bold text**'
+    else if (cmd === 'link') {
+      const url = prompt('URL:')
+      if (!url) return
+      insert = selectedText ? selectedText + ' (' + url + ')' : url
+    } else if (cmd === 'ul') insert = '\n\u2014 '
+    else if (cmd === 'divider') insert = '\n\n---\n\n'
+    else if (cmd === 'var_fn') insert = '{{firstName}}'
+    else if (cmd === 'var_ch') insert = '{{channelName}}'
+    if (insert) {
+      const ta = document.getElementById('tpl-body-editor')
+      if (!ta) return
+      const start = ta.selectionStart
+      const end = ta.selectionEnd
+      const newVal = tplEditing.body.slice(0, start) + insert + tplEditing.body.slice(end)
+      setTplEditing(p => ({ ...p, body: newVal }))
+      setTplDirty(true)
+      setTimeout(() => { ta.focus(); ta.setSelectionRange(start + insert.length, start + insert.length) }, 0)
+    }
+  }
+
   const prevC = contacts.find(c=>c._id===prevId)
   const prevHTML = buildEmailHTML({subject,preheader,greeting,body:getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||''),ctaText,ctaUrl,contactName:prevC?.name||'John Smith',accentColor:accent,signature:sig})
 
@@ -639,9 +684,7 @@ export default function OutreachCRM({ adminKey }) {
                   ].map((btn,i)=>btn===null
                     ? <div key={i} style={{width:1,background:'#1a1f2e',margin:'2px 3px',alignSelf:'stretch'}}/>
                     : <button key={btn.cmd} title={btn.title} onClick={()=>{
-                        if(btn.cmd==='var_fn') { tplEdRef.current?.focus(); document.execCommand('insertText',false,'{{firstName}}') }
-                        else if(btn.cmd==='var_ch') { tplEdRef.current?.focus(); document.execCommand('insertText',false,'{{channelName}}') }
-                        else tplCmd(btn.cmd)
+                        tplCmd(btn.cmd==='var_fn'?'var_fn':btn.cmd==='var_ch'?'var_ch':btn.cmd)
                         setTplDirty(true)
                       }}
                       style={{background:'none',border:'1px solid transparent',color:'#6b7280',fontFamily:MONO,fontSize:11,fontWeight:700,padding:'4px 8px',cursor:'pointer',borderRadius:3}}>
@@ -651,13 +694,13 @@ export default function OutreachCRM({ adminKey }) {
                 </div>
 
                 {/* body editor */}
-                <div
-                  ref={tplEdRef}
-                  contentEditable
-                  suppressContentEditableWarning
-                  data-placeholder="Write email body here…"
-                  onInput={()=>setTplDirty(true)}
-                  style={{flex:1,background:'#0d1117',color:'#d1d5db',fontSize:14,lineHeight:1.85,padding:'20px 24px',outline:'none',overflowY:'auto',fontFamily:'Arial,sans-serif'}}
+                <textarea
+                  id="tpl-body-editor"
+                  value={tplEditing?.body||''}
+                  onChange={e=>{setTplEditing(p=>({...p,body:e.target.value}));setTplDirty(true)}}
+                  placeholder="Write email body here…"
+                  spellCheck={false}
+                  style={{flex:1,background:'#0d1117',color:'#d1d5db',fontSize:13,lineHeight:1.85,padding:'20px 24px',outline:'none',resize:'none',border:'none',fontFamily:"'IBM Plex Mono',monospace",whiteSpace:'pre-wrap'}}
                 />
               </div>
 
