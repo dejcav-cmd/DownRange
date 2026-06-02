@@ -82,9 +82,9 @@ ${p(`That said, I’m also hoping this becomes the start of something more usefu
   ])}
 </div>
 ${p(`This is not a sponsorship request. I’m not asking you to promote something you don’t believe in. The audience that follows {{channelName}} is exactly who DownRange was built to serve — connecting them with quality creators and useful resources is the whole point.`)}
-${cta('https://www.downrangeco.com/video','See Your Channel on DownRange')}
+${cta('https://www.downrangeco.com','Visit DownRange')}
 ${hr()}
-${p(`If you’d like to explore working together, I’d love to hear from you. Thank you for your time, and for everything you do for the firearms community.<br><br>— DJ Cavalcanti<br><span style="font-size:13px;color:#9ca3af;">Founder, DownRange &nbsp;·&nbsp; <a href="https://www.downrangeco.com" style="color:${G};text-decoration:none;">downrangeco.com</a></span>`)}
+${p(`If you’d like to explore working together, I’d love to hear from you. Thank you for your time, and for everything you do for the firearms community.`)}
 `),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
