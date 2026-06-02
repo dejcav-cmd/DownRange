@@ -668,35 +668,37 @@ export default function OutreachCRM({ adminKey }) {
           <button className="ghost" onClick={loadQueue} style={{marginLeft:4}}>↺</button>
           {qTab==='draft'&&queue.length>0&&<button className="crm-btn" style={{marginLeft:8}} onClick={()=>approve(queue.map(q=>q._id))}>✅ Approve All ({queue.length})</button>}
         </div>
-        {debugResult&&<div style={{padding:'12px 18px',borderBottom:'1px solid #1a1f2e',background:debugResult.ok?'rgba(59,130,246,.04)':'rgba(239,68,68,.05)',flexShrink:0,maxHeight:320,overflowY:'auto'}}>
-          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:8}}>
-            <span style={{fontFamily:BEBAS,fontSize:'1rem',color:debugResult.ok?'#3b82f6':'#ef4444',letterSpacing:'.06em'}}>
-              🔬 DEBUG TRACE — {debugResult.ok?'✅ SUCCESS':'❌ FAILED'}
+        {debugResult&&<div style={{borderBottom:'1px solid #1a1f2e',background:'#050508',flexShrink:0,maxHeight:460,overflowY:'auto'}}>
+          <div style={{padding:'8px 16px',background:'#0A0B0C',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',gap:10,position:'sticky',top:0,zIndex:1}}>
+            <span style={{fontFamily:BEBAS,fontSize:'1rem',letterSpacing:'.06em',color:debugResult.ok?'#22c55e':'#ef4444'}}>
+              🔬 DEBUG LOG — {debugResult.ok?'✅ SUCCESS':'❌ FAILED'}
             </span>
-            <button onClick={()=>setDebugResult(null)} style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',fontSize:12}}>✕</button>
+            {debugResult.conclusion&&<span style={{fontFamily:MONO,fontSize:10,color:'#9ca3af',flex:1}}>{debugResult.conclusion}</span>}
+            <button onClick={()=>setDebugResult(null)} style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',fontSize:14,lineHeight:1}}>✕</button>
           </div>
-          {(debugResult.steps||[]).map((s,i)=>(
-            <div key={i} style={{marginBottom:6,padding:'6px 10px',background:'#0d0e10',border:'1px solid',borderColor:s.result==='FAILED'||s.step==='EXCEPTION'?'rgba(239,68,68,.3)':s.result==='SUCCESS'?'rgba(34,197,94,.2)':'#1a1f2e'}}>
-              <div style={{fontFamily:MONO,fontSize:10,fontWeight:700,color:s.result==='FAILED'||s.step==='EXCEPTION'?'#ef4444':s.result==='SUCCESS'?'#22c55e':GOLD,marginBottom:3}}>
-                Step {s.step}: {s.label||s.step}  {s.result?`→ ${s.result}`:''}
-              </div>
-              {s.entry&&<div style={{fontFamily:MONO,fontSize:9,color:'#6b7280',lineHeight:1.8}}>
-                {Object.entries(s.entry).map(([k,v])=>(
-                  <span key={k} style={{marginRight:14,color:v===true||v===0||v===null||v==='null'?'#ef4444':'#6b7280'}}>
-                    {k}: <span style={{color:!v&&v!==0?'#ef4444':'#9ca3af'}}>{String(v)}</span>
-                  </span>
-                ))}
-              </div>}
-              {s.issues?.length>0&&<div style={{fontFamily:MONO,fontSize:10,color:'#f59e0b',marginTop:3}}>⚠ {s.issues.join(' · ')}</div>}
-              {s.resend_response&&<div style={{fontFamily:MONO,fontSize:10,color:'#9ca3af',marginTop:3}}>
-                Resend: {JSON.stringify(s.resend_response).slice(0,200)}
-              </div>}
-              {s.error&&<div style={{fontFamily:MONO,fontSize:10,color:'#ef4444',marginTop:3}}>{s.error}</div>}
-            </div>
-          ))}
-          {debugResult.exception&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',padding:'6px 10px',background:'rgba(239,68,68,.08)'}}>EXCEPTION: {debugResult.exception}</div>}
-          {debugResult.resend_error&&<div style={{fontFamily:MONO,fontSize:11,color:'#ef4444',padding:'6px 10px',background:'rgba(239,68,68,.08)'}}>RESEND ERROR: {JSON.stringify(debugResult.resend_error)}</div>}
-          {debugResult.ok&&<div style={{fontFamily:MONO,fontSize:11,color:'#22c55e',marginTop:6}}>✅ Sent → {debugResult.to} · ID: {debugResult.resend_id}</div>}
+          <div style={{padding:'8px 12px',display:'flex',flexDirection:'column',gap:3}}>
+            {(debugResult.log||[]).map((entry,i)=>{
+              const isErr = entry.ok===false || entry.error
+              const isOk  = entry.ok===true
+              return(
+                <div key={i} style={{fontFamily:MONO,fontSize:10,padding:'5px 8px',background:isErr?'rgba(239,68,68,.06)':isOk?'rgba(34,197,94,.04)':'rgba(255,255,255,.02)',border:'1px solid',borderColor:isErr?'rgba(239,68,68,.25)':isOk?'rgba(34,197,94,.15)':'#1a1f2e',lineHeight:1.7}}>
+                  <div style={{display:'flex',gap:8,alignItems:'baseline'}}>
+                    <span style={{color:isErr?'#ef4444':isOk?'#22c55e':GOLD,fontWeight:700,minWidth:160}}>{entry.step}</span>
+                    <span style={{color:'#374151',fontSize:9}}>{entry.ts?.slice(11,23)}</span>
+                    {entry.ok!==undefined&&<span style={{color:isOk?'#22c55e':'#ef4444'}}>{isOk?'✅':'❌'}</span>}
+                  </div>
+                  {entry.error&&<div style={{color:'#ef4444',marginTop:2}}>ERROR: {entry.error}</div>}
+                  {entry.hint&&<div style={{color:'#f59e0b',marginTop:2}}>HINT: {entry.hint}</div>}
+                  {entry.issues?.length>0&&<div style={{color:'#f59e0b',marginTop:2}}>ISSUES: {entry.issues.join(' · ')}</div>}
+                  {entry.data!==undefined&&<div style={{color:'#6b7280',marginTop:2,whiteSpace:'pre-wrap',wordBreak:'break-all'}}>{JSON.stringify(entry.data,null,0).slice(0,400)}</div>}
+                  {entry.id!==undefined&&<div style={{color:'#9ca3af',marginTop:2}}>id: {String(entry.id)}</div>}
+                  {entry.toEmail&&<div style={{color:'#9ca3af',marginTop:2}}>toEmail: {entry.toEmail} · sendable: {String(entry.sendable)}</div>}
+                  {entry.chars!==undefined&&<div style={{color:'#9ca3af',marginTop:2}}>bodyHtml: {entry.chars} chars · source: {entry.source}</div>}
+                  {entry.stack&&<div style={{color:'#7f1d1d',marginTop:2,fontSize:9}}>{entry.stack}</div>}
+                </div>
+              )
+            })}
+          </div>
         </div>}
         {testResult&&<div style={{padding:'10px 18px',borderBottom:'1px solid #1a1f2e',background:testResult.ok?'rgba(34,197,94,.05)':'rgba(239,68,68,.05)',flexShrink:0}}>
           <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:6}}>
