@@ -33,7 +33,21 @@ function buildEmailHTML({ subject, preheader, greeting, body, ctaText, ctaUrl, c
   const g  = (greeting||'Hi {{firstName}},').replace(/\{\{firstName\}\}/g, fn)
   const b  = (body||'').replace(/\{\{firstName\}\}/g, fn)
   const cta = ctaText && ctaUrl ? `<table cellpadding="0" cellspacing="0" style="margin:32px 0 0;"><tr><td style="background:${accentColor};padding:0;"><a href="${ctaUrl}" style="display:inline-block;padding:14px 36px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#000;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;">${ctaText} &rarr;</a></td></tr></table>` : ''
-  const sig = signature ? `<div style="margin-top:12px;font-size:13px;color:#9ca3af;line-height:1.7;white-space:pre-line;">${signature}</div>` : `<div style="margin-top:12px;"><p style="font-size:14px;color:#9ca3af;line-height:1.7;margin:0 0 2px;">&mdash; ${senderName}</p><p style="font-size:11px;color:#4b5563;margin:0;">Founder, DownRange &middot; <a href="https://downrangeco.com" style="color:${accentColor};text-decoration:none;">downrangeco.com</a></p></div>`
+  const sig = signature
+    ? `<div style="margin-top:12px;font-size:13px;color:#9ca3af;line-height:1.7;white-space:pre-line;">${signature}</div>`
+    : `<table cellpadding="0" cellspacing="0" style="margin-top:16px;border-top:1px solid #1f2428;padding-top:16px;">
+        <tr>
+          <td style="vertical-align:middle;padding-right:14px;">
+            <img src="https://downrangeco.com/img/dj-avatar.png" alt="DJ Cavalcanti" width="48" height="48"
+              style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid ${accentColor};">
+          </td>
+          <td style="vertical-align:middle;">
+            <div style="font-size:14px;font-weight:700;color:#e5e7eb;margin-bottom:2px;">${senderName}</div>
+            <div style="font-size:12px;color:#6b7280;margin-bottom:4px;">Founder, DownRange</div>
+            <a href="https://downrangeco.com" style="font-size:12px;color:${accentColor};text-decoration:none;font-weight:600;">downrangeco.com</a>
+          </td>
+        </tr>
+      </table>`
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${subject||'DownRange'}</title></head><body style="margin:0;padding:0;background:#09090B;font-family:Arial,Helvetica,sans-serif;">${preheader?`<div style="display:none;max-height:0;overflow:hidden;">${preheader}</div>`:''}<table width="100%" cellpadding="0" cellspacing="0" style="background:#09090B;padding:32px 16px;"><tr><td align="center"><table width="600" cellpadding="0" cellspacing="0" style="background:#0A0B0C;border:1px solid #1f2428;max-width:600px;width:100%;"><tr><td style="background:#0d0e10;border-bottom:3px solid ${accentColor};padding:20px 36px;"><img src="https://downrangeco.com/img/logo-banner.png" alt="DownRange" width="480" height="auto" style="display:block;height:auto;max-height:58px;width:auto;max-width:100%;"></td></tr><tr><td style="padding:32px 36px 24px;"><p style="font-size:15px;color:#9ca3af;line-height:1.8;margin:0 0 18px;">${g}</p><div style="font-size:15px;color:#d1d5db;line-height:1.9;font-size:15px;color:#d1d5db;line-height:1.9;">${b.split(\'\\n\\n\').filter(Boolean).map(p => \'<p style="margin:0 0 16px;font-size:15px;color:#d1d5db;line-height:1.9;">\' + p.replace(/\\n/g, \'<br>\') + \'</p>\').join(\'\')}</div>${cta}<div style="margin-top:32px;padding-top:20px;border-top:1px solid #1f2428;">${sig}</div></td></tr><tr><td style="padding:0 36px;"><div style="height:1px;background:linear-gradient(90deg,${accentColor}22,${accentColor},${accentColor}22);"></div></td></tr><tr><td style="padding:16px 36px 24px;background:#050506;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:10px;color:#374151;line-height:1.7;">DownRange Media LLC &middot; America's Firearms Intelligence Hub<br><a href="https://downrangeco.com/press" style="color:${accentColor};text-decoration:none;">Press Kit</a> &nbsp;&middot;&nbsp; <a href="https://downrangeco.com" style="color:#4b5563;text-decoration:none;">downrangeco.com</a></td><td align="right" style="vertical-align:bottom;"><a href="{{unsubscribeUrl}}" style="color:#374151;text-decoration:none;font-size:9px;letter-spacing:.08em;">Unsubscribe</a></td></tr></table></td></tr></table></td></tr></table></body></html>`
 }
 
