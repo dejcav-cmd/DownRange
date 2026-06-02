@@ -8,11 +8,10 @@ jobs:
     env:
       SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
       GH_PAT: ${{ secrets.GH_PAT }}
-      PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
-      PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+      ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
     steps:
       - uses: actions/checkout@v4
-      - name: Fetch real images for gun releases
-        run: python3 scripts/read-news-status.py
+      - name: Write Virginia article
+        run: python3 scripts/write-virginia-article.py
       - name: Delete international articles
         run: python3 scripts/cleanup-intl-articles.py
