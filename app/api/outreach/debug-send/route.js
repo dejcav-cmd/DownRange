@@ -10,8 +10,6 @@ const sanity = createClient({
 
 function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN_KEY }
 
-// POST /api/outreach/debug-send
-// Pass { id } = a specific outreachSendLog _id, OR omit to use the first draft
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -20,81 +18,87 @@ export async function POST(req) {
   let { id }  = body
 
   try {
-    // STEP 1: find the entry
-    steps.push({ step: 1, label: 'Find entry in Sanity' })
+    // ── STEP 1: find first draft id ───────────────────────────────────────
+    steps.push({ step:1, label:'Find draft entry' })
     if (!id) {
-      const first = await sanity.fetch(
-        `*[_type=="outreachSendLog" && status=="draft"] | order(_createdAt desc) [0]._id`
-      )
-      id = first
-      steps[0].found_id = id
+      id = await sanity.fetch(`*[_type=="outreachSendLog" && status=="draft"][0]._id`)
     }
-    if (!id) return Response.json({ ok: false, steps, error: 'No draft entries in Sanity' })
+    steps[0].id = id || 'NONE'
+    if (!id) return Response.json({ ok:false, steps, error:'No draft entries found in Sanity' })
 
-    // STEP 2: fetch full entry
-    steps.push({ step: 2, label: 'Fetch full entry' })
-    const entry = await sanity.fetch(
-      `*[_type=="outreachSendLog" && _id==$id][0] {
-        _id, status, toEmail, toName, subject, bodyHtml,
-        contact->{ _id, name, firstName, type, email },
-        template->{ _id, name }
-      }`,
+    // ── STEP 2: fetch raw doc — NO joins ──────────────────────────────────
+    steps.push({ step:2, label:'Fetch raw doc (no joins)' })
+    const raw = await sanity.fetch(
+      `*[_type=="outreachSendLog" && _id==$id][0]`,
       { id }
     )
-    steps[1].entry = {
-      _id:             entry?._id,
-      status:          entry?.status,
-      toEmail:         entry?.toEmail,
-      toName:          entry?.toName,
-      subject:         entry?.subject,
-      bodyHtml_length: entry?.bodyHtml?.length || 0,
-      bodyHtml_null:   !entry?.bodyHtml,
-      contact_id:      entry?.contact?._id,
-      contact_email:   entry?.contact?.email,
-      template_name:   entry?.template?.name,
+    steps[1].raw = {
+      _id:            raw?._id,
+      status:         raw?.status,
+      toEmail:        raw?.toEmail,
+      toName:         raw?.toName,
+      subject:        raw?.subject,
+      bodyHtml_chars: raw?.bodyHtml?.length ?? 'NULL',
+      contact_ref:    raw?.contact?._ref || 'MISSING',
+      template_ref:   raw?.template?._ref || 'MISSING',
     }
-    if (!entry) return Response.json({ ok: false, steps, error: 'Entry not found in Sanity for id: ' + id })
+    if (!raw) return Response.json({ ok:false, steps, error:'Doc not found for id: '+id })
 
-    // STEP 3: validate fields
-    steps.push({ step: 3, label: 'Validate fields' })
-    const issues = []
-    if (!entry.toEmail)   issues.push('toEmail is empty')
-    if (!entry.subject)   issues.push('subject is empty')
-    if (!entry.bodyHtml)  issues.push('bodyHtml is null/empty — will send blank email')
-    steps[2].issues = issues
-    steps[2].will_send = entry.toEmail && entry.subject
+    // ── STEP 3: validate toEmail ──────────────────────────────────────────
+    steps.push({ step:3, label:'Validate toEmail' })
+    const toEmail = raw.toEmail
+    steps[2].toEmail  = toEmail || 'EMPTY'
+    steps[2].ok       = !!toEmail
+    if (!toEmail) return Response.json({ ok:false, steps, error:'toEmail is empty — contact has no email' })
 
-    // STEP 4: attempt Resend
-    steps.push({ step: 4, label: 'Call Resend API' })
+    // ── STEP 4: fetch contact separately ─────────────────────────────────
+    steps.push({ step:4, label:'Fetch contact doc' })
+    let contact = null
+    if (raw.contact?._ref) {
+      contact = await sanity.fetch(
+        `*[_id==$id][0]{ _id, name, firstName, email, type }`,
+        { id: raw.contact._ref }
+      )
+    }
+    steps[3].contact = contact
+      ? { _id: contact._id, name: contact.name, email: contact.email, type: contact.type }
+      : 'NOT FOUND — ref: ' + (raw.contact?._ref || 'none')
+
+    // ── STEP 5: check bodyHtml ────────────────────────────────────────────
+    steps.push({ step:5, label:'Check bodyHtml' })
+    const html = raw.bodyHtml || '<p>Fallback test body — original was empty</p>'
+    steps[4].bodyHtml_source = raw.bodyHtml ? 'from Sanity' : 'FALLBACK (original was null)'
+    steps[4].html_length     = html.length
+
+    // ── STEP 6: send via Resend ───────────────────────────────────────────
+    steps.push({ step:6, label:'Call Resend' })
     const resend = new Resend(process.env.RESEND_API_KEY)
     const { data, error } = await resend.emails.send({
       from:    'DJ Cavalcanti <dj@downrangeco.com>',
-      to:      [entry.toEmail],
+      to:      [toEmail],
       replyTo: 'dj@downrangeco.com',
-      subject: entry.subject || '(no subject)',
-      html:    entry.bodyHtml || '<p>Test</p>',
+      subject: raw.subject || '(no subject)',
+      html,
     })
-    steps[3].resend_response = { data, error }
+    steps[5].resend_data  = data
+    steps[5].resend_error = error
 
     if (error) {
-      steps[3].result = 'FAILED'
-      return Response.json({ ok: false, steps, resend_error: error })
+      steps[5].result = 'FAILED'
+      return Response.json({ ok:false, steps, resend_error: error })
     }
 
-    steps[3].result  = 'SUCCESS'
-    steps[3].resend_id = data?.id
-
-    // STEP 5: patch status
-    steps.push({ step: 5, label: 'Patch Sanity status to sent' })
+    // ── STEP 7: patch Sanity ──────────────────────────────────────────────
+    steps.push({ step:7, label:'Patch Sanity → sent' })
     await sanity.patch(id).set({
-      status: 'sent', sentAt: new Date().toISOString(), resendId: data?.id
+      status: 'sent', sentAt: new Date().toISOString(), resendId: data?.id || null
     }).commit()
-    steps[4].result = 'patched'
+    steps[6].result = 'patched'
 
-    return Response.json({ ok: true, steps, resend_id: data?.id, to: entry.toEmail })
+    return Response.json({ ok:true, steps, resend_id: data?.id, to: toEmail })
 
   } catch (e) {
-    steps.push({ step: 'EXCEPTION', error: e.message, stack: e.stack?.slice(0, 600) })
-    return Response.json({ ok: false, steps, exception: e.message })
+    steps.push({ step:'EXCEPTION', error: e.message, stack: e.stack?.slice(0,800) })
+    return Response.json({ ok:false, steps, exception: e.message })
   }
 }
