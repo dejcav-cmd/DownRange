@@ -100,7 +100,6 @@ export async function POST(req) {
   if (!html)    html = '<p>No body provided.</p>'
 
   try {
-    const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email || '')}`
     const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(toEmail)}`
     const { data, error } = await getResend().emails.send({
       from:    'DJ Cavalcanti <dj@downrangeco.com>',
