@@ -218,11 +218,27 @@ export async function POST(req) {
       const entry = await sanity.fetch(
         `*[_type == "outreachSendLog" && _id == $id][0] {
           _id, toEmail, toName, subject, bodyHtml,
-          contact->{ _id, name }
+          contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, subscribers, website, fflLicense, specialties },
+          template->{ _id, name, subject, body }
         }`,
         { id }
       )
-      if (!entry?.toEmail) { results.failed++; continue }
+      // Re-render bodyHtml if missing
+      if (entry && !entry.bodyHtml && entry.template && entry.contact) {
+        console.log('[OUTREACH SEND] bodyHtml missing for', entry.toEmail, '— re-rendering from template')
+        const { subject: s, body: b } = personalize(entry.template, entry.contact)
+        entry.bodyHtml = wrapEmail(b, entry.contact)
+        entry.subject  = entry.subject || s
+        // Patch it back into Sanity so it's there next time
+        await sanity.patch(id).set({ bodyHtml: entry.bodyHtml, subject: entry.subject }).commit()
+      }
+      if (!entry?.toEmail) {
+        console.error('[OUTREACH SEND] No toEmail on entry', id)
+        try { await sanity.patch(id).set({ status:'failed', error:'No email address on record', sentAt: new Date().toISOString() }).commit() } catch(_){}
+        results.failed++
+        results.errors.push({ id, error: 'No email address on record' })
+        continue
+      }
 
       try {
         const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(entry.toEmail)}`

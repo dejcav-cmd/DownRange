@@ -333,7 +333,27 @@ export default function OutreachCRM({ adminKey }) {
     setSending(false)
   }
 
-  async function approve(ids){await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'approve',ids})}); loadQueue(); flash('✅ Approved & sending')}
+  async function approve(ids) {
+    flash('Sending…')
+    try {
+      const r = await fetch('/api/outreach/queue', { method:'POST', headers:H, body:JSON.stringify({ action:'approve', ids }) })
+      const d = await r.json()
+      if (!r.ok || d.error) {
+        flash('Send failed: ' + (d.error || r.status), false)
+        loadQueue(); loadHistory(); return
+      }
+      const { sent=0, failed=0, errors=[] } = d
+      if (failed > 0) {
+        flash(`⚠ ${sent} sent, ${failed} failed — ${errors[0]?.error||'check log'}`, false)
+      } else {
+        flash(`✅ ${sent} sent`)
+      }
+    } catch(e) {
+      flash('Network error: ' + e.message, false)
+    }
+    loadQueue()
+    loadHistory()
+  }
   async function skip(id){await fetch('/api/outreach/queue',{method:'POST',headers:H,body:JSON.stringify({action:'skip',ids:[id]})}); loadQueue()}
   async function delDup(id){if(!confirm('Delete this duplicate?'))return; await fetch('/api/outreach/contacts',{method:'DELETE',headers:H,body:JSON.stringify({id})}); loadContacts()}
   async function seed(url,label){await fetch(url,{method:'POST',headers:H}); loadContacts(); flash('Seeded: '+label)}
