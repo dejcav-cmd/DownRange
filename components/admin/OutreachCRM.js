@@ -155,6 +155,9 @@ export default function OutreachCRM({ adminKey }) {
   const [toast,        setToast]        = useState(null)
   const edRef = useRef(null)
   const tplEdRef = useRef(null)
+  const [contactModal, setContactModal] = useState(null)  // null | 'add' | contact-object (edit)
+  const [cmForm, setCmForm] = useState({})
+  const [cmSaving, setCmSaving] = useState(false)
   const [tplEditing, setTplEditing] = useState(null)    // copy of template being edited
   const [tplDirty,   setTplDirty]   = useState(false)
   const [tplSaved,   setTplSaved]   = useState(false)
@@ -223,6 +226,40 @@ export default function OutreachCRM({ adminKey }) {
       .replace(/<br\s*\/?>/gi,'\n').replace(/<hr[^>]*>/gi,'\n---\n')
       .replace(/<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/gi,'$2 ($1)')
       .replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&nbsp;/g,' ').trim()
+  }
+
+  // ── Contact CRUD ─────────────────────────────────────────────────────────
+  function openAdd() {
+    setCmForm({ name:'', firstName:'', email:'', type:'youtuber', status:'active', youtubeUrl:'', notes:'' })
+    setContactModal('add')
+  }
+  function openEdit(c) {
+    setCmForm({ name:c.name||'', firstName:c.firstName||'', email:c.email||'', type:c.type||'youtuber', status:c.status||'active', youtubeUrl:c.youtubeUrl||'', notes:c.notes||'' })
+    setContactModal(c)
+  }
+  async function saveContact() {
+    setCmSaving(true)
+    try {
+      if (contactModal === 'add') {
+        const r = await fetch('/api/outreach/contacts', { method:'POST', headers:H, body: JSON.stringify({ ...cmForm, source:'manual', addedAt: new Date().toISOString() }) })
+        const d = await r.json()
+        if (!d.ok && !d.created) { flash('Save failed', false); setCmSaving(false); return }
+      } else {
+        const r = await fetch('/api/outreach/contacts', { method:'PATCH', headers:H, body: JSON.stringify({ id: contactModal._id, ...cmForm }) })
+        const d = await r.json()
+        if (!d.ok) { flash('Update failed', false); setCmSaving(false); return }
+      }
+      setContactModal(null)
+      loadContacts()
+      flash(contactModal === 'add' ? '✅ Contact added' : '✅ Contact updated')
+    } catch { flash('Error saving', false) }
+    setCmSaving(false)
+  }
+  async function deleteContact(c) {
+    if (!confirm('Delete ' + c.name + '?')) return
+    await fetch('/api/outreach/contacts', { method:'DELETE', headers:H, body: JSON.stringify({ id: c._id }) })
+    loadContacts()
+    flash('Deleted: ' + c.name)
   }
 
   // ── Template editor functions ─────────────────────────────────────────────
@@ -497,6 +534,7 @@ export default function OutreachCRM({ adminKey }) {
             {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
           </select>
           <button className="crm-btn" style={{padding:'6px 14px'}} onClick={loadContacts}>Search</button>
+          <button className="crm-btn" style={{padding:'6px 14px',background:'#1a2a1a',color:'#22c55e',border:'1px solid #22c55e22'}} onClick={openAdd}>＋ Add Contact</button>
           {selIds.size>0&&<><span style={{fontFamily:MONO,fontSize:10,color:GOLD}}>{selIds.size} sel</span>
             <button className="ghost" onClick={()=>setView('compose')}>✉ Compose</button>
             <button className="ghost" onClick={queueDrafts} disabled={sending}>📬 Queue</button>
@@ -506,7 +544,7 @@ export default function OutreachCRM({ adminKey }) {
           <table className="crm-table">
             <thead><tr>
               <th className="crm-th"><input type="checkbox" style={{accentColor:GOLD,cursor:'pointer'}} checked={selIds.size===contacts.length&&contacts.length>0} onChange={selAll}/></th>
-              <th className="crm-th">Contact</th><th className="crm-th">Type</th><th className="crm-th">Email</th><th className="crm-th">Location</th><th className="crm-th">Status</th><th className="crm-th">Last Contacted</th><th className="crm-th"/>
+              <th className="crm-th">Contact</th><th className="crm-th">Type</th><th className="crm-th">Email</th><th className="crm-th">Location</th><th className="crm-th">Status</th><th className="crm-th">Last Contacted</th><th className="crm-th">Actions</th>
             </tr></thead>
             <tbody>
               {loadingC?<tr><td colSpan={8} className="crm-td" style={{textAlign:'center',color:'#374151',padding:40}}>Loading…</td></tr>
@@ -526,7 +564,13 @@ export default function OutreachCRM({ adminKey }) {
                   <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280'}}>{[c.city,c.state].filter(Boolean).join(', ')||'—'}</td>
                   <td className="crm-td"><span className="crm-badge" style={{background:sm.color+'22',color:sm.color}}>{sm.label}</span></td>
                   <td className="crm-td" style={{fontFamily:MONO,fontSize:10,color:'#6b7280'}}>{c.lastContactedAt?new Date(c.lastContactedAt).toLocaleDateString():<span style={{color:'#f59e0b'}}>Never</span>}</td>
-                  <td className="crm-td">{c.email&&<button className="ghost" style={{padding:'3px 7px',fontSize:10}} onClick={()=>{setSelIds(new Set([c._id]));setPrevId(c._id);setView('compose')}}>✉</button>}</td>
+                  <td className="crm-td">
+                    <div style={{display:'flex',gap:4}}>
+                      {c.email&&<button className="ghost" style={{padding:'3px 7px',fontSize:10}} onClick={()=>{setSelIds(new Set([c._id]));setPrevId(c._id);setView('compose')}}>✉</button>}
+                      <button className="ghost" style={{padding:'3px 7px',fontSize:10}} onClick={()=>openEdit(c)}>✏</button>
+                      <button className="ghost" style={{padding:'3px 7px',fontSize:10,color:'#ef4444',borderColor:'rgba(239,68,68,.3)'}} onClick={()=>deleteContact(c)}>✕</button>
+                    </div>
+                  </td>
                 </tr>)
               })}
             </tbody>
@@ -766,6 +810,64 @@ export default function OutreachCRM({ adminKey }) {
 
     {/* Toast */}
     {toast&&<div className="crm-toast" style={{borderLeftColor:toast.ok?GOLD:'#ef4444'}}>{toast.msg}</div>}
+
+    {/* ── Contact Add/Edit Modal ── */}
+    {contactModal&&<div style={{position:'fixed',inset:0,background:'rgba(0,0,0,.7)',zIndex:1000,display:'flex',alignItems:'center',justifyContent:'center'}} onClick={e=>{if(e.target===e.currentTarget)setContactModal(null)}}>
+      <div style={{background:'#0d0e10',border:'1px solid #1f2428',width:480,maxHeight:'90vh',overflowY:'auto',boxShadow:'0 24px 64px rgba(0,0,0,.6)'}}>
+
+        {/* Modal header */}
+        <div style={{padding:'14px 20px',borderBottom:'1px solid #1a1f2e',display:'flex',alignItems:'center',justifyContent:'space-between',background:'#0A0B0C'}}>
+          <span style={{fontFamily:BEBAS,fontSize:'1.1rem',color:GOLD,letterSpacing:'.06em'}}>{contactModal==='add'?'Add Contact':'Edit Contact'}</span>
+          <button onClick={()=>setContactModal(null)} style={{background:'none',border:'none',color:'#4b5563',cursor:'pointer',fontSize:18,lineHeight:1}}>✕</button>
+        </div>
+
+        {/* Form */}
+        <div style={{padding:20,display:'flex',flexDirection:'column',gap:12}}>
+          {[
+            {lbl:'Full Name *',       key:'name',       ph:'e.g. Hickok45',                  req:true},
+            {lbl:'First Name',        key:'firstName',  ph:'e.g. Greg'},
+            {lbl:'Email *',           key:'email',      ph:'contact@example.com',            req:true},
+            {lbl:'YouTube / Website', key:'youtubeUrl', ph:'https://youtube.com/@handle'},
+            {lbl:'Notes',             key:'notes',      ph:'Any background info…',           multi:true},
+          ].map(({lbl,key,ph,req,multi})=>(
+            <div key={key}>
+              <label style={{fontFamily:MONO,fontSize:9,color:'#4b5563',letterSpacing:'.1em',textTransform:'uppercase',display:'block',marginBottom:4}}>{lbl}</label>
+              {multi
+                ? <textarea value={cmForm[key]||''} onChange={e=>setCmForm(p=>({...p,[key]:e.target.value}))} placeholder={ph} rows={3}
+                    style={{width:'100%',boxSizing:'border-box',background:'#111318',border:'1px solid #1a1f2e',color:'#e5e7eb',fontFamily:MONO,fontSize:12,padding:'7px 10px',outline:'none',resize:'vertical'}}/>
+                : <input value={cmForm[key]||''} onChange={e=>setCmForm(p=>({...p,[key]:e.target.value}))} placeholder={ph}
+                    style={{width:'100%',boxSizing:'border-box',background:'#111318',border:'1px solid #1a1f2e',color:'#e5e7eb',fontFamily:MONO,fontSize:12,padding:'7px 10px',outline:'none'}}/>
+              }
+            </div>
+          ))}
+
+          <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:12}}>
+            <div>
+              <label style={{fontFamily:MONO,fontSize:9,color:'#4b5563',letterSpacing:'.1em',textTransform:'uppercase',display:'block',marginBottom:4}}>Type</label>
+              <select value={cmForm.type||'youtuber'} onChange={e=>setCmForm(p=>({...p,type:e.target.value}))}
+                style={{width:'100%',background:'#111318',border:'1px solid #1a1f2e',color:'#e5e7eb',fontFamily:MONO,fontSize:11,padding:'7px 9px',outline:'none',cursor:'pointer'}}>
+                {Object.entries(TYPE_META).map(([k,v])=><option key={k} value={k}>{v.icon} {v.label}</option>)}
+              </select>
+            </div>
+            <div>
+              <label style={{fontFamily:MONO,fontSize:9,color:'#4b5563',letterSpacing:'.1em',textTransform:'uppercase',display:'block',marginBottom:4}}>Status</label>
+              <select value={cmForm.status||'active'} onChange={e=>setCmForm(p=>({...p,status:e.target.value}))}
+                style={{width:'100%',background:'#111318',border:'1px solid #1a1f2e',color:'#e5e7eb',fontFamily:MONO,fontSize:11,padding:'7px 9px',outline:'none',cursor:'pointer'}}>
+                {Object.entries(STATUS_META).map(([k,v])=><option key={k} value={k}>{v.label}</option>)}
+              </select>
+            </div>
+          </div>
+
+          {/* Actions */}
+          <div style={{display:'flex',gap:8,justifyContent:'flex-end',paddingTop:8,borderTop:'1px solid #1a1f2e',marginTop:4}}>
+            <button className="ghost" onClick={()=>setContactModal(null)}>Cancel</button>
+            <button className="crm-btn" disabled={cmSaving||!cmForm.name||!cmForm.email} onClick={saveContact}>
+              {cmSaving?'Saving…':contactModal==='add'?'Add Contact':'Save Changes'}
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>}
     </>
   )
 }
