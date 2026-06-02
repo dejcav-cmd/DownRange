@@ -66,12 +66,12 @@ const CSS = `
 .rail-btn:hover{background:rgba(200,146,42,.1)}
 .rail-btn.on{background:rgba(200,146,42,.15)}
 .rail-icon{font-size:15px;line-height:1}
-.rail-lbl{font-size:7px;color:#374151;letter-spacing:.04em;text-transform:uppercase;line-height:1}
+.rail-lbl{font-size:9px;color:#374151;letter-spacing:.04em;text-transform:uppercase;line-height:1}
 .rail-btn.on .rail-lbl{color:${GOLD}}
 .rail-badge{position:absolute;top:2px;right:2px;background:${GOLD};color:#000;font-size:8px;font-weight:700;min-width:14px;height:14px;border-radius:7px;display:flex;align-items:center;justify-content:center;padding:0 2px}
 .crm-left{width:260px;flex-shrink:0;border-right:1px solid #1a1f2e;display:flex;flex-direction:column;background:#0A0B0C}
 .crm-left-hdr{padding:10px 12px;border-bottom:1px solid #1a1f2e;display:flex;align-items:center;gap:8px;flex-shrink:0}
-.left-search{flex:1;background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:11px;padding:6px 9px;outline:none}
+.left-search{flex:1;background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:13px;padding:6px 9px;outline:none}
 .left-search:focus{border-color:${GOLD}}
 .c-row{display:flex;align-items:center;gap:9px;padding:8px 12px;border-bottom:1px solid #0d1117;cursor:pointer;transition:background .1s}
 .c-row:hover{background:rgba(200,146,42,.04)}
@@ -81,11 +81,11 @@ const CSS = `
 .compose{flex:1;display:flex;flex-direction:column;overflow:hidden;min-width:0}
 .c-hdr{background:#0A0B0C;border-bottom:1px solid #1a1f2e;flex-shrink:0}
 .c-field{display:flex;align-items:center;border-bottom:1px solid #0d1117;padding:0 16px;min-height:40px}
-.c-lbl{font-size:10px;color:#4b5563;letter-spacing:.08em;text-transform:uppercase;width:76px;flex-shrink:0;font-family:${MONO}}
-.c-inp{flex:1;background:none;border:none;color:#e5e7eb;font-family:${MONO};font-size:12px;padding:9px 0;outline:none}
+.c-lbl{font-size:12px;color:#4b5563;letter-spacing:.08em;text-transform:uppercase;width:76px;flex-shrink:0;font-family:${MONO}}
+.c-inp{flex:1;background:none;border:none;color:#e5e7eb;font-family:${MONO};font-size:13px;padding:9px 0;outline:none}
 .c-inp::placeholder{color:#374151}
 .toolbar{display:flex;gap:1px;padding:5px 10px;background:#050506;border-bottom:1px solid #1a1f2e;flex-wrap:wrap;flex-shrink:0}
-.t-btn{background:none;border:1px solid transparent;color:#6b7280;font-family:${MONO};font-size:11px;font-weight:700;padding:4px 8px;cursor:pointer;border-radius:3px;white-space:nowrap}
+.t-btn{background:none;border:1px solid transparent;color:#6b7280;font-family:${MONO};font-size:12px;font-weight:700;padding:4px 8px;cursor:pointer;border-radius:3px;white-space:nowrap}
 .t-btn:hover{background:rgba(255,255,255,.06);color:#e5e7eb;border-color:#1a1f2e}
 .t-sep{width:1px;background:#1a1f2e;margin:2px 3px;align-self:stretch}
 .body-area{flex:1;overflow:hidden;display:flex}
@@ -96,29 +96,29 @@ const CSS = `
 .send-bar{padding:9px 16px;background:#0A0B0C;border-top:1px solid #1a1f2e;display:flex;gap:8px;align-items:center;flex-shrink:0;flex-wrap:wrap}
 .crm-right{width:230px;flex-shrink:0;border-left:1px solid #1a1f2e;display:flex;flex-direction:column;background:#050506;overflow-y:auto}
 .r-sec{padding:12px 14px;border-bottom:1px solid #1a1f2e}
-.r-lbl{font-size:9px;color:#374151;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;display:block;font-family:${MONO}}
-.r-inp{background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:11px;padding:6px 9px;outline:none;width:100%;box-sizing:border-box;margin-bottom:6px}
+.r-lbl{font-size:11px;color:#374151;letter-spacing:.1em;text-transform:uppercase;margin-bottom:7px;display:block;font-family:${MONO}}
+.r-inp{background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:12px;padding:6px 9px;outline:none;width:100%;box-sizing:border-box;margin-bottom:6px}
 .r-inp:focus{border-color:${GOLD}}
-.r-sel{background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:11px;padding:6px 9px;outline:none;width:100%;cursor:pointer}
-.tpl-chip{padding:6px 10px;background:#111318;border:1px solid #1a1f2e;color:#9ca3af;font-family:${MONO};font-size:10px;cursor:pointer;margin-bottom:4px;display:block;text-align:left;width:100%}
+.r-sel{background:#111318;border:1px solid #1a1f2e;color:#e5e7eb;font-family:${MONO};font-size:12px;padding:6px 9px;outline:none;width:100%;cursor:pointer}
+.tpl-chip{padding:7px 11px;background:#111318;border:1px solid #1a1f2e;color:#9ca3af;font-family:${MONO};font-size:12px;cursor:pointer;margin-bottom:4px;display:block;text-align:left;width:100%}
 .tpl-chip:hover{border-color:${GOLD};color:${GOLD};background:rgba(200,146,42,.06)}
 .tpl-chip.on{border-color:${GOLD};color:${GOLD};background:rgba(200,146,42,.1)}
-.crm-btn{background:${GOLD};color:#000;border:none;font-family:${BARLOW};font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;cursor:pointer;white-space:nowrap}
+.crm-btn{background:${GOLD};color:#000;border:none;font-family:${BARLOW};font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:8px 18px;cursor:pointer;white-space:nowrap}
 .crm-btn:hover{opacity:.85}
 .crm-btn:disabled{opacity:.4;cursor:not-allowed}
-.ghost{background:none;border:1px solid #1a1f2e;color:#6b7280;font-family:${MONO};font-size:11px;padding:7px 12px;cursor:pointer}
+.ghost{background:none;border:1px solid #1a1f2e;color:#6b7280;font-family:${MONO};font-size:12px;padding:7px 12px;cursor:pointer}
 .ghost:hover{border-color:${GOLD};color:${GOLD}}
 .ghost:disabled{opacity:.35;cursor:not-allowed}
-.crm-badge{display:inline-block;font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:2px;text-transform:uppercase}
+.crm-badge{display:inline-block;font-family:${MONO};font-size:11px;font-weight:700;letter-spacing:.05em;padding:2px 7px;border-radius:2px;text-transform:uppercase}
 .crm-table{width:100%;border-collapse:collapse}
-.crm-th{font-family:${MONO};font-size:9px;color:#4b5563;letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border-bottom:1px solid #1a1f2e;text-align:left;background:#050506;position:sticky;top:0;z-index:1}
-.crm-td{padding:9px 12px;border-bottom:1px solid #0d1117;font-size:12px;vertical-align:middle}
+.crm-th{font-family:${MONO};font-size:11px;color:#4b5563;letter-spacing:.1em;text-transform:uppercase;padding:9px 12px;border-bottom:1px solid #1a1f2e;text-align:left;background:#050506;position:sticky;top:0;z-index:1}
+.crm-td{padding:9px 12px;border-bottom:1px solid #0d1117;font-size:13px;vertical-align:middle}
 .crm-tr:hover .crm-td{background:rgba(200,146,42,.02)}
 .stat-row{display:flex;gap:10px;padding:12px 20px;border-bottom:1px solid #1a1f2e;flex-wrap:wrap}
 .stat-box{background:#0A0B0C;border:1px solid #1a1f2e;padding:10px 14px;flex:1;min-width:90px}
 .stat-n{font-family:${BEBAS};font-size:1.7rem;color:${GOLD};line-height:1}
-.stat-l{font-size:9px;color:#4b5563;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;font-family:${MONO}}
-.q-item{border-bottom:1px solid #1a1f2e;padding:14px 22px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}
+.stat-l{font-size:11px;color:#4b5563;text-transform:uppercase;letter-spacing:.06em;margin-top:2px;font-family:${MONO}}
+.q-item{border-bottom:1px solid #1a1f2e;padding:16px 22px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:start}
 .q-item:hover{background:rgba(200,146,42,.02)}
 .crm-toast{position:fixed;bottom:20px;right:20px;z-index:9999;padding:9px 16px;font-family:${MONO};font-size:11px;background:#0A0B0C;border:1px solid #1a1f2e;border-left:3px solid ${GOLD};max-width:320px;animation:slideIn .2s ease}
 @keyframes slideIn{from{transform:translateY(10px);opacity:0}to{transform:translateY(0);opacity:1}}
@@ -348,7 +348,9 @@ export default function OutreachCRM({ adminKey }) {
     setSending(true); setSendRes(null)
     const body=getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||'')
     const targets=contacts.filter(c=>selIds.has(c._id)&&c.email)
-    if(!targets.length){flash('No selected contacts have an email address',false);setSending(false);return}
+    const noEmail = contacts.filter(c=>selIds.has(c._id)&&!c.email)
+    if(noEmail.length) flash(`⚠ ${noEmail.length} contact${noEmail.length>1?'s':''} skipped — no email: ${noEmail.map(c=>c.name).join(', ')}`, false)
+    if(!targets.length){flash('No selected contacts have an email address. Add emails in the People tab first.',false);setSending(false);return}
     let sent=0,failed=0,lastErr=''
     for(const c of targets){
       const html=buildEmailHTML({subject,preheader,greeting,body,ctaText,ctaUrl,contactName:c.firstName||c.name,accentColor:accent,signature:sig}).replace('{{unsubscribeUrl}}','https://downrangeco.com/api/outreach/unsubscribe?email='+encodeURIComponent(c.email))
@@ -654,7 +656,7 @@ export default function OutreachCRM({ adminKey }) {
       {view==='queue'&&<div style={{flex:1,display:'flex',flexDirection:'column',overflow:'hidden'}}>
         <div style={{padding:'9px 18px',borderBottom:'1px solid #1a1f2e',display:'flex',gap:0,alignItems:'center',flexWrap:'wrap'}}>
           {['draft','approved','sent','skipped'].map(s=>(
-            <button key={s} onClick={()=>setQTab(s)} style={{background:'none',border:'none',borderBottom:'2px solid',borderBottomColor:qTab===s?GOLD:'transparent',fontFamily:BARLOW,fontSize:12,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'8px 14px',cursor:'pointer',color:qTab===s?GOLD:'#4b5563'}}>
+            <button key={s} onClick={()=>setQTab(s)} style={{background:'none',border:'none',borderBottom:'2px solid',borderBottomColor:qTab===s?GOLD:'transparent',fontFamily:BARLOW,fontSize:14,fontWeight:700,letterSpacing:'.06em',textTransform:'uppercase',padding:'9px 16px',cursor:'pointer',color:qTab===s?GOLD:'#4b5563'}}>
               {s} {qStats[s]?<span style={{fontSize:10}}>({qStats[s]})</span>:null}
             </button>
           ))}

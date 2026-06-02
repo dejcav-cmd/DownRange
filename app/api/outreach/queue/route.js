@@ -147,11 +147,17 @@ export async function POST(req) {
     for (const t of templates) templateMap[t._id] = t
 
     // Build contact query
-    let contactFilter = `_type == "outreachContact" && status == "active" && defined(email) && email != ""`
-    if (contactIds?.length) contactFilter += ` && _id in ["${contactIds.join('","')}"]`
-    if (filterType)  contactFilter += ` && type == "${filterType}"`
-    if (filterState) contactFilter += ` && state == "${filterState}"`
-    if (skipContacted) contactFilter += ` && !defined(lastContactedAt)`
+    // When contactIds are explicitly passed, only filter by ID — skip email/skipContacted guards
+    let contactFilter = `_type == "outreachContact"`
+    if (contactIds?.length) {
+      contactFilter += ` && _id in ["${contactIds.join('","')}"]`
+    } else {
+      // Bulk generate — enforce email + active + not already contacted
+      contactFilter += ` && status == "active" && defined(email) && email != ""`
+      if (filterType)    contactFilter += ` && type == "${filterType}"`
+      if (filterState)   contactFilter += ` && state == "${filterState}"`
+      if (skipContacted) contactFilter += ` && !defined(lastContactedAt)`
+    }
 
     const contacts = await sanity.fetch(
       `*[${contactFilter}] | order(addedAt desc) [0...${limit}] {
