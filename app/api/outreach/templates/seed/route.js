@@ -61,19 +61,43 @@ const ul = items => `<ul style="margin:0 0 18px;padding-left:22px;">${items.map(
 const YOUTUBER_INTRO = {
   name: 'YouTuber — Introduction & Embed Permission (Primary)',
   type: 'youtuber',
-  subject: '{{firstName}}, your channel is on DownRange',
-  previewText: 'I added you to the site — wanted to let you know directly.',
+  subject: '{{firstName}} — wanted you to hear about this directly',
+  previewText: 'Built something for the 2A community. Your content is already part of it.',
   body: shell(`
+<div style="text-align:center;padding:8px 0 32px;">
+  <img src="${LOGO}" alt="DownRange" width="220" height="auto" style="display:inline-block;height:auto;max-height:54px;width:auto;max-width:240px;">
+  <div style="height:1px;background:${G};width:80px;margin:20px auto 0;opacity:0.6;"></div>
+</div>
 ${p(`Hey {{firstName}},`)}
-${p(`My name is DJ. I built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment intelligence portal I put together because I think the firearms community deserves better than what's out there right now.`)}
-${hl(`DownRange covers breaking firearms news, state gun laws for all 50 states, manufacturer releases, live ammo prices, NFA wait times, and CCW information. I also built a video section — and {{channelName}} is already on it.`)}
-${p(`Your videos show up for gun owners browsing the site, outside of YouTube's algorithm. I'm not monetizing your content or asking you for anything. I just believe your channel belongs there, and I'd rather tell you directly than quietly embed it without a word.`)}
-${p(`If you'd rather not be on the site, say the word and I'll pull it immediately. No hard feelings.`)}
-${p(`If you want to take a look:`)}
-${cta('https://www.downrangeco.com/video','See how {{channelName}} looks')}
+${p(`My name is DJ Cavalcanti. I'm a gun owner based in Washington state, and a couple of years ago I got frustrated — frustrated that the firearms community had no real home on the internet. Not a forum. Not a YouTube channel. An actual intelligence platform. So I built one.`)}
+<div style="background:#111316;border:1px solid ${BOR};padding:24px 28px;margin:24px 0;">
+  <div style="font-size:11px;letter-spacing:0.12em;text-transform:uppercase;color:${G};font-weight:700;margin-bottom:14px;">What DownRange Actually Is</div>
+  ${ul([
+    '<strong style="color:#e5e7eb;">Breaking 2A news</strong> — 13+ sources, updated every 15 minutes around the clock',
+    '<strong style="color:#e5e7eb;">All 50 states</strong> — gun laws, CCW reciprocity, permit requirements in one place',
+    '<strong style="color:#e5e7eb;">Manufacturer releases</strong> — new guns tracked automatically across 16+ brands',
+    '<strong style="color:#e5e7eb;">Live ammo prices, NFA wait times, NICS data</strong> — the stuff gun owners actually need',
+    '<strong style="color:#e5e7eb;">Video section</strong> — the best firearms creators, surfaced outside of YouTube\'s algorithm',
+  ])}
+  <div style="margin-top:14px;font-size:13px;color:#9ca3af;line-height:1.7;">No ads. No manufacturer funding. No pay-to-play. Free for the community — always.</div>
+</div>
+${p(`Here's why I'm reaching out personally.`)}
+${p(`<strong style="color:#C8922A;">{{channelName}} is already featured on DownRange.</strong> Gun owners using the platform can find your videos in our Video Hub — outside the algorithm, in front of people who are actively there for firearms content. I added it because it belongs there. But I wanted you to know about it, not find out by accident.`)}
+${hl(`If you'd prefer not to have your content featured on the platform, just say the word — I'll remove it immediately, no questions asked. Your call entirely.`)}
+${p(`But I'm also hoping this becomes the start of something more useful than that.`)}
+<div style="background:#111316;border-top:3px solid ${G};padding:20px 24px;margin:24px 0;">
+  <div style="font-size:12px;letter-spacing:0.1em;text-transform:uppercase;color:${G};font-weight:700;margin-bottom:12px;">The Partnership I'm Thinking About</div>
+  <p style="margin:0 0 12px;font-size:14px;color:#d1d5db;line-height:1.8;">The firearms community is at its best when creators and platforms work together instead of in separate silos. Here's what I think could be genuinely valuable for both of us:</p>
+  ${ul([
+    'A mention in a video description — something like <em style="color:#9ca3af;">"All 50-state gun laws and live ammo prices at DownRange: downrangeco.com"</em> — sends your audience to a free resource they\'ll actually use',
+    'A share or shoutout for any DownRange content that lines up with what you cover — we publish original 2A news and analysis daily',
+    'A dedicated creator profile on DownRange linking back to your channel — putting your work in front of a firearms-engaged audience that doesn\'t all live on YouTube',
+  ])}
+</div>
+${p(`This isn't a sponsorship. I'm not asking you to read an ad or pretend to use something. I'm asking because the people watching {{channelName}} are exactly the people DownRange was built for — and I think they deserve to know both exist.`)}
+${cta('https://www.downrangeco.com/video','See Your Channel on DownRange')}
 ${hr()}
-${p(`And if you think your audience would get something out of it, I'd be grateful for a mention. The site is completely free — always will be.`)}
-${p(`Thanks for what you do,<br><br>DJ`)}
+${p(`If this sounds worth a conversation, reply here. If you want the channel removed instead — also reply here. Either way, I'd rather hear from you directly.<br><br>— DJ Cavalcanti<br><span style="font-size:13px;color:#9ca3af;">Founder, DownRange &nbsp;·&nbsp; <a href="https://www.downrangeco.com" style="color:${G};text-decoration:none;">downrangeco.com</a></span>`)}
 `),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
