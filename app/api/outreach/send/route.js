@@ -37,7 +37,7 @@ function personalize(template, contact) {
     '{{firstName}}':      contact.firstName || contact.name?.split(' ')[0] || 'there',
     '{{fullName}}':       contact.name || '',
     '{{businessName}}':   contact.name || '',
-    '{{channelName}}':    contact.name || '',
+    '{{channelName}}':    contact.youtubeChannel || contact.name || '',
     '{{email}}':          contact.email || '',
     '{{city}}':           contact.city || '',
     '{{state}}':          contact.state || '',

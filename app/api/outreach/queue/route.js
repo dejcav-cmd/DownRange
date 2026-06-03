@@ -46,7 +46,7 @@ function personalize(template, contact) {
     '{{firstName}}':      contact.firstName || contact.name?.split(' ')[0] || 'there',
     '{{fullName}}':       contact.name || '',
     '{{businessName}}':   contact.name || '',
-    '{{channelName}}':    contact.name || '',
+    '{{channelName}}':    contact.youtubeChannel || contact.name || '',
     '{{email}}':          contact.email || '',
     '{{city}}':           contact.city || '',
     '{{state}}':          contact.state || '',
@@ -118,7 +118,7 @@ export async function GET(req) {
   const entries = await sanity.fetch(
     `*[${filter}] | order(draftedAt desc) [0...${limit}] {
       _id, status, toEmail, toName, subject, bodyHtml, approvalNote, draftedAt, approvedAt, sentAt, snoozeUntil,
-      contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, subscribers, website, notes, tags, lastContactedAt },
+      contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, youtubeChannel, subscribers, website, notes, tags, lastContactedAt },
       template->{ _id, name, type, subject, body },
       campaign->{ _id, name }
     }`
@@ -189,7 +189,7 @@ export async function POST(req) {
 
     const contacts = await sanity.fetch(
       `*[${contactFilter}] | order(addedAt desc) [0...${limit}] {
-        _id, name, firstName, type, email, city, state, youtubeUrl, subscribers,
+        _id, name, firstName, type, email, city, state, youtubeUrl, youtubeChannel, subscribers,
         website, fflLicense, instagram, twitter, specialties, notes, lastContactedAt
       }`
     )
@@ -252,14 +252,19 @@ export async function POST(req) {
       const entry = await sanity.fetch(
         `*[_type == "outreachSendLog" && _id == $id][0] {
           _id, toEmail, toName, subject, bodyHtml,
-          contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, subscribers, website, fflLicense, specialties },
+          contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, youtubeChannel, subscribers, website, fflLicense, specialties },
           template->{ _id, name, subject, body }
         }`,
         { id }
       )
-      // Re-render bodyHtml if missing
-      if (entry && !entry.bodyHtml && entry.template && entry.contact) {
-        console.log('[OUTREACH SEND] bodyHtml missing for', entry.toEmail, '— re-rendering from template')
+      // Re-render bodyHtml if missing OR if it contains unresolved {{variables}}
+      const hasStaleVars = entry?.bodyHtml && /\{\{[a-zA-Z]+\}\}/.test(entry.bodyHtml)
+      if (entry && (!entry.bodyHtml || hasStaleVars) && entry.template && entry.contact) {
+        if (hasStaleVars) {
+          console.log('[OUTREACH SEND] bodyHtml has unresolved vars for', entry.toEmail, '— re-rendering')
+        } else {
+          console.log('[OUTREACH SEND] bodyHtml missing for', entry.toEmail, '— re-rendering from template')
+        }
         const { subject: s, body: b } = personalize(entry.template, entry.contact)
         entry.bodyHtml = wrapEmail(b, entry.contact)
         entry.subject  = entry.subject || s
@@ -337,7 +342,7 @@ export async function POST(req) {
     if (templateId && !bodyHtml) {
       const [tmpl, entry] = await Promise.all([
         sanity.fetch(`*[_type == "outreachTemplate" && _id == $id][0]`, { id: templateId }),
-        sanity.fetch(`*[_type == "outreachSendLog" && _id == $id][0] { contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, subscribers, website, fflLicense, specialties, instagram, twitter } }`, { id }),
+        sanity.fetch(`*[_type == "outreachSendLog" && _id == $id][0] { contact->{ _id, name, firstName, type, email, city, state, youtubeUrl, youtubeChannel, subscribers, website, fflLicense, specialties, instagram, twitter } }`, { id }),
       ])
       if (tmpl && entry?.contact) {
         const { subject: s, body: b } = personalize(tmpl, entry.contact)
