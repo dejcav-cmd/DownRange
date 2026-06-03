@@ -44,7 +44,32 @@ export async function POST(req) {
     const { action, channels, channel } = body
 
     if (action === 'save') {
+      const prev = await sanity.fetch('*[_id == $id][0]{channels}', { id: CONFIG_ID })
+      const prevMap = Object.fromEntries((prev?.channels || []).map(c => [c.id, c.active !== false]))
       await upsertChannels(channels || [])
+
+      // Sync video active state for any channels whose active flag changed
+      for (const ch of (channels || [])) {
+        const wasActive = prevMap[ch.id] ?? true
+        const isActive  = ch.active !== false
+        if (wasActive === isActive) continue
+        // Find the channelId (the YouTube channel ID used in video docs)
+        const ytId = ch.channelId || ch.id
+        const name = ch.name
+        // Get all videos for this channel
+        const vids = await sanity.fetch(
+          `*[_type == "video" && (channelId == $ytId || channelName == $name)]{_id}`,
+          { ytId, name }
+        )
+        if (!vids.length) continue
+        const mutations = vids.map(v => ({ patch: { id: v._id, set: { active: isActive } } }))
+        // Batch in 100s
+        for (let i = 0; i < mutations.length; i += 100) {
+          await sanity.mutate(mutations.slice(i, i + 100))
+        }
+        console.log(`[channels] ${isActive ? 'Activated' : 'Deactivated'} ${vids.length} videos for ${name}`)
+      }
+
       return Response.json({ ok: true })
     }
 
