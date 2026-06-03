@@ -1,7 +1,9 @@
+import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
+import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 
 const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange' }
@@ -274,8 +276,12 @@ export default async function ArticlePage({ params }) {
     .filter(([s]) => s !== params.slug)
     .slice(0, 6)
 
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
+
   return (
     <>
+      <BreakingTicker alerts={alerts} />
+
       <Masthead />
 
       {/* ── FULL-BLEED HERO IMAGE ── */}

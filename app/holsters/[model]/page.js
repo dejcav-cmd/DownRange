@@ -1,5 +1,7 @@
+import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
+import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 const HOLSTER_DB = {
   'glock-19': {
@@ -42,10 +44,12 @@ export async function generateMetadata({ params }) {
   return { title:`Best Holsters for ${d.name} — DownRange`, description:`Top-rated IWB, AIWB, and OWB holsters for the ${d.name}. Expert recommendations and comparisons.` }
 }
 
-export default function HolsterPage({ params }) {
+export default async function HolsterPage({ params }) {
   const d = HOLSTER_DB[params.model]
   if (!d) return (
     <>
+      <BreakingTicker alerts={alerts} />
+
       <Masthead />
       <div style={{ padding:'100px', textAlign:'center', color:'#6B7280', fontFamily:"'IBM Plex Mono',monospace" }}>
         Holster data not yet available for this model.<br/><br/>
@@ -54,6 +58,8 @@ export default function HolsterPage({ params }) {
       <Footer />
     </>
   )
+
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
 
   return (
     <>

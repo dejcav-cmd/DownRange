@@ -1,7 +1,9 @@
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = { title: 'Privacy Policy — DownRange', alternates: { canonical: 'https://downrangeco.com/privacy' } }
-export default function Privacy() {
+export default async function Privacy() {
   const sections = [
     ['Information We Collect','We collect email addresses when you subscribe to our newsletter or set price alerts. We collect anonymous usage data to improve the site. We do not sell your data.'],
     ['How We Use Your Information','Email addresses are used solely to send newsletters and alerts you explicitly subscribed to. Unsubscribe anytime via the link in any email.'],
@@ -9,8 +11,12 @@ export default function Privacy() {
     ['Third-Party Services','We use Sanity (CMS), Vercel (hosting), Resend (email), and Algolia (search). We do not share personal data beyond what is required for operation.'],
     ['Contact','For privacy questions: privacy@downrangeco.com'],
   ]
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
+
   return (
     <>
+      <BreakingTicker alerts={alerts} />
+
       <Masthead />
       <div style={{ padding:'60px 0', background:'var(--bg)' }}>
         <div className="container" style={{ maxWidth:720 }}>

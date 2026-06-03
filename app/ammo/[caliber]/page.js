@@ -1,6 +1,7 @@
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import { fetchAmmoByType } from '../../../sanity/lib/client'
+import { fetchAmmoByType , fetchBreakingAlerts } from '../../../sanity/lib/client'
+import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 const CALIBER_DATA = {
   '9mm': { name:'9mm Luger (9x19mm)', also:'9mm, 9x19', bullet:'115gr–147gr', velocity:'1100–1400 fps', use:'Handgun — EDC, duty, competition', history:'Developed 1901 by Georg Luger. Most popular pistol cartridge worldwide. NATO standard since 1980s.', bestFor:['Concealed carry','Home defense','Competition shooting','Law enforcement'], brands:['Federal HST','Speer Gold Dot','Hornady Critical Defense','Winchester Ranger'], pricePer:0.22, availability:'Very High', image:'/img/photos/rifle.jpg' },
@@ -26,8 +27,12 @@ export default async function CaliberPage({ params }) {
 
   const sanityAmmo = await fetchAmmoByType(params.caliber).catch(()=>[])
 
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
+
   return (
     <>
+      <BreakingTicker alerts={alerts} />
+
       <Masthead />
       <div style={{ width:'100%', height:'280px', overflow:'hidden', position:'relative' }}>
         <img src={d.image} alt={d.name} style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.4 }} />

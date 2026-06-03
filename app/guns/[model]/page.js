@@ -1,7 +1,9 @@
+import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
+import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 export const revalidate = 86400
 
@@ -507,8 +509,12 @@ export default async function GunPage({ params }) {
     .filter(([k]) => k !== params.model && GUN_DATA[k].type === g.type)
     .slice(0, 4)
 
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
+
   return (
     <>
+      <BreakingTicker alerts={alerts} />
+
       <Masthead />
       <div style={{ width:'100%', height:'clamp(280px, 40vw, 460px)', overflow:'hidden', position:'relative' }}>
         <img src={g.image} alt={g.name} style={{ width:'100%', height:'100%', objectFit:'cover', opacity:0.5 }} />

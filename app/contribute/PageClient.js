@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 
 const WHAT_WE_PUBLISH = [
   { icon:'⚖', title:'Legal Analysis', desc:'In-depth analysis of firearms laws, ATF rulings, SCOTUS decisions. We want attorney-authored or law-school-credentialed writers for legal content.' },
@@ -43,6 +44,8 @@ export default function ContributePage() {
 
   return (
     <>
+      <BreakingTicker alerts={[]} />
+
       <Masthead />
       <div style={{ background:'var(--bg)', minHeight:'100vh' }}>
         <div className="page-hero" data-title="CONTRIBUTE">

@@ -1,7 +1,9 @@
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = { title: 'Terms of Service — DownRange', alternates: { canonical: 'https://downrangeco.com/terms' } }
-export default function Terms() {
+export default async function Terms() {
   const sections = [
     ['Not Legal Advice','All content on DownRange is for informational purposes only and does not constitute legal advice. Always consult a licensed attorney regarding firearms laws.'],
     ['Content Accuracy','DownRange aggregates content from third-party sources using AI. Laws change frequently — always verify with official government sources.'],
@@ -9,8 +11,12 @@ export default function Terms() {
     ['Intellectual Property','Original DownRange editorial content is owned by DownRange Media LLC. Aggregated content remains property of original publishers.'],
     ['Limitation of Liability','DownRange is not liable for any damages arising from use of this site or reliance on information provided.'],
   ]
+  const alerts = await fetchBreakingAlerts(5).catch(() => [])
+
   return (
     <>
+      <BreakingTicker alerts={alerts} />
+
       <Masthead />
       <div style={{ padding:'60px 0', background:'var(--bg)' }}>
         <div className="container" style={{ maxWidth:720 }}>

@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 
 const FORM_META = {
   'suppressor':      { icon: '🔇', label: 'Suppressor / Can',    color: '#34D399' },
@@ -75,6 +76,8 @@ export default function NFATracker() {
 
   return (
     <>
+      <BreakingTicker alerts={[]} />
+
       <Masthead />
       <div className="page-hero" data-title="NFA">
         <div className="container">

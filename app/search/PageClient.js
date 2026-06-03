@@ -3,6 +3,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import Link from 'next/link'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 
 const TYPE_COLORS = {
   News:'#9ca3af', Laws:'#60a5fa', Blog:'#c084fc',
@@ -86,6 +87,8 @@ export default function SearchPage() {
 
   return (
     <>
+      <BreakingTicker alerts={[]} />
+
       <Masthead />
       <div style={{ background:'var(--bg)', minHeight:'100vh' }}>
         {/* Search hero */}

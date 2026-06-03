@@ -2,6 +2,7 @@
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import BreakingTicker from '../../components/layout/BreakingTicker'
 
 const CONDITIONS = ['Poor','Fair','Good','Very Good','Excellent','NIB (New in Box)']
 const CONDITION_MULT = { 'Poor':0.35,'Fair':0.55,'Good':0.75,'Very Good':0.88,'Excellent':0.97,'NIB (New in Box)':1.05 }
@@ -54,6 +55,8 @@ export default function ValueEstimator() {
 
   return (
     <>
+      <BreakingTicker alerts={[]} />
+
       <Masthead />
       <div className="page-hero" data-title="VALUE">
         <div className="container">
