@@ -56,13 +56,23 @@ function daysLeft(endDate) {
 export default async function GiveawaysPage() {
   let giveaways = []
   try {
-    const live = await sanity.fetch(
-      `*[_type == "giveaway" && active == true] | order(featured desc, _createdAt desc) [0...100] {
-        _id, title, sponsor, prize, entryUrl, category, sourceType, endDate, featured, value, imageUrl
-      }`
-    )
+    const [live, lastLog] = await Promise.all([
+      sanity.fetch(
+        `*[_type == "giveaway" && active == true] | order(featured desc, _createdAt desc) [0...100] {
+          _id, title, sponsor, prize, entryUrl, category, sourceType, endDate, featured, value, imageUrl
+        }`
+      ),
+      sanity.fetch(
+        `*[_type == "cronRun" && jobId == "giveaways"] | order(_createdAt desc) [0] { _createdAt, ok, added }`
+      ).catch(() => null),
+    ])
     giveaways = live.length > 0 ? live : SEED
   } catch { giveaways = SEED }
+  let lastUpdated = null
+  if (typeof lastLog !== 'undefined' && lastLog?._createdAt) {
+    const d = new Date(lastLog._createdAt)
+    lastUpdated = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC'
+  }
 
   const featured = giveaways.filter(g => g.featured)
   const regular = giveaways.filter(g => !g.featured)
@@ -88,6 +98,11 @@ export default async function GiveawaysPage() {
                 <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: 'var(--gold)', letterSpacing: '.18em', textTransform: 'uppercase', marginBottom: 8 }}>
                   Updated Daily · {giveaways.length} Active Giveaways
                 </div>
+                {lastUpdated && (
+                  <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#4b5563', letterSpacing: '.1em', marginBottom: 6 }}>
+                    last updated {lastUpdated}
+                  </div>
+                )}
                 <h1 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: 'clamp(2.8rem,6vw,4.5rem)', color: 'var(--text)', lineHeight: 1, margin: 0, letterSpacing: '.04em' }}>
                   GUN <span style={{ color: 'var(--gold)' }}>GIVEAWAYS</span>
                 </h1>

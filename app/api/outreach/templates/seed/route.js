@@ -25,7 +25,7 @@ const p  = t => `<p style="margin:0 0 18px;font-size:15px;color:${TEXT};line-hei
 const a  = (h,t) => `<a href="${h}" style="color:${G};text-decoration:none;font-weight:600;">${t}</a>`
 const hr = () => `<div style="height:1px;background:${BOR};margin:24px 0;"></div>`
 const hl = t => `<div style="padding:14px 18px;background:#111316;border-left:3px solid ${G};margin:20px 0;font-size:14px;color:#d1d5db;line-height:1.75;">${t}</div>`
-const cta= (h,t) => `<div style="margin:28px 0 8px;"><a href="${h}" style="display:block;background:${G};color:#000;padding:14px 36px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;text-align:center;">${t} &rarr;</a></div>`
+const cta= (h,t) => `<div style="margin:28px 0 8px;"><a href="${h}" style="display:block;background:${G};color:#000;padding:14px 36px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.03em;text-align:center;">${t} &rarr;</a></div>`
 const ul = items => `<ul style="margin:0 0 18px;padding-left:22px;">${items.map(i=>`<li style="margin-bottom:8px;font-size:14px;color:#d1d5db;line-height:1.75;">${i}</li>`).join('')}</ul>`
 
 // ─────────────────────────────────────────────────────────────────────────────

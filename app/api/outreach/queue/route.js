@@ -271,12 +271,14 @@ export async function POST(req) {
 
       try {
         const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(entry.toEmail)}`
+        // Resolve {{unsubscribeUrl}} at send-time (never stored resolved in Sanity)
+        const finalHtml = (entry.bodyHtml || '').replace(/\{\{unsubscribeUrl\}\}/g, unsubUrl)
         const { data, error } = await getResend().emails.send({
           from:    'DJ Cavalcanti <dj@downrangeco.com>',
           to:      [entry.toEmail],
           replyTo: 'dj@downrangeco.com',
           subject: entry.subject,
-          html:    entry.bodyHtml,
+          html:    finalHtml,
           headers: {
             'X-Entity-Ref-ID': entry._id || '',
           },
