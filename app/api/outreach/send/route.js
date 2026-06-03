@@ -65,25 +65,26 @@ function personalize(template, contact) {
 
 // ── Wrap body in branded HTML shell ──────────────────────────────────────────
 function wrapEmail(body, contact, unsubUrl) {
+  // If the template body is already a full HTML document, never double-wrap it.
+  // Nested <html> docs cause Outlook and most email clients to strip all formatting.
+  const trimmed = (body || '').trimStart()
+  if (trimmed.startsWith('<!DOCTYPE') || trimmed.toLowerCase().startsWith('<html')) {
+    return body
+  }
+  // Plain-text or partial-HTML body — wrap in branded shell
   return `<!DOCTYPE html>
 <html>
 <head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#09090B;font-family:Arial,sans-serif;">
   <div style="max-width:600px;margin:0 auto;background:#0A0B0C;border:1px solid #1f2428;">
-    <!-- Header -->
     <div style="background:#0A0B0C;border-bottom:3px solid #C8922A;padding:20px 32px;text-align:center;">
       <div style="font-family:Georgia,serif;font-size:28px;font-weight:900;color:#C8922A;letter-spacing:0.1em;">DOWNRANGE</div>
       <div style="font-size:10px;color:#6b7280;letter-spacing:0.2em;margin-top:2px;">INTELLIGENCE HUB</div>
     </div>
-    <!-- Body -->
-    <div style="padding:32px;color:#e5e7eb;font-size:15px;line-height:1.7;">
-      ${body}
-    </div>
-    <!-- Footer -->
+    <div style="padding:32px;color:#e5e7eb;font-size:15px;line-height:1.7;">${body}</div>
     <div style="padding:20px 32px;border-top:1px solid #1f2428;text-align:center;">
       <div style="font-size:11px;color:#4b5563;line-height:1.8;">
-        DownRange Intelligence Hub · <a href="https://www.downrangeco.com" style="color:#C8922A;">downrangeco.com</a><br>
-        You're receiving this because you're part of the firearms community.<br>
+        DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;">downrangeco.com</a><br>
         <a href="${unsubUrl}" style="color:#6b7280;font-size:10px;">Unsubscribe</a>
       </div>
     </div>

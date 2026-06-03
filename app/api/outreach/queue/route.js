@@ -74,6 +74,13 @@ function personalize(template, contact) {
 }
 
 function wrapEmail(body, contact) {
+  // If the template body is already a full HTML document, never double-wrap it.
+  // Nested <html> docs cause Outlook and most email clients to strip all formatting.
+  const trimmed = (body || '').trimStart()
+  if (trimmed.startsWith('<!DOCTYPE') || trimmed.toLowerCase().startsWith('<html')) {
+    return body
+  }
+  // Plain-text or partial-HTML body — wrap in branded shell
   const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email || '')}`
   return `<!DOCTYPE html>
 <html>
@@ -87,7 +94,7 @@ function wrapEmail(body, contact) {
     <div style="padding:32px;color:#e5e7eb;font-size:15px;line-height:1.7;">${body}</div>
     <div style="padding:20px 32px;border-top:1px solid #1f2428;text-align:center;">
       <div style="font-size:11px;color:#4b5563;line-height:1.8;">
-        DownRange Intelligence Hub · <a href="https://www.downrangeco.com" style="color:#C8922A;">downrangeco.com</a><br>
+        DownRange · <a href="https://www.downrangeco.com" style="color:#C8922A;">downrangeco.com</a><br>
         <a href="${unsubUrl}" style="color:#6b7280;font-size:10px;">Unsubscribe</a>
       </div>
     </div>

@@ -117,9 +117,12 @@ export default async function ArticlePage({ params }) {
   let article, related, alerts
 
   try {
-    ;[article, related, alerts] = await Promise.all([
-      getArticleBySlug(params.slug).catch(() => null),
-      (article ? getRelatedArticles(article?.category || 'news', params.slug, 8) : getRecentArticles(8)).catch(() => []),
+    // article must resolve first so its category can be used for related articles
+    article = await getArticleBySlug(params.slug).catch(() => null)
+    ;[related, alerts] = await Promise.all([
+      article
+        ? getRelatedArticles(article.category || 'news', params.slug, 8).catch(() => [])
+        : getRecentArticles(8).catch(() => []),
       fetchBreakingAlerts(5).catch(() => []),
     ])
   } catch {
