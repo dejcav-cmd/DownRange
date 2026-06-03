@@ -58,7 +58,7 @@ function buildEmailHTML({ subject, preheader, greeting, body, ctaText, ctaUrl, c
 }
 
 const TEMPLATES = [
-  { id:'intro-youtuber', name:'YouTuber — Intro', cat:'youtuber', subject:`{{firstName}} — wanted you to hear about this directly`, greeting:'Hey {{firstName}},', preheader:'Built something for the 2A community. Your content is already part of it.', body:`My name is DJ Cavalcanti, founder of DownRange — a free Second Amendment intelligence portal built for gun owners who want real information: breaking 2A news updated every 15 minutes, all 50 states’ gun laws and CCW reciprocity, live ammo prices, NFA wait times, manufacturer releases, and NICS data. No ads, no manufacturer funding, no pay-to-play. Free for the community, always.\n\nI’m reaching out because {{channelName}} is already featured on DownRange through a dedicated creator profile and inclusion in our Video Hub, helping firearms enthusiasts discover your content alongside the news, resources, and tools they already use on the platform. I wanted you to hear about it directly rather than stumble across it later.\n\nIf you’d prefer not to have your content featured on DownRange, just let me know and I’ll respect that decision completely.\n\nThat said, I’m also hoping this becomes the start of something more useful for both sides. A few things that could benefit us both:\n\n— A dedicated creator profile on DownRange linking directly to your channel, helping firearms-focused users discover your content\n— Your videos featured in our Video Hub, in front of an audience actively looking for reviews, training, industry updates, and 2A content\n— A mention of DownRange as a free resource for 50-state gun laws, CCW reciprocity, live ammo pricing, NFA wait times, and firearms news — the kind of thing your audience actually uses\n— Sharing or referencing DownRange content when it aligns with topics you cover — we publish original 2A news, industry analysis, and legislative updates daily\n\nThis is not a sponsorship request. I’m not asking you to promote something you don’t believe in. The audience that follows {{channelName}} is exactly who DownRange was built to serve — connecting them with quality creators and useful resources is the whole point.\n\nIf you’d like to explore working together, I’d love to hear from you.\n\nThank you for your time, and for everything you do for the firearms community.`, ctaText:'Visit DownRange', ctaUrl:'https://downrangeco.com' },
+  { id:'intro-youtuber', name:'YouTuber — Intro', cat:'youtuber', subject:`DJ from DownRange — wanted to tell you directly`, greeting:'Hey {{firstName}},', preheader:'Built something for the 2A community. Your content is already part of it.', body:`My name is DJ Cavalcanti, founder of DownRange — a free Second Amendment intelligence portal built for gun owners who want real information: breaking 2A news updated every 15 minutes, all 50 states’ gun laws and CCW reciprocity, live ammo prices, NFA wait times, manufacturer releases, and NICS data. No ads, no manufacturer funding, no pay-to-play. Free for the community, always.\n\nI’m reaching out because {{channelName}} is already featured on DownRange through a dedicated creator profile and inclusion in our Video Hub, helping firearms enthusiasts discover your content alongside the news, resources, and tools they already use on the platform. I wanted you to hear about it directly rather than stumble across it later.\n\nIf you’d prefer not to have your content featured on DownRange, just let me know and I’ll respect that decision completely.\n\nThat said, I’m also hoping this becomes the start of something more useful for both sides. A few things that could benefit us both:\n\n— A dedicated creator profile on DownRange linking directly to your channel, helping firearms-focused users discover your content\n— Your videos featured in our Video Hub, in front of an audience actively looking for reviews, training, industry updates, and 2A content\n— A mention of DownRange as a free resource for 50-state gun laws, CCW reciprocity, live ammo pricing, NFA wait times, and firearms news — the kind of thing your audience actually uses\n— Sharing or referencing DownRange content when it aligns with topics you cover — we publish original 2A news, industry analysis, and legislative updates daily\n\nThis is not a sponsorship request. I’m not asking you to promote something you don’t believe in. The audience that follows {{channelName}} is exactly who DownRange was built to serve — connecting them with quality creators and useful resources is the whole point.\n\nIf you’d like to explore working together, I’d love to hear from you.\n\nThank you for your time, and for everything you do for the firearms community.`, ctaText:'Visit DownRange', ctaUrl:'https://downrangeco.com' },
   { id:'intro-manufacturer', name:'Manufacturer — Press', cat:'manufacturer', subject:'DownRange — covering your releases for the 2A community', greeting:'Hi {{firstName}},', preheader:'The firearms industry deserves media that treats manufacturers like partners.', body:`My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform because the firearms industry deserves media coverage that treats manufacturers like partners — and because gun owners deserve accurate, timely information about the products they carry.\n\nDownRange is an independent firearms intelligence portal. We cover breaking legislation, new product releases, market data, and 2A news daily. Our audience are active buyers, FFLs, competitive shooters, and daily carriers who make purchasing decisions based on what they read.\n\nI'd like to cover your releases as they happen. We publish what's true and what matters to people who take the Second Amendment seriously.\n\nIf you have a media contact, press releases, or a PR list, I'd genuinely appreciate being added.`, ctaText:'Visit Our Press Page', ctaUrl:'https://downrangeco.com/press' },
   { id:'intro-ffl', name:'FFL Dealer — Free Listing', cat:'ffl_dealer', subject:'Free listing on DownRange — built for FFLs like yours', greeting:'Hi {{firstName}},', preheader:'Gun shops are the backbone of the 2A community.', body:`My name is DJ Cavalcanti, and I run DownRange — a firearms news and resource portal at downrangeco.com. I'd like to add your shop to our FFL dealer directory — completely free, no strings attached.\n\nWhen someone in your area needs a transfer, wants to buy their first firearm, or is searching for an NFA dealer who actually knows the process — DownRange is where we want them to land. And we want them finding you.\n\nThe listing includes your hours, specialties, and contact information. Just reply with what you'd like included.`, ctaText:'Find Your State Listing', ctaUrl:'https://downrangeco.com/state-hub' },
   { id:'intro-holster', name:'Holster Company — Feature', cat:'holster', subject:'DownRange — featuring your brand for daily carriers', greeting:'Hi {{firstName}},', preheader:'Our audience carries every day. They want honest gear recommendations.', body:`My name is DJ Cavalcanti, founder of DownRange (downrangeco.com). I built this platform for gun owners who carry every day — people who take their equipment seriously.\n\nA good holster is something someone trusts their life to. That's why we dedicated an entire section to holster coverage — and why I'm reaching out specifically.\n\nI'd like to feature your brand. We don't do pay-to-play — if your holsters earn a spot, it's because our readers would genuinely benefit from knowing about them.\n\nIf you'd like to be featured, I'd love to learn more about what you're building.`, ctaText:'See Our Holster Coverage', ctaUrl:'https://downrangeco.com/holsters' },
@@ -188,6 +188,27 @@ export default function OutreachCRM({ adminKey }) {
   const [tplSaved,   setTplSaved]   = useState(false)
   const [tplTemplates, setTplTemplates] = useState(TEMPLATES) // mutable in-session copy
 
+  // Load Sanity _ids so Save persists to DB instead of just session state
+  const loadSanityTemplates = useCallback(async () => {
+    try {
+      const r = await fetch('/api/outreach/templates', { headers: H })
+      const d = await r.json()
+      if (!d.ok || !d.templates?.length) return
+      // Merge _id from Sanity into local TEMPLATES by name match
+      setTplTemplates(prev => prev.map(local => {
+        const sanity = d.templates.find(s => s.name === local.name)
+        if (!sanity) return local
+        return {
+          ...local,
+          subject:    sanity.subject  || local.subject,
+          body:       sanity.body     || local.body,
+          preheader:  sanity.previewText || local.preheader,
+          _sanityId:  sanity._id,
+        }
+      }))
+    } catch(e) { console.warn('loadSanityTemplates failed', e.message) }
+  }, [])
+
   const flash = (msg, ok=true) => { setToast({msg,ok}); setTimeout(()=>setToast(null),4000) }
 
   const loadContacts = useCallback(async () => {
@@ -207,6 +228,7 @@ export default function OutreachCRM({ adminKey }) {
     setLoadingC(false)
   }, [fType,fStatus,search,adminKey])
 
+  useEffect(()=>{ loadSanityTemplates() },[])
   useEffect(()=>{ if(view==='contacts'||view==='dups') loadContacts() },[view])
 
   const loadQueue = useCallback(async ()=>{
@@ -325,13 +347,30 @@ export default function OutreachCRM({ adminKey }) {
     setTplSaved(false)
   }
 
-  function tplSave() {
+  async function tplSave() {
     if (!tplEditing) return
+    // Persist to Sanity if we have a real _id (loaded from Sanity)
+    if (tplEditing._sanityId) {
+      try {
+        const r = await fetch('/api/outreach/templates', {
+          method: 'PATCH',
+          headers: H,
+          body: JSON.stringify({ id: tplEditing._sanityId, subject: tplEditing.subject, body: tplEditing.body, previewText: tplEditing.preheader }),
+        })
+        const d = await r.json()
+        if (!d.ok) throw new Error(d.error || 'Save failed')
+        flash('✅ Template saved to Sanity')
+      } catch(e) {
+        flash('❌ Save failed: ' + e.message, false)
+        return
+      }
+    } else {
+      flash('⚠ No Sanity ID — use Sync to push first', false)
+    }
     setTplTemplates(prev => prev.map(t => t.id === tplEditing.id ? { ...tplEditing } : t))
     setTplDirty(false)
     setTplSaved(true)
     setTimeout(() => setTplSaved(false), 2500)
-    flash('Template saved for this session')
   }
 
   function tplCmd(cmd) {

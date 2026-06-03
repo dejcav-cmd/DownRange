@@ -61,7 +61,7 @@ const ul = items => `<ul style="margin:0 0 18px;padding-left:22px;">${items.map(
 const YOUTUBER_INTRO = {
   name: 'YouTuber — Introduction & Embed Permission (Primary)',
   type: 'youtuber',
-  subject: '{{firstName}} — wanted you to hear about this directly',
+  subject: 'DJ from DownRange — wanted to tell you directly',
   previewText: 'Built something for the 2A community. Your content is already part of it.',
   body: shell(`
 <div style="text-align:center;padding:8px 0 32px;">
@@ -347,8 +347,20 @@ export async function POST(req) {
       try {
         const existing = await sanity.fetch(`*[_type=="outreachTemplate"&&name==$name][0]._id`,{name:tmpl.name})
         if (existing) {
-          await sanity.patch(existing).set({body:tmpl.body,subject:tmpl.subject,previewText:tmpl.previewText,variables:tmpl.variables}).commit()
-          results.templates.updated++
+          // NEVER overwrite subject/body on existing templates — admin edits must be preserved
+          // Only backfill fields that are genuinely missing
+          const existingFull = await sanity.fetch(`*[_id==$id][0]{subject,body}`,{id:existing})
+          const patch = {}
+          if (!existingFull?.subject) patch.subject = tmpl.subject
+          if (!existingFull?.body)    patch.body    = tmpl.body
+          if (tmpl.previewText)       patch.previewText = tmpl.previewText
+          if (tmpl.variables)         patch.variables   = tmpl.variables
+          if (Object.keys(patch).length > 0) {
+            await sanity.patch(existing).set(patch).commit()
+            results.templates.updated++
+          } else {
+            results.templates.skipped++
+          }
         } else {
           await sanity.create({_type:'outreachTemplate',...tmpl,isActive:true,createdAt:new Date().toISOString()})
           results.templates.created++
