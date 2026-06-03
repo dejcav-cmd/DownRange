@@ -1,0 +1,42 @@
+name: Patch Sanity Template Subject
+on:
+  workflow_dispatch:
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Patch YouTuber intro subject
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          python3 << 'PYEOF'
+import urllib.request, urllib.parse, json, os
+
+TOKEN   = os.environ["SANITY_TOKEN"]
+PROJECT = "vbnsqnkg"
+HEADERS = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
+
+def sanity_get(query):
+    url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(query)}&returnQuery=false"
+    req = urllib.request.Request(url, headers=HEADERS)
+    with urllib.request.urlopen(req) as r:
+        return json.loads(r.read())["result"]
+
+def sanity_mutate(mutations):
+    url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/mutate/production"
+    data = json.dumps({"mutations": mutations}).encode()
+    req = urllib.request.Request(url, data=data, headers=HEADERS, method="POST")
+    with urllib.request.urlopen(req) as r:
+        return json.loads(r.read())
+
+results = sanity_get('*[_type=="outreachTemplate"]{_id,name,subject}')
+print("All templates found:", len(results))
+for t in results:
+    name = t.get("name","")
+    print(f"  {name} | {t.get('subject','')[:60]}")
+    if "YouTuber" in name and "Introduction" in name and "Follow" not in name and "Deeper" not in name:
+        r = sanity_mutate([{"patch": {"id": t["_id"], "set": {"subject": "DJ from DownRange — wanted to tell you directly"}}}])
+        print(f"  => PATCHED: {r}")
+
+print("Done")
+PYEOF
