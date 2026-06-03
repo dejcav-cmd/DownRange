@@ -23,19 +23,15 @@ const shell = (body, accent) => `<!DOCTYPE html>
     <img src="${LOGO}" alt="DownRange" width="160" height="auto" style="display:block;height:auto;max-height:42px;width:auto;max-width:180px;">
   </div>
   <div style="padding:40px;background:${CARD};">${body}</div>
-  <div style="padding:24px 36px;background:${DRK};border-top:1px solid ${BOR};">
-    <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;"><tr>
-      <td style="width:56px;vertical-align:top;padding-right:16px;">
-        <img src="${AV}" alt="DJ Cavalcanti" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;">
+  <div style="padding:20px 36px 24px;background:${DRK};border-top:1px solid ${BOR};">
+    <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-top:1px solid ${BOR};padding-top:16px;margin-top:0;width:100%;"><tr>
+      <td style="vertical-align:middle;padding-right:14px;width:60px;">
+        <img src="${AV}" alt="DJ Cavalcanti" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid ${G};">
       </td>
-      <td style="vertical-align:top;">
-        <div style="font-size:15px;font-weight:700;color:${TEXT};">DJ Cavalcanti</div>
-        <div style="font-size:12px;color:${MUT};margin-top:2px;">Founder, DownRange</div>
-        <div style="margin-top:8px;font-size:11px;">
-          <a href="https://www.downrangeco.com" style="color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a>
-          &nbsp;·&nbsp;
-          <a href="https://www.downrangeco.com/press" style="color:${G};text-decoration:none;">Press &amp; Partners</a>
-        </div>
+      <td style="vertical-align:middle;">
+        <div style="font-size:14px;font-weight:700;color:${TEXT};margin-bottom:2px;">DJ Cavalcanti</div>
+        <div style="font-size:12px;color:#6b7280;margin-bottom:4px;">Founder, DownRange</div>
+        <a href="https://www.downrangeco.com" style="font-size:12px;color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a>
       </td>
     </tr></table>
   </div>
@@ -51,7 +47,7 @@ const p  = t => `<p style="margin:0 0 18px;font-size:15px;color:${TEXT};line-hei
 const a  = (h,t) => `<a href="${h}" style="color:${G};text-decoration:none;font-weight:600;">${t}</a>`
 const hr = () => `<div style="height:1px;background:${BOR};margin:24px 0;"></div>`
 const hl = t => `<div style="padding:14px 18px;background:#111316;border-left:3px solid ${G};margin:20px 0;font-size:14px;color:#d1d5db;line-height:1.75;">${t}</div>`
-const cta= (h,t) => `<div style="margin:28px 0 8px;"><a href="${h}" style="display:inline-block;background:${G};color:#000;padding:13px 26px;text-decoration:none;font-weight:700;font-size:14px;letter-spacing:0.04em;">${t} &rarr;</a></div>`
+const cta= (h,t) => `<div style="margin:28px 0 8px;"><a href="${h}" style="display:block;background:${G};color:#000;padding:14px 36px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:0.1em;text-transform:uppercase;text-align:center;">${t} &rarr;</a></div>`
 const ul = items => `<ul style="margin:0 0 18px;padding-left:22px;">${items.map(i=>`<li style="margin-bottom:8px;font-size:14px;color:#d1d5db;line-height:1.75;">${i}</li>`).join('')}</ul>`
 
 // ─────────────────────────────────────────────────────────────────────────────

@@ -32,7 +32,7 @@ function buildEmailHTML({ subject, preheader, greeting, body, ctaText, ctaUrl, c
   const fn = (contactName||'').split(' ')[0] || 'there'
   const g  = (greeting||'Hi {{firstName}},').replace(/\{\{firstName\}\}/g, fn)
   const b  = (body||'').replace(/\{\{firstName\}\}/g, fn)
-  const cta = ctaText && ctaUrl ? `<table cellpadding="0" cellspacing="0" style="margin:32px 0 0;"><tr><td style="background:${accentColor};padding:0;"><a href="${ctaUrl}" style="display:inline-block;padding:14px 36px;font-family:Arial,sans-serif;font-size:13px;font-weight:700;color:#000;text-decoration:none;letter-spacing:0.1em;text-transform:uppercase;">${ctaText} &rarr;</a></td></tr></table>` : ''
+  const cta = ctaText && ctaUrl ? `<div style="margin:28px 0 8px;"><a href="${ctaUrl}" style="display:inline-block;background:${accentColor};color:#000;padding:10px 22px;text-decoration:none;font-weight:700;font-size:13px;letter-spacing:0.05em;border-radius:2px;">${ctaText} &rarr;</a></div>` : ''
   const sig = signature
     ? `<div style="margin-top:12px;font-size:13px;color:#9ca3af;line-height:1.7;white-space:pre-line;">${signature}</div>`
     : `<table cellpadding="0" cellspacing="0" style="margin-top:16px;border-top:1px solid #1f2428;padding-top:16px;">
