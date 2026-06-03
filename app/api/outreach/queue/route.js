@@ -243,7 +243,12 @@ export async function POST(req) {
         { id }
       )
       // Re-render bodyHtml if missing OR if it contains unresolved {{variables}}
-      const hasStaleVars = entry?.bodyHtml && /\{\{[a-zA-Z]+\}\}/.test(entry.bodyHtml)
+      const hasStaleVars = entry?.bodyHtml && (
+        /\{\{[a-zA-Z]+\}\}/.test(entry.bodyHtml) ||          // unresolved template vars
+        entry.bodyHtml.includes('max-width:640px') ||         // old shell layout
+        entry.bodyHtml.includes('padding:40px') ||            // old shell body padding
+        !entry.bodyHtml.includes('logo-banner.png')           // old logo
+      )
       if (entry && (!entry.bodyHtml || hasStaleVars) && entry.template && entry.contact) {
         if (hasStaleVars) {
           console.log('[OUTREACH SEND] bodyHtml has unresolved vars for', entry.toEmail, '— re-rendering')
