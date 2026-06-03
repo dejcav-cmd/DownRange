@@ -14,34 +14,12 @@ const G='#C8922A',BG='#09090B',CARD='#0d0e10',TEXT='#e5e7eb',MUT='#9ca3af',BOR='
 const LOGO='https://downrangeco.com/img/logo-banner.png'
 const AV  ='https://downrangeco.com/img/dj-avatar.png'
 
-const shell = (body, accent) => `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><meta name="x-apple-disable-message-reformatting"></head>
-<body style="margin:0;padding:0;background:${BG};font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:${TEXT};-webkit-text-size-adjust:100%;">
-<div style="max-width:640px;margin:0 auto;background:${BG};">
-  <div style="height:4px;background:${accent||G};"></div>
-  <div style="background:${DRK};padding:18px 36px 14px;border-bottom:1px solid ${BOR};">
-    <img src="${LOGO}" alt="DownRange" width="160" height="auto" style="display:block;height:auto;max-height:42px;width:auto;max-width:180px;">
-  </div>
-  <div style="padding:40px;background:${CARD};">${body}</div>
-  <div style="padding:20px 36px 24px;background:${DRK};border-top:1px solid ${BOR};">
-    <table cellpadding="0" cellspacing="0" style="border-collapse:collapse;border-top:1px solid ${BOR};padding-top:16px;margin-top:0;width:100%;"><tr>
-      <td style="vertical-align:middle;padding-right:14px;width:60px;">
-        <img src="${AV}" alt="DJ Cavalcanti" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid ${G};">
-      </td>
-      <td style="vertical-align:middle;">
-        <div style="font-size:14px;font-weight:700;color:${TEXT};margin-bottom:2px;">DJ Cavalcanti</div>
-        <div style="font-size:12px;color:#6b7280;margin-bottom:4px;">Founder, DownRange</div>
-        <a href="https://www.downrangeco.com" style="font-size:12px;color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a>
-      </td>
-    </tr></table>
-  </div>
-  <div style="padding:12px 36px;background:${BG};text-align:center;">
-    <p style="margin:0;font-size:10px;color:#374151;line-height:1.6;">
-      You received this because you were added to the DownRange outreach list as a trusted creator or partner.
-      &nbsp;<a href="{{unsubscribeUrl}}" style="color:#4b5563;text-decoration:none;">Unsubscribe</a>
-    </p>
-  </div>
-</div></body></html>`
+// shell() — single-arg, output identical to buildEmailHTML in OutreachCRM.js
+// body string includes p(), cta(), hr(), hl() helpers inline — sig appended automatically
+function shell(body) {
+  const sigHtml = `<table cellpadding="0" cellspacing="0" style="margin-top:16px;border-top:1px solid #1f2428;padding-top:16px;"><tr><td style="vertical-align:middle;padding-right:14px;"><img src="${AV}" alt="DJ Cavalcanti" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid ${G};"></td><td style="vertical-align:middle;"><div style="font-size:14px;font-weight:700;color:#e5e7eb;margin-bottom:2px;">DJ Cavalcanti</div><div style="font-size:12px;color:#6b7280;margin-bottom:4px;">Founder, DownRange</div><a href="https://downrangeco.com" style="font-size:12px;color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a></td></tr></table>`
+  return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DownRange</title></head><body style="margin:0;padding:0;background:#09090B;font-family:Arial,Helvetica,sans-serif;"><table width="100%" cellpadding="0" cellspacing="0" style="background:#09090B;padding:32px 16px;"><tr><td align="center"><table width="600" cellpadding="0" cellspacing="0" style="background:#0A0B0C;border:1px solid #1f2428;max-width:600px;width:100%;"><tr><td style="background:#0d0e10;border-bottom:3px solid ${G};padding:20px 36px;"><img src="${LOGO}" alt="DownRange" width="480" height="auto" style="display:block;height:auto;max-height:58px;width:auto;max-width:100%;"></td></tr><tr><td style="padding:32px 36px 24px;">${body}<div style="margin-top:32px;padding-top:20px;border-top:1px solid #1f2428;">${sigHtml}</div></td></tr><tr><td style="padding:0 36px;"><div style="height:1px;background:linear-gradient(90deg,${G}22,${G},${G}22);"></div></td></tr><tr><td style="padding:16px 36px 24px;background:#050506;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:10px;color:#374151;line-height:1.7;">DownRange Media LLC &middot; America&#39;s Firearms Intelligence Hub<br><a href="https://downrangeco.com" style="color:#4b5563;text-decoration:none;">downrangeco.com</a></td><td align="right" style="vertical-align:bottom;"><a href="{{unsubscribeUrl}}" style="color:#374151;text-decoration:none;font-size:9px;letter-spacing:.08em;">Unsubscribe</a></td></tr></table></td></tr></table></td></tr></table></body></html>`
+}
 
 const p  = t => `<p style="margin:0 0 18px;font-size:15px;color:${TEXT};line-height:1.85;">${t}</p>`
 const a  = (h,t) => `<a href="${h}" style="color:${G};text-decoration:none;font-weight:600;">${t}</a>`
