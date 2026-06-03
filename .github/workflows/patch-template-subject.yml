@@ -6,7 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Reseed templates from JSON
+      - name: Seed channel config + reseed templates
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: |
@@ -17,7 +17,7 @@ jobs:
           PROJECT = "vbnsqnkg"
           H = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
 
-          def get(q, params=None):
+          def get(q):
               url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(q)}&returnQuery=false"
               with urllib.request.urlopen(urllib.request.Request(url, headers=H)) as r:
                   return json.loads(r.read())["result"]
@@ -28,25 +28,56 @@ jobs:
               with urllib.request.urlopen(urllib.request.Request(url, data=data, headers=H, method="POST")) as r:
                   return json.loads(r.read())
 
+          # ── 1. Seed channel config — all hidden except Garand Thumb ──────────
+          CHANNELS = [
+            {"channelId":"UC0RBTQIYLEQbcahZWkmzeTQ","id":"ch1","name":"Garand Thumb","category":"Reviews & Tactical","subs":"~4.6M","active":True},
+            {"channelId":"UCIRgR4iANHI2taJdz8hjwLw","id":"ch2","name":"Paul Harrell","category":"Demonstrations","subs":"~1.1M","active":False},
+            {"channelId":"UCwIHnIpEIbyzmL9cB2l5Elw","id":"ch3","name":"Military Arms Channel","category":"Reviews & Industry","subs":"~860K","active":False},
+            {"channelId":"UCa2OJa5n9oeQ_NRohmI8kVA","id":"ch4","name":"Iraqveteran8888","category":"General Firearms","subs":"~2.6M","active":False},
+            {"channelId":"UCVp_8H_KAQL7dJT6fGfSLKQ","id":"ch5","name":"InRange TV","category":"Reviews & Historical","subs":"~300K","active":False},
+            {"channelId":"UCrfKGpvbEQXcbe68dzXgJuA","id":"ch6","name":"Forgotten Weapons","category":"Historical Collector","subs":"~2.8M","active":False},
+            {"channelId":"UCkKnVVYHmFYMgWJjJPzwHdw","id":"ch7","name":"Active Self Protection","category":"Training & Self-Defense","subs":"~2.2M","active":False},
+            {"channelId":"UCpAQxclFD9eGCqRoIDNIGsA","id":"ch8","name":"Lucky Gunner","category":"Ammo & Testing","subs":"~600K","active":False},
+            {"channelId":"UCVdMoKcLQ7-4lxjhJXx_E8A","id":"ch9","name":"Hickok45","category":"Demonstrations","subs":"~6.6M","active":False},
+            {"channelId":"UCpUJCA4YcMVMdSolcaWOQOw","id":"ch10","name":"Mr. Guns N Gear","category":"Reviews & EDC","subs":"~1.3M","active":False},
+            {"channelId":"UCftEYpFBf_m8gJEWMXXfqVg","id":"ch11","name":"Brownells","category":"Industry & Parts","subs":"~260K","active":False},
+            {"channelId":"UCR6jQ7mXz6zZx3DtCMzKWxQ","id":"ch12","name":"IMPACT SHOOTING","category":"Hunting & Precision","subs":"—","active":False},
+            {"channelId":"UC-y0QNNNujtB2PLjrHDwnPg","id":"ch13","name":"Daniel Defense","category":"Manufacturer","subs":"—","active":False},
+            {"channelId":"UC9ZKDGCc5R67fVvLFSv-OLA","id":"ch14","name":"Warrior Poet Society","category":"Training & 2A","subs":"—","active":False},
+            {"channelId":"UCFJ2K2gUJJ1ecBU6Sxc3bCA","id":"ch15","name":"Gun Owners of America","category":"2A Advocacy","subs":"—","active":False},
+            {"channelId":"UC3CfC922pS8htNjW8yTPGRg","id":"ch16","name":"Washington Gun Law","category":"Law & 2A","subs":"—","active":False},
+            {"channelId":"UCHWRbypJau9R8lDCXqlWgUA","id":"ch17","name":"Backfire","category":"Hunting","subs":"—","active":False},
+            {"channelId":"UC0VQT2e75ejR-mUCuerugvA","id":"ch18","name":"Tactical Cowboy","category":"Training","subs":"—","active":False},
+            {"channelId":"UCG1_A0jPBGZUpRW7XkaaBkg","id":"ch19","name":"Honest Outlaw","category":"Reviews & EDC","subs":"—","active":False},
+            {"channelId":"UC7X2IY5-ZHKU83nyb6KejgQ","id":"ch20","name":"Dirty Civilian","category":"Training","subs":"—","active":False},
+            {"channelId":"UCmBmZD1xOLIAmLe7wVKfUmA","id":"ch21","name":"Classic Firearms","category":"Industry & Review","subs":"—","active":False},
+            {"channelId":"UC193r5YXcpQJV34N99ZbhzQ","id":"ch22","name":"Colion Noir","category":"2A & Law","subs":"—","active":False},
+            {"channelId":"UCA_R_X4kk4P-ZUSrt2CXmng","id":"ch23","name":"Argali","category":"Hunting & Gear","subs":"—","active":False},
+            {"channelId":"UC816lSSFUowW4NrA5WfSpNw","id":"ch24","name":"PNWild","category":"Hunting PNW","subs":"—","active":False},
+            {"channelId":"UCLDHTNcCXHlu2Z9XNBZ2gZg","id":"ch25","name":"xring","category":"Competition","subs":"—","active":False},
+            {"channelId":"UCCgbrWR2dh0jDSCToEymeaw","id":"ch26","name":"Clint Morgan (Magdump)","category":"2A & Training","subs":"—","active":False},
+            {"channelId":"UCJxCLIuutemQ2D71hD3c5ug","id":"ch27","name":"GBRS Group","category":"Training & Tactics","subs":"—","active":False},
+            {"channelId":"UCdqO3qjABeMfqdhErk-A7zg","id":"ch28","name":"Haley Strategic Partners","category":"Training & Tactics","subs":"—","active":False},
+          ]
+
+          result = mutate([
+            {"createIfNotExists": {"_id": "youtube-channel-config", "_type": "videoChannelConfig", "channels": []}},
+            {"patch": {"id": "youtube-channel-config", "set": {"channels": CHANNELS}}}
+          ])
+          print(f"Channel config seeded: {len(CHANNELS)} channels, 1 active (Garand Thumb)")
+          print("Result:", result.get("results", [])[:2])
+
+          # ── 2. Reseed templates ───────────────────────────────────────────────
           with open("scripts/outreach-templates.json") as f:
               templates = json.load(f)
-
-          existing = get('*[_type=="outreachTemplate"]{_id,name,subject,body}')
-          by_name  = {t["name"]: t for t in existing}
-
+          existing = get('*[_type=="outreachTemplate"]{_id,name}')
+          by_name  = {t["name"]: t["_id"] for t in existing}
           patched = 0
           for tmpl in templates:
-              name = tmpl.get("name","")
-              ex   = by_name.get(name)
-              if not ex:
-                  print(f"  SKIP (not in Sanity): {name}")
-                  continue
-              result = mutate([{"patch": {"id": ex["_id"], "set": {
-                  "subject": tmpl.get("subject", ex.get("subject","")),
-                  "body":    tmpl.get("body",    ex.get("body","")),
-              }}}])
-              print(f"  PATCHED: {name}")
+              doc_id = by_name.get(tmpl.get("name",""))
+              if not doc_id: continue
+              mutate([{"patch": {"id": doc_id, "set": {"subject": tmpl.get("subject",""), "body": tmpl.get("body","")}}}])
               patched += 1
-
-          print(f"Done — {patched} templates updated in Sanity")
+          print(f"Templates reseeded: {patched}")
+          print("Done")
           PYEOF

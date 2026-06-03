@@ -16,14 +16,21 @@ function auth(req) {
 
 const CONFIG_ID = 'youtube-channel-config'
 
-// Fetch channels from Sanity (stored as a singleton config doc)
+// Upsert helper — works even if doc doesn't exist yet
+async function upsertChannels(channels) {
+  // Try patch first; if doc missing, create it
+  try {
+    await sanity.createIfNotExists({ _id: CONFIG_ID, _type: 'videoChannelConfig', channels: [] })
+    await sanity.patch(CONFIG_ID).set({ channels }).commit()
+  } catch (e) {
+    throw new Error('Sanity upsert failed: ' + e.message)
+  }
+}
+
 export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   try {
-    const doc = await sanity.fetch(
-      '*[_id == $id][0]{ channels }',
-      { id: CONFIG_ID }
-    )
+    const doc = await sanity.fetch('*[_id == $id][0]{ channels }', { id: CONFIG_ID })
     return Response.json({ ok: true, channels: doc?.channels || [] })
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 })
@@ -36,41 +43,32 @@ export async function POST(req) {
     const body = await req.json()
     const { action, channels, channel } = body
 
-    // Save full channel list
     if (action === 'save') {
-      await sanity
-        .createOrReplace({
-          _id:      CONFIG_ID,
-          _type:    'siteConfig',
-          channels: channels || [],
-        })
+      await upsertChannels(channels || [])
       return Response.json({ ok: true })
     }
 
-    // Add single channel
     if (action === 'add') {
       const doc = await sanity.fetch('*[_id == $id][0]', { id: CONFIG_ID })
       const existing = doc?.channels || []
       const updated = [...existing, { ...channel, id: 'ch' + Date.now(), active: true }]
-      await sanity.createOrReplace({ _id: CONFIG_ID, _type: 'siteConfig', channels: updated })
+      await upsertChannels(updated)
       return Response.json({ ok: true, channels: updated })
     }
 
-    // Toggle active
     if (action === 'toggle') {
       const { id } = body
       const doc = await sanity.fetch('*[_id == $id][0]', { id: CONFIG_ID })
       const updated = (doc?.channels || []).map(c => c.id === id ? { ...c, active: !c.active } : c)
-      await sanity.createOrReplace({ _id: CONFIG_ID, _type: 'siteConfig', channels: updated })
+      await upsertChannels(updated)
       return Response.json({ ok: true, channels: updated })
     }
 
-    // Remove channel
     if (action === 'remove') {
       const { id } = body
       const doc = await sanity.fetch('*[_id == $id][0]', { id: CONFIG_ID })
       const updated = (doc?.channels || []).filter(c => c.id !== id)
-      await sanity.createOrReplace({ _id: CONFIG_ID, _type: 'siteConfig', channels: updated })
+      await upsertChannels(updated)
       return Response.json({ ok: true, channels: updated })
     }
 
