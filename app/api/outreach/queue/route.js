@@ -288,10 +288,7 @@ export async function POST(req) {
           subject: entry.subject,
           html:    entry.bodyHtml,
           headers: {
-            'List-Unsubscribe':      `<${unsubUrl}>, <mailto:dj@downrangeco.com?subject=unsubscribe>`,
-            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-            'X-Entity-Ref-ID':       entry._id || '',
-            'Precedence':            'bulk',
+            'X-Entity-Ref-ID': entry._id || '',
           },
         })
         if (error) {
