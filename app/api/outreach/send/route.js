@@ -71,7 +71,6 @@ function wrapEmail(body, contact, unsubUrl) {
     return body
   }
   // Plain/partial body — wrap in the canonical DownRange shell (identical to admin preview)
-  const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(contact.email || '')}`
   const paras = body.split('\n\n').filter(Boolean)
     .map(p => `<p style="margin:0 0 16px;font-size:15px;color:#d1d5db;line-height:1.9;">${p.replace(/\n/g, '<br>')}</p>`)
     .join('')
