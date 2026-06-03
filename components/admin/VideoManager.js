@@ -153,13 +153,25 @@ export default function VideoManager({ adminKey }) {
     setChannels(updated)
     cacheChannels(updated)
     const ch = updated.find(c => c.id === id)
-    flash(ch.active ? '✅ ' + ch.name + ' enabled' : '⚠ ' + ch.name + ' paused — no new videos until re-enabled')
     try {
-      await fetch('/api/admin/youtube-channels', {
+      const res = await fetch('/api/admin/youtube-channels', {
         method: 'POST', headers: { ...H, 'Content-Type': 'application/json' },
         body: JSON.stringify({ action: 'save', channels: updated }),
       })
-    } catch {}
+      const d = await res.json()
+      if (!d.ok) {
+        flash('❌ Save failed — ' + (d.error || 'unknown error'), false)
+        // Revert local state so UI matches reality
+        setChannels(channels)
+        cacheChannels(channels)
+        return
+      }
+      flash(ch.active ? '✅ ' + ch.name + ' enabled' : '⊘ ' + ch.name + ' hidden — cron will skip it')
+    } catch (e) {
+      flash('❌ Save failed — ' + e.message, false)
+      setChannels(channels)
+      cacheChannels(channels)
+    }
   }
 
   async function removeChannel(id) {

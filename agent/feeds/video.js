@@ -251,7 +251,9 @@ async function loadChannelsFromSanity() {
     const data = await res.json()
     if (data.result?.channels?.length) {
       console.log(`[VIDEO] Loaded ${data.result.channels.length} channels from Sanity VideoManager`)
-      return data.result.channels.map(c => ({ id: c.channelId || c.id, name: c.name, handle: c.handle || null, tags: ['review'] }))
+      const active = data.result.channels.filter(c => c.active !== false)
+      console.log(`[VIDEO] ${active.length} active / ${data.result.channels.length} total channels (hidden: ${data.result.channels.length - active.length})`)
+      return active.map(c => ({ id: c.channelId || c.id, name: c.name, handle: c.handle || null, tags: ['review'] }))
     }
   } catch {}
   return null
