@@ -1,6 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import LawAssistant from '../../components/ui/LawAssistant'
 import ReciprocityPlanner from '../../components/ui/ReciprocityPlanner'
 import { fetchLegislation, searchLegislation, fetchBreakingAlerts, fetchAllStateProfiles } from '../../sanity/lib/client'
@@ -158,7 +157,6 @@ export default async function LawsPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── PAGE HERO ── */}

@@ -1,7 +1,6 @@
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 const HOLSTER_DB = {
   'glock-19': {
@@ -48,7 +47,6 @@ export default async function HolsterPage({ params }) {
   const d = HOLSTER_DB[params.model]
   if (!d) return (
     <>
-      <BreakingTicker alerts={alerts} />
 
       <Masthead />
       <div style={{ padding:'100px', textAlign:'center', color:'#6B7280', fontFamily:"'IBM Plex Mono',monospace" }}>

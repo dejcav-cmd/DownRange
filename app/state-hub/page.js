@@ -1,5 +1,4 @@
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import StateHub from '../../components/sections/StateHub'
 import StateMap from '../../components/sections/StateMap'
@@ -25,7 +24,6 @@ export default async function StateHubPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <div className="page-hero" data-title="STATE HUB">

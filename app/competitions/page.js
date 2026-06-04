@@ -1,5 +1,4 @@
 import CompetitionsClient from './PageClient'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
@@ -18,7 +17,6 @@ export default async function CompetitionsPage() {
   const alerts = await fetchBreakingAlerts(3).catch(() => [])
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <CompetitionsClient />
     </>
   )

@@ -1,7 +1,6 @@
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = { title: 'Privacy Policy — DownRange', alternates: { canonical: 'https://downrangeco.com/privacy' } }
 export default async function Privacy() {
   const sections = [
@@ -15,7 +14,6 @@ export default async function Privacy() {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
 
       <Masthead />
       <div style={{ padding:'60px 0', background:'var(--bg)' }}>

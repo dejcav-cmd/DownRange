@@ -1,6 +1,5 @@
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 import Link from 'next/link'
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { notFound } from 'next/navigation'
@@ -151,7 +150,6 @@ export default async function StateNewsPage({ params, searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <div className="page-hero" data-title={abbr}>

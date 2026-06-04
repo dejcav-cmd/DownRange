@@ -2,7 +2,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 
 const PER_PAGE = 24  // videos per page in browse grid
@@ -220,7 +219,6 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── PAGE HERO ── */}

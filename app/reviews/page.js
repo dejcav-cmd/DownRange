@@ -1,6 +1,5 @@
 import Masthead    from '../../components/layout/Masthead'
 import Footer      from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Link        from 'next/link'
 import { fetchReviews, searchReviews, fetchBreakingAlerts } from '../../sanity/lib/client'
 import SectionSearch from '../../components/ui/SectionSearch'
@@ -230,7 +229,6 @@ export default async function ReviewsPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── HERO ── */}

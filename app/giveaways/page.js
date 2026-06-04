@@ -1,7 +1,6 @@
 import { createClient } from '@sanity/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 export const metadata = {
   title: 'Gun Giveaways 2026 — Free Firearm Giveaways | DownRange',
@@ -83,7 +82,6 @@ export default async function GiveawaysPage() {
   return (
     <>
       <Masthead />
-      <BreakingTicker alerts={[]} />
 
       <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 

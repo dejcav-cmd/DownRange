@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import { getReviewBySlug, fetchReviews , fetchBreakingAlerts } from '../../../sanity/lib/client'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 // Seed reviews — same data as reviews/page.js — fallback when Sanity has no review
 const SEED_REVIEWS = [
@@ -69,7 +68,6 @@ export default async function ReviewPage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
 
       <Masthead />
       <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>

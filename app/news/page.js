@@ -1,6 +1,5 @@
 // deploy trigger
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import NewsCard from '../../components/ui/NewsCard'
 import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
@@ -40,7 +39,6 @@ export default async function NewsPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── PAGE HERO ── */}

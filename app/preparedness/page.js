@@ -1,7 +1,6 @@
 import Link from 'next/link'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import { createClient } from '@sanity/client'
 
@@ -171,7 +170,6 @@ export default async function PreparednessPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* HERO */}

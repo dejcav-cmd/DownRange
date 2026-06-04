@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || ''
 
@@ -34,7 +33,6 @@ export default function FFLFinder() {
 
   return (
     <>
-      <BreakingTicker alerts={[]} />
 
       <Masthead />
       <div className="page-hero" data-title="FFL">

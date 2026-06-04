@@ -1,7 +1,6 @@
 import React from 'react'
 import Masthead from '../components/layout/Masthead'
 import LiveNewsGrid from '../components/ui/LiveNewsGrid'
-import BreakingTicker from '../components/layout/BreakingTicker'
 import Footer from '../components/layout/Footer'
 import NewsCard from '../components/ui/NewsCard'
 import WhatsHot from '../components/ui/WhatsHot'
@@ -88,7 +87,6 @@ export default async function HomePage() {
     <>
       {/* AvantLink affiliate ownership verification — delete after approval */}
       <div style={{display:'none'}} dangerouslySetInnerHTML={{__html:'<script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521"></script>'}} />
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <style>{`

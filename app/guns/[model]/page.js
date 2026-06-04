@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 export const revalidate = 86400
 
@@ -513,7 +512,6 @@ export default async function GunPage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
 
       <Masthead />
       <div style={{ width:'100%', height:'clamp(280px, 40vw, 460px)', overflow:'hidden', position:'relative' }}>

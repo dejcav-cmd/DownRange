@@ -1,7 +1,6 @@
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 export const revalidate = 86400
 
@@ -59,7 +58,6 @@ export default async function ComparePage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
 
       <Masthead />
       <div className="page-hero" data-title="COMPARE">

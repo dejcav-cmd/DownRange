@@ -119,7 +119,6 @@ export default async function BrazilArtigoPage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* JSON-LD */}

@@ -1,7 +1,6 @@
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Link from 'next/link'
 import { buildStateFaqSchema, buildStateFaqHtml } from '../../../lib/stateFaq'
@@ -65,8 +64,6 @@ export default async function StatePage({ params }) {
     <>
       {/* ── FAQPage structured data ── */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-
-      <BreakingTicker alerts={alerts} />
       <Masthead />
       <div className="page-hero" data-title={abbr}>
         <div className="container">

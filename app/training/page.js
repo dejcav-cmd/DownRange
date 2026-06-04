@@ -1,6 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = { title: 'Firearms Training & Drills — DownRange', description: 'Dry fire plans, live fire drills, and training resources. No theory — just the drills that build real skill.', alternates: { canonical: 'https://downrangeco.com/training' } }
 
 const DRILLS = [
@@ -32,7 +31,6 @@ const RESOURCES = [
 export default function TrainingPage() {
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
       <div className="page-hero" data-title="TRAINING">
         <div className="container">

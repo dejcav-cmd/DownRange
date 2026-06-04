@@ -2,7 +2,6 @@ import { createClient } from '@sanity/client'
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 
@@ -61,7 +60,6 @@ export default async function ReleasePage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <div style={{ background:'var(--bg)', minHeight:'100vh' }}>

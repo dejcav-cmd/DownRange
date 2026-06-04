@@ -1,5 +1,4 @@
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import { fetchAmmoPrices, fetchBreakingAlerts } from '../../sanity/lib/client'
 import { createClient } from '@sanity/client'
@@ -303,7 +302,6 @@ export default async function MarketPage() {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <style>{`

@@ -1,5 +1,4 @@
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import IntlArticleCard, { IntlFeaturedArticle } from '../../components/ui/IntlArticleCard'
 import CanadaExtras from './CanadaExtras'
@@ -50,7 +49,6 @@ export default async function CanadaPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={breaking} />
       <Masthead />
 
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>

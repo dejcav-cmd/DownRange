@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
-import BreakingTicker from '../../../components/layout/BreakingTicker'
 
 
 const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange' }
@@ -280,7 +279,6 @@ export default async function ArticlePage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
 
       <Masthead />
 

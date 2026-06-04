@@ -1,6 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 export const metadata = {
   title: 'About DownRange — Built for Gun Owners',
@@ -11,7 +10,6 @@ export const metadata = {
 export default function AboutPage() {
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
       <div className="page-hero" data-title="ABOUT">
         <div className="container">

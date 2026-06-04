@@ -1,7 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 import { sendGAEvent } from '@next/third-parties/google'
 
@@ -298,7 +297,6 @@ export default function DealsPage() {
 
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
 
       {/* ── HERO ── */}

@@ -118,7 +118,6 @@ export default async function CanadaArticlePage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* JSON-LD */}

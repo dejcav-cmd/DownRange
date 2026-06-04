@@ -1,6 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 export const revalidate = 604800  // Weekly — updated by /api/cron/carry-insurance
 
 export const metadata = { title: 'CCW Insurance Comparison — DownRange', description: 'Compare USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance.', alternates: { canonical: 'https://downrangeco.com/carry-insurance' } }
@@ -17,7 +16,6 @@ const FACTORS = ['Upfront Attorney Payment','Civil Coverage Limit','Criminal Def
 export default function CarryInsurancePage() {
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
       <div className="page-hero" data-title="INSURANCE">
         <div className="container">

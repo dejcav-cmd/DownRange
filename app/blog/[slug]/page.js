@@ -117,7 +117,6 @@ export default async function BlogArticlePage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({

@@ -1,7 +1,6 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 export const metadata = {
   title: 'Firearms Learning Center — DownRange',
@@ -39,7 +38,6 @@ export default function LearnPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
 
       {/* ── HERO ── */}

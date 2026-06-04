@@ -5,6 +5,7 @@ import MobileTabBar from '../components/ui/MobileTabBar'
 import { ThemeProvider } from '../components/ui/ThemeProvider'
 import Script from 'next/script'
 import PageViewTracker from '../components/ui/PageViewTracker'
+import GlobalBreakingTicker from '../components/layout/GlobalBreakingTicker'
 
 const GA_ID = 'G-KDGZX3CLEC'
 
@@ -80,6 +81,7 @@ export default function RootLayout({ children }) {
       <ClerkWrapper>
       <body>
         <ThemeProvider>
+          <GlobalBreakingTicker />
           {children}
           <MobileTabBar />
         </ThemeProvider>

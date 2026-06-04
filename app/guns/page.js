@@ -1,5 +1,4 @@
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import SectionSearch from '../../components/ui/SectionSearch'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
@@ -142,7 +141,6 @@ export default async function GunsPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── HERO ── */}

@@ -152,7 +152,6 @@ export default async function ArticlePage({ params }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       {/* ── NewsArticle structured data (JSON-LD) ── */}

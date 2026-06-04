@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 export default function ContactPage() {
   const [form, setForm] = useState({ name:'', email:'', phone:'', subject:'', message:'' })
@@ -28,7 +27,6 @@ export default function ContactPage() {
 
   return (
     <>
-      <BreakingTicker alerts={[]} />
 
       <Masthead />
       <div className="page-hero" data-title="CONTACT">

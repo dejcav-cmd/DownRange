@@ -3,7 +3,6 @@ import { useState } from 'react'
 import SectionSearch from '../../components/ui/SectionSearch'
 import Link from 'next/link'
 import Masthead from '../../components/layout/Masthead'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Footer from '../../components/layout/Footer'
 
 // Static seed data with real gun images — shown when Sanity has no releases yet
@@ -93,7 +92,6 @@ export default function ReleasesPage({ releases = [], alerts = [], searchQ = nul
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
       <div className="page-hero" data-title="RELEASES">
         <div className="container">

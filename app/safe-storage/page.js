@@ -1,6 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 export const metadata = { title: 'Gun Safe & Storage Guide — DownRange', description: 'Complete guide to firearms safe storage. Reviews and recommendations for quick-access, biometric, and full-vault safes.', alternates: { canonical: 'https://downrangeco.com/safe-storage' } }
 
 const SAFES = [
@@ -50,7 +49,6 @@ function SafeCard({ safe }) {
 export default function SafeStoragePage() {
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
       <div className="page-hero" data-title="STORAGE">
         <div className="container">

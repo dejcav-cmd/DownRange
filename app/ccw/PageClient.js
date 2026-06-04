@@ -2,7 +2,6 @@
 import { useState, useMemo } from 'react'
 import Masthead    from '../../components/layout/Masthead'
 import Footer      from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 // ── Complete 50-state CCW dataset ─────────────────────────────────────────────
 const STATES = [
@@ -616,7 +615,6 @@ export default function CcwPage() {
 
   return (
     <>
-      <BreakingTicker alerts={[]} />
       <Masthead />
       <style>{`
         .ccw-card { background:var(--bg2); border:1px solid var(--border); transition:border-color .15s, transform .15s; cursor:pointer; }

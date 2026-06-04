@@ -1,6 +1,5 @@
 import Masthead    from '../../components/layout/Masthead'
 import Footer      from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 import Link        from 'next/link'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../sanity/lib/client'
 
@@ -438,7 +437,6 @@ export default async function BlogPage({ searchParams }) {
 
   return (
     <>
-      <BreakingTicker alerts={alerts} />
       <Masthead />
 
       <style>{`

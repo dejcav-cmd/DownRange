@@ -2,7 +2,6 @@
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
 import Footer   from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
 
 // ── DADOS ESTÁTICOS — Base de conhecimento sobre armas no Brasil ──────────────
 
