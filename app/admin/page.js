@@ -1924,6 +1924,87 @@ function ContentSourcesPanel({ adminKey }) {
   )
 }
 
+// ── Per-article rewrite button ────────────────────────────────────────────────
+function RewriteBtn({ articleId, adminKey, onDone }) {
+  const [state, setState] = React.useState('idle') // idle | running | done | error
+  async function run(e) {
+    e.stopPropagation()
+    setState('running')
+    try {
+      const res  = await fetch(`/api/admin/backfill-articles?id=${articleId}&force=true`, {
+        headers: { 'x-admin-key': adminKey }
+      })
+      const data = await res.json()
+      setState(data.ok || data.done > 0 ? 'done' : 'error')
+      setTimeout(() => { setState('idle'); onDone?.() }, 2000)
+    } catch { setState('error'); setTimeout(() => setState('idle'), 2000) }
+  }
+  const colors = { idle:'#374151', running:'#f59e0b', done:'#22c55e', error:'#ef4444' }
+  const labels = { idle:'✍ REWRITE', running:'…', done:'✓ DONE', error:'✗ FAIL' }
+  return (
+    <button onClick={run} disabled={state === 'running'}
+      style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, padding:'3px 7px', cursor: state==='running' ? 'not-allowed' : 'pointer',
+        background:'none', border:`1px solid ${colors[state]}`, color:colors[state], letterSpacing:'.06em', whiteSpace:'nowrap' }}>
+      {labels[state]}
+    </button>
+  )
+}
+
+// ── Bulk rewrite all failing articles ─────────────────────────────────────────
+function FixAllFailingBtn({ adminKey, items, onDone }) {
+  const [state,    setState]    = React.useState('idle')
+  const [progress, setProgress] = React.useState({ done:0, total:0, current:'' })
+
+  async function run() {
+    const failing = items.filter(a => a.score < 70)
+    if (!failing.length) return
+    setState('running')
+    setProgress({ done:0, total:failing.length, current:'' })
+
+    for (let i = 0; i < failing.length; i++) {
+      const a = failing[i]
+      setProgress({ done:i, total:failing.length, current: a.title.slice(0,40) })
+      try {
+        await fetch(`/api/admin/backfill-articles?id=${a._id}&force=true`, {
+          headers: { 'x-admin-key': adminKey }
+        })
+      } catch {}
+      // Small delay to avoid rate limiting
+      await new Promise(r => setTimeout(r, 800))
+    }
+    setState('done')
+    setProgress(p => ({ ...p, done: p.total }))
+    setTimeout(() => { setState('idle'); onDone?.() }, 3000)
+  }
+
+  const failCount = items.filter(a => a.score < 70).length
+  if (!failCount) return null
+
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:6 }}>
+      {state === 'running' && (
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#f59e0b' }}>
+          {progress.done}/{progress.total} — {progress.current}…
+        </span>
+      )}
+      {state === 'done' && (
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#22c55e' }}>
+          ✓ All rewrites complete
+        </span>
+      )}
+      <button onClick={run} disabled={state !== 'idle'}
+        style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'4px 12px',
+          cursor: state!=='idle' ? 'not-allowed' : 'pointer',
+          background: state==='idle' ? 'rgba(239,68,68,.12)' : 'rgba(200,146,42,.12)',
+          border:`1px solid ${state==='idle' ? '#ef4444' : '#C8922A'}`,
+          color: state==='idle' ? '#ef4444' : '#C8922A',
+          letterSpacing:'.06em', whiteSpace:'nowrap' }}>
+        {state === 'idle' ? `🔧 FIX ALL FAILING (${failCount})` : state === 'running' ? '⏳ REWRITING…' : '✓ DONE'}
+      </button>
+    </div>
+  )
+}
+
 function ContentHub({ adminKey, setPanel, setSection }) {
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
 
@@ -2232,6 +2313,8 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                   )
                 })}
                 <div style={{ flex:1 }} />
+                {/* FIX ALL FAILING button */}
+                <FixAllFailingBtn adminKey={adminKey} items={allItems} onDone={() => loadAllItems()} />
                 {/* Search */}
                 <input value={artSearch} onChange={e => { setArtSearch(e.target.value); setArtPage(1) }}
                   placeholder="Search articles…"
@@ -2258,7 +2341,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                       <table style={{ width:'100%', borderCollapse:'collapse' }}>
                         <thead>
                           <tr style={{ background:'rgba(0,0,0,.25)' }}>
-                            {['#','Title','Type','Score','Words','Issues','Status'].map(h => (
+                            {['#','Title','Type','Score','Words','Issues','Status','Action'].map(h => (
                               <th key={h} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563', letterSpacing:'.1em', textTransform:'uppercase', padding:'8px 12px', borderBottom:'1px solid var(--border)', textAlign:'left', whiteSpace:'nowrap' }}>{h}</th>
                             ))}
                           </tr>
@@ -2314,6 +2397,9 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                                   ) : (
                                     <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', letterSpacing:'.06em' }}>— OK</span>
                                   )}
+                                </td>
+                                <td style={{ padding:'8px 6px' }}>
+                                  <RewriteBtn articleId={a._id} adminKey={adminKey} onDone={() => loadAllItems()} />
                                 </td>
                               </tr>
                             )
