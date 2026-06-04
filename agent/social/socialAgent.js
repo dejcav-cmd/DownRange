@@ -69,18 +69,21 @@ Return ONLY the body text. No quotes, no preamble.`,
 
 // ── BLUESKY (100% free, AT Protocol) ────────────────────────────────────────
 async function postBluesky(content) {
-  const handle = process.env.BLUESKY_HANDLE
-  const pass   = process.env.BLUESKY_APP_PASSWORD
-  if (!handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars. Free at bsky.app — Settings → App Passwords.' }
+  let handle = (process.env.BLUESKY_HANDLE || '').trim()
+  const pass  = (process.env.BLUESKY_APP_PASSWORD || '').trim()
+  if (!handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars.' }
 
-  const auth = await fetch('https://bsky.social/xrpc/com.atproto.server.createSession', {
+  // Sanitize handle — strip https://, @, trailing slashes, whitespace
+  handle = handle.replace(/^https?:\/\//i, '').replace(/^@/, '').replace(/\/$/, '').trim()
+
+  const authRes = await fetch('https://bsky.social/xrpc/com.atproto.server.createSession', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ identifier: handle, password: pass }),
-  }).then(r => r.json())
+  })
+  const auth = await authRes.json()
+  if (!auth.accessJwt) return { ok: false, error: `Bluesky auth failed: ${auth.message || authRes.status} — check BLUESKY_HANDLE (e.g. yourname.bsky.social) and BLUESKY_APP_PASSWORD` }
 
-  if (!auth.accessJwt) return { ok: false, error: auth.message || 'Bluesky auth failed' }
-
-  // Detect URLs and create facets for clickable links
+  // Build facets for clickable URLs
   const urlRegex = /https?:\/\/[^\s]+/g
   const facets = []
   let match
@@ -91,18 +94,20 @@ async function postBluesky(content) {
     facets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#link', uri: match[0] }] })
   }
 
-  const post = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
+  const postRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${auth.accessJwt}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       repo: auth.did, collection: 'app.bsky.feed.post',
-      record: { $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(), facets: facets.length ? facets : undefined },
+      record: { $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(), ...(facets.length ? { facets } : {}) },
     }),
-  }).then(r => r.json())
+  })
+  const post = await postRes.json()
+  if (!post.uri) return { ok: false, error: `Bluesky post failed: ${post.message || postRes.status}` }
 
-  if (!post.uri) return { ok: false, error: post.message || 'Bluesky post failed' }
-  const rkey   = post.uri.split('/').pop()
-  return { ok: true, postId: post.uri, postUrl: `https://bsky.app/profile/${handle}/post/${rkey}` }
+  const rkey = post.uri.split('/').pop()
+  // Use DID-based URL which is always correct regardless of handle format
+  return { ok: true, postId: post.uri, postUrl: `https://bsky.app/profile/${auth.did}/post/${rkey}` }
 }
 
 // ── THREADS (free, Meta Graph API) ───────────────────────────────────────────
@@ -147,25 +152,42 @@ async function postFacebook(content) {
   return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}` }
 }
 
-// ── TWITTER via Buffer API (free tier handles API cost) ─────────────────────
+// ── TWITTER via Buffer API (free tier handles X API cost) ───────────────────
 async function postViaBuffer(content, platform = 'twitter') {
-  const token = process.env.BUFFER_ACCESS_TOKEN
-  const profileId = platform === 'twitter'
+  const token     = (process.env.BUFFER_ACCESS_TOKEN || '').trim()
+  const profileId = (platform === 'twitter'
     ? process.env.BUFFER_TWITTER_PROFILE_ID
-    : process.env[`BUFFER_${platform.toUpperCase()}_PROFILE_ID`]
+    : process.env[`BUFFER_${platform.toUpperCase()}_PROFILE_ID`] || '').trim()
 
-  if (!token) return { ok: false, error: 'Add BUFFER_ACCESS_TOKEN. Free at buffer.com — Settings → Apps & Integrations → Access Token. Buffer absorbs the X API cost ($0.20/URL tweet).' }
-  if (!profileId) return { ok: false, error: `Add BUFFER_${platform.toUpperCase()}_PROFILE_ID. Found in Buffer → Connect Channels → select platform → copy profile ID from URL.` }
+  if (!token)     return { ok: false, error: 'Add BUFFER_ACCESS_TOKEN to Vercel env vars. Buffer → Settings → Apps & Integrations → Access Token.' }
+  if (!profileId) return { ok: false, error: `Add BUFFER_${platform.toUpperCase()}_PROFILE_ID to Vercel. In Buffer, go to your connected X account and copy the profile ID from the URL.` }
+
+  // Buffer v1 API — form-encoded, not JSON
+  const params = new URLSearchParams()
+  params.append('access_token', token)
+  params.append('profile_ids[]', profileId)
+  params.append('text', content)
+  params.append('now', 'true')  // post immediately, don't queue
 
   const res = await fetch('https://api.bufferapp.com/1/updates/create.json', {
-    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ access_token: token, [`profile_ids[]`]: profileId, text: content, now: 'true' }),
-  }).then(r => r.json())
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: params.toString(),
+  })
 
-  if (!res.success) return { ok: false, error: res.message || 'Buffer post failed' }
-  const update = res.updates?.[0]
-  // Buffer doesn't return the live post URL directly — we construct it
-  return { ok: true, postId: update?.id, postUrl: null, note: 'Posted via Buffer. View in Buffer dashboard for live URL.' }
+  const raw  = await res.text()
+  let data
+  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Buffer non-JSON response (${res.status}): ${raw.slice(0,200)}` } }
+
+  // Buffer returns { success: true, updates: [...] } on success
+  if (data.success === true) {
+    const update = data.updates?.[0]
+    return { ok: true, postId: update?.id || null, postUrl: null, note: 'Posted via Buffer. Check your X account or Buffer dashboard to see the live tweet.' }
+  }
+
+  // Detailed error for debugging
+  const errMsg = data.message || data.error || data.code || JSON.stringify(data).slice(0, 200)
+  return { ok: false, error: `Buffer error (${res.status}): ${errMsg}` }
 }
 
 // ── Dispatcher ───────────────────────────────────────────────────────────────
