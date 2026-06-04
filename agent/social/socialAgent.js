@@ -35,7 +35,7 @@ const PLATFORM_CONFIG = {
   bluesky:  { limit: 290, tone: 'Direct and punchy. Gun-owner voice. One strong insight. No hashtags on Bluesky — they hurt reach.' },
   threads:  { limit: 440, tone: 'Conversational, 2-3 short sentences. End with a question to drive replies. 2A community voice.' },
   facebook: { limit: 470, tone: 'Informative. 3-4 sentences with context. End with a question or CTA. Slightly longer is fine on Facebook.' },
-  twitter:  { limit: 240, tone: 'Punchy. Max impact. Strong opener. 2-3 relevant hashtags at the end.' },
+  twitter:  { limit: 260, tone: 'Informative and punchy. Lead with the most important fact. Give enough context that someone who hasn\'t read the article understands what happened and why it matters to gun owners. 2-3 sentences. End with 2-3 relevant hashtags.' },
   reddit:   { limit: 290, tone: 'Factual and direct. No marketing language. r/CCW and r/guns users hate hype. Just the news.' },
 }
 
@@ -82,7 +82,7 @@ Use emojis naturally within the text to increase engagement (2-4 total).
 Body character limit: ${maxBody} chars MAX (NOT including the URL and hashtags we append).
 Do NOT include the URL or hashtags — appended automatically.
 Return ONLY the post body. No quotes, no preamble.`,
-    useCase: 'default', maxTokens: 160,
+    useCase: 'default', maxTokens: 200,
   })
   const body = raw.replace(/^["']|["']$/g, '').trim().slice(0, maxBody)
   return `${body}\n\n${url}${tags}`

@@ -200,9 +200,8 @@ export default function Masthead() {
               </a>
               <span style={{ background:'#C8922A', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
             </div>
-            {/* DOWNRANGECO.COM + date */}
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
+            {/* Date */}
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
           </div>
 
           {/* Right side: social + search — absolutely positioned right */}
