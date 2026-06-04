@@ -337,7 +337,7 @@ export default async function HomePage() {
       </section>
 
       {/* ════ NEWSLETTER ════ */}
-      <section className="hide-mobile" style={{ padding:'56px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
+      <section style={{ padding:'56px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', fontFamily:"'Bebas Neue',cursive", fontSize:'20vw', color:'rgba(200,146,42,0.03)', top:'50%', left:'50%', transform:'translate(-50%,-50%)', whiteSpace:'nowrap', pointerEvents:'none' }}>DOWNRANGE</div>
         <div className="container" style={{ position:'relative' }}>
           <div className="newsletter-split" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
