@@ -34,12 +34,6 @@ export default function EmailCapture({ variant = 'footer' }) {
   if (variant === 'footer') {
     return (
       <div style={{ background: '#111318', border: '1px solid #C8922A30', padding: '20px 24px', marginBottom: '32px' }}>
-        <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '14px', fontWeight: 700, letterSpacing: '0.15em', textTransform: 'uppercase', color: '#C8922A', marginBottom: '6px' }}>
-          DownRange Daily
-        </div>
-        <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#6B7280', marginBottom: '14px' }}>
-          Breaking 2A news, state law updates &amp; gear intel — free.
-        </div>
         {status === 'success' ? (
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#34D399', padding: '8px 0' }}>
             ✓ {msg}

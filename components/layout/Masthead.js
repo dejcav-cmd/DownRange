@@ -174,12 +174,9 @@ export default function Masthead() {
 
       <div className="container" style={{ position:'relative', zIndex:1 }}>
         {/* ── Logo row ── */}
-        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 0 12px' }}>
-          {/* Left spacer — same width as dateline so logo centers */}
-          <div className="masthead-dateline" style={{ visibility:'hidden', flex:'0 0 auto', minWidth:200 }} aria-hidden="true" />
-
-          {/* Logo — centered */}
-          <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none', flex:'0 0 auto' }} aria-label="DownRange Home">
+        <div style={{ position:'relative', padding:'10px 0 12px', display:'flex', alignItems:'center', justifyContent:'center' }}>
+          {/* Logo — absolutely centered, never moves regardless of dateline width */}
+          <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none' }} aria-label="DownRange Home">
             <img
               src="/img/logo.png"
               alt="DownRange Co."
@@ -190,7 +187,8 @@ export default function Masthead() {
             />
           </Link>
 
-          <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'7px', flex:'0 0 auto' }}>
+          {/* Dateline — absolutely positioned to the right, never affects logo position */}
+          <div className="masthead-dateline" style={{ position:'absolute', right:0, top:'50%', transform:'translateY(-50%)', textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'7px' }}>
             {/* Top row: RSS + DAILY EDITION */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'#C8922A', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
