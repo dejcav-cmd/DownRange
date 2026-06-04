@@ -1,11 +1,12 @@
-name: Debug Social Articles
+name: Debug Social Articles Output
 on:
   workflow_dispatch:
 jobs:
   debug:
     runs-on: ubuntu-latest
     steps:
-      - name: Check article fields
+      - uses: actions/checkout@v4
+      - name: Check article fields and write output
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: |
@@ -19,15 +20,24 @@ jobs:
               url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(query)}&returnQuery=false"
               return json.loads(urllib.request.urlopen(urllib.request.Request(url, headers=H)).read())["result"]
 
-          print("=== SAMPLE ARTICLE ===")
-          s = q('*[_type == "newsArticle"][0]{_id,title,status,published,"slug":slug.current,urgencyScore,publishedAt}')
-          print(json.dumps(s, indent=2))
-          print("\n=== COUNTS ===")
-          print("total:", q('count(*[_type == "newsArticle"])'))
-          print("status==published:", q('count(*[_type == "newsArticle" && status == "published"])'))
-          print("published==true:", q('count(*[_type == "newsArticle" && published == true])'))
-          print("has slug:", q('count(*[_type == "newsArticle" && defined(slug.current)])'))
-          print("status OR published:", q('count(*[_type == "newsArticle" && (status == "published" || published == true)])'))
-          print("active==true:", q('count(*[_type == "newsArticle" && active == true])'))
-          print("all fields on first:", list(q('*[_type == "newsArticle"][0]').keys()) if q('*[_type == "newsArticle"][0]') else "none")
+          out = {}
+          out["sample"] = q('*[_type == "newsArticle"][0]{_id,title,status,published,"slug":slug.current,urgencyScore,publishedAt,active}')
+          out["total"] = q('count(*[_type == "newsArticle"])')
+          out["status_published"] = q('count(*[_type == "newsArticle" && status == "published"])')
+          out["published_true"] = q('count(*[_type == "newsArticle" && published == true])')
+          out["has_slug"] = q('count(*[_type == "newsArticle" && defined(slug.current)])')
+          out["active_true"] = q('count(*[_type == "newsArticle" && active == true])')
+          out["status_or_published"] = q('count(*[_type == "newsArticle" && (status == "published" || published == true)])')
+          out["sample_fields"] = list(q('*[_type == "newsArticle"][0]').keys()) if q('*[_type == "newsArticle"][0]') else []
+
+          with open("debug-output.json","w") as f:
+              json.dump(out, f, indent=2)
+          print(json.dumps(out, indent=2))
           PYEOF2
+      - name: Commit output
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add debug-output.json
+          git commit -m "debug: social article query results" || echo "nothing to commit"
+          git push origin main
