@@ -41,7 +41,7 @@ function getImage(article) {
 // Platform character budgets (body text only, URL/hashtags appended separately):
 const CHAR_BUDGETS = {
   twitter:  200,  // 280 total - 23 (t.co URL) - 55 (hashtags) - 2 (newlines)
-  bluesky:  250,  // 300 limit - 45 (full URL) - 5 (newlines)
+  bluesky:  220,  // 300 GRAPHEME limit - 45 (URL) - 5 (newlines) - 30 safety buffer for emoji
   threads:  430,  // 500 limit - 50 (URL) - 20 (newlines)
   facebook: 450,  // No hard limit; keep focused
   reddit:   250,  // Title-only post; this is the title
@@ -138,11 +138,22 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
     maxTokens: 300,
   })
 
-  const body = raw
+  let body = raw
     .replace(/^["'`]|["'`]$/g, '')
     .replace(/^(Here'?s?( a| the)?( draft| post| copy)?:?\s*)/i, '')
     .trim()
-    .slice(0, budget)
+
+  // Grapheme-aware truncation — emoji count as 1 grapheme but 2+ JS chars
+  // Critical for Bluesky which enforces a 300 grapheme hard limit
+  if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+    const segmenter = new Intl.Segmenter()
+    const graphemes = [...segmenter.segment(body)].map(s => s.segment)
+    if (graphemes.length > budget) {
+      body = graphemes.slice(0, budget - 1).join('') + '…'
+    }
+  } else {
+    body = body.slice(0, budget)
+  }
 
   return `${body}\n\n${url}${tags}`
 }

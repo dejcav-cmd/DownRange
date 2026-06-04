@@ -18,9 +18,22 @@ function auth(req) {
 
 export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  // Load per-platform count from config
-  const config = await sanity.fetch(`*[_type == "socialConfig"][0]{"count": platforms_config.bluesky.postsPerRun}`).catch(() => null)
-  const count  = config?.count ?? 1
+
+  // Load config — platforms_config is stored as JSON string in Sanity
+  const raw = await sanity.fetch(`*[_type == "socialConfig"][0]{platforms_config_json}`).catch(() => null)
+  let platformCfg = {}
+  if (raw?.platforms_config_json) {
+    try { platformCfg = JSON.parse(raw.platforms_config_json) } catch {}
+  }
+
+  const cfg = platformCfg['bluesky'] || {}
+
+  // Only run if this platform is explicitly enabled in the scheduler
+  if (!cfg.enabled) {
+    return Response.json({ ok: true, skipped: true, reason: 'bluesky is not enabled in the scheduler' })
+  }
+
+  const count  = cfg.postsPerRun ?? 1
   const result = await runSocialAgent({ platform: 'bluesky', count }).catch(e => ({ ok: false, error: e.message }))
   return Response.json(result)
 }
