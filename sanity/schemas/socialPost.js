@@ -66,6 +66,8 @@ export const socialConfig = defineType({
     defineField({ name: 'instagramHandle',   type: 'string', title: 'Instagram Handle' }),
     defineField({ name: 'threadsHandle',     type: 'string', title: 'Threads Handle' }),
     defineField({ name: 'blueskyHandle',     type: 'string', title: 'Bluesky Handle' }),
+    // Per-platform schedule config — stored as JSON string to avoid schema churn
+    defineField({ name: 'platforms_config_json', type: 'text', title: 'Per-Platform Schedule Config (JSON)' }),
     // Social profile URLs — shown in header/footer
     defineField({ name: 'socialLinks', type: 'object', title: 'Social Media Profile Links (shown in header/footer)',
       fields: [

@@ -14,6 +14,7 @@ export default function GlobalBreakingTicker() {
   const isAdmin = pathname?.startsWith('/admin')
 
   useEffect(() => {
+    if (isAdmin) return // Don't poll on admin
     async function fetchAlerts() {
       try {
         const res  = await fetch('/api/breaking-alerts', { cache: 'no-store' })
@@ -33,6 +34,9 @@ export default function GlobalBreakingTicker() {
     const t = setInterval(fetchAlerts, POLL_INTERVAL)
     return () => clearInterval(t)
   }, [])
+
+  // Never render on admin pages
+  if (isAdmin) return null
 
   // Don't take up space if no alerts
   if (!alerts.length) return null
