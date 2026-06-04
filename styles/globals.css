@@ -54,6 +54,14 @@
 [data-theme="light"] ::-webkit-scrollbar-track { background: var(--bg3); }
 [data-theme="light"] ::-webkit-scrollbar-thumb { background: var(--border-mid); }
 
+/* ── MASTHEAD / HEADER — always dark regardless of theme ────── */
+/* The logo bar uses a white PNG asset — it must NEVER go light  */
+[data-theme="light"] header.masthead-header,
+[data-theme="light"] site-header {
+  background: #111318 !important;
+  border-bottom-color: #1F2428 !important;
+}
+
 /* smooth theme transition */
 body, header, footer, .card, section, div, a, span, p, h1, h2, h3, h4 {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;

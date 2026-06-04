@@ -15,7 +15,7 @@ export default function ThemeToggle() {
         alignItems: 'center',
         gap: '6px',
         background: 'none',
-        border: '1px solid var(--border)',
+        border: '1px solid #1F2428',
         borderRadius: '20px',
         padding: '5px 12px 5px 8px',
         cursor: 'pointer',
@@ -49,7 +49,7 @@ export default function ThemeToggle() {
         fontFamily: "'IBM Plex Mono',monospace",
         fontSize: '10px',
         letterSpacing: '0.08em',
-        color: 'var(--text-dim)',
+        color: '#6B7280',
         userSelect: 'none',
       }}>
         {isDark ? '☽ DARK' : '☀ LIGHT'}

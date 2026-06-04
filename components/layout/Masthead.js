@@ -140,22 +140,22 @@ export default function Masthead() {
   }
 
   return (
-    <header style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:0, zIndex:50, overflow:'visible' }}>
+    <header style={{ background:'#111318', borderBottom:'1px solid #1F2428', position:'sticky', top:0, zIndex:50, overflow:'visible' }}>
       <DottedSurface style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} />
 
       <style>{`
         /* Dropdown */
-        .nav-drop { display:none; position:absolute; top:calc(100% + 1px); left:0; background:#0A0B0C; border:1px solid var(--border); border-top:2px solid var(--gold); padding:6px; min-width:240px; z-index:200; box-shadow:0 12px 40px rgba(0,0,0,0.9); }
+        .nav-drop { display:none; position:absolute; top:calc(100% + 1px); left:0; background:#0A0B0C; border:1px solid #1F2428; border-top:2px solid var(--gold); padding:6px; min-width:240px; z-index:200; box-shadow:0 12px 40px rgba(0,0,0,0.9); }
         .nav-drop.open { display:block; }
         .nav-drop-item { display:block; padding:8px 12px; text-decoration:none; transition:background 0.1s; }
-        .nav-drop-item:hover { background:var(--bg3); }
-        .ndi-label { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:var(--text); letter-spacing:0.04em; display:block; }
-        .ndi-desc { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--text-dim); display:block; margin-top:1px; }
+        .nav-drop-item:hover { background:#16191F; }
+        .ndi-label { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:#E5E5E5; letter-spacing:0.04em; display:block; }
+        .ndi-desc { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#6B7280; display:block; margin-top:1px; }
         /* Nav item */
         .nav-item-wrap { position:relative; }
-        .nav-top-link { display:flex; align-items:center; gap:4px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:13px 13px; white-space:nowrap; text-decoration:none; border-bottom:2px solid transparent; transition:color 0.15s, border-color 0.15s; }
+        .nav-top-link { display:flex; align-items:center; gap:4px; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; padding:13px 13px; white-space:nowrap; text-decoration:none; border-bottom:2px solid transparent; transition:color 0.15s, border-color 0.15s; color:#9CA3AF !important; }
         .nav-top-link:hover { color:#fff !important; }
-        .nav-top-link.active { border-bottom-color:var(--gold) !important; color:var(--text) !important; }
+        .nav-top-link.active { border-bottom-color:var(--gold) !important; color:#E5E5E5 !important; }
         /* Responsive */
         @media(max-width:900px) { .nav-desktop{display:none!important} .nav-mob-bar{display:flex!important} .masthead-dateline{display:none!important} .nav-mob-backdrop{display:block!important} }
         @media(min-width:901px) { .nav-mob-bar{display:none!important} .nav-mob-sheet{display:none!important} }
@@ -187,18 +187,18 @@ export default function Masthead() {
 
           <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'3px' }}>
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-              <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'var(--gold)', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
+              <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'#C8922A', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
                 📡 RSS
               </a>
-              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
+              <span style={{ background:'#C8922A', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
             </div>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)' }}>{dateStr}</div>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--gold)' }}>📍 DOWNRANGECO.COM</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280' }}>{dateStr}</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
           </div>
         </div>
 
         {/* ── Desktop nav ── */}
-        <nav className="nav-desktop" style={{ borderTop:'1px solid var(--border)', display:'flex', alignItems:'stretch' }}>
+        <nav className="nav-desktop" style={{ borderTop:'1px solid #1F2428', display:'flex', alignItems:'stretch' }}>
           <ul style={{ display:'flex', listStyle:'none', flex:1, margin:0, padding:0 }}>
             {NAV.filter(item => !hiddenNav.includes(item.label)).map(item => {
               const active = isActive(item)
@@ -210,9 +210,9 @@ export default function Masthead() {
                   onMouseLeave={closeDropdown}>
                   <Link href={item.href}
                     className={`nav-top-link${active ? ' active' : ''}`}
-                    style={{ color: active ? 'var(--text)' : 'var(--text-muted)' }}>
+                    style={{ color: active ? '#E5E5E5' : '#9CA3AF' }}>
                     {item.label}
-                    {hasChildren && <span style={{ fontSize:'8px', color: active ? 'var(--gold)' : 'var(--text-dim)', marginTop:'1px' }}>▼</span>}
+                    {hasChildren && <span style={{ fontSize:'8px', color: active ? '#C8922A' : '#6B7280', marginTop:'1px' }}>▼</span>}
                   </Link>
                   {hasChildren && (
                     <div className={`nav-drop${isOpen ? ' open' : ''}`}
@@ -230,7 +230,7 @@ export default function Masthead() {
               )
             })}
           </ul>
-          <div style={{ padding:'0 12px', display:'flex', alignItems:'center', gap:'10px', borderLeft:'1px solid var(--border)' }}>
+          <div style={{ padding:'0 12px', display:'flex', alignItems:'center', gap:'10px', borderLeft:'1px solid #1F2428' }}>
             <button
               onClick={() => setFeedbackOpen(true)}
               style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', padding:'6px 14px', cursor:'pointer', whiteSpace:'nowrap' }}
@@ -243,7 +243,7 @@ export default function Masthead() {
         </nav>
 
         {/* ── Mobile bar ── */}
-        <div className="nav-mob-bar" style={{ display:'none', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderTop:'1px solid var(--border)' }}>
+        <div className="nav-mob-bar" style={{ display:'none', alignItems:'center', justifyContent:'space-between', padding:'12px 0', borderTop:'1px solid #1F2428' }}>
           
           <div style={{ display:'flex', gap:'8px', alignItems:'center' }}>
             <button
@@ -251,10 +251,10 @@ export default function Masthead() {
               style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', padding:'6px 10px', cursor:'pointer' }}>
               Feedback
             </button>
-            <Link href="/search" style={{ color:'var(--text-dim)', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Search">⌕</Link>
+            <Link href="/search" style={{ color:'#6B7280', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Search">⌕</Link>
             <ThemeToggle />
             <button onClick={() => setMenuOpen(!menuOpen)}
-              style={{ background:'none', border:'1px solid var(--border)', color:'var(--text-muted)', padding:'7px 14px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.05em' }}>
+              style={{ background:'none', border:'1px solid #1F2428', color:'#9CA3AF', padding:'7px 14px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.05em' }}>
               {menuOpen ? '✕ CLOSE' : '☰ MENU'}
             </button>
           </div>
