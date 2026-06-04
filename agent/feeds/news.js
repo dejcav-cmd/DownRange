@@ -367,15 +367,20 @@ async function runNewsFeed() {
   const withAI    = published.filter(p => p.hasAI).length
   const withRaw   = published.length - withAI
 
+  const dupeCount = all.length - published.length
   const summary = {
     done:     published.length,
     withAI,
     withRaw,
+    dupes:    dupeCount,
     total:    all.length,
     ms:       Date.now() - t,
     claudeUp: !!process.env.ANTHROPIC_API_KEY,
   }
-  console.log(`[NEWS] ✓ Done: ${published.length} published (${withAI} AI-rewritten, ${withRaw} raw). ${summary.ms}ms`)
+  console.log(`[NEWS] ✓ Done: ${published.length} published, ${dupeCount} duped/skipped of ${all.length} fetched. ${summary.ms}ms`)
+  if (published.length === 0 && all.length > 0) {
+    console.warn('[NEWS] ⚠️ All items were deduped — possible stale dedup cache or all sources returning old articles')
+  }
   return summary
 }
 

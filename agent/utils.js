@@ -133,17 +133,35 @@ const _sanityDedup = { urls: new Set(), titles: new Set(), loaded: false }
 async function loadSanityDedup() {
   if (_sanityDedup.loaded) return
   try {
-    const res = await fetch(
-      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=*[_type%3D%3D%22newsArticle%22]%20%7B%20%22u%22%3A%20externalUrl%2C%20%22t%22%3A%20title%20%7D`,
-      { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` } }
-    )
-    const data = await res.json()
-    for (const doc of (data.result || [])) {
-      if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
-      if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0,80))
+    // Load ALL article URLs/titles — paginate in batches of 5000 to avoid timeouts
+    // Without an explicit limit, Sanity returns only the first 100 by default
+    let offset = 0
+    const BATCH = 5000
+    let totalLoaded = 0
+
+    while (true) {
+      const query = encodeURIComponent(
+        `*[_type == "newsArticle"][${offset}...${offset + BATCH}]{ "u": externalUrl, "t": title }`
+      )
+      const res = await fetch(
+        `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&returnQuery=false`,
+        { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` } }
+      )
+      const data = await res.json()
+      const batch = data.result || []
+
+      for (const doc of batch) {
+        if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
+        if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0, 80))
+      }
+
+      totalLoaded += batch.length
+      if (batch.length < BATCH) break  // last page
+      offset += BATCH
     }
+
     _sanityDedup.loaded = true
-    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity`)
+    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity (${totalLoaded} total docs scanned)`)
   } catch (e) {
     console.warn('[DEDUP] Could not load Sanity dedup cache:', e.message)
   }
