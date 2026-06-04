@@ -186,22 +186,24 @@ export default function Masthead() {
             />
           </Link>
 
-          <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'6px' }}>
+          <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'7px' }}>
+            {/* Top row: RSS + DAILY EDITION */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'#C8922A', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
                 📡 RSS
               </a>
               <span style={{ background:'#C8922A', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
             </div>
-            {/* Search bar — moved up next to logo/dateline */}
-            <div style={{ width:'100%', maxWidth:320 }}>
-              <GlobalSearchBar />
-            </div>
+            {/* DOWNRANGECO.COM + Social Icons */}
             <div style={{ display:'flex', alignItems:'center', gap:10 }}>
               <SocialIcons size="sm" />
               <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
             </div>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280' }}>{dateStr}</div>
+            {/* Date + Search bar inline */}
+            <div style={{ display:'flex', alignItems:'center', gap:12 }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
+              <GlobalSearchBar />
+            </div>
           </div>
         </div>
 

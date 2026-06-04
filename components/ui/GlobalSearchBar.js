@@ -104,7 +104,7 @@ export default function GlobalSearchBar() {
   return (
     <div ref={panelRef} style={{ position:'relative', zIndex:200 }}>
       {/* Input */}
-      <div style={{ display:'flex', alignItems:'center', gap:6, background:'var(--bg)', border:'1px solid #C8922A', padding:'4px 10px', minWidth:260 }}>
+      <div style={{ display:'flex', alignItems:'center', gap:6, background:'var(--bg)', border:'1px solid #C8922A', padding:'4px 10px', minWidth:390 }}>
         <span style={{ color:'#C8922A', fontSize:14 }}>⌕</span>
         <input
           ref={inputRef}
