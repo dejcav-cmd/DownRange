@@ -1,6 +1,7 @@
 'use client'
 import Link from 'next/link'
 import EmailCapture from '../ui/EmailCapture'
+import SocialIcons from '../ui/SocialIcons'
 
 const FOOTER_COLS = [
   { title: 'News & Intel', links: [['Latest News','/news'],['Live Deals','/deals'],['Market Watch','/market'],['Video','/video'],['Canada','/canada']] },
@@ -26,9 +27,10 @@ export default function Footer() {
                 style={{ width: '220px', height: 'auto', display: 'block' }}
               />
             </Link>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#6B7280', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '16px' }}>
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '11px', color: '#6B7280', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: '12px' }}>
               Proudly Independent · Pro-Second Amendment
             </div>
+            <SocialIcons size="md" style={{ marginBottom: '14px' }} />
             <p style={{ fontSize: '11px', color: '#6B7280', lineHeight: 1.5 }}>
               DownRange content is for informational purposes only and does not constitute legal advice. Always consult a licensed attorney regarding firearms laws in your jurisdiction.
             </p>

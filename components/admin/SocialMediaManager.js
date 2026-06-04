@@ -278,6 +278,69 @@ function SetupGuide() {
   )
 }
 
+
+// ── Social Profile Links Config ───────────────────────────────────────────────
+const SOCIAL_LINK_FIELDS = [
+  { key:'bluesky',  label:'🦋 Bluesky',   placeholder:'https://bsky.app/profile/downrangeco.bsky.social' },
+  { key:'twitter',  label:'𝕏 X/Twitter',  placeholder:'https://x.com/DownRangeCo' },
+  { key:'facebook', label:'f Facebook',   placeholder:'https://www.facebook.com/downrangeco' },
+  { key:'threads',  label:'@ Threads',    placeholder:'https://www.threads.net/@downrangeco' },
+  { key:'reddit',   label:'🔴 Reddit',    placeholder:'https://www.reddit.com/user/DownRangeCo' },
+  { key:'youtube',  label:'▶ YouTube',   placeholder:'https://www.youtube.com/@DownRangeCo' },
+]
+
+function SocialLinksConfig({ adminKey, config, onSaved }) {
+  const existing = config?.socialLinks || {}
+  const [links, setLinks] = useState(existing)
+  const [saving, setSaving] = useState(false)
+  const [msg,    setMsg]    = useState('')
+
+  async function save() {
+    setSaving(true)
+    try {
+      const res  = await fetch('/api/social/config', {
+        method:'POST', headers:{'Content-Type':'application/json','x-admin-key':adminKey},
+        body: JSON.stringify({ ...config, socialLinks: links }),
+      })
+      const data = await res.json()
+      setMsg(data.ok ? "✓ Saved — icons update on next page load" : "✗ " + (data.error||"Save failed"))
+      onSaved?.()
+    } catch(e) { setMsg("✗ " + e.message) }
+    setSaving(false); setTimeout(()=>setMsg(''),4000)
+  }
+
+  return (
+    <div>
+      <div style={{ background:'#0a1a08', border:'1px solid #34d39930', padding:'14px 18px', marginBottom:20 }}>
+        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'#34d399', letterSpacing:'0.1em', marginBottom:6 }}>
+          SOCIAL MEDIA PROFILE LINKS
+        </div>
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.8 }}>
+          Icons appear automatically in the website header and footer for any platform with a URL entered.<br/>
+          Leave blank to hide that platform's icon.
+        </div>
+      </div>
+      <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12, marginBottom:20 }}>
+        {SOCIAL_LINK_FIELDS.map(f => (
+          <div key={f.key}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6b7280', marginBottom:5 }}>{f.label}</div>
+            <input value={links[f.key]||''} onChange={e => setLinks(l => ({...l,[f.key]:e.target.value}))}
+              placeholder={f.placeholder}
+              style={{ width:'100%', background:'#09090b', border:'1px solid #1f2428', color:'#e5e5e5', padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', outline:'none', boxSizing:'border-box' }} />
+          </div>
+        ))}
+      </div>
+      <div style={{ display:'flex', alignItems:'center', gap:14 }}>
+        <button onClick={save} disabled={saving}
+          style={{ background:'#c8922a', color:'#000', border:'none', padding:'10px 24px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', cursor:saving?'not-allowed':'pointer' }}>
+          {saving ? 'SAVING...' : 'SAVE LINKS'}
+        </button>
+        {msg && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:msg.startsWith('✓')?'#34d399':'#ef4444' }}>{msg}</span>}
+      </div>
+    </div>
+  )
+}
+
 // ── Main Component ────────────────────────────────────────────────────────────
 export default function SocialMediaManager({ adminKey }) {
   const [tab,        setTab]        = useState('schedule')
@@ -322,6 +385,7 @@ export default function SocialMediaManager({ adminKey }) {
     { id:'schedule', label:'⏱ Schedule' },
     { id:'compose',  label:'⚡ Post Now' },
     { id:'log',      label:'📋 Log' },
+    { id:'links',    label:'🔗 Profile Links' },
     { id:'setup',    label:'🔧 Setup' },
   ]
 
@@ -399,6 +463,11 @@ export default function SocialMediaManager({ adminKey }) {
           {posts.map(p => <PostCard key={p._id} post={p} onDelete={deletePost} />)}
           {posts.length === 0 && <div style={{ textAlign:'center', padding:'40px', color:'#374151', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>No posts yet.</div>}
         </div>
+      )}
+
+      {/* ── PROFILE LINKS ── */}
+      {tab === 'links' && (
+        <SocialLinksConfig adminKey={adminKey} config={config} onSaved={load} />
       )}
 
       {/* ── SETUP ── */}

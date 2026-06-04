@@ -66,5 +66,16 @@ export const socialConfig = defineType({
     defineField({ name: 'instagramHandle',   type: 'string', title: 'Instagram Handle' }),
     defineField({ name: 'threadsHandle',     type: 'string', title: 'Threads Handle' }),
     defineField({ name: 'blueskyHandle',     type: 'string', title: 'Bluesky Handle' }),
+    // Social profile URLs — shown in header/footer
+    defineField({ name: 'socialLinks', type: 'object', title: 'Social Media Profile Links (shown in header/footer)',
+      fields: [
+        { name: 'bluesky',  type: 'url', title: '🦋 Bluesky URL',          description: 'e.g. https://bsky.app/profile/downrangeco.bsky.social' },
+        { name: 'twitter',  type: 'url', title: '𝕏 X/Twitter URL',         description: 'e.g. https://x.com/DownRangeCo' },
+        { name: 'facebook', type: 'url', title: 'f Facebook Page URL',      description: 'e.g. https://www.facebook.com/downrangeco' },
+        { name: 'threads',  type: 'url', title: '@ Threads URL',            description: 'e.g. https://www.threads.net/@downrangeco' },
+        { name: 'reddit',   type: 'url', title: '🔴 Reddit Profile/Sub URL', description: 'e.g. https://www.reddit.com/user/DownRangeCo' },
+        { name: 'youtube',  type: 'url', title: '▶ YouTube Channel URL',    description: 'e.g. https://www.youtube.com/@DownRangeCo' },
+      ]
+    }),
   ],
 })

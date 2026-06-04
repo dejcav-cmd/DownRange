@@ -39,24 +39,36 @@ const PLATFORM_CONFIG = {
   reddit:   { limit: 290, tone: 'Factual and direct. No marketing language. r/CCW and r/guns users hate hype. Just the news.' },
 }
 
+// Emoji map per category — boosts reach on all platforms
+const CATEGORY_EMOJI = {
+  law:      '⚖️🔫', breaking: '🚨🔫', news:     '📰🔫',
+  review:   '🎯🔫', industry: '🏭🔫', training: '🎯🛡️',
+  hunting:  '🏹🌲', default:  '🔫🇺🇸',
+}
+
 const HASHTAGS = {
-  law:'#2A #GunRights #SecondAmendment', news:'#Firearms #2A #GunNews',
-  review:'#GunReview #EDC #Firearms', industry:'#GunIndustry #2A',
-  breaking:'#Breaking #2A #GunNews', training:'#CCW #SelfDefense #Firearms',
-  hunting:'#Hunting #2A #Outdoors', default:'#2A #Firearms #GunOwners',
+  law:      '#2A #GunRights #SecondAmendment #ConstitutionalCarry',
+  news:     '#Firearms #2A #GunNews #GunOwners',
+  review:   '#GunReview #EDC #Firearms #GearReview',
+  industry: '#GunIndustry #2A #Firearms',
+  breaking: '#Breaking #2A #GunNews #Firearms',
+  training: '#CCW #SelfDefense #Firearms #GunTraining',
+  hunting:  '#Hunting #2A #Outdoors #HuntingLife',
+  default:  '#2A #Firearms #GunOwners #SecondAmendment',
 }
 
 async function generateCopy(article, platform, contentType) {
-  const cfg   = PLATFORM_CONFIG[platform] || PLATFORM_CONFIG.bluesky
-  const base  = contentType === 'blog' ? 'blog.downrangeco.com' : 'downrangeco.com/news'
-  const url   = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${article.slug}`
-  const tags  = platform === 'twitter' ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
-  const reserve = url.length + tags.length + 4
-  const maxBody = cfg.limit - reserve
+  const cfg      = PLATFORM_CONFIG[platform] || PLATFORM_CONFIG.bluesky
+  const url      = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${article.slug}`
+  const emoji    = CATEGORY_EMOJI[article.category] || CATEGORY_EMOJI.default
+  // Twitter/Threads/Facebook get hashtags; Bluesky and Reddit don't
+  const tags     = ['twitter','threads','facebook'].includes(platform) ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
+  const reserve  = url.length + tags.length + emoji.length + 6
+  const maxBody  = cfg.limit - reserve
 
   const typeLabel = contentType === 'blog' ? 'in-depth blog post' : 'breaking news article'
   const raw = await callAIText({
-    prompt: `You are the social media voice for DownRange Co — an independent 2A intelligence portal at downrangeco.com. Founded by DJ Cavalcanti, a daily carrier in Washington State.
+    prompt: `You are the social media voice for DownRange Co — an independent 2A intelligence portal. Founded by DJ Cavalcanti, a daily carrier in Washington State.
 
 Write a ${platform} post promoting this ${typeLabel}:
 TITLE: ${article.title}
@@ -65,10 +77,12 @@ CATEGORY: ${article.category}
 TYPE: ${contentType === 'blog' ? 'Blog / Analysis' : 'News'}
 
 Tone: ${cfg.tone}
-Body character limit: ${maxBody} chars MAX.
+Start the post with 1-2 relevant emojis that match the content.
+Use emojis naturally within the text to increase engagement (2-4 total).
+Body character limit: ${maxBody} chars MAX (NOT including the URL and hashtags we append).
 Do NOT include the URL or hashtags — appended automatically.
 Return ONLY the post body. No quotes, no preamble.`,
-    useCase: 'default', maxTokens: 150,
+    useCase: 'default', maxTokens: 160,
   })
   const body = raw.replace(/^["']|["']$/g, '').trim().slice(0, maxBody)
   return `${body}\n\n${url}${tags}`
@@ -195,10 +209,12 @@ async function postViaZernio(content, imageUrl) {
   const accountId = (process.env.ZERNIO_TWITTER_ACCOUNT_ID || '').trim()
   if (!apiKey)     return { ok: false, error: 'Missing ZERNIO_API_KEY in Vercel.' }
   if (!accountId)  return { ok: false, error: 'Missing ZERNIO_TWITTER_ACCOUNT_ID in Vercel.' }
+  // Zernio accountId must start with acc_ — get it from: GET https://zernio.com/api/v1/accounts
+  if (!accountId.startsWith('acc_')) return { ok: false, error: `Invalid ZERNIO_TWITTER_ACCOUNT_ID: "${accountId}". Must start with "acc_". Get it from Zernio dashboard → Connected Accounts, or call GET https://zernio.com/api/v1/accounts with your API key.` }
 
   const body = {
     content,
-    platforms: [{ platform: 'twitter', accountId }],
+    platforms: [{ platform: 'x', accountId }],
     ...(imageUrl ? { media: [{ url: imageUrl }] } : {}),
   }
   const res  = await fetch('https://zernio.com/api/v1/posts', {
