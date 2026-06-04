@@ -222,12 +222,30 @@ async function postBluesky(content, imageUrl) {
     facets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#link', uri: match[0] }] })
   }
 
+  // HARD LIMIT: Enforce 300 grapheme max on the FINAL string sent to Bluesky — no exceptions.
+  let safeContent = content
+  try {
+    const segs = [...new Intl.Segmenter().segment(content)]
+    if (segs.length > 298) safeContent = segs.slice(0, 297).map(s => s.segment).join('') + '…'
+  } catch { if (safeContent.length > 298) safeContent = safeContent.slice(0, 297) + '…' }
+
+  // Recompute facets on the safe content (positions may have shifted after truncation)
+  const safeFacets = []
+  const urlRegex2 = /https?:\/\/[^\s]+/g
+  const enc2 = new TextEncoder()
+  let m2
+  while ((m2 = urlRegex2.exec(safeContent)) !== null) {
+    const start = enc2.encode(safeContent.slice(0, m2.index)).length
+    const end   = enc2.encode(safeContent.slice(0, m2.index + m2[0].length)).length
+    safeFacets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#link', uri: m2[0] }] })
+  }
+
   const postRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${auth.accessJwt}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ repo: auth.did, collection: 'app.bsky.feed.post', record: {
-      $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(),
-      ...(facets.length ? { facets } : {}), ...(embed ? { embed } : {}),
+      $type: 'app.bsky.feed.post', text: safeContent, createdAt: new Date().toISOString(),
+      ...(safeFacets.length ? { facets: safeFacets } : {}), ...(embed ? { embed } : {}),
     }}),
   })
   const post = await postRes.json()

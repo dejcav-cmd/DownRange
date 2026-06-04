@@ -133,37 +133,27 @@ const _sanityDedup = { urls: new Set(), titles: new Set(), loaded: false }
 async function loadSanityDedup() {
   if (_sanityDedup.loaded) return
   try {
-    // Load ALL article URLs/titles — paginate in batches of 5000 to avoid timeouts
-    // Without an explicit limit, Sanity returns only the first 100 by default
-    let offset = 0
-    const BATCH = 5000
-    let totalLoaded = 0
-
-    while (true) {
-      const query = encodeURIComponent(
-        `*[_type == "newsArticle"][${offset}...${offset + BATCH}]{ "u": externalUrl, "t": title }`
-      )
-      const res = await fetch(
-        `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&returnQuery=false`,
-        { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` } }
-      )
-      const data = await res.json()
-      const batch = data.result || []
-
-      for (const doc of batch) {
-        if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
-        if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0, 80))
-      }
-
-      totalLoaded += batch.length
-      if (batch.length < BATCH) break  // last page
-      offset += BATCH
+    // Use a fast count + recent-first approach instead of loading ALL articles
+    // Only load last 2000 articles — anything older won't appear in RSS feeds anyway
+    // RSS feeds only serve the last 20-100 items, all published within days/weeks
+    const query = encodeURIComponent(
+      `*[_type == "newsArticle"] | order(_createdAt desc)[0...2000]{ "u": externalUrl, "t": title }`
+    )
+    const res = await fetch(
+      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&returnQuery=false`,
+      { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` } }
+    )
+    const data = await res.json()
+    for (const doc of (data.result || [])) {
+      if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
+      if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0, 80))
     }
-
     _sanityDedup.loaded = true
-    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity (${totalLoaded} total docs scanned)`)
+    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity (last 2000 articles)`)
   } catch (e) {
     console.warn('[DEDUP] Could not load Sanity dedup cache:', e.message)
+    // Don't block — continue without dedup cache rather than failing the whole feed
+    _sanityDedup.loaded = true
   }
 }
 
