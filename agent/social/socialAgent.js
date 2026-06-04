@@ -222,8 +222,9 @@ async function postViaZernio(content, imageUrl) {
 
   const body = {
     content,
-    platforms: [{ platform: 'x', accountId: cleanId }],
-    ...(imageUrl ? { media: [{ url: imageUrl }] } : {}),
+    publishNow: true,
+    platforms: [{ platform: 'twitter', accountId: cleanId }],
+    ...(imageUrl ? { mediaItems: [{ type: 'image', url: imageUrl }] } : {}),
   }
   const res  = await fetch('https://zernio.com/api/v1/posts', {
     method: 'POST',
