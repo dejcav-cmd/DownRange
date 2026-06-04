@@ -141,7 +141,7 @@ export default function Masthead() {
   }
 
   return (
-    <header style={{ background:'#111318', borderBottom:'1px solid #1F2428', position:'sticky', top:0, zIndex:50, overflow:'visible' }}>
+    <header style={{ background:'#111318', borderBottom:'1px solid #1F2428', position:'sticky', top:'var(--ticker-height, 37px)', zIndex:50, overflow:'visible' }}>
       <DottedSurface style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} />
 
       <style>{`

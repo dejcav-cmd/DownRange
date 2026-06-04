@@ -1,12 +1,17 @@
 'use client'
 import { useState, useEffect, useRef } from 'react'
+import { usePathname } from 'next/navigation'
 
 const POLL_INTERVAL = 3 * 60 * 1000 // 3 min
 
 export default function GlobalBreakingTicker() {
+  const pathname = usePathname()
   const [alerts, setAlerts] = useState([])
   const [flash,  setFlash]  = useState(false)
   const prevIds              = useRef(new Set())
+
+  // Don't render on admin pages — admin has its own fixed header layout
+  const isAdmin = pathname?.startsWith('/admin')
 
   useEffect(() => {
     async function fetchAlerts() {
@@ -41,6 +46,11 @@ export default function GlobalBreakingTicker() {
       position: 'sticky', top: 0, zIndex: 9999,
       transition: 'background 0.4s ease',
       width: '100%',
+    }} ref={el => {
+      // Set CSS variable so Masthead knows exact ticker height
+      if (el && typeof document !== 'undefined') {
+        document.documentElement.style.setProperty('--ticker-height', el.offsetHeight + 'px')
+      }
     }}>
       <style>{`
         @keyframes scrollLeft {
