@@ -69,19 +69,34 @@ Return ONLY the body text. No quotes, no preamble.`,
 
 // ── BLUESKY (100% free, AT Protocol) ────────────────────────────────────────
 async function postBluesky(content) {
-  let handle = (process.env.BLUESKY_HANDLE || '').trim()
-  const pass  = (process.env.BLUESKY_APP_PASSWORD || '').trim()
-  if (!handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars.' }
+  let raw_handle = (process.env.BLUESKY_HANDLE || '').trim()
+  const pass      = (process.env.BLUESKY_APP_PASSWORD || '').trim()
+  if (!raw_handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars.' }
 
-  // Sanitize handle — strip https://, @, trailing slashes, whitespace
-  handle = handle.replace(/^https?:\/\//i, '').replace(/^@/, '').replace(/\/$/, '').trim()
+  // Aggressive sanitization — handle every possible format a user might paste
+  let handle = raw_handle
+    .replace(/^https?:\/\/(www\.)?(bsky\.app\/profile\/)?/i, '') // strip URL prefix
+    .replace(/^@/, '')           // strip leading @
+    .replace(/\/$/, '')          // strip trailing slash
+    .replace(/\s+/g, '')         // strip any whitespace
+    .toLowerCase()               // must be lowercase
+
+  // If they pasted a full profile URL like bsky.app/profile/did:plc:xxx, extract handle
+  if (handle.startsWith('did:')) {
+    // They pasted a DID — use it directly as identifier
+  } else if (!handle.includes('.')) {
+    // No dot — append .bsky.social
+    handle = handle + '.bsky.social'
+  }
 
   const authRes = await fetch('https://bsky.social/xrpc/com.atproto.server.createSession', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ identifier: handle, password: pass }),
   })
   const auth = await authRes.json()
-  if (!auth.accessJwt) return { ok: false, error: `Bluesky auth failed: ${auth.message || authRes.status} — check BLUESKY_HANDLE (e.g. yourname.bsky.social) and BLUESKY_APP_PASSWORD` }
+  if (!auth.accessJwt) {
+    return { ok: false, error: `Bluesky auth failed (using identifier: "${handle}"): ${auth.message || authRes.status}. Check your handle in Vercel — set BLUESKY_HANDLE to exactly: yourname.bsky.social` }
+  }
 
   // Build facets for clickable URLs
   const urlRegex = /https?:\/\/[^\s]+/g
@@ -106,7 +121,6 @@ async function postBluesky(content) {
   if (!post.uri) return { ok: false, error: `Bluesky post failed: ${post.message || postRes.status}` }
 
   const rkey = post.uri.split('/').pop()
-  // Use DID-based URL which is always correct regardless of handle format
   return { ok: true, postId: post.uri, postUrl: `https://bsky.app/profile/${auth.did}/post/${rkey}` }
 }
 
@@ -159,34 +173,35 @@ async function postViaBuffer(content, platform = 'twitter') {
     ? process.env.BUFFER_TWITTER_PROFILE_ID
     : process.env[`BUFFER_${platform.toUpperCase()}_PROFILE_ID`] || '').trim()
 
-  if (!token)     return { ok: false, error: 'Add BUFFER_ACCESS_TOKEN to Vercel env vars. Buffer → Settings → Apps & Integrations → Access Token.' }
-  if (!profileId) return { ok: false, error: `Add BUFFER_${platform.toUpperCase()}_PROFILE_ID to Vercel. In Buffer, go to your connected X account and copy the profile ID from the URL.` }
+  if (!token)     return { ok: false, error: 'Add BUFFER_ACCESS_TOKEN to Vercel env vars.' }
+  if (!profileId) return { ok: false, error: `Add BUFFER_TWITTER_PROFILE_ID to Vercel. Get it from: https://api.bufferapp.com/1/profiles.json?access_token=YOUR_TOKEN` }
 
-  // Buffer v1 API — form-encoded, not JSON
+  // Buffer v1 API — must be form-encoded, NOT JSON
   const params = new URLSearchParams()
   params.append('access_token', token)
   params.append('profile_ids[]', profileId)
   params.append('text', content)
-  params.append('now', 'true')  // post immediately, don't queue
+  params.append('now', 'true')
 
-  const res = await fetch('https://api.bufferapp.com/1/updates/create.json', {
+  const res  = await fetch('https://api.bufferapp.com/1/updates/create.json', {
     method: 'POST',
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: params.toString(),
   })
-
   const raw  = await res.text()
   let data
-  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Buffer non-JSON response (${res.status}): ${raw.slice(0,200)}` } }
+  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Buffer non-JSON (${res.status}): ${raw.slice(0,200)}` } }
 
-  // Buffer returns { success: true, updates: [...] } on success
   if (data.success === true) {
     const update = data.updates?.[0]
-    return { ok: true, postId: update?.id || null, postUrl: null, note: 'Posted via Buffer. Check your X account or Buffer dashboard to see the live tweet.' }
+    return { ok: true, postId: update?.id || null, postUrl: null, note: 'Posted via Buffer. Check your X account or Buffer dashboard.' }
   }
 
-  // Detailed error for debugging
-  const errMsg = data.message || data.error || data.code || JSON.stringify(data).slice(0, 200)
+  const errMsg = data.message || data.error || JSON.stringify(data).slice(0, 300)
+  // OIDC error = wrong token type
+  if (errMsg.includes('OIDC')) {
+    return { ok: false, error: `Wrong token type. Buffer needs the legacy OAuth Access Token, NOT a JWT/OIDC token. In Buffer: go to buffer.com/developers/apps → click your app → copy the "Access Token" shown on that page (it starts with a long string of letters/numbers, not "eyJ").` }
+  }
   return { ok: false, error: `Buffer error (${res.status}): ${errMsg}` }
 }
 
