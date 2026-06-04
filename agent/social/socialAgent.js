@@ -232,14 +232,16 @@ async function postViaZernio(content, imageUrl) {
     body: JSON.stringify(body),
   })
   const raw  = await res.text()
-  let data
-  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Zernio error (${res.status}): ${raw.slice(0,200)}` } }
-  if (res.ok && (data.id || data.postId || data.success || data.posts?.length)) {
-    const postId  = data.id || data.postId || data.posts?.[0]?.id || null
-    const postUrl = data.url || data.posts?.[0]?.url || null
+  let data = {}
+  try { data = JSON.parse(raw) } catch {}
+
+  // 2xx = success (Zernio returns 201 on publish)
+  if (res.status >= 200 && res.status < 300) {
+    const postId  = data._id || data.id || data.postId || data.post?._id || data.post?.id || null
+    const postUrl = data.url || data.post?.url || data.posts?.[0]?.url || null
     return { ok: true, postId, postUrl, hasImage: !!imageUrl }
   }
-  return { ok: false, error: `Zernio error (${res.status}): ${data.message || data.error || JSON.stringify(data).slice(0,200)}` }
+  return { ok: false, error: `Zernio error (${res.status}): ${data.message || data.error || data.detail || raw.slice(0,300)}` }
 }
 
 // ── REDDIT ────────────────────────────────────────────────────────────────────
