@@ -822,3 +822,8 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
   margin-top: 2em;
   margin-bottom: 0.6em;
 }
+
+/* ── Mobile visibility utilities ── */
+@media (max-width: 768px) {
+  .hide-mobile { display: none !important; }
+}
