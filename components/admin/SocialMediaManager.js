@@ -50,7 +50,54 @@ function StatCard({ label, value, color }) {
   )
 }
 
-function PostCard({ post, onDelete }) {
+// ── Retry a failed post ───────────────────────────────────────────────────────
+function RetryPostBtn({ post, adminKey, onSuccess }) {
+  const [state, setState] = useState('idle') // idle | running | done | error
+  const [msg,   setMsg]   = useState('')
+
+  async function retry() {
+    setState('running'); setMsg('')
+    try {
+      const res  = await fetch('/api/social/post', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'x-admin-key': adminKey },
+        body: JSON.stringify({
+          platforms:  [post.platform],
+          count:      1,
+          articleId:  post._id,   // signal to agent: retry this specific post doc
+          retryDocId: post._id,   // used by post route to update the existing doc
+        }),
+      })
+      const data = await res.json()
+      if (data.posted > 0 || data.results?.some(r => r.status === 'posted')) {
+        setState('done'); setMsg('✓ Posted!')
+        setTimeout(() => { setState('idle'); setMsg(''); onSuccess?.() }, 3000)
+      } else {
+        const err = data.results?.[0]?.error || data.error || 'Post failed'
+        setState('error'); setMsg(err.slice(0, 60))
+        setTimeout(() => { setState('idle'); setMsg('') }, 5000)
+      }
+    } catch(e) { setState('error'); setMsg(e.message.slice(0,60)); setTimeout(() => { setState('idle'); setMsg('') }, 4000) }
+  }
+
+  return (
+    <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+      <button onClick={retry} disabled={state === 'running'}
+        style={{
+          background: state === 'idle' ? '#0a1a08' : state === 'done' ? '#052e16' : state === 'error' ? '#1a0505' : '#0a0f08',
+          border: `1px solid ${state === 'idle' ? '#34d39950' : state === 'done' ? '#34d399' : state === 'error' ? '#ef4444' : '#f59e0b'}`,
+          color: state === 'idle' ? '#34d399' : state === 'done' ? '#34d399' : state === 'error' ? '#ef4444' : '#f59e0b',
+          padding: '5px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px',
+          fontWeight: 700, letterSpacing:'0.08em', cursor: state === 'running' ? 'not-allowed' : 'pointer',
+        }}>
+        {state === 'idle' ? '↻ RETRY POST' : state === 'running' ? '⏳ POSTING…' : state === 'done' ? '✓ POSTED' : '✗ FAILED'}
+      </button>
+      {msg && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: state === 'done' ? '#34d399' : '#ef4444' }}>{msg}</span>}
+    </div>
+  )
+}
+
+function PostCard({ post, onDelete, onRetrySuccess, adminKey }) {
   const [open, setOpen] = useState(false)
   const p  = PLATFORMS[post.platform] || { label:post.platform, icon:'?', color:'#6b7280' }
   const st = STATUS_STYLE[post.status] || STATUS_STYLE.draft
@@ -117,6 +164,10 @@ function PostCard({ post, onDelete }) {
                 style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', textDecoration:'none' }}>
                 Source article ↗
               </a>
+            )}
+            {/* RETRY button — only on failed posts */}
+            {post.status === 'failed' && post.platform && post.articleSlug && (
+              <RetryPostBtn post={post} adminKey={adminKey} onSuccess={onRetrySuccess} />
             )}
             <button onClick={() => onDelete(post._id)}
               style={{ marginLeft:'auto', background:'#1a0505', border:'1px solid #ef444430', color:'#ef4444', padding:'4px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', cursor:'pointer', letterSpacing:'0.06em' }}>
@@ -736,7 +787,7 @@ export default function SocialMediaManager({ adminKey }) {
             </select>
             <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151' }}>{posts.length} entries</span>
           </div>
-          {posts.map(p => <PostCard key={p._id} post={p} onDelete={deletePost} />)}
+          {posts.map(p => <PostCard key={p._id} post={p} onDelete={deletePost} adminKey={adminKey} onRetrySuccess={load} />)}
           {posts.length === 0 && <div style={{ textAlign:'center', padding:'40px', color:'#374151', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>No posts yet.</div>}
         </div>
       )}

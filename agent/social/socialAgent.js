@@ -107,7 +107,12 @@ const PLATFORM_PROMPTS = {
 }
 
 async function generateCopy(article, platform, contentType) {
-  const url    = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${article.slug}`
+  // Ensure we have a real slug string — never use _id as URL
+  const slugStr = (typeof article.slug === 'string' && article.slug && !article.slug.startsWith('news-') && !article.slug.startsWith('blog-'))
+    ? article.slug
+    : null
+  if (!slugStr) throw new Error(`Article "${article.title?.slice(0,50)}" has no valid slug — skipping to avoid broken URL`)
+  const url    = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${slugStr}`
   const tags   = ['twitter','threads','facebook'].includes(platform)
     ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
   const budget = CHAR_BUDGETS[platform] || 200
@@ -425,7 +430,13 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
         { p: platform }
       ).catch(() => [])).filter(Boolean)
     )
-    const fresh = pool.filter(a => !postedPairs.has(a.slug))
+    // Only include articles with real slugs (not Sanity _id hashes like news-abc123)
+    const validPool = pool.filter(a =>
+      a.slug &&
+      typeof a.slug === 'string' &&
+      !a.slug.match(/^(news|blog)-[a-f0-9]{20,}$/)
+    )
+    const fresh = validPool.filter(a => !postedPairs.has(a.slug))
     articles = fresh.length ? fresh.slice(0, count) : []
   }
 
