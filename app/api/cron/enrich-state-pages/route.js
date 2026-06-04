@@ -2,7 +2,7 @@ export const dynamic  = 'force-dynamic'
 export const maxDuration = 300
 
 import { createClient } from '@sanity/client'
-import { callAIText }   from '../../../../lib/ai'
+import { callAIText }   from '../../../../lib/aiClient.js'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
