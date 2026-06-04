@@ -239,6 +239,10 @@
     {
       "path": "/api/social/cron/reddit",
       "schedule": "0 22 * * *"
+    },
+    {
+      "path": "/api/social/analytics?refresh=1",
+      "schedule": "0 */2 * * *"
     }
   ],
   "headers": [

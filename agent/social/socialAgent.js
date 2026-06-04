@@ -298,8 +298,13 @@ async function dispatch(platform, content, imageUrl, category) {
 // ── Article + Blog fetcher ────────────────────────────────────────────────────
 async function fetchCandidates(minUrgency = 5, limit = 20) {
   const today = new Date(); today.setHours(0,0,0,0)
-  const postedToday = new Set(
-    (await sanity.fetch(`*[_type == "socialPost" && postedAt > $t].articleSlug`, { t: today.toISOString() }).catch(() => [])).filter(Boolean)
+  // Per-platform dedup: track platform+slug pairs already posted (ever, not just today)
+  // This prevents reposting the same article to the same platform
+  // We do allow re-posting to a DIFFERENT platform (e.g. Bluesky can post what X already did)
+  const postedPairs = new Set(
+    (await sanity.fetch(
+      `*[_type == "socialPost" && status == "posted" && defined(articleSlug) && defined(platform)]{platform, articleSlug}`,
+    ).catch(() => [])).map(p => `${p.platform}::${p.articleSlug}`)
   )
 
   // News articles
@@ -318,12 +323,9 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
     }`
   ).catch(() => [])
 
-  // Merge, de-dupe already-posted, apply urgency filter
-  const all = [...news, ...blogs]
-    .filter(a => !postedToday.has(a.slug))
-    .filter(a => (a.urgencyScore ?? 5) >= minUrgency)
-
-  // If urgency filter wipes everything, fall back to latest regardless
+  // Merge + filter: exclude articles already posted to this specific platform
+  // minUrgency applied, with fallback to latest 10 if all filtered out
+  const all = [...news, ...blogs].filter(a => (a.urgencyScore ?? 5) >= minUrgency)
   return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3)]
 }
 
@@ -338,7 +340,15 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
     articles = a ? [a] : []
   } else {
     const pool = await fetchCandidates(minUrgency)
-    articles   = pool.slice(0, count)
+    // Filter out articles already posted to THIS platform
+    const postedPairs = new Set(
+      (await sanity.fetch(
+        `*[_type == "socialPost" && status == "posted" && platform == $p && defined(articleSlug)].articleSlug`,
+        { p: platform }
+      ).catch(() => [])).filter(Boolean)
+    )
+    const fresh = pool.filter(a => !postedPairs.has(a.slug))
+    articles = fresh.length ? fresh.slice(0, count) : []
   }
 
   if (!articles.length) return { ok: true, posted: 0, total: 0, message: 'No unposted articles available.', dryRun }

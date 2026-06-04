@@ -367,6 +367,166 @@ function SetupGuide({ adminKey }) {
 }
 
 
+
+// ── Analytics Dashboard ───────────────────────────────────────────────────────
+const PLATFORM_COLORS = { twitter:'#e5e5e5', bluesky:'#0085FF', facebook:'#1877F2', threads:'#aaaaaa', reddit:'#FF4500' }
+
+function MetricBar({ label, value, max, color }) {
+  const pct = max > 0 ? Math.round((value / max) * 100) : 0
+  return (
+    <div style={{ marginBottom:8 }}>
+      <div style={{ display:'flex', justifyContent:'space-between', marginBottom:3 }}>
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6b7280' }}>{label}</span>
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#e5e5e5', fontWeight:700 }}>{value?.toLocaleString()}</span>
+      </div>
+      <div style={{ background:'#1f2428', height:4, borderRadius:2 }}>
+        <div style={{ background:color||'#c8922a', height:4, borderRadius:2, width:`${pct}%`, transition:'width 0.4s' }} />
+      </div>
+    </div>
+  )
+}
+
+function AnalyticsDashboard({ adminKey }) {
+  const [data,       setData]       = useState(null)
+  const [loading,    setLoading]    = useState(true)
+  const [refreshing, setRefreshing] = useState(false)
+  const [msg,        setMsg]        = useState('')
+
+  async function load() {
+    setLoading(true)
+    try {
+      const res  = await fetch('/api/social/analytics', { headers: { 'x-admin-key': adminKey } })
+      const json = await res.json()
+      setData(json)
+    } catch {}
+    setLoading(false)
+  }
+
+  async function refresh() {
+    setRefreshing(true); setMsg('')
+    try {
+      const res  = await fetch('/api/social/analytics?refresh=1', { headers: { 'x-admin-key': adminKey } })
+      const json = await res.json()
+      setMsg(json.ok ? `✓ Refreshed — updated ${json.updated} of ${json.refreshed} posts` : `✗ ${json.error}`)
+      await load()
+    } catch(e) { setMsg(`✗ ${e.message}`) }
+    setRefreshing(false)
+  }
+
+  useEffect(() => { load() }, [])
+
+  if (loading) return <div style={{ padding:'40px', textAlign:'center', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4b5563' }}>Loading analytics...</div>
+
+  const posts  = data?.posts  || []
+  const totals = data?.totals || {}
+  const maxImpressions = Math.max(...posts.map(p => p.impressions || 0), 1)
+  const maxLikes       = Math.max(...posts.map(p => p.likes       || 0), 1)
+
+  // Group by platform
+  const byPlatform = posts.reduce((acc, p) => {
+    if (!acc[p.platform]) acc[p.platform] = { posts:0, impressions:0, likes:0, reposts:0, replies:0, clicks:0 }
+    acc[p.platform].posts++
+    acc[p.platform].impressions += p.impressions || 0
+    acc[p.platform].likes       += p.likes       || 0
+    acc[p.platform].reposts     += p.reposts     || 0
+    acc[p.platform].replies     += p.replies     || 0
+    acc[p.platform].clicks      += p.clicks      || 0
+    return acc
+  }, {})
+
+  return (
+    <div>
+      {/* Header */}
+      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563' }}>
+          Last 30 days · auto-refreshes every 2 hours · {posts.length} posts tracked
+        </div>
+        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+          {msg && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:msg.startsWith('✓')?'#34d399':'#ef4444' }}>{msg}</span>}
+          <button onClick={refresh} disabled={refreshing}
+            style={{ background:'#c8922a', color:'#000', border:'none', padding:'6px 16px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', cursor:refreshing?'not-allowed':'pointer' }}>
+            {refreshing ? 'FETCHING...' : '↻ REFRESH NOW'}
+          </button>
+        </div>
+      </div>
+
+      {/* Totals */}
+      <div style={{ display:'grid', gridTemplateColumns:'repeat(5,1fr)', gap:8, marginBottom:20 }}>
+        {[
+          ['IMPRESSIONS', totals.impressions, '#60a5fa'],
+          ['LIKES',       totals.likes,       '#f472b6'],
+          ['REPOSTS',     totals.reposts,     '#34d399'],
+          ['REPLIES',     totals.replies,     '#a78bfa'],
+          ['CLICKS',      totals.clicks,      '#c8922a'],
+        ].map(([label, val, color]) => (
+          <div key={label} style={{ background:'#111318', border:'1px solid #1f2428', padding:'14px 12px', textAlign:'center' }}>
+            <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.8rem', color, lineHeight:1 }}>{(val||0).toLocaleString()}</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4b5563', letterSpacing:'0.1em', marginTop:3 }}>{label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Per-platform breakdown */}
+      {Object.keys(byPlatform).length > 0 && (
+        <div style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:10, marginBottom:20 }}>
+          {Object.entries(byPlatform).map(([pid, metrics]) => {
+            const color = PLATFORM_COLORS[pid] || '#6b7280'
+            const icon  = {twitter:'𝕏',bluesky:'🦋',facebook:'f',threads:'@',reddit:'🔴'}[pid] || '?'
+            return (
+              <div key={pid} style={{ background:'#111318', border:`1px solid ${color}30`, padding:'14px 16px' }}>
+                <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12 }}>
+                  <span style={{ fontSize:'16px' }}>{icon}</span>
+                  <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color, letterSpacing:'0.06em' }}>{pid.toUpperCase()}</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', marginLeft:'auto' }}>{metrics.posts} posts</span>
+                </div>
+                <MetricBar label="Impressions" value={metrics.impressions} max={Math.max(...Object.values(byPlatform).map(m=>m.impressions),1)} color={color} />
+                <MetricBar label="Likes"       value={metrics.likes}       max={Math.max(...Object.values(byPlatform).map(m=>m.likes),1)}       color={color} />
+                <MetricBar label="Reposts"     value={metrics.reposts}     max={Math.max(...Object.values(byPlatform).map(m=>m.reposts),1)}     color={color} />
+                {metrics.clicks > 0 && <MetricBar label="Clicks" value={metrics.clicks} max={Math.max(...Object.values(byPlatform).map(m=>m.clicks),1)} color={color} />}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {/* Top posts by engagement */}
+      {posts.length > 0 && (
+        <div>
+          <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', color:'#6b7280', marginBottom:10 }}>TOP POSTS BY IMPRESSIONS</div>
+          {[...posts].sort((a,b)=>(b.impressions||0)-(a.impressions||0)).slice(0,10).map((p,i) => {
+            const color = PLATFORM_COLORS[p.platform] || '#6b7280'
+            const icon  = {twitter:'𝕏',bluesky:'🦋',facebook:'f',threads:'@',reddit:'🔴'}[p.platform] || '?'
+            return (
+              <div key={p._id} style={{ display:'flex', alignItems:'center', gap:10, padding:'9px 12px', background:'#111318', border:'1px solid #1f2428', marginBottom:3 }}>
+                <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'14px', color:'#374151', flexShrink:0, width:20 }}>{i+1}</span>
+                <span style={{ fontSize:'13px', flexShrink:0 }}>{icon}</span>
+                <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+                  {p.articleTitle}
+                </span>
+                <div style={{ display:'flex', gap:12, flexShrink:0 }}>
+                  {p.impressions > 0 && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#60a5fa' }}>{p.impressions?.toLocaleString()} imp</span>}
+                  {p.likes > 0       && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#f472b6' }}>♥ {p.likes}</span>}
+                  {p.reposts > 0     && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#34d399' }}>↺ {p.reposts}</span>}
+                  {p.replies > 0     && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#a78bfa' }}>💬 {p.replies}</span>}
+                </div>
+                {p.postUrl && (
+                  <a href={p.postUrl} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#c8922a', textDecoration:'none', flexShrink:0 }}>↗</a>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      {posts.length === 0 && (
+        <div style={{ textAlign:'center', padding:'40px', border:'1px solid #1f2428', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#374151' }}>
+          No analytics yet. Post some content first, then click ↻ Refresh Now to fetch metrics.
+        </div>
+      )}
+    </div>
+  )
+}
+
 // ── Social Profile Links Config ───────────────────────────────────────────────
 const SOCIAL_LINK_FIELDS = [
   { key:'bluesky',  label:'🦋 Bluesky',   placeholder:'https://bsky.app/profile/downrangeco.bsky.social' },
@@ -470,11 +630,12 @@ export default function SocialMediaManager({ adminKey }) {
   }
 
   const TABS = [
-    { id:'schedule', label:'⏱ Schedule' },
-    { id:'compose',  label:'⚡ Post Now' },
-    { id:'log',      label:'📋 Log' },
-    { id:'links',    label:'🔗 Profile Links' },
-    { id:'setup',    label:'🔧 Setup' },
+    { id:'schedule',  label:'⏱ Schedule' },
+    { id:'compose',   label:'⚡ Post Now' },
+    { id:'log',       label:'📋 Log' },
+    { id:'analytics', label:'📊 Analytics' },
+    { id:'links',     label:'🔗 Profile Links' },
+    { id:'setup',     label:'🔧 Setup' },
   ]
 
   const configuredCount = Object.values(configured).filter(Boolean).length
@@ -552,6 +713,9 @@ export default function SocialMediaManager({ adminKey }) {
           {posts.length === 0 && <div style={{ textAlign:'center', padding:'40px', color:'#374151', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>No posts yet.</div>}
         </div>
       )}
+
+      {/* ── ANALYTICS ── */}
+      {tab === 'analytics' && <AnalyticsDashboard adminKey={adminKey} />}
 
       {/* ── PROFILE LINKS ── */}
       {tab === 'links' && (
