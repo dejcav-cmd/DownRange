@@ -55,25 +55,73 @@ function PostCard({ post, onDelete }) {
   const p  = PLATFORMS[post.platform] || { label:post.platform, icon:'?', color:'#6b7280' }
   const st = STATUS_STYLE[post.status] || STATUS_STYLE.draft
   return (
-    <div style={{ background:'#111318', border:'1px solid #1f2428', marginBottom:3 }}>
-      <div onClick={() => setOpen(x=>!x)} style={{ display:'flex', alignItems:'center', gap:8, padding:'9px 14px', cursor:'pointer', userSelect:'none' }}>
-        <span style={{ background:p.color+'22', color:p.color, border:`1px solid ${p.color}33`, padding:'2px 7px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, flexShrink:0 }}>{p.icon} {p.label.toUpperCase()}</span>
-        <span style={{ background:st.bg, color:st.color, padding:'2px 7px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, flexShrink:0 }}>{st.label}</span>
-        {post.hasImage && <span title="Includes image" style={{ fontSize:'11px' }}>🖼</span>}
-        <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{post.articleTitle||post.content?.slice(0,80)}</span>
+    <div style={{ background:'#111318', border:`1px solid ${post.status==='failed'?'#ef444430':'#1f2428'}`, marginBottom:4 }}>
+      <div onClick={() => setOpen(x=>!x)} style={{ display:'flex', alignItems:'center', gap:8, padding:'10px 14px', cursor:'pointer', userSelect:'none' }}>
+        <span style={{ background:p.color+'22', color:p.color, border:`1px solid ${p.color}33`, padding:'2px 8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, flexShrink:0 }}>{p.icon} {p.label.toUpperCase()}</span>
+        <span style={{ background:st.bg, color:st.color, padding:'2px 8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, flexShrink:0 }}>{st.label}</span>
+        {post.hasImage && <span title="Includes image" style={{ fontSize:'11px', flexShrink:0 }}>🖼</span>}
+        <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+          {post.articleTitle||post.content?.slice(0,80)}
+        </span>
+        {post.status === 'failed' && post.error && (
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#ef4444', flexShrink:0, maxWidth:200, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+            ✗ {post.error.slice(0,40)}…
+          </span>
+        )}
         {post.urgencyScore>=8 && <span style={{ color:'#ef4444', fontSize:'10px', flexShrink:0 }}>⚡{post.urgencyScore}</span>}
         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', flexShrink:0 }}>{timeAgo(post.postedAt||post.scheduledAt)}</span>
-        <span style={{ color:'#374151', fontSize:'10px' }}>{open?'▲':'▼'}</span>
+        <span style={{ color:'#374151', fontSize:'10px', flexShrink:0 }}>{open?'▲':'▼'}</span>
       </div>
       {open && (
-        <div style={{ borderTop:'1px solid #1f2428', padding:'12px 14px', background:'#0d1117' }}>
-          {post.mediaUrl && <img src={post.mediaUrl} alt="" style={{ width:'100%', maxHeight:180, objectFit:'cover', marginBottom:10, border:'1px solid #1f2428' }} />}
-          <pre style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', lineHeight:1.7, whiteSpace:'pre-wrap', background:'#111318', padding:'10px 12px', border:'1px solid #1f2428', marginBottom:10, overflow:'auto' }}>{post.content}</pre>
+        <div style={{ borderTop:'1px solid #1f2428', padding:'14px 16px', background:'#0a0d12' }}>
+          {/* Error — full message in prominent red box */}
+          {post.error && (
+            <div style={{ background:'#1a0505', border:'1px solid #ef444440', padding:'12px 14px', marginBottom:12, borderLeft:'3px solid #ef4444' }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#ef4444', fontWeight:700, letterSpacing:'0.06em', marginBottom:4 }}>✗ ERROR</div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#fca5a5', lineHeight:1.7, wordBreak:'break-all' }}>{post.error}</div>
+            </div>
+          )}
+          {/* Image preview */}
+          {post.mediaUrl && (
+            <img src={post.mediaUrl} alt="" style={{ width:'100%', maxHeight:160, objectFit:'cover', marginBottom:10, border:'1px solid #1f2428' }} />
+          )}
+          {/* Post copy */}
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', letterSpacing:'0.08em', marginBottom:4 }}>POST COPY</div>
+          <pre style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#d1d5db', lineHeight:1.7, whiteSpace:'pre-wrap', background:'#111318', padding:'10px 12px', border:'1px solid #1f2428', marginBottom:12, overflow:'auto', maxHeight:160 }}>{post.content}</pre>
+          {/* Meta */}
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8, marginBottom:12 }}>
+            {[
+              ['Platform', post.platform],
+              ['Status',   post.status],
+              ['Category', post.category||'—'],
+              ['Urgency',  post.urgencyScore ? `${post.urgencyScore}/10` : '—'],
+              ['Has Image',post.hasImage ? 'Yes' : 'No'],
+              ['Scheduled',post.scheduledAt ? new Date(post.scheduledAt).toLocaleTimeString() : '—'],
+            ].map(([k,v]) => (
+              <div key={k} style={{ background:'#111318', padding:'6px 10px', border:'1px solid #1f2428' }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4b5563', letterSpacing:'0.08em' }}>{k}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', marginTop:2 }}>{v}</div>
+              </div>
+            ))}
+          </div>
+          {/* Actions */}
           <div style={{ display:'flex', gap:10, flexWrap:'wrap', alignItems:'center' }}>
-            {post.postUrl && <a href={post.postUrl} target="_blank" rel="noreferrer" style={{ display:'inline-flex', alignItems:'center', gap:5, background:'#c8922a', color:'#000', padding:'5px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textDecoration:'none' }}>VIEW LIVE POST ↗</a>}
-            {post.articleSlug && <a href={`/news/${post.articleSlug}`} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', textDecoration:'none' }}>Source ↗</a>}
-            {post.error && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#ef4444', flex:1 }}>✗ {post.error}</span>}
-            <button onClick={() => onDelete(post._id)} style={{ marginLeft:'auto', background:'none', border:'1px solid #1f2428', color:'#374151', padding:'3px 8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', cursor:'pointer' }}>DELETE</button>
+            {post.postUrl && (
+              <a href={post.postUrl} target="_blank" rel="noreferrer"
+                style={{ background:'#c8922a', color:'#000', padding:'6px 16px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textDecoration:'none' }}>
+                VIEW LIVE POST ↗
+              </a>
+            )}
+            {post.articleSlug && (
+              <a href={`/news/${post.articleSlug}`} target="_blank" rel="noreferrer"
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', textDecoration:'none' }}>
+                Source article ↗
+              </a>
+            )}
+            <button onClick={() => onDelete(post._id)}
+              style={{ marginLeft:'auto', background:'#1a0505', border:'1px solid #ef444430', color:'#ef4444', padding:'4px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', cursor:'pointer', letterSpacing:'0.06em' }}>
+              DELETE
+            </button>
           </div>
         </div>
       )}

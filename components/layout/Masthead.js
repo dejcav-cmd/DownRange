@@ -188,11 +188,10 @@ export default function Masthead() {
             />
           </Link>
 
-          {/* Dateline — absolutely overlaid on right side, zero effect on logo centering */}
+          {/* Left side: date — absolutely positioned left, never touches logo */}
           <div className="masthead-dateline" style={{
-            position:'absolute', right:0, top:'50%', transform:'translateY(-50%)',
-            textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'6px',
-            maxWidth:'50%',
+            position:'absolute', left:0, top:'50%', transform:'translateY(-50%)',
+            display:'flex', flexDirection:'column', alignItems:'flex-start', gap:'5px',
           }}>
             {/* RSS + DAILY EDITION */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
@@ -201,18 +200,23 @@ export default function Masthead() {
               </a>
               <span style={{ background:'#C8922A', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
             </div>
-            {/* DOWNRANGECO.COM */}
+            {/* DOWNRANGECO.COM + date */}
             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
+          </div>
+
+          {/* Right side: social + search — absolutely positioned right */}
+          <div className="masthead-dateline" style={{
+            position:'absolute', right:0, top:'50%', transform:'translateY(-50%)',
+            display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'6px',
+          }}>
             {/* Social Media icons */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', letterSpacing:'0.06em' }}>Social Media:</span>
               <SocialIcons size="sm" />
             </div>
-            {/* Search bar BEFORE date */}
-            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <GlobalSearchBar />
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
-            </div>
+            {/* Search bar */}
+            <GlobalSearchBar />
           </div>
         </div>
 

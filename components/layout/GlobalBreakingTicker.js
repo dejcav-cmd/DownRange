@@ -38,7 +38,7 @@ export default function GlobalBreakingTicker() {
     <div style={{
       background: flash ? '#991B1B' : '#B91C1C',
       padding: '8px 0', overflow: 'hidden',
-      position: 'relative', zIndex: 9999,
+      position: 'sticky', top: 0, zIndex: 9999,
       transition: 'background 0.4s ease',
       width: '100%',
     }}>

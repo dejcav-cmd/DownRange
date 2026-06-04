@@ -212,9 +212,12 @@ async function postViaZernio(content, imageUrl) {
   // Zernio accountId must start with acc_ — NOT your Twitter handle (@username)
   // Get the real ID from: Admin → Social Media → Setup → "Look up my Account ID" button
   // Or call: GET https://zernio.com/api/v1/accounts  (Authorization: Bearer YOUR_API_KEY)
-  const cleanId = accountId.replace(/^@/, '').trim()
-  if (!cleanId.startsWith('acc_')) {
-    return { ok: false, error: `ZERNIO_TWITTER_ACCOUNT_ID is set to "${accountId}" — this is your Twitter handle, not a Zernio account ID. The correct value starts with "acc_" and looks like acc_abc123. In Vercel: update ZERNIO_TWITTER_ACCOUNT_ID. To find it: call GET https://zernio.com/api/v1/accounts with your Zernio API key, or use Admin → Social Media → Command Center → Setup tab → X/Twitter → Look up Account ID button.` }
+  // Strip invisible chars and @ if accidentally included
+  const cleanId = accountId
+    .replace(/[\u0000-\u001F\u007F-\u00A0\u200B-\u200F\u202A-\u202E\uFEFF]/g, '')
+    .replace(/^@/, '').trim()
+  if (!cleanId || cleanId.length < 8) {
+    return { ok: false, error: `ZERNIO_TWITTER_ACCOUNT_ID "${accountId}" is invalid. Must be the Zernio account ID (e.g. 6a2109ef2b2567671ac1458c), not your @handle. Update ZERNIO_TWITTER_ACCOUNT_ID in Vercel.` }
   }
 
   const body = {
