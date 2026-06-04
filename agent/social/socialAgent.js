@@ -31,60 +31,119 @@ function getImage(article) {
 }
 
 // ── Platform copy config ──────────────────────────────────────────────────────
-const PLATFORM_CONFIG = {
-  bluesky:  { limit: 290, tone: 'Direct and punchy. Gun-owner voice. One strong insight. No hashtags on Bluesky — they hurt reach.' },
-  threads:  { limit: 440, tone: 'Conversational, 2-3 short sentences. End with a question to drive replies. 2A community voice.' },
-  facebook: { limit: 470, tone: 'Informative. 3-4 sentences with context. End with a question or CTA. Slightly longer is fine on Facebook.' },
-  twitter:  { limit: 260, tone: 'Informative and punchy. Lead with the most important fact. Give enough context that someone who hasn\'t read the article understands what happened and why it matters to gun owners. 2-3 sentences. End with 2-3 relevant hashtags.' },
-  reddit:   { limit: 290, tone: 'Factual and direct. No marketing language. r/CCW and r/guns users hate hype. Just the news.' },
-}
-
-// Emoji map per category — boosts reach on all platforms
-const CATEGORY_EMOJI = {
-  law:      '⚖️🔫', breaking: '🚨🔫', news:     '📰🔫',
-  review:   '🎯🔫', industry: '🏭🔫', training: '🎯🛡️',
-  hunting:  '🏹🌲', default:  '🔫🇺🇸',
+// ── COPY WRITING ENGINE ──────────────────────────────────────────────────────
+//
+// Twitter: 280 chars total. URLs count as 23 chars (t.co). So we have
+//   280 - 23 (url) = 257 chars for text + hashtags.
+//   Hashtags ~55 chars → ~200 chars for actual copy body.
+//   That's enough for 2-3 meaty sentences if written tightly.
+//
+// Platform character budgets (body text only, URL/hashtags appended separately):
+const CHAR_BUDGETS = {
+  twitter:  200,  // 280 total - 23 (t.co URL) - 55 (hashtags) - 2 (newlines)
+  bluesky:  250,  // 300 limit - 45 (full URL) - 5 (newlines)
+  threads:  430,  // 500 limit - 50 (URL) - 20 (newlines)
+  facebook: 450,  // No hard limit; keep focused
+  reddit:   250,  // Title-only post; this is the title
 }
 
 const HASHTAGS = {
   law:      '#2A #GunRights #SecondAmendment #ConstitutionalCarry',
   news:     '#Firearms #2A #GunNews #GunOwners',
   review:   '#GunReview #EDC #Firearms #GearReview',
-  industry: '#GunIndustry #2A #Firearms',
+  industry: '#GunIndustry #2A #Firearms #SHOT',
   breaking: '#Breaking #2A #GunNews #Firearms',
   training: '#CCW #SelfDefense #Firearms #GunTraining',
   hunting:  '#Hunting #2A #Outdoors #HuntingLife',
   default:  '#2A #Firearms #GunOwners #SecondAmendment',
 }
 
+// Per-platform writing instructions — what the AI must produce
+const PLATFORM_PROMPTS = {
+  twitter: `TWITTER POST RULES (STRICT):
+- Total copy budget: 200 characters MAX (NOT counting the URL or hashtags we add)
+- COUNT EVERY CHARACTER. Stay under 200.
+- Structure: [Hook line] [Key fact/what happened] [Why it matters to gun owners]
+- Lead with the most alarming or surprising fact — not the title
+- Write like a gun owner who's angry, informed, or excited — not a press release
+- Use 2-3 emojis woven into the text naturally (not just at the start)
+- Be specific: name the state, the court, the ATF rule number, the gun model
+- DO NOT include the URL or hashtags — added automatically
+- Example of GOOD copy: "🚨 New Jersey just authorized warrantless gun seizures — no crime needed, just a 'tip.' A federal court already blocked this. State police are defying the order. 🔫 This is where it starts."
+- Example of BAD copy (too vague/short): "Big 2A news from NJ. Courts involved. Read more."`,
+
+  bluesky: `BLUESKY POST RULES:
+- Copy budget: 250 characters MAX (not counting the URL)
+- No hashtags on Bluesky — they kill algorithmic reach
+- Write like a knowledgeable gun owner talking to another gun owner
+- Lead with the specific development — state, ruling, number, company name
+- Include the key implication: what does this mean for carry rights / gun owners?
+- Use 1-2 emojis max, placed naturally
+- DO NOT include the URL — added automatically`,
+
+  threads: `THREADS POST RULES:
+- Copy budget: 430 characters MAX (not counting URL/hashtags)
+- Conversational tone — like you're telling a friend the news
+- 3-4 sentences: hook → what happened → context → question or reaction
+- End with a question or hot take to drive replies
+- Use 2-3 emojis naturally through the text
+- DO NOT include the URL or hashtags — added automatically`,
+
+  facebook: `FACEBOOK POST RULES:
+- Copy budget: 450 characters MAX (not counting URL/hashtags)
+- More informative than other platforms — Facebook users want context
+- 3-5 sentences: lead with the news, explain the background, state the 2A impact
+- End with a question to drive comments ("What do you think?" / "Will you be affected?")
+- Use 2-3 emojis naturally
+- DO NOT include the URL or hashtags — added automatically`,
+
+  reddit: `REDDIT POST TITLE RULES:
+- This is the LINK POST TITLE — 300 characters MAX
+- Reddit titles must be factual and specific — no clickbait, no hype words
+- Include: location/jurisdiction, what happened, and the relevant right/law
+- Example: "New Jersey: State Police Defying Federal Court Order Blocking Warrantless Gun Seizures Under Red Flag Law"
+- NO emojis in Reddit titles
+- DO NOT include the URL`,
+}
+
 async function generateCopy(article, platform, contentType) {
-  const cfg      = PLATFORM_CONFIG[platform] || PLATFORM_CONFIG.bluesky
-  const url      = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${article.slug}`
-  const emoji    = CATEGORY_EMOJI[article.category] || CATEGORY_EMOJI.default
-  // Twitter/Threads/Facebook get hashtags; Bluesky and Reddit don't
-  const tags     = ['twitter','threads','facebook'].includes(platform) ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
-  const reserve  = url.length + tags.length + emoji.length + 6
-  const maxBody  = cfg.limit - reserve
+  const url    = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${article.slug}`
+  const tags   = ['twitter','threads','facebook'].includes(platform)
+    ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
+  const budget = CHAR_BUDGETS[platform] || 200
 
-  const typeLabel = contentType === 'blog' ? 'in-depth blog post' : 'breaking news article'
+  // Build a rich article brief for the AI — the more context, the better the copy
+  const summary = article.summary || article.excerpt || ''
+  const brief = [
+    `TITLE: ${article.title}`,
+    summary ? `SUMMARY: ${summary.slice(0, 400)}` : '',
+    `CATEGORY: ${article.category || 'news'}`,
+    `TYPE: ${contentType === 'blog' ? 'Analysis / Blog' : 'Breaking News'}`,
+    article.urgencyScore >= 8 ? `URGENCY: HIGH (${article.urgencyScore}/10) — treat as breaking` : '',
+  ].filter(Boolean).join('\n')
+
+  const instructions = PLATFORM_PROMPTS[platform] || PLATFORM_PROMPTS.twitter
+
   const raw = await callAIText({
-    prompt: `You are the social media voice for DownRange Co — an independent 2A intelligence portal. Founded by DJ Cavalcanti, a daily carrier in Washington State.
+    prompt: `You are the social media editor for DownRange Co — an independent Second Amendment intelligence portal run by DJ Cavalcanti, a daily carrier in Washington State. DownRange readers are gun owners who follow 2A case law, carry daily, and want real information — not fluff.
 
-Write a ${platform} post promoting this ${typeLabel}:
-TITLE: ${article.title}
-SUMMARY: ${article.summary || article.excerpt || ''}
-CATEGORY: ${article.category}
-TYPE: ${contentType === 'blog' ? 'Blog / Analysis' : 'News'}
+ARTICLE TO PROMOTE:
+${brief}
 
-Tone: ${cfg.tone}
-Start the post with 1-2 relevant emojis that match the content.
-Use emojis naturally within the text to increase engagement (2-4 total).
-Body character limit: ${maxBody} chars MAX (NOT including the URL and hashtags we append).
-Do NOT include the URL or hashtags — appended automatically.
-Return ONLY the post body. No quotes, no preamble.`,
-    useCase: 'default', maxTokens: 200,
+${instructions}
+
+CHARACTER BUDGET REMINDER: ${budget} characters MAX for the copy body.
+Write the post body now. Return ONLY the post text. No quotes, no preamble, no "Here's a post:".`,
+    useCase: 'default',
+    maxTokens: 300,
   })
-  const body = raw.replace(/^["']|["']$/g, '').trim().slice(0, maxBody)
+
+  const body = raw
+    .replace(/^["'`]|["'`]$/g, '')
+    .replace(/^(Here'?s?( a| the)?( draft| post| copy)?:?\s*)/i, '')
+    .trim()
+    .slice(0, budget)
+
   return `${body}\n\n${url}${tags}`
 }
 
