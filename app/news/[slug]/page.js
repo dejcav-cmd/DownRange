@@ -5,6 +5,7 @@ import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
 import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
+import EmailCapture from '../../../components/ui/EmailCapture'
 
 // Local photo fallbacks — always available, no hotlink risk
 const ARTICLE_FALLBACKS = {
@@ -418,7 +419,10 @@ export default async function ArticlePage({ params }) {
               <a href="/news" style={{ display: 'block', textAlign: 'center', marginTop: '1rem', color: '#C8922A', textDecoration: 'none', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', letterSpacing: '0.1em' }}>
                 ALL NEWS →
               </a>
-            </div></aside>
+            </div>
+
+            {/* Email capture */}
+            <EmailCapture variant="sidebar" /></aside>
         </div>
 
         {/* ── RELATED GRID ── */}

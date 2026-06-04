@@ -107,6 +107,27 @@ export async function GET(req) {
       duration:  Date.now()-t,
       headlines: result?.headlines || [],
     }).catch(() => {})
+
+    // ── Sitemap ping — notify Google + IndexNow when new articles saved ──
+    const newCount = result?.done ?? result?.saved ?? 0
+    if (newCount > 0 && ['news','blog','releases','goa','laws'].includes(feed)) {
+      // Google ping (asks Googlebot to re-crawl sitemap)
+      fetch('https://www.google.com/ping?sitemap=https://downrangeco.com/sitemap.xml').catch(() => {})
+      fetch('https://www.google.com/ping?sitemap=https://downrangeco.com/news-sitemap.xml').catch(() => {})
+      // Bing/IndexNow ping for immediate indexing
+      if (result?.slugs?.length > 0) {
+        fetch('https://api.indexnow.org/indexnow', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            host: 'downrangeco.com',
+            key: process.env.INDEXNOW_KEY || 'downrangeco',
+            urlList: result.slugs.slice(0, 100).map(s => `https://downrangeco.com/news/${s}`),
+          }),
+        }).catch(() => {})
+      }
+    }
+
     return Response.json({ success: true, feed, result, ms: Date.now()-t })
   } catch (err) {
     console.error(`[AGENT] ✗ feed=${feed} error:`, err.message)

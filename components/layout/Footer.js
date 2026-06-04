@@ -1,5 +1,6 @@
 'use client'
 import Link from 'next/link'
+import EmailCapture from '../ui/EmailCapture'
 
 const FOOTER_COLS = [
   { title: 'News & Intel', links: [['Latest News','/news'],['Live Deals','/deals'],['Market Watch','/market'],['Video','/video'],['Canada','/canada']] },
@@ -12,6 +13,9 @@ export default function Footer() {
   return (
     <footer style={{ background: '#07080A', borderTop: '1px solid var(--border)', padding: '48px 0 24px' }}>
       <div className="container">
+        {/* ── Email Capture ── */}
+        <EmailCapture variant="footer" />
+
         <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '280px repeat(4, 1fr)', gap: '40px', marginBottom: '40px' }}>
           {/* Brand */}
           <div>

@@ -137,20 +137,12 @@
       "schedule": "0 9 * * 1"
     },
     {
-      "path": "/api/agent?feed=blog",
-      "schedule": "0 10 * * 5"
-    },
-    {
       "path": "/api/cron/sitemap",
       "schedule": "0 2 * * *"
     },
     {
       "path": "/api/cron/giveaways",
       "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/cron/blog-writer",
-      "schedule": "0 18 * * 5"
     },
     {
       "path": "/api/cron/gun-deals",
@@ -175,6 +167,18 @@
     {
       "path": "/api/admin/fix-images-intl",
       "schedule": "0 11 * * *"
+    },
+    {
+      "path": "/api/cron/enrich-state-pages?batch=5",
+      "schedule": "0 3 * * *"
+    },
+    {
+      "path": "/api/agent?feed=blog",
+      "schedule": "0 10 * * 1,3,5"
+    },
+    {
+      "path": "/api/cron/blog-writer",
+      "schedule": "0 18 * * 1,3,5"
     }
   ],
   "headers": [

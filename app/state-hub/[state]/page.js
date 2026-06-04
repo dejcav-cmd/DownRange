@@ -4,6 +4,7 @@ import Footer from '../../../components/layout/Footer'
 import BreakingTicker from '../../../components/layout/BreakingTicker'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Link from 'next/link'
+import { buildStateFaqSchema, buildStateFaqHtml } from '../../../lib/stateFaq'
 
 export const revalidate = 3600
 
@@ -55,11 +56,16 @@ export default async function StatePage({ params }) {
 
   const data = profile || SEED_PROFILES[abbr] || { name: STATE_NAMES[abbr], abbr }
   const stateName = data.name || STATE_NAMES[abbr]
+  const faqSchema = buildStateFaqSchema(stateName, abbr, data)
+  const faqItems  = buildStateFaqHtml(stateName, abbr, data)
 
   const ratingColor = { 'A':'#34D399','A+':'#34D399','B':'#60A5FA','B+':'#60A5FA','C':'#FBBF24','D':'#EF4444','D-':'#EF4444','F':'#B91C1C' }[data.rating] || '#9CA3AF'
 
   return (
     <>
+      {/* ── FAQPage structured data ── */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+
       <BreakingTicker alerts={alerts} />
       <Masthead />
       <div className="page-hero" data-title={abbr}>
@@ -142,6 +148,58 @@ export default async function StatePage({ params }) {
           <div style={{ marginTop:'24px', padding:'16px', background:'#111318', border:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.7 }}>
             ⚠ Laws change frequently. Always verify current statutes before carrying. This is general information, not legal advice. Consult a licensed attorney for legal decisions.
             {!profile && <span style={{ color:'#C8922A' }}> · Live data populates when LegiScan feed runs.</span>}
+          </div>
+
+          {/* ── Rich editorial content — AI-generated, 600+ words for SEO ── */}
+          {data.richContent && (
+            <div style={{ marginTop:'40px' }}>
+              <style>{`
+                .state-rich-body h2 { font-family:'Bebas Neue',sans-serif; font-size:1.4rem; color:#C8922A; letter-spacing:0.04em; margin:2rem 0 0.75rem; padding-bottom:0.4rem; border-bottom:2px solid #1F2428; }
+                .state-rich-body h2:first-child { margin-top:0; }
+                .state-rich-body p { font-size:15px; line-height:1.85; color:#9CA3AF; margin-bottom:1.2rem; font-family:'IBM Plex Sans',sans-serif; text-align:justify; }
+                .state-rich-body strong { color:#E5E5E5; font-weight:700; }
+              `}</style>
+              <div className="state-rich-body" dangerouslySetInnerHTML={{ __html: data.richContent }} />
+            </div>
+          )}
+
+          {/* ── FAQ Accordion — indexed by Google as FAQPage schema ── */}
+          <div style={{ marginTop:'40px' }}>
+            <h2 style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'1.6rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px', borderBottom:'2px solid #1F2428', paddingBottom:'8px' }}>
+              {`FREQUENTLY ASKED QUESTIONS — ${stateName.toUpperCase()} GUN LAWS`}
+            </h2>
+            <div style={{ display:'flex', flexDirection:'column', gap:'4px' }}>
+              {faqItems.map((faq, i) => (
+                <details key={i} style={{ background:'#111318', border:'1px solid #1F2428', overflow:'hidden' }}>
+                  <summary style={{ padding:'14px 18px', cursor:'pointer', fontFamily:"'Barlow Condensed', sans-serif", fontSize:'16px', fontWeight:700, color:'#E5E5E5', letterSpacing:'0.04em', listStyle:'none', display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                    {faq.question}
+                    <span style={{ color:'#C8922A', fontSize:'20px', flexShrink:0, marginLeft:'12px' }}>+</span>
+                  </summary>
+                  <div style={{ padding:'14px 18px 16px', fontFamily:"'IBM Plex Sans', sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, borderTop:'1px solid #1F2428' }}>
+                    {faq.answer}
+                  </div>
+                </details>
+              ))}
+            </div>
+          </div>
+
+          {/* ── Internal links to related pages ── */}
+          <div style={{ marginTop:'32px', padding:'20px 24px', background:'#111318', border:'1px solid #1F2428' }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', letterSpacing:'0.12em', fontWeight:700, marginBottom:'12px' }}>RELATED RESOURCES</div>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'10px' }}>
+              {[
+                [`/ccw`, `${stateName} CCW Permit Guide`],
+                [`/laws?tab=state`, `All State Gun Laws`],
+                [`/laws?tab=federal`, `Federal Bills Tracker`],
+                [`/news`, `Latest 2A News`],
+                [`/state-hub`, `All 50 States`],
+                [`/nfa-tracker`, `NFA Wait Times`],
+              ].map(([href, label]) => (
+                <Link key={href} href={href} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', background:'#09090B', border:'1px solid #1F2428', padding:'6px 14px', textDecoration:'none' }}>
+                  {label}
+                </Link>
+              ))}
+            </div>
           </div>
         </div>
       </div>

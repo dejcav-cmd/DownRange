@@ -150,7 +150,8 @@ export async function fetchStateProfile(abbr) {
       _id, name, abbr, rating,
       constitutionalCarry, ccwPermit, redFlagLaw, magLimit, waitPeriod,
       awbStatus, suppressors, openCarry, bgcPrivate,
-      reciprocityStates[], recentBills[], summary, lastUpdated
+      reciprocityStates[], recentBills[], summary, lastUpdated,
+      richContent, updatedAt
     }
   `, { abbr: abbr.toUpperCase() })
 }
