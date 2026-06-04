@@ -1,12 +1,12 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
 
+// ── Platform definitions — free/low-cost stack ────────────────────────────────
 const PLATFORMS = {
-  twitter:   { label: 'X / Twitter',  icon: '𝕏',  color: '#000000', envKeys: ['TWITTER_API_KEY','TWITTER_ACCESS_TOKEN'], setupUrl: 'https://developer.twitter.com' },
-  facebook:  { label: 'Facebook',     icon: '󰈌',  color: '#1877F2', envKeys: ['FACEBOOK_PAGE_ACCESS_TOKEN','FACEBOOK_PAGE_ID'], setupUrl: 'https://developers.facebook.com' },
-  threads:   { label: 'Threads',      icon: '@',  color: '#000000', envKeys: ['THREADS_ACCESS_TOKEN','THREADS_USER_ID'], setupUrl: 'https://developers.facebook.com/docs/threads' },
-  bluesky:   { label: 'Bluesky',      icon: '🦋', color: '#0085FF', envKeys: ['BLUESKY_HANDLE','BLUESKY_APP_PASSWORD'], setupUrl: 'https://bsky.app' },
-  instagram: { label: 'Instagram',    icon: '📸', color: '#E1306C', envKeys: ['INSTAGRAM_ACCESS_TOKEN'], setupUrl: 'https://developers.facebook.com/docs/instagram' },
+  bluesky:  { label:'Bluesky',   icon:'🦋', color:'#0085FF', cost:'FREE',  costNote:'Direct AT Protocol. No API fees ever.', envKeys:['BLUESKY_HANDLE','BLUESKY_APP_PASSWORD'],     setupUrl:'https://bsky.app', setupSteps:['Create @downrangeco.bsky.social account','Settings → Privacy and Security → App Passwords → Add App Password','Name it "DownRange" and copy the password','Add BLUESKY_HANDLE (e.g. downrangeco.bsky.social) to Vercel','Add BLUESKY_APP_PASSWORD to Vercel → redeploy'] },
+  threads:  { label:'Threads',   icon:'@',  color:'#111111', cost:'FREE',  costNote:'Meta Graph API. One-time App Review, then free forever.', envKeys:['THREADS_ACCESS_TOKEN','THREADS_USER_ID'],       setupUrl:'https://developers.facebook.com/docs/threads', setupSteps:['Create @downrangeco Threads account','Go to developers.facebook.com → Create App → Consumer type','Add "Threads API" product','Submit App Review (usually 1-3 days)','Generate User Access Token → add THREADS_ACCESS_TOKEN to Vercel','Add THREADS_USER_ID to Vercel → redeploy'] },
+  facebook: { label:'Facebook',  icon:'f',  color:'#1877F2', cost:'FREE',  costNote:'Meta Graph API. Create a Page and generate a Page Access Token.', envKeys:['FACEBOOK_PAGE_ACCESS_TOKEN','FACEBOOK_PAGE_ID'], setupUrl:'https://developers.facebook.com', setupSteps:['Create DownRange Co. Facebook Page','Go to developers.facebook.com → Graph API Explorer','Select your app, select page, generate Page Access Token','Copy Page ID from Page About section','Add FACEBOOK_PAGE_ACCESS_TOKEN to Vercel','Add FACEBOOK_PAGE_ID to Vercel → redeploy'] },
+  twitter:  { label:'X/Twitter', icon:'𝕏',  color:'#E5E5E5', cost:'~$0/mo',costNote:'Post via Buffer free tier. Buffer absorbs the $0.20/URL-tweet X API cost. Free up to 10 queued posts.', envKeys:['BUFFER_ACCESS_TOKEN','BUFFER_TWITTER_PROFILE_ID'], setupUrl:'https://buffer.com', setupSteps:['Create free Buffer account at buffer.com','Connect your X/Twitter account in Buffer','Go to Buffer → Settings → Apps & Integrations → Access Token → copy it','For Profile ID: connect Twitter in Buffer, then check the URL on your Twitter channel page — it ends in the profile ID','Add BUFFER_ACCESS_TOKEN to Vercel','Add BUFFER_TWITTER_PROFILE_ID to Vercel → redeploy'] },
 }
 
 const STATUS_STYLE = {
@@ -20,142 +20,92 @@ const STATUS_STYLE = {
 function timeAgo(d) {
   if (!d) return ''
   const diff = Date.now() - new Date(d).getTime()
-  const min = Math.floor(diff / 60000)
+  const min  = Math.floor(diff/60000)
+  if (min < 2)  return 'just now'
   if (min < 60) return `${min}m ago`
-  const hr = Math.floor(min / 60)
-  if (hr < 24) return `${hr}h ago`
-  return `${Math.floor(hr / 24)}d ago`
+  const hr = Math.floor(min/60)
+  if (hr < 24)  return `${hr}h ago`
+  return `${Math.floor(hr/24)}d ago`
 }
 
-function PlatformBadge({ platform, size = 'sm' }) {
-  const p = PLATFORMS[platform] || { label: platform, icon: '?', color: '#6b7280' }
-  const px = size === 'lg' ? '8px 14px' : '3px 8px'
-  const fs = size === 'lg' ? '13px' : '11px'
-  return (
-    <span style={{ background: p.color + '22', color: p.color, border: `1px solid ${p.color}44`, padding: px, fontFamily:"'IBM Plex Mono',monospace", fontSize: fs, fontWeight: 700, borderRadius: 2, whiteSpace:'nowrap' }}>
-      {p.icon} {p.label}
-    </span>
-  )
+// ── Sub-components ────────────────────────────────────────────────────────────
+function CostBadge({ cost, small }) {
+  const c = cost === 'FREE' ? '#34d399' : cost === '~$0/mo' ? '#c8922a' : '#9ca3af'
+  return <span style={{ background: c+'22', color: c, border:`1px solid ${c}44`, padding: small ? '1px 6px' : '3px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize: small ? '9px' : '11px', fontWeight:700, letterSpacing:'0.08em' }}>{cost}</span>
 }
 
-// ── Overview Stats Row ────────────────────────────────────────────────────────
-function StatsRow({ stats }) {
-  const items = [
-    { label:'Total Posts',  value: stats.total,    color:'#e5e5e5' },
-    { label:'Posted',       value: stats.posted,   color:'#34d399' },
-    { label:'Failed',       value: stats.failed,   color:'#ef4444' },
-    { label:'Drafts',       value: stats.drafts,   color:'#9ca3af' },
-    { label:'Today',        value: stats.today,    color:'#c8922a' },
-    { label:'This Week',    value: stats.thisWeek, color:'#60a5fa' },
-  ]
+function StatCard({ label, value, color }) {
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:8, marginBottom:20 }}>
-      {items.map(item => (
-        <div key={item.label} style={{ background:'#111318', border:'1px solid #1f2428', padding:'14px 16px', textAlign:'center' }}>
-          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'2rem', color: item.color, lineHeight:1 }}>{item.value ?? '—'}</div>
-          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4b5563', letterSpacing:'0.1em', marginTop:4 }}>{item.label}</div>
-        </div>
-      ))}
+    <div style={{ background:'#111318', border:'1px solid #1f2428', padding:'14px 16px', textAlign:'center' }}>
+      <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'2rem', color: color||'#e5e5e5', lineHeight:1 }}>{value ?? '—'}</div>
+      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4b5563', letterSpacing:'0.1em', marginTop:4 }}>{label}</div>
     </div>
   )
 }
 
-// ── Platform Setup Card ───────────────────────────────────────────────────────
-function PlatformCard({ pid, configured, enabled, onToggle }) {
+function PlatformStatusRow({ pid, configured, isActive }) {
   const p = PLATFORMS[pid]
+  if (!p) return null
   return (
-    <div style={{ background:'#111318', border: `1px solid ${configured ? (enabled ? p.color + '60' : '#1f2428') : '#1f2428'}`, padding:'16px 20px', display:'flex', alignItems:'center', gap:14 }}>
-      <div style={{ width:40, height:40, background: p.color + '22', display:'flex', alignItems:'center', justifyContent:'center', fontSize:'20px', flexShrink:0, border:`1px solid ${p.color}33` }}>
-        {p.icon}
-      </div>
+    <div style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 16px', background: configured ? (isActive ? '#0a0f08' : '#0d1117') : '#0d1117', border:`1px solid ${configured && isActive ? p.color+'40' : '#1f2428'}` }}>
+      <span style={{ fontSize:'20px', width:28, textAlign:'center' }}>{p.icon}</span>
       <div style={{ flex:1, minWidth:0 }}>
-        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'15px', fontWeight:700, color:'#e5e5e5', letterSpacing:'0.05em' }}>{p.label}</div>
-        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: configured ? '#34d399' : '#ef4444', marginTop:3 }}>
-          {configured ? '✓ API keys configured' : '✗ Needs setup — add API keys to Vercel'}
-        </div>
+        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color: configured ? '#e5e5e5' : '#4b5563', letterSpacing:'0.05em' }}>{p.label}</div>
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', marginTop:2 }}>{p.costNote}</div>
       </div>
-      {configured ? (
-        <button
-          onClick={() => onToggle(pid)}
-          style={{ background: enabled ? p.color : 'transparent', border:`1px solid ${enabled ? p.color : '#374151'}`, color: enabled ? '#000' : '#6b7280', padding:'6px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', cursor:'pointer' }}
-        >
-          {enabled ? '● ACTIVE' : '○ INACTIVE'}
-        </button>
-      ) : (
-        <a href={p.setupUrl} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#c8922a', textDecoration:'none' }}>
-          Setup guide ↗
-        </a>
-      )}
+      <CostBadge cost={p.cost} small />
+      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: configured ? (isActive ? '#34d399' : '#9ca3af') : '#ef4444' }}>
+        {configured ? (isActive ? '● ACTIVE' : '○ READY') : '✗ NEEDS SETUP'}
+      </div>
     </div>
   )
 }
 
-// ── Post Card ─────────────────────────────────────────────────────────────────
 function PostCard({ post, onDelete }) {
-  const [expanded, setExpanded] = useState(false)
+  const [open, setOpen] = useState(false)
+  const p  = PLATFORMS[post.platform] || { label: post.platform, icon:'?', color:'#6b7280' }
   const st = STATUS_STYLE[post.status] || STATUS_STYLE.draft
-
   return (
-    <div style={{ background:'#111318', border:'1px solid #1f2428', marginBottom:4 }}>
-      {/* Header row */}
-      <div
-        onClick={() => setExpanded(!expanded)}
-        style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 14px', cursor:'pointer' }}
-      >
-        <PlatformBadge platform={post.platform} />
-        <span style={{ background: st.bg, color: st.color, padding:'2px 8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, letterSpacing:'0.1em', flexShrink:0 }}>
+    <div style={{ background:'#111318', border:'1px solid #1f2428', marginBottom:3 }}>
+      <div onClick={() => setOpen(x => !x)} style={{ display:'flex', alignItems:'center', gap:8, padding:'9px 14px', cursor:'pointer', userSelect:'none' }}>
+        <span style={{ background: p.color+'22', color: p.color, border:`1px solid ${p.color}33`, padding:'2px 7px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, flexShrink:0 }}>
+          {p.icon} {p.label.toUpperCase()}
+        </span>
+        <span style={{ background: st.bg, color: st.color, padding:'2px 7px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', fontWeight:700, letterSpacing:'0.08em', flexShrink:0 }}>
           {st.label}
         </span>
-        <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+        <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
           {post.articleTitle || post.content?.slice(0,80)}
         </span>
-        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', flexShrink:0 }}>
-          {timeAgo(post.postedAt || post.scheduledAt)}
-        </span>
-        {post.urgencyScore && (
-          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#c8922a', flexShrink:0 }}>
-            ⚡{post.urgencyScore}
-          </span>
-        )}
-        <span style={{ color:'#4b5563', fontSize:'12px' }}>{expanded ? '▲' : '▼'}</span>
+        {post.urgencyScore >= 8 && <span style={{ color:'#ef4444', fontSize:'11px', flexShrink:0 }}>⚡{post.urgencyScore}</span>}
+        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', flexShrink:0 }}>{timeAgo(post.postedAt || post.scheduledAt)}</span>
+        <span style={{ color:'#374151', fontSize:'10px' }}>{open ? '▲' : '▼'}</span>
       </div>
-
-      {/* Expanded detail */}
-      {expanded && (
-        <div style={{ borderTop:'1px solid #1f2428', padding:'14px 16px', background:'#0d1117' }}>
-          {/* Post content */}
-          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#9ca3af', lineHeight:1.7, whiteSpace:'pre-wrap', background:'#111318', padding:'12px 14px', border:'1px solid #1f2428', marginBottom:12 }}>
+      {open && (
+        <div style={{ borderTop:'1px solid #1f2428', padding:'12px 14px', background:'#0d1117' }}>
+          <pre style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', lineHeight:1.7, whiteSpace:'pre-wrap', background:'#111318', padding:'10px 12px', border:'1px solid #1f2428', marginBottom:10, overflow:'auto' }}>
             {post.content}
-          </div>
-
-          {/* Meta row */}
-          <div style={{ display:'flex', gap:16, flexWrap:'wrap', alignItems:'center' }}>
+          </pre>
+          <div style={{ display:'flex', gap:10, flexWrap:'wrap', alignItems:'center' }}>
             {post.postUrl && (
-              <a href={post.postUrl} target="_blank" rel="noreferrer"
-                style={{ display:'inline-flex', alignItems:'center', gap:6, background:'#c8922a', color:'#000', padding:'6px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textDecoration:'none' }}>
+              <a href={post.postUrl} target="_blank" rel="noreferrer" style={{ display:'inline-flex', alignItems:'center', gap:5, background:'#c8922a', color:'#000', padding:'5px 14px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textDecoration:'none' }}>
                 VIEW LIVE POST ↗
               </a>
             )}
             {post.articleSlug && (
-              <a href={`/news/${post.articleSlug}`} target="_blank" rel="noreferrer"
-                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', textDecoration:'none' }}>
+              <a href={`/news/${post.articleSlug}`} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', textDecoration:'none' }}>
                 Source article ↗
               </a>
             )}
             {post.error && (
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#ef4444' }}>
-                Error: {post.error}
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#ef4444', flex:1 }}>
+                ✗ {post.error}
               </span>
             )}
-            {post.metrics?.impressions > 0 && (
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af' }}>
-                👁 {post.metrics.impressions} · ❤ {post.metrics.likes} · 🔁 {post.metrics.reposts}
-              </span>
+            {post.note && (
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280' }}>{post.note}</span>
             )}
-            <button
-              onClick={() => onDelete(post._id)}
-              style={{ marginLeft:'auto', background:'none', border:'1px solid #1f2428', color:'#4b5563', padding:'4px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', cursor:'pointer' }}
-            >
+            <button onClick={() => onDelete(post._id)} style={{ marginLeft:'auto', background:'none', border:'1px solid #1f2428', color:'#374151', padding:'3px 8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', cursor:'pointer', letterSpacing:'0.06em' }}>
               DELETE
             </button>
           </div>
@@ -165,272 +115,212 @@ function PostCard({ post, onDelete }) {
   )
 }
 
-// ── Manual Post Composer ──────────────────────────────────────────────────────
-function PostComposer({ adminKey, onPosted }) {
-  const [platforms, setPlatforms] = useState(['twitter'])
-  const [dryRun,    setDryRun]    = useState(false)
-  const [loading,   setLoading]   = useState(false)
-  const [result,    setResult]    = useState(null)
+function PostComposer({ adminKey, onPosted, activePlatforms }) {
+  const [selected, setSelected] = useState(activePlatforms?.length ? [activePlatforms[0]] : ['bluesky'])
+  const [dryRun,   setDryRun]   = useState(false)
+  const [loading,  setLoading]  = useState(false)
+  const [result,   setResult]   = useState(null)
 
-  async function firePost() {
-    setLoading(true)
-    setResult(null)
+  function toggle(pid) { setSelected(p => p.includes(pid) ? p.filter(x => x !== pid) : [...p, pid]) }
+
+  async function fire() {
+    setLoading(true); setResult(null)
     try {
-      const res = await fetch('/api/social/post', {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json', 'x-admin-key': adminKey },
-        body: JSON.stringify({ platforms, dryRun }),
-      })
+      const res  = await fetch('/api/social/post', { method:'POST', headers:{'Content-Type':'application/json','x-admin-key':adminKey}, body: JSON.stringify({ platforms: selected, dryRun }) })
       const data = await res.json()
       setResult(data)
       if (data.posted > 0) onPosted?.()
-    } catch (e) {
-      setResult({ ok: false, error: e.message })
-    }
+    } catch (e) { setResult({ ok:false, error:e.message }) }
     setLoading(false)
   }
 
-  function togglePlatform(pid) {
-    setPlatforms(prev => prev.includes(pid) ? prev.filter(p => p !== pid) : [...prev, pid])
-  }
-
   return (
-    <div style={{ background:'#111318', border:'1px solid #c8922a40', padding:'20px 24px' }}>
-      <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'16px', fontWeight:700, letterSpacing:'0.1em', color:'#c8922a', marginBottom:16 }}>
-        ⚡ FIRE NOW — POST TOP ARTICLES
-      </div>
-      <div style={{ fontSize:'13px', color:'#6b7280', marginBottom:16 }}>
-        Auto-picks the highest urgency unposted articles and generates platform-optimized copy.
-      </div>
-
-      {/* Platform toggles */}
-      <div style={{ display:'flex', flexWrap:'wrap', gap:8, marginBottom:16 }}>
-        {Object.entries(PLATFORMS).map(([pid, p]) => (
-          <button
-            key={pid}
-            onClick={() => togglePlatform(pid)}
-            style={{ background: platforms.includes(pid) ? p.color + '22' : 'transparent', border:`1px solid ${platforms.includes(pid) ? p.color : '#374151'}`, color: platforms.includes(pid) ? p.color : '#6b7280', padding:'6px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}
-          >
-            {p.icon} {p.label}
-          </button>
-        ))}
+    <div style={{ display:'flex', flexDirection:'column', gap:14 }}>
+      <div style={{ background:'#111318', border:'1px solid #c8922a30', padding:'18px 22px' }}>
+        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'15px', fontWeight:700, letterSpacing:'0.1em', color:'#c8922a', marginBottom:10 }}>
+          SELECT PLATFORMS
+        </div>
+        <div style={{ display:'flex', flexWrap:'wrap', gap:8 }}>
+          {Object.entries(PLATFORMS).map(([pid, p]) => (
+            <button key={pid} onClick={() => toggle(pid)}
+              style={{ display:'flex', alignItems:'center', gap:7, background: selected.includes(pid) ? p.color+'18' : 'transparent', border:`1px solid ${selected.includes(pid) ? p.color : '#1f2428'}`, color: selected.includes(pid) ? p.color : '#6b7280', padding:'7px 14px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', cursor:'pointer', transition:'all 0.15s' }}>
+              <span style={{ fontSize:'15px' }}>{p.icon}</span>
+              {p.label}
+              <CostBadge cost={p.cost} small />
+            </button>
+          ))}
+        </div>
       </div>
 
       <div style={{ display:'flex', alignItems:'center', gap:16 }}>
-        <label style={{ display:'flex', alignItems:'center', gap:8, fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#9ca3af', cursor:'pointer' }}>
-          <input type="checkbox" checked={dryRun} onChange={e => setDryRun(e.target.checked)} />
-          Dry run (generates copy, no actual posting)
+        <label style={{ display:'flex', alignItems:'center', gap:8, cursor:'pointer' }}>
+          <input type="checkbox" checked={dryRun} onChange={e => setDryRun(e.target.checked)} style={{ accentColor:'#c8922a' }} />
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280' }}>Dry run — generate copy only, no actual posting</span>
         </label>
-        <button
-          onClick={firePost}
-          disabled={loading || platforms.length === 0}
-          style={{ background: loading ? '#8a6320' : '#c8922a', color:'#000', border:'none', padding:'10px 28px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, letterSpacing:'0.1em', cursor: loading ? 'not-allowed' : 'pointer' }}
-        >
-          {loading ? 'POSTING...' : dryRun ? '👁 DRY RUN' : '🚀 POST NOW'}
+        <button onClick={fire} disabled={loading || !selected.length}
+          style={{ background: loading ? '#5a3d10' : '#c8922a', color:'#000', border:'none', padding:'10px 28px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, letterSpacing:'0.1em', cursor: loading ? 'not-allowed' : 'pointer' }}>
+          {loading ? 'GENERATING...' : dryRun ? '👁 PREVIEW COPY' : '🚀 POST NOW'}
         </button>
       </div>
 
       {result && (
-        <div style={{ marginTop:14, padding:'12px 16px', background: result.ok ? '#052e16' : '#2a0000', border:`1px solid ${result.ok ? '#34d39940' : '#ef444440'}`, fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color: result.ok ? '#34d399' : '#ef4444' }}>
-          {result.ok
-            ? `✓ ${result.dryRun ? 'Generated' : 'Posted'}: ${result.posted || result.total} posts across ${platforms.length} platform(s)`
-            : `✗ Error: ${result.error}`
-          }
-          {result.results?.map((r,i) => (
-            <div key={i} style={{ marginTop:6, color: r.status === 'posted' || r.status === 'draft' ? '#34d399' : '#ef4444' }}>
-              {PLATFORMS[r.platform]?.icon} {r.platform}: {r.status} — {r.title?.slice(0,50)}
-              {r.postUrl && <a href={r.postUrl} target="_blank" rel="noreferrer" style={{ color:'#60a5fa', marginLeft:8 }}>↗ view</a>}
-              {r.error && <span style={{ color:'#f87171', marginLeft:8 }}>{r.error}</span>}
-            </div>
-          ))}
+        <div style={{ padding:'12px 16px', background: result.ok ? '#0a1f0f' : '#1a0505', border:`1px solid ${result.ok ? '#34d39930' : '#ef444430'}`, fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>
+          <div style={{ color: result.ok ? '#34d399' : '#ef4444', fontWeight:700, marginBottom:6 }}>
+            {result.ok ? `✓ ${dryRun ? 'Previewed' : 'Posted'}: ${result.posted || result.total} items` : `✗ ${result.error}`}
+          </div>
+          {result.results?.map((r,i) => {
+            const pp = PLATFORMS[r.platform]
+            return (
+              <div key={i} style={{ display:'flex', alignItems:'center', gap:8, padding:'4px 0', borderTop:'1px solid #1f2428', color: r.status === 'posted' || r.status === 'draft' ? '#34d399' : '#ef4444' }}>
+                <span>{pp?.icon} {r.platform}</span>
+                <span style={{ color:'#4b5563' }}>·</span>
+                <span style={{ color:'#9ca3af', flex:1, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>{r.title?.slice(0,50)}</span>
+                <span style={{ color: r.status === 'posted' ? '#34d399' : r.status === 'draft' ? '#9ca3af' : '#ef4444', fontWeight:700 }}>{r.status.toUpperCase()}</span>
+                {r.postUrl && <a href={r.postUrl} target="_blank" rel="noreferrer" style={{ color:'#60a5fa', textDecoration:'none' }}>↗</a>}
+                {r.error && <span style={{ color:'#ef4444', fontSize:'10px' }}>{r.error.slice(0,60)}</span>}
+              </div>
+            )
+          })}
         </div>
       )}
     </div>
   )
 }
 
-// ── Config Panel ──────────────────────────────────────────────────────────────
-function ConfigPanel({ adminKey, config, configured, onSaved }) {
-  const [form, setForm]     = useState({
-    enabled:        config?.enabled || false,
-    postsPerDay:    config?.postsPerDay || 3,
-    postTimes:      (config?.postTimes || [13,18,23]).join(', '),
-    minUrgencyScore: config?.minUrgencyScore || 5,
-    platforms:      config?.platforms || ['twitter'],
+function SetupGuide() {
+  const [open, setOpen] = useState(null)
+  return (
+    <div>
+      <div style={{ background:'#0a1a08', border:'1px solid #34d39930', padding:'14px 18px', marginBottom:20 }}>
+        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'#34d399', letterSpacing:'0.1em', marginBottom:6 }}>
+          💡 TOTAL MONTHLY COST: ~$0
+        </div>
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.8 }}>
+          Bluesky → Direct AT Protocol, no fees<br/>
+          Facebook → Meta Graph API, free<br/>
+          Threads → Meta Graph API, free (one-time App Review)<br/>
+          X/Twitter → Via Buffer free tier (handles $0.20/tweet cost, 10 queued posts free)
+        </div>
+      </div>
+      {Object.entries(PLATFORMS).map(([pid, p]) => (
+        <div key={pid} style={{ marginBottom:8 }}>
+          <div
+            onClick={() => setOpen(open === pid ? null : pid)}
+            style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 16px', background:'#111318', border:`1px solid ${open === pid ? p.color+'40' : '#1f2428'}`, cursor:'pointer' }}
+          >
+            <span style={{ fontSize:'18px' }}>{p.icon}</span>
+            <div style={{ flex:1 }}>
+              <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color: open === pid ? p.color : '#e5e5e5', letterSpacing:'0.06em' }}>{p.label}</span>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', marginLeft:10 }}>{p.costNote}</span>
+            </div>
+            <CostBadge cost={p.cost} small />
+            <a href={p.setupUrl} target="_blank" rel="noreferrer" onClick={e => e.stopPropagation()} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#c8922a', textDecoration:'none' }}>portal ↗</a>
+            <span style={{ color:'#4b5563', fontSize:'11px' }}>{open === pid ? '▲' : '▼'}</span>
+          </div>
+          {open === pid && (
+            <div style={{ background:'#0d1117', border:`1px solid ${p.color}20`, borderTop:'none', padding:'16px 18px' }}>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', marginBottom:12 }}>Step-by-step setup:</div>
+              {p.setupSteps.map((step, i) => (
+                <div key={i} style={{ display:'flex', gap:10, marginBottom:8 }}>
+                  <span style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'14px', color: p.color, flexShrink:0, width:18, textAlign:'right' }}>{i+1}</span>
+                  <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', lineHeight:1.6 }}>{step}</span>
+                </div>
+              ))}
+              <div style={{ marginTop:14, background:'#111318', padding:'10px 14px', borderLeft:`3px solid ${p.color}` }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', letterSpacing:'0.08em', marginBottom:4 }}>VERCEL ENV VARS NEEDED:</div>
+                <div style={{ display:'flex', flexWrap:'wrap', gap:6 }}>
+                  {p.envKeys.map(k => (
+                    <code key={k} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#c8922a', background:'#09090b', padding:'2px 8px', border:'1px solid #1f2428' }}>{k}</code>
+                  ))}
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
+      ))}
+    </div>
+  )
+}
+
+function ScheduleConfig({ adminKey, config, configured, onSaved }) {
+  const [form, setForm] = useState({
+    enabled:         config?.enabled || false,
+    postsPerDay:     config?.postsPerDay || 2,
+    postTimes:       (config?.postTimes || [13,23]).join(', '),
+    minUrgencyScore: config?.minUrgencyScore || 6,
+    platforms:       config?.platforms || ['bluesky'],
   })
   const [saving, setSaving] = useState(false)
   const [msg,    setMsg]    = useState('')
 
+  function toggle(pid) { setForm(f => ({ ...f, platforms: f.platforms.includes(pid) ? f.platforms.filter(p => p !== pid) : [...f.platforms, pid] })) }
+
   async function save() {
     setSaving(true)
     try {
-      const res = await fetch('/api/social/config', {
-        method: 'POST',
-        headers: { 'Content-Type':'application/json', 'x-admin-key': adminKey },
-        body: JSON.stringify({
-          ...form,
-          postTimes: form.postTimes.split(',').map(t => parseInt(t.trim())).filter(Boolean),
-        }),
-      })
+      const res  = await fetch('/api/social/config', { method:'POST', headers:{'Content-Type':'application/json','x-admin-key':adminKey}, body: JSON.stringify({ ...form, postTimes: form.postTimes.split(',').map(t => parseInt(t.trim())).filter(Boolean) }) })
       const data = await res.json()
-      setMsg(data.ok ? '✓ Config saved' : `✗ ${data.error}`)
+      setMsg(data.ok ? '✓ Saved' : `✗ ${data.error}`)
       onSaved?.()
-    } catch (e) {
-      setMsg(`✗ ${e.message}`)
-    }
-    setSaving(false)
-    setTimeout(() => setMsg(''), 3000)
-  }
-
-  function togglePlatform(pid) {
-    setForm(f => ({
-      ...f,
-      platforms: f.platforms.includes(pid) ? f.platforms.filter(p => p !== pid) : [...f.platforms, pid]
-    }))
-  }
-
-  const F = {
-    label: (text) => (
-      <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6b7280', letterSpacing:'0.1em', marginBottom:5 }}>{text}</div>
-    ),
-    input: (key, type = 'text') => (
-      <input
-        type={type}
-        value={form[key]}
-        onChange={e => setForm(f => ({ ...f, [key]: type === 'number' ? Number(e.target.value) : e.target.value }))}
-        style={{ background:'#09090b', border:'1px solid #1f2428', color:'#e5e5e5', padding:'8px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', width:'100%', outline:'none', boxSizing:'border-box' }}
-      />
-    ),
+    } catch (e) { setMsg(`✗ ${e.message}`) }
+    setSaving(false); setTimeout(() => setMsg(''), 3000)
   }
 
   return (
-    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:20 }}>
+    <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:24 }}>
       <div>
-        <div className="panel-title" style={{ marginBottom:16 }}>Auto-Post Schedule</div>
+        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'#c8922a', letterSpacing:'0.1em', marginBottom:14 }}>AUTO-POST SCHEDULE</div>
 
-        <div style={{ marginBottom:14 }}>
-          {F.label('MASTER SWITCH')}
-          <label style={{ display:'flex', alignItems:'center', gap:10, cursor:'pointer' }}>
-            <div
-              onClick={() => setForm(f => ({ ...f, enabled: !f.enabled }))}
-              style={{ width:48, height:26, borderRadius:13, background: form.enabled ? '#c8922a' : '#1f2428', position:'relative', cursor:'pointer', transition:'background 0.2s', flexShrink:0 }}>
-              <div style={{ position:'absolute', top:3, left: form.enabled ? '25px' : '3px', width:20, height:20, borderRadius:'50%', background:'#fff', transition:'left 0.2s' }} />
+        <div style={{ marginBottom:16 }}>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6b7280', marginBottom:6 }}>MASTER SWITCH</div>
+          <div onClick={() => setForm(f => ({...f, enabled:!f.enabled}))} style={{ display:'inline-flex', alignItems:'center', gap:10, cursor:'pointer' }}>
+            <div style={{ width:44, height:24, borderRadius:12, background: form.enabled ? '#c8922a' : '#1f2428', position:'relative', transition:'background 0.2s' }}>
+              <div style={{ position:'absolute', top:3, left: form.enabled ? '23px' : '3px', width:18, height:18, borderRadius:'50%', background:'#fff', transition:'left 0.2s' }} />
             </div>
-            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color: form.enabled ? '#c8922a' : '#6b7280' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color: form.enabled ? '#c8922a' : '#4b5563' }}>
               {form.enabled ? 'AUTO-POSTING ENABLED' : 'AUTO-POSTING DISABLED'}
             </span>
-          </label>
-        </div>
-
-        <div style={{ marginBottom:14 }}>
-          {F.label('POSTS PER DAY (per platform)')}
-          {F.input('postsPerDay', 'number')}
-        </div>
-
-        <div style={{ marginBottom:14 }}>
-          {F.label('POST TIMES (UTC hours, comma-separated)')}
-          {F.input('postTimes')}
-          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', marginTop:4 }}>
-            e.g. 13, 18, 23 = 9am ET, 2pm ET, 7pm ET
           </div>
         </div>
 
-        <div style={{ marginBottom:14 }}>
-          {F.label('MIN URGENCY SCORE TO AUTO-POST (1-10)')}
-          {F.input('minUrgencyScore', 'number')}
-        </div>
+        {[
+          { key:'postsPerDay', label:'POSTS PER DAY (per platform)', type:'number' },
+          { key:'postTimes',   label:'POST TIMES UTC (comma-sep, e.g. 13, 23)', type:'text', hint:'13 UTC = 9am ET · 23 UTC = 7pm ET' },
+          { key:'minUrgencyScore', label:'MIN URGENCY TO POST (1-10)', type:'number' },
+        ].map(f => (
+          <div key={f.key} style={{ marginBottom:14 }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6b7280', marginBottom:5 }}>{f.label}</div>
+            <input type={f.type} value={form[f.key]}
+              onChange={e => setForm(p => ({...p, [f.key]: f.type==='number' ? Number(e.target.value) : e.target.value}))}
+              style={{ background:'#09090b', border:'1px solid #1f2428', color:'#e5e5e5', padding:'7px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', width:'100%', outline:'none', boxSizing:'border-box' }} />
+            {f.hint && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', marginTop:3 }}>{f.hint}</div>}
+          </div>
+        ))}
       </div>
 
       <div>
-        <div className="panel-title" style={{ marginBottom:16 }}>Active Platforms</div>
-        <div style={{ display:'flex', flexDirection:'column', gap:10, marginBottom:20 }}>
+        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'#c8922a', letterSpacing:'0.1em', marginBottom:14 }}>ACTIVE PLATFORMS</div>
+        <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
           {Object.entries(PLATFORMS).map(([pid, p]) => (
-            <div
-              key={pid}
-              onClick={() => togglePlatform(pid)}
-              style={{ display:'flex', alignItems:'center', gap:12, padding:'12px 16px', background: form.platforms.includes(pid) ? p.color + '11' : '#0d1117', border:`1px solid ${form.platforms.includes(pid) ? p.color + '60' : '#1f2428'}`, cursor:'pointer' }}
-            >
-              <span style={{ fontSize:'18px' }}>{p.icon}</span>
-              <span style={{ flex:1, fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color: form.platforms.includes(pid) ? p.color : '#6b7280' }}>{p.label}</span>
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: configured[pid] ? '#34d399' : '#4b5563' }}>
-                {configured[pid] ? '✓ READY' : '✗ NEEDS KEYS'}
-              </span>
-              <div style={{ width:16, height:16, borderRadius:'50%', background: form.platforms.includes(pid) ? p.color : 'transparent', border:`2px solid ${form.platforms.includes(pid) ? p.color : '#374151'}` }} />
+            <div key={pid} onClick={() => toggle(pid)}
+              style={{ display:'flex', alignItems:'center', gap:10, padding:'10px 14px', background: form.platforms.includes(pid) ? p.color+'10' : '#0d1117', border:`1px solid ${form.platforms.includes(pid) ? p.color+'50' : '#1f2428'}`, cursor:'pointer' }}>
+              <span style={{ fontSize:'16px' }}>{p.icon}</span>
+              <span style={{ flex:1, fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, color: form.platforms.includes(pid) ? p.color : '#4b5563', letterSpacing:'0.06em' }}>{p.label}</span>
+              <CostBadge cost={p.cost} small />
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color: configured[pid] ? '#34d399' : '#4b5563' }}>{configured[pid] ? '✓ READY' : '✗ NEEDS KEYS'}</span>
+              <div style={{ width:14, height:14, borderRadius:'50%', background: form.platforms.includes(pid) ? p.color : 'transparent', border:`2px solid ${form.platforms.includes(pid) ? p.color : '#374151'}` }} />
             </div>
           ))}
         </div>
       </div>
 
-      <div style={{ gridColumn:'1/-1', display:'flex', alignItems:'center', gap:16 }}>
-        <button
-          onClick={save}
-          disabled={saving}
-          style={{ background:'#c8922a', color:'#000', border:'none', padding:'10px 28px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, letterSpacing:'0.1em', cursor: saving ? 'not-allowed' : 'pointer' }}
-        >
-          {saving ? 'SAVING...' : '💾 SAVE CONFIG'}
+      <div style={{ gridColumn:'1/-1', display:'flex', alignItems:'center', gap:14 }}>
+        <button onClick={save} disabled={saving}
+          style={{ background:'#c8922a', color:'#000', border:'none', padding:'10px 24px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', cursor: saving ? 'not-allowed' : 'pointer' }}>
+          {saving ? 'SAVING...' : 'SAVE CONFIG'}
         </button>
-        {msg && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color: msg.startsWith('✓') ? '#34d399' : '#ef4444' }}>{msg}</span>}
+        {msg && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color: msg.startsWith('✓') ? '#34d399' : '#ef4444' }}>{msg}</span>}
       </div>
-    </div>
-  )
-}
-
-// ── API Keys Setup Panel ──────────────────────────────────────────────────────
-function ApiKeysPanel() {
-  const rows = [
-    { platform:'twitter',   keys: [
-      { var:'TWITTER_API_KEY',              label:'API Key',              hint:'From Twitter Developer Portal → App → Keys and Tokens' },
-      { var:'TWITTER_API_SECRET',           label:'API Key Secret',       hint:'From Twitter Developer Portal → App → Keys and Tokens' },
-      { var:'TWITTER_ACCESS_TOKEN',         label:'Access Token',         hint:'From Twitter Developer Portal → App → Keys and Tokens (User Auth)' },
-      { var:'TWITTER_ACCESS_TOKEN_SECRET',  label:'Access Token Secret',  hint:'From Twitter Developer Portal → App → Keys and Tokens (User Auth)' },
-      { var:'TWITTER_HANDLE',               label:'Handle (no @)',         hint:'e.g. DownRangeCo' },
-    ]},
-    { platform:'facebook',  keys: [
-      { var:'FACEBOOK_PAGE_ACCESS_TOKEN', label:'Page Access Token',   hint:'Meta for Developers → Graph API Explorer → Generate Page Token' },
-      { var:'FACEBOOK_PAGE_ID',           label:'Page ID',             hint:'Facebook Page → About → Page ID' },
-    ]},
-    { platform:'threads',   keys: [
-      { var:'THREADS_ACCESS_TOKEN', label:'Access Token',  hint:'Same as Instagram/Meta. Meta for Developers → Threads API' },
-      { var:'THREADS_USER_ID',      label:'User ID',       hint:'From Threads API auth response' },
-      { var:'THREADS_HANDLE',       label:'Handle (no @)', hint:'e.g. downrangeco' },
-    ]},
-    { platform:'bluesky',   keys: [
-      { var:'BLUESKY_HANDLE',        label:'Handle',           hint:'e.g. downrangeco.bsky.social' },
-      { var:'BLUESKY_APP_PASSWORD',  label:'App Password',     hint:'Bluesky Settings → Privacy and Security → App Passwords → Add App Password' },
-    ]},
-  ]
-
-  return (
-    <div>
-      <div style={{ background:'#0c1a2e', border:'1px solid #1e3a5f', padding:'14px 18px', marginBottom:20 }}>
-        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', fontWeight:700, marginBottom:6 }}>HOW TO ADD API KEYS</div>
-        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.8 }}>
-          Go to <strong style={{color:'#9ca3af'}}>Vercel → your project → Settings → Environment Variables</strong> and add each key below. After adding, redeploy for changes to take effect. Never paste secrets in Sanity or this UI.
-        </div>
-      </div>
-      {rows.map(({ platform, keys }) => {
-        const p = PLATFORMS[platform]
-        return (
-          <div key={platform} style={{ marginBottom:20 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:10 }}>
-              <span style={{ fontSize:'16px' }}>{p.icon}</span>
-              <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'15px', fontWeight:700, color: p.color, letterSpacing:'0.08em' }}>{p.label}</span>
-              <a href={p.setupUrl} target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#c8922a', marginLeft:'auto' }}>Developer portal ↗</a>
-            </div>
-            <div style={{ display:'flex', flexDirection:'column', gap:4 }}>
-              {keys.map(k => (
-                <div key={k.var} style={{ display:'grid', gridTemplateColumns:'260px 1fr', gap:12, padding:'8px 12px', background:'#0d1117', border:'1px solid #1f2428', alignItems:'start' }}>
-                  <div>
-                    <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#c8922a', fontWeight:700 }}>{k.var}</code>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', marginTop:2 }}>{k.label}</div>
-                  </div>
-                  <div style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#6b7280', lineHeight:1.5 }}>{k.hint}</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )
-      })}
     </div>
   )
 }
@@ -443,20 +333,19 @@ export default function SocialMediaManager({ adminKey }) {
   const [config,     setConfig]     = useState({})
   const [configured, setConfigured] = useState({})
   const [loading,    setLoading]    = useState(true)
-  const [filterPlatform, setFilterPlatform] = useState('')
-  const [filterStatus,   setFilterStatus]   = useState('')
+  const [filterPlatform, setFP]     = useState('')
+  const [filterStatus,   setFS]     = useState('')
 
   const load = useCallback(async () => {
     setLoading(true)
     try {
       const [logRes, cfgRes] = await Promise.all([
-        fetch(`/api/social/log?limit=200${filterPlatform ? `&platform=${filterPlatform}` : ''}${filterStatus ? `&status=${filterStatus}` : ''}`, { headers:{'x-admin-key':adminKey} }),
+        fetch(`/api/social/log?limit=200${filterPlatform?`&platform=${filterPlatform}`:''}${filterStatus?`&status=${filterStatus}`:''}`, { headers:{'x-admin-key':adminKey} }),
         fetch('/api/social/config', { headers:{'x-admin-key':adminKey} }),
       ])
-      const logData = await logRes.json()
-      const cfgData = await cfgRes.json()
-      if (logData.ok) { setPosts(logData.posts || []); setStats(logData.stats || {}) }
-      if (cfgData.ok) { setConfig(cfgData.config || {}); setConfigured(cfgData.configured || {}) }
+      const logD = await logRes.json(); const cfgD = await cfgRes.json()
+      if (logD.ok) { setPosts(logD.posts||[]); setStats(logD.stats||{}) }
+      if (cfgD.ok) { setConfig(cfgD.config||{}); setConfigured(cfgD.configured||{}) }
     } catch {}
     setLoading(false)
   }, [adminKey, filterPlatform, filterStatus])
@@ -464,189 +353,122 @@ export default function SocialMediaManager({ adminKey }) {
   useEffect(() => { load() }, [load])
 
   async function deletePost(id) {
-    await fetch('/api/social/log', { method:'DELETE', headers:{'Content-Type':'application/json','x-admin-key':adminKey}, body: JSON.stringify({id}) })
-    setPosts(prev => prev.filter(p => p._id !== id))
-    setStats(s => ({ ...s, total: s.total - 1 }))
+    await fetch('/api/social/log', { method:'DELETE', headers:{'Content-Type':'application/json','x-admin-key':adminKey}, body:JSON.stringify({id}) })
+    setPosts(p => p.filter(x => x._id !== id))
   }
 
   const TABS = [
     { id:'dashboard', label:'📊 Dashboard' },
-    { id:'compose',   label:'⚡ Fire Posts' },
-    { id:'log',       label:'📋 Post Log' },
-    { id:'config',    label:'⚙ Schedule' },
-    { id:'platforms', label:'🔗 Platforms' },
-    { id:'keys',      label:'🔑 API Keys' },
+    { id:'compose',   label:'⚡ Post Now' },
+    { id:'log',       label:'📋 Log' },
+    { id:'schedule',  label:'⏱ Schedule' },
+    { id:'setup',     label:'🔧 Setup Guide' },
   ]
+
+  const configuredCount = Object.values(configured).filter(Boolean).length
+  const activePlatforms = config.platforms || []
 
   return (
     <div>
       <style>{`
-        .soc-tab { display:inline-flex; align-items:center; gap:6px; padding:8px 16px; cursor:pointer; font-family:'IBM Plex Mono',monospace; font-size:12px; letter-spacing:0.05em; border:none; background:none; color:#6b7280; border-bottom:2px solid transparent; transition:all 0.15s; }
-        .soc-tab:hover { color:#e5e5e5; }
-        .soc-tab.active { color:#c8922a; border-bottom-color:#c8922a; }
-        .panel-title { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; letter-spacing:0.1em; color:#c8922a; text-transform:uppercase; }
+        .soc-tab{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;border:none;background:none;color:#4b5563;border-bottom:2px solid transparent;transition:all 0.15s;}
+        .soc-tab:hover{color:#e5e5e5;}
+        .soc-tab.active{color:#c8922a;border-bottom-color:#c8922a;}
       `}</style>
 
       {/* Header */}
-      <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16 }}>
+      <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:18 }}>
         <div>
-          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'2rem', color:'#e5e5e5', letterSpacing:'0.05em' }}>SOCIAL MEDIA COMMAND</div>
-          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4b5563' }}>
-            Auto-post · Multi-platform · AI-generated copy · Full audit log
+          <div style={{ fontFamily:"'Bebas Neue',sans-serif", fontSize:'1.8rem', color:'#e5e5e5', letterSpacing:'0.05em', lineHeight:1.1 }}>SOCIAL MEDIA COMMAND</div>
+          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4b5563', marginTop:3 }}>
+            {configuredCount}/{Object.keys(PLATFORMS).length} platforms configured · {config.enabled ? <span style={{color:'#34d399'}}>AUTO-POSTING ON</span> : <span style={{color:'#4b5563'}}>auto-posting off</span>}
           </div>
         </div>
-        <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-          <div style={{ width:10, height:10, borderRadius:'50%', background: config.enabled ? '#34d399' : '#4b5563', boxShadow: config.enabled ? '0 0 8px #34d399' : 'none' }} />
-          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color: config.enabled ? '#34d399' : '#4b5563' }}>
-            {config.enabled ? 'AUTO-POSTING ON' : 'AUTO-POSTING OFF'}
-          </span>
-          <button onClick={load} style={{ background:'none', border:'1px solid #1f2428', color:'#6b7280', padding:'5px 10px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px' }}>
-            ↻ REFRESH
-          </button>
+        <div style={{ display:'flex', gap:8, alignItems:'center' }}>
+          <div style={{ background:'#0a1a08', border:'1px solid #34d39930', padding:'5px 14px' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#34d399', fontWeight:700 }}>$0/month</span>
+          </div>
+          <button onClick={load} style={{ background:'none', border:'1px solid #1f2428', color:'#4b5563', padding:'5px 10px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', letterSpacing:'0.05em' }}>↻ REFRESH</button>
         </div>
       </div>
 
       {/* Tabs */}
       <div style={{ borderBottom:'1px solid #1f2428', marginBottom:20 }}>
-        {TABS.map(t => (
-          <button key={t.id} className={`soc-tab${tab===t.id?' active':''}`} onClick={() => setTab(t.id)}>
-            {t.label}
-          </button>
-        ))}
+        {TABS.map(t => <button key={t.id} className={`soc-tab${tab===t.id?' active':''}`} onClick={() => setTab(t.id)}>{t.label}</button>)}
       </div>
 
-      {loading && tab === 'dashboard' && (
-        <div style={{ textAlign:'center', padding:'40px', color:'#4b5563', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>Loading...</div>
-      )}
-
       {/* ── DASHBOARD ── */}
-      {tab === 'dashboard' && !loading && (
+      {tab === 'dashboard' && (
         <div>
-          <StatsRow stats={stats} />
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:8, marginBottom:20 }}>
+            <StatCard label="TOTAL" value={stats.total} />
+            <StatCard label="POSTED" value={stats.posted} color="#34d399" />
+            <StatCard label="FAILED" value={stats.failed} color="#ef4444" />
+            <StatCard label="DRAFTS" value={stats.drafts} color="#9ca3af" />
+            <StatCard label="TODAY" value={stats.today} color="#c8922a" />
+            <StatCard label="THIS WEEK" value={stats.thisWeek} color="#60a5fa" />
+          </div>
 
-          {/* Platform status grid */}
-          <div style={{ marginBottom:24 }}>
-            <div className="panel-title" style={{ marginBottom:12 }}>Platform Status</div>
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:8 }}>
-              {Object.keys(PLATFORMS).map(pid => (
-                <PlatformCard
-                  key={pid} pid={pid}
-                  configured={configured[pid]}
-                  enabled={config.platforms?.includes(pid)}
-                  onToggle={(p) => {
-                    const next = config.platforms?.includes(p)
-                      ? config.platforms.filter(x => x !== p)
-                      : [...(config.platforms || []), p]
-                    setConfig(c => ({ ...c, platforms: next }))
-                  }}
-                />
-              ))}
+          <div style={{ marginBottom:20 }}>
+            <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', color:'#6b7280', marginBottom:10 }}>PLATFORM STATUS</div>
+            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:6 }}>
+              {Object.keys(PLATFORMS).map(pid => <PlatformStatusRow key={pid} pid={pid} configured={configured[pid]} isActive={activePlatforms.includes(pid)} />)}
             </div>
           </div>
 
-          {/* Recent posts */}
-          <div>
-            <div className="panel-title" style={{ marginBottom:12 }}>Recent Posts</div>
-            {posts.slice(0,10).map(p => <PostCard key={p._id} post={p} onDelete={deletePost} />)}
-            {posts.length === 0 && (
-              <div style={{ textAlign:'center', padding:'32px', color:'#4b5563', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', border:'1px solid #1f2428' }}>
-                No posts yet. Use the Fire Posts tab to start posting.
-              </div>
-            )}
-            {posts.length > 10 && (
-              <button onClick={() => setTab('log')} style={{ width:'100%', background:'none', border:'1px solid #1f2428', color:'#6b7280', padding:'10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer', marginTop:4 }}>
-                VIEW ALL {posts.length} POSTS IN LOG →
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-
-      {/* ── COMPOSE / FIRE ── */}
-      {tab === 'compose' && (
-        <div>
-          <PostComposer adminKey={adminKey} onPosted={load} />
-          <div style={{ marginTop:20, padding:'16px 20px', background:'#111318', border:'1px solid #1f2428' }}>
-            <div className="panel-title" style={{ marginBottom:10 }}>HOW IT WORKS</div>
-            <div style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6b7280', lineHeight:1.8 }}>
-              1. Fetches your top unposted articles ranked by urgency score (highest first)<br/>
-              2. AI generates platform-optimized copy for each platform (different tone per platform)<br/>
-              3. Appends the article URL + relevant 2A hashtags<br/>
-              4. Posts live and logs everything in the Post Log with direct links<br/>
-              5. Dry run mode generates the copy but does not post — use it to preview
+          {posts.length > 0 && (
+            <div>
+              <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', color:'#6b7280', marginBottom:10 }}>RECENT POSTS</div>
+              {posts.slice(0,8).map(p => <PostCard key={p._id} post={p} onDelete={deletePost} />)}
+              {posts.length > 8 && <button onClick={() => setTab('log')} style={{ width:'100%', background:'none', border:'1px solid #1f2428', color:'#4b5563', padding:'8px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', cursor:'pointer', marginTop:4 }}>VIEW ALL {posts.length} IN LOG →</button>}
             </div>
-          </div>
-        </div>
-      )}
-
-      {/* ── POST LOG ── */}
-      {tab === 'log' && (
-        <div>
-          {/* Filters */}
-          <div style={{ display:'flex', gap:8, marginBottom:16, flexWrap:'wrap' }}>
-            <select
-              value={filterPlatform}
-              onChange={e => setFilterPlatform(e.target.value)}
-              style={{ background:'#09090b', border:'1px solid #1f2428', color:'#9ca3af', padding:'7px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}
-            >
-              <option value="">All platforms</option>
-              {Object.entries(PLATFORMS).map(([pid, p]) => <option key={pid} value={pid}>{p.icon} {p.label}</option>)}
-            </select>
-            <select
-              value={filterStatus}
-              onChange={e => setFilterStatus(e.target.value)}
-              style={{ background:'#09090b', border:'1px solid #1f2428', color:'#9ca3af', padding:'7px 12px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}
-            >
-              <option value="">All statuses</option>
-              {Object.keys(STATUS_STYLE).map(s => <option key={s} value={s}>{s.toUpperCase()}</option>)}
-            </select>
-            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4b5563', padding:'7px 0' }}>
-              {posts.length} entries
-            </span>
-          </div>
-
-          {posts.map(p => <PostCard key={p._id} post={p} onDelete={deletePost} />)}
-          {posts.length === 0 && (
-            <div style={{ textAlign:'center', padding:'48px', color:'#4b5563', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>
-              No posts match the current filters.
+          )}
+          {posts.length === 0 && !loading && (
+            <div style={{ textAlign:'center', padding:'40px', border:'1px solid #1f2428', color:'#374151', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px' }}>
+              No posts yet. Go to <strong style={{color:'#c8922a'}}>Setup Guide</strong> to connect platforms, then <strong style={{color:'#c8922a'}}>Post Now</strong> to fire your first posts.
             </div>
           )}
         </div>
       )}
 
-      {/* ── SCHEDULE CONFIG ── */}
-      {tab === 'config' && (
-        <ConfigPanel adminKey={adminKey} config={config} configured={configured} onSaved={load} />
-      )}
-
-      {/* ── PLATFORM STATUS ── */}
-      {tab === 'platforms' && (
+      {/* ── COMPOSE ── */}
+      {tab === 'compose' && (
         <div>
-          <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
-            {Object.keys(PLATFORMS).map(pid => (
-              <PlatformCard
-                key={pid} pid={pid}
-                configured={configured[pid]}
-                enabled={config.platforms?.includes(pid)}
-                onToggle={() => {}}
-              />
-            ))}
-          </div>
-          <div style={{ marginTop:20, padding:'14px 18px', background:'#0c1a2e', border:'1px solid #1e3a5f' }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60a5fa', marginBottom:6 }}>
-              ADDING A NEW PLATFORM
-            </div>
+          <div style={{ marginBottom:16, padding:'12px 16px', background:'#111318', border:'1px solid #1f2428' }}>
             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.8 }}>
-              1. Get API credentials from the platform developer portal (link on each card above)<br/>
-              2. Add the environment variables to Vercel → Settings → Environment Variables<br/>
-              3. Redeploy — the platform card will show ✓ READY and you can activate it in Schedule settings
+              Picks your top unposted articles by urgency score · AI writes platform-specific copy (different tone per platform) · Appends article URL + 2A hashtags · Logs everything with live post links
             </div>
           </div>
+          <PostComposer adminKey={adminKey} onPosted={load} activePlatforms={activePlatforms.filter(p => configured[p])} />
         </div>
       )}
 
-      {/* ── API KEYS GUIDE ── */}
-      {tab === 'keys' && <ApiKeysPanel />}
+      {/* ── LOG ── */}
+      {tab === 'log' && (
+        <div>
+          <div style={{ display:'flex', gap:8, marginBottom:14, flexWrap:'wrap', alignItems:'center' }}>
+            <select value={filterPlatform} onChange={e => setFP(e.target.value)}
+              style={{ background:'#09090b', border:'1px solid #1f2428', color:'#9ca3af', padding:'6px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}>
+              <option value="">All platforms</option>
+              {Object.entries(PLATFORMS).map(([pid,p]) => <option key={pid} value={pid}>{p.icon} {p.label}</option>)}
+            </select>
+            <select value={filterStatus} onChange={e => setFS(e.target.value)}
+              style={{ background:'#09090b', border:'1px solid #1f2428', color:'#9ca3af', padding:'6px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', cursor:'pointer' }}>
+              <option value="">All statuses</option>
+              {Object.keys(STATUS_STYLE).map(s => <option key={s} value={s}>{s.toUpperCase()}</option>)}
+            </select>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151' }}>{posts.length} entries</span>
+          </div>
+          {posts.map(p => <PostCard key={p._id} post={p} onDelete={deletePost} />)}
+          {posts.length === 0 && <div style={{ textAlign:'center', padding:'40px', color:'#374151', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>No posts match filters.</div>}
+        </div>
+      )}
+
+      {/* ── SCHEDULE ── */}
+      {tab === 'schedule' && <ScheduleConfig adminKey={adminKey} config={config} configured={configured} onSaved={load} />}
+
+      {/* ── SETUP GUIDE ── */}
+      {tab === 'setup' && <SetupGuide />}
     </div>
   )
 }
