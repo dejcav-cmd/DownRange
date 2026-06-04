@@ -1,0 +1,50 @@
+name: Debug News Feed
+on:
+  workflow_dispatch:
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check Sanity state
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+        run: |
+          python3 - << PYEOF2
+
+import urllib.request, urllib.parse, json, os, subprocess, sys
+
+T = os.environ["SANITY_TOKEN"]
+P = "vbnsqnkg"
+H = {"Authorization": "Bearer " + T}
+AK = os.environ.get("ADMIN_KEY","")
+
+def q(query):
+    url = "https://" + P + ".api.sanity.io/v2024-01-01/data/query/production?query=" + urllib.parse.quote(query) + "&returnQuery=false"
+    r = urllib.request.urlopen(urllib.request.Request(url, headers=H))
+    return json.loads(r.read())["result"]
+
+print("=== Article counts ===")
+total = q('count(*[_type == "newsArticle"])')
+recent = q('count(*[_type == "newsArticle" && _createdAt > "2025-06-01"])')
+with_slug = q('count(*[_type == "newsArticle" && defined(slug.current)])')
+no_slug = q('count(*[_type == "newsArticle" && !defined(slug.current)])')
+print("Total articles:", total)
+print("Created after June 2025:", recent)
+print("With slug:", with_slug)
+print("Without slug:", no_slug)
+
+print("")
+print("=== Latest 5 articles ===")
+latest = q('*[_type == "newsArticle"] | order(_createdAt desc)[0...5]{title, _createdAt, "slug": slug.current, publishedAt}')
+for a in latest:
+    print(" ", a.get("_createdAt","?")[:16], "|", str(a.get("slug","NO SLUG"))[:30].ljust(30), "|", a.get("title","?")[:60])
+
+print("")
+print("=== Dedup query sample (first 3 of default 100 limit) ===")
+sample = q('*[_type == "newsArticle"][0...3]{"u": externalUrl, "t": title}')
+for s in sample:
+    print("  url:", str(s.get("u",""))[:60])
+    print("  title:", str(s.get("t",""))[:60])
+
+          PYEOF2
