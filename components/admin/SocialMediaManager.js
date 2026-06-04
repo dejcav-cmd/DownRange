@@ -6,7 +6,16 @@ const PLATFORMS = {
   bluesky:  { label:'Bluesky',   icon:'🦋', color:'#0085FF', cost:'FREE',  costNote:'Direct AT Protocol. No API fees ever.', envKeys:['BLUESKY_HANDLE','BLUESKY_APP_PASSWORD'],     setupUrl:'https://bsky.app', setupSteps:['Create @downrangeco.bsky.social account','Settings → Privacy and Security → App Passwords → Add App Password','Name it "DownRange" and copy the password','Add BLUESKY_HANDLE (e.g. downrangeco.bsky.social) to Vercel','Add BLUESKY_APP_PASSWORD to Vercel → redeploy'] },
   threads:  { label:'Threads',   icon:'@',  color:'#111111', cost:'FREE',  costNote:'Meta Graph API. One-time App Review, then free forever.', envKeys:['THREADS_ACCESS_TOKEN','THREADS_USER_ID'],       setupUrl:'https://developers.facebook.com/docs/threads', setupSteps:['Create @downrangeco Threads account','Go to developers.facebook.com → Create App → Consumer type','Add "Threads API" product','Submit App Review (usually 1-3 days)','Generate User Access Token → add THREADS_ACCESS_TOKEN to Vercel','Add THREADS_USER_ID to Vercel → redeploy'] },
   facebook: { label:'Facebook',  icon:'f',  color:'#1877F2', cost:'FREE',  costNote:'Meta Graph API. Create a Page and generate a Page Access Token.', envKeys:['FACEBOOK_PAGE_ACCESS_TOKEN','FACEBOOK_PAGE_ID'], setupUrl:'https://developers.facebook.com', setupSteps:['Create DownRange Co. Facebook Page','Go to developers.facebook.com → Graph API Explorer','Select your app, select page, generate Page Access Token','Copy Page ID from Page About section','Add FACEBOOK_PAGE_ACCESS_TOKEN to Vercel','Add FACEBOOK_PAGE_ID to Vercel → redeploy'] },
-  twitter:  { label:'X/Twitter', icon:'𝕏',  color:'#E5E5E5', cost:'~$0/mo',costNote:'Post via Buffer free tier. Buffer absorbs the $0.20/URL-tweet X API cost. Free up to 10 queued posts.', envKeys:['BUFFER_ACCESS_TOKEN','BUFFER_TWITTER_PROFILE_ID'], setupUrl:'https://buffer.com', setupSteps:['Create free Buffer account at buffer.com','Connect your X/Twitter account in Buffer','Go to Buffer → Settings → Apps & Integrations → Access Token → copy it','For Profile ID: connect Twitter in Buffer, then check the URL on your Twitter channel page — it ends in the profile ID','Add BUFFER_ACCESS_TOKEN to Vercel','Add BUFFER_TWITTER_PROFILE_ID to Vercel → redeploy'] },
+  twitter:  { label:'X/Twitter', icon:'𝕏',  color:'#6b7280', cost:'PENDING', costNote:'Requires a Buffer Developer App. Free to create but needs setup first.', envKeys:['BUFFER_ACCESS_TOKEN','BUFFER_TWITTER_PROFILE_ID'], setupUrl:'https://buffer.com/developers/apps/create', setupSteps:[
+    '1. Go to buffer.com/developers/apps/create and create an app',
+    '2. Fill in any name (e.g. "DownRange") and callback URL (https://downrangeco.com)',
+    '3. After creating, Buffer shows your Access Token on the app page — copy it',
+    '4. Open in browser: https://api.bufferapp.com/1/profiles.json?access_token=YOUR_TOKEN',
+    '5. Find the "id" field for your X/Twitter profile in that JSON',
+    '6. Add BUFFER_ACCESS_TOKEN to Vercel env vars',
+    '7. Add BUFFER_TWITTER_PROFILE_ID to Vercel env vars → redeploy',
+    'Note: Buffer free tier allows 10 queued posts per channel. They absorb the $0.20/tweet X API cost.',
+  ] },
 }
 
 const STATUS_STYLE = {
@@ -30,7 +39,7 @@ function timeAgo(d) {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 function CostBadge({ cost, small }) {
-  const c = cost === 'FREE' ? '#34d399' : cost === '~$0/mo' ? '#c8922a' : '#9ca3af'
+  const c = cost === 'FREE' ? '#34d399' : cost === 'PENDING' ? '#f59e0b' : cost === '~$0/mo' ? '#c8922a' : '#6b7280'
   return <span style={{ background: c+'22', color: c, border:`1px solid ${c}44`, padding: small ? '1px 6px' : '3px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize: small ? '9px' : '11px', fontWeight:700, letterSpacing:'0.08em' }}>{cost}</span>
 }
 
@@ -198,13 +207,13 @@ function SetupGuide() {
     <div>
       <div style={{ background:'#0a1a08', border:'1px solid #34d39930', padding:'14px 18px', marginBottom:20 }}>
         <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'#34d399', letterSpacing:'0.1em', marginBottom:6 }}>
-          💡 TOTAL MONTHLY COST: ~$0
+          💡 PLATFORM STATUS
         </div>
-        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.8 }}>
-          Bluesky → Direct AT Protocol, no fees<br/>
-          Facebook → Meta Graph API, free<br/>
-          Threads → Meta Graph API, free (one-time App Review)<br/>
-          X/Twitter → Via Buffer free tier (handles $0.20/tweet cost, 10 queued posts free)
+        <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.9 }}>
+          <span style={{color:'#0085FF'}}>🦋 Bluesky</span> → Free. Direct AT Protocol. Configure first — already have account.<br/>
+          <span style={{color:'#9ca3af'}}>𝕏 X/Twitter</span> → <span style={{color:'#f59e0b'}}>PENDING</span> — go to <a href="https://buffer.com/developers/apps/create" target="_blank" rel="noreferrer" style={{color:'#c8922a'}}>buffer.com/developers/apps/create</a> to create a free Buffer app first.<br/>
+          <span style={{color:'#6b7280'}}>f Facebook</span> → Free, Meta Graph API. Set up when ready.<br/>
+          <span style={{color:'#6b7280'}}>@ Threads</span> → Free, Meta Graph API. Set up when ready.
         </div>
       </div>
       {Object.entries(PLATFORMS).map(([pid, p]) => (
