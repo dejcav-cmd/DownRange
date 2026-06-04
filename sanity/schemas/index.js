@@ -27,6 +27,7 @@ import imageAsset           from './imageAsset'
 import { nfaWaitTime }      from './nfaWaitTime'
 import { cronRun }          from './cronRun'
 import { youtubeInfluencer } from './youtubeInfluencer'
+import { socialPost, socialConfig } from './socialPost'
 
 export const schemaTypes = [
   feedConfig,
@@ -44,4 +45,6 @@ export const schemaTypes = [
   blogPost,
   nfaWaitTime,
   cronRun,
+  socialPost,
+  socialConfig,
 ]

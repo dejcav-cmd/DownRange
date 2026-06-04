@@ -27,6 +27,7 @@ const CronDashboard         = L(() => import('../../components/admin/CronDashboa
 const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
 const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
 const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
+const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -82,6 +83,12 @@ const NAV = [
       { id:'rss',          label:'RSS Sources',      icon:'📡', badge:null },
       { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
       { id:'sitemap',      label:'Site Map',          icon:'🗺️', badge:null },
+    ]
+  },
+  {
+    id: 'social', label: 'Social Media', icon: '📣',
+    panels: [
+      { id:'social',       label:'Command Center',   icon:'📣', badge:'new' },
     ]
   },
   {
@@ -2756,6 +2763,9 @@ export default function AdminPage() {
             {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
             {panel==='ranges'  && <RangesPanel />}
             {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
+
+            {/* ── SOCIAL MEDIA ── */}
+            {panel==='social'       && <SocialMediaManager adminKey={adminKey} />}
 
             {/* ── OUTREACH ── */}
             {panel==='outreach'     && <OutreachCRM adminKey={adminKey} />}
