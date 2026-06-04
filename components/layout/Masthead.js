@@ -173,12 +173,10 @@ export default function Masthead() {
       `}</style>
 
       <div className="container" style={{ position:'relative', zIndex:1 }}>
-        {/* ── Logo row — logo is centered via CSS grid; dateline floats right without pushing logo */}
-        <div style={{ display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'center', padding:'10px 0 12px' }}>
-          {/* Col 1: empty left spacer */}
-          <div />
+        {/* ── Logo row — logo centered, dateline overlaid with position:absolute so it NEVER affects logo */}
+        <div style={{ position:'relative', display:'flex', justifyContent:'center', alignItems:'center', padding:'10px 0 12px', minHeight:80 }}>
 
-          {/* Col 2: Logo — always centered */}
+          {/* Logo — pure center, no flex siblings to push it */}
           <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none' }} aria-label="DownRange Home">
             <img
               src="/img/logo.png"
@@ -190,9 +188,13 @@ export default function Masthead() {
             />
           </Link>
 
-          {/* Col 3: Dateline — right-aligned, never affects logo */}
-          <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'7px', justifySelf:'end' }}>
-            {/* Top row: RSS + DAILY EDITION */}
+          {/* Dateline — absolutely overlaid on right side, zero effect on logo centering */}
+          <div className="masthead-dateline" style={{
+            position:'absolute', right:0, top:'50%', transform:'translateY(-50%)',
+            textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'6px',
+            maxWidth:'50%',
+          }}>
+            {/* RSS + DAILY EDITION */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'#C8922A', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
                 📡 RSS
@@ -201,15 +203,15 @@ export default function Masthead() {
             </div>
             {/* DOWNRANGECO.COM */}
             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
-            {/* Social icons with label */}
+            {/* Social Media icons */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', letterSpacing:'0.06em' }}>Social Media:</span>
               <SocialIcons size="sm" />
             </div>
-            {/* Date + Search bar inline */}
-            <div style={{ display:'flex', alignItems:'center', gap:12 }}>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
+            {/* Search bar BEFORE date */}
+            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
               <GlobalSearchBar />
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6B7280', whiteSpace:'nowrap' }}>{dateStr}</div>
             </div>
           </div>
         </div>

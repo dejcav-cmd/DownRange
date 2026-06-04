@@ -95,16 +95,16 @@ export default function GlobalSearchBar() {
     <button
       onClick={() => { setOpen(true); setTimeout(() => inputRef.current?.focus(), 30) }}
       title="Search (⌘K)"
-      style={{ display:'flex', alignItems:'center', gap:5, background:'none', border:'1px solid var(--border)', color:'var(--text-dim)', padding:'5px 10px', cursor:'pointer', fontFamily:mono, fontSize:10 }}>
-      ⌕ <span style={{opacity:.6}}>Search</span>
-      <span style={{opacity:.35,fontSize:9,marginLeft:2}}>⌘K</span>
+      style={{ display:'flex', alignItems:'center', gap:5, background:'none', border:'1px solid rgba(200,146,42,0.4)', color:'#ffffff', padding:'5px 10px', cursor:'pointer', fontFamily:mono, fontSize:10 }}>
+      <span style={{color:'#C8922A'}}>⌕</span> <span style={{color:'#ffffff'}}>Search</span>
+      <span style={{opacity:.4,fontSize:9,marginLeft:2,color:'#ffffff'}}>⌘K</span>
     </button>
   )
 
   return (
     <div ref={panelRef} style={{ position:'relative', zIndex:200 }}>
-      {/* Input — compact, does not push layout */}
-      <div style={{ display:'flex', alignItems:'center', gap:6, background:'var(--bg)', border:'1px solid #C8922A', padding:'4px 10px', width:195 }}>
+      {/* Input — fixed width 195px, never expands layout */}
+      <div style={{ display:'flex', alignItems:'center', gap:6, background:'#111318', border:'1px solid #C8922A', padding:'4px 10px', width:195, boxSizing:'border-box' }}>
         <span style={{ color:'#C8922A', fontSize:14, flexShrink:0 }}>⌕</span>
         <input
           ref={inputRef}
@@ -113,10 +113,10 @@ export default function GlobalSearchBar() {
           onKeyDown={onKeyDown}
           placeholder="Search DownRange…"
           autoFocus
-          style={{ background:'none', border:'none', outline:'none', color:'var(--text)', fontFamily:mono, fontSize:11, flex:1, minWidth:0, width:'100%' }}
+          style={{ background:'none', border:'none', outline:'none', color:'#ffffff', fontFamily:mono, fontSize:11, flex:1, minWidth:0, width:'100%' }}
         />
-        {loading && <span style={{ fontSize:10, color:'#6b7280', animation:'spin 1s linear infinite', flexShrink:0 }}>↻</span>}
-        <button onClick={close} style={{ background:'none', border:'none', color:'#6b7280', cursor:'pointer', fontSize:12, padding:'0 2px', flexShrink:0 }}>✕</button>
+        {loading && <span style={{ fontSize:10, color:'#9ca3af', animation:'spin 1s linear infinite', flexShrink:0 }}>↻</span>}
+        <button onClick={close} style={{ background:'none', border:'none', color:'#9ca3af', cursor:'pointer', fontSize:12, padding:'0 2px', flexShrink:0 }}>✕</button>
       </div>
 
       {/* Results dropdown — anchored right, never wider than viewport */}
