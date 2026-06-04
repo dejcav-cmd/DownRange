@@ -174,8 +174,12 @@ export default function Masthead() {
 
       <div className="container" style={{ position:'relative', zIndex:1 }}>
         {/* ── Logo row ── */}
-        <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', padding:'8px 0 12px' }}>
-          <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none' }} aria-label="DownRange Home">
+        <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', padding:'10px 0 12px' }}>
+          {/* Left spacer — same width as dateline so logo centers */}
+          <div className="masthead-dateline" style={{ visibility:'hidden', flex:'0 0 auto', minWidth:200 }} aria-hidden="true" />
+
+          {/* Logo — centered */}
+          <Link href="/" style={{ display:'block', lineHeight:1, textDecoration:'none', flex:'0 0 auto' }} aria-label="DownRange Home">
             <img
               src="/img/logo.png"
               alt="DownRange Co."
@@ -186,7 +190,7 @@ export default function Masthead() {
             />
           </Link>
 
-          <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'7px' }}>
+          <div className="masthead-dateline" style={{ textAlign:'right', display:'flex', flexDirection:'column', alignItems:'flex-end', gap:'7px', flex:'0 0 auto' }}>
             {/* Top row: RSS + DAILY EDITION */}
             <div style={{ display:'flex', alignItems:'center', gap:8 }}>
               <a href="/rss" style={{ display:'inline-flex', alignItems:'center', gap:4, background:'rgba(200,146,42,.12)', color:'#C8922A', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.12em', padding:'3px 10px', textDecoration:'none', border:'1px solid rgba(200,146,42,.3)' }}>
@@ -194,10 +198,12 @@ export default function Masthead() {
               </a>
               <span style={{ background:'#C8922A', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'10px', fontWeight:700, letterSpacing:'0.15em', padding:'3px 10px' }}>DAILY EDITION</span>
             </div>
-            {/* DOWNRANGECO.COM + Social Icons */}
-            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
+            {/* DOWNRANGECO.COM */}
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
+            {/* Social icons with label */}
+            <div style={{ display:'flex', alignItems:'center', gap:8 }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563', letterSpacing:'0.06em' }}>Social Media:</span>
               <SocialIcons size="sm" />
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>📍 DOWNRANGECO.COM</div>
             </div>
             {/* Date + Search bar inline */}
             <div style={{ display:'flex', alignItems:'center', gap:12 }}>

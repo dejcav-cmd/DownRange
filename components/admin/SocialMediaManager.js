@@ -238,8 +238,21 @@ const SETUP = {
   reddit:   { steps:['Create u/DownRangeCo Reddit account (account must be a few days old)','reddit.com/prefs/apps → Create App → choose "script"','Name: DownRange, redirect: http://localhost:8080','Copy client_id (under app name) and secret','Add REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USERNAME, REDDIT_PASSWORD to Vercel'], url:'https://www.reddit.com/prefs/apps' },
 }
 
-function SetupGuide() {
-  const [open, setOpen] = useState(null)
+function SetupGuide({ adminKey }) {
+  const [open,     setOpen]     = useState(null)
+  const [accounts, setAccounts] = useState(null)
+  const [lookingUp,setLookingUp]= useState(false)
+
+  async function lookupZernioAccounts() {
+    setLookingUp(true)
+    try {
+      const res  = await fetch('/api/social/zernio-accounts', { headers: { 'x-admin-key': adminKey } })
+      const data = await res.json()
+      setAccounts(data)
+    } catch(e) { setAccounts({ ok: false, error: e.message }) }
+    setLookingUp(false)
+  }
+
   return (
     <div>
       <div style={{ background:'#0a1a08', border:'1px solid #34d39930', padding:'14px 18px', marginBottom:16 }}>
@@ -269,6 +282,33 @@ function SetupGuide() {
                     <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', lineHeight:1.6 }}>{step}</span>
                   </div>
                 ))}
+                {s.lookupAccountId && (
+                  <div style={{ marginTop:14, borderTop:'1px solid #1f2428', paddingTop:14 }}>
+                    <button onClick={lookupZernioAccounts} disabled={lookingUp}
+                      style={{ background:'#c8922a', color:'#000', border:'none', padding:'8px 18px', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', cursor:lookingUp?'not-allowed':'pointer' }}>
+                      {lookingUp ? 'LOOKING UP...' : '🔍 LOOK UP MY ZERNIO ACCOUNT ID'}
+                    </button>
+                    {accounts && (
+                      <div style={{ marginTop:10, background:'#09090b', border:'1px solid #1f2428', padding:'10px 14px' }}>
+                        {accounts.ok ? (
+                          <>
+                            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#34d399', marginBottom:8 }}>✓ Found {accounts.accounts?.length} connected accounts:</div>
+                            {(accounts.accounts||[]).map(a => (
+                              <div key={a.id} style={{ display:'flex', alignItems:'center', gap:10, padding:'6px 0', borderBottom:'1px solid #1f2428' }}>
+                                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#9ca3af', flex:1 }}>{a.platform} · {a.name}</span>
+                                <code style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#c8922a', background:'#111318', padding:'2px 8px', border:'1px solid #1f2428', cursor:'pointer', userSelect:'all' }} title="Click to select and copy">{a.id}</code>
+                              </div>
+                            ))}
+                            {accounts.accounts?.length === 0 && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#ef4444' }}>No accounts found. Make sure you connected your X account in Zernio first.</div>}
+                            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6b7280', marginTop:8 }}>Copy the acc_... ID for your X account → paste it into ZERNIO_TWITTER_ACCOUNT_ID in Vercel</div>
+                          </>
+                        ) : (
+                          <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#ef4444' }}>✗ {accounts.error}</div>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -471,7 +511,7 @@ export default function SocialMediaManager({ adminKey }) {
       )}
 
       {/* ── SETUP ── */}
-      {tab === 'setup' && <SetupGuide />}
+      {tab === 'setup' && <SetupGuide adminKey={adminKey} />}
     </div>
   )
 }
