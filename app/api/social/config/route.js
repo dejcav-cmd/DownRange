@@ -16,11 +16,12 @@ export async function GET(req) {
   const config = await sanity.fetch(`*[_type == "socialConfig"][0]`).catch(() => null)
   // Check which platform env vars are configured
   const configured = {
-    twitter:   !!(process.env.ZERNIO_API_KEY && process.env.ZERNIO_TWITTER_ACCOUNT_ID),
+    twitter:   !!(process.env.ZERNIO_API_KEY && process.env.ZERNIO_TWITTER_ACCOUNT_ID), // paid ~$18/mo
     facebook:  !!(process.env.FACEBOOK_PAGE_ACCESS_TOKEN && process.env.FACEBOOK_PAGE_ID),
     threads:   !!(process.env.THREADS_ACCESS_TOKEN && process.env.THREADS_USER_ID),
     bluesky:   !!(process.env.BLUESKY_HANDLE && process.env.BLUESKY_APP_PASSWORD),
     instagram: !!(process.env.INSTAGRAM_ACCESS_TOKEN),
+    reddit:    !!(process.env.REDDIT_CLIENT_ID && process.env.REDDIT_CLIENT_SECRET && process.env.REDDIT_USERNAME && process.env.REDDIT_PASSWORD),
   }
   return Response.json({ ok: true, config: config || {}, configured })
 }

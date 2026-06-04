@@ -6,14 +6,23 @@ const PLATFORMS = {
   bluesky:  { label:'Bluesky',   icon:'🦋', color:'#0085FF', cost:'FREE',  costNote:'Direct AT Protocol. No API fees ever.', envKeys:['BLUESKY_HANDLE','BLUESKY_APP_PASSWORD'],     setupUrl:'https://bsky.app', setupSteps:['Create @downrangeco.bsky.social account','Settings → Privacy and Security → App Passwords → Add App Password','Name it "DownRange" and copy the password','Add BLUESKY_HANDLE (e.g. downrangeco.bsky.social) to Vercel','Add BLUESKY_APP_PASSWORD to Vercel → redeploy'] },
   threads:  { label:'Threads',   icon:'@',  color:'#111111', cost:'FREE',  costNote:'Meta Graph API. One-time App Review, then free forever.', envKeys:['THREADS_ACCESS_TOKEN','THREADS_USER_ID'],       setupUrl:'https://developers.facebook.com/docs/threads', setupSteps:['Create @downrangeco Threads account','Go to developers.facebook.com → Create App → Consumer type','Add "Threads API" product','Submit App Review (usually 1-3 days)','Generate User Access Token → add THREADS_ACCESS_TOKEN to Vercel','Add THREADS_USER_ID to Vercel → redeploy'] },
   facebook: { label:'Facebook',  icon:'f',  color:'#1877F2', cost:'FREE',  costNote:'Meta Graph API. Create a Page and generate a Page Access Token.', envKeys:['FACEBOOK_PAGE_ACCESS_TOKEN','FACEBOOK_PAGE_ID'], setupUrl:'https://developers.facebook.com', setupSteps:['Create DownRange Co. Facebook Page','Go to developers.facebook.com → Graph API Explorer','Select your app, select page, generate Page Access Token','Copy Page ID from Page About section','Add FACEBOOK_PAGE_ACCESS_TOKEN to Vercel','Add FACEBOOK_PAGE_ID to Vercel → redeploy'] },
-  twitter:  { label:'X/Twitter', icon:'𝕏',  color:'#E5E5E5', cost:'FREE', costNote:'Via Zernio — first 2 accounts free, unlimited posts. No X developer portal needed.', envKeys:['ZERNIO_API_KEY','ZERNIO_TWITTER_ACCOUNT_ID'], setupUrl:'https://zernio.com', setupSteps:[
-    '1. Sign up free at zernio.com (no credit card required)',
-    '2. Connect your X/Twitter account via their OAuth flow',
-    '3. Dashboard → API Keys → copy your API key',
-    '4. Dashboard → Connected Accounts → copy the Account ID next to your X profile',
-    '5. Add ZERNIO_API_KEY to Vercel env vars',
-    '6. Add ZERNIO_TWITTER_ACCOUNT_ID to Vercel env vars → redeploy',
-    'Note: First 2 connected accounts are completely free with unlimited posts.',
+  twitter:  { label:'X/Twitter', icon:'𝕏',  color:'#4b5563', cost:'$18/mo', costNote:'$0.20 per URL post via X API. At 3 posts/day = ~$18/month. No free path exists in 2026.', envKeys:['ZERNIO_API_KEY','ZERNIO_TWITTER_ACCOUNT_ID'], setupUrl:'https://zernio.com', setupSteps:[
+    'X/Twitter has no free API tier as of 2026.',
+    'Every post with a URL (all DownRange posts) costs $0.20 via any service.',
+    'At 3 posts/day that is ~$18/month minimum.',
+    'If you want to proceed: sign up at zernio.com, connect X account,',
+    'add payment method in Zernio billing, then add ZERNIO_API_KEY',
+    'and ZERNIO_TWITTER_ACCOUNT_ID to Vercel.',
+    'Recommendation: post manually on X and focus automation on free platforms.',
+  ] },
+  reddit:   { label:'Reddit',    icon:'🔴', color:'#FF4500', cost:'FREE',   costNote:'Post links to relevant 2A subreddits. r/CCW (650K), r/guns (900K), r/2ALiberals. Via Reddit API — free for posting.', envKeys:['REDDIT_CLIENT_ID','REDDIT_CLIENT_SECRET','REDDIT_USERNAME','REDDIT_PASSWORD'], setupUrl:'https://www.reddit.com/prefs/apps', setupSteps:[
+    '1. Create a Reddit account for DownRange (e.g. u/DownRangeCo)',
+    '2. Go to reddit.com/prefs/apps → Create App → choose "script"',
+    '3. Name: DownRange, redirect uri: http://localhost:8080',
+    '4. Copy the client_id (under app name) and client_secret',
+    '5. Add REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET to Vercel',
+    '6. Add REDDIT_USERNAME (u/DownRangeCo) and REDDIT_PASSWORD to Vercel → redeploy',
+    'Note: Post to r/CCW, r/guns, r/2ALiberals — these have millions of readers.',
   ] },
 }
 
@@ -38,7 +47,7 @@ function timeAgo(d) {
 
 // ── Sub-components ────────────────────────────────────────────────────────────
 function CostBadge({ cost, small }) {
-  const c = cost === 'FREE' ? '#34d399' : cost === 'PENDING' ? '#f59e0b' : cost === '~$0/mo' ? '#c8922a' : '#6b7280'
+  const c = cost === 'FREE' ? '#34d399' : cost === 'PENDING' ? '#f59e0b' : cost === '~$0/mo' ? '#c8922a' : cost?.startsWith('$') ? '#ef4444' : '#6b7280'
   return <span style={{ background: c+'22', color: c, border:`1px solid ${c}44`, padding: small ? '1px 6px' : '3px 10px', fontFamily:"'IBM Plex Mono',monospace", fontSize: small ? '9px' : '11px', fontWeight:700, letterSpacing:'0.08em' }}>{cost}</span>
 }
 
@@ -210,10 +219,11 @@ function SetupGuide() {
           💡 PLATFORM STATUS
         </div>
         <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#6b7280', lineHeight:1.9 }}>
-          <span style={{color:'#0085FF'}}>🦋 Bluesky</span> → Free. Direct AT Protocol. Configure first — already have account.<br/>
-          <span style={{color:'#9ca3af'}}>𝕏 X/Twitter</span> → <span style={{color:'#f59e0b'}}>SETUP NEEDED</span> — Sign up free at <a href="https://zernio.com" target="_blank" rel="noreferrer" style={{color:'#c8922a'}}>zernio.com</a> (2 accounts free, unlimited posts, no X developer portal).<br/>
-          <span style={{color:'#6b7280'}}>f Facebook</span> → Free, Meta Graph API. Set up when ready.<br/>
-          <span style={{color:'#6b7280'}}>@ Threads</span> → Free, Meta Graph API. Set up when ready.
+          <span style={{color:'#0085FF'}}>🦋 Bluesky</span> → Free. Working now. Posts with images.<br/>
+          <span style={{color:'#FF4500'}}>🔴 Reddit</span> → Free. r/CCW (650K), r/guns (900K). High 2A intent audience.<br/>
+          <span style={{color:'#1877F2'}}>f Facebook</span> → Free, Meta Graph API. Set up when ready.<br/>
+          <span style={{color:'#111111'}}>@ Threads</span> → Free, Meta Graph API. Set up when ready.<br/>
+          <span style={{color:'#4b5563'}}>𝕏 X/Twitter</span> → <span style={{color:'#ef4444'}}>$0.20/URL post</span> (~$18/mo at 3/day). Post manually on X; automate the free platforms.
         </div>
       </div>
       {Object.entries(PLATFORMS).map(([pid, p]) => (

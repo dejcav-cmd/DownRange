@@ -217,13 +217,88 @@ async function postViaZernio(content, platform = 'twitter', imageUrl = null) {
   return { ok: false, error: `Zernio error (${res.status}): ${errMsg}` }
 }
 
+// ── REDDIT (free, PRAW-style API) ────────────────────────────────────────────
+// Posts to relevant 2A subreddits based on article category
+const SUBREDDITS = {
+  law:      ['r/2ALiberals', 'r/CCW', 'r/guns'],
+  breaking: ['r/guns', 'r/CCW', 'r/2ALiberals'],
+  news:     ['r/guns', 'r/CCW'],
+  review:   ['r/guns', 'r/EDC'],
+  training: ['r/CCW', 'r/guns'],
+  default:  ['r/guns'],
+}
+
+async function postReddit(content, imageUrl = null, category = 'default') {
+  const clientId     = process.env.REDDIT_CLIENT_ID
+  const clientSecret = process.env.REDDIT_CLIENT_SECRET
+  const username     = process.env.REDDIT_USERNAME
+  const password     = process.env.REDDIT_PASSWORD
+  if (!clientId || !clientSecret || !username || !password) {
+    return { ok: false, error: 'Add REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USERNAME, REDDIT_PASSWORD to Vercel. Free at reddit.com/prefs/apps.' }
+  }
+
+  // Get access token
+  const tokenRes = await fetch('https://www.reddit.com/api/v1/access_token', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'DownRange/1.0 by u/DownRangeCo',
+    },
+    body: new URLSearchParams({ grant_type: 'password', username, password }),
+  })
+  const tokenData = await tokenRes.json()
+  if (!tokenData.access_token) return { ok: false, error: `Reddit auth failed: ${tokenData.error || tokenRes.status}` }
+
+  // Extract URL from content for link post
+  const urlMatch = content.match(/https?:\/\/[^\s]+/)
+  const url      = urlMatch?.[0] || null
+  // Title = first sentence of content, truncated to 300 chars
+  const title    = content.split('\n')[0].replace(/https?:\/\/[^\s]+/g, '').trim().slice(0, 299) || 'DownRange Intel'
+
+  // Pick the primary subreddit for this category
+  const subs     = SUBREDDITS[category] || SUBREDDITS.default
+  const subreddit = subs[0].replace('r/', '')
+
+  const postBody = new URLSearchParams({
+    sr: subreddit,
+    kind: url ? 'link' : 'self',
+    title,
+    ...(url ? { url } : { text: content }),
+    resubmit: 'true',
+    nsfw: 'false',
+  })
+
+  const submitRes = await fetch('https://oauth.reddit.com/api/submit', {
+    method: 'POST',
+    headers: {
+      'Authorization': `Bearer ${tokenData.access_token}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+      'User-Agent': 'DownRange/1.0 by u/DownRangeCo',
+    },
+    body: postBody,
+  })
+  const submitData = await submitRes.json()
+  const postUrl = submitData?.jquery?.find?.(x => Array.isArray(x) && x[2] === 'attr' && x[3] === 'href')?.[4]
+    || submitData?.data?.url
+    || null
+
+  if (!submitRes.ok || submitData?.json?.errors?.length) {
+    const err = submitData?.json?.errors?.[0]?.[1] || submitData?.message || JSON.stringify(submitData).slice(0,200)
+    return { ok: false, error: `Reddit post failed: ${err}` }
+  }
+
+  return { ok: true, postId: subreddit, postUrl, hasImage: false }
+}
+
 // ── Dispatcher ───────────────────────────────────────────────────────────────
-async function dispatch(platform, content, imageUrl = null) {
+async function dispatch(platform, content, imageUrl = null, category = 'default') {
   switch (platform) {
     case 'bluesky':  return postBluesky(content, imageUrl)
     case 'threads':  return postThreads(content, imageUrl)
     case 'facebook': return postFacebook(content, imageUrl)
     case 'twitter':  return postViaZernio(content, 'twitter', imageUrl)
+    case 'reddit':   return postReddit(content, imageUrl, category)
     default:         return { ok: false, error: `${platform} not yet supported` }
   }
 }
@@ -272,7 +347,7 @@ export async function runSocialAgent({ platforms, dryRun = false, forceArticleId
         })
         if (dryRun) { results.push({ platform, title: article.title, status: 'draft', content, docId: logDoc._id }); continue }
 
-        const result = await dispatch(platform, content, article.imageUrl || null)
+        const result = await dispatch(platform, content, article.imageUrl || null, article.category || 'default')
         await sanity.patch(logDoc._id).set({ status: result.ok ? 'posted' : 'failed', postId: result.postId || null, postUrl: result.postUrl || null, postedAt: result.ok ? new Date().toISOString() : null, error: result.error || null, hasImage: result.hasImage || false }).commit()
         posted += result.ok ? 1 : 0
         results.push({ platform, title: article.title, status: result.ok ? "posted" : "failed", postUrl: result.postUrl, error: result.error, note: result.note, hasImage: result.hasImage || false, docId: logDoc._id })
