@@ -14,9 +14,9 @@ function auth(req) {
 export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   const config = await sanity.fetch(`*[_type == "socialConfig"][0]`).catch(() => null)
-  // Also check which platform env vars are configured
+  // Check which platform env vars are configured
   const configured = {
-    twitter:   !!(process.env.TWITTER_API_KEY && process.env.TWITTER_ACCESS_TOKEN),
+    twitter:   !!(process.env.ZERNIO_API_KEY && process.env.ZERNIO_TWITTER_ACCOUNT_ID),
     facebook:  !!(process.env.FACEBOOK_PAGE_ACCESS_TOKEN && process.env.FACEBOOK_PAGE_ID),
     threads:   !!(process.env.THREADS_ACCESS_TOKEN && process.env.THREADS_USER_ID),
     bluesky:   !!(process.env.BLUESKY_HANDLE && process.env.BLUESKY_APP_PASSWORD),

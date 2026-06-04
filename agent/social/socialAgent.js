@@ -180,45 +180,41 @@ async function postFacebook(content) {
   return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}` }
 }
 
-// ── TWITTER via Buffer API (free tier handles X API cost) ───────────────────
-async function postViaBuffer(content, platform = 'twitter', imageUrl = null) {
-  const token     = (process.env.BUFFER_ACCESS_TOKEN || '').trim()
-  const profileId = (platform === 'twitter'
-    ? process.env.BUFFER_TWITTER_PROFILE_ID
-    : process.env[`BUFFER_${platform.toUpperCase()}_PROFILE_ID`] || '').trim()
+// ── TWITTER via Zernio (free for 2 accounts, no developer portal needed) ──────
+// Zernio abstracts the X API entirely — $0 for up to 2 connected accounts
+async function postViaZernio(content, platform = 'twitter', imageUrl = null) {
+  const apiKey    = (process.env.ZERNIO_API_KEY || '').trim()
+  const accountId = platform === 'twitter'
+    ? (process.env.ZERNIO_TWITTER_ACCOUNT_ID || '').trim()
+    : (process.env[`ZERNIO_${platform.toUpperCase()}_ACCOUNT_ID`] || '').trim()
 
-  if (!token)     return { ok: false, error: 'Add BUFFER_ACCESS_TOKEN to Vercel env vars.' }
-  if (!profileId) return { ok: false, error: `Add BUFFER_TWITTER_PROFILE_ID to Vercel. Get it from: https://api.bufferapp.com/1/profiles.json?access_token=YOUR_TOKEN` }
+  if (!apiKey)     return { ok: false, error: 'Add ZERNIO_API_KEY to Vercel. Sign up free at zernio.com — Dashboard → API Keys.' }
+  if (!accountId)  return { ok: false, error: `Add ZERNIO_TWITTER_ACCOUNT_ID to Vercel. In Zernio dashboard → Connected Accounts → copy the account ID next to your X profile.` }
 
-  const params = new URLSearchParams()
-  params.append('access_token', token)
-  params.append('profile_ids[]', profileId)
-  params.append('text', content)
-  params.append('now', 'true')
-  if (imageUrl) {
-    params.append('media[picture]', imageUrl)
-    params.append('media[thumbnail]', imageUrl)
+  const body = {
+    content,
+    platforms: [{ platform, accountId }],
+    ...(imageUrl ? { media: [{ url: imageUrl }] } : {}),
   }
 
-  const res  = await fetch('https://api.bufferapp.com/1/updates/create.json', {
+  const res  = await fetch('https://zernio.com/api/v1/posts', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: params.toString(),
+    headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
   })
   const raw  = await res.text()
   let data
-  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Buffer non-JSON (${res.status}): ${raw.slice(0,200)}` } }
+  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Zernio non-JSON (${res.status}): ${raw.slice(0,200)}` } }
 
-  if (data.success === true) {
-    const update = data.updates?.[0]
-    return { ok: true, postId: update?.id || null, postUrl: null, hasImage: !!imageUrl, note: 'Posted via Buffer. Check your X account or Buffer dashboard.' }
+  if (res.ok && (data.id || data.postId || data.success || data.posts?.length)) {
+    const postId  = data.id || data.postId || data.posts?.[0]?.id || null
+    // Zernio returns the live X post URL when available
+    const postUrl = data.url || data.posts?.[0]?.url || null
+    return { ok: true, postId, postUrl, hasImage: !!imageUrl, note: postUrl ? null : 'Check your X account — tweet should be live.' }
   }
 
-  const errMsg = data.message || data.error || JSON.stringify(data).slice(0, 300)
-  if (errMsg.includes('OIDC')) {
-    return { ok: false, error: `Wrong token type. Go to buffer.com/developers/apps → click your app → copy the Access Token shown on that page (not from Settings).` }
-  }
-  return { ok: false, error: `Buffer error (${res.status}): ${errMsg}` }
+  const errMsg = data.message || data.error || data.detail || JSON.stringify(data).slice(0, 300)
+  return { ok: false, error: `Zernio error (${res.status}): ${errMsg}` }
 }
 
 // ── Dispatcher ───────────────────────────────────────────────────────────────
@@ -227,7 +223,7 @@ async function dispatch(platform, content, imageUrl = null) {
     case 'bluesky':  return postBluesky(content, imageUrl)
     case 'threads':  return postThreads(content, imageUrl)
     case 'facebook': return postFacebook(content, imageUrl)
-    case 'twitter':  return postViaBuffer(content, 'twitter', imageUrl)
+    case 'twitter':  return postViaZernio(content, 'twitter', imageUrl)
     default:         return { ok: false, error: `${platform} not yet supported` }
   }
 }
