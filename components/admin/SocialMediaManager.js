@@ -110,9 +110,16 @@ function PostCard({ post, onDelete, onRetrySuccess, adminKey }) {
         <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
           {post.articleTitle||post.content?.slice(0,80)}
         </span>
+        {/* Show inline retry on collapsed row for quick access */}
+        {post.status === 'failed' && post.platform && post.articleSlug && !open && (
+          <span onClick={e => { e.stopPropagation(); setOpen(true) }}
+            style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#34d399', background:'#052e16', border:'1px solid #34d39940', padding:'2px 8px', flexShrink:0, cursor:'pointer', letterSpacing:'0.06em' }}>
+            ↻ RETRY
+          </span>
+        )}
         {post.status === 'failed' && post.error && (
-          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#ef4444', flexShrink:0, maxWidth:200, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
-            ✗ {post.error.slice(0,40)}…
+          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#ef4444', flexShrink:0, maxWidth:160, overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
+            ✗ {post.error.slice(0,30)}…
           </span>
         )}
         {post.urgencyScore>=8 && <span style={{ color:'#ef4444', fontSize:'10px', flexShrink:0 }}>⚡{post.urgencyScore}</span>}
