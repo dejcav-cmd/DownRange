@@ -86,6 +86,7 @@ function PostCard({ post, onDelete }) {
         <span style={{ flex:1, fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'12px', color:'#9ca3af', overflow:'hidden', textOverflow:'ellipsis', whiteSpace:'nowrap' }}>
           {post.articleTitle || post.content?.slice(0,80)}
         </span>
+        {post.hasImage && <span style={{ color:'#60a5fa', fontSize:'11px', flexShrink:0 }} title="Posted with image">🖼</span>}
         {post.urgencyScore >= 8 && <span style={{ color:'#ef4444', fontSize:'11px', flexShrink:0 }}>⚡{post.urgencyScore}</span>}
         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#374151', flexShrink:0 }}>{timeAgo(post.postedAt || post.scheduledAt)}</span>
         <span style={{ color:'#374151', fontSize:'10px' }}>{open ? '▲' : '▼'}</span>

@@ -67,63 +67,75 @@ Return ONLY the body text. No quotes, no preamble.`,
   return `${body}\n\n${url}${tags}`
 }
 
+// ── BLUESKY image upload helper ─────────────────────────────────────────────
+async function uploadImageBluesky(imageUrl, accessJwt) {
+  try {
+    const imgRes = await fetch(imageUrl, { headers: { 'User-Agent': 'DownRange/1.0' } })
+    if (!imgRes.ok) return null
+    const imgBuffer = await imgRes.arrayBuffer()
+    const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
+    if (imgBuffer.byteLength > 976 * 1024) return null // Bluesky 1MB limit
+    const blobRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.uploadBlob', {
+      method: 'POST',
+      headers: { 'Authorization': `Bearer ${accessJwt}`, 'Content-Type': contentType },
+      body: imgBuffer,
+    })
+    const blob = await blobRes.json()
+    return blob?.blob || null
+  } catch { return null }
+}
+
 // ── BLUESKY (100% free, AT Protocol) ────────────────────────────────────────
-async function postBluesky(content) {
+async function postBluesky(content, imageUrl = null) {
   let raw_handle = (process.env.BLUESKY_HANDLE || '').trim()
   const pass      = (process.env.BLUESKY_APP_PASSWORD || '').trim()
   if (!raw_handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars.' }
 
-  // Aggressive sanitization — strip invisible unicode, @, URLs, whitespace
   let handle = raw_handle
-    // Strip ALL invisible/control/formatting unicode characters (the real culprit)
     .replace(/[\u0000-\u001F\u007F-\u00A0\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g, '')
     .replace(/^https?:\/\/(www\.)?(bsky\.app\/profile\/)?/i, '')
-    .replace(/^@+/, '')          // strip one or more leading @
-    .replace(/\/$/, '')          // strip trailing slash
-    .replace(/\s+/g, '')         // strip any remaining whitespace
-    .toLowerCase()
-
-  // If they pasted a full profile URL like bsky.app/profile/did:plc:xxx, extract handle
-  if (handle.startsWith('did:')) {
-    // They pasted a DID — use it directly as identifier
-  } else if (!handle.includes('.')) {
-    // No dot — append .bsky.social
-    handle = handle + '.bsky.social'
-  }
+    .replace(/^@+/, '').replace(/\/$/, '').replace(/\s+/g, '').toLowerCase()
+  if (!handle.startsWith('did:') && !handle.includes('.')) handle += '.bsky.social'
 
   const authRes = await fetch('https://bsky.social/xrpc/com.atproto.server.createSession', {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ identifier: handle, password: pass }),
   })
   const auth = await authRes.json()
-  if (!auth.accessJwt) {
-    return { ok: false, error: `Bluesky auth failed (using identifier: "${handle}"): ${auth.message || authRes.status}. Check your handle in Vercel — set BLUESKY_HANDLE to exactly: yourname.bsky.social` }
+  if (!auth.accessJwt) return { ok: false, error: `Bluesky auth failed (using identifier: "${handle}"): ${auth.message || authRes.status}. Check BLUESKY_HANDLE in Vercel.` }
+
+  // Upload image if available
+  let embed
+  if (imageUrl) {
+    const blob = await uploadImageBluesky(imageUrl, auth.accessJwt)
+    if (blob) embed = { $type: 'app.bsky.embed.images', images: [{ image: blob, alt: 'DownRange 2A News' }] }
   }
 
-  // Build facets for clickable URLs
+  // Build URL facets for clickable links
   const urlRegex = /https?:\/\/[^\s]+/g
-  const facets = []
+  const facets = [], encoder = new TextEncoder()
   let match
-  const encoder = new TextEncoder()
   while ((match = urlRegex.exec(content)) !== null) {
     const start = encoder.encode(content.slice(0, match.index)).length
     const end   = encoder.encode(content.slice(0, match.index + match[0].length)).length
     facets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#link', uri: match[0] }] })
   }
 
+  const record = {
+    $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(),
+    ...(facets.length ? { facets } : {}),
+    ...(embed ? { embed } : {}),
+  }
+
   const postRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${auth.accessJwt}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      repo: auth.did, collection: 'app.bsky.feed.post',
-      record: { $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(), ...(facets.length ? { facets } : {}) },
-    }),
+    body: JSON.stringify({ repo: auth.did, collection: 'app.bsky.feed.post', record }),
   })
   const post = await postRes.json()
   if (!post.uri) return { ok: false, error: `Bluesky post failed: ${post.message || postRes.status}` }
-
   const rkey = post.uri.split('/').pop()
-  return { ok: true, postId: post.uri, postUrl: `https://bsky.app/profile/${auth.did}/post/${rkey}` }
+  return { ok: true, postId: post.uri, postUrl: `https://bsky.app/profile/${auth.did}/post/${rkey}`, hasImage: !!embed }
 }
 
 // ── THREADS (free, Meta Graph API) ───────────────────────────────────────────
@@ -169,7 +181,7 @@ async function postFacebook(content) {
 }
 
 // ── TWITTER via Buffer API (free tier handles X API cost) ───────────────────
-async function postViaBuffer(content, platform = 'twitter') {
+async function postViaBuffer(content, platform = 'twitter', imageUrl = null) {
   const token     = (process.env.BUFFER_ACCESS_TOKEN || '').trim()
   const profileId = (platform === 'twitter'
     ? process.env.BUFFER_TWITTER_PROFILE_ID
@@ -178,12 +190,15 @@ async function postViaBuffer(content, platform = 'twitter') {
   if (!token)     return { ok: false, error: 'Add BUFFER_ACCESS_TOKEN to Vercel env vars.' }
   if (!profileId) return { ok: false, error: `Add BUFFER_TWITTER_PROFILE_ID to Vercel. Get it from: https://api.bufferapp.com/1/profiles.json?access_token=YOUR_TOKEN` }
 
-  // Buffer v1 API — must be form-encoded, NOT JSON
   const params = new URLSearchParams()
   params.append('access_token', token)
   params.append('profile_ids[]', profileId)
   params.append('text', content)
   params.append('now', 'true')
+  if (imageUrl) {
+    params.append('media[picture]', imageUrl)
+    params.append('media[thumbnail]', imageUrl)
+  }
 
   const res  = await fetch('https://api.bufferapp.com/1/updates/create.json', {
     method: 'POST',
@@ -196,24 +211,23 @@ async function postViaBuffer(content, platform = 'twitter') {
 
   if (data.success === true) {
     const update = data.updates?.[0]
-    return { ok: true, postId: update?.id || null, postUrl: null, note: 'Posted via Buffer. Check your X account or Buffer dashboard.' }
+    return { ok: true, postId: update?.id || null, postUrl: null, hasImage: !!imageUrl, note: 'Posted via Buffer. Check your X account or Buffer dashboard.' }
   }
 
   const errMsg = data.message || data.error || JSON.stringify(data).slice(0, 300)
-  // OIDC error = wrong token type
   if (errMsg.includes('OIDC')) {
-    return { ok: false, error: `Wrong token type. Buffer needs the legacy OAuth Access Token, NOT a JWT/OIDC token. In Buffer: go to buffer.com/developers/apps → click your app → copy the "Access Token" shown on that page (it starts with a long string of letters/numbers, not "eyJ").` }
+    return { ok: false, error: `Wrong token type. Go to buffer.com/developers/apps → click your app → copy the Access Token shown on that page (not from Settings).` }
   }
   return { ok: false, error: `Buffer error (${res.status}): ${errMsg}` }
 }
 
 // ── Dispatcher ───────────────────────────────────────────────────────────────
-async function dispatch(platform, content) {
+async function dispatch(platform, content, imageUrl = null) {
   switch (platform) {
-    case 'bluesky':  return postBluesky(content)
-    case 'threads':  return postThreads(content)
-    case 'facebook': return postFacebook(content)
-    case 'twitter':  return postViaBuffer(content, 'twitter')
+    case 'bluesky':  return postBluesky(content, imageUrl)
+    case 'threads':  return postThreads(content, imageUrl)
+    case 'facebook': return postFacebook(content, imageUrl)
+    case 'twitter':  return postViaBuffer(content, 'twitter', imageUrl)
     default:         return { ok: false, error: `${platform} not yet supported` }
   }
 }
@@ -262,10 +276,10 @@ export async function runSocialAgent({ platforms, dryRun = false, forceArticleId
         })
         if (dryRun) { results.push({ platform, title: article.title, status: 'draft', content, docId: logDoc._id }); continue }
 
-        const result = await dispatch(platform, content)
-        await sanity.patch(logDoc._id).set({ status: result.ok ? 'posted' : 'failed', postId: result.postId || null, postUrl: result.postUrl || null, postedAt: result.ok ? new Date().toISOString() : null, error: result.error || null }).commit()
+        const result = await dispatch(platform, content, article.imageUrl || null)
+        await sanity.patch(logDoc._id).set({ status: result.ok ? 'posted' : 'failed', postId: result.postId || null, postUrl: result.postUrl || null, postedAt: result.ok ? new Date().toISOString() : null, error: result.error || null, hasImage: result.hasImage || false }).commit()
         posted += result.ok ? 1 : 0
-        results.push({ platform, title: article.title, status: result.ok ? 'posted' : 'failed', postUrl: result.postUrl, error: result.error, note: result.note, docId: logDoc._id })
+        results.push({ platform, title: article.title, status: result.ok ? "posted" : "failed", postUrl: result.postUrl, error: result.error, note: result.note, hasImage: result.hasImage || false, docId: logDoc._id })
       } catch (e) { results.push({ platform, title: article.title, status: 'error', error: e.message }) }
     }
   }
