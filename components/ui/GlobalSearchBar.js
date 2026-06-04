@@ -103,9 +103,9 @@ export default function GlobalSearchBar() {
 
   return (
     <div ref={panelRef} style={{ position:'relative', zIndex:200 }}>
-      {/* Input */}
-      <div style={{ display:'flex', alignItems:'center', gap:6, background:'var(--bg)', border:'1px solid #C8922A', padding:'4px 10px', minWidth:390 }}>
-        <span style={{ color:'#C8922A', fontSize:14 }}>⌕</span>
+      {/* Input — compact, does not push layout */}
+      <div style={{ display:'flex', alignItems:'center', gap:6, background:'var(--bg)', border:'1px solid #C8922A', padding:'4px 10px', width:195 }}>
+        <span style={{ color:'#C8922A', fontSize:14, flexShrink:0 }}>⌕</span>
         <input
           ref={inputRef}
           value={q}
@@ -113,18 +113,22 @@ export default function GlobalSearchBar() {
           onKeyDown={onKeyDown}
           placeholder="Search DownRange…"
           autoFocus
-          style={{ background:'none', border:'none', outline:'none', color:'var(--text)', fontFamily:mono, fontSize:11, flex:1, minWidth:0 }}
+          style={{ background:'none', border:'none', outline:'none', color:'var(--text)', fontFamily:mono, fontSize:11, flex:1, minWidth:0, width:'100%' }}
         />
-        {loading && <span style={{ fontSize:10, color:'#6b7280', animation:'spin 1s linear infinite' }}>↻</span>}
-        <button onClick={close} style={{ background:'none', border:'none', color:'#6b7280', cursor:'pointer', fontSize:12, padding:'0 2px' }}>✕</button>
+        {loading && <span style={{ fontSize:10, color:'#6b7280', animation:'spin 1s linear infinite', flexShrink:0 }}>↻</span>}
+        <button onClick={close} style={{ background:'none', border:'none', color:'#6b7280', cursor:'pointer', fontSize:12, padding:'0 2px', flexShrink:0 }}>✕</button>
       </div>
 
-      {/* Results dropdown */}
+      {/* Results dropdown — anchored right, never wider than viewport */}
       {(results.length > 0 || (q.length >= 2 && !loading)) && (
         <div style={{
-          position:'absolute', top:'100%', right:0, width:'max(360px,100%)',
-          background:'#111318', border:'1px solid var(--border)', borderTop:'none',
+          position:'fixed',
+          top: panelRef.current ? panelRef.current.getBoundingClientRect().bottom + 2 : 'auto',
+          right: 16,
+          width: Math.min(420, (typeof window !== 'undefined' ? window.innerWidth : 420) - 32),
+          background:'#111318', border:'1px solid var(--border)',
           maxHeight:420, overflowY:'auto', boxShadow:'0 8px 32px rgba(0,0,0,.7)',
+          zIndex:9999,
         }}>
           {results.length === 0 && (
             <div style={{ padding:'20px 16px', fontFamily:mono, fontSize:11, color:'#6b7280', textAlign:'center' }}>
