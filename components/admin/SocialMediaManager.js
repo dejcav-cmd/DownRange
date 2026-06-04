@@ -138,10 +138,21 @@ function PlatformScheduleCard({ pid, platformConfig, configured, onUpdate }) {
   const [postsPerRun, setPostsPerRun] = useState(cfg.postsPerRun ?? 1)
   const [times, setTimes]             = useState((cfg.times || opt.times).join(', '))
   const [saving, setSaving]           = useState(false)
+  const [saveErr, setSaveErr]         = useState('')
+
+  // Sync local state when platformConfig prop changes (e.g. after parent reloads)
+  useEffect(() => {
+    if (platformConfig) {
+      setEnabled(platformConfig.enabled ?? false)
+      setPostsPerRun(platformConfig.postsPerRun ?? 1)
+      setTimes((platformConfig.times || opt.times).join(', '))
+    }
+  }, [platformConfig])
 
   async function save() {
-    setSaving(true)
-    await onUpdate(pid, { enabled, postsPerRun, times: times.split(',').map(t => parseInt(t.trim())).filter(n => !isNaN(n)) })
+    setSaving(true); setSaveErr('')
+    const result = await onUpdate(pid, { enabled, postsPerRun, times: times.split(',').map(t => parseInt(t.trim())).filter(n => !isNaN(n)) })
+    if (result?.error) setSaveErr(result.error)
     setSaving(false)
   }
 
@@ -619,9 +630,25 @@ export default function SocialMediaManager({ adminKey }) {
 
   async function updatePlatformConfig(pid, update) {
     const next = { ...config, platforms_config: { ...(config.platforms_config||{}), [pid]: update } }
-    const res  = await fetch('/api/social/config', { method:'POST', headers:{'Content-Type':'application/json','x-admin-key':adminKey}, body: JSON.stringify(next) })
-    const data = await res.json()
-    if (data.ok) { setConfig(next); setSavingMsg(`✓ ${PLATFORMS[pid].label} saved`); setTimeout(()=>setSavingMsg(''),2000) }
+    try {
+      const res  = await fetch('/api/social/config', { method:'POST', headers:{'Content-Type':'application/json','x-admin-key':adminKey}, body: JSON.stringify(next) })
+      const data = await res.json()
+      if (data.ok) {
+        setSavingMsg(`✓ ${PLATFORMS[pid].label} saved`)
+        setTimeout(()=>setSavingMsg(''),3000)
+        await load() // Re-fetch from server to confirm persisted state
+        return { ok: true }
+      } else {
+        const err = data.error || `Save failed (${res.status})`
+        setSavingMsg(`✗ ${err}`)
+        setTimeout(()=>setSavingMsg(''),5000)
+        return { error: err }
+      }
+    } catch(e) {
+      setSavingMsg(`✗ ${e.message}`)
+      setTimeout(()=>setSavingMsg(''),5000)
+      return { error: e.message }
+    }
   }
 
   async function deletePost(id) {

@@ -13,10 +13,10 @@ function auth(req) {
 
 function parseConfig(raw) {
   if (!raw) return {}
-  // Deserialize platforms_config from JSON string
   const config = { ...raw }
   if (config.platforms_config_json) {
-    try { config.platforms_config = JSON.parse(config.platforms_config_json) } catch {}
+    try { config.platforms_config = JSON.parse(config.platforms_config_json) }
+    catch(e) { config.platforms_config = {} }
     delete config.platforms_config_json
   }
   return config
@@ -39,24 +39,33 @@ export async function GET(req) {
 
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  const body = await req.json()
 
-  // Strip Sanity internal fields — never send these in a patch
+  let body
+  try { body = await req.json() }
+  catch(e) { return Response.json({ ok: false, error: `Invalid JSON: ${e.message}` }, { status: 400 }) }
+
+  // Strip ALL Sanity internal/read-only fields before patching
   const { _id, _type, _rev, _createdAt, _updatedAt, platforms_config, ...rest } = body
 
-  // Serialize platforms_config to JSON string for storage
+  // Serialize platforms_config → JSON string (it's stored as text in Sanity schema)
   const patch = {
     ...rest,
-    ...(platforms_config ? { platforms_config_json: JSON.stringify(platforms_config) } : {}),
+    ...(platforms_config !== undefined
+      ? { platforms_config_json: JSON.stringify(platforms_config) }
+      : {}),
   }
 
-  const existing = await sanity.fetch(`*[_type == "socialConfig"][0]._id`).catch(() => null)
-  let saved
-  if (existing) {
-    saved = await sanity.patch(existing).set(patch).commit()
-  } else {
-    saved = await sanity.create({ _type: 'socialConfig', ...patch })
+  try {
+    const existingId = await sanity.fetch(`*[_type == "socialConfig"][0]._id`).catch(() => null)
+    let saved
+    if (existingId) {
+      saved = await sanity.patch(existingId).set(patch).commit()
+    } else {
+      saved = await sanity.create({ _type: 'socialConfig', ...patch })
+    }
+    return Response.json({ ok: true, config: parseConfig(saved) })
+  } catch(e) {
+    console.error('socialConfig save error:', e.message)
+    return Response.json({ ok: false, error: e.message }, { status: 500 })
   }
-
-  return Response.json({ ok: true, config: parseConfig(saved) })
 }
