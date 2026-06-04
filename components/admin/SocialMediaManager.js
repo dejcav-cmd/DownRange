@@ -166,7 +166,12 @@ function PostComposer({ adminKey, onPosted, activePlatforms }) {
       {result && (
         <div style={{ padding:'12px 16px', background: result.ok ? '#0a1f0f' : '#1a0505', border:`1px solid ${result.ok ? '#34d39930' : '#ef444430'}`, fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px' }}>
           <div style={{ color: result.ok ? '#34d399' : '#ef4444', fontWeight:700, marginBottom:6 }}>
-            {result.ok ? `✓ ${dryRun ? 'Previewed' : 'Posted'}: ${result.posted || result.total} items` : `✗ ${result.error}`}
+            {result.ok
+              ? result.message
+                ? `ℹ ${result.message}`
+                : `✓ ${dryRun ? 'Previewed' : 'Posted'}: ${dryRun ? result.total : result.posted} items`
+              : `✗ ${result.error}`
+            }
           </div>
           {result.results?.map((r,i) => {
             const pp = PLATFORMS[r.platform]

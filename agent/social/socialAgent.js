@@ -196,14 +196,23 @@ export async function runSocialAgent({ platforms, dryRun = false, forceArticleId
     const a = await sanity.fetch(`*[_type == "newsArticle" && _id == $id][0]{_id,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`, { id: forceArticleId })
     articles = a ? [a] : []
   } else {
+    // Fetch top articles — don't require urgencyScore (many articles lack it)
+    // Filter by min urgency only when score is explicitly set
     articles = await sanity.fetch(
-      `*[_type == "newsArticle" && (status == "published" || published == true) && urgencyScore >= $min] | order(urgencyScore desc, publishedAt desc)[0...30]{_id,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`,
-      { min: minUrgency }
+      `*[_type == "newsArticle" && (status == "published" || published == true) && defined(slug.current)] | order(coalesce(urgencyScore,5) desc, publishedAt desc)[0...30]{_id,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`,
     ).catch(() => [])
+    // Apply urgency filter post-fetch so articles without score still qualify
+    articles = articles.filter(a => (a.urgencyScore ?? 5) >= minUrgency)
+    // If still empty (all below threshold), grab latest 10 regardless
+    if (!articles.length) {
+      articles = await sanity.fetch(
+        `*[_type == "newsArticle" && (status == "published" || published == true) && defined(slug.current)] | order(publishedAt desc)[0...10]{_id,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`,
+      ).catch(() => [])
+    }
   }
 
   const candidates = articles.filter(a => !postedSlugs.has(a.slug)).slice(0, postsPerPlatform * 2)
-  if (!candidates.length) return { ok: true, posted: 0, message: 'No new articles to post', dryRun }
+  if (!candidates.length) return { ok: true, posted: 0, total: 0, message: 'No published articles found. Make sure articles are published in Sanity (status=published or published=true) and have a slug.', dryRun }
 
   const results = []; let posted = 0
   for (const platform of activePlatforms) {
