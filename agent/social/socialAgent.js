@@ -1,15 +1,9 @@
 /**
- * DownRange Social Media Agent — Free/Low-Cost Stack
- *
- * Platform strategy:
- *   Bluesky   — 100% free, AT Protocol direct, app password auth
- *   Threads   — Free, Meta Graph API (needs one-time App Review)
- *   Facebook  — Free, Meta Graph API (same app as Threads)
- *   X/Twitter — Via Buffer free tier (3 channels, 10 queued posts)
- *               Buffer absorbs the $0.20/post X API cost.
- *               Buffer API key is free with a Buffer account.
- *
- * Cost at 3 posts/day across all 4 platforms: $0/month
+ * DownRange Social Media Agent v2
+ * - Pulls from BOTH newsArticle and blogPost
+ * - Images required on all posts (category fallback if no imageUrl)
+ * - Per-platform scheduling via Sanity socialConfig
+ * - Platform-optimized copy (tone + length per platform)
  */
 import { createClient } from '@sanity/client'
 import { callAIText }   from '../../lib/aiClient.js'
@@ -20,61 +14,74 @@ const sanity = createClient({
   useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
 
-// ── Platform limits & tone ────────────────────────────────────────────────────
-const PLATFORMS = {
-  bluesky:  { limit: 295, tone: 'sharp and direct. One strong insight + the link. Gun-owner voice. No hashtags on Bluesky — they kill reach.' },
-  threads:  { limit: 450, tone: 'conversational. 2-3 punchy sentences. Ask a question to drive replies. 2A community voice.' },
-  facebook: { limit: 480, tone: 'informative and community-focused. 3-4 sentences. End with a question or call to action. Slightly longer is fine.' },
-  twitter:  { limit: 265, tone: 'punchy, urgent, max impact in fewest words. Strong opener. Use 2-3 relevant hashtags.' },
+// ── Category image fallbacks ─────────────────────────────────────────────────
+const FALLBACK_IMAGES = {
+  law:        'https://downrangeco.com/img/photos/law.jpg',
+  breaking:   'https://downrangeco.com/img/photos/law.jpg',
+  news:       'https://downrangeco.com/img/photos/news.jpg',
+  review:     'https://downrangeco.com/img/photos/rifle.jpg',
+  industry:   'https://downrangeco.com/img/photos/rifle.jpg',
+  training:   'https://downrangeco.com/img/photos/training.jpg',
+  hunting:    'https://downrangeco.com/img/photos/hunting.jpg',
+  default:    'https://downrangeco.com/img/photos/news.jpg',
+}
+
+function getImage(article) {
+  return article.imageUrl || FALLBACK_IMAGES[article.category] || FALLBACK_IMAGES.default
+}
+
+// ── Platform copy config ──────────────────────────────────────────────────────
+const PLATFORM_CONFIG = {
+  bluesky:  { limit: 290, tone: 'Direct and punchy. Gun-owner voice. One strong insight. No hashtags on Bluesky — they hurt reach.' },
+  threads:  { limit: 440, tone: 'Conversational, 2-3 short sentences. End with a question to drive replies. 2A community voice.' },
+  facebook: { limit: 470, tone: 'Informative. 3-4 sentences with context. End with a question or CTA. Slightly longer is fine on Facebook.' },
+  twitter:  { limit: 240, tone: 'Punchy. Max impact. Strong opener. 2-3 relevant hashtags at the end.' },
+  reddit:   { limit: 290, tone: 'Factual and direct. No marketing language. r/CCW and r/guns users hate hype. Just the news.' },
 }
 
 const HASHTAGS = {
-  law:      '#2A #GunRights #SecondAmendment',
-  news:     '#Firearms #2A #GunNews',
-  review:   '#GunReview #EDC #Firearms',
-  industry: '#GunIndustry #2A #Firearms',
-  breaking: '#Breaking #2A #GunNews',
-  training: '#CCW #SelfDefense #Firearms',
-  default:  '#2A #Firearms #GunOwners',
+  law:'#2A #GunRights #SecondAmendment', news:'#Firearms #2A #GunNews',
+  review:'#GunReview #EDC #Firearms', industry:'#GunIndustry #2A',
+  breaking:'#Breaking #2A #GunNews', training:'#CCW #SelfDefense #Firearms',
+  hunting:'#Hunting #2A #Outdoors', default:'#2A #Firearms #GunOwners',
 }
 
-// ── AI copy generator ────────────────────────────────────────────────────────
-async function generateCopy(article, platform) {
-  const cfg   = PLATFORMS[platform]
-  const url   = `https://downrangeco.com/news/${article.slug?.current || article.slug}`
+async function generateCopy(article, platform, contentType) {
+  const cfg   = PLATFORM_CONFIG[platform] || PLATFORM_CONFIG.bluesky
+  const base  = contentType === 'blog' ? 'blog.downrangeco.com' : 'downrangeco.com/news'
+  const url   = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${article.slug}`
   const tags  = platform === 'twitter' ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
   const reserve = url.length + tags.length + 4
   const maxBody = cfg.limit - reserve
 
+  const typeLabel = contentType === 'blog' ? 'in-depth blog post' : 'breaking news article'
   const raw = await callAIText({
-    prompt: `You are the social media voice for DownRange Co — an independent firearms and Second Amendment intelligence portal. The founder, DJ Cavalcanti, is a daily carrier based in Washington State.
+    prompt: `You are the social media voice for DownRange Co — an independent 2A intelligence portal at downrangeco.com. Founded by DJ Cavalcanti, a daily carrier in Washington State.
 
-Write a ${platform} post about this article:
+Write a ${platform} post promoting this ${typeLabel}:
 TITLE: ${article.title}
 SUMMARY: ${article.summary || article.excerpt || ''}
 CATEGORY: ${article.category}
-URGENCY: ${article.urgencyScore || 5}/10
+TYPE: ${contentType === 'blog' ? 'Blog / Analysis' : 'News'}
 
 Tone: ${cfg.tone}
-Body character limit: ${maxBody} chars MAX. Count carefully.
-Do NOT include the URL or hashtags — they get appended automatically.
-Return ONLY the body text. No quotes, no preamble.`,
-    useCase: 'default',
-    maxTokens: 150,
+Body character limit: ${maxBody} chars MAX.
+Do NOT include the URL or hashtags — appended automatically.
+Return ONLY the post body. No quotes, no preamble.`,
+    useCase: 'default', maxTokens: 150,
   })
-
   const body = raw.replace(/^["']|["']$/g, '').trim().slice(0, maxBody)
   return `${body}\n\n${url}${tags}`
 }
 
-// ── BLUESKY image upload helper ─────────────────────────────────────────────
+// ── BLUESKY ───────────────────────────────────────────────────────────────────
 async function uploadImageBluesky(imageUrl, accessJwt) {
   try {
     const imgRes = await fetch(imageUrl, { headers: { 'User-Agent': 'DownRange/1.0' } })
     if (!imgRes.ok) return null
     const imgBuffer = await imgRes.arrayBuffer()
+    if (imgBuffer.byteLength > 976 * 1024) return null
     const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
-    if (imgBuffer.byteLength > 976 * 1024) return null // Bluesky 1MB limit
     const blobRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.uploadBlob', {
       method: 'POST',
       headers: { 'Authorization': `Bearer ${accessJwt}`, 'Content-Type': contentType },
@@ -85,16 +92,13 @@ async function uploadImageBluesky(imageUrl, accessJwt) {
   } catch { return null }
 }
 
-// ── BLUESKY (100% free, AT Protocol) ────────────────────────────────────────
-async function postBluesky(content, imageUrl = null) {
-  let raw_handle = (process.env.BLUESKY_HANDLE || '').trim()
-  const pass      = (process.env.BLUESKY_APP_PASSWORD || '').trim()
-  if (!raw_handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars.' }
-
-  let handle = raw_handle
+async function postBluesky(content, imageUrl) {
+  let handle = (process.env.BLUESKY_HANDLE || '').trim()
     .replace(/[\u0000-\u001F\u007F-\u00A0\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g, '')
     .replace(/^https?:\/\/(www\.)?(bsky\.app\/profile\/)?/i, '')
     .replace(/^@+/, '').replace(/\/$/, '').replace(/\s+/g, '').toLowerCase()
+  const pass = (process.env.BLUESKY_APP_PASSWORD || '').trim()
+  if (!handle || !pass) return { ok: false, error: 'Missing BLUESKY_HANDLE or BLUESKY_APP_PASSWORD in Vercel.' }
   if (!handle.startsWith('did:') && !handle.includes('.')) handle += '.bsky.social'
 
   const authRes = await fetch('https://bsky.social/xrpc/com.atproto.server.createSession', {
@@ -102,16 +106,16 @@ async function postBluesky(content, imageUrl = null) {
     body: JSON.stringify({ identifier: handle, password: pass }),
   })
   const auth = await authRes.json()
-  if (!auth.accessJwt) return { ok: false, error: `Bluesky auth failed (using identifier: "${handle}"): ${auth.message || authRes.status}. Check BLUESKY_HANDLE in Vercel.` }
+  if (!auth.accessJwt) return { ok: false, error: `Bluesky auth failed: ${auth.message}` }
 
-  // Upload image if available
+  // Image embed (required)
   let embed
   if (imageUrl) {
     const blob = await uploadImageBluesky(imageUrl, auth.accessJwt)
-    if (blob) embed = { $type: 'app.bsky.embed.images', images: [{ image: blob, alt: 'DownRange 2A News' }] }
+    if (blob) embed = { $type: 'app.bsky.embed.images', images: [{ image: blob, alt: 'DownRange — 2A News' }] }
   }
 
-  // Build URL facets for clickable links
+  // URL facets
   const urlRegex = /https?:\/\/[^\s]+/g
   const facets = [], encoder = new TextEncoder()
   let match
@@ -121,82 +125,82 @@ async function postBluesky(content, imageUrl = null) {
     facets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#link', uri: match[0] }] })
   }
 
-  const record = {
-    $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(),
-    ...(facets.length ? { facets } : {}),
-    ...(embed ? { embed } : {}),
-  }
-
   const postRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${auth.accessJwt}`, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ repo: auth.did, collection: 'app.bsky.feed.post', record }),
+    body: JSON.stringify({ repo: auth.did, collection: 'app.bsky.feed.post', record: {
+      $type: 'app.bsky.feed.post', text: content, createdAt: new Date().toISOString(),
+      ...(facets.length ? { facets } : {}), ...(embed ? { embed } : {}),
+    }}),
   })
   const post = await postRes.json()
-  if (!post.uri) return { ok: false, error: `Bluesky post failed: ${post.message || postRes.status}` }
+  if (!post.uri) return { ok: false, error: `Bluesky post failed: ${post.message}` }
   const rkey = post.uri.split('/').pop()
   return { ok: true, postId: post.uri, postUrl: `https://bsky.app/profile/${auth.did}/post/${rkey}`, hasImage: !!embed }
 }
 
-// ── THREADS (free, Meta Graph API) ───────────────────────────────────────────
-async function postThreads(content) {
+// ── THREADS ───────────────────────────────────────────────────────────────────
+async function postThreads(content, imageUrl) {
   const token  = process.env.THREADS_ACCESS_TOKEN
   const userId = process.env.THREADS_USER_ID
-  if (!token || !userId) return { ok: false, error: 'Add THREADS_ACCESS_TOKEN + THREADS_USER_ID. Free via Meta for Developers → Threads API. One-time App Review required.' }
+  if (!token || !userId) return { ok: false, error: 'Missing THREADS_ACCESS_TOKEN or THREADS_USER_ID.' }
+
+  const body = { media_type: imageUrl ? 'IMAGE' : 'TEXT', access_token: token }
+  if (imageUrl) { body.image_url = imageUrl; body.text = content }
+  else body.text = content
 
   const container = await fetch(`https://graph.threads.net/v1.0/${userId}/threads`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ text: content, media_type: 'TEXT', access_token: token }),
+    method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body),
   }).then(r => r.json())
-
   if (!container.id) return { ok: false, error: container?.error?.message || 'Threads container failed' }
 
-  // Brief pause — Threads requires container to be ready
-  await new Promise(r => setTimeout(r, 1500))
-
+  await new Promise(r => setTimeout(r, 2000))
   const published = await fetch(`https://graph.threads.net/v1.0/${userId}/threads_publish`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ creation_id: container.id, access_token: token }),
   }).then(r => r.json())
-
   if (!published.id) return { ok: false, error: published?.error?.message || 'Threads publish failed' }
   const handle = process.env.THREADS_HANDLE || 'downrangeco'
-  return { ok: true, postId: published.id, postUrl: `https://www.threads.net/@${handle}/post/${published.id}` }
+  return { ok: true, postId: published.id, postUrl: `https://www.threads.net/@${handle}/post/${published.id}`, hasImage: !!imageUrl }
 }
 
-// ── FACEBOOK (free, Meta Graph API) ─────────────────────────────────────────
-async function postFacebook(content) {
+// ── FACEBOOK ──────────────────────────────────────────────────────────────────
+async function postFacebook(content, imageUrl) {
   const token  = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
   const pageId = process.env.FACEBOOK_PAGE_ID
-  if (!token || !pageId) return { ok: false, error: 'Add FACEBOOK_PAGE_ACCESS_TOKEN + FACEBOOK_PAGE_ID. Free via Meta for Developers → Graph API Explorer → generate page token.' }
+  if (!token || !pageId) return { ok: false, error: 'Missing FACEBOOK_PAGE_ACCESS_TOKEN or FACEBOOK_PAGE_ID.' }
 
-  const res  = await fetch(`https://graph.facebook.com/v20.0/${pageId}/feed`, {
+  // With image: use /photos endpoint for richer post
+  if (imageUrl) {
+    const res = await fetch(`https://graph.facebook.com/v20.0/${pageId}/photos`, {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ url: imageUrl, caption: content, access_token: token }),
+    }).then(r => r.json())
+    if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook photo post failed' }
+    return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/photo?fbid=${res.id}`, hasImage: true }
+  }
+
+  const res = await fetch(`https://graph.facebook.com/v20.0/${pageId}/feed`, {
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ message: content, access_token: token }),
   }).then(r => r.json())
-
   if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook post failed' }
   const [pid, eid] = res.id.split('_')
-  return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}` }
+  return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}`, hasImage: false }
 }
 
-// ── TWITTER via Zernio (free for 2 accounts, no developer portal needed) ──────
-// Zernio abstracts the X API entirely — $0 for up to 2 connected accounts
-async function postViaZernio(content, platform = 'twitter', imageUrl = null) {
+// ── TWITTER via Zernio ────────────────────────────────────────────────────────
+async function postViaZernio(content, imageUrl) {
   const apiKey    = (process.env.ZERNIO_API_KEY || '').trim()
-  const accountId = platform === 'twitter'
-    ? (process.env.ZERNIO_TWITTER_ACCOUNT_ID || '').trim()
-    : (process.env[`ZERNIO_${platform.toUpperCase()}_ACCOUNT_ID`] || '').trim()
-
-  if (!apiKey)     return { ok: false, error: 'Add ZERNIO_API_KEY to Vercel. Sign up free at zernio.com — Dashboard → API Keys.' }
-  if (!accountId)  return { ok: false, error: `Add ZERNIO_TWITTER_ACCOUNT_ID to Vercel. In Zernio dashboard → Connected Accounts → copy the account ID next to your X profile.` }
+  const accountId = (process.env.ZERNIO_TWITTER_ACCOUNT_ID || '').trim()
+  if (!apiKey)     return { ok: false, error: 'Missing ZERNIO_API_KEY in Vercel.' }
+  if (!accountId)  return { ok: false, error: 'Missing ZERNIO_TWITTER_ACCOUNT_ID in Vercel.' }
 
   const body = {
     content,
-    platforms: [{ platform, accountId }],
+    platforms: [{ platform: 'twitter', accountId }],
     ...(imageUrl ? { media: [{ url: imageUrl }] } : {}),
   }
-
   const res  = await fetch('https://zernio.com/api/v1/posts', {
     method: 'POST',
     headers: { 'Authorization': `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
@@ -204,154 +208,146 @@ async function postViaZernio(content, platform = 'twitter', imageUrl = null) {
   })
   const raw  = await res.text()
   let data
-  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Zernio non-JSON (${res.status}): ${raw.slice(0,200)}` } }
-
+  try { data = JSON.parse(raw) } catch { return { ok: false, error: `Zernio error (${res.status}): ${raw.slice(0,200)}` } }
   if (res.ok && (data.id || data.postId || data.success || data.posts?.length)) {
     const postId  = data.id || data.postId || data.posts?.[0]?.id || null
-    // Zernio returns the live X post URL when available
     const postUrl = data.url || data.posts?.[0]?.url || null
-    return { ok: true, postId, postUrl, hasImage: !!imageUrl, note: postUrl ? null : 'Check your X account — tweet should be live.' }
+    return { ok: true, postId, postUrl, hasImage: !!imageUrl }
   }
-
-  const errMsg = data.message || data.error || data.detail || JSON.stringify(data).slice(0, 300)
-  return { ok: false, error: `Zernio error (${res.status}): ${errMsg}` }
+  return { ok: false, error: `Zernio error (${res.status}): ${data.message || data.error || JSON.stringify(data).slice(0,200)}` }
 }
 
-// ── REDDIT (free, PRAW-style API) ────────────────────────────────────────────
-// Posts to relevant 2A subreddits based on article category
+// ── REDDIT ────────────────────────────────────────────────────────────────────
 const SUBREDDITS = {
-  law:      ['r/2ALiberals', 'r/CCW', 'r/guns'],
-  breaking: ['r/guns', 'r/CCW', 'r/2ALiberals'],
-  news:     ['r/guns', 'r/CCW'],
-  review:   ['r/guns', 'r/EDC'],
-  training: ['r/CCW', 'r/guns'],
-  default:  ['r/guns'],
+  law:['CCW','2ALiberals','guns'], breaking:['guns','CCW','2ALiberals'],
+  news:['guns','CCW'], review:['guns','EDC'], training:['CCW','guns'],
+  hunting:['hunting','guns'], default:['guns'],
 }
 
-async function postReddit(content, imageUrl = null, category = 'default') {
-  const clientId     = process.env.REDDIT_CLIENT_ID
-  const clientSecret = process.env.REDDIT_CLIENT_SECRET
-  const username     = process.env.REDDIT_USERNAME
-  const password     = process.env.REDDIT_PASSWORD
-  if (!clientId || !clientSecret || !username || !password) {
-    return { ok: false, error: 'Add REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USERNAME, REDDIT_PASSWORD to Vercel. Free at reddit.com/prefs/apps.' }
-  }
+async function postReddit(content, imageUrl, category) {
+  const clientId  = process.env.REDDIT_CLIENT_ID
+  const clientSec = process.env.REDDIT_CLIENT_SECRET
+  const username  = process.env.REDDIT_USERNAME
+  const password  = process.env.REDDIT_PASSWORD
+  if (!clientId || !clientSec || !username || !password)
+    return { ok: false, error: 'Missing Reddit env vars. See Setup Guide in admin.' }
 
-  // Get access token
   const tokenRes = await fetch('https://www.reddit.com/api/v1/access_token', {
     method: 'POST',
-    headers: {
-      'Authorization': `Basic ${btoa(`${clientId}:${clientSecret}`)}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'User-Agent': 'DownRange/1.0 by u/DownRangeCo',
-    },
+    headers: { 'Authorization': `Basic ${btoa(`${clientId}:${clientSec}`)}`, 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'DownRange/1.0 by u/DownRangeCo' },
     body: new URLSearchParams({ grant_type: 'password', username, password }),
   })
   const tokenData = await tokenRes.json()
-  if (!tokenData.access_token) return { ok: false, error: `Reddit auth failed: ${tokenData.error || tokenRes.status}` }
+  if (!tokenData.access_token) return { ok: false, error: `Reddit auth failed: ${tokenData.error}` }
 
-  // Extract URL from content for link post
-  const urlMatch = content.match(/https?:\/\/[^\s]+/)
-  const url      = urlMatch?.[0] || null
-  // Title = first sentence of content, truncated to 300 chars
-  const title    = content.split('\n')[0].replace(/https?:\/\/[^\s]+/g, '').trim().slice(0, 299) || 'DownRange Intel'
-
-  // Pick the primary subreddit for this category
-  const subs     = SUBREDDITS[category] || SUBREDDITS.default
-  const subreddit = subs[0].replace('r/', '')
-
-  const postBody = new URLSearchParams({
-    sr: subreddit,
-    kind: url ? 'link' : 'self',
-    title,
-    ...(url ? { url } : { text: content }),
-    resubmit: 'true',
-    nsfw: 'false',
-  })
+  const urlMatch  = content.match(/https?:\/\/[^\s]+/)
+  const url       = urlMatch?.[0] || null
+  const title     = content.split('\n')[0].replace(/https?:\/\/[^\s]+/g, '').trim().slice(0, 299) || 'DownRange Intel'
+  const subreddit = (SUBREDDITS[category] || SUBREDDITS.default)[0]
 
   const submitRes = await fetch('https://oauth.reddit.com/api/submit', {
     method: 'POST',
-    headers: {
-      'Authorization': `Bearer ${tokenData.access_token}`,
-      'Content-Type': 'application/x-www-form-urlencoded',
-      'User-Agent': 'DownRange/1.0 by u/DownRangeCo',
-    },
-    body: postBody,
+    headers: { 'Authorization': `Bearer ${tokenData.access_token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'DownRange/1.0 by u/DownRangeCo' },
+    body: new URLSearchParams({ sr: subreddit, kind: url ? 'link' : 'self', title, ...(url ? { url } : { text: content }), resubmit: 'true', nsfw: 'false' }),
   })
   const submitData = await submitRes.json()
-  const postUrl = submitData?.jquery?.find?.(x => Array.isArray(x) && x[2] === 'attr' && x[3] === 'href')?.[4]
-    || submitData?.data?.url
-    || null
-
-  if (!submitRes.ok || submitData?.json?.errors?.length) {
-    const err = submitData?.json?.errors?.[0]?.[1] || submitData?.message || JSON.stringify(submitData).slice(0,200)
-    return { ok: false, error: `Reddit post failed: ${err}` }
-  }
-
+  if (submitData?.json?.errors?.length) return { ok: false, error: submitData.json.errors[0][1] }
+  const postUrl = submitData?.data?.url || null
   return { ok: true, postId: subreddit, postUrl, hasImage: false }
 }
 
-// ── Dispatcher ───────────────────────────────────────────────────────────────
-async function dispatch(platform, content, imageUrl = null, category = 'default') {
+// ── Dispatcher ────────────────────────────────────────────────────────────────
+async function dispatch(platform, content, imageUrl, category) {
   switch (platform) {
     case 'bluesky':  return postBluesky(content, imageUrl)
     case 'threads':  return postThreads(content, imageUrl)
     case 'facebook': return postFacebook(content, imageUrl)
-    case 'twitter':  return postViaZernio(content, 'twitter', imageUrl)
+    case 'twitter':  return postViaZernio(content, imageUrl)
     case 'reddit':   return postReddit(content, imageUrl, category)
-    default:         return { ok: false, error: `${platform} not yet supported` }
+    default:         return { ok: false, error: `${platform} not supported` }
   }
 }
 
-// ── Main run ─────────────────────────────────────────────────────────────────
-export async function runSocialAgent({ platforms, dryRun = false, forceArticleId = null } = {}) {
-  const config = await sanity.fetch(`*[_type == "socialConfig"][0]`).catch(() => null)
-  const activePlatforms  = platforms || config?.platforms || ['bluesky']
-  const minUrgency       = config?.minUrgencyScore || 5
-  const postsPerPlatform = config?.postsPerDay || 3
-
+// ── Article + Blog fetcher ────────────────────────────────────────────────────
+async function fetchCandidates(minUrgency = 5, limit = 20) {
   const today = new Date(); today.setHours(0,0,0,0)
-  const postedSlugs = new Set(
-    (await sanity.fetch(`*[_type == "socialPost" && postedAt > $today].articleSlug`, { today: today.toISOString() }).catch(() => [])).filter(Boolean)
+  const postedToday = new Set(
+    (await sanity.fetch(`*[_type == "socialPost" && postedAt > $t].articleSlug`, { t: today.toISOString() }).catch(() => [])).filter(Boolean)
   )
+
+  // News articles
+  const news = await sanity.fetch(
+    `*[_type == "newsArticle" && defined(slug.current) && defined(publishedAt)] | order(coalesce(urgencyScore,5) desc, publishedAt desc)[0...${limit}]{
+      _id, "type":"news", title, summary, excerpt, category, urgencyScore,
+      "slug": slug.current, imageUrl
+    }`
+  ).catch(() => [])
+
+  // Blog posts (published only)
+  const blogs = await sanity.fetch(
+    `*[_type == "blogPost" && status == "published" && defined(slug.current)] | order(publishedAt desc)[0...10]{
+      _id, "type":"blog", title, "summary": excerpt, excerpt, category,
+      "urgencyScore": 6, "slug": slug.current, imageUrl
+    }`
+  ).catch(() => [])
+
+  // Merge, de-dupe already-posted, apply urgency filter
+  const all = [...news, ...blogs]
+    .filter(a => !postedToday.has(a.slug))
+    .filter(a => (a.urgencyScore ?? 5) >= minUrgency)
+
+  // If urgency filter wipes everything, fall back to latest regardless
+  return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3)]
+}
+
+// ── Main run — single platform ────────────────────────────────────────────────
+export async function runSocialAgent({ platform, count = 2, dryRun = false, forceArticleId = null } = {}) {
+  const config       = await sanity.fetch(`*[_type == "socialConfig"][0]`).catch(() => null)
+  const minUrgency   = config?.minUrgencyScore ?? 5
 
   let articles
   if (forceArticleId) {
-    const a = await sanity.fetch(`*[_type == "newsArticle" && _id == $id][0]{_id,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`, { id: forceArticleId })
+    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id,"type":_type,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`, { id: forceArticleId })
     articles = a ? [a] : []
   } else {
-    // newsArticle schema has no status/published field — filter by publishedAt + slug only
-    articles = await sanity.fetch(
-      `*[_type == "newsArticle" && defined(slug.current) && defined(publishedAt)] | order(coalesce(urgencyScore,5) desc, publishedAt desc)[0...30]{_id,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`
-    ).catch(() => [])
-    // Apply urgency filter — treat missing score as 5
-    const filtered = articles.filter(a => (a.urgencyScore ?? 5) >= minUrgency)
-    // Fall back to latest 10 if urgency filter leaves nothing
-    articles = filtered.length ? filtered : articles.slice(0, 10)
+    const pool = await fetchCandidates(minUrgency)
+    articles   = pool.slice(0, count)
   }
 
-  const candidates = articles.filter(a => !postedSlugs.has(a.slug)).slice(0, postsPerPlatform * 2)
-  if (!candidates.length) return { ok: true, posted: 0, total: 0, message: 'No published articles found. Make sure articles are published in Sanity (status=published or published=true) and have a slug.', dryRun }
+  if (!articles.length) return { ok: true, posted: 0, total: 0, message: 'No unposted articles available.', dryRun }
 
   const results = []; let posted = 0
-  for (const platform of activePlatforms) {
-    for (const article of candidates.slice(0, postsPerPlatform)) {
-      try {
-        const content = await generateCopy(article, platform)
-        const logDoc  = await sanity.create({
-          _type: 'socialPost', platform,
-          status: dryRun ? 'draft' : 'scheduled',
-          content, articleSlug: article.slug, articleTitle: article.title,
-          urgencyScore: article.urgencyScore, category: article.category,
-          scheduledAt: new Date().toISOString(), autoGenerated: true,
-        })
-        if (dryRun) { results.push({ platform, title: article.title, status: 'draft', content, docId: logDoc._id }); continue }
+  for (const article of articles) {
+    try {
+      const imageUrl    = getImage(article)
+      const contentType = article.type === 'blog' ? 'blog' : 'news'
+      const content     = await generateCopy(article, platform, contentType)
 
-        const result = await dispatch(platform, content, article.imageUrl || null, article.category || 'default')
-        await sanity.patch(logDoc._id).set({ status: result.ok ? 'posted' : 'failed', postId: result.postId || null, postUrl: result.postUrl || null, postedAt: result.ok ? new Date().toISOString() : null, error: result.error || null, hasImage: result.hasImage || false }).commit()
-        posted += result.ok ? 1 : 0
-        results.push({ platform, title: article.title, status: result.ok ? "posted" : "failed", postUrl: result.postUrl, error: result.error, note: result.note, hasImage: result.hasImage || false, docId: logDoc._id })
-      } catch (e) { results.push({ platform, title: article.title, status: 'error', error: e.message }) }
+      const logDoc = await sanity.create({
+        _type: 'socialPost', platform,
+        status: dryRun ? 'draft' : 'scheduled',
+        content, articleSlug: article.slug, articleTitle: article.title,
+        urgencyScore: article.urgencyScore, category: article.category,
+        mediaUrl: imageUrl, scheduledAt: new Date().toISOString(), autoGenerated: true,
+      })
+
+      if (dryRun) {
+        results.push({ platform, title: article.title, status: 'draft', content, imageUrl, docId: logDoc._id })
+        continue
+      }
+
+      const result = await dispatch(platform, content, imageUrl, article.category || 'default')
+      await sanity.patch(logDoc._id).set({
+        status: result.ok ? 'posted' : 'failed',
+        postId: result.postId || null, postUrl: result.postUrl || null,
+        postedAt: result.ok ? new Date().toISOString() : null,
+        error: result.error || null, hasImage: result.hasImage || false,
+      }).commit()
+
+      posted += result.ok ? 1 : 0
+      results.push({ platform, title: article.title, status: result.ok ? 'posted' : 'failed', postUrl: result.postUrl, error: result.error, hasImage: result.hasImage || false, docId: logDoc._id })
+    } catch (e) {
+      results.push({ platform, title: article.title, status: 'error', error: e.message })
     }
   }
   return { ok: true, posted, total: results.length, results, dryRun }
