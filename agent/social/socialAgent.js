@@ -73,13 +73,15 @@ async function postBluesky(content) {
   const pass      = (process.env.BLUESKY_APP_PASSWORD || '').trim()
   if (!raw_handle || !pass) return { ok: false, error: 'Add BLUESKY_HANDLE and BLUESKY_APP_PASSWORD to Vercel env vars.' }
 
-  // Aggressive sanitization — handle every possible format a user might paste
+  // Aggressive sanitization — strip invisible unicode, @, URLs, whitespace
   let handle = raw_handle
-    .replace(/^https?:\/\/(www\.)?(bsky\.app\/profile\/)?/i, '') // strip URL prefix
-    .replace(/^@/, '')           // strip leading @
+    // Strip ALL invisible/control/formatting unicode characters (the real culprit)
+    .replace(/[\u0000-\u001F\u007F-\u00A0\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g, '')
+    .replace(/^https?:\/\/(www\.)?(bsky\.app\/profile\/)?/i, '')
+    .replace(/^@+/, '')          // strip one or more leading @
     .replace(/\/$/, '')          // strip trailing slash
-    .replace(/\s+/g, '')         // strip any whitespace
-    .toLowerCase()               // must be lowercase
+    .replace(/\s+/g, '')         // strip any remaining whitespace
+    .toLowerCase()
 
   // If they pasted a full profile URL like bsky.app/profile/did:plc:xxx, extract handle
   if (handle.startsWith('did:')) {
