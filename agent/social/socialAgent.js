@@ -41,7 +41,7 @@ function getImage(article) {
 // Platform character budgets (body text only, URL/hashtags appended separately):
 const CHAR_BUDGETS = {
   twitter:  200,  // 280 total - 23 (t.co URL) - 55 (hashtags) - 2 (newlines)
-  bluesky:  220,  // 300 GRAPHEME limit - 45 (URL) - 5 (newlines) - 30 safety buffer for emoji
+  bluesky:  220,  // 300 GRAPHEME limit - 65 (URL worst case) - 2 (newlines) - 13 (safety)
   threads:  430,  // 500 limit - 50 (URL) - 20 (newlines)
   facebook: 450,  // No hard limit; keep focused
   reddit:   250,  // Title-only post; this is the title
@@ -73,7 +73,7 @@ const PLATFORM_PROMPTS = {
 - Example of BAD copy (too vague/short): "Big 2A news from NJ. Courts involved. Read more."`,
 
   bluesky: `BLUESKY POST RULES:
-- Copy budget: 250 characters MAX (not counting the URL)
+- Copy budget: 220 characters MAX for the body text (URL is appended separately)
 - No hashtags on Bluesky — they kill algorithmic reach
 - Write like a knowledgeable gun owner talking to another gun owner
 - Lead with the specific development — state, ruling, number, company name
@@ -143,19 +143,27 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
     .replace(/^(Here'?s?( a| the)?( draft| post| copy)?:?\s*)/i, '')
     .trim()
 
-  // Grapheme-aware truncation — emoji count as 1 grapheme but 2+ JS chars
-  // Critical for Bluesky which enforces a 300 grapheme hard limit
+  // Grapheme-aware truncation
+  // For Bluesky: the 300 grapheme limit applies to the ENTIRE post including URL
+  // We must enforce this on the full assembled string, not just the body
+  const suffix = `\n\n${url}${tags}`
+
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
     const segmenter = new Intl.Segmenter()
-    const graphemes = [...segmenter.segment(body)].map(s => s.segment)
-    if (graphemes.length > budget) {
-      body = graphemes.slice(0, budget - 1).join('') + '…'
+    // Count graphemes in suffix to know how many body graphemes we can use
+    const suffixGraphemes = [...segmenter.segment(suffix)].length
+    const bodyLimit = (platform === 'bluesky' ? 298 : budget * 2) - suffixGraphemes
+    const bodyGraphemes = [...segmenter.segment(body)].map(s => s.segment)
+    if (bodyGraphemes.length > bodyLimit) {
+      body = bodyGraphemes.slice(0, bodyLimit - 1).join('') + '…'
     }
   } else {
-    body = body.slice(0, budget)
+    const suffixLen = suffix.length
+    const bodyLimit = budget - suffixLen
+    if (body.length > bodyLimit) body = body.slice(0, bodyLimit - 1) + '…'
   }
 
-  return `${body}\n\n${url}${tags}`
+  return `${body}${suffix}`
 }
 
 // ── BLUESKY ───────────────────────────────────────────────────────────────────

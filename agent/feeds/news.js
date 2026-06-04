@@ -307,11 +307,18 @@ async function processNewsItem(item) {
     dedupHash:     hash,
   }
 
-  // Fetch real OG image from source
-  try {
-    const cdnUrl = await fetchAndUploadOgImage(item.url, doc._id)
-    if (cdnUrl) { doc.imageUrl = cdnUrl; console.log(`[NEWS] 📷 Got real image for "${item.title.slice(0,40)}"`) }
-  } catch { /* non-critical */ }
+  // Fetch real OG image — only if we don't already have one from RSS
+  // Skip if item already has an image to avoid wasting time on HTTP fetches
+  if (!doc.imageUrl && item.url) {
+    try {
+      // Tight 5s total timeout wrapper — never let this block the feed
+      const cdnUrl = await Promise.race([
+        fetchAndUploadOgImage(item.url, doc._id),
+        new Promise(resolve => setTimeout(() => resolve(null), 5000)),
+      ])
+      if (cdnUrl) { doc.imageUrl = cdnUrl; console.log(`[NEWS] 📷 Got real image for "${item.title.slice(0,40)}"`) }
+    } catch { /* non-critical */ }
+  }
 
   await publishToSanity(doc)
   console.log(`[NEWS] ✓ "${item.title.slice(0, 60)}" [${category}]${ai ? ' +AI' : ' +raw'}`)
