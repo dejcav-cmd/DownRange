@@ -1,5 +1,50 @@
 {
-  "bad_social_count": 0,
-  "bad_social_sample": [],
-  "total_social": 55
+  "sample": [
+    {
+      "_id": "news-46ca3c9d0d339a59190cc17945672600",
+      "slug": {
+        "_type": "slug",
+        "current": "potd-glock-clone-the-norinco-np7a"
+      },
+      "slug_current": "potd-glock-clone-the-norinco-np7a",
+      "title": "Norinco's NP7A Copies Glock 17 Design, Drastically Undercuts U.S. Pricing"
+    },
+    {
+      "_id": "news-0272f4a09bf387791d3ce3076d972c3d",
+      "slug": {
+        "_type": "slug",
+        "current": "tactical-youtube-is-getting-hammered-here-s-why"
+      },
+      "slug_current": "tactical-youtube-is-getting-hammered-here-s-why",
+      "title": "YouTube Throttles Gun Training Channels Through Algorithm Changes"
+    },
+    {
+      "_id": "news-f1560b62037d6e6cb08172f29a859f63",
+      "slug": {
+        "_type": "slug",
+        "current": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources"
+      },
+      "slug_current": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources",
+      "title": "SAF Exposes Bloomberg Money Behind ProPublica's ATF Story"
+    },
+    {
+      "_id": "news-b6d0591cb28f7e2653ae5f4d53c80665",
+      "slug": {
+        "_type": "slug",
+        "current": "5-11-tactical-clothing-pants-shorts-that-can-keep-up"
+      },
+      "slug_current": "5-11-tactical-clothing-pants-shorts-that-can-keep-up",
+      "title": "5.11 Tactical Launches Women's Carry Shorts and Pants for Daily Users"
+    },
+    {
+      "_id": "news-8d900cdbda518fda6344fc2756ca1705",
+      "slug": {
+        "_type": "slug",
+        "current": "torture-test-the-first-1000-rounds-through-the-glock-17-gen-6"
+      },
+      "slug_current": "torture-test-the-first-1000-rounds-through-the-glock-17-gen-6",
+      "title": "Glock 17 Gen 6 Runs 1,000 Rounds Flawless, Metal Gun Shooter Converts"
+    }
+  ],
+  "string_slugs": []
 }
