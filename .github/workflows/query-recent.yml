@@ -9,13 +9,9 @@ jobs:
       - name: Query Sanity
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_QUERY_TOKEN }}
-        run: python3 scripts/query_recent.py
-      - name: Push result
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "CI"
-          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/dejcav-cmd/DownRange.git
-          git add -f scripts/query_recent_result.txt
-          git diff --staged --quiet || git commit -m "ci: article query result" && git push
+        run: python3 scripts/query_recent.py | tee /tmp/result.txt; exit 0
+      - name: Upload result
+        uses: actions/upload-artifact@v4
+        with:
+          name: query-result
+          path: /tmp/result.txt
