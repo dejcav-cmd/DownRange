@@ -267,11 +267,15 @@ async function processNewsItem(item) {
   }
 
   const hash = crypto.createHash('md5').update(item.url).digest('hex')
-  const slug = item.title
+  // Always generate a real slug from the title — never leave it empty
+  const rawSlug = (item.title || item.sourceTitle || 'article')
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '')
-    .slice(0, 96)
+    .slice(0, 80)
+  // Append short hash suffix to guarantee uniqueness even with duplicate titles
+  const slugSuffix = hash.slice(0, 6)
+  const slug = rawSlug ? `${rawSlug}-${slugSuffix}` : `article-${slugSuffix}`
 
   // AI rewrite
   let ai = null

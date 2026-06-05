@@ -34,7 +34,7 @@ export function resolveImage(article) {
 export async function fetchArticles(limit = 20, category = null) {
   const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
   return client.fetch(`
-    *[_type == "newsArticle" && approved == true ${filter}] | order(publishedAt desc) [0...${limit}] {
+    *[_type == "newsArticle" && approved == true && defined(slug.current) ${filter}] | order(publishedAt desc) [0...${limit}] {
       _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
       author->{name, slug},
       heroImage { asset->{url}, alt },
@@ -48,7 +48,7 @@ export async function fetchArticles(limit = 20, category = null) {
 // ── PAGINATED / SEARCH — for News page ──────────────────────────────────────
 export async function fetchArticlesPaginated({ page = 1, perPage = 20, category = null, days = null, search = null } = {}) {
   const offset = (page - 1) * perPage
-  let filters = `_type == "newsArticle" && approved == true && category != "deals"`
+  let filters = `_type == "newsArticle" && approved == true && category != "deals" && defined(slug.current)`
   if (category) filters += ` && category == "${category}"`
   if (days) {
     const since = new Date(Date.now() - days * 24 * 60 * 60 * 1000).toISOString()

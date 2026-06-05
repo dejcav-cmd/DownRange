@@ -447,7 +447,7 @@ function HeroRotator({ articles }) {
             <span id="hero-meta" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6B7280', letterSpacing:'0.06em' }}>
               {a.source} · {timeAgo(a.publishedAt)}
             </span>
-            <a id="hero-link" href={`/news/${a.slug?.current || a._id}`}
+            <a id="hero-link" href={`/news/${a.slug?.current || a.slug?.current || ''}`}
               style={{ background:'#C8922A', color:'#000', fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.08em', padding:'10px 22px', textDecoration:'none', display:'inline-block', transition:'opacity 0.15s' }}>
               Read Full Story →
             </a>
@@ -515,7 +515,7 @@ function HeroRotator({ articles }) {
     if (title) title.textContent = a.title;
     if (excerpt) { excerpt.textContent = a.excerpt; excerpt.style.display = a.excerpt ? 'block' : 'none'; }
     if (meta) meta.textContent = (a.source || '') + ' · ' + timeAgo(a.publishedAt);
-    if (link) link.href = '/news/' + a.slug;
+    if (link) link.href = '/news/' + (a.slug?.current || a.slug || '');
     if (cat) { cat.textContent = CAT_LABEL[a.category] || (a.category||'').toUpperCase(); cat.style.background = cc; cat.style.color = a.category==='law'?'#fff':'#000'; }
 
     // Progress bar animation
