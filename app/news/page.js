@@ -25,7 +25,7 @@ export default async function NewsPage({ searchParams }) {
   const sort   = searchParams?.sort   || 'newest'
   const page   = Math.max(1, parseInt(searchParams?.page || '1'))
   const search = searchParams?.q || null
-  const days   = search ? null : 10  // 10-day window unless searching
+  const days   = search ? null : 30  // 30-day window unless searching
 
   // Fetch data
   const [{ articles, total, pages }, alerts, legislation] = await Promise.all([
@@ -60,7 +60,7 @@ export default async function NewsPage({ searchParams }) {
               <span style={{ color:'var(--gold)' }}>Intelligence Feed</span>
             </h1>
             <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
-              {total > 0 ? total : '—'} stories in last 10 days · Updated every 15 minutes · All sources aggregatedregated
+              {total > 0 ? total : '—'} stories in last 30 days · Updated every 15 minutes · All sources aggregatedregated
             </p>
           </div>
         </div>

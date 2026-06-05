@@ -52,8 +52,9 @@ export async function GET(req) {
   if (key !== process.env.ADMIN_KEY) return Response.json({ error:'Unauthorized' }, { status:401 })
 
   const QUERIES = [
-    { type:'newsArticle',    label:'News Articles',  q:`*[_type=="newsArticle" && defined(title)] | order(publishedAt desc) [0...200] { _id, title, body, qualityReviewed, publishedAt }` },
-    { type:'blogPost',       label:'Blog Posts',     q:`*[_type=="blogPost" && defined(title)] | order(publishedAt desc) [0...100] { _id, title, body, qualityReviewed }` },
+    // Use _createdAt desc so newly ingested articles always appear regardless of their publishedAt
+    { type:'newsArticle',    label:'News Articles',  q:`*[_type=="newsArticle" && defined(title)] | order(_createdAt desc) [0...500] { _id, title, body, qualityReviewed, publishedAt, _createdAt, "slug": slug.current, category }` },
+    { type:'blogPost',       label:'Blog Posts',     q:`*[_type=="blogPost" && defined(title)] | order(_createdAt desc) [0...100] { _id, title, body, qualityReviewed, "slug": slug.current }` },
     { type:'firearmRelease', label:'Gun Releases',   q:`*[_type=="firearmRelease" && defined(brand)] | order(_createdAt desc) [0...100] { _id, "title": brand + " " + model, body, qualityReviewed }` },
     { type:'canadaContent',  label:'Canada',         q:`*[_type=="canadaContent" && defined(title)] | order(_createdAt desc) [0...100] { _id, title, body, qualityReviewed }` },
   ]

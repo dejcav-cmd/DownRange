@@ -2045,6 +2045,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
     fetchCounts()
   }, [])
 
+  const loadAllItems = () => fetchCounts() // alias used by RewriteBtn and FixAllFailingBtn
   async function fetchCounts() {
     try {
       setItemsLoading(true)
