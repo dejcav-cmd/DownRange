@@ -1,44 +1,25 @@
-import urllib.request, urllib.parse, json, os, sys
+import urllib.request, urllib.parse, json, os
+T = os.environ['SANITY_TOKEN']
+BASE = 'https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production'
 
-TOKEN = os.environ['SANITY_TOKEN']
-PROJECT = 'vbnsqnkg'
-BASE = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data'
-
-def query(q):
-    url = f'{BASE}/query/production?query={urllib.parse.quote(q)}&returnQuery=false'
-    req = urllib.request.Request(url, headers={'Authorization': f'Bearer {TOKEN}'})
-    with urllib.request.urlopen(req, timeout=20) as r:
+def q(query):
+    url = BASE + '?query=' + urllib.parse.quote(query) + '&returnQuery=false'
+    req = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + T})
+    with urllib.request.urlopen(req, timeout=15) as r:
         return json.loads(r.read()).get('result', [])
 
-def mutate(mutations):
-    url = f'{BASE}/mutate/production'
-    body = json.dumps({'mutations': mutations}).encode()
-    req = urllib.request.Request(url, data=body, headers={
-        'Authorization': f'Bearer {TOKEN}', 'Content-Type': 'application/json'
-    })
-    with urllib.request.urlopen(req, timeout=20) as r:
-        return json.loads(r.read())
+briefs = q('*[_type=="dailyBriefing"]|order(date desc)[0...5]{_id,date,status,headline}')
+print(f'dailyBriefing docs: {len(briefs)}')
+for b in briefs:
+    print(f'  {b.get("date")} {b.get("status")} {(b.get("headline") or "")[:50]}')
 
-# Get all Canada + Brazil articles missing active==true
-canada = query('*[_type=="canadaContent" && active != true]{_id, title, active}')
-brazil = query('*[_type=="brazilContent" && active != true]{_id, title, active}')
-
-print(f'Canada articles missing active==true: {len(canada)}')
-print(f'Brazil articles missing active==true: {len(brazil)}')
-
-all_docs = canada + brazil
-if not all_docs:
-    print('Nothing to patch.')
-    sys.exit(0)
-
-# Patch in batches of 50
-BATCH = 50
-patched = 0
-for i in range(0, len(all_docs), BATCH):
-    batch = all_docs[i:i+BATCH]
-    mutations = [{'patch': {'id': d['_id'], 'set': {'active': True}}} for d in batch]
-    result = mutate(mutations)
-    patched += len(batch)
-    print(f'Patched {patched}/{len(all_docs)}...')
-
-print(f'Done. {patched} articles set to active=true.')
+alerts = q('*[_type=="systemAlert"]|order(_createdAt desc)[0...5]{_id,title,level,_createdAt}')
+print(f'systemAlert docs: {len(alerts)}')
+for a in alerts:
+    print(f'  {a.get("_createdAt","")[:16]} [{a.get("level")}] {a.get("title","")}')
+    
+# Also check cronRun for recent failures
+fails = q('*[_type=="cronRun" && status=="failed"]|order(_createdAt desc)[0...5]{jobId,status,_createdAt,details}')
+print(f'Recent failed cron runs: {len(fails)}')
+for f in fails:
+    print(f'  {f.get("_createdAt","")[:16]} {f.get("jobId")} {f.get("details","")}')
