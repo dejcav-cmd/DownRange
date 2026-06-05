@@ -1,0 +1,57 @@
+{
+  "total_before": 344,
+  "approved": 344,
+  "since_jun": 39,
+  "latest3": [
+    {
+      "_createdAt": "2026-06-05T00:02:50Z",
+      "approved": true,
+      "slug": "tactical-youtube-is-getting-hammered-here-s-why",
+      "title": "YouTube Suppresses Tactical Firearms Content Channels"
+    },
+    {
+      "_createdAt": "2026-06-04T23:15:54Z",
+      "approved": true,
+      "slug": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources",
+      "title": "SAF Exposes Bloomberg Money Behind ProPublica's ATF Story"
+    },
+    {
+      "_createdAt": "2026-06-04T19:15:25Z",
+      "approved": true,
+      "slug": "5-11-tactical-clothing-pants-shorts-that-can-keep-up",
+      "title": "5.11 Tactical Launches Women's Carry Shorts and Pants for Daily Users"
+    }
+  ],
+  "crons": [],
+  "broken": {
+    "_id": "news-ed2885a86a33802b8759352ff4b98b4a",
+    "approved": true,
+    "externalUrl": "https://gunsamerica.com/digest/infitac-fml19-review/",
+    "slug": "fml19-vs-fmp13-small-thermal-big-upgrade",
+    "title": "Infiitac Fast Mini FML19 Cuts Thermal Weight Without Killing Performance"
+  },
+  "agent_status": 200,
+  "agent_response": "{\"success\":true,\"feed\":\"news\",\"result\":{\"done\":1,\"withAI\":0,\"withRaw\":1,\"dupes\":19,\"total\":20,\"ms\":74967,\"claudeUp\":true},\"ms\":77336}",
+  "total_after": 344,
+  "delta": 0,
+  "latest3_after": [
+    {
+      "_createdAt": "2026-06-05T00:02:50Z",
+      "approved": true,
+      "slug": "tactical-youtube-is-getting-hammered-here-s-why",
+      "title": "YouTube Suppresses Tactical Firearms Content Channels"
+    },
+    {
+      "_createdAt": "2026-06-04T23:15:54Z",
+      "approved": true,
+      "slug": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources",
+      "title": "SAF Exposes Bloomberg Money Behind ProPublica's ATF Story"
+    },
+    {
+      "_createdAt": "2026-06-04T19:15:25Z",
+      "approved": true,
+      "slug": "5-11-tactical-clothing-pants-shorts-that-can-keep-up",
+      "title": "5.11 Tactical Launches Women's Carry Shorts and Pants for Daily Users"
+    }
+  ]
+}
