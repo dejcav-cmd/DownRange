@@ -1514,7 +1514,7 @@ function AuthorBioPanel({ adminKey }) {
   const [msg, setMsg]         = useState(null)
   const [updatedAt, setUpdatedAt] = useState(null)
 
-  useEffect(() => { loadBio() }, [])
+  useEffect(() => { if (adminKey) loadBio() }, [adminKey])
 
   async function loadBio() {
     try {
@@ -1644,7 +1644,7 @@ function ContentSourcesPanel({ adminKey }) {
   const [confirmDelete, setConfirmDelete] = useState(null) // { id, name, feedType }
   const [deleteContent, setDeleteContent] = useState(false)
 
-  useEffect(() => { loadSources() }, [])
+  useEffect(() => { if (adminKey) loadSources() }, [adminKey])
 
   async function loadSources() {
     setLoading(true)
@@ -2042,10 +2042,10 @@ function ContentHub({ adminKey, setPanel, setSection }) {
   }
 
   useEffect(() => {
-    fetchCounts()
-  }, [])
+    if (adminKey) fetchCounts()  // only fetch once adminKey is available
+  }, [adminKey])
 
-  const loadAllItems = () => fetchCounts() // alias used by RewriteBtn and FixAllFailingBtn
+  const loadAllItems = () => fetchCounts()
   async function fetchCounts() {
     try {
       setItemsLoading(true)
