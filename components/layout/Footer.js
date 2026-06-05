@@ -1,6 +1,5 @@
 'use client'
 import Link from 'next/link'
-import EmailCapture from '../ui/EmailCapture'
 import SocialIcons from '../ui/SocialIcons'
 
 const FOOTER_COLS = [
@@ -14,9 +13,6 @@ export default function Footer() {
   return (
     <footer style={{ background: '#07080A', borderTop: '1px solid var(--border)', padding: '48px 0 24px' }}>
       <div className="container">
-        {/* ── Email Capture ── */}
-        <EmailCapture variant="footer" />
-
         <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '280px repeat(4, 1fr)', gap: '40px', marginBottom: '40px' }}>
           {/* Brand */}
           <div>
