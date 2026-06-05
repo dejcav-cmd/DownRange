@@ -1,117 +1,36 @@
 {
-  "recent_articles": [
+  "scan_total": 345,
+  "scan_top5": [
+    {
+      "_createdAt": "2026-06-05T00:46:09Z",
+      "publishedAt": "2026-06-04T23:30:00.000Z",
+      "slug": "potd-glock-clone-the-norinco-np7a",
+      "title": "Norinco NP7A: Chinese Glock 17 Clone Enters Global Market"
+    },
     {
       "_createdAt": "2026-06-05T00:02:50Z",
-      "_id": "news-0272f4a09bf387791d3ce3076d972c3d",
-      "externalUrl": "https://gunsamerica.com/digest/tactical-youtube-channels-algorithm-decline/",
+      "publishedAt": "2026-06-04T05:05:00.000Z",
       "slug": "tactical-youtube-is-getting-hammered-here-s-why",
-      "sourceTitle": "Tactical YouTube Is Getting Hammered. Here\u2019s Why\u2026",
       "title": "YouTube Suppresses Tactical Firearms Content Channels"
     },
     {
       "_createdAt": "2026-06-04T23:15:54Z",
-      "_id": "news-f1560b62037d6e6cb08172f29a859f63",
-      "externalUrl": "https://www.thetruthaboutguns.com/saf-rips-propublicas-atf-hit-piece-over-bloomberg-funded-sources/",
+      "publishedAt": "2026-06-04T19:30:00.000Z",
       "slug": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources",
-      "sourceTitle": "SAF Rips ProPublica\u2019s ATF Hit Piece Over Bloomberg-Funded Sources",
       "title": "SAF Exposes Bloomberg Money Behind ProPublica's ATF Story"
     },
     {
       "_createdAt": "2026-06-04T19:15:25Z",
-      "_id": "news-b6d0591cb28f7e2653ae5f4d53c80665",
-      "externalUrl": "https://www.thetruthaboutguns.com/5-11-tactical-womens-clothing-review/",
+      "publishedAt": "2026-06-04T16:00:00.000Z",
       "slug": "5-11-tactical-clothing-pants-shorts-that-can-keep-up",
-      "sourceTitle": "5.11 Tactical Clothing: Pants & Shorts That Can Keep Up",
       "title": "5.11 Tactical Launches Women's Carry Shorts and Pants for Daily Users"
     },
     {
       "_createdAt": "2026-06-04T18:30:26Z",
-      "_id": "news-8d900cdbda518fda6344fc2756ca1705",
-      "externalUrl": "https://combathandguns.com/torture-test-the-first-1000-rounds-through-the-glock-17-gen-6/",
+      "publishedAt": "2026-06-04T10:52:00.000Z",
       "slug": "torture-test-the-first-1000-rounds-through-the-glock-17-gen-6",
-      "sourceTitle": "Torture Test: The First 1000 Rounds Through the Glock 17 Gen 6",
       "title": "Glock 17 Gen 6 Runs 1,000 Rounds Flawless, Metal Gun Shooter Converts"
-    },
-    {
-      "_createdAt": "2026-06-04T15:15:28Z",
-      "_id": "news-0a8f3d29811769ce7c1736c1505d108d",
-      "externalUrl": "https://www.thetruthaboutguns.com/saf-bergen-county-gun-confiscation-lawsuit/",
-      "slug": "saf-expands-lawsuit-over-new-jersey-guilt-by-association-gun-confiscations-in-bergen-county",
-      "sourceTitle": "SAF Expands Lawsuit Over New Jersey \u201cGuilt by Association\u201d Gun Confiscations in Bergen County",
-      "title": "SAF Sues Bergen County for Seizing Guns Without Criminal Charges"
-    },
-    {
-      "_createdAt": "2026-06-04T14:15:24Z",
-      "_id": "news-3197ac63066f5146c2073f5c05dfb5a6",
-      "externalUrl": "https://saf.org/gannetts-usa-today-blasts-guns-second-amendment-rights-sanity/",
-      "slug": "gannett-s-usa-today-blasts-guns-second-amendment-rights-sanity",
-      "sourceTitle": "Gannett\u2019s USA TODAY blasts guns, Second Amendment rights, sanity",
-      "title": "Gannett Pushes Gun Control While Gutting Reporter Ranks"
-    },
-    {
-      "_createdAt": "2026-06-04T06:45:58Z",
-      "_id": "news-727e36638b4f82b709847e4d23aac207",
-      "externalUrl": "https://bearingarms.com/tomknighton/2026/06/03/the-continuing-trend-that-undermines-gun-owner-trust-in-atf-n1232733",
-      "slug": "the-continuing-trend-that-undermines-gun-owner-trust-in-atf",
-      "sourceTitle": "The Continuing Trend That Undermines Gun Owner Trust in ATF",
-      "title": "ATF Announces Rule Changes While Gun Industry Remains Deeply Skeptical"
-    },
-    {
-      "_createdAt": "2026-06-04T02:00:59Z",
-      "_id": "goa-41c1715833caf20130265c97acbd5793",
-      "externalUrl": "https://www.gunowners.org/goa-vcdl-warn-virginia-officials-against-enforcing-enjoined-universal-background-check-law-as-court-considers-states-effort-to-dissolve-injunction/",
-      "slug": "goa-vcdl-warn-virginia-officials-against-enforcing-enjoined-universal-background-41c171",
-      "sourceTitle": null,
-      "title": "GOA, VCDL Warn Virginia Officials Against Enforcing Enjoined Universal Background Check Law as Court Considers State's Effort to Dissolve Injunction"
-    },
-    {
-      "_createdAt": "2026-06-04T02:00:57Z",
-      "_id": "goa-c7e8680bf3625a52179dc30cd0c7fb55",
-      "externalUrl": "https://www.gunowners.org/va06032026/",
-      "slug": "va-goa-and-vcdl-just-had-a-major-win-against-universal-background-check-enforcem-c7e868",
-      "sourceTitle": null,
-      "title": "VA: GOA and VCDL Just Had a Major Win Against Universal Background Check Enforcement in Court!"
-    },
-    {
-      "_createdAt": "2026-06-04T02:00:54Z",
-      "_id": "goa-a28ebed5cdb8329926d4a618788b408e",
-      "externalUrl": "https://www.gunowners.org/sc06032026/",
-      "slug": "sc-can-we-trust-stephen-goldfinch-to-be-scs-top-cop-a28ebe",
-      "sourceTitle": null,
-      "title": "SC: Can We Trust Stephen Goldfinch to be SC's Top Cop?"
     }
   ],
-  "no_external_url": 0,
-  "dedup_sample": [
-    {
-      "t": "YouTube Suppresses Tactical Firearms Content Channels",
-      "u": "https://gunsamerica.com/digest/tactical-youtube-channels-algorithm-decline/"
-    },
-    {
-      "t": "SAF Exposes Bloomberg Money Behind ProPublica's ATF Story",
-      "u": "https://www.thetruthaboutguns.com/saf-rips-propublicas-atf-hit-piece-over-bloomberg-funded-sources/"
-    },
-    {
-      "t": "5.11 Tactical Launches Women's Carry Shorts and Pants for Daily Users",
-      "u": "https://www.thetruthaboutguns.com/5-11-tactical-womens-clothing-review/"
-    },
-    {
-      "t": "Glock 17 Gen 6 Runs 1,000 Rounds Flawless, Metal Gun Shooter Converts",
-      "u": "https://combathandguns.com/torture-test-the-first-1000-rounds-through-the-glock-17-gen-6/"
-    },
-    {
-      "t": "SAF Sues Bergen County for Seizing Guns Without Criminal Charges",
-      "u": "https://www.thetruthaboutguns.com/saf-bergen-county-gun-confiscation-lawsuit/"
-    }
-  ],
-  "created_last_hour": [
-    {
-      "_createdAt": "2026-06-05T00:02:50Z",
-      "_id": "news-0272f4a09bf387791d3ce3076d972c3d",
-      "externalUrl": "https://gunsamerica.com/digest/tactical-youtube-channels-algorithm-decline/",
-      "slug": "tactical-youtube-is-getting-hammered-here-s-why",
-      "title": "YouTube Suppresses Tactical Firearms Content Channels"
-    }
-  ],
-  "created_last_hour_count": 1
+  "visible_30d": 299
 }
