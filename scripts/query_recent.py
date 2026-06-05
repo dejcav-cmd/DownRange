@@ -1,28 +1,26 @@
 import urllib.request, urllib.parse, json, os, sys, traceback
 from datetime import datetime, timedelta, timezone
 
-def sanity_req(path, data=None):
-    url = f'https://vbnsqnkg.api.sanity.io/v2024-01-01{path}'
-    body = json.dumps(data).encode() if data else None
-    req = urllib.request.Request(url, data=body, headers={
-        'Authorization': f'Bearer {os.environ["SANITY_TOKEN"]}',
-        'Content-Type': 'application/json'
-    })
-    with urllib.request.urlopen(req, timeout=20) as r:
-        return json.loads(r.read())
-
 outlines = []
-def log(s): print(s); outlines.append(str(s))
+def log(s): print(s, flush=True); outlines.append(str(s))
 
 try:
+    token = os.environ.get('SANITY_TOKEN', '')
+    if not token:
+        raise Exception('SANITY_TOKEN is empty')
+
     since = (datetime.now(timezone.utc) - timedelta(hours=24)).strftime('%Y-%m-%dT%H:%M:%SZ')
     log(f'Since: {since}')
-    
+
     query = '*[_type=="newsArticle"&&_createdAt>"' + since + '"]|order(_createdAt desc)[0...50]{title,"slug":slug.current,_createdAt,source}'
-    data = sanity_req('/data/query/production?query=' + urllib.parse.quote(query) + '&returnQuery=false')
+    url = 'https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=' + urllib.parse.quote(query) + '&returnQuery=false'
+    req = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + token})
+    with urllib.request.urlopen(req, timeout=20) as r:
+        data = json.loads(r.read())
+
     results = data.get('result', [])
     log(f'FOUND: {len(results)} articles in last 24h')
-    
+    log('---')
     for a in results:
         slug = a.get('slug', '')
         title = (a.get('title') or '')[:80]
@@ -30,21 +28,12 @@ try:
         source = a.get('source', '')
         log(f'[{created}] {title}')
         log(f'  https://downrangeco.com/news/{slug}  ({source})')
-
-    # Save to Sanity doc so we can read back
-    sanity_req('/data/mutate/production', {'mutations': [{'createOrReplace': {
-        '_id': 'query-result-latest',
-        '_type': 'cronRun',
-        'jobId': 'query-recent-articles',
-        'status': 'success',
-        'at': datetime.now(timezone.utc).isoformat(),
-        'details': '\n'.join(outlines)[:10000],
-        'trigger': 'manual',
-        'ms': 0
-    }}]})
-    log('Saved to Sanity: query-result-latest')
+        log('')
 
 except Exception as e:
-    log(f'ERROR: {e}')
+    log(f'EXCEPTION: {e}')
     traceback.print_exc()
-    sys.exit(1)
+
+with open('scripts/query_recent_result.txt', 'w') as f:
+    f.write('\n'.join(outlines))
+print('File written.')
