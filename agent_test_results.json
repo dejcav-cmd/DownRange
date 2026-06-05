@@ -1,39 +1,6 @@
 {
-  "bad_by_slug": null,
-  "bad_by_id": {
-    "_id": "goa-c7f32d4e8dd10832c66d424782eb9c20",
-    "_type": "newsArticle",
-    "slug": "dont-let-the-usps-trample-on-the-2a-c7f32d",
-    "title": "USPS Still Blocking Handgun Shipments Despite Court Loss"
-  },
-  "types": [
-    "ammoPrice",
-    "blogPost",
-    "brazilContent",
-    "breakingAlert",
-    "canadaContent",
-    "competition",
-    "cronRun",
-    "cronRunStore",
-    "dailyBriefing",
-    "firearmRelease",
-    "giveaway",
-    "huntingContent",
-    "imageAsset",
-    "legislation",
-    "newsArticle",
-    "outreachContact",
-    "outreachSendLog",
-    "outreachTemplate",
-    "prepContent",
-    "review",
-    "sanity.imageAsset",
-    "siteConfig",
-    "socialConfig",
-    "socialPost",
-    "stateProfile",
-    "system.group",
-    "system.retention",
-    "video"
-  ]
+  "null_slug_count": 0,
+  "fixed": 0,
+  "errors": 0,
+  "log": []
 }
