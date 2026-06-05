@@ -1,6 +1,5 @@
 {
-  "null_slug_count": 0,
+  "broken_id_slugs": 0,
   "fixed": 0,
-  "errors": 0,
-  "log": []
+  "errors": 0
 }
