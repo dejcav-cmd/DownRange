@@ -219,18 +219,52 @@ let adminKey = '';
 let screenInited = {};
 
 // AUTH
-function tryAuth() {
+async function tryAuth() {
   const val = document.getElementById('lock-input').value.trim();
   if (!val) return;
-  adminKey = val;
-  localStorage.setItem('dr_admin_key', val);
-  document.getElementById('lock-screen').style.display = 'none';
-  initApp();
+  const btn = document.getElementById('lock-btn');
+  const err = document.getElementById('lock-err');
+  btn.disabled = true; btn.textContent = 'Verifying...'; err.style.display = 'none';
+  // Test key against a lightweight auth endpoint
+  try {
+    const r = await fetch('/api/admin/ai-status', { headers: { 'x-admin-key': val } });
+    if (r.status === 401) {
+      err.textContent = 'Invalid key — does not match ADMIN_KEY in Vercel';
+      err.style.display = 'block';
+      btn.disabled = false; btn.textContent = 'Unlock Portal';
+      return;
+    }
+    adminKey = val;
+    localStorage.setItem('dr_admin_key', val);
+    document.getElementById('lock-screen').style.display = 'none';
+    initApp();
+  } catch(e) {
+    err.textContent = 'Network error: ' + e.message;
+    err.style.display = 'block';
+    btn.disabled = false; btn.textContent = 'Unlock Portal';
+  }
 }
 document.getElementById('lock-input').addEventListener('keydown', e => { if(e.key==='Enter') tryAuth(); });
-window.addEventListener('load', () => {
+window.addEventListener('load', async () => {
   const k = localStorage.getItem('dr_admin_key');
-  if (k) { adminKey = k; document.getElementById('lock-screen').style.display = 'none'; initApp(); }
+  if (!k) return;
+  // Silently re-verify stored key on each load
+  try {
+    const r = await fetch('/api/admin/ai-status', { headers: { 'x-admin-key': k } });
+    if (r.status === 401) {
+      // Key is stale/wrong — clear it and show lock screen
+      localStorage.removeItem('dr_admin_key');
+      return;
+    }
+    adminKey = k;
+    document.getElementById('lock-screen').style.display = 'none';
+    initApp();
+  } catch {
+    // Network error — let them in anyway if key exists (offline use)
+    adminKey = k;
+    document.getElementById('lock-screen').style.display = 'none';
+    initApp();
+  }
 });
 
 // API — sends x-admin-key header on every request
