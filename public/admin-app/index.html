@@ -2,1167 +2,1500 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0A0A0A">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<meta name="theme-color" content="#09090B">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="DR Admin">
-<meta name="mobile-web-app-capable" content="yes">
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
-<title>DownRange Admin</title>
+<title>DR Admin</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-  :root {
-    --bg: #0A0A0A;
-    --bg-card: #111111;
-    --bg-el: #1A1A1A;
-    --border: #222222;
-    --border-s: #333333;
-    --gold: #C8922A;
-    --gold-dim: #8a6018;
-    --text: #F0F0F0;
-    --muted: #888888;
-    --dim: #444444;
-    --ok: #22C55E;
-    --err: #EF4444;
-    --warn: #F59E0B;
-    --info: #3B82F6;
-    --safe-top: env(safe-area-inset-top, 0px);
-    --safe-bot: env(safe-area-inset-bottom, 0px);
-  }
+/* ─── TOKENS ─── */
+:root {
+  --bg:       #09090B;
+  --bg2:      #111318;
+  --bg3:      #1a1d24;
+  --bg4:      #21252f;
+  --border:   #1e293b;
+  --border2:  #2d3748;
+  --text:     #F0EDE6;
+  --dim:      #6b7280;
+  --dim2:     #4b5563;
+  --gold:     #C8922A;
+  --gold2:    #a87520;
+  --ok:       #22c55e;
+  --err:      #ef4444;
+  --warn:     #f59e0b;
+  --safe-t:   env(safe-area-inset-top, 0px);
+  --safe-b:   env(safe-area-inset-bottom, 0px);
+  --safe-l:   env(safe-area-inset-left, 0px);
+  --safe-r:   env(safe-area-inset-right, 0px);
+  --topbar-h: 52px;
+  --nav-h:    60px;
+}
+* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+html,body {
+  height:100%; background:var(--bg); color:var(--text);
+  font-family:'Barlow Condensed',sans-serif;
+  overscroll-behavior:none; overflow:hidden;
+}
+button { font-family:inherit; }
+input,textarea,select { font-family:'IBM Plex Mono',monospace; }
+a { color:inherit; text-decoration:none; }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+/* ─── SHELL ─── */
+#app {
+  display:flex; flex-direction:column;
+  height:100vh; height:100dvh;
+  padding-top:calc(var(--topbar-h) + var(--safe-t));
+  padding-bottom:calc(var(--nav-h) + var(--safe-b));
+}
 
-  html, body {
-    height: 100%;
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'Barlow Condensed', sans-serif;
-    overscroll-behavior: none;
-  }
+/* ─── TOPBAR ─── */
+#topbar {
+  position:fixed; top:0; left:0; right:0; z-index:200;
+  height:calc(var(--topbar-h) + var(--safe-t));
+  padding-top:var(--safe-t);
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  display:flex; align-items:center;
+  padding-left:calc(16px + var(--safe-l));
+  padding-right:calc(16px + var(--safe-r));
+  gap:10px;
+}
+#topbar-logo {
+  font-family:'Bebas Neue',cursive; font-size:1.3rem;
+  color:var(--gold); letter-spacing:.1em; flex-shrink:0;
+}
+#topbar-title {
+  font-family:'IBM Plex Mono',monospace; font-size:10px;
+  color:var(--dim); letter-spacing:.12em; text-transform:uppercase;
+  flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+}
+#topbar-status { font-size:16px; flex-shrink:0; }
+#topbar-menu-btn {
+  background:none; border:1px solid var(--border); color:var(--dim);
+  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
+  font-size:14px; cursor:pointer; flex-shrink:0;
+  transition:border-color .15s, color .15s;
+}
+#topbar-menu-btn:active { border-color:var(--gold); color:var(--gold); }
 
-  /* ── APP SHELL ── */
-  #app { display: flex; flex-direction: column; height: 100vh; height: 100dvh; }
+/* ─── FLASH MESSAGE ─── */
+#flash {
+  position:fixed; top:calc(var(--topbar-h) + var(--safe-t)); left:0; right:0;
+  z-index:199; padding:10px 16px;
+  font-family:'IBM Plex Mono',monospace; font-size:11px;
+  display:none; align-items:center; gap:8px;
+  transform:translateY(-100%); transition:transform .2s ease;
+}
+#flash.show { display:flex; transform:translateY(0); }
+#flash.ok  { background:rgba(34,197,94,.12);  border-bottom:1px solid rgba(34,197,94,.3);  color:#4ade80; }
+#flash.err { background:rgba(239,68,68,.12);  border-bottom:1px solid rgba(239,68,68,.3);  color:#f87171; }
+#flash.info{ background:rgba(200,146,42,.1);  border-bottom:1px solid rgba(200,146,42,.3); color:var(--gold); }
+#flash-close { margin-left:auto; background:none; border:none; color:inherit; font-size:16px; cursor:pointer; }
 
-  /* ── TOPBAR ── */
-  #topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: calc(var(--safe-top) + 10px) 16px 10px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    flex-shrink: 0;
-    z-index: 100;
-  }
-  #topbar .logo { font-family: 'Bebas Neue', sans-serif; font-size: 22px; color: var(--gold); letter-spacing: 4px; }
-  #topbar .screen-title { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
-  #topbar .menu-btn { background: none; border: none; color: var(--gold); font-size: 20px; cursor: pointer; padding: 4px 8px; }
+/* ─── BOTTOM NAV ─── */
+#bottom-nav {
+  position:fixed; bottom:0; left:0; right:0; z-index:200;
+  height:calc(var(--nav-h) + var(--safe-b));
+  padding-bottom:var(--safe-b);
+  background:var(--bg2); border-top:1px solid var(--border);
+  display:flex; align-items:stretch;
+}
+.nav-tab {
+  flex:1; background:none; border:none; border-top:2px solid transparent;
+  color:var(--dim2); cursor:pointer; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:3px; padding:0;
+  transition:color .15s; position:relative;
+}
+.nav-tab.active { color:var(--gold); border-top-color:var(--gold); }
+.nav-tab-icon { font-size:18px; line-height:1; }
+.nav-tab-label { font-size:9px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
+.nav-badge {
+  position:absolute; top:6px; right:calc(50% - 16px);
+  background:var(--err); color:#fff; font-size:7px; font-weight:700;
+  padding:1px 4px; border-radius:2px; pointer-events:none;
+}
 
-  /* ── CONTENT ── */
-  #content {
-    flex: 1;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    padding: 0;
-  }
+/* ─── CONTENT AREA ─── */
+#content { flex:1; overflow:hidden; position:relative; }
 
-  /* ── BOTTOM NAV ── */
-  #bottom-nav {
-    display: flex;
-    background: var(--bg-card);
-    border-top: 1px solid var(--border);
-    padding-bottom: var(--safe-bot);
-    flex-shrink: 0;
-    z-index: 100;
-  }
-  .nav-item {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 8px 4px;
-    cursor: pointer;
-    border: none;
-    background: none;
-    gap: 3px;
-    transition: opacity 0.15s;
-  }
-  .nav-item .nav-icon { font-size: 18px; }
-  .nav-item .nav-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
-  .nav-item.active .nav-label { color: var(--gold); }
-  .nav-item.active .nav-icon { filter: drop-shadow(0 0 4px var(--gold)); }
+/* ─── SCREENS ─── */
+.screen {
+  position:absolute; inset:0; overflow-y:auto; overflow-x:hidden;
+  padding:16px; display:none; -webkit-overflow-scrolling:touch;
+  scrollbar-width:thin; scrollbar-color:var(--border) transparent;
+}
+.screen.active { display:block; animation:fadeIn .18s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
 
-  /* ── SLIDE DRAWER ── */
-  #drawer-overlay {
-    display: none;
-    position: fixed; inset: 0;
-    background: rgba(0,0,0,0.7);
-    z-index: 200;
-  }
-  #drawer-overlay.open { display: block; }
-  #drawer {
-    position: fixed;
-    top: 0; left: -280px; bottom: 0;
-    width: 280px;
-    background: var(--bg-card);
-    border-right: 1px solid var(--border);
-    z-index: 201;
-    transition: left 0.25s cubic-bezier(0.4,0,0.2,1);
-    overflow-y: auto;
-    padding-top: var(--safe-top);
-  }
-  #drawer.open { left: 0; }
-  .drawer-header { padding: 20px 20px 16px; border-bottom: 1px solid var(--border); }
-  .drawer-logo { font-family: 'Bebas Neue', sans-serif; font-size: 28px; color: var(--gold); letter-spacing: 5px; }
-  .drawer-sub { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 3px; margin-top: 2px; }
-  .drawer-section { padding: 12px 0; border-bottom: 1px solid var(--border); }
-  .drawer-section-label { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--dim); letter-spacing: 2px; padding: 4px 20px 8px; text-transform: uppercase; }
-  .drawer-item {
-    display: flex; align-items: center; gap: 12px;
-    padding: 12px 20px;
-    cursor: pointer;
-    transition: background 0.15s;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    color: var(--muted);
-    border: none; background: none; width: 100%; text-align: left;
-  }
-  .drawer-item:active, .drawer-item.active { background: var(--bg-el); color: var(--text); }
-  .drawer-item.active { border-left: 2px solid var(--gold); color: var(--gold); }
-  .drawer-item .di-icon { font-size: 16px; width: 20px; text-align: center; }
+/* ─── DRAWER (full-screen panel overlay) ─── */
+#drawer {
+  position:fixed; inset:0; z-index:300;
+  display:flex; flex-direction:column;
+  transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1);
+  background:var(--bg); pointer-events:none;
+}
+#drawer.open { transform:translateX(0); pointer-events:all; }
+#drawer-topbar {
+  display:flex; align-items:center; gap:12px;
+  padding:12px 16px; padding-top:calc(12px + var(--safe-t));
+  background:var(--bg2); border-bottom:1px solid var(--border);
+  flex-shrink:0;
+}
+#drawer-back {
+  background:none; border:none; color:var(--gold); font-size:18px;
+  cursor:pointer; padding:4px 8px; margin-left:-8px; display:flex; align-items:center; gap:4px;
+  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em;
+}
+#drawer-title {
+  font-family:'Bebas Neue',cursive; font-size:1.3rem;
+  color:var(--text); letter-spacing:.08em; flex:1;
+}
+#drawer-content {
+  flex:1; overflow-y:auto; overflow-x:hidden; padding:16px;
+  -webkit-overflow-scrolling:touch;
+  padding-bottom:calc(16px + var(--safe-b));
+}
 
-  /* ── SCREENS ── */
-  .screen { display: none; padding: 16px; animation: fadeIn 0.2s ease; }
-  .screen.active { display: block; }
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+/* ─── SECTION MENU SHEET ─── */
+#section-sheet {
+  position:fixed; inset:0; z-index:250;
+  background:rgba(0,0,0,.7); backdrop-filter:blur(4px);
+  display:none; align-items:flex-end;
+}
+#section-sheet.open { display:flex; }
+#section-sheet-inner {
+  width:100%; background:var(--bg2); border-top:1px solid var(--border);
+  border-radius:16px 16px 0 0; max-height:80vh; overflow-y:auto;
+  padding-bottom:calc(16px + var(--safe-b));
+  animation:slideUp .22s ease;
+}
+@keyframes slideUp { from{transform:translateY(100%)} to{transform:none} }
+#sheet-handle { width:36px; height:4px; background:var(--border2); border-radius:2px; margin:12px auto 8px; }
+.sheet-section-header {
+  padding:10px 20px 6px;
+  font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim2);
+  letter-spacing:.12em; text-transform:uppercase;
+}
+.sheet-panel-btn {
+  width:100%; background:none; border:none; border-bottom:1px solid rgba(30,41,59,.5);
+  color:var(--text); cursor:pointer; text-align:left;
+  display:flex; align-items:center; gap:12px;
+  padding:13px 20px; transition:background .1s;
+}
+.sheet-panel-btn:active { background:rgba(200,146,42,.08); }
+.sheet-panel-btn .pi { font-size:18px; flex-shrink:0; }
+.sheet-panel-btn .pl {
+  flex:1; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:600;
+  letter-spacing:.03em;
+}
+.sheet-panel-btn .pb {
+  background:var(--err); color:#fff; font-family:'IBM Plex Mono',monospace;
+  font-size:7px; font-weight:700; padding:2px 5px;
+}
 
-  /* ── AUTH SCREEN ── */
-  #screen-auth {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    min-height: calc(100vh - 120px);
-    padding: 32px 24px;
-  }
-  .auth-logo { font-family: 'Bebas Neue', sans-serif; font-size: 48px; color: var(--gold); letter-spacing: 10px; }
-  .auth-sub { font-family: 'IBM Plex Mono', monospace; font-size: 11px; color: var(--muted); letter-spacing: 4px; margin-top: 4px; }
-  .auth-divider { width: 100%; max-width: 360px; height: 1px; background: var(--border); margin: 32px 0; }
-  .auth-box { width: 100%; max-width: 360px; }
+/* ─── KEY LOCK SCREEN ─── */
+#lock-screen {
+  position:fixed; inset:0; z-index:500;
+  background:var(--bg); display:flex; flex-direction:column;
+  align-items:center; justify-content:center; gap:24px; padding:32px;
+}
+#lock-logo { font-family:'Bebas Neue',cursive; font-size:3rem; color:var(--gold); letter-spacing:.1em; }
+#lock-sub { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim); text-align:center; }
+#lock-input {
+  width:100%; max-width:300px; background:var(--bg3); border:1px solid var(--border2);
+  color:var(--text); padding:14px 16px; font-family:'IBM Plex Mono',monospace;
+  font-size:14px; outline:none; text-align:center; border-radius:0;
+  -webkit-appearance:none;
+}
+#lock-input:focus { border-color:var(--gold); }
+#lock-btn {
+  width:100%; max-width:300px; background:var(--gold); color:#000;
+  border:none; padding:14px; font-family:'Barlow Condensed',sans-serif;
+  font-size:15px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
+  cursor:pointer;
+}
+#lock-err { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--err); display:none; }
 
-  /* ── CARDS ── */
-  .card {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 14px;
-    margin-bottom: 8px;
-  }
-  .card-tight { padding: 10px 14px; }
+/* ─── COMPONENT STYLES ─── */
+.card { background:var(--bg2); border:1px solid var(--border); }
+.section-title {
+  font-family:'Bebas Neue',cursive; font-size:1.6rem;
+  color:var(--text); letter-spacing:.04em; margin-bottom:4px;
+}
+.section-sub {
+  font-family:'IBM Plex Mono',monospace; font-size:10px;
+  color:var(--dim2); margin-bottom:16px; line-height:1.6;
+}
+.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+.stat-box { background:var(--bg2); border:1px solid var(--border); padding:14px; }
+.stat-val { font-family:'Bebas Neue',cursive; font-size:2rem; color:var(--gold); line-height:1; }
+.stat-lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim2); margin-top:2px; letter-spacing:.08em; text-transform:uppercase; }
+.row { display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--bg2); border:1px solid var(--border); border-bottom:none; }
+.row:last-child { border-bottom:1px solid var(--border); }
+.row-label { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:600; flex:1; }
+.row-sub { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); margin-top:2px; }
+.pill { font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700; padding:2px 7px; }
+.pill-ok   { background:rgba(34,197,94,.12);  color:var(--ok);  border:1px solid rgba(34,197,94,.3); }
+.pill-err  { background:rgba(239,68,68,.12);  color:var(--err); border:1px solid rgba(239,68,68,.3); }
+.pill-warn { background:rgba(245,158,11,.12); color:var(--warn);border:1px solid rgba(245,158,11,.3); }
+.pill-gold { background:rgba(200,146,42,.12); color:var(--gold);border:1px solid rgba(200,146,42,.3); }
+.pill-dim  { background:rgba(107,114,128,.1); color:var(--dim); border:1px solid var(--border); }
+.btn {
+  background:var(--gold); color:#000; border:none;
+  font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase; padding:10px 18px;
+  cursor:pointer; transition:opacity .15s; flex-shrink:0;
+  -webkit-appearance:none;
+}
+.btn:active { opacity:.8; }
+.btn:disabled { opacity:.35; cursor:not-allowed; }
+.btn-sm { padding:6px 12px; font-size:11px; }
+.btn-outline {
+  background:none; border:1px solid var(--border); color:var(--dim);
+  font-family:'IBM Plex Mono',monospace; font-size:10px; padding:7px 12px;
+  cursor:pointer; transition:border-color .15s, color .15s;
+  -webkit-appearance:none;
+}
+.btn-outline:active { border-color:var(--gold); color:var(--gold); }
+.btn-danger {
+  background:none; border:1px solid rgba(239,68,68,.4); color:var(--err);
+  font-family:'IBM Plex Mono',monospace; font-size:10px; padding:7px 12px;
+  cursor:pointer; -webkit-appearance:none;
+}
+.btn-danger:active { background:rgba(239,68,68,.1); }
+.inp {
+  width:100%; background:var(--bg3); border:1px solid var(--border);
+  color:var(--text); font-family:'IBM Plex Mono',monospace;
+  font-size:12px; padding:10px 12px; outline:none; -webkit-appearance:none;
+}
+.inp:focus { border-color:var(--gold); }
+.lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim2); letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:4px; }
+.form-row { margin-bottom:12px; }
+.divider { height:1px; background:var(--border); margin:16px 0; }
+.empty { text-align:center; padding:40px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim2); }
+.loading { text-align:center; padding:40px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim2); }
+.spinner { display:inline-block; animation:spin 1s linear infinite; }
+@keyframes spin { to{transform:rotate(360deg)} }
+.tag { font-family:'IBM Plex Mono',monospace; font-size:9px; padding:2px 6px; background:rgba(200,146,42,.1); color:var(--gold); }
+.code { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--gold); }
 
-  /* ── SECTION TITLE ── */
-  .sec-title {
-    display: flex; align-items: center; gap: 8px;
-    margin: 16px 0 8px;
-  }
-  .sec-title-bar { width: 3px; height: 13px; background: var(--gold); border-radius: 2px; flex-shrink: 0; }
-  .sec-title-text { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; }
+/* ─── ARTICLE CARD ─── */
+.article-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
+.article-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:var(--text); margin-bottom:4px; line-height:1.3; }
+.article-meta { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
+.article-actions { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
 
-  /* ── BADGES ── */
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 4px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-  }
-  .badge-gold { background: rgba(200,146,42,0.15); color: var(--gold); }
-  .badge-ok { background: rgba(34,197,94,0.15); color: var(--ok); }
-  .badge-err { background: rgba(239,68,68,0.15); color: var(--err); }
-  .badge-warn { background: rgba(245,158,11,0.15); color: var(--warn); }
-  .badge-info { background: rgba(59,130,246,0.15); color: var(--info); }
-  .badge-muted { background: var(--bg-el); color: var(--muted); }
+/* ─── CRON CARD ─── */
+.cron-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
+.cron-name { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
+.cron-details { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
+.cron-actions { display:flex; gap:6px; }
 
-  /* ── BUTTONS ── */
-  .btn {
-    display: inline-flex; align-items: center; justify-content: center;
-    padding: 10px 16px;
-    border-radius: 4px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 12px;
-    font-weight: 600;
-    letter-spacing: 1px;
-    cursor: pointer;
-    border: none;
-    transition: opacity 0.15s, transform 0.1s;
-    min-height: 40px;
-    text-transform: uppercase;
-  }
-  .btn:active { opacity: 0.75; transform: scale(0.98); }
-  .btn:disabled { opacity: 0.4; pointer-events: none; }
-  .btn-primary { background: var(--gold); color: #000; }
-  .btn-secondary { background: var(--bg-el); color: var(--text); border: 1px solid var(--border-s); }
-  .btn-danger { background: var(--err); color: #fff; }
-  .btn-ghost { background: transparent; color: var(--muted); border: 1px solid var(--border); }
-  .btn-sm { padding: 6px 12px; font-size: 10px; min-height: 30px; }
-  .btn-full { width: 100%; }
-  .btn-row { display: flex; gap: 8px; }
-  .btn-row .btn { flex: 1; }
+/* ─── LIST ITEM ─── */
+.list-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
+.list-item:last-child { border-bottom:none; }
 
-  /* ── INPUTS ── */
-  .input {
-    width: 100%;
-    background: var(--bg-el);
-    border: 1px solid var(--border-s);
-    border-radius: 4px;
-    color: var(--text);
-    padding: 10px 12px;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 13px;
-    outline: none;
-    transition: border-color 0.15s;
-  }
-  .input:focus { border-color: var(--gold); }
-  .input::placeholder { color: var(--dim); }
-  .label { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 6px; display: block; }
+/* ─── QUICK ACTION GRID ─── */
+.qa-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
+.qa-btn {
+  background:var(--bg2); border:1px solid var(--border); padding:14px 12px;
+  cursor:pointer; display:flex; flex-direction:column; align-items:flex-start; gap:6px;
+  transition:border-color .15s; text-align:left;
+}
+.qa-btn:active { border-color:var(--gold); background:rgba(200,146,42,.05); }
+.qa-icon { font-size:20px; }
+.qa-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.05em; color:var(--text); line-height:1.2; }
 
-  /* ── ROWS ── */
-  .row { display: flex; align-items: center; }
-  .row-between { display: flex; align-items: center; justify-content: space-between; }
-  .gap-sm { gap: 8px; }
-  .gap-md { gap: 16px; }
-  .flex1 { flex: 1; }
+/* ─── OUTREACH ─── */
+.outreach-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
+.outreach-name { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; margin-bottom:2px; }
+.outreach-platform { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--gold); margin-bottom:6px; }
+.outreach-meta { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; }
+.outreach-actions { display:flex; gap:6px; margin-top:10px; }
 
-  /* ── STAT BOXES ── */
-  .stat-row { display: flex; gap: 8px; margin-bottom: 8px; }
-  .stat-box {
-    flex: 1;
-    background: var(--bg-el);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px;
-    text-align: center;
-  }
-  .stat-val { font-family: 'Bebas Neue', sans-serif; font-size: 32px; line-height: 1; }
-  .stat-lbl { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--muted); letter-spacing: 1px; margin-top: 4px; text-transform: uppercase; }
+/* ─── BLOG CARD ─── */
+.blog-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
+.blog-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:4px; color:var(--text); }
+.blog-meta  { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
 
-  /* ── GRID NAV ── */
-  .grid-nav { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .grid-nav-item {
-    background: var(--bg-card);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 12px 4px;
-    display: flex; flex-direction: column; align-items: center; gap: 6px;
-    cursor: pointer;
-    transition: border-color 0.15s, background 0.15s;
-    border: none; background: var(--bg-card); border: 1px solid var(--border);
-  }
-  .grid-nav-item:active { background: var(--bg-el); border-color: var(--gold); }
-  .gni-icon { font-size: 22px; }
-  .gni-label { font-family: 'IBM Plex Mono', monospace; font-size: 8px; color: var(--muted); text-align: center; letter-spacing: 0.5px; text-transform: uppercase; }
+/* ─── TABS ─── */
+.tabs { display:flex; overflow-x:auto; gap:0; border-bottom:1px solid var(--border); margin-bottom:16px; scrollbar-width:none; }
+.tabs::-webkit-scrollbar { display:none; }
+.tab-btn {
+  background:none; border:none; border-bottom:2px solid transparent;
+  color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:10px;
+  padding:8px 14px; cursor:pointer; white-space:nowrap; letter-spacing:.05em;
+  transition:all .12s; flex-shrink:0;
+}
+.tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
 
-  /* ── TAB BAR ── */
-  .tab-bar {
-    display: flex;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 0; z-index: 10;
-  }
-  .tab-item {
-    flex: 1; padding: 12px 4px;
-    text-align: center;
-    font-family: 'IBM Plex Mono', monospace;
-    font-size: 10px; letter-spacing: 1px; text-transform: uppercase;
-    color: var(--muted);
-    cursor: pointer;
-    border: none; background: none;
-    border-bottom: 2px solid transparent;
-    transition: color 0.15s, border-color 0.15s;
-  }
-  .tab-item.active { color: var(--gold); border-bottom-color: var(--gold); }
+/* ─── RELEASE / GUN CARD ─── */
+.release-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:flex-start; }
+.release-img { width:64px; height:48px; object-fit:cover; flex-shrink:0; background:var(--bg3); }
+.release-info { flex:1; min-width:0; }
+.release-name { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:3px; }
+.release-meta { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); }
 
-  /* ── SEARCH BAR ── */
-  .search-bar {
-    padding: 8px 16px;
-    background: var(--bg-card);
-    border-bottom: 1px solid var(--border);
-    position: sticky; top: 41px; z-index: 9;
-  }
+/* ─── COST CHART ─── */
+.cost-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+.cost-bar-label { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); width:80px; flex-shrink:0; }
+.cost-bar-track { flex:1; height:6px; background:var(--bg3); position:relative; }
+.cost-bar-fill { height:100%; background:var(--gold); transition:width .5s ease; }
+.cost-bar-val { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text); width:50px; text-align:right; flex-shrink:0; }
 
-  /* ── ARTICLE CARD ── */
-  .art-title { font-size: 15px; font-weight: 600; color: var(--text); line-height: 1.35; margin: 6px 0 4px; }
-  .art-meta { font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--dim); }
-
-  /* ── CRON BARS ── */
-  .cron-bars { display: flex; gap: 2px; align-items: flex-end; margin-top: 6px; }
-  .cron-bar { width: 8px; border-radius: 2px; }
-
-  /* ── ALERT CARD ── */
-  .alert-card { background: rgba(239,68,68,0.08); border-color: var(--err); }
-  .alert-title { color: var(--err); font-family: 'IBM Plex Mono', monospace; font-size: 11px; letter-spacing: 1px; font-weight: 700; margin-bottom: 6px; }
-  .alert-item { color: var(--err); font-size: 12px; margin-top: 3px; }
-
-  /* ── LOADING ── */
-  .loading {
-    display: flex; align-items: center; justify-content: center;
-    padding: 48px;
-  }
-  .spinner {
-    width: 32px; height: 32px;
-    border: 3px solid var(--border-s);
-    border-top-color: var(--gold);
-    border-radius: 50%;
-    animation: spin 0.8s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  /* ── EMPTY STATE ── */
-  .empty { text-align: center; padding: 48px 24px; font-family: 'IBM Plex Mono', monospace; font-size: 12px; color: var(--dim); }
-
-  /* ── MISC ── */
-  .text-gold { color: var(--gold); }
-  .text-muted { color: var(--muted); }
-  .text-err { color: var(--err); }
-  .text-ok { color: var(--ok); }
-  .text-mono { font-family: 'IBM Plex Mono', monospace; }
-  .text-sm { font-size: 12px; }
-  .text-xs { font-size: 10px; }
-  .mt-sm { margin-top: 8px; }
-  .mt-md { margin-top: 16px; }
-  .mb-sm { margin-bottom: 8px; }
-  .divider { height: 1px; background: var(--border); margin: 8px 0; }
-  .pb-safe { padding-bottom: calc(var(--safe-bot) + 80px); }
-
-  /* ── LINK ROW ── */
-  .link-row {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 0;
-    cursor: pointer;
-    border-bottom: 1px solid var(--border);
-    text-decoration: none;
-  }
-  .link-row:last-child { border-bottom: none; }
-  .link-row-label { font-size: 14px; color: var(--text); }
-  .link-row-arrow { color: var(--gold); font-size: 16px; }
-
-  /* ── EXPAND ── */
-  .expand-hint { font-family: 'IBM Plex Mono', monospace; font-size: 9px; color: var(--gold); letter-spacing: 1px; margin-top: 8px; text-transform: uppercase; }
-  .expanded-body { display: none; }
-  .expanded-body.open { display: block; }
-
-  /* ── PULL TO REFRESH INDICATOR ── */
-  #ptr { text-align: center; padding: 12px; font-family: 'IBM Plex Mono', monospace; font-size: 10px; color: var(--muted); display: none; }
-
-  /* ── TOAST ── */
-  #toast {
-    position: fixed; bottom: calc(var(--safe-bot) + 80px); left: 50%;
-    transform: translateX(-50%) translateY(20px);
-    background: var(--bg-el); border: 1px solid var(--border-s);
-    color: var(--text);
-    padding: 10px 20px; border-radius: 6px;
-    font-family: 'IBM Plex Mono', monospace; font-size: 12px;
-    opacity: 0; transition: all 0.25s; pointer-events: none;
-    white-space: nowrap; z-index: 999;
-    max-width: 90vw;
-  }
-  #toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
-  #toast.toast-ok { border-color: var(--ok); color: var(--ok); }
-  #toast.toast-err { border-color: var(--err); color: var(--err); }
+/* ─── BOTTOM SHEET (inner drawer panels) ─── */
+.inner-tabs { display:flex; overflow-x:auto; gap:0; border-bottom:1px solid var(--border); margin:-16px -16px 16px; padding:0 16px; scrollbar-width:none; }
+.inner-tabs::-webkit-scrollbar { display:none; }
 </style>
 </head>
 <body>
+
+<!-- ─── LOCK SCREEN ─── -->
+<div id="lock-screen">
+  <div id="lock-logo">◈ DR Admin</div>
+  <div id="lock-sub">DownRange Command Center<br>Enter your admin key to continue</div>
+  <input type="password" id="lock-input" placeholder="Admin key..." autocomplete="current-password">
+  <div id="lock-err">Invalid key — check Vercel env vars</div>
+  <button id="lock-btn" onclick="tryAuth()">Unlock Portal</button>
+</div>
+
+<!-- ─── FLASH ─── -->
+<div id="flash">
+  <span id="flash-text"></span>
+  <button id="flash-close" onclick="hideFlash()">✕</button>
+</div>
+
+<!-- ─── TOPBAR ─── -->
+<div id="topbar">
+  <div id="topbar-logo">◈ DR</div>
+  <div id="topbar-title">COMMAND CENTER</div>
+  <div id="topbar-status">🟢</div>
+  <button id="topbar-menu-btn" onclick="openSectionSheet()">☰</button>
+</div>
+
+<!-- ─── APP ─── -->
 <div id="app">
-  <!-- TOPBAR -->
-  <div id="topbar">
-    <button class="menu-btn" onclick="toggleDrawer()">☰</button>
-    <span class="logo">DR</span>
-    <span class="screen-title" id="screen-title">DASHBOARD</span>
-  </div>
-
-  <!-- CONTENT -->
   <div id="content">
-    <div id="ptr">↓ Release to refresh</div>
 
-    <!-- AUTH -->
-    <div id="screen-auth" style="display:none;">
-      <div class="auth-logo">DOWNRANGE</div>
-      <div class="auth-sub">ADMIN PORTAL</div>
-      <div class="auth-divider"></div>
-      <div class="auth-box">
-        <label class="label">Admin Key</label>
-        <div class="row gap-sm mb-sm" style="margin-bottom:10px;">
-          <input class="input flex1" type="password" id="auth-key-input" placeholder="Enter admin key..." autocomplete="off">
-          <button class="btn btn-ghost btn-sm" onclick="toggleAuthVis()" style="padding:10px;min-height:40px;">👁</button>
-        </div>
-        <button class="btn btn-primary btn-full" onclick="doAuth()">UNLOCK</button>
-        <div id="auth-err" style="color:var(--err);font-family:'IBM Plex Mono',monospace;font-size:11px;margin-top:8px;"></div>
-      </div>
-    </div>
+    <!-- ══ DASHBOARD ══ -->
+    <div id="screen-dashboard" class="screen active"></div>
 
-    <!-- DASHBOARD -->
-    <div id="screen-dashboard" class="screen pb-safe">
-      <div style="text-align:center;padding:20px 0 12px;">
-        <div style="font-family:'Bebas Neue',sans-serif;font-size:36px;color:var(--gold);letter-spacing:8px;">DOWNRANGE</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--muted);letter-spacing:4px;margin-top:2px;">ADMIN PORTAL</div>
-      </div>
-      <div id="dash-alerts"></div>
-      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Quick Stats</div></div>
-      <div class="stat-row" id="dash-stats">
-        <div class="stat-box"><div class="stat-val text-gold" id="stat-pending">—</div><div class="stat-lbl">Pending</div></div>
-        <div class="stat-box"><div class="stat-val text-gold" id="stat-jobs">—</div><div class="stat-lbl">Cron Jobs</div></div>
-        <div class="stat-box"><div class="stat-val" id="stat-failed" style="color:var(--ok)">0</div><div class="stat-lbl">Failed</div></div>
-      </div>
-      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Sections</div></div>
-      <div class="grid-nav" id="dash-grid"></div>
-      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Cron Health</div></div>
-      <div id="dash-cron-list"><div class="loading"><div class="spinner"></div></div></div>
-    </div>
+    <!-- ══ CONTENT ══ -->
+    <div id="screen-content" class="screen"></div>
 
-    <!-- ARTICLES -->
-    <div id="screen-articles" class="screen pb-safe">
-      <div class="btn-row mt-sm mb-sm">
-        <button class="btn btn-secondary" id="btn-backfill" onclick="runBackfill()">BACKFILL</button>
-        <button class="btn btn-secondary" id="btn-fix-img" onclick="runFixImages()">FIX IMAGES</button>
-      </div>
-      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text" id="articles-count">Articles</div></div>
-      <div id="articles-list"><div class="loading"><div class="spinner"></div></div></div>
-    </div>
+    <!-- ══ OUTREACH ══ -->
+    <div id="screen-outreach" class="screen"></div>
 
-    <!-- OUTREACH -->
-    <div id="screen-outreach" class="screen" style="padding:0;">
-      <div class="tab-bar">
-        <button class="tab-item active" onclick="setOutreachTab('queue',this)">QUEUE <span id="queue-count"></span></button>
-        <button class="tab-item" onclick="setOutreachTab('history',this)">HISTORY</button>
-        <button class="tab-item" onclick="setOutreachTab('contacts',this)">CONTACTS</button>
-      </div>
-      <div id="outreach-content" style="padding:16px;" class="pb-safe">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
-    </div>
+    <!-- ══ INTELLIGENCE ══ -->
+    <div id="screen-intel" class="screen"></div>
 
-    <!-- CRON -->
-    <div id="screen-cron" class="screen pb-safe">
-      <div class="stat-row mt-sm">
-        <div class="stat-box"><div class="stat-val text-ok" id="cron-ok">—</div><div class="stat-lbl">OK</div></div>
-        <div class="stat-box"><div class="stat-val text-warn" id="cron-running">—</div><div class="stat-lbl">Running</div></div>
-        <div class="stat-box"><div class="stat-val text-err" id="cron-failed">—</div><div class="stat-lbl">Failed</div></div>
-      </div>
-      <div id="cron-list" class="mt-sm"><div class="loading"><div class="spinner"></div></div></div>
-    </div>
+    <!-- ══ SYSTEM ══ -->
+    <div id="screen-system" class="screen"></div>
 
-    <!-- INTELLIGENCE -->
-    <div id="screen-intelligence" class="screen pb-safe">
-      <button class="btn btn-primary btn-full mt-sm mb-sm" id="btn-gen-brief" onclick="generateBriefing()">GENERATE BRIEFING NOW</button>
-      <div id="intel-list"><div class="loading"><div class="spinner"></div></div></div>
-    </div>
+    <!-- ══ MEDIA ══ -->
+    <div id="screen-media" class="screen"></div>
 
-    <!-- IMAGES -->
-    <div id="screen-images" class="screen pb-safe">
-      <div class="btn-row mt-sm mb-sm">
-        <button class="btn btn-secondary" id="btn-seed" onclick="seedImages()">SEED REPO</button>
-        <button class="btn btn-secondary" onclick="fetchOgImages()">FETCH OG:IMG</button>
-      </div>
-      <div id="images-count" class="text-mono text-xs text-muted mb-sm"></div>
-      <div id="images-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:8px;"></div>
-    </div>
+    <!-- ══ SETTINGS ══ -->
+    <div id="screen-settings" class="screen"></div>
 
-    <!-- CONTACTS -->
-    <div id="screen-contacts" class="screen" style="padding:0;">
-      <div class="tab-bar">
-        <button class="tab-item active" onclick="setContactTab('all',this)">ALL</button>
-        <button class="tab-item" onclick="setContactTab('manufacturer',this)">MFG</button>
-        <button class="tab-item" onclick="setContactTab('dealer',this)">DEALERS</button>
-        <button class="tab-item" onclick="setContactTab('holster',this)">HOLSTERS</button>
-      </div>
-      <div class="search-bar">
-        <input class="input" type="search" id="contact-search" placeholder="Search contacts..." oninput="filterContacts()">
-      </div>
-      <div id="contacts-list" style="padding:16px;" class="pb-safe">
-        <div class="loading"><div class="spinner"></div></div>
-      </div>
-    </div>
+    <!-- ══ PUBLISHING ══ -->
+    <div id="screen-publishing" class="screen"></div>
 
-    <!-- RELEASES -->
-    <div id="screen-releases" class="screen pb-safe">
-      <button class="btn btn-secondary btn-full mt-sm mb-sm" id="btn-scrape" onclick="scrapeNow()">SCRAPE PRN NOW</button>
-      <div id="releases-list"><div class="loading"><div class="spinner"></div></div></div>
-    </div>
-
-    <!-- SETTINGS -->
-    <div id="screen-settings" class="screen pb-safe">
-      <div class="sec-title mt-sm"><div class="sec-title-bar"></div><div class="sec-title-text">Admin Key</div></div>
-      <div class="card">
-        <label class="label">Admin Key</label>
-        <div class="row gap-sm" style="margin-bottom:8px;">
-          <input class="input flex1" type="password" id="settings-key" placeholder="Enter admin key..." autocomplete="off">
-          <button class="btn btn-ghost btn-sm" onclick="toggleSettingsVis()" style="padding:10px;min-height:40px;">👁</button>
-        </div>
-        <div id="key-saved-hint" style="color:var(--ok);font-family:'IBM Plex Mono',monospace;font-size:10px;margin-bottom:8px;display:none;">✓ KEY ACTIVE</div>
-        <div class="btn-row">
-          <button class="btn btn-primary" onclick="saveKey()">SAVE KEY</button>
-          <button class="btn btn-danger" onclick="clearKey()">CLEAR</button>
-        </div>
-      </div>
-
-      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Quick Links</div></div>
-      <div class="card">
-        <a class="link-row" href="https://downrangeco.com" target="_blank"><span class="link-row-label">DownRange Website</span><span class="link-row-arrow">→</span></a>
-        <a class="link-row" href="https://downrangeco.com/admin" target="_blank"><span class="link-row-label">Admin Panel (Web)</span><span class="link-row-arrow">→</span></a>
-        <a class="link-row" href="https://vercel.com/dashboard" target="_blank"><span class="link-row-label">Vercel Dashboard</span><span class="link-row-arrow">→</span></a>
-        <a class="link-row" href="https://downrangeco.sanity.studio" target="_blank"><span class="link-row-label">Sanity Studio</span><span class="link-row-arrow">→</span></a>
-        <a class="link-row" href="https://github.com/dejcav-cmd/DownRange" target="_blank"><span class="link-row-label">GitHub Repo</span><span class="link-row-arrow">→</span></a>
-      </div>
-
-      <div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">App Info</div></div>
-      <div class="card">
-        <div class="row-between" style="margin-bottom:8px;"><span class="text-mono text-sm text-muted">Version</span><span class="text-mono text-sm">1.0.0</span></div>
-        <div class="row-between" style="margin-bottom:8px;"><span class="text-mono text-sm text-muted">Base URL</span><span class="text-mono text-sm">downrangeco.com</span></div>
-        <div class="row-between"><span class="text-mono text-sm text-muted">Type</span><span class="text-mono text-sm">PWA</span></div>
-      </div>
-    </div>
-
-  </div><!-- /content -->
-
-  <!-- BOTTOM NAV -->
-  <nav id="bottom-nav">
-    <button class="nav-item active" onclick="nav('dashboard',this)"><span class="nav-icon">🏠</span><span class="nav-label">Home</span></button>
-    <button class="nav-item" onclick="nav('articles',this)"><span class="nav-icon">📰</span><span class="nav-label">Articles</span></button>
-    <button class="nav-item" onclick="nav('outreach',this)"><span class="nav-icon">📤</span><span class="nav-label">Outreach</span></button>
-    <button class="nav-item" onclick="nav('cron',this)"><span class="nav-icon">⚙️</span><span class="nav-label">Cron</span></button>
-    <button class="nav-item" onclick="nav('settings',this)"><span class="nav-icon">🔑</span><span class="nav-label">Settings</span></button>
-  </nav>
+  </div>
 </div>
 
-<!-- DRAWER -->
-<div id="drawer-overlay" onclick="closeDrawer()"></div>
+<!-- ─── BOTTOM NAV ─── -->
+<div id="bottom-nav">
+  <button class="nav-tab active" data-screen="dashboard" onclick="navTo('dashboard',this)">
+    <span class="nav-tab-icon">◈</span>
+    <span class="nav-tab-label">Home</span>
+  </button>
+  <button class="nav-tab" data-screen="content" onclick="navTo('content',this)">
+    <span class="nav-tab-icon">📰</span>
+    <span class="nav-tab-label">Content</span>
+  </button>
+  <button class="nav-tab" data-screen="outreach" onclick="navTo('outreach',this)">
+    <span class="nav-tab-icon">📬</span>
+    <span class="nav-tab-label">Outreach</span>
+  </button>
+  <button class="nav-tab" data-screen="intel" onclick="navTo('intel',this)">
+    <span class="nav-tab-icon">🧠</span>
+    <span class="nav-tab-label">Intel</span>
+  </button>
+  <button class="nav-tab" data-screen="system" onclick="navTo('system',this)">
+    <span class="nav-tab-icon">⚙️</span>
+    <span class="nav-tab-label">System</span>
+  </button>
+</div>
+
+<!-- ─── DRAWER (panel detail) ─── -->
 <div id="drawer">
-  <div class="drawer-header">
-    <div class="drawer-logo">DOWNRANGE</div>
-    <div class="drawer-sub">ADMIN PORTAL</div>
+  <div id="drawer-topbar">
+    <button id="drawer-back" onclick="closeDrawer()">← Back</button>
+    <div id="drawer-title">Panel</div>
   </div>
-  <div class="drawer-section">
-    <div class="drawer-section-label">Content</div>
-    <button class="drawer-item" onclick="navDrawer('dashboard')"><span class="di-icon">🏠</span> Dashboard</button>
-    <button class="drawer-item" onclick="navDrawer('articles')"><span class="di-icon">📰</span> Articles</button>
-    <button class="drawer-item" onclick="navDrawer('releases')"><span class="di-icon">📣</span> Press Releases</button>
-  </div>
-  <div class="drawer-section">
-    <div class="drawer-section-label">Outreach</div>
-    <button class="drawer-item" onclick="navDrawer('outreach')"><span class="di-icon">📤</span> Outreach Queue</button>
-    <button class="drawer-item" onclick="navDrawer('contacts')"><span class="di-icon">👤</span> Contacts</button>
-  </div>
-  <div class="drawer-section">
-    <div class="drawer-section-label">Intelligence</div>
-    <button class="drawer-item" onclick="navDrawer('intelligence')"><span class="di-icon">🔍</span> Briefings</button>
-  </div>
-  <div class="drawer-section">
-    <div class="drawer-section-label">System</div>
-    <button class="drawer-item" onclick="navDrawer('cron')"><span class="di-icon">⚙️</span> Cron Jobs</button>
-    <button class="drawer-item" onclick="navDrawer('images')"><span class="di-icon">🖼️</span> Image Repo</button>
-  </div>
-  <div class="drawer-section">
-    <button class="drawer-item" onclick="navDrawer('settings')"><span class="di-icon">🔑</span> Settings</button>
-  </div>
+  <div id="drawer-content"></div>
 </div>
 
-<!-- TOAST -->
-<div id="toast"></div>
+<!-- ─── SECTION SHEET ─── -->
+<div id="section-sheet" onclick="if(event.target===this)closeSectionSheet()">
+  <div id="section-sheet-inner" id="sheet-inner">
+    <div id="sheet-handle"></div>
+    <div id="sheet-list"></div>
+  </div>
+</div>
 
 <script>
-// ── CONFIG ──────────────────────────────────────────────────────────────────
-const BASE = 'https://downrangeco.com';
-let adminKey = localStorage.getItem('dr_admin_key') || '';
+// ─── STATE ───────────────────────────────────────────────────────────────────
+let adminKey = '';
 let currentScreen = 'dashboard';
-let allContacts = [];
-let contactTypeFilter = 'all';
-let outreachTab = 'queue';
-let outreachData = { queue: [], history: [], contacts: [] };
+let screenInited = {};
 
-// ── INIT ─────────────────────────────────────────────────────────────────────
-window.addEventListener('DOMContentLoaded', () => {
-  if (!adminKey) {
-    showAuth();
-  } else {
-    showApp();
-    loadDashboard();
-  }
-  buildDashGrid();
-  loadSettings();
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function tryAuth() {
+  const val = document.getElementById('lock-input').value.trim();
+  if (!val) return;
+  adminKey = val;
+  localStorage.setItem('dr_admin_key', val);
+  document.getElementById('lock-screen').style.display = 'none';
+  initApp();
+}
+document.getElementById('lock-input').addEventListener('keydown', e => { if(e.key==='Enter') tryAuth(); });
+window.addEventListener('load', () => {
+  const k = localStorage.getItem('dr_admin_key');
+  if (k) { adminKey = k; document.getElementById('lock-screen').style.display = 'none'; initApp(); }
 });
 
-// ── AUTH ─────────────────────────────────────────────────────────────────────
-function showAuth() {
-  document.getElementById('screen-auth').style.display = 'flex';
-  document.getElementById('bottom-nav').style.display = 'none';
-  document.querySelector('.menu-btn').style.display = 'none';
-}
-function showApp() {
-  document.getElementById('screen-auth').style.display = 'none';
-  document.getElementById('bottom-nav').style.display = 'flex';
-  document.querySelector('.menu-btn').style.display = '';
-  document.getElementById('screen-dashboard').classList.add('active');
-}
-function toggleAuthVis() {
-  const i = document.getElementById('auth-key-input');
-  i.type = i.type === 'password' ? 'text' : 'password';
-}
-function doAuth() {
-  const val = document.getElementById('auth-key-input').value.trim();
-  if (!val) { document.getElementById('auth-err').textContent = 'Enter your admin key'; return; }
-  adminKey = val;
-  localStorage.setItem('dr_admin_key', val);
-  showApp();
-  loadDashboard();
+// ─── API ──────────────────────────────────────────────────────────────────────
+async function api(path, opts={}) {
+  const headers = { 'x-admin-key': adminKey, ...(opts.body ? {'Content-Type':'application/json'} : {}), ...opts.headers };
+  const r = await fetch(path, { ...opts, headers });
+  return r.json();
 }
 
-// ── API ───────────────────────────────────────────────────────────────────────
-async function api(path, opts = {}) {
-  const headers = { 'Content-Type': 'application/json', 'x-admin-key': adminKey, ...(opts.headers || {}) };
-  const res = await fetch(BASE + path, { ...opts, headers });
-  if (!res.ok) throw new Error(res.status + ': ' + await res.text().catch(() => ''));
-  const ct = res.headers.get('content-type') || '';
-  return ct.includes('json') ? res.json() : res.text();
+// ─── FLASH ────────────────────────────────────────────────────────────────────
+let flashTimer;
+function flash(msg, type='info') {
+  const el = document.getElementById('flash');
+  el.className = 'show ' + type;
+  document.getElementById('flash-text').textContent = msg;
+  clearTimeout(flashTimer);
+  if (!msg.startsWith('⏳')) flashTimer = setTimeout(hideFlash, 5000);
 }
-const apiGet = p => api(p);
-const apiPost = (p, b) => api(p, { method: 'POST', body: b ? JSON.stringify(b) : undefined });
-
-// ── TOAST ─────────────────────────────────────────────────────────────────────
-let toastTimer;
-function toast(msg, type = '') {
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.className = 'show' + (type ? ' toast-' + type : '');
-  clearTimeout(toastTimer);
-  toastTimer = setTimeout(() => { t.className = ''; }, 2800);
+function hideFlash() {
+  const el = document.getElementById('flash');
+  el.classList.remove('show');
+  setTimeout(()=>{ el.className=''; },200);
 }
 
-// ── NAVIGATION ───────────────────────────────────────────────────────────────
-const screenTitles = {
-  dashboard: 'DASHBOARD', articles: 'ARTICLES', outreach: 'OUTREACH',
-  cron: 'CRON JOBS', intelligence: 'INTELLIGENCE', images: 'IMAGE REPO',
-  contacts: 'CONTACTS', releases: 'RELEASES', settings: 'SETTINGS'
-};
-function nav(screen, btnEl) {
+// ─── NAV ──────────────────────────────────────────────────────────────────────
+function navTo(screen, btn) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(b => b.classList.remove('active'));
-  document.getElementById('screen-' + screen).classList.add('active');
-  if (btnEl) btnEl.classList.add('active');
-  document.getElementById('screen-title').textContent = screenTitles[screen] || screen.toUpperCase();
+  document.getElementById('screen-'+screen).classList.add('active');
+  document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
   currentScreen = screen;
-  loadScreen(screen);
-  document.getElementById('content').scrollTop = 0;
-}
-function navDrawer(screen) {
-  closeDrawer();
-  // find bottom nav btn or just switch
-  const btns = document.querySelectorAll('.nav-item');
-  let found = null;
-  btns.forEach(b => { if (b.getAttribute('onclick')?.includes("'" + screen + "'")) found = b; });
-  nav(screen, found);
-}
-function loadScreen(s) {
-  if (s === 'dashboard') loadDashboard();
-  else if (s === 'articles') loadArticles();
-  else if (s === 'outreach') loadOutreach();
-  else if (s === 'cron') loadCron();
-  else if (s === 'intelligence') loadIntelligence();
-  else if (s === 'images') loadImages();
-  else if (s === 'contacts') loadContacts();
-  else if (s === 'releases') loadReleases();
+  const titles = { dashboard:'Command Center', content:'Content', outreach:'Outreach',
+    intel:'Intelligence', system:'System', media:'Media', settings:'Settings', publishing:'Publishing' };
+  document.getElementById('topbar-title').textContent = (titles[screen]||screen).toUpperCase();
+  if (!screenInited[screen]) { screenInited[screen] = true; renderScreen(screen); }
 }
 
-// ── DRAWER ───────────────────────────────────────────────────────────────────
-function toggleDrawer() {
-  document.getElementById('drawer').classList.toggle('open');
-  document.getElementById('drawer-overlay').classList.toggle('open');
+// ─── DRAWER ──────────────────────────────────────────────────────────────────
+function openDrawer(title, renderFn) {
+  document.getElementById('drawer-title').textContent = title;
+  document.getElementById('drawer-content').innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  document.getElementById('drawer').classList.add('open');
+  requestAnimationFrame(() => renderFn(document.getElementById('drawer-content')));
 }
-function closeDrawer() {
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('drawer-overlay').classList.remove('open');
+function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
+
+// ─── SECTION SHEET ────────────────────────────────────────────────────────────
+const SECTIONS = [
+  { id:'dashboard',   label:'Home',         icon:'◈',  panels:[] },
+  { id:'content',     label:'Content',      icon:'📰', panels:[
+    {id:'hub',label:'Content Hub',icon:'◈'}, {id:'drafts',label:'Draft Recovery',icon:'🔍'},
+    {id:'news',label:'News Articles',icon:'📰'}, {id:'releases',label:'Gun Releases',icon:'🔫',badge:'new'},
+    {id:'blog',label:'Blog',icon:'✍'}, {id:'reviews',label:'Reviews',icon:'★'},
+    {id:'canada',label:'Canada',icon:'🇨🇦'}, {id:'brazil',label:'Brasil',icon:'🇧🇷'},
+    {id:'competitions',label:'Competitions',icon:'🏆'},
+  ]},
+  { id:'publishing',  label:'Publishing',   icon:'📅', panels:[
+    {id:'schedule',label:'Schedule',icon:'📅'},{id:'breaking',label:'Breaking Alerts',icon:'🔴'},
+    {id:'newsletter',label:'Newsletter',icon:'📧'},{id:'seo',label:'SEO & Meta',icon:'🔍'},
+  ]},
+  { id:'intel',       label:'Intelligence', icon:'🧠', panels:[
+    {id:'intel',label:'Briefings',icon:'🧠'},{id:'statelaws',label:'State Laws',icon:'🗺'},
+    {id:'pulllog',label:'Pull Log',icon:'📡'},{id:'deals',label:'Deals Feed',icon:'🔥'},
+    {id:'feeds',label:'Feed Agent',icon:'⚡'},{id:'marketbrief',label:'Market Brief',icon:'📊',badge:'live'},
+    {id:'copyright',label:'Copyright',icon:'⚖'},
+  ]},
+  { id:'system',      label:'System',       icon:'⚙️', panels:[
+    {id:'overview',label:'Overview',icon:'◈'},{id:'crons',label:'Cron Jobs',icon:'⏱'},
+    {id:'sysalerts',label:'System Alerts',icon:'🚨'},{id:'agents',label:'Content Agents',icon:'🤖'},
+    {id:'rss',label:'RSS Sources',icon:'📡'},{id:'sitemap',label:'Site Map',icon:'🗺️'},
+  ]},
+  { id:'outreach',    label:'Outreach',     icon:'📬', panels:[
+    {id:'campaigns',label:'Campaigns',icon:'📬'},{id:'contacts',label:'Contacts',icon:'👤'},
+  ]},
+  { id:'media',       label:'Media',        icon:'▶️', panels:[
+    {id:'videos',label:'Video Manager',icon:'▶'},{id:'channels',label:'Channels',icon:'📺'},
+    {id:'imglib',label:'Image Library',icon:'📸'},{id:'imgsearch',label:'Image Finder',icon:'🔍'},
+    {id:'social',label:'Social Media',icon:'📣',badge:'new'},
+  ]},
+  { id:'settings',    label:'Settings',     icon:'⚙️', panels:[
+    {id:'ai',label:'AI Models',icon:'🤖'},{id:'costs',label:'Cost Center',icon:'💰'},
+    {id:'keys',label:'API Keys',icon:'🔑'},{id:'envcheck',label:'Env Vars',icon:'🔧'},
+    {id:'emails',label:'Email Tests',icon:'✉'},
+  ]},
+];
+
+function openSectionSheet() {
+  const list = document.getElementById('sheet-list');
+  list.innerHTML = SECTIONS.map(sec => {
+    if (sec.panels.length === 0) return `
+      <button class="sheet-panel-btn" onclick="navTo('${sec.id}', document.querySelector('[data-screen=${sec.id}]')); closeSectionSheet();">
+        <span class="pi">${sec.icon}</span>
+        <span class="pl">${sec.label}</span>
+      </button>`;
+    return `
+      <div class="sheet-section-header">${sec.icon} ${sec.label}</div>
+      ${sec.panels.map(p => `
+        <button class="sheet-panel-btn" onclick="openPanel('${sec.id}','${p.id}','${p.label}'); closeSectionSheet();">
+          <span class="pi">${p.icon}</span>
+          <span class="pl">${p.label}</span>
+          ${p.badge ? `<span class="pb">${p.badge}</span>` : ''}
+        </button>`).join('')}`;
+  }).join('');
+  document.getElementById('section-sheet').classList.add('open');
+}
+function closeSectionSheet() { document.getElementById('section-sheet').classList.remove('open'); }
+
+// ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
+function openPanel(sectionId, panelId, panelLabel) {
+  openDrawer(panelLabel, el => {
+    switch(panelId) {
+      case 'news':        renderNewsPanel(el); break;
+      case 'blog':        renderBlogPanel(el); break;
+      case 'releases':    renderReleasesPanel(el); break;
+      case 'breaking':    renderBreakingPanel(el); break;
+      case 'crons':       renderCronsPanel(el); break;
+      case 'costs':       renderCostsPanel(el); break;
+      case 'keys':        renderKeysPanel(el); break;
+      case 'rss':         renderRSSPanel(el); break;
+      case 'agents':      renderAgentsPanel(el); break;
+      case 'feeds':       renderFeedsPanel(el); break;
+      case 'envcheck':    renderEnvPanel(el); break;
+      case 'campaigns':   renderCampaignsPanel(el); break;
+      case 'contacts':    renderContactsPanel(el); break;
+      case 'videos':      renderVideosPanel(el); break;
+      case 'channels':    renderChannelsPanel(el); break;
+      case 'emails':      renderEmailTestPanel(el); break;
+      case 'copyright':   renderCopyrightPanel(el); break;
+      case 'statelaws':   renderStateLawsPanel(el); break;
+      case 'pulllog':     renderPullLogPanel(el); break;
+      case 'overview':    renderSystemOverview(el); break;
+      default:
+        el.innerHTML = `<div class="empty">🔧 ${panelLabel}<br><br><span style="color:var(--dim2);font-size:9px">Open on desktop for full controls</span><br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold);font-size:11px">Open Admin →</a></div>`;
+    }
+  });
 }
 
-// ── DASHBOARD ─────────────────────────────────────────────────────────────────
-function buildDashGrid() {
-  const items = [
-    { icon: '📰', label: 'Articles', screen: 'articles' },
-    { icon: '📤', label: 'Outreach', screen: 'outreach' },
-    { icon: '⚙️', label: 'Cron', screen: 'cron' },
-    { icon: '🔍', label: 'Intel', screen: 'intelligence' },
-    { icon: '🖼️', label: 'Images', screen: 'images' },
-    { icon: '👤', label: 'Contacts', screen: 'contacts' },
-    { icon: '📣', label: 'Releases', screen: 'releases' },
-    { icon: '🔑', label: 'Settings', screen: 'settings' },
-  ];
-  document.getElementById('dash-grid').innerHTML = items.map(i => `
-    <button class="grid-nav-item" onclick="navDrawer('${i.screen}')">
-      <span class="gni-icon">${i.icon}</span>
-      <span class="gni-label">${i.label}</span>
-    </button>`).join('');
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+function initApp() {
+  screenInited = {};
+  renderScreen('dashboard');
+  screenInited.dashboard = true;
+  // Check health
+  fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>{
+    if (d.status !== 'ok') document.getElementById('topbar-status').textContent = '🟡';
+  }).catch(()=>{});
 }
 
-async function loadDashboard() {
+function renderScreen(screen) {
+  const el = document.getElementById('screen-'+screen);
+  if (!el) return;
+  switch(screen) {
+    case 'dashboard':   renderDashboard(el); break;
+    case 'content':     renderContent(el); break;
+    case 'outreach':    renderOutreach(el); break;
+    case 'intel':       renderIntel(el); break;
+    case 'system':      renderSystem(el); break;
+    case 'media':       renderMedia(el); break;
+    case 'settings':    renderSettingsScreen(el); break;
+    case 'publishing':  renderPublishing(el); break;
+  }
+}
+
+// ─── SCREEN: DASHBOARD ────────────────────────────────────────────────────────
+async function renderDashboard(el) {
+  el.innerHTML = `
+    <div class="section-title">Command Center</div>
+    <div class="section-sub">DownRange Intelligence Platform</div>
+    <div class="stat-grid" id="dash-stats">
+      <div class="stat-box"><div class="stat-val" id="ds-articles">—</div><div class="stat-lbl">Articles</div></div>
+      <div class="stat-box"><div class="stat-val" id="ds-contacts">—</div><div class="stat-lbl">Contacts</div></div>
+      <div class="stat-box"><div class="stat-val" id="ds-crons">—</div><div class="stat-lbl">Cron Jobs</div></div>
+      <div class="stat-box"><div class="stat-val" id="ds-videos">—</div><div class="stat-lbl">Videos</div></div>
+    </div>
+
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">Quick Actions</div>
+    <div class="qa-grid">
+      <button class="qa-btn" onclick="openPanel('system','crons','Cron Jobs')"><span class="qa-icon">⏱</span><span class="qa-label">Cron Jobs</span></button>
+      <button class="qa-btn" onclick="openPanel('content','news','News Articles')"><span class="qa-icon">📰</span><span class="qa-label">News Articles</span></button>
+      <button class="qa-btn" onclick="openPanel('outreach','campaigns','Campaigns')"><span class="qa-icon">📬</span><span class="qa-label">Outreach</span></button>
+      <button class="qa-btn" onclick="openPanel('intel','copyright','Copyright')"><span class="qa-icon">⚖</span><span class="qa-label">Copyright</span></button>
+      <button class="qa-btn" onclick="openPanel('content','breaking','Breaking Alerts')"><span class="qa-icon">🔴</span><span class="qa-label">Alerts</span></button>
+      <button class="qa-btn" onclick="openPanel('system','agents','Content Agents')"><span class="qa-icon">🤖</span><span class="qa-label">AI Agents</span></button>
+    </div>
+
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px;">Site Links</div>
+    <div style="display:flex;flex-direction:column;gap:0;">
+      ${[
+        ['🌐','Live Site','https://downrangeco.com'],
+        ['📰','News Feed','https://downrangeco.com/news'],
+        ['✍','Blog','https://downrangeco.com/blog'],
+        ['📝','Sanity Studio','https://downrangeco.com/studio'],
+        ['▲','Vercel Dashboard','https://vercel.com'],
+      ].map(([i,l,u])=>`
+        <a href="${u}" target="_blank" class="list-item" style="padding:13px 0;text-decoration:none;">
+          <span style="font-size:18px;flex-shrink:0;">${i}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;flex:1;">${l}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">↗</span>
+        </a>`).join('')}
+    </div>
+
+    <div style="height:1px;background:var(--border);margin:16px 0;"></div>
+    <div id="dash-feed-section">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">News Feed</div>
+      <button class="btn" style="width:100%;" id="run-feed-btn" onclick="runNewsFeed()">▶ Run News Feed Now</button>
+      <div id="feed-result" style="margin-top:8px;display:none;"></div>
+    </div>
+  `;
+  // Load stats
   try {
-    const [cronRes, queueRes] = await Promise.allSettled([
-      apiGet('/api/admin/cron-status'),
-      apiGet('/api/outreach/queue'),
+    const [art, contacts] = await Promise.all([
+      api('/api/admin/articles-list?limit=1').catch(()=>null),
+      api('/api/admin/influencers?limit=1').catch(()=>null),
     ]);
-
-    let jobs = [];
-    if (cronRes.status === 'fulfilled') {
-      jobs = Object.entries(cronRes.value?.jobs || {}).map(([name, d]) => ({ name, ...d }));
-    }
-    const failed = jobs.filter(j => j.status === 'error');
-    const running = jobs.filter(j => j.status === 'running');
-
-    document.getElementById('stat-jobs').textContent = jobs.length || '—';
-    document.getElementById('stat-failed').textContent = failed.length;
-    document.getElementById('stat-failed').style.color = failed.length > 0 ? 'var(--err)' : 'var(--ok)';
-
-    if (queueRes.status === 'fulfilled') {
-      const pending = queueRes.value?.pending?.length || 0;
-      document.getElementById('stat-pending').textContent = pending;
-      document.getElementById('queue-count').textContent = pending > 0 ? `(${pending})` : '';
-    }
-
-    // alerts
-    const alertsEl = document.getElementById('dash-alerts');
-    if (failed.length > 0) {
-      alertsEl.innerHTML = `<div class="card alert-card">
-        <div class="alert-title">⚠ SYSTEM ALERTS</div>
-        ${failed.map(j => `<div class="alert-item">• ${j.name} failed</div>`).join('')}
-      </div>`;
-    } else {
-      alertsEl.innerHTML = '';
-    }
-
-    // cron list (top 8)
-    const cronEl = document.getElementById('dash-cron-list');
-    if (jobs.length === 0) {
-      cronEl.innerHTML = '<div class="empty">No cron data</div>';
-    } else {
-      cronEl.innerHTML = jobs.slice(0, 8).map(j => cronCard(j, true)).join('');
-    }
-  } catch (e) {
-    document.getElementById('dash-cron-list').innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
+    if (art?.total) document.getElementById('ds-articles').textContent = art.total;
+    if (contacts?.total) document.getElementById('ds-contacts').textContent = contacts.total;
+  } catch {}
+  try {
+    const crons = await api('/api/admin/cron-status');
+    if (crons?.jobs) document.getElementById('ds-crons').textContent = crons.jobs.length;
+  } catch {}
 }
 
-// ── ARTICLES ──────────────────────────────────────────────────────────────────
-async function loadArticles() {
-  const el = document.getElementById('articles-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+async function runNewsFeed() {
+  const btn = document.getElementById('run-feed-btn');
+  const res = document.getElementById('feed-result');
+  btn.disabled = true; btn.textContent = '⏳ Running...';
+  res.style.display = 'none';
   try {
-    const data = await apiGet('/api/admin/articles?limit=30');
-    const arts = data?.articles || data || [];
-    document.getElementById('articles-count').textContent = `Articles (${arts.length})`;
-    if (arts.length === 0) { el.innerHTML = '<div class="empty">No articles found</div>'; return; }
-    el.innerHTML = arts.map(a => `
-      <div class="card card-tight">
-        <div class="row-between mb-sm">
-          <span class="badge badge-gold">${(a.category || 'NEWS').toUpperCase()}</span>
-          ${!a.hasImage ? '<span class="badge badge-warn">NO IMG</span>' : ''}
+    const d = await api('/api/admin/cron-status?trigger=true', {
+      method:'POST', body:JSON.stringify({jobId:'news'})
+    });
+    res.style.cssText = `display:block;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};color:${d.ok?'var(--ok)':'var(--err)'}`;
+    res.textContent = d.ok ? `✓ Feed ran in ${d.ms||0}ms` : '✕ ' + (d.error||'Failed');
+  } catch(e) {
+    res.style.cssText = 'display:block;padding:10px;background:rgba(239,68,68,.08);border:1px solid var(--err);color:var(--err);font-family:IBM Plex Mono,monospace;font-size:11px;';
+    res.textContent = 'Error: ' + e.message;
+  }
+  btn.disabled = false; btn.textContent = '▶ Run News Feed Now';
+}
+
+// ─── SCREEN: CONTENT ──────────────────────────────────────────────────────────
+function renderContent(el) {
+  el.innerHTML = `
+    <div class="section-title">Content</div>
+    <div class="section-sub">Manage all content types</div>
+    ${[
+      {id:'news',icon:'📰',label:'News Articles',sub:'Pull & manage news'},
+      {id:'releases',icon:'🔫',label:'Gun Releases',sub:'New product releases',badge:'new'},
+      {id:'blog',icon:'✍',label:'Blog',sub:'Editorial posts'},
+      {id:'reviews',icon:'★',label:'Reviews',sub:'Gear & firearm reviews'},
+      {id:'canada',icon:'🇨🇦',label:'Canada',sub:'Canadian 2A content'},
+      {id:'brazil',icon:'🇧🇷',label:'Brasil',sub:'Brazilian content'},
+      {id:'competitions',icon:'🏆',label:'Competitions',sub:'Shooting competitions'},
+      {id:'drafts',icon:'🔍',label:'Draft Recovery',sub:'Recover unpublished drafts'},
+      {id:'hub',icon:'◈',label:'Content Hub',sub:'Article intelligence'},
+    ].map(p=>`
+      <div class="row" onclick="openPanel('content','${p.id}','${p.label}')" style="cursor:pointer;">
+        <span style="font-size:20px;">${p.icon}</span>
+        <div style="flex:1;">
+          <div class="row-label">${p.label}${p.badge?` <span class="pill pill-gold" style="margin-left:4px">${p.badge}</span>`:''}</div>
+          <div class="row-sub">${p.sub}</div>
         </div>
-        <div class="art-title">${esc(a.title || '')}</div>
-        <div class="art-meta mt-sm row gap-sm">
-          ${a.publishedAt ? `<span>${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
-          ${a.wordCount ? `<span>${a.wordCount}w</span>` : ''}
-        </div>
-      </div>`).join('');
-  } catch (e) {
-    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
+        <span style="color:var(--dim);font-size:14px;">›</span>
+      </div>
+    `).join('')}
+  `;
 }
 
-async function runBackfill() {
-  const btn = document.getElementById('btn-backfill');
-  btn.disabled = true; btn.textContent = 'RUNNING...';
-  try {
-    await apiPost('/api/admin/backfill-articles');
-    toast('Backfill triggered', 'ok');
-  } catch (e) { toast(e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'BACKFILL';
-}
-async function runFixImages() {
-  const btn = document.getElementById('btn-fix-img');
-  btn.disabled = true; btn.textContent = 'RUNNING...';
-  try {
-    await apiPost('/api/admin/fix-images');
-    toast('Fix images triggered', 'ok');
-  } catch (e) { toast(e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'FIX IMAGES';
+// ─── SCREEN: OUTREACH ─────────────────────────────────────────────────────────
+function renderOutreach(el) {
+  el.innerHTML = `
+    <div class="section-title">Outreach</div>
+    <div class="section-sub">Creator & influencer CRM</div>
+    <div class="tabs">
+      <button class="tab-btn active" onclick="setOutreachTab('campaigns',this)">Campaigns</button>
+      <button class="tab-btn" onclick="setOutreachTab('contacts',this)">Contacts</button>
+      <button class="tab-btn" onclick="setOutreachTab('queue',this)">Queue</button>
+      <button class="tab-btn" onclick="setOutreachTab('history',this)">Sent</button>
+    </div>
+    <div id="outreach-tab-content"><div class="loading"><span class="spinner">◈</span> Loading...</div></div>
+  `;
+  loadOutreachTab('campaigns');
 }
 
-// ── OUTREACH ──────────────────────────────────────────────────────────────────
-async function loadOutreach() {
-  renderOutreachTab();
-  try {
-    const [q, h, m, d, hol] = await Promise.allSettled([
-      apiGet('/api/outreach/queue'),
-      apiGet('/api/outreach/history'),
-      apiGet('/api/outreach/manufacturers'),
-      apiGet('/api/outreach/dealers'),
-      apiGet('/api/outreach/holsters'),
-    ]);
-    outreachData.queue = q.status === 'fulfilled' ? (q.value?.pending || []) : [];
-    outreachData.history = h.status === 'fulfilled' ? (h.value?.history || h.value || []) : [];
-    outreachData.contacts = [
-      ...(m.status === 'fulfilled' ? (m.value?.manufacturers || []).map(c => ({ ...c, type: 'manufacturer' })) : []),
-      ...(d.status === 'fulfilled' ? (d.value?.dealers || []).map(c => ({ ...c, type: 'dealer' })) : []),
-      ...(hol.status === 'fulfilled' ? (hol.value?.companies || []).map(c => ({ ...c, type: 'holster' })) : []),
-    ];
-    document.getElementById('queue-count').textContent = outreachData.queue.length > 0 ? `(${outreachData.queue.length})` : '';
-    renderOutreachTab();
-  } catch (e) {
-    document.getElementById('outreach-content').innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
-}
-
+let currentOutreachTab = 'campaigns';
 function setOutreachTab(tab, btn) {
-  outreachTab = tab;
-  document.querySelectorAll('#screen-outreach .tab-item').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderOutreachTab();
+  currentOutreachTab = tab;
+  document.querySelectorAll('#screen-outreach .tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  loadOutreachTab(tab);
 }
 
-function renderOutreachTab() {
-  const el = document.getElementById('outreach-content');
-  if (outreachTab === 'queue') {
-    const q = outreachData.queue;
+async function loadOutreachTab(tab) {
+  const el = document.getElementById('outreach-tab-content');
+  if (!el) return;
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  try {
+    if (tab === 'contacts') {
+      const d = await api('/api/admin/influencers?limit=30');
+      const list = d.contacts || d.influencers || [];
+      el.innerHTML = list.length === 0 ? '<div class="empty">No contacts found</div>' :
+        `<div style="margin-bottom:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">${list.length} contacts</div>` +
+        list.map(c=>`
+          <div class="outreach-card">
+            <div class="outreach-name">${c.name||c.channelName||'—'}</div>
+            <div class="outreach-platform">${c.platform||''} ${c.handle?'· '+c.handle:''}</div>
+            <div class="outreach-meta">
+              ${c.subscribers ? `<span>👥 ${c.subscribers}</span>` : ''}
+              ${c.email ? `<span>✉ ${c.email}</span>` : ''}
+              ${c.status ? `<span class="pill pill-dim">${c.status}</span>` : ''}
+            </div>
+          </div>`).join('');
+    } else if (tab === 'queue') {
+      const d = await api('/api/admin/influencers?queue=true');
+      const list = d.queue || d.items || [];
+      el.innerHTML = list.length === 0 ? '<div class="empty">Queue is empty</div>' :
+        list.map(q=>`
+          <div class="outreach-card">
+            <div class="outreach-name">${q.recipientName||q.name||'—'}</div>
+            <div class="outreach-platform">${q.templateName||''}</div>
+            <div class="outreach-meta"><span class="pill pill-warn">PENDING</span></div>
+          </div>`).join('');
+    } else if (tab === 'history') {
+      const d = await api('/api/admin/influencers?history=true');
+      const list = d.history || d.logs || d.sent || [];
+      el.innerHTML = list.length === 0 ? '<div class="empty">No emails sent yet</div>' :
+        list.map(s=>`
+          <div class="outreach-card">
+            <div class="outreach-name">${s.recipientName||s.name||'—'}</div>
+            <div class="outreach-platform">${s.subject||''}</div>
+            <div class="outreach-meta">
+              <span>${s.sentAt ? new Date(s.sentAt).toLocaleDateString() : ''}</span>
+              <span class="pill pill-ok">SENT</span>
+            </div>
+          </div>`).join('');
+    } else {
+      // campaigns / templates
+      el.innerHTML = `
+        <div style="margin-bottom:16px">
+          <a href="https://downrangeco.com/admin#outreach" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full CRM →</a>
+        </div>
+        <div class="empty">Template editor and send pipeline<br>available on desktop admin<br><br><span style="font-size:9px;color:var(--dim2)">Mobile view shows contacts & history</span></div>`;
+    }
+  } catch(e) {
+    el.innerHTML = `<div class="empty">Error: ${e.message}</div>`;
+  }
+}
+
+// ─── SCREEN: INTEL ────────────────────────────────────────────────────────────
+function renderIntel(el) {
+  el.innerHTML = `
+    <div class="section-title">Intelligence</div>
+    <div class="section-sub">Data feeds, copyright & briefings</div>
+    ${[
+      {id:'intel',icon:'🧠',label:'Briefings',sub:'AI intelligence reports'},
+      {id:'statelaws',icon:'🗺',label:'State Laws',sub:'50-state firearms database'},
+      {id:'copyright',icon:'⚖',label:'Copyright',sub:'Risk scan & rewrites'},
+      {id:'pulllog',icon:'📡',label:'Pull Log',sub:'Feed agent logs'},
+      {id:'deals',icon:'🔥',label:'Deals Feed',sub:'Ammo & gear deals'},
+      {id:'feeds',icon:'⚡',label:'Feed Agent',sub:'Trigger content pulls'},
+      {id:'marketbrief',icon:'📊',label:'Market Brief',sub:'Live market summary',badge:'live'},
+    ].map(p=>`
+      <div class="row" onclick="openPanel('intel','${p.id}','${p.label}')" style="cursor:pointer;">
+        <span style="font-size:20px;">${p.icon}</span>
+        <div style="flex:1;">
+          <div class="row-label">${p.label}${p.badge?` <span class="pill pill-ok" style="margin-left:4px">${p.badge}</span>`:''}</div>
+          <div class="row-sub">${p.sub}</div>
+        </div>
+        <span style="color:var(--dim);font-size:14px;">›</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ─── SCREEN: SYSTEM ───────────────────────────────────────────────────────────
+function renderSystem(el) {
+  el.innerHTML = `
+    <div class="section-title">System</div>
+    <div class="section-sub">Crons, alerts, agents & ops</div>
+    <div id="system-health-banner" style="margin-bottom:12px;display:none;"></div>
+    ${[
+      {id:'overview',icon:'◈',label:'Overview',sub:'System status dashboard'},
+      {id:'crons',icon:'⏱',label:'Cron Jobs',sub:'Run & monitor scheduled tasks'},
+      {id:'sysalerts',icon:'🚨',label:'System Alerts',sub:'Platform notifications'},
+      {id:'agents',icon:'🤖',label:'Content Agents',sub:'Trigger AI pipelines'},
+      {id:'rss',icon:'📡',label:'RSS Sources',sub:'News feed configuration'},
+      {id:'sitemap',icon:'🗺️',label:'Site Map',sub:'URL index & indexing'},
+    ].map(p=>`
+      <div class="row" onclick="openPanel('system','${p.id}','${p.label}')" style="cursor:pointer;">
+        <span style="font-size:20px;">${p.icon}</span>
+        <div style="flex:1;">
+          <div class="row-label">${p.label}</div>
+          <div class="row-sub">${p.sub}</div>
+        </div>
+        <span style="color:var(--dim);font-size:14px;">›</span>
+      </div>
+    `).join('')}
+  `;
+  // health check
+  api('/api/admin/cron-health').then(d=>{
+    const banner = document.getElementById('system-health-banner');
+    if (!banner) return;
+    if (d.status !== 'ok') {
+      banner.style.display = 'block';
+      banner.innerHTML = `<div style="padding:10px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">⚠ SYSTEM DEGRADED — ${(d.issues||[]).map(i=>typeof i==='object'?i.msg||'Issue':i).join(', ')}</div>`;
+    } else {
+      banner.style.display = 'block';
+      banner.innerHTML = `<div style="padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ok)">● All systems operational</div>`;
+    }
+  }).catch(()=>{});
+}
+
+// ─── SCREEN: MEDIA ────────────────────────────────────────────────────────────
+function renderMedia(el) {
+  el.innerHTML = `
+    <div class="section-title">Media</div>
+    <div class="section-sub">Videos, images & social</div>
+    ${[
+      {id:'videos',icon:'▶',label:'Video Manager',sub:'YouTube content management'},
+      {id:'channels',icon:'📺',label:'Channels',sub:'Channel configuration'},
+      {id:'imglib',icon:'📸',label:'Image Library',sub:'Asset repository'},
+      {id:'imgsearch',icon:'🔍',label:'Image Finder',sub:'Find & attach images'},
+      {id:'social',icon:'📣',label:'Social Media',sub:'Command center',badge:'new'},
+    ].map(p=>`
+      <div class="row" onclick="openPanel('media','${p.id}','${p.label}')" style="cursor:pointer;">
+        <span style="font-size:20px;">${p.icon}</span>
+        <div style="flex:1;">
+          <div class="row-label">${p.label}${p.badge?` <span class="pill pill-gold" style="margin-left:4px">${p.badge}</span>`:''}</div>
+          <div class="row-sub">${p.sub}</div>
+        </div>
+        <span style="color:var(--dim);font-size:14px;">›</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ─── SCREEN: SETTINGS ─────────────────────────────────────────────────────────
+function renderSettingsScreen(el) {
+  el.innerHTML = `
+    <div class="section-title">Settings</div>
+    <div class="section-sub">Configuration & API keys</div>
+    ${[
+      {id:'ai',icon:'🤖',label:'AI Models',sub:'Provider & model routing'},
+      {id:'costs',icon:'💰',label:'Cost Center',sub:'AI usage & spend tracking'},
+      {id:'keys',icon:'🔑',label:'API Keys',sub:'Integration key status'},
+      {id:'envcheck',icon:'🔧',label:'Env Vars',sub:'Environment variable audit'},
+      {id:'emails',icon:'✉',label:'Email Tests',sub:'Test email delivery'},
+    ].map(p=>`
+      <div class="row" onclick="openPanel('settings','${p.id}','${p.label}')" style="cursor:pointer;">
+        <span style="font-size:20px;">${p.icon}</span>
+        <div style="flex:1;">
+          <div class="row-label">${p.label}</div>
+          <div class="row-sub">${p.sub}</div>
+        </div>
+        <span style="color:var(--dim);font-size:14px;">›</span>
+      </div>
+    `).join('')}
+    <div class="divider"></div>
+    <div style="text-align:center;padding:8px 0;">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-bottom:8px">KEY</div>
+      <input type="password" id="settings-key-input" class="inp" value="${adminKey}" placeholder="Admin key..."
+        style="max-width:280px;text-align:center;margin-bottom:8px"
+        onchange="adminKey=this.value;localStorage.setItem('dr_admin_key',this.value)">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2)">Stored in localStorage</div>
+    </div>
+    <div class="divider"></div>
+    <button class="btn-danger" style="width:100%" onclick="signOut()">Sign Out</button>
+  `;
+}
+
+function signOut() {
+  localStorage.removeItem('dr_admin_key');
+  adminKey = '';
+  location.reload();
+}
+
+// ─── SCREEN: PUBLISHING ───────────────────────────────────────────────────────
+function renderPublishing(el) {
+  el.innerHTML = `
+    <div class="section-title">Publishing</div>
+    <div class="section-sub">Schedule, alerts & newsletters</div>
+    ${[
+      {id:'schedule',icon:'📅',label:'Schedule',sub:'Publication schedule'},
+      {id:'breaking',icon:'🔴',label:'Breaking Alerts',sub:'Publish breaking news ticker'},
+      {id:'newsletter',icon:'📧',label:'Newsletter',sub:'Email campaign management'},
+      {id:'seo',icon:'🔍',label:'SEO & Meta',sub:'Search optimization'},
+    ].map(p=>`
+      <div class="row" onclick="openPanel('publishing','${p.id}','${p.label}')" style="cursor:pointer;">
+        <span style="font-size:20px;">${p.icon}</span>
+        <div style="flex:1;">
+          <div class="row-label">${p.label}</div>
+          <div class="row-sub">${p.sub}</div>
+        </div>
+        <span style="color:var(--dim);font-size:14px;">›</span>
+      </div>
+    `).join('')}
+  `;
+}
+
+// ─── PANEL: NEWS ARTICLES ─────────────────────────────────────────────────────
+async function renderNewsPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading articles...</div>';
+  try {
+    const d = await api('/api/admin/articles-list?limit=30');
+    const articles = d.articles || d.items || [];
+    if (!articles.length) { el.innerHTML = '<div class="empty">No articles found</div>'; return; }
+    const total = d.total || articles.length;
     el.innerHTML = `
-      <button class="btn btn-primary btn-full mb-sm" id="btn-gen-out" onclick="generateOutreach()">GENERATE DRAFTS</button>
-      ${q.length === 0 ? '<div class="empty">Queue is empty</div>' : q.map(item => `
-        <div class="card" id="qitem-${esc(item.id)}">
-          <div class="row-between mb-sm">
-            <span class="badge badge-info">${(item.type || 'CONTACT').toUpperCase()}</span>
-            <span class="badge badge-muted">${(item.status || 'DRAFT').toUpperCase()}</span>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${total} articles total</div>
+      ${articles.map(a=>`
+        <div class="article-card">
+          <div class="article-title">${a.title||'Untitled'}</div>
+          <div class="article-meta">
+            <span class="pill ${a.status==='published'?'pill-ok':'pill-warn'}">${a.status||'draft'}</span>
+            ${a.source ? `<span>${a.source}</span>` : ''}
+            ${a.publishedAt ? `<span>${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
+            ${a.category ? `<span class="tag">${a.category}</span>` : ''}
           </div>
-          <div style="font-weight:700;font-size:14px;">${esc(item.contactName || item.companyName || 'Unknown')}</div>
-          ${item.subject ? `<div class="text-muted text-sm mt-sm" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${esc(item.subject)}</div>` : ''}
-          ${item.preview ? `<div style="font-size:12px;color:var(--dim);margin-top:6px;line-height:1.5;">${esc(item.preview)}</div>` : ''}
-          <div class="btn-row mt-sm">
-            <button class="btn btn-primary btn-sm" onclick="approveItem('${esc(item.id)}')">APPROVE & SEND</button>
-            <button class="btn btn-ghost btn-sm" onclick="skipItem('${esc(item.id)}')">SKIP</button>
+          <div class="article-actions">
+            ${a.slug?.current ? `<a href="https://downrangeco.com/news/${a.slug.current}" target="_blank" class="btn-outline" style="font-size:9px;padding:5px 10px;text-decoration:none;">View ↗</a>` : ''}
           </div>
         </div>`).join('')}`;
-  } else if (outreachTab === 'history') {
-    const h = outreachData.history.slice(0, 50);
-    el.innerHTML = h.length === 0 ? '<div class="empty">No history</div>' : h.map(item => `
-      <div class="card card-tight">
-        <div class="row-between">
-          <span style="font-weight:700;font-size:13px;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(item.to || item.contactName || 'Unknown')}</span>
-          <span class="badge ${item.status === 'sent' ? 'badge-ok' : 'badge-err'}">${item.status === 'sent' ? 'SENT' : 'FAILED'}</span>
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: BLOG ──────────────────────────────────────────────────────────────
+async function renderBlogPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading posts...</div>';
+  try {
+    const d = await api('/api/admin/blog-posts?limit=30');
+    const posts = d.posts || d.items || [];
+    if (!posts.length) { el.innerHTML = '<div class="empty">No blog posts</div>'; return; }
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${posts.length} posts</div>
+      ${posts.map(p=>`
+        <div class="blog-card">
+          <div class="blog-title">${p.title||'Untitled'}</div>
+          <div class="blog-meta">
+            <span class="pill ${p.status==='published'?'pill-ok':'pill-warn'}">${p.status||'draft'}</span>
+            ${p.author ? `<span>${p.author}</span>` : ''}
+            ${p.publishedAt ? `<span>${new Date(p.publishedAt).toLocaleDateString()}</span>` : ''}
+          </div>
+          ${p.slug?.current ? `<a href="https://downrangeco.com/blog/${p.slug.current}" target="_blank" class="btn-outline btn-sm" style="text-decoration:none;display:inline-block">View ↗</a>` : ''}
+        </div>`).join('')}`;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: RELEASES ──────────────────────────────────────────────────────────
+async function renderReleasesPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading releases...</div>';
+  try {
+    const d = await api('/api/admin/releases-manager?limit=30');
+    const items = d.releases || d.items || [];
+    if (!items.length) { el.innerHTML = '<div class="empty">No releases found</div>'; return; }
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} releases</div>
+      ${items.map(r=>`
+        <div class="release-card">
+          ${r.image ? `<img src="${r.image}" class="release-img" alt="" onerror="this.style.display='none'">` : '<div class="release-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">🔫</div>'}
+          <div class="release-info">
+            <div class="release-name">${r.name||r.title||'—'}</div>
+            <div class="release-meta">
+              ${r.brand ? `<span style="color:var(--gold)">${r.brand}</span> · ` : ''}
+              ${r.category||''} ${r.msrp ? `· $${r.msrp}` : ''}
+            </div>
+            ${r.slug?.current ? `<a href="https://downrangeco.com/releases/${r.slug.current}" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;display:inline-block;margin-top:6px">View ↗</a>` : ''}
+          </div>
+        </div>`).join('')}`;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: BREAKING ALERTS ───────────────────────────────────────────────────
+async function renderBreakingPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  try {
+    const d = await api('/api/breaking-alerts?limit=10');
+    const alerts = d.alerts || [];
+    el.innerHTML = `
+      <div class="section-sub">${alerts.length} active alerts</div>
+      <div class="form-row"><span class="lbl">Headline</span><input id="brk-headline" class="inp" placeholder="Breaking: ..."></div>
+      <div class="form-row"><span class="lbl">URL (optional)</span><input id="brk-url" class="inp" placeholder="https://..."></div>
+      <div class="form-row"><span class="lbl">Urgency (1-10)</span><input id="brk-urgency" class="inp" type="number" min="1" max="10" value="7"></div>
+      <button class="btn" style="width:100%;margin-bottom:20px" id="brk-submit" onclick="addBreakingAlert()">Publish Alert</button>
+      ${alerts.length === 0 ? '<div class="empty">No active alerts</div>' :
+        alerts.map(a=>`
+          <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;">
+            <span class="pill pill-err">LIVE</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;flex:1;">${a.headline}</span>
+            <button class="btn-danger" style="padding:5px 8px;font-size:9px;" onclick="deleteBreakingAlert('${a._id}')">✕</button>
+          </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+async function addBreakingAlert() {
+  const h = document.getElementById('brk-headline')?.value?.trim();
+  if (!h) return;
+  const btn = document.getElementById('brk-submit');
+  btn.disabled = true; btn.textContent = '⏳ Publishing...';
+  try {
+    await api('/api/admin/breaking-alert', {
+      method:'POST',
+      body: JSON.stringify({ headline:h, url:document.getElementById('brk-url')?.value||'', urgency:parseInt(document.getElementById('brk-urgency')?.value)||7 })
+    });
+    flash('✅ Alert published', 'ok');
+    renderBreakingPanel(document.getElementById('drawer-content'));
+  } catch(e) { flash('❌ Error: '+e.message, 'err'); }
+  btn.disabled = false; btn.textContent = 'Publish Alert';
+}
+async function deleteBreakingAlert(id) {
+  await api('/api/admin/breaking-alert', { method:'DELETE', body:JSON.stringify({id}) });
+  flash('Alert removed', 'info');
+  renderBreakingPanel(document.getElementById('drawer-content'));
+}
+
+// ─── PANEL: CRON JOBS ─────────────────────────────────────────────────────────
+async function renderCronsPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading crons...</div>';
+  try {
+    const d = await api('/api/admin/cron-status');
+    const jobs = d.jobs || [];
+    const recent = d.recent || d.runs || [];
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${jobs.length} scheduled jobs</div>
+      ${jobs.map(j=>`
+        <div class="cron-card">
+          <div class="cron-name">
+            <span class="pill ${j.status==='ok'||j.lastRun?'pill-ok':'pill-dim'}">${j.status||'idle'}</span>
+            ${j.id||j.name||'Job'}
+          </div>
+          <div class="cron-details">
+            ${j.schedule ? `<span>⏱ ${j.schedule}</span>` : ''}
+            ${j.lastRun ? `<span>Last: ${new Date(j.lastRun).toLocaleString()}</span>` : ''}
+            ${j.nextRun ? `<span>Next: ${new Date(j.nextRun).toLocaleTimeString()}</span>` : ''}
+          </div>
+          <div class="cron-actions">
+            <button class="btn btn-sm" onclick="triggerCron('${j.id||j.name}',this)">▶ Run</button>
+          </div>
+        </div>`).join('')}
+      ${recent.length ? `
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Recent Runs</div>
+        ${recent.slice(0,10).map(r=>`
+          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px;">
+            <span class="pill ${r.status==='ok'||r.success?'pill-ok':'pill-err'}">${r.status||'?'}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;flex:1;">${r.job||r.name||'—'}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${r._createdAt?new Date(r._createdAt).toLocaleTimeString():''}</span>
+          </div>`).join('')}` : ''}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+async function triggerCron(jobId, btn) {
+  btn.disabled = true; btn.textContent = '⏳';
+  try {
+    const d = await api('/api/admin/cron-status?trigger=true', { method:'POST', body:JSON.stringify({jobId}) });
+    flash(d.ok ? `✓ ${jobId} ran (${d.ms||0}ms)` : '✕ '+d.error, d.ok?'ok':'err');
+  } catch(e) { flash('Error: '+e.message, 'err'); }
+  btn.disabled = false; btn.textContent = '▶ Run';
+}
+
+// ─── PANEL: SYSTEM OVERVIEW ───────────────────────────────────────────────────
+async function renderSystemOverview(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Checking status...</div>';
+  try {
+    const h = await api('/api/admin/cron-health');
+    const status = h.status === 'ok';
+    el.innerHTML = `
+      <div style="padding:16px;background:var(--bg2);border:1px solid ${status?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};margin-bottom:16px;text-align:center;">
+        <div style="font-size:32px;margin-bottom:8px">${status?'✅':'⚠️'}</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:1.4rem;color:${status?'var(--ok)':'var(--err)'}">${status?'ALL SYSTEMS OPERATIONAL':'SYSTEM DEGRADED'}</div>
+      </div>
+      ${(h.checks||[]).map(c=>`
+        <div class="row" style="cursor:default;">
+          <span class="pill ${c.ok?'pill-ok':'pill-err'}">${c.ok?'OK':'FAIL'}</span>
+          <div style="flex:1;">
+            <div class="row-label">${c.name||c.label||'Check'}</div>
+            ${c.msg ? `<div class="row-sub">${c.msg}</div>` : ''}
+          </div>
+        </div>`).join('')}
+      <div class="divider"></div>
+      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full Admin →</a>
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: COST CENTER ───────────────────────────────────────────────────────
+async function renderCostsPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading costs...</div>';
+  try {
+    const d = await api('/api/admin/ai-costs');
+    const costs = d.costs || d.breakdown || {};
+    const total = d.total || 0;
+    el.innerHTML = `
+      <div class="stat-box" style="margin-bottom:16px;text-align:center;">
+        <div class="stat-val">$${(total/100).toFixed(4)}</div>
+        <div class="stat-lbl">Total AI Spend</div>
+      </div>
+      ${Object.entries(costs).map(([k,v])=>`
+        <div class="cost-bar-row">
+          <div class="cost-bar-label">${k}</div>
+          <div class="cost-bar-track"><div class="cost-bar-fill" style="width:${Math.min(100,(v/Math.max(...Object.values(costs),1))*100)}%"></div></div>
+          <div class="cost-bar-val">$${(v/100).toFixed(4)}</div>
+        </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Cost tracking data not available</div>`; }
+}
+
+// ─── PANEL: API KEYS ──────────────────────────────────────────────────────────
+async function renderKeysPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Checking keys...</div>';
+  const KEYS = [
+    {k:'ANTHROPIC_API_KEY',l:'Anthropic Claude',req:true},
+    {k:'SANITY_API_TOKEN',l:'Sanity CMS',req:true},
+    {k:'RESEND_API_KEY',l:'Resend Email',req:true},
+    {k:'CRON_SECRET',l:'Cron Secret',req:true},
+    {k:'GLM_API_KEY',l:'Z.ai GLM',req:false},
+    {k:'YOUTUBE_API_KEY',l:'YouTube API',req:false},
+    {k:'NEWSAPI_KEY',l:'NewsAPI',req:false},
+    {k:'GNEWS_KEY',l:'GNews',req:false},
+  ];
+  try {
+    const d = await api('/api/admin/ai-status');
+    const status = d.status || {};
+    el.innerHTML = KEYS.map(k=>`
+      <div class="row" style="cursor:default;">
+        <div style="flex:1;">
+          <div class="row-label">${k.l}${k.req?` <span class="pill pill-err" style="font-size:7px">REQ</span>`:''}</div>
+          <div class="row-sub code">${k.k}</div>
         </div>
-        ${item.subject ? `<div class="text-sm text-muted mt-sm">${esc(item.subject)}</div>` : ''}
-        ${item.sentAt ? `<div class="art-meta mt-sm">${new Date(item.sentAt).toLocaleString()}</div>` : ''}
+        ${d.ok ? `<span class="pill ${status[k.k]?'pill-ok':'pill-dim'}">${status[k.k]?'SET':'—'}</span>` : '<span class="pill pill-dim">?</span>'}
       </div>`).join('');
-  } else {
-    const c = outreachData.contacts;
-    el.innerHTML = `<div class="text-mono text-xs text-muted mb-sm">${c.length} contacts</div>` +
-      (c.length === 0 ? '<div class="empty">No contacts</div>' : c.map(item => `
-        <div class="card card-tight">
-          <div class="row-between">
-            <span style="font-weight:700;font-size:14px;">${esc(item.name || item.company || 'Unknown')}</span>
-            <span class="badge ${item.type === 'manufacturer' ? 'badge-gold' : item.type === 'dealer' ? 'badge-info' : 'badge-muted'}">${item.type === 'manufacturer' ? 'MFG' : item.type === 'dealer' ? 'DEALER' : 'HOLSTER'}</span>
-          </div>
-          ${item.email ? `<div class="art-meta mt-sm">✉ ${esc(item.email)}</div>` : ''}
-          ${item.website ? `<div class="art-meta">🌐 ${esc(item.website)}</div>` : ''}
-        </div>`).join(''));
-  }
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
 }
 
-async function generateOutreach() {
-  const btn = document.getElementById('btn-gen-out');
-  if (btn) { btn.disabled = true; btn.textContent = 'GENERATING...'; }
-  try {
-    await apiPost('/api/outreach/queue', { action: 'generate' });
-    toast('Drafts generated', 'ok');
-    loadOutreach();
-  } catch (e) { toast(e.message, 'err'); if (btn) { btn.disabled = false; btn.textContent = 'GENERATE DRAFTS'; } }
-}
-async function approveItem(id) {
-  try {
-    await apiPost('/api/outreach/queue', { action: 'approve', id });
-    outreachData.queue = outreachData.queue.filter(i => i.id !== id);
-    renderOutreachTab();
-    toast('Sent via Resend', 'ok');
-  } catch (e) { toast(e.message, 'err'); }
-}
-async function skipItem(id) {
-  try {
-    await apiPost('/api/outreach/queue', { action: 'skip', id });
-    outreachData.queue = outreachData.queue.filter(i => i.id !== id);
-    renderOutreachTab();
-  } catch (e) { toast(e.message, 'err'); }
+// ─── PANEL: RSS SOURCES ───────────────────────────────────────────────────────
+function renderRSSPanel(el) {
+  const feeds = [
+    'The Firearm Blog','TTAG','Guns.com News','NRA-ILA','ATF News','SAF',
+    'Bearing Arms','AmmoLand','TheGunFeed','Gun Owners of America',
+    'American Rifleman','Concealed Nation','r/guns','r/firearms'
+  ];
+  el.innerHTML = `
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${feeds.length} active feeds</div>
+    ${feeds.map(f=>`
+      <div class="row" style="cursor:default;">
+        <span style="font-size:16px;">📡</span>
+        <div style="flex:1;"><div class="row-label">${f}</div></div>
+        <span class="pill pill-ok">Active</span>
+      </div>`).join('')}
+  `;
 }
 
-// ── CRON ──────────────────────────────────────────────────────────────────────
-async function loadCron() {
-  const el = document.getElementById('cron-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-  try {
-    const data = await apiGet('/api/admin/cron-status');
-    const jobs = Object.entries(data?.jobs || {}).map(([name, d]) => ({ name, ...d }));
-    const failed = jobs.filter(j => j.status === 'error');
-    const running = jobs.filter(j => j.status === 'running');
-    const ok = jobs.filter(j => j.status !== 'error' && j.status !== 'running');
-    document.getElementById('cron-ok').textContent = ok.length;
-    document.getElementById('cron-running').textContent = running.length;
-    document.getElementById('cron-failed').textContent = failed.length;
-    let html = '';
-    if (failed.length) html += `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Failed</div></div>` + failed.map(j => cronCard(j)).join('');
-    if (running.length) html += `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Running</div></div>` + running.map(j => cronCard(j)).join('');
-    html += `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">All Jobs (${jobs.length})</div></div>` + ok.map(j => cronCard(j)).join('');
-    el.innerHTML = html || '<div class="empty">No cron data</div>';
-  } catch (e) {
-    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
-}
-
-function cronCard(job, compact = false) {
-  const st = job.status;
-  const badgeCls = st === 'error' ? 'badge-err' : st === 'running' ? 'badge-warn' : 'badge-ok';
-  const badgeLbl = st === 'error' ? 'FAILED' : st === 'running' ? 'RUNNING' : 'OK';
-  return `<div class="card card-tight" style="margin-bottom:6px;">
-    <div class="row-between">
-      <span class="text-mono text-sm" style="flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(job.name)}</span>
-      <span class="badge ${badgeCls}">${badgeLbl}</span>
-    </div>
-    <div class="row gap-md mt-sm">
-      ${job.schedule ? `<span class="text-mono text-xs">${esc(job.schedule)}</span>` : ''}
-      ${job.streak ? `<span class="text-mono text-xs text-gold">🔥 ${job.streak}</span>` : ''}
-      ${job.totalRuns ? `<span class="text-mono text-xs">${job.totalRuns} runs</span>` : ''}
-    </div>
-    ${job.lastRun ? `<div class="art-meta mt-sm">Last: ${new Date(job.lastRun).toLocaleString()}</div>` : ''}
-    ${!compact ? `<button class="btn btn-secondary btn-sm mt-sm" onclick="triggerJob('${esc(job.name)}',this)">TRIGGER NOW</button>` : ''}
-  </div>`;
-}
-
-async function triggerJob(name, btn) {
-  btn.disabled = true; btn.textContent = 'TRIGGERING...';
-  try {
-    await apiPost('/api/admin/cron-trigger', { job: name });
-    toast(`${name} triggered`, 'ok');
-  } catch (e) { toast(e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'TRIGGER NOW';
-}
-
-// ── INTELLIGENCE ──────────────────────────────────────────────────────────────
-async function loadIntelligence() {
-  const el = document.getElementById('intel-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-  try {
-    const data = await apiGet('/api/admin/intelligence?limit=20');
-    const briefs = data?.briefings || data || [];
-    if (briefs.length === 0) { el.innerHTML = '<div class="empty">No briefings yet</div>'; return; }
-    el.innerHTML = `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Briefings (${briefs.length})</div></div>` +
-      briefs.map((b, i) => `
-        <div class="card" onclick="toggleExpand('brief-${i}',this)" style="cursor:pointer;">
-          <div class="row-between mb-sm">
-            <span class="badge ${b.status === 'draft' ? 'badge-warn' : 'badge-ok'}">${(b.status || 'PUBLISHED').toUpperCase()}</span>
-            ${b.date ? `<span class="art-meta">${new Date(b.date).toLocaleDateString()}</span>` : ''}
-          </div>
-          <div style="font-weight:700;font-size:15px;line-height:1.35;">${esc(b.title || 'Intelligence Briefing')}</div>
-          <div class="expand-hint">▼ EXPAND</div>
-          <div class="expanded-body" id="brief-${i}">
-            <div class="divider"></div>
-            ${b.summary ? `<div style="font-size:13px;color:var(--muted);line-height:1.6;">${esc(b.summary)}</div>` : ''}
-            ${b.topics?.length ? `<div class="row gap-sm mt-sm" style="flex-wrap:wrap;">${b.topics.map(t => `<span class="badge badge-muted">${esc(t)}</span>`).join('')}</div>` : ''}
-          </div>
-        </div>`).join('');
-  } catch (e) {
-    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
-}
-
-async function generateBriefing() {
-  const btn = document.getElementById('btn-gen-brief');
-  btn.disabled = true; btn.textContent = 'GENERATING...';
-  try {
-    await apiPost('/api/admin/intelligence/generate');
-    toast('Briefing queued', 'ok');
-    loadIntelligence();
-  } catch (e) { toast(e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'GENERATE BRIEFING NOW';
-}
-
-// ── IMAGES ────────────────────────────────────────────────────────────────────
-async function loadImages() {
-  const el = document.getElementById('images-grid');
-  el.innerHTML = '<div class="loading" style="grid-column:span 3;"><div class="spinner"></div></div>';
-  try {
-    const data = await apiGet('/api/admin/image-repo?limit=50');
-    const imgs = data?.images || data || [];
-    document.getElementById('images-count').textContent = `${imgs.length} images in repo`;
-    if (imgs.length === 0) { el.innerHTML = '<div class="empty" style="grid-column:span 3;">No images</div>'; return; }
-    el.innerHTML = imgs.map(img => {
-      const url = img.cdnUrl || img.imageUrl;
-      return `<div style="position:relative;">
-        ${url ? `<img src="${esc(url)}" style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:6px;background:var(--bg-el);" loading="lazy">` :
-          `<div style="width:100%;aspect-ratio:1;background:var(--bg-el);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:24px;">🖼️</div>`}
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--muted);margin-top:3px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${esc(img.title || img.alt || 'Image')}</div>
-      </div>`;
-    }).join('');
-  } catch (e) {
-    el.innerHTML = `<div class="empty text-err" style="grid-column:span 3;">${e.message}</div>`;
-  }
-}
-
-async function seedImages() {
-  const btn = document.getElementById('btn-seed');
-  btn.disabled = true; btn.textContent = 'SEEDING...';
-  try {
-    await apiPost('/api/admin/seed-image-repo');
-    toast('Image repo seeded', 'ok');
-    loadImages();
-  } catch (e) { toast(e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'SEED REPO';
-}
-async function fetchOgImages() {
-  try {
-    await apiPost('/api/admin/fetch-article-images');
-    toast('OG image fetch triggered', 'ok');
-  } catch (e) { toast(e.message, 'err'); }
-}
-
-// ── CONTACTS ──────────────────────────────────────────────────────────────────
-async function loadContacts() {
-  const el = document.getElementById('contacts-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
-  try {
-    const [m, d, hol] = await Promise.allSettled([
-      apiGet('/api/outreach/manufacturers'),
-      apiGet('/api/outreach/dealers'),
-      apiGet('/api/outreach/holsters'),
-    ]);
-    allContacts = [
-      ...(m.status === 'fulfilled' ? (m.value?.manufacturers || []).map(c => ({ ...c, type: 'manufacturer' })) : []),
-      ...(d.status === 'fulfilled' ? (d.value?.dealers || []).map(c => ({ ...c, type: 'dealer' })) : []),
-      ...(hol.status === 'fulfilled' ? (hol.value?.companies || []).map(c => ({ ...c, type: 'holster' })) : []),
-    ];
-    renderContacts();
-  } catch (e) {
-    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
-}
-
-function setContactTab(type, btn) {
-  contactTypeFilter = type;
-  document.querySelectorAll('#screen-contacts .tab-item').forEach(b => b.classList.remove('active'));
-  btn.classList.add('active');
-  renderContacts();
-}
-
-function filterContacts() { renderContacts(); }
-
-function renderContacts() {
-  const q = (document.getElementById('contact-search')?.value || '').toLowerCase();
-  let list = allContacts;
-  if (contactTypeFilter !== 'all') list = list.filter(c => c.type === contactTypeFilter);
-  if (q) list = list.filter(c => (c.name || '').toLowerCase().includes(q) || (c.company || '').toLowerCase().includes(q) || (c.email || '').toLowerCase().includes(q));
-  const el = document.getElementById('contacts-list');
-  if (list.length === 0) { el.innerHTML = '<div class="empty">No contacts found</div>'; return; }
-  el.innerHTML = `<div class="text-mono text-xs text-muted mb-sm">${list.length} contacts</div>` +
-    list.map(c => `
-      <div class="card card-tight">
-        <div class="row-between">
-          <span style="font-weight:700;font-size:14px;flex:1;">${esc(c.name || c.company || 'Unknown')}</span>
-          <span class="badge ${c.type === 'manufacturer' ? 'badge-gold' : c.type === 'dealer' ? 'badge-info' : 'badge-muted'}">${c.type === 'manufacturer' ? 'MFG' : c.type === 'dealer' ? 'DEALER' : 'HOLSTER'}</span>
+// ─── PANEL: AGENTS ────────────────────────────────────────────────────────────
+async function renderAgentsPanel(el) {
+  const agents = [
+    {id:'news',icon:'📰',name:'News Feed',desc:'Pull & process news articles'},
+    {id:'youtube',icon:'▶',name:'YouTube Sync',desc:'Sync video channels'},
+    {id:'statelaws',icon:'🗺',name:'State Laws',desc:'Update 50-state law database'},
+    {id:'releases',icon:'🔫',name:'Gun Releases',desc:'Scrape new product releases'},
+    {id:'briefing',icon:'🧠',name:'Intelligence Brief',desc:'Generate AI briefings'},
+    {id:'giveaways',icon:'🎁',name:'Giveaways',desc:'Daily giveaway scan'},
+  ];
+  el.innerHTML = `
+    <div class="section-sub">Trigger AI content pipeline agents</div>
+    ${agents.map(a=>`
+      <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;">
+        <span style="font-size:22px;">${a.icon}</span>
+        <div style="flex:1;">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;">${a.name}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${a.desc}</div>
         </div>
-        ${c.email ? `<div class="art-meta mt-sm">✉ ${esc(c.email)}</div>` : ''}
-        ${c.website ? `<div class="art-meta">🌐 ${esc(c.website)}</div>` : ''}
-        ${c.state ? `<div class="art-meta">📍 ${esc(c.state)}</div>` : ''}
-      </div>`).join('');
+        <button class="btn btn-sm" onclick="triggerCron('${a.id}',this)">▶</button>
+      </div>`).join('')}
+  `;
 }
 
-// ── RELEASES ──────────────────────────────────────────────────────────────────
-async function loadReleases() {
-  const el = document.getElementById('releases-list');
-  el.innerHTML = '<div class="loading"><div class="spinner"></div></div>';
+// ─── PANEL: FEEDS ─────────────────────────────────────────────────────────────
+async function renderFeedsPanel(el) {
+  el.innerHTML = `
+    <div class="section-sub">Trigger content feed pulls directly</div>
+    <div style="display:flex;flex-direction:column;gap:8px;">
+      ${[
+        {label:'Pull All News',endpoint:'/api/admin/run',body:{job:'news'},icon:'📰'},
+        {label:'Scrape Releases',endpoint:'/api/admin/scrape-releases',body:{},icon:'🔫'},
+        {label:'Seed All Content',endpoint:'/api/admin/seed-all-content',body:{},icon:'◈'},
+        {label:'Backfill Articles',endpoint:'/api/admin/backfill-articles',body:{},icon:'🔄'},
+        {label:'Fix Images',endpoint:'/api/admin/smart-image-fix',body:{},icon:'📸'},
+      ].map(f=>`
+        <button class="qa-btn" style="flex-direction:row;gap:12px;align-items:center;" onclick="runFeed('${f.endpoint}',${JSON.stringify(JSON.stringify(f.body))},this)">
+          <span style="font-size:20px">${f.icon}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700">${f.label}</span>
+          <span style="margin-left:auto;color:var(--dim)">▶</span>
+        </button>`).join('')}
+    </div>
+  `;
+}
+
+async function runFeed(endpoint, bodyStr, btn) {
+  const body = JSON.parse(bodyStr);
+  btn.disabled = true;
+  const orig = btn.innerHTML;
+  btn.innerHTML = btn.innerHTML.replace('▶','⏳');
   try {
-    const data = await apiGet('/api/admin/releases?limit=30');
-    const rels = data?.releases || data || [];
-    if (rels.length === 0) { el.innerHTML = '<div class="empty">No releases</div>'; return; }
-    el.innerHTML = `<div class="sec-title"><div class="sec-title-bar"></div><div class="sec-title-text">Releases (${rels.length})</div></div>` +
-      rels.map((r, i) => `
-        <div class="card" onclick="toggleExpand('rel-${i}',this)" style="cursor:pointer;">
-          <div class="row-between mb-sm">
-            <span class="badge badge-gold">${(r.category || 'PRESS').toUpperCase()}</span>
-            ${r.publishedAt ? `<span class="art-meta">${new Date(r.publishedAt).toLocaleDateString()}</span>` : ''}
+    const d = await api(endpoint, { method:'POST', body:JSON.stringify(body) });
+    flash(d.ok||d.success ? '✅ Done' : '⚠ '+(d.error||d.message||'Check logs'), d.ok||d.success?'ok':'info');
+  } catch(e) { flash('Error: '+e.message, 'err'); }
+  btn.disabled = false; btn.innerHTML = orig;
+}
+
+// ─── PANEL: ENV CHECK ─────────────────────────────────────────────────────────
+async function renderEnvPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Checking env...</div>';
+  try {
+    const d = await api('/api/admin/env-check');
+    const vars = d.vars || d.checks || [];
+    el.innerHTML = vars.length === 0 ? '<div class="empty">No env data</div>' :
+      vars.map(v=>`
+        <div class="row" style="cursor:default;">
+          <div style="flex:1;">
+            <div class="row-label code">${v.key||v.name||'?'}</div>
+            ${v.note ? `<div class="row-sub">${v.note}</div>` : ''}
           </div>
-          <div style="font-weight:700;font-size:14px;line-height:1.35;">${esc(r.title || '')}</div>
-          <div class="expand-hint">▼ EXPAND</div>
-          <div class="expanded-body" id="rel-${i}">
-            <div class="divider"></div>
-            ${r.summary ? `<div style="font-size:13px;color:var(--muted);line-height:1.6;">${esc(r.summary)}</div>` : ''}
-            ${r.source ? `<div class="art-meta mt-sm">Source: ${esc(r.source)}</div>` : ''}
-            ${r.url ? `<a href="${esc(r.url)}" target="_blank" style="color:var(--gold);font-size:13px;display:block;margin-top:6px;">🔗 View Original</a>` : ''}
-          </div>
+          <span class="pill ${v.set||v.ok?'pill-ok':'pill-err'}">${v.set||v.ok?'SET':'MISSING'}</span>
         </div>`).join('');
-  } catch (e) {
-    el.innerHTML = `<div class="empty text-err">${e.message}</div>`;
-  }
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
 }
 
-async function scrapeNow() {
-  const btn = document.getElementById('btn-scrape');
-  btn.disabled = true; btn.textContent = 'SCRAPING...';
+// ─── PANEL: CAMPAIGNS ─────────────────────────────────────────────────────────
+async function renderCampaignsPanel(el) {
+  el.innerHTML = `
+    <div style="margin-bottom:16px;">
+      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full CRM →</a>
+    </div>
+    <div class="empty">Template editor and campaign pipeline<br>are available on desktop admin</div>
+  `;
+}
+
+// ─── PANEL: CONTACTS ──────────────────────────────────────────────────────────
+async function renderContactsPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading contacts...</div>';
   try {
-    await apiPost('/api/agent/feeds/prn');
-    toast('PRN scraper triggered', 'ok');
-    loadReleases();
-  } catch (e) { toast(e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'SCRAPE PRN NOW';
+    const d = await api('/api/admin/influencers?limit=50');
+    const list = d.contacts || d.influencers || [];
+    if (!list.length) { el.innerHTML = '<div class="empty">No contacts found</div>'; return; }
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${list.length} contacts</div>
+      ${list.map(c=>`
+        <div class="outreach-card">
+          <div class="outreach-name">${c.name||c.channelName||'—'}</div>
+          <div class="outreach-platform">${c.platform||''} ${c.handle?'· @'+c.handle:''}</div>
+          <div class="outreach-meta">
+            ${c.subscribers ? `<span>👥 ${c.subscribers}</span>` : ''}
+            ${c.email ? `<span>✉ ${c.email}</span>` : ''}
+            ${c.category ? `<span class="tag">${c.category}</span>` : ''}
+            ${c.status ? `<span class="pill pill-dim">${c.status}</span>` : ''}
+          </div>
+        </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
 }
 
-// ── SETTINGS ──────────────────────────────────────────────────────────────────
-function loadSettings() {
-  if (adminKey) {
-    document.getElementById('settings-key').value = adminKey;
-    document.getElementById('key-saved-hint').style.display = 'block';
+// ─── PANEL: VIDEOS ────────────────────────────────────────────────────────────
+async function renderVideosPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading videos...</div>';
+  try {
+    const d = await api('/api/admin/save-videos?list=true');
+    const videos = d.videos || [];
+    if (!videos.length) { el.innerHTML = '<div class="empty">No videos cached</div>'; return; }
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${videos.length} videos</div>
+      ${videos.slice(0,20).map(v=>`
+        <div style="display:flex;gap:10px;padding:12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;align-items:flex-start;">
+          ${v.thumbnail ? `<img src="${v.thumbnail}" style="width:64px;height:48px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">` : '<div style="width:64px;height:48px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;">▶</div>'}
+          <div style="flex:1;min-width:0;">
+            <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${v.title||'—'}</div>
+            <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">${v.channel||''} ${v.publishedAt?'· '+new Date(v.publishedAt).toLocaleDateString():''}</div>
+          </div>
+        </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Video list not available from API</div>`; }
+}
+
+// ─── PANEL: CHANNELS ──────────────────────────────────────────────────────────
+async function renderChannelsPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading channels...</div>';
+  try {
+    const d = await api('/api/admin/youtube-channels');
+    const channels = d.channels || d.items || [];
+    if (!channels.length) {
+      el.innerHTML = `
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">Static channel list</div>
+        ${['Military Arms Channel','Lucky Gunner','IraqVeteran8888','Hickok45','Garand Thumb','Paul Harrell','Guns & Gadgets'].map(c=>`
+          <div class="row" style="cursor:default;"><span style="font-size:16px;">📺</span><div class="row-label">${c}</div><span class="pill pill-ok">Active</span></div>`).join('')}`;
+      return;
+    }
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${channels.length} channels</div>
+      ${channels.map(c=>`
+        <div class="row" style="cursor:default;">
+          <span style="font-size:18px;">📺</span>
+          <div style="flex:1;">
+            <div class="row-label">${c.name||c.channelName||'—'}</div>
+            <div class="row-sub">${c.handle||c.channelId||''} ${c.category?'· '+c.category:''}</div>
+          </div>
+          <span class="pill pill-ok">Active</span>
+        </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: EMAIL TEST ────────────────────────────────────────────────────────
+async function renderEmailTestPanel(el) {
+  el.innerHTML = `
+    <div class="section-sub">Test email delivery via Resend</div>
+    <div class="form-row"><span class="lbl">To Address</span><input id="et-to" class="inp" type="email" placeholder="test@example.com"></div>
+    <button class="btn" style="width:100%;margin-bottom:20px" onclick="sendTestEmail()">Send Test Email</button>
+    <div id="et-result"></div>
+  `;
+}
+async function sendTestEmail() {
+  const to = document.getElementById('et-to')?.value?.trim();
+  if (!to) { flash('Enter an email address', 'err'); return; }
+  try {
+    const d = await api('/api/admin/test-emails', { method:'POST', body:JSON.stringify({to}) });
+    const r = document.getElementById('et-result');
+    r.innerHTML = `<div style="padding:10px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};font-family:'IBM Plex Mono',monospace;font-size:11px;color:${d.ok?'var(--ok)':'var(--err)'}">
+      ${d.ok ? '✅ Test email sent' : '❌ '+(d.error||'Failed')}</div>`;
+  } catch(e) { flash('Error: '+e.message, 'err'); }
+}
+
+// ─── PANEL: COPYRIGHT ─────────────────────────────────────────────────────────
+async function renderCopyrightPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Scanning...</div>';
+  try {
+    const d = await api('/api/admin/content-scan');
+    const items = d.items || d.articles || [];
+    const high = items.filter(i=>i.risk==='HIGH').length;
+    const med  = items.filter(i=>i.risk==='MEDIUM').length;
+    const low  = items.filter(i=>i.risk==='LOW').length;
+    el.innerHTML = `
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="stat-box" style="text-align:center;"><div class="stat-val" style="color:var(--err)">${high}</div><div class="stat-lbl">High</div></div>
+        <div class="stat-box" style="text-align:center;"><div class="stat-val" style="color:var(--warn)">${med}</div><div class="stat-lbl">Medium</div></div>
+        <div class="stat-box" style="text-align:center;"><div class="stat-val" style="color:var(--ok)">${low}</div><div class="stat-lbl">Low</div></div>
+      </div>
+      <div style="margin-bottom:12px;">
+        <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full Report →</a>
+      </div>
+      ${items.slice(0,15).map(a=>`
+        <div class="article-card">
+          <div class="article-title">${a.title||a.sourceTitle||'—'}</div>
+          <div class="article-meta">
+            <span class="pill ${a.risk==='HIGH'?'pill-err':a.risk==='MEDIUM'?'pill-warn':'pill-ok'}">${a.risk||'?'}</span>
+            ${a.source ? `<span>${a.source}</span>` : ''}
+          </div>
+        </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Copyright scan not available<br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold)">Open Admin →</a></div>`; }
+}
+
+// ─── PANEL: STATE LAWS ────────────────────────────────────────────────────────
+async function renderStateLawsPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading states...</div>';
+  try {
+    const d = await api('/api/admin/state-profiles');
+    const states = d.states || d.profiles || [];
+    if (!states.length) { el.innerHTML = '<div class="empty">No state profiles loaded<br><span style="font-size:9px;color:var(--dim2)">Run State Feed agent to populate</span></div>'; return; }
+    const cc = states.filter(s=>s.constitutionalCarry).length;
+    const rf = states.filter(s=>s.redFlagLaw).length;
+    el.innerHTML = `
+      <div class="stat-grid">
+        <div class="stat-box"><div class="stat-val">${states.length}</div><div class="stat-lbl">States</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--ok)">${cc}</div><div class="stat-lbl">Const. Carry</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--err)">${rf}</div><div class="stat-lbl">Red Flag</div></div>
+      </div>
+      <input class="inp" id="state-search" placeholder="Search state..." oninput="filterStates(this.value)" style="margin-bottom:12px;">
+      <div id="state-list">
+        ${states.map(s=>`
+          <div class="row" style="cursor:default;" data-state="${(s.name||'').toLowerCase()}">
+            <div style="flex:1;">
+              <div class="row-label"><span style="color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;margin-right:6px">${s.abbr||''}</span>${s.name||'—'}</div>
+            </div>
+            ${s.rating ? `<span style="font-family:'Bebas Neue',cursive;font-size:1.2rem;color:${s.rating==='A'||s.rating==='A+'?'#22c55e':s.rating==='F'?'#ef4444':'#f59e0b'}">${s.rating}</span>` : ''}
+            ${s.constitutionalCarry ? '<span class="pill pill-ok" style="margin-left:4px">CC</span>' : ''}
+            ${s.redFlagLaw ? '<span class="pill pill-err" style="margin-left:4px">RF</span>' : ''}
+          </div>`).join('')}
+      </div>
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+function filterStates(q) {
+  document.querySelectorAll('#state-list .row').forEach(row => {
+    row.style.display = row.dataset.state?.includes(q.toLowerCase()) ? '' : 'none';
+  });
+}
+
+// ─── PANEL: PULL LOG ──────────────────────────────────────────────────────────
+async function renderPullLogPanel(el) {
+  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading logs...</div>';
+  try {
+    const d = await api('/api/admin/cron-status');
+    const logs = d.recent || d.runs || d.logs || [];
+    if (!logs.length) { el.innerHTML = '<div class="empty">No pull logs found</div>'; return; }
+    el.innerHTML = `
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${logs.length} recent runs</div>
+      ${logs.map(l=>`
+        <div style="padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px;">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
+            <span class="pill ${l.status==='ok'||l.success?'pill-ok':'pill-err'}">${l.status||'?'}</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;">${l.job||l.name||'—'}</span>
+            <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${l._createdAt?new Date(l._createdAt).toLocaleString():''}</span>
+          </div>
+          ${l.pulled !== undefined ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">Pulled: ${l.pulled} · Saved: ${l.saved||0}</div>` : ''}
+          ${l.error ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);margin-top:4px">${l.error}</div>` : ''}
+        </div>`).join('')}
+    `;
+  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── KEYBOARD HANDLING ────────────────────────────────────────────────────────
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (document.getElementById('drawer').classList.contains('open')) closeDrawer();
+    else closeSectionSheet();
   }
-}
-function toggleSettingsVis() {
-  const i = document.getElementById('settings-key');
-  i.type = i.type === 'password' ? 'text' : 'password';
-}
-function saveKey() {
-  const val = document.getElementById('settings-key').value.trim();
-  if (!val) { toast('Key cannot be empty', 'err'); return; }
-  adminKey = val;
-  localStorage.setItem('dr_admin_key', val);
-  document.getElementById('key-saved-hint').style.display = 'block';
-  toast('Admin key saved', 'ok');
-}
-function clearKey() {
-  if (!confirm('Clear admin key and log out?')) return;
-  adminKey = '';
-  localStorage.removeItem('dr_admin_key');
-  document.getElementById('settings-key').value = '';
-  document.getElementById('key-saved-hint').style.display = 'none';
-  toast('Logged out', '');
-  setTimeout(() => location.reload(), 1000);
-}
-
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function esc(s) {
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;');
-}
-function toggleExpand(id, cardEl) {
-  const body = document.getElementById(id);
-  const hint = cardEl.querySelector('.expand-hint');
-  if (!body) return;
-  body.classList.toggle('open');
-  if (hint) hint.textContent = body.classList.contains('open') ? '▲ COLLAPSE' : '▼ EXPAND';
-}
-
-// ── SERVICE WORKER ────────────────────────────────────────────────────────────
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(() => {});
-}
+});
 </script>
 </body>
 </html>
