@@ -1,87 +1,51 @@
 
-import requests, json, os, re
+import requests, json, os
 
 T = os.environ["SANITY_TOKEN"]
 H = {"Authorization": "Bearer " + T}
 BASE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production"
-MUTATE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/mutate/production"
 
 def q(query):
-    r = requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=30)
-    return r.json()["result"]
+    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=30).json()["result"]
 
-def mutate(mutations):
-    r = requests.post(MUTATE, json={"mutations": mutations}, 
-                      headers={**H, "Content-Type": "application/json"}, timeout=30)
-    return r.json()
+# Check exact articles from the broken URLs
+ids = [
+    "news-e5b5f674295e9bb381c563ddf7862e37",
+    "news-87bc8a8e196d20438e21db8c4046dec1",
+    "news-b6d0591cb28f7e2653ae5f4d53c80665",
+    "news-6f39119ae9c09dd46d7370c4398c7b88",
+]
+for _id in ids:
+    # Check by _id
+    by_id = q(f'*[_id == "{_id}"][0]{{_id, _type, title, "slug": slug.current}}')
+    # Check by slug.current (maybe slug = _id string)
+    by_slug = q(f'*[slug.current == "{_id}"][0]{{_id, _type, title, "slug": slug.current}}')
+    print(f"ID={_id[:20]}")
+    print(f"  by_id:   {json.dumps(by_id)}")
+    print(f"  by_slug: {json.dumps(by_slug)}")
 
-# Fetch ALL articles - check every single one
-print("Loading all articles...")
-all_arts = []
-offset = 0
-while True:
-    batch = q(f'*[_type == "newsArticle"][{offset}...{offset+2000}]{{_id, title, sourceTitle, "slug": slug.current}}')
-    all_arts.extend(batch)
-    print(f"  Loaded {len(all_arts)} so far...")
-    if len(batch) < 2000:
+# Count total articles
+total = q('count(*[_type == "newsArticle"])')
+print(f"\nTotal newsArticles: {total}")
+
+# Check what the news/[slug] page does - it looks up by slug.current
+# If slug.current == _id, then /news/_id would work
+# But these 404 -- meaning slug.current != _id AND the article doesn't exist by slug=_id
+
+# Check total with broken slugs - load in pages
+import re
+HASH = re.compile(r'^[a-z]+-[a-f0-9]{32}$')
+all_broken = []
+for offset in range(0, 5000, 1000):
+    batch = q(f'*[_type == "newsArticle"][{offset}...{offset+1000}]{{"slug": slug.current, "_id": _id}}')
+    broken = [a for a in batch if HASH.match(str(a.get('slug','')))]
+    all_broken.extend(broken)
+    print(f"Offset {offset}: {len(batch)} fetched, {len(broken)} broken")
+    if len(batch) < 1000:
         break
-    offset += 2000
 
-print(f"Total articles: {len(all_arts)}")
-
-# Find articles where slug.current IS the _id (e.g. "news-abc123...")
-# Pattern: starts with type prefix + 32-char hex
-HASH_PAT = re.compile(r'^[a-z]+-[a-f0-9]{32}$')
-broken = [a for a in all_arts if HASH_PAT.match(str(a.get('slug', '')))]
-print(f"Articles with _id as slug: {len(broken)}")
-for a in broken[:5]:
-    print(f"  {a.get('slug','')} | {a.get('title','')[:50]}")
-
-# Build real slugs from titles
-def make_slug(title, _id):
-    s = (title or '').lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
-    s = re.sub(r'-+', '-', s).strip('-')[:80]
-    # Use last 6 chars of the hex portion as suffix
-    suffix = _id.split('-')[-1][:6] if len(_id) > 8 else _id[-6:]
-    return (s + '-' + suffix) if s else ('article-' + suffix)
-
-# Get all existing good slugs to avoid conflicts
-good_slugs = set(a.get('slug','') for a in all_arts if a.get('slug') and not HASH_PAT.match(str(a.get('slug',''))))
-print(f"Good existing slugs: {len(good_slugs)}")
-
-mutations = []
-for a in broken:
-    title = a.get('title') or a.get('sourceTitle', '')
-    new_slug = make_slug(title, a['_id'])
-    base = new_slug
-    counter = 2
-    while new_slug in good_slugs:
-        new_slug = f"{base}-{counter}"; counter += 1
-    good_slugs.add(new_slug)
-    mutations.append({
-        "patch": {
-            "id": a["_id"],
-            "set": {"slug": {"_type": "slug", "current": new_slug}}
-        }
-    })
-
-print(f"Fixing {len(mutations)} articles...")
-total_errors = 0
-for i in range(0, len(mutations), 100):
-    batch = mutations[i:i+100]
-    result = mutate(batch)
-    errs = sum(1 for r in result.get("results", []) if r.get("error"))
-    total_errors += errs
-    print(f"  Batch {i//100+1}/{(len(mutations)+99)//100}: {len(batch)} patched, {errs} errors")
-
-print(f"DONE. Fixed={len(mutations)} errors={total_errors}")
-
-# Verify: count remaining broken
-remaining = [a for a in q(f'*[_type == "newsArticle"][0...2000]{{"slug": slug.current}}') 
-             if HASH_PAT.match(str(a.get('slug','')))]
-print(f"Remaining broken: {len(remaining)}")
+print(f"Total broken slugs: {len(all_broken)}")
 
 with open("fix_results.json", "w") as f:
-    json.dump({"broken_found": len(broken), "fixed": len(mutations), 
-               "errors": total_errors, "remaining": len(remaining)}, f, indent=2)
+    json.dump({"total": total, "broken_scan": len(all_broken), 
+               "sample_broken": all_broken[:5]}, f, indent=2)
