@@ -10,5 +10,6 @@ jobs:
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
           GH_PAT: ${{ secrets.GH_PAT }}
-          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
         run: python3 scripts/query_recent.py
