@@ -62,9 +62,9 @@ export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const articles = await sanity.fetch(
-    `*[_type == "newsArticle"] | order(publishedAt desc) [0...500] {
+    `*[_type == "newsArticle"] | order(publishedAt desc, _createdAt desc) [0...500] {
       _id, title, slug, category, source, imageUrl, imageAlt,
-      approved, editorLocked, publishedAt, summary, body,
+      approved, editorLocked, publishedAt, _createdAt, summary, body,
       externalUrl, heroImage { asset->{url} }
     }`
   )

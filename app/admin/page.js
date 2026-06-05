@@ -596,6 +596,98 @@ function BreakingAlertsPanel({ adminKey }) {
   )
 }
 
+// ── Inline: System Alerts panel ───────────────────────────────────────────────
+function SystemAlertsPanel({ adminKey }) {
+  const [runs,    setRuns]    = useState([])
+  const [loading, setLoading] = useState(true)
+  const [filter,  setFilter]  = useState('all') // all | failed | warning
+
+  const H = { 'x-admin-key': adminKey }
+
+  const load = useCallback(async () => {
+    setLoading(true)
+    try {
+      const r = await fetch('/api/admin/system-alerts', { headers: H })
+      const d = await r.json()
+      setRuns(d.runs || [])
+    } catch {}
+    setLoading(false)
+  }, [adminKey])
+
+  useEffect(() => { load() }, [load])
+
+  const visible = runs.filter(r => {
+    if (filter === 'failed')  return r.status === 'failed'
+    if (filter === 'warning') return r.status === 'warning'
+    return true
+  })
+
+  const failCount = runs.filter(r => r.status === 'failed').length
+  const warnCount = runs.filter(r => r.status === 'warning').length
+
+  const SEV = {
+    failed:  { color:'#ef4444', bg:'rgba(239,68,68,.12)', label:'FAILED' },
+    warning: { color:'#f59e0b', bg:'rgba(245,158,11,.12)', label:'WARNING' },
+    success: { color:'#22c55e', bg:'rgba(34,197,94,.08)',  label:'OK' },
+  }
+
+  function fmt(ts) {
+    if (!ts) return '—'
+    const d = new Date(ts)
+    return d.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' +
+           d.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'})
+  }
+
+  return (
+    <div>
+      <div className="panel-title">System Alerts</div>
+      <div className="panel-sub">Cron job run history — failures, warnings and recent activity across all feeds.</div>
+
+      {/* Summary strip */}
+      <div style={{display:'flex',gap:10,marginBottom:16,flexWrap:'wrap'}}>
+        {[
+          {id:'all',    label:'ALL RUNS',   count:runs.length,    color:'#64748b'},
+          {id:'failed', label:'FAILURES',   count:failCount,      color:'#ef4444'},
+          {id:'warning',label:'WARNINGS',   count:warnCount,      color:'#f59e0b'},
+        ].map(t => (
+          <button key={t.id} onClick={() => setFilter(t.id)}
+            style={{background:filter===t.id?'rgba(200,146,42,.1)':'var(--bg2)',border:`1px solid ${filter===t.id?'var(--gold)':'var(--border)'}`,color:filter===t.id?'var(--gold)':'var(--text-dim)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'6px 14px',cursor:'pointer',display:'flex',gap:8,alignItems:'center'}}>
+            <span style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.1rem',color:t.color,lineHeight:1}}>{t.count}</span>
+            <span style={{letterSpacing:'.06em'}}>{t.label}</span>
+          </button>
+        ))}
+        <button onClick={load} style={{marginLeft:'auto',background:'none',border:'1px solid var(--border)',color:'#64748b',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'6px 12px',cursor:'pointer'}}>↻ Refresh</button>
+      </div>
+
+      {loading ? (
+        <div style={{padding:40,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563'}}>Loading...</div>
+      ) : visible.length === 0 ? (
+        <div style={{padding:40,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563'}}>
+          {filter === 'all' ? 'No cron runs found.' : `No ${filter} runs.`}
+        </div>
+      ) : (
+        <div style={{display:'flex',flexDirection:'column',gap:6}}>
+          {visible.map((r, i) => {
+            const sev = SEV[r.status] || SEV.success
+            return (
+              <div key={i} className="adm-card" style={{padding:'10px 14px',display:'grid',gridTemplateColumns:'90px 160px 1fr auto',gap:10,alignItems:'center'}}>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,padding:'2px 7px',background:sev.bg,color:sev.color,textAlign:'center',letterSpacing:'.06em'}}>{sev.label}</span>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#C8922A',letterSpacing:'.04em'}}>{r.jobId || r.feed || '—'}</span>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--text)',lineHeight:1.4}}>{r.details || r.error || '—'}</span>
+                <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',whiteSpace:'nowrap'}}>{fmt(r.runAt || r._createdAt)}</span>
+              </div>
+            )
+          })}
+        </div>
+      )}
+
+      <div style={{marginTop:16,fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#374151',lineHeight:1.9,borderTop:'1px solid var(--border)',paddingTop:12}}>
+        Alert emails → <code style={{color:'#C8922A'}}>dejcav@gmail.com</code> · Rate-limited 1/job/2h · Triggers on 3 consecutive failures · Requires <code style={{color:'#C8922A'}}>RESEND_API_KEY</code>
+      </div>
+    </div>
+  )
+}
+
 // ── Inline: SEO panel ─────────────────────────────────────────────────────────
 function SEOPanel() {
   const pages = [
@@ -2837,17 +2929,7 @@ export default function AdminPage() {
             {/* ── SYSTEM ── */}
             {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='crons'     && <CronDashboard adminKey={adminKey} />}
-            {panel==='sysalerts' && (
-              <div>
-                <div className="panel-title">System Alerts</div>
-                <div className="panel-sub">Automated alerts sent via Resend when cron jobs fail 3× in a row.</div>
-                <div className="adm-card">
-                  <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#6b7280',lineHeight:1.9}}>
-                    Alert emails go to <code style={{color:'#C8922A'}}>dejcav@gmail.com</code> · Rate-limited to 1 per job per 2 hours · Triggered on 3 consecutive failures. Configure via <code style={{color:'#C8922A'}}>RESEND_API_KEY</code>.
-                  </div>
-                </div>
-              </div>
-            )}
+            {panel==='sysalerts' && <SystemAlertsPanel adminKey={adminKey} />}
             {panel==='rss'     && <RSSSourcesPanel />}
             {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
             {panel==='ranges'  && <RangesPanel />}

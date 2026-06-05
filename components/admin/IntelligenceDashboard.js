@@ -45,11 +45,13 @@ function BriefingList({ briefings, selected, onSelect }) {
         <div key={b._id} onClick={()=>onSelect(b._id)}
           style={{ padding:'12px 16px', borderBottom:'1px solid rgba(30,41,59,.4)', cursor:'pointer', background:selected===b._id?'rgba(200,146,42,.08)':'transparent', borderLeft:selected===b._id?'3px solid var(--gold)':'3px solid transparent', transition:'all .1s' }}>
           <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-start', marginBottom:4 }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text)', fontWeight:700 }}>{b.date}</div>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text)', fontWeight:700 }}>
+              {b.date} {b.runAt ? '· ' + new Date(b.runAt).toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'}) : ''}
+            </div>
             {b.score!=null && <ScoreChip score={b.score} />}
           </div>
           <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.5, overflow:'hidden', display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical' }}>
-            {b.headline || (b.status==='running'?'⏳ Running...':`${b.status}`)}
+            {b.headline || (b.status === 'running' ? '⏳ Running...' : b.status === 'complete' ? '✅ Complete — click to view' : b.status === 'failed' ? '❌ Failed' : b.status || 'No summary')}
           </div>
           <div style={{ display:'flex', gap:6, marginTop:5, flexWrap:'wrap' }}>
             {b.openRecs>0 && <Bdg label={`${b.openRecs} recs`} color="#C8922A" size={8} />}
@@ -140,10 +142,12 @@ export default function IntelligenceDashboard({ adminKey }) {
   const loadList = useCallback(async () => {
     try {
       const res = await fetch('/api/admin/briefings?limit=30', { headers: h })
+      if (!res.ok) { setLoading(false); return }
       const d = await res.json()
-      setBriefings(d.briefings || [])
-      if (!selected && d.briefings?.[0]) setSelected(d.briefings[0]._id)
-    } catch {}
+      const list = d.briefings || []
+      setBriefings(list)
+      if (!selected && list[0]) setSelected(list[0]._id)
+    } catch (e) { console.error('loadList failed:', e) }
     setLoading(false)
   }, [adminKey])
 

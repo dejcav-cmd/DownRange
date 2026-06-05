@@ -190,7 +190,14 @@ export default function UniversalContentEditor({
       const r = await fetch(api + qs, { headers: H })
       const d = await r.json()
       const key = config.responseKey || 'items'
-      setItems(d[key] || d.items || d.posts || d.articles || d.releases || d.reviews || [])
+      const raw = d[key] || d.items || d.posts || d.articles || d.releases || d.reviews || []
+      // Always sort latest first by publishedAt, then _createdAt as fallback
+      const sorted = [...raw].sort((a, b) => {
+        const ta = new Date(a.publishedAt || a._createdAt || 0).getTime()
+        const tb = new Date(b.publishedAt || b._createdAt || 0).getTime()
+        return tb - ta
+      })
+      setItems(sorted)
     } catch { flash('Failed to load', 'error') } finally { setLoading(false) }
   }, [api, type, adminKey])
 
@@ -606,7 +613,11 @@ export default function UniversalContentEditor({
                     <div style={{ display:'flex', gap:5, flexWrap:'wrap' }}>
                       {(item.tag||item.category||item.type) && <span style={{ fontSize:8, color:'#C8922A' }}>{item.tag||item.category}</span>}
                       <span style={{ fontSize:8, color: published ? '#22c55e' : '#ef4444' }}>● {published ? 'live' : 'draft'}</span>
-                      {item.publishedAt && <span style={{ fontSize:8, color:'#374151' }}>{timeAgo(item.publishedAt)}</span>}
+                      {(item.publishedAt||item._createdAt) && (
+                        <span style={{ fontSize:8, color:'#4b5563' }} title={new Date(item.publishedAt||item._createdAt).toLocaleString()}>
+                          {new Date(item.publishedAt||item._createdAt).toLocaleDateString('en-US',{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})}
+                        </span>
+                      )}
                     </div>
                   </div>
                 </div>

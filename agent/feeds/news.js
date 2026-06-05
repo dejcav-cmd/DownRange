@@ -80,10 +80,32 @@ const RSS_FEEDS = [
   // ── US GUN RIGHTS ORGS ────────────────────────────────────────────────
   { name: 'GOA',                    url: 'https://www.gunowners.org/feed/',                     cat: 'law'      },
   { name: 'GOA Press',              url: 'https://www.gunowners.org/category/press/feed/',      cat: 'law'      },
+  // ── NEW US SOURCES ────────────────────────────────────────────────────
+  { name: 'Gun News Daily',         url: 'https://gunnewsdaily.com/feed/',                      cat: 'news'     },
+  { name: 'AmmoLand',               url: 'https://www.ammoland.com/feed/',                      cat: 'news'     },
+  { name: 'Gun Digest',             url: 'https://gundigest.com/feed/',                         cat: 'industry' },
+  { name: 'Recoil Magazine',        url: 'https://www.recoilweb.com/feed/',                     cat: 'industry' },
+  { name: 'Guns.com',               url: 'https://www.guns.com/feed',                           cat: 'industry' },
+  { name: 'Daily Caller Guns',      url: 'https://dailycaller.com/section/guns/feed/',          cat: 'news'     },
+  { name: 'Washington Free Beacon Guns', url: 'https://freebeacon.com/tag/guns/feed/',          cat: 'news'     },
+  { name: 'National Review Guns',   url: 'https://www.nationalreview.com/tag/guns/feed/',       cat: 'news'     },
+  { name: 'Townhall Guns',          url: 'https://townhall.com/tag/guns/feed/',                 cat: 'news'     },
+  { name: 'Breitbart 2A',           url: 'https://www.breitbart.com/tag/second-amendment/feed/', cat: 'law'    },
+  { name: 'NSSF Blog',              url: 'https://www.nssf.org/articles/feed/',                 cat: 'industry' },
+  { name: 'USCCA Blog',             url: 'https://www.usconcealedcarry.com/blog/feed/',         cat: 'industry' },
+  { name: 'Pew Pew Tactical',       url: 'https://www.pewpewtactical.com/feed/',                cat: 'industry' },
+  { name: 'Lucky Gunner',           url: 'https://www.luckygunner.com/lounge/feed/',            cat: 'industry' },
   // ── CANADA ONLY — routed to canadaContent, never newsArticle ──────────
   { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law', region: 'canada' },
   { name: 'NFA Canada',             url: 'https://www.nfa.ca/feed/',                            cat: 'law', region: 'canada' },
   { name: 'CSSA',                   url: 'https://www.cdnshootingsports.org/feed/',              cat: 'law', region: 'canada' },
+  { name: 'Calibre Magazine',       url: 'https://calibremag.ca/feed/',                         cat: 'industry', region: 'canada' },
+  { name: 'CCFR',                   url: 'https://www.firearmrights.ca/feed/',                  cat: 'law',      region: 'canada' },
+  { name: 'Wolverine Supplies Blog',url: 'https://www.wolverinesupplies.com/blog/feed/',        cat: 'industry', region: 'canada' },
+  // ── BRAZIL ONLY — routed to brazilContent, never newsArticle ──────────
+  { name: 'Firearmsbrasil.com.br',  url: 'https://firearmsbrasil.com.br/feed/',                cat: 'industry', region: 'brazil' },
+  { name: 'CBC Armas',              url: 'https://riobravoarmas.com.br/blog/feed/',             cat: 'industry', region: 'brazil' },
+  { name: 'Vida Militar',           url: 'https://vidamilitar.com.br/feed/',                    cat: 'law',      region: 'brazil' },
 ]
 
 // ── IMAGE EXTRACTION ──────────────────────────────────────────────────────────
@@ -202,7 +224,10 @@ const ALLOWED_US_DOMAINS = new Set([
   'cleanupatf.org','firearmslaw.duke.edu','bearingarms.com','newsmax.com',
   'atf.gov','congress.gov','gunowners.org','pewpewtactical.com',
   'outdoorhub.com','thearmorylife.com','gunnewsdaily.com',
-  'ammoland.com', // deals only but domain is legit
+  'ammoland.com','gundigest.com','recoilweb.com',
+  'dailycaller.com','freebeacon.com','nationalreview.com',
+  'townhall.com','breitbart.com','nssf.org',
+  'usconcealedcarry.com','luckygunner.com',
 ])
 
 function isAllowedUSUrl(url) {
@@ -247,8 +272,30 @@ async function processNewsItem(item) {
     return { id: 'ca-' + hash, title: item.title, category: 'canada', hasAI: false }
   }
 
-  // ── GATE 2: Brazil items — handled by dedicated cron, skip here ───────────
-  if (region === 'brazil') return
+  // ── GATE 2: Brazil items → brazilContent ─────────────────────────────────
+  if (region === 'brazil') {
+    if (await isSanityDuplicate(item.url, item.title)) return
+    const hash = crypto.createHash('md5').update(item.url).digest('hex')
+    const slug = item.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,96)
+    await publishToSanity({
+      _id:           'br-' + hash,
+      _type:         'brazilContent',
+      title:         item.title,
+      slug:          { _type: 'slug', current: slug },
+      excerpt:       item.description?.slice(0, 300) || item.title,
+      body:          item.description || null,
+      type:          'artigo',
+      source:        item.source,
+      sourceUrl:     item.url,
+      imageUrl:      item.imageUrl || null,
+      publishedAt:   item.publishedAt ? new Date(item.publishedAt).toISOString() : new Date().toISOString(),
+      autoGenerated: true,
+      qualityReviewed: false,
+      active:        true,
+    })
+    console.log(`[NEWS] 🇧🇷 Brazil → brazilContent: "${item.title.slice(0,60)}"`)
+    return { id: 'br-' + hash, title: item.title, category: 'brazil', hasAI: false }
+  }
 
   // ── GATE 3: US only — must be from an allowed US firearms domain ──────────
   // For RSS feeds (all pre-vetted in RSS_FEEDS), always allow.
