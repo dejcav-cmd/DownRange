@@ -25,6 +25,7 @@ const AICostDashboard       = L(() => import('../../components/admin/AICostDashb
 const EnvChecker            = L(() => import('../../components/admin/EnvChecker'))
 const CronDashboard         = L(() => import('../../components/admin/CronDashboard'))
 const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
+const ImageFinder           = L(() => import('../../components/admin/ImageFinder'))
 const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
 const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
@@ -103,6 +104,7 @@ const NAV = [
       { id:'videos',       label:'Video Manager',    icon:'▶',  badge:null },
       { id:'channels',     label:'Channels',         icon:'📺', badge:null },
       { id:'imglib',       label:'Image Library',     icon:'📸', badge:null },
+      { id:'imgsearch',    label:'Image Finder',      icon:'🔍', badge:null },
     ]
   },
   {
@@ -2861,6 +2863,7 @@ export default function AdminPage() {
             {panel==='videos'   && <VideoManager adminKey={adminKey} />}
             {panel==='channels' && <ChannelsPanel />}
             {panel==='imglib'   && <ImageRepository adminKey={adminKey} />}
+            {panel==='imgsearch'&& <ImageFinder adminKey={adminKey} />}
 
             {/* ── SETTINGS ── */}
             {panel==='ai'       && <AIProviderSettings adminKey={adminKey} />}

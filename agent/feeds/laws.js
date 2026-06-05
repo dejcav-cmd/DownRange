@@ -1,4 +1,4 @@
-import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
+import { enrichLawWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const STATUS_MAP = {
   'Introduced': 'pending',
