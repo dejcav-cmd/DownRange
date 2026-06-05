@@ -6,12 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Query Sanity
+      - name: Query and write to repo
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_QUERY_TOKEN }}
-        run: python3 scripts/query_recent.py | tee /tmp/result.txt; exit 0
-      - name: Upload result
-        uses: actions/upload-artifact@v4
-        with:
-          name: query-result
-          path: /tmp/result.txt
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/query_recent.py
