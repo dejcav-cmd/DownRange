@@ -10,3 +10,12 @@ jobs:
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_QUERY_TOKEN }}
         run: python3 scripts/query_recent.py
+      - name: Push result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "CI"
+          git remote set-url origin https://x-access-token:${GH_PAT}@github.com/dejcav-cmd/DownRange.git
+          git add -f scripts/query_recent_result.txt
+          git diff --staged --quiet || git commit -m "ci: article query result" && git push
