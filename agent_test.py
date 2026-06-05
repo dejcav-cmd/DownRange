@@ -7,50 +7,42 @@ BASE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production"
 MUTATE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/mutate/production"
 
 def q(query):
-    r = requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=30)
-    return r.json()["result"]
+    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=30).json()["result"]
 
 def mutate(mutations):
-    r = requests.post(MUTATE, json={"mutations": mutations}, headers={**H, "Content-Type":"application/json"}, timeout=30)
-    return r.json()
+    return requests.post(MUTATE, json={"mutations": mutations}, headers={**H, "Content-Type":"application/json"}, timeout=30).json()
 
-def make_slug(title):
-    s = title.lower()
+def make_slug(title, _id):
+    s = (title or '').lower()
     s = re.sub(r'[^a-z0-9]+', '-', s)
-    s = re.sub(r'-+', '-', s).strip('-')
-    return s[:96]
+    s = re.sub(r'-+', '-', s).strip('-')[:80]
+    suffix = _id.split('-')[-1][:6] if '-' in _id else _id[:6]
+    return f"{s}-{suffix}" if s else f"article-{suffix}"
 
-# Get all newsArticles - those with null slug.current AND check if _id looks like hash
-all_arts = q('*[_type == "newsArticle"][0...2000]{_id, title, sourceTitle, "slug": slug.current, "has_slug": defined(slug.current)}')
-print(f"Total newsArticles: {len(all_arts)}")
+# Find articles where slug.current IS the _id (article slug was incorrectly set to the document _id)
+# These look like: slug="news-abc123..." or "goa-abc123..." or "ca-abc123..."
+HASH_PAT = re.compile(r'^(news|goa|ca|blog)-[a-f0-9]{20,}$')
 
-# Find articles where slug is null or empty
-null_slug = [a for a in all_arts if not a.get('slug')]
-print(f"Articles with null/empty slug: {len(null_slug)}")
+all_arts = q('*[_type == "newsArticle"][0...2000]{_id, title, sourceTitle, "slug": slug.current}')
+broken_id_slugs = [a for a in all_arts if a.get('slug') and HASH_PAT.match(str(a.get('slug',''))) ]
+print(f"Articles with _id-as-slug: {len(broken_id_slugs)}")
+for a in broken_id_slugs[:5]:
+    print(f"  _id={a['_id'][:30]} slug={a.get('slug','')[:40]} title={a.get('title','')[:40]}")
 
-# Get existing slugs to avoid conflicts
-existing = set(a.get('slug','') for a in all_arts if a.get('slug'))
-print(f"Existing valid slugs: {len(existing)}")
-
+# Fix them
+existing = set(a.get('slug','') for a in all_arts if a.get('slug') and not HASH_PAT.match(str(a.get('slug',''))))
 mutations = []
-fixed_log = []
-for a in null_slug:
-    title = a.get('title') or a.get('sourceTitle', '')
-    if not title:
-        print(f"  SKIP no title: {a['_id'][:30]}")
-        continue
-    new_slug = make_slug(title)
+for a in broken_id_slugs:
+    title = a.get('title') or a.get('sourceTitle','')
+    new_slug = make_slug(title, a['_id'])
     base_slug = new_slug
     counter = 2
     while new_slug in existing:
-        new_slug = f"{base_slug}-{counter}"
-        counter += 1
+        new_slug = f"{base_slug}-{counter}"; counter += 1
     existing.add(new_slug)
     mutations.append({"patch": {"id": a["_id"], "set": {"slug": {"_type": "slug", "current": new_slug}}}})
-    fixed_log.append({"id": a["_id"][:20], "new_slug": new_slug[:50], "title": title[:50]})
-    print(f"  FIX: {a['_id'][:30]} -> {new_slug[:40]}")
 
-print(f"\nApplying {len(mutations)} slug fixes...")
+print(f"Fixing {len(mutations)} articles...")
 errors = 0
 for i in range(0, len(mutations), 50):
     batch = mutations[i:i+50]
@@ -59,7 +51,11 @@ for i in range(0, len(mutations), 50):
     errors += batch_errors
     print(f"  Batch {i//50+1}: {len(batch)} patched, {batch_errors} errors")
 
-out = {"null_slug_count": len(null_slug), "fixed": len(mutations), "errors": errors, "log": fixed_log[:20]}
+# Verify the specific broken article
+art = q('*[_id == "goa-c7f32d4e8dd10832c66d424782eb9c20"][0]{_id, title, "slug": slug.current}')
+print(f"GOA article: {json.dumps(art)}")
+
+out = {"broken_id_slugs": len(broken_id_slugs), "fixed": len(mutations), "errors": errors}
 with open("agent_test_results.json", "w") as f:
     json.dump(out, f, indent=2)
-print(f"DONE: fixed={len(mutations)} errors={errors}")
+print("DONE")
