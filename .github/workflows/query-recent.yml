@@ -6,8 +6,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Query and write to repo
+      - name: Query and write
         env:
-          SANITY_TOKEN: ${{ secrets.SANITY_QUERY_TOKEN }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
           GH_PAT: ${{ secrets.GH_PAT }}
         run: python3 scripts/query_recent.py
