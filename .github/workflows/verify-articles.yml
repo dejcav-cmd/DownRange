@@ -1,0 +1,21 @@
+name: Verify Articles
+on:
+  workflow_dispatch:
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Run
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: pip install requests && python3 agent_test.py
+      - name: Save
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add agent_test_results.json
+          git diff --cached --quiet || git commit -m "debug: verify"
+          git push
