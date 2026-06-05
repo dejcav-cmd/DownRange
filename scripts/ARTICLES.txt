@@ -1,20 +1,22 @@
-=== dailyBriefing docs: 5 ===
-  2026-06-05 [complete] 
-  2026-06-04 [complete] 
-  2026-06-03 [complete] 
-  2026-06-02 [complete] 
-  2026-06-01 [complete] 
+Canada articles: 7
 
-=== systemAlert docs: 0 ===
+  [OK] Canada Gun Rights News: Week of 2026 June 01
+  [OK] Ontario Voters Demand Ford Block Federal Handgun S
+  [OK] Restricted Firearms in Canada: Storage, Transport,
+  [OK] 2025 Canada Hunting Season: Province-by-Province F
+  [OK] How to Get Your PAL in Canada: The Realistic Step-
+  [OK] The OIC Rifle Ban: Illegal to Sell, Legal to Own —
+  [OK] Canada's Handgun Transfer Freeze: What Every Owner
 
-=== Recent failed cron runs: 5 ===
-  2026-06-01T17:00 quality-rewrite :: Scanned 1 · rewrote 0 · skipped 0 (already ok) · failed 1
-  2026-05-29T04:38 video :: 
-  2026-05-29T04:38 video :: 
-  2026-05-29T04:37 video :: 
-  2026-05-29T03:33 video :: 
+Brazil articles: 10
 
-=== Recent newsArticle docs: 3 ===
-  2026-06-05T18:00 Holosun Updates 507C-X3 Red Dot for Daily Carry Pistols
-  2026-06-05T16:00 Charter Arms Target Mastiff 9mm Revolver Matches Semi-Auto A
-  2026-06-05T14:00 Kaine Attacks Gun-Friendly Sheriffs; Gets Corrected by Right
+  [OK] Os Estados Mais (e Menos) Amigáveis para Atiradore
+  [OK] CBC e IMBEL: A Indústria de Armas Brasileira Que P
+  [OK] Legítima Defesa com Arma no Brasil: O Que a Lei Di
+  [OK] SIGMA: O Sistema do Exército que Controla Cada Arm
+  [OK] Porte Civil no Brasil: É Possível ou É Impossível 
+  [OK] Munição no Brasil em 2025: Preços Reais, Onde Comp
+  [OK] Uso Permitido vs. Uso Restrito no Brasil: Entenda 
+  [OK] Decreto Lula e o CAC: O Que Realmente Mudou — e O 
+  [OK] Como Virar CAC em 2025: Guia Completo para Atirado
+  [OK] Estatuto do Desarmamento: O Que o Atirador Precisa
