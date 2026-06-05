@@ -48,13 +48,13 @@ const TYPES = {
     query: (force, limit) => {
       const f = force
         ? '_type == "newsArticle" && defined(title) && editorLocked != true'
-        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
-      return `*[${f}] | order(publishedAt desc) [0...${limit}] { _id, title, summary, excerpt, body, source, category, publishedAt, tags }`
+        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 100) && editorLocked != true'
+      return `*[${f}] | order(_createdAt desc) [0...${limit}] { _id, title, summary, excerpt, body, source, category, publishedAt, externalUrl, tags }`
     },
     countQuery: (force) => {
       const f = force
         ? '_type == "newsArticle" && defined(title) && editorLocked != true'
-        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
+        : '_type == "newsArticle" && defined(title) && (!defined(body) || length(body) < 100) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
@@ -89,13 +89,13 @@ Return ONLY valid JSON: { "title": "Rewritten headline — DownRange phrasing, m
     query: (force, limit) => {
       const f = force
         ? '_type == "blogPost" && defined(title) && editorLocked != true'
-        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
+        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 100) && editorLocked != true'
       return `*[${f}] | order(publishedAt desc) [0...${limit}] { _id, title, excerpt, body, category, tags }`
     },
     countQuery: (force) => {
       const f = force
         ? '_type == "blogPost" && defined(title) && editorLocked != true'
-        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 600) && editorLocked != true'
+        : '_type == "blogPost" && defined(title) && (!defined(body) || length(body) < 100) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
@@ -130,13 +130,13 @@ Return ONLY valid JSON: { "body": "<full HTML blog post>", "excerpt": "1 sentenc
     query: (force, limit) => {
       const f = force
         ? '_type == "firearmRelease" && defined(brand) && editorLocked != true'
-        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 600) && editorLocked != true'
+        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 100) && editorLocked != true'
       return `*[${f}] | order(_createdAt desc) [0...${limit}] { _id, brand, model, caliber, action, msrp, category, summary, body, description, pressReleaseExcerpt, specUrl }`
     },
     countQuery: (force) => {
       const f = force
         ? '_type == "firearmRelease" && defined(brand) && editorLocked != true'
-        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 600) && editorLocked != true'
+        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 100) && editorLocked != true'
       return `count(*[${f}])`
     },
     buildPrompt: (item) => `
