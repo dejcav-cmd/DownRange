@@ -637,7 +637,7 @@ async function renderNewsPanel(el) {
       articles.map(a=>`<div class="article-card">
         <div class="article-title">${a.title||'Untitled'}</div>
         <div class="article-meta">
-          <span class="pill ${a.status==='published'?'pill-ok':'pill-warn'}">${a.status||'draft'}</span>
+          <span class="pill ${(a.publishedAt&&a.slug?.current)?'pill-ok':'pill-warn'}">${(a.publishedAt&&a.slug?.current)?'published':'draft'}</span>
           ${a.source?`<span>${a.source}</span>`:''}
           ${a.publishedAt?`<span>${new Date(a.publishedAt).toLocaleDateString()}</span>`:''}
           ${a.category?`<span class="tag">${a.category}</span>`:''}
@@ -682,7 +682,10 @@ async function renderReleasesPanel(el) {
         ${r.image||r.imageUrl?`<img src="${r.image||r.imageUrl}" class="release-img" alt="" onerror="this.style.display='none'">`:'<div class="release-img" style="display:flex;align-items:center;justify-content:center;font-size:22px">🔫</div>'}
         <div style="flex:1;min-width:0">
           <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;margin-bottom:3px">${r.name||r.title||'—'}</div>
-          <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">${r.brand?`<span style="color:var(--gold)">${r.brand}</span> · `:''}${r.category||''}${r.msrp?' · $'+r.msrp:''}</div>
+          <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">
+            <span class="pill ${(r.publishedAt&&r.slug?.current)?'pill-ok':'pill-warn'}" style="margin-right:6px">${(r.publishedAt&&r.slug?.current)?'live':'draft'}</span>
+            ${r.brand?`<span style="color:var(--gold)">${r.brand}</span> · `:''}${r.category||''}${r.msrp?' · $'+r.msrp:''}
+          </div>
           ${r.slug?.current?`<a href="https://downrangeco.com/releases/${r.slug.current}" target="_blank" style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--gold);display:inline-block;margin-top:5px">View ↗</a>`:''}
         </div></div>`).join('');
   } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
