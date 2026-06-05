@@ -1,34 +1,28 @@
 
-import requests, json, os
+import requests, json, os, urllib.parse
 
 T = os.environ["SANITY_TOKEN"]
-P = "vbnsqnkg"
 H = {"Authorization": "Bearer " + T}
+BASE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production"
 
-# Fix social posts that have hash IDs as articleSlug
-fix_url = "https://" + P + ".api.sanity.io/v2024-01-01/data/mutate/production"
+def q(query):
+    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=15).json()["result"]
 
-# The broken article: _id=news-ed2885a86a33802b8759352ff4b98b4a has slug fml19-vs-fmp13-small-thermal-big-upgrade
-# Fix any socialPost that has articleSlug = "news-ed2885a86a33802b8759352ff4b98b4a"
-q_url = "https://" + P + ".api.sanity.io/v2024-01-01/data/query/production"
+# Check publishedAt vs _createdAt for recent articles
+print("=== publishedAt vs _createdAt for last 5 articles ===")
+arts = q('*[_type == "newsArticle" && approved == true] | order(_createdAt desc)[0...5]{title, _createdAt, publishedAt, "slug": slug.current}')
+for a in arts:
+    print(f"  created={a.get('_createdAt','')[:16]} published={str(a.get('publishedAt') or 'NULL')[:16]} | {a.get('title','')[:50]}")
 
-# Find bad social posts
-bad_posts = requests.get(q_url, params={
-    "query": '*[_type == "socialPost" && articleSlug match "news-*" && length(articleSlug) > 30][0...10]{_id, articleSlug, platform}',
-    "returnQuery": "false"
-}, headers=H).json().get("result", [])
+# Count articles with publishedAt in last 10 days
+from datetime import datetime, timedelta
+since = (datetime.utcnow() - timedelta(days=10)).strftime('%Y-%m-%dT%H:%M:%S')
+count_10d = q(f'count(*[_type == "newsArticle" && approved == true && publishedAt >= "{since}"])')
+print(f"\nArticles with publishedAt in last 10 days: {count_10d}")
 
-print(f"Found {len(bad_posts)} social posts with hash IDs as slugs")
-for p in bad_posts:
-    print(f"  {p['_id'][:20]} platform={p.get('platform')} slug={p.get('articleSlug','')[:40]}")
+count_null_pub = q('count(*[_type == "newsArticle" && approved == true && !defined(publishedAt)])')
+print(f"Articles with NULL publishedAt: {count_null_pub}")
 
-# Check what news page is actually querying 
-# Check the news page count
-total = requests.get(q_url, params={"query": 'count(*[_type == "newsArticle" && approved == true])', "returnQuery":"false"}, headers=H).json().get("result",0)
-print(f"\nApproved articles: {total}")
-
-# Check latest articles as they appear to the frontend  
-latest = requests.get(q_url, params={"query": '*[_type == "newsArticle" && approved == true] | order(publishedAt desc)[0...5]{title, publishedAt, "slug": slug.current}', "returnQuery":"false"}, headers=H).json().get("result",[])
-print("Latest articles (frontend view):")
-for a in latest:
-    print(f"  {str(a.get('publishedAt',''))[:16]} | {str(a.get('slug','NO SLUG'))[:30]} | {a.get('title','')[:50]}")
+# Check what the news page would show (approved + not deals + publishedAt last 10 days)
+count_visible = q(f'count(*[_type == "newsArticle" && approved == true && category != "deals" && publishedAt >= "{since}"])')
+print(f"Articles VISIBLE on news page (last 10 days, not deals): {count_visible}")
