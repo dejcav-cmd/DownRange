@@ -1,6 +1,5 @@
 {
-  "broken_found": 0,
-  "fixed": 0,
-  "errors": 0,
-  "remaining": 0
+  "total": 345,
+  "broken_scan": 0,
+  "sample_broken": []
 }
