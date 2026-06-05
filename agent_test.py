@@ -12,50 +12,46 @@ def q(query):
 def mutate(mutations):
     return requests.post(MUTATE, json={"mutations": mutations}, headers={**H, "Content-Type":"application/json"}, timeout=30).json()
 
-def make_slug(title, _id):
-    s = (title or '').lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
-    s = re.sub(r'-+', '-', s).strip('-')[:80]
-    suffix = _id.split('-')[-1][:6] if '-' in _id else _id[:6]
-    return f"{s}-{suffix}" if s else f"article-{suffix}"
+HASH_PAT = re.compile(r'^(news|goa|ca|blog|review)-[a-f0-9]{16,}')
 
-# Find articles where slug.current IS the _id (article slug was incorrectly set to the document _id)
-# These look like: slug="news-abc123..." or "goa-abc123..." or "ca-abc123..."
-HASH_PAT = re.compile(r'^(news|goa|ca|blog)-[a-f0-9]{20,}$')
+# Check socialPosts with bad articleSlugs  
+social = q('*[_type == "socialPost"][0...500]{_id, platform, articleSlug, status, postUrl}')
+bad_social = [s for s in social if HASH_PAT.match(str(s.get('articleSlug','')))]
+print(f"Social posts with _id as articleSlug: {len(bad_social)}")
+for s in bad_social[:5]:
+    print(f"  {s.get('platform')} | {s.get('articleSlug','')[:40]} | {s.get('postUrl','')[:50]}")
 
-all_arts = q('*[_type == "newsArticle"][0...2000]{_id, title, sourceTitle, "slug": slug.current}')
-broken_id_slugs = [a for a in all_arts if a.get('slug') and HASH_PAT.match(str(a.get('slug',''))) ]
-print(f"Articles with _id-as-slug: {len(broken_id_slugs)}")
-for a in broken_id_slugs[:5]:
-    print(f"  _id={a['_id'][:30]} slug={a.get('slug','')[:40]} title={a.get('title','')[:40]}")
-
-# Fix them
-existing = set(a.get('slug','') for a in all_arts if a.get('slug') and not HASH_PAT.match(str(a.get('slug',''))))
+# Now find the real slug for each bad socialPost's articleSlug
+# The articleSlug should be the slug.current of the article, not the _id
 mutations = []
-for a in broken_id_slugs:
-    title = a.get('title') or a.get('sourceTitle','')
-    new_slug = make_slug(title, a['_id'])
-    base_slug = new_slug
-    counter = 2
-    while new_slug in existing:
-        new_slug = f"{base_slug}-{counter}"; counter += 1
-    existing.add(new_slug)
-    mutations.append({"patch": {"id": a["_id"], "set": {"slug": {"_type": "slug", "current": new_slug}}}})
+for s in bad_social:
+    art_id = s.get('articleSlug','')  # This is actually the _id
+    # Look up the article by _id
+    art = q(f'*[_id == "{art_id}"][0]{{"slug": slug.current}}')
+    real_slug = art.get('slug') if art else None
+    if real_slug:
+        mutations.append({"patch": {"id": s['_id'], "set": {"articleSlug": real_slug}}})
+        print(f"  FIX socialPost: {art_id[:30]} -> {real_slug[:40]}")
+    else:
+        print(f"  SKIP no article found for: {art_id[:30]}")
 
-print(f"Fixing {len(mutations)} articles...")
-errors = 0
+print(f"Fixing {len(mutations)} social posts...")
 for i in range(0, len(mutations), 50):
     batch = mutations[i:i+50]
     result = mutate(batch)
-    batch_errors = sum(1 for r in result.get("results",[]) if r.get("error"))
-    errors += batch_errors
-    print(f"  Batch {i//50+1}: {len(batch)} patched, {batch_errors} errors")
+    errs = sum(1 for r in result.get('results',[]) if r.get('error'))
+    print(f"  Batch {i//50+1}: {len(batch)}, errors={errs}")
 
-# Verify the specific broken article
-art = q('*[_id == "goa-c7f32d4e8dd10832c66d424782eb9c20"][0]{_id, title, "slug": slug.current}')
-print(f"GOA article: {json.dumps(art)}")
+# Also check the admin page links in content hub
+# The issue was admin used a._id - now fixed, but let's confirm those article cards
+# Check articles by all types for bad slugs
+all_types = q('*[_type in ["newsArticle","blogPost","canadaContent","firearmRelease"]][0...2000]{_id, _type, "slug": slug.current, title}')
+bad_arts = [a for a in all_types if not a.get('slug') or HASH_PAT.match(str(a.get('slug','')))]
+print(f"\nArticles with bad/null slug: {len(bad_arts)}")
+for a in bad_arts[:10]:
+    print(f"  {a['_type']} | slug={str(a.get('slug','NULL'))[:40]} | {a.get('title','')[:50]}")
 
-out = {"broken_id_slugs": len(broken_id_slugs), "fixed": len(mutations), "errors": errors}
+out = {"bad_social": len(bad_social), "social_fixed": len(mutations), "bad_articles": len(bad_arts), "bad_sample": [{"type":a['_type'],"slug":str(a.get('slug',''))[:40],"title":a.get('title','')[:40]} for a in bad_arts[:10]]}
 with open("agent_test_results.json", "w") as f:
     json.dump(out, f, indent=2)
 print("DONE")
