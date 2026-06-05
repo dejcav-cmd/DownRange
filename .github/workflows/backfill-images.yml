@@ -1,0 +1,24 @@
+name: Backfill Images to CDN
+on:
+  workflow_dispatch:
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger backfill
+        env:
+          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+        run: |
+          curl -s -X POST "https://downrangeco.com/api/admin/backfill-images" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"types":["canadaContent","brazilContent"],"limit":50}' \
+            | python3 -c "
+import sys,json
+d=json.load(sys.stdin)
+print('ok:', d.get('ok'))
+print('fixed:', d.get('fixed'), '/', d.get('total'))
+for r in d.get('results',[]):
+    print(f'  [{r[\"status\"]}] {r[\"title\"]}')
+    if r.get('url'): print(f'    -> {r[\"url\"]}')
+"
