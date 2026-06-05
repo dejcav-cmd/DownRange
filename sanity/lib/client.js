@@ -70,6 +70,14 @@ export async function fetchArticlesPaginated({ page = 1, perPage = 20, category 
   return { articles, total, pages: Math.ceil(total / perPage), page, perPage }
 }
 
+// Look up article by Sanity _id — used to redirect old broken URLs
+export async function getArticleById(id) {
+  return client.fetch(
+    `*[_type == "newsArticle" && _id == $id][0] { _id, slug, title }`,
+    { id }
+  )
+}
+
 export async function getArticleBySlug(slug) {
   return client.fetch(`
     *[_type == "newsArticle" && slug.current == $slug][0] {

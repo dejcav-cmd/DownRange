@@ -3,7 +3,7 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
-import { getArticleBySlug, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
+import { getArticleBySlug, getArticleById, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 import EmailCapture from '../../../components/ui/EmailCapture'
 
@@ -120,6 +120,16 @@ export default async function ArticlePage({ params }) {
   try {
     // article must resolve first so its category can be used for related articles
     article = await getArticleBySlug(params.slug).catch(() => null)
+
+    // If not found by slug, check if the URL contains a Sanity _id (e.g. news-abc123...)
+    // This happens when old social posts or links used _id instead of slug.current
+    if (!article && /^[a-z]+-[a-f0-9]{20,}$/.test(params.slug)) {
+      const byId = await getArticleById(params.slug).catch(() => null)
+      if (byId?.slug?.current) {
+        redirect(`/news/${byId.slug.current}`)
+      }
+    }
+
     ;[related, alerts] = await Promise.all([
       article
         ? getRelatedArticles(article.category || 'news', params.slug, 8).catch(() => [])
