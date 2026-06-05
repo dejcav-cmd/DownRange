@@ -6,15 +6,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Query Sanity
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_QUERY_TOKEN }}
-        run: python3 scripts/query_recent.py || true
-      - name: Commit result
-        run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "CI Query"
-          git add -f scripts/query_recent_result.txt 2>/dev/null || true
-          git diff --staged --quiet || git commit -m "ci: query result" && git push
+        run: python3 scripts/query_recent.py
