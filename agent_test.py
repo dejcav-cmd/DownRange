@@ -1,50 +1,42 @@
 
-import requests, json, os
+import requests, json, os, subprocess
 
 T = os.environ["SANITY_TOKEN"]
 H = {"Authorization": "Bearer " + T}
 BASE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production"
+MUTATE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/mutate/production"
+CRON = os.environ.get("CRON_SECRET","")
 
 def q(query):
-    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=15).json()["result"]
+    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=30).json()["result"]
 
-# Check the GOA article specifically
-art = q('*[_id == "goa-c7f32d4e8dd10832c66d424782eb9c20"][0]{_id, title, "slug": slug.current, approved, publishedAt, body}')
-print("GOA article:")
-print(f"  title: {art.get('title','')}")
-print(f"  slug: {art.get('slug','')}")
-print(f"  approved: {art.get('approved')}")
-print(f"  has body: {bool(art.get('body'))}")
+def mutate(mutations):
+    return requests.post(MUTATE, json={"mutations": mutations}, headers={**H,"Content-Type":"application/json"}, timeout=30).json()
 
-# Check the article is fetchable by slug (simulates what the news/[slug] page does)
-slug = art.get('slug','')
-art2 = q(f'*[_type == "newsArticle" && slug.current == "{slug}"][0]{{_id, title, "slug": slug.current}}')
-print(f"\nFetchable by slug '{slug}':", json.dumps(art2))
+# Check article page status
+def check_url(slug):
+    r = subprocess.run(['curl','-s','-o','/dev/null','-w','%{http_code}',
+        f'https://downrangeco.com/news/{slug}'], capture_output=True, text=True, timeout=15)
+    return r.stdout.strip()
 
-# Now test the article URL via curl (GitHub Actions has real internet)
-import subprocess
-result = subprocess.run(
-    ['curl', '-s', '-o', '/dev/null', '-w', '%{http_code}', 
-     f'https://downrangeco.com/news/{slug}'],
-    capture_output=True, text=True, timeout=15
-)
-print(f"\nHTTP status for /news/{slug}: {result.stdout}")
-
-# Also test a known good recent article
-recent = q('*[_type == "newsArticle" && approved == true && defined(slug.current)] | order(_createdAt desc)[0...3]{title, "slug": slug.current}')
+recent = q('*[_type == "newsArticle" && approved == true && defined(slug.current)] | order(_createdAt desc)[0...5]{title, "slug": slug.current, "has_body": defined(body)}')
+print("Recent article HTTP statuses:")
 for a in recent:
-    r2 = subprocess.run(
-        ['curl', '-s', '-o', '/dev/null', '-w', '%{http_code}',
-         f'https://downrangeco.com/news/{a["slug"]}'],
-        capture_output=True, text=True, timeout=15
-    )
-    print(f"HTTP {r2.stdout} — /news/{a['slug'][:50]}")
+    status = check_url(a['slug'])
+    print(f"  HTTP {status} | body={a.get('has_body')} | {a.get('slug','')[:40]} | {a.get('title','')[:40]}")
 
-# Count articles that have NO body (never rewritten)
-no_body = q('count(*[_type == "newsArticle" && !defined(body)])')
-with_body = q('count(*[_type == "newsArticle" && defined(body) && length(body) > 50])')
-print(f"\nArticles with no body: {no_body}")
-print(f"Articles with body: {with_body}")
+# How many articles lack body but have a summary/excerpt?
+no_body_with_summary = q('count(*[_type == "newsArticle" && !defined(body) && defined(summary)])')
+no_body_no_summary   = q('count(*[_type == "newsArticle" && !defined(body) && !defined(summary)])')
+print(f"\nNo body, has summary: {no_body_with_summary}")
+print(f"No body, no summary: {no_body_no_summary}")
 
-with open("agent_test_results.json", "w") as f:
-    json.dump({"goa_article": art, "no_body": no_body, "with_body": with_body}, f, indent=2)
+# These 313 no-body articles need the backfill cron to run
+# Let's trigger it manually
+print("\nTriggering backfill...")
+resp = requests.get("https://downrangeco.com/api/admin/backfill-articles?limit=25&force=false&types=newsArticle",
+    headers={"Authorization": "Bearer " + CRON, "x-vercel-cron": "1"}, timeout=120)
+print(f"Backfill: HTTP {resp.status_code} — {resp.text[:300]}")
+
+with open("agent_test_results.json","w") as f:
+    json.dump({"no_body": 313, "no_body_with_summary": no_body_with_summary, "no_body_no_summary": no_body_no_summary, "backfill": resp.text[:300]}, f, indent=2)
