@@ -300,7 +300,6 @@ async function fetchAndUploadOgImage(pageUrl, articleId) {
     return null
   }
 }
-export { fetchAndUploadOgImage }
 function isTrustedImage(url) {
   if (!url) return false
   return TRUSTED_IMAGE_DOMAINS.some(d => url.includes(d))
@@ -371,4 +370,4 @@ async function rateLimitedBatch(items, fn, delayMs = 1000) {
   return results
 }
 
-export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch }
+export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch, fetchAndUploadOgImage }
