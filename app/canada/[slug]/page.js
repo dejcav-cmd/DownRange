@@ -51,7 +51,7 @@ function readingTime(text) {
 
 async function getArticle(slug) {
   return sanity.fetch(
-    `*[_type == "canadaContent" && type == "article" && slug.current == $slug][0] {
+    `*[_type == "canadaContent" && type == "article" && active == true && slug.current == $slug][0] {
       _id, title, slug, body, summary, imageUrl, tag, readMins, author,
       sourceUrl, publishedAt, active
     }`,

@@ -115,6 +115,7 @@ export async function POST(req) {
           author:          'DJ Cavalcanti',
           qualityReviewed: false,
           publishedAt:     new Date().toISOString(),
+          active:          true,
           order:           99,
         })
         results.push({ slug: article.slug, status: 'created', title: article.title })

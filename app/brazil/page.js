@@ -34,7 +34,7 @@ export default async function BrazilPage({ searchParams }) {
 
   const [items, breaking] = await Promise.all([
     sanity.fetch(
-      '*[_type=="brazilContent"] | order(publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, brlPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
+      '*[_type=="brazilContent" && active == true] | order(publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, brlPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
     ).catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
   ])

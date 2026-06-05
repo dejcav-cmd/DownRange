@@ -33,7 +33,7 @@ export default async function CanadaPage({ searchParams }) {
 
   const [items, breaking] = await Promise.all([
     sanity.fetch(
-      '*[_type=="canadaContent"] | order(publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, cadPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
+      '*[_type=="canadaContent" && active == true] | order(publishedAt desc) { _id, type, title, slug, status, impact, effectiveDate, summary, detail, sourceUrl, abbr, rating, highlights, body, imageUrl, tag, readMins, author, cadPrice, usdEquiv, availability, trend, note, value, color, order, publishedAt }'
     ).catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
   ])
