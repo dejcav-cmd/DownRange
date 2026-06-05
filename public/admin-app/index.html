@@ -227,7 +227,11 @@ async function tryAuth() {
   btn.disabled = true; btn.textContent = 'Verifying...'; err.style.display = 'none';
   // Test key against a lightweight auth endpoint
   try {
-    const r = await fetch('/api/admin/ai-status', { headers: { 'x-admin-key': val } });
+    const r = await fetch('/api/admin/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: val })
+    });
     if (r.status === 401) {
       err.textContent = 'Invalid key — does not match ADMIN_KEY in Vercel';
       err.style.display = 'block';
@@ -250,7 +254,11 @@ window.addEventListener('load', async () => {
   if (!k) return;
   // Silently re-verify stored key on each load
   try {
-    const r = await fetch('/api/admin/ai-status', { headers: { 'x-admin-key': k } });
+    const r = await fetch('/api/admin/auth', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ password: k })
+    });
     if (r.status === 401) {
       // Key is stale/wrong — clear it and show lock screen
       localStorage.removeItem('dr_admin_key');
