@@ -1,5 +1,5 @@
 {
-  "total": 345,
-  "broken_scan": 0,
-  "sample_broken": []
+  "bad_social_count": 0,
+  "bad_social_sample": [],
+  "total_social": 55
 }
