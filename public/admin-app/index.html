@@ -13,427 +13,192 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
-/* ─── TOKENS ─── */
 :root {
-  --bg:       #09090B;
-  --bg2:      #111318;
-  --bg3:      #1a1d24;
-  --bg4:      #21252f;
-  --border:   #1e293b;
-  --border2:  #2d3748;
-  --text:     #F0EDE6;
-  --dim:      #6b7280;
-  --dim2:     #4b5563;
-  --gold:     #C8922A;
-  --gold2:    #a87520;
-  --ok:       #22c55e;
-  --err:      #ef4444;
-  --warn:     #f59e0b;
-  --safe-t:   env(safe-area-inset-top, 0px);
-  --safe-b:   env(safe-area-inset-bottom, 0px);
-  --safe-l:   env(safe-area-inset-left, 0px);
-  --safe-r:   env(safe-area-inset-right, 0px);
-  --topbar-h: 52px;
-  --nav-h:    60px;
+  --bg:#09090B; --bg2:#111318; --bg3:#1a1d24; --bg4:#21252f;
+  --border:#1e293b; --border2:#2d3748;
+  --text:#F0EDE6; --dim:#6b7280; --dim2:#4b5563;
+  --gold:#C8922A; --ok:#22c55e; --err:#ef4444; --warn:#f59e0b;
+  --safe-t:env(safe-area-inset-top,0px); --safe-b:env(safe-area-inset-bottom,0px);
+  --safe-l:env(safe-area-inset-left,0px); --safe-r:env(safe-area-inset-right,0px);
+  --topbar-h:52px; --nav-h:60px;
 }
-* { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
-html,body {
-  height:100%; background:var(--bg); color:var(--text);
-  font-family:'Barlow Condensed',sans-serif;
-  overscroll-behavior:none; overflow:hidden;
-}
-button { font-family:inherit; }
-input,textarea,select { font-family:'IBM Plex Mono',monospace; }
-a { color:inherit; text-decoration:none; }
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;background:var(--bg);color:var(--text);font-family:'Barlow Condensed',sans-serif;overscroll-behavior:none;overflow:hidden;}
+button{font-family:inherit;} input,textarea,select{font-family:'IBM Plex Mono',monospace;} a{color:inherit;text-decoration:none;}
 
-/* ─── SHELL ─── */
-#app {
-  display:flex; flex-direction:column;
-  height:100vh; height:100dvh;
-  padding-top:calc(var(--topbar-h) + var(--safe-t));
-  padding-bottom:calc(var(--nav-h) + var(--safe-b));
-}
+#app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding-top:calc(var(--topbar-h) + var(--safe-t));padding-bottom:calc(var(--nav-h) + var(--safe-b));}
 
-/* ─── TOPBAR ─── */
-#topbar {
-  position:fixed; top:0; left:0; right:0; z-index:200;
-  height:calc(var(--topbar-h) + var(--safe-t));
-  padding-top:var(--safe-t);
-  background:var(--bg2); border-bottom:1px solid var(--border);
-  display:flex; align-items:center;
-  padding-left:calc(16px + var(--safe-l));
-  padding-right:calc(16px + var(--safe-r));
-  gap:10px;
-}
-#topbar-logo {
-  font-family:'Bebas Neue',cursive; font-size:1.3rem;
-  color:var(--gold); letter-spacing:.1em; flex-shrink:0;
-}
-#topbar-title {
-  font-family:'IBM Plex Mono',monospace; font-size:10px;
-  color:var(--dim); letter-spacing:.12em; text-transform:uppercase;
-  flex:1; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
-}
-#topbar-status { font-size:16px; flex-shrink:0; }
-#topbar-menu-btn {
-  background:none; border:1px solid var(--border); color:var(--dim);
-  width:34px; height:34px; display:flex; align-items:center; justify-content:center;
-  font-size:14px; cursor:pointer; flex-shrink:0;
-  transition:border-color .15s, color .15s;
-}
-#topbar-menu-btn:active { border-color:var(--gold); color:var(--gold); }
+/* TOPBAR */
+#topbar{position:fixed;top:0;left:0;right:0;z-index:200;height:calc(var(--topbar-h) + var(--safe-t));padding-top:var(--safe-t);background:var(--bg2);border-bottom:1px solid var(--border);display:flex;align-items:center;padding-left:calc(16px + var(--safe-l));padding-right:calc(16px + var(--safe-r));gap:10px;}
+#topbar-logo{font-family:'Bebas Neue',cursive;font-size:1.3rem;color:var(--gold);letter-spacing:.1em;flex-shrink:0;}
+#topbar-title{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);letter-spacing:.12em;text-transform:uppercase;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+#topbar-status{font-size:16px;flex-shrink:0;}
+#topbar-menu-btn{background:none;border:1px solid var(--border);color:var(--dim);width:34px;height:34px;display:flex;align-items:center;justify-content:center;font-size:14px;cursor:pointer;flex-shrink:0;transition:border-color .15s,color .15s;}
+#topbar-menu-btn:active{border-color:var(--gold);color:var(--gold);}
 
-/* ─── FLASH MESSAGE ─── */
-#flash {
-  position:fixed; top:calc(var(--topbar-h) + var(--safe-t)); left:0; right:0;
-  z-index:199; padding:10px 16px;
-  font-family:'IBM Plex Mono',monospace; font-size:11px;
-  display:none; align-items:center; gap:8px;
-  transform:translateY(-100%); transition:transform .2s ease;
-}
-#flash.show { display:flex; transform:translateY(0); }
-#flash.ok  { background:rgba(34,197,94,.12);  border-bottom:1px solid rgba(34,197,94,.3);  color:#4ade80; }
-#flash.err { background:rgba(239,68,68,.12);  border-bottom:1px solid rgba(239,68,68,.3);  color:#f87171; }
-#flash.info{ background:rgba(200,146,42,.1);  border-bottom:1px solid rgba(200,146,42,.3); color:var(--gold); }
-#flash-close { margin-left:auto; background:none; border:none; color:inherit; font-size:16px; cursor:pointer; }
+/* FLASH */
+#flash{position:fixed;top:calc(var(--topbar-h) + var(--safe-t));left:0;right:0;z-index:199;padding:10px 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;display:none;align-items:center;gap:8px;transform:translateY(-100%);transition:transform .2s ease;}
+#flash.show{display:flex;transform:translateY(0);}
+#flash.ok{background:rgba(34,197,94,.12);border-bottom:1px solid rgba(34,197,94,.3);color:#4ade80;}
+#flash.err{background:rgba(239,68,68,.12);border-bottom:1px solid rgba(239,68,68,.3);color:#f87171;}
+#flash.info{background:rgba(200,146,42,.1);border-bottom:1px solid rgba(200,146,42,.3);color:var(--gold);}
+#flash-close{margin-left:auto;background:none;border:none;color:inherit;font-size:16px;cursor:pointer;}
 
-/* ─── BOTTOM NAV ─── */
-#bottom-nav {
-  position:fixed; bottom:0; left:0; right:0; z-index:200;
-  height:calc(var(--nav-h) + var(--safe-b));
-  padding-bottom:var(--safe-b);
-  background:var(--bg2); border-top:1px solid var(--border);
-  display:flex; align-items:stretch;
-}
-.nav-tab {
-  flex:1; background:none; border:none; border-top:2px solid transparent;
-  color:var(--dim2); cursor:pointer; display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:3px; padding:0;
-  transition:color .15s; position:relative;
-}
-.nav-tab.active { color:var(--gold); border-top-color:var(--gold); }
-.nav-tab-icon { font-size:18px; line-height:1; }
-.nav-tab-label { font-size:9px; letter-spacing:.08em; text-transform:uppercase; font-weight:700; }
-.nav-badge {
-  position:absolute; top:6px; right:calc(50% - 16px);
-  background:var(--err); color:#fff; font-size:7px; font-weight:700;
-  padding:1px 4px; border-radius:2px; pointer-events:none;
-}
+/* BOTTOM NAV */
+#bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:200;height:calc(var(--nav-h) + var(--safe-b));padding-bottom:var(--safe-b);background:var(--bg2);border-top:1px solid var(--border);display:flex;align-items:stretch;}
+.nav-tab{flex:1;background:none;border:none;border-top:2px solid transparent;color:var(--dim2);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:3px;padding:0;transition:color .15s;position:relative;}
+.nav-tab.active{color:var(--gold);border-top-color:var(--gold);}
+.nav-tab-icon{font-size:18px;line-height:1;}
+.nav-tab-label{font-size:9px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;}
 
-/* ─── CONTENT AREA ─── */
-#content { flex:1; overflow:hidden; position:relative; }
+/* CONTENT AREA */
+#content{flex:1;overflow:hidden;position:relative;}
+.screen{position:absolute;inset:0;overflow-y:auto;overflow-x:hidden;padding:16px;display:none;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--border) transparent;}
+.screen.active{display:block;animation:fadeIn .18s ease;}
+@keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
-/* ─── SCREENS ─── */
-.screen {
-  position:absolute; inset:0; overflow-y:auto; overflow-x:hidden;
-  padding:16px; display:none; -webkit-overflow-scrolling:touch;
-  scrollbar-width:thin; scrollbar-color:var(--border) transparent;
-}
-.screen.active { display:block; animation:fadeIn .18s ease; }
-@keyframes fadeIn { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:none} }
+/* DRAWER */
+#drawer{position:fixed;inset:0;z-index:300;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);background:var(--bg);pointer-events:none;}
+#drawer.open{transform:translateX(0);pointer-events:all;}
+#drawer-topbar{display:flex;align-items:center;gap:12px;padding:12px 16px;padding-top:calc(12px + var(--safe-t));background:var(--bg2);border-bottom:1px solid var(--border);flex-shrink:0;}
+#drawer-back{background:none;border:none;color:var(--gold);cursor:pointer;padding:4px 8px;margin-left:-8px;display:flex;align-items:center;gap:4px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.04em;}
+#drawer-title{font-family:'Bebas Neue',cursive;font-size:1.3rem;color:var(--text);letter-spacing:.08em;flex:1;}
+#drawer-content{flex:1;overflow-y:auto;overflow-x:hidden;padding:16px;-webkit-overflow-scrolling:touch;padding-bottom:calc(16px + var(--safe-b));}
 
-/* ─── DRAWER (full-screen panel overlay) ─── */
-#drawer {
-  position:fixed; inset:0; z-index:300;
-  display:flex; flex-direction:column;
-  transform:translateX(100%); transition:transform .28s cubic-bezier(.4,0,.2,1);
-  background:var(--bg); pointer-events:none;
-}
-#drawer.open { transform:translateX(0); pointer-events:all; }
-#drawer-topbar {
-  display:flex; align-items:center; gap:12px;
-  padding:12px 16px; padding-top:calc(12px + var(--safe-t));
-  background:var(--bg2); border-bottom:1px solid var(--border);
-  flex-shrink:0;
-}
-#drawer-back {
-  background:none; border:none; color:var(--gold); font-size:18px;
-  cursor:pointer; padding:4px 8px; margin-left:-8px; display:flex; align-items:center; gap:4px;
-  font-family:'IBM Plex Mono',monospace; font-size:11px; letter-spacing:.04em;
-}
-#drawer-title {
-  font-family:'Bebas Neue',cursive; font-size:1.3rem;
-  color:var(--text); letter-spacing:.08em; flex:1;
-}
-#drawer-content {
-  flex:1; overflow-y:auto; overflow-x:hidden; padding:16px;
-  -webkit-overflow-scrolling:touch;
-  padding-bottom:calc(16px + var(--safe-b));
-}
+/* SECTION SHEET */
+#section-sheet{position:fixed;inset:0;z-index:250;background:rgba(0,0,0,.7);backdrop-filter:blur(4px);display:none;align-items:flex-end;}
+#section-sheet.open{display:flex;}
+#section-sheet-inner{width:100%;background:var(--bg2);border-top:1px solid var(--border);border-radius:16px 16px 0 0;max-height:80vh;overflow-y:auto;padding-bottom:calc(16px + var(--safe-b));animation:slideUp .22s ease;}
+@keyframes slideUp{from{transform:translateY(100%)}to{transform:none}}
+#sheet-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 8px;}
+.sheet-section-header{padding:10px 20px 6px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);letter-spacing:.12em;text-transform:uppercase;}
+.sheet-panel-btn{width:100%;background:none;border:none;border-bottom:1px solid rgba(30,41,59,.5);color:var(--text);cursor:pointer;text-align:left;display:flex;align-items:center;gap:12px;padding:13px 20px;transition:background .1s;}
+.sheet-panel-btn:active{background:rgba(200,146,42,.08);}
+.sheet-panel-btn .pi{font-size:18px;flex-shrink:0;}
+.sheet-panel-btn .pl{flex:1;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;letter-spacing:.03em;}
+.sheet-panel-btn .pb{background:var(--err);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:7px;font-weight:700;padding:2px 5px;}
 
-/* ─── SECTION MENU SHEET ─── */
-#section-sheet {
-  position:fixed; inset:0; z-index:250;
-  background:rgba(0,0,0,.7); backdrop-filter:blur(4px);
-  display:none; align-items:flex-end;
-}
-#section-sheet.open { display:flex; }
-#section-sheet-inner {
-  width:100%; background:var(--bg2); border-top:1px solid var(--border);
-  border-radius:16px 16px 0 0; max-height:80vh; overflow-y:auto;
-  padding-bottom:calc(16px + var(--safe-b));
-  animation:slideUp .22s ease;
-}
-@keyframes slideUp { from{transform:translateY(100%)} to{transform:none} }
-#sheet-handle { width:36px; height:4px; background:var(--border2); border-radius:2px; margin:12px auto 8px; }
-.sheet-section-header {
-  padding:10px 20px 6px;
-  font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim2);
-  letter-spacing:.12em; text-transform:uppercase;
-}
-.sheet-panel-btn {
-  width:100%; background:none; border:none; border-bottom:1px solid rgba(30,41,59,.5);
-  color:var(--text); cursor:pointer; text-align:left;
-  display:flex; align-items:center; gap:12px;
-  padding:13px 20px; transition:background .1s;
-}
-.sheet-panel-btn:active { background:rgba(200,146,42,.08); }
-.sheet-panel-btn .pi { font-size:18px; flex-shrink:0; }
-.sheet-panel-btn .pl {
-  flex:1; font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:600;
-  letter-spacing:.03em;
-}
-.sheet-panel-btn .pb {
-  background:var(--err); color:#fff; font-family:'IBM Plex Mono',monospace;
-  font-size:7px; font-weight:700; padding:2px 5px;
-}
+/* LOCK */
+#lock-screen{position:fixed;inset:0;z-index:500;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:24px;padding:32px;}
+#lock-logo{font-family:'Bebas Neue',cursive;font-size:3rem;color:var(--gold);letter-spacing:.1em;}
+#lock-sub{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim);text-align:center;}
+#lock-input{width:100%;max-width:300px;background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:14px 16px;font-family:'IBM Plex Mono',monospace;font-size:14px;outline:none;text-align:center;-webkit-appearance:none;}
+#lock-input:focus{border-color:var(--gold);}
+#lock-btn{width:100%;max-width:300px;background:var(--gold);color:#000;border:none;padding:14px;font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;}
+#lock-err{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--err);display:none;}
 
-/* ─── KEY LOCK SCREEN ─── */
-#lock-screen {
-  position:fixed; inset:0; z-index:500;
-  background:var(--bg); display:flex; flex-direction:column;
-  align-items:center; justify-content:center; gap:24px; padding:32px;
-}
-#lock-logo { font-family:'Bebas Neue',cursive; font-size:3rem; color:var(--gold); letter-spacing:.1em; }
-#lock-sub { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim); text-align:center; }
-#lock-input {
-  width:100%; max-width:300px; background:var(--bg3); border:1px solid var(--border2);
-  color:var(--text); padding:14px 16px; font-family:'IBM Plex Mono',monospace;
-  font-size:14px; outline:none; text-align:center; border-radius:0;
-  -webkit-appearance:none;
-}
-#lock-input:focus { border-color:var(--gold); }
-#lock-btn {
-  width:100%; max-width:300px; background:var(--gold); color:#000;
-  border:none; padding:14px; font-family:'Barlow Condensed',sans-serif;
-  font-size:15px; font-weight:700; letter-spacing:.1em; text-transform:uppercase;
-  cursor:pointer;
-}
-#lock-err { font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--err); display:none; }
-
-/* ─── COMPONENT STYLES ─── */
-.card { background:var(--bg2); border:1px solid var(--border); }
-.section-title {
-  font-family:'Bebas Neue',cursive; font-size:1.6rem;
-  color:var(--text); letter-spacing:.04em; margin-bottom:4px;
-}
-.section-sub {
-  font-family:'IBM Plex Mono',monospace; font-size:10px;
-  color:var(--dim2); margin-bottom:16px; line-height:1.6;
-}
-.stat-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
-.stat-box { background:var(--bg2); border:1px solid var(--border); padding:14px; }
-.stat-val { font-family:'Bebas Neue',cursive; font-size:2rem; color:var(--gold); line-height:1; }
-.stat-lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim2); margin-top:2px; letter-spacing:.08em; text-transform:uppercase; }
-.row { display:flex; align-items:center; gap:10px; padding:12px 14px; background:var(--bg2); border:1px solid var(--border); border-bottom:none; }
-.row:last-child { border-bottom:1px solid var(--border); }
-.row-label { font-family:'Barlow Condensed',sans-serif; font-size:14px; font-weight:600; flex:1; }
-.row-sub { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); margin-top:2px; }
-.pill { font-family:'IBM Plex Mono',monospace; font-size:9px; font-weight:700; padding:2px 7px; }
-.pill-ok   { background:rgba(34,197,94,.12);  color:var(--ok);  border:1px solid rgba(34,197,94,.3); }
-.pill-err  { background:rgba(239,68,68,.12);  color:var(--err); border:1px solid rgba(239,68,68,.3); }
-.pill-warn { background:rgba(245,158,11,.12); color:var(--warn);border:1px solid rgba(245,158,11,.3); }
-.pill-gold { background:rgba(200,146,42,.12); color:var(--gold);border:1px solid rgba(200,146,42,.3); }
-.pill-dim  { background:rgba(107,114,128,.1); color:var(--dim); border:1px solid var(--border); }
-.btn {
-  background:var(--gold); color:#000; border:none;
-  font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700;
-  letter-spacing:.08em; text-transform:uppercase; padding:10px 18px;
-  cursor:pointer; transition:opacity .15s; flex-shrink:0;
-  -webkit-appearance:none;
-}
-.btn:active { opacity:.8; }
-.btn:disabled { opacity:.35; cursor:not-allowed; }
-.btn-sm { padding:6px 12px; font-size:11px; }
-.btn-outline {
-  background:none; border:1px solid var(--border); color:var(--dim);
-  font-family:'IBM Plex Mono',monospace; font-size:10px; padding:7px 12px;
-  cursor:pointer; transition:border-color .15s, color .15s;
-  -webkit-appearance:none;
-}
-.btn-outline:active { border-color:var(--gold); color:var(--gold); }
-.btn-danger {
-  background:none; border:1px solid rgba(239,68,68,.4); color:var(--err);
-  font-family:'IBM Plex Mono',monospace; font-size:10px; padding:7px 12px;
-  cursor:pointer; -webkit-appearance:none;
-}
-.btn-danger:active { background:rgba(239,68,68,.1); }
-.inp {
-  width:100%; background:var(--bg3); border:1px solid var(--border);
-  color:var(--text); font-family:'IBM Plex Mono',monospace;
-  font-size:12px; padding:10px 12px; outline:none; -webkit-appearance:none;
-}
-.inp:focus { border-color:var(--gold); }
-.lbl { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim2); letter-spacing:.1em; text-transform:uppercase; display:block; margin-bottom:4px; }
-.form-row { margin-bottom:12px; }
-.divider { height:1px; background:var(--border); margin:16px 0; }
-.empty { text-align:center; padding:40px 16px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim2); }
-.loading { text-align:center; padding:40px; font-family:'IBM Plex Mono',monospace; font-size:11px; color:var(--dim2); }
-.spinner { display:inline-block; animation:spin 1s linear infinite; }
-@keyframes spin { to{transform:rotate(360deg)} }
-.tag { font-family:'IBM Plex Mono',monospace; font-size:9px; padding:2px 6px; background:rgba(200,146,42,.1); color:var(--gold); }
-.code { font-family:'IBM Plex Mono',monospace; font-size:10px; color:var(--gold); }
-
-/* ─── ARTICLE CARD ─── */
-.article-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
-.article-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; color:var(--text); margin-bottom:4px; line-height:1.3; }
-.article-meta { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-.article-actions { display:flex; gap:6px; margin-top:10px; flex-wrap:wrap; }
-
-/* ─── CRON CARD ─── */
-.cron-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
-.cron-name { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:6px; display:flex; align-items:center; gap:8px; }
-.cron-details { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:10px; flex-wrap:wrap; margin-bottom:8px; }
-.cron-actions { display:flex; gap:6px; }
-
-/* ─── LIST ITEM ─── */
-.list-item { display:flex; align-items:center; gap:12px; padding:12px 0; border-bottom:1px solid var(--border); }
-.list-item:last-child { border-bottom:none; }
-
-/* ─── QUICK ACTION GRID ─── */
-.qa-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; margin-bottom:16px; }
-.qa-btn {
-  background:var(--bg2); border:1px solid var(--border); padding:14px 12px;
-  cursor:pointer; display:flex; flex-direction:column; align-items:flex-start; gap:6px;
-  transition:border-color .15s; text-align:left;
-}
-.qa-btn:active { border-color:var(--gold); background:rgba(200,146,42,.05); }
-.qa-icon { font-size:20px; }
-.qa-label { font-family:'Barlow Condensed',sans-serif; font-size:13px; font-weight:700; letter-spacing:.05em; color:var(--text); line-height:1.2; }
-
-/* ─── OUTREACH ─── */
-.outreach-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
-.outreach-name { font-family:'Barlow Condensed',sans-serif; font-size:16px; font-weight:700; margin-bottom:2px; }
-.outreach-platform { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--gold); margin-bottom:6px; }
-.outreach-meta { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; }
-.outreach-actions { display:flex; gap:6px; margin-top:10px; }
-
-/* ─── BLOG CARD ─── */
-.blog-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; }
-.blog-title { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:4px; color:var(--text); }
-.blog-meta  { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); display:flex; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
-
-/* ─── TABS ─── */
-.tabs { display:flex; overflow-x:auto; gap:0; border-bottom:1px solid var(--border); margin-bottom:16px; scrollbar-width:none; }
-.tabs::-webkit-scrollbar { display:none; }
-.tab-btn {
-  background:none; border:none; border-bottom:2px solid transparent;
-  color:var(--dim); font-family:'IBM Plex Mono',monospace; font-size:10px;
-  padding:8px 14px; cursor:pointer; white-space:nowrap; letter-spacing:.05em;
-  transition:all .12s; flex-shrink:0;
-}
-.tab-btn.active { color:var(--gold); border-bottom-color:var(--gold); }
-
-/* ─── RELEASE / GUN CARD ─── */
-.release-card { background:var(--bg2); border:1px solid var(--border); padding:14px; margin-bottom:8px; display:flex; gap:12px; align-items:flex-start; }
-.release-img { width:64px; height:48px; object-fit:cover; flex-shrink:0; background:var(--bg3); }
-.release-info { flex:1; min-width:0; }
-.release-name { font-family:'Barlow Condensed',sans-serif; font-size:15px; font-weight:700; margin-bottom:3px; }
-.release-meta { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); }
-
-/* ─── COST CHART ─── */
-.cost-bar-row { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
-.cost-bar-label { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--dim); width:80px; flex-shrink:0; }
-.cost-bar-track { flex:1; height:6px; background:var(--bg3); position:relative; }
-.cost-bar-fill { height:100%; background:var(--gold); transition:width .5s ease; }
-.cost-bar-val { font-family:'IBM Plex Mono',monospace; font-size:9px; color:var(--text); width:50px; text-align:right; flex-shrink:0; }
-
-/* ─── BOTTOM SHEET (inner drawer panels) ─── */
-.inner-tabs { display:flex; overflow-x:auto; gap:0; border-bottom:1px solid var(--border); margin:-16px -16px 16px; padding:0 16px; scrollbar-width:none; }
-.inner-tabs::-webkit-scrollbar { display:none; }
+/* COMPONENTS */
+.card{background:var(--bg2);border:1px solid var(--border);}
+.section-title{font-family:'Bebas Neue',cursive;font-size:1.6rem;color:var(--text);letter-spacing:.04em;margin-bottom:4px;}
+.section-sub{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim2);margin-bottom:16px;line-height:1.6;}
+.stat-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.stat-box{background:var(--bg2);border:1px solid var(--border);padding:14px;}
+.stat-val{font-family:'Bebas Neue',cursive;font-size:2rem;color:var(--gold);line-height:1;}
+.stat-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-top:2px;letter-spacing:.08em;text-transform:uppercase;}
+.row{display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);border-bottom:none;}
+.row:last-child{border-bottom:1px solid var(--border);}
+.row-label{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:600;flex:1;}
+.row-sub{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px;}
+.pill{font-family:'IBM Plex Mono',monospace;font-size:9px;font-weight:700;padding:2px 7px;}
+.pill-ok{background:rgba(34,197,94,.12);color:var(--ok);border:1px solid rgba(34,197,94,.3);}
+.pill-err{background:rgba(239,68,68,.12);color:var(--err);border:1px solid rgba(239,68,68,.3);}
+.pill-warn{background:rgba(245,158,11,.12);color:var(--warn);border:1px solid rgba(245,158,11,.3);}
+.pill-gold{background:rgba(200,146,42,.12);color:var(--gold);border:1px solid rgba(200,146,42,.3);}
+.pill-dim{background:rgba(107,114,128,.1);color:var(--dim);border:1px solid var(--border);}
+.btn{background:var(--gold);color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:10px 18px;cursor:pointer;transition:opacity .15s;flex-shrink:0;-webkit-appearance:none;}
+.btn:active{opacity:.8;} .btn:disabled{opacity:.35;cursor:not-allowed;}
+.btn-sm{padding:6px 12px;font-size:11px;}
+.btn-outline{background:none;border:1px solid var(--border);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:7px 12px;cursor:pointer;transition:border-color .15s,color .15s;-webkit-appearance:none;}
+.btn-outline:active{border-color:var(--gold);color:var(--gold);}
+.btn-danger{background:none;border:1px solid rgba(239,68,68,.4);color:var(--err);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:7px 12px;cursor:pointer;-webkit-appearance:none;}
+.btn-danger:active{background:rgba(239,68,68,.1);}
+.inp{width:100%;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:12px;padding:10px 12px;outline:none;-webkit-appearance:none;}
+.inp:focus{border-color:var(--gold);}
+.lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);letter-spacing:.1em;text-transform:uppercase;display:block;margin-bottom:4px;}
+.form-row{margin-bottom:12px;}
+.divider{height:1px;background:var(--border);margin:16px 0;}
+.empty{text-align:center;padding:40px 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim2);}
+.loading{text-align:center;padding:40px;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--dim2);}
+.spinner{display:inline-block;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.tag{font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 6px;background:rgba(200,146,42,.1);color:var(--gold);}
+.code{font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold);}
+.article-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;}
+.article-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;color:var(--text);margin-bottom:4px;line-height:1.3;}
+.article-meta{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+.article-actions{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.cron-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;}
+.blog-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;}
+.blog-title{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px;color:var(--text);}
+.blog-meta{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px;}
+.tabs{display:flex;overflow-x:auto;gap:0;border-bottom:1px solid var(--border);margin-bottom:16px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab-btn{background:none;border:none;border-bottom:2px solid transparent;color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:8px 14px;cursor:pointer;white-space:nowrap;letter-spacing:.05em;transition:all .12s;flex-shrink:0;}
+.tab-btn.active{color:var(--gold);border-bottom-color:var(--gold);}
+.outreach-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;}
+.outreach-name{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;margin-bottom:2px;}
+.outreach-platform{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--gold);margin-bottom:6px;}
+.outreach-meta{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;}
+.release-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;display:flex;gap:12px;align-items:flex-start;}
+.release-img{width:64px;height:48px;object-fit:cover;flex-shrink:0;background:var(--bg3);}
+.qa-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:16px;}
+.qa-btn{background:var(--bg2);border:1px solid var(--border);padding:14px 12px;cursor:pointer;display:flex;flex-direction:column;align-items:flex-start;gap:6px;transition:border-color .15s;text-align:left;}
+.qa-btn:active{border-color:var(--gold);background:rgba(200,146,42,.05);}
+.qa-icon{font-size:20px;} .qa-label{font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.05em;color:var(--text);line-height:1.2;}
+.list-item{display:flex;align-items:center;gap:12px;padding:12px 0;border-bottom:1px solid var(--border);}
+.list-item:last-child{border-bottom:none;}
 </style>
 </head>
 <body>
 
-<!-- ─── LOCK SCREEN ─── -->
 <div id="lock-screen">
   <div id="lock-logo">◈ DR Admin</div>
   <div id="lock-sub">DownRange Command Center<br>Enter your admin key to continue</div>
   <input type="password" id="lock-input" placeholder="Admin key..." autocomplete="current-password">
-  <div id="lock-err">Invalid key — check Vercel env vars</div>
+  <div id="lock-err">Invalid key</div>
   <button id="lock-btn" onclick="tryAuth()">Unlock Portal</button>
 </div>
 
-<!-- ─── FLASH ─── -->
-<div id="flash">
-  <span id="flash-text"></span>
-  <button id="flash-close" onclick="hideFlash()">✕</button>
-</div>
+<div id="flash"><span id="flash-text"></span><button id="flash-close" onclick="hideFlash()">✕</button></div>
 
-<!-- ─── TOPBAR ─── -->
 <div id="topbar">
   <div id="topbar-logo">◈ DR</div>
   <div id="topbar-title">COMMAND CENTER</div>
-  <div id="topbar-status">🟢</div>
+  <div id="topbar-status">●</div>
   <button id="topbar-menu-btn" onclick="openSectionSheet()">☰</button>
 </div>
 
-<!-- ─── APP ─── -->
 <div id="app">
   <div id="content">
-
-    <!-- ══ DASHBOARD ══ -->
     <div id="screen-dashboard" class="screen active"></div>
-
-    <!-- ══ CONTENT ══ -->
     <div id="screen-content" class="screen"></div>
-
-    <!-- ══ OUTREACH ══ -->
     <div id="screen-outreach" class="screen"></div>
-
-    <!-- ══ INTELLIGENCE ══ -->
     <div id="screen-intel" class="screen"></div>
-
-    <!-- ══ SYSTEM ══ -->
     <div id="screen-system" class="screen"></div>
-
-    <!-- ══ MEDIA ══ -->
     <div id="screen-media" class="screen"></div>
-
-    <!-- ══ SETTINGS ══ -->
     <div id="screen-settings" class="screen"></div>
-
-    <!-- ══ PUBLISHING ══ -->
     <div id="screen-publishing" class="screen"></div>
-
   </div>
 </div>
 
-<!-- ─── BOTTOM NAV ─── -->
 <div id="bottom-nav">
   <button class="nav-tab active" data-screen="dashboard" onclick="navTo('dashboard',this)">
-    <span class="nav-tab-icon">◈</span>
-    <span class="nav-tab-label">Home</span>
+    <span class="nav-tab-icon">◈</span><span class="nav-tab-label">Home</span>
   </button>
   <button class="nav-tab" data-screen="content" onclick="navTo('content',this)">
-    <span class="nav-tab-icon">📰</span>
-    <span class="nav-tab-label">Content</span>
+    <span class="nav-tab-icon">📰</span><span class="nav-tab-label">Content</span>
   </button>
   <button class="nav-tab" data-screen="outreach" onclick="navTo('outreach',this)">
-    <span class="nav-tab-icon">📬</span>
-    <span class="nav-tab-label">Outreach</span>
+    <span class="nav-tab-icon">📬</span><span class="nav-tab-label">Outreach</span>
   </button>
   <button class="nav-tab" data-screen="intel" onclick="navTo('intel',this)">
-    <span class="nav-tab-icon">🧠</span>
-    <span class="nav-tab-label">Intel</span>
+    <span class="nav-tab-icon">🧠</span><span class="nav-tab-label">Intel</span>
   </button>
   <button class="nav-tab" data-screen="system" onclick="navTo('system',this)">
-    <span class="nav-tab-icon">⚙️</span>
-    <span class="nav-tab-label">System</span>
+    <span class="nav-tab-icon">⚙️</span><span class="nav-tab-label">System</span>
   </button>
 </div>
 
-<!-- ─── DRAWER (panel detail) ─── -->
 <div id="drawer">
   <div id="drawer-topbar">
     <button id="drawer-back" onclick="closeDrawer()">← Back</button>
@@ -442,21 +207,18 @@ a { color:inherit; text-decoration:none; }
   <div id="drawer-content"></div>
 </div>
 
-<!-- ─── SECTION SHEET ─── -->
 <div id="section-sheet" onclick="if(event.target===this)closeSectionSheet()">
-  <div id="section-sheet-inner" id="sheet-inner">
+  <div id="section-sheet-inner">
     <div id="sheet-handle"></div>
     <div id="sheet-list"></div>
   </div>
 </div>
 
 <script>
-// ─── STATE ───────────────────────────────────────────────────────────────────
 let adminKey = '';
-let currentScreen = 'dashboard';
 let screenInited = {};
 
-// ─── AUTH ─────────────────────────────────────────────────────────────────────
+// AUTH
 function tryAuth() {
   const val = document.getElementById('lock-input').value.trim();
   if (!val) return;
@@ -471,14 +233,15 @@ window.addEventListener('load', () => {
   if (k) { adminKey = k; document.getElementById('lock-screen').style.display = 'none'; initApp(); }
 });
 
-// ─── API ──────────────────────────────────────────────────────────────────────
+// API — sends x-admin-key header on every request
 async function api(path, opts={}) {
-  const headers = { 'x-admin-key': adminKey, ...(opts.body ? {'Content-Type':'application/json'} : {}), ...opts.headers };
+  const headers = { 'x-admin-key': adminKey, ...(opts.body ? {'Content-Type':'application/json'} : {}), ...(opts.headers||{}) };
   const r = await fetch(path, { ...opts, headers });
+  if (!r.ok && r.status === 401) throw new Error('Unauthorized — check admin key');
   return r.json();
 }
 
-// ─── FLASH ────────────────────────────────────────────────────────────────────
+// FLASH
 let flashTimer;
 function flash(msg, type='info') {
   const el = document.getElementById('flash');
@@ -490,23 +253,21 @@ function flash(msg, type='info') {
 function hideFlash() {
   const el = document.getElementById('flash');
   el.classList.remove('show');
-  setTimeout(()=>{ el.className=''; },200);
+  setTimeout(()=>{ el.className=''; }, 200);
 }
 
-// ─── NAV ──────────────────────────────────────────────────────────────────────
+// NAV
 function navTo(screen, btn) {
   document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
   document.getElementById('screen-'+screen).classList.add('active');
   document.querySelectorAll('.nav-tab').forEach(b => b.classList.remove('active'));
   if (btn) btn.classList.add('active');
-  currentScreen = screen;
-  const titles = { dashboard:'Command Center', content:'Content', outreach:'Outreach',
-    intel:'Intelligence', system:'System', media:'Media', settings:'Settings', publishing:'Publishing' };
+  const titles = {dashboard:'Command Center',content:'Content',outreach:'Outreach',intel:'Intelligence',system:'System',media:'Media',settings:'Settings',publishing:'Publishing'};
   document.getElementById('topbar-title').textContent = (titles[screen]||screen).toUpperCase();
-  if (!screenInited[screen]) { screenInited[screen] = true; renderScreen(screen); }
+  if (!screenInited[screen]) { screenInited[screen]=true; renderScreen(screen); }
 }
 
-// ─── DRAWER ──────────────────────────────────────────────────────────────────
+// DRAWER
 function openDrawer(title, renderFn) {
   document.getElementById('drawer-title').textContent = title;
   document.getElementById('drawer-content').innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading...</div>';
@@ -515,40 +276,41 @@ function openDrawer(title, renderFn) {
 }
 function closeDrawer() { document.getElementById('drawer').classList.remove('open'); }
 
-// ─── SECTION SHEET ────────────────────────────────────────────────────────────
+// SECTION SHEET
 const SECTIONS = [
-  { id:'dashboard',   label:'Home',         icon:'◈',  panels:[] },
-  { id:'content',     label:'Content',      icon:'📰', panels:[
-    {id:'hub',label:'Content Hub',icon:'◈'}, {id:'drafts',label:'Draft Recovery',icon:'🔍'},
-    {id:'news',label:'News Articles',icon:'📰'}, {id:'releases',label:'Gun Releases',icon:'🔫',badge:'new'},
-    {id:'blog',label:'Blog',icon:'✍'}, {id:'reviews',label:'Reviews',icon:'★'},
-    {id:'canada',label:'Canada',icon:'🇨🇦'}, {id:'brazil',label:'Brasil',icon:'🇧🇷'},
-    {id:'competitions',label:'Competitions',icon:'🏆'},
+  {id:'dashboard',label:'Home',icon:'◈',panels:[]},
+  {id:'content',label:'Content',icon:'📰',panels:[
+    {id:'news',label:'News Articles',icon:'📰'},{id:'blog',label:'Blog',icon:'✍'},
+    {id:'releases',label:'Gun Releases',icon:'🔫',badge:'new'},{id:'reviews',label:'Reviews',icon:'★'},
+    {id:'canada',label:'Canada',icon:'🇨🇦'},{id:'brazil',label:'Brasil',icon:'🇧🇷'},
+    {id:'competitions',label:'Competitions',icon:'🏆'},{id:'drafts',label:'Draft Recovery',icon:'🔍'},
+    {id:'hub',label:'Content Hub',icon:'◈'},
   ]},
-  { id:'publishing',  label:'Publishing',   icon:'📅', panels:[
-    {id:'schedule',label:'Schedule',icon:'📅'},{id:'breaking',label:'Breaking Alerts',icon:'🔴'},
+  {id:'publishing',label:'Publishing',icon:'📅',panels:[
+    {id:'breaking',label:'Breaking Alerts',icon:'🔴'},{id:'schedule',label:'Schedule',icon:'📅'},
     {id:'newsletter',label:'Newsletter',icon:'📧'},{id:'seo',label:'SEO & Meta',icon:'🔍'},
   ]},
-  { id:'intel',       label:'Intelligence', icon:'🧠', panels:[
+  {id:'intel',label:'Intelligence',icon:'🧠',panels:[
     {id:'intel',label:'Briefings',icon:'🧠'},{id:'statelaws',label:'State Laws',icon:'🗺'},
-    {id:'pulllog',label:'Pull Log',icon:'📡'},{id:'deals',label:'Deals Feed',icon:'🔥'},
-    {id:'feeds',label:'Feed Agent',icon:'⚡'},{id:'marketbrief',label:'Market Brief',icon:'📊',badge:'live'},
-    {id:'copyright',label:'Copyright',icon:'⚖'},
+    {id:'copyright',label:'Copyright',icon:'⚖'},{id:'pulllog',label:'Pull Log',icon:'📡'},
+    {id:'deals',label:'Deals Feed',icon:'🔥'},{id:'feeds',label:'Feed Agent',icon:'⚡'},
+    {id:'marketbrief',label:'Market Brief',icon:'📊',badge:'live'},
   ]},
-  { id:'system',      label:'System',       icon:'⚙️', panels:[
+  {id:'system',label:'System',icon:'⚙️',panels:[
     {id:'overview',label:'Overview',icon:'◈'},{id:'crons',label:'Cron Jobs',icon:'⏱'},
     {id:'sysalerts',label:'System Alerts',icon:'🚨'},{id:'agents',label:'Content Agents',icon:'🤖'},
     {id:'rss',label:'RSS Sources',icon:'📡'},{id:'sitemap',label:'Site Map',icon:'🗺️'},
   ]},
-  { id:'outreach',    label:'Outreach',     icon:'📬', panels:[
-    {id:'campaigns',label:'Campaigns',icon:'📬'},{id:'contacts',label:'Contacts',icon:'👤'},
+  {id:'outreach',label:'Outreach',icon:'📬',panels:[
+    {id:'contacts',label:'Contacts',icon:'👤'},{id:'queue',label:'Queue',icon:'📤'},
+    {id:'history',label:'Sent History',icon:'📋'},
   ]},
-  { id:'media',       label:'Media',        icon:'▶️', panels:[
+  {id:'media',label:'Media',icon:'▶️',panels:[
     {id:'videos',label:'Video Manager',icon:'▶'},{id:'channels',label:'Channels',icon:'📺'},
     {id:'imglib',label:'Image Library',icon:'📸'},{id:'imgsearch',label:'Image Finder',icon:'🔍'},
     {id:'social',label:'Social Media',icon:'📣',badge:'new'},
   ]},
-  { id:'settings',    label:'Settings',     icon:'⚙️', panels:[
+  {id:'settings',label:'Settings',icon:'⚙️',panels:[
     {id:'ai',label:'AI Models',icon:'🤖'},{id:'costs',label:'Cost Center',icon:'💰'},
     {id:'keys',label:'API Keys',icon:'🔑'},{id:'envcheck',label:'Env Vars',icon:'🔧'},
     {id:'emails',label:'Email Tests',icon:'✉'},
@@ -558,78 +320,63 @@ const SECTIONS = [
 function openSectionSheet() {
   const list = document.getElementById('sheet-list');
   list.innerHTML = SECTIONS.map(sec => {
-    if (sec.panels.length === 0) return `
-      <button class="sheet-panel-btn" onclick="navTo('${sec.id}', document.querySelector('[data-screen=${sec.id}]')); closeSectionSheet();">
-        <span class="pi">${sec.icon}</span>
-        <span class="pl">${sec.label}</span>
-      </button>`;
-    return `
-      <div class="sheet-section-header">${sec.icon} ${sec.label}</div>
-      ${sec.panels.map(p => `
-        <button class="sheet-panel-btn" onclick="openPanel('${sec.id}','${p.id}','${p.label}'); closeSectionSheet();">
-          <span class="pi">${p.icon}</span>
-          <span class="pl">${p.label}</span>
-          ${p.badge ? `<span class="pb">${p.badge}</span>` : ''}
-        </button>`).join('')}`;
+    if (sec.panels.length===0) return `<button class="sheet-panel-btn" onclick="navTo('${sec.id}',document.querySelector('[data-screen=${sec.id}]'));closeSectionSheet();"><span class="pi">${sec.icon}</span><span class="pl">${sec.label}</span></button>`;
+    return `<div class="sheet-section-header">${sec.icon} ${sec.label}</div>` +
+      sec.panels.map(p=>`<button class="sheet-panel-btn" onclick="openPanel('${p.id}','${p.label}');closeSectionSheet();"><span class="pi">${p.icon}</span><span class="pl">${p.label}</span>${p.badge?`<span class="pb">${p.badge}</span>`:''}</button>`).join('');
   }).join('');
   document.getElementById('section-sheet').classList.add('open');
 }
 function closeSectionSheet() { document.getElementById('section-sheet').classList.remove('open'); }
 
-// ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
-function openPanel(sectionId, panelId, panelLabel) {
+// PANEL ROUTER
+function openPanel(panelId, panelLabel) {
   openDrawer(panelLabel, el => {
-    switch(panelId) {
-      case 'news':        renderNewsPanel(el); break;
-      case 'blog':        renderBlogPanel(el); break;
-      case 'releases':    renderReleasesPanel(el); break;
-      case 'breaking':    renderBreakingPanel(el); break;
-      case 'crons':       renderCronsPanel(el); break;
-      case 'costs':       renderCostsPanel(el); break;
-      case 'keys':        renderKeysPanel(el); break;
-      case 'rss':         renderRSSPanel(el); break;
-      case 'agents':      renderAgentsPanel(el); break;
-      case 'feeds':       renderFeedsPanel(el); break;
-      case 'envcheck':    renderEnvPanel(el); break;
-      case 'campaigns':   renderCampaignsPanel(el); break;
-      case 'contacts':    renderContactsPanel(el); break;
-      case 'videos':      renderVideosPanel(el); break;
-      case 'channels':    renderChannelsPanel(el); break;
-      case 'emails':      renderEmailTestPanel(el); break;
-      case 'copyright':   renderCopyrightPanel(el); break;
-      case 'statelaws':   renderStateLawsPanel(el); break;
-      case 'pulllog':     renderPullLogPanel(el); break;
-      case 'overview':    renderSystemOverview(el); break;
-      default:
-        el.innerHTML = `<div class="empty">🔧 ${panelLabel}<br><br><span style="color:var(--dim2);font-size:9px">Open on desktop for full controls</span><br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold);font-size:11px">Open Admin →</a></div>`;
+    const map = {
+      news:        renderNewsPanel,
+      blog:        renderBlogPanel,
+      releases:    renderReleasesPanel,
+      breaking:    renderBreakingPanel,
+      crons:       renderCronsPanel,
+      costs:       renderCostsPanel,
+      keys:        renderKeysPanel,
+      rss:         renderRSSPanel,
+      agents:      renderAgentsPanel,
+      feeds:       renderFeedsPanel,
+      envcheck:    renderEnvPanel,
+      contacts:    renderContactsPanel,
+      queue:       renderQueuePanel,
+      history:     renderHistoryPanel,
+      videos:      renderVideosPanel,
+      channels:    renderChannelsPanel,
+      emails:      renderEmailTestPanel,
+      copyright:   renderCopyrightPanel,
+      statelaws:   renderStateLawsPanel,
+      pulllog:     renderPullLogPanel,
+      overview:    renderSystemOverview,
+    };
+    if (map[panelId]) { map[panelId](el); }
+    else {
+      el.innerHTML = `<div class="empty">🔧 ${panelLabel}<br><br><span style="color:var(--dim2);font-size:9px">Full controls available on desktop</span><br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold);font-size:11px">Open Admin →</a></div>`;
     }
   });
 }
 
-// ─── INIT ─────────────────────────────────────────────────────────────────────
+// INIT
 function initApp() {
   screenInited = {};
-  renderScreen('dashboard');
-  screenInited.dashboard = true;
-  // Check health
-  fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>{
-    if (d.status !== 'ok') document.getElementById('topbar-status').textContent = '🟡';
+  renderScreen('dashboard'); screenInited.dashboard = true;
+  api('/api/admin/cron-health').then(d => {
+    const s = document.getElementById('topbar-status');
+    if (s) s.style.color = d.status==='ok' ? 'var(--ok)' : 'var(--warn)';
   }).catch(()=>{});
 }
 
 function renderScreen(screen) {
   const el = document.getElementById('screen-'+screen);
   if (!el) return;
-  switch(screen) {
-    case 'dashboard':   renderDashboard(el); break;
-    case 'content':     renderContent(el); break;
-    case 'outreach':    renderOutreach(el); break;
-    case 'intel':       renderIntel(el); break;
-    case 'system':      renderSystem(el); break;
-    case 'media':       renderMedia(el); break;
-    case 'settings':    renderSettingsScreen(el); break;
-    case 'publishing':  renderPublishing(el); break;
-  }
+  ({dashboard:renderDashboard, content:renderContent, outreach:renderOutreach,
+    intel:renderIntel, system:renderSystem, media:renderMedia,
+    settings:renderSettingsScreen, publishing:renderPublishing})[screen]?.(el);
 }
 
 // ─── SCREEN: DASHBOARD ────────────────────────────────────────────────────────
@@ -637,861 +384,667 @@ async function renderDashboard(el) {
   el.innerHTML = `
     <div class="section-title">Command Center</div>
     <div class="section-sub">DownRange Intelligence Platform</div>
-    <div class="stat-grid" id="dash-stats">
+    <div class="stat-grid">
       <div class="stat-box"><div class="stat-val" id="ds-articles">—</div><div class="stat-lbl">Articles</div></div>
       <div class="stat-box"><div class="stat-val" id="ds-contacts">—</div><div class="stat-lbl">Contacts</div></div>
       <div class="stat-box"><div class="stat-val" id="ds-crons">—</div><div class="stat-lbl">Cron Jobs</div></div>
-      <div class="stat-box"><div class="stat-val" id="ds-videos">—</div><div class="stat-lbl">Videos</div></div>
+      <div class="stat-box"><div class="stat-val" id="ds-releases">—</div><div class="stat-lbl">Releases</div></div>
     </div>
-
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">Quick Actions</div>
     <div class="qa-grid">
-      <button class="qa-btn" onclick="openPanel('system','crons','Cron Jobs')"><span class="qa-icon">⏱</span><span class="qa-label">Cron Jobs</span></button>
-      <button class="qa-btn" onclick="openPanel('content','news','News Articles')"><span class="qa-icon">📰</span><span class="qa-label">News Articles</span></button>
-      <button class="qa-btn" onclick="openPanel('outreach','campaigns','Campaigns')"><span class="qa-icon">📬</span><span class="qa-label">Outreach</span></button>
-      <button class="qa-btn" onclick="openPanel('intel','copyright','Copyright')"><span class="qa-icon">⚖</span><span class="qa-label">Copyright</span></button>
-      <button class="qa-btn" onclick="openPanel('content','breaking','Breaking Alerts')"><span class="qa-icon">🔴</span><span class="qa-label">Alerts</span></button>
-      <button class="qa-btn" onclick="openPanel('system','agents','Content Agents')"><span class="qa-icon">🤖</span><span class="qa-label">AI Agents</span></button>
+      <button class="qa-btn" onclick="openPanel('crons','Cron Jobs')"><span class="qa-icon">⏱</span><span class="qa-label">Cron Jobs</span></button>
+      <button class="qa-btn" onclick="openPanel('news','News Articles')"><span class="qa-icon">📰</span><span class="qa-label">News</span></button>
+      <button class="qa-btn" onclick="openPanel('contacts','Contacts')"><span class="qa-icon">📬</span><span class="qa-label">Contacts</span></button>
+      <button class="qa-btn" onclick="openPanel('breaking','Breaking Alerts')"><span class="qa-icon">🔴</span><span class="qa-label">Alerts</span></button>
+      <button class="qa-btn" onclick="openPanel('copyright','Copyright')"><span class="qa-icon">⚖</span><span class="qa-label">Copyright</span></button>
+      <button class="qa-btn" onclick="openPanel('agents','Content Agents')"><span class="qa-icon">🤖</span><span class="qa-label">Agents</span></button>
     </div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:0 0 8px;">News Feed</div>
+    <button class="btn" style="width:100%;margin-bottom:8px" id="run-feed-btn" onclick="runNewsFeed()">▶ Run News Feed Now</button>
+    <div id="feed-result"></div>
+    <div class="divider"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">Site Links</div>
+    ${[['🌐','Live Site','https://downrangeco.com'],['📰','News','https://downrangeco.com/news'],['✍','Blog','https://downrangeco.com/blog'],['📝','Sanity Studio','https://downrangeco.com/studio'],['▲','Vercel','https://vercel.com']].map(([i,l,u])=>`
+      <a href="${u}" target="_blank" class="list-item"><span style="font-size:18px">${i}</span><span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;flex:1">${l}</span><span style="color:var(--dim);font-size:12px">↗</span></a>`).join('')}`;
 
-    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px;">Site Links</div>
-    <div style="display:flex;flex-direction:column;gap:0;">
-      ${[
-        ['🌐','Live Site','https://downrangeco.com'],
-        ['📰','News Feed','https://downrangeco.com/news'],
-        ['✍','Blog','https://downrangeco.com/blog'],
-        ['📝','Sanity Studio','https://downrangeco.com/studio'],
-        ['▲','Vercel Dashboard','https://vercel.com'],
-      ].map(([i,l,u])=>`
-        <a href="${u}" target="_blank" class="list-item" style="padding:13px 0;text-decoration:none;">
-          <span style="font-size:18px;flex-shrink:0;">${i}</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:600;flex:1;">${l}</span>
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">↗</span>
-        </a>`).join('')}
-    </div>
-
-    <div style="height:1px;background:var(--border);margin:16px 0;"></div>
-    <div id="dash-feed-section">
-      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px;">News Feed</div>
-      <button class="btn" style="width:100%;" id="run-feed-btn" onclick="runNewsFeed()">▶ Run News Feed Now</button>
-      <div id="feed-result" style="margin-top:8px;display:none;"></div>
-    </div>
-  `;
-  // Load stats
-  try {
-    const [art, contacts] = await Promise.all([
-      api('/api/admin/articles-list?limit=1').catch(()=>null),
-      api('/api/admin/influencers?limit=1').catch(()=>null),
-    ]);
-    if (art?.total) document.getElementById('ds-articles').textContent = art.total;
-    if (contacts?.total) document.getElementById('ds-contacts').textContent = contacts.total;
-  } catch {}
-  try {
-    const crons = await api('/api/admin/cron-status');
-    if (crons?.jobs) document.getElementById('ds-crons').textContent = crons.jobs.length;
-  } catch {}
+  // Load stats from correct endpoints
+  api('/api/admin/articles-list').then(d => {
+    const el = document.getElementById('ds-articles');
+    if (el) el.textContent = d.total ?? d.articles?.length ?? '—';
+  }).catch(()=>{});
+  // contacts: /api/outreach/contacts returns { contacts, count }
+  api('/api/outreach/contacts?limit=1').then(d => {
+    const el = document.getElementById('ds-contacts');
+    if (el) el.textContent = d.count ?? d.contacts?.length ?? '—';
+  }).catch(()=>{});
+  // cron jobs count from ALL_JOBS static list
+  api('/api/admin/cron-status').then(d => {
+    const el = document.getElementById('ds-crons');
+    if (el) el.textContent = d.jobs?.length ?? '—';
+  }).catch(()=>{});
+  // releases count
+  api('/api/admin/releases-manager').then(d => {
+    const el = document.getElementById('ds-releases');
+    if (el) el.textContent = d.releases?.length ?? '—';
+  }).catch(()=>{});
 }
 
 async function runNewsFeed() {
   const btn = document.getElementById('run-feed-btn');
   const res = document.getElementById('feed-result');
-  btn.disabled = true; btn.textContent = '⏳ Running...';
-  res.style.display = 'none';
+  if (!btn||!res) return;
+  btn.disabled=true; btn.textContent='⏳ Running...'; res.innerHTML='';
   try {
-    const d = await api('/api/admin/cron-status?trigger=true', {
-      method:'POST', body:JSON.stringify({jobId:'news'})
-    });
-    res.style.cssText = `display:block;padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};color:${d.ok?'var(--ok)':'var(--err)'}`;
-    res.textContent = d.ok ? `✓ Feed ran in ${d.ms||0}ms` : '✕ ' + (d.error||'Failed');
-  } catch(e) {
-    res.style.cssText = 'display:block;padding:10px;background:rgba(239,68,68,.08);border:1px solid var(--err);color:var(--err);font-family:IBM Plex Mono,monospace;font-size:11px;';
-    res.textContent = 'Error: ' + e.message;
-  }
-  btn.disabled = false; btn.textContent = '▶ Run News Feed Now';
+    const d = await api('/api/admin/cron-status?trigger=true', {method:'POST',body:JSON.stringify({jobId:'news'})});
+    res.innerHTML = `<div style="padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:11px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};color:${d.ok?'var(--ok)':'var(--err)'}">${d.ok?`✓ Feed ran in ${d.ms||0}ms`:'✕ '+(d.error||'Failed')}</div>`;
+  } catch(e) { res.innerHTML=`<div style="padding:10px;background:rgba(239,68,68,.08);border:1px solid var(--err);color:var(--err);font-family:monospace;font-size:11px">Error: ${e.message}</div>`; }
+  btn.disabled=false; btn.textContent='▶ Run News Feed Now';
 }
 
 // ─── SCREEN: CONTENT ──────────────────────────────────────────────────────────
 function renderContent(el) {
-  el.innerHTML = `
-    <div class="section-title">Content</div>
-    <div class="section-sub">Manage all content types</div>
-    ${[
-      {id:'news',icon:'📰',label:'News Articles',sub:'Pull & manage news'},
-      {id:'releases',icon:'🔫',label:'Gun Releases',sub:'New product releases',badge:'new'},
-      {id:'blog',icon:'✍',label:'Blog',sub:'Editorial posts'},
-      {id:'reviews',icon:'★',label:'Reviews',sub:'Gear & firearm reviews'},
-      {id:'canada',icon:'🇨🇦',label:'Canada',sub:'Canadian 2A content'},
-      {id:'brazil',icon:'🇧🇷',label:'Brasil',sub:'Brazilian content'},
-      {id:'competitions',icon:'🏆',label:'Competitions',sub:'Shooting competitions'},
-      {id:'drafts',icon:'🔍',label:'Draft Recovery',sub:'Recover unpublished drafts'},
-      {id:'hub',icon:'◈',label:'Content Hub',sub:'Article intelligence'},
-    ].map(p=>`
-      <div class="row" onclick="openPanel('content','${p.id}','${p.label}')" style="cursor:pointer;">
-        <span style="font-size:20px;">${p.icon}</span>
-        <div style="flex:1;">
-          <div class="row-label">${p.label}${p.badge?` <span class="pill pill-gold" style="margin-left:4px">${p.badge}</span>`:''}</div>
-          <div class="row-sub">${p.sub}</div>
-        </div>
-        <span style="color:var(--dim);font-size:14px;">›</span>
-      </div>
-    `).join('')}
-  `;
+  el.innerHTML = `<div class="section-title">Content</div><div class="section-sub">Manage all content types</div>` +
+    [{id:'news',icon:'📰',label:'News Articles',sub:'Pull & manage news'},{id:'blog',icon:'✍',label:'Blog',sub:'Editorial posts'},
+     {id:'releases',icon:'🔫',label:'Gun Releases',sub:'New product releases',badge:'new'},{id:'reviews',icon:'★',label:'Reviews',sub:'Gear reviews'},
+     {id:'canada',icon:'🇨🇦',label:'Canada',sub:'Canadian 2A content'},{id:'brazil',icon:'🇧🇷',label:'Brasil',sub:'Brazilian content'},
+     {id:'competitions',icon:'🏆',label:'Competitions',sub:'Shooting competitions'},{id:'drafts',icon:'🔍',label:'Draft Recovery',sub:'Recover unpublished drafts'},
+     {id:'hub',icon:'◈',label:'Content Hub',sub:'Article intelligence'}]
+    .map(p=>`<div class="row" onclick="openPanel('${p.id}','${p.label}')" style="cursor:pointer;"><span style="font-size:20px">${p.icon}</span><div style="flex:1"><div class="row-label">${p.label}${p.badge?` <span class="pill pill-gold">${p.badge}</span>`:''}</div><div class="row-sub">${p.sub}</div></div><span style="color:var(--dim);font-size:14px">›</span></div>`).join('');
 }
 
 // ─── SCREEN: OUTREACH ─────────────────────────────────────────────────────────
 function renderOutreach(el) {
-  el.innerHTML = `
-    <div class="section-title">Outreach</div>
-    <div class="section-sub">Creator & influencer CRM</div>
+  el.innerHTML = `<div class="section-title">Outreach</div><div class="section-sub">Creator & influencer CRM</div>
     <div class="tabs">
-      <button class="tab-btn active" onclick="setOutreachTab('campaigns',this)">Campaigns</button>
-      <button class="tab-btn" onclick="setOutreachTab('contacts',this)">Contacts</button>
+      <button class="tab-btn active" onclick="setOutreachTab('contacts',this)">Contacts</button>
       <button class="tab-btn" onclick="setOutreachTab('queue',this)">Queue</button>
       <button class="tab-btn" onclick="setOutreachTab('history',this)">Sent</button>
     </div>
-    <div id="outreach-tab-content"><div class="loading"><span class="spinner">◈</span> Loading...</div></div>
-  `;
-  loadOutreachTab('campaigns');
+    <div id="outreach-body"></div>`;
+  loadOutreachInline('contacts');
 }
 
-let currentOutreachTab = 'campaigns';
 function setOutreachTab(tab, btn) {
-  currentOutreachTab = tab;
   document.querySelectorAll('#screen-outreach .tab-btn').forEach(b=>b.classList.remove('active'));
   if(btn) btn.classList.add('active');
-  loadOutreachTab(tab);
+  loadOutreachInline(tab);
 }
 
-async function loadOutreachTab(tab) {
-  const el = document.getElementById('outreach-tab-content');
+async function loadOutreachInline(tab) {
+  const el = document.getElementById('outreach-body');
   if (!el) return;
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
   try {
-    if (tab === 'contacts') {
-      const d = await api('/api/admin/influencers?limit=30');
-      const list = d.contacts || d.influencers || [];
-      el.innerHTML = list.length === 0 ? '<div class="empty">No contacts found</div>' :
-        `<div style="margin-bottom:10px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">${list.length} contacts</div>` +
-        list.map(c=>`
-          <div class="outreach-card">
-            <div class="outreach-name">${c.name||c.channelName||'—'}</div>
-            <div class="outreach-platform">${c.platform||''} ${c.handle?'· '+c.handle:''}</div>
-            <div class="outreach-meta">
-              ${c.subscribers ? `<span>👥 ${c.subscribers}</span>` : ''}
-              ${c.email ? `<span>✉ ${c.email}</span>` : ''}
-              ${c.status ? `<span class="pill pill-dim">${c.status}</span>` : ''}
-            </div>
-          </div>`).join('');
-    } else if (tab === 'queue') {
-      const d = await api('/api/admin/influencers?queue=true');
-      const list = d.queue || d.items || [];
-      el.innerHTML = list.length === 0 ? '<div class="empty">Queue is empty</div>' :
-        list.map(q=>`
-          <div class="outreach-card">
-            <div class="outreach-name">${q.recipientName||q.name||'—'}</div>
-            <div class="outreach-platform">${q.templateName||''}</div>
-            <div class="outreach-meta"><span class="pill pill-warn">PENDING</span></div>
-          </div>`).join('');
-    } else if (tab === 'history') {
-      const d = await api('/api/admin/influencers?history=true');
-      const list = d.history || d.logs || d.sent || [];
-      el.innerHTML = list.length === 0 ? '<div class="empty">No emails sent yet</div>' :
-        list.map(s=>`
-          <div class="outreach-card">
-            <div class="outreach-name">${s.recipientName||s.name||'—'}</div>
-            <div class="outreach-platform">${s.subject||''}</div>
-            <div class="outreach-meta">
-              <span>${s.sentAt ? new Date(s.sentAt).toLocaleDateString() : ''}</span>
-              <span class="pill pill-ok">SENT</span>
-            </div>
-          </div>`).join('');
+    if (tab==='contacts') {
+      const d = await api('/api/outreach/contacts?limit=50');
+      const list = d.contacts||[];
+      el.innerHTML = !list.length ? '<div class="empty">No contacts</div>' :
+        `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${d.count||list.length} contacts</div>` +
+        list.map(c=>`<div class="outreach-card">
+          <div class="outreach-name">${c.channelName||c.hostName||'—'}</div>
+          <div class="outreach-platform">${c.source||'YouTube'} ${c.tier?'· Tier '+c.tier:''}</div>
+          <div class="outreach-meta">
+            ${c.subscribers?`<span>👥 ${fmtNum(c.subscribers)}</span>`:''}
+            ${c.email?`<span>✉ ${c.email}</span>`:''}
+            ${c.outreachStatus?`<span class="pill pill-dim">${c.outreachStatus}</span>`:''}
+          </div></div>`).join('');
+    } else if (tab==='queue') {
+      const d = await api('/api/outreach/queue?limit=30');
+      const list = d.entries||[];
+      el.innerHTML = !list.length ? '<div class="empty">Queue is empty</div>' :
+        `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${list.length} pending</div>` +
+        list.map(q=>`<div class="outreach-card">
+          <div class="outreach-name">${q.toName||q.contact?.channelName||'—'}</div>
+          <div class="outreach-platform">${q.subject||''}</div>
+          <div class="outreach-meta"><span class="pill pill-warn">${q.status||'PENDING'}</span>${q.draftedAt?`<span>${new Date(q.draftedAt).toLocaleDateString()}</span>`:''}</div>
+        </div>`).join('');
     } else {
-      // campaigns / templates
-      el.innerHTML = `
-        <div style="margin-bottom:16px">
-          <a href="https://downrangeco.com/admin#outreach" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full CRM →</a>
-        </div>
-        <div class="empty">Template editor and send pipeline<br>available on desktop admin<br><br><span style="font-size:9px;color:var(--dim2)">Mobile view shows contacts & history</span></div>`;
+      const d = await api('/api/outreach/history?limit=30');
+      const list = d.logs||[];
+      el.innerHTML = !list.length ? '<div class="empty">No emails sent yet</div>' :
+        `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${d.count||list.length} sent</div>` +
+        list.map(s=>`<div class="outreach-card">
+          <div class="outreach-name">${s.toName||'—'}</div>
+          <div class="outreach-platform">${s.subject||''}</div>
+          <div class="outreach-meta">
+            <span class="pill pill-ok">${s.status||'sent'}</span>
+            ${s.sentAt?`<span>${new Date(s.sentAt).toLocaleDateString()}</span>`:''}
+            ${s.toEmail?`<span>${s.toEmail}</span>`:''}
+          </div></div>`).join('');
     }
-  } catch(e) {
-    el.innerHTML = `<div class="empty">Error: ${e.message}</div>`;
-  }
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── SCREEN: INTEL ────────────────────────────────────────────────────────────
 function renderIntel(el) {
-  el.innerHTML = `
-    <div class="section-title">Intelligence</div>
-    <div class="section-sub">Data feeds, copyright & briefings</div>
-    ${[
-      {id:'intel',icon:'🧠',label:'Briefings',sub:'AI intelligence reports'},
-      {id:'statelaws',icon:'🗺',label:'State Laws',sub:'50-state firearms database'},
-      {id:'copyright',icon:'⚖',label:'Copyright',sub:'Risk scan & rewrites'},
-      {id:'pulllog',icon:'📡',label:'Pull Log',sub:'Feed agent logs'},
-      {id:'deals',icon:'🔥',label:'Deals Feed',sub:'Ammo & gear deals'},
-      {id:'feeds',icon:'⚡',label:'Feed Agent',sub:'Trigger content pulls'},
-      {id:'marketbrief',icon:'📊',label:'Market Brief',sub:'Live market summary',badge:'live'},
-    ].map(p=>`
-      <div class="row" onclick="openPanel('intel','${p.id}','${p.label}')" style="cursor:pointer;">
-        <span style="font-size:20px;">${p.icon}</span>
-        <div style="flex:1;">
-          <div class="row-label">${p.label}${p.badge?` <span class="pill pill-ok" style="margin-left:4px">${p.badge}</span>`:''}</div>
-          <div class="row-sub">${p.sub}</div>
-        </div>
-        <span style="color:var(--dim);font-size:14px;">›</span>
-      </div>
-    `).join('')}
-  `;
+  el.innerHTML = `<div class="section-title">Intelligence</div><div class="section-sub">Data feeds, copyright & briefings</div>` +
+    [{id:'intel',icon:'🧠',label:'Briefings',sub:'AI intelligence reports'},
+     {id:'statelaws',icon:'🗺',label:'State Laws',sub:'50-state firearms database'},
+     {id:'copyright',icon:'⚖',label:'Copyright',sub:'Risk scan & rewrites'},
+     {id:'pulllog',icon:'📡',label:'Pull Log',sub:'Feed agent run logs'},
+     {id:'deals',icon:'🔥',label:'Deals Feed',sub:'Ammo & gear deals'},
+     {id:'feeds',icon:'⚡',label:'Feed Agent',sub:'Trigger content pulls'},
+     {id:'marketbrief',icon:'📊',label:'Market Brief',sub:'Live market summary',badge:'live'}]
+    .map(p=>`<div class="row" onclick="openPanel('${p.id}','${p.label}')" style="cursor:pointer;"><span style="font-size:20px">${p.icon}</span><div style="flex:1"><div class="row-label">${p.label}${p.badge?` <span class="pill pill-ok">${p.badge}</span>`:''}</div><div class="row-sub">${p.sub}</div></div><span style="color:var(--dim);font-size:14px">›</span></div>`).join('');
 }
 
 // ─── SCREEN: SYSTEM ───────────────────────────────────────────────────────────
 function renderSystem(el) {
-  el.innerHTML = `
-    <div class="section-title">System</div>
-    <div class="section-sub">Crons, alerts, agents & ops</div>
-    <div id="system-health-banner" style="margin-bottom:12px;display:none;"></div>
-    ${[
-      {id:'overview',icon:'◈',label:'Overview',sub:'System status dashboard'},
-      {id:'crons',icon:'⏱',label:'Cron Jobs',sub:'Run & monitor scheduled tasks'},
-      {id:'sysalerts',icon:'🚨',label:'System Alerts',sub:'Platform notifications'},
-      {id:'agents',icon:'🤖',label:'Content Agents',sub:'Trigger AI pipelines'},
-      {id:'rss',icon:'📡',label:'RSS Sources',sub:'News feed configuration'},
-      {id:'sitemap',icon:'🗺️',label:'Site Map',sub:'URL index & indexing'},
-    ].map(p=>`
-      <div class="row" onclick="openPanel('system','${p.id}','${p.label}')" style="cursor:pointer;">
-        <span style="font-size:20px;">${p.icon}</span>
-        <div style="flex:1;">
-          <div class="row-label">${p.label}</div>
-          <div class="row-sub">${p.sub}</div>
-        </div>
-        <span style="color:var(--dim);font-size:14px;">›</span>
-      </div>
-    `).join('')}
-  `;
-  // health check
+  el.innerHTML = `<div class="section-title">System</div><div class="section-sub">Crons, alerts, agents & ops</div><div id="sys-health" style="margin-bottom:12px"></div>` +
+    [{id:'overview',icon:'◈',label:'Overview',sub:'System status'},
+     {id:'crons',icon:'⏱',label:'Cron Jobs',sub:'Run & monitor scheduled tasks'},
+     {id:'sysalerts',icon:'🚨',label:'System Alerts',sub:'Platform notifications'},
+     {id:'agents',icon:'🤖',label:'Content Agents',sub:'Trigger AI pipelines'},
+     {id:'rss',icon:'📡',label:'RSS Sources',sub:'18 active feeds'},
+     {id:'sitemap',icon:'🗺️',label:'Site Map',sub:'URL index'}]
+    .map(p=>`<div class="row" onclick="openPanel('${p.id}','${p.label}')" style="cursor:pointer;"><span style="font-size:20px">${p.icon}</span><div style="flex:1"><div class="row-label">${p.label}</div><div class="row-sub">${p.sub}</div></div><span style="color:var(--dim);font-size:14px">›</span></div>`).join('');
   api('/api/admin/cron-health').then(d=>{
-    const banner = document.getElementById('system-health-banner');
-    if (!banner) return;
-    if (d.status !== 'ok') {
-      banner.style.display = 'block';
-      banner.innerHTML = `<div style="padding:10px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">⚠ SYSTEM DEGRADED — ${(d.issues||[]).map(i=>typeof i==='object'?i.msg||'Issue':i).join(', ')}</div>`;
-    } else {
-      banner.style.display = 'block';
-      banner.innerHTML = `<div style="padding:10px 14px;background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ok)">● All systems operational</div>`;
-    }
+    const b = document.getElementById('sys-health'); if (!b) return;
+    const ok = d.status==='ok';
+    b.innerHTML = `<div style="padding:10px 14px;background:${ok?'rgba(34,197,94,.06)':'rgba(239,68,68,.08)'};border:1px solid ${ok?'rgba(34,197,94,.2)':'rgba(239,68,68,.3)'};font-family:'IBM Plex Mono',monospace;font-size:10px;color:${ok?'var(--ok)':'var(--err)'}">
+      ${ok?'● All systems operational':'⚠ DEGRADED — '+(d.issues||[]).map(i=>typeof i==='object'?i.msg||'Issue':i).join(', ')}</div>`;
   }).catch(()=>{});
 }
 
 // ─── SCREEN: MEDIA ────────────────────────────────────────────────────────────
 function renderMedia(el) {
-  el.innerHTML = `
-    <div class="section-title">Media</div>
-    <div class="section-sub">Videos, images & social</div>
-    ${[
-      {id:'videos',icon:'▶',label:'Video Manager',sub:'YouTube content management'},
-      {id:'channels',icon:'📺',label:'Channels',sub:'Channel configuration'},
-      {id:'imglib',icon:'📸',label:'Image Library',sub:'Asset repository'},
-      {id:'imgsearch',icon:'🔍',label:'Image Finder',sub:'Find & attach images'},
-      {id:'social',icon:'📣',label:'Social Media',sub:'Command center',badge:'new'},
-    ].map(p=>`
-      <div class="row" onclick="openPanel('media','${p.id}','${p.label}')" style="cursor:pointer;">
-        <span style="font-size:20px;">${p.icon}</span>
-        <div style="flex:1;">
-          <div class="row-label">${p.label}${p.badge?` <span class="pill pill-gold" style="margin-left:4px">${p.badge}</span>`:''}</div>
-          <div class="row-sub">${p.sub}</div>
-        </div>
-        <span style="color:var(--dim);font-size:14px;">›</span>
-      </div>
-    `).join('')}
-  `;
+  el.innerHTML = `<div class="section-title">Media</div><div class="section-sub">Videos, images & social</div>` +
+    [{id:'videos',icon:'▶',label:'Video Manager',sub:'YouTube content'},{id:'channels',icon:'📺',label:'Channels',sub:'Channel config'},
+     {id:'imglib',icon:'📸',label:'Image Library',sub:'Asset repo'},{id:'imgsearch',icon:'🔍',label:'Image Finder',sub:'Find & attach'},
+     {id:'social',icon:'📣',label:'Social Media',sub:'Command center',badge:'new'}]
+    .map(p=>`<div class="row" onclick="openPanel('${p.id}','${p.label}')" style="cursor:pointer;"><span style="font-size:20px">${p.icon}</span><div style="flex:1"><div class="row-label">${p.label}${p.badge?` <span class="pill pill-gold">${p.badge}</span>`:''}</div><div class="row-sub">${p.sub}</div></div><span style="color:var(--dim);font-size:14px">›</span></div>`).join('');
 }
 
 // ─── SCREEN: SETTINGS ─────────────────────────────────────────────────────────
 function renderSettingsScreen(el) {
-  el.innerHTML = `
-    <div class="section-title">Settings</div>
-    <div class="section-sub">Configuration & API keys</div>
-    ${[
-      {id:'ai',icon:'🤖',label:'AI Models',sub:'Provider & model routing'},
-      {id:'costs',icon:'💰',label:'Cost Center',sub:'AI usage & spend tracking'},
-      {id:'keys',icon:'🔑',label:'API Keys',sub:'Integration key status'},
-      {id:'envcheck',icon:'🔧',label:'Env Vars',sub:'Environment variable audit'},
-      {id:'emails',icon:'✉',label:'Email Tests',sub:'Test email delivery'},
-    ].map(p=>`
-      <div class="row" onclick="openPanel('settings','${p.id}','${p.label}')" style="cursor:pointer;">
-        <span style="font-size:20px;">${p.icon}</span>
-        <div style="flex:1;">
-          <div class="row-label">${p.label}</div>
-          <div class="row-sub">${p.sub}</div>
-        </div>
-        <span style="color:var(--dim);font-size:14px;">›</span>
-      </div>
-    `).join('')}
-    <div class="divider"></div>
-    <div style="text-align:center;padding:8px 0;">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-bottom:8px">KEY</div>
-      <input type="password" id="settings-key-input" class="inp" value="${adminKey}" placeholder="Admin key..."
-        style="max-width:280px;text-align:center;margin-bottom:8px"
-        onchange="adminKey=this.value;localStorage.setItem('dr_admin_key',this.value)">
+  el.innerHTML = `<div class="section-title">Settings</div><div class="section-sub">Config & API keys</div>` +
+    [{id:'ai',icon:'🤖',label:'AI Models',sub:'Provider & model routing'},{id:'costs',icon:'💰',label:'Cost Center',sub:'AI spend tracking'},
+     {id:'keys',icon:'🔑',label:'API Keys',sub:'Integration key status'},{id:'envcheck',icon:'🔧',label:'Env Vars',sub:'Variable audit'},
+     {id:'emails',icon:'✉',label:'Email Tests',sub:'Test delivery'}]
+    .map(p=>`<div class="row" onclick="openPanel('${p.id}','${p.label}')" style="cursor:pointer;"><span style="font-size:20px">${p.icon}</span><div style="flex:1"><div class="row-label">${p.label}</div><div class="row-sub">${p.sub}</div></div><span style="color:var(--dim);font-size:14px">›</span></div>`).join('') +
+    `<div class="divider"></div>
+    <div style="text-align:center;padding:8px 0">
+      <div class="lbl" style="margin-bottom:8px">Admin Key</div>
+      <input type="password" class="inp" value="${adminKey}" style="max-width:280px;text-align:center;margin:0 auto;display:block;margin-bottom:8px" onchange="adminKey=this.value;localStorage.setItem('dr_admin_key',this.value)">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2)">Stored in localStorage</div>
     </div>
     <div class="divider"></div>
-    <button class="btn-danger" style="width:100%" onclick="signOut()">Sign Out</button>
-  `;
+    <button class="btn-danger" style="width:100%" onclick="signOut()">Sign Out</button>`;
 }
 
-function signOut() {
-  localStorage.removeItem('dr_admin_key');
-  adminKey = '';
-  location.reload();
-}
-
-// ─── SCREEN: PUBLISHING ───────────────────────────────────────────────────────
 function renderPublishing(el) {
-  el.innerHTML = `
-    <div class="section-title">Publishing</div>
-    <div class="section-sub">Schedule, alerts & newsletters</div>
-    ${[
-      {id:'schedule',icon:'📅',label:'Schedule',sub:'Publication schedule'},
-      {id:'breaking',icon:'🔴',label:'Breaking Alerts',sub:'Publish breaking news ticker'},
-      {id:'newsletter',icon:'📧',label:'Newsletter',sub:'Email campaign management'},
-      {id:'seo',icon:'🔍',label:'SEO & Meta',sub:'Search optimization'},
-    ].map(p=>`
-      <div class="row" onclick="openPanel('publishing','${p.id}','${p.label}')" style="cursor:pointer;">
-        <span style="font-size:20px;">${p.icon}</span>
-        <div style="flex:1;">
-          <div class="row-label">${p.label}</div>
-          <div class="row-sub">${p.sub}</div>
-        </div>
-        <span style="color:var(--dim);font-size:14px;">›</span>
-      </div>
-    `).join('')}
-  `;
+  el.innerHTML = `<div class="section-title">Publishing</div><div class="section-sub">Schedule, alerts & newsletters</div>` +
+    [{id:'breaking',icon:'🔴',label:'Breaking Alerts',sub:'Publish breaking news'},
+     {id:'schedule',icon:'📅',label:'Schedule',sub:'Publication schedule'},
+     {id:'newsletter',icon:'📧',label:'Newsletter',sub:'Email campaigns'},
+     {id:'seo',icon:'🔍',label:'SEO & Meta',sub:'Search optimization'}]
+    .map(p=>`<div class="row" onclick="openPanel('${p.id}','${p.label}')" style="cursor:pointer;"><span style="font-size:20px">${p.icon}</span><div style="flex:1"><div class="row-label">${p.label}</div><div class="row-sub">${p.sub}</div></div><span style="color:var(--dim);font-size:14px">›</span></div>`).join('');
 }
+
+function signOut() { localStorage.removeItem('dr_admin_key'); adminKey=''; location.reload(); }
 
 // ─── PANEL: NEWS ARTICLES ─────────────────────────────────────────────────────
+// GET /api/admin/articles-list → { ok, articles: [...], total }
 async function renderNewsPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading articles...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading articles...</div>';
   try {
-    const d = await api('/api/admin/articles-list?limit=30');
-    const articles = d.articles || d.items || [];
-    if (!articles.length) { el.innerHTML = '<div class="empty">No articles found</div>'; return; }
-    const total = d.total || articles.length;
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${total} articles total</div>
-      ${articles.map(a=>`
-        <div class="article-card">
-          <div class="article-title">${a.title||'Untitled'}</div>
-          <div class="article-meta">
-            <span class="pill ${a.status==='published'?'pill-ok':'pill-warn'}">${a.status||'draft'}</span>
-            ${a.source ? `<span>${a.source}</span>` : ''}
-            ${a.publishedAt ? `<span>${new Date(a.publishedAt).toLocaleDateString()}</span>` : ''}
-            ${a.category ? `<span class="tag">${a.category}</span>` : ''}
-          </div>
-          <div class="article-actions">
-            ${a.slug?.current ? `<a href="https://downrangeco.com/news/${a.slug.current}" target="_blank" class="btn-outline" style="font-size:9px;padding:5px 10px;text-decoration:none;">View ↗</a>` : ''}
-          </div>
-        </div>`).join('')}`;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const d = await api('/api/admin/articles-list');
+    const articles = d.articles||[];
+    if (!articles.length) { el.innerHTML='<div class="empty">No articles found</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${d.total||articles.length} articles</div>` +
+      articles.map(a=>`<div class="article-card">
+        <div class="article-title">${a.title||'Untitled'}</div>
+        <div class="article-meta">
+          <span class="pill ${a.status==='published'?'pill-ok':'pill-warn'}">${a.status||'draft'}</span>
+          ${a.source?`<span>${a.source}</span>`:''}
+          ${a.publishedAt?`<span>${new Date(a.publishedAt).toLocaleDateString()}</span>`:''}
+          ${a.category?`<span class="tag">${a.category}</span>`:''}
+        </div>
+        <div class="article-actions">
+          ${a.slug?.current?`<a href="https://downrangeco.com/news/${a.slug.current}" target="_blank" class="btn-outline" style="font-size:9px;padding:5px 10px;text-decoration:none">View ↗</a>`:''}
+        </div></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: BLOG ──────────────────────────────────────────────────────────────
+// GET /api/admin/blog-posts → { ok, posts: [...] }
 async function renderBlogPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading posts...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading posts...</div>';
   try {
-    const d = await api('/api/admin/blog-posts?limit=30');
-    const posts = d.posts || d.items || [];
-    if (!posts.length) { el.innerHTML = '<div class="empty">No blog posts</div>'; return; }
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${posts.length} posts</div>
-      ${posts.map(p=>`
-        <div class="blog-card">
-          <div class="blog-title">${p.title||'Untitled'}</div>
-          <div class="blog-meta">
-            <span class="pill ${p.status==='published'?'pill-ok':'pill-warn'}">${p.status||'draft'}</span>
-            ${p.author ? `<span>${p.author}</span>` : ''}
-            ${p.publishedAt ? `<span>${new Date(p.publishedAt).toLocaleDateString()}</span>` : ''}
-          </div>
-          ${p.slug?.current ? `<a href="https://downrangeco.com/blog/${p.slug.current}" target="_blank" class="btn-outline btn-sm" style="text-decoration:none;display:inline-block">View ↗</a>` : ''}
-        </div>`).join('')}`;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const d = await api('/api/admin/blog-posts');
+    const posts = d.posts||[];
+    if (!posts.length) { el.innerHTML='<div class="empty">No blog posts</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${posts.length} posts</div>` +
+      posts.map(p=>`<div class="blog-card">
+        <div class="blog-title">${p.title||'Untitled'}</div>
+        <div class="blog-meta">
+          <span class="pill ${p.status==='published'?'pill-ok':'pill-warn'}">${p.status||'draft'}</span>
+          ${p.author?`<span>${p.author}</span>`:''}
+          ${p.publishedAt?`<span>${new Date(p.publishedAt).toLocaleDateString()}</span>`:''}
+        </div>
+        ${p.slug?.current?`<a href="https://downrangeco.com/blog/${p.slug.current}" target="_blank" class="btn-outline btn-sm" style="text-decoration:none;display:inline-block">View ↗</a>`:''}
+      </div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: RELEASES ──────────────────────────────────────────────────────────
+// GET /api/admin/releases-manager → { ok, releases: [...] }
 async function renderReleasesPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading releases...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading releases...</div>';
   try {
-    const d = await api('/api/admin/releases-manager?limit=30');
-    const items = d.releases || d.items || [];
-    if (!items.length) { el.innerHTML = '<div class="empty">No releases found</div>'; return; }
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} releases</div>
-      ${items.map(r=>`
-        <div class="release-card">
-          ${r.image ? `<img src="${r.image}" class="release-img" alt="" onerror="this.style.display='none'">` : '<div class="release-img" style="display:flex;align-items:center;justify-content:center;font-size:24px;">🔫</div>'}
-          <div class="release-info">
-            <div class="release-name">${r.name||r.title||'—'}</div>
-            <div class="release-meta">
-              ${r.brand ? `<span style="color:var(--gold)">${r.brand}</span> · ` : ''}
-              ${r.category||''} ${r.msrp ? `· $${r.msrp}` : ''}
-            </div>
-            ${r.slug?.current ? `<a href="https://downrangeco.com/releases/${r.slug.current}" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--gold);text-decoration:none;display:inline-block;margin-top:6px">View ↗</a>` : ''}
-          </div>
-        </div>`).join('')}`;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const d = await api('/api/admin/releases-manager');
+    const items = d.releases||[];
+    if (!items.length) { el.innerHTML='<div class="empty">No releases found</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} releases</div>` +
+      items.map(r=>`<div class="release-card">
+        ${r.image||r.imageUrl?`<img src="${r.image||r.imageUrl}" class="release-img" alt="" onerror="this.style.display='none'">`:'<div class="release-img" style="display:flex;align-items:center;justify-content:center;font-size:22px">🔫</div>'}
+        <div style="flex:1;min-width:0">
+          <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;margin-bottom:3px">${r.name||r.title||'—'}</div>
+          <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">${r.brand?`<span style="color:var(--gold)">${r.brand}</span> · `:''}${r.category||''}${r.msrp?' · $'+r.msrp:''}</div>
+          ${r.slug?.current?`<a href="https://downrangeco.com/releases/${r.slug.current}" target="_blank" style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--gold);display:inline-block;margin-top:5px">View ↗</a>`:''}
+        </div></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: BREAKING ALERTS ───────────────────────────────────────────────────
+// GET /api/breaking-alerts → { alerts: [...] }  (no auth needed)
+// POST /api/admin/breaking-alert { headline, url, urgency }
 async function renderBreakingPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
   try {
-    const d = await api('/api/breaking-alerts?limit=10');
-    const alerts = d.alerts || [];
-    el.innerHTML = `
-      <div class="section-sub">${alerts.length} active alerts</div>
-      <div class="form-row"><span class="lbl">Headline</span><input id="brk-headline" class="inp" placeholder="Breaking: ..."></div>
-      <div class="form-row"><span class="lbl">URL (optional)</span><input id="brk-url" class="inp" placeholder="https://..."></div>
-      <div class="form-row"><span class="lbl">Urgency (1-10)</span><input id="brk-urgency" class="inp" type="number" min="1" max="10" value="7"></div>
+    const d = await fetch('/api/breaking-alerts?limit=20').then(r=>r.json());
+    const alerts = d.alerts||[];
+    el.innerHTML=`
+      <div class="form-row"><span class="lbl">Headline</span><input id="brk-h" class="inp" placeholder="Breaking: ..."></div>
+      <div class="form-row"><span class="lbl">URL (optional)</span><input id="brk-u" class="inp" placeholder="https://..."></div>
+      <div class="form-row"><span class="lbl">Urgency (1-10)</span><input id="brk-urg" class="inp" type="number" min="1" max="10" value="7"></div>
       <button class="btn" style="width:100%;margin-bottom:20px" id="brk-submit" onclick="addBreakingAlert()">Publish Alert</button>
-      ${alerts.length === 0 ? '<div class="empty">No active alerts</div>' :
-        alerts.map(a=>`
-          <div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;">
-            <span class="pill pill-err">LIVE</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;flex:1;">${a.headline}</span>
-            <button class="btn-danger" style="padding:5px 8px;font-size:9px;" onclick="deleteBreakingAlert('${a._id}')">✕</button>
-          </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${alerts.length} active alerts</div>
+      ${!alerts.length ? '<div class="empty">No active alerts</div>' :
+        alerts.map(a=>`<div style="display:flex;align-items:center;gap:10px;padding:12px 14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px">
+          <span class="pill pill-err">LIVE</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:11px;flex:1">${a.headline}</span>
+          <button class="btn-danger" style="padding:5px 8px;font-size:9px" onclick="deleteBreakingAlert('${a._id}')">✕</button>
+        </div>`).join('')}`;
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 async function addBreakingAlert() {
-  const h = document.getElementById('brk-headline')?.value?.trim();
-  if (!h) return;
-  const btn = document.getElementById('brk-submit');
-  btn.disabled = true; btn.textContent = '⏳ Publishing...';
+  const h=document.getElementById('brk-h')?.value?.trim(); if (!h) return;
+  const btn=document.getElementById('brk-submit'); btn.disabled=true; btn.textContent='⏳ Publishing...';
   try {
-    await api('/api/admin/breaking-alert', {
-      method:'POST',
-      body: JSON.stringify({ headline:h, url:document.getElementById('brk-url')?.value||'', urgency:parseInt(document.getElementById('brk-urgency')?.value)||7 })
-    });
-    flash('✅ Alert published', 'ok');
+    await api('/api/admin/breaking-alert',{method:'POST',body:JSON.stringify({headline:h,url:document.getElementById('brk-u')?.value||'',urgency:parseInt(document.getElementById('brk-urg')?.value)||7})});
+    flash('✅ Alert published','ok');
     renderBreakingPanel(document.getElementById('drawer-content'));
-  } catch(e) { flash('❌ Error: '+e.message, 'err'); }
-  btn.disabled = false; btn.textContent = 'Publish Alert';
+  } catch(e) { flash('❌ '+e.message,'err'); btn.disabled=false; btn.textContent='Publish Alert'; }
 }
 async function deleteBreakingAlert(id) {
-  await api('/api/admin/breaking-alert', { method:'DELETE', body:JSON.stringify({id}) });
-  flash('Alert removed', 'info');
+  await api('/api/admin/breaking-alert',{method:'DELETE',body:JSON.stringify({id})});
+  flash('Alert removed','info');
   renderBreakingPanel(document.getElementById('drawer-content'));
 }
 
 // ─── PANEL: CRON JOBS ─────────────────────────────────────────────────────────
+// GET /api/admin/cron-status → { jobs: [{id,label,schedule,desc,status,lastRun:{at,status},rate,streak,isOverdue}] }
 async function renderCronsPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading crons...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading crons...</div>';
   try {
     const d = await api('/api/admin/cron-status');
-    const jobs = d.jobs || [];
-    const recent = d.recent || d.runs || [];
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${jobs.length} scheduled jobs</div>
-      ${jobs.map(j=>`
-        <div class="cron-card">
-          <div class="cron-name">
-            <span class="pill ${j.status==='ok'||j.lastRun?'pill-ok':'pill-dim'}">${j.status||'idle'}</span>
-            ${j.id||j.name||'Job'}
+    const jobs = d.jobs||[];
+    // Group by group field
+    const groups = {};
+    jobs.forEach(j => { const g=j.group||'Other'; (groups[g]=groups[g]||[]).push(j); });
+    let html = `<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${jobs.length} cron jobs</div>`;
+    for (const [gName, gjobs] of Object.entries(groups)) {
+      html += `<div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:12px 0 8px">${gName}</div>`;
+      html += gjobs.map(j => {
+        const statusCls = j.status==='success'?'pill-ok': j.status==='failed'?'pill-err': j.status==='overdue'?'pill-warn':'pill-dim';
+        const lastRunStr = j.lastRun?.at ? new Date(j.lastRun.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}) : 'Never';
+        return `<div class="cron-card">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <span style="font-size:16px">${j.icon||'⏱'}</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;flex:1">${j.label||j.id}</span>
+            <span class="pill ${statusCls}">${j.status||'never'}</span>
           </div>
-          <div class="cron-details">
-            ${j.schedule ? `<span>⏱ ${j.schedule}</span>` : ''}
-            ${j.lastRun ? `<span>Last: ${new Date(j.lastRun).toLocaleString()}</span>` : ''}
-            ${j.nextRun ? `<span>Next: ${new Date(j.nextRun).toLocaleTimeString()}</span>` : ''}
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:8px;display:flex;gap:10px;flex-wrap:wrap">
+            <span>⏱ ${j.schedule}</span>
+            <span>Last: ${lastRunStr}</span>
+            ${j.rate!==null?`<span>Rate: ${j.rate}%</span>`:''}
           </div>
-          <div class="cron-actions">
-            <button class="btn btn-sm" onclick="triggerCron('${j.id||j.name}',this)">▶ Run</button>
-          </div>
-        </div>`).join('')}
-      ${recent.length ? `
-        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Recent Runs</div>
-        ${recent.slice(0,10).map(r=>`
-          <div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px;">
-            <span class="pill ${r.status==='ok'||r.success?'pill-ok':'pill-err'}">${r.status||'?'}</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;flex:1;">${r.job||r.name||'—'}</span>
-            <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${r._createdAt?new Date(r._createdAt).toLocaleTimeString():''}</span>
-          </div>`).join('')}` : ''}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-bottom:8px">${j.desc||''}</div>
+          <button class="btn btn-sm" onclick="triggerCron('${j.id}',this)">▶ Run Now</button>
+        </div>`;
+      }).join('');
+    }
+    el.innerHTML = html;
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 async function triggerCron(jobId, btn) {
-  btn.disabled = true; btn.textContent = '⏳';
+  btn.disabled=true; btn.textContent='⏳';
   try {
-    const d = await api('/api/admin/cron-status?trigger=true', { method:'POST', body:JSON.stringify({jobId}) });
-    flash(d.ok ? `✓ ${jobId} ran (${d.ms||0}ms)` : '✕ '+d.error, d.ok?'ok':'err');
-  } catch(e) { flash('Error: '+e.message, 'err'); }
-  btn.disabled = false; btn.textContent = '▶ Run';
+    const d = await api('/api/admin/cron-status?trigger=true',{method:'POST',body:JSON.stringify({jobId})});
+    flash(d.ok?`✓ ${jobId} ran (${d.ms||0}ms)`:'✕ '+(d.error||'Failed'), d.ok?'ok':'err');
+  } catch(e) { flash('Error: '+e.message,'err'); }
+  btn.disabled=false; btn.textContent='▶ Run Now';
 }
 
 // ─── PANEL: SYSTEM OVERVIEW ───────────────────────────────────────────────────
 async function renderSystemOverview(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Checking status...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Checking...</div>';
   try {
     const h = await api('/api/admin/cron-health');
-    const status = h.status === 'ok';
-    el.innerHTML = `
-      <div style="padding:16px;background:var(--bg2);border:1px solid ${status?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};margin-bottom:16px;text-align:center;">
-        <div style="font-size:32px;margin-bottom:8px">${status?'✅':'⚠️'}</div>
-        <div style="font-family:'Bebas Neue',cursive;font-size:1.4rem;color:${status?'var(--ok)':'var(--err)'}">${status?'ALL SYSTEMS OPERATIONAL':'SYSTEM DEGRADED'}</div>
+    const ok = h.status==='ok';
+    el.innerHTML=`
+      <div style="padding:20px;background:var(--bg2);border:1px solid ${ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};margin-bottom:16px;text-align:center">
+        <div style="font-size:32px;margin-bottom:8px">${ok?'✅':'⚠️'}</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:1.4rem;color:${ok?'var(--ok)':'var(--err)'}">${ok?'ALL SYSTEMS OPERATIONAL':'DEGRADED'}</div>
       </div>
-      ${(h.checks||[]).map(c=>`
-        <div class="row" style="cursor:default;">
-          <span class="pill ${c.ok?'pill-ok':'pill-err'}">${c.ok?'OK':'FAIL'}</span>
-          <div style="flex:1;">
-            <div class="row-label">${c.name||c.label||'Check'}</div>
-            ${c.msg ? `<div class="row-sub">${c.msg}</div>` : ''}
-          </div>
-        </div>`).join('')}
+      ${(h.checks||[]).map(c=>`<div class="row" style="cursor:default"><span class="pill ${c.ok?'pill-ok':'pill-err'}">${c.ok?'OK':'FAIL'}</span><div style="flex:1"><div class="row-label">${c.name||c.label||'Check'}</div>${c.msg?`<div class="row-sub">${c.msg}</div>`:''}</div></div>`).join('')}
       <div class="divider"></div>
-      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full Admin →</a>
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none">Open Full Admin →</a>`;
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: COST CENTER ───────────────────────────────────────────────────────
 async function renderCostsPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading costs...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
   try {
     const d = await api('/api/admin/ai-costs');
-    const costs = d.costs || d.breakdown || {};
-    const total = d.total || 0;
-    el.innerHTML = `
-      <div class="stat-box" style="margin-bottom:16px;text-align:center;">
-        <div class="stat-val">$${(total/100).toFixed(4)}</div>
-        <div class="stat-lbl">Total AI Spend</div>
-      </div>
-      ${Object.entries(costs).map(([k,v])=>`
-        <div class="cost-bar-row">
-          <div class="cost-bar-label">${k}</div>
-          <div class="cost-bar-track"><div class="cost-bar-fill" style="width:${Math.min(100,(v/Math.max(...Object.values(costs),1))*100)}%"></div></div>
-          <div class="cost-bar-val">$${(v/100).toFixed(4)}</div>
-        </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Cost tracking data not available</div>`; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:16px">AI cost tracking via ai-costs endpoint</div>` +
+      `<pre style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);background:var(--bg3);padding:12px;overflow-x:auto;max-height:400px">${JSON.stringify(d,null,2)}</pre>`;
+  } catch(e) { el.innerHTML=`<div class="empty">Cost data not available</div>`; }
 }
 
 // ─── PANEL: API KEYS ──────────────────────────────────────────────────────────
+// GET /api/admin/ai-status → { ok, status: { KEY_NAME: true/false } }
 async function renderKeysPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Checking keys...</div>';
-  const KEYS = [
-    {k:'ANTHROPIC_API_KEY',l:'Anthropic Claude',req:true},
-    {k:'SANITY_API_TOKEN',l:'Sanity CMS',req:true},
-    {k:'RESEND_API_KEY',l:'Resend Email',req:true},
-    {k:'CRON_SECRET',l:'Cron Secret',req:true},
-    {k:'GLM_API_KEY',l:'Z.ai GLM',req:false},
-    {k:'YOUTUBE_API_KEY',l:'YouTube API',req:false},
-    {k:'NEWSAPI_KEY',l:'NewsAPI',req:false},
-    {k:'GNEWS_KEY',l:'GNews',req:false},
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Checking keys...</div>';
+  const KEYS=[
+    {k:'ANTHROPIC_API_KEY',l:'Anthropic Claude',req:true},{k:'SANITY_API_TOKEN',l:'Sanity CMS',req:true},
+    {k:'RESEND_API_KEY',l:'Resend Email',req:true},{k:'CRON_SECRET',l:'Cron Secret',req:true},
+    {k:'GLM_API_KEY',l:'Z.ai GLM',req:false},{k:'YOUTUBE_API_KEY',l:'YouTube API',req:false},
+    {k:'NEWSAPI_KEY',l:'NewsAPI',req:false},{k:'GNEWS_KEY',l:'GNews',req:false},
+    {k:'GOOGLE_PLACES_API_KEY',l:'Google Places',req:false},{k:'ALGOLIA_ADMIN_KEY',l:'Algolia',req:false},
   ];
   try {
     const d = await api('/api/admin/ai-status');
-    const status = d.status || {};
-    el.innerHTML = KEYS.map(k=>`
-      <div class="row" style="cursor:default;">
-        <div style="flex:1;">
-          <div class="row-label">${k.l}${k.req?` <span class="pill pill-err" style="font-size:7px">REQ</span>`:''}</div>
-          <div class="row-sub code">${k.k}</div>
-        </div>
-        ${d.ok ? `<span class="pill ${status[k.k]?'pill-ok':'pill-dim'}">${status[k.k]?'SET':'—'}</span>` : '<span class="pill pill-dim">?</span>'}
-      </div>`).join('');
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const status = d.status||{};
+    el.innerHTML = KEYS.map(k=>`<div class="row" style="cursor:default">
+      <div style="flex:1">
+        <div class="row-label">${k.l}${k.req?` <span class="pill pill-err" style="font-size:7px">REQ</span>`:''}</div>
+        <div class="row-sub code">${k.k}</div>
+      </div>
+      <span class="pill ${status[k.k]?'pill-ok':'pill-dim'}">${status[k.k]?'SET':'—'}</span>
+    </div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
-// ─── PANEL: RSS SOURCES ───────────────────────────────────────────────────────
+// ─── PANEL: RSS ───────────────────────────────────────────────────────────────
 function renderRSSPanel(el) {
-  const feeds = [
-    'The Firearm Blog','TTAG','Guns.com News','NRA-ILA','ATF News','SAF',
-    'Bearing Arms','AmmoLand','TheGunFeed','Gun Owners of America',
-    'American Rifleman','Concealed Nation','r/guns','r/firearms'
-  ];
-  el.innerHTML = `
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${feeds.length} active feeds</div>
-    ${feeds.map(f=>`
-      <div class="row" style="cursor:default;">
-        <span style="font-size:16px;">📡</span>
-        <div style="flex:1;"><div class="row-label">${f}</div></div>
-        <span class="pill pill-ok">Active</span>
-      </div>`).join('')}
-  `;
+  const feeds=['The Firearm Blog','TTAG','Guns.com News','NRA-ILA','ATF News','SAF','Bearing Arms','AmmoLand','TheGunFeed','TheGunBlog.ca','NFA Canada','CSSA','Gun Owners of America','American Rifleman','Concealed Nation','r/guns','r/firearms','gun.deals'];
+  el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${feeds.length} active feeds</div>` +
+    feeds.map(f=>`<div class="row" style="cursor:default"><span style="font-size:14px">📡</span><div style="flex:1"><div class="row-label">${f}</div></div><span class="pill pill-ok">Active</span></div>`).join('');
 }
 
 // ─── PANEL: AGENTS ────────────────────────────────────────────────────────────
-async function renderAgentsPanel(el) {
-  const agents = [
-    {id:'news',icon:'📰',name:'News Feed',desc:'Pull & process news articles'},
-    {id:'youtube',icon:'▶',name:'YouTube Sync',desc:'Sync video channels'},
-    {id:'statelaws',icon:'🗺',name:'State Laws',desc:'Update 50-state law database'},
-    {id:'releases',icon:'🔫',name:'Gun Releases',desc:'Scrape new product releases'},
-    {id:'briefing',icon:'🧠',name:'Intelligence Brief',desc:'Generate AI briefings'},
+function renderAgentsPanel(el) {
+  const agents=[
+    {id:'news',icon:'📰',name:'News Feed',desc:'Pull & process RSS + AI rewrite'},
+    {id:'releases',icon:'🔫',name:'Releases Feed',desc:'Scrape new product releases'},
+    {id:'video',icon:'▶',name:'Video Feed',desc:'Sync YouTube channels'},
+    {id:'laws',icon:'⚖',name:'Laws Feed',desc:'Congress.gov + LegiScan'},
+    {id:'state',icon:'🗺',name:'State Laws',desc:'50-state law profiles'},
+    {id:'intelligence',icon:'🧠',name:'Intel Brief',desc:'Generate AI briefings'},
+    {id:'market',icon:'📊',name:'Market Feed',desc:'AmmoSeek + pricing data'},
     {id:'giveaways',icon:'🎁',name:'Giveaways',desc:'Daily giveaway scan'},
+    {id:'quality-rewrite',icon:'✨',name:'Quality Rewrite',desc:'Rewrite AI-phrase articles'},
+    {id:'image-fix',icon:'📸',name:'Image Fix',desc:'Fetch OG images → Sanity CDN'},
   ];
-  el.innerHTML = `
-    <div class="section-sub">Trigger AI content pipeline agents</div>
-    ${agents.map(a=>`
-      <div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;">
-        <span style="font-size:22px;">${a.icon}</span>
-        <div style="flex:1;">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;">${a.name}</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${a.desc}</div>
-        </div>
-        <button class="btn btn-sm" onclick="triggerCron('${a.id}',this)">▶</button>
-      </div>`).join('')}
-  `;
+  el.innerHTML=`<div class="section-sub">Trigger AI content pipeline agents</div>` +
+    agents.map(a=>`<div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px">
+      <span style="font-size:22px">${a.icon}</span>
+      <div style="flex:1"><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700">${a.name}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${a.desc}</div></div>
+      <button class="btn btn-sm" onclick="triggerCron('${a.id}',this)">▶</button>
+    </div>`).join('');
 }
 
 // ─── PANEL: FEEDS ─────────────────────────────────────────────────────────────
-async function renderFeedsPanel(el) {
-  el.innerHTML = `
-    <div class="section-sub">Trigger content feed pulls directly</div>
-    <div style="display:flex;flex-direction:column;gap:8px;">
-      ${[
-        {label:'Pull All News',endpoint:'/api/admin/run',body:{job:'news'},icon:'📰'},
-        {label:'Scrape Releases',endpoint:'/api/admin/scrape-releases',body:{},icon:'🔫'},
-        {label:'Seed All Content',endpoint:'/api/admin/seed-all-content',body:{},icon:'◈'},
-        {label:'Backfill Articles',endpoint:'/api/admin/backfill-articles',body:{},icon:'🔄'},
-        {label:'Fix Images',endpoint:'/api/admin/smart-image-fix',body:{},icon:'📸'},
-      ].map(f=>`
-        <button class="qa-btn" style="flex-direction:row;gap:12px;align-items:center;" onclick="runFeed('${f.endpoint}',${JSON.stringify(JSON.stringify(f.body))},this)">
-          <span style="font-size:20px">${f.icon}</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700">${f.label}</span>
-          <span style="margin-left:auto;color:var(--dim)">▶</span>
-        </button>`).join('')}
-    </div>
-  `;
+function renderFeedsPanel(el) {
+  const feeds=[
+    {label:'Run News Agent',endpoint:'/api/agent?feed=news',icon:'📰'},
+    {label:'Run Releases Agent',endpoint:'/api/agent?feed=releases',icon:'🔫'},
+    {label:'Run Video Agent',endpoint:'/api/agent?feed=video',icon:'▶'},
+    {label:'Fix Article Images',endpoint:'/api/admin/smart-image-fix',icon:'📸'},
+    {label:'Backfill Articles',endpoint:'/api/admin/backfill-articles',icon:'🔄'},
+  ];
+  el.innerHTML=`<div class="section-sub">Directly trigger content feed pulls</div>` +
+    feeds.map(f=>`<button onclick="runFeedEndpoint('${f.endpoint}',this)" style="width:100%;display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;cursor:pointer;text-align:left;color:var(--text)">
+      <span style="font-size:20px">${f.icon}</span>
+      <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;flex:1">${f.label}</span>
+      <span style="color:var(--dim)">▶</span>
+    </button>`).join('');
 }
-
-async function runFeed(endpoint, bodyStr, btn) {
-  const body = JSON.parse(bodyStr);
-  btn.disabled = true;
-  const orig = btn.innerHTML;
-  btn.innerHTML = btn.innerHTML.replace('▶','⏳');
+async function runFeedEndpoint(endpoint, btn) {
+  btn.disabled=true; const orig=btn.innerHTML; btn.innerHTML=btn.innerHTML.replace('▶','⏳');
   try {
-    const d = await api(endpoint, { method:'POST', body:JSON.stringify(body) });
-    flash(d.ok||d.success ? '✅ Done' : '⚠ '+(d.error||d.message||'Check logs'), d.ok||d.success?'ok':'info');
-  } catch(e) { flash('Error: '+e.message, 'err'); }
-  btn.disabled = false; btn.innerHTML = orig;
+    const d = await api(endpoint,{method:'POST',body:JSON.stringify({})});
+    flash((d.ok||d.success)?'✅ Done':'⚠ '+(d.error||d.message||'Check logs'),(d.ok||d.success)?'ok':'info');
+  } catch(e) { flash('Error: '+e.message,'err'); }
+  btn.disabled=false; btn.innerHTML=orig;
 }
 
 // ─── PANEL: ENV CHECK ─────────────────────────────────────────────────────────
+// GET /api/admin/env-check → { vars: [{key,set,note}] } or similar
 async function renderEnvPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Checking env...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Checking env...</div>';
   try {
     const d = await api('/api/admin/env-check');
-    const vars = d.vars || d.checks || [];
-    el.innerHTML = vars.length === 0 ? '<div class="empty">No env data</div>' :
-      vars.map(v=>`
-        <div class="row" style="cursor:default;">
-          <div style="flex:1;">
-            <div class="row-label code">${v.key||v.name||'?'}</div>
-            ${v.note ? `<div class="row-sub">${v.note}</div>` : ''}
-          </div>
-          <span class="pill ${v.set||v.ok?'pill-ok':'pill-err'}">${v.set||v.ok?'SET':'MISSING'}</span>
-        </div>`).join('');
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const vars = d.vars||d.checks||Object.entries(d).filter(([k])=>k!=='ok').map(([k,v])=>({key:k,set:!!v}));
+    el.innerHTML=!vars.length ? '<div class="empty">No env data returned</div>' :
+      vars.map(v=>`<div class="row" style="cursor:default"><div style="flex:1"><div class="row-label code">${v.key||v.name||'?'}</div>${v.note?`<div class="row-sub">${v.note}</div>`:''}</div><span class="pill ${(v.set||v.ok)?'pill-ok':'pill-err'}">${(v.set||v.ok)?'SET':'MISSING'}</span></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
-// ─── PANEL: CAMPAIGNS ─────────────────────────────────────────────────────────
-async function renderCampaignsPanel(el) {
-  el.innerHTML = `
-    <div style="margin-bottom:16px;">
-      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full CRM →</a>
-    </div>
-    <div class="empty">Template editor and campaign pipeline<br>are available on desktop admin</div>
-  `;
-}
-
-// ─── PANEL: CONTACTS ──────────────────────────────────────────────────────────
+// ─── PANEL: CONTACTS (Drawer version) ─────────────────────────────────────────
+// GET /api/outreach/contacts → { ok, contacts: [...], count }
 async function renderContactsPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading contacts...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading contacts...</div>';
   try {
-    const d = await api('/api/admin/influencers?limit=50');
-    const list = d.contacts || d.influencers || [];
-    if (!list.length) { el.innerHTML = '<div class="empty">No contacts found</div>'; return; }
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${list.length} contacts</div>
-      ${list.map(c=>`
-        <div class="outreach-card">
-          <div class="outreach-name">${c.name||c.channelName||'—'}</div>
-          <div class="outreach-platform">${c.platform||''} ${c.handle?'· @'+c.handle:''}</div>
-          <div class="outreach-meta">
-            ${c.subscribers ? `<span>👥 ${c.subscribers}</span>` : ''}
-            ${c.email ? `<span>✉ ${c.email}</span>` : ''}
-            ${c.category ? `<span class="tag">${c.category}</span>` : ''}
-            ${c.status ? `<span class="pill pill-dim">${c.status}</span>` : ''}
-          </div>
-        </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const d = await api('/api/outreach/contacts?limit=50');
+    const list = d.contacts||[];
+    if (!list.length) { el.innerHTML='<div class="empty">No contacts found</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${d.count||list.length} contacts</div>` +
+      list.map(c=>`<div class="outreach-card">
+        <div class="outreach-name">${c.channelName||c.hostName||'—'}</div>
+        <div class="outreach-platform">${c.source||'YouTube'} ${c.tier?'· Tier '+c.tier:''}</div>
+        <div class="outreach-meta">
+          ${c.subscribers?`<span>👥 ${fmtNum(c.subscribers)}</span>`:''}
+          ${c.email?`<span>✉ ${c.email}</span>`:''}
+          ${c.focus?.length?`<span class="tag">${c.focus[0]}</span>`:''}
+          ${c.outreachStatus?`<span class="pill pill-dim">${c.outreachStatus}</span>`:''}
+        </div></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: QUEUE ─────────────────────────────────────────────────────────────
+// GET /api/outreach/queue → { ok, entries: [...], count }
+async function renderQueuePanel(el) {
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading queue...</div>';
+  try {
+    const d = await api('/api/outreach/queue?limit=30');
+    const list = d.entries||[];
+    if (!list.length) { el.innerHTML='<div class="empty">Queue is empty</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${d.count||list.length} items</div>` +
+      list.map(q=>`<div class="outreach-card">
+        <div class="outreach-name">${q.toName||q.contact?.channelName||'—'}</div>
+        <div class="outreach-platform">${q.subject||''}</div>
+        <div class="outreach-meta">
+          <span class="pill pill-warn">${q.status||'pending'}</span>
+          ${q.draftedAt?`<span>${new Date(q.draftedAt).toLocaleDateString()}</span>`:''}
+        </div></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
+}
+
+// ─── PANEL: HISTORY ───────────────────────────────────────────────────────────
+// GET /api/outreach/history?limit=30 → { ok, logs: [...], count }
+async function renderHistoryPanel(el) {
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading history...</div>';
+  try {
+    const d = await api('/api/outreach/history?limit=30');
+    const list = d.logs||[];
+    if (!list.length) { el.innerHTML='<div class="empty">No emails sent yet</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${d.count||list.length} sent</div>` +
+      list.map(s=>`<div class="outreach-card">
+        <div class="outreach-name">${s.toName||'—'}</div>
+        <div class="outreach-platform">${s.subject||''}</div>
+        <div class="outreach-meta">
+          <span class="pill pill-ok">${s.status||'sent'}</span>
+          ${s.sentAt?`<span>${new Date(s.sentAt).toLocaleDateString()}</span>`:''}
+          ${s.toEmail?`<span>${s.toEmail}</span>`:''}
+        </div></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: VIDEOS ────────────────────────────────────────────────────────────
+// GET /api/admin/videos-manager → { ok, videos: [...] }
 async function renderVideosPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading videos...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading videos...</div>';
   try {
-    const d = await api('/api/admin/save-videos?list=true');
-    const videos = d.videos || [];
-    if (!videos.length) { el.innerHTML = '<div class="empty">No videos cached</div>'; return; }
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${videos.length} videos</div>
-      ${videos.slice(0,20).map(v=>`
-        <div style="display:flex;gap:10px;padding:12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;align-items:flex-start;">
-          ${v.thumbnail ? `<img src="${v.thumbnail}" style="width:64px;height:48px;object-fit:cover;flex-shrink:0;" onerror="this.style.display='none'">` : '<div style="width:64px;height:48px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;">▶</div>'}
-          <div style="flex:1;min-width:0;">
-            <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;">${v.title||'—'}</div>
-            <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">${v.channel||''} ${v.publishedAt?'· '+new Date(v.publishedAt).toLocaleDateString():''}</div>
-          </div>
-        </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Video list not available from API</div>`; }
+    const d = await api('/api/admin/videos-manager');
+    const videos = d.videos||[];
+    if (!videos.length) { el.innerHTML='<div class="empty">No videos cached</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${videos.length} videos</div>` +
+      videos.slice(0,25).map(v=>`<div style="display:flex;gap:10px;padding:12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px;align-items:flex-start">
+        ${v.thumbnail?`<img src="${v.thumbnail}" style="width:64px;height:48px;object-fit:cover;flex-shrink:0" onerror="this.style.display='none'">`:
+          '<div style="width:64px;height:48px;background:var(--bg3);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:18px">▶</div>'}
+        <div style="flex:1;min-width:0">
+          <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:13px;font-weight:700;margin-bottom:3px;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${v.title||'—'}</div>
+          <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">${v.channelTitle||v.channel||''} ${v.publishedAt?'· '+new Date(v.publishedAt).toLocaleDateString():''}</div>
+        </div></div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: CHANNELS ──────────────────────────────────────────────────────────
+// GET /api/admin/youtube-channels → { channels: [...] }  or similar
 async function renderChannelsPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading channels...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading channels...</div>';
   try {
     const d = await api('/api/admin/youtube-channels');
-    const channels = d.channels || d.items || [];
-    if (!channels.length) {
-      el.innerHTML = `
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">Static channel list</div>
-        ${['Military Arms Channel','Lucky Gunner','IraqVeteran8888','Hickok45','Garand Thumb','Paul Harrell','Guns & Gadgets'].map(c=>`
-          <div class="row" style="cursor:default;"><span style="font-size:16px;">📺</span><div class="row-label">${c}</div><span class="pill pill-ok">Active</span></div>`).join('')}`;
-      return;
-    }
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${channels.length} channels</div>
-      ${channels.map(c=>`
-        <div class="row" style="cursor:default;">
-          <span style="font-size:18px;">📺</span>
-          <div style="flex:1;">
-            <div class="row-label">${c.name||c.channelName||'—'}</div>
-            <div class="row-sub">${c.handle||c.channelId||''} ${c.category?'· '+c.category:''}</div>
-          </div>
-          <span class="pill pill-ok">Active</span>
-        </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const channels = d.channels||d.items||[];
+    if (!channels.length) { el.innerHTML='<div class="empty">No channels found</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${channels.length} channels</div>` +
+      channels.map(c=>`<div class="row" style="cursor:default">
+        <span style="font-size:18px">📺</span>
+        <div style="flex:1">
+          <div class="row-label">${c.name||c.channelName||c.title||'—'}</div>
+          <div class="row-sub">${c.handle||c.channelId||''} ${c.category?'· '+c.category:''}</div>
+        </div>
+        <span class="pill pill-ok">Active</span>
+      </div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
 // ─── PANEL: EMAIL TEST ────────────────────────────────────────────────────────
-async function renderEmailTestPanel(el) {
-  el.innerHTML = `
-    <div class="section-sub">Test email delivery via Resend</div>
+function renderEmailTestPanel(el) {
+  el.innerHTML=`<div class="section-sub">Test email delivery via Resend</div>
     <div class="form-row"><span class="lbl">To Address</span><input id="et-to" class="inp" type="email" placeholder="test@example.com"></div>
-    <button class="btn" style="width:100%;margin-bottom:20px" onclick="sendTestEmail()">Send Test Email</button>
-    <div id="et-result"></div>
-  `;
+    <button class="btn" style="width:100%;margin-bottom:16px" onclick="sendTestEmail()">Send Test Email</button>
+    <div id="et-result"></div>`;
 }
 async function sendTestEmail() {
-  const to = document.getElementById('et-to')?.value?.trim();
-  if (!to) { flash('Enter an email address', 'err'); return; }
+  const to=document.getElementById('et-to')?.value?.trim(); if (!to) { flash('Enter an email','err'); return; }
   try {
-    const d = await api('/api/admin/test-emails', { method:'POST', body:JSON.stringify({to}) });
-    const r = document.getElementById('et-result');
-    r.innerHTML = `<div style="padding:10px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};font-family:'IBM Plex Mono',monospace;font-size:11px;color:${d.ok?'var(--ok)':'var(--err)'}">
-      ${d.ok ? '✅ Test email sent' : '❌ '+(d.error||'Failed')}</div>`;
-  } catch(e) { flash('Error: '+e.message, 'err'); }
+    const d=await api('/api/admin/test-emails',{method:'POST',body:JSON.stringify({to})});
+    document.getElementById('et-result').innerHTML=`<div style="padding:10px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};font-family:'IBM Plex Mono',monospace;font-size:11px;color:${d.ok?'var(--ok)':'var(--err)'}">${d.ok?'✅ Sent':'❌ '+(d.error||'Failed')}</div>`;
+  } catch(e) { flash('Error: '+e.message,'err'); }
 }
 
 // ─── PANEL: COPYRIGHT ─────────────────────────────────────────────────────────
+// GET /api/admin/content-scan → { items: [{title, risk, source}] }
 async function renderCopyrightPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Scanning...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Scanning...</div>';
   try {
     const d = await api('/api/admin/content-scan');
-    const items = d.items || d.articles || [];
-    const high = items.filter(i=>i.risk==='HIGH').length;
-    const med  = items.filter(i=>i.risk==='MEDIUM').length;
-    const low  = items.filter(i=>i.risk==='LOW').length;
-    el.innerHTML = `
-      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;">
-        <div class="stat-box" style="text-align:center;"><div class="stat-val" style="color:var(--err)">${high}</div><div class="stat-lbl">High</div></div>
-        <div class="stat-box" style="text-align:center;"><div class="stat-val" style="color:var(--warn)">${med}</div><div class="stat-lbl">Medium</div></div>
-        <div class="stat-box" style="text-align:center;"><div class="stat-val" style="color:var(--ok)">${low}</div><div class="stat-lbl">Low</div></div>
+    const items = d.items||d.articles||[];
+    const h=items.filter(i=>i.risk==='HIGH').length, m=items.filter(i=>i.risk==='MEDIUM').length, l=items.filter(i=>i.risk==='LOW').length;
+    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${h}</div><div class="stat-lbl">High</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${m}</div><div class="stat-lbl">Medium</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${l}</div><div class="stat-lbl">Low</div></div>
       </div>
-      <div style="margin-bottom:12px;">
-        <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;">Open Full Report →</a>
-      </div>
-      ${items.slice(0,15).map(a=>`
-        <div class="article-card">
-          <div class="article-title">${a.title||a.sourceTitle||'—'}</div>
-          <div class="article-meta">
-            <span class="pill ${a.risk==='HIGH'?'pill-err':a.risk==='MEDIUM'?'pill-warn':'pill-ok'}">${a.risk||'?'}</span>
-            ${a.source ? `<span>${a.source}</span>` : ''}
-          </div>
-        </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Copyright scan not available<br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold)">Open Admin →</a></div>`; }
+      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none;margin-bottom:16px">Open Full Report →</a>
+      ${items.slice(0,20).map(a=>`<div class="article-card">
+        <div class="article-title">${a.title||a.sourceTitle||'—'}</div>
+        <div class="article-meta"><span class="pill ${a.risk==='HIGH'?'pill-err':a.risk==='MEDIUM'?'pill-warn':'pill-ok'}">${a.risk||'?'}</span>${a.source?`<span>${a.source}</span>`:''}</div>
+      </div>`).join('')}`;
+  } catch(e) { el.innerHTML=`<div class="empty">Scan not available<br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold)">Open Admin →</a></div>`; }
 }
 
 // ─── PANEL: STATE LAWS ────────────────────────────────────────────────────────
+// GET /api/admin/state-profiles → { states: [...] }
 async function renderStateLawsPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading states...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading states...</div>';
   try {
     const d = await api('/api/admin/state-profiles');
-    const states = d.states || d.profiles || [];
-    if (!states.length) { el.innerHTML = '<div class="empty">No state profiles loaded<br><span style="font-size:9px;color:var(--dim2)">Run State Feed agent to populate</span></div>'; return; }
-    const cc = states.filter(s=>s.constitutionalCarry).length;
-    const rf = states.filter(s=>s.redFlagLaw).length;
-    el.innerHTML = `
-      <div class="stat-grid">
-        <div class="stat-box"><div class="stat-val">${states.length}</div><div class="stat-lbl">States</div></div>
-        <div class="stat-box"><div class="stat-val" style="color:var(--ok)">${cc}</div><div class="stat-lbl">Const. Carry</div></div>
-        <div class="stat-box"><div class="stat-val" style="color:var(--err)">${rf}</div><div class="stat-lbl">Red Flag</div></div>
+    const states = d.states||d.profiles||[];
+    if (!states.length) { el.innerHTML='<div class="empty">No state profiles<br><span style="font-size:9px;color:var(--dim2)">Run State Agent to populate</span></div>'; return; }
+    const cc=states.filter(s=>s.constitutionalCarry).length, rf=states.filter(s=>s.redFlagLaw).length;
+    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="stat-box" style="text-align:center"><div class="stat-val">${states.length}</div><div class="stat-lbl">States</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${cc}</div><div class="stat-lbl">Const. Carry</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${rf}</div><div class="stat-lbl">Red Flag</div></div>
       </div>
-      <input class="inp" id="state-search" placeholder="Search state..." oninput="filterStates(this.value)" style="margin-bottom:12px;">
-      <div id="state-list">
-        ${states.map(s=>`
-          <div class="row" style="cursor:default;" data-state="${(s.name||'').toLowerCase()}">
-            <div style="flex:1;">
-              <div class="row-label"><span style="color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;margin-right:6px">${s.abbr||''}</span>${s.name||'—'}</div>
-            </div>
-            ${s.rating ? `<span style="font-family:'Bebas Neue',cursive;font-size:1.2rem;color:${s.rating==='A'||s.rating==='A+'?'#22c55e':s.rating==='F'?'#ef4444':'#f59e0b'}">${s.rating}</span>` : ''}
-            ${s.constitutionalCarry ? '<span class="pill pill-ok" style="margin-left:4px">CC</span>' : ''}
-            ${s.redFlagLaw ? '<span class="pill pill-err" style="margin-left:4px">RF</span>' : ''}
-          </div>`).join('')}
-      </div>
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+      <input class="inp" id="state-search" placeholder="Search state..." oninput="filterStates(this.value)" style="margin-bottom:12px">
+      <div id="state-list">${states.map(s=>`<div class="row" style="cursor:default" data-state="${(s.name||'').toLowerCase()}">
+        <div style="flex:1"><div class="row-label"><span style="color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;margin-right:6px">${s.abbr||''}</span>${s.name||'—'}</div></div>
+        ${s.rating?`<span style="font-family:'Bebas Neue',cursive;font-size:1.2rem;color:${s.rating==='A'||s.rating==='A+'?'var(--ok)':s.rating==='F'?'var(--err)':'var(--warn)'}">${s.rating}</span>`:''}
+        ${s.constitutionalCarry?'<span class="pill pill-ok" style="margin-left:4px">CC</span>':''}
+        ${s.redFlagLaw?'<span class="pill pill-err" style="margin-left:4px">RF</span>':''}
+      </div>`).join('')}</div>`;
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
-
 function filterStates(q) {
-  document.querySelectorAll('#state-list .row').forEach(row => {
-    row.style.display = row.dataset.state?.includes(q.toLowerCase()) ? '' : 'none';
-  });
+  document.querySelectorAll('#state-list .row').forEach(r => { r.style.display=r.dataset.state?.includes(q.toLowerCase())?'':'none'; });
 }
 
 // ─── PANEL: PULL LOG ──────────────────────────────────────────────────────────
+// Use cron-status which includes history per job (lastRun objects)
 async function renderPullLogPanel(el) {
-  el.innerHTML = '<div class="loading"><span class="spinner">◈</span> Loading logs...</div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading logs...</div>';
   try {
     const d = await api('/api/admin/cron-status');
-    const logs = d.recent || d.runs || d.logs || [];
-    if (!logs.length) { el.innerHTML = '<div class="empty">No pull logs found</div>'; return; }
-    el.innerHTML = `
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${logs.length} recent runs</div>
-      ${logs.map(l=>`
-        <div style="padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px;">
-          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px;">
-            <span class="pill ${l.status==='ok'||l.success?'pill-ok':'pill-err'}">${l.status||'?'}</span>
-            <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;">${l.job||l.name||'—'}</span>
-            <span style="margin-left:auto;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${l._createdAt?new Date(l._createdAt).toLocaleString():''}</span>
-          </div>
-          ${l.pulled !== undefined ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">Pulled: ${l.pulled} · Saved: ${l.saved||0}</div>` : ''}
-          ${l.error ? `<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);margin-top:4px">${l.error}</div>` : ''}
-        </div>`).join('')}
-    `;
-  } catch(e) { el.innerHTML = `<div class="empty">Error: ${e.message}</div>`; }
+    const jobs = d.jobs||[];
+    // Flatten all history entries across all jobs, sorted newest first
+    const all = [];
+    jobs.forEach(j => (j.history||[]).forEach(r => all.push({...r, jobId:j.id, jobLabel:j.label})));
+    all.sort((a,b)=>new Date(b.at||0)-new Date(a.at||0));
+    const recent = all.slice(0,40);
+    if (!recent.length) { el.innerHTML='<div class="empty">No run history yet</div>'; return; }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${recent.length} recent runs</div>` +
+      recent.map(r=>`<div style="padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:3px">
+          <span class="pill ${r.status==='success'?'pill-ok':'pill-err'}">${r.status||'?'}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;flex:1">${r.jobLabel||r.jobId||'—'}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${r.at?new Date(r.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):''}</span>
+        </div>
+        ${r.ms!==undefined?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2)">${r.ms}ms${r.pulled!==undefined?' · pulled '+r.pulled:''}${r.saved!==undefined?' · saved '+r.saved:''}</div>`:'' }
+        ${r.error?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);margin-top:3px">${r.error}</div>`:''}
+      </div>`).join('');
+  } catch(e) { el.innerHTML=`<div class="empty">Error: ${e.message}</div>`; }
 }
 
-// ─── KEYBOARD HANDLING ────────────────────────────────────────────────────────
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function fmtNum(n) {
+  if (!n) return '';
+  const num = typeof n==='string' ? parseInt(n.replace(/[^0-9]/g,'')) : n;
+  if (isNaN(num)) return n;
+  if (num >= 1e6) return (num/1e6).toFixed(1)+'M';
+  if (num >= 1e3) return (num/1e3).toFixed(0)+'K';
+  return String(num);
+}
+
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape') {
+  if (e.key==='Escape') {
     if (document.getElementById('drawer').classList.contains('open')) closeDrawer();
     else closeSectionSheet();
   }
