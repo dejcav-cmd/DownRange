@@ -1,58 +1,50 @@
 
-import requests, json, os, re
+import requests, json, os
 
 T = os.environ["SANITY_TOKEN"]
 H = {"Authorization": "Bearer " + T}
 BASE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production"
-MUTATE = "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/mutate/production"
 
 def q(query):
-    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=30).json()["result"]
+    return requests.get(BASE, params={"query": query, "returnQuery": "false"}, headers=H, timeout=15).json()["result"]
 
-def mutate(mutations):
-    return requests.post(MUTATE, json={"mutations": mutations}, headers={**H, "Content-Type":"application/json"}, timeout=30).json()
+# Check the GOA article specifically
+art = q('*[_id == "goa-c7f32d4e8dd10832c66d424782eb9c20"][0]{_id, title, "slug": slug.current, approved, publishedAt, body}')
+print("GOA article:")
+print(f"  title: {art.get('title','')}")
+print(f"  slug: {art.get('slug','')}")
+print(f"  approved: {art.get('approved')}")
+print(f"  has body: {bool(art.get('body'))}")
 
-def make_slug(title, _id):
-    s = (title or '').lower()
-    s = re.sub(r'[^a-z0-9]+', '-', s)
-    s = re.sub(r'-+', '-', s).strip('-')[:80]
-    suffix = re.sub(r'[^a-f0-9]', '', _id)[:6]
-    return f"{s}-{suffix}" if s else f"article-{suffix}"
+# Check the article is fetchable by slug (simulates what the news/[slug] page does)
+slug = art.get('slug','')
+art2 = q(f'*[_type == "newsArticle" && slug.current == "{slug}"][0]{{_id, title, "slug": slug.current}}')
+print(f"\nFetchable by slug '{slug}':", json.dumps(art2))
 
-# Find ALL articles with null slug.current across ALL types
-all_bad = q('*[_type in ["newsArticle","blogPost","canadaContent","firearmRelease","review","huntingContent","prepContent","brazilContent"] && !defined(slug.current)][0...500]{_id, _type, title, "slug_obj": slug}')
-print(f"Total with null slug.current: {len(all_bad)}")
+# Now test the article URL via curl (GitHub Actions has real internet)
+import subprocess
+result = subprocess.run(
+    ['curl', '-s', '-o', '/dev/null', '-w', '%{http_code}', 
+     f'https://downrangeco.com/news/{slug}'],
+    capture_output=True, text=True, timeout=15
+)
+print(f"\nHTTP status for /news/{slug}: {result.stdout}")
 
-# Get existing slugs
-existing_slugs = set(s.get('slug','') for s in q('*[defined(slug.current)][0...5000]{"slug": slug.current}') if s.get('slug'))
-print(f"Existing slugs loaded: {len(existing_slugs)}")
+# Also test a known good recent article
+recent = q('*[_type == "newsArticle" && approved == true && defined(slug.current)] | order(_createdAt desc)[0...3]{title, "slug": slug.current}')
+for a in recent:
+    r2 = subprocess.run(
+        ['curl', '-s', '-o', '/dev/null', '-w', '%{http_code}',
+         f'https://downrangeco.com/news/{a["slug"]}'],
+        capture_output=True, text=True, timeout=15
+    )
+    print(f"HTTP {r2.stdout} — /news/{a['slug'][:50]}")
 
-mutations = []
-for a in all_bad:
-    title = a.get('title','')
-    new_slug = make_slug(title, a['_id'])
-    base = new_slug
-    counter = 2
-    while new_slug in existing_slugs:
-        new_slug = f"{base}-{counter}"; counter += 1
-    existing_slugs.add(new_slug)
-    mutations.append({"patch": {"id": a["_id"], "set": {"slug": {"_type": "slug", "current": new_slug}}}})
-    print(f"  {a['_type']} | {a['_id'][:20]} -> {new_slug[:40]}")
+# Count articles that have NO body (never rewritten)
+no_body = q('count(*[_type == "newsArticle" && !defined(body)])')
+with_body = q('count(*[_type == "newsArticle" && defined(body) && length(body) > 50])')
+print(f"\nArticles with no body: {no_body}")
+print(f"Articles with body: {with_body}")
 
-print(f"\nApplying {len(mutations)} fixes...")
-errors = 0
-for i in range(0, len(mutations), 50):
-    batch = mutations[i:i+50]
-    result = mutate(batch)
-    errs = sum(1 for r in result.get("results",[]) if r.get("error"))
-    errors += errs
-    print(f"  Batch {i//50+1}: {len(batch)} patched, errors={errs}")
-
-# Final verification
-remaining = q('count(*[_type in ["newsArticle","blogPost","canadaContent","firearmRelease"] && !defined(slug.current)])')
-print(f"\nRemaining null slugs: {remaining}")
-
-out = {"fixed": len(mutations), "errors": errors, "remaining_null": remaining}
 with open("agent_test_results.json", "w") as f:
-    json.dump(out, f, indent=2)
-print("DONE")
+    json.dump({"goa_article": art, "no_body": no_body, "with_body": with_body}, f, indent=2)
