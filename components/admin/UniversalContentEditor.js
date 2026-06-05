@@ -36,6 +36,19 @@ const S = `
 .uce-preview-html strong{color:#C8922A}
 .uce-preview-html a{color:#C8922A}
 .uce-tab-active{border-bottom:2px solid var(--gold)!important;color:var(--gold)!important}
+.uce-img-search{border:1px solid var(--border);background:var(--bg3);padding:12px;margin-top:8px}
+.uce-img-search-bar{display:flex;gap:6px;margin-bottom:10px}
+.uce-img-search-input{flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 10px;outline:none}
+.uce-img-search-input:focus{border-color:var(--gold)}
+.uce-img-src-btn{background:var(--bg);border:1px solid var(--border);border-left:none;color:#6b7280;font-family:'IBM Plex Mono',monospace;font-size:9px;padding:0 8px;cursor:pointer;letter-spacing:.06em}
+.uce-img-src-btn:first-of-type{border-left:1px solid var(--border)}
+.uce-img-src-btn.on{border-color:var(--gold);color:var(--gold);background:rgba(200,146,42,.08)}
+.uce-img-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;max-height:280px;overflow-y:auto}
+.uce-img-thumb{position:relative;aspect-ratio:16/9;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color .15s}
+.uce-img-thumb:hover{border-color:var(--gold)}
+.uce-img-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.uce-img-thumb-apply{position:absolute;inset:0;background:rgba(0,0,0,.6);display:flex;align-items:center;justify-content:center;opacity:0;transition:opacity .15s;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:11px;letter-spacing:.06em;color:#fff}
+.uce-img-thumb:hover .uce-img-thumb-apply{opacity:1}
 `
 
 // ── Helpers ───────────────────────────────────────────────────────────────────
@@ -156,6 +169,11 @@ export default function UniversalContentEditor({
   const [showAdd,    setShowAdd]    = useState(false)
   const [addForm,    setAddForm]    = useState({})
   const [imgSearch,  setImgSearch]  = useState(null)
+  const [imgSearchOpen, setImgSearchOpen] = useState(false)
+  const [imgSearchQ,    setImgSearchQ]    = useState('')
+  const [imgSearchSrc,  setImgSearchSrc]  = useState('all')
+  const [imgSearchRes,  setImgSearchRes]  = useState(null)
+  const [imgSearchBusy, setImgSearchBusy] = useState(false)
   const [detailTab,  setDetailTab]  = useState('edit')  // 'edit'|'html'|'preview'
   const [aiPrompt,   setAiPrompt]   = useState('')
   const [fieldVals,  setFieldVals]  = useState({})
@@ -314,6 +332,32 @@ export default function UniversalContentEditor({
         flash('✅ Image: ' + (d.imageUrl||'').slice(0,60))
       } else flash('❌ ' + (d.error || 'No image found'), 'error')
     } finally { setBusy(false) }
+  }
+
+  async function runImgSearch(q, src) {
+    if (!q?.trim()) return
+    setImgSearchBusy(true)
+    setImgSearchRes(null)
+    try {
+      const r = await fetch('/api/admin/image-finder', {
+        method: 'POST',
+        headers: { ...H, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ query: q.trim(), source: src || imgSearchSrc }),
+      })
+      const d = await r.json()
+      if (d.ok) setImgSearchRes(d.results || [])
+      else flash('❌ Image search: ' + (d.error || 'failed'), 'error')
+    } catch(e) { flash('❌ ' + e.message, 'error') }
+    setImgSearchBusy(false)
+  }
+
+  async function applyImgFromSearch(imageUrl, itemId) {
+    await patch(itemId, { imageUrl })
+    setItems(prev => prev.map(x => x._id === itemId ? {...x, imageUrl} : x))
+    if (sel === itemId) setFieldVals(prev => ({...prev, imageUrl}))
+    setImgSearchOpen(false)
+    setImgSearchRes(null)
+    flash('✅ Image applied')
   }
 
   async function fixAllImages() {
@@ -538,7 +582,7 @@ export default function UniversalContentEditor({
               const published = isPublished(item, config)
               return (
                 <div key={item._id} className={'uce-row' + (sel===item._id?' sel':'') + (checked.has(item._id)?' checked':'')}
-                  onClick={() => setSel(sel===item._id ? null : item._id)}>
+                  onClick={() => { setSel(sel===item._id ? null : item._id); setImgSearchOpen(false); setImgSearchRes(null) }}>
                   {/* Checkbox */}
                   <div onClick={e => { e.stopPropagation(); setChecked(prev => { const n = new Set(prev); n.has(item._id)?n.delete(item._id):n.add(item._id); return n }) }}
                     style={{ paddingTop:2 }}>
@@ -632,8 +676,6 @@ export default function UniversalContentEditor({
                     })()}
                     {/* Fix image */}
                     <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy}>🖼 Image</button>
-                    {/* Search image */}
-                    <button className="uce-ghost" onClick={() => setImgSearch(selItem)}>🔍 Search</button>
                     {/* Delete */}
                     <button className="uce-del" onClick={() => del(selItem._id)} disabled={busy}>🗑</button>
                   </div>
@@ -661,8 +703,67 @@ export default function UniversalContentEditor({
                         onChange={e => setFieldVals(prev => ({...prev, imageUrl: e.target.value}))}
                         />
                       <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy} title="Auto-fetch from Pexels/Pixabay">Auto</button>
-                      <button className="uce-ghost" onClick={() => setImgSearch(selItem)} title="Search images">Search</button>
+                      <button
+                        className={`uce-ghost${imgSearchOpen ? ' uce-tab-active' : ''}`}
+                        onClick={() => {
+                          setImgSearchOpen(o => !o)
+                          setImgSearchRes(null)
+                          setImgSearchQ(selItem.title || '')
+                        }}
+                        title="Search images by keyword"
+                      >🔍 Find Image</button>
                     </div>
+
+                    {/* ── INLINE IMAGE SEARCH ── */}
+                    {imgSearchOpen && (
+                      <div className="uce-img-search">
+                        <div className="uce-img-search-bar">
+                          <input
+                            className="uce-img-search-input"
+                            placeholder="Type keyword… glock 19, AR-15 range, concealed carry…"
+                            value={imgSearchQ}
+                            autoFocus
+                            onChange={e => setImgSearchQ(e.target.value)}
+                            onKeyDown={e => e.key === 'Enter' && runImgSearch(imgSearchQ, imgSearchSrc)}
+                          />
+                          {['all','pexels','pixabay'].map(s => (
+                            <button key={s}
+                              className={`uce-img-src-btn${imgSearchSrc === s ? ' on' : ''}`}
+                              onClick={() => { setImgSearchSrc(s); if (imgSearchQ.trim()) runImgSearch(imgSearchQ, s) }}
+                            >{s.toUpperCase()}</button>
+                          ))}
+                          <button className="uce-btn" style={{fontSize:10,padding:'0 12px'}}
+                            disabled={imgSearchBusy || !imgSearchQ.trim()}
+                            onClick={() => runImgSearch(imgSearchQ, imgSearchSrc)}>
+                            {imgSearchBusy ? '…' : 'GO'}
+                          </button>
+                        </div>
+
+                        {imgSearchBusy && (
+                          <div style={{textAlign:'center',padding:'16px 0',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>Searching…</div>
+                        )}
+
+                        {!imgSearchBusy && imgSearchRes && imgSearchRes.length === 0 && (
+                          <div style={{textAlign:'center',padding:'12px 0',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>No results — try a different keyword</div>
+                        )}
+
+                        {!imgSearchBusy && imgSearchRes && imgSearchRes.length > 0 && (
+                          <div className="uce-img-grid">
+                            {imgSearchRes.map((img, i) => (
+                              <div key={i} className="uce-img-thumb"
+                                onClick={() => applyImgFromSearch(img.largeUrl || img.url, selItem._id)}>
+                                <img src={img.thumb || img.url} alt="" loading="lazy"
+                                  onError={e => { e.target.style.opacity='.2' }} />
+                                <div className="uce-img-thumb-apply">
+                                  APPLY ✓
+                                  <span style={{display:'block',fontSize:8,color:'#ccc',fontWeight:400}}>{img.source}</span>
+                                </div>
+                              </div>
+                            ))}
+                          </div>
+                        )}
+                      </div>
+                    )}
                     <button className="uce-btn" disabled={busy}
                       style={{ width:'100%', fontSize:11, padding:'7px 0', opacity: fieldVals.imageUrl && fieldVals.imageUrl.startsWith('http') ? 1 : 0.4 }}
                       onClick={async () => {
@@ -756,21 +857,6 @@ export default function UniversalContentEditor({
         </div>
       </div>
 
-      {/* Image search modal */}
-      {imgSearch && (
-        <ImageSearchModal
-          adminKey={adminKey}
-          item={imgSearch}
-          onClose={() => setImgSearch(null)}
-          onApply={async (imageUrl) => {
-            await patch(imgSearch._id, { imageUrl })
-            setItems(prev => prev.map(x => x._id === imgSearch._id ? {...x, imageUrl} : x))
-            if (sel === imgSearch._id) setFieldVals(prev => ({...prev, imageUrl}))
-            setImgSearch(null)
-            flash('✅ Image saved')
-          }}
-        />
-      )}
     </>
   )
 }
