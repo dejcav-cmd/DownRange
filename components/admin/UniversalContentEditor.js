@@ -159,7 +159,7 @@ export default function UniversalContentEditor({
 
   const [items,      setItems]      = useState([])
   const [sel,        setSel]        = useState(null)
-  const [loading,    setLoading]    = useState(false)
+  const [loading,    setLoading]    = useState(true)
   const [busy,       setBusy]       = useState(false)
   const [msg,        setMsg]        = useState('')
   const [msgType,    setMsgType]    = useState('info')
@@ -184,10 +184,11 @@ export default function UniversalContentEditor({
 
   // ── Load ──────────────────────────────────────────────────────────────────
   const load = useCallback(async () => {
-    setLoading(true)
-    try {
+    if (!adminKey) return           // wait until key is loaded from localStorage
+    setLoading(true)    try {
       const qs = type ? '?all=1&type=' + encodeURIComponent(type) : '?all=1'
       const r = await fetch(api + qs, { headers: H })
+      if (r.status === 401) { flash('Auth error — check admin key', 'error'); setLoading(false); return }
       const d = await r.json()
       const key = config.responseKey || 'items'
       const raw = d[key] || d.items || d.posts || d.articles || d.releases || d.reviews || []
