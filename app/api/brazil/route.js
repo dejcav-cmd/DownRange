@@ -1,4 +1,5 @@
 import { callAIText } from '@/lib/aiClient.js'
+import { fetchAndUploadImage } from '@/lib/imageUpload.js'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
@@ -12,27 +13,6 @@ const sanity = createClient({
 
 function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN_KEY }
 
-async function fetchImage(query) {
-  const pKey = process.env.PEXELS_API_KEY
-  if (pKey) {
-    try {
-      const r = await fetch(`https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`, { headers: { Authorization: pKey } })
-      const d = await r.json()
-      const p = d.photos?.[0]
-      if (p) return p.src.large2x || p.src.large
-    } catch {}
-  }
-  const xKey = process.env.PIXABAY_API_KEY
-  if (xKey) {
-    try {
-      const r = await fetch(`https://pixabay.com/api/?key=${xKey}&q=${encodeURIComponent(query)}&image_type=photo&orientation=horizontal&min_width=1200&per_page=5&safesearch=true`)
-      const d = await r.json()
-      const h = d.hits?.[0]
-      if (h) return h.largeImageURL || h.webformatURL
-    } catch {}
-  }
-  return null
-}
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url)
@@ -92,7 +72,7 @@ export async function POST(req) {
     const prompt = prompts[t] || prompts.default
     const content = await callAIText({ prompt, useCase: 'brazil', maxTokens: 2000 })
     if (!content) return Response.json({ error: 'AI returned empty' }, { status: 500 })
-    const imageUrl = await fetchImage(topic + ' firearms Brazil')
+    const imageUrl = await fetchAndUploadImage(topic + " firearms Brazil", "brazil-ai")
     await sanity.patch(id).set({ body: content, imageUrl: imageUrl || undefined, qualityReviewed: false }).commit()
     return Response.json({ ok: true, imageUrl })
   }
@@ -100,7 +80,7 @@ export async function POST(req) {
   if (action === 'fix-image') {
     const { title, type: t } = body
     const q = t === 'artigo' ? title + ' firearms Brazil' : title + ' gun law Brazil'
-    const imageUrl = await fetchImage(q)
+    const imageUrl = await fetchAndUploadImage(q, "brazil-" + (id || "").slice(-8))
     if (!imageUrl) return Response.json({ error: 'No image found' }, { status: 404 })
     await sanity.patch(id).set({ imageUrl }).commit()
     return Response.json({ ok: true, imageUrl })

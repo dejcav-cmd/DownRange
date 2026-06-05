@@ -13,36 +13,10 @@ const sanity = createClient({
 })
 
 // ── Fetch real image from Pexels or Pixabay ─────────────────────────────────
+import { fetchAndUploadImage } from '@/lib/imageUpload.js'
+
 async function fetchImage(query) {
-  const pexelsKey = process.env.PEXELS_API_KEY
-  if (pexelsKey) {
-    try {
-      const res = await fetch(
-        `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=5&orientation=landscape`,
-        { headers: { Authorization: pexelsKey } }
-      )
-      const data = await res.json()
-      const photo = data.photos?.[0]
-      if (photo) return photo.src.large2x || photo.src.large
-    } catch {}
-  }
-  const pixabayKey = process.env.PIXABAY_API_KEY
-  if (pixabayKey) {
-    try {
-      const url = new URL('https://pixabay.com/api/')
-      url.searchParams.set('key', pixabayKey)
-      url.searchParams.set('q', query)
-      url.searchParams.set('image_type', 'photo')
-      url.searchParams.set('orientation', 'horizontal')
-      url.searchParams.set('per_page', '5')
-      url.searchParams.set('safesearch', 'true')
-      const res = await fetch(url.toString())
-      const data = await res.json()
-      const hit = data.hits?.[0]
-      if (hit) return hit.largeImageURL || hit.webformatURL
-    } catch {}
-  }
-  return null
+  return fetchAndUploadImage(query, 'canada')
 }
 
 const VOICE_RULES = `MANDATORY RULES:

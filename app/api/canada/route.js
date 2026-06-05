@@ -1,4 +1,5 @@
 import { callAIText } from '@/lib/aiClient.js'
+import { fetchAndUploadImage } from '@/lib/imageUpload.js'
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
@@ -129,7 +130,7 @@ export async function POST(req) {
   if (action === 'fix-image') {
     const { title, type: t } = body
     const q = (title || '') + ' Canada firearms law'
-    const imageUrl = await fetchImage(q)
+    const imageUrl = await fetchAndUploadImage(q, 'canada-' + (id || '').slice(-8))
     if (!imageUrl) return Response.json({ error: 'No image found' }, { status: 404 })
     await sanity.patch(id).set({ imageUrl }).commit()
     return Response.json({ ok: true, imageUrl })
