@@ -94,9 +94,14 @@ export async function GET(req) {
       body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'success' }),
     }).catch(() => {})
     await reportCronRun(feed, {
-      status:  'success',
+      status:  (feed === 'news' && result?.done === 0 && result?.total === 0) ? 'warning'
+             : (feed === 'news' && result?.done === 0 && result?.total > 0)  ? 'warning'
+             : 'success',
       ms:      Date.now()-t,
       details: result ? formatDetails(feed, result) : `${feed} completed`,
+      error:   (feed === 'news' && result?.done === 0 && result?.total === 0) ? 'Zero items fetched — RSS feeds may be blocked or returning empty'
+             : (feed === 'news' && result?.done === 0 && result?.total > 0)  ? `All ${result.total} items were duplicates — dedup cache may be stale`
+             : null,
     })
     // Log to pull log dashboard
     logPull({

@@ -141,7 +141,7 @@ async function loadSanityDedup() {
     )
     const res = await fetch(
       `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&returnQuery=false`,
-      { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` } }
+      { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` }, signal: AbortSignal.timeout(10000) }
     )
     const data = await res.json()
     for (const doc of (data.result || [])) {

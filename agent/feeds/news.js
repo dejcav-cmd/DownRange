@@ -440,6 +440,9 @@ async function runNewsFeed() {
   if (published.length === 0 && all.length > 0) {
     console.warn('[NEWS] ⚠️ All items were deduped — possible stale dedup cache or all sources returning old articles')
   }
+  if (published.length === 0 && all.length === 0) {
+    console.warn('[NEWS] ⚠️ Zero items fetched from ALL sources — RSS feeds may be blocked or returning empty')
+  }
   return summary
 }
 
