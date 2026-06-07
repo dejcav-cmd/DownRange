@@ -29,6 +29,7 @@ const ImageFinder           = L(() => import('../../components/admin/ImageFinder
 const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
 const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
+const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -2933,6 +2934,7 @@ export default function AdminPage() {
             {panel==='rss'     && <RSSSourcesPanel />}
             {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
             {panel==='ranges'  && <RangesPanel />}
+            {panel==='deployments' && <DeploymentsPanel adminKey={adminKey} />}
             {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
 
             {/* ── SOCIAL MEDIA ── */}
