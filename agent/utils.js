@@ -72,26 +72,22 @@ Start with { end with }. No markdown fences.`
     const clean = text.split('```json').join('').split('```').join('').trim()
     const parsed = JSON.parse(clean)
     // Ensure body is a string
-    if (typeof parsed.body !== 'string') parsed.body = ''
-    // Reject short bodies so backfill picks them up later
-    const wordCount = parsed.body.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length
-    if (wordCount < 400) {
-      console.warn(`[REWRITE] Body too short (${wordCount} words) for "${(item.title||'').slice(0,50)}" — saving null so backfill can retry`)
-      parsed.body = ''
+    if (typeof parsed.body !== 'string') parsed.body = null
+    // Validate body length — must be at least 150 words to be usable
+    // (short-but-complete articles are valid; only discard truly empty/placeholder responses)
+    if (parsed.body) {
+      const wordCount = parsed.body.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length
+      if (wordCount < 150) {
+        console.warn(`[REWRITE] Body too short (${wordCount} words) for "${(item.title||'').slice(0,50)}" — discarding`)
+        parsed.body = null
+      }
     }
     // Attribution is rendered by the page component — not baked into body HTML
     return parsed
   } catch (err) {
     console.error('Claude rewrite error:', err.message)
-    return {
-      summary: item.description?.slice(0, 300) || item.title,
-      body: '',
-      category: 'news',
-      urgencyScore: 3,
-      tags: [],
-      relatedStates: [],
-      isBreaking: false
-    }
+    // Return null body so backfill-articles cron can retry with AI later
+    return null
   }
 }
 
