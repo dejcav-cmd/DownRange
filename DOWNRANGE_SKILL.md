@@ -158,3 +158,62 @@ git push https://dejcav-cmd:[GH_TOKEN]@github.com/dejcav-cmd/DownRange.git main
 - AI: tiered router live, GLM_API_KEY set in Vercel
 - GOA feed: live, every 2h
 - Image repo: built, needs seeding (Admin → Media → Image Library → Seed All)
+
+## June 2026 Updates — Critical Fixes & New Systems
+
+### Vercel Cron Limit (CRITICAL)
+- Vercel Pro plan: **40 cron max**. vercel.json was at 61 → DEGRADED status. Pruned to 40.
+- Every new cron must check count first. Remove low-priority crons before adding new ones.
+- cron-health returns `status: 'HEALTHY'|'DEGRADED'|'BROKEN'|'WARNING'` (NOT 'ok').
+
+### Hash-Slug Bug — Fixed Permanently
+- Root cause: old publishToSanity code set `slug.current = doc._id` ('news-{32hex}').
+- Fix 1: `agent/utils.js` — `isHashSlug()` guard in `publishToSanity()`. Fires on EVERY write.
+- Fix 2: `/api/cron/fix-slugs` route — daily 4am scan of all newsArticles, patches bad slugs.
+- Fix 3: `fix_slugs.py` script — manual trigger via fix-broken-slugs GH Actions workflow.
+- Pattern: `/^[a-z]+-[a-f0-9]{20,}$/` = hash slug. Build from title: `title-slug-hash[:6]`.
+- For new sources: the guard in publishToSanity catches ALL sources automatically.
+
+### No-Body Articles — Root Cause & Fix
+- Articles arriving with no body = AI rewrite failing silently or skipping rewrite path.
+- Check `rewriteWithClaude()` in `agent/utils.js` — if ANTHROPIC_API_KEY missing, returns null.
+- GLM fallback must exist for every rewrite path. Never publish without body validation.
+- Add: `if (!ai?.body || ai.body.length < 200) skip or retry`. Never publish empty body.
+- Copyright policy: input capped at 400 chars of source. Must rewrite facts only, not words.
+
+### Mobile PWA (/admin-app) — v7 Complete
+- **Auth**: `POST /api/admin/auth {password}` — NEVER use ai-status (LLM timeout).
+- **Key**: localStorage `dr_admin_key`, sent as `x-admin-key` header.
+- **Status**: newsArticle+firearmRelease have NO status field → derive from `publishedAt && slug.current`. blogPost has explicit `status` field.
+- **cron-health**: No auth required. Returns `status: 'HEALTHY'|'DEGRADED'|'BROKEN'|'WARNING'`.
+- **API shapes**: articles-list→{articles,total}; blog-posts→{posts}; releases-manager→{releases}; outreach/contacts→{contacts,count}; outreach/queue→{entries}; outreach/history→{logs}; cron-status→{jobs[{id,label,schedule,group,status,lastRun,history}]}; videos-manager→{videos}; youtube-channels→{channels}.
+- **Deployments panel**: `/api/admin/deployments` (GET list/detail/logs, POST redeploy). Requires `VERCEL_TOKEN` in Vercel env vars. Uses v3 NDJSON logs endpoint with `Accept: application/x-ndjson`.
+- **System screen**: Deployments row is wired → `renderDeployments()`. Health banner checks `HEALTHY||ok`.
+- **All panels confirmed**: hub, canada, brazil, competitions, deals, schedule, rss (live with pause/resume), social analytics, cost center, site settings, alert config, portal report, backup, lock-all, market brief, briefings, state laws, copyright, pull log, image search (Pexels+Pixabay).
+- **Image search in articles**: Each article card has 🔍 Search Img → opens scoped image search drawer. Tap to apply image directly to article in Sanity.
+- **Parity rule**: Every new feature must be built in BOTH web admin React component AND PWA panel.
+
+### Web Admin — New Panels Added (June 2026)
+- System → **Deployments** tab: `DeploymentsPanel.js` component. Full build log, redeploy, inspect.
+- Content Agents → **🔗 Fix Hash Slugs** button → `/api/cron/fix-slugs?limit=500`.
+- All panels have parity with PWA. New features ship to both simultaneously.
+
+### Env Vars — Confirmed Set in Vercel (June 2026)
+SET: ADMIN_KEY, ANTHROPIC_API_KEY, CRON_SECRET, SANITY_API_TOKEN, NEXT_PUBLIC_SANITY_PROJECT_ID, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN, GLM_API_KEY, PEXELS_API_KEY, PIXABAY_API_KEY, RESEND_API_KEY, GH_PAT, NEWSAPI_KEY, GNEWS_KEY, LEGISCAN_KEY, CONGRESS_GOV_KEY, CONTACT_EMAIL
+
+MISSING (priority): VERCEL_TOKEN (deployments panel), YOUTUBE_API_KEY, RESEND_AUDIENCE_ID, ALGOLIA_APP_ID+ALGOLIA_ADMIN_KEY, DISCORD_WEBHOOK_URL, GITHUB_TOKEN+GITHUB_BACKUP_REPO, INDEXNOW_KEY, social platform tokens (ZERNIO, BLUESKY, FACEBOOK, THREADS, REDDIT, INSTAGRAM)
+
+### GitHub Actions — Workflow Dispatch Gotcha
+- After modifying a workflow file, GitHub caches the OLD trigger metadata for ~3-5 minutes.
+- Dispatching immediately after a push returns 422 "Workflow does not have workflow_dispatch trigger".
+- Solution: wait 3-5 min after file modification before dispatching, OR use a different unmodified workflow.
+- Workflow log downloads (job logs) redirect to Azure blob storage — requires special redirect handling.
+- AGENT_SECRET GitHub secret = ADMIN_KEY value for live API calls from workflows.
+
+## Latest State (June 7 2026)
+- Latest commit: b76fdc2e (Deployments panel + Fix Hash Slugs agent)
+- Admin: System → Deployments tab live. All 40+ panels in both web admin and PWA.
+- PWA: v7, fully complete — all sections open, no "Open Admin →" fallbacks.
+- Crons: 40 active (Vercel Pro limit). news(*/15), laws(0 */2), fix-slugs(0 4 * * *).
+- Slug bug: fixed with guard + daily cron. No hash-slug articles in production.
+- New keys live: NEWSAPI_KEY, GNEWS_KEY, LEGISCAN_KEY, CONGRESS_GOV_KEY, CONTACT_EMAIL.
