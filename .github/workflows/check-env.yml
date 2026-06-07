@@ -5,29 +5,24 @@ jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - name: Hit cron-health
+      - uses: actions/checkout@v4
+      - name: Check all endpoints
         env:
           ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
         run: |
-          curl -s "https://downrangeco.com/api/admin/cron-health" \
-            -H "x-admin-key: $ADMIN_KEY" > /tmp/health.json
-          cat /tmp/health.json
-      - name: Hit ai-status
-        env:
-          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+          echo "=== cron-health ===" > /tmp/results.txt
+          curl -s "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $ADMIN_KEY" >> /tmp/results.txt
+          echo "" >> /tmp/results.txt
+          echo "=== ai-status ===" >> /tmp/results.txt
+          curl -s "https://downrangeco.com/api/admin/ai-status" -H "x-admin-key: $ADMIN_KEY" >> /tmp/results.txt
+          echo "" >> /tmp/results.txt
+          echo "=== social/config ===" >> /tmp/results.txt
+          curl -s "https://downrangeco.com/api/social/config" -H "x-admin-key: $ADMIN_KEY" >> /tmp/results.txt
+          cp /tmp/results.txt scripts/env-check-results.json
+      - name: Commit results
         run: |
-          curl -s "https://downrangeco.com/api/admin/ai-status" \
-            -H "x-admin-key: $ADMIN_KEY" > /tmp/aistatus.json
-          cat /tmp/aistatus.json
-      - name: Hit env-check
-        env:
-          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
-        run: |
-          curl -s "https://downrangeco.com/api/admin/env-check" \
-            -H "x-admin-key: $ADMIN_KEY" > /tmp/envcheck.json
-          cat /tmp/envcheck.json
-      - name: Save results
-        uses: actions/upload-artifact@v4
-        with:
-          name: env-check-results
-          path: /tmp/*.json
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add scripts/env-check-results.json
+          git commit -m "temp: env check results" || echo "no changes"
+          git push https://dejcav-cmd:${{ secrets.GH_PAT }}@github.com/dejcav-cmd/DownRange.git main
