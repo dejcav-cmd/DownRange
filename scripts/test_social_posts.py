@@ -1,72 +1,72 @@
 #!/usr/bin/env python3
-"""Dry-run test for social post format using requests (follows redirects)."""
+"""Test Twitter + Bluesky social posts with newly added keys."""
 import os, json, sys
-
-# Use requests which follows redirects properly
 try:
     import requests
-except ImportError:
-    import subprocess
-    subprocess.run(["pip","install","requests","-q"])
-    import requests
+except:
+    import subprocess; subprocess.run(["pip","install","requests","-q"]); import requests
 
 ADMIN_KEY = os.environ.get("ADMIN_KEY","")
 BASE = "https://downrangeco.com"
-LIMITS = {"twitter":280,"bluesky":300,"threads":500,"facebook":800,"reddit":300}
-PLATFORMS = ["twitter","bluesky","threads","facebook","reddit"]
 
-print("=== SOCIAL POST DRY-RUN TEST ===\n")
+print("=== STEP 1: Check which keys are now live ===")
+r = requests.get(f"{BASE}/api/admin/cron-health",
+    headers={"x-admin-key": ADMIN_KEY}, timeout=20)
+d = r.json()
+env = d.get("env", {})
+print(f"Overall status: {d.get('status')}")
+for key in ["ZERNIO_API_KEY","BLUESKY_HANDLE","BLUESKY_APP_PASSWORD","ZERNIO_TWITTER_ACCOUNT_ID"]:
+    v = env.get(key, {})
+    print(f"  {key}: {'SET' if v.get('set') else 'MISSING'}")
 
-try:
-    resp = requests.post(
-        f"{BASE}/api/social/post",
-        json={"platforms":PLATFORMS,"count":1,"dryRun":True},
-        headers={"x-admin-key":ADMIN_KEY},
-        timeout=120,
-        allow_redirects=True
-    )
-    print(f"HTTP {resp.status_code} — {resp.url}")
-    d = resp.json()
-    print(f"ok={d.get('ok')} total={d.get('total',0)}")
-except Exception as e:
-    print(f"FATAL ERROR: {e}")
-    with open("fix_results.json","w") as f:
-        json.dump({"test":"social_posts","overall":"ERROR","error":str(e)},f,indent=2)
-    sys.exit(1)
+print()
+print("=== STEP 2: DRY-RUN social posts (Twitter + Bluesky) ===")
+LIMITS = {"twitter":280,"bluesky":300}
 
-results_raw = d.get("results",[])
+r2 = requests.post(f"{BASE}/api/social/post",
+    json={"platforms":["twitter","bluesky"],"count":1,"dryRun":True},
+    headers={"x-admin-key": ADMIN_KEY},
+    timeout=120, allow_redirects=True)
+print(f"HTTP {r2.status_code}")
+d2 = r2.json()
+print(f"ok={d2.get('ok')} total={d2.get('total',0)}")
+results_raw = d2.get("results",[])
+
 platform_results = {}
 all_pass = True
 
 for item in results_raw:
     platform = item.get("platform","?")
-    content = item.get("content",item.get("text",""))
-    char_count = len(content)
-    limit = LIMITS.get(platform,300)
-    over = char_count > limit
-    has_fa = "Full article:" in content
-    has_url = "downrangeco.com" in content
-    passed = has_fa and has_url and not over
+    content  = item.get("content", item.get("text",""))
+    chars    = len(content)
+    limit    = LIMITS.get(platform, 300)
+    over     = chars > limit
+    has_fa   = "Full article:" in content
+    has_url  = "downrangeco.com" in content
+    passed   = has_fa and has_url and not over
     if not passed: all_pass = False
-    
+
     print(f"\n--- {platform.upper()} ---")
     print(f"Content:\n{content}")
-    print(f"\nChars: {char_count}/{limit} ({'OVER' if over else 'OK'})")
-    print(f"Full article: {'YES' if has_fa else 'MISSING'}")
-    print(f"Portal URL:   {'YES' if has_url else 'MISSING'}")
+    print(f"\nChars: {chars}/{limit} ({'OVER LIMIT!' if over else 'OK'})")
+    print(f"Has 'Full article:': {'YES' if has_fa else 'MISSING'}")
+    print(f"Has portal URL: {'YES' if has_url else 'MISSING'}")
     print(f"STATUS: {'PASS' if passed else 'FAIL'}")
-    
     platform_results[platform] = {
         "status":"PASS" if passed else "FAIL",
-        "chars":char_count,"limit":limit,
-        "over_limit":over,"has_full_article":has_fa,"has_url":has_url,
-        "content":content
+        "chars":chars,"limit":limit,"over_limit":over,
+        "has_full_article":has_fa,"has_url":has_url,"content":content
     }
 
 if not results_raw:
-    print(f"NO RESULTS. Response: {json.dumps(d)[:500]}")
+    print(f"NO RESULTS. Response: {json.dumps(d2)[:500]}")
+    # Check if platforms are still disabled
+    if "skipped" in str(d2).lower() or d2.get("total",0) == 0:
+        print("Platforms may still be disabled in socialConfig — need to enable them")
     all_pass = False
 
-print(f"\n=== OVERALL: {'ALL PASS' if all_pass else 'FAILURES DETECTED'} ===")
+print(f"\n=== OVERALL: {'ALL PASS' if all_pass else 'FAIL / NO RESULTS'} ===")
 with open("fix_results.json","w") as f:
-    json.dump({"test":"social_posts","overall":"PASS" if all_pass else "FAIL","platforms":platform_results},f,indent=2)
+    json.dump({"test":"social_twitter_bluesky","overall":"PASS" if all_pass else "FAIL",
+               "platforms":platform_results,"raw_response":d2}, f, indent=2)
+print("Saved to fix_results.json")
