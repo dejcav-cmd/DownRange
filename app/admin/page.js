@@ -1343,6 +1343,7 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
       {activeTab === 'tools' && (
         <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(320px,1fr))', gap:16}}>
           {[
+            { key:'fix-slugs',           label:'🔗 Fix Hash Slugs',           color:'#f59e0b',  path:'fix-slugs',            actions:[{label:'Scan & Fix (200)',params:''},{label:'Scan & Fix (500)',params:'?limit=500'}] },
             { key:'fix-images',          label:'🖼 Fix Article Images',        color:'#3b82f6',  path:'fix-images',           actions:[{label:'Fix Missing (50)',params:'?batch=50&force=false'},{label:'Force All (50)',params:'?batch=50&force=true'}] },
             { key:'write-blog-articles', label:'📝 Generate Blog Posts',        color:'#22c55e',  path:'write-blog-articles',  actions:[{label:'Write 3 Posts',params:''}] },
             { key:'write-canada-articles',label:'🍁 Write Canada Articles',     color:'#ef4444',  path:'write-canada-articles',actions:[{label:'Write Articles',params:''}] },
