@@ -325,11 +325,20 @@ async function processNewsItem(item) {
   const slugSuffix = hash.slice(0, 6)
   const slug = rawSlug ? `${rawSlug}-${slugSuffix}` : `article-${slugSuffix}`
 
-  // AI rewrite
+  // AI rewrite — try Anthropic first, GLM fallback, then null (backfill retries)
   let ai = null
-  if (process.env.ANTHROPIC_API_KEY) {
-    try { ai = await rewriteWithClaude(item) }
-    catch (err) { console.warn(`[NEWS] Claude rewrite failed for "${item.title.slice(0,50)}": ${err.message}`) }
+  if (process.env.ANTHROPIC_API_KEY || process.env.GLM_API_KEY) {
+    try {
+      ai = await rewriteWithClaude(item)
+      // If primary rewrite failed and GLM is available, rewriteWithClaude handles fallback internally
+      if (!ai || !ai.body) {
+        console.warn(`[NEWS] Rewrite returned no body for "${(item.title||'').slice(0,50)}" — will be picked up by backfill`)
+      }
+    } catch (err) {
+      console.warn(`[NEWS] Rewrite threw for "${(item.title||'').slice(0,50)}": ${err.message} — backfill will retry`)
+    }
+  } else {
+    console.warn('[NEWS] No AI key set — articles will publish without body (backfill required)')
   }
 
   const category = item.feedCat === 'deals' || item.source === 'AmmoLand'
@@ -344,7 +353,7 @@ async function processNewsItem(item) {
     slug:          { _type: 'slug', current: slug },
     excerpt:       ai?.summary || item.description?.slice(0, 300) || item.title,
     summary:       ai?.summary || item.description?.slice(0, 300) || item.title,
-    body:          ai?.body    || null,
+    body:          (ai?.body && ai.body.length > 50) ? ai.body : null,
     category,
     urgencyScore:  ai?.urgencyScore || (item.feedCat === 'law' ? 5 : 3),
     tags:          ai?.tags         || [],
