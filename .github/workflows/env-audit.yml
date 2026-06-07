@@ -5,15 +5,20 @@ jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
-      - name: Check cron-health
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Fetch and save results
         env:
           K: ${{ secrets.AGENT_SECRET }}
         run: |
-          echo "=HEALTH="
-          curl -sf "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $K"
-          echo ""
-          echo "=AISTATUS="
-          curl -sf "https://downrangeco.com/api/admin/ai-status" -H "x-admin-key: $K"
-          echo ""
-          echo "=SOCIALCFG="
-          curl -sf "https://downrangeco.com/api/social/config" -H "x-admin-key: $K"
+          curl -sf "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $K" > docs/env-audit-health.json
+          curl -sf "https://downrangeco.com/api/admin/ai-status" -H "x-admin-key: $K" > docs/env-audit-ai.json
+          curl -sf "https://downrangeco.com/api/social/config" -H "x-admin-key: $K" > docs/env-audit-social.json
+      - name: Commit results
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add docs/env-audit-*.json
+          git diff --staged --quiet || git commit -m "temp: env audit results"
+          git push
