@@ -865,18 +865,106 @@ async function triggerCron(id,btn){
 }
 
 async function renderSysOverview(el){
-  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Running diagnostics...</div>';
   try{
-    const h=await api('/api/admin/cron-health');
-    const ok=h.status==='ok';
+    const [h, cronD] = await Promise.all([
+      api('/api/admin/cron-health'),
+      api('/api/admin/cron-status').catch(()=>({jobs:[]})),
+    ]);
+    const statusColor = h.status==='HEALTHY'?'var(--ok)':h.status==='BROKEN'?'var(--err)':'var(--warn)';
+    const statusIcon  = h.status==='HEALTHY'?'✅':h.status==='BROKEN'?'🔴':'⚠️';
+
+    // Sanity freshness
+    const s = h.sanity||{};
+    const mins = s.minutesSinceLastArticle;
+    const freshColor = mins==null?'var(--dim)':mins<60?'var(--ok)':mins<240?'var(--warn)':'var(--err)';
+    const freshLabel = mins==null?'—':mins<60?mins+'m ago':mins<1440?Math.floor(mins/60)+'h ago':Math.floor(mins/1440)+'d ago';
+
+    // Cron job summary
+    const jobs = cronD.jobs||[];
+    const jobOk    = jobs.filter(j=>j.status==='success').length;
+    const jobFail  = jobs.filter(j=>j.status==='failed').length;
+    const jobOver  = jobs.filter(j=>j.status==='overdue'||j.isOverdue).length;
+
+    // Env vars
+    const envEntries = Object.entries(h.env||{});
+    const critMissing = envEntries.filter(([,v])=>v.critical&&!v.set);
+    const optMissing  = envEntries.filter(([,v])=>!v.critical&&!v.set);
+
     el.innerHTML=`
-      <div style="padding:20px;background:var(--bg2);border:1px solid ${ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};margin-bottom:16px;text-align:center">
-        <div style="font-size:32px;margin-bottom:8px">${ok?'✅':'⚠️'}</div>
-        <div style="font-family:'Bebas Neue',cursive;font-size:1.4rem;color:${ok?'var(--ok)':'var(--err)'}">${ok?'ALL SYSTEMS OPERATIONAL':'DEGRADED'}</div>
+      <!-- STATUS HERO -->
+      <div style="padding:20px 16px;background:var(--bg2);border:1px solid ${h.status==='HEALTHY'?'rgba(34,197,94,.25)':h.status==='BROKEN'?'rgba(239,68,68,.3)':'rgba(245,158,11,.3)'};margin-bottom:16px;text-align:center">
+        <div style="font-size:36px;margin-bottom:6px">${statusIcon}</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:1.6rem;color:${statusColor};letter-spacing:.06em">${h.status||'UNKNOWN'}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:4px">${h.timestamp?new Date(h.timestamp).toLocaleString():''}</div>
       </div>
-      ${(h.checks||[]).map(c=>`<div class="row row-last"><span class="pill ${c.ok?'pill-ok':'pill-err'}">${c.ok?'OK':'FAIL'}</span><div style="flex:1"><div class="row-label">${c.name||c.label||'Check'}</div>${c.msg?`<div class="row-sub">${c.msg}</div>`:''}</div></div>`).join('')}
+
+      <!-- ISSUE LIST -->
+      ${(h.issues||[]).length?`
+        <div style="margin-bottom:16px">
+          ${(h.issues||[]).map(i=>`<div style="padding:10px 14px;background:${i.severity==='CRITICAL'?'rgba(239,68,68,.08)':i.severity==='HIGH'?'rgba(239,68,68,.05)':'rgba(245,158,11,.07)'};border-left:3px solid ${i.severity==='CRITICAL'?'var(--err)':i.severity==='HIGH'?'var(--err)':'var(--warn)'};margin-bottom:6px">
+            <div style="display:flex;align-items:center;gap:6px;margin-bottom:3px">
+              <span class="pill ${i.severity==='CRITICAL'?'pill-err':'pill-warn'}" style="font-size:7px">${i.severity}</span>
+            </div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text);line-height:1.5">${i.msg}</div>
+          </div>`).join('')}
+        </div>`:''}
+
+      <!-- STAT ROW: Sanity + Crons -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Sanity CMS</div>
+      <div class="stat-grid" style="margin-bottom:16px">
+        <div class="stat-box"><div class="stat-val">${s.counts?.articles||'—'}</div><div class="stat-lbl">Articles</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:${freshColor};font-size:1.4rem">${freshLabel}</div><div class="stat-lbl">Last Article</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--ok)">${s.counts?.activeAlerts||0}</div><div class="stat-lbl">Live Alerts</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:${s.connected?'var(--ok)':'var(--err)'}">${s.connected?'OK':'ERR'}</div><div class="stat-lbl">Connection</div></div>
+      </div>
+
+      <!-- LATEST ARTICLE -->
+      ${s.latest?`
+        <div style="padding:10px 14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:16px">
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:3px">LATEST ARTICLE IN SANITY</div>
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;margin-bottom:2px">${s.latest.title||'—'}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${s.latest.source||''} ${s.latest.publishedAt?'· '+new Date(s.latest.publishedAt).toLocaleString():''}</div>
+        </div>`:''}
+
+      <!-- CRON SUMMARY -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Cron Jobs (${jobs.length})</div>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:12px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${jobOk}</div><div class="stat-lbl">OK</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${jobFail}</div><div class="stat-lbl">Failed</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${jobOver}</div><div class="stat-lbl">Overdue</div></div>
+      </div>
+      <!-- mini cron list — only show non-healthy jobs first, then rest -->
+      ${[...jobs.filter(j=>j.status!=='success'&&j.status), ...jobs.filter(j=>j.status==='success'||!j.status)].slice(0,12).map(j=>{
+        const sc=j.status==='success'?'pill-ok':j.status==='failed'?'pill-err':j.status==='overdue'?'pill-warn':'pill-dim';
+        const lr=j.lastRun?.at?new Date(j.lastRun.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'}):'Never';
+        return `<div style="display:flex;align-items:center;gap:8px;padding:8px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px">
+          <span style="font-size:14px">${j.icon||'⏱'}</span>
+          <div style="flex:1;min-width:0">
+            <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${j.label||j.id}</div>
+            <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">${lr}</div>
+          </div>
+          <span class="pill ${sc}" style="font-size:8px;flex-shrink:0">${j.status||'—'}</span>
+          <button class="btn btn-xs" style="padding:3px 8px;font-size:9px" onclick="triggerCron('${j.id}',this)">▶</button>
+        </div>`;
+      }).join('')}
+
+      <!-- ENV VARS -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Env Variables</div>
+      ${critMissing.length?`<div style="padding:10px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.3);margin-bottom:8px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">⚠ ${critMissing.length} critical vars missing: ${critMissing.map(([k])=>k).join(', ')}</div>`:''}
+      ${envEntries.map(([k,v])=>`<div style="display:flex;align-items:center;gap:8px;padding:7px 12px;background:var(--bg2);border:1px solid ${!v.set&&v.critical?'rgba(239,68,68,.3)':'var(--border)'};margin-bottom:3px">
+        <span class="pill ${v.set?'pill-ok':v.critical?'pill-err':'pill-dim'}" style="font-size:7px;flex-shrink:0">${v.set?'SET':v.critical?'MISS':'—'}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:${v.set?'var(--text)':v.critical?'var(--err)':'var(--dim2)'};flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${k}</span>
+        ${v.critical?'<span style="font-size:8px;color:var(--err)">●</span>':''}
+      </div>`).join('')}
+
+      <!-- ACTIONS -->
       <div class="divider"></div>
-      <a href="https://downrangeco.com/admin" target="_blank" class="btn" style="display:block;text-align:center;text-decoration:none">Open Full Admin →</a>`;
+      <div style="display:flex;gap:8px">
+        <button class="btn" style="flex:1" onclick="openPanel('deployments','Deployments')">▲ Deployments</button>
+        <button class="btn-outline" style="flex:1" onclick="openPanel('crons','Cron Jobs')">⏱ Cron Jobs</button>
+      </div>
+    `;
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
@@ -1141,19 +1229,51 @@ function fmtN(n){if(!n)return '';const num=typeof n==='string'?parseInt(n.replac
 async function renderDeployments(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span> Fetching from Vercel...</div>';
   try{
-    const d=await api('/api/admin/deployments?limit=15');
+    const d=await api('/api/admin/deployments?limit=20');
     if(d.noToken){
-      el.innerHTML=`<div style="padding:16px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3)">
+      el.innerHTML=`<div style="padding:16px;background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.3);margin-bottom:16px">
         <div style="font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--warn);margin-bottom:8px">⚠ VERCEL_TOKEN not set</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);line-height:1.6">Go to vercel.com/account/tokens → Create Token → add as VERCEL_TOKEN in Vercel Project Settings → Env Vars</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);line-height:1.7">1. Go to vercel.com/account/tokens<br>2. Create Token → copy value<br>3. Vercel → Project → Settings → Env Vars<br>4. Add VERCEL_TOKEN = &lt;your token&gt;<br>5. Redeploy</div>
       </div>`;
       return;
     }
-    if(!d.ok){el.innerHTML=`<div class="empty">Error: ${d.error}</div>`;return;}
+    if(!d.ok){el.innerHTML=`<div class="empty">Vercel API error:<br>${d.error}</div>`;return;}
     const deps=d.deployments||[];
     if(!deps.length){el.innerHTML='<div class="empty">No deployments found</div>';return;}
-    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${deps.length} recent deployments</div>`+
-      deps.map(dep=>depCard(dep)).join('');
+
+    // Summary stats
+    const prod    = deps.filter(x=>x.target==='production');
+    const ready   = deps.filter(x=>x.state==='READY').length;
+    const errored = deps.filter(x=>x.state==='ERROR'||x.state==='FAILED').length;
+    const latest  = deps[0];
+
+    el.innerHTML=`
+      <!-- Latest deploy hero -->
+      <div style="padding:14px;background:var(--bg2);border:1px solid ${stateColor(latest?.state)==='var(--ok)'?'rgba(34,197,94,.25)':stateColor(latest?.state)==='var(--err)'?'rgba(239,68,68,.3)':'rgba(245,158,11,.3)'};margin-bottom:12px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:6px">LATEST DEPLOYMENT</div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span class="pill ${stateClass(latest?.state)}">${latest?.state||'?'}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold)">${latest?.commit||''} ${latest?.branch?'· '+latest.branch:''}</span>
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-left:auto">${fmtAgo(latest?.createdAt)}</span>
+        </div>
+        ${latest?.source?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-bottom:6px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${latest.source}</div>`:''}
+        <div style="display:flex;gap:6px">
+          ${latest?.url?`<a href="${latest.url}" target="_blank" class="btn-outline btn-xs">↗ Open</a>`:''}
+          <button class="btn-outline btn-xs" onclick="viewDepLogs('${latest?.id}',this)">📋 Build Log</button>
+          <button class="btn btn-xs" onclick="redeployDep('${latest?.id}',this)">↺ Redeploy</button>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val">${deps.length}</div><div class="stat-lbl">Total</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${ready}</div><div class="stat-lbl">Ready</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${errored}</div><div class="stat-lbl">Errors</div></div>
+      </div>
+
+      <!-- Full list -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">All Deployments</div>
+      ${deps.map(dep=>depCard(dep)).join('')}`;
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
@@ -1203,19 +1323,39 @@ function depCard(dep){
 async function viewDepLogs(id, btn){
   const logEl=document.getElementById('dep-logs-'+id);
   if(!logEl)return;
-  if(logEl.style.display!=='none'){logEl.style.display='none';btn.textContent='📋 Logs';return;}
-  btn.disabled=true;btn.textContent='⏳';
+  if(logEl.style.display!=='none'){logEl.style.display='none';btn.textContent='📋 Build Log';return;}
+  btn.disabled=true;btn.textContent='⏳ Loading...';
   logEl.style.display='block';
-  logEl.innerHTML='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">Loading logs...</div>';
+  logEl.innerHTML='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim);padding:8px">Fetching build logs from Vercel...</div>';
   try{
     const d=await api(`/api/admin/deployments?id=${id}&logs=true`);
+    if(!d.ok){
+      logEl.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);padding:8px">Error: ${d.error||'Failed to fetch logs'}</div>`;
+      btn.disabled=false;btn.textContent='📋 Build Log';
+      return;
+    }
     const lines=d.logs||[];
-    if(!lines.length){logEl.innerHTML='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)">No log output</div>';return;}
-    logEl.innerHTML=`<div style="background:var(--bg);border:1px solid var(--border);padding:10px;max-height:300px;overflow-y:auto;-webkit-overflow-scrolling:touch">
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;line-height:1.6;white-space:pre-wrap;color:var(--dim2);">${lines.map(l=>`<span style="color:${l.type==='stderr'?'var(--err)':l.type==='command'?'var(--gold)':'var(--dim2)'}">${escHtml(l.text)}</span>`).join('\n')}</div>
+    if(!lines.length){
+      logEl.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);padding:8px">No log output returned (${d.raw||0} raw events parsed).<br>Logs may not be available for older deployments.</div>`;
+      btn.disabled=false;btn.textContent='📋 Build Log';
+      return;
+    }
+    logEl.innerHTML=`<div style="background:#000;border:1px solid var(--border);border-radius:2px;margin-top:8px">
+      <div style="padding:6px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">${lines.length} lines</span>
+        <button class="btn-outline" style="padding:2px 8px;font-size:8px;margin-left:auto" onclick="this.closest('[id^=dep-logs]').style.display='none'">✕ Close</button>
+      </div>
+      <div style="max-height:320px;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:8px 10px" id="log-scroll-${id}">
+        <pre style="font-family:'IBM Plex Mono',monospace;font-size:8px;line-height:1.7;white-space:pre-wrap;margin:0;color:#a0aec0">${lines.map(l=>{
+          const col = l.type==='stderr'?'#fc8181':l.type==='command'?'#f6c90e':l.type==='delimiter'?'#68d391':'#a0aec0';
+          return `<span style="color:${col}">${escHtml(l.text)}</span>`;
+        }).join('\n')}</pre>
+      </div>
     </div>`;
-  }catch(e){logEl.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err)">${e.message}</div>`;}
-  btn.disabled=false;btn.textContent='📋 Hide Logs';
+    // Scroll to bottom of log
+    setTimeout(()=>{const s=document.getElementById('log-scroll-'+id);if(s)s.scrollTop=s.scrollHeight;},50);
+  }catch(e){logEl.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);padding:8px">Error: ${e.message}</div>`;}
+  btn.disabled=false;btn.textContent='📋 Hide Log';
 }
 
 async function redeployDep(id, btn){
