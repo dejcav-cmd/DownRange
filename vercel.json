@@ -29,10 +29,6 @@
       "schedule": "0 7 * * *"
     },
     {
-      "path": "/api/nics",
-      "schedule": "0 10 1 * *"
-    },
-    {
       "path": "/api/site-health",
       "schedule": "0 8 * * *"
     },
@@ -69,16 +65,8 @@
       "schedule": "0 5 * * 0"
     },
     {
-      "path": "/api/cron/carry-insurance",
-      "schedule": "0 6 * * 1"
-    },
-    {
       "path": "/api/cron/market-brief",
       "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/cron/market-brief",
-      "schedule": "0 21 * * *"
     },
     {
       "path": "/api/admin/backup",
@@ -105,16 +93,8 @@
       "schedule": "0 8 * * *"
     },
     {
-      "path": "/api/cron/write-canada-articles",
-      "schedule": "0 20 * * *"
-    },
-    {
       "path": "/api/cron/write-brazil-articles",
       "schedule": "0 9 * * *"
-    },
-    {
-      "path": "/api/cron/write-brazil-articles",
-      "schedule": "0 21 * * *"
     },
     {
       "path": "/api/agent?feed=blog",
@@ -129,48 +109,20 @@
       "schedule": "0 13 * * *"
     },
     {
-      "path": "/api/social/cron/bluesky",
-      "schedule": "0 17 * * *"
-    },
-    {
       "path": "/api/social/cron/twitter",
       "schedule": "0 13 * * *"
     },
     {
-      "path": "/api/social/cron/twitter",
-      "schedule": "0 18 * * *"
-    },
-    {
       "path": "/api/social/cron/facebook",
       "schedule": "0 14 * * *"
     },
     {
-      "path": "/api/social/cron/facebook",
-      "schedule": "0 20 * * *"
-    },
-    {
       "path": "/api/social/cron/threads",
       "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/social/cron/threads",
-      "schedule": "30 18 * * *"
     },
     {
       "path": "/api/social/cron/reddit",
       "schedule": "0 12 * * *"
-    },
-    {
-      "path": "/api/admin/patch-ammo-article",
-      "schedule": "*/10 * * * *"
-    },
-    {
-      "path": "/api/site-health",
-      "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/site-health",
-      "schedule": "0 20 * * *"
     },
     {
       "path": "/api/cron/releases",
@@ -193,56 +145,20 @@
       "schedule": "0 * * * *"
     },
     {
-      "path": "/api/cron/fix-placeholder-images",
-      "schedule": "0 * * * *"
-    },
-    {
-      "path": "/api/admin/backup",
-      "schedule": "0 15 * * *"
-    },
-    {
       "path": "/api/cron/copyright-review",
       "schedule": "0 6 * * *"
-    },
-    {
-      "path": "/api/cron/giveaways",
-      "schedule": "0 14 * * *"
-    },
-    {
-      "path": "/api/admin/fix-images-intl",
-      "schedule": "0 11 * * *"
     },
     {
       "path": "/api/cron/enrich-state-pages?batch=5",
       "schedule": "0 3 * * *"
     },
     {
-      "path": "/api/social/cron/bluesky",
-      "schedule": "0 23 * * *"
-    },
-    {
-      "path": "/api/social/cron/twitter",
-      "schedule": "0 2 * * *"
-    },
-    {
-      "path": "/api/social/cron/facebook",
-      "schedule": "0 0 * * *"
-    },
-    {
-      "path": "/api/social/cron/threads",
-      "schedule": "0 1 * * *"
-    },
-    {
-      "path": "/api/social/cron/reddit",
-      "schedule": "30 17 * * *"
-    },
-    {
-      "path": "/api/social/cron/reddit",
-      "schedule": "0 22 * * *"
-    },
-    {
       "path": "/api/social/analytics?refresh=1",
       "schedule": "0 */2 * * *"
+    },
+    {
+      "path": "/api/nics",
+      "schedule": "0 10 1 * *"
     }
   ],
   "headers": [
