@@ -305,8 +305,26 @@ function isTrustedImage(url) {
   return TRUSTED_IMAGE_DOMAINS.some(d => url.includes(d))
 }
 
+// ── SLUG GUARD: detect and fix hash-style slugs (type-prefix + 32hex) ──────
+function isHashSlug(slug) {
+  return typeof slug === 'string' && /^[a-z]+-[a-f0-9]{20,}$/.test(slug)
+}
+
+function fixSlugFromTitle(title, _id) {
+  const raw = (title || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80)
+  const suffix = _id ? _id.replace(/^[a-z]+-/, '').slice(0, 6) : 'fixed'
+  return raw ? `${raw}-${suffix}` : `article-${suffix}`
+}
+
 async function publishToSanity(doc) {
   try {
+    // ── SLUG VALIDATION: never allow hash-style slugs (type-xxxxxx...) ──
+    if (doc.slug?.current && isHashSlug(doc.slug.current)) {
+      const fixed = fixSlugFromTitle(doc.title || doc.sourceTitle, doc._id)
+      console.warn(`[SLUG FIX] Hash slug detected on ${doc._id}: "${doc.slug.current}" → "${fixed}"`)
+      doc = { ...doc, slug: { _type: 'slug', current: fixed } }
+    }
+
     // For news articles: use createIfNotExists + patch to avoid overwriting
     // good imageUrls that were manually set by the patch-article job.
     // For other doc types (breakingAlert, etc.): still use createOrReplace.
