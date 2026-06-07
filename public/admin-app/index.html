@@ -366,12 +366,16 @@ function closeSheet(){document.getElementById('section-sheet').classList.remove(
 // ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
 function openPanel(id,label){
   const map={
-    news:renderNews,blog:renderBlog,releases:renderReleases,
-    breaking:renderBreaking,crons:renderCrons,overview:renderSysOverview,
-    agents:renderAgents,rss:renderRSS,contacts:renderContacts,
-    queue:renderQueue,history:renderHistory,videos:renderVideos,
-    channels:renderChannels,aikeys:renderAPIKeys,envcheck:renderEnvCheck,
-    emailtest:renderEmailTest,copyright:renderCopyright,statelaws:renderStateLaws,
+    news:renderNews,blog:renderBlog,releases:renderReleases,reviews:renderReviews,
+    breaking:renderBreaking,newsletter:renderNewsletter,social:renderSocialLog,
+    drafts:renderDraftRecovery,hub:renderContentHub,canada:renderCanada,
+    brazil:renderBrazil,competitions:renderCompetitions,deals:renderDeals,
+    schedule:renderSchedule,crons:renderCrons,overview:renderSysOverview,
+    deployments:renderDeployments,agents:renderAgents,rss:renderRSSources,
+    contacts:renderContacts,queue:renderQueue,history:renderHistory,
+    videos:renderVideos,channels:renderChannels,
+    aikeys:renderAPIKeys,envcheck:renderEnvCheck,emailtest:renderEmailTest,
+    copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,
     pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,
   };
   if(id==='signout'){confirmSignOut();return;}
@@ -991,7 +995,7 @@ function renderAgents(el){
     </div>`).join('');
 }
 
-function renderRSS(el){
+function renderRSSources(el){
   const feeds=['The Firearm Blog','TTAG','Guns.com','NRA-ILA','ATF','SAF','Bearing Arms','AmmoLand','TheGunFeed','TheGunBlog.ca','NFA Canada','CSSA','GOA','American Rifleman','Concealed Nation','r/guns','r/firearms','gun.deals'];
   el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${feeds.length} active feeds</div>`+
     feeds.map(f=>`<div class="row row-last"><span style="font-size:14px">📡</span><div class="row-label">${f}</div><span class="pill pill-ok">Active</span></div>`).join('');
@@ -1532,6 +1536,345 @@ async function renderSysAlerts(el){
         ${r.error?`<div class="log-err">${r.error}</div>`:''}
       </div>`).join('');
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — CONTENT HUB (article intelligence / scan)
+// GET /api/admin/content-scan → { items: [{_id,title,risk,source,category}] }
+// ═══════════════════════════════════════════════════════════════════
+async function renderContentHub(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Scanning content...</div>';
+  try{
+    const [scan, arts] = await Promise.all([
+      api('/api/admin/content-scan').catch(()=>({items:[]})),
+      api('/api/admin/articles-list').catch(()=>({articles:[], total:0})),
+    ]);
+    const items = scan.items||scan.articles||[];
+    const high   = items.filter(i=>i.risk==='HIGH').length;
+    const medium = items.filter(i=>i.risk==='MEDIUM').length;
+    const low    = items.filter(i=>i.risk==='LOW').length;
+
+    el.innerHTML=`
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Content Stats</div>
+      <div class="stat-grid" style="margin-bottom:16px">
+        <div class="stat-box"><div class="stat-val">${arts.total||0}</div><div class="stat-lbl">Total Articles</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--err)">${high}</div><div class="stat-lbl">High Risk</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--warn)">${medium}</div><div class="stat-lbl">Med Risk</div></div>
+        <div class="stat-box"><div class="stat-val" style="color:var(--ok)">${low}</div><div class="stat-lbl">Low Risk</div></div>
+      </div>
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Quick Actions</div>
+      <div style="display:flex;flex-direction:column;gap:6px;margin-bottom:16px">
+        <button class="btn" onclick="triggerCron('quality-rewrite',this)" style="width:100%">✨ Run Quality Rewrite (all articles)</button>
+        <button class="btn-outline" onclick="triggerCron('image-fix',this)" style="width:100%">📸 Fix All Broken Images</button>
+        <button class="btn-outline" onclick="triggerCron('news',this)" style="width:100%">📰 Pull News Feed Now</button>
+      </div>
+      ${items.length?`
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Copyright Risk Articles (${items.length})</div>
+        ${items.slice(0,25).map(a=>`<div class="art-card">
+          <div class="art-card-top">
+            <div class="art-thumb-ph">${a.risk==='HIGH'?'🔴':a.risk==='MEDIUM'?'🟡':'🟢'}</div>
+            <div class="art-info">
+              <div class="art-title">${a.title||'—'}</div>
+              <div class="art-meta">
+                <span class="pill ${a.risk==='HIGH'?'pill-err':a.risk==='MEDIUM'?'pill-warn':'pill-ok'}">${a.risk||'?'}</span>
+                ${a.source?`<span>${a.source}</span>`:''}
+              </div>
+            </div>
+          </div>
+          <div class="art-actions">
+            <button class="btn-blue btn-xs" onclick="rewriteArticle('${a._id}','${encodeURIComponent(a.title||'')}',this)">✏ Rewrite</button>
+            <button class="btn-danger btn-xs" onclick="deleteArticle('${a._id}','${encodeURIComponent(a.title||'')}')">🗑</button>
+          </div>
+        </div>`).join('')}`:''}
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — CANADA
+// GET /api/canada?all=true → { items: [{_id,type,title,province,active,...}] }
+// POST /api/canada { action:'patch'|'delete'|'ai-write', id, fields }
+// ═══════════════════════════════════════════════════════════════════
+async function renderCanada(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  try{
+    const d = await api('/api/canada?all=true');
+    const items = d.items||[];
+    if(!items.length){
+      el.innerHTML=`<div class="empty">No Canada content yet</div>
+        <button class="btn" style="width:100%;margin-top:16px" onclick="triggerCron('canada',this)">▶ Run Canada Feed</button>`;
+      return;
+    }
+    // Group by type
+    const byType = {};
+    items.forEach(i=>{ const t=i.type||'other'; (byType[t]=byType[t]||[]).push(i); });
+    const typeIcons = {law:'⚖',province:'🍁',article:'📰',ammo:'🎯',alert:'🚨',stat:'📊'};
+
+    el.innerHTML=`
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} items · ${Object.keys(byType).length} types</div>
+      <div class="tabs" id="canada-tabs">
+        ${Object.keys(byType).map((t,i)=>`<button class="tab-btn ${i===0?'active':''}" onclick="setCanadaTab('${t}',this)">${typeIcons[t]||'📄'} ${t} (${byType[t].length})</button>`).join('')}
+      </div>
+      <div id="canada-body"></div>`;
+    window._canadaData = byType;
+    renderCanadaTab(Object.keys(byType)[0]);
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+function setCanadaTab(type, btn){
+  document.querySelectorAll('#canada-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderCanadaTab(type);
+}
+
+function renderCanadaTab(type){
+  const el = document.getElementById('canada-body'); if(!el) return;
+  const items = (window._canadaData||{})[type]||[];
+  el.innerHTML = items.map(item=>`
+    <div class="art-card" id="card-${item._id}">
+      <div class="art-card-top">
+        <div class="art-thumb-ph">${item.active?'🟢':'⭕'}</div>
+        <div class="art-info">
+          <div class="art-title">${item.title||item.name||'—'}</div>
+          <div class="art-meta">
+            <span class="pill ${item.active?'pill-ok':'pill-dim'}">${item.active?'active':'inactive'}</span>
+            ${item.province?`<span class="tag">${item.province}</span>`:''}
+            ${item.type?`<span>${item.type}</span>`:''}
+          </div>
+        </div>
+      </div>
+      <div class="art-actions">
+        <button class="btn btn-xs" onclick="patchCanada('${item._id}',${item.active?'false':'true'},this)">${item.active?'Deactivate':'Activate'}</button>
+        <button class="btn-blue btn-xs" onclick="rewriteArticle('${item._id}','${encodeURIComponent(item.title||'')}',this)">✏ Rewrite</button>
+        <button class="btn-danger btn-xs" onclick="deleteArticle('${item._id}','${encodeURIComponent(item.title||item.name||'')}')">🗑</button>
+      </div>
+    </div>`).join('') || '<div class="empty">No items in this category</div>';
+}
+
+async function patchCanada(id, active, btn){
+  btn.disabled=true;
+  try{
+    await api('/api/canada',{method:'POST',body:JSON.stringify({action:'patch',id,fields:{active}})});
+    flash(`✅ ${active?'Activated':'Deactivated'}`,'ok');
+    // refresh
+    renderCanada(document.getElementById('drawer-content'));
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — BRAZIL
+// GET /api/brazil?all=true → { items: [...] }
+// ═══════════════════════════════════════════════════════════════════
+async function renderBrazil(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  try{
+    const d = await api('/api/brazil?all=true');
+    const items = d.items||d.articles||[];
+    if(!items.length){
+      el.innerHTML=`<div class="empty">No Brasil content yet</div>
+        <button class="btn" style="width:100%;margin-top:16px" onclick="triggerCron('brazil',this)">▶ Run Brasil Feed</button>`;
+      return;
+    }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} items</div>`+
+      items.map(a=>{
+        const isLive=!!(a.publishedAt&&(a.slug?.current||a.slug));
+        return `<div class="art-card" id="card-${a._id}">
+          <div class="art-card-top">
+            <div class="art-thumb-ph">🇧🇷</div>
+            <div class="art-info">
+              <div class="art-title">${a.title||'—'}</div>
+              <div class="art-meta">
+                <span class="pill ${isLive?'pill-ok':'pill-warn'}">${isLive?'live':'draft'}</span>
+                ${a.type?`<span class="tag">${a.type}</span>`:''}
+                ${a.publishedAt?`<span>${new Date(a.publishedAt).toLocaleDateString()}</span>`:''}
+              </div>
+            </div>
+          </div>
+          <div class="art-actions">
+            ${!isLive?`<button class="btn btn-xs" onclick="artAction('${a._id}','news','approve',this)">✓ Publish</button>`:''}
+            <button class="btn-blue btn-xs" onclick="rewriteArticle('${a._id}','${encodeURIComponent(a.title||'')}',this)">✏ Rewrite</button>
+            <button class="btn-danger btn-xs" onclick="deleteArticle('${a._id}','${encodeURIComponent(a.title||'')}')">🗑</button>
+          </div>
+        </div>`;
+      }).join('');
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — COMPETITIONS
+// GET /api/competitions → { matches: [...] }
+// ═══════════════════════════════════════════════════════════════════
+async function renderCompetitions(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
+  try{
+    const d = await api('/api/competitions');
+    const items = d.matches||d.competitions||d.items||[];
+    if(!items.length){
+      el.innerHTML=`<div class="empty">No competition data</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);text-align:center;margin-top:8px">Competitions are auto-populated from USPSA, IDPA, and 3-Gun feeds</div>`;
+      return;
+    }
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} competitions</div>`+
+      items.map(c=>`
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px">${c.name||c.title||'—'}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap">
+            ${c.type?`<span class="tag">${c.type}</span>`:''}
+            ${c.date||c.startDate?`<span>📅 ${new Date(c.date||c.startDate).toLocaleDateString()}</span>`:''}
+            ${c.location?`<span>📍 ${c.location}</span>`:''}
+            ${c.active!==undefined?`<span class="pill ${c.active?'pill-ok':'pill-dim'}">${c.active?'active':'inactive'}</span>`:''}
+          </div>
+        </div>`).join('');
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — DEALS FEED
+// GET /api/deals → deals array (public, no auth needed)
+// ═══════════════════════════════════════════════════════════════════
+async function renderDeals(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Fetching deals...</div>';
+  try{
+    const r = await fetch('/api/deals');
+    const d = await r.json();
+    const deals = d.deals||d.items||[];
+    if(!deals.length){el.innerHTML='<div class="empty">No deals found</div>';return;}
+
+    const bySource = {reddit:0, gunDeals:0, ammoland:0};
+    deals.forEach(x=>{ if(x.source) bySource[x.source]=(bySource[x.source]||0)+1; });
+
+    el.innerHTML=`
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:12px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val">${deals.length}</div><div class="stat-lbl">Total</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.2rem">${bySource.reddit||0}</div><div class="stat-lbl">Reddit</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.2rem">${bySource.gunDeals||bySource.ammoland||0}</div><div class="stat-lbl">Other</div></div>
+      </div>
+      ${deals.slice(0,30).map(deal=>`
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:6px">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;margin-bottom:4px;line-height:1.3">${deal.title||'—'}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+            ${deal.price?`<span style="color:var(--ok);font-weight:700">${deal.price}</span>`:''}
+            ${deal.flair?`<span class="tag">${deal.flair}</span>`:''}
+            ${deal.score?`<span>▲ ${deal.score}</span>`:''}
+            ${deal.source?`<span>${deal.source}</span>`:''}
+          </div>
+          ${deal.url?`<a href="${deal.url}" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--gold);display:inline-block;margin-top:6px">↗ View Deal</a>`:''}
+        </div>`).join('')}
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — SCHEDULE
+// GET /api/admin/schedule → { schedules: [{id,name,cron,lastRun,nextRun,...}] }
+// DELETE /api/admin/schedule { id }
+// ═══════════════════════════════════════════════════════════════════
+async function renderSchedule(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading schedule...</div>';
+  try{
+    const d = await api('/api/admin/schedule');
+    const schedules = d.schedules||[];
+    if(!schedules.length){el.innerHTML='<div class="empty">No schedules found</div>';return;}
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${schedules.length} scheduled items</div>`+
+      schedules.map(s=>`
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+            <div style="flex:1">
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700">${s.name||s.title||s.id||'—'}</div>
+              ${s.articleTitle?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">${s.articleTitle}</div>`:''}
+            </div>
+            <span class="pill ${s.status==='active'||s.enabled?'pill-ok':'pill-dim'}">${s.status||'scheduled'}</span>
+          </div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:10px;flex-wrap:wrap;margin-bottom:8px">
+            ${s.publishAt||s.scheduledAt?`<span>📅 ${new Date(s.publishAt||s.scheduledAt).toLocaleString()}</span>`:''}
+            ${s.cron?`<span>⏱ ${s.cron}</span>`:''}
+            ${s.platform?`<span>📣 ${s.platform}</span>`:''}
+          </div>
+          <div style="display:flex;gap:6px">
+            ${s.slug?`<a href="https://downrangeco.com/news/${s.slug}" target="_blank" class="btn-outline btn-xs">↗ Article</a>`:''}
+            <button class="btn-danger btn-xs" onclick="deleteSchedule('${s._id||s.id}',this)">🗑 Remove</button>
+          </div>
+        </div>`).join('');
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+async function deleteSchedule(id, btn){
+  btn.disabled=true;
+  try{
+    const d = await api('/api/admin/schedule',{method:'DELETE',body:JSON.stringify({id})});
+    if(d.ok){flash('🗑 Schedule removed','info'); btn.closest('div[style*="background:var(--bg2)"]')?.remove();}
+    else flash('❌ '+(d.error||'Failed'),'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// RSS SOURCES — full live version with pause/resume
+// GET /api/admin/content-sources → { sources: {feedType: [{id,name,url,status}]}, counts }
+// POST /api/admin/content-sources { action:'pause'|'resume'|'delete', sourceId, feedType }
+// ═══════════════════════════════════════════════════════════════════
+async function renderRSSources(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading sources...</div>';
+  try{
+    const d = await api('/api/admin/content-sources');
+    const sources = d.sources||{};
+    const counts  = d.counts||{};
+    const allSources = Object.values(sources).flat();
+    const activeCount = allSources.filter(s=>s.status==='active').length;
+    const pausedCount = allSources.filter(s=>s.status==='paused').length;
+
+    el.innerHTML=`
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val">${allSources.length}</div><div class="stat-lbl">Total</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${activeCount}</div><div class="stat-lbl">Active</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${pausedCount}</div><div class="stat-lbl">Paused</div></div>
+      </div>
+      <div class="tabs" id="rss-tabs">
+        ${Object.keys(sources).map((t,i)=>`<button class="tab-btn ${i===0?'active':''}" onclick="setRSSTab('${t}',this)">${t} (${counts[t]?.total||0})</button>`).join('')}
+      </div>
+      <div id="rss-body"></div>`;
+    window._rssSources = sources;
+    renderRSSTab(Object.keys(sources)[0]);
+  }catch(e){
+    // Fallback to static list
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">Static source list</div>`+
+      ['The Firearm Blog','TTAG','Guns.com','NRA-ILA','ATF','SAF','Bearing Arms','AmmoLand',
+       'TheGunFeed','TheGunBlog.ca','NFA Canada','CSSA','GOA','American Rifleman',
+       'Concealed Nation','r/guns','r/firearms','gun.deals']
+      .map(f=>`<div class="row row-last"><span style="font-size:14px">📡</span><div class="row-label">${f}</div><span class="pill pill-ok">Active</span></div>`).join('');
+  }
+}
+
+function setRSSTab(type, btn){
+  document.querySelectorAll('#rss-tabs .tab-btn').forEach(b=>b.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+  renderRSSTab(type);
+}
+
+function renderRSSTab(type){
+  const el = document.getElementById('rss-body'); if(!el) return;
+  const sources = (window._rssSources||{})[type]||[];
+  el.innerHTML = sources.map(s=>`
+    <div style="display:flex;align-items:center;gap:10px;padding:11px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px" id="rss-${s.id}">
+      <span style="font-size:14px">📡</span>
+      <div style="flex:1;min-width:0">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${s.name||s.id}</div>
+        ${s._custom?'<span style="font-family:\'IBM Plex Mono\',monospace;font-size:8px;color:var(--gold)">custom</span>':''}
+      </div>
+      <span class="pill ${s.status==='active'?'pill-ok':s.status==='paused'?'pill-warn':'pill-err'}">${s.status||'active'}</span>
+      <button class="btn-outline btn-xs" onclick="toggleRSSSource('${s.id}','${type}','${s.status==='active'?'pause':'resume'}',this)">${s.status==='active'?'⏸':'▶'}</button>
+    </div>`).join('') || '<div class="empty">No sources in this category</div>';
+}
+
+async function toggleRSSSource(sourceId, feedType, action, btn){
+  btn.disabled=true;
+  try{
+    const d = await api('/api/admin/content-sources',{method:'POST',body:JSON.stringify({action,sourceId,feedType})});
+    if(d.ok){ flash(`✅ Source ${action}d`,'ok'); renderRSSources(document.getElementById('drawer-content')); }
+    else flash('❌ '+(d.error||'Failed'),'err');
+  }catch(e){flash('Error: '+e.message,'err'); btn.disabled=false;}
 }
 
 document.addEventListener('keydown',e=>{
