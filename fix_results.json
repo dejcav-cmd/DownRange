@@ -1,26 +1,5 @@
 {
   "test": "social_posts",
   "overall": "FAIL",
-  "platforms": {
-    "twitter": {
-      "status": "ERROR",
-      "error": "HTTP Error 307: Temporary Redirect"
-    },
-    "bluesky": {
-      "status": "ERROR",
-      "error": "HTTP Error 307: Temporary Redirect"
-    },
-    "threads": {
-      "status": "ERROR",
-      "error": "HTTP Error 307: Temporary Redirect"
-    },
-    "facebook": {
-      "status": "ERROR",
-      "error": "HTTP Error 307: Temporary Redirect"
-    },
-    "reddit": {
-      "status": "ERROR",
-      "error": "HTTP Error 307: Temporary Redirect"
-    }
-  }
+  "platforms": {}
 }
