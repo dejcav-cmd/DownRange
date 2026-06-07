@@ -68,8 +68,14 @@ Return ONLY valid JSON:
 Start with { end with }. No markdown fences.`
   try {
     const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1800 })
-    // Strip any accidental markdown fences
-    const clean = text.split('```json').join('').split('```').join('').trim()
+    // Strip markdown fences and extract JSON robustly
+    let clean = text.split('```json').join('').split('```').join('').trim()
+    // If response starts with prose before JSON, extract the JSON object
+    const jsonStart = clean.indexOf('{')
+    const jsonEnd   = clean.lastIndexOf('}')
+    if (jsonStart > 0 && jsonEnd > jsonStart) {
+      clean = clean.slice(jsonStart, jsonEnd + 1)
+    }
     const parsed = JSON.parse(clean)
     // Ensure body is a string
     if (typeof parsed.body !== 'string') parsed.body = null
