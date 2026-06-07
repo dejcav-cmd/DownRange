@@ -1,8 +1,79 @@
 {
-  "test": "social_twitter_bluesky",
+  "test": "social_sanity_check",
   "overall": "FAIL",
-  "platforms": {},
-  "raw": {
-    "error": "Unauthorized"
+  "total_posts": 10,
+  "by_platform": {
+    "twitter": {
+      "pass": 0,
+      "fail": 3,
+      "samples": [
+        {
+          "status": "posted",
+          "chars": 394,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 365,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 397,
+          "has_fa": false,
+          "has_url": true
+        }
+      ]
+    },
+    "bluesky": {
+      "pass": 0,
+      "fail": 7,
+      "samples": [
+        {
+          "status": "posted",
+          "chars": 207,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 196,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 228,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 271,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 284,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 282,
+          "has_fa": false,
+          "has_url": true
+        },
+        {
+          "status": "posted",
+          "chars": 298,
+          "has_fa": false,
+          "has_url": true
+        }
+      ]
+    }
   }
 }
