@@ -1,5 +1,8 @@
 {
-  "test": "social_posts",
+  "test": "social_twitter_bluesky",
   "overall": "FAIL",
-  "platforms": {}
+  "platforms": {},
+  "raw_response": {
+    "error": "Unauthorized"
+  }
 }
