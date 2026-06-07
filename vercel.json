@@ -157,8 +157,8 @@
       "schedule": "0 */2 * * *"
     },
     {
-      "path": "/api/nics",
-      "schedule": "0 10 1 * *"
+      "path": "/api/cron/fix-slugs",
+      "schedule": "0 4 * * *"
     }
   ],
   "headers": [
