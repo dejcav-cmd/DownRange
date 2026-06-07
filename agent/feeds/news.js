@@ -27,9 +27,9 @@ import crypto from 'crypto'
 import { rewriteWithClaude, isDuplicate, isSanityDuplicate, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage } from '../utils.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
-const CONCURRENCY    = 3    // COST: was 5
-const ITEMS_PER_FEED = 5    // COST: was 10 — enough for 15-min cadence
-const MAX_ITEMS      = 20   // COST: was 60 — runs every 15min, 20 is plenty
+const CONCURRENCY    = 3
+const ITEMS_PER_FEED = 10   // 10 per feed — needed as archive grows and top items dedup
+const MAX_ITEMS      = 50   // 50 total cap — enough to find fresh items across 40+ feeds
 const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────
