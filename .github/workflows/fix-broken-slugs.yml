@@ -8,14 +8,15 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Fix slugs
+      - name: Fix hash slugs + rewrite broken article
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: pip install requests && python3 fix_slugs.py
+          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+        run: pip install requests && python3 scripts/fix_hash_slugs.py
       - name: Save results
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
-          git add fix_results.json
+          git add fix_results.json || true
           git diff --staged --quiet || git commit -m "chore: slug fix results"
-          git push
+          git push || true
