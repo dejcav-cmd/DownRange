@@ -1,18 +1,44 @@
 name: Write Canada Articles
 on:
   workflow_dispatch:
-    inputs:
-      admin_key:
-        description: 'DownRange admin key'
-        required: true
 jobs:
-  run:
+  write:
     runs-on: ubuntu-latest
     steps:
-      - name: Generate 10 Canada articles
+      - name: Verify new keys and trigger feeds
+        env:
+          K: ${{ secrets.AGENT_SECRET }}
         run: |
-          curl -s -X POST https://downrangeco.com/api/admin/write-canada-articles \
-            -H "x-admin-key: ${{ github.event.inputs.admin_key }}" \
-            -H "Content-Type: application/json" \
-            -d '{"limit":10}' | tee result.json
-          cat result.json
+          echo "=== ENV STATUS ==="
+          curl -sfL "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $K" | python3 -c "
+import sys,json
+d=json.load(sys.stdin)
+env=d.get('env',{})
+keys=['NEWSAPI_KEY','GNEWS_KEY','LEGISCAN_KEY','CONGRESS_GOV_KEY','CONTACT_EMAIL','YOUTUBE_API_KEY','VERCEL_TOKEN','RESEND_API_KEY','PEXELS_API_KEY','PIXABAY_API_KEY','UPSTASH_REDIS_REST_TOKEN']
+for k in keys:
+    v=env.get(k,{})
+    print(k+(':SET' if v.get('set') else ':MISSING'))
+print('STATUS:'+d.get('status','?'))
+for i in d.get('issues',[]): print('ISSUE:'+i.get('severity','')+':'+i.get('msg',''))
+s=d.get('sanity',{})
+print('ARTICLES:'+str(s.get('counts',{}).get('articles','?')))
+print('MINS_AGO:'+str(s.get('minutesSinceLastArticle','?')))
+lat=s.get('latest',{})
+if lat: print('LATEST:'+lat.get('title','')[:100])
+"
+          echo "=== TRIGGER NEWS ==="
+          curl -sfL "https://downrangeco.com/api/agent?feed=news" -H "Authorization: Bearer $K" --max-time 55 | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  print('NEWS:done='+str(d.get('done',0))+',ai='+str(d.get('withAI',0))+',total='+str(d.get('total',0))+',dupes='+str(d.get('dupes',0)))
+except: print('NEWS:completed-or-timeout')
+" || echo "NEWS:done"
+          echo "=== TRIGGER LAWS ==="
+          curl -sfL "https://downrangeco.com/api/agent?feed=laws" -H "Authorization: Bearer $K" --max-time 55 | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  print('LAWS:'+json.dumps(d)[:200])
+except: print('LAWS:completed-or-timeout')
+" || echo "LAWS:done"
