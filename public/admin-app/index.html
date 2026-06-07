@@ -204,6 +204,8 @@ img{display:block;}
     <div id="screen-outreach"  class="screen"></div>
     <div id="screen-intel"     class="screen"></div>
     <div id="screen-system"    class="screen"></div>
+    <div id="screen-media"     class="screen"></div>
+    <div id="screen-settings"  class="screen"></div>
   </div>
 </div>
 
@@ -329,9 +331,10 @@ const SECTIONS=[
     {id:'breaking',l:'Breaking Alerts',i:'🔴'},{id:'newsletter',l:'Newsletter',i:'📧'},
   ]},
   {id:'intel',label:'Intelligence',icon:'🧠',panels:[
-    {id:'briefings',l:'Briefings',i:'🧠'},{id:'statelaws',l:'State Laws',i:'🗺'},
-    {id:'copyright',l:'Copyright Scan',i:'⚖'},{id:'sysalerts',l:'System Alerts',i:'🚨'},
-    {id:'pulllog',l:'Pull Log',i:'📡'},{id:'deals',l:'Deals Feed',i:'🔥'},
+    {id:'briefings',l:'Briefings',i:'🧠'},{id:'marketbrief',l:'Market Brief',i:'📊',b:'live'},
+    {id:'statelaws',l:'State Laws',i:'🗺'},{id:'copyright',l:'Copyright Scan',i:'⚖'},
+    {id:'sysalerts',l:'System Alerts',i:'🚨'},{id:'pulllog',l:'Pull Log',i:'📡'},
+    {id:'deals',l:'Deals Feed',i:'🔥'},
   ]},
   {id:'system',label:'System',icon:'⚙️',panels:[
     {id:'overview',l:'System Overview',i:'◈'},{id:'crons',l:'Cron Jobs',i:'⏱'},
@@ -347,8 +350,11 @@ const SECTIONS=[
     {id:'imgsearch',l:'Image Search',i:'🔍'},{id:'social',l:'Social Media',i:'📣'},
   ]},
   {id:'settings',label:'Settings',icon:'⚙️',panels:[
-    {id:'aikeys',l:'API Keys',i:'🔑'},{id:'envcheck',l:'Env Vars',i:'🔧'},
-    {id:'emailtest',l:'Email Test',i:'✉'},{id:'signout',l:'Sign Out',i:'🚪'},
+    {id:'aikeys',l:'API Keys',i:'🔑'},{id:'costs',l:'Cost Center',i:'💰'},
+    {id:'siteconfig',l:'Site Settings',i:'⚙'},{id:'alertconfig',l:'Alert Config',i:'🚨'},
+    {id:'envcheck',l:'Env Vars',i:'🔧'},{id:'emailtest',l:'Email Test',i:'✉'},
+    {id:'report',l:'Portal Report',i:'📧'},{id:'backup',l:'Backup',i:'📦'},
+    {id:'lockall',l:'Lock All',i:'🔒'},{id:'signout',l:'Sign Out',i:'🚪'},
   ]},
 ];
 
@@ -375,6 +381,9 @@ function openPanel(id,label){
     contacts:renderContacts,queue:renderQueue,history:renderHistory,
     videos:renderVideos,channels:renderChannels,
     aikeys:renderAPIKeys,envcheck:renderEnvCheck,emailtest:renderEmailTest,
+    costs:renderCostCenter,siteconfig:renderSiteSettings,alertconfig:renderAlertConfig,
+    report:renderPortalReport,backup:renderBackup,lockall:renderLockAll,
+    marketbrief:renderMarketBrief,
     copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,
     pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,
   };
@@ -389,12 +398,13 @@ function initApp(){
   renderScreen('dashboard'); screenInited.dashboard=true;
   api('/api/admin/cron-health').then(d=>{
     const s=document.getElementById('topbar-status');
-    if(s){s.style.color=d.status==='ok'?'var(--ok)':'var(--warn)';s.textContent='●';}
+    const ok=d.status==='HEALTHY'||d.status==='ok';
+    if(s){s.style.color=ok?'var(--ok)':d.status==='BROKEN'?'var(--err)':'var(--warn)';s.textContent='●';}
   }).catch(()=>{});
 }
 function renderScreen(s){
   const el=document.getElementById('screen-'+s); if(!el)return;
-  const m={dashboard:renderDashboard,content:renderContent,outreach:renderOutreachScreen,intel:renderIntelScreen,system:renderSystemScreen};
+  const m={dashboard:renderDashboard,content:renderContent,outreach:renderOutreachScreen,intel:renderIntelScreen,system:renderSystemScreen,settings:renderSettingsHub,media:renderMediaScreen};
   m[s]?.(el);
 }
 
@@ -421,6 +431,8 @@ async function renderDashboard(el){
       <button class="qa-btn" onclick="openPanel('agents','Content Agents')"><span class="qa-icon">🤖</span><span class="qa-label">AI Agents</span></button>
       <button class="qa-btn" onclick="openPanel('copyright','Copyright Scan')"><span class="qa-icon">⚖</span><span class="qa-label">Copyright</span></button>
       <button class="qa-btn" onclick="openPanel('imgsearch','Image Search')"><span class="qa-icon">🔍</span><span class="qa-label">Image Search</span></button>
+      <button class="qa-btn" onclick="openPanel('deployments','Deployments')"><span class="qa-icon">▲</span><span class="qa-label">Deployments</span></button>
+      <button class="qa-btn" onclick="openPanel('backup','Backup')"><span class="qa-icon">📦</span><span class="qa-label">Backup</span></button>
     </div>
     <div class="divider"></div>
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Run Feed Now</div>
@@ -1875,6 +1887,440 @@ async function toggleRSSSource(sourceId, feedType, action, btn){
     if(d.ok){ flash(`✅ Source ${action}d`,'ok'); renderRSSources(document.getElementById('drawer-content')); }
     else flash('❌ '+(d.error||'Failed'),'err');
   }catch(e){flash('Error: '+e.message,'err'); btn.disabled=false;}
+}
+
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — SOCIAL MEDIA COMMAND CENTER (config + analytics + log)
+// ═══════════════════════════════════════════════════════════════════
+async function renderSocialLog(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const [logD, cfgD, anaD] = await Promise.all([
+      api('/api/social/log?limit=50'),
+      api('/api/social/config'),
+      api('/api/social/analytics'),
+    ]);
+    const posts      = logD.posts||[];
+    const stats      = logD.stats||{};
+    const config     = cfgD.config||{};
+    const configured = cfgD.configured||{};
+    const totals     = anaD.totals||{};
+
+    const PLAT_ICONS = {twitter:'𝕏',bluesky:'🦋',facebook:'f',threads:'@',instagram:'📸',reddit:'🤖'};
+
+    el.innerHTML=`
+      <!-- Platform status -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Platforms</div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+        ${Object.entries(configured).map(([p,ok])=>`
+          <div style="display:flex;align-items:center;gap:6px;padding:8px 12px;background:var(--bg2);border:1px solid ${ok?'rgba(34,197,94,.3)':'var(--border)'};flex:1;min-width:80px">
+            <span style="font-size:16px">${PLAT_ICONS[p]||'📣'}</span>
+            <div>
+              <div style="font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;text-transform:capitalize">${p}</div>
+              <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:${ok?'var(--ok)':'var(--err)'}">${ok?'connected':'not set'}</div>
+            </div>
+          </div>`).join('')}
+      </div>
+
+      <!-- Analytics totals -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Analytics (All Time)</div>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.3rem">${fmtN(totals.impressions||0)}</div><div class="stat-lbl">Impressions</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.3rem">${fmtN(totals.likes||0)}</div><div class="stat-lbl">Likes</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.3rem">${fmtN(totals.reposts||0)}</div><div class="stat-lbl">Reposts</div></div>
+      </div>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val">${stats.total||0}</div><div class="stat-lbl">Posted</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${stats.posted||stats.success||0}</div><div class="stat-lbl">Today</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${stats.failed||0}</div><div class="stat-lbl">Failed</div></div>
+      </div>
+
+      <!-- Refresh analytics -->
+      <button class="btn-outline" style="width:100%;margin-bottom:16px" onclick="refreshSocialAnalytics(this)">🔄 Refresh Analytics</button>
+
+      <!-- Post log -->
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Recent Posts (${posts.length})</div>
+      ${posts.map(p=>`
+        <div style="background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:6px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:5px">
+            <span class="pill ${p.status==='posted'?'pill-ok':p.status==='failed'?'pill-err':'pill-warn'}">${p.status||'?'}</span>
+            <span style="font-size:14px">${PLAT_ICONS[p.platform]||'📣'}</span>
+            <span style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${p.articleTitle||'—'}</span>
+            <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">${p.postedAt?fmtAgo(new Date(p.postedAt).getTime()):''}</span>
+          </div>
+          ${p.content?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);line-height:1.5;overflow:hidden;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical">${p.content}</div>`:''}
+          ${p.error?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);margin-top:4px">${p.error}</div>`:''}
+          <div style="display:flex;gap:6px;margin-top:6px">
+            ${p.postUrl?`<a href="${p.postUrl}" target="_blank" class="btn-outline btn-xs">↗ View</a>`:''}
+            ${p.metrics?`<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">👁 ${p.metrics.impressions||0} · ❤ ${p.metrics.likes||0}</span>`:''}
+          </div>
+        </div>`).join('')}
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+async function refreshSocialAnalytics(btn){
+  btn.disabled=true; btn.textContent='⏳ Refreshing...';
+  try{
+    const d = await api('/api/social/analytics?refresh=1');
+    flash(d.ok?`✅ Updated ${d.refreshed||0} posts`:'❌ '+(d.error||'Failed'), d.ok?'ok':'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false; btn.textContent='🔄 Refresh Analytics';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — SITE SETTINGS (author bio + urgency threshold + nav config)
+// ═══════════════════════════════════════════════════════════════════
+async function renderSiteSettings(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const [site, nav] = await Promise.all([
+      api('/api/admin/site-config'),
+      api('/api/admin/nav-config'),
+    ]);
+    el.innerHTML=`
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Author Bio</div>
+      <textarea id="author-bio" class="inp" rows="4" style="resize:vertical;margin-bottom:8px">${site.authorBio||''}</textarea>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:12px">Last updated: ${site.authorBioUpdatedAt?new Date(site.authorBioUpdatedAt).toLocaleDateString():'never'}</div>
+      <button class="btn" style="width:100%;margin-bottom:20px" onclick="saveBio(this)">Save Bio</button>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Breaking Alert Threshold</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">Urgency score (1-10) required to auto-publish a breaking alert</div>
+      <input id="urgency-thresh" class="inp" type="number" min="1" max="10" value="${site.breakingUrgencyThreshold||8}" style="margin-bottom:8px">
+      <button class="btn-outline" style="width:100%;margin-bottom:20px" onclick="saveUrgencyThreshold(this)">Save Threshold</button>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Nav Hidden Items</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${(nav.hiddenItems||[]).length} items hidden from nav</div>
+      ${(nav.hiddenItems||[]).length?
+        (nav.hiddenItems||[]).map(item=>`<div class="row row-last"><div class="row-label code">${item}</div><button class="btn-outline btn-xs" onclick="unhideNav('${item}',this)">Show</button></div>`).join('')
+        :'<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--ok)">All nav items visible ✓</div>'}
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+async function saveBio(btn){
+  const bio=document.getElementById('author-bio')?.value?.trim();
+  if(!bio||bio.length<20){flash('Bio must be at least 20 chars','err');return;}
+  btn.disabled=true;btn.textContent='⏳';
+  try{
+    const d=await api('/api/admin/site-config',{method:'POST',body:JSON.stringify({authorBio:bio})});
+    flash(d.ok?'✅ Bio saved':'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='Save Bio';
+}
+
+async function saveUrgencyThreshold(btn){
+  const val=parseInt(document.getElementById('urgency-thresh')?.value)||8;
+  btn.disabled=true;btn.textContent='⏳';
+  try{
+    const d=await api('/api/admin/site-config',{method:'POST',body:JSON.stringify({breakingUrgencyThreshold:val})});
+    flash(d.ok?`✅ Threshold set to ${val}`:'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='Save Threshold';
+}
+
+async function unhideNav(item,btn){
+  btn.disabled=true;
+  try{
+    const d=await api('/api/admin/nav-config');
+    const current=(d.hiddenItems||[]).filter(x=>x!==item);
+    await api('/api/admin/nav-config',{method:'POST',body:JSON.stringify({hiddenItems:current})});
+    flash(`✅ ${item} shown`,'ok');
+    renderSiteSettings(document.getElementById('drawer-content'));
+  }catch(e){flash('Error: '+e.message,'err');btn.disabled=false;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — AI COST CENTER (live spend + projections + model tiers)
+// ═══════════════════════════════════════════════════════════════════
+async function renderCostCenter(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/ai-costs');
+    const live=d.live||{};
+    const proj=d.projections||{};
+    const tiers=d.tiers||{};
+    const hist=d.historical||[];
+    const today=live.today||{};
+
+    el.innerHTML=`
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Today's Spend</div>
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
+        <div class="stat-box" style="text-align:center">
+          <div class="stat-val" style="color:var(--gold)">$${(live.todayUsd||0).toFixed(4)}</div>
+          <div class="stat-lbl">Today USD</div>
+        </div>
+        <div class="stat-box" style="text-align:center">
+          <div class="stat-val">${live.todayCalls||0}</div>
+          <div class="stat-lbl">API Calls</div>
+        </div>
+        <div class="stat-box" style="text-align:center">
+          <div class="stat-val" style="font-size:1.2rem;color:var(--warn)">$${(proj.monthly||0).toFixed(2)}</div>
+          <div class="stat-lbl">Proj. Monthly</div>
+        </div>
+        <div class="stat-box" style="text-align:center">
+          <div class="stat-val" style="font-size:1.2rem;color:var(--ok)">$${(proj.savedVsSonnet||0).toFixed(2)}</div>
+          <div class="stat-lbl">Saved vs Sonnet</div>
+        </div>
+      </div>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">By Model Tier</div>
+      ${Object.entries(today).map(([tier,v])=>{
+        const maxUsd=Math.max(...Object.values(today).map(x=>x.usd||0),0.0001);
+        const pct=Math.round(((v.usd||0)/maxUsd)*100);
+        return `<div style="margin-bottom:8px">
+          <div style="display:flex;justify-content:space-between;font-family:'IBM Plex Mono',monospace;font-size:9px;margin-bottom:3px">
+            <span style="color:var(--text)">${tier} <span style="color:var(--dim)">(${tiers[tier]?.model||''})</span></span>
+            <span style="color:var(--gold)">$${(v.usd||0).toFixed(5)} · ${v.calls||0} calls</span>
+          </div>
+          <div style="height:5px;background:var(--bg3)"><div style="height:100%;background:var(--gold);width:${pct}%"></div></div>
+        </div>`;
+      }).join('')}
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">Model Tiers</div>
+      ${Object.entries(tiers).map(([tier,t])=>`
+        <div class="row row-last">
+          <div style="flex:1">
+            <div class="row-label">${tier.toUpperCase()} — ${t.model}</div>
+            <div class="row-sub">${t.costPer1k} per 1k tokens</div>
+          </div>
+        </div>`).join('')}
+
+      ${hist.length?`
+        <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:16px 0 8px">History (${hist.length} entries)</div>
+        ${hist.slice(0,7).map(h=>`<div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:9px">
+          <span style="color:var(--dim)">${h.date||h.ts||'?'}</span>
+          <span style="color:var(--gold)">$${(h.usd||h.totalUsd||0).toFixed(4)}</span>
+          <span style="color:var(--dim2)">${h.calls||0} calls</span>
+        </div>`).join('')}`:''}
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — MARKET BRIEF (investment intelligence)
+// ═══════════════════════════════════════════════════════════════════
+async function renderMarketBrief(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/market-brief-list');
+    const briefs=d.briefs||[];
+    el.innerHTML=`
+      <button class="btn" style="width:100%;margin-bottom:16px" onclick="triggerCron('market',this)">📊 Generate New Brief</button>
+      ${!briefs.length?'<div class="empty">No market briefs yet</div>':
+        briefs.map(b=>`
+          <div style="background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+              <span class="pill ${b.signal==='BULLISH'?'pill-ok':b.signal==='BEARISH'?'pill-err':'pill-warn'}">${b.signal||'NEUTRAL'}</span>
+              <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;flex:1">${b.title||'Market Brief'}</span>
+              <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${b.publishedAt?new Date(b.publishedAt).toLocaleDateString():''}</span>
+            </div>
+            ${b.summary?`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim2);line-height:1.6;margin-bottom:8px">${b.summary.slice(0,200)}…</div>`:''}
+            ${b.bullets?.length?`<ul style="margin:0;padding-left:16px">${b.bullets.slice(0,3).map(x=>`<li style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:2px">${x}</li>`).join('')}</ul>`:''}
+            ${b.signalReason?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-top:6px;font-style:italic">${b.signalReason}</div>`:''}
+          </div>`).join('')}`;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — BACKUP & RESTORE
+// ═══════════════════════════════════════════════════════════════════
+async function renderBackup(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/backup');
+    const manifest=d.manifest||{};
+    const counts=d.counts||manifest.counts||{};
+    const totalDocs=d.totalDocs||manifest.totalDocs||Object.values(counts).reduce((s,v)=>s+v,0);
+
+    el.innerHTML=`
+      <div style="padding:14px;background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);margin-bottom:16px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold);margin-bottom:4px">LAST BACKUP</div>
+        <div style="font-family:'Bebas Neue',cursive;font-size:1.4rem">${totalDocs} documents</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${manifest.timestamp?new Date(manifest.timestamp).toLocaleString():new Date().toLocaleString()} · ${d.sizeKB||0}KB</div>
+      </div>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Document Counts</div>
+      ${Object.entries(counts).map(([type,count])=>`
+        <div style="display:flex;justify-content:space-between;align-items:center;padding:7px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:3px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--text)">${type}</span>
+          <span style="font-family:'Bebas Neue',cursive;font-size:1.1rem;color:var(--gold)">${count}</span>
+        </div>`).join('')}
+
+      <div class="divider"></div>
+      <button class="btn" id="backup-btn" style="width:100%" onclick="runBackup(this)">📦 Run Backup Now</button>
+      <div id="backup-result" style="margin-top:8px"></div>
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error loading backup data<br><br><button class="btn" onclick="runBackup(this)">📦 Run Backup Now</button><div id="backup-result" style="margin-top:8px"></div></div>`;}
+}
+
+async function runBackup(btn){
+  btn.disabled=true;btn.textContent='⏳ Backing up...';
+  flash('⏳ Running full Sanity backup...','info');
+  try{
+    const d=await api('/api/admin/backup');
+    const res=document.getElementById('backup-result');
+    if(res) res.innerHTML=`<div style="padding:10px;background:rgba(34,197,94,.08);border:1px solid var(--ok);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ok)">✅ ${d.totalDocs||0} docs · ${d.sizeKB||0}KB · ${d.ms||0}ms</div>`;
+    flash(`✅ Backup complete — ${d.totalDocs||0} documents`,'ok');
+    renderBackup(document.getElementById('drawer-content'));
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='📦 Run Backup Now';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — PORTAL REPORT (send email digest)
+// ═══════════════════════════════════════════════════════════════════
+async function renderPortalReport(el){
+  el.innerHTML=`
+    <div style="padding:16px;background:var(--bg2);border:1px solid var(--border);margin-bottom:16px">
+      <div style="font-family:'Bebas Neue',cursive;font-size:1.4rem;margin-bottom:6px">Intelligence Briefing Email</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);line-height:1.6">Sends a full intelligence digest to dejcav@gmail.com — includes top news, market brief, state law updates, and system status.</div>
+    </div>
+    <button class="btn" style="width:100%;margin-bottom:8px" id="report-btn" onclick="sendPortalReport(this)">📧 Send Portal Report</button>
+    <div id="report-result"></div>
+  `;
+}
+
+async function sendPortalReport(btn){
+  btn.disabled=true;btn.textContent='⏳ Sending...';
+  try{
+    const d=await api('/api/admin/send-portal-report');
+    const res=document.getElementById('report-result');
+    if(res) res.innerHTML=`<div style="padding:10px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};font-family:'IBM Plex Mono',monospace;font-size:10px;color:${d.ok?'var(--ok)':'var(--err)'}">${d.ok?'✅ Report sent successfully':'❌ '+(d.error||'Failed')}</div>`;
+    flash(d.ok?'✅ Portal report sent':'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='📧 Send Portal Report';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — LOCK ALL (bulk content lock/unlock)
+// ═══════════════════════════════════════════════════════════════════
+async function renderLockAll(el){
+  el.innerHTML=`
+    <div style="padding:14px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.2);margin-bottom:16px">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err);margin-bottom:4px">⚠ BULK OPERATION</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);line-height:1.6">Lock or unlock all content of a given type. Locked content cannot be edited in Sanity Studio without unlocking first.</div>
+    </div>
+
+    <div class="form-row"><span class="lbl">Content Type</span>
+      <select id="lock-type" class="inp">
+        <option value="newsArticle">News Articles</option>
+        <option value="blogPost">Blog Posts</option>
+        <option value="firearmRelease">Firearm Releases</option>
+        <option value="socialPost">Social Posts</option>
+      </select>
+    </div>
+    <div style="display:flex;gap:8px">
+      <button class="btn" style="flex:1" onclick="runLockAll(true,this)">🔒 Lock All</button>
+      <button class="btn-outline" style="flex:1" onclick="runLockAll(false,this)">🔓 Unlock All</button>
+    </div>
+    <div id="lock-result" style="margin-top:12px"></div>
+  `;
+}
+
+async function runLockAll(lock, btn){
+  const type=document.getElementById('lock-type')?.value;
+  if(!type) return;
+  showModal(
+    lock?'Lock All Content':'Unlock All Content',
+    `${lock?'Lock':'Unlock'} ALL <strong>${type}</strong> documents?${lock?' This prevents editing in Sanity Studio.':''}`,
+    `<button class="${lock?'btn-danger':'btn'}" style="flex:1" onclick="confirmLockAll('${type}',${lock},this)">Confirm ${lock?'Lock':'Unlock'}</button>
+     <button class="btn-outline" style="flex:1" onclick="closeModal()">Cancel</button>`
+  );
+}
+
+async function confirmLockAll(type, lock, btn){
+  closeModal(); btn.disabled=true;
+  flash(`⏳ ${lock?'Locking':'Unlocking'} all ${type}...`,'info');
+  try{
+    const d=await api('/api/admin/lock-all',{method:'POST',body:JSON.stringify({type,lock})});
+    const res=document.getElementById('lock-result');
+    if(res) res.innerHTML=`<div style="padding:10px;background:${d.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)'};border:1px solid ${d.ok?'var(--ok)':'var(--err)'};font-family:'IBM Plex Mono',monospace;font-size:10px;color:${d.ok?'var(--ok)':'var(--err)'}">${d.ok?`✅ ${lock?'Locked':'Unlocked'} ${d.updated||0} documents`:'❌ '+(d.error||'Failed')}</div>`;
+    flash(d.ok?`✅ ${d.updated||0} docs ${lock?'locked':'unlocked'}`:'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — ALERT CONFIG (email alerts configuration)
+// ═══════════════════════════════════════════════════════════════════
+async function renderAlertConfig(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/alert-config');
+    const cfg=d.config||{};
+    el.innerHTML=`
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:16px;line-height:1.6">Configure when DownRange sends system alert emails to dejcav@gmail.com</div>
+
+      <div class="form-row"><span class="lbl">Alert Email</span>
+        <input id="alert-email" class="inp" type="email" value="${cfg.email||'dejcav@gmail.com'}">
+      </div>
+      <div class="form-row"><span class="lbl">Failure Threshold (consecutive fails before alert)</span>
+        <input id="alert-threshold" class="inp" type="number" min="1" max="10" value="${cfg.failThreshold||3}">
+      </div>
+
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Alert Types</div>
+      ${['cronFailed','cronOverdue','sanityUnreachable','lowArticleCount'].map(key=>`
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 12px;background:var(--bg2);border:1px solid var(--border);margin-bottom:4px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px">${key}</span>
+          <button class="pill ${cfg[key]!==false?'pill-ok':'pill-dim'}" id="alert-toggle-${key}" onclick="toggleAlertType('${key}',this)">${cfg[key]!==false?'ON':'OFF'}</button>
+        </div>`).join('')}
+
+      <div class="divider"></div>
+      <button class="btn" style="width:100%" onclick="saveAlertConfig(this)">Save Alert Config</button>
+    `;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+function toggleAlertType(key, btn){
+  const isOn = btn.textContent.trim()==='ON';
+  btn.textContent = isOn?'OFF':'ON';
+  btn.className = `pill ${isOn?'pill-dim':'pill-ok'}`;
+  if(!window._alertCfgOverrides) window._alertCfgOverrides={};
+  window._alertCfgOverrides[key] = !isOn;
+}
+
+async function saveAlertConfig(btn){
+  btn.disabled=true;btn.textContent='⏳';
+  try{
+    const overrides=window._alertCfgOverrides||{};
+    const config={
+      email: document.getElementById('alert-email')?.value||'dejcav@gmail.com',
+      failThreshold: parseInt(document.getElementById('alert-threshold')?.value)||3,
+      ...overrides,
+    };
+    const d=await api('/api/admin/alert-config',{method:'POST',body:JSON.stringify({config})});
+    flash(d.ok?'✅ Alert config saved':'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false;btn.textContent='Save Alert Config';
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — SETTINGS SCREEN (hub for all config panels)
+// ═══════════════════════════════════════════════════════════════════
+function renderSettingsHub(el){
+  el.innerHTML=`<div class="section-title">Settings</div><div class="section-sub">Configuration & tools</div>`+
+    [{id:'aikeys',i:'🔑',l:'API Keys',s:'Integration key status'},
+     {id:'costs',i:'💰',l:'Cost Center',s:'AI spend tracking & projections'},
+     {id:'siteconfig',i:'⚙',l:'Site Settings',s:'Author bio, thresholds, nav'},
+     {id:'alertconfig',i:'🚨',l:'Alert Config',s:'System alert email settings'},
+     {id:'envcheck',i:'🔧',l:'Env Vars',s:'Variable audit'},
+     {id:'emailtest',i:'✉',l:'Email Test',s:'Test delivery'},
+     {id:'report',i:'📧',l:'Portal Report',s:'Send intelligence digest'},
+     {id:'backup',i:'📦',l:'Backup',s:'Full Sanity backup'},
+     {id:'lockall',i:'🔒',l:'Lock All',s:'Bulk content lock/unlock'},
+     {id:'signout',i:'🚪',l:'Sign Out',s:''}]
+    .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div>${p.s?`<div class="row-sub">${p.s}</div>`:''}</div><span style="color:var(--dim)">›</span></div>`).join('');
+}
+
+
+function renderMediaScreen(el){
+  el.innerHTML=`<div class="section-title">Media</div><div class="section-sub">Videos, images & social</div>`+
+    [{id:'videos',i:'▶',l:'Videos',s:'YouTube content cache'},
+     {id:'channels',i:'📺',l:'Channels',s:'YouTube channel config'},
+     {id:'imgsearch',i:'🔍',l:'Image Search',s:'Pexels + Pixabay finder'},
+     {id:'social',i:'📣',l:'Social Media',s:'Post log + analytics + platforms'}]
+    .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
 }
 
 document.addEventListener('keydown',e=>{
