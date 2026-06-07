@@ -2,7 +2,7 @@
   "test": "social_twitter_bluesky",
   "overall": "FAIL",
   "platforms": {},
-  "raw_response": {
+  "raw": {
     "error": "Unauthorized"
   }
 }
