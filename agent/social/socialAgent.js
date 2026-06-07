@@ -39,12 +39,24 @@ function getImage(article) {
 //   That's enough for 2-3 meaty sentences if written tightly.
 //
 // Platform character budgets (body text only, URL/hashtags appended separately):
+// Character limits per platform (body copy only — footer appended separately)
+// Footer format: "\n\nFull article: <url>" + optional hashtags
+// URL on downrangeco.com averages ~55 chars. "Full article: " = 14 chars.
+// Twitter: 280 total. t.co wraps URLs to 23 chars. "Full article: " + t.co = 37.
+//   280 - 37 (footer URL) - 2 (newlines) - 55 (hashtags) - 5 (safety) = 181
+// Bluesky: 300 graphemes total. URL counts as full length (no shortening).
+//   300 - 14 ("Full article: ") - 55 (url) - 2 (newlines) - 9 (safety) = 220
+// Threads: 500 chars. 
+//   500 - 14 - 55 - 2 - 55 (hashtags) - 4 (safety) = 370
+// Facebook: No hard limit — keep focused.
+//   800 soft target - 14 - 55 - 2 = 729 max, cap at 600 for quality
+// Reddit: title only, no footer needed in body budget.
 const CHAR_BUDGETS = {
-  twitter:  200,  // 280 total - 23 (t.co URL) - 55 (hashtags) - 2 (newlines)
-  bluesky:  220,  // 300 GRAPHEME limit - 65 (URL worst case) - 2 (newlines) - 13 (safety)
-  threads:  430,  // 500 limit - 50 (URL) - 20 (newlines)
-  facebook: 450,  // No hard limit; keep focused
-  reddit:   250,  // Title-only post; this is the title
+  twitter:  175,  // 280 total - 37 (Full article: + t.co) - 2 (\n) - 55 (tags) - 11 (safety)
+  bluesky:  215,  // 300 grapheme limit - 14 - 55 - 2 - 14 (safety)
+  threads:  360,  // 500 limit - 14 - 55 - 2 - 55 (tags) - 14 (safety)
+  facebook: 580,  // soft cap for quality, well under any limit
+  reddit:   250,  // post title only
 }
 
 const HASHTAGS = {
@@ -69,8 +81,10 @@ const PLATFORM_PROMPTS = {
 - Use 2-3 emojis woven into the text naturally (not just at the start)
 - Be specific: name the state, the court, the ATF rule number, the gun model
 - DO NOT include the URL or hashtags — added automatically
+- DO NOT add "Full article:" — added automatically below the copy
 - Example of GOOD copy: "🚨 New Jersey just authorized warrantless gun seizures — no crime needed, just a 'tip.' A federal court already blocked this. State police are defying the order. 🔫 This is where it starts."
-- Example of BAD copy (too vague/short): "Big 2A news from NJ. Courts involved. Read more."`,
+- Example of BAD copy (too vague/short): "Big 2A news from NJ. Courts involved. Read more."
+- BAD: ending with "Read more at DownRange" — the footer handles that`,
 
   bluesky: `BLUESKY POST RULES:
 - Copy budget: 220 characters MAX for the body text (URL is appended separately)
@@ -123,7 +137,8 @@ async function generateCopy(article, platform, contentType) {
     `TITLE: ${article.title}`,
     summary ? `SUMMARY: ${summary.slice(0, 400)}` : '',
     `CATEGORY: ${article.category || 'news'}`,
-    `TYPE: ${contentType === 'blog' ? 'Analysis / Blog' : 'Breaking News'}`,
+    `TYPE: ${contentType === 'blog' ? 'DownRange Analysis / Blog' : 'Breaking News from DownRange'}`,
+    article.source ? `SOURCE: ${article.source} (original reporting — DownRange portal link added in footer)` : '',
     article.urgencyScore >= 8 ? `URGENCY: HIGH (${article.urgencyScore}/10) — treat as breaking` : '',
   ].filter(Boolean).join('\n')
 
@@ -151,13 +166,23 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
   // Grapheme-aware truncation
   // For Bluesky: the 300 grapheme limit applies to the ENTIRE post including URL
   // We must enforce this on the full assembled string, not just the body
-  const suffix = `\n\n${url}${tags}`
+  // Footer: "Full article: <url>" on all platforms (clearly labels the portal link)
+  // Source attribution shown when article has a known external source
+  const sourceLabel = article.source && !['DownRange','downrangeco.com'].includes(article.source)
+    ? ` (via ${article.source})`
+    : ''
+  const suffix = `\n\nFull article: ${url}${sourceLabel}${tags}`
 
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
     const segmenter = new Intl.Segmenter()
     // Count graphemes in suffix to know how many body graphemes we can use
     const suffixGraphemes = [...segmenter.segment(suffix)].length
-    const bodyLimit = (platform === 'bluesky' ? 298 : budget * 2) - suffixGraphemes
+    // Bluesky: hard 300 grapheme limit on entire post (body + footer)
+    // Give 2 grapheme safety margin → 298 total; subtract suffix graphemes = body budget
+    const platformLimit = platform === 'bluesky' ? 298 : 
+                          platform === 'twitter'  ? 275 :  // 280 - 5 safety (t.co wraps URL)
+                          9999  // no hard grapheme limit for others
+    const bodyLimit = platformLimit - suffixGraphemes
     const bodyGraphemes = [...segmenter.segment(body)].map(s => s.segment)
     if (bodyGraphemes.length > bodyLimit) {
       body = bodyGraphemes.slice(0, bodyLimit - 1).join('') + '…'
