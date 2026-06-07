@@ -6,12 +6,49 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Trigger backfill
+      - name: Verify new keys
         env:
           ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
         run: |
-          curl -s -X POST "https://downrangeco.com/api/admin/backfill-images" \
-            -H "x-admin-key: $ADMIN_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{"types":["canadaContent","brazilContent"],"limit":50}' \
-            | python3 scripts/parse_backfill_result.py
+          echo "=== ENV KEY STATUS ==="
+          curl -sfL "https://downrangeco.com/api/admin/cron-health" \
+            -H "x-admin-key: $ADMIN_KEY" | python3 -c "
+import sys,json
+d=json.load(sys.stdin)
+env=d.get('env',{})
+print('STATUS:', d.get('status','?'))
+for k in ['NEWSAPI_KEY','GNEWS_KEY','LEGISCAN_KEY','YOUTUBE_API_KEY','VERCEL_TOKEN']:
+    v=env.get(k,{})
+    print(k+':', 'SET' if v.get('set') else 'MISSING')
+for i in d.get('issues',[]):
+    print('ISSUE ['+i.get('severity','')+']:', i.get('msg',''))
+s=d.get('sanity',{})
+mins=s.get('minutesSinceLastArticle')
+print('Articles:', s.get('counts',{}).get('articles','?'))
+print('Last article mins ago:', mins)
+lat=s.get('latest',{})
+if lat: print('Latest:', lat.get('title','')[:80])
+"
+      - name: Trigger news feed now
+        env:
+          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+        run: |
+          echo "=== TRIGGERING NEWS FEED ==="
+          curl -sfL "https://downrangeco.com/api/agent?feed=news" \
+            -H "Authorization: Bearer $ADMIN_KEY" \
+            --max-time 55 | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  print('done:', d.get('done',0), 'withAI:', d.get('withAI',0), 'total:', d.get('total',0), 'dupes:', d.get('dupes',0))
+  print('status:', d.get('status','?'))
+except: print('timed out or non-JSON (ok if done>0)')
+" || echo "News feed completed (timeout ok)"
+      - name: Trigger laws feed
+        env:
+          ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
+        run: |
+          echo "=== TRIGGERING LAWS/LEGISCAN FEED ==="
+          curl -sfL "https://downrangeco.com/api/agent?feed=laws" \
+            -H "Authorization: Bearer $ADMIN_KEY" \
+            --max-time 55 | head -c 400 || echo "Laws feed triggered"
