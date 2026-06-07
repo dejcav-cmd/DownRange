@@ -1,49 +1,49 @@
 {
   "sample": [
     {
-      "_id": "news-46ca3c9d0d339a59190cc17945672600",
+      "_id": "news-18829626f1b3c116b79c9e70c188d4ad",
       "slug": {
         "_type": "slug",
-        "current": "potd-glock-clone-the-norinco-np7a"
+        "current": "right-to-repair-youtube-star-takes-on-the-man-behind-3d-printing-bans-188296"
       },
-      "slug_current": "potd-glock-clone-the-norinco-np7a",
-      "title": "Norinco's NP7A Copies Glock 17 Design, Drastically Undercuts U.S. Pricing"
+      "slug_current": "right-to-repair-youtube-star-takes-on-the-man-behind-3d-printing-bans-188296",
+      "title": "YouTube Repair Advocate Targets 3D Printing Gun Ban Architects"
     },
     {
-      "_id": "news-0272f4a09bf387791d3ce3076d972c3d",
+      "_id": "news-4131f632f4682e5e47da2699368ed749",
       "slug": {
         "_type": "slug",
-        "current": "tactical-youtube-is-getting-hammered-here-s-why"
+        "current": "federal-6-5-creedmoor-peak-a-faster-creedmoor-without-a-new-rifle-4131f6"
       },
-      "slug_current": "tactical-youtube-is-getting-hammered-here-s-why",
-      "title": "YouTube Throttles Gun Training Channels Through Algorithm Changes"
+      "slug_current": "federal-6-5-creedmoor-peak-a-faster-creedmoor-without-a-new-rifle-4131f6",
+      "title": "Federal's 6.5 Creedmoor +Peak Pushes 3,100 fps in Existing Rifles"
     },
     {
-      "_id": "news-f1560b62037d6e6cb08172f29a859f63",
+      "_id": "news-71c39e7c7b965c93ee34e5bc6a0fda2c",
       "slug": {
         "_type": "slug",
-        "current": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources"
+        "current": "pence-anyone-who-assaulted-police-vandalized-government-should-never-get-a-dime-71c39e"
       },
-      "slug_current": "saf-rips-propublica-s-atf-hit-piece-over-bloomberg-funded-sources",
-      "title": "SAF Exposes Bloomberg Money Behind ProPublica's ATF Story"
+      "slug_current": "pence-anyone-who-assaulted-police-vandalized-government-should-never-get-a-dime-71c39e",
+      "title": "Pence: Cop Attackers from January 6 Get Zero Taxpayer Money"
     },
     {
-      "_id": "news-b6d0591cb28f7e2653ae5f4d53c80665",
+      "_id": "news-473623e46ac3d405743532ceef63c0d9",
       "slug": {
         "_type": "slug",
-        "current": "5-11-tactical-clothing-pants-shorts-that-can-keep-up"
+        "current": "psa-pa-15-5-56-ar-15-rifle-m4-carbine-blem-479-99-473623"
       },
-      "slug_current": "5-11-tactical-clothing-pants-shorts-that-can-keep-up",
-      "title": "5.11 Tactical Launches Women's Carry Shorts and Pants for Daily Users"
+      "slug_current": "psa-pa-15-5-56-ar-15-rifle-m4-carbine-blem-479-99-473623",
+      "title": "PSA PA-15 Hits $479.99: Budget AR-15 Worth Your Money"
     },
     {
-      "_id": "news-8d900cdbda518fda6344fc2756ca1705",
+      "_id": "news-a35816cd2b0e2547b81efe068a1d1325",
       "slug": {
         "_type": "slug",
-        "current": "torture-test-the-first-1000-rounds-through-the-glock-17-gen-6"
+        "current": "may-2026-nics-checks-show-gun-demand-rising-as-nfa-numbers-surge-a35816"
       },
-      "slug_current": "torture-test-the-first-1000-rounds-through-the-glock-17-gen-6",
-      "title": "Glock 17 Gen 6 Runs 1,000 Rounds Flawless, Metal Gun Shooter Converts"
+      "slug_current": "may-2026-nics-checks-show-gun-demand-rising-as-nfa-numbers-surge-a35816",
+      "title": "NFA Form 4 Checks Double: Suppressors and SBRs See Massive Spike"
     }
   ],
   "string_slugs": []
