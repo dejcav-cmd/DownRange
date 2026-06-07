@@ -156,12 +156,15 @@ img{display:block;}
 .art-actions{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--border);flex-wrap:wrap;background:rgba(0,0,0,.2);}
 
 /* IMAGE SEARCH GRID */
-.img-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:4px;margin-top:12px;}
-.img-opt{position:relative;aspect-ratio:16/9;overflow:hidden;cursor:pointer;border:2px solid transparent;}
+.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
+.img-opt{position:relative;aspect-ratio:3/2;overflow:hidden;cursor:pointer;border:2px solid transparent;border-radius:2px;}
 .img-opt:active{border-color:var(--gold);}
-.img-opt.selected{border-color:var(--gold);}
-.img-opt img{width:100%;height:100%;object-fit:cover;}
-.img-opt-src{position:absolute;bottom:0;left:0;right:0;background:rgba(0,0,0,.7);font-family:'IBM Plex Mono',monospace;font-size:7px;color:var(--dim);padding:2px 4px;text-align:center;}
+.img-opt.selected{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);}
+.img-opt img{width:100%;height:100%;object-fit:cover;transition:transform .2s;}
+.img-opt:active img{transform:scale(1.03);}
+.img-opt-src{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:'IBM Plex Mono',monospace;font-size:8px;color:#ccc;padding:10px 6px 4px;text-align:center;}
+.img-opt-check{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#000;display:none;align-items:center;justify-content:center;font-size:12px;font-weight:900;}
+.img-opt.selected .img-opt-check{display:flex;}
 
 /* CRON CARD */
 .cron-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;}
@@ -740,9 +743,10 @@ async function doImgSearch(){
     if(!imgs.length){res.innerHTML='<div class="empty">No images found</div>';return;}
     res.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${imgs.length} results for "${q}"</div>
       <div class="img-grid">${imgs.map((img,i)=>`
-        <div class="img-opt" onclick="selectImg(${i})" id="imgopt-${i}" data-url="${img.url}" data-thumb="${img.thumb}">
+        <div class="img-opt" onclick="selectImg(${i})" id="imgopt-${i}" data-url="${img.url}" data-thumb="${img.thumb}" title="${img.photographer||img.source||''}">
           <img src="${img.thumb||img.url}" alt="" loading="lazy" onerror="this.style.display='none'">
           <div class="img-opt-src">${img.source||''}</div>
+          <div class="img-opt-check">✓</div>
         </div>`).join('')}</div>
       <div id="img-preview" style="margin-top:12px;display:none">
         <img id="img-prev-img" style="width:100%;max-height:160px;object-fit:cover;margin-bottom:8px">
@@ -761,9 +765,10 @@ async function doImgSearchFor(targetId){
     if(!imgs.length){res.innerHTML='<div class="empty">No images found</div>';return;}
     res.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${imgs.length} results — tap to apply</div>
       <div class="img-grid">${imgs.map((img,i)=>`
-        <div class="img-opt" onclick="applyImg('${targetId}','${img.url}',${i})" id="imgopt-${i}">
+        <div class="img-opt" onclick="applyImg('${targetId}','${img.url}',${i})" id="imgopt-${i}" title="${img.photographer||img.source||''}">
           <img src="${img.thumb||img.url}" alt="" loading="lazy" onerror="this.style.display='none'">
           <div class="img-opt-src">${img.source||''}</div>
+          <div class="img-opt-check">✓</div>
         </div>`).join('')}</div>`;
   }catch(e){res.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
