@@ -85,6 +85,7 @@ const NAV = [
       { id:'rss',          label:'RSS Sources',      icon:'📡', badge:null },
       { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
       { id:'sitemap',      label:'Site Map',          icon:'🗺️', badge:null },
+      { id:'deployments',  label:'Deployments',      icon:'▲',  badge:null },
     ]
   },
   {
