@@ -12,3 +12,10 @@ jobs:
         env:
           ADMIN_KEY: ${{ secrets.AGENT_SECRET }}
         run: pip install requests && python3 scripts/test_social_posts.py
+      - name: Save results
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add fix_results.json
+          git diff --staged --quiet || git commit -m "test: social post dry-run results"
+          git push || true
