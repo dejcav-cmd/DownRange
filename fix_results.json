@@ -1,50 +1,26 @@
 {
-  "sample": [
-    {
-      "_id": "news-18829626f1b3c116b79c9e70c188d4ad",
-      "slug": {
-        "_type": "slug",
-        "current": "right-to-repair-youtube-star-takes-on-the-man-behind-3d-printing-bans-188296"
-      },
-      "slug_current": "right-to-repair-youtube-star-takes-on-the-man-behind-3d-printing-bans-188296",
-      "title": "YouTube Repair Advocate Targets 3D Printing Gun Ban Architects"
+  "test": "social_posts",
+  "overall": "FAIL",
+  "platforms": {
+    "twitter": {
+      "status": "ERROR",
+      "error": "HTTP Error 307: Temporary Redirect"
     },
-    {
-      "_id": "news-4131f632f4682e5e47da2699368ed749",
-      "slug": {
-        "_type": "slug",
-        "current": "federal-6-5-creedmoor-peak-a-faster-creedmoor-without-a-new-rifle-4131f6"
-      },
-      "slug_current": "federal-6-5-creedmoor-peak-a-faster-creedmoor-without-a-new-rifle-4131f6",
-      "title": "Federal's 6.5 Creedmoor +Peak Pushes 3,100 fps in Existing Rifles"
+    "bluesky": {
+      "status": "ERROR",
+      "error": "HTTP Error 307: Temporary Redirect"
     },
-    {
-      "_id": "news-71c39e7c7b965c93ee34e5bc6a0fda2c",
-      "slug": {
-        "_type": "slug",
-        "current": "pence-anyone-who-assaulted-police-vandalized-government-should-never-get-a-dime-71c39e"
-      },
-      "slug_current": "pence-anyone-who-assaulted-police-vandalized-government-should-never-get-a-dime-71c39e",
-      "title": "Pence: Cop Attackers from January 6 Get Zero Taxpayer Money"
+    "threads": {
+      "status": "ERROR",
+      "error": "HTTP Error 307: Temporary Redirect"
     },
-    {
-      "_id": "news-473623e46ac3d405743532ceef63c0d9",
-      "slug": {
-        "_type": "slug",
-        "current": "psa-pa-15-5-56-ar-15-rifle-m4-carbine-blem-479-99-473623"
-      },
-      "slug_current": "psa-pa-15-5-56-ar-15-rifle-m4-carbine-blem-479-99-473623",
-      "title": "PSA PA-15 Hits $479.99: Budget AR-15 Worth Your Money"
+    "facebook": {
+      "status": "ERROR",
+      "error": "HTTP Error 307: Temporary Redirect"
     },
-    {
-      "_id": "news-a35816cd2b0e2547b81efe068a1d1325",
-      "slug": {
-        "_type": "slug",
-        "current": "may-2026-nics-checks-show-gun-demand-rising-as-nfa-numbers-surge-a35816"
-      },
-      "slug_current": "may-2026-nics-checks-show-gun-demand-rising-as-nfa-numbers-surge-a35816",
-      "title": "NFA Form 4 Checks Double: Suppressors and SBRs See Massive Spike"
+    "reddit": {
+      "status": "ERROR",
+      "error": "HTTP Error 307: Temporary Redirect"
     }
-  ],
-  "string_slugs": []
+  }
 }
