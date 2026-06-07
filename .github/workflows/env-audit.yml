@@ -1,0 +1,19 @@
+name: Env Var Audit
+on:
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check cron-health
+        env:
+          K: ${{ secrets.AGENT_SECRET }}
+        run: |
+          echo "=HEALTH="
+          curl -sf "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $K"
+          echo ""
+          echo "=AISTATUS="
+          curl -sf "https://downrangeco.com/api/admin/ai-status" -H "x-admin-key: $K"
+          echo ""
+          echo "=SOCIALCFG="
+          curl -sf "https://downrangeco.com/api/social/config" -H "x-admin-key: $K"
