@@ -510,16 +510,19 @@ function renderIntelScreen(el){
 
 function renderSystemScreen(el){
   el.innerHTML=`<div class="section-title">System</div><div class="section-sub">Crons, agents & ops</div><div id="sys-h2" style="margin-bottom:12px"></div>`+
-    [{id:'overview',i:'◈',l:'System Overview',s:'Health check'},
+    [{id:'overview',i:'◈',l:'System Overview',s:'Full health dashboard'},
      {id:'crons',i:'⏱',l:'Cron Jobs',s:'Run & monitor all jobs'},
+     {id:'deployments',i:'▲',l:'Deployments',s:'Vercel build history & logs'},
      {id:'agents',i:'🤖',l:'Content Agents',s:'Trigger AI pipelines'},
+     {id:'sysalerts',i:'🚨',l:'System Alerts',s:'cronRun log — failures & warnings'},
      {id:'rss',i:'📡',l:'RSS Sources',s:'Active feed list'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
   api('/api/admin/cron-health').then(d=>{
     const b=document.getElementById('sys-h2');if(!b)return;
-    const ok=d.status==='ok';
+    const ok=d.status==='HEALTHY'||d.status==='ok';
+    const issues=d.issues||[];
     b.innerHTML=`<div style="padding:10px 14px;background:${ok?'rgba(34,197,94,.06)':'rgba(239,68,68,.08)'};border:1px solid ${ok?'rgba(34,197,94,.2)':'rgba(239,68,68,.3)'};font-family:'IBM Plex Mono',monospace;font-size:10px;color:${ok?'var(--ok)':'var(--err)'}">
-      ${ok?'● All systems operational':'⚠ '+(d.issues||[]).map(i=>typeof i==='object'?i.msg:i).join(', ')}</div>`;
+      ${ok?'● All systems operational':'⚠ '+issues.slice(0,2).map(i=>typeof i==='object'?i.msg:i).join(' · ')}</div>`;
   }).catch(()=>{});
 }
 
