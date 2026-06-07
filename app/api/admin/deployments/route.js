@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic'
-export const maxDuration = 15
+export const maxDuration = 20
 
 function auth(req) {
   return req.headers.get('x-admin-key') === process.env.ADMIN_KEY
@@ -8,10 +8,11 @@ function auth(req) {
 const VERCEL_PROJECT = process.env.VERCEL_PROJECT_ID || 'down-range-indol'
 const VERCEL_TEAM    = process.env.VERCEL_TEAM_ID
 
-function vercelHeaders() {
+function vHeaders(extra = {}) {
   return {
     'Authorization': `Bearer ${process.env.VERCEL_TOKEN}`,
     'Content-Type': 'application/json',
+    ...extra,
   }
 }
 
@@ -21,9 +22,6 @@ function qs(extra = {}) {
   return '?' + new URLSearchParams(p).toString()
 }
 
-// GET /api/admin/deployments?limit=10   — list deployments
-// GET /api/admin/deployments?id=xxx      — single deployment detail
-// GET /api/admin/deployments?id=xxx&logs=true — deployment build logs
 export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -36,42 +34,48 @@ export async function GET(req) {
   const limit = url.searchParams.get('limit') || '15'
 
   try {
-    // ── Single deployment logs ────────────────────────────────────────────
+    // ── Build logs for a deployment ───────────────────────────────────────
     if (depId && logs) {
+      // v3 returns NDJSON when Accept is application/x-ndjson
       const r = await fetch(
-        `https://api.vercel.com/v2/deployments/${depId}/events${qs({ builds: '1', limit: '500' })}`,
-        { headers: vercelHeaders(), signal: AbortSignal.timeout(10000) }
+        `https://api.vercel.com/v3/deployments/${depId}/events${qs({ direction: 'forward', limit: '2000' })}`,
+        {
+          headers: vHeaders({ 'Accept': 'application/x-ndjson' }),
+          signal: AbortSignal.timeout(12000),
+        }
       )
       const text = await r.text()
-      // Vercel returns newline-delimited JSON
-      const events = text.trim().split('\n').map(l => { try { return JSON.parse(l) } catch { return null } }).filter(Boolean)
-      const logLines = events
-        .filter(e => e.type === 'stdout' || e.type === 'stderr' || e.type === 'command')
+      // Parse NDJSON lines
+      const lines = text.trim().split('\n')
+        .map(l => { try { return JSON.parse(l) } catch { return null } })
+        .filter(Boolean)
+
+      const logLines = lines
+        .filter(e => ['stdout','stderr','command','delimiter'].includes(e.type))
         .map(e => ({
-          type: e.type,
-          text: e.payload?.text || e.payload?.name || '',
+          type:    e.type,
+          text:    e.payload?.text ?? e.payload?.name ?? '',
           created: e.created,
         }))
-      return Response.json({ ok: true, depId, logs: logLines })
+        .filter(e => e.text.trim())
+
+      return Response.json({ ok: true, depId, logs: logLines, raw: lines.length })
     }
 
     // ── Single deployment detail ──────────────────────────────────────────
     if (depId) {
       const r = await fetch(
         `https://api.vercel.com/v13/deployments/${depId}${qs()}`,
-        { headers: vercelHeaders(), signal: AbortSignal.timeout(10000) }
+        { headers: vHeaders(), signal: AbortSignal.timeout(10000) }
       )
       const d = await r.json()
-      return Response.json({
-        ok: true,
-        deployment: normalizeDep(d),
-      })
+      return Response.json({ ok: true, deployment: normalizeDep(d) })
     }
 
-    // ── List deployments ──────────────────────────────────────────────────
+    // ── List deployments (production + preview) ───────────────────────────
     const r = await fetch(
-      `https://api.vercel.com/v6/deployments${qs({ projectId: VERCEL_PROJECT, limit, target: 'production' })}`,
-      { headers: vercelHeaders(), signal: AbortSignal.timeout(10000) }
+      `https://api.vercel.com/v6/deployments${qs({ projectId: VERCEL_PROJECT, limit })}`,
+      { headers: vHeaders(), signal: AbortSignal.timeout(10000) }
     )
     const data = await r.json()
     const deployments = (data.deployments || []).map(normalizeDep)
@@ -82,7 +86,6 @@ export async function GET(req) {
   }
 }
 
-// POST /api/admin/deployments { action: 'redeploy', depId }
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
@@ -93,35 +96,40 @@ export async function POST(req) {
 
   if (action === 'redeploy' && depId) {
     const r = await fetch(
-      `https://api.vercel.com/v13/deployments?${VERCEL_TEAM ? 'teamId='+VERCEL_TEAM : ''}`,
+      `https://api.vercel.com/v13/deployments${VERCEL_TEAM ? '?teamId='+VERCEL_TEAM : ''}`,
       {
         method: 'POST',
-        headers: vercelHeaders(),
+        headers: vHeaders(),
         body: JSON.stringify({ deploymentId: depId, target: 'production', meta: { triggeredBy: 'DR Admin Mobile' } }),
-        signal: AbortSignal.timeout(10000),
+        signal: AbortSignal.timeout(12000),
       }
     )
     const d = await r.json()
-    return Response.json({ ok: !!d.id, deployment: normalizeDep(d), error: d.error?.message })
+    return Response.json({ ok: !!d.id, deployment: d.id ? normalizeDep(d) : null, error: d.error?.message })
   }
 
   return Response.json({ error: 'Unknown action' }, { status: 400 })
 }
 
 function normalizeDep(d) {
+  const createdAt  = d.createdAt  || d.created
+  const buildingAt = d.buildingAt || d.building
+  const readyAt    = d.ready      || d.readyAt
   return {
     id:        d.uid || d.id,
-    url:       d.url ? `https://${d.url}` : null,
-    state:     d.readyState || d.state || d.status,
-    target:    d.target,
-    createdAt: d.createdAt,
-    buildingAt:d.buildingAt,
-    ready:     d.ready,
-    source:    d.meta?.githubCommitMessage || d.meta?.gitlabCommitMessage || null,
+    url:       d.url    ? `https://${d.url}`    : null,
+    inspectUrl:d.inspectorUrl || null,
+    state:     d.readyState || d.state || d.status || 'UNKNOWN',
+    target:    d.target || 'production',
+    createdAt,
+    buildingAt,
+    ready:     readyAt,
+    source:    (d.meta?.githubCommitMessage || d.meta?.gitlabCommitMessage || '').split('\n')[0].slice(0,80) || null,
     commit:    d.meta?.githubCommitSha?.slice(0,7) || null,
     branch:    d.meta?.githubCommitRef || 'main',
     creator:   d.creator?.username || d.creator?.email || null,
-    duration:  (d.ready && d.buildingAt) ? Math.round((d.ready - d.buildingAt) / 1000) : null,
+    duration:  (readyAt && buildingAt) ? Math.round((readyAt - buildingAt) / 1000) : null,
     errorCode: d.errorCode || null,
+    buildError:d.buildError?.message || null,
   }
 }
