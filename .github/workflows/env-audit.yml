@@ -8,17 +8,52 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Fetch and save results
+      - name: Fetch results
         env:
           K: ${{ secrets.AGENT_SECRET }}
         run: |
-          curl -sf "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $K" > docs/env-audit-health.json
-          curl -sf "https://downrangeco.com/api/admin/ai-status" -H "x-admin-key: $K" > docs/env-audit-ai.json
-          curl -sf "https://downrangeco.com/api/social/config" -H "x-admin-key: $K" > docs/env-audit-social.json
-      - name: Commit results
+          curl -sfL "https://downrangeco.com/api/admin/cron-health" -H "x-admin-key: $K" -o docs/env-audit-health.json
+          curl -sfL "https://downrangeco.com/api/admin/ai-status" -H "x-admin-key: $K" -o docs/env-audit-ai.json
+          curl -sfL "https://downrangeco.com/api/social/config" -H "x-admin-key: $K" -o docs/env-audit-social.json
+          echo "--- health ---"
+          cat docs/env-audit-health.json | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  env=d.get('env',{})
+  print('ENV SET:')
+  [print(' SET:',k) for k,v in env.items() if v.get('set')]
+  print('ENV MISSING:')
+  [print(' MISS:',k,'CRIT:',v.get('critical')) for k,v in env.items() if not v.get('set')]
+except Exception as e:
+  print('parse error:',e)
+  sys.stdin.seek(0)
+"
+          echo "--- ai-status ---"
+          cat docs/env-audit-ai.json | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  s=d.get('status',{})
+  [print('AI:',k,'=',v) for k,v in s.items()]
+  [print('ROUTE:',k,'->',v) for k,v in d.get('routing',{}).items()]
+  [print('TEST:',k,v) for k,v in d.get('tests',{}).items()]
+except Exception as e:
+  print('ai parse error:',e)
+"
+          echo "--- social ---"
+          cat docs/env-audit-social.json | python3 -c "
+import sys,json
+try:
+  d=json.load(sys.stdin)
+  [print('SOCIAL:',k,'=',v) for k,v in d.get('configured',{}).items()]
+except Exception as e:
+  print('social parse error:',e)
+"
+      - name: Commit
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add docs/env-audit-*.json
-          git diff --staged --quiet || git commit -m "temp: env audit results"
+          git diff --staged --quiet || git commit -m "temp: env audit"
           git push
