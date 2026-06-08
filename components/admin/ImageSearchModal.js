@@ -104,7 +104,7 @@ export default function ImageSearchModal({ adminKey, item, onApply, onClose, api
 
           {!searching && results && results.length > 0 && (
             <>
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(240px,1fr))', gap:12 }}>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px,1fr))', gap:12 }}>
                 {results.map((img, idx) => (
                   <div key={idx}
                     onClick={() => applyImage(img.largeUrl || img.url)}

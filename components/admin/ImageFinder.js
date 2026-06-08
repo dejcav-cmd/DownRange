@@ -19,12 +19,12 @@ const S = `
   letter-spacing:.08em; padding:0 28px; cursor:pointer; transition:opacity .15s; white-space:nowrap; }
 .ifdr-go-btn:disabled { opacity:.45; cursor:not-allowed; }
 .ifdr-meta { font-family:'IBM Plex Mono',monospace; font-size:10px; color:#4b5563; margin-bottom:14px; min-height:16px; }
-.ifdr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+.ifdr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(380px,1fr)); gap:16px; }
 .ifdr-card { background:var(--bg2); border:1px solid var(--border); overflow:hidden;
   cursor:pointer; transition:all .15s; position:relative; }
 .ifdr-card:hover { border-color:var(--gold); transform:translateY(-2px);
   box-shadow:0 4px 20px rgba(200,146,42,.18); }
-.ifdr-card-img { width:100%; aspect-ratio:16/9; object-fit:cover; display:block; background:#0a0a0c; }
+.ifdr-card-img { width:100%; aspect-ratio:4/3; object-fit:cover; display:block; background:#0a0a0c; min-height:200px; }
 .ifdr-card-foot { padding:8px 10px; display:flex; justify-content:space-between; align-items:center; gap:8px; }
 .ifdr-card-info { font-family:'IBM Plex Mono',monospace; font-size:9px; color:#4b5563; }
 .ifdr-card-copy { background:none; border:1px solid var(--border); color:#9ca3af;
