@@ -11,7 +11,7 @@ async function searchPexels(query) {
   if (!key) return []
   try {
     const res = await fetch(
-      'https://api.pexels.com/v1/search?' + new URLSearchParams({ query, per_page: 12, orientation: 'landscape' }),
+      'https://api.pexels.com/v1/search?' + new URLSearchParams({ query, per_page: 20, orientation: 'landscape' }),
       { headers: { Authorization: key } }
     )
     const data = await res.json()
@@ -35,15 +35,15 @@ async function searchPixabay(query) {
     url.searchParams.set('image_type', 'photo')
     url.searchParams.set('orientation', 'horizontal')
     url.searchParams.set('min_width', '1200')
-    url.searchParams.set('per_page', '12')
+    url.searchParams.set('per_page', '20')
     url.searchParams.set('safesearch', 'true')
     url.searchParams.set('order', 'popular')
     const res  = await fetch(url.toString())
     const data = await res.json()
     return (data.hits || []).map(h => ({
       url:      h.webformatURL,
-      largeUrl: h.largeImageURL,
-      thumb:    h.previewURL,
+      largeUrl: h.largeImageURL || h.webformatURL,
+      thumb:    h.webformatURL,
       author:   h.user,
       source:   'Pixabay',
     }))
@@ -74,7 +74,7 @@ export async function POST(req) {
       results = results.filter(r => { if (seen.has(r.url)) return false; seen.add(r.url); return true })
     }
 
-    return Response.json({ ok: true, query: query.trim(), results: results.slice(0, 24) })
+    return Response.json({ ok: true, query: query.trim(), results: results.slice(0, 40) })
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 })
   }
