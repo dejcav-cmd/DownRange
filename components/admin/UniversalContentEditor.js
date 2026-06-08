@@ -717,66 +717,16 @@ export default function UniversalContentEditor({
                         />
                       <button className="uce-ghost" onClick={() => fixImage(selItem)} disabled={busy} title="Auto-fetch from Pexels/Pixabay">Auto</button>
                       <button
-                        className={`uce-ghost${imgSearchOpen ? ' uce-tab-active' : ''}`}
+                        className="uce-ghost"
                         onClick={() => {
-                          setImgSearchOpen(o => !o)
-                          setImgSearchRes(null)
+                          setImgSearchOpen(true)
                           setImgSearchQ(selItem.title || '')
                         }}
                         title="Search images by keyword"
                       >🔍 Find Image</button>
                     </div>
 
-                    {/* ── INLINE IMAGE SEARCH ── */}
-                    {imgSearchOpen && (
-                      <div className="uce-img-search">
-                        <div className="uce-img-search-bar">
-                          <input
-                            className="uce-img-search-input"
-                            placeholder="Type keyword… glock 19, AR-15 range, concealed carry…"
-                            value={imgSearchQ}
-                            autoFocus
-                            onChange={e => setImgSearchQ(e.target.value)}
-                            onKeyDown={e => e.key === 'Enter' && runImgSearch(imgSearchQ, imgSearchSrc)}
-                          />
-                          {['all','pexels','pixabay'].map(s => (
-                            <button key={s}
-                              className={`uce-img-src-btn${imgSearchSrc === s ? ' on' : ''}`}
-                              onClick={() => { setImgSearchSrc(s); if (imgSearchQ.trim()) runImgSearch(imgSearchQ, s) }}
-                            >{s.toUpperCase()}</button>
-                          ))}
-                          <button className="uce-btn" style={{fontSize:10,padding:'0 12px'}}
-                            disabled={imgSearchBusy || !imgSearchQ.trim()}
-                            onClick={() => runImgSearch(imgSearchQ, imgSearchSrc)}>
-                            {imgSearchBusy ? '…' : 'GO'}
-                          </button>
-                        </div>
 
-                        {imgSearchBusy && (
-                          <div style={{textAlign:'center',padding:'16px 0',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>Searching…</div>
-                        )}
-
-                        {!imgSearchBusy && imgSearchRes && imgSearchRes.length === 0 && (
-                          <div style={{textAlign:'center',padding:'12px 0',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>No results — try a different keyword</div>
-                        )}
-
-                        {!imgSearchBusy && imgSearchRes && imgSearchRes.length > 0 && (
-                          <div className="uce-img-grid">
-                            {imgSearchRes.map((img, i) => (
-                              <div key={i} className="uce-img-thumb"
-                                onClick={() => applyImgFromSearch(img.largeUrl || img.url, selItem._id)}>
-                                <img src={img.thumb || img.url} alt="" loading="lazy"
-                                  onError={e => { e.target.style.opacity='.2' }} />
-                                <div className="uce-img-thumb-apply">
-                                  APPLY ✓
-                                  <span style={{display:'block',fontSize:8,color:'#ccc',fontWeight:400}}>{img.source}</span>
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )}
-                      </div>
-                    )}
                     <button className="uce-btn" disabled={busy}
                       style={{ width:'100%', fontSize:11, padding:'7px 0', opacity: fieldVals.imageUrl && fieldVals.imageUrl.startsWith('http') ? 1 : 0.4 }}
                       onClick={async () => {
@@ -870,6 +820,20 @@ export default function UniversalContentEditor({
         </div>
       </div>
 
-    </>
+      {imgSearchOpen && (
+        <ImageSearchModal
+          adminKey={adminKey}
+          item={selItem}
+          initialQuery={imgSearchQ}
+          apiPath="/api/admin/image-finder"
+          onApply={(url) => {
+            setFieldVals(prev => ({...prev, imageUrl: url}))
+            setItems(prev => prev.map(x => x._id === selItem?._id ? {...x, imageUrl: url} : x))
+            flash('✅ Image applied — click Save to upload to CDN')
+          }}
+          onClose={() => setImgSearchOpen(false)}
+        />
+      )}
+    </div>
   )
 }
