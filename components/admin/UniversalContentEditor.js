@@ -834,6 +834,6 @@ export default function UniversalContentEditor({
           onClose={() => setImgSearchOpen(false)}
         />
       )}
-    </div>
+    </>
   )
 }
