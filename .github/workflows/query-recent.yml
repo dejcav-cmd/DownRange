@@ -2,14 +2,47 @@ name: Query Recent Articles
 on:
   workflow_dispatch:
 jobs:
-  query:
+  run:
     runs-on: ubuntu-latest
+    timeout-minutes: 5
     steps:
-      - uses: actions/checkout@v4
-      - name: Query and write
+      - name: Test backup endpoint
         env:
-          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
           GH_PAT: ${{ secrets.GH_PAT }}
-          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
-          PIXABAY_API_KEY: ${{ secrets.PIXABAY_API_KEY }}
-        run: python3 scripts/query_recent.py
+        run: |
+          HTTP=$(curl -s -o /tmp/r.txt -w "%{http_code}" \
+            https://www.downrangeco.com/api/admin/backup \
+            -H "x-admin-key: $ADMIN_KEY" --max-time 120)
+          echo "HTTP: $HTTP"
+          python3 << 'PYEOF'
+import json
+try:
+    d = json.loads(open('/tmp/r.txt').read())
+    print('ok:', d.get('ok'))
+    print('totalDocs:', d.get('totalDocs'))
+    print('sizeKB:', d.get('sizeKB'))
+    print('ms:', d.get('ms'))
+    g = d.get('github', {})
+    print('github.ok:', g.get('ok'))
+    print('github.url:', g.get('url'))
+    print('github.reason:', g.get('reason'))
+    print('errors:', d.get('errors'))
+except Exception as e:
+    print('parse error:', e)
+    print(open('/tmp/r.txt').read()[:300])
+PYEOF
+          B64=$(base64 -w0 /tmp/r.txt)
+          SHA=$(curl -s https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/diag-result.txt \
+            -H "Authorization: token $GH_PAT" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null)
+          python3 -c "
+import json, subprocess, sys
+sha = '$SHA'.strip()
+payload = {'message': 'diag: backup test result', 'content': '$B64'}
+if sha: payload['sha'] = sha
+print(json.dumps(payload))" > /tmp/payload.json
+          curl -s -X PUT https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/diag-result.txt \
+            -H "Authorization: token $GH_PAT" \
+            -H "Content-Type: application/json" \
+            -d @/tmp/payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print('wrote:', 'ok' if 'content' in d else d.get('message','err'))"
