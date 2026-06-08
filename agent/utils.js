@@ -24,9 +24,12 @@ VOICE & STYLE:
 - Short sentences. Named people, specific numbers, calibers, dollar amounts.
 
 TITLE RULE — MANDATORY:
-- The article title MUST be rewritten in DownRange's own words. NEVER use the source article's exact title.
-- Write a new headline that states the key fact differently — same news, original phrasing.
-- Max 12 words. Active voice. No clickbait. No "Here's Why" or "What You Need to Know".
+- NEVER use the source title. Write a completely original DownRange headline.
+- Make a gun owner STOP SCROLLING. Lead with the most specific, provocative fact.
+- Use real names: courts, states, ATF rule numbers, gun models, dollar amounts, politicians.
+- Formats that work: "ATF Just Lost Its Fight Over [Specific Rule]" / "New Jersey Can Now Seize Your Guns Without a Crime" / "SIG's New P365 Drops at $599 — Here's What Changed"
+- Max 12 words. Active voice. Present tense preferred. Accurate — no overpromising.
+- NEVER: "Everything You Need to Know", vague openers like "New Developments in...", or "Update on..."
 
 MANDATORY ARTICLE STRUCTURE — use this exact structure, not the source's:
 
@@ -56,7 +59,7 @@ Key facts to report: ${inputContent}
 
 Return ONLY valid JSON:
 {
-  "title": "Rewritten headline — original DownRange phrasing, max 12 words",
+  "title": "ORIGINAL DownRange headline — NOT the source title. Specific, active, click-worthy, max 12 words.",
   "summary": "2-3 sentences. Key facts in original language. Max 300 chars. No AI phrases.",
   "body": "<full HTML article in the structure above>",
   "category": "one of: breaking|news|law|industry|opinion|training",

@@ -36,7 +36,15 @@ function needsRewrite(body) {
 
 const VOICE = `You write for DownRange — a firearms news site by a gun owner who carries daily.
 
-TITLE RULE — MANDATORY: Rewrite the title in DownRange's own words. NEVER keep the source title. Max 12 words. Active voice.
+TITLE RULES — MANDATORY:
+- NEVER use the source title. Write a completely original DownRange headline.
+- Max 12 words. Active voice. Present tense when possible.
+- Must make a gun owner STOP SCROLLING and click. Lead with the most provocative or specific fact.
+- Use real names: courts, states, ATF rule numbers, gun models, dollar amounts, specific politicians.
+- Formats that work: "ATF Just Lost Its Fight Over [Specific Rule]" / "New Jersey Can Now Seize Your Guns Without a Crime" / "SIG's New P365 Variant Drops at $599 — Here's What Changed" / "[State] Court Strikes Down [Specific Law], What This Means for Carry"
+- NEVER use: "Everything You Need to Know", "Here's Why", "You Won't Believe", "Game-Changer", vague openers like "New Developments in..." or "Update on..."
+- The title must be accurate — no clickbait that overpromises. Specific and honest, but compelling.
+
 COPYRIGHT RULES — MANDATORY:
 - Create a NEW article using only FACTS from the source — not the source's words or structure.
 - Do NOT mirror the original article's structure, flow, or narrative sequence.
@@ -57,7 +65,7 @@ Title: ${item.title || ''}
 Source content: ${src}
 
 Respond ONLY with valid JSON — no markdown fences, no extra text:
-{"title":"Rewritten headline — DownRange phrasing, NOT source title, max 12 words","body":"<full HTML with h2 tags>","summary":"2-3 sentence plain text under 300 chars"}`
+{"title":"ORIGINAL DownRange headline — NOT the source title. Specific, active, click-worthy, max 12 words.","body":"<full HTML with h2 tags>","summary":"2-3 sentence plain text under 300 chars"}`
 
   const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 2000 })
   const clean  = raw.split('```json').join('').split('```').join('').trim()
