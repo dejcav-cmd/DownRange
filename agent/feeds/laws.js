@@ -1,3 +1,4 @@
+import Parser from 'rss-parser'
 import { enrichLawWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const STATUS_MAP = {
@@ -92,12 +93,85 @@ const US_STATES = [
   'SD','TN','TX','UT','VT','VA','WA','WV','WI','WY'
 ]
 
+
+// RSS fallback — works with NO API keys
+// Pulls 2A legal news from public RSS feeds
+async function fetchLawsFromRSS() {
+  const parser = new Parser({ timeout: 10000, headers: { 'User-Agent': 'DownRange/1.0' } })
+  const feeds = [
+    { name: 'NRA-ILA',       url: 'https://www.nraila.org/rss/',                    cat: 'legal'    },
+    { name: 'GOA News',      url: 'https://gunowners.org/feed/',                    cat: 'legal'    },
+    { name: 'FPC',           url: 'https://www.firearmspolicycoalition.org/feed/',  cat: 'legal'    },
+    { name: 'SAF',           url: 'https://www.saf.org/feed/',                      cat: 'legal'    },
+    { name: 'Bearing Arms',  url: 'https://bearingarms.com/feed/',                  cat: 'news'     },
+    { name: 'TTAG Laws',     url: 'https://www.thetruthaboutguns.com/category/gun-laws/feed/', cat: 'legal' },
+  ]
+  const items = []
+  for (const feed of feeds) {
+    try {
+      const parsed = await parser.parseURL(feed.url)
+      for (const item of (parsed.items || []).slice(0, 5)) {
+        if (!item.title || !item.link) continue
+        const lower = (item.title + ' ' + (item.contentSnippet || '')).toLowerCase()
+        const relevant = ['law','bill','court','ruling','atf','ban','legislation','second amendment','2a','carry','permit','firearm','gun'].some(k => lower.includes(k))
+        if (!relevant) continue
+        items.push({
+          _id:        `law-rss-${Buffer.from(item.link).toString('base64').slice(0,40)}`,
+          _type:      'legislation',
+          title:      item.title,
+          level:      'federal',
+          status:     'pending',
+          summary:    item.contentSnippet?.slice(0, 400) || item.title,
+          url:        item.link,
+          externalUrl: item.link,
+          source:     feed.name,
+          publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
+          urgent:     false,
+        })
+      }
+    } catch (e) {
+      console.warn(`[LAWS] RSS fallback failed for ${feed.name}:`, e.message)
+    }
+  }
+  console.log(`[LAWS] RSS fallback: ${items.length} relevant items from ${feeds.length} feeds`)
+  return items
+}
+
 async function runLawsFeed() {
   console.log('[LAWS] Starting laws feed...')
   const t = Date.now()
   let done = 0, failed = 0
 
-  // Federal bills
+  // Env var diagnostics — logged every run so cron dashboard shows what is/isn't configured
+  const hasCongress  = !!process.env.CONGRESS_GOV_KEY
+  const hasLegiScan  = !!process.env.LEGISCAN_KEY
+  console.log(`[LAWS] API keys: Congress.gov=${hasCongress ? 'YES' : 'MISSING'}, LegiScan=${hasLegiScan ? 'YES' : 'MISSING'}`)
+  if (!hasCongress && !hasLegiScan) {
+    console.log('[LAWS] No API keys — using RSS fallback only')
+  }
+
+  // RSS fallback — always runs first (no API key needed, fast, reliable)
+  const rssItems = await fetchLawsFromRSS()
+  for (const item of rssItems) {
+    try {
+      if (process.env.ANTHROPIC_API_KEY) {
+        try {
+          const enriched = await enrichLawWithClaude(item)
+          if (enriched.summary) item.summary = enriched.summary
+        } catch {}
+      }
+      await publishToSanity(item)
+      done++
+    } catch (err) {
+      if (!err.message?.includes('already exists') && !err.message?.includes('duplicate')) {
+        failed++
+        console.error('[LAWS] RSS item publish error:', err.message)
+      }
+    }
+  }
+  console.log(`[LAWS] RSS fallback published ${done} items`)
+
+  // Federal bills (requires CONGRESS_GOV_KEY)
   const federal = await fetchCongressBills()
   for (const bill of federal) {
     try {
