@@ -156,15 +156,24 @@ img{display:block;}
 .art-actions{display:flex;gap:6px;padding:8px 12px;border-top:1px solid var(--border);flex-wrap:wrap;background:rgba(0,0,0,.2);}
 
 /* IMAGE SEARCH GRID */
-.img-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px;}
-.img-opt{position:relative;aspect-ratio:3/2;overflow:hidden;cursor:pointer;border:2px solid transparent;border-radius:2px;}
-.img-opt:active{border-color:var(--gold);}
-.img-opt.selected{border-color:var(--gold);box-shadow:0 0 0 1px var(--gold);}
-.img-opt img{width:100%;height:100%;object-fit:cover;transition:transform .2s;}
-.img-opt:active img{transform:scale(1.03);}
-.img-opt-src{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.85));font-family:'IBM Plex Mono',monospace;font-size:8px;color:#ccc;padding:10px 6px 4px;text-align:center;}
-.img-opt-check{position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--gold);color:#000;display:none;align-items:center;justify-content:center;font-size:12px;font-weight:900;}
-.img-opt.selected .img-opt-check{display:flex;}
+/* IMAGE FINDER MODAL */
+.imgmodal{position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,.97);display:flex;flex-direction:column;animation:imgin .15s ease;}
+@keyframes imgin{from{opacity:0;transform:scale(.98)}to{opacity:1;transform:none}}
+.imgmodal-header{display:flex;align-items:center;gap:8px;padding:12px 14px;border-bottom:1px solid #222;flex-shrink:0;}
+.imgmodal-title{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:18px;color:var(--gold);letter-spacing:.08em;flex-shrink:0;}
+.imgmodal-inp{flex:1;background:#111;border:1px solid #333;color:#e5e7eb;font-family:'IBM Plex Mono',monospace;font-size:13px;padding:9px 12px;outline:none;}
+.imgmodal-inp:focus{border-color:var(--gold);}
+.imgmodal-go{background:var(--gold);color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;padding:0 18px;height:40px;cursor:pointer;flex-shrink:0;}
+.imgmodal-go:disabled{opacity:.4;}
+.imgmodal-close{background:none;border:1px solid #333;color:#9ca3af;font-size:18px;width:40px;height:40px;cursor:pointer;flex-shrink:0;}
+.imgmodal-meta{padding:6px 14px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:#4b5563;border-bottom:1px solid #111;flex-shrink:0;min-height:28px;display:flex;align-items:center;}
+.imgmodal-body{flex:1;overflow-y:auto;padding:14px;}
+.imgmodal-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.imgmodal-card{position:relative;aspect-ratio:3/2;overflow:hidden;cursor:pointer;border:2px solid #222;}
+.imgmodal-card:active{border-color:var(--gold);}
+.imgmodal-card img{width:100%;height:100%;object-fit:cover;}
+.imgmodal-card-src{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(transparent,rgba(0,0,0,.9));font-family:'IBM Plex Mono',monospace;font-size:8px;color:#ccc;padding:14px 6px 5px;text-align:center;}
+.imgmodal-applying{position:absolute;inset:0;background:rgba(200,146,42,.4);display:flex;align-items:center;justify-content:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;}
 
 /* CRON CARD */
 .cron-card{background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px;}
@@ -685,10 +694,10 @@ async function fixImage(id, encodedTitle, category, btn){
   if(btn){btn.disabled=false;btn.textContent='📷 Fix Img';}
 }
 
-// Open image search scoped to this article
+// Open image search scoped to this article (fullscreen modal)
 function openImgSearch(id, encodedTitle){
   const title=decodeURIComponent(encodedTitle);
-  openDrawer('Image Search', el => renderImgSearchFor(el, id, title));
+  openImgModal(id, title);
 }
 
 // Delete article
@@ -712,101 +721,117 @@ async function confirmDelete(id){
   }catch(e){flash('Error: '+e.message,'err');}
 }
 
-// ─── IMAGE SEARCH PANEL ───────────────────────────────────────────────────────
+// ─── IMAGE FINDER MODAL (fullscreen) ─────────────────────────────────────────
+
+function openImgModal(targetId, initialQuery) {
+  // Remove any existing modal
+  document.getElementById('pwa-imgmodal')?.remove();
+
+  const modal = document.createElement('div');
+  modal.className = 'imgmodal';
+  modal.id = 'pwa-imgmodal';
+  modal.innerHTML = `
+    <div class="imgmodal-header">
+      <div class="imgmodal-title">🔍 FIND IMAGE</div>
+      <input class="imgmodal-inp" id="imgm-q" placeholder="Type keyword — gun model, topic, scene…" value="${(initialQuery||'').replace(/"/g,'&quot;')}">
+      <button class="imgmodal-go" id="imgm-go" onclick="doImgModalSearch()">GO</button>
+      <button class="imgmodal-close" onclick="closeImgModal()">✕</button>
+    </div>
+    <div class="imgmodal-meta" id="imgm-meta">Type a keyword and tap GO</div>
+    <div class="imgmodal-body">
+      <div class="imgmodal-grid" id="imgm-grid"></div>
+    </div>`;
+
+  document.body.appendChild(modal);
+  window._imgModalTargetId = targetId;
+
+  // ESC to close
+  modal._escFn = e => { if(e.key==='Escape') closeImgModal(); };
+  document.addEventListener('keydown', modal._escFn);
+
+  // Enter to search
+  modal.querySelector('#imgm-q').addEventListener('keydown', e => {
+    if(e.key==='Enter') doImgModalSearch();
+  });
+
+  // Auto-search if we have a query
+  if(initialQuery && initialQuery.trim()) doImgModalSearch();
+}
+
+function closeImgModal() {
+  const modal = document.getElementById('pwa-imgmodal');
+  if(modal) {
+    document.removeEventListener('keydown', modal._escFn);
+    modal.remove();
+  }
+}
+
+async function doImgModalSearch() {
+  const q = document.getElementById('imgm-q')?.value?.trim();
+  if(!q) return;
+  const meta = document.getElementById('imgm-meta');
+  const grid = document.getElementById('imgm-grid');
+  const goBtn = document.getElementById('imgm-go');
+  meta.innerHTML = '<span class="spinner" style="display:inline-block;width:12px;height:12px;border:2px solid rgba(200,146,42,.3);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;vertical-align:middle;margin-right:6px"></span>Searching…';
+  grid.innerHTML = '';
+  if(goBtn) goBtn.disabled = true;
+  try {
+    const d = await api('/api/admin/image-finder', {method:'POST', body:JSON.stringify({query:q, source:'all'})});
+    const imgs = d.results || [];
+    meta.textContent = imgs.length ? `${imgs.length} results — tap to apply` : 'No results. Try a different keyword.';
+    if(!imgs.length) return;
+    grid.innerHTML = imgs.map((img,i) => `
+      <div class="imgmodal-card" id="imgmc-${i}" onclick="applyImgModal('${window._imgModalTargetId}','${(img.largeUrl||img.url).replace(/'/g,"\\'")}',${i})">
+        <img src="${img.thumb||img.url}" alt="" loading="lazy" onerror="this.style.opacity='.2'">
+        <div class="imgmodal-card-src">${img.source||''}${img.author?' · '+img.author:''}</div>
+      </div>`).join('');
+  } catch(e) {
+    meta.innerHTML = `<span style="color:#f87171">❌ ${e.message}</span>`;
+  }
+  if(goBtn) goBtn.disabled = false;
+}
+
+async function applyImgModal(id, url, i) {
+  // Visual feedback on card
+  const card = document.getElementById('imgmc-'+i);
+  if(card) card.innerHTML += '<div class="imgmodal-applying">Saving…</div>';
+  flash('⏳ Saving image...','info');
+  try {
+    const d = await api('/api/admin/save-image-url', {method:'POST', body:JSON.stringify({id, imageUrl:url})});
+    if(d.ok) {
+      flash('✅ Image saved','ok');
+      // Update thumbnail in article card if visible
+      const artCard = document.getElementById('card-'+id);
+      if(artCard) {
+        const thumb = artCard.querySelector('.art-thumb,.art-thumb-ph');
+        if(thumb) thumb.outerHTML = `<img class="art-thumb" src="${url}" alt="" onerror="this.parentNode.innerHTML='<div class=art-thumb-ph>📷</div>'">`;
+      }
+      setTimeout(closeImgModal, 600);
+    } else flash('❌ '+(d.error||'Failed'),'err');
+  } catch(e) { flash('Error: '+e.message,'err'); }
+}
+
+// ─── IMAGE SEARCH PANEL (standalone tab — opens modal) ────────────────────────
 async function renderImageSearch(el){
   el.innerHTML=`
     <div class="section-sub">Search Pexels & Pixabay for article images</div>
     <div style="display:flex;gap:8px;margin-bottom:12px">
-      <input id="img-q" class="inp" style="flex:1" placeholder="Search query..." onkeydown="if(event.key==='Enter')doImgSearch()">
-      <button class="btn" onclick="doImgSearch()">Search</button>
+      <input id="img-q" class="inp" style="flex:1" placeholder="Search query..." onkeydown="if(event.key==='Enter')openImgModal(null,document.getElementById('img-q').value)">
+      <button class="btn" onclick="openImgModal(null,document.getElementById('img-q').value)">Search</button>
     </div>
-    <div id="img-results"></div>`;
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);padding:20px 0;text-align:center">
+      Tap Search to open fullscreen image picker
+    </div>`;
 }
 
+// Called from article/release "📷 Find Img" button
+function openImgSearchFor(id, title) {
+  openImgModal(id, title);
+}
+
+// Legacy compat
 async function renderImgSearchFor(el, targetId, title){
-  el.innerHTML=`
-    <div class="section-sub">Find image for:<br><strong style="color:var(--text)">${title.slice(0,50)}</strong></div>
-    <div style="display:flex;gap:8px;margin-bottom:12px">
-      <input id="img-q" class="inp" style="flex:1" value="${title.split(' ').slice(0,4).join(' ')}" onkeydown="if(event.key==='Enter')doImgSearchFor('${targetId}')">
-      <button class="btn" onclick="doImgSearchFor('${targetId}')">Search</button>
-    </div>
-    <div id="img-results"></div>`;
-  doImgSearchFor(targetId);
-}
-
-async function doImgSearch(){
-  const q=document.getElementById('img-q')?.value?.trim();if(!q)return;
-  const res=document.getElementById('img-results');res.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
-  try{
-    const d=await api('/api/admin/image-finder',{method:'POST',body:JSON.stringify({query:q,source:'all'})});
-    const imgs=d.results||[];
-    if(!imgs.length){res.innerHTML='<div class="empty">No images found</div>';return;}
-    res.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${imgs.length} results for "${q}"</div>
-      <div class="img-grid">${imgs.map((img,i)=>`
-        <div class="img-opt" onclick="selectImg(${i})" id="imgopt-${i}" data-url="${img.url}" data-thumb="${img.thumb}" title="${img.photographer||img.source||''}">
-          <img src="${img.thumb||img.url}" alt="" loading="lazy" onerror="this.style.display='none'">
-          <div class="img-opt-src">${img.source||''}</div>
-          <div class="img-opt-check">✓</div>
-        </div>`).join('')}</div>
-      <div id="img-preview" style="margin-top:12px;display:none">
-        <img id="img-prev-img" style="width:100%;max-height:160px;object-fit:cover;margin-bottom:8px">
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:8px" id="img-prev-credit"></div>
-        <button class="btn" style="width:100%" onclick="copyImgUrl()">Copy URL</button>
-      </div>`;
-  }catch(e){res.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
-}
-
-async function doImgSearchFor(targetId){
-  const q=document.getElementById('img-q')?.value?.trim();if(!q)return;
-  const res=document.getElementById('img-results');res.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
-  try{
-    const d=await api('/api/admin/image-finder',{method:'POST',body:JSON.stringify({query:q,source:'all'})});
-    const imgs=d.results||[];
-    if(!imgs.length){res.innerHTML='<div class="empty">No images found</div>';return;}
-    res.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${imgs.length} results — tap to apply</div>
-      <div class="img-grid">${imgs.map((img,i)=>`
-        <div class="img-opt" onclick="applyImg('${targetId}','${img.url}',${i})" id="imgopt-${i}" title="${img.photographer||img.source||''}">
-          <img src="${img.thumb||img.url}" alt="" loading="lazy" onerror="this.style.display='none'">
-          <div class="img-opt-src">${img.source||''}</div>
-          <div class="img-opt-check">✓</div>
-        </div>`).join('')}</div>`;
-  }catch(e){res.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
-}
-
-function selectImg(i){
-  document.querySelectorAll('.img-opt').forEach(x=>x.classList.remove('selected'));
-  const opt=document.getElementById('imgopt-'+i);if(!opt)return;
-  opt.classList.add('selected');
-  const url=opt.dataset.url;
-  const prev=document.getElementById('img-preview');
-  document.getElementById('img-prev-img').src=url;
-  document.getElementById('img-prev-credit').textContent=url;
-  if(prev)prev.style.display='block';
-  window._selectedImgUrl=url;
-}
-
-function copyImgUrl(){
-  if(window._selectedImgUrl){
-    navigator.clipboard?.writeText(window._selectedImgUrl).then(()=>flash('URL copied','ok')).catch(()=>flash(window._selectedImgUrl,'info'));
-  }
-}
-
-async function applyImg(id, url, i){
-  document.querySelectorAll('.img-opt').forEach(x=>x.classList.remove('selected'));
-  const opt=document.getElementById('imgopt-'+i);if(opt)opt.classList.add('selected');
-  flash('⏳ Saving image...','info');
-  try{
-    const d=await api('/api/admin/save-image-url',{method:'POST',body:JSON.stringify({id,imageUrl:url})});
-    if(d.ok){
-      flash('✅ Image saved','ok');
-      const card=document.getElementById('card-'+id);
-      if(card){
-        const img=card.querySelector('.art-thumb,.art-thumb-ph');
-        if(img)img.outerHTML=`<img class="art-thumb" src="${url}" alt="">`;
-      }
-      setTimeout(closeDrawer,800);
-    }else flash('❌ '+(d.error||'Failed'),'err');
-  }catch(e){flash('Error: '+e.message,'err');}
+  openImgModal(targetId, title);
 }
 
 // ─── BREAKING ALERTS ─────────────────────────────────────────────────────────
