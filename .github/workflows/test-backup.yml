@@ -5,19 +5,25 @@ jobs:
   run:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Call backup endpoint
         env:
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
         run: |
-          echo "Calling backup endpoint..."
-          RESP=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X GET "https://www.downrangeco.com/api/admin/backup" -H "x-admin-key: $ADMIN_KEY" --max-time 90)
-          echo "$RESP"
-          HTTP_CODE=$(echo "$RESP" | grep "HTTP_STATUS:" | cut -d: -f2)
+          echo "Calling backup endpoint (allow 120s)..."
+          HTTP_CODE=$(curl -s -o /tmp/backup_body.txt -w "%{http_code}" \
+            -X GET "https://www.downrangeco.com/api/admin/backup" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            --max-time 120)
           echo "HTTP Status: $HTTP_CODE"
-          BODY=$(echo "$RESP" | grep -v "HTTP_STATUS:")
-          echo "$BODY" > scripts/backup-test-result.txt
+          cat /tmp/backup_body.txt | python3 -m json.tool --no-ensure-ascii 2>/dev/null | head -40 || cat /tmp/backup_body.txt | head -40
+          mkdir -p scripts
+          echo "HTTP_STATUS=$HTTP_CODE" > scripts/backup-test-result.txt
+          cat /tmp/backup_body.txt >> scripts/backup-test-result.txt
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
-          git add scripts/backup-test-result.txt || true
-          git commit -m "diag: backup test result" || echo "nothing to commit"
-          git push || true
+          git add scripts/backup-test-result.txt
+          git diff --staged --quiet || git commit -m "diag: backup test result $HTTP_CODE"
+          git push
