@@ -16,13 +16,30 @@ function isoToSecs(iso = '') {
   return (parseInt(m[1]||0)*3600)+(parseInt(m[2]||0)*60)+parseInt(m[3]||0)
 }
 
-// Scrape gun.deals RSS — the best community-aggregated deals site
+// Scrape gun.deals RSS — try multiple URL patterns (site has changed RSS paths)
+const GUN_DEALS_URLS = [
+  'https://gun.deals/feed/syndication/rss',
+  'https://gun.deals/rss.xml',
+  'https://gun.deals/feed',
+  'https://gun.deals/feeds/items.rss',
+]
+
 async function fetchGunDeals() {
-  const res = await fetch('https://gun.deals/feed/syndication/rss', {
-    headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
-    signal: AbortSignal.timeout(12000),
-  })
-  if (!res.ok) throw new Error('gun.deals returned ' + res.status)
+  let res = null
+  for (const url of GUN_DEALS_URLS) {
+    try {
+      res = await fetch(url, {
+        headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
+        signal: AbortSignal.timeout(10000),
+      })
+      if (res.ok) { console.log('[GUN-DEALS] Found working URL:', url); break }
+      console.warn(`[GUN-DEALS] ${url} → ${res.status}`)
+      res = null
+    } catch (e) {
+      console.warn(`[GUN-DEALS] ${url} → ${e.message}`)
+    }
+  }
+  if (!res) throw new Error('gun.deals: all RSS URLs returned errors — site may be down or restructured')
   const xml = await res.text()
 
   const items = []

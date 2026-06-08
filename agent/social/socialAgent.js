@@ -205,6 +205,7 @@ async function uploadImageBluesky(imageUrl, accessJwt) {
     if (imgBuffer.byteLength > 976 * 1024) return null
     const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
     const blobRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.uploadBlob', {
+      signal: AbortSignal.timeout(15000),
       method: 'POST',
       headers: { 'Authorization': `Bearer ${accessJwt}`, 'Content-Type': contentType },
       body: imgBuffer,
@@ -224,6 +225,7 @@ async function postBluesky(content, imageUrl) {
   if (!handle.startsWith('did:') && !handle.includes('.')) handle += '.bsky.social'
 
   const authRes = await fetch('https://bsky.social/xrpc/com.atproto.server.createSession', {
+    signal: AbortSignal.timeout(15000),
     method: 'POST', headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ identifier: handle, password: pass }),
   })
@@ -266,6 +268,7 @@ async function postBluesky(content, imageUrl) {
   }
 
   const postRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
+    signal: AbortSignal.timeout(15000),
     method: 'POST',
     headers: { 'Authorization': `Bearer ${auth.accessJwt}`, 'Content-Type': 'application/json' },
     body: JSON.stringify({ repo: auth.did, collection: 'app.bsky.feed.post', record: {

@@ -1,7 +1,7 @@
 import Parser from 'rss-parser'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
-const parser = new Parser()
+const parser = new Parser({ timeout: 8000, headers: { 'User-Agent': 'DownRange/1.0' } })
 
 const CALIBERS = [
   { slug: '9mm', display: '9mm', unit: '115gr FMJ', rssSeg: 'ammo/9mm' },
@@ -144,34 +144,30 @@ async function runMarketFeed() {
   const t = Date.now()
   let done = 0
 
-  for (const caliber of CALIBERS) {
+  // Parallel fetch all calibers simultaneously (was sequential with 2s sleeps = 14s+ minimum)
+  const results = await Promise.allSettled(CALIBERS.map(async caliber => {
     const data = await fetchAmmoSeekRSS(caliber)
-    if (data) {
-      try {
-        await publishToSanity({
-          _id: `ammo-${caliber.slug}`,
-          _type: 'ammoPrice',
-          caliber: caliber.display,
-          caliberSlug: caliber.slug,
-          pricePerRound: data.avg,
-          unit: caliber.unit,
-          trendPercent: 0,
-          trendDirection: 'flat',
-          availabilityIndex: Math.min(100, data.count * 10),
-          lowestPrice: data.lowest,
-          highestPrice: data.highest,
-          sampleSize: data.count,
-          lastUpdated: new Date().toISOString()
-        })
-        done++
-        console.log(`[MARKET] ${caliber.display}: $${data.avg.toFixed(3)}/rd`)
-      } catch (err) {
-        console.error('[MARKET] Publish error:', err.message)
-      }
-    }
-    await sleep(2000)
-  }
+    if (!data) return null
+    await publishToSanity({
+      _id: `ammo-${caliber.slug}`,
+      _type: 'ammoPrice',
+      caliber: caliber.display,
+      caliberSlug: caliber.slug,
+      pricePerRound: data.avg,
+      unit: caliber.unit,
+      trendPercent: 0,
+      trendDirection: 'flat',
+      availabilityIndex: Math.min(100, data.count * 10),
+      lowestPrice: data.lowest,
+      highestPrice: data.highest,
+      sampleSize: data.count,
+      lastUpdated: new Date().toISOString()
+    })
+    console.log(`[MARKET] ${caliber.display}: $${data.avg.toFixed(3)}/rd`)
+    return caliber.display
+  }))
 
+  done = results.filter(r => r.status === 'fulfilled' && r.value).length
   console.log(`[MARKET] Done. ${done}/${CALIBERS.length} calibers. ${Date.now() - t}ms`)
   return { done }
 }

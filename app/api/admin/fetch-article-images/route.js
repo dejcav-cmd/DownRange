@@ -148,10 +148,10 @@ export async function POST(req) {
 
   const t0 = Date.now()
   try {
-  const { limit = 30, force = false } = await req.json().catch(() => ({}))
+  const { limit = 10, force = false } = await req.json().catch(() => ({}))
 
   // Get articles with missing, placeholder, or non-CDN external images (incl AI-generated)
-  const fetchLimit = Math.min(limit, 50)
+  const fetchLimit = Math.min(limit, 15)  // Hard cap — keep under 60s maxDuration
   const articles = await sanity.fetch(
     `*[_type == "newsArticle" && approved == true
       && editorLocked != true
@@ -177,7 +177,9 @@ export async function POST(req) {
   const results = { fetched: 0, uploaded: 0, skipped: 0, failed: 0, samples: [] }
   const mutations = []
 
+  const _deadline = Date.now() + 45000  // 45s hard stop — 15s buffer before 60s maxDuration
   for (const article of articles) {
+    if (Date.now() > _deadline) { console.log("[FETCH-IMAGES] Time limit reached"); break }
     if (!article.externalUrl) { results.skipped++; continue }
 
     // Skip sources that reliably block

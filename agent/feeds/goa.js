@@ -6,6 +6,46 @@ const GOA_SOURCES = [
   { name: 'GOA News', base: 'https://www.gunowners.org', cat: 'goanews' },
 ]
 
+// Reliable RSS fallbacks that don't require WP API (used when GOA blocks Vercel IPs)
+const GOA_RSS_FALLBACKS = [
+  { name: 'NRA-ILA',  url: 'https://www.nraila.org/rss/' },
+  { name: 'FPC',      url: 'https://www.firearmspolicycoalition.org/feed/' },
+  { name: 'SAF',      url: 'https://www.saf.org/feed/' },
+  { name: 'GOA Feed', url: 'https://gunowners.org/feed/' },
+]
+
+import Parser from 'rss-parser'
+const rssParser = new Parser({ timeout: 8000, headers: { 'User-Agent': 'DownRange/1.0' } })
+
+async function fetchGOARSSFallbacks() {
+  const items = []
+  for (const feed of GOA_RSS_FALLBACKS) {
+    try {
+      const parsed = await rssParser.parseURL(feed.url)
+      for (const item of (parsed.items || []).slice(0, 8)) {
+        if (!item.title || !item.link) continue
+        const lower = (item.title + ' ' + (item.contentSnippet || '')).toLowerCase()
+        const relevant = ['gun','firearm','second amendment','2a','atf','carry','legislation','court','ruling','ban','permit','bill'].some(k => lower.includes(k))
+        if (!relevant) continue
+        items.push({
+          title:       item.title,
+          url:         item.link,
+          description: item.contentSnippet?.slice(0, 400) || item.title,
+          publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
+          source:      feed.name,
+          category:    'law',
+          feedCat:     'law',
+          imageUrl:    '/img/law.svg',
+        })
+      }
+      console.log(`[GOA] RSS fallback ${feed.name}: ${items.length} items so far`)
+    } catch (e) {
+      console.warn(`[GOA] RSS fallback ${feed.name} failed:`, e.message)
+    }
+  }
+  return items
+}
+
 async function fetchGOAPosts(base, cat, limit = 20) {
   // WordPress REST API — works even when RSS feed is blocked by Cloudflare
   const url = `${base}/wp-json/wp/v2/posts?categories_name=${cat}&per_page=${limit}&_fields=id,title,excerpt,link,date,categories,tags`
@@ -129,7 +169,15 @@ export async function runGOAFeed() {
     const posts = await fetchGOAPosts(src.base, src.cat)
     console.log(`[GOA] ${src.name} (${src.cat}): ${posts.length} posts`)
     all.push(...posts)
-    await sleep(500)
+    await sleep(300)
+  }
+
+  // If GOA WP API returned nothing (Cloudflare blocking Vercel IPs), use RSS fallbacks
+  if (all.length === 0) {
+    console.log('[GOA] Primary sources returned 0 posts — using RSS fallbacks')
+    const fallbackItems = await fetchGOARSSFallbacks()
+    all.push(...fallbackItems)
+    console.log(`[GOA] RSS fallbacks provided ${fallbackItems.length} items`)
   }
 
   // Deduplicate by URL

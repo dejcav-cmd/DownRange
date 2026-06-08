@@ -180,11 +180,16 @@ async function notifyDiscord(report) {
 
 export async function GET(req) {
   // Auth check — only cron or admin
-  const cronHeader = req.headers.get('x-vercel-cron')
-  const authHeader = req.headers.get('authorization')
-  const secret     = process.env.CRON_SECRET
+  const cronHeader  = req.headers.get('x-vercel-cron')
+  const authHeader  = req.headers.get('authorization')
+  const adminHeader = req.headers.get('x-admin-key')
+  const secret      = process.env.CRON_SECRET
+  const adminKey    = process.env.ADMIN_KEY
 
-  const isValid = cronHeader === '1' || !secret || (secret && authHeader === `Bearer ${secret}`)
+  const isValid = cronHeader === '1'
+    || !secret
+    || (secret && authHeader === `Bearer ${secret}`)
+    || (adminKey && adminHeader === adminKey)
   if (!isValid) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
