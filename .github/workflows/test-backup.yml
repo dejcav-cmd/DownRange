@@ -1,0 +1,23 @@
+name: Test Backup
+on:
+  workflow_dispatch: {}
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call backup endpoint
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          echo "Calling backup endpoint..."
+          RESP=$(curl -s -w "\nHTTP_STATUS:%{http_code}" -X GET "https://www.downrangeco.com/api/admin/backup" -H "x-admin-key: $ADMIN_KEY" --max-time 90)
+          echo "$RESP"
+          HTTP_CODE=$(echo "$RESP" | grep "HTTP_STATUS:" | cut -d: -f2)
+          echo "HTTP Status: $HTTP_CODE"
+          BODY=$(echo "$RESP" | grep -v "HTTP_STATUS:")
+          echo "$BODY" > scripts/backup-test-result.txt
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add scripts/backup-test-result.txt || true
+          git commit -m "diag: backup test result" || echo "nothing to commit"
+          git push || true
