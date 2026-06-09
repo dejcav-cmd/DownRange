@@ -354,14 +354,17 @@ async function processNewsItem(item) {
     console.warn('[NEWS] No AI key set — articles will publish without body (backfill required)')
   }
 
-  // Deal detector: catch price/discount articles that AI may mislabel
-  const DEAL_PATTERN = /\$(\d+)|\d+%\s*off|save\s+\$|discount|coupon|sale price|ships for|only \$|starting at \$|drops to \$|priced at \$/i
-  const titleLooksLikeDeal = DEAL_PATTERN.test(item.title || '')
-  const aiSaysDeal = ai?.category === 'deals'
-  const feedIsDeal  = item.feedCat === 'deals'
-  const category = (feedIsDeal || aiSaysDeal || titleLooksLikeDeal)
+  // Category resolution — strict deal gate:
+  // Only dedicated deals feeds OR a real price signal in the title can produce a 'deals' article.
+  // AI saying 'deals' is NOT sufficient on its own — it hallucinates this on opinion/history pieces.
+  const PRICE_SIGNAL = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price|free shipping|rebate/i
+  const titleHasPrice = PRICE_SIGNAL.test(item.title || '')
+  const feedIsDeal    = item.feedCat === 'deals'
+  // Allow deals only if: dedicated deals feed, OR title has a real price signal
+  const isDeal = feedIsDeal || titleHasPrice
+  const category = isDeal
     ? 'deals'
-    : (ai?.category || item.feedCat || 'news')
+    : (ai?.category === 'deals' ? 'news' : (ai?.category || item.feedCat || 'news'))
 
   const doc = {
     _id:           'news-' + hash,

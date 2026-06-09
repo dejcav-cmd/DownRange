@@ -12,12 +12,24 @@ const sanity = createClient({
   useCdn: false,
 });
 
-const DEAL_RE     = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price|free shipping|rebate/i;
-const NOT_DEAL_RE = /ninth circuit|supreme court|lawsuit|ruling|ban|law\b|bill\b|legislation|subpoena|\batf\b|\bnra\b|court\b|judge\b|verdict|conviction|election|rights|amendment|congress|senate|police|sheriff|arrest|charged|indicted|killed|crime|history|review of|how the|changed the|market forever|under development/i;
+// These sources publish news/law/opinion — never deals unless title has a price signal
+const NEWS_ONLY_SOURCES = [
+  'AmmoLand','The Firearm Blog','TTAG','Guns.com News','Guns & Ammo',
+  'Shooting Wire','Firearms News','Concealed Nation','Outdoor Life Guns',
+  'Field & Stream Guns','Tactical Life','Personal Defense World','Combat Handguns',
+  'Handguns Magazine','Rifle Shooter','American Rifleman','American Hunter',
+  'Shooting Illustrated','GunsAmerica Digest','NRA-ILA','SAF','FPC','FPC Law',
+  'CleanUpATF','Duke Firearms Law','Bearing Arms','Guns & Patriots','ATF News',
+  'Congress.gov 2A','GOA','GOA Press','Gun News Daily','Gun Digest','Recoil Magazine',
+  'Daily Caller Guns','Washington Free Beacon Guns','National Review Guns',
+  'Townhall Guns','Breitbart 2A','NSSF Blog','USCCA Blog','Pew Pew Tactical',
+];
+
+const PRICE_RE = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price|free shipping|rebate/i;
 
 function bestCat(title) {
-  if (/court|circuit|supreme|ruling|\blaw\b|\bbill\b|legislation|\batf\b|ban|rights|amendment|congress|senate|subpoena|lawsuit/i.test(title)) return 'law';
-  if (/review|history|\bhow\b|market|industry|manufacturer|glock|sig\b|smith|ruger|barrett|colt|polymer|pistol|rifle|shotgun/i.test(title)) return 'industry';
+  if (/court|circuit|supreme|ruling|\blaw\b|\bbill\b|legislation|\batf\b|ban|rights|amendment|congress|senate|subpoena|lawsuit|verdict|conviction/i.test(title)) return 'law';
+  if (/review|history|\bhow\b|market|industry|manufacturer|glock|sig\b|smith|ruger|barrett|colt|polymer|pistol|rifle|shotgun|handgun|carbine|suppressor/i.test(title)) return 'industry';
   return 'news';
 }
 
@@ -27,65 +39,65 @@ export async function POST(request) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  const movedFromDeals = [], movedToDeals = [];
+  const movedFromDeals = [];
+  const movedToDeals = [];
   let errors = 0;
 
-  // 1. Articles in deals that shouldn't be — batch fetch, batch mutate
+  // 1. Articles marked deals from news-only sources that have no price signal
   const wrongDeals = await sanity.fetch(
-    `*[_type=="newsArticle" && category=="deals"] | order(publishedAt desc) [0..500] {_id, title}`
+    `*[_type=="newsArticle" && category=="deals"] | order(publishedAt desc) [0..1000] {_id, title, source}`
   );
 
   const toFix = wrongDeals.filter(a => {
-    const t = a.title || '';
-    return !DEAL_RE.test(t) || NOT_DEAL_RE.test(t);
+    if (!a.title) return true; // no title = mislabeled
+    const fromNewsSource = NEWS_ONLY_SOURCES.includes(a.source);
+    const hasPrice = PRICE_RE.test(a.title);
+    // Remove from deals if: news-only source with no price, OR clearly no price signal at all
+    return (fromNewsSource && !hasPrice) || (!hasPrice);
   });
 
   if (toFix.length) {
     const mutations = toFix.map(a => ({
       patch: { id: a._id, set: { category: bestCat(a.title || '') } }
     }));
-    // Sanity allows up to 256 mutations per transaction
     for (let i = 0; i < mutations.length; i += 200) {
       try {
         await sanity.mutate(mutations.slice(i, i + 200));
-        mutations.slice(i, i + 200).forEach((m, idx) => {
-          const a = toFix[i + idx];
-          movedFromDeals.push({ id: a._id, title: (a.title||'').slice(0,70), to: m.patch.set.category });
+        mutations.slice(i, i + 200).forEach((m, j) => {
+          const a = toFix[i + j];
+          movedFromDeals.push({ title: (a.title||'').slice(0,70), source: a.source, to: m.patch.set.category });
         });
-      } catch (e) { errors++; console.error('batch patch error:', e.message); }
+      } catch (e) { errors++; }
     }
   }
 
-  // 2. Non-deal articles that have price signals — should be deals
+  // 2. Articles NOT in deals that have a real price signal in title
   const nonDeals = await sanity.fetch(
-    `*[_type=="newsArticle" && category!="deals"] | order(publishedAt desc) [0..1000] {_id, title, category}`
+    `*[_type=="newsArticle" && category!="deals"] | order(publishedAt desc) [0..1000] {_id, title, source, category}`
   );
 
   const toPromote = nonDeals.filter(a => {
-    const t = a.title || '';
-    return DEAL_RE.test(t) && !NOT_DEAL_RE.test(t);
+    if (!a.title) return false;
+    return PRICE_RE.test(a.title);
   });
 
   if (toPromote.length) {
-    const mutations = toPromote.map(a => ({
-      patch: { id: a._id, set: { category: 'deals' } }
-    }));
+    const mutations = toPromote.map(a => ({ patch: { id: a._id, set: { category: 'deals' } } }));
     for (let i = 0; i < mutations.length; i += 200) {
       try {
         await sanity.mutate(mutations.slice(i, i + 200));
-        mutations.slice(i, i + 200).forEach((m, idx) => {
-          const a = toPromote[i + idx];
-          movedToDeals.push({ id: a._id, title: (a.title||'').slice(0,70), from: a.category });
+        mutations.slice(i, i + 200).forEach((m, j) => {
+          const a = toPromote[i + j];
+          movedToDeals.push({ title: (a.title||'').slice(0,70), source: a.source, from: a.category });
         });
-      } catch (e) { errors++; console.error('promote batch error:', e.message); }
+      } catch (e) { errors++; }
     }
   }
 
   return NextResponse.json({
     ok: errors === 0,
-    scanned: { wrongDeals: wrongDeals.length, nonDeals: nonDeals.length },
     movedFromDeals: { count: movedFromDeals.length, items: movedFromDeals },
-    movedToDeals:   { count: movedToDeals.length,   items: movedToDeals   },
+    movedToDeals:   { count: movedToDeals.length,   items: movedToDeals },
     errors,
   });
 }
