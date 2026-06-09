@@ -30,21 +30,8 @@ const CATS = [
   { val:'Gear',        label:'◈ Gear' },
 ]
 
-// ── SEED DEALS (shown while loading) ─────────────────────────────────────────
-const SEED = [
-  { id:'s1', title:'[Ammo] Federal American Eagle 9mm 115gr FMJ 1000rd — $189.99 shipped', price:'$189.99', url:'#', score:847,  flair:'Ammo',    source:'r/gundeals', domain:'federalpremium.com', created:Date.now()-7200000,  imageUrl:null },
-  { id:'s2', title:'[Rifle] PSA PA-15 Complete MOE 5.56 16" Rifle — $479.99 Free Ship',     price:'$479.99', url:'#', score:612,  flair:'Rifle',   source:'r/gundeals', domain:'palmettostatearmory.com', created:Date.now()-10800000, imageUrl:null },
-  { id:'s3', title:'[Handgun] Glock 19 Gen5 MOS + Crimson Trace Red Dot Bundle — $699.99',  price:'$699.99', url:'#', score:534,  flair:'Handgun', source:'r/gundeals', domain:'glockstore.com', created:Date.now()-14400000,  imageUrl:null },
-  { id:'s4', title:'[Ammo] CCI Blazer Brass 9mm 350rd Value Pack — $62.99 (PSA)',           price:'$62.99',  url:'#', score:423,  flair:'Ammo',    source:'PSA', domain:'palmettostatearmory.com', created:Date.now()-21600000,  imageUrl:null },
-  { id:'s5', title:'[Optic] Vortex Crossfire II Red Dot — $109.99 (reg $180)',              price:'$109.99', url:'#', score:389,  flair:'Optic',   source:'Brownells', domain:'brownells.com', created:Date.now()-25200000,    imageUrl:null },
-  { id:'s6', title:'[NFA] SilencerCo Omega 9K — $799 shipped (no tax stamp 2026)',          price:'$799.00', url:'#', score:321,  flair:'NFA',     source:'r/gundeals', domain:'silencershop.com', created:Date.now()-18000000,  imageUrl:null },
-  { id:'s7', title:'[Accessories] Streamlight TLR-1 HL 1000 Lumen — $89.99 (reg $140)',    price:'$89.99',  url:'#', score:301,  flair:'Accessories', source:'Brownells', domain:'brownells.com', created:Date.now()-28800000, imageUrl:null },
-  { id:'s8', title:'[Rifle] CMMG Banshee 9mm AR Pistol — $799.99 Deal of the Week',         price:'$799.99', url:'#', score:267,  flair:'Rifle',   source:'Primary Arms', domain:'primaryarms.com', created:Date.now()-32400000, imageUrl:null },
-  { id:'s9', title:'[Ammo] Hornady Critical Defense 9mm 115gr FTX 250rd — $134.99',         price:'$134.99', url:'#', score:245,  flair:'Ammo',    source:'MidwayUSA', domain:'midwayusa.com', created:Date.now()-36000000,    imageUrl:null },
-  { id:'s10',title:'[Accessories] Magpul PMAG 30 AR-15 5.56 10-Pack — $99.99 Free Ship',   price:'$99.99',  url:'#', score:198,  flair:'Accessories', source:'Magpul', domain:'magpul.com', created:Date.now()-39600000,    imageUrl:null },
-  { id:'s11',title:'[Handgun] SIG Sauer P365XL Romeo Zero Elite Bundle — $649.99',          price:'$649.99', url:'#', score:187,  flair:'Handgun', source:'r/gundeals', domain:'sigsauer.com', created:Date.now()-43200000,  imageUrl:null },
-  { id:'s12',title:'[Ammo] Winchester USA 5.56 55gr FMJ 500rd — $219.99 shipped',           price:'$219.99', url:'#', score:156,  flair:'Ammo',    source:'Brownells', domain:'brownells.com', created:Date.now()-46800000,    imageUrl:null },
-]
+// No fake seed deals — page starts empty, real data loads from API
+const SEED = []
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 function timeAgo(ts) {
@@ -289,10 +276,10 @@ export default function DealsPage() {
   useEffect(() => { load(cat, sort) }, [cat, sort, load])
 
   const totalSources = meta
-    ? [meta.sources?.reddit > 0 && `${meta.sources.reddit} r/gundeals`,
-       meta.sources?.gunDeals > 0 && `${meta.sources.gunDeals} gun.deals`,
-       meta.sources?.ammoland > 0 && `${meta.sources.ammoland} AmmoLand`]
-        .filter(Boolean).join(' · ')
+    ? [meta.sources?.sanity   > 0 && `${meta.sources.sanity} curated`,
+       meta.sources?.reddit   > 0 && `r/gundeals`,
+       meta.sources?.gunDeals > 0 && `gun.deals`]
+        .filter(Boolean).join(', ')
     : ''
 
   return (
@@ -380,7 +367,7 @@ export default function DealsPage() {
           `}</style>
 
           {/* Loading skeleton */}
-          {status === 'loading' && deals === SEED && (
+          {status === 'loading' && deals.length === 0 && (
             <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:12, marginBottom:24 }}>
               {[...Array(12)].map((_,i) => (
                 <div key={i} style={{ height:340, background:'linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%)', backgroundSize:'200% 100%', animation:'shimmer 1.5s infinite', borderRadius:0, border:'1px solid var(--border)' }} />
@@ -389,7 +376,7 @@ export default function DealsPage() {
           )}
 
           {/* Deal grid — Amazon product tile style */}
-          {(status !== 'loading' || deals !== SEED) && (
+          {(status !== 'loading' || deals.length > 0) && (
             <>
               <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16, flexWrap:'wrap', gap:8 }}>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'var(--text-dim)' }}>

@@ -1,261 +1,208 @@
-export const dynamic = 'force-dynamic'
+export const dynamic   = 'force-dynamic'
 export const revalidate = 0
 
-// ── IMAGE UTILITIES ────────────────────────────────────────────────────────
+import { createClient } from '@sanity/client'
 
-// Extract product image from Reddit post preview data
-function extractRedditImage(post) {
-  // Try preview images first (best quality)
-  const preview = post.preview?.images?.[0]
-  if (preview) {
-    // resolutions array gives smaller sizes — use source for full, or largest resolution
-    const resolutions = preview.resolutions || []
-    if (resolutions.length > 0) {
-      // Pick ~640px wide if available
-      const mid = resolutions.find(r => r.width >= 400) || resolutions[resolutions.length - 1]
-      if (mid?.url) return mid.url.replace(/&amp;/g, '&')
-    }
-    if (preview.source?.url) return preview.source.url.replace(/&amp;/g, '&')
-  }
-  // Thumbnail fallback (small but fast)
-  const thumb = post.thumbnail
-  if (thumb && thumb.startsWith('http')) return thumb
-  return null
-}
+const sanity = createClient({
+  projectId: 'vbnsqnkg',
+  dataset:   'production',
+  apiVersion:'2023-08-01',
+  token:     process.env.SANITY_API_TOKEN,
+  useCdn:    false,
+})
 
-// ── PRICE EXTRACTION ───────────────────────────────────────────────────────
-
-function extractPrice(title) {
-  // Match $XX.XX or $X,XXX.XX patterns
-  const match = title.match(/\$[\d,]+(?:\.\d{2})?/)
-  return match ? match[0] : null
-}
-
-// ── FLAIR CATEGORY → DISPLAY ───────────────────────────────────────────────
-
+// ── FLAIR MAPPING ─────────────────────────────────────────────────────────────
 const FLAIR_META = {
-  'Handgun':     { color:'#60A5FA', bg:'#001a2a', icon:'🔫' },
-  'Rifle':       { color:'#34D399', bg:'#001a0a', icon:'◈' },
-  'Shotgun':     { color:'#FBBF24', bg:'#1a1000', icon:'◉' },
-  'Ammo':        { color:'#C8922A', bg:'#1a0800', icon:'◎' },
-  'Accessories': { color:'#C084FC', bg:'#0d001a', icon:'◈' },
-  'NFA':         { color:'#EF4444', bg:'#1a0000', icon:'◈' },
-  'Optic':       { color:'#34D399', bg:'#001a0a', icon:'◎' },
-  'Gear':        { color:'#9CA3AF', bg:'#111318', icon:'◈' },
-  'Deals':       { color:'#FBBF24', bg:'#1a1000', icon:'◈' },
-  'Other':       { color:'#4B5563', bg:'#111318', icon:'◈' },
+  'Handgun':     { color:'#60A5FA', bg:'rgba(96,165,250,0.12)',  label:'HANDGUN'     },
+  'Rifle':       { color:'#34D399', bg:'rgba(52,211,153,0.12)',  label:'RIFLE'       },
+  'Shotgun':     { color:'#FBBF24', bg:'rgba(251,191,36,0.12)',  label:'SHOTGUN'     },
+  'Ammo':        { color:'#C8922A', bg:'rgba(200,146,42,0.12)',  label:'AMMO'        },
+  'Accessories': { color:'#C084FC', bg:'rgba(192,132,252,0.12)', label:'ACCESSORIES' },
+  'NFA':         { color:'#EF4444', bg:'rgba(239,68,68,0.12)',   label:'NFA'         },
+  'Optic':       { color:'#34D399', bg:'rgba(52,211,153,0.12)',  label:'OPTIC'       },
+  'Gear':        { color:'#9CA3AF', bg:'rgba(156,163,175,0.12)', label:'GEAR'        },
+  'Deals':       { color:'#FBBF24', bg:'rgba(251,191,36,0.12)',  label:'DEAL'        },
+  'Other':       { color:'#4B5563', bg:'rgba(75,85,99,0.12)',    label:'OTHER'       },
 }
 
+function inferFlair(title = '') {
+  const t = title.toLowerCase()
+  if (/handgun|pistol|glock|sig sauer|beretta|kimber|1911|revolver/.test(t)) return 'Handgun'
+  if (/rifle|ar-15|ar15|ak-|carbine|sbr|bolt.action|lever.action/.test(t))   return 'Rifle'
+  if (/shotgun|mossberg|remington 870|benelli/.test(t))                        return 'Shotgun'
+  if (/\bammo\b|9mm|\.223|\.308|5\.56|7\.62|\.45|\.357|rounds|gr fmj|gr hp/.test(t)) return 'Ammo'
+  if (/suppressor|silencer|\bnfa\b|form 4|form4/.test(t))                      return 'NFA'
+  if (/scope|optic|red dot|lpvo|vortex|leupold|eotech|aimpoint/.test(t))       return 'Optic'
+  if (/holster|magazine|pmag|light|streamlight|sling|grip|trigger/.test(t))    return 'Accessories'
+  if (/gear|vest|plate|carrier|bag|case|safe/.test(t))                         return 'Gear'
+  return 'Deals'
+}
+
+function extractPrice(title = '') {
+  const m = title.match(/\$[\d,]+(?:\.\d{2})?/)
+  return m ? m[0] : null
+}
+
+// ── SOURCE 1: Sanity newsArticle deals ───────────────────────────────────────
+async function fetchSanityDeals() {
+  try {
+    const articles = await sanity.fetch(
+      `*[_type=="newsArticle" && category=="deals" && approved==true] | order(publishedAt desc) [0..150] {
+        _id, title, slug, source, imageUrl, externalUrl, publishedAt, summary,
+        heroImage { asset->{ url } }
+      }`
+    )
+    return articles.map(a => {
+      const title  = a.title || ''
+      const flair  = inferFlair(title)
+      const imgUrl = a.heroImage?.asset?.url || a.imageUrl || null
+      return {
+        id:        a._id,
+        title,
+        url:       a.externalUrl || `https://downrangeco.com/news/${a.slug?.current || a._id}`,
+        permalink: a.externalUrl || `https://downrangeco.com/news/${a.slug?.current || a._id}`,
+        score:     null,
+        comments:  null,
+        created:   a.publishedAt ? new Date(a.publishedAt).getTime() : Date.now(),
+        flair,
+        flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
+        source:    a.source || 'DownRange',
+        domain:    a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'downrangeco.com' } })() : 'downrangeco.com',
+        imageUrl:  imgUrl,
+        price:     extractPrice(title),
+        fromSanity: true,
+      }
+    })
+  } catch (e) {
+    console.error('[DEALS] Sanity fetch error:', e.message)
+    return []
+  }
+}
+
+// ── SOURCE 2: r/gundeals (live Reddit) ───────────────────────────────────────
+async function fetchRedditDeals() {
+  const results = []
+  const urls = [
+    'https://old.reddit.com/r/gundeals/hot.json?limit=50&raw_json=1',
+    'https://old.reddit.com/r/gundeals/new.json?limit=25&raw_json=1',
+    'https://old.reddit.com/r/ammo/hot.json?limit=20&raw_json=1',
+  ]
+  for (const url of urls) {
+    try {
+      const res = await fetch(url, {
+        headers: { 'User-Agent': 'DownRange/2.0 (firearms platform; contact@downrangeco.com)' },
+        next: { revalidate: 0 },
+        signal: AbortSignal.timeout(6000),
+      })
+      if (!res.ok) continue
+      const data  = await res.json()
+      const posts = data?.data?.children || []
+      for (const { data: p } of posts) {
+        if (p.stickied || !p.title || p.score < 5) continue
+        const flair   = p.link_flair_text || 'Deals'
+        const preview = p.preview?.images?.[0]
+        const imgUrl  = preview?.resolutions?.find(r => r.width >= 400)?.url?.replace(/&amp;/g,'&')
+                      || preview?.source?.url?.replace(/&amp;/g,'&')
+                      || (p.thumbnail?.startsWith('http') ? p.thumbnail : null)
+        results.push({
+          id:        'r-' + p.id,
+          title:     p.title,
+          url:       p.url?.startsWith('http') ? p.url : `https://reddit.com${p.permalink}`,
+          permalink: `https://reddit.com${p.permalink}`,
+          score:     p.score,
+          comments:  p.num_comments,
+          created:   p.created_utc * 1000,
+          flair,
+          flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
+          source:    'r/gundeals',
+          domain:    p.domain,
+          imageUrl:  imgUrl,
+          price:     extractPrice(p.title),
+        })
+      }
+      if (results.length > 0) break
+    } catch { /* Reddit unreachable */ }
+  }
+  return results
+}
+
+// ── SOURCE 3: gun.deals RSS ───────────────────────────────────────────────────
+async function fetchGunDeals() {
+  const results = []
+  try {
+    const res = await fetch(
+      'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://gun.deals/rss.xml') + '&count=40',
+      { next: { revalidate: 0 }, signal: AbortSignal.timeout(6000) }
+    )
+    if (!res.ok) return results
+    const json = await res.json()
+    if (json.status !== 'ok' || !json.items?.length) return results
+    for (const item of json.items.slice(0, 30)) {
+      const title = item.title || ''
+      if (!title || !item.link) continue
+      const flair = inferFlair(title)
+      results.push({
+        id:        'gd-' + Buffer.from(item.link).toString('base64').slice(0,10),
+        title,
+        url:       item.link,
+        permalink: item.link,
+        score:     null,
+        comments:  null,
+        created:   item.pubDate ? new Date(item.pubDate).getTime() : Date.now(),
+        flair,
+        flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
+        source:    'gun.deals',
+        domain:    'gun.deals',
+        imageUrl:  item.enclosure?.link || item.thumbnail || null,
+        price:     extractPrice(title),
+      })
+    }
+  } catch { /* gun.deals unreachable */ }
+  return results
+}
+
+// ── MAIN ──────────────────────────────────────────────────────────────────────
 export async function GET(request) {
   const { searchParams } = new URL(request.url)
   const catFilter = searchParams.get('cat') || null
   const sortBy    = searchParams.get('sort') || 'hot'
 
+  // Fetch all sources in parallel
+  const [sanityDeals, redditDeals, gunDealsItems] = await Promise.all([
+    fetchSanityDeals(),
+    fetchRedditDeals(),
+    fetchGunDeals(),
+  ])
+
+  // Merge — Sanity first, then live sources; dedup by URL
+  const seen = new Set()
   const deals = []
-  const sources = { reddit: 0, gunDeals: 0, ammoland: 0 }
+  for (const d of [...sanityDeals, ...redditDeals, ...gunDealsItems]) {
+    const key = d.url
+    if (seen.has(key)) continue
+    seen.add(key)
+    deals.push(d)
+  }
 
-  // ── Source 1: r/gundeals (hot + new for freshness) ────────────────────────
-  const redditUrls = [
-    'https://old.reddit.com/r/gundeals/hot.json?limit=50&raw_json=1',
-    'https://old.reddit.com/r/gundeals/new.json?limit=25&raw_json=1',
-    'https://old.reddit.com/r/ammo/hot.json?limit=20&raw_json=1',
-  ]
-  for (const url of redditUrls) {
-    try {
-      const res = await fetch(url, {
-        headers: {
-          'User-Agent': 'DownRange/2.0 (firearms intelligence platform; contact@downrangeco.com)',
-          'Accept': 'application/json',
-        },
-        next: { revalidate: 0 },
+  // Sort
+  const sorted = sortBy === 'new'
+    ? deals.sort((a, b) => b.created - a.created)
+    : deals.sort((a, b) => {
+        if (a.score !== null && b.score !== null) return b.score - a.score
+        if (a.score !== null) return -1
+        if (b.score !== null) return 1
+        return b.created - a.created
       })
-      if (!res.ok) continue
-      const data = await res.json()
-      const posts = data?.data?.children || []
-      for (const { data: p } of posts) {
-        if (p.stickied || !p.title || p.score < 5) continue
-        if (deals.find(d => d.id === 'r-' + p.id)) continue // dedup
 
-        const imageUrl = extractRedditImage(p)
-        const price    = extractPrice(p.title)
-        const flair    = p.link_flair_text || 'Other'
-
-        deals.push({
-          id:         'r-' + p.id,
-          title:      p.title,
-          url:        p.url?.startsWith('http') ? p.url : `https://reddit.com${p.permalink}`,
-          permalink:  `https://reddit.com${p.permalink}`,
-          score:      p.score,
-          comments:   p.num_comments,
-          created:    p.created_utc * 1000,
-          flair,
-          flairMeta:  FLAIR_META[flair] || FLAIR_META.Other,
-          source:     'r/gundeals',
-          domain:     p.domain,
-          imageUrl,
-          price,
-          isNSFW:     p.over_18,
-        })
-        sources.reddit++
-      }
-    } catch { /* Reddit unreachable — continue */ }
-    if (sources.reddit > 0) break // if hot worked, skip new
-  }
-
-  // ── Source 2: gun.deals via RSS proxy ────────────────────────────────────
-  // gun.deals uses Cloudflare which blocks direct server fetches.
-  // Use rss2json.com as a proxy — free tier, no auth needed, bypasses CF.
-  const gunDealsUrls = [
-    'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://gun.deals/rss.xml') + '&count=40',
-    'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://gun.deals/blog/feed') + '&count=40',
-  ]
-  for (const gdUrl of gunDealsUrls) {
-    try {
-      const res = await fetch(gdUrl, {
-        headers: { 'User-Agent': 'DownRange/2.0 (contact@downrangeco.com)' },
-        next: { revalidate: 0 },
-      })
-      if (!res.ok) continue
-      const json = await res.json()
-      // rss2json returns { status:'ok', items:[...] }
-      if (json.status === 'ok' && json.items?.length > 0) {
-        for (const item of json.items.slice(0, 30)) {
-          const title    = item.title || ''
-          const link     = item.link || item.guid || ''
-          const desc     = item.description || item.content || ''
-          const pubDate  = item.pubDate || ''
-          const imageUrl = item.enclosure?.link || item.thumbnail || null
-          const price    = extractPrice(title) || extractPrice(desc)
-          if (!title || !link) continue
-          let flair = 'Deals'
-          const tl = title.toLowerCase()
-          if (tl.includes('handgun')||tl.includes('pistol')||tl.includes('glock')||tl.includes('sig ')) flair='Handgun'
-          else if (tl.includes('rifle')||tl.includes('ar-15')||tl.includes('ar15')) flair='Rifle'
-          else if (tl.includes('shotgun')||tl.includes('mossberg')) flair='Shotgun'
-          else if (tl.includes('ammo')||tl.includes('9mm')||tl.includes('.223')||tl.includes('rounds')) flair='Ammo'
-          else if (tl.includes('suppressor')||tl.includes('silencer')||tl.includes('nfa')) flair='NFA'
-          else if (tl.includes('scope')||tl.includes('optic')||tl.includes('red dot')) flair='Optic'
-          else if (tl.includes('holster')||tl.includes('magazine')||tl.includes('pmag')) flair='Accessories'
-          deals.push({ id:'gd-'+Buffer.from(link).toString('base64').slice(0,10), title, url:link, permalink:link, score:null, comments:null, created:pubDate?new Date(pubDate).getTime():Date.now(), flair, flairMeta:FLAIR_META[flair]||FLAIR_META.Deals, source:'gun.deals', domain:'gun.deals', imageUrl, price })
-          sources.gunDeals++
-        }
-        if (sources.gunDeals > 0) break
-      }
-      // Fallback: try parsing as XML if JSON failed
-      const xml = ''
-      const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
-
-      for (const item of items.slice(0, 30)) {
-        const title   = (item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1]
-                      || item.match(/<title>(.*?)<\/title>/)?.[1] || '').trim()
-        const link    = (item.match(/<link>(https?[^<]+)<\/link>/)?.[1]
-                      || item.match(/<feedburner:origLink>(https?[^<]+)<\/feedburner:origLink>/)?.[1] || '').trim()
-        const desc    = item.match(/<description><!\[CDATA\[([\s\S]*?)\]\]><\/description>/)?.[1] || ''
-        const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || ''
-        const encImg  = item.match(/<enclosure[^>]+url="([^"]+)"/)?.[1] || null
-        // Try to extract image from description HTML
-        const descImg = desc.match(/<img[^>]+src="([^"]+)"/)?.[1] || null
-        const imageUrl = encImg || descImg || null
-        const price   = extractPrice(title) || extractPrice(desc)
-
-        if (!title || !link) continue
-
-        // Infer flair from title keywords
-        let flair = 'Deals'
-        const tl = title.toLowerCase()
-        if (tl.includes('handgun') || tl.includes('pistol') || tl.includes('glock') || tl.includes('sig ') || tl.includes('beretta')) flair = 'Handgun'
-        else if (tl.includes('rifle') || tl.includes('ar-15') || tl.includes('ar15') || tl.includes('ak-') || tl.includes(' sbr')) flair = 'Rifle'
-        else if (tl.includes('shotgun') || tl.includes('mossberg') || tl.includes('remington 870')) flair = 'Shotgun'
-        else if (tl.includes('ammo') || tl.includes('9mm') || tl.includes('.223') || tl.includes('.308') || tl.includes(' gr ') || tl.includes(' gr,') || tl.includes('rounds')) flair = 'Ammo'
-        else if (tl.includes('suppressor') || tl.includes('silencer') || tl.includes(' nfa') || tl.includes('form 4')) flair = 'NFA'
-        else if (tl.includes('scope') || tl.includes('optic') || tl.includes('red dot') || tl.includes('lpvo') || tl.includes('vortex') || tl.includes('leupold')) flair = 'Optic'
-        else if (tl.includes('holster') || tl.includes('magazine') || tl.includes('pmag') || tl.includes('light') || tl.includes('streamlight')) flair = 'Accessories'
-
-        deals.push({
-          id:        'gd-' + Buffer.from(link).toString('base64').slice(0, 10),
-          title,
-          url:       link,
-          permalink: link,
-          score:     null,
-          comments:  null,
-          created:   pubDate ? new Date(pubDate).getTime() : Date.now(),
-          flair,
-          flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
-          source:    'gun.deals',
-          domain:    'gun.deals',
-          imageUrl,
-          price,
-        })
-        sources.gunDeals++
-      }
-      if (sources.gunDeals > 0) break
-    } catch { /* gun.deals unreachable */ }
-  }
-
-  // ── Source 3: AmmoLand (deals category) ────────────────────────────────────
-  try {
-    const res = await fetch('https://www.ammoland.com/feed/', {
-      headers: { 'User-Agent': 'DownRange/2.0 (contact@downrangeco.com)' },
-      next: { revalidate: 0 },
-    })
-    if (res.ok) {
-      const xml = await res.text()
-      const items = xml.match(/<item>([\s\S]*?)<\/item>/g) || []
-      for (const item of items.slice(0, 15)) {
-        const title   = (item.match(/<title><!\[CDATA\[(.*?)\]\]><\/title>/)?.[1]
-                      || item.match(/<title>(.*?)<\/title>/)?.[1] || '').trim()
-        const link    = (item.match(/<link>(https?[^<]+)<\/link>/)?.[1] || '').trim()
-        const pubDate = item.match(/<pubDate>(.*?)<\/pubDate>/)?.[1] || ''
-        const imgUrl  = item.match(/<media:content[^>]+url="([^"]+)"/)?.[1]
-                      || item.match(/<enclosure[^>]+url="([^"]+)"/)?.[1] || null
-        const price   = extractPrice(title)
-        if (!title || !link) continue
-
-        let flair = 'Ammo'
-        const tl = title.toLowerCase()
-        if (tl.includes('deal') || tl.includes('sale') || tl.includes('discount')) flair = 'Deals'
-        else if (tl.includes('handgun') || tl.includes('pistol')) flair = 'Handgun'
-        else if (tl.includes('rifle')) flair = 'Rifle'
-        else if (tl.includes('accessories') || tl.includes('gear')) flair = 'Accessories'
-
-        deals.push({
-          id:        'al-' + Buffer.from(title).toString('base64').slice(0, 10),
-          title,
-          url:       link,
-          permalink: link,
-          score:     null,
-          comments:  null,
-          created:   pubDate ? new Date(pubDate).getTime() : Date.now(),
-          flair,
-          flairMeta: FLAIR_META[flair] || FLAIR_META.Ammo,
-          source:    'AmmoLand',
-          domain:    'ammoland.com',
-          imageUrl:  imgUrl,
-          price,
-        })
-        sources.ammoland++
-      }
-    }
-  } catch { /* AmmoLand unreachable */ }
-
-  // ── Sort ───────────────────────────────────────────────────────────────────
-  let sorted
-  if (sortBy === 'new') {
-    sorted = deals.sort((a, b) => b.created - a.created)
-  } else {
-    // hot: Reddit score wins, null-score items sorted by date after
-    sorted = deals.sort((a, b) => {
-      if (a.score !== null && b.score !== null) return b.score - a.score
-      if (a.score !== null) return -1
-      if (b.score !== null) return 1
-      return b.created - a.created
-    })
-  }
-
-  // ── Filter by category ────────────────────────────────────────────────────
+  // Filter
   const filtered = catFilter ? sorted.filter(d => d.flair === catFilter) : sorted
 
-  const live = sources.reddit > 0 || sources.gunDeals > 0
+  const sources = {
+    sanity:   sanityDeals.length,
+    reddit:   redditDeals.length,
+    gunDeals: gunDealsItems.length,
+  }
+  const live = redditDeals.length > 0 || gunDealsItems.length > 0
 
   return Response.json({
     deals: filtered,
