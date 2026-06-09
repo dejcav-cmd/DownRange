@@ -1,0 +1,21 @@
+name: Test Live Deals API
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python scripts/test-deals-api.py
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+      - run: |
+          git config user.name "DownRange Bot"
+          git config user.email "dj@downrangeco.com"
+          git add -f scripts/deals-api-test.txt
+          git commit -m "chore: deals api test result" || echo "nothing"
+          git push
