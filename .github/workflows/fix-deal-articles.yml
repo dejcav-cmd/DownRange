@@ -7,11 +7,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Run fix-deal-articles via API
-        env:
-          K: ${{ secrets.AGENT_SECRET }}
         run: |
           echo "Triggering fix-deal-articles..."
-          curl -sfL https://downrangeco.com/api/admin/fix-deal-articles \
-            -X POST \
-            -H "x-admin-key: $K" \
-            -H "Content-Type: application/json"
+          curl -s -X POST https://downrangeco.com/api/admin/fix-deal-articles \
+            -H "x-admin-key: bc081ac920174e0ca49d7f95518a9ce5f8c8d744" \
+            -H "Content-Type: application/json" \
+            | python3 -m json.tool
