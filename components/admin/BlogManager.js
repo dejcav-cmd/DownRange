@@ -37,7 +37,7 @@ export default function BlogManager({ adminKey, setMsg }) {
         fields: FIELDS,
         responseKey: 'posts',
         baseUrl: '/blog',
-        urlFn: item => item?.slug?.current ? '/blog/' + item.slug.current : null,
+        urlFn: item => { const s = item?.slug?.current || item?.slug; return s ? '/blog/' + s : null },
         lang: 'en',
         pullFn: pullArticles,
         perPage: 25,

@@ -39,11 +39,12 @@ export default function DealsManager({ adminKey }) {
     setMigrating(false)
   }
 
-  async function triggerFeed(flash) {
+  async function triggerFeed(flash, reload) {
     flash('⏳ Triggering deals feed pull...')
     try {
       await fetch('/api/agent?feed=news', { headers: H })
       flash('✅ Feed agent triggered — deals refresh in ~2 min')
+      setTimeout(reload, 5000)
     } catch (e) { flash('❌ ' + e.message) }
   }
 
@@ -61,12 +62,10 @@ export default function DealsManager({ adminKey }) {
           {migrateMsg.detail && (
             <div style={{marginTop:6, color:'#6b7280'}}>
               {(migrateMsg.detail.movedFromDeals?.items||[]).slice(0,8).map((a,i) => (
-                <div key={i} style={{paddingLeft:12, color:'#4b5563'}}>
-                  ✗ [{a.to}] {a.title}
-                </div>
+                <div key={i} style={{paddingLeft:12, color:'#4b5563'}}>✗ [{a.to}] {a.title}</div>
               ))}
               {(migrateMsg.detail.movedFromDeals?.count||0) > 8 && (
-                <div style={{paddingLeft:12, color:'#374151'}}>
+                <div style={{paddingLeft:12,color:'#374151'}}>
                   ...and {migrateMsg.detail.movedFromDeals.count - 8} more removed
                 </div>
               )}
@@ -74,18 +73,17 @@ export default function DealsManager({ adminKey }) {
           )}
         </div>
       )}
-
       <UniversalContentEditor
         adminKey={adminKey}
         config={{
           label:        'Deals Manager',
           icon:         '🔥',
-          api:          '/api/admin/articles-list?category=deals',
+          api:          '/api/admin/deals-list',
           type:         'newsArticle',
           publishField: { field: 'approved', publishedValue: true },
           fields:       FIELDS,
           responseKey:  'articles',
-          urlFn:        item => item?.slug?.current ? '/news/' + item.slug.current : null,
+          urlFn:        item => item?.slug ? '/news/' + item.slug : null,
           perPage:      50,
           extraActions: [
             { label: migrating ? '⏳ Running...' : '🔧 Fix Miscategorized', fn: runMigration, disabled: migrating },

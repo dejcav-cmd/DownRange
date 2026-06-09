@@ -52,7 +52,13 @@ export async function GET(req) {
         _createdAt
       }
     `)
-    return Response.json({ ok: true, posts })
+    // Normalize heroImage -> imageUrl so UCE can display/edit it
+    const normalized = posts.map(p => ({
+      ...p,
+      slug:     p.slug?.current || p.slug || '',
+      imageUrl: p.heroImage?.asset?.url || p.imageUrl || null,
+    }))
+    return Response.json({ ok: true, posts: normalized })
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 })
   }
