@@ -1,1 +1,22 @@
-done
+
+--- virginia-bill-sponsor-attacks-prosecutors-refusing ---
+  _id:       news-e2f03190968f5327e763dc9e2f0bf04d
+  approved:  True
+  imageUrl:  /img/photos/law.jpg
+  heroImage: NULL
+  source:    TTAG
+  externalUrl: https://www.thetruthaboutguns.com/virginia-gun-ban-sponsor-attacks-prosecutors/
+
+--- vortex-hunter-constantine-collaboration-benefits-s ---
+  _id:       news-c9b5136c79790681f9d1b17fec3ae630
+  approved:  True
+  imageUrl:  /img/photos/law.jpg
+  heroImage: NULL
+  source:    SAF
+  externalUrl: https://saf.org/vortex-hunter-constantine-collaboration-benefits-safs-legal-effo
+
+=== IMAGE AUDIT ===
+Total approved: 415
+No image at all: 0
+
+Recent imageless articles (0):
