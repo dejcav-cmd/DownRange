@@ -6,13 +6,12 @@ jobs:
   fix:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Run fix-deal-articles
-        run: python3 scripts/fix-deal-articles.py
-      - name: Commit result
+      - name: Run fix-deal-articles via API
+        env:
+          K: ${{ secrets.AGENT_SECRET }}
         run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git add scripts/diag-result.txt || true
-          git commit -m "diag: fix-deal-articles result" || true
-          git push || true
+          echo "Triggering fix-deal-articles..."
+          curl -sfL https://downrangeco.com/api/admin/fix-deal-articles \
+            -X POST \
+            -H "x-admin-key: $K" \
+            -H "Content-Type: application/json"
