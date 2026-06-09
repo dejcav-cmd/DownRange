@@ -13,7 +13,8 @@ export const metadata = {
   },
 }
 
-export const revalidate = 3600
+export const revalidate = 0
+export const dynamic = 'force-dynamic'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -31,25 +32,20 @@ const CAT_ICON = {
   optics: '🔭', nfa: '🔇', gear: '⚙️', accessories: '🛒',
 }
 
-const SEED = [
-  { _id:'g1', title:'Win a Glock 19 Gen5 — GOA Monthly Member Giveaway', sponsor:'Gun Owners of America', prize:'Glock 19 Gen5 9mm', entryUrl:'https://gunowners.org', category:'pistol', sourceType:'organization', endDate:null, featured:true, value:599 },
-  { _id:'g2', title:'PSA PA-15 Complete Rifle Sweepstakes', sponsor:'Palmetto State Armory', prize:'PSA PA-15 5.56 NATO Rifle', entryUrl:'https://palmettostatearmory.com', category:'rifle', sourceType:'retailer', endDate:'2026-06-30', featured:false, value:499 },
-  { _id:'g3', title:'SIG Sauer P365 Night Sight Sweepstakes', sponsor:'SIG Sauer', prize:'P365 with XRay3 Night Sights', entryUrl:'https://sigsauer.com', category:'pistol', sourceType:'manufacturer', endDate:'2026-07-15', featured:true, value:599 },
-  { _id:'g4', title:'Springfield Armory Hellcat Pro OSP Giveaway', sponsor:'Springfield Armory', prize:'Hellcat Pro OSP 9mm', entryUrl:'https://springfield-armory.com', category:'pistol', sourceType:'manufacturer', endDate:'2026-06-15', featured:false, value:549 },
-  { _id:'g5', title:'Federal Premium 1,000 Round Ammo Giveaway', sponsor:'Federal Premium', prize:'1000 Rounds Federal Eagle 9mm', entryUrl:'https://federalpremium.com', category:'ammo', sourceType:'manufacturer', endDate:null, featured:false, value:280 },
-  { _id:'g6', title:'Vortex Strike Eagle 1-8x24 LPVO Giveaway', sponsor:'Vortex Optics', prize:'Strike Eagle 1-8x24 LPVO', entryUrl:'https://vortexoptics.com', category:'optics', sourceType:'manufacturer', endDate:'2026-08-01', featured:false, value:399 },
-  { _id:'g7', title:'Ruger 10/22 Takedown Giveaway', sponsor:'Ruger', prize:'10/22 Takedown Stainless', entryUrl:'https://ruger.com', category:'rifle', sourceType:'manufacturer', endDate:'2026-07-04', featured:false, value:429 },
-  { _id:'g8', title:'GLOCK 43X MOS With Streamlight TLR-7', sponsor:'GunZone Deals', prize:'GLOCK 43X MOS + TLR-7 Sub', entryUrl:'https://gunzonedeals.com', category:'pistol', sourceType:'retailer', endDate:'2026-06-20', featured:false, value:649 },
-  { _id:'g9', title:'NRA 1911 American Made Giveaway', sponsor:'NRA', prize:'1911 Government Model .45 ACP', entryUrl:'https://nra.org', category:'pistol', sourceType:'organization', endDate:null, featured:false, value:899 },
-  { _id:'g10', title:'Streamlight ProTac Rail Mount Flashlight Giveaway', sponsor:'Streamlight', prize:'ProTac Rail Mount HL-X Laser', entryUrl:'https://streamlight.com', category:'gear', sourceType:'manufacturer', endDate:'2026-09-01', featured:false, value:179 },
-]
-
 function daysLeft(endDate) {
   if (!endDate) return null
-  const diff = new Date(endDate) - Date.now()
+  // Compare date-only (ignore time) so "ends today" shows correctly
+  const end  = new Date(endDate + 'T23:59:59Z')
+  const now  = new Date()
+  const diff = end - now
   if (diff < 0) return 'ended'
   const days = Math.ceil(diff / 86400000)
-  return days <= 1 ? '1 day left' : `${days}d left`
+  if (days === 0) return 'ends today'
+  if (days === 1) return '1 day left'
+  if (days <= 7)  return `${days} days left`
+  if (days <= 30) return `${days}d left`
+  const weeks = Math.ceil(days / 7)
+  return `${weeks}w left`
 }
 
 export default async function GiveawaysPage() {
@@ -57,16 +53,18 @@ export default async function GiveawaysPage() {
   try {
     const [live, lastLog] = await Promise.all([
       sanity.fetch(
-        `*[_type == "giveaway" && active == true] | order(featured desc, _createdAt desc) [0...100] {
-          _id, title, sponsor, prize, entryUrl, category, sourceType, endDate, featured, value, imageUrl
-        }`
+        `*[_type == "giveaway" && active == true && (endDate == null || endDate >= $today)] | order(featured desc, _createdAt desc) [0...100] {
+          _id, title, sponsor, prize, entryUrl, category, sourceType, endDate, featured, value, prizeValue, imageUrl
+        }`,
+        { today: new Date().toISOString().split('T')[0] }
       ),
       sanity.fetch(
         `*[_type == "cronRun" && jobId == "giveaways"] | order(_createdAt desc) [0] { _createdAt, ok, added }`
       ).catch(() => null),
     ])
-    giveaways = live.length > 0 ? live : SEED
-  } catch { giveaways = SEED }
+    // Normalize value field — agent saves prizeValue, old data may use value
+    giveaways = live.map(g => ({ ...g, value: g.value || g.prizeValue || 0 }))
+  } catch (e) { console.error('[giveaways page]', e.message); giveaways = [] }
   let lastUpdated = null
   if (typeof lastLog !== 'undefined' && lastLog?._createdAt) {
     const d = new Date(lastLog._createdAt)
@@ -94,7 +92,7 @@ export default async function GiveawaysPage() {
             <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 20 }}>
               <div>
                 <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: 'var(--gold)', letterSpacing: '.18em', textTransform: 'uppercase', marginBottom: 8 }}>
-                  Updated Daily · {giveaways.length} Active Giveaways
+                  Updated Daily · {giveaways.length} Active Giveaway{giveaways.length !== 1 ? 's' : ''}
                 </div>
                 {lastUpdated && (
                   <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#4b5563', letterSpacing: '.1em', marginBottom: 6 }}>
@@ -181,7 +179,7 @@ export default async function GiveawaysPage() {
               <tbody>
                 {[...featured, ...regular].map((g, idx) => {
                   const dl = daysLeft(g.endDate)
-                  const urgent = dl && dl !== 'ended' && g.endDate && (new Date(g.endDate) - Date.now()) < 3 * 86400000
+                  const urgent = dl && dl !== 'ended' && g.endDate && (new Date(g.endDate + 'T23:59:59Z') - Date.now()) < 4 * 86400000
                   const catColor = CAT_COLOR[g.category] || '#9CA3AF'
                   return (
                     <tr key={g._id} style={{

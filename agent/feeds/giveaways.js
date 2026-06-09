@@ -92,6 +92,25 @@ export async function runGiveawaysFeed() {
   let skipped = 0
   const errors = []
 
+  // First: expire any giveaways past their end date
+  try {
+    const { createClient } = await import('@sanity/client')
+    const sanity = createClient({
+      projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+      dataset: 'production', apiVersion: '2024-01-01',
+      token: process.env.SANITY_API_TOKEN, useCdn: false,
+    })
+    const today = new Date().toISOString().split('T')[0]
+    const expired = await sanity.fetch(
+      `*[_type=="giveaway" && active==true && defined(endDate) && endDate < $today]{_id, endDate}`,
+      { today }
+    )
+    if (expired.length > 0) {
+      await sanity.mutate(expired.map(g => ({ patch: { id: g._id, set: { active: false } } })))
+      console.log('[GIVEAWAYS] Expired', expired.length, 'giveaways')
+    }
+  } catch (e) { console.warn('[GIVEAWAYS] Expiry cleanup failed:', e.message) }
+
   try {
     const raw = await searchForGiveaways()
     const giveaways = deduplicateGiveaways(raw)

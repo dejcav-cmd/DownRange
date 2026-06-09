@@ -1,0 +1,21 @@
+name: Fix Giveaways
+on:
+  workflow_dispatch:
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Expire old giveaways + trigger fresh pull
+        run: |
+          echo "=== Expiring past giveaways ==="
+          curl -v --max-time 60 -X POST https://downrangeco.com/api/admin/fix-giveaways \
+            -H "x-admin-key: bc081ac920174e0ca49d7f95518a9ce5f8c8d744" \
+            -H "Content-Type: application/json" \
+            2>&1
+          echo ""
+          echo "=== Triggering fresh giveaways cron ==="
+          curl -v --max-time 120 "https://downrangeco.com/api/cron/giveaways" \
+            -H "x-admin-key: bc081ac920174e0ca49d7f95518a9ce5f8c8d744" \
+            2>&1
