@@ -12,7 +12,11 @@ const sanity = createClient({
   useCdn: false,
 });
 
-const DEAL_RE = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price/i;
+// Titles that look like deals: must have a price/discount signal
+const DEAL_RE = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price|free shipping|rebate/i;
+
+// Titles that are clearly NOT deals regardless of source
+const NOT_DEAL_RE = /ninth circuit|supreme court|lawsuit|ruling|ban|law|bill|legislation|subpoena|atf|nra|court|judge|verdict|conviction|election|rights|amendment|congress|senate|police|sheriff|arrest|charged|indicted|killed|shooting|crime|history|review of|how the|changed the|market forever|under development/i;
 
 export async function POST(request) {
   const adminKey = request.headers.get('x-admin-key');
@@ -20,33 +24,48 @@ export async function POST(request) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  // Fetch non-deal news articles
-  const articles = await sanity.fetch(
-    `*[_type=="newsArticle" && category!="deals"] | order(publishedAt desc) [0..500] {_id, title, category}`
+  const movedToDeals = [], movedFromDeals = [];
+  let errors = 0;
+
+  // 1. Fix articles currently in 'deals' that are actually news/law/industry
+  const wrongDeals = await sanity.fetch(
+    `*[_type=="newsArticle" && category=="deals"] | order(publishedAt desc) [0..300] {_id, title, source}`
   );
 
-  const toFix = articles.filter(a => a.title && DEAL_RE.test(a.title));
+  for (const a of wrongDeals) {
+    const title = a.title || '';
+    // If it has no price signal OR it clearly looks like news/law, reclassify
+    if (!DEAL_RE.test(title) || NOT_DEAL_RE.test(title)) {
+      // Determine best category from title keywords
+      let newCat = 'news';
+      if (/court|circuit|supreme|ruling|law|bill|legislation|atf|ban|rights|amendment|congress|senate|subpoena|lawsuit/i.test(title)) newCat = 'law';
+      else if (/review|history|how|market|industry|manufacturer|glock|sig|smith|ruger|barrett|colt/i.test(title)) newCat = 'industry';
+      try {
+        await sanity.patch(a._id).set({ category: newCat }).commit();
+        movedFromDeals.push({ id: a._id, title: title.slice(0, 80), to: newCat });
+      } catch (e) { errors++; }
+    }
+  }
 
-  let fixed = 0, errors = 0;
-  const results = [];
+  // 2. Fix non-deal articles that actually ARE deals (price pattern in title)
+  const nonDeals = await sanity.fetch(
+    `*[_type=="newsArticle" && category!="deals"] | order(publishedAt desc) [0..500] {_id, title, source, category}`
+  );
 
-  for (const a of toFix) {
-    try {
-      await sanity.patch(a._id).set({ category: 'deals' }).commit();
-      fixed++;
-      results.push({ id: a._id, title: a.title, from: a.category, status: 'fixed' });
-    } catch (err) {
-      errors++;
-      results.push({ id: a._id, title: a.title, status: 'error', error: err.message });
+  for (const a of nonDeals) {
+    const title = a.title || '';
+    if (DEAL_RE.test(title) && !NOT_DEAL_RE.test(title)) {
+      try {
+        await sanity.patch(a._id).set({ category: 'deals' }).commit();
+        movedToDeals.push({ id: a._id, title: title.slice(0, 80), from: a.category });
+      } catch (e) { errors++; }
     }
   }
 
   return NextResponse.json({
     ok: errors === 0,
-    scanned: articles.length,
-    found: toFix.length,
-    fixed,
+    movedFromDeals: { count: movedFromDeals.length, items: movedFromDeals },
+    movedToDeals:   { count: movedToDeals.length,   items: movedToDeals   },
     errors,
-    results,
   });
 }

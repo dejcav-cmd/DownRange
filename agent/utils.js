@@ -62,7 +62,7 @@ Return ONLY valid JSON:
   "title": "ORIGINAL DownRange headline — NOT the source title. Specific, active, click-worthy, max 12 words.",
   "summary": "2-3 sentences. Key facts in original language. Max 300 chars. No AI phrases.",
   "body": "<full HTML article in the structure above>",
-  "category": "one of: breaking|news|law|industry|opinion|training|deals — use deals for any article primarily about a product sale, discount, price drop, coupon, or limited-time offer",
+  "category": "one of: breaking|news|law|industry|opinion|training|deals — STRICT RULES: use 'deals' ONLY for articles primarily about a product sale, discount, price drop, coupon, rebate, or limited-time price offer. Court cases, legislation, product announcements, reviews, history pieces, and company news are NEVER deals even if they mention a price.",
   "urgencyScore": 1-10,
   "tags": ["4-8 kebab-case tags"],
   "relatedStates": ["state abbreviations"],

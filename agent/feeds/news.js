@@ -95,6 +95,12 @@ const RSS_FEEDS = [
   { name: 'USCCA Blog',             url: 'https://www.usconcealedcarry.com/blog/feed/',         cat: 'industry' },
   { name: 'Pew Pew Tactical',       url: 'https://www.pewpewtactical.com/feed/',                cat: 'industry' },
   { name: 'Lucky Gunner',           url: 'https://www.luckygunner.com/lounge/feed/',            cat: 'industry' },
+  // ── DEALS — product sales, pricing, limited-time offers ─────────────
+  { name: 'Guns.com Deals',         url: 'https://www.guns.com/deals/feed',                    cat: 'deals'    },
+  { name: 'GunDeals Reddit',        url: 'https://www.reddit.com/r/gundeals/.rss',              cat: 'deals'    },
+  { name: 'Lucky Gunner Ammo',      url: 'https://www.luckygunner.com/ammo-deals/feed/',        cat: 'deals'    },
+  { name: 'Brownells Blog',         url: 'https://www.brownells.com/blog/feed/',                cat: 'deals'    },
+  { name: 'Sportsmans Warehouse',   url: 'https://blog.sportsmanswarehouse.com/feed/',          cat: 'deals'    },
   // ── CANADA ONLY — routed to canadaContent, never newsArticle ──────────
   { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law', region: 'canada' },
   { name: 'NFA Canada',             url: 'https://www.nfa.ca/feed/',                            cat: 'law', region: 'canada' },
@@ -228,6 +234,7 @@ const ALLOWED_US_DOMAINS = new Set([
   'dailycaller.com','freebeacon.com','nationalreview.com',
   'townhall.com','breitbart.com','nssf.org',
   'usconcealedcarry.com','luckygunner.com',
+  'reddit.com','brownells.com','sportsmanswarehouse.com',
 ])
 
 function isAllowedUSUrl(url) {
@@ -303,7 +310,8 @@ async function processNewsItem(item) {
   const isFromNewsAPI = !item.feedCat || item.feedCat === 'news'
   const fromKnownRSS  = RSS_FEEDS.some(f => !f.region && item.source === f.name)
 
-  if (!fromKnownRSS && !isAllowedUSUrl(item.url)) {
+  // Deals feeds always pass — pre-vetted sources, domain allowlist may not cover them
+  if (item.feedCat !== 'deals' && !fromKnownRSS && !isAllowedUSUrl(item.url)) {
     console.log('[NEWS] BLOCKED non-US/unknown source:', item.source, item.url?.slice(0,60))
     return
   }
