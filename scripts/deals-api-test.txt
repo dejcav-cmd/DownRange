@@ -1,0 +1,17 @@
+=== LIVE /api/deals RESPONSE ===
+Total deals: 110
+Sources: {'sanity': 80, 'reddit': 0, 'gunDeals': 30}
+With imageUrl: 80
+Without imageUrl: 30
+
+First 5 deals:
+  [gun.deals] Emissary Development Handbrake X M-LOK - $34.32 af
+    imageUrl: NULL
+  [gun.deals] Spring Assisted Heavy Duty Pocket Knife 3.5&quot; 
+    imageUrl: NULL
+  [gun.deals] Diamondback DB15 5.56 Pistol OD FLAG 30 Round - 30
+    imageUrl: NULL
+  [gun.deals] 6.7&#039;&#039; Tactical Knife with Sheath - Micar
+    imageUrl: NULL
+  [gun.deals] BN Complete AR-15 QUAD Rifle Build Kit - $300
+    imageUrl: NULL
