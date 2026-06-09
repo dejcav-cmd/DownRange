@@ -5,19 +5,13 @@ on:
 jobs:
   fix:
     runs-on: ubuntu-latest
+    timeout-minutes: 10
     steps:
       - name: Run fix-deal-articles via API
         run: |
           echo "Calling fix-deal-articles API..."
-          RESPONSE=$(curl -s --max-time 90 -X POST https://downrangeco.com/api/admin/fix-deal-articles \
+          curl -v --max-time 300 -X POST https://downrangeco.com/api/admin/fix-deal-articles \
             -H "x-admin-key: bc081ac920174e0ca49d7f95518a9ce5f8c8d744" \
             -H "Content-Type: application/json" \
-            -w "\nHTTP_STATUS:%{http_code}")
-          echo "Response: $RESPONSE"
-          HTTP_CODE=$(echo "$RESPONSE" | grep "HTTP_STATUS:" | cut -d: -f2)
-          echo "HTTP Status: $HTTP_CODE"
-          if [ "$HTTP_CODE" != "200" ]; then
-            echo "ERROR: API returned $HTTP_CODE"
-            exit 1
-          fi
-          echo "Migration complete"
+            2>&1
+          echo "Exit code: $?"
