@@ -5,9 +5,18 @@ jobs:
   trigger:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
       - name: Fire gun-deals cron
         run: |
           RESPONSE=$(curl -s -w "\nHTTP:%{http_code}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
             "https://downrangeco.com/api/cron/gun-deals")
           echo "$RESPONSE"
+          echo "$RESPONSE" > scripts/gun-deals-cron-result.txt
+      - name: Commit result
+        run: |
+          git config user.name "DownRange Bot"
+          git config user.email "dj@downrangeco.com"
+          git add -f scripts/gun-deals-cron-result.txt
+          git commit -m "chore: gun-deals cron trigger result" || echo "nothing to commit"
+          git push || echo "nothing to push"
