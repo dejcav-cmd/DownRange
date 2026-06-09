@@ -10,9 +10,14 @@ jobs:
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: python scripts/delete-gundeals-newsarticles.py
+      - name: Show result
+        run: cat scripts/delete-gundeals-result.txt || echo "No result file found"
       - name: Commit result
         run: |
           git config user.name "DownRange Bot"
           git config user.email "dj@downrangeco.com"
-          git add scripts/delete-gundeals-result.txt || true
-          git diff --cached --quiet && echo "Nothing to commit" || git commit -m "chore: gun.deals cleanup result" && git push
+          git add -f scripts/delete-gundeals-result.txt
+          git status
+          git diff --cached --stat
+          git commit -m "chore: gun.deals newsArticle cleanup result" || echo "Nothing to commit"
+          git push || echo "Nothing to push"
