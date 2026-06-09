@@ -27,10 +27,10 @@ export async function POST(request) {
     return NextResponse.json({ error: 'unauthorized' }, { status: 401 });
   }
 
-  const { to, toName, subject, htmlBody, fromAddress } = await request.json();
+  const { to, toName, subject, textBody, htmlBody, fromAddress } = await request.json();
 
-  if (!to || !subject || !htmlBody) {
-    return NextResponse.json({ error: 'Missing required fields: to, subject, htmlBody' }, { status: 400 });
+  if (!to || !subject || (!textBody && !htmlBody)) {
+    return NextResponse.json({ error: 'Missing required fields: to, subject, textBody or htmlBody' }, { status: 400 });
   }
 
   let accessToken;
@@ -40,13 +40,15 @@ export async function POST(request) {
     return NextResponse.json({ error: err.message }, { status: 500 });
   }
 
+  const isPlainText = !!textBody && !htmlBody;
+
   const payload = {
     mode:        'draft',
     fromAddress: fromAddress || 'dj@downrangeco.com',
     toAddress:   toName ? `${toName} <${to}>` : to,
     subject,
-    content:     htmlBody,
-    mailFormat:  'html',
+    content:     textBody || htmlBody,
+    mailFormat:  isPlainText ? 'plaintext' : 'html',
   };
 
   const res = await fetch(`https://mail.zoho.com/api/accounts/${ZOHO_ACCOUNT_ID}/messages`, {
