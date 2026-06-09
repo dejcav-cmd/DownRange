@@ -1,6 +1,0 @@
-=== FULL DEALS IMAGE BACKFILL ===
-Docs processed: 80
-Updated:        80
-Failed:         0
-Final with img: 80/80
-

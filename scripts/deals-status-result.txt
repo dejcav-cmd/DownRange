@@ -1,2 +1,0 @@
-CRON RESPONSE: {"ok":true,"ms":262,"fetched":437,"added":0,"skipped":40}
-SANITY gunDeal count: 40
