@@ -124,8 +124,8 @@ export async function GET(req) {
     ).catch(() => [])
     const existingUrls = new Set((existing || []).map(d => d.externalUrl))
 
-    const newDeals = deals.slice(0, 40).filter(d => !existingUrls.has(d.link))
-    stats.skipped  = deals.slice(0, 40).length - newDeals.length
+    const newDeals = deals.slice(0, 80).filter(d => !existingUrls.has(d.link))
+    stats.skipped  = deals.slice(0, 80).length - newDeals.length
 
     if (!newDeals.length) return NextResponse.json({ ok: true, ms: Date.now() - t0, ...stats })
 

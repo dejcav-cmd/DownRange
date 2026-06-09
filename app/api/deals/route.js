@@ -47,8 +47,8 @@ function extractPrice(title = '') {
 async function fetchSanityDeals() {
   try {
     const articles = await sanity.fetch(
-      `*[_type=="gunDeal" && approved==true] | order(publishedAt desc) [0..150] {
-        _id, title, source, imageUrl, externalUrl, publishedAt, summary, price
+      `*[_type=="gunDeal" && approved==true] | order(publishedAt desc) [0..200] {
+        _id, title, source, imageUrl, externalUrl, publishedAt, summary, price, store
       }`
     )
     return articles.map(a => {
@@ -227,11 +227,12 @@ export async function GET(request) {
   const sortBy    = searchParams.get('sort') || 'hot'
 
   // Fetch all sources in parallel
-  const [sanityDeals, redditDeals, gunDealsItems] = await Promise.all([
+  // NOTE: fetchGunDeals (live RSS) excluded — all items stored in Sanity with images via hourly cron
+  const [sanityDeals, redditDeals] = await Promise.all([
     fetchSanityDeals(),
     fetchRedditDeals(),
-    fetchGunDeals(),
   ])
+  const gunDealsItems = []  // Served from Sanity with guaranteed images
 
   // Build URL → imageUrl map from Sanity for cross-referencing live RSS items
   const sanityImageMap = new Map(
@@ -253,20 +254,6 @@ export async function GET(request) {
       d.imageUrl = sanityImageMap.get(key)
     }
     deals.push(d)
-  }
-
-  // For live RSS items still missing images (not in Sanity yet), do a fast scrape
-  // Only scrape up to 5 items, 3s timeout — keeps response under 2s total
-  const stillMissing = deals
-    .filter(d => !d.imageUrl && d.source === 'gun.deals' && !d.fromSanity)
-    .slice(0, 5)
-  if (stillMissing.length > 0) {
-    try {
-      const quickImgs = await scrapeOGBatch(stillMissing.map(d => d.url), 5)
-      for (const d of deals) {
-        if (!d.imageUrl && quickImgs.has(d.url)) d.imageUrl = quickImgs.get(d.url)
-      }
-    } catch (_e) { /* skip */ }
   }
 
   // Sort
