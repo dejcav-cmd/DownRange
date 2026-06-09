@@ -28,7 +28,18 @@ const SEED_PROFILES = {
 export async function generateMetadata({ params }) {
   const abbr = params.state?.toUpperCase()
   const name = STATE_NAMES[abbr] || abbr
-  return { title: `${name} Gun Laws — DownRange`, description: `Firearms laws, CCW requirements, and reciprocity for ${name}.`, alternates: { canonical: `https://downrangeco.com/state-hub/${abbr}` } }
+  const url = `https://downrangeco.com/state-hub/${abbr}`
+  return {
+    title: `${name} Gun Laws & CCW Guide | DownRange`,
+    description: `Comprehensive guide to ${name} firearms laws: concealed carry, constitutional carry status, magazine limits, AWB, red flag laws, and CCW reciprocity.`,
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article', url,
+      title: `${name} Gun Laws & CCW Guide`,
+      description: `${name} carry laws, magazine limits, AWB status, and CCW reciprocity — updated for ${new Date().getFullYear()}.`,
+      images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: `${name} Gun Laws` }],
+    },
+  }
 }
 
 function LawRow({ label, value, good }) {
@@ -62,8 +73,17 @@ export default async function StatePage({ params }) {
 
   return (
     <>
-      {/* ── FAQPage structured data ── */}
+      {/* ── FAQPage + BreadcrumbList structured data ── */}
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type': 'BreadcrumbList',
+        itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home',      item: 'https://downrangeco.com' },
+          { '@type': 'ListItem', position: 2, name: 'State Hub', item: 'https://downrangeco.com/state-hub' },
+          { '@type': 'ListItem', position: 3, name: `${stateName} Gun Laws`, item: `https://downrangeco.com/state-hub/${abbr}` },
+        ],
+      }) }} />
       <Masthead />
       <div className="page-hero" data-title={abbr}>
         <div className="container">

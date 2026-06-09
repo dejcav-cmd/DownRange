@@ -1,7 +1,17 @@
 import ReleasesPage from './ReleasesPage'
 import { fetchReleases, searchReleases, fetchBreakingAlerts } from '../../sanity/lib/client'
 
-export const metadata = { title: 'New Releases — DownRange', description: 'Latest firearm announcements, new model releases, and product launches.', alternates: { canonical: 'https://downrangeco.com/releases' } }
+export const metadata = {
+  title: 'New Gun Releases 2026 | DownRange',
+  description: 'Latest firearm announcements, new pistol, rifle, and shotgun releases. Full specs, MSRP, and availability — updated daily.',
+  alternates: { canonical: 'https://downrangeco.com/releases' },
+  openGraph: {
+    type: 'website', url: 'https://downrangeco.com/releases',
+    title: 'New Gun Releases 2026 | DownRange',
+    description: 'New pistols, rifles, shotguns, and suppressors — full specs and MSRP.',
+    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'New Gun Releases' }],
+  },
+}
 export const revalidate = 3600
 
 export default async function Page({ searchParams }) {

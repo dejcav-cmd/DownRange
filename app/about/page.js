@@ -2,14 +2,56 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
 export const metadata = {
-  title: 'About DownRange — Built for Gun Owners',
-  description: 'DownRange covers Second Amendment news, state gun laws, new releases, and ammo prices for American gun owners. Independent, free, no manufacturer money.',
+  title: 'About DownRange — Built for Gun Owners | Independent 2A Intelligence',
+  description: 'DownRange is an independent firearms intelligence platform covering 2A news, state gun laws, new releases, and ammo prices. No manufacturer money. No paywalls.',
   alternates: { canonical: 'https://downrangeco.com/about' },
+  openGraph: {
+    type: 'website', url: 'https://downrangeco.com/about',
+    title: 'About DownRange — Built for Gun Owners',
+    description: 'Independent 2A intelligence. No manufacturer money. No paywalls. Built by a gun owner, for gun owners.',
+    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'About DownRange' }],
+  },
+}
+
+const ABOUT_SCHEMA = {
+  '@context': 'https://schema.org',
+  '@type': 'AboutPage',
+  '@id': 'https://downrangeco.com/about#page',
+  url: 'https://downrangeco.com/about',
+  name: 'About DownRange',
+  description: 'DownRange is an independent firearms intelligence platform covering Second Amendment news, gun laws, ammo prices, and new releases.',
+  isPartOf: { '@id': 'https://downrangeco.com/#website' },
+  about: {
+    '@id': 'https://downrangeco.com/#organization',
+    '@type': 'NewsMediaOrganization',
+    name: 'DownRange',
+    alternateName: 'DownRange Firearms Intelligence',
+    url: 'https://downrangeco.com',
+    foundingDate: '2026',
+    areaServed: 'United States',
+    knowsAbout: [
+      'Second Amendment', 'Firearms Law', 'Concealed Carry',
+      'ATF Regulations', 'Ammunition Prices', 'Gun Reviews',
+      'National Firearms Act', '2A Legislation', 'SCOTUS Cases',
+    ],
+    founder: {
+      '@type': 'Person',
+      name: 'DJ Cavalcanti',
+      url: 'https://downrangeco.com/about',
+      jobTitle: 'Founder & Editor',
+      knowsAbout: ['Second Amendment', 'Firearms', 'CCW', '2A Law'],
+    },
+    sameAs: [
+      'https://twitter.com/downrangeco',
+      'https://bsky.app/profile/downrangeco.com',
+    ],
+  },
 }
 
 export default function AboutPage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_SCHEMA) }} />
       <Masthead />
       <div className="page-hero" data-title="ABOUT">
         <div className="container">

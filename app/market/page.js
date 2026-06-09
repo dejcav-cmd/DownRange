@@ -5,7 +5,7 @@ import { createClient } from '@sanity/client'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Ammo Price Index & Market Analysis — DownRange',
+  title: 'Ammo Prices & Firearms Market Index | DownRange',
   description: 'Live ammo prices with direct retailer links, NICS trends, buying signals, and daily AI market analysis. 12 calibers tracked.',
   alternates: { canonical: 'https://downrangeco.com/market' },
 }

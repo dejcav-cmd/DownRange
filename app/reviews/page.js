@@ -5,7 +5,7 @@ import { fetchReviews, searchReviews, fetchBreakingAlerts } from '../../sanity/l
 import SectionSearch from '../../components/ui/SectionSearch'
 
 export const metadata = {
-  title: 'Firearms & Gear Reviews — DownRange',
+  title: 'Firearms & Gear Reviews | DownRange',
   description: 'Field-tested firearm and gear reviews. Round counts documented, no paid placements, no manufacturer samples that affect the outcome.',
   alternates: { canonical: 'https://downrangeco.com/reviews' }
 }

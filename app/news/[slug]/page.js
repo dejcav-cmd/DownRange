@@ -73,18 +73,20 @@ export async function generateMetadata({ params }) {
       type:        'article',
       url,
       title:       article.title,
-      description: article.summary || article.excerpt,
+      description: (article.summary || article.excerpt || article.title).slice(0, 160),
       publishedTime: article.publishedAt,
       modifiedTime:  article._updatedAt || article.publishedAt,
       section:     article.category,
       tags:        article.tags || [],
-      images:      img ? [{ url: img, width: 1200, height: 630, alt: article.imageAlt || article.title }] : [],
+      images: img
+        ? [{ url: img, width: 1200, height: 630, alt: article.imageAlt || article.title }]
+        : [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange' }],
     },
     twitter: {
       card:        'summary_large_image',
       title:       article.title,
-      description: article.summary || article.excerpt,
-      images:      img ? [img] : [],
+      description: (article.summary || article.excerpt || '').slice(0, 160),
+      images:      img ? [img] : ['https://downrangeco.com/og-default.png'],
     }
   }
 }
@@ -164,34 +166,54 @@ export default async function ArticlePage({ params }) {
     <>
       <Masthead />
 
-      {/* ── NewsArticle structured data (JSON-LD) ── */}
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context': 'https://schema.org',
-        '@type':    'NewsArticle',
-        headline:   article.title,
-        description: article.summary || article.excerpt,
-        image:      imageUrl ? [imageUrl] : [],
-        datePublished: article.publishedAt,
-        dateModified:  article._updatedAt || article.publishedAt,
-        author: [{
-          '@type': 'Organization',
-          name:    article.source || 'DownRange',
-          url:     'https://downrangeco.com',
-        }],
-        publisher: {
-          '@type': 'Organization',
-          name:    'DownRange',
-          url:     'https://downrangeco.com',
-          logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/favicon.svg' },
+      {/* ── Structured data: NewsArticle + BreadcrumbList ── */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
+        {
+          '@context': 'https://schema.org',
+          '@type':    'NewsArticle',
+          '@id':      `https://downrangeco.com/news/${params.slug}#article`,
+          headline:   article.title,
+          description: (article.summary || article.excerpt || article.title).slice(0, 160),
+          image:      imageUrl
+            ? [{ '@type': 'ImageObject', url: imageUrl, width: 1200, height: 630 }]
+            : [{ '@type': 'ImageObject', url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+          datePublished: article.publishedAt,
+          dateModified:  article._updatedAt || article.publishedAt,
+          author: [{
+            '@type': 'Person',
+            name:    'DJ Cavalcanti',
+            url:     'https://downrangeco.com/about',
+            jobTitle:'Editor, DownRange',
+          }],
+          publisher: {
+            '@type': 'Organization',
+            '@id':   'https://downrangeco.com/#organization',
+            name:    'DownRange',
+            url:     'https://downrangeco.com',
+            logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/img/logo.png', width: 560, height: 162 },
+          },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id':   `https://downrangeco.com/news/${params.slug}`,
+          },
+          isPartOf: { '@id': 'https://downrangeco.com/#website' },
+          articleSection: article.category,
+          keywords: (article.tags || []).join(', '),
+          url: `https://downrangeco.com/news/${params.slug}`,
+          inLanguage: 'en-US',
+          copyrightHolder: { '@id': 'https://downrangeco.com/#organization' },
+          copyrightYear: new Date(article.publishedAt || Date.now()).getFullYear(),
         },
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id':   `https://downrangeco.com/news/${params.slug}`,
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home',  item: 'https://downrangeco.com' },
+            { '@type': 'ListItem', position: 2, name: 'News',  item: 'https://downrangeco.com/news' },
+            { '@type': 'ListItem', position: 3, name: article.title, item: `https://downrangeco.com/news/${params.slug}` },
+          ],
         },
-        articleSection: article.category,
-        keywords: (article.tags || []).join(', '),
-        url: `https://downrangeco.com/news/${params.slug}`,
-      }) }} />
+      ]) }} />
 
       <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 

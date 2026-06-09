@@ -6,8 +6,15 @@ import { fetchLegislation, searchLegislation, fetchBreakingAlerts, fetchAllState
 import SectionSearch from '../../components/ui/SectionSearch'
 
 export const metadata = {
-  title: 'Laws & Legislation — DownRange',
-  description: '2A law tracker: Federal bills, ATF rules, SCOTUS cases, state legislation. AI law assistant.'
+  title: '2A Laws & Legislation Tracker | DownRange',
+  description: '2A law tracker: Federal bills, ATF rules, SCOTUS cases, and state legislation. Real-time updates on Second Amendment law.',
+  alternates: { canonical: 'https://downrangeco.com/laws' },
+  openGraph: {
+    type: 'website', url: 'https://downrangeco.com/laws',
+    title: '2A Laws & Legislation Tracker | DownRange',
+    description: 'Federal bills, ATF rules, SCOTUS cases, and state legislation — updated in real time.',
+    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: '2A Laws & Legislation' }],
+  },
 }
 export const revalidate = 120
 

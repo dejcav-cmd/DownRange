@@ -21,11 +21,26 @@ export async function generateMetadata({ params }) {
     { slug: params.slug }
   ).catch(() => null)
   if (!r) return { title: 'Release — DownRange' }
+  const img = r.heroImage?.asset?.url || r.imageUrl || 'https://downrangeco.com/og-default.png'
+  const title = `${r.brand} ${r.model || r.title}`
+  const url   = `https://downrangeco.com/releases/${params.slug}`
   return {
-    title: `${r.brand} ${r.model || r.title} — DownRange`,
-    description: r.summary?.slice(0,155) || '',
-    alternates: { canonical: `https://downrangeco.com/releases/${params.slug}` },
-    openGraph: { images: [r.heroImage?.asset?.url || r.imageUrl || ''] },
+    title: `${title} | DownRange`,
+    description: (r.summary || `${r.brand} ${r.model} — new firearm release. Full specs, MSRP, and availability on DownRange.`).slice(0, 160),
+    alternates: { canonical: url },
+    openGraph: {
+      type: 'article',
+      url,
+      title: `${title} — New Release`,
+      description: (r.summary || '').slice(0, 160),
+      images: [{ url: img, width: 1200, height: 630, alt: title }],
+    },
+    twitter: {
+      card:  'summary_large_image',
+      title: `${title} — New Release`,
+      description: (r.summary || '').slice(0, 160),
+      images: [img],
+    },
   }
 }
 
@@ -58,9 +73,49 @@ export default async function ReleasePage({ params }) {
     release.availableDate && { label:'Available', value: release.availableDate },
   ].filter(Boolean)
 
+  const releaseUrl = `https://downrangeco.com/releases/${params.slug}`
+  const releaseSchema = [
+    {
+      '@context': 'https://schema.org',
+      '@type':    'Product',
+      '@id':      `${releaseUrl}#product`,
+      name:       `${release.brand} ${release.model || release.title}`,
+      description: (release.summary || '').slice(0, 500),
+      brand:      { '@type': 'Brand', name: release.brand },
+      image:      img,
+      url:        releaseUrl,
+      category:   release.category || 'Firearm',
+      ...(release.msrp ? {
+        offers: {
+          '@type':         'Offer',
+          priceCurrency:   'USD',
+          price:           typeof release.msrp === 'number' ? release.msrp : undefined,
+          priceSpecification: typeof release.msrp === 'string' ? { '@type': 'PriceSpecification', priceCurrency: 'USD', description: release.msrp } : undefined,
+          availability:    'https://schema.org/PreOrder',
+          seller:          { '@id': 'https://downrangeco.com/#organization' },
+        },
+      } : {}),
+      additionalProperty: specRows.map(s => ({
+        '@type':    'PropertyValue',
+        name:       s.label,
+        value:      s.value,
+      })),
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://downrangeco.com' },
+        { '@type': 'ListItem', position: 2, name: 'Releases', item: 'https://downrangeco.com/releases' },
+        { '@type': 'ListItem', position: 3, name: `${release.brand} ${release.model || release.title}`, item: releaseUrl },
+      ],
+    },
+  ]
+
   return (
     <>
       <Masthead />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(releaseSchema) }} />
 
       <div style={{ background:'var(--bg)', minHeight:'100vh' }}>
         <div className="container" style={{ maxWidth:900, padding:'0 20px', paddingTop:40, paddingBottom:80 }}>

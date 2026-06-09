@@ -5,8 +5,18 @@ import NewsCard from '../../components/ui/NewsCard'
 import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
 import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
 
-export const metadata = { title: 'News — DownRange', description: 'Latest firearms and Second Amendment news from across the United States.', alternates: { canonical: 'https://downrangeco.com/news' } }
-export const revalidate = 60 // revalidate every 60s for fresher content
+export const metadata = {
+  title: 'Firearms & 2A News | DownRange',
+  description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage. Updated every 15 minutes.',
+  alternates: { canonical: 'https://downrangeco.com/news' },
+  openGraph: {
+    type: 'website', url: 'https://downrangeco.com/news',
+    title: 'Firearms & 2A News | DownRange',
+    description: 'Real-time 2A news, ATF updates, and gun legislation — updated every 15 minutes.',
+    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange News' }],
+  },
+}
+export const revalidate = 300 // revalidate every 60s for fresher content
 
 const CATEGORIES = [
   { label: 'All News', val: null },

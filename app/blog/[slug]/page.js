@@ -61,13 +61,15 @@ export async function generateMetadata({ params }) {
       publishedTime: post.date,
       authors:     [post.author],
       tags:        post.tags || [],
-      images:      [{ url: post.img, width: 1400, height: 900, alt: post.title }],
+      images: post.img
+        ? [{ url: post.img, width: 1400, height: 900, alt: post.title }]
+        : [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card:        'summary_large_image',
       title:       post.title,
-      description: post.excerpt,
-      images:      [post.img],
+      description: (post.excerpt || '').slice(0, 160),
+      images:      [post.img || 'https://downrangeco.com/og-default.png'],
     },
   }
 }
@@ -119,31 +121,51 @@ export default async function BlogArticlePage({ params }) {
     <>
       <Masthead />
 
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
-        '@context':   'https://schema.org',
-        '@type':      'BlogPosting',
-        headline:     post.title,
-        description:  post.excerpt,
-        image:        [post.img],
-        datePublished: post.date,
-        author: [{
-          '@type': 'Person',
-          name:    post.author,
-          url:     'https://downrangeco.com/blog',
-        }],
-        publisher: {
-          '@type': 'Organization',
-          name:    'DownRange',
-          url:     'https://downrangeco.com',
-          logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/favicon.svg' },
+      {/* ── Structured data: BlogPosting + BreadcrumbList ── */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
+        {
+          '@context':   'https://schema.org',
+          '@type':      'BlogPosting',
+          '@id':        `https://downrangeco.com/blog/${post.slug}#article`,
+          headline:     post.title,
+          description:  (post.excerpt || '').slice(0, 160),
+          image: post.img
+            ? [{ '@type': 'ImageObject', url: post.img, width: 1400, height: 900 }]
+            : [{ '@type': 'ImageObject', url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+          datePublished: post.date,
+          dateModified:  post.date,
+          author: [{
+            '@type':   'Person',
+            name:      post.author || 'DJ Cavalcanti',
+            url:       'https://downrangeco.com/about',
+            jobTitle:  'Founder, DownRange',
+          }],
+          publisher: {
+            '@type': 'Organization',
+            '@id':   'https://downrangeco.com/#organization',
+            name:    'DownRange',
+            url:     'https://downrangeco.com',
+            logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/img/logo.png', width: 560, height: 162 },
+          },
+          mainEntityOfPage: {
+            '@type': 'WebPage',
+            '@id':   `https://downrangeco.com/blog/${post.slug}`,
+          },
+          isPartOf: { '@id': 'https://downrangeco.com/#website' },
+          keywords: (post.tags || []).join(', '),
+          url: `https://downrangeco.com/blog/${post.slug}`,
+          inLanguage: 'en-US',
         },
-        mainEntityOfPage: {
-          '@type': 'WebPage',
-          '@id':   `https://downrangeco.com/blog/${params.slug}`,
+        {
+          '@context': 'https://schema.org',
+          '@type': 'BreadcrumbList',
+          itemListElement: [
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://downrangeco.com/blog' },
+            { '@type': 'ListItem', position: 3, name: post.title, item: `https://downrangeco.com/blog/${post.slug}` },
+          ],
         },
-        keywords: (post.tags || []).join(', '),
-        url: `https://downrangeco.com/blog/${params.slug}`,
-      }) }} />
+      ]) }} />
 
       <style>{`
         .blog-article-body h2 {
