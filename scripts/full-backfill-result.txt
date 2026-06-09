@@ -1,3 +1,6 @@
-=== DEALS IMAGE FULL BACKFILL ===
-ERROR: HTTP Error 307: Temporary Redirect
-Final Sanity count with imageUrl: 40
+=== FULL DEALS IMAGE BACKFILL ===
+Docs processed: 80
+Updated:        80
+Failed:         0
+Final with img: 80/80
+
