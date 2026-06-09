@@ -336,22 +336,25 @@ const SECTIONS=[
   {id:'content',label:'Content',icon:'📰',panels:[
     {id:'news',l:'News Articles',i:'📰'},{id:'blog',l:'Blog Posts',i:'✍'},
     {id:'releases',l:'Gun Releases',i:'🔫',b:'new'},{id:'reviews',l:'Reviews',i:'★'},
-    {id:'canada',l:'Canada',i:'🇨🇦'},{id:'drafts',l:'Draft Recovery',i:'🔍'},
+    {id:'canada',l:'Canada',i:'🇨🇦'},{id:'brazil',l:'Brasil',i:'🇧🇷'},
+    {id:'competitions',l:'Competitions',i:'🏆'},{id:'drafts',l:'Draft Recovery',i:'🔍'},
     {id:'hub',l:'Content Hub',i:'◈'},
   ]},
   {id:'publishing',label:'Publishing',icon:'📅',panels:[
     {id:'breaking',l:'Breaking Alerts',i:'🔴'},{id:'newsletter',l:'Newsletter',i:'📧'},
+    {id:'schedule',l:'Schedule',i:'📅'},{id:'seo',l:'SEO & Meta',i:'🔍'},
   ]},
   {id:'intel',label:'Intelligence',icon:'🧠',panels:[
     {id:'briefings',l:'Briefings',i:'🧠'},{id:'marketbrief',l:'Market Brief',i:'📊',b:'live'},
-    {id:'statelaws',l:'State Laws',i:'🗺'},{id:'copyright',l:'Copyright Scan',i:'⚖'},
-    {id:'sysalerts',l:'System Alerts',i:'🚨'},{id:'pulllog',l:'Pull Log',i:'📡'},
-    {id:'deals',l:'Deals Feed',i:'🔥'},
+    {id:'statelaws',l:'State Laws',i:'🗺'},{id:'feeds',l:'Feed Agent',i:'⚙'},
+    {id:'copyright',l:'Copyright Scan',i:'⚖'},{id:'sysalerts',l:'System Alerts',i:'🚨'},
+    {id:'pulllog',l:'Pull Log',i:'📡'},{id:'deals',l:'Deals Feed',i:'🔥'},
   ]},
   {id:'system',label:'System',icon:'⚙️',panels:[
     {id:'overview',l:'System Overview',i:'◈'},{id:'crons',l:'Cron Jobs',i:'⏱'},
     {id:'deployments',l:'Deployments',i:'▲',b:'new'},{id:'agents',l:'Content Agents',i:'🤖'},
-    {id:'rss',l:'Source Manager',i:'📡'},
+    {id:'rss',l:'Source Manager',i:'📡'},{id:'sitemap',l:'Site Map',i:'🗺️'},
+    {id:'ranges',l:'Ranges DB',i:'◎'},
   ]},
   {id:'outreach',label:'Outreach',icon:'📬',panels:[
     {id:'contacts',l:'Contacts',i:'👤'},{id:'queue',l:'Email Queue',i:'📤'},
@@ -359,12 +362,15 @@ const SECTIONS=[
   ]},
   {id:'media',label:'Media',icon:'▶️',panels:[
     {id:'videos',l:'Videos',i:'▶'},{id:'channels',l:'Channels',i:'📺'},
-    {id:'imgsearch',l:'Image Search',i:'🔍'},{id:'social',l:'Social Media',i:'📣'},
+    {id:'imgsearch',l:'Image Search',i:'🔍'},{id:'imglib',l:'Image Library',i:'📸'},
+    {id:'social',l:'Social Media',i:'📣'},
   ]},
   {id:'settings',label:'Settings',icon:'⚙️',panels:[
-    {id:'aikeys',l:'API Keys',i:'🔑'},{id:'costs',l:'Cost Center',i:'💰'},
-    {id:'siteconfig',l:'Site Settings',i:'⚙'},{id:'alertconfig',l:'Alert Config',i:'🚨'},
-    {id:'envcheck',l:'Env Vars',i:'🔧'},{id:'emailtest',l:'Email Test',i:'✉'},
+    {id:'aikeys',l:'API Keys',i:'🔑'},{id:'ai',l:'AI Models',i:'🤖'},
+    {id:'costs',l:'Cost Center',i:'💰'},{id:'identity',l:'Identity',i:'🎨'},
+    {id:'navvis',l:'Nav Visibility',i:'👁'},{id:'siteconfig',l:'Site Settings',i:'⚙'},
+    {id:'alertconfig',l:'Alert Config',i:'🚨'},{id:'envcheck',l:'Env Vars',i:'🔧'},
+    {id:'emails',l:'Email Test',i:'✉'},{id:'emailtest',l:'Email Test',i:'✉'},
     {id:'report',l:'Portal Report',i:'📧'},{id:'backup',l:'Backup',i:'📦'},
     {id:'lockall',l:'Lock All',i:'🔒'},{id:'signout',l:'Sign Out',i:'🚪'},
   ]},
@@ -381,6 +387,265 @@ function openSheet(){
 }
 function closeSheet(){document.getElementById('section-sheet').classList.remove('open');}
 
+
+// ═══════════════════════════════════════════════════════════════════
+// NEW PANELS — SEO, FEEDS, SITEMAP, RANGES, IMGLIB, AI MODELS, IDENTITY, NAVVIS
+// ═══════════════════════════════════════════════════════════════════
+
+function renderSEO(el){
+  const pages=[
+    {p:'/',        t:'DownRange — America\'s Firearms Intelligence Hub', ga:'Active',idx:'Indexed'},
+    {p:'/news',    t:'Firearms News | DownRange',                         ga:'Active',idx:'Indexed'},
+    {p:'/market',  t:'Firearms Market | DownRange',                       ga:'Active',idx:'Indexed'},
+    {p:'/releases',t:'New Gun Releases | DownRange',                      ga:'Active',idx:'Indexed'},
+    {p:'/laws',    t:'2A Laws & Legislation | DownRange',                 ga:'Active',idx:'Indexed'},
+    {p:'/deals',   t:'Gun Deals | DownRange',                             ga:'Active',idx:'Indexed'},
+    {p:'/blog',    t:'Blog | DownRange',                                  ga:'Active',idx:'Indexed'},
+    {p:'/canada',  t:'Canadian Firearms Law | DownRange',                 ga:'Active',idx:'Indexed'},
+    {p:'/competitions',t:'Shooting Competitions | DownRange',             ga:'Active',idx:'Indexed'},
+  ];
+  el.innerHTML=`
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">GA4: G-KDGZX3CLEC · Sitemap: downrangeco.com/sitemap.xml</div>
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px">
+      <a href="https://search.google.com/search-console" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--gold);text-decoration:none">Search Console ↗</a>
+      <a href="https://analytics.google.com" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--gold);text-decoration:none">Analytics ↗</a>
+      <a href="https://downrangeco.com/sitemap.xml" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--dim);text-decoration:none">Sitemap ↗</a>
+      <a href="https://downrangeco.com/news-sitemap.xml" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--dim);text-decoration:none">News Sitemap ↗</a>
+    </div>
+    ${pages.map(p=>`<div class="row row-last">
+      <div style="flex:1">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--gold)">${p.p}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">${p.t}</div>
+      </div>
+      <div style="display:flex;gap:8px;flex-shrink:0">
+        <span class="pill pill-ok">GA4</span>
+        <span class="pill pill-ok">Indexed</span>
+      </div>
+    </div>`).join('')}`;
+}
+
+function renderFeeds(el){
+  const feeds=[
+    {key:'news',    l:'News Feed',     i:'📰', sched:'Every 15m', desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', c:'#22c55e'},
+    {key:'laws',    l:'Laws Feed',     i:'⚖️', sched:'Every 2h',  desc:'Congress.gov + LegiScan → bill analysis',      c:'#3b82f6'},
+    {key:'releases',l:'Releases Feed', i:'🔫', sched:'Hourly',    desc:'PRNewswire + manufacturer RSS → gun releases',   c:'#C8922A'},
+    {key:'market',  l:'Market Feed',   i:'📊', sched:'Every 30m', desc:'Ammo prices + market data → analysis',           c:'#f59e0b'},
+    {key:'video',   l:'Video Feed',    i:'▶️', sched:'Every 4h',  desc:'YouTube API → channel videos + thumbnails',      c:'#ef4444'},
+    {key:'state',   l:'State Feed',    i:'🗺️', sched:'Daily 8am', desc:'State legislation + profiles → 50-state DB',    c:'#a855f7'},
+    {key:'goa',     l:'GOA Press',     i:'⚖️', sched:'Every 2h',  desc:'Gun Owners of America press center',             c:'#ef4444'},
+    {key:'gun-deals',l:'Gun Deals',    i:'🔥', sched:'Every 4h',  desc:'gun.deals RSS + OG image scrape → gunDeal docs', c:'#C8922A'},
+  ];
+  const running={};
+  function renderAll(){
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:14px">${feeds.length} AI content pipelines</div>`+
+    feeds.map(f=>`<div class="adm-card" style="margin-bottom:8px;border-left:3px solid ${f.c}">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px">
+        <span style="font-size:18px">${f.i}</span>
+        <div style="flex:1">
+          <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--text)">${f.l}</div>
+          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:${f.c}">${f.sched}</div>
+        </div>
+        <button id="feed-btn-${f.key}" onclick="window._runFeed('${f.key}')"
+          style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:${f.c}22;border:1px solid ${f.c}44;color:${f.c};cursor:pointer">
+          ▶ Run
+        </button>
+      </div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#6b7280">${f.desc}</div>
+      <div id="feed-result-${f.key}" style="margin-top:6px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)"></div>
+    </div>`).join('');
+
+    window._runFeed=async(key)=>{
+      const btn=document.getElementById('feed-btn-'+key);
+      const res=document.getElementById('feed-result-'+key);
+      if(btn){btn.textContent='⏳';btn.disabled=true;}
+      const isGunDeals = key==='gun-deals';
+      const url = isGunDeals ? '/api/cron/gun-deals' : `/api/admin/run?feed=${key}`;
+      try{
+        const r = isGunDeals
+          ? await fetch(url,{headers:{'x-admin-key':window.ADMIN_KEY||''}})
+          : await fetch(url,{method:'POST',headers:{'x-admin-key':window.ADMIN_KEY||''}});
+        const d=await r.json();
+        const ok=d.ok||d.success;
+        if(res)res.innerHTML=`<span style="color:${ok?'var(--ok)':'var(--err)'}">${ok?'✓':'✗'} ${JSON.stringify(d).slice(0,80)}</span>`;
+      }catch(e){if(res)res.innerHTML=`<span style="color:var(--err)">✗ ${e.message}</span>`;}
+      if(btn){btn.textContent='▶ Run';btn.disabled=false;}
+    };
+  }
+  renderAll();
+}
+
+function renderSitemap(el){
+  const pages=[
+    {url:'/',              type:'page',    freq:'daily',   priority:'1.0'},
+    {url:'/news',          type:'page',    freq:'hourly',  priority:'0.9'},
+    {url:'/news/[slug]',   type:'dynamic', freq:'weekly',  priority:'0.8'},
+    {url:'/market',        type:'page',    freq:'hourly',  priority:'0.8'},
+    {url:'/releases',      type:'page',    freq:'daily',   priority:'0.8'},
+    {url:'/laws',          type:'page',    freq:'daily',   priority:'0.8'},
+    {url:'/deals',         type:'page',    freq:'hourly',  priority:'0.7'},
+    {url:'/blog',          type:'page',    freq:'weekly',  priority:'0.7'},
+    {url:'/blog/[slug]',   type:'dynamic', freq:'monthly', priority:'0.6'},
+    {url:'/canada',        type:'page',    freq:'daily',   priority:'0.7'},
+    {url:'/competitions',  type:'page',    freq:'weekly',  priority:'0.6'},
+    {url:'/states/[state]',type:'dynamic', freq:'weekly',  priority:'0.6'},
+    {url:'/about',         type:'page',    freq:'monthly', priority:'0.4'},
+    {url:'/sitemap.xml',   type:'sitemap', freq:'—',       priority:'—'},
+    {url:'/news-sitemap.xml',type:'sitemap',freq:'—',      priority:'—'},
+  ];
+  const TYPE_C={page:'#34D399',dynamic:'#60A5FA',sitemap:'#C8922A'};
+  el.innerHTML=`
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${pages.length} routes · Auto-generated by Next.js sitemap.js</div>
+    <div style="display:flex;gap:6px;margin-bottom:14px">
+      <a href="https://downrangeco.com/sitemap.xml" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--gold);text-decoration:none">View Sitemap ↗</a>
+      <a href="https://downrangeco.com/news-sitemap.xml" target="_blank" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:transparent;border:1px solid var(--border);color:var(--gold);text-decoration:none">News Sitemap ↗</a>
+    </div>
+    ${pages.map(p=>`<div class="row row-last">
+      <div style="flex:1;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text)">${p.url}</div>
+      <div style="display:flex;gap:8px;flex-shrink:0;align-items:center">
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;padding:2px 6px;background:${TYPE_C[p.type]||'#9ca3af'}22;color:${TYPE_C[p.type]||'#9ca3af'};border:1px solid ${TYPE_C[p.type]||'#9ca3af'}44">${p.type}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#4b5563">${p.freq}</span>
+        <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim)">${p.priority}</span>
+      </div>
+    </div>`).join('')}`;
+}
+
+function renderRanges(el){
+  el.innerHTML=`
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:16px">Shooting range finder. Powered by Google Places API.</div>
+    <div style="display:flex;flex-direction:column;gap:10px">
+      <a href="https://downrangeco.com/ranges" target="_blank"
+        style="display:block;padding:14px;background:var(--bg2);border:1px solid var(--border);text-decoration:none">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:15px;color:var(--gold);margin-bottom:4px">🔍 Range Finder → downrangeco.com/ranges</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">Live Google Places-powered search. Enter zip or city.</div>
+      </a>
+      <div class="adm-card">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">Requirements</div>
+        <div class="row row-last"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">GOOGLE_PLACES_API_KEY</span><span class="pill pill-warn">Required</span></div>
+        <div class="row row-last"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">NEXT_PUBLIC_GOOGLE_MAPS_KEY</span><span class="pill pill-warn">Required</span></div>
+      </div>
+      <div class="adm-card">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:8px">Features</div>
+        ${['Zip/city search','Distance radius filter','Range type filter (pistol/rifle/3-gun)','Hours + phone + directions','Google Maps embed','Mobile-optimized cards'].map(f=>`<div class="row row-last"><span style="font-size:14px">◎</span><div class="row-label">${f}</div></div>`).join('')}
+      </div>
+    </div>`;
+}
+
+async function renderImgLib(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/image-assets');
+    const imgs=d.assets||d.images||[];
+    if(!imgs.length){el.innerHTML='<div class="empty">No images in repository</div>';return;}
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${imgs.length} images in Sanity CDN</div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(100px,1fr));gap:8px">
+      ${imgs.slice(0,60).map(img=>`<div style="position:relative;background:var(--bg2);border:1px solid var(--border)">
+        <img src="${img.url||img.asset?.url||''}" alt="${img.alt||''}"
+          style="width:100%;height:80px;object-fit:cover;display:block"
+          onerror="this.style.display='none'"
+        />
+        <div style="padding:4px;font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${img.alt||img._id||''}</div>
+      </div>`).join('')}
+    </div>`;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+async function renderAIModels(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/ai-status');
+    const status=d.status||{};
+    const tiers=[
+      {id:'nano',  l:'Nano',  model:'GLM-4.5 Air', use:'Ultra-low-cost bulk ops', color:'#34D399'},
+      {id:'cheap', l:'Cheap', model:'GLM-4.7',     use:'Summaries, tags, scoring',color:'#60A5FA'},
+      {id:'mid',   l:'Mid',   model:'Haiku 3.5',   use:'Most content generation', color:'#C8922A'},
+      {id:'smart', l:'Smart', model:'Sonnet 4',    use:'Complex reasoning, intel', color:'#C084FC'},
+    ];
+    el.innerHTML=`
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:16px">4-tier AI cost router · lib/aiRouter.js</div>
+      ${tiers.map(t=>`<div class="adm-card" style="margin-bottom:8px;border-left:3px solid ${t.color}">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 8px;background:${t.color}22;color:${t.color};border:1px solid ${t.color}44">${t.id.toUpperCase()}</span>
+          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text)">${t.model}</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#6b7280">${t.use}</div>
+      </div>`).join('')}
+      <div class="adm-card" style="margin-top:12px">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:8px">API Status</div>
+        ${['ANTHROPIC_API_KEY','GLM_API_KEY','OPENAI_API_KEY'].map(k=>`<div class="row row-last">
+          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">${k}</span>
+          <span class="pill ${status[k]?'pill-ok':'pill-err'}">${status[k]?'Set':'Missing'}</span>
+        </div>`).join('')}
+      </div>`;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+
+function renderIdentity(el){
+  const links=[
+    {l:'Logo',       d:'PNG — /public/img/logo.png · 560px wide, maxH:162px'},
+    {l:'Color Scheme',d:'Gold #C8922A · BG #09090B · Text #F0EDE6 → globals.css'},
+    {l:'Fonts',       d:'Bebas Neue · IBM Plex Mono · Barlow Condensed → layout.js'},
+    {l:'Favicon',     d:'/public/favicon.ico + apple-touch-icon.png'},
+    {l:'OG Image',    d:'/public/og-default.jpg · 1200×630px'},
+    {l:'Masthead',    d:'components/layout/Masthead.js · black bg, logo left'},
+  ];
+  el.innerHTML=`
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:16px">Brand assets and visual identity configuration</div>
+    ${links.map(item=>`<div class="adm-card" style="margin-bottom:8px;display:flex;gap:12px;align-items:flex-start">
+      <div style="flex:1">
+        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text);margin-bottom:2px">🎨 ${item.l}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${item.d}</div>
+      </div>
+    </div>`).join('')}
+    <div class="adm-card" style="margin-top:4px">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:8px">Live Preview</div>
+      <a href="https://downrangeco.com" target="_blank"
+        style="display:block;padding:8px 14px;background:#000;text-align:center;text-decoration:none">
+        <img src="https://downrangeco.com/img/logo.png" style="max-height:40px;max-width:100%" alt="DownRange Logo" onerror="this.style.display='none'" />
+      </a>
+    </div>`;
+}
+
+async function renderNavVis(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/config');
+    const cfg=d.config||{};
+    const navItems=cfg.navVisibility||{};
+    const ALL_NAV=[
+      {label:'Home',always:true},{label:'News',always:false},{label:'Market',always:false},
+      {label:'Releases',always:false},{label:'Laws',always:false},{label:'Deals',always:false},
+      {label:'Blog',always:false},{label:'Canada',always:false},{label:'Competitions',always:false},
+      {label:'About',always:false},
+    ];
+    const saving={};
+    function renderItems(){
+      el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:14px">Control which nav items appear in the masthead</div>`+
+      ALL_NAV.map(item=>{
+        const on=item.always||(navItems[item.label]!==false);
+        return `<div class="row row-last">
+          <div style="flex:1">
+            <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text)">${item.label}</span>
+            ${item.always?`<span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);margin-left:8px">always on</span>`:''}
+          </div>
+          ${!item.always?`<button onclick="window._toggleNav('${item.label}',${!on})"
+            style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:4px 10px;background:${on?'rgba(34,197,94,0.1)':'rgba(239,68,68,0.1)'};border:1px solid ${on?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'};color:${on?'#22c55e':'#ef4444'};cursor:pointer">
+            ${on?'● ON':'○ OFF'}
+          </button>`:'<span class="pill pill-ok">Always On</span>'}
+        </div>`;
+      }).join('');
+
+      window._toggleNav=async(label,newVal)=>{
+        try{
+          await fetch('/api/admin/config',{method:'POST',headers:{'x-admin-key':window.ADMIN_KEY||'','Content-Type':'application/json'},body:JSON.stringify({navVisibility:{...navItems,[label]:newVal}})});
+          navItems[label]=newVal;
+          renderItems();
+        }catch(e){alert('Save failed: '+e.message);}
+      };
+    }
+    renderItems();
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}<br><br>Check /api/admin/config endpoint</div>`;}
+}
+
 // ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
 function openPanel(id,label){
   const map={
@@ -393,11 +658,14 @@ function openPanel(id,label){
     contacts:renderContacts,queue:renderQueue,history:renderHistory,
     videos:renderVideos,channels:renderChannels,
     aikeys:renderAPIKeys,envcheck:renderEnvCheck,emailtest:renderEmailTest,
+    emails:renderEmailTest,
     costs:renderCostCenter,siteconfig:renderSiteSettings,alertconfig:renderAlertConfig,
     report:renderPortalReport,backup:renderBackup,lockall:renderLockAll,
     marketbrief:renderMarketBrief,
     copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,
     pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,
+    seo:renderSEO,feeds:renderFeeds,sitemap:renderSitemap,ranges:renderRanges,
+    imglib:renderImgLib,ai:renderAIModels,identity:renderIdentity,navvis:renderNavVis,
   };
   if(id==='signout'){confirmSignOut();return;}
   if(map[id]) openDrawer(label,map[id]);
@@ -416,7 +684,7 @@ function initApp(){
 }
 function renderScreen(s){
   const el=document.getElementById('screen-'+s); if(!el)return;
-  const m={dashboard:renderDashboard,content:renderContent,outreach:renderOutreachScreen,intel:renderIntelScreen,system:renderSystemScreen,settings:renderSettingsHub,media:renderMediaScreen};
+  const m={dashboard:renderDashboard,content:renderContent,publishing:renderPublishingScreen,outreach:renderOutreachScreen,intel:renderIntelScreen,system:renderSystemScreen,settings:renderSettingsHub,media:renderMediaScreen};
   m[s]?.(el);
 }
 
@@ -480,7 +748,10 @@ function renderContent(el){
   el.innerHTML=`<div class="section-title">Content</div><div class="section-sub">Manage all content types</div>`+
     [{id:'news',i:'📰',l:'News Articles',s:'Pull & manage news'},{id:'blog',i:'✍',l:'Blog Posts',s:'Editorial posts'},
      {id:'releases',i:'🔫',l:'Gun Releases',s:'New product releases',b:'new'},{id:'reviews',i:'★',l:'Reviews',s:'Gear reviews'},
-     {id:'breaking',i:'🔴',l:'Breaking Alerts',s:'Ticker alerts'},{id:'drafts',i:'🔍',l:'Draft Recovery',s:'Unpublished drafts'}]
+     {id:'canada',i:'🇨🇦',l:'Canada',s:'Canadian firearms news'},{id:'brazil',i:'🇧🇷',l:'Brasil',s:'Brazilian firearms news'},
+     {id:'competitions',i:'🏆',l:'Competitions',s:'Shooting competition calendar'},{id:'deals',i:'🔥',l:'Deals Feed',s:'Gun deals & ammo'},
+     {id:'breaking',i:'🔴',l:'Breaking Alerts',s:'Ticker alerts'},{id:'drafts',i:'🔍',l:'Draft Recovery',s:'Unpublished drafts'},
+     {id:'hub',i:'◈',l:'Content Hub',s:'All content overview'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}${p.b?` <span class="pill pill-gold">${p.b}</span>`:''}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
 }
 
@@ -526,11 +797,23 @@ async function loadOutreachTab(t){
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
+function renderPublishingScreen(el){
+  el.innerHTML=`<div class="section-title">Publishing</div><div class="section-sub">Alerts, newsletter & scheduling</div>`+
+    [{id:'breaking',i:'🔴',l:'Breaking Alerts',s:'Ticker alerts'},
+     {id:'newsletter',i:'📧',l:'Newsletter',s:'Weekly dispatch & templates'},
+     {id:'schedule',i:'📅',l:'Schedule',s:'Content publication calendar'},
+     {id:'seo',i:'🔍',l:'SEO & Meta',s:'GA4, sitemap & indexing status'}]
+    .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
+}
+
 function renderIntelScreen(el){
   el.innerHTML=`<div class="section-title">Intelligence</div><div class="section-sub">Data feeds, copyright & briefings</div>`+
     [{id:'briefings',i:'🧠',l:'Briefings',s:'AI intelligence reports'},
+     {id:'marketbrief',i:'📊',l:'Market Brief',s:'Ammo & firearms market analysis',b:'live'},
      {id:'statelaws',i:'🗺',l:'State Laws',s:'50-state firearms database'},
+     {id:'feeds',i:'⚙️',l:'Feed Agent',s:'Run AI content pipelines'},
      {id:'copyright',i:'⚖',l:'Copyright Scan',s:'Risk analysis & rewrites'},
+     {id:'sysalerts',i:'🚨',l:'System Alerts',s:'Failures & warnings'},
      {id:'pulllog',i:'📡',l:'Pull Log',s:'Cron run history'},
      {id:'deals',i:'🔥',l:'Deals Feed',s:'Ammo & gear deals'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
@@ -542,6 +825,9 @@ function renderSystemScreen(el){
      {id:'crons',i:'⏱',l:'Cron Jobs',s:'Run & monitor all jobs'},
      {id:'deployments',i:'▲',l:'Deployments',s:'Vercel build history & logs'},
      {id:'agents',i:'🤖',l:'Content Agents',s:'Trigger AI pipelines'},
+     {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'},
+     {id:'sitemap',i:'🗺️',l:'Site Map',s:'URL routes & indexing'},
+     {id:'ranges',i:'◎',l:'Ranges DB',s:'Shooting range finder'},
      {id:'sysalerts',i:'🚨',l:'System Alerts',s:'cronRun log — failures & warnings'},
      {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
@@ -2416,11 +2702,14 @@ async function saveAlertConfig(btn){
 function renderSettingsHub(el){
   el.innerHTML=`<div class="section-title">Settings</div><div class="section-sub">Configuration & tools</div>`+
     [{id:'aikeys',i:'🔑',l:'API Keys',s:'Integration key status'},
+     {id:'ai',i:'🤖',l:'AI Models',s:'Tier config & provider status'},
      {id:'costs',i:'💰',l:'Cost Center',s:'AI spend tracking & projections'},
+     {id:'identity',i:'🎨',l:'Identity',s:'Brand assets & visual config'},
+     {id:'navvis',i:'👁',l:'Nav Visibility',s:'Control masthead nav items'},
      {id:'siteconfig',i:'⚙',l:'Site Settings',s:'Author bio, thresholds, nav'},
      {id:'alertconfig',i:'🚨',l:'Alert Config',s:'System alert email settings'},
      {id:'envcheck',i:'🔧',l:'Env Vars',s:'Variable audit'},
-     {id:'emailtest',i:'✉',l:'Email Test',s:'Test delivery'},
+     {id:'emails',i:'✉',l:'Email Test',s:'Test delivery'},
      {id:'report',i:'📧',l:'Portal Report',s:'Send intelligence digest'},
      {id:'backup',i:'📦',l:'Backup',s:'Full Sanity backup'},
      {id:'lockall',i:'🔒',l:'Lock All',s:'Bulk content lock/unlock'},
@@ -2434,6 +2723,7 @@ function renderMediaScreen(el){
     [{id:'videos',i:'▶',l:'Videos',s:'YouTube content cache'},
      {id:'channels',i:'📺',l:'Channels',s:'YouTube channel config'},
      {id:'imgsearch',i:'🔍',l:'Image Search',s:'Pexels + Pixabay finder'},
+     {id:'imglib',i:'📸',l:'Image Library',s:'Sanity CDN image repository'},
      {id:'social',i:'📣',l:'Social Media',s:'Post log + analytics + platforms'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
 }
