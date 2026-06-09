@@ -1,81 +1,78 @@
 """
-One-time migration: find newsArticle docs miscategorized as news/industry
-that look like deals (price pattern in title), patch them to category='deals'.
+One-time migration: reclassify deal articles in newsArticle collection.
+Uses Sanity REST API with single-quoted GROQ to avoid shell escaping issues.
 """
-import urllib.request, urllib.parse, json, re, time, sys
+import urllib.request, urllib.parse, json, re, time, sys, os
 
-SANITY_PROJECT = 'vbnsqnkg'
-SANITY_DATASET = 'production'
-SANITY_TOKEN   = 'skbUvbYYIvf0Uwc43kqoHa7MX556BIABP7tNDQjW06yeBHY9ImiPeEjgMs87ZxlUafA5XRt6LXwn8d5Y9JcmDaZN13fvjxt6Tm3QgSAE8LqSvP6oU7zgF3W4dGb3jnjVIuBnZTICBsln2LHqgKjFIAybBohK6JCJWR8qHmP6CMhPVpsiPB79'
-BASE = f'https://{SANITY_PROJECT}.api.sanity.io/v2023-08-01/data'
+PROJECT = 'vbnsqnkg'
+DATASET = 'production'
+TOKEN   = 'skbUvbYYIvf0Uwc43kqoHa7MX556BIABP7tNDQjW06yeBHY9ImiPeEjgMs87ZxlUafA5XRt6LXwn8d5Y9JcmDaZN13fvjxt6Tm3QgSAE8LqSvP6oU7zgF3W4dGb3jnjVIuBnZTICBsln2LHqgKjFIAybBohK6JCJWR8qHmP6CMhPVpsiPB79'
+BASE    = f'https://{PROJECT}.api.sanity.io/v2023-08-01/data'
 
 DEAL_RE = re.compile(
-    r'\$\d+|'
-    r'\d+%\s*off|'
-    r'save\s+\$|'
-    r'\bdiscount\b|'
-    r'\bcoupon\b|'
-    r'sale price|'
-    r'ships for|'
-    r'only\s+\$|'
-    r'starting at\s+\$|'
-    r'drops to\s+\$|'
-    r'priced at\s+\$',
+    r'\$\d+|\d+%\s*off|save\s+\$|\bdiscount\b|\bcoupon\b|sale price|'
+    r'ships for|only\s+\$|starting at\s+\$|drops to\s+\$|priced at\s+\$',
     re.IGNORECASE
 )
 
-def sanity_query(groq):
-    q = urllib.parse.quote(groq)
-    url = f'{BASE}/query/{SANITY_DATASET}?query={q}'
-    req = urllib.request.Request(url, headers={'Authorization': f'Bearer {SANITY_TOKEN}'})
-    with urllib.request.urlopen(req, timeout=30) as r:
-        return json.loads(r.read())['result']
+HEADERS = {'Authorization': f'Bearer {TOKEN}', 'Content-Type': 'application/json'}
 
-def sanity_patch(doc_id, patches):
-    url = f'{BASE}/mutate/{SANITY_DATASET}'
-    payload = json.dumps({'mutations': [{'patch': {'id': doc_id, 'set': patches}}]}).encode()
-    req = urllib.request.Request(url, data=payload, method='POST', headers={
-        'Authorization': f'Bearer {SANITY_TOKEN}',
-        'Content-Type': 'application/json',
-    })
-    with urllib.request.urlopen(req, timeout=15) as r:
+def api_get(path):
+    req = urllib.request.Request(f'{BASE}{path}', headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-print('Fetching articles...')
+def api_post(path, body):
+    data = json.dumps(body).encode()
+    req = urllib.request.Request(f'{BASE}{path}', data=data, method='POST', headers=HEADERS)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.loads(r.read())
+
+# Use URL-encoded GROQ with single quotes
+groq = "*[_type=='newsArticle' && category!='deals' && defined(publishedAt)] | order(publishedAt desc) [0..500] {_id, title, category}"
+print(f'Querying Sanity: {PROJECT}/{DATASET}')
+print(f'GROQ: {groq[:80]}...')
+
 try:
-    groq = '*[_type=="newsArticle" && category!="deals" && defined(publishedAt)] | order(publishedAt desc) [0..500] {_id, title, category}'
-    articles = sanity_query(groq)
-    print(f'Fetched {len(articles)} articles')
+    result = api_get(f'/query/{DATASET}?query={urllib.parse.quote(groq)}')
+    articles = result.get('result', [])
+    print(f'Got {len(articles)} articles')
 except Exception as e:
-    print(f'FATAL: Sanity query failed: {e}', file=sys.stderr)
+    print(f'FATAL query error: {type(e).__name__}: {e}', file=sys.stderr)
+    # Write diag anyway
+    os.makedirs('scripts', exist_ok=True)
+    with open('scripts/diag-result.txt', 'w') as f:
+        f.write(f'FATAL: {e}\n')
     sys.exit(1)
 
 to_fix = [a for a in articles if a.get('title') and DEAL_RE.search(a['title'])]
-print(f'Found {len(to_fix)} deal articles to reclassify')
-for a in to_fix:
-    print(f'  [{a["category"]}] {a["title"][:80]}')
+print(f'Deal articles to reclassify: {len(to_fix)}')
 
-fixed = 0
-errors = 0
+fixed = errors = 0
+lines = [f'fix-deal-articles: found={len(to_fix)}\n']
+
 for a in to_fix:
+    title = (a.get('title') or '')[:80]
+    cat   = a.get('category', '?')
+    print(f'  [{cat}] -> [deals]: {title}')
     try:
-        sanity_patch(a['_id'], {'category': 'deals'})
-        print(f'  FIXED: {a["title"][:70]}')
+        api_post(f'/mutate/{DATASET}', {
+            'mutations': [{'patch': {'id': a['_id'], 'set': {'category': 'deals'}}}]
+        })
         fixed += 1
+        lines.append(f'FIXED | {a["_id"]} | {cat} | {title}\n')
         time.sleep(0.15)
     except Exception as e:
-        print(f'  ERROR {a["_id"]}: {e}', file=sys.stderr)
         errors += 1
+        lines.append(f'ERROR | {a["_id"]} | {e}\n')
+        print(f'  ERROR: {e}', file=sys.stderr)
 
-result = f'fix-deal-articles: fixed={fixed} errors={errors} total={len(to_fix)}\n'
-print(result)
-for a in to_fix:
-    result += f'  {a["_id"]} | {a["category"]} | {a["title"][:80]}\n'
+summary = f'Done: fixed={fixed} errors={errors} total={len(to_fix)}'
+print(summary)
+lines.insert(1, summary + '\n')
 
-import os
 os.makedirs('scripts', exist_ok=True)
 with open('scripts/diag-result.txt', 'w') as f:
-    f.write(result)
+    f.writelines(lines)
 
-if errors > 0:
-    sys.exit(1)
+sys.exit(1 if errors else 0)
