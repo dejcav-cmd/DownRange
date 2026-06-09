@@ -1,0 +1,19 @@
+name: Sample gun.deals Product Page
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  sample:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python scripts/sample-gundeals-product.py
+      - run: |
+          git config user.name "DownRange Bot"
+          git config user.email "dj@downrangeco.com"
+          git add -f scripts/gun-deals-product-sample.txt
+          git commit -m "chore: product page sample" || echo "nothing"
+          git push
