@@ -9,16 +9,24 @@ const sanity = createClient({
   token: process.env.SANITY_API_TOKEN, useCdn: false,
 })
 
+// Full browser UA — gun.deals returns 200 with these headers from Vercel
+const SCRAPE_HEADERS = {
+  'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.5',
+}
+
 async function scrapeOGImage(url) {
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
-      signal: AbortSignal.timeout(8000),
+      headers: SCRAPE_HEADERS,
+      signal: AbortSignal.timeout(10000),
     })
     if (!res.ok) return null
     const html = await res.text()
-    const m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
-           || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)
+    // [\s\S] handles newlines inside meta tag attributes (gun.deals sometimes has them)
+    const m = html.match(/<meta[\s\S]*?property=["']og:image["'][\s\S]*?content=["']([^"']+)["']/i)
+           || html.match(/<meta[\s\S]*?content=["']([^"']+)["'][\s\S]*?property=["']og:image["']/i)
     return m ? m[1].trim() : null
   } catch (_e) { return null }
 }
@@ -27,20 +35,21 @@ export async function POST(req) {
   const adminKey = req.headers.get('x-admin-key')
   if (adminKey !== ADMIN_KEY) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const { limit = 20 } = await req.json().catch(() => ({}))
+  const { limit = 50, force = false } = await req.json().catch(() => ({}))
 
-  // Fetch deals with no imageUrl
-  const docs = await sanity.fetch(
-    `*[_type=="gunDeal" && (imageUrl == null || imageUrl == "")] | order(publishedAt desc) [0..${Math.min(limit, 50) - 1}] { _id, externalUrl, title }`
-  ).catch(() => [])
+  // force=true backfills ALL docs regardless of current imageUrl
+  const groq = force
+    ? `*[_type=="gunDeal"] | order(publishedAt desc) [0..${Math.min(limit, 100) - 1}] { _id, externalUrl, title, imageUrl }`
+    : `*[_type=="gunDeal" && (!defined(imageUrl) || imageUrl == null || imageUrl == "")] | order(publishedAt desc) [0..${Math.min(limit, 100) - 1}] { _id, externalUrl, title }`
 
-  const results = { total: docs.length, updated: 0, failed: 0 }
+  const docs = await sanity.fetch(groq).catch(() => [])
+  const results = { total: docs.length, updated: 0, failed: 0, skipped: 0 }
 
-  // Process 5 at a time
-  const BATCH = 5
-  for (let i = 0; i < docs.length; i += BATCH) {
-    const chunk = docs.slice(i, i + BATCH)
+  const CONCURRENCY = 5
+  for (let i = 0; i < docs.length; i += CONCURRENCY) {
+    const chunk = docs.slice(i, i + CONCURRENCY)
     await Promise.allSettled(chunk.map(async (doc) => {
+      if (!doc.externalUrl) { results.skipped++; return }
       const img = await scrapeOGImage(doc.externalUrl)
       if (img) {
         await sanity.patch(doc._id).set({ imageUrl: img }).commit()

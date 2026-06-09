@@ -51,17 +51,25 @@ function parseRSS(xml) {
   return items
 }
 
+// Full browser UA — confirmed working against gun.deals from Vercel
+const SCRAPE_HEADERS = {
+  'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.5',
+}
+
 // Scrape OG image from a gun.deals product page
 async function scrapeOGImage(url) {
   try {
     const res = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
-      signal: AbortSignal.timeout(8000),
+      headers: SCRAPE_HEADERS,
+      signal: AbortSignal.timeout(10000),
     })
     if (!res.ok) return null
     const html = await res.text()
-    const m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
-           || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)
+    // [\s\S] handles newlines inside meta tag attributes
+    const m = html.match(/<meta[\s\S]*?property=["']og:image["'][\s\S]*?content=["']([^"']+)["']/i)
+           || html.match(/<meta[\s\S]*?content=["']([^"']+)["'][\s\S]*?property=["']og:image["']/i)
     return m ? m[1].trim() : null
   } catch (_e) { return null }
 }
