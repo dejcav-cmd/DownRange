@@ -1,0 +1,20 @@
+name: Fix Deal Articles
+on:
+  workflow_dispatch:
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run fix-deal-articles
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/fix-deal-articles.py
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add scripts/diag-result.txt || true
+          git commit -m "diag: fix-deal-articles result" || true
+          git push || true

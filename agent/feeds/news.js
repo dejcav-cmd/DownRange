@@ -341,7 +341,12 @@ async function processNewsItem(item) {
     console.warn('[NEWS] No AI key set — articles will publish without body (backfill required)')
   }
 
-  const category = item.feedCat === 'deals' || item.source === 'AmmoLand'
+  // Deal detector: catch price/discount articles that AI may mislabel
+  const DEAL_PATTERN = /\$(\d+)|\d+%\s*off|save\s+\$|discount|coupon|sale price|ships for|only \$|starting at \$|drops to \$|priced at \$/i
+  const titleLooksLikeDeal = DEAL_PATTERN.test(item.title || '')
+  const aiSaysDeal = ai?.category === 'deals'
+  const feedIsDeal  = item.feedCat === 'deals'
+  const category = (feedIsDeal || aiSaysDeal || titleLooksLikeDeal)
     ? 'deals'
     : (ai?.category || item.feedCat || 'news')
 

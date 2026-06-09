@@ -62,7 +62,7 @@ Return ONLY valid JSON:
   "title": "ORIGINAL DownRange headline — NOT the source title. Specific, active, click-worthy, max 12 words.",
   "summary": "2-3 sentences. Key facts in original language. Max 300 chars. No AI phrases.",
   "body": "<full HTML article in the structure above>",
-  "category": "one of: breaking|news|law|industry|opinion|training",
+  "category": "one of: breaking|news|law|industry|opinion|training|deals — use deals for any article primarily about a product sale, discount, price drop, coupon, or limited-time offer",
   "urgencyScore": 1-10,
   "tags": ["4-8 kebab-case tags"],
   "relatedStates": ["state abbreviations"],
