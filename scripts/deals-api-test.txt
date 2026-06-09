@@ -1,17 +1,17 @@
 === LIVE /api/deals RESPONSE ===
-Total deals: 110
-Sources: {'sanity': 80, 'reddit': 0, 'gunDeals': 30}
+Total deals: 80
+Sources: {'sanity': 80, 'reddit': 0, 'gunDeals': 0}
 With imageUrl: 80
-Without imageUrl: 30
+Without imageUrl: 0
 
 First 5 deals:
-  [gun.deals] Emissary Development Handbrake X M-LOK - $34.32 af
-    imageUrl: NULL
-  [gun.deals] Spring Assisted Heavy Duty Pocket Knife 3.5&quot; 
-    imageUrl: NULL
-  [gun.deals] Diamondback DB15 5.56 Pistol OD FLAG 30 Round - 30
-    imageUrl: NULL
-  [gun.deals] 6.7&#039;&#039; Tactical Knife with Sheath - Micar
-    imageUrl: NULL
-  [gun.deals] BN Complete AR-15 QUAD Rifle Build Kit - $300
-    imageUrl: NULL
+  [gun.deals] Streamlight TLR-3 170-Lumen Lightweight, Compact W
+    imageUrl: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/f9bab43966f999898d0762a6cb30fa23.jpg
+  [gun.deals] OneTigris Gun Holster Right Handed Nylon Pistol Ho
+    imageUrl: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/15e4b1548b6fed63c58f7dec39304464.jpg
+  [gun.deals] Ruger LCP Max 75th Anniversary 380 ACP 2.8&quot; B
+    imageUrl: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/ruger-lcp-max-75th-anniversary-380-acp-2-8-barrel-10rd-pistol-2-mags-polished-black.png
+  [gun.deals] Streamlight 71500 JR 225-Lumen LED AA Battery-Powe
+    imageUrl: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/617ZR51vRWL._AC_SL1500_.jpg
+  [gun.deals] Heckler &amp; Koch VP9-B Match 9mm 5.51&quot; 20rd
+    imageUrl: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/heckler-koch-vp9-b-match-9mm-5-51-20rd-full-size-pistol-4-magazines-black-3.png
