@@ -8,8 +8,6 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - name: Run fix-deal-articles
-        env:
-          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: python3 scripts/fix-deal-articles.py
       - name: Commit result
         run: |
