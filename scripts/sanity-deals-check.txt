@@ -1,0 +1,1 @@
+total=80 approved=80 has_img=80 approved+img=80
