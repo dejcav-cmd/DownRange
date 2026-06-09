@@ -1,0 +1,13 @@
+name: Trigger gun-deals cron (seed gunDeal docs)
+on:
+  workflow_dispatch:
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire gun-deals cron
+        run: |
+          RESPONSE=$(curl -s -w "\nHTTP:%{http_code}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            "https://downrangeco.com/api/cron/gun-deals")
+          echo "$RESPONSE"
