@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import { useSearchParams, useRouter } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import { sendGAEvent } from '@next/third-parties/google'
@@ -19,15 +20,15 @@ const FLAIR_META = {
 }
 
 const CATS = [
-  { val:null,          label:'All Deals' },
-  { val:'Handgun',     label:'🔫 Handguns' },
-  { val:'Rifle',       label:'◈ Rifles' },
-  { val:'Shotgun',     label:'◉ Shotguns' },
-  { val:'Ammo',        label:'◎ Ammo' },
-  { val:'NFA',         label:'◈ NFA / Suppressors' },
-  { val:'Optic',       label:'◎ Optics' },
-  { val:'Accessories', label:'◈ Accessories' },
-  { val:'Gear',        label:'◈ Gear' },
+  { val:null,          label:'All Deals',       icon:'🔥' },
+  { val:'Handgun',     label:'Handguns',         icon:'🔫' },
+  { val:'Rifle',       label:'Rifles',           icon:'🎯' },
+  { val:'Shotgun',     label:'Shotguns',         icon:'💥' },
+  { val:'Ammo',        label:'Ammo',             icon:'◎'  },
+  { val:'NFA',         label:'NFA / Suppressors',icon:'🔇' },
+  { val:'Optic',       label:'Optics',           icon:'🔭' },
+  { val:'Accessories', label:'Accessories',      icon:'⚙'  },
+  { val:'Gear',        label:'Gear',             icon:'🎒' },
 ]
 
 // No fake seed deals — page starts empty, real data loads from API
@@ -242,14 +243,27 @@ function DealCard({ deal }) {
 
 // ── PAGE ───────────────────────────────────────────────────────────────────────
 export default function DealsPage() {
+  const searchParams = useSearchParams()
+  const router = useRouter()
   const [deals,    setDeals]    = useState(SEED)
   const [status,   setStatus]   = useState('loading')
   const [meta,     setMeta]     = useState(null)
-  const [cat,      setCat]      = useState(null)
-  const [sort,     setSort]     = useState('hot')
+  const [cat,      setCat]      = useState(() => searchParams.get('cat') || null)
+  const [sort,     setSort]     = useState(() => searchParams.get('sort') || 'hot')
+  const [search,   setSearch]   = useState(() => searchParams.get('q') || '')
   const [lastFetch,setLastFetch]= useState(null)
 
-  const load = useCallback(async (c, s) => {
+  // Sync URL when cat/sort changes
+  useEffect(() => {
+    const p = new URLSearchParams()
+    if (cat)  p.set('cat',  cat)
+    if (sort && sort !== 'hot') p.set('sort', sort)
+    if (search) p.set('q', search)
+    const qs = p.toString()
+    router.replace(qs ? `/deals?${qs}` : '/deals', { scroll: false })
+  }, [cat, sort, search])
+
+  const load = useCallback(async (c, s, q) => {
     setStatus('loading')
     try {
       const params = new URLSearchParams()
@@ -258,22 +272,22 @@ export default function DealsPage() {
       const res  = await fetch(`/api/deals?${params}`, { cache:'no-store' })
       if (!res.ok) throw new Error('API error')
       const data = await res.json()
-      if (data.deals?.length >= 3) {
+      if (data.deals?.length >= 0) {
         setDeals(data.deals)
         setMeta(data)
         setStatus(data.live ? 'live' : 'seed')
       } else {
-        setDeals(SEED)
-        setStatus('seed')
+        setDeals([])
+        setStatus('empty')
       }
       setLastFetch(Date.now())
     } catch {
-      setDeals(SEED)
-      setStatus('seed')
+      setDeals([])
+      setStatus('error')
     }
   }, [])
 
-  useEffect(() => { load(cat, sort) }, [cat, sort, load])
+  useEffect(() => { load(cat, sort, search) }, [cat, sort, load])
 
   const totalSources = meta
     ? [meta.sources?.sanity   > 0 && `${meta.sources.sanity} curated`,
@@ -311,48 +325,85 @@ export default function DealsPage() {
               <span style={{ color:'var(--gold)' }}>Best Deals Today</span>
             </h1>
             <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:16, color:'var(--text-muted)', lineHeight:1.7, maxWidth:520 }}>
-              {deals.length} deals live · r/gundeals, gun.deals, AmmoLand · Updated every 30 min
+              {deals.length > 0 ? `${deals.length} deals` : 'Loading deals...'} · Curated + r/gundeals + gun.deals · Updated every 30 min
               {totalSources && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#4B5563', display:'block', marginTop:4 }}>{totalSources}</span>}
             </p>
           </div>
         </div>
       </div>
 
-      {/* ── STICKY FILTER BAR ── */}
-      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:60, zIndex:20 }}>
+      {/* ── STICKY CATEGORY BAR (standard DownRange pattern) ── */}
+      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
           <div style={{ display:'flex', gap:0, overflowX:'auto', justifyContent:'space-between', alignItems:'stretch' }}>
-            <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
-              {CATS.map(c => (
-                <button key={c.val||'all'} onClick={() => setCat(c.val)}
-                  style={{
-                    display:'inline-flex', alignItems:'center', padding:'12px 14px',
-                    fontFamily:"'IBM Plex Mono',monospace", fontSize:11,
-                    borderBottom:`2px solid ${cat===c.val?'var(--gold)':'transparent'}`,
-                    color:cat===c.val?'var(--gold)':'var(--text-dim)',
-                    background:'none', border:'none',
-                    borderBottom:`2px solid ${cat===c.val?'var(--gold)':'transparent'}`,
-                    cursor:'pointer', whiteSpace:'nowrap', letterSpacing:'0.05em',
-                    transition:'color 0.15s',
-                  }}>
-                  {c.label}
-                </button>
-              ))}
+
+            {/* Category tabs */}
+            <div style={{ display:'flex', gap:0, overflowX:'auto', scrollbarWidth:'none' }}>
+              {CATS.map(cat_ => {
+                const active = cat === cat_.val
+                return (
+                  <button key={cat_.val || 'all'}
+                    onClick={() => setCat(cat_.val)}
+                    style={{
+                      display:'inline-flex', alignItems:'center', gap:5,
+                      padding:'12px 16px',
+                      fontFamily:"'IBM Plex Mono',monospace", fontSize:11,
+                      border:'none',
+                      borderBottom:`2px solid ${active ? 'var(--gold)' : 'transparent'}`,
+                      color: active ? 'var(--gold)' : 'var(--text-dim)',
+                      background:'none', cursor:'pointer',
+                      whiteSpace:'nowrap', letterSpacing:'0.05em',
+                      transition:'color 0.15s',
+                    }}>
+                    <span style={{ opacity: active ? 1 : 0.6 }}>{cat_.icon}</span>
+                    {cat_.label}
+                  </button>
+                )
+              })}
             </div>
-            {/* Sort + refresh */}
+
+            {/* Sort + Search + Refresh */}
             <div style={{ display:'flex', gap:4, alignItems:'center', padding:'0 0 0 12px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4B5563' }}>SORT:</span>
               {[['hot','🔥 Hot'],['new','🆕 New']].map(([k,l]) => (
                 <button key={k} onClick={() => setSort(k)}
-                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'5px 10px', border:`1px solid ${sort===k?'var(--gold)':'var(--border)'}`, background:sort===k?'rgba(200,146,42,0.15)':'transparent', color:sort===k?'var(--gold)':'var(--text-dim)', cursor:'pointer', transition:'all 0.12s' }}>
+                  style={{
+                    fontFamily:"'IBM Plex Mono',monospace", fontSize:10,
+                    padding:'4px 10px',
+                    border:`1px solid ${sort===k ? 'var(--gold)' : 'var(--border)'}`,
+                    background: sort===k ? 'rgba(200,146,42,0.15)' : 'transparent',
+                    color: sort===k ? 'var(--gold)' : 'var(--text-dim)',
+                    cursor:'pointer', transition:'all 0.12s',
+                  }}>
                   {l}
                 </button>
               ))}
               <button onClick={() => load(cat, sort)}
-                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'5px 10px', border:'1px solid var(--border)', background:'transparent', color:'var(--text-dim)', cursor:'pointer' }}
-                title="Refresh deals">
-                ↺
-              </button>
+                style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'4px 10px', border:'1px solid var(--border)', background:'transparent', color:'var(--text-dim)', cursor:'pointer' }}
+                title="Refresh deals">↺</button>
             </div>
+
+            {/* Search */}
+            <div style={{ display:'flex', alignItems:'center', gap:6, padding:'0 0 0 12px', borderLeft:'1px solid var(--border)' }}>
+              <input
+                type="search"
+                value={search}
+                onChange={e => setSearch(e.target.value)}
+                placeholder="Search deals…"
+                style={{
+                  fontFamily:"'IBM Plex Mono',monospace", fontSize:11,
+                  background:'var(--bg)', border:'1px solid var(--border)',
+                  color:'var(--text)', padding:'5px 10px', width:160, outline:'none',
+                }}
+              />
+              {search && (
+                <button onClick={() => setSearch('')}
+                  style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280', background:'none', border:'none', cursor:'pointer', padding:'0 4px' }}>
+                  ✕
+                </button>
+              )}
+            </div>
+
           </div>
         </div>
       </div>
@@ -384,7 +435,7 @@ export default function DealsPage() {
                   {lastFetch && <span style={{ marginLeft:8, color:'#4B5563' }}>· refreshed {timeAgo(lastFetch)}</span>}
                 </div>
                 <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-                  {[['r/gundeals','#FF4500'],['gun.deals','#FF6314'],['AmmoLand','#C8922A']].map(([src,col])=>(
+                  {[['Curated','#C8922A'],['r/gundeals','#FF4500'],['gun.deals','#FF6314']].map(([src,col])=>(
                     <div key={src} style={{ display:'flex', alignItems:'center', gap:4 }}>
                       <span style={{ width:5, height:5, borderRadius:'50%', background:col }} />
                       <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4B5563' }}>{src}</span>
@@ -394,7 +445,10 @@ export default function DealsPage() {
               </div>
 
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(210px, 1fr))', gap:12 }}>
-                {deals.map((deal, i) => <DealCard key={deal.id || i} deal={deal} />)}
+                {(search
+                    ? deals.filter(d => d.title?.toLowerCase().includes(search.toLowerCase()) || d.source?.toLowerCase().includes(search.toLowerCase()))
+                    : deals
+                  ).map((deal, i) => <DealCard key={deal.id || i} deal={deal} />)}
               </div>
 
               {deals.length === 0 && (
@@ -408,12 +462,11 @@ export default function DealsPage() {
           {/* Footer */}
           <div style={{ marginTop:32, padding:'14px 18px', background:'var(--bg2)', border:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:8 }}>
             <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4B5563', lineHeight:1.6 }}>
-              Deals sourced from r/gundeals, gun.deals, and AmmoLand. Verify pricing at the retailer before purchasing.
+              Deals sourced from DownRange curated picks, r/gundeals, and gun.deals. Always verify pricing at the retailer before purchasing.
             </span>
             <div style={{ display:'flex', gap:12, flexShrink:0 }}>
               <a href="https://www.reddit.com/r/gundeals" target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#FF4500', textDecoration:'none' }}>r/gundeals ↗</a>
               <a href="https://gun.deals" target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#FF6314', textDecoration:'none' }}>gun.deals ↗</a>
-              <a href="https://www.ammoland.com" target="_blank" rel="noreferrer" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>AmmoLand ↗</a>
             </div>
           </div>
 
