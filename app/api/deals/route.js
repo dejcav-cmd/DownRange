@@ -125,38 +125,62 @@ async function fetchRedditDeals() {
   return results
 }
 
-// ── SOURCE 3: gun.deals RSS ───────────────────────────────────────────────────
+// ── SOURCE 3: gun.deals RSS (direct fetch, no proxy) ─────────────────────────
+const GUN_DEALS_RSS_URLS = [
+  'https://gun.deals/feed/syndication/rss',
+  'https://gun.deals/rss.xml',
+  'https://gun.deals/feed',
+  'https://gun.deals/feeds/items.rss',
+]
+
 async function fetchGunDeals() {
   const results = []
   try {
-    const res = await fetch(
-      'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent('https://gun.deals/rss.xml') + '&count=40',
-      { next: { revalidate: 0 }, signal: AbortSignal.timeout(6000) }
-    )
-    if (!res.ok) return results
-    const json = await res.json()
-    if (json.status !== 'ok' || !json.items?.length) return results
-    for (const item of json.items.slice(0, 30)) {
-      const title = item.title || ''
-      if (!title || !item.link) continue
+    let xml = null
+    for (const url of GUN_DEALS_RSS_URLS) {
+      try {
+        const res = await fetch(url, {
+          headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
+          next: { revalidate: 0 },
+          signal: AbortSignal.timeout(8000),
+        })
+        if (res.ok) { xml = await res.text(); break }
+      } catch(_e) { /* try next */ }
+    }
+    if (!xml) return results
+
+    const itemRegex = /<item>([\s\S]*?)<\/item>/gi
+    let match
+    while ((match = itemRegex.exec(xml)) !== null) {
+      const block = match[1]
+      const get = (tag) => {
+        const m = block.match(new RegExp('<' + tag + '[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/' + tag + '>'))
+                 || block.match(new RegExp('<' + tag + '[^>]*>([^<]*)<\\/' + tag + '>'))
+        return m ? m[1].trim() : ''
+      }
+      const title = get('title')
+      const link  = get('link') || get('guid')
+      const date  = get('pubDate')
+      if (!title || !link) continue
       const flair = inferFlair(title)
       results.push({
-        id:        'gd-' + Buffer.from(item.link).toString('base64').slice(0,10),
+        id:        'gd-' + Buffer.from(link).toString('base64').slice(0, 10),
         title,
-        url:       item.link,
-        permalink: item.link,
+        url:       link,
+        permalink: link,
         score:     null,
         comments:  null,
-        created:   item.pubDate ? new Date(item.pubDate).getTime() : Date.now(),
+        created:   date ? new Date(date).getTime() : Date.now(),
         flair,
         flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
         source:    'gun.deals',
         domain:    'gun.deals',
-        imageUrl:  item.enclosure?.link || item.thumbnail || null,
+        imageUrl:  null,
         price:     extractPrice(title),
       })
+      if (results.length >= 30) break
     }
-  } catch { /* gun.deals unreachable */ }
+  } catch(_e) { /* gun.deals unreachable */ }
   return results
 }
 
