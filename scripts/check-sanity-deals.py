@@ -27,3 +27,9 @@ for s in sample:
 result = f"total={total} approved={approved} has_img={has_img} approved+img={approved_img}"
 with open('scripts/sanity-deals-check.txt','w') as f: f.write(result+'\n')
 print('\nDone')
+
+# Show sample image URLs
+sample_imgs = q('*[_type=="gunDeal" && defined(imageUrl)] | order(publishedAt desc) [0..4] { imageUrl }')
+print("\nSample imageUrls:")
+for s in sample_imgs:
+    print(f"  {s.get('imageUrl','')}")
