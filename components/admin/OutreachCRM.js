@@ -478,6 +478,43 @@ export default function OutreachCRM({ adminKey }) {
     else flash('📬 '+created+' draft'+(created!==1?'s':'')+' queued for approval')
   }
 
+  async function saveToZohoDrafts(){
+    if(!selIds.size){flash('Select contacts first',false);return}
+    setSending(true)
+    const body=getBody()||(tplTemplates.find(t=>t.id===activeTpl)?.body||'')
+    const targets=contacts.filter(c=>selIds.has(c._id))
+    const noEmail=targets.filter(c=>!c.email)
+    if(noEmail.length) flash(`⚠ ${noEmail.length} contact${noEmail.length>1?'s':''} have no email`,false)
+    let created=0,failed=0,lastErr=''
+    for(const c of targets.filter(c=>c.email)){
+      const firstName=c.firstName||c.name?.split(' ')[0]||''
+      const personalizedBody=body
+        .replace(/\{\{firstName\}\}/g,firstName)
+        .replace(/\{\{channelName\}\}/g,c.name||'')
+        .replace(/\{\{businessName\}\}/g,c.name||'')
+      const html=buildEmailHTML({subject,preheader,greeting,body:personalizedBody,ctaText,ctaUrl,contactName:firstName,accentColor:accent,signature:sig})
+      const subj=subject
+        .replace(/\{\{firstName\}\}/g,firstName)
+        .replace(/\{\{businessName\}\}/g,c.name||'')
+        .replace(/\{\{channelName\}\}/g,c.name||'')
+      try{
+        const r=await fetch('/api/admin/zoho-draft',{method:'POST',headers:H,body:JSON.stringify({
+          to:c.email,
+          toName:c.name||'',
+          subject:subj,
+          htmlBody:html,
+        })})
+        const d=await r.json()
+        if(d.ok) created++
+        else{failed++;lastErr=d.error||d.detail||'unknown'}
+      }catch(e){failed++;lastErr=e.message}
+    }
+    setSending(false)
+    setSelIds(new Set())
+    if(failed>0) flash('❌ '+failed+' failed'+(lastErr?' — '+String(lastErr).slice(0,50):'')+(created?' · 📝 '+created+' saved to Zoho':''),false)
+    else flash('📝 '+created+' draft'+(created!==1?'s':'')+' saved to Zoho Mail')
+  }
+
   async function approve(ids) {
     flash('Sending…')
     try {
@@ -639,6 +676,7 @@ export default function OutreachCRM({ adminKey }) {
               {sending?'⏳ Sending…':selIds.size>0?'✉ Send to '+selIds.size:'✉ Send'}
             </button>
             <button className="ghost" onClick={queueDrafts} disabled={sending||!selIds.size}>📬 Queue for Approval</button>
+            <button className="ghost" onClick={saveToZohoDrafts} disabled={sending||!selIds.size} style={{color:'#22c55e',borderColor:'#22c55e44'}} title="Save to Zoho Mail Drafts for manual review &amp; send">📝 Save to Zoho Drafts</button>
             <div style={{flex:1}}/>
             {sendRes&&<div style={{fontFamily:MONO,fontSize:11,color:sendRes.failed?'#f59e0b':'#22c55e'}}>
               {sendRes.sent>0&&'✅ '+sendRes.sent+' sent'}{sendRes.failed>0&&' · ❌ '+sendRes.failed+' failed'}
@@ -704,6 +742,7 @@ export default function OutreachCRM({ adminKey }) {
           {selIds.size>0&&<><span style={{fontFamily:MONO,fontSize:10,color:GOLD}}>{selIds.size} sel</span>
             <button className="ghost" onClick={()=>setView('compose')}>✉ Compose</button>
             <button className="ghost" onClick={queueDrafts} disabled={sending}>📬 Queue</button>
+            <button className="ghost" onClick={saveToZohoDrafts} disabled={sending} style={{color:'#22c55e',borderColor:'#22c55e44'}} title="Save to Zoho Mail Drafts">📝 Zoho Draft</button>
           </>}
         </div>
         <div style={{flex:1,overflowY:'auto'}}>
