@@ -1,0 +1,25 @@
+name: Test Vercel OG Scrape
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Wait for deploy
+        run: sleep 30
+      - name: Run test
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: python scripts/test-vercel-og-scrape.py
+      - name: Commit
+        run: |
+          git config user.name "DownRange Bot"
+          git config user.email "dj@downrangeco.com"
+          git add -f scripts/vercel-og-test-result.txt
+          git commit -m "chore: vercel og test result" || echo "nothing"
+          git push
