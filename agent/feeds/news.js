@@ -96,11 +96,15 @@ const RSS_FEEDS = [
   { name: 'Pew Pew Tactical',       url: 'https://www.pewpewtactical.com/feed/',                cat: 'industry' },
   { name: 'Lucky Gunner',           url: 'https://www.luckygunner.com/lounge/feed/',            cat: 'industry' },
   // ── DEALS — product sales, pricing, limited-time offers ─────────────
-  { name: 'Guns.com Deals',         url: 'https://www.guns.com/deals/feed',                    cat: 'deals'    },
   { name: 'GunDeals Reddit',        url: 'https://www.reddit.com/r/gundeals/.rss',              cat: 'deals'    },
-  { name: 'Lucky Gunner Ammo',      url: 'https://www.luckygunner.com/ammo-deals/feed/',        cat: 'deals'    },
+  { name: 'Slickguns',              url: 'https://www.slickguns.com/feed',                      cat: 'deals'    },
+  { name: 'WikiArms',               url: 'https://www.wikiarms.com/feed',                       cat: 'deals'    },
   { name: 'Brownells Blog',         url: 'https://www.brownells.com/blog/feed/',                cat: 'deals'    },
+  { name: 'Palmetto State Armory',  url: 'https://palmettostatearmory.com/blog/feed/',          cat: 'deals'    },
+  { name: 'Primary Arms Blog',      url: 'https://www.primaryarms.com/blog/feed/',              cat: 'deals'    },
+  { name: 'GrabAGun Blog',          url: 'https://www.grabaggun.com/blog/rss.xml',              cat: 'deals'    },
   { name: 'Sportsmans Warehouse',   url: 'https://blog.sportsmanswarehouse.com/feed/',          cat: 'deals'    },
+  { name: 'Guns.com Deals',         url: 'https://www.guns.com/deals/feed',                     cat: 'deals'    },
   // ── CANADA ONLY — routed to canadaContent, never newsArticle ──────────
   { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law', region: 'canada' },
   { name: 'NFA Canada',             url: 'https://www.nfa.ca/feed/',                            cat: 'law', region: 'canada' },
@@ -235,6 +239,7 @@ const ALLOWED_US_DOMAINS = new Set([
   'townhall.com','breitbart.com','nssf.org',
   'usconcealedcarry.com','luckygunner.com',
   'reddit.com','brownells.com','sportsmanswarehouse.com',
+  'slickguns.com','wikiarms.com','palmettostatearmory.com','primaryarms.com','grabaggun.com',
 ])
 
 function isAllowedUSUrl(url) {
