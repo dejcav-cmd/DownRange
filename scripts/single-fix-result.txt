@@ -1,0 +1,13 @@
+=== FIX SINGLE ARTICLE ===
+slug:       everytown-s-outrage-over-new-atf-rule-proposals-downright-hilarious-c6b105
+_id:        news-c6b105922afe62865d67b34ef08bd634
+source:     Bearing Arms
+category:   law
+imageUrl:   NULL
+heroImage:  NULL
+externalUrl:https://bearingarms.com/tomknighton/2026/06/08/everytowns-outrage-over-new-atf-rule-proposals-downright-hilarious-n1232782
+
+Scraping: https://bearingarms.com/tomknighton/2026/06/08/everytowns-outrage-over-new-atf-rule-proposals-downright-hilarious-n1232782
+OG result: https://media.townhall.com/cdn/hodl/2020/93/f618f0a2-7bdb-4761-9177-e1b835e03863.jpg
+
+✓ Patched imageUrl → https://media.townhall.com/cdn/hodl/2020/93/f618f0a2-7bdb-4761-9177-e1b835e03863.jpg
