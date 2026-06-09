@@ -1,4 +1,4 @@
-import urllib.request, urllib.parse, json, os
+import urllib.request, urllib.parse, json, os, sys
 
 TOKEN = os.environ.get('SANITY_TOKEN','')
 BASE  = 'https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production'
@@ -9,38 +9,43 @@ def q(groq):
     with urllib.request.urlopen(req, timeout=20) as r:
         return json.loads(r.read())['result']
 
-slugs = ['virginia-bill-sponsor-attacks-prosecutors-refusing-to-enforce-his-gun-ban-e2f031',
-         'vortex-hunter-constantine-collaboration-benefits-saf-s-legal-efforts-c9b513']
+lines = []
+def log(s):
+    print(s)
+    lines.append(s)
+
+slugs = [
+    'virginia-bill-sponsor-attacks-prosecutors-refusing-to-enforce-his-gun-ban-e2f031',
+    'vortex-hunter-constantine-collaboration-benefits-saf-s-legal-efforts-c9b513'
+]
 
 for slug in slugs:
-    groq = f'*[_type=="newsArticle" && slug.current=="${slug}"][0]{{ _id, title, imageUrl, heroImage{{asset->{{url}}}}, approved, source, externalUrl }}'
-    doc = q(groq)
-    print(f"\nSlug: {slug}")
+    doc = q(f'*[_type=="newsArticle" && slug.current=="{slug}"][0]{{ _id, title, imageUrl, heroImage{{asset->{{url}}}}, approved, source, externalUrl }}')
+    log(f"\n--- {slug[:50]} ---")
     if doc:
-        print(f"  _id:       {doc.get('_id')}")
-        print(f"  approved:  {doc.get('approved')}")
-        print(f"  imageUrl:  {doc.get('imageUrl') or 'NULL'}")
-        print(f"  heroImage: {doc.get('heroImage') or 'NULL'}")
-        print(f"  source:    {doc.get('source')}")
-        print(f"  externalUrl: {doc.get('externalUrl') or 'NULL'}")
+        log(f"  _id:       {doc.get('_id')}")
+        log(f"  approved:  {doc.get('approved')}")
+        log(f"  imageUrl:  {doc.get('imageUrl') or 'NULL'}")
+        hi = doc.get('heroImage')
+        log(f"  heroImage: {hi.get('asset',{}).get('url') if hi else 'NULL'}")
+        log(f"  source:    {doc.get('source')}")
+        log(f"  externalUrl: {(doc.get('externalUrl') or 'NULL')[:80]}")
     else:
-        print("  NOT FOUND in Sanity")
+        log("  NOT FOUND")
 
-# Also check how many articles have no images at all
-total = q('count(*[_type=="newsArticle" && approved==true && defined(slug.current)])')
-no_img = q('count(*[_type=="newsArticle" && approved==true && defined(slug.current) && !defined(heroImage) && !defined(imageUrl)])')
-with_ext = q('count(*[_type=="newsArticle" && approved==true && defined(slug.current) && defined(externalUrl)])')
-print(f"\n=== IMAGE AUDIT ===")
-print(f"Total approved articles: {total}")
-print(f"No heroImage AND no imageUrl: {no_img}")
-print(f"Has externalUrl: {with_ext}")
+total  = q('count(*[_type=="newsArticle" && approved==true && defined(slug.current)])')
+no_img = q('count(*[_type=="newsArticle" && approved==true && defined(slug.current) && !defined(heroImage.asset) && (!defined(imageUrl) || imageUrl=="")])')
+log(f"\n=== IMAGE AUDIT ===")
+log(f"Total approved: {total}")
+log(f"No image at all: {no_img}")
 
-# Sample 5 no-image articles with externalUrl
-no_img_sample = q('*[_type=="newsArticle" && approved==true && defined(slug.current) && !defined(heroImage) && (!defined(imageUrl) || imageUrl=="")] | order(publishedAt desc) [0..4] { _id, title, externalUrl, source }')
-print(f"\nSample imageless articles:")
-for a in no_img_sample:
-    print(f"  [{a.get('source','')}] {a.get('title','')[:55]}")
-    print(f"    externalUrl: {a.get('externalUrl') or 'NULL'}")
+sample = q('*[_type=="newsArticle" && approved==true && defined(slug.current) && !defined(heroImage.asset) && (!defined(imageUrl)||imageUrl=="")] | order(publishedAt desc) [0..9] { _id, title, externalUrl, source, slug }')
+log(f"\nRecent imageless articles ({len(sample)}):")
+for a in sample:
+    log(f"  /news/{a.get('slug',{}).get('current','')} [{a.get('source','')}]")
+    log(f"    {a.get('title','')[:70]}")
+    log(f"    externalUrl: {(a.get('externalUrl') or 'none')[:80]}")
 
-with open('scripts/article-check.txt','w') as f:
-    f.write('done')
+result = '\n'.join(lines)
+with open('scripts/article-check.txt', 'w') as f:
+    f.write(result + '\n')

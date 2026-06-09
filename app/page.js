@@ -13,7 +13,7 @@ import {
   fetchVideos, fetchAllStateProfiles
 } from '../sanity/lib/client'
 
-export const revalidate = 300
+export const revalidate = 120
 
 export const metadata = {
   title: 'DownRange — Firearms & Second Amendment Intelligence',
@@ -68,7 +68,7 @@ export default async function HomePage() {
     releases, reviews, ammoPrices,
     videos, stateProfiles
   ] = await Promise.allSettled([
-    fetchArticles(20), fetchBreakingAlerts(10),
+    fetchArticles(24), fetchBreakingAlerts(10),
     fetchReleases(8), fetchReviews(4), fetchAmmoPrices(),
     fetchVideos(4), fetchAllStateProfiles()
   ]).then(r => r.map(p => p.status === 'fulfilled' ? p.value : []))
@@ -77,9 +77,9 @@ export default async function HomePage() {
   for (const p of (stateProfiles || [])) { if (p?.abbr) profileMap[p.abbr] = p }
 
   const allArticles  = articles.length > 0 ? articles : SEED_ARTICLES
-  const heroArticles = allArticles.slice(0, 6)  // rotate through first 6
+  const heroArticles = allArticles.slice(0, 8)  // rotate through first 8
   const listArticles = allArticles.slice(0, 12) // left list
-  const gridArticles = allArticles.slice(6, 14) // bottom grid
+  const gridArticles = allArticles.slice(8, 18) // bottom grid (non-overlapping with hero)
   const ammo = (ammoPrices.length > 0 ? ammoPrices : SEED_AMMO)
     .map(a => ({ ...a, ppr: a.ppr ?? a.pricePerRound ?? 0, dir: a.dir ?? a.trendDirection ?? 'up', trendPercent: a.trendPercent ?? a.trend ?? Math.random()*3+0.5, url: a.url ?? a.bestUrl ?? '/market' }))
 
