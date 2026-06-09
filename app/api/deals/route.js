@@ -125,6 +125,33 @@ async function fetchRedditDeals() {
   return results
 }
 
+
+// ── OG image scraper (for live RSS items without stored images) ───────────────
+async function scrapeOGBatch(urls, concurrency = 4) {
+  const results = new Map()
+  for (let i = 0; i < urls.length; i += concurrency) {
+    const chunk = urls.slice(i, i + concurrency)
+    const settled = await Promise.allSettled(
+      chunk.map(async (url) => {
+        try {
+          const res = await fetch(url, {
+            headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
+            signal: AbortSignal.timeout(5000),
+          })
+          if (!res.ok) return { url, img: null }
+          const html = await res.text()
+          const m = html.match(/<meta[^>]+property=["'']og:image["''][^>]+content=["'']([^"'']+)["'']/i)
+                 || html.match(/<meta[^>]+content=["'']([^"'']+)["''][^>]+property=["'']og:image["'']/i)
+          return { url, img: m ? m[1].trim() : null }
+        } catch(_e) { return { url, img: null } }
+      })
+    )
+    for (const r of settled)
+      if (r.status === 'fulfilled') results.set(r.value.url, r.value.img)
+  }
+  return results
+}
+
 // ── SOURCE 3: gun.deals RSS (direct fetch, no proxy) ─────────────────────────
 const GUN_DEALS_RSS_URLS = [
   'https://gun.deals/feed/syndication/rss',
@@ -175,10 +202,16 @@ async function fetchGunDeals() {
         flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
         source:    'gun.deals',
         domain:    'gun.deals',
-        imageUrl:  null,
+        imageUrl:  null, // filled below
         price:     extractPrice(title),
       })
       if (results.length >= 30) break
+    }
+
+    // Scrape OG images for all live items (4 concurrent, 5s timeout each)
+    if (results.length > 0) {
+      const imgs = await scrapeOGBatch(results.map(r => r.url), 4)
+      for (const r of results) if (imgs.get(r.url)) r.imageUrl = imgs.get(r.url)
     }
   } catch(_e) { /* gun.deals unreachable */ }
   return results

@@ -351,7 +351,7 @@ const SECTIONS=[
   {id:'system',label:'System',icon:'⚙️',panels:[
     {id:'overview',l:'System Overview',i:'◈'},{id:'crons',l:'Cron Jobs',i:'⏱'},
     {id:'deployments',l:'Deployments',i:'▲',b:'new'},{id:'agents',l:'Content Agents',i:'🤖'},
-    {id:'rss',l:'RSS Sources',i:'📡'},
+    {id:'rss',l:'Source Manager',i:'📡'},
   ]},
   {id:'outreach',label:'Outreach',icon:'📬',panels:[
     {id:'contacts',l:'Contacts',i:'👤'},{id:'queue',l:'Email Queue',i:'📤'},
@@ -543,7 +543,7 @@ function renderSystemScreen(el){
      {id:'deployments',i:'▲',l:'Deployments',s:'Vercel build history & logs'},
      {id:'agents',i:'🤖',l:'Content Agents',s:'Trigger AI pipelines'},
      {id:'sysalerts',i:'🚨',l:'System Alerts',s:'cronRun log — failures & warnings'},
-     {id:'rss',i:'📡',l:'RSS Sources',s:'Active feed list'}]
+     {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
   api('/api/admin/cron-health').then(d=>{
     const b=document.getElementById('sys-h2');if(!b)return;
@@ -1038,9 +1038,94 @@ function renderAgents(el){
 }
 
 function renderRSSources(el){
-  const feeds=['The Firearm Blog','TTAG','Guns.com','NRA-ILA','ATF','SAF','Bearing Arms','AmmoLand','TheGunFeed','TheGunBlog.ca','NFA Canada','CSSA','GOA','American Rifleman','Concealed Nation','r/guns','r/firearms','gun.deals'];
-  el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${feeds.length} active feeds</div>`+
-    feeds.map(f=>`<div class="row row-last"><span style="font-size:14px">📡</span><div class="row-label">${f}</div><span class="pill pill-ok">Active</span></div>`).join('');
+  const SOURCES=[
+    {id:'newsapi',    page:'News',      type:'API',    label:'NewsAPI',              cron:'15m',  url:'/api/cron/news'},
+    {id:'tfb',        page:'News',      type:'RSS',    label:'The Firearm Blog',     cron:'15m',  url:null},
+    {id:'ttag',       page:'News',      type:'RSS',    label:'TTAG',                 cron:'15m',  url:null},
+    {id:'bearingarms',page:'News',      type:'RSS',    label:'Bearing Arms',         cron:'15m',  url:null},
+    {id:'ammoland',   page:'News',      type:'RSS',    label:'AmmoLand',             cron:'15m',  url:null},
+    {id:'nraila',     page:'Laws',      type:'RSS',    label:'NRA-ILA',              cron:'2h',   url:null},
+    {id:'atf',        page:'Laws',      type:'RSS',    label:'ATF News',             cron:'2h',   url:null},
+    {id:'goa',        page:'Laws',      type:'RSS',    label:'Gun Owners of America',cron:'2h',   url:null},
+    {id:'releases_ai',page:'Releases',  type:'AI',     label:'DownRange AI',         cron:'1h',   url:'/api/cron/releases'},
+    {id:'gundeals',   page:'Deals',     type:'RSS',    label:'gun.deals + OG Scrape',cron:'4h',   url:'/api/cron/gun-deals'},
+    {id:'reddit_gd',  page:'Deals',     type:'Reddit', label:'r/gundeals',           cron:'Live', url:null},
+    {id:'reddit_ammo',page:'Deals',     type:'Reddit', label:'r/ammo',               cron:'Live', url:null},
+    {id:'ammoprices', page:'Market',    type:'Scrape', label:'Ammo Price Tracker',   cron:'30m',  url:'/api/cron/ammo-prices'},
+    {id:'market_ai',  page:'Market',    type:'AI',     label:'Market Analysis AI',   cron:'30m',  url:'/api/cron/market'},
+    {id:'youtube',    page:'Videos',    type:'API',    label:'YouTube Data API',     cron:'4h',   url:'/api/cron/video'},
+    {id:'gunblogca',  page:'Canada',    type:'RSS',    label:'TheGunBlog.ca',        cron:'2h',   url:null},
+    {id:'brazil_ai',  page:'Brazil',    type:'AI',     label:'Brazil AI Feed',       cron:'2h',   url:'/api/cron/brazil'},
+    {id:'intel_ai',   page:'Intel',     type:'AI',     label:'Intelligence AI',      cron:'Daily',url:'/api/cron/intelligence'},
+    {id:'newsletter', page:'Newsletter',type:'AI',     label:'Newsletter AI',        cron:'Daily',url:'/api/cron/newsletter'},
+    {id:'states_ai',  page:'States',    type:'AI',     label:'State Profile AI',     cron:'Weekly',url:'/api/cron/state'},
+  ];
+  const TYPE_C={RSS:'#60A5FA',API:'#34D399',AI:'#C8922A',Scrape:'#C084FC',Reddit:'#F97316'};
+  const PAGE_I={News:'📰',Laws:'⚖️',Releases:'🔫',Deals:'🔥',Market:'📊',Videos:'▶️',Canada:'🇨🇦',Brazil:'🇧🇷',Intel:'🧠',Newsletter:'✉️',States:'🗺️'};
+  const enabled={};
+  SOURCES.forEach(s=>{enabled[s.id]=localStorage.getItem('src_'+s.id)!=='0';});
+  
+  const pages=['All',...new Set(SOURCES.map(s=>s.page))];
+  let curPage='All', running={};
+
+  function render(){
+    const vis=SOURCES.filter(s=>curPage==='All'||s.page===curPage);
+    const activeCount=SOURCES.filter(s=>enabled[s.id]).length;
+    el.innerHTML=`
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${activeCount}/${SOURCES.length} sources active</div>
+      <div style="display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px">
+        ${pages.map(p=>`<button onclick="window._srcPage('${p}')" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:3px 8px;background:${curPage===p?'rgba(200,146,42,0.15)':'transparent'};border:1px solid ${curPage===p?'var(--gold)':'var(--border)'};color:${curPage===p?'var(--gold)':'var(--dim)'};cursor:pointer">${p==='All'?'ALL':(PAGE_I[p]||'')+' '+p.toUpperCase()}</button>`).join('')}
+      </div>
+      <div style="display:flex;flex-direction:column;gap:6px">
+        ${vis.map(s=>{
+          const tc=TYPE_C[s.type]||'#9ca3af';
+          const on=enabled[s.id];
+          const isRunning=running[s.id];
+          return `<div style="background:var(--bg2);border:1px solid var(--border);padding:10px 12px;opacity:${on?1:0.4};display:flex;align-items:center;gap:10px">
+            <button onclick="window._srcToggle('${s.id}')" style="width:28px;height:16px;border-radius:8px;background:${on?'var(--gold)':'#374151'};border:none;cursor:pointer;position:relative;flex-shrink:0">
+              <span style="position:absolute;top:2px;width:12px;height:12px;border-radius:50%;background:#fff;left:${on?'14px':'2px'};transition:left .15s"></span>
+            </button>
+            <div style="flex:1;min-width:0">
+              <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px">
+                <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--text)">${s.label}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;padding:1px 5px;background:${tc}22;color:${tc};border:1px solid ${tc}44">${s.type}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#4b5563">${(PAGE_I[s.page]||'')} ${s.page}</span>
+                <span style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:#374151">${s.cron==='Live'?'⚡ Live':'⏱ '+s.cron}</span>
+              </div>
+            </div>
+            ${s.url?`<button id="src-run-${s.id}" onclick="window._srcRun('${s.id}','${s.url}')" style="font-family:'IBM Plex Mono',monospace;font-size:8px;padding:3px 8px;background:rgba(200,146,42,0.08);border:1px solid rgba(200,146,42,0.25);color:var(--gold);cursor:pointer">${isRunning?'⟳':'▶ Run'}</button>`:''}
+          </div>`;
+        }).join('')}
+      </div>
+      <div style="margin-top:14px;padding:10px;background:var(--bg2);border:1px solid var(--border);display:flex;gap:16px;flex-wrap:wrap">
+        <button onclick="window._srcBackfill()" style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:5px 10px;background:rgba(200,146,42,0.1);border:1px solid rgba(200,146,42,0.3);color:var(--gold);cursor:pointer">🖼 Backfill Deal Images</button>
+        <div id="src-backfill-msg" style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);align-self:center"></div>
+      </div>`;
+    
+    window._srcPage=p=>{curPage=p;render();};
+    window._srcToggle=id=>{enabled[id]=!enabled[id];localStorage.setItem('src_'+id,enabled[id]?'1':'0');render();};
+    window._srcRun=async(id,url)=>{
+      running[id]=true;render();
+      try{
+        const r=await fetch(url,{headers:{'x-admin-key':window.ADMIN_KEY||''}});
+        const d=await r.json();
+        running[id]=false;
+        const btn=document.getElementById('src-run-'+id);
+        if(btn){btn.textContent='✓';btn.style.color='var(--ok)';setTimeout(()=>{running[id]=false;render();},2000);}
+        else render();
+      }catch(e){running[id]=false;render();}
+    };
+    window._srcBackfill=async()=>{
+      const msg=document.getElementById('src-backfill-msg');
+      if(msg)msg.textContent='Backfilling…';
+      try{
+        const r=await fetch('/api/admin/deals-image-backfill',{method:'POST',headers:{'x-admin-key':window.ADMIN_KEY||'','Content-Type':'application/json'},body:JSON.stringify({limit:20})});
+        const d=await r.json();
+        if(msg)msg.textContent=d.ok?`✓ ${d.updated} images updated`:`✗ ${d.error}`;
+      }catch(e){if(msg)msg.textContent='✗ '+e.message;}
+    };
+  }
+  render();
 }
 
 // ═══════════════════════════════════════════════════════════════════
@@ -1857,7 +1942,7 @@ async function deleteSchedule(id, btn){
 // GET /api/admin/content-sources → { sources: {feedType: [{id,name,url,status}]}, counts }
 // POST /api/admin/content-sources { action:'pause'|'resume'|'delete', sourceId, feedType }
 // ═══════════════════════════════════════════════════════════════════
-async function renderRSSources(el){
+async function renderSourcesLive(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading sources...</div>';
   try{
     const d = await api('/api/admin/content-sources');
@@ -1914,7 +1999,7 @@ async function toggleRSSSource(sourceId, feedType, action, btn){
   btn.disabled=true;
   try{
     const d = await api('/api/admin/content-sources',{method:'POST',body:JSON.stringify({action,sourceId,feedType})});
-    if(d.ok){ flash(`✅ Source ${action}d`,'ok'); renderRSSources(document.getElementById('drawer-content')); }
+    if(d.ok){ flash(`✅ Source ${action}d`,'ok'); renderSourcesLive(document.getElementById('drawer-content')); }
     else flash('❌ '+(d.error||'Failed'),'err');
   }catch(e){flash('Error: '+e.message,'err'); btn.disabled=false;}
 }

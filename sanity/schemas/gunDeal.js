@@ -13,6 +13,7 @@ export const gunDeal = {
       options: { list: ['ammo','rifle','pistol','shotgun','suppressor','optic','accessory','deal'] } },
     { name: 'summary',     title: 'Summary',       type: 'text', rows: 3 },
     { name: 'imageUrl',    title: 'Image URL',     type: 'url' },
+    { name: 'store',       title: 'Store/Retailer', type: 'string' },
     { name: 'publishedAt', title: 'Published At',  type: 'datetime' },
     { name: 'approved',    title: 'Approved',      type: 'boolean', initialValue: true },
     { name: 'tags',        title: 'Tags',          type: 'array', of: [{ type: 'string' }] },

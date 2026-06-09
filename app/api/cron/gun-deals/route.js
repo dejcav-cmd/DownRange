@@ -9,123 +9,141 @@ const sanity = createClient({
   token: process.env.SANITY_API_TOKEN, useCdn: false,
 })
 
-// Parse ISO duration to seconds
-function isoToSecs(iso = '') {
-  const m = iso.match(/PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?/)
-  if (!m) return 0
-  return (parseInt(m[1]||0)*3600)+(parseInt(m[2]||0)*60)+parseInt(m[3]||0)
-}
-
-// Scrape gun.deals RSS — try multiple URL patterns
 const GUN_DEALS_URLS = [
   'https://gun.deals/feed/syndication/rss',
   'https://gun.deals/rss.xml',
   'https://gun.deals/feed',
-  'https://gun.deals/feeds/items.rss',
 ]
 
-async function fetchGunDeals() {
-  let res = null
+async function fetchRSS() {
   for (const url of GUN_DEALS_URLS) {
     try {
-      res = await fetch(url, {
+      const res = await fetch(url, {
         headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
         signal: AbortSignal.timeout(10000),
       })
-      if (res.ok) { console.log('[GUN-DEALS] Found working URL:', url); break }
-      console.warn(`[GUN-DEALS] ${url} → ${res.status}`)
-      res = null
-    } catch (e) {
-      console.warn(`[GUN-DEALS] ${url} → ${e.message}`)
-    }
+      if (res.ok) return res.text()
+    } catch (_e) { /* try next */ }
   }
-  if (!res) throw new Error('gun.deals: all RSS URLs returned errors — site may be down or restructured')
-  const xml = await res.text()
+  throw new Error('gun.deals: all RSS URLs failed')
+}
 
+function parseRSS(xml) {
   const items = []
-  const itemRegex = /<item>([\s\S]*?)<\/item>/gi
-  let match
-  while ((match = itemRegex.exec(xml)) !== null) {
-    const block = match[1]
+  const itemRe = /<item>([\s\S]*?)<\/item>/gi
+  let m
+  while ((m = itemRe.exec(xml)) !== null) {
+    const block = m[1]
     const get = (tag) => {
-      const m = block.match(new RegExp('<' + tag + '[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/' + tag + '>'))
-               || block.match(new RegExp('<' + tag + '[^>]*>([^<]*)<\\/' + tag + '>'))
-      return m ? m[1].trim() : ''
+      const r = block.match(new RegExp('<' + tag + '[^>]*><!\\[CDATA\\[([\\s\\S]*?)\\]\\]><\\/' + tag + '>'))
+             || block.match(new RegExp('<' + tag + '[^>]*>([^<]*)<\\/' + tag + '>'))
+      return r ? r[1].trim() : ''
     }
-    const title = get('title')
-    const link  = get('link') || get('guid')
-    const desc  = get('description')
-    const date  = get('pubDate')
-    const price = desc.match(/\$[\d,]+\.?\d*/)?.[0] || ''
-
+    const title = get('title'), link = get('link') || get('guid')
+    const desc  = get('description'), date = get('pubDate')
+    const cats  = [...block.matchAll(/<category[^>]*>([^<]+)<\/category>/gi)].map(c => c[1].trim())
+    const price = title.match(/\$[\d,]+(?:\.\d{2})?/) ? title.match(/\$[\d,]+(?:\.\d{2})?/)[0]
+                : desc.match(/\$[\d,]+(?:\.\d{2})?/)?.[0] || ''
+    const store = desc.match(/Store: <a[^>]*>([^<]+)<\/a>/)?.[1] || ''
     if (!title || !link) continue
-    items.push({ title, link, desc, date, price })
+    items.push({ title, link, desc, date, price, cats, store })
   }
   return items
 }
 
-function detectCategory(title) {
-  const t = title.toLowerCase()
-  if (t.includes('ammo') || t.includes('9mm') || t.includes('rounds') || t.includes('.223') || t.includes('5.56') || t.includes('bulk'))
-    return 'ammo'
-  if (t.includes('ar-15') || t.includes('rifle') || t.includes('ak-47') || t.includes('carbine'))
-    return 'rifle'
-  if (t.includes('pistol') || t.includes('glock') || t.includes('handgun') || t.includes('sig ') || t.includes('p365') || t.includes('p320'))
-    return 'pistol'
-  if (t.includes('shotgun') || t.includes('gauge'))
-    return 'shotgun'
-  if (t.includes('suppressor') || t.includes('silencer'))
-    return 'suppressor'
-  if (t.includes('optic') || t.includes('scope') || t.includes('red dot') || t.includes('sight'))
-    return 'optic'
-  if (t.includes('holster') || t.includes('magazine') || t.includes('mag ') || t.includes('parts'))
-    return 'accessory'
+// Scrape OG image from a gun.deals product page
+async function scrapeOGImage(url) {
+  try {
+    const res = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!res.ok) return null
+    const html = await res.text()
+    const m = html.match(/<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i)
+           || html.match(/<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i)
+    return m ? m[1].trim() : null
+  } catch (_e) { return null }
+}
+
+// Scrape images concurrently, max N at a time
+async function scrapeImages(urls, concurrency = 5) {
+  const results = new Map()
+  const chunks = []
+  for (let i = 0; i < urls.length; i += concurrency)
+    chunks.push(urls.slice(i, i + concurrency))
+  for (const chunk of chunks) {
+    const settled = await Promise.allSettled(
+      chunk.map(async (url) => ({ url, img: await scrapeOGImage(url) }))
+    )
+    for (const r of settled)
+      if (r.status === 'fulfilled') results.set(r.value.url, r.value.img)
+  }
+  return results
+}
+
+function detectCategory(title, cats = []) {
+  const t = (title + ' ' + cats.join(' ')).toLowerCase()
+  if (/ammo|9mm|rounds|\.223|5\.56|bulk|cartridge|grain|fmj|jhp|hst/.test(t)) return 'ammo'
+  if (/ar-15|ar15|rifle|ak-47|carbine|sbr|nato|5\.56|300 blk/.test(t)) return 'rifle'
+  if (/pistol|glock|handgun|sig |p365|p320|1911|revolver|hk|beretta|kimber/.test(t)) return 'pistol'
+  if (/shotgun|gauge|mossberg|remington/.test(t)) return 'shotgun'
+  if (/suppressor|silencer|nfa/.test(t)) return 'suppressor'
+  if (/optic|scope|red dot|lpvo|sight|eotech|vortex|leupold/.test(t)) return 'optic'
+  if (/holster|magazine|mag |parts|trigger|light|sling|grip/.test(t)) return 'accessory'
   return 'deal'
 }
 
 export async function GET(req) {
   const cronSecret = process.env.CRON_SECRET
-  const auth = req.headers.get('authorization')
-  const adminKey = req.headers.get('x-admin-key')
-  const isCron  = cronSecret && auth === 'Bearer ' + cronSecret
-  const isAdmin = adminKey === ADMIN_KEY
+  const auth       = req.headers.get('authorization')
+  const adminKey   = req.headers.get('x-admin-key')
+  const isCron     = cronSecret && auth === 'Bearer ' + cronSecret
+  const isAdmin    = adminKey === ADMIN_KEY
   if (!isCron && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const t0 = Date.now()
-  const stats = { fetched: 0, added: 0, skipped: 0 }
+  const t0    = Date.now()
+  const stats = { fetched: 0, added: 0, skipped: 0, imaged: 0 }
 
   try {
-    const deals = await fetchGunDeals()
+    const xml   = await fetchRSS()
+    const deals = parseRSS(xml)
     stats.fetched = deals.length
 
-    // Dedup against existing gunDeal docs
+    // Dedup
     const existing = await sanity.fetch(
-      '*[_type == "gunDeal" && source == "gun.deals"] { externalUrl }'
+      '*[_type=="gunDeal" && source=="gun.deals"]{externalUrl}'
     ).catch(() => [])
     const existingUrls = new Set((existing || []).map(d => d.externalUrl))
 
-    const mutations = []
-    for (const deal of deals.slice(0, 40)) {
-      if (existingUrls.has(deal.link)) { stats.skipped++; continue }
-      mutations.push({
-        create: {
-          _type:       'gunDeal',
-          title:       deal.title,
-          summary:     (deal.desc || '').slice(0, 300),
-          externalUrl: deal.link,
-          source:      'gun.deals',
-          category:    detectCategory(deal.title),
-          approved:    true,
-          publishedAt: deal.date ? new Date(deal.date).toISOString() : new Date().toISOString(),
-          imageUrl:    null,
-          tags:        ['deals', 'gun.deals', detectCategory(deal.title)],
-          price:       deal.price,
-        }
-      })
-      stats.added++
-    }
+    const newDeals = deals.slice(0, 40).filter(d => !existingUrls.has(d.link))
+    stats.skipped  = deals.slice(0, 40).length - newDeals.length
 
-    if (mutations.length) await sanity.mutate(mutations)
+    if (!newDeals.length) return NextResponse.json({ ok: true, ms: Date.now() - t0, ...stats })
+
+    // Scrape OG images for new deals (5 concurrent)
+    const imageMap = await scrapeImages(newDeals.map(d => d.link), 5)
+    stats.imaged = [...imageMap.values()].filter(Boolean).length
+
+    const mutations = newDeals.map(deal => ({
+      create: {
+        _type:       'gunDeal',
+        title:       deal.title,
+        summary:     `${deal.price ? deal.price + ' · ' : ''}${deal.store ? 'at ' + deal.store : ''}`.trim() || (deal.desc || '').slice(0, 200),
+        externalUrl: deal.link,
+        source:      'gun.deals',
+        category:    detectCategory(deal.title, deal.cats),
+        approved:    true,
+        publishedAt: deal.date ? new Date(deal.date).toISOString() : new Date().toISOString(),
+        imageUrl:    imageMap.get(deal.link) || null,
+        tags:        ['deals', 'gun.deals', detectCategory(deal.title, deal.cats)],
+        price:       deal.price,
+        store:       deal.store,
+      }
+    }))
+
+    await sanity.mutate(mutations)
+    stats.added = mutations.length
 
     return NextResponse.json({ ok: true, ms: Date.now() - t0, ...stats })
   } catch (err) {

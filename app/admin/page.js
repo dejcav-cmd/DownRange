@@ -31,6 +31,7 @@ const MarketBriefManager    = L(() => import('../../components/admin/MarketBrief
 const DealsManager          = L(() => import('../../components/admin/DealsManager'))
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
 const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
+const SourceManager         = L(() => import('../../components/admin/SourceManager'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -83,7 +84,7 @@ const NAV = [
       { id:'crons',        label:'Cron Jobs',        icon:'⏱', badge:null },
       { id:'sysalerts',    label:'Alerts',           icon:'🚨', badge:null },
       { id:'agents',       label:'Content Agents',   icon:'🤖', badge:null },
-      { id:'rss',          label:'RSS Sources',      icon:'📡', badge:null },
+      { id:'sources',      label:'Source Manager',   icon:'📡', badge:'new' },
       { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
       { id:'sitemap',      label:'Site Map',          icon:'🗺️', badge:null },
       { id:'deployments',  label:'Deployments',      icon:'▲',  badge:null },
@@ -2922,7 +2923,7 @@ export default function AdminPage() {
             {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='crons'     && <CronDashboard adminKey={adminKey} />}
             {panel==='sysalerts' && <SystemAlertsPanel adminKey={adminKey} />}
-            {panel==='rss'     && <RSSSourcesPanel />}
+            {panel==='sources' && <SourceManager adminKey={adminKey} />}
             {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
             {panel==='ranges'  && <RangesPanel />}
             {panel==='deployments' && <DeploymentsPanel adminKey={adminKey} />}
