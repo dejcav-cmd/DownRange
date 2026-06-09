@@ -86,7 +86,7 @@
     },
     {
       "path": "/api/cron/gun-deals",
-      "schedule": "0 */4 * * *"
+      "schedule": "0 * * * *"
     },
     {
       "path": "/api/cron/write-canada-articles",

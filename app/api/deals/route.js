@@ -143,7 +143,7 @@ async function scrapeOGBatch(urls, concurrency = 4) {
         try {
           const res = await fetch(url, {
             headers: OG_SCRAPE_HEADERS,
-            signal: AbortSignal.timeout(8000),
+            signal: AbortSignal.timeout(3000),
           })
           if (!res.ok) return { url, img: null }
           const html = await res.text()
@@ -216,11 +216,6 @@ async function fetchGunDeals() {
       if (results.length >= 30) break
     }
 
-    // Scrape OG images for all live items (4 concurrent, 5s timeout each)
-    if (results.length > 0) {
-      const imgs = await scrapeOGBatch(results.map(r => r.url), 4)
-      for (const r of results) if (imgs.get(r.url)) r.imageUrl = imgs.get(r.url)
-    }
   } catch(_e) { /* gun.deals unreachable */ }
   return results
 }
@@ -238,14 +233,40 @@ export async function GET(request) {
     fetchGunDeals(),
   ])
 
+  // Build URL → imageUrl map from Sanity for cross-referencing live RSS items
+  const sanityImageMap = new Map(
+    sanityDeals
+      .filter(d => d.imageUrl && d.url)
+      .map(d => [d.url, d.imageUrl])
+  )
+
   // Merge — Sanity first, then live sources; dedup by URL
+  // Enrich live RSS items with Sanity images when URL matches
   const seen = new Set()
   const deals = []
   for (const d of [...sanityDeals, ...redditDeals, ...gunDealsItems]) {
     const key = d.url
     if (seen.has(key)) continue
     seen.add(key)
+    // If this live item has no image but Sanity has one for this URL, use it
+    if (!d.imageUrl && sanityImageMap.has(key)) {
+      d.imageUrl = sanityImageMap.get(key)
+    }
     deals.push(d)
+  }
+
+  // For live RSS items still missing images (not in Sanity yet), do a fast scrape
+  // Only scrape up to 5 items, 3s timeout — keeps response under 2s total
+  const stillMissing = deals
+    .filter(d => !d.imageUrl && d.source === 'gun.deals' && !d.fromSanity)
+    .slice(0, 5)
+  if (stillMissing.length > 0) {
+    try {
+      const quickImgs = await scrapeOGBatch(stillMissing.map(d => d.url), 5)
+      for (const d of deals) {
+        if (!d.imageUrl && quickImgs.has(d.url)) d.imageUrl = quickImgs.get(d.url)
+      }
+    } catch (_e) { /* skip */ }
   }
 
   // Sort
