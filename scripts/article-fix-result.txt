@@ -1,19 +1,18 @@
-=== ARTICLE IMAGE FIX ===
+=== ARTICLE IMAGE FIX v2 ===
+Found: 13
 
-Articles with placeholder imageUrl: 14
-  ✗ acc-ballistic-advantage-blem-section-restocks-sale (no OG at https://www.reddit.com/r/gundeals/comments/1u1b17o/acc_balli)
-  ✗ code-tombstone-tx22-1-5oz-weighted-backplate-rate- (no OG at https://www.reddit.com/r/gundeals/comments/1u1a6ww/code_tomb)
-  ✗ acc-early-fathers-day-deal-podavach-original-speed (no OG at https://www.reddit.com/r/gundeals/comments/1u19a0u/acc_early)
-  ✗ virginia-bill-sponsor-attacks-prosecutors-refusing (no OG at https://www.thetruthaboutguns.com/virginia-gun-ban-sponsor-a)
-  ✓ vortex-hunter-constantine-collaboration-benefits-s → https://saf.org/wp-content/uploads/2025/04/Vortex-release-lo
-  ✗ pistol-walther-p22q-22lr-10-1-tungsten-semi-auto-h (no OG at https://www.reddit.com/r/gundeals/comments/1u1596c/pistol_wa)
-  ✗ handgun-taurus-2tx-22-t-o-r-o-single-action-rimfir (no OG at https://www.reddit.com/r/gundeals/comments/1u11ot6/handgun_t)
-  ✗ handgun-249-kel-tec-pr57-pistol-5-7x28-4-64-20rd-g (no OG at https://www.reddit.com/r/gundeals/comments/1u0tk96/handgun_2)
-  ✗ ammo-sbr-380-auto-68gr-xtreme-lehigh-defense-coppe (no OG at https://www.reddit.com/r/gundeals/comments/1u0qw0x/ammo_sbr_)
-  ✗ rifle-hk-g36-semi-auto-22lr-20-1-339-98-679d23 (no OG at https://www.reddit.com/r/gundeals/comments/1u0p15o/rifle_hk_)
-  ✗ nfa-allen-engineering-aem5-30-774-95-shipped-w-cod (no OG at https://www.reddit.com/r/gundeals/comments/1u0ndmp/nfa_allen)
-  ✗ parts-rearden-atlas-bravo-hub-mount-gen-2-titanium (no OG at https://www.reddit.com/r/gundeals/comments/1u0mdrk/parts_rea)
-  ✗ weekly-buy-curious-thread-7a4179 (no OG at https://www.reddit.com/r/gundeals/comments/1u08u5n/weekly_bu)
-  ✗ don-t-tread-on-me-the-gadsden-flag-s-marine-corps- (no OG at https://www.thetruthaboutguns.com/what-does-dont-tread-on-me)
+  ✓ [category_fallback:deals] acc-ballistic-advantage-blem-section-restocks-sale
+  ✓ [category_fallback:deals] code-tombstone-tx22-1-5oz-weighted-backplate-rate-
+  ✓ [category_fallback:deals] acc-early-fathers-day-deal-podavach-original-speed
+  ✓ [category_fallback:law] virginia-bill-sponsor-attacks-prosecutors-refusing
+  ✓ [category_fallback:deals] pistol-walther-p22q-22lr-10-1-tungsten-semi-auto-h
+  ✓ [category_fallback:deals] handgun-taurus-2tx-22-t-o-r-o-single-action-rimfir
+  ✓ [category_fallback:deals] handgun-249-kel-tec-pr57-pistol-5-7x28-4-64-20rd-g
+  ✓ [category_fallback:deals] ammo-sbr-380-auto-68gr-xtreme-lehigh-defense-coppe
+  ✓ [category_fallback:deals] rifle-hk-g36-semi-auto-22lr-20-1-339-98-679d23
+  ✓ [category_fallback:deals] nfa-allen-engineering-aem5-30-774-95-shipped-w-cod
+  ✓ [category_fallback:deals] parts-rearden-atlas-bravo-hub-mount-gen-2-titanium
+  ✓ [category_fallback:deals] weekly-buy-curious-thread-7a4179
+  ✓ [category_fallback:news] don-t-tread-on-me-the-gadsden-flag-s-marine-corps-
 
-Updated: 1, Failed: 13
+Updated: 13
