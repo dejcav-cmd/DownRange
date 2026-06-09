@@ -159,6 +159,10 @@
     {
       "path": "/api/cron/fix-slugs",
       "schedule": "0 4 * * *"
+    },
+    {
+      "path": "/api/cron/bible-update",
+      "schedule": "0 7 * * 0"
     }
   ],
   "headers": [

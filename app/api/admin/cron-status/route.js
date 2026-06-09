@@ -41,6 +41,7 @@ export const ALL_JOBS = [
     label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
     desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
   { id:'fix-images-intl',  path:'/api/admin/fix-images-intl',       schedule:'0 11 * * *',        label:'Intl Image Fixer',         group:'System',  icon:'🌐', critical:false, desc:'Fixes images on international content daily at 11am UTC' },
+  { id:'bible-update',     path:'/api/cron/bible-update',           schedule:'0 7 * * 0',         label:'Bible Update (Weekly)',    group:'System',  icon:'📖', critical:false, desc:'Every Sunday 7am UTC — collects live Sanity stats, pushes bible-stats.json to GitHub, posts weekly Discord summary.' },
 ]
 
 function auth(req) {
