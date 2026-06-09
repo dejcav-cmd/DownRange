@@ -1,0 +1,98 @@
+'use client'
+import { useState } from 'react'
+import UniversalContentEditor from './UniversalContentEditor'
+
+const MONO = "'IBM Plex Mono',monospace"
+
+const FIELDS = [
+  { key:'title',       label:'Title',             type:'text' },
+  { key:'category',    label:'Category',          opts:['deals','news','law','industry','opinion','training','breaking'] },
+  { key:'source',      label:'Source',            type:'text' },
+  { key:'summary',     label:'Summary / Excerpt', rows:3 },
+  { key:'body',        label:'Body (HTML)',        rows:10 },
+  { key:'imageUrl',    label:'Image URL',          type:'url' },
+  { key:'externalUrl', label:'Deal / Source URL',  type:'url' },
+]
+
+export default function DealsManager({ adminKey }) {
+  const [migrating,  setMigrating]  = useState(false)
+  const [migrateMsg, setMigrateMsg] = useState(null)
+  const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+
+  async function runMigration(flash, reload) {
+    setMigrating(true)
+    setMigrateMsg(null)
+    flash('⏳ Running deals migration...')
+    try {
+      const r = await fetch('/api/admin/fix-deal-articles', { method: 'POST', headers: H })
+      const d = await r.json()
+      const msg = d.ok
+        ? `✅ Done — removed ${d.movedFromDeals.count} non-deals, promoted ${d.movedToDeals.count} to deals`
+        : `⚠️ Ran with ${d.errors} errors — removed ${d.movedFromDeals?.count||0}, promoted ${d.movedToDeals?.count||0}`
+      setMigrateMsg({ ok: d.ok, detail: d, text: msg })
+      flash(msg)
+      reload()
+    } catch (e) {
+      flash('❌ Migration failed: ' + e.message)
+      setMigrateMsg({ ok: false, text: '❌ ' + e.message })
+    }
+    setMigrating(false)
+  }
+
+  async function triggerFeed(flash) {
+    flash('⏳ Triggering deals feed pull...')
+    try {
+      await fetch('/api/agent?feed=news', { headers: H })
+      flash('✅ Feed agent triggered — deals refresh in ~2 min')
+    } catch (e) { flash('❌ ' + e.message) }
+  }
+
+  return (
+    <div>
+      {migrateMsg && (
+        <div style={{
+          margin:'0 0 12px', padding:'10px 14px',
+          background: migrateMsg.ok ? '#0a1f0a' : '#1f0a0a',
+          border: `1px solid ${migrateMsg.ok ? '#22c55e33' : '#ef444433'}`,
+          borderRadius: 4, fontFamily: MONO, fontSize: 11,
+          color: migrateMsg.ok ? '#22c55e' : '#f87171',
+        }}>
+          {migrateMsg.text}
+          {migrateMsg.detail && (
+            <div style={{marginTop:6, color:'#6b7280'}}>
+              {(migrateMsg.detail.movedFromDeals?.items||[]).slice(0,8).map((a,i) => (
+                <div key={i} style={{paddingLeft:12, color:'#4b5563'}}>
+                  ✗ [{a.to}] {a.title}
+                </div>
+              ))}
+              {(migrateMsg.detail.movedFromDeals?.count||0) > 8 && (
+                <div style={{paddingLeft:12, color:'#374151'}}>
+                  ...and {migrateMsg.detail.movedFromDeals.count - 8} more removed
+                </div>
+              )}
+            </div>
+          )}
+        </div>
+      )}
+
+      <UniversalContentEditor
+        adminKey={adminKey}
+        config={{
+          label:        'Deals Manager',
+          icon:         '🔥',
+          api:          '/api/admin/articles-list?category=deals',
+          type:         'newsArticle',
+          publishField: { field: 'approved', publishedValue: true },
+          fields:       FIELDS,
+          responseKey:  'articles',
+          urlFn:        item => item?.slug?.current ? '/news/' + item.slug.current : null,
+          perPage:      50,
+          extraActions: [
+            { label: migrating ? '⏳ Running...' : '🔧 Fix Miscategorized', fn: runMigration, disabled: migrating },
+            { label: '⚡ Pull Deals Feed', fn: triggerFeed },
+          ],
+        }}
+      />
+    </div>
+  )
+}

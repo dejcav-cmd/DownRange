@@ -28,6 +28,7 @@ const ImageRepository       = L(() => import('../../components/admin/ImageReposi
 const ImageFinder           = L(() => import('../../components/admin/ImageFinder'))
 const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
 const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
+const DealsManager          = L(() => import('../../components/admin/DealsManager'))
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
 const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
 
@@ -52,6 +53,7 @@ const NAV = [
       { id:'canada',       label:'Canada',           icon:'🇨🇦', badge:null },
       { id:'brazil',       label:'Brasil',           icon:'🇧🇷', badge:null },
       { id:'competitions', label:'Competitions',     icon:'🏆', badge:null },
+      { id:'deals',        label:'Deals Manager',    icon:'🔥', badge:null },
     ]
   },
   {
@@ -69,7 +71,6 @@ const NAV = [
       { id:'intel',        label:'Briefings',        icon:'🧠', badge:null },
       { id:'statelaws',    label:'State Laws',       icon:'🗺', badge:null },
       { id:'pulllog',      label:'Pull Log',         icon:'📡', badge:null },
-      { id:'deals',        label:'Deals Feed',       icon:'🔥', badge:null },
       { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
       { id:'marketbrief',  label:'Market Brief',     icon:'📊', badge:'live' },
       { id:'copyright',  label:'Copyright',       icon:'⚖',  badge:null },
@@ -943,19 +944,7 @@ function FeedsPanel({ adminKey, setMsg }) {
 }
 
 // ── Inline: Deals panel ───────────────────────────────────────────────────────
-function DealsPanel() {
-  return (
-    <div>
-      <div className="panel-title">Deals Feed Config</div>
-      <div className="panel-sub">Gun.deals and AmmoLand deals aggregation. Configure sources in the feed agent.</div>
-      <div className="adm-card">
-        <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#6b7280',lineHeight:1.9}}>
-          Deals are scraped from AmmoLand (locked to deals category) and gun.deals API. Configure the <code style={{color:'#C8922A'}}>GUN_DEALS_API_KEY</code> in Vercel to enable the gun.deals feed. The agent runs every 30 minutes and deduplicates by URL.
-        </div>
-      </div>
-    </div>
-  )
-}
+// DealsPanel replaced by DealsManager component
 
 // ── Inline: Ranges panel ──────────────────────────────────────────────────────
 function ContentAgentsPanel({ adminKey, setMsg }) {
@@ -2925,7 +2914,7 @@ export default function AdminPage() {
               {panel==='copyright' && <CopyrightReport adminKey={adminKey} />}
             {panel==='statelaws' && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='pulllog'   && <PullLogDashboard />}
-            {panel==='deals'   && <DealsPanel />}
+            {panel==='deals'   && <DealsManager adminKey={adminKey} />}
             {panel==='feeds'        && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
             {panel==='marketbrief' && <MarketBriefManager adminKey={adminKey} />}
 
