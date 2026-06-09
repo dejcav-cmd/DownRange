@@ -1,0 +1,21 @@
+name: Compare RSS vs Sanity
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  compare:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+      - run: python scripts/compare-rss-vs-sanity.py
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+      - run: |
+          git config user.name "DownRange Bot"
+          git config user.email "dj@downrangeco.com"
+          git add -f scripts/rss-vs-sanity.txt
+          git commit -m "chore: rss vs sanity compare" || echo "nothing"
+          git push
