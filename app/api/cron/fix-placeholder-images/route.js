@@ -161,11 +161,7 @@ async function handler(req) {
           || imageUrl == null
           || imageUrl == ""
           || string::startsWith(imageUrl, "/img/")
-          || (
-            !string::startsWith(imageUrl, "https://cdn.sanity.io")
-            && !string::startsWith(imageUrl, "https://img.youtube.com")
-            && !string::startsWith(imageUrl, "https://i.ytimg.com")
-          )
+          || string::startsWith(imageUrl, "/public/")
         )
       ] | order(publishedAt desc) [0...50] {
         _id, title, externalUrl, imageUrl, category
