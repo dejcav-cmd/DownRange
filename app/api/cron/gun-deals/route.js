@@ -16,7 +16,7 @@ function isoToSecs(iso = '') {
   return (parseInt(m[1]||0)*3600)+(parseInt(m[2]||0)*60)+parseInt(m[3]||0)
 }
 
-// Scrape gun.deals RSS — try multiple URL patterns (site has changed RSS paths)
+// Scrape gun.deals RSS — try multiple URL patterns
 const GUN_DEALS_URLS = [
   'https://gun.deals/feed/syndication/rss',
   'https://gun.deals/rss.xml',
@@ -98,9 +98,9 @@ export async function GET(req) {
     const deals = await fetchGunDeals()
     stats.fetched = deals.length
 
-    // Get existing deal URLs to dedup
+    // Dedup against existing gunDeal docs
     const existing = await sanity.fetch(
-      '*[_type == "newsArticle" && source == "gun.deals"] { externalUrl }'
+      '*[_type == "gunDeal" && source == "gun.deals"] { externalUrl }'
     ).catch(() => [])
     const existingUrls = new Set((existing || []).map(d => d.externalUrl))
 
@@ -109,16 +109,15 @@ export async function GET(req) {
       if (existingUrls.has(deal.link)) { stats.skipped++; continue }
       mutations.push({
         create: {
-          _type:       'newsArticle',
+          _type:       'gunDeal',
           title:       deal.title,
           summary:     (deal.desc || '').slice(0, 300),
           externalUrl: deal.link,
           source:      'gun.deals',
           category:    detectCategory(deal.title),
           approved:    true,
-          published:   true,
           publishedAt: deal.date ? new Date(deal.date).toISOString() : new Date().toISOString(),
-          imageUrl:    '/img/photos/blog-ammo-market.jpg',
+          imageUrl:    null,
           tags:        ['deals', 'gun.deals', detectCategory(deal.title)],
           price:       deal.price,
         }

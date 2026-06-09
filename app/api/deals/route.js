@@ -43,33 +43,32 @@ function extractPrice(title = '') {
   return m ? m[0] : null
 }
 
-// ── SOURCE 1: Sanity newsArticle deals ───────────────────────────────────────
+// ── SOURCE 1: Sanity gunDeal docs ────────────────────────────────────────────
 async function fetchSanityDeals() {
   try {
     const articles = await sanity.fetch(
-      `*[_type=="newsArticle" && category=="deals" && approved==true] | order(publishedAt desc) [0..150] {
-        _id, title, slug, source, imageUrl, externalUrl, publishedAt, summary,
-        heroImage { asset->{ url } }
+      `*[_type=="gunDeal" && approved==true] | order(publishedAt desc) [0..150] {
+        _id, title, source, imageUrl, externalUrl, publishedAt, summary, price
       }`
     )
     return articles.map(a => {
       const title  = a.title || ''
       const flair  = inferFlair(title)
-      const imgUrl = a.heroImage?.asset?.url || a.imageUrl || null
+      const imgUrl = a.imageUrl || null
       return {
         id:        a._id,
         title,
-        url:       a.externalUrl || `https://downrangeco.com/news/${a.slug?.current || a._id}`,
-        permalink: a.externalUrl || `https://downrangeco.com/news/${a.slug?.current || a._id}`,
+        url:       a.externalUrl || `https://downrangeco.com/deals`,
+        permalink: a.externalUrl || `https://downrangeco.com/deals`,
         score:     null,
         comments:  null,
         created:   a.publishedAt ? new Date(a.publishedAt).getTime() : Date.now(),
         flair,
         flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
-        source:    a.source || 'DownRange',
-        domain:    a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'downrangeco.com' } })() : 'downrangeco.com',
+        source:    a.source || 'gun.deals',
+        domain:    a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'gun.deals' } })() : 'gun.deals',
         imageUrl:  imgUrl,
-        price:     extractPrice(title),
+        price:     a.price || extractPrice(title),
         fromSanity: true,
       }
     })

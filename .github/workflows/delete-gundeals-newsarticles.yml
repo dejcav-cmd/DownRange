@@ -1,0 +1,19 @@
+name: Delete gun.deals newsArticle Docs
+on:
+  workflow_dispatch:
+jobs:
+  delete:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run cleanup
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python scripts/delete-gundeals-newsarticles.py
+      - name: Commit result
+        run: |
+          git config user.name "DownRange Bot"
+          git config user.email "dj@downrangeco.com"
+          git add scripts/delete-gundeals-result.txt
+          git diff --cached --quiet || git commit -m "chore: gun.deals cleanup result"
+          git push

@@ -28,6 +28,7 @@ import { nfaWaitTime }      from './nfaWaitTime'
 import { cronRun }          from './cronRun'
 import { youtubeInfluencer } from './youtubeInfluencer'
 import { socialPost, socialConfig } from './socialPost'
+import { gunDeal } from './gunDeal'
 
 export const schemaTypes = [
   feedConfig,
@@ -47,4 +48,5 @@ export const schemaTypes = [
   cronRun,
   socialPost,
   socialConfig,
+  gunDeal,
 ]
