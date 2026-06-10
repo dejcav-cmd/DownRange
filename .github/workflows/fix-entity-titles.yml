@@ -15,4 +15,5 @@ jobs:
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add scripts/diag-result.txt || true
-          git diff --staged --quiet && echo "Nothing new" || (git commit -m "fix: entity title backfill results" && git push)
+          git commit -m "fix: entity title backfill results $(date -u +%Y%m%d-%H%M)" --allow-empty || true
+          git push || true
