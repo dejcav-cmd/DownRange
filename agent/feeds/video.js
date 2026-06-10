@@ -4,8 +4,9 @@
  * Falls back to Sanity-stored channel list if available
  * Runs every 4 hours via cron
  */
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 import {
-import { decodeHtmlEntities } from '../../lib/decodeEntities.js' publishToSanity, notifyError, sleep } from '../utils.js'
+  publishToSanity, notifyError, sleep } from '../utils.js'
 
 const CHANNELS = [
   { id: 'UC0RBTQIYLEQbcahZWkmzeTQ', name: 'Garand Thumb',          tags: ['review','tactical','military'] , handle:'@GarandThumb'},
