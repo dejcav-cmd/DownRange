@@ -4,7 +4,8 @@
  * Falls back to Sanity-stored channel list if available
  * Runs every 4 hours via cron
  */
-import { publishToSanity, notifyError, sleep } from '../utils.js'
+import {
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js' publishToSanity, notifyError, sleep } from '../utils.js'
 
 const CHANNELS = [
   { id: 'UC0RBTQIYLEQbcahZWkmzeTQ', name: 'Garand Thumb',          tags: ['review','tactical','military'] , handle:'@GarandThumb'},
@@ -79,7 +80,7 @@ function parseYouTubeRSS(xml, channelId, channelName) {
 
     videos.push({
       _type:       'video',
-      title:       title.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#39;/g,"'").replace(/&quot;/g,'"'),
+      title:       decodeHtmlEntities(title),
       videoId,
       youtubeId:   videoId,
       channelName,

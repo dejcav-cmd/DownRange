@@ -1,4 +1,5 @@
 import Parser from 'rss-parser'
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 import { enrichLawWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const STATUS_MAP = {
@@ -118,7 +119,7 @@ async function fetchLawsFromRSS() {
         items.push({
           _id:        `law-rss-${Buffer.from(item.link).toString('base64').slice(0,40)}`,
           _type:      'legislation',
-          title:      item.title,
+          title:      decodeHtmlEntities(item.title),
           level:      'federal',
           status:     'pending',
           summary:    item.contentSnippet?.slice(0, 400) || item.title,

@@ -1,4 +1,5 @@
 import Parser from 'rss-parser'
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 import crypto from 'crypto'
 
@@ -48,7 +49,7 @@ async function fetchMfrRSS() {
         const text = item.title + ' ' + (item.contentSnippet || '')
         releases.push({
           brand: feed.brand,
-          model: item.title.replace(feed.brand, '').trim(),
+          model: decodeHtmlEntities(item.title).replace(feed.brand, '').trim(),
           description: item.contentSnippet?.slice(0, 400),
           caliber: extractCaliberFromText(text),
           msrp: extractMSRP(text),

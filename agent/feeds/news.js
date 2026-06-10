@@ -25,6 +25,7 @@ function pickImage(title, category) {
 import Parser from 'rss-parser'
 import crypto from 'crypto'
 import { rewriteWithClaude, isDuplicate, isSanityDuplicate, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage } from '../utils.js'
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 3
@@ -174,7 +175,7 @@ async function fetchNewsAPI() {
     return (res.data.articles || [])
       .filter(a => a.title && a.url && !a.title.includes('[Removed]'))
       .map(a => ({
-        title: a.title, description: a.description, url: a.url,
+        title: decodeHtmlEntities(a.title), description: a.description, url: a.url,
         source: a.source?.name, publishedAt: a.publishedAt,
         imageUrl: null, imageAlt: a.title,
         feedCat: 'news', region: 'us',
@@ -192,7 +193,7 @@ async function fetchOneFeed(feed) {
   try {
     const result = await parser.parseURL(feed.url)
     const items = result.items.slice(0, ITEMS_PER_FEED).map(i => ({
-      title:       i.title,
+      title:       decodeHtmlEntities(i.title),
       description: i.contentSnippet || i.summary || i.content?.slice(0, 400),
       url:         i.link,
       source:      feed.name,

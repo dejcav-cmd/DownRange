@@ -1,4 +1,5 @@
 import Parser from 'rss-parser'
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
 const parser = new Parser({ timeout: 8000, headers: { 'User-Agent': 'DownRange/1.0' } })
@@ -64,7 +65,7 @@ async function fetchGunDealsRSS() {
     const feed = await parser.parseURL(GUN_DEALS_RSS)
     for (const item of feed.items.slice(0, 30)) {
       const price = parsePriceFromTitle(item.title || '')
-      const title = (item.title || '').trim()
+      const title = decodeHtmlEntities(item.title || '').trim()
       if (!title) continue
       // Parse category from title brackets e.g. [Rifle], [Ammo]
       const catMatch = title.match(/^\[([^\]]+)\]/)
@@ -103,7 +104,7 @@ async function fetchRedditJSON() {
         const isOOS = p.link_flair_text?.includes('OOS') || p.title.toLowerCase().includes('[oos]')
         if (isOOS) continue
         deals.push({
-          title:   p.title,
+          title:   decodeHtmlEntities(p.title),
           price,
           url:     p.url || '',
           source:  feed.source,
@@ -129,7 +130,7 @@ async function fetchRedditDeals() {
       for (const item of feed.items.slice(0, 20)) {
         const price = parsePriceFromTitle(item.title || '')
         const isOOS = (item.title || '').toLowerCase().includes('oos')
-        if (price) deals.push({ title: item.title, price, isOOS, url: item.link })
+        if (price) deals.push({ title: decodeHtmlEntities(item.title), price, isOOS, url: item.link })
       }
       await sleep(1000)
     } catch (err) {
@@ -199,7 +200,7 @@ async function runVideoFeed() {
         await publishToSanity({
           _id: `video-${item.id.videoId}`,
           _type: 'video',
-          title: sn.title,
+          title: decodeHtmlEntities(sn.title),
           videoId: item.id.videoId,
           channelName: channel.name,
           channelId: channel.id,

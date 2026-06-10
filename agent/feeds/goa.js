@@ -15,6 +15,7 @@ const GOA_RSS_FALLBACKS = [
 ]
 
 import Parser from 'rss-parser'
+import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 const rssParser = new Parser({ timeout: 8000, headers: { 'User-Agent': 'DownRange/1.0' } })
 
 async function fetchGOARSSFallbacks() {
@@ -28,7 +29,7 @@ async function fetchGOARSSFallbacks() {
         const relevant = ['gun','firearm','second amendment','2a','atf','carry','legislation','court','ruling','ban','permit','bill'].some(k => lower.includes(k))
         if (!relevant) continue
         items.push({
-          title:       item.title,
+          title:       decodeHtmlEntities(item.title),
           url:         item.link,
           description: item.contentSnippet?.slice(0, 400) || item.title,
           publishedAt: item.pubDate ? new Date(item.pubDate).toISOString() : new Date().toISOString(),
@@ -62,7 +63,7 @@ async function fetchGOAPosts(base, cat, limit = 20) {
     if (res.ok) {
       const posts = await res.json()
       return posts.map(p => ({
-        title:       p.title?.rendered?.replace(/&amp;/g,'&').replace(/&#8216;/g,"'").replace(/&#8217;/g,"'").replace(/&#8220;/g,'"').replace(/&#8221;/g,'"') || '',
+        title:       decodeHtmlEntities(p.title?.rendered) || '',
         description: p.excerpt?.rendered?.replace(/<[^>]+>/g,'').replace(/&amp;/g,'&').replace(/&#[0-9]+;/g,'').trim() || '',
         url:         p.link,
         publishedAt: p.date,
