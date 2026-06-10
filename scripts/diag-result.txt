@@ -1,0 +1,63 @@
+DEALS IMAGE DIAGNOSTIC
+
+=== COUNTS ===
+Total gunDeal docs:   693
+Has imageUrl:         454
+Missing imageUrl:     239
+Has externalUrl:      693
+
+=== SAMPLE WITH IMAGES (first 5) ===
+  [gun.deals] Cold Steel Mini Buckler / 9" Diameter Overall / 10mm Thick -
+    img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/bc17444a129aa23ffcbe1706e950
+  [gun.deals] HK45C V1 .45 ACP 3.94" 8rd Pistol with Night Sights - $699.9
+    img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/hk-hkhk45-81001111-2__14064.
+  [gun.deals] Beretta PX4 Storm Full-Size .40 S&W, 14+1 Capacity, Beretta 
+    img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/IMG_0461.JPG
+  [gun.deals] Daniel Defense DDM4A1 RII 5.56 NATO 14.5" BBL 30rd AR-15 Rif
+    img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/daniel-defense-ddm4a1-rii-5-
+  [gun.deals] Panzer Arms EG-220 Lever Action Tactical 12 Gauge Shotgun w/
+    img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screenshot%202024-12-31%20at
+
+=== SAMPLE WITHOUT IMAGES (first 10) ===
+  [gun.deals] FosTech Stealth Raptor Builders Kit Billet Magnesium, 7&quot
+    url: https://gun.deals/product/fostech-stealth-raptor-builders-kit-billet-magnesium-7
+  [gun.deals] Olight Usa Inc OSIGHTGN Green Dot Matte Black 1x 3 MOA Green
+    url: https://gun.deals/product/olight-usa-inc-osightgn-green-dot-matte-black-1x-3-moa
+  [gun.deals] Heckler &amp; Koch SP5 9mm 8.86&quot; 30rd Two Mags - $2878.
+    url: https://gun.deals/product/heckler-koch-sp5-9mm-886-30rd-two-mags-28783-email-pri
+  [gun.deals] Sig Sauer P226 Full Size Legion RX 9mm Luger 4.40&quot; 10rd
+    url: https://gun.deals/product/sig-sauer-p226-full-size-legion-rx-9mm-luger-440-10rd-
+  [gun.deals] Kimber 1911 DS Warrior 9m 5&quot; 20+1 - $859.92 with code N
+    url: https://gun.deals/product/kimber-1911-ds-warrior-9m-5-201-88652
+  [gun.deals] Norma Ammunition Range &amp; Training 7.62x39 124gr FMJ 2430
+    url: https://gun.deals/product/norma-ammunition-range-training-762x39-124gr-fmj-2430-
+  [gun.deals] ORTHOS S4RAE RAIDER S4 12G 6R 18.5 Marshland Elite Only 150 
+    url: https://gun.deals/product/orthos-s4rae-raider-s4-12g-6r-185-marshland-elite-only
+  [gun.deals] FRANCHI Momentum 308 Win 22&quot; 4+1 Bolt Rifle w/ Threaded
+    url: https://gun.deals/product/franchi-momentum-308-win-22-41-bolt-rifle-w-threaded-b
+  [gun.deals] Mossberg MC-2SC 9mm 3.4&quot; 14 Rd - $249.98
+    url: https://gun.deals/product/mossberg-mc-2sc-9mm-34-14-rd-24998
+  [gun.deals] Benelli Super Nova 12GA 28″ Barrel 4rd Pump Shotgun, Realtre
+    url: https://gun.deals/product/benelli-super-nova-12ga-28%E2%80%B3-barrel-4rd-pump-sh
+
+=== SOURCE BREAKDOWN ===
+  gun.deals: 636
+  GunDeals Reddit: 33
+  AmmoLand: 23
+  Breitbart 2A: 1
+
+=== OG SCRAPE TEST (3 docs without images) ===
+
+  Testing: https://gun.deals/product/fostech-stealth-raptor-builders-kit-billet-magnesium-7
+  HTTP 200, HTML len=212234
+  OG IMAGE FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/fostech-stealth-raptor-build
+
+  Testing: https://gun.deals/product/olight-usa-inc-osightgn-green-dot-matte-black-1x-3-moa
+  HTTP 200, HTML len=365679
+  OG IMAGE FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/olight-usa-inc-osightgn-gree
+
+  Testing: https://gun.deals/product/heckler-koch-sp5-9mm-886-30rd-two-mags-28783-email-pri
+  HTTP 200, HTML len=338890
+  OG IMAGE FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/IMG_7d8d56__71ddf781.jpg
+
+DIAGNOSTIC COMPLETE
