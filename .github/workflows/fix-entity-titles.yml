@@ -1,0 +1,18 @@
+name: Fix Entity Titles
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run title entity fix
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/fix_entity_titles.py
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add scripts/diag-result.txt || true
+          git diff --staged --quiet && echo "Nothing new" || (git commit -m "fix: entity title backfill results" && git push)
