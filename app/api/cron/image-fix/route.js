@@ -124,10 +124,27 @@ async function handler(req) {
 
   try {
     // Cover newsArticle + canadaContent articles + brazilContent artigos
+    // Filter in GROQ to only fetch articles that actually need image fixing —
+    // this lets us raise the limit without performance hit. Catches /img/photos/
+    // fallbacks that were previously stuck permanently.
+    const BAD_IMG_FILTER = `(
+      !defined(imageUrl) || imageUrl == null
+      || string::startsWith(imageUrl, "/img/")
+      || (
+        !string::startsWith(imageUrl, "https://cdn.sanity.io")
+        && !string::startsWith(imageUrl, "https://img.youtube.com")
+        && !string::startsWith(imageUrl, "https://i.ytimg.com")
+        && !string::startsWith(imageUrl, "https://images.pexels.com")
+        && !string::startsWith(imageUrl, "https://cdn.pixabay.com")
+        && !string::startsWith(imageUrl, "https://live.staticflickr.com")
+        && !string::startsWith(imageUrl, "https://upload.wikimedia.org")
+        && imageUrl != null
+      )
+    )`
     const [newsArts, canadaArts, brazilArts] = await Promise.all([
-      sanity.fetch('*[_type=="newsArticle"] | order(publishedAt desc) [0...50] { _id, title, imageUrl, "sourceUrl": externalUrl, category }'),
-      sanity.fetch('*[_type=="canadaContent" && type=="article"] | order(publishedAt desc) [0...20] { _id, title, imageUrl, sourceUrl }'),
-      sanity.fetch('*[_type=="brazilContent" && type=="artigo"] | order(publishedAt desc) [0...20] { _id, title, imageUrl, sourceUrl }'),
+      sanity.fetch(`*[_type=="newsArticle" && ${BAD_IMG_FILTER}] | order(publishedAt desc) [0...200] { _id, title, imageUrl, "sourceUrl": externalUrl, category }`),
+      sanity.fetch(`*[_type=="canadaContent" && type=="article" && ${BAD_IMG_FILTER}] | order(publishedAt desc) [0...50] { _id, title, imageUrl, sourceUrl }`),
+      sanity.fetch(`*[_type=="brazilContent" && type=="artigo" && ${BAD_IMG_FILTER}] | order(publishedAt desc) [0...50] { _id, title, imageUrl, sourceUrl }`),
     ])
 
     const allItems = [

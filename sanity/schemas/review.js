@@ -11,6 +11,8 @@ export const review = defineType({
     defineField({ name: 'category', title: 'Category', type: 'string',
       options: { list: ['Pistol','Rifle','Shotgun','Optic','Suppressor','Accessory','Ammo'] } }),
     defineField({ name: 'heroImage', title: 'Hero Image', type: 'image', options: { hotspot: true } }),
+    defineField({ name: 'imageUrl', title: 'Image URL (CDN)', type: 'url',
+      description: 'External image URL — used if Hero Image is not uploaded. Auto-resolved to heroImage otherwise.' }),
     defineField({ name: 'score', title: 'Score (0-10)', type: 'number', validation: R => R.min(0).max(10) }),
     defineField({ name: 'verdict', title: 'Verdict', type: 'string',
       options: { list: ['Best in Class','Highly Recommended','Recommended','Good Value','Average','Skip It'] } }),

@@ -190,9 +190,9 @@ export async function POST(req) {
     results.fetched++
 
     if (!ogImage) {
-      // Source blocked scraping — assign a relevant local photo as fallback
-      const fallback = pickPhoto(article.title, article.category)
-      mutations.push({ patch: { id: article._id, set: { imageUrl: fallback } } })
+      // Source blocked scraping — leave imageUrl null so image-fix cron can retry with Pexels/Pixabay
+      // DO NOT write local /img/photos/ fallbacks here — they get permanently stuck and
+      // display local placeholder photos instead of real article images
       results.skipped++
       continue
     }

@@ -127,7 +127,9 @@ const CATEGORY_FALLBACKS = {
 function ReviewCard({ r, featured = false }) {
   const href       = `/reviews/${r.slug?.current || r._id}`
   const catColor   = CAT_COLORS[r.category] || '#9CA3AF'
-  const imageUrl   = r.img || r.heroImage?.asset?.url || r.imageUrl || CATEGORY_FALLBACKS[r.category] || CATEGORY_FALLBACKS.default
+  // imageUrl is pre-resolved by GROQ (heroImage.asset->url or imageUrl field).
+  // r.img only exists on the static STATIC_REVIEWS array — falls through cleanly.
+  const imageUrl   = r.img || r.imageUrl || r.heroImage?.asset?.url || CATEGORY_FALLBACKS[r.category?.toLowerCase()] || CATEGORY_FALLBACKS.default
 
   if (featured) {
     return (
@@ -157,7 +159,7 @@ function ReviewCard({ r, featured = false }) {
               {r.summary}
             </p>
             <div style={{ display:'flex', alignItems:'center', gap:16 }}>
-              {r.roundCount && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{r.roundCount} rounds tested</span>}
+              {(r.roundCount || r.testRounds) && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563' }}>{r.roundCount || (r.testRounds ? r.testRounds.toLocaleString() + '+ rounds' : '')} tested</span>}
               <span style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, color:'var(--gold)', letterSpacing:'0.1em', marginLeft:'auto' }}>FULL REVIEW →</span>
             </div>
           </div>

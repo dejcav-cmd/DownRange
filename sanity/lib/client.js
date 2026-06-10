@@ -129,9 +129,13 @@ export async function fetchReviews(limit = 12, category = null) {
   return client.fetch(`
     *[_type == "review" ${filter}] | order(publishedAt desc) [0...${limit}] {
       _id, title, slug, score, verdict, category, publishedAt, featured,
-      brand, model, caliber, msrp,
+      brand, model, caliber, msrp, testRounds,
       heroImage { asset->{url}, alt },
-      imageUrl,
+      "imageUrl": select(
+        defined(imageUrl) && imageUrl != null => imageUrl,
+        defined(heroImage.asset) => heroImage.asset->url,
+        null
+      ),
       author->{name}
     }
   `)
@@ -212,7 +216,12 @@ export async function searchReviews(q, limit = 20) {
      | score(boost(brand match $q,10), boost(model match $q,8), boost(title match $q,5), boost(summary match $q,1))
      | order(_score desc) [0...$lim] {
        _id, _score, "title": brand+" "+model, "slug": slug.current,
-       summary, category, score, publishedAt, imageUrl, brand, model, caliber, msrp
+       summary, category, score, publishedAt, brand, model, caliber, msrp,
+       "imageUrl": select(
+         defined(imageUrl) && imageUrl != null => imageUrl,
+         defined(heroImage.asset) => heroImage.asset->url,
+         null
+       )
      }`, { q: safe, lim: limit }
   ).catch(() => [])
 }
