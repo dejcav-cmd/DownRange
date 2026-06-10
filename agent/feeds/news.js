@@ -381,7 +381,7 @@ async function processNewsItem(item) {
       tags:        ['deals', item.source?.toLowerCase().replace(/\s+/g,'-') || 'reddit'],
     }
     await publishToSanity(dealDoc)
-    console.log(\`[NEWS] 🔥 Deal → gunDeal: "\${item.title.slice(0,60)}"\`)
+    console.log(`[NEWS] Deal -> gunDeal: "${item.title.slice(0,60)}"`)
     return { id: dealDoc._id, title: item.title, category: 'deals', hasAI: false }
   }
 
