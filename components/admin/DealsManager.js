@@ -79,11 +79,11 @@ export default function DealsManager({ adminKey }) {
           label:        'Deals Manager',
           icon:         '🔥',
           api:          '/api/admin/deals-list',
-          type:         'newsArticle',
+          type:         'gunDeal',
           publishField: { field: 'approved', publishedValue: true },
           fields:       FIELDS,
           responseKey:  'articles',
-          urlFn:        item => item?.slug ? '/news/' + item.slug : null,
+          urlFn:        item => item?.externalUrl || '#',
           perPage:      50,
           extraActions: [
             { label: migrating ? '⏳ Running...' : '🔧 Fix Miscategorized', fn: runMigration, disabled: migrating },

@@ -227,14 +227,9 @@ async function handler(req) {
           stats.fallback++
           console.log(`[FIX-IMAGES] ~ Pixabay (blocked source): "${article.title?.slice(0, 40)}"`)
         } else {
-          // Last resort: best-match local photo (only patch if it's a different/better one)
-          const better = pickPhoto(article.title, article.category)
-          if (better !== article.imageUrl) {
-            mutations.push({ patch: { id: article._id, set: { imageUrl: better } } })
-            stats.fallback++
-          } else {
-            stats.skipped++
-          }
+          // Don't store local /img/* placeholder — leave imageUrl null so next run retries
+          // Storing any /img/* path causes infinite loop: isBad→retry→same failure→same path
+          stats.skipped++
         }
       }
 

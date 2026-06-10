@@ -50,10 +50,17 @@ export async function GET(req) {
         publishedAt, body, approved, editorLocked,
         pros, cons,
         specs[] { label, value },
+        imageUrl,
         heroImage { asset->{ url } }
       }
     `)
-    return Response.json({ ok: true, reviews })
+    // Normalize heroImage → imageUrl so UCE can display thumbnails
+    const normalized = reviews.map(r => ({
+      ...r,
+      imageUrl: r.imageUrl || r.heroImage?.asset?.url || null,
+      slug: r.slug?.current || r._id,
+    }))
+    return Response.json({ ok: true, reviews: normalized })
   } catch (e) {
     return Response.json({ ok: false, error: e.message }, { status: 500 })
   }

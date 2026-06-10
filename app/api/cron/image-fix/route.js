@@ -146,7 +146,12 @@ async function handler(req) {
       if (a.sourceUrl) { newUrl = await tryOgImage(a.sourceUrl); if (newUrl) stats.ogFetched++ }
       if (!newUrl) { newUrl = await searchPixabay(a.title, catOrCountry); if (newUrl) stats.ogFetched++ }
       if (!newUrl) { newUrl = await searchPexels(a.title, catOrCountry); if (newUrl) stats.ogFetched++ }
-      if (!newUrl) { newUrl = pickFallback(a.title, a.category || ''); stats.photoFallback++ }
+      if (!newUrl) {
+        // Don't write /img/photos/* placeholder - leave null so next run retries
+        // pickFallback() was causing infinite loops: isBad(placeholder)→true→retry→placeholder
+        stats.failed++
+        continue
+      }
       try { await sanity.patch(a._id).set({ imageUrl: newUrl }).commit() }
       catch (e) { stats.failed++; stats.photoFallback-- }
       await new Promise(r => setTimeout(r, 80))
