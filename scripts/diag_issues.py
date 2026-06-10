@@ -1,9 +1,7 @@
-import urllib.request, urllib.parse, json, sys
+import urllib.request, urllib.parse, json, sys, os
 
-SANITY_TOKEN = os.environ.get("SANITY_TOKEN","")
+SANITY_TOKEN = os.environ.get("SANITY_API_TOKEN","")
 PROJECT = "vbnsqnkg"
-
-import os
 
 def sanity_query(query):
     encoded = urllib.parse.quote(query)
@@ -23,7 +21,7 @@ slugs = [
 
 article_data = []
 for slug in slugs:
-    q = f'*[_type=="newsArticle" && slug.current=="{slug}"][0]{{_id, title, imageUrl, externalUrl}}'
+    q = '*[_type=="newsArticle" && slug.current=="' + slug + '"][0]{_id, title, imageUrl, externalUrl}'
     r = sanity_query(q)
     article_data.append(r)
 results["articles"] = article_data
@@ -34,4 +32,4 @@ results["review_sample"] = sanity_query('*[_type=="review"][0...3]{_id,title,ima
 
 with open("scripts/diag-result.txt","w") as f:
     f.write(json.dumps(results,indent=2))
-print("DONE")
+print("DONE:", json.dumps(results, indent=2))
