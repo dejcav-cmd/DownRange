@@ -1,0 +1,22 @@
+name: Trigger Image Fix Cron
+on:
+  workflow_dispatch:
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger image-fix cron
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          echo "Triggering image-fix cron..."
+          curl -s -X POST https://www.downrangeco.com/api/cron/image-fix \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            -H "Content-Type: application/json" | head -c 500
+          echo ""
+          echo "Triggering fetch-article-images..."
+          curl -s -X POST https://www.downrangeco.com/api/admin/fetch-article-images \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{"limit":20,"force":false}' | head -c 500
