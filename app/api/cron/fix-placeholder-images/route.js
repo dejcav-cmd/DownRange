@@ -156,6 +156,7 @@ async function handler(req) {
     const articles = await sanity.fetch(
       `*[_type == "newsArticle"
         && defined(externalUrl)
+        && category != "deals"
         && (
           !defined(imageUrl)
           || imageUrl == null

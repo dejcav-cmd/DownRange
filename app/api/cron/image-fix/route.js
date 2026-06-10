@@ -138,6 +138,7 @@ async function handler(req) {
     stats.scanned = allItems.length
 
     for (const a of allItems) {
+      if (a.category === 'deals') { stats.alreadyOk++; continue }  // deals get images from gun-deals cron
       if (a.imageUrl && !isBad(a.imageUrl)) { stats.alreadyOk++; continue }
       let newUrl = null
       // Country-specific query for intl articles

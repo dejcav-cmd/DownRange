@@ -360,11 +360,32 @@ async function processNewsItem(item) {
   const PRICE_SIGNAL = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price|free shipping|rebate/i
   const titleHasPrice = PRICE_SIGNAL.test(item.title || '')
   const feedIsDeal    = item.feedCat === 'deals'
-  // Allow deals only if: dedicated deals feed, OR title has a real price signal
-  const isDeal = feedIsDeal || titleHasPrice
-  const category = isDeal
-    ? 'deals'
-    : (ai?.category === 'deals' ? 'news' : (ai?.category || item.feedCat || 'news'))
+  const isDeal        = feedIsDeal || titleHasPrice
+
+  // DEALS GO TO gunDeal, NOT newsArticle
+  // This prevents image-fix crons from looping on them, deals page from polluting news, etc.
+  if (isDeal) {
+    const price = (item.title || '').match(/\$[\d,]+(?:\.\d{2})?/)?.[0] || ''
+    const dealDoc = {
+      _id:         'gd-' + hash,
+      _type:       'gunDeal',
+      title:       ai?.title || item.title,
+      summary:     ai?.summary || item.description?.slice(0, 300) || '',
+      externalUrl: item.url,
+      source:      item.source || 'reddit',
+      category:    'deal',
+      approved:    true,
+      publishedAt: item.publishedAt ? new Date(item.publishedAt).toISOString() : new Date().toISOString(),
+      imageUrl:    null,   // gun-deals cron or backfill will fill this in
+      price,
+      tags:        ['deals', item.source?.toLowerCase().replace(/\s+/g,'-') || 'reddit'],
+    }
+    await publishToSanity(dealDoc)
+    console.log(\`[NEWS] 🔥 Deal → gunDeal: "\${item.title.slice(0,60)}"\`)
+    return { id: dealDoc._id, title: item.title, category: 'deals', hasAI: false }
+  }
+
+  const category = ai?.category === 'deals' ? 'news' : (ai?.category || item.feedCat || 'news')
 
   const doc = {
     _id:           'news-' + hash,
