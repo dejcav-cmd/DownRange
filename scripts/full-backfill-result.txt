@@ -1,7 +1,7 @@
 === FULL DEALS IMAGE BACKFILL ===
-Docs processed: 100
-Updated:        100
+Docs processed: 29
+Updated:        29
 Failed:         0
-Remaining need: 29
-Final with img: 435/464
+Remaining need: 0
+Final with img: 464/464
 
