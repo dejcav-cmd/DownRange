@@ -1,29 +1,12 @@
-=== FETCHING MISSING GUN.DEALS DOCS ===
-Found 10 gun.deals docs without imageUrl
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/51f47dd92e64a66b0cb7be066491be3
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/774125876291c19a271d504b347325a
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/71dd29f50b838f16777af217b84ac20
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/4bd28ec8979e83c90d8d131f5297ad7
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/573094bdc83f85a2831fd16ce2e3be4
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/8dcd97660ed063ceb1302941e6ddae0
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/7915c28ce7c034bdc2b0bafad255b45
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/1575b17f960fa6adb13d1a8e3e16b08
-  ✗ scrape failed: https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
-  ✗ scrape failed: https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
-  → Committed final 8 patches
+Found 61 Reddit-sourced gunDeal docs to delete
+  gd-02dd79d3c4b2ccd3ecf8be219f3b176b [GunDeals Reddit] Ruger 10/22 110-Round Drum Mag Drops to $70—Out of Stock
+  gd-049515f74108fef52e6dc6bcb1ef0e7b [GunDeals Reddit] SIG P226 X-FIVE drops to $1,458 with triple 20-round mags in
+  gd-068eb574219737269a456ce72053166b [AmmoLand] Federal Champion Training 9mm 115 Gr FMJ 500 Rounds – $127.7
+  gd-084d72fe58b91dad16168446c0d6383f [AmmoLand] Sportsman’s Select Remanufactured 9mm 115gr FMJ 1,000 Rounds
+  gd-0a0d5204f048344613dfa4622b64f630 [GunDeals Reddit] Lehigh Defense 380 Auto Rounds Drop to 57 CPR—Bulk Case Avai
+  ... and 56 more
+  Deleted batch 1: 61 docs
 
-=== DONE ===
-Attempted:  10
-Scraped:    8
-Downloaded: 8
-Uploaded:   8
-Patched:    8
-Failed:     2
-
-=== AMMOLAND MISSING DOCS ===
-Found 3
-  ✓ https://www.ammoland.com/wp-content/uploads/2026/06/PSA-Sabre-Mixtape-
-  ✓ https://www.ammoland.com/wp-content/uploads/2026/06/Sportsmans-Select-
-  ✓ https://www.ammoland.com/wp-content/uploads/2026/02/Reman-9mm-124-200-
-  → Patched 3 AmmoLand docs
-ALL DONE
+Deleted: 61  Errors: 0
+Reddit remaining: 0  Total deals: 684
+DONE
