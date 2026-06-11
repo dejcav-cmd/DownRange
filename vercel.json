@@ -290,6 +290,9 @@
     },
     "app/api/cron/copyright-review/route.js": {
       "maxDuration": 300
+    },
+    "app/api/cron/gun-deals/route.js": {
+      "maxDuration": 300
     }
   }
 }
