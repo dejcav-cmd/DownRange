@@ -267,8 +267,11 @@ const FIREARMS_KEYWORDS = [
   'second amendment','2nd amendment','2a','gun rights','gun control','gun law',
   'gun bill','gun ban','assault weapon','nra','nra-ila','saf','fpc','goa',
   'gun owners','concealed carry','ccw','shall-issue','may-issue','constitutional carry',
-  'red flag','atf','batfe','background check','nics','ffl','4473',
+  'red flag','atf','batfe','background check','background checks','nics','ffl','4473',
   'bruen','heller','mcdonald','chevron doctrine','ghost gun','80%',
+  'bear arms','keep and bear','carry permit','carry law','carry rights',
+  'campus carry','permitless carry','carry license','gun permit','pistol permit',
+  'firearm permit','reloading','blade','knife','knives',
   // Products / brands
   'glock','sig sauer','smith & wesson','smith and wesson','ruger','colt',
   'springfield','beretta','fn','hk','walther','taurus','mossberg','remington',
