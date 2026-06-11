@@ -1,0 +1,21 @@
+name: Upload Deals Images to Sanity
+on:
+  workflow_dispatch:
+jobs:
+  upload:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Upload images to Sanity CDN
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/upload_deals_images.py
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "upload deals images result" && git push
