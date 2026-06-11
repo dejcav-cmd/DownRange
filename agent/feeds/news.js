@@ -97,7 +97,6 @@ const RSS_FEEDS = [
   { name: 'Pew Pew Tactical',       url: 'https://www.pewpewtactical.com/feed/',                cat: 'industry' },
   { name: 'Lucky Gunner',           url: 'https://www.luckygunner.com/lounge/feed/',            cat: 'industry' },
   // ── DEALS — product sales, pricing, limited-time offers ─────────────
-  { name: 'GunDeals Reddit',        url: 'https://www.reddit.com/r/gundeals/.rss',              cat: 'deals'    },
   { name: 'Slickguns',              url: 'https://www.slickguns.com/feed',                      cat: 'deals'    },
   { name: 'WikiArms',               url: 'https://www.wikiarms.com/feed',                       cat: 'deals'    },
   { name: 'Brownells Blog',         url: 'https://www.brownells.com/blog/feed/',                cat: 'deals'    },
@@ -366,6 +365,11 @@ async function processNewsItem(item) {
   // DEALS GO TO gunDeal, NOT newsArticle
   // This prevents image-fix crons from looping on them, deals page from polluting news, etc.
   if (isDeal) {
+    // Never store Reddit URLs as deals — no images, no stable content
+    if ((item.url || '').includes('reddit.com')) {
+      console.log(`[NEWS] Skipping Reddit deal: ${item.title?.slice(0, 60)}`)
+      return null
+    }
     const price = (item.title || '').match(/\$[\d,]+(?:\.\d{2})?/)?.[0] || ''
     const dealDoc = {
       _id:         'gd-' + hash,
