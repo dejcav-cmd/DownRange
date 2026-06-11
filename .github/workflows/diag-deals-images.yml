@@ -8,13 +8,13 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Run scrape test
+      - name: Run final count
         env:
           SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/scrape_test.py
+        run: python3 scripts/final_count.py
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "scrape test result" && git push
+          git diff --staged --quiet || git commit -m "final count result" && git push
