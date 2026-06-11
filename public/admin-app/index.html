@@ -352,7 +352,7 @@ const SECTIONS=[
   ]},
   {id:'system',label:'System',icon:'⚙️',panels:[
     {id:'overview',l:'System Overview',i:'◈'},{id:'crons',l:'Cron Jobs',i:'⏱'},
-    {id:'deployments',l:'Deployments',i:'▲',b:'new'},{id:'agents',l:'Content Agents',i:'🤖'},
+    {id:'smsalerts',l:'SMS Alerts',i:'📱',b:'new'},{id:'deployments',l:'Deployments',i:'▲'},{id:'agents',l:'Content Agents',i:'🤖'},
     {id:'rss',l:'Source Manager',i:'📡'},{id:'sitemap',l:'Site Map',i:'🗺️'},
     {id:'ranges',l:'Ranges DB',i:'◎'},
   ]},
@@ -662,7 +662,7 @@ function openPanel(id,label){
     costs:renderCostCenter,siteconfig:renderSiteSettings,alertconfig:renderAlertConfig,
     report:renderPortalReport,backup:renderBackup,lockall:renderLockAll,
     marketbrief:renderMarketBrief,
-    copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,
+    copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,smsalerts:renderSMSAlerts,
     pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,
     seo:renderSEO,feeds:renderFeeds,sitemap:renderSitemap,ranges:renderRanges,
     imglib:renderImgLib,ai:renderAIModels,identity:renderIdentity,navvis:renderNavVis,
@@ -828,6 +828,7 @@ function renderSystemScreen(el){
      {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'},
      {id:'sitemap',i:'🗺️',l:'Site Map',s:'URL routes & indexing'},
      {id:'ranges',i:'◎',l:'Ranges DB',s:'Shooting range finder'},
+     {id:'smsalerts',i:'📱',l:'SMS Alerts',s:'Twilio log — sent, skipped & failed',b:'new'},
      {id:'sysalerts',i:'🚨',l:'System Alerts',s:'cronRun log — failures & warnings'},
      {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
@@ -1926,6 +1927,228 @@ async function renderDraftRecovery(el){
 // ═══════════════════════════════════════════════════════════════════
 // PANEL — SYSTEM ALERTS
 // ═══════════════════════════════════════════════════════════════════
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — SMS ALERTS (Twilio execution log)
+// GET /api/admin/sms-config → { status, log }
+// POST /api/admin/test-sms  → { sent, sid, status, ms, error }
+// ═══════════════════════════════════════════════════════════════════
+let _smsState={tab:'all',search:'',expanded:null,autoRefresh:true,timer:null,data:null};
+
+async function renderSMSAlerts(el){
+  // stop old timer if any
+  if(_smsState.timer){clearInterval(_smsState.timer);_smsState.timer=null;}
+  await _smsLoad(el);
+  if(_smsState.autoRefresh){
+    _smsState.timer=setInterval(()=>_smsLoad(el,true),15000);
+  }
+}
+
+async function _smsLoad(el,silent=false){
+  if(!silent) el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading SMS log...</div>';
+  try{
+    const d=await api('/api/admin/sms-config');
+    _smsState.data=d;
+    _smsRender(el);
+  }catch(e){
+    if(!silent) el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;
+  }
+}
+
+function _smsClassify(l){
+  if(l.sent) return 'sent';
+  const t=(l.reason||'')+(l.message||'');
+  if(/cooldown|Cooldown|quiet|configured|skipped|isabled/i.test(t)) return 'skipped';
+  return 'failed';
+}
+
+function _smsBadge(l){
+  const c=_smsClassify(l);
+  if(c==='sent')    return '<span class="pill pill-ok">✓ SENT</span>';
+  if(c==='skipped') return '<span class="pill" style="background:rgba(59,130,246,.1);color:#60a5fa;border:1px solid rgba(59,130,246,.25)">SKIPPED</span>';
+  return '<span class="pill pill-err">✕ FAILED</span>';
+}
+
+function _fmtAge(ts){
+  const m=Math.floor((Date.now()-new Date(ts).getTime())/60000);
+  if(m<1) return 'just now';
+  if(m<60) return m+'m ago';
+  if(m<1440) return Math.floor(m/60)+'h ago';
+  return Math.floor(m/1440)+'d ago';
+}
+function _fmtTime(ts){
+  return new Date(ts).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit',second:'2-digit',hour12:false});
+}
+
+function _smsRender(el){
+  const d=_smsState.data;
+  if(!d){el.innerHTML='<div class="empty">No data</div>';return;}
+  const log=d.log||[];
+  const cfg=d.status||{};
+  const sent=log.filter(l=>l.sent);
+  const failed=log.filter(l=>!l.sent&&_smsClassify(l)==='failed');
+  const skipped=log.filter(l=>!l.sent&&_smsClassify(l)==='skipped');
+  const rate=log.length?Math.round((sent.length/log.length)*100):null;
+  const lastSent=sent[0];
+  const tab=_smsState.tab;
+  const search=_smsState.search.toLowerCase();
+  const filtered=log.filter(l=>{
+    if(tab==='sent'    && !l.sent)                         return false;
+    if(tab==='failed'  && _smsClassify(l)!=='failed')     return false;
+    if(tab==='skipped' && _smsClassify(l)!=='skipped')    return false;
+    if(search && !((l.message||'').toLowerCase().includes(search)||(l.jobId||'').toLowerCase().includes(search)||(l.reason||'').toLowerCase().includes(search))) return false;
+    return true;
+  });
+
+  // Spark
+  const sparkBars=log.slice(0,16).reverse().map(l=>{
+    const c=_smsClassify(l);
+    const h=c==='sent'?18:c==='skipped'?10:6;
+    const bg=c==='sent'?'var(--ok)':c==='skipped'?'#60a5fa':'var(--err)';
+    return `<div style="width:5px;height:${h}px;background:${bg};border-radius:1px;flex-shrink:0"></div>`;
+  }).join('');
+
+  const isOk=cfg.configured&&cfg.enabled;
+  const statusColor=isOk?'var(--ok)':cfg.configured?'var(--warn)':'var(--err)';
+  const statusLabel=isOk?'OPERATIONAL':cfg.configured?'DISABLED':'NOT CONFIGURED';
+
+  // Build rows
+  const rows=filtered.slice(0,80).map(l=>{
+    const isExp=_smsState.expanded===l.id;
+    const c=_smsClassify(l);
+    const detail=isExp?`<div style="background:#060a0f;border-bottom:1px solid var(--border);padding:10px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;line-height:1.9">
+      ${[
+        ['Time',         _fmtTime(l.ts)],
+        ['Job',          l.jobId||'—'],
+        ['Full Message', l.message||'—'],
+        l.reason?['Reason',l.reason]:null,
+        l.twilioSid?['Twilio SID',l.twilioSid]:null,
+        l.twilioStatus?['Status',l.twilioStatus]:null,
+        l.httpStatus?['HTTP',String(l.httpStatus)]:null,
+        l.errCode?['Error Code',l.errCode+(l.errCode===30034?' — Toll-free verify needed':l.errCode===21608?' — Number not verified':'')]:null,
+        l.ms?['Latency',l.ms+'ms']:null,
+        ['ID',(l.id||'—').slice(0,20)],
+      ].filter(Boolean).map(([k,v])=>`<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;margin-bottom:2px">
+          <span style="color:var(--dim);font-size:9px;text-transform:uppercase;letter-spacing:.06em">${k}</span>
+          <span style="color:${k==='Full Message'?'var(--text)':k==='Twilio SID'||k==='Status'?'var(--ok)':k.includes('Error')||k==='HTTP'&&parseInt(v)>=400?'var(--err)':'var(--dim)'};word-break:break-all">${v}</span>
+        </div>`).join('')}
+    </div>`:''
+    return `<div onclick="_smsToggle('${l.id}',this.closest('[data-sms-log]'))" style="border-bottom:1px solid var(--border);background:${isExp?'#0d0d0f':'transparent'};cursor:pointer">
+      <div style="display:grid;grid-template-columns:80px 70px 1fr 50px;gap:0;padding:8px 12px;align-items:center">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${_fmtAge(l.ts)}</div>
+        ${_smsBadge(l)}
+        <div style="font-size:11px;color:${c==='sent'?'var(--text)':c==='skipped'?'#60a5fa':'var(--err)'};overflow:hidden;text-overflow:ellipsis;white-space:nowrap;padding:0 8px" title="${(l.message||'').replace(/"/g,'&quot;')}">${l.jobId?`<span style="color:var(--gold);margin-right:5px">${l.jobId}</span>`:''}${l.sent?l.message:(l.reason||l.message)||'—'}</div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);text-align:right">${l.ms?l.ms+'ms':'—'} ${isExp?'▲':'▼'}</div>
+      </div>
+      ${detail}
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+  <!-- Status + Spark -->
+  <div style="background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+    <span style="font-size:20px">${isOk?'🟢':cfg.configured?'🟡':'🔴'}</span>
+    <div style="flex:1">
+      <div style="font-family:'Bebas Neue',cursive;font-size:16px;letter-spacing:.06em;color:${statusColor}">${statusLabel}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">${cfg.from||'—'} → ${cfg.to||'—'}${lastSent?` · last sent ${_fmtAge(lastSent.ts)}`:''}</div>
+    </div>
+    <div style="display:flex;gap:2px;align-items:flex-end;height:20px">${sparkBars}</div>
+  </div>
+
+  <!-- Stats -->
+  <div class="stat-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:12px">
+    ${[['Events',log.length,'var(--text)'],['Sent',sent.length,'var(--ok)'],['Failed',failed.length,failed.length?'var(--err)':'var(--dim)'],['Skipped',skipped.length,'#60a5fa'],['Rate',rate!=null?rate+'%':'—',rate>=90?'var(--ok)':rate>=50?'var(--warn)':'var(--err)']].map(([l,v,c])=>`
+    <div class="stat-box" style="text-align:center;padding:8px 4px">
+      <div class="stat-val" style="color:${c};font-size:1.4rem">${v}</div>
+      <div class="stat-lbl">${l}</div>
+    </div>`).join('')}
+  </div>
+
+  <!-- Actions -->
+  <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
+    <button class="btn" style="flex:1;background:rgba(34,197,94,.12);color:var(--ok);border:1px solid rgba(34,197,94,.25)" onclick="_smsSendTest(this)">📱 Send Test SMS</button>
+    <a href="/api/admin/test-sms" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:9px;text-decoration:none">🔍 Diagnostic</a>
+    <button class="btn-outline" onclick="renderSMSAlerts(this.closest('#drawer-content'))">↻</button>
+  </div>
+  <div id="sms-test-result" style="margin-bottom:12px"></div>
+
+  <!-- Config strip -->
+  <div style="background:var(--bg2);border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;margin-bottom:12px">
+    ${[['From','+12062036281'],['To','+12066016076'],['Cooldown',(cfg.cooldownSecs||900)/60+'min'],['Quiet Hrs',(cfg.quietStart||23)+':00–'+(cfg.quietEnd||7)+':00 UTC']].map(([k,v],i)=>`
+    <div style="padding:8px 12px;border-right:${i%2===0?`1px solid var(--border)`:'none'};border-bottom:${i<2?`1px solid var(--border)`:'none'}">
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${k}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold)">${v}</div>
+    </div>`).join('')}
+  </div>
+
+  <!-- Filter tabs -->
+  <div style="display:flex;gap:0;border-bottom:1px solid var(--border);margin-bottom:0">
+    ${[['all','All',log.length],['sent','Sent',sent.length],['failed','Failed',failed.length],['skipped','Skip',skipped.length]].map(([id,lbl,n])=>`
+    <button onclick="_smsSetTab('${id}',this.closest('[data-sms-log]'))" style="flex:1;background:none;border:none;border-bottom:2px solid ${tab===id?'var(--gold)':'transparent'};color:${tab===id?'var(--gold)':'var(--dim)'};font-family:'Barlow Condensed',sans-serif;font-size:12px;font-weight:700;letter-spacing:.06em;padding:8px 4px;cursor:pointer">
+      ${lbl} <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;opacity:.7">${n}</span>
+    </button>`).join('')}
+  </div>
+  <div style="padding:8px 0 8px">
+    <input oninput="_smsSetSearch(this.value,this.closest('[data-sms-log]'))" value="${search}"
+      placeholder="filter by job or message…"
+      style="width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:7px 10px;outline:none">
+  </div>
+
+  <!-- Log -->
+  <div data-sms-log style="border:1px solid var(--border);background:#050809">
+    <div style="display:grid;grid-template-columns:80px 70px 1fr 50px;padding:5px 12px;border-bottom:1px solid var(--border)">
+      ${['Time','Status','Job / Message','ms'].map(h=>`<div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em">${h}</div>`).join('')}
+    </div>
+    <div style="max-height:400px;overflow-y:auto;-webkit-overflow-scrolling:touch">
+      ${filtered.length===0
+        ?`<div class="empty">${log.length===0?'No SMS events yet. Send a test SMS above.':`No ${tab} events${search?' matching "'+search+'"':''}.`}</div>`
+        :rows}
+    </div>
+  </div>
+
+  <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);border-top:1px solid var(--border);padding-top:8px;display:flex;justify-content:space-between">
+    <span>Upstash Redis · max 200 events · DownRange-News</span>
+    <label style="display:flex;gap:5px;align-items:center;cursor:pointer">
+      <input type="checkbox" ${_smsState.autoRefresh?'checked':''} onchange="_smsToggleRefresh(this.checked,this.closest('#drawer-content'))" style="accent-color:var(--gold)">
+      auto 15s
+    </label>
+  </div>`;
+}
+
+function _smsToggle(id,logEl){
+  _smsState.expanded=_smsState.expanded===id?null:id;
+  if(logEl) _smsRender(logEl.closest('#drawer-content'));
+}
+function _smsSetTab(tab,logEl){
+  _smsState.tab=tab;_smsState.expanded=null;
+  if(logEl) _smsRender(logEl.closest('#drawer-content'));
+}
+function _smsSetSearch(val,logEl){
+  _smsState.search=val;_smsState.expanded=null;
+  if(logEl) _smsRender(logEl.closest('#drawer-content'));
+}
+function _smsToggleRefresh(on,el){
+  _smsState.autoRefresh=on;
+  if(_smsState.timer){clearInterval(_smsState.timer);_smsState.timer=null;}
+  if(on&&el) _smsState.timer=setInterval(()=>_smsLoad(el,true),15000);
+}
+async function _smsSendTest(btn){
+  btn.disabled=true;btn.textContent='Sending…';
+  const res=document.getElementById('sms-test-result');
+  try{
+    const d=await apiPost('/api/admin/test-sms',{key:window._adminKey||''});
+    if(d.sent){
+      res.innerHTML=`<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ok)">✓ Sent · SID: ${d.sid||'—'} · ${d.status||''} · ${d.ms||'?'}ms</div>`;
+    }else{
+      res.innerHTML=`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">✕ Failed · ${d.error||d.reason||'Unknown'} ${d.httpStatus?'(HTTP '+d.httpStatus+')':''}</div>`;
+    }
+    setTimeout(()=>_smsLoad(btn.closest('#drawer-content'),true),1200);
+  }catch(e){
+    res.innerHTML=`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">✕ ${e.message}</div>`;
+  }
+  btn.disabled=false;btn.textContent='📱 Send Test SMS';
+}
+
 async function renderSysAlerts(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
   try{
