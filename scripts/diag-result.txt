@@ -1,4 +1,4 @@
-[DRY RUN] Scanning for off-topic newsArticles...
+[LIVE DELETE] Scanning for off-topic newsArticles...
 
   OFF-TOPIC [Breitbart 2A]: Fetterman Blocks Blanche AG Nomination Vote Over Fitness Concerns
              https://www.breitbart.com/clips/2026/06/05/fetterman-blanche-not-someo
@@ -26,11 +26,9 @@
              https://www.breitbart.com/politics/2026/06/08/report-new-jersey-republ
   OFF-TOPIC [Breitbart 2A]: Trump Authorizes Fresh Iran Strikes Over Failed Peace Negotiations
              https://www.breitbart.com/politics/2026/06/10/u-s-hits-iran-again-trum
-  ... scanned 300 articles total  OFF-TOPIC [Bearing Arms]: Right to Keep and Bear Arms Not Exclusively an American Right
+  OFF-TOPIC [Bearing Arms]: Right to Keep and Bear Arms Not Exclusively an American Right
              https://bearingarms.com/tomknighton/2026/05/26/right-to-keep-and-bear-
-  OFF-TOPIC [Bearing Arms]: New Hampshire GOP Drops Campus Carry, Targets Wider Carry Rights Instead
-             https://bearingarms.com/camedwards/2026/05/30/after-campus-carry-debac
-  OFF-TOPIC [Breitbart 2A]: Putin Orders Air Defense Fixes After Ukrainian Drones Breach Russian Territory
+  ... scanned 300 articles total  OFF-TOPIC [Breitbart 2A]: Putin Orders Air Defense Fixes After Ukrainian Drones Breach Russian Territory
              https://www.breitbart.com/europe/2026/06/05/putin-vows-to-boost-russia
   OFF-TOPIC [AmmoLand]: Four Major AR Builders Enter Receivership; Delays Expected
              https://www.ammoland.com/2026/06/aero-precision-ballistic-advantage-st
@@ -42,10 +40,10 @@
              https://www.breitbart.com/politics/2026/06/09/senate-candidate-roy-coo
   OFF-TOPIC [Bearing Arms]: New Mississippi Law Actually Targeting Young Offers Goes Into Effect July 1st
              https://bearingarms.com/tomknighton/2026/05/26/new-mississippi-law-act
-  ... scanned 400 articles total  ... scanned 437 articles total
+  ... scanned 400 articles total  ... scanned 417 articles total
 
 ────────────────────────────────────────────────────────────
-Scanned:    437 articles
-Off-topic:  21 found
-Action:     DRY RUN — pass --delete to actually remove them
+Scanned:    417 articles
+Off-topic:  20 found
+Deleted:    20 articles
 ────────────────────────────────────────────────────────────
