@@ -276,7 +276,7 @@ const FIREARMS_KEYWORDS = [
   'glock','sig sauer','smith & wesson','smith and wesson','ruger','colt',
   'springfield','beretta','fn','hk','walther','taurus','mossberg','remington',
   'winchester','hornady','federal premium','speer','nosler','ar-15','ar15',
-  'ak-47','ak47','1911','9mm','45 acp','.357','.44 mag','.308','5.56',
+  'ak-47','ak47','1911','2011','fusion firearms','9mm','45 acp','.357','.44 mag','.308','5.56',
   // Activities
   'shooting','range','hunt','hunting','hunter','bow hunting','archery',
   'self-defense','self defense','home defense','concealed','open carry',

@@ -30,7 +30,7 @@ FIREARMS_KEYWORDS = [
     "bruen","heller","mcdonald","ghost gun",
     "glock","sig sauer","smith wesson","ruger","colt","springfield","beretta",
     "fn ","hk","walther","taurus","mossberg","remington","winchester","hornady",
-    "ar-15","ar15","ak-47","ak47","1911","9mm","45 acp",".357",".44 mag",
+    "ar-15","ar15","ak-47","ak47","1911","2011","fusion firearms","9mm","45 acp",".357",".44 mag",
     ".308","5.56","hunting","hunter","shooting range","self-defense","self defense",
     "home defense","concealed","open carry","gun store","gun shop","gunsmith",
     "gun show","gun sale","gun dealer",
