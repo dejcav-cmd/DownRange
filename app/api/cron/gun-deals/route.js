@@ -13,6 +13,8 @@ const GUN_DEALS_URLS = [
   'https://gun.deals/feed/syndication/rss',
   'https://gun.deals/rss.xml',
   'https://gun.deals/feed',
+  'https://gun.deals/rss',
+  'https://gun.deals/feed.rss',
 ]
 
 async function fetchRSS() {
@@ -20,7 +22,7 @@ async function fetchRSS() {
     try {
       const res = await fetch(url, {
         headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
-        signal: AbortSignal.timeout(10000),
+        signal: AbortSignal.timeout(12000),
       })
       if (res.ok) return res.text()
     } catch (_e) { /* try next */ }
@@ -51,31 +53,29 @@ function parseRSS(xml) {
   return items
 }
 
-// Full browser UA — confirmed working against gun.deals from Vercel
+// Full browser UA — confirmed working against gun.deals
 const SCRAPE_HEADERS = {
   'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
   'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
   'Accept-Language': 'en-US,en;q=0.5',
 }
 
-// Scrape OG image from a gun.deals product page
 async function scrapeOGImage(url) {
   try {
     const res = await fetch(url, {
       headers: SCRAPE_HEADERS,
-      signal: AbortSignal.timeout(10000),
+      signal: AbortSignal.timeout(15000),  // increased from 10s → 15s
     })
     if (!res.ok) return null
     const html = await res.text()
-    // [\s\S] handles newlines inside meta tag attributes
     const m = html.match(/<meta[\s\S]*?property=["']og:image["'][\s\S]*?content=["']([^"']+)["']/i)
            || html.match(/<meta[\s\S]*?content=["']([^"']+)["'][\s\S]*?property=["']og:image["']/i)
     return m ? m[1].trim() : null
   } catch (_e) { return null }
 }
 
-// Scrape images concurrently, max N at a time
-async function scrapeImages(urls, concurrency = 5) {
+// Scrape images sequentially in small batches (reduced from 5→3 concurrent to avoid rate limits)
+async function scrapeImages(urls, concurrency = 3) {
   const results = new Map()
   const chunks = []
   for (let i = 0; i < urls.length; i += concurrency)
@@ -111,7 +111,7 @@ export async function GET(req) {
   if (!isCron && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const t0    = Date.now()
-  const stats = { fetched: 0, added: 0, skipped: 0, imaged: 0 }
+  const stats = { fetched: 0, added: 0, skipped: 0, imaged: 0, healed: 0 }
 
   try {
     const xml   = await fetchRSS()
@@ -127,31 +127,49 @@ export async function GET(req) {
     const newDeals = deals.slice(0, 80).filter(d => !existingUrls.has(d.link))
     stats.skipped  = deals.slice(0, 80).length - newDeals.length
 
-    if (!newDeals.length) return NextResponse.json({ ok: true, ms: Date.now() - t0, ...stats })
+    if (newDeals.length > 0) {
+      // Scrape OG images (3 concurrent, 15s timeout)
+      const imageMap = await scrapeImages(newDeals.map(d => d.link), 3)
+      stats.imaged = [...imageMap.values()].filter(Boolean).length
 
-    // Scrape OG images for new deals (5 concurrent)
-    const imageMap = await scrapeImages(newDeals.map(d => d.link), 5)
-    stats.imaged = [...imageMap.values()].filter(Boolean).length
+      const mutations = newDeals.map(deal => ({
+        create: {
+          _type:       'gunDeal',
+          title:       deal.title,
+          summary:     `${deal.price ? deal.price + ' · ' : ''}${deal.store ? 'at ' + deal.store : ''}`.trim() || (deal.desc || '').slice(0, 200),
+          externalUrl: deal.link,
+          source:      'gun.deals',
+          category:    detectCategory(deal.title, deal.cats),
+          approved:    true,
+          publishedAt: deal.date ? new Date(deal.date).toISOString() : new Date().toISOString(),
+          imageUrl:    imageMap.get(deal.link) || null,
+          tags:        ['deals', 'gun.deals', detectCategory(deal.title, deal.cats)],
+          price:       deal.price,
+          store:       deal.store,
+        }
+      }))
 
-    const mutations = newDeals.map(deal => ({
-      create: {
-        _type:       'gunDeal',
-        title:       deal.title,
-        summary:     `${deal.price ? deal.price + ' · ' : ''}${deal.store ? 'at ' + deal.store : ''}`.trim() || (deal.desc || '').slice(0, 200),
-        externalUrl: deal.link,
-        source:      'gun.deals',
-        category:    detectCategory(deal.title, deal.cats),
-        approved:    true,
-        publishedAt: deal.date ? new Date(deal.date).toISOString() : new Date().toISOString(),
-        imageUrl:    imageMap.get(deal.link) || null,
-        tags:        ['deals', 'gun.deals', detectCategory(deal.title, deal.cats)],
-        price:       deal.price,
-        store:       deal.store,
+      await sanity.mutate(mutations)
+      stats.added = mutations.length
+    }
+
+    // ── SELF-HEAL: backfill any gunDeal docs missing imageUrl (up to 30 per run) ──
+    // Catches docs that were inserted with null imageUrl due to scrape failures
+    const needsImage = await sanity.fetch(
+      `*[_type=="gunDeal" && source=="gun.deals" && (!defined(imageUrl) || imageUrl == null || imageUrl == "")] | order(_createdAt desc) [0..29] { _id, externalUrl }`
+    ).catch(() => [])
+
+    if (needsImage.length > 0) {
+      const healUrls = needsImage.filter(d => d.externalUrl).map(d => d.externalUrl)
+      const healMap  = await scrapeImages(healUrls, 3)
+      const healMuts = needsImage
+        .filter(d => d.externalUrl && healMap.get(d.externalUrl))
+        .map(d => ({ patch: { id: d._id, set: { imageUrl: healMap.get(d.externalUrl) } } }))
+      if (healMuts.length > 0) {
+        await sanity.mutate(healMuts)
+        stats.healed = healMuts.length
       }
-    }))
-
-    await sanity.mutate(mutations)
-    stats.added = mutations.length
+    }
 
     return NextResponse.json({ ok: true, ms: Date.now() - t0, ...stats })
   } catch (err) {
