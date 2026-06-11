@@ -1,49 +1,62 @@
-[LIVE DELETE] Scanning for off-topic newsArticles...
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-  OFF-TOPIC [Breitbart 2A]: Fetterman Blocks Blanche AG Nomination Vote Over Fitness Concerns
-             https://www.breitbart.com/clips/2026/06/05/fetterman-blanche-not-someo
-  OFF-TOPIC [Breitbart 2A]: Trump Questions Smith's Fitness for 2028 Run, Attacks IQ Directly
-             https://www.breitbart.com/sports/2026/06/09/trump-blasts-stephen-a-smi
-  OFF-TOPIC [Breitbart 2A]: California's 40th District: Two Republicans Advance to General Election
-             https://www.breitbart.com/midterm-election/2026/06/07/californias-40th
-  OFF-TOPIC [Breitbart 2A]: Trump Claims Iran Directly Sought End to U.S. Strikes This Week
-             https://www.breitbart.com/politics/2026/06/10/trump-iranian-officials-
-  ... scanned 100 articles total  OFF-TOPIC [Bearing Arms]: Virginia Judge May Hold State Police Chief in Contempt Over Background Checks
-             https://bearingarms.com/camedwards/2026/06/02/virginia-judge-set-to-he
-  OFF-TOPIC [Bearing Arms]: SCOTUS Passes on 'Come and Take It' Hat Case, School Ban Stands
-             https://bearingarms.com/camedwards/2026/06/08/first-amendment-challeng
-  OFF-TOPIC [Bearing Arms]: The New Republic 'Unnerved' By Variation of Policy They've Loved for Decades
-             https://bearingarms.com/tomknighton/2026/06/08/the-new-republic-unnerv
-  ... scanned 200 articles total  OFF-TOPIC [Breitbart 2A]: Belfast Violence Exposes UK's Inability to Protect Citizens from Blade Attacks
-             https://www.breitbart.com/europe/2026/06/10/anti-beheading-rioters-wil
-  OFF-TOPIC [Breitbart 2A]: Trump Administration Weighs Using Iran's Frozen Billions for Regional Defense
-             https://www.breitbart.com/politics/2026/06/07/u-s-weighs-using-frozen-
-  OFF-TOPIC [Breitbart 2A]: Pence: Cop Attackers from January 6 Get Zero Taxpayer Money
-             https://www.breitbart.com/clips/2026/06/06/pence-anyone-who-assaulted-
-  OFF-TOPIC [Breitbart 2A]: Northern Ireland Descends Into Civil Unrest After Asylum Seeker Attack
-             https://www.breitbart.com/europe/2026/06/10/chaos-continues-in-norther
-  OFF-TOPIC [Breitbart 2A]: New Jersey Republicans Find Hundreds of Noncitizens Voting in State Elections
-             https://www.breitbart.com/politics/2026/06/08/report-new-jersey-republ
-  OFF-TOPIC [Breitbart 2A]: Trump Authorizes Fresh Iran Strikes Over Failed Peace Negotiations
-             https://www.breitbart.com/politics/2026/06/10/u-s-hits-iran-again-trum
-  OFF-TOPIC [Bearing Arms]: Right to Keep and Bear Arms Not Exclusively an American Right
-             https://bearingarms.com/tomknighton/2026/05/26/right-to-keep-and-bear-
-  ... scanned 300 articles total  OFF-TOPIC [Breitbart 2A]: Putin Orders Air Defense Fixes After Ukrainian Drones Breach Russian Territory
-             https://www.breitbart.com/europe/2026/06/05/putin-vows-to-boost-russia
-  OFF-TOPIC [AmmoLand]: Four Major AR Builders Enter Receivership; Delays Expected
-             https://www.ammoland.com/2026/06/aero-precision-ballistic-advantage-st
-  OFF-TOPIC [Bearing Arms]: DOJ Eyes Philadelphia's Carry Permit Revocation Pattern
-             https://bearingarms.com/camedwards/2026/06/09/doj-civil-rights-divisio
-  OFF-TOPIC [AmmoLand]: Lee Precision Six Pack Pro: Budget Progressive Reloading Press
-             https://www.ammoland.com/2026/06/lee-precision-six-pack-pro-press-prog
-  OFF-TOPIC [Breitbart 2A]: North Carolina Governor's Judges Released Thousands of Felons Before Senate Run
-             https://www.breitbart.com/politics/2026/06/09/senate-candidate-roy-coo
-  OFF-TOPIC [Bearing Arms]: New Mississippi Law Actually Targeting Young Offers Goes Into Effect July 1st
-             https://bearingarms.com/tomknighton/2026/05/26/new-mississippi-law-act
-  ... scanned 400 articles total  ... scanned 417 articles total
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 52
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54ae42c53f576977d9f0deab1287d49
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/adc944089e5489bc909594501877193
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c3c4741dd8f06b1bbbb0a12dea9007
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae60c0ed3d999db4cf10e9138f1d3a2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6dd57716e676a0c11f0aa4e018abc8b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4cbc419a6afaf8a231367f74bdaac97
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3cbc4b5b0a18c3e573afc99e5b29370
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cfd1edf03e48ad6fb289cdfefdd9b32
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/351f53c54e29284037647b4064332dd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1a450fae2753295df6496ed27d37c03
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2fd3dc37299731cbc4e09c728daefb5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e2b8ab890ca477fda2fe69b56040e97
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/abffce712639a77fc92343110bc6aef
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f3ba03a65c2db9ccce8c5567c4085c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85ec7e755259465abfd6835514418be
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ad2a98632c51494cb1b01182b7566f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/50df241fd523ea4db1af67810ae9df6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b92a51409c8f1193b9a04174f2b465
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6796b816a3535fc45442c589e4971d9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/895dc4e3e6972b51a9c501530fa2632
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/34f5ea6befaa825758456aefea98e07
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c395ee17dfa0aad4efc722c01ef537
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7ade22bd65e3335ad282f8698a4f7e9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2246335a33197b626b231df6c57f1c1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4a7b38be00ec09d97aca826507ad2fc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/21ae305ff4d654e10f6ea01f9255e79
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b3c24924a38bb4e6a95d0cd129dc14
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2466ec6bd0bcdf3cd3c902ab08aa914
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dac057a1d4ef49427953bc736561f83
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20fa5f58244d13f6966faa43f77c31e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a4898a829dceebe2263d2d48b27e7a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eec1158c85b9bc07dc19e1a94bc5d9c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d45204788295bb27dfcfcfb98f43668
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c94a587a36cfc2fcd8b92e670f18693
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a11a5d1647c27bfe6aea4384d1c0bcf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/117d32ad46fb9ca02fdbf4fbbf71d3c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/985308191a38bfb98f2a2e573295ee4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d2786f7e7e02f2520c0b04eda94094
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/46c2b7b978054092a6307b74add3900
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8de16006985afa591c6640b5e292ede
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/31f88675899bdd6765eeb5817b273d8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9d931ea38d84a92c0fd380404db2400
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0344e7f07716116aa39087b559875a2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/002cfe4fb206036db61f68d0d6d5de5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a37e4d420ee91e66e7f8f782f805b66
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f8acc5fd7fea79b829bbba40604a474
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8639dbe699b28ce7dcb355c6cb1cf99
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Reman-9mm-124-200-
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Sportsmans-Select-
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/PSA-Sabre-Mixtape-
+  → patched 50
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
 
-────────────────────────────────────────────────────────────
-Scanned:    417 articles
-Off-topic:  20 found
-Deleted:    20 articles
-────────────────────────────────────────────────────────────
+Stats: uploaded=47 fallback=3 failed=0
+
+=== FINAL: total=768 missing_images=2 reddit=0 ===
