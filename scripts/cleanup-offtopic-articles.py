@@ -21,7 +21,7 @@ DRY_RUN = "--delete" not in sys.argv
 FIREARMS_KEYWORDS = [
     "gun","guns","firearm","firearms","pistol","pistols","rifle","rifles",
     "shotgun","shotguns","revolver","handgun","handguns","ammo","ammunition",
-    "caliber","calibre","cartridge","bullet","bullets","suppressor","silencer",
+    "caliber","calibre","cartridge","bullet","bullets","suppressor","silencer","muzzle device","red dot",
     "holster","magazine","trigger","barrel","receiver","suppressor",
     "second amendment","2nd amendment","2a","gun rights","gun control","gun law",
     "gun bill","gun ban","assault weapon","nra","saf","fpc","goa",

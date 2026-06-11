@@ -261,7 +261,7 @@ const FIREARMS_KEYWORDS = [
   // Core terms
   'gun','guns','firearm','firearms','pistol','pistols','rifle','rifles',
   'shotgun','shotguns','revolver','handgun','handguns','ammo','ammunition',
-  'caliber','calibre','cartridge','bullet','bullets','suppressor','silencer',
+  'caliber','calibre','cartridge','bullet','bullets','suppressor','silencer','muzzle device','red dot',
   'holster','magazine','clip','trigger','barrel','receiver','frame','slide',
   // 2A / legal
   'second amendment','2nd amendment','2a','gun rights','gun control','gun law',
