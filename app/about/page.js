@@ -287,6 +287,136 @@ export default function AboutPage() {
         </div>
       </div>
 
+      {/* ── APPAREL SHOP ─────────────────────────────────────────────── */}
+      <div style={{
+        background: '#0a0b0e',
+        borderTop: '1px solid #1f2937',
+        borderBottom: '1px solid #1f2937',
+        padding: '72px 0',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Gold diagonal texture stripe */}
+        <div aria-hidden style={{
+          position: 'absolute', top: 0, right: 0,
+          width: '40%', height: '100%',
+          background: 'linear-gradient(135deg, transparent 40%, #C8922A08 100%)',
+          pointerEvents: 'none',
+        }} />
+
+        <div className="container" style={{ maxWidth: 860, position: 'relative' }}>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '48px',
+            alignItems: 'center',
+          }}>
+
+            {/* Left copy */}
+            <div>
+              <div style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px', letterSpacing: '0.2em',
+                color: '#C8922A', marginBottom: '16px',
+                textTransform: 'uppercase',
+              }}>&#9677; &nbsp;Down Range Co. Apparel</div>
+
+              <h2 style={{
+                fontFamily: "'Bebas Neue', cursive",
+                fontSize: 'clamp(2.2rem, 5vw, 3.4rem)',
+                lineHeight: 0.97,
+                letterSpacing: '0.03em',
+                color: '#F0EDE6',
+                margin: '0 0 20px',
+              }}>
+                WEAR WHAT<br />
+                <span style={{ color: '#C8922A' }}>YOU BELIEVE.</span>
+              </h2>
+
+              <p style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '14px', color: '#6B7280',
+                lineHeight: 1.8, marginBottom: '14px',
+                textAlign: 'justify',
+              }}>
+                The Second Amendment is not just something you read about.
+                It is something you carry, practice, and defend every day.
+                Down Range Co. apparel is built for the people who live it —
+                hunters, carriers, veterans, and everyone who refuses to be
+                unarmed or uninformed.
+              </p>
+              <p style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '14px', color: '#6B7280',
+                lineHeight: 1.8, marginBottom: '28px',
+                textAlign: 'justify',
+              }}>
+                Every design is a statement. Not a slogan. If you believe in
+                the right, wear the right.
+              </p>
+
+              <a
+                href="https://shop.downrangeco.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                style={{
+                  display: 'inline-block',
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '12px', letterSpacing: '0.14em',
+                  background: '#C8922A', color: '#09090B',
+                  padding: '13px 28px', textDecoration: 'none',
+                  fontWeight: 700, textTransform: 'uppercase',
+                }}
+              >
+                Shop the Collection
+              </a>
+            </div>
+
+            {/* Right product tags */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+              {[
+                { tag: 'HUNTERS',      line: 'Field-ready designs for the opening day crowd.' },
+                { tag: 'CARRIERS',     line: 'For the ones who take the responsibility seriously.' },
+                { tag: 'VETERANS',     line: 'Built with the respect the service deserves.' },
+                { tag: '2A PATRIOTS',  line: 'Because some rights are worth putting on your chest.' },
+              ].map(({ tag, line }) => (
+                <a
+                  key={tag}
+                  href="https://shop.downrangeco.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  style={{
+                    display: 'flex', alignItems: 'center', gap: '16px',
+                    background: '#0d0e12',
+                    border: '1px solid #1f2937',
+                    padding: '16px 20px',
+                    textDecoration: 'none',
+                  }}
+                >
+                  <div style={{
+                    fontFamily: "'Bebas Neue', cursive",
+                    fontSize: '0.85rem', letterSpacing: '0.15em',
+                    color: '#C8922A', minWidth: 100,
+                    textTransform: 'uppercase',
+                  }}>{tag}</div>
+                  <div style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '11px', color: '#4B5563',
+                    lineHeight: 1.5,
+                  }}>{line}</div>
+                  <div style={{
+                    marginLeft: 'auto', flexShrink: 0,
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '11px', color: '#374151',
+                  }}>&#8594;</div>
+                </a>
+              ))}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
       {/* ── TRUTH IN NUMBERS ─────────────────────────────────────────── */}
       <div style={{
         background: '#0a0b0e',
