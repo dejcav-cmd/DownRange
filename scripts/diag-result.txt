@@ -1,26 +1,30 @@
-Total: 734  HasImage: 668  Missing: 66
+=== MISSING DOCS FULL URLs ===
+  FVNP6r5cO7N0o7HVucrGfX | created=2026-06-11T00:00:33
+  url: https://gun.deals/product/lmt-defense-mlc-mars-556-nato-223-rem-16-30rd-semi-auto-rifle-black-238999-see-price-cart-fr
+  FVNP6r5cO7N0o7HVucrGiA | created=2026-06-11T00:00:33
+  url: https://gun.deals/product/cz-usa-bobwhite-g2-20-ga-3-28-side-side-shotgun-gloss-black-walnut-59723
+  FVNP6r5cO7N0o7HVucrGkn | created=2026-06-11T00:00:33
+  url: https://gun.deals/product/buffalo-cartridge-co-9mm-brg9-elite-4-barrel-grip-safety-trigger-safety-ambi-mag-release-2-1
+  FVNP6r5cO7N0o7HVucrGnQ | created=2026-06-11T00:00:33
+  url: https://gun.deals/product/holosun-3moa-shake-awake-red-dot-pistol-sight-16999-free-shipping-0
+  FVNP6r5cO7N0o7HVucrGq3 | created=2026-06-11T00:00:33
+  url: https://gun.deals/product/blazer-handgun-9mm-115gr-jacketed-hollow-point-50-rounds-2159
 
---- Sample imageUrls (first 8) ---
-  4smu7Ks5k1PWjXUh5Dvdx1: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/bc17444a129aa23ffcbe1706e950
-  4smu7Ks5k1PWjXUh5Dvdzs: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/hk-hkhk45-81001111-2__14064.
-  4smu7Ks5k1PWjXUh5Dve2j: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/IMG_0461.JPG
-  4smu7Ks5k1PWjXUh5Dve5a: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/daniel-defense-ddm4a1-rii-5-
-  4smu7Ks5k1PWjXUh5Dve8R: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screenshot%202024-12-31%20at
-  4smu7Ks5k1PWjXUh5DveBI: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/86711_source_1777567199.jpg
-  4smu7Ks5k1PWjXUh5DveE9: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/1_1.jpg
-  4smu7Ks5k1PWjXUh5DveH0: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/glock_g48_v_9mm_aut.jpg
+=== SCRAPE TESTS ===
 
-Docs with proxy URL stored: 0
+Testing: https://gun.deals/product/lmt-defense-mlc-mars-556-nato-223-rem-16-30rd-semi-auto-rifle-black-238999-see-price-cart-fr
+HTTP 200, len=273143
+og:image: FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/LMT-Defense-MLC-MARS.jpg
 
---- Sample MISSING imageUrl (first 5) ---
-  FVNP6r5cO7N0o7HVucrGfX [gun.deals] https://gun.deals/product/lmt-defense-mlc-mars-556-nato-223-rem-16-30r
-  FVNP6r5cO7N0o7HVucrGiA [gun.deals] https://gun.deals/product/cz-usa-bobwhite-g2-20-ga-3-28-side-side-shot
-  FVNP6r5cO7N0o7HVucrGkn [gun.deals] https://gun.deals/product/buffalo-cartridge-co-9mm-brg9-elite-4-barrel
-  FVNP6r5cO7N0o7HVucrGnQ [gun.deals] https://gun.deals/product/holosun-3moa-shake-awake-red-dot-pistol-sigh
-  FVNP6r5cO7N0o7HVucrGq3 [gun.deals] https://gun.deals/product/blazer-handgun-9mm-115gr-jacketed-hollow-poi
+Testing: https://gun.deals/product/cz-usa-bobwhite-g2-20-ga-3-28-side-side-shotgun-gloss-black-walnut-59723
+HTTP 200, len=460217
+og:image: FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/CZ-USA-Bobwhite-G2.jpg
 
---- Testing /api/img-proxy on prod ---
-Test URL: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/bc17444a129aa23ffcbe1706e950
-Proxy HTTP 200, Content-Type: image/webp, Length: ?
+Testing: https://gun.deals/product/buffalo-cartridge-co-9mm-brg9-elite-4-barrel-grip-safety-trigger-safety-ambi-mag-release-2-1
+HTTP 200, len=311739
+og:image: FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screenshot%202023-09-28%20at
+
+=== CRON RSS TEST ===
+RSS ERROR: HTTP Error 404: Not Found
 
 DONE
