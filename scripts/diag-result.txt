@@ -1,12 +1,48 @@
-Found 12 Reddit-sourced gunDeal docs to delete
-  gd-02dd79d3c4b2ccd3ecf8be219f3b176b [GunDeals Reddit] Ruger 10/22 110-Round Drum Magazine Drops to $70
-  gd-2897589c786ebe2498f6c29c606fb7a4 [AmmoLand] 660K Suppressors Ordered in Four Months After Tax Stamp Elim
-  gd-2afdf5609cdbd70b7eac62198e9b9c02 [GunDeals Reddit] Smith & Wesson M&P 9 2.0 Drops to $319.99—Law Enforcement Tr
-  gd-34538837d1c81a0d3a1653079c68704b [GunDeals Reddit] KAC USMC Rear Flip Sight Drops to $64.99—Stock Moving Fast
-  gd-43cc535de0450335236839b50ecce114 [GunDeals Reddit] Primary Arms CLx Red Dot Hits $109.95 — Mid-Week Optics & Pa
-  ... and 7 more
-  Deleted batch 1: 12 docs
+=== ALL gunDeal SOURCES ===
+Total: 699
+  gun.deals: 696
+  AmmoLand: 3
 
-Deleted: 12  Errors: 0
-Reddit remaining: 0  Total deals: 691
+=== REDDIT.COM externalUrl: 0 ===
+
+=== MISSING imageUrl: 17 ===
+  gun.deals: 14
+  AmmoLand: 3
+
+=== NEWEST 10 MISSING IMAGE DOCS ===
+  SKDVlyMd9FiV3xrtgUtOzr | 2026-06-11T03:00:15 | [gun.deals] | https://gun.deals/product/sar-usa-cm9-9mm-pistol-blk-cm9st-21999
+  SKDVlyMd9FiV3xrtgUtP0Z | 2026-06-11T03:00:15 | [gun.deals] | https://gun.deals/product/trijicon-rmr-type-2-matte-black-1x-325-moa-i
+  SKDVlyMd9FiV3xrtgUtP1H | 2026-06-11T03:00:15 | [gun.deals] | https://gun.deals/product/fn-usa-510-tactical-10mm-auto-471-22-rds-859
+  SKDVlyMd9FiV3xrtgUtP1z | 2026-06-11T03:00:15 | [gun.deals] | https://gun.deals/product/standard-manufacturing-dp-12-12-ga-1888-barr
+  SKDVlyMd9FiV3xrtgUtP2h | 2026-06-11T03:00:15 | [gun.deals] | https://gun.deals/product/hyperion-munitions-veteran-ammo-300-blackout
+  gd-ed014e2e4e5713aee42c8b031834ffb2 | 2026-06-11T02:18:00 | [AmmoLand] | https://www.ammoland.com/2026/06/sportsmans-select-reman-subsonic-9mm-
+  gd-5713762ebe295032c16a0b81958dc584 | 2026-06-11T02:17:59 | [AmmoLand] | https://www.ammoland.com/2026/06/sportsmans-select-remanufactured-223-
+  gd-2897589c786ebe2498f6c29c606fb7a4 | 2026-06-11T02:17:22 | [AmmoLand] | https://www.ammoland.com/2026/06/suppressor-demand-explodes-200-tax-st
+  FVNP6r5cO7N0o7HVudoX2R | 2026-06-11T02:00:41 | [gun.deals] | https://gun.deals/product/citadel-coach-20-ga-side-side-shotgun-w-185-
+  FVNP6r5cO7N0o7HVudoX54 | 2026-06-11T02:00:41 | [gun.deals] | https://gun.deals/product/canik-mete-mc9-prime-9mm-364-17rd-bk-50471-a
+
+=== STEP 1: DELETE 0 REDDIT DOCS ===
+
+=== STEP 2: FIX 14 MISSING GUN.DEALS IMAGES ===
+gun.deals docs needing images: 14
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff64023f7b7abeeed9253d7cb187f8b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6eb8181e0c4acfda711c174663cfea0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7277a52b5f065ed92f2c76dbfb410a5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f303064660b50b1254ab7afe2732d02
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3c644fd37423d33fe0c8fc49974870
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b21875c0da4bac6506cd618e0de25d7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bad25e31fc7022b1877b5ecd83d6b1c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e38cee8ca3727a683b8d3d1ccf79f6e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/21d2f902becc26e4750aed6ed83b3cf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20bdda999f73a4cd349f23114dc6b11
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b509474c3cca20c4ce3718c84eec873
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f318ec3567b6040c51a6972d1bb92f9
+  ✗ scrape: https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
+  ✗ scrape: https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
+  → patched final 12
+
+Stats: scraped=12 uploaded=12 fallback=0 failed=2
+
+=== FINAL STATE ===
+Total: 699  Missing images: 5  Reddit docs: 0
 DONE
