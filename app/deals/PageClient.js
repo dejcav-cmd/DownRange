@@ -195,7 +195,6 @@ function DealsInner() {
 
   const sources = meta
     ? [meta.sources?.sanity   > 0 && `${meta.sources.sanity} curated`,
-       meta.sources?.reddit   > 0 && `r/gundeals`,
        meta.sources?.gunDeals > 0 && `gun.deals`]
         .filter(Boolean).join(' · ')
     : null
@@ -383,11 +382,9 @@ function DealsInner() {
             {/* Footer */}
             <div style={{ marginTop:16, padding:'14px 18px', background:'var(--bg2)', border:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:8 }}>
               <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563', lineHeight:1.6 }}>
-                Deals sourced from DownRange curated picks, r/gundeals, and gun.deals. Always verify pricing at the retailer before purchasing.
+                Deals sourced from DownRange curated picks and gun.deals. Always verify pricing at the retailer before purchasing.
               </span>
               <div style={{ display:'flex', gap:12, flexShrink:0 }}>
-                <a href="https://www.reddit.com/r/gundeals" target="_blank" rel="noreferrer"
-                  style={{ fontFamily:MONO, fontSize:10, color:'#FF4500', textDecoration:'none' }}>r/gundeals ↗</a>
                 <a href="https://gun.deals" target="_blank" rel="noreferrer"
                   style={{ fontFamily:MONO, fontSize:10, color:'#FF6314', textDecoration:'none' }}>gun.deals ↗</a>
               </div>
