@@ -1,17 +1,51 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+[DRY RUN] Scanning for off-topic newsArticles...
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/93e8a381a57cab7dab513618fccaa1f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b92b587b50e05654bfd2c60a2f3a4c5
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Reman-9mm-124-200-
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Sportsmans-Select-
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/PSA-Sabre-Mixtape-
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 5
+  OFF-TOPIC [Breitbart 2A]: Fetterman Blocks Blanche AG Nomination Vote Over Fitness Concerns
+             https://www.breitbart.com/clips/2026/06/05/fetterman-blanche-not-someo
+  OFF-TOPIC [Breitbart 2A]: Trump Questions Smith's Fitness for 2028 Run, Attacks IQ Directly
+             https://www.breitbart.com/sports/2026/06/09/trump-blasts-stephen-a-smi
+  OFF-TOPIC [Breitbart 2A]: California's 40th District: Two Republicans Advance to General Election
+             https://www.breitbart.com/midterm-election/2026/06/07/californias-40th
+  OFF-TOPIC [Breitbart 2A]: Trump Claims Iran Directly Sought End to U.S. Strikes This Week
+             https://www.breitbart.com/politics/2026/06/10/trump-iranian-officials-
+  ... scanned 100 articles total  OFF-TOPIC [Bearing Arms]: Virginia Judge May Hold State Police Chief in Contempt Over Background Checks
+             https://bearingarms.com/camedwards/2026/06/02/virginia-judge-set-to-he
+  OFF-TOPIC [Bearing Arms]: SCOTUS Passes on 'Come and Take It' Hat Case, School Ban Stands
+             https://bearingarms.com/camedwards/2026/06/08/first-amendment-challeng
+  OFF-TOPIC [Bearing Arms]: The New Republic 'Unnerved' By Variation of Policy They've Loved for Decades
+             https://bearingarms.com/tomknighton/2026/06/08/the-new-republic-unnerv
+  ... scanned 200 articles total  OFF-TOPIC [Breitbart 2A]: Belfast Violence Exposes UK's Inability to Protect Citizens from Blade Attacks
+             https://www.breitbart.com/europe/2026/06/10/anti-beheading-rioters-wil
+  OFF-TOPIC [Breitbart 2A]: Trump Administration Weighs Using Iran's Frozen Billions for Regional Defense
+             https://www.breitbart.com/politics/2026/06/07/u-s-weighs-using-frozen-
+  OFF-TOPIC [Breitbart 2A]: Pence: Cop Attackers from January 6 Get Zero Taxpayer Money
+             https://www.breitbart.com/clips/2026/06/06/pence-anyone-who-assaulted-
+  OFF-TOPIC [Breitbart 2A]: Northern Ireland Descends Into Civil Unrest After Asylum Seeker Attack
+             https://www.breitbart.com/europe/2026/06/10/chaos-continues-in-norther
+  OFF-TOPIC [Breitbart 2A]: New Jersey Republicans Find Hundreds of Noncitizens Voting in State Elections
+             https://www.breitbart.com/politics/2026/06/08/report-new-jersey-republ
+  OFF-TOPIC [Breitbart 2A]: Trump Authorizes Fresh Iran Strikes Over Failed Peace Negotiations
+             https://www.breitbart.com/politics/2026/06/10/u-s-hits-iran-again-trum
+  ... scanned 300 articles total  OFF-TOPIC [Bearing Arms]: Right to Keep and Bear Arms Not Exclusively an American Right
+             https://bearingarms.com/tomknighton/2026/05/26/right-to-keep-and-bear-
+  OFF-TOPIC [Bearing Arms]: New Hampshire GOP Drops Campus Carry, Targets Wider Carry Rights Instead
+             https://bearingarms.com/camedwards/2026/05/30/after-campus-carry-debac
+  OFF-TOPIC [Breitbart 2A]: Putin Orders Air Defense Fixes After Ukrainian Drones Breach Russian Territory
+             https://www.breitbart.com/europe/2026/06/05/putin-vows-to-boost-russia
+  OFF-TOPIC [AmmoLand]: Four Major AR Builders Enter Receivership; Delays Expected
+             https://www.ammoland.com/2026/06/aero-precision-ballistic-advantage-st
+  OFF-TOPIC [Bearing Arms]: DOJ Eyes Philadelphia's Carry Permit Revocation Pattern
+             https://bearingarms.com/camedwards/2026/06/09/doj-civil-rights-divisio
+  OFF-TOPIC [AmmoLand]: Lee Precision Six Pack Pro: Budget Progressive Reloading Press
+             https://www.ammoland.com/2026/06/lee-precision-six-pack-pro-press-prog
+  OFF-TOPIC [Breitbart 2A]: North Carolina Governor's Judges Released Thousands of Felons Before Senate Run
+             https://www.breitbart.com/politics/2026/06/09/senate-candidate-roy-coo
+  OFF-TOPIC [Bearing Arms]: New Mississippi Law Actually Targeting Young Offers Goes Into Effect July 1st
+             https://bearingarms.com/tomknighton/2026/05/26/new-mississippi-law-act
+  ... scanned 400 articles total  ... scanned 437 articles total
 
-Stats: uploaded=2 fallback=3 failed=0
-
-=== FINAL: total=721 missing_images=2 reddit=0 ===
+────────────────────────────────────────────────────────────
+Scanned:    437 articles
+Off-topic:  21 found
+Action:     DRY RUN — pass --delete to actually remove them
+────────────────────────────────────────────────────────────
