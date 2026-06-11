@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { reportCronRun } from '@/lib/cronReporter'
+import { sendSMSAlert, shouldAlertConsecutive } from '@/lib/smsAlert'
 import { logPull, STATUS } from '@/lib/pullLogger'
 export const maxDuration = 300  // 5 minutes — required for feed processing
 
@@ -143,6 +144,15 @@ export async function GET(req) {
       body: JSON.stringify({ source: feed, sourceLabel: `Agent: ${feed}`, status: 'failed', error: err.message }),
     }).catch(() => {})
     await reportCronRun(feed, { status:'failed', ms:Date.now()-t, error:err.message })
+    // SMS alert on 3 consecutive failures for critical feeds
+    const CRITICAL_FEEDS = ['news', 'laws', 'gun-deals']
+    if (CRITICAL_FEEDS.includes(feed)) {
+      const shouldAlert = await shouldAlertConsecutive(feed, 3).catch(() => false)
+      if (shouldAlert) {
+        const smsBody = `DownRange feed "${feed}" failed 3x in a row: ${err.message.slice(0, 100)}`
+        sendSMSAlert(smsBody, { jobId: feed, critical: feed === 'news' }).catch(() => {})
+      }
+    }
     logPull({
       sourceId: feed,
       status:   STATUS.FAILED,

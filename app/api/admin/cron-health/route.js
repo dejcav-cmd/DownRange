@@ -8,6 +8,7 @@ export const maxDuration = 30
  */
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
+import { sendSMSAlert } from '@/lib/smsAlert'
 
 const ALERT_EMAIL = 'dejcav@gmail.com'
 const ALERT_KEY   = 'dr:cron-health-last-status'
@@ -149,6 +150,10 @@ export async function GET() {
   // Send email alert if degraded or broken (rate-limited via Redis)
   if (overallStatus === 'BROKEN' || overallStatus === 'DEGRADED') {
     sendHealthAlert(issues, overallStatus).catch(() => {})
+    // SMS: BROKEN bypasses quiet hours, DEGRADED respects them
+    const topIssue = issues[0]?.msg?.slice(0, 110) ?? 'Unknown issue'
+    const smsBody = `DownRange ${overallStatus}: ${topIssue}`
+    sendSMSAlert(smsBody, { jobId: 'cron-health', critical: overallStatus === 'BROKEN' }).catch(() => {})
   }
 
   // Log the health check run itself

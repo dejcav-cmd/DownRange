@@ -32,6 +32,7 @@ const DealsManager          = L(() => import('../../components/admin/DealsManage
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
 const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
 const SourceManager         = L(() => import('../../components/admin/SourceManager'))
+const SMSAlertsPanel        = L(() => import('../../components/admin/SMSAlertsPanel'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -82,7 +83,8 @@ const NAV = [
     panels: [
       { id:'overview',     label:'Overview',         icon:'◈',  badge:null },
       { id:'crons',        label:'Cron Jobs',        icon:'⏱', badge:null },
-      { id:'sysalerts',    label:'Alerts',           icon:'🚨', badge:null },
+      { id:'smsalerts',    label:'SMS Alerts',       icon:'📱', badge:'new' },
+      { id:'sysalerts',    label:'Cron Alerts',      icon:'🚨', badge:null },
       { id:'agents',       label:'Content Agents',   icon:'🤖', badge:null },
       { id:'sources',      label:'Source Manager',   icon:'📡', badge:'new' },
       { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
@@ -2922,6 +2924,7 @@ export default function AdminPage() {
             {/* ── SYSTEM ── */}
             {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='crons'     && <CronDashboard adminKey={adminKey} />}
+            {panel==='smsalerts' && <SMSAlertsPanel adminKey={adminKey} />}
             {panel==='sysalerts' && <SystemAlertsPanel adminKey={adminKey} />}
             {panel==='sources' && <SourceManager adminKey={adminKey} />}
             {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
