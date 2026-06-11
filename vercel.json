@@ -41,10 +41,6 @@
       "schedule": "0 1 * * *"
     },
     {
-      "path": "/api/admin/cron-health",
-      "schedule": "*/30 * * * *"
-    },
-    {
       "path": "/api/agent?feed=goa",
       "schedule": "0 */2 * * *"
     },
@@ -138,7 +134,7 @@
     },
     {
       "path": "/api/cron/quality-rewrite",
-      "schedule": "0 * * * *"
+      "schedule": "30 */2 * * *"
     },
     {
       "path": "/api/cron/image-fix",
