@@ -149,7 +149,7 @@ export async function GET(req) {
     if (CRITICAL_FEEDS.includes(feed)) {
       const shouldAlert = await shouldAlertConsecutive(feed, 3).catch(() => false)
       if (shouldAlert) {
-        const smsBody = `DownRange feed "${feed}" failed 3x in a row: ${err.message.slice(0, 100)}`
+        const smsBody = `DownRange-News feed "${feed}" failed 3x in a row: ${err.message.slice(0, 100)}`
         sendSMSAlert(smsBody, { jobId: feed, critical: feed === 'news' }).catch(() => {})
       }
     }

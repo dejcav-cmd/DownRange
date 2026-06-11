@@ -152,7 +152,7 @@ export async function GET() {
     sendHealthAlert(issues, overallStatus).catch(() => {})
     // SMS: BROKEN bypasses quiet hours, DEGRADED respects them
     const topIssue = issues[0]?.msg?.slice(0, 110) ?? 'Unknown issue'
-    const smsBody = `DownRange ${overallStatus}: ${topIssue}`
+    const smsBody = `DownRange-News ${overallStatus}: ${topIssue}`
     sendSMSAlert(smsBody, { jobId: 'cron-health', critical: overallStatus === 'BROKEN' }).catch(() => {})
   }
 

@@ -22,7 +22,7 @@ function hashKey(k) {
 
 function html(body, status = 200) {
   return new NextResponse(
-    `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SMS Diagnostic — DownRange</title>
+    `<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>SMS Diagnostic — DownRange-News</title>
     <style>*{box-sizing:border-box;margin:0;padding:0}body{font:14px/1.7 monospace;padding:32px 24px;background:#09090B;color:#E5E5E5;max-width:640px}
     h2{font:900 22px 'Barlow Condensed',sans-serif;color:#C8922A;letter-spacing:.1em;margin-bottom:4px;text-transform:uppercase}
     h3{font:700 13px sans-serif;color:#e0a830;margin:16px 0 8px;letter-spacing:.06em;text-transform:uppercase}
@@ -62,7 +62,7 @@ export async function GET(req) {
         </p></div>`
 
   return html(`
-    <h2>⬡ DownRange SMS Diagnostic</h2>
+    <h2>⬡ DownRange-News SMS Diagnostic</h2>
     <p style="font-size:11px;color:#4b5563;margin-bottom:16px">downrangeco.com · news portal</p>
     ${authSection}
     <h3>Twilio Configuration</h3>
@@ -99,12 +99,12 @@ export async function POST(req) {
   if (key !== ADMIN_KEY) {
     const accept = req.headers.get('accept') ?? ''
     if (accept.includes('text/html') || ct.includes('form')) {
-      return html(`<h2>⬡ DownRange SMS Diagnostic</h2><p class="bad">Wrong admin key. <a href="/api/admin/test-sms">Try again</a></p>`, 401)
+      return html(`<h2>⬡ DownRange-News SMS Diagnostic</h2><p class="bad">Wrong admin key. <a href="/api/admin/test-sms">Try again</a></p>`, 401)
     }
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  const msg    = `🟢 DownRange Portal — SMS test OK\n${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PT`
+  const msg    = `🟢 DownRange-News — SMS test OK\n${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PT`
   const result = await sendSMSAlert(msg, { jobId: 'sms-test', bypassCooldown: true, critical: true })
 
   const accept = req.headers.get('accept') ?? ''
