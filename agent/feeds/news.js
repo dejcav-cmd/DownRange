@@ -251,6 +251,47 @@ function isAllowedUSUrl(url) {
   } catch { return false }
 }
 
+// ── TOPIC RELEVANCE FILTER ────────────────────────────────────────────────────
+// Hard keyword gate — must match at least one firearms/2A term in title+description.
+// Runs BEFORE AI to avoid paying tokens on off-topic articles.
+// This is the primary defense against bleed from political feeds (Breitbart, Daily Caller, etc.)
+// that tag 2A articles but also publish general news.
+
+const FIREARMS_KEYWORDS = [
+  // Core terms
+  'gun','guns','firearm','firearms','pistol','pistols','rifle','rifles',
+  'shotgun','shotguns','revolver','handgun','handguns','ammo','ammunition',
+  'caliber','calibre','cartridge','bullet','bullets','suppressor','silencer',
+  'holster','magazine','clip','trigger','barrel','receiver','frame','slide',
+  // 2A / legal
+  'second amendment','2nd amendment','2a','gun rights','gun control','gun law',
+  'gun bill','gun ban','assault weapon','nra','nra-ila','saf','fpc','goa',
+  'gun owners','concealed carry','ccw','shall-issue','may-issue','constitutional carry',
+  'red flag','atf','batfe','background check','nics','ffl','4473',
+  'bruen','heller','mcdonald','chevron doctrine','ghost gun','80%',
+  // Products / brands
+  'glock','sig sauer','smith & wesson','smith and wesson','ruger','colt',
+  'springfield','beretta','fn','hk','walther','taurus','mossberg','remington',
+  'winchester','hornady','federal premium','speer','nosler','ar-15','ar15',
+  'ak-47','ak47','1911','9mm','45 acp','.357','.44 mag','.308','5.56',
+  // Activities
+  'shooting','range','hunt','hunting','hunter','bow hunting','archery',
+  'self-defense','self defense','home defense','concealed','open carry',
+  // Dealers / industry
+  'gun store','gun shop','gun dealer','gun sale','gun show','gunsmith',
+]
+
+// Build a single regex for fast matching
+const FIREARMS_REGEX = new RegExp(
+  '\\b(' + FIREARMS_KEYWORDS.map(k => k.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')).join('|') + ')\\b',
+  'i'
+)
+
+function isFirearmsRelevant(item) {
+  const text = ((item.title || '') + ' ' + (item.description || '')).slice(0, 600)
+  return FIREARMS_REGEX.test(text)
+}
+
 async function processNewsItem(item) {
   if (!item.title || !item.url) return null
   if (isDuplicate(item.url)) return
@@ -318,6 +359,15 @@ async function processNewsItem(item) {
   // Deals feeds always pass — pre-vetted sources, domain allowlist may not cover them
   if (item.feedCat !== 'deals' && !fromKnownRSS && !isAllowedUSUrl(item.url)) {
     console.log('[NEWS] BLOCKED non-US/unknown source:', item.source, item.url?.slice(0,60))
+    return
+  }
+
+  // ── GATE 4: Topic relevance — must contain firearms/2A keywords ──────────
+  // Catches off-topic bleed from political/general feeds (Breitbart, Daily Caller,
+  // Townhall, National Review, etc.) that tag 2A articles but also publish
+  // general news. Deals feeds skip this check (product titles often lack keywords).
+  if (item.feedCat !== 'deals' && !isFirearmsRelevant(item)) {
+    console.log('[NEWS] BLOCKED off-topic:', item.source, '"' + (item.title || '').slice(0, 60) + '"')
     return
   }
 

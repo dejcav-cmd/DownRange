@@ -1,0 +1,30 @@
+name: Cleanup Off-Topic Articles
+on:
+  workflow_dispatch:
+    inputs:
+      delete:
+        description: 'Set to "yes" to actually delete (default is dry-run)'
+        required: false
+        default: 'no'
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Run off-topic cleanup
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.delete }}" = "yes" ]; then
+            python3 scripts/cleanup-offtopic-articles.py --delete | tee scripts/diag-result.txt
+          else
+            python3 scripts/cleanup-offtopic-articles.py | tee scripts/diag-result.txt
+          fi
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "cleanup offtopic articles result" && git push
