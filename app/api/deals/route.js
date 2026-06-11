@@ -92,53 +92,6 @@ async function fetchSanityDeals() {
   }
 }
 
-// ── SOURCE 2: r/gundeals (live Reddit) ───────────────────────────────────────
-async function fetchRedditDeals() {
-  const results = []
-  const urls = [
-    'https://old.reddit.com/r/gundeals/hot.json?limit=50&raw_json=1',
-    'https://old.reddit.com/r/gundeals/new.json?limit=25&raw_json=1',
-    'https://old.reddit.com/r/ammo/hot.json?limit=20&raw_json=1',
-  ]
-  for (const url of urls) {
-    try {
-      const res = await fetch(url, {
-        headers: { 'User-Agent': 'DownRange/2.0 (firearms platform; contact@downrangeco.com)' },
-        next: { revalidate: 0 },
-        signal: AbortSignal.timeout(6000),
-      })
-      if (!res.ok) continue
-      const data  = await res.json()
-      const posts = data?.data?.children || []
-      for (const { data: p } of posts) {
-        if (p.stickied || !p.title || p.score < 5) continue
-        const flair   = p.link_flair_text || 'Deals'
-        const preview = p.preview?.images?.[0]
-        const imgUrl  = preview?.resolutions?.find(r => r.width >= 400)?.url?.replace(/&amp;/g,'&')
-                      || preview?.source?.url?.replace(/&amp;/g,'&')
-                      || (p.thumbnail?.startsWith('http') ? p.thumbnail : null)
-        results.push({
-          id:        'r-' + p.id,
-          title:     p.title,
-          url:       p.url?.startsWith('http') ? p.url : `https://reddit.com${p.permalink}`,
-          permalink: `https://reddit.com${p.permalink}`,
-          score:     p.score,
-          comments:  p.num_comments,
-          created:   p.created_utc * 1000,
-          flair,
-          flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
-          source:    'r/gundeals',
-          domain:    p.domain,
-          imageUrl:  imgUrl,
-          price:     extractPrice(p.title),
-        })
-      }
-      if (results.length > 0) break
-    } catch { /* Reddit unreachable */ }
-  }
-  return results
-}
-
 
 // ── OG image scraper (for live RSS items without stored images) ───────────────
 // Full browser UA — confirmed working against gun.deals from Vercel (HTTP 200, OG scraped)
@@ -240,33 +193,17 @@ export async function GET(request) {
   const catFilter = searchParams.get('cat') || null
   const sortBy    = searchParams.get('sort') || 'hot'
 
-  // Fetch all sources in parallel
-  // NOTE: fetchGunDeals (live RSS) excluded — all items stored in Sanity with images via hourly cron
-  const [sanityDeals, redditDeals] = await Promise.all([
-    fetchSanityDeals(),
-    fetchRedditDeals(),
-  ])
-  const gunDealsItems = []  // Served from Sanity with guaranteed images
+  // Fetch from Sanity (all deals stored with images via hourly cron)
+  const sanityDeals = await fetchSanityDeals()
+  const gunDealsItems = []
 
-  // Build URL → imageUrl map from Sanity for cross-referencing live RSS items
-  const sanityImageMap = new Map(
-    sanityDeals
-      .filter(d => d.imageUrl && d.url)
-      .map(d => [d.url, d.imageUrl])
-  )
-
-  // Merge — Sanity first, then live sources; dedup by URL
-  // Enrich live RSS items with Sanity images when URL matches
+  // Dedup by URL
   const seen = new Set()
   const deals = []
-  for (const d of [...sanityDeals, ...redditDeals, ...gunDealsItems]) {
+  for (const d of [...sanityDeals, ...gunDealsItems]) {
     const key = d.url
     if (seen.has(key)) continue
     seen.add(key)
-    // If this live item has no image but Sanity has one for this URL, use it
-    if (!d.imageUrl && sanityImageMap.has(key)) {
-      d.imageUrl = sanityImageMap.get(key)
-    }
     deals.push(d)
   }
 
@@ -285,10 +222,9 @@ export async function GET(request) {
 
   const sources = {
     sanity:   sanityDeals.length,
-    reddit:   redditDeals.length,
     gunDeals: gunDealsItems.length,
   }
-  const live = redditDeals.length > 0 || gunDealsItems.length > 0
+  const live = gunDealsItems.length > 0
 
   return Response.json({
     deals: filtered,
