@@ -43,6 +43,20 @@ function extractPrice(title = '') {
   return m ? m[0] : null
 }
 
+// ── IMAGE PROXY ───────────────────────────────────────────────────────────────
+// gun.deals uses Cloudflare Image Resizing (cdn-cgi/image/*) which blocks hotlinking.
+// Rewrite those URLs through our server-side proxy so the browser gets the image.
+function proxyImage(url) {
+  if (!url) return null
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '')
+    if (host === 'gun.deals') {
+      return `/api/img-proxy?url=${encodeURIComponent(url)}`
+    }
+  } catch { /* ignore */ }
+  return url
+}
+
 // ── SOURCE 1: Sanity gunDeal docs ────────────────────────────────────────────
 async function fetchSanityDeals() {
   try {
@@ -54,7 +68,7 @@ async function fetchSanityDeals() {
     return articles.map(a => {
       const title  = a.title || ''
       const flair  = inferFlair(title)
-      const imgUrl = a.imageUrl || null
+      const imgUrl = proxyImage(a.imageUrl)
       return {
         id:        a._id,
         title,
