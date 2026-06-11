@@ -48,99 +48,422 @@ const ABOUT_SCHEMA = {
   },
 }
 
+const MANIFESTO_LINES = [
+  'We believe the Second Amendment is not a privilege.',
+  'It is not a hobby. It is not a talking point.',
+  'It is a right — individual, fundamental, and non-negotiable.',
+  'And rights require intelligence to defend.',
+]
+
+const PILLARS = [
+  {
+    number: '01',
+    title: 'Relentless Coverage',
+    body: 'The ATF doesn\'t take weekends off. Neither do we. DownRange monitors 50+ sources — RSS feeds, Congress.gov, LegiScan, manufacturer press lines, SCOTUS dockets — and surfaces what matters within the hour it breaks.',
+    accent: 'Every 15 minutes. All day. Every day.',
+  },
+  {
+    number: '02',
+    title: 'Your State. Your Laws.',
+    body: 'A mag ban in California is not your problem if you\'re in Texas. DownRange gives you the intelligence that\'s relevant to where you live, carry, and hunt — 50-state law profiles, live bill tracking, ATF rule updates, and SCOTUS case analysis.',
+    accent: 'All 50 states. All the time.',
+  },
+  {
+    number: '03',
+    title: 'No Agenda. No Advertisers.',
+    body: 'No manufacturer pays for placement here. No PAC buys favorable coverage. No paywall keeps information out of reach. DownRange\'s only obligation is to you — the person reading the page. We cover legislation on its merits, not on who funded the campaign.',
+    accent: 'Independent. Forever.',
+  },
+  {
+    number: '04',
+    title: 'Built By a Carrier. Written for Carriers.',
+    body: 'This was built in Washington State — one of the hardest places to be a gun owner in America. The laws change constantly. The media coverage is hostile. The information you actually need is buried. That frustration is why DownRange exists.',
+    accent: 'We know what it costs to stay informed.',
+  },
+]
+
+const TRUTH_LINES = [
+  { stat: '100M+', label: 'Gun owners in America deserve better than 10 tabs open at once.' },
+  { stat: '24/7',  label: 'The fight for the Second Amendment doesn\'t clock out.' },
+  { stat: '0',     label: 'Dollars taken from manufacturers, PACs, or political organizations.' },
+  { stat: '∞',     label: 'Commitment to keeping every article free, forever.' },
+]
+
 export default function AboutPage() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ABOUT_SCHEMA) }} />
       <Masthead />
-      <div className="page-hero" data-title="ABOUT">
-        <div className="container">
-          <h1 className="page-hero-title">About DownRange</h1>
-          <p className="page-hero-sub">Built by a gun owner. For gun owners.</p>
-        </div>
-      </div>
-      <div style={{ padding:'60px 0', background:'var(--bg)' }}>
-        <div className="container" style={{ maxWidth:800 }}>
 
-          {/* Stats */}
-          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(180px, 1fr))', gap:'16px', marginBottom:'56px' }}>
-            {[
-              { num:'50',    label:'States Covered',       sub:'Full carry law database' },
-              { num:'15min', label:'News Refresh',         sub:'Every 15 minutes, all day' },
-              { num:'30+',   label:'Manufacturers Tracked',sub:'New releases, day they drop' },
-              { num:'Free',  label:'Always',               sub:'No paywalls, no subscriptions' },
-            ].map(s => (
-              <div key={s.num} style={{ background:'#111318', border:'1px solid var(--border)', padding:'24px', textAlign:'center' }}>
-                <div style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'2.8rem', color:'#C8922A', letterSpacing:'0.05em', lineHeight:1 }}>{s.num}</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#F0EDE6', letterSpacing:'0.1em', marginTop:'6px' }}>{s.label.toUpperCase()}</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'9px', color:'#4B5563', marginTop:'3px' }}>{s.sub}</div>
-              </div>
+      {/* ── HERO ─────────────────────────────────────────────────────── */}
+      <div style={{
+        background: 'linear-gradient(180deg, #0a0b0e 0%, #09090B 100%)',
+        borderBottom: '1px solid #1f2937',
+        padding: '80px 0 64px',
+        position: 'relative',
+        overflow: 'hidden',
+      }}>
+        {/* Crosshair watermark */}
+        <div aria-hidden style={{
+          position: 'absolute', top: '50%', left: '50%',
+          transform: 'translate(-50%, -50%)',
+          width: 480, height: 480, opacity: 0.03,
+          border: '1px solid #C8922A', borderRadius: '50%',
+          pointerEvents: 'none',
+        }} />
+        <div aria-hidden style={{
+          position: 'absolute', top: '50%', left: 0, right: 0, height: 1,
+          background: '#C8922A', opacity: 0.04, transform: 'translateY(-50%)',
+        }} />
+        <div aria-hidden style={{
+          position: 'absolute', left: '50%', top: 0, bottom: 0, width: 1,
+          background: '#C8922A', opacity: 0.04, transform: 'translateX(-50%)',
+        }} />
+
+        <div className="container" style={{ maxWidth: 860, position: 'relative' }}>
+          <div style={{
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: '11px', letterSpacing: '0.2em',
+            color: '#C8922A', marginBottom: '20px',
+            textTransform: 'uppercase',
+          }}>
+            ◉ &nbsp;About DownRange
+          </div>
+
+          <h1 style={{
+            fontFamily: "'Bebas Neue', cursive",
+            fontSize: 'clamp(3rem, 8vw, 6rem)',
+            lineHeight: 0.95,
+            letterSpacing: '0.03em',
+            color: '#F0EDE6',
+            margin: '0 0 28px',
+          }}>
+            INTELLIGENCE<br />
+            <span style={{ color: '#C8922A' }}>FOR THE ARMED</span><br />
+            CITIZEN.
+          </h1>
+
+          <div style={{
+            borderLeft: '3px solid #C8922A',
+            paddingLeft: '20px',
+            marginBottom: '40px',
+          }}>
+            {MANIFESTO_LINES.map((line, i) => (
+              <p key={i} style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: 'clamp(13px, 2vw, 16px)',
+                color: i === 0 ? '#F0EDE6' : i < 3 ? '#94A3B8' : '#C8922A',
+                lineHeight: 1.7,
+                margin: '0 0 4px',
+                fontWeight: i === 0 ? 600 : 400,
+              }}>{line}</p>
             ))}
           </div>
 
-          {/* Mission */}
-          <div style={{ marginBottom:'48px' }}>
-            <h2 style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>WHY THIS EXISTS</h2>
-            <p style={{ fontSize:'16px', color:'#94A3B8', lineHeight:1.85, marginBottom:'18px' }}>
-              I built DownRange because there wasn't a single place where a gun owner could check what changed in their state's carry laws, see what Glock announced this week, find out why 9mm prices spiked, and read about the ATF rule that passed yesterday — all without wading through 10 different websites.
-            </p>
-            <p style={{ fontSize:'16px', color:'#94A3B8', lineHeight:1.85, marginBottom:'18px' }}>
-              Washington State is a difficult place to be a gun owner. The laws change constantly, the media coverage is mostly hostile, and the information you actually need is scattered. That experience shaped what DownRange covers and how it's written.
-            </p>
-            <p style={{ fontSize:'16px', color:'#94A3B8', lineHeight:1.85 }}>
-              We cover the Second Amendment as an individual right. We don't soften language to make the subject more palatable, and we don't accept money from manufacturers or political organizations to stay favorable. The only obligation here is to the person reading the page.
-            </p>
+          <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+            <a href="/news" style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '12px', letterSpacing: '0.12em',
+              background: '#C8922A', color: '#09090B',
+              padding: '11px 24px', textDecoration: 'none',
+              fontWeight: 700, textTransform: 'uppercase',
+            }}>Read Today's Intel →</a>
+            <a href="/laws" style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '12px', letterSpacing: '0.12em',
+              background: 'transparent',
+              border: '1px solid #374151', color: '#94A3B8',
+              padding: '11px 24px', textDecoration: 'none',
+              textTransform: 'uppercase',
+            }}>Your State's Laws →</a>
           </div>
-
-          {/* How it works */}
-          <div style={{ marginBottom:'48px' }}>
-            <h2 style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>HOW IT WORKS</h2>
-            <div style={{ display:'flex', flexDirection:'column', gap:'12px' }}>
-              {[
-                { icon:'📡', title:'50+ Sources, Every 15 Minutes', desc:'RSS feeds, Congress.gov, LegiScan, YouTube channels, manufacturer press feeds, and market data APIs. If something happens, it shows up here within the hour.' },
-                { icon:'🤖', title:'AI Writes the First Draft', desc:'Every article gets processed by Claude — categorized, scored for urgency from 1–10, summarized, and tagged with affected states and topics. A human sets the editorial direction.' },
-                { icon:'⚖',  title:'State Laws in Real Time', desc:'ATF rules, pending legislation, SCOTUS cases, and carry law changes across all 50 states. When your state passes a mag ban, DownRange covers it the day it happens.' },
-                { icon:'📊', title:'Market Data That\'s Actually Useful', desc:'9mm, 5.56, .308, 12 gauge, and more — tracked daily. New releases with full specs and MSRP the day they drop. Price alerts if you want them.' },
-              ].map(f => (
-                <div key={f.title} style={{ background:'#111318', border:'1px solid var(--border)', borderLeft:'3px solid #C8922A', padding:'18px 22px', display:'flex', gap:'16px' }}>
-                  <span style={{ fontSize:'22px', flexShrink:0, paddingTop:'2px' }}>{f.icon}</span>
-                  <div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', fontWeight:700, color:'#F0EDE6', marginBottom:'5px' }}>{f.title}</div>
-                    <p style={{ fontSize:'13px', color:'#6B7280', lineHeight:1.65, margin:0 }}>{f.desc}</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Editorial policy */}
-          <div style={{ marginBottom:'48px' }}>
-            <h2 style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>EDITORIAL POLICY</h2>
-            <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px' }}>
-              {[
-                ['No manufacturer money', 'We don\'t accept payments for coverage. A new release from Glock gets the same treatment as one from a brand we\'ve never mentioned.'],
-                ['No political funding',  'No NRA money, no gun control money, no PAC money. We cover legislation on its merits.'],
-                ['No paywalls',           'Every article is free. The goal is more gun owners who know their rights, not more subscribers.'],
-                ['Corrections policy',    'We fix mistakes. If something we published is wrong, email legal@downrangeco.com and we\'ll correct it with a note.'],
-              ].map(([t,d]) => (
-                <div key={t} style={{ background:'#111318', border:'1px solid var(--border)', padding:'16px 18px' }}>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'#F0EDE6', marginBottom:'8px' }}>{t}</div>
-                  <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', lineHeight:1.65, margin:0 }}>{d}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ padding:'24px', background:'#111318', border:'1px solid #C8922A40', textAlign:'center' }}>
-            <div style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.6rem', color:'#C8922A', marginBottom:'10px' }}>BUILT BY GUN OWNERS, FOR GUN OWNERS</div>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#4B5563', lineHeight:1.7, margin:0 }}>
-              DownRange is independent. No advertisers. No manufacturers. No political organizations. <br />
-              If you find something wrong or missing, tell us: <a href="mailto:press@downrangeco.com" style={{ color:'#C8922A', textDecoration:'none' }}>press@downrangeco.com</a>
-            </p>
-          </div>
-
         </div>
       </div>
+
+      {/* ── ORIGIN STORY ─────────────────────────────────────────────── */}
+      <div style={{ background: '#09090B', padding: '72px 0', borderBottom: '1px solid #1f2937' }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 3fr', gap: '40px', alignItems: 'start' }}>
+            <div>
+              <div style={{
+                fontFamily: "'Bebas Neue', cursive",
+                fontSize: '1rem', letterSpacing: '0.2em',
+                color: '#4B5563', marginBottom: '8px',
+              }}>THE ORIGIN</div>
+              <div style={{
+                width: 40, height: 3, background: '#C8922A',
+              }} />
+            </div>
+            <div>
+              <p style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '18px', lineHeight: 1.9,
+                color: '#F0EDE6', marginBottom: '20px',
+                fontStyle: 'italic',
+              }}>
+                "I was living in Washington State, carrying every day, and I couldn't keep up.
+                New laws. New ATF rules. New magazine limits. Hostile press. Scattered data.
+                I wanted one place that treated me like an adult who carries a firearm —
+                not a threat to be managed."
+              </p>
+              <p style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '14px', lineHeight: 1.8,
+                color: '#6B7280', marginBottom: '16px',
+              }}>
+                DownRange started as that place. It runs 24 hours a day, pulls from over 50 sources,
+                and covers the Second Amendment as the individual right it is — not as a controversy
+                to be balanced, both-sided, or softened for an audience that might be offended.
+              </p>
+              <p style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '14px', lineHeight: 1.8,
+                color: '#6B7280',
+              }}>
+                If you carry, hunt, shoot, or simply believe the right to bear arms should not require
+                a law degree to exercise — this was built for you.
+              </p>
+              <div style={{
+                marginTop: '24px',
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '12px', color: '#C8922A',
+                letterSpacing: '0.1em',
+              }}>
+                — DJ CAVALCANTI, FOUNDER
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* ── FOUR PILLARS ─────────────────────────────────────────────── */}
+      <div style={{ background: '#09090B', padding: '72px 0', borderBottom: '1px solid #1f2937' }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <h2 style={{
+            fontFamily: "'Bebas Neue', cursive",
+            fontSize: '2rem', letterSpacing: '0.08em',
+            color: '#C8922A', marginBottom: '40px',
+          }}>WHAT WE STAND FOR</h2>
+
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
+            {PILLARS.map((p) => (
+              <div key={p.number} style={{
+                display: 'grid',
+                gridTemplateColumns: '64px 1fr',
+                background: '#0d0e12',
+                border: '1px solid #1f2937',
+                borderLeft: '3px solid #C8922A',
+                padding: '28px 24px',
+                gap: '24px',
+                alignItems: 'start',
+              }}>
+                <div style={{
+                  fontFamily: "'Bebas Neue', cursive",
+                  fontSize: '2.8rem', color: '#1f2937',
+                  lineHeight: 1,
+                }}>{p.number}</div>
+                <div>
+                  <div style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '14px', fontWeight: 700,
+                    color: '#F0EDE6', marginBottom: '10px',
+                    letterSpacing: '0.05em',
+                  }}>{p.title}</div>
+                  <p style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '13px', color: '#6B7280',
+                    lineHeight: 1.75, margin: '0 0 12px',
+                    textAlign: 'justify',
+                  }}>{p.body}</p>
+                  <div style={{
+                    fontFamily: "'IBM Plex Mono', monospace",
+                    fontSize: '11px', color: '#C8922A',
+                    letterSpacing: '0.1em', textTransform: 'uppercase',
+                  }}>{p.accent}</div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── TRUTH IN NUMBERS ─────────────────────────────────────────── */}
+      <div style={{
+        background: '#0a0b0e',
+        borderTop: '1px solid #1f2937',
+        borderBottom: '1px solid #1f2937',
+        padding: '64px 0',
+      }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <h2 style={{
+            fontFamily: "'Bebas Neue', cursive",
+            fontSize: '2rem', letterSpacing: '0.08em',
+            color: '#C8922A', marginBottom: '36px',
+          }}>BY THE NUMBERS</h2>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fill, minmax(180px, 1fr))',
+            gap: '2px',
+          }}>
+            {TRUTH_LINES.map(({ stat, label }) => (
+              <div key={stat} style={{
+                background: '#0d0e12',
+                border: '1px solid #1f2937',
+                padding: '28px 20px',
+              }}>
+                <div style={{
+                  fontFamily: "'Bebas Neue', cursive",
+                  fontSize: '3.2rem', color: '#C8922A',
+                  lineHeight: 1, marginBottom: '10px',
+                  letterSpacing: '0.03em',
+                }}>{stat}</div>
+                <p style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '11px', color: '#6B7280',
+                  lineHeight: 1.65, margin: 0,
+                  textAlign: 'justify',
+                }}>{label}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── EDITORIAL POLICY ─────────────────────────────────────────── */}
+      <div style={{ background: '#09090B', padding: '72px 0', borderBottom: '1px solid #1f2937' }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <h2 style={{
+            fontFamily: "'Bebas Neue', cursive",
+            fontSize: '2rem', letterSpacing: '0.08em',
+            color: '#C8922A', marginBottom: '12px',
+          }}>THE RULES WE OPERATE BY</h2>
+          <p style={{
+            fontFamily: "'IBM Plex Mono', monospace",
+            fontSize: '13px', color: '#4B5563',
+            marginBottom: '32px', lineHeight: 1.7,
+          }}>
+            These aren't aspirational. They're the conditions under which DownRange operates — and if we violate them, you should call it out.
+          </p>
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(240px, 1fr))', gap: '2px' }}>
+            {[
+              {
+                rule: 'No Manufacturer Money',
+                detail: 'We don\'t accept payments or gifts for coverage. A Glock announcement gets the same treatment as a brand you\'ve never heard of. No exceptions.',
+              },
+              {
+                rule: 'No Political Funding',
+                detail: 'No NRA money, no Everytown money, no PAC money. We don\'t endorse candidates. We cover legislation on its merits, not on who paid for the campaign.',
+              },
+              {
+                rule: 'No Paywalls. Ever.',
+                detail: 'Every article, every law update, every tool — free. The goal is more informed gun owners, not more paid subscribers.',
+              },
+              {
+                rule: 'We Fix Our Mistakes',
+                detail: 'If we got something wrong, we correct it — with a visible note, not a quiet edit. Email legal@downrangeco.com and it gets fixed.',
+              },
+            ].map(({ rule, detail }) => (
+              <div key={rule} style={{
+                background: '#0d0e12',
+                border: '1px solid #1f2937',
+                padding: '24px 20px',
+              }}>
+                <div style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '12px', fontWeight: 700,
+                  color: '#F0EDE6', marginBottom: '10px',
+                  letterSpacing: '0.06em', textTransform: 'uppercase',
+                }}>{rule}</div>
+                <p style={{
+                  fontFamily: "'IBM Plex Mono', monospace",
+                  fontSize: '12px', color: '#4B5563',
+                  lineHeight: 1.7, margin: 0,
+                  textAlign: 'justify',
+                }}>{detail}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ── CLOSING CTA ──────────────────────────────────────────────── */}
+      <div style={{
+        background: 'linear-gradient(180deg, #09090B 0%, #0a0b0e 100%)',
+        padding: '80px 0',
+      }}>
+        <div className="container" style={{ maxWidth: 860 }}>
+          <div style={{
+            border: '1px solid #C8922A40',
+            padding: '48px 40px',
+            position: 'relative',
+            overflow: 'hidden',
+          }}>
+            {/* Corner marks */}
+            {['top:0;left:0', 'top:0;right:0', 'bottom:0;left:0', 'bottom:0;right:0'].map((pos, i) => (
+              <div key={i} aria-hidden style={{
+                position: 'absolute',
+                ...Object.fromEntries(pos.split(';').map(p => p.split(':'))),
+                width: 12, height: 12,
+                borderTop: ['top', 'top', 'none', 'none'][i] !== 'none' ? '2px solid #C8922A' : undefined,
+                borderBottom: ['none', 'none', 'bottom', 'bottom'][i] !== 'none' ? '2px solid #C8922A' : undefined,
+                borderLeft: ['left', 'none', 'left', 'none'][i] !== 'none' ? '2px solid #C8922A' : undefined,
+                borderRight: ['none', 'right', 'none', 'right'][i] !== 'none' ? '2px solid #C8922A' : undefined,
+              }} />
+            ))}
+
+            <div style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '11px', letterSpacing: '0.2em',
+              color: '#C8922A', marginBottom: '16px',
+              textTransform: 'uppercase',
+            }}>◉ &nbsp;The Mission</div>
+
+            <h2 style={{
+              fontFamily: "'Bebas Neue', cursive",
+              fontSize: 'clamp(2rem, 5vw, 3.2rem)',
+              color: '#F0EDE6', lineHeight: 1.05,
+              letterSpacing: '0.04em', marginBottom: '20px',
+            }}>
+              EVERY GUN OWNER DESERVES<br />
+              <span style={{ color: '#C8922A' }}>ACCESS TO THE TRUTH.</span>
+            </h2>
+
+            <p style={{
+              fontFamily: "'IBM Plex Mono', monospace",
+              fontSize: '14px', color: '#6B7280',
+              lineHeight: 1.8, marginBottom: '32px',
+              maxWidth: 540,
+            }}>
+              No gatekeeping. No subscriptions. No editorial slant for hire.
+              Just clean, fast, unfiltered intelligence — so you always know
+              what's happening to your rights, your state, and your community.
+            </p>
+
+            <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap', alignItems: 'center' }}>
+              <a href="/news" style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '12px', letterSpacing: '0.12em',
+                background: '#C8922A', color: '#09090B',
+                padding: '12px 28px', textDecoration: 'none',
+                fontWeight: 700, textTransform: 'uppercase',
+              }}>Start Reading →</a>
+              <a href="/contact" style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px', letterSpacing: '0.1em',
+                color: '#4B5563', textDecoration: 'none',
+                textTransform: 'uppercase', padding: '12px 0',
+              }}>Contact Us</a>
+              <a href="mailto:press@downrangeco.com" style={{
+                fontFamily: "'IBM Plex Mono', monospace",
+                fontSize: '11px', letterSpacing: '0.1em',
+                color: '#4B5563', textDecoration: 'none',
+                textTransform: 'uppercase', padding: '12px 0',
+              }}>press@downrangeco.com</a>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <Footer />
     </>
   )
