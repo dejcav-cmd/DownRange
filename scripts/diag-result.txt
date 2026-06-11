@@ -2,38 +2,21 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 29
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2bf6bcfecbbd5623cabc1fca36dab4e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/66db2326f7a997d9196492e071e916a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8d55ae73112d2873fae7a3f8ee981db
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bd847457fdd3d36091048aa3fe02bf6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fa79f26d02bc62e05fc0a04a1227c4e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e2f2c919b0d0151c66b0a401dc87077
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ed7b67e5595a4ad70152386833f6b70
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ed863f63aefbf47d23c52796190de0e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4eee5ad06011862c5974ad452bc11f9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/82ac8f5e15b5c7ad3370abefcc09768
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f44781874d1c7789c3da0dbdf3ead4c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/02f41e858a9e123a375d307997d0505
+Missing: 12
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/49895687fac2be6b96357f55821426e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f67b19e166cbdfba9f356bf05c5cbe2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e664c4dea40cc213b2080c65e00022a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e22d3a6aacc91d3806732a31e0cacf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62941ccd47ca53f5ca635f613908c25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/157668e5b6789f047b1c1cf73a4b1c1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d445c83e6af7b1741fa4e95ae484690
   ~ og: https://cdn-fastly.thefirearmblog.com/media/2026/06/02/06131/wsm-legio
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/04c331d73c405a503b4c087ee01b3c1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/baea96777b513eb1fa539f4bd373876
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ed9b73f1521b1e619e4b4eba45a398
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/31a09d6f4637f5afe37510f39289099
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec909dad7d5ce9dcbb286da0dad4d78
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bb27cbea85f771c737826880de4326f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a2fd384efc59805a46d5cd056086917
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9463f8e15c1894d5e8890a37f1a5403
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4a2e97b09d9a476f8e39c827f7a5f70
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/091ba029362bbadae46aad786cd379d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3886816e1f4f20acd9cdf4a01bb44f2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e326ad8eb04c55b676e10b2c6364083
   ~ og: https://www.ammoland.com/wp-content/uploads/2025/10/CMMG-Bravo-22lr-AR
   skip coupon: https://gun.deals/content/coupon-store-defense-depotthursday
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 26
+  → patched final 9
 
-Stats: uploaded=24 fallback=2 failed=0
+Stats: uploaded=7 fallback=2 failed=0
 
-=== FINAL: total=826 missing_images=3 reddit=0 ===
+=== FINAL: total=833 missing_images=3 reddit=0 ===
