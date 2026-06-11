@@ -1,30 +1,86 @@
-=== MISSING DOCS FULL URLs ===
-  FVNP6r5cO7N0o7HVucrGfX | created=2026-06-11T00:00:33
-  url: https://gun.deals/product/lmt-defense-mlc-mars-556-nato-223-rem-16-30rd-semi-auto-rifle-black-238999-see-price-cart-fr
-  FVNP6r5cO7N0o7HVucrGiA | created=2026-06-11T00:00:33
-  url: https://gun.deals/product/cz-usa-bobwhite-g2-20-ga-3-28-side-side-shotgun-gloss-black-walnut-59723
-  FVNP6r5cO7N0o7HVucrGkn | created=2026-06-11T00:00:33
-  url: https://gun.deals/product/buffalo-cartridge-co-9mm-brg9-elite-4-barrel-grip-safety-trigger-safety-ambi-mag-release-2-1
-  FVNP6r5cO7N0o7HVucrGnQ | created=2026-06-11T00:00:33
-  url: https://gun.deals/product/holosun-3moa-shake-awake-red-dot-pistol-sight-16999-free-shipping-0
-  FVNP6r5cO7N0o7HVucrGq3 | created=2026-06-11T00:00:33
-  url: https://gun.deals/product/blazer-handgun-9mm-115gr-jacketed-hollow-point-50-rounds-2159
+DEALS IMAGE BACKFILL
 
-=== SCRAPE TESTS ===
+Fetching docs without images...
+Found 66 docs without images
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrG | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrH | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrH | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrH | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrH | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ FVNP6r5cO7N0o7HVucrH | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✗ gd-43cc535de04503352 | https://www.reddit.com/r/gundeals/comments/1u2h2u0/parts_day - no image
+  ✓ SKDVlyMd9FiV3xrtgUQk | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✗ gd-f1026d5b12425dab5 | https://www.reddit.com/r/gundeals/comments/1u2g5d7/acc_cat_s - no image
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✗ gd-34538837d1c81a0d3 | https://www.reddit.com/r/gundeals/comments/1u2fesd/acc_kac_k - no image
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ SKDVlyMd9FiV3xrtgUQl | https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✗ SKDVlyMd9FiV3xrtgU2T | https://gun.deals/content/coupon-store-sportsmans-outdoor-ss - no image
+  ✗ gd-abff0b237c3f0ddc9 | https://www.reddit.com/r/gundeals/comments/1u2a2b4/acc_suppr - no image
+  ✗ gd-70d6d27a91bee78a9 | https://www.reddit.com/r/gundeals/comments/1u28tt6/parts_com - no image
+  ✗ gd-8b10b5b07dadab75e | https://www.reddit.com/r/gundeals/comments/1u28ff4/acc_nanuk - no image
+  ✗ gd-02dd79d3c4b2ccd3e | https://www.reddit.com/r/gundeals/comments/1u28bc6/parts_102 - no image
+  ✓ gd-2897589c786ebe249 | https://www.ammoland.com/wp-content/uploads/2026/06/PSA-Sabre-Mixtape-
+  ✗ gd-e02680a0f1536426e | https://www.reddit.com/r/gundeals/comments/1u25az6/other_lmt - no image
+  ✗ gd-bf19a0192242992f8 | https://www.reddit.com/r/gundeals/comments/1u24lgu/pistol_co - no image
+  ✗ gd-5486c9c96772ed650 | https://www.reddit.com/r/gundeals/comments/1u22537/nfa_10_of - no image
+  ✓ gd-5713762ebe295032c | https://www.ammoland.com/wp-content/uploads/2026/06/Sportsmans-Select-
+  ✗ gd-5fab16b3f193d5082 | https://www.reddit.com/r/gundeals/comments/1u20fwy/nfa_15_of - no image
+  ✓ gd-ed014e2e4e5713aee | https://www.ammoland.com/wp-content/uploads/2026/02/Reman-9mm-124-200-
+  ✗ gd-049515f74108fef52 | https://www.reddit.com/r/gundeals/comments/1u1r4hl/handgun_1 - no image
+  ✗ QR3knQwiU7hQ2mmjtTwe | https://gun.deals/content/coupon-store-shooters-gatetuesday- - no image
+  ✗ gd-cd714ac31173bc946 | https://www.reddit.com/r/gundeals/comments/1u1mypg/other_150 - no image
+  ✗ gd-43f8742f6ad154329 | https://www.reddit.com/r/gundeals/comments/1u1muyp/optics_su - no image
+  ✗ gd-c7635d883d88aea9b | https://www.reddit.com/r/gundeals/comments/1u1m0gf/rifle_rug - no image
+  ✗ gd-bbafb63c57f03351a | https://www.reddit.com/r/gundeals/comments/1u1ionq/handgun_c - no image
+  ✗ gd-72384d2b078131f3a | https://www.reddit.com/r/gundeals/comments/1u1i11k/optics_vo - no image
+  ✗ gd-9e933c960d2f57c5d | https://www.reddit.com/r/gundeals/comments/1u1f6qm/rifle_bar - no image
+  ✗ gd-dc21181114ee2dd6c | https://www.reddit.com/r/gundeals/comments/1u1b17o/acc_balli - no image
+  ✗ gd-4255616ab076e0694 | https://www.reddit.com/r/gundeals/comments/1u1a6ww/code_tomb - no image
+  ✗ gd-fd7e0f0c8e21434ea | https://www.reddit.com/r/gundeals/comments/1u19a0u/acc_early - no image
+  → Committed final 43 patches
 
-Testing: https://gun.deals/product/lmt-defense-mlc-mars-556-nato-223-rem-16-30rd-semi-auto-rifle-black-238999-see-price-cart-fr
-HTTP 200, len=273143
-og:image: FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/LMT-Defense-MLC-MARS.jpg
+=== BACKFILL COMPLETE ===
+Attempted:    66
+Scraped OK:   43
+Failed scrape:23
+No URL:       0
+Patched:      43
+Patch errors: 0
 
-Testing: https://gun.deals/product/cz-usa-bobwhite-g2-20-ga-3-28-side-side-shotgun-gloss-black-walnut-59723
-HTTP 200, len=460217
-og:image: FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/CZ-USA-Bobwhite-G2.jpg
+=== FIXING HTML ENTITIES IN TITLES ===
+Found 734 docs with HTML entities in title
+  → Fixed 21 entity titles
+  No additional entity titles found
 
-Testing: https://gun.deals/product/buffalo-cartridge-co-9mm-brg9-elite-4-barrel-grip-safety-trigger-safety-ambi-mag-release-2-1
-HTTP 200, len=311739
-og:image: FOUND: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screenshot%202023-09-28%20at
-
-=== CRON RSS TEST ===
-RSS ERROR: HTTP Error 404: Not Found
-
-DONE
+ALL DONE
