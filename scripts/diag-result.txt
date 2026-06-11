@@ -1,3 +1,59 @@
-Total: 734  HasImage: 711  Missing: 23
-  [GunDeals Reddit]: 21
-  [gun.deals]: 2
+=== TOP 20 DEALS (as shown on page) ===
+  [N] [GunDeals Reddit] Smith & Wesson M&P9 2.0 Compact Drops to $319.99 — LE T
+       img: NULL
+  [N] [gun.deals] Geissele Super Duty MOD1 5.56mm, 14.5&quot; Upper Recie
+       img: NULL
+  [N] [gun.deals] Harrington &amp; Richardson Retro 5.56 20rd Straight Ma
+       img: NULL
+  [N] [gun.deals] GLOCK G25 Magazine 380 ACP 15rd Black Polymer - $21.99
+       img: NULL
+  [N] [gun.deals] PSA AK Norinco Furniture Set with Smooth Grip - $169.99
+       img: NULL
+  [N] [gun.deals] Burris Fastfire III Red Dot with Picatinny Mount 3MOA -
+       img: NULL
+  [N] [gun.deals] Surplus AR-15 Mil-Spec Bare Bones Lower Build Kit - $44
+       img: NULL
+  [N] [GunDeals Reddit] Ballistic Advantage Glock 19 Barrels Drop to $41 With F
+       img: NULL
+  [N] [gun.deals] One Horse RYN 30 Cal HUB Compatible Titanium Suppressor
+       img: NULL
+  [N] [gun.deals] UTG Ambidextrous 45/90 Safety Selector, Black (Gray, Re
+       img: NULL
+  [Y] [gun.deals] LMT Defense MLC MARS 5.56 NATO / 223 Rem 16" 30rd Semi-
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/LMT-Defe
+  [Y] [gun.deals] CZ-USA Bobwhite G2 20 Ga 3" 28" Side by Side Shotgun - 
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/CZ-USA-B
+  [Y] [gun.deals] Buffalo Cartridge Co. 9mm BRG9 Elite 4" Barrel Grip Saf
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screensh
+  [Y] [gun.deals] Holosun 407 Reflex Sight 3MOA Shake Awake - $149.99
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screen%2
+  [Y] [gun.deals] Blazer Handgun 9mm 115gr Jacketed Hollow Point 50 Round
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/6045447s
+  [Y] [gun.deals] Tisas U.S. 1911-A1 .45 ACP 5.02" Barrel 7 Round - $329.
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Tisas-U.
+  [N] [GunDeals Reddit] SilencerCo Spiro HUB .223 Hits $969 With Free Shipping
+       img: NULL
+  [Y] [gun.deals] Holosun HE507C X2 Red Multi-Reticle Red Dot 7075 Alumin
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/holosun-
+  [Y] [gun.deals] Aero Precision Stainless Carbine Length Gas Tube - $6.9
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/aero_pre
+  [Y] [gun.deals] TIPTON Best Gun Vise - 181181 - $49.95
+       img: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/318781.p
+
+=== MISSING BY SOURCE (37 total) ===
+  GunDeals Reddit: 24
+  gun.deals: 10
+  AmmoLand: 3
+
+=== PROXY TEST ===
+  stored: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/bc17444a
+  proxy:  /api/img-proxy?url=https%3A//gun.deals/cdn-cgi/image/w%3D1200%2Ch%3D630%2Cf%3Dauto/sites/default/fil
+  result: HTTP 200, ct=image/webp, len=?
+  stored: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/hk-hkhk4
+  proxy:  /api/img-proxy?url=https%3A//gun.deals/cdn-cgi/image/w%3D1200%2Ch%3D630%2Cf%3Dauto/sites/default/fil
+  result: HTTP 200, ct=image/webp, len=?
+  stored: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/IMG_0461
+  proxy:  /api/img-proxy?url=https%3A//gun.deals/cdn-cgi/image/w%3D1200%2Ch%3D630%2Cf%3Dauto/sites/default/fil
+  result: ERROR HTTP Error 502: Bad Gateway
+
+DONE
