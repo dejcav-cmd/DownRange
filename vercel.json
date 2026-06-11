@@ -134,7 +134,7 @@
     },
     {
       "path": "/api/cron/quality-rewrite",
-      "schedule": "30 */2 * * *"
+      "schedule": "0 * * * *"
     },
     {
       "path": "/api/cron/image-fix",
