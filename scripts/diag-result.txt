@@ -2,14 +2,34 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 5
+Missing: 25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/72317296346e0f53df4960c7000c47e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/53272bb9672b9c4c6a791c7690eb80c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/265937e3ac330f247ce13e23ad326ce
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4dc3546433ab956462e8edec0b16fc3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c79fff76b0be1a167929a7a0b6273ed
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/36621a733b08717fb0f17bc3f5c2424
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/902992898223e2ff0ff5f6344f32455
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/824f3fc4296294739ab5b4488496191
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e4c1cad17fc7c3355ad6d471d171abe
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b60cbc4d8a2e863405fdfabb4b800a3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2e0d50e986801453dc8b887da0d0415
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d00da82b8d9e0bc0c9b7bdc50c23d41
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ccfa0207e478a8e9971ed62d8ef6dcd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f64d727d793fb8200518665a7f1848c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ce763bf67ffdcc0dfd34bedea200b88
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0b454ae94a63e2f5aa103b1c9e3d896
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a25b5d2533fdda22a412434f99dc68
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e92283d1a87eda8381d20f467907b82
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8359426bd640dffa7bbb26f0e4f6061
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a814e41949c4174ea93c69d6e43f9f7
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Reman-9mm-124-200-
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Sportsmans-Select-
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/PSA-Sabre-Mixtape-
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 3
+  → patched final 23
 
-Stats: uploaded=0 fallback=3 failed=0
+Stats: uploaded=20 fallback=3 failed=0
 
-=== FINAL: total=699 missing_images=2 reddit=0 ===
+=== FINAL: total=719 missing_images=2 reddit=0 ===
