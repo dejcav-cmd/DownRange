@@ -34,6 +34,9 @@ FIREARMS_KEYWORDS = [
     ".308","5.56","hunting","hunter","shooting range","self-defense","self defense",
     "home defense","concealed","open carry","gun store","gun shop","gunsmith",
     "gun show","gun sale","gun dealer",
+    "bear arms","keep and bear","carry permit","carry law","carry rights",
+    "campus carry","permitless carry","carry license","gun permit",
+    "background check","background checks","reloading",
 ]
 
 FIREARMS_RE = re.compile(
