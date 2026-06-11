@@ -1,12 +1,19 @@
-Found 61 Reddit-sourced gunDeal docs to delete
-  gd-02dd79d3c4b2ccd3ecf8be219f3b176b [GunDeals Reddit] Ruger 10/22 110-Round Drum Mag Drops to $70—Out of Stock
-  gd-049515f74108fef52e6dc6bcb1ef0e7b [GunDeals Reddit] SIG P226 X-FIVE drops to $1,458 with triple 20-round mags in
-  gd-068eb574219737269a456ce72053166b [AmmoLand] Federal Champion Training 9mm 115 Gr FMJ 500 Rounds – $127.7
-  gd-084d72fe58b91dad16168446c0d6383f [AmmoLand] Sportsman’s Select Remanufactured 9mm 115gr FMJ 1,000 Rounds
-  gd-0a0d5204f048344613dfa4622b64f630 [GunDeals Reddit] Lehigh Defense 380 Auto Rounds Drop to 57 CPR—Bulk Case Avai
-  ... and 56 more
-  Deleted batch 1: 61 docs
+Total: 703
 
-Deleted: 61  Errors: 0
-Reddit remaining: 0  Total deals: 684
+=== ALL SOURCES ===
+  gun.deals: 691
+  GunDeals Reddit: 9
+  AmmoLand: 3
+
+=== DOCS WITH reddit.com in externalUrl: 9 ===
+  gd-02dd79d3c4b2ccd3ecf8be219f3b176b [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u28bc6/parts_1022_110round_drum_mag_
+  gd-2afdf5609cdbd70b7eac62198e9b9c02 [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u2klu3/handgun_smith_wesson_mp9_20_4
+  gd-34538837d1c81a0d3a1653079c68704b [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u2fesd/acc_kac_knights_armament_micr
+  gd-43cc535de0450335236839b50ecce114 [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u2h2u0/parts_daydream_defense_topo_r
+  gd-70d6d27a91bee78a9bbdd8790d864e68 [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u28tt6/parts_complete_bcm_mk2_t2_rec
+  gd-8c4ee76910cd222ec041c02dd85407c4 [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u2lkq9/ammo_pmc_xtac_556x45mm_55gr_f
+  gd-abff0b237c3f0ddc96c5da346a13142d [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u2a2b4/acc_suppressed_handgun_holste
+  gd-d0b059db53c7783fc096bd9b66d9e58e [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u2jfl0/parts_41_free_shipping_glock_
+  gd-e02680a0f1536426e89c7d476cac3aad [GunDeals Reddit] https://www.reddit.com/r/gundeals/comments/1u25az6/other_lmt_marsl_stripped_lowe
+
 DONE
