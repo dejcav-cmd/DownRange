@@ -2,15 +2,52 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 6
+Missing: 43
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3939d8a2e386b0a6a4694db6ff92d1e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/133563f63578effcded0d25f59fc5d3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3df6f79e0dd0749463b89ef4b246db6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c43a9c19377aba952f90452f10a728c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20889ee6567a4cc047417ad23a205ef
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/017fa0d8a9ad28d84e273a73347c208
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8423c90d64c38c833fd8f7032f8a49
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/587da5c4a3c96ee48c009be52353093
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e58a607f9ea80678077552c64aa47ec
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cbc2c339f35e1f4ea88c35589275eea
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/673c046d6dd837fb2a34a20610f3ca7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/40725024a76eafa3554a099d6750685
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e4010f668b86a23ca042564bf4fe8c2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae5a42ac776ea9715d4d9bd2fe28973
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a13e43e462f72b7e7c53323a551000f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fab8f2dca8b8573093fd0f4872f79b8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8217bcf7286c8befc0c40add7a1ea1d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a602e3dc890b18894bcbc44294e8433
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/baa770719536b7fadb4edb448eef40d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9264f2f665774011c0cc69862e0d204
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4d8f9a61796a7bf61e7abb4dcc10cc7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2cdea84a5d4b107084a59854db391b0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ea10d0245510737e61ed515865825a5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/59c5216e0e3de27e7e3e32e3035a9a8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f5379e24718e2ec2237e3ae2f5b885b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f1e1282229e0d6eb52e2206ee1b32db
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d30a7f18746818274b6e6a759d70f69
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5389b1f1c5b2de0fd0f0378c208d3cd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3678abb541f136d3a6af4f7625c943
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/112df8e198d88b8bfd59d56330dc3aa
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3bd1fc3320f5a37bdf87e73104b7f3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a08f522fbe1339ed92aea88d4728ccf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d3740ed6a516fa98d1dc7c7ed230a75
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab2674f418c846e9c6387c85dee5c5f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3bbdbe9d6f67929e19f5c24f43b5391
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3a914fd4552b1a4138a12ec73d563a
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PMC-XTAC-Ammo-Can-
   ~ og: https://cdn-fastly.thefirearmblog.com/media/2026/06/02/06131/wsm-legio
   ~ og: https://www.ammoland.com/wp-content/uploads/2025/10/CMMG-Bravo-22lr-AR
   skip coupon: https://gun.deals/content/coupon-store-defense-depotthursday
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 3
+  → patched final 40
 
-Stats: uploaded=0 fallback=3 failed=0
+Stats: uploaded=36 fallback=4 failed=0
 
-=== FINAL: total=892 missing_images=3 reddit=0 ===
+=== FINAL: total=929 missing_images=3 reddit=0 ===
