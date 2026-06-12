@@ -2,42 +2,21 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 33
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4924cf5fb6a1cf23518e1030c0166d3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae554ad1d10f66d1cd5deee708c0085
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb68c93862e70e6824a93261204209a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/57be92efcee3a204bb5a17ebbfb48b5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87c6619af1260733994413a434d0e58
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3d6aa72bae8afad4414a983c85e84b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2be0c319e3259ee0b29ad09be7d1f9e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6b2da7ffc9f7c8eee37da7fef1f84e1
+Missing: 12
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c2d7cc3b27a92c36f963a9c0348d09b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e5e66734a6dd8cc868a3e688def670b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0340da3a596403e278aeea2a816d666
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/def1c7c80ac553d86c4f322a0c77b18
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df5d8db8db161e21ae062bfd2c7c760
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6c70b8766f81280a2877c26b096e093
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/105eb72a0c7374607c9c61df81f3ccf
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f6fef0e662dfcf71baa22614aa5ddec
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d8c9ee2e0155406215e9a575cc30ae
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e53443f644f451257a24c8e138e1380
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9354d6de831e370caf00e7f8edbca5e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e83121ab5aca62663cca10e07ee2ea6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6cf75981554a652ae11f2fd4837c6a8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e92b57264c36f9a5a4ce32343307430
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/198011738c5b23840b3800eaa2ec673
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6457e4a51dc3f12c3d28f9087f39ede
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d22a5d1208890aef715d72a43238856
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7453f7c8f7204094883201b002b0fe3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5184c98bb7d9cbe7b62ebc746b010f9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a319a8fae6701b2232bd1c2d3bf487
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1b6be2650b0b05c7f56b03fc7e404fb
-  ~ og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/72271ed1e6dec3f2452800577e6aecc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/429a447c64fabfd44faa3a3c785e0fa
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/492be17abfa339dea51419e1f855ec6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e758574d786c303a08b39c447adee89
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
-  ~ og: https://cdn-fastly.thefirearmblog.com/media/2026/06/02/06131/wsm-legio
   skip coupon: https://gun.deals/content/coupon-store-defense-depotthursday
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 30
+  → patched final 9
 
-Stats: uploaded=26 fallback=4 failed=0
+Stats: uploaded=7 fallback=2 failed=0
 
-=== FINAL: total=975 missing_images=3 reddit=0 ===
+=== FINAL: total=982 missing_images=3 reddit=0 ===
