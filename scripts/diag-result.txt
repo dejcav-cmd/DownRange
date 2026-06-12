@@ -2,21 +2,41 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 12
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/49895687fac2be6b96357f55821426e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f67b19e166cbdfba9f356bf05c5cbe2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e664c4dea40cc213b2080c65e00022a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e22d3a6aacc91d3806732a31e0cacf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62941ccd47ca53f5ca635f613908c25
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/157668e5b6789f047b1c1cf73a4b1c1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d445c83e6af7b1741fa4e95ae484690
+Missing: 32
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f000b2842249e3a2691b632ec68c01
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64bdd224a407dcd57ea3217d0f42212
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9e0d7b4e64533a331379543516ff2f8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b86ed7433005688aba4bb2da01ba84
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa124ffbe817732f7ca05ec5f499e53
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2569fa9c6b831ee16e252c83a39950d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b252be29cc615fec7e5934a8af5a761
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7fcb60739ad6874769b76e52485e9a5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/454d1520f30b784fa5b8daac66461e6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c212b877aecde452258b4d0155592d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f059ddab3ca6aea2ff2c7e5ca39b280
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3cc47c0a727de8814f30b9b957f5f0f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/296b66f83f906a4e07dac9a204c843d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3882cece1654b6dcb1d34fa787cb475
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c69253a366c542b4a3eb17c1bfebbd5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4fbbfb1156d951953568cb4a2bbab2e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05bef6d3087264126a582eb4b6edbc8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/535ce53dcaafe603ae528c7e9d8210d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/53d127dd1515f00d81280ecbc7f9fd4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b739bfac5af6afddd974a04c9c0382e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/31753dfd82fc302894bb10fd281de3c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8cf592b1a566b252e0a2d8a28202e6a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/40d1d207edbdd5d0cf16b52cbfd9645
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6180480d62fdd7597abe8fcb6f394e0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4b8e5816edf50d31384f39e1daf9aed
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62879f8b2f99026405e0df884a98243
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PMC-XTAC-Ammo-Can-
   ~ og: https://cdn-fastly.thefirearmblog.com/media/2026/06/02/06131/wsm-legio
   ~ og: https://www.ammoland.com/wp-content/uploads/2025/10/CMMG-Bravo-22lr-AR
   skip coupon: https://gun.deals/content/coupon-store-defense-depotthursday
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 9
+  → patched final 29
 
-Stats: uploaded=7 fallback=2 failed=0
+Stats: uploaded=26 fallback=3 failed=0
 
-=== FINAL: total=833 missing_images=3 reddit=0 ===
+=== FINAL: total=860 missing_images=3 reddit=0 ===
