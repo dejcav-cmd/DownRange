@@ -2,33 +2,15 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 24
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7278529227433f28287e461b88c9dfb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d4107d373f3b9d56c5ced712875da53
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/caab9d17a8a530dd0f5cbe0d8ff1d82
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6238db3097ebe950559e57b2fad3710
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bfb547f1004ae3774f8e37c83ebbf6c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6d34abb7609456b0ef2e3cbd2f514de
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cc745c944487189cb26ac1684af9c2e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4d642e5cc958a4954ce2cd2a95bc42f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/47f5b1322f33b12abbc08ac212cc11e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bbbbbd90220b48b8ff0b64d15e3d4d5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cd879b4d540adf23b13c075aeb0eda7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bf601f3b4fcd4655bb11342925c8f0f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/65e1aa9e4637610441e0ed072075eb1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e688ebd43feed2da2bce72adc3c1a1a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7de1a8cbef6837c8bb36b55d383437c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/389ef981d76574765eeb2de4ed48e90
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/83f3d34fc6eb0ab8a3cf2e4a35ccc6f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/24fb58fe9efbd19c924810e8f69c256
+Missing: 6
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PMC-XTAC-Ammo-Can-
   ~ og: https://cdn-fastly.thefirearmblog.com/media/2026/06/02/06131/wsm-legio
   ~ og: https://www.ammoland.com/wp-content/uploads/2025/10/CMMG-Bravo-22lr-AR
   skip coupon: https://gun.deals/content/coupon-store-defense-depotthursday
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 21
+  → patched final 3
 
-Stats: uploaded=18 fallback=3 failed=0
+Stats: uploaded=0 fallback=3 failed=0
 
 === FINAL: total=892 missing_images=3 reddit=0 ===
