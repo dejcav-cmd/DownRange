@@ -1,0 +1,31 @@
+name: Fix Blog Images
+
+on:
+  workflow_dispatch:
+  
+jobs:
+  fix-images:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      
+      - name: Fix blog post images
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          echo "🔧 Fixing blog post images..."
+          node scripts/fix-blog-images.js
+      
+      - name: Revalidate paths
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          echo "🔄 Revalidating pages..."
+          curl -X POST "https://downrangeco.com/api/revalidate?paths=/blog/gun-prices-tariffs-2026,/blog/bruen-standard-state-battles-2026,/blog/micro-compact-pistol-market-2026" \
+            -H "x-admin-key: $ADMIN_KEY"
+          echo "✅ Revalidation complete"
