@@ -139,8 +139,12 @@ function extractRSSImage(item) {
   if (item.enclosure?.url && isImageUrl(item.enclosure.url)) return item.enclosure.url
   const html = item.contentEncoded || item.content || item['content:encoded'] || ''
   if (html) {
-    const match = html.match(/<img[^>]+src=["']([^"']+)["']/i)
-    if (match?.[1] && isImageUrl(match[1])) return match[1]
+    // Try img src first (most reliable)
+    const imgMatch = html.match(/<img[^>]+src=["']([^"']*(?:cdn|media|upload|img|image)[^"']*)["']/i)
+    if (imgMatch?.[1] && isImageUrl(imgMatch[1])) return imgMatch[1]
+    // Fallback to any img src
+    const anyImg = html.match(/<img[^>]+src=["']([^"']+)["']/i)
+    if (anyImg?.[1] && isImageUrl(anyImg[1])) return anyImg[1]
   }
   return null
 }
@@ -149,7 +153,8 @@ function isImageUrl(url) {
   if (!url || typeof url !== 'string' || url.length > 2000) return false
   return /\.(jpg|jpeg|png|webp|gif)(\?|$)/i.test(url) ||
          /images\.|img\.|cdn\.|media\./i.test(url) ||
-         /wp-content\/uploads/i.test(url)
+         /wp-content\/uploads/i.test(url) ||
+         /townhall\.com\/cdn|hodl\/|cloudfront\.net|imgix\.net/i.test(url)
 }
 
 function cleanImageUrl(url) {
@@ -629,7 +634,7 @@ async function processNewsItem(item) {
       // Tight 5s total timeout wrapper — never let this block the feed
       const cdnUrl = await Promise.race([
         fetchAndUploadOgImage(item.url, doc._id),
-        new Promise(resolve => setTimeout(() => resolve(null), 5000)),
+        new Promise(resolve => setTimeout(() => resolve(null), 8000)),
       ])
       if (cdnUrl) { doc.imageUrl = cdnUrl; console.log(`[NEWS] 📷 Got real image for "${item.title.slice(0,40)}"`) }
     } catch { /* non-critical */ }
