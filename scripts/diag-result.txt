@@ -1,14 +1,15 @@
-Article: Liberals Extend Gun-Confiscation “Amnesty” While Continuing Seizures
+Article: Liberals Extend Gun Amnesty to 2027 While Ramping Up Seizures
 imageUrl: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
-body: 2416 chars, 326 words
+body: 3296 chars, 450 words
 
-── Fetching real OG image...
-  Upload error: HTTP Error 403: Forbidden
-  ✓ Image updated: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
+── Fetching CDN image via Pexels...
+  Pexels error: HTTP Error 403: Forbidden
+  Pixabay: https://cdn.sanity.io/images/vbnsqnkg/production/7f63613ec4f
+  ✓ Image set: https://cdn.sanity.io/images/vbnsqnkg/production/7f63613ec4f9c03f87315
 
-── AI rewriting body (currently 326 words)...
-  AI output: 450 words, 4 h2s
-  ✓ Body rewritten: 450 words
-  ✓ Title: Liberals Extend Gun Amnesty to 2027 While Ramping Up Seizures
+── AI rewriting body (currently 450 words)...
+  AI output: 486 words, 4 h2s
+  ✓ Body rewritten: 486 words
+  ✓ Title: Ottawa Extends Gun Amnesty to 2027 as Seizure Operations Accelerate
 
 Done.
