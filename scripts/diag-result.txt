@@ -2,29 +2,34 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 20
+Missing: 25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0c45422299e4531db2ac8bdea1263e5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/27ef29e0f84449cddc94202f9027d6d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/63116d66a7fa05559000547fc9de127
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fabe5348549abe717fa916fb3a6b0d9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c8df6e416df4a67405d7a7d25c8865f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c0c532593c46c0f9f67cefaa529bc72
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/50620ca8d4de1d30e27e8f1c70fbebe
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b59a0b2c037cd584d81385a7069c6a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0599997f176608993253b8fb6d68c9c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7d1185fe710142c47f67a4348331d0c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d66ae3849132356f8799debb70046e3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c4859fb2ad2de836206c98096010d1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69a85614513a3d16f592cfe204addd7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f50c11d1c78ff99b5a9e6299bbf7688
+  ~ og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8497147f3b86ee1d9e46bbf6a7c89d0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6728f088f09307ff641401b4b64fc22
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/055c1661462084074e752d23f35f782
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8099b3037736870134e4f38d4d6c22b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/608c71c2597544cba4b23ffee63311e
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3d06236c185fc4e978b906df16bc24e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eda1906a2bc569f039a374a1172bb03
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1fd16de4f3949f9c5523b3c156fb3f8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f1a2034f04332ef078cb09b2310e13d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e41ed5397a8d69b86e0e466c76e625f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7db931c2c3ae0698796a5bcfc2fd5f8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/651da4439f001c7f5d4270d784d397b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ee191333ceede81ffe8a3e21acb400
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df2579aca212170110b2b995902d98e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87d585ee174cb7dc071051a075c168e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/523dbee672d1ea2733d9dfdd1a4dc53
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/665fb71a921e3a368e4c9f7cea5782a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/18552b1f2e0b13c24f826a2d7f81dd0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c1bc072165240ef35947f9a1ceb8d5b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3b2364bb2d13be180485934cc286151
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 17
+  → patched final 22
 
-Stats: uploaded=15 fallback=2 failed=1
+Stats: uploaded=19 fallback=3 failed=1
 
-=== FINAL: total=1019 missing_images=3 reddit=0 ===
+=== FINAL: total=1039 missing_images=3 reddit=0 ===
