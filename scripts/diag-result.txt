@@ -2,21 +2,24 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 12
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c2d7cc3b27a92c36f963a9c0348d09b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e5e66734a6dd8cc868a3e688def670b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0340da3a596403e278aeea2a816d666
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/def1c7c80ac553d86c4f322a0c77b18
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df5d8db8db161e21ae062bfd2c7c760
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6c70b8766f81280a2877c26b096e093
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/105eb72a0c7374607c9c61df81f3ccf
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
-  skip coupon: https://gun.deals/content/coupon-store-defense-depotthursday
+Missing: 15
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eea9ecbe9ea2c656d3c2077f0050b99
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7a9a358670fda532f113a42cb459f1c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7fa4907b3cce2e13df7fb916c936763
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e442ebeccda272944a3ef46df090129
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/068cebb19b584f7083e192a83c5bea9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/86680e4b6d750147dd09113bbc52453
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ee07bb184cba1933903f8613ffd75f5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/535ce53dcaafe603ae528c7e9d8210d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0ecd55c4e0c02b658452a1ff08b54a0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f9f0e99bf42daf360f7081c1e8e1c3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/76aa21c3716c9a9cf7c05e80c69d1d1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b3978a31c7541e86b9b3d50877771d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/70f7dc3347e8359ba34d6362767e3fd
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 9
+  → patched final 13
 
-Stats: uploaded=7 fallback=2 failed=0
+Stats: uploaded=13 fallback=0 failed=0
 
-=== FINAL: total=982 missing_images=3 reddit=0 ===
+=== FINAL: total=1003 missing_images=2 reddit=0 ===
