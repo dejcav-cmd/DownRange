@@ -2,16 +2,21 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a8f72104c3452f9fad2165d2e607b0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44132854e94f2d1b277503ba31e51ed
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/949b9d791aa1f582e58d23018ba87a3
+Missing: 12
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b96f60c13aaed5384c7a04708afccf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/649eb9914e10cab4e394da84389bff7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b01fd41a162b646ee96dc3fd6982317
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e023bbe37463da2546b7a4c6faa8f6b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3ee24d33ab160728563ad4f2ac69e5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69cff8845b50a7566057bc77b0e2d24
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1e03a544a5eca9e8dde899980db70b7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/70dee720a67b3949deb891066eabb6e
   skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 3
+  → patched final 8
 
-Stats: uploaded=3 fallback=0 failed=1
+Stats: uploaded=8 fallback=0 failed=1
 
-=== FINAL: total=1114 missing_images=4 reddit=0 ===
+=== FINAL: total=1122 missing_images=4 reddit=0 ===
