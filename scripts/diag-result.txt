@@ -1,17 +1,30 @@
-=== AI Provider Test ===
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-── GLM-4.5 Air direct call ─────────────────────────────
-  GLM_API_KEY not in GH secrets — testing via model routing instead
-  (Key IS set in Vercel — GH secrets are separate)
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 20
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c06df71e0d36a46f2f3a2720f9c0baa
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a911d5826eccff2e512fa7122373914
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/078c2fede317883ff1905dd197fc064
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9a82a36a0cfef7cc8aaf006c82d9f4a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d65597b2529cfa4360e03d6286edc5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/386574717d2986475dd955d70cd1a1e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0e5fe20d096bccd2ebbfd7488ce9808
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3ecccbfacad92327650f14f49cc71de
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/992a19f156fbc25564f4691711dd460
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/00e716c03939cc4004231d97f0427d4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b78582bc227af287eaed0a9af0a0a21
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fb85e60fef444bf672ca2b51ddfccf9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/526fe6790a9b95d419da5444533a8f4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05ee66b190c2d6f2e2e9e9d5c7681f4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/94a8a70e8b19d01a3df973607a76da7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c171377e25f73dd57be8d1178ba6173
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/68c9f9deceeb4b9388cf25b7572b76b
+  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 17
 
-── Article rewrite quality test ────────────────────────
+Stats: uploaded=17 fallback=0 failed=1
 
-── Anthropic (Haiku) fallback test ─────────────────────
-  Response:  Haiku fallback working
-  Latency:   891ms
-  Status:    ✓ HAIKU FALLBACK WORKING
-
-=== Summary ===
-  GLM_API_KEY: NOT in GH secrets (set in Vercel only)
-  Live crons:  Will use GLM when Vercel has GLM_API_KEY ✓
-  To verify:   Check Vercel dashboard → DownRange → Environment Variables
+=== FINAL: total=1101 missing_images=3 reddit=0 ===
