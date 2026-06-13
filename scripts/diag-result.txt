@@ -1,39 +1,7 @@
-=== PATCH ===
-[LIVE] Scanning Canada + Brazil articles...
-
-BROKEN ARTICLE: Liberals Extend Gun-Confiscation “Amnesty” While Continuing 
-  type=article active=True body_len=2416
-  ✓ Patched: ['qualityReviewed']
-
-Auto-generated articles: CA=7 BR=2
-Missing body structure:  4
-Missing images:          0
-
-── Marking unstructured for quality-rewrite ────────────────────
-  [CA] GSG-16 in .22LR Is Most-Claimed Gun in Liberal Confiscation 
-       words=20 h2=0
-  [CA] Sloppy data results in misinformation re: crime guns
-       words=74 h2=0
-  [BR] Quadro de oficiais capelães: carreira, ingresso e o dia a di
-       words=78 h2=0
-  [BR] Como entrar na EEAR: tudo sobre a Escola de Especialistas de
-       words=75 h2=0
-
-── Fetching missing images ─────────────────────────────────────
-
-────────────────────────────────────────────────────────────
-Unstructured articles found: 4
-Marked for rewrite:          4
-Images fixed:                0
-Mode: LIVE
-────────────────────────────────────────────────────────────
-
-=== OFF-TOPIC CLEANUP ===
-OFF-TOPIC [Vida Militar]: Quadro de oficiais capelães: carreira, ingresso e o dia a dia da assis
-OFF-TOPIC [Vida Militar]: Como entrar na EEAR: tudo sobre a Escola de Especialistas de Aeronáuti
-OFF-TOPIC [Calibre Magazine]: Canada's C-21 Consultants Wanted Handgun Ban, Online Sales Shutdown
-OFF-TOPIC [CCFR]: Sloppy data results in misinformation re: crime guns
-OFF-TOPIC [None]: Saskatchewan Stacks Federal PAL Rules With Provincial Storage Requirem
-
-Found 5 off-topic articles
-Deleted: 5
+FOUND: Liberals Extend Gun-Confiscation “Amnesty” While Continuing Seizures
+  type=article active=True qualityReviewed=False
+  imageUrl=YES
+  body=2416 chars
+  body h2=4 words=326
+  body preview: <h2>Liberals Extend Gun-Confiscation "Amnesty" While Continuing Seizures</h2>
+<p>Canada's Liberal government extended its partial amnesty for gun owners caught holding now-prohibited firearms until 2027. This amnesty lets owners surrender banned guns without criminal prosecution—but only if they tur
