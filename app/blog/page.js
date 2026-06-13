@@ -70,7 +70,7 @@ export const BLOG_POSTS = [
     category:    'ANALYSIS',
     catColor:    '#C8922A',
     featured:    false,
-    img:         '/img/photos/blog-edc-pistol.jpg',
+    img:         'https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1400&h=900&fit=crop',
     excerpt:     'The Sig P365 changed everything when it launched in 2018. Eight years later, every major manufacturer has a micro-compact answer, the technology has matured, and the market is more competitive than any category in firearms history.',
     tags:        ['Pistols', 'EDC', 'Micro-Compact', 'Market Analysis'],
     body: `
@@ -117,7 +117,7 @@ export const BLOG_POSTS = [
     category:    'MARKET',
     catColor:    '#22c55e',
     featured:    false,
-    img:         '/img/photos/rifle.jpg',
+    img:         'https://images.unsplash.com/photo-1552664730-d307ca884978?w=1400&h=900&fit=crop',
     excerpt:     'If you enjoyed the buyer\'s market of 2025, the window is closing. Steel tariffs, import restrictions, and rising manufacturing costs are converging to push firearms prices up across the board in the second half of 2026.',
     tags:        ['Market', 'Pricing', 'Tariffs', 'Buying Guide'],
     body: `
@@ -160,7 +160,7 @@ export const BLOG_POSTS = [
     category:    'LAW',
     catColor:    '#3b82f6',
     featured:    false,
-    img:         '/img/photos/blog-bruen-law.jpg',
+    img:         'https://images.unsplash.com/photo-1554115176-72a380f824c7?w=1400&h=900&fit=crop',
     excerpt:     'The Supreme Court\'s 2022 Bruen decision established a text-and-history standard for evaluating gun laws. But the lower courts are still brawling over what that standard requires — and the outcomes of these fights will determine the practical scope of your Second Amendment rights for decades.',
     tags:        ['2A', 'Bruen', 'SCOTUS', 'Legal', 'Constitutional'],
     body: `
