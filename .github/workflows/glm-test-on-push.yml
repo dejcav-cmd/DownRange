@@ -4,20 +4,31 @@ on:
     branches: [main]
     paths: ['.github/workflows/glm-test-on-push.yml']
 jobs:
-  test:
+  monitor:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Test GLM and Anthropic
+      - name: Monitor crons
         env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
-        run: python3 scripts/glm-test-live.py | tee scripts/diag-result.txt
+        run: |
+          MONITOR_SINCE=$(python3 -c "
+from datetime import datetime, timezone, timedelta
+print((datetime.now(timezone.utc) - timedelta(minutes=70)).isoformat())
+")
+          echo "Checking crons since: $MONITOR_SINCE"
+          MONITOR_SINCE="$MONITOR_SINCE" python3 scripts/monitor-crons.py | tee scripts/diag-result.txt
+          echo "" | tee -a scripts/diag-result.txt
+          echo "=== GLM Test ===" | tee -a scripts/diag-result.txt
+          python3 scripts/glm-test-live.py | tee -a scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "GLM test result [skip ci]" && git push
+          git diff --staged --quiet || git commit -m "monitor result [skip ci]" && git push
+# triggered 19:29:11
