@@ -1,0 +1,44 @@
+name: Fix and Revalidate Blog Images
+
+on:
+  workflow_dispatch:
+
+jobs:
+  fix-and-revalidate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fix blog post images
+        run: |
+          echo "🔧 Fixing blog post images..."
+          RESPONSE=$(curl -s -X POST "https://downrangeco.com/api/admin/fix-blog-images" \
+            -H "x-admin-key: e0f56a3c7c9d4e8b2f1a5c3e7d9b2f0a" \
+            -H "Content-Type: application/json" \
+            -d '{}')
+          
+          echo "✅ Fix response:"
+          echo "$RESPONSE" | python3 -m json.tool 2>/dev/null || echo "$RESPONSE"
+      
+      - name: Revalidate blog pages
+        run: |
+          echo "🔄 Revalidating blog pages..."
+          REVALIDATE=$(curl -s -X POST "https://downrangeco.com/api/revalidate?paths=/blog/gun-prices-tariffs-2026,/blog/bruen-standard-state-battles-2026,/blog/micro-compact-pistol-market-2026" \
+            -H "x-admin-key: e0f56a3c7c9d4e8b2f1a5c3e7d9b2f0a")
+          
+          echo "📋 Revalidate response:"
+          echo "$REVALIDATE" | python3 -m json.tool 2>/dev/null || echo "$REVALIDATE"
+      
+      - name: Verify images updated
+        run: |
+          echo "✨ Waiting 10 seconds for cache to clear..."
+          sleep 10
+          
+          echo "📸 Checking article 1..."
+          curl -s "https://downrangeco.com/blog/gun-prices-tariffs-2026" | grep -o 'og:image.*content="[^"]*"' | head -1
+          
+          echo "📸 Checking article 2..."
+          curl -s "https://downrangeco.com/blog/bruen-standard-state-battles-2026" | grep -o 'og:image.*content="[^"]*"' | head -1
+          
+          echo "📸 Checking article 3..."
+          curl -s "https://downrangeco.com/blog/micro-compact-pistol-market-2026" | grep -o 'og:image.*content="[^"]*"' | head -1
+          
+          echo "✅ Blog images fix complete!"
