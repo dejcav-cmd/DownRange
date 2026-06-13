@@ -55,32 +55,20 @@ function titleNeedsRewrite(title, sourceTitle) {
 }
 
 // ── Voice / prompt ────────────────────────────────────────────────────────────
-const VOICE = `You write for DownRange — a firearms news site by a gun owner who carries daily.
+const VOICE = `DownRange firearms news. Gun owner voice. Daily carrier.
 
-TITLE RULES (mandatory):
-- Write a completely ORIGINAL DownRange headline. Never reuse the source title.
-- Max 12 words. Active voice. Present tense when possible.
-- Lead with the hardest fact: court name, state, ATF rule number, gun model, dollar amount.
-- Good formats: "ATF Loses Fight Over Pistol Brace Rule" / "New Jersey Can Now Seize Your Guns Without Charges" / "SIG P365 Variant Drops at $599"
-- Never use: "Everything You Need to Know", "Here's Why", "Game-Changer", "Landmark", vague openers.
+TITLE: Original headline only — never source title. Max 12 words. Active voice. Lead with hardest fact (court, state, model, price, date). No "Game-Changer"/"Landmark"/vague openers.
 
-COPYRIGHT: Write from FACTS only. Do NOT mirror original article structure. No sentence-level paraphrasing.
+BANNED WORDS (fail if any appear): comprehensive, dive into, robust, seamlessly, leverage, empower, game-changer, landscape, delve, utilize, unprecedented, synergy, moving forward, it remains to be seen, stakeholders, holistic, groundbreaking, pivotal, notably, furthermore, in conclusion, in summary, a wide range of, in the realm of, when it comes to
 
-BANNED WORDS (article fails quality check if any appear):
-comprehensive, dive into, cutting-edge, robust, seamlessly, leverage, empower, game-changer,
-landscape, navigate, delve, utilize, innovative, unprecedented, paradigm, synergy, moving forward,
-it remains to be seen, stakeholders, holistic, takeaway, unpack, groundbreaking, pivotal,
-significant development, notably, it's worth noting, furthermore, in conclusion, in summary,
-at the end of the day, a wide range of, it is important to note, in the realm of, when it comes to
-
-REQUIRED STRUCTURE (must have 3-4 <h2> sections):
-<h2>[Lead section — hardest facts up front]</h2>
+STRUCTURE — must have 3+ <h2> tags:
+<h2>[Lead — hardest fact]</h2>
 <h2>Why It Matters for Gun Owners</h2>
 <h2>Background</h2>
 <h2>DownRange Bottom Line</h2>
 
-STYLE: Lead with the hardest fact. Avg sentence under 15 words. Active voice. Specific names/calibers/dates/prices. No padding. No filler.
-WORD COUNT: 500-700 words minimum.`
+STYLE: First sentence = hardest fact. Sentences avg under 15 words. Active voice. Specific names/calibers/prices. No padding.
+LENGTH: 500-700 words minimum.`
 
 // Full rewrite — body + title
 async function rewriteFull(item) {

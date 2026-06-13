@@ -263,7 +263,7 @@ Return ONLY a valid JSON object — no markdown, no preamble, no explanation:
   const res = await fetch('https://api.anthropic.com/v1/messages', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
-    body: JSON.stringify({ model: 'claude-sonnet-4-5-20251022', max_tokens: 5000, messages: [{ role: 'user', content: prompt }] }),
+    body: JSON.stringify({ model: 'claude-sonnet-4-5-20251022', max_tokens: 2500, messages: [{ role: 'user', content: prompt }] }),
   })
   const d = await res.json()
   const raw = d.content?.[0]?.text || '{}'
