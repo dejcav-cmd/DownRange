@@ -29,8 +29,8 @@ import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 3
-const ITEMS_PER_FEED = 10   // 10 per feed — needed as archive grows and top items dedup
-const MAX_ITEMS      = 50   // 50 total cap — enough to find fresh items across 40+ feeds
+const ITEMS_PER_FEED = 5    // 5 per feed — top items only, reduces AI cost
+const MAX_ITEMS      = 25   // 25 total cap — enough fresh items across 40+ feeds
 const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────
@@ -380,9 +380,9 @@ async function processNewsItem(item) {
     let finalSummary = item.description?.slice(0, 300) || item.title
     let hasAI = false
 
-    // Only AI-rewrite if we have enough source text to work with
+    // Only AI-rewrite if we have enough source text to work with (min 200 chars)
     const srcLen = (item.description || item.content || '').length
-    if (srcLen > 80) {
+    if (srcLen > 200) {
       try {
         const ai = await rewriteWithClaude({
           ...item,
@@ -469,7 +469,7 @@ async function processNewsItem(item) {
     let finalSummary = item.description?.slice(0, 300) || item.title
     let hasAI = false
     const srcLen = (item.description || item.content || '').length
-    if (srcLen > 80) {
+    if (srcLen > 200) {
       try {
         const ai = await rewriteWithClaude({
           ...item,

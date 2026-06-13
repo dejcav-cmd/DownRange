@@ -129,12 +129,8 @@
       "schedule": "0 12-23,0-3 * * *"
     },
     {
-      "path": "/api/admin/backfill-articles?batch=20",
-      "schedule": "0 12-23,0-3 * * *"
-    },
-    {
       "path": "/api/cron/quality-rewrite",
-      "schedule": "0 * * * *"
+      "schedule": "0 */6 * * *"
     },
     {
       "path": "/api/cron/image-fix",
