@@ -1,0 +1,32 @@
+name: Monitor Crons
+on:
+  workflow_dispatch:
+    inputs:
+      since_minutes:
+        description: 'Look back N minutes (default 65)'
+        required: false
+        default: '65'
+jobs:
+  monitor:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Poll cron results
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          MONITOR_SINCE: ""
+        run: |
+          MINS="${{ github.event.inputs.since_minutes }}"
+          SINCE=$(python3 -c "
+from datetime import datetime, timezone, timedelta
+print((datetime.now(timezone.utc) - timedelta(minutes=int('$MINS'))).isoformat())
+")
+          MONITOR_SINCE="$SINCE" python3 scripts/monitor-crons.py | tee scripts/diag-result.txt
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "cron monitor result [skip ci]" && git push
