@@ -5,7 +5,8 @@ from datetime import datetime, timezone, timedelta
 
 TOKEN   = os.environ.get("SANITY_TOKEN","").replace("ST=","")
 PROJECT = "vbnsqnkg"
-SINCE   = os.environ.get("MONITOR_SINCE", "")  # ISO timestamp
+SINCE   = os.environ.get("MONITOR_SINCE", "")
+MINUTES = int(os.environ.get("MONITOR_MINUTES", "65"))
 
 def q(query, params=None):
     url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query=" + \
@@ -15,7 +16,7 @@ def q(query, params=None):
         return json.loads(r.read()).get("result", [])
 
 now  = datetime.now(timezone.utc)
-since_dt = datetime.fromisoformat(SINCE) if SINCE else (now - timedelta(hours=1))
+since_dt = datetime.fromisoformat(SINCE) if SINCE else (now - timedelta(minutes=MINUTES))
 since_iso = since_dt.isoformat()
 
 print(f"=== Cron Monitor Report ===")
