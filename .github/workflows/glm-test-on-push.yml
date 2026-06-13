@@ -4,28 +4,20 @@ on:
     branches: [main]
     paths: ['.github/workflows/glm-test-on-push.yml']
 jobs:
-  monitor:
+  fix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Monitor crons and test GLM
+      - name: Fix article image
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
-          MONITOR_MINUTES: "70"
-        run: |
-          python3 scripts/monitor-crons.py | tee scripts/diag-result.txt
-          echo "" | tee -a scripts/diag-result.txt
-          python3 scripts/glm-test-live.py | tee -a scripts/diag-result.txt
+        run: python3 scripts/fix-article-image.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "monitor result [skip ci]" && git push
-# v3
-# v4 19:34
-# poll2 19:42
+          git diff --staged --quiet || git commit -m "fix article image result [skip ci]" && git push
+# article-image-fix
