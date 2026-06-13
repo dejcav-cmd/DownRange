@@ -303,6 +303,13 @@ async function processNewsItem(item) {
 
   // ── GATE 1: Canada items route to canadaContent, not newsArticle ──────────
   if (region === 'canada') {
+    // Block weekly digest round-ups (TheGunBlog "Canada Gun Rights News: Week of...")
+    // These are link-aggregator posts, not individual news articles
+    if (/week\s+of\s+\d{4}/i.test(item.title || '') ||
+        /gun.rights.news.*week/i.test(item.title || '')) {
+      console.log(`[NEWS] 🇨🇦 BLOCKED digest: "${item.title?.slice(0,60)}"`)
+      return
+    }
     if (await isSanityDuplicate(item.url, item.title)) return
     const hash = crypto.createHash('md5').update(item.url).digest('hex')
 

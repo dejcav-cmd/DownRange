@@ -98,17 +98,24 @@ def canada_slug_from_url(source_url, title):
     base = re.sub(r"[^a-z0-9]+", "-", stripped.lower()).strip("-")[:80]
     return base if base.startswith("canada-") else "canada-" + base
 
-def is_bad_slug(slug, title):
-    """Return True if this slug looks like a date-based digest slug."""
-    if not slug:
+def is_digest_article(slug, title):
+    """Return True if this is a weekly digest round-up — should be deleted, not renamed.
+    TheGunBlog.ca publishes weekly round-ups titled 'Canada Gun Rights News: Week of YYYY Month DD'
+    whose URL path also reflects the digest title. These are not individual articles.
+    """
+    if not slug and not title:
         return False
-    # Matches patterns: canada-gun-rights-news-week-of-2026-june-08
-    if re.search(r"week-of-\d{4}", slug):
+    if re.search(r"week-of-\d{4}", slug or ""):
         return True
-    # Title has "Week of YYYY"
     if re.search(r"week\s+of\s+\d{4}", title or "", re.I):
         return True
+    if re.search(r"gun.rights.news.*week", title or "", re.I):
+        return True
     return False
+
+# Keep is_bad_slug as alias for backward compat
+def is_bad_slug(slug, title):
+    return is_digest_article(slug, title)
 
 # ── Main ──────────────────────────────────────────────────────────────────────
 print(f"{'[DRY RUN] ' if DRY_RUN else '[LIVE] '}Scanning canadaContent articles...\n")
@@ -166,29 +173,25 @@ for doc in needs_image:
     time.sleep(0.8)
 
 print()
-print("── Fixing bad slugs ───────────────────────────────────────────────")
+print("── Deleting weekly digest articles ────────────────────────────────")
+print("   (TheGunBlog 'Week of YYYY' round-ups are not individual articles)")
 for doc in bad_slug_docs:
-    title      = doc.get("title", "")
-    source_url = doc.get("sourceUrl") or doc.get("externalUrl") or ""
-    old_slug   = doc.get("slug", {}).get("current", "")
-    new_slug   = canada_slug_from_url(source_url, title)
-
-    print(f"  SLUG FIX: {old_slug[:50]}")
-    print(f"         → {new_slug}")
+    title    = doc.get("title", "")
+    old_slug = doc.get("slug", {}).get("current", "")
+    print(f"  DELETE: {title[:70]}")
+    print(f"          slug: {old_slug}")
     if not DRY_RUN:
         try:
-            sanity_mutate([{"patch": {"id": doc["_id"], "set": {
-                "slug": {"_type": "slug", "current": new_slug}
-            }}}])
-            print(f"    ✓ Updated")
+            sanity_mutate([{"delete": {"id": doc["_id"]}}])
+            print(f"    ✓ Deleted")
             fixed_slugs += 1
         except Exception as e:
             print(f"    ✗ Failed: {e}")
             failed += 1
     else:
-        print(f"    [DRY RUN] Would update slug")
+        print(f"    [DRY RUN] Would delete")
         fixed_slugs += 1
-    time.sleep(0.3)
+    time.sleep(0.2)
 
 print()
 print("─" * 60)
