@@ -1,18 +1,23 @@
-=== Article State ===
-  _id:       news-6d860e2c3f11856b7fc2d85031cad16f
-  title:     Glock Switch Bans Target Wrong Enemy—Here's Why
-  slug:      another-reason-no-one-should-take-glock-switch-hysteria-seriously-6d860e
-  imageUrl:  MISSING
-  externalUrl: https://bearingarms.com/tomknighton/2026/06/13/another-reason-no-one-should-take
-  imageUrl cdn?: NO - hotlink or missing
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-  ISSUE: imageUrl is null/empty
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 13
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/98d0408487a81f18e0ed3b34d67f66c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8568b3b444920f98fe4e31824e2cd31
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a9335b3b8237a7013393d81ff6a401
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c4d928980c7c74a122e0f8076108a04
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0efadf44f9939be2bad6a37cf1a9667
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa2c187d7620ef861a6fbaf3f0ca272
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64cae148dcbf11566715cd7a30fb052
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6dc9e3bb9c90047ebf20a2b02bbaeb0
+  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b32d5f7f851ca7c1b6847d0d9adda7c
+  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 9
 
-=== Fetching OG image from source ===
-  Source: https://bearingarms.com/tomknighton/2026/06/13/another-reason-no-one-should-take-glock-switch-hysteria-seriously-n1232844
-  Found OG: https://media.townhall.com/cdn/hodl/2016/230/93d23f78-4ad6-4069-8703-795a579cf8ae.jpg
-  Uploading to Sanity CDN...
-  CDN URL: https://cdn.sanity.io/images/vbnsqnkg/production/f8fafb9722c8c86d7c7b4b1da09175a8b16b296f-650x395.jpg
-  ✓ Patched imageUrl → CDN
+Stats: uploaded=9 fallback=0 failed=1
 
-Done.
+=== FINAL: total=1111 missing_images=4 reddit=0 ===
