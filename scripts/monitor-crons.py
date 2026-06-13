@@ -6,16 +6,16 @@ from datetime import datetime, timezone, timedelta
 TOKEN   = os.environ.get("SANITY_TOKEN","").replace("ST=","")
 PROJECT = "vbnsqnkg"
 SINCE   = os.environ.get("MONITOR_SINCE", "")
-MINUTES = int(os.environ.get("MONITOR_MINUTES", "65"))
+MINUTES = int(os.environ.get("MONITOR_MINUTES", "70"))
 
-def q(query, params=None):
+def q(query):
     url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query=" + \
           urllib.parse.quote(query)
     req = urllib.request.Request(url, headers={"Authorization": f"Bearer {TOKEN}"})
     with urllib.request.urlopen(req, timeout=15) as r:
         return json.loads(r.read()).get("result", [])
 
-now  = datetime.now(timezone.utc)
+now      = datetime.now(timezone.utc)
 since_dt = datetime.fromisoformat(SINCE) if SINCE else (now - timedelta(minutes=MINUTES))
 since_iso = since_dt.isoformat()
 
@@ -23,61 +23,74 @@ print(f"=== Cron Monitor Report ===")
 print(f"Window: {since_dt.strftime('%H:%M UTC')} → {now.strftime('%H:%M UTC')}")
 print()
 
-docs = q(f'*[_type=="cronRun" && _createdAt > "{since_iso}"] | order(_createdAt asc) {{job,status,ms,details,error,_createdAt}}')
+# Field names from cronReporter.js: jobId, at, status, ms, details, error
+docs = q(f'*[_type=="cronRun" && at > "{since_iso}"] | order(at asc) {{jobId,status,ms,details,error,at}}')
 
 if not docs:
-    print("No cronRun docs found in this window.")
-    print("(Either no crons fired yet, or cronRun writes are disabled)")
+    print("No cronRun docs found in window.")
+    print("Possible reasons:")
+    print("  - No crons have fired yet in this window")
+    print("  - cronReporter is failing silently")
+    print("  - 'at' field might differ — checking raw sample...")
+    sample = q('*[_type=="cronRun"] | order(_createdAt desc) [0...3] {jobId,status,ms,at,_createdAt}')
+    if sample:
+        print(f"  Latest cronRun docs:")
+        for d in sample:
+            print(f"    jobId={d.get('jobId')} at={d.get('at',d.get('_createdAt','?'))[:16]} status={d.get('status')}")
+    else:
+        print("  No cronRun docs found at all!")
 else:
-    ok = [d for d in docs if d.get('status') == 'success']
-    warn = [d for d in docs if d.get('status') == 'warning']
+    ok     = [d for d in docs if d.get('status') == 'success']
+    warn   = [d for d in docs if d.get('status') == 'warning']
     failed = [d for d in docs if d.get('status') in ('failed','error')]
 
     print(f"Total runs: {len(docs)}  ✓ {len(ok)}  ⚠ {len(warn)}  ✗ {len(failed)}")
     print()
 
-    # Group by job
     by_job = {}
     for d in docs:
-        j = d.get('job','?')
+        j = d.get('jobId','?')
         by_job.setdefault(j, []).append(d)
 
-    print(f"{'JOB':35s} {'RUNS':>5} {'OK':>4} {'FAIL':>5} {'AVG_MS':>7} LAST_STATUS")
+    print(f"{'JOB':35s} {'RUNS':>5} {'OK':>4} {'FAIL':>5} {'AVG_MS':>7} LAST STATUS")
     print("-" * 75)
-    for job, runs in sorted(by_job.items(), key=lambda x: x[0]):
+    for job, runs in sorted(by_job.items()):
         n_ok   = sum(1 for r in runs if r.get('status')=='success')
         n_fail = sum(1 for r in runs if r.get('status') in ('failed','error'))
-        avg_ms = int(sum(r.get('ms',0) for r in runs) / len(runs))
+        avg_ms = int(sum(r.get('ms',0) for r in runs) / max(len(runs),1))
         last   = runs[-1]
         last_s = last.get('status','?')
-        last_t = last.get('_createdAt','')[:16]
+        last_t = (last.get('at') or last.get('_createdAt',''))[:16]
         icon   = '✓' if last_s=='success' else '✗' if last_s in ('failed','error') else '⚠'
-        print(f"  {job:33s} {len(runs):5d} {n_ok:4d} {n_fail:5d} {avg_ms:7d}ms {icon} {last_s} @ {last_t[11:]}")
+        print(f"  {job:33s} {len(runs):5d} {n_ok:4d} {n_fail:5d} {avg_ms:7d}ms  {icon} {last_s} @ {last_t[11:]}")
 
     if failed:
         print()
         print("FAILURES:")
         for d in failed:
-            print(f"  ✗ [{d.get('_createdAt','')[:16]}] {d.get('job','?')}")
+            t = (d.get('at') or d.get('_createdAt',''))[:16]
+            print(f"  ✗ [{t}] {d.get('jobId','?')}")
             print(f"    {(d.get('error','') or d.get('details',''))[:120]}")
 
-    # Sanity quota check
     quota_errors = [d for d in docs if 'quota' in (d.get('error','') or '').lower() or 'plan_limit' in (d.get('error','') or '').lower()]
     print()
     if quota_errors:
-        print(f"⚠ SANITY QUOTA ERRORS: {len(quota_errors)}")
+        print(f"⚠ SANITY QUOTA ERRORS STILL OCCURRING: {len(quota_errors)}")
         for d in quota_errors:
-            print(f"  {d.get('job')} @ {d.get('_createdAt','')[:16]}: {d.get('error','')[:80]}")
+            print(f"  {d.get('jobId')} @ {d.get('at','')[:16]}: {d.get('error','')[:80]}")
     else:
-        print("✓ No Sanity quota errors in this window")
+        print("✓ No Sanity quota errors in window")
 
-    # Quality-rewrite check
     qr_runs = by_job.get('quality-rewrite', [])
     print()
-    print(f"quality-rewrite: {len(qr_runs)} run(s) in window")
-    for r in qr_runs:
-        det = (r.get('details','') or '')[:100]
-        print(f"  [{r.get('_createdAt','')[:16]}] {r.get('status')} — {det}")
+    if qr_runs:
+        print(f"quality-rewrite: {len(qr_runs)} run(s)")
+        for r in qr_runs:
+            det = (r.get('details','') or '')[:100]
+            t   = (r.get('at') or '')[:16]
+            print(f"  [{t[11:]}] {r.get('status')} — {det}")
+    else:
+        print("quality-rewrite: no runs yet in window")
 
 print()
 print(f"Report generated: {now.strftime('%H:%M:%S UTC')}")
