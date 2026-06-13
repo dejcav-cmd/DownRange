@@ -1,14 +1,28 @@
-FOUND [liberals-extend-gun-confiscation-amnesty-while-continuing-seizures]: Liberals Extend Gun-Confiscation “Amnesty” While Continuing  active: True img: True body: 2416
-NOT FOUND: canada-liberals-extend-gun-confiscation-amnesty-while-continuing-seizures
-NOT FOUND: canada-gun-rights-news-week-of-2026-june-01
+[LIVE] Scanning Canada + Brazil articles...
 
-All canadaContent articles (9):
-  [ACTIVE  ] [RSS] img=True canada-c-21-docs-show-stakeholders-sought-to-ban-online | Gov't Documents Reveal Stakeholders invited to con
-  [ACTIVE  ] [RSS] img=True sloppy-data-results-in-misinformation-re-crime-guns     | Sloppy data results in misinformation re: crime gu
-  [ACTIVE  ] [RSS] img=True amnesty-extended-as-ccfr-goes-to-supreme-court          | Canada Extends Gun Amnesty as CCFR Fights Supreme 
-  [ACTIVE  ] [RSS] img=True liberals-extend-gun-confiscation-amnesty-while-continui | Liberals Extend Gun-Confiscation “Amnesty” While C
-  [ACTIVE  ] [AI ] img=True canada-restricted-firearm-rules-complete-guide          | Restricted Firearms in Canada: Storage, Transport,
-  [ACTIVE  ] [AI ] img=True canada-hunting-season-2025-province-guide               | 2025 Canada Hunting Season: Province-by-Province F
-  [ACTIVE  ] [AI ] img=True how-to-get-your-pal-canada-complete-guide               | How to Get Your PAL in Canada: The Realistic Step-
-  [ACTIVE  ] [AI ] img=True canada-oic-rifle-ban-explained-2025                     | The OIC Rifle Ban: Illegal to Sell, Legal to Own —
-  [ACTIVE  ] [AI ] img=True canada-handgun-freeze-2025-what-owners-must-know        | Canada's Handgun Transfer Freeze: What Every Owner
+BROKEN ARTICLE: Liberals Extend Gun-Confiscation “Amnesty” While Continuing 
+  type=article active=True body_len=2416
+  ✓ Patched: ['qualityReviewed']
+
+Auto-generated articles: CA=7 BR=2
+Missing body structure:  4
+Missing images:          0
+
+── Marking unstructured for quality-rewrite ────────────────────
+  [CA] GSG-16 in .22LR Is Most-Claimed Gun in Liberal Confiscation 
+       words=20 h2=0
+  [CA] Sloppy data results in misinformation re: crime guns
+       words=74 h2=0
+  [BR] Quadro de oficiais capelães: carreira, ingresso e o dia a di
+       words=78 h2=0
+  [BR] Como entrar na EEAR: tudo sobre a Escola de Especialistas de
+       words=75 h2=0
+
+── Fetching missing images ─────────────────────────────────────
+
+────────────────────────────────────────────────────────────
+Unstructured articles found: 4
+Marked for rewrite:          4
+Images fixed:                0
+Mode: LIVE
+────────────────────────────────────────────────────────────
