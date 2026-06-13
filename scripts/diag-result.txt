@@ -1,14 +1,20 @@
-=== GLM Live Test ===
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-── Provider & Chain Status ─────────────────────────────
-  Providers present in Vercel:
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 10
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b281a5914595d94e10ae144ddbbe648
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/898c478fd5c904e13751946287006e9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7f050b22cac83bbe4576593310e0b9a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/78aaa606c4b228b046b6516bb354022
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ad26fdd373c0a1ae3df1ba73d9ec85b
+  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 7
 
-  Active chains:
+Stats: uploaded=5 fallback=2 failed=1
 
-  GLM_API_KEY detected: NO ✗ — still using Anthropic
-
-── Direct GLM call test ────────────────────────────────
-  ERROR: HTTP 307: Redirecting...
-
-
-=== Done ===
+=== FINAL: total=1084 missing_images=3 reddit=0 ===
