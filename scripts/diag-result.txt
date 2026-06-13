@@ -1,23 +1,13 @@
-=== FULL ARTICLE STATE ===
-  _id                  = ca-35361e85e7a22b2e80e86b582f14ef46
-  title                = Liberals Extend Gun-Confiscation “Amnesty” While Continuing Seizures
-  type                 = article
-  active               = True
-  qualityReviewed      = True
-  tag                  = None
-  author               = None
-  _updatedAt           = 2026-06-13T01:41:28Z
-  imageUrl             = SET: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
-  sourceUrl            = https://thegunblog.ca/2026/06/09/liberals-extend-gun-confiscation-amnesty-while-
-  body                 = 2416 chars, 4 h2s, 326 words
-  summary              = Canada's Liberals extended amnesty for prohibited firearm owners until 2027 but 
+Article: Liberals Extend Gun-Confiscation “Amnesty” While Continuing Seizures
+imageUrl: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
+body: 2416 chars, 326 words
 
-  Body safety: script=False iframe=False null=False
-  Title JSON-safe: YES
+── Fetching real OG image...
+  Upload error: HTTP Error 403: Forbidden
+  ✓ Image updated: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
 
-Documents with this slug: 1
-  _id=ca-35361e85e7a22b2e80e86b582f14ef46 active=True type=article updated=2026-06-13T01:41:28Z
+── AI rewriting body (currently 326 words)...
+  ✗ AI rewrite failed: HTTP Error 401: Unauthorized
+  Raw: N/A
 
-Force re-patching all page-required fields...
-  Result: update
-Done
+Done.
