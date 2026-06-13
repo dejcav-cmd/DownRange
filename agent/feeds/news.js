@@ -275,6 +275,8 @@ const FIREARMS_KEYWORDS = [
   'red flag','atf','batfe','background check','background checks','nics','ffl','4473',
   'bruen','heller','mcdonald','chevron doctrine','ghost gun','80%',
   'bear arms','keep and bear','carry permit','carry law','carry rights',
+  'pal','rpal','c-21','c-71','bill c-21','bill c-71','ccfr','nfa canada','cac','tiro esportivo','arma de fogo',
+  'porte de arma','clube de tiro','policia federal','exercito','exército','fuzil','espingarda','revolver',
   'campus carry','permitless carry','carry license','gun permit','pistol permit',
   'firearm permit','reloading','blade','knife','knives',
   // Products / brands

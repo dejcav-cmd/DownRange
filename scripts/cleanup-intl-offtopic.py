@@ -20,7 +20,24 @@ def mutate(mutations):
         return json.loads(r.read())
 
 # Firearms keywords (abbreviated — same logic as GATE 4)
-ARMS = re.compile(r'\b(gun|firearm|arma|pistol|rifle|carabina|munição|ammo|atirador|cac|tiro|craf|sinarm|exército.*arm|policia.*arm|calibre|cartucho|fuzil|revólver|espingarda|suppressore|silencer|carry|porte)\b', re.I)
+# Full keyword list — mirrors GATE 4 in news.js, extended with CA/BR terms
+ARMS_KEYWORDS = [
+    'gun','guns','firearm','firearms','pistol','rifle','shotgun','revolver','handgun','handguns',
+    'ammo','ammunition','caliber','calibre','cartridge','bullet','suppressor','silencer',
+    'magazine','trigger','barrel','assault weapon','nra','saf','fpc','goa','atf','batfe',
+    'background check','nics','ffl','bruen','heller','ghost gun','ar-15','ar15','1911','2011',
+    'shooting','hunting','hunter','self-defense','open carry','gun store','gunsmith',
+    'concealed carry','ccw','constitutional carry','red flag','second amendment','2nd amendment',
+    'muzzle device','red dot','nfa','fusion firearms',
+    # Canada-specific
+    'pal','rpal','c-21','c-71','bill c-21','bill c-71','ccfr','nfa canada','crime gun',
+    'handgun ban','handgun freeze','oic','firearm ban','gun ban','gun rights','firearms act',
+    'saskatchewan','alberta','firearms law','gun law','gun owner',
+    # Brazil-specific  
+    'cac','tiro esportivo','arma de fogo','porte de arma','clube de tiro',
+    'policia federal','exercito','exército','fuzil','espingarda','craf','sinarm','munição',
+]
+ARMS = re.compile(r'\b(' + '|'.join(re.escape(k) for k in ARMS_KEYWORDS) + r')\b', re.I)
 
 def is_arms(title, body=''):
     return bool(ARMS.search((title or '') + ' ' + (body or '')[:200]))
