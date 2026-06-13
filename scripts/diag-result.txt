@@ -1,7 +1,12 @@
-FOUND: Liberals Extend Gun-Confiscation “Amnesty” While Continuing Seizures
-  type=article active=True qualityReviewed=False
-  imageUrl=YES
-  body=2416 chars
-  body h2=4 words=326
-  body preview: <h2>Liberals Extend Gun-Confiscation "Amnesty" While Continuing Seizures</h2>
-<p>Canada's Liberal government extended its partial amnesty for gun owners caught holding now-prohibited firearms until 2027. This amnesty lets owners surrender banned guns without criminal prosecution—but only if they tur
+Article exists:
+  _id         = ca-35361e85e7a22b2e80e86b582f14ef46
+  type        = article
+  active      = True
+  qualityReviewed = False
+  _updatedAt  = 2026-06-13T01:04:05Z
+  body        = 2416 chars, 4 h2s, 326 words
+  imageUrl    = YES
+
+Force-patching to ensure all required fields are set...
+  Patch result: update
+Done
