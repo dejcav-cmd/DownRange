@@ -1,0 +1,21 @@
+name: Test GLM Key
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Test GLM API key and routing
+        env:
+          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/test-glm-key.py | tee scripts/diag-result.txt
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "glm test result [skip ci]" && git push
