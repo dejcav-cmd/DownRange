@@ -3,13 +3,8 @@
 ── Provider & Chain Status ─────────────────────────────
   ERROR: HTTP 401: {"error":"Unauthorized"}
 
-── Direct GLM call ─────────────────────────────────────
+── Direct GLM call test ────────────────────────────────
   ERROR: HTTP 307: Redirecting...
 
-
-── News useCase routing test ────────────────────────────
-  Provider used: unknown
-  GLM routing: NO — still on Anthropic
-  Raw: {"error": "HTTP 307: Redirecting...\n"}
 
 === Done ===
