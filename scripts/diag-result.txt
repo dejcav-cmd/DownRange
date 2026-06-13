@@ -7,7 +7,8 @@ body: 2416 chars, 326 words
   ✓ Image updated: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
 
 ── AI rewriting body (currently 326 words)...
-  ✗ AI rewrite failed: HTTP Error 401: Unauthorized
-  Raw: N/A
+  AI output: 450 words, 4 h2s
+  ✓ Body rewritten: 450 words
+  ✓ Title: Liberals Extend Gun Amnesty to 2027 While Ramping Up Seizures
 
 Done.
