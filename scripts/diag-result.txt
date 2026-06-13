@@ -1,15 +1,30 @@
-Article: Liberals Extend Gun Amnesty to 2027 While Ramping Up Seizures
-imageUrl: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.
-body: 3296 chars, 450 words
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-── Fetching CDN image via Pexels...
-  Pexels error: HTTP Error 403: Forbidden
-  Pixabay: https://cdn.sanity.io/images/vbnsqnkg/production/7f63613ec4f
-  ✓ Image set: https://cdn.sanity.io/images/vbnsqnkg/production/7f63613ec4f9c03f87315
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 20
+  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3d06236c185fc4e978b906df16bc24e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eda1906a2bc569f039a374a1172bb03
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1fd16de4f3949f9c5523b3c156fb3f8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f1a2034f04332ef078cb09b2310e13d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e41ed5397a8d69b86e0e466c76e625f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7db931c2c3ae0698796a5bcfc2fd5f8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/651da4439f001c7f5d4270d784d397b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ee191333ceede81ffe8a3e21acb400
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df2579aca212170110b2b995902d98e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87d585ee174cb7dc071051a075c168e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/523dbee672d1ea2733d9dfdd1a4dc53
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/665fb71a921e3a368e4c9f7cea5782a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/18552b1f2e0b13c24f826a2d7f81dd0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c1bc072165240ef35947f9a1ceb8d5b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3b2364bb2d13be180485934cc286151
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 17
 
-── AI rewriting body (currently 450 words)...
-  AI output: 486 words, 4 h2s
-  ✓ Body rewritten: 486 words
-  ✓ Title: Ottawa Extends Gun Amnesty to 2027 as Seizure Operations Accelerate
+Stats: uploaded=15 fallback=2 failed=1
 
-Done.
+=== FINAL: total=1019 missing_images=3 reddit=0 ===
