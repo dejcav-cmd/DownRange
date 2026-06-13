@@ -101,38 +101,55 @@ current_img = doc.get("imageUrl","") or ""
 is_placeholder = not current_img or "thegunblog.ca" in current_img or "law.jpg" in current_img or not current_img.startswith("https://cdn.sanity.io")
 
 if is_placeholder:
-    print("\n── Fetching real OG image...")
-    source_url = doc.get("sourceUrl","")
-    og = fetch_og_image(source_url) if source_url else None
+    print("\n── Fetching CDN image via Pexels...")
+    final_img = None
+    pexels_key = os.environ.get("PEXELS_API_KEY","")
+    if pexels_key:
+        try:
+            req = urllib.request.Request(
+                "https://api.pexels.com/v1/search?query=canada+gun+law+confiscation+firearm&per_page=5&orientation=landscape",
+                headers={"Authorization": pexels_key}
+            )
+            with urllib.request.urlopen(req, timeout=10) as r:
+                pdata = json.loads(r.read())
+            photo = pdata.get("photos",[None])[0]
+            if photo:
+                og = photo["src"].get("large2x") or photo["src"].get("large")
+                print(f"  Pexels hit: {og[:70]}")
+                cdn = upload_to_sanity(og, "ca-img")
+                if cdn:
+                    final_img = cdn
+                    print(f"  ✓ Uploaded to CDN: {cdn[:60]}")
+                else:
+                    final_img = og
+                    print(f"  ~ Using direct Pexels URL")
+        except Exception as e:
+            print(f"  Pexels error: {e}")
     
-    if not og:
-        # Try Pexels as fallback
-        print("  No OG image from source — trying Pexels...")
-        pexels_key = os.environ.get("PEXELS_API_KEY","")
-        if pexels_key:
+    if not final_img:
+        # Try Pixabay
+        pixabay_key = os.environ.get("PIXABAY_API_KEY","")
+        if pixabay_key:
             try:
-                req = urllib.request.Request(
-                    "https://api.pexels.com/v1/search?query=canada+firearms+gun+law&per_page=3&orientation=landscape",
-                    headers={"Authorization": pexels_key}
-                )
-                with urllib.request.urlopen(req, timeout=10) as r:
+                url = f"https://pixabay.com/api/?key={pixabay_key}&q=canada+gun+firearm&image_type=photo&orientation=horizontal&per_page=3&safesearch=true"
+                with urllib.request.urlopen(url, timeout=10) as r:
                     pdata = json.loads(r.read())
-                photo = pdata.get("photos",[None])[0]
-                if photo:
-                    og = photo["src"].get("large2x") or photo["src"].get("large")
-                    print(f"  Pexels hit: {og[:60]}")
+                hit = pdata.get("hits",[None])[0]
+                if hit:
+                    og = hit.get("largeImageURL") or hit.get("webformatURL")
+                    cdn = upload_to_sanity(og, "ca-img")
+                    final_img = cdn or og
+                    print(f"  Pixabay: {final_img[:60] if final_img else 'none'}")
             except Exception as e:
-                print(f"  Pexels error: {e}")
+                print(f"  Pixabay error: {e}")
     
-    if og:
-        cdn = upload_to_sanity(og, "ca-img")
-        final_img = cdn or og
+    if final_img:
         mutate([{"patch": {"id": doc["_id"], "set": {"imageUrl": final_img}}}])
-        print(f"  ✓ Image updated: {final_img[:60]}")
+        print(f"  ✓ Image set: {final_img[:70]}")
     else:
-        print("  No image found — leaving current")
+        print("  No image found — leaving placeholder")
 else:
-    print(f"\nImage OK: {current_img[:60]}")
+    print(f"\nImage already on CDN: {current_img[:60]}")
 
 # ── Step 2: AI rewrite body ────────────────────────────────────────────────────
 print(f"\n── AI rewriting body (currently {words} words)...")
