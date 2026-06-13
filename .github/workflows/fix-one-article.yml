@@ -1,0 +1,22 @@
+name: Fix One Article (Image + Body)
+on:
+  workflow_dispatch:
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Fix image and rewrite body
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          GLM_API_KEY: ${{ secrets.GLM_API_KEY }}
+          PEXELS_API_KEY: ${{ secrets.PEXELS_API_KEY }}
+        run: python3 scripts/fix-one-article.py | tee scripts/diag-result.txt
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "fix one article result [skip ci]" && git push
