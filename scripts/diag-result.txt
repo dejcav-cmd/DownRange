@@ -2,30 +2,33 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 21
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/075a89204f90a8988a183de8a444c89
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/807706d54a8583a42a9684d3cae9b29
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/16bd0df99049b534246777b1bf6b064
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/322c3f7b61c47e8eb6f2901fe4ade5c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9aa6aa5ffd4591e6599ecea3730ac6c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9ab82fd52ec76047fd263b966537f00
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e854b07986ac1e766be33a259921477
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69f441eb38960838b04ab240624bdd1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2fec0e49cd316bc9a60845d84dacfef
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0342e074fead79dbd5f909ee35a2560
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69ea6856ac86bf0d28f3d5f88949195
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cc8754bc93d03670d463288dc976d58
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b4d4f70f5e79df0e33f8b6270ded039
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f201057b4746a4065ab4bc10f7046b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2e5e7cfedf5771fa3f8b1f046dc3c0d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eecf80f9f654043cc34b43dd96e47b0
+Missing: 24
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/45d87801f1efee0bfa1bdece8f10adc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/90017c1f69e02e37b00666264d42e6f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9032d863e96f4bd3df09b901088ab75
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b8c59bc285bee9eb4dcdc20bdc99d16
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d1347d8cdbe36691fbb43831bb97eb1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a4e7c68f8592f663d3c7820f0326ecf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/726c1ea50a25afe844908be21fcaae5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62133e2f3889288b63f70ae79df5342
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1f3ede4e73f50ce15be7183c51467d7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/408e61d1041b6f98fe54070a25f2333
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64a2f376cc0ce7652cf03c8ce44bec5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2f94dc5ef4863088209d33574709e4c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab978aeb3fb4ecf2afd6ab3869ca70c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44fdc1e3f3e9851503c7934219a360e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/368e3a26330a57ebddebd35d063a0fd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/be421d3e37b009a993b613b57e1c21b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1abe3720322b1c04254ed8810c5a6bb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ce5a3ca3c13264d43d00651e12473e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5086b055f4a1df0dd75a0abe55024ed
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 18
+  → patched final 21
 
-Stats: uploaded=16 fallback=2 failed=1
+Stats: uploaded=19 fallback=2 failed=1
 
-=== FINAL: total=1060 missing_images=3 reddit=0 ===
+=== FINAL: total=1079 missing_images=3 reddit=0 ===
