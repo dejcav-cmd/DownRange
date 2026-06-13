@@ -1,0 +1,30 @@
+name: Fix Canada Articles (Images + Slugs)
+on:
+  workflow_dispatch:
+    inputs:
+      apply:
+        description: 'Set to "yes" to apply changes (default is dry-run)'
+        required: false
+        default: 'no'
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Run fix script
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          if [ "${{ github.event.inputs.apply }}" = "yes" ]; then
+            python3 scripts/fix-canada-articles.py --apply | tee scripts/diag-result.txt
+          else
+            python3 scripts/fix-canada-articles.py | tee scripts/diag-result.txt
+          fi
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "fix canada articles result [skip ci]" && git push
