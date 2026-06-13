@@ -1,3 +1,15 @@
-=== GLM-4.5 Air Key Test ===
+=== GLM Live Test ===
 
-ERROR: GLM_API_KEY not set in environment
+── Provider & Chain Status ─────────────────────────────
+  ERROR: HTTP 401: {"error":"Unauthorized"}
+
+── Direct GLM call ─────────────────────────────────────
+  ERROR: HTTP 307: Redirecting...
+
+
+── News useCase routing test ────────────────────────────
+  Provider used: unknown
+  GLM routing: NO — still on Anthropic
+  Raw: {"error": "HTTP 307: Redirecting...\n"}
+
+=== Done ===
