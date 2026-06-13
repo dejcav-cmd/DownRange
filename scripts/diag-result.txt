@@ -1,10 +1,22 @@
 === Cron Monitor Report ===
-Window: 18:21 UTC → 19:31 UTC
+Window: 18:25 UTC → 19:35 UTC
 
-Total runs: 10  ✓ 10  ⚠ 0  ✗ 0
+Total runs: 11  ✓ 11  ⚠ 0  ✗ 0
 
-JOB                                  RUNS   OK  FAIL  AVG_MS LAST_STATUS
+JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
 ---------------------------------------------------------------------------
+  fetch-images                          1    1     0     535ms  ✓ success @ 18:30
+  fix-images                            1    1     0    2027ms  ✓ success @ 19:00
+  image-fix                             1    1     0   29270ms  ✓ success @ 19:15
+  market                                3    3     0    1856ms  ✓ success @ 19:30
+  news                                  4    4     0  107636ms  ✓ success @ 19:32
+  releases                              1    1     0    4761ms  ✓ success @ 19:25
+
+✓ No Sanity quota errors in window
+
+quality-rewrite: no runs yet in window
+
+Report generated: 19:35:11 UTC
 
 === AI Provider Test ===
 
@@ -16,7 +28,7 @@ JOB                                  RUNS   OK  FAIL  AVG_MS LAST_STATUS
 
 ── Anthropic (Haiku) fallback test ─────────────────────
   Response:  Haiku fallback working
-  Latency:   614ms
+  Latency:   656ms
   Status:    ✓ HAIKU FALLBACK WORKING
 
 === Summary ===
