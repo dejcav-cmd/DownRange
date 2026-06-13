@@ -1,7 +1,6 @@
 import urllib.request, urllib.parse, json, os, re, time
 
 TOKEN   = os.environ.get("SANITY_TOKEN","").replace("ST=","")
-GLMAPIKEY = os.environ.get("GLM_API_KEY","")
 PROJECT = "vbnsqnkg"
 BASE    = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data"
 HEADERS = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
@@ -66,21 +65,23 @@ def upload_to_sanity(image_url, label):
         print(f"  Upload error: {e}")
     return None
 
-def call_glm(prompt):
-    """Call GLM API directly for the rewrite."""
-    url = "https://open.bigmodel.cn/api/paas/v4/chat/completions"
+def call_ai(prompt):
+    """Call Anthropic API for the rewrite."""
+    api_key = os.environ.get("ANTHROPIC_API_KEY","")
+    url = "https://api.anthropic.com/v1/messages"
     payload = json.dumps({
-        "model": "glm-4-air",
+        "model": "claude-haiku-4-5-20251001",
         "max_tokens": 3500,
         "messages": [{"role": "user", "content": prompt}]
     }).encode()
     req = urllib.request.Request(url, data=payload, method="POST", headers={
-        "Authorization": f"Bearer {GLMAPIKEY}",
+        "x-api-key": api_key,
+        "anthropic-version": "2023-06-01",
         "Content-Type": "application/json",
     })
     with urllib.request.urlopen(req, timeout=60) as r:
         data = json.loads(r.read())
-    return data["choices"][0]["message"]["content"]
+    return data["content"][0]["text"]
 
 # ── Fetch article ─────────────────────────────────────────────────────────────
 slug = "liberals-extend-gun-confiscation-amnesty-while-continuing-seizures"
@@ -97,7 +98,7 @@ print(f"body: {len(body)} chars, {words} words")
 
 # ── Step 1: Fix image ─────────────────────────────────────────────────────────
 current_img = doc.get("imageUrl","") or ""
-is_placeholder = not current_img or "thegunblog.ca" in current_img or "law.jpg" in current_img
+is_placeholder = not current_img or "thegunblog.ca" in current_img or "law.jpg" in current_img or not current_img.startswith("https://cdn.sanity.io")
 
 if is_placeholder:
     print("\n── Fetching real OG image...")
@@ -105,8 +106,8 @@ if is_placeholder:
     og = fetch_og_image(source_url) if source_url else None
     
     if not og:
-        # Try Pexels as fallback with a Canada firearms query
-        print("  No OG image — trying Pexels...")
+        # Try Pexels as fallback
+        print("  No OG image from source — trying Pexels...")
         pexels_key = os.environ.get("PEXELS_API_KEY","")
         if pexels_key:
             try:
@@ -166,7 +167,7 @@ Return ONLY valid JSON with no markdown fences:
 {{"title":"original DownRange headline max 12 words","body":"<full HTML article>","summary":"2-3 sentence plain text under 250 chars"}}"""
 
 try:
-    raw    = call_glm(prompt)
+    raw    = call_ai(prompt)
     clean  = raw.replace("```json","").replace("```","").strip()
     m      = re.search(r'\{[\s\S]*\}', clean)
     parsed = json.loads(m.group(0)) if m else {}
