@@ -10,45 +10,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Test GLM via live Vercel
+      - name: Test GLM
         env:
           AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
-        run: |
-          set +e
-          echo "=== GLM Live Test ===" | tee scripts/diag-result.txt
-
-          echo "-- Provider status --" | tee -a scripts/diag-result.txt
-          STATUS=$(curl -s "https://downrangeco.com/api/admin/ai-status" \
-            -H "x-admin-key: $AGENT_SECRET" --max-time 20)
-          echo "$STATUS" | python3 -c "
-import sys, json
-try:
-    d = json.load(sys.stdin)
-    avail = d.get('available', {})
-    chains = d.get('chains', {})
-    print('Providers:')
-    for k,v in avail.items():
-        print(f'  {k}: {\"YES\" if v else \"NO\"}')
-    print()
-    print('Active chains:')
-    for k,v in chains.items():
-        print(f'  {k}: {v}')
-except Exception as e:
-    print(f'Parse error: {e}')
-    print(f'Raw: {sys.stdin.read()[:200]}')
-" 2>&1 | tee -a scripts/diag-result.txt
-
-          echo "" | tee -a scripts/diag-result.txt
-          echo "-- GLM direct test --" | tee -a scripts/diag-result.txt
-          GLM_RESULT=$(curl -s "https://downrangeco.com/api/admin/ai-test" \
-            -X POST \
-            -H "x-admin-key: $AGENT_SECRET" \
-            -H "Content-Type: application/json" \
-            -d "{\"provider\":\"glm\",\"prompt\":\"Reply with only: GLM working\",\"maxTokens\":20}" \
-            --max-time 25)
-          echo "$GLM_RESULT" | tee -a scripts/diag-result.txt
-          echo "" | tee -a scripts/diag-result.txt
-
+        run: python3 scripts/glm-test-live.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
