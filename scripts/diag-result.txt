@@ -1,3 +1,4 @@
+=== PATCH ===
 [LIVE] Scanning Canada + Brazil articles...
 
 BROKEN ARTICLE: Liberals Extend Gun-Confiscation “Amnesty” While Continuing 
@@ -26,3 +27,13 @@ Marked for rewrite:          4
 Images fixed:                0
 Mode: LIVE
 ────────────────────────────────────────────────────────────
+
+=== OFF-TOPIC CLEANUP ===
+OFF-TOPIC [Vida Militar]: Quadro de oficiais capelães: carreira, ingresso e o dia a dia da assis
+OFF-TOPIC [Vida Militar]: Como entrar na EEAR: tudo sobre a Escola de Especialistas de Aeronáuti
+OFF-TOPIC [Calibre Magazine]: Canada's C-21 Consultants Wanted Handgun Ban, Online Sales Shutdown
+OFF-TOPIC [CCFR]: Sloppy data results in misinformation re: crime guns
+OFF-TOPIC [None]: Saskatchewan Stacks Federal PAL Rules With Provincial Storage Requirem
+
+Found 5 off-topic articles
+Deleted: 5
