@@ -119,7 +119,6 @@ const RSS_FEEDS = [
   // ── BRAZIL ONLY — routed to brazilContent, never newsArticle ──────────
   { name: 'Firearmsbrasil.com.br',  url: 'https://firearmsbrasil.com.br/feed/',                cat: 'industry', region: 'brazil' },
   { name: 'CBC Armas',              url: 'https://riobravoarmas.com.br/blog/feed/',             cat: 'industry', region: 'brazil' },
-  { name: 'Vida Militar',           url: 'https://vidamilitar.com.br/feed/',                    cat: 'law',      region: 'brazil' },
   { name: 'Legalmente Armado',      url: 'https://legalmentearmado.com.br/feed/',               cat: 'law',      region: 'brazil' },
   { name: 'CACs e Armas',           url: 'https://www.cacearmas.com.br/feed/',                  cat: 'industry', region: 'brazil' },
 ]
@@ -317,6 +316,14 @@ async function processNewsItem(item) {
       return
     }
     if (await isSanityDuplicate(item.url, item.title)) return
+
+    // ── GATE 1b: Topic relevance — block non-firearms Canada articles ─────
+    // Catches off-topic bleed from Calibre/Wolverine general content
+    if (!isFirearmsRelevant(item)) {
+      console.log(`[NEWS] 🇨🇦 BLOCKED off-topic: "${(item.title||'').slice(0,60)}"`)
+      return
+    }
+
     const hash = crypto.createHash('md5').update(item.url).digest('hex')
 
     // ── SLUG: derive from URL path, not title ─────────────────────────────
@@ -416,6 +423,13 @@ async function processNewsItem(item) {
   // ── GATE 2: Brazil items → brazilContent ─────────────────────────────────
   if (region === 'brazil') {
     if (await isSanityDuplicate(item.url, item.title)) return
+
+    // ── GATE 2b: Topic relevance — block non-firearms Brazil articles ─────
+    if (!isFirearmsRelevant(item)) {
+      console.log(`[NEWS] 🇧🇷 BLOCKED off-topic: "${(item.title||'').slice(0,60)}"`)
+      return
+    }
+
     const hash = crypto.createHash('md5').update(item.url).digest('hex')
 
     // Slug: derive from URL path, prefixed with "brasil-"
