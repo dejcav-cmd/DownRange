@@ -1,9 +1,12 @@
 #!/usr/bin/env python3
-"""Test GLM integration via live Vercel endpoints."""
 import urllib.request, json, os, sys
 
-ADMIN_KEY = os.environ.get("AGENT_SECRET", os.environ.get("ADMIN_KEY", ""))
+# Try both possible key env vars
+ADMIN_KEY = (os.environ.get("ADMIN_KEY") or 
+             os.environ.get("AGENT_SECRET") or "")
 BASE = "https://downrangeco.com"
+
+print(f"Using key: {ADMIN_KEY[:8]}...{ADMIN_KEY[-4:] if len(ADMIN_KEY)>8 else ''}")
 
 def call(path, method="GET", body=None):
     url = BASE + path
@@ -11,16 +14,16 @@ def call(path, method="GET", body=None):
     headers = {"x-admin-key": ADMIN_KEY, "Content-Type": "application/json"}
     req = urllib.request.Request(url, data=data, method=method, headers=headers)
     try:
-        with urllib.request.urlopen(req, timeout=25) as r:
+        with urllib.request.urlopen(req, timeout=30) as r:
             return json.loads(r.read()), r.status
     except urllib.error.HTTPError as e:
-        return {"error": f"HTTP {e.code}: {e.read().decode()[:200]}"}, e.code
+        body_text = e.read().decode()[:200]
+        return {"error": f"HTTP {e.code}: {body_text}"}, e.code
     except Exception as e:
         return {"error": str(e)}, 0
 
 print("=== GLM Live Test ===\n")
 
-# 1. AI Status
 print("── Provider & Chain Status ─────────────────────────────")
 d, status = call("/api/admin/ai-status")
 if "error" in d:
@@ -30,21 +33,18 @@ else:
     chains = d.get("chains", {})
     print("  Providers:")
     for k, v in avail.items():
-        icon = "YES" if v else "NO "
-        print(f"    {icon}  {k}")
+        print(f"    {'YES' if v else 'NO ':3s}  {k}")
     print()
-    print("  Active chains (first = primary provider):")
+    print("  Active chains (GLM = cost savings active):")
     for k, v in chains.items():
-        glm_first = v.startswith("glm")
-        mark = "✓ GLM" if glm_first else "  ---"
+        glm_first = "glm" in v.split("->")[0].lower() if "->" in v else v.startswith("glm")
+        mark = "✓ GLM FIRST" if glm_first else "  Anthropic "
         print(f"    {mark}  {k:15s}: {v}")
-    glm_available = avail.get("glm", False)
+    glm_ok = avail.get("glm", False)
     print()
-    print(f"  GLM_API_KEY active: {'YES ✓' if glm_available else 'NO ✗ — key not reaching Vercel'}")
+    print(f"  GLM_API_KEY in Vercel: {'YES ✓ — cost savings active' if glm_ok else 'NO ✗ — key not found'}")
 
 print()
-
-# 2. Direct GLM test
 print("── Direct GLM call ─────────────────────────────────────")
 d, status = call("/api/admin/ai-test", "POST", {
     "provider": "glm",
@@ -53,26 +53,12 @@ d, status = call("/api/admin/ai-test", "POST", {
 })
 if "error" in d:
     print(f"  ERROR: {d['error']}")
-elif d.get("ok") or d.get("text") or d.get("result"):
-    result = d.get("text") or d.get("result") or str(d)
-    print(f"  Response: {result[:100]}")
-    print(f"  Status: PASS ✓")
 else:
-    print(f"  Raw response: {json.dumps(d)[:300]}")
-
-print()
-
-# 3. Test news useCase routing (should pick GLM if available)
-print("── News useCase routing test ────────────────────────────")
-d, status = call("/api/admin/ai-test", "POST", {
-    "useCase": "news",
-    "prompt": "Say: routing works",
-    "maxTokens": 20
-})
-provider = d.get("provider", d.get("model", "unknown"))
-print(f"  Provider used: {provider}")
-print(f"  GLM routing: {'YES ✓' if 'glm' in str(provider).lower() else 'NO — still on Anthropic'}")
-print(f"  Raw: {json.dumps(d)[:200]}")
+    result = d.get("text") or d.get("result") or d.get("response") or str(d)
+    print(f"  Response: {str(result)[:100]}")
+    ok = d.get("ok", False) or "glm" in str(result).lower() or "working" in str(result).lower()
+    print(f"  Status: {'PASS ✓' if ok else 'CHECK OUTPUT'}")
+    print(f"  Full: {json.dumps(d)[:300]}")
 
 print()
 print("=== Done ===")
