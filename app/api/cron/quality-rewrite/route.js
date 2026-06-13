@@ -142,10 +142,10 @@ async function handler(req) {
 
   try {
     const [articles, blogs, releases, canada] = await Promise.all([
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 3}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
-      sanity.fetch(`*[_type=="blogPost"       && defined(title) && editorLocked != true] | order(publishedAt desc) [0...20] { _id, title, sourceTitle, body, excerpt, qualityReviewed }`),
-      sanity.fetch(`*[_type=="firearmRelease" && defined(brand) && editorLocked != true] | order(_createdAt desc)  [0...10] { _id, "title": brand+" "+model, body, summary, brand, model, caliber, msrp, category, qualityReviewed }`),
-      sanity.fetch(`*[_type=="canadaContent"  && defined(title) && editorLocked != true] | order(_createdAt desc)  [0...10] { _id, title, sourceTitle, body, summary, type, status, qualityReviewed }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
+      sanity.fetch(`*[_type=="blogPost"       && defined(title) && editorLocked != true] | order(publishedAt desc) [0...10] { _id, title, sourceTitle, body, excerpt, qualityReviewed }`),
+      sanity.fetch(`*[_type=="firearmRelease" && defined(brand) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, "title": brand+" "+model, body, summary, brand, model, caliber, msrp, category, qualityReviewed }`),
+      sanity.fetch(`*[_type=="canadaContent"  && defined(title) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, title, sourceTitle, body, summary, type, status, qualityReviewed }`),
     ])
 
     const allDocs = [

@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/agent?feed=releases",
-      "schedule": "0 * * * *"
+      "schedule": "25 * * * *"
     },
     {
       "path": "/api/agent?feed=market",
@@ -42,11 +42,11 @@
     },
     {
       "path": "/api/agent?feed=goa",
-      "schedule": "0 */2 * * *"
+      "schedule": "2 */2 * * *"
     },
     {
       "path": "/api/admin/fetch-article-images",
-      "schedule": "*/30 * * * *"
+      "schedule": "20 */2 * * *"
     },
     {
       "path": "/api/nfa-wait-times",
@@ -62,7 +62,7 @@
     },
     {
       "path": "/api/cron/market-brief",
-      "schedule": "0 14 * * *"
+      "schedule": "6 14 * * *"
     },
     {
       "path": "/api/admin/backup",
@@ -70,11 +70,11 @@
     },
     {
       "path": "/api/agent?feed=giveaways",
-      "schedule": "0 8 * * *"
+      "schedule": "3 8 * * *"
     },
     {
       "path": "/api/agent?feed=outdoors",
-      "schedule": "0 9 * * 1"
+      "schedule": "10 9 * * 1"
     },
     {
       "path": "/api/cron/sitemap",
@@ -82,15 +82,15 @@
     },
     {
       "path": "/api/cron/gun-deals",
-      "schedule": "0 * * * *"
+      "schedule": "5 * * * *"
     },
     {
       "path": "/api/cron/write-canada-articles",
-      "schedule": "0 8 * * *"
+      "schedule": "20 8 * * *"
     },
     {
       "path": "/api/cron/write-brazil-articles",
-      "schedule": "0 9 * * *"
+      "schedule": "40 9 * * *"
     },
     {
       "path": "/api/agent?feed=blog",
@@ -102,19 +102,19 @@
     },
     {
       "path": "/api/social/cron/bluesky",
-      "schedule": "0 13 * * *"
+      "schedule": "2 13 * * *"
     },
     {
       "path": "/api/social/cron/twitter",
-      "schedule": "0 13 * * *"
+      "schedule": "4 13 * * *"
     },
     {
       "path": "/api/social/cron/facebook",
-      "schedule": "0 14 * * *"
+      "schedule": "2 14 * * *"
     },
     {
       "path": "/api/social/cron/threads",
-      "schedule": "0 14 * * *"
+      "schedule": "4 14 * * *"
     },
     {
       "path": "/api/social/cron/reddit",
@@ -122,7 +122,7 @@
     },
     {
       "path": "/api/cron/releases",
-      "schedule": "0 12 * * *"
+      "schedule": "5 12 * * *"
     },
     {
       "path": "/api/admin/fix-images?batch=500&force=false&cron=1",
@@ -130,27 +130,27 @@
     },
     {
       "path": "/api/cron/quality-rewrite",
-      "schedule": "0 */6 * * *"
+      "schedule": "10 */6 * * *"
     },
     {
       "path": "/api/cron/image-fix",
-      "schedule": "0 * * * *"
+      "schedule": "15 * * * *"
     },
     {
       "path": "/api/cron/copyright-review",
-      "schedule": "0 6 * * *"
+      "schedule": "30 6 * * *"
     },
     {
       "path": "/api/cron/enrich-state-pages?batch=5",
-      "schedule": "0 3 * * *"
+      "schedule": "30 3 * * *"
     },
     {
       "path": "/api/social/analytics?refresh=1",
-      "schedule": "0 */2 * * *"
+      "schedule": "35 */2 * * *"
     },
     {
       "path": "/api/cron/fix-slugs",
-      "schedule": "0 4 * * *"
+      "schedule": "30 4 * * *"
     },
     {
       "path": "/api/cron/bible-update",
