@@ -1,34 +1,3 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== GLM-4.5 Air Key Test ===
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 24
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/45d87801f1efee0bfa1bdece8f10adc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/90017c1f69e02e37b00666264d42e6f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9032d863e96f4bd3df09b901088ab75
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b8c59bc285bee9eb4dcdc20bdc99d16
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d1347d8cdbe36691fbb43831bb97eb1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a4e7c68f8592f663d3c7820f0326ecf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/726c1ea50a25afe844908be21fcaae5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62133e2f3889288b63f70ae79df5342
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1f3ede4e73f50ce15be7183c51467d7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/408e61d1041b6f98fe54070a25f2333
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64a2f376cc0ce7652cf03c8ce44bec5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2f94dc5ef4863088209d33574709e4c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab978aeb3fb4ecf2afd6ab3869ca70c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44fdc1e3f3e9851503c7934219a360e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/368e3a26330a57ebddebd35d063a0fd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/be421d3e37b009a993b613b57e1c21b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1abe3720322b1c04254ed8810c5a6bb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ce5a3ca3c13264d43d00651e12473e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5086b055f4a1df0dd75a0abe55024ed
-  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 21
-
-Stats: uploaded=19 fallback=2 failed=1
-
-=== FINAL: total=1079 missing_images=3 reddit=0 ===
+ERROR: GLM_API_KEY not set in environment
