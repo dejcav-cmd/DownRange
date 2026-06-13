@@ -1,7 +1,11 @@
 === GLM Live Test ===
 
 ── Provider & Chain Status ─────────────────────────────
-  ERROR: HTTP 401: {"error":"Unauthorized"}
+  Providers present in Vercel:
+
+  Active chains:
+
+  GLM_API_KEY detected: NO ✗ — still using Anthropic
 
 ── Direct GLM call test ────────────────────────────────
   ERROR: HTTP 307: Redirecting...
