@@ -1,0 +1,32 @@
+name: Debug Blog Fix
+
+on:
+  workflow_dispatch:
+
+jobs:
+  debug:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call fix endpoint with detailed logging
+        run: |
+          echo "🔍 Calling fix endpoint..."
+          
+          RESPONSE=$(curl -v -X POST "https://downrangeco.com/api/admin/fix-blog-images" \
+            -H "x-admin-key: e0f56a3c7c9d4e8b2f1a5c3e7d9b2f0a" \
+            -H "Content-Type: application/json" \
+            -d '{}' 2>&1)
+          
+          echo "📋 Full Response:"
+          echo "$RESPONSE"
+          
+          echo ""
+          echo "📊 Response Analysis:"
+          if echo "$RESPONSE" | grep -q '"ok":true'; then
+            echo "✅ Success response detected"
+          elif echo "$RESPONSE" | grep -q '"error"'; then
+            echo "❌ Error response detected"
+          elif echo "$RESPONSE" | grep -q "updated"; then
+            echo "✨ Updated response detected"
+          else
+            echo "⚠️  Unexpected response format"
+          fi
