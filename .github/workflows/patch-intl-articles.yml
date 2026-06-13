@@ -1,4 +1,4 @@
-name: Diag Canada State
+name: Fix Intl Articles
 on:
   workflow_dispatch:
 jobs:
@@ -11,7 +11,7 @@ jobs:
       - name: Run diagnostic
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/patch-canada-broken.py | tee scripts/diag-result.txt
+        run: python3 scripts/patch-intl-articles.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"

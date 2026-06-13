@@ -106,16 +106,22 @@ const RSS_FEEDS = [
   { name: 'Sportsmans Warehouse',   url: 'https://blog.sportsmanswarehouse.com/feed/',          cat: 'deals'    },
   { name: 'Guns.com Deals',         url: 'https://www.guns.com/deals/feed',                     cat: 'deals'    },
   // ── CANADA ONLY — routed to canadaContent, never newsArticle ──────────
-  { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law', region: 'canada' },
-  { name: 'NFA Canada',             url: 'https://www.nfa.ca/feed/',                            cat: 'law', region: 'canada' },
-  { name: 'CSSA',                   url: 'https://www.cdnshootingsports.org/feed/',              cat: 'law', region: 'canada' },
+  // Note: TheGunBlog.ca weekly digest round-ups ('Week of YYYY') are blocked in GATE 1
+  { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law',      region: 'canada' },
+  { name: 'NFA Canada',             url: 'https://www.nfa.ca/feed/',                            cat: 'law',      region: 'canada' },
+  { name: 'CSSA',                   url: 'https://www.cdnshootingsports.org/feed/',              cat: 'law',      region: 'canada' },
   { name: 'Calibre Magazine',       url: 'https://calibremag.ca/feed/',                         cat: 'industry', region: 'canada' },
   { name: 'CCFR',                   url: 'https://www.firearmrights.ca/feed/',                  cat: 'law',      region: 'canada' },
   { name: 'Wolverine Supplies Blog',url: 'https://www.wolverinesupplies.com/blog/feed/',        cat: 'industry', region: 'canada' },
+  { name: 'Justice for Gun Owners', url: 'https://justiceforgunowners.ca/feed/',                cat: 'law',      region: 'canada' },
+  { name: 'Calibre Magazine News',  url: 'https://calibremag.ca/category/news/feed/',           cat: 'news',     region: 'canada' },
+  { name: 'Calibre Politics',       url: 'https://calibremag.ca/category/politics/feed/',       cat: 'law',      region: 'canada' },
   // ── BRAZIL ONLY — routed to brazilContent, never newsArticle ──────────
   { name: 'Firearmsbrasil.com.br',  url: 'https://firearmsbrasil.com.br/feed/',                cat: 'industry', region: 'brazil' },
   { name: 'CBC Armas',              url: 'https://riobravoarmas.com.br/blog/feed/',             cat: 'industry', region: 'brazil' },
   { name: 'Vida Militar',           url: 'https://vidamilitar.com.br/feed/',                    cat: 'law',      region: 'brazil' },
+  { name: 'Legalmente Armado',      url: 'https://legalmentearmado.com.br/feed/',               cat: 'law',      region: 'brazil' },
+  { name: 'CACs e Armas',           url: 'https://www.cacearmas.com.br/feed/',                  cat: 'industry', region: 'brazil' },
 ]
 
 // ── IMAGE EXTRACTION ──────────────────────────────────────────────────────────
@@ -356,49 +362,133 @@ async function processNewsItem(item) {
       } catch { /* non-critical */ }
     }
 
+    // ── AI REWRITE: give every Canada article a proper body+title on ingest ─
+    // Raw RSS bodies are 50-200 word excerpts with no h2 structure.
+    // They render as broken pages. Rewrite immediately so articles are
+    // always publication-ready when they hit Sanity.
+    let finalTitle = item.title
+    let finalBody  = item.description || null
+    let finalSummary = item.description?.slice(0, 300) || item.title
+    let hasAI = false
+
+    // Only AI-rewrite if we have enough source text to work with
+    const srcLen = (item.description || item.content || '').length
+    if (srcLen > 80) {
+      try {
+        const ai = await rewriteWithClaude({
+          ...item,
+          // Signal to rewriteWithClaude that this is a Canada article
+          description: (item.description || item.content || '') + `\n\nSource: ${item.source} (Canada)`,
+        })
+        if (ai?.body && ai.body.length > 300) {
+          finalBody    = ai.body
+          finalTitle   = ai.title   || item.title
+          finalSummary = ai.summary || finalSummary
+          hasAI        = true
+          // Update slug from AI title if it's more descriptive
+          console.log(`[NEWS] 🇨🇦🤖 AI rewrote: "${finalTitle.slice(0,60)}"`)
+        }
+      } catch (e) {
+        console.log(`[NEWS] 🇨🇦 AI rewrite skipped (${e.message.slice(0,40)}) — saving raw`)
+      }
+    }
+
     await publishToSanity({
       _id:           'ca-' + hash,
       _type:         'canadaContent',
-      title:         item.title,
+      title:         finalTitle,
       slug:          { _type: 'slug', current: slug },
-      excerpt:       item.description?.slice(0, 300) || item.title,
-      body:          item.description || null,
+      excerpt:       finalSummary,
+      body:          finalBody,
       type:          'article',
       source:        item.source,
       sourceUrl:     item.url,
       imageUrl,
       publishedAt:   item.publishedAt ? new Date(item.publishedAt).toISOString() : new Date().toISOString(),
       autoGenerated: true,
-      qualityReviewed: false,
+      qualityReviewed: hasAI,   // mark reviewed if AI already rewrote it
       active:        true,
     })
-    console.log(`[NEWS] 🇨🇦 Canada → canadaContent: "${item.title.slice(0,60)}" [${slug}]`)
-    return { id: 'ca-' + hash, title: item.title, category: 'canada', hasAI: false }
+    console.log(`[NEWS] 🇨🇦 Canada → canadaContent: "${finalTitle.slice(0,60)}" [${slug}]${hasAI ? ' +AI' : ' +raw'}`)
+    return { id: 'ca-' + hash, title: finalTitle, category: 'canada', hasAI }
   }
 
   // ── GATE 2: Brazil items → brazilContent ─────────────────────────────────
   if (region === 'brazil') {
     if (await isSanityDuplicate(item.url, item.title)) return
     const hash = crypto.createHash('md5').update(item.url).digest('hex')
-    const slug = item.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-+|-+$/g,'').slice(0,96)
+
+    // Slug: derive from URL path, prefixed with "brasil-"
+    function brazilSlugFromUrl(url, title) {
+      try {
+        const path = new URL(url).pathname
+        const segments = path.split('/').filter(Boolean)
+        const last = segments[segments.length - 1] || ''
+        const cleaned = last.replace(/^\d{4}-\d{2}-\d{2}-/, '').replace(/\.html?$/, '')
+        if (cleaned.length > 8) {
+          const base = cleaned.startsWith('brasil-') ? cleaned : 'brasil-' + cleaned
+          return base.slice(0, 96)
+        }
+      } catch {}
+      const base = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/, '').slice(0, 80)
+      return base.startsWith('brasil-') ? base : 'brasil-' + base
+    }
+    const slug = brazilSlugFromUrl(item.url, item.title)
+
+    // OG image fetch
+    let imageUrl = item.imageUrl || null
+    if (!imageUrl && item.url) {
+      try {
+        const cdnUrl = await Promise.race([
+          fetchAndUploadOgImage(item.url, 'br-' + hash),
+          new Promise(resolve => setTimeout(() => resolve(null), 6000)),
+        ])
+        if (cdnUrl) { imageUrl = cdnUrl }
+      } catch { /* non-critical */ }
+    }
+
+    // AI rewrite on ingest — Brazil articles may be in Portuguese; rewrite in English
+    let finalTitle = item.title
+    let finalBody  = item.description || null
+    let finalSummary = item.description?.slice(0, 300) || item.title
+    let hasAI = false
+    const srcLen = (item.description || item.content || '').length
+    if (srcLen > 80) {
+      try {
+        const ai = await rewriteWithClaude({
+          ...item,
+          description: (item.description || item.content || '') + `\n\nSource: ${item.source} (Brazil — may be in Portuguese, write article in English for DownRange audience)`,
+        })
+        if (ai?.body && ai.body.length > 300) {
+          finalBody    = ai.body
+          finalTitle   = ai.title   || item.title
+          finalSummary = ai.summary || finalSummary
+          hasAI        = true
+          console.log(`[NEWS] 🇧🇷🤖 AI rewrote: "${finalTitle.slice(0,60)}"`)
+        }
+      } catch (e) {
+        console.log(`[NEWS] 🇧🇷 AI rewrite skipped (${e.message.slice(0,40)}) — saving raw`)
+      }
+    }
+
     await publishToSanity({
       _id:           'br-' + hash,
       _type:         'brazilContent',
-      title:         item.title,
+      title:         finalTitle,
       slug:          { _type: 'slug', current: slug },
-      excerpt:       item.description?.slice(0, 300) || item.title,
-      body:          item.description || null,
+      excerpt:       finalSummary,
+      body:          finalBody,
       type:          'artigo',
       source:        item.source,
       sourceUrl:     item.url,
-      imageUrl:      item.imageUrl || null,
+      imageUrl,
       publishedAt:   item.publishedAt ? new Date(item.publishedAt).toISOString() : new Date().toISOString(),
       autoGenerated: true,
-      qualityReviewed: false,
+      qualityReviewed: hasAI,
       active:        true,
     })
-    console.log(`[NEWS] 🇧🇷 Brazil → brazilContent: "${item.title.slice(0,60)}"`)
-    return { id: 'br-' + hash, title: item.title, category: 'brazil', hasAI: false }
+    console.log(`[NEWS] 🇧🇷 Brazil → brazilContent: "${finalTitle.slice(0,60)}" [${slug}]${hasAI ? ' +AI' : ' +raw'}`)
+    return { id: 'br-' + hash, title: finalTitle, category: 'brazil', hasAI }
   }
 
   // ── GATE 3: US only — must be from an allowed US firearms domain ──────────
