@@ -2,19 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 10
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95b1d7d8320270c4f3735cddf12a411
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b94b86c7feefcfc455323af3ba4507
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/67b99deba6c4471c3bddc803e505063
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/30978584a422995af87fbe4a5a32cb8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/790361f21dc54cd73b55843b84e5150
+Missing: 5
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-9mm-Dea
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 7
+  → patched final 2
 
-Stats: uploaded=5 fallback=2 failed=1
+Stats: uploaded=0 fallback=2 failed=1
 
 === FINAL: total=1044 missing_images=3 reddit=0 ===
