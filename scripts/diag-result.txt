@@ -1,57 +1,14 @@
-[LIVE] Scanning canadaContent articles...
+FOUND [liberals-extend-gun-confiscation-amnesty-while-continuing-seizures]: Liberals Extend Gun-Confiscation “Amnesty” While Continuing  active: True img: True body: 2416
+NOT FOUND: canada-liberals-extend-gun-confiscation-amnesty-while-continuing-seizures
+NOT FOUND: canada-gun-rights-news-week-of-2026-june-01
 
-Found 17 auto-generated Canada articles
-
-Missing images:  1
-Bad slugs:       11
-
-── Fixing missing images ──────────────────────────────────────────
-  Fetching image for: Canada Gun Rights News: Week of 2026 June 08
-    OG: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.ca-News-Update-Gener
-    Upload error: HTTP Error 403: Forbidden
-    ~ Stored direct URL (CDN upload failed)
-
-── Deleting weekly digest articles ────────────────────────────────
-   (TheGunBlog 'Week of YYYY' round-ups are not individual articles)
-  DELETE: Canada Gun Rights News: Week of 2026 June 08
-          slug: canada-gun-rights-news-week-of-2026-june-08
-    ✓ Deleted
-  DELETE: Canada Extends Gun Amnesty While Still Seizing Firearms From Owners
-          slug: canada-gun-rights-news-week-of-2026-june-08
-    ✓ Deleted
-  DELETE: Canada Gun Rights News: Week of 2026 June 08
-          slug: canada-gun-rights-news-week-of-2026-june-08
-    ✓ Deleted
-  DELETE: Canada Gun Rights News: Week of 2026 June 08
-          slug: canada-gun-rights-news-week-of-2026-june-08
-    ✓ Deleted
-  DELETE: Canada's Gun Ban Enforcement Accelerates—What U.S. Owners Should Track
-          slug: canada-gun-rights-news-week-of-2026-june-08
-    ✓ Deleted
-  DELETE: Canada Gun Rights News: Week of 2026 June 07
-          slug: canada-gun-rights-news-week-of-2026-june-07
-    ✓ Deleted
-  DELETE: Canada's Liberal Gun Seizure Stalls as Manitoba Confiscations Begin
-          slug: canada-gun-rights-news-week-of-2026-june-01
-    ✓ Deleted
-  DELETE: Ontario Voters Demand Ford Block Federal Gun Seizure Plans
-          slug: canada-gun-rights-news-week-of-2026-june-01
-    ✓ Deleted
-  DELETE: Ontario Voters Tell Ford: Stop Federal Gun Seizures Now
-          slug: canada-gun-rights-news-week-of-2026-june-01
-    ✓ Deleted
-  DELETE: Ontario Voters Reject Federal Gun Seizure Plan Outright
-          slug: canada-gun-rights-news-week-of-2026-june-01
-    ✓ Deleted
-  DELETE: Ontario Voters Demand Ford Block Federal Handgun Seizure Orders
-          slug: canada-gun-rights-news-week-of-2026-june-01
-    ✓ Deleted
-
-────────────────────────────────────────────────────────────
-Missing images found:  1
-Bad slugs found:       11
-Images fixed:          1
-Slugs fixed:           11
-Failed:                0
-Mode:                  LIVE
-────────────────────────────────────────────────────────────
+All canadaContent articles (9):
+  [ACTIVE  ] [RSS] img=True canada-c-21-docs-show-stakeholders-sought-to-ban-online | Gov't Documents Reveal Stakeholders invited to con
+  [ACTIVE  ] [RSS] img=True sloppy-data-results-in-misinformation-re-crime-guns     | Sloppy data results in misinformation re: crime gu
+  [ACTIVE  ] [RSS] img=True amnesty-extended-as-ccfr-goes-to-supreme-court          | Canada Extends Gun Amnesty as CCFR Fights Supreme 
+  [ACTIVE  ] [RSS] img=True liberals-extend-gun-confiscation-amnesty-while-continui | Liberals Extend Gun-Confiscation “Amnesty” While C
+  [ACTIVE  ] [AI ] img=True canada-restricted-firearm-rules-complete-guide          | Restricted Firearms in Canada: Storage, Transport,
+  [ACTIVE  ] [AI ] img=True canada-hunting-season-2025-province-guide               | 2025 Canada Hunting Season: Province-by-Province F
+  [ACTIVE  ] [AI ] img=True how-to-get-your-pal-canada-complete-guide               | How to Get Your PAL in Canada: The Realistic Step-
+  [ACTIVE  ] [AI ] img=True canada-oic-rifle-ban-explained-2025                     | The OIC Rifle Ban: Illegal to Sell, Legal to Own —
+  [ACTIVE  ] [AI ] img=True canada-handgun-freeze-2025-what-owners-must-know        | Canada's Handgun Transfer Freeze: What Every Owner
