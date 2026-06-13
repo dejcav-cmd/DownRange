@@ -12,7 +12,7 @@ jobs:
           token: ${{ secrets.GH_PAT }}
       - name: Test GLM
         env:
-          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: python3 scripts/glm-test-live.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
@@ -20,4 +20,3 @@ jobs:
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
           git diff --staged --quiet || git commit -m "GLM test result [skip ci]" && git push
-# Sat Jun 13 16:52:52 UTC 2026

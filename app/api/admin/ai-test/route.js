@@ -1,8 +1,11 @@
 export const dynamic = 'force-dynamic'
 
 export async function POST(req) {
-  const key = req.headers.get('x-admin-key')
-  if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const key     = req.headers.get('x-admin-key')
+  const cronHdr = req.headers.get('authorization')?.replace('Bearer ','')
+  const isAdmin = key === process.env.ADMIN_KEY
+  const isCron  = process.env.CRON_SECRET && cronHdr === process.env.CRON_SECRET
+  if (!isAdmin && !isCron) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { provider, model, openaiKey, glmKey } = await req.json().catch(() => ({}))
 
