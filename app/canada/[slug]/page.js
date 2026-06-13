@@ -12,7 +12,7 @@ const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   'production',
   apiVersion:'2024-01-01',
-  useCdn:    true,
+  useCdn:    false,
   token:     process.env.SANITY_API_TOKEN,
 })
 
