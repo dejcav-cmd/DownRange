@@ -11,7 +11,7 @@ jobs:
       - name: Run diagnostic
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/diag-canada-state.py | tee scripts/diag-result.txt
+        run: python3 scripts/diag-canada-state2.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
