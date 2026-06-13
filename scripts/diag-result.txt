@@ -1,25 +1,55 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+[DRY RUN] Scanning canadaContent articles...
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 15
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eea9ecbe9ea2c656d3c2077f0050b99
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7a9a358670fda532f113a42cb459f1c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7fa4907b3cce2e13df7fb916c936763
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e442ebeccda272944a3ef46df090129
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/068cebb19b584f7083e192a83c5bea9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/86680e4b6d750147dd09113bbc52453
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ee07bb184cba1933903f8613ffd75f5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/535ce53dcaafe603ae528c7e9d8210d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0ecd55c4e0c02b658452a1ff08b54a0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f9f0e99bf42daf360f7081c1e8e1c3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/76aa21c3716c9a9cf7c05e80c69d1d1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b3978a31c7541e86b9b3d50877771d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/70f7dc3347e8359ba34d6362767e3fd
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 13
+Found 17 auto-generated Canada articles
 
-Stats: uploaded=13 fallback=0 failed=0
+Missing images:  1
+Bad slugs:       11
 
-=== FINAL: total=1003 missing_images=2 reddit=0 ===
+── Fixing missing images ──────────────────────────────────────────
+  Fetching image for: Canada Gun Rights News: Week of 2026 June 08
+    OG: https://thegunblog.ca/wp-content/uploads/2021/11/TheGunBlog.ca-News-Update-Gener
+    [DRY RUN] Would upload and set imageUrl
+
+── Fixing bad slugs ───────────────────────────────────────────────
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-08
+         → canada-gun-rights-news-week-of-2026-june-08
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-08
+         → canada-gun-rights-news-week-of-2026-june-08
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-08
+         → canada-gun-rights-news-week-of-2026-june-08
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-08
+         → canada-gun-rights-news-week-of-2026-june-08
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-08
+         → canada-gun-rights-news-week-of-2026-june-08
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-07
+         → canada-gun-rights-news-week-of-2026-june-07
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-01
+         → canada-gun-rights-news-week-of-2026-june-01
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-01
+         → canada-gun-rights-news-week-of-2026-june-01
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-01
+         → canada-gun-rights-news-week-of-2026-june-01
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-01
+         → canada-gun-rights-news-week-of-2026-june-01
+    [DRY RUN] Would update slug
+  SLUG FIX: canada-gun-rights-news-week-of-2026-june-01
+         → canada-gun-rights-news-week-of-2026-june-01
+    [DRY RUN] Would update slug
+
+────────────────────────────────────────────────────────────
+Missing images found:  1
+Bad slugs found:       11
+Images fixed:          1
+Slugs fixed:           11
+Failed:                0
+Mode:                  DRY RUN — pass --apply to commit
+────────────────────────────────────────────────────────────
