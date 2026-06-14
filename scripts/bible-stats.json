@@ -1,0 +1,27 @@
+{
+  "generatedAt": "2026-06-14T07:00:12.425Z",
+  "content": {
+    "newsArticles": 450,
+    "blogPosts": 83,
+    "legislation": 228,
+    "firearmReleases": 18,
+    "videos": 189,
+    "reviews": 3,
+    "canadaArticles": 32,
+    "brazilArticles": 10
+  },
+  "operations": {
+    "cronRuns": 1378,
+    "outreachContacts": 221,
+    "socialPosts": 109,
+    "briefings": 20
+  },
+  "latest": {
+    "newsTitle": "Rideout Arsenal Abandons Virginia for Georgia Over Gun Bans",
+    "newsDate": "2026-06-13T19:00:00.000Z",
+    "briefingDate": "2026-06-14",
+    "briefingScore": 0,
+    "briefingHeadline": "n/a"
+  },
+  "totalContentDocs": 1013
+}
