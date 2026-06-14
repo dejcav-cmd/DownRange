@@ -2,30 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 21
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6bc5f859b21c7ac55caf97562e22607
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8cb31e4d26a62926145c90e187ce0e8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/98f646322bf1a55ae67a1178d1eece9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f43f4e179679654c2048340bc6d1e50
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7f1159225abd6c37de42b6bdc76ab06
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6899611446943e2cff567288449f943
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/30d073795410323402c4fad40f2acab
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c9d53c6eede7679ad441363cf680da
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/14228909fe8fc0ebad928c3c43d606b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6df160579d342a22a72fdd66e2e2a50
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d87b51dff0f84089a739680714f7e9b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bcdacb8aa653dc1af3daa1dbce014a9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f5a81064b8c28edd508fc4e66b5e15
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c5318b61b08fe37e55547c953a037ea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dd41f4b3e6d815e0509049eee59e9eb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1bccd8eb7d5a9df68d5a8eafebf3da5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/db6e430ec36a56470a330a899bd6b73
+Missing: 10
+  ✗ https://gun.deals/product/sig-sauer-romeo-1-pro-1x30mm-reflex-red-dot-
+  ✗ https://gun.deals/product/rossi-single-shot-poly-tuffy-green-polymer-4
+  ✗ https://gun.deals/product/century-arms-draco-tactical-762x39-75-barrel
+  ✗ https://gun.deals/product/hawke-optics-3-9x40-1-3030-duplex-1-49-9995
+  ✗ https://gun.deals/product/springfield-armory-xdme-pac-10mm-45-16rd-w-v
+  ✗ https://gun.deals/product/orthos-raider-s4-tactical-12-ga-3-185-6-rd-s
   skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 17
 
-Stats: uploaded=17 fallback=0 failed=1
+Stats: uploaded=0 fallback=0 failed=7
 
-=== FINAL: total=1139 missing_images=4 reddit=0 ===
+=== FINAL: total=1145 missing_images=10 reddit=0 ===
