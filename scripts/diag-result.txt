@@ -2,26 +2,33 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 17
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6b676d9a88cf8cd7a2a4152e5b73edd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/560922f7bd21bc1f23025ddb4bb33f2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a851e84be64a5e84e4db0e878bdcf60
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d93424f97de1f5e57aa76b7e8112c2b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/06dab079400585b87f3b9f2ac88f4f7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0906b1b58816422e189919c67555314
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/81d49ed050a907ece9af70144a8d967
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/21b3494eab4cc3860ab04c83b5fbcde
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ad8f7ac8e9a24f3a1f3f412d8ad1014
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6caf7ee5bf993aeec3054aa021250d1
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/PSA-Blem-PA-15.jpg
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Holosun-ARO-Deal.j
+Missing: 24
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/33d823f6b534335a04628d2214f6449
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c4c1e8391516aa719667652cf422dd8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cf08ca0d871041169cf54ee2cc08b70
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/77b0277aaf01b4eeb8e49ab21887757
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/108bbdf5a2df706467c87bda0c36397
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a149a5b9533c0e988b1883a79c135c9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cce6b6cd90e8091151877872448b186
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/524bd573ada2f8beca25bd6ba66fb09
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/accefbacbd398607ad65dab98b7d2be
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87a8ca63c0dcdf8fda1b44ad7d29fc0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b99c97aef26a516d4a0839d5071790
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ecd096de24b869162974d9faaf38c1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/924eeb41a0099cb0694bc4750a1446a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a60ad8970d52fb2380e074441b4feae
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9528e6b373f7899c68dd0d9dcc5ace6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/444af116a3b77ff138835e68ff271ef
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6e003ea34a417d36b07c8b63bdf8b25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/752268e35ae7013f41216e826e65647
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9742d4f2a6e6041dfed5f56b840f0b9
   ~ og: https://www.ammoland.com/wp-content/uploads/2025/08/Guns-Ammo-Cash-Mon
   skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 13
+  → patched final 20
 
-Stats: uploaded=10 fallback=3 failed=1
+Stats: uploaded=19 fallback=1 failed=1
 
-=== FINAL: total=1234 missing_images=4 reddit=0 ===
+=== FINAL: total=1253 missing_images=4 reddit=0 ===
