@@ -2,18 +2,38 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 10
-  ✗ https://gun.deals/product/sig-sauer-romeo-1-pro-1x30mm-reflex-red-dot-
-  ✗ https://gun.deals/product/rossi-single-shot-poly-tuffy-green-polymer-4
-  ✗ https://gun.deals/product/century-arms-draco-tactical-762x39-75-barrel
-  ✗ https://gun.deals/product/hawke-optics-3-9x40-1-3030-duplex-1-49-9995
-  ✗ https://gun.deals/product/springfield-armory-xdme-pac-10mm-45-16rd-w-v
-  ✗ https://gun.deals/product/orthos-raider-s4-tactical-12-ga-3-185-6-rd-s
+Missing: 29
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f9e7139a113402d749e7e5a9f43c743
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a334b4ef77f905aadc4317db2de494a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/212110c2e0d25aefd37e452a5d68c45
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/237002ef7a1913ad579328d9d2850b3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4587ebfbb24bd09f6f886e9b6130f2f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ad64c3f6e0ce70b8cb51073f29381ba
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ac34ec6fa8c226085829b92dbe42851
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb957a143d4071ce82b1fac14fb7c80
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/270a6ea76eac29babb942dd4072b986
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/39e032014ea71a85d2bad525e0ae1e9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4031335ba372fcc8f3c675b281af10e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e87fcf3a146b59ea4bf828271acfdd4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/22251aaae943d57f532a7dde756216b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/29f417c782526ae3b960d51f8acd85c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/531d45e5fcbead5e92618fe04476e27
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/790361f21dc54cd73b55843b84e5150
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1b6750a6ce3402734810c9ad27beff2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fa51e57431ef73456e3ead8877c4921
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/92d762f5d919f2911fbc82503811c97
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/60eac7bed23404db805b0ad7cdd9f01
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/91a4e326a22f1f3e7c76f62f06d6d8d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/45ff76d987c30cbfefb53037abadd03
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f7509a59687d202095765d8213a181e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7116109c1d4c238912fa30914181405
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/43dbeab06e5b6708a7419448deab296
   skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 25
 
-Stats: uploaded=0 fallback=0 failed=7
+Stats: uploaded=25 fallback=0 failed=1
 
-=== FINAL: total=1145 missing_images=10 reddit=0 ===
+=== FINAL: total=1164 missing_images=4 reddit=0 ===
