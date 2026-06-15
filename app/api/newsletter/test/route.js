@@ -22,7 +22,7 @@ export async function POST(req) {
     await resend.emails.send({
       from: 'DownRange <news@downrangeco.com>',
       to: email,
-      subject: '🔫 [TEST] Welcome to DownRange — Your Daily 2A Intelligence Briefing',
+      subject: '🔫 [TEST] Welcome to DownRange — Your 2A Intelligence Briefing',
       html: generateWelcomeEmailHTML(),
     })
 
