@@ -63,13 +63,13 @@ export async function GET(req) {
     const subscribers = filtered.slice(page * limit, (page + 1) * limit)
     console.log('[subscribers GET] Paginated results:', subscribers.length)
 
-    // Calculate stats
-    const stats = await client.fetch(`{
-      total: count(*[_type == "newsletterSubscriber"]),
-      active: count(*[_type == "newsletterSubscriber" && status == "active"]),
-      unsubscribed: count(*[_type == "newsletterSubscriber" && status == "unsubscribed"]),
-      bounced: count(*[_type == "newsletterSubscriber" && status == "bounced"]),
-    }`)
+    // Calculate stats from all subscribers (not filtered, for totals)
+    const stats = {
+      total: allSubscribers.length,
+      active: allSubscribers.filter(s => s.status === 'active').length,
+      unsubscribed: allSubscribers.filter(s => s.status === 'unsubscribed').length,
+      bounced: allSubscribers.filter(s => s.status === 'bounced').length,
+    }
 
     console.log('[subscribers GET] Stats:', stats)
 
