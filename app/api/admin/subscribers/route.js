@@ -21,11 +21,13 @@ export async function GET(req) {
 
     console.log('[subscribers GET] Fetching with params:', { search, status, page, limit, sort, order })
 
-    // Build base query
+    // Build base query - GROQ safe
     let baseQuery = '*[_type == "newsletterSubscriber"'
     
     if (search) {
-      baseQuery += ` && email match "${search}*"`
+      // Use string::startsWith instead of match with wildcards
+      const searchLower = search.toLowerCase()
+      baseQuery += ` && email | startsWith("${searchLower}")`
     }
     
     if (status && status !== 'all') {

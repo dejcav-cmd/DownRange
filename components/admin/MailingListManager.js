@@ -84,6 +84,10 @@ export default function MailingListManager({ adminKey }) {
   const [newEmail, setNewEmail] = useState('')
   const [newNotes, setNewNotes] = useState('')
 
+  const [showTestEmail, setShowTestEmail] = useState(false)
+  const [testEmail, setTestEmail] = useState('')
+  const [testLoading, setTestLoading] = useState(false)
+
   const fetchSubscribers = useCallback(async () => {
     try {
       setLoading(true)
@@ -210,6 +214,40 @@ export default function MailingListManager({ adminKey }) {
       fetchSubscribers()
     } catch (err) {
       setError(err.message)
+    }
+  }
+
+  const handleSendTestEmail = async (e) => {
+    e.preventDefault()
+    if (!testEmail) {
+      setError('Email required')
+      return
+    }
+
+    try {
+      setTestLoading(true)
+      const res = await fetch('/api/newsletter/test', {
+        method: 'POST',
+        headers: {
+          'x-admin-key': adminKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ email: testEmail }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to send')
+      }
+
+      setTestEmail('')
+      setShowTestEmail(false)
+      setSuccess('Test email sent to ' + testEmail)
+      setTimeout(() => setSuccess(''), 5000)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setTestLoading(false)
     }
   }
 
@@ -344,6 +382,9 @@ export default function MailingListManager({ adminKey }) {
         <button onClick={() => setShowAddForm(!showAddForm)} className="ml-btn">
           + Add
         </button>
+        <button onClick={() => setShowTestEmail(!showTestEmail)} className="ml-btn" style={{background:'#666'}}>
+          📧 Test Email
+        </button>
         <button onClick={handleExport} className="ml-btn" disabled={stats.total === 0}>
           📥 Export
         </button>
@@ -374,6 +415,30 @@ export default function MailingListManager({ adminKey }) {
               Add
             </button>
             <button type="button" onClick={() => setShowAddForm(false)} className="ml-btn-ghost">
+              Cancel
+            </button>
+          </div>
+        </form>
+      )}
+
+      {showTestEmail && (
+        <form onSubmit={handleSendTestEmail} className="ml-add-form" style={{background:'rgba(102,102,102,.1)',borderColor:'#666'}}>
+          <div className="ml-form-group">
+            <label>📧 Send Test Welcome Email</label>
+            <input
+              type="email"
+              value={testEmail}
+              onChange={(e) => setTestEmail(e.target.value)}
+              placeholder="test@example.com"
+              required
+              className="ml-input"
+            />
+          </div>
+          <div className="ml-form-actions">
+            <button type="submit" disabled={testLoading} className="ml-btn">
+              {testLoading ? 'Sending...' : 'Send Test'}
+            </button>
+            <button type="button" onClick={() => setShowTestEmail(false)} className="ml-btn-ghost">
               Cancel
             </button>
           </div>
