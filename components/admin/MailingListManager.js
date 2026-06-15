@@ -60,6 +60,15 @@ const S = `
 .ml-empty{padding:40px;text-align:center;color:var(--text-dim);font-size:14px}
 .ml-pagination{display:flex;gap:12px;align-items:center;justify-content:center;flex-wrap:wrap;padding-top:16px;border-top:1px solid var(--border);font-size:12px}
 .ml-pagination .ml-btn{padding:6px 12px;font-size:11px}
+.ml-modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;z-index:1000}
+.ml-modal{background:var(--bg);border:1px solid var(--border);border-radius:8px;max-width:500px;width:90%;max-height:80vh;overflow-y:auto;box-shadow:0 10px 40px rgba(0,0,0,.5)}
+.ml-modal-header{display:flex;justify-content:space-between;align-items:center;padding:20px;border-bottom:1px solid var(--border);gap:16px}
+.ml-modal-header h3{margin:0;font-size:16px;font-weight:700;color:var(--text)}
+.ml-modal-close{background:none;border:none;color:var(--text-dim);font-size:20px;cursor:pointer;padding:0;width:24px;height:24px;display:flex;align-items:center;justify-content:center}
+.ml-modal-close:hover{color:var(--text)}
+.ml-modal-content{padding:20px}
+.ml-modal-actions{display:flex;gap:12px;justify-content:flex-end;padding:20px;border-top:1px solid var(--border);margin-top:16px}
+.ml-modal-actions .ml-btn{margin:0;flex:1}
 `
 
 export default function MailingListManager({ adminKey }) {
@@ -87,6 +96,10 @@ export default function MailingListManager({ adminKey }) {
   const [showTestEmail, setShowTestEmail] = useState(false)
   const [testEmail, setTestEmail] = useState('')
   const [testLoading, setTestLoading] = useState(false)
+
+  const [showNewsletterSend, setShowNewsletterSend] = useState(false)
+  const [newsletterLoading, setNewsletterLoading] = useState(false)
+  const [testNewsletterEmail, setTestNewsletterEmail] = useState('') // For test newsletters
 
   const fetchSubscribers = useCallback(async () => {
     try {
@@ -242,12 +255,52 @@ export default function MailingListManager({ adminKey }) {
 
       setTestEmail('')
       setShowTestEmail(false)
-      setSuccess('Test email sent to ' + testEmail)
+      setSuccess('Test welcome email sent to ' + testEmail)
       setTimeout(() => setSuccess(''), 5000)
     } catch (err) {
       setError(err.message)
     } finally {
       setTestLoading(false)
+    }
+  }
+
+  const handleSendNewsletter = async (sendToTest = false) => {
+    try {
+      setNewsletterLoading(true)
+      
+      // If sending test, use test email endpoint
+      const endpoint = sendToTest ? '/api/newsletter/send-test' : '/api/newsletter/send'
+      const body = sendToTest ? { email: testNewsletterEmail } : {}
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'x-admin-key': adminKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(body),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to send')
+      }
+
+      const result = await res.json()
+      
+      if (sendToTest) {
+        setSuccess(`Test newsletter sent to ${testNewsletterEmail}`)
+        setTestNewsletterEmail('')
+      } else {
+        setSuccess(`Newsletter sent to ${result.sent}/${result.total} subscribers`)
+      }
+      
+      setShowNewsletterSend(false)
+      setTimeout(() => setSuccess(''), 5000)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setNewsletterLoading(false)
     }
   }
 
@@ -385,6 +438,9 @@ export default function MailingListManager({ adminKey }) {
         <button onClick={() => setShowTestEmail(!showTestEmail)} className="ml-btn" style={{background:'#666'}}>
           📧 Test Email
         </button>
+        <button onClick={() => setShowNewsletterSend(!showNewsletterSend)} className="ml-btn" style={{background:'#8b6914'}}>
+          📬 Send Newsletter
+        </button>
         <button onClick={handleExport} className="ml-btn" disabled={stats.total === 0}>
           📥 Export
         </button>
@@ -520,6 +576,110 @@ export default function MailingListManager({ adminKey }) {
           </table>
         )}
       </div>
+
+      {/* TEST EMAIL MODAL */}
+      {showTestEmail && (
+        <div className="ml-modal-overlay" onClick={() => setShowTestEmail(false)}>
+          <div className="ml-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="ml-modal-header">
+              <h3>📧 Send Test Welcome Email</h3>
+              <button onClick={() => setShowTestEmail(false)} className="ml-modal-close">✕</button>
+            </div>
+            <form onSubmit={handleSendTestEmail} className="ml-modal-content">
+              <div className="ml-form-group">
+                <label>Email Address</label>
+                <input
+                  type="email"
+                  placeholder="your@email.com"
+                  value={testEmail}
+                  onChange={(e) => setTestEmail(e.target.value)}
+                  className="ml-input"
+                  required
+                />
+              </div>
+              {error && <div className="ml-alert error">{error}</div>}
+              {success && <div className="ml-alert success">{success}</div>}
+              <div className="ml-modal-actions">
+                <button type="button" onClick={() => setShowTestEmail(false)} className="ml-btn" style={{background:'var(--border)'}}>
+                  Cancel
+                </button>
+                <button type="submit" disabled={testLoading} className="ml-btn">
+                  {testLoading ? '⏳ Sending...' : '📧 Send Test Email'}
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* NEWSLETTER SEND MODAL */}
+      {showNewsletterSend && (
+        <div className="ml-modal-overlay" onClick={() => setShowNewsletterSend(false)}>
+          <div className="ml-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="ml-modal-header">
+              <h3>📬 Send Daily Newsletter</h3>
+              <button onClick={() => setShowNewsletterSend(false)} className="ml-modal-close">✕</button>
+            </div>
+            <div className="ml-modal-content">
+              <div style={{marginBottom: '20px', padding: '12px', background: 'rgba(200,146,42,.1)', border: '1px solid var(--gold)', borderRadius: '4px', fontSize: '12px', color: 'var(--text-dim)'}}>
+                <strong>⚠️ Manual Send:</strong> This will send the curated newsletter (top 6 news, 3 blogs, hottest deals) to all active subscribers.
+              </div>
+
+              {/* TEST NEWSLETTER SECTION */}
+              <div style={{marginBottom: '24px', paddingBottom: '24px', borderBottom: '1px solid var(--border)'}}>
+                <h4 style={{margin: '0 0 12px 0', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--gold)'}}>
+                  🧪 Send Test Newsletter
+                </h4>
+                <div className="ml-form-group" style={{marginBottom: '12px'}}>
+                  <label>Email Address</label>
+                  <input
+                    type="email"
+                    placeholder="your@email.com"
+                    value={testNewsletterEmail}
+                    onChange={(e) => setTestNewsletterEmail(e.target.value)}
+                    className="ml-input"
+                  />
+                </div>
+                <button 
+                  onClick={() => handleSendNewsletter(true)}
+                  disabled={newsletterLoading || !testNewsletterEmail}
+                  className="ml-btn"
+                  style={{width: '100%', background: '#8b6914'}}
+                >
+                  {newsletterLoading ? '⏳ Sending...' : '🧪 Send Test'}
+                </button>
+              </div>
+
+              {/* PRODUCTION SEND SECTION */}
+              <div style={{marginBottom: '12px'}}>
+                <h4 style={{margin: '0 0 12px 0', fontSize: '13px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--gold)'}}>
+                  🚀 Send to All Subscribers
+                </h4>
+                <p style={{fontSize: '12px', color: 'var(--text-dim)', margin: '0 0 12px 0'}}>
+                  This will be sent to <strong>{stats.active}</strong> active subscribers.
+                </p>
+                <button
+                  onClick={() => handleSendNewsletter(false)}
+                  disabled={newsletterLoading || stats.active === 0}
+                  className="ml-btn"
+                  style={{width: '100%', background: '#c8922a'}}
+                >
+                  {newsletterLoading ? '⏳ Sending to all...' : `📬 Send to ${stats.active} Subscribers`}
+                </button>
+              </div>
+
+              {error && <div className="ml-alert error">{error}</div>}
+              {success && <div className="ml-alert success">{success}</div>}
+
+              <div className="ml-modal-actions">
+                <button onClick={() => setShowNewsletterSend(false)} className="ml-btn" style={{background:'var(--border)', width: '100%'}}>
+                  Close
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {totalPages > 1 && (
         <div className="ml-pagination">

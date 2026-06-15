@@ -21,25 +21,26 @@ export async function GET(req) {
 
     console.log('[subscribers GET] Fetching with params:', { search, status, page, limit, sort, order })
 
-    // Build base query - GROQ safe
+    // Build base query with GROQ variables
+    const queryParams = { search: search.toLowerCase(), status }
+    
     let baseQuery = '*[_type == "newsletterSubscriber"'
     
     if (search) {
-      // Use string::startsWith instead of match with wildcards
-      const searchLower = search.toLowerCase()
-      baseQuery += ` && email | startsWith("${searchLower}")`
+      // Simple contains check on lowercase email
+      baseQuery += ` && string::startsWith(lower(email), $search)`
     }
     
     if (status && status !== 'all') {
-      baseQuery += ` && status == "${status}"`
+      baseQuery += ` && status == $status`
     }
     
     baseQuery += ']'
 
-    console.log('[subscribers GET] Base query:', baseQuery)
+    console.log('[subscribers GET] Base query:', baseQuery, 'params:', queryParams)
 
     // Get total count
-    const totalCount = await client.fetch(`count(${baseQuery})`)
+    const totalCount = await client.fetch(`count(${baseQuery})`, queryParams)
     console.log('[subscribers GET] Total count:', totalCount)
 
     // Get paginated results with proper ordering
@@ -54,7 +55,7 @@ export async function GET(req) {
     }`
     
     console.log('[subscribers GET] Full query:', fullQuery)
-    const subscribers = await client.fetch(fullQuery)
+    const subscribers = await client.fetch(fullQuery, queryParams)
     console.log('[subscribers GET] Retrieved subscribers:', subscribers.length)
 
     // Calculate stats
