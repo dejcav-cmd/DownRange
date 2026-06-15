@@ -32,7 +32,7 @@ export default function NewsletterSignup({ variant = 'full' }) {
           Daily briefings. Breaking alerts. No spam.
         </p>
         {status === 'success' ? (
-          <div style={{ color: '#34D399', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }}>✓ You're in. First brief hits tomorrow at 7am.</div>
+          <div style={{ color: '#34D399', fontFamily: "'IBM Plex Mono',monospace", fontSize: '12px' }}>✓ You're in. You'll start receiving our newsletters soon.</div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', gap: '8px' }}>
             <input type="email" value={email} onChange={e=>setEmail(e.target.value)} placeholder="your@email.com" required
