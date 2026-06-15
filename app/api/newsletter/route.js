@@ -22,6 +22,38 @@ export async function POST(req) {
     if (!email || !email.includes('@')) {
       return Response.json({ error: 'Valid email required' }, { status: 400 })
     }
+    
+    // Create or update Sanity document
+    try {
+      const existing = await sanity.fetch(
+        `*[_type == "newsletterSubscriber" && email == $email][0]`,
+        { email }
+      )
+      
+      if (existing) {
+        if (existing.status === 'unsubscribed') {
+          // Reactivate
+          await sanity.patch(existing._id).set({
+            status: 'active',
+            subscribedAt: new Date().toISOString(),
+          }).commit()
+        }
+      } else {
+        // Create new
+        await sanity.create({
+          _type: 'newsletterSubscriber',
+          email,
+          status: 'active',
+          subscribedAt: new Date().toISOString(),
+          source: 'website',
+          notes: name ? `Signup name: ${name}` : '',
+        })
+      }
+    } catch (err) {
+      console.error('Sanity subscriber error:', err.message)
+      // Don't fail the signup if Sanity fails
+    }
+    
     const resend = getResend()
     const audienceId = process.env.RESEND_AUDIENCE_ID
     if (audienceId && process.env.RESEND_API_KEY) {

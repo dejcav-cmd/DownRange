@@ -33,6 +33,7 @@ const SocialMediaManager    = L(() => import('../../components/admin/SocialMedia
 const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
 const SourceManager         = L(() => import('../../components/admin/SourceManager'))
 const SMSAlertsPanel        = L(() => import('../../components/admin/SMSAlertsPanel'))
+const MailingListManager    = L(() => import('../../components/admin/MailingListManager'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -64,6 +65,7 @@ const NAV = [
       { id:'schedule',     label:'Schedule',         icon:'📅', badge:null },
       { id:'breaking',     label:'Breaking Alerts',  icon:'🔴', badge:null },
       { id:'newsletter',   label:'Newsletter',       icon:'📧', badge:null },
+      { id:'mailing-list', label:'Mailing List',     icon:'📬', badge:null },
       { id:'seo',          label:'SEO & Meta',       icon:'🔍', badge:null },
     ]
   },
@@ -2910,6 +2912,7 @@ export default function AdminPage() {
             {panel==='schedule'   && <PublicationSchedule secret={adminKey} setMsg={flash} />}
             {panel==='breaking'   && <BreakingAlertsPanel adminKey={adminKey} />}
             {panel==='newsletter' && <NewsletterManager   adminKey={adminKey} />}
+            {panel==='mailing-list' && <MailingListManager adminKey={adminKey} />}
             {panel==='seo'        && <SEOPanel />}
 
             {/* ── INTELLIGENCE ── */}

@@ -29,6 +29,7 @@ import { cronRun }          from './cronRun'
 import { youtubeInfluencer } from './youtubeInfluencer'
 import { socialPost, socialConfig } from './socialPost'
 import { gunDeal } from './gunDeal'
+import newsletterSubscriber from './newsletterSubscriber'
 
 export const schemaTypes = [
   feedConfig,
@@ -49,4 +50,5 @@ export const schemaTypes = [
   socialPost,
   socialConfig,
   gunDeal,
+  newsletterSubscriber,
 ]
