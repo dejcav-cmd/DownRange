@@ -113,6 +113,7 @@ export default function MailingListManager({ adminKey }) {
 
   const [showNewsletterSend, setShowNewsletterSend] = useState(false)
   const [newsletterLoading, setNewsletterLoading] = useState(false)
+  const [testNewsletterLoading, setTestNewsletterLoading] = useState(false)
   const [testNewsletterEmail, setTestNewsletterEmail] = useState('')
 
   // Schedule management
@@ -352,37 +353,40 @@ export default function MailingListManager({ adminKey }) {
     }
   }
 
+  const handleSendTestNewsletter = async () => {
+    if (!testNewsletterEmail) return setError('Enter an email address')
+    try {
+      setTestNewsletterLoading(true)
+      setError('')
+      const res = await fetch('/api/newsletter/send-test', {
+        method: 'POST',
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: testNewsletterEmail }),
+      })
+      if (!res.ok) { const d = await res.json(); throw new Error(d.error || 'Failed') }
+      setSuccess(`✓ Test newsletter sent to ${testNewsletterEmail}`)
+      setTestNewsletterEmail('')
+      setTimeout(() => setSuccess(''), 5000)
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setTestNewsletterLoading(false)
+    }
+  }
+
   const handleSendNewsletter = async (sendToTest = false) => {
+    if (sendToTest) return handleSendTestNewsletter()
     try {
       setNewsletterLoading(true)
-      
-      // If sending test, use test email endpoint
-      const endpoint = sendToTest ? '/api/newsletter/send-test' : '/api/newsletter/send'
-      const body = sendToTest ? { email: testNewsletterEmail } : {}
-
-      const res = await fetch(endpoint, {
+      setError('')
+      const res = await fetch('/api/newsletter/send', {
         method: 'POST',
-        headers: {
-          'x-admin-key': adminKey,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
+        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
+        body: JSON.stringify({}),
       })
-
-      if (!res.ok) {
-        const data = await res.json()
-        throw new Error(data.error || 'Failed to send')
-      }
-
+      if (!res.ok) { const d = await res.json(); throw new Error(d.error || 'Failed') }
       const result = await res.json()
-      
-      if (sendToTest) {
-        setSuccess(`Test newsletter sent to ${testNewsletterEmail}`)
-        setTestNewsletterEmail('')
-      } else {
-        setSuccess(`Newsletter sent to ${result.sent}/${result.total} subscribers`)
-      }
-      
+      setSuccess(`✓ Newsletter sent to ${result.sent}/${result.total} subscribers`)
       setShowNewsletterSend(false)
       setTimeout(() => setSuccess(''), 5000)
     } catch (err) {
@@ -883,11 +887,11 @@ export default function MailingListManager({ adminKey }) {
                 </div>
                 <button 
                   onClick={() => handleSendNewsletter(true)}
-                  disabled={newsletterLoading || !testNewsletterEmail}
+                  disabled={testNewsletterLoading || !testNewsletterEmail}
                   className="ml-btn"
                   style={{width: '100%', background: '#8b6914'}}
                 >
-                  {newsletterLoading ? '⏳ Sending...' : '🧪 Send Test'}
+                  {testNewsletterLoading ? '⏳ Sending...' : '🧪 Send Test'}
                 </button>
               </div>
 
