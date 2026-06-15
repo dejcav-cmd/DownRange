@@ -168,13 +168,18 @@ export default function MailingListManager({ adminKey }) {
         headers: { 'x-admin-key': adminKey },
       })
 
-      if (!res.ok) throw new Error('Failed to fetch schedule')
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error || 'Failed to fetch schedule')
+      }
 
       const data = await res.json()
       setSchedule(data)
-      setEditingSchedule(data) // Initialize editing state
+      setEditingSchedule(data)
+      console.log('[MailingListManager] Schedule loaded:', data)
     } catch (err) {
       console.error('[MailingListManager] Schedule error:', err)
+      setError('Failed to load schedule: ' + err.message)
     } finally {
       setScheduleLoading(false)
     }
@@ -504,24 +509,36 @@ export default function MailingListManager({ adminKey }) {
       {error && <div className="ml-alert error">❌ {error}</div>}
       {success && <div className="ml-alert success">✅ {success}</div>}
 
-      {schedule && (
-        <div className="ml-schedule-card">
-          <div className="ml-schedule-info">
-            <div className="ml-schedule-days">
-              🗓️ {schedule.days?.length ? schedule.days.join(', ').toUpperCase() : 'No days set'}
+      {/* SCHEDULE SECTION - Always Visible */}
+      <div style={{marginBottom: '24px', padding: '20px', background: 'linear-gradient(135deg, rgba(200,146,42,0.15) 0%, rgba(200,146,42,0.05) 100%)', border: '2px solid #c8922a', borderRadius: '6px'}}>
+        <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', gap: '20px'}}>
+          <div>
+            <div style={{fontSize: '13px', fontWeight: '700', color: '#c8922a', textTransform: 'uppercase', letterSpacing: '1px', marginBottom: '8px'}}>
+              📅 Newsletter Schedule
             </div>
-            <div className="ml-schedule-time">
-              ⏰ {String(schedule.hour).padStart(2, '0')}:{String(schedule.minute).padStart(2, '0')} UTC
-            </div>
-            <div className="ml-schedule-status">
-              {schedule.enabled ? '✓ AUTO-SEND ENABLED' : '✗ AUTO-SEND DISABLED'}
-            </div>
+            {scheduleLoading ? (
+              <div style={{fontSize: '12px', color: '#999'}}>⏳ Loading schedule...</div>
+            ) : schedule ? (
+              <>
+                <div style={{fontSize: '14px', fontWeight: '700', color: '#fff', marginBottom: '4px'}}>
+                  {schedule.days?.length ? schedule.days.map(d => d.slice(0, 3).toUpperCase()).join(', ') : 'No days set'}
+                </div>
+                <div style={{fontSize: '12px', color: '#b0b0b0'}}>
+                  ⏰ {String(schedule.hour).padStart(2, '0')}:{String(schedule.minute).padStart(2, '0')} UTC
+                </div>
+                <div style={{fontSize: '11px', color: schedule.enabled ? '#22c55e' : '#ef4444', marginTop: '6px', textTransform: 'uppercase', letterSpacing: '0.5px', fontWeight: '600'}}>
+                  {schedule.enabled ? '✓ AUTO-SEND ENABLED' : '✗ AUTO-SEND DISABLED'}
+                </div>
+              </>
+            ) : (
+              <div style={{fontSize: '12px', color: '#999'}}>No schedule data</div>
+            )}
           </div>
-          <button onClick={() => setShowScheduleEditor(true)} className="ml-btn" style={{margin: '0'}}>
-            ⚙️ Edit Schedule
+          <button onClick={() => setShowScheduleEditor(true)} className="ml-btn" style={{margin: '0', height: 'fit-content'}}>
+            ⚙️ Edit
           </button>
         </div>
-      )}
+      </div>
 
       <div className="ml-toolbar">
         <input
