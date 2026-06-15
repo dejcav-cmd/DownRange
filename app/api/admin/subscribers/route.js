@@ -32,6 +32,14 @@ export async function GET(req) {
     }`)
     
     console.log('[subscribers GET] Retrieved all subscribers:', allSubscribers.length)
+    if (allSubscribers.length > 0) {
+      console.log('[subscribers GET] Sample subscriber:', JSON.stringify(allSubscribers[0], null, 2))
+    } else {
+      console.log('[subscribers GET] ⚠️ No subscribers found in database')
+      // Try to see what types exist
+      const allTypes = await client.fetch(`unique(*[]._type)`)
+      console.log('[subscribers GET] Available types:', allTypes)
+    }
 
     // Filter in JavaScript (safe, predictable)
     let filtered = allSubscribers

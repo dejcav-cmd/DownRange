@@ -144,6 +144,12 @@ export default function MailingListManager({ adminKey }) {
       }
 
       const data = await res.json()
+      console.log('[MailingListManager] API response:', {
+        subscribersCount: data.subscribers?.length,
+        stats: data.stats,
+        totalPages: data.totalPages,
+        firstSubscriber: data.subscribers?.[0],
+      })
       setSubscribers(data.subscribers)
       setStats(data.stats)
       setTotalPages(data.totalPages)
