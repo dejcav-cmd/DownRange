@@ -1,20 +1,22 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== gunDeal image audit ===
+Total gunDeal docs:     1269
+From gun.deals:         1258
+Has imageUrl:           1253
+On Sanity CDN:          558
+Missing imageUrl:       16
+Image fill rate:        98%
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 10
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e7b0c26216542f9012e0ba949bd1291
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/92900eddf2dbdf767d312c90bf4880c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/af7112aeec1bf575814faae4ffb4531
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5aa6b9c7585d60340caf759a3ee3dbb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7a1fa7c490723089c7f3f33d362af0a
-  ~ og: https://www.ammoland.com/wp-content/uploads/2025/08/Guns-Ammo-Cash-Mon
-  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
-  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 6
+Recent 10 deals:
+  [MISSING ] Uppers + FREE SUPPRESSOR &amp; SCOPE (with code FREEGOODS) -
+  [MISSING ] REAT Fixed Blade Knife with Kydex Sheath, 8&quot; D2 Steel B
+  [MISSING ] VKTR Indrustries VK-1, 5.56mm, 11.5&quot; Barrel w/ A2 Flash
+  [MISSING ] VKTR VK-1, 5.56mm, 16&quot; Barrel w/ A2 Muzzle Device, Blac
+  [MISSING ] Blackout Defense .223 Wylde 13.9&quot; Barrel Carbine Mid Le
+  [MISSING ] BAOFENG UV-32 Ham Radio Rechargeable Walkie Talkies with NOA
+  [MISSING ] Radian Weapons R0024 Complete Upper 223 Wylde 14.50&quot; 41
+  [MISSING ] Discount Mil-Spec Carbine Buffer / Receiver Extension Kit - 
+  [MISSING ] ProMag Taurus TX22 34rd Magazine - $19.99
+  [MISSING ] NORMA AMMO SafeGuard 9mm 115gr JHP 50 Rounds - $18.99 ($13.9
 
-Stats: uploaded=5 fallback=1 failed=1
-
-=== FINAL: total=1258 missing_images=4 reddit=0 ===
+=== Testing OG image scrape from gun.deals ===
+  FAILED: HTTP Error 404: Not Found
