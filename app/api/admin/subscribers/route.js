@@ -4,7 +4,10 @@ import { client } from '@/sanity/lib/client'
 export async function GET(req) {
   try {
     const adminKey = req.headers.get('x-admin-key')
+    console.log('[subscribers GET] adminKey present:', !!adminKey, 'ADMIN_KEY set:', !!process.env.ADMIN_KEY)
+    
     if (adminKey !== process.env.ADMIN_KEY) {
+      console.log('[subscribers GET] Auth failed')
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
@@ -16,35 +19,41 @@ export async function GET(req) {
     const sort = searchParams.get('sort') || 'subscribedAt'
     const order = searchParams.get('order') || 'desc'
 
-    // Build filter
-    let filter = '*[_type == "newsletterSubscriber"'
+    console.log('[subscribers GET] Fetching with params:', { search, status, page, limit, sort, order })
+
+    // Build base query
+    let baseQuery = '*[_type == "newsletterSubscriber"'
     
     if (search) {
-      filter += ` && email match "${search}*"`
+      baseQuery += ` && email match "${search}*"`
     }
     
     if (status && status !== 'all') {
-      filter += ` && status == "${status}"`
+      baseQuery += ` && status == "${status}"`
     }
     
-    filter += ']'
+    baseQuery += ']'
+
+    console.log('[subscribers GET] Base query:', baseQuery)
 
     // Get total count
-    const totalCount = await client.fetch(`count(${filter})`)
+    const totalCount = await client.fetch(`count(${baseQuery})`)
+    console.log('[subscribers GET] Total count:', totalCount)
 
-    // Get paginated results
-    const sortDirection = order === 'asc' ? 'asc' : 'desc'
+    // Get paginated results with proper ordering
+    const sortDir = order === 'asc' ? '' : ' desc'
+    const fullQuery = `${baseQuery} | order(${sort}${sortDir}) [${page * limit}...${(page + 1) * limit}] {
+      _id,
+      email,
+      status,
+      subscribedAt,
+      source,
+      notes,
+    }`
     
-    const subscribers = await client.fetch(
-      `${filter} | order(${sort} ${sortDirection}) [${page * limit}...${(page + 1) * limit}] {
-        _id,
-        email,
-        status,
-        subscribedAt,
-        source,
-        notes,
-      }`
-    )
+    console.log('[subscribers GET] Full query:', fullQuery)
+    const subscribers = await client.fetch(fullQuery)
+    console.log('[subscribers GET] Retrieved subscribers:', subscribers.length)
 
     // Calculate stats
     const stats = await client.fetch(`{
@@ -53,6 +62,8 @@ export async function GET(req) {
       unsubscribed: count(*[_type == "newsletterSubscriber" && status == "unsubscribed"]),
       bounced: count(*[_type == "newsletterSubscriber" && status == "bounced"]),
     }`)
+
+    console.log('[subscribers GET] Stats:', stats)
 
     return Response.json({
       subscribers,
@@ -63,8 +74,8 @@ export async function GET(req) {
       stats,
     })
   } catch (error) {
-    console.error('Subscribers GET error:', error)
-    return Response.json({ error: error.message }, { status: 500 })
+    console.error('[subscribers GET] Error:', error)
+    return Response.json({ error: error.message, details: error.toString() }, { status: 500 })
   }
 }
 

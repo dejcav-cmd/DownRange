@@ -87,6 +87,7 @@ export default function MailingListManager({ adminKey }) {
   const fetchSubscribers = useCallback(async () => {
     try {
       setLoading(true)
+      setError('')
       const params = new URLSearchParams({
         search,
         status: statusFilter,
@@ -100,15 +101,18 @@ export default function MailingListManager({ adminKey }) {
         headers: { 'x-admin-key': adminKey },
       })
 
-      if (!res.ok) throw new Error('Failed to fetch')
+      if (!res.ok) {
+        const errorData = await res.json()
+        throw new Error(`${res.status}: ${errorData.error || errorData.message || 'Failed to fetch'}`)
+      }
 
       const data = await res.json()
       setSubscribers(data.subscribers)
       setStats(data.stats)
       setTotalPages(data.totalPages)
-      setError('')
     } catch (err) {
-      setError(err.message)
+      console.error('[MailingListManager] Error:', err)
+      setError(err.message || 'Failed to fetch subscribers')
     } finally {
       setLoading(false)
     }
