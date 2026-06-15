@@ -13,21 +13,18 @@ export async function GET(req) {
       `*[_type == "newsletterSchedule"][0]`
     )
 
-    if (!schedule) {
-      // Create default if doesn't exist
-      const defaultSchedule = {
-        _type: 'newsletterSchedule',
-        title: 'Daily Newsletter Schedule',
-        enabled: true,
-        days: ['monday', 'thursday'],
-        hour: 7,
-        minute: 0,
-      }
-      const created = await client.create(defaultSchedule)
-      return Response.json(created)
+    // Return default if doesn't exist (will be created manually in Sanity)
+    const defaultSchedule = schedule || {
+      _type: 'newsletterSchedule',
+      _id: 'draft.newsletterSchedule-default',
+      title: 'Daily Newsletter Schedule',
+      enabled: true,
+      days: ['monday', 'thursday'],
+      hour: 7,
+      minute: 0,
     }
 
-    return Response.json(schedule)
+    return Response.json(defaultSchedule)
   } catch (error) {
     console.error('[newsletter-schedule GET] Error:', error)
     return Response.json({ error: error.message }, { status: 500 })
