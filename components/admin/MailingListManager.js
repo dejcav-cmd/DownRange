@@ -439,6 +439,20 @@ export default function MailingListManager({ adminKey }) {
     }
   }
 
+  const handleDebug = async () => {
+    try {
+      const res = await fetch('/api/admin/debug/subscribers', {
+        headers: { 'x-admin-key': adminKey },
+      })
+      const data = await res.json()
+      console.log('🔍 MAILING LIST DEBUG INFO:', data)
+      setSuccess(`✅ Debug data logged to console. Found ${data.subscriberCount} subscribers in database.`)
+      setTimeout(() => setSuccess(''), 5000)
+    } catch (err) {
+      setError('❌ Debug error: ' + err.message)
+    }
+  }
+
   const toggleSelect = (id) => {
     const newSet = new Set(selectedIds)
     if (newSet.has(id)) {
@@ -542,6 +556,9 @@ export default function MailingListManager({ adminKey }) {
         </button>
         <button onClick={() => setShowNewsletterSend(!showNewsletterSend)} className="ml-btn" style={{background:'#8b6914'}}>
           📬 Send Newsletter
+        </button>
+        <button onClick={handleDebug} className="ml-btn" style={{background:'#666'}}>
+          🔍 Debug
         </button>
         <button onClick={handleExport} className="ml-btn" disabled={stats.total === 0}>
           📥 Export
