@@ -1,34 +1,50 @@
-=== Recent deals WITHOUT images ===
-  Uppers + FREE SUPPRESSOR &amp; SCOPE (with code FREEGOODS) -
-  URL: https://gun.deals/product/uppers-free-suppressor-scope-code-freegoods-149999
+=== Backfill missing deal images ===
 
-  REAT Fixed Blade Knife with Kydex Sheath, 8&quot; D2 Steel B
-  URL: https://gun.deals/product/reat-fixed-blade-knife-kydex-sheath-8-d2-steel-blade-full-tang-desgin-ergonomic-g10-handle-h
+Found 16 deals missing images
 
-  VKTR Indrustries VK-1, 5.56mm, 11.5&quot; Barrel w/ A2 Flash
-  URL: https://gun.deals/product/vktr-indrustries-vk-1-556mm-115-barrel-w-a2-flash-hider-black-complete-upper-receiver-179999
+  Uppers + FREE SUPPRESSOR &amp; SCOPE (with code FR
+    OG: https://gun.deals/sites/default/files/unnamed%20(5)_0.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/b514638db8a
+  REAT Fixed Blade Knife with Kydex Sheath, 8&quot; 
+    OG: https://gun.deals/sites/default/files/607c66ada60225e7c9399ad53169a99d
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/442931c24de
+  VKTR Indrustries VK-1, 5.56mm, 11.5&quot; Barrel w
+    OG: https://gun.deals/sites/default/files/454235_0.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/f599ee4a9fc
+  VKTR VK-1, 5.56mm, 16&quot; Barrel w/ A2 Muzzle De
+    OG: https://gun.deals/sites/default/files/hgghjghj.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/c00f0d62e05
+  Blackout Defense .223 Wylde 13.9&quot; Barrel Carb
+    OG: https://gun.deals/sites/default/files/unnamed%20(1)gftu.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/cfdfa055025
+  BAOFENG UV-32 Ham Radio Rechargeable Walkie Talkie
+    OG: https://gun.deals/sites/default/files/8fa052cb09439cc2c7c114fe51a7c606
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/76bf71d9cfa
+  Radian Weapons R0024 Complete Upper 223 Wylde 14.5
+    OG: https://gun.deals/sites/default/files/unnamedllll.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/957eb04bcd8
+  Discount Mil-Spec Carbine Buffer / Receiver Extens
+    OG: https://gun.deals/sites/default/files/trinity-force-mil-spec-carbine-b
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/cdaa5cd8060
+  ProMag Taurus TX22 34rd Magazine - $19.99
+    OG: https://gun.deals/sites/default/files/f873ed2e45296dc1c763cc37a5668833
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/d56c9967ed5
+  NORMA AMMO SafeGuard 9mm 115gr JHP 50 Rounds - $18
+    OG: https://gun.deals/sites/default/files/BHCNORMA%20610540050__19520.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/9537c6a19dc
+  Bulgarian AK-47 7.62x39mm 30-Round Steel Magazine 
+    OG: https://gun.deals/sites/default/files/bulgarian-AK47-30rd-magazine.jpg
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/ac5504959e5
+  NRA Foundation Rebrands to 1791 Foundation, Contro
+    OG: https://www.ammoland.com/wp-content/uploads/2025/08/Guns-Ammo-Cash-Mon
+    ✓ CDN: https://cdn.sanity.io/images/vbnsqnkg/production/cf41517c3c8
+  Coupon for store Brownells Saturday, June 13, 2026
+    SKIP — no OG image found
+  .45 ACP/Auto 230gr JHP Ammo 50 Rounds - New
+    SKIP — no OG image found
+  Coupon for store Sportsmans Outdoor SS Wednesday, 
+    SKIP — no OG image found
+  Coupon for store Shooters Gate Tuesday, June 9, 20
+    SKIP — no OG image found
 
-  VKTR VK-1, 5.56mm, 16&quot; Barrel w/ A2 Muzzle Device, Blac
-  URL: https://gun.deals/product/vktr-vk-1-556mm-16-barrel-w-a2-muzzle-device-black-complete-upper-receiver-179999-free-sound
-
-  Blackout Defense .223 Wylde 13.9&quot; Barrel Carbine Mid Le
-  URL: https://gun.deals/product/blackout-defense-223-wylde-139-barrel-carbine-mid-length-fixed-gas-block-slick-side-blackout
-
-=== Recent deals WITH images (working) ===
-  NBS AR-15 Stripped Upper - $39.95
-  externalUrl: https://gun.deals/product/nbs-ar-15-stripped-upper-3995
-  imageUrl:    https://cdn.sanity.io/images/vbnsqnkg/production/e7b0c26216542f9012e0b
-
-  Savior Eq Specialist Single Long Gun Padded Soft Case Padded
-  externalUrl: https://gun.deals/product/savior-eq-specialist-single-long-gun-padded-
-  imageUrl:    https://cdn.sanity.io/images/vbnsqnkg/production/92900eddf2dbdf767d312
-
-  Discount Mil-Spec Lower Build Kit - AR15-Lower-Build-Kit - $
-  externalUrl: https://gun.deals/product/finish-those-lowers-mil-spec-lower-build-kit
-  imageUrl:    https://cdn.sanity.io/images/vbnsqnkg/production/af7112aeec1bf575814fa
-
-=== OG scrape test on real URL ===
-  URL: https://gun.deals/product/uppers-free-suppressor-scope-code-freegoods-149999
-  UA='Mozilla/5.0 (Macintosh; Intel ...' → HTTP 200 → OG: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/unnamed%
-
-Done.
+=== Done: 12 fixed, 4 failed ===
