@@ -23,7 +23,7 @@ export async function POST(req) {
     await resend().emails.send({
       from:    'DownRange <news@downrangeco.com>',
       to:      emailLower,
-      subject: "Welcome to DownRange — Your 2A Intelligence Briefing",
+      subject: "Welcome to DownRange Co. — Your 2A Intelligence Briefing",
       html: generateWelcomeEmailHTML(),
     }).catch(e => console.log('Welcome email error:', e.message))
 
