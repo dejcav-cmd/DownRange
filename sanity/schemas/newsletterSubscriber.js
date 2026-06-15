@@ -1,3 +1,4 @@
+// Newsletter Subscriber Schema - auto-deployed via GitHub Actions
 export default {
   name: 'newsletterSubscriber',
   title: 'Newsletter Subscriber',
