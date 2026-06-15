@@ -8,8 +8,9 @@ export async function GET(req) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Check all types in database
-    const allTypes = await client.fetch(`unique(*[]._type)`)
+    // Fetch all types in database (will dedupe in JS)
+    const allTypesRaw = await client.fetch(`*[]._type`)
+    const allTypes = [...new Set(allTypesRaw)] // Dedupe in JavaScript
     console.log('All types:', allTypes)
 
     // Try to fetch newsletterSubscriber documents
