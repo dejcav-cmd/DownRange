@@ -69,6 +69,20 @@ const S = `
 .ml-modal-content{padding:20px}
 .ml-modal-actions{display:flex;gap:12px;justify-content:flex-end;padding:20px;border-top:1px solid var(--border);margin-top:16px}
 .ml-modal-actions .ml-btn{margin:0;flex:1}
+.ml-schedule-card{display:flex;justify-content:space-between;align-items:center;padding:16px;background:rgba(200,146,42,.08);border:1px solid var(--gold);border-radius:4px;margin-bottom:16px}
+.ml-schedule-info{flex:1}
+.ml-schedule-days{font-size:13px;font-weight:700;color:var(--text);margin-bottom:4px;text-transform:capitalize}
+.ml-schedule-time{font-size:12px;color:var(--text-dim)}
+.ml-schedule-status{font-size:11px;color:var(--gold);text-transform:uppercase;margin-top:4px;letter-spacing:.05em}
+.ml-days-group{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:16px}
+.ml-day-btn{padding:8px 12px;background:var(--bg3);border:1px solid var(--border);color:var(--text);font-size:12px;cursor:pointer;border-radius:4px;transition:all .2s;text-transform:capitalize}
+.ml-day-btn.active{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700}
+.ml-day-btn:hover{border-color:var(--gold)}
+.ml-time-group{display:flex;gap:12px;align-items:flex-end}
+.ml-time-field{flex:1}
+.ml-time-field label{display:block;font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--text-dim);margin-bottom:6px}
+.ml-time-field input{background:var(--bg3);border:1px solid var(--border);color:var(--text);padding:8px 10px;border-radius:4px;width:100%;font-family:'IBM Plex Mono',monospace;font-size:12px}
+.ml-time-field input:focus{border-color:var(--gold)}
 `
 
 export default function MailingListManager({ adminKey }) {
@@ -99,7 +113,13 @@ export default function MailingListManager({ adminKey }) {
 
   const [showNewsletterSend, setShowNewsletterSend] = useState(false)
   const [newsletterLoading, setNewsletterLoading] = useState(false)
-  const [testNewsletterEmail, setTestNewsletterEmail] = useState('') // For test newsletters
+  const [testNewsletterEmail, setTestNewsletterEmail] = useState('')
+
+  // Schedule management
+  const [schedule, setSchedule] = useState(null)
+  const [scheduleLoading, setScheduleLoading] = useState(true)
+  const [showScheduleEditor, setShowScheduleEditor] = useState(false)
+  const [editingSchedule, setEditingSchedule] = useState(null) // For test newsletters
 
   const fetchSubscribers = useCallback(async () => {
     try {
@@ -135,9 +155,66 @@ export default function MailingListManager({ adminKey }) {
     }
   }, [search, statusFilter, page, limit, sort, order, adminKey])
 
+  const loadSchedule = useCallback(async () => {
+    try {
+      setScheduleLoading(true)
+      const res = await fetch('/api/admin/newsletter-schedule', {
+        headers: { 'x-admin-key': adminKey },
+      })
+
+      if (!res.ok) throw new Error('Failed to fetch schedule')
+
+      const data = await res.json()
+      setSchedule(data)
+      setEditingSchedule(data) // Initialize editing state
+    } catch (err) {
+      console.error('[MailingListManager] Schedule error:', err)
+    } finally {
+      setScheduleLoading(false)
+    }
+  }, [adminKey])
+
+  const handleUpdateSchedule = async () => {
+    if (!editingSchedule || !editingSchedule.days || editingSchedule.days.length === 0) {
+      setError('Select at least one day')
+      return
+    }
+
+    try {
+      const res = await fetch('/api/admin/newsletter-schedule', {
+        method: 'PATCH',
+        headers: {
+          'x-admin-key': adminKey,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          enabled: editingSchedule.enabled,
+          days: editingSchedule.days,
+          hour: editingSchedule.hour,
+          minute: editingSchedule.minute,
+          notes: editingSchedule.notes,
+        }),
+      })
+
+      if (!res.ok) {
+        const data = await res.json()
+        throw new Error(data.error)
+      }
+
+      const updated = await res.json()
+      setSchedule(updated)
+      setShowScheduleEditor(false)
+      setSuccess('Schedule updated!')
+      setTimeout(() => setSuccess(''), 5000)
+    } catch (err) {
+      setError(err.message)
+    }
+  }
+
   useEffect(() => {
     fetchSubscribers()
-  }, [fetchSubscribers])
+    loadSchedule()
+  }, [fetchSubscribers, loadSchedule])
 
   const handleDelete = async (id) => {
     if (!confirm('Delete this subscriber?')) return
@@ -407,6 +484,25 @@ export default function MailingListManager({ adminKey }) {
       {error && <div className="ml-alert error">❌ {error}</div>}
       {success && <div className="ml-alert success">✅ {success}</div>}
 
+      {schedule && (
+        <div className="ml-schedule-card">
+          <div className="ml-schedule-info">
+            <div className="ml-schedule-days">
+              🗓️ {schedule.days?.length ? schedule.days.join(', ').toUpperCase() : 'No days set'}
+            </div>
+            <div className="ml-schedule-time">
+              ⏰ {String(schedule.hour).padStart(2, '0')}:{String(schedule.minute).padStart(2, '0')} UTC
+            </div>
+            <div className="ml-schedule-status">
+              {schedule.enabled ? '✓ AUTO-SEND ENABLED' : '✗ AUTO-SEND DISABLED'}
+            </div>
+          </div>
+          <button onClick={() => setShowScheduleEditor(true)} className="ml-btn" style={{margin: '0'}}>
+            ⚙️ Edit Schedule
+          </button>
+        </div>
+      )}
+
       <div className="ml-toolbar">
         <input
           type="text"
@@ -576,6 +672,111 @@ export default function MailingListManager({ adminKey }) {
           </table>
         )}
       </div>
+
+      {/* SCHEDULE EDITOR MODAL */}
+      {showScheduleEditor && editingSchedule && (
+        <div className="ml-modal-overlay" onClick={() => setShowScheduleEditor(false)}>
+          <div className="ml-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="ml-modal-header">
+              <h3>⚙️ Newsletter Schedule</h3>
+              <button onClick={() => setShowScheduleEditor(false)} className="ml-modal-close">✕</button>
+            </div>
+            <div className="ml-modal-content">
+              {/* Enable Toggle */}
+              <div className="ml-form-group" style={{marginBottom: '20px'}}>
+                <label style={{display: 'flex', alignItems: 'center', gap: '10px', cursor: 'pointer'}}>
+                  <input
+                    type="checkbox"
+                    checked={editingSchedule.enabled}
+                    onChange={(e) => setEditingSchedule({...editingSchedule, enabled: e.target.checked})}
+                    className="ml-checkbox"
+                  />
+                  <span>Enable Automatic Sends</span>
+                </label>
+              </div>
+
+              {/* Days Selection */}
+              <div style={{marginBottom: '20px'}}>
+                <label style={{fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--text-dim)', display: 'block', marginBottom: '12px'}}>
+                  📅 Send On Days
+                </label>
+                <div className="ml-days-group">
+                  {['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday'].map(day => (
+                    <button
+                      key={day}
+                      type="button"
+                      onClick={() => {
+                        const updated = editingSchedule.days.includes(day)
+                          ? editingSchedule.days.filter(d => d !== day)
+                          : [...editingSchedule.days, day]
+                        setEditingSchedule({...editingSchedule, days: updated})
+                      }}
+                      className={`ml-day-btn ${editingSchedule.days.includes(day) ? 'active' : ''}`}
+                    >
+                      {day.slice(0, 3)}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Time Selection */}
+              <div style={{marginBottom: '20px'}}>
+                <label style={{fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--text-dim)', display: 'block', marginBottom: '12px'}}>
+                  ⏰ Send Time (UTC)
+                </label>
+                <div className="ml-time-group">
+                  <div className="ml-time-field">
+                    <label>Hour</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="23"
+                      value={editingSchedule.hour}
+                      onChange={(e) => setEditingSchedule({...editingSchedule, hour: parseInt(e.target.value) || 0})}
+                    />
+                  </div>
+                  <div className="ml-time-field">
+                    <label>Minute</label>
+                    <input
+                      type="number"
+                      min="0"
+                      max="59"
+                      value={editingSchedule.minute}
+                      onChange={(e) => setEditingSchedule({...editingSchedule, minute: parseInt(e.target.value) || 0})}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* Notes */}
+              <div style={{marginBottom: '20px'}}>
+                <label style={{fontSize: '11px', fontWeight: '700', textTransform: 'uppercase', letterSpacing: '.05em', color: 'var(--text-dim)', display: 'block', marginBottom: '6px'}}>
+                  Notes
+                </label>
+                <textarea
+                  value={editingSchedule.notes || ''}
+                  onChange={(e) => setEditingSchedule({...editingSchedule, notes: e.target.value})}
+                  className="ml-textarea"
+                  placeholder="Any notes about this schedule..."
+                  style={{minHeight: '60px'}}
+                />
+              </div>
+
+              {error && <div className="ml-alert error">{error}</div>}
+              {success && <div className="ml-alert success">{success}</div>}
+
+              <div className="ml-modal-actions">
+                <button onClick={() => setShowScheduleEditor(false)} className="ml-btn" style={{background:'var(--border)'}}>
+                  Cancel
+                </button>
+                <button onClick={handleUpdateSchedule} className="ml-btn">
+                  ✓ Save Schedule
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* TEST EMAIL MODAL */}
       {showTestEmail && (

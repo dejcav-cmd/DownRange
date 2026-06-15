@@ -30,6 +30,7 @@ import { youtubeInfluencer } from './youtubeInfluencer'
 import { socialPost, socialConfig } from './socialPost'
 import { gunDeal } from './gunDeal'
 import newsletterSubscriber from './newsletterSubscriber'
+import newsletterSchedule from './newsletterSchedule'
 
 export const schemaTypes = [
   feedConfig,
@@ -51,4 +52,5 @@ export const schemaTypes = [
   socialConfig,
   gunDeal,
   newsletterSubscriber,
+  newsletterSchedule,
 ]

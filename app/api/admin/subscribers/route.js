@@ -21,42 +21,47 @@ export async function GET(req) {
 
     console.log('[subscribers GET] Fetching with params:', { search, status, page, limit, sort, order })
 
-    // Build base query with GROQ variables
-    const queryParams = { search: search.toLowerCase(), status }
-    
-    let baseQuery = '*[_type == "newsletterSubscriber"'
-    
-    if (search) {
-      // Simple contains check on lowercase email
-      baseQuery += ` && string::startsWith(lower(email), $search)`
-    }
-    
-    if (status && status !== 'all') {
-      baseQuery += ` && status == $status`
-    }
-    
-    baseQuery += ']'
-
-    console.log('[subscribers GET] Base query:', baseQuery, 'params:', queryParams)
-
-    // Get total count
-    const totalCount = await client.fetch(`count(${baseQuery})`, queryParams)
-    console.log('[subscribers GET] Total count:', totalCount)
-
-    // Get paginated results with proper ordering
-    const sortDir = order === 'asc' ? '' : ' desc'
-    const fullQuery = `${baseQuery} | order(${sort}${sortDir}) [${page * limit}...${(page + 1) * limit}] {
+    // Fetch all subscribers (no GROQ filtering to avoid syntax issues)
+    const allSubscribers = await client.fetch(`*[_type == "newsletterSubscriber"] {
       _id,
       email,
       status,
       subscribedAt,
       source,
       notes,
-    }`
+    }`)
     
-    console.log('[subscribers GET] Full query:', fullQuery)
-    const subscribers = await client.fetch(fullQuery, queryParams)
-    console.log('[subscribers GET] Retrieved subscribers:', subscribers.length)
+    console.log('[subscribers GET] Retrieved all subscribers:', allSubscribers.length)
+
+    // Filter in JavaScript (safe, predictable)
+    let filtered = allSubscribers
+    
+    if (search) {
+      const searchLower = search.toLowerCase()
+      filtered = filtered.filter(sub => 
+        sub.email.toLowerCase().includes(searchLower)
+      )
+    }
+    
+    if (status && status !== 'all') {
+      filtered = filtered.filter(sub => sub.status === status)
+    }
+    
+    const totalCount = filtered.length
+    console.log('[subscribers GET] Filtered count:', totalCount)
+
+    // Sort
+    const sortField = sort === 'email' ? 'email' : 'subscribedAt'
+    filtered.sort((a, b) => {
+      const aVal = a[sortField]
+      const bVal = b[sortField]
+      const cmp = aVal < bVal ? -1 : aVal > bVal ? 1 : 0
+      return order === 'asc' ? cmp : -cmp
+    })
+
+    // Paginate
+    const subscribers = filtered.slice(page * limit, (page + 1) * limit)
+    console.log('[subscribers GET] Paginated results:', subscribers.length)
 
     // Calculate stats
     const stats = await client.fetch(`{
