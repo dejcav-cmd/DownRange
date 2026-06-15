@@ -1,79 +1,48 @@
 // app/api/newsletter/content/route.js
-// Fetch curated content for daily newsletter
-
+export const dynamic = 'force-dynamic'
 import { client } from '@/sanity/lib/client'
 
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url)
     const adminKey = searchParams.get('adminKey')
-    
-    // Check auth for manual preview
     if (adminKey && adminKey !== process.env.ADMIN_KEY) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    // Calculate 48-hour window
-    const now = new Date()
-    const fortyEightHoursAgo = new Date(now.getTime() - 48 * 60 * 60 * 1000)
-    const isoTime = fortyEightHoursAgo.toISOString()
+    const fortyEightHoursAgo = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
 
-    // Fetch top 6 news articles from last 48 hours
-    const newsArticles = await client.fetch(`
-      *[_type == "newsArticle" && publishedAt > $time && approved == true] 
-      | order(publishedAt desc) 
-      [0...6] {
-        _id,
-        title,
-        slug,
-        summary,
-        category,
-        urgencyScore,
-        imageUrl,
-        publishedAt,
-        author->{name}
+    // Top 6 news from last 48 hours
+    const news = await client.fetch(`
+      *[_type == "newsArticle" && publishedAt > $time && approved == true]
+      | order(publishedAt desc)[0...6] {
+        _id, title, slug, summary, category, urgencyScore,
+        imageUrl, publishedAt, author->{name}
       }
-    `, { time: isoTime })
+    `, { time: fortyEightHoursAgo })
 
-    // Fetch latest 3 blog articles
-    const blogArticles = await client.fetch(`
-      *[_type == "blogPost" && status == "published" && _createdAt > $time]
-      | order(_createdAt desc)
-      [0...3] {
-        _id,
-        title,
-        slug,
-        summary,
-        heroImage,
-        _createdAt,
-        author->{name}
+    // Latest 3 published blog posts (no time filter — just most recent)
+    const blogs = await client.fetch(`
+      *[_type == "blogPost" && status == "published"]
+      | order(publishedAt desc)[0...3] {
+        _id, title, slug, summary, imageUrl, publishedAt, author->{name}
       }
-    `, { time: isoTime })
+    `)
 
-    // Fetch latest deals
+    // Latest deals (no time filter — just most recent with prices)
     const deals = await client.fetch(`
-      *[_type == "gunDeal" && _createdAt > $time]
-      | order(_createdAt desc)
-      [0...8] {
-        _id,
-        title,
-        description,
-        retailer,
-        originalPrice,
-        dealPrice,
-        savings,
-        url,
-        imageUrl,
-        category,
-        _createdAt
+      *[_type == "gunDeal" && defined(dealPrice)]
+      | order(_createdAt desc)[0...8] {
+        _id, title, retailer, originalPrice, dealPrice,
+        savings, url, imageUrl, category, _createdAt
       }
-    `, { time: isoTime })
+    `)
 
     return Response.json({
-      news: newsArticles,
-      blogs: blogArticles,
-      deals: deals,
-      generatedAt: now.toISOString(),
+      news,
+      blogs,
+      deals,
+      generatedAt: new Date().toISOString(),
     })
   } catch (error) {
     console.error('[newsletter/content] Error:', error)
