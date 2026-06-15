@@ -67,6 +67,8 @@ const IMG_HEADERS = {
 }
 
 // Scrape OG image URL from a gun.deals product page
+// gun.deals serves og:image via Cloudflare image transforms (/cdn-cgi/image/)
+// We extract the underlying /sites/default/files/ URL for direct download
 async function scrapeOGImage(url) {
   try {
     const res = await fetch(url, { headers: SCRAPE_HEADERS, signal: AbortSignal.timeout(15000) })
@@ -74,7 +76,21 @@ async function scrapeOGImage(url) {
     const html = await res.text()
     const m = html.match(/<meta[\s\S]*?property=["']og:image["'][\s\S]*?content=["']([^"']+)["']/i)
            || html.match(/<meta[\s\S]*?content=["']([^"']+)["'][\s\S]*?property=["']og:image["']/i)
-    return m ? m[1].trim() : null
+    if (!m) {
+      // Fallback: look for structured data or direct img tags with product images
+      const imgMatch = html.match(/sites\/default\/files\/[^"'\s]+\.(jpg|jpeg|png|webp|gif)/i)
+      if (imgMatch) return 'https://gun.deals/' + imgMatch[0]
+      return null
+    }
+    let imgUrl = m[1].trim()
+    // gun.deals wraps images in Cloudflare image transforms — extract underlying URL
+    const cdnCgiMatch = imgUrl.match(/\/cdn-cgi\/image\/[^\/]+\/(.+)/)
+    if (cdnCgiMatch) {
+      // Reconstruct the direct image URL
+      const origin = new URL(imgUrl).origin
+      imgUrl = origin + '/' + cdnCgiMatch[1]
+    }
+    return imgUrl
   } catch { return null }
 }
 

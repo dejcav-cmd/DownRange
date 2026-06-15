@@ -4,24 +4,20 @@ on:
     branches: [main]
     paths: ['.github/workflows/glm-test-on-push.yml']
 jobs:
-  check:
+  fix:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Check deals images
+      - name: Backfill missing deal images
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/check-deals-images.py | tee scripts/diag-result.txt
+        run: python3 scripts/backfill-deals-missing-images.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "deals image diag [skip ci]" && git push
-# deals-diag
-# diag2 0221
-# diag3
-# v2 022727
-# v3 023026
+          git diff --staged --quiet || git commit -m "deals image backfill result [skip ci]" && git push
+# backfill-deals-images
