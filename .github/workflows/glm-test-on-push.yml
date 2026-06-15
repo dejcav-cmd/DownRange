@@ -4,20 +4,20 @@ on:
     branches: [main]
     paths: ['.github/workflows/glm-test-on-push.yml']
 jobs:
-  fix:
+  check:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Fix article image
+      - name: Check deals images
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/fix-article-image.py | tee scripts/diag-result.txt
+        run: python3 scripts/check-deals-images.py | tee scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "fix article image result [skip ci]" && git push
-# article-image-fix
+          git diff --staged --quiet || git commit -m "deals image diag [skip ci]" && git push
+# deals-diag
