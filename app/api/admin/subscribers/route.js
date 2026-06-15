@@ -36,9 +36,14 @@ export async function GET(req) {
       console.log('[subscribers GET] Sample subscriber:', JSON.stringify(allSubscribers[0], null, 2))
     } else {
       console.log('[subscribers GET] ⚠️ No subscribers found in database')
-      // Try to see what types exist
-      const allTypes = await client.fetch(`unique(*[]._type)`)
-      console.log('[subscribers GET] Available types:', allTypes)
+      // Try to see what types exist (dedupe in JS)
+      try {
+        const allTypesRaw = await client.fetch(`*[]._type`)
+        const allTypes = [...new Set(allTypesRaw)]
+        console.log('[subscribers GET] Available types:', allTypes)
+      } catch (e) {
+        console.log('[subscribers GET] Could not fetch types:', e.message)
+      }
     }
 
     // Filter in JavaScript (safe, predictable)
