@@ -3,6 +3,7 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
+import { STATE_SEED } from '../../../lib/stateSeed'
 
 export const revalidate = 3600
 
@@ -40,21 +41,13 @@ function Row({ label, value, good }) {
   )
 }
 
-// Seed data for states not yet in Sanity
-const SEED = {
-  WA: { name:'Washington', abbr:'WA', constitutionalCarry:false, ccwPermit:'Concealed Pistol License (CPL)', redFlagLaw:true, magLimit:10, waitPeriod:10, awbStatus:'Full', suppressors:false, openCarry:'Legal (no permit)', bgcPrivate:true, rating:'D', reciprocityStates:['AK','AZ','ID','MT'] },
-  TX: { name:'Texas', abbr:'TX', constitutionalCarry:true, ccwPermit:'License to Carry (LTC) — optional', redFlagLaw:false, magLimit:null, waitPeriod:0, awbStatus:'none', suppressors:true, openCarry:'Legal (no permit)', bgcPrivate:false, rating:'A', reciprocityStates:['AL','AK','AZ','AR','CO','FL','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NV','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','UT','VT','VA','WV','WI','WY'] },
-  CA: { name:'California', abbr:'CA', constitutionalCarry:false, ccwPermit:'Concealed Carry Permit (may-issue)', redFlagLaw:true, magLimit:10, waitPeriod:10, awbStatus:'Full', suppressors:false, openCarry:'Prohibited', bgcPrivate:true, rating:'F', reciprocityStates:[] },
-  FL: { name:'Florida', abbr:'FL', constitutionalCarry:true, ccwPermit:'Concealed Weapon License (CWL) — optional', redFlagLaw:true, magLimit:null, waitPeriod:3, awbStatus:'none', suppressors:true, openCarry:'Prohibited', bgcPrivate:false, rating:'B+', reciprocityStates:['AL','AK','AZ','AR','CO','GA','ID','IN','IA','KS','KY','LA','ME','MI','MS','MO','MT','NE','NV','NH','NM','NC','ND','OH','OK','PA','SC','SD','TN','TX','UT','VT','VA','WV','WI','WY'] },
-}
-
 export default async function StateLawPage({ params }) {
   const abbr = params.state?.toUpperCase()
   if (!STATE_NAMES[abbr]) notFound()
-
   const stateName = STATE_NAMES[abbr]
+
   const profile = await fetchStateProfile(abbr).catch(() => null)
-  const data = profile || SEED[abbr] || { name: stateName, abbr }
+  const data = profile || STATE_SEED[abbr] || { name: stateName, abbr }
 
   const faqItems = [
     { question: `Do I need a permit to carry a concealed firearm in ${stateName}?`, answer: data.constitutionalCarry ? `No. ${stateName} is a constitutional carry state — you can carry concealed without a permit if you're legally allowed to possess a firearm. A permit is still available and useful for reciprocity.` : `Yes. ${stateName} requires a ${data.ccwPermit || 'concealed carry permit'} to carry a concealed handgun.` },

@@ -2,6 +2,7 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 import { fetchLegislation, fetchBreakingAlerts, fetchAllStateProfiles } from '../../sanity/lib/client'
+import { STATE_SEED } from '../../lib/stateSeed'
 
 export const metadata = {
   title: '2A Legal Intelligence | DownRange',
@@ -36,12 +37,16 @@ function getTier(p) {
 }
 
 export default async function LawsHub() {
-  const [legislation, alerts, profiles] = await Promise.all([
+  const [legislation, alerts, sanityProfiles] = await Promise.all([
     fetchLegislation(6).catch(() => []),
     fetchBreakingAlerts(3).catch(() => []),
     fetchAllStateProfiles().catch(() => []),
   ])
 
+  const profileMap2 = {}
+  for (const p of Object.values(STATE_SEED)) { profileMap2[p.abbr] = { ...p } }
+  for (const p of sanityProfiles) { if (p?.abbr && profileMap2[p.abbr]) { for (const [k,v] of Object.entries(p)) { if (v !== null && v !== undefined) profileMap2[p.abbr][k] = v } } }
+  const profiles = Object.values(profileMap2).sort((a,b) => a.name.localeCompare(b.name))
   const recentLaws = legislation.slice(0, 6)
   const ccCount = profiles.filter(p => p.constitutionalCarry).length
   const restrictedCount = profiles.filter(p => p.magLimit || (p.awbStatus && p.awbStatus !== 'None' && p.awbStatus !== 'none')).length

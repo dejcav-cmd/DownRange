@@ -2,6 +2,7 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 import { fetchAllStateProfiles } from '../../../sanity/lib/client'
+import { STATE_SEED } from '../../../lib/stateSeed'
 
 export const metadata = {
   title: 'Gun Laws by State — All 50 States | DownRange',
@@ -13,7 +14,11 @@ export const revalidate = 3600
 const S = { mono:"'IBM Plex Mono',monospace", bebas:"'Bebas Neue',sans-serif", sans:"'IBM Plex Sans',sans-serif", cond:"'Barlow Condensed',sans-serif" }
 
 export default async function StatesPage() {
-  const profiles = await fetchAllStateProfiles().catch(() => [])
+  const sanityProfiles = await fetchAllStateProfiles().catch(() => [])
+  const profileMap = {}
+  for (const p of Object.values(STATE_SEED)) { profileMap[p.abbr] = { ...p } }
+  for (const p of sanityProfiles) { if (p?.abbr && profileMap[p.abbr]) { for (const [k,v] of Object.entries(p)) { if (v !== null && v !== undefined) profileMap[p.abbr][k] = v } } }
+  const profiles = Object.values(profileMap).sort((a,b) => a.name.localeCompare(b.name))
   const sorted = profiles.sort((a, b) => a.name?.localeCompare(b.name))
 
   const ccCount = profiles.filter(p => p.constitutionalCarry).length

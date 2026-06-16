@@ -5,7 +5,8 @@ export const client = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET   || 'production',
   apiVersion: '2024-01-01',
-  useCdn:    false,  // always fresh — CDN cache was hiding new articles
+  useCdn:    false,
+  token:     process.env.SANITY_API_TOKEN, // needed for private dataset reads
 })
 
 export const writeClient = createClient({
