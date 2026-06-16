@@ -2,38 +2,16 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 38
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6ac83b45d097d0e3e432a4003c895be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8e04c28519e7025903a5cab972cbefb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dea8c22d87a6c43e99a320a2216472c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2d9ced2f3de76cbf05f4666553e3c27
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c8362dbd93b90ffcb32d4163a72e03
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/73ee6d0d70fca655d90b6ed739f09d5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b24145d2c5e9d5635785e1f7ccc01cd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3e5f92752c7281ce47ccda64a1938a2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1a96674c51392e005b7d61fce22544d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/98eb3bcb5a02333a1c0a5196f815522
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/19bbd53f304547acfd2517ee7a36d01
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c0c91f09b5dfd51db414fd383e1217
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cd955cbf6bb4ea9f5d5a8f5d832e339
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/984e8745eb42b3c169999ce97a0372a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1decd639880351952a54092ee599c4c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e0d262ad025ee4d92b376d69ad25d53
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a9678e82c8943ecba194b34441e79f6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/208b53215ccd466300679e80c1eef24
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6b17fc8f5fbc4a3b727db641a482935
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/75710104470607fec90c19cef8e69bf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/99051d20e08fe23bcce9e6488a8face
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/efd614125d290c59bce5827f28d311c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e9cdee6f387081bd4767b22978da15f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/97709d02092a7f589d286c0520d7d6f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/03ac63cd194d93aaad584d95e56a0e2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1267ad033a40abadfcfff180fd6eded
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e749e8ae07411febcd6d10a9de9da39
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/41895cb167140ec0f1910723f56bbbe
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c893edb46ee8762f734dfbf1fda89d
+Missing: 16
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/595349ead09bb196dd89da4ed79a9d6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a0701e9f54afc8ec71e8f9312b2b1c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5546634bcf3ea131940a2d18d9f1a4a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d91c7af6da4fdc0bf6660642a98b08
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c6a40c2133698ca8911abeb500308a1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b67eeead31125a418bef4aab6fc98a7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a3cbe7552404bff7a0fda33950c2a99
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/556d6b6e9b11e8cce6ec35146cdec5a
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a87b192cac9a938683da5727010331e
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -41,8 +19,8 @@ Missing: 38
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 30
+  → patched final 8
 
-Stats: uploaded=30 fallback=0 failed=1
+Stats: uploaded=8 fallback=0 failed=1
 
-=== FINAL: total=1464 missing_images=8 reddit=0 ===
+=== FINAL: total=1472 missing_images=8 reddit=0 ===
