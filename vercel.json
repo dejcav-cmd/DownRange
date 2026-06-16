@@ -161,6 +161,10 @@
       "schedule": "0 0 * * 0,3,6"
     },
     {
+      "path": "/api/cron/nra-law-sync-enhanced",
+      "schedule": "15 0 * * 0,3,6"
+    },
+    {
       "path": "/api/cron/bible-update",
       "schedule": "0 7 * * 0"
     }
@@ -295,6 +299,9 @@
       "maxDuration": 300
     },
     "app/api/cron/nra-law-sync/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/cron/nra-law-sync-enhanced/route.js": {
       "maxDuration": 300
     }
   }
