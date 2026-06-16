@@ -1,0 +1,20 @@
+name: Patch State Profiles
+on:
+  workflow_dispatch:
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run state profile patch
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/patch-state-profiles.py | tee scripts/diag-result.txt
+      - name: Commit result
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || git commit -m "state profile patch result [skip ci]" && git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
