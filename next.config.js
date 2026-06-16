@@ -46,6 +46,22 @@ const nextConfig = {
       },
     ]
   },
+  async redirects() {
+    return [
+      // Legacy laws tabs → new routes
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'federal' }],   destination: '/laws/federal', permanent: true },
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'state' }],     destination: '/laws/states',  permanent: true },
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'atf' }],       destination: '/laws/federal', permanent: true },
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'scotus' }],    destination: '/laws/federal#scotus', permanent: true },
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'reciprocity' }], destination: '/laws/my-state', permanent: true },
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'assistant' }], destination: '/laws/federal', permanent: true },
+      // Old pages → new routes
+      { source: '/ccw',                        destination: '/laws/my-state',           permanent: true },
+      { source: '/state-hub',                  destination: '/laws/states',             permanent: true },
+      { source: '/state-hub/:state',           destination: '/laws/:state',             permanent: true },
+      { source: '/state-intel',                destination: '/laws/my-state',           permanent: true },
+    ]
+  },
 }
 
 module.exports = nextConfig
