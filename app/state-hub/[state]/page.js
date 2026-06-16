@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
+import EnhancedLawPanel from '../../../components/EnhancedLawPanel'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Link from 'next/link'
 import { buildStateFaqSchema, buildStateFaqHtml } from '../../../lib/stateFaq'
@@ -199,6 +200,13 @@ export default async function StatePage({ params }) {
               ))}
             </div>
           </div>
+
+          {/* ── Enhanced Law Panel (Court cases, local rules, scenarios, resources) ── */}
+          <EnhancedLawPanel 
+            data={data?.nraEnhancedData} 
+            stateName={stateName}
+            stateCode={abbr}
+          />
 
           {/* ── Internal links to related pages ── */}
           <div style={{ marginTop:'32px', padding:'20px 24px', background:'#111318', border:'1px solid #1F2428' }}>
