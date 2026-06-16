@@ -52,15 +52,17 @@ export const stateProfile = defineType({
         }),
         defineField({
           name: 'coreLaws',
-          title: 'Core Law Snippets',
-          type: 'object',
-          description: 'Extracted key law sections by category'
+          title: 'Core Law Snippets (JSON)',
+          type: 'text',
+          rows: 3,
+          description: 'JSON: { magazine, assault_weapons, permit_carry, open_carry, waiting_period, suppressors, red_flag }'
         }),
         defineField({
           name: 'localRestrictions',
-          title: 'Local/Municipal Restrictions',
-          type: 'object',
-          description: 'City/county laws that differ from state law'
+          title: 'Local/Municipal Restrictions (JSON)',
+          type: 'text',
+          rows: 3,
+          description: 'JSON: { affected_areas: [...], note: "..." }'
         }),
         defineField({
           name: 'recentCaseLaw',
@@ -87,21 +89,20 @@ export const stateProfile = defineType({
         }),
         defineField({
           name: 'resources',
-          title: 'Official Resources & Links',
-          type: 'object',
-          description: 'Direct links to permits, forms, official agencies'
+          title: 'Official Resources & Links (JSON)',
+          type: 'text',
+          rows: 3,
+          description: 'JSON: { general: url, state_official: { label: url } }'
         }),
         defineField({
           name: 'dataVersion',
           title: 'Data Format Version',
           type: 'string',
-          readOnly: true
         }),
         defineField({
           name: 'updatedAt',
           title: 'Enhanced Data Updated',
           type: 'datetime',
-          readOnly: true
         })
       ],
       description: 'Rich contextual data: court cases, use cases, local rules, resources'
