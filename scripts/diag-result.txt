@@ -2,33 +2,20 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 34
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79351c40e1d49c60327fdd3f6cc9fd2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5a7741b6da350a1355aee68654241d0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df8d3126365cd293e7e8d8987e24dcb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4aa2e9de1913a62524eece89751fe5e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f92a593bafd33575b0fde8a916606b6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/83f06b3fee34c30d2732021677986fc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1cd82365bb8c40cd70efc0ee801a0f7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d87930853de7829ca11cba04cae6d84
+Missing: 21
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Springfield-Echelo
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5cf3bbf74908809470d9f1bfd6e14c4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2978321f94bee9fef89891c5c5ee35e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d18a5babe83a268c29d67ac525b4246
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79517a8785f7f9741e87d2c58d0791f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4598d0b572bc172adae85f6883bcde3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4e5f35e6bcab197525fd325e1d7fac6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d36a1c1c5baf7d0d882b7120a955817
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/55f508618c2672d51bc8d2566ee60cd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/56573d8f6062c5e27ff8dd0bde1e237
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8147d7899e3f3ebe58a52459406b470
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/PSA-AR15-Stealth-H
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PSA-Freedom-Blem.j
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-124-dea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/719aecd189b64c7aca94e8badc4537f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/96ff500ab89fe272a78096e97594c7e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a628aec601bc37c55f76505bf6fac9b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3743e116d543aa61b45bf5bda17533
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/364877d58dce479484b7084dc35e67d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d630d18d656bfe33272b0989c4e5bdb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/879bd1530d50313476c79c57fb4096a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b90d5f8cafa7657fc3cccf849174a4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/977fadf1ad2d9325a048ba13a9291ed
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d1d32bfaddfc2c22ef969aad16a5c0a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/369316d7300c1148a911843b901a618
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/78f4ad95c7c8e6bfddb5f7c80fbc4a5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/db4c007568dbe8aee8ff27a8ec70918
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/50d1bfaa010f59f18cf72284b00d625
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dc6a3fbfe77f5d07a8b2b0d4229fce5
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -37,8 +24,8 @@ Missing: 34
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 26
+  → patched final 13
 
-Stats: uploaded=23 fallback=3 failed=1
+Stats: uploaded=10 fallback=3 failed=1
 
-=== FINAL: total=1555 missing_images=8 reddit=0 ===
+=== FINAL: total=1566 missing_images=8 reddit=0 ===
