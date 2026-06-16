@@ -18,7 +18,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '18'
+          node-version: '20'
           cache: 'npm'
 
       - name: Install dependencies
@@ -27,7 +27,10 @@ jobs:
       - name: Deploy Sanity schema
         run: npm run studio:deploy
         env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_TOKEN }}
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
+          NEXT_PUBLIC_SANITY_DATASET: production
 
       - name: Log success
         if: success()
