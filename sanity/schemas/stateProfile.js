@@ -31,10 +31,25 @@ export const stateProfile = defineType({
       ]}]
     }),
     defineField({ name: 'summary', title: 'Summary Notes', type: 'text', rows: 3 }),
+    defineField({ 
+      name: 'nraLawSummary', 
+      title: 'Gun Laws Summary (NRA-ILA Source)', 
+      type: 'text', 
+      rows: 6,
+      description: 'Auto-updated every 10 days from NRA-ILA state pages. Paraphrased to avoid copyright.'
+    }),
     defineField({ name: 'lastUpdated', title: 'Last Updated', type: 'datetime' }),
+    defineField({ 
+      name: 'lastNRAUpdate', 
+      title: 'Last NRA-ILA Sync', 
+      type: 'datetime',
+      readOnly: true,
+      description: 'Auto-populated when NRA-ILA cron runs'
+    }),
   ],
   preview: {
     select: { title: 'name', subtitle: 'rating' },
     prepare: ({ title, subtitle }) => ({ title, subtitle: `Rating: ${subtitle || 'N/A'}` })
   }
 })
+
