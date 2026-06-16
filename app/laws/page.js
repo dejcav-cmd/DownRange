@@ -91,10 +91,8 @@ export default async function LawsHub() {
             <Link href="/laws/my-state" style={{ textDecoration: 'none', display: 'block' }}>
               <div style={{
                 background: '#111318', border: '1px solid #1F2428', borderTop: '3px solid #C8922A',
-                padding: '32px 28px', height: '100%', transition: 'all 200ms',
+                padding: '32px 28px', height: '100%',
               }}
-                onMouseEnter={e => e.currentTarget.style.background = '#16191F'}
-                onMouseLeave={e => e.currentTarget.style.background = '#111318'}
               >
                 <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: '#C8922A', letterSpacing: '0.15em', marginBottom: 12 }}>YOUR STATE</div>
                 <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 36, color: '#fff', lineHeight: 1, marginBottom: 16 }}>State Gun Laws</div>
