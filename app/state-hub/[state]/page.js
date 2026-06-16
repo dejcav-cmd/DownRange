@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
-import EnhancedLawPanel from '../../../components/EnhancedLawPanel'
+import EnhancedLawPanel from '../../components/EnhancedLawPanel'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import Link from 'next/link'
 import { buildStateFaqSchema, buildStateFaqHtml } from '../../../lib/stateFaq'

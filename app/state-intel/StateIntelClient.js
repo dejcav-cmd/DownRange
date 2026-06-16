@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import EnhancedLawPanel from '../../components/EnhancedLawPanel'
+import EnhancedLawPanel from '../components/EnhancedLawPanel'
 import styles from './state-intel.module.css'
 
 const STATE_NAMES = {
