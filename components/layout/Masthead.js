@@ -12,12 +12,11 @@ const NAV = [
   {
     label: 'Laws', href: '/laws',
     children: [
-      { label: '⚖️ Laws Home',          href: '/laws',                   desc: 'Bills, ATF rules, SCOTUS cases' },
-      { label: '📋 Bill Tracker',        href: '/laws?tab=federal',       desc: 'Federal & state bills tracked live' },
-      { label: '🗺️ Reciprocity Map',     href: '/laws?tab=reciprocity',   desc: 'Where your permit is honored' },
-      { label: '🪪 CCW Reciprocity Map', href: '/ccw',                    desc: 'State laws, permit info & reciprocity' },
-      { label: '🏛️ State Hub',           href: '/state-hub',              desc: '50-state firearms law profiles' },
-      { label: '📜 SCOTUS & Cases',      href: '/laws?tab=scotus',        desc: 'Landmark rulings & pending cases' },
+      { label: '⚖️ Laws Home',              href: '/laws',                   desc: 'Bills, ATF rules, SCOTUS cases' },
+      { label: '🚀 State Intelligence Hub', href: '/state-intel',             desc: 'All state laws + reciprocity + scenarios (NEW!)' },
+      { label: '📋 Bill Tracker',           href: '/laws?tab=federal',       desc: 'Federal & state bills tracked live' },
+      { label: '📜 SCOTUS & Cases',         href: '/laws?tab=scotus',        desc: 'Landmark rulings & pending cases' },
+      { label: '🏛️ State Profiles',         href: '/state-hub',              desc: 'Detailed law profiles for all 50 states' },
     ]
   },
   {
