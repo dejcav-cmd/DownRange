@@ -38,6 +38,74 @@ export const stateProfile = defineType({
       rows: 6,
       description: 'Auto-updated every 10 days from NRA-ILA state pages. Paraphrased to avoid copyright.'
     }),
+    defineField({
+      name: 'nraEnhancedData',
+      title: 'Enhanced Law Context (v2.0)',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'summary',
+          title: 'Attorney-Style Summary',
+          type: 'text',
+          rows: 5,
+          description: 'Rewritten 3-4 paragraph summary focused on gun owner concerns'
+        }),
+        defineField({
+          name: 'coreLaws',
+          title: 'Core Law Snippets',
+          type: 'object',
+          description: 'Extracted key law sections by category'
+        }),
+        defineField({
+          name: 'localRestrictions',
+          title: 'Local/Municipal Restrictions',
+          type: 'object',
+          description: 'City/county laws that differ from state law'
+        }),
+        defineField({
+          name: 'recentCaseLaw',
+          title: 'Relevant Court Cases',
+          type: 'object',
+          fields: [
+            defineField({ name: 'cases', title: 'Case names', type: 'array', of: [{ type: 'string' }] }),
+            defineField({ name: 'impact', title: 'What it means for this state', type: 'text', rows: 2 })
+          ],
+          description: 'Landmark cases affecting this state\'s laws (Bruen, state-specific, pending)'
+        }),
+        defineField({
+          name: 'useCases',
+          title: 'Practical Scenarios',
+          type: 'array',
+          of: [{ type: 'string' }],
+          description: 'Real gun owner questions: "Can I carry across state lines?" etc'
+        }),
+        defineField({
+          name: 'reciprocityNotes',
+          title: 'Reciprocity Context',
+          type: 'text',
+          description: 'How this state\'s permit is honored elsewhere (or not)'
+        }),
+        defineField({
+          name: 'resources',
+          title: 'Official Resources & Links',
+          type: 'object',
+          description: 'Direct links to permits, forms, official agencies'
+        }),
+        defineField({
+          name: 'dataVersion',
+          title: 'Data Format Version',
+          type: 'string',
+          readOnly: true
+        }),
+        defineField({
+          name: 'updatedAt',
+          title: 'Enhanced Data Updated',
+          type: 'datetime',
+          readOnly: true
+        })
+      ],
+      description: 'Rich contextual data: court cases, use cases, local rules, resources'
+    }),
     defineField({ name: 'lastUpdated', title: 'Last Updated', type: 'datetime' }),
     defineField({ 
       name: 'lastNRAUpdate', 
