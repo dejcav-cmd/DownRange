@@ -137,29 +137,47 @@ If this is NOT a new product announcement, set skip:true.`
 
 // ── FALLBACK: Create basic release without AI ─────────────────────────────
 function createBasicRelease(title, desc, link, brand) {
-  const words = title.split(/\s+/)
-  const brandIdx = words.findIndex(w => w.toLowerCase() === brand.toLowerCase().split(' ')[0])
-  const model = words.slice(brandIdx + 1, brandIdx + 4).join(' ').replace(/[^a-zA-Z0-9\s-]/g, '').trim() || 'New Release'
+  // Remove brand from title to extract model
+  const cleanTitle = title.replace(new RegExp(brand.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), '').trim()
   
+  // Extract model: take meaningful words after removing brand, source attribution, and common noise
+  const noiseWords = new Set(['announces','launches','introduces','unveils','debuts','releases','new',
+    'the','a','an','and','for','with','in','on','at','by','from','to','of','gun','firearm','rifle',
+    'pistol','shotgun','review','–','-','|',':','first','look','hands','report','says','atf','nfa'])
+  
+  const modelWords = cleanTitle
+    .split(/[\s\-–|:]+/)
+    .filter(w => w.length > 1 && !noiseWords.has(w.toLowerCase()) && !/^(www\.|http)/i.test(w))
+    .slice(0, 4)
+  
+  const model = modelWords.join(' ').replace(/[^a-zA-Z0-9\s\-\.]/g, '').trim()
+  
+  if (!model || model.length < 2) return { skip: true }
+
   const categoryMap = {
-    pistol: 'Pistol', handgun: 'Pistol', rifle: 'Rifle', shotgun: 'Shotgun',
-    suppressor: 'Suppressor', revolver: 'Revolver', carbine: 'Rifle',
-    ar: 'Rifle', ak: 'Rifle', sbr: 'Rifle',
+    suppressor: 'Suppressor', silencer: 'Suppressor', can: 'Suppressor',
+    pistol: 'Pistol', handgun: 'Pistol', 'semi-auto': 'Pistol',
+    rifle: 'Rifle', carbine: 'Rifle', 'ar-15': 'Rifle', 'ak-47': 'Rifle',
+    shotgun: 'Shotgun', revolver: 'Revolver', sbr: 'Rifle',
   }
-  const titleLower = title.toLowerCase()
-  const category = Object.entries(categoryMap).find(([k]) => titleLower.includes(k))?.[1] || 'Pistol'
+  const text = (title + ' ' + desc).toLowerCase()
+  const category = Object.entries(categoryMap).find(([k]) => text.includes(k))?.[1] || 'Pistol'
+  
+  // Extract caliber if present
+  const caliberMatch = (title + ' ' + desc).match(/\.\d+|\d+mm|\d+x\d+|5\.56|6\.5|6\.8|\.308|\.223|\.22|9mm|10mm|45 ?acp|40 ?s&?w/i)
+  const caliber = caliberMatch?.[0] || null
   
   return {
     brand,
     model,
     category,
-    caliber: null,
+    caliber,
     msrp: 0,
-    title: title.slice(0, 100),
-    summary: desc.slice(0, 300) || `${brand} announces the ${model}.`,
-    body: `<p>${desc.slice(0, 800)}</p><p>Source: <a href="${link}">${link}</a></p>`,
-    specs: [],
-    skip: !model || model.length < 2,
+    title: `${brand} ${model}: New ${category} Release`,
+    summary: desc.slice(0, 280).trim() || `${brand} announces the new ${model} ${category.toLowerCase()}.`,
+    body: `<h2>Overview</h2><p>${desc.slice(0, 600)}</p><h2>Details</h2><p>Read the full announcement at the source link below for complete specifications and pricing information.</p>`,
+    specs: caliber ? [{ label: 'Caliber', value: caliber }] : [],
+    skip: false,
   }
 }
 

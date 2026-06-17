@@ -187,16 +187,53 @@ export async function GET(req) {
 async function runScrapeAndSave(req) {
   const t0 = Date.now()
 
-  // Try sources in priority order: ATF official > SilencerShop > fallback
-  let result = await scrapeATF()
-  if (!result || result.forms.length === 0) {
+  // Try sources in priority order: ATF official > SilencerShop
+  let scraped = await scrapeATF()
+  if (!scraped || scraped.forms.length === 0) {
     console.log('[NFA] ATF parse returned empty, trying SilencerShop...')
-    result = await scrapeSilencerShop()
+    scraped = await scrapeSilencerShop()
   }
-  if (!result || result.forms.length === 0) {
-    console.log('[NFA] All scrapes failed, using fallback data')
-    result = getFallbackData()
+
+  // Always start with full baseline — ensures all 6 form types are present
+  const baseline = getFallbackData()
+
+  // Merge: scraped data overrides baseline for matching form types
+  const scrapedMap = {}
+  if (scraped?.forms) {
+    for (const f of scraped.forms) {
+      // Match by formType or by category keyword
+      scrapedMap[f.formType?.toLowerCase()] = f
+      if (f.category) scrapedMap[f.category] = f
+    }
   }
+
+  const mergedForms = baseline.forms.map(base => {
+    // Look for a scraped match by formType or category
+    const key1 = base.formType?.toLowerCase()
+    const key2 = base.category
+    const match = scrapedMap[key1] || scrapedMap[key2]
+    if (match) {
+      // Use scraped days but keep baseline's note and structure
+      return {
+        ...base,
+        avgDays:  match.avgDays  || base.avgDays,
+        minDays:  match.minDays  || base.minDays,
+        maxDays:  match.maxDays  || base.maxDays,
+        trend:    match.trend    || base.trend,
+      }
+    }
+    return base
+  })
+
+  const result = {
+    forms:       mergedForms,
+    reportMonth: scraped?.reportMonth || baseline.reportMonth,
+    official:    scraped?.official    || false,
+    url:         scraped?.url         || baseline.url,
+    source:      scraped?.source      || 'downrange-baseline',
+  }
+
+  console.log('[NFA] Forms after merge:', result.forms.length, result.forms.map(f => f.formType).join(', '))
 
   // Compute trends by comparing to previous snapshot
   try {
