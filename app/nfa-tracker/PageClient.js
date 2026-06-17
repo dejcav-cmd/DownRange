@@ -49,7 +49,7 @@ function FormCard({ w, meta, large }) {
     }}>
       {/* Top row */}
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 14 }}>
-        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#777', letterSpacing: '.12em', textTransform: 'uppercase' }}>
+        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: '#c8922a', letterSpacing: '.12em', textTransform: 'uppercase' }}>
           <span style={{ marginRight: 6 }}>{meta.icon}</span>{meta.label}
         </div>
         <TrendBadge trend={w.trend} delta={w.delta} />
@@ -64,15 +64,15 @@ function FormCard({ w, meta, large }) {
       </div>
 
       {/* Sub info */}
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#555', marginBottom: 2 }}>{w.formType}</div>
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#444' }}>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', marginBottom: 2 }}>{w.formType}</div>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#888' }}>
         Range: <span style={{ color: '#34D399' }}>{w.minDays}d</span> — <span style={{ color: '#EF4444' }}>{w.maxDays}d</span>
       </div>
 
       <WaitBar days={w.avgDays} maxDays={400} />
 
       {w.note && (
-        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#555', marginTop: 10, lineHeight: 1.7, borderTop: '1px solid #1a1a1a', paddingTop: 10 }}>
+        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#999', marginTop: 10, lineHeight: 1.7, borderTop: '1px solid #222', paddingTop: 10 }}>
           {w.note}
         </div>
       )}
@@ -143,7 +143,7 @@ export default function NFATracker() {
           <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
             NFA WAIT TIME<br /><span style={{ color: '#c8922a' }}>TRACKER</span>
           </h1>
-          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
+          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
             Current ATF Form 4 processing times · Scraped from ATF.gov & industry trackers · Estimate your approval date
           </p>
         </div>
@@ -173,10 +173,10 @@ export default function NFATracker() {
               </span>
             </span>
             {data?.reportMonth && (
-              <span style={{ color: '#999', fontSize: 10 }}>ATF reporting period: <strong style={{ color: '#ccc' }}>{data.reportMonth}</strong></span>
+              <span style={{ color: '#bbb', fontSize: 11 }}>ATF reporting period: <strong style={{ color: '#ccc' }}>{data.reportMonth}</strong></span>
             )}
             {ageHours != null && (
-              <span style={{ color: '#555', fontSize: 10 }}>
+              <span style={{ color: '#888', fontSize: 11 }}>
                 Updated {ageHours < 1 ? '< 1 hour' : ageHours < 24 ? `${ageHours}h` : `${Math.round(ageHours/24)}d`} ago
               </span>
             )}
@@ -230,7 +230,7 @@ export default function NFATracker() {
               {secondaryForms.length > 0 && (
                 <>
                   <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '20px 0 12px' }}>
-                    <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#444', letterSpacing: '.12em' }}>ADDITIONAL FORM TYPES</span>
+                    <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', letterSpacing: '.12em' }}>ADDITIONAL FORM TYPES</span>
                     <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
                   </div>
                   <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(280px,1fr))', gap: 12, marginBottom: 48, opacity: .8 }}>
@@ -251,7 +251,7 @@ export default function NFATracker() {
               </h2>
               <div style={{ flex: 1, height: 1, background: '#2a1a0a' }} />
             </div>
-            <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', marginBottom: 24, lineHeight: 1.8 }}>
+            <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#aaa', marginBottom: 24, lineHeight: 1.8 }}>
               Enter your item and submission date to project your approval window based on current ATF averages.
             </p>
             <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap', marginBottom: 16 }}>
@@ -309,7 +309,7 @@ export default function NFATracker() {
               <div key={f.title} style={{ background: '#0f0f0f', border: '1px solid #1a1a1a', padding: 20 }}>
                 <div style={{ fontSize: 24, marginBottom: 10 }}>{f.icon}</div>
                 <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: f.color, marginBottom: 8, letterSpacing: '.03em' }}>{f.title}</div>
-                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#666', lineHeight: 1.8 }}>{f.desc}</div>
+                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#aaa', lineHeight: 1.8 }}>{f.desc}</div>
               </div>
             ))}
           </div>
@@ -335,7 +335,7 @@ export default function NFATracker() {
                       ? <a href={s.href} target="_blank" rel="noreferrer" style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: s.color, textDecoration: 'none', display: 'block', marginBottom: 6, letterSpacing: '.03em' }}>{s.title} ↗</a>
                       : <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: s.color, marginBottom: 6, letterSpacing: '.03em' }}>{s.title}</div>
                     }
-                    <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#666', lineHeight: 1.8 }}>{s.desc}</div>
+                    <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#aaa', lineHeight: 1.8 }}>{s.desc}</div>
                   </div>
                 </div>
               ))}
@@ -343,10 +343,10 @@ export default function NFATracker() {
           </div>
 
           {/* DATA SOURCES FOOTER */}
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#333', lineHeight: 2, borderTop: '1px solid #111', paddingTop: 20 }}>
-            <strong style={{ color: '#555', letterSpacing: '.08em' }}>DATA SOURCES:</strong>{' '}
-            <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#444', textDecoration: 'none' }}>ATF.gov official processing times</a> ·{' '}
-            <a href="https://www.silencershop.com/atf-wait-times" target="_blank" rel="noreferrer" style={{ color: '#444', textDecoration: 'none' }}>Silencer Shop tracker</a> ·{' '}
+          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', lineHeight: 2, borderTop: '1px solid #222', paddingTop: 20 }}>
+            <strong style={{ color: '#999', letterSpacing: '.08em' }}>DATA SOURCES:</strong>{' '}
+            <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#888', textDecoration: 'none' }}>ATF.gov official processing times</a> ·{' '}
+            <a href="https://www.silencershop.com/atf-wait-times" target="_blank" rel="noreferrer" style={{ color: '#888', textDecoration: 'none' }}>Silencer Shop tracker</a> ·{' '}
             Silencer Central community data · Updated Mon + Thu 6am UTC · Individual results vary.
           </div>
 
