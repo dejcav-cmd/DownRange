@@ -1,5 +1,7 @@
 name: Cleanup Off-Topic Articles
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       delete:
@@ -9,6 +11,7 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -23,8 +26,11 @@ jobs:
             python3 scripts/cleanup-offtopic-articles.py | tee scripts/diag-result.txt
           fi
       - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add -f scripts/diag-result.txt
           git diff --staged --quiet || git commit -m "cleanup offtopic articles result" && git push

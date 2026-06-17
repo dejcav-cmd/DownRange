@@ -1,9 +1,12 @@
 name: Trigger gun-deals cron (seed gunDeal docs)
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   trigger:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
       - name: Fire gun-deals cron
@@ -14,9 +17,12 @@ jobs:
           echo "$RESPONSE"
           echo "$RESPONSE" > scripts/gun-deals-cron-result.txt
       - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.name "DownRange Bot"
           git config user.email "dj@downrangeco.com"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add -f scripts/gun-deals-cron-result.txt
           git commit -m "chore: gun-deals cron trigger result" || echo "nothing to commit"
           git push || echo "nothing to push"

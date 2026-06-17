@@ -1,11 +1,14 @@
 name: Debug Blog Fix
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   debug:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - name: Call fix endpoint with detailed logging
         run: |

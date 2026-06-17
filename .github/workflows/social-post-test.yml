@@ -1,9 +1,12 @@
 name: Social Post Dry-Run Test
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   test:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - name: Test social posts dry-run across all platforms
         env:

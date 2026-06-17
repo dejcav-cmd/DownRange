@@ -1,5 +1,7 @@
 name: Write Canada Articles
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       admin_key:
@@ -8,6 +10,7 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - name: Generate 10 Canada articles
         run: |

@@ -1,5 +1,7 @@
 name: Fix Intl Articles
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       apply:
@@ -9,6 +11,7 @@ on:
 jobs:
   fix:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -49,8 +52,11 @@ for k,v in d.get('chains',{}).items():
             python3 scripts/patch-intl-articles.py | tee scripts/diag-result.txt
           fi
       - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add -f scripts/diag-result.txt
           git diff --staged --quiet || git commit -m "result [skip ci]" && git push

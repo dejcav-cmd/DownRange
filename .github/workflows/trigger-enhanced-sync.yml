@@ -1,6 +1,8 @@
 name: Trigger Enhanced Law Sync
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       state:
@@ -19,6 +21,7 @@ on:
 jobs:
   sync:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - name: Trigger Enhanced Law Sync
         run: |

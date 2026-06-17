@@ -1,9 +1,12 @@
 name: Fix Bad Images
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   fix:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
       - name: Run fix
@@ -11,8 +14,11 @@ jobs:
           SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: python3 scripts/fix_bad_images.py
       - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add scripts/diag-result.txt || true
           git diff --staged --quiet && echo "Nothing to commit" || git commit -m "fix: bad image patch results" && git push || true

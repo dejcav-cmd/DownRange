@@ -1,11 +1,14 @@
 name: Fix and Revalidate Blog Images
 
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 
 jobs:
   fix-and-revalidate:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - name: Fix blog post images
         run: |

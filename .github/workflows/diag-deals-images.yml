@@ -1,9 +1,12 @@
 name: Diagnose Deals Images
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   diag:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
         with:

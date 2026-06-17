@@ -1,9 +1,12 @@
 name: Fix All Broken Slugs
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   fix:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -17,6 +20,7 @@ jobs:
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add fix_results.json || true
           git diff --staged --quiet || git commit -m "chore: slug fix results"
           git push || true

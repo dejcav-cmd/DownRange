@@ -1,5 +1,7 @@
 name: Monitor Crons
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
     inputs:
       since_minutes:
@@ -9,6 +11,7 @@ on:
 jobs:
   monitor:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
         with:
@@ -25,8 +28,11 @@ print((datetime.now(timezone.utc) - timedelta(minutes=int('$MINS'))).isoformat()
 ")
           MONITOR_SINCE="$SINCE" python3 scripts/monitor-crons.py | tee scripts/diag-result.txt
       - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add -f scripts/diag-result.txt
           git diff --staged --quiet || git commit -m "cron monitor result [skip ci]" && git push

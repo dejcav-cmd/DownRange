@@ -1,9 +1,12 @@
 name: Fix One Article (Image + Body)
 on:
+  push:
+    branches: [main]
   workflow_dispatch:
 jobs:
   fix:
     runs-on: ubuntu-latest
+    if: github.event_name == \'workflow_dispatch\'
     steps:
       - uses: actions/checkout@v4
         with:
