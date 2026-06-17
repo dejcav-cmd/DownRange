@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/agent?feed=releases",
-      "schedule": "25 * * * *"
+      "schedule": "45 4 * * *"
     },
     {
       "path": "/api/agent?feed=market",
@@ -58,7 +58,7 @@
     },
     {
       "path": "/api/cron/weekly-gun-releases",
-      "schedule": "0 9 * * *"
+      "schedule": "45 4 * * *"
     },
     {
       "path": "/api/cron/ccw-update",
@@ -126,7 +126,7 @@
     },
     {
       "path": "/api/cron/releases",
-      "schedule": "5 12 * * *"
+      "schedule": "45 4 * * *"
     },
     {
       "path": "/api/admin/fix-images?batch=500&force=false&cron=1",
