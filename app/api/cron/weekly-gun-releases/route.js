@@ -157,44 +157,118 @@ async function getImageForGun(brand, model, category, sourceUrl) {
   return null
 }
 
-// ── AI: Search for new releases ───────────────────────────────────────────────
+// ── RSS FEEDS: Real gun release sources ───────────────────────────────────────
 
-async function discoverNewReleases() {
-  const now    = new Date()
-  const cutoff = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) // 1 week ago (cron now runs daily)
-  const dateStr = cutoff.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
-
-  const prompt = `You are a firearm industry analyst. List the 12 most significant NEW gun releases announced or shipped in the last 2 weeks (after ${dateStr}). Include pistols, rifles, shotguns, revolvers, and suppressors from major manufacturers.
-
-For each release, provide EXACTLY this JSON structure (array of objects):
-[
-  {
-    "brand": "Manufacturer name",
-    "model": "Exact model name",
-    "category": "pistol|rifle|shotgun|revolver|suppressor|carbine",
-    "caliber": "e.g. 9mm Luger",
-    "msrp": "e.g. $699",
-    "summary": "2-3 sentence summary of what makes this release notable",
-    "keyFeatures": ["feature1", "feature2", "feature3"],
-    "announcedDate": "approximate month/year",
-    "sourceUrl": "manufacturer website URL if known, else empty string"
-  }
+const RELEASE_FEEDS = [
+  'https://www.thetruthaboutguns.com/feed/',
+  'https://www.ammoland.com/feed/',
+  'https://www.guns.com/feed',
+  'https://www.gunsandammo.com/feed/',
+  'https://www.pewpewtactical.com/feed/',
+  'https://www.ar15.com/rss/forum/',
 ]
 
-Focus on REAL, VERIFIABLE releases from 2025-2026. Do not invent products. If you are not confident about a release, omit it. Return ONLY the JSON array, no other text.`
+const RELEASE_KEYWORDS = [
+  'new ','release','launch','introduces','announced','debuts',
+  'first look','hands on','review','just dropped','available now',
+  'ships','shipping','unveiled','reveals',
+]
 
-  const raw = await callAIText({ prompt, useCase: 'article', maxTokens: 2000 })
-  const cleaned = raw.replace(/^```[a-z]*\s*/i, '').replace(/\s*```\s*$/i, '').trim()
+const KNOWN_BRANDS = [
+  'Glock','Sig Sauer','SIG','Smith & Wesson','S&W','Ruger','Springfield',
+  'Taurus','Beretta','FN','Heckler & Koch','H&K','HK','CZ','Walther',
+  'Kimber','Wilson Combat','Nighthawk','Daniel Defense','Aero Precision',
+  'CMMG','Stag Arms','Mossberg','Remington','Winchester','Browning',
+  'Benelli','Savage','Tikka','Christensen','Barrett','Seekins',
+  'Holosun','Trijicon','Vortex','Leupold','Nightforce',
+  'Dead Air','SilencerCo','OSS','Griffin Armament','AAC','Liberty',
+  'Maxim Defense','B&T','IWI','Canik','Shadow Systems',
+  'ZEV Technologies','Agency Arms','Grey Ghost','Faxon','Geissele',
+  'Timney','CMC','Triggertech','LaRue','BCM','Bravo Company','LWRC',
+  'Radian','Surefire','Streamlight','Magpul',
+]
 
+async function parseFeed(url) {
   try {
-    const parsed = JSON.parse(cleaned)
-    return Array.isArray(parsed) ? parsed : []
-  } catch (e) {
-    console.error('[RELEASES-CRON] JSON parse failed:', e.message, '| raw:', cleaned.slice(0, 200))
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
+      signal: AbortSignal.timeout(12000),
+    })
+    if (!r.ok) return []
+    const xml = await r.text()
+    const items = []
+    const itemMatches = xml.matchAll(/<item[^>]*>([\s\S]*?)<\/item>/gi)
+    for (const m of itemMatches) {
+      const block = m[1]
+      const title   = (block.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/)    || [])[1]?.trim() || ''
+      const link    = (block.match(/<link[^>]*>([\s\S]*?)<\/link>/)                                  || [])[1]?.trim()
+                   || (block.match(/<guid[^>]*>(https?[^<]+)<\/guid>/)                               || [])[1]?.trim() || ''
+      const desc    = (block.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) || [])[1]?.trim() || ''
+      const pubDate = (block.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/)                            || [])[1]?.trim() || ''
+      if (title && link) items.push({ title, link, desc: desc.replace(/<[^>]+>/g, '').slice(0, 500), pubDate })
+    }
+    return items
+  } catch(e) {
+    console.log('[RELEASES-CRON] Feed error ' + url + ': ' + e.message)
     return []
   }
 }
 
+function detectBrand(text) {
+  const t = text.toLowerCase()
+  for (const b of KNOWN_BRANDS) {
+    if (t.includes(b.toLowerCase())) return b
+  }
+  return null
+}
+
+function isReleaseArticle(title, desc) {
+  const text = (title + ' ' + desc).toLowerCase()
+  return RELEASE_KEYWORDS.some(k => text.includes(k))
+}
+
+async function discoverNewReleases() {
+  const cutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000)
+
+  const feedResults = await Promise.all(RELEASE_FEEDS.map(parseFeed))
+  const allItems = feedResults.flat()
+  console.log('[RELEASES-CRON] Fetched ' + allItems.length + ' total RSS items')
+
+  const candidates = allItems.filter(item => {
+    if (!isReleaseArticle(item.title, item.desc)) return false
+    const pub = item.pubDate ? new Date(item.pubDate) : null
+    if (pub && pub < cutoff) return false
+    return true
+  })
+  console.log('[RELEASES-CRON] ' + candidates.length + ' candidate release articles')
+
+  const releases = []
+  const seen = new Set()
+
+  for (const item of candidates.slice(0, 20)) {
+    const brand = detectBrand(item.title + ' ' + item.desc)
+    if (!brand) continue
+
+    const prompt = 'You are a firearms data extractor. Given this article title and excerpt, extract the gun product details as JSON.\n\nTitle: ' + item.title + '\nExcerpt: ' + item.desc + '\nSource: ' + item.link + '\n\nReturn ONLY a JSON object (not an array) with these fields, or null if not a specific gun product release:\n{"brand":"exact manufacturer name","model":"exact model designation","category":"pistol|rifle|shotgun|revolver|suppressor|carbine","caliber":"caliber if mentioned else empty","msrp":"price like $699 if mentioned else empty","summary":"1-2 sentences about what makes this notable","keyFeatures":["feature1","feature2"],"sourceUrl":"' + item.link + '"}\n\nReturn null if not a specific new product announcement. Return ONLY the JSON, no other text.'
+
+    try {
+      const raw = await callAIText({ prompt, useCase: 'nano', maxTokens: 500 })
+      const cleaned = raw.replace(/^```[a-z]*\s*/i, '').replace(/\s*```\s*$/i, '').trim()
+      if (cleaned === 'null' || !cleaned.startsWith('{')) continue
+      const parsed = JSON.parse(cleaned)
+      if (!parsed?.brand || !parsed?.model) continue
+      const key = (parsed.brand + '::' + parsed.model).toLowerCase()
+      if (seen.has(key)) continue
+      seen.add(key)
+      releases.push(parsed)
+    } catch(e) {
+      console.log('[RELEASES-CRON] Parse error for "' + item.title + '": ' + e.message)
+    }
+  }
+
+  console.log('[RELEASES-CRON] Extracted ' + releases.length + ' structured releases from RSS')
+  return releases
+}
 // ── AI: Write full article ─────────────────────────────────────────────────────
 
 async function writeReleaseArticle(release) {
