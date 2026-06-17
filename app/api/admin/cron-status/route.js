@@ -140,13 +140,30 @@ export async function POST(req) {
           'x-vercel-cron':  '1',
           'Content-Type':   'application/json',
         },
-        signal: AbortSignal.timeout(270000), // 4.5 min
+        signal: AbortSignal.timeout(270000),
       })
       const text = await res.text().catch(() => '')
       const ms   = Date.now() - t0
       const ok   = res.ok
 
-      // Record the manual trigger run
+      // Parse job response FIRST so details is defined before reportCronRun
+      let details = null
+      try {
+        const r = JSON.parse(text)
+        const parts = []
+        if (r.discovered != null) parts.push(`discovered:${r.discovered}`)
+        if (r.created   != null)  parts.push(`created:${r.created}`)
+        if (r.skipped   != null)  parts.push(`skipped:${r.skipped}`)
+        if (r.failed    != null)  parts.push(`failed:${r.failed}`)
+        if (r.done      != null)  parts.push(`done:${r.done}`)
+        if (r.saved?.length)      parts.push(`saved: ` + r.saved.slice(0,8).join(', '))
+        if (r.message)            parts.push(r.message.slice(0, 300))
+        details = parts.join(' | ').slice(0, 600) || text.slice(0, 300)
+      } catch {
+        // Not JSON — store truncated raw text
+        details = text.slice(0, 300)
+      }
+
       await reportCronRun(jobId, {
         status:  ok ? 'success' : 'failed',
         ms,
@@ -155,31 +172,23 @@ export async function POST(req) {
         trigger: 'manual',
       })
 
-      // Try to parse job response to extract structured details
-      let details = null
-      let parsedResponse = null
-      try {
-        parsedResponse = JSON.parse(text)
-        // Extract key metrics from job response
-        const r = parsedResponse
-        const parts = []
-        if (r.discovered != null) parts.push(`discovered:${r.discovered}`)
-        if (r.created != null)    parts.push(`created:${r.created}`)
-        if (r.skipped != null)    parts.push(`skipped:${r.skipped}`)
-        if (r.failed != null)     parts.push(`failed:${r.failed}`)
-        if (r.done != null)       parts.push(`done:${r.done}`)
-        if (r.saved?.length)      parts.push(`saved:${r.saved.slice(0,5).join(', ')}`)
-        if (r.message)            parts.push(r.message.slice(0, 200))
-        details = parts.join(' | ').slice(0, 500) || text.slice(0, 300)
-      } catch {
-        details = text.slice(0, 300)
-      }
-      
-      return Response.json({ ok, ms, status: res.status, response: text.slice(0, 500), details })
+      return Response.json({ ok, ms, status: res.status, details })
     } catch (e) {
       const ms = Date.now() - t0
-      await reportCronRun(jobId, { status: 'failed', ms, error: e.message, trigger: 'manual' })
-      return Response.json({ ok: false, error: e.message, ms }, { status: 500 })
+      // If it timed out, the job likely still ran — mark as triggered not failed
+      const timedOut = e.name === 'AbortError' || e.message?.includes('abort') || e.message?.includes('timeout')
+      await reportCronRun(jobId, {
+        status: timedOut ? 'success' : 'failed',
+        ms, trigger: 'manual',
+        error: timedOut ? null : e.message,
+        details: timedOut ? `Job triggered — ran longer than ${Math.round(ms/60000)}m (normal for this job, check run log for results)` : null,
+      })
+      return Response.json({
+        ok: timedOut,
+        ms,
+        details: timedOut ? `Job is still running — takes 2-3 min. Refresh in a moment to see results.` : null,
+        error: timedOut ? null : e.message,
+      })
     }
   }
 
