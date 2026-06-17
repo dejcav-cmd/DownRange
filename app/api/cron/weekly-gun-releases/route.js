@@ -161,10 +161,10 @@ async function getImageForGun(brand, model, category, sourceUrl) {
 
 async function discoverNewReleases() {
   const now    = new Date()
-  const cutoff = new Date(now.getTime() - 14 * 24 * 60 * 60 * 1000) // 2 weeks ago
+  const cutoff = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000) // 1 week ago (cron now runs daily)
   const dateStr = cutoff.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
-  const prompt = `You are a firearm industry analyst. List the 8 most significant NEW gun releases announced or shipped in the last 2 weeks (after ${dateStr}). Include pistols, rifles, shotguns, revolvers, and suppressors from major manufacturers.
+  const prompt = `You are a firearm industry analyst. List the 12 most significant NEW gun releases announced or shipped in the last 2 weeks (after ${dateStr}). Include pistols, rifles, shotguns, revolvers, and suppressors from major manufacturers.
 
 For each release, provide EXACTLY this JSON structure (array of objects):
 [
