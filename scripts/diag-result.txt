@@ -1,27 +1,39 @@
-DEALS IMAGE BACKFILL
+=== ALL gunDeal SOURCES ===
+Total: 1613
+  gun.deals: 1597
+  AmmoLand: 15
+  The Firearm Blog: 1
 
-Fetching docs without images...
-Found 8 docs without images
-  ✗ mB5SX091O5zS0c2Qu2LW | https://gun.deals/content/coupon-store-vance-outdoorsmonday- - no image
-  ✗ S5bzMTDRifCZEnNLwecf | https://gun.deals/content/coupon-store-brass-kissesmonday-ju - no image
-  ✗ S5bzMTDRifCZEnNLwdRW | https://gun.deals/content/coupon-store-natchez-shooting-outd - no image
-  ✗ S5bzMTDRifCZEnNLwdIV | https://gun.deals/content/coupon-store-natchez-shooting-outd - no image
-  ✗ D3P5Tec7S0NBTLdHDA61 | https://gun.deals/content/coupon-store-brownellssaturday-jun - no image
-  ✗ rhMI06j2e0dNGX3sDIZh | https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-round - no image
-  ✗ SKDVlyMd9FiV3xrtgU2T | https://gun.deals/content/coupon-store-sportsmans-outdoor-ss - no image
-  ✗ QR3knQwiU7hQ2mmjtTwe | https://gun.deals/content/coupon-store-shooters-gatetuesday- - no image
+=== REDDIT.COM externalUrl: 0 ===
 
-=== BACKFILL COMPLETE ===
-Attempted:    8
-Scraped OK:   0
-Failed scrape:8
-No URL:       0
-Patched:      0
-Patch errors: 0
+=== MISSING imageUrl: 8 ===
+  gun.deals: 8
 
-=== FIXING HTML ENTITIES IN TITLES ===
-Found 1613 docs with HTML entities in title
-  No entity titles found (may use different pattern)
-  No additional entity titles found
+=== NEWEST 10 MISSING IMAGE DOCS ===
+  mB5SX091O5zS0c2Qu2LWX9 | 2026-06-16T03:05:08 | [gun.deals] | https://gun.deals/content/coupon-store-vance-outdoorsmonday-june-15-20
+  S5bzMTDRifCZEnNLwecfGN | 2026-06-16T00:05:50 | [gun.deals] | https://gun.deals/content/coupon-store-brass-kissesmonday-june-15-2026
+  S5bzMTDRifCZEnNLwdRWEl | 2026-06-15T16:05:37 | [gun.deals] | https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  S5bzMTDRifCZEnNLwdIVLJ | 2026-06-15T15:05:37 | [gun.deals] | https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  D3P5Tec7S0NBTLdHDA615v | 2026-06-13T20:05:10 | [gun.deals] | https://gun.deals/content/coupon-store-brownellssaturday-june-13-2026
+  rhMI06j2e0dNGX3sDIZhcR | 2026-06-13T04:00:21 | [gun.deals] | https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  SKDVlyMd9FiV3xrtgU2TOJ | 2026-06-10T20:00:20 | [gun.deals] | https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
+  QR3knQwiU7hQ2mmjtTwesO | 2026-06-10T14:00:20 | [gun.deals] | https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
 
-ALL DONE
+=== STEP 1: DELETE 0 REDDIT DOCS ===
+
+=== STEP 2: FIX 8 MISSING GUN.DEALS IMAGES ===
+gun.deals docs needing images: 8
+  ✗ scrape: https://gun.deals/content/coupon-store-vance-outdoorsmonday-june-15-20
+  ✗ scrape: https://gun.deals/content/coupon-store-brass-kissesmonday-june-15-2026
+  ✗ scrape: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  ✗ scrape: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  ✗ scrape: https://gun.deals/content/coupon-store-brownellssaturday-june-13-2026
+  ✗ scrape: https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  ✗ scrape: https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
+  ✗ scrape: https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
+
+Stats: scraped=0 uploaded=0 fallback=0 failed=8
+
+=== FINAL STATE ===
+Total: 1613  Missing images: 8  Reddit docs: 0
+DONE
