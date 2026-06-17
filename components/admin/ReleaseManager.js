@@ -16,13 +16,21 @@ const FIELDS = [
 
 export default function ReleaseManager({ adminKey }) {
   function pullReleases(flash, reload) {
-    flash('⏳ Fetching gun releases feed...')
-    return fetch('/api/admin/cron-status?trigger=true', {
-      headers:{'x-admin-key':adminKey},
-    }).then(r=>r.json()).then(()=>{
-      flash('✅ Releases feed triggered')
-      setTimeout(reload, 2000)
-    }).catch(()=>flash('❌ Failed'))
+    flash('⏳ Pulling new releases from RSS feeds (takes ~2 min)...')
+    return fetch('/api/cron/weekly-gun-releases', {
+      method: 'GET',
+      headers: { 'x-admin-key': adminKey },
+    })
+    .then(r => r.json())
+    .then(d => {
+      if (d.ok) {
+        flash('✅ Done — ' + d.created + ' new, ' + d.skipped + ' skipped, ' + d.failed + ' failed')
+      } else {
+        flash('❌ Error: ' + (d.error || 'Unknown error'))
+      }
+      setTimeout(reload, 1500)
+    })
+    .catch(() => flash('❌ Request failed or timed out'))
   }
 
   return (
