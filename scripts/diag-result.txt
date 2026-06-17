@@ -1,38 +1,34 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== FETCHING MISSING GUN.DEALS DOCS ===
+Found 19 gun.deals docs without imageUrl
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/e97c1574a32d03fa9acfdc57171b59c
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/573ba582fa120fcc76835591fc5d8ab
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/1faa81b8e9b84895bbc50918fecac53
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/78a86dbc10e17535e13954a17305b5e
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/8d6f9f29fadc91bd7886146be9ec191
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/7d7aac97db71bad96359e52d46c18d3
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/bb7c43c99cc73c44c1378484ae4c22d
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/ec920b0a8c45deabdae67cbb8fe350d
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/8ef27777dbd6d4de3cd7854624aab77
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/c0c41ba2596b8756f5f9ff5f7a865ae
+  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/f3b0be58197ee98bec1fcd1955ad20b
+  ✗ scrape failed: https://gun.deals/content/coupon-store-vance-outdoorsmonday-june-15-20
+  ✗ scrape failed: https://gun.deals/content/coupon-store-brass-kissesmonday-june-15-2026
+  ✗ scrape failed: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  ✗ scrape failed: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  ✗ scrape failed: https://gun.deals/content/coupon-store-brownellssaturday-june-13-2026
+  ✗ scrape failed: https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  ✗ scrape failed: https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
+  ✗ scrape failed: https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
+  → Committed final 11 patches
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 28
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d679b53791fb1e002e37d05b089f25d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f57653ae1f6d520098003ee512fdc1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/355217f1ccfe296a2e18b796191dbe0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b29b2dfe6746ca5a4a129f52201c57a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3f318368a5967677dd041305e31348f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa609c3f85a6ce99350736d4b649722
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8fa8a72e7e3a56f6f298013cf329583
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c2cdd8a72ffe9be9281465cea668aef
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/528138bcee03ea606663cd0ccbf9f85
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9be0811bed015f5b41d6da261c01422
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c6419676323a33f901d1bb9da4ecef1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b25e1bec34ac56a1422568931c232d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d3f2dcfd35893050c690b32b7391691
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/29e48c6ab5eb951113bd230ff248c2a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a853984a40376d59d7a13c64e8d2988
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f22b6740653556f33d55c4fd9efdf1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/efce3dd5bb3dd2f0a731950cb18636d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2067b0a7cf07a3e908c90a5911ed4ea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/43fc9be2c9c3c643ff3864e2ec2f036
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05e748b15ec291289e4724e34677bf2
-  skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
-  skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
-  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 20
+=== DONE ===
+Attempted:  19
+Scraped:    11
+Downloaded: 11
+Uploaded:   11
+Patched:    11
+Failed:     8
 
-Stats: uploaded=20 fallback=0 failed=1
-
-=== FINAL: total=1602 missing_images=8 reddit=0 ===
+=== AMMOLAND MISSING DOCS ===
+Found 0
+ALL DONE
