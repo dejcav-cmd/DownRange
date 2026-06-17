@@ -1,0 +1,27 @@
+name: Trigger Gun Releases
+on:
+  workflow_dispatch:
+jobs:
+  trigger:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger releases cron
+        run: |
+          echo "Triggering releases pipeline..."
+          curl -s -X GET \
+            "https://downrangeco.com/api/cron/releases" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            | tee /tmp/result.txt
+          echo ""
+          echo "Result:"
+          cat /tmp/result.txt
+      - name: Trigger weekly releases
+        run: |
+          echo "Triggering weekly releases..."
+          curl -s -X GET \
+            "https://downrangeco.com/api/cron/weekly-gun-releases" \
+            -H "x-admin-key: ${{ secrets.ADMIN_KEY }}" \
+            | tee /tmp/weekly.txt
+          echo ""
+          echo "Weekly result:"
+          cat /tmp/weekly.txt
