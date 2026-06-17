@@ -67,7 +67,7 @@ const RSS_FEEDS = [
   { name: 'Shooting Illustrated',   url: 'https://www.shootingillustrated.com/feed/',           cat: 'industry' },
   { name: 'GunsAmerica Digest',     url: 'https://www.gunsamerica.com/blog/feed/',              cat: 'industry' },
   // ── US LEGAL & RIGHTS ─────────────────────────────────────────────────
-  { name: 'NRA-ILA',                url: 'https://www.nraila.org/rss/',                        cat: 'law'      },
+  { name: 'NRA-ILA',                url: 'https://www.nraila.org/XML/RSS.aspx',                cat: 'law'      },
   { name: 'SAF',                    url: 'https://www.saf.org/feed/',                           cat: 'law'      },
   { name: 'FPC',                    url: 'https://www.firearmspolicy.org/feed/',                cat: 'law'      },
   { name: 'FPC Law',                url: 'https://fpclaw.org/feed/',                            cat: 'law'      },

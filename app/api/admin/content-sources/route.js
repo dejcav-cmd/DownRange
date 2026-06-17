@@ -41,7 +41,7 @@ const DEFAULT_SOURCES = {
     { id: 'legiscan', name: 'LegiScan State Bills', url: 'https://api.legiscan.com', cat: 'law', type: 'api' },
     { id: 'scotusblog', name: 'SCOTUSblog', url: 'https://www.scotusblog.com/feed/', cat: 'law', type: 'rss' },
     { id: 'goa', name: 'Gun Owners of America', url: 'https://gunowners.org/feed/', cat: 'law', type: 'rss' },
-    { id: 'nra-ila', name: 'NRA-ILA', url: 'https://www.nraila.org/rss/articles/', cat: 'law', type: 'rss' },
+    { id: 'nra-ila', name: 'NRA-ILA', url: 'https://www.nraila.org/XML/RSS.aspx', cat: 'law', type: 'rss' },
   ],
   releases: [
     { id: 'glock', name: 'GLOCK Inc', url: 'https://us.glock.com/rss/news.xml', cat: 'releases', type: 'rss' },
