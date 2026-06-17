@@ -246,7 +246,7 @@ Return ONLY the headline, nothing else.`
     category,
     tags,
     readTime:    '8 min read',
-    published:   false,   // DRAFT — requires DJ review
+    status:      'draft',  // DRAFT — requires DJ review at /admin → Blog
     publishedAt: today.toISOString(),
     qualityReviewed: false,
     editorLocked: false,
@@ -258,17 +258,24 @@ export async function GET(req) {
   const auth = req.headers.get('authorization')
   const adminKey = req.headers.get('x-admin-key')
 
-  const isCron  = cronSecret && auth === 'Bearer ' + cronSecret
-  const isAdmin = adminKey === ADMIN_KEY
-  if (!isCron && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const isCron    = cronSecret && auth === 'Bearer ' + cronSecret
+  const isVercel  = req.headers.get('x-vercel-cron') === '1'
+  const isAdmin   = adminKey === ADMIN_KEY
+  if (!isCron && !isVercel && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const t0 = Date.now()
   const stats = { written: 0, failed: 0, titles: [] }
 
   try {
     // Pick 10 topics — rotate based on week number to avoid repeats
+    // Rotate 3 topics per run to stay within timeout. Full rotation = ~3-4 weeks
     const weekNum = Math.floor(Date.now() / (7 * 24 * 60 * 60 * 1000))
-    const topics = TOPIC_BUCKETS.slice(0, 10) // use all 10 each week
+    const startIdx = (weekNum * 3) % TOPIC_BUCKETS.length
+    const topics = [
+      TOPIC_BUCKETS[startIdx % TOPIC_BUCKETS.length],
+      TOPIC_BUCKETS[(startIdx + 1) % TOPIC_BUCKETS.length],
+      TOPIC_BUCKETS[(startIdx + 2) % TOPIC_BUCKETS.length],
+    ]
 
     for (let i = 0; i < topics.length; i++) {
       try {

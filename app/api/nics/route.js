@@ -12,13 +12,28 @@ const sanity = createClient({
 
 export async function GET(req) {
   const authHeader = req.headers.get('authorization')
-  if (process.env.CRON_SECRET && authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+  const adminKey = req.headers.get('x-admin-key')
+  const isCron   = req.headers.get('x-vercel-cron') === '1'
+  const isBearer = process.env.CRON_SECRET && authHeader === `Bearer ${process.env.CRON_SECRET}`
+  const isAdmin  = adminKey === process.env.ADMIN_KEY
+  if (!isCron && !isBearer && !isAdmin) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
   try {
-    const nicsCSVUrl = `https://www.fbi.gov/file-repository/nics_firearm_checks_month_year_by_state_type.csv`
-    const res = await fetch(nicsCSVUrl, { headers: { 'User-Agent': 'DownRange/1.0' } })
-    if (!res.ok) return Response.json({ message: 'NICS CSV unavailable' })
+    // FBI has changed this URL multiple times — try all known locations
+    const NICS_URLS = [
+      'https://www.fbi.gov/file-repository/nics_firearm_checks_month_year_by_state_type.csv/view',
+      'https://www.fbi.gov/file-repository/nics_firearm_checks_month_year_by_state_type.csv',
+      'https://s3-us-gov-west-1.amazonaws.com/cg-d4b776d0-d898-4153-90c8-8336f86bdfec/nics_firearm_checks_month_year_by_state_type.csv',
+    ]
+    let res = null
+    for (const url of NICS_URLS) {
+      try {
+        const r = await fetch(url, { headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' }, signal: AbortSignal.timeout(15000) })
+        if (r.ok) { res = r; break }
+      } catch {}
+    }
+    if (!res) return Response.json({ message: 'NICS CSV unavailable — FBI URL may have changed. Check https://www.fbi.gov/services/cjis/nics' })
     const csv  = await res.text()
     const rows = csv.trim().split('\n').map(r => r.split(','))
     let totalChecks = 0
