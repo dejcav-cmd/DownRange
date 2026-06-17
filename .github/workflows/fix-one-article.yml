@@ -23,4 +23,4 @@ jobs:
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "fix one article result [skip ci]" && git push
+          git diff --staged --quiet || (git commit -m "fix one article result [skip ci]" && git pull --rebase && git push) || true

@@ -21,4 +21,4 @@ jobs:
           git config user.name "DJ Cavalcanti"
           git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "diag result" && git push
+          git diff --staged --quiet || (git commit -m "diag result" && git pull --rebase && git push) || true
