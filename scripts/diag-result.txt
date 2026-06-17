@@ -2,20 +2,24 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 21
+Missing: 25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05e4f1b12a31b4d4d83656e2576ad7f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff2e90c32853d30def6c81764b43785
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/39ab0621d209f783705455cad4567ac
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/04e146e5bedf8293b543c6481e050ba
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c1e999ed5553bef6f058a8b1ffbf330
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f8bbbe16159c7f8de68ce04705b03a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e226010b5be0564efc2d43664152cd2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3032fd1f49d0265748742a83126a858
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74c782f81ea54c6fd3502c131ebfe77
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/645ca87429e463190a4c7f6fa5f920e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/224ec31c9cb306c3ebe004d54e6cac0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3d85b54c7440dfa2493f894af00c10d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/825c6300a06ead22cbbea5cf4abfbb3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a5af0a8479083249976c6c57a490347
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/de2ade7981951f02fa1a0f1c89b4a1c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4b581d2da0f45b381aced84fb4c5f93
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Springfield-Echelo
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5cf3bbf74908809470d9f1bfd6e14c4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2978321f94bee9fef89891c5c5ee35e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d18a5babe83a268c29d67ac525b4246
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79517a8785f7f9741e87d2c58d0791f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4598d0b572bc172adae85f6883bcde3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4e5f35e6bcab197525fd325e1d7fac6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d36a1c1c5baf7d0d882b7120a955817
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/55f508618c2672d51bc8d2566ee60cd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/56573d8f6062c5e27ff8dd0bde1e237
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8147d7899e3f3ebe58a52459406b470
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/PSA-AR15-Stealth-H
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/Sportsmans-124-dea
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -24,8 +28,8 @@ Missing: 21
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 13
+  → patched final 17
 
-Stats: uploaded=10 fallback=3 failed=1
+Stats: uploaded=16 fallback=1 failed=1
 
-=== FINAL: total=1566 missing_images=8 reddit=0 ===
+=== FINAL: total=1582 missing_images=8 reddit=0 ===
