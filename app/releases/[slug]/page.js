@@ -101,6 +101,41 @@ export default async function ReleasePage({ params }) {
           name:    'DownRange Co.',
           url:     'https://downrangeco.com',
         },
+        hasMerchantReturnPolicy: {
+          '@type':                 'MerchantReturnPolicy',
+          applicableCountry:       'US',
+          returnPolicyCategory:    'https://schema.org/MerchantReturnNotPermitted',
+          merchantReturnDays:      0,
+          returnMethod:            'https://schema.org/ReturnNotSupported',
+          returnFees:              'https://schema.org/FreeReturn',
+        },
+        shippingDetails: {
+          '@type': 'OfferShippingDetails',
+          shippingRate: {
+            '@type':   'MonetaryAmount',
+            value:     '0',
+            currency:  'USD',
+          },
+          shippingDestination: {
+            '@type':           'DefinedRegion',
+            addressCountry:    'US',
+          },
+          deliveryTime: {
+            '@type':          'ShippingDeliveryTime',
+            handlingTime: {
+              '@type':    'QuantitativeValue',
+              minValue:   0,
+              maxValue:   1,
+              unitCode:   'DAY',
+            },
+            transitTime: {
+              '@type':    'QuantitativeValue',
+              minValue:   3,
+              maxValue:   7,
+              unitCode:   'DAY',
+            },
+          },
+        },
       },
       aggregateRating: {
         '@type':      'AggregateRating',
