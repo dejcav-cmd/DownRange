@@ -390,7 +390,7 @@ export default function CronDashboard({ adminKey }) {
                             {tResult && (
                               <div style={{margin:'8px 16px',padding:'8px 12px',background:tResult.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)',border:`1px solid ${tResult.ok?'rgba(34,197,94,.3)':'rgba(239,68,68,.3)'}`,fontSize:10,fontFamily:"'IBM Plex Mono',monospace"}}>
                                 {tResult.ok
-                                  ? <span style={{color:'#4ade80'}}>✓ Triggered in {fmtMs(tResult.ms)} — {(tResult.response||'').slice(0,200)}</span>
+                                  ? <span style={{color:'#4ade80'}}>✓ Triggered in {fmtMs(tResult.ms)} — {(tResult.details || tResult.response||'').slice(0,300)}</span>
                                   : <span style={{color:'#f87171'}}>✕ {tResult.error || `HTTP ${tResult.status}`}</span>}
                               </div>
                             )}
