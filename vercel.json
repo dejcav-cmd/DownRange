@@ -292,6 +292,9 @@
     },
     "app/api/cron/nra-law-sync-enhanced/route.js": {
       "maxDuration": 300
+    },
+    "app/api/cron/weekly-gun-releases/route.js": {
+      "maxDuration": 300
     }
   }
 }
