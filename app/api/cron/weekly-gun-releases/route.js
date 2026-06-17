@@ -84,7 +84,9 @@ function detectBrand(text) {
 // ── AI EXTRACT + WRITE ────────────────────────────────────────────────────────
 async function extractAndWrite(title, desc, link) {
   if (!process.env.ANTHROPIC_API_KEY) {
-    console.log('[RELEASES] No ANTHROPIC_API_KEY — skipping AI extraction')
+    console.log('[RELEASES] No ANTHROPIC_API_KEY — cannot extract, skipping')
+    // Create a basic release without AI when key is missing
+    const brand = title.split(/\s+/).find(w => w.length > 3) || 'Unknown'
     return null
   }
   const prompt = `You are a DownRange firearms editor. Given this article, extract product data and write an original article.
@@ -130,6 +132,34 @@ If this is NOT a new product announcement, set skip:true.`
   } catch(e) {
     console.error('[RELEASES] AI error:', e.message)
     return null
+  }
+}
+
+// ── FALLBACK: Create basic release without AI ─────────────────────────────
+function createBasicRelease(title, desc, link, brand) {
+  const words = title.split(/\s+/)
+  const brandIdx = words.findIndex(w => w.toLowerCase() === brand.toLowerCase().split(' ')[0])
+  const model = words.slice(brandIdx + 1, brandIdx + 4).join(' ').replace(/[^a-zA-Z0-9\s-]/g, '').trim() || 'New Release'
+  
+  const categoryMap = {
+    pistol: 'Pistol', handgun: 'Pistol', rifle: 'Rifle', shotgun: 'Shotgun',
+    suppressor: 'Suppressor', revolver: 'Revolver', carbine: 'Rifle',
+    ar: 'Rifle', ak: 'Rifle', sbr: 'Rifle',
+  }
+  const titleLower = title.toLowerCase()
+  const category = Object.entries(categoryMap).find(([k]) => titleLower.includes(k))?.[1] || 'Pistol'
+  
+  return {
+    brand,
+    model,
+    category,
+    caliber: null,
+    msrp: 0,
+    title: title.slice(0, 100),
+    summary: desc.slice(0, 300) || `${brand} announces the ${model}.`,
+    body: `<p>${desc.slice(0, 800)}</p><p>Source: <a href="${link}">${link}</a></p>`,
+    specs: [],
+    skip: !model || model.length < 2,
   }
 }
 
@@ -242,8 +272,17 @@ export async function GET(req) {
 
     const brand = detectBrand(item.title + ' ' + item.desc)
 
-    const extracted = await extractAndWrite(item.title, item.desc, item.link)
-    if (!extracted) { skipped++; console.log(`[RELEASES] AI skip: ${item.title.slice(0,60)}`); continue }
+    let extracted = await extractAndWrite(item.title, item.desc, item.link)
+    if (!extracted) {
+      // AI failed or no key — try basic extraction as fallback
+      extracted = createBasicRelease(item.title, item.desc, item.link, brand)
+      if (!extracted || extracted.skip) {
+        skipped++
+        console.log(`[RELEASES] Skip (no AI + basic failed): ${item.title.slice(0,60)}`)
+        continue
+      }
+      console.log(`[RELEASES] Using basic extraction for: ${extracted.brand} — ${extracted.model}`)
+    }
 
     const key = `${extracted.brand}::${extracted.model}`.toLowerCase()
     if (seenKeys.has(key) || existingKeys.has(key)) {
