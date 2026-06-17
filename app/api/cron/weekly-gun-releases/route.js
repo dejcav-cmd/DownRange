@@ -216,24 +216,39 @@ export async function GET(req) {
 
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
 
-  for (const item of allItems.slice(0, 25)) {
+  // Pre-filter: only items with a known brand, within cutoff
+  const brandedItems = allItems.filter(item => {
+    const brand = detectBrand(item.title + ' ' + item.desc)
+    if (!brand) return false
+    const pub = item.pubDate ? new Date(item.pubDate) : null
+    if (pub && pub < cutoff) return false
+    return true
+  })
+
+  console.log(`[RELEASES] ${brandedItems.length} items passed brand+date filter (of ${allItems.length} total)`)
+
+  // Batch dedup check against Sanity
+  let existingKeys = new Set()
+  try {
+    const existing = await sanity.fetch(`*[_type=="firearmRelease"]{ brand, model }`)
+    existingKeys = new Set(existing.map(d => `${d.brand}::${d.model}`.toLowerCase()))
+    console.log(`[RELEASES] ${existingKeys.size} existing releases in Sanity`)
+  } catch(e) {
+    console.log('[RELEASES] Dedup prefetch failed:', e.message)
+  }
+
+  for (const item of brandedItems.slice(0, 30)) {
     if (created >= 15) break
 
     const brand = detectBrand(item.title + ' ' + item.desc)
-    if (!brand) { skipped++; continue }
-
-    const pub = item.pubDate ? new Date(item.pubDate) : null
-    if (pub && pub < cutoff) { skipped++; continue }
 
     const extracted = await extractAndWrite(item.title, item.desc, item.link)
-    if (!extracted) { skipped++; continue }
+    if (!extracted) { skipped++; console.log(`[RELEASES] AI skip: ${item.title.slice(0,60)}`); continue }
 
     const key = `${extracted.brand}::${extracted.model}`.toLowerCase()
-    if (seenKeys.has(key)) { skipped++; continue }
-
-    if (await isDuplicate(extracted.brand, extracted.model)) {
-      seenKeys.add(key)
+    if (seenKeys.has(key) || existingKeys.has(key)) {
       skipped++
+      console.log(`[RELEASES] Dupe skip: ${extracted.brand} ${extracted.model}`)
       continue
     }
 
