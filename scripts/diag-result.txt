@@ -1,16 +1,5 @@
 === FETCHING MISSING GUN.DEALS DOCS ===
-Found 19 gun.deals docs without imageUrl
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/e97c1574a32d03fa9acfdc57171b59c
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/573ba582fa120fcc76835591fc5d8ab
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/1faa81b8e9b84895bbc50918fecac53
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/78a86dbc10e17535e13954a17305b5e
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/8d6f9f29fadc91bd7886146be9ec191
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/7d7aac97db71bad96359e52d46c18d3
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/bb7c43c99cc73c44c1378484ae4c22d
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/ec920b0a8c45deabdae67cbb8fe350d
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/8ef27777dbd6d4de3cd7854624aab77
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/c0c41ba2596b8756f5f9ff5f7a865ae
-  ✓ uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/f3b0be58197ee98bec1fcd1955ad20b
+Found 8 gun.deals docs without imageUrl
   ✗ scrape failed: https://gun.deals/content/coupon-store-vance-outdoorsmonday-june-15-20
   ✗ scrape failed: https://gun.deals/content/coupon-store-brass-kissesmonday-june-15-2026
   ✗ scrape failed: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
@@ -19,14 +8,13 @@ Found 19 gun.deals docs without imageUrl
   ✗ scrape failed: https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   ✗ scrape failed: https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
   ✗ scrape failed: https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
-  → Committed final 11 patches
 
 === DONE ===
-Attempted:  19
-Scraped:    11
-Downloaded: 11
-Uploaded:   11
-Patched:    11
+Attempted:  8
+Scraped:    0
+Downloaded: 0
+Uploaded:   0
+Patched:    0
 Failed:     8
 
 === AMMOLAND MISSING DOCS ===
