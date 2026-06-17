@@ -10,7 +10,7 @@ on:
 jobs:
   run:
     runs-on: ubuntu-latest
-    if: github.event_name == \'workflow_dispatch\'
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Generate 10 Canada articles
         run: |

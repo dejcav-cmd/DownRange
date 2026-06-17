@@ -6,7 +6,7 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
-    if: github.event_name == \'workflow_dispatch\'
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Fire gun-deals cron

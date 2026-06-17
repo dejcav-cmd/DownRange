@@ -6,7 +6,7 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
-    if: github.event_name == \'workflow_dispatch\'
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - name: Trigger releases cron
         run: |

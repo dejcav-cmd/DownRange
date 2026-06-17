@@ -6,7 +6,7 @@ on:
 jobs:
   fix:
     runs-on: ubuntu-latest
-    if: github.event_name == \'workflow_dispatch\'
+    if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
       - name: Run title entity fix
