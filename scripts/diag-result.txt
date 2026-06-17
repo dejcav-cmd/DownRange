@@ -1,23 +1,17 @@
-=== Backfill missing deal images ===
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-Found 8 deals missing images
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 8
+  skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
+  skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
+  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
+  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
+  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
+  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
 
-  Coupon for store Vance Outdoors Monday, June 15, 2
-    SKIP — no OG image found
-  Coupon for store Brass Kisses Monday, June 15, 202
-    SKIP — no OG image found
-  Coupon for store Natchez Shooting & Outdoors Monda
-    SKIP — no OG image found
-  Coupon for store Natchez Shooting & Outdoors Monda
-    scrape error: HTTP Error 404: Not Found
-    SKIP — no OG image found
-  Coupon for store Brownells Saturday, June 13, 2026
-    SKIP — no OG image found
-  .45 ACP/Auto 230gr JHP Ammo 50 Rounds - New
-    SKIP — no OG image found
-  Coupon for store Sportsmans Outdoor SS Wednesday, 
-    SKIP — no OG image found
-  Coupon for store Shooters Gate Tuesday, June 9, 20
-    SKIP — no OG image found
+Stats: uploaded=0 fallback=0 failed=1
 
-=== Done: 0 fixed, 8 failed ===
+=== FINAL: total=1613 missing_images=8 reddit=0 ===
