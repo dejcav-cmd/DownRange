@@ -26,7 +26,7 @@ export async function GET(request) {
   try {
     console.log('[releases-cron] Starting scrape:', new Date().toISOString())
 
-    const results = await scrapeReleases({ limit: 10, onlyNew: true })
+    const results = await scrapeReleases({ limit: 20, onlyNew: true })
 
     console.log('[releases-cron] Done:', results)
 
