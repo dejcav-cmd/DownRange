@@ -1,27 +1,23 @@
-DEALS IMAGE BACKFILL
+=== Backfill missing deal images ===
 
-Fetching docs without images...
-Found 8 docs without images
-  ✗ mB5SX091O5zS0c2Qu2LW | https://gun.deals/content/coupon-store-vance-outdoorsmonday- - no image
-  ✗ S5bzMTDRifCZEnNLwecf | https://gun.deals/content/coupon-store-brass-kissesmonday-ju - no image
-  ✗ S5bzMTDRifCZEnNLwdRW | https://gun.deals/content/coupon-store-natchez-shooting-outd - no image
-  ✗ S5bzMTDRifCZEnNLwdIV | https://gun.deals/content/coupon-store-natchez-shooting-outd - no image
-  ✗ D3P5Tec7S0NBTLdHDA61 | https://gun.deals/content/coupon-store-brownellssaturday-jun - no image
-  ✗ rhMI06j2e0dNGX3sDIZh | https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-round - no image
-  ✗ SKDVlyMd9FiV3xrtgU2T | https://gun.deals/content/coupon-store-sportsmans-outdoor-ss - no image
-  ✗ QR3knQwiU7hQ2mmjtTwe | https://gun.deals/content/coupon-store-shooters-gatetuesday- - no image
+Found 8 deals missing images
 
-=== BACKFILL COMPLETE ===
-Attempted:    8
-Scraped OK:   0
-Failed scrape:8
-No URL:       0
-Patched:      0
-Patch errors: 0
+  Coupon for store Vance Outdoors Monday, June 15, 2
+    SKIP — no OG image found
+  Coupon for store Brass Kisses Monday, June 15, 202
+    SKIP — no OG image found
+  Coupon for store Natchez Shooting & Outdoors Monda
+    SKIP — no OG image found
+  Coupon for store Natchez Shooting & Outdoors Monda
+    scrape error: HTTP Error 404: Not Found
+    SKIP — no OG image found
+  Coupon for store Brownells Saturday, June 13, 2026
+    SKIP — no OG image found
+  .45 ACP/Auto 230gr JHP Ammo 50 Rounds - New
+    SKIP — no OG image found
+  Coupon for store Sportsmans Outdoor SS Wednesday, 
+    SKIP — no OG image found
+  Coupon for store Shooters Gate Tuesday, June 9, 20
+    SKIP — no OG image found
 
-=== FIXING HTML ENTITIES IN TITLES ===
-Found 1613 docs with HTML entities in title
-  No entity titles found (may use different pattern)
-  No additional entity titles found
-
-ALL DONE
+=== Done: 0 fixed, 8 failed ===
