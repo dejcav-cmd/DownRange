@@ -140,6 +140,7 @@ export async function runGiveawaysFeed() {
           addedAt:   new Date().toISOString(),
         })
         done++
+        saved.push((g && (g.title || g.name || g.sponsor)) || 'Unknown giveaway')
         console.log(`[GIVEAWAYS] ✓ ${g.sponsor}: ${g.title.slice(0,60)}`)
       } catch (e) {
         if (e.message?.includes('duplicate') || e.message?.includes('already exists')) {
@@ -156,5 +157,5 @@ export async function runGiveawaysFeed() {
 
   const ms = Date.now() - t
   console.log(`[GIVEAWAYS] Done: ${done} new, ${skipped} skipped, ${errors.length} errors in ${ms}ms`)
-  return { done, skipped, errors, ms }
+  return { done, skipped, errors, ms, saved, headlines: saved.slice(0, 20) }
 }

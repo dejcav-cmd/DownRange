@@ -337,6 +337,8 @@ async function runVideoFeed() {
     errors,
     channelLog,
     summary,
+    headlines:    channelLog ? channelLog.slice(0, 20) : [],
+    saved:        channelLog ? channelLog.slice(0, 20) : [],
   }
 }
 

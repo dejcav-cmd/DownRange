@@ -231,5 +231,5 @@ export async function runBlogFeed() {
   console.log(`[BLOG] Done: ${done} drafts saved, ${errors.length} errors in ${ms}ms`)
   console.log(`[BLOG] Review drafts at: https://www.sanity.io/manage`)
   
-  return { done, errors, ms, weekNumber }
+  return { done, errors, ms, weekNumber, saved, headlines: saved.slice(0, 20) }
 }

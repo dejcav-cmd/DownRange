@@ -199,5 +199,7 @@ export async function runGOAFeed() {
     total:  all.length,
     source: 'Gun Owners of America',
     ms:     Date.now() - t,
+    headlines: results.map(r => r.title || '').filter(Boolean).slice(0, 20),
+    saved:     results.map(r => r.title || '').filter(Boolean).slice(0, 20),
   }
 }

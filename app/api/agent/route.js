@@ -7,37 +7,65 @@ export const maxDuration = 300  // 5 minutes — required for feed processing
 function formatDetails(feed, result) {
   if (!result) return `${feed} completed`
   const r = result
+
+  // Helper: append headlines list to a summary string
+  const withHeadlines = (summary) => {
+    const titles = r.headlines || r.saved || []
+    if (!titles.length) return summary + ' | None pulled'
+    return summary + ' | ' + titles.slice(0, 15).join(' · ')
+  }
+
   // News feed
-  if (r.done != null && r.total != null && r.withAI != null)
-    return `${r.done} published (${r.withAI} AI-rewritten, ${r.done - r.withAI} raw) of ${r.total} fetched · ${r.dupes || 0} dupes skipped`
+  if (r.done != null && r.total != null && r.withAI != null) {
+    const base = `${r.done} published (${r.withAI} AI, ${r.done - r.withAI} raw) of ${r.total} fetched · ${r.dupes || 0} dupes`
+    return withHeadlines(base)
+  }
+
   // Video feed
   if (r.summary && r.channelLog != null) {
     if (r.fatal) return `FATAL: ${r.fatal}`
     const errSuffix = r.errors?.length ? ` | ${r.errors.length} errors: ${r.errors[0].slice(0,80)}` : ''
-    return r.summary + errSuffix
+    return r.summary + errSuffix + (r.channelLog?.length ? ' | ' + r.channelLog.slice(0,10).join(' · ') : '')
   }
-  // Releases (has saved titles + errors)
-  if (r.done != null && r.failed != null && r.saved != null) {
-    const savedLine = r.saved?.length ? ' | Saved: ' + r.saved.join(', ') : ' | None saved'
-    const errLine   = r.errors?.length ? ' | Errors: ' + r.errors.join('; ') : ''
-    const skipLine  = r.skippedTitles?.length ? ' | Skipped: ' + r.skippedTitles.slice(0,5).join(', ') : ''
-    return `${r.done} saved · ${r.skipped||0} skipped · ${r.failed} failed · ${r.candidates||0} candidates${savedLine}${errLine}${skipLine}`
+
+  // Releases (has saved + skippedTitles + errors)
+  if (r.done != null && r.failed != null && r.candidates != null) {
+    const base = `${r.done} saved · ${r.skipped||0} skipped · ${r.failed} failed · ${r.candidates} candidates`
+    const savedLine   = r.saved?.length       ? ' | Saved: '   + r.saved.slice(0,15).join(' · ')         : ' | None saved'
+    const errLine     = r.errors?.length      ? ' | Errors: '  + r.errors.slice(0,3).join('; ')          : ''
+    const skipLine    = r.skippedTitles?.length ? ' | Skipped: ' + r.skippedTitles.slice(0,5).join(' · ') : ''
+    return base + savedLine + errLine + skipLine
   }
-  // Laws
-  if (r.done != null && r.failed != null)
-    return `${r.done} saved · ${r.failed} failed`
-  // Market
-  if (r.done != null)
-    return `${r.done} items processed`
-  // GOA
-  if (r.saved != null)
-    return `${r.saved} articles saved`
-  // Fallback — readable JSON
+
+  // Laws, GOA, Giveaways, Outdoors, Blog — all now return saved/headlines
+  if (r.done != null && r.failed != null) {
+    const base = `${r.done} saved · ${r.failed} failed`
+    return withHeadlines(base)
+  }
+
+  // GOA specific (done + total)
+  if (r.done != null && r.total != null) {
+    const base = `${r.done} of ${r.total} saved`
+    return withHeadlines(base)
+  }
+
+  // Giveaways / Blog / Outdoors (done + skipped/errors)
+  if (r.done != null && (r.skipped != null || r.errors != null)) {
+    const base = `${r.done} saved · ${r.skipped||0} skipped · ${r.errors?.length||0} errors`
+    return withHeadlines(base)
+  }
+
+  // Market (just done count — calibers)
+  if (r.done != null) {
+    return withHeadlines(`${r.done} items processed`)
+  }
+
+  // Fallback
   return Object.entries(r)
     .filter(([, v]) => typeof v === 'number' || typeof v === 'string')
     .map(([k, v]) => `${k}: ${v}`)
     .join(' · ')
-    .slice(0, 200)
+    .slice(0, 300)
 }
 
 /**

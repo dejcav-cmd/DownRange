@@ -144,6 +144,7 @@ async function runMarketFeed() {
   console.log('[MARKET] Starting market feed...')
   const t = Date.now()
   let done = 0
+  const saved = []
 
   // Parallel fetch all calibers simultaneously (was sequential with 2s sleeps = 14s+ minimum)
   const results = await Promise.allSettled(CALIBERS.map(async caliber => {
@@ -170,7 +171,7 @@ async function runMarketFeed() {
 
   done = results.filter(r => r.status === 'fulfilled' && r.value).length
   console.log(`[MARKET] Done. ${done}/${CALIBERS.length} calibers. ${Date.now() - t}ms`)
-  return { done }
+  return { done, saved, headlines: saved.slice(0, 20) }
 }
 
 // ── YOUTUBE FEED ──────────────────────────────────────────────────────

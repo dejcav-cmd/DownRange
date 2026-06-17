@@ -142,6 +142,7 @@ async function runLawsFeed() {
   console.log('[LAWS] Starting laws feed...')
   const t = Date.now()
   let done = 0, failed = 0
+  const saved = []
 
   // Env var diagnostics — logged every run so cron dashboard shows what is/isn't configured
   const hasCongress  = !!process.env.CONGRESS_GOV_KEY
@@ -163,6 +164,7 @@ async function runLawsFeed() {
       }
       await publishToSanity(item)
       done++
+      saved.push(item.title || item.billNumber || 'Unknown')
     } catch (err) {
       if (!err.message?.includes('already exists') && !err.message?.includes('duplicate')) {
         failed++
@@ -190,6 +192,7 @@ async function runLawsFeed() {
       }
       await publishToSanity(bill)
       done++
+      saved.push(bill.title || bill.billNumber || 'Unknown')
     } catch (err) { failed++; console.error(err.message) }
     await sleep(200)
   }
@@ -220,6 +223,7 @@ async function runLawsFeed() {
           }
           await publishToSanity(bill)
           done++
+          saved.push(bill.title || bill.billNumber || 'Unknown')
         } catch (err) { failed++ }
       }
     }
@@ -227,7 +231,7 @@ async function runLawsFeed() {
   }
 
   console.log(`[LAWS] Done. ${done} published, ${failed} failed. ${Date.now() - t}ms`)
-  return { done, failed }
+  return { done, failed, saved, headlines: saved.slice(0, 20) }
 }
 
 export { runLawsFeed }

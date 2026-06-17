@@ -118,5 +118,5 @@ export async function runOutdoorsFeed() {
 
   const ms = Date.now() - t
   console.log(`[OUTDOORS] Done: ${done} published, ${errors.length} errors in ${ms}ms`)
-  return { done, errors, ms, week: weekNumber }
+  return { done, errors, ms, week: weekNumber, saved, headlines: saved.slice(0, 20) }
 }

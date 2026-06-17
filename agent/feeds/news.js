@@ -703,6 +703,7 @@ async function runNewsFeed() {
     total:    all.length,
     ms:       Date.now() - t,
     claudeUp: !!process.env.ANTHROPIC_API_KEY,
+    headlines: published.map(p => p.title || '').filter(Boolean).slice(0, 20),
   }
   console.log(`[NEWS] ✓ Done: ${published.length} published, ${dupeCount} duped/skipped of ${all.length} fetched. ${summary.ms}ms`)
   if (published.length === 0 && all.length > 0) {
