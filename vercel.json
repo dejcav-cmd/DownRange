@@ -54,7 +54,7 @@
     },
     {
       "path": "/api/nfa-wait-times",
-      "schedule": "0 6 * * *"
+      "schedule": "0 6 * * 1,4"
     },
     {
       "path": "/api/cron/ccw-update",

@@ -146,8 +146,20 @@ function getFallbackData() {
   }
 }
 
-// ── GET: Return latest stored wait times ───────────────────────────────────
+// ── GET: Return latest data OR trigger scrape if called by cron/admin ───────
 export async function GET(req) {
+  const adminKey = req.headers.get('x-admin-key')
+  const isCron   = req.headers.get('x-vercel-cron') === '1'
+  const isAdmin  = adminKey === process.env.ADMIN_KEY
+  const auth     = req.headers.get('authorization')
+  const isBearer = process.env.CRON_SECRET && auth === `Bearer ${process.env.CRON_SECRET}`
+
+  // If called by cron or admin, run the scrape and save
+  if (isCron || isAdmin || isBearer) {
+    return runScrapeAndSave(req)
+  }
+
+  // Otherwise just return stored data (public read)
   try {
     const latest = await sanity.fetch(
       `*[_type == "nfaWaitTime"] | order(fetchedAt desc) [0] {
@@ -161,25 +173,18 @@ export async function GET(req) {
         ok: true,
         data: latest,
         ageHours: Math.round(age / 3600000),
-        stale: age > 25 * 3600000, // stale if > 25 hours
+        stale: age > 96 * 3600000,
       })
     }
 
-    // No stored data — return fallback
     return Response.json({ ok: true, data: getFallbackData(), ageHours: 999, stale: true, fallback: true })
   } catch (e) {
     return Response.json({ ok: true, data: getFallbackData(), ageHours: 999, stale: true, fallback: true })
   }
 }
 
-// ── POST: Trigger a fresh fetch (called by cron or admin) ─────────────────
-export async function POST(req) {
-  const cronAuth = req.headers.get('authorization')
-  const adminKey = req.headers.get('x-admin-key')
-  const isCron   = process.env.CRON_SECRET && cronAuth === `Bearer ${process.env.CRON_SECRET}`
-  const isAdmin  = adminKey === process.env.ADMIN_KEY
-  if (!isCron && !isAdmin) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
+// ── Shared scrape + save logic ────────────────────────────────────────────
+async function runScrapeAndSave(req) {
   const t0 = Date.now()
 
   // Try sources in priority order: ATF official > SilencerShop > fallback
@@ -232,4 +237,14 @@ export async function POST(req) {
     ms:     Date.now() - t0,
     data:   result,
   })
+}
+
+// ── POST: Also trigger scrape (kept for backwards compat) ─────────────────
+export async function POST(req) {
+  const cronAuth = req.headers.get('authorization')
+  const adminKey = req.headers.get('x-admin-key')
+  const isCron   = req.headers.get('x-vercel-cron') === '1' || (process.env.CRON_SECRET && cronAuth === `Bearer ${process.env.CRON_SECRET}`)
+  const isAdmin  = adminKey === process.env.ADMIN_KEY
+  if (!isCron && !isAdmin) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  return runScrapeAndSave(req)
 }
