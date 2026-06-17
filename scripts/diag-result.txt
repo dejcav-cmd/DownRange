@@ -1,27 +1,22 @@
-DEALS IMAGE BACKFILL
+=== FETCHING MISSING GUN.DEALS DOCS ===
+Found 8 gun.deals docs without imageUrl
+  ✗ scrape failed: https://gun.deals/content/coupon-store-vance-outdoorsmonday-june-15-20
+  ✗ scrape failed: https://gun.deals/content/coupon-store-brass-kissesmonday-june-15-2026
+  ✗ scrape failed: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  ✗ scrape failed: https://gun.deals/content/coupon-store-natchez-shooting-outdoorsmonday
+  ✗ scrape failed: https://gun.deals/content/coupon-store-brownellssaturday-june-13-2026
+  ✗ scrape failed: https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  ✗ scrape failed: https://gun.deals/content/coupon-store-sportsmans-outdoor-sswednesday-
+  ✗ scrape failed: https://gun.deals/content/coupon-store-shooters-gatetuesday-june-9-202
 
-Fetching docs without images...
-Found 8 docs without images
-  ✗ mB5SX091O5zS0c2Qu2LW | https://gun.deals/content/coupon-store-vance-outdoorsmonday- - no image
-  ✗ S5bzMTDRifCZEnNLwecf | https://gun.deals/content/coupon-store-brass-kissesmonday-ju - no image
-  ✗ S5bzMTDRifCZEnNLwdRW | https://gun.deals/content/coupon-store-natchez-shooting-outd - no image
-  ✗ S5bzMTDRifCZEnNLwdIV | https://gun.deals/content/coupon-store-natchez-shooting-outd - no image
-  ✗ D3P5Tec7S0NBTLdHDA61 | https://gun.deals/content/coupon-store-brownellssaturday-jun - no image
-  ✗ rhMI06j2e0dNGX3sDIZh | https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-round - no image
-  ✗ SKDVlyMd9FiV3xrtgU2T | https://gun.deals/content/coupon-store-sportsmans-outdoor-ss - no image
-  ✗ QR3knQwiU7hQ2mmjtTwe | https://gun.deals/content/coupon-store-shooters-gatetuesday- - no image
+=== DONE ===
+Attempted:  8
+Scraped:    0
+Downloaded: 0
+Uploaded:   0
+Patched:    0
+Failed:     8
 
-=== BACKFILL COMPLETE ===
-Attempted:    8
-Scraped OK:   0
-Failed scrape:8
-No URL:       0
-Patched:      0
-Patch errors: 0
-
-=== FIXING HTML ENTITIES IN TITLES ===
-Found 1613 docs with HTML entities in title
-  No entity titles found (may use different pattern)
-  No additional entity titles found
-
+=== AMMOLAND MISSING DOCS ===
+Found 0
 ALL DONE
