@@ -151,11 +151,31 @@ export async function POST(req) {
         status:  ok ? 'success' : 'failed',
         ms,
         error:   ok ? null : `HTTP ${res.status}: ${text.slice(0, 200)}`,
-        details: ok ? text.slice(0, 300) : null,
+        details: ok ? details : null,
         trigger: 'manual',
       })
 
-      return Response.json({ ok, ms, status: res.status, response: text.slice(0, 500) })
+      // Try to parse job response to extract structured details
+      let details = null
+      let parsedResponse = null
+      try {
+        parsedResponse = JSON.parse(text)
+        // Extract key metrics from job response
+        const r = parsedResponse
+        const parts = []
+        if (r.discovered != null) parts.push(`discovered:${r.discovered}`)
+        if (r.created != null)    parts.push(`created:${r.created}`)
+        if (r.skipped != null)    parts.push(`skipped:${r.skipped}`)
+        if (r.failed != null)     parts.push(`failed:${r.failed}`)
+        if (r.done != null)       parts.push(`done:${r.done}`)
+        if (r.saved?.length)      parts.push(`saved:${r.saved.slice(0,5).join(', ')}`)
+        if (r.message)            parts.push(r.message.slice(0, 200))
+        details = parts.join(' | ').slice(0, 500) || text.slice(0, 300)
+      } catch {
+        details = text.slice(0, 300)
+      }
+      
+      return Response.json({ ok, ms, status: res.status, response: text.slice(0, 500), details })
     } catch (e) {
       const ms = Date.now() - t0
       await reportCronRun(jobId, { status: 'failed', ms, error: e.message, trigger: 'manual' })

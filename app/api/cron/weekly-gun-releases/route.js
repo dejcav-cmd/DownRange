@@ -89,25 +89,31 @@ async function extractAndWrite(title, desc, link) {
     const brand = title.split(/\s+/).find(w => w.length > 3) || 'Unknown'
     return null
   }
-  const prompt = `You are a DownRange firearms editor. Given this article, extract product data and write an original article.
+  const prompt = `You are a DownRange firearms editor. Extract product data from this article.
 
 Title: ${title}
-Excerpt: ${desc.slice(0,800)}
+Excerpt: ${desc.slice(0,600)}
 Source: ${link}
 
-Return ONLY this JSON (no markdown fences):
+CRITICAL RULES:
+- If this is NOT about a SPECIFIC named firearm product being newly released or announced, return: {"skip":true}
+- The "model" field must be a REAL GUN MODEL NAME (e.g. G19, P365 XMacro, Omega 9K) NOT a news headline
+- Do NOT use attorney names, lawsuit names, political terms, or event titles as model names
+- If you cannot identify a clear brand + specific model name, return: {"skip":true}
+
+Return ONLY this JSON (no markdown fences, no preamble):
 {
-  "brand": "manufacturer name",
-  "model": "exact model",
-  "category": "Pistol|Rifle|Shotgun|Revolver|Suppressor|Optic|Accessory",
-  "caliber": "e.g. 9mm or null",
+  "brand": "Exact manufacturer name e.g. Glock, SIG Sauer, Smith and Wesson",
+  "model": "Exact product model designation only e.g. G47 MOS, P365-XMACRO Comp, Omega 9K",
+  "category": "Pistol or Rifle or Shotgun or Revolver or Suppressor or Optic or Accessory",
+  "caliber": "e.g. 9mm Luger or null",
   "msrp": 0,
-  "summary": "2-3 sentences, specific, direct, for serious gun owners",
-  "body": "400-600 word HTML article with <h2> sections. Original prose.",
-  "specs": [{"label":"Barrel","value":"4in"}],
+  "summary": "2-3 sentences about this specific product. Specs, features, who it is for. No filler.",
+  "body": "<h2>Overview</h2><p>...</p><h2>Key Features</h2><p>...</p><h2>Bottom Line</h2><p>...</p>",
+  "specs": [{"label": "Barrel Length", "value": "4.02 in"}],
   "skip": false
 }
-If this is NOT a new product announcement, set skip:true.`
+If not a specific new product announcement: {"skip":true}`
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
@@ -193,12 +199,42 @@ async function isDuplicate(brand, model) {
 }
 
 // ── SAVE ──────────────────────────────────────────────────────────────────────
+async function fetchOgImage(url) {
+  try {
+    const r = await fetch(url, {
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!r.ok) return null
+    const html = await r.text()
+    const og = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i)
+             || html.match(/<meta[^>]+content="([^"]+)"[^>]+property="og:image"/i)
+    return og?.[1] || null
+  } catch { return null }
+}
+
+// Category-based fallback images hosted on DownRange
+const CATEGORY_IMAGES = {
+  Pistol:      'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=800&q=80',
+  Rifle:       'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+  Shotgun:     'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+  Suppressor:  'https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=800&q=80',
+  Revolver:    'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=800&q=80',
+  Optic:       'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
+  Accessory:   'https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=800&q=80',
+}
+
 async function saveRelease(extracted, sourceUrl, pubDate) {
   const slug = extracted.title
     ? extracted.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)
     : (extracted.brand+'-'+extracted.model).toLowerCase().replace(/[^a-z0-9]+/g,'-')
   const _id = 'release-' + crypto.createHash('md5')
     .update((extracted.brand+extracted.model).toLowerCase()).digest('hex').slice(0,12)
+
+  // Try to get OG image from source URL, fall back to category image
+  const imageUrl = await fetchOgImage(sourceUrl)
+    || CATEGORY_IMAGES[extracted.category]
+    || CATEGORY_IMAGES.Pistol
 
   return sanity.createOrReplace({
     _id, _type: 'firearmRelease',
@@ -211,6 +247,7 @@ async function saveRelease(extracted, sourceUrl, pubDate) {
     msrp:     extracted.msrp     || 0,
     summary:  extracted.summary  || '',
     body:     extracted.body     || null,
+    imageUrl,
     specs:    (extracted.specs||[]).map(s=>({
       _type:'object', _key:s.label.toLowerCase().replace(/\s+/g,'-'), label:s.label, value:s.value
     })),
