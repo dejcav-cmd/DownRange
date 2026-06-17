@@ -26,14 +26,14 @@ function isAuthorized(req) {
     || admin === process.env.ADMIN_KEY
 }
 
-// ── PARSE RSS/ATOM FEED (native fetch, no rss-parser) ─────────────────────────
-async function parseFeed(url) {
+// ── PARSE RSS FEED ────────────────────────────────────────────────────────────
+async function parseFeed(url, label='') {
   try {
     const r = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
-      signal: AbortSignal.timeout(10000),
+      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0 +https://downrangeco.com)' },
+      signal: AbortSignal.timeout(12000),
     })
-    if (!r.ok) { console.log(`[RELEASES] Feed ${url} returned ${r.status}`); return [] }
+    if (!r.ok) { console.log(`[RELEASES] ${label} returned ${r.status}`); return [] }
     const xml = await r.text()
     const items = []
     const rx = /<item[^>]*>([\s\S]*?)<\/item>/gi
@@ -44,265 +44,117 @@ async function parseFeed(url) {
       const link    = (b.match(/<link[^>]*>([\s\S]*?)<\/link>/)                                  ||[])[1]?.trim()
                    || (b.match(/<guid[^>]*>(https?[^<]+)<\/guid>/)                               ||[])[1]?.trim()||''
       const desc    = (b.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/)  ||[])[1]
-                       ?.replace(/<[^>]+>/g,'').slice(0,400).trim()||''
+                       ?.replace(/<[^>]+>/g,'').slice(0,500).trim()||''
       const pubDate = (b.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/)                            ||[])[1]?.trim()||''
       if (title && link) items.push({ title, link, desc, pubDate })
     }
     return items
   } catch(e) {
-    console.log(`[RELEASES] Feed error ${url}: ${e.message}`)
+    console.log(`[RELEASES] Feed error ${label}: ${e.message}`)
     return []
   }
 }
 
-// ── GOOGLE NEWS RSS (no blocking, no auth) ────────────────────────────────────
-async function fetchGoogleNews(query) {
-  const url = `https://news.google.com/rss/search?q=${encodeURIComponent(query)}&hl=en-US&gl=US&ceid=US:en`
-  return parseFeed(url)
+// ── CURATED SOURCES: Gun media + manufacturer PRN feeds ───────────────────────
+// These are ONLY gun-specific sources — no general news that mentions gun brands
+const SOURCES = [
+  // Gun media — dedicated firearms coverage only
+  { url: 'https://www.thetruthaboutguns.com/feed/',         label: 'TTAG' },
+  { url: 'https://www.ammoland.com/feed/',                  label: 'AmmoLand' },
+  { url: 'https://www.guns.com/feed',                       label: 'Guns.com' },
+  { url: 'https://www.gunsandammo.com/feed/',               label: 'GunsAndAmmo' },
+  { url: 'https://www.pewpewtactical.com/feed/',            label: 'PewPewTactical' },
+  { url: 'https://www.shootingillustrated.com/feed/',       label: 'ShootingIllustrated' },
+  { url: 'https://www.americanrifleman.org/feed/',          label: 'AmericanRifleman' },
+  { url: 'https://www.handgunsmag.com/feed/',               label: 'Handguns' },
+  { url: 'https://www.rifleshootermag.com/feed/',           label: 'RifleShooter' },
+  { url: 'https://www.outdoorlife.com/guns/feed/',          label: 'OutdoorLife' },
+  { url: 'https://www.fieldandstream.com/guns/feed/',       label: 'FieldAndStream' },
+  // PRNewswire gun manufacturer keywords
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=firearms', label: 'PRN-firearms' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=pistol',   label: 'PRN-pistol' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=rifle',    label: 'PRN-rifle' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=shotgun',  label: 'PRN-shotgun' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=suppressor', label: 'PRN-suppressor' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Glock',   label: 'PRN-Glock' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=SIG+Sauer', label: 'PRN-SIG' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Smith+Wesson', label: 'PRN-SW' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Ruger',   label: 'PRN-Ruger' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Springfield+Armory', label: 'PRN-Springfield' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Daniel+Defense', label: 'PRN-DD' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Mossberg', label: 'PRN-Mossberg' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Taurus',  label: 'PRN-Taurus' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Canik',   label: 'PRN-Canik' },
+  { url: 'https://www.prnewswire.com/rss/news-releases-list.rss?d=rss&kw=Walther',  label: 'PRN-Walther' },
+  // BusinessWire
+  { url: 'https://feed.businesswire.com/rss/home/?rss=G22&rssid=firearms', label: 'BW-firearms' },
+]
+
+// Hard blacklist — domains that NEVER produce gun release content
+const BLACKLIST_DOMAINS = [
+  'economictimes','indiatimes','timesofindia','ndtv','hindustantimes','deccanherald',
+  'moneycontrol','financialexpress','livemint','theprint','scroll.in','thewire',
+  'dailymail','theguardian','bbc.','cnn.','foxnews','msnbc','npr.org',
+  'yahoo.com/news','msn.com','reddit.com','facebook.com','twitter.com',
+  'horoscope','astrology','zodiac',
+]
+
+// Patterns that definitively mark an article as NOT a gun product release
+const JUNK_PATTERNS = [
+  /horoscope/i, /astrology/i, /zodiac/i, /born on/i,
+  /family feud/i, /game show/i, /tv show/i, /television/i,
+  /ford f-150/i, /toyota/i, /honda civic/i, /chevrolet/i, /automobile/i,
+  /socom contract/i, /military contract/i, /department of defense/i,
+  /attorney general/i, /commonwealth attorney/i, /district attorney/i,
+  /senator/i, /congressman/i, /legislation/i, /vote on/i,
+  /nra convention speech/i, /gun violence/i, /mass shooting/i,
+  /stock market/i, /earnings report/i, /quarterly results/i,
+  /march \d|april \d|may \d|june \d|july \d|august \d|sept \d|oct \d|nov \d|dec \d/i,  // date-specific news
+]
+
+function isBlacklisted(url) {
+  const u = (url || '').toLowerCase()
+  return BLACKLIST_DOMAINS.some(d => u.includes(d))
 }
 
-// ── SIGNAL DETECTION ──────────────────────────────────────────────────────────
-const SIGNALS = ['new ','release','launch','introduces','announced','unveiled','debuts',
-  'ships','available now','first look','new model','new pistol','new rifle','new shotgun','new suppressor']
-const SKIP    = ['recall','lawsuit','earnings','quarterly','hiring','scholarship','sale ends']
-const BRANDS  = ['Glock','SIG Sauer','Smith & Wesson','Ruger','Springfield Armory','Taurus',
-  'Canik','Staccato','Shadow Systems','Walther','CZ','HK','Beretta','Kimber','Wilson Combat',
-  'Daniel Defense','Aero Precision','LWRC','Christensen Arms','Savage','Tikka','Mossberg',
-  'Winchester','Browning','Benelli','SilencerCo','Dead Air','Holosun','Trijicon','Vortex',
-  'Leupold','Magpul','Geissele','Surefire','Streamlight','Maxim Defense','IWI','ZEV Technologies',
-  'Nighthawk','Fusion Firearms','BCM','Barrett','Radian','LaRue','CMMG','Troy Industries']
-
-function isRelease(title, desc) {
-  const t = (title+' '+desc).toLowerCase()
-  return SIGNALS.some(k=>t.includes(k)) && !SKIP.some(k=>t.includes(k))
-}
-function detectBrand(text) {
-  const t = text.toLowerCase()
-  return BRANDS.find(b => t.includes(b.toLowerCase())) || null
+function isJunk(title, desc) {
+  const text = `${title} ${desc}`
+  return JUNK_PATTERNS.some(rx => rx.test(text))
 }
 
-// ── AI EXTRACT + WRITE ────────────────────────────────────────────────────────
-async function extractAndWrite(title, desc, link) {
-  if (!process.env.ANTHROPIC_API_KEY) {
-    console.log('[RELEASES] No ANTHROPIC_API_KEY — cannot extract, skipping')
-    // Create a basic release without AI when key is missing
-    const brand = title.split(/\s+/).find(w => w.length > 3) || 'Unknown'
-    return null
-  }
-  const prompt = `You are a DownRange firearms editor. Extract product data from this article.
-
-Title: ${title}
-Excerpt: ${desc.slice(0,600)}
-Source: ${link}
-
-CRITICAL RULES:
-- If this is NOT about a SPECIFIC named firearm product being newly released or announced, return: {"skip":true}
-- The "model" field must be a REAL GUN MODEL NAME (e.g. G19, P365 XMacro, Omega 9K) NOT a news headline
-- Do NOT use attorney names, lawsuit names, political terms, or event titles as model names
-- If you cannot identify a clear brand + specific model name, return: {"skip":true}
-
-Return ONLY this JSON (no markdown fences, no preamble):
-{
-  "brand": "Exact manufacturer name e.g. Glock, SIG Sauer, Smith and Wesson",
-  "model": "Exact product model designation only e.g. G47 MOS, P365-XMACRO Comp, Omega 9K",
-  "category": "Pistol or Rifle or Shotgun or Revolver or Suppressor or Optic or Accessory",
-  "caliber": "e.g. 9mm Luger or null",
-  "msrp": 0,
-  "summary": "2-3 sentences about this specific product. Specs, features, who it is for. No filler.",
-  "body": "<h2>Overview</h2><p>...</p><h2>Key Features</h2><p>...</p><h2>Bottom Line</h2><p>...</p>",
-  "specs": [{"label": "Barrel Length", "value": "4.02 in"}],
-  "skip": false
-}
-If not a specific new product announcement: {"skip":true}`
-
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1500,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-      signal: AbortSignal.timeout(30000),
-    })
-    const data  = await res.json()
-    const raw   = data.content?.[0]?.text || '{}'
-    const clean = raw.replace(/^```[a-z]*\s*/i,'').replace(/\s*```\s*$/i,'').trim()
-    const parsed = JSON.parse(clean)
-    return parsed.skip ? null : parsed
-  } catch(e) {
-    console.error('[RELEASES] AI error:', e.message)
-    return null
-  }
-}
-
-// ── FALLBACK: Create basic release without AI ─────────────────────────────
-function createBasicRelease(title, desc, link, brand) {
-  // Remove brand from title to extract model
-  const cleanTitle = title.replace(new RegExp(brand.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'), 'gi'), '').trim()
-  
-  // Extract model: take meaningful words after removing brand, source attribution, and common noise
-  const noiseWords = new Set(['announces','launches','introduces','unveils','debuts','releases','new',
-    'the','a','an','and','for','with','in','on','at','by','from','to','of','gun','firearm','rifle',
-    'pistol','shotgun','review','–','-','|',':','first','look','hands','report','says','atf','nfa'])
-  
-  const modelWords = cleanTitle
-    .split(/[\s\-–|:]+/)
-    .filter(w => w.length > 1 && !noiseWords.has(w.toLowerCase()) && !/^(www\.|http)/i.test(w))
-    .slice(0, 4)
-  
-  const model = modelWords.join(' ').replace(/[^a-zA-Z0-9\s\-\.]/g, '').trim()
-  
-  if (!model || model.length < 2) return { skip: true }
-
-  const categoryMap = {
-    suppressor: 'Suppressor', silencer: 'Suppressor', can: 'Suppressor',
-    pistol: 'Pistol', handgun: 'Pistol', 'semi-auto': 'Pistol',
-    rifle: 'Rifle', carbine: 'Rifle', 'ar-15': 'Rifle', 'ak-47': 'Rifle',
-    shotgun: 'Shotgun', revolver: 'Revolver', sbr: 'Rifle',
-  }
-  const text = (title + ' ' + desc).toLowerCase()
-  const category = Object.entries(categoryMap).find(([k]) => text.includes(k))?.[1] || 'Pistol'
-  
-  // Extract caliber if present
-  const caliberMatch = (title + ' ' + desc).match(/\.\d+|\d+mm|\d+x\d+|5\.56|6\.5|6\.8|\.308|\.223|\.22|9mm|10mm|45 ?acp|40 ?s&?w/i)
-  const caliber = caliberMatch?.[0] || null
-  
-  return {
-    brand,
-    model,
-    category,
-    caliber,
-    msrp: 0,
-    title: `${brand} ${model}: New ${category} Release`,
-    summary: desc.slice(0, 280).trim() || `${brand} announces the new ${model} ${category.toLowerCase()}.`,
-    body: `<h2>Overview</h2><p>${desc.slice(0, 600)}</p><h2>Details</h2><p>Read the full announcement at the source link below for complete specifications and pricing information.</p>`,
-    specs: caliber ? [{ label: 'Caliber', value: caliber }] : [],
-    skip: false,
-  }
-}
-
-// ── DEDUP ─────────────────────────────────────────────────────────────────────
-async function isDuplicate(brand, model) {
-  try {
-    const n = await sanity.fetch(
-      `count(*[_type=="firearmRelease" && brand==$brand && model==$model])`,
-      { brand, model }
-    )
-    return n > 0
-  } catch { return false }
-}
-
-// ── SAVE ──────────────────────────────────────────────────────────────────────
-async function fetchOgImage(url) {
-  try {
-    const r = await fetch(url, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0)' },
-      signal: AbortSignal.timeout(8000),
-    })
-    if (!r.ok) return null
-    const html = await r.text()
-    const og = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i)
-             || html.match(/<meta[^>]+content="([^"]+)"[^>]+property="og:image"/i)
-    return og?.[1] || null
-  } catch { return null }
-}
-
-// Category-based fallback images hosted on DownRange
-const CATEGORY_IMAGES = {
-  Pistol:      'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=800&q=80',
-  Rifle:       'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
-  Shotgun:     'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
-  Suppressor:  'https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=800&q=80',
-  Revolver:    'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=800&q=80',
-  Optic:       'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=800&q=80',
-  Accessory:   'https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=800&q=80',
-}
-
-async function saveRelease(extracted, sourceUrl, pubDate) {
-  const slug = extracted.title
-    ? extracted.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)
-    : (extracted.brand+'-'+extracted.model).toLowerCase().replace(/[^a-z0-9]+/g,'-')
-  const _id = 'release-' + crypto.createHash('md5')
-    .update((extracted.brand+extracted.model).toLowerCase()).digest('hex').slice(0,12)
-
-  // Try to get OG image from source URL, fall back to category image
-  const imageUrl = await fetchOgImage(sourceUrl)
-    || CATEGORY_IMAGES[extracted.category]
-    || CATEGORY_IMAGES.Pistol
-
-  return sanity.createOrReplace({
-    _id, _type: 'firearmRelease',
-    title:    extracted.title || `${extracted.brand} ${extracted.model}`,
-    slug:     { _type:'slug', current:slug },
-    brand:    extracted.brand,
-    model:    extracted.model,
-    category: extracted.category || 'Pistol',
-    caliber:  extracted.caliber  || null,
-    msrp:     extracted.msrp     || 0,
-    summary:  extracted.summary  || '',
-    body:     extracted.body     || null,
-    imageUrl,
-    specs:    (extracted.specs||[]).map(s=>({
-      _type:'object', _key:s.label.toLowerCase().replace(/\s+/g,'-'), label:s.label, value:s.value
-    })),
-    sourceUrl,
-    isJustDropped:   true,
-    approved:        true,
-    qualityReviewed: true,
-    publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
-  })
-}
-
-// ── MAIN ──────────────────────────────────────────────────────────────────────
-export async function GET(req) {
-  if (!isAuthorized(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
-
-  const t0 = Date.now()
-  let created = 0, skipped = 0, failed = 0
-  const saved = [], errors = [], seenKeys = new Set()
-
-  // Google News queries — broad + brand-specific
-  const queries = [
-    'new firearm release 2026', 'new pistol announced 2026', 'new rifle 2026',
-    'new shotgun 2026', 'new suppressor 2026', 'gun manufacturer new model 2026',
-    'Glock new 2026', 'SIG Sauer new 2026', 'Smith Wesson new 2026',
-    'Springfield Armory new 2026', 'Ruger new 2026', 'Taurus new 2026',
-    'Canik new 2026', 'Walther new 2026', 'CZ new pistol 2026',
-    'Daniel Defense new 2026', 'Christensen Arms new 2026',
-    'Mossberg new 2026', 'Savage Arms new 2026', 'Tikka new rifle 2026',
-    'SilencerCo new 2026', 'Dead Air new 2026',
-    'Holosun new optic 2026', 'Trijicon new 2026',
-    'ammoland new gun', 'thetruthaboutguns new firearm', 'pewpewtactical new gun',
-  ]
-
-  console.log(`[RELEASES] Starting — ${queries.length} queries, ANTHROPIC_KEY=${!!process.env.ANTHROPIC_API_KEY}`)
+  console.log(`[RELEASES] Starting — ${SOURCES.length} curated sources, ANTHROPIC_KEY=${!!process.env.ANTHROPIC_API_KEY}`)
 
   const allItems = []
   const seenUrls = new Set()
 
-  for (const query of queries) {
-    const items = await fetchGoogleNews(query)
-    for (const item of items) {
-      if (!item.link || seenUrls.has(item.link)) continue
-      if (!isRelease(item.title, item.desc)) continue
-      seenUrls.add(item.link)
-      allItems.push(item)
+  // Fetch all curated sources in parallel batches
+  for (let i = 0; i < SOURCES.length; i += 5) {
+    const batch = SOURCES.slice(i, i + 5)
+    const results = await Promise.all(batch.map(s => parseFeed(s.url, s.label)))
+    for (let j = 0; j < batch.length; j++) {
+      let added = 0
+      for (const item of results[j]) {
+        if (!item.link || seenUrls.has(item.link)) continue
+        if (isBlacklisted(item.link)) continue
+        if (isJunk(item.title, item.desc)) continue
+        if (!isRelease(item.title, item.desc)) continue
+        seenUrls.add(item.link)
+        allItems.push({ ...item, feedSource: batch[j].label })
+        added++
+      }
+      if (added) console.log(`[RELEASES] ${batch[j].label}: +${added}`)
     }
     await sleep(200)
   }
 
-  console.log(`[RELEASES] ${allItems.length} candidates from Google News`)
+  console.log(`[RELEASES] ${allItems.length} total candidates from ${SOURCES.length} curated gun sources`)
 
   const cutoff = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000)
 
-  // Pre-filter: only items with a known brand, within cutoff
+  // Pre-filter: known brand + within cutoff + not junk
   const brandedItems = allItems.filter(item => {
+    if (isBlacklisted(item.link)) return false
+    if (isJunk(item.title, item.desc)) return false
     const brand = detectBrand(item.title + ' ' + item.desc)
     if (!brand) return false
     const pub = item.pubDate ? new Date(item.pubDate) : null
