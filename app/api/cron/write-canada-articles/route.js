@@ -1,29 +1,35 @@
-// Weekly cron: writes 10 Canada articles every Monday at 10am UTC
-// Calls the admin route with cron auth
 export const dynamic = 'force-dynamic'
-import { reportCronRun } from '@/lib/cronReporter'
 export const maxDuration = 300
+import { reportCronRun } from '@/lib/cronReporter'
+import { POST as writeCanada } from '@/app/api/admin/write-canada-articles/route'
 
 export async function GET(req) {
   const auth   = req.headers.get('authorization')
   const secret = process.env.CRON_SECRET
-  if (secret && auth !== 'Bearer ' + secret) {
+  const isCron = req.headers.get('x-vercel-cron') === '1'
+  const isAdmin = req.headers.get('x-admin-key') === process.env.ADMIN_KEY
+  if (!isCron && !(secret && auth === 'Bearer ' + secret) && !isAdmin) {
     return Response.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // Call the admin route with admin key
-  const origin = process.env.VERCEL_URL
-    ? `https://${process.env.VERCEL_URL}`
-    : 'https://downrangeco.com'
-
-  const res = await fetch(`${origin}/api/admin/write-canada-articles`, {
-    method: 'POST',
-    headers: { 'x-admin-key': process.env.ADMIN_KEY || '', 'Content-Type': 'application/json' },
-    body: JSON.stringify({ limit: 10 }),
-  })
-  const d = await res.json()
-  const t1 = Date.now()
-  const created = (d.results||[]).filter(r=>r.status==='created').length
-  await reportCronRun('write-canada-articles', { status: d.ok ? 'success' : 'failed', ms: t1, details: 'Created ' + created + ' articles' }).catch(()=>{})
-  return Response.json({ ok: true, cron: 'write-canada-articles', ...d })
+  const t0 = Date.now()
+  try {
+    const fakeReq = new Request('https://downrangeco.com/api/admin/write-canada-articles', {
+      method: 'POST',
+      headers: { 'x-admin-key': process.env.ADMIN_KEY || '', 'Content-Type': 'application/json' },
+      body: JSON.stringify({ limit: 10 }),
+    })
+    const res = await writeCanada(fakeReq)
+    const d = await res.json().catch(() => ({}))
+    const ms = Date.now() - t0
+    const created = (d.results||[]).filter(r => r.status === 'created').length
+    const titles = (d.results||[]).filter(r => r.status === 'created').map(r => r.title || r.slug || 'Unknown').join(', ')
+    const details = created + ' articles created' + (titles ? ' | ' + titles : '')
+    await reportCronRun('write-canada', { status: d.ok ? 'success' : 'failed', ms, details }).catch(() => {})
+    return Response.json({ ok: true, created, details, ...d })
+  } catch (err) {
+    const ms = Date.now() - t0
+    await reportCronRun('write-canada', { status: 'failed', ms, error: err.message }).catch(() => {})
+    return Response.json({ ok: false, error: err.message }, { status: 500 })
+  }
 }

@@ -106,8 +106,11 @@ async function tryFetchPrice(url, planName) {
 
 export async function GET(req) {
   const { searchParams } = new URL(req.url)
-  const key = req.headers.get('x-admin-key') || searchParams.get('key')
-  if (key !== ADMIN_KEY) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  const key    = req.headers.get('x-admin-key') || searchParams.get('key')
+  const auth   = req.headers.get('authorization')
+  const isCron = req.headers.get('x-vercel-cron') === '1'
+  const isBearer = process.env.CRON_SECRET && auth === 'Bearer ' + process.env.CRON_SECRET
+  if (!isCron && !isBearer && key !== ADMIN_KEY) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const results = []
   let updated = 0

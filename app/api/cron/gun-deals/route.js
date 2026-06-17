@@ -181,8 +181,9 @@ export async function GET(req) {
   const auth       = req.headers.get('authorization')
   const adminKey   = req.headers.get('x-admin-key')
   const isCron     = cronSecret && auth === 'Bearer ' + cronSecret
+  const isVercel   = req.headers.get('x-vercel-cron') === '1'
   const isAdmin    = adminKey === ADMIN_KEY
-  if (!isCron && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!isCron && !isVercel && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const t0    = Date.now()
   const stats = { fetched: 0, added: 0, skipped: 0, imaged: 0, healed: 0 }

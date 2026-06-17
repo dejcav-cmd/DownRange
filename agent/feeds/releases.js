@@ -28,7 +28,7 @@ const sanity = createClient({
 
 const parser = new Parser({ timeout: 8000 })
 
-const MAX_PER_RUN = 15
+const MAX_PER_RUN = 25
 const RATE_MS     = 1000
 
 // ── PRODUCT SIGNAL KEYWORDS ──────────────────────────────────────────────────
@@ -84,26 +84,58 @@ async function fetchGoogleNews(query) {
 
 async function fetchAllGoogleNews() {
   const queries = [
-    // Major manufacturer new product queries
+    // Generic release searches
     'new firearm release 2026',
     'new pistol announced 2026',
     'new rifle released 2026',
-    'new shotgun 2026 announced',
-    'new suppressor announced 2026',
-    // Brand-specific
+    'new shotgun 2026',
+    'new suppressor 2026',
+    'new revolver 2026',
+    'gun announces new model 2026',
+    'firearm unveiled 2026',
+    // Major handgun manufacturers
     'Glock new pistol 2026',
     'SIG Sauer new model 2026',
     'Smith Wesson new gun 2026',
     'Springfield Armory new 2026',
     'Ruger new firearm 2026',
-    'Mossberg new shotgun 2026',
     'Taurus new pistol 2026',
     'Canik new pistol 2026',
     'Staccato new 2026',
     'Shadow Systems new 2026',
-    'Fusion Firearms new 2026',
-    'SilencerCo new suppressor 2026',
+    'Walther new pistol 2026',
+    'CZ new pistol 2026',
+    'HK new firearm 2026',
+    'Beretta new pistol 2026',
+    'Kimber new 2026',
+    'Wilson Combat new 2026',
+    'Nighthawk Custom new 2026',
+    // Rifle manufacturers
     'Daniel Defense new rifle 2026',
+    'Aero Precision new rifle 2026',
+    'LWRC new rifle 2026',
+    'BCM Bravo Company new 2026',
+    'Christensen Arms new rifle 2026',
+    'Savage Arms new rifle 2026',
+    'Tikka new rifle 2026',
+    'Mossberg new firearm 2026',
+    'Winchester new rifle 2026',
+    'Browning new firearm 2026',
+    'Benelli new shotgun 2026',
+    // Suppressors & accessories
+    'SilencerCo new suppressor 2026',
+    'Dead Air new suppressor 2026',
+    'Griffin Armament new 2026',
+    'Maxim Defense new 2026',
+    // Optics
+    'Holosun new optic 2026',
+    'Trijicon new optic 2026',
+    'Vortex new scope 2026',
+    // Recent news sources
+    'ammoland new gun release',
+    'thetruthaboutguns new firearm',
+    'guns.com new release',
+    'gunsandammo new gun',
   ]
 
   const results = []
