@@ -16,7 +16,14 @@ function formatDetails(feed, result) {
     const errSuffix = r.errors?.length ? ` | ${r.errors.length} errors: ${r.errors[0].slice(0,80)}` : ''
     return r.summary + errSuffix
   }
-  // Laws, releases
+  // Releases (has saved titles + errors)
+  if (r.done != null && r.failed != null && r.saved != null) {
+    const savedLine = r.saved?.length ? ' | Saved: ' + r.saved.join(', ') : ' | None saved'
+    const errLine   = r.errors?.length ? ' | Errors: ' + r.errors.join('; ') : ''
+    const skipLine  = r.skippedTitles?.length ? ' | Skipped: ' + r.skippedTitles.slice(0,5).join(', ') : ''
+    return `${r.done} saved · ${r.skipped||0} skipped · ${r.failed} failed · ${r.candidates||0} candidates${savedLine}${errLine}${skipLine}`
+  }
+  // Laws
   if (r.done != null && r.failed != null)
     return `${r.done} saved · ${r.failed} failed`
   // Market

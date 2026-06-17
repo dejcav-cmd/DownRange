@@ -310,6 +310,9 @@ export async function runReleasesFeed() {
   console.log('[RELEASES v4] Starting...')
   const t0 = Date.now()
   let done = 0, failed = 0, skipped = 0
+  const saved   = []  // titles of saved releases
+  const errors  = []  // error messages
+  const skippedTitles = []
   seenInRun.clear()
 
   // Source 1: Fusion Firearms (direct scrape — always works)
@@ -325,7 +328,7 @@ export async function runReleasesFeed() {
 
   for (const item of allItems) {
     if (done >= MAX_PER_RUN) break
-    if (!item.title || !item.link) { skipped++; continue }
+    if (!item.title || !item.link) { skipped++; skippedTitles.push('(no title)'); continue }
 
     const mfr = item.brand ? { brand:item.brand, notes:item.notes||'' } : matchManufacturer(item.title + ' ' + (item.description||''))
 
@@ -335,24 +338,44 @@ export async function runReleasesFeed() {
 
     // Claude extract + write
     const extracted = await extractAndWrite(item.title, combined, item.link, mfr)
-    if (!extracted || extracted.skip) { skipped++; continue }
+    if (!extracted || extracted.skip) {
+      skipped++
+      skippedTitles.push(item.title.slice(0, 80) + ' [AI skip]')
+      continue
+    }
 
     // Dedup
-    if (await isDuplicate(item.link, extracted.brand, extracted.model)) { skipped++; continue }
+    if (await isDuplicate(item.link, extracted.brand, extracted.model)) {
+      skipped++
+      skippedTitles.push(`${extracted.brand} ${extracted.model} [dupe]`)
+      continue
+    }
 
     // Save
     try {
       await saveRelease(extracted, item.link, imageUrl, item.pubDate)
       done++
+      saved.push(`${extracted.brand} — ${extracted.model}`)
       console.log(`[RELEASES v4] ✓ ${extracted.brand} — ${extracted.model}`)
     } catch (e) {
       failed++
+      errors.push(`${extracted.brand} ${extracted.model}: ${e.message}`)
       console.error(`[RELEASES v4] Save failed: ${e.message}`)
     }
 
     await sleep(RATE_MS)
   }
 
-  console.log(`[RELEASES v4] Done: ${done} saved, ${skipped} skipped, ${failed} failed. ${Date.now()-t0}ms`)
-  return { done, failed, skipped }
+  const ms = Date.now() - t0
+  console.log(`[RELEASES v4] Done: ${done} saved, ${skipped} skipped, ${failed} failed. ${ms}ms`)
+  console.log(`[RELEASES v4] Saved: ${saved.join(' | ') || 'none'}`)
+  if (errors.length) console.log(`[RELEASES v4] Errors: ${errors.join(' | ')}`)
+
+  return {
+    done, failed, skipped, ms,
+    saved,          // array of "Brand — Model" strings
+    errors,         // array of error strings
+    skippedTitles,  // array of skipped reasons
+    candidates: allItems.length,
+  }
 }

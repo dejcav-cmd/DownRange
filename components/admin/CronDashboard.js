@@ -140,7 +140,7 @@ function LogRow({ run }) {
             ))}
             {/* Show remainder of details not captured in chips */}
             {run.details && !chips.length && (
-              <span style={{color:'#4b5563',fontSize:10}}>{run.details.slice(0,100)}</span>
+              <span style={{color:'#4b5563',fontSize:10}}>{run.details}</span>
             )}
           </>
         ) : (
@@ -403,7 +403,7 @@ export default function CronDashboard({ adminKey }) {
                                   {[
                                     `[${fmtTime(lastRun.at)}] ${lastRun.status.toUpperCase()} in ${fmtMs(lastRun.ms)}`,
                                     lastRun.trigger === 'manual' ? '[MANUAL TRIGGER]' : '[CRON]',
-                                    lastRun.details ? `\n${lastRun.details}` : '',
+                                    lastRun.details ? `\n${lastRun.details}` : '\n(no details recorded)',
                                     lastRun.error   ? `\nERROR: ${lastRun.error}` : '',
                                   ].filter(Boolean).join('\n')}
                                 </div>
