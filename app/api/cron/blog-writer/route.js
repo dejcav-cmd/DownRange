@@ -305,3 +305,5 @@ export async function GET(req) {
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
   }
 }
+
+export async function POST(req) { return GET(req) }

@@ -125,7 +125,11 @@ export async function POST(req) {
     const baseUrl = 'https://www.downrangeco.com'
 
     const t0  = Date.now()
-    const isGet = job.path.includes('?feed=') || job.path === '/api/site-health' || job.path === '/api/nfa-wait-times'
+    // Routes that only export GET (not POST)
+    // All cron paths use GET — POST only for specific admin write routes
+    // Default to GET for all /api/cron/ routes and agent feeds
+    const FORCE_POST_PATHS = [] // currently none need forced POST
+    const isGet = !FORCE_POST_PATHS.some(p => job.path.startsWith(p))
 
     try {
       const res = await fetch(`${baseUrl}${job.path}`, {

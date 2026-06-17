@@ -148,3 +148,5 @@ export async function GET(req) {
       : 'All plan prices current within 5% tolerance.',
   })
 }
+
+export async function POST(req) { return GET(req) }
