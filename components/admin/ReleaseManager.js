@@ -16,19 +16,20 @@ const FIELDS = [
 
 export default function ReleaseManager({ adminKey }) {
   function pullReleases(flash, reload) {
-    flash('⏳ Pulling new releases from RSS feeds (takes ~2 min)...')
-    return fetch('/api/cron/weekly-gun-releases', {
+    flash('⏳ Pulling new releases from Google News + PRN (takes 2-3 min)...')
+    return fetch('/api/agent?feed=releases', {
       method: 'GET',
-      headers: { 'x-admin-key': adminKey },
+      headers: { 'x-admin-key': adminKey, 'Authorization': 'Bearer ' + adminKey },
     })
     .then(r => r.json())
     .then(d => {
-      if (d.ok) {
-        flash('✅ Done — ' + d.created + ' new, ' + d.skipped + ' skipped, ' + d.failed + ' failed')
+      const r = d.result || {}
+      if (d.success || d.ok) {
+        flash('✅ Done — ' + (r.done||0) + ' new releases saved, ' + (r.skipped||0) + ' skipped')
       } else {
         flash('❌ Error: ' + (d.error || 'Unknown error'))
       }
-      setTimeout(reload, 1500)
+      setTimeout(reload, 2000)
     })
     .catch(() => flash('❌ Request failed or timed out'))
   }

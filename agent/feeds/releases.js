@@ -273,9 +273,14 @@ async function uploadImage(imageUrl) {
 // ── SAVE TO SANITY ───────────────────────────────────────────────────────────
 async function saveRelease(extracted, sourceUrl, imageUrl, pubDate) {
   const slug = extracted.title.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)
+  // Deterministic _id from brand+model so createOrReplace is idempotent
+  const stableKey = crypto.createHash('md5').update((extracted.brand + extracted.model).toLowerCase()).digest('hex').slice(0,12)
+  const _id = 'release-' + stableKey
+
   const imageAssetId = await uploadImage(imageUrl || extracted.imageUrl)
 
   const doc = {
+    _id,
     _type:        'firearmRelease',
     title:        extracted.title,
     slug:         { _type:'slug', current:slug },
@@ -297,7 +302,7 @@ async function saveRelease(extracted, sourceUrl, imageUrl, pubDate) {
     qualityReviewed: true,
     publishedAt:     pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
   }
-  return sanity.create(doc)
+  return sanity.createOrReplace(doc)
 }
 
 // ── MAIN ─────────────────────────────────────────────────────────────────────
