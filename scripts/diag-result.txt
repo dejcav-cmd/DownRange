@@ -2,32 +2,27 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 34
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6cbc2b66e4413367836cb06dafc2d94
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c8816039484a0b9488c029831560ff
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ac21bb0e5e00d03bb0d7057ad03e549
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d82e097ffa0bca94cb1bee69d09dbf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5adca11438198922e6b6a42b9bf16c0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a7a03f690b2ffaf2f1f3b78783eb336
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6fa95ae9ce3b221d5836265e34ad787
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bf1fd7b93d6a02a82466748ed02089a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3fd2c6b182725c88bd01097a9be056
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a69d52147e018421cc8c565969b1f3a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a479475e8be45967df0f690b7cb16d6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/37e2fe2f98a0afca1d57b8d1127e9f9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/edd06f02eea8ac933ac44ab610f8b6d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3ec549eaab903c71e090d29ecc8d953
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5470e8320666db6d9bbef6e080fdad0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/17be99bc56fc9db66c91a6394889e7d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f4c435455b38a7ed62af47d0a1208f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/77e53b31792e85998ef79c295e816ca
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/32553693d10ef1c10bb3ca659a78381
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e1a378381a1f5b04aa4ae014b51fd53
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f4060546745e5f05a5135a49e0e8790
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ebb7084a7b953b0c3edcecec5977ca
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dbb204dfe78fcfd6bd8900a014f6d20
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c727dc3d7e658f6638af22b2754a36a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dae926e21920a7139f18d06574cec7f
+Missing: 30
+  skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7d77575fe46b0b95149f48c4e53858d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dcfa809a1609aeb60fd4ae17d9246bb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f5a4b59f28155150acef11b3c9639f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/af016e68327e6c964dc2186aac125b5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8e9e68d7e42bec3c7874e2996e05e9a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/276d195261c944ddd95fe502d737772
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c4e3828618d3873170736c0e0aa25f1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eabe622515eec3fe989078c60e9e8a9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3106f2dadf26826529558effb8e33c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/27c4b86f270014c963222c3e47ce853
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aab2ca442fae658503895f27b8bcccf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/da22b3d5f4cd03f53305c11175e7283
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/351982db1a2124e23e202c0b6e3ac95
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7a528625140e4243abde304799d88d7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7b7b42362566b219351bf81e4cd8250
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/57c984019b5ece9793ed8676eb7bccf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3bb3b88ed1b0a2652ea06e7d62ee54a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/269e83cabf15b459adc94b0f59668bf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3ca3e9409fb7c9af69f3e25bc2842e0
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/PSA-11.5-ar-pistol
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
@@ -35,10 +30,11 @@ Missing: 34
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PMC-XTAC-Ammo-Can-
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 26
+  → patched final 21
 
-Stats: uploaded=25 fallback=1 failed=1
+Stats: uploaded=19 fallback=2 failed=1
 
-=== FINAL: total=1683 missing_images=8 reddit=0 ===
+=== FINAL: total=1703 missing_images=9 reddit=0 ===
