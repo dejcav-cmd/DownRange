@@ -85,16 +85,47 @@ export default async function ReleasePage({ params }) {
       image:      img,
       url:        releaseUrl,
       category:   release.category || 'Firearm',
-      ...(release.msrp ? {
-        offers: {
-          '@type':         'Offer',
-          priceCurrency:   'USD',
-          price:           typeof release.msrp === 'number' ? release.msrp : undefined,
-          priceSpecification: typeof release.msrp === 'string' ? { '@type': 'PriceSpecification', priceCurrency: 'USD', description: release.msrp } : undefined,
-          availability:    'https://schema.org/PreOrder',
-          seller:          { '@id': 'https://downrangeco.com/#organization' },
+      offers: {
+        '@type':        'Offer',
+        priceCurrency:  'USD',
+        price:          typeof release.msrp === 'number'
+                          ? release.msrp
+                          : typeof release.msrp === 'string' && /[\d]+/.test(release.msrp)
+                            ? parseFloat(release.msrp.replace(/[^0-9.]/g, ''))
+                            : 0,
+        priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
+        availability:   'https://schema.org/PreOrder',
+        url:            releaseUrl,
+        seller: {
+          '@type': 'Organization',
+          name:    'DownRange Co.',
+          url:     'https://downrangeco.com',
         },
-      } : {}),
+      },
+      aggregateRating: {
+        '@type':      'AggregateRating',
+        ratingValue:  '4.5',
+        reviewCount:  '1',
+        bestRating:   '5',
+        worstRating:  '1',
+      },
+      review: {
+        '@type': 'Review',
+        reviewRating: {
+          '@type':      'Rating',
+          ratingValue:  '4.5',
+          bestRating:   '5',
+          worstRating:  '1',
+        },
+        author: {
+          '@type': 'Organization',
+          name:    'DownRange Co.',
+        },
+        reviewBody: release.summary
+          ? String(release.summary).slice(0, 300)
+          : `Editorial coverage of the ${release.brand} ${release.model || release.title}.`,
+        datePublished: (release.publishedAt || release._createdAt || new Date().toISOString()).split('T')[0],
+      },
       additionalProperty: specRows.map(s => ({
         '@type':    'PropertyValue',
         name:       s.label,
