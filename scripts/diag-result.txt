@@ -2,34 +2,25 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 36
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d5a010d69c5f80accd5440fa73f3902
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/34a4a5e17b9ce86feaf912560770555
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/be7a1bacf41e6599a09aa40f156b304
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d46ce5abbca76f4ceaf01f38a24ac9e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0d370e73da86b093d9f3eeba730fa2a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/201b5bdeee3937517e0f1b9ee7afd5d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9d7cbfc44161d49911264672494c897
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/961fc6c83c3e17d36bc5b23296dc2a6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/309c7943bbd578578a5d82cab9598c9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dabaabe5315bc762670d79c143c2e84
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f525caedea7c41299da059c04d1b516
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4aa9f2010a71bbfc8a173f11ef62bb7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7f7b915a92417a13bd419cabde99df4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/581e282e21a77aefd09a4b66f1fbf43
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/791aa80467b3dba68d5c78dacbc3dfd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b519403e6039458bb8bb949fda95fab
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/35d58f210366a567089bf88c2c60644
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/07a57813afe42dab0fe86d61e23bcfc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a4725d31cee0dd64d5a256a0503ee52
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7b1cabacf03e4ccbc00b5bd66a0f3a2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fccb72770927332db1323bb0fc53072
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1b26caad144c9d6cf4f4ad3bdc62534
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0338703268c1ac81e0aeeeefe0abb21
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/951b73e69e1b7b5777d3457616a7350
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/36527be805ad481524ae8cbe005cb3f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec487a14bcb3554c695cfbdda46b0bf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ca2efff5a54256d317a14d6fa08559a
+Missing: 27
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/33a78c2db4411b3360604076e94ae7f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3b120faeefe33a83fcf4fb34961155
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/39ed065f92ae628df6e0cfcc5090af7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b7acd5b0d1dfb5b6149170f8633f17c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f1267a3acc4e86d87f301db0cff5511
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/441bdfaf9ea38c47d4083cadc9f13c5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c6804681ba5ddac7195bb9998ba18a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6833b395495cba6d820f5d0679c45f3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3d1dde150b342047ea34e77e9ddba39
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e60df8a7a23e29f6c9697d3894108c7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d5aaf92eb4df765affe49a7315c2c49
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c7fb0bb005abc54c76c95398b2c87eb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95b569b09ae84694945fdc3f8060d6b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d158c761560eddc5c812e2d970b9877
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/97a021586e8419f02466db052e3c517
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0b47109f95e3e1a2e667f1cdabe46da
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/171fae6845fe98bbf2d52e4f7e3ec57
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/26b3b41af1c051e3539ab4ebb1c592e
   skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
@@ -39,8 +30,8 @@ Missing: 36
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 27
+  → patched final 18
 
-Stats: uploaded=27 fallback=0 failed=1
+Stats: uploaded=18 fallback=0 failed=1
 
-=== FINAL: total=1802 missing_images=9 reddit=0 ===
+=== FINAL: total=1820 missing_images=9 reddit=0 ===
