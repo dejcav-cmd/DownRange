@@ -88,13 +88,28 @@ const INCLUDE_KEYWORDS = [
 
 // ── EXCLUDE: articles containing ANY of these are dropped ────────────────────
 const EXCLUDE_KEYWORDS = [
-  'apparel', 't-shirt', 'hoodie', 'hat ', 'sticker', 'patch', 'swag',
+  // Apparel / merch
+  'apparel', 't-shirt', 'hoodie', 'hat ', 'sticker', 'patch', 'swag', 'cap ',
+  // Parts / accessories only (not complete firearms)
   'holster', 'grip tape', 'stock only', 'chassis-only', 'barrel-only',
   'upper only', 'lower only', 'parts kit', 'handguard', 'rail ',
+  'trigger kit', 'trigger pack', 'muzzle device', 'compensator only',
+  'magazine', ' mag ', 'speed loader', 'cleaning kit', 'bipod',
+  // Deals / sales (PSA and others)
+  'daily deal', 'flash deal', 'deal of the day', 'deal of the week',
+  'blem ', 'blemished', 'sale price', 'sale ends', 'limited time',
+  'ammo deal', 'bulk ammo', 'coupon code', 'promo code',
+  // Bundles / kits that are NOT complete firearms
+  'rifle kit', 'pistol kit', 'build kit', 'ar-15 kit', 'ak kit',
+  'stripped lower', 'stripped upper', 'complete upper', 'complete lower',
+  'brace kit', 'stock kit', 'furniture kit',
+  // Optics / sights (standalone)
+  'red dot only', 'scope only', 'sight only',
+  // Non-gun content
   'giveaway', 'donation', 'ambassador', 'training course', 'scholarship',
   'horoscope', 'astrology', 'zodiac', 'family feud', 'game show',
   'earnings', 'quarterly', 'fiscal', 'lawsuit', 'recall ',
-  'ammo deal', 'bulk ammo', 'sale ends', 'coupon code',
+  'tire ', 'vehicle', 'automobile', 'ford ', 'chevy ', 'toyota ',
 ]
 
 // ── CATEGORY FALLBACK IMAGES (only used if OG fetch fails) ───────────────────
@@ -159,7 +174,11 @@ function extractLinksFromHTML(html, baseUrl) {
       const abs = href.startsWith('http') ? href : new URL(href, base).href
       // Only same-domain links that look like articles
       if (abs.includes(base.hostname) && abs.length > baseUrl.length + 5) {
-        links.add(abs)
+        // Skip PSA deal/sale URLs
+        const skipUrlPatterns = ['/daily-deal', '/flash-deal', '/blem', '/sale/', '/ammo/', '/magazines/', '/accessories/']
+        if (!skipUrlPatterns.some(p => abs.toLowerCase().includes(p))) {
+          links.add(abs)
+        }
       }
     } catch {}
   }
@@ -212,8 +231,10 @@ STRICT RULES:
 - Only extract if this announces a SPECIFIC new firearm product (pistol, rifle, shotgun, revolver)
 - The "model" must be the ACTUAL product model name (e.g. "G19 Gen6", "P365 XMacro", "Mark V Backcountry")
 - Do NOT extract: accessories, optics, suppressors, ammo, apparel, parts, training, events, financial news
-- Do NOT extract if you cannot confirm a specific named firearm model
-- If not a new firearm product: return {"skip": true}
+- Do NOT extract: deals, sales, daily deals, blemished items, bundles, kits (rifle kit, pistol kit, build kit)
+- Do NOT extract: stripped lowers, complete uppers, brace kits, furniture kits — these are parts not firearms
+- Do NOT extract if you cannot confirm a COMPLETE, NAMED firearm model (e.g. "Glock 19 Gen5 MOS" is valid, "AR-15 Rifle Kit" is NOT)
+- If not a new COMPLETE firearm product announcement: return {"skip": true}
 
 Return ONLY valid JSON (no markdown, no preamble):
 {
