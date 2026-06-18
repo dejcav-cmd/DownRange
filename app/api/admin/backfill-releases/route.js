@@ -259,7 +259,7 @@ Return ONLY valid JSON (no markdown):
 }
 
 // ── SAVE TO SANITY ─────────────────────────────────────────────────────────────
-async function saveRelease(ext, sourceUrl, imageUrl, pubDate) {
+async function saveRelease(ext, sourceUrl, imageUrl, pubDate, imageStatus='pending') {
   const eightMonthsAgo=new Date(Date.now()-240*24*60*60*1000)
   const slug=`${ext.brand}-${ext.model}`.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)
   const _id='release-'+crypto.createHash('md5').update(`${ext.brand}::${ext.model}`.toLowerCase()).digest('hex').slice(0,12)
@@ -278,6 +278,8 @@ async function saveRelease(ext, sourceUrl, imageUrl, pubDate) {
     sourceUrl,
     isJustDropped:true, approved:true, qualityReviewed:true,
     publishedAt:(pubDate&&pubDate>eightMonthsAgo)?pubDate.toISOString():new Date().toISOString(),
+    imageStatus, imageScore: imageStatus==='verified'?95:imageStatus==='gun'?75:imageStatus==='pending'?40:5,
+    imageVerifiedAt: new Date().toISOString(),
   })
 }
 
@@ -409,22 +411,81 @@ export async function GET(req) {
       }
       seenKeys.add(key);existingKeys.add(key)
 
-      // ── IMAGE STRATEGY ──────────────────────────────────────────────────────
-      // 1. OG image from article
-      let imageUrl=extractOgImage(aHtml)
-
-      // 2. If no OG image or looks like a generic site image, search for gun-specific image
-      if(!imageUrl||imageUrl.includes('logo')||imageUrl.includes('default')){
-        const searchQuery=ext.imageSearchQuery||`${ext.brand} ${ext.model} ${ext.category}`
-        imageUrl=await findGunImage(ext.brand,ext.model,ext.category)||null
+      // ── IMAGE: collect candidates then vision-verify ────────────────────────
+      // Collect all image candidates from the article page
+      const imgCandidates = []
+      const seenImgUrls = new Set()
+      function addImg(url, pri) {
+        if (!url || !url.startsWith('http') || seenImgUrls.has(url)) return
+        const u = url.toLowerCase()
+        if (u.includes('logo') || u.includes('favicon') || u.includes('banner') ||
+            u.includes('icon-') || u.includes('avatar') || u.includes('.gif') ||
+            u.includes('placeholder') || u.includes('sprite')) return
+        seenImgUrls.add(url); imgCandidates.push({ url, pri })
+      }
+      // OG + meta
+      const ogm = aHtml.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i) ||
+                  aHtml.match(/<meta[^>]+content="([^"]+)"[^>]+property="og:image"/i)
+      if (ogm?.[1]) addImg(ogm[1], 10)
+      const twm = aHtml.match(/<meta[^>]+name="twitter:image[^"]*"[^>]+content="([^"]+)"/i)
+      if (twm?.[1]) addImg(twm[1], 9)
+      // Large img tags
+      const imgRx2 = /<img[^>]+src="(https?:\/\/[^"]+\.(?:jpe?g|png|webp)[^"]*)"[^>]*(?:width="(\d+)")?/gi
+      let im2; while((im2=imgRx2.exec(aHtml))!==null){ addImg(im2[1], parseInt(im2[2]||'0')>400?7:4) }
+      // Srcset
+      const srRx2 = /srcset="([^"]+)"/gi; let sm2
+      while((sm2=srRx2.exec(aHtml))!==null){
+        sm2[1].split(',').forEach(p=>{ const u=p.trim().split(/\s+/)[0]; if(u?.startsWith('http')) addImg(u,3) })
       }
 
-      // 3. Category fallback (self-hosted)
-      if(!imageUrl) imageUrl=CAT_IMG[ext.category]||CAT_IMG.default
+      imgCandidates.sort((a,b)=>b.pri-a.pri)
+
+      // Vision-verify: find the first candidate that Claude says shows the actual gun
+      let imageUrl = null
+      let imageStatus = 'fallback'
+      if (process.env.ANTHROPIC_API_KEY && imgCandidates.length > 0) {
+        for (const cand of imgCandidates.slice(0,5)) {
+          try {
+            const vRes = await fetch('https://api.anthropic.com/v1/messages', {
+              method:'POST',
+              headers:{'Content-Type':'application/json','x-api-key':process.env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},
+              body: JSON.stringify({
+                model:'claude-haiku-4-5-20251001', max_tokens:80,
+                messages:[{ role:'user', content:[
+                  { type:'image', source:{ type:'url', url:cand.url }},
+                  { type:'text', text:`Does this image show the ${ext.brand} ${ext.model} firearm (or any firearm)? Reply ONLY: {"gun":true/false,"correct":true/false,"confidence":0-100}` }
+                ]}]
+              }),
+              signal: AbortSignal.timeout(12000),
+            })
+            const vData = await vRes.json()
+            const vRaw = vData.content?.[0]?.text?.replace(/^```[a-z]*\s*/i,'').replace(/\s*```\s*$/i,'').trim()||'{}'
+            const v = JSON.parse(vRaw)
+            if (v.gun && v.confidence >= 55) {
+              imageUrl = cand.url
+              imageStatus = v.correct ? 'verified' : 'gun'
+              console.log(`[IMG:${imageStatus}] ${ext.brand} ${ext.model} c:${v.confidence}`)
+              break
+            }
+          } catch {}
+          await sleep(100)
+        }
+      } else if (imgCandidates.length > 0) {
+        // No vision API — just take best candidate
+        imageUrl = imgCandidates[0].url
+        imageStatus = 'pending'
+      }
+
+      // Fallback if vision found nothing
+      if (!imageUrl) {
+        imageUrl = CAT_IMG[ext.category]||CAT_IMG.default
+        imageStatus = 'fallback'
+        console.log(`[IMG:fallback] ${ext.brand} ${ext.model}`)
+      }
 
       // Save
       try{
-        await saveRelease(ext,cand.url,imageUrl,pubDate)
+        await saveRelease(ext,cand.url,imageUrl,pubDate,imageStatus)
         stats.created++;srcCreated++
         stats.saved.push(`${ext.brand} — ${ext.model}`)
         console.log(`[SAVED ✓] [${stats.created}] ${ext.brand} — ${ext.model} (${ext.category}) img:${imageUrl.slice(0,50)}`)
