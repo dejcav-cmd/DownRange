@@ -8,20 +8,24 @@ const sanity = createClient({
   dataset: 'production', apiVersion: '2024-01-01',
   useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
-
 const sleep = ms => new Promise(r => setTimeout(r, ms))
+
 const CAT_IMG = {
   Pistol: '/img/photos/pistol.jpg', Revolver: '/img/photos/pistol.jpg',
   Rifle: '/img/photos/rifle.jpg', Shotgun: '/img/photos/shotgun.jpg',
   Suppressor: '/img/photos/suppressor.jpg', default: '/img/photos/pistol.jpg',
 }
 
+// ── IMAGE QUALITY FLAGS stored in Sanity ─────────────────────────────────────
+// imageStatus: 'verified' | 'generic' | 'pending'
+// imageVerifiedAt: ISO datetime
+// imageMethod: 'article_og' | 'article_content' | 'manufacturer_cdn' | 'google' | 'fallback'
+
 function isAuth(req) {
   return req.headers.get('x-admin-key') === process.env.ADMIN_KEY
     || req.headers.get('authorization') === `Bearer ${process.env.ADMIN_KEY}`
 }
 
-// ── FETCH WITH BROWSER UA ─────────────────────────────────────────────────────
 async function fetchHTML(url, timeout = 12000) {
   try {
     const r = await fetch(url, {
@@ -29,7 +33,6 @@ async function fetchHTML(url, timeout = 12000) {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
         Accept: 'text/html,application/xhtml+xml,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.9',
-        'Cache-Control': 'no-cache',
       },
       signal: AbortSignal.timeout(timeout),
       redirect: 'follow',
@@ -38,243 +41,300 @@ async function fetchHTML(url, timeout = 12000) {
   } catch { return null }
 }
 
-// ── EXTRACT ALL CANDIDATE IMAGES FROM HTML ────────────────────────────────────
-function extractImages(html, sourceUrl) {
+// ── IMAGE URL QUALITY SCORER ──────────────────────────────────────────────────
+// Returns 0-100. Higher = more likely to be the actual product photo.
+function scoreImageUrl(url, brand, model) {
+  if (!url || !url.startsWith('http')) return 0
+  const u = url.toLowerCase()
+  const brandSlug = (brand || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+  const modelSlug = (model || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+
+  // Hard disqualifiers
+  if (u.includes('logo') || u.includes('favicon') || u.includes('icon-') ||
+      u.includes('avatar') || u.includes('placeholder') || u.includes('no-image') ||
+      u.includes('default-image') || u.includes('blank') || u.includes('spinner')) return 0
+
+  // Generic fallback images (our own)
+  if (u.includes('/img/photos/')) return 5
+
+  // Stock photo CDNs — no specific gun photo
+  if (u.includes('unsplash.com') || u.includes('pexels.com') ||
+      u.includes('shutterstock') || u.includes('gettyimages') ||
+      u.includes('istockphoto')) return 10
+
+  // Social media / site thumbnails — usually not the product
+  if (u.includes('twitter.com') || u.includes('facebook.com') ||
+      u.includes('og-default') || u.includes('share-default')) return 15
+
+  let score = 40 // base: it's an external image URL
+
+  // Boost: image is on manufacturer's domain
+  const mfrDomains = ['glock.com','sigsauer.com','sig-sauer.com','smith-wesson.com',
+    'ruger.com','springfield-armory.com','taurususa.com','mossberg.com','fnamerica.com',
+    'kimberamerica.com','waltherarms.com','canikusa.com','henryusa.com','browning.com',
+    'winchesterguns.com','colt.com','danieldefense.com','christensenarms.com',
+    'tikka.fi','weatherby.com','staccato2011.com','wilsoncombat.com',
+    'shadowsystemscorp.com','iwi.us','aeroprecisionusa.com','keltecweapons.com',
+    'savagearms.com','benelliusa.com','bergara.online','fusionfirearms.com',
+    'palmettostatearmory.com']
+  if (mfrDomains.some(d => u.includes(d))) score += 30
+
+  // Boost: URL contains brand/model slug
+  if (brandSlug.length > 3 && u.includes(brandSlug)) score += 15
+  if (modelSlug.length > 3 && u.includes(modelSlug)) score += 20
+
+  // Boost: looks like a product image path
+  if (u.includes('/product') || u.includes('/products') || u.includes('/catalog') ||
+      u.includes('/firearms') || u.includes('/guns') || u.includes('/pistol') ||
+      u.includes('/rifle') || u.includes('/shotgun')) score += 10
+
+  // Boost: common product image filename patterns
+  if (/\d{4,}x\d{4,}/.test(u)) score += 5  // high-res dimensions in filename
+  if (u.includes('_main') || u.includes('-main') || u.includes('_hero') ||
+      u.includes('-hero') || u.includes('_front') || u.includes('-front')) score += 10
+
+  // Penalty: looks like a blog/news thumbnail
+  if (u.includes('/blog') || u.includes('/news') || u.includes('/press') ||
+      u.includes('thumbnail') || u.includes('-thumb-') || u.includes('featured-image')) score -= 10
+
+  return Math.min(100, Math.max(0, score))
+}
+
+// ── EXTRACT ALL IMAGES FROM HTML ──────────────────────────────────────────────
+function extractAllImages(html, sourceUrl, brand, model) {
   if (!html) return []
   const images = []
-  const baseHost = sourceUrl ? new URL(sourceUrl).hostname : ''
 
-  // 1. OG / Twitter meta tags (highest priority)
-  const metaPatterns = [
+  // 1. OG / Twitter meta (score 60+ base)
+  const metas = [
     /<meta[^>]+property="og:image(?::secure_url)?"[^>]+content="([^"]+)"/gi,
     /<meta[^>]+content="([^"]+)"[^>]+property="og:image(?::secure_url)?"/gi,
-    /<meta[^>]+name="twitter:image(?::src)?"[^>]+content="([^"]+)"/gi,
-    /<meta[^>]+content="([^"]+)"[^>]+name="twitter:image(?::src)?"/gi,
+    /<meta[^>]+name="twitter:image[^"]*"[^>]+content="([^"]+)"/gi,
+    /<meta[^>]+content="([^"]+)"[^>]+name="twitter:image[^"]*"/gi,
   ]
-  for (const rx of metaPatterns) {
-    let m
-    while ((m = rx.exec(html)) !== null) {
+  for (const rx of metas) {
+    let m; while ((m = rx.exec(html)) !== null) {
       const url = m[1]?.trim()
-      if (url && url.startsWith('http')) images.push({ url, score: 100 })
+      if (url?.startsWith('http')) images.push({ url, source: 'og_meta' })
     }
   }
 
   // 2. JSON-LD structured data
-  const jsonldRx = /<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi
-  let jm
-  while ((jm = jsonldRx.exec(html)) !== null) {
+  const ldRx = /<script[^>]+type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi
+  let ldm
+  while ((ldm = ldRx.exec(html)) !== null) {
     try {
-      const data = JSON.parse(jm[1])
-      const extractImg = (obj) => {
+      const walk = (obj) => {
         if (!obj) return
-        if (typeof obj === 'string' && obj.startsWith('http') && /\.(jpg|jpeg|png|webp)/i.test(obj)) {
-          images.push({ url: obj, score: 90 })
-        }
-        if (typeof obj === 'object') {
-          for (const v of Object.values(obj)) extractImg(v)
-        }
+        if (typeof obj === 'string' && obj.startsWith('http') && /\.(jpe?g|png|webp)/i.test(obj))
+          images.push({ url: obj, source: 'jsonld' })
+        if (typeof obj === 'object') Object.values(obj).forEach(walk)
       }
-      extractImg(data)
+      walk(JSON.parse(ldm[1]))
     } catch {}
   }
 
-  // 3. Large content images (skip logos, icons, avatars)
-  const imgRx = /<img[^>]+src="(https?:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"[^>]*(?:width="(\d+)")?[^>]*(?:height="(\d+)")?[^>]*>/gi
-  let im
-  while ((im = imgRx.exec(html)) !== null) {
-    const url = im[1], w = parseInt(im[2] || '0'), h = parseInt(im[3] || '0')
-    if (!url) continue
-    const urlLower = url.toLowerCase()
-    if (urlLower.includes('logo') || urlLower.includes('icon') || urlLower.includes('avatar') ||
-        urlLower.includes('banner') || urlLower.includes('ad-') || urlLower.includes('sprite')) continue
-    // Score based on dimensions
-    const dimScore = w > 600 ? 80 : w > 400 ? 60 : w > 200 ? 40 : 20
-    images.push({ url, score: dimScore })
-  }
-
-  // 4. Srcset images (responsive images often have good product photos)
+  // 3. Srcset (responsive product images)
   const srcsetRx = /srcset="([^"]+)"/gi
   let sm
   while ((sm = srcsetRx.exec(html)) !== null) {
-    const parts = sm[1].split(',').map(p => p.trim().split(/\s+/)[0])
-    for (const url of parts) {
-      if (url.startsWith('http') && /\.(jpg|jpeg|png|webp)/i.test(url)) {
-        images.push({ url, score: 50 })
+    sm[1].split(',').forEach(part => {
+      const url = part.trim().split(/\s+/)[0]
+      if (url?.startsWith('http') && /\.(jpe?g|png|webp)/i.test(url))
+        images.push({ url, source: 'srcset' })
+    })
+  }
+
+  // 4. Regular img tags — rank by size
+  const imgRx = /<img[^>]+src="(https?:\/\/[^"]+\.(?:jpe?g|png|webp)[^"]*)"(?:[^>]*width="(\d+)")?[^>]*>/gi
+  let im
+  while ((im = imgRx.exec(html)) !== null) {
+    const url = im[1], w = parseInt(im[2] || '0')
+    if (url) images.push({ url, source: 'img_tag', width: w })
+  }
+
+  // Score, deduplicate, sort
+  const seen = new Set()
+  return images
+    .map(img => ({ ...img, score: scoreImageUrl(img.url, brand, model) }))
+    .filter(img => { if (seen.has(img.url) || img.score === 0) return false; seen.add(img.url); return true })
+    .sort((a, b) => b.score - a.score)
+}
+
+// ── GOOGLE IMAGE SCRAPE ───────────────────────────────────────────────────────
+async function googleImageSearch(brand, model, category) {
+  const query = encodeURIComponent(`"${brand}" "${model}" ${category} firearm product photo`)
+  const html = await fetchHTML(`https://www.google.com/search?q=${query}&tbm=isch`, 10000)
+  if (!html) return null
+
+  // Google embeds image URLs in multiple patterns
+  const patterns = [
+    /"ou":"(https?:\/\/(?!encrypted)[^"]+\.(?:jpe?g|png|webp)[^"]*)"/gi,
+    /\["(https?:\/\/(?!encrypted)[^"]+\.(?:jpe?g|png|webp)(?:\?[^"]*)?)",\s*\d{3,},\s*\d{3,}\]/gi,
+    /"imgurl=([^&"]+\.(?:jpe?g|png|webp)[^&"]*)"/gi,
+  ]
+
+  const candidates = []
+  for (const rx of patterns) {
+    let m; while ((m = rx.exec(html)) !== null) {
+      const url = decodeURIComponent(m[1]).replace(/\\u003d/g,'=').replace(/\\u0026/g,'&')
+      if (url.startsWith('http') && !url.includes('google') && !url.includes('gstatic')) {
+        const score = scoreImageUrl(url, brand, model)
+        if (score > 20) candidates.push({ url, score })
       }
     }
   }
 
-  // Deduplicate and sort by score
-  const seen = new Set()
-  return images
-    .filter(img => {
-      if (seen.has(img.url)) return false
-      seen.add(img.url)
-      return true
-    })
-    .sort((a, b) => b.score - a.score)
-    .map(img => img.url)
-}
-
-// ── GOOGLE SEARCH FOR GUN IMAGE ───────────────────────────────────────────────
-async function googleImageSearch(brand, model, category) {
-  // Google Images — parse the HTML response for image URLs
-  const query = encodeURIComponent(`"${brand}" "${model}" ${category} gun firearm product photo`)
-  const googleUrl = `https://www.google.com/search?q=${query}&tbm=isch&tbs=isz:l`
-
-  try {
-    const html = await fetchHTML(googleUrl, 10000)
-    if (!html) return null
-
-    // Google embeds image URLs in AF_initDataCallback or data-src attributes
-    const patterns = [
-      /"(https?:\/\/(?!encrypted)[^"]+\.(?:jpg|jpeg|png|webp)(?:\?[^"]*)?)"(?:[^>]*?(?:width|height)"?\s*:?\s*[3-9]\d{2,})/gi,
-      /\["(https?:\/\/(?!encrypted)[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)",\d{3,},\d{3,}\]/gi,
-      /"ou":"(https?:\/\/[^"]+\.(?:jpg|jpeg|png|webp)[^"]*)"/gi,
-    ]
-    for (const rx of patterns) {
-      const m = rx.exec(html)
-      if (m?.[1]) {
-        const url = m[1].replace(/\\u003d/g, '=').replace(/\\u0026/g, '&')
-        if (!url.includes('google') && !url.includes('gstatic') && !url.includes('logo')) {
-          return url
-        }
-      }
-    }
-  } catch {}
-  return null
+  candidates.sort((a, b) => b.score - a.score)
+  return candidates[0]?.url || null
 }
 
 // ── MANUFACTURER PRODUCT PAGE SEARCH ─────────────────────────────────────────
-async function findManufacturerImage(brand, model) {
+async function findManufacturerPageImage(brand, model) {
   const modelSlug = model.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
-  const brandSlug = brand.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '')
 
-  // Known manufacturer CDN patterns
-  const attempts = []
+  const urls = []
+  const b = brand.toLowerCase()
 
-  if (brand.includes('Glock')) {
-    attempts.push(`https://us.glock.com/content/dam/glock/global/products/${modelSlug.replace(/-/g,'').toUpperCase()}.jpg`)
-    attempts.push(`https://us.glock.com/content/dam/glock/global/products/${modelSlug.replace(/-/g,'')}.jpg`)
-  }
-  if (brand.includes('SIG') || brand.includes('Sig')) {
-    attempts.push(`https://www.sigsauer.com/media/catalog/product/p/${modelSlug[0]}/${modelSlug}.jpg`)
-    attempts.push(`https://www.sigsauer.com/media/catalog/product/${modelSlug}.jpg`)
-  }
-  if (brand.includes('Smith') || brand.includes('S&W') || brand.includes('SW')) {
-    attempts.push(`https://www.smith-wesson.com/media/catalog/product/${modelSlug}.jpg`)
-  }
-  if (brand.includes('Ruger')) {
-    attempts.push(`https://www.ruger.com/images/guns/${modelSlug}.jpg`)
-    attempts.push(`https://www.ruger.com/files/productImages/${modelSlug}.jpg`)
-  }
-  if (brand.includes('Springfield')) {
-    attempts.push(`https://www.springfield-armory.com/media/catalog/product/${modelSlug}.jpg`)
-  }
-  if (brand.includes('Walther') || brand.includes('walther')) {
-    attempts.push(`https://www.waltherarms.com/media/catalog/product/${modelSlug}.jpg`)
-  }
+  if (b.includes('glock'))
+    urls.push(`https://us.glock.com/en/pistols/${modelSlug}`)
+  if (b.includes('sig') || b.includes('sauer'))
+    urls.push(`https://www.sigsauer.com/products/pistols/${modelSlug}.html`,
+               `https://www.sigsauer.com/search#q=${encodeURIComponent(model)}`)
+  if (b.includes('smith') || b.includes('wesson'))
+    urls.push(`https://www.smith-wesson.com/search?q=${encodeURIComponent(model)}`,
+               `https://www.smith-wesson.com/products/${modelSlug}`)
+  if (b.includes('ruger'))
+    urls.push(`https://ruger.com/products/${modelSlug}/`)
+  if (b.includes('springfield'))
+    urls.push(`https://www.springfield-armory.com/${modelSlug}/`)
+  if (b.includes('taurus'))
+    urls.push(`https://www.taurususa.com/products/${modelSlug}`)
+  if (b.includes('walther'))
+    urls.push(`https://www.waltherarms.com/en-us/pistols/${modelSlug}.html`)
+  if (b.includes('canik'))
+    urls.push(`https://www.canikusa.com/products/${modelSlug}`)
+  if (b.includes('henry'))
+    urls.push(`https://www.henryusa.com/rifles/${modelSlug}/`)
+  if (b.includes('savage'))
+    urls.push(`https://savagearms.com/firearms/${modelSlug}`)
 
-  for (const url of attempts) {
-    try {
-      const r = await fetch(url, { method: 'HEAD', signal: AbortSignal.timeout(3000) })
-      if (r.ok && r.headers.get('content-type')?.includes('image')) return url
-    } catch {}
+  for (const url of urls.slice(0, 3)) {
+    const html = await fetchHTML(url, 8000)
+    if (!html) continue
+    const imgs = extractAllImages(html, url, brand, model)
+    const best = imgs.find(i => i.score >= 60)
+    if (best) return best.url
   }
   return null
 }
 
-// ── FIND BEST IMAGE FOR A RELEASE ─────────────────────────────────────────────
-async function findBestImage(doc) {
-  console.log(`[IMG] ${doc.brand} — ${doc.model}`)
+// ── MAIN IMAGE FINDER ─────────────────────────────────────────────────────────
+async function findVerifiedImage(doc) {
+  const { brand, model, category, sourceUrl } = doc
+  const label = `${brand} — ${model}`
 
-  // Step 1: Try original article source URL — most aggressive extraction
-  if (doc.sourceUrl) {
-    const html = await fetchHTML(doc.sourceUrl)
+  // Step 1: Manufacturer article source page
+  if (sourceUrl) {
+    const html = await fetchHTML(sourceUrl)
     if (html) {
-      const imgs = extractImages(html, doc.sourceUrl)
-      // Skip the first image if it looks like a site logo/banner
-      for (const img of imgs.slice(0, 5)) {
-        const lower = img.toLowerCase()
-        if (!lower.includes('logo') && !lower.includes('banner') && !lower.includes('header')) {
-          console.log(`  ✓ source article: ${img.slice(0, 70)}`)
-          return { url: img, method: 'article_og' }
-        }
+      const imgs = extractAllImages(html, sourceUrl, brand, model)
+      const best = imgs.find(i => i.score >= 50)
+      if (best) {
+        console.log(`  ✓ [article_og:${best.score}] ${label}`)
+        return { url: best.url, method: 'article_og', score: best.score }
       }
     }
   }
 
-  // Step 2: Try manufacturer's product page directly
-  const mfrImg = await findManufacturerImage(doc.brand, doc.model)
+  // Step 2: Manufacturer product page (direct URL construction)
+  const mfrImg = await findManufacturerPageImage(brand, model)
   if (mfrImg) {
-    console.log(`  ✓ manufacturer CDN: ${mfrImg.slice(0, 70)}`)
-    return { url: mfrImg, method: 'manufacturer_cdn' }
+    console.log(`  ✓ [mfr_page] ${label}`)
+    return { url: mfrImg, method: 'manufacturer_page', score: 80 }
   }
 
-  // Step 3: Google image search for the specific gun
-  const googleImg = await googleImageSearch(doc.brand, doc.model, doc.category || 'firearm')
+  // Step 3: Google image search for the exact gun
+  const googleImg = await googleImageSearch(brand, model, category || 'firearm')
   if (googleImg) {
-    console.log(`  ✓ google: ${googleImg.slice(0, 70)}`)
-    return { url: googleImg, method: 'google' }
+    console.log(`  ✓ [google] ${label}`)
+    return { url: googleImg, method: 'google', score: 70 }
   }
 
-  // Step 4: Category fallback
-  console.log(`  - fallback category image`)
-  return { url: CAT_IMG[doc.category] || CAT_IMG.default, method: 'fallback' }
+  // Step 4: Category fallback — mark as unverified
+  console.log(`  - [fallback] ${label}`)
+  return { url: CAT_IMG[category] || CAT_IMG.default, method: 'fallback', score: 5 }
 }
 
-// ── MAIN HANDLER ──────────────────────────────────────────────────────────────
+// ── HANDLER ───────────────────────────────────────────────────────────────────
 async function handler(req) {
   if (!isAuth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const docs = await sanity.fetch(
-    `*[_type=="firearmRelease"] | order(publishedAt desc) [0...300] {
-      _id, brand, model, category, sourceUrl, imageUrl
-    }`
-  ).catch(() => [])
+  const { searchParams } = new URL(req.url)
+  const forceAll = searchParams.get('force') === 'true'
+
+  // Fetch all releases with image status
+  const docs = await sanity.fetch(`
+    *[_type=="firearmRelease"] | order(publishedAt desc) [0...300] {
+      _id, brand, model, category, sourceUrl, imageUrl,
+      imageStatus, imageMethod, imageScore
+    }
+  `).catch(() => [])
 
   console.log(`[PATCH-IMG] ${docs.length} total releases`)
 
-  // Process ALL releases — prioritize ones with generic/missing images first
-  const priority = docs.filter(d =>
-    !d.imageUrl || d.imageUrl.includes('/img/photos/') ||
-    d.imageUrl.includes('unsplash.com') || d.imageUrl.includes('pexels.com')
-  )
-  const hasImage = docs.filter(d =>
-    d.imageUrl && !d.imageUrl.includes('/img/photos/') &&
-    !d.imageUrl.includes('unsplash.com') && !d.imageUrl.includes('pexels.com')
-  )
+  // Decide which to process:
+  // - imageStatus === 'verified' AND imageScore >= 60 → SKIP (already good)
+  // - everything else → process
+  const toProcess = docs.filter(d => {
+    if (forceAll) return true
+    if (d.imageStatus === 'verified' && (d.imageScore || 0) >= 60) return false
+    return true
+  })
 
-  console.log(`[PATCH-IMG] ${priority.length} need images, ${hasImage.length} already have real images`)
+  const skipped = docs.length - toProcess.length
+  console.log(`[PATCH-IMG] Processing: ${toProcess.length} | Skipping (verified): ${skipped}`)
 
-  const stats = { article_og: 0, manufacturer_cdn: 0, google: 0, fallback: 0, errors: 0 }
+  const stats = { article_og: 0, manufacturer_page: 0, google: 0, fallback: 0, errors: 0, skipped }
   const results = []
 
-  // Process priority items first, then try to improve existing ones
-  for (const doc of priority) {
-    const { url, method } = await findBestImage(doc)
+  for (const doc of toProcess) {
+    const { url, method, score } = await findVerifiedImage(doc)
+
     try {
-      await sanity.patch(doc._id).set({ imageUrl: url }).commit()
+      await sanity.patch(doc._id).set({
+        imageUrl: url,
+        imageStatus: score >= 60 ? 'verified' : score >= 30 ? 'partial' : 'fallback',
+        imageMethod: method,
+        imageScore: score,
+        imageVerifiedAt: new Date().toISOString(),
+      }).commit()
+
       stats[method] = (stats[method] || 0) + 1
-      results.push({ brand: doc.brand, model: doc.model, method, url: url.slice(0, 80) })
+      results.push({
+        brand: doc.brand, model: doc.model,
+        method, score, url: url.slice(0, 80),
+        status: score >= 60 ? '✓' : score >= 30 ? '~' : '✗',
+      })
     } catch (e) {
       stats.errors++
-      console.error(`  ✗ save error: ${e.message}`)
+      console.error(`  ✗ save: ${e.message}`)
     }
-    await sleep(600)
+    await sleep(700)
   }
 
-  const msg = `article_og:${stats.article_og} mfr_cdn:${stats.manufacturer_cdn} google:${stats.google} fallback:${stats.fallback} errors:${stats.errors}`
+  const verified = results.filter(r => r.score >= 60).length
+  const partial  = results.filter(r => r.score >= 30 && r.score < 60).length
+  const fallback = results.filter(r => r.score < 30).length
+
+  const msg = `processed:${toProcess.length} verified:${verified} partial:${partial} fallback:${fallback} skipped:${skipped}`
   console.log('[PATCH-IMG] Done:', msg)
 
   return Response.json({
-    ok: true,
-    total: docs.length,
-    processed: priority.length,
-    alreadyHaveImages: hasImage.length,
-    stats,
-    results,
-    message: msg,
+    ok: true, total: docs.length,
+    processed: toProcess.length, skipped,
+    verified, partial, fallback, errors: stats.errors,
+    breakdown: stats, results, message: msg,
   })
 }
 

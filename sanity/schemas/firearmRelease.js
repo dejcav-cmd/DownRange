@@ -31,6 +31,10 @@ defineField({ name: 'approved', title: 'Published', type: 'boolean', initialValu
     defineField({ name: 'sourceUrl', title: 'Manufacturer Source URL', type: 'url' }),
     defineField({ name: 'availableDate', title: 'Available Date', type: 'date' }),
     defineField({ name: 'isJustDropped', title: 'Just Dropped', type: 'boolean', initialValue: true }),
+    defineField({ name: 'imageStatus',     title: 'Image Status',     type: 'string', options: { list: ['verified','partial','fallback','pending'] }, initialValue: 'pending' }),
+    defineField({ name: 'imageMethod',     title: 'Image Method',     type: 'string' }),
+    defineField({ name: 'imageScore',      title: 'Image Score (0-100)', type: 'number' }),
+    defineField({ name: 'imageVerifiedAt', title: 'Image Verified At', type: 'datetime' }),
     defineField({ name: 'publishedAt', title: 'Published At', type: 'datetime' }),
   ],
   preview: {
