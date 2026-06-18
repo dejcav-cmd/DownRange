@@ -46,13 +46,7 @@ const SOURCES = [
   { brand: 'IWI US',              url: 'https://iwi.us/news/' },
   { brand: 'Aero Precision',      url: 'https://www.aeroprecisionusa.com/blog' },
   { brand: 'Fusion Firearms',     url: 'https://fusionfirearms.com/videovault/category/announcements' },
-  { brand: null, rss:true, label:'TTAG',       url: 'https://www.thetruthaboutguns.com/feed/' },
-  { brand: null, rss:true, label:'AmmoLand',   url: 'https://www.ammoland.com/feed/' },
-  { brand: null, rss:true, label:'Guns.com',   url: 'https://www.guns.com/feed' },
-  { brand: null, rss:true, label:'G&A',        url: 'https://www.gunsandammo.com/feed/' },
-  { brand: null, rss:true, label:'AmRifleman', url: 'https://www.americanrifleman.org/feed/' },
-  { brand: null, rss:true, label:'PPT',        url: 'https://www.pewpewtactical.com/feed/' },
-  { brand: null, rss:true, label:'SI',         url: 'https://www.shootingillustrated.com/feed/' },
+  // RSS sources removed — manufacturer pages only per curated source list
 ]
 
 // ── ONLY BLOCK OBVIOUS JUNK — let AI decide the rest ─────────────────────────

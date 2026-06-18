@@ -69,13 +69,7 @@ const SOURCES = [
   { brand: 'Fusion Firearms',   url: 'https://fusionfirearms.com/videovault/category/announcements',      type: 'html' },
   { brand: 'MasterPiece Arms',  url: 'https://masterpiecearms.com/',                                      type: 'html' },
   // Supplemental: trusted gun media RSS (gun-specific only)
-  { brand: null, url: 'https://www.thetruthaboutguns.com/feed/',   type: 'rss', label: 'TTAG'       },
-  { brand: null, url: 'https://www.ammoland.com/feed/',            type: 'rss', label: 'AmmoLand'   },
-  { brand: null, url: 'https://www.guns.com/feed',                 type: 'rss', label: 'Guns.com'   },
-  { brand: null, url: 'https://www.gunsandammo.com/feed/',         type: 'rss', label: 'G&A'        },
-  { brand: null, url: 'https://www.pewpewtactical.com/feed/',      type: 'rss', label: 'PPT'        },
-  { brand: null, url: 'https://www.shootingillustrated.com/feed/', type: 'rss', label: 'SI'         },
-  { brand: null, url: 'https://www.americanrifleman.org/feed/',    type: 'rss', label: 'AmRifleman' },
+  // RSS sources removed — manufacturer pages only per curated source list
 ]
 
 // ── INCLUDE: article MUST contain at least one of these ──────────────────────
