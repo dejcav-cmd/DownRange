@@ -2,27 +2,7 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 29
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/07aba51e36b0e07f23003a108001d15
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/26c14ecd2ad1f560961a3d2bd9b5ce8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e3ecb1aaf5f8e03720d4e668e4771b7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dfdea4df77d6e6ea4dce71c75115d35
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/34718b8d1cb83685a8044aa032ad26b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e5eb91a475de176909f98c19fcb48a4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95b0f836aa532ed12b4f7b3a1246202
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6238db3097ebe950559e57b2fad3710
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f483c45641b33836478d4e633a33c7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9921fe54267c6d8b5a818841d1b95a2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/63259b184fdef0799dacf66d8458f0c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/feed8aac5611868cd0d19ace189f0be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/93997ef1605bd511b51a28a7bc699fb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/177859630f996f2a74501deb924c7b0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a78fe05001e4190fa1d9fea34c178de
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b37fbcb588f81ee25b6b47093c55fb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aab801e30a12009c3def73cf93e2c07
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54c992d254d46c32846ce755b2e83f7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4b326163eb42cad2341405a755acd69
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6bcc089ac884763c266d91487edda5c
+Missing: 9
   skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
@@ -32,8 +12,7 @@ Missing: 29
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 20
 
-Stats: uploaded=20 fallback=0 failed=1
+Stats: uploaded=0 fallback=0 failed=1
 
 === FINAL: total=1747 missing_images=9 reddit=0 ===
