@@ -16,6 +16,7 @@ const VideoManager          = L(() => import('../../components/admin/VideoManage
 const NewsletterManager     = L(() => import('../../components/admin/NewsletterManager'))
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
 const ReleaseManager        = L(() => import('../../components/admin/ReleaseManager'))
+const OperationsPanel        = L(() => import('../../components/admin/OperationsPanel'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
 const BrazilManager         = L(() => import('../../components/admin/BrazilManager'))
 const CompetitionManager    = L(() => import('../../components/admin/CompetitionManager'))
@@ -85,6 +86,7 @@ const NAV = [
     panels: [
       { id:'overview',     label:'Overview',         icon:'◈',  badge:null },
       { id:'crons',        label:'Cron Jobs',        icon:'⏱', badge:null },
+      { id:'operations',   label:'Operations',       icon:'⚡', badge:'new' },
       { id:'smsalerts',    label:'SMS Alerts',       icon:'📱', badge:'new' },
       { id:'sysalerts',    label:'Cron Alerts',      icon:'🚨', badge:null },
       { id:'agents',       label:'Content Agents',   icon:'🤖', badge:null },
@@ -2927,6 +2929,7 @@ export default function AdminPage() {
             {/* ── SYSTEM ── */}
             {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='crons'     && <CronDashboard adminKey={adminKey} />}
+            {panel==='operations' && <OperationsPanel adminKey={adminKey} setMsg={flash} />}
             {panel==='smsalerts' && <SMSAlertsPanel adminKey={adminKey} />}
             {panel==='sysalerts' && <SystemAlertsPanel adminKey={adminKey} />}
             {panel==='sources' && <SourceManager adminKey={adminKey} />}
