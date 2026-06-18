@@ -380,10 +380,12 @@ async function processSource(source, existingKeys, seenKeys, stats) {
 
     const fullTitle = ogTitle.replace(/ ?[|\-–] .*$/, '').trim() // strip "| Site Name" suffix
 
-    if (!isValidArticle(fullTitle, articleText.slice(0, 500))) {
-      stats.skipped++
-      continue
-    }
+    // For known manufacturer sources (brand set), only check excludes — trust the source
+    // For RSS sources, require at least one include keyword
+    const isKnownMfr = !!source.brand
+    const hasExclude2 = EXCLUDE_KEYWORDS.some(k => (fullTitle + ' ' + articleText.slice(0,300)).toLowerCase().includes(k))
+    const hasInclude2 = INCLUDE_KEYWORDS.some(k => (fullTitle + ' ' + articleText.slice(0,500)).toLowerCase().includes(k))
+    if (hasExclude2 || (!isKnownMfr && !hasInclude2)) { stats.skipped++; continue }
 
     // AI extract + write
     const extracted = await extractAndWrite(fullTitle, articleText, candidate.url, candidate.brand || source.brand)

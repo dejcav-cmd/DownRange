@@ -377,19 +377,33 @@ async function processSource(source, existingKeys, seenKeys, stats) {
 
     const fullTitle = ogTitle.replace(/ ?[|\-–] .*$/, '').trim() // strip "| Site Name" suffix
 
-    if (!isValidArticle(fullTitle, articleText.slice(0, 500))) {
+    // For known manufacturer sources, only exclude — don't require include keywords
+    // (manufacturer pages only publish product content)
+    const isKnownMfr = !!source.brand
+    const hasExclude = EXCLUDE_KEYWORDS.some(k => (fullTitle + ' ' + articleText.slice(0,300)).toLowerCase().includes(k))
+    const hasInclude = INCLUDE_KEYWORDS.some(k => (fullTitle + ' ' + articleText.slice(0,500)).toLowerCase().includes(k))
+
+    if (hasExclude || (!isKnownMfr && !hasInclude)) {
       stats.skipped++
+      const t = (fullTitle + ' ' + articleText.slice(0,300)).toLowerCase()
+      const failedExclude = EXCLUDE_KEYWORDS.find(k => t.includes(k))
+      console.log(`[SKIP:filter] "${fullTitle.slice(0,60)}" — ${failedExclude ? 'exclude: '+failedExclude : 'no include keyword (RSS source)'}`)
       continue
     }
 
     // AI extract + write
     const extracted = await extractAndWrite(fullTitle, articleText, candidate.url, candidate.brand || source.brand)
-    if (!extracted) { stats.skipped++; await sleep(200); continue }
+    if (!extracted) {
+      stats.skipped++
+      console.log(`[SKIP:AI] "${fullTitle.slice(0,60)}" — AI returned skip/null`)
+      await sleep(200)
+      continue
+    }
 
     const key = `${extracted.brand}::${extracted.model}`.toLowerCase()
     if (seenKeys.has(key) || existingKeys.has(key)) {
       stats.skipped++
-      console.log(`[RELEASES] Dupe: ${extracted.brand} — ${extracted.model}`)
+      console.log(`[SKIP:dupe] ${extracted.brand} — ${extracted.model}`)
       continue
     }
     seenKeys.add(key)
