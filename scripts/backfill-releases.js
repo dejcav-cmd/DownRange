@@ -221,6 +221,14 @@ async function sleep(ms) { return new Promise(r => setTimeout(r, ms)) }
 async function run() {
   console.log('=== 60-Day Backfill Starting ===')
   console.log(`Sources: ${SOURCES.length} | Anthropic: ${!!ANTHROPIC_KEY}`)
+  if (!ANTHROPIC_KEY) {
+    console.error('ERROR: ANTHROPIC_API_KEY not set — cannot extract articles. Exiting.')
+    process.exit(1)
+  }
+  if (!SANITY_TOKEN) {
+    console.error('ERROR: SANITY_API_TOKEN not set. Exiting.')
+    process.exit(1)
+  }
 
   // Load existing keys
   const { result: existing } = await sanityRequest(`query/${DATASET}?query=${encodeURIComponent('*[_type=="firearmRelease"]{brand,model}')}`, 'GET')
