@@ -295,6 +295,15 @@
     },
     "app/api/cron/weekly-gun-releases/route.js": {
       "maxDuration": 300
+    },
+    "app/api/admin/backfill-releases/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/admin/nuke-releases/route.js": {
+      "maxDuration": 60
+    },
+    "app/api/admin/patch-releases-images/route.js": {
+      "maxDuration": 300
     }
   }
 }
