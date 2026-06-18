@@ -197,10 +197,11 @@ export default async function ReleasePage({ params }) {
 
           {/* ── HERO ── */}
           <div style={{ position:'relative', marginBottom:32 }}>
-            <div style={{ width:'100%', height:'clamp(260px,40vw,480px)', overflow:'hidden', position:'relative' }}>
+            <div style={{ width:'100%', height:'clamp(260px,40vw,480px)', overflow:'hidden', position:'relative', background:'#0d0d0f' }}>
               <ArticleHeroImage src={img} alt={`${release.brand} ${release.model}`}
                 fallback="/img/photos/pistol.jpg" />
-              <div style={{ position:'absolute', inset:0, background:'linear-gradient(to top, #09090B 0%, transparent 60%)' }} />
+              {/* Only add subtle bottom gradient, not full overlay that hides dark-bg gun photos */}
+              <div style={{ position:'absolute', bottom:0, left:0, right:0, height:'40%', background:'linear-gradient(to top, #09090B 0%, transparent 100%)' }} />
             </div>
 
             {/* Badges */}

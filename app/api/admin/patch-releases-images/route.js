@@ -285,14 +285,42 @@ async function handler(req) {
 
   console.log(`[PATCH-IMG] ${docs.length} total releases`)
 
-  // Decide which to process:
-  // - imageStatus === 'verified' AND imageScore >= 60 → SKIP (already good)
-  // - everything else → process
+  // Score all existing images first — some may already be verified without the flag
+  const MFR_DOMAINS = ['smith-wesson.com','sigsauer.com','ruger.com','glock.com',
+    'springfield-armory.com','taurususa.com','mossberg.com','fnamerica.com','waltherarms.com',
+    'canikusa.com','henryusa.com','browning.com','winchesterguns.com','kimberamerica.com',
+    'danieldefense.com','christensenarms.com','savagearms.com','benelliusa.com',
+    'keltecweapons.com','colt.com','cz-usa.com','bergara.online','tikka.fi','weatherby.com',
+    'staccato2011.com','wilsoncombat.com','shadowsystemscorp.com','iwi.us',
+    'aeroprecisionusa.com','fusionfirearms.com','palmettostatearmory.com']
+
   const toProcess = docs.filter(d => {
     if (forceAll) return true
+    // Already explicitly verified with good score → skip
     if (d.imageStatus === 'verified' && (d.imageScore || 0) >= 60) return false
+    // Has a real manufacturer domain image → auto-verify and skip
+    const url = (d.imageUrl || '').toLowerCase()
+    if (d.imageUrl && MFR_DOMAINS.some(dom => url.includes(dom))) return false
+    // Has /img/photos/ fallback or no image → needs work
     return true
   })
+
+  // Auto-verify any untagged manufacturer images we just identified as good
+  const autoVerify = docs.filter(d => {
+    if (d.imageStatus === 'verified') return false
+    const url = (d.imageUrl || '').toLowerCase()
+    return d.imageUrl && MFR_DOMAINS.some(dom => url.includes(dom))
+  })
+  if (autoVerify.length > 0) {
+    console.log(`[PATCH-IMG] Auto-verifying ${autoVerify.length} manufacturer domain images`)
+    for (const d of autoVerify) {
+      const score = scoreImageUrl(d.imageUrl, d.brand, d.model)
+      await sanity.patch(d._id).set({
+        imageStatus: 'verified', imageScore: score, imageMethod: 'manufacturer_domain',
+        imageVerifiedAt: new Date().toISOString(),
+      }).commit().catch(() => {})
+    }
+  }
 
   const skipped = docs.length - toProcess.length
   console.log(`[PATCH-IMG] Processing: ${toProcess.length} | Skipping (verified): ${skipped}`)
