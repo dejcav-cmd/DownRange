@@ -1,471 +1,337 @@
 export const dynamic   = 'force-dynamic'
 export const maxDuration = 300
-// BACKFILL VARIANT — called via admin panel, uses same logic but higher limits
 
 import crypto from 'crypto'
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
 
 const sanity = createClient({
-  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-  dataset:    'production',
-  apiVersion: '2024-01-01',
-  useCdn:     false,
-  token:      process.env.SANITY_API_TOKEN,
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+  dataset: 'production', apiVersion: '2024-01-01',
+  useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
-
 const sleep = ms => new Promise(r => setTimeout(r, ms))
 
-// ── AUTH ──────────────────────────────────────────────────────────────────────
-function isAuthorized(req) {
-  const admin = req.headers.get('x-admin-key')
-  return admin === process.env.ADMIN_KEY
-}
-
-// ── MANUFACTURER SOURCES (from your curated list) ─────────────────────────────
+// ── SOURCES ───────────────────────────────────────────────────────────────────
 const SOURCES = [
-  { brand: 'Smith & Wesson',    url: 'https://www.smith-wesson.com/products/new',                         type: 'html' },
-  { brand: 'Ruger',             url: 'https://ruger.com/micros/newProducts/',                              type: 'html' },
-  { brand: 'SIG Sauer',         url: 'https://www.sigsauer.com/blog/category/company-news',               type: 'html' },
-  { brand: 'Springfield Armory',url: 'https://www.springfield-armory.com/intel/press-releases/',          type: 'html' },
-  { brand: 'Savage Arms',       url: 'https://savagearms.com/news',                                       type: 'html' },
-  { brand: 'Mossberg',          url: 'https://www.mossberg.com/corporate/press-releases',                 type: 'html' },
-  { brand: 'FN America',        url: 'https://fnamerica.com/press-releases/',                             type: 'html' },
-  { brand: 'Benelli USA',       url: 'https://www.benelliusa.com/resources/press-releases',               type: 'html' },
-  { brand: 'Browning',          url: 'https://www.browning.com/news/articles.html',                       type: 'html' },
-  { brand: 'Palmetto State Armory', url: 'https://palmettostatearmory.com/blog/category/product-releases.html', type: 'html' },
-  { brand: 'KelTec',            url: 'https://www.keltecweapons.com/blog/',                               type: 'html' },
-  { brand: 'Winchester',        url: 'https://www.winchesterguns.com/news/articles.html',                 type: 'html' },
-  { brand: 'Colt',              url: 'https://www.colt.com/category/colt-news/',                          type: 'html' },
-  { brand: 'Glock',             url: 'https://us.glock.com/en/press-release',                             type: 'html' },
-  { brand: 'CZ-USA',            url: 'https://cz-usa.com/',                                               type: 'html' },
-  { brand: 'Daniel Defense',    url: 'https://danieldefense.com/blog/',                                   type: 'html' },
-  { brand: 'Kimber',            url: 'https://www.kimberamerica.com/press',                               type: 'html' },
-  { brand: 'Walther',           url: 'https://waltherarms.com/blog/',                                     type: 'html' },
-  { brand: 'Beretta',           url: 'https://www.beretta.com/en-us/news',                                type: 'html' },
-  { brand: 'Canik',             url: 'https://www.canikusa.com/news',                                     type: 'html' },
-  { brand: 'Taurus',            url: 'https://www.taurususa.com/blog',                                    type: 'html' },
-  { brand: 'Henry Repeating',   url: 'https://www.henryusa.com/news/',                                    type: 'html' },
-  { brand: 'Weatherby',         url: 'https://weatherby.com/news/',                                       type: 'html' },
-  { brand: 'Christensen Arms',  url: 'https://christensenarms.com/blog/',                                 type: 'html' },
-  { brand: 'Bergara',           url: 'https://www.bergara.online/us/',                                    type: 'html' },
-  { brand: 'Tikka',             url: 'https://choose.tikka.fi/usa/news',                                  type: 'html' },
-  { brand: 'Sako',              url: 'https://www.sako.global/news',                                      type: 'html' },
-  { brand: 'Staccato',          url: 'https://staccato2011.com/shop/new-arrivals',                        type: 'html' },
-  { brand: 'Wilson Combat',     url: 'https://wilsoncombat.com/news/',                                    type: 'html' },
-  { brand: 'Nighthawk Custom',  url: 'https://www.nighthawkcustom.com/news',                              type: 'html' },
-  { brand: 'Shadow Systems',    url: 'https://shadowsystemscorp.com/category/press-release/',             type: 'html' },
-  { brand: 'IWI US',            url: 'https://iwi.us/news/',                                              type: 'html' },
-  { brand: 'LMT Defense',       url: 'https://lmtdefense.com/news/',                                      type: 'html' },
-  { brand: 'Bravo Company',     url: 'https://bravocompanyusa.com/bcm-news/',                             type: 'html' },
-  { brand: 'Aero Precision',    url: 'https://www.aeroprecisionusa.com/blog',                             type: 'html' },
-  { brand: 'ZEV Technologies',  url: 'https://www.zevtechnologies.com/news',                              type: 'html' },
-  { brand: 'Diamondback',       url: 'https://diamondbackfirearms.com/news/',                             type: 'html' },
-  { brand: 'SCCY',              url: 'https://sccy.com/blogs/news',                                       type: 'html' },
-  { brand: 'Standard Mfg',     url: 'https://stdgun.com/news/',                                           type: 'html' },
-  { brand: 'Fusion Firearms',   url: 'https://fusionfirearms.com/videovault/category/announcements',      type: 'html' },
-  { brand: 'MasterPiece Arms',  url: 'https://masterpiecearms.com/',                                      type: 'html' },
-  // Supplemental: trusted gun media RSS (gun-specific only)
-  { brand: null, url: 'https://www.thetruthaboutguns.com/feed/',   type: 'rss', label: 'TTAG'       },
-  { brand: null, url: 'https://www.ammoland.com/feed/',            type: 'rss', label: 'AmmoLand'   },
-  { brand: null, url: 'https://www.guns.com/feed',                 type: 'rss', label: 'Guns.com'   },
-  { brand: null, url: 'https://www.gunsandammo.com/feed/',         type: 'rss', label: 'G&A'        },
-  { brand: null, url: 'https://www.pewpewtactical.com/feed/',      type: 'rss', label: 'PPT'        },
-  { brand: null, url: 'https://www.shootingillustrated.com/feed/', type: 'rss', label: 'SI'         },
-  { brand: null, url: 'https://www.americanrifleman.org/feed/',    type: 'rss', label: 'AmRifleman' },
+  { brand: 'Smith & Wesson',     url: 'https://www.smith-wesson.com/products/new' },
+  { brand: 'Ruger',              url: 'https://ruger.com/micros/newProducts/' },
+  { brand: 'SIG Sauer',         url: 'https://www.sigsauer.com/blog/category/company-news' },
+  { brand: 'Springfield Armory', url: 'https://www.springfield-armory.com/intel/press-releases/' },
+  { brand: 'Savage Arms',        url: 'https://savagearms.com/news' },
+  { brand: 'Mossberg',           url: 'https://www.mossberg.com/corporate/press-releases' },
+  { brand: 'FN America',         url: 'https://fnamerica.com/press-releases/' },
+  { brand: 'Benelli USA',        url: 'https://www.benelliusa.com/resources/press-releases' },
+  { brand: 'Browning',           url: 'https://www.browning.com/news/articles.html' },
+  { brand: 'Palmetto State Armory', url: 'https://palmettostatearmory.com/blog/category/product-releases.html' },
+  { brand: 'KelTec',             url: 'https://www.keltecweapons.com/blog/' },
+  { brand: 'Winchester',         url: 'https://www.winchesterguns.com/news/articles.html' },
+  { brand: 'Colt',               url: 'https://www.colt.com/category/colt-news/' },
+  { brand: 'Glock',              url: 'https://us.glock.com/en/press-release' },
+  { brand: 'CZ-USA',             url: 'https://cz-usa.com/' },
+  { brand: 'Daniel Defense',     url: 'https://danieldefense.com/blog/' },
+  { brand: 'Kimber',             url: 'https://www.kimberamerica.com/press' },
+  { brand: 'Walther',            url: 'https://waltherarms.com/blog/' },
+  { brand: 'Beretta',            url: 'https://www.beretta.com/en-us/news' },
+  { brand: 'Canik',              url: 'https://www.canikusa.com/news' },
+  { brand: 'Taurus',             url: 'https://www.taurususa.com/blog' },
+  { brand: 'Henry Repeating',    url: 'https://www.henryusa.com/news/' },
+  { brand: 'Weatherby',          url: 'https://weatherby.com/news/' },
+  { brand: 'Christensen Arms',   url: 'https://christensenarms.com/blog/' },
+  { brand: 'Staccato',           url: 'https://staccato2011.com/shop/new-arrivals' },
+  { brand: 'Wilson Combat',      url: 'https://wilsoncombat.com/news/' },
+  { brand: 'Shadow Systems',     url: 'https://shadowsystemscorp.com/category/press-release/' },
+  { brand: 'IWI US',             url: 'https://iwi.us/news/' },
+  { brand: 'Aero Precision',     url: 'https://www.aeroprecisionusa.com/blog' },
+  { brand: 'Fusion Firearms',    url: 'https://fusionfirearms.com/videovault/category/announcements' },
+  { brand: null, rss: true, label: 'TTAG',        url: 'https://www.thetruthaboutguns.com/feed/' },
+  { brand: null, rss: true, label: 'AmmoLand',    url: 'https://www.ammoland.com/feed/' },
+  { brand: null, rss: true, label: 'Guns.com',    url: 'https://www.guns.com/feed' },
+  { brand: null, rss: true, label: 'G&A',         url: 'https://www.gunsandammo.com/feed/' },
+  { brand: null, rss: true, label: 'AmRifleman',  url: 'https://www.americanrifleman.org/feed/' },
 ]
 
-// ── INCLUDE: article MUST contain at least one of these ──────────────────────
-const INCLUDE_KEYWORDS = [
-  'new ', 'release', 'released', 'releases', 'new product', 'announces', 'announced',
-  'introduces', 'introduced', 'launches', 'launched', 'now shipping', 'now available',
-  'pre-order', 'available now', 'pistol', 'handgun', 'rifle', 'carbine',
-  'shotgun', 'revolver', '1911', 'bolt-action', 'semi-auto', 'firearm', 'gun',
-]
+// ── FILTERS ───────────────────────────────────────────────────────────────────
+const INCLUDE_KW = ['new ','release','releases','introduces','announces','launches','launched',
+  'now available','now shipping','pistol','rifle','shotgun','revolver','firearm','handgun','1911',
+  'carbine','semi-auto','bolt-action','pump-action']
+const EXCLUDE_KW = ['daily deal','flash deal','blem ','blemished','sale price','sale ends',
+  'rifle kit','pistol kit','build kit','ar-15 kit','stripped lower','complete upper','brace kit',
+  'parts kit','apparel','t-shirt','holster','magazine',' mag ','coupon','horoscope',
+  'astrology','zodiac','lawsuit','recall ','earnings','quarterly']
+const SKIP_URLS  = ['/about','/contact','/support','/faq','/cart','/account','/login',
+  '/register','/terms','/privacy','/shipping','/careers','/dealers','/warranty','/catalog']
 
-// ── EXCLUDE: articles containing ANY of these are dropped ────────────────────
-const EXCLUDE_KEYWORDS = [
-  // Apparel / merch
-  'apparel', 't-shirt', 'hoodie', 'hat ', 'sticker', 'patch', 'swag', 'cap ',
-  // Parts / accessories only (not complete firearms)
-  'holster', 'grip tape', 'stock only', 'chassis-only', 'barrel-only',
-  'upper only', 'lower only', 'parts kit', 'handguard', 'rail ',
-  'trigger kit', 'trigger pack', 'muzzle device', 'compensator only',
-  'magazine', ' mag ', 'speed loader', 'cleaning kit', 'bipod',
-  // Deals / sales (PSA and others)
-  'daily deal', 'flash deal', 'deal of the day', 'deal of the week',
-  'blem ', 'blemished', 'sale price', 'sale ends', 'limited time',
-  'ammo deal', 'bulk ammo', 'coupon code', 'promo code',
-  // Bundles / kits that are NOT complete firearms
-  'rifle kit', 'pistol kit', 'build kit', 'ar-15 kit', 'ak kit',
-  'stripped lower', 'stripped upper', 'complete upper', 'complete lower',
-  'brace kit', 'stock kit', 'furniture kit',
-  // Optics / sights (standalone)
-  'red dot only', 'scope only', 'sight only',
-  // Non-gun content
-  'giveaway', 'donation', 'ambassador', 'training course', 'scholarship',
-  'horoscope', 'astrology', 'zodiac', 'family feud', 'game show',
-  'earnings', 'quarterly', 'fiscal', 'lawsuit', 'recall ',
-  'tire ', 'vehicle', 'automobile', 'ford ', 'chevy ', 'toyota ',
-]
-
-// ── CATEGORY FALLBACK IMAGES (only used if OG fetch fails) ───────────────────
 const CAT_IMGS = {
-  Pistol:     'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
-  Revolver:   'https://images.unsplash.com/photo-1609205807115-b8ea8cf28a52?w=900&q=85',
-  Rifle:      'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',
-  Shotgun:    'https://images.unsplash.com/photo-1584552532191-fed9e2c2d21e?w=900&q=85',
-  Suppressor: 'https://images.unsplash.com/photo-1580261450046-d0a30080dc9b?w=900&q=85',
-  default:    'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
+  Pistol:   'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
+  Revolver: 'https://images.unsplash.com/photo-1609205807115-b8ea8cf28a52?w=900&q=85',
+  Rifle:    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',
+  Shotgun:  'https://images.unsplash.com/photo-1584552532191-fed9e2c2d21e?w=900&q=85',
+  default:  'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
 }
 
-// ── FETCH PAGE (HTML or RSS) ──────────────────────────────────────────────────
+// ── HELPERS ───────────────────────────────────────────────────────────────────
+function hasExclude(text) { return EXCLUDE_KW.some(k => text.toLowerCase().includes(k)) }
+function hasInclude(text) { return INCLUDE_KW.some(k => text.toLowerCase().includes(k)) }
+
 async function fetchPage(url) {
   try {
     const r = await fetch(url, {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
-        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Cache-Control': 'no-cache',
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/125.0 Safari/537.36',
+        Accept: 'text/html,application/xhtml+xml,*/*;q=0.8',
       },
-      signal: AbortSignal.timeout(15000),
-      redirect: 'follow',
+      signal: AbortSignal.timeout(12000), redirect: 'follow',
     })
     if (!r.ok) return null
     return await r.text()
   } catch { return null }
 }
 
-// ── PARSE RSS ─────────────────────────────────────────────────────────────────
 function parseRSS(xml) {
-  const items = []
-  const rx = /<item[^>]*>([\s\S]*?)<\/item>/gi
-  let m
+  const items = []; const rx = /<item[^>]*>([\s\S]*?)<\/item>/gi; let m
   while ((m = rx.exec(xml)) !== null) {
-    const b       = m[1]
-    const title   = (b.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/)         ||[])[1]?.trim() || ''
-    const link    = (b.match(/<link[^>]*>([\s\S]*?)<\/link>/)                                       ||[])[1]?.trim()
-                 || (b.match(/<guid[^>]*>(https?[^<]+)<\/guid>/)                                    ||[])[1]?.trim() || ''
+    const b = m[1]
+    const title   = (b.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/)    ||[])[1]?.trim()||''
+    const link    = (b.match(/<link[^>]*>([\s\S]*?)<\/link>/)                                  ||[])[1]?.trim()
+                 || (b.match(/<guid[^>]*>(https?[^<]+)<\/guid>/)                               ||[])[1]?.trim()||''
     const desc    = (b.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) ||[])[1]
-                    ?.replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim().slice(0, 600) || ''
-    const pubDate = (b.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/)                                 ||[])[1]?.trim() || ''
-    const encImg  = (b.match(/<enclosure[^>]+url="([^"]+)"[^>]+type="image/i)                      ||[])[1] || null
-    if (title && link) items.push({ title, link, desc, pubDate, encImg })
+                   ?.replace(/<[^>]+>/g,'').trim().slice(0,500)||''
+    const pubDate = (b.match(/<pubDate[^>]*>([\s\S]*?)<\/pubDate>/)                            ||[])[1]?.trim()||''
+    if (title && link) items.push({ title, link, desc, pubDate })
   }
   return items
 }
 
-// ── EXTRACT ARTICLE LINKS FROM MANUFACTURER HTML PAGES ───────────────────────
-function extractLinksFromHTML(html, baseUrl) {
-  const base = new URL(baseUrl)
-  const links = new Set()
-  // Match <a href="..."> tags
-  const rx = /<a[^>]+href=["']([^"']+)["'][^>]*>([\s\S]*?)<\/a>/gi
-  let m
-  while ((m = rx.exec(html)) !== null) {
-    const href    = m[1]?.trim()
-    const text    = m[2]?.replace(/<[^>]+>/g, '').trim()
-    if (!href || href.startsWith('#') || href.startsWith('javascript')) continue
-    try {
-      const abs = href.startsWith('http') ? href : new URL(href, base).href
-      // Only same-domain links that look like articles
-      if (abs.includes(base.hostname) && abs.length > baseUrl.length + 5) {
-        // Skip PSA deal/sale URLs
-        const skipUrlPatterns = ['/daily-deal', '/flash-deal', '/blem', '/sale/', '/ammo/', '/magazines/', '/accessories/']
-        if (!skipUrlPatterns.some(p => abs.toLowerCase().includes(p))) {
-          links.add(abs)
-        }
-      }
-    } catch {}
-  }
-  return [...links].slice(0, 30)
+function extractLinks(html, baseUrl) {
+  try {
+    const base = new URL(baseUrl); const links = new Set()
+    const rx = /<a[^>]+href=["']([^"'#][^"']*?)["'][^>]*>/gi; let m
+    while ((m = rx.exec(html)) !== null) {
+      const href = m[1]?.trim()
+      if (!href || href.startsWith('javascript') || href.startsWith('mailto')) continue
+      try {
+        const abs = href.startsWith('http') ? href : new URL(href, base).href
+        if (!abs.includes(base.hostname)) continue
+        if (abs === baseUrl || abs === baseUrl + '/') continue
+        if (SKIP_URLS.some(s => abs.toLowerCase().includes(s))) continue
+        if (abs.match(/\.(pdf|zip|jpg|png|gif|svg|css|js)$/i)) continue
+        links.add(abs)
+      } catch {}
+    }
+    return [...links].slice(0, 25)
+  } catch { return [] }
 }
 
-// ── EXTRACT OG IMAGE FROM HTML ────────────────────────────────────────────────
 function extractOgImage(html) {
   if (!html) return null
-  const patterns = [
-    /<meta[^>]+property=["']og:image["'][^>]+content=["']([^"']+)["']/i,
-    /<meta[^>]+content=["']([^"']+)["'][^>]+property=["']og:image["']/i,
-    /<meta[^>]+name=["']twitter:image["'][^>]+content=["']([^"']+)["']/i,
-    /<meta[^>]+content=["']([^"']+)["'][^>]+name=["']twitter:image["']/i,
-  ]
-  for (const rx of patterns) {
+  for (const rx of [
+    /<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i,
+    /<meta[^>]+content="([^"]+)"[^>]+property="og:image"/i,
+    /<meta[^>]+name="twitter:image"[^>]+content="([^"]+)"/i,
+  ]) {
     const m = html.match(rx)
-    if (m?.[1] && m[1].startsWith('http') && !m[1].includes('logo') && !m[1].includes('icon') && m[1].length > 20)
-      return m[1]
+    if (m?.[1]?.startsWith('http') && !m[1].includes('logo') && !m[1].includes('icon')) return m[1]
   }
   return null
 }
 
-// ── SIGNAL CHECKS ─────────────────────────────────────────────────────────────
-function hasIncludeSignal(text) {
-  const t = text.toLowerCase()
-  return INCLUDE_KEYWORDS.some(k => t.includes(k))
-}
-function hasExcludeSignal(text) {
-  const t = text.toLowerCase()
-  return EXCLUDE_KEYWORDS.some(k => t.includes(k))
-}
-function isValidArticle(title, desc) {
-  const text = `${title} ${desc}`
-  return hasIncludeSignal(text) && !hasExcludeSignal(text)
-}
-
-// ── AI: EXTRACT + WRITE ───────────────────────────────────────────────────────
-async function extractAndWrite(title, pageText, sourceUrl, knownBrand) {
+async function aiExtract(title, text, url, brand) {
   if (!process.env.ANTHROPIC_API_KEY) return null
+  const prompt = `You are a DownRange firearms editor. Analyze this article.
 
-  const prompt = `You are a DownRange firearms editor. Analyze this article and extract a NEW FIREARM PRODUCT if one is announced.
+Title: ${title}
+Manufacturer hint: ${brand || 'unknown'}  
+Article text: ${text.slice(0, 2000)}
+Source: ${url}
 
-Article Title: ${title}
-Source URL: ${sourceUrl}
-${knownBrand ? `Known Manufacturer: ${knownBrand}` : ''}
-Article Text: ${pageText.slice(0, 2000)}
+TASK: Extract a NEW COMPLETE FIREARM product if announced.
+ONLY extract: pistols, rifles, shotguns, revolvers — complete named production firearms.
+REJECT: deals, sales, kits, blemished items, parts, accessories, accessories-only, non-gun content.
+REJECT if model name looks like a sentence or news headline (more than 6 words).
+If not a specific new complete firearm: {"skip":true}
 
-STRICT RULES:
-- Only extract if this announces a SPECIFIC new firearm product (pistol, rifle, shotgun, revolver)
-- The "model" must be the ACTUAL product model name (e.g. "G19 Gen6", "P365 XMacro", "Mark V Backcountry")
-- Do NOT extract: accessories, optics, suppressors, ammo, apparel, parts, training, events, financial news
-- Do NOT extract: deals, sales, daily deals, blemished items, bundles, kits (rifle kit, pistol kit, build kit)
-- Do NOT extract: stripped lowers, complete uppers, brace kits, furniture kits — these are parts not firearms
-- Do NOT extract if you cannot confirm a COMPLETE, NAMED firearm model (e.g. "Glock 19 Gen5 MOS" is valid, "AR-15 Rifle Kit" is NOT)
-- If not a new COMPLETE firearm product announcement: return {"skip": true}
-
-Return ONLY valid JSON (no markdown, no preamble):
+Return ONLY valid JSON, no markdown:
 {
   "brand": "Exact manufacturer name",
-  "model": "Exact model name/designation",
+  "model": "Exact model designation e.g. P365-XMACRO Comp, G47 MOS",
   "category": "Pistol|Rifle|Shotgun|Revolver",
-  "caliber": "e.g. 9mm Luger, .308 Win, 12 Gauge, or null",
-  "action": "e.g. Semi-Auto, Bolt-Action, Pump, Lever-Action, Revolver, or null",
+  "caliber": "e.g. 9mm Luger or null",
+  "action": "Semi-Auto|Bolt-Action|Pump|Lever-Action|Revolver or null",
   "msrp": 0,
-  "summary": "3-4 sentences. Specific facts about this exact model: features, specs, who it is for. Direct voice, no fluff.",
-  "body": "<h2>What Is It</h2><p>...</p><h2>Key Specs</h2><p>...</p><h2>Who Should Consider It</h2><p>...</p><h2>Bottom Line</h2><p>...</p>",
-  "specs": [{"label": "Barrel Length", "value": "4.02 in"}, {"label": "Weight", "value": "25.5 oz"}, {"label": "Capacity", "value": "15+1"}],
+  "summary": "2-3 sentences. Specific specs, features, who it is for.",
+  "body": "<h2>What Is It</h2><p>...</p><h2>Key Specs</h2><p>...</p><h2>Bottom Line</h2><p>...</p>",
+  "specs": [{"label":"Barrel Length","value":"4 in"},{"label":"Weight","value":"25 oz"}],
   "skip": false
 }`
-
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
-        max_tokens: 1500,
-        messages: [{ role: 'user', content: prompt }],
-      }),
-      signal: AbortSignal.timeout(30000),
+      headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
+      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 1200, messages: [{ role: 'user', content: prompt }] }),
+      signal: AbortSignal.timeout(25000),
     })
-    const data  = await res.json()
-    const raw   = data.content?.[0]?.text || ''
-    const clean = raw.replace(/^```[a-z]*\s*/i, '').replace(/\s*```\s*$/i, '').trim()
-    if (!clean || clean === '{"skip":true}' || clean.includes('"skip": true') || clean.includes('"skip":true')) return null
+    const data = await res.json()
+    const raw  = data.content?.[0]?.text || ''
+    const clean = raw.replace(/^```[a-z]*\s*/i,'').replace(/\s*```\s*$/i,'').trim()
+    if (!clean) return null
     const parsed = JSON.parse(clean)
     if (parsed.skip || !parsed.brand || !parsed.model) return null
-    // Validate model name — must look like a real gun model
-    if (parsed.model.split(' ').length > 8) return null  // too long = probably a headline
-    if (/horoscope|today|june|attorney|lawsuit|congress|senate|ford|toyota/i.test(parsed.model)) return null
+    if (parsed.model.split(' ').length > 7) return null
     return parsed
-  } catch(e) {
-    console.error('[RELEASES] AI error:', e.message)
-    return null
-  }
+  } catch (e) { console.error('[AI]', e.message); return null }
 }
 
-// ── DEDUP ─────────────────────────────────────────────────────────────────────
-async function loadExistingKeys() {
-  try {
-    const docs = await sanity.fetch(`*[_type=="firearmRelease"]{ brand, model }`)
-    return new Set(docs.map(d => `${d.brand}::${d.model}`.toLowerCase()))
-  } catch { return new Set() }
-}
-
-// ── SAVE ──────────────────────────────────────────────────────────────────────
-async function saveRelease(extracted, sourceUrl, imageUrl, pubDate) {
-  const slug = `${extracted.brand}-${extracted.model}`
-    .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 90)
-  const _id = 'release-' + crypto.createHash('md5')
-    .update(`${extracted.brand}::${extracted.model}`.toLowerCase()).digest('hex').slice(0, 12)
-
+async function saveRelease(ext, sourceUrl, imageUrl) {
+  const slug = `${ext.brand}-${ext.model}`.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)
+  const _id  = 'release-' + crypto.createHash('md5').update(`${ext.brand}::${ext.model}`.toLowerCase()).digest('hex').slice(0,12)
   return sanity.createOrReplace({
     _id, _type: 'firearmRelease',
-    title:    `${extracted.brand} ${extracted.model}: ${extracted.summary?.split('.')[0] || 'New Release'}`.slice(0, 120),
+    title:    `${ext.brand} ${ext.model}: ${(ext.summary||'').split('.')[0]}`.slice(0,120),
     slug:     { _type: 'slug', current: slug },
-    brand:    extracted.brand,
-    model:    extracted.model,
-    category: extracted.category || 'Pistol',
-    caliber:  extracted.caliber  || null,
-    action:   extracted.action   || null,
-    msrp:     typeof extracted.msrp === 'number' ? extracted.msrp : 0,
-    summary:  extracted.summary  || '',
-    body:     extracted.body     || null,
-    imageUrl: imageUrl || CAT_IMGS[extracted.category] || CAT_IMGS.default,
-    specs:    (extracted.specs || []).map(s => ({
-      _type: 'object',
-      _key:  s.label.toLowerCase().replace(/\s+/g, '-'),
-      label: s.label,
-      value: s.value,
-    })),
-    sourceUrl,
-    isJustDropped:   true,
-    approved:        true,
-    qualityReviewed: true,
-    publishedAt: pubDate ? new Date(pubDate).toISOString() : new Date().toISOString(),
+    brand:    ext.brand, model: ext.model, category: ext.category || 'Rifle',
+    caliber:  ext.caliber || null, action: ext.action || null,
+    msrp:     typeof ext.msrp === 'number' ? ext.msrp : 0,
+    summary:  ext.summary || '', body: ext.body || null,
+    imageUrl: imageUrl || CAT_IMGS[ext.category] || CAT_IMGS.default,
+    specs: (ext.specs||[]).map(s=>({ _type:'object', _key:s.label.toLowerCase().replace(/\s+/g,'-'), label:s.label, value:s.value })),
+    sourceUrl, isJustDropped: true, approved: true, qualityReviewed: true,
+    publishedAt: new Date().toISOString(),
   })
 }
 
-// ── PROCESS ONE SOURCE ────────────────────────────────────────────────────────
-async function processSource(source, existingKeys, seenKeys, stats) {
-  const html = await fetchPage(source.url)
-  if (!html) {
-    console.log(`[RELEASES] ${source.brand || source.label}: fetch failed`)
-    return
-  }
-
-  let candidates = []
-
-  if (source.type === 'rss') {
-    // RSS: parse items directly
-    const items = parseRSS(html)
-    for (const item of items) {
-      if (!isValidArticle(item.title, item.desc)) continue
-      candidates.push({ title: item.title, url: item.link, desc: item.desc, pubDate: item.pubDate, encImg: item.encImg })
-    }
-    console.log(`[RELEASES] ${source.label}: ${candidates.length} candidates from ${items.length} RSS items`)
-  } else {
-    // HTML manufacturer page: extract article links — trust all links from manufacturer pages
-    const links = extractLinksFromHTML(html, source.url)
-    for (const link of links.slice(0, 20)) {
-      const slug = link.split('/').pop().replace(/-/g, ' ')
-      // Only exclude obvious non-product URLs
-      const skipUrl = ['/about','/contact','/support','/faq','/cart','/account','/login','/register',
-        '/terms','/privacy','/shipping','/careers','/dealers','/warranty','/catalog']
-      if (skipUrl.some(s => link.toLowerCase().includes(s))) continue
-      candidates.push({ title: slug, url: link, desc: '', pubDate: '', encImg: null, brand: source.brand })
-    }
-    console.log(`[RELEASES] ${source.brand}: ${candidates.length} candidate links from ${links.length} total`)
-  }
-
-  const cutoff = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // 90 days
-
-  for (const candidate of candidates.slice(0, 15)) {
-    if (stats.created >= stats.maxCreate) return
-
-    // Fetch the actual article page
-    const articleHtml = await fetchPage(candidate.url)
-    if (!articleHtml) { stats.skipped++; stats.skipReasons.fetch++; continue }
-
-    const ogImage = extractOgImage(articleHtml)
-
-    // Extract clean text
-    const articleText = articleHtml
-      .replace(/<script[\s\S]*?<\/script>/gi, '')
-      .replace(/<style[\s\S]*?<\/style>/gi, '')
-      .replace(/<[^>]+>/g, ' ')
-      .replace(/\s+/g, ' ')
-      .trim()
-
-    // Title from OG if available
-    const ogTitle = (articleHtml.match(/<meta[^>]+property="og:title"[^>]+content="([^"]+)"/i) || [])[1]
-                 || (articleHtml.match(/<title[^>]*>([^<]+)<\/title>/i) || [])[1]
-                 || candidate.title
-
-    const fullTitle = ogTitle.replace(/ ?[|\-–] .*$/, '').trim() // strip "| Site Name" suffix
-
-    // For known manufacturer sources, only exclude — don't require include keywords
-    // (manufacturer pages only publish product content)
-    const isKnownMfr = !!source.brand
-    const hasExclude = EXCLUDE_KEYWORDS.some(k => (fullTitle + ' ' + articleText.slice(0,300)).toLowerCase().includes(k))
-    const hasInclude = INCLUDE_KEYWORDS.some(k => (fullTitle + ' ' + articleText.slice(0,500)).toLowerCase().includes(k))
-
-    if (hasExclude || (!isKnownMfr && !hasInclude)) {
-      stats.skipped++
-      const t = (fullTitle + ' ' + articleText.slice(0,300)).toLowerCase()
-      const failedExclude = EXCLUDE_KEYWORDS.find(k => t.includes(k))
-      stats.skipReasons.filter++
-      console.log(`[SKIP:filter] "${fullTitle.slice(0,60)}" — ${failedExclude ? 'exclude: '+failedExclude : 'no include kw'}`)
-      continue
-    }
-
-    // AI extract + write
-    const extracted = await extractAndWrite(fullTitle, articleText, candidate.url, candidate.brand || source.brand)
-    if (!extracted) {
-      stats.skipped++
-      stats.skipReasons.ai++
-      console.log(`[SKIP:AI] "${fullTitle.slice(0,60)}"`)
-      await sleep(200)
-      continue
-    }
-
-    const key = `${extracted.brand}::${extracted.model}`.toLowerCase()
-    if (seenKeys.has(key) || existingKeys.has(key)) {
-      stats.skipped++
-      stats.skipReasons.dupe++
-      console.log(`[SKIP:dupe] ${extracted.brand} — ${extracted.model}`)
-      continue
-    }
-    seenKeys.add(key)
-    existingKeys.add(key)
-
-    try {
-      const pub = candidate.pubDate ? new Date(candidate.pubDate) : null
-      const validPub = pub && pub > cutoff ? pub.toISOString() : new Date().toISOString()
-      await saveRelease(extracted, candidate.url, ogImage, validPub)
-      stats.created++
-      stats.saved.push(`${extracted.brand} — ${extracted.model}`)
-      console.log(`[RELEASES] ✓ SAVED: ${extracted.brand} — ${extracted.model} (${extracted.category})`)
-    } catch(e) {
-      stats.failed++
-      stats.errors.push(`${extracted.brand} ${extracted.model}: ${e.message}`)
-      console.error(`[RELEASES] Save failed: ${e.message}`)
-    }
-
-    await sleep(600) // rate limit between AI calls
-  }
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function isAuth(req) {
+  const admin = req.headers.get('x-admin-key')
+  const auth  = req.headers.get('authorization')
+  return admin === process.env.ADMIN_KEY || auth === `Bearer ${process.env.ADMIN_KEY}`
 }
 
 // ── MAIN ──────────────────────────────────────────────────────────────────────
 export async function GET(req) {
-  if (!isAuthorized(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  if (!isAuth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const t0  = Date.now()
-  const stats = { created: 0, skipped: 0, failed: 0, maxCreate: 20, saved: [], errors: [] }
+  const t0 = Date.now()
+  const stats = {
+    created: 0, skipped: 0, failed: 0, saved: [], errors: [],
+    skipFetch: 0, skipFilter: 0, skipAI: 0, skipDupe: 0,
+    sourceLog: [],
+  }
   const seenKeys = new Set()
 
-  console.log(`[RELEASES] Starting — ${SOURCES.length} manufacturer sources`)
-  console.log(`[RELEASES] ANTHROPIC_API_KEY: ${!!process.env.ANTHROPIC_API_KEY}`)
+  // Load existing releases for dedup
+  const existing = await sanity.fetch(`*[_type=="firearmRelease"]{brand,model}`).catch(() => [])
+  const existingKeys = new Set(existing.map(d => `${d.brand}::${d.model}`.toLowerCase()))
+  console.log(`[BACKFILL] Start — ${SOURCES.length} sources, ${existingKeys.size} existing, AI=${!!process.env.ANTHROPIC_API_KEY}`)
 
-  // Batch dedup from Sanity
-  const existingKeys = await loadExistingKeys()
-  console.log(`[RELEASES] ${existingKeys.size} existing releases in Sanity`)
-
-  // Process sources sequentially (respect rate limits)
   for (const source of SOURCES) {
-    if (stats.created >= stats.maxCreate) break
-    await processSource(source, existingKeys, seenKeys, stats)
-    await sleep(500)
+    if (stats.created >= 60) break
+    const label = source.brand || source.label || 'unknown'
+
+    const html = await fetchPage(source.url)
+    if (!html) {
+      console.log(`[BACKFILL] ${label}: fetch failed`)
+      stats.sourceLog.push(`${label}: fetch failed`)
+      continue
+    }
+
+    // Build candidate list
+    let candidates = []
+    if (source.rss) {
+      // RSS — require include keyword, reject exclude
+      const items = parseRSS(html)
+      for (const item of items) {
+        const text = `${item.title} ${item.desc}`
+        if (hasExclude(text)) continue
+        if (!hasInclude(text)) continue
+        candidates.push({ title: item.title, url: item.link, desc: item.desc, pubDate: item.pubDate })
+      }
+      console.log(`[BACKFILL] ${label}: ${candidates.length}/${items.length} RSS candidates`)
+      stats.sourceLog.push(`${label}: ${candidates.length}/${items.length} RSS`)
+    } else {
+      // Manufacturer HTML page — trust all links, only reject known bad URL patterns
+      const links = extractLinks(html, source.url)
+      for (const link of links) {
+        candidates.push({ title: link.split('/').pop().replace(/-/g,' '), url: link, brand: source.brand })
+      }
+      console.log(`[BACKFILL] ${label}: ${candidates.length} links to check`)
+      stats.sourceLog.push(`${label}: ${candidates.length} links`)
+    }
+
+    let srcCreated = 0
+    for (const cand of candidates.slice(0, 15)) {
+      if (stats.created >= 60) break
+
+      // Fetch article
+      const aHtml = await fetchPage(cand.url)
+      if (!aHtml) { stats.skipped++; stats.skipFetch++; continue }
+
+      const ogImg   = extractOgImage(aHtml)
+      const ogTitle = (aHtml.match(/<meta[^>]+property="og:title"[^>]+content="([^"]+)"/i)||[])[1]
+                   || (aHtml.match(/<title[^>]*>([^<]+)/i)||[])[1]?.split(/[|\-–]/)[0]?.trim()
+                   || cand.title
+      const aText   = aHtml.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'')
+                           .replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()
+
+      // Filter: exclude always applies; include only required for RSS sources
+      if (hasExclude(ogTitle + ' ' + aText.slice(0,300))) {
+        const which = EXCLUDE_KW.find(k => (ogTitle+' '+aText.slice(0,300)).toLowerCase().includes(k))
+        console.log(`[SKIP:excl] ${ogTitle.slice(0,60)} — "${which}"`)
+        stats.skipped++; stats.skipFilter++; continue
+      }
+      if (source.rss && !hasInclude(ogTitle + ' ' + aText.slice(0,500))) {
+        console.log(`[SKIP:incl] ${ogTitle.slice(0,60)} — no include keyword`)
+        stats.skipped++; stats.skipFilter++; continue
+      }
+
+      // AI extract
+      const ext = await aiExtract(ogTitle, aText, cand.url, cand.brand || source.brand)
+      if (!ext) {
+        console.log(`[SKIP:AI]   ${ogTitle.slice(0,60)}`)
+        stats.skipped++; stats.skipAI++; await sleep(150); continue
+      }
+
+      // Dedup
+      const key = `${ext.brand}::${ext.model}`.toLowerCase()
+      if (seenKeys.has(key) || existingKeys.has(key)) {
+        console.log(`[SKIP:dupe] ${ext.brand} — ${ext.model}`)
+        stats.skipped++; stats.skipDupe++; continue
+      }
+      seenKeys.add(key); existingKeys.add(key)
+
+      // Save
+      try {
+        await saveRelease(ext, cand.url, ogImg)
+        stats.created++; srcCreated++
+        stats.saved.push(`${ext.brand} — ${ext.model}`)
+        console.log(`[SAVED ✓]  [${stats.created}] ${ext.brand} — ${ext.model} (${ext.category})`)
+      } catch(e) {
+        stats.failed++
+        stats.errors.push(`${ext.brand} ${ext.model}: ${e.message}`)
+        console.error(`[SAVE ERR] ${e.message}`)
+      }
+      await sleep(500)
+    }
+    if (srcCreated > 0) console.log(`[BACKFILL] ${label}: ${srcCreated} saved`)
+    await sleep(300)
   }
 
-  const ms      = Date.now() - t0
-  const sr = stats.skipReasons
-  const details = `created:${stats.created} skipped:${stats.skipped} failed:${stats.failed} (${ms}ms)`
-    + ` | Skips: fetch:${sr.fetch} filter:${sr.filter} AI:${sr.ai} dupe:${sr.dupe}`
-    + (stats.saved.length ? ' | Saved: ' + stats.saved.join(', ') : ' | None saved')
-    + (stats.errors.length ? ' | Errors: ' + stats.errors.slice(0, 3).join('; ') : '')
+  const ms = Date.now() - t0
+  const details = [
+    `created:${stats.created} skipped:${stats.skipped} failed:${stats.failed}`,
+    `skips→ fetch:${stats.skipFetch} filter:${stats.skipFilter} AI:${stats.skipAI} dupe:${stats.skipDupe}`,
+    stats.saved.length ? `saved: ${stats.saved.join(', ')}` : 'none saved',
+  ].join(' | ')
 
-  console.log('[RELEASES] Done:', details)
+  console.log('[BACKFILL] Done:', details)
   await reportCronRun('backfill-releases', { status: 'success', ms, details }).catch(() => {})
 
   return Response.json({
-    ok: true, created: stats.created, skipped: stats.skipped,
-    failed: stats.failed, saved: stats.saved, errors: stats.errors, ms,
-    message: details,
+    ok: true, created: stats.created, skipped: stats.skipped, failed: stats.failed,
+    saved: stats.saved, errors: stats.errors, ms,
+    skipBreakdown: { fetch: stats.skipFetch, filter: stats.skipFilter, ai: stats.skipAI, dupe: stats.skipDupe },
+    sourceLog: stats.sourceLog,
+    details,
   })
 }
 
