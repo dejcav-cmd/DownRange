@@ -144,7 +144,7 @@ export async function fetchReviews(limit = 12, category = null) {
 
 // ── RELEASES ──────────────────────────────────────────────────────────────────
 
-export async function fetchReleases(limit = 20) {
+export async function fetchReleases(limit = 200) {
   return client.fetch(`
     *[_type == "firearmRelease" && approved == true] | order(publishedAt desc) [0...${limit}] {
       _id, title, brand, model, caliber, action, category, msrp, publishedAt, isJustDropped,

@@ -17,7 +17,7 @@ export const revalidate = 3600
 export default async function Page({ searchParams }) {
   const q = searchParams?.q || null
   const [releases, alerts] = await Promise.all([
-    q ? searchReleases(q, 40) : fetchReleases(40).catch(() => []),
+    q ? searchReleases(q, 200) : fetchReleases(200).catch(() => []),
     fetchBreakingAlerts(5).catch(() => []),
   ])
   return <ReleasesPage releases={releases} alerts={alerts} searchQ={q} />

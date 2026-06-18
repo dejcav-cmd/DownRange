@@ -206,7 +206,8 @@ Return ONLY valid JSON, no markdown:
   } catch (e) { console.error('[AI]', e.message); return null }
 }
 
-async function saveRelease(ext, sourceUrl, imageUrl) {
+async function saveRelease(ext, sourceUrl, imageUrl, pubDate) {
+  const eightMonthsAgo = new Date(Date.now() - 240 * 24 * 60 * 60 * 1000)
   const slug = `${ext.brand}-${ext.model}`.toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'').slice(0,90)
   const _id  = 'release-' + crypto.createHash('md5').update(`${ext.brand}::${ext.model}`.toLowerCase()).digest('hex').slice(0,12)
   return sanity.createOrReplace({
@@ -220,7 +221,7 @@ async function saveRelease(ext, sourceUrl, imageUrl) {
     imageUrl: imageUrl || CAT_IMGS[ext.category] || CAT_IMGS.default,
     specs: (ext.specs||[]).map(s=>({ _type:'object', _key:s.label.toLowerCase().replace(/\s+/g,'-'), label:s.label, value:s.value })),
     sourceUrl, isJustDropped: true, approved: true, qualityReviewed: true,
-    publishedAt: new Date().toISOString(),
+    publishedAt: (pubDate && pubDate > eightMonthsAgo) ? pubDate.toISOString() : new Date().toISOString(),
   })
 }
 
@@ -321,6 +322,24 @@ export async function GET(req) {
       const ogTitle = (aHtml.match(/<meta[^>]+property="og:title"[^>]+content="([^"]+)"/i)||[])[1]
                    || (aHtml.match(/<title[^>]*>([^<]+)/i)||[])[1]?.split(/[|\-–]/)[0]?.trim()
                    || cand.title
+
+      // Extract real publish date from article metadata
+      const pubDateRaw =
+        (aHtml.match(/<meta[^>]+property="article:published_time"[^>]+content="([^"]+)"/i)||[])[1] ||
+        (aHtml.match(/<meta[^>]+name="publish[^"]*"[^>]+content="([^"]+)"/i)||[])[1] ||
+        (aHtml.match(/<time[^>]+datetime="([^"]+)"/i)||[])[1] ||
+        (aHtml.match(/"datePublished"\s*:\s*"([^"]+)"/i)||[])[1] ||
+        (aHtml.match(/"publishedAt"\s*:\s*"([^"]+)"/i)||[])[1] ||
+        cand.pubDate || null
+      const pubDate = pubDateRaw ? new Date(pubDateRaw) : null
+      const eightMonthsAgo = new Date(Date.now() - 240 * 24 * 60 * 60 * 1000)
+      // Skip articles older than 8 months
+      if (pubDate && pubDate < eightMonthsAgo) {
+        stats.skipped++; stats.skipFilter++
+        console.log(`[SKIP:old]  ${ogTitle.slice(0,50)} — ${pubDate.toISOString().slice(0,10)}`)
+        continue
+      }
+
       const aText   = aHtml.replace(/<script[\s\S]*?<\/script>/gi,'').replace(/<style[\s\S]*?<\/style>/gi,'')
                            .replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim()
 
@@ -352,7 +371,7 @@ export async function GET(req) {
 
       // Save
       try {
-        await saveRelease(ext, cand.url, ogImg)
+        await saveRelease(ext, cand.url, ogImg, pubDate)
         stats.created++; srcCreated++
         stats.saved.push(`${ext.brand} — ${ext.model}`)
         console.log(`[SAVED ✓]  [${stats.created}] ${ext.brand} — ${ext.model} (${ext.category})`)
