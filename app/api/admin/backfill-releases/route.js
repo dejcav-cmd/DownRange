@@ -120,8 +120,31 @@ function extractLinks(html, baseUrl) {
         links.add(abs)
       } catch {}
     }
-    return [...links].slice(0, 25)
+    return [...links].slice(0, 60)
   } catch { return [] }
+}
+
+// ── PAGINATION: find next page URL ───────────────────────────────────────────
+function findNextPage(html, currentUrl) {
+  try {
+    const base = new URL(currentUrl)
+    // Common pagination patterns
+    const patterns = [
+      /<a[^>]+href="([^"]+)"[^>]*>(?:Next|next|›|»|→)[^<]*<\/a>/i,
+      /<a[^>]+rel="next"[^>]*href="([^"]+)"/i,
+      /<a[^>]+href="([^"]+)"[^>]*rel="next"/i,
+      /class="[^"]*next[^"]*"[^>]*href="([^"]+)"/i,
+      /href="([^"]+)"[^>]*class="[^"]*next[^"]*"/i,
+    ]
+    for (const rx of patterns) {
+      const m = html.match(rx)
+      if (m?.[1]) {
+        const next = m[1].startsWith('http') ? m[1] : new URL(m[1], base).href
+        if (next !== currentUrl) return next
+      }
+    }
+  } catch {}
+  return null
 }
 
 function extractOgImage(html) {
@@ -212,21 +235,27 @@ function isAuth(req) {
 export async function GET(req) {
   if (!isAuth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
+  // ?offset=0 (sources 0-9), ?offset=10 (10-19), etc. Default runs ALL
+  const { searchParams } = new URL(req.url)
+  const offset    = parseInt(searchParams.get('offset') || '0')
+  const batchSize = parseInt(searchParams.get('batch')  || String(SOURCES.length))
+  const sourceBatch = SOURCES.slice(offset, offset + batchSize)
+
   const t0 = Date.now()
   const stats = {
     created: 0, skipped: 0, failed: 0, saved: [], errors: [],
     skipFetch: 0, skipFilter: 0, skipAI: 0, skipDupe: 0,
-    sourceLog: [],
+    sourceLog: [], offset, batchSize: sourceBatch.length,
   }
   const seenKeys = new Set()
 
   // Load existing releases for dedup
   const existing = await sanity.fetch(`*[_type=="firearmRelease"]{brand,model}`).catch(() => [])
   const existingKeys = new Set(existing.map(d => `${d.brand}::${d.model}`.toLowerCase()))
-  console.log(`[BACKFILL] Start — ${SOURCES.length} sources, ${existingKeys.size} existing, AI=${!!process.env.ANTHROPIC_API_KEY}`)
+  console.log(`[BACKFILL] Start offset=${offset} sources=${sourceBatch.length}/${SOURCES.length} existing=${existingKeys.size} AI=${!!process.env.ANTHROPIC_API_KEY}`)
 
-  for (const source of SOURCES) {
-    if (stats.created >= 60) break
+  for (const source of sourceBatch) {
+    if (stats.created >= 300) break
     const label = source.brand || source.label || 'unknown'
 
     const html = await fetchPage(source.url)
@@ -250,18 +279,39 @@ export async function GET(req) {
       console.log(`[BACKFILL] ${label}: ${candidates.length}/${items.length} RSS candidates`)
       stats.sourceLog.push(`${label}: ${candidates.length}/${items.length} RSS`)
     } else {
-      // Manufacturer HTML page — trust all links, only reject known bad URL patterns
-      const links = extractLinks(html, source.url)
-      for (const link of links) {
-        candidates.push({ title: link.split('/').pop().replace(/-/g,' '), url: link, brand: source.brand })
+      // Manufacturer HTML page — paginate up to 5 pages to get 8 months back
+      let pageUrl = source.url
+      let pageNum = 0
+      const seenLinks = new Set()
+
+      while (pageUrl && pageNum < 5) {
+        const pageHtml = pageNum === 0 ? html : await fetchPage(pageUrl)
+        if (!pageHtml) break
+        pageNum++
+
+        const links = extractLinks(pageHtml, source.url)
+        let added = 0
+        for (const link of links) {
+          if (!seenLinks.has(link)) {
+            seenLinks.add(link)
+            candidates.push({ title: link.split('/').pop().replace(/-/g,' '), url: link, brand: source.brand })
+            added++
+          }
+        }
+        if (added > 0) console.log(`[BACKFILL] ${label} p${pageNum}: +${added} links (total:${candidates.length})`)
+
+        // Find and follow next page link
+        const next = findNextPage(pageHtml, pageUrl)
+        pageUrl = (next && next !== source.url) ? next : null
+        if (pageUrl) await sleep(400)
       }
-      console.log(`[BACKFILL] ${label}: ${candidates.length} links to check`)
-      stats.sourceLog.push(`${label}: ${candidates.length} links`)
+      console.log(`[BACKFILL] ${label}: ${candidates.length} total links (${pageNum} pages crawled)`)
+      stats.sourceLog.push(`${label}: ${candidates.length} links / ${pageNum}p`)
     }
 
     let srcCreated = 0
-    for (const cand of candidates.slice(0, 15)) {
-      if (stats.created >= 60) break
+    for (const cand of candidates.slice(0, 40)) {
+      if (stats.created >= 300) break
 
       // Fetch article
       const aHtml = await fetchPage(cand.url)
@@ -327,12 +377,16 @@ export async function GET(req) {
   console.log('[BACKFILL] Done:', details)
   await reportCronRun('backfill-releases', { status: 'success', ms, details }).catch(() => {})
 
+  const nextOffset = offset + batchSize
+  const hasMore = nextOffset < SOURCES.length
+
   return Response.json({
     ok: true, created: stats.created, skipped: stats.skipped, failed: stats.failed,
     saved: stats.saved, errors: stats.errors, ms,
     skipBreakdown: { fetch: stats.skipFetch, filter: stats.skipFilter, ai: stats.skipAI, dupe: stats.skipDupe },
     sourceLog: stats.sourceLog,
     details,
+    pagination: { offset, batchSize: sourceBatch.length, nextOffset: hasMore ? nextOffset : null, totalSources: SOURCES.length, hasMore },
   })
 }
 

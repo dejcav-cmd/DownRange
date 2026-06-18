@@ -10,13 +10,14 @@ const OPERATIONS = [
     ops: [
       {
         id: 'backfill-releases',
-        label: 'Backfill Releases (60 days)',
-        desc: 'Crawls all 41 manufacturer sources and pulls real gun releases. Takes 3-5 min. Run after nuking.',
+        label: 'Backfill Releases (8 months)',
+        desc: 'Crawls all 41 manufacturer sources with pagination — pulls up to 300 real gun releases from the last 8 months. Runs in 3 batches automatically.',
         endpoint: '/api/admin/backfill-releases',
         method: 'GET',
         color: '#c8922a',
         danger: false,
         timeout: 290000,
+        batched: true,
       },
       {
         id: 'nuke-releases',
@@ -142,6 +143,12 @@ function OpButton({ op, adminKey }) {
     setConfirm(false)
     setStatus('running')
     setResult(null)
+
+    if (op.batched) {
+      await runBatched()
+      return
+    }
+
     const start = Date.now()
     try {
       const res = await fetch(op.endpoint, {
@@ -153,7 +160,6 @@ function OpButton({ op, adminKey }) {
       const ms   = Date.now() - start
       let parsed = null
       try { parsed = JSON.parse(text) } catch {}
-
       const summary = parsed
         ? [
             parsed.created   != null && `created: ${parsed.created}`,
@@ -165,7 +171,6 @@ function OpButton({ op, adminKey }) {
             parsed.error     && `ERROR: ${parsed.error}`,
           ].filter(Boolean).join(' · ')
         : text.slice(0, 300)
-
       setStatus(res.ok ? 'done' : 'error')
       setResult({ summary: summary || `HTTP ${res.status}`, ms })
     } catch (e) {
@@ -173,12 +178,51 @@ function OpButton({ op, adminKey }) {
       const timedOut = e.name === 'AbortError'
       setStatus(timedOut ? 'done' : 'error')
       setResult({
-        summary: timedOut
-          ? `Job running — took ${Math.round(ms/60000)}m. Refresh cron dashboard for results.`
-          : `Error: ${e.message}`,
+        summary: timedOut ? `Job running — took ${Math.round(ms/60000)}m. Refresh for results.` : `Error: ${e.message}`,
         ms,
       })
     }
+  }
+
+  async function runBatched() {
+    // Run backfill in batches of 12 sources at a time across all 36 manufacturer sources
+    const BATCH = 12
+    const TOTAL = 36
+    let totalCreated = 0
+    let totalSkipped = 0
+    const allSaved = []
+    const start = Date.now()
+
+    for (let offset = 0; offset < TOTAL; offset += BATCH) {
+      setResult({ summary: `Batch ${Math.floor(offset/BATCH)+1}/${Math.ceil(TOTAL/BATCH)}: crawling sources ${offset+1}–${Math.min(offset+BATCH,TOTAL)}...`, ms: Date.now()-start })
+      try {
+        const res = await fetch(`${op.endpoint}?offset=${offset}&batch=${BATCH}`, {
+          method: op.method,
+          headers: { 'x-admin-key': adminKey, 'authorization': `Bearer ${adminKey}`, 'x-vercel-cron': '1' },
+          signal: AbortSignal.timeout(290000),
+        })
+        const text = await res.text()
+        let parsed = null
+        try { parsed = JSON.parse(text) } catch {}
+        if (parsed) {
+          totalCreated += parsed.created || 0
+          totalSkipped += parsed.skipped || 0
+          if (parsed.saved?.length) allSaved.push(...parsed.saved)
+        }
+      } catch (e) {
+        // Timeout = job still ran, continue to next batch
+        console.log(`Batch ${offset} timeout — continuing`)
+      }
+      // Small pause between batches
+      await new Promise(r => setTimeout(r, 2000))
+    }
+
+    const ms = Date.now() - start
+    setStatus('done')
+    setResult({
+      summary: `All batches complete — created: ${totalCreated} · skipped: ${totalSkipped} · saved: ${allSaved.slice(0,8).join(', ')}`,
+      ms,
+    })
   }
 
   const borderColor = status === 'done' ? '#22c55e' : status === 'error' ? '#ef4444' : status === 'running' ? op.color : '#1e1e1e'
