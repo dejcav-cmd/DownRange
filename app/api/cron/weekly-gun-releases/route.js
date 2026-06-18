@@ -342,16 +342,16 @@ async function processSource(source, existingKeys, seenKeys, stats) {
     }
     console.log(`[RELEASES] ${source.label}: ${candidates.length} candidates from ${items.length} RSS items`)
   } else {
-    // HTML manufacturer page: extract article links then fetch each one
+    // HTML manufacturer page — trust all links (it's a gun manufacturer, not general news)
     const links = extractLinksFromHTML(html, source.url)
-    // Also check the page itself for OG meta
-    for (const link of links.slice(0, 15)) {
-      // Quick title check from URL slug
+    const skipUrl = ['/about','/contact','/support','/faq','/cart','/account','/login',
+      '/register','/terms','/privacy','/shipping','/careers','/dealers','/warranty']
+    for (const link of links.slice(0, 20)) {
+      if (skipUrl.some(s => link.toLowerCase().includes(s))) continue
       const slug = link.split('/').pop().replace(/-/g, ' ')
-      if (!hasIncludeSignal(slug) && !hasIncludeSignal(source.brand || '')) continue
       candidates.push({ title: slug, url: link, desc: '', pubDate: '', encImg: null, brand: source.brand })
     }
-    console.log(`[RELEASES] ${source.brand}: ${candidates.length} candidate links`)
+    console.log(`[RELEASES] ${source.brand}: ${candidates.length} candidates from ${links.length} links`)
   }
 
   const cutoff = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // 90 days

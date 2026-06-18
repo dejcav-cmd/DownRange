@@ -339,16 +339,17 @@ async function processSource(source, existingKeys, seenKeys, stats) {
     }
     console.log(`[RELEASES] ${source.label}: ${candidates.length} candidates from ${items.length} RSS items`)
   } else {
-    // HTML manufacturer page: extract article links then fetch each one
+    // HTML manufacturer page: extract article links — trust all links from manufacturer pages
     const links = extractLinksFromHTML(html, source.url)
-    // Also check the page itself for OG meta
-    for (const link of links.slice(0, 15)) {
-      // Quick title check from URL slug
+    for (const link of links.slice(0, 20)) {
       const slug = link.split('/').pop().replace(/-/g, ' ')
-      if (!hasIncludeSignal(slug) && !hasIncludeSignal(source.brand || '')) continue
+      // Only exclude obvious non-product URLs
+      const skipUrl = ['/about','/contact','/support','/faq','/cart','/account','/login','/register',
+        '/terms','/privacy','/shipping','/careers','/dealers','/warranty','/catalog']
+      if (skipUrl.some(s => link.toLowerCase().includes(s))) continue
       candidates.push({ title: slug, url: link, desc: '', pubDate: '', encImg: null, brand: source.brand })
     }
-    console.log(`[RELEASES] ${source.brand}: ${candidates.length} candidate links`)
+    console.log(`[RELEASES] ${source.brand}: ${candidates.length} candidate links from ${links.length} total`)
   }
 
   const cutoff = new Date(Date.now() - 90 * 24 * 60 * 60 * 1000) // 90 days
@@ -358,7 +359,7 @@ async function processSource(source, existingKeys, seenKeys, stats) {
 
     // Fetch the actual article page
     const articleHtml = await fetchPage(candidate.url)
-    if (!articleHtml) continue
+    if (!articleHtml) { stats.skipped++; stats.skipReasons.fetch++; continue }
 
     const ogImage = extractOgImage(articleHtml)
 
@@ -387,7 +388,8 @@ async function processSource(source, existingKeys, seenKeys, stats) {
       stats.skipped++
       const t = (fullTitle + ' ' + articleText.slice(0,300)).toLowerCase()
       const failedExclude = EXCLUDE_KEYWORDS.find(k => t.includes(k))
-      console.log(`[SKIP:filter] "${fullTitle.slice(0,60)}" — ${failedExclude ? 'exclude: '+failedExclude : 'no include keyword (RSS source)'}`)
+      stats.skipReasons.filter++
+      console.log(`[SKIP:filter] "${fullTitle.slice(0,60)}" — ${failedExclude ? 'exclude: '+failedExclude : 'no include kw'}`)
       continue
     }
 
@@ -395,7 +397,8 @@ async function processSource(source, existingKeys, seenKeys, stats) {
     const extracted = await extractAndWrite(fullTitle, articleText, candidate.url, candidate.brand || source.brand)
     if (!extracted) {
       stats.skipped++
-      console.log(`[SKIP:AI] "${fullTitle.slice(0,60)}" — AI returned skip/null`)
+      stats.skipReasons.ai++
+      console.log(`[SKIP:AI] "${fullTitle.slice(0,60)}"`)
       await sleep(200)
       continue
     }
@@ -403,6 +406,7 @@ async function processSource(source, existingKeys, seenKeys, stats) {
     const key = `${extracted.brand}::${extracted.model}`.toLowerCase()
     if (seenKeys.has(key) || existingKeys.has(key)) {
       stats.skipped++
+      stats.skipReasons.dupe++
       console.log(`[SKIP:dupe] ${extracted.brand} — ${extracted.model}`)
       continue
     }
@@ -449,7 +453,9 @@ export async function GET(req) {
   }
 
   const ms      = Date.now() - t0
+  const sr = stats.skipReasons
   const details = `created:${stats.created} skipped:${stats.skipped} failed:${stats.failed} (${ms}ms)`
+    + ` | Skips: fetch:${sr.fetch} filter:${sr.filter} AI:${sr.ai} dupe:${sr.dupe}`
     + (stats.saved.length ? ' | Saved: ' + stats.saved.join(', ') : ' | None saved')
     + (stats.errors.length ? ' | Errors: ' + stats.errors.slice(0, 3).join('; ') : '')
 
