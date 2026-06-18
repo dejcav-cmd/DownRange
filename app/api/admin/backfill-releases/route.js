@@ -63,11 +63,12 @@ const SKIP_URLS  = ['/about','/contact','/support','/faq','/cart','/account','/l
   '/register','/terms','/privacy','/shipping','/careers','/dealers','/warranty','/catalog']
 
 const CAT_IMGS = {
-  Pistol:   'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
-  Revolver: 'https://images.unsplash.com/photo-1609205807115-b8ea8cf28a52?w=900&q=85',
-  Rifle:    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',
-  Shotgun:  'https://images.unsplash.com/photo-1584552532191-fed9e2c2d21e?w=900&q=85',
-  default:  'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
+  Pistol:     '/img/photos/pistol.jpg',
+  Revolver:   '/img/photos/pistol.jpg',
+  Rifle:      '/img/photos/rifle.jpg',
+  Shotgun:    '/img/photos/shotgun.jpg',
+  Suppressor: '/img/photos/suppressor.jpg',
+  default:    '/img/photos/pistol.jpg',
 }
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────

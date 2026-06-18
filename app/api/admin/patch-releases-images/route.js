@@ -9,11 +9,12 @@ const sanity = createClient({
 })
 
 const CAT_IMGS = {
-  Pistol:   'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
-  Revolver: 'https://images.unsplash.com/photo-1609205807115-b8ea8cf28a52?w=900&q=85',
-  Rifle:    'https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=900&q=85',
-  Shotgun:  'https://images.unsplash.com/photo-1584552532191-fed9e2c2d21e?w=900&q=85',
-  default:  'https://images.unsplash.com/photo-1578302758063-aaff0d54e35f?w=900&q=85',
+  Pistol:     '/img/photos/pistol.jpg',
+  Revolver:   '/img/photos/pistol.jpg',
+  Rifle:      '/img/photos/rifle.jpg',
+  Shotgun:    '/img/photos/shotgun.jpg',
+  Suppressor: '/img/photos/suppressor.jpg',
+  default:    '/img/photos/pistol.jpg',
 }
 
 async function fetchOgImage(url) {
@@ -42,7 +43,11 @@ export async function POST(req) {
   let patched = 0, fallback = 0, skipped = 0
 
   for (const doc of docs) {
-    if (doc.imageUrl && !doc.imageUrl.includes('unsplash.com')) { skipped++; continue }
+    // Skip only if already has a real manufacturer image (not a generic fallback)
+    const isGeneric = !doc.imageUrl 
+      || doc.imageUrl.includes('unsplash.com') 
+      || doc.imageUrl.includes('pexels.com')
+    if (!isGeneric) { skipped++; continue }
 
     const img = await fetchOgImage(doc.sourceUrl)
     const finalImg = img || CAT_IMGS[doc.category] || CAT_IMGS.default
@@ -54,3 +59,5 @@ export async function POST(req) {
 
   return Response.json({ ok: true, patched, fallback, skipped, message: `${patched} real images, ${fallback} category fallbacks, ${skipped} already had images` })
 }
+
+export async function GET(req) { return POST(req) }
