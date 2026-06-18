@@ -55,10 +55,23 @@ const SOURCES = [
 const INCLUDE_KW = ['new ','release','releases','introduces','announces','launches','launched',
   'now available','now shipping','pistol','rifle','shotgun','revolver','firearm','handgun','1911',
   'carbine','semi-auto','bolt-action','pump-action']
-const EXCLUDE_KW = ['daily deal','flash deal','blem ','blemished','sale price','sale ends',
-  'rifle kit','pistol kit','build kit','ar-15 kit','stripped lower','complete upper','brace kit',
-  'parts kit','apparel','t-shirt','holster','magazine',' mag ','coupon','horoscope',
-  'astrology','zodiac','lawsuit','recall ','earnings','quarterly']
+const EXCLUDE_KW = [
+  // Deals / sales
+  'daily deal', 'flash deal', 'deal of the day', 'sale ends', 'limited time offer',
+  // Blemished / used
+  'blemished', ' blem ', 'blem-',
+  // Parts / kits (not complete firearms)
+  'rifle kit', 'pistol kit', 'build kit', 'ar-15 kit', 'ak-47 kit',
+  'stripped lower', 'complete upper', 'brace kit', 'parts kit',
+  'lower parts kit', 'upper parts kit',
+  // Pure apparel
+  't-shirt', 'hoodie', 'hat drop', 'apparel collection',
+  // Non-gun
+  'horoscope', 'astrology', 'zodiac', 'family feud',
+  'earnings report', 'quarterly results', 'fiscal year',
+  // NOTE: removed 'magazine', 'holster', ' mag ', 'recall' — these appear in
+  // nearly every gun product article and cause massive false positive exclusions
+]
 const SKIP_URLS  = ['/about','/contact','/support','/faq','/cart','/account','/login',
   '/register','/terms','/privacy','/shipping','/careers','/dealers','/warranty','/catalog']
 

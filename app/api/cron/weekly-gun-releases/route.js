@@ -88,28 +88,23 @@ const INCLUDE_KEYWORDS = [
 
 // ── EXCLUDE: articles containing ANY of these are dropped ────────────────────
 const EXCLUDE_KEYWORDS = [
-  // Apparel / merch
-  'apparel', 't-shirt', 'hoodie', 'hat ', 'sticker', 'patch', 'swag', 'cap ',
-  // Parts / accessories only (not complete firearms)
-  'holster', 'grip tape', 'stock only', 'chassis-only', 'barrel-only',
-  'upper only', 'lower only', 'parts kit', 'handguard', 'rail ',
-  'trigger kit', 'trigger pack', 'muzzle device', 'compensator only',
-  'magazine', ' mag ', 'speed loader', 'cleaning kit', 'bipod',
-  // Deals / sales (PSA and others)
-  'daily deal', 'flash deal', 'deal of the day', 'deal of the week',
-  'blem ', 'blemished', 'sale price', 'sale ends', 'limited time',
-  'ammo deal', 'bulk ammo', 'coupon code', 'promo code',
-  // Bundles / kits that are NOT complete firearms
+  // Apparel / merch (title-level only — these never appear in gun product titles)
+  't-shirt', 'hoodie', 'apparel collection', 'hat drop',
+  // Pure parts/kits (complete firearms always have a model name, not just "kit")
   'rifle kit', 'pistol kit', 'build kit', 'ar-15 kit', 'ak kit',
   'stripped lower', 'stripped upper', 'complete upper', 'complete lower',
-  'brace kit', 'stock kit', 'furniture kit',
-  // Optics / sights (standalone)
-  'red dot only', 'scope only', 'sight only',
-  // Non-gun content
-  'giveaway', 'donation', 'ambassador', 'training course', 'scholarship',
+  'lower parts kit', 'upper parts kit', 'brace kit', 'furniture kit',
+  // Deals / sales
+  'daily deal', 'flash deal', 'deal of the day', 'deal of the week',
+  'blemished', ' blem-', 'sale ends', 'coupon code', 'promo code',
+  'ammo deal', 'bulk ammo',
+  // Non-gun junk
   'horoscope', 'astrology', 'zodiac', 'family feud', 'game show',
-  'earnings', 'quarterly', 'fiscal', 'lawsuit', 'recall ',
-  'tire ', 'vehicle', 'automobile', 'ford ', 'chevy ', 'toyota ',
+  'earnings report', 'quarterly results', 'fiscal year',
+  'automobile', 'ford f-150', 'chevy', 'toyota',
+  // NOTE: 'magazine', 'holster', 'recall', ' mag ', 'rail', 'handguard' intentionally
+  // REMOVED — these words appear in virtually every legitimate gun product article
+  // and cause massive false-positive exclusions. AI validates content instead.
 ]
 
 // ── CATEGORY FALLBACK IMAGES (only used if OG fetch fails) ───────────────────
