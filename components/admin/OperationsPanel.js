@@ -32,22 +32,26 @@ const OPERATIONS = [
       {
         id: 'patch-release-images',
         label: 'Patch Release Images',
-        desc: 'Finds real product images: (1) source article OG image, (2) manufacturer product page, (3) Google image search. Skips releases already verified (score ≥60). Run after backfill.',
+        desc: 'Finds real product images for releases missing verified images. Runs in batches of 25. Skips already-verified (score ≥60). Steps: article OG → manufacturer page → Google.',
         endpoint: '/api/admin/patch-releases-images',
         method: 'GET',
         color: '#60a5fa',
         danger: false,
         timeout: 290000,
+        batchedImages: true,
+        batchParam: '',
       },
       {
         id: 'patch-release-images-force',
         label: 'Force Re-scan All Images',
-        desc: 'Re-runs image search on ALL releases including already-verified ones. Use when you want to refresh everything.',
+        desc: 'Re-scans ALL releases including already-verified. Runs in batches of 25 automatically.',
         endpoint: '/api/admin/patch-releases-images?force=true',
         method: 'GET',
         color: '#a78bfa',
         danger: true,
         timeout: 290000,
+        batchedImages: true,
+        batchParam: 'force=true',
       },
     ],
   },
@@ -154,6 +158,10 @@ function OpButton({ op, adminKey }) {
     setStatus('running')
     setResult(null)
 
+    if (op.batchedImages) {
+      await runImageBatches()
+      return
+    }
     if (op.batched) {
       await runBatched()
       return
@@ -192,6 +200,63 @@ function OpButton({ op, adminKey }) {
         ms,
       })
     }
+  }
+
+  async function runImageBatches() {
+    // Auto-paginate through all releases in batches of 25
+    const LIMIT = 25
+    let offset = 0
+    let totalVerified = 0, totalFallback = 0, totalProcessed = 0
+    const start = Date.now()
+    let batchNum = 0
+
+    while (true) {
+      batchNum++
+      const sep = op.batchParam ? '&' : '?'
+      const url = op.batchParam
+        ? `${op.endpoint}&offset=${offset}&limit=${LIMIT}`
+        : `${op.endpoint}?offset=${offset}&limit=${LIMIT}`
+
+      setResult({ summary: `Batch ${batchNum}: scanning releases ${offset+1}–${offset+LIMIT}...`, ms: Date.now()-start })
+
+      try {
+        const res = await fetch(url, {
+          method: op.method,
+          headers: { 'x-admin-key': adminKey, 'authorization': `Bearer ${adminKey}` },
+          signal: AbortSignal.timeout(290000),
+        })
+        const text = await res.text()
+        let d = null
+        try { d = JSON.parse(text) } catch {}
+
+        if (d) {
+          totalVerified   += d.verified  || 0
+          totalFallback   += d.fallback  || 0
+          totalProcessed  += d.processed || 0
+
+          setResult({
+            summary: `Batch ${batchNum} done · verified:${totalVerified} fallback:${totalFallback} processed:${totalProcessed} · ${d.pagination?.remaining||0} remaining...`,
+            ms: Date.now()-start
+          })
+
+          if (!d.pagination?.hasMore || !d.pagination?.nextOffset) break
+          offset = d.pagination.nextOffset
+        } else {
+          break
+        }
+      } catch (e) {
+        // Timeout — try next batch anyway
+        offset += LIMIT
+        if (offset > 300) break
+      }
+      await new Promise(r => setTimeout(r, 1500))
+    }
+
+    setStatus('done')
+    setResult({
+      summary: `Complete — verified:${totalVerified} fallback:${totalFallback} total processed:${totalProcessed} in ${batchNum} batches`,
+      ms: Date.now() - start,
+    })
   }
 
   async function runBatched() {

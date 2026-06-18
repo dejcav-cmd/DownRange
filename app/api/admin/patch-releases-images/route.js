@@ -272,6 +272,8 @@ async function handler(req) {
 
   const { searchParams } = new URL(req.url)
   const forceAll = searchParams.get('force') === 'true'
+  const offset   = parseInt(searchParams.get('offset') || '0')
+  const limit    = parseInt(searchParams.get('limit')  || '25') // 25 per batch @ ~3s each = ~75s
 
   // Fetch all releases with image status
   const docs = await sanity.fetch(`
@@ -298,7 +300,11 @@ async function handler(req) {
   const stats = { article_og: 0, manufacturer_page: 0, google: 0, fallback: 0, errors: 0, skipped }
   const results = []
 
-  for (const doc of toProcess) {
+  const paginated = toProcess.slice(offset, offset + limit)
+  const totalPending = toProcess.length
+  console.log(`[PATCH-IMG] Batch offset=${offset} limit=${limit}: processing ${paginated.length} of ${totalPending} pending`)
+
+  for (const doc of paginated) {
     const { url, method, score } = await findVerifiedImage(doc)
 
     try {
@@ -320,7 +326,7 @@ async function handler(req) {
       stats.errors++
       console.error(`  ✗ save: ${e.message}`)
     }
-    await sleep(700)
+    await sleep(300)
   }
 
   const verified = results.filter(r => r.score >= 60).length
@@ -330,11 +336,23 @@ async function handler(req) {
   const msg = `processed:${toProcess.length} verified:${verified} partial:${partial} fallback:${fallback} skipped:${skipped}`
   console.log('[PATCH-IMG] Done:', msg)
 
+  const nextOffset = offset + limit
+  const hasMore = nextOffset < toProcess.length
+
   return Response.json({
-    ok: true, total: docs.length,
-    processed: toProcess.length, skipped,
+    ok: true,
+    total: docs.length,
+    processed: paginated.length,
+    totalPending: toProcess.length,
+    skipped,
     verified, partial, fallback, errors: stats.errors,
     breakdown: stats, results, message: msg,
+    pagination: {
+      offset, limit,
+      nextOffset: hasMore ? nextOffset : null,
+      hasMore,
+      remaining: Math.max(0, toProcess.length - nextOffset),
+    },
   })
 }
 
