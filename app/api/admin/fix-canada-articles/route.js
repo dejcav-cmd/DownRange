@@ -63,7 +63,7 @@ export async function GET(req) {
   const needsBody = all.filter(a => {
     if (!a.body) return true
     const stripped = a.body.replace(/<[^>]+>/g, '').trim()
-    return stripped.length < 500
+    return stripped.length < 800  // RSS excerpts are typically 100-400 chars; real articles are 800+
   })
 
   if (needsBody.length === 0) {
@@ -77,12 +77,12 @@ export async function GET(req) {
   const article = needsBody[offset]
   if (!article) {
     return Response.json({
-      ok: true, fixed: 0, total: all.length, processed: 0, results: [],
+      ok: true, fixed: 0, total: needsBody.length, processed: 0, results: [],
       pagination: { offset, hasMore: false, nextOffset: null, remaining: 0 },
     })
   }
 
-  console.log(`[FIX-CANADA] ${offset+1}/${all.length}: ${article.title}`)
+  console.log(`[FIX-CANADA] ${offset+1}/${needsBody.length}: ${article.title}`)
   let result = { slug: article.slug?.current, title: article.title, status: 'error' }
 
   try {
