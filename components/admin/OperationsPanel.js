@@ -154,6 +154,16 @@ const OPERATIONS = [
         danger: false,
         timeout: 290000,
       },
+      {
+        id: 'run-brazil',
+        label: 'Write Brazil Articles',
+        desc: 'Writes new Brazilian firearms articles in Portuguese. Picks unwritten topics first.',
+        endpoint: '/api/cron/write-brazil-articles',
+        method: 'GET',
+        color: '#34d399',
+        danger: false,
+        timeout: 290000,
+      },
     ],
   },
 ]

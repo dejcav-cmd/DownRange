@@ -137,6 +137,54 @@ const BRAZIL_TOPICS = [
     tag:'GUIA', readMins:'9 min', imageQuery:'Brazil map states flag gun rights',
     prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Análise por estado para atiradores desportivos no Brasil. Classifique e analise: Rio Grande do Sul (melhor), Mato Grosso, Minas Gerais, Paraná vs São Paulo, Rio de Janeiro (piores). Cubra: postura da PF local, burocracia, clubes ativos, pressão política.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`
   },
+  {
+    slug:'novas-pistolas-2025-mercado-brasileiro-cac',
+    title:'Novas Pistolas no Mercado Brasileiro em 2025: O Que o CAC Pode Comprar Agora',
+    tag:'PRODUTO', readMins:'7 min', imageQuery:'pistol handgun 9mm firearm product Brazil',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Melhores pistolas novas disponíveis para CAC no Brasil em 2025. Cubra: Glock 47 MOS, SIG P365 XMACRO, Beretta APX-A1, Taurus TX22 Competition, preços reais em reais, onde comprar, vantagens práticas para atirador desportivo.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'atirador-desportivo-minimo-competicoes-2025',
+    title:'Mínimo de Competições para Manter o CR de Atirador Desportivo em 2025',
+    tag:'GUIA', readMins:'7 min', imageQuery:'shooting competition sport target range Brazil',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Requisitos de competições para manter o CR de Atirador Desportivo. Cubra: mínimo atual de competições por ano, como registrar no SIGMA, o que acontece se não cumprir, competições reconhecidas pelo Exército, como encontrar competições na sua região, dicas práticas.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'transportar-arma-legalmente-brasil-2025',
+    title:'Como Transportar Sua Arma Legalmente no Brasil em 2025: Guia Atualizado',
+    tag:'LEI', readMins:'8 min', imageQuery:'firearm transport case law enforcement Brazil',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Transporte legal de armas no Brasil em 2025. Cubra: diferença entre porte e transporte, regras da PF para transporte ao clube, maleta lacrada vs desmuniciada, transporte aéreo (ANAC), o que fazer em abordagem policial, multas e penalidades.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'reforma-estatuto-desarmamento-perspectivas-2026',
+    title:'Reforma do Estatuto do Desarmamento: O Que Está em Jogo para 2026',
+    tag:'POLÍTICA', readMins:'8 min', imageQuery:'Brazil congress parliament legislation politics',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Perspectivas de reforma do Estatuto do Desarmamento para 2026. Cubra: projetos de lei em tramitação, posição do governo Lula vs oposição, demandas da CNCAP e ATIBS, o que atiradores devem monitorar, linha do tempo realista.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'cofre-ideal-colecionador-brasil-guia-compra',
+    title:'Cofre para Armas no Brasil: Como Escolher o Cofre Certo para Sua Coleção',
+    tag:'GUIA', readMins:'7 min', imageQuery:'gun safe firearm storage security vault',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Como escolher cofre para armas no Brasil. Cubra: normas da PF e Exército para guarda, diferença entre cofres homologados vs não-homologados, marcas disponíveis no mercado brasileiro e preços reais, capacidade vs acesso rápido, cofres para uso doméstico vs coleção extensa.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'fuzis-brasil-o-que-cac-pode-ter-2025',
+    title:'Fuzis e Rifles de Alta Potência: O Que o CAC Brasileiro Pode Ter em 2025',
+    tag:'LEI', readMins:'9 min', imageQuery:'rifle AR-15 firearm shooting range sport',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Acesso de CACs a fuzis e rifles de uso restrito no Brasil. Cubra: o que mudou com os decretos Lula, calibres ainda acessíveis, diferença entre colecionador e atirador para rifles, impacto das liminares do STF, qual o limite prático hoje.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'mercado-armas-brasil-2025-numeros-tendencias',
+    title:'O Mercado de Armas no Brasil em 2025: Números, Tendências e Perspectivas',
+    tag:'SETOR', readMins:'8 min', imageQuery:'firearms industry market gun shop Brazil',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Mercado de armas no Brasil em 2025. Cubra: número de CACs registrados, crescimento vs anos anteriores, impacto dos decretos Lula nas vendas, marcas mais vendidas, importação vs produção nacional, perspectivas para 2026.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
+  {
+    slug:'armas-de-colecao-criterios-brasil-guia-completo',
+    title:'Armas de Coleção no Brasil: Critérios, Limites e Como Manter Seu Acervo Legal',
+    tag:'GUIA', readMins:'9 min', imageQuery:'firearm collection antique weapons display',
+    prompt:`${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil.\nTópico: Colecionismo de armas no Brasil. Cubra: quem pode ser colecionador, quais armas são elegíveis (históricas, artísticas, esportivas), limites de quantidade, fiscalização do Exército, como adquirir peças raras legalmente, cuidados com documentação.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify". Sem h1.`
+  },
 ]
 
 export async function GET() {
@@ -151,7 +199,16 @@ export async function POST(req) {
   if (!valid) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { limit = 10, force = false } = await req.json().catch(() => ({}))
-  const topics  = BRAZIL_TOPICS.slice(0, Math.min(limit, BRAZIL_TOPICS.length))
+  // Find which topics haven't been written yet
+  const existingSlugs = await sanity.fetch(
+    `*[_type == "brazilContent" && type == "artigo"]{ "slug": slug.current }`
+  ).then(docs => new Set(docs.map(d => d.slug))).catch(() => new Set())
+
+  // Prioritise unwritten topics, fall back to all if force=true
+  const unwritten = BRAZIL_TOPICS.filter(t => !existingSlugs.has(t.slug))
+  const pool = force ? BRAZIL_TOPICS : (unwritten.length > 0 ? unwritten : BRAZIL_TOPICS)
+  const topics = pool.slice(0, Math.min(limit, pool.length))
+  console.log(`[BRAZIL] ${unwritten.length} unwritten, writing ${topics.length}`)
   const results = []
 
   for (const article of topics) {
