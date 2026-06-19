@@ -2,37 +2,15 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 41
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d9c8e358bea756996963e89a6ada0ed
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b4c7aff7bdfd5b4403eb838f768662
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b77d578b73824c545c7131d17b0d67d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0c2646aba9917b715c94d4a6f1cfe45
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0c4c79e4885d58a56803927f69d7ce6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c48baa1e21833a9955ca63bc14788b5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cda0ea261f13a952522000ec66208b3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/006cc91d5f68a62ba0197c2d86dcf4f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/82540c5d7c7b4de4a1508cc824725dc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2977218e5d5a832caede10520c95f03
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f91372fdca78be4348fd5e36bf6b992
+Missing: 19
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3f8f6b3cf1f3eeb85f9e3bea5ac035b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9cfe46f08f55cbe9a7f9e8485250016
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3914af44d1f3bf8aca13b494c3e4fa
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/055c84f5565575c1976e7156538bfce
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/acf7a8b307edd31ae4b29ba93527269
+  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/96c8f32b59b8f683ac3b058947a601b
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/DSC01722-102
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/41424319d03c4c53ee0aaa61929c4a9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b4d56bc21dce6a15043b3ccf7baa44a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a88cf128ad6b0b64fe702faa041578d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/662c19fa9a5baceb92c524163feb298
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0d4fbc17d61a6120a5b3c193acdbb2f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7b010d5e2834cf774df72d069317cef
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d128de3bc9acf5b1c53aaa6ca445a59
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fd05f53012bd1b42099e814745a5891
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a016788291f182fa9e5e256cf8b69e9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cd964af4edba47114c055e3904b4588
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c58eb233028bbcae7304c433890d3ec
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/db7e1eccb5311cb797919cd71e54e17
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b9db34de96028db6d5afdca750883c0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/607e497b9dc98f30f9b03c3b6b29da8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae3056c11774a0301fb14c825e5664e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dc88db605ad8b31b48585198bce2df6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7b0cc88b3c6dd3a8a788098d383f207
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5c53c1d8c8b4270a59318b6e0b6527f
   skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armoryfrid
   skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
@@ -44,8 +22,8 @@ Missing: 41
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 30
+  → patched final 7
 
-Stats: uploaded=29 fallback=1 failed=1
+Stats: uploaded=6 fallback=1 failed=1
 
-=== FINAL: total=1927 missing_images=11 reddit=0 ===
+=== FINAL: total=1934 missing_images=12 reddit=0 ===
