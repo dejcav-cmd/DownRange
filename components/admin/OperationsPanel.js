@@ -98,6 +98,16 @@ const OPERATIONS = [
         danger: false,
         timeout: 290000,
       },
+      {
+        id: 'fix-canada-articles',
+        label: 'Fix Canada Articles (no body)',
+        desc: 'Finds all Canada articles with empty body and rewrites them with AI.',
+        endpoint: '/api/admin/fix-canada-articles',
+        method: 'GET',
+        color: '#34d399',
+        danger: false,
+        timeout: 60000,
+      },
     ],
   },
   {
