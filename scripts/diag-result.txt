@@ -1,8 +1,2 @@
-=== Recent firearmRelease docs ===
-Total count: 6
-
-  [2026-06-19] ✓ IMG Fusion Firearms XP 3C                          | fusion-firearms-xp-3c-compensated-1911-n
-  [2026-05-30] ✓ IMG Wilson Combat Bulwark                        | wilson-combat-bulwark-mid-range-1911-del
-
-=== Triggering releases cron now ===
+=== Triggering weekly-gun-releases ===
 Redirecting...
