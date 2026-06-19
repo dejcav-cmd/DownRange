@@ -15,6 +15,10 @@ const sanity = createClient({
 
 const sleep = ms => new Promise(r => setTimeout(r, ms))
 
+// Rotate through sources in batches to avoid timeout
+// 41 total sources / 3 runs (Mon+Thu each fire Vercel twice) = ~14/run
+const MAX_SOURCES_PER_RUN = 15
+
 // ── AUTH ──────────────────────────────────────────────────────────────────────
 function isAuthorized(req) {
   const cron  = req.headers.get('x-vercel-cron')
@@ -421,8 +425,14 @@ export async function GET(req) {
   const existingKeys = await loadExistingKeys()
   console.log(`[RELEASES] ${existingKeys.size} existing releases in Sanity`)
 
+  // Rotate through sources in batches — avoids 300s timeout on 41 sources
+  const offset = Math.floor(Date.now() / (1000 * 60 * 60 * 6)) % Math.ceil(SOURCES.length / MAX_SOURCES_PER_RUN)
+  const start  = offset * MAX_SOURCES_PER_RUN
+  const batch  = SOURCES.slice(start, start + MAX_SOURCES_PER_RUN)
+  console.log(`[RELEASES] Batch ${offset + 1}: sources ${start + 1}-${start + batch.length} of ${SOURCES.length}`)
+
   // Process sources sequentially (respect rate limits)
-  for (const source of SOURCES) {
+  for (const source of batch) {
     if (stats.created >= stats.maxCreate) break
     await processSource(source, existingKeys, seenKeys, stats)
     await sleep(500)
