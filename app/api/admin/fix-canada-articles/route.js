@@ -54,11 +54,19 @@ export async function GET(req) {
   const limit  = 1
 
   const all = await sanity.fetch(
-    `*[_type=="canadaContent" && type=="article" && (!defined(body) || body == "" || body == null)] | order(_createdAt asc) {
-      _id, title, slug, sourceUrl
+    `*[_type=="canadaContent" && type=="article"] | order(_createdAt asc) {
+      _id, title, slug, sourceUrl, body
     }`
   ).catch(() => [])
 
+  // Filter: missing body OR stub body (< 500 chars = raw RSS excerpt, not a real article)
+  const needsBody = all.filter(a => {
+    if (!a.body) return true
+    const stripped = a.body.replace(/<[^>]+>/g, '').trim()
+    return stripped.length < 500
+  })
+
+  const all = needsBody
   if (all.length === 0) {
     return Response.json({
       ok: true, fixed: 0, total: 0, processed: 0, results: [],
