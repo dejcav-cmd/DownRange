@@ -167,6 +167,7 @@ export async function runBlogFeed() {
   const t = Date.now()
   let done = 0
   const errors = []
+  const saved = []
 
   // Pick 10 topics for this week (rotate through the pool)
   const weekNumber = Math.floor(Date.now() / (7 * 24 * 3600 * 1000))
@@ -217,6 +218,7 @@ export async function runBlogFeed() {
       })
 
       done++
+      saved.push(title)
       console.log(`[BLOG] ✓ Draft saved: "${title.slice(0, 60)}"`)
       await sleep(3000) // Rate limit respect
       
