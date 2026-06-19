@@ -4,27 +4,24 @@ on:
     branches: [main]
     paths: ['.github/workflows/glm-test-on-push.yml']
 jobs:
-  check:
+  trigger:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Check releases
+      - name: Trigger weekly-gun-releases now
         env:
-          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-          AGENT_SECRET: ${{ secrets.AGENT_SECRET }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
-          python3 scripts/check-releases.py | tee scripts/diag-result.txt
-          echo "" | tee -a scripts/diag-result.txt
-          echo "=== Triggering releases cron now ===" | tee -a scripts/diag-result.txt
-          curl -s -X POST "https://downrangeco.com/api/agent?feed=releases" \
-            -H "x-admin-key: $AGENT_SECRET" \
-            --max-time 120 | tee -a scripts/diag-result.txt
+          echo "=== Triggering weekly-gun-releases ===" | tee scripts/diag-result.txt
+          curl -s -X GET "https://downrangeco.com/api/cron/weekly-gun-releases" \
+            -H "Authorization: Bearer $CRON_SECRET" \
+            --max-time 290 | tee -a scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "releases check result [skip ci]" && git push
-# check-releases
+          git diff --staged --quiet || git commit -m "weekly-gun-releases trigger result [skip ci]" && git push
+# trigger-weekly-releases

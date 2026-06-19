@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/agent?feed=releases",
-      "schedule": "45 4 * * *"
+      "schedule": "45 */6 * * *"
     },
     {
       "path": "/api/agent?feed=market",
@@ -57,8 +57,8 @@
       "schedule": "0 6 * * 1,4"
     },
     {
-      "path": "/api/cron/ccw-update",
-      "schedule": "0 5 * * 0"
+      "path": "/api/cron/weekly-gun-releases",
+      "schedule": "0 6 * * 1,4"
     },
     {
       "path": "/api/cron/market-brief",
