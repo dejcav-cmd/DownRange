@@ -1,25 +1,8 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== Recent firearmRelease docs ===
+Total count: 6
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 15
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a292f4d0a8dfc2a457f19b07ef8ca26
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5a017003705a24eeed7626bd2f348b1
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Keltec-KSG-deal.jp
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69e69ae727b3ef8807fcfbc1b1b672c
-  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armoryfrid
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e253a26abe0531662da2b60eec22651
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
-  skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
-  skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
-  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 5
+  [2026-06-19] ✓ IMG Fusion Firearms XP 3C                          | fusion-firearms-xp-3c-compensated-1911-n
+  [2026-05-30] ✓ IMG Wilson Combat Bulwark                        | wilson-combat-bulwark-mid-range-1911-del
 
-Stats: uploaded=4 fallback=1 failed=1
-
-=== FINAL: total=1878 missing_images=10 reddit=0 ===
+=== Triggering releases cron now ===
+Redirecting...
