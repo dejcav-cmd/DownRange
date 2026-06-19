@@ -91,6 +91,7 @@ export async function runGiveawaysFeed() {
   let done = 0
   let skipped = 0
   const errors = []
+  const saved = []
 
   // First: expire any giveaways past their end date
   try {

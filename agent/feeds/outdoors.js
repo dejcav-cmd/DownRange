@@ -68,6 +68,7 @@ export async function runOutdoorsFeed() {
   const t = Date.now()
   let done = 0
   const errors = []
+  const saved = []
 
   // Alternate: week number determines hunting vs prep
   const weekNumber = Math.floor(Date.now() / (7 * 24 * 3600 * 1000))
@@ -107,6 +108,7 @@ export async function runOutdoorsFeed() {
         weekNumber,
       })
       done++
+      saved.push(topic.slice(0, 80))
       console.log(`[OUTDOORS] ✓ Published: ${topic.slice(0, 60)}`)
       await sleep(2000)
     } catch (e) {
