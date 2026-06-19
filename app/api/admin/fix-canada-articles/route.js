@@ -1,5 +1,5 @@
 export const dynamic   = 'force-dynamic'
-export const maxDuration = 60
+export const maxDuration = 300
 
 import { createClient } from '@sanity/client'
 
@@ -46,13 +46,18 @@ Cover key facts, specific numbers/dates, what it means for Canadian gun owners.`
 export async function GET(req) {
   if (!isAuth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const articles = await sanity.fetch(
+  const { searchParams } = new URL(req.url)
+  const offset = parseInt(searchParams.get('offset') || '0')
+  const limit  = parseInt(searchParams.get('limit')  || '5')
+
+  const all = await sanity.fetch(
     `*[_type=="canadaContent" && type=="article" && (!defined(body) || body == "" || body == null)] {
       _id, title, slug, sourceUrl
     }`
   ).catch(() => [])
 
-  console.log(`[FIX-CANADA] ${articles.length} articles need body text`)
+  const articles = all.slice(offset, offset + limit)
+  console.log(`[FIX-CANADA] ${all.length} total empty · processing ${articles.length} (offset:${offset})`)
   const results = []
 
   for (const article of articles) {
@@ -71,10 +76,18 @@ export async function GET(req) {
     await new Promise(r => setTimeout(r, 1000))
   }
 
+  const nextOffset = offset + limit
   return Response.json({
     ok: true,
     fixed: results.filter(r => r.status==='fixed').length,
-    total: articles.length,
+    total: all.length,
+    processed: articles.length,
     results,
+    pagination: {
+      offset, limit,
+      nextOffset: nextOffset < all.length ? nextOffset : null,
+      hasMore: nextOffset < all.length,
+      remaining: Math.max(0, all.length - nextOffset),
+    },
   })
 }

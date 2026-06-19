@@ -304,6 +304,9 @@
     },
     "app/api/admin/patch-releases-images/route.js": {
       "maxDuration": 300
+    },
+    "app/api/admin/fix-canada-articles/route.js": {
+      "maxDuration": 300
     }
   }
 }

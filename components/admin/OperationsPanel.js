@@ -101,12 +101,14 @@ const OPERATIONS = [
       {
         id: 'fix-canada-articles',
         label: 'Fix Canada Articles (no body)',
-        desc: 'Finds all Canada articles with empty body and rewrites them with AI.',
+        desc: 'Finds all Canada articles with empty body and rewrites them with AI. Processes 5 at a time automatically.',
         endpoint: '/api/admin/fix-canada-articles',
         method: 'GET',
         color: '#34d399',
         danger: false,
-        timeout: 60000,
+        timeout: 290000,
+        batchedImages: true,
+        batchParam: '',
       },
     ],
   },
@@ -244,8 +246,10 @@ function OpButton({ op, adminKey }) {
           totalFallback   += d.fallback  || 0
           totalProcessed  += d.processed || 0
 
+          const fixed = d.fixed || d.verified || 0
+          const done  = d.processed || paginated || 0
           setResult({
-            summary: `Batch ${batchNum} done · verified:${totalVerified} fallback:${totalFallback} processed:${totalProcessed} · ${d.pagination?.remaining||0} remaining...`,
+            summary: `Batch ${batchNum} done · fixed/verified:${totalVerified} processed:${totalProcessed} · ${d.pagination?.remaining||0} remaining...`,
             ms: Date.now()-start
           })
 
@@ -264,7 +268,7 @@ function OpButton({ op, adminKey }) {
 
     setStatus('done')
     setResult({
-      summary: `Complete — verified:${totalVerified} fallback:${totalFallback} total processed:${totalProcessed} in ${batchNum} batches`,
+      summary: `Complete — ${totalVerified} fixed/verified · ${totalProcessed} total processed · ${batchNum} batches`,
       ms: Date.now() - start,
     })
   }
