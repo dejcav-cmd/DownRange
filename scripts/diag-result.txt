@@ -3,13 +3,13 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Missing: 19
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3f8f6b3cf1f3eeb85f9e3bea5ac035b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9cfe46f08f55cbe9a7f9e8485250016
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3914af44d1f3bf8aca13b494c3e4fa
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/055c84f5565575c1976e7156538bfce
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/acf7a8b307edd31ae4b29ba93527269
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/851ff08dd87c3abc90d71ad9cbf2478
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/28982c29b6cf317490e0051898e04ca
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bf70b6c5835ae3f20fc361fc5f6cccf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/724c4a51980eef54c363645a4425769
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54cfd20e2b39418f6acec460c2978c4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b6c31d01bbc99168fd3ee265de46ffd
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/96c8f32b59b8f683ac3b058947a601b
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/DSC01722-102
   skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armoryfrid
@@ -26,4 +26,4 @@ Missing: 19
 
 Stats: uploaded=6 fallback=1 failed=1
 
-=== FINAL: total=1934 missing_images=12 reddit=0 ===
+=== FINAL: total=1940 missing_images=12 reddit=0 ===
