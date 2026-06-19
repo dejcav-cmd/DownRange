@@ -66,8 +66,7 @@ export async function GET(req) {
     return stripped.length < 500
   })
 
-  const all = needsBody
-  if (all.length === 0) {
+  if (needsBody.length === 0) {
     return Response.json({
       ok: true, fixed: 0, total: 0, processed: 0, results: [],
       message: 'All Canada articles already have body content.',
@@ -75,7 +74,7 @@ export async function GET(req) {
     })
   }
 
-  const article = all[offset]
+  const article = needsBody[offset]
   if (!article) {
     return Response.json({
       ok: true, fixed: 0, total: all.length, processed: 0, results: [],
@@ -112,9 +111,9 @@ export async function GET(req) {
     verified: result.status === 'fixed' ? 1 : 0,
     pagination: {
       offset,
-      hasMore: nextOffset < all.length,
-      nextOffset: nextOffset < all.length ? nextOffset : null,
-      remaining: Math.max(0, all.length - nextOffset),
+      hasMore: nextOffset < needsBody.length,
+      nextOffset: nextOffset < needsBody.length ? nextOffset : null,
+      remaining: Math.max(0, needsBody.length - nextOffset),
     },
   })
 }
