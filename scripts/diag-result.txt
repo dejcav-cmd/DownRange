@@ -1,2 +1,7 @@
 === Triggering weekly-gun-releases ===
-Redirecting...
+Raw response: An error occurred with your deployment
+
+FUNCTION_INVOCATION_TIMEOUT
+
+cle1::bfjh6-1781884684877-d5d1594bdc84
+
