@@ -6,22 +6,41 @@ on:
 jobs:
   trigger:
     runs-on: ubuntu-latest
+    timeout-minutes: 8
     steps:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
-      - name: Trigger weekly-gun-releases now
+      - name: Trigger weekly-gun-releases
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
         run: |
           echo "=== Triggering weekly-gun-releases ===" | tee scripts/diag-result.txt
-          curl -s -X GET "https://downrangeco.com/api/cron/weekly-gun-releases" \
+          curl -sL -X GET "https://downrangeco.com/api/cron/weekly-gun-releases" \
             -H "Authorization: Bearer $CRON_SECRET" \
-            --max-time 290 | tee -a scripts/diag-result.txt
+            -H "x-admin-key: $ADMIN_KEY" \
+            --max-time 400 | python3 -c "
+import sys,json
+try:
+    d=json.load(sys.stdin)
+    print('Status: OK')
+    print('Added:', d.get('added', d.get('done', '?')))
+    print('Skipped:', d.get('skipped','?'))
+    print('Failed:', d.get('failed','?'))
+    saved = d.get('saved', d.get('titles', []))
+    if saved:
+        print('New releases:')
+        for s in saved:
+            print(f'  - {s}')
+    print('Full:', str(d)[:500])
+except Exception as e:
+    print('Raw:', sys.stdin.read()[:500])
+" 2>/dev/null | tee -a scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
-          git diff --staged --quiet || git commit -m "weekly-gun-releases trigger result [skip ci]" && git push
-# trigger-weekly-releases
+          git diff --staged --quiet || git commit -m "weekly-gun-releases result [skip ci]" && git push
+# v2
