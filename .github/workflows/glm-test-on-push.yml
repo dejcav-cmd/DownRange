@@ -20,27 +20,11 @@ jobs:
           curl -sL -X GET "https://downrangeco.com/api/cron/weekly-gun-releases" \
             -H "Authorization: Bearer $CRON_SECRET" \
             -H "x-admin-key: $ADMIN_KEY" \
-            --max-time 400 | python3 -c "
-import sys,json
-try:
-    d=json.load(sys.stdin)
-    print('Status: OK')
-    print('Added:', d.get('added', d.get('done', '?')))
-    print('Skipped:', d.get('skipped','?'))
-    print('Failed:', d.get('failed','?'))
-    saved = d.get('saved', d.get('titles', []))
-    if saved:
-        print('New releases:')
-        for s in saved:
-            print(f'  - {s}')
-    print('Full:', str(d)[:500])
-except Exception as e:
-    print('Raw:', sys.stdin.read()[:500])
-" 2>/dev/null | tee -a scripts/diag-result.txt
+            --max-time 420 | python3 scripts/parse-releases-result.py | tee -a scripts/diag-result.txt
       - name: Commit result
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add -f scripts/diag-result.txt
           git diff --staged --quiet || git commit -m "weekly-gun-releases result [skip ci]" && git push
-# v2
+# v3
