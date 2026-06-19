@@ -101,14 +101,13 @@ const OPERATIONS = [
       {
         id: 'fix-canada-articles',
         label: 'Fix Canada Articles (no body)',
-        desc: 'Finds all Canada articles with empty body and rewrites them with AI. Processes 5 at a time automatically.',
+        desc: 'Rewrites empty Canada articles with AI, one at a time. Runs until all are fixed.',
         endpoint: '/api/admin/fix-canada-articles',
         method: 'GET',
         color: '#34d399',
         danger: false,
-        timeout: 290000,
-        batchedImages: true,
-        batchParam: '',
+        timeout: 55000,
+        batchedSimple: true,
       },
     ],
   },
@@ -170,6 +169,10 @@ function OpButton({ op, adminKey }) {
     setStatus('running')
     setResult(null)
 
+    if (op.batchedSimple) {
+      await runBatchedSimple()
+      return
+    }
     if (op.batchedImages) {
       await runImageBatches()
       return
@@ -271,6 +274,46 @@ function OpButton({ op, adminKey }) {
       summary: `Complete — ${totalVerified} fixed/verified · ${totalProcessed} total processed · ${batchNum} batches`,
       ms: Date.now() - start,
     })
+  }
+
+  async function runBatchedSimple() {
+    // Process one item at a time by incrementing offset until done
+    let offset = 0
+    let totalFixed = 0
+    let batchNum = 0
+    const start = Date.now()
+
+    while (true) {
+      batchNum++
+      setResult({ summary: `Processing item ${offset + 1}... (${totalFixed} fixed so far)`, ms: Date.now()-start })
+
+      try {
+        const res = await fetch(`${op.endpoint}?offset=${offset}`, {
+          method: op.method,
+          headers: { 'x-admin-key': adminKey, 'authorization': `Bearer ${adminKey}` },
+          signal: AbortSignal.timeout(op.timeout),
+        })
+        const d = await res.json().catch(() => null)
+        if (!d) break
+
+        if (d.fixed) totalFixed += d.fixed
+
+        if (!d.pagination?.hasMore || d.pagination?.nextOffset == null) {
+          setStatus('done')
+          setResult({
+            summary: `Complete — ${totalFixed} articles fixed out of ${d.total} total`,
+            ms: Date.now() - start,
+          })
+          break
+        }
+        offset = d.pagination.nextOffset
+      } catch(e) {
+        // Timeout on one item — skip and try next
+        offset++
+        if (offset > 500) break
+      }
+      await new Promise(r => setTimeout(r, 800))
+    }
   }
 
   async function runBatched() {
