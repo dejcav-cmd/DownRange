@@ -385,26 +385,30 @@ async function processNewsItem(item) {
     let finalSummary = item.description?.slice(0, 300) || item.title
     let hasAI = false
 
-    // Only AI-rewrite if we have enough source text to work with (min 200 chars)
-    const srcLen = (item.description || item.content || '').length
-    if (srcLen > 200) {
-      try {
-        const ai = await rewriteWithClaude({
-          ...item,
-          // Signal to rewriteWithClaude that this is a Canada article
-          description: (item.description || item.content || '') + `\n\nSource: ${item.source} (Canada)`,
-        })
-        if (ai?.body && ai.body.length > 300) {
-          finalBody    = ai.body
-          finalTitle   = ai.title   || item.title
-          finalSummary = ai.summary || finalSummary
-          hasAI        = true
-          // Update slug from AI title if it's more descriptive
-          console.log(`[NEWS] 🇨🇦🤖 AI rewrote: "${finalTitle.slice(0,60)}"`)
-        }
-      } catch (e) {
-        console.log(`[NEWS] 🇨🇦 AI rewrite skipped (${e.message.slice(0,40)}) — saving raw`)
+    // ALWAYS AI-rewrite Canada articles — raw RSS descriptions are 50-200 word excerpts
+    // that render as broken pages. Never save a Canada article without a full body.
+    const srcText = (item.description || item.content || '').trim()
+    try {
+      const ai = await rewriteWithClaude({
+        ...item,
+        // Provide full context even if description is short — AI will research and expand
+        description: srcText + `\n\nSource: ${item.source} (Canada firearms news)\nTitle: ${item.title}`,
+      })
+      if (ai?.body && ai.body.length > 300) {
+        finalBody    = ai.body
+        finalTitle   = ai.title   || item.title
+        finalSummary = ai.summary || finalSummary
+        hasAI        = true
+        console.log(`[NEWS] 🇨🇦🤖 AI body written: "${finalTitle.slice(0,60)}" (${ai.body.length} chars)`)
+      } else {
+        // AI returned empty — skip this article entirely rather than save a stub
+        console.log(`[NEWS] 🇨🇦 Skipping (AI body empty): "${item.title.slice(0,60)}"`)
+        return null
       }
+    } catch (e) {
+      // AI failed — skip rather than save a bodyless article
+      console.log(`[NEWS] 🇨🇦 Skipping (AI error: ${e.message.slice(0,40)}): "${item.title.slice(0,50)}"`)
+      return null
     }
 
     await publishToSanity({
@@ -468,28 +472,29 @@ async function processNewsItem(item) {
       } catch { /* non-critical */ }
     }
 
-    // AI rewrite on ingest — Brazil articles may be in Portuguese; rewrite in English
+    // ALWAYS AI-rewrite Brazil articles — may be in Portuguese, never save raw stub
     let finalTitle = item.title
-    let finalBody  = item.description || null
+    let finalBody  = null
     let finalSummary = item.description?.slice(0, 300) || item.title
     let hasAI = false
-    const srcLen = (item.description || item.content || '').length
-    if (srcLen > 200) {
-      try {
-        const ai = await rewriteWithClaude({
-          ...item,
-          description: (item.description || item.content || '') + `\n\nSource: ${item.source} (Brazil — may be in Portuguese, write article in English for DownRange audience)`,
-        })
-        if (ai?.body && ai.body.length > 300) {
-          finalBody    = ai.body
-          finalTitle   = ai.title   || item.title
-          finalSummary = ai.summary || finalSummary
-          hasAI        = true
-          console.log(`[NEWS] 🇧🇷🤖 AI rewrote: "${finalTitle.slice(0,60)}"`)
-        }
-      } catch (e) {
-        console.log(`[NEWS] 🇧🇷 AI rewrite skipped (${e.message.slice(0,40)}) — saving raw`)
+    try {
+      const ai = await rewriteWithClaude({
+        ...item,
+        description: (item.description || item.content || '') + `\n\nSource: ${item.source} (Brazil — may be in Portuguese, write article in English for DownRange audience)`,
+      })
+      if (ai?.body && ai.body.length > 300) {
+        finalBody    = ai.body
+        finalTitle   = ai.title   || item.title
+        finalSummary = ai.summary || finalSummary
+        hasAI        = true
+        console.log(`[NEWS] 🇧🇷🤖 AI body written: "${finalTitle.slice(0,60)}"`)
+      } else {
+        console.log(`[NEWS] 🇧🇷 Skipping (AI body empty): "${item.title.slice(0,60)}"`)
+        return null
       }
+    } catch (e) {
+      console.log(`[NEWS] 🇧🇷 Skipping (AI error): "${item.title.slice(0,50)}"`)
+      return null
     }
 
     await publishToSanity({
