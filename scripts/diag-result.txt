@@ -2,19 +2,25 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 25
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7c3db57354b3e8e134f7967d59921c8
-  ✗ https://gun.deals/product/atrius-development-forced-reset-selector-175
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e579513053a17440016c4be01ad4160
-  ✗ https://gun.deals/product/franklin-armory-bfsiii-ar-essential-curved-b
-  ✗ https://gun.deals/product/smith-wesson-bodyguard-20-380-acp-275-10rd-1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec5ecc15573a5a11113c8c79f5545e7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0e21e508a0e14368be1e2cdade476e6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cbbe937a27625275c09e3bdc39b6271
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b8a18430d9b5951c2ccc62fdccb235d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/18884fdacee82f62a4b472548dc799b
-  ✗ https://gun.deals/product/vltor-re-a5-receiver-extension-grade-b-re-a5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4b401d0d73db89920e462b3c282ce08
+Missing: 31
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d70c1de69404766168c2a2788eb9957
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa9754a19a5b7881530684e2cc42292
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4693d47f51d9ea7928b8a1b2735a6b4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87d355038907a8dba61a8f19e12dc22
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1bfc3be49db5061de9a6419735e1b4d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa5a19172a6b7a779755bbeba37021a
+  skip coupon: https://gun.deals/content/coupon-store-taktactical-friday-ju
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aea48991004fbcddd6b64ffd4c1857b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d1e2ae475a1ebe0f1d8983a1d14bd09
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5086da86699296bc7d71fe170a86997
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2795dd13b63f513e922270fb4774599
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a9f0272842d0b52a22f2e37e6101fb3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e25552289a7afb64acfb4a4dad236d6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e5b555dcd6a9fcd521493e51560ff4e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e4759ebce33eff5f161c49c80e9c605
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9d2f584d7c47bcacf4da5dad1e888ab
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dd0b0c4068c2dfad6b33c1347e0ad27
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/547c155f03c88ef729b3da494b26318
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/DSC01722-102
   skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
@@ -28,8 +34,8 @@ Missing: 25
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 9
+  → patched final 18
 
-Stats: uploaded=8 fallback=1 failed=5
+Stats: uploaded=17 fallback=1 failed=1
 
-=== FINAL: total=1960 missing_images=16 reddit=0 ===
+=== FINAL: total=1974 missing_images=13 reddit=0 ===
