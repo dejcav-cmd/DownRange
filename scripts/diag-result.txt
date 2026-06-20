@@ -2,17 +2,7 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 25
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54c6bd447ca24b4fafc43c1d87c4ca7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7cb39034f383e1d0dcc1f0b8d3c26fd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/861127089f5bdcfbf071dc0388f5997
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/65cb447660a179f2b81bae9c779b79d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7ccb99b40c729c87818d07c1764aa11
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1c840d8e21d219a01065e8f8ea0f190
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2d785841ce38da6dd9907656ba6523b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/39b7cb7567b84ac61d03be1906dcb6c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/60dcd34d1a9c6e3f3311749e6ad7af4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c23aebe7dbf05fcdef3da573012fcf
+Missing: 15
   skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
   skip coupon: https://gun.deals/content/coupon-store-taktactical-friday-ju
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
@@ -28,8 +18,8 @@ Missing: 25
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 11
+  → patched final 1
 
-Stats: uploaded=10 fallback=1 failed=1
+Stats: uploaded=0 fallback=1 failed=1
 
 === FINAL: total=2018 missing_images=14 reddit=0 ===
