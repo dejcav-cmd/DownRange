@@ -2,40 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 47
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20ba04e86fc15993febc0c6ae091940
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/29bfb8d0a27ec6dec239b9db0da4a75
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b5ba3d163e1cde2041790c4c0953cc7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0bc8f0fbb085edddb0f334613b804e7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/430a254313db87ff5055aa8b413fcad
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6d19efcc806f2911e672762e7981686
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6e06f73119d65953a7b33cc2870f12c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1a5a9bb24e818d73b71a926212e0d62
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/da278fd1821ec2a6b0c3c5501d4ffcd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05e2953802263b09757ff66e4b4c6e4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d73b36f83095fabb8ed6ffb88f2d8fb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/33e949941304217c22acc6eadb6c8b7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e7432d7dd72e915d5f1f2f7fdc5fdf7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/29378caf2c34c808fc7870c65f88fb8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/143ad4ccd1d3ffd41215b198545a40a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c5bc5a07a3bc2f516c3ff6313e0fb62
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/16fc1edb6beb5c948bb6595ff89161f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f9cb0d0bde34a37abe643dbcc7d4144
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/926029389e0c726e3527481b28c9804
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b033cef6e0b5a0d35f69e1cedd5523
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0826355b33f45d381ed5ab1779a9e5e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0a6933054ebccea6e2fdb455a8a0075
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79971a3ee4bb6c35d3731a3a5e992c6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4a6d81854c1bbaf197f7d2e7cbd2693
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6c4548220560c9675085f0731599a07
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9ddd048577292c10c408f872e58a5af
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/60190fe8942c7233e6428b46a8285cb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a95db7ef6aa63b33a170b2e6fc9e60b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/12c3a196c5c02884a348065ff50f042
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69ea9aaf4a147c6f2413aa9cd47030b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b7486e075fa85452bf35a955cb59943
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d92e4d86d702d4040902532b225ead1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/36d6ce47ca96e9b39e0197895ba9166
+Missing: 25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54c6bd447ca24b4fafc43c1d87c4ca7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7cb39034f383e1d0dcc1f0b8d3c26fd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/861127089f5bdcfbf071dc0388f5997
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/65cb447660a179f2b81bae9c779b79d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7ccb99b40c729c87818d07c1764aa11
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1c840d8e21d219a01065e8f8ea0f190
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2d785841ce38da6dd9907656ba6523b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/39b7cb7567b84ac61d03be1906dcb6c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/60dcd34d1a9c6e3f3311749e6ad7af4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c23aebe7dbf05fcdef3da573012fcf
+  skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
   skip coupon: https://gun.deals/content/coupon-store-taktactical-friday-ju
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/DSC01722-102
@@ -50,8 +28,8 @@ Missing: 47
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 34
+  → patched final 11
 
-Stats: uploaded=33 fallback=1 failed=1
+Stats: uploaded=10 fallback=1 failed=1
 
-=== FINAL: total=2007 missing_images=13 reddit=0 ===
+=== FINAL: total=2018 missing_images=14 reddit=0 ===
