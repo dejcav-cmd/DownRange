@@ -2,15 +2,19 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 21
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b6be0b66af081075f789fe60826af19
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f8d9b45af7edf6eefa060382d360bf7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7c9b15eb8086017f0e85f629fa826ee
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f5731dd1318281f4df6ee4ead746d4d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/670e1c00b460e6aea18e30f550554a7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b73150fa51aa4e6403f9cec6a7cb739
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a720e72a8f21b056f2bc2c63877bb7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/608f85ad48d2bd8845f00bc2d55fb9e
+Missing: 25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7c3db57354b3e8e134f7967d59921c8
+  ✗ https://gun.deals/product/atrius-development-forced-reset-selector-175
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e579513053a17440016c4be01ad4160
+  ✗ https://gun.deals/product/franklin-armory-bfsiii-ar-essential-curved-b
+  ✗ https://gun.deals/product/smith-wesson-bodyguard-20-380-acp-275-10rd-1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec5ecc15573a5a11113c8c79f5545e7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0e21e508a0e14368be1e2cdade476e6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cbbe937a27625275c09e3bdc39b6271
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b8a18430d9b5951c2ccc62fdccb235d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/18884fdacee82f62a4b472548dc799b
+  ✗ https://gun.deals/product/vltor-re-a5-receiver-extension-grade-b-re-a5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4b401d0d73db89920e462b3c282ce08
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/DSC01722-102
   skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
@@ -26,6 +30,6 @@ Missing: 21
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
   → patched final 9
 
-Stats: uploaded=8 fallback=1 failed=1
+Stats: uploaded=8 fallback=1 failed=5
 
-=== FINAL: total=1948 missing_images=12 reddit=0 ===
+=== FINAL: total=1960 missing_images=16 reddit=0 ===
