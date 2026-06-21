@@ -2,16 +2,21 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 27
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/250f2586e2266ce16d88c476cd6e27c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ea41967668b6c7184b85807784c519b
+Missing: 32
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/03d725b5ec033f4689bf1acb8dfaf4d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/42cdbba5e53292f52f9f67a2c1102b6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/00bf2c42a8538f0e9f47f8749d2aae6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ebacfe2dee8efa4746abf4aed7f97ab
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5303709e1db7dd27a4c6b45942fb28c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a59be38a190a3911afcda06a000ab5f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e3937a19de74e3f016c083c6f6e480f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/50d55654a1af7a68b6556d04ec5b3df
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/16544ebbd5f3762446d4dd3f6bcac51
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/71c901f289a561574f10359ab74dccd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ed507782e4c3a5e7ac20f505abc1ebe
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cdd7bc31c3c1efc74df7eccb4e64a7c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/249d2144fa94fffa206be817553936c
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Sportsman-Reman-22
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6c458ced8da0c75a2908e5060535db7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae9fd6e53719a72aa4b85d2226bf592
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ef5a35195f783c024a17746b06aae6f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0286bf4af30b1ddaa2fecb895c55e70
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b7eb5c597a89aadd99745e5f48acbe5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a42c4f78f7cb64cd659aea3adb5d22a
   skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
   skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
   skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
@@ -30,8 +35,8 @@ Missing: 27
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 11
+  → patched final 16
 
-Stats: uploaded=8 fallback=3 failed=1
+Stats: uploaded=13 fallback=3 failed=1
 
-=== FINAL: total=2161 missing_images=16 reddit=0 ===
+=== FINAL: total=2174 missing_images=16 reddit=0 ===
