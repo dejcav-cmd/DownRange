@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-06-14T07:00:12.425Z",
+  "generatedAt": "2026-06-21T07:01:03.122Z",
   "content": {
-    "newsArticles": 450,
-    "blogPosts": 83,
-    "legislation": 228,
-    "firearmReleases": 18,
-    "videos": 189,
+    "newsArticles": 491,
+    "blogPosts": 116,
+    "legislation": 237,
+    "firearmReleases": 29,
+    "videos": 190,
     "reviews": 3,
-    "canadaArticles": 32,
-    "brazilArticles": 10
+    "canadaArticles": 40,
+    "brazilArticles": 16
   },
   "operations": {
-    "cronRuns": 1378,
+    "cronRuns": 1484,
     "outreachContacts": 221,
-    "socialPosts": 109,
-    "briefings": 20
+    "socialPosts": 125,
+    "briefings": 27
   },
   "latest": {
-    "newsTitle": "Rideout Arsenal Abandons Virginia for Georgia Over Gun Bans",
-    "newsDate": "2026-06-13T19:00:00.000Z",
-    "briefingDate": "2026-06-14",
+    "newsTitle": "HiLight Tactical Adds FDE Option to Weapon Light Lineup",
+    "newsDate": "2026-06-20T19:00:00.000Z",
+    "briefingDate": "2026-06-21",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 1013
+  "totalContentDocs": 1122
 }
