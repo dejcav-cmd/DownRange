@@ -2,11 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 21
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bf533d2796669d9e301b91a9ab2d431
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9535c8bb7035d07fa2efb69336d3a43
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a3a7a44cf76017448ddf85b4d02776a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4f46ac353946cee6d0d2d48fb8050a5
+Missing: 28
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6288f33d2038060377be23ae1c7517b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/718a35b73a7ff19a2c056e126218d6a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7a099321819377e3b855d585396a803
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f0fabea42d4c893ca6c836b7bd5319
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8d09d1a5a77f50abbce14c4a2e6d0c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e79be2f20b4d0f3fcee6463ddd2f3bc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1e85797e5a1ab9560b9f20e9a78d423
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a088befc5c82790b320e13e2f009125
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8371641d7363a9bf5cda621862616b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4f4db5c03941ea478f5c6e12f37ebcc
+  skip coupon: https://gun.deals/content/coupon-store-ar15discountssunday-j
   skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
   skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
   skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
@@ -24,8 +31,8 @@ Missing: 21
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 5
+  → patched final 11
 
-Stats: uploaded=4 fallback=1 failed=1
+Stats: uploaded=10 fallback=1 failed=1
 
-=== FINAL: total=2182 missing_images=16 reddit=0 ===
+=== FINAL: total=2193 missing_images=17 reddit=0 ===
