@@ -2,53 +2,17 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 65
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6461fa67614f0836e511c46a3bf105c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bdbb5817f87336a99f1231ce5fec77b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d4d0be736a31e58f2442d18576b04cf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/59aa587356ffbf4f9cbc5124d024e5e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d121e0a7f306b6b44d16f3d44ad11f7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0112a15a3e736dd0cba1df2bc0da15d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ad951583ffbc91b608a3e92ada91931
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05ab2108c7e69fde9488b7d0b851a66
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c4be7b95c31bbc347bc333526eff9e0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/46917285d872c6479937725d231659b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/14af0b324ebd14e024503a0443c3f68
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e73feb7b906ad2a7193ff180283f9bc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/159b1f440e6e2c586d4d387e38af88f
+Missing: 30
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Federal-Champion-9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb92cbb417d52aa629779f0f92e94e4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fbecc6c8883fa737ca8c1e3ba8f0928
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7119b926f9f7c14223d77a950a71da2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5ec3afe95acb295318685e2052cfc54
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fa19534b207249859c7ec289cbcac17
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/411a9f86be4fe791debcb558afaee0a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c25cad0baa9b2eb3703c6c42077e56
   ~ og: https://www.ammoland.com/wp-content/uploads/2025/10/SW-Daily-Deal.jpg
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9252fdae8245a612d36cd57003912a1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b99428c394850ef2ab6fb4d7c964bd8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/41895cb167140ec0f1910723f56bbbe
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0a606390eac0e77570c2056f7ec9404
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3e7b0d14bcdf94b3f2a6252e598f54e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8948fd9911e25ff9a4023965d5a7144
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b81c55fdec9efa9abd0ccfccbd3a10
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/069deaf48a5bfb68a7082e71126f79f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/73f6920fc757823bb3a7e3d279908dd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/23e2f28227a2db2c0a49e4796d0e13e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e6ad15f511635dc5b5a5c7d6ae5a377
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5c3d2bc9ef7505d891fcee619d9bafd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4529eac48d46356461eeaca74867aed
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/451f83eb8f1bd8d570a6299e6d355ce
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/651d1085a5bba1494a9138fb91283be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/929f12bd084df35073dc258ab10ff79
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bbd7da62b87f95dc8097defdf2885d4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a95a97f57b9712c491ef3ae50164431
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ef850c6fde85e5d336cbe683cb1c001
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/de124642947368f2ed9610316092476
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/509310d75e876b9102f2e1a521b45f2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2838ebe3c2114c44bd87b4857ee487f
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44e9f6323a71dac1048b78bf252c9fc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1457f80409cf5d7605e7704117b3838
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d782cec042a21a83c76a55ccc824407
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d5d52225c33a0ccda1e2492dbc928ea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/750068da66bd9d6cb0568bd618cdae6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/06528d3e29be52e58daf347a49d4228
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1dbd8a4594249e82bd07d19d82bb0f4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/005e463652aa258f5c8be8fb954e9f4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e55c0f15febe205ead674d2be83a38b
   skip coupon: https://gun.deals/content/coupon-store-brownellsmonday-june-
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
   skip coupon: https://gun.deals/content/coupon-store-ar15discountssunday-j
@@ -62,14 +26,15 @@ Missing: 65
   skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
   skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
   skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/PSA-Sabre-Mixtape-
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 45
+  → patched final 10
 
-Stats: uploaded=44 fallback=1 failed=1
+Stats: uploaded=7 fallback=3 failed=1
 
-=== FINAL: total=2302 missing_images=20 reddit=0 ===
+=== FINAL: total=2310 missing_images=20 reddit=0 ===
