@@ -2,17 +2,26 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 28
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6288f33d2038060377be23ae1c7517b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/718a35b73a7ff19a2c056e126218d6a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7a099321819377e3b855d585396a803
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f0fabea42d4c893ca6c836b7bd5319
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8d09d1a5a77f50abbce14c4a2e6d0c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e79be2f20b4d0f3fcee6463ddd2f3bc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1e85797e5a1ab9560b9f20e9a78d423
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a088befc5c82790b320e13e2f009125
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8371641d7363a9bf5cda621862616b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4f4db5c03941ea478f5c6e12f37ebcc
+Missing: 37
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/96f3bacbdcc046288b97b71234ab9fb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d36814185ac6bc011afb2dd72040c82
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0956da00a76ec1657c6aea87ba1f817
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cfb585d5a4d84c45ff1c3ff9d53e626
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e215be259b15f9f576b32336015d6c8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/669cade8ee0cd2025db8f7dc1ab72f7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df5eab2ea6d33826d56be7fdeb29619
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7394f0ef272ac92e0b375f14c377555
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/073ccac4ee08c36b81a15c57f2981da
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fe8da2d58178c0d97b94c559c19b7c1
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d1adc2ac52966845fdb419de0598991
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/19581081ca116bd8489a520d8474127
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c9c509e7d97902f74c5013499746f5a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b12e7fd1fe80f67a222ea4a7013de6e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1a84f212b61caa6a8ec301a89109715
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4ee245a17b35dc56c758ab1cb36394d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/428b8a72f332afce26aa8872aa0f788
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f7451e0c3fdd94b34dedd3173a117c5
   skip coupon: https://gun.deals/content/coupon-store-ar15discountssunday-j
   skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
   skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
@@ -31,8 +40,8 @@ Missing: 28
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 11
+  → patched final 19
 
-Stats: uploaded=10 fallback=1 failed=1
+Stats: uploaded=18 fallback=1 failed=1
 
-=== FINAL: total=2193 missing_images=17 reddit=0 ===
+=== FINAL: total=2212 missing_images=18 reddit=0 ===
