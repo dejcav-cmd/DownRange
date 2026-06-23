@@ -2,15 +2,16 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 28
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eed4f9eaa9bbf88a69ba722f871154b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c82f85a3ab3a9314dc2dccf948f4ddf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/11a83f318eeddb74b134c1d6cbc06d7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4df3f7ff8bf32adf83b7c2ed1f53b00
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7760777107e7c1e331f36be1696659a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ed5025cbe1ec3fc736502beeb1422d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/25e8133bb50a54cf4c6afe65b07de9d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/30959c3762b74ca0f5880c4afcb9fb0
+Missing: 29
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6c3a75f87e96108fef7eab73afcda0e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7079cdd5c9f4449a711e888869d056c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/58bccf0f868f38733894b02aa2f0a07
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5c9e9facda6a12160736c50dd127ade
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1aa2148d85f8726a6667b562de8963f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c55cefadf580394beca807c29de9cb1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/04147ae0b80578725dd5170b4f17e03
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fe0e4242a53c9770fb60ffc7cdd2125
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ce4537fd72285e3bed93d0d9f3ae48
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
   skip coupon: https://gun.deals/content/coupon-store-brownellsmonday-june-
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
@@ -31,8 +32,8 @@ Missing: 28
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 8
+  → patched final 9
 
-Stats: uploaded=8 fallback=0 failed=1
+Stats: uploaded=9 fallback=0 failed=1
 
-=== FINAL: total=2318 missing_images=20 reddit=0 ===
+=== FINAL: total=2327 missing_images=20 reddit=0 ===
