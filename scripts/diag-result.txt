@@ -2,33 +2,44 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 46
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b94743ab79f48230d9607c2f7324cc0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2e00c0efb592d4cb6a3a246255545f4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74e5989985d1de06d3030a68e6ada60
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/10102a57d26d75694434456ab737fec
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dd47f55cf6c6cd4015c36f0274aa6a7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7729521e2620d3a759e1064c9adb275
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a485d22fad1a3b62da5c62740537b20
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae1cdbf99099725590250004e442456
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5dbab91dda6ea2e3f07918641585213
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f59fd2f11fcda6664cab2eb69188a93
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cec3a27a127ae079df8e4e4d29c2989
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/efcc5a20544128606b19641d84b5250
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7f07d77a1ffdcb1e12c9dc68724cff1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1b6a08381ef7e823897b9e614e24373
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d5107a50ae4f301f37f209bdcc18a61
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4fd2b0660e789b708f5f6a41c73e7de
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bce23fa33005daaf0d944010e71ba75
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/569f7c17dda05c92d336fc40de0cd67
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f5258faa7963a8316b62d45f9425ec1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1a321199c53275cce090c91c1a24836
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2f3e85867f450470a25108ce37b9a81
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6e838326f6d3791a708bb00c46a0f6e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/10bf63aa88ef3a2a2951481bdf5aaf2
+Missing: 57
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a941518ea4c16f0d6da028fc090542b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ff3de3f1de1653e89348c6711e1cc8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/506bbd37c69a15e9b9aa3db9c306352
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/814ba3d036819a36111449d8a99554b
+  skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c5bb929019258a63202559dd27df935
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ff4cfcf8efbea89cc97235cc9fe52e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/65bf61e2b5d5d463d3fd265b32cddf9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dd1ae40ee17f06b28295eb8545cfa08
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/59a56f953ba2df785680c9f15b2d909
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c53511ca38eefeb343908eb99ac235
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/866b88da935c17329c0992d2728e81b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f7b84497b0ad2313b7381aa455c0261
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec4899ec04bb0a9ace84ceb77bac5c0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0cf6059c3d4314135fd062599a4a346
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/28c94bc75b115075a4839f042aae736
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a0b0260c92354fb0b45d05243c2fcba
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/be1ca417eb68676e7d78e02dfedf21d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e9d2af54aeb3fc22fa6df7b737ee2ef
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/68d222bb32628c1498e77e72ea1d6c6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab9109ef2013da255d0c2d0674d9809
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8d450c0237167eb54a6bee7032afd82
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cfcd498eb994d3a021e42ba219d004e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f7373a44396d3e2e0214a81d25505be
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aee0576ba6a0b2eb73bc6fad91fd83c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1092eba93d741ecedaf11553d0be6b4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/23224c2c8f5d672f506bd98a07cb31c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3ee0d24cadbd25c0ca05a033f9cfddd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/589170b4f4eb8e567002bb8b00f9361
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9f5586b48b785c7a689b89db5a67464
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/66ed114172e088a52b5c80c5d8352d7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/36ff3f9db86a1c3aa013b2fe0edfe15
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c4a8cac1bd8e6c2a8b62881aab8afed
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d748492a07445a3de89235bd8b2ee6e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6da04474f0833acd81734ddfa645026
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/67850d72b2217e82a3061be2fa33ff1
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b589b3d7e7a134199166a1036eebd8d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7702be1f2aff64511ed7a25f4507bc4
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
   skip coupon: https://gun.deals/content/coupon-store-brownellsmonday-june-
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
@@ -49,8 +60,8 @@ Missing: 46
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 25
+  → patched final 35
 
-Stats: uploaded=25 fallback=0 failed=1
+Stats: uploaded=35 fallback=0 failed=1
 
-=== FINAL: total=2411 missing_images=21 reddit=0 ===
+=== FINAL: total=2447 missing_images=22 reddit=0 ===
