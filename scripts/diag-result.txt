@@ -2,35 +2,27 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 51
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb6b9629b20219c699df7c66c8b5985
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d8d8bb95826b3382a6ecfa419d16768
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1178bfe7ee5535c93eb4ca6a585dccb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/03b05ffa888f9d967951adad6945bbc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c19c4abb24c0532009ced942a3cb847
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c42d904a8a71e62196b44d7f069497
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1063367c751d1c7fed0a8d2d57548c9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8fcaeaa579c49e62e112631dc745c87
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7fedadf08805202047990532d4349e4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ef9b8ac3f7e3070d5b66d5046bc3c80
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4210e4bcc3ee0bd7947df1a4a0106bf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/369d1645f5894f6a39b0e1415643e79
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/07b69710698bbcc63817510cc9aa5aa
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2d7c9102ac7becc0929ad9b78d3d712
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b294830b45e7a12a0f4f5d3a99de43
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9e1906a1c1a001a00aff97327a8af3f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3771a3bc1c636c158d39094fcf723d6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b539d0d7b4df5a906cf8212558e50e2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec2db46b3a66b7cbe4f04c3fc52f8be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/42aa27e3af1e44aac82457667a939eb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cce45807646f58853094d3fd60e7817
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e0b61cb2f8238c4f72486a00cb77450
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a8b069310f452ffbc9608525b1157e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fedb6bacc8cad74fac3d541e1475e5d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3a549c1c3b6ce38540d8534c0d9fbef
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4c30e11816598445c2f57adb8f1ddca
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64088363be412c66f5198a5773148db
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/73ec09609ce2e691dda5340e3c95daa
+Missing: 43
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e4b35713ea539b013c9cba3a873604d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b7fdf196c371759ff0f82beeb0900e3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bc63e6c052942d32529146cd6568158
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/68e4c056a180894a2d047b87045f76a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/29a9e864483176ca660bdd32326444a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6cb52bd7c9362a00c255edbedfa1fd7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/05e67c9222dad372835a91f1193232a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64f031c7d924ef604bb818204b1abcf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c6a8af5a19da1f4f6d328fa8b4e4a3a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e3b6f8942c3a3642a41488fa1788c5a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4467404468e9df66265a86d25d67550
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d850b6d687339bd4ef36bd1c09f66c1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9b36509e6e49a3038f72766dfbdf68d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/28cbe59be46c2a1bcbc474694851c58
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/be414a79e753d7355ff341a9db23615
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1bd4b6729ace15b4037648e6cd98694
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ab857961fbec07797c55071b36797c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85ce441e9b061ba5022a6b677cae1c9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a5c8fb25b6d1e19461b342f70d93f4c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44b75825a7a9346faaa3d734f5d0eb7
   ~ og: https://media.townhall.com/cdn/hodl/2020/55/a193740c-6952-4ec5-9caf-f4
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -54,8 +46,8 @@ Missing: 51
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 29
+  → patched final 21
 
-Stats: uploaded=28 fallback=1 failed=1
+Stats: uploaded=20 fallback=1 failed=1
 
-=== FINAL: total=2638 missing_images=22 reddit=0 ===
+=== FINAL: total=2658 missing_images=22 reddit=0 ===
