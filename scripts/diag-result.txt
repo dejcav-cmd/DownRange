@@ -2,8 +2,26 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 23
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6050e38f8dee5318ad4172ced9547b1
+Missing: 41
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a282ca458e215ce2e4d03eaea8cadce
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c131daae056b48ba370542a239ecb65
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ed9f569abbb1ee60b95fe2fa1d4d61d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b38b6cbc9461ce95fb9a2713da190b0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c5d72ff65ae22e8a6b46e557efea68b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5bd3ee11f7712e29b58a533021b256f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ace74048e71265de10ba3bce9176b42
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/43882b3228182195d19ac9736712d87
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c35dbb277b3d18a95537b86aa50564b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/57870ac3f60b3311e2e427ab595958f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/299596ee816234b23f4169d488d8baa
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/772b1a6f489bafdbdd14eedff678a46
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/704fdf54b67abfea473057ecf3f59e1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/233fcb04c9b7ab4a79c913768678d04
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9aa10cd0266aad1e85e1f26283caaf1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/756b3ade7fc33ef7f697726ff357c35
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95fa2010a88f7250fcb2f3de7ad30ca
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f34612d3b0f6b0e3588e28ab1f9e324
+  ~ og: https://media.townhall.com/cdn/hodl/2020/55/a193740c-6952-4ec5-9caf-f4
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
@@ -26,8 +44,8 @@ Missing: 23
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 1
+  → patched final 19
 
-Stats: uploaded=1 fallback=0 failed=1
+Stats: uploaded=18 fallback=1 failed=1
 
-=== FINAL: total=2569 missing_images=22 reddit=0 ===
+=== FINAL: total=2588 missing_images=22 reddit=0 ===
