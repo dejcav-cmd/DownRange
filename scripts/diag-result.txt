@@ -2,22 +2,28 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 37
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/848de26bcc2a00f631f38fff28e05de
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0465b9bbf5577af244b364f3e1bd1d3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/088ccc895b2b74ee39d81b94f76238e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c931d73624898fcc37bc7af0ca2447
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/06d67df3f3e3ee01469acbcb34c5a1f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b9d418d4e2ae223beb68a45085553b2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/823ef243a33b6cbfd75ece7c29fc16b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1e5aad68081cc0737fe176b9270b7e1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/90c604f80269480575d6c71ee31f655
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/151de94974b379bfd00d61200aae227
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/56c3a982527e1103da698ad6ac6003b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f1e55acb6d4e8540e694dba01ae1c3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/37acdb24171ff66b115cd5fd12b6106
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e401537c0a83854eca6b369511b2f8c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d9686d40378f837b7f558419318dc1f
+Missing: 43
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4422fd7078ad2b4fb4ad4fffcb66426
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f34410c428917473b8ed77c6c19b6b6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ac2543c0797f0f5bcf3beefb37c802
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/28d0e209eff315f0611140c16b7fd50
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/08e1d40f4e3927a238dc664a76745e0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/30a696094ac02b26a97bf36799c0c27
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d2918701c0565dbf6f4516a0f9634e9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d4ab5ef484182d7abf8159b13bbccc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b22290563ba20e34a79788a0355779d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/119e39d132c6fcb3b19dd0094f81501
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f38b431475f02c2f0526577d340bcd8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/435ae3084bd1d75499aa82150d0abfe
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/31f0f5e2b15c09bfc8ac602c315d724
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/77e0f814998d26052e11e57bb19345c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6eb8181e0c4acfda711c174663cfea0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ccc8172045de5c5607a8dc292f5f8be
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/63a7257eee30d555fe81d90a5b2b4ba
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/993080a78b86f5f98304ace25e109de
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/47446c215c4e189b20b42ef269f327d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fbde666d6fe6739fd710dcab03e4221
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79cb829db6e9d8be9575be858cefb17
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
@@ -40,8 +46,8 @@ Missing: 37
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 15
+  → patched final 21
 
-Stats: uploaded=15 fallback=0 failed=1
+Stats: uploaded=21 fallback=0 failed=1
 
-=== FINAL: total=2524 missing_images=22 reddit=0 ===
+=== FINAL: total=2545 missing_images=22 reddit=0 ===
