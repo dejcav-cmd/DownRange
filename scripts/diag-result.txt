@@ -2,19 +2,9 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 34
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/af5bfaef99bb26230ecc847cd34058d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8b6a3bf62e0534718d6202f5275540
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c538b7f35cbfeb64057931becf2f8de
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d4107d373f3b9d56c5ced712875da53
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a77576ea29cac660f65c531e954373e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/90442618d139976f3843885ee8ca4f8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3103fc53bd95e8623e7692a4e79150
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4e911a2663afa76e328245f1909b42c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bfb547f1004ae3774f8e37c83ebbf6c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c54844e99c0ae164f6abea8c5ea9c94
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/81c50dc22339e5ceef501876d4a19c7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/46abe418c2da88a7b5db034c37ec394
+Missing: 24
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3de07174584083c372e879f7febb3b0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c8d2e4072add8211e6133482c0735c
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
@@ -37,8 +27,8 @@ Missing: 34
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 12
+  → patched final 2
 
-Stats: uploaded=12 fallback=0 failed=1
+Stats: uploaded=2 fallback=0 failed=1
 
-=== FINAL: total=2741 missing_images=22 reddit=0 ===
+=== FINAL: total=2743 missing_images=22 reddit=0 ===
