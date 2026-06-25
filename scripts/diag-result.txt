@@ -2,9 +2,23 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 24
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3de07174584083c372e879f7febb3b0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c8d2e4072add8211e6133482c0735c
+Missing: 38
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ced32e1fab407550fa3b0da715beddd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/079f00d015bf325131d159ae47caa36
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f733487c810dcd48781e404d8ddeb5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4000ab8b66f0d1044fbfbb1904b8f52
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c08e8d1f674d0c9f5c8b01e499a3054
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b05d512ce2907970db5f3cb282ce91b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff6a9a3aeac5f1271efc9fb1aa66b7e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9d9c8d515c1ae7d4f65ef52d1d65442
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab7cd83687351082208be82baa66a1b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/deaf80ca645c330d36cb88d273ea422
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/777cb774024d37938131db92bd7c4c6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a6d477aecdc038ec689483aeeb0f62e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9be4b2d199680c824e13fc01f8a9f52
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/463d91bad70586be95c0aa10fd7fe0c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79246da8316c7c9fdfe7fd5c20659e0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f570739c2e6dd65c96ad41e6ce9e4c3
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
@@ -27,8 +41,8 @@ Missing: 24
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 2
+  → patched final 16
 
-Stats: uploaded=2 fallback=0 failed=1
+Stats: uploaded=16 fallback=0 failed=1
 
-=== FINAL: total=2743 missing_images=22 reddit=0 ===
+=== FINAL: total=2759 missing_images=22 reddit=0 ===
