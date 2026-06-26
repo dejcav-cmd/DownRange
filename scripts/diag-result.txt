@@ -3,13 +3,13 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Missing: 30
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c2d0b9c4db19024b749d472ed671abe
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/563ae5d579c8a7b2b2591a5eb878e8e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7f68c3c374fcdb878569fddcd40f9cf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0d8e20bf5e92d892524967ba9ee6add
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b8864468b3be6e3c11b0c98211033f0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c360d551c3c3c9a7673ffa116e9e4bd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/debb2f2c849c81f766b88bc3f9f9aba
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/78462a3302db3525dfb1172d744879e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fb1df8361271accd1867b49bc4135f2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/23c56cb0b9a3f9a29bdd073dcea3255
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4592d22a997a45f090a826b9049db46
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/23eae62c3f45c41368f038ea2216560
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/845c8e00b4236da86cac9c29abd6b47
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/407114838eabd80d934153072694605
   skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -37,4 +37,4 @@ Missing: 30
 
 Stats: uploaded=7 fallback=0 failed=1
 
-=== FINAL: total=2873 missing_images=23 reddit=0 ===
+=== FINAL: total=2880 missing_images=23 reddit=0 ===
