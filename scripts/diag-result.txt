@@ -2,33 +2,29 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 49
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2d70a2142c7d76a59b35ca90acf58b0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a5c1e107198f22cfeb717d4f75de28d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/07598fa4bdd3ac1c47da57e9627ab2e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/22b7e9d887194631ebac5b2683693fc
+Missing: 45
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f4474c2ca5f750e5aef590f151201e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fb9612b003f51535208029817fcb6c1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f24e6caf34d7b4fab1f0e18dc5d93fc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/040159462ba6270a2363a86a4982618
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d1f2153d43fb802ec98effe27bb443d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e77e066526f967738ad2d5a5121023
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7312b0b4823129b5dc0a2e05265f313
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4b6c21632958d7357370c5f217de0bf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cca039a747dbc947b3121f9a01e4731
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/471db9d60246ec5491884d6266e8d8b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2cfc0961bbd86757e1a85b2cc79d391
+  ✗ https://gun.deals/node/1522116
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/37860e72b7b5056352d3776b5d80ab1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/036b6243b3315d9d4dc1138d51ff2ec
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/72ef0412133e34d6e71c8a738d0759e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7b299480f92dd34ad602ff9ad239ba2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7563b2ae719e4d8f805f3df83407261
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/798b79534831f2c8d8f46b63876d1cc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3774d0f8a068045f8c4c9cddb6fcd91
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3881706715e488f8941ef36daa0ed99
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/342a53d0ce9ce5bcbbc410b3521d3d1
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b585ba635ecf9a96f4bfa61aa3d6e30
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0e2bba814db81238b82b56e5c0640b6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6bcb331090cc8a2ce6cac754b28c8cf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ce35afb4c24ff9abd8f42068694bf8b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9a14d0b58bd789f8527a7a7bb24ca6c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ba6966e8b76d01f98bab161af2b772
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8dc2c1c3cbe73045b6b00604e8e06b8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9ab754ff084342d5b80ad01c6bece85
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cf5c50487792458d3f42d5ec7a89f49
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f99365fc058454ddd37e308f89a48c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/273431ea5023dd697144431c1ec15bb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/03383b97a05255f0a5990f9ca818361
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/af0cdaf1de16a4721ab3470dbf41529
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/06d90793c11bf48e85f7e1c0296f5bf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d97021c40cdd202c220e9af40a6522
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e6d992a2bccf6b60c095c284881eb9b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb1afcf9f75f8c19ba41ba72d08e55a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/761ba1c994ea822316e4d44556de839
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/00bd8372b45e96cf67f092590e8c2ab
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6b117cd39c87299c2427dd00afa4a7b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6569a40ce63ea59805111e8626c8c6e
   skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
   skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -52,8 +48,8 @@ Missing: 49
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 25
+  → patched final 20
 
-Stats: uploaded=25 fallback=0 failed=1
+Stats: uploaded=20 fallback=0 failed=2
 
-=== FINAL: total=2951 missing_images=24 reddit=0 ===
+=== FINAL: total=2972 missing_images=25 reddit=0 ===
