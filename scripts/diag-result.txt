@@ -3,11 +3,11 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Missing: 32
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/21b562322e43d3105cf3df165103f9a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7d552186054e807438f28d051f7b161
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d41a18ad0642d67b83f072b326d126a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e989c67d8a80f869adcd4427de156bc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b96925783dd98a8b3f1f025520fe3ed
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e7b268f10fbbd10d616fd61be0b908
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5cb742611590ffcee94e8d51650dc1a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3b8d0c0baafd9bb8a6f88568e875f5c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e9b5cae34e40108dedbbc21c2028b4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74388e6ab09f5bce6089392fb067502
   skip coupon: https://gun.deals/content/coupon-store-gunmagwarehousesaturd
   skip coupon: https://gun.deals/content/coupon-store-right-bearsaturday-ju
   ✗ https://gun.deals/node/1522116
@@ -39,4 +39,4 @@ Missing: 32
 
 Stats: uploaded=5 fallback=0 failed=2
 
-=== FINAL: total=3104 missing_images=27 reddit=0 ===
+=== FINAL: total=3109 missing_images=27 reddit=0 ===
