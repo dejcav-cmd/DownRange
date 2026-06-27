@@ -2,7 +2,23 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 25
+Missing: 41
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a349a841b66263b2328d27ef5bd961b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20a7aeb5aae9b9fa191be72578b405e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b511ca4544180d7f1289cd9202d06ce
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/da7f7f069ab344856f84c0c37872d32
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5c1432596d90dedeae8aae23003e5fe
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3bc700c5433cf8c55dcd29a0cc21980
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9fde7513dba342b4a10736b7e5ae8ed
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b46e392d52f7f24a1164454e1094b95
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a504e9cafad4114bc065cab6ec8e09
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/732ab55a19a14e90d3a39ccb8344ace
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/653afb7b4286fb8c81492c5acb7fe9e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b35258e9ff12f56ee64409ed565ec86
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/219ea51df4e100c075a0e3a93c9b490
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8abbbf67c78d63056dd735acec292ff
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1245b8202a310aa30bf016811231af8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/db766e0f90dd569e534e1563100fe4b
   ✗ https://gun.deals/node/1522116
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
   skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
@@ -28,7 +44,8 @@ Missing: 25
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 16
 
-Stats: uploaded=0 fallback=0 failed=2
+Stats: uploaded=16 fallback=0 failed=2
 
-=== FINAL: total=3057 missing_images=25 reddit=0 ===
+=== FINAL: total=3073 missing_images=25 reddit=0 ===
