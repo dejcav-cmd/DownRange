@@ -2,28 +2,7 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 46
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7ed0066fb56a2edf32b6785877d1125
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f630ab42132cbbb2348692cf15ac2d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20c1544d83806dc0904c949aaf2a45e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1f58deeea77b8a81a6f706f0e07fd0b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/22251aaae943d57f532a7dde756216b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4bbe595c910543cba8683ba3078b9f4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3e0dbebd8f4218127b36c55902a31f8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/765d4486da2b3d74c0da481d94d802c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/279618444a145fda6d2c459375aa2ec
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/086b9f50c892bea7f06ff89a7e4d968
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/03833d4856e4dadfe6aa58380e69a90
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20ea7f6e86529fb1a3ad514ad757f1b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3f992522c1b31288e30cdc969221f0f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/10a9276b0e072074663ef8d28afaeea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4abfe934c9f15715aad4274d69c7fe5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/14649371dacf7eca9573c56685efb94
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/491a3db2f0cb7bda7b538f9a01fadc4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ca56b2cbf30b7e9ed1aa8637695d085
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ead8e33805e9f3b7b81b21313f3a9ad
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3e4570c58fa1f071210c564b7d2865b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6041b19c3b4d4e5e989b91bf7818787
+Missing: 25
   ✗ https://gun.deals/node/1522116
   skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
   skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
@@ -49,8 +28,7 @@ Missing: 46
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 21
 
-Stats: uploaded=21 fallback=0 failed=2
+Stats: uploaded=0 fallback=0 failed=2
 
 === FINAL: total=3057 missing_images=25 reddit=0 ===
