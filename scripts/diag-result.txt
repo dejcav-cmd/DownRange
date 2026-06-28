@@ -2,25 +2,7 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 49
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85f50e8235f8f71375ebe8ca8127ce3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/db8b4b54d8a043c2ae265a8d137f5b3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0831df86e1dc5b0bd33de52c9dfd1d5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f6e53339534f321e741a57a59fbbb7c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6814a0814180547312cd10687b969e0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e9d1e1ad78c9638f6ea91dd104ae750
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/af72e5bb81a83568272903ba006cd48
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/359fbbefa730e3e3c552c81d9e713f9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6456cdde36f0c13b49b2296c3bd99c1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0ed1046d013a4895b2cd2f896562e57
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/686b9a99a5bf09e7bce0a05e8ec21b9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64ce8837a2b44dc7b0d061abcf38d0a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/58c48bcbfdc1f2c01879d28ac346d5f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/37360df96975b3a92547491687847f4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f342a63a622454c6f1201733ca443b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/422f052712567550e2f8446d4071191
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b04275a662fc525ba1dcda3f51f3cb0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/09ef765d373cbcba5d8ab1c763f4337
+Missing: 31
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Beretta-model-84bb
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -52,8 +34,8 @@ Missing: 49
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 19
+  → patched final 1
 
-Stats: uploaded=18 fallback=1 failed=2
+Stats: uploaded=0 fallback=1 failed=2
 
 === FINAL: total=3200 missing_images=30 reddit=0 ===
