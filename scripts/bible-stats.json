@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-06-21T07:01:03.122Z",
+  "generatedAt": "2026-06-28T07:00:34.327Z",
   "content": {
-    "newsArticles": 491,
-    "blogPosts": 116,
-    "legislation": 237,
-    "firearmReleases": 29,
-    "videos": 190,
+    "newsArticles": 538,
+    "blogPosts": 135,
+    "legislation": 245,
+    "firearmReleases": 40,
+    "videos": 191,
     "reviews": 3,
-    "canadaArticles": 40,
-    "brazilArticles": 16
+    "canadaArticles": 42,
+    "brazilArticles": 18
   },
   "operations": {
-    "cronRuns": 1484,
+    "cronRuns": 1554,
     "outreachContacts": 221,
-    "socialPosts": 125,
-    "briefings": 27
+    "socialPosts": 146,
+    "briefings": 34
   },
   "latest": {
-    "newsTitle": "HiLight Tactical Adds FDE Option to Weapon Light Lineup",
-    "newsDate": "2026-06-20T19:00:00.000Z",
-    "briefingDate": "2026-06-21",
+    "newsTitle": "Akos Arms Baza: Glock-Fed Straight-Pull .45 ACP Debuts",
+    "newsDate": "2026-06-27T19:00:00.000Z",
+    "briefingDate": "2026-06-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 1122
+  "totalContentDocs": 1212
 }
