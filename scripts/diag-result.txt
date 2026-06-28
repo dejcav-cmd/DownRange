@@ -3,13 +3,13 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Missing: 37
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ec3dd6d0a8a5361826a0f90ad6501d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f972adf2654d60b06df5451a08c2343
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74901a4aa7b16c515d2f11bea6ef6cf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c65ede937d91a99cbaf2247cc357e19
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85d4c69f831b1c731a5fe1317d2f52d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cb59655cbc270443e6a6e706f7f7c8d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e467fb7d8484aecc1d5c1ddcc3031b0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b38c3a9634c54991283b90ebe337b2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3f4a4326cb524a4869cd54fd53a1d5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/444be7d347413edfedac8aa4226dc1b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ef3fe10326d318698739dea6793863a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b726afc5c9d4cdde3e704a99cdd5ce
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PMC-Bronze-deal-up
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Beretta-model-84bb
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -42,6 +42,6 @@ Missing: 37
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
   → patched final 7
 
-Stats: uploaded=7 fallback=0 failed=2
+Stats: uploaded=5 fallback=2 failed=2
 
-=== FINAL: total=3172 missing_images=30 reddit=0 ===
+=== FINAL: total=3179 missing_images=30 reddit=0 ===
