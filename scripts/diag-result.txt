@@ -2,7 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 30
+Missing: 37
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ec3dd6d0a8a5361826a0f90ad6501d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f972adf2654d60b06df5451a08c2343
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74901a4aa7b16c515d2f11bea6ef6cf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c65ede937d91a99cbaf2247cc357e19
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85d4c69f831b1c731a5fe1317d2f52d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cb59655cbc270443e6a6e706f7f7c8d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e467fb7d8484aecc1d5c1ddcc3031b0
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -33,7 +40,8 @@ Missing: 30
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 7
 
-Stats: uploaded=0 fallback=0 failed=2
+Stats: uploaded=7 fallback=0 failed=2
 
-=== FINAL: total=3165 missing_images=30 reddit=0 ===
+=== FINAL: total=3172 missing_images=30 reddit=0 ===
