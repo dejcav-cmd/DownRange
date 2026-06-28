@@ -2,20 +2,16 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 43
+Missing: 39
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/216b1625daeadaf5618eb71b5de401b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/02c8deac2f18198310280bbb0677684
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/00840de824005b85cdce3fbf38382b7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/35384f197aee87eb963410e0dc60e44
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/caaa6cd0d9a8007a0e8c19464ac319e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4f5c78c76a2684cafc3724f2999910d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/60f80e54e207e2f02179089fc32e71e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a638ebdc4c80e2b7836d4753bbcc3f9
   ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2204d32ff3030044c1cd2e5be501a50
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a48edc2a1cc13c89505cfe728f3eaca
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e811f3c6d03ef719f29812f0cb4d0be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b5f29e5e97b3e7680d85934148dd68
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa6813d468c1b451a7b0a8bd6514b3f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/36717beb8e12a312cbea6053a71a855
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/48b4dc828b689f38f458af12fae1755
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95431932a461028438b45d15e42c110
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e4b3775a738c35571bd4af7979939eb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1191fb6f97376acb638313bb5d2bd91
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d115fa9718109591ceb115850569380
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d73b36f83095fabb8ed6ffb88f2d8fb
-  ~ og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/file
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -46,8 +42,8 @@ Missing: 43
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 13
+  → patched final 9
 
-Stats: uploaded=12 fallback=1 failed=2
+Stats: uploaded=9 fallback=0 failed=2
 
-=== FINAL: total=3156 missing_images=30 reddit=0 ===
+=== FINAL: total=3165 missing_images=30 reddit=0 ===
