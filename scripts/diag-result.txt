@@ -2,12 +2,10 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 37
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b38c3a9634c54991283b90ebe337b2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3f4a4326cb524a4869cd54fd53a1d5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/444be7d347413edfedac8aa4226dc1b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ef3fe10326d318698739dea6793863a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b726afc5c9d4cdde3e704a99cdd5ce
+Missing: 35
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b62335aec616fb3b12eb8284ccce210
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1923b8fb6d7f48c3754a489df7f2ef4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/80fda6e7f0573cb7b8cebe1d7f1ee11
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PMC-Bronze-deal-up
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Beretta-model-84bb
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -40,8 +38,8 @@ Missing: 37
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 7
+  → patched final 5
 
-Stats: uploaded=5 fallback=2 failed=2
+Stats: uploaded=3 fallback=2 failed=2
 
-=== FINAL: total=3179 missing_images=30 reddit=0 ===
+=== FINAL: total=3182 missing_images=30 reddit=0 ===
