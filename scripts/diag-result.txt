@@ -2,8 +2,22 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 31
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Beretta-model-84bb
+Missing: 45
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/059a67c88af45b77607f803ea97179e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4f35586cb95e4a6d6353f881d319b23
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f71c56abf7b05a6a8247eebf5f0b9bf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/56a4f0498ef91a67318ca74f9f1bf5b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e498e838fcbc88127db67021a1aece
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f7a1aad008ac2cbab030b1b1fbbbf5a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df3fd4ab9a9b787ab37f2a7b8e3a00b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7ca16761b11988981547da6519cb65b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/728bdb3bdb9ba1149cd13ac8d901baa
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5198cbff034fb24f53d7f64575c7e3f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/30510cf09db9666c2132c63d0a47d1c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5cfed14de6edd2ebeb6dc37d2110717
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8179fde7621a26a0d14e113ffacb564
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/353f039a1b0cf613ac80133872a5760
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/16e496962c80213af57dee509250fbd
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -34,8 +48,8 @@ Missing: 31
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 1
+  → patched final 15
 
-Stats: uploaded=0 fallback=1 failed=2
+Stats: uploaded=15 fallback=0 failed=2
 
-=== FINAL: total=3200 missing_images=30 reddit=0 ===
+=== FINAL: total=3215 missing_images=30 reddit=0 ===
