@@ -29,223 +29,181 @@ function g1Cd(mach) {
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Caliber Presets
+// 38 Caliber Presets
+// BC data: Bryan Litz Applied Ballistics, Hornady, Sierra, and manufacturer specs
 // ─────────────────────────────────────────────────────────────────────────────
 const PRESETS = [
-  { id:'9mm-124',   name:'9mm 124gr FMJ',          mv:1150, bc:0.145, wt:124,  cat:'Pistol'  },
-  { id:'45acp-230', name:'.45 ACP 230gr FMJ',       mv:830,  bc:0.195, wt:230,  cat:'Pistol'  },
-  { id:'223-55',    name:'.223 Rem 55gr FMJ',        mv:3240, bc:0.243, wt:55,   cat:'Rifle'   },
-  { id:'556-77',    name:'5.56 77gr OTM',            mv:2750, bc:0.372, wt:77,   cat:'Rifle'   },
-  { id:'762x39',    name:'7.62×39 123gr FMJ',        mv:2350, bc:0.275, wt:123,  cat:'Rifle'   },
-  { id:'308-168',   name:'.308 Win 168gr HPBT',      mv:2650, bc:0.470, wt:168,  cat:'Rifle'   },
-  { id:'308-175',   name:'.308 Win 175gr Sierra MK', mv:2600, bc:0.505, wt:175,  cat:'Rifle'   },
-  { id:'3006-165',  name:'.30-06 165gr SST',         mv:2800, bc:0.447, wt:165,  cat:'Rifle'   },
-  { id:'65cm-140',  name:'6.5 CM 140gr ELD-M',       mv:2710, bc:0.646, wt:140,  cat:'Precision'},
-  { id:'65prc-143', name:'6.5 PRC 143gr ELD-X',      mv:2960, bc:0.623, wt:143,  cat:'Precision'},
-  { id:'300wm-190', name:'.300 Win Mag 190gr HPBT',  mv:2980, bc:0.533, wt:190,  cat:'Precision'},
-  { id:'338lap-300',name:'.338 Lapua 300gr HPBT',    mv:2650, bc:0.818, wt:300,  cat:'Precision'},
-  { id:'custom',    name:'Custom Load',              mv:2700, bc:0.500, wt:150,  cat:'Custom'  },
+  // Rimfire
+  { id:'22lr-40',     name:'.22 LR 40gr LRN',              mv:1080, bc:0.130, wt:40,  cat:'Rimfire'      },
+  { id:'17hmr-17',    name:'.17 HMR 17gr V-Max',           mv:2550, bc:0.125, wt:17,  cat:'Rimfire'      },
+  { id:'22wmr-40',    name:'.22 WMR 40gr JHP',             mv:1910, bc:0.118, wt:40,  cat:'Rimfire'      },
+  // Pistol
+  { id:'9mm-124',     name:'9mm 124gr FMJ',                mv:1150, bc:0.145, wt:124, cat:'Pistol'       },
+  { id:'9mm-147',     name:'9mm 147gr HST',                mv:990,  bc:0.160, wt:147, cat:'Pistol'       },
+  { id:'357sig-125',  name:'.357 SIG 125gr FMJ',           mv:1350, bc:0.172, wt:125, cat:'Pistol'       },
+  { id:'40sw-165',    name:'.40 S&W 165gr JHP',            mv:1130, bc:0.185, wt:165, cat:'Pistol'       },
+  { id:'10mm-180',    name:'10mm Auto 180gr FMJ',          mv:1275, bc:0.195, wt:180, cat:'Pistol'       },
+  { id:'357mag-158',  name:'.357 Mag 158gr JHP',           mv:1235, bc:0.179, wt:158, cat:'Pistol'       },
+  { id:'44mag-240',   name:'.44 Mag 240gr JHP',            mv:1180, bc:0.194, wt:240, cat:'Pistol'       },
+  { id:'45acp-230',   name:'.45 ACP 230gr FMJ',            mv:830,  bc:0.195, wt:230, cat:'Pistol'       },
+  // Intermediate
+  { id:'223-55',      name:'.223 Rem 55gr FMJ',            mv:3240, bc:0.243, wt:55,  cat:'Intermediate' },
+  { id:'556-77',      name:'5.56 77gr OTM',                mv:2750, bc:0.372, wt:77,  cat:'Intermediate' },
+  { id:'762x39',      name:'7.62x39 123gr FMJ',            mv:2350, bc:0.275, wt:123, cat:'Intermediate' },
+  { id:'6arc-108',    name:'6mm ARC 108gr ELD-M',          mv:2750, bc:0.536, wt:108, cat:'Intermediate' },
+  { id:'300blk-125',  name:'.300 BLK 125gr TAC-TX (sup)', mv:2215, bc:0.320, wt:125, cat:'Intermediate' },
+  { id:'300blk-220',  name:'.300 BLK 220gr OTM (sub)',    mv:1010, bc:0.275, wt:220, cat:'Intermediate' },
+  // Hunting
+  { id:'243-95',      name:'.243 Win 95gr SST',            mv:3025, bc:0.354, wt:95,  cat:'Hunting'      },
+  { id:'270-130',     name:'.270 Win 130gr SST',           mv:3060, bc:0.430, wt:130, cat:'Hunting'      },
+  { id:'7mm08-140',   name:'7mm-08 Rem 140gr HPBT',       mv:2800, bc:0.475, wt:140, cat:'Hunting'      },
+  { id:'3006-165',    name:'.30-06 165gr SST',             mv:2800, bc:0.447, wt:165, cat:'Hunting'      },
+  { id:'280ai-162',   name:'.280 AI 162gr ELD-X',         mv:2950, bc:0.631, wt:162, cat:'Hunting'      },
+  { id:'3030-150',    name:'.30-30 Win 150gr FP',          mv:2390, bc:0.186, wt:150, cat:'Hunting'      },
+  // Precision
+  { id:'6cm-108',     name:'6mm CM 108gr ELD-M',           mv:2960, bc:0.536, wt:108, cat:'Precision'    },
+  { id:'260-140',     name:'.260 Rem 140gr HPBT',          mv:2750, bc:0.490, wt:140, cat:'Precision'    },
+  { id:'65cm-140',    name:'6.5 CM 140gr ELD-M',           mv:2710, bc:0.646, wt:140, cat:'Precision'    },
+  { id:'308-168',     name:'.308 Win 168gr HPBT',          mv:2650, bc:0.470, wt:168, cat:'Precision'    },
+  { id:'308-175',     name:'.308 Win 175gr Sierra MK',     mv:2600, bc:0.505, wt:175, cat:'Precision'    },
+  // PRC Family
+  { id:'65prc-143',   name:'6.5 PRC 143gr ELD-X',         mv:2960, bc:0.623, wt:143, cat:'PRC'          },
+  { id:'7prc-175',    name:'7mm PRC 175gr ELD-X',         mv:2860, bc:0.689, wt:175, cat:'PRC'          },
+  { id:'300prc-225',  name:'.300 PRC 225gr ELD-M',        mv:2810, bc:0.777, wt:225, cat:'PRC'          },
+  // Magnum
+  { id:'7rm-168',     name:'7mm Rem Mag 168gr HPBT',      mv:2940, bc:0.617, wt:168, cat:'Magnum'       },
+  { id:'300wsm-210',  name:'.300 WSM 210gr Berger',       mv:2840, bc:0.730, wt:210, cat:'Magnum'       },
+  { id:'300wm-190',   name:'.300 Win Mag 190gr HPBT',     mv:2980, bc:0.533, wt:190, cat:'Magnum'       },
+  { id:'338wm-250',   name:'.338 Win Mag 250gr HPBT',     mv:2650, bc:0.645, wt:250, cat:'Magnum'       },
+  { id:'338lap-300',  name:'.338 Lapua 300gr HPBT',       mv:2650, bc:0.818, wt:300, cat:'Magnum'       },
+  // Specialty
+  { id:'86blk-170',   name:'8.6 BLK 170gr OTM (super)',  mv:2550, bc:0.548, wt:170, cat:'Specialty'    },
+  { id:'86blk-300',   name:'8.6 BLK 300gr OTM (sub)',    mv:1050, bc:0.485, wt:300, cat:'Specialty'    },
+  { id:'300nm-230',   name:'.300 Norma 230gr ELD-M',      mv:2900, bc:0.789, wt:230, cat:'Specialty'    },
+  // Custom
+  { id:'custom',      name:'Custom Load',                  mv:2700, bc:0.500, wt:150, cat:'Custom'       },
 ]
+const CAT_ORDER = ['Rimfire','Pistol','Intermediate','Hunting','Precision','PRC','Magnum','Specialty','Custom']
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Ballistics Engine — G1 Numerical Integration
+// Ballistics Engine
 // ─────────────────────────────────────────────────────────────────────────────
 function computeTrajectory({ mv, bc, wt, altFt, tempF, windMph, zeroYds, scopeIn, maxYds }) {
-  const G = 32.174          // ft/s²
-  const DX = 0.5            // foot per step
-
-  // Atmosphere
-  const T_R  = tempF + 459.67
-  const T0_R = 518.67
-  const rho0 = 0.002377     // slug/ft³
-  const p_ratio = Math.pow(Math.max(1 - 6.8756e-6 * altFt, 0.001), 5.2559)
-  const rho  = rho0 * p_ratio * (T0_R / T_R)
-  const cFps = 1116.45 * Math.sqrt(T_R / T0_R)   // speed of sound
-
-  // BC: lb/in² → slug/ft²
-  const BC = bc * 7000 / (32.174 * 144)
-
-  // Build record-range list
+  const G = 32.174
+  const T_R = tempF + 459.67, T0_R = 518.67
+  const rho = 0.002377 * Math.pow(Math.max(1 - 6.8756e-6 * altFt, 0.001), 5.2559) * (T0_R / T_R)
+  const cFps = 1116.45 * Math.sqrt(T_R / T0_R)
+  const BC   = bc * 7000 / (32.174 * 144)
   const STEP = maxYds <= 500 ? 25 : 50
   const recYds = []
   for (let y = 0; y <= maxYds; y += STEP) recYds.push(y)
-
-  // 2-D integration (downrange + vertical)
-  let vx = mv, vy = 0
-  let yPos = 0   // inches below bore (negative = below)
-  let t = 0
-  let xFt = 0
-
+  let vx = mv, vy = 0, yPos = 0, t = 0, xFt = 0
   const rawData = []
-
   for (const rYd of recYds) {
     const rFt = rYd * 3
     while (xFt < rFt - 0.001) {
-      const dx = Math.min(DX, rFt - xFt)
+      const dx = Math.min(0.5, rFt - xFt)
       const v  = Math.sqrt(vx*vx + vy*vy)
       if (v < 50) break
-
-      const mach = v / cFps
-      const Cd   = g1Cd(mach)
-      const a_d  = Cd * rho * v * v / (2 * BC)   // ft/s²
-      const dt   = dx / Math.max(vx, 1)
-
-      vx  -= a_d * (vx/v) * dt
-      vy  -= (a_d * (vy/v) + G) * dt
-      yPos += vy * dt   // ft
-      t    += dt
-      xFt  += dx
+      const a_d = g1Cd(v / cFps) * rho * v * v / (2 * BC)
+      const dt  = dx / Math.max(vx, 1)
+      vx -= a_d * (vx/v) * dt; vy -= (a_d * (vy/v) + G) * dt
+      yPos += vy * dt; t += dt; xFt += dx
     }
-
     const vTot = Math.sqrt(vx*vx + vy*vy)
-    const KE   = 0.5 * (wt/7000) / 32.174 * vTot * vTot   // ft-lbs
-
-    // Wind drift via lag rule (accurate for typical ranges)
-    const lag     = t - (rYd * 3) / mv          // seconds
-    const driftIn = windMph * 1.46667 * lag * 12 // inches (crosswind from right)
-
+    const lag  = t - (rYd * 3) / mv
     rawData.push({
-      range: rYd,
-      dropBore: yPos * 12,   // inches below bore (negative)
-      v: Math.round(vTot),
-      energy: Math.round(KE),
-      tof: t,
-      drift: Math.round(driftIn * 10) / 10,
+      range: rYd, dropBore: yPos * 12, v: Math.round(vTot),
+      energy: Math.round(0.5 * (wt/7000) / 32.174 * vTot * vTot),
+      tof: t, drift: Math.round(windMph * 1.46667 * lag * 12 * 10) / 10,
       subsonic: vTot < 1100,
     })
   }
-
-  // Sight line: scope is scopeIn above bore at x=0
-  // Crosses bullet at zeroYds
   const zeroRec = rawData.find(r => r.range === zeroYds) || rawData[Math.floor(rawData.length/3)]
   const dropAtZ = zeroRec ? zeroRec.dropBore : -5
-
   return rawData.map(r => {
-    // Sight: from +scopeIn at x=0 down to dropAtZ at zeroYds
-    const sight   = scopeIn + (dropAtZ - scopeIn) * (r.range / (zeroYds || 1))
-    const bh      = r.dropBore - sight          // above sight line = positive
-    const moa     = r.range > 0 ? -bh / (1.0472 * r.range / 100) : 0
-    const mrad    = r.range > 0 ? -bh / (3.6    * r.range / 100) : 0
-    return {
-      ...r,
-      bh:   Math.round(bh   * 10) / 10,
-      moa:  Math.round(moa  * 10) / 10,
-      mrad: Math.round(mrad * 100) / 100,
-    }
+    const sight = scopeIn + (dropAtZ - scopeIn) * (r.range / (zeroYds || 1))
+    const bh    = r.dropBore - sight
+    const moa   = r.range > 0 ? -bh / (1.0472 * r.range / 100) : 0
+    const mrad  = r.range > 0 ? -bh / (3.6    * r.range / 100) : 0
+    return { ...r, bh: Math.round(bh*10)/10, moa: Math.round(moa*10)/10, mrad: Math.round(mrad*100)/100 }
   })
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
-// SVG Trajectory Chart
+// SVG Trajectory Chart — supports 1 or 2 loads
 // ─────────────────────────────────────────────────────────────────────────────
-function TrajectoryChart({ data, maxYds, zeroYds }) {
-  if (!data || data.length < 2) return null
-  const W = 720, H = 220, PAD = { t:16, r:20, b:36, l:52 }
-  const IW = W - PAD.l - PAD.r
-  const IH = H - PAD.t - PAD.b
-
-  const bhs = data.map(d => d.bh)
-  const yMin = Math.min(...bhs, -5)
-  const yMax = Math.max(...bhs, 2)
-  const yRange = yMax - yMin || 1
-
-  const scaleX = r => PAD.l + (r / maxYds) * IW
-  const scaleY = v => PAD.t + IH - ((v - yMin) / yRange) * IH
-
-  // Zero line Y
-  const zeroY = scaleY(0)
-  // Subsonic transition X
-  const subEntry = data.find(d => d.subsonic)
-  const subX = subEntry ? scaleX(subEntry.range) : null
-
-  // Build path
-  const pts = data.map(d => `${scaleX(d.range).toFixed(1)},${scaleY(d.bh).toFixed(1)}`).join(' ')
-  const pathD = `M ${pts.split(' ').join(' L ')}`
-
-  // X-axis labels
-  const xTicks = data.filter((_, i) => i % Math.ceil(data.length/8) === 0 || data[i].range === maxYds)
-
-  // Y-axis labels
-  const rawStep = yRange / 4
-  const step = rawStep < 1 ? 0.5 : rawStep < 5 ? Math.ceil(rawStep) : Math.ceil(rawStep/5)*5
-  const yTicks = []
-  for (let v = Math.floor(yMin/step)*step; v <= yMax + step; v += step) yTicks.push(v)
-
+function TrajectoryChart({ dataA, dataB, maxYds, zeroYds, labelA, labelB }) {
+  if (!dataA || dataA.length < 2) return null
+  const W=720, H=230, PAD={t:18,r:20,b:38,l:54}, IW=W-PAD.l-PAD.r, IH=H-PAD.t-PAD.b
+  const allBhs = [...dataA.map(d=>d.bh), ...(dataB||[]).map(d=>d.bh)]
+  const yMin = Math.min(...allBhs, -5), yMax = Math.max(...allBhs, 2), yRange = yMax-yMin||1
+  const scX = r => PAD.l + (r/maxYds)*IW
+  const scY = v => PAD.t + IH - ((v-yMin)/yRange)*IH
+  const zeroY = scY(0)
+  const subX  = (dataA.find(d=>d.subsonic)?.range ?? null) !== null ? scX(dataA.find(d=>d.subsonic).range) : null
+  const path  = data => 'M '+data.map(d=>`${scX(d.range).toFixed(1)},${scY(d.bh).toFixed(1)}`).join(' L ')
+  const rawStep = yRange/4
+  const step = rawStep<1?0.5:rawStep<5?Math.ceil(rawStep):Math.ceil(rawStep/5)*5
+  const yTicks=[], xTicks=dataA.filter((_,i)=>i%Math.ceil(dataA.length/8)===0||dataA[i].range===maxYds)
+  for(let v=Math.floor(yMin/step)*step;v<=yMax+step;v+=step) yTicks.push(v)
   return (
     <svg viewBox={`0 0 ${W} ${H}`} style={{width:'100%',maxWidth:W,display:'block'}}>
-      {/* Background */}
-      <rect width={W} height={H} fill="var(--bg2)" rx="6" />
-
-      {/* Subsonic zone */}
-      {subX && (
-        <rect x={subX} y={PAD.t} width={W-PAD.r-subX} height={IH}
-          fill="rgba(239,68,68,0.06)" />
-      )}
-
-      {/* Grid */}
-      {yTicks.map(v => (
-        <line key={v} x1={PAD.l} x2={W-PAD.r} y1={scaleY(v)} y2={scaleY(v)}
-          stroke="var(--border)" strokeWidth="1" strokeDasharray="3,3" opacity="0.6" />
+      <rect width={W} height={H} fill="var(--bg2)" rx="6"/>
+      {subX&&<rect x={subX} y={PAD.t} width={W-PAD.r-subX} height={IH} fill="rgba(239,68,68,0.05)"/>}
+      {yTicks.map(v=>(
+        <line key={v} x1={PAD.l} x2={W-PAD.r} y1={scY(v)} y2={scY(v)} stroke="var(--border)" strokeWidth="1" strokeDasharray="3,3" opacity="0.5"/>
       ))}
-
-      {/* Zero line */}
-      <line x1={PAD.l} x2={W-PAD.r} y1={zeroY} y2={zeroY}
-        stroke="var(--gold)" strokeWidth="1" strokeDasharray="6,3" opacity="0.8" />
-      <text x={W-PAD.r+4} y={zeroY+4} fill="var(--gold)" fontSize="9"
-        fontFamily="'IBM Plex Mono', monospace">0</text>
-
-      {/* Zero marker */}
-      {(() => {
-        const zx = scaleX(zeroYds)
-        const zy = scaleY(0)
-        return <circle cx={zx} cy={zy} r="4" fill="var(--gold)" opacity="0.9" />
-      })()}
-
-      {/* Bullet path */}
-      <path d={pathD} fill="none" stroke="var(--gold-light)" strokeWidth="2.5"
-        strokeLinejoin="round" strokeLinecap="round" />
-
-      {/* Data dots at key ranges */}
-      {data.filter((_, i) => i % 4 === 0 || data[i].range === maxYds).map(d => (
-        <circle key={d.range} cx={scaleX(d.range)} cy={scaleY(d.bh)} r="2.5"
-          fill="var(--gold-light)" opacity="0.7" />
-      ))}
-
-      {/* Subsonic label */}
-      {subX && subX < W - 80 && (
-        <text x={subX+4} y={PAD.t+10} fill="#ef4444" fontSize="9"
-          fontFamily="'IBM Plex Mono', monospace" opacity="0.8">SUBSONIC</text>
-      )}
-
-      {/* X-axis */}
-      <line x1={PAD.l} x2={W-PAD.r} y1={H-PAD.b} y2={H-PAD.b}
-        stroke="var(--border-mid)" strokeWidth="1" />
-      {xTicks.map(d => (
+      <line x1={PAD.l} x2={W-PAD.r} y1={zeroY} y2={zeroY} stroke="var(--gold)" strokeWidth="1" strokeDasharray="6,3" opacity="0.7"/>
+      <text x={W-PAD.r+4} y={zeroY+4} fill="var(--gold)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">0</text>
+      <path d={path(dataA)} fill="none" stroke="var(--gold-light)" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round"/>
+      {dataB&&<path d={path(dataB)} fill="none" stroke="#60a5fa" strokeWidth="2.5" strokeLinejoin="round" strokeLinecap="round" strokeDasharray="9,4"/>}
+      <circle cx={scX(zeroYds)} cy={scY(0)} r="4" fill="var(--gold)" opacity="0.9"/>
+      {subX&&subX<W-80&&<text x={subX+4} y={PAD.t+10} fill="#ef4444" fontSize="9" fontFamily="'IBM Plex Mono', monospace" opacity="0.8">SUBSONIC</text>}
+      {dataB&&<>
+        <text x={PAD.l+6} y={PAD.t+14} fill="var(--gold-light)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">A: {labelA?.slice(0,28)}</text>
+        <text x={PAD.l+6} y={PAD.t+26} fill="#60a5fa" fontSize="9" fontFamily="'IBM Plex Mono', monospace">B: {labelB?.slice(0,28)}</text>
+      </>}
+      <line x1={PAD.l} x2={W-PAD.r} y1={H-PAD.b} y2={H-PAD.b} stroke="var(--border-mid)" strokeWidth="1"/>
+      {xTicks.map(d=>(
         <g key={d.range}>
-          <line x1={scaleX(d.range)} x2={scaleX(d.range)} y1={H-PAD.b} y2={H-PAD.b+4}
-            stroke="var(--border-mid)" strokeWidth="1" />
-          <text x={scaleX(d.range)} y={H-PAD.b+14} textAnchor="middle"
-            fill="var(--text-dim)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">
-            {d.range}
-          </text>
+          <line x1={scX(d.range)} x2={scX(d.range)} y1={H-PAD.b} y2={H-PAD.b+4} stroke="var(--border-mid)" strokeWidth="1"/>
+          <text x={scX(d.range)} y={H-PAD.b+14} textAnchor="middle" fill="var(--text-dim)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">{d.range}</text>
         </g>
       ))}
-      <text x={W/2} y={H-2} textAnchor="middle" fill="var(--text-dim)" fontSize="9"
-        fontFamily="'IBM Plex Mono', monospace">RANGE (yards)</text>
-
-      {/* Y-axis */}
-      <line x1={PAD.l} x2={PAD.l} y1={PAD.t} y2={H-PAD.b}
-        stroke="var(--border-mid)" strokeWidth="1" />
-      {yTicks.filter(v => v >= yMin && v <= yMax).map(v => (
-        <text key={v} x={PAD.l-4} y={scaleY(v)+4} textAnchor="end"
-          fill="var(--text-dim)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">
-          {v.toFixed(0)}
-        </text>
+      <text x={W/2} y={H-2} textAnchor="middle" fill="var(--text-dim)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">RANGE (yards)</text>
+      <line x1={PAD.l} x2={PAD.l} y1={PAD.t} y2={H-PAD.b} stroke="var(--border-mid)" strokeWidth="1"/>
+      {yTicks.filter(v=>v>=yMin&&v<=yMax).map(v=>(
+        <text key={v} x={PAD.l-4} y={scY(v)+4} textAnchor="end" fill="var(--text-dim)" fontSize="9" fontFamily="'IBM Plex Mono', monospace">{v.toFixed(0)}</text>
       ))}
-      <text x={12} y={H/2} textAnchor="middle" fill="var(--text-dim)" fontSize="9"
-        fontFamily="'IBM Plex Mono', monospace"
-        transform={`rotate(-90,12,${H/2})`}>INCHES (±LOS)</text>
+      <text x={12} y={H/2} textAnchor="middle" fill="var(--text-dim)" fontSize="9" fontFamily="'IBM Plex Mono', monospace" transform={`rotate(-90,12,${H/2})`}>INCHES (±LOS)</text>
     </svg>
+  )
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Grouped Selector
+// ─────────────────────────────────────────────────────────────────────────────
+function LoadSelector({ value, onChange, label, color }) {
+  return (
+    <div style={{marginBottom:12}}>
+      <label style={{display:'flex',alignItems:'center',gap:6,fontSize:11,letterSpacing:'0.08em',fontFamily:"'IBM Plex Mono', monospace",color:'var(--text-muted)',marginBottom:4,textTransform:'uppercase'}}>
+        {color&&<span style={{display:'inline-block',width:10,height:10,borderRadius:2,background:color,flexShrink:0}}/>}
+        {label}
+      </label>
+      <select value={value} onChange={e=>onChange(e.target.value)}
+        style={{width:'100%',background:'var(--bg3)',border:`1px solid ${color||'var(--border)'}`,color:'var(--text)',borderRadius:4,padding:'7px 10px',fontSize:13,fontFamily:"'IBM Plex Mono', monospace",cursor:'pointer'}}>
+        {CAT_ORDER.map(cat=>{
+          const opts=PRESETS.filter(p=>p.cat===cat)
+          if(!opts.length) return null
+          return (
+            <optgroup key={cat} label={`── ${cat.toUpperCase()} ──`}>
+              {opts.map(p=><option key={p.id} value={p.id}>{p.name}</option>)}
+            </optgroup>
+          )
+        })}
+      </select>
+    </div>
   )
 }
 
@@ -253,316 +211,282 @@ function TrajectoryChart({ data, maxYds, zeroYds }) {
 // Main Component
 // ─────────────────────────────────────────────────────────────────────────────
 export default function BallisticsCalc() {
-  const [presetId, setPresetId]   = useState('308-168')
-  const [mv,  setMv]              = useState(2650)
-  const [bc,  setBc]              = useState(0.470)
-  const [wt,  setWt]              = useState(168)
-  const [alt, setAlt]             = useState(0)
-  const [temp,setTemp]            = useState(59)
-  const [wind,setWind]            = useState(10)
-  const [zero,setZero]            = useState(100)
-  const [scopeIn, setScopeIn]     = useState(1.5)
-  const [maxYds, setMaxYds]       = useState(1000)
-  const [unit,  setUnit]          = useState('imperial')   // imperial | metric
+  const [pA, setPA] = useState('308-168')
+  const [mvA, setMvA] = useState(2650); const [bcA, setBcA] = useState(0.470); const [wtA, setWtA] = useState(168)
+  const [compareMode, setCompareMode] = useState(false)
+  const [pB, setPB] = useState('65cm-140')
+  const [mvB, setMvB] = useState(2710); const [bcB, setBcB] = useState(0.646); const [wtB, setWtB] = useState(140)
+  const [alt, setAlt] = useState(0); const [temp, setTemp] = useState(59)
+  const [wind, setWind] = useState(10); const [zero, setZero] = useState(100)
+  const [scopeIn, setScopeIn] = useState(1.5); const [maxYds, setMaxYds] = useState(1000)
 
-  function applyPreset(id) {
-    setPresetId(id)
-    const p = PRESETS.find(p => p.id === id)
-    if (p && id !== 'custom') { setMv(p.mv); setBc(p.bc); setWt(p.wt) }
+  const env = { altFt:alt, tempF:temp, windMph:wind, zeroYds:zero, scopeIn, maxYds }
+
+  function applyPreset(id, setMv, setBc, setWt) {
+    const p = PRESETS.find(p=>p.id===id)
+    if (p && id!=='custom') { setMv(p.mv); setBc(p.bc); setWt(p.wt) }
   }
 
-  const data = useMemo(() => {
-    if (mv < 100 || bc < 0.01 || wt < 1) return []
-    try {
-      return computeTrajectory({ mv, bc, wt, altFt: alt, tempF: temp,
-        windMph: wind, zeroYds: zero, scopeIn, maxYds })
-    } catch { return [] }
-  }, [mv, bc, wt, alt, temp, wind, zero, scopeIn, maxYds])
+  const dataA = useMemo(()=>{ try { return computeTrajectory({mv:mvA,bc:bcA,wt:wtA,...env}) } catch{return[]} }, [mvA,bcA,wtA,alt,temp,wind,zero,scopeIn,maxYds])
+  const dataB = useMemo(()=>{ if(!compareMode) return null; try { return computeTrajectory({mv:mvB,bc:bcB,wt:wtB,...env}) } catch{return null} }, [compareMode,mvB,bcB,wtB,alt,temp,wind,zero,scopeIn,maxYds])
 
-  const cats = [...new Set(PRESETS.map(p => p.cat))]
+  const labelA = PRESETS.find(p=>p.id===pA)?.name || 'Load A'
+  const labelB = PRESETS.find(p=>p.id===pB)?.name || 'Load B'
 
-  const labelStyle = {
-    display:'block', fontSize:11, letterSpacing:'0.08em',
-    fontFamily:"'IBM Plex Mono', monospace", color:'var(--text-muted)',
-    marginBottom:4, textTransform:'uppercase',
-  }
-  const inputStyle = {
-    width:'100%', background:'var(--bg3)', border:'1px solid var(--border)',
-    color:'var(--text)', borderRadius:4, padding:'6px 10px', fontSize:13,
-    fontFamily:"'IBM Plex Mono', monospace",
-  }
-  const selectStyle = { ...inputStyle }
-
-  return (
-    <>
-      <style>{`
-        .bal-hero { background:var(--bg2); border-bottom:1px solid var(--border); padding:32px 0 28px; }
-        .bal-hero h1 { font-family:'Bebas Neue',sans-serif; font-size:clamp(2.4rem,5vw,3.8rem);
-          letter-spacing:.05em; color:var(--text); margin:0 0 6px; }
-        .bal-hero p  { color:var(--text-muted); font-size:14px; margin:0; max-width:640px; }
-        .bal-tag { display:inline-block; padding:2px 10px; border-radius:3px;
-          background:rgba(200,146,42,.13); color:var(--gold); font-size:10px;
-          fontFamily:"'IBM Plex Mono', monospace"; letter-spacing:.1em; margin-bottom:12px; }
-        .bal-layout { display:grid; grid-template-columns:300px 1fr; gap:24px;
-          align-items:start; padding:32px 0 48px; }
-        @media(max-width:860px) { .bal-layout { grid-template-columns:1fr; } }
-        .bal-panel { background:var(--bg2); border:1px solid var(--border); border-radius:8px;
-          padding:20px; }
-        .bal-panel-title { font-family:'Bebas Neue',sans-serif; font-size:1.1rem;
-          letter-spacing:.08em; color:var(--gold); margin:0 0 16px; }
-        .bal-group { margin-bottom:14px; }
-        .bal-preset-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; margin-bottom:6px; }
-        .bal-preset-btn { background:var(--bg3); border:1px solid var(--border);
-          color:var(--text-muted); border-radius:4px; padding:6px 8px; font-size:11px;
-          cursor:pointer; text-align:left; font-family:"'IBM Plex Mono', monospace";
-          transition:all .15s; line-height:1.2; }
-        .bal-preset-btn:hover { border-color:var(--border-mid); color:var(--text); }
-        .bal-preset-btn.active { border-color:var(--gold); color:var(--gold);
-          background:rgba(200,146,42,.08); }
-        .bal-results-header { display:flex; align-items:center; justify-content:space-between;
-          margin-bottom:16px; flex-wrap:wrap; gap:8px; }
-        .bal-stat-row { display:flex; gap:16px; flex-wrap:wrap; margin-bottom:20px; }
-        .bal-stat { background:var(--bg3); border:1px solid var(--border); border-radius:6px;
-          padding:10px 16px; min-width:110px; }
-        .bal-stat-num { font-family:'Bebas Neue',sans-serif; font-size:1.6rem;
-          color:var(--gold); line-height:1; }
-        .bal-stat-lbl { font-size:10px; fontFamily:"'IBM Plex Mono', monospace";
-          color:var(--text-dim); letter-spacing:.08em; text-transform:uppercase; margin-top:2px; }
-        .bal-chart-wrap { margin-bottom:20px; border:1px solid var(--border); border-radius:6px;
-          overflow:hidden; padding:12px 4px 4px; background:var(--bg2); }
-        .bal-chart-legend { display:flex; gap:16px; padding:8px 12px; flex-wrap:wrap; }
-        .bal-chart-legend-item { display:flex; align-items:center; gap:6px;
-          font-size:10px; fontFamily:"'IBM Plex Mono', monospace"; color:var(--text-muted); }
-        .bal-chart-legend-dot { width:10px; height:10px; border-radius:50%; }
-        .bal-table-wrap { overflow-x:auto; }
-        .bal-table { width:100%; border-collapse:collapse; font-size:12px;
-          fontFamily:"'IBM Plex Mono', monospace"; }
-        .bal-table th { background:var(--bg3); color:var(--text-muted);
-          padding:7px 10px; text-align:right; font-weight:600; letter-spacing:.05em;
-          font-size:10px; border-bottom:1px solid var(--border); white-space:nowrap; }
-        .bal-table th:first-child { text-align:left; }
-        .bal-table td { padding:6px 10px; text-align:right; border-bottom:1px solid var(--border);
-          color:var(--text); white-space:nowrap; }
-        .bal-table td:first-child { text-align:left; font-weight:600; color:var(--text-muted); }
-        .bal-table tr:last-child td { border-bottom:none; }
-        .bal-table tr.zero-row td { background:rgba(200,146,42,.07); }
-        .bal-table tr.zero-row td:first-child { color:var(--gold); }
-        .bal-table tr.subsonic td { color:rgba(239,68,68,.75); }
-        .bal-table td.pos { color:#16a34a; }
-        .bal-table td.neg { color:#ef4444; }
-        .bal-table td.warn { color:#f59e0b; }
-        .bal-divider { border:none; border-top:1px solid var(--border); margin:20px 0; }
-        .bal-note { background:rgba(200,146,42,.06); border:1px solid rgba(200,146,42,.2);
-          border-radius:6px; padding:14px 16px; font-size:12px; color:var(--text-muted);
-          line-height:1.6; }
-        .bal-tabs { display:flex; gap:4px; }
-        .bal-tab { background:var(--bg3); border:1px solid var(--border); color:var(--text-muted);
-          border-radius:4px; padding:4px 12px; font-size:11px; cursor:pointer;
-          font-family:"'IBM Plex Mono', monospace"; transition:all .15s; }
-        .bal-tab.active { background:var(--gold); border-color:var(--gold); color:#000;
-          font-weight:700; }
-      `}</style>
-
-      {/* Hero */}
-      <div className="bal-hero">
-        <div className="container">
-          <div className="bal-tag">TOOLS</div>
-          <h1>Ballistics Calculator</h1>
-          <p>G1 external ballistics engine — drop tables, wind drift, and scope adjustments for any cartridge out to 1,000 yards. Data computed via numerical integration of the G1 drag function.</p>
+  const inp = {width:'100%',background:'var(--bg3)',border:'1px solid var(--border)',color:'var(--text)',borderRadius:4,padding:'6px 10px',fontSize:13,fontFamily:"'IBM Plex Mono', monospace"}
+  const sel = {...inp, cursor:'pointer'}
+  const lbl = {display:'block',fontSize:11,letterSpacing:'0.08em',fontFamily:"'IBM Plex Mono', monospace",color:'var(--text-muted)',marginBottom:4,textTransform:'uppercase'}
+  const triplet = (vals) => (
+    <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8,marginBottom:14}}>
+      {vals.map(f=>(
+        <div key={f.l}>
+          <label style={lbl}>{f.l}</label>
+          <input style={inp} type="number" value={f.v} min={f.min} max={f.max} step={f.s||1}
+            onChange={e=>f.set(e.target.value)}/>
         </div>
+      ))}
+    </div>
+  )
+
+  const stat500A = (dataA.find(d=>d.range===500)||dataA[dataA.length-1])
+  const stat500B = dataB && (dataB.find(d=>d.range===500)||dataB[dataB.length-1])
+
+  return (<>
+    <style>{`
+      .bal-hero{background:var(--bg2);border-bottom:1px solid var(--border);padding:32px 0 28px}
+      .bal-hero h1{font-family:'Bebas Neue',sans-serif;font-size:clamp(2.4rem,5vw,3.8rem);letter-spacing:.05em;color:var(--text);margin:0 0 6px}
+      .bal-hero p{color:var(--text-muted);font-size:14px;margin:0;max-width:680px}
+      .bal-tag{display:inline-block;padding:2px 10px;border-radius:3px;background:rgba(200,146,42,.13);color:var(--gold);font-size:10px;letter-spacing:.1em;margin-bottom:12px;font-family:'IBM Plex Mono',monospace}
+      .bal-layout{display:grid;grid-template-columns:290px 1fr;gap:24px;align-items:start;padding:32px 0 48px}
+      @media(max-width:860px){.bal-layout{grid-template-columns:1fr}}
+      .bal-panel{background:var(--bg2);border:1px solid var(--border);border-radius:8px;padding:20px}
+      .bal-panel-title{font-family:'Bebas Neue',sans-serif;font-size:1.05rem;letter-spacing:.08em;color:var(--gold);margin:0 0 14px}
+      .bal-group{margin-bottom:12px}
+      .bal-compare-toggle{display:flex;align-items:center;justify-content:center;gap:8px;padding:8px 14px;border-radius:6px;border:1px solid var(--border);background:var(--bg3);color:var(--text-muted);cursor:pointer;font-size:11px;font-family:'IBM Plex Mono',monospace;letter-spacing:.06em;transition:all .15s;width:100%;margin-bottom:14px}
+      .bal-compare-toggle.active{border-color:#3b82f6;color:#60a5fa;background:rgba(59,130,246,.08)}
+      .bal-load-div{display:flex;align-items:center;gap:8px;margin:12px 0}
+      .bal-load-div::before,.bal-load-div::after{content:'';flex:1;border-top:1px solid var(--border)}
+      .bal-load-lbl{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text-dim);letter-spacing:.08em;white-space:nowrap}
+      .bal-compare-note{background:rgba(59,130,246,.07);border:1px solid rgba(59,130,246,.25);border-radius:5px;padding:10px 12px;font-size:11px;font-family:'IBM Plex Mono',monospace;color:#93c5fd;margin-top:8px;line-height:1.5}
+      .bal-stat-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:16px}
+      .bal-stat{background:var(--bg3);border:1px solid var(--border);border-radius:6px;padding:10px 14px;min-width:95px}
+      .bal-stat-num{font-family:'Bebas Neue',sans-serif;font-size:1.5rem;color:var(--gold);line-height:1}
+      .bal-stat-num.b{color:#60a5fa}
+      .bal-stat-lbl{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text-dim);letter-spacing:.07em;text-transform:uppercase;margin-top:2px}
+      .bal-chart-wrap{margin-bottom:16px;border:1px solid var(--border);border-radius:6px;overflow:hidden;padding:10px 4px 4px;background:var(--bg2)}
+      .bal-chart-leg{display:flex;gap:14px;padding:8px 12px;flex-wrap:wrap}
+      .bal-chart-leg-item{display:flex;align-items:center;gap:6px;font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--text-muted)}
+      .bal-chart-leg-sw{width:16px;height:3px;border-radius:1px}
+      .bal-tw{overflow-x:auto}
+      .bal-t{width:100%;border-collapse:collapse;font-size:11.5px;font-family:'IBM Plex Mono',monospace}
+      .bal-t th{background:var(--bg3);color:var(--text-muted);padding:6px 8px;text-align:right;font-weight:600;letter-spacing:.04em;font-size:10px;border-bottom:1px solid var(--border);white-space:nowrap}
+      .bal-t th:first-child{text-align:left}
+      .bal-t td{padding:5px 8px;text-align:right;border-bottom:1px solid var(--border);color:var(--text);white-space:nowrap}
+      .bal-t td:first-child{text-align:left;font-weight:600;color:var(--text-muted)}
+      .bal-t tr:last-child td{border-bottom:none}
+      .bal-t tr.zr td{background:rgba(200,146,42,.07)}
+      .bal-t tr.zr td:first-child{color:var(--gold)}
+      .bal-t tr.sub td{color:rgba(239,68,68,.75)}
+      .bal-t td.pos{color:#16a34a}
+      .bal-t td.neg{color:#ef4444}
+      .bal-t td.warn{color:#f59e0b}
+      .bal-t td.b{color:#60a5fa}
+      .bal-t td.cb{background:rgba(59,130,246,.04)}
+      .bal-t td.dp{color:#4ade80;font-size:10px}
+      .bal-t td.dn{color:#f87171;font-size:10px}
+      .bal-div{border:none;border-top:1px solid var(--border);margin:14px 0}
+      .bal-note{background:rgba(200,146,42,.06);border:1px solid rgba(200,146,42,.2);border-radius:6px;padding:12px 14px;font-size:12px;color:var(--text-muted);line-height:1.6}
+    `}</style>
+
+    {/* Hero */}
+    <div className="bal-hero">
+      <div className="container">
+        <div className="bal-tag">TOOLS</div>
+        <h1>Ballistics Calculator</h1>
+        <p>G1 external ballistics engine — 38 caliber presets from .17 HMR to .338 Lapua including the full PRC family. Drop tables, wind drift, MOA/MRAD corrections, and trajectory charts to 1,000 yards. Compare any two loads head-to-head.</p>
       </div>
+    </div>
 
-      <div className="dr-page">
-        <div className="container">
-          <div className="bal-layout">
-            {/* ── Input Panel ── */}
-            <div>
-              <div className="bal-panel">
-                <div className="bal-panel-title">Cartridge</div>
+    <div className="dr-page"><div className="container"><div className="bal-layout">
 
-                {cats.map(cat => (
-                  <div key={cat} className="bal-group">
-                    <label style={labelStyle}>{cat}</label>
-                    <div className="bal-preset-grid">
-                      {PRESETS.filter(p => p.cat === cat).map(p => (
-                        <button key={p.id}
-                          className={'bal-preset-btn' + (presetId === p.id ? ' active' : '')}
-                          onClick={() => applyPreset(p.id)}>
-                          {p.name}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                ))}
+      {/* ── Input Panel ── */}
+      <div><div className="bal-panel">
 
-                <hr className="bal-divider" />
-                <div className="bal-panel-title">Bullet Data</div>
+        <button className={'bal-compare-toggle'+(compareMode?' active':'')} onClick={()=>setCompareMode(v=>!v)}>
+          {compareMode ? '✕ EXIT COMPARE MODE' : '⚖ COMPARE TWO LOADS'}
+        </button>
 
-                <div className="bal-group">
-                  <label style={labelStyle}>Muzzle Velocity (fps)</label>
-                  <input style={inputStyle} type="number" value={mv} min={200} max={5000}
-                    onChange={e => { setPresetId('custom'); setMv(+e.target.value) }} />
-                </div>
-                <div className="bal-group">
-                  <label style={labelStyle}>G1 Ballistic Coefficient</label>
-                  <input style={inputStyle} type="number" value={bc} min={0.05} max={1.2} step={0.001}
-                    onChange={e => { setPresetId('custom'); setBc(+e.target.value) }} />
-                </div>
-                <div className="bal-group">
-                  <label style={labelStyle}>Bullet Weight (grains)</label>
-                  <input style={inputStyle} type="number" value={wt} min={20} max={750}
-                    onChange={e => { setPresetId('custom'); setWt(+e.target.value) }} />
-                </div>
+        {compareMode&&<div className="bal-load-div"><span className="bal-load-lbl">LOAD A — GOLD</span></div>}
+        <LoadSelector value={pA} label={compareMode?'Load A':'Cartridge'} color={compareMode?'var(--gold)':null}
+          onChange={id=>{setPA(id);applyPreset(id,setMvA,setBcA,setWtA)}}/>
+        {triplet([
+          {l:'MV (fps)',v:mvA,set:v=>{setPA('custom');setMvA(+v)},min:100,max:5000},
+          {l:'G1 BC',  v:bcA,set:v=>{setPA('custom');setBcA(+v)},min:0.05,max:1.2,s:0.001},
+          {l:'Wt (gr)',v:wtA,set:v=>{setPA('custom');setWtA(+v)},min:10,max:750},
+        ])}
 
-                <hr className="bal-divider" />
-                <div className="bal-panel-title">Environment</div>
+        {compareMode&&<>
+          <div className="bal-load-div"><span className="bal-load-lbl">LOAD B — BLUE</span></div>
+          <LoadSelector value={pB} label="Load B" color="#3b82f6"
+            onChange={id=>{setPB(id);applyPreset(id,setMvB,setBcB,setWtB)}}/>
+          {triplet([
+            {l:'MV (fps)',v:mvB,set:v=>{setPB('custom');setMvB(+v)},min:100,max:5000},
+            {l:'G1 BC',  v:bcB,set:v=>{setPB('custom');setBcB(+v)},min:0.05,max:1.2,s:0.001},
+            {l:'Wt (gr)',v:wtB,set:v=>{setPB('custom');setWtB(+v)},min:10,max:750},
+          ])}
+          <div className="bal-compare-note">Both loads share zero, scope height, and environment. Δ column = B minus A.</div>
+        </>}
 
-                <div className="bal-group">
-                  <label style={labelStyle}>Altitude (feet MSL)</label>
-                  <input style={inputStyle} type="number" value={alt} min={0} max={15000} step={100}
-                    onChange={e => setAlt(+e.target.value)} />
-                </div>
-                <div className="bal-group">
-                  <label style={labelStyle}>Temperature (°F)</label>
-                  <input style={inputStyle} type="number" value={temp} min={-40} max={120}
-                    onChange={e => setTemp(+e.target.value)} />
-                </div>
-                <div className="bal-group">
-                  <label style={labelStyle}>Crosswind Speed (mph)</label>
-                  <input style={inputStyle} type="number" value={wind} min={0} max={60}
-                    onChange={e => setWind(+e.target.value)} />
-                  <div style={{fontSize:10,color:'var(--text-dim)',marginTop:3,fontFamily:"'IBM Plex Mono', monospace"}}>
-                    Full value 90° crosswind. Drift direction depends on wind angle.
-                  </div>
-                </div>
+        <hr className="bal-div"/>
+        <div className="bal-panel-title">Environment</div>
+        {[
+          {l:'Altitude (ft MSL)',v:alt,set:setAlt,min:0,max:15000,s:100},
+          {l:'Temperature (°F)', v:temp,set:setTemp,min:-40,max:120},
+          {l:'Crosswind (mph, 90°)',v:wind,set:setWind,min:0,max:60},
+        ].map(f=>(
+          <div key={f.l} className="bal-group">
+            <label style={lbl}>{f.l}</label>
+            <input style={inp} type="number" value={f.v} min={f.min} max={f.max} step={f.s||1}
+              onChange={e=>f.set(+e.target.value)}/>
+          </div>
+        ))}
 
-                <hr className="bal-divider" />
-                <div className="bal-panel-title">Zero & Optic</div>
+        <hr className="bal-div"/>
+        <div className="bal-panel-title">Zero & Optic</div>
+        <div className="bal-group">
+          <label style={lbl}>Zero Distance</label>
+          <select style={sel} value={zero} onChange={e=>setZero(+e.target.value)}>
+            {[25,50,100,150,200,250,300].map(y=><option key={y} value={y}>{y} yards</option>)}
+          </select>
+        </div>
+        <div className="bal-group">
+          <label style={lbl}>Scope Height (in above bore)</label>
+          <input style={inp} type="number" value={scopeIn} min={0.5} max={4} step={0.1}
+            onChange={e=>setScopeIn(+e.target.value)}/>
+        </div>
+        <div className="bal-group">
+          <label style={lbl}>Max Range</label>
+          <select style={sel} value={maxYds} onChange={e=>setMaxYds(+e.target.value)}>
+            <option value={500}>500 yards</option>
+            <option value={800}>800 yards</option>
+            <option value={1000}>1,000 yards</option>
+          </select>
+        </div>
+      </div></div>
 
-                <div className="bal-group">
-                  <label style={labelStyle}>Zero Distance (yards)</label>
-                  <select style={selectStyle} value={zero} onChange={e => setZero(+e.target.value)}>
-                    {[25,50,100,150,200,250,300].map(y => (
-                      <option key={y} value={y}>{y} yards</option>
-                    ))}
-                  </select>
+      {/* ── Results Panel ── */}
+      <div>
+        {dataA.length > 0 ? (<>
+
+          {/* Stats */}
+          <div className="bal-stat-row">
+            {compareMode ? (<>
+              {[
+                {l:'A — MV',   v:`${mvA} fps`,                             cls:''},
+                {l:'B — MV',   v:`${mvB} fps`,                             cls:'b'},
+                {l:'A 500yd',  v:`${stat500A?.energy?.toLocaleString() ?? '—'} ft-lb`, cls:''},
+                {l:'B 500yd',  v:`${stat500B?.energy?.toLocaleString() ?? '—'} ft-lb`, cls:'b'},
+              ].map(s=>(
+                <div className="bal-stat" key={s.l}>
+                  <div className={`bal-stat-num ${s.cls}`}>{s.v}</div>
+                  <div className="bal-stat-lbl">{s.l}</div>
                 </div>
-                <div className="bal-group">
-                  <label style={labelStyle}>Scope Height (inches above bore)</label>
-                  <input style={inputStyle} type="number" value={scopeIn} min={0.5} max={4} step={0.1}
-                    onChange={e => setScopeIn(+e.target.value)} />
+              ))}
+            </>) : (<>
+              {[
+                {l:'MV',        v:`${mvA} fps`},
+                {l:'G1 BC',     v:bcA.toFixed(3)},
+                {l:'Zero',      v:`${zero} yd`},
+                {l:'500yd E',   v:`${stat500A?.energy?.toLocaleString() ?? '—'} ft-lb`},
+              ].map(s=>(
+                <div className="bal-stat" key={s.l}>
+                  <div className="bal-stat-num">{s.v}</div>
+                  <div className="bal-stat-lbl">{s.l}</div>
                 </div>
-                <div className="bal-group">
-                  <label style={labelStyle}>Max Range</label>
-                  <select style={selectStyle} value={maxYds} onChange={e => setMaxYds(+e.target.value)}>
-                    <option value={500}>500 yards</option>
-                    <option value={800}>800 yards</option>
-                    <option value={1000}>1,000 yards</option>
-                  </select>
-                </div>
+              ))}
+            </>)}
+          </div>
+
+          {/* Chart */}
+          <div className="bal-chart-wrap">
+            <TrajectoryChart dataA={dataA} dataB={dataB} maxYds={maxYds} zeroYds={zero} labelA={labelA} labelB={labelB}/>
+            <div className="bal-chart-leg">
+              <div className="bal-chart-leg-item">
+                <div className="bal-chart-leg-sw" style={{background:'var(--gold-light)'}}/>
+                {compareMode ? `A: ${labelA}` : 'Bullet path (±LOS)'}
               </div>
-            </div>
-
-            {/* ── Results Panel ── */}
-            <div>
-              {data.length > 0 ? (
-                <>
-                  {/* Summary stats */}
-                  <div className="bal-stat-row">
-                    {[
-                      { label:'MV', val:`${mv} fps`, unit:'' },
-                      { label:'G1 BC', val:bc.toFixed(3), unit:'' },
-                      { label:'Zero', val:`${zero} yd`, unit:'' },
-                      { label:'500yd Energy', val:(data.find(d=>d.range===500)||data[data.length-1]).energy.toLocaleString(), unit:'ft-lb' },
-                    ].map(s => (
-                      <div className="bal-stat" key={s.label}>
-                        <div className="bal-stat-num">{s.val}</div>
-                        <div className="bal-stat-lbl">{s.label}{s.unit ? ` · ${s.unit}` : ''}</div>
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Trajectory chart */}
-                  <div className="bal-chart-wrap">
-                    <TrajectoryChart data={data} maxYds={maxYds} zeroYds={zero} />
-                    <div className="bal-chart-legend">
-                      <div className="bal-chart-legend-item">
-                        <div className="bal-chart-legend-dot" style={{background:'var(--gold-light)'}}/>
-                        Bullet path (relative to line of sight)
-                      </div>
-                      <div className="bal-chart-legend-item">
-                        <div className="bal-chart-legend-dot" style={{background:'var(--gold)',borderRadius:0,height:2,width:16}}/>
-                        Zero / line of sight
-                      </div>
-                      {data.some(d => d.subsonic) && (
-                        <div className="bal-chart-legend-item">
-                          <div className="bal-chart-legend-dot" style={{background:'rgba(239,68,68,.4)'}}/>
-                          Subsonic zone (&lt;1,100 fps)
-                        </div>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Data table */}
-                  <div className="bal-table-wrap">
-                    <table className="bal-table">
-                      <thead>
-                        <tr>
-                          <th>Range</th>
-                          <th>Velocity</th>
-                          <th>Energy</th>
-                          <th>Drop↓</th>
-                          <th>Bullet Path</th>
-                          <th>Wind {wind}mph</th>
-                          <th>↑MOA</th>
-                          <th>↑MRAD</th>
-                          <th>TOF</th>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {data.map(row => {
-                          const isZero = row.range === zero
-                          const isSub  = row.subsonic && row.range > 0
-                          const bhCls  = row.bh > 0.1 ? 'pos' : row.bh < -0.1 ? 'neg' : ''
-                          const moaCls = row.moa > 0.5 ? 'neg' : ''
-                          return (
-                            <tr key={row.range}
-                              className={(isZero ? 'zero-row ' : '') + (isSub ? 'subsonic' : '')}>
-                              <td>{row.range} yd{isZero ? ' ★' : ''}</td>
-                              <td>{row.v.toLocaleString()} fps</td>
-                              <td>{row.energy.toLocaleString()} ft-lb</td>
-                              <td className="neg">{row.dropBore.toFixed(1)}&quot;</td>
-                              <td className={bhCls}>{row.bh > 0 ? '+' : ''}{row.bh.toFixed(1)}&quot;</td>
-                              <td className="warn">{row.range > 0 ? `${row.drift.toFixed(1)}"` : '—'}</td>
-                              <td className={moaCls}>{row.range > 0 ? `${row.moa.toFixed(1)}` : '—'}</td>
-                              <td className={moaCls}>{row.range > 0 ? `${row.mrad.toFixed(2)}` : '—'}</td>
-                              <td style={{color:'var(--text-dim)'}}>{row.range > 0 ? `${row.tof.toFixed(3)}s` : '—'}</td>
-                            </tr>
-                          )
-                        })}
-                      </tbody>
-                    </table>
-                  </div>
-
-                  <hr className="bal-divider" />
-                  <div className="bal-note">
-                    <strong style={{color:'var(--gold)',fontFamily:"'IBM Plex Mono', monospace"}}>READING THIS TABLE</strong><br/>
-                    <strong>Drop ↓</strong> — inches below bore line (absolute, ignoring scope).&nbsp;
-                    <strong>Bullet Path</strong> — inches above (+) or below (−) your line of sight; zero at your selected zero range.&nbsp;
-                    <strong>↑MOA / ↑MRAD</strong> — scope clicks needed to hit at that range; positive = dial up.&nbsp;
-                    <strong>Wind {wind}mph</strong> — lateral drift for a full-value 90° crosswind; halve for 45° wind.&nbsp;
-                    Drag model: G1 (standard). For VLD/hybrid projectiles use G7 BC × 2.0 as an approximate G1 conversion.
-                  </div>
-                </>
-              ) : (
-                <div className="dr-card" style={{textAlign:'center',padding:'48px 24px',color:'var(--text-muted)'}}>
-                  Enter valid bullet data to compute trajectory.
-                </div>
-              )}
+              {dataB&&<div className="bal-chart-leg-item">
+                <div className="bal-chart-leg-sw" style={{background:'#60a5fa'}}/>
+                B: {labelB}
+              </div>}
+              {dataA.some(d=>d.subsonic)&&<div className="bal-chart-leg-item">
+                <div className="bal-chart-leg-sw" style={{background:'rgba(239,68,68,.4)'}}/>
+                Subsonic (&lt;1,100 fps)
+              </div>}
             </div>
           </div>
-        </div>
+
+          {/* Table */}
+          <div className="bal-tw"><table className="bal-t">
+            <thead><tr>
+              <th>Range</th>
+              <th>{compareMode?'A Vel':'Velocity'}</th>
+              {compareMode&&<th className="cb">B Vel</th>}
+              <th>{compareMode?'A Energy':'Energy'}</th>
+              {compareMode&&<th className="cb">B Energy</th>}
+              <th>{compareMode?'A Path':'Bullet Path'}</th>
+              {compareMode&&<th className="cb">B Path</th>}
+              {compareMode&&<th>Δ Path</th>}
+              <th>Wind {wind}mph</th>
+              <th>↑MOA</th>
+              {compareMode&&<th className="cb">B MOA</th>}
+              <th>↑MRAD</th>
+              <th>TOF</th>
+            </tr></thead>
+            <tbody>
+              {dataA.map((rA,i)=>{
+                const rB = dataB?.[i]
+                const isZ = rA.range===zero, isSub=rA.subsonic&&rA.range>0
+                const bhC = rA.bh>0.1?'pos':rA.bh<-0.1?'neg':''
+                const delta = rB ? rB.bh-rA.bh : null
+                return (
+                  <tr key={rA.range} className={(isZ?'zr ':'')+(isSub?'sub':'')}>
+                    <td>{rA.range} yd{isZ?' ★':''}</td>
+                    <td>{rA.v.toLocaleString()} fps</td>
+                    {compareMode&&<td className="cb b">{rB?`${rB.v.toLocaleString()} fps`:'—'}</td>}
+                    <td>{rA.energy.toLocaleString()}</td>
+                    {compareMode&&<td className="cb b">{rB?rB.energy.toLocaleString():'—'}</td>}
+                    <td className={bhC}>{rA.range>0?`${rA.bh>0?'+':''}${rA.bh.toFixed(1)}"`:'—'}</td>
+                    {compareMode&&<td className="cb b">{rB&&rB.range>0?`${rB.bh>0?'+':''}${rB.bh.toFixed(1)}"`:'—'}</td>}
+                    {compareMode&&<td className={delta!==null?(delta>0.2?'dp':delta<-0.2?'dn':''):''}>{delta!==null&&rA.range>0?`${delta>0?'+':''}${delta.toFixed(1)}"`:'—'}</td>}
+                    <td className="warn">{rA.range>0?`${rA.drift.toFixed(1)}"`: '—'}</td>
+                    <td className={rA.moa>0.5?'neg':''}>{rA.range>0?rA.moa.toFixed(1):'—'}</td>
+                    {compareMode&&<td className="cb b">{rB&&rB.range>0?rB.moa.toFixed(1):'—'}</td>}
+                    <td>{rA.range>0?rA.mrad.toFixed(2):'—'}</td>
+                    <td style={{color:'var(--text-dim)'}}>{rA.range>0?`${rA.tof.toFixed(3)}s`:'—'}</td>
+                  </tr>
+                )
+              })}
+            </tbody>
+          </table></div>
+
+          <hr className="bal-div"/>
+          <div className="bal-note">
+            <strong style={{color:'var(--gold)',fontFamily:"'IBM Plex Mono', monospace"}}>READING THIS TABLE</strong><br/>
+            <strong>Bullet Path</strong> — inches above (+) or below (−) line of sight; zeroed at selected distance.&nbsp;
+            <strong>↑MOA / ↑MRAD</strong> — scope correction to hit at that range; positive = dial up.&nbsp;
+            <strong>Wind {wind}mph</strong> — full-value 90° crosswind drift; halve for 45°.&nbsp;
+            {compareMode&&<><strong>Δ Path</strong> — positive means Load B hits higher than Load A.&nbsp;</>}
+            Model: G1 drag function via 0.5ft numerical integration. For VLD/hybrid projectiles use G7 BC × 2.0 as approximate G1.
+          </div>
+
+        </>) : (
+          <div className="dr-card" style={{textAlign:'center',padding:'48px 24px',color:'var(--text-muted)'}}>
+            Enter valid bullet data to compute trajectory.
+          </div>
+        )}
       </div>
-    </>
-  )
+
+    </div></div></div>
+  </>)
 }
