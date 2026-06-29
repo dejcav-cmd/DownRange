@@ -2,11 +2,19 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 34
+Missing: 42
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/29636a3ef3b6cfb2f0aa3bb9c9d7ac7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/47828c26a40d369fa7ab189f4e06846
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5a7c31ec3342719a5f02c81c3cfdcdf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4d17974e56e429e5c4e450cf0828d37
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44ee84ba47092ef926bd42f451a4723
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c0c29fc0c8af7e24abf8978c4e275d1
+  skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85320e9a2943ffaa96aa9cc2f4b9ce5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5034876914506fa5c975da9e6c767cf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bb3edf0ec201e31384b5d2469b483a1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f8a4042b49f6613445a6b1b2164ec73
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/IMG_0820.jpg
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/89e5fb8bcfa2d86a5488116f7d2282f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7636e5be0998307470db7614105bf3d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0378b6d91a4034004eebbc98b1e6937
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -37,8 +45,8 @@ Missing: 34
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 4
+  → patched final 11
 
-Stats: uploaded=3 fallback=1 failed=2
+Stats: uploaded=10 fallback=1 failed=2
 
-=== FINAL: total=3223 missing_images=30 reddit=0 ===
+=== FINAL: total=3234 missing_images=31 reddit=0 ===
