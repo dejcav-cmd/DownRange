@@ -159,6 +159,18 @@
     {
       "path": "/api/cron/bible-update",
       "schedule": "0 7 * * 0"
+    },
+    {
+      "path": "/api/cron/fix-placeholder-images",
+      "schedule": "0 * * * *"
+    },
+    {
+      "path": "/api/admin/cron-health",
+      "schedule": "*/30 * * * *"
+    },
+    {
+      "path": "/api/cron/carry-insurance",
+      "schedule": "0 6 * * 1"
     }
   ],
   "headers": [

@@ -6,7 +6,7 @@ import { getAllRuns, getAlertConfig, setAlertConfig, reportCronRun } from '@/lib
 export const ALL_JOBS = [
   { id:'news',             path:'/api/agent?feed=news',             schedule:'*/15 * * * *',  label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 15 min' },
   { id:'market',           path:'/api/agent?feed=market',           schedule:'*/30 * * * *',  label:'Market Feed',             group:'Content',  icon:'📊', critical:false, desc:'AmmoSeek + pricing data every 30 min' },
-  { id:'releases',         path:'/api/agent?feed=releases',         schedule:'0 * * * *',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
+  { id:'releases',         path:'/api/agent?feed=releases',         schedule:'45 */6 * * *',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
   { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */2 * * *',   label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },
   { id:'video',            path:'/api/agent?feed=video',            schedule:'0 */4 * * *',   label:'Video Feed',              group:'Content',  icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
   { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * 0',     label:'State Laws (Weekly)',     group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → 50-state law profiles updated every Sunday 8am UTC' },
@@ -35,7 +35,7 @@ export const ALL_JOBS = [
   { id:'sitemap',          path:'/api/cron/sitemap',                schedule:'0 2 * * *',         label:'Sitemap Generator',        group:'System',  icon:'🗺', critical:false, desc:'Regenerates sitemap.xml daily at 2am UTC' },
   { id:'giveaways',        path:'/api/cron/giveaways',              schedule:'0 14 * * *',        label:'Giveaways Feed',           group:'Content', icon:'🎁', critical:false, desc:'Pulls active giveaways daily at 2pm UTC' },
   { id:'blog-writer',      path:'/api/cron/blog-writer',            schedule:'0 18 * * 5',        label:'Blog Writer (Weekly)',     group:'Content', icon:'✏', critical:false, desc:'AI blog post writer every Friday 6pm UTC' },
-  { id:'gun-deals',        path:'/api/cron/gun-deals',              schedule:'0 */4 * * *',       label:'Gun Deals Feed',           group:'Content', icon:'💰', critical:false, desc:'Pulls gun.deals listings every 4 hrs' },
+  { id:'gun-deals',        path:'/api/cron/gun-deals',              schedule:'5 * * * *',       label:'Gun Deals Feed',           group:'Content', icon:'💰', critical:false, desc:'Pulls gun.deals listings every 4 hrs' },
   { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'0 8,20 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
   { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'0 9,21 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
   { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 9 * * 1',

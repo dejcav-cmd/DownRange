@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
+import { reportCronRun } from '@/lib/cronReporter'
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
@@ -244,8 +245,14 @@ export async function GET(req) {
       }
     }
 
-    return NextResponse.json({ ok: true, ms: Date.now() - t0, ...stats })
+    const ms = Date.now() - t0
+    await reportCronRun('gun-deals', {
+      status: 'success', ms,
+      details: `fetched:${stats.fetched} added:${stats.added} skipped:${stats.skipped} healed:${stats.healed} imaged:${stats.imaged}`,
+    }).catch(() => {})
+    return NextResponse.json({ ok: true, ms, ...stats })
   } catch (err) {
+    await reportCronRun('gun-deals', { status: 'failed', ms: Date.now() - t0, error: err.message }).catch(() => {})
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
   }
 }

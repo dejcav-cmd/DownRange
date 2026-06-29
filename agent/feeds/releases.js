@@ -82,7 +82,7 @@ async function fetchGoogleNews(query) {
   }
 }
 
-async function fetchAllGoogleNews() {
+async function fetchAllGoogleNews(deadlineMs = 0) {
   const queries = [
     // Generic release searches
     'new firearm release 2026',
@@ -142,6 +142,11 @@ async function fetchAllGoogleNews() {
   const seen = new Set()
 
   for (const query of queries) {
+    // Stop fetching if we're approaching the Vercel function deadline
+    if (deadlineMs && Date.now() > deadlineMs) {
+      console.log(`[RELEASES v4] Deadline reached, stopping Google News at ${results.length} items`)
+      break
+    }
     const items = await fetchGoogleNews(query)
     for (const item of items) {
       if (!item.link || seen.has(item.link)) continue
@@ -341,6 +346,8 @@ async function saveRelease(extracted, sourceUrl, imageUrl, pubDate) {
 export async function runReleasesFeed() {
   console.log('[RELEASES v4] Starting...')
   const t0 = Date.now()
+  // Stop fetching new RSS items 60s before Vercel's 300s maxDuration limit
+  const DEADLINE = t0 + 240_000
   let done = 0, failed = 0, skipped = 0
   const saved   = []  // titles of saved releases
   const errors  = []  // error messages
@@ -351,8 +358,8 @@ export async function runReleasesFeed() {
   const fusionItems = await scrapeFusionFirearms()
   console.log(`[RELEASES v4] Fusion: ${fusionItems.length} candidates`)
 
-  // Source 2: Google News RSS (no CloudFlare blocking)
-  const googleItems = await fetchAllGoogleNews()
+  // Source 2: Google News RSS — pass deadline so we don't timeout
+  const googleItems = await fetchAllGoogleNews(DEADLINE)
 
   // Combine: Fusion first (priority), then Google News
   const allItems = [...fusionItems, ...googleItems]
