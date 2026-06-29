@@ -2,7 +2,11 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 30
+Missing: 34
+  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/IMG_0820.jpg
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/89e5fb8bcfa2d86a5488116f7d2282f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7636e5be0998307470db7614105bf3d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0378b6d91a4034004eebbc98b1e6937
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -33,7 +37,8 @@ Missing: 30
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 4
 
-Stats: uploaded=0 fallback=0 failed=2
+Stats: uploaded=3 fallback=1 failed=2
 
-=== FINAL: total=3219 missing_images=30 reddit=0 ===
+=== FINAL: total=3223 missing_images=30 reddit=0 ===
