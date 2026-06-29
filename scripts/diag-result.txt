@@ -2,26 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 51
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c5984814923e47ee3136ed97279bbed
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e7df7ed2eec18a7bfabafe9da2bfe88
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b520423e8ec2484580cb10eee4cb12e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d9ae542d4415d306e561f70177add5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/08ac498b5a230b1271eb5dc88645def
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0776a8ee7afd09acdf023f9917775fe
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e9b7aa7d408d70f0322d7be55700194
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4421201cc57761e9ed99779e8d4a161
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/38b0ca20d613b4990bc2143542fe983
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f33bb1670331e4090a048cc3150f02
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5467e00eaad3f428a626fb7d5f5594c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f9bdd7b7fff144265b5373f1ca2190c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/734a59b7cecf93eac67528b3904039e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1f2b3965cc064055483fec761ae673a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3ae71b98989b3c9a82ec2de62018f41
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a17b2fa50c3b99244c0c0be474e8fc4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/591f5a0067bd1a147c69566599143d8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0817b6bd019abbd7cc8bb379c313bee
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a3a639181e41cdcec329e2c50b2590
+Missing: 37
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b638eb0026dfb494ecb9325a7250c2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8660fcedcb09857c4b384c64633d2db
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/900608b7783d6c2c30cb39f88e8446c
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Keltec-pr57-deal.j
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/Speer-amo-update.j
   skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/IMG_0820.jpg
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -54,8 +40,8 @@ Missing: 51
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 20
+  → patched final 6
 
-Stats: uploaded=19 fallback=1 failed=2
+Stats: uploaded=3 fallback=3 failed=2
 
-=== FINAL: total=3253 missing_images=31 reddit=0 ===
+=== FINAL: total=3258 missing_images=31 reddit=0 ===
