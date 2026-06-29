@@ -153,3 +153,9 @@ total   = q('count(*[_type=="gunDeal"])')
 missing = q('count(*[_type=="gunDeal" && (!defined(imageUrl) || imageUrl == null || imageUrl == "")])')
 reddit  = q('count(*[_type=="gunDeal" && (source == "GunDeals Reddit" || string::startsWith(externalUrl, "https://www.reddit.com"))])')
 log(f"\n=== FINAL: total={total} missing_images={missing} reddit={reddit} ===")
+
+# ── COMMIT SIGNAL ─────────────────────────────────────────────────────────────
+# Write a machine-readable line so the GH Actions workflow knows whether
+# to commit this file. "FIXED: 0" means nothing changed → no commit.
+fixed_total = stats['uploaded'] + stats['fallback']
+log(f"\nFIXED: {fixed_total}")

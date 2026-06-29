@@ -11,13 +11,30 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_PAT }}
+
       - name: Fix missing images + delete Reddit docs
         env:
           SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: python3 scripts/scheduled_image_fix.py
-      - name: Commit result
+
+      # Only commit if the script actually fixed something (fixed_count > 0)
+      # The script writes "FIXED: N" to diag-result.txt when N > 0 images were patched.
+      # This prevents the 30-min commit spam when there is nothing to fix.
+      - name: Commit if images were fixed
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
-          git add -f scripts/diag-result.txt
-          git diff --staged --quiet || (git commit -m "auto-fix deal images [skip ci]" && git pull --rebase && git push) || true
+
+          # Check if anything was actually fixed (non-zero fix count in output)
+          if grep -qE "^FIXED: [1-9]" scripts/diag-result.txt 2>/dev/null; then
+            FIXED_COUNT=$(grep -oP "(?<=^FIXED: )\d+" scripts/diag-result.txt | head -1)
+            git add -f scripts/diag-result.txt
+            git diff --staged --quiet || (
+              git commit -m "fix: deal images — ${FIXED_COUNT} images patched [skip ci]" \
+              && git pull --rebase \
+              && git push
+            ) || true
+            echo "✓ Committed: ${FIXED_COUNT} images fixed"
+          else
+            echo "✓ No images needed fixing — skipping commit"
+          fi

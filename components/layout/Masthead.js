@@ -39,6 +39,7 @@ const NAV = [
       { label: '💰 Value Estimator',   href: '/value-estimator',              desc: 'What is your gun worth?' },
       { label: '🔫 Holsters',          href: '/holsters/glock-19',            desc: 'IWB/OWB by model' },
       { label: '⚙️ NFA Tracker',       href: '/nfa-tracker',                  desc: 'Form 4 wait times' },
+      { label: '🎯 Ballistics Calc',    href: '/ballistics',                   desc: 'Drop tables, wind drift, MOA/MRAD to 1,000 yards' },
     ]
   },
   {
