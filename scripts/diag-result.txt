@@ -2,53 +2,26 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 76
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a90d603d654a57a53b9f42a4c7bc6f9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3bc6fb07d424e7ec06acdf0b1343c60
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9743c7dd0d6f7d75488650e6a01d8b1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/81deb9e216783d577a83a2972cf4ab8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/037d36d070cfa1eb421861a2f46f2d4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dfe0c56bc40446c568588fb9b53d1a4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/800ad5b158a07956140ae4ac7271261
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4f84bcd21c9a8a2c310ec321f325225
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4229b12286c5dc543de24e4030766df
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a9f0ebb3d271d7a980a8df1fc5f641
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/325f78e0ca25cfe724f493ec0385ca4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f18f06d440797b1be1a72f730a002f
+Missing: 49
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3e45f1cf5b519b9712badca3b63693
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9e4fbb7da8749a47f973140d627ff44
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/434c296e900d6c57de5a1255a15c4f7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/48e3758af3a87e4f6640f8a5d647dc3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/211e3ae5557a1d5bf901c72def0de02
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/041c9046b7ec0c2358de2cacfbe57ea
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6ee6cc19058ad3bf5b89c55d458ff2e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/475597648a7ac90225ffe3cbb19a7eb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/434c296e900d6c57de5a1255a15c4f7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2423bef1a6ffaea790f6ef049c33be0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a2498eaf7b0136fc2697df86f3c1f2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e8131aa82e2c34949352198155f2748
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f65a15169df2dca66f68d12f7ed1272
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b7d067a05616bc55b37b07bc86fe3e
+  ~ og: https://media.townhall.com/cdn/hodl/2018/263/f3f188be-8843-4a63-a968-b
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/10268c4860fe127462088f21eba17db
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2abe7ea659d9cc3bf9eb9443f9c3c28
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/809d084e73f29a1b133ac037a92026a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4bd5e50445ae2650de49322198eb111
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b2d04a9e058d9a72c67f9301df0b501
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9812e99f30ddcbd016b4f963120a409
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/906a247db644e107e79c4a9b14df16b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3d34500ae27ca0b96ca267a1961a314
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69490762411404b4e776d917fd7d506
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2c270553a058b0c49f86343a82378a4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/08e2c4b4980be88b09a807ab287c353
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff0a087ed8b3ed2bd2b5f4773aa7fcd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fc74ce5f24f68507b313a0cee45f0e7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9577abcc12358177debfeb122ef229e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c472ed8d42ecdd1ffaa67f1bfe45ab8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/239e2dc1360f5f79440ba89351afe36
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b9f5e3ad50ce973672ceb1e71b3c57
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7790c200c27ccf1f4f6cacd5b619f91
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4371609b9bffa4217ea6e2c8172de20
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f9fbde130aaa51cd31cdcdcd70c70fc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1149c52f66525b6775273add819046f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fc334bf59637227c7fe2112ef18c6d5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/20cefe2609978abd81477cf7a8d678f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1fb4f90f9d420892899f25c92345ceb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/86b02c3960f8bacd8b8de979949f606
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff0b9f87af847e79d86eb42c0516270
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/541e2b707e9458edd42b4213c9a0c9b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c7ad990cb8b67d0fa5555a5b4df684
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/73406c55aa694b629f05a467800214a
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Keltec-pr57-deal.j
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/Speer-amo-update.j
   skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
-  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/06/IMG_0820.jpg
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -79,8 +52,8 @@ Missing: 76
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 44
+  → patched final 17
 
-Stats: uploaded=41 fallback=3 failed=2
+Stats: uploaded=14 fallback=3 failed=2
 
-=== FINAL: total=3300 missing_images=32 reddit=0 ===
+=== FINAL: total=3315 missing_images=32 reddit=0 ===
