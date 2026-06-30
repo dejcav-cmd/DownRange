@@ -15,13 +15,15 @@ function isAuthorized(req) {
 }
 
 // ── Web search using Anthropic web_search tool ────────────────────────────────
+// Uses Haiku — web_search tool works identically across models; Sonnet not needed
+// for factual retrieval tasks. Saves ~$18/mo vs prior Sonnet usage (14 calls/day).
 async function webSearch(query, maxTokens = 1200) {
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5-20251022',
+        model: 'claude-haiku-4-5-20251001',
         max_tokens: maxTokens,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: `Search for: ${query}\n\nReturn a detailed, factual summary of key findings. Include specific features, dates, article titles, and metrics where available.` }],

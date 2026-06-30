@@ -25,7 +25,7 @@ async function getComparison(guns) {
       method:'POST',
       headers:{ 'Content-Type':'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY||'', 'anthropic-version':'2023-06-01' },
       body: JSON.stringify({
-        model:'claude-sonnet-4-5', max_tokens:800,
+        model:'claude-haiku-4-5-20251001', max_tokens:800,
         messages:[{ role:'user', content:`Compare the ${g1.name} vs ${g2.name} for a gun owner. Write 2 short paragraphs: who each gun is best for, and an overall recommendation. Be specific and direct. Max 150 words total.` }]
       })
     })

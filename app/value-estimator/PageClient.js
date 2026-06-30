@@ -42,7 +42,7 @@ export default function ValueEstimator() {
     try {
       const r = await fetch('https://api.anthropic.com/v1/messages', {
         method:'POST', headers:{ 'Content-Type':'application/json', 'x-api-key':'', 'anthropic-version':'2023-06-01' },
-        body:JSON.stringify({ model:'claude-sonnet-4-5', max_tokens:150, messages:[{ role:'user', content:`In 1-2 sentences, what factors most affect the resale value of a ${form.condition} ${form.model}? Be specific about current market.` }] })
+        body:JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:150, messages:[{ role:'user', content:`In 1-2 sentences, what factors most affect the resale value of a ${form.condition} ${form.model}? Be specific about current market.` }] })
       })
       const d = await r.json()
       aiNote = d.content?.[0]?.text
