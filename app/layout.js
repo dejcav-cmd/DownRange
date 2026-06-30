@@ -23,7 +23,7 @@ export const metadata = {
   icons: {
     icon:    [{ url: '/favicon.svg', type: 'image/svg+xml' }],
     shortcut:'/favicon.svg',
-    apple:   '/apple-touch-icon.png',
+    apple:   '/favicon.svg',
   },
   openGraph: {
     type:'website', locale:'en_US', url:'https://downrangeco.com',
@@ -38,7 +38,7 @@ export const metadata = {
     index:true, follow:true,
     googleBot:{ index:true, follow:true, 'max-image-preview':'large', 'max-snippet':-1, 'max-video-preview':-1 },
   },
-  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || '' },
+  verification: { google: process.env.GOOGLE_SITE_VERIFICATION || undefined },
 }
 
 // ── Root schema.org — Organization + SiteLinksSearchBox ─────────────────────

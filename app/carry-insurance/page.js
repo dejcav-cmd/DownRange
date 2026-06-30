@@ -2,7 +2,39 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 export const revalidate = 604800  // Weekly — updated by /api/cron/carry-insurance
 
-export const metadata = { title: 'CCW Insurance Comparison — DownRange', description: 'Compare USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance.', alternates: { canonical: 'https://downrangeco.com/carry-insurance' } }
+export const metadata = {
+  title: 'Best CCW Insurance 2026 — USCCA vs CCW Safe vs US Law Shield | DownRange',
+  description: 'Side-by-side comparison of USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance. Coverage limits, attorney fees, bail bond, and pricing compared.',
+  keywords: 'CCW insurance, USCCA review, CCW Safe review, concealed carry insurance, self-defense insurance, gun owner insurance',
+  alternates: { canonical: 'https://downrangeco.com/carry-insurance' },
+  openGraph: {
+    type: 'website', url: 'https://downrangeco.com/carry-insurance',
+    title: 'Best CCW Insurance 2026 — USCCA vs CCW Safe vs US Law Shield',
+    description: 'Side-by-side comparison of the top 4 concealed carry insurance plans.',
+    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+  },
+  twitter: { card: 'summary_large_image', title: 'Best CCW Insurance 2026 | DownRange', description: 'USCCA vs CCW Safe vs US Law Shield — coverage, cost, and attorney fees compared.' },
+}
+
+const CARRY_SCHEMA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      { '@type': 'Question', name: 'Is USCCA worth it?', acceptedAnswer: { '@type': 'Answer', text: 'USCCA is the most popular concealed carry insurance for most carriers. At $47/month for Elite, it pays attorney fees upfront before trial — unlike most plans that reimburse after. It also includes the best training library in the industry. Worth it if you carry regularly.' } },
+      { '@type': 'Question', name: 'What is the best CCW insurance?', acceptedAnswer: { '@type': 'Answer', text: 'For most carriers, USCCA Elite offers the best balance of coverage and value with upfront attorney payment and training. CCW Safe is preferred by attorneys themselves for its unlimited coverage caps. US Law Shield is the lowest-cost entry point with unlimited civil and criminal defense.' } },
+      { '@type': 'Question', name: 'Does CCW insurance cover criminal defense?', acceptedAnswer: { '@type': 'Answer', text: 'Yes — all major CCW insurance plans cover criminal defense attorney fees for lawful self-defense incidents. USCCA and CCW Safe pay attorney fees upfront; others reimburse after the fact.' } },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: 'CCW Insurance Comparison', item: 'https://downrangeco.com/carry-insurance' },
+    ],
+  },
+]
 
 const PLANS = [
   { name:'USCCA', tier:'Elite', monthly:47, annual:497, coverage:'$2M civil', criminal:'Attorney fees paid upfront', bail:'$100K', training:'Included ($25 value)', verdict:'Best overall — upfront attorney payment is key. No reimbursement delays.', rating:9.4, url:'https://www.uscca.com', pros:['Pays attorney before trial','Best training resources','Established 2003','$2M civil coverage','Bail bond coverage'], cons:['Most expensive','Monthly cost adds up'] },
@@ -16,6 +48,7 @@ const FACTORS = ['Upfront Attorney Payment','Civil Coverage Limit','Criminal Def
 export default function CarryInsurancePage() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(CARRY_SCHEMA) }} />
       <Masthead />
       <div className="page-hero" data-title="INSURANCE">
         <div className="container">

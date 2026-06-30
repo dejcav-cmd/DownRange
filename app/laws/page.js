@@ -7,6 +7,7 @@ import { STATE_SEED } from '../../lib/stateSeed'
 export const metadata = {
   title: '2A Legal Intelligence | DownRange',
   description: 'Second Amendment law command center. Your state\'s gun laws, federal bills in Congress, ATF rules, and active SCOTUS cases — all in one place.',
+  keywords: 'gun laws by state, Second Amendment law, ATF regulations, concealed carry laws, state firearms laws, gun control legislation 2026',
   alternates: { canonical: 'https://downrangeco.com/laws' },
   openGraph: {
     type: 'website', url: 'https://downrangeco.com/laws',
@@ -36,6 +37,29 @@ function getTier(p) {
   return 'mid'
 }
 
+
+const LAWS_SCHEMA = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Dataset',
+    name: '2A Legal Intelligence — DownRange',
+    description: 'Comprehensive database of Second Amendment legislation, state gun laws, ATF regulations, and SCOTUS cases.',
+    url: 'https://downrangeco.com/laws',
+    publisher: { '@id': 'https://downrangeco.com/#organization' },
+    keywords: ['Second Amendment', 'gun laws', 'ATF regulations', 'state firearms laws', 'concealed carry', 'SCOTUS 2A'],
+    temporalCoverage: '2024/..',
+    spatialCoverage: 'United States',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: '2A Legal Intelligence', item: 'https://downrangeco.com/laws' },
+    ],
+  },
+]
+
 export default async function LawsHub() {
   const [legislation, alerts, sanityProfiles] = await Promise.all([
     fetchLegislation(6).catch(() => []),
@@ -53,6 +77,7 @@ export default async function LawsHub() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(LAWS_SCHEMA) }} />
       <Masthead />
 
       {/* ── HERO ── */}
