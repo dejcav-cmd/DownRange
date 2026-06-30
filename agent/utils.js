@@ -132,11 +132,20 @@ Return ONLY valid JSON, no markdown, no explanation.`
 
 // ── DEDUPLICATION ─────────────────────────────────────────────────────
 const seenHashes = new Set()
-// Sanity-backed dedup: titles and URLs we've seen across cron cycles
-const _sanityDedup = { urls: new Set(), titles: new Set(), loaded: false }
+// Sanity-backed dedup: titles and URLs we've seen across cron cycles.
+// NOTE: this cache lives in module scope, which on Vercel persists across
+// multiple invocations of the same warm serverless instance. Previously it
+// only loaded once (loaded=true forever), so a warm instance handed several
+// consecutive 15-min cron runs would keep using an increasingly stale view —
+// missing articles that genuinely published elsewhere in the meantime, and
+// causing runs to report "all items deduped" even when new content existed.
+// Fix: expire and reload every 10 minutes, well under the 15-min cron interval,
+// so each run sees what was actually published since the cache last refreshed.
+const DEDUP_TTL_MS = 10 * 60 * 1000
+const _sanityDedup = { urls: new Set(), titles: new Set(), loaded: false, loadedAt: 0 }
 
 async function loadSanityDedup() {
-  if (_sanityDedup.loaded) return
+  if (_sanityDedup.loaded && (Date.now() - _sanityDedup.loadedAt) < DEDUP_TTL_MS) return
   try {
     // Use a fast count + recent-first approach instead of loading ALL articles
     // Only load last 2000 articles — anything older won't appear in RSS feeds anyway
@@ -149,15 +158,22 @@ async function loadSanityDedup() {
       { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` }, signal: AbortSignal.timeout(10000) }
     )
     const data = await res.json()
+    // Rebuild from scratch each refresh rather than only adding, so removed/edited
+    // docs don't leave phantom entries behind indefinitely.
+    _sanityDedup.urls = new Set()
+    _sanityDedup.titles = new Set()
     for (const doc of (data.result || [])) {
       if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
       if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0, 80))
     }
     _sanityDedup.loaded = true
-    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity (last 2000 articles)`)
+    _sanityDedup.loadedAt = Date.now()
+    console.log(`[DEDUP] Loaded ${_sanityDedup.urls.size} URLs, ${_sanityDedup.titles.size} titles from Sanity (last 2000 articles, refreshes every ${DEDUP_TTL_MS/60000}min)`)
   } catch (e) {
     console.warn('[DEDUP] Could not load Sanity dedup cache:', e.message)
-    // Don't block — continue without dedup cache rather than failing the whole feed
+    // Don't block — continue without dedup cache rather than failing the whole feed.
+    // Mark as loaded so we don't retry every item this run, but DON'T set loadedAt,
+    // so the next run will retry the fetch rather than being stuck on a failed load.
     _sanityDedup.loaded = true
   }
 }
