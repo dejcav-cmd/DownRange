@@ -27,7 +27,7 @@ export const ALL_JOBS = [
   { id:'copyright-review', path:'/api/cron/copyright-review', schedule:'0 6 * * *', label:'Copyright Compliance', group:'System', icon:'⚖', critical:true, desc:'Daily scan of last 48h articles for copyright risk — old structure, no source, no analysis. Emails report.' },
   { id:'backup',           path:'/api/admin/backup',                schedule:'0 10,15 * * *', label:'Sanity Backup',           group:'System',   icon:'💾', critical:true,  desc:'Full Sanity export → GitHub backup repo at 10am & 3pm UTC. No AI cost.' },
   { id:'backfill',         path:'/api/admin/backfill-articles',     schedule:'0 12-23,0-3 * * *', label:'Article Backfill (legacy)', group:'Content', icon:'✍', critical:false, desc:'Legacy backfill — replaced by quality-rewrite' },
-  { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 0 * * 0',         label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
+  { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 6,14,22 * * *',   label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
   // patch-ammo-article removed from monitoring: one-time fixer for 8 hardcoded slugs,
   // never scheduled in vercel.json, was showing false OVERDUE every run since it has no recurring purpose.
   // Route still exists at /api/admin/patch-ammo-article for manual re-run if needed.

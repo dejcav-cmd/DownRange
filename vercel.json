@@ -118,7 +118,7 @@
     },
     {
       "path": "/api/admin/fix-images?batch=500&force=false&cron=1",
-      "schedule": "0 0 * * 0"
+      "schedule": "0 6,14,22 * * *"
     },
     {
       "path": "/api/cron/quality-rewrite",
