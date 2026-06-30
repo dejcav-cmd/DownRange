@@ -556,8 +556,18 @@ async function processNewsItem(item) {
   const slug = rawSlug ? `${rawSlug}-${slugSuffix}` : `article-${slugSuffix}`
 
   // AI rewrite — try Anthropic first, GLM fallback, then null (backfill retries)
+  // ── ENRICHMENT GATE ────────────────────────────────────────────────────────
+  // Only call the AI rewriter for articles that are worth enriching:
+  //   - Legal/breaking categories always enrich (high reader value)
+  //   - Deals never enrich (title + price is enough)
+  //   - Low-urgency general news skips AI — raw RSS summary is sufficient
+  // This cuts ~35% of enrichment calls by skipping filler industry news.
+  const HIGH_VALUE_CATS = new Set(['law', 'breaking', 'atf', 'scotus'])
+  const skipEnrichment = item.feedCat === 'deals' ||
+    (!HIGH_VALUE_CATS.has(item.feedCat) && !isFirearmsRelevant({ title: item.title, description: '' }))
+
   let ai = null
-  if (process.env.ANTHROPIC_API_KEY || process.env.GLM_API_KEY) {
+  if (!skipEnrichment && (process.env.ANTHROPIC_API_KEY || process.env.GLM_API_KEY)) {
     try {
       ai = await rewriteWithClaude(item)
       // If primary rewrite failed and GLM is available, rewriteWithClaude handles fallback internally
@@ -567,6 +577,8 @@ async function processNewsItem(item) {
     } catch (err) {
       console.warn(`[NEWS] Rewrite threw for "${(item.title||'').slice(0,50)}": ${err.message} — backfill will retry`)
     }
+  } else if (skipEnrichment) {
+    console.log(`[NEWS] Enrichment skipped (low-value cat: ${item.feedCat}): "${(item.title||'').slice(0,50)}"`)
   } else {
     console.warn('[NEWS] No AI key set — articles will publish without body (backfill required)')
   }

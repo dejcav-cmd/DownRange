@@ -157,7 +157,18 @@ async function handler(req) {
 
     stats.scanned = allDocs.length
 
-    // Classify every doc
+    // ── EARLY EXIT: skip AI entirely if nothing needs work ────────────────────
+    // Prevents ghost invocations — tokens burned re-evaluating already-good articles.
+    // Returns immediately when qualityReviewed is already set on all fetched docs.
+    const unreviewed = allDocs.filter(d => !d.qualityReviewed)
+    if (unreviewed.length === 0) {
+      const ms = Date.now() - t0
+      console.log(`[QR] Early exit — all ${allDocs.length} docs already reviewed`)
+      await reportCronRun('quality-rewrite', { status: 'success', ms, details: `skipped — queue empty (${allDocs.length} docs already reviewed)` })
+      return Response.json({ ok: true, skipped: allDocs.length, fullRewrite: 0, titleOnly: 0, failed: 0, ms, message: 'queue empty — nothing to rewrite' })
+    }
+
+
     const needsFullRewrite  = allDocs.filter(item => scoreBody(item.body).score < 70)
     const needsTitleRewrite = allDocs.filter(item =>
       scoreBody(item.body).score >= 70 &&           // body is fine
