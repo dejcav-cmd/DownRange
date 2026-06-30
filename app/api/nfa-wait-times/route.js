@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
 import { createClient } from '@sanity/client'
+import { reportCronRun } from '@/lib/cronReporter'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -186,6 +187,15 @@ export async function GET(req) {
 // ── Shared scrape + save logic ────────────────────────────────────────────
 async function runScrapeAndSave(req) {
   const t0 = Date.now()
+  try {
+    return await doScrapeAndSave(t0)
+  } catch (err) {
+    await reportCronRun('nfa-wait-times', { status: 'failed', ms: Date.now() - t0, error: err.message })
+    return Response.json({ ok: false, error: err.message, ms: Date.now() - t0 }, { status: 500 })
+  }
+}
+
+async function doScrapeAndSave(t0) {
 
   // Try sources in priority order: ATF official > SilencerShop
   let scraped = await scrapeATF()
@@ -264,6 +274,12 @@ async function runScrapeAndSave(req) {
   }
 
   await sanity.create(doc)
+
+  await reportCronRun('nfa-wait-times', {
+    status: 'success',
+    ms: Date.now() - t0,
+    details: `${result.forms.length} forms updated from ${result.source}, month: ${result.reportMonth}`,
+  })
 
   return Response.json({
     ok:     true,

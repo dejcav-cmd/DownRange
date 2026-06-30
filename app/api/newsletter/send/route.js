@@ -3,6 +3,7 @@
 
 import { client } from '@/sanity/lib/client'
 import { generateNewsletterHTML } from '@/lib/emailTemplates'
+import { reportCronRun } from '@/lib/cronReporter'
 
 export const dynamic = 'force-dynamic'
 
@@ -12,6 +13,7 @@ function getResend() {
 }
 
 export async function POST(req) {
+  const t0 = Date.now()
   try {
     const adminKey = req.headers.get('x-admin-key')
     const auth = req.headers.get('authorization')
@@ -36,6 +38,7 @@ export async function POST(req) {
     )
 
     if (subscribers.length === 0) {
+      await reportCronRun('newsletter-send', { status: 'warning', ms: Date.now() - t0, details: 'No active subscribers', error: 'Zero subscribers' })
       return Response.json({ message: 'No active subscribers', sent: 0 })
     }
 
@@ -65,6 +68,13 @@ export async function POST(req) {
       sent += results.filter(r => r).length
     }
 
+    await reportCronRun('newsletter-send', {
+      status: sent > 0 ? 'success' : 'warning',
+      ms: Date.now() - t0,
+      details: `Sent to ${sent}/${subscribers.length} subscribers`,
+      error: sent === 0 ? 'Zero emails delivered' : null,
+    })
+
     return Response.json({
       success: true,
       message: `Newsletter sent to ${sent}/${subscribers.length} subscribers`,
@@ -73,6 +83,7 @@ export async function POST(req) {
     })
   } catch (error) {
     console.error('[newsletter/send] Error:', error)
+    await reportCronRun('newsletter-send', { status: 'failed', ms: Date.now() - t0, error: error.message })
     return Response.json({ error: error.message }, { status: 500 })
   }
 }

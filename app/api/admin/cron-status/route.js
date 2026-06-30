@@ -9,7 +9,7 @@ export const ALL_JOBS = [
   { id:'releases',         path:'/api/agent?feed=releases',         schedule:'45 */6 * * *',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
   { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */2 * * *',   label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },
   { id:'video',            path:'/api/agent?feed=video',            schedule:'0 */4 * * *',   label:'Video Feed',              group:'Content',  icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
-  { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * *',     label:'State Laws (Daily)',      group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → 50-state law profiles updated daily 8am UTC' },
+  { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * 0',     label:'State Laws (Weekly)',     group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → 50-state law profiles updated every Sunday 8am UTC' },
   { id:'goa',              path:'/api/agent?feed=goa',              schedule:'0 */2 * * *',   label:'GOA Feed',                group:'Content',  icon:'🦅', critical:false, desc:'Gun Owners of America press feed every 2 hrs' },
   { id:'quality-rewrite',  path:'/api/cron/quality-rewrite',        schedule:'0 * * * *',     label:'Quality Rewrite',         group:'Content',  icon:'✨', critical:true,  desc:'Scans all content for AI phrases + short bodies → rewrites failing items. Every hour.' },
   { id:'image-fix',        path:'/api/cron/image-fix',              schedule:'0 * * * *',     label:'Image Fix',               group:'Content',  icon:'🖼', critical:true,  desc:'Fetches OG images from source URLs, assigns real photo fallbacks. Every hour.' },
@@ -28,12 +28,16 @@ export const ALL_JOBS = [
   { id:'backup',           path:'/api/admin/backup',                schedule:'0 10,15 * * *', label:'Sanity Backup',           group:'System',   icon:'💾', critical:true,  desc:'Full Sanity export → GitHub backup repo at 10am & 3pm UTC. No AI cost.' },
   { id:'backfill',         path:'/api/admin/backfill-articles',     schedule:'0 12-23,0-3 * * *', label:'Article Backfill (legacy)', group:'Content', icon:'✍', critical:false, desc:'Legacy backfill — replaced by quality-rewrite' },
   { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 12-23,0-3 * * *', label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
-  { id:'patch-ammo-article', path:'/api/admin/patch-ammo-article',  schedule:'*/10 * * * *',      label:'Ammo Article Patcher',     group:'Content', icon:'🔩', critical:false, desc:'Patches ammo articles every 10 min' },
-  { id:'ccw-update',       path:'/api/cron/ccw-update',             schedule:'0 5 * * 0',         label:'CCW Update (Weekly)',       group:'Content', icon:'🪪', critical:false, desc:'Updates CCW reciprocity data every Sunday 5am UTC' },
+  // patch-ammo-article removed from monitoring: one-time fixer for 8 hardcoded slugs,
+  // never scheduled in vercel.json, was showing false OVERDUE every run since it has no recurring purpose.
+  // Route still exists at /api/admin/patch-ammo-article for manual re-run if needed.
+  // ccw-update removed from monitoring: explicitly replaced by weekly-gun-releases
+  // (commit 1e27b7a). Never in vercel.json. Its own auth check doesn't accept
+  // x-vercel-cron or CRON_SECRET — admin-key only — so it couldn't be cron-invoked anyway.
   { id:'carry-insurance',  path:'/api/cron/carry-insurance',        schedule:'0 6 * * 1',         label:'Carry Insurance Update',   group:'Content', icon:'🛡', critical:false, desc:'Updates carry insurance comparison data every Monday 6am UTC' },
   { id:'market-brief',     path:'/api/cron/market-brief',           schedule:'0 14,21 * * *',     label:'Market Brief',             group:'Content', icon:'📉', critical:false, desc:'Market brief email at 2pm and 9pm UTC daily' },
   { id:'sitemap',          path:'/api/cron/sitemap',                schedule:'0 2 * * *',         label:'Sitemap Generator',        group:'System',  icon:'🗺', critical:false, desc:'Regenerates sitemap.xml daily at 2am UTC' },
-  { id:'giveaways',        path:'/api/cron/giveaways',              schedule:'0 14 * * *',        label:'Giveaways Feed',           group:'Content', icon:'🎁', critical:false, desc:'Pulls active giveaways daily at 2pm UTC' },
+  { id:'giveaways',        path:'/api/agent?feed=giveaways',       schedule:'3 8 * * *',         label:'Giveaways Feed',           group:'Content', icon:'🎁', critical:false, desc:'Pulls active giveaways daily 8:03am UTC. Was monitoring dead route /api/cron/giveaways (never scheduled) — fixed to track the real one.' },
   { id:'blog-writer',      path:'/api/cron/blog-writer',            schedule:'0 18 * * 5',        label:'Blog Writer (Weekly)',     group:'Content', icon:'✏', critical:false, desc:'AI blog post writer every Friday 6pm UTC' },
   { id:'gun-deals',        path:'/api/cron/gun-deals',              schedule:'5 * * * *',       label:'Gun Deals Feed',           group:'Content', icon:'💰', critical:false, desc:'Pulls gun.deals listings every 4 hrs' },
   { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'0 8,20 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
@@ -41,7 +45,9 @@ export const ALL_JOBS = [
   { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 9 * * 1',
     label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
     desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
-  { id:'fix-images-intl',  path:'/api/admin/fix-images-intl',       schedule:'0 11 * * *',        label:'Intl Image Fixer',         group:'System',  icon:'🌐', critical:false, desc:'Fixes images on international content daily at 11am UTC' },
+  // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
+  // {type: 'canada'|'brazil'|'both'} body param (no default cron would send this usefully).
+  // Manual admin tool, not a scheduled job. Was showing permanent false OVERDUE.
   { id:'bible-update',     path:'/api/cron/bible-update',           schedule:'0 7 * * 0',         label:'Bible Update (Weekly)',    group:'System',  icon:'📖', critical:false, desc:'Every Sunday 7am UTC — collects live Sanity stats, pushes bible-stats.json to GitHub, posts weekly Discord summary.' },
 ]
 

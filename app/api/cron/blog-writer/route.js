@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
+import { reportCronRun } from '@/lib/cronReporter'
 
 // DownRange Weekly Blog Writer — Fridays 10am PST (18:00 UTC)
 // Writes 10 original, human-sounding articles on trending 2A topics
@@ -302,6 +303,12 @@ export async function GET(req) {
       }
     }
 
+    await reportCronRun('blog-writer', {
+      status: stats.written > 0 ? 'success' : 'warning',
+      ms: Date.now() - t0,
+      details: `${stats.written} draft articles written, ${stats.failed} failed | ${stats.titles.slice(0,5).join(' · ')}`,
+      error: stats.written === 0 ? 'Zero articles written this run' : null,
+    })
     return NextResponse.json({
       ok: true,
       ms: Date.now() - t0,
@@ -309,6 +316,7 @@ export async function GET(req) {
       message: stats.written + ' draft articles written — pending DJ review at /admin → Blog',
     })
   } catch (err) {
+    await reportCronRun('blog-writer', { status: 'failed', ms: Date.now() - t0, error: err.message })
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
   }
 }

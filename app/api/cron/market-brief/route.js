@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
+import { reportCronRun } from '@/lib/cronReporter'
 
 // Market Brief cron — runs 2x daily: 6am + 6pm UTC
 // Fetches live ammo price signals and generates AI analysis via GLM/Claude
@@ -142,6 +143,7 @@ export async function GET(req) {
   const { searchParams } = new URL(req.url)
   const key  = req.headers.get('x-admin-key') || searchParams.get('key')
   const force= searchParams.get('force') === '1'
+  const t0 = Date.now()
 
   // Allow cron (no key) OR admin key
   if (key && key !== ADMIN_KEY) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
@@ -184,6 +186,7 @@ export async function GET(req) {
     // Generate AI brief
     const brief = await generateBrief(PRICE_SOURCES, [...sanityPrices, ...livePrices])
     if (!brief) {
+      await reportCronRun('market-brief', { status: 'warning', ms: Date.now() - t0, details: `${updatedPrices} prices updated`, error: 'AI brief generation failed' })
       return NextResponse.json({ ok: false, error: 'AI generation failed', updatedPrices })
     }
 
@@ -208,6 +211,12 @@ export async function GET(req) {
       for (const doc of old) await sanity.delete(doc._id)
     } catch { /* cleanup not critical */ }
 
+    await reportCronRun('market-brief', {
+      status: 'success',
+      ms: Date.now() - t0,
+      details: `Brief: ${brief.title} | ${updatedPrices} prices updated, ${livePrices.length} live fetched`,
+    })
+
     return NextResponse.json({
       ok: true,
       timestamp:    new Date().toISOString(),
@@ -217,6 +226,7 @@ export async function GET(req) {
     })
   } catch (err) {
     console.error('[market-brief]', err.message)
+    await reportCronRun('market-brief', { status: 'failed', ms: Date.now() - t0, error: err.message })
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
   }
 }
