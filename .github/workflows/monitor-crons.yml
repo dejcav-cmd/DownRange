@@ -29,9 +29,9 @@ jobs:
         run: |
           MINS="${{ github.event.inputs.since_minutes }}"
           SINCE=$(python3 -c "
-from datetime import datetime, timezone, timedelta
-print((datetime.now(timezone.utc) - timedelta(minutes=int('$MINS'))).isoformat())
-")
+          from datetime import datetime, timezone, timedelta
+          print((datetime.now(timezone.utc) - timedelta(minutes=int('$MINS'))).isoformat())
+          ")
           MONITOR_SINCE="$SINCE" python3 scripts/monitor-crons.py | tee scripts/diag-result.txt
       - name: Commit result
         env:
