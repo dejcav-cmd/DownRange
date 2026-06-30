@@ -1,18 +1,51 @@
-=== Cron Monitor Report ===
-Window: 16:33 UTC → 17:03 UTC
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-Total runs: 7  ✓ 7  ⚠ 0  ✗ 0
+=== STEP 2: FIX MISSING IMAGES ===
+Missing: 39
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fb95569283f71bfbf7030524b36da84
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/51587f4d09f9d15b96a491734a7e3b3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3b2db9d6d112d56b8a4efe95574b365
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/73b96a4c9c8125b47126dd2028951f6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dc750947b79eb0c5642e83bff7ce77c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e72ec916066e514f28d21652f7fdb0b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c1f88bc33357af782ecd7e33d86f280
+  skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
+  skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
+  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
+  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
+  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
+  skip coupon: https://gun.deals/content/coupon-store-gunmagwarehousesaturd
+  skip coupon: https://gun.deals/content/coupon-store-right-bearsaturday-ju
+  ✗ https://gun.deals/node/1522116
+  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
+  skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
+  skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
+  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
+  skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
+  skip coupon: https://gun.deals/content/coupon-store-brownellsmonday-june-
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
+  skip coupon: https://gun.deals/content/coupon-store-ar15discountssunday-j
+  skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
+  skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
+  skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
+  skip coupon: https://gun.deals/content/coupon-store-taktactical-friday-ju
+  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
+  skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
+  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armoryfrid
+  skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
+  skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
+  skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
+  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
+  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
+  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
+  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
+  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
+  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
+  → patched final 7
 
-JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
----------------------------------------------------------------------------
-  cron-health                           1    1     0     185ms  ✓ success @ 17:01
-  fix-images                            2    2     0    2026ms  ✓ success @ 17:01
-  fix-placeholder-images                1    1     0     373ms  ✓ success @ 17:00
-  market                                1    1     0    1572ms  ✓ success @ 17:00
-  news                                  2    2     0  124121ms  ✓ success @ 17:02
+Stats: uploaded=7 fallback=0 failed=2
 
-✓ No Sanity quota errors in window
+=== FINAL: total=3443 missing_images=32 reddit=0 ===
 
-quality-rewrite: no runs yet in window
-
-Report generated: 17:03:13 UTC
+FIXED: 7
