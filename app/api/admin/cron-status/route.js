@@ -27,7 +27,7 @@ export const ALL_JOBS = [
   { id:'copyright-review', path:'/api/cron/copyright-review', schedule:'0 6 * * *', label:'Copyright Compliance', group:'System', icon:'⚖', critical:true, desc:'Daily scan of last 48h articles for copyright risk — old structure, no source, no analysis. Emails report.' },
   { id:'backup',           path:'/api/admin/backup',                schedule:'0 10,15 * * *', label:'Sanity Backup',           group:'System',   icon:'💾', critical:true,  desc:'Full Sanity export → GitHub backup repo at 10am & 3pm UTC. No AI cost.' },
   { id:'backfill',         path:'/api/admin/backfill-articles',     schedule:'0 12-23,0-3 * * *', label:'Article Backfill (legacy)', group:'Content', icon:'✍', critical:false, desc:'Legacy backfill — replaced by quality-rewrite' },
-  { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 12-23,0-3 * * *', label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
+  { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 0 * * 0',         label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
   // patch-ammo-article removed from monitoring: one-time fixer for 8 hardcoded slugs,
   // never scheduled in vercel.json, was showing false OVERDUE every run since it has no recurring purpose.
   // Route still exists at /api/admin/patch-ammo-article for manual re-run if needed.
@@ -35,10 +35,10 @@ export const ALL_JOBS = [
   // (commit 1e27b7a). Never in vercel.json. Its own auth check doesn't accept
   // x-vercel-cron or CRON_SECRET — admin-key only — so it couldn't be cron-invoked anyway.
   { id:'carry-insurance',  path:'/api/cron/carry-insurance',        schedule:'0 6 * * 1',         label:'Carry Insurance Update',   group:'Content', icon:'🛡', critical:false, desc:'Updates carry insurance comparison data every Monday 6am UTC' },
-  { id:'market-brief',     path:'/api/cron/market-brief',           schedule:'0 14,21 * * *',     label:'Market Brief',             group:'Content', icon:'📉', critical:false, desc:'Market brief email at 2pm and 9pm UTC daily' },
+  { id:'market-brief',     path:'/api/cron/market-brief',           schedule:'6 14 * * *',        label:'Market Brief',             group:'Content', icon:'📉', critical:false, desc:'Market brief email at 2pm and 9pm UTC daily' },
   { id:'sitemap',          path:'/api/cron/sitemap',                schedule:'0 2 * * *',         label:'Sitemap Generator',        group:'System',  icon:'🗺', critical:false, desc:'Regenerates sitemap.xml daily at 2am UTC' },
   { id:'giveaways',        path:'/api/agent?feed=giveaways',       schedule:'3 8 * * *',         label:'Giveaways Feed',           group:'Content', icon:'🎁', critical:false, desc:'Pulls active giveaways daily 8:03am UTC. Was monitoring dead route /api/cron/giveaways (never scheduled) — fixed to track the real one.' },
-  { id:'blog-writer',      path:'/api/cron/blog-writer',            schedule:'0 18 * * 5',        label:'Blog Writer (Weekly)',     group:'Content', icon:'✏', critical:false, desc:'AI blog post writer every Friday 6pm UTC' },
+  { id:'blog-writer',      path:'/api/cron/blog-writer',            schedule:'0 18 * * 1,3,5',    label:'Blog Writer (Mon/Wed/Fri)',     group:'Content', icon:'✏', critical:false, desc:'AI blog post writer every Friday 6pm UTC' },
   { id:'gun-deals',        path:'/api/cron/gun-deals',              schedule:'5 * * * *',       label:'Gun Deals Feed',           group:'Content', icon:'💰', critical:false, desc:'Pulls gun.deals listings every 4 hrs' },
   { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'0 8,20 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
   { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'0 9,21 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
