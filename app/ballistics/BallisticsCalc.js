@@ -487,6 +487,47 @@ export default function BallisticsCalc() {
         )}
       </div>
 
+      <hr className="bal-div" style={{margin:'40px 0'}}/>
+
+      <div className="dr-section">
+        <h2 className="dr-section-title">How to Use This Calculator</h2>
+        <p style={{color:'var(--text-muted)',maxWidth:760,marginBottom:28}}>
+          Four steps: pick a load, set your environment, dial in your zero, then read the table. Walk through them in order — each one feeds the next.
+        </p>
+
+        <div className="dr-grid-2">
+          <div className="dr-card">
+            <div className="dr-card-title">1. Pick a Load</div>
+            <div className="dr-card-body">
+              Choose a preset from the category dropdown — Rimfire through Magnum, plus the full PRC family — or switch to Custom and enter your own bullet weight, ballistic coefficient (BC), and muzzle velocity from your handloads or factory ammo box. Presets use published G1 BCs; if you're loading a VLD or hybrid bullet with a G7 BC on the box, multiply it by roughly 2.0 to get an approximate G1 equivalent for this calculator.
+            </div>
+          </div>
+          <div className="dr-card">
+            <div className="dr-card-title">2. Set the Environment</div>
+            <div className="dr-card-body">
+              Altitude and temperature change air density, which changes drag — entering your actual range conditions (not sea level on a cold day, if that's not where you're shooting) measurably shifts the drop and wind numbers, especially past 400 yards. Crosswind speed assumes a full 90° crosswind; for a quartering wind, halve the drift value the table gives you.
+            </div>
+          </div>
+          <div className="dr-card">
+            <div className="dr-card-title">3. Dial In Zero & Optic</div>
+            <div className="dr-card-body">
+              Set the distance you're actually zeroed at and your scope height over bore — not the rifle's spec sheet, your scope's real center-to-bore measurement. Everything downstream (bullet path, MOA, MRAD) is calculated relative to this zero, so an incorrect height here throws off every column in the table.
+            </div>
+          </div>
+          <div className="dr-card">
+            <div className="dr-card-title">4. Read the Table</div>
+            <div className="dr-card-body">
+              Bullet Path is inches above or below your line of sight at each range. ↑MOA / ↑MRAD is how much to dial your turret to hit at that distance — positive always means dial up. The wind column is full drift at the crosswind speed you set in step 2. Toggle Compare Mode to stack two loads side-by-side with a Δ Path column showing how far apart they land at each range.
+            </div>
+          </div>
+        </div>
+
+        <div className="bal-note" style={{marginTop:24}}>
+          <strong style={{color:'var(--gold)',fontFamily:"'IBM Plex Mono', monospace"}}>WORTH KNOWING</strong><br/>
+          This runs a G1 drag model with forward-Euler numerical integration in 0.5ft steps — solid for most hunting and general-purpose loads, but less precise for very-low-drag long-range bullets, where a true G7 calculator will track slightly closer to observed drop past 600-700 yards. Treat the output here as a strong starting point for ballistic match-grade ammunition and confirm final corrections at the range, not as a substitute for verified dope at distance.
+        </div>
+      </div>
+
     </div></div></div>
   </>)
 }

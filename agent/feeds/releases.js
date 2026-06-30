@@ -199,6 +199,36 @@ async function scrapeFusionFirearms() {
 }
 
 // ── FETCH PAGE CONTENT + OG IMAGE ───────────────────────────────────────────
+// NOTE: og:image match is preferred (publisher-declared, almost always the actual
+// product/article photo). The <img> tag fallback below is intentionally strict —
+// the previous version took the FIRST <img src> on the page with no filtering,
+// which regularly grabbed nav logos, ad banners, and social icons instead of the
+// product photo on pages without an og:image tag. Now filters out common
+// logo/icon/ad/tracking-pixel patterns and prefers images with larger declared
+// width/height attributes, since real product photos are usually sized >=300px.
+function pickBestImgTag(html) {
+  const imgRe = /<img[^>]+src="(https?:\/\/[^"]{20,})"[^>]*>/gi
+  const BAD_PATTERNS = /logo|icon|avatar|sprite|pixel|tracking|badge|button|spacer|favicon|placeholder|1x1|blank\.(gif|png)/i
+  let best = null
+  let bestScore = -1
+  let m
+  while ((m = imgRe.exec(html)) !== null) {
+    const tag = m[0]
+    const src = m[1]
+    if (BAD_PATTERNS.test(src)) continue
+    const wMatch = tag.match(/width=["']?(\d+)/i)
+    const hMatch = tag.match(/height=["']?(\d+)/i)
+    const w = wMatch ? parseInt(wMatch[1], 10) : 0
+    const h = hMatch ? parseInt(hMatch[1], 10) : 0
+    // Score: prefer declared larger dimensions; undeclared-size images get a
+    // modest baseline score so they're still eligible, just ranked behind
+    // anything explicitly sized as a real photo.
+    const score = (w && h) ? (w * h) : 50000
+    if (score > bestScore) { bestScore = score; best = src }
+  }
+  return best
+}
+
 async function fetchPageContent(url) {
   try {
     const res = await fetch(url, {
@@ -215,8 +245,7 @@ async function fetchPageContent(url) {
       .trim()
       .slice(0, 5000)
     const ogMatch  = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i)
-    const imgMatch = html.match(/<img[^>]+src="(https?:\/\/[^"]{20,})"[^>]*/i)
-    const imageUrl = ogMatch?.[1] || imgMatch?.[1] || null
+    const imageUrl = ogMatch?.[1] || pickBestImgTag(html) || null
     return { text, imageUrl }
   } catch {
     return { text: '', imageUrl: null }

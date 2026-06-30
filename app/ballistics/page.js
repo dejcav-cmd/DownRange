@@ -49,6 +49,32 @@ const SCHEMA = [
       { '@type': 'ListItem', position: 2, name: 'Ballistics Calculator', item: 'https://downrangeco.com/ballistics' },
     ],
   },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How do I pick a load in the ballistics calculator?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Choose a preset from the category dropdown (Rimfire through Magnum, including the full PRC family) or switch to Custom and enter your own bullet weight, ballistic coefficient, and muzzle velocity. Presets use published G1 BCs; for G7 BC bullets, multiply by roughly 2.0 to approximate G1.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Why does altitude and temperature matter for bullet drop?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Altitude and temperature change air density, which changes drag on the bullet. Entering your actual range conditions instead of default values measurably shifts drop and wind drift, especially past 400 yards.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'What scope height should I use?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Use your scope\u2019s actual center-to-bore measurement, not a generic rifle spec. Bullet path, MOA, and MRAD corrections are all calculated relative to this value and your zero distance.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'How accurate is a G1 ballistics calculator for long-range shooting?',
+        acceptedAnswer: { '@type': 'Answer', text: 'G1 models are solid for hunting and general-purpose loads but less precise for very-low-drag long-range bullets, where a true G7 calculator tracks closer to observed drop past 600-700 yards. Use the output as a strong starting point and confirm final corrections with verified dope at the range.' },
+      },
+    ],
+  },
 ]
 
 export default async function Page() {
