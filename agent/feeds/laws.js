@@ -2,6 +2,40 @@ import Parser from 'rss-parser'
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 import { enrichLawWithClaude, isDuplicate, publishToSanity, notifyBreaking, notifyError, sleep } from '../utils.js'
 
+// ── Pre-fetch enriched legislation IDs ────────────────────────────────────────
+// Legislation uses createOrReplace, so every run overwrites existing docs.
+// Without this guard, Claude enriches ~280 bills every 2h run — most already stored.
+// We fetch all _ids that already have a non-trivial analysis, then skip enrichment
+// for those. Saves ~90% of laws-feed Claude calls (only new bills get enriched).
+// TTL: 90 minutes — shorter than the 2h cron interval so we always get fresh data.
+let _enrichedIds = null
+let _enrichedAt  = 0
+const ENRICHED_TTL_MS = 90 * 60 * 1000
+
+async function getEnrichedIds() {
+  const now = Date.now()
+  if (_enrichedIds && (now - _enrichedAt) < ENRICHED_TTL_MS) return _enrichedIds
+  try {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
+    const query = encodeURIComponent(`*[_type=="legislation" && defined(analysis) && length(analysis)>20]._id`)
+    const res = await fetch(
+      `https://${projectId}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&returnQuery=false`,
+      { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` }, signal: AbortSignal.timeout(8000) }
+    )
+    if (!res.ok) throw new Error(`Sanity ${res.status}`)
+    const data = await res.json()
+    _enrichedIds = new Set(data.result || [])
+    _enrichedAt  = now
+    console.log(`[LAWS] Pre-fetch: ${_enrichedIds.size} bills already enriched — will skip Claude for these`)
+    return _enrichedIds
+  } catch (err) {
+    console.warn('[LAWS] Pre-fetch failed, will enrich all:', err.message)
+    _enrichedIds = new Set()
+    _enrichedAt  = now
+    return _enrichedIds
+  }
+}
+
 const STATUS_MAP = {
   'Introduced': 'pending',
   'Referred to Committee': 'pending',
@@ -152,11 +186,14 @@ async function runLawsFeed() {
     console.log('[LAWS] No API keys — using RSS fallback only')
   }
 
+  // Pre-fetch already-enriched legislation IDs — skip Claude for these (saves ~90% of laws AI calls)
+  const enrichedIds = process.env.ANTHROPIC_API_KEY ? await getEnrichedIds() : new Set()
+
   // RSS fallback — always runs first (no API key needed, fast, reliable)
   const rssItems = await fetchLawsFromRSS()
   for (const item of rssItems) {
     try {
-      if (process.env.ANTHROPIC_API_KEY) {
+      if (process.env.ANTHROPIC_API_KEY && !enrichedIds.has(item._id)) {
         try {
           const enriched = await enrichLawWithClaude(item)
           if (enriched.summary) item.summary = enriched.summary
@@ -178,8 +215,8 @@ async function runLawsFeed() {
   const federal = await fetchCongressBills()
   for (const bill of federal) {
     try {
-      // Enrich with Claude extended summary + analysis
-      if (process.env.ANTHROPIC_API_KEY) {
+      // Enrich with Claude extended summary + analysis — only if not already enriched
+      if (process.env.ANTHROPIC_API_KEY && !enrichedIds.has(bill._id)) {
         try {
           const enriched = await enrichLawWithClaude(bill)
           if (enriched.summary) bill.summary = enriched.summary
@@ -209,8 +246,8 @@ async function runLawsFeed() {
     for (const bills of results) {
       for (const bill of bills) {
         try {
-          // Enrich with Claude extended summary
-          if (process.env.ANTHROPIC_API_KEY) {
+          // Enrich with Claude extended summary — only if not already enriched
+          if (process.env.ANTHROPIC_API_KEY && !enrichedIds.has(bill._id)) {
             try {
               const enriched = await enrichLawWithClaude(bill)
               if (enriched.summary) bill.summary = enriched.summary
