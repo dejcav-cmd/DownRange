@@ -42,3 +42,4 @@ print((datetime.now(timezone.utc) - timedelta(minutes=int('$MINS'))).isoformat()
           git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
           git add -f scripts/diag-result.txt
           git diff --staged --quiet || (git commit -m "cron monitor result [skip ci]" && git pull --rebase && git push) || true
+
