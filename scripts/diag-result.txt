@@ -2,20 +2,29 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 45
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/717bf5e355faf0f1095f84d75e46492
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6d8a644839aa93c3cbce4edeed3ee75
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5092a0511b7775b3715306ed72b0989
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/de1982c30bafc8919f81cebc358a89c
+Missing: 54
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0322398b8ca8b88c903f9d094e8fe98
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/add32d57bcb8b3b8bdbeff6f4d28df5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8463529e4c00c0b9e59369b1ca610fd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/277aa4ac2fe0e419dbac51ab53ba95a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5dd9859a2d9a0d779d64b03931999ab
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5bc63eeeaa1a02c37a250d8aafcea51
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ae7a9d75ff145ae538d8dd3483caf6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b07395cd278aee72fd06d9f9a779161
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a37c747ec63c4c6621f1febec66ab9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cb3bc418ed90d76797153e1f466e5cc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c8a87a5c0e8f609316ba74f3e61aa7f
+  skip coupon: https://gun.deals/content/coupon-store-usagowednesday-july-1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6b79589885cd9ef05bd20829bb09300
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/49349328d39c222c359a5c45c5c58f2
+  skip coupon: https://gun.deals/content/coupon-store-ammunition-depotwedne
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/90280f900fe0a66d28c35804263f381
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cdb4e5fd0e2dd61214d70b80d194074
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff020dcce8f24c4a24133d4b82dc9ad
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e14ca24ca049368d65928f6a5fec360
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9cafa302d97fb2659c82b7a068ae718
   skip coupon: https://gun.deals/content/coupon-store-brownellswednesday-ju
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d00757f0a72c2eacb60b3959682dd06
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3756f4b9169dc83074e7a1b874dd65
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f820f75e10e88dc17751d511bd1700
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d7a6a8084aefca1d5109c94027c707
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8d8d737307a7dd957beaabd442e51e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/52b5ac7dca364ddaf7352a3c43777cd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/331d2a3e5200217910e576d34a60d56
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
   skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -48,10 +57,10 @@ Missing: 45
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 11
+  → patched final 18
 
-Stats: uploaded=11 fallback=0 failed=2
+Stats: uploaded=18 fallback=0 failed=2
 
-=== FINAL: total=3561 missing_images=34 reddit=0 ===
+=== FINAL: total=3581 missing_images=36 reddit=0 ===
 
-FIXED: 11
+FIXED: 18
