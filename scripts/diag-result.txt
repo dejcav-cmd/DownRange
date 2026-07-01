@@ -1,60 +1,27 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== Cron Monitor Report ===
+Window: 20:29 UTC → 05:29 UTC
 
-=== STEP 2: FIX MISSING IMAGES ===
-Missing: 48
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95cec10332360aae3d8cd7289d475a4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2af47bca7a0165f8666721cae9dda7b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6d485ec25ac4782f3ca15f3e3d1b2c9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c25f6555561bdb91078f734c5a89402
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6219fc868f6ed1b3aaf81a4170c82f0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8885c213ee82bb45d253cac2c7cf6f6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b527746d8c6097cb78a88c3e4d13780
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8862ba9eec83ffd4419efdc6dcf17ea
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f7421ef5c787736fd8d670f59260b7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/414c717c7eb846f50b2577da4dcfc0a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a0f161d577df643c26a864636a28bf9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1fff0cb37c10e195afe901d6e39efdd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/60aa4e9d8403e4302188351e3c1289a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0dbf7c260bc844135520338759c6adf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e62bd3e4732d9ee0b857705415c2c13
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7f1baf52c343c67a92c77307a6f50f0
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
-  skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
-  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
-  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
-  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
-  skip coupon: https://gun.deals/content/coupon-store-gunmagwarehousesaturd
-  skip coupon: https://gun.deals/content/coupon-store-right-bearsaturday-ju
-  ✗ https://gun.deals/node/1522116
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
-  skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
-  skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
-  skip coupon: https://gun.deals/content/coupon-store-brownellsmonday-june-
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountssunday-j
-  skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
-  skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
-  skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
-  skip coupon: https://gun.deals/content/coupon-store-taktactical-friday-ju
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
-  skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
-  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armoryfrid
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
-  skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
-  skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
-  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 16
+Total runs: 66  ✓ 58  ⚠ 8  ✗ 0
 
-Stats: uploaded=16 fallback=0 failed=2
+JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
+---------------------------------------------------------------------------
+  cron-health                           9    8     0     219ms  ⚠ warning @ 05:00
+  fetch-images                          5    5     0     524ms  ✓ success @ 04:20
+  fix-placeholder-images                1    1     0     124ms  ✓ success @ 04:01
+  fix-slugs                             1    1     0     372ms  ✓ success @ 04:30
+  goa                                   4    4     0   70948ms  ✓ success @ 04:03
+  gun-deals                             9    9     0    2361ms  ✓ success @ 05:05
+  image-fix                             9    9     0   11936ms  ✓ success @ 05:15
+  intelligence                          1    1     0   33742ms  ✓ success @ 01:00
+  market                                5    5     0    3547ms  ✓ success @ 04:00
+  news                                 18   11     0   63374ms  ✓ success @ 05:01
+  quality-rewrite                       1    1     0    9929ms  ✓ success @ 00:10
+  sitemap                               1    1     0       0ms  ✓ success @ 02:00
+  video                                 2    2     0    1677ms  ✓ success @ 04:00
 
-=== FINAL: total=3505 missing_images=32 reddit=0 ===
+✓ No Sanity quota errors in window
 
-FIXED: 16
+quality-rewrite: 1 run(s)
+  [00:10] success — Scanned 50 · full-rewrite 0/0 · title-only 2/2 · skipped 48 · failed 0 · remaining 0
+
+Report generated: 05:29:22 UTC
