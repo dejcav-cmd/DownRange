@@ -2,15 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 44
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/31b0b04e3be8eff7b8cce3718e8d6da
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c2e25054d9e0bdf4c4b1e36f0bf247d
+Missing: 43
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0c2fcfd180a17b66ff21e0f64a0e81a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab541cd3ee7648aeb65c5b50947b238
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f005ff67e75922d44261633499c003
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b91f3822c59c4d2894cae2f17bf991f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/af8ea1aa8dc32252f868db441e2a56b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3bb01104e54a35a0d6748eb1ea0f3fa
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9d05e919dbc640478ecf4560832088c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6ef71fdfa5e0fc8985f40986208d880
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c1d27d1d65599836e3a8b494dde0f8b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/adb9c6ea9d9f0221647133ea6973047
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7e9e5ee885ffd11a238ef43f386e23b
   skip coupon: https://gun.deals/content/coupon-store-usagowednesday-july-1
   skip coupon: https://gun.deals/content/coupon-store-ammunition-depotwedne
   skip coupon: https://gun.deals/content/coupon-store-brownellswednesday-ju
@@ -47,10 +46,10 @@ Missing: 44
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 7
+  → patched final 6
 
-Stats: uploaded=7 fallback=0 failed=2
+Stats: uploaded=6 fallback=0 failed=2
 
-=== FINAL: total=3603 missing_images=37 reddit=0 ===
+=== FINAL: total=3609 missing_images=37 reddit=0 ===
 
-FIXED: 7
+FIXED: 6
