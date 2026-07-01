@@ -4,7 +4,7 @@ import { getAllRuns, getAlertConfig, setAlertConfig, reportCronRun } from '@/lib
 
 // ── All cron jobs registry ────────────────────────────────────────────────────
 export const ALL_JOBS = [
-  { id:'news',             path:'/api/agent?feed=news',             schedule:'*/30 * * * *',  label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 15 min' },
+  { id:'news',             path:'/api/agent?feed=news',             schedule:'*/30 * * * *',  label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 30 min' },
   { id:'market',           path:'/api/agent?feed=market',           schedule:'0 */2 * * *',   label:'Market Feed',             group:'Content',  icon:'📊', critical:false, desc:'AmmoSeek + pricing data every 30 min' },
   { id:'releases',         path:'/api/agent?feed=releases',         schedule:'45 */6 * * *',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
   { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */2 * * *',   label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },

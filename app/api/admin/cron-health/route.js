@@ -112,14 +112,33 @@ export async function GET() {
 
   // ── CRON SCHEDULE ─────────────────────────────────────────────────────
   const crons = [
-    { feed: 'news',     schedule: '*/15 * * * *', label: 'Every 15 min',  critical: true,  desc: 'RSS + NewsAPI + GNews → Sanity articles' },
-    { feed: 'laws',     schedule: '0 */2 * * *',  label: 'Every 2 hrs',   critical: true,  desc: 'Congress.gov + LegiScan → legislation feed' },
-    { feed: 'releases', schedule: '0 * * * *',    label: 'Every hour',    critical: false, desc: 'Manufacturer RSS → new product releases' },
-    { feed: 'market',   schedule: '*/30 * * * *', label: 'Every 30 min',  critical: false, desc: 'AmmoSeek + Reddit → ammo price index' },
-    { feed: 'video',    schedule: '0 */4 * * *',  label: 'Every 4 hrs',   critical: false, desc: 'YouTube API → video feed' },
-    { feed: 'state',    schedule: '0 8 * * *',    label: 'Daily 8am',     critical: false, desc: 'LegiScan → per-state bill updates' },
-    { feed: 'newsletter',schedule:'0 7 * * *',    label: 'Daily 7am',     critical: false, desc: 'Resend → weekly digest email' },
+    { feed: 'news',       schedule: '*/30 * * * *', label: 'Every 30 min',  critical: true,  desc: 'RSS → AI rewrite → Sanity articles' },
+    { feed: 'laws',       schedule: '0 */2 * * *',  label: 'Every 2 hrs',   critical: true,  desc: 'Congress.gov + LegiScan → legislation feed' },
+    { feed: 'releases',   schedule: '0 * * * *',    label: 'Every hour',    critical: false, desc: 'Manufacturer RSS → new product releases' },
+    { feed: 'market',     schedule: '0 */2 * * *',  label: 'Every 2 hrs',   critical: false, desc: 'AmmoSeek + Reddit → ammo price index' },
+    { feed: 'video',      schedule: '0 */4 * * *',  label: 'Every 4 hrs',   critical: false, desc: 'YouTube API → video feed' },
+    { feed: 'state',      schedule: '0 8 * * *',    label: 'Daily 8am',     critical: false, desc: 'LegiScan → per-state bill updates' },
+    { feed: 'newsletter', schedule: '0 7 * * *',    label: 'Daily 7am',     critical: false, desc: 'Resend → weekly digest email' },
   ]
+
+  // ── MISSION CONTROL: LAST NEWS CRON RUN ──────────────────────────────
+  // Query this separately from article timestamps. The article-gap alert was
+  // previously raised as HIGH any time no article published in 8h — but with
+  // news now running every 30min, overnight quiet periods (sources not posting)
+  // produce a false DEGRADED. We now check whether the cron itself has run
+  // recently, and only raise HIGH if BOTH the article gap AND the cron inactivity
+  // confirm the feed is actually stopped — not just that sources were quiet.
+  let lastNewsCronRun = null
+  let minutesSinceLastCronRun = null
+  try {
+    const lastRun = await sanity.fetch(
+      `*[_type == "cronRun" && jobId == "news"] | order(at desc) [0] { at, status, details, error }`,
+    )
+    if (lastRun?.at) {
+      lastNewsCronRun = lastRun
+      minutesSinceLastCronRun = Math.round((Date.now() - new Date(lastRun.at).getTime()) / 60000)
+    }
+  } catch {}
 
   // ── DIAGNOSIS ─────────────────────────────────────────────────────────
   const issues = []
@@ -136,8 +155,18 @@ export async function GET() {
   if (!sanityStatus.connected)
     issues.push({ severity: 'CRITICAL', msg: `Sanity connection failed: ${sanityStatus.error}` })
 
-  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 480)
-    issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h). News feed may not be running — check System → Cron Jobs.` })
+  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 480) {
+    // Check if the cron itself is still running before raising HIGH.
+    // If last cron run was < 90min ago (3× the 30min interval): cron is alive,
+    // sources are just quiet. Raise MEDIUM only — this is normal overnight behavior.
+    // If last cron run was > 90min ago (or unknown): cron itself has stopped → HIGH.
+    const cronStoppedToo = minutesSinceLastCronRun === null || minutesSinceLastCronRun > 90
+    if (cronStoppedToo) {
+      issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) AND news cron hasn't run in ${minutesSinceLastCronRun ?? 'unknown'} min — feed may have stopped. Check Vercel → Cron Jobs.` })
+    } else {
+      issues.push({ severity: 'MEDIUM', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) but news cron is running (last run ${minutesSinceLastCronRun}min ago, status: ${lastNewsCronRun?.status}). Sources may be quiet — normal overnight behavior.` })
+    }
+  }
 
   if (!env.NEWSAPI_KEY.set && !env.GNEWS_KEY.set)
     issues.push({ severity: 'MEDIUM', msg: 'Neither NEWSAPI_KEY nor GNEWS_KEY set — news feed relies on RSS only (no API articles).' })
