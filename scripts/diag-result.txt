@@ -2,9 +2,20 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 34
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/324648e5f70d82702a200adc9ff9eda
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74353866dda0c826ef509c958faa467
+Missing: 45
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/717bf5e355faf0f1095f84d75e46492
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6d8a644839aa93c3cbce4edeed3ee75
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5092a0511b7775b3715306ed72b0989
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/de1982c30bafc8919f81cebc358a89c
+  skip coupon: https://gun.deals/content/coupon-store-brownellswednesday-ju
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d00757f0a72c2eacb60b3959682dd06
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f3756f4b9169dc83074e7a1b874dd65
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f820f75e10e88dc17751d511bd1700
+  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d7a6a8084aefca1d5109c94027c707
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8d8d737307a7dd957beaabd442e51e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/52b5ac7dca364ddaf7352a3c43777cd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/331d2a3e5200217910e576d34a60d56
   skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
   skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
   skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
@@ -37,10 +48,10 @@ Missing: 34
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 2
+  → patched final 11
 
-Stats: uploaded=2 fallback=0 failed=2
+Stats: uploaded=11 fallback=0 failed=2
 
-=== FINAL: total=3548 missing_images=32 reddit=0 ===
+=== FINAL: total=3561 missing_images=34 reddit=0 ===
 
-FIXED: 2
+FIXED: 11
