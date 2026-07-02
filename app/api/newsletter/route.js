@@ -54,11 +54,12 @@ export async function POST(req) {
       // Don't fail the signup if Sanity fails
     }
     
-    const resend = getResend()
-    const audienceId = process.env.RESEND_AUDIENCE_ID
-    if (audienceId && process.env.RESEND_API_KEY) {
-      await resend.contacts.create({ email, firstName: name || '', audienceId }).catch(() => {})
+    // Add to MailerLite group
+    if (process.env.MAILERLITE_API_KEY) {
+      const { mlSubscribe } = require('@/lib/mailerLite')
+      await mlSubscribe(email, { name }).catch(e => console.error('MailerLite error:', e.message))
     }
+    const resend = getResend()
     if (process.env.RESEND_API_KEY) {
       const welcomeHTML = `
 <!DOCTYPE html>

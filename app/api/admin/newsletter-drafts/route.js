@@ -171,13 +171,11 @@ export async function POST(req) {
       return Response.json({ ok: true })
     }
 
-    // Real send — to audience
-    const audienceId = process.env.RESEND_AUDIENCE_ID
-    if (!audienceId) return Response.json({ error: 'RESEND_AUDIENCE_ID not configured' }, { status: 400 })
-
-    const contacts = await resend.contacts.list({ audienceId })
-    const emails = (contacts.data?.data || []).filter(c => !c.unsubscribed).map(c => c.email)
-    if (emails.length === 0) return Response.json({ error: 'No subscribers found in audience' }, { status: 400 })
+    // Real send — fetch active subscribers from MailerLite group
+    const { mlGetGroupSubscribers } = require('@/lib/mailerLite')
+    const mlSubscribers = await mlGetGroupSubscribers()
+    const emails = mlSubscribers.map(s => s.email).filter(Boolean)
+    if (emails.length === 0) return Response.json({ error: 'No active subscribers found in MailerLite group' }, { status: 400 })
 
     // Send in batches of 50
     let sent = 0
