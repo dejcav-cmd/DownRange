@@ -1,7 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
-export const metadata = { title: 'Embed DownRange Widget — Free Gun Law Widget for Your Site', description: 'Free embeddable firearms law widget for gun stores and 2A websites.', alternates: { canonical: 'https://downrangeco.com/widget' } }
+export const metadata = { title: 'Embed DownRange Widget — Free Gun Law Widget for Your Site', description: 'Free embeddable firearms law widget for gun stores and 2A websites.', alternates: { canonical: 'https://www.downrangeco.com/widget' } }
 
 export default function WidgetPage() {
   return (
@@ -22,7 +22,7 @@ export default function WidgetPage() {
             </p>
             <div style={{ background: '#0D1117', border: '1px solid var(--border)', padding: '20px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '13px', color: '#34D399', lineHeight: 2 }}>
               {'<div id="downrange-widget"></div>'}<br/>
-              {'<script src="https://downrangeco.com/api/widget?state=TX&format=js"></script>'}
+              {'<script src="https://www.downrangeco.com/api/widget?state=TX&format=js"></script>'}
             </div>
           </div>
           <div style={{ background: '#111318', border: '1px solid var(--border)', padding: '32px' }}>

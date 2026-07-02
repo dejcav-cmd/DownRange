@@ -8,12 +8,12 @@ export const metadata = {
   title: 'Live Ammo Prices & Firearms Market Index | DownRange',
   description: 'Live ammo prices for 9mm, .223/5.56, .308, and 12 more calibers. NICS trends, buy signals, retailer links, and daily AI market analysis.',
   keywords: 'ammo prices, cheapest ammo, 9mm price, .223 price, bulk ammo deals, ammo market, NICS background checks',
-  alternates: { canonical: 'https://downrangeco.com/market' },
+  alternates: { canonical: 'https://www.downrangeco.com/market' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/market',
+    type: 'website', url: 'https://www.downrangeco.com/market',
     title: 'Live Ammo Prices & Firearms Market Index | DownRange',
     description: 'Live ammo prices for 14 calibers with buy signals, NICS trends, and retailer links.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
   },
   twitter: { card: 'summary_large_image', title: 'Live Ammo Prices | DownRange', description: 'Current 9mm, .223, .308 prices with buy signals and retailer links.' },
 }
@@ -23,17 +23,17 @@ const MARKET_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'WebPage',
     name: 'Ammo Prices & Firearms Market Index',
-    url: 'https://downrangeco.com/market',
+    url: 'https://www.downrangeco.com/market',
     description: 'Live ammo prices for 14 calibers with NICS background check trends, retailer buy links, and AI market analysis.',
-    publisher: { '@id': 'https://downrangeco.com/#organization' },
+    publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     about: { '@type': 'Thing', name: 'Ammunition Pricing' },
   },
   {
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
-      { '@type': 'ListItem', position: 2, name: 'Market Index', item: 'https://downrangeco.com/market' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: 'Market Index', item: 'https://www.downrangeco.com/market' },
     ],
   },
 ]

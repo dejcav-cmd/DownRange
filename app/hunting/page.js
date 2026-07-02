@@ -7,11 +7,11 @@ import { fetchBreakingAlerts } from '../../sanity/lib/client'
 export const metadata = {
   title: 'Hunting — Season Dates, Game by State, Cartridge Guides | DownRange',
   description: 'Complete hunting resource: 2025-2026 season dates for all 50 states, species guides, cartridge selection, draw deadlines, field skills, and gear recommendations.',
-  alternates: { canonical: 'https://downrangeco.com/hunting' },
+  alternates: { canonical: 'https://www.downrangeco.com/hunting' },
   openGraph: {
     title: 'Hunting — Season Dates by State, Game & Cartridge Guides | DownRange',
     description: '2025-2026 hunting seasons for deer, elk, turkey, bear & waterfowl across all 50 states. Cartridge guides, draw deadlines, and field skills.',
-    url: 'https://downrangeco.com/hunting',
+    url: 'https://www.downrangeco.com/hunting',
   },
 }
 

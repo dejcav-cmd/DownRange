@@ -9,7 +9,7 @@ export async function GET() {
   let items = []
   items = articles.map(m => ({
       title:       `${m.name} — ${m.org}`,
-      url:         m.registrationUrl || `https://downrangeco.com/competitions`,
+      url:         m.registrationUrl || `https://www.downrangeco.com/competitions`,
       description: `${m.discipline} · ${m.city}, ${m.state} · ${m.startDate}${m.entryFee ? ' · $'+m.entryFee : ''}. ${m.description||''}`,
       date:        m.startDate,
       category:    m.discipline,
@@ -20,7 +20,7 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — Shooting Competitions',
     description: 'NRA, USPSA, IDPA, PRS, NRL22, Steel Challenge and more — competition calendar.',
-    feedUrl:     'https://downrangeco.com/feeds/competitions',
+    feedUrl:     'https://www.downrangeco.com/feeds/competitions',
     items,
   })
 }

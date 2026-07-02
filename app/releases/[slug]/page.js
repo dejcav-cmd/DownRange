@@ -21,9 +21,9 @@ export async function generateMetadata({ params }) {
     { slug: params.slug }
   ).catch(() => null)
   if (!r) return { title: 'Release — DownRange' }
-  const img = r.heroImage?.asset?.url || r.imageUrl || 'https://downrangeco.com/og-default.png'
+  const img = r.heroImage?.asset?.url || r.imageUrl || 'https://www.downrangeco.com/og-default.png'
   const title = `${r.brand} ${r.model || r.title}`
-  const url   = `https://downrangeco.com/releases/${params.slug}`
+  const url   = `https://www.downrangeco.com/releases/${params.slug}`
   return {
     title: `${title} | DownRange`,
     description: (r.summary || `${r.brand} ${r.model} — new firearm release. Full specs, MSRP, and availability on DownRange.`).slice(0, 160),
@@ -73,7 +73,7 @@ export default async function ReleasePage({ params }) {
     release.availableDate && { label:'Available', value: release.availableDate },
   ].filter(Boolean)
 
-  const releaseUrl = `https://downrangeco.com/releases/${params.slug}`
+  const releaseUrl = `https://www.downrangeco.com/releases/${params.slug}`
   const releaseSchema = [
     {
       '@context': 'https://schema.org',
@@ -99,7 +99,7 @@ export default async function ReleasePage({ params }) {
         seller: {
           '@type': 'Organization',
           name:    'DownRange Co.',
-          url:     'https://downrangeco.com',
+          url:     'https://www.downrangeco.com',
         },
         hasMerchantReturnPolicy: {
           '@type':                 'MerchantReturnPolicy',
@@ -171,8 +171,8 @@ export default async function ReleasePage({ params }) {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://downrangeco.com' },
-        { '@type': 'ListItem', position: 2, name: 'Releases', item: 'https://downrangeco.com/releases' },
+        { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.downrangeco.com' },
+        { '@type': 'ListItem', position: 2, name: 'Releases', item: 'https://www.downrangeco.com/releases' },
         { '@type': 'ListItem', position: 3, name: `${release.brand} ${release.model || release.title}`, item: releaseUrl },
       ],
     },

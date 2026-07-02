@@ -29,7 +29,7 @@ const SEED_PROFILES = {
 export async function generateMetadata({ params }) {
   const abbr = params.state?.toUpperCase()
   const name = STATE_NAMES[abbr] || abbr
-  const url = `https://downrangeco.com/state-hub/${abbr}`
+  const url = `https://www.downrangeco.com/state-hub/${abbr}`
   return {
     title: `${name} Gun Laws & CCW Guide | DownRange`,
     description: `Comprehensive guide to ${name} firearms laws: concealed carry, constitutional carry status, magazine limits, AWB, red flag laws, and CCW reciprocity.`,
@@ -38,7 +38,7 @@ export async function generateMetadata({ params }) {
       type: 'article', url,
       title: `${name} Gun Laws & CCW Guide`,
       description: `${name} carry laws, magazine limits, AWB status, and CCW reciprocity — updated for ${new Date().getFullYear()}.`,
-      images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: `${name} Gun Laws` }],
+      images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: `${name} Gun Laws` }],
     },
   }
 }
@@ -80,9 +80,9 @@ export default async function StatePage({ params }) {
         '@context': 'https://schema.org',
         '@type': 'BreadcrumbList',
         itemListElement: [
-          { '@type': 'ListItem', position: 1, name: 'Home',      item: 'https://downrangeco.com' },
-          { '@type': 'ListItem', position: 2, name: 'State Hub', item: 'https://downrangeco.com/state-hub' },
-          { '@type': 'ListItem', position: 3, name: `${stateName} Gun Laws`, item: `https://downrangeco.com/state-hub/${abbr}` },
+          { '@type': 'ListItem', position: 1, name: 'Home',      item: 'https://www.downrangeco.com' },
+          { '@type': 'ListItem', position: 2, name: 'State Hub', item: 'https://www.downrangeco.com/state-hub' },
+          { '@type': 'ListItem', position: 3, name: `${stateName} Gun Laws`, item: `https://www.downrangeco.com/state-hub/${abbr}` },
         ],
       }) }} />
       <Masthead />

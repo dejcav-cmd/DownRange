@@ -48,7 +48,7 @@ export async function generateMetadata({ params }) {
   const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
   const post = allPosts.find(p => p.slug === params.slug)
   if (!post) return { title: 'Article Not Found | DownRange' }
-  const url = `https://downrangeco.com/blog/${params.slug}`
+  const url = `https://www.downrangeco.com/blog/${params.slug}`
   return {
     title:       `${post.title} | DownRange Blog`,
     description: post.excerpt,
@@ -63,13 +63,13 @@ export async function generateMetadata({ params }) {
       tags:        post.tags || [],
       images: post.img
         ? [{ url: post.img, width: 1400, height: 900, alt: post.title }]
-        : [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: post.title }],
+        : [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
       card:        'summary_large_image',
       title:       post.title,
       description: (post.excerpt || '').slice(0, 160),
-      images:      [post.img || 'https://downrangeco.com/og-default.png'],
+      images:      [post.img || 'https://www.downrangeco.com/og-default.png'],
     },
   }
 }
@@ -126,43 +126,43 @@ export default async function BlogArticlePage({ params }) {
         {
           '@context':   'https://schema.org',
           '@type':      'BlogPosting',
-          '@id':        `https://downrangeco.com/blog/${post.slug}#article`,
+          '@id':        `https://www.downrangeco.com/blog/${post.slug}#article`,
           headline:     post.title,
           description:  (post.excerpt || '').slice(0, 160),
           image: post.img
             ? [{ '@type': 'ImageObject', url: post.img, width: 1400, height: 900 }]
-            : [{ '@type': 'ImageObject', url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+            : [{ '@type': 'ImageObject', url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
           datePublished: post.date,
           dateModified:  post.date,
           author: [{
             '@type':   'Person',
             name:      post.author || 'DJ Cavalcanti',
-            url:       'https://downrangeco.com/about',
+            url:       'https://www.downrangeco.com/about',
             jobTitle:  'Founder, DownRange',
           }],
           publisher: {
             '@type': 'Organization',
-            '@id':   'https://downrangeco.com/#organization',
+            '@id':   'https://www.downrangeco.com/#organization',
             name:    'DownRange',
-            url:     'https://downrangeco.com',
-            logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/img/logo.png', width: 560, height: 162 },
+            url:     'https://www.downrangeco.com',
+            logo:    { '@type': 'ImageObject', url: 'https://www.downrangeco.com/img/logo.png', width: 560, height: 162 },
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id':   `https://downrangeco.com/blog/${post.slug}`,
+            '@id':   `https://www.downrangeco.com/blog/${post.slug}`,
           },
-          isPartOf: { '@id': 'https://downrangeco.com/#website' },
+          isPartOf: { '@id': 'https://www.downrangeco.com/#website' },
           keywords: (post.tags || []).join(', '),
-          url: `https://downrangeco.com/blog/${post.slug}`,
+          url: `https://www.downrangeco.com/blog/${post.slug}`,
           inLanguage: 'en-US',
         },
         {
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
-            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://downrangeco.com/blog' },
-            { '@type': 'ListItem', position: 3, name: post.title, item: `https://downrangeco.com/blog/${post.slug}` },
+            { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+            { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://www.downrangeco.com/blog' },
+            { '@type': 'ListItem', position: 3, name: post.title, item: `https://www.downrangeco.com/blog/${post.slug}` },
           ],
         },
       ]) }} />

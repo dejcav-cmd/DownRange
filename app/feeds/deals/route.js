@@ -9,10 +9,10 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — Gun Deals',
     description: 'Firearms, ammo, and gear deals from verified retailers.',
-    feedUrl:     'https://downrangeco.com/feeds/deals',
+    feedUrl:     'https://www.downrangeco.com/feeds/deals',
     items: items.map(d => ({
       title:       `${d.title}${d.price ? ` — $${d.price}` : ''}`,
-      url:         d.dealUrl || `https://downrangeco.com/deals`,
+      url:         d.dealUrl || `https://www.downrangeco.com/deals`,
       description: d.description || '',
       date:        d.publishedAt || d._createdAt,
       category:    d.category || 'deals',

@@ -9,7 +9,7 @@ export async function GET() {
   let items = []
   items = articles.map(a => ({
       title:       a.title,
-      url:         `https://downrangeco.com/news/${a.slug?.current}`,
+      url:         `https://www.downrangeco.com/news/${a.slug?.current}`,
       description: a.summary || a.excerpt || '',
       date:        a.publishedAt,
       category:    a.category,
@@ -20,7 +20,7 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — Gun Laws & Legislation',
     description: 'Second Amendment legislation, court cases, ATF rules, and 2A legal news.',
-    feedUrl:     'https://downrangeco.com/feeds/laws',
+    feedUrl:     'https://www.downrangeco.com/feeds/laws',
     items,
   })
 }

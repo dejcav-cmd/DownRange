@@ -199,7 +199,7 @@ export default function RSSPageClient() {
   const [activeId,  setActiveId]  = useState(null)
   const [filterTag, setFilterTag] = useState(null)
 
-  const BASE = 'https://downrangeco.com'
+  const BASE = 'https://www.downrangeco.com'
   const allTags = [...new Set(FEEDS.flatMap(f => f.tags))].sort()
   const visible = filterTag ? FEEDS.filter(f => f.tags.includes(filterTag)) : FEEDS
 
@@ -275,7 +275,7 @@ export default function RSSPageClient() {
             <code style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#F0EDE6' }}>
               downrangeco.com/feed.xml
             </code>
-            <CopyBtn text="https://downrangeco.com/feed.xml" />
+            <CopyBtn text="https://www.downrangeco.com/feed.xml" />
             <a href="/feed.xml" target="_blank" rel="noreferrer"
               style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#C8922A', textDecoration: 'none' }}>
               Preview ↗
@@ -292,8 +292,8 @@ export default function RSSPageClient() {
               Open master feed in:
             </span>
             {READERS.map(r => {
-              const feedUrl = encodeURIComponent('https://downrangeco.com/feed.xml')
-              const href = r.url + (r.url.startsWith('http') ? feedUrl : 'https://downrangeco.com/feed.xml')
+              const feedUrl = encodeURIComponent('https://www.downrangeco.com/feed.xml')
+              const href = r.url + (r.url.startsWith('http') ? feedUrl : 'https://www.downrangeco.com/feed.xml')
               return (
                 <a key={r.name} href={href} target="_blank" rel="noreferrer"
                   style={{

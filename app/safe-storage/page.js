@@ -1,6 +1,6 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-export const metadata = { title: 'Gun Safe & Storage Guide — DownRange', description: 'Complete guide to firearms safe storage. Reviews and recommendations for quick-access, biometric, and full-vault safes.', alternates: { canonical: 'https://downrangeco.com/safe-storage' } }
+export const metadata = { title: 'Gun Safe & Storage Guide — DownRange', description: 'Complete guide to firearms safe storage. Reviews and recommendations for quick-access, biometric, and full-vault safes.', alternates: { canonical: 'https://www.downrangeco.com/safe-storage' } }
 
 const SAFES = [
   { name:'Fort Knox PB1 Handgun Safe', category:'Quick-Access', price:200, rating:9.2, image:'/img/photos/pistol.jpg', pros:['Simplex mechanical lock — no batteries','Heavy 10-gauge steel','No electronics to fail','Lifetime warranty'], cons:['Combination only','Holds 1–2 handguns'], verdict:'Best for reliability purists. Mechanical lock means it works every time, no dead batteries.' },

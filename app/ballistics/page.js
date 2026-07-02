@@ -8,13 +8,13 @@ export const metadata = {
   title: 'Ballistics Calculator — Free Drop Tables & Wind Drift | DownRange',
   description: 'Free G1 external ballistics calculator. Bullet drop tables, wind drift, MOA/MRAD scope corrections, and trajectory charts for 38 calibers out to 1,000 yards. Compare two loads.',
   keywords: 'ballistics calculator, bullet drop calculator, external ballistics, MOA calculator, wind drift, trajectory chart, scope correction',
-  alternates: { canonical: 'https://downrangeco.com/ballistics' },
+  alternates: { canonical: 'https://www.downrangeco.com/ballistics' },
   openGraph: {
     type: 'website',
-    url: 'https://downrangeco.com/ballistics',
+    url: 'https://www.downrangeco.com/ballistics',
     title: 'Free Ballistics Calculator — Drop Tables, Wind Drift & MOA | DownRange',
     description: 'G1 ballistics engine: bullet drop tables, wind drift, MOA/MRAD corrections, and trajectory charts for 38 calibers to 1,000 yards.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange Ballistics Calculator' }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange Ballistics Calculator' }],
   },
   twitter: { card: 'summary_large_image', title: 'Free Ballistics Calculator | DownRange', description: 'Drop tables, wind drift, MOA corrections for 38 calibers.' },
 }
@@ -26,10 +26,10 @@ const SCHEMA = [
     name: 'DownRange Ballistics Calculator',
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
-    url: 'https://downrangeco.com/ballistics',
+    url: 'https://www.downrangeco.com/ballistics',
     description: 'Free G1 external ballistics calculator with drop tables, wind drift, MOA/MRAD scope corrections, and dual-load comparison for 38 calibers out to 1,000 yards.',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    publisher: { '@id': 'https://downrangeco.com/#organization' },
+    publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     featureList: [
       '38 caliber presets from .17 HMR to .338 Lapua',
       'Full PRC family (6.5 PRC, 7mm PRC, .300 PRC)',
@@ -45,8 +45,8 @@ const SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
-      { '@type': 'ListItem', position: 2, name: 'Ballistics Calculator', item: 'https://downrangeco.com/ballistics' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: 'Ballistics Calculator', item: 'https://www.downrangeco.com/ballistics' },
     ],
   },
   {

@@ -5,11 +5,11 @@ import Footer from '../../components/layout/Footer'
 export const metadata = {
   title: 'Gun Giveaways 2026 — Free Firearm Giveaways | DownRange',
   description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. Updated daily.',
-  alternates: { canonical: 'https://downrangeco.com/giveaways' },
+  alternates: { canonical: 'https://www.downrangeco.com/giveaways' },
   openGraph: {
     title: 'Gun Giveaways 2026 — Win Free Firearms | DownRange',
     description: 'Active gun giveaways updated daily.',
-    url: 'https://downrangeco.com/giveaways',
+    url: 'https://www.downrangeco.com/giveaways',
   },
 }
 

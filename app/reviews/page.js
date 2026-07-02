@@ -8,12 +8,12 @@ export const metadata = {
   title: 'Firearms & Gear Reviews | DownRange',
   description: 'Field-tested firearm and gear reviews. Round counts documented, no paid placements, no manufacturer samples that affect the outcome.',
   keywords: 'gun reviews, firearm reviews, pistol review, rifle review, gear review, handgun review',
-  alternates: { canonical: 'https://downrangeco.com/reviews' },
+  alternates: { canonical: 'https://www.downrangeco.com/reviews' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/reviews',
+    type: 'website', url: 'https://www.downrangeco.com/reviews',
     title: 'Firearms & Gear Reviews | DownRange',
     description: 'Field-tested firearm and gear reviews with documented round counts. No paid placements.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange Firearms Reviews' }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange Firearms Reviews' }],
   },
   twitter: { card: 'summary_large_image', title: 'Firearms Reviews | DownRange', description: 'Field-tested, no-BS gun and gear reviews.' },
 }

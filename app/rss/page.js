@@ -6,18 +6,18 @@ export const metadata = {
   alternates: {
     types: {
       'application/rss+xml': [
-        { url: 'https://downrangeco.com/feed.xml',             title: 'DownRange — All Content' },
-        { url: 'https://downrangeco.com/feeds/news',           title: 'DownRange — Firearms News' },
-        { url: 'https://downrangeco.com/feeds/laws',           title: 'DownRange — Laws & Legislation' },
-        { url: 'https://downrangeco.com/feeds/releases',       title: 'DownRange — New Releases' },
-        { url: 'https://downrangeco.com/feeds/blog',           title: 'DownRange — Blog & Analysis' },
-        { url: 'https://downrangeco.com/feeds/reviews',        title: 'DownRange — Gun Reviews' },
-        { url: 'https://downrangeco.com/feeds/giveaways',      title: 'DownRange — Gun Giveaways' },
-        { url: 'https://downrangeco.com/feeds/hunting',        title: 'DownRange — Hunting & Outdoors' },
-        { url: 'https://downrangeco.com/feeds/deals',          title: 'DownRange — Gun Deals' },
-        { url: 'https://downrangeco.com/feeds/video',          title: 'DownRange — Firearms Videos' },
-        { url: 'https://downrangeco.com/feeds/competitions',   title: 'DownRange — Competitions' },
-        { url: 'https://downrangeco.com/feeds/canada',         title: 'DownRange — Canada' },
+        { url: 'https://www.downrangeco.com/feed.xml',             title: 'DownRange — All Content' },
+        { url: 'https://www.downrangeco.com/feeds/news',           title: 'DownRange — Firearms News' },
+        { url: 'https://www.downrangeco.com/feeds/laws',           title: 'DownRange — Laws & Legislation' },
+        { url: 'https://www.downrangeco.com/feeds/releases',       title: 'DownRange — New Releases' },
+        { url: 'https://www.downrangeco.com/feeds/blog',           title: 'DownRange — Blog & Analysis' },
+        { url: 'https://www.downrangeco.com/feeds/reviews',        title: 'DownRange — Gun Reviews' },
+        { url: 'https://www.downrangeco.com/feeds/giveaways',      title: 'DownRange — Gun Giveaways' },
+        { url: 'https://www.downrangeco.com/feeds/hunting',        title: 'DownRange — Hunting & Outdoors' },
+        { url: 'https://www.downrangeco.com/feeds/deals',          title: 'DownRange — Gun Deals' },
+        { url: 'https://www.downrangeco.com/feeds/video',          title: 'DownRange — Firearms Videos' },
+        { url: 'https://www.downrangeco.com/feeds/competitions',   title: 'DownRange — Competitions' },
+        { url: 'https://www.downrangeco.com/feeds/canada',         title: 'DownRange — Canada' },
       ]
     }
   }

@@ -9,10 +9,10 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — Hunting & Outdoors',
     description: 'Hunting news, gear reviews, season updates, and outdoors content.',
-    feedUrl:     'https://downrangeco.com/feeds/hunting',
+    feedUrl:     'https://www.downrangeco.com/feeds/hunting',
     items: items.map(a => ({
       title:       a.title,
-      url:         `https://downrangeco.com/hunting/${a.slug?.current || ''}`,
+      url:         `https://www.downrangeco.com/hunting/${a.slug?.current || ''}`,
       description: a.excerpt || '',
       date:        a.publishedAt,
       category:    a.category || 'hunting',

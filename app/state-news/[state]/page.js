@@ -119,7 +119,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${name} Firearms News — DownRange`,
     description: `Latest firearms news, laws, and legislation for ${name}. Updated every 15 minutes.`,
-    alternates: { canonical: `https://downrangeco.com/state-news/${abbr.toLowerCase()}` },
+    alternates: { canonical: `https://www.downrangeco.com/state-news/${abbr.toLowerCase()}` },
   }
 }
 

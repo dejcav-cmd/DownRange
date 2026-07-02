@@ -4,29 +4,29 @@ import Footer from '../../components/layout/Footer'
 export const metadata = {
   title: 'About DownRange — Built for Gun Owners | Independent 2A Intelligence',
   description: 'DownRange is an independent firearms intelligence platform covering 2A news, state gun laws, new releases, and ammo prices. No manufacturer money. No paywalls.',
-  alternates: { canonical: 'https://downrangeco.com/about' },
+  alternates: { canonical: 'https://www.downrangeco.com/about' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/about',
+    type: 'website', url: 'https://www.downrangeco.com/about',
     title: 'About DownRange — Built for Gun Owners',
     description: 'Independent 2A intelligence. No manufacturer money. No paywalls. Built by a gun owner, for gun owners.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'About DownRange' }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'About DownRange' }],
   },
 }
 
 const ABOUT_SCHEMA = {
   '@context': 'https://schema.org',
   '@type': 'AboutPage',
-  '@id': 'https://downrangeco.com/about#page',
-  url: 'https://downrangeco.com/about',
+  '@id': 'https://www.downrangeco.com/about#page',
+  url: 'https://www.downrangeco.com/about',
   name: 'About DownRange',
   description: 'DownRange is an independent firearms intelligence platform covering Second Amendment news, gun laws, ammo prices, and new releases.',
-  isPartOf: { '@id': 'https://downrangeco.com/#website' },
+  isPartOf: { '@id': 'https://www.downrangeco.com/#website' },
   about: {
-    '@id': 'https://downrangeco.com/#organization',
+    '@id': 'https://www.downrangeco.com/#organization',
     '@type': 'NewsMediaOrganization',
     name: 'DownRange',
     alternateName: 'DownRange Firearms Intelligence',
-    url: 'https://downrangeco.com',
+    url: 'https://www.downrangeco.com',
     foundingDate: '2026',
     areaServed: 'United States',
     knowsAbout: [
@@ -37,7 +37,7 @@ const ABOUT_SCHEMA = {
     founder: {
       '@type': 'Person',
       name: 'DJ Cavalcanti',
-      url: 'https://downrangeco.com/about',
+      url: 'https://www.downrangeco.com/about',
       jobTitle: 'Founder & Editor',
       knowsAbout: ['Second Amendment', 'Firearms', 'CCW', '2A Law'],
     },

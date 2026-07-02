@@ -5,7 +5,7 @@ import { fetchLegislation, fetchBreakingAlerts } from '../../../sanity/lib/clien
 export const metadata = {
   title: 'Federal Gun Law Intelligence | DownRange',
   description: 'Bills in Congress, ATF rulemaking, and active SCOTUS cases. Every law that affects your Second Amendment rights at the federal level.',
-  alternates: { canonical: 'https://downrangeco.com/laws/federal' },
+  alternates: { canonical: 'https://www.downrangeco.com/laws/federal' },
 }
 export const revalidate = 120
 

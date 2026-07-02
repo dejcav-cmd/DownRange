@@ -14,9 +14,9 @@ export default function robots() {
       },
     ],
     sitemap: [
-      'https://downrangeco.com/sitemap.xml',
-      'https://downrangeco.com/news-sitemap.xml',
+      'https://www.downrangeco.com/sitemap.xml',
+      'https://www.downrangeco.com/news-sitemap.xml',
     ],
-    host: 'https://downrangeco.com',
+    host: 'https://www.downrangeco.com',
   }
 }

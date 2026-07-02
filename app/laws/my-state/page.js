@@ -7,7 +7,7 @@ import { STATE_SEED } from '../../../lib/stateSeed'
 export const metadata = {
   title: "Your State's Gun Laws | DownRange",
   description: "Your state's concealed carry laws, magazine limits, AWB status, waiting periods, and reciprocity — auto-detected from your location.",
-  alternates: { canonical: 'https://downrangeco.com/laws/my-state' },
+  alternates: { canonical: 'https://www.downrangeco.com/laws/my-state' },
 }
 export const revalidate = 1800
 

@@ -30,7 +30,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${name} Gun Laws ${new Date().getFullYear()} | DownRange`,
     description: `${name} firearms laws: constitutional carry, CCW permit, magazine limits, AWB status, waiting period, red flag law, and reciprocity.`,
-    alternates: { canonical: `https://downrangeco.com/laws/${params.state.toUpperCase()}` },
+    alternates: { canonical: `https://www.downrangeco.com/laws/${params.state.toUpperCase()}` },
   }
 }
 

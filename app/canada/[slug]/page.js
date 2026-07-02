@@ -72,7 +72,7 @@ async function getRelated(slug) {
 export async function generateMetadata({ params }) {
   const article = await getArticle(params.slug)
   if (!article) return { title: 'Article Not Found | DownRange' }
-  const url = `https://downrangeco.com/canada/${params.slug}`
+  const url = `https://www.downrangeco.com/canada/${params.slug}`
   return {
     title:       `${article.title} | DownRange Canada`,
     description: article.summary || article.title,
@@ -114,7 +114,7 @@ export default async function CanadaArticlePage({ params }) {
   const tag      = article.tag || 'NEWS'
   const tagStyle = TAG_COLORS[tag] || TAG_COLORS.NEWS
   const imageUrl = article.imageUrl || getFallback(article)
-  const pageUrl  = `https://downrangeco.com/canada/${params.slug}`
+  const pageUrl  = `https://www.downrangeco.com/canada/${params.slug}`
 
   return (
     <>
@@ -131,8 +131,8 @@ export default async function CanadaArticlePage({ params }) {
         author: [{ '@type': 'Person', name: article.author || 'DownRange' }],
         publisher: {
           '@type': 'Organization', name: 'DownRange',
-          url: 'https://downrangeco.com',
-          logo: { '@type': 'ImageObject', url: 'https://downrangeco.com/favicon.svg' },
+          url: 'https://www.downrangeco.com',
+          logo: { '@type': 'ImageObject', url: 'https://www.downrangeco.com/favicon.svg' },
         },
         mainEntityOfPage: { '@type': 'WebPage', '@id': pageUrl },
         url: pageUrl,

@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Canada — Firearms News, PAL, C-21 | DownRange',
   description: 'Canadian firearms news, PAL licensing, Bill C-21 updates, and province-by-province laws.',
-  alternates: { canonical: 'https://downrangeco.com/canada' },
+  alternates: { canonical: 'https://www.downrangeco.com/canada' },
 }
 
 const sanity = createClient({

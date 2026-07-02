@@ -2,7 +2,7 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 
-export const metadata = { title: 'State Firearms News — DownRange', description: 'Firearms news for all 50 states. Real-time feeds from state-level sources.', alternates: { canonical: 'https://downrangeco.com/state-news' } }
+export const metadata = { title: 'State Firearms News — DownRange', description: 'Firearms news for all 50 states. Real-time feeds from state-level sources.', alternates: { canonical: 'https://www.downrangeco.com/state-news' } }
 
 const STATES_WITH_ACTIVITY = [
   { abbr:'TX', name:'Texas', activity:'HIGH', note:'Constitutional carry expansion, no red flag law' },

@@ -1,7 +1,7 @@
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-export const metadata = { title: 'Privacy Policy — DownRange', alternates: { canonical: 'https://downrangeco.com/privacy' } }
+export const metadata = { title: 'Privacy Policy — DownRange', alternates: { canonical: 'https://www.downrangeco.com/privacy' } }
 export default async function Privacy() {
   const sections = [
     ['Information We Collect','We collect email addresses when you subscribe to our newsletter or set price alerts. We collect anonymous usage data to improve the site. We do not sell your data.'],

@@ -3,11 +3,11 @@ import ValueEstimatorPage from "./PageClient"
 export const metadata = {
   title:       "Gun Value Estimator — What Is Your Firearm Worth? | DownRange",
   description: "Estimate the current market value of your firearm. Compare used gun prices across platforms.",
-  alternates:  { canonical: "https://downrangeco.com/value-estimator" },
+  alternates:  { canonical: "https://www.downrangeco.com/value-estimator" },
   openGraph: {
     title:       "Gun Value Estimator — What Is Your Firearm Worth? | DownRange",
     description: "Estimate the current market value of your firearm. Compare used gun prices across platforms.",
-    url:         "https://downrangeco.com/value-estimator",
+    url:         "https://www.downrangeco.com/value-estimator",
     type:        "website",
   },
   twitter: {

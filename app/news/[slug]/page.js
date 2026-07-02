@@ -64,7 +64,7 @@ export async function generateMetadata({ params }) {
   const article = await getArticleBySlug(params.slug).catch(() => null)
   if (!article) return { title: 'Article Not Found | DownRange' }
   const img = article?.heroImage?.asset?.url || article?.imageUrl || null
-  const url = `https://downrangeco.com/news/${params.slug}`
+  const url = `https://www.downrangeco.com/news/${params.slug}`
   return {
     title:       `${article.title} | DownRange`,
     description: article.summary || article.excerpt || article.title,
@@ -80,13 +80,13 @@ export async function generateMetadata({ params }) {
       tags:        article.tags || [],
       images: img
         ? [{ url: img, width: 1200, height: 630, alt: article.imageAlt || article.title }]
-        : [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange' }],
+        : [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange' }],
     },
     twitter: {
       card:        'summary_large_image',
       title:       article.title,
       description: (article.summary || article.excerpt || '').slice(0, 160),
-      images:      img ? [img] : ['https://downrangeco.com/og-default.png'],
+      images:      img ? [img] : ['https://www.downrangeco.com/og-default.png'],
     }
   }
 }
@@ -171,46 +171,46 @@ export default async function ArticlePage({ params }) {
         {
           '@context': 'https://schema.org',
           '@type':    'NewsArticle',
-          '@id':      `https://downrangeco.com/news/${params.slug}#article`,
+          '@id':      `https://www.downrangeco.com/news/${params.slug}#article`,
           headline:   article.title,
           description: (article.summary || article.excerpt || article.title).slice(0, 160),
           image:      imageUrl
             ? [{ '@type': 'ImageObject', url: imageUrl, width: 1200, height: 630 }]
-            : [{ '@type': 'ImageObject', url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+            : [{ '@type': 'ImageObject', url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
           datePublished: article.publishedAt,
           dateModified:  article._updatedAt || article.publishedAt,
           author: [{
             '@type': 'Person',
             name:    'DJ Cavalcanti',
-            url:     'https://downrangeco.com/about',
+            url:     'https://www.downrangeco.com/about',
             jobTitle:'Editor, DownRange',
           }],
           publisher: {
             '@type': 'Organization',
-            '@id':   'https://downrangeco.com/#organization',
+            '@id':   'https://www.downrangeco.com/#organization',
             name:    'DownRange',
-            url:     'https://downrangeco.com',
-            logo:    { '@type': 'ImageObject', url: 'https://downrangeco.com/img/logo.png', width: 560, height: 162 },
+            url:     'https://www.downrangeco.com',
+            logo:    { '@type': 'ImageObject', url: 'https://www.downrangeco.com/img/logo.png', width: 560, height: 162 },
           },
           mainEntityOfPage: {
             '@type': 'WebPage',
-            '@id':   `https://downrangeco.com/news/${params.slug}`,
+            '@id':   `https://www.downrangeco.com/news/${params.slug}`,
           },
-          isPartOf: { '@id': 'https://downrangeco.com/#website' },
+          isPartOf: { '@id': 'https://www.downrangeco.com/#website' },
           articleSection: article.category,
           keywords: (article.tags || []).join(', '),
-          url: `https://downrangeco.com/news/${params.slug}`,
+          url: `https://www.downrangeco.com/news/${params.slug}`,
           inLanguage: 'en-US',
-          copyrightHolder: { '@id': 'https://downrangeco.com/#organization' },
+          copyrightHolder: { '@id': 'https://www.downrangeco.com/#organization' },
           copyrightYear: new Date(article.publishedAt || Date.now()).getFullYear(),
         },
         {
           '@context': 'https://schema.org',
           '@type': 'BreadcrumbList',
           itemListElement: [
-            { '@type': 'ListItem', position: 1, name: 'Home',  item: 'https://downrangeco.com' },
-            { '@type': 'ListItem', position: 2, name: 'News',  item: 'https://downrangeco.com/news' },
-            { '@type': 'ListItem', position: 3, name: article.title, item: `https://downrangeco.com/news/${params.slug}` },
+            { '@type': 'ListItem', position: 1, name: 'Home',  item: 'https://www.downrangeco.com' },
+            { '@type': 'ListItem', position: 2, name: 'News',  item: 'https://www.downrangeco.com/news' },
+            { '@type': 'ListItem', position: 3, name: article.title, item: `https://www.downrangeco.com/news/${params.slug}` },
           ],
         },
       ]) }} />
@@ -407,8 +407,8 @@ export default async function ArticlePage({ params }) {
             <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <span style={{ fontSize: '0.7rem', color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace", letterSpacing: '0.1em' }}>SHARE:</span>
               {[
-                { label: 'X / TWITTER', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://downrangeco.com/news/' + params.slug)}` },
-                { label: 'FACEBOOK',    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://downrangeco.com/news/' + params.slug)}` },
+                { label: 'X / TWITTER', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://www.downrangeco.com/news/' + params.slug)}` },
+                { label: 'FACEBOOK',    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://www.downrangeco.com/news/' + params.slug)}` },
               ].map(s => (
                 <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
                   style={{ color: '#4B5563', textDecoration: 'none', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', padding: '4px 8px', border: '1px solid var(--border)', transition: 'color 0.2s, border-color 0.2s' }}

@@ -6,12 +6,12 @@ export const metadata = {
   title: 'Best CCW Insurance 2026 — USCCA vs CCW Safe vs US Law Shield | DownRange',
   description: 'Side-by-side comparison of USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance. Coverage limits, attorney fees, bail bond, and pricing compared.',
   keywords: 'CCW insurance, USCCA review, CCW Safe review, concealed carry insurance, self-defense insurance, gun owner insurance',
-  alternates: { canonical: 'https://downrangeco.com/carry-insurance' },
+  alternates: { canonical: 'https://www.downrangeco.com/carry-insurance' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/carry-insurance',
+    type: 'website', url: 'https://www.downrangeco.com/carry-insurance',
     title: 'Best CCW Insurance 2026 — USCCA vs CCW Safe vs US Law Shield',
     description: 'Side-by-side comparison of the top 4 concealed carry insurance plans.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
   },
   twitter: { card: 'summary_large_image', title: 'Best CCW Insurance 2026 | DownRange', description: 'USCCA vs CCW Safe vs US Law Shield — coverage, cost, and attorney fees compared.' },
 }
@@ -30,8 +30,8 @@ const CARRY_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
-      { '@type': 'ListItem', position: 2, name: 'CCW Insurance Comparison', item: 'https://downrangeco.com/carry-insurance' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: 'CCW Insurance Comparison', item: 'https://www.downrangeco.com/carry-insurance' },
     ],
   },
 ]

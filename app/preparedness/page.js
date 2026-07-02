@@ -7,11 +7,11 @@ import { createClient } from '@sanity/client'
 export const metadata = {
   title: 'Firearms Preparedness — Home Defense, Go-Bag, Grid-Down | DownRange',
   description: 'Practical preparedness for gun owners: 72-hour kit, home defense planning, ammo storage, grid-down protocols, IFAK build, communications, and vehicle prep.',
-  alternates: { canonical: 'https://downrangeco.com/preparedness' },
+  alternates: { canonical: 'https://www.downrangeco.com/preparedness' },
   openGraph: {
     title: 'Firearms Preparedness — Home Defense & Emergency Planning | DownRange',
     description: 'No-nonsense preparedness for gun owners. 72-hour kit, home defense setup, ammo storage, go-bag, IFAK, grid-down protocols.',
-    url: 'https://downrangeco.com/preparedness',
+    url: 'https://www.downrangeco.com/preparedness',
   },
 }
 

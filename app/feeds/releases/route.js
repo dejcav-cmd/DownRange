@@ -9,7 +9,7 @@ export async function GET() {
   let items = []
   items = articles.map(r => ({
       title:       `${r.brand} ${r.model || r.title}`,
-      url:         `https://downrangeco.com/releases/${r.slug?.current}`,
+      url:         `https://www.downrangeco.com/releases/${r.slug?.current}`,
       description: r.summary || `${r.brand} ${r.model}. ${r.caliber||''} ${r.category||''}. MSRP: $${r.msrp||'TBD'}`,
       date:        r.publishedAt,
       category:    r.category,
@@ -20,7 +20,7 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — New Gun Releases',
     description: 'New firearm releases and product announcements from major manufacturers.',
-    feedUrl:     'https://downrangeco.com/feeds/releases',
+    feedUrl:     'https://www.downrangeco.com/feeds/releases',
     items,
   })
 }

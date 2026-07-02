@@ -8,12 +8,12 @@ export const metadata = {
   title: '2A Legal Intelligence | DownRange',
   description: 'Second Amendment law command center. Your state\'s gun laws, federal bills in Congress, ATF rules, and active SCOTUS cases — all in one place.',
   keywords: 'gun laws by state, Second Amendment law, ATF regulations, concealed carry laws, state firearms laws, gun control legislation 2026',
-  alternates: { canonical: 'https://downrangeco.com/laws' },
+  alternates: { canonical: 'https://www.downrangeco.com/laws' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/laws',
+    type: 'website', url: 'https://www.downrangeco.com/laws',
     title: '2A Legal Intelligence | DownRange',
     description: 'Know the law. Know your rights. Federal bills, state laws, ATF rules, and SCOTUS cases.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
   },
 }
 export const revalidate = 300
@@ -44,8 +44,8 @@ const LAWS_SCHEMA = [
     '@type': 'Dataset',
     name: '2A Legal Intelligence — DownRange',
     description: 'Comprehensive database of Second Amendment legislation, state gun laws, ATF regulations, and SCOTUS cases.',
-    url: 'https://downrangeco.com/laws',
-    publisher: { '@id': 'https://downrangeco.com/#organization' },
+    url: 'https://www.downrangeco.com/laws',
+    publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     keywords: ['Second Amendment', 'gun laws', 'ATF regulations', 'state firearms laws', 'concealed carry', 'SCOTUS 2A'],
     temporalCoverage: '2024/..',
     spatialCoverage: 'United States',
@@ -54,8 +54,8 @@ const LAWS_SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
-      { '@type': 'ListItem', position: 2, name: '2A Legal Intelligence', item: 'https://downrangeco.com/laws' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: '2A Legal Intelligence', item: 'https://www.downrangeco.com/laws' },
     ],
   },
 ]

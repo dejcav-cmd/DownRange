@@ -4,12 +4,12 @@ import { fetchReleases, searchReleases, fetchBreakingAlerts } from '../../sanity
 export const metadata = {
   title: 'New Gun Releases 2026 | DownRange',
   description: 'Latest firearm announcements, new pistol, rifle, and shotgun releases. Full specs, MSRP, and availability — updated daily.',
-  alternates: { canonical: 'https://downrangeco.com/releases' },
+  alternates: { canonical: 'https://www.downrangeco.com/releases' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/releases',
+    type: 'website', url: 'https://www.downrangeco.com/releases',
     title: 'New Gun Releases 2026 | DownRange',
     description: 'New pistols, rifles, shotguns, and suppressors — full specs and MSRP.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'New Gun Releases' }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'New Gun Releases' }],
   },
 }
 export const revalidate = 3600

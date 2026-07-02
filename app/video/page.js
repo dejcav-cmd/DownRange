@@ -4,7 +4,7 @@ import { fetchVideos, fetchBreakingAlerts } from '../../sanity/lib/client'
 export const metadata = {
   title: 'Video — DownRange',
   description: 'Firearms video reviews, training, news, and interviews from trusted channels.',
-  alternates: { canonical: 'https://downrangeco.com/video' },
+  alternates: { canonical: 'https://www.downrangeco.com/video' },
 }
 export const revalidate = 3600
 

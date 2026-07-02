@@ -4,13 +4,13 @@ export const metadata = {
   title:       "NFA Wait Time Tracker — Form 4 & Form 1 ATF Approval Times | DownRange",
   description: "Current ATF NFA wait times for Form 4 suppressors, SBRs, SBSs, and Form 1 builds. Community-sourced approval data updated weekly.",
   keywords:    'NFA wait times, Form 4 wait time, ATF approval time, suppressor wait time, SBR Form 4, NFA tracker',
-  alternates:  { canonical: "https://downrangeco.com/nfa-tracker" },
+  alternates:  { canonical: "https://www.downrangeco.com/nfa-tracker" },
   openGraph: {
     title:       "NFA Wait Time Tracker — Form 4 & Form 1 Approval Times | DownRange",
     description: "Current ATF NFA processing times for Form 4 suppressors, SBRs, and Form 1 builds.",
-    url:         "https://downrangeco.com/nfa-tracker",
+    url:         "https://www.downrangeco.com/nfa-tracker",
     type:        "website",
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
   },
   twitter: { card: "summary_large_image", title: "NFA Wait Time Tracker | DownRange", description: "Current ATF Form 4 & Form 1 approval times." },
 }
@@ -22,10 +22,10 @@ const SCHEMA = [
     name: 'DownRange NFA Wait Time Tracker',
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
-    url: 'https://downrangeco.com/nfa-tracker',
+    url: 'https://www.downrangeco.com/nfa-tracker',
     description: 'Tracks current ATF NFA wait times for Form 4 suppressors, SBRs, SBSs, and Form 1 builds using community-sourced approval data.',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
-    publisher: { '@id': 'https://downrangeco.com/#organization' },
+    publisher: { '@id': 'https://www.downrangeco.com/#organization' },
   },
   {
     '@context': 'https://schema.org',
@@ -52,8 +52,8 @@ const SCHEMA = [
     '@context': 'https://schema.org',
     '@type': 'BreadcrumbList',
     itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://downrangeco.com' },
-      { '@type': 'ListItem', position: 2, name: 'NFA Wait Time Tracker', item: 'https://downrangeco.com/nfa-tracker' },
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+      { '@type': 'ListItem', position: 2, name: 'NFA Wait Time Tracker', item: 'https://www.downrangeco.com/nfa-tracker' },
     ],
   },
 ]

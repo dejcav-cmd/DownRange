@@ -10,7 +10,7 @@ export const dynamic = 'force-dynamic'
 export const metadata = {
   title: 'Brasil — Notícias sobre Armas, CAC, Leis | DownRange',
   description: 'Notícias sobre armas de fogo no Brasil, legislação, guia CAC, análise por estado — tudo em português.',
-  alternates: { canonical: 'https://downrangeco.com/brazil' },
+  alternates: { canonical: 'https://www.downrangeco.com/brazil' },
 }
 
 const sanity = createClient({

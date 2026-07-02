@@ -8,12 +8,12 @@ import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '.
 export const metadata = {
   title: 'Firearms & 2A News | DownRange',
   description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage. Updated every 15 minutes.',
-  alternates: { canonical: 'https://downrangeco.com/news' },
+  alternates: { canonical: 'https://www.downrangeco.com/news' },
   openGraph: {
-    type: 'website', url: 'https://downrangeco.com/news',
+    type: 'website', url: 'https://www.downrangeco.com/news',
     title: 'Firearms & 2A News | DownRange',
     description: 'Real-time 2A news, ATF updates, and gun legislation — updated every 15 minutes.',
-    images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange News' }],
+    images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange News' }],
   },
 }
 export const revalidate = 300 // revalidate every 60s for fresher content

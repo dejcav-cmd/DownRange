@@ -7,7 +7,7 @@ const sanity = createClient({
   useCdn:    true,
 })
 
-const BASE = 'https://downrangeco.com'
+const BASE = 'https://www.downrangeco.com'
 
 // 2-letter state codes — matches /state-hub/[state] route params
 const US_STATE_CODES = [

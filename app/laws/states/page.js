@@ -7,7 +7,7 @@ import { STATE_SEED } from '../../../lib/stateSeed'
 export const metadata = {
   title: 'Gun Laws by State — All 50 States | DownRange',
   description: 'Complete gun law comparison for all 50 states: constitutional carry, CCW permits, magazine limits, AWB status, and red flag laws.',
-  alternates: { canonical: 'https://downrangeco.com/laws/states' },
+  alternates: { canonical: 'https://www.downrangeco.com/laws/states' },
 }
 export const revalidate = 3600
 

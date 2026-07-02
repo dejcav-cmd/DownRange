@@ -18,7 +18,7 @@ export const revalidate = 120
 export const metadata = {
   title: 'DownRange — Firearms & Second Amendment Intelligence',
   description: 'Real-time 2A news, state gun laws, ammo prices, new releases, and CCW guides for American gun owners.',
-  alternates: { canonical: 'https://downrangeco.com' },
+  alternates: { canonical: 'https://www.downrangeco.com' },
 }
 
 // ── SEED DATA ─────────────────────────────────────────────────────────────────

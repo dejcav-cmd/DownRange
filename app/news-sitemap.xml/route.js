@@ -4,7 +4,7 @@ import { client } from '../../sanity/lib/client'
 export async function GET() {
   const articles = await client.fetch(`*[_type=="newsArticle"&&approved==true]|order(publishedAt desc)[0...1000]{title,slug,publishedAt,source}`).catch(()=>[])
   const items = articles.map(a=>`<url>
-    <loc>https://downrangeco.com/news/${a.slug?.current}</loc>
+    <loc>https://www.downrangeco.com/news/${a.slug?.current}</loc>
     <news:news>
       <news:publication><news:name>DownRange</news:name><news:language>en</news:language></news:publication>
       <news:publication_date>${new Date(a.publishedAt||Date.now()).toISOString()}</news:publication_date>

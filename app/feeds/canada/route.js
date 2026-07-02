@@ -9,7 +9,7 @@ export async function GET() {
   let items = []
   items = articles.map(a => ({
       title:       a.title,
-      url:         `https://downrangeco.com/news/${a.slug?.current}`,
+      url:         `https://www.downrangeco.com/news/${a.slug?.current}`,
       description: a.summary || a.excerpt || '',
       date:        a.publishedAt,
       category:    'canada',
@@ -20,7 +20,7 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — Canadian Firearms News',
     description: 'Canadian firearms law, PAL news, C-21 updates, OIC ban, and 2A advocacy in Canada.',
-    feedUrl:     'https://downrangeco.com/feeds/canada',
+    feedUrl:     'https://www.downrangeco.com/feeds/canada',
     items,
   })
 }

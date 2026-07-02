@@ -19,19 +19,19 @@ export const viewport = {
 export const metadata = {
   title: { default: "DownRange — America's Firearms Intelligence Hub", template: '%s | DownRange' },
   description: 'The central source for U.S. firearms news, Second Amendment law, gun reviews, new releases, ammo prices, and state-by-state carry information.',
-  metadataBase: new URL('https://downrangeco.com'),
+  metadataBase: new URL('https://www.downrangeco.com'),
   icons: {
     icon:    [{ url: '/favicon.svg', type: 'image/svg+xml' }],
     shortcut:'/favicon.svg',
     apple:   '/favicon.svg',
   },
   openGraph: {
-    type:'website', locale:'en_US', url:'https://downrangeco.com',
+    type:'website', locale:'en_US', url:'https://www.downrangeco.com',
     siteName:'DownRange',
     title:"DownRange — America's Firearms Intelligence Hub",
     description:'Live. Loaded. Lawful. Real-time 2A news, gun laws, ammo prices, and new releases.',
     // PNG fallback — SVGs don't render on all social platforms
-    images:[{ url:'https://downrangeco.com/og-default.png', width:1200, height:630, alt:"DownRange — America's Firearms Intelligence Hub" }],
+    images:[{ url:'https://www.downrangeco.com/og-default.png', width:1200, height:630, alt:"DownRange — America's Firearms Intelligence Hub" }],
   },
   twitter: { card:'summary_large_image', site:'@downrangeco', creator:'@downrangeco' },
   robots: {
@@ -46,13 +46,13 @@ const ROOT_SCHEMA = [
   {
     '@context': 'https://schema.org',
     '@type': 'NewsMediaOrganization',
-    '@id': 'https://downrangeco.com/#organization',
+    '@id': 'https://www.downrangeco.com/#organization',
     name: 'DownRange',
     alternateName: 'DownRange Firearms Intelligence',
-    url: 'https://downrangeco.com',
+    url: 'https://www.downrangeco.com',
     logo: {
       '@type': 'ImageObject',
-      url: 'https://downrangeco.com/img/logo.png',
+      url: 'https://www.downrangeco.com/img/logo.png',
       width: 560, height: 162,
     },
     description: "America's central intelligence hub for firearms news, Second Amendment law, ammo prices, and state gun laws.",
@@ -67,7 +67,7 @@ const ROOT_SCHEMA = [
       'https://twitter.com/downrangeco',
       'https://bsky.app/profile/downrangeco.com',
     ],
-    publishingPrinciples: 'https://downrangeco.com/about',
+    publishingPrinciples: 'https://www.downrangeco.com/about',
     contactPoint: {
       '@type': 'ContactPoint',
       email: 'contact@downrangeco.com',
@@ -77,13 +77,13 @@ const ROOT_SCHEMA = [
   {
     '@context': 'https://schema.org',
     '@type': 'WebSite',
-    '@id': 'https://downrangeco.com/#website',
-    url: 'https://downrangeco.com',
+    '@id': 'https://www.downrangeco.com/#website',
+    url: 'https://www.downrangeco.com',
     name: 'DownRange',
-    publisher: { '@id': 'https://downrangeco.com/#organization' },
+    publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     potentialAction: {
       '@type': 'SearchAction',
-      target: { '@type': 'EntryPoint', urlTemplate: 'https://downrangeco.com/search?q={search_term_string}' },
+      target: { '@type': 'EntryPoint', urlTemplate: 'https://www.downrangeco.com/search?q={search_term_string}' },
       'query-input': 'required name=search_term_string',
     },
   },

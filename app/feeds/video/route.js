@@ -9,12 +9,12 @@ export async function GET() {
   return buildFeed({
     title:       'DownRange — Firearms Videos',
     description: 'Curated firearms videos — reviews, training, news, and tactical content from trusted channels.',
-    feedUrl:     'https://downrangeco.com/feeds/video',
+    feedUrl:     'https://www.downrangeco.com/feeds/video',
     items: items.map(v => {
       const vid = v.youtubeId || v.videoId
       return {
         title:       v.title,
-        url:         vid ? `https://www.youtube.com/watch?v=${vid}` : 'https://downrangeco.com/video',
+        url:         vid ? `https://www.youtube.com/watch?v=${vid}` : 'https://www.downrangeco.com/video',
         description: `${v.channelName || 'DownRange Video'} — ${v.category || 'firearms'}`,
         date:        v.publishedAt,
         category:    v.category || 'video',
