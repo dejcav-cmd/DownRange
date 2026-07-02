@@ -2,13 +2,10 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 45
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1589b6c22d8ae8817980d6bfd724343
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7aa4f350f5ac1a32cddd7b32d4c22c5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ab65b5df3cb31b222725f27d99f3a62
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d0219121beeae66b352cf2bf78b0ce
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d0c313b7717addb3bad3ec6a6e7027d
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/PSA-Sabre-Deal.jpg
+Missing: 42
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f0fee739b247dd5d7a2f979d976019c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2cc07545d92a6d04bd8cc01d961539e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9414d44f71a615aa46bdb4a1376dc0c
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PSA-556-AR-Pistol-
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
@@ -48,10 +45,10 @@ Missing: 45
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 7
+  → patched final 4
 
-Stats: uploaded=5 fallback=2 failed=2
+Stats: uploaded=3 fallback=1 failed=2
 
-=== FINAL: total=3717 missing_images=38 reddit=0 ===
+=== FINAL: total=3720 missing_images=38 reddit=0 ===
 
-FIXED: 7
+FIXED: 4
