@@ -48,6 +48,7 @@ export const ALL_JOBS = [
   // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
   // {type: 'canada'|'brazil'|'both'} body param (no default cron would send this usefully).
   // Manual admin tool, not a scheduled job. Was showing permanent false OVERDUE.
+  { id:'sitemap-health',   path:'/api/cron/sitemap-health',          schedule:'0 8 * * 1',         label:'Sitemap & SEO Health',     group:'System',  icon:'🗺', critical:false, desc:'Every Monday 8am UTC — fetches live sitemap.xml, HEAD-checks all static URLs, detects 404s/redirects/non-www leakage, runs AI nano analysis, auto-revalidates sitemap on any finding.' },
   { id:'bible-update',     path:'/api/cron/bible-update',           schedule:'0 7 * * 0',         label:'Bible Update (Weekly)',    group:'System',  icon:'📖', critical:false, desc:'Every Sunday 7am UTC — collects live Sanity stats, pushes bible-stats.json to GitHub, posts weekly Discord summary.' },
 ]
 
