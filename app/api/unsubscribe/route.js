@@ -1,6 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { client } from '@/sanity/lib/client'
-import { Resend } from 'resend'
+import { mlUnsubscribe } from '@/lib/mailerLite'
 
 export async function POST(req) {
   try {
@@ -10,7 +10,7 @@ export async function POST(req) {
     }
     const emailLower = email.toLowerCase().trim()
 
-    // 1. Update status in Sanity
+    // Update Sanity record
     const existing = await client.fetch(
       `*[_type == "newsletterSubscriber" && email == $email][0]._id`,
       { email: emailLower }
@@ -18,15 +18,14 @@ export async function POST(req) {
 
     if (existing) {
       await client.patch(existing).set({ status: 'unsubscribed' }).commit()
-        .catch(e => console.log('Sanity unsubscribe error:', e.message))
+        .catch(e => console.error('[unsubscribe] Sanity error:', e.message))
     }
 
-    // 2. Mark unsubscribed in Resend audience
-    const audienceId = process.env.RESEND_AUDIENCE_ID
-    if (audienceId && audienceId !== 'your_audience_id') {
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.contacts.update({ audienceId, email: emailLower, unsubscribed: true })
-        .catch(e => console.log('Resend unsubscribe error:', e.message))
+    // Unsubscribe from MailerLite
+    if (process.env.MAILERLITE_API_KEY) {
+      await mlUnsubscribe(emailLower).catch(e =>
+        console.error('[unsubscribe] MailerLite error:', e.message)
+      )
     }
 
     return Response.json({ ok: true })
@@ -36,7 +35,7 @@ export async function POST(req) {
   }
 }
 
-// Also support GET with ?email= for one-click links
+// One-click unsubscribe via GET ?email=
 export async function GET(req) {
   try {
     const { searchParams } = new URL(req.url)
@@ -54,19 +53,19 @@ export async function GET(req) {
 
     if (existing) {
       await client.patch(existing).set({ status: 'unsubscribed' }).commit()
-        .catch(e => console.log('Sanity unsubscribe error:', e.message))
+        .catch(e => console.error('[unsubscribe GET] Sanity error:', e.message))
     }
 
-    // Update Resend
-    const audienceId = process.env.RESEND_AUDIENCE_ID
-    if (audienceId && audienceId !== 'your_audience_id') {
-      const resend = new Resend(process.env.RESEND_API_KEY)
-      await resend.contacts.update({ audienceId, email: emailLower, unsubscribed: true })
-        .catch(e => console.log('Resend unsubscribe error:', e.message))
+    // Unsubscribe from MailerLite
+    if (process.env.MAILERLITE_API_KEY) {
+      await mlUnsubscribe(emailLower).catch(e =>
+        console.error('[unsubscribe GET] MailerLite error:', e.message)
+      )
     }
 
-    // Redirect to unsubscribe page with success state
-    return Response.redirect(new URL(`/unsubscribe?success=1&email=${encodeURIComponent(emailLower)}`, req.url))
+    return Response.redirect(
+      new URL(`/unsubscribe?success=1&email=${encodeURIComponent(emailLower)}`, req.url)
+    )
   } catch (e) {
     console.error('[unsubscribe GET] Error:', e)
     return Response.redirect(new URL('/unsubscribe?error=1', req.url))
