@@ -12,10 +12,10 @@ import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../sanity/lib/cli
 export const metadata = {
   title: 'State Intelligence Hub — Complete Gun Laws & Reciprocity | DownRange',
   description: 'Know your state\'s gun laws, CCW reciprocity, magazine limits, and how to carry across state lines. All 50 states with court cases and scenarios.',
-  alternates: { canonical: 'https://downrangeco.com/state-intel' },
+  alternates: { canonical: 'https://downrangeco.com/laws/my-state' },
   openGraph: {
     type: 'website',
-    url: 'https://downrangeco.com/state-intel',
+    url: 'https://downrangeco.com/laws/my-state',
     title: 'State Intelligence Hub — Gun Laws & Reciprocity',
     description: 'Complete gun law guide: constitutional carry, permits, magazines, local rules, and travel reciprocity for all 50 states.',
     images: [{ url: 'https://downrangeco.com/og-default.png', width: 1200, height: 630 }],

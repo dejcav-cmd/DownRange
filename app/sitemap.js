@@ -25,6 +25,9 @@ const STATIC_PAGES = [
   { url: BASE,                          priority: 1.0,  changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/news`,                priority: 0.9,  changeFrequency: 'hourly',  lastModified: NOW },
   { url: `${BASE}/laws`,                priority: 0.9,  changeFrequency: 'daily',   lastModified: NOW },
+  { url: `${BASE}/laws/federal`,        priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
+  { url: `${BASE}/laws/states`,         priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
+  { url: `${BASE}/laws/my-state`,       priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/deals`,               priority: 0.9,  changeFrequency: 'hourly',  lastModified: NOW },
   { url: `${BASE}/releases`,            priority: 0.85, changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/market`,              priority: 0.85, changeFrequency: 'hourly',  lastModified: NOW },
@@ -34,9 +37,7 @@ const STATIC_PAGES = [
   { url: `${BASE}/giveaways`,           priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
 
   // CCW / Carry tools — high-intent search queries
-  { url: `${BASE}/ccw`,                 priority: 0.9,  changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/carry-insurance`,     priority: 0.85, changeFrequency: 'monthly', lastModified: NOW },
-  { url: `${BASE}/state-hub`,           priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
 
   // Tools — commercial intent
   { url: `${BASE}/ballistics`,          priority: 0.85, changeFrequency: 'monthly', lastModified: NOW },
@@ -62,7 +63,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/press`,               priority: 0.6,  changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/contact`,             priority: 0.5,  changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/contribute`,          priority: 0.5,  changeFrequency: 'monthly', lastModified: NOW },
-  { url: `${BASE}/search`,              priority: 0.5,  changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/privacy`,             priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
   { url: `${BASE}/terms`,               priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
 ]
@@ -105,9 +105,9 @@ export default async function sitemap() {
       changeFrequency: 'weekly',
     }))
 
-    // State hub: use 2-letter codes to match /state-hub/[state] route
+    // Individual state law pages — canonical destination for all state traffic
     const stateUrls = US_STATE_CODES.map(code => ({
-      url:             `${BASE}/state-hub/${code}`,
+      url:             `${BASE}/laws/${code}`,
       priority:        0.75,
       changeFrequency: 'weekly',
       lastModified:    NOW,

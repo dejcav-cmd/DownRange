@@ -1,4 +1,4 @@
-import { notFound } from 'next/navigation'
+import { notFound, redirect } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
@@ -19,13 +19,18 @@ const STATE_NAMES = {
   WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming',
 }
 
+// Reverse lookup: full name → 2-letter code (handles old URLs like /laws/Alabama)
+const NAME_TO_ABBR = Object.fromEntries(
+  Object.entries(STATE_NAMES).map(([abbr, name]) => [name.toLowerCase(), abbr])
+)
+
 export async function generateMetadata({ params }) {
   const abbr = params.state?.toUpperCase()
   const name = STATE_NAMES[abbr] || abbr
   return {
     title: `${name} Gun Laws ${new Date().getFullYear()} | DownRange`,
     description: `${name} firearms laws: constitutional carry, CCW permit, magazine limits, AWB status, waiting period, red flag law, and reciprocity.`,
-    alternates: { canonical: `https://downrangeco.com/laws/${params.state}` },
+    alternates: { canonical: `https://downrangeco.com/laws/${params.state.toUpperCase()}` },
   }
 }
 
@@ -42,8 +47,18 @@ function Row({ label, value, good }) {
 }
 
 export default async function StateLawPage({ params }) {
-  const abbr = params.state?.toUpperCase()
-  if (!STATE_NAMES[abbr]) notFound()
+  const raw = params.state || ''
+  const abbr = raw.toUpperCase()
+
+  // Redirect full state names: /laws/Alabama → /laws/AL
+  if (!STATE_NAMES[abbr]) {
+    const fromFullName = NAME_TO_ABBR[raw.toLowerCase()]
+    if (fromFullName) redirect(`/laws/${fromFullName}`)
+    notFound()
+  }
+
+  // Redirect lowercase codes: /laws/al → /laws/AL
+  if (raw !== abbr) redirect(`/laws/${abbr}`)
   const stateName = STATE_NAMES[abbr]
 
   const profile = await fetchStateProfile(abbr).catch(() => null)

@@ -4,7 +4,7 @@ import StateHub from '../../components/sections/StateHub'
 import StateMap from '../../components/sections/StateMap'
 import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../sanity/lib/client'
 
-export const metadata = { title: 'State Hub — DownRange', description: 'Firearms laws for all 50 states. Constitutional carry status, CCW, magazine limits, and more.', alternates: { canonical: 'https://downrangeco.com/state-hub' } }
+export const metadata = { title: 'State Hub — DownRange', description: 'Firearms laws for all 50 states. Constitutional carry status, CCW, magazine limits, and more.', alternates: { canonical: 'https://downrangeco.com/laws/states' } }
 export const revalidate = 1800 // 30 min
 
 export default async function StateHubPage({ searchParams }) {
