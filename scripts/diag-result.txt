@@ -2,14 +2,10 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 47
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/401bf5246af42a60136645ddab58269
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5600eb61030b79297725b80a208d445
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87e442d901200bb49f0e94ff867ccbb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6fff23d9f3645e995da38a3bd308d4c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f74f870307c8f375c4da8e6f41885e7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d40b5f5b16dc436bd36e45cc2363f8b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4665115569365dc1afe7d464f98a758
+Missing: 43
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cdd754d58213cf85d673c9f3db45506
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/11945da514235e009df09f40abef324
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bf2b9a9598aae4534d2a99f337a7fd9
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/PSA-Sabre-Deal.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/05/PSA-556-AR-Pistol-
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -50,10 +46,10 @@ Missing: 47
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 9
+  → patched final 5
 
-Stats: uploaded=7 fallback=2 failed=2
+Stats: uploaded=3 fallback=2 failed=2
 
-=== FINAL: total=3727 missing_images=38 reddit=0 ===
+=== FINAL: total=3730 missing_images=38 reddit=0 ===
 
-FIXED: 9
+FIXED: 5
