@@ -164,8 +164,8 @@ export default function AboutPage() {
             <a href="/news" style={{
               fontFamily: "'IBM Plex Mono', monospace",
               fontSize: '12px', letterSpacing: '0.12em',
-              background: '#C8922A', color: '#09090B',
-              padding: '11px 24px', textDecoration: 'none',
+              color: '#C8922A',
+              textDecoration: 'none',
               fontWeight: 700, textTransform: 'uppercase',
             }}>Read Today's Intel →</a>
             <a href="/laws" style={{
