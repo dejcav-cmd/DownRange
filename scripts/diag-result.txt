@@ -2,12 +2,17 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 42
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/361075f5efcef4ce8b41544a8d37b50
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3292193b9ce588139780319f577454e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/58c2be909d9b40e3c251d129c3c1904
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/87244e3c60f5a307ee0844cd2ae4f8c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/830c1e77441c9dbcaca477f5b6097e9
+Missing: 47
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/38221f78eb255fad8b20779ce56c48b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0e0241ae2417cbabb6d35ade444a6c5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/46abe418c2da88a7b5db034c37ec394
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4fc4ece9fe0aa9fd591313617ef43e8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/819962f06c6f7089ce7ed77dcb96629
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3195044bfffa4dce43241063b73c932
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6667761f149d0ab9a9542a4837080e8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d53d39b7c6858746c17e3a99deba0db
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/22251aaae943d57f532a7dde756216b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0a3de8f98347cb46b62d77bb78c582a
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
   skip coupon: https://gun.deals/content/coupon-store-usagowednesday-july-1
   skip coupon: https://gun.deals/content/coupon-store-ammunition-depotwedne
@@ -45,10 +50,10 @@ Missing: 42
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 5
+  → patched final 10
 
-Stats: uploaded=5 fallback=0 failed=2
+Stats: uploaded=10 fallback=0 failed=2
 
-=== FINAL: total=3632 missing_images=37 reddit=0 ===
+=== FINAL: total=3642 missing_images=37 reddit=0 ===
 
-FIXED: 5
+FIXED: 10
