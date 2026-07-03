@@ -2,9 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 43
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62bda4c55efda30a298a7810f72551d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95ac4fd95d5aa614b1eb619e1cb65bb
+Missing: 46
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/314aa7e72339ff7d14858ba3ebd705b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/906865f17d86a70fd690281987a71c6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/92ce95e4e33f4684191b323bf314ab6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/03c4252580d6225eefa82ac823f2477
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4acd71f58aa2a90f775fb1b8a89dbab
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Vortex-Sparc-Pmags
@@ -46,10 +49,10 @@ Missing: 43
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 4
+  → patched final 7
 
-Stats: uploaded=2 fallback=2 failed=2
+Stats: uploaded=5 fallback=2 failed=2
 
-=== FINAL: total=3824 missing_images=39 reddit=0 ===
+=== FINAL: total=3829 missing_images=39 reddit=0 ===
 
-FIXED: 4
+FIXED: 7
