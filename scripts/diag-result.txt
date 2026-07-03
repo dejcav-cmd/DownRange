@@ -2,14 +2,11 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 45
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eae188733d457674da2f2f397f7c019
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a812b3df3ee32ea64c3f1e6c599608e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8389f0759248a89ba2017513cc075b4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d0df535554126ecbe0a29e99e44ccc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b7d8b2dd4f7fa3860311020669bfef
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0319a3d4100d7cc5124fd2c2fb468ce
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/42d9412a3b1ee8e3d677a0077c24210
+Missing: 42
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/58af5251bda2d45b5f20d1766179134
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7b4c2bb1cb99b89915608bbac6d6ef6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9e6b73a4b4e8d4d39884227ce6a1c1d
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Vortex-Sparc-Pmags
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
   skip coupon: https://gun.deals/content/coupon-store-usagowednesday-july-1
@@ -48,10 +45,10 @@ Missing: 45
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 7
+  → patched final 4
 
-Stats: uploaded=7 fallback=0 failed=2
+Stats: uploaded=3 fallback=1 failed=2
 
-=== FINAL: total=3775 missing_images=38 reddit=0 ===
+=== FINAL: total=3779 missing_images=38 reddit=0 ===
 
-FIXED: 7
+FIXED: 4
