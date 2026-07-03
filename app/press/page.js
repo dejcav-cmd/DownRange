@@ -6,6 +6,7 @@ import Link from 'next/link'
 export const metadata = {
   title: 'Press & Media Kit — DownRange Intelligence Hub',
   description: "DownRange is America's independent firearms and Second Amendment intelligence platform. Press kit, media contacts, brand guidelines, partnership inquiries, and manufacturer PR submissions.",
+  alternates: { canonical: 'https://www.downrangeco.com/press' },
   openGraph: {
     title: 'DownRange Press Kit — Media Resources',
     description: "America's firearms intelligence hub. Brand assets, editorial guidelines, partnership inquiries, and press contacts.",

@@ -31,12 +31,12 @@ export async function generateMetadata({ params }) {
   const name = STATE_NAMES[abbr] || abbr
   const url = `https://www.downrangeco.com/state-hub/${abbr}`
   return {
-    title: `${name} Gun Laws & CCW Guide | DownRange`,
+    title: `${name} Firearms Hub — News, Laws & CCW | DownRange`,
     description: `Comprehensive guide to ${name} firearms laws: concealed carry, constitutional carry status, magazine limits, AWB, red flag laws, and CCW reciprocity.`,
     alternates: { canonical: url },
     openGraph: {
       type: 'article', url,
-      title: `${name} Gun Laws & CCW Guide`,
+      title: `${name} Firearms Hub — News, Laws & CCW`,
       description: `${name} carry laws, magazine limits, AWB status, and CCW reciprocity — updated for ${new Date().getFullYear()}.`,
       images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: `${name} Gun Laws` }],
     },

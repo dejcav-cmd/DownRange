@@ -6,6 +6,7 @@ import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../sanity/lib/c
 export const metadata = {
   title: 'The Range Report — DownRange Blog',
   description: 'Expert analysis, industry commentary, and field intelligence from DJ Cavalcanti and the DownRange editorial team.',
+  alternates: { canonical: 'https://www.downrangeco.com/blog' },
 }
 export const revalidate = 1
 

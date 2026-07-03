@@ -113,9 +113,18 @@ export default async function sitemap() {
       lastModified:    NOW,
     }))
 
+    // State hub pages — news + laws + resources combined view (lower priority than /laws/)
+    const stateHubUrls = US_STATE_CODES.map(code => ({
+      url:             `${BASE}/state-hub/${code}`,
+      priority:        0.65,
+      changeFrequency: 'daily',
+      lastModified:    NOW,
+    }))
+
     return [
       ...STATIC_PAGES,
       ...stateUrls,
+      ...stateHubUrls,
       ...articleUrls,
       ...blogUrls,
       ...releaseUrls,
