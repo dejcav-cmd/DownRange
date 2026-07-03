@@ -2,23 +2,21 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 55
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c56ff74d70d822f3635a9b0946179bf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dbb8f35be49bc93fe64158fc3576293
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c29ad2dd72831c4b52a9fe0737744e7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fcb417436549d6394c1064255c944be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e96dd4d5af0315eb8151593c99061bc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b31bd8ed7d05daaa1a5cde5dac56d61
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/17460b06a2f40754ef947438f0ea041
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/67ea3efc81fd4881dd345704479d78b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e644c2f86f01e80772fdedb3ca92066
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3fe3ce4c0efb695040b30ca750d9a43
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a25cd7898ffb0cd1b30491388099537
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5f0e42ef7e5425180d385b07288e021
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f41a34a479e1bb8c8cc75c8ad3fd80
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5493b92852ef1cdbddf09a1f68ac7d6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6767cd8332f0577ea65109d49c5107c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d0083d1b2efe9932ade0ec92cfb3f6
+Missing: 53
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f440e2fee66c541d8541db9436e0d45
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3b320cd6ebe4df4e93218a0dc6a6428
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0a23ee85dc0f9996c88ade6fde147d7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e424f51223b23789486a227a0882443
+  skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3484d6defd1bf73230a35b95331fd5e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ad2f43488cd6bbdcd0322c8bbfcd34b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/443b475209a4ecae124cbdec33f3a14
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/57c2ab99864509431c55dbf072bd31b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b36bfedf8cffbdbffc0edc00fe66e80
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7cb8f504b41fcb6953b96fd90726d52
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5542b8327781bb1cc2bbcc6dee7392d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/844e9ff8f829c9859b6938d704f418d
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Vortex-Sparc-Pmags
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
@@ -58,10 +56,10 @@ Missing: 55
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 17
+  → patched final 14
 
-Stats: uploaded=16 fallback=1 failed=2
+Stats: uploaded=12 fallback=2 failed=2
 
-=== FINAL: total=3802 missing_images=38 reddit=0 ===
+=== FINAL: total=3816 missing_images=39 reddit=0 ===
 
-FIXED: 17
+FIXED: 14
