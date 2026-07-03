@@ -2,13 +2,9 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Missing: 47
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c633acbc62b9c51bf75273cf4a0855f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6281889e74126e442d7970ad10b17f4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8e3f8f2a9391539fadde40eed2cd9e4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f72f3dfc8d131e72d67bc0af0294832
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/084d356d2183dae4032b6acb7b6ebf5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a618e05e29aa4404df8b95d5bfd8f8a
+Missing: 43
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/62bda4c55efda30a298a7810f72551d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/95ac4fd95d5aa614b1eb619e1cb65bb
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Vortex-Sparc-Pmags
@@ -50,10 +46,10 @@ Missing: 47
   ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 8
+  → patched final 4
 
-Stats: uploaded=6 fallback=2 failed=2
+Stats: uploaded=2 fallback=2 failed=2
 
-=== FINAL: total=3822 missing_images=39 reddit=0 ===
+=== FINAL: total=3824 missing_images=39 reddit=0 ===
 
-FIXED: 8
+FIXED: 4
