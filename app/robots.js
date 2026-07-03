@@ -4,13 +4,34 @@ export default function robots() {
       {
         userAgent: '*',
         allow: '/',
-        disallow: ['/studio/', '/admin/', '/api/', '/_next/'],
+        disallow: [
+          '/studio/',
+          '/admin/',
+          '/admin-app/',
+          '/admin-login/',
+          '/api/',
+          '/_next/',
+        ],
+        crawlDelay: 1,
       },
       {
         // Block AI scrapers from hammering the API
         userAgent: ['GPTBot', 'ChatGPT-User', 'CCBot', 'anthropic-ai', 'Claude-Web'],
         allow: '/',
         disallow: ['/api/'],
+      },
+      {
+        userAgent: 'Bingbot',
+        allow: '/',
+        disallow: [
+          '/studio/',
+          '/admin/',
+          '/admin-app/',
+          '/admin-login/',
+          '/api/',
+          '/_next/',
+        ],
+        crawlDelay: 2,
       },
     ],
     sitemap: [
