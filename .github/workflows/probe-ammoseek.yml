@@ -7,14 +7,15 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run AmmoSeek probe
         run: python3 scripts/probe_ammoseek.py
-      - name: Commit and push results
+      - name: Push results
+        env:
+          PAT: ${{ secrets.DOWNRANGE_GH_PAT }}
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
+          git remote set-url origin "https://dejcav-cmd:${PAT}@github.com/dejcav-cmd/DownRange.git"
           git add scripts/ammoseek_probe_result.json
           git diff --staged --quiet || git commit -m "chore: ammoseek probe results [skip ci]"
-          git push https://dejcav-cmd:${{ secrets.GITHUB_TOKEN }}@github.com/dejcav-cmd/DownRange.git main
+          git push origin main
