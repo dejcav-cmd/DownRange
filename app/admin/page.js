@@ -2921,7 +2921,7 @@ export default function AdminPage() {
             {panel==='pulllog'   && <PullLogDashboard />}
             {panel==='deals'   && <DealsManager adminKey={adminKey} />}
             {panel==='feeds'        && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
-            {panel==='marketbrief' && <MarketBriefManager adminKey={adminKey} />}
+
 
             {/* ── SYSTEM ── */}
             {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
