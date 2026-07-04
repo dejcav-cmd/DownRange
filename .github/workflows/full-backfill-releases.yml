@@ -3,7 +3,7 @@ on:
   workflow_dispatch:
     inputs:
       backfill:
-        description: 'backfill=1 skips 6-month cutoff (pull all history)'
+        description: '1 = no 6-month cutoff (pull all history), 0 = standard window'
         required: false
         default: '1'
 
@@ -15,41 +15,49 @@ jobs:
       - name: Phase 1 — scrape all sources
         run: |
           echo "Triggering scrape phase (backfill=${{ github.event.inputs.backfill }})..."
-          curl -s -X GET \
+          # Try bypass header first, fall back to CRON_SECRET
+          RESP=$(curl -s -w "\n%{http_code}" -X GET \
             "https://downrangeco.com/api/agent?feed=releases&phase=scrape&backfill=${{ github.event.inputs.backfill }}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            --max-time 120 \
-            | tee /tmp/scrape.json
-          echo ""
-          echo "Scrape result:"
-          cat /tmp/scrape.json
+            -H "x-vercel-protection-bypass: ${{ secrets.VERCEL_BYPASS_SECRET }}" \
+            --max-time 120)
+          HTTP=$(echo "$RESP" | tail -1)
+          BODY=$(echo "$RESP" | head -n -1)
+          echo "HTTP $HTTP"
+          echo "$BODY"
+          if [ "$HTTP" = "403" ]; then
+            echo "::warning::WAF blocked. Add VERCEL_BYPASS_SECRET to GitHub Actions secrets."
+            echo "Get it from: Vercel → Project → Settings → Deployment Protection → Protection Bypass for Automation"
+          fi
 
   process:
     runs-on: ubuntu-latest
     needs: scrape
-    timeout-minutes: 10
-    strategy:
-      max-parallel: 1
+    timeout-minutes: 20
     steps:
       - name: Phase 2 — process batch 1
+        id: b1
         run: |
-          curl -s -X GET \
+          RESP=$(curl -s -w "\n%{http_code}" -X GET \
             "https://downrangeco.com/api/cron/releases-process?backfill=${{ github.event.inputs.backfill }}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            --max-time 310 | tee /tmp/p1.json
-          echo ""; cat /tmp/p1.json
-          echo "remaining=$(cat /tmp/p1.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('remaining',0))")" >> $GITHUB_OUTPUT
-        id: batch1
+            -H "x-vercel-protection-bypass: ${{ secrets.VERCEL_BYPASS_SECRET }}" \
+            --max-time 310)
+          HTTP=$(echo "$RESP" | tail -1)
+          BODY=$(echo "$RESP" | head -n -1)
+          echo "HTTP $HTTP"; echo "$BODY"
+          REM=$(echo "$BODY" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('remaining',0))" 2>/dev/null || echo "0")
+          echo "remaining=$REM" >> $GITHUB_OUTPUT
 
       - name: Phase 2 — process batch 2
-        if: ${{ steps.batch1.outputs.remaining != '0' }}
+        if: steps.b1.outputs.remaining != '0'
         run: |
           sleep 5
           curl -s -X GET \
             "https://downrangeco.com/api/cron/releases-process?backfill=${{ github.event.inputs.backfill }}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            --max-time 310 | tee /tmp/p2.json
-          echo ""; cat /tmp/p2.json
+            -H "x-vercel-protection-bypass: ${{ secrets.VERCEL_BYPASS_SECRET }}" \
+            --max-time 310
 
       - name: Phase 2 — process batch 3
         run: |
@@ -57,5 +65,5 @@ jobs:
           curl -s -X GET \
             "https://downrangeco.com/api/cron/releases-process?backfill=${{ github.event.inputs.backfill }}" \
             -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
-            --max-time 310 | tee /tmp/p3.json
-          echo ""; cat /tmp/p3.json
+            -H "x-vercel-protection-bypass: ${{ secrets.VERCEL_BYPASS_SECRET }}" \
+            --max-time 310
