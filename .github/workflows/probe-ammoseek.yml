@@ -7,12 +7,14 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
       - name: Run AmmoSeek probe
         run: python3 scripts/probe_ammoseek.py
-      - name: Commit results
+      - name: Commit and push results
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
           git add scripts/ammoseek_probe_result.json
-          git commit -m "chore: ammoseek probe results" || echo "nothing to commit"
-          git push
+          git diff --staged --quiet || git commit -m "chore: ammoseek probe results [skip ci]"
+          git push https://dejcav-cmd:${{ secrets.GITHUB_TOKEN }}@github.com/dejcav-cmd/DownRange.git main
