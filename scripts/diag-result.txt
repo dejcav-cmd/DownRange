@@ -2,19 +2,13 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 55 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fc118ef35472e5f994101783d18bc5e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e837d6af6122bc0ac8504bc90b60825
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3fe1678b51154ea69543f58b2897e6e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec211290bb3f9e62b56fc42346f3510
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f12ce09ccaab7842992c9e959c5709
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ac5d1ebbba3d35c83332c284ac29106
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/36de5675aa005c8402b9cd59adb5210
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f128c2a02ccc82e94b7f40b889beab8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e19edbba5538ebf058882b60acdeecc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/66868388bdd57f7ce0f2314fada77f9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c4b2a77a00804023540a3f403332bd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/28719e3b3a8c2ddd8926b12bf692229
+Needs image fix: 49 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ba52c37876a8680b3e0b6d89ab6c34
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b80a8cc78ed1d31329833c824b930e1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b4f347ae19eb6a9148d1a54eb20132f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7146694294474992cec99dd0df79186
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/120c20517cbcdb913fd2cf9bf3fffe1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2a9332ff1e4d309f3309310a15e1400
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -58,10 +52,10 @@ Needs image fix: 55 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 15
+  → patched final 9
 
-Stats: uploaded=12 fallback=3 failed=3
+Stats: uploaded=6 fallback=3 failed=3
 
-=== FINAL: total=3921 missing_images=39 reddit=0 ===
+=== FINAL: total=3927 missing_images=39 reddit=0 ===
 
-FIXED: 15
+FIXED: 9
