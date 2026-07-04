@@ -19,66 +19,73 @@ function weekOf() {
   return mon.toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' })
 }
 
-async function generateWithClaude(articles) {
+// Build a fallback newsletter template from raw articles (no AI needed)
+function buildFallbackNewsletter(articles) {
+  const top = articles[0]
+  const subject = top ? top.title.slice(0, 65) + ' — DownRange' : 'DownRange Weekly Brief'
+  const CAT = { breaking:'#EF4444', law:'#60A5FA', industry:'#C8922A', news:'#9CA3AF', training:'#34D399', review:'#C8922A' }
+
+  const storiesHtml = articles.slice(0, 5).map(a => `
+    <div style="margin-bottom:20px;padding-bottom:20px;border-bottom:1px solid #1F2428;">
+      <div style="font-size:10px;color:${CAT[a.category]||'#9CA3AF'};letter-spacing:0.12em;font-weight:700;margin-bottom:4px;">${(a.category||'news').toUpperCase()}</div>
+      <h3 style="margin:0 0 6px;font-size:16px;color:#F0EDE6;line-height:1.35;">
+        <a href="https://www.downrangeco.com/news/${a.slug?.current}" style="color:#F0EDE6;text-decoration:none;">${a.title}</a>
+      </h3>
+      ${a.summary ? `<p style="margin:0 0 8px;font-size:13px;color:#94A3B8;line-height:1.6;">${a.summary}</p>` : ''}
+      <a href="https://www.downrangeco.com/news/${a.slug?.current}" style="font-size:11px;color:#C8922A;text-decoration:none;">READ MORE →</a>
+    </div>`).join('')
+
+  const bodyHtml = `
+    <p style="font-size:15px;color:#CBD5E1;line-height:1.8;margin-bottom:24px;">
+      Another week of 2A news — here are the stories that matter most for gun owners right now.
+    </p>
+    <h2 style="font-family:Arial,sans-serif;font-size:20px;color:#C8922A;border-bottom:2px solid #1F2428;padding-bottom:8px;margin-bottom:16px;">This Week's Top Stories</h2>
+    ${storiesHtml}
+    <p style="font-size:13px;color:#6B7280;margin-top:24px;">— DJ Cavalcanti, DownRange</p>`
+
+  return {
+    subject,
+    bodyHtml,
+    preview: top ? top.summary?.slice(0, 90) || top.title.slice(0, 90) : 'This week in firearms and 2A news.',
+  }
+}
+
+async function generateWithAI(articles) {
   const topArticles = articles.slice(0, 8).map((a, i) =>
-    (i+1) + '. ' + a.title + (a.summary ? ' — ' + a.summary.slice(0,120) : '')
+    (i+1) + '. ' + a.title + (a.summary ? ' — ' + a.summary.slice(0, 120) : '')
   ).join('\n')
 
-  const prompt = [
-    'Write a weekly firearms and Second Amendment newsletter email for DownRange.',
-    'DownRange is run by DJ Cavalcanti, a gun owner and 2A advocate in Washington State.',
-    '',
-    'TONE: Write like a person, not a newsletter bot. Direct, informed, opinionated.',
-    'BANNED: comprehensive, dive into, game-changer, leverage, synergy, seamlessly, unprecedented.',
-    'NO corporate-speak. Sound like a gun owner writing to other gun owners.',
-    '',
-    'This week\'s top stories from the site:',
-    topArticles,
-    '',
-    'Write the newsletter in this format:',
-    '',
-    '== SUBJECT LINE ==',
-    'One punchy, specific subject line. Under 60 chars. Provocative but accurate.',
-    '',
-    '== BODY (HTML format) ==',
-    'Opening paragraph: 2-3 sentences. What happened this week that matters to gun owners. Hard news first.',
-    '',
-    '<h2>This Week\'s Top Stories</h2>',
-    'Bullet each top story with 1-2 sentence summary. Be specific. Name the law, the agency, the ruling.',
-    '',
-    '<h2>From the DownRange Blog</h2>',
-    'Tease 1-2 recent blog posts. Specific, actionable.',
-    '',
-    '<h2>Quick Hits</h2>',
-    '3-4 one-liners on industry news, deals, or events worth knowing.',
-    '',
-    '<h2>Bottom Line This Week</h2>',
-    '2-3 sentences. Editorial take. What should gun owners do with this information? Be direct.',
-    '',
-    'Signature: "— DJ Cavalcanti, DownRange"',
-    '',
-    'Return JSON: { "subject": "...", "bodyHtml": "...", "preview": "First 90 chars for email preview text" }',
-    'CRITICAL: Return only valid JSON. No markdown fences.',
-  ].join('\n')
+  const prompt = `Write a weekly firearms and Second Amendment newsletter email for DownRange.
+DownRange is run by DJ Cavalcanti, a gun owner and 2A advocate in Washington State.
 
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method: 'POST',
-    headers: {
-      'x-api-key': process.env.ANTHROPIC_API_KEY,
-      'anthropic-version': '2023-06-01',
-      'content-type': 'application/json',
-    },
-    body: JSON.stringify({
-      model: 'claude-haiku-4-5-20251001',
-      max_tokens: 3000,
-      messages: [{ role: 'user', content: prompt }],
-    }),
-  })
+TONE: Write like a person, not a newsletter bot. Direct, informed, opinionated.
+BANNED words: comprehensive, dive into, game-changer, leverage, synergy, seamlessly, unprecedented.
+NO corporate-speak. Sound like a gun owner writing to other gun owners.
 
-  const d = await res.json()
-  const raw = d.content?.[0]?.text || '{}'
-  const clean = raw.split('```json').join('').split('```').join('').trim()
-  return JSON.parse(clean)
+This week's top stories:
+${topArticles}
+
+Write the newsletter body as HTML with these sections:
+- Opening paragraph (2-3 sentences, hard news first)
+- <h2>This Week's Top Stories</h2> (bullet each story, 1-2 sentence summary, be specific)
+- <h2>Quick Hits</h2> (3-4 one-liners on industry news)
+- <h2>Bottom Line</h2> (2-3 sentences editorial take, what should gun owners do?)
+- Signature: "— DJ Cavalcanti, DownRange"
+
+Return ONLY a JSON object, no markdown:
+{"subject":"punchy subject line under 60 chars","bodyHtml":"<p>...</p>","preview":"first 90 chars of body for email preview"}`
+
+  try {
+    const raw = await callAIText({ prompt, maxTokens: 3000, useCase: 'generation' })
+    const clean = raw.replace(/```json/g, '').replace(/```/g, '').trim()
+    // Extract JSON even if there's surrounding text
+    const match = clean.match(/\{[\s\S]*\}/)
+    if (!match) throw new Error('No JSON object found in AI response')
+    return JSON.parse(match[0])
+  } catch (err) {
+    console.warn('[NEWSLETTER] AI generation failed:', err.message, '— using fallback template')
+    return buildFallbackNewsletter(articles)
+  }
 }
 
 export async function GET(req) {
@@ -107,7 +114,7 @@ export async function POST(req) {
       '*[_type=="newsArticle" && approved==true] | order(publishedAt desc) [0...10] { title, summary, slug, category }'
     ).catch(() => [])
 
-    const ai = await generateWithClaude(articles)
+    const ai = await generateWithAI(articles)
 
     const draft = await sanity.create({
       _type:    'newsletterDraft',
