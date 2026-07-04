@@ -9,8 +9,12 @@
       "schedule": "0 */2 * * *"
     },
     {
-      "path": "/api/agent?feed=releases",
+      "path": "/api/agent?feed=releases&phase=scrape",
       "schedule": "45 6 * * 1,4"
+    },
+    {
+      "path": "/api/cron/releases-process",
+      "schedule": "50 6 * * 1,4"
     },
     {
       "path": "/api/agent?feed=market",
@@ -318,6 +322,9 @@
       "maxDuration": 300
     },
     "app/api/admin/fix-canada-articles/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/cron/releases-process/route.js": {
       "maxDuration": 300
     }
   }

@@ -1,32 +1,41 @@
 /**
- * DownRange Gun Releases Feed — v6
+ * DownRange Gun Releases Feed — v7
  *
- * Architecture:
- *   1. Scrape 40 manufacturer press/news listing pages in parallel
- *   2. Pre-filter links with keyword gate (PRODUCT signal + FIREARM signal, no SKIP signals)
- *   3. Fetch each article page — extract text + image
- *   4. Claude Haiku: validate it's a real product launch + extract specs + write article
- *   5. Image waterfall: og:image → twitter:image → largest <img> → Bing image search fallback
- *   6. Upload image to Sanity CDN
- *   7. Dedup: Redis set (fast, TTL 90d) + Sanity query (authoritative)
- *   8. Save firearmRelease doc with heroImage + full article
+ * Two-phase architecture to stay well under Vercel's 300s limit:
  *
- * Schedule: twice a week — Mon & Thu at 06:45 UTC
+ *   Phase 1 — scrape  (~60-90s)
+ *     Scrape all 65 listing pages in parallel batches of 8.
+ *     Keyword-filter candidate URLs. Push to Redis queue.
+ *     Returns { queued: N }.
+ *
+ *   Phase 2 — process (~200s per batch of 6)
+ *     Pop PROCESS_BATCH items from Redis queue.
+ *     For each: fetch article → date check → Claude validate+write → image waterfall → save.
+ *     Loops until queue empty OR wall-clock approaches 250s safety margin.
+ *     Returns { done, remaining }.
+ *
+ * Regular cron (Mon+Thu 06:45 UTC) calls phase=scrape then phase=process.
+ * Full backfill: phase=scrape?backfill=1 (no date cutoff) then repeated phase=process calls.
+ *
+ * Queue keys:
+ *   dr:releases:queue    — regular (6-month window)
+ *   dr:releases:backfill — backfill (no cutoff)
  *
  * Sources (65):
  *   Pistols:     Glock, SIG Sauer ×2, S&W, Springfield, Taurus, Beretta, Kimber,
  *                Walther, CZ-USA, CZ Firearms, HK USA, FN America, Ruger, Canik,
  *                Staccato, Shadow Systems, Wilson Combat, Nighthawk Custom
- *   2011/Comp:   Bul Armory, MAC (Military Armament Corp), Colt
+ *   2011/Comp:   Bul Armory, MAC, Colt
  *   Rifles:      Daniel Defense, Aero Precision, BCM, LWRC, Christensen Arms,
  *                Savage Arms, Mossberg, Winchester, Browning, Benelli USA,
  *                Maxim Defense, PSA, MPA, Tikka, Fusion Firearms
  *   Shotguns:    Stoeger, TriStar Arms, Hatsan USA, Weatherby, Retay
  *   Suppressors: SilencerCo, Dead Air, Griffin Armament, Rugged Suppressors,
- *                AAC, Gemtech, Q LLC, SureFire, HUXWRX
- *   Turkish:     SAR USA, Girsan (via EAA), Tisas (via SDS Imports)
+ *                AAC, Gemtech, Q LLC, SureFire, HUXWRX, Liberty, YHM, TBAC
+ *   Turkish:     SAR USA, Girsan (via EAA), Tisas (via SDS)
  *   Nordic:      Sako
  *   Optics:      Holosun, Trijicon, Vortex
+ *   Competition: Jacob Grey, ZEV Technologies, Noveske, POF-USA, Kel-Tec
  */
 
 import crypto from 'crypto'
@@ -44,10 +53,14 @@ const sanity = createClient({
   token:      process.env.SANITY_API_TOKEN,
 })
 
-const MAX_PER_RUN = 20   // max new releases per run
-const RATE_MS     = 1500 // delay between article fetches
-const DEDUP_TTL        = 90 * 24 * 3600         // 90 days in seconds
-const MAX_ARTICLE_AGE  = 6 * 30 * 24 * 3600 * 1000  // 6 months in ms
+const PROCESS_BATCH   = 6            // articles processed per phase-2 batch
+const RATE_MS         = 1200         // ms between article fetches
+const DEDUP_TTL       = 90 * 24 * 3600          // Redis dedup key TTL: 90 days (seconds)
+const QUEUE_TTL       = 48 * 3600               // queue item TTL: 48h (seconds)
+const MAX_ARTICLE_AGE = 6 * 30 * 24 * 3600 * 1000  // 6-month cutoff (ms)
+const WALL_CLOCK_SAFE = 250_000      // abort loop before Vercel 300s hard kill
+const QUEUE_KEY       = 'dr:releases:queue'
+const BACKFILL_KEY    = 'dr:releases:backfill'
 
 // ── DATE EXTRACTION ───────────────────────────────────────────────────────────
 // Tries to parse a publish date from article HTML or URL.
@@ -603,97 +616,175 @@ async function saveRelease(extracted, sourceUrl, imageAssetId, imageUrl, pubDate
   })
 }
 
-// ── MAIN ──────────────────────────────────────────────────────────────────────
-export async function runReleasesFeed() {
-  const t0 = Date.now()
-  console.log('[RELEASES v6] Starting...')
-  _seenThisRun.clear()
+// ── REDIS QUEUE HELPERS ──────────────────────────────────────────────────────
 
-  const stats = { done: 0, failed: 0, skipped: 0, noImage: 0, saved: [], errors: [] }
+async function queuePush(key, items) {
+  const redis = await getRedis()
+  if (!redis || !items.length) return 0
+  // Push serialized items; each gets its own TTL via expireat-style
+  const pipeline = redis.pipeline()
+  for (const item of items) {
+    pipeline.rpush(key, JSON.stringify(item))
+  }
+  pipeline.expire(key, QUEUE_TTL)
+  await pipeline.exec()
+  return items.length
+}
 
-  // ── Step 1: Scrape all listing pages in parallel batches ──────────────────
+async function queuePop(key, count) {
+  const redis = await getRedis()
+  if (!redis) return []
+  const items = []
+  for (let i = 0; i < count; i++) {
+    const raw = await redis.lpop(key)
+    if (!raw) break
+    try { items.push(JSON.parse(raw)) } catch {}
+  }
+  return items
+}
+
+async function queueLen(key) {
+  const redis = await getRedis()
+  if (!redis) return 0
+  return (await redis.llen(key)) || 0
+}
+
+async function queueClear(key) {
+  const redis = await getRedis()
+  if (!redis) return
+  await redis.del(key)
+}
+
+// ── PHASE 1: SCRAPE — collect candidates, push to Redis queue ────────────────
+// Runs in ~60-90s. Scrapes all 65 listing pages, keyword-gates titles,
+// pushes candidate {title, link, brand, pubDate} objects to the queue.
+// backfill=true skips the 6-month date window check at process time.
+
+export async function scrapeReleases({ backfill = false } = {}) {
+  const t0   = Date.now()
+  const qKey = backfill ? BACKFILL_KEY : QUEUE_KEY
+  console.log(`[RELEASES v7] Phase 1 — scrape (backfill=${backfill})`)
+
+  // Clear stale queue from a previous incomplete run
+  await queueClear(qKey)
+
   const raw = []
   raw.push(...(await scrapeFusion()))
 
-  const BATCH = 7
+  const BATCH = 8
   for (let i = 0; i < MFR_SOURCES.length; i += BATCH) {
     const batch   = MFR_SOURCES.slice(i, i + BATCH)
     const results = await Promise.allSettled(batch.map(s => scrapeListingPage(s)))
     results.forEach(r => { if (r.status === 'fulfilled') raw.push(...r.value) })
-    await sleep(600)
+    await sleep(500)
   }
 
-  // ── Step 2: Dedupe by URL within this run ─────────────────────────────────
+  // Dedupe by URL within this scrape
   const linkSeen = new Set()
   const candidates = raw.filter(item => {
     if (!item.link || linkSeen.has(item.link)) return false
     linkSeen.add(item.link)
     return true
   })
-  console.log(`[RELEASES v6] ${candidates.length} candidates after listing dedup`)
 
-  // ── Step 3: Process each candidate ───────────────────────────────────────
-  for (const item of candidates) {
-    if (stats.done >= MAX_PER_RUN) break
+  const queued = await queuePush(qKey, candidates)
+  const ms = Date.now() - t0
+  console.log(`[RELEASES v7] Scraped ${candidates.length} candidates → queued ${queued} (${ms}ms)`)
+  return { phase: 'scrape', queued, ms, backfill }
+}
 
-    // Fetch article page
-    const { html: articleHtml, text: articleText, pubDate: articleDate } = await fetchArticle(item.link)
-    if (!articleText) { stats.skipped++; continue }
+// ── PHASE 2: PROCESS — dequeue and fully process each candidate ──────────────
+// Pops PROCESS_BATCH items per inner loop, keeps looping until queue is empty
+// OR wall-clock approaches WALL_CLOCK_SAFE (250s), whichever comes first.
+// Safe to call multiple times — Redis queue persists across invocations.
 
-    // 6-month cutoff — reject articles published before the window
-    if (isTooOld(articleDate)) {
-      stats.skipped++
-      console.log(`[RELEASES v6] Too old (${articleDate?.toISOString().slice(0,10)}): ${item.title.slice(0,60)}`)
-      continue
+export async function processReleases({ backfill = false } = {}) {
+  const t0   = Date.now()
+  const qKey = backfill ? BACKFILL_KEY : QUEUE_KEY
+  console.log(`[RELEASES v7] Phase 2 — process (backfill=${backfill})`)
+  _seenThisRun.clear()
+
+  const stats = { done: 0, failed: 0, skipped: 0, noImage: 0, saved: [], errors: [] }
+  let remaining = await queueLen(qKey)
+  console.log(`[RELEASES v7] Queue depth: ${remaining}`)
+
+  // Keep processing batches until queue empty or wall-clock approaches limit
+  outerLoop: while (remaining > 0 && (Date.now() - t0) < WALL_CLOCK_SAFE) {
+    const batch = await queuePop(qKey, PROCESS_BATCH)
+    if (!batch.length) break
+
+    for (const item of batch) {
+      // Bail out if we're approaching the time limit
+      if ((Date.now() - t0) >= WALL_CLOCK_SAFE) {
+        // Re-queue unprocessed item so it isn't lost
+        await queuePush(qKey, [item])
+        console.log(`[RELEASES v7] ⏱ Wall-clock limit — re-queued remaining items`)
+        break outerLoop
+      }
+
+      // Fetch article page
+      const { html: articleHtml, text: articleText, pubDate: articleDate } = await fetchArticle(item.link)
+      if (!articleText) { stats.skipped++; continue }
+
+      // 6-month cutoff (skipped in backfill mode)
+      if (!backfill && isTooOld(articleDate)) {
+        stats.skipped++
+        console.log(`[RELEASES v7] Too old (${articleDate?.toISOString().slice(0,10)}): ${item.title.slice(0,55)}`)
+        continue
+      }
+
+      // Claude: validate it's a real product launch + write article
+      const extracted = await validateAndWrite(item.title, articleText, item.link, item.brand)
+      if (!extracted || extracted.skip) { stats.skipped++; continue }
+
+      // Dedup against Redis seen-set + Sanity
+      if (await alreadySeen(item.link, extracted.brand, extracted.model)) {
+        stats.skipped++
+        console.log(`[RELEASES v7] Dupe: ${extracted.brand} ${extracted.model}`)
+        continue
+      }
+
+      // Image waterfall: og:image → twitter:image → largest img → Bing fallback
+      const imgResult = await resolveImage(item.link, articleHtml, extracted.brand, extracted.model)
+      let imageAssetId = null
+      let hotlinkUrl   = null
+
+      if (imgResult) {
+        console.log(`[RELEASES v7] Image via ${imgResult.source}: ${imgResult.url.slice(0, 70)}`)
+        imageAssetId = await uploadToSanity(imgResult.url)
+        if (!imageAssetId) hotlinkUrl = imgResult.url
+      } else {
+        stats.noImage++
+        console.warn(`[RELEASES v7] ⚠ No image: ${extracted.brand} ${extracted.model}`)
+      }
+
+      // Save to Sanity
+      try {
+        await saveRelease(extracted, item.link, imageAssetId, hotlinkUrl, articleDate || item.pubDate)
+        await markSeen(item.link, extracted.brand, extracted.model)
+        stats.done++
+        const img = imageAssetId ? '📷CDN' : hotlinkUrl ? '🔗link' : '⚠none'
+        stats.saved.push(`${extracted.brand} ${extracted.model} [${img}]`)
+        console.log(`[RELEASES v7] ✓ ${extracted.brand} — ${extracted.model} [${img}]`)
+      } catch (e) {
+        stats.failed++
+        stats.errors.push(`${extracted.brand} ${extracted.model}: ${e.message}`)
+        console.error(`[RELEASES v7] Save failed: ${e.message}`)
+      }
+
+      await sleep(RATE_MS)
     }
 
-    // Layer 4: Claude validates + writes
-    const extracted = await validateAndWrite(item.title, articleText, item.link, item.brand)
-    if (!extracted || extracted.skip) { stats.skipped++; continue }
-
-    // Layer 3: Dedup against Redis + Sanity
-    if (await alreadySeen(item.link, extracted.brand, extracted.model)) {
-      stats.skipped++
-      console.log(`[RELEASES v6] Dupe: ${extracted.brand} ${extracted.model}`)
-      continue
-    }
-
-    // Image waterfall
-    const imgResult = await resolveImage(item.link, articleHtml, extracted.brand, extracted.model)
-    let imageAssetId = null
-    let hotlinkUrl   = null
-
-    if (imgResult) {
-      console.log(`[RELEASES v6] Image via ${imgResult.source}: ${imgResult.url.slice(0, 80)}`)
-      imageAssetId = await uploadToSanity(imgResult.url)
-      if (!imageAssetId) hotlinkUrl = imgResult.url // CDN upload failed, store URL as fallback
-    } else {
-      stats.noImage++
-      console.warn(`[RELEASES v6] ⚠ No image found for ${extracted.brand} ${extracted.model}`)
-    }
-
-    // Save
-    try {
-      await saveRelease(extracted, item.link, imageAssetId, hotlinkUrl, articleDate || item.pubDate)
-      await markSeen(item.link, extracted.brand, extracted.model)
-      stats.done++
-      const img = imageAssetId ? '📷CDN' : hotlinkUrl ? '🔗link' : '⚠none'
-      stats.saved.push(`${extracted.brand} ${extracted.model} [${img}]`)
-      console.log(`[RELEASES v6] ✓ ${extracted.brand} — ${extracted.model} [${img}]`)
-    } catch (e) {
-      stats.failed++
-      stats.errors.push(`${extracted.brand} ${extracted.model}: ${e.message}`)
-      console.error(`[RELEASES v6] Save failed: ${e.message}`)
-    }
-
-    await sleep(RATE_MS)
+    remaining = await queueLen(qKey)
+    console.log(`[RELEASES v7] Queue remaining: ${remaining}`)
   }
 
-  const ms = Date.now() - t0
-  const detail = `${stats.done} saved | ${stats.skipped} skipped | ${stats.failed} failed | ${stats.noImage} no-image | ${ms}ms`
-  console.log(`[RELEASES v6] Done: ${detail}`)
-  if (stats.saved.length)  console.log(`[RELEASES v6] Saved: ${stats.saved.join(' | ')}`)
-  if (stats.errors.length) console.log(`[RELEASES v6] Errors: ${stats.errors.join(' | ')}`)
+  const ms     = Date.now() - t0
+  remaining    = await queueLen(qKey)
+  const detail = `${stats.done} saved | ${stats.skipped} skipped | ${stats.failed} failed | ${stats.noImage} no-image | ${remaining} still queued | ${ms}ms`
+  console.log(`[RELEASES v7] Done: ${detail}`)
+  if (stats.saved.length)  console.log(`[RELEASES v7] Saved: ${stats.saved.join(' | ')}`)
+  if (stats.errors.length) console.log(`[RELEASES v7] Errors: ${stats.errors.join(' | ')}`)
 
   await reportCronRun('releases', {
     status:  stats.failed > 0 && stats.done === 0 ? 'failed' : 'success',
@@ -701,5 +792,12 @@ export async function runReleasesFeed() {
     details: detail,
   })
 
-  return { ...stats, ms, candidates: candidates.length }
+  return { phase: 'process', ...stats, ms, remaining }
+}
+
+// ── BACKWARDS COMPAT: called by legacy agent route with no phase param ────────
+export async function runReleasesFeed() {
+  const scrapeResult = await scrapeReleases()
+  const processResult = await processReleases()
+  return { ...processResult, queued: scrapeResult.queued }
 }
