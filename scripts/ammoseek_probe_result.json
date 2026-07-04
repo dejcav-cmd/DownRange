@@ -1,11 +1,51 @@
 {
-  "probed_at": "2026-07-04T15:02:48.290741",
-  "9mm": {
-    "error": "HTTP Error 404: Not Found"
-  },
-  "223-remington": [],
-  "65-creedmoor": {
-    "error": "HTTP Error 404: Not Found"
-  },
-  "7mm-prc": []
+  "probed_at": "2026-07-04T15:04:53.870808",
+  "tests": {
+    "ammoseek_old_rss": {
+      "error": "HTTP 404",
+      "url": "https://www.ammoseek.com/ammo/9mm/rss"
+    },
+    "ammoseek_feed": {
+      "error": "HTTP 404",
+      "url": "https://www.ammoseek.com/ammo/9mm?feed=rss"
+    },
+    "ammoseek_rss2": {
+      "error": "HTTP 404",
+      "url": "https://www.ammoseek.com/rss/9mm"
+    },
+    "ammoseek_search_html": {
+      "error": "HTTP 404",
+      "url": "https://www.ammoseek.com/ammo/9mm"
+    },
+    "gunbot_9mm": {
+      "error": "HTTP 404",
+      "url": "https://www.gunbot.com/api/ammo/search/?caliber=9mm&qty=50"
+    },
+    "wikiarms_9mm": {
+      "error": "HTTP 404",
+      "url": "https://www.wikiarms.com/ammo/9mm/rss"
+    },
+    "wikiarms_556": {
+      "error": "HTTP 404",
+      "url": "https://www.wikiarms.com/ammo/223/rss"
+    },
+    "wikiarms_65cm": {
+      "error": "HTTP 404",
+      "url": "https://www.wikiarms.com/ammo/6.5-creedmoor/rss"
+    },
+    "wikiarms_homepage": {
+      "status": 200,
+      "len": 388962,
+      "url": "https://www.wikiarms.com/",
+      "preview": "<!doctype html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>WikiArms AmmoEngine | Live Ammo and Firearm Tracking</title>\n    <meta name=\"description\" content=\"WikiArms - an easy way to track and find the lowest ammo and firearm prices. Browse the best deals, and see for your self.\""
+    },
+    "slickguns_rss": {
+      "error": "<urlopen error [Errno -2] Name or service not known>",
+      "url": "https://www.slickguns.com/rss.xml"
+    },
+    "reddit_gundeals": {
+      "error": "HTTP 403",
+      "url": "https://www.reddit.com/r/gundeals/search.json?q=9mm&restrict_sr=1&sort=new&limit=5"
+    }
+  }
 }
