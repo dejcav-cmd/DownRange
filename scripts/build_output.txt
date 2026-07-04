@@ -1,0 +1,30 @@
+
+> downrange@1.0.0 build
+> npx next build
+
+ ⚠ Invalid next.config.js options detected: 
+ ⚠     Unrecognized key(s) in object: 'outputFileTracingIncludes'
+ ⚠ See more info here: https://nextjs.org/docs/messages/invalid-next-config
+⚠ No build cache found. Please configure build caching for faster rebuilds. Read more: https://nextjs.org/docs/messages/no-cache
+Attention: Next.js now collects completely anonymous telemetry regarding usage.
+This information is used to shape Next.js' roadmap and prioritize features.
+You can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:
+https://nextjs.org/telemetry
+
+  ▲ Next.js 14.2.29
+
+   Creating an optimized production build ...
+Failed to compile.
+
+./app/api/admin/run/route.js
+Module not found: Can't resolve '../../../../agent/feeds/market.js'
+
+https://nextjs.org/docs/messages/module-not-found
+
+./app/api/admin/trigger/route.js
+Module not found: Can't resolve '../../../../agent/feeds/market.js'
+
+https://nextjs.org/docs/messages/module-not-found
+
+
+> Build failed because of webpack errors
