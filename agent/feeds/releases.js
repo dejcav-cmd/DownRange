@@ -13,14 +13,19 @@
  *
  * Schedule: twice a week — Mon & Thu at 06:45 UTC
  *
- * Sources (40):
+ * Sources (57):
  *   Pistols:     Glock, SIG Sauer ×2, S&W, Springfield, Taurus, Beretta, Kimber,
  *                Walther, CZ-USA, CZ Firearms, HK USA, FN America, Ruger, Canik,
  *                Staccato, Shadow Systems, Wilson Combat, Nighthawk Custom
+ *   2011/Comp:   Bul Armory, MAC (Military Armament Corp), Colt
  *   Rifles:      Daniel Defense, Aero Precision, BCM, LWRC, Christensen Arms,
  *                Savage Arms, Mossberg, Winchester, Browning, Benelli USA,
  *                Maxim Defense, PSA, MPA, Tikka, Fusion Firearms
- *   Suppressors: SilencerCo, Dead Air
+ *   Shotguns:    Stoeger, TriStar Arms, Hatsan USA, Weatherby, Retay
+ *   Suppressors: SilencerCo, Dead Air, Griffin Armament, Rugged Suppressors,
+ *                AAC, Gemtech, Q LLC, SureFire, HUXWRX
+ *   Turkish:     SAR USA, Girsan (via EAA), Tisas (via SDS Imports)
+ *   Nordic:      Sako
  *   Optics:      Holosun, Trijicon, Vortex
  */
 
@@ -150,6 +155,35 @@ const MFR_SOURCES = [
   { brand:'Holosun',            url:'https://www.holosun.com/news.html',                           base:'https://www.holosun.com',           pat:/holosun\.com\/.{10,}/i },
   { brand:'Trijicon',           url:'https://www.trijicon.com/news/',                              base:'https://www.trijicon.com',          pat:/\/news\/.{5,}/i },
   { brand:'Vortex',             url:'https://www.vortexoptics.com/blog/',                          base:'https://www.vortexoptics.com',      pat:/\/blog\/.{5,}/i },
+
+  // ── 2011 / COMPETITION PISTOLS ──────────────────────────────────────────────
+  { brand:'Bul Armory',         url:'https://www.global.bularmory.com/blog',                       base:'https://www.global.bularmory.com',  pat:/\/blog\/.{5,}/i },
+  { brand:'MAC',                url:'https://www.milarmamentcorp.com/news/',                       base:'https://www.milarmamentcorp.com',   pat:/\/news\/.{5,}/i },
+  { brand:'Colt',               url:'https://www.colt.com/category/colt-news/',                    base:'https://www.colt.com',              pat:/\/colt-news\/.{5,}/i },
+
+  // ── SHOTGUNS ─────────────────────────────────────────────────────────────────
+  { brand:'Stoeger',            url:'https://www.stoegerindustries.com/news/',                     base:'https://www.stoegerindustries.com', pat:/\/news\/.{5,}/i },
+  { brand:'TriStar Arms',       url:'https://tristararms.com/news/',                               base:'https://tristararms.com',           pat:/\/news\/.{5,}/i },
+  { brand:'Hatsan USA',         url:'https://hatsan.com.tr/en/news',                               base:'https://hatsan.com.tr',             pat:/hatsan\.com\.tr\/en\/news\/.{5,}/i },
+  { brand:'Weatherby',          url:'https://www.weatherby.com/blog/',                             base:'https://www.weatherby.com',         pat:/\/blog\/.{5,}/i },
+  { brand:'Retay',              url:'https://retay.com/news/',                                     base:'https://retay.com',                 pat:/retay\.com\/news\/.{5,}/i },
+
+  // ── SUPPRESSORS (EXPANDED) ────────────────────────────────────────────────────
+  { brand:'Griffin Armament',   url:'https://griffinarmament.com/blog/',                           base:'https://griffinarmament.com',       pat:/griffinarmament\.com\/blog\/.{5,}/i },
+  { brand:'Rugged Suppressors', url:'https://ruggedsuppressors.com/blog/',                         base:'https://ruggedsuppressors.com',     pat:/\/blog\/.{5,}/i },
+  { brand:'AAC',                url:'https://advanced-armament.com/news/',                         base:'https://advanced-armament.com',     pat:/\/news\/.{5,}/i },
+  { brand:'Gemtech',            url:'https://www.gemtech.com/blogs/news',                          base:'https://www.gemtech.com',           pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'Q LLC',              url:'https://www.theqcompany.com/blogs/news',                      base:'https://www.theqcompany.com',       pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'SureFire',           url:'https://www.surefire.com/blogs/news',                         base:'https://www.surefire.com',          pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'HUXWRX',             url:'https://huxwrx.com/blogs/news',                               base:'https://huxwrx.com',                pat:/\/blogs\/news\/.{5,}/i },
+
+  // ── TURKISH BRANDS ────────────────────────────────────────────────────────────
+  { brand:'SAR USA',            url:'https://www.sarusa.com/news/',                                base:'https://www.sarusa.com',            pat:/sarusa\.com\/news\/.{5,}/i },
+  { brand:'Girsan',             url:'https://www.eaacorp.com/news/',                               base:'https://www.eaacorp.com',           pat:/eaacorp\.com\/(news|blog)\/.{5,}/i },
+  { brand:'Tisas',              url:'https://sdsimports.com/blogs/news',                           base:'https://sdsimports.com',            pat:/\/blogs\/news\/.{5,}/i },
+
+  // ── NORDIC PRECISION ──────────────────────────────────────────────────────────
+  { brand:'Sako',               url:'https://www.sako.global/articles/press-release',              base:'https://www.sako.global',           pat:/sako\.global\/article\/.{5,}/i },
 ]
 
 // ── LAYER 2: SCRAPE LISTING PAGE ─────────────────────────────────────────────
