@@ -1,0 +1,61 @@
+name: Full Releases Backfill
+on:
+  workflow_dispatch:
+    inputs:
+      backfill:
+        description: 'backfill=1 skips 6-month cutoff (pull all history)'
+        required: false
+        default: '1'
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Phase 1 — scrape all sources
+        run: |
+          echo "Triggering scrape phase (backfill=${{ github.event.inputs.backfill }})..."
+          curl -s -X GET \
+            "https://downrangeco.com/api/agent?feed=releases&phase=scrape&backfill=${{ github.event.inputs.backfill }}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 120 \
+            | tee /tmp/scrape.json
+          echo ""
+          echo "Scrape result:"
+          cat /tmp/scrape.json
+
+  process:
+    runs-on: ubuntu-latest
+    needs: scrape
+    timeout-minutes: 10
+    strategy:
+      max-parallel: 1
+    steps:
+      - name: Phase 2 — process batch 1
+        run: |
+          curl -s -X GET \
+            "https://downrangeco.com/api/cron/releases-process?backfill=${{ github.event.inputs.backfill }}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 310 | tee /tmp/p1.json
+          echo ""; cat /tmp/p1.json
+          echo "remaining=$(cat /tmp/p1.json | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('remaining',0))")" >> $GITHUB_OUTPUT
+        id: batch1
+
+      - name: Phase 2 — process batch 2
+        if: ${{ steps.batch1.outputs.remaining != '0' }}
+        run: |
+          sleep 5
+          curl -s -X GET \
+            "https://downrangeco.com/api/cron/releases-process?backfill=${{ github.event.inputs.backfill }}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 310 | tee /tmp/p2.json
+          echo ""; cat /tmp/p2.json
+
+      - name: Phase 2 — process batch 3
+        run: |
+          sleep 5
+          curl -s -X GET \
+            "https://downrangeco.com/api/cron/releases-process?backfill=${{ github.event.inputs.backfill }}" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            --max-time 310 | tee /tmp/p3.json
+          echo ""; cat /tmp/p3.json
