@@ -5,16 +5,19 @@ on:
 jobs:
   cleanup:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 15
     steps:
+      - uses: actions/checkout@v4
+
       - name: Run gnews cleanup + image fix
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: |
-          echo "Running Google News release cleanup + image fix..."
-          curl -s -X GET \
-            "https://downrangeco.com/api/admin/delete-gnews-releases" \
-            -H "x-admin-key: ${{ secrets.ADMIN_KEY }}" \
-            --max-time 305 \
-            | tee /tmp/result.txt
+          pip install requests --quiet 2>/dev/null || true
+          python3 scripts/delete-gnews-releases.py 2>&1 | tee /tmp/cleanup-result.txt
           echo ""
-          echo "=== Result ==="
-          cat /tmp/result.txt
+          echo "=== Exit code: $? ==="
+
+      - name: Print result
+        if: always()
+        run: cat /tmp/cleanup-result.txt || echo "No result file"
