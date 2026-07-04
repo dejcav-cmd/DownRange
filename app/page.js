@@ -346,7 +346,7 @@ export default async function HomePage() {
                 Stay <span style={{ color:'#C8922A' }}>Armed</span><br />& Informed
               </h2>
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#475569', lineHeight:1.7, marginBottom:24 }}>
-                Join 400,000+ Americans getting the daily DownRange intelligence briefing — breaking news, new laws, gear releases, and ammo prices every morning.
+                Join 400,000+ Americans getting the weekly DownRange intelligence briefing — breaking news, new laws, gear releases, and ammo prices.
               </p>
               <NewsletterSignup variant="compact" />
             </div>

@@ -61,13 +61,13 @@ export default function NewsletterSignup({ variant = 'full' }) {
             STAY LOCKED IN
           </h2>
           <p style={{ fontSize: '16px', color: '#6B7280', marginBottom: '36px', lineHeight: 1.7, maxWidth: '480px', margin: '0 auto 36px' }}>
-            Breaking law changes. New releases. Ammo price alerts. Every morning at 7am — straight to your inbox. No noise. No spam.
+            Breaking law changes. New releases. Ammo price alerts. Every week — straight to your inbox. No noise. No spam.
           </p>
 
           {status === 'success' ? (
             <div style={{ padding: '20px 32px', background: '#001A0A', border: '1px solid #166534', display: 'inline-block' }}>
               <span style={{ color: '#34D399', fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.4rem', letterSpacing: '0.05em' }}>
-                ✓ YOU'RE IN. FIRST BRIEF HITS TOMORROW 7AM.
+                ✓ YOU'RE IN. WELCOME TO DOWNRANGE.
               </span>
             </div>
           ) : (
