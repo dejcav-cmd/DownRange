@@ -5,6 +5,12 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
+      NEXT_PUBLIC_SANITY_DATASET: production
+      SANITY_API_TOKEN: placeholder
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_placeholder
+      CLERK_SECRET_KEY: sk_test_placeholder
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -13,9 +19,7 @@ jobs:
       - name: Install deps
         run: npm ci --legacy-peer-deps
       - name: Build and capture errors
-        run: |
-          npm run build 2>&1 | tail -80 > /tmp/build_output.txt || true
-          cat /tmp/build_output.txt
+        run: npm run build 2>&1 | tee /tmp/build_output.txt; exit 0
       - name: Push build output
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
@@ -24,19 +28,13 @@ jobs:
           SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/build_output.txt" \
             | python3 -c "import sys,json; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || echo "")
-          if [ -n "$SHA" ]; then
-            PAYLOAD=$(python3 -c "import json; print(json.dumps({'message':'chore: build output [skip ci]','content':'$CONTENT','sha':'$SHA'}))")
+          if [ -n "$SHA" ] && [ "$SHA" != "" ]; then
+            python3 -c "import json; print(json.dumps({'message':'chore: build output [skip ci]','content':'$CONTENT','sha':'$SHA'}))" > /tmp/payload.json
           else
-            PAYLOAD=$(python3 -c "import json; print(json.dumps({'message':'chore: build output [skip ci]','content':'$CONTENT'}))")
+            python3 -c "import json; print(json.dumps({'message':'chore: build output [skip ci]','content':'$CONTENT'}))" > /tmp/payload.json
           fi
           curl -s -X PUT \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
             "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/build_output.txt" \
-            -d "$PAYLOAD" | python3 -c "import sys,json; d=json.load(sys.stdin); print('OK' if 'content' in d else d.get('message'))"
-        env:
-          NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
-          NEXT_PUBLIC_SANITY_DATASET: production
-          SANITY_API_TOKEN: placeholder
-          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: pk_test_placeholder
-          CLERK_SECRET_KEY: sk_test_placeholder
+            -d @/tmp/payload.json | python3 -c "import sys,json; d=json.load(sys.stdin); print('OK' if 'content' in d else d.get('message','?')[:100])"
