@@ -84,12 +84,20 @@ async function scrapeOGImage(url) {
       return null
     }
     let imgUrl = m[1].trim()
-    // gun.deals wraps images in Cloudflare image transforms — extract underlying URL
+    // gun.deals wraps images in Cloudflare image transforms, e.g.:
+    //   https://gun.deals/cdn-cgi/image/format=auto,width=800/https://gun.deals/sites/default/files/foo.jpg
+    //   https://gun.deals/cdn-cgi/image/f=auto/sites/default/files/foo.jpg
+    // The capture group after the transform params may be:
+    //   (a) a full https:// URL  → use as-is
+    //   (b) a root-relative path → prepend gun.deals origin
     const cdnCgiMatch = imgUrl.match(/\/cdn-cgi\/image\/[^\/]+\/(.+)/)
     if (cdnCgiMatch) {
-      // Reconstruct the direct image URL
-      const origin = new URL(imgUrl).origin
-      imgUrl = origin + '/' + cdnCgiMatch[1]
+      const downstream = cdnCgiMatch[1]
+      if (downstream.startsWith('http://') || downstream.startsWith('https://')) {
+        imgUrl = downstream  // already a full URL
+      } else {
+        imgUrl = 'https://gun.deals/' + downstream.replace(/^\//, '')
+      }
     }
     return imgUrl
   } catch { return null }

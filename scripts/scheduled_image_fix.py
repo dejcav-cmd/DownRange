@@ -48,7 +48,19 @@ def scrape_og(url):
             html = r.read().decode('utf-8', errors='replace')
         m = re.search(r'property=["\']og:image["\'][^>]*content=["\']([^"\']+)', html, re.I) \
          or re.search(r'content=["\']([^"\']+)["\'][^>]*property=["\']og:image', html, re.I)
-        return m.group(1).strip() if m else None
+        if not m:
+            return None
+        img_url = m.group(1).strip()
+        # Unwrap Cloudflare cdn-cgi image transforms
+        # e.g. https://gun.deals/cdn-cgi/image/format=auto,width=800/https://gun.deals/sites/.../foo.jpg
+        cgi = re.match(r'.*/cdn-cgi/image/[^/]+/(.+)', img_url)
+        if cgi:
+            downstream = cgi.group(1)
+            if downstream.startswith('http://') or downstream.startswith('https://'):
+                img_url = downstream
+            else:
+                img_url = 'https://gun.deals/' + downstream.lstrip('/')
+        return img_url
     except: return None
 
 def download_img(url):
@@ -93,8 +105,12 @@ else:
 
 # ── STEP 2: Fix missing images ────────────────────────────────────────────────
 log("\n=== STEP 2: FIX MISSING IMAGES ===")
-missing = q('''*[_type=="gunDeal" && (!defined(imageUrl) || imageUrl == null || imageUrl == "")] | order(_createdAt desc) { _id, externalUrl, source }''')
-log(f"Missing: {len(missing)}")
+missing = q('''*[_type=="gunDeal" && (
+  !defined(imageUrl) || imageUrl == null || imageUrl == ""
+  || string::startsWith(imageUrl, "https://gun.deals")
+  || string::startsWith(imageUrl, "http://gun.deals")
+)] | order(_createdAt desc) [0..149] { _id, externalUrl, source, imageUrl }''')
+log(f"Needs image fix: {len(missing)} (null + gun.deals hotlink-blocked)")
 
 updates = []
 stats = {'uploaded': 0, 'fallback': 0, 'failed': 0}
