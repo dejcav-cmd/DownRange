@@ -2,12 +2,10 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 48 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e5bc1d62f930e584a4a7e885687c03f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b27c7b35de7e14e6aa91f3ad8a4b50b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0da0119a3580076bb5c011b9610ff27
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fd49dca5d82bd58af2dc4d58de023cf
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8b7d901bb62d922e20121f88e82f7b1
+Needs image fix: 46 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d6d50a5dbd091ee0dea6ff08b1f55b1
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5765def9ba03e6e82c030ef60c5360b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3446584fa8356f0618d29b879abe2b9
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -51,10 +49,10 @@ Needs image fix: 48 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 8
+  → patched final 6
 
-Stats: uploaded=5 fallback=3 failed=3
+Stats: uploaded=3 fallback=3 failed=3
 
-=== FINAL: total=3932 missing_images=39 reddit=0 ===
+=== FINAL: total=3935 missing_images=39 reddit=0 ===
 
-FIXED: 8
+FIXED: 6
