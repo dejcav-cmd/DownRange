@@ -1,0 +1,37 @@
+Testing 26 manufacturer sources...
+
+Glock                  — 0 candidates
+SIG Sauer              ✗ HTTPError: HTTP Error 403: Forbidden
+Smith & Wesson         — 0 candidates
+Springfield Armory     — 0 candidates
+Ruger                  — 0 candidates
+Taurus                 — 0 candidates
+Beretta                ✗ HTTPError: HTTP Error 404: Not Found
+Kimber                 ✓ 17 candidates
+  → KIMBER® LAUNCHES NEW PRO CARBON RIFLES TO THE OPEN RANGE LINEUP
+  → KIMBER® LAUNCHES NEW MODELS TO THEIR K6S REVOLVER LINE UP
+Staccato               ✗ HTTPError: HTTP Error 404: Not Found
+Bul Armory             ✗ HTTPError: HTTP Error 404: Not Found
+Colt                   — 0 candidates
+Daniel Defense         ✗ HTTPError: HTTP Error 401: Unauthorized
+Mossberg               ✗ HTTPError: HTTP Error 403: Forbidden
+Browning               — 0 candidates
+MPA                    ✗ URLError: <urlopen error [Errno -2] Name or service not known>
+Stoeger                — 0 candidates
+TriStar Arms           ✗ HTTPError: HTTP Error 404: Not Found
+Weatherby              — 0 candidates
+SilencerCo             ✗ HTTPError: HTTP Error 403: Forbidden
+Dead Air               ✗ HTTPError: HTTP Error 404: Not Found
+Griffin Armament       — 0 candidates
+Rugged Suppressors     — 0 candidates
+Q LLC                  ✗ URLError: <urlopen error [Errno -3] Temporary failure in name resolution>
+SAR USA                ✗ HTTPError: HTTP Error 404: Not Found
+Girsan (EAA)           ✗ HTTPError: HTTP Error 404: Not Found
+Sako                   ✓ 2 candidates
+  → The National Defence Training Association of Finland (MPK) to procure new rifles from Sako
+  → Sako launches a new Hunting rifles series - the Sako 90 Press Release May 2023
+
+=================================================================
+Total candidates: 19
+Sources reachable: 13/26
+Sources with candidates: 2/26
