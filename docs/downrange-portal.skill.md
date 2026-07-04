@@ -48,3 +48,35 @@ Fix: removed Google News entirely. All sources are now direct manufacturer pages
 
 - `delete-gnews-releases.yml` was triggering on push events (caused "No jobs were run" email) — fixed to `workflow_dispatch` only
 - `releases.js` DEADLINE constant removed along with Google News (it only existed to gate the Google News loop)
+
+## Releases Feed — v7 (Two-Phase Queue)
+
+**Architecture:**
+- `scrapeReleases({backfill})` — scrape all 65 sources in batches of 8, keyword-gate, push to Redis
+- `processReleases({backfill})` — pop PROCESS_BATCH=6 from Redis, per item: fetch → date check → Claude → image → save
+- `WALL_CLOCK_SAFE = 250s` — checked before every article; re-queues current item if limit hit
+- `runReleasesFeed()` — chains both phases (backwards compat)
+- Queue keys: `dr:releases:queue` (regular) / `dr:releases:backfill` (no date cutoff)
+
+**Cron schedule:**
+```
+45 6 * * 1,4   /api/agent?feed=releases&phase=scrape   (Mon+Thu 06:45 UTC)
+50 6 * * 1,4   /api/cron/releases-process               (Mon+Thu 06:50 UTC)
+```
+
+**New route:** `/api/cron/releases-process` (maxDuration 300s, accepts backfill=1)
+
+**Agent route params:**
+- `?phase=scrape` → scrapeReleases()
+- `?phase=process` → processReleases()
+- `?backfill=1` → skips 6-month cutoff, uses BACKFILL_KEY
+- No params → runReleasesFeed() (both phases)
+
+**On-demand trigger (WAF issue):**
+- Vercel WAF blocks all external callers to downrangeco.com (GH Actions, sandbox IPs)
+- Fix: add VERCEL_BYPASS_SECRET to Vercel dashboard → Project → Settings → Deployment Protection → Protection Bypass for Automation
+- Then add same value as VERCEL_BYPASS_SECRET in GitHub Actions secrets
+- Use header: `x-vercel-protection-bypass: SECRET`
+- Workflow: `.github/workflows/full-backfill-releases.yml`
+
+**Sources:** 65 total (see releases.js header for full list)
