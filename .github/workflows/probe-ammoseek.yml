@@ -11,7 +11,7 @@ jobs:
         run: python3 scripts/probe_ammoseek.py
       - name: Push results
         env:
-          PAT: ${{ secrets.DOWNRANGE_GH_PAT }}
+          PAT: ${{ secrets.GH_PAT }}
         run: |
           git config user.email "dj@downrangeco.com"
           git config user.name "DJ Cavalcanti"
