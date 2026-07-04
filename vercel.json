@@ -326,6 +326,9 @@
     },
     "app/api/cron/releases-process/route.js": {
       "maxDuration": 300
+    },
+    "app/api/admin/rewrite-releases/route.js": {
+      "maxDuration": 300
     }
   }
 }
