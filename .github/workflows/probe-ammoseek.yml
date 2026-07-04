@@ -1,0 +1,18 @@
+name: Probe AmmoSeek RSS
+on:
+  workflow_dispatch:
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run AmmoSeek probe
+        run: python3 scripts/probe_ammoseek.py
+      - name: Commit results
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add scripts/ammoseek_probe_result.json
+          git commit -m "chore: ammoseek probe results" || echo "nothing to commit"
+          git push
