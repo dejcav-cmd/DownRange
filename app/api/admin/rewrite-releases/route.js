@@ -9,6 +9,7 @@ export const dynamic    = 'force-dynamic'
 export const maxDuration = 300
 
 import { createClient } from '@sanity/client'
+import { reportCronRun } from '@/lib/cronReporter'
 import { validateAndWrite } from '@/agent/feeds/releases.js'
 
 const sanity = createClient({
@@ -125,5 +126,10 @@ export async function GET(req) {
   }
 
   results.ms = Date.now() - t0
+  await reportCronRun('rewrite-releases', {
+    status:  results.failed.length > 0 && results.rewritten.length === 0 ? 'failed' : 'success',
+    ms:      results.ms,
+    details: `rewritten:${results.rewritten.length} skipped:${results.skipped.length} failed:${results.failed.length} | ${results.rewritten.join(' · ').slice(0,120)}`,
+  }).catch(() => {})
   return Response.json({ ok: true, ...results })
 }

@@ -178,11 +178,19 @@
     },
     {
       "path": "/api/admin/rewrite-releases",
-      "schedule": "45 5 * * *"
+      "schedule": "50 5 * * *"
     },
     {
-      "path": "/api/admin/rewrite-releases?batch=2",
-      "schedule": "55 5 * * *"
+      "path": "/api/admin/rewrite-releases",
+      "schedule": "0 6 * * *"
+    },
+    {
+      "path": "/api/admin/rewrite-releases",
+      "schedule": "10 6 * * *"
+    },
+    {
+      "path": "/api/admin/rewrite-releases",
+      "schedule": "20 6 * * *"
     }
   ],
   "headers": [
