@@ -5,7 +5,6 @@ const HOT_FALLBACK = [
   { rank:1, title:'ATF 34-Rule Reform Package — April 2026', href:'/laws?tab=atf',     cat:'law',     score:98 },
   { rank:2, title:'NFA Tax Stamp Eliminated Jan 1 2026',     href:'/laws?tab=atf',     cat:'law',     score:95 },
   { rank:3, title:'SCOTUS: Hemani (Drug Users & 2A)',        href:'/laws?tab=scotus',  cat:'scotus',  score:91 },
-  { rank:4, title:'9mm Hits 18¢/rd — 3-Year Low',           href:'/market',           cat:'market',  score:87 },
   { rank:5, title:'SIG P365XL Review — 9.5/10',             href:'/reviews',          cat:'review',  score:82 },
 ]
 

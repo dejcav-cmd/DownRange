@@ -5,7 +5,6 @@ import { getAllRuns, getAlertConfig, setAlertConfig, reportCronRun } from '@/lib
 // ── All cron jobs registry ────────────────────────────────────────────────────
 export const ALL_JOBS = [
   { id:'news',             path:'/api/agent?feed=news',             schedule:'*/30 * * * *',  label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 30 min' },
-  { id:'market',           path:'/api/agent?feed=market',           schedule:'0 */4 * * *',   label:'Market Feed',             group:'Content',  icon:'📊', critical:false, desc:'AmmoSeek + pricing data every 4 hours (19 calibers)' },
   { id:'releases',         path:'/api/agent?feed=releases&phase=scrape', schedule:'45 6 * * 1,4',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
     { path:'/api/cron/releases-process',           schedule:'50 6 * * 1,4',     label:'Releases Process',        group:'Content',  icon:'⚙️',  critical:false, desc:'Phase 2: dequeue and process scraped candidates' },
   { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */2 * * *',   label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:true,  desc:'Congress.gov + LegiScan → legislation every 2 hrs' },
@@ -36,7 +35,6 @@ export const ALL_JOBS = [
   // (commit 1e27b7a). Never in vercel.json. Its own auth check doesn't accept
   // x-vercel-cron or CRON_SECRET — admin-key only — so it couldn't be cron-invoked anyway.
   { id:'carry-insurance',  path:'/api/cron/carry-insurance',        schedule:'0 6 * * 1',         label:'Carry Insurance Update',   group:'Content', icon:'🛡', critical:false, desc:'Updates carry insurance comparison data every Monday 6am UTC' },
-  { id:'market-brief',     path:'/api/cron/market-brief',           schedule:'6 14 * * *',        label:'Market Brief',             group:'Content', icon:'📉', critical:false, desc:'Market brief email at 2pm and 9pm UTC daily' },
   { id:'sitemap',          path:'/api/cron/sitemap',                schedule:'0 2 * * *',         label:'Sitemap Generator',        group:'System',  icon:'🗺', critical:false, desc:'Regenerates sitemap.xml daily at 2am UTC' },
   { id:'giveaways',        path:'/api/agent?feed=giveaways',       schedule:'3 8 * * *',         label:'Giveaways Feed',           group:'Content', icon:'🎁', critical:false, desc:'Pulls active giveaways daily 8:03am UTC. Was monitoring dead route /api/cron/giveaways (never scheduled) — fixed to track the real one.' },
   { id:'blog-writer',      path:'/api/cron/blog-writer',            schedule:'0 18 * * 1,3,5',    label:'Blog Writer (Mon/Wed/Fri)',     group:'Content', icon:'✏', critical:false, desc:'AI blog post writer every Friday 6pm UTC' },

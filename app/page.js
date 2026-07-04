@@ -9,7 +9,7 @@ import NewsletterSignup from '../components/sections/NewsletterSignup'
 import Link from 'next/link'
 import {
   fetchArticles, fetchBreakingAlerts,
-  fetchReleases, fetchReviews, fetchAmmoPrices,
+  fetchReleases, fetchReviews,
   fetchVideos, fetchAllStateProfiles
 } from '../sanity/lib/client'
 
@@ -17,31 +17,13 @@ export const revalidate = 120
 
 export const metadata = {
   title: 'DownRange — Firearms & Second Amendment Intelligence',
-  description: 'Real-time 2A news, state gun laws, ammo prices, new releases, and CCW guides for American gun owners.',
+  description: 'Real-time 2A news, state gun laws, new releases, and CCW guides for American gun owners.',
   alternates: { canonical: 'https://www.downrangeco.com' },
 }
 
 // ── SEED DATA ─────────────────────────────────────────────────────────────────
 
-const SEED_ARTICLES = [
-  { _id:'s1', title:'Supreme Court Takes Up Landmark 2A Challenge — Harrington v. ATF', category:'breaking', urgencyScore:9, source:'SCOTUSblog', publishedAt: new Date(Date.now()-300000).toISOString(), excerpt:'SCOTUS agreed to hear arguments in the most significant Second Amendment case since Bruen.', slug:{ current:'scotus-harrington-atf' } },
-  { _id:'s2', title:'National Reciprocity Act Advances in Senate — 11 States Would Gain Full Reciprocity', category:'law', urgencyScore:8, source:'NRA-ILA', publishedAt: new Date(Date.now()-900000).toISOString(), excerpt:'Senate Judiciary Committee passed the bill 11-7 along party lines.', slug:{ current:'national-reciprocity-senate' } },
-  { _id:'s3', title:'Glock Officially Announces G47 Gen 6 — Ships October 2026', category:'industry', urgencyScore:6, source:'The Firearm Blog', publishedAt: new Date(Date.now()-1800000).toISOString(), excerpt:'New Gen 6 frame with improved grip texture and factory-installed optic cut.', slug:{ current:'glock-g47-gen6-announced' } },
-  { _id:'s4', title:'9mm FMJ Drops Below 18¢/rd — Cheapest Since January 2024', category:'industry', urgencyScore:5, source:'AmmoSeek', publishedAt: new Date(Date.now()-3600000).toISOString(), excerpt:'Federal and Blazer bulk pack hitting all-time lows at major retailers.', slug:{ current:'9mm-price-18-cents' } },
-  { _id:'s5', title:'California AWB Ruled Unconstitutional by 9th Circuit Panel', category:'law', urgencyScore:9, source:'TTAG', publishedAt: new Date(Date.now()-5400000).toISOString(), excerpt:'Divided 9th Circuit panel found California assault weapons ban violates Bruen standard.', slug:{ current:'california-awb-9th-circuit' } },
-  { _id:'s6', title:'ATF Brace Rule Vacated Nationwide — DOJ Declines to Appeal', category:'breaking', urgencyScore:9, source:'GOA', publishedAt: new Date(Date.now()-7200000).toISOString(), excerpt:'Fifth Circuit ruling stands after DOJ announcement.', slug:{ current:'atf-brace-rule-vacated' } },
-  { _id:'s7', title:'SIG Sauer Wins $88M Army Contract for P320 MHS Upgrade Program', category:'industry', urgencyScore:5, source:'Defense News', publishedAt: new Date(Date.now()-10800000).toISOString(), excerpt:'Contract covers P320 AXG and optic system upgrades for active-duty units.', slug:{ current:'sig-p320-army-contract' } },
-  { _id:'s8', title:'House SHARE Act Would Remove Suppressors from NFA — Floor Vote Set', category:'law', urgencyScore:8, source:'NRA-ILA', publishedAt: new Date(Date.now()-14400000).toISOString(), excerpt:'SHARE Act scheduled for full House floor vote next week.', slug:{ current:'share-act-floor-vote' } },
-]
 
-const SEED_AMMO = [
-  { _id:'1', caliber:'9mm',      pricePerRound:0.189, trendDirection:'down', trendPercent:4.2, bestUrl:'https://www.luckygunner.com/handgun/9mm-ammo' },
-  { _id:'2', caliber:'.223/5.56', pricePerRound:0.321, trendDirection:'up',   trendPercent:1.8, bestUrl:'https://palmettostatearmory.com/ammo' },
-  { _id:'3', caliber:'.308 WIN',  pricePerRound:0.745, trendDirection:'down', trendPercent:2.1, bestUrl:'https://ammo.com/rifle/308-ammo' },
-  { _id:'4', caliber:'.45 ACP',   pricePerRound:0.387, trendDirection:'up',   trendPercent:0.9, bestUrl:'https://www.grabagun.com' },
-  { _id:'5', caliber:'12 GA',     pricePerRound:0.412, trendDirection:'down', trendPercent:1.3, bestUrl:'https://www.ammunitiondepot.com' },
-  { _id:'6', caliber:'6.5 CM',    pricePerRound:1.42,  trendDirection:'up',   trendPercent:3.4, bestUrl:'https://www.midwayusa.com' },
-]
 
 const CAT_COLOR = {
   breaking: '#ef4444', law: '#3b82f6', industry: '#C8922A',
@@ -65,11 +47,11 @@ function timeAgo(iso) {
 export default async function HomePage() {
   const [
     articles, alerts,
-    releases, reviews, ammoPrices,
+    releases, reviews,
     videos, stateProfiles
   ] = await Promise.allSettled([
     fetchArticles(24), fetchBreakingAlerts(10),
-    fetchReleases(8), fetchReviews(4), fetchAmmoPrices(),
+    fetchReleases(8), fetchReviews(4),
     fetchVideos(4), fetchAllStateProfiles()
   ]).then(r => r.map(p => p.status === 'fulfilled' ? p.value : []))
 
@@ -80,8 +62,7 @@ export default async function HomePage() {
   const heroArticles = allArticles.slice(0, 8)  // rotate through first 8
   const listArticles = allArticles.slice(0, 12) // left list
   const gridArticles = allArticles.slice(8, 18) // bottom grid (non-overlapping with hero)
-  const ammo = (ammoPrices.length > 0 ? ammoPrices : SEED_AMMO)
-    .map(a => ({ ...a, ppr: a.ppr ?? a.pricePerRound ?? 0, dir: a.dir ?? a.trendDirection ?? 'up', trendPercent: a.trendPercent ?? a.trend ?? Math.random()*3+0.5, url: a.url ?? a.bestUrl ?? '/market' }))
+    .map(a => ({ ...a, ppr: a.ppr ?? a.pricePerRound ?? 0, dir: a.dir ?? a.trendDirection ?? 'up', trendPercent: a.trendPercent ?? a.trend ?? Math.random()*3+0.5, url: a.url ?? a.bestUrl ?? '/deals' }))
 
   return (
     <>
@@ -97,7 +78,6 @@ export default async function HomePage() {
         .hero-slide { animation: heroFadeIn 0.5s ease forwards; }
         .news-list-item:hover { background: rgba(200,146,42,0.05) !important; border-left-color: #C8922A !important; }
         .news-list-item:hover .nl-title { color: #C8922A !important; }
-        .ammo-card:hover { border-color: #C8922A !important; transform: translateY(-2px); }
         .release-card:hover { border-color: #C8922A !important; }
         .section-link:hover { color: #C8922A !important; }
         .review-card:hover { border-color: #C8922A !important; }
@@ -180,65 +160,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ════ MARKET WATCH STRIP ════ */}
-      <section style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'20px 0' }}>
-        <div className="container">
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:14 }}>
-            <div style={{ display:'flex', alignItems:'center', gap:10 }}>
-              <span style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.05em', color:'var(--foreground)' }}>AMMO MARKET</span>
-              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#22c55e', background:'#14532d', padding:'1px 7px', borderRadius:2 }}>● LIVE</span>
-            </div>
-            <Link href="/market" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>Full Market Analysis →</Link>
-          </div>
-
-          {/* ── Scrolling price ticker — under header, above cards ── */}
-          <div style={{ overflow:'hidden', height:28, marginBottom:14, background:'#09090b', border:'1px solid rgba(200,146,42,0.12)', borderRadius:3 }}>
-            <div style={{ display:'flex', gap:0, animation:'tickerScroll 40s linear infinite', whiteSpace:'nowrap', willChange:'transform' }}>
-              {[...ammo, ...ammo].map((a, i) => (
-                <a key={i} href={a.url || '/market'} target={a.url?.startsWith('http') ? '_blank' : '_self'} rel="noreferrer" style={{
-                  fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'0 18px',
-                  borderRight:'1px solid #1e293b', display:'flex', alignItems:'center', gap:7,
-                  height:28, textDecoration:'none', color:'inherit',
-                }}>
-                  <span style={{ color:'#64748b' }}>{a.caliber}</span>
-                  <span style={{ color:'#C8922A', fontWeight:700 }}>
-                    {(a.ppr < 1) ? `${(a.ppr*100).toFixed(1)}¢` : `$${a.ppr.toFixed(2)}`}/rd
-                  </span>
-                  <span style={{ color: a.dir === 'down' ? '#22c55e' : '#ef4444', fontSize:9 }}>
-                    {a.dir === 'down' ? '▼' : '▲'} {Math.abs(a.trendPercent ?? a.trend ?? 0).toFixed(1)}%
-                  </span>
-                </a>
-              ))}
-            </div>
-          </div>
-
-          <div className="ammo-grid-6" style={{ display:'grid', gridTemplateColumns:'repeat(6,1fr)', gap:8 }}>
-            {ammo.slice(0,6).map(a => (
-              <a key={a._id} href={a.url || '/market'} target={a.url?.startsWith('http') ? '_blank' : '_self'} rel="noreferrer"
-                className="ammo-card"
-                style={{
-                  background:'var(--bg)', border:`1px solid var(--border)`,
-                  borderBottom:`3px solid ${a.dir === 'down' ? '#22c55e' : '#ef4444'}`,
-                  padding:'12px 14px', textDecoration:'none', display:'block',
-                  transition:'all 0.2s', borderRadius:2,
-                }}
-              >
-                <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--foreground)', marginBottom:4 }}>{a.caliber}</div>
-                <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:22, color:'#C8922A', letterSpacing:'0.03em', lineHeight:1 }}>
-                  {a.ppr < 1 ? `${(a.ppr*100).toFixed(1)}¢` : `$${a.ppr.toFixed(2)}`}
-                </div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155', marginBottom:4 }}>per round</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color: a.dir === 'down' ? '#22c55e' : '#ef4444', fontWeight:700 }}>
-                  {a.dir === 'down' ? '▼' : '▲'} {Math.abs(a.trendPercent ?? a.trend ?? 0).toFixed(1)}%
-                </div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#475569', marginTop:4 }}>
-                  Tap to shop ↗
-                </div>
-              </a>
-            ))}
-          </div>
-        </div>
-      </section>
+      
 
       {/* ════ BREAKING ALERTS STRIP ════ */}
       {(alerts || []).length > 0 && (
@@ -346,7 +268,7 @@ export default async function HomePage() {
                 Stay <span style={{ color:'#C8922A' }}>Armed</span><br />& Informed
               </h2>
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#475569', lineHeight:1.7, marginBottom:24 }}>
-                Join 400,000+ Americans getting the weekly DownRange intelligence briefing — breaking news, new laws, gear releases, and ammo prices.
+                Join 400,000+ Americans getting the weekly DownRange intelligence briefing — breaking news, new laws, and gear releases.
               </p>
               <NewsletterSignup variant="compact" />
             </div>

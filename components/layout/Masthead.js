@@ -42,17 +42,7 @@ const NAV = [
       { label: '🎯 Ballistics Calc',    href: '/ballistics',                   desc: 'Drop tables, wind drift, MOA/MRAD to 1,000 yards' },
     ]
   },
-  {
-    label: 'Market', href: '/market',
-    children: [
-      { label: '📊 Market Watch',      href: '/market',          desc: 'Daily ammo price analysis' },
-      { label: '🔥 Deals',             href: '/deals',           desc: 'Best prices live' },
-      { label: '🧪 Ammo Guide',        href: '/ammo/9mm',        desc: '9mm, 5.56, .308 & more' },
-      { label: '🎯 Find a Range',      href: '/ranges',          desc: 'Ranges near you' },
-      { label: '🔍 FFL Finder',        href: '/ffl-finder',      desc: 'Licensed dealers near you' },
-      { label: '🛡️ CCW Insurance',     href: '/carry-insurance', desc: 'USCCA vs CCW Safe compared' },
-    ]
-  },
+  
   {
     label: 'Outdoors', href: '/hunting',
     children: [

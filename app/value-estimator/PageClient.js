@@ -164,7 +164,7 @@ export default function ValueEstimator() {
             </p>
           </div>
           <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6B7280', lineHeight:1.7, margin:0 }}>
-            Values are estimates based on market trends and condition grades. Actual sale prices vary by region, platform, and timing. Check the <a href="/deals" style={{ color:'#C8922A', textDecoration:'none' }}>Deals page</a> for current market pricing on new guns, or the <a href="/market" style={{ color:'#C8922A', textDecoration:'none' }}>Market Watch</a> for ammo price trends.
+            Values are estimates based on market trends and condition grades. Actual sale prices vary by region, platform, and timing. Check the <a href="/deals" style={{ color:'#C8922A', textDecoration:'none' }}>Deals page</a> for current market pricing on new guns, or the <a href="/deals" style={{ color:'#C8922A', textDecoration:'none' }}>Live Deals</a> for current firearms pricing.
           </p>
         </div>
       </div>

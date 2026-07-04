@@ -1,17 +1,14 @@
 import { feedConfig } from './feedConfig'
 import { siteConfig }    from './siteConfig'
-import { marketAnalysis } from './marketAnalysis'
 import newsArticle        from './newsArticle'
 import { breakingAlert }  from './breakingAlert'
 import { legislation }    from './legislation'
 import { review }         from './review'
 import { firearmRelease } from './firearmRelease'
 import { stateProfile }   from './stateProfile'
-import { ammoPrice }      from './ammoPrice'
 import { video }          from './video'
 import { author }         from './author'
 import { globalStats }    from './globalStats'
-import { priceAlert }     from './priceAlert'
 import { billTracker }    from './billTracker'
 import { outreachContact }  from './outreachContact'
 import { dailyBriefing }    from './dailyBriefing'
@@ -37,10 +34,9 @@ export const schemaTypes = [
   feedConfig,
   newsArticle,
   imageAsset, breakingAlert, legislation, review,
-  firearmRelease, stateProfile, ammoPrice, video, author, globalStats,
+  firearmRelease, stateProfile, video, author, globalStats,
   youtubeInfluencer,
-  priceAlert, billTracker, siteConfig, marketAnalysis,
-  outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
+  billTracker, siteConfig, outreachContact, outreachCampaign, outreachTemplate, outreachSendLog,
   dailyBriefing,
   canadaContent,
   brazilContent,

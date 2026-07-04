@@ -3,7 +3,7 @@ import Link from 'next/link'
 import SocialIcons from '../ui/SocialIcons'
 
 const FOOTER_COLS = [
-  { title: 'News & Intel', links: [['Latest News','/news'],['Live Deals','/deals'],['Market Watch','/market'],['Video','/video'],['Canada','/canada']] },
+  { title: 'News & Intel', links: [['Latest News','/news'],['Live Deals','/deals'],['Video','/video'],['Canada','/canada']] },
   { title: 'Tools', links: [['NFA Tracker','/nfa-tracker'],['Value Estimator','/value-estimator'],['CCW Insurance','/carry-insurance'],['FFL Finder','/ffl-finder'],['Gun Compare','/compare/glock-19-vs-sig-p320'],['Range Finder','/ranges']] },
   { title: 'Laws & States', links: [['Federal Bills','/laws?tab=federal'],['State Laws','/laws?tab=state'],['ATF Rules','/laws?tab=atf'],['SCOTUS Cases','/laws?tab=scotus'],['State Map','/state-hub'],['AI Law Assistant','/laws?tab=assistant']] },
   { title: 'Community', links: [['Write For Us','/contribute'],['Contact','/contact'],['Press Kit','/press'],['Hunting','/hunting'],['Precision','/precision'],['About','/about']] },

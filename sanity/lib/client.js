@@ -180,15 +180,7 @@ export async function fetchAllStateProfiles() {
 
 // ── AMMO PRICES ───────────────────────────────────────────────────────────────
 
-export async function fetchAmmoPrices() {
-  return client.fetch(`
-    *[_type == "ammoPrice"] | order(caliber asc) {
-      _id, caliber, pricePerRound, price30DayAvg, trendDir, trendPct,
-      bestVendor, bestPrice, bestUrl, inStock, recordedAt,
-      retailers[]{ vendor, price, url, inStock, label }
-    }
-  `)
-}
+
 
 // ── VIDEOS ────────────────────────────────────────────────────────────────────
 
@@ -362,5 +354,5 @@ export async function getRelatedArticles(category, excludeSlug, limit = 6) {
 }
 
 export async function fetchAmmoByType(caliber) {
-  return client.fetch(`*[_type=="ammoPrice"&&caliber==$cal]|order(updatedAt desc)[0...10]`, { cal: caliber })
+
 }

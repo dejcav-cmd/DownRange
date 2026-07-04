@@ -28,7 +28,6 @@ const CronDashboard         = L(() => import('../../components/admin/CronDashboa
 const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
 const ImageFinder           = L(() => import('../../components/admin/ImageFinder'))
 const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
-const MarketBriefManager    = L(() => import('../../components/admin/MarketBriefManager'))
 const DealsManager          = L(() => import('../../components/admin/DealsManager'))
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
 const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
@@ -77,7 +76,6 @@ const NAV = [
       { id:'statelaws',    label:'State Laws',       icon:'🗺', badge:null },
       { id:'pulllog',      label:'Pull Log',         icon:'📡', badge:null },
       { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
-      { id:'marketbrief',  label:'Market Brief',     icon:'📊', badge:'live' },
       { id:'copyright',  label:'Copyright',       icon:'⚖',  badge:null },
     ]
   },
@@ -904,7 +902,6 @@ function FeedsPanel({ adminKey, setMsg }) {
     { key:'news',     label:'News Feed',     icon:'📰', schedule:'Every 15 min', desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', color:'#22c55e' },
     { key:'laws',     label:'Laws Feed',     icon:'⚖',  schedule:'Every 2 hrs',  desc:'Congress.gov + LegiScan → bill analysis', color:'#3b82f6' },
     { key:'releases', label:'Releases Feed', icon:'🔫', schedule:'Every 1 hr',   desc:'PRNewswire + manufacturer RSS → new gun releases', color:'#C8922A' },
-    { key:'market',   label:'Market Feed',   icon:'📊', schedule:'Every 30 min', desc:'Ammo prices + market data → market analysis', color:'#f59e0b' },
     { key:'video',    label:'Video Feed',    icon:'▶',  schedule:'Every 4 hrs',  desc:'YouTube API → channel videos + thumbnails', color:'#ef4444' },
     { key:'state',    label:'State Feed',    icon:'🗺', schedule:'Daily 8am',    desc:'State legislation + profiles → 50-state database', color:'#a855f7' },
     { key:'goa',      label:'GOA Press',     icon:'⚖', schedule:'Every 2 hrs',  desc:'Gun Owners of America press center — no-compromise 2A advocacy', color:'#ef4444' },
@@ -1801,7 +1798,7 @@ function ContentSourcesPanel({ adminKey }) {
 
   const TAB_LABELS = {
     news: '📰 News', laws: '⚖️ Laws', releases: '🔫 Releases',
-    market: '📊 Market', video: '📹 Video',
+     video: '📹 Video',
   }
 
   const TYPE_COLOR = { rss: '#3b82f6', api: '#a855f7', youtube: '#ef4444' }
