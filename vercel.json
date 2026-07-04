@@ -10,7 +10,7 @@
     },
     {
       "path": "/api/agent?feed=releases",
-      "schedule": "45 */6 * * *"
+      "schedule": "45 6 * * 1,4"
     },
     {
       "path": "/api/agent?feed=market",
