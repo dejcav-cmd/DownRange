@@ -1,0 +1,22 @@
+name: Test Releases Pull
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Run test
+        run: python3 scripts/test-releases-pull.py | tee scripts/test-pull-result.txt
+      - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
+          git add -f scripts/test-pull-result.txt
+          git diff --staged --quiet || (git commit -m "ci: test pull result" && git pull --rebase && git push) || true
