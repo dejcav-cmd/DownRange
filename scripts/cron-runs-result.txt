@@ -4,5 +4,5 @@
   2026-07-04T05:22:05  success  0 saved | 0 skipped | 0 failed | 0 no-image | 11 still queued | 40ms
   2026-07-04T05:17:19  success  phase: scrape · queued: 17 · ms: 36526
 
-=== rewrite-releases (last 0 runs) ===
-  No runs found
+=== rewrite-releases (last 1 runs) ===
+  2026-07-04T05:50:35  failed  rewritten:0 skipped:0 failed:4 | 
