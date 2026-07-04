@@ -26,7 +26,9 @@ const MIN_BODY_CHARS = 1200  // skip if existing body already substantial
 function isAuth(req) {
   const admin  = req.headers.get('x-admin-key')
   const bearer = req.headers.get('authorization')
+  const cron   = req.headers.get('x-vercel-cron')
   return (
+    cron === '1' ||
     admin === process.env.ADMIN_KEY ||
     bearer === `Bearer ${process.env.CRON_SECRET}`
   )

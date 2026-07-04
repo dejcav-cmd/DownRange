@@ -175,6 +175,14 @@
     {
       "path": "/api/cron/sitemap-health",
       "schedule": "0 8 * * 1"
+    },
+    {
+      "path": "/api/admin/rewrite-releases",
+      "schedule": "45 5 * * *"
+    },
+    {
+      "path": "/api/admin/rewrite-releases?batch=2",
+      "schedule": "55 5 * * *"
     }
   ],
   "headers": [
