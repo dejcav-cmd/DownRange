@@ -2,16 +2,12 @@
  * DownRange Gun Releases Feed — v4
  *
  * Sources (in priority order):
- *   1. Google News RSS — "new [brand] [model]" queries (no blocking)
- *   2. Fusion Firearms direct scrape (custom, always works)
- *   3. Manufacturer sitemaps — XML, rarely blocked
- *   4. AI-powered discovery via Claude web_search (fallback)
+ *   1. Fusion Firearms direct scrape (custom, always works)
  *
  * All items → Claude Haiku: extract specs + write original article
  * → Sanity with approved:true (auto-publish)
  */
 
-import Parser from 'rss-parser'
 import crypto from 'crypto'
 import { createClient } from '@sanity/client'
 import { MANUFACTURERS, matchManufacturer } from '../../lib/manufacturers.js'
@@ -25,8 +21,6 @@ const sanity = createClient({
   useCdn:    false,
   token:     process.env.SANITY_API_TOKEN,
 })
-
-const parser = new Parser({ timeout: 8000 })
 
 const MAX_PER_RUN = 25
 const RATE_MS     = 1000
@@ -55,138 +49,6 @@ function isReleaseCandidate(title = '', description = '') {
   const txt = `${title} ${description}`.toLowerCase()
   return RELEASE_SIGNALS.some(k => txt.includes(k)) &&
         !SKIP_SIGNALS.some(k => txt.includes(k))
-}
-
-// ── GOOGLE NEWS RSS — PRIMARY SOURCE (no blocking) ──────────────────────────
-// Google News RSS doesn't require auth and isn't blocked by CloudFlare
-function googleNewsUrl(query) {
-  const encoded = encodeURIComponent(query)
-  return `https://news.google.com/rss/search?q=${encoded}&hl=en-US&gl=US&ceid=US:en`
-}
-
-// Google News RSS links point to news.google.com redirect pages whose og:image
-// is the Google News logo — not the actual article image. This function decodes
-// the real publisher URL directly from the base64url-encoded path segment,
-// avoiding the need to follow the redirect and scrape a Google-hosted page.
-function resolveGoogleNewsUrl(link) {
-  if (!link) return link
-  try {
-    const u = new URL(link)
-    if (!u.hostname.includes('news.google.com')) return link
-    const seg = u.pathname.split('/').pop()
-    if (!seg || seg.length < 10) return link
-    const b64 = seg.replace(/-/g, '+').replace(/_/g, '/')
-    const buf = Buffer.from(b64, 'base64')
-    const str = buf.toString('binary')
-    const idx = str.indexOf('http')
-    if (idx < 0) return link
-    let raw = ''
-    for (let i = idx; i < str.length; i++) {
-      const c = str.charCodeAt(i)
-      if (c < 0x20 || c > 0x7e) break
-      raw += str[i]
-    }
-    return raw.startsWith('http') ? raw : link
-  } catch {
-    return link
-  }
-}
-
-async function fetchGoogleNews(query) {
-  try {
-    const url = googleNewsUrl(query)
-    const result = await parser.parseURL(url)
-    return result.items.slice(0, 6).map(item => ({
-      title:       item.title || '',
-      link:        resolveGoogleNewsUrl(item.link || ''),
-      description: item.contentSnippet || item.title || '',
-      pubDate:     item.pubDate || new Date().toISOString(),
-      sourceName:  'Google News',
-      sourceType:  'news',
-    }))
-  } catch (e) {
-    console.warn(`[RELEASES v4] Google News error (${query}):`, e.message)
-    return []
-  }
-}
-
-async function fetchAllGoogleNews(deadlineMs = 0) {
-  const queries = [
-    // Generic release searches
-    'new firearm release 2026',
-    'new pistol announced 2026',
-    'new rifle released 2026',
-    'new shotgun 2026',
-    'new suppressor 2026',
-    'new revolver 2026',
-    'gun announces new model 2026',
-    'firearm unveiled 2026',
-    // Major handgun manufacturers
-    'Glock new pistol 2026',
-    'SIG Sauer new model 2026',
-    'Smith Wesson new gun 2026',
-    'Springfield Armory new 2026',
-    'Ruger new firearm 2026',
-    'Taurus new pistol 2026',
-    'Canik new pistol 2026',
-    'Staccato new 2026',
-    'Shadow Systems new 2026',
-    'Walther new pistol 2026',
-    'CZ new pistol 2026',
-    'HK new firearm 2026',
-    'Beretta new pistol 2026',
-    'Kimber new 2026',
-    'Wilson Combat new 2026',
-    'Nighthawk Custom new 2026',
-    // Rifle manufacturers
-    'Daniel Defense new rifle 2026',
-    'Aero Precision new rifle 2026',
-    'LWRC new rifle 2026',
-    'BCM Bravo Company new 2026',
-    'Christensen Arms new rifle 2026',
-    'Savage Arms new rifle 2026',
-    'Tikka new rifle 2026',
-    'Mossberg new firearm 2026',
-    'Winchester new rifle 2026',
-    'Browning new firearm 2026',
-    'Benelli new shotgun 2026',
-    // Suppressors & accessories
-    'SilencerCo new suppressor 2026',
-    'Dead Air new suppressor 2026',
-    'Griffin Armament new 2026',
-    'Maxim Defense new 2026',
-    // Optics
-    'Holosun new optic 2026',
-    'Trijicon new optic 2026',
-    'Vortex new scope 2026',
-    // Recent news sources
-    'ammoland new gun release',
-    'thetruthaboutguns new firearm',
-    'guns.com new release',
-    'gunsandammo new gun',
-  ]
-
-  const results = []
-  const seen = new Set()
-
-  for (const query of queries) {
-    // Stop fetching if we're approaching the Vercel function deadline
-    if (deadlineMs && Date.now() > deadlineMs) {
-      console.log(`[RELEASES v4] Deadline reached, stopping Google News at ${results.length} items`)
-      break
-    }
-    const items = await fetchGoogleNews(query)
-    for (const item of items) {
-      if (!item.link || seen.has(item.link)) continue
-      if (!isReleaseCandidate(item.title, item.description)) continue
-      seen.add(item.link)
-      results.push(item)
-    }
-    await sleep(300)
-  }
-
-  console.log(`[RELEASES v4] Google News: ${results.length} candidates`)
-  return results
 }
 
 // ── FUSION FIREARMS SPECIFIC SCRAPER ────────────────────────────────────────
@@ -258,12 +120,8 @@ function pickBestImgTag(html) {
 }
 
 async function fetchPageContent(url) {
-  // Safety net: resolve Google News redirect URLs before scraping so we hit
-  // the real publisher page, not a Google-hosted reader page (whose og:image
-  // would be the Google News logo instead of the actual product photo).
-  const resolvedUrl = resolveGoogleNewsUrl(url)
   try {
-    const res = await fetch(resolvedUrl, {
+    const res = await fetch(url, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/4.0)' },
       signal: AbortSignal.timeout(10000),
       redirect: 'follow',
@@ -277,11 +135,7 @@ async function fetchPageContent(url) {
       .trim()
       .slice(0, 5000)
     const ogMatch  = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i)
-    const rawOg    = ogMatch?.[1] || null
-    // Reject og:image URLs hosted on google.com/news — these are the Google
-    // News logo served when the redirect lands on a Google-hosted reader page.
-    const ogImage  = (rawOg && !rawOg.includes('news.google.com') && !rawOg.includes('googleusercontent.com/news')) ? rawOg : null
-    const imageUrl = ogImage || pickBestImgTag(html) || null
+    const imageUrl = ogMatch?.[1] || pickBestImgTag(html) || null
     return { text, imageUrl }
   } catch {
     return { text: '', imageUrl: null }
@@ -411,23 +265,17 @@ async function saveRelease(extracted, sourceUrl, imageUrl, pubDate) {
 export async function runReleasesFeed() {
   console.log('[RELEASES v4] Starting...')
   const t0 = Date.now()
-  // Stop fetching new RSS items 60s before Vercel's 300s maxDuration limit
-  const DEADLINE = t0 + 240_000
   let done = 0, failed = 0, skipped = 0
   const saved   = []  // titles of saved releases
   const errors  = []  // error messages
   const skippedTitles = []
   seenInRun.clear()
 
-  // Source 1: Fusion Firearms (direct scrape — always works)
+  // Source 1: Fusion Firearms (direct scrape)
   const fusionItems = await scrapeFusionFirearms()
   console.log(`[RELEASES v4] Fusion: ${fusionItems.length} candidates`)
 
-  // Source 2: Google News RSS — pass deadline so we don't timeout
-  const googleItems = await fetchAllGoogleNews(DEADLINE)
-
-  // Combine: Fusion first (priority), then Google News
-  const allItems = [...fusionItems, ...googleItems]
+  const allItems = [...fusionItems]
   console.log(`[RELEASES v4] Total candidates: ${allItems.length}`)
 
   for (const item of allItems) {
