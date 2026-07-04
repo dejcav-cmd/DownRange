@@ -2,20 +2,19 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 54 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9755e5071425bdcc91746538c940653
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ee8acec535edf343bfd138e21a7232f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d410de8f96ad998b3e23bdd65242da4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9aa589f5188f3a054756ca4ed599215
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/99ee4ea4968b6288d0d8b7485304e73
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/aa308622c7fe21b7bbc8c31437ec0d9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b537f0e637d57207226bb4686f8c772
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bfbf67f1b8db72ec845bc960f16fc4e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8de2a28c698938ac44c3b8252d481cc
+Needs image fix: 53 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3eb0b470c778b5fa7e596700a4f9b7b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/972c912889bf3c07bf198c9fe3ece28
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b06e0af9388d781489eb4cf22876db
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cbbb0899b93e8e8365ca1c820cd5630
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/04db9a2d0ea5f45b074075c8477b0ce
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a995bf448e01a534e9211d400140317
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/516da0fe341de1a5f814a6cab4a5f40
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df1dbbf54b5095c127968e8c389d330
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b8260762aa4ae8b5804c1590344e637
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Vortex-Sparc-Pmags
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
   skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
   skip coupon: https://gun.deals/content/coupon-store-usagowednesday-july-1
@@ -57,10 +56,10 @@ Needs image fix: 54 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 14
+  → patched final 13
 
-Stats: uploaded=9 fallback=5 failed=3
+Stats: uploaded=9 fallback=4 failed=3
 
-=== FINAL: total=3882 missing_images=39 reddit=0 ===
+=== FINAL: total=3891 missing_images=39 reddit=0 ===
 
-FIXED: 14
+FIXED: 13
