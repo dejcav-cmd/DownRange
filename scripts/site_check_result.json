@@ -1,0 +1,103 @@
+{
+  "checked_at": "2026-07-04T15:43:38.410969",
+  "pages": {
+    "/": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/news": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/deals": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"style"
+    },
+    "/laws": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/releases": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/ballistics": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/ranges": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/nfa-tracker": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/carry-insurance": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/value-estimator": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/learn": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/video": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/state-hub/TX": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/canada": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/brazil": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/ffl-finder": {
+      "status": 200,
+      "ok": true,
+      "preview": "<!DOCTYPE html><html lang=\"en\" data-theme=\"dark\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=5, viewport-fit=cover\"/><link rel=\"prelo"
+    },
+    "/market": {
+      "status": 404,
+      "ok": false
+    },
+    "/sitemap.xml": {
+      "status": 200,
+      "ok": true,
+      "preview": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n<url>\n<loc>https://www.downrangeco.com</loc>\n<lastmod>2026-07-04T15:40:04.584Z</lastmod>\n<changefreq"
+    },
+    "/robots.txt": {
+      "status": 200,
+      "ok": true,
+      "preview": "User-Agent: *\nAllow: /\nDisallow: /studio/\nDisallow: /admin/\nDisallow: /admin-app/\nDisallow: /admin-login/\nDisallow: /api/\nDisallow: /_next/\nCrawl-delay: 1\n\nUser-Agent: GPTBot\nUser-Agent: ChatGPT-User\n"
+    },
+    "/api/health": {
+      "status": 404,
+      "ok": false
+    }
+  }
+}
