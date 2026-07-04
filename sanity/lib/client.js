@@ -313,7 +313,7 @@ export async function searchReleases(q, limit = 20) {
   return client.fetch(
     `*[_type=="firearmRelease" && (brand match $q || model match $q || caliber match $q || summary match $q)]
      | score(boost(brand match $q,10), boost(model match $q,8), boost(caliber match $q,5), boost(summary match $q,1))
-     | order(_score desc) [0...$lim] {
+     | order(_score desc, publishedAt desc) [0...$lim] {
        _id, _score, "title": brand+" "+model, "slug": slug.current,
        summary, category, publishedAt, imageUrl, brand, model, caliber, msrp, isJustDropped
      }`, { q: safe, lim: limit }

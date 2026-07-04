@@ -21,7 +21,7 @@ const SEED_RELEASES = [
   { _id:'s12', brand:'Kimber',             model:'Rapide Black Ice',   category:'Pistol',  caliber:'9mm',       action:'Single Action', msrp:1599, isJustDropped:false, imageUrl:'/img/photos/pistol.jpg',                              summary:'1911-platform with KimPro II finish, ball-milled slide, optics-ready cut, match-grade trigger.',                   sourceUrl:'https://www.kimberamerica.com/rapide-black-ice' },
 ]
 
-function ReleaseCard({ release, size = 'normal' }) {
+function ReleaseCard({ release, size = 'normal', isNew = false }) {
   const img = release.heroImage?.asset?.url || release.imageUrl || release.productImage?.asset?.url
   const isLarge = size === 'large'
 
@@ -44,7 +44,7 @@ function ReleaseCard({ release, size = 'normal' }) {
           )}
           {/* Badges */}
           <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 6 }}>
-            {(release.isJustDropped || release.isNew) && (
+            {isNew && (
               <span style={{ background: '#B91C1C', color: '#fff', fontFamily: "'IBM Plex Mono',monospace", fontSize: '9px', fontWeight: 700, letterSpacing: '0.15em', padding: '3px 8px' }}>● NEW</span>
             )}
             {release.category && (
@@ -82,12 +82,24 @@ function ReleaseCard({ release, size = 'normal' }) {
   )
 }
 
+// A release is "new" if it was published within the last 14 days
+function isRecent(publishedAt) {
+  if (!publishedAt) return false
+  return Date.now() - new Date(publishedAt).getTime() < 14 * 24 * 3600 * 1000
+}
+
 export default function ReleasesPage({ releases = [], alerts = [], searchQ = null }) {
   const [activeCat, setActiveCat] = useState(null)
-  const all = releases.length > 0 ? releases : SEED_RELEASES
+
+  // Sort by publishedAt desc (server already returns this order, but enforce here too)
+  const live = releases.length > 0 ? releases : SEED_RELEASES
+  const all  = [...live].sort((a, b) => {
+    const da = a.publishedAt ? new Date(a.publishedAt).getTime() : 0
+    const db = b.publishedAt ? new Date(b.publishedAt).getTime() : 0
+    return db - da
+  })
+
   const filtered = activeCat ? all.filter(r => r.category === activeCat) : all
-  const justDropped = filtered.filter(r => r.isJustDropped || r.isNew)
-  const recent = filtered.filter(r => !r.isJustDropped && !r.isNew)
   const cats = [...new Set(all.map(r => r.category).filter(Boolean))]
 
   return (
@@ -96,15 +108,15 @@ export default function ReleasesPage({ releases = [], alerts = [], searchQ = nul
       <div className="page-hero" data-title="RELEASES">
         <div className="container">
           <h1 className="page-hero-title">New Releases</h1>
-          <p className="page-hero-sub">Latest firearm announcements · {all.length} models tracked · Updated hourly</p>
+          <p className="page-hero-sub">Latest firearm announcements · {all.length} models tracked · Sorted by release date</p>
         </div>
       </div>
 
       <div style={{ padding: '32px 0' }}>
         <div className="container">
           {/* Search */}
-          <div style={{ marginBottom:16 }}>
-            <SectionSearch type="firearmRelease" placeholder="Search by brand, model, caliber…" defaultValue={searchQ||''} compact />
+          <div style={{ marginBottom: 16 }}>
+            <SectionSearch type="firearmRelease" placeholder="Search by brand, model, caliber…" defaultValue={searchQ || ''} compact />
           </div>
 
           {/* Category filter */}
@@ -115,26 +127,14 @@ export default function ReleasesPage({ releases = [], alerts = [], searchQ = nul
             ))}
           </div>
 
-          {/* Just Dropped */}
-          {justDropped.length > 0 && (
-            <div style={{ marginBottom: '48px' }}>
-              <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
-                <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#EF4444', letterSpacing: '0.05em' }}>⚡ JUST DROPPED</h2>
-                <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '10px', color: '#EF4444', background: '#1A0000', padding: '3px 10px', border: '1px solid #EF444440' }}>NEW THIS WEEK</span>
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-                {justDropped.map(r => <ReleaseCard key={r._id} release={r} />)}
-              </div>
+          {/* All releases — latest to oldest */}
+          {filtered.length > 0 ? (
+            <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
+              {filtered.map(r => <ReleaseCard key={r._id} release={r} isNew={isRecent(r.publishedAt)} />)}
             </div>
-          )}
-
-          {/* Recent releases */}
-          {recent.length > 0 && (
-            <div>
-              <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: '1.8rem', color: '#C8922A', letterSpacing: '0.05em', marginBottom: '24px' }}>RECENT RELEASES</h2>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(220px, 1fr))', gap: '16px' }}>
-                {recent.map(r => <ReleaseCard key={r._id} release={r} />)}
-              </div>
+          ) : (
+            <div style={{ textAlign: 'center', padding: '80px 0', color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace", fontSize: '13px' }}>
+              No releases found{activeCat ? ` in ${activeCat}` : ''}.
             </div>
           )}
         </div>
