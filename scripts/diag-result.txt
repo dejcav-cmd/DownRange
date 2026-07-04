@@ -2,13 +2,15 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 50 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a81936a53546777682071724e8708c0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e8e5f61782b00a678f24f2be4ffb72d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/127ef0942d96ce8199019310b3cc7f2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/82a8c3099da3630b7b60008f06eb8f3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a260955eea5d8399d802b1ad5d64ff7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/751e9bed15ee318de34135f273ebc3a
+Needs image fix: 52 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ae2afd76b0f1ad4028705ce4c1f5881
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/23e13eeb4ca4c193cd232a4fc4a0afc
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/92a9b1cca213dcd6d3118fd1242bd2e
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6d4d527b1cc2d5421aeb045b9f60f6b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fc3ad75185b0b55a96aa46cbf2b3442
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7af05c51071691e196420b9e8d596e3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a95bb0d23561b62418b0886ae7b4760
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9f9cb2ae42bf73620cf16798ef3349a
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
@@ -53,10 +55,10 @@ Needs image fix: 50 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 10
+  → patched final 12
 
-Stats: uploaded=6 fallback=4 failed=3
+Stats: uploaded=8 fallback=4 failed=3
 
-=== FINAL: total=3901 missing_images=39 reddit=0 ===
+=== FINAL: total=3909 missing_images=39 reddit=0 ===
 
-FIXED: 10
+FIXED: 12
