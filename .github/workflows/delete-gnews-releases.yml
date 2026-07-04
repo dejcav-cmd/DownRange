@@ -9,51 +9,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Count before
-        env:
-          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: |
-          python3 - <<'PYEOF'
-          import urllib.request, urllib.parse, json, os
-          TOKEN   = os.environ['SANITY_TOKEN']
-          PROJECT = 'vbnsqnkg'
-          queries = [
-            ('Total releases',          'count(*[_type=="firearmRelease"])'),
-            ('Google News releases',     'count(*[_type=="firearmRelease" && (sourceUrl match "*news.google.com*" || sourceUrl match "*google.com/rss*")])'),
-            ('No hero + no imageUrl',    'count(*[_type=="firearmRelease" && !defined(heroImage) && (!defined(imageUrl) || imageUrl == "")])'),
-            ('Bad google imageUrl',      'count(*[_type=="firearmRelease" && (imageUrl match "*googleusercontent.com*" || imageUrl match "*gstatic.com*")])'),
-          ]
-          print('=== Before ===')
-          for label, groq in queries:
-            url = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(groq)}&returnQuery=false'
-            req = urllib.request.Request(url, headers={'Authorization': f'Bearer {TOKEN}'})
-            r   = urllib.request.urlopen(req, timeout=15)
-            print(f'  {label}: {json.loads(r.read())["result"]}')
-          PYEOF
-
       - name: Run gnews cleanup + image fix
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/delete-gnews-releases.py
-
-      - name: Count after
-        env:
-          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: |
-          python3 - <<'PYEOF'
-          import urllib.request, urllib.parse, json, os
-          TOKEN   = os.environ['SANITY_TOKEN']
-          PROJECT = 'vbnsqnkg'
-          queries = [
-            ('Total releases',          'count(*[_type=="firearmRelease"])'),
-            ('Google News remaining',    'count(*[_type=="firearmRelease" && (sourceUrl match "*news.google.com*" || sourceUrl match "*google.com/rss*")])'),
-            ('Still no image',          'count(*[_type=="firearmRelease" && !defined(heroImage) && (!defined(imageUrl) || imageUrl == "")])'),
-            ('Bad google imageUrl left', 'count(*[_type=="firearmRelease" && (imageUrl match "*googleusercontent.com*" || imageUrl match "*gstatic.com*")])'),
-          ]
-          print('=== After ===')
-          for label, groq in queries:
-            url = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(groq)}&returnQuery=false'
-            req = urllib.request.Request(url, headers={'Authorization': f'Bearer {TOKEN}'})
-            r   = urllib.request.urlopen(req, timeout=15)
-            print(f'  {label}: {json.loads(r.read())["result"]}')
-          PYEOF
+          set -e
+          python3 scripts/delete-gnews-releases.py 2>&1
+          echo "Exit: $?"
