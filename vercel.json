@@ -18,7 +18,7 @@
     },
     {
       "path": "/api/agent?feed=market",
-      "schedule": "0 */2 * * *"
+      "schedule": "0 */4 * * *"
     },
     {
       "path": "/api/agent?feed=video",

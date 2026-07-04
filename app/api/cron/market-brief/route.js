@@ -18,14 +18,31 @@ const sanity = createClient({
 
 // Live price sources (public APIs / RSS — no auth required)
 const PRICE_SOURCES = [
-  { caliber:'9mm Luger',    slug:'9mm',              floor:0.14, ceiling:0.40 },
-  { caliber:'5.56 NATO',    slug:'223-remington',    floor:0.25, ceiling:0.65 },
-  { caliber:'.308 WIN',     slug:'308-winchester',   floor:0.55, ceiling:1.40 },
-  { caliber:'.45 ACP',      slug:'45-acp',           floor:0.28, ceiling:0.75 },
-  { caliber:'12 GA',        slug:'12-gauge',         floor:0.25, ceiling:0.80 },
-  { caliber:'.22 LR',       slug:'22-lr',            floor:0.04, ceiling:0.15 },
-  { caliber:'6.5 CM',       slug:'65-creedmoor',     floor:0.80, ceiling:2.20 },
-  { caliber:'7.62x39',      slug:'762x39',           floor:0.22, ceiling:0.60 },
+  // Pistol
+  { caliber:'9mm Luger',     slug:'9mm',            floor:0.14, ceiling:0.40 },
+  { caliber:'.45 ACP',       slug:'45-acp',         floor:0.28, ceiling:0.75 },
+  { caliber:'.40 S&W',       slug:'40-sw',          floor:0.22, ceiling:0.65 },
+  { caliber:'.380 ACP',      slug:'380-acp',        floor:0.18, ceiling:0.55 },
+  { caliber:'.357 Magnum',   slug:'357-magnum',     floor:0.38, ceiling:1.00 },
+  { caliber:'.44 Magnum',    slug:'44-magnum',      floor:0.55, ceiling:1.40 },
+  { caliber:'10mm Auto',     slug:'10mm-auto',      floor:0.30, ceiling:0.80 },
+  { caliber:'5.7x28mm',      slug:'57x28',          floor:0.40, ceiling:1.10 },
+  // Rimfire
+  { caliber:'.22 LR',        slug:'22-lr',          floor:0.04, ceiling:0.15 },
+  // Rifle
+  { caliber:'5.56 NATO',     slug:'223-remington',  floor:0.25, ceiling:0.65 },
+  { caliber:'7.62x39mm',     slug:'762x39',         floor:0.22, ceiling:0.60 },
+  { caliber:'.308 WIN',      slug:'308-winchester', floor:0.55, ceiling:1.40 },
+  { caliber:'.300 BLK',      slug:'300-blackout',   floor:0.35, ceiling:0.90 },
+  // PRC Family
+  { caliber:'6.5 Creedmoor', slug:'65-creedmoor',   floor:0.80, ceiling:2.20 },
+  { caliber:'6.5 PRC',       slug:'65-prc',         floor:1.20, ceiling:3.50 },
+  { caliber:'7mm PRC',       slug:'7mm-prc',        floor:1.40, ceiling:3.80 },
+  { caliber:'.300 PRC',      slug:'300-prc',        floor:1.60, ceiling:4.50 },
+  // Magnum
+  { caliber:'.300 Win Mag',  slug:'300-win-mag',    floor:0.90, ceiling:3.00 },
+  // Shotgun
+  { caliber:'12 Gauge',      slug:'12-gauge',       floor:0.25, ceiling:0.80 },
 ]
 
 async function fetchAmmoSeekPrice(slug) {

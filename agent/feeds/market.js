@@ -5,13 +5,31 @@ import { rewriteWithClaude, isDuplicate, publishToSanity, notifyBreaking, notify
 const parser = new Parser({ timeout: 8000, headers: { 'User-Agent': 'DownRange/1.0' } })
 
 const CALIBERS = [
-  { slug: '9mm', display: '9mm', unit: '115gr FMJ', rssSeg: 'ammo/9mm' },
-  { slug: '223-remington', display: '.223 / 5.56', unit: '55gr FMJ', rssSeg: 'ammo/223-remington' },
-  { slug: '308-winchester', display: '.308 WIN', unit: '147gr FMJ', rssSeg: 'ammo/308-winchester' },
-  { slug: '45-acp', display: '.45 ACP', unit: '230gr FMJ', rssSeg: 'ammo/45-acp' },
-  { slug: '12-gauge', display: '12 GA', unit: '00 Buck', rssSeg: 'ammo/12-gauge' },
-  { slug: '65-creedmoor', display: '6.5 CM', unit: '140gr', rssSeg: 'ammo/65-creedmoor' },
-  { slug: '22-lr', display: '.22 LR', unit: '40gr', rssSeg: 'ammo/22-lr' },
+  // Pistol / Handgun
+  { slug: '9mm',             display: '9mm Luger',     unit: '115gr FMJ',  rssSeg: 'ammo/9mm' },
+  { slug: '45-acp',          display: '.45 ACP',       unit: '230gr FMJ',  rssSeg: 'ammo/45-acp' },
+  { slug: '40-sw',           display: '.40 S&W',       unit: '165gr FMJ',  rssSeg: 'ammo/40-sw' },
+  { slug: '380-acp',         display: '.380 ACP',      unit: '95gr FMJ',   rssSeg: 'ammo/380-acp' },
+  { slug: '357-magnum',      display: '.357 Magnum',   unit: '158gr JSP',  rssSeg: 'ammo/357-magnum' },
+  { slug: '44-magnum',       display: '.44 Magnum',    unit: '240gr JSP',  rssSeg: 'ammo/44-magnum' },
+  { slug: '10mm-auto',       display: '10mm Auto',     unit: '180gr FMJ',  rssSeg: 'ammo/10mm-auto' },
+  { slug: '57x28',           display: '5.7x28mm',      unit: '40gr V-Max', rssSeg: 'ammo/57x28' },
+  // Rimfire
+  { slug: '22-lr',           display: '.22 LR',        unit: '40gr',       rssSeg: 'ammo/22-lr' },
+  // Rifle — Common
+  { slug: '223-remington',   display: '5.56 NATO',     unit: '55gr FMJ',   rssSeg: 'ammo/223-remington' },
+  { slug: '762x39',          display: '7.62x39mm',     unit: '123gr FMJ',  rssSeg: 'ammo/762x39' },
+  { slug: '308-winchester',  display: '.308 WIN',      unit: '147gr FMJ',  rssSeg: 'ammo/308-winchester' },
+  { slug: '300-blackout',    display: '.300 BLK',      unit: '125gr FMJ',  rssSeg: 'ammo/300-blackout' },
+  // Rifle — Precision / PRC Family
+  { slug: '65-creedmoor',    display: '6.5 Creedmoor', unit: '140gr BTHP', rssSeg: 'ammo/65-creedmoor' },
+  { slug: '65-prc',          display: '6.5 PRC',       unit: '143gr ELD-M',rssSeg: 'ammo/65-prc' },
+  { slug: '7mm-prc',         display: '7mm PRC',       unit: '175gr ELD-M',rssSeg: 'ammo/7mm-prc' },
+  { slug: '300-prc',         display: '.300 PRC',      unit: '225gr ELD-M',rssSeg: 'ammo/300-prc' },
+  // Rifle — Magnum
+  { slug: '300-win-mag',     display: '.300 Win Mag',  unit: '180gr SP',   rssSeg: 'ammo/300-win-mag' },
+  // Shotgun
+  { slug: '12-gauge',        display: '12 Gauge',      unit: '00 Buck',    rssSeg: 'ammo/12-gauge' },
 ]
 
 // gun.deals blog RSS — community-curated deals (free, no auth)
@@ -32,7 +50,7 @@ const REDDIT_AMMO_FEEDS = [
 function parsePriceFromTitle(title) {
   const match = title.match(/\$?([\d.]+)\s*\/\s*(?:rd|round|rnd)/i)
   if (match) return parseFloat(match[1])
-  const match2 = title.match(/\$([\d.]+)\s+per\s+round/i)
+  const match2 = title.match(/\$([\\d.]+)\s+per\s+round/i)
   if (match2) return parseFloat(match2[1])
   return null
 }
@@ -43,7 +61,7 @@ async function fetchAmmoSeekRSS(caliber) {
     const prices = []
     for (const item of feed.items.slice(0, 10)) {
       const p = parsePriceFromTitle(item.title || '')
-      if (p && p > 0.01 && p < 5.0) prices.push(p)
+      if (p && p > 0.01 && p < 8.0) prices.push(p)
     }
     if (!prices.length) return null
 
@@ -67,15 +85,10 @@ async function fetchGunDealsRSS() {
       const price = parsePriceFromTitle(item.title || '')
       const title = decodeHtmlEntities(item.title || '').trim()
       if (!title) continue
-      // Parse category from title brackets e.g. [Rifle], [Ammo]
       const catMatch = title.match(/^\[([^\]]+)\]/)
       const flair = catMatch ? catMatch[1] : 'Other'
       deals.push({
-        title,
-        price,
-        url: item.link || '',
-        source: 'gun.deals',
-        flair,
+        title, price, url: item.link || '', source: 'gun.deals', flair,
         created: item.pubDate ? new Date(item.pubDate).getTime() : Date.now(),
       })
     }
@@ -105,9 +118,7 @@ async function fetchRedditJSON() {
         if (isOOS) continue
         deals.push({
           title:   decodeHtmlEntities(p.title),
-          price,
-          url:     p.url || '',
-          source:  feed.source,
+          price, url: p.url || '', source: feed.source,
           flair:   p.link_flair_text || 'Other',
           score:   p.score || 0,
           created: (p.created_utc || 0) * 1000,
@@ -146,7 +157,7 @@ async function runMarketFeed() {
   let done = 0
   const saved = []
 
-  // Parallel fetch all calibers simultaneously (was sequential with 2s sleeps = 14s+ minimum)
+  // Parallel fetch all calibers simultaneously
   const results = await Promise.allSettled(CALIBERS.map(async caliber => {
     const data = await fetchAmmoSeekRSS(caliber)
     if (!data) return null

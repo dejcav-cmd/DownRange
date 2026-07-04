@@ -6,16 +6,16 @@ import Link from 'next/link'
 
 export const metadata = {
   title: 'Live Ammo Prices & Firearms Market Index | DownRange',
-  description: 'Live ammo prices for 9mm, .223/5.56, .308, and 12 more calibers. NICS trends, buy signals, retailer links, and daily AI market analysis.',
+  description: 'Live ammo prices for 19 calibers including the full PRC family. NICS trends, buy signals, retailer links, and daily AI market analysis.',
   keywords: 'ammo prices, cheapest ammo, 9mm price, .223 price, bulk ammo deals, ammo market, NICS background checks',
   alternates: { canonical: 'https://www.downrangeco.com/market' },
   openGraph: {
     type: 'website', url: 'https://www.downrangeco.com/market',
     title: 'Live Ammo Prices & Firearms Market Index | DownRange',
-    description: 'Live ammo prices for 14 calibers with buy signals, NICS trends, and retailer links.',
+    description: 'Live ammo prices for 19 calibers — PRC family, pistol, rifle, rimfire — with buy signals and retailer links.',
     images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
   },
-  twitter: { card: 'summary_large_image', title: 'Live Ammo Prices | DownRange', description: 'Current 9mm, .223, .308 prices with buy signals and retailer links.' },
+  twitter: { card: 'summary_large_image', title: 'Live Ammo Prices | DownRange', description: 'Current 9mm, 5.56, 6.5CM, 7mm PRC and 15 more calibers with buy signals.' },
 }
 
 const MARKET_SCHEMA = [
@@ -24,7 +24,7 @@ const MARKET_SCHEMA = [
     '@type': 'WebPage',
     name: 'Ammo Prices & Firearms Market Index',
     url: 'https://www.downrangeco.com/market',
-    description: 'Live ammo prices for 14 calibers with NICS background check trends, retailer buy links, and AI market analysis.',
+    description: 'Live ammo prices for 19 calibers — including 6.5 PRC, 7mm PRC, .300 PRC — with NICS trends, retailer buy links, and AI market analysis.',
     publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     about: { '@type': 'Thing', name: 'Ammunition Pricing' },
   },
@@ -46,124 +46,213 @@ const sanity = createClient({
 
 // ── SEED DATA ──────────────────────────────────────────────────────────────────
 const SEED_PRICES = [
-  { _id:'1',  caliber:'9mm Luger',     grain:'115gr FMJ',   brand:'Federal / Blazer',    ppr:0.189, trend:-4.2, dir:'down', avail:92, wLow:0.175, wHigh:0.215,
-    analysis:'9mm is at near all-time lows. Federal 115gr FMJ bulk available under $180/1000rd. Best buying window in 3 years. Stock training ammo now.',
+  { _id:'1',  caliber:'9mm Luger',      grain:'115gr FMJ',   brand:'Federal / Blazer',
+    ppr:0.189, trend:-4.2, dir:'down', avail:92, wLow:0.175, wHigh:0.215,
+    analysis:'9mm near all-time lows. Federal 115gr FMJ bulk available under $180/1000rd. Best buying window in 3 years. Stock training ammo now.',
     signal:'BUY', signalColor:'#22c55e',
     retailers:[
-      { name:'Lucky Gunner',   price:0.179, url:'https://www.luckygunner.com/handgun/9mm-ammo',           stock:'In Stock',  badge:'CHEAPEST' },
-      { name:'PSA',            price:0.184, url:'https://palmettostatearmory.com/ammo/handgun/9mm.html',  stock:'In Stock',  badge:'FREE SHIP' },
-      { name:'Ammo.com',       price:0.189, url:'https://ammo.com/handgun/9mm-ammo',                      stock:'In Stock',  badge:'' },
-      { name:'Brownells',      price:0.194, url:'https://www.brownells.com/ammunition/handgun-ammo/',      stock:'In Stock',  badge:'' },
+      { name:'Lucky Gunner', price:0.179, url:'https://www.luckygunner.com/handgun/9mm-ammo',          stock:'In Stock', badge:'CHEAPEST' },
+      { name:'PSA',          price:0.184, url:'https://palmettostatearmory.com/ammo/handgun/9mm.html', stock:'In Stock', badge:'FREE SHIP' },
+      { name:'Ammo.com',     price:0.189, url:'https://ammo.com/handgun/9mm-ammo',                     stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:0.194, url:'https://www.brownells.com/ammunition/handgun-ammo/',     stock:'In Stock', badge:'' },
     ]
   },
-  { _id:'2',  caliber:'5.56 NATO',     grain:'55gr FMJ',    brand:'PMC / Federal',        ppr:0.321, trend: 1.8, dir:'up',   avail:78, wLow:0.305, wHigh:0.349,
+  { _id:'2',  caliber:'5.56 NATO',      grain:'55gr FMJ',    brand:'PMC / Federal',
+    ppr:0.321, trend: 1.8, dir:'up',   avail:78, wLow:0.305, wHigh:0.349,
     analysis:'5.56 creeping up on import supply tightness. PMC still best value. Buy M193 bulk now before summer surge hits.',
     signal:'BUY SOON', signalColor:'#f59e0b',
     retailers:[
-      { name:'PSA',            price:0.299, url:'https://palmettostatearmory.com/ammo/rifle/5-56x45mm.html', stock:'In Stock', badge:'BEST PRICE' },
-      { name:'Brownells',      price:0.315, url:'https://www.brownells.com/ammunition/rifle-ammo/223-ammo/', stock:'In Stock', badge:'' },
-      { name:'Ammo.com',       price:0.321, url:'https://ammo.com/rifle/556-ammo',                          stock:'In Stock', badge:'' },
-      { name:'Lucky Gunner',   price:0.335, url:'https://www.luckygunner.com/rifle/5-56x45mm-ammo',         stock:'Limited',  badge:'' },
+      { name:'PSA',          price:0.299, url:'https://palmettostatearmory.com/ammo/rifle/5-56x45mm.html', stock:'In Stock', badge:'BEST PRICE' },
+      { name:'Brownells',    price:0.315, url:'https://www.brownells.com/ammunition/rifle-ammo/223-ammo/', stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:0.321, url:'https://ammo.com/rifle/556-ammo',                          stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.335, url:'https://www.luckygunner.com/rifle/5-56x45mm-ammo',         stock:'Limited',  badge:'' },
     ]
   },
-  { _id:'3',  caliber:'.308 WIN',      grain:'147gr FMJ',   brand:'Federal / Hornady',    ppr:0.745, trend:-2.1, dir:'down', avail:65, wLow:0.720, wHigh:0.800,
-    analysis:'.308 availability tightening due to reduced surplus. Federal brass-case best value. Handloaders: buy brass and projectiles now.',
+  { _id:'3',  caliber:'.308 WIN',       grain:'147gr FMJ',   brand:'Federal / Hornady',
+    ppr:0.745, trend:-2.1, dir:'down', avail:65, wLow:0.720, wHigh:0.800,
+    analysis:'.308 availability tightening on reduced surplus. Federal brass-case is best value. Handloaders: buy brass and projectiles now.',
     signal:'WATCH', signalColor:'#f59e0b',
     retailers:[
-      { name:'Ammo.com',       price:0.699, url:'https://ammo.com/rifle/308-ammo',                          stock:'In Stock', badge:'BEST PRICE' },
-      { name:'MidwayUSA',      price:0.725, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=308-winchester', stock:'In Stock', badge:'' },
-      { name:'Brownells',      price:0.745, url:'https://www.brownells.com/ammunition/rifle-ammo/308-ammo/', stock:'In Stock', badge:'' },
-      { name:'Lucky Gunner',   price:0.789, url:'https://www.luckygunner.com/rifle/308-winchester-ammo',     stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:0.699, url:'https://ammo.com/rifle/308-ammo',                           stock:'In Stock', badge:'BEST PRICE' },
+      { name:'MidwayUSA',    price:0.725, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=308-winchester', stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:0.745, url:'https://www.brownells.com/ammunition/rifle-ammo/308-ammo/',  stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.789, url:'https://www.luckygunner.com/rifle/308-winchester-ammo',      stock:'In Stock', badge:'' },
     ]
   },
-  { _id:'4',  caliber:'.45 ACP',       grain:'230gr FMJ',   brand:'Federal / Blazer',     ppr:0.387, trend: 0.9, dir:'up',   avail:80, wLow:0.375, wHigh:0.420,
+  { _id:'4',  caliber:'.45 ACP',        grain:'230gr FMJ',   brand:'Federal / Blazer',
+    ppr:0.387, trend: 0.9, dir:'up',   avail:80, wLow:0.375, wHigh:0.420,
     analysis:'.45 ACP stable. Blazer Brass bulk is the value play. Avoid premium training loads — no benefit for range use. Steady supply from domestic manufacturers.',
     signal:'HOLD', signalColor:'#94a3b8',
     retailers:[
-      { name:'Ammo.com',       price:0.369, url:'https://ammo.com/handgun/45-acp-ammo',                     stock:'In Stock', badge:'BEST PRICE' },
-      { name:'Lucky Gunner',   price:0.385, url:'https://www.luckygunner.com/handgun/45-acp-ammo',          stock:'In Stock', badge:'' },
-      { name:'PSA',            price:0.387, url:'https://palmettostatearmory.com/ammo/handgun/45-acp.html',  stock:'In Stock', badge:'' },
-      { name:'GrabAGun',       price:0.399, url:'https://www.grabagun.com/ammunition.html',                  stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:0.369, url:'https://ammo.com/handgun/45-acp-ammo',                     stock:'In Stock', badge:'BEST PRICE' },
+      { name:'Lucky Gunner', price:0.385, url:'https://www.luckygunner.com/handgun/45-acp-ammo',          stock:'In Stock', badge:'' },
+      { name:'PSA',          price:0.387, url:'https://palmettostatearmory.com/ammo/handgun/45-acp.html',  stock:'In Stock', badge:'' },
+      { name:'GrabAGun',     price:0.399, url:'https://www.grabagun.com/ammunition.html',                  stock:'In Stock', badge:'' },
     ]
   },
-  { _id:'5',  caliber:'12 Gauge',      grain:'00 Buck',     brand:'Federal / Winchester',  ppr:0.412, trend:-1.3, dir:'down', avail:88, wLow:0.395, wHigh:0.450,
-    analysis:'12 gauge at excellent availability. Federal FliteControl 00 Buck is the home defense standard — shop around, price spread is wide.',
+  { _id:'5',  caliber:'.40 S&W',        grain:'165gr FMJ',   brand:'Federal / Winchester',
+    ppr:0.298, trend:-1.5, dir:'down', avail:75, wLow:0.279, wHigh:0.325,
+    analysis:'.40 S&W at a 2-year low on platform consolidation toward 9mm. Excellent training round value right now. Stock for range use before LEO surplus dries up.',
     signal:'BUY', signalColor:'#22c55e',
     retailers:[
-      { name:'Ammo Depot',     price:0.389, url:'https://www.ammunitiondepot.com/shotshells/12-gauge/',      stock:'In Stock', badge:'CHEAPEST' },
-      { name:'Ammo.com',       price:0.399, url:'https://ammo.com/shotgun/12-gauge-ammo',                    stock:'In Stock', badge:'' },
-      { name:'Lucky Gunner',   price:0.412, url:'https://www.luckygunner.com/shotgun/12-gauge-ammo',         stock:'In Stock', badge:'' },
-      { name:'MidwayUSA',      price:0.435, url:'https://www.midwayusa.com/category/shotgun-ammunition?gauge=12-gauge', stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:0.275, url:'https://ammo.com/handgun/40-sw-ammo',                      stock:'In Stock', badge:'BEST PRICE' },
+      { name:'Lucky Gunner', price:0.289, url:'https://www.luckygunner.com/handgun/40-s-w-ammo',          stock:'In Stock', badge:'' },
+      { name:'PSA',          price:0.298, url:'https://palmettostatearmory.com/ammo/handgun/40-sw.html',   stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:0.319, url:'https://www.brownells.com/ammunition/handgun-ammo/',        stock:'In Stock', badge:'' },
     ]
   },
-  { _id:'6',  caliber:'6.5 Creedmoor', grain:'140gr BTHP',  brand:'Hornady / Federal',    ppr:1.420, trend: 3.4, dir:'up',   avail:52, wLow:1.38, wHigh:1.55,
-    analysis:'6.5CM rising on demand from new platform adopters. Match-grade pricing up 12% YTD. Buy practice brass and reload, or lock in Hornady Match pricing now.',
-    signal:'BUY NOW', signalColor:'#ef4444',
-    retailers:[
-      { name:'MidwayUSA',      price:1.350, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=6-5-creedmoor', stock:'Limited', badge:'LOWEST' },
-      { name:'Brownells',      price:1.399, url:'https://www.brownells.com/ammunition/rifle-ammo/65-creedmoor-ammo/', stock:'In Stock', badge:'' },
-      { name:'Ammo.com',       price:1.420, url:'https://ammo.com/rifle/65-creedmoor-ammo',                  stock:'In Stock', badge:'' },
-      { name:'Lucky Gunner',   price:1.489, url:'https://www.luckygunner.com/rifle/6-5-creedmoor-ammo',      stock:'Limited',  badge:'' },
-    ]
-  },
-  { _id:'7',  caliber:'.22 LR',        grain:'40gr LRN',    brand:'CCI / Federal',        ppr:0.071, trend:-0.5, dir:'down', avail:94, wLow:0.065, wHigh:0.082,
-    analysis:'.22 LR at historic supply levels. CCI Standard and Federal AutoMatch routinely sub-7¢/rd in brick. Buy bricks, not boxes — per-round savings are significant.',
-    signal:'BUY', signalColor:'#22c55e',
-    retailers:[
-      { name:'Ammo.com',       price:0.065, url:'https://ammo.com/rimfire/22lr-ammo',                        stock:'In Stock', badge:'BEST PRICE' },
-      { name:'Lucky Gunner',   price:0.068, url:'https://www.luckygunner.com/rimfire/22-lr-ammo',            stock:'In Stock', badge:'' },
-      { name:'PSA',            price:0.071, url:'https://palmettostatearmory.com/ammo/rimfire/22lr.html',     stock:'In Stock', badge:'' },
-      { name:'Cabelas',        price:0.079, url:'https://www.cabelas.com/category/Ammunition/22-LR/',         stock:'In Stock', badge:'' },
-    ]
-  },
-  { _id:'8',  caliber:'7.62x39mm',     grain:'123gr FMJ',   brand:'Wolf / Tula',          ppr:0.285, trend: 8.2, dir:'up',   avail:55, wLow:0.265, wHigh:0.319,
-    analysis:'7.62x39 surging on import restrictions. Steel-case supply constrained. Brass-case premium widening. Buy your training stock now — next import restriction could push past 35¢.',
-    signal:'BUY NOW', signalColor:'#ef4444',
-    retailers:[
-      { name:'AIM Surplus',    price:0.259, url:'https://www.aimsurplus.com/ammo/',                          stock:'Limited', badge:'LOWEST' },
-      { name:'Ammo.com',       price:0.275, url:'https://ammo.com/rifle/7-62x39-ammo',                      stock:'Limited', badge:'' },
-      { name:'Lucky Gunner',   price:0.299, url:'https://www.luckygunner.com/rifle/7-62x39mm-ammo',         stock:'Limited', badge:'' },
-      { name:'PSA',            price:0.319, url:'https://palmettostatearmory.com/ammo/rifle/7-62x39mm.html', stock:'In Stock', badge:'' },
-    ]
-  },
-  { _id:'9',  caliber:'.300 BLK',      grain:'125gr FMJ',   brand:'Hornady / AAC',        ppr:0.568, trend: 2.1, dir:'up',   avail:61, wLow:0.539, wHigh:0.589,
-    analysis:'.300 BLK premium narrowing vs 5.56. Subsonic demand stable from suppressor market growth. Supersonic 125gr FMJ is range-viable option. Watch for bulk deals.',
-    signal:'WATCH', signalColor:'#f59e0b',
-    retailers:[
-      { name:'SilencerShop',   price:0.529, url:'https://www.silencershop.com/ammo.html',                    stock:'In Stock', badge:'LOWEST' },
-      { name:'Ammo.com',       price:0.549, url:'https://ammo.com/rifle/300-blackout-ammo',                  stock:'In Stock', badge:'' },
-      { name:'Lucky Gunner',   price:0.568, url:'https://www.luckygunner.com/rifle/300-aac-blackout-ammo',   stock:'In Stock', badge:'' },
-      { name:'Brownells',      price:0.589, url:'https://www.brownells.com/ammunition/rifle-ammo/300-blk-ammo/', stock:'Limited', badge:'' },
-    ]
-  },
-  { _id:'10', caliber:'10mm Auto',      grain:'180gr FMJ',   brand:'Federal / Sig',        ppr:0.445, trend:-1.2, dir:'down', avail:71, wLow:0.429, wHigh:0.469,
-    analysis:'10mm stable and falling. Federal 180gr HST available at reasonable prices. Growing platform adoption keeping supply healthy. Good buy window for high-volume shooters.',
-    signal:'BUY', signalColor:'#22c55e',
-    retailers:[
-      { name:'Ammo.com',       price:0.419, url:'https://ammo.com/handgun/10mm-ammo',                        stock:'In Stock', badge:'BEST PRICE' },
-      { name:'Lucky Gunner',   price:0.435, url:'https://www.luckygunner.com/handgun/10mm-auto-ammo',        stock:'In Stock', badge:'' },
-      { name:'Brownells',      price:0.449, url:'https://www.brownells.com/ammunition/handgun-ammo/10mm-auto/', stock:'In Stock', badge:'' },
-      { name:'GrabAGun',       price:0.469, url:'https://www.grabagun.com/ammunition.html',                   stock:'In Stock', badge:'' },
-    ]
-  },
-  { _id:'11', caliber:'.380 ACP',       grain:'95gr FMJ',    brand:'Federal / Remington',  ppr:0.312, trend:-3.1, dir:'down', avail:83, wLow:0.289, wHigh:0.339,
+  { _id:'6',  caliber:'.380 ACP',       grain:'95gr FMJ',    brand:'Federal / Remington',
+    ppr:0.312, trend:-3.1, dir:'down', avail:83, wLow:0.289, wHigh:0.339,
     analysis:'.380 at best value in 18 months. Pocket pistol market demand stable. Premium JHP for carry is priority buy — training ammo can wait at this price level.',
     signal:'BUY', signalColor:'#22c55e',
     retailers:[
-      { name:'Lucky Gunner',   price:0.289, url:'https://www.luckygunner.com/handgun/380-acp-ammo',          stock:'In Stock', badge:'CHEAPEST' },
-      { name:'PSA',            price:0.299, url:'https://palmettostatearmory.com/ammo/handgun/380-acp.html',  stock:'In Stock', badge:'' },
-      { name:'Ammo.com',       price:0.312, url:'https://ammo.com/handgun/380-acp-ammo',                     stock:'In Stock', badge:'' },
-      { name:'Ammo Depot',     price:0.329, url:'https://www.ammunitiondepot.com',                            stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.289, url:'https://www.luckygunner.com/handgun/380-acp-ammo',        stock:'In Stock', badge:'CHEAPEST' },
+      { name:'PSA',          price:0.299, url:'https://palmettostatearmory.com/ammo/handgun/380-acp.html',stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:0.312, url:'https://ammo.com/handgun/380-acp-ammo',                   stock:'In Stock', badge:'' },
+      { name:'Ammo Depot',   price:0.329, url:'https://www.ammunitiondepot.com',                         stock:'In Stock', badge:'' },
     ]
   },
-  { _id:'12', caliber:'.338 Lapua',     grain:'250gr BTHP',  brand:'Lapua / Hornady',      ppr:4.200, trend: 5.6, dir:'up',   avail:34, wLow:3.90, wHigh:4.50,
-    analysis:'.338 Lapua pricing elevated on precision rifle competition demand. Component costs rising. Factory Lapua Scenar is benchmark — Hornady A-MAX at 15% discount is viable for training.',
+  { _id:'7',  caliber:'.357 Magnum',    grain:'158gr JSP',   brand:'Federal / Hornady',
+    ppr:0.612, trend: 1.2, dir:'up',   avail:68, wLow:0.579, wHigh:0.659,
+    analysis:'.357 Magnum trending up on revolver market resurgence. Hornady Critical Defense JHP commanding a premium. Factory FMJ equivalent for training is the value path.',
     signal:'WATCH', signalColor:'#f59e0b',
     retailers:[
-      { name:'MidwayUSA',      price:3.950, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=338-lapua-magnum', stock:'Limited', badge:'LOWEST' },
-      { name:'Brownells',      price:4.150, url:'https://www.brownells.com/ammunition/rifle-ammo/',           stock:'Limited', badge:'' },
-      { name:'Ammo.com',       price:4.200, url:'https://ammo.com/rifle/338-lapua-ammo',                     stock:'Limited', badge:'' },
-      { name:'Cabelas',        price:4.499, url:'https://www.cabelas.com/category/Ammunition/',               stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:0.579, url:'https://ammo.com/handgun/357-magnum-ammo',                stock:'In Stock', badge:'BEST PRICE' },
+      { name:'MidwayUSA',    price:0.599, url:'https://www.midwayusa.com/category/handgun-ammunition?caliber=357-magnum', stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.619, url:'https://www.luckygunner.com/handgun/357-magnum-ammo',     stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:0.649, url:'https://www.brownells.com/ammunition/handgun-ammo/',       stock:'Limited',  badge:'' },
+    ]
+  },
+  { _id:'8',  caliber:'.44 Magnum',     grain:'240gr JSP',   brand:'Federal / Remington',
+    ppr:0.749, trend: 0.5, dir:'up',   avail:62, wLow:0.719, wHigh:0.799,
+    analysis:'.44 Magnum steady. Hunting season demand drives premium loads. Federal 240gr JSP is the training-equivalent value buy. Supply adequate through fall.',
+    signal:'HOLD', signalColor:'#94a3b8',
+    retailers:[
+      { name:'Ammo.com',     price:0.719, url:'https://ammo.com/handgun/44-magnum-ammo',                 stock:'In Stock', badge:'BEST PRICE' },
+      { name:'MidwayUSA',    price:0.739, url:'https://www.midwayusa.com/category/handgun-ammunition?caliber=44-magnum', stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.749, url:'https://www.luckygunner.com/handgun/44-magnum-ammo',      stock:'In Stock', badge:'' },
+      { name:'Cabelas',      price:0.789, url:'https://www.cabelas.com/category/Ammunition/',             stock:'In Stock', badge:'' },
+    ]
+  },
+  { _id:'9',  caliber:'10mm Auto',      grain:'180gr FMJ',   brand:'Federal / Sig',
+    ppr:0.445, trend:-1.2, dir:'down', avail:71, wLow:0.429, wHigh:0.469,
+    analysis:'10mm stable and falling. Federal 180gr HST available at reasonable prices. Growing platform adoption keeping supply healthy. Good buy window for high-volume shooters.',
+    signal:'BUY', signalColor:'#22c55e',
+    retailers:[
+      { name:'Ammo.com',     price:0.419, url:'https://ammo.com/handgun/10mm-ammo',                      stock:'In Stock', badge:'BEST PRICE' },
+      { name:'Lucky Gunner', price:0.435, url:'https://www.luckygunner.com/handgun/10mm-auto-ammo',      stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:0.449, url:'https://www.brownells.com/ammunition/handgun-ammo/10mm-auto/', stock:'In Stock', badge:'' },
+      { name:'GrabAGun',     price:0.469, url:'https://www.grabagun.com/ammunition.html',                 stock:'In Stock', badge:'' },
+    ]
+  },
+  { _id:'10', caliber:'5.7x28mm',       grain:'40gr V-Max',  brand:'FN / Speer',
+    ppr:0.529, trend: 2.8, dir:'up',   avail:55, wLow:0.499, wHigh:0.579,
+    analysis:'5.7x28mm rising on PS90 and FN Five-seveN demand. FN factory remains premium-priced. Speer and Elite Ammunition closing the gap — watch for bulk deals.',
+    signal:'WATCH', signalColor:'#f59e0b',
+    retailers:[
+      { name:'Ammo.com',     price:0.499, url:'https://ammo.com/handgun/5-7x28mm-ammo',                  stock:'In Stock', badge:'BEST PRICE' },
+      { name:'Lucky Gunner', price:0.519, url:'https://www.luckygunner.com/handgun/5-7x28mm-ammo',       stock:'In Stock', badge:'' },
+      { name:'MidwayUSA',    price:0.535, url:'https://www.midwayusa.com/category/handgun-ammunition?caliber=5-7x28mm', stock:'Limited', badge:'' },
+      { name:'Brownells',    price:0.579, url:'https://www.brownells.com/ammunition/handgun-ammo/',       stock:'Limited',  badge:'' },
+    ]
+  },
+  { _id:'11', caliber:'.22 LR',         grain:'40gr LRN',    brand:'CCI / Federal',
+    ppr:0.071, trend:-0.5, dir:'down', avail:94, wLow:0.065, wHigh:0.082,
+    analysis:'.22 LR at historic supply levels. CCI Standard and Federal AutoMatch routinely sub-7c/rd in brick. Buy bricks not boxes — per-round savings are significant.',
+    signal:'BUY', signalColor:'#22c55e',
+    retailers:[
+      { name:'Ammo.com',     price:0.065, url:'https://ammo.com/rimfire/22lr-ammo',                      stock:'In Stock', badge:'BEST PRICE' },
+      { name:'Lucky Gunner', price:0.068, url:'https://www.luckygunner.com/rimfire/22-lr-ammo',          stock:'In Stock', badge:'' },
+      { name:'PSA',          price:0.071, url:'https://palmettostatearmory.com/ammo/rimfire/22lr.html',   stock:'In Stock', badge:'' },
+      { name:'Cabelas',      price:0.079, url:'https://www.cabelas.com/category/Ammunition/22-LR/',       stock:'In Stock', badge:'' },
+    ]
+  },
+  { _id:'12', caliber:'7.62x39mm',      grain:'123gr FMJ',   brand:'Wolf / Tula',
+    ppr:0.285, trend: 8.2, dir:'up',   avail:55, wLow:0.265, wHigh:0.319,
+    analysis:'7.62x39 surging on import restrictions. Steel-case supply constrained. Brass-case premium widening. Buy training stock now — next import restriction could push past 35c.',
+    signal:'BUY NOW', signalColor:'#ef4444',
+    retailers:[
+      { name:'AIM Surplus',  price:0.259, url:'https://www.aimsurplus.com/ammo/',                        stock:'Limited',  badge:'LOWEST' },
+      { name:'Ammo.com',     price:0.275, url:'https://ammo.com/rifle/7-62x39-ammo',                     stock:'Limited',  badge:'' },
+      { name:'Lucky Gunner', price:0.299, url:'https://www.luckygunner.com/rifle/7-62x39mm-ammo',        stock:'Limited',  badge:'' },
+      { name:'PSA',          price:0.319, url:'https://palmettostatearmory.com/ammo/rifle/7-62x39mm.html',stock:'In Stock', badge:'' },
+    ]
+  },
+  { _id:'13', caliber:'.300 BLK',       grain:'125gr FMJ',   brand:'Hornady / AAC',
+    ppr:0.568, trend: 2.1, dir:'up',   avail:61, wLow:0.539, wHigh:0.589,
+    analysis:'.300 BLK premium narrowing vs 5.56. Subsonic demand stable from suppressor market growth. Supersonic 125gr FMJ is range-viable option. Watch for bulk deals.',
+    signal:'WATCH', signalColor:'#f59e0b',
+    retailers:[
+      { name:'SilencerShop', price:0.529, url:'https://www.silencershop.com/ammo.html',                  stock:'In Stock', badge:'LOWEST' },
+      { name:'Ammo.com',     price:0.549, url:'https://ammo.com/rifle/300-blackout-ammo',                stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.568, url:'https://www.luckygunner.com/rifle/300-aac-blackout-ammo', stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:0.589, url:'https://www.brownells.com/ammunition/rifle-ammo/300-blk-ammo/', stock:'Limited', badge:'' },
+    ]
+  },
+  { _id:'14', caliber:'6.5 Creedmoor',  grain:'140gr BTHP',  brand:'Hornady / Federal',
+    ppr:1.420, trend: 3.4, dir:'up',   avail:52, wLow:1.38, wHigh:1.55,
+    analysis:'6.5CM rising on demand from new platform adopters. Match-grade pricing up 12% YTD. Buy practice brass and reload, or lock in Hornady Match pricing now.',
+    signal:'BUY NOW', signalColor:'#ef4444',
+    retailers:[
+      { name:'MidwayUSA',    price:1.350, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=6-5-creedmoor', stock:'Limited', badge:'LOWEST' },
+      { name:'Brownells',    price:1.399, url:'https://www.brownells.com/ammunition/rifle-ammo/65-creedmoor-ammo/', stock:'In Stock', badge:'' },
+      { name:'Ammo.com',     price:1.420, url:'https://ammo.com/rifle/65-creedmoor-ammo',               stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:1.489, url:'https://www.luckygunner.com/rifle/6-5-creedmoor-ammo',   stock:'Limited',  badge:'' },
+    ]
+  },
+  { _id:'15', caliber:'6.5 PRC',        grain:'143gr ELD-M',  brand:'Hornady / Federal',
+    ppr:1.749, trend: 4.1, dir:'up',   avail:44, wLow:1.65, wHigh:1.89,
+    analysis:'6.5 PRC demand accelerating as hunters upgrade from 6.5CM for longer range. Hornady factory dominates — alternatives limited. Supply tight heading into hunting season. Buy now.',
+    signal:'BUY NOW', signalColor:'#ef4444',
+    retailers:[
+      { name:'MidwayUSA',    price:1.650, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=6-5-prc', stock:'Limited', badge:'LOWEST' },
+      { name:'Brownells',    price:1.699, url:'https://www.brownells.com/ammunition/rifle-ammo/',        stock:'Limited',  badge:'' },
+      { name:'Ammo.com',     price:1.749, url:'https://ammo.com/rifle/65-prc-ammo',                     stock:'Limited',  badge:'' },
+      { name:'Cabelas',      price:1.849, url:'https://www.cabelas.com/category/Ammunition/',             stock:'Limited',  badge:'' },
+    ]
+  },
+  { _id:'16', caliber:'7mm PRC',        grain:'175gr ELD-M',  brand:'Hornady',
+    ppr:2.199, trend: 6.2, dir:'up',   avail:38, wLow:2.05, wHigh:2.39,
+    analysis:'7mm PRC supply critically tight. Hornady holds near-monopoly on factory loads. Adoption rate outpacing manufacturing capacity. If you shoot this platform, buy every box you see.',
+    signal:'BUY NOW', signalColor:'#ef4444',
+    retailers:[
+      { name:'MidwayUSA',    price:2.050, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=7mm-prc', stock:'Limited', badge:'LOWEST' },
+      { name:'Brownells',    price:2.149, url:'https://www.brownells.com/ammunition/rifle-ammo/',        stock:'Limited',  badge:'' },
+      { name:'Ammo.com',     price:2.199, url:'https://ammo.com/rifle/7mm-prc-ammo',                    stock:'Out of Stock', badge:'' },
+      { name:'Cabelas',      price:2.350, url:'https://www.cabelas.com/category/Ammunition/',             stock:'Limited',  badge:'' },
+    ]
+  },
+  { _id:'17', caliber:'.300 PRC',       grain:'225gr ELD-M',  brand:'Hornady',
+    ppr:2.849, trend: 3.8, dir:'up',   avail:32, wLow:2.69, wHigh:3.05,
+    analysis:'.300 PRC occupies the extreme long-range hunting niche. Factory options limited to Hornady and a handful of boutique loaders. Component supply more robust — reloading strongly recommended for high-volume shooters.',
+    signal:'WATCH', signalColor:'#f59e0b',
+    retailers:[
+      { name:'MidwayUSA',    price:2.690, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=300-prc', stock:'Limited', badge:'LOWEST' },
+      { name:'Brownells',    price:2.799, url:'https://www.brownells.com/ammunition/rifle-ammo/',        stock:'Limited',  badge:'' },
+      { name:'Ammo.com',     price:2.849, url:'https://ammo.com/rifle/300-prc-ammo',                    stock:'Limited',  badge:'' },
+      { name:'Cabelas',      price:2.999, url:'https://www.cabelas.com/category/Ammunition/',             stock:'Limited',  badge:'' },
+    ]
+  },
+  { _id:'18', caliber:'.300 Win Mag',   grain:'180gr SP',     brand:'Federal / Nosler',
+    ppr:1.189, trend: 1.4, dir:'up',   avail:69, wLow:1.12, wHigh:1.29,
+    analysis:'.300 Win Mag healthy supply relative to PRC cartridges. Hunting season pull starting to tighten premium loads. Federal Power-Shok at $1.12/rd is still the value target for practice.',
+    signal:'WATCH', signalColor:'#f59e0b',
+    retailers:[
+      { name:'Ammo.com',     price:1.120, url:'https://ammo.com/rifle/300-win-mag-ammo',                stock:'In Stock', badge:'BEST PRICE' },
+      { name:'MidwayUSA',    price:1.149, url:'https://www.midwayusa.com/category/rifle-ammunition?caliber=300-winchester-magnum', stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:1.189, url:'https://www.luckygunner.com/rifle/300-winchester-magnum-ammo', stock:'In Stock', badge:'' },
+      { name:'Brownells',    price:1.249, url:'https://www.brownells.com/ammunition/rifle-ammo/',        stock:'In Stock', badge:'' },
+    ]
+  },
+  { _id:'19', caliber:'12 Gauge',       grain:'00 Buck',      brand:'Federal / Winchester',
+    ppr:0.412, trend:-1.3, dir:'down', avail:88, wLow:0.395, wHigh:0.450,
+    analysis:'12 gauge at excellent availability. Federal FliteControl 00 Buck is the home defense standard — shop around, price spread is wide.',
+    signal:'BUY', signalColor:'#22c55e',
+    retailers:[
+      { name:'Ammo Depot',   price:0.389, url:'https://www.ammunitiondepot.com/shotshells/12-gauge/',    stock:'In Stock', badge:'CHEAPEST' },
+      { name:'Ammo.com',     price:0.399, url:'https://ammo.com/shotgun/12-gauge-ammo',                  stock:'In Stock', badge:'' },
+      { name:'Lucky Gunner', price:0.412, url:'https://www.luckygunner.com/shotgun/12-gauge-ammo',       stock:'In Stock', badge:'' },
+      { name:'MidwayUSA',    price:0.435, url:'https://www.midwayusa.com/category/shotgun-ammunition?gauge=12-gauge', stock:'In Stock', badge:'' },
     ]
   },
 ]
@@ -355,7 +444,7 @@ export default async function MarketPage() {
                 Ammo Price Index<br /><span style={{ color:'#C8922A' }}>With Direct Retailer Links</span>
               </h1>
               <p style={{ fontFamily:'IBM Plex Mono, monospace', fontSize:12, color:'#64748b', lineHeight:1.7, maxWidth:520 }}>
-                {prices.length} calibers · Buy signal analysis · 4 retailers per caliber · NICS demand index · Updated every 30 min
+                {prices.length} calibers · Buy signal analysis · 4 retailers per caliber · NICS demand index · Updated every 4 hours
               </p>
             </div>
             <div style={{ textAlign:'right' }}>
