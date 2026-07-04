@@ -2,8 +2,8 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 117 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a7ecb45fa3bbcef392a9d8124825ca2
+Needs image fix: 46 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3f94a329a49dd078af46c44d43ec11b
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
@@ -49,82 +49,10 @@ Needs image fix: 117 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64b2304ba23ab40b42c36903f14f32d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7465872d6f883c080b81819470d0739
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e4c7caabafa83ca1f3cc7ef907dd38b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/84c3f3eca2a887cfef554a65e6ca602
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0275f2eef65c895baca16e0a34d4bdb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fdaef8f970756add716a766b62224a6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a80e511e29bd895dfd2a12d40c280be
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/71c180f5078229ec8f8a15a3b290e64
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2d1f72279e68f68ad588f186193fa2c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/510eca9c06aed073d6b43461f5da67c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54dbebbdc727cc6fee7e01c42767a40
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f4a90740abf20730a43cff6be41a548
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8dda4d3478e27fa9a21aa345cb566ac
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8fa3ada091eb5bf72e9736b6dea5ff7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9692ab4b0f6a1f2fca1f0cb001155a8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9c5d986e3b4951d3a1212261a65d5db
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b4204610dd6af146be6113e3333b321
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/196fdeac0109b5d8ab770791f8c76f6
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5d97cb90b12dd749b96172f55c7c63d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/083666b9d9a085f342f87a8cdee77c5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d754d725c16b7879da8c9eb8ddb06e3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85537f8d5dc251a6dd72dbbdd54f6ee
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/feb3fd5a803cfba58bca2bcbfec290c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8dbbb31dc4e647cfb3264c9e169381b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/653cdd4f42f8b8f89150390d08e3729
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a6223503cf88a9b12d82f260655d406
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b9d01339babb258e2db745739006bd9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/643ff15c737fc096ffaf45efc43bb4e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3b4f12d121a1ef5d379a2cbd43a6f7b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a8a0a62b4d7f6ad382f6f099520ef63
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c0c040db35ce9a7462f17715df2d2e7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85118700bd1d7db24c9a84a8f831812
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7d737a5b618a88680f64ec729bacb63
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c5d895557f39f28ed059b6c5b9dbba9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/481b1630d7657fa7659d0fd6f8daacd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85c596e0823819662b054f144d864c9
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f72f8451df47cc790ac28e17c01b54
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5a713109049f7e2eea0106e6d4af027
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/39cde5550738199d43dc30b8c0899ed
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d6d5fe3bf44fd92b54cfb7ad246201f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e42a3e3090425a0b253b2dde32e9b38
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/91e125d9bb880463c5cf02973da84b7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/021f8faa219d4b343bd9148800f70f5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/616babc50a50e1a576f1ee2a9fc67db
-  → patched 50
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/415b9db40fa8535b1c9f43bc0b6ecc4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/248b25ff55445ff9bd902c3e0062113
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/34ddf809c4b8495ca354ca761c4d141
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b97598e9da1efb80f0920e6c0ded72d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cb24acec4650c04b4120c00c05a723a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a555d335e01178a48613a43325f0bd2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d3ae5da2cd010ecdc393c265cb74dba
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/47ba46453c52eaa68bc34cda4e76164
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f7bee6d668bd422d427c06eb12251a2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0309897e12e362a66cd26afc192d06b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ad2bd6decce3d31a646449c4493713e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c08e0fb28b152c92053744398d4923f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e5d37236c4fad2bb79edc34d26df0fc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f19be22b6acdf422bdc1c02dc24323e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/183c9d527c22fb42740eedd37bed159
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2330f001de66e9a7f78909e1be24f55
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3c17e51fd7ebe93a9208433014c3d7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b2f2a46ed741a64ed73b4fcbface8a4
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f673023f5b7003d1dfbd1551953c06f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/06fbfc80d5f85a8b7af8ae448dd1f0e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/32f365012a79d958821515db6ff94a7
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/93395733a6d2fa90f923b9336febdac
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/99396021936b2b2c5ce51d26b7302d3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2fab04ebdd3f67af657b73b6e267ec1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8f6a2f4025c71ca445e393a6f0ffbfb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7232710d4b4b4f3eb9d721325522a21
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5444531cb5e93d7948296b76fb520bf
-  → patched final 27
+  → patched final 6
 
-Stats: uploaded=72 fallback=5 failed=3
+Stats: uploaded=1 fallback=5 failed=3
 
-=== FINAL: total=3872 missing_images=39 reddit=0 ===
+=== FINAL: total=3873 missing_images=39 reddit=0 ===
 
-FIXED: 77
+FIXED: 6
