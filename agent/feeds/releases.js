@@ -484,7 +484,7 @@ async function markSeen(url, brand, model) {
 //  a) Validate: is this genuinely a new firearm/suppressor/optic product launch?
 //  b) If yes: extract structured specs and write a 700-word DownRange article
 
-async function validateAndWrite(title, pageText, sourceUrl, brand) {
+export async function validateAndWrite(title, pageText, sourceUrl, brand) {
   // ── Step A: Haiku validates (cheap) ────────────────────────────────────────
   // Only asks: is this a real new product launch? Returns skip or a stub.
   // If text is too thin to validate, reject immediately — saves all AI cost.
