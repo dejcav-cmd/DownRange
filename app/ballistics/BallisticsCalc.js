@@ -318,7 +318,7 @@ export default function BallisticsCalc() {
 
         {compareMode&&<div className="bal-load-div"><span className="bal-load-lbl">LOAD A — GOLD</span></div>}
         <LoadSelector value={pA} label={compareMode?'Load A':'Cartridge'} color={compareMode?'var(--gold)':null}
-          onChange={id=>{setPA(id);applyPreset(id,setMvA,setBcA,setWtA)}}/>
+          onChange={id=>{setPA(id);applyPreset(id,setMvA,setBcA,setWtA);if(typeof window!=='undefined'&&window.gtag&&id!=='custom')window.gtag('event','tool_used',{tool:'ballistics_calculator',preset:id})}}/>
         {triplet([
           {l:'MV (fps)',v:mvA,set:v=>{setPA('custom');setMvA(+v)},min:100,max:5000},
           {l:'G1 BC',  v:bcA,set:v=>{setPA('custom');setBcA(+v)},min:0.05,max:1.2,s:0.001},

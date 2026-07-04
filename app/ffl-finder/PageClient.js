@@ -15,6 +15,7 @@ export default function FFLFinder() {
   async function search(e) {
     e.preventDefault()
     if (!zip.trim()) return
+    if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'tool_used', { tool: 'ffl_finder', query: zip })
     setLoading(true); setError(null); setResults(null); setLocation(null)
     try {
       const res = await fetch(`/api/ffl?zip=${encodeURIComponent(zip.trim())}`)

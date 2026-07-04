@@ -6,6 +6,7 @@ export default function NewsletterSignup({ variant = 'full' }) {
   const [status, setStatus] = useState(null) // null | 'loading' | 'success' | 'error'
 
   async function handleSubmit(e) {
+    if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'newsletter_signup', { method: 'form' })
     e.preventDefault()
     if (!email || !email.includes('@')) return
     setStatus('loading')

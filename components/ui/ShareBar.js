@@ -24,6 +24,7 @@ export default function ShareBar({ title, slug }) {
         { label: 'SIGNAL',      href: `https://signal.me/#p=${encodeURIComponent(url)}` },
       ].map(s => (
         <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+          onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'article_share', { method: s.label.toLowerCase().replace(' / ', '_'), content_id: slug }) }}
           style={{ color: '#4B5563', textDecoration: 'none', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', padding: '4px 10px', border: '1px solid var(--border)' }}>
           {s.label}
         </a>

@@ -94,6 +94,7 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="dark">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ROOT_SCHEMA) }} />
+        <link rel="alternate" type="application/rss+xml" title="DownRange — Firearms Intelligence" href="https://www.downrangeco.com/feed.xml" />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
 
         <Script

@@ -27,6 +27,7 @@ export default function ValueEstimator() {
   const [loading, setLoading] = useState(false)
 
   async function estimate() {
+    if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'tool_used', { tool: 'value_estimator', model: form.model, condition: form.condition })
     setLoading(true)
     const base = GUN_VALS[form.model]
     if (!base) { setLoading(false); return }
