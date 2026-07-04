@@ -177,12 +177,8 @@
       "schedule": "0 8 * * 1"
     },
     {
-      "path": "/api/agent?feed=releases&phase=scrape&backfill=1",
-      "schedule": "16 5 * * *"
-    },
-    {
       "path": "/api/cron/releases-process?backfill=1",
-      "schedule": "22 5 * * *"
+      "schedule": "25 5 * * *"
     }
   ],
   "headers": [
