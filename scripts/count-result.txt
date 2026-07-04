@@ -1,0 +1,6 @@
+  Total firearmRelease docs: 17
+  Google News sourceUrl remaining: 0
+  No heroImage AND no imageUrl: 0
+  Bad google imageUrl: 0
+  Has real imageUrl: 17
+  Has heroImage (CDN): 1
