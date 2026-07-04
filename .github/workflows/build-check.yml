@@ -1,0 +1,22 @@
+name: Build Check
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install deps
+        run: npm ci --legacy-peer-deps
+      - name: Build
+        run: npm run build
+        env:
+          NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
+          NEXT_PUBLIC_SANITY_DATASET: production
+          SANITY_API_TOKEN: placeholder
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: placeholder
+          CLERK_SECRET_KEY: placeholder
