@@ -1,61 +1,43 @@
 {
-  "probed_at": "2026-07-04T15:10:07.536099",
+  "probed_at": "2026-07-04T15:12:21.658380",
   "tests": {
-    "wikiarms_api_9mm": {
-      "url": "https://www.wikiarms.com/api/ammo?caliber=9mm&limit=5",
-      "error": "HTTP 404"
-    },
-    "wikiarms_feed_9mm": {
-      "url": "https://www.wikiarms.com/feed/ammo/9mm",
-      "error": "HTTP 404"
-    },
-    "wikiarms_group_9mm": {
-      "url": "https://www.wikiarms.com/group/9mm-ammo",
-      "error": "HTTP 404"
-    },
-    "wikiarms_group_556": {
-      "url": "https://www.wikiarms.com/group/223-556-ammo",
-      "error": "HTTP 404"
-    },
-    "wikiarms_deals": {
-      "url": "https://www.wikiarms.com/deals",
+    "ammoseek_q_9mm": {
+      "url": "https://www.ammoseek.com/?q=9mm",
       "status": 200,
-      "len": 388962,
-      "preview": "<!doctype html>\n<html lang=\"en\">\n<head>\n    <meta charset=\"UTF-8\">\n    <title>WikiArms AmmoEngine | Live Ammo and Firearm Tracking</title>\n    <meta name=\"description\" content=\"WikiArms - an easy way to track and find the lowest ammo and firearm prices. Browse the best deals, and see for your self.\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <link rel=\"icon\" type=\"image/x-icon\""
+      "len": 197815,
+      "prices_found": []
     },
-    "ammoseek_root": {
-      "url": "https://www.ammoseek.com/",
+    "ammoseek_search_9mm": {
+      "url": "https://www.ammoseek.com/search?q=9mm",
+      "error": "HTTP 404"
+    },
+    "ammoseek_caliber_9mm": {
+      "url": "https://www.ammoseek.com/caliber/9mm",
+      "error": "HTTP 404"
+    },
+    "wikiarms_search_9mm": {
+      "url": "https://www.wikiarms.com/search?term=9mm",
       "status": 200,
-      "len": 198441,
-      "preview": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"utf-8\">\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\">\n  <meta http-equiv=\"x-ua-compatible\" content=\"ie=edge\">\n\n<link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/img/favicons/prod/apple-touch-icon.png?v=2bB6vawXXd\"\n  crossorigin=\"use-credentials\">\n<link rel=\"icon\" type=\"image/png\" sizes=\"32x32\" hr"
+      "len": 211800,
+      "prices_found": []
     },
-    "ammoseek_compare_9mm": {
-      "url": "https://www.ammoseek.com/compare/9mm",
+    "wikiarms_ammo_9mm": {
+      "url": "https://www.wikiarms.com/ammo/9mm-luger",
       "error": "HTTP 404"
     },
-    "ammoseek_embed": {
-      "url": "https://www.ammoseek.com/embed/9mm",
+    "wikiarms_prices_9mm": {
+      "url": "https://www.wikiarms.com/prices/9mm",
       "error": "HTTP 404"
     },
-    "gundeals_rss_main": {
-      "url": "https://gun.deals/feed/syndication/rss",
+    "gunbot_search": {
+      "url": "https://www.gunbot.com/ammo/9mm-luger-ammo/",
       "error": "HTTP 404"
     },
-    "gundeals_ammo_cat": {
-      "url": "https://gun.deals/category/ammo",
+    "luckygunner_9mm": {
+      "url": "https://www.luckygunner.com/handgun/9mm-ammo",
       "status": 200,
-      "len": 655945,
-      "preview": "<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta http-equiv=\"Content-Type\" content=\"text/html; charset=utf-8\" />\n    <meta charset=\"UTF-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"ie=edge\"><script type=\"7c34292dd306f1f9334b98d4-text/javascript\">(window.NREUM||(NREUM={})).init={privacy:{c"
-    },
-    "gundeals_ammo_rss": {
-      "url": "https://gun.deals/category/ammo/feed",
-      "error": "HTTP 404"
-    },
-    "bing_shopping_9mm": {
-      "url": "https://www.bing.com/shop?q=9mm+ammo+bulk&filters=price%3A%220%2B%22",
-      "status": 200,
-      "len": 115564,
-      "preview": "<!DOCTYPE html><html dir=\"ltr\" lang=\"en\" xml:lang=\"en\" xmlns=\"http://www.w3.org/1999/xhtml\" xmlns:Web=\"http://schemas.live.com/Web/\"><script type=\"text/javascript\" nonce=\"DZaQDo5QfKo9TS8CISD/FkyZFuk+JLOVsiwEp1Yohgw=\" >//<![CDATA[\r\nsi_ST=new Date\r\n//]]></script><head><!--pc--><title>9mm ammo bulk - Search Shopping</title><meta content=\"text/html; charset=utf-8\" http-equiv=\"content-type\" /><meta nam"
+      "len": 619008,
+      "prices_found": []
     }
   }
 }
