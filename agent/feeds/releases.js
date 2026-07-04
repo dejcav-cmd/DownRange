@@ -13,7 +13,7 @@
  *
  * Schedule: twice a week — Mon & Thu at 06:45 UTC
  *
- * Sources (57):
+ * Sources (65):
  *   Pistols:     Glock, SIG Sauer ×2, S&W, Springfield, Taurus, Beretta, Kimber,
  *                Walther, CZ-USA, CZ Firearms, HK USA, FN America, Ruger, Canik,
  *                Staccato, Shadow Systems, Wilson Combat, Nighthawk Custom
@@ -46,7 +46,53 @@ const sanity = createClient({
 
 const MAX_PER_RUN = 20   // max new releases per run
 const RATE_MS     = 1500 // delay between article fetches
-const DEDUP_TTL   = 90 * 24 * 3600 // 90 days in seconds
+const DEDUP_TTL        = 90 * 24 * 3600         // 90 days in seconds
+const MAX_ARTICLE_AGE  = 6 * 30 * 24 * 3600 * 1000  // 6 months in ms
+
+// ── DATE EXTRACTION ───────────────────────────────────────────────────────────
+// Tries to parse a publish date from article HTML or URL.
+// Returns a Date object or null.
+function extractDateFromHtml(html, articleUrl) {
+  // 1. JSON-LD datePublished
+  const ldMatch = html.match(/"datePublished"\s*:\s*"([^"]+)"/i)
+  if (ldMatch?.[1]) { const d = new Date(ldMatch[1]); if (!isNaN(d)) return d }
+
+  // 2. <meta> published time
+  const metaPatterns = [
+    /<meta[^>]+(?:property|name)=["'](?:article:published_time|pubdate|date|publishdate)["'][^>]+content=["']([^"']+)["']/i,
+    /<meta[^>]+content=["']([^"']+)["'][^>]+(?:property|name)=["'](?:article:published_time|pubdate|date|publishdate)["']/i,
+  ]
+  for (const p of metaPatterns) {
+    const m = html.match(p)
+    if (m?.[1]) { const d = new Date(m[1]); if (!isNaN(d)) return d }
+  }
+
+  // 3. <time datetime="...">
+  const timeMatch = html.match(/<time[^>]+datetime=["']([^"']+)["']/i)
+  if (timeMatch?.[1]) { const d = new Date(timeMatch[1]); if (!isNaN(d)) return d }
+
+  // 4. URL date pattern: /2025/01/15/ or /2025-01-15 or -jan-2025
+  if (articleUrl) {
+    const urlDate = articleUrl.match(/\/(20\d{2})[\/\-](0?[1-9]|1[0-2])[\/\-](0?[1-9]|[12]\d|3[01])/)
+    if (urlDate) {
+      const d = new Date(`${urlDate[1]}-${urlDate[2].padStart(2,'0')}-${urlDate[3].padStart(2,'0')}`)
+      if (!isNaN(d)) return d
+    }
+    // Year-month only: /2025/01/ or /2025-01
+    const urlYM = articleUrl.match(/\/(20\d{2})[\/\-](0?[1-9]|1[0-2])[\/\-]/)
+    if (urlYM) {
+      const d = new Date(`${urlYM[1]}-${urlYM[2].padStart(2,'0')}-01`)
+      if (!isNaN(d)) return d
+    }
+  }
+
+  return null
+}
+
+function isTooOld(date) {
+  if (!date || isNaN(date)) return false // no date = don't reject, let Claude decide
+  return Date.now() - date.getTime() > MAX_ARTICLE_AGE
+}
 
 // ── FETCH HELPER ─────────────────────────────────────────────────────────────
 async function fetchHtml(url, timeoutMs = 12000) {
@@ -184,6 +230,16 @@ const MFR_SOURCES = [
 
   // ── NORDIC PRECISION ──────────────────────────────────────────────────────────
   { brand:'Sako',               url:'https://www.sako.global/articles/press-release',              base:'https://www.sako.global',           pat:/sako\.global\/article\/.{5,}/i },
+
+  // ── APPROVED ADDITIONS ───────────────────────────────────────────────────────
+  { brand:'Jacob Grey',         url:'https://jacobgreyfirearms.com/blogs/news',                    base:'https://jacobgreyfirearms.com',     pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'ZEV Technologies',   url:'https://www.zevtech.com/blogs/news',                          base:'https://www.zevtech.com',           pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'Noveske',            url:'https://noveskerifleworks.com/blogs/news',                    base:'https://noveskerifleworks.com',     pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'POF-USA',            url:'https://pof-usa.com/blog',                                   base:'https://pof-usa.com',               pat:/pof-usa\.com\/blog\/.{5,}/i },
+  { brand:'Kel-Tec',            url:'https://keltecweapons.com/news/',                            base:'https://keltecweapons.com',         pat:/\/news\/.{5,}/i },
+  { brand:'Liberty Suppressors',url:'https://www.libertysuppressors.com/blog/',                   base:'https://www.libertysuppressors.com', pat:/\/blog\/.{5,}/i },
+  { brand:'YHM',                url:'https://www.yhm.net/blogs/news',                             base:'https://www.yhm.net',               pat:/\/blogs\/news\/.{5,}/i },
+  { brand:'TBAC',               url:'https://www.thunderbeastarms.com/blogs/news',                base:'https://www.thunderbeastarms.com',   pat:/\/blogs\/news\/.{5,}/i },
 ]
 
 // ── LAYER 2: SCRAPE LISTING PAGE ─────────────────────────────────────────────
@@ -499,9 +555,10 @@ async function fetchArticle(url) {
       .replace(/\s+/g, ' ')
       .trim()
       .slice(0, 5000)
-    return { html, text }
+    const pubDate = extractDateFromHtml(html, url)
+    return { html, text, pubDate }
   } catch {
-    return { html: '', text: '' }
+    return { html: '', text: '', pubDate: null }
   }
 }
 
@@ -580,8 +637,15 @@ export async function runReleasesFeed() {
     if (stats.done >= MAX_PER_RUN) break
 
     // Fetch article page
-    const { html: articleHtml, text: articleText } = await fetchArticle(item.link)
+    const { html: articleHtml, text: articleText, pubDate: articleDate } = await fetchArticle(item.link)
     if (!articleText) { stats.skipped++; continue }
+
+    // 6-month cutoff — reject articles published before the window
+    if (isTooOld(articleDate)) {
+      stats.skipped++
+      console.log(`[RELEASES v6] Too old (${articleDate?.toISOString().slice(0,10)}): ${item.title.slice(0,60)}`)
+      continue
+    }
 
     // Layer 4: Claude validates + writes
     const extracted = await validateAndWrite(item.title, articleText, item.link, item.brand)
@@ -610,7 +674,7 @@ export async function runReleasesFeed() {
 
     // Save
     try {
-      await saveRelease(extracted, item.link, imageAssetId, hotlinkUrl, item.pubDate)
+      await saveRelease(extracted, item.link, imageAssetId, hotlinkUrl, articleDate || item.pubDate)
       await markSeen(item.link, extracted.brand, extracted.model)
       stats.done++
       const img = imageAssetId ? '📷CDN' : hotlinkUrl ? '🔗link' : '⚠none'
