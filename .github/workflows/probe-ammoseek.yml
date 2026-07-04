@@ -7,5 +7,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run AmmoSeek probe and print results
+      - name: Run AmmoSeek probe
         run: python3 scripts/probe_ammoseek.py
+      - name: Upload results as artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: ammoseek-results
+          path: scripts/ammoseek_probe_result.json
