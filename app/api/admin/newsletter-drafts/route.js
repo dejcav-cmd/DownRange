@@ -201,5 +201,40 @@ export async function POST(req) {
     return Response.json({ ok: true, sent })
   }
 
+  if (action === 'send-test') {
+    const { to = 'dj@downrangeco.com' } = body
+    if (!process.env.RESEND_API_KEY) return Response.json({ error: 'RESEND_API_KEY not set' }, { status: 400 })
+
+    const { generateNewsletterHTML } = await import('@/lib/emailTemplates.js')
+    const { Resend } = require('resend')
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
+    const [stories, deals, alerts, videos, ammo, nfa] = await Promise.all([
+      sanity.fetch(`*[_type=="newsArticle" && defined(slug.current) && defined(publishedAt)] | order(urgencyScore desc, publishedAt desc) [0...10] { title, slug, summary, category, urgencyScore, imageUrl }`).catch(() => []),
+      sanity.fetch(`*[_type=="gunDeal"] | order(_createdAt desc) [0...4] { title, name, price, dealPrice, originalPrice, store, retailer, url, imageUrl }`).catch(() => []),
+      sanity.fetch(`*[_type=="breakingAlert" && active==true] | order(_createdAt desc) [0...3] { text, title }`).catch(() => []),
+      sanity.fetch(`*[_type=="video" && active==true] | order(addedAt desc) [0...3] { title, youtubeId, videoId, channelName, thumbnail, thumbnailUrl, category, duration }`).catch(() => []),
+      sanity.fetch(`*[_type=="ammoPrice"] | order(recordedAt desc) [0...6] { caliber, pricePerRound, trendDir, trendPct, inStock }`).catch(() => []),
+      sanity.fetch(`*[_type=="nfaWaitTime"] | order(fetchedAt desc) [0] { forms, reportMonth }`).catch(() => null),
+    ])
+
+    const html = generateNewsletterHTML({ news: stories, deals, alerts, videos, ammo, nfa,
+      unsubUrl: 'https://www.downrangeco.com/unsubscribe' }, true)
+
+    const subject = stories.length > 0
+      ? `[TEST] ${stories[0].title.slice(0,68)} — DownRange`
+      : '[TEST] DownRange Weekly Brief'
+
+    const result = await resend.emails.send({
+      from: 'DownRange <news@downrangeco.com>',
+      to,
+      subject,
+      html,
+    })
+
+    if (result.error) return Response.json({ error: result.error }, { status: 500 })
+    return Response.json({ ok: true, sent: to, id: result.data?.id })
+  }
+
   return Response.json({ error: 'Unknown action' }, { status: 400 })
 }
