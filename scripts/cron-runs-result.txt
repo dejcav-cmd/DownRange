@@ -1,6 +1,6 @@
 Last 5 releases cron runs:
+  2026-07-04T05:25:07  success  0 saved | 0 skipped | 0 failed | 0 no-image | 5 still queued | 134ms
   2026-07-04T05:22:05  success  0 saved | 0 skipped | 0 failed | 0 no-image | 11 still queued | 40ms
   2026-07-04T05:17:19  success  phase: scrape · queued: 17 · ms: 36526
   2026-06-17T10:25:51  success  0 saved · 0 failed
   2026-06-17T09:25:51  success  0 saved · 0 failed
-  2026-06-17T08:25:51  success  0 saved · 0 failed
