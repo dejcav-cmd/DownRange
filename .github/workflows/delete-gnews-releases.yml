@@ -1,0 +1,20 @@
+name: Delete Google News Releases + Fix Images
+on:
+  workflow_dispatch:
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Run gnews cleanup + image fix
+        run: |
+          echo "Running Google News release cleanup + image fix..."
+          curl -s -X GET \
+            "https://downrangeco.com/api/admin/delete-gnews-releases" \
+            -H "x-admin-key: ${{ secrets.ADMIN_KEY }}" \
+            --max-time 305 \
+            | tee /tmp/result.txt
+          echo ""
+          echo "=== Result ==="
+          cat /tmp/result.txt
