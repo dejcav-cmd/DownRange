@@ -30,7 +30,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/laws/my-state`,       priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/deals`,               priority: 0.9,  changeFrequency: 'hourly',  lastModified: NOW },
   { url: `${BASE}/releases`,            priority: 0.85, changeFrequency: 'daily',   lastModified: NOW },
-  { url: `${BASE}/market`,              priority: 0.85, changeFrequency: 'hourly',  lastModified: NOW },
   { url: `${BASE}/reviews`,             priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/video`,               priority: 0.8,  changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/blog`,                priority: 0.8,  changeFrequency: 'daily',   lastModified: NOW },
