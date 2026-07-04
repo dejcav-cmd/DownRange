@@ -184,7 +184,8 @@ export async function fetchAmmoPrices() {
   return client.fetch(`
     *[_type == "ammoPrice"] | order(caliber asc) {
       _id, caliber, pricePerRound, price30DayAvg, trendDir, trendPct,
-      bestVendor, bestPrice, inStock, recordedAt
+      bestVendor, bestPrice, bestUrl, inStock, recordedAt,
+      retailers[]{ vendor, price, url, inStock, label }
     }
   `)
 }

@@ -85,13 +85,27 @@ function SignalBadge({ signal, color, size = 'sm' }) {
   )
 }
 
+// ── AMMOSEEK SEARCH URL FALLBACK (honest, working, no fake links) ─────────────
+function ammoseekUrl(caliberSlug) {
+  return `https://www.ammoseek.com/ammo/${caliberSlug || ''}`
+}
+
 // ── CALIBER CARD ───────────────────────────────────────────────────────────────
+// retailers come from Sanity (live AmmoSeek data) or fall back to AmmoSeek search
 function CaliberCard({ a }) {
   const [open, setOpen] = useState(false)
   const up = a.dir === 'up'
   const tc = up ? '#ef4444' : '#22c55e'
   const ac = availColor(a.avail)
-  const top = a.retailers?.[0]
+
+  // Live retailers from Sanity (populated by AmmoSeek RSS cron every 4h)
+  // Each entry: { vendor, price, url (AmmoSeek redirect), inStock, label }
+  const liveRetailers = a.liveRetailers || []
+  const hasLive = liveRetailers.length > 0
+
+  // Best price row: live data first, fallback to AmmoSeek search page
+  const bestRetailer = hasLive ? liveRetailers[0] : null
+  const fallbackUrl  = ammoseekUrl(a.caliberSlug || a.caliber.toLowerCase().replace(/[^a-z0-9]/g, '-'))
 
   return (
     <div style={{
@@ -109,7 +123,6 @@ function CaliberCard({ a }) {
     >
       {/* ── MAIN ROW ── */}
       <div style={{ padding: '14px 16px 12px', display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: 8 }}>
-        {/* Left: name + grain */}
         <div style={{ minWidth: 0 }}>
           <div style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: 22, color: 'var(--text)', letterSpacing: '0.04em', lineHeight: 1 }}>
             {a.caliber}
@@ -118,7 +131,6 @@ function CaliberCard({ a }) {
             {a.grain} · {a.brand}
           </div>
         </div>
-        {/* Right: signal */}
         <SignalBadge signal={a.signal} color={a.signalColor} />
       </div>
 
@@ -128,7 +140,7 @@ function CaliberCard({ a }) {
           {fmt(a.ppr)}
         </div>
         <div style={{ paddingBottom: 4 }}>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--text-dim)' }}>per round</div>
+          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--text-dim)' }}>per round avg</div>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, fontWeight: 700, color: tc }}>
             {up ? '▲' : '▼'} {Math.abs(a.trend).toFixed(1)}% 30d
           </div>
@@ -137,15 +149,17 @@ function CaliberCard({ a }) {
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: ac, fontWeight: 700 }}>
             ● {availLabel(a.avail)}
           </div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--text-dim)' }}>
-            {fmt(a.wLow)} – {fmt(a.wHigh)} wk
-          </div>
+          {hasLive && (
+            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color: '#22c55e', marginTop: 1 }}>
+              ✓ LIVE DATA
+            </div>
+          )}
         </div>
       </div>
 
-      {/* ── BEST PRICE LINK ── */}
-      {top && (
-        <a href={top.url} target="_blank" rel="noreferrer" style={{
+      {/* ── BEST PRICE ROW ── */}
+      {bestRetailer ? (
+        <a href={bestRetailer.url} target="_blank" rel="noreferrer noopener" style={{
           display: 'flex', justifyContent: 'space-between', alignItems: 'center',
           padding: '9px 16px',
           background: 'rgba(200,146,42,0.06)',
@@ -153,67 +167,90 @@ function CaliberCard({ a }) {
           textDecoration: 'none',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            {top.badge && (
-              <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, fontWeight: 700, color: 'var(--gold)', background: 'rgba(200,146,42,0.15)', padding: '1px 5px', borderRadius: 1 }}>
-                {top.badge}
-              </span>
-            )}
-            <span style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{top.name}</span>
-            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: top.stock === 'In Stock' ? '#22c55e' : '#f59e0b' }}>● {top.stock}</span>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, fontWeight: 700, color: 'var(--gold)', background: 'rgba(200,146,42,0.15)', padding: '1px 5px', borderRadius: 1 }}>
+              BEST PRICE
+            </span>
+            <span style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{bestRetailer.vendor}</span>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: bestRetailer.inStock !== false ? '#22c55e' : '#f59e0b' }}>
+              ● {bestRetailer.inStock !== false ? 'In Stock' : 'Limited'}
+            </span>
           </div>
           <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <span style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: 18, color: 'var(--gold)', letterSpacing: '0.03em' }}>{fmt(top.price)}</span>
+            <span style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: 18, color: 'var(--gold)', letterSpacing: '0.03em' }}>{fmt(bestRetailer.price)}</span>
             <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--text-dim)' }}>↗</span>
           </div>
+        </a>
+      ) : (
+        <a href={fallbackUrl} target="_blank" rel="noreferrer noopener" style={{
+          display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          padding: '9px 16px',
+          background: 'rgba(30,41,59,0.3)',
+          borderBottom: '1px solid var(--border)',
+          textDecoration: 'none',
+        }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+            <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 7, color: 'var(--text-dim)', background: 'rgba(30,41,59,0.5)', padding: '1px 5px', borderRadius: 1 }}>
+              COMPARE PRICES
+            </span>
+            <span style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 12, color: 'var(--text-muted)' }}>AmmoSeek — All Retailers</span>
+          </div>
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--text-dim)' }}>↗</span>
         </a>
       )}
 
       {/* ── EXPAND TOGGLE ── */}
-      <button
-        onClick={() => setOpen(o => !o)}
-        style={{
-          width: '100%', padding: '7px 16px',
-          background: 'transparent', border: 'none', borderBottom: open ? '1px solid var(--border)' : 'none',
-          cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        }}
-      >
-        <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.08em' }}>
-          {open ? '▲ HIDE DETAILS' : '▼ ANALYSIS + MORE RETAILERS'}
-        </span>
-      </button>
+      {(a.analysis || liveRetailers.length > 1) && (
+        <button
+          onClick={() => setOpen(o => !o)}
+          style={{
+            width: '100%', padding: '7px 16px',
+            background: 'transparent', border: 'none',
+            borderBottom: open ? '1px solid var(--border)' : 'none',
+            cursor: 'pointer', display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+          }}
+        >
+          <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 9, color: 'var(--text-dim)', letterSpacing: '0.08em' }}>
+            {open ? '▲ COLLAPSE' : `▼ ${liveRetailers.length > 1 ? `${liveRetailers.length - 1} MORE RETAILERS` : 'ANALYSIS'}`}
+          </span>
+        </button>
+      )}
 
       {/* ── EXPANDED CONTENT ── */}
       {open && (
         <div>
-          {/* Analysis blurb */}
           {a.analysis && (
-            <div style={{ padding: '10px 16px', borderBottom: '1px solid var(--border)', background: 'rgba(0,0,0,0.2)' }}>
+            <div style={{ padding: '10px 16px', borderBottom: liveRetailers.length > 1 ? '1px solid var(--border)' : 'none', background: 'rgba(0,0,0,0.2)' }}>
               <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 10, color: 'var(--text-muted)', lineHeight: 1.6 }}>
                 {a.analysis}
               </div>
             </div>
           )}
-          {/* Additional retailers */}
-          <div style={{ padding: '8px 16px 12px' }}>
-            <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--text-dim)', letterSpacing: '0.1em', marginBottom: 6 }}>MORE RETAILERS</div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-              {(a.retailers || []).slice(1).map((r, i) => (
-                <a key={i} href={r.url} target="_blank" rel="noreferrer" style={{
-                  display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-                  padding: '5px 10px',
-                  background: 'rgba(0,0,0,0.15)',
-                  border: '1px solid rgba(30,41,59,0.5)',
-                  borderRadius: 3, textDecoration: 'none',
-                }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-                    <span style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>{r.name}</span>
-                    <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: r.stock === 'In Stock' ? '#22c55e' : '#f59e0b' }}>● {r.stock}</span>
-                  </div>
-                  <span style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: 15, color: 'var(--text-dim)', letterSpacing: '0.03em' }}>{fmt(r.price)}</span>
-                </a>
-              ))}
+          {liveRetailers.length > 1 && (
+            <div style={{ padding: '8px 16px 12px' }}>
+              <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: 'var(--text-dim)', letterSpacing: '0.1em', marginBottom: 6 }}>
+                MORE RETAILERS — VIA AMMOSEEK
+              </div>
+              <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+                {liveRetailers.slice(1).map((r, i) => (
+                  <a key={i} href={r.url} target="_blank" rel="noreferrer noopener" style={{
+                    display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+                    padding: '5px 10px',
+                    background: 'rgba(0,0,0,0.15)',
+                    border: '1px solid rgba(30,41,59,0.5)',
+                    borderRadius: 3, textDecoration: 'none',
+                  }}>
+                    <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                      <span style={{ fontFamily: 'Barlow Condensed, sans-serif', fontSize: 12, fontWeight: 600, color: 'var(--text-muted)' }}>{r.vendor}</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 8, color: r.inStock !== false ? '#22c55e' : '#f59e0b' }}>
+                        ● {r.inStock !== false ? 'In Stock' : 'Limited'}
+                      </span>
+                    </div>
+                    <span style={{ fontFamily: 'Bebas Neue, sans-serif', fontSize: 15, color: 'var(--text-dim)', letterSpacing: '0.03em' }}>{fmt(r.price)}</span>
+                  </a>
+                ))}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       )}
     </div>

@@ -45,27 +45,58 @@ const PRICE_SOURCES = [
   { caliber:'12 Gauge',      slug:'12-gauge',       floor:0.25, ceiling:0.80 },
 ]
 
-async function fetchAmmoSeekPrice(slug) {
+async function fetchAmmoSeekPrice(slug, floor = 0.05, ceil = 8.0) {
   try {
     const res = await fetch(`https://www.ammoseek.com/ammo/${slug}/rss`, {
       headers: { 'User-Agent': 'DownRange/1.0 ammo market tracker' },
-      signal: AbortSignal.timeout(6000),
+      signal: AbortSignal.timeout(8000),
     })
     if (!res.ok) return null
     const xml = await res.text()
-    // Extract prices from titles: "$0.189/rd", "18.9 cents/round"
-    const prices = []
-    const matches = xml.matchAll(/\$\s*([\d.]+)\s*\/\s*(?:rd|round|rnd)/gi)
-    for (const m of matches) {
-      const p = parseFloat(m[1])
-      if (p > 0.01 && p < 5.0) prices.push(p)
+
+    // Parse items: extract price + vendor + link
+    const items = []
+    const itemBlocks = [...xml.matchAll(/<item>([\s\S]*?)<\/item>/gi)]
+    for (const block of itemBlocks) {
+      const inner = block[1]
+      const titleM = inner.match(/<title[^>]*>([\s\S]*?)<\/title>/i)
+      const linkM  = inner.match(/<link[^>]*>([\s\S]*?)<\/link>/i)
+      if (!titleM) continue
+      const title = titleM[1].replace(/<!\[CDATA\[|\]\]>/g, '').trim()
+      const link  = linkM  ? linkM[1].replace(/<!\[CDATA\[|\]\]>/g, '').trim() : ''
+
+      const pprM = title.match(/\$\s*([\d.]+)\s*\/\s*(?:rd|round|rnd)\b/i)
+        || title.match(/\b([\d.]+)\s*(?:cents?|¢)\s*\/\s*(?:rd|round|rnd)\b/i)
+      if (!pprM) continue
+      const ppr = pprM[0].toLowerCase().includes('cent') || pprM[0].includes('¢')
+        ? parseFloat(pprM[1]) / 100
+        : parseFloat(pprM[1])
+      if (ppr < floor || ppr > ceil) continue
+
+      // Extract vendor: everything before first ' - '
+      const dashIdx = title.indexOf(' - ')
+      const vendor  = dashIdx > 0 && dashIdx < 45 ? title.slice(0, dashIdx).trim() : null
+
+      items.push({ ppr: Math.round(ppr * 10000) / 10000, vendor, url: link, title })
     }
-    if (!prices.length) return null
-    prices.sort((a,b) => a-b)
+
+    if (!items.length) return null
+    items.sort((a, b) => a.ppr - b.ppr)
+
+    // Dedupe by vendor
+    const byVendor = new Map()
+    for (const item of items) {
+      if (item.vendor && !byVendor.has(item.vendor)) byVendor.set(item.vendor, item)
+    }
+    const top = [...byVendor.values()].slice(0, 4)
+    const prices = top.map(i => i.ppr)
+    const avg = Math.round(prices.reduce((s, p) => s + p, 0) / prices.length * 10000) / 10000
+
     return {
       lowest: prices[0],
-      avg:    Math.round(prices.reduce((s,p) => s+p,0) / prices.length * 1000) / 1000,
-      count:  prices.length,
+      avg,
+      count: items.length,
+      retailers: top.map(i => ({ vendor: i.vendor, price: i.ppr, url: i.url })),
     }
   } catch { return null }
 }
@@ -188,11 +219,23 @@ export async function GET(req) {
         if (existing?._id) {
           const prev = existing.pricePerRound || lp.avg
           const trendPct = prev ? Math.round((lp.avg - prev) / prev * 1000) / 10 : 0
+          const retailers = (lp.retailers || []).map((r, idx) => ({
+            _type:   'object',
+            _key:    (r.vendor || 'v' + idx).toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 20),
+            vendor:  r.vendor,
+            price:   r.price,
+            url:     r.url,
+            inStock: true,
+          }))
           await sanity.patch(existing._id).set({
             pricePerRound: lp.avg,
             trendDir:      trendPct > 0.5 ? 'up' : trendPct < -0.5 ? 'down' : 'flat',
             trendPct:      trendPct,
             inStock:       true,
+            bestVendor:    retailers[0]?.vendor || null,
+            bestPrice:     retailers[0]?.price  || null,
+            bestUrl:       retailers[0]?.url    || null,
+            retailers,
             recordedAt:    new Date().toISOString(),
           }).commit()
           updatedPrices++
