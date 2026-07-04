@@ -9,7 +9,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Check secret and Sanity connectivity
+      - name: Check connectivity
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: python3 scripts/check-sanity-conn.py
