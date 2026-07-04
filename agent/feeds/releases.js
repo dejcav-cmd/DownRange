@@ -485,77 +485,133 @@ async function markSeen(url, brand, model) {
 //  b) If yes: extract structured specs and write a 700-word DownRange article
 
 async function validateAndWrite(title, pageText, sourceUrl, brand) {
-  const systemPrompt = `You are a senior editor at DownRange, America's firearms intelligence portal.
-Your job is to: (1) determine if a source article is a genuine NEW product launch announcement, and if so,
-(2) extract specifications and write an original DownRange article in the portal's voice.
+  // ── Step A: Haiku validates (cheap) ────────────────────────────────────────
+  // Only asks: is this a real new product launch? Returns skip or a stub.
+  // If text is too thin to validate, reject immediately — saves all AI cost.
 
-DownRange voice: Direct, technical, no fluff. Written for serious gun owners — carriers, competitors, veterans.
-Banned words: comprehensive, robust, leverage, seamlessly, empower, game-changer.`
+  const cleanText = pageText.trim()
+  if (cleanText.length < 400) {
+    console.log(`[RELEASES v7] Too thin (${cleanText.length} chars): ${title.slice(0,55)}`)
+    return { skip: true, skip_reason: 'insufficient source content' }
+  }
 
-  const userPrompt = `SOURCE ARTICLE:
+  const validatePrompt = `You are a firearms editor. Determine if this is a genuine NEW PRODUCT LAUNCH.
+
 Title: ${title}
 Brand: ${brand}
 URL: ${sourceUrl}
-Content: ${pageText.slice(0, 3500)}
+Content (first 1200 chars): ${cleanText.slice(0, 1200)}
 
-TASK:
-Decide if this is a NEW PRODUCT LAUNCH for a firearm, suppressor, or optic.
+Return ONLY one of:
+- {"skip":true,"skip_reason":"<reason>"}  if NOT a new gun/suppressor/optic product launch
+- {"skip":false,"category":"Pistol|Rifle|Shotgun|Revolver|Suppressor|Optic|Accessory","caliber":"9mm or null","msrp":0}  if IS a launch
 
-A genuine launch: manufacturer announces a new model now shipping or available for order.
-NOT a launch: company events, financial reports, sponsorships, editorial content, product reviews,
-cleaning accessories, ammo-only announcements, holster releases, magazine promotions.
+A real launch: manufacturer announces a new model, shipping or available to order.
+NOT a launch: events, financials, HR, editorial roundups, cleaning kits, holster-only, ammo tests, promos.`
 
-If NOT a launch, return: {"skip":true,"skip_reason":"<one sentence>"}
+  let validation
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'Content-Type':'application/json', 'x-api-key':process.env.ANTHROPIC_API_KEY, 'anthropic-version':'2023-06-01' },
+      body: JSON.stringify({ model:'claude-haiku-4-5-20251001', max_tokens:200,
+        messages:[{ role:'user', content:validatePrompt }] }),
+    })
+    const raw = ((await res.json()).content?.[0]?.text || '{}').replace(/^```[a-z]*\s*/i,'').replace(/\s*```\s*$/i,'').trim()
+    validation = JSON.parse(raw)
+  } catch (e) {
+    console.error('[RELEASES v7] Validation error:', e.message)
+    return null
+  }
 
-If IS a launch, return this exact JSON (no markdown, no fences):
+  if (validation.skip) {
+    console.log(`[RELEASES v7] AI skip: "${title.slice(0,55)}" — ${validation.skip_reason}`)
+    return validation
+  }
+
+  // ── Step B: Sonnet writes the article (quality) ───────────────────────────
+  const systemPrompt = `You are the lead firearms editor at DownRange — America's no-BS firearms intelligence portal.
+
+Your readers: serious gun owners. Active carriers. Competition shooters. Veterans. People who can tell a CZ Shadow from a P-10 at a glance, who know what a Marksman barrel is and why a pre-travel adjustment matters.
+
+Your voice:
+- Lead with what's actually new — the specific feature, innovation, or change that makes this release matter
+- Technical but never academic. Use real terms (striker-fired, Cerakote, MIL-STD-1913, first-round pop) without defining them
+- Honest about trade-offs. A budget pistol and a custom shop gun serve different buyers — say which
+- No preamble. Never "In the world of firearms..." or "Smith & Wesson has announced..."
+- Specific. "$679 MSRP" beats "aggressively priced." "8.5 oz suppressor" beats "lightweight."
+- Short sentences. Active verbs. Zero filler.
+
+BANNED: comprehensive, robust, leverage, seamlessly, empower, game-changer, innovative, cutting-edge, exciting, proud to announce, in today's market, look no further`
+
+  const writePrompt = `PRODUCT LAUNCH:
+Brand: ${brand}
+Title: ${title}
+Category: ${validation.category}
+Caliber: ${validation.caliber || 'unknown'}
+Source URL: ${sourceUrl}
+
+FULL SOURCE CONTENT:
+${cleanText.slice(0, 4000)}
+
+Write a complete DownRange release article. Return ONLY valid JSON, no markdown fences:
+
 {
   "skip": false,
-  "title": "Sharp, specific headline: Brand + Model + defining feature. Example: 'Glock G19 Gen6 Ships with Factory Aimpoint COA — 9mm, Optic-Ready Out of Box'",
-  "brand": "Official brand name",
-  "model": "Model designation only (no brand prefix)",
-  "category": "Pistol|Rifle|Shotgun|Revolver|Suppressor|Optic|Accessory",
-  "caliber": "Primary caliber string, e.g. '9mm Luger' or null",
-  "action": "e.g. 'Striker-Fired' or 'Bolt-Action' or null",
+  "title": "Punchy headline. Pattern: [Brand] [Model] [Specific Feature or Caliber] — [What Makes It Different]. Max 90 chars. E.g.: 'SIG P365-FUSE Ships in 9mm — Modular Grip Module Swaps In Under 30 Seconds'",
+  "brand": "${brand}",
+  "model": "Model name only, no brand prefix",
+  "category": "${validation.category}",
+  "caliber": "${validation.caliber || null}",
+  "action": "e.g. Striker-Fired, Bolt-Action, or null",
   "msrp": 0,
-  "summary": "3 sentences max. What it is, what's new about it, who it's for. No filler.",
-  "body": "700–900 word HTML article. Sections: <h2>What's New</h2> → <h2>Key Specs</h2> → <h2>Who It's For</h2> → <h2>Bottom Line</h2>. Original prose. Do not copy source text.",
-  "specs": [{"label":"Caliber","value":"9mm Luger"},{"label":"Barrel Length","value":"4.02 in"}],
-  "availableDate": "YYYY-MM-DD or null",
-  "msrp": 0
+  "summary": "2–3 tight sentences. Hit: what it is, the single most important spec or feature, who it's for. No 'The [model] is a...' opener. Example: 'Ruger's LC Carbine finally comes in 10mm — a 16-inch PCC that runs GLOCK mags and ships with a threaded barrel. At $729, it undercuts every competing option in the category by at least $150. Hunters and suppressor hosts are the obvious buyer.' Write at that level of specificity.",
+  "body": "Write 900–1100 words of HTML. Structure:\n\n<h2>What Changed</h2>\n1–2 sharp paragraphs. Focus on the DELTA — what's new vs. what existed before, or why this model exists. If it's a first-gen product, explain the gap it fills. Be specific: new trigger geometry, new alloy, new mounting system, whatever. Mention real competitors if relevant.\n\n<h2>Specs That Matter</h2>\n1–2 paragraphs pulling the specs that actually affect how the gun performs or who can carry it. Frame them in context: a 24 oz carry pistol is lightweight, a 24 oz competition gun is heavy. Connect specs to real-world impact.\n\n<h2>In the Field</h2>\n1–2 paragraphs about how this thing actually works — carry, competition, hunting, home defense, whatever the use case is. Address practical questions: holster compatibility, suppressor-ready, optic footprint standards, magazine compatibility. This is where you earn reader trust by thinking about real use.\n\n<h2>The Call</h2>\n1 paragraph. Direct recommendation: who should buy this and why, who should pass and why. Name a specific competing option if one exists. Give a clear verdict, not a hedge.",
+  "specs": [
+    {"label": "Caliber", "value": "9mm Luger"},
+    {"label": "Barrel Length", "value": "4.9 in"},
+    {"label": "Overall Length", "value": "8.5 in"},
+    {"label": "Weight", "value": "34.1 oz unloaded"},
+    {"label": "Capacity", "value": "15+1"},
+    {"label": "Action", "value": "SA, Striker-Fired"},
+    {"label": "MSRP", "value": "$1,449"}
+  ],
+  "availableDate": "YYYY-MM-DD or null"
 }
 
-Rules:
-- msrp: number only, 0 if not stated
-- specs: 3–8 items, only what is explicitly stated in source
-- title must contain the model name and differ from source title
-- body must be original — rewrite in DownRange's voice, do not paraphrase`
+RULES:
+- specs: list every spec stated in the source, 3–10 items, exact values only
+- msrp: integer, 0 if not stated
+- body: use the section structure above, HTML only, 900–1100 words — hit that range
+- If the source is thin on specs, say so directly in the article: "FN hasn't released full specs yet"
+- Do not invent specs. Do not paraphrase specs from sections you wrote yourself.`
 
   try {
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method:  'POST',
-      headers: {
-        'Content-Type':    'application/json',
-        'x-api-key':       process.env.ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
+      headers: { 'Content-Type':'application/json', 'x-api-key':process.env.ANTHROPIC_API_KEY, 'anthropic-version':'2023-06-01' },
       body: JSON.stringify({
-        model:      'claude-haiku-4-5-20251001',
-        max_tokens: 2500,
+        model:      'claude-sonnet-4-6',
+        max_tokens: 4000,
         system:     systemPrompt,
-        messages:   [{ role: 'user', content: userPrompt }],
+        messages:   [{ role:'user', content:writePrompt }],
       }),
     })
     const data  = await res.json()
     const raw   = data.content?.[0]?.text || '{}'
-    const clean = raw.replace(/^```[a-z]*\s*/i, '').replace(/\s*```\s*$/i, '').trim()
+    const clean = raw.replace(/^```[a-z]*\s*/i,'').replace(/\s*```\s*$/i,'').trim()
     const obj   = JSON.parse(clean)
-    if (obj.skip) console.log(`[RELEASES v6] AI skip: "${title.slice(0, 55)}" — ${obj.skip_reason}`)
+    // Merge validation fields
+    obj.category = obj.category || validation.category
+    obj.caliber  = obj.caliber  || validation.caliber
+    if (!obj.msrp && validation.msrp) obj.msrp = validation.msrp
     return obj
   } catch (e) {
-    console.error('[RELEASES v6] Claude error:', e.message)
+    console.error('[RELEASES v7] Write error:', e.message)
     return null
   }
 }
+
 
 // ── FETCH ARTICLE PAGE ───────────────────────────────────────────────────────
 async function fetchArticle(url) {
