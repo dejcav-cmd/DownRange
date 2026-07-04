@@ -1,211 +1,165 @@
-name: Deals Image Audit & Patch
+name: Deals Image Audit & Patch (30-day)
 
 on:
   workflow_dispatch:
 
 jobs:
-  audit-and-patch:
+  patch:
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 25
     steps:
       - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
 
-      - name: Audit & patch deals images
+      - name: Patch last 30 days of deals
         env:
-          SANITY_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: |
           python3 << 'PYEOF'
-import urllib.request, urllib.parse, json, os, sys, time
+import os, json, urllib.request, urllib.parse, re, time
 
-TOKEN = os.environ['SANITY_TOKEN']
+LOG = 'scripts/diag-result.txt'
+open(LOG, 'w').close()
+def log(msg):
+    print(msg, flush=True)
+    with open(LOG, 'a') as f: f.write(msg + '\n')
+
+TOKEN = os.environ['SANITY_API_TOKEN'].lstrip('ST=')
 PROJECT = 'vbnsqnkg'
-DATASET = 'production'
+BASE = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data'
+H_R = {'Authorization': f'Bearer {TOKEN}', 'Accept': 'application/json'}
+H_W = {'Authorization': f'Bearer {TOKEN}', 'Accept': 'application/json', 'Content-Type': 'application/json'}
+SCRAPE_H = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+}
+IMG_H = {
+    'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Referer': 'https://gun.deals/',
+    'Accept': 'image/webp,image/apng,image/*,*/*',
+}
 
-def sanity_query(q):
-    encoded = urllib.parse.quote(q)
-    url = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/{DATASET}?query={encoded}'
-    req = urllib.request.Request(url, headers={'Authorization': f'Bearer {TOKEN}'})
-    with urllib.request.urlopen(req, timeout=20) as r:
-        return json.loads(r.read())['result']
+def q(groq):
+    url = f'{BASE}/query/production?query={urllib.parse.quote(groq)}'
+    req = urllib.request.Request(url, headers=H_R)
+    with urllib.request.urlopen(req, timeout=30) as r:
+        return json.loads(r.read()).get('result')
 
-def sanity_mutate(mutations):
-    url = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data/mutate/{DATASET}'
-    payload = json.dumps({'mutations': mutations}).encode()
-    req = urllib.request.Request(url, data=payload, headers={
-        'Authorization': f'Bearer {TOKEN}',
-        'Content-Type': 'application/json',
-    }, method='POST')
-    with urllib.request.urlopen(req, timeout=20) as r:
+def mutate(muts):
+    url = f'{BASE}/mutate/production?returnDocuments=false'
+    body = json.dumps({'mutations': muts}).encode()
+    req = urllib.request.Request(url, data=body, headers=H_W, method='POST')
+    with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-def scrape_og_image(page_url):
-    """Scrape og:image from a gun.deals product page."""
+def scrape_og(page_url):
     try:
-        req = urllib.request.Request(page_url, headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-            'Accept': 'text/html,application/xhtml+xml',
-            'Accept-Language': 'en-US,en;q=0.5',
-        })
-        with urllib.request.urlopen(req, timeout=15) as r:
+        req = urllib.request.Request(page_url, headers=SCRAPE_H)
+        with urllib.request.urlopen(req, timeout=12) as r:
             html = r.read().decode('utf-8', errors='replace')
-    except Exception as e:
-        return None, f'fetch_error: {e}'
-
-    import re
-    # Try og:image first
-    m = re.search(r'<meta[\s\S]*?property=["\']og:image["\'][\s\S]*?content=["\']([^"\']+)["\']', html, re.I)
-    if not m:
-        m = re.search(r'<meta[\s\S]*?content=["\']([^"\']+)["\'][\s\S]*?property=["\']og:image["\']', html, re.I)
-    if m:
+        m = re.search(r'property=["\']og:image["\'][^>]*content=["\']([^"\']+)', html, re.I) \
+         or re.search(r'content=["\']([^"\']+)["\'][^>]*property=["\']og:image', html, re.I)
+        if not m:
+            return None
         img_url = m.group(1).strip()
-        # Unwrap Cloudflare cdn-cgi transforms
-        import re as re2
-        cdn_cgi = re2.match(r'.*?/cdn-cgi/image/[^/]+/(.+)', img_url)
-        if cdn_cgi:
-            origin = img_url.split('/cdn-cgi/')[0]
-            img_url = origin + '/' + cdn_cgi.group(1)
-        return img_url, 'og:image'
-    # Fallback: look for /sites/default/files/ pattern
-    m2 = re.search(r'sites/default/files/[^"\'\s]+\.(jpg|jpeg|png|webp)', html, re.I)
-    if m2:
-        return 'https://gun.deals/' + m2.group(0), 'fallback_img'
-    return None, 'not_found'
+        cgi = re.match(r'.*/cdn-cgi/image/[^/]+/(.+)', img_url)
+        if cgi:
+            ds = cgi.group(1)
+            img_url = ds if ds.startswith('http') else 'https://gun.deals/' + ds.lstrip('/')
+        return img_url
+    except:
+        return None
 
-def download_image(url):
-    """Download image bytes."""
+def download_img(url):
     try:
-        req = urllib.request.Request(url, headers={
-            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-            'Referer': 'https://gun.deals/',
-            'Accept': 'image/webp,image/apng,image/*,*/*',
-        })
+        req = urllib.request.Request(url, headers=IMG_H)
         with urllib.request.urlopen(req, timeout=15) as r:
-            ct = r.headers.get('Content-Type', 'image/jpeg')
-            buf = r.read()
-            if len(buf) < 5000:
-                return None, None
-            return buf, ct
+            ct = r.headers.get('content-type', 'image/jpeg')
+            data = r.read()
+            return (data, ct) if len(data) > 3000 else (None, None)
     except:
         return None, None
 
-def upload_to_sanity(buf, ct, filename):
-    """Upload image to Sanity and return CDN URL."""
+def upload_sanity(data, ct, filename):
     try:
         ext = 'webp' if 'webp' in ct else 'png' if 'png' in ct else 'jpg'
-        safe_name = filename.replace(' ', '_')[:60] + '.' + ext
-        url = f'https://{PROJECT}.api.sanity.io/v2024-01-01/assets/images/{DATASET}'
-        req = urllib.request.Request(url, data=buf, headers={
-            'Authorization': f'Bearer {TOKEN}',
-            'Content-Type': ct,
-            'Content-Disposition': f'attachment; filename="{safe_name}"',
+        safe = re.sub(r'[^\w.-]', '_', filename or 'deal')[:60] + '.' + ext
+        url = f'https://{PROJECT}.api.sanity.io/v2024-01-01/assets/images/production'
+        req = urllib.request.Request(url, data=data, headers={
+            'Authorization': f'Bearer {TOKEN}', 'Content-Type': ct,
+            'Content-Disposition': f'attachment; filename="{safe}"',
         }, method='POST')
-        with urllib.request.urlopen(req, timeout=20) as r:
-            data = json.loads(r.read())
-            return data.get('document', {}).get('url')
-    except Exception as e:
+        with urllib.request.urlopen(req, timeout=30) as r:
+            return json.loads(r.read()).get('document', {}).get('url')
+    except:
         return None
 
-# --- STEP 1: Audit ---
-print('=== STEP 1: Auditing deals ===')
-all_deals = sanity_query('''*[_type=="gunDeal"] | order(publishedAt desc) {
-  _id, title, externalUrl, imageUrl,
-  "isSanityCdn": string::startsWith(imageUrl, "https://cdn.sanity.io"),
-  "isGunDealsUrl": string::startsWith(imageUrl, "https://gun.deals"),
-  "isNull": !defined(imageUrl) || imageUrl == null || imageUrl == ""
-}''')
+# 30-day cutoff
+import datetime
+cutoff = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=30)).isoformat()
 
-total = len(all_deals)
-sanity_cdn = [d for d in all_deals if d.get('isSanityCdn')]
-gun_deals_url = [d for d in all_deals if d.get('isGunDealsUrl')]
-null_img = [d for d in all_deals if d.get('isNull')]
-other = [d for d in all_deals if not d.get('isSanityCdn') and not d.get('isGunDealsUrl') and not d.get('isNull')]
+docs = q(f'''*[_type=="gunDeal" && publishedAt > "{cutoff}" && (
+  !defined(imageUrl) || imageUrl == null || imageUrl == ""
+  || string::startsWith(imageUrl, "https://gun.deals")
+  || string::startsWith(imageUrl, "http://gun.deals")
+)] | order(publishedAt desc) [0..299] {{ _id, externalUrl, title, imageUrl }}''')
 
-print(f'Total deals: {total}')
-print(f'  cdn.sanity.io (stable): {len(sanity_cdn)}')
-print(f'  gun.deals URL (hotlink-blocked): {len(gun_deals_url)}')
-print(f'  Other URL: {len(other)}')
-print(f'  Null/empty: {len(null_img)}')
+log(f'Last 30 days needing fix: {len(docs)}')
+stats = {'uploaded': 0, 'fallback': 0, 'failed': 0, 'skipped': 0}
+mutations = []
 
-# Sample other URLs
-for d in other[:5]:
-    print(f'  Other sample: {(d.get("imageUrl") or "")[:80]}')
+for doc in docs:
+    doc_id  = doc['_id']
+    ext_url = doc.get('externalUrl', '')
+    title   = (doc.get('title') or '')[:50]
 
-# --- STEP 2: Patch null + gun.deals URLs ---
-# gun.deals CDN URLs are hotlink-blocked by Cloudflare → show broken in browser
-# Must scrape og:image → download → re-upload to Sanity CDN
-to_patch = null_img + gun_deals_url + other
-print(f'\n=== STEP 2: Patching {len(to_patch)} deals ===')
-
-patched = 0
-failed = 0
-skipped = 0
-patch_log = []
-
-for deal in to_patch:
-    doc_id = deal['_id']
-    ext_url = deal.get('externalUrl', '')
-    title = deal.get('title', '')[:50]
-    old_img = deal.get('imageUrl', '')
-
-    if not ext_url:
-        skipped += 1
+    if not ext_url or '/content/coupon' in ext_url:
+        stats['skipped'] += 1
         continue
 
-    print(f'  [{patched+failed+skipped+1}/{len(to_patch)}] {title[:40]}...')
-
-    img_url, method = scrape_og_image(ext_url)
-    if not img_url:
-        print(f'    SKIP: no image found ({method})')
-        failed += 1
+    og_url = scrape_og(ext_url)
+    if not og_url:
+        stats['failed'] += 1
+        log(f'  ✗ {ext_url[:70]}')
         time.sleep(0.3)
         continue
 
-    # Download and upload to Sanity
-    buf, ct = download_image(img_url)
-    if buf:
-        slug = ''.join(c if c.isalnum() else '-' for c in title.lower())[:40]
-        cdn_url = upload_to_sanity(buf, ct, f'deal-{slug}-{doc_id[-6:]}')
+    data, ct = download_img(og_url)
+    if data:
+        slug = re.sub(r'[^a-z0-9]', '-', title.lower())[:40]
+        cdn_url = upload_sanity(data, ct, f'deal-{slug}-{doc_id[-6:]}')
         if cdn_url:
-            result = sanity_mutate([{'patch': {'id': doc_id, 'set': {'imageUrl': cdn_url}}}])
-            patched += 1
-            patch_log.append({'id': doc_id, 'title': title, 'was': old_img[:60] if old_img else 'null', 'now': cdn_url[:60]})
-            print(f'    OK: uploaded to CDN')
+            mutations.append({'patch': {'id': doc_id, 'set': {'imageUrl': cdn_url}}})
+            stats['uploaded'] += 1
+            log(f'  ✓ {cdn_url[:70]}')
         else:
-            # Fall back to the scraped URL directly (it may work via proxy)
-            result = sanity_mutate([{'patch': {'id': doc_id, 'set': {'imageUrl': img_url}}}])
-            patched += 1
-            patch_log.append({'id': doc_id, 'title': title, 'was': old_img[:60] if old_img else 'null', 'now': img_url[:60]})
-            print(f'    OK: stored scraped URL (CDN upload failed)')
+            mutations.append({'patch': {'id': doc_id, 'set': {'imageUrl': og_url}}})
+            stats['fallback'] += 1
+            log(f'  ~ og fallback: {og_url[:70]}')
     else:
-        # Store scraped URL — proxy will handle at serve time
-        result = sanity_mutate([{'patch': {'id': doc_id, 'set': {'imageUrl': img_url}}}])
-        patched += 1
-        patch_log.append({'id': doc_id, 'title': title, 'was': old_img[:60] if old_img else 'null', 'now': img_url[:60]})
-        print(f'    OK: stored scraped URL (download blocked)')
+        mutations.append({'patch': {'id': doc_id, 'set': {'imageUrl': og_url}}})
+        stats['fallback'] += 1
+        log(f'  ~ og (no dl): {og_url[:70]}')
 
-    time.sleep(0.5)
+    time.sleep(0.4)
 
-print(f'\n=== DONE ===')
-print(f'Patched: {patched} | Failed: {failed} | Skipped: {skipped}')
+if mutations:
+    for i in range(0, len(mutations), 100):
+        mutate(mutations[i:i+100])
+    log(f'  → wrote {len(mutations)} mutations')
 
-# Write results to file for reading
-with open('deals_patch_results.json', 'w') as f:
-    json.dump({
-        'audit': {'total': total, 'sanity_cdn': len(sanity_cdn), 'gun_deals_url': len(gun_deals_url), 'null': len(null_img), 'other': len(other)},
-        'patched': patched,
-        'failed': failed,
-        'skipped': skipped,
-        'samples': patch_log[:20]
-    }, f, indent=2)
-print('Results written to deals_patch_results.json')
+log(f'\nStats: uploaded={stats["uploaded"]} fallback={stats["fallback"]} failed={stats["failed"]} skipped={stats["skipped"]}')
+log(f'FIXED: {stats["uploaded"] + stats["fallback"]}')
 PYEOF
 
       - name: Commit results
         run: |
-          git config user.email "actions@github.com"
-          git config user.name "GitHub Actions"
-          if [ -f deals_patch_results.json ]; then
-            git add deals_patch_results.json
-            git commit -m "ci: deals image audit results [skip ci]" || echo "Nothing to commit"
-            git push || echo "Push failed"
-          fi
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/diag-result.txt
+          git diff --staged --quiet || (
+            FIXED=$(grep -oP '(?<=^FIXED: )\d+' scripts/diag-result.txt | head -1 || echo '?')
+            git commit -m "fix: deals image patch (30-day) — ${FIXED} images [skip ci]"
+            git pull --rebase && git push
+          ) || true
