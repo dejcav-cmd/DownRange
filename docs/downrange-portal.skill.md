@@ -80,3 +80,46 @@ Fix: removed Google News entirely. All sources are now direct manufacturer pages
 - Workflow: `.github/workflows/full-backfill-releases.yml`
 
 **Sources:** 65 total (see releases.js header for full list)
+
+## Deals Image Pipeline — Root Cause & Fix (July 4 2026)
+
+**Root cause:** `scrapeOGImage()` in `app/api/cron/gun-deals/route.js` had a broken cdn-cgi URL reconstruction.
+
+gun.deals serves `og:image` via Cloudflare transforms:
+```
+https://gun.deals/cdn-cgi/image/format=auto,width=800/https://gun.deals/sites/default/files/foo.jpg
+https://gun.deals/cdn-cgi/image/f=auto/sites/default/files/foo.jpg
+```
+
+Old code did `origin + '/' + captureGroup` — when capture group was a full `https://` URL this produced `https://gun.deals/https://gun.deals/sites/...` (malformed). `downloadImage()` silently failed, cron stored the raw gun.deals URL in Sanity's `imageUrl` field. gun.deals CDN is hotlink-blocked by Cloudflare → broken images in browser.
+
+**Fix in `app/api/cron/gun-deals/route.js` `scrapeOGImage()`:**
+```js
+const cdnCgiMatch = imgUrl.match(/\/cdn-cgi\/image\/[^\/]+\/(.+)/)
+if (cdnCgiMatch) {
+  const downstream = cdnCgiMatch[1]
+  if (downstream.startsWith('http://') || downstream.startsWith('https://')) {
+    imgUrl = downstream  // full URL — use as-is
+  } else {
+    imgUrl = 'https://gun.deals/' + downstream.replace(/^\//, '')
+  }
+}
+```
+Same fix applied in `scripts/scheduled_image_fix.py` `scrape_og()`.
+
+**`scheduled_image_fix.py` expanded scope:** now queries both null imageUrl AND `string::startsWith(imageUrl, "https://gun.deals")` (not just null), batch limit 150/run.
+
+**Backfill results (full corpus):**
+- Pre-fix: 677 gun.deals hotlink URLs + 52 null = 729 broken
+- Post-backfill: cdn.sanity.io 3,092→3,450 | gun.deals 677→330 | null 52→41
+- 30-day targeted run after: 110 more fixed (105 CDN uploads + 5 OG fallbacks)
+- Final state: ~3,560 of 3,871 total deals have stable cdn.sanity.io images
+
+**Workflows:**
+- `backfill-gundeals-images.yml` + `scripts/backfill_gundeals_images.py` — full corpus backfill (workflow_dispatch only)
+- `fix-deals-images-30d.yml` + `scripts/patch_deals_30day.py` — 30-day scoped patch (workflow_dispatch only)
+- `auto-fix-deal-images.yml` — existing 30-min scheduled fix (expanded to catch gun.deals URLs)
+
+**GH Actions YAML heredoc bug (re-confirmed):** Inline Python via `run: python3 << 'PYEOF'` breaks YAML parsing — Python assignment lines (`LOG = '...'`) parse as YAML keys. GitHub strips all triggers, workflow shows filename as name, `workflow_dispatch` returns 422. Always move Python to a script file. This also causes "No jobs were run" notification emails on push-triggered workflows.
+
+**GH Actions trigger cache:** GitHub caches trigger metadata per file path. Updating a workflow file that previously had a broken/push trigger does NOT immediately refresh — even after multiple pushes. Only reliable flush: delete the file entirely and create a new one with a different filename.
