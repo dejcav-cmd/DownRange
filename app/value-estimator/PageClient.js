@@ -138,6 +138,36 @@ export default function ValueEstimator() {
           </div>
         </div>
       </div>
+      {/* ── SEO Content Block ── */}
+      <div style={{ background:'#09090B', borderTop:'1px solid #1F2428', padding:'48px 0' }}>
+        <div style={{ maxWidth:'900px', margin:'0 auto', padding:'0 24px' }}>
+          <h2 style={{ fontFamily:"'Bebas Neue',Impact,sans-serif", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>HOW GUN RESALE VALUE WORKS</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px', marginBottom:'32px' }}>
+            <div>
+              <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.1rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>THE CONDITION SPECTRUM</h3>
+              <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+                Condition is the largest single variable in firearm resale value — it can shift price by 50% or more on the same model. The standard grades run from Poor (heavy wear, questionable function) through Fair, Good, Very Good, and Excellent, up to NIB (New in Box, unfired with all factory contents). High-demand pistols like the Glock 19 and SIG P365 hold value across all condition grades better than most other platforms.
+              </p>
+            </div>
+            <div>
+              <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.1rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>WHERE TO SELL</h3>
+              <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+                Private sale through GunBroker, Armslist, or local gun shows typically yields the highest price but requires you to handle paperwork and shipping logistics. Dealer trade-in is fastest but returns only 40–60% of retail. Consignment at a local gun shop splits the difference — the dealer handles the transaction and takes 10–20% of the sale price, leaving you more than a trade-in without the hassle of a private sale.
+              </p>
+            </div>
+          </div>
+          <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px 24px', marginBottom:'24px' }}>
+            <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.05rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>WHAT ADDS VALUE BEYOND CONDITION</h3>
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+              Original factory box, all included magazines, cleaning kit, and paperwork add $30–100 to most modern pistols. Quality aftermarket upgrades (optics cuts, trigger work by a known smith, night sights) can add value if documented — but only to buyers who wanted those specific upgrades. Generic mods often reduce appeal. Rare configurations, limited editions, and production discontinuations can create collector premiums well above standard market value.
+            </p>
+          </div>
+          <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6B7280', lineHeight:1.7, margin:0 }}>
+            Values are estimates based on market trends and condition grades. Actual sale prices vary by region, platform, and timing. Check the <a href="/deals" style={{ color:'#C8922A', textDecoration:'none' }}>Deals page</a> for current market pricing on new guns, or the <a href="/market" style={{ color:'#C8922A', textDecoration:'none' }}>Market Watch</a> for ammo price trends.
+          </p>
+        </div>
+      </div>
+
       <Footer />
     </>
   )

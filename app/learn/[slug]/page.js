@@ -477,6 +477,20 @@ export default async function ArticlePage({ params }) {
                 </div>
               </div>
 
+              {/* ── SHARE ── */}
+              <div style={{ marginTop:'32px', paddingTop:'20px', borderTop:'1px solid var(--border)', display:'flex', gap:'0.6rem', alignItems:'center', flexWrap:'wrap' }}>
+                <span style={{ fontSize:'0.68rem', color:'#4B5563', fontFamily:"'IBM Plex Mono',monospace", letterSpacing:'0.1em' }}>SHARE:</span>
+                {[
+                  { label:'X / TWITTER', href:`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title + ' via @DownRangeCo')}&url=${encodeURIComponent('https://www.downrangeco.com/learn/' + slug)}` },
+                  { label:'FACEBOOK',    href:`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://www.downrangeco.com/learn/' + slug)}` },
+                ].map(s => (
+                  <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
+                    style={{ color:'#4B5563', textDecoration:'none', fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.68rem', padding:'4px 10px', border:'1px solid var(--border)' }}>
+                    {s.label}
+                  </a>
+                ))}
+              </div>
+
               {/* ── PREV / NEXT NAVIGATION ── */}
               <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'12px', marginTop:'32px' }}>
                 {prevSlug && ARTICLES[prevSlug] && (

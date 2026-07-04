@@ -369,6 +369,36 @@ export default function RangesPage() {
 
         </div>
       </div>
+      {/* ── SEO Content Block ── */}
+      <div style={{ background:'#09090B', borderTop:'1px solid #1F2428', padding:'48px 0' }}>
+        <div style={{ maxWidth:'900px', margin:'0 auto', padding:'0 24px' }}>
+          <h2 style={{ fontFamily:"'Bebas Neue',Impact,sans-serif", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>FINDING THE RIGHT SHOOTING RANGE</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px', marginBottom:'32px' }}>
+            <div>
+              <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.1rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>INDOOR RANGES</h3>
+              <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+                Indoor shooting ranges are climate-controlled and accessible year-round, making them ideal for pistol practice, new shooter training, and concealed carry qualification. Most indoor facilities cap distances at 25–50 yards and restrict certain ammunition types (no steel-core or green tip) to protect downrange baffles. They typically offer lane rentals, instruction, and firearm rentals for first-timers.
+              </p>
+            </div>
+            <div>
+              <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.1rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>OUTDOOR RANGES</h3>
+              <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+                Outdoor ranges support rifle-caliber distances from 100 yards to 1,000+ yards and often allow activities restricted indoors — holster draws, movement drills, steel targets, and hunting sight-in. Many gun clubs operate outdoor facilities on a membership basis, which gives you access to a wider variety of bays and shooting positions at a lower per-visit cost.
+              </p>
+            </div>
+          </div>
+          <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px 24px', marginBottom:'24px' }}>
+            <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.05rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>WHAT TO BRING TO A SHOOTING RANGE</h3>
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+              Valid government-issued ID is required at virtually all public ranges. Eye protection and ear protection (electronic muffs or foam plugs) are mandatory and often required to be your own. Bring enough ammunition for your session — most ranges sell ammo on-site but at a premium. If you own the firearm you plan to shoot, call ahead to confirm the range approves your caliber and ammunition type. Most ranges prohibit armor-piercing, tracer, and incendiary ammunition regardless of caliber.
+            </p>
+          </div>
+          <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6B7280', lineHeight:1.7, margin:0 }}>
+            Range data sourced from our curated database, OpenStreetMap community contributions, and Google Places. Coverage spans all 50 states with indoor and outdoor facilities. Use the <a href="/state-hub" style={{ color:'#C8922A', textDecoration:'none' }}>State Hub</a> to review your state&apos;s specific range regulations, or the <a href="/laws" style={{ color:'#C8922A', textDecoration:'none' }}>Laws page</a> for federal and state firearms statutes.
+          </p>
+        </div>
+      </div>
+
       <Footer />
     </>
   )

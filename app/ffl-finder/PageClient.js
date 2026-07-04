@@ -123,6 +123,36 @@ export default function FFLFinder() {
           )}
         </div>
       </div>
+      {/* ── SEO Content Block ── */}
+      <div style={{ background:'#09090B', borderTop:'1px solid #1F2428', padding:'48px 0' }}>
+        <div style={{ maxWidth:'900px', margin:'0 auto', padding:'0 24px' }}>
+          <h2 style={{ fontFamily:"'Bebas Neue',Impact,sans-serif", fontSize:'1.8rem', color:'#C8922A', letterSpacing:'0.05em', marginBottom:'20px' }}>UNDERSTANDING FFL DEALERS AND TRANSFERS</h2>
+          <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:'32px', marginBottom:'32px' }}>
+            <div>
+              <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.1rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>WHY YOU NEED AN FFL</h3>
+              <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+                Federal law (18 U.S.C. § 922) requires all commercial firearm sales and interstate transfers to go through a licensed Federal Firearms Licensee. When you purchase a firearm online, the seller ships to an FFL in your state. The dealer runs your NICS background check, completes ATF Form 4473, and releases the gun to you after approval — typically within minutes, though some states impose additional waiting periods.
+              </p>
+            </div>
+            <div>
+              <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.1rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>FFL LICENSE TYPES</h3>
+              <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+                The ATF issues 11 FFL license types. Type 01 (Dealer) is the most common — these are your standard gun shops. Type 07 (Manufacturer) dealers can also transfer. Class III / SOT dealers hold Special Occupational Taxpayer status on top of their FFL, authorizing them to transfer NFA items: suppressors, short-barreled rifles, machine guns, and destructive devices. Confirm NFA capability before shipping any NFA item.
+              </p>
+            </div>
+          </div>
+          <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'20px 24px', marginBottom:'24px' }}>
+            <h3 style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'1.05rem', fontWeight:700, color:'#F0EDE6', marginBottom:'10px', letterSpacing:'0.04em' }}>WHAT TO EXPECT AT AN FFL TRANSFER</h3>
+            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'14px', color:'#9CA3AF', lineHeight:1.8, margin:0 }}>
+              Bring a valid, government-issued photo ID (driver&apos;s license or passport). You&apos;ll complete ATF Form 4473, which the dealer submits for a NICS background check. The check typically takes minutes; a &apos;proceed&apos; result means you can take the gun. A &apos;delay&apos; gives the FBI up to 3 business days to complete the check. Transfer fees range from $15 to $75 depending on the dealer — always confirm the fee before having a gun shipped.
+            </p>
+          </div>
+          <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6B7280', lineHeight:1.7, margin:0 }}>
+            FFL data sourced from the ATF Federal Firearms Licensee database. For state-specific carry and purchase laws, visit the <a href="/state-hub" style={{ color:'#C8922A', textDecoration:'none' }}>State Hub</a>. Track NFA suppressor and SBR wait times on the <a href="/nfa-tracker" style={{ color:'#C8922A', textDecoration:'none' }}>NFA Tracker</a>.
+          </p>
+        </div>
+      </div>
+
       <Footer />
     </>
   )

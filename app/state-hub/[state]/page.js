@@ -209,18 +209,35 @@ export default async function StatePage({ params }) {
           />
 
           {/* ── Internal links to related pages ── */}
-          <div style={{ marginTop:'32px', padding:'20px 24px', background:'#111318', border:'1px solid #1F2428' }}>
-            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A', letterSpacing:'0.12em', fontWeight:700, marginBottom:'12px' }}>RELATED RESOURCES</div>
-            <div style={{ display:'flex', flexWrap:'wrap', gap:'10px' }}>
+          <div style={{ marginTop:'32px' }}>
+            <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', fontWeight:700, marginBottom:'14px' }}>TOOLS FOR {stateName.toUpperCase()} GUN OWNERS</div>
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill,minmax(200px,1fr))', gap:'10px', marginBottom:'16px' }}>
               {[
-                [`/ccw`, `${stateName} CCW Permit Guide`],
+                { href:'/ranges',          icon:'◎', label:'Find Shooting Ranges',    sub:'Ranges near you'             },
+                { href:'/deals',           icon:'🔥', label:'Gun Deals',               sub:'Current sales & discounts'   },
+                { href:'/ffl-finder',      icon:'🏪', label:'Find an FFL Dealer',      sub:'Licensed dealers by ZIP'     },
+                { href:'/nfa-tracker',     icon:'⏱', label:'NFA Wait Times',          sub:'Suppressor & SBR approvals'  },
+                { href:'/ballistics',      icon:'◈', label:'Ballistics Calculator',   sub:'Drop, drift & scope data'    },
+                { href:'/carry-insurance', icon:'🛡', label:'Carry Insurance',         sub:'USCCA vs CCW Safe'            },
+              ].map(({ href, icon, label, sub }) => (
+                <Link key={href} href={href} style={{ textDecoration:'none', display:'block' }}>
+                  <div style={{ background:'#111318', border:'1px solid #1F2428', padding:'14px 16px', transition:'border-color 0.15s' }}>
+                    <div style={{ fontSize:'18px', marginBottom:'6px' }}>{icon}</div>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:'14px', fontWeight:700, color:'#F0EDE6', marginBottom:'2px', letterSpacing:'0.03em' }}>{label}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>{sub}</div>
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <div style={{ display:'flex', flexWrap:'wrap', gap:'8px' }}>
+              {[
                 [`/laws?tab=state`, `All State Gun Laws`],
                 [`/laws?tab=federal`, `Federal Bills Tracker`],
                 [`/news`, `Latest 2A News`],
                 [`/state-hub`, `All 50 States`],
-                [`/nfa-tracker`, `NFA Wait Times`],
+                [`/ccw`, `${stateName} CCW Guide`],
               ].map(([href, label]) => (
-                <Link key={href} href={href} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#6B7280', background:'#09090B', border:'1px solid #1F2428', padding:'6px 14px', textDecoration:'none' }}>
+                <Link key={href} href={href} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', background:'#09090B', border:'1px solid #1F2428', padding:'5px 12px', textDecoration:'none' }}>
                   {label}
                 </Link>
               ))}
