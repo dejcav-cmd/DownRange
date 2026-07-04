@@ -1,0 +1,24 @@
+name: Inspect Release Queue
+on:
+  workflow_dispatch:
+jobs:
+  inspect:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+      - name: Inspect
+        env:
+          UPSTASH_REDIS_REST_TOKEN: ${{ secrets.UPSTASH_REDIS_REST_TOKEN }}
+          UPSTASH_REDIS_REST_URL: ${{ secrets.UPSTASH_REDIS_REST_URL }}
+        run: python3 scripts/inspect-queue.py | tee scripts/queue-inspect-result.txt
+      - name: Commit
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
+          git add -f scripts/queue-inspect-result.txt
+          git diff --staged --quiet || (git commit -m "ci: queue inspect result" && git pull --rebase && git push) || true
