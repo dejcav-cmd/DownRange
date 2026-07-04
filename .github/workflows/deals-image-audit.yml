@@ -1,4 +1,4 @@
-name: Deals Image Audit & Patch (30-day)
+name: Deals Image Audit and Patch 30day
 
 on:
   workflow_dispatch:
