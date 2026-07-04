@@ -1,23 +1,9 @@
-name: Deals Image Audit and Patch 30day
-
-on:
-  workflow_dispatch:
-
-jobs:
-  patch:
-    runs-on: ubuntu-latest
-    timeout-minutes: 25
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
-
-      - name: Patch last 30 days of deals
-        env:
-          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: |
-          python3 << 'PYEOF'
-import os, json, urllib.request, urllib.parse, re, time
+"""
+Patch gunDeal docs from the last 30 days that have broken/missing images.
+Targets: null imageUrl OR gun.deals hotlink-blocked URLs.
+Scrapes og:image from source page, downloads, uploads to Sanity CDN.
+"""
+import os, json, urllib.request, urllib.parse, re, time, datetime
 
 LOG = 'scripts/diag-result.txt'
 open(LOG, 'w').close()
@@ -63,6 +49,7 @@ def scrape_og(page_url):
         if not m:
             return None
         img_url = m.group(1).strip()
+        # Unwrap Cloudflare cdn-cgi transforms
         cgi = re.match(r'.*/cdn-cgi/image/[^/]+/(.+)', img_url)
         if cgi:
             ds = cgi.group(1)
@@ -95,8 +82,6 @@ def upload_sanity(data, ct, filename):
     except:
         return None
 
-# 30-day cutoff
-import datetime
 cutoff = (datetime.datetime.now(datetime.timezone.utc) - datetime.timedelta(days=30)).isoformat()
 
 docs = q(f'''*[_type=="gunDeal" && publishedAt > "{cutoff}" && (
@@ -121,7 +106,7 @@ for doc in docs:
     og_url = scrape_og(ext_url)
     if not og_url:
         stats['failed'] += 1
-        log(f'  ✗ {ext_url[:70]}')
+        log(f'  X {ext_url[:70]}')
         time.sleep(0.3)
         continue
 
@@ -132,7 +117,7 @@ for doc in docs:
         if cdn_url:
             mutations.append({'patch': {'id': doc_id, 'set': {'imageUrl': cdn_url}}})
             stats['uploaded'] += 1
-            log(f'  ✓ {cdn_url[:70]}')
+            log(f'  ok cdn: {cdn_url[:70]}')
         else:
             mutations.append({'patch': {'id': doc_id, 'set': {'imageUrl': og_url}}})
             stats['fallback'] += 1
@@ -140,26 +125,14 @@ for doc in docs:
     else:
         mutations.append({'patch': {'id': doc_id, 'set': {'imageUrl': og_url}}})
         stats['fallback'] += 1
-        log(f'  ~ og (no dl): {og_url[:70]}')
+        log(f'  ~ og no-dl: {og_url[:70]}')
 
     time.sleep(0.4)
 
 if mutations:
     for i in range(0, len(mutations), 100):
         mutate(mutations[i:i+100])
-    log(f'  → wrote {len(mutations)} mutations')
+    log(f'  wrote {len(mutations)} mutations')
 
-log(f'\nStats: uploaded={stats["uploaded"]} fallback={stats["fallback"]} failed={stats["failed"]} skipped={stats["skipped"]}')
+log(f'Stats: uploaded={stats["uploaded"]} fallback={stats["fallback"]} failed={stats["failed"]} skipped={stats["skipped"]}')
 log(f'FIXED: {stats["uploaded"] + stats["fallback"]}')
-PYEOF
-
-      - name: Commit results
-        run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git add -f scripts/diag-result.txt
-          git diff --staged --quiet || (
-            FIXED=$(grep -oP '(?<=^FIXED: )\d+' scripts/diag-result.txt | head -1 || echo '?')
-            git commit -m "fix: deals image patch (30-day) — ${FIXED} images [skip ci]"
-            git pull --rebase && git push
-          ) || true
