@@ -64,13 +64,41 @@ function googleNewsUrl(query) {
   return `https://news.google.com/rss/search?q=${encoded}&hl=en-US&gl=US&ceid=US:en`
 }
 
+// Google News RSS links point to news.google.com redirect pages whose og:image
+// is the Google News logo — not the actual article image. This function decodes
+// the real publisher URL directly from the base64url-encoded path segment,
+// avoiding the need to follow the redirect and scrape a Google-hosted page.
+function resolveGoogleNewsUrl(link) {
+  if (!link) return link
+  try {
+    const u = new URL(link)
+    if (!u.hostname.includes('news.google.com')) return link
+    const seg = u.pathname.split('/').pop()
+    if (!seg || seg.length < 10) return link
+    const b64 = seg.replace(/-/g, '+').replace(/_/g, '/')
+    const buf = Buffer.from(b64, 'base64')
+    const str = buf.toString('binary')
+    const idx = str.indexOf('http')
+    if (idx < 0) return link
+    let raw = ''
+    for (let i = idx; i < str.length; i++) {
+      const c = str.charCodeAt(i)
+      if (c < 0x20 || c > 0x7e) break
+      raw += str[i]
+    }
+    return raw.startsWith('http') ? raw : link
+  } catch {
+    return link
+  }
+}
+
 async function fetchGoogleNews(query) {
   try {
     const url = googleNewsUrl(query)
     const result = await parser.parseURL(url)
     return result.items.slice(0, 6).map(item => ({
       title:       item.title || '',
-      link:        item.link  || '',
+      link:        resolveGoogleNewsUrl(item.link || ''),
       description: item.contentSnippet || item.title || '',
       pubDate:     item.pubDate || new Date().toISOString(),
       sourceName:  'Google News',
@@ -230,8 +258,12 @@ function pickBestImgTag(html) {
 }
 
 async function fetchPageContent(url) {
+  // Safety net: resolve Google News redirect URLs before scraping so we hit
+  // the real publisher page, not a Google-hosted reader page (whose og:image
+  // would be the Google News logo instead of the actual product photo).
+  const resolvedUrl = resolveGoogleNewsUrl(url)
   try {
-    const res = await fetch(url, {
+    const res = await fetch(resolvedUrl, {
       headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/4.0)' },
       signal: AbortSignal.timeout(10000),
       redirect: 'follow',
@@ -245,7 +277,11 @@ async function fetchPageContent(url) {
       .trim()
       .slice(0, 5000)
     const ogMatch  = html.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/i)
-    const imageUrl = ogMatch?.[1] || pickBestImgTag(html) || null
+    const rawOg    = ogMatch?.[1] || null
+    // Reject og:image URLs hosted on google.com/news — these are the Google
+    // News logo served when the redirect lands on a Google-hosted reader page.
+    const ogImage  = (rawOg && !rawOg.includes('news.google.com') && !rawOg.includes('googleusercontent.com/news')) ? rawOg : null
+    const imageUrl = ogImage || pickBestImgTag(html) || null
     return { text, imageUrl }
   } catch {
     return { text: '', imageUrl: null }

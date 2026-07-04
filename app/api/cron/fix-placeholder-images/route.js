@@ -237,6 +237,59 @@ async function handler(req) {
       await new Promise(r => setTimeout(r, 400))
     }
 
+    // ── PHASE 2: Fix firearmRelease docs with Google News logo image ──────────
+    // When releases are scraped via Google News RSS, the redirect link sometimes
+    // lands on a Google-hosted reader page whose og:image is the Google News logo
+    // (lh3.googleusercontent.com/news-logo or similar). Detect and replace these.
+    const BAD_RELEASE_IMG_PATTERNS = [
+      'googleusercontent.com',
+      'news.google.com',
+      'gstatic.com/news',
+    ]
+    const badReleases = await sanity.fetch(
+      `*[_type == "firearmRelease"
+        && defined(sourceUrl)
+        && defined(imageUrl)
+        && (
+          imageUrl match "*googleusercontent.com*"
+          || imageUrl match "*news.google.com*"
+          || imageUrl match "*gstatic.com/news*"
+          || imageUrl == null
+          || imageUrl == ""
+        )
+      ] | order(_createdAt desc) [0...30] {
+        _id, brand, model, sourceUrl, imageUrl
+      }`
+    )
+
+    if (badReleases.length > 0) {
+      console.log(`[FIX-IMAGES] Found ${badReleases.length} firearmRelease docs with bad/missing images`)
+      const releaseMutations = []
+      for (const rel of badReleases) {
+        if (!rel.sourceUrl) continue
+        const label = `${rel.brand || ''} ${rel.model || ''}`.trim().slice(0, 50)
+        console.log(`[FIX-IMAGES] Fixing release: "${label}" (was: ${rel.imageUrl?.slice(0, 60)})`)
+        const ogImage = await extractOgImage(rel.sourceUrl)
+        if (ogImage && !BAD_RELEASE_IMG_PATTERNS.some(p => ogImage.includes(p))) {
+          const slug   = label.toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
+          const cdnUrl = await uploadToSanity(ogImage, `rel-${slug}-${rel._id.slice(-6)}.jpg`)
+          if (cdnUrl) {
+            releaseMutations.push({ patch: { id: rel._id, set: { imageUrl: cdnUrl } } })
+            stats.upgraded++
+            console.log(`[FIX-IMAGES] ✓ Release CDN: "${label}"`)
+          }
+        } else {
+          stats.skipped++
+        }
+        await new Promise(r => setTimeout(r, 400))
+      }
+      if (releaseMutations.length) {
+        await sanity.mutate(releaseMutations)
+        console.log(`[FIX-IMAGES] Wrote ${releaseMutations.length} release mutations to Sanity`)
+        mutations.push(...releaseMutations)
+      }
+    }
+
     // Batch write all patches to Sanity
     if (mutations.length) {
       await sanity.mutate(mutations)
