@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-06-28T07:00:34.327Z",
+  "generatedAt": "2026-07-05T07:01:04.873Z",
   "content": {
-    "newsArticles": 538,
-    "blogPosts": 135,
-    "legislation": 245,
-    "firearmReleases": 40,
-    "videos": 191,
+    "newsArticles": 576,
+    "blogPosts": 144,
+    "legislation": 253,
+    "firearmReleases": 17,
+    "videos": 219,
     "reviews": 3,
     "canadaArticles": 42,
     "brazilArticles": 18
   },
   "operations": {
-    "cronRuns": 1554,
+    "cronRuns": 1740,
     "outreachContacts": 221,
-    "socialPosts": 146,
-    "briefings": 34
+    "socialPosts": 162,
+    "briefings": 41
   },
   "latest": {
-    "newsTitle": "Akos Arms Baza: Glock-Fed Straight-Pull .45 ACP Debuts",
-    "newsDate": "2026-06-27T19:00:00.000Z",
-    "briefingDate": "2026-06-28",
+    "newsTitle": "Desert Eagle Mark XIX Now Ships Threaded for Suppressors",
+    "newsDate": "2026-07-04T10:52:00.000Z",
+    "briefingDate": "2026-07-05",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 1212
+  "totalContentDocs": 1272
 }
