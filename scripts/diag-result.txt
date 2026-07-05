@@ -1,68 +1,13 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+Article : Desert Eagle Mark XIX Now Ships Threaded for Suppressors
+imageUrl: https://pixabay.com/get/g0ab0787464c6dd62a87419c199e28bb4dc3c5c37871320d14538ebdc598214fee1c809eb86dfcbb98cd7fffc69667198da609d7914131aa57e41d59b418cf3ca_1280.jpg
+category: industry
+needs_fix: True
 
-=== STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 56 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/270dce59e03c84de96a876793756866
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bbd03047f505ea72b4d45f65626702a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1f40c50e66caca7cdfd67f9dbbfaec3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fd1df605d30fac99a37e99b39760686
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/51fba6173d66a75d94b09832d7ef6d5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/879c74099d336623626e35b7bd1041e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b5080ca8b47336915586947939a2118
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a37541bc4c2e983bd05255ae7e1cd95
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9937bfc5262f9a70d1ab4dbdb8de719
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/04d9595ce3f4dc3a9ba11efa26ba3f2
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountssaturday
-  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
-  skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/02/Vortex-Sparc-Pmags
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
-  skip coupon: https://gun.deals/content/coupon-store-usagowednesday-july-1
-  skip coupon: https://gun.deals/content/coupon-store-ammunition-depotwedne
-  skip coupon: https://gun.deals/content/coupon-store-brownellswednesday-ju
-  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armorywedn
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
-  skip coupon: https://gun.deals/content/coupon-store-brownellssunday-june-
-  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
-  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
-  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
-  skip coupon: https://gun.deals/content/coupon-store-cvlifesaturday-june-2
-  skip coupon: https://gun.deals/content/coupon-store-gunmagwarehousesaturd
-  skip coupon: https://gun.deals/content/coupon-store-right-bearsaturday-ju
-  ✗ https://gun.deals/node/1522116
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
-  skip coupon: https://gun.deals/content/coupon-store-next-level-armamentth
-  skip coupon: https://gun.deals/content/coupon-store-primary-armstuesday-j
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetmonday-j
-  skip coupon: https://gun.deals/content/coupon-store-brownellsmonday-june-
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatemonday-j
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountssunday-j
-  skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
-  skip coupon: https://gun.deals/content/coupon-store-buyagunnetsunday-june
-  skip coupon: https://gun.deals/content/coupon-store-battlboxsaturday-june
-  skip coupon: https://gun.deals/content/coupon-store-taktactical-friday-ju
-  skip coupon: https://gun.deals/content/coupon-store-optics-planetfriday-j
-  skip coupon: https://gun.deals/content/coupon-store-right-bearfriday-june
-  skip coupon: https://gun.deals/content/coupon-store-battlehawk-armoryfrid
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountswednesda
-  skip coupon: https://gun.deals/content/coupon-store-vance-outdoorsmonday-
-  skip coupon: https://gun.deals/content/coupon-store-brass-kissesmonday-ju
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  skip coupon: https://gun.deals/content/coupon-store-brownellssaturday-jun
-  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
-  ✗ https://gun.deals/product/45-acpauto-230gr-jhp-ammo-50-rounds-new
-  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
-  skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 15
+Trying: 'Desert Eagle Mark XIX 50 AE pistol'
+  Pexels error: HTTP Error 403: Forbidden
+  Pixabay [Desert Eagle Mark XIX 50 AE pistol]: https://pixabay.com/get/g2e6e2c6b13a9e6ba8fbad658127006ebe1b3b7358504147af51cb9d
+  ✓ Uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/bb3704ca7bd2c2e43ba3219c8b9a732
 
-Stats: uploaded=10 fallback=5 failed=3
+✓ Patched imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/bb3704ca7bd2c2e43ba3219c8b9a732
 
-=== FINAL: total=3990 missing_images=40 reddit=0 ===
-
-FIXED: 15
+Done.
