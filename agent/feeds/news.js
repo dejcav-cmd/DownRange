@@ -29,8 +29,8 @@ import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 3
-const ITEMS_PER_FEED = 5    // 5 per feed — top items only, reduces AI cost
-const MAX_ITEMS      = 25   // 25 total cap — enough fresh items across 40+ feeds
+const ITEMS_PER_FEED = 8    // 8 per feed — enough lookahead to find new items past dupe noise
+const MAX_ITEMS      = 60   // 60 total cap — feeds publish slowly, need more headroom
 const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────
