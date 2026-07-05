@@ -255,6 +255,42 @@ async function notifyError(message, context = '') {
 // ── SANITY WRITER ─────────────────────────────────────────────────────
 const TRUSTED_IMAGE_DOMAINS = ['cdn.sanity.io','img.youtube.com','i.ytimg.com','upload.wikimedia.org','images.unsplash.com','pexels.com']
 
+// Parse PNG/JPEG dimensions from raw bytes — no external deps
+function parseImageDimensions(buf) {
+  try {
+    const bytes = new Uint8Array(buf)
+    if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) {
+      const w = (bytes[16] << 24) | (bytes[17] << 16) | (bytes[18] << 8) | bytes[19]
+      const h = (bytes[20] << 24) | (bytes[21] << 16) | (bytes[22] << 8) | bytes[23]
+      return { w, h }
+    }
+    if (bytes[0] === 0xFF && bytes[1] === 0xD8) {
+      let i = 2
+      while (i < bytes.length - 9) {
+        if (bytes[i] !== 0xFF) { i++; continue }
+        const marker = bytes[i + 1]
+        if (marker === 0xC0 || marker === 0xC1 || marker === 0xC2) {
+          const h = (bytes[i + 5] << 8) | bytes[i + 6]
+          const w = (bytes[i + 7] << 8) | bytes[i + 8]
+          return { w, h }
+        }
+        const segLen = (bytes[i + 2] << 8) | bytes[i + 3]
+        i += 2 + segLen
+      }
+    }
+  } catch {}
+  return null
+}
+function isPhotoSized(buf) {
+  const dims = parseImageDimensions(buf)
+  if (!dims) return true
+  const { w, h } = dims
+  if (w < 400) return false
+  if (h > 0 && w / h > 3.5) return false
+  if (h > w) return false
+  return true
+}
+
 // Extract og:image from article source page and upload to Sanity CDN
 // Returns cdn.sanity.io URL or null
 async function fetchAndUploadOgImage(pageUrl, articleId) {
@@ -299,6 +335,7 @@ async function fetchAndUploadOgImage(pageUrl, articleId) {
     if (!imgRes.ok) return null
     const buf = await imgRes.arrayBuffer()
     if (buf.byteLength < 8000) return null // skip tiny placeholders
+    if (!isPhotoSized(buf)) return null    // skip logos/banners by pixel dimensions
 
     // Upload to Sanity CDN
     const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'

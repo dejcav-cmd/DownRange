@@ -2,43 +2,44 @@ name: debug-img-query
 on:
   workflow_dispatch:
 jobs:
-  query:
+  cleanup:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run Sanity query
+      - name: Fix logo-shaped images in Sanity
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/debug_image_check.py
-      - name: Upload results via API
+        run: python3 scripts/fix_logo_images.py
+      - name: Commit results via API
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          import base64, json, urllib.request, os
-          with open("scripts/debug_image_results.txt", "rb") as f:
-              content = base64.b64encode(f.read()).decode()
-          pat = os.environ["GH_PAT"]
-          # Check if file exists to get SHA
-          try:
-              req = urllib.request.Request(
-                  "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/debug_image_results.txt",
-                  headers={"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github.v3+json"}
-              )
-              with urllib.request.urlopen(req) as r:
-                  existing = json.loads(r.read())
-              sha = existing.get("sha", "")
-          except:
-              sha = ""
-          payload = {"message": "debug: image query results", "content": content}
-          if sha:
-              payload["sha"] = sha
-          data = json.dumps(payload).encode()
-          req2 = urllib.request.Request(
-              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/debug_image_results.txt",
-              data=data, method="PUT",
-              headers={"Authorization": f"Bearer {pat}", "Content-Type": "application/json"}
-          )
-          with urllib.request.urlopen(req2) as r:
-              result = json.loads(r.read())
-          print("Committed:", result.get("commit", {}).get("sha", "")[:12])
-        shell: python3 {0}
+          python3 -c "
+import base64, json, urllib.request, os
+try:
+    with open('scripts/debug_image_results.txt', 'rb') as f:
+        content = base64.b64encode(f.read()).decode()
+    pat = os.environ['GH_PAT']
+    try:
+        req = urllib.request.Request(
+            'https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/debug_image_results.txt',
+            headers={'Authorization': f'Bearer {pat}', 'Accept': 'application/vnd.github.v3+json'}
+        )
+        with urllib.request.urlopen(req) as r:
+            sha = json.loads(r.read()).get('sha', '')
+    except:
+        sha = ''
+    payload = {'message': 'debug: image cleanup results', 'content': content}
+    if sha:
+        payload['sha'] = sha
+    req2 = urllib.request.Request(
+        'https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/debug_image_results.txt',
+        data=json.dumps(payload).encode(), method='PUT',
+        headers={'Authorization': f'Bearer {pat}', 'Content-Type': 'application/json'}
+    )
+    with urllib.request.urlopen(req2) as r:
+        result = json.loads(r.read())
+    print('Committed:', result.get('commit', {}).get('sha', '')[:12])
+except Exception as e:
+    print('Commit skip:', e)
+"

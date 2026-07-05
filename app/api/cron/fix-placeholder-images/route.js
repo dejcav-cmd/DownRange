@@ -40,6 +40,57 @@ function isGoodImage(url) {
   if (lower.includes('1x1') || lower.includes('pixel') || lower.includes('spacer')) return false
   if (lower.includes('placeholder') || lower.includes('default-image'))              return false
   if (!lower.match(/\.(jpg|jpeg|png|webp)/))          return false
+  // Reject dimension hints in URL that signal logos/banners (e.g. -306x94.png, _120x60.jpg)
+  const dimMatch = lower.match(/-(\d+)x(\d+)\.(png|jpg|jpeg|webp)/)
+  if (dimMatch) {
+    const w = parseInt(dimMatch[1], 10)
+    const h = parseInt(dimMatch[2], 10)
+    if (w < 400) return false             // too narrow
+    if (h > 0 && w / h > 3.5) return false  // banner/logo aspect ratio
+    if (h > w) return false               // portrait logo
+  }
+  return true
+}
+
+// Parse image dimensions from raw bytes without external deps.
+// Returns { w, h } or null. Supports JPEG (SOF markers) and PNG (IHDR).
+function parseImageDimensions(buf) {
+  try {
+    const bytes = new Uint8Array(buf)
+    // PNG: signature 8 bytes, then IHDR chunk at offset 8
+    // IHDR: length(4) + 'IHDR'(4) + width(4) + height(4)
+    if (bytes[0] === 0x89 && bytes[1] === 0x50 && bytes[2] === 0x4E && bytes[3] === 0x47) {
+      const w = (bytes[16] << 24) | (bytes[17] << 16) | (bytes[18] << 8) | bytes[19]
+      const h = (bytes[20] << 24) | (bytes[21] << 16) | (bytes[22] << 8) | bytes[23]
+      return { w, h }
+    }
+    // JPEG: scan for SOF0/SOF1/SOF2 markers (0xFF 0xC0/C1/C2)
+    if (bytes[0] === 0xFF && bytes[1] === 0xD8) {
+      let i = 2
+      while (i < bytes.length - 9) {
+        if (bytes[i] !== 0xFF) { i++; continue }
+        const marker = bytes[i + 1]
+        if (marker === 0xC0 || marker === 0xC1 || marker === 0xC2) {
+          const h = (bytes[i + 5] << 8) | bytes[i + 6]
+          const w = (bytes[i + 7] << 8) | bytes[i + 8]
+          return { w, h }
+        }
+        const segLen = (bytes[i + 2] << 8) | bytes[i + 3]
+        i += 2 + segLen
+      }
+    }
+  } catch {}
+  return null
+}
+
+// Returns true if image bytes represent a photo-sized image (not a logo/banner)
+function isPhotoSized(buf) {
+  const dims = parseImageDimensions(buf)
+  if (!dims) return true // can't parse → give benefit of the doubt
+  const { w, h } = dims
+  if (w < 400) return false             // too narrow for an article hero
+  if (h > 0 && w / h > 3.5) return false  // banner/logo shape
+  if (h > w) return false               // portrait logos
   return true
 }
 
@@ -89,6 +140,11 @@ async function uploadToSanity(imageUrl, filename) {
     if (!ct.includes('image')) return null
     const buf = await imgRes.arrayBuffer()
     if (buf.byteLength < 5000) return null
+    // Reject logo/banner shapes — parse actual pixel dimensions from bytes
+    if (!isPhotoSized(buf)) {
+      console.log(`[FIX-IMAGES] ✗ Rejected logo-shaped image: ${filename} (${buf.byteLength} bytes)`)
+      return null
+    }
     const asset = await sanity.assets.upload('image', Buffer.from(buf), { filename, contentType: ct })
     return asset?.url || null
   } catch { return null }
