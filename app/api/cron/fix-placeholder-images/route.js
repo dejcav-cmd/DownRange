@@ -14,22 +14,8 @@ const sanity = createClient({
 
 // ── HELPERS ───────────────────────────────────────────────────────────────────
 
-function pickPhoto(title = '', category = '') {
-  const t = (title + ' ' + category).toLowerCase()
-  if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen/.test(t))           return '/img/photos/law.jpg'
-  if (/pistol|handgun|glock|sig|beretta|colt|revolver|1911|carry|edc|p365|hellcat|shield|walther/.test(t)) return '/img/photos/pistol.jpg'
-  if (/rifle|ar.?15|m4|carbine|ak|sbr|ar.10|ddm4|scar|ruger.pc|m16|bcm/.test(t))                  return '/img/photos/rifle.jpg'
-  if (/shotgun|mossberg|remington.*870|benelli|gauge|pump|590|870/.test(t))                         return '/img/photos/shotgun.jpg'
-  if (/suppressor|silencer|nfa|omega|dead.air|surefire|thunder|obsidian/.test(t))                   return '/img/photos/suppressor.jpg'
-  if (/ammo|ammunition|cartridge|bullet|grain|ballistic|hornady|federal|speer|reload/.test(t))      return '/img/photos/ammo.jpg'
-  if (/hunt|deer|elk|game|waterfowl|turkey|bear|boar/.test(t))                                      return '/img/photos/hunting.jpg'
-  if (/competi|uspsa|idpa|ipsc|3.gun|steel.*match|bianchi/.test(t))                                 return '/img/photos/competition.jpg'
-  if (/train|range|practice|marksmanship|drill|dry.fire/.test(t))                                   return '/img/photos/training.jpg'
-  if (/gear|holster|optic|sight|scope|light|sling|magazine|accessory/.test(t))                     return '/img/photos/gear.jpg'
-  if (/home.*defense|nightstand|self.defense/.test(t))                                              return '/img/photos/homedefense.jpg'
-  if (/military|army|marine|navy|soldier|combat|veteran/.test(t))                                   return '/img/photos/military.jpg'
-  return '/img/photos/news.jpg'
-}
+// pickPhoto removed — local /img/photos/ placeholder paths are unacceptable.
+// All missing images must be fetched via searchForImage() (Pexels + Pixabay).
 
 function isGoodImage(url) {
   if (!url || typeof url !== 'string') return false
@@ -150,36 +136,127 @@ async function uploadToSanity(imageUrl, filename) {
   } catch { return null }
 }
 
-// ── PIXABAY FALLBACK ──────────────────────────────────────────────────────────
+// ── SMART IMAGE SEARCH — title-aware, specific gun/topic queries ───────────────
+// Priority: 1) extract exact gun model from title  2) category-specific photo search
+// Never use generic category keywords — always search for the actual subject.
 
-function buildPixabayQuery(title = '', category = '') {
-  const t = (title + ' ' + category).toLowerCase()
-  if (/law|atf|bill|court|constitution|legal|2a|amendment|ban|rule|scotus|bruen/.test(t)) return 'second amendment law constitution'
-  if (/pistol|handgun|glock|sig|carry|edc|revolver|1911/.test(t))  return 'handgun pistol shooting range'
-  if (/rifle|ar.?15|carbine|ak|sbr/.test(t))                        return 'rifle shooting range AR-15'
-  if (/shotgun|mossberg|gauge|pump/.test(t))                         return 'shotgun firearms range'
-  if (/suppressor|silencer|nfa/.test(t))                             return 'firearm suppressor'
-  if (/ammo|ammunition|bullet|cartridge/.test(t))                    return 'ammunition bullets firearm'
-  if (/hunt|deer|elk|game/.test(t))                                  return 'hunting rifle outdoors'
-  if (/competi|uspsa|idpa/.test(t))                                  return 'shooting competition sport'
-  if (/train|range|practice/.test(t))                                return 'shooting range training'
-  if (/gear|holster|optic|scope/.test(t))                            return 'gun holster tactical gear'
-  if (/home.*defense|self.defense/.test(t))                          return 'home defense firearm'
-  if (/military|army|marine|soldier/.test(t))                        return 'military soldier weapons'
-  return 'firearms gun second amendment'
+function buildSearchQuery(title = '', category = '') {
+  const t = title.toLowerCase()
+
+  // ── EXTRACT SPECIFIC GUN MODEL / BRAND ──────────────────────────────────────
+  // Try to pull the most specific identifier from the title for a targeted search.
+
+  // Named handgun models
+  const handgunModel = title.match(
+    /\b(glock\s*\d+|sig\s*(?:sauer\s*)?(?:p\d{3}|m\d{3}|cross|emperor|p365|p320|p226|p229|p938|1911)|colt\s*(?:python|cobra|king\s*cobra|anaconda|1911|delta\s*elite)|smith\s*(?:&|and)\s*wesson\s*(?:m&p|model\s*\d+|shield|bodyguard|442|686|629)|springfield\s*(?:armory\s*)?(?:hellcat|xd|xds|xdm|ronin|emissary|echelon|prodigy|1911)|ruger\s*(?:lcp|lc9|sr\d+|american|security\s*\d+|gp100|sp101|redhawk|super\s*redhawk|wrangler|57|max\s*9)|walther\s*(?:ppk|pdp|pdp|creed|pps|q4|q5|ccp)|canik\s*(?:tp9|mete|rival)|kimber\s*(?:micro|pro|raptor|eclipse|custom)|beretta\s*(?:apx|m9|92|px4|a300|a400)|fn\s*(?:509|five\s*seven|fns|fnx|509t)|hk\s*(?:vp9|p30|usp|mk23|hk45|sp5)|desert\s*eagle|baby\s*eagle|taurus\s*(?:g2c|g3|g3c|th9|judge|raging|spectrum|tx22|defender)|hellcat|p365|xd-?s|xd-?m|m&p\s*shield|shield\s*plus|bodyguard\s*380)\b/i
+  )?.[1]
+
+  // Named rifle/carbine models
+  const rifleModel = title.match(
+    /\b(ar-?15|ar-?10|m4\s*carbine|m16|ak-?47|ak-?74|akg\s*\d+|bcm\s*\w+|daniel\s*defense\s*\w+|dd\s*m4|ddm4|bcm\s*recce|scar\s*(?:16|17|20)|m1a|m14|mini-?14|mini-?30|ruger\s*pc\s*carbine|sub-?2000|mpx|mcx|rattler|honey\s*badger|honey\s*badger|300\s*blackout\s*(?:sbr|pistol|rifle)|ban\w*\s*(?:pcc|pistol|rifle)|b&t\s*\w+|iwi\s*(?:tavor|galil|zion|masada|carmel)|cz\s*(?:bren|scorpion|shadow|p10|p09|p07)|steyr\s*(?:aug|mannlicher)|kel-?tec\s*(?:sub|rdb|ksg|p15|su16)|kriss\s*vector|fn\s*(?:scar|fal|f2000|p90)|hk\s*(?:416|433|g36|mp5|ump|sp5)|sig\s*(?:mcx|mpx|rattler|cross)|barrett\s*(?:m82|m107|m95|mrad|rec10|rec7)|windham\s*\w+|cmmg\s*\w+|lwrci\s*\w+|stag\s*arms|aero\s*precision\s*\w+|psa\s*\w+|palmetto\s*\w+|wilson\s*combat\s*\w+|larue\s*\w+|noveske\s*\w+|kac\s*\w+|sr-?25|mk\s*12|mk\s*18|am-?15|dpms\s*\w+)\b/i
+  )?.[1]
+
+  // Named shotgun models
+  const shotgunModel = title.match(
+    /\b(mossberg\s*(?:500|590|940|930|maverick|shockwave)|remington\s*(?:870|1100|v3|versa|model\s*\d+)|benelli\s*(?:m2|m4|supernova|nova|ethos|sbe|montefeltro)|beretta\s*(?:a300|a400|a350|a390)|browning\s*(?:maxus|bps|cynergy|citori|a5)|winchester\s*(?:sxp|sx4|model\s*12)|charles\s*daly\s*\w+|stoeger\s*\w+|kel-?tec\s*ksg|tactical\s*shotgun|bullpup\s*shotgun)\b/i
+  )?.[1]
+
+  // Named suppressor/NFA items
+  const suppressorModel = title.match(
+    /\b(dead\s*air\s*(?:sandman|nomad|mask|primal|wolf)|silencerco\s*(?:omega|hybrid|harvester|switchback|maxim|sparrow)|surefire\s*(?:socom|ryder|warcomp)|thunder\s*beast\s*\w+|sig\s*sauer\s*(?:srd|suppressor)|rugged\s*\w+|gemtech\s*\w+|advanced\s*armament|aac\s*\w+|obsidian\s*45|banish\s*\w+|modular\s*\w+\s*suppressor|integrally\s*suppressed)\b/i
+  )?.[1]
+
+  // Named optics
+  const opticsModel = title.match(
+    /\b(trijicon\s*(?:acog|rmr|sro|vcog|mro|accupoint)|eotech\s*(?:exps|vudu|holographic|xps)|aimpoint\s*(?:pro|comp|micro|acro|patrol)|vortex\s*(?:razor|viper|strike\s*eagle|crossfire|spitfire|sparc|defender|opmod)|leupold\s*(?:deltapoint|mark|vx|firedot)|nightforce\s*\w+|schmidt\s*&\s*bender\s*\w+|holosun\s*(?:\d+|eps|507|510|aems)|burris\s*(?:fastfire|rt\-6|veracity|fullfield)|sig\s*(?:romeo|tango|kilo|electro-optics)|primary\s*arms\s*\w+|bushnell\s*\w+)\b/i
+  )?.[1]
+
+  // If we got a specific model, use it directly
+  const specificModel = handgunModel || rifleModel || shotgunModel || suppressorModel || opticsModel
+  if (specificModel) {
+    const cleaned = specificModel.replace(/\s+/g, ' ').trim()
+    // Add "firearm" context if it's a pure model number that might be ambiguous
+    const needsContext = /^\d/.test(cleaned) || cleaned.length < 5
+    return needsContext ? `${cleaned} firearm gun` : cleaned
+  }
+
+  // ── BRAND + TYPE EXTRACTION ──────────────────────────────────────────────────
+  // No specific model found — try brand + general type
+  const brandMatch = title.match(
+    /\b(glock|sig\s*sauer|smith\s*(?:&|and)\s*wesson|s&w|ruger|kimber|springfield|colt|beretta|fn\s*america|heckler\s*(?:&|and)\s*koch|hk|walther|canik|taurus|kel-?tec|mossberg|remington|benelli|winchester|browning|savage|tikka|accuracy\s*international|barrett|christensen|daniel\s*defense|aero\s*precision|bcm|larue|lwrci|noveske|kac|silencerco|dead\s*air|surefire|gemtech|leupold|vortex|nightforce|trijicon|eotech|aimpoint|holosun)\b/i
+  )?.[1]
+
+  if (brandMatch) {
+    const brand = brandMatch.replace(/\s+/g, ' ').trim()
+    if (/suppressor|silencer|nfa/i.test(t))       return `${brand} suppressor firearm`
+    if (/pistol|handgun|carry|edc|ccw/i.test(t))  return `${brand} pistol handgun`
+    if (/rifle|carbine|ar|sbr/i.test(t))           return `${brand} rifle`
+    if (/shotgun|gauge/i.test(t))                  return `${brand} shotgun`
+    if (/optic|scope|sight/i.test(t))              return `${brand} optic firearm`
+    return `${brand} firearm`
+  }
+
+  // ── TOPIC-BASED FALLBACK (no brand/model) ───────────────────────────────────
+  if (/suppressor|silencer|nfa|form\s*4/i.test(t))            return 'suppressor silencer rifle shooting'
+  if (/desert\s*eagle|magnum\s*research/i.test(t))            return 'desert eagle 50AE handgun'
+  if (/constitutional\s*carry|permitless\s*carry/i.test(t))   return 'concealed carry handgun holster'
+  if (/concealed\s*carry|ccw|edc/i.test(t))                   return 'concealed carry holster pistol'
+  if (/atf|bureau\s*alcohol|national\s*firearms\s*act/i.test(t)) return 'ATF firearms bureau gun'
+  if (/second\s*amend|2a\s*rights|gun\s*rights/i.test(t))    return 'second amendment gun rights rally'
+  if (/scotus|supreme\s*court|bruen|heller/i.test(t))         return 'supreme court second amendment'
+  if (/gun\s*control|ban\s*(?:on|the|guns)|restrict/i.test(t)) return 'gun control protest legislation'
+  if (/ar-?15|assault\s*(?:weapon|rifle)/i.test(t))           return 'AR-15 rifle range shooting'
+  if (/9mm|handgun|pistol|semi-?auto/i.test(t))               return 'handgun pistol shooting range'
+  if (/rifle|carbine|long\s*gun/i.test(t))                    return 'rifle shooting range outdoors'
+  if (/shotgun|12\s*gauge/i.test(t))                          return 'shotgun shooting range'
+  if (/ammo|ammunition|cartridge|bullet/i.test(t))            return 'ammunition bullets firearm'
+  if (/hunt|deer|elk|game\s*(?:season|animal)/i.test(t))     return 'hunting rifle outdoors'
+  if (/competi|uspsa|idpa|ipsc|3.gun/i.test(t))              return 'shooting competition sport'
+  if (/train|range|practice|marksmanship/i.test(t))           return 'shooting range training firearms'
+  if (/holster|optic|scope|red\s*dot/i.test(t))              return 'gun accessories holster optic'
+  if (/military|army|marine|soldier|veteran/i.test(t))        return 'military soldier weapons training'
+  if (/home\s*defense|self.?defense|home\s*security/i.test(t)) return 'home defense firearm shotgun'
+  return 'firearm shooting range gun'
 }
 
+// Pexels — highest quality, real photography
+async function fetchPexels(title, category) {
+  const key = process.env.PEXELS_API_KEY
+  if (!key) return null
+  try {
+    const q   = buildSearchQuery(title, category)
+    const url = `https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&orientation=landscape&size=large&per_page=5`
+    const res = await fetch(url, {
+      headers: { Authorization: key },
+      signal: AbortSignal.timeout(8000),
+    })
+    if (!res.ok) return null
+    const data = await res.json()
+    // Prefer larger photos; pick the first result with a landscape-ish src
+    const photo = data.photos?.find(p => p.width >= p.height) || data.photos?.[0]
+    return photo?.src?.large2x || photo?.src?.large || photo?.src?.medium || null
+  } catch { return null }
+}
+
+// Pixabay — fallback when Pexels misses
 async function fetchPixabay(title, category) {
   const key = process.env.PIXABAY_API_KEY
   if (!key) return null
   try {
-    const q   = buildPixabayQuery(title, category)
-    const url = `https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(q)}&image_type=photo&orientation=horizontal&min_width=800&per_page=3&safesearch=true`
+    const q   = buildSearchQuery(title, category)
+    const url = `https://pixabay.com/api/?key=${key}&q=${encodeURIComponent(q)}&image_type=photo&orientation=horizontal&min_width=800&per_page=5&safesearch=true`
     const res = await fetch(url, { signal: AbortSignal.timeout(8000) })
     if (!res.ok) return null
     const data = await res.json()
     return data.hits?.[0]?.largeImageURL || data.hits?.[0]?.webformatURL || null
   } catch { return null }
+}
+
+// Primary image search: try Pexels first, Pixabay as fallback
+async function searchForImage(title, category) {
+  const pexels = await fetchPexels(title, category)
+  if (pexels) return pexels
+  return fetchPixabay(title, category)
 }
 
 // ── MAIN HANDLER ──────────────────────────────────────────────────────────────
@@ -259,32 +336,32 @@ async function handler(req) {
           }
           console.log(`[FIX-IMAGES] ✓ CDN: "${article.title?.slice(0, 40)}"`)
         } else {
-          // CDN upload failed — try Pixabay
-          const pixUrl = await fetchPixabay(article.title, article.category)
-          if (pixUrl) {
+          // OG upload failed — search Pexels/Pixabay for the specific gun/topic
+          const searchUrl = await searchForImage(article.title, article.category)
+          if (searchUrl) {
             const slug2    = (article.title || 'article').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
-            const pixCdn   = await uploadToSanity(pixUrl, `pix-${slug2}-${article._id.slice(-6)}.jpg`)
-            const finalUrl = pixCdn || pixUrl
+            const searchCdn = await uploadToSanity(searchUrl, `search-${slug2}-${article._id.slice(-6)}.jpg`)
+            const finalUrl  = searchCdn || searchUrl
             mutations.push({ patch: { id: article._id, set: { imageUrl: finalUrl } } })
             stats.fallback++
-            console.log(`[FIX-IMAGES] ~ Pixabay: "${article.title?.slice(0, 40)}"`)
+            console.log(`[FIX-IMAGES] ~ Search (${buildSearchQuery(article.title, article.category).slice(0,30)}): "${article.title?.slice(0, 40)}"`)
           } else {
             stats.skipped++
           }
         }
       } else {
-        // Source blocked — try Pixabay first, then best-match local photo
-        const pixUrl = await fetchPixabay(article.title, article.category)
-        if (pixUrl) {
-          const slug2  = (article.title || 'article').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
-          const pixCdn = await uploadToSanity(pixUrl, `pix-${slug2}-${article._id.slice(-6)}.jpg`)
-          const finalUrl = pixCdn || pixUrl
+        // Source blocked — search Pexels/Pixabay for the specific gun/topic
+        const searchUrl = await searchForImage(article.title, article.category)
+        if (searchUrl) {
+          const slug2     = (article.title || 'article').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
+          const searchCdn = await uploadToSanity(searchUrl, `search-${slug2}-${article._id.slice(-6)}.jpg`)
+          const finalUrl  = searchCdn || searchUrl
           mutations.push({ patch: { id: article._id, set: { imageUrl: finalUrl } } })
           stats.fallback++
-          console.log(`[FIX-IMAGES] ~ Pixabay (blocked source): "${article.title?.slice(0, 40)}"`)
+          console.log(`[FIX-IMAGES] ~ Search/blocked (${buildSearchQuery(article.title, article.category).slice(0,30)}): "${article.title?.slice(0, 40)}"`)
         } else {
-          // Don't store local /img/* placeholder — leave imageUrl null so next run retries
-          // Storing any /img/* path causes infinite loop: isBad→retry→same failure→same path
+          // No image found — leave null so next hourly run retries
+          // Never write /img/* placeholder paths to Sanity
           stats.skipped++
         }
       }

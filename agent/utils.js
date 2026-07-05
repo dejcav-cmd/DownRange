@@ -291,6 +291,93 @@ function isPhotoSized(buf) {
   return true
 }
 
+// ── TITLE-AWARE IMAGE SEARCH (Pexels → Pixabay) ──────────────────────────────
+// Searches for the specific gun model/brand in the article title.
+// Never falls back to generic category silhouettes.
+
+function buildSearchQuery(title = '', category = '') {
+  const t = title.toLowerCase()
+  // Named handgun models
+  const handgunModel = title.match(/\b(glock\s*\d+|sig\s*(?:sauer\s*)?(?:p\d{3}|m\d{3}|p365|p320|p226|p229)|colt\s*(?:python|cobra|anaconda|1911|delta\s*elite)|smith\s*(?:&|and)\s*wesson\s*(?:m&p|shield|bodyguard|\d+)|springfield\s*(?:armory\s*)?(?:hellcat|xd[sm]?|ronin|echelon|prodigy)|ruger\s*(?:lcp|lc9|sr\d+|security\s*\d+|gp100|sp101|max\s*9)|walther\s*(?:ppk|pdp|pps|q[45])|canik\s*(?:tp9|mete|rival)|kimber\s*(?:micro|pro|raptor|eclipse)|beretta\s*(?:apx|m9|92|px4)|fn\s*(?:509|five\s*seven|fns|fnx)|hk\s*(?:vp9|p30|usp|hk45|sp5)|desert\s*eagle|taurus\s*(?:g2c|g3[c]?|th9|judge|tx22)|hellcat|p365)\b/i)?.[1]
+  const rifleModel = title.match(/\b(ar-?15|ar-?10|m4\s*carbine|ak-?47|ak-?74|scar\s*(?:16|17|20)|m1a|mini-?14|ruger\s*pc\s*carbine|sub-?2000|mpx|mcx|rattler|honey\s*badger|cz\s*(?:bren|scorpion)|steyr\s*aug|kel-?tec\s*(?:sub|rdb|p15)|kriss\s*vector|fn\s*(?:scar|fal|p90)|hk\s*(?:416|g36|mp5|sp5)|sig\s*(?:mcx|mpx|rattler|cross)|barrett\s*(?:m82|m107|mrad|rec\d+)|psa\s*\w+|ddm4|dd\s*m4|bcm\s*recce|lwrci\s*\w+)\b/i)?.[1]
+  const shotgunModel = title.match(/\b(mossberg\s*(?:500|590|940|930|shockwave)|remington\s*(?:870|1100|v3|versa)|benelli\s*(?:m2|m4|supernova|ethos|sbe)|beretta\s*(?:a300|a400)|browning\s*(?:maxus|bps|citori|a5)|winchester\s*(?:sxp|sx4|model\s*12)|kel-?tec\s*ksg)\b/i)?.[1]
+  const suppressorModel = title.match(/\b(dead\s*air\s*(?:sandman|nomad|mask|primal|wolf)|silencerco\s*(?:omega|hybrid|harvester|switchback|maxim|sparrow)|surefire\s*(?:socom|ryder)|thunder\s*beast\s*\w+|sig\s*sauer\s*srd|rugged\s*\w+|obsidian\s*45|banish\s*\w+)\b/i)?.[1]
+  const opticsModel = title.match(/\b(trijicon\s*(?:acog|rmr|sro|vcog|mro)|eotech\s*(?:exps|vudu|xps)|aimpoint\s*(?:pro|comp|micro|acro)|vortex\s*(?:razor|viper|strike\s*eagle|sparc|defender)|leupold\s*(?:deltapoint|mark|vx)|nightforce\s*\w+|holosun\s*(?:\d+|eps|507|510|aems)|sig\s*(?:romeo|tango|kilo))\b/i)?.[1]
+
+  const specificModel = handgunModel || rifleModel || shotgunModel || suppressorModel || opticsModel
+  if (specificModel) {
+    const cleaned = specificModel.replace(/\s+/g, ' ').trim()
+    return /^\d/.test(cleaned) || cleaned.length < 5 ? `${cleaned} firearm` : cleaned
+  }
+
+  const brandMatch = title.match(/\b(glock|sig\s*sauer|smith\s*(?:&|and)\s*wesson|s&w|ruger|kimber|springfield|colt|beretta|fn\s*america|heckler\s*(?:&|and)\s*koch|hk|walther|canik|taurus|kel-?tec|mossberg|remington|benelli|winchester|browning|savage|tikka|barrett|christensen|daniel\s*defense|aero\s*precision|bcm|larue|lwrci|noveske|silencerco|dead\s*air|surefire|leupold|vortex|nightforce|trijicon|eotech|aimpoint|holosun)\b/i)?.[1]
+  if (brandMatch) {
+    const brand = brandMatch.replace(/\s+/g, ' ').trim()
+    if (/suppressor|silencer|nfa/i.test(t)) return `${brand} suppressor firearm`
+    if (/pistol|handgun|carry|edc|ccw/i.test(t)) return `${brand} pistol handgun`
+    if (/rifle|carbine|ar|sbr/i.test(t)) return `${brand} rifle`
+    if (/shotgun|gauge/i.test(t)) return `${brand} shotgun`
+    return `${brand} firearm`
+  }
+
+  if (/suppressor|silencer|nfa/i.test(t))            return 'suppressor silencer rifle shooting'
+  if (/desert\s*eagle/i.test(t))                     return 'desert eagle 50AE handgun'
+  if (/concealed\s*carry|ccw|edc/i.test(t))          return 'concealed carry holster pistol'
+  if (/constitutional\s*carry|permitless/i.test(t))  return 'concealed carry handgun holster'
+  if (/atf\b|bureau\s*alcohol/i.test(t))             return 'ATF firearms bureau'
+  if (/second\s*amend|2a\s*rights/i.test(t))         return 'second amendment gun rights'
+  if (/scotus|supreme\s*court|bruen|heller/i.test(t)) return 'supreme court second amendment'
+  if (/gun\s*control|ban\s*(?:on|the|guns)/i.test(t)) return 'gun control legislation firearms'
+  if (/ar-?15|assault\s*(?:weapon|rifle)/i.test(t))  return 'AR-15 rifle range shooting'
+  if (/9mm|handgun|pistol|semi-?auto/i.test(t))      return 'handgun pistol shooting range'
+  if (/rifle|carbine|long\s*gun/i.test(t))           return 'rifle shooting range outdoors'
+  if (/shotgun|12\s*gauge/i.test(t))                 return 'shotgun shooting range'
+  if (/ammo|ammunition|cartridge|bullet/i.test(t))   return 'ammunition bullets firearm'
+  if (/hunt|deer|elk|game\s*(?:season|animal)/i.test(t)) return 'hunting rifle outdoors'
+  if (/competi|uspsa|idpa|ipsc|3.gun/i.test(t))     return 'shooting competition sport'
+  if (/train|range|practice|marksmanship/i.test(t))  return 'shooting range training firearms'
+  if (/military|army|marine|soldier|veteran/i.test(t)) return 'military soldier weapons training'
+  if (/home\s*defense|self.?defense/i.test(t))       return 'home defense firearm shotgun'
+  return 'firearm shooting range gun'
+}
+
+async function searchForImage(title, category) {
+  // Try Pexels first (higher quality photography)
+  const pexelsKey = process.env.PEXELS_API_KEY
+  if (pexelsKey) {
+    try {
+      const q = buildSearchQuery(title, category)
+      const res = await fetch(
+        `https://api.pexels.com/v1/search?query=${encodeURIComponent(q)}&orientation=landscape&size=large&per_page=5`,
+        { headers: { Authorization: pexelsKey }, signal: AbortSignal.timeout(8000) }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        const photo = data.photos?.find(p => p.width >= p.height) || data.photos?.[0]
+        const url = photo?.src?.large2x || photo?.src?.large || photo?.src?.medium
+        if (url) return url
+      }
+    } catch {}
+  }
+  // Fallback to Pixabay
+  const pixabayKey = process.env.PIXABAY_API_KEY
+  if (pixabayKey) {
+    try {
+      const q = buildSearchQuery(title, category)
+      const res = await fetch(
+        `https://pixabay.com/api/?key=${pixabayKey}&q=${encodeURIComponent(q)}&image_type=photo&orientation=horizontal&min_width=800&per_page=5&safesearch=true`,
+        { signal: AbortSignal.timeout(8000) }
+      )
+      if (res.ok) {
+        const data = await res.json()
+        const url = data.hits?.[0]?.largeImageURL || data.hits?.[0]?.webformatURL
+        if (url) return url
+      }
+    } catch {}
+  }
+  return null
+}
+
 // Extract og:image from article source page and upload to Sanity CDN
 // Returns cdn.sanity.io URL or null
 async function fetchAndUploadOgImage(pageUrl, articleId) {
@@ -446,4 +533,4 @@ async function rateLimitedBatch(items, fn, delayMs = 1000) {
   return results
 }
 
-export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch, fetchAndUploadOgImage }
+export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch, fetchAndUploadOgImage, searchForImage }
