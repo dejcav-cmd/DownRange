@@ -24,7 +24,7 @@ function pickImage(title, category) {
 }
 import Parser from 'rss-parser'
 import crypto from 'crypto'
-import { rewriteWithClaude, isDuplicate, isSanityDuplicate, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage } from '../utils.js'
+import { rewriteWithClaude, isDuplicate, isSanityDuplicate, resetDedup, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage } from '../utils.js'
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
@@ -695,6 +695,9 @@ async function processWithConcurrency(items, concurrency) {
 
 async function runNewsFeed() {
   const t = Date.now()
+  // Clear in-memory dedup set — module-level Set persists across warm Lambda invocations.
+  // Without this, every URL seen in prior runs gets permanently flagged as a dupe.
+  resetDedup()
   console.log('[NEWS] ▶ Starting feed pull...')
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
 
