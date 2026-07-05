@@ -69,3 +69,10 @@ for i in range(0, len(mutations), 100):
 
 print(f"\nDone. {len(bad)} articles queued for re-scrape (imageUrl cleared).")
 print("fix-placeholder-images cron will refetch real photos on next hourly run.")
+
+# Write summary to file for verification
+with open("scripts/logo_fix_results.txt", "w") as f:
+    f.write(f"Articles with logo-shaped images found: {len(bad)}\n")
+    for a in bad:
+        f.write(f"  CLEARED: [{a['_id'][-8:]}] {a.get('title','')[:60]} was: {a.get('imageUrl','')[-50:]}\n")
+    f.write(f"\nCleared {len(bad)} articles. fix-placeholder-images cron will re-scrape photos.\n")
