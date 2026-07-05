@@ -1,8 +1,8 @@
-Cron status check — 2026-07-05 06:49 UTC
+Cron status check — 2026-07-05 06:51 UTC
 
 JOB                          LAST RUN               STATUS     AGO          DETAIL
 ----------------------------------------------------------------------------------------------------
-  ✓ news                       2026-07-05T06:31:33    success    18m ago      2 published (1 AI, 1 raw) of 25 fetched · 23 dupes | Mark XI
+  ✓ news                       2026-07-05T06:31:33    success    19m ago      2 published (1 AI, 1 raw) of 25 fetched · 23 dupes | Mark XI
   ✓ laws                       2026-06-04T18:03:47    success    30d ago      20 saved · 0 failed
   ✓ releases                   2026-07-04T05:25:07    success    1d ago       0 saved | 0 skipped | 0 failed | 0 no-image | 5 still queued
   ✓ market                     2026-07-04T14:00:25    success    16h ago      0 items processed | None pulled
@@ -10,10 +10,10 @@ JOB                          LAST RUN               STATUS     AGO          DETA
   NEVER RUN                    canada
   NEVER RUN                    brazil
   ✓ state                      2026-06-28T08:04:00    success    6d ago       
-  ✓ quality-rewrite            2026-07-05T06:10:23    success    39m ago      skipped — queue empty (50 docs already reviewed)
-  ✓ gun-deals                  2026-07-05T06:05:16    success    44m ago      fetched:437 added:1 skipped:79 healed:0 imaged:0
+  ✓ quality-rewrite            2026-07-05T06:10:23    success    41m ago      skipped — queue empty (50 docs already reviewed)
+  ✓ gun-deals                  2026-07-05T06:05:16    success    46m ago      fetched:437 added:1 skipped:79 healed:0 imaged:0
   ✓ fix-placeholder-images     2026-07-05T04:00:34    success    2h ago       No placeholder images found — all clean
-  ✓ cron-health                2026-07-05T06:00:48    success    49m ago      HEALTHY — 0 issue(s)
+  ✓ cron-health                2026-07-05T06:00:48    success    50m ago      HEALTHY — 0 issue(s)
   ✓ sitemap                    2026-07-05T02:00:46    success    4h ago       Revalidated: /sitemap.xml, /news-sitemap.xml, /blog
 
 
