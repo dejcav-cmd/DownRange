@@ -2,8 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 47 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/01570d8197652f6601280ab7f9a347f
+Needs image fix: 51 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5b1dafe1c79c0139b7127c29524130d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f6cb6422250b992773f7a9594f74402
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/df5ff3167e62e4cb0b01e5c53637635
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0844f2aba3b27a97770f6362c52f45b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e339688d7fbba51f92b07e32a09a37b
   skip coupon: https://gun.deals/content/coupon-store-ar15discountssaturday
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
@@ -50,10 +54,10 @@ Needs image fix: 47 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 6
+  → patched final 10
 
-Stats: uploaded=1 fallback=5 failed=3
+Stats: uploaded=5 fallback=5 failed=3
 
-=== FINAL: total=4001 missing_images=40 reddit=0 ===
+=== FINAL: total=4006 missing_images=40 reddit=0 ===
 
-FIXED: 6
+FIXED: 10
