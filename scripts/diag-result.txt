@@ -1,13 +1,10 @@
 Article : Desert Eagle Mark XIX Now Ships Threaded for Suppressors
-imageUrl: https://pixabay.com/get/g0ab0787464c6dd62a87419c199e28bb4dc3c5c37871320d14538ebdc598214fee1c809eb86dfcbb98cd7fffc69667198da609d7914131aa57e41d59b418cf3ca_1280.jpg
-category: industry
-needs_fix: True
+imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/bb3704ca7bd2c2e43ba3219c8b9a732017b36cff-1280x960.jpg
 
-Trying: 'Desert Eagle Mark XIX 50 AE pistol'
+Query: 'Desert Eagle 50 caliber semi-automatic pistol'
   Pexels error: HTTP Error 403: Forbidden
-  Pixabay [Desert Eagle Mark XIX 50 AE pistol]: https://pixabay.com/get/g2e6e2c6b13a9e6ba8fbad658127006ebe1b3b7358504147af51cb9d
-  ✓ Uploaded: https://cdn.sanity.io/images/vbnsqnkg/production/bb3704ca7bd2c2e43ba3219c8b9a732
+  Pixabay hit: https://pixabay.com/get/g5eab86c424b250b792b744aee577dd86afe1c60e5de0500d09b0cdd
+  CDN: https://cdn.sanity.io/images/vbnsqnkg/production/06a627eafbea2f7010d6f3b53e70d58
 
-✓ Patched imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/bb3704ca7bd2c2e43ba3219c8b9a732
-
+✓ Patched: https://cdn.sanity.io/images/vbnsqnkg/production/06a627eafbea2f7010d6f3b53e70d58
 Done.
