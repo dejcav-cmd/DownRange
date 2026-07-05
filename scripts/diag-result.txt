@@ -2,15 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 51 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69bfeac1e8d1bd002b4388ce597a5a3
+Needs image fix: 48 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/91713c51f2d500b3a762b92985e8d0b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b1fbf9de153e3e98f6cf1e38d23dd8f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5c275b4aae235c941449c4c704cb98a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8a167668018135aa086c100e6359c9f
   skip coupon: https://gun.deals/content/coupon-store-ar15discountssaturday
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/440c919af83dfb09069954e1450ded5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0a97de6e733cbdebb3a505cf8b607fb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3d7bb74c00311c1b8a4fec0c0040a9c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a149bf7d594d95e0508990631d35197
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/872bf657ca89b6c109727e51aa20d50
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/88944c7f4faf5a36dcc0fa4dfba3332
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   skip coupon: https://gun.deals/content/coupon-store-shooting-targets-usaf
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
@@ -54,10 +51,10 @@ Needs image fix: 51 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 10
+  → patched final 7
 
-Stats: uploaded=7 fallback=3 failed=3
+Stats: uploaded=4 fallback=3 failed=3
 
-=== FINAL: total=3943 missing_images=40 reddit=0 ===
+=== FINAL: total=3947 missing_images=40 reddit=0 ===
 
-FIXED: 10
+FIXED: 7
