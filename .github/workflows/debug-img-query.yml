@@ -10,13 +10,35 @@ jobs:
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
         run: python3 scripts/debug_image_check.py
-      - name: Commit results
+      - name: Upload results via API
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git remote set-url origin "https://dejcav-cmd:${GH_PAT}@github.com/dejcav-cmd/DownRange.git"
-          git add scripts/debug_image_results.txt
-          git commit -m "debug: image query results" || echo "nothing to commit"
-          git push origin main
+          import base64, json, urllib.request, os
+          with open("scripts/debug_image_results.txt", "rb") as f:
+              content = base64.b64encode(f.read()).decode()
+          pat = os.environ["GH_PAT"]
+          # Check if file exists to get SHA
+          try:
+              req = urllib.request.Request(
+                  "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/debug_image_results.txt",
+                  headers={"Authorization": f"Bearer {pat}", "Accept": "application/vnd.github.v3+json"}
+              )
+              with urllib.request.urlopen(req) as r:
+                  existing = json.loads(r.read())
+              sha = existing.get("sha", "")
+          except:
+              sha = ""
+          payload = {"message": "debug: image query results", "content": content}
+          if sha:
+              payload["sha"] = sha
+          data = json.dumps(payload).encode()
+          req2 = urllib.request.Request(
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/debug_image_results.txt",
+              data=data, method="PUT",
+              headers={"Authorization": f"Bearer {pat}", "Content-Type": "application/json"}
+          )
+          with urllib.request.urlopen(req2) as r:
+              result = json.loads(r.read())
+          print("Committed:", result.get("commit", {}).get("sha", "")[:12])
+        shell: python3 {0}
