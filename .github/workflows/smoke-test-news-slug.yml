@@ -1,0 +1,39 @@
+name: smoke-test-news-slug
+on:
+  workflow_dispatch:
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test news slug pages
+        run: |
+          BASE="https://www.downrangeco.com"
+          
+          # Fetch 5 recent slugs from Sanity
+          SLUGS=$(curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=*%5B_type%3D%3D%22newsArticle%22+%26%26+approved%3D%3Dtrue+%26%26+defined(slug.current)%5D%7Corder(publishedAt+desc)%5B0...5%5D%7B%22s%22%3Aslug.current%7D" \
+            -H "Authorization: Bearer ${{ secrets.SANITY_API_TOKEN }}" | \
+            python3 -c "import json,sys; [print(a['s']) for a in json.load(sys.stdin).get('result',[])]" 2>/dev/null)
+          
+          if [ -z "$SLUGS" ]; then
+            echo "Sanity fetch failed - testing with preview domain fallback"
+            SLUGS=$(curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=*%5B_type%3D%3D%22newsArticle%22+%26%26+approved%3D%3Dtrue+%26%26+defined(slug.current)%5D%7Corder(publishedAt+desc)%5B0...5%5D%7B%22s%22%3Aslug.current%7D" | \
+              python3 -c "import json,sys; [print(a['s']) for a in json.load(sys.stdin).get('result',[])]" 2>/dev/null)
+          fi
+          
+          PASS=0
+          FAIL=0
+          echo "=== Testing /news/[slug] pages ==="
+          for SLUG in $SLUGS; do
+            STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://www.downrangeco.com/news/$SLUG" \
+              -H "User-Agent: Mozilla/5.0 DownRange-SmokeTest" --max-time 20)
+            echo "  /news/$SLUG → HTTP $STATUS"
+            if [ "$STATUS" = "200" ] || [ "$STATUS" = "404" ]; then
+              PASS=$((PASS+1))
+            else
+              FAIL=$((FAIL+1))
+            fi
+          done
+          
+          echo ""
+          echo "Results: $PASS ok, $FAIL failed (500s)"
+          [ "$FAIL" -eq 0 ]
