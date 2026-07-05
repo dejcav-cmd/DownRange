@@ -1,0 +1,27 @@
+name: debug-img-check2
+on:
+  workflow_dispatch:
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run Sanity query
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          python3 -c "
+import urllib.request, urllib.parse, json, os
+token = os.environ['SANITY_TOKEN']
+slug = 'mark-xix-desert-eagle-suppressor-ready-69efb4'
+q = '*[_type == "newsArticle" && slug.current == "' + slug + '"] { _id, title, imageUrl, externalUrl, category }'
+url = 'https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=' + urllib.parse.quote(q)
+req = urllib.request.Request(url, headers={'Authorization': 'Bearer ' + token})
+with urllib.request.urlopen(req) as r:
+    data = json.loads(r.read())
+for doc in data.get('result', []):
+    print('TITLE:', doc.get('title'))
+    print('IMAGE_URL:', doc.get('imageUrl'))
+    print('EXTERNAL_URL:', doc.get('externalUrl'))
+    print('CATEGORY:', doc.get('category'))
+"
