@@ -1,27 +1,27 @@
-Cron status check — 2026-07-05 06:59 UTC
+Cron status check — 2026-07-05 07:04 UTC
 
 JOB                          LAST RUN               STATUS     AGO          DETAIL
 ----------------------------------------------------------------------------------------------------
-  ✓ news                       2026-07-05T06:31:33    success    28m ago      2 published (1 AI, 1 raw) of 25 fetched · 23 dupes | Mark XI
+  ✓ news                       2026-07-05T06:31:33    success    32m ago      2 published (1 AI, 1 raw) of 25 fetched · 23 dupes | Mark XI
   ✓ laws                       2026-06-04T18:03:47    success    30d ago      20 saved · 0 failed
   ✓ releases                   2026-07-04T05:25:07    success    1d ago       0 saved | 0 skipped | 0 failed | 0 no-image | 5 still queued
-  ✓ market                     2026-07-04T14:00:25    success    16h ago      0 items processed | None pulled
-  ✓ video                      2026-07-05T04:00:39    success    2h ago       0 new videos | 38 already existed | 13/13 channels | 0 error
+  ✓ market                     2026-07-04T14:00:25    success    17h ago      0 items processed | None pulled
+  ✓ video                      2026-07-05T04:00:39    success    3h ago       0 new videos | 38 already existed | 13/13 channels | 0 error
   NEVER RUN                    canada
   NEVER RUN                    brazil
   ✓ state                      2026-06-28T08:04:00    success    6d ago       
-  ✓ quality-rewrite            2026-07-05T06:10:23    success    49m ago      skipped — queue empty (50 docs already reviewed)
-  ✓ gun-deals                  2026-07-05T06:05:16    success    54m ago      fetched:437 added:1 skipped:79 healed:0 imaged:0
-  ✓ fix-placeholder-images     2026-07-05T04:00:34    success    2h ago       No placeholder images found — all clean
-  ✓ cron-health                2026-07-05T06:00:48    success    58m ago      HEALTHY — 0 issue(s)
-  ✓ sitemap                    2026-07-05T02:00:46    success    4h ago       Revalidated: /sitemap.xml, /news-sitemap.xml, /blog
+  ✓ quality-rewrite            2026-07-05T06:10:23    success    53m ago      skipped — queue empty (50 docs already reviewed)
+  ✓ gun-deals                  2026-07-05T06:05:16    success    58m ago      fetched:437 added:1 skipped:79 healed:0 imaged:0
+  ✓ fix-placeholder-images     2026-07-05T04:00:34    success    3h ago       No placeholder images found — all clean
+  ✓ cron-health                2026-07-05T07:00:39    success    3m ago       HEALTHY — 0 issue(s)
+  ✓ sitemap                    2026-07-05T02:00:46    success    5h ago       Revalidated: /sitemap.xml, /news-sitemap.xml, /blog
 
 
 ⚠️  3 ISSUE(S) FOUND:
-  - STALE: market last ran 16h ago
+  - STALE: market last ran 17h ago
   - NEVER RUN: canada
   - NEVER RUN: brazil
 
 === Recent news articles ===
 Articles in last 24h: 1
-  2026-07-04T10:52 | Combat Handguns | Desert Eagle Mark XIX Now Ships Threaded for Suppressors
+  2026-07-04T10:52 | Combat Handguns | Desert Eagle Mark XIX Now Ships Suppressor-Ready from Factor
