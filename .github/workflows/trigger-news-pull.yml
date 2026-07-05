@@ -1,0 +1,17 @@
+name: Trigger News Pull
+on:
+  workflow_dispatch:
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fire news agent and capture result
+        run: |
+          echo "Triggering /api/agent?feed=news..."
+          curl -i -X GET "https://downrangeco.com/api/agent?feed=news" \
+            -H "Authorization: Bearer ${{ secrets.CRON_SECRET }}" \
+            -H "User-Agent: GitHub-Actions-ManualTrigger/1.0" \
+            --max-time 310 \
+            2>&1
+          echo ""
+          echo "Done."
