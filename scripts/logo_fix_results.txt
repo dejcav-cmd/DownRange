@@ -1,0 +1,12 @@
+Articles with logo-shaped images found: 9
+  CLEARED: [fa64ca43] Desert Eagle Mark XIX Now Ships Suppressor-Ready from Factor was: 68731b7851eec6becc66d389ee0292501664689-306x94.png
+  CLEARED: [a5e9e7f4] California AG: Glock Ban Doesn't Violate Second Amendment Ri was: 8f095eabed49a9abd5a3cc75902f54d094a7c8-150x150.jpg
+  CLEARED: [3199106b] Woman's Parking Lot Shooting Sparks Debate Over Self-Defense was: 763ffd73c6bdf4f4b5ff4fb57ba5983ba63100-150x150.jpg
+  CLEARED: [23ead88c] STINC Converts PSA Krink Into OTs-14 Groza Bullpup Kit was: 60ca76bdd8667ac340123c52c9f61a1233bad2-350x220.jpg
+  CLEARED: [b71aa65b] DSArms Discontinues AR-10 Line, Doubles Down on FAL Producti was: e35c37d469ce08bf6b9a30aebcb9a62af08131-350x220.jpg
+  CLEARED: [6cfdabe4] Extar Introduces EP9 MDB Delayed Blowback Pistol at GunCon 2 was: 2c07300d5d542577f8f5db4248e6bd4ddc8247-350x220.jpg
+  CLEARED: [b8e8d8e3] LSD Arms Ships Factory-Ready FRT Rifles with Disruptor Pre-I was: 14518e3e5b70e63a6d60cd96826a46d4e630f0-350x220.jpg
+  CLEARED: [8fd5ba8a] Biofire's Biometric 9mm Reaches Market After Decades of Dela was: 1aab5a7beeec2446c20d8bf420e34d7a967380-350x220.jpg
+  CLEARED: [82eb9c20] USPS Still Blocking Handgun Shipments Despite Court Loss was: 0c4035b4ef3da03c8700a0a2e3912f41d3bf-1080x1350.jpg
+
+Cleared 9 articles. fix-placeholder-images cron will re-scrape photos.
