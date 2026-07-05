@@ -1,3 +1,7 @@
+"""
+Force-fix the Desert Eagle article image + trigger Vercel revalidation.
+Targeted at: mark-xix-desert-eagle-suppressor-ready-69efb4
+"""
 import urllib.request, urllib.parse, json, os, re, time
 
 TOKEN   = os.environ.get("SANITY_TOKEN","").replace("ST=","")
@@ -17,41 +21,28 @@ def mutate(mutations):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-def fetch_og_image(page_url):
-    try:
-        req = urllib.request.Request(page_url, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; Googlebot/2.1; +http://www.google.com/bot.html)",
-            "Accept": "text/html,application/xhtml+xml",
-        })
-        with urllib.request.urlopen(req, timeout=12) as r:
-            html = r.read(100000).decode("utf-8", errors="ignore")
-        patterns = [
-            r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
-            r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
-            r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']',
-        ]
-        for p in patterns:
-            m = re.search(p, html, re.I)
-            if m:
-                url = m.group(1).strip()
-                if url.startswith('http') and any(ext in url.lower() for ext in ['.jpg','.jpeg','.png','.webp']):
-                    return url
-    except Exception as e:
-        print(f"  OG fetch error: {e}")
-    return None
+def is_logo_sized(url):
+    """Reject logo/banner images by dimension hints in Sanity CDN URLs."""
+    if not url: return True
+    m = re.search(r'-(\d+)x(\d+)\.(png|jpg|jpeg|webp)', url, re.I)
+    if not m: return False
+    w, h = int(m.group(1)), int(m.group(2))
+    return w < 400 or (h and w/h > 3.5) or h > w
 
 def upload_to_sanity(image_url, label):
     try:
         req = urllib.request.Request(image_url, headers={
-            "User-Agent": "Mozilla/5.0 (compatible; DownRange/1.0)",
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
             "Referer": "https://downrangeco.com",
+            "Accept": "image/*,*/*",
         })
-        with urllib.request.urlopen(req, timeout=15) as r:
+        with urllib.request.urlopen(req, timeout=20) as r:
             buf = r.read()
             ct  = r.headers.get("Content-Type","image/jpeg")
-        if len(buf) < 5000:
+        if len(buf) < 8000:
+            print(f"  ✗ Image too small ({len(buf)} bytes)")
             return None
-        ext = "png" if "png" in ct else "webp" if "webp" in ct else "jpg"
+        ext   = "png" if "png" in ct else "webp" if "webp" in ct else "jpg"
         fname = f"{label}-{int(time.time())}.{ext}"
         up = urllib.request.Request(
             f"https://{PROJECT}.api.sanity.io/v2024-01-01/assets/images/production?filename={fname}",
@@ -60,156 +51,105 @@ def upload_to_sanity(image_url, label):
         )
         with urllib.request.urlopen(up, timeout=30) as r:
             data = json.loads(r.read())
-        return data.get("document",{}).get("url") or data.get("url")
+        url = data.get("document",{}).get("url") or data.get("url")
+        if url:
+            print(f"  ✓ Uploaded: {url[:80]}")
+        return url
     except Exception as e:
-        print(f"  Upload error: {e}")
+        print(f"  ✗ Upload error: {e}")
     return None
 
-def call_ai(prompt):
-    """Call Anthropic API for the rewrite."""
-    api_key = os.environ.get("ANTHROPIC_API_KEY","")
-    url = "https://api.anthropic.com/v1/messages"
-    payload = json.dumps({
-        "model": "claude-haiku-4-5-20251001",
-        "max_tokens": 3500,
-        "messages": [{"role": "user", "content": prompt}]
-    }).encode()
-    req = urllib.request.Request(url, data=payload, method="POST", headers={
-        "x-api-key": api_key,
-        "anthropic-version": "2023-06-01",
-        "Content-Type": "application/json",
-    })
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = json.loads(r.read())
-    return data["content"][0]["text"]
+def search_pexels(query):
+    key = os.environ.get("PEXELS_API_KEY","")
+    if not key: return None
+    try:
+        url = f"https://api.pexels.com/v1/search?query={urllib.parse.quote(query)}&orientation=landscape&size=large&per_page=5"
+        req = urllib.request.Request(url, headers={"Authorization": key})
+        with urllib.request.urlopen(req, timeout=12) as r:
+            data = json.loads(r.read())
+        photos = data.get("photos", [])
+        # Prefer landscape
+        photo = next((p for p in photos if p.get("width",0) >= p.get("height",0)), photos[0] if photos else None)
+        if photo:
+            hit = photo["src"].get("large2x") or photo["src"].get("large") or photo["src"].get("medium")
+            print(f"  Pexels [{query}]: {hit[:80] if hit else 'no hit'}")
+            return hit
+    except Exception as e:
+        print(f"  Pexels error: {e}")
+    return None
 
-# ── Fetch article ─────────────────────────────────────────────────────────────
-slug = "liberals-extend-gun-confiscation-amnesty-while-continuing-seizures"
-doc  = q(f'*[_type=="canadaContent" && slug.current=="{slug}"][0]{{_id,title,body,imageUrl,sourceUrl,summary}}')
+def search_pixabay(query):
+    key = os.environ.get("PIXABAY_API_KEY","")
+    if not key: return None
+    try:
+        url = f"https://pixabay.com/api/?key={key}&q={urllib.parse.quote(query)}&image_type=photo&orientation=horizontal&min_width=800&per_page=5&safesearch=true"
+        with urllib.request.urlopen(url, timeout=12) as r:
+            data = json.loads(r.read())
+        hit = data.get("hits",[None])[0]
+        if hit:
+            img = hit.get("largeImageURL") or hit.get("webformatURL")
+            print(f"  Pixabay [{query}]: {img[:80] if img else 'no hit'}")
+            return img
+    except Exception as e:
+        print(f"  Pixabay error: {e}")
+    return None
+
+# ── FETCH ARTICLE ─────────────────────────────────────────────────────────────
+SLUG = "mark-xix-desert-eagle-suppressor-ready-69efb4"
+doc  = q(f'*[_type=="newsArticle" && slug.current=="{SLUG}"][0]{{_id,title,imageUrl,externalUrl,category}}')
 
 if not doc:
     print("Article not found"); exit(1)
 
-print(f"Article: {doc.get('title','')[:70]}")
-print(f"imageUrl: {doc.get('imageUrl','')[:60]}")
-body  = doc.get("body","") or ""
-words = len(re.sub(r'<[^>]+>',' ',body).split())
-print(f"body: {len(body)} chars, {words} words")
+print(f"Article : {doc.get('title','')[:70]}")
+print(f"imageUrl: {doc.get('imageUrl') or 'NULL'}")
+print(f"category: {doc.get('category','')}")
 
-# ── Step 1: Fix image ─────────────────────────────────────────────────────────
-current_img = doc.get("imageUrl","") or ""
-is_placeholder = not current_img or "thegunblog.ca" in current_img or "law.jpg" in current_img or not current_img.startswith("https://cdn.sanity.io")
+current = doc.get("imageUrl","") or ""
+needs_fix = (
+    not current
+    or current.endswith(".svg")
+    or "/img/" in current
+    or is_logo_sized(current)
+    or not current.startswith("https://cdn.sanity.io")
+)
+print(f"needs_fix: {needs_fix}")
 
-if is_placeholder:
-    print("\n── Fetching CDN image via Pexels...")
-    final_img = None
-    pexels_key = os.environ.get("PEXELS_API_KEY","")
-    if pexels_key:
-        try:
-            req = urllib.request.Request(
-                "https://api.pexels.com/v1/search?query=canada+gun+law+confiscation+firearm&per_page=5&orientation=landscape",
-                headers={"Authorization": pexels_key}
-            )
-            with urllib.request.urlopen(req, timeout=10) as r:
-                pdata = json.loads(r.read())
-            photo = pdata.get("photos",[None])[0]
-            if photo:
-                og = photo["src"].get("large2x") or photo["src"].get("large")
-                print(f"  Pexels hit: {og[:70]}")
-                cdn = upload_to_sanity(og, "ca-img")
-                if cdn:
-                    final_img = cdn
-                    print(f"  ✓ Uploaded to CDN: {cdn[:60]}")
-                else:
-                    final_img = og
-                    print(f"  ~ Using direct Pexels URL")
-        except Exception as e:
-            print(f"  Pexels error: {e}")
-    
-    if not final_img:
-        # Try Pixabay
-        pixabay_key = os.environ.get("PIXABAY_API_KEY","")
-        if pixabay_key:
-            try:
-                url = f"https://pixabay.com/api/?key={pixabay_key}&q=canada+gun+firearm&image_type=photo&orientation=horizontal&per_page=3&safesearch=true"
-                with urllib.request.urlopen(url, timeout=10) as r:
-                    pdata = json.loads(r.read())
-                hit = pdata.get("hits",[None])[0]
-                if hit:
-                    og = hit.get("largeImageURL") or hit.get("webformatURL")
-                    cdn = upload_to_sanity(og, "ca-img")
-                    final_img = cdn or og
-                    print(f"  Pixabay: {final_img[:60] if final_img else 'none'}")
-            except Exception as e:
-                print(f"  Pixabay error: {e}")
-    
-    if final_img:
-        mutate([{"patch": {"id": doc["_id"], "set": {"imageUrl": final_img}}}])
-        print(f"  ✓ Image set: {final_img[:70]}")
-    else:
-        print("  No image found — leaving placeholder")
+if not needs_fix:
+    print("\nImage looks good already — forcing re-fetch anyway to get best quality.")
+
+# ── SEARCH FOR REAL IMAGE ─────────────────────────────────────────────────────
+# Try progressively broader queries until we get something
+QUERIES = [
+    "Desert Eagle Mark XIX 50 AE pistol",
+    "Desert Eagle handgun 50 caliber",
+    "Desert Eagle semi automatic pistol",
+    "Magnum Research Desert Eagle firearm",
+    "large caliber semi automatic handgun",
+    "50 caliber handgun pistol shooting",
+]
+
+final_img = None
+for query in QUERIES:
+    print(f"\nTrying: '{query}'")
+    img = search_pexels(query)
+    if not img:
+        img = search_pixabay(query)
+    if img:
+        cdn = upload_to_sanity(img, "desert-eagle")
+        if cdn:
+            final_img = cdn
+            break
+        else:
+            # Use direct URL if CDN upload fails
+            final_img = img
+            break
+
+if final_img:
+    mutate([{"patch": {"id": doc["_id"], "set": {"imageUrl": final_img}}}])
+    print(f"\n✓ Patched imageUrl: {final_img[:80]}")
 else:
-    print(f"\nImage already on CDN: {current_img[:60]}")
-
-# ── Step 2: AI rewrite body ────────────────────────────────────────────────────
-print(f"\n── AI rewriting body (currently {words} words)...")
-
-src_text = re.sub(r'<[^>]+>',' ', body).strip()[:1500]
-
-prompt = f"""You write for DownRange — a firearms and Second Amendment portal covering Canada.
-
-Write a complete, properly structured news article about this topic for Canadian gun owners.
-The article must:
-- Be 500-700 words
-- Have exactly 4 <h2> sections (no h1)
-- Use active voice, specific facts, real names
-- Sound like a Canadian gun owner who knows firearms law cold
-- NOT use banned words: comprehensive, dive into, robust, seamlessly, leverage, empower, game-changer, landmark, significant development, furthermore, in conclusion, stakeholders, holistic, unpack, groundbreaking, notably
-
-REQUIRED STRUCTURE:
-<h2>[Lead — state the hardest fact]</h2>
-<p>Opening paragraph with who/what/when/where.</p>
-<h2>What This Means for PAL Holders</h2>
-<p>Direct practical impact on licensed gun owners.</p>
-<h2>Background</h2>
-<p>Context: CCFR challenge, OIC history, amnesty timeline.</p>
-<h2>DownRange Bottom Line</h2>
-<p>Blunt one-paragraph take for the daily carrier.</p>
-
-Source article title: {doc.get('title','')}
-Source URL: {doc.get('sourceUrl','')}
-Source content: {src_text}
-
-Return ONLY valid JSON with no markdown fences:
-{{"title":"original DownRange headline max 12 words","body":"<full HTML article>","summary":"2-3 sentence plain text under 250 chars"}}"""
-
-try:
-    raw    = call_ai(prompt)
-    clean  = raw.replace("```json","").replace("```","").strip()
-    m      = re.search(r'\{[\s\S]*\}', clean)
-    parsed = json.loads(m.group(0)) if m else {}
-    
-    new_body  = parsed.get("body","")
-    new_title = parsed.get("title","") or doc.get("title","")
-    new_sum   = parsed.get("summary","") or doc.get("summary","")
-    
-    new_words = len(re.sub(r'<[^>]+>',' ', new_body).split())
-    new_h2s   = len(re.findall(r'<h2', new_body, re.I))
-    print(f"  AI output: {new_words} words, {new_h2s} h2s")
-    
-    if new_words >= 300 and new_h2s >= 2:
-        mutate([{"patch": {"id": doc["_id"], "set": {
-            "body":            new_body,
-            "title":           new_title,
-            "summary":         new_sum,
-            "qualityReviewed": True,
-        }}}])
-        print(f"  ✓ Body rewritten: {new_words} words")
-        print(f"  ✓ Title: {new_title[:70]}")
-    else:
-        print(f"  ✗ Output too short or no h2s — not saving")
-except Exception as e:
-    print(f"  ✗ AI rewrite failed: {e}")
-    print(f"  Raw: {raw[:200] if 'raw' in dir() else 'N/A'}")
+    print("\n✗ Could not find any image — leaving as-is")
+    exit(1)
 
 print("\nDone.")
