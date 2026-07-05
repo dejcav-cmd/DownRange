@@ -6,6 +6,7 @@ import NewsCard            from '../../../components/ui/NewsCard'
 import { getArticleBySlug, getArticleById, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 import EmailCapture from '../../../components/ui/EmailCapture'
+import ShareButtons from '../../../components/ui/ShareButtons'
 
 // Local photo fallbacks — always available, no hotlink risk
 const ARTICLE_FALLBACKS = {
@@ -406,16 +407,7 @@ export default async function ArticlePage({ params }) {
             {/* Share */}
             <div style={{ marginTop: '2rem', paddingTop: '1.5rem', borderTop: '1px solid var(--border)', display: 'flex', gap: '0.75rem', alignItems: 'center' }}>
               <span style={{ fontSize: '0.7rem', color: '#4B5563', fontFamily: "'IBM Plex Mono',monospace", letterSpacing: '0.1em' }}>SHARE:</span>
-              {[
-                { label: 'X / TWITTER', href: `https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title)}&url=${encodeURIComponent('https://www.downrangeco.com/news/' + params.slug)}` },
-                { label: 'FACEBOOK',    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent('https://www.downrangeco.com/news/' + params.slug)}` },
-              ].map(s => (
-                <a key={s.label} href={s.href} target="_blank" rel="noopener noreferrer"
-                  onClick={() => { if (typeof window !== 'undefined' && window.gtag) window.gtag('event', 'article_share', { method: s.label.toLowerCase().replace(' / ', '_'), content_id: params.slug }) }}
-                  style={{ color: '#4B5563', textDecoration: 'none', fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', padding: '4px 8px', border: '1px solid var(--border)', transition: 'color 0.2s, border-color 0.2s' }}>
-                  {s.label}
-                </a>
-              ))}
+              <ShareButtons title={article.title} slug={params.slug} />
             </div>
           </div>
 
