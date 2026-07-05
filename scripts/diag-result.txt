@@ -2,8 +2,7 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 47 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4ed0523c1c1fdcc008270596668336d
+Needs image fix: 46 (null + gun.deals hotlink-blocked)
   skip coupon: https://gun.deals/content/coupon-store-ar15discountssaturday
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
@@ -50,10 +49,10 @@ Needs image fix: 47 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 6
+  → patched final 5
 
-Stats: uploaded=1 fallback=5 failed=3
+Stats: uploaded=0 fallback=5 failed=3
 
 === FINAL: total=3967 missing_images=40 reddit=0 ===
 
-FIXED: 6
+FIXED: 5
