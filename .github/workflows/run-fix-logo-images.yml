@@ -1,0 +1,12 @@
+name: run-fix-logo-images
+on:
+  workflow_dispatch:
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fix logo-shaped images in Sanity
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/fix_logo_images.py
