@@ -1,0 +1,42 @@
+name: debug-article-image
+on:
+  workflow_dispatch:
+
+jobs:
+  query:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Query Sanity for article image
+        id: query
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          python3 << 'PYEOF'
+import urllib.request, urllib.parse, json, os
+
+token = os.environ['SANITY_TOKEN']
+slug = "mark-xix-desert-eagle-suppressor-ready-69efb4"
+query = '*[_type == "newsArticle" && slug.current == "' + slug + '"] { _id, title, imageUrl, externalUrl, heroImage, category }'
+encoded = urllib.parse.quote(query)
+url = f"https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query={encoded}"
+
+req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+with urllib.request.urlopen(req) as r:
+    data = json.loads(r.read())
+
+result = data.get("result", [])
+print("ARTICLE_COUNT:", len(result))
+for doc in result:
+    print("ID:", doc.get("_id"))
+    print("TITLE:", doc.get("title"))
+    print("IMAGE_URL:", doc.get("imageUrl"))
+    print("EXTERNAL_URL:", doc.get("externalUrl"))
+    print("CATEGORY:", doc.get("category"))
+    print("HERO_IMAGE:", doc.get("heroImage"))
+PYEOF
+
+      - name: Commit results
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          echo "Query complete - check logs above"
