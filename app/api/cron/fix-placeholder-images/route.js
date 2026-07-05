@@ -171,13 +171,18 @@ function buildSearchQuery(title = '', category = '') {
     /\b(trijicon\s*(?:acog|rmr|sro|vcog|mro|accupoint)|eotech\s*(?:exps|vudu|holographic|xps)|aimpoint\s*(?:pro|comp|micro|acro|patrol)|vortex\s*(?:razor|viper|strike\s*eagle|crossfire|spitfire|sparc|defender|opmod)|leupold\s*(?:deltapoint|mark|vx|firedot)|nightforce\s*\w+|schmidt\s*&\s*bender\s*\w+|holosun\s*(?:\d+|eps|507|510|aems)|burris\s*(?:fastfire|rt\-6|veracity|fullfield)|sig\s*(?:romeo|tango|kilo|electro-optics)|primary\s*arms\s*\w+|bushnell\s*\w+)\b/i
   )?.[1]
 
-  // If we got a specific model, use it directly
+  // If we got a specific model, always append a firearm type word.
+  // NEVER return a bare model name — "desert eagle" returns the bird,
+  // "python" returns the snake, "viper" returns the snake, etc.
   const specificModel = handgunModel || rifleModel || shotgunModel || suppressorModel || opticsModel
   if (specificModel) {
     const cleaned = specificModel.replace(/\s+/g, ' ').trim()
-    // Add "firearm" context if it's a pure model number that might be ambiguous
-    const needsContext = /^\d/.test(cleaned) || cleaned.length < 5
-    return needsContext ? `${cleaned} firearm gun` : cleaned
+    if (suppressorModel) return `${cleaned} suppressor firearm`
+    if (opticsModel)     return `${cleaned} rifle optic scope`
+    if (shotgunModel)    return `${cleaned} shotgun firearm`
+    if (rifleModel)      return `${cleaned} rifle firearm`
+    // handgun — always append to avoid animal/place/brand collisions
+    return `${cleaned} pistol handgun firearm`
   }
 
   // ── BRAND + TYPE EXTRACTION ──────────────────────────────────────────────────

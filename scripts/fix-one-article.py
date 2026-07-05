@@ -1,6 +1,6 @@
 """
-Force-fix the Desert Eagle article image + trigger Vercel revalidation.
-Targeted at: mark-xix-desert-eagle-suppressor-ready-69efb4
+Force-fix the Desert Eagle article with correct firearm-specific search queries.
+Never search bare gun model names — always append 'handgun' or 'pistol firearm'.
 """
 import urllib.request, urllib.parse, json, os, re, time
 
@@ -21,14 +21,6 @@ def mutate(mutations):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-def is_logo_sized(url):
-    """Reject logo/banner images by dimension hints in Sanity CDN URLs."""
-    if not url: return True
-    m = re.search(r'-(\d+)x(\d+)\.(png|jpg|jpeg|webp)', url, re.I)
-    if not m: return False
-    w, h = int(m.group(1)), int(m.group(2))
-    return w < 400 or (h and w/h > 3.5) or h > w
-
 def upload_to_sanity(image_url, label):
     try:
         req = urllib.request.Request(image_url, headers={
@@ -40,7 +32,7 @@ def upload_to_sanity(image_url, label):
             buf = r.read()
             ct  = r.headers.get("Content-Type","image/jpeg")
         if len(buf) < 8000:
-            print(f"  ✗ Image too small ({len(buf)} bytes)")
+            print(f"  Too small ({len(buf)} bytes)")
             return None
         ext   = "png" if "png" in ct else "webp" if "webp" in ct else "jpg"
         fname = f"{label}-{int(time.time())}.{ext}"
@@ -52,11 +44,26 @@ def upload_to_sanity(image_url, label):
         with urllib.request.urlopen(up, timeout=30) as r:
             data = json.loads(r.read())
         url = data.get("document",{}).get("url") or data.get("url")
-        if url:
-            print(f"  ✓ Uploaded: {url[:80]}")
+        if url: print(f"  CDN: {url[:80]}")
         return url
     except Exception as e:
-        print(f"  ✗ Upload error: {e}")
+        print(f"  Upload error: {e}")
+    return None
+
+def search_pixabay(query):
+    key = os.environ.get("PIXABAY_API_KEY","")
+    if not key: return None
+    try:
+        url = f"https://pixabay.com/api/?key={key}&q={urllib.parse.quote(query)}&image_type=photo&orientation=horizontal&min_width=800&per_page=5&safesearch=true"
+        with urllib.request.urlopen(url, timeout=12) as r:
+            data = json.loads(r.read())
+        hits = data.get("hits",[])
+        if hits:
+            img = hits[0].get("largeImageURL") or hits[0].get("webformatURL")
+            print(f"  Pixabay hit: {img[:80] if img else 'none'}")
+            return img
+    except Exception as e:
+        print(f"  Pixabay error: {e}")
     return None
 
 def search_pexels(query):
@@ -67,31 +74,14 @@ def search_pexels(query):
         req = urllib.request.Request(url, headers={"Authorization": key})
         with urllib.request.urlopen(req, timeout=12) as r:
             data = json.loads(r.read())
-        photos = data.get("photos", [])
-        # Prefer landscape
+        photos = data.get("photos",[])
         photo = next((p for p in photos if p.get("width",0) >= p.get("height",0)), photos[0] if photos else None)
         if photo:
-            hit = photo["src"].get("large2x") or photo["src"].get("large") or photo["src"].get("medium")
-            print(f"  Pexels [{query}]: {hit[:80] if hit else 'no hit'}")
-            return hit
-    except Exception as e:
-        print(f"  Pexels error: {e}")
-    return None
-
-def search_pixabay(query):
-    key = os.environ.get("PIXABAY_API_KEY","")
-    if not key: return None
-    try:
-        url = f"https://pixabay.com/api/?key={key}&q={urllib.parse.quote(query)}&image_type=photo&orientation=horizontal&min_width=800&per_page=5&safesearch=true"
-        with urllib.request.urlopen(url, timeout=12) as r:
-            data = json.loads(r.read())
-        hit = data.get("hits",[None])[0]
-        if hit:
-            img = hit.get("largeImageURL") or hit.get("webformatURL")
-            print(f"  Pixabay [{query}]: {img[:80] if img else 'no hit'}")
+            img = photo["src"].get("large2x") or photo["src"].get("large") or photo["src"].get("medium")
+            print(f"  Pexels hit: {img[:80] if img else 'none'}")
             return img
     except Exception as e:
-        print(f"  Pixabay error: {e}")
+        print(f"  Pexels error: {e}")
     return None
 
 # ── FETCH ARTICLE ─────────────────────────────────────────────────────────────
@@ -103,53 +93,35 @@ if not doc:
 
 print(f"Article : {doc.get('title','')[:70]}")
 print(f"imageUrl: {doc.get('imageUrl') or 'NULL'}")
-print(f"category: {doc.get('category','')}")
 
-current = doc.get("imageUrl","") or ""
-needs_fix = (
-    not current
-    or current.endswith(".svg")
-    or "/img/" in current
-    or is_logo_sized(current)
-    or not current.startswith("https://cdn.sanity.io")
-)
-print(f"needs_fix: {needs_fix}")
-
-if not needs_fix:
-    print("\nImage looks good already — forcing re-fetch anyway to get best quality.")
-
-# ── SEARCH FOR REAL IMAGE ─────────────────────────────────────────────────────
-# Try progressively broader queries until we get something
+# ── SEARCH WITH FIREARM-SPECIFIC QUERIES ─────────────────────────────────────
+# CRITICAL: always include 'pistol', 'handgun', or 'semi-automatic' to avoid
+# returning photos of animals, places, or other things named similarly.
 QUERIES = [
-    "Desert Eagle Mark XIX 50 AE pistol",
-    "Desert Eagle handgun 50 caliber",
-    "Desert Eagle semi automatic pistol",
-    "Magnum Research Desert Eagle firearm",
-    "large caliber semi automatic handgun",
-    "50 caliber handgun pistol shooting",
+    "Desert Eagle 50 caliber semi-automatic pistol",
+    "Magnum Research Desert Eagle handgun",
+    "50 AE semi-automatic pistol suppressor threaded",
+    "large caliber semi-automatic pistol 50 caliber",
+    "semi-automatic pistol shooting range large caliber",
+    "handgun pistol suppressor ready threaded barrel",
 ]
 
 final_img = None
 for query in QUERIES:
-    print(f"\nTrying: '{query}'")
+    print(f"\nQuery: '{query}'")
     img = search_pexels(query)
     if not img:
         img = search_pixabay(query)
     if img:
-        cdn = upload_to_sanity(img, "desert-eagle")
-        if cdn:
-            final_img = cdn
-            break
-        else:
-            # Use direct URL if CDN upload fails
-            final_img = img
-            break
+        cdn = upload_to_sanity(img, "desert-eagle-pistol")
+        final_img = cdn or img
+        break
 
 if final_img:
     mutate([{"patch": {"id": doc["_id"], "set": {"imageUrl": final_img}}}])
-    print(f"\n✓ Patched imageUrl: {final_img[:80]}")
+    print(f"\n✓ Patched: {final_img[:80]}")
 else:
-    print("\n✗ Could not find any image — leaving as-is")
+    print("\n✗ No image found")
     exit(1)
 
-print("\nDone.")
+print("Done.")

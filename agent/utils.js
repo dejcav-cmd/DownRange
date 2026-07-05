@@ -307,7 +307,13 @@ function buildSearchQuery(title = '', category = '') {
   const specificModel = handgunModel || rifleModel || shotgunModel || suppressorModel || opticsModel
   if (specificModel) {
     const cleaned = specificModel.replace(/\s+/g, ' ').trim()
-    return /^\d/.test(cleaned) || cleaned.length < 5 ? `${cleaned} firearm` : cleaned
+    // Always append firearm type — never return bare model name.
+    // "desert eagle" returns the bird. "python"/"cobra"/"viper" return snakes.
+    if (suppressorModel) return `${cleaned} suppressor firearm`
+    if (opticsModel)     return `${cleaned} rifle optic scope`
+    if (shotgunModel)    return `${cleaned} shotgun firearm`
+    if (rifleModel)      return `${cleaned} rifle firearm`
+    return `${cleaned} pistol handgun firearm`
   }
 
   const brandMatch = title.match(/\b(glock|sig\s*sauer|smith\s*(?:&|and)\s*wesson|s&w|ruger|kimber|springfield|colt|beretta|fn\s*america|heckler\s*(?:&|and)\s*koch|hk|walther|canik|taurus|kel-?tec|mossberg|remington|benelli|winchester|browning|savage|tikka|barrett|christensen|daniel\s*defense|aero\s*precision|bcm|larue|lwrci|noveske|silencerco|dead\s*air|surefire|leupold|vortex|nightforce|trijicon|eotech|aimpoint|holosun)\b/i)?.[1]
