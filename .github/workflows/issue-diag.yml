@@ -15,16 +15,39 @@ jobs:
     if: github.event_name == 'workflow_dispatch'
     steps:
       - uses: actions/checkout@v4
-      - name: Run diagnostics
+      - name: Test news slug HTTP responses
         env:
-          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/diag_issues.py
-      - name: Commit result
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
+          SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
         run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
-          git add scripts/diag-result.txt
-          git diff --staged --quiet || (git commit -m "diag result" && git pull --rebase && git push) || true
+          python3 - << 'PYEOF'
+import urllib.request, urllib.parse, json, os, subprocess, sys
+
+token = os.environ.get("SANITY_API_TOKEN", "")
+query = '*[_type=="newsArticle"&&approved==true&&defined(slug.current)]|order(publishedAt desc)[0...6]{"s":slug.current}'
+url = f"https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(query)}"
+
+slugs = []
+try:
+    req = urllib.request.Request(url, headers={"Authorization": f"Bearer {token}"})
+    with urllib.request.urlopen(req, timeout=15) as r:
+        d = json.loads(r.read())
+    slugs = [a["s"] for a in d.get("result", []) if a.get("s")]
+    print(f"Fetched {len(slugs)} slugs from Sanity")
+except Exception as e:
+    print(f"Sanity error: {e}")
+    sys.exit(0)
+
+base = "https://www.downrangeco.com"
+passed = failed = 0
+print("\\n=== /news/[slug] smoke test ===")
+for slug in slugs:
+    r = subprocess.run(["curl","-s","-o","/dev/null","-w","%{http_code}","-A","Mozilla/5.0 DownRange-SmokeTest","--max-time","20","-L",f"{base}/news/{slug}"],capture_output=True,text=True)
+    code = r.stdout.strip()
+    mark = "PASS" if code in ("200","404") else ("FAIL-500" if code=="500" else f"HTTP{code}")
+    print(f"  {mark}  /news/{slug}  ->  {code}")
+    if code == "500": failed += 1
+    else: passed += 1
+
+print(f"\\nSummary: {passed} ok, {failed} 500-errors")
+if failed: sys.exit(1)
+PYEOF
