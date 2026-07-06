@@ -4,12 +4,24 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
 const FORM_TYPES = [
-  { key: 'suppressor',      icon: '🔇', label: 'Suppressor / Can',     color: '#34D399', bg: 'rgba(52,211,153,.08)',  border: 'rgba(52,211,153,.2)'  },
-  { key: 'sbr-make',        icon: '🎯', label: 'SBR / SBS (Form 1)',   color: '#60A5FA', bg: 'rgba(96,165,250,.08)',  border: 'rgba(96,165,250,.2)'  },
-  { key: 'dealer-transfer', icon: '🏪', label: 'Dealer Transfer (F3)', color: '#A78BFA', bg: 'rgba(167,139,250,.08)', border: 'rgba(167,139,250,.2)' },
-  { key: 'machinegun',      icon: '⚙️', label: 'Machine Gun (Pre-86)', color: '#EF4444', bg: 'rgba(239,68,68,.08)',   border: 'rgba(239,68,68,.2)'   },
-  { key: 'paper',           icon: '📄', label: 'Paper Submission',     color: '#F59E0B', bg: 'rgba(245,158,11,.08)',  border: 'rgba(245,158,11,.2)'  },
+  { key:'form4-ind',   icon:'🔇', label:'Form 4 · Individual', color:'#34D399', bg:'rgba(52,211,153,.08)',  border:'rgba(52,211,153,.2)' },
+  { key:'form4-trust', icon:'🔇', label:'Form 4 · Trust',      color:'#22C55E', bg:'rgba(34,197,94,.08)',   border:'rgba(34,197,94,.2)' },
+  { key:'form1',       icon:'🎯', label:'Form 1 · Make',       color:'#60A5FA', bg:'rgba(96,165,250,.08)',  border:'rgba(96,165,250,.2)' },
+  { key:'form3',       icon:'🏪', label:'Form 3 · Dealer',     color:'#A78BFA', bg:'rgba(167,139,250,.08)', border:'rgba(167,139,250,.2)' },
+  { key:'form5',       icon:'📋', label:'Form 5 · Tax-Exempt', color:'#F59E0B', bg:'rgba(245,158,11,.08)',  border:'rgba(245,158,11,.2)' },
+  { key:'form2',       icon:'🏭', label:'Form 2 · Mfg',        color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form9',       icon:'📦', label:'Form 9 · Export',     color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form10',      icon:'🏛️', label:'Form 10 · Gov',       color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form20',      icon:'🚚', label:'Form 20 · Transport', color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form7',       icon:'📜', label:'Form 7 · FFL',        color:'#EF4444', bg:'rgba(239,68,68,.08)',   border:'rgba(239,68,68,.2)' },
 ]
+
+function fmtNum(n) {
+  if (n == null) return null
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'
+  if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K'
+  return String(n)
+}
 
 function TrendBadge({ trend, delta }) {
   const cfg = {
@@ -57,14 +69,14 @@ function FormCard({ w, meta, large }) {
 
       {/* Big number */}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
-        <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: large ? '4rem' : '3.2rem', lineHeight: 1, color: meta.color }}>
+        <span style={{ fontFamily: "'Bebas Neue',cursive", fontSize: large ? '4rem' : '3.2rem', lineHeight: 1, color: meta.color }}>
           {w.avgDays}
         </span>
         <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#555', fontWeight: 600 }}>DAYS AVG</span>
       </div>
 
       {/* Sub info */}
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', marginBottom: 2 }}>{w.formType}</div>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', marginBottom: 2 }}>{w.desc || w.formType}</div>
       <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#888' }}>
         Range: <span style={{ color: '#34D399' }}>{w.minDays}d</span> — <span style={{ color: '#EF4444' }}>{w.maxDays}d</span>
       </div>
@@ -127,26 +139,32 @@ export default function NFATracker() {
   const getMeta = (w) => FORM_TYPES.find(t => t.key === w.category) || FORM_TYPES[0]
 
   // Split into primary (suppressor, sbr, dealer) and secondary (paper, machinegun)
-  const primaryForms  = forms.filter(f => !['paper','machinegun'].includes(f.category))
-  const secondaryForms = forms.filter(f => ['paper','machinegun'].includes(f.category))
+  const primaryForms   = forms.filter(f => f.tier !== 'secondary')
+  const secondaryForms = forms.filter(f => f.tier === 'secondary')
 
   return (
     <>
       <Masthead />
 
       {/* HERO */}
-      <div style={{ background: '#0a0a0a', borderBottom: '2px solid #c8922a', padding: '52px 0 40px' }}>
-        <div className="container">
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8922a', letterSpacing: '.2em', marginBottom: 12 }}>
-            ⏱ NFA PROCESSING INTELLIGENCE
+      <div style={{ background: '#0a0a0a', borderBottom: '2px solid #c8922a', padding: '56px 0 44px', position:'relative', overflow:'hidden' }}>
+        <div aria-hidden style={{ position:'absolute', inset:0, backgroundImage:'url(/img/photos/rifle.jpg)', backgroundSize:'cover', backgroundPosition:'center', opacity:.5, pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(10,10,10,.9) 0%, rgba(10,10,10,.6) 48%, rgba(10,10,10,.28) 100%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(10,10,10,.88) 0%, transparent 58%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.12), transparent 60%)', pointerEvents:'none' }} />
+        <div className="container" style={{ position:'relative' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
+            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8922a', letterSpacing: '.2em' }}>⏱ NFA PROCESSING INTELLIGENCE</span>
+            <span style={{ display:'flex', alignItems:'center', gap:6, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#22C55E', letterSpacing:'.1em' }}><span className="nfa-live-dot" /> LIVE</span>
           </div>
-          <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
+          <h1 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
             NFA WAIT TIME<br /><span style={{ color: '#c8922a' }}>TRACKER</span>
           </h1>
-          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
-            Current ATF Form 4 processing times · Scraped from ATF.gov & industry trackers · Estimate your approval date
+          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#cbd5e1', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
+            Live ATF processing times for every NFA form · Straight from ATF.gov · Estimate your approval date
           </p>
         </div>
+        <style>{`@keyframes nfaPulse{0%,100%{opacity:1}50%{opacity:.35}} .nfa-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;animation:nfaPulse 1.6s infinite}`}</style>
       </div>
 
       <div style={{ padding: '40px 0 80px' }}>
@@ -195,9 +213,35 @@ export default function NFATracker() {
             )}
           </div>
 
+          {/* ATF BY THE NUMBERS — surprise stats panel */}
+          {data?.atfStats && (
+            <div style={{ marginBottom: 34 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#c8922a', letterSpacing:'.2em' }}>ATF BY THE NUMBERS</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#555' }}>· {data.atfStats.reportMonth}</span>
+                <div style={{ flex:1, height:1, background:'#1a1a1a' }} />
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))', gap:10 }}>
+                {[
+                  [fmtNum(data.atfStats.silencerAppsReceived), 'Silencer Form 4s filed', 'this month'],
+                  [data.atfStats.medianEForm4 != null ? data.atfStats.medianEForm4 + 'd' : null, 'Median eForm 4', 'individual approval'],
+                  [fmtNum(data.atfStats.silencersRegistered), 'Silencers registered', 'in the NFRTR'],
+                  [fmtNum(data.atfStats.sbrRegistered), 'SBRs registered', 'in the NFRTR'],
+                  [fmtNum(data.atfStats.totalNfaReceived), 'Total NFA filings', 'this month'],
+                ].filter(x => x[0]).map(([n, l, s], i) => (
+                  <div key={i} style={{ background:'#0d0d0d', border:'1px solid #1a1a1a', padding:'16px' }}>
+                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:'#c8922a', lineHeight:1 }}>{n}</div>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:13, color:'#ddd', letterSpacing:'.04em', marginTop:6 }}>{l}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#666', letterSpacing:'.06em', marginTop:2 }}>{s}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
           {/* SECTION HEADER */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.8rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
+            <h2 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.8rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
               CURRENT ATF PROCESSING TIMES
             </h2>
             <div style={{ flex: 1, height: 1, background: '#1e1e1e' }} />
@@ -214,7 +258,7 @@ export default function NFATracker() {
             </div>
           ) : forms.length === 0 ? (
             <div style={{ background: '#0f0f0f', border: '1px solid #1a1a1a', padding: 40, marginBottom: 48, textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.4rem', color: '#555', marginBottom: 8 }}>NO DATA LOADED</div>
+              <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.4rem', color: '#555', marginBottom: 8 }}>NO DATA LOADED</div>
               <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#444' }}>Run the NFA Wait Times cron from the admin panel to fetch current data.</div>
             </div>
           ) : (
@@ -246,7 +290,7 @@ export default function NFATracker() {
           {/* ESTIMATE CALCULATOR */}
           <div style={{ background: '#0a0a0a', border: '1px solid #2a1a0a', padding: '36px 32px', marginBottom: 40 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-              <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.8rem', color: '#c8922a', margin: 0, letterSpacing: '.05em' }}>
+              <h2 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.8rem', color: '#c8922a', margin: 0, letterSpacing: '.05em' }}>
                 ESTIMATE YOUR APPROVAL DATE
               </h2>
               <div style={{ flex: 1, height: 1, background: '#2a1a0a' }} />
@@ -265,7 +309,7 @@ export default function NFATracker() {
               <input type="date" value={form.submitted} onChange={e => setForm(f => ({ ...f, submitted: e.target.value }))}
                 style={{ flex: 1, minWidth: 160, background: '#111', border: '1px solid #222', color: '#eee', padding: '13px 16px', fontFamily: "'IBM Plex Mono',monospace", fontSize: 12 }} />
               <button onClick={calcEstimate}
-                style={{ background: '#c8922a', color: '#000', border: 'none', padding: '13px 28px', fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: '.08em', cursor: 'pointer', whiteSpace: 'nowrap', borderBottom: '3px solid #7a5010' }}>
+                style={{ background: '#c8922a', color: '#000', border: 'none', padding: '13px 28px', fontFamily: "'Bebas Neue',cursive", fontSize: '1.1rem', letterSpacing: '.08em', cursor: 'pointer', whiteSpace: 'nowrap', borderBottom: '3px solid #7a5010' }}>
                 CALCULATE →
               </button>
             </div>
@@ -281,7 +325,7 @@ export default function NFATracker() {
                   ].map(col => (
                     <div key={col.label}>
                       <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#555', marginBottom: 6, letterSpacing: '.12em' }}>{col.label}</div>
-                      <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.6rem', color: col.color, lineHeight: 1 }}>{col.val}</div>
+                      <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.6rem', color: col.color, lineHeight: 1 }}>{col.val}</div>
                       {col.sub && <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#666', marginTop: 4 }}>{col.sub}</div>}
                     </div>
                   ))}
@@ -317,7 +361,7 @@ export default function NFATracker() {
           {/* HOW TO CHECK STATUS */}
           <div style={{ background: '#0a0a0a', border: '1px solid #1a1a1a', padding: '32px 28px', marginBottom: 40 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.5rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
+              <h3 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.5rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
                 CHECK YOUR APPLICATION STATUS
               </h3>
               <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
@@ -329,7 +373,7 @@ export default function NFATracker() {
                 { step: '03', title: 'Pending Research', desc: '"Pending Research" means additional review — not denied. Follow up after 90 days.', color: '#F59E0B', href: null },
               ].map(s => (
                 <div key={s.step} style={{ display: 'flex', gap: 16 }}>
-                  <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '2rem', color: s.color, flexShrink: 0, lineHeight: 1, opacity: .5 }}>{s.step}</div>
+                  <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '2rem', color: s.color, flexShrink: 0, lineHeight: 1, opacity: .5 }}>{s.step}</div>
                   <div>
                     {s.href
                       ? <a href={s.href} target="_blank" rel="noreferrer" style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: s.color, textDecoration: 'none', display: 'block', marginBottom: 6, letterSpacing: '.03em' }}>{s.title} ↗</a>
@@ -344,10 +388,9 @@ export default function NFATracker() {
 
           {/* DATA SOURCES FOOTER */}
           <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', lineHeight: 2, borderTop: '1px solid #222', paddingTop: 20 }}>
-            <strong style={{ color: '#999', letterSpacing: '.08em' }}>DATA SOURCES:</strong>{' '}
-            <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#888', textDecoration: 'none' }}>ATF.gov official processing times</a> ·{' '}
-            <a href="https://www.silencershop.com/atf-wait-times" target="_blank" rel="noreferrer" style={{ color: '#888', textDecoration: 'none' }}>Silencer Shop tracker</a> ·{' '}
-            Silencer Central community data · Updated Mon + Thu 6am UTC · Individual results vary.
+            <strong style={{ color: '#999', letterSpacing: '.08em' }}>DATA SOURCE:</strong>{' '}
+            <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#c8922a', textDecoration: 'none' }}>ATF.gov — official current processing times</a>.{' '}
+            Averages reflect ATF&rsquo;s most recently finalized applications. Refreshed every 2 days · individual results vary.
           </div>
 
         </div>
