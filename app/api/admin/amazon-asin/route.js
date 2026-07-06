@@ -144,17 +144,32 @@ export async function POST(req) {
   const html        = await fetchProductHtml(asin)
   const { title: scrapedTitle, imageUrl: scrapedImg, price } = parseProductData(html, asin)
 
-  const title    = scrapedTitle || `Amazon Product ${asin}`
-  const category = reqCat || detectCategory(title)
+  // If scraping failed, require explicit title from the caller
+  const scraped = !!scrapedTitle
+  const title   = scrapedTitle || body.manualTitle || null
+
+  if (!title) {
+    return NextResponse.json({
+      ok:        false,
+      scrapeFailed: true,
+      asin,
+      price,
+      imageUrl:  scrapedImg,
+      error:     'Amazon blocked the product page scrape. Enter the product title manually to save.',
+    }, { status: 422 })
+  }
+
+  const category = body.category || reqCat || detectCategory(title)
 
   // If dryRun, return preview without saving
   if (dryRun) {
     return NextResponse.json({
-      ok:       true,
-      preview:  true,
+      ok:          true,
+      preview:     true,
       asin,
-      title,
-      imageUrl: scrapedImg,
+      title:       title || null,
+      scrapeFailed: !scraped,
+      imageUrl:    scrapedImg,
       price,
       category,
       affiliateUrl: `https://www.amazon.com/dp/${asin}?tag=${ASSOCIATE_TAG}&linkCode=ogi&th=1&psc=1`,

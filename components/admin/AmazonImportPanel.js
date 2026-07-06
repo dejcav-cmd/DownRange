@@ -7,12 +7,13 @@ const CATS  = ['accessory','optic','rifle','pistol','shotgun','ammo','suppressor
 const TAG   = 'downrangeco-20'
 
 export default function AmazonImportPanel({ adminKey }) {
-  const [input,    setInput]    = useState('')
-  const [cat,      setCat]      = useState('accessory')
-  const [state,    setState]    = useState('idle')   // idle | previewing | saving | done | error
-  const [preview,  setPreview]  = useState(null)
-  const [msg,      setMsg]      = useState('')
-  const [history,  setHistory]  = useState([])       // last 5 saved deals
+  const [input,       setInput]       = useState('')
+  const [cat,         setCat]         = useState('accessory')
+  const [state,       setState]       = useState('idle')
+  const [preview,     setPreview]     = useState(null)
+  const [manualTitle, setManualTitle] = useState('')
+  const [msg,         setMsg]         = useState('')
+  const [history,     setHistory]     = useState([])
 
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
 
@@ -22,51 +23,53 @@ export default function AmazonImportPanel({ adminKey }) {
     setState('previewing')
     setMsg('')
     setPreview(null)
+    setManualTitle('')
     try {
       const res  = await fetch('/api/admin/amazon-asin', {
         method: 'POST', headers: H,
         body: JSON.stringify({ input: input.trim(), category: cat, dryRun: true }),
       })
       const data = await res.json()
-      if (!res.ok) {
-        setState('error')
-        setMsg(data.error || 'Failed to fetch product data')
+      // 422 = scrape failed — surface it the same way as a preview
+      if (res.status === 422 || data.scrapeFailed) {
+        setPreview({ ...data, scrapeFailed: true })
+        setState('previewed')
+        setMsg('⚠ Amazon blocked the scrape — enter the product title below to continue.')
         return
       }
+      if (!res.ok) { setState('error'); setMsg(data.error || 'Failed'); return }
       setPreview(data)
       setState('previewed')
-    } catch (e) {
-      setState('error')
-      setMsg('Network error: ' + e.message)
-    }
+    } catch (e) { setState('error'); setMsg('Network error: ' + e.message) }
   }
 
   // ── Save deal ──────────────────────────────────────────────────────────────
   async function saveDeal() {
     if (!input.trim()) return
+    const needsManual = preview?.scrapeFailed
+    if (needsManual && !manualTitle.trim()) {
+      setMsg('⚠ Title required — Amazon blocked the scrape. Enter the title above.')
+      return
+    }
     setState('saving')
     setMsg('')
     try {
       const res  = await fetch('/api/admin/amazon-asin', {
         method: 'POST', headers: H,
-        body: JSON.stringify({ input: input.trim(), category: cat }),
+        body: JSON.stringify({
+          input: input.trim(),
+          category: cat,
+          ...(needsManual ? { manualTitle: manualTitle.trim() } : {}),
+        }),
       })
       const data = await res.json()
-      if (!res.ok) {
-        setState('error')
-        setMsg(data.error || 'Save failed')
-        return
-      }
+      if (!res.ok) { setState('error'); setMsg(data.error || 'Save failed'); return }
       setState('done')
       setMsg(`✓ Saved — "${data.title}"`)
       setHistory(h => [{ asin: data.asin, title: data.title, price: data.price, url: data.affiliateUrl }, ...h].slice(0, 5))
-      setInput('')
-      setPreview(null)
+      setInput(''); setPreview(null); setManualTitle('')
       setTimeout(() => setState('idle'), 3000)
-    } catch (e) {
-      setState('error')
-      setMsg('Network error: ' + e.message)
-    }
+    } catch (e) { setState('error'); setMsg('Network error: ' + e.message) }
   }
 
   const busy = state === 'previewing' || state === 'saving'
@@ -158,23 +161,47 @@ export default function AmazonImportPanel({ adminKey }) {
       {/* Preview card */}
       {preview && state === 'previewed' && (
         <div style={{
-          marginTop: 12, display:'flex', gap:12, alignItems:'flex-start',
-          padding: '10px 12px', background: 'var(--bg3)', border: '1px solid var(--border-mid)', borderRadius:4,
+          marginTop: 12, padding: '10px 12px',
+          background: 'var(--bg3)', border: `1px solid ${preview.scrapeFailed ? '#f59e0b44' : 'var(--border-mid)'}`, borderRadius: 4,
         }}>
-          {preview.imageUrl && (
-            <img src={preview.imageUrl} alt="" style={{ width:64, height:64, objectFit:'cover', borderRadius:3, flexShrink:0 }} />
-          )}
-          <div style={{ flex:1, minWidth:0 }}>
-            <div style={{ fontFamily:MONO, fontSize:11, color:'var(--text)', marginBottom:4, lineHeight:1.4 }}>
-              {preview.title}
-            </div>
-            <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
-              {preview.price && <span style={{ fontFamily:MONO, fontSize:11, color: GOLD }}>{preview.price}</span>}
-              <span style={{ fontFamily:MONO, fontSize:10, color:'var(--text-dim)' }}>ASIN: {preview.asin}</span>
-              <span style={{ fontFamily:MONO, fontSize:10, color:'var(--text-dim)' }}>{preview.category}</span>
-              {!preview.scraped && <span style={{ fontFamily:MONO, fontSize:10, color:'#f59e0b' }}>⚠ title from ASIN — scrape blocked</span>}
+          <div style={{ display:'flex', gap:12, alignItems:'flex-start' }}>
+            {preview.imageUrl && !preview.scrapeFailed && (
+              <img src={preview.imageUrl} alt="" style={{ width:64, height:64, objectFit:'cover', borderRadius:3, flexShrink:0 }} />
+            )}
+            <div style={{ flex:1, minWidth:0 }}>
+              {preview.scrapeFailed ? (
+                <div style={{ fontFamily:MONO, fontSize:10, color:'#f59e0b', marginBottom:8 }}>
+                  ⚠ Amazon blocked product page — enter title manually to save
+                </div>
+              ) : (
+                <div style={{ fontFamily:MONO, fontSize:11, color:'var(--text)', marginBottom:4, lineHeight:1.4 }}>
+                  {preview.title}
+                </div>
+              )}
+              <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
+                {preview.price && <span style={{ fontFamily:MONO, fontSize:11, color: GOLD }}>{preview.price}</span>}
+                <span style={{ fontFamily:MONO, fontSize:10, color:'var(--text-dim)' }}>ASIN: {preview.asin}</span>
+                <span style={{ fontFamily:MONO, fontSize:10, color:'var(--text-dim)' }}>{preview.category || cat}</span>
+              </div>
             </div>
           </div>
+
+          {/* Manual title input shown only when scrape failed */}
+          {preview.scrapeFailed && (
+            <div style={{ marginTop:10 }}>
+              <span style={label}>Product Title <span style={{ color:'#ef4444' }}>*required</span></span>
+              <input
+                style={{ ...input_s, borderColor: manualTitle.trim() ? 'var(--border)' : '#f59e0b66' }}
+                placeholder="e.g. Eberlestock Bando Bag Tactical Fanny Pack"
+                value={manualTitle}
+                onChange={e => setManualTitle(e.target.value)}
+                disabled={busy}
+              />
+              <div style={{ fontFamily:MONO, fontSize:10, color:'var(--text-dim)', marginTop:4 }}>
+                Copy the title from the Amazon product page. The affiliate link is already set.
+              </div>
+            </div>
+          )}
         </div>
       )}
 
