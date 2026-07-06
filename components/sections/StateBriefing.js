@@ -8,6 +8,15 @@ const COND = "'Barlow Condensed',sans-serif"
 
 const QUICK = ['TX', 'FL', 'CA', 'NY', 'PA', 'GA']
 
+function timeAgo(iso) {
+  if (!iso) return ''
+  const diff = Math.floor((Date.now() - new Date(iso).getTime()) / 60000)
+  if (diff < 1) return 'just now'
+  if (diff < 60) return `${diff}m ago`
+  if (diff < 1440) return `${Math.floor(diff / 60)}h ago`
+  return `${Math.floor(diff / 1440)}d ago`
+}
+
 function ok(t)   { return { lvl: 'ok',   ico: '✓', text: t } }
 function warn(t) { return { lvl: 'warn', ico: '⚠', text: t } }
 function no(t)   { return { lvl: 'no',   ico: '✗', text: t } }
@@ -34,6 +43,8 @@ function verdict(cat, s) {
       if (s.abbr === 'CA') return warn('Must be on the CA approved roster')
       if (s.awbFull || s.abbr === 'NY') return warn(`${s.name}: permit / registration required`)
       return ok(`Legal in ${s.name}`)
+    case 'GENERAL':
+      return ok(`No state restriction — ships to ${s.name}`)
     default:
       return ok(`Legal in ${s.name}`)
   }
@@ -57,7 +68,7 @@ const yn = (v, goodIsYes = true) => {
   return { txt: v ? 'Yes' : 'No', color: good ? '#22C55E' : '#EF4444' }
 }
 
-export default function StateBriefing({ states = [], deals = [], articles = [] }) {
+export default function StateBriefing({ states = [], deals = [], articles = [], heroImage = null }) {
   const byAbbr = {}
   for (const s of states) byAbbr[s.abbr] = s
   const has = a => byAbbr[a]
@@ -85,8 +96,8 @@ export default function StateBriefing({ states = [], deals = [], articles = [] }
     (a.title || '').toLowerCase().includes(nl) ||
     (a.tags || []).some(t => (t || '').toLowerCase().includes(nl) || (t || '').toLowerCase() === abbr.toLowerCase())
   )
-  const news = (stateNews.length >= 2 ? stateNews : articles).slice(0, 2)
-  const newsIsState = stateNews.length >= 2
+  const news = (stateNews.length >= 3 ? stateNews : articles).slice(0, 4)
+  const newsIsState = stateNews.length >= 3
 
   const carry = yn(s.carry)
   const rf    = yn(s.rf, false)
@@ -95,7 +106,9 @@ export default function StateBriefing({ states = [], deals = [], articles = [] }
     <>
       {/* ══ BRIEFING — the single organizing idea ══ */}
       <section style={{ padding:'40px 0 32px', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.10), transparent 60%)', pointerEvents:'none' }} />
+        {heroImage && <div style={{ position:'absolute', inset:0, backgroundImage:`url(${heroImage})`, backgroundSize:'cover', backgroundPosition:'center', opacity:.20, pointerEvents:'none' }} />}
+        {heroImage && <div style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(8,8,10,.97) 0%, rgba(8,8,10,.86) 42%, rgba(8,8,10,.62) 100%)', pointerEvents:'none' }} />}
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.12), transparent 60%)', pointerEvents:'none' }} />
         <div className="container" style={{ position:'relative' }}>
           <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:20 }}>
             <span style={{ fontFamily:MONO, fontSize:11, letterSpacing:'.22em', textTransform:'uppercase', color:'#C8922A' }}>Today&rsquo;s Briefing</span>
@@ -162,27 +175,37 @@ export default function StateBriefing({ states = [], deals = [], articles = [] }
             <h2 style={{ fontFamily:DISP, fontSize:22, letterSpacing:'.04em' }}>Deals you can actually buy in <span style={{ color:'#C8922A' }}>{s.name}</span></h2>
             <Link href="/deals" className="section-link" style={{ fontFamily:MONO, fontSize:10, color:'#C8922A', letterSpacing:'.1em' }}>ALL LIVE DEALS →</Link>
           </div>
-          <div className="briefing-deals" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
-            {deals.map((d, i) => {
-              const v = verdict(d.cat, s)
-              const vs = V_STYLE[v.lvl]
-              return (
-                <Link key={i} href="/deals" className="release-card" style={{ background:'var(--bg2)', border:'1px solid var(--border-mid)', display:'flex', flexDirection:'column', overflow:'hidden' }}>
-                  <div style={{ height:96, background:'linear-gradient(135deg,#1a1f2a,#0c0f14)', position:'relative' }}>
-                    <span style={{ position:'absolute', top:8, left:8, fontFamily:MONO, fontSize:8, fontWeight:700, letterSpacing:'.1em', color:'#C8922A', background:'rgba(200,146,42,.14)', padding:'2px 6px' }}>{d.cat}</span>
-                  </div>
-                  <div style={{ padding:'12px 13px', display:'flex', flexDirection:'column', flex:1 }}>
-                    <div style={{ fontFamily:MONO, fontSize:8.5, color:'#6B7280', marginBottom:3, letterSpacing:'.05em' }}>{d.brand}</div>
-                    <div style={{ fontFamily:COND, fontWeight:700, fontSize:15, lineHeight:1.12, marginBottom:7 }}>{d.name}</div>
-                    <div style={{ fontFamily:DISP, fontSize:22, color:'#C8922A', letterSpacing:'.02em', marginBottom:10 }}>{d.price} {d.was && <s style={{ fontFamily:MONO, fontSize:11, color:'#6B7280', marginLeft:6 }}>{d.was}</s>}</div>
-                    <div style={{ marginTop:'auto', fontFamily:MONO, fontSize:10, lineHeight:1.4, padding:'7px 8px', borderRadius:2, display:'flex', gap:6, alignItems:'flex-start', background:vs.bg, border:`1px solid ${vs.bd}`, color:vs.fg }}>
-                      <span style={{ fontWeight:700 }}>{v.ico}</span><span>{v.text}</span>
+          {deals.length > 0 ? (
+            <div className="briefing-deals" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px,1fr))', gap:12 }}>
+              {deals.slice(0, 12).map((d, i) => {
+                const v = verdict(d.cat, s)
+                const vs = V_STYLE[v.lvl]
+                const badge = d.cat === 'GENERAL' ? 'DEAL' : d.cat
+                return (
+                  <a key={i} href={d.url || '/deals'} target="_blank" rel="noopener noreferrer" className="release-card" style={{ background:'var(--bg2)', border:'1px solid var(--border-mid)', display:'flex', flexDirection:'column', overflow:'hidden', textDecoration:'none' }}>
+                    <div style={{ height:120, background:'linear-gradient(135deg,#1a1f2a,#0c0f14)', position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
+                      {d.imageUrl
+                        ? <img src={d.imageUrl} alt="" onError={e => { e.currentTarget.style.display = 'none' }} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                        : <span style={{ fontSize:26, opacity:.18 }}>🎯</span>}
+                      <span style={{ position:'absolute', top:8, left:8, fontFamily:MONO, fontSize:8, fontWeight:700, letterSpacing:'.1em', color:'#C8922A', background:'rgba(8,8,10,.75)', border:'1px solid rgba(200,146,42,.3)', padding:'2px 6px' }}>{badge}</span>
                     </div>
-                  </div>
-                </Link>
-              )
-            })}
-          </div>
+                    <div style={{ padding:'12px 13px', display:'flex', flexDirection:'column', flex:1 }}>
+                      <div style={{ fontFamily:MONO, fontSize:8.5, color:'#6B7280', marginBottom:3, letterSpacing:'.05em' }}>{d.brand}</div>
+                      <div style={{ fontFamily:COND, fontWeight:700, fontSize:14.5, lineHeight:1.14, marginBottom:8, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>{d.name}</div>
+                      {d.price && <div style={{ fontFamily:DISP, fontSize:22, color:'#C8922A', letterSpacing:'.02em', marginBottom:10 }}>{d.price}</div>}
+                      <div style={{ marginTop:'auto', fontFamily:MONO, fontSize:9.5, lineHeight:1.4, padding:'7px 8px', borderRadius:2, display:'flex', gap:6, alignItems:'flex-start', background:vs.bg, border:`1px solid ${vs.bd}`, color:vs.fg }}>
+                        <span style={{ fontWeight:700 }}>{v.ico}</span><span>{v.text}</span>
+                      </div>
+                    </div>
+                  </a>
+                )
+              })}
+            </div>
+          ) : (
+            <Link href="/deals" style={{ display:'block', background:'var(--bg2)', border:'1px dashed var(--border-mid)', padding:'28px', textAlign:'center', fontFamily:MONO, fontSize:12, color:'#9CA3AF', textDecoration:'none' }}>
+              Browse the full live deal feed on the deals page →
+            </Link>
+          )}
           <p style={{ fontFamily:MONO, fontSize:9.5, color:'#4B5563', marginTop:12, letterSpacing:'.04em' }}>
             Legality checks run on live 50-state law data. Featured picks refresh weekly — the full live feed is on the deals page.
           </p>
@@ -198,14 +221,18 @@ export default function StateBriefing({ states = [], deals = [], articles = [] }
             </h2>
             <Link href="/news" className="section-link" style={{ fontFamily:MONO, fontSize:10, color:'#C8922A', letterSpacing:'.1em' }}>ALL 2A NEWS →</Link>
           </div>
-          <div className="briefing-news" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:12 }}>
-            {news.map((n, i) => (
-              <Link key={n._id || i} href={n.slug ? `/news/${n.slug}` : '/news'} className="review-card" style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'14px 16px', display:'flex', flexDirection:'column', gap:6 }}>
-                <span style={{ fontFamily:MONO, fontSize:8, fontWeight:700, letterSpacing:'.08em', color:'#3B82F6', background:'rgba(59,130,246,.12)', padding:'1px 6px', width:'fit-content' }}>⚖ {(n.category || 'NEWS').toUpperCase()}</span>
-                <div style={{ fontFamily:COND, fontWeight:600, fontSize:15, lineHeight:1.2 }}>{n.title}</div>
-                <div style={{ fontFamily:MONO, fontSize:9, color:'#6B7280' }}>{n.source}</div>
-              </Link>
-            ))}
+          <div style={{ border:'1px solid var(--border)', background:'var(--bg2)' }}>
+            {news.map((n, i) => {
+              const cat = (n.category || 'news').toLowerCase()
+              const cc = { law:'#3B82F6', breaking:'#EF4444', industry:'#C8922A', opinion:'#a855f7', training:'#22c55e', news:'#9CA3AF' }[cat] || '#9CA3AF'
+              return (
+                <Link key={n._id || i} href={n.slug ? `/news/${n.slug}` : '/news'} className="news-row" style={{ display:'flex', alignItems:'center', gap:14, padding:'13px 16px', borderBottom: i < news.length - 1 ? '1px solid var(--border)' : 'none', textDecoration:'none' }}>
+                  <span style={{ fontFamily:MONO, fontSize:8, fontWeight:700, letterSpacing:'.08em', color:cc, background:cc + '1a', border:`1px solid ${cc}44`, padding:'2px 7px', textTransform:'uppercase', flexShrink:0, minWidth:66, textAlign:'center' }}>{cat}</span>
+                  <span className="news-row-title" style={{ fontFamily:COND, fontWeight:600, fontSize:16, lineHeight:1.2, color:'#F0EDE6', flex:1, transition:'color .14s' }}>{n.title}</span>
+                  <span style={{ fontFamily:MONO, fontSize:9, color:'#6B7280', flexShrink:0, whiteSpace:'nowrap' }}>{n.source}{n.publishedAt ? ` · ${timeAgo(n.publishedAt)}` : ''}</span>
+                </Link>
+              )
+            })}
           </div>
         </div>
       </section>
@@ -214,12 +241,10 @@ export default function StateBriefing({ states = [], deals = [], articles = [] }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
         .pulse-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e; animation:pulse 1.6s infinite; }
         .release-card:hover { border-color:#C8922A !important; }
-        .review-card:hover { border-color:#C8922A !important; }
         .section-link:hover { color:#E5A83A !important; }
-        @media(max-width:900px){ .briefing-deals{ grid-template-columns:repeat(2,1fr) !important; } }
+        .news-row:hover { background:rgba(200,146,42,.04); }
+        .news-row:hover .news-row-title { color:#C8922A !important; }
         @media(max-width:760px){ .briefing-stats{ grid-template-columns:repeat(2,1fr) !important; } }
-        @media(max-width:640px){ .briefing-news{ grid-template-columns:1fr !important; } }
-        @media(max-width:520px){ .briefing-deals{ grid-template-columns:1fr !important; } }
       `}</style>
     </>
   )

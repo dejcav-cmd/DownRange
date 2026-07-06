@@ -61,14 +61,16 @@ function DealCard({ deal }) {
         <div style={{ width:'100%', height:160, background:'#0D0E10', overflow:'hidden', flexShrink:0, position:'relative' }}>
           {hasImage ? (
             <img src={deal.imageUrl} alt={cleanTitle} onError={() => setImgError(true)}
+              loading="lazy" referrerPolicy="no-referrer"
               style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
           ) : (
             <div style={{
               width:'100%', height:'100%',
-              background:`linear-gradient(135deg, #0D0E10 0%, rgba(200,146,42,0.06) 100%)`,
-              display:'flex', alignItems:'center', justifyContent:'center',
+              background:`linear-gradient(135deg, ${fm.bg} 0%, #0D0E10 72%)`,
+              display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:7,
             }}>
-              <span style={{ fontSize:32, opacity:0.2 }}>🔥</span>
+              <span style={{ fontFamily:BEBAS, fontSize:'1.5rem', color:fm.color, letterSpacing:'.04em', opacity:.6 }}>{fm.label}</span>
+              <span style={{ fontFamily:MONO, fontSize:9, color:'#4B5563', letterSpacing:'.14em' }}>DOWNRANGE</span>
             </div>
           )}
           {/* Flair badge */}

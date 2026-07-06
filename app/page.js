@@ -3,7 +3,7 @@ import Footer from '../components/layout/Footer'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
 import StateBriefing from '../components/sections/StateBriefing'
 import Link from 'next/link'
-import { fetchArticles, fetchReleases, fetchAllStateProfiles } from '../sanity/lib/client'
+import { fetchArticles, fetchReleases, fetchAllStateProfiles, client } from '../sanity/lib/client'
 
 export const revalidate = 120
 
@@ -24,13 +24,50 @@ const SEED_STATES = [
   { abbr:'TX', name:'Texas',      grade:'A',  carry:true,  mag:null, awbFull:false, awbRestricted:false, suppLegal:true,  rf:false },
 ]
 
-// Featured weekly picks — categories drive the per-state legality verdict
-const DEALS = [
-  { cat:'RIFLE',      brand:'Palmetto State Armory', name:'PA-15 16" Complete AR-15', price:'$499', was:'$629' },
-  { cat:'AMMO',       brand:'Federal · brass',       name:'9mm 115gr — 1,000 rds',    price:'$189', was:'$0.19/rd' },
-  { cat:'MAGAZINE',   brand:'Magpul',                name:'PMAG 30rd — 5 pack',       price:'$59',  was:'$75' },
-  { cat:'SUPPRESSOR', brand:'SilencerCo',            name:'Omega 36M — .30 cal',      price:'$699', was:'$829' },
-]
+// Infer the legality-relevant category from a deal title
+function inferCat(title = '') {
+  const t = title.toLowerCase()
+  if (/magazine|pmag|\bmag\b|\bdrum\b/.test(t))                              return 'MAGAZINE'
+  if (/suppressor|silencer|\bnfa\b|form ?4/.test(t))                         return 'SUPPRESSOR'
+  if (/ar-?15|ak-?47|\brifle\b|carbine|\bsbr\b|upper|lower receiver/.test(t)) return 'RIFLE'
+  if (/\bammo\b|9mm|5\.56|\.223|\.308|7\.62|\.45|rounds|\bgr\b fmj/.test(t))  return 'AMMO'
+  if (/pistol|handgun|glock|sig ?p|revolver|1911/.test(t))                   return 'HANDGUN'
+  return 'GENERAL'
+}
+
+function cleanDealTitle(t = '') {
+  return t.replace(/^\[(handgun|rifle|shotgun|ammo|optic|nfa|accessories|gear|deals?|other)\]\s*/i, '').trim()
+}
+
+// gun.deals images are hotlink-blocked → route through our proxy
+function proxyImg(url) {
+  if (!url) return null
+  try {
+    const host = new URL(url).hostname.replace(/^www\./, '')
+    if (host === 'gun.deals') return `/api/img-proxy?url=${encodeURIComponent(url)}`
+  } catch { /* ignore */ }
+  return url
+}
+
+async function fetchBriefingDeals() {
+  try {
+    const rows = await client.fetch(
+      `*[_type=="gunDeal" && approved==true] | order(publishedAt desc)[0..15]{
+        _id, title, price, imageUrl, externalUrl, source
+      }`
+    )
+    return (rows || []).map(d => ({
+      cat:      inferCat(d.title),
+      brand:    d.source || 'gun.deals',
+      name:     cleanDealTitle(d.title || ''),
+      price:    d.price || null,
+      url:      d.externalUrl || '/deals',
+      imageUrl: proxyImg(d.imageUrl),
+    })).filter(d => d.name)
+  } catch (e) {
+    return []
+  }
+}
 
 const TOOLS = [
   { ic:'⏱️', t:'NFA Wait Times', d:'Live suppressor & SBR approval tracker', h:'/nfa-tracker' },
@@ -40,8 +77,8 @@ const TOOLS = [
 ]
 
 export default async function HomePage() {
-  const [articles, releases, stateProfiles] = await Promise.allSettled([
-    fetchArticles(24), fetchReleases(6), fetchAllStateProfiles(),
+  const [articles, releases, stateProfiles, briefingDeals] = await Promise.allSettled([
+    fetchArticles(24), fetchReleases(6), fetchAllStateProfiles(), fetchBriefingDeals(),
   ]).then(r => r.map(p => (p.status === 'fulfilled' ? p.value : [])))
 
   const built = (stateProfiles || []).map(p => {
@@ -57,7 +94,7 @@ export default async function HomePage() {
 
   const news = (articles || []).slice(0, 24).map(a => ({
     _id: a._id, title: a.title, source: a.source, category: a.category,
-    slug: a.slug?.current || null, tags: a.tags || [],
+    slug: a.slug?.current || null, tags: a.tags || [], publishedAt: a.publishedAt || null,
   }))
 
   return (
@@ -67,7 +104,7 @@ export default async function HomePage() {
       <Masthead />
 
       {/* THE PAGE: one state-aware briefing */}
-      <StateBriefing states={states} deals={DEALS} articles={news} />
+      <StateBriefing states={states} deals={briefingDeals} articles={news} heroImage="/img/photos/military.jpg" />
 
       {/* SECONDARY — quiet tools row */}
       <section style={{ padding:'28px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
