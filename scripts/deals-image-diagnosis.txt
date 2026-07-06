@@ -1,41 +1,20 @@
-=== DEAL IMAGE — SOURCE-ACCURATE FIX TEST ===
-time: 2026-07-06T15:46:28.977Z
+=== JINA PROXY → gun.deals SOURCE IMAGE TEST ===
+time: 2026-07-06T15:49:05.872Z
+links: 3
 
-RSS items: 4
+  PRODUCT: https://gun.deals
+    jina HTTP 200
+    found image: https://gun.deals/cdn-cgi/image/w=400,h=400,f=auto/sites/default/files/6cf4a8b70b0cf802d0e2155d65235d0d.jpg
+    dl og direct  : HTTP 200 · image/jpeg · 4869b x
 
---- A) gun.deals product page with FULL browser headers ---
-  403  https://gun.deals/product/sons-liberty-gun-works-m4-exo3-556-145-pw-hu
-  403  https://gun.deals/product/sons-liberty-gun-works-precision-spr-223-wyl
-  403  https://gun.deals/product/sons-liberty-gun-works-liberty-stainless-ste
+  PRODUCT: https://gun.deals/product/sons-liberty-gun-works-m4-exo3-556-145-pw-hux-bar
+    jina HTTP 200
+    found image: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/sons-of-liberty-gun-works-m4-exo3-5-56
+    dl og direct  : HTTP 200 · image/png · 30544b OK
 
---- B) Bing image search per product title ---
-
-  TITLE: Sons of Liberty Gun Works M4-EXO3 5.56 14.5&quot; P/W HUX - Barreled Upper - $73
-  QUERY: Sons of Liberty Gun Works M4-EXO3 5.56 14.5 P/W HUX - Barreled Upper
-    candidates: 1
-      [0] https://mathmonks.com/wp-content/uploads/2022/11/Histogram-vs-Bar-Graph.jpg
-    download top   : HTTP 200 · image/jpeg · 421676b OK
-
-  TITLE: Sons of Liberty Gun Works Precision SPR .223 Wylde Mid-Length AR-15 Threaded Bar
-  QUERY: Sons of Liberty Gun Works Precision SPR .223 Wylde Mid-Length AR-15 Threaded Barrel - 16
-    candidates: 33
-      [0] https://images.pexels.com/photos/20331914/pexels-photo-20331914.jpeg?cs=srgb
-      [1] https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg?cs=srgb
-      [2] https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg?cs=srgb
-    download top   : HTTP 200 · image/jpeg · 1294831b OK
-
-  TITLE: Sons of Liberty Gun Works Liberty Stainless Steel AR-15 Gas Block .750&quot; - $
-  QUERY: Sons of Liberty Gun Works Liberty Stainless Steel AR-15 Gas Block .750
-    candidates: 31
-      [0] https://carschematics.com/wp-content/images/Chevrolet_Impala_Parts_Diagram_6564.jpg
-      [1] https://carschematics.com/wp-content/images/Chevrolet-Impala-Parts-Diagram-368.jpg
-      [2] https://carschematics.com/wp-content/images/Chevrolet_Impala_Parts_Diagram_7491.jpg
-    download top   : HTTP 403 · text/html; charset=UTF-8 · 0b x
-
-  TITLE: Yankee Hill 110BILLET Billet Upper Receiver Stripped 223 Rem, 5.56x45mm NATO - $
-  QUERY: Yankee Hill 110BILLET Billet Upper Receiver Stripped 223 Rem, 5.56x45mm NATO
-    candidates: 1
-      [0] https://imagecdn.clips4sale.com/accounts99/264475/clip_images/rect_ex_lrg_b_29042085.jpg
-    download top   : HTTP 200 · image/jpeg · 8631b OK
+  PRODUCT: https://gun.deals/product/sons-liberty-gun-works-precision-spr-223-wylde-mi
+    jina HTTP 200
+    found image: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/sons-of-liberty-gun-works-precision-sp
+    dl og direct  : HTTP 200 · image/png · 89112b OK
 
 === END ===
