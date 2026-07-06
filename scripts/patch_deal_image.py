@@ -43,7 +43,11 @@ req3 = urllib.request.Request(
 with urllib.request.urlopen(req3, timeout=30) as r:
     asset = json.loads(r.read())
 
-sanity_url = asset.get('url')
+# Sanity returns URL at document.url or url (see lib/imageUpload.js line 47)
+sanity_url = (asset.get('document') or {}).get('url') or asset.get('url')
+if not sanity_url:
+    print(f'Upload response had no URL: {json.dumps(asset)[:300]}')
+    sys.exit(1)
 print(f'Sanity CDN URL: {sanity_url}')
 
 # Patch the doc
