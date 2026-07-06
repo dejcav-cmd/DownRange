@@ -114,6 +114,10 @@ export default function DealsManager({ adminKey }) {
             { label: '🏹 Carbon Expr.', fn: (f) => triggerBrandScrape('carbon-express', f)  },
             { label: '🏹 Barnett',      fn: (f) => triggerBrandScrape('barnett', f)         },
             { label: '🏹 TenPoint',     fn: (f) => triggerBrandScrape('tenpoint', f)        },
+            { label: '🔭 Burris',       fn: (f) => triggerBrandScrape('burris', f)           },
+            { label: '🔭 Zeiss',        fn: (f) => triggerBrandScrape('zeiss', f)            },
+            { label: '🏹 Hoyt',         fn: (f) => triggerBrandScrape('hoyt', f)             },
+            { label: '🏹 Bowtech',      fn: (f) => triggerBrandScrape('bowtech', f)          },
           ],
         }}
       />

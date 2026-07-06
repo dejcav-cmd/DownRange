@@ -121,6 +121,32 @@ const BRAND_SOURCES = [
     brandWords: ['truglo','tru-glo','tritium','fiber optic','bow sight','archery sight',
                  'firearm sight','carbon','tru-bead'],
   },
+  // ── Optics (premium) ───────────────────────────────────────────────────────
+  {
+    id: 'burris', label: 'Burris Optics', store: 'Amazon – Burris', cat: 'optic',
+    url: 'https://www.amazon.com/s?k=burris+scope+optic&i=sporting' + DEAL_FILTER,
+    brandWords: ['burris','fastfire','speedbead','fullfield','droptine','eliminator',
+                 'rt-6','ar-332','rt-1','oracle','ballistic plex','xtreme tactical'],
+  },
+  {
+    id: 'zeiss', label: 'Zeiss Scopes', store: 'Amazon – Zeiss', cat: 'optic',
+    url: 'https://www.amazon.com/s?k=zeiss+scope+optic&i=sporting' + DEAL_FILTER,
+    brandWords: ['zeiss','conquest','victory','terra','diarange','duralyt','varipoint',
+                 'hd5','hd','riflescope','binocular','rangefinder'],
+  },
+  // ── Archery (premium compound bows) ───────────────────────────────────────
+  {
+    id: 'hoyt', label: 'Hoyt Archery', store: 'Amazon – Hoyt', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=hoyt+archery&i=sporting' + DEAL_FILTER,
+    brandWords: ['hoyt','axius','carbon rx','altus','powermax','torrex','invicta',
+                 'compound bow','archery bow','riser','limb'],
+  },
+  {
+    id: 'bowtech', label: 'Bowtech', store: 'Amazon – Bowtech', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=bowtech+compound+bow&i=sporting' + DEAL_FILTER,
+    brandWords: ['bowtech','realm','revolt','carbon one','solution','amplify',
+                 'compound bow','archery','riser'],
+  },
 ]
 
 // ── 2A / Archery relevance filter ─────────────────────────────────────────────

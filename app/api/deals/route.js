@@ -33,7 +33,7 @@ function inferFlair(title = '') {
   if (/shotgun|mossberg|remington 870|benelli/.test(t))                        return 'Shotgun'
   if (/\bammo\b|9mm|\.223|\.308|5\.56|7\.62|\.45|\.357|rounds|gr fmj|gr hp/.test(t)) return 'Ammo'
   if (/suppressor|silencer|\bnfa\b|form 4|form4/.test(t))                      return 'NFA'
-  if (/scope|optic|red dot|lpvo|vortex|leupold|eotech|aimpoint/.test(t))       return 'Optic'
+  if (/scope|optic|red dot|lpvo|vortex|leupold|eotech|aimpoint|holosun|burris|zeiss|monstrum/.test(t)) return 'Optic'
   if (/\bbow\b|archery|arrow|broadhead|quiver|recurve|compound bow|crossbow|nock|fletching|vane|mathews|hoyt|bowtech|pse bow|gold tip|carbon express|rage broadhead|barnett|tenpoint/.test(t)) return 'Archery'
   if (/holster|magazine|pmag|light|streamlight|sling|grip|trigger/.test(t))    return 'Accessories'
   if (/gear|vest|plate|carrier|bag|case|safe/.test(t))                         return 'Gear'
