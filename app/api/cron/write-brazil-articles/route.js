@@ -17,7 +17,7 @@ export async function GET(req) {
     const fakeReq = new Request('https://downrangeco.com/api/admin/write-brazil-articles', {
       method: 'POST',
       headers: { 'x-admin-key': process.env.ADMIN_KEY || '', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ limit: 2 }),
+      body: JSON.stringify({ limit: 1 }),
     })
     const res = await writeBrazil(fakeReq)
     const d = await res.json().catch(() => ({}))
