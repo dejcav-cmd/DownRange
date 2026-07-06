@@ -8,17 +8,17 @@ jobs:
       contents: write
     steps:
       - uses: actions/checkout@v4
-      - name: Trigger gun-deals heal on prod (2 passes)
+      - name: Resync recent deals with REAL source images (Jina)
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
         run: |
           : > scripts/deals-heal-result.txt
-          for i in 1 2; do
-            echo "=== pass $i @ $(date -u) ===" >> scripts/deals-heal-result.txt
+          for off in 0 30 60; do
+            echo "=== resync offset=$off @ $(date -u) ===" >> scripts/deals-heal-result.txt
             curl -s -m 300 -H "Authorization: Bearer $CRON_SECRET" \
-              "https://www.downrangeco.com/api/cron/gun-deals" >> scripts/deals-heal-result.txt || echo "curl failed" >> scripts/deals-heal-result.txt
+              "https://www.downrangeco.com/api/cron/gun-deals?resync=30&offset=$off" >> scripts/deals-heal-result.txt || echo "curl failed" >> scripts/deals-heal-result.txt
             echo "" >> scripts/deals-heal-result.txt
-            sleep 10
+            sleep 5
           done
           cat scripts/deals-heal-result.txt
       - name: Commit result
@@ -26,5 +26,5 @@ jobs:
           git config user.name "DownRange CI"
           git config user.email "dj@downrangeco.com"
           git add scripts/deals-heal-result.txt
-          git commit -m "heal: gun-deals backfill result" || echo "no changes"
+          git commit -m "resync: real source images result" || echo "no changes"
           git push

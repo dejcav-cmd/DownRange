@@ -1,8 +1,8 @@
 export const dynamic = 'force-dynamic'
+export const maxDuration = 300
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
-import { fetchAndUploadImage } from '@/lib/imageUpload'
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
@@ -152,41 +152,35 @@ async function uploadToSanity(buf, contentType, filename) {
   } catch { return null }
 }
 
-// Category-anchored image-search query (gun.deals product pages are Cloudflare-blocked
-// from datacenter IPs, so scraping their OG image usually 403s — we search stock instead)
-function buildDealImageQuery(category = '') {
-  const byCat = {
-    rifle:      'AR-15 rifle black firearm',
-    pistol:     'handgun pistol black firearm',
-    ammo:       'ammunition rounds cartridges',
-    shotgun:    'shotgun firearm',
-    suppressor: 'rifle suppressor silencer',
-    optic:      'rifle scope optic sight',
-    accessory:  'tactical firearm gear black',
-    deal:       'firearm gun black',
-  }
-  return byCat[category] || byCat.deal
+const DEAL_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+
+// gun.deals product pages 403 datacenter IPs (Cloudflare). We fetch the page
+// through the Jina reader proxy, which returns the real HTML, then pull the
+// actual product og:image — a gun.deals CDN url that IS directly downloadable.
+async function scrapeOGImageViaJina(pageUrl) {
+  try {
+    const res = await fetch('https://r.jina.ai/' + pageUrl, {
+      headers: { 'User-Agent': DEAL_UA, 'x-respond-with': 'html', 'Accept': 'text/html' },
+      signal: AbortSignal.timeout(25000),
+    })
+    if (!res.ok) return null
+    const html = await res.text()
+    const og = (html.match(/og:image["'\s]+content=["']([^"']+)["']/i) || [])[1]
+      || (html.match(/(https?:\/\/gun\.deals\/cdn-cgi\/image\/[^\s"')]+\.(?:jpg|jpeg|png|webp)[^\s"')]*)/i) || [])[1]
+      || (html.match(/(https?:\/\/gun\.deals\/[^\s"')]*sites\/default\/files\/[^\s"')]+\.(?:jpg|jpeg|png|webp))/i) || [])[1]
+    return og || null
+  } catch { return null }
 }
 
-// Full pipeline for one deal: try the product-page OG image first; if that's
-// blocked (403) or fails, fall back to a firearm-anchored stock image search.
-// Both paths end at a stable cdn.sanity.io URL.
+// One deal → the REAL source image on Sanity CDN. No stock fallback: a
+// placeholder is better than a wrong photo, so return null if unreachable.
 async function getDealImage(deal) {
-  const ogUrl = await scrapeOGImage(deal.link)
-  if (ogUrl) {
-    const img = await downloadImage(ogUrl)
-    if (img && img.buf) {
-      const filename = ogUrl.split('/').pop()?.split('?')[0] || 'deal'
-      const sanityUrl = await uploadToSanity(img.buf, img.ct, filename)
-      if (sanityUrl) return sanityUrl
-    }
-  }
-  // Fallback: category-anchored stock image → Sanity CDN
-  try {
-    const cdn = await fetchAndUploadImage(buildDealImageQuery(deal.category), 'deal')
-    if (cdn) return cdn
-  } catch { /* ignore */ }
-  return null
+  const ogUrl = await scrapeOGImageViaJina(deal.link)
+  if (!ogUrl) return null
+  const img = await downloadImage(ogUrl)
+  if (!img || !img.buf || img.buf.byteLength < 8000) return null  // reject logos / tiny fallbacks
+  const filename = ogUrl.split('/').pop()?.split('?')[0] || 'deal'
+  return await uploadToSanity(img.buf, img.ct, filename)
 }
 
 // Process deals in small batches. Each deal: { link, title, category }
@@ -224,6 +218,26 @@ export async function GET(req) {
   const isAdmin    = adminKey === ADMIN_KEY
   if (!isCron && !isVercel && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
+  // Re-sync: overwrite imageUrl on the N most-recent deals with the REAL source
+  // image (used to fix deals that were previously given wrong/stock images).
+  const sp = new URL(req.url).searchParams
+  const resyncN = parseInt(sp.get('resync') || '0', 10)
+  if (resyncN > 0) {
+    const tr = Date.now()
+    const off = parseInt(sp.get('offset') || '0', 10)
+    const n = Math.min(resyncN, 30)
+    const recent = await sanity.fetch(
+      `*[_type=="gunDeal" && source=="gun.deals"] | order(_createdAt desc) [${off}...${off + n}] { _id, externalUrl }`
+    ).catch(() => [])
+    const dealsR = recent.filter(d => d.externalUrl).map(d => ({ link: d.externalUrl }))
+    const mapR   = await processImages(dealsR, 2)
+    const mutsR  = recent
+      .filter(d => d.externalUrl && mapR.get(d.externalUrl))
+      .map(d => ({ patch: { id: d._id, set: { imageUrl: mapR.get(d.externalUrl) } } }))
+    if (mutsR.length) await sanity.mutate(mutsR)
+    return NextResponse.json({ ok: true, resync: true, checked: recent.length, repatched: mutsR.length, ms: Date.now() - tr })
+  }
+
   const t0    = Date.now()
   const stats = { fetched: 0, added: 0, skipped: 0, imaged: 0, healed: 0 }
 
@@ -241,10 +255,10 @@ export async function GET(req) {
     stats.skipped  = deals.slice(0, 80).length - newDeals.length
 
     if (newDeals.length > 0) {
-      // Scrape/search + upload images to Sanity CDN (3 concurrent)
+      // Fetch real source images via Jina proxy → Sanity CDN (2 concurrent)
       const imageMap = await processImages(
         newDeals.map(d => ({ link: d.link, title: d.title, category: detectCategory(d.title, d.cats) })),
-        3
+        2
       )
       stats.imaged = [...imageMap.values()].filter(Boolean).length
 
@@ -269,16 +283,16 @@ export async function GET(req) {
       stats.added = mutations.length
     }
 
-    // ── SELF-HEAL: backfill any docs still missing imageUrl (up to 50 per run) ──
+    // ── SELF-HEAL: backfill any docs still missing imageUrl (up to 25 per run) ──
     const needsImage = await sanity.fetch(
-      `*[_type=="gunDeal" && source=="gun.deals" && (!defined(imageUrl) || imageUrl == null || imageUrl == "")] | order(_createdAt desc) [0..49] { _id, externalUrl, title, category }`
+      `*[_type=="gunDeal" && source=="gun.deals" && (!defined(imageUrl) || imageUrl == null || imageUrl == "")] | order(_createdAt desc) [0..24] { _id, externalUrl, title, category }`
     ).catch(() => [])
 
     if (needsImage.length > 0) {
       const healDeals = needsImage
         .filter(d => d.externalUrl)
         .map(d => ({ link: d.externalUrl, title: d.title, category: d.category || detectCategory(d.title || '') }))
-      const healMap = await processImages(healDeals, 3)
+      const healMap = await processImages(healDeals, 2)
       const healMuts = needsImage
         .filter(d => d.externalUrl && healMap.get(d.externalUrl))
         .map(d => ({ patch: { id: d._id, set: { imageUrl: healMap.get(d.externalUrl) } } }))
