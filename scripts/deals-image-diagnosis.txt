@@ -1,36 +1,27 @@
 === DEAL IMAGE PIPELINE DIAGNOSIS ===
-time: 2026-07-06T15:19:56.018Z
+time: 2026-07-06T15:28:13.511Z
 
 --- 1) Live /api/deals imageUrl distribution ---
 === DEAL IMAGE PIPELINE DIAGNOSIS ===
-time: 2026-07-06T15:19:56.079Z
+time: 2026-07-06T15:28:13.566Z
 
 --- 1) Live /api/deals imageUrl distribution ---
   /api/deals HTTP 200
-  total:201  null:13  sanity:187  proxy:1  gundeals:0  other:0
-  sample imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/f2c0b208c3ac60fb1bf4e8d7c1faa8bf5d72c0bd-475x292.jpg
+  total:201  null:0  sanity:200  proxy:1  gundeals:0  other:0
+  sample imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/675274a15cb32876db54933d6c5e7d209e625eac-1880x1253.jpg
 
 --- 2) Pipeline test on 5 real gun.deals product pages ---
+  got 5 product links from RSS
+
+  PAGE: https://gun.deals
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-id
   /api/deals HTTP 200
-  total:201  null:13  sanity:187  proxy:1  gundeals:0  other:0
-  sample imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/f2c0b208c3ac60fb1bf4e8d7c1faa8bf5d72c0bd-475x292.jpg
+  total:201  null:0  sanity:200  proxy:1  gundeals:0  other:0
+  sample imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/675274a15cb32876db54933d6c5e7d209e625eac-1880x1253.jpg
 
 --- 2) Pipeline test on 5 real gun.deals product pages ---
-  got 5 product links from RSS
-
-  PAGE: https://gun.deals
-  got 5 product links from RSS
-
-  PAGE: https://gun.deals
-    scrapeOG: FAILED — 403
-
-  PAGE: https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-id
-    scrapeOG: FAILED — 403
-
-  PAGE: https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-id
-    scrapeOG: FAILED — 403
-
-  PAGE: https://gun.deals/product/breek-arms-sledgehammer-ar-15-ambidextrous-charging-handle-od-gr
     scrapeOG: FAILED — 403
 
   PAGE: https://gun.deals/product/breek-arms-sledgehammer-ar-15-ambidextrous-charging-handle-od-gr
@@ -39,24 +30,33 @@ time: 2026-07-06T15:19:56.079Z
   PAGE: https://gun.deals/product/lmt-defense-exclusive-125-mars-l-specwar-pistol-midmilk125-marsp
     scrapeOG: FAILED — 403
 
-  PAGE: https://gun.deals/product/lmt-defense-exclusive-125-mars-l-specwar-pistol-midmilk125-marsp
-    scrapeOG: FAILED — 403
-
-  PAGE: https://gun.deals/product/walther-pps-m2-9mm-318-barrel-pistol-tenifer-black-6-7-round-mag
-    scrapeOG: FAILED — 403
-
   PAGE: https://gun.deals/product/walther-pps-m2-9mm-318-barrel-pistol-tenifer-black-6-7-round-mag
     scrapeOG: FAILED — 403
 
 --- 3) RSS item structure (looking for embedded images) ---
-    scrapeOG: FAILED — 403
+  got 5 product links from RSS
 
---- 3) RSS item structure (looking for embedded images) ---
+  PAGE: https://gun.deals
   has <enclosure>: false
     NO image in RSS item. Raw block (first 700 chars):
      <title>12 Pack Magsaddle 5.56 NATO Magazine Marking Bands 5.56 Caliber Identification Holster Accessories - $6.99</title> <link>https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-identification-holster-accesso</link> <description><![CDATA[<div>Price: $6.99</div> <div>Store: <a href="https://gun.deals/content/amazon">Amazon</a></div>]]></description> <category domain="https://gun.deals/category/caliber/range-gear">Range Gear</category> <comments>https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-identification-holster-accesso#comments</comments> <pubDate>Mon, 06 Jul 2026 15:13:51 +0000</pubDate> <dc:creator>nukewookie<
 
 === END ===
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-id
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/breek-arms-sledgehammer-ar-15-ambidextrous-charging-handle-od-gr
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/lmt-defense-exclusive-125-mars-l-specwar-pistol-midmilk125-marsp
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/walther-pps-m2-9mm-318-barrel-pistol-tenifer-black-6-7-round-mag
+    scrapeOG: FAILED — 403
+
+--- 3) RSS item structure (looking for embedded images) ---
   has <enclosure>: false
     NO image in RSS item. Raw block (first 700 chars):
      <title>12 Pack Magsaddle 5.56 NATO Magazine Marking Bands 5.56 Caliber Identification Holster Accessories - $6.99</title> <link>https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-identification-holster-accesso</link> <description><![CDATA[<div>Price: $6.99</div> <div>Store: <a href="https://gun.deals/content/amazon">Amazon</a></div>]]></description> <category domain="https://gun.deals/category/caliber/range-gear">Range Gear</category> <comments>https://gun.deals/product/12-pack-magsaddle-556-nato-magazine-marking-bands-556-caliber-identification-holster-accesso#comments</comments> <pubDate>Mon, 06 Jul 2026 15:13:51 +0000</pubDate> <dc:creator>nukewookie<
