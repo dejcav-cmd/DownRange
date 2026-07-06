@@ -123,3 +123,46 @@ Same fix applied in `scripts/scheduled_image_fix.py` `scrape_og()`.
 **GH Actions YAML heredoc bug (re-confirmed):** Inline Python via `run: python3 << 'PYEOF'` breaks YAML parsing — Python assignment lines (`LOG = '...'`) parse as YAML keys. GitHub strips all triggers, workflow shows filename as name, `workflow_dispatch` returns 422. Always move Python to a script file. This also causes "No jobs were run" notification emails on push-triggered workflows.
 
 **GH Actions trigger cache:** GitHub caches trigger metadata per file path. Updating a workflow file that previously had a broken/push trigger does NOT immediately refresh — even after multiple pushes. Only reliable flush: delete the file entirely and create a new one with a different filename.
+
+---
+
+## AvantLink Affiliate Verification (hard-won — read before touching AvantLink)
+
+**The single most important rule: get the EXACT snippet from the applicant's AvantLink email/dashboard BEFORE writing any code. Do not reconstruct it.**
+
+The verification snippet is NOT `?mode=js&application_id=XXXX`. That form has no auth token and will ALWAYS fail verification with "Unable to locate authentication information in the confirmation file." The real snippet contains a unique per-application token:
+```
+<script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=<40-char-hex-token>"></script>
+```
+The `authResponse` token is only visible behind the "Install this JavaScript tag" link in the applicant's application email — it is not in the email body and cannot be guessed. Ask the applicant to paste the exact tag (or screenshot it if copy drops it) before doing anything else. Four sessions were wasted debugging placement when the real problem was the wrong URL form the whole time.
+
+**Where to place it:** the `app/avantlink-verify/route.js` GET handler returns RAW verbatim HTML via `NextResponse` — no React, no `&`→`&amp;` encoding, no async/execution mangling. This is the correct home for the snippet. Put the exact tag in the `<head>` there.
+
+**Why the homepage does NOT work:** the homepage is React/Next. Two failure modes were confirmed live:
+1. A plain JSX `<script src="...&...">` renders the `&` as `&amp;` in the HTML source.
+2. A `<script>` injected via `dangerouslySetInnerHTML` (hidden div) appears in source but browsers NEVER execute innerHTML-injected scripts — so AvantLink's executing verifier finds no written token.
+Do not try to force verification through the React homepage. Use the dedicated `/avantlink-verify` route.
+
+**Applied-URL / trailing-slash gotcha:** using box #2 ("change the URL") on the AvantLink error page overwrites the official applied URL (confirmed via the follow-up email showing the new URL). AvantLink then appends filenames to and checks that exact URL. Note `/avantlink-verify/` (trailing slash) 308-redirects to `/avantlink-verify` under default `trailingSlash:false`; browsers/JS-executing crawlers follow it fine, but if AvantLink reports "cannot reach URL," eliminate the redirect (don't flip global `trailingSlash`; scope it).
+
+**Mixed content:** AvantLink's snippet is `http://` but the site is `https://`. Place it verbatim as they provide it (that's what their verifier expects). If a strict browser check blocks it, swap to `https://` with the SAME token and re-verify.
+
+**Verification links (from the error page):**
+- JS method: `.../affiliate_app_confirm.php?mode=verify-js&application_id=<id>`
+- File method: `.../affiliate_app_confirm.php?mode=verify-file&application_id=<id>`
+- Re-send instructions email: `.../affiliate_app_confirm.php?mode=send-instructions&application_id=<id>`
+The error page's "click here to confirm again" sometimes routes back to the JS method even if the prior error was file-method — read which `mode=` the link uses.
+
+**Verifying our own placement (site is behind Vercel WAF, sandbox gets 403):** use the `avantlink-check.yml` workflow (runs from Azure IP) → `scripts/avantlink_check.sh` curls the live URL and greps for `authResponse=<token>`; commit result back via `git push` in the workflow (NOT the Contents API PUT — that fails on new-file creation with empty sha). Read the committed `scripts/avantlink_check_result.txt`. Confirm the token string is present with a literal `&` and the URL returns 200 (after any redirect) before telling the applicant to click verify.
+
+**"Confirmed" ≠ "Approved":** passing ownership verification only queues the application for manual staff review (a few days). That review judges the actual site — the same bar (low traffic, must look like a real active business) that can reject. Do not treat confirmation as done.
+
+**Sequence that works:**
+1. Get the exact `authResponse` snippet from the applicant (paste or screenshot).
+2. Put it verbatim in `app/avantlink-verify/route.js` `<head>`.
+3. Commit, push, confirm Vercel deploy success.
+4. Run `avantlink-check.yml`; confirm the token is live at the applied URL from an outside IP.
+5. Applicant clicks the `mode=verify-js` link.
+6. On success, AvantLink says the tag can be deleted; clean up leftover snippets (e.g. any dead `application_id` tag in `app/page.js`) and the debug workflow.
+
+**Fallback if automated verification keeps failing:** email `affiliateapps@avantlink.com` with Application ID, applied URL, applied email, and a screenshot of the placed tag for manual human confirmation. This is an AvantLink-sanctioned path, not a hack.
