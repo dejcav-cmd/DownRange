@@ -1,0 +1,33 @@
+name: run-amazon-brands
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/run-amazon-brands.yml'
+  workflow_dispatch:
+    inputs:
+      brand:
+        description: 'Single brand id to test (leave blank for all)'
+        required: false
+        default: ''
+
+jobs:
+  guard:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push'
+    steps:
+      - run: echo "push trigger — guard only"
+
+  trigger:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    timeout-minutes: 7
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Trigger Amazon Brands Cron
+        env:
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: bash scripts/trigger-amazon-brands.sh "${{ github.event.inputs.brand }}"

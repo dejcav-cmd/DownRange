@@ -1,5 +1,5 @@
 export const dynamic    = 'force-dynamic'
-export const maxDuration = 120
+export const maxDuration = 300
 
 import { NextResponse }        from 'next/server'
 import { createClient }        from '@sanity/client'
@@ -291,7 +291,8 @@ export async function GET(req) {
     ? BRAND_SOURCES.filter(b => b.id === brandFilter)
     : BRAND_SOURCES
 
-  const t0    = Date.now()
+  const t0       = Date.now()
+  const DEADLINE = 240_000  // stop after 240s so reportCronRun fires before 300s kill
   const stats = { brands: 0, found: 0, notDeals: 0, filtered: 0, added: 0, skipped: 0, imaged: 0 }
 
   try {
@@ -307,6 +308,11 @@ export async function GET(req) {
     )
 
     for (const brand of sources) {
+      // Stop processing if we're approaching Vercel's 300s kill
+      if (Date.now() - t0 > DEADLINE) {
+        console.warn(`[amazon-brands] deadline reached after ${stats.brands} brands — stopping early`)
+        break
+      }
       stats.brands++
       if (stats.brands > 1) await new Promise(r => setTimeout(r, 2000))
 
