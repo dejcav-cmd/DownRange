@@ -6,7 +6,7 @@ export async function GET() {
 <head>
   <meta charset="UTF-8">
   <title>AvantLink Verification | DownRange</title>
-  <script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1619841"></script>
+  <script type="text/javascript" src="http://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=958faffc401d524371e92683a1faf7458c69da50"></script>
 </head>
 <body>
   <p>AvantLink affiliate ownership verification for downrangeco.com — application ID 1619841</p>
