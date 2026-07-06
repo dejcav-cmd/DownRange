@@ -52,7 +52,7 @@ function proxyImg(url) {
 async function fetchBriefingDeals() {
   try {
     const rows = await client.fetch(
-      `*[_type=="gunDeal" && approved==true] | order(publishedAt desc)[0..15]{
+      `*[_type=="gunDeal" && approved==true && defined(imageUrl) && imageUrl match "*cdn.sanity.io*"] | order(publishedAt desc)[0..29]{
         _id, title, price, imageUrl, externalUrl, source
       }`
     )

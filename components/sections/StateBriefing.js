@@ -96,18 +96,22 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
     (a.title || '').toLowerCase().includes(nl) ||
     (a.tags || []).some(t => (t || '').toLowerCase().includes(nl) || (t || '').toLowerCase() === abbr.toLowerCase())
   )
-  const news = (stateNews.length >= 3 ? stateNews : articles).slice(0, 4)
-  const newsIsState = stateNews.length >= 3
+  const news = (stateNews.length >= 4 ? stateNews : articles).slice(0, 6)
+  const newsIsState = stateNews.length >= 4
 
   const carry = yn(s.carry)
   const rf    = yn(s.rf, false)
+
+  const shownDeals = deals.slice(0, 12)
+  const flagged = shownDeals.filter(d => verdict(d.cat, s).lvl !== 'ok').length
 
   return (
     <>
       {/* ══ BRIEFING — the single organizing idea ══ */}
       <section style={{ padding:'40px 0 32px', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
-        {heroImage && <div style={{ position:'absolute', inset:0, backgroundImage:`url(${heroImage})`, backgroundSize:'cover', backgroundPosition:'center', opacity:.20, pointerEvents:'none' }} />}
-        {heroImage && <div style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(8,8,10,.97) 0%, rgba(8,8,10,.86) 42%, rgba(8,8,10,.62) 100%)', pointerEvents:'none' }} />}
+        {heroImage && <div style={{ position:'absolute', inset:0, backgroundImage:`url(${heroImage})`, backgroundSize:'cover', backgroundPosition:'center', opacity:.42, pointerEvents:'none' }} />}
+        {heroImage && <div style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(8,8,10,.92) 0%, rgba(8,8,10,.72) 46%, rgba(8,8,10,.4) 100%)', pointerEvents:'none' }} />}
+        {heroImage && <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(8,8,10,.85) 0%, transparent 55%)', pointerEvents:'none' }} />}
         <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.12), transparent 60%)', pointerEvents:'none' }} />
         <div className="container" style={{ position:'relative' }}>
           <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:20 }}>
@@ -172,12 +176,12 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
       <section style={{ padding:'30px 0', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
           <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:12, marginBottom:16, flexWrap:'wrap' }}>
-            <h2 style={{ fontFamily:DISP, fontSize:22, letterSpacing:'.04em' }}>Deals you can actually buy in <span style={{ color:'#C8922A' }}>{s.name}</span></h2>
+            <h2 style={{ fontFamily:DISP, fontSize:22, letterSpacing:'.04em' }}>Deals you can actually buy in <span style={{ color:'#C8922A' }}>{s.name}</span>{flagged > 0 && <span style={{ fontFamily:MONO, fontSize:11, color:'#fbbf68', marginLeft:10, letterSpacing:'.04em' }}>· {flagged} flagged for your state</span>}</h2>
             <Link href="/deals" className="section-link" style={{ fontFamily:MONO, fontSize:10, color:'#C8922A', letterSpacing:'.1em' }}>ALL LIVE DEALS →</Link>
           </div>
           {deals.length > 0 ? (
             <div className="briefing-deals" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px,1fr))', gap:12 }}>
-              {deals.slice(0, 12).map((d, i) => {
+              {shownDeals.map((d, i) => {
                 const v = verdict(d.cat, s)
                 const vs = V_STYLE[v.lvl]
                 const badge = d.cat === 'GENERAL' ? 'DEAL' : d.cat

@@ -33,8 +33,36 @@ function timeAgo(ts) {
   return `${Math.floor(h / 24)}d ago`
 }
 
+// ── STATE LEGALITY VERDICT ────────────────────────────────────────────────────
+const V_STYLE = {
+  ok:   { bg:'rgba(34,197,94,.09)',  bd:'rgba(34,197,94,.28)',  fg:'#6ee7a3' },
+  warn: { bg:'rgba(245,158,11,.09)', bd:'rgba(245,158,11,.28)', fg:'#fbbf68' },
+  no:   { bg:'rgba(239,68,68,.09)',  bd:'rgba(239,68,68,.28)',  fg:'#fca5a5' },
+}
+function inferCat(title = '') {
+  const t = title.toLowerCase()
+  if (/magazine|pmag|\bmag\b|\bdrum\b/.test(t)) return 'MAGAZINE'
+  if (/suppressor|silencer|\bnfa\b|form ?4/.test(t)) return 'SUPPRESSOR'
+  if (/ar-?15|ak-?47|\brifle\b|carbine|\bsbr\b|upper|lower receiver/.test(t)) return 'RIFLE'
+  if (/\bammo\b|9mm|5\.56|\.223|\.308|7\.62|\.45|rounds|\bgr\b fmj/.test(t)) return 'AMMO'
+  if (/pistol|handgun|glock|sig ?p|revolver|1911/.test(t)) return 'HANDGUN'
+  return 'GENERAL'
+}
+function stateVerdict(title, s) {
+  if (!s) return null
+  const ok = t => ({ lvl:'ok', ico:'✓', text:t }), warn = t => ({ lvl:'warn', ico:'⚠', text:t }), no = t => ({ lvl:'no', ico:'✗', text:t })
+  switch (inferCat(title)) {
+    case 'RIFLE':      if (s.awbFull) return no(`Banned config in ${s.name}`); if (s.awbRestricted) return warn(`${s.name}: featureless required`); return ok(`Legal in ${s.name}`)
+    case 'MAGAZINE':   if (s.mag) return no(`Blocked — ${s.mag}-rd max in ${s.name}`); return ok(`Legal in ${s.name}`)
+    case 'SUPPRESSOR': if (!s.suppLegal) return no(`Illegal in ${s.name}`); return ok('Legal · NFA')
+    case 'AMMO':       if (s.abbr === 'CA') return warn('CA: in-person + background check'); if (s.abbr === 'NY') return warn('NY: dealer transfer only'); return ok('Ships to your door')
+    case 'HANDGUN':    if (s.abbr === 'CA') return warn('Must be on CA roster'); if (s.awbFull || s.abbr === 'NY') return warn(`${s.name}: permit required`); return ok(`Legal in ${s.name}`)
+    default:           return ok(`No state restriction`)
+  }
+}
+
 // ── DEAL CARD ─────────────────────────────────────────────────────────────────
-function DealCard({ deal }) {
+function DealCard({ deal, stateObj }) {
   const [imgError, setImgError] = useState(false)
   const fm = FLAIR_META[deal.flair] || FLAIR_META.Other
   const hasImage = deal.imageUrl && !imgError
@@ -116,6 +144,17 @@ function DealCard({ deal }) {
           )}
         </div>
 
+        {/* Per-state legality verdict */}
+        {stateObj && (() => {
+          const v = stateVerdict(deal.title || '', stateObj)
+          const vs = V_STYLE[v.lvl]
+          return (
+            <div style={{ margin:'0 14px 8px', fontFamily:MONO, fontSize:9.5, lineHeight:1.4, padding:'6px 8px', display:'flex', gap:6, alignItems:'flex-start', background:vs.bg, border:`1px solid ${vs.bd}`, color:vs.fg }}>
+              <span style={{ fontWeight:700 }}>{v.ico}</span><span>{v.text}</span>
+            </div>
+          )
+        })()}
+
         {/* CTA */}
         <div style={{ padding:'8px 14px 12px' }}>
           <div style={{
@@ -139,6 +178,8 @@ function DealsInner() {
   const [sort,      setSort]      = useState(() => searchParams.get('sort') || 'hot')
   const [search,    setSearch]    = useState(() => searchParams.get('q') || '')
   const [page,      setPage]      = useState(() => parseInt(searchParams.get('p') || '1'))
+  const [stateFilter, setStateFilter] = useState('')
+  const selState = states.find(s => s.abbr === stateFilter) || null
   const [lastFetch, setLastFetch] = useState(null)
   const searchInput = useRef(null)
 
@@ -278,6 +319,22 @@ function DealsInner() {
                   style={{ fontFamily:MONO, fontSize:11, padding:'5px 10px', border:'1px solid var(--border)', background:'transparent', color:'var(--text-dim)', cursor:'pointer' }}>↺</button>
               </div>
 
+              {/* State legality filter */}
+              {states.length > 0 && (
+                <div style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 0 8px 12px', borderLeft:'1px solid var(--border)' }}>
+                  <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563' }}>STATE:</span>
+                  <select value={stateFilter} onChange={e => setStateFilter(e.target.value)}
+                    style={{ fontFamily:MONO, fontSize:10, background:'var(--bg)', color:'var(--text)', border:`1px solid ${stateFilter ? GOLD : 'var(--border)'}`, padding:'5px 8px', cursor:'pointer', maxWidth:150 }}>
+                    <option value="">Check legality…</option>
+                    {states.map(s => <option key={s.abbr} value={s.abbr}>{s.name}</option>)}
+                  </select>
+                  {stateFilter && (
+                    <button onClick={() => setStateFilter('')}
+                      style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', background:'none', border:'none', cursor:'pointer' }}>✕</button>
+                  )}
+                </div>
+              )}
+
               {/* Search */}
               <form onSubmit={handleSearch}
                 style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 0 8px 12px', borderLeft:'1px solid var(--border)' }}>
@@ -340,7 +397,7 @@ function DealsInner() {
               <>
                 {paginated.length > 0 ? (
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:12, marginBottom:32 }}>
-                    {paginated.map((deal, i) => <DealCard key={deal.id || i} deal={deal} />)}
+                    {paginated.map((deal, i) => <DealCard key={deal.id || i} deal={deal} stateObj={selState} />)}
                   </div>
                 ) : (
                   <div style={{ padding:'80px 0', textAlign:'center', color:'#4B5563', fontFamily:MONO, fontSize:12 }}>
@@ -403,7 +460,7 @@ function DealsInner() {
 }
 
 // ── EXPORT — wraps inner in Suspense (required for useSearchParams in Next 14) ─
-export default function DealsPage() {
+export default function DealsPage({ states = [] }) {
   return (
     <Suspense fallback={
       <div style={{ background:'var(--bg)', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center' }}>
