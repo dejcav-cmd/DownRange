@@ -16,8 +16,8 @@ import {
 export const revalidate = 120
 
 export const metadata = {
-  title: 'DownRange — Firearms & Second Amendment Intelligence',
-  description: 'Real-time 2A news, state gun laws, new releases, and CCW guides for American gun owners.',
+  title: 'DownRange — Gun & Ammo Deals, Tools & 2A Intelligence',
+  description: 'The best live gun and ammo deals, NFA wait times, state gun laws, ballistics tools, and the 2A news that actually matters. Free weekly briefing.',
   alternates: { canonical: 'https://www.downrangeco.com' },
 }
 
@@ -58,7 +58,7 @@ export default async function HomePage() {
   const profileMap = {}
   for (const p of (stateProfiles || [])) { if (p?.abbr) profileMap[p.abbr] = p }
 
-  const allArticles  = articles.length > 0 ? articles : SEED_ARTICLES
+  const allArticles  = articles.length > 0 ? articles : []
   const heroArticles = allArticles.slice(0, 8)  // rotate through first 8
   const listArticles = allArticles.slice(0, 12) // left list
   const gridArticles = allArticles.slice(8, 18) // bottom grid (non-overlapping with hero)
@@ -71,7 +71,6 @@ export default async function HomePage() {
       <Masthead />
 
       <style>{`
-        /* Hero rotator */
         @keyframes heroFadeIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
         @keyframes heroProgress { from { width:0; } to { width:100%; } }
         @keyframes tickerScroll { 0% { transform:translateX(0); } 100% { transform:translateX(-50%); } }
@@ -84,8 +83,157 @@ export default async function HomePage() {
         .dr-page { padding: 0; }
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:0.4; } }
         .pulse-dot { display:inline-block; width:7px; height:7px; border-radius:50%; background:#22c55e; animation:pulse 1.5s infinite; }
+        .tool-card { transition: border-color .15s, transform .15s; }
+        .tool-card:hover { border-color:#C8922A !important; transform:translateY(-2px); }
+        .deal-cta:hover { border-color:#C8922A !important; }
+        .deal-cta:hover .deal-cta-arrow { color:#C8922A !important; }
+        .lede-btn:hover { background:#E5A83A !important; }
+        @media(max-width:820px){ .lede-grid{ grid-template-columns:1fr !important; } .tools-grid{ grid-template-columns:repeat(2,1fr) !important; } }
       `}</style>
 
+      {/* ════════════════════════════════════════════════════════
+          HERO — deals + tools + newsletter (repositioned front door)
+      ════════════════════════════════════════════════════════ */}
+      <section style={{ background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
+        <div style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse at top left, rgba(200,146,42,0.12) 0%, transparent 55%)', pointerEvents:'none' }} />
+        <div className="container" style={{ position:'relative', padding:'52px 0 46px' }}>
+          <div className="lede-grid" style={{ display:'grid', gridTemplateColumns:'1.35fr 1fr', gap:48, alignItems:'center' }}>
+            <div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, letterSpacing:'0.2em', textTransform:'uppercase', color:'#C8922A', marginBottom:14 }}>
+                Live. Loaded. Lawful.
+              </div>
+              <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.4rem,5.2vw,3.9rem)', lineHeight:0.95, letterSpacing:'0.01em', color:'#F0EDE6', margin:'0 0 16px', maxWidth:640 }}>
+                The <span style={{ color:'#C8922A' }}>smartest</span> gun &amp; ammo deals &mdash; plus the tools to buy right.
+              </h1>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:13, color:'#9CA3AF', lineHeight:1.65, maxWidth:540, marginBottom:26 }}>
+                Not the biggest deal list &mdash; the ones worth your money, with the legality checks and ballistics to back the buy. One free briefing a week, no spam.
+              </p>
+              <div style={{ maxWidth:460, marginBottom:14 }}>
+                <NewsletterSignup variant="compact" />
+              </div>
+              <Link href="/deals" className="lede-btn" style={{ display:'inline-block', background:'#C8922A', color:'#000', fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:15, letterSpacing:'0.08em', padding:'11px 24px', textDecoration:'none' }}>
+                BROWSE LIVE DEALS &rarr;
+              </Link>
+            </div>
+            <div className="tools-grid" style={{ display:'grid', gridTemplateColumns:'repeat(2,1fr)', gap:12 }}>
+              {[
+                { ic:'⏱️', t:'NFA Wait Times', d:'Live suppressor & SBR tracker', h:'/nfa-tracker' },
+                { ic:'⚖️', t:'State Laws & CCW', d:'All 50 states · carry & mags', h:'/laws' },
+                { ic:'🎯', t:'Ballistics Calc', d:'Drop, drift & energy', h:'/ballistics' },
+                { ic:'📍', t:'FFL Finder', d:'Nearest transfer dealer', h:'/ffl-finder' },
+              ].map(x => (
+                <Link key={x.t} href={x.h} className="tool-card" style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'16px 15px', textDecoration:'none', display:'block' }}>
+                  <div style={{ fontSize:20, marginBottom:9 }}>{x.ic}</div>
+                  <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:16, letterSpacing:'0.03em', color:'#F0EDE6', marginBottom:3 }}>{x.t}</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6B7280', lineHeight:1.5 }}>{x.d}</div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ════ DEALS — the front-and-center commerce layer ════ */}
+      <section style={{ padding:'40px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
+        <div className="container">
+          <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:12, marginBottom:20, flexWrap:'wrap' }}>
+            <div>
+              <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.7rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:'0 0 4px' }}>💰 LIVE GUN &amp; AMMO DEALS</h2>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.68rem', color:'#4B5563', margin:0 }}>Real-time pricing · curated for value, not volume</p>
+            </div>
+            <Link href="/deals" className="section-link" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.7rem', color:'#C8922A', textDecoration:'none', letterSpacing:'0.1em', border:'1px solid #C8922A40', padding:'6px 14px', whiteSpace:'nowrap' }}>ALL LIVE DEALS →</Link>
+          </div>
+          <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px, 1fr))', gap:12 }}>
+            {[
+              { t:'Rifles & AR-15s', d:'Complete rifles, uppers, PSA drops', h:'/deals' },
+              { t:'Bulk Ammo', d:'9mm, 5.56, .308 by the case', h:'/deals' },
+              { t:'Optics & Red Dots', d:'Holosun, Vortex, Primary Arms', h:'/deals' },
+              { t:'Handguns', d:'Glock, SIG, S&W carry guns', h:'/deals' },
+            ].map(x => (
+              <Link key={x.t} href={x.h} className="deal-cta" style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'18px 16px', textDecoration:'none', display:'flex', flexDirection:'column', minHeight:110 }}>
+                <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:18, letterSpacing:'0.03em', color:'#F0EDE6', marginBottom:6 }}>{x.t}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6B7280', lineHeight:1.5, marginBottom:'auto' }}>{x.d}</div>
+                <div className="deal-cta-arrow" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#C8922A', letterSpacing:'0.08em', marginTop:12 }}>Shop deals →</div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ════ LATEST GUN RELEASES ════ */}
+      {releases?.length > 0 && (
+        <section style={{ padding:'48px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)' }}>
+          <div className="container">
+            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:24 }}>
+              <div>
+                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:'0 0 4px' }}>
+                  🔫 LATEST GUN RELEASES
+                </h2>
+                <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.68rem', color:'#4B5563', margin:0 }}>
+                  New firearms · Just announced or shipping now
+                </p>
+              </div>
+              <a href="/releases" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.7rem', color:'#C8922A', textDecoration:'none', letterSpacing:'0.1em', border:'1px solid #C8922A40', padding:'6px 14px', whiteSpace:'nowrap' }}>
+                ALL RELEASES →
+              </a>
+            </div>
+
+            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:16 }}>
+              {releases.slice(0, 5).map(rel => {
+                const img      = rel?.heroImage?.asset?.url || rel?.imageUrl || '/img/photos/pistol.jpg'
+                const href     = rel?.slug?.current ? `/releases/${rel.slug.current}` : '/releases'
+                const catColor = { pistol:'#60A5FA', rifle:'#34D399', shotgun:'#F59E0B', revolver:'#C084FC', suppressor:'#9CA3AF' }[rel.category] || '#C8922A'
+                const msrpStr  = rel.msrp ? (typeof rel.msrp === 'number' ? `$${rel.msrp.toLocaleString()}` : String(rel.msrp)) : null
+                return (
+                  <a key={rel._id} href={href} style={{ textDecoration:'none', display:'block' }}>
+                    <div style={{ background:'#111318', border:'1px solid #1F2428', overflow:'hidden' }}>
+                      <div style={{ width:'100%', height:160, overflow:'hidden', position:'relative', background:'#0d1117' }}>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img src={img} alt={rel.model || rel.title || ''}
+                          style={{ width:'100%', height:'100%', objectFit:'cover', opacity:.85 }} />
+                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg,rgba(9,9,11,.7) 0%,transparent 60%)' }} />
+                        {rel.isJustDropped && (
+                          <span style={{ position:'absolute', top:8, right:8, background:'#C8922A', color:'#000', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'2px 7px', letterSpacing:'.08em' }}>
+                            JUST DROPPED
+                          </span>
+                        )}
+                        {rel.category && (
+                          <span style={{ position:'absolute', bottom:8, left:10, fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:catColor, fontWeight:700, letterSpacing:'.1em', textTransform:'uppercase' }}>
+                            {rel.category}
+                          </span>
+                        )}
+                      </div>
+                      <div style={{ padding:'12px 14px' }}>
+                        {rel.brand && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4B5563', marginBottom:4 }}>{rel.brand}</div>}
+                        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'#E5E5E5', lineHeight:1.25, marginBottom:8 }}>
+                          {rel.model || rel.title}
+                        </div>
+                        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
+                          {rel.caliber && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6B7280' }}>{rel.caliber}</span>}
+                          {msrpStr    && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', fontWeight:700 }}>{msrpStr}</span>}
+                        </div>
+                      </div>
+                    </div>
+                  </a>
+                )
+              })}
+            </div>
+          </div>
+        </section>
+      )}
+      {/* ════ STATE HUB ════ */}
+      <section style={{ padding:'40px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
+        <div className="container">
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
+            <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:0 }}>🗺 YOUR STATE · YOUR RIGHTS</h2>
+            <Link href="/state-hub" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>All 50 States →</Link>
+          </div>
+          <StateHub profiles={profileMap} />
+        </div>
+      </section>
+      {/* ════════════════════════════════════════════════════════
+          LIVE 2A FEED — demoted from the top; freshness + fuel
+      ════════════════════════════════════════════════════════ */}
       {/* ════════════════════════════════════════════════════════
           HERO — rotating big story + news list
       ════════════════════════════════════════════════════════ */}
@@ -159,9 +307,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      
-
       {/* ════ BREAKING ALERTS STRIP ════ */}
       {(alerts || []).length > 0 && (
         <section style={{ background:'rgba(239,68,68,0.06)', borderBottom:'1px solid rgba(239,68,68,0.2)', padding:'16px 0' }}>
@@ -181,82 +326,8 @@ export default async function HomePage() {
           </div>
         </section>
       )}
-
       {/* ════ MORE STORIES — magazine grid with photos + live updates ════ */}
       <LiveNewsGrid articles={gridArticles} />
-
-      {/* ════ LATEST GUN RELEASES ════ */}
-      {releases?.length > 0 && (
-        <section style={{ padding:'48px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)' }}>
-          <div className="container">
-            <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:24 }}>
-              <div>
-                <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:'0 0 4px' }}>
-                  🔫 LATEST GUN RELEASES
-                </h2>
-                <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.68rem', color:'#4B5563', margin:0 }}>
-                  New firearms · Just announced or shipping now
-                </p>
-              </div>
-              <a href="/releases" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'0.7rem', color:'#C8922A', textDecoration:'none', letterSpacing:'0.1em', border:'1px solid #C8922A40', padding:'6px 14px', whiteSpace:'nowrap' }}>
-                ALL RELEASES →
-              </a>
-            </div>
-
-            <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:16 }}>
-              {releases.slice(0, 5).map(rel => {
-                const img      = rel?.heroImage?.asset?.url || rel?.imageUrl || '/img/photos/pistol.jpg'
-                const href     = rel?.slug?.current ? `/releases/${rel.slug.current}` : '/releases'
-                const catColor = { pistol:'#60A5FA', rifle:'#34D399', shotgun:'#F59E0B', revolver:'#C084FC', suppressor:'#9CA3AF' }[rel.category] || '#C8922A'
-                const msrpStr  = rel.msrp ? (typeof rel.msrp === 'number' ? `$${rel.msrp.toLocaleString()}` : String(rel.msrp)) : null
-                return (
-                  <a key={rel._id} href={href} style={{ textDecoration:'none', display:'block' }}>
-                    <div style={{ background:'#111318', border:'1px solid #1F2428', overflow:'hidden' }}>
-                      <div style={{ width:'100%', height:160, overflow:'hidden', position:'relative', background:'#0d1117' }}>
-                        {/* eslint-disable-next-line @next/next/no-img-element */}
-                        <img src={img} alt={rel.model || rel.title || ''}
-                          style={{ width:'100%', height:'100%', objectFit:'cover', opacity:.85 }} />
-                        <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg,rgba(9,9,11,.7) 0%,transparent 60%)' }} />
-                        {rel.isJustDropped && (
-                          <span style={{ position:'absolute', top:8, right:8, background:'#C8922A', color:'#000', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, padding:'2px 7px', letterSpacing:'.08em' }}>
-                            JUST DROPPED
-                          </span>
-                        )}
-                        {rel.category && (
-                          <span style={{ position:'absolute', bottom:8, left:10, fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:catColor, fontWeight:700, letterSpacing:'.1em', textTransform:'uppercase' }}>
-                            {rel.category}
-                          </span>
-                        )}
-                      </div>
-                      <div style={{ padding:'12px 14px' }}>
-                        {rel.brand && <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4B5563', marginBottom:4 }}>{rel.brand}</div>}
-                        <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'#E5E5E5', lineHeight:1.25, marginBottom:8 }}>
-                          {rel.model || rel.title}
-                        </div>
-                        <div style={{ display:'flex', justifyContent:'space-between', alignItems:'center' }}>
-                          {rel.caliber && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#6B7280' }}>{rel.caliber}</span>}
-                          {msrpStr    && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', fontWeight:700 }}>{msrpStr}</span>}
-                        </div>
-                      </div>
-                    </div>
-                  </a>
-                )
-              })}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ════ STATE HUB ════ */}
-      <section style={{ padding:'40px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
-        <div className="container">
-          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:20 }}>
-            <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.6rem', letterSpacing:'0.04em', color:'var(--foreground)', margin:0 }}>🗺 YOUR STATE · YOUR RIGHTS</h2>
-            <Link href="/state-hub" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none' }}>All 50 States →</Link>
-          </div>
-          <StateHub profiles={profileMap} />
-        </div>
-      </section>
 
       {/* ════ NEWSLETTER ════ */}
       <section style={{ padding:'56px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
@@ -265,25 +336,25 @@ export default async function HomePage() {
           <div className="newsletter-split" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:60, alignItems:'center' }}>
             <div>
               <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.5rem,5vw,3.8rem)', color:'var(--foreground)', lineHeight:0.95, letterSpacing:'0.02em', marginBottom:14 }}>
-                Stay <span style={{ color:'#C8922A' }}>Armed</span><br />& Informed
+                Stay <span style={{ color:'#C8922A' }}>Armed</span><br />&amp; Informed
               </h2>
-              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#475569', lineHeight:1.7, marginBottom:24 }}>
-                Join 400,000+ Americans getting the weekly DownRange intelligence briefing — breaking news, new laws, and gear releases.
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#9CA3AF', lineHeight:1.7, marginBottom:24 }}>
+                The weekly DownRange briefing: the best gun &amp; ammo deals, new releases, and the 2A news that actually matters. Free, no spam, unsubscribe anytime.
               </p>
               <NewsletterSignup variant="compact" />
             </div>
             <div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:18 }}>
-                {[['412K','Subscribers'],['50','State Guides'],['Daily','Briefings']].map(([n,l]) => (
+                {[['50','State Guides'],['Weekly','Deal Drop'],['Free','No Spam']].map(([n,l]) => (
                   <div key={l} style={{ textAlign:'center', padding:'18px 10px', background:'var(--bg2)', border:'1px solid var(--border)' }}>
                     <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.2rem', color:'#C8922A', lineHeight:1 }}>{n}</div>
-                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#334155', letterSpacing:'0.1em', textTransform:'uppercase', marginTop:3 }}>{l}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#6B7280', letterSpacing:'0.1em', textTransform:'uppercase', marginTop:3 }}>{l}</div>
                   </div>
                 ))}
               </div>
               <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
                 {[['𝕏 Twitter','#'],['▶ YouTube','#'],['📡 Rumble','#'],['✈ Telegram','#']].map(([l,h]) => (
-                  <a key={l} href={h} style={{ background:'var(--bg2)', border:'1px solid var(--border)', color:'#475569', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'7px 12px', textDecoration:'none' }}>{l}</a>
+                  <a key={l} href={h} style={{ background:'var(--bg2)', border:'1px solid var(--border)', color:'#6B7280', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'7px 12px', textDecoration:'none' }}>{l}</a>
                 ))}
               </div>
             </div>
