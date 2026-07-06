@@ -1,4 +1,9 @@
-Total Amazon deals: 1
+Total Amazon deals: 2
+
+  asin:B0DN2XGRTJ
+  title:    Eberlestock Fade Sling Pack - EDC Crossbody Sling Backpack
+  imageUrl: (none)
+  affiliate:OK
 
   asin:B0D1KXJYR6
   title:    Eberlestock Bando Bag Tactical Fanny Pack for Men
