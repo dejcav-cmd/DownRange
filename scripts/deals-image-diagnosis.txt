@@ -1,8 +1,17 @@
 === DEAL IMAGE PIPELINE DIAGNOSIS ===
-time: 2026-07-06T15:10:59.094Z
+time: 2026-07-06T15:13:48.855Z
+
+--- 1) Live /api/deals imageUrl distribution ---
+=== DEAL IMAGE PIPELINE DIAGNOSIS ===
+time: 2026-07-06T15:13:48.913Z
 
 --- 1) Live /api/deals imageUrl distribution ---
   /api/deals HTTP 200
+  /api/deals HTTP 200
+  total:201  null:13  sanity:187  proxy:1  gundeals:0  other:0
+  sample imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/f2c0b208c3ac60fb1bf4e8d7c1faa8bf5d72c0bd-475x292.jpg
+
+--- 2) Pipeline test on 5 real gun.deals product pages ---
   total:201  null:13  sanity:187  proxy:1  gundeals:0  other:0
   sample imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/f2c0b208c3ac60fb1bf4e8d7c1faa8bf5d72c0bd-475x292.jpg
 
@@ -13,9 +22,27 @@ time: 2026-07-06T15:10:59.094Z
     scrapeOG: FAILED — 403
 
   PAGE: https://gun.deals/product/lmt-defense-exclusive-125-mars-l-specwar-pistol-midmilk125-marsp
+  got 5 product links from RSS
+
+  PAGE: https://gun.deals
     scrapeOG: FAILED — 403
 
   PAGE: https://gun.deals/product/walther-pps-m2-9mm-318-barrel-pistol-tenifer-black-6-7-round-mag
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/lmt-defense-exclusive-125-mars-l-specwar-pistol-midmilk125-marsp
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/glock-g25-g3-380-acp-4-barrel-15-rnds-black-511
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/walther-pps-m2-9mm-318-barrel-pistol-tenifer-black-6-7-round-mag
+    scrapeOG: FAILED — 403
+
+  PAGE: https://gun.deals/product/bergara-b-14-ridge-308-winchester-sggray-bolt-action-rifle-22in-
+    scrapeOG: FAILED — 403
+
+--- 3) RSS item structure (looking for embedded images) ---
     scrapeOG: FAILED — 403
 
   PAGE: https://gun.deals/product/glock-g25-g3-380-acp-4-barrel-15-rnds-black-511
@@ -23,5 +50,15 @@ time: 2026-07-06T15:10:59.094Z
 
   PAGE: https://gun.deals/product/bergara-b-14-ridge-308-winchester-sggray-bolt-action-rifle-22in-
     scrapeOG: FAILED — 403
+
+--- 3) RSS item structure (looking for embedded images) ---
+  has <enclosure>: false
+    NO image in RSS item. Raw block (first 700 chars):
+     <title>Breek Arms Sledgehammer AR-15 Ambidextrous Charging Handle OD Green - $43.96 after code: JULY1226</title> <link>https://gun.deals/node/1525636</link> <description><![CDATA[<div>Price: $43.96</div> <div>Store: <a href="https://gun.deals/content/ar15discounts">AR15Discounts</a></div>]]></description> <comments>https://gun.deals/node/1525636#comments</comments> <pubDate>Mon, 06 Jul 2026 15:13:47 +0000</pubDate> <dc:creator>gunMafia</dc:creator> <guid isPermaLink="false">1525636 at https://gun.deals</guid> 
+
+=== END ===
+  has <enclosure>: false
+    NO image in RSS item. Raw block (first 700 chars):
+     <title>Breek Arms Sledgehammer AR-15 Ambidextrous Charging Handle OD Green - $43.96 after code: JULY1226</title> <link>https://gun.deals/node/1525636</link> <description><![CDATA[<div>Price: $43.96</div> <div>Store: <a href="https://gun.deals/content/ar15discounts">AR15Discounts</a></div>]]></description> <comments>https://gun.deals/node/1525636#comments</comments> <pubDate>Mon, 06 Jul 2026 15:13:47 +0000</pubDate> <dc:creator>gunMafia</dc:creator> <guid isPermaLink="false">1525636 at https://gun.deals</guid> 
 
 === END ===
