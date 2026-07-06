@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import UniversalContentEditor from './UniversalContentEditor'
+import AmazonImportPanel from './AmazonImportPanel'
 
 const MONO = "'IBM Plex Mono',monospace"
 
@@ -50,6 +51,9 @@ export default function DealsManager({ adminKey }) {
 
   return (
     <div>
+      {/* Amazon ASIN import — no PA API needed */}
+      <AmazonImportPanel adminKey={adminKey} />
+
       {migrateMsg && (
         <div style={{
           margin:'0 0 12px', padding:'10px 14px',
