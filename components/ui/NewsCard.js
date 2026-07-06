@@ -80,7 +80,9 @@ export default function NewsCard({ article, featured = false }) {
   // Always route to internal DownRange article page
   // externalUrl is shown as "Read original source" inside the article page
   const slug = article.slug?.current || article.slug || ''
-  const href = `/news/${encodeURIComponent(slug)}`
+  const redirectsToDeals = (article.source || '').toLowerCase().includes('ammoland') || article.category === 'deals'
+  const href = (redirectsToDeals && article.externalUrl) ? article.externalUrl : `/news/${encodeURIComponent(slug)}`
+  const linkTarget = (redirectsToDeals && article.externalUrl) ? '_blank' : undefined
   const catColor   = CAT_COLORS[article.category]  || '#9CA3AF'
   const catLabel   = CAT_LABELS[article.category]  || (article.category?.toUpperCase() || 'NEWS')
   const catGrad    = CAT_GRADIENTS[article.category] || CAT_GRADIENTS.news
@@ -89,7 +91,7 @@ export default function NewsCard({ article, featured = false }) {
 
   if (featured) {
     return (
-      <a href={href} rel="noreferrer"
+      <a href={href} target={linkTarget} rel="noreferrer"
         style={{ display: 'block', textDecoration: 'none' }}>
         <div style={{ position: 'relative', minHeight: '420px', overflow: 'hidden', background: '#0d1117' }}>
           {/* Background image — always shown (resolveImage always returns a fallback) */}
@@ -138,7 +140,7 @@ export default function NewsCard({ article, featured = false }) {
 
   // Standard card
   return (
-    <a href={href} rel="noreferrer"
+    <a href={href} target={linkTarget} rel="noreferrer"
       style={{ display: 'block', textDecoration: 'none' }}>
       <div style={{ background: '#111318', border: '1px solid var(--border)', overflow: 'hidden', height: '100%', display: 'flex', flexDirection: 'column', transition: 'border-color 0.2s' }}
         onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
