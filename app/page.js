@@ -74,6 +74,7 @@ const TOOLS = [
   { ic:'🎯', t:'Ballistics Calc', d:'Drop, drift & energy · 38 loads',       h:'/ballistics' },
   { ic:'🔫', t:'New Releases',    d:'Just-dropped firearms & gear',          h:'/releases' },
   { ic:'📍', t:'FFL Finder',      d:'Nearest transfer dealer near you',      h:'/ffl-finder' },
+  { ic:'🎁', t:'Giveaways',       d:'Live gun & gear giveaways to enter',    h:'/giveaways' },
 ]
 
 export default async function HomePage() {
@@ -109,7 +110,7 @@ export default async function HomePage() {
       {/* SECONDARY — quiet tools row */}
       <section style={{ padding:'28px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
-          <div className="home-tools" style={{ display:'grid', gridTemplateColumns:'repeat(4,1fr)', gap:12 }}>
+          <div className="home-tools" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(180px,1fr))', gap:12 }}>
             {TOOLS.map(t => (
               <Link key={t.t} href={t.h} className="tool-sq" style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'18px 16px', textDecoration:'none', display:'block' }}>
                 <div style={{ fontSize:19, marginBottom:8 }}>{t.ic}</div>

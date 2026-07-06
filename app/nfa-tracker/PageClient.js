@@ -135,18 +135,24 @@ export default function NFATracker() {
       <Masthead />
 
       {/* HERO */}
-      <div style={{ background: '#0a0a0a', borderBottom: '2px solid #c8922a', padding: '52px 0 40px' }}>
-        <div className="container">
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8922a', letterSpacing: '.2em', marginBottom: 12 }}>
-            ⏱ NFA PROCESSING INTELLIGENCE
+      <div style={{ background: '#0a0a0a', borderBottom: '2px solid #c8922a', padding: '56px 0 44px', position:'relative', overflow:'hidden' }}>
+        <div aria-hidden style={{ position:'absolute', inset:0, backgroundImage:'url(/img/photos/suppressor.jpg)', backgroundSize:'cover', backgroundPosition:'center', opacity:.38, pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(10,10,10,.94) 0%, rgba(10,10,10,.74) 46%, rgba(10,10,10,.45) 100%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(10,10,10,.9) 0%, transparent 55%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.14), transparent 60%)', pointerEvents:'none' }} />
+        <div className="container" style={{ position:'relative' }}>
+          <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
+            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8922a', letterSpacing: '.2em' }}>⏱ NFA PROCESSING INTELLIGENCE</span>
+            <span style={{ display:'flex', alignItems:'center', gap:6, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#22C55E', letterSpacing:'.1em' }}><span className="nfa-live-dot" /> LIVE</span>
           </div>
           <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
             NFA WAIT TIME<br /><span style={{ color: '#c8922a' }}>TRACKER</span>
           </h1>
-          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
-            Current ATF Form 4 processing times · Scraped from ATF.gov & industry trackers · Estimate your approval date
+          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#cbd5e1', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
+            Current ATF Form 4 processing times · Scraped from ATF.gov &amp; industry trackers · Estimate your approval date
           </p>
         </div>
+        <style>{`@keyframes nfaPulse{0%,100%{opacity:1}50%{opacity:.35}} .nfa-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;animation:nfaPulse 1.6s infinite}`}</style>
       </div>
 
       <div style={{ padding: '40px 0 80px' }}>

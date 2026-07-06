@@ -3,7 +3,7 @@ import Footer from '../../components/layout/Footer'
 
 export const metadata = {
   title: 'About DownRange — Built for Gun Owners | Independent 2A Intelligence',
-  description: 'DownRange is an independent firearms intelligence platform covering 2A news, state gun laws, new releases, and ammo prices. No manufacturer money. No paywalls.',
+  description: 'DownRange checks every gun and ammo deal, new release, and law against your state — independent 2A intelligence with no manufacturer money and no paywalls.',
   alternates: { canonical: 'https://www.downrangeco.com/about' },
   openGraph: {
     type: 'website', url: 'https://www.downrangeco.com/about',
@@ -19,7 +19,7 @@ const ABOUT_SCHEMA = {
   '@id': 'https://www.downrangeco.com/about#page',
   url: 'https://www.downrangeco.com/about',
   name: 'About DownRange',
-  description: 'DownRange is an independent firearms intelligence platform covering Second Amendment news, gun laws, ammo prices, and new releases.',
+  description: 'DownRange is an independent firearms intelligence platform that checks every gun and ammo deal, new release, and law against your state — covering Second Amendment news, gun laws, and NFA processing times.',
   isPartOf: { '@id': 'https://www.downrangeco.com/#website' },
   about: {
     '@id': 'https://www.downrangeco.com/#organization',
@@ -31,7 +31,7 @@ const ABOUT_SCHEMA = {
     areaServed: 'United States',
     knowsAbout: [
       'Second Amendment', 'Firearms Law', 'Concealed Carry',
-      'ATF Regulations', 'Ammunition Prices', 'Gun Reviews',
+      'ATF Regulations', 'Gun Deals', 'Gun Reviews',
       'National Firearms Act', '2A Legislation', 'SCOTUS Cases',
     ],
     founder: {
@@ -58,9 +58,9 @@ const MANIFESTO_LINES = [
 const PILLARS = [
   {
     number: '01',
-    title: 'Relentless Coverage',
-    body: 'The ATF doesn\'t take weekends off. Neither do we. DownRange monitors 50+ sources — RSS feeds, Congress.gov, LegiScan, manufacturer press lines, SCOTUS dockets — and surfaces what matters within the hour it breaks.',
-    accent: 'Every 15 minutes. All day. Every day.',
+    title: 'Every Deal, Checked',
+    body: 'Other sites hand you a price list and a rulebook and make you connect them. DownRange connects them for you — every live gun and ammo deal comes checked against your state\'s laws, so you know what you can actually buy before you click.',
+    accent: 'One page. Your state. The whole picture.',
   },
   {
     number: '02',
