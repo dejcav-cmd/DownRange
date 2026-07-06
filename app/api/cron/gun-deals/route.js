@@ -159,10 +159,9 @@ const DEAL_UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (K
 // actual product og:image — a gun.deals CDN url that IS directly downloadable.
 async function scrapeOGImageViaJina(pageUrl) {
   try {
-    const res = await fetch('https://r.jina.ai/' + pageUrl, {
-      headers: { 'User-Agent': DEAL_UA, 'x-respond-with': 'html', 'Accept': 'text/html' },
-      signal: AbortSignal.timeout(25000),
-    })
+    const headers = { 'User-Agent': DEAL_UA, 'x-respond-with': 'html', 'Accept': 'text/html' }
+    if (process.env.JINA_API_KEY) headers['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
+    const res = await fetch('https://r.jina.ai/' + pageUrl, { headers, signal: AbortSignal.timeout(25000) })
     if (!res.ok) return null
     const html = await res.text()
     const og = (html.match(/og:image["'\s]+content=["']([^"']+)["']/i) || [])[1]
@@ -184,7 +183,7 @@ async function getDealImage(deal) {
 }
 
 // Process deals in small batches. Each deal: { link, title, category }
-async function processImages(deals, concurrency = 3) {
+async function processImages(deals, concurrency = 1) {
   const results = new Map()
   for (let i = 0; i < deals.length; i += concurrency) {
     const chunk = deals.slice(i, i + concurrency)
@@ -193,6 +192,7 @@ async function processImages(deals, concurrency = 3) {
     )
     for (const r of settled)
       if (r.status === 'fulfilled') results.set(r.value.link, r.value.img)
+    if (i + concurrency < deals.length) await new Promise(r => setTimeout(r, 1200))  // stay under Jina rate limit
   }
   return results
 }
@@ -230,7 +230,7 @@ export async function GET(req) {
       `*[_type=="gunDeal" && source=="gun.deals"] | order(_createdAt desc) [${off}...${off + n}] { _id, externalUrl }`
     ).catch(() => [])
     const dealsR = recent.filter(d => d.externalUrl).map(d => ({ link: d.externalUrl }))
-    const mapR   = await processImages(dealsR, 2)
+    const mapR   = await processImages(dealsR, 1)
     const mutsR  = recent
       .filter(d => d.externalUrl && mapR.get(d.externalUrl))
       .map(d => ({ patch: { id: d._id, set: { imageUrl: mapR.get(d.externalUrl) } } }))
@@ -258,7 +258,7 @@ export async function GET(req) {
       // Fetch real source images via Jina proxy → Sanity CDN (2 concurrent)
       const imageMap = await processImages(
         newDeals.map(d => ({ link: d.link, title: d.title, category: detectCategory(d.title, d.cats) })),
-        2
+        1
       )
       stats.imaged = [...imageMap.values()].filter(Boolean).length
 
@@ -292,7 +292,7 @@ export async function GET(req) {
       const healDeals = needsImage
         .filter(d => d.externalUrl)
         .map(d => ({ link: d.externalUrl, title: d.title, category: d.category || detectCategory(d.title || '') }))
-      const healMap = await processImages(healDeals, 2)
+      const healMap = await processImages(healDeals, 1)
       const healMuts = needsImage
         .filter(d => d.externalUrl && healMap.get(d.externalUrl))
         .map(d => ({ patch: { id: d._id, set: { imageUrl: healMap.get(d.externalUrl) } } }))
