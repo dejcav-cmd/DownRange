@@ -109,7 +109,7 @@ export default function RootLayout({ children }) {
             gtag('config', '${GA_ID}', { page_path: window.location.pathname });
           `}
         </Script>
-        <script dangerouslySetInnerHTML={{ __html: '' }} src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1604521" />
+        <script src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&application_id=1619841" />
       </head>
       <ClerkWrapper>
       <body>

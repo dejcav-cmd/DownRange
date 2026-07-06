@@ -1,7 +1,6 @@
 'use client'
 import Link from 'next/link'
 import SocialIcons from '../ui/SocialIcons'
-import EmailCapture from '../ui/EmailCapture'
 
 const FOOTER_COLS = [
   { title: 'News & Intel', links: [['Latest News','/news'],['Live Deals','/deals'],['Video','/video'],['Canada','/canada']] },
@@ -14,15 +13,6 @@ export default function Footer() {
   return (
     <footer style={{ background: '#07080A', borderTop: '1px solid var(--border)', padding: '48px 0 24px' }}>
       <div className="container">
-        <div style={{ marginBottom: '40px' }}>
-          <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '18px', fontWeight: 700, letterSpacing: '0.1em', textTransform: 'uppercase', color: 'var(--gold)', marginBottom: '6px' }}>
-            DownRange Daily
-          </div>
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '12px', color: '#9CA3AF', marginBottom: '14px', lineHeight: 1.5 }}>
-            Best gun &amp; ammo deals, breaking 2A news, and new releases — straight to your inbox. Free, no spam.
-          </div>
-          <EmailCapture variant="footer" />
-        </div>
         <div className="footer-grid" style={{ display: 'grid', gridTemplateColumns: '280px repeat(4, 1fr)', gap: '40px', marginBottom: '40px' }}>
           {/* Brand */}
           <div>
