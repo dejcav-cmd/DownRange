@@ -168,7 +168,7 @@ function DealCard({ deal, stateObj }) {
 }
 
 // ── INNER PAGE (uses useSearchParams — must be inside Suspense) ───────────────
-function DealsInner() {
+function DealsInner({ states = [] }) {
   const searchParams = useSearchParams()
   const router = useRouter()
 
@@ -467,7 +467,7 @@ export default function DealsPage({ states = [] }) {
         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4B5563' }}>Loading deals…</span>
       </div>
     }>
-      <DealsInner />
+      <DealsInner states={states} />
     </Suspense>
   )
 }
