@@ -1,5 +1,5 @@
 === JINA PROXY → gun.deals SOURCE IMAGE TEST ===
-time: 2026-07-06T15:59:26.025Z
+time: 2026-07-06T16:28:45.887Z
 links: 3
 
   PRODUCT: https://gun.deals
@@ -7,14 +7,14 @@ links: 3
     found image: https://gun.deals/cdn-cgi/image/w=400,h=400,f=auto/sites/default/files/6cf4a8b70b0cf802d0e2155d65235d0d.jpg
     dl og direct  : HTTP 200 · image/jpeg · 4869b x
 
-  PRODUCT: https://gun.deals/product/sons-liberty-gun-works-m4-exo3-556-145-pw-hux-bar
+  PRODUCT: https://gun.deals/product/hornady-22-arc-75-gr-eld-match-hornady-black-20-r
     jina HTTP 200
-    found image: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/sons-of-liberty-gun-works-m4-exo3-5-56
-    dl og direct  : HTTP 200 · image/png · 30544b OK
+    found image: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/090255815ds412__36064.jpg
+    dl og direct  : HTTP 200 · image/jpeg · 76234b OK
 
-  PRODUCT: https://gun.deals/product/sons-liberty-gun-works-precision-spr-223-wylde-mi
+  PRODUCT: https://gun.deals/product/us-cartridge-9mm-147-grain-fmj-ammo-subsonic-2486
     jina HTTP 200
-    found image: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/sons-of-liberty-gun-works-precision-sp
-    dl og direct  : HTTP 200 · image/png · 89112b OK
+    found image: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/5898djh4ododopp7d.jpg
+    dl og direct  : HTTP 200 · image/jpeg · 40183b OK
 
 === END ===
