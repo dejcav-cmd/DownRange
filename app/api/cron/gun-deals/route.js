@@ -32,6 +32,16 @@ async function fetchRSS() {
   throw new Error('gun.deals: all RSS URLs failed')
 }
 
+function decodeEntities(s = '') {
+  if (!s) return s
+  const named = { amp:'&', lt:'<', gt:'>', quot:'"', apos:"'", '#39':"'", nbsp:' ', ndash:'–', mdash:'—', hellip:'…', rsquo:'’', lsquo:'‘', ldquo:'“', rdquo:'”', trade:'™', reg:'®', copy:'©', deg:'°' }
+  return s
+    .replace(/&#(\d+);/g, (_, n) => String.fromCodePoint(parseInt(n, 10)))
+    .replace(/&#x([0-9a-f]+);/gi, (_, n) => String.fromCodePoint(parseInt(n, 16)))
+    .replace(/&([a-z0-9#]+);/gi, (m, e) => (named[e.toLowerCase()] !== undefined ? named[e.toLowerCase()] : m))
+    .trim()
+}
+
 function parseRSS(xml) {
   const items = []
   const itemRe = /<item>([\s\S]*?)<\/item>/gi
@@ -43,8 +53,8 @@ function parseRSS(xml) {
              || block.match(new RegExp('<' + tag + '[^>]*>([^<]*)<\\/' + tag + '>'))
       return r ? r[1].trim() : ''
     }
-    const title = get('title'), link = get('link') || get('guid')
-    const desc  = get('description'), date = get('pubDate')
+    const title = decodeEntities(get('title')), link = get('link') || get('guid')
+    const desc  = decodeEntities(get('description')), date = get('pubDate')
     const cats  = [...block.matchAll(/<category[^>]*>([^<]+)<\/category>/gi)].map(c => c[1].trim())
     const price = title.match(/\$[\d,]+(?:\.\d{2})?/) ? title.match(/\$[\d,]+(?:\.\d{2})?/)[0]
                 : desc.match(/\$[\d,]+(?:\.\d{2})?/)?.[0] || ''
