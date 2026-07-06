@@ -21,6 +21,7 @@ const FLAIR_META = {
   'NFA':         { color:'#EF4444', bg:'rgba(239,68,68,0.12)',   label:'NFA'         },
   'Optic':       { color:'#34D399', bg:'rgba(52,211,153,0.12)',  label:'OPTIC'       },
   'Gear':        { color:'#9CA3AF', bg:'rgba(156,163,175,0.12)', label:'GEAR'        },
+  'Archery':     { color:'#84CC16', bg:'rgba(132,204,22,0.12)',  label:'ARCHERY'     },
   'Deals':       { color:'#FBBF24', bg:'rgba(251,191,36,0.12)',  label:'DEAL'        },
   'Other':       { color:'#4B5563', bg:'rgba(75,85,99,0.12)',    label:'OTHER'       },
 }
@@ -33,6 +34,7 @@ function inferFlair(title = '') {
   if (/\bammo\b|9mm|\.223|\.308|5\.56|7\.62|\.45|\.357|rounds|gr fmj|gr hp/.test(t)) return 'Ammo'
   if (/suppressor|silencer|\bnfa\b|form 4|form4/.test(t))                      return 'NFA'
   if (/scope|optic|red dot|lpvo|vortex|leupold|eotech|aimpoint/.test(t))       return 'Optic'
+  if (/\bbow\b|archery|arrow|broadhead|quiver|recurve|compound bow|crossbow|nock|fletching|vane|mathews|hoyt|bowtech|pse bow|gold tip|carbon express|rage broadhead|barnett|tenpoint/.test(t)) return 'Archery'
   if (/holster|magazine|pmag|light|streamlight|sling|grip|trigger/.test(t))    return 'Accessories'
   if (/gear|vest|plate|carrier|bag|case|safe/.test(t))                         return 'Gear'
   return 'Deals'

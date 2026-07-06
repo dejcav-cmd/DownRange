@@ -102,9 +102,18 @@ export default function DealsManager({ adminKey }) {
           extraActions: [
             { label: migrating ? '⏳ Running...' : '🔧 Fix Miscategorized', fn: runMigration, disabled: migrating },
             { label: '⚡ Pull Deals Feed', fn: triggerFeed },
-            { label: '🔦 Scrape Olight',    fn: (f) => triggerBrandScrape('olight', f)    },
-            { label: '🔭 Scrape Monstrum',  fn: (f) => triggerBrandScrape('monstrum', f)  },
-            { label: '🎯 Scrape Vortex',    fn: (f) => triggerBrandScrape('vortex', f)    },
+            { label: '🔦 Olight',       fn: (f) => triggerBrandScrape('olight', f)          },
+            { label: '💡 Streamlight',  fn: (f) => triggerBrandScrape('streamlight', f)    },
+            { label: '🎯 Vortex',       fn: (f) => triggerBrandScrape('vortex', f)          },
+            { label: '⭕ Holosun',      fn: (f) => triggerBrandScrape('holosun', f)         },
+            { label: '🔭 Monstrum',     fn: (f) => triggerBrandScrape('monstrum', f)        },
+            { label: '🟩 Magpul',       fn: (f) => triggerBrandScrape('magpul', f)          },
+            { label: '🏹 Mathews',      fn: (f) => triggerBrandScrape('mathews', f)         },
+            { label: '🏹 Gold Tip',     fn: (f) => triggerBrandScrape('goldtip', f)         },
+            { label: '🏹 Rage',         fn: (f) => triggerBrandScrape('rage', f)            },
+            { label: '🏹 Carbon Expr.', fn: (f) => triggerBrandScrape('carbon-express', f)  },
+            { label: '🏹 Barnett',      fn: (f) => triggerBrandScrape('barnett', f)         },
+            { label: '🏹 TenPoint',     fn: (f) => triggerBrandScrape('tenpoint', f)        },
           ],
         }}
       />

@@ -10,7 +10,7 @@ export const gunDeal = {
     { name: 'price',       title: 'Price',         type: 'string',
       description: 'Extracted price string, e.g. "$349.99"' },
     { name: 'category',    title: 'Category',      type: 'string',
-      options: { list: ['ammo','rifle','pistol','shotgun','suppressor','optic','accessory','deal'] } },
+      options: { list: ['ammo','rifle','pistol','shotgun','suppressor','optic','accessory','archery','deal'] } },
     { name: 'summary',     title: 'Summary',       type: 'text', rows: 3 },
     { name: 'imageUrl',    title: 'Image URL',     type: 'url' },
     { name: 'store',       title: 'Store/Retailer', type: 'string' },

@@ -19,6 +19,7 @@ const FLAIR_META = {
   Accessories:{ color:'#C084FC' }, NFA:        { color:'#EF4444' },
   Optic:      { color:'#34D399' }, Gear:       { color:'#9CA3AF' },
   Deals:      { color:'#FBBF24' }, Other:      { color:'#4B5563' },
+  Archery:    { color:'#84CC16' },
 }
 
 function timeAgo(ts) {

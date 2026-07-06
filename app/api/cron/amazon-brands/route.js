@@ -10,6 +10,10 @@ const ADMIN_KEY     = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const PROJECT_ID    = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
 const ASSOCIATE_TAG = process.env.AMAZON_ASSOCIATE_TAG || 'downrangeco-20'
 
+// Amazon "All Deals" refinement — appended to every search URL so Amazon
+// pre-filters to discounted items server-side before we even parse the HTML.
+const DEAL_FILTER = '&rh=p_n_deal_type%3A23566065011&s=discount-rank'
+
 const sanity = createClient({
   projectId:  PROJECT_ID,
   dataset:    'production',
@@ -18,80 +22,166 @@ const sanity = createClient({
   useCdn:     false,
 })
 
-// ── Brand sources ─────────────────────────────────────────────────────────────
-// Each brand gets a targeted search URL in the Sporting Goods index.
-// brandWords are the always-pass keywords for this brand's product line — if
-// the title contains any of them, it bypasses the generic 2A filter.
+// ── Brand roster ──────────────────────────────────────────────────────────────
+// brandWords: title substrings that always pass the 2A/archery filter for this brand.
+// cat: gunDeal category written to Sanity.
 
 const BRAND_SOURCES = [
+  // ── Weapon lights ──────────────────────────────────────────────────────────
   {
-    id:         'olight',
-    label:      'Olight',
-    store:      'Amazon – Olight',
-    url:        'https://www.amazon.com/s?k=olight+flashlight+tactical+weapon&i=sporting',
-    brandWords: ['olight', 'weapon light', 'torch', 'lamp', 'warrior', 'baldr', 'pl-pro',
-                 'valkyrie', 'javelot', 'marauder', 'perun', 'turbo', 'mini'],
-    cat:        'accessory',
+    id: 'olight', label: 'Olight', store: 'Amazon – Olight', cat: 'accessory',
+    url: 'https://www.amazon.com/s?k=olight+flashlight+tactical+weapon&i=sporting' + DEAL_FILTER,
+    brandWords: ['olight','weapon light','warrior','baldr','pl-pro','valkyrie',
+                 'javelot','marauder','perun','turbo mini','odin','baton'],
   },
   {
-    id:         'monstrum',
-    label:      'Monstrum Tactical',
-    store:      'Amazon – Monstrum',
-    url:        'https://www.amazon.com/s?k=monstrum+tactical&i=sporting',
-    brandWords: ['monstrum', 'scope mount', 'ring mount', 'cantilever', 'riser', 'offset',
-                 'scope rail', 'picatinny', 'low profile', 'prism scope', 'red dot'],
-    cat:        'optic',
+    id: 'streamlight', label: 'Streamlight', store: 'Amazon – Streamlight', cat: 'accessory',
+    url: 'https://www.amazon.com/s?k=streamlight+weapon+light+tactical&i=sporting' + DEAL_FILTER,
+    brandWords: ['streamlight','tlr','stinger','protac','sidewinder','siege',
+                 'polytac','microstream','stylus'],
+  },
+  // ── Optics ─────────────────────────────────────────────────────────────────
+  {
+    id: 'vortex', label: 'Vortex Optics', store: 'Amazon – Vortex', cat: 'optic',
+    url: 'https://www.amazon.com/s?k=vortex+optics+scope&i=sporting' + DEAL_FILTER,
+    brandWords: ['vortex','viper','sparc','strikefire','crossfire','diamondback',
+                 'razor','ranger','pst','spitfire','summit','kaibab','fury','impact'],
   },
   {
-    id:         'vortex',
-    label:      'Vortex Optics',
-    store:      'Amazon – Vortex',
-    url:        'https://www.amazon.com/s?k=vortex+optics&i=sporting',
-    brandWords: ['vortex', 'viper', 'sparc', 'strikefire', 'crossfire', 'diamondback',
-                 'ranger', 'razor', 'pst', 'hs-lr', 'impact', 'fury', 'kaibab',
-                 'spitfire', 'summit', 'strike eagle'],
-    cat:        'optic',
+    id: 'holosun', label: 'Holosun', store: 'Amazon – Holosun', cat: 'optic',
+    url: 'https://www.amazon.com/s?k=holosun+red+dot+sight&i=sporting' + DEAL_FILTER,
+    brandWords: ['holosun','hs510','hs507','hs503','he510','acss','solar','multi-reticle'],
+  },
+  {
+    id: 'monstrum', label: 'Monstrum Tactical', store: 'Amazon – Monstrum', cat: 'optic',
+    url: 'https://www.amazon.com/s?k=monstrum+tactical&i=sporting' + DEAL_FILTER,
+    brandWords: ['monstrum','scope mount','ring mount','cantilever','riser',
+                 'prism scope','red dot','offset mount','scope rail'],
+  },
+  // ── AR accessories ─────────────────────────────────────────────────────────
+  {
+    id: 'magpul', label: 'Magpul', store: 'Amazon – Magpul', cat: 'accessory',
+    url: 'https://www.amazon.com/s?k=magpul+ar15+accessories&i=sporting' + DEAL_FILTER,
+    brandWords: ['magpul','pmag','moe','miad','mbus','afg','rls','xtm','mag552',
+                 'ctr','str','ubl','ms4','moe sl','acs','acs-l'],
+  },
+  // ── Shooting accessories ───────────────────────────────────────────────────
+  {
+    id: 'caldwell', label: 'Caldwell', store: 'Amazon – Caldwell', cat: 'accessory',
+    url: 'https://www.amazon.com/s?k=caldwell+shooting+rest&i=sporting' + DEAL_FILTER,
+    brandWords: ['caldwell','lead sled','dead shot','pic rail','pivot bipod',
+                 'target','shooting rest','brass catcher','chronograph'],
+  },
+  {
+    id: 'wheeler', label: 'Wheeler', store: 'Amazon – Wheeler', cat: 'accessory',
+    url: 'https://www.amazon.com/s?k=wheeler+gunsmithing+tools&i=sporting' + DEAL_FILTER,
+    brandWords: ['wheeler','armorer','torque wrench','carbon fiber','level','f.a.t.',
+                 'professional','combo kit','ultra scope'],
+  },
+  // ── Archery ────────────────────────────────────────────────────────────────
+  {
+    id: 'mathews', label: 'Mathews Archery', store: 'Amazon – Mathews', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=mathews+archery&i=sporting' + DEAL_FILTER,
+    brandWords: ['mathews','halon','triax','vertix','traverse','prima','phase4',
+                 'lift','v3','archery bow','compound bow'],
+  },
+  {
+    id: 'goldtip', label: 'Gold Tip Arrows', store: 'Amazon – Gold Tip', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=gold+tip+arrows&i=sporting' + DEAL_FILTER,
+    brandWords: ['gold tip','arrow shaft','velocity','hunter pro','pierce','warrior',
+                 'traditional','carbon arrow'],
+  },
+  {
+    id: 'carbon-express', label: 'Carbon Express', store: 'Amazon – Carbon Express', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=carbon+express+arrows&i=sporting' + DEAL_FILTER,
+    brandWords: ['carbon express','maxima','piledriver','crossbolt','cx','nano',
+                 'predator','arrow shaft','crossbow bolt'],
+  },
+  {
+    id: 'rage', label: 'Rage Broadheads', store: 'Amazon – Rage', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=rage+broadheads&i=sporting' + DEAL_FILTER,
+    brandWords: ['rage','broadhead','chisel tip','mechanical','trypan','hypodermic',
+                 'x-treme','bowhunting'],
+  },
+  {
+    id: 'barnett', label: 'Barnett Crossbows', store: 'Amazon – Barnett', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=barnett+crossbow&i=sporting' + DEAL_FILTER,
+    brandWords: ['barnett','crossbow','bolt','quiver','crank','hyper','whitetail',
+                 'explorer','recruit'],
+  },
+  {
+    id: 'tenpoint', label: 'TenPoint Crossbows', store: 'Amazon – TenPoint', cat: 'archery',
+    url: 'https://www.amazon.com/s?k=tenpoint+crossbow&i=sporting' + DEAL_FILTER,
+    brandWords: ['tenpoint','ten point','crossbow','volt','titan','viper','shadow',
+                 'turbo','acuslide','rangemaster'],
+  },
+  {
+    id: 'truglo', label: 'TRUGLO', store: 'Amazon – TRUGLO', cat: 'accessory',
+    url: 'https://www.amazon.com/s?k=truglo+sights+archery&i=sporting' + DEAL_FILTER,
+    brandWords: ['truglo','tru-glo','tritium','fiber optic','bow sight','archery sight',
+                 'firearm sight','carbon','tru-bead'],
   },
 ]
 
-// ── 2A relevance filter ───────────────────────────────────────────────────────
+// ── 2A / Archery relevance filter ─────────────────────────────────────────────
 const ALLOW_WORDS = [
-  'flashlight', 'weapon light', 'tactical', 'gun', 'firearm', 'rifle', 'pistol',
-  'shotgun', 'ar-15', 'ar15', 'scope', 'optic', 'red dot', 'sight', 'reticle',
-  'magnifier', 'mount', 'ring', 'rail', 'picatinny', 'holster', 'magazine',
-  'trigger', 'grip', 'bipod', 'sling', 'suppressor', 'muzzle', 'brake',
-  'hunting', 'shooting', 'range', 'target', 'ammunition', 'ammo', 'rimfire',
-  'centerfire', 'bore', 'cleaning', 'mil-spec', 'ar 15', 'ak47', 'handgun',
+  'flashlight','weapon light','tactical','gun','firearm','rifle','pistol','shotgun',
+  'ar-15','ar15','scope','optic','red dot','sight','reticle','magnifier',
+  'mount','ring','rail','picatinny','holster','magazine','trigger','grip',
+  'bipod','sling','suppressor','muzzle','brake','hunting','shooting','range',
+  'target','ammunition','ammo','rimfire','centerfire','bore','cleaning','mil-spec',
+  // Archery
+  'bow','archery','arrow','broadhead','quiver','recurve','compound','crossbow',
+  'nock','fletching','vane','shaft','bolt','broadhead','bowhunting','release',
+  'stabilizer','limb','draw weight','let-off',
 ]
 
 const BLOCK_WORDS = [
-  'kitchen', 'cooking', 'baking', 'beauty', 'skincare', 'makeup', 'cosmetic',
-  'jewelry', 'necklace', 'bracelet', 'earring', 'ring ',
-  'clothing', 'shirt', 'pants', 'shoes', 'sneaker', 'boot ',
-  'food', 'supplement', 'vitamin', 'protein powder', 'toy', 'kids',
-  'garden', 'planter', 'furniture', 'pillow', 'bedding', 'curtain',
-  'phone case', 'laptop', 'tablet', 'headphone', 'speaker', 'bluetooth',
-  'pet food', 'dog food', 'cat food', 'aquarium',
+  'kitchen','cooking','baking','beauty','skincare','makeup','cosmetic',
+  'jewelry','necklace','bracelet','earring',
+  'clothing','shirt','pants','shoe','sneaker','boots ',
+  'food','supplement','vitamin','protein powder','toy','kids',
+  'garden','planter','furniture','pillow','bedding','curtain',
+  'phone case','laptop','tablet','headphone','speaker','bluetooth',
+  'pet food','dog food','cat food','aquarium',
 ]
 
 function is2ARelevant(title = '', brandWords = []) {
   const t = title.toLowerCase()
-  if (!t || t.length < 5) return false
-  // Hard block
-  if (BLOCK_WORDS.some(w => t.includes(w))) return false
-  // Brand-specific pass (almost everything from these brands is relevant)
+  if (!t || t.length < 5)                              return false
+  if (BLOCK_WORDS.some(w => t.includes(w)))            return false
   if (brandWords.some(w => t.toLowerCase().includes(w))) return true
-  // Generic 2A pass
-  if (ALLOW_WORDS.some(w => t.includes(w))) return true
+  if (ALLOW_WORDS.some(w => t.includes(w)))            return true
   return false
 }
 
-// ── Fetch a page via Jina proxy (handles Amazon's datacenter IP blocks) ────────
+// ── Deal detection ─────────────────────────────────────────────────────────────
+// Confirm the item is actually discounted before saving.
+// Amazon may serve non-deal items even with the URL filter applied if Jina
+// doesn't fully execute the JS refinement.
+function isDealItem(win = '') {
+  return (
+    /[−\-]\s*\d+\s*%|\d+\s*%\s*off/i.test(win)          ||  // "−17%" / "17% off"
+    /limited\s+time\s+deal/i.test(win)                    ||  // "Limited time deal" badge
+    /deal\s+of\s+the\s+day/i.test(win)                    ||  // "Deal of the Day"
+    /class="[^"]*a-text-price[^"]*"/.test(win)            ||  // crossed-out original price
+    /you\s+save[:\s]+\$?[\d,.]+/i.test(win)               ||  // "You Save $X"
+    /was[\s:]+\$[\d,.]+/i.test(win)                           // "Was $X.XX"
+  )
+}
+
+// Extract saving percentage string for the summary line
+function parseSavingPct(win = '') {
+  const m = win.match(/[−\-]\s*(\d+)\s*%/) || win.match(/(\d+)\s*%\s*off/i)
+  return m ? `−${m[1]}%` : null
+}
+
+// ── Jina fetch ────────────────────────────────────────────────────────────────
 async function fetchViaJina(url) {
   const headers = {
-    'User-Agent':      'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
-    'x-respond-with':  'html',
-    'Accept':          'text/html',
+    'User-Agent':     'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36',
+    'x-respond-with': 'html',
+    'Accept':         'text/html',
   }
   if (process.env.JINA_API_KEY) headers['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
 
@@ -99,21 +189,17 @@ async function fetchViaJina(url) {
     headers,
     signal: AbortSignal.timeout(25000),
   })
-  if (!res.ok) throw new Error(`Jina ${res.status} for ${url}`)
+  if (!res.ok) throw new Error(`Jina ${res.status}`)
   const html = await res.text()
-  if (html.length < 1000) throw new Error(`Jina returned too-short response (${html.length} chars)`)
+  if (html.length < 1000) throw new Error(`Jina response too short (${html.length} chars)`)
   return html
 }
 
-// ── Parse search result items from Amazon search HTML ─────────────────────────
-// Amazon server-renders data-asin attributes + product info in search results.
-// We pull up to 15 ASINs per page + their titles, prices, and primary images.
-
+// ── Parse deal items from Amazon search result HTML ───────────────────────────
 function parseSearchResults(html) {
   const items = []
   const seen  = new Set()
 
-  // Walk ASIN occurrences; grab a 4000-char window after each one
   const asinRe = /data-asin="([A-Z0-9]{10})"/gi
   let m
   while ((m = asinRe.exec(html)) !== null) {
@@ -123,39 +209,38 @@ function parseSearchResults(html) {
 
     const win = html.slice(m.index, m.index + 4000)
 
-    // Title — several possible patterns across Amazon's A/B layouts
+    // ── Deal gate: skip if no discount evidence ──────────────────────────────
+    if (!isDealItem(win)) continue
+
+    // ── Title ────────────────────────────────────────────────────────────────
     let title = null
-    const titlePatterns = [
-      // a-size-medium / a-size-base-plus in a link
+    for (const pat of [
       /class="[^"]*a-size-(?:medium|base-plus|medium-bold)[^"]*"[^>]*>([\s\S]{10,250}?)<\/span>/i,
-      // h2 > a > span pattern
       /<h2[^>]*>[\s\S]*?<span[^>]*>([\s\S]{10,250}?)<\/span>[\s\S]*?<\/h2>/i,
-    ]
-    for (const pat of titlePatterns) {
+    ]) {
       const tm = win.match(pat)
       if (tm) {
-        title = tm[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
-        if (title.length > 10) break
-        title = null
+        const t = tm[1].replace(/<[^>]+>/g, '').replace(/\s+/g, ' ').trim()
+        if (t.length > 10) { title = t; break }
       }
     }
 
-    // Price — a-offscreen is the accessible price text
+    // ── Current price ────────────────────────────────────────────────────────
     let price = null
     const pm = win.match(/class="a-offscreen">\$?([\d,.]+)<\/span>/)
     if (pm) price = `$${parseFloat(pm[1].replace(/,/g, '')).toFixed(2)}`
 
-    // Image — s-image class or m.media-amazon.com URL
+    // ── Saving pct ───────────────────────────────────────────────────────────
+    const savingPct = parseSavingPct(win)
+
+    // ── Product image ─────────────────────────────────────────────────────────
     let imageUrl = null
     const im = win.match(/<img[^>]+class="[^"]*s-image[^"]*"[^>]*src="([^"]+)"/i)
             || win.match(/src="(https:\/\/m\.media-amazon\.com\/images\/I\/[A-Za-z0-9%._-]+\.(?:jpg|jpeg|png|webp))"/i)
-    if (im) {
-      // Upgrade to a larger image variant (replace size code)
-      imageUrl = im[1].replace(/\._[A-Z]{2,4}\d*_\./, '._SL500_.')
-    }
+    if (im) imageUrl = im[1].replace(/\._[A-Z]{2,4}\d*_\./, '._SL500_.')
 
-    items.push({ asin, title, price, imageUrl })
-    if (items.length >= 15) break
+    items.push({ asin, title, price, savingPct, imageUrl })
+    if (items.length >= 12) break
   }
 
   return items
@@ -174,7 +259,6 @@ export async function GET(req) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
 
-  // Allow single-brand override via ?brand=olight|monstrum|vortex
   const { searchParams } = new URL(req.url)
   const brandFilter = searchParams.get('brand')
   const sources = brandFilter
@@ -182,10 +266,10 @@ export async function GET(req) {
     : BRAND_SOURCES
 
   const t0    = Date.now()
-  const stats = { brands: 0, found: 0, filtered: 0, added: 0, skipped: 0, imaged: 0 }
+  const stats = { brands: 0, found: 0, notDeals: 0, filtered: 0, added: 0, skipped: 0, imaged: 0 }
 
   try {
-    // Load ALL existing Amazon ASINs once (avoid N+1 per brand)
+    // Load all existing Amazon ASINs once
     const existingDocs = await sanity.fetch(
       `*[_type == "gunDeal" && source == "amazon"] { tags }`
     ).catch(() => [])
@@ -198,15 +282,13 @@ export async function GET(req) {
 
     for (const brand of sources) {
       stats.brands++
-
-      // Throttle between brands
       if (stats.brands > 1) await new Promise(r => setTimeout(r, 2000))
 
       let html
       try {
         html = await fetchViaJina(brand.url)
       } catch (err) {
-        console.error(`[amazon-brands] ${brand.id}: fetch failed — ${err.message}`)
+        console.error(`[amazon-brands] ${brand.id}: ${err.message}`)
         continue
       }
 
@@ -215,31 +297,20 @@ export async function GET(req) {
 
       const mutations = []
       for (const item of items) {
-        // Skip if no ASIN or already imported
-        if (!item.asin || existingAsins.has(item.asin)) {
-          stats.skipped++
-          continue
-        }
+        if (!item.asin || existingAsins.has(item.asin)) { stats.skipped++; continue }
+        if (!item.title || !is2ARelevant(item.title, brand.brandWords)) { stats.filtered++; continue }
 
-        // Skip if title doesn't pass 2A filter (null titles also skip)
-        if (!item.title || !is2ARelevant(item.title, brand.brandWords)) {
-          stats.filtered++
-          continue
-        }
+        existingAsins.add(item.asin)
 
-        existingAsins.add(item.asin)  // prevent intra-run dups
-
-        // Upload product image to Sanity CDN
+        // Upload image to Sanity CDN
         let sanityImg = null
         if (item.imageUrl) {
           sanityImg = await uploadImageToSanity(item.imageUrl, `amazon-${item.asin}`).catch(() => null)
           if (sanityImg) stats.imaged++
         }
+        await new Promise(r => setTimeout(r, 400))
 
-        // Throttle image uploads
-        await new Promise(r => setTimeout(r, 500))
-
-        const summary = [item.price, `${brand.label}`, 'Amazon'].filter(Boolean).join(' · ')
+        const summaryParts = [item.price, item.savingPct, brand.label, 'Amazon'].filter(Boolean)
 
         mutations.push({
           create: {
@@ -250,45 +321,32 @@ export async function GET(req) {
             store:        brand.store,
             price:        item.price || '',
             category:     brand.cat,
-            summary,
+            summary:      summaryParts.join(' · '),
             imageUrl:     sanityImg || item.imageUrl || null,
             approved:     true,
             publishedAt:  new Date().toISOString(),
-            tags:         [
-              'amazon',
-              `asin:${item.asin}`,
-              brand.id,
-              brand.cat,
-            ],
+            tags:         ['amazon', `asin:${item.asin}`, brand.id, brand.cat, 'deal'],
           },
         })
         stats.added++
       }
 
-      // Write this brand's batch to Sanity
-      if (mutations.length > 0) {
-        for (let i = 0; i < mutations.length; i += 100) {
-          await sanity.mutate(mutations.slice(i, i + 100))
-        }
+      for (let i = 0; i < mutations.length; i += 100) {
+        await sanity.mutate(mutations.slice(i, i + 100))
       }
     }
 
     const ms = Date.now() - t0
     await reportCronRun('amazon-brands', {
-      status:  'success',
-      ms,
-      details: `brands:${stats.brands} found:${stats.found} filtered:${stats.filtered} added:${stats.added} skipped:${stats.skipped} imaged:${stats.imaged}`,
+      status:  'success', ms,
+      details: `brands:${stats.brands} found:${stats.found} notDeals:${stats.notDeals} filtered:${stats.filtered} added:${stats.added} skipped:${stats.skipped} imaged:${stats.imaged}`,
     }).catch(() => {})
 
     return NextResponse.json({ ok: true, ms, ...stats })
 
   } catch (err) {
     console.error('[amazon-brands] fatal:', err.message)
-    await reportCronRun('amazon-brands', {
-      status: 'failed',
-      ms:     Date.now() - t0,
-      error:  err.message,
-    }).catch(() => {})
+    await reportCronRun('amazon-brands', { status: 'failed', ms: Date.now() - t0, error: err.message }).catch(() => {})
     return NextResponse.json({ ok: false, error: err.message }, { status: 500 })
   }
 }
