@@ -83,7 +83,31 @@ async function main() {
     if (og.og) await tryDownload('via our proxy      ', 'https://www.downrangeco.com/api/img-proxy?url=' + encodeURIComponent(og.og))
   }
 
+  // 3) What image data does the RSS itself carry?
+  log('\n--- 3) RSS item structure (looking for embedded images) ---')
+  try {
+    const xml = await (await fetch(RSS, { headers: { 'User-Agent': UA }, signal: AbortSignal.timeout(15000) })).text()
+    const item = xml.match(/<item>([\s\S]*?)<\/item>/)
+    if (item) {
+      const block = item[1]
+      log('  has <enclosure>: ' + /<enclosure/i.test(block))
+      const enc = block.match(/<enclosure[^>]*url=["']([^"']+)["']/i)
+      if (enc) log('    enclosure url: ' + enc[1].slice(0, 120))
+      const mediaC = block.match(/<media:content[^>]*url=["']([^"']+)["']/i)
+      if (mediaC) log('    media:content url: ' + mediaC[1].slice(0, 120))
+      const mediaT = block.match(/<media:thumbnail[^>]*url=["']([^"']+)["']/i)
+      if (mediaT) log('    media:thumbnail url: ' + mediaT[1].slice(0, 120))
+      const imgInDesc = block.match(/<img[^>]+src=["']([^"']+)["']/i)
+      if (imgInDesc) log('    <img> in description: ' + imgInDesc[1].slice(0, 120))
+      if (!enc && !mediaC && !mediaT && !imgInDesc) {
+        log('    NO image in RSS item. Raw block (first 700 chars):')
+        log('    ' + block.replace(/\s+/g, ' ').slice(0, 700))
+      }
+    }
+  } catch (e) { log('  RSS dump ERROR: ' + e.message) }
+
   log('\n=== END ===')
   writeFileSync(OUT, lines.join('\n'))
 }
+main().catch(e => { log('FATAL: ' + e.message); writeFileSync(OUT, lines.join('\n')); process.exit(0) })
 main().catch(e => { log('FATAL: ' + e.message); writeFileSync(OUT, lines.join('\n')); process.exit(0) })
