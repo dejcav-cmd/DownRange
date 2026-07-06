@@ -1,6 +1,6 @@
-=== resync offset=0 @ Mon Jul  6 16:01:54 UTC 2026 ===
-{"ok":true,"resync":true,"checked":30,"repatched":4,"ms":7015}
-=== resync offset=30 @ Mon Jul  6 16:02:07 UTC 2026 ===
-{"ok":true,"resync":true,"checked":30,"repatched":0,"ms":1442}
-=== resync offset=60 @ Mon Jul  6 16:02:13 UTC 2026 ===
-{"ok":true,"resync":true,"checked":30,"repatched":11,"ms":17625}
+=== resync offset=0 @ Mon Jul  6 16:13:53 UTC 2026 ===
+{"ok":true,"resync":true,"checked":30,"repatched":24,"ms":102799}
+=== resync offset=30 @ Mon Jul  6 16:15:42 UTC 2026 ===
+{"ok":true,"resync":true,"checked":30,"repatched":21,"ms":89740}
+=== resync offset=60 @ Mon Jul  6 16:17:17 UTC 2026 ===
+{"ok":true,"resync":true,"checked":30,"repatched":28,"ms":96145}
