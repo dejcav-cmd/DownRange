@@ -1,0 +1,98 @@
+name: check-canada-brazil-debug
+on:
+  workflow_dispatch:
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Query Sanity for Canada/Brazil article status
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          python3 << 'PYEOF'
+          import urllib.request, urllib.parse, json, os, base64
+
+          token = os.environ['SANITY_TOKEN']
+          gh_pat = os.environ['GH_PAT']
+          project = 'vbnsqnkg'
+          api_base = f'https://{project}.api.sanity.io/v2024-01-01/data/query/production'
+
+          def sanity_query(q):
+              url = api_base + '?query=' + urllib.parse.quote(q) + '&returnQuery=false'
+              req = urllib.request.Request(url, headers={'Authorization': f'Bearer {token}'})
+              with urllib.request.urlopen(req, timeout=15) as r:
+                  return json.loads(r.read())['result']
+
+          # Latest Canada articles
+          ca = sanity_query('*[_type=="canadaContent"]|order(publishedAt desc)[0..4]{_id,title,publishedAt,_createdAt,source}')
+          # Latest Brazil articles
+          br = sanity_query('*[_type=="brazilContent"]|order(publishedAt desc)[0..4]{_id,title,publishedAt,_createdAt,source}')
+          # Last 5 news cron runs
+          runs = sanity_query('*[_type=="cronRun"&&jobId=="news"]|order(at desc)[0..9]{at,status,details,error}')
+          # Test Canada feed reachability from Azure IPs
+          import urllib.error
+          feed_status = {}
+          feeds = [
+              ('TheGunBlog.ca',     'https://www.thegunblog.ca/feed/'),
+              ('NFA Canada',        'https://www.nfa.ca/feed/'),
+              ('CSSA',              'https://www.cdnshootingsports.org/feed/'),
+              ('Calibre Magazine',  'https://calibremag.ca/feed/'),
+              ('CCFR',              'https://www.firearmrights.ca/feed/'),
+              ('Firearmsbrasil',    'https://firearmsbrasil.com.br/feed/'),
+              ('Legalmente Armado', 'https://legalmentearmado.com.br/feed/'),
+          ]
+          for name, url in feeds:
+              try:
+                  req = urllib.request.Request(url, headers={
+                      'User-Agent': 'Mozilla/5.0 (compatible; FeedFetcher)',
+                      'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+                  })
+                  with urllib.request.urlopen(req, timeout=8) as r:
+                      body = r.read(800)
+                      has_items = b'<item' in body or b'<entry' in body
+                      # count items
+                      import re
+                      count = len(re.findall(b'<item>', body))
+                      feed_status[name] = {'http': r.status, 'has_items': has_items, 'item_count_in_preview': count}
+              except urllib.error.HTTPError as e:
+                  feed_status[name] = {'http': e.code, 'error': str(e)}
+              except Exception as ex:
+                  feed_status[name] = {'error': str(ex)[:80]}
+
+          result = {
+              'canada_latest': ca,
+              'brazil_latest': br,
+              'news_cron_runs': runs,
+              'feed_reachability': feed_status
+          }
+
+          output = json.dumps(result, indent=2, default=str)
+          print(output)
+
+          # Write result to repo via GitHub Contents API
+          content_b64 = base64.b64encode(output.encode()).decode()
+          api_url = 'https://api.github.com/repos/dejcav-cmd/DownRange/contents/tmp/canada-brazil-debug.json'
+          # Check if file exists to get SHA
+          req = urllib.request.Request(api_url, headers={
+              'Authorization': f'Bearer {gh_pat}',
+              'Accept': 'application/vnd.github+json',
+          })
+          try:
+              with urllib.request.urlopen(req, timeout=10) as r:
+                  existing = json.loads(r.read())
+                  sha = existing.get('sha','')
+          except:
+              sha = ''
+
+          payload = json.dumps({'message': 'debug: canada/brazil feed check', 'content': content_b64, **({'sha': sha} if sha else {})}).encode()
+          req = urllib.request.Request(api_url, data=payload, method='PUT', headers={
+              'Authorization': f'Bearer {gh_pat}',
+              'Content-Type': 'application/json',
+              'Accept': 'application/vnd.github+json',
+          })
+          with urllib.request.urlopen(req, timeout=10) as r:
+              print('Written to repo:', r.status)
+          PYEOF
