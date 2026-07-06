@@ -6,7 +6,7 @@
     },
     {
       "path": "/api/agent?feed=laws",
-      "schedule": "0 */6 * * *"
+      "schedule": "0 */12 * * *"
     },
     {
       "path": "/api/agent?feed=releases&phase=scrape",
@@ -46,7 +46,7 @@
     },
     {
       "path": "/api/agent?feed=goa",
-      "schedule": "2 */6 * * *"
+      "schedule": "2 */12 * * *"
     },
     {
       "path": "/api/admin/fetch-article-images",
@@ -118,7 +118,7 @@
     },
     {
       "path": "/api/cron/quality-rewrite",
-      "schedule": "10 */12 * * *"
+      "schedule": "10 */8 * * *"
     },
     {
       "path": "/api/cron/image-fix",
