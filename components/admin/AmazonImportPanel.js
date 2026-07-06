@@ -48,7 +48,7 @@ export default function AmazonImportPanel({ adminKey }) {
     if (!input.trim()) return
     const needsManual = preview?.scrapeFailed
     if (needsManual && !manualTitle.trim()) {
-      setMsg('⚠ Title required — Amazon blocked the scrape. Enter the title above.')
+      setMsg('⚠ Enter the product title above before saving.')
       return
     }
     setState('saving')
@@ -63,6 +63,13 @@ export default function AmazonImportPanel({ adminKey }) {
         }),
       })
       const data = await res.json()
+      // Scrape blocked — surface the manual title input instead of dead-end error
+      if (res.status === 422 || data.scrapeFailed) {
+        setPreview({ ...data, scrapeFailed: true })
+        setState('previewed')
+        setMsg('⚠ Amazon blocked the scrape — enter the product title below then click Add Deal again.')
+        return
+      }
       if (!res.ok) { setState('error'); setMsg(data.error || 'Save failed'); return }
       setState('done')
       setMsg(`✓ Saved — "${data.title}"`)
