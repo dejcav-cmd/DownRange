@@ -1,0 +1,23 @@
+name: patch-deal-image
+on:
+  workflow_dispatch:
+    inputs:
+      asin:
+        description: ASIN to patch
+        required: true
+        default: B0D1KXJYR6
+      image_url:
+        description: Image URL to upload
+        required: true
+        default: 'https://underyours.com/cdn/shop/files/41DA6TsWniL._AC.jpg?v=1747274053'
+jobs:
+  patch:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Patch deal image
+        env:
+          FIX_ASIN: ${{ github.event.inputs.asin }}
+          IMAGE_URL: ${{ github.event.inputs.image_url }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/patch_deal_image.py
