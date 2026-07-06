@@ -1,1 +1,6 @@
-Total Amazon deals in Sanity: 0
+Total Amazon deals: 1
+
+  asin:B0D1KXJYR6
+  title:    Eberlestock Bando Bag Tactical Fanny Pack for Men
+  imageUrl: (none)
+  affiliate:OK
