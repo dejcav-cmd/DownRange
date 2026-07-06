@@ -19,8 +19,9 @@ jobs:
           SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
             "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/avantlink_check_result.txt" \
             | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha',''))")
+          if [ -n "$SHA" ]; then EXTRA=",\"sha\":\"$SHA\""; else EXTRA=""; fi
           curl -s -X PUT \
             "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/avantlink_check_result.txt" \
             -H "Authorization: Bearer $GH_TOKEN" \
             -H "Content-Type: application/json" \
-            -d "{\"message\":\"ci: avantlink check result [skip ci]\",\"content\":\"$CONTENT\",\"sha\":\"$SHA\"}"
+            -d "{\"message\":\"ci: avantlink check result [skip ci]\",\"content\":\"$CONTENT\"$EXTRA}"
