@@ -183,6 +183,10 @@
     {
       "path": "/api/admin/rewrite-releases",
       "schedule": "20 6 * * *"
+    },
+    {
+      "path": "/api/cron/amazon-deals",
+      "schedule": "0 */6 * * *"
     }
   ],
   "headers": [

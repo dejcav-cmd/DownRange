@@ -239,7 +239,8 @@ function DealsInner({ states = [] }) {
 
   const sources = meta
     ? [meta.sources?.sanity   > 0 && `${meta.sources.sanity} curated`,
-       meta.sources?.gunDeals > 0 && `gun.deals`]
+       meta.sources?.gunDeals > 0 && `gun.deals`,
+       meta.sources?.amazon   > 0 && `amazon`]
         .filter(Boolean).join(' · ')
     : null
 
@@ -443,7 +444,7 @@ function DealsInner({ states = [] }) {
             {/* Footer */}
             <div style={{ marginTop:16, padding:'14px 18px', background:'var(--bg2)', border:'1px solid var(--border)', display:'flex', justifyContent:'space-between', alignItems:'center', flexWrap:'wrap', gap:8 }}>
               <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563', lineHeight:1.6 }}>
-                Deals sourced from DownRange curated picks and gun.deals. Always verify pricing at the retailer before purchasing.
+                Deals sourced from DownRange curated picks, gun.deals, and Amazon. Always verify pricing at the retailer before purchasing. As an Amazon Associate DownRange earns from qualifying purchases.
               </span>
               <div style={{ display:'flex', gap:12, flexShrink:0 }}>
                 <a href="https://gun.deals" target="_blank" rel="noreferrer"

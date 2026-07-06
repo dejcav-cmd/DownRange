@@ -80,7 +80,9 @@ async function fetchSanityDeals() {
         flair,
         flairMeta: FLAIR_META[flair] || FLAIR_META.Deals,
         source:    a.source || 'gun.deals',
-        domain:    a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'gun.deals' } })() : 'gun.deals',
+        domain:    a.source === 'amazon'
+          ? 'amazon.com'
+          : a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'gun.deals' } })() : 'gun.deals',
         imageUrl:  imgUrl,
         price:     a.price || extractPrice(title),
         fromSanity: true,
@@ -220,9 +222,11 @@ export async function GET(request) {
   // Filter
   const filtered = catFilter ? sorted.filter(d => d.flair === catFilter) : sorted
 
+  const amazonCount = deals.filter(d => d.source === 'amazon').length
   const sources = {
-    sanity:   sanityDeals.length,
+    sanity:   sanityDeals.filter(d => d.source !== 'amazon').length,
     gunDeals: gunDealsItems.length,
+    amazon:   amazonCount,
   }
   const live = gunDealsItems.length > 0
 
