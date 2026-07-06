@@ -197,21 +197,10 @@ export default function AboutPage() {
             <div>
               <p style={{
                 fontFamily: "'IBM Plex Mono', monospace",
-                fontSize: '18px', lineHeight: 1.9,
-                color: '#F0EDE6', marginBottom: '20px',
-                fontStyle: 'italic',
-              }}>
-                "I was living in Washington State, carrying every day, and I couldn't keep up.
-                New laws. New ATF rules. New magazine limits. Hostile press. Scattered data.
-                I wanted one place that treated me like an adult who carries a firearm —
-                not a threat to be managed."
-              </p>
-              <p style={{
-                fontFamily: "'IBM Plex Mono', monospace",
                 fontSize: '14px', lineHeight: 1.8,
                 color: '#6B7280', marginBottom: '16px',
               }}>
-                DownRange started as that place. It runs 24 hours a day, pulls from over 50 sources,
+                DownRange runs 24 hours a day, pulls from over 50 sources,
                 and covers the Second Amendment as the individual right it is — not as a controversy
                 to be balanced, both-sided, or softened for an audience that might be offended.
               </p>

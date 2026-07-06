@@ -57,7 +57,7 @@ function FormCard({ w, meta, large }) {
 
       {/* Big number */}
       <div style={{ display: 'flex', alignItems: 'baseline', gap: 6, marginBottom: 4 }}>
-        <span style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: large ? '4rem' : '3.2rem', lineHeight: 1, color: meta.color }}>
+        <span style={{ fontFamily: "'Bebas Neue',cursive", fontSize: large ? '4rem' : '3.2rem', lineHeight: 1, color: meta.color }}>
           {w.avgDays}
         </span>
         <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#555', fontWeight: 600 }}>DAYS AVG</span>
@@ -136,16 +136,16 @@ export default function NFATracker() {
 
       {/* HERO */}
       <div style={{ background: '#0a0a0a', borderBottom: '2px solid #c8922a', padding: '56px 0 44px', position:'relative', overflow:'hidden' }}>
-        <div aria-hidden style={{ position:'absolute', inset:0, backgroundImage:'url(/img/photos/suppressor.jpg)', backgroundSize:'cover', backgroundPosition:'center', opacity:.38, pointerEvents:'none' }} />
-        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(10,10,10,.94) 0%, rgba(10,10,10,.74) 46%, rgba(10,10,10,.45) 100%)', pointerEvents:'none' }} />
-        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(10,10,10,.9) 0%, transparent 55%)', pointerEvents:'none' }} />
-        <div aria-hidden style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.14), transparent 60%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, backgroundImage:'url(/img/photos/rifle.jpg)', backgroundSize:'cover', backgroundPosition:'center', opacity:.5, pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(10,10,10,.9) 0%, rgba(10,10,10,.6) 48%, rgba(10,10,10,.28) 100%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(10,10,10,.88) 0%, transparent 58%)', pointerEvents:'none' }} />
+        <div aria-hidden style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.12), transparent 60%)', pointerEvents:'none' }} />
         <div className="container" style={{ position:'relative' }}>
           <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
             <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8922a', letterSpacing: '.2em' }}>⏱ NFA PROCESSING INTELLIGENCE</span>
             <span style={{ display:'flex', alignItems:'center', gap:6, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#22C55E', letterSpacing:'.1em' }}><span className="nfa-live-dot" /> LIVE</span>
           </div>
-          <h1 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
+          <h1 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
             NFA WAIT TIME<br /><span style={{ color: '#c8922a' }}>TRACKER</span>
           </h1>
           <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#cbd5e1', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
@@ -203,7 +203,7 @@ export default function NFATracker() {
 
           {/* SECTION HEADER */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-            <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.8rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
+            <h2 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.8rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
               CURRENT ATF PROCESSING TIMES
             </h2>
             <div style={{ flex: 1, height: 1, background: '#1e1e1e' }} />
@@ -220,7 +220,7 @@ export default function NFATracker() {
             </div>
           ) : forms.length === 0 ? (
             <div style={{ background: '#0f0f0f', border: '1px solid #1a1a1a', padding: 40, marginBottom: 48, textAlign: 'center' }}>
-              <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.4rem', color: '#555', marginBottom: 8 }}>NO DATA LOADED</div>
+              <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.4rem', color: '#555', marginBottom: 8 }}>NO DATA LOADED</div>
               <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#444' }}>Run the NFA Wait Times cron from the admin panel to fetch current data.</div>
             </div>
           ) : (
@@ -252,7 +252,7 @@ export default function NFATracker() {
           {/* ESTIMATE CALCULATOR */}
           <div style={{ background: '#0a0a0a', border: '1px solid #2a1a0a', padding: '36px 32px', marginBottom: 40 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
-              <h2 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.8rem', color: '#c8922a', margin: 0, letterSpacing: '.05em' }}>
+              <h2 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.8rem', color: '#c8922a', margin: 0, letterSpacing: '.05em' }}>
                 ESTIMATE YOUR APPROVAL DATE
               </h2>
               <div style={{ flex: 1, height: 1, background: '#2a1a0a' }} />
@@ -271,7 +271,7 @@ export default function NFATracker() {
               <input type="date" value={form.submitted} onChange={e => setForm(f => ({ ...f, submitted: e.target.value }))}
                 style={{ flex: 1, minWidth: 160, background: '#111', border: '1px solid #222', color: '#eee', padding: '13px 16px', fontFamily: "'IBM Plex Mono',monospace", fontSize: 12 }} />
               <button onClick={calcEstimate}
-                style={{ background: '#c8922a', color: '#000', border: 'none', padding: '13px 28px', fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.1rem', letterSpacing: '.08em', cursor: 'pointer', whiteSpace: 'nowrap', borderBottom: '3px solid #7a5010' }}>
+                style={{ background: '#c8922a', color: '#000', border: 'none', padding: '13px 28px', fontFamily: "'Bebas Neue',cursive", fontSize: '1.1rem', letterSpacing: '.08em', cursor: 'pointer', whiteSpace: 'nowrap', borderBottom: '3px solid #7a5010' }}>
                 CALCULATE →
               </button>
             </div>
@@ -287,7 +287,7 @@ export default function NFATracker() {
                   ].map(col => (
                     <div key={col.label}>
                       <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#555', marginBottom: 6, letterSpacing: '.12em' }}>{col.label}</div>
-                      <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.6rem', color: col.color, lineHeight: 1 }}>{col.val}</div>
+                      <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.6rem', color: col.color, lineHeight: 1 }}>{col.val}</div>
                       {col.sub && <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#666', marginTop: 4 }}>{col.sub}</div>}
                     </div>
                   ))}
@@ -323,7 +323,7 @@ export default function NFATracker() {
           {/* HOW TO CHECK STATUS */}
           <div style={{ background: '#0a0a0a', border: '1px solid #1a1a1a', padding: '32px 28px', marginBottom: 40 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 24 }}>
-              <h3 style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '1.5rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
+              <h3 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.5rem', color: '#fff', margin: 0, letterSpacing: '.05em' }}>
                 CHECK YOUR APPLICATION STATUS
               </h3>
               <div style={{ flex: 1, height: 1, background: '#1a1a1a' }} />
@@ -335,7 +335,7 @@ export default function NFATracker() {
                 { step: '03', title: 'Pending Research', desc: '"Pending Research" means additional review — not denied. Follow up after 90 days.', color: '#F59E0B', href: null },
               ].map(s => (
                 <div key={s.step} style={{ display: 'flex', gap: 16 }}>
-                  <div style={{ fontFamily: "'Bebas Neue',sans-serif", fontSize: '2rem', color: s.color, flexShrink: 0, lineHeight: 1, opacity: .5 }}>{s.step}</div>
+                  <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '2rem', color: s.color, flexShrink: 0, lineHeight: 1, opacity: .5 }}>{s.step}</div>
                   <div>
                     {s.href
                       ? <a href={s.href} target="_blank" rel="noreferrer" style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: s.color, textDecoration: 'none', display: 'block', marginBottom: 6, letterSpacing: '.03em' }}>{s.title} ↗</a>
