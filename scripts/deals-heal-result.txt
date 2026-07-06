@@ -1,4 +1,6 @@
-=== pass 1 @ Mon Jul  6 15:25:00 UTC 2026 ===
-{"ok":true,"ms":46113,"fetched":402,"added":4,"skipped":76,"imaged":4,"healed":50}
-=== pass 2 @ Mon Jul  6 15:25:59 UTC 2026 ===
-{"ok":true,"ms":5350,"fetched":402,"added":0,"skipped":80,"imaged":0,"healed":2}
+=== resync offset=0 @ Mon Jul  6 16:01:54 UTC 2026 ===
+{"ok":true,"resync":true,"checked":30,"repatched":4,"ms":7015}
+=== resync offset=30 @ Mon Jul  6 16:02:07 UTC 2026 ===
+{"ok":true,"resync":true,"checked":30,"repatched":0,"ms":1442}
+=== resync offset=60 @ Mon Jul  6 16:02:13 UTC 2026 ===
+{"ok":true,"resync":true,"checked":30,"repatched":11,"ms":17625}
