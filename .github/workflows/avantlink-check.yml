@@ -11,17 +11,10 @@ jobs:
           token: ${{ secrets.GH_PAT }}
       - name: Fetch homepage and check for AvantLink script
         run: bash scripts/avantlink_check.sh
-      - name: Push results
-        env:
-          GH_TOKEN: ${{ secrets.GH_PAT }}
+      - name: Commit results
         run: |
-          CONTENT=$(base64 -w 0 scripts/avantlink_check_result.txt)
-          SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/avantlink_check_result.txt" \
-            | python3 -c "import json,sys; print(json.load(sys.stdin).get('sha',''))")
-          if [ -n "$SHA" ]; then EXTRA=",\"sha\":\"$SHA\""; else EXTRA=""; fi
-          curl -s -X PUT \
-            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/avantlink_check_result.txt" \
-            -H "Authorization: Bearer $GH_TOKEN" \
-            -H "Content-Type: application/json" \
-            -d "{\"message\":\"ci: avantlink check result [skip ci]\",\"content\":\"$CONTENT\"$EXTRA}"
+          git config user.email "ci@downrangeco.com"
+          git config user.name "DownRange CI"
+          git add -f scripts/avantlink_check_result.txt
+          git commit -m "ci: avantlink check result [skip ci]" || echo "no changes"
+          git push origin HEAD:main
