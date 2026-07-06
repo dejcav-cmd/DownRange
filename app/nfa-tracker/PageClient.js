@@ -4,12 +4,24 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
 const FORM_TYPES = [
-  { key: 'suppressor',      icon: '🔇', label: 'Suppressor / Can',     color: '#34D399', bg: 'rgba(52,211,153,.08)',  border: 'rgba(52,211,153,.2)'  },
-  { key: 'sbr-make',        icon: '🎯', label: 'SBR / SBS (Form 1)',   color: '#60A5FA', bg: 'rgba(96,165,250,.08)',  border: 'rgba(96,165,250,.2)'  },
-  { key: 'dealer-transfer', icon: '🏪', label: 'Dealer Transfer (F3)', color: '#A78BFA', bg: 'rgba(167,139,250,.08)', border: 'rgba(167,139,250,.2)' },
-  { key: 'machinegun',      icon: '⚙️', label: 'Machine Gun (Pre-86)', color: '#EF4444', bg: 'rgba(239,68,68,.08)',   border: 'rgba(239,68,68,.2)'   },
-  { key: 'paper',           icon: '📄', label: 'Paper Submission',     color: '#F59E0B', bg: 'rgba(245,158,11,.08)',  border: 'rgba(245,158,11,.2)'  },
+  { key:'form4-ind',   icon:'🔇', label:'Form 4 · Individual', color:'#34D399', bg:'rgba(52,211,153,.08)',  border:'rgba(52,211,153,.2)' },
+  { key:'form4-trust', icon:'🔇', label:'Form 4 · Trust',      color:'#22C55E', bg:'rgba(34,197,94,.08)',   border:'rgba(34,197,94,.2)' },
+  { key:'form1',       icon:'🎯', label:'Form 1 · Make',       color:'#60A5FA', bg:'rgba(96,165,250,.08)',  border:'rgba(96,165,250,.2)' },
+  { key:'form3',       icon:'🏪', label:'Form 3 · Dealer',     color:'#A78BFA', bg:'rgba(167,139,250,.08)', border:'rgba(167,139,250,.2)' },
+  { key:'form5',       icon:'📋', label:'Form 5 · Tax-Exempt', color:'#F59E0B', bg:'rgba(245,158,11,.08)',  border:'rgba(245,158,11,.2)' },
+  { key:'form2',       icon:'🏭', label:'Form 2 · Mfg',        color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form9',       icon:'📦', label:'Form 9 · Export',     color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form10',      icon:'🏛️', label:'Form 10 · Gov',       color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form20',      icon:'🚚', label:'Form 20 · Transport', color:'#9CA3AF', bg:'rgba(156,163,175,.08)', border:'rgba(156,163,175,.2)' },
+  { key:'form7',       icon:'📜', label:'Form 7 · FFL',        color:'#EF4444', bg:'rgba(239,68,68,.08)',   border:'rgba(239,68,68,.2)' },
 ]
+
+function fmtNum(n) {
+  if (n == null) return null
+  if (n >= 1e6) return (n / 1e6).toFixed(1).replace(/\.0$/, '') + 'M'
+  if (n >= 1e3) return (n / 1e3).toFixed(1).replace(/\.0$/, '') + 'K'
+  return String(n)
+}
 
 function TrendBadge({ trend, delta }) {
   const cfg = {
@@ -64,7 +76,7 @@ function FormCard({ w, meta, large }) {
       </div>
 
       {/* Sub info */}
-      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', marginBottom: 2 }}>{w.formType}</div>
+      <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#999', marginBottom: 2 }}>{w.desc || w.formType}</div>
       <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#888' }}>
         Range: <span style={{ color: '#34D399' }}>{w.minDays}d</span> — <span style={{ color: '#EF4444' }}>{w.maxDays}d</span>
       </div>
@@ -127,8 +139,8 @@ export default function NFATracker() {
   const getMeta = (w) => FORM_TYPES.find(t => t.key === w.category) || FORM_TYPES[0]
 
   // Split into primary (suppressor, sbr, dealer) and secondary (paper, machinegun)
-  const primaryForms  = forms.filter(f => !['paper','machinegun'].includes(f.category))
-  const secondaryForms = forms.filter(f => ['paper','machinegun'].includes(f.category))
+  const primaryForms   = forms.filter(f => f.tier !== 'secondary')
+  const secondaryForms = forms.filter(f => f.tier === 'secondary')
 
   return (
     <>
@@ -149,7 +161,7 @@ export default function NFATracker() {
             NFA WAIT TIME<br /><span style={{ color: '#c8922a' }}>TRACKER</span>
           </h1>
           <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#cbd5e1', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
-            Current ATF Form 4 processing times · Scraped from ATF.gov &amp; industry trackers · Estimate your approval date
+            Live ATF processing times for every NFA form · Straight from ATF.gov · Estimate your approval date
           </p>
         </div>
         <style>{`@keyframes nfaPulse{0%,100%{opacity:1}50%{opacity:.35}} .nfa-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;animation:nfaPulse 1.6s infinite}`}</style>
@@ -200,6 +212,32 @@ export default function NFATracker() {
               </span>
             )}
           </div>
+
+          {/* ATF BY THE NUMBERS — surprise stats panel */}
+          {data?.atfStats && (
+            <div style={{ marginBottom: 34 }}>
+              <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:14 }}>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#c8922a', letterSpacing:'.2em' }}>ATF BY THE NUMBERS</span>
+                <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#555' }}>· {data.atfStats.reportMonth}</span>
+                <div style={{ flex:1, height:1, background:'#1a1a1a' }} />
+              </div>
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(150px,1fr))', gap:10 }}>
+                {[
+                  [fmtNum(data.atfStats.silencerAppsReceived), 'Silencer Form 4s filed', 'this month'],
+                  [data.atfStats.medianEForm4 != null ? data.atfStats.medianEForm4 + 'd' : null, 'Median eForm 4', 'individual approval'],
+                  [fmtNum(data.atfStats.silencersRegistered), 'Silencers registered', 'in the NFRTR'],
+                  [fmtNum(data.atfStats.sbrRegistered), 'SBRs registered', 'in the NFRTR'],
+                  [fmtNum(data.atfStats.totalNfaReceived), 'Total NFA filings', 'this month'],
+                ].filter(x => x[0]).map(([n, l, s], i) => (
+                  <div key={i} style={{ background:'#0d0d0d', border:'1px solid #1a1a1a', padding:'16px' }}>
+                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:'#c8922a', lineHeight:1 }}>{n}</div>
+                    <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:13, color:'#ddd', letterSpacing:'.04em', marginTop:6 }}>{l}</div>
+                    <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#666', letterSpacing:'.06em', marginTop:2 }}>{s}</div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
 
           {/* SECTION HEADER */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 16, marginBottom: 20 }}>
@@ -350,10 +388,9 @@ export default function NFATracker() {
 
           {/* DATA SOURCES FOOTER */}
           <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', lineHeight: 2, borderTop: '1px solid #222', paddingTop: 20 }}>
-            <strong style={{ color: '#999', letterSpacing: '.08em' }}>DATA SOURCES:</strong>{' '}
-            <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#888', textDecoration: 'none' }}>ATF.gov official processing times</a> ·{' '}
-            <a href="https://www.silencershop.com/atf-wait-times" target="_blank" rel="noreferrer" style={{ color: '#888', textDecoration: 'none' }}>Silencer Shop tracker</a> ·{' '}
-            Silencer Central community data · Updated Mon + Thu 6am UTC · Individual results vary.
+            <strong style={{ color: '#999', letterSpacing: '.08em' }}>DATA SOURCE:</strong>{' '}
+            <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#c8922a', textDecoration: 'none' }}>ATF.gov — official current processing times</a>.{' '}
+            Averages reflect ATF&rsquo;s most recently finalized applications. Refreshed every 2 days · individual results vary.
           </div>
 
         </div>
