@@ -1,0 +1,13 @@
+name: run-amazon-diag
+on:
+  workflow_dispatch:
+jobs:
+  diag:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Run Amazon Diagnostic
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: bash scripts/run-amazon-diag.sh
