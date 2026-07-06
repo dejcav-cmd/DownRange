@@ -18,38 +18,63 @@ const sanity = createClient({
   useCdn:    false,
 })
 
-// ── Search rotation — 16 queries, 4 per 6-hour slot ───────────────────────────
-//   Slot 0 (00-05 UTC): cleaning & protection
-//   Slot 1 (06-11 UTC): stability & lighting
-//   Slot 2 (12-17 UTC): optics & storage
+// ── Search rotation — 32 queries across 8 six-hour slots ─────────────────────
+//   PA API runs every 6hr → 8 slots/day → full cycle every 2 days
+//   Slot 0 (00-05 UTC): generic accessories
+//   Slot 1 (06-11 UTC): optics accessories
+//   Slot 2 (12-17 UTC): storage & protection
 //   Slot 3 (18-23 UTC): maintenance & shooting aids
+//   Slot 4 (next 00-05): weapon lights (Olight / Streamlight)
+//   Slot 5 (next 06-11): optics brands (Vortex / Holosun / Burris / Zeiss)
+//   Slot 6 (next 12-17): AR accessories (Magpul / Monstrum / Caldwell / Wheeler)
+//   Slot 7 (next 18-23): archery (Mathews / Hoyt / Gold Tip / Rage / Barnett)
 
 const ALL_QUERIES = [
-  // Slot 0
+  // ── Slot 0: generic accessories ────────────────────────────────────────────
   { keywords: 'gun cleaning kit firearm',               cat: 'accessory', minSave: 5  },
   { keywords: 'electronic shooting ear protection',     cat: 'accessory', minSave: 5  },
   { keywords: 'shooting eye protection ballistic',      cat: 'accessory', minSave: 5  },
   { keywords: 'gun bore snake cleaner',                 cat: 'accessory', minSave: 5  },
-  // Slot 1
+  // ── Slot 1: optics accessories ─────────────────────────────────────────────
   { keywords: 'rifle bipod adjustable lightweight',     cat: 'accessory', minSave: 5  },
-  { keywords: 'tactical flashlight weapon light',       cat: 'accessory', minSave: 5  },
-  { keywords: 'shooting range bag backpack tactical',   cat: 'accessory', minSave: 5  },
-  { keywords: 'shooting sling two point rifle',         cat: 'accessory', minSave: 5  },
-  // Slot 2
   { keywords: 'rifle scope rings mount picatinny',      cat: 'optic',     minSave: 5  },
   { keywords: 'concealed carry holster iwb kydex',      cat: 'accessory', minSave: 5  },
-  { keywords: 'gun quick access safe pistol',           cat: 'accessory', minSave: 5  },
+  { keywords: 'shooting sling two point rifle',         cat: 'accessory', minSave: 5  },
+  // ── Slot 2: storage & protection ──────────────────────────────────────────
+  { keywords: 'gun quick access safe biometric pistol', cat: 'accessory', minSave: 5  },
   { keywords: 'gun lock trigger cable lock storage',    cat: 'accessory', minSave: 5  },
-  // Slot 3
-  { keywords: 'gun oil CLP firearm lubricant',          cat: 'accessory', minSave: 5  },
+  { keywords: 'shooting range bag backpack tactical',   cat: 'accessory', minSave: 5  },
   { keywords: 'steel shooting target ar500 reactive',   cat: 'accessory', minSave: 5  },
+  // ── Slot 3: maintenance & shooting aids ───────────────────────────────────
+  { keywords: 'gun oil CLP firearm lubricant',          cat: 'accessory', minSave: 5  },
   { keywords: 'shooting rest bench bag sandbag',        cat: 'accessory', minSave: 5  },
   { keywords: 'gun cleaning mat workstation bench',     cat: 'accessory', minSave: 5  },
+  { keywords: 'gun vise armorer bench block',           cat: 'accessory', minSave: 5  },
+  // ── Slot 4: weapon lights ──────────────────────────────────────────────────
+  { keywords: 'Olight weapon light tactical flashlight',cat: 'accessory', minSave: 5  },
+  { keywords: 'Olight Baldr PL warrior flashlight',     cat: 'accessory', minSave: 5  },
+  { keywords: 'Streamlight TLR weapon light rail',      cat: 'accessory', minSave: 5  },
+  { keywords: 'Streamlight ProTac tactical flashlight', cat: 'accessory', minSave: 5  },
+  // ── Slot 5: optics brands ─────────────────────────────────────────────────
+  { keywords: 'Vortex Optics scope red dot sight',      cat: 'optic',     minSave: 5  },
+  { keywords: 'Vortex Strikefire SPARC Crossfire optic',cat: 'optic',     minSave: 5  },
+  { keywords: 'Holosun red dot sight ACSS reticle',     cat: 'optic',     minSave: 5  },
+  { keywords: 'Burris FastFire scope optic riflescope', cat: 'optic',     minSave: 5  },
+  // ── Slot 6: AR accessories & tools ────────────────────────────────────────
+  { keywords: 'Magpul PMAG AR15 magazine grip stock',   cat: 'accessory', minSave: 5  },
+  { keywords: 'Magpul MOE furniture AR15 accessories',  cat: 'accessory', minSave: 5  },
+  { keywords: 'Monstrum scope mount ring cantilever',   cat: 'optic',     minSave: 5  },
+  { keywords: 'Caldwell shooting rest Lead Sled target', cat: 'accessory', minSave: 5  },
+  // ── Slot 7: archery ───────────────────────────────────────────────────────
+  { keywords: 'Gold Tip arrows carbon arrow shafts',    cat: 'archery',   minSave: 5  },
+  { keywords: 'Rage broadheads mechanical archery',     cat: 'archery',   minSave: 5  },
+  { keywords: 'Carbon Express arrows crossbow bolts',   cat: 'archery',   minSave: 5  },
+  { keywords: 'archery bow hunting accessories release', cat: 'archery',   minSave: 5  },
 ]
 
 function currentSlotQueries() {
   const hour = new Date().getUTCHours()
-  const slot = Math.floor(hour / 6) // 0-3
+  const slot = Math.floor(hour / 6) % 8   // 8 slots cycling across two days
   const start = slot * 4
   return ALL_QUERIES.slice(start, start + 4)
 }
