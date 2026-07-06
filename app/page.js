@@ -93,10 +93,17 @@ export default async function HomePage() {
   }).filter(s => s.abbr && s.name).sort((a, b) => a.name.localeCompare(b.name))
   const states = built.length >= 10 ? built : SEED_STATES
 
-  const news = (articles || []).slice(0, 24).map(a => ({
-    _id: a._id, title: a.title, source: a.source, category: a.category,
-    slug: a.slug?.current || null, tags: a.tags || [], publishedAt: a.publishedAt || null,
-  }))
+  const news = (articles || [])
+    .filter(a => {
+      const redirects = (a.source || '').toLowerCase().includes('ammoland') || a.category === 'deals'
+      return !redirects || a.externalUrl   // drop redirect-bound articles that have no real link
+    })
+    .slice(0, 24)
+    .map(a => ({
+      _id: a._id, title: a.title, source: a.source, category: a.category,
+      slug: a.slug?.current || null, tags: a.tags || [], publishedAt: a.publishedAt || null,
+      externalUrl: a.externalUrl || null,
+    }))
 
   return (
     <>

@@ -229,14 +229,22 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
             {news.map((n, i) => {
               const cat = (n.category || 'news').toLowerCase()
               const cc = { law:'#3B82F6', breaking:'#EF4444', industry:'#C8922A', opinion:'#a855f7', training:'#22c55e', news:'#9CA3AF' }[cat] || '#9CA3AF'
-              const href = n.slug ? `/news/${encodeURIComponent(n.slug)}` : (n._id ? `/news/${n._id}` : '/news')
-              return (
-                <Link key={n._id || i} href={href} className="news-row" style={{ display:'flex', alignItems:'center', gap:14, padding:'13px 16px', borderBottom: i < news.length - 1 ? '1px solid var(--border)' : 'none', textDecoration:'none' }}>
+              const redirects = (n.source || '').toLowerCase().includes('ammoland') || cat === 'deals'
+              const external = redirects && !!n.externalUrl
+              const href = external
+                ? n.externalUrl
+                : (n.slug ? `/news/${encodeURIComponent(n.slug)}` : (n._id ? `/news/${n._id}` : '/news'))
+              const rowStyle = { display:'flex', alignItems:'center', gap:14, padding:'13px 16px', borderBottom: i < news.length - 1 ? '1px solid var(--border)' : 'none', textDecoration:'none' }
+              const inner = (
+                <>
                   <span style={{ fontFamily:MONO, fontSize:8, fontWeight:700, letterSpacing:'.08em', color:cc, background:cc + '1a', border:`1px solid ${cc}44`, padding:'2px 7px', textTransform:'uppercase', flexShrink:0, minWidth:66, textAlign:'center' }}>{cat}</span>
                   <span className="news-row-title" style={{ fontFamily:COND, fontWeight:600, fontSize:16, lineHeight:1.2, color:'#F0EDE6', flex:1, transition:'color .14s' }}>{n.title}</span>
                   <span style={{ fontFamily:MONO, fontSize:9, color:'#6B7280', flexShrink:0, whiteSpace:'nowrap' }}>{n.source}{n.publishedAt ? ` · ${timeAgo(n.publishedAt)}` : ''}</span>
-                </Link>
+                </>
               )
+              return external
+                ? <a key={n._id || i} href={href} target="_blank" rel="noopener noreferrer" className="news-row" style={rowStyle}>{inner}</a>
+                : <Link key={n._id || i} href={href} className="news-row" style={rowStyle}>{inner}</Link>
             })}
           </div>
         </div>
