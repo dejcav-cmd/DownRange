@@ -49,6 +49,16 @@ export default function DealsManager({ adminKey }) {
     } catch (e) { flash('❌ ' + e.message) }
   }
 
+  async function triggerBrandScrape(brand, flash) {
+    flash(`⏳ Scraping ${brand} brand page...`)
+    try {
+      const r = await fetch(`/api/cron/amazon-brands?brand=${brand}`, { headers: H })
+      const d = await r.json()
+      if (d.ok) flash(`✅ ${brand}: added ${d.added}, skipped ${d.skipped}, filtered ${d.filtered}`)
+      else flash(`❌ ${brand}: ${d.error}`)
+    } catch (e) { flash('❌ ' + e.message) }
+  }
+
   return (
     <div>
       {/* Amazon ASIN import — no PA API needed */}
@@ -92,6 +102,9 @@ export default function DealsManager({ adminKey }) {
           extraActions: [
             { label: migrating ? '⏳ Running...' : '🔧 Fix Miscategorized', fn: runMigration, disabled: migrating },
             { label: '⚡ Pull Deals Feed', fn: triggerFeed },
+            { label: '🔦 Scrape Olight',    fn: (f) => triggerBrandScrape('olight', f)    },
+            { label: '🔭 Scrape Monstrum',  fn: (f) => triggerBrandScrape('monstrum', f)  },
+            { label: '🎯 Scrape Vortex',    fn: (f) => triggerBrandScrape('vortex', f)    },
           ],
         }}
       />
