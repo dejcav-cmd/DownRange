@@ -2,16 +2,19 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 55 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b74107c2231c33fe418840f2ac7cdca
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/06e54723f75ac5b93565653f23fb618
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e095350582b84257af0e90c1567cc48
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1608223fcaafe97485f65c31d4495cb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1642f2d4383a6a4d7f04e45e0c8bba1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/41294c0cd1d03cef6c0499a60cba4d3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c2f5d4dc33fb7d773c4f70436b3cf02
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e46d52d77b76062cbf2cfd5fd890e68
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8765d778aae69c5a2fef39186a14115
+Needs image fix: 58 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f2c0b208c3ac60fb1bf4e8d7c1faa8b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f746162e0446c2c76c984ed95b70ee0
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/34b7c223d281f9b950fa8e5dba766a6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b95a9d9c728e4b53a723e81fca96b9
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b832b00febf206abf65a177402986fa
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cf84a752d6e2cd95e24234e710c0f2c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/02bdc489a28c45f66e235f55e9d34ff
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/712cffa880373ba5a6f19b1123d4fd7
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f62466597f921815923b4c988af48f2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/77bf042732d5b732bbe3e9d9e97ee2c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e50e6954054b973b3a8fe4f65747f46
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d65d00e09501284b7a8afb4303b05a1
   skip coupon: https://gun.deals/content/coupon-store-ar15discountssaturday
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/06/Daniel-Pistol.jpg
@@ -58,10 +61,10 @@ Needs image fix: 55 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   skip coupon: https://gun.deals/content/coupon-store-sportsmans-outdoor-ss
   skip coupon: https://gun.deals/content/coupon-store-shooters-gatetuesday-
-  → patched final 14
+  → patched final 17
 
-Stats: uploaded=9 fallback=5 failed=3
+Stats: uploaded=12 fallback=5 failed=3
 
-=== FINAL: total=4030 missing_images=40 reddit=0 ===
+=== FINAL: total=4042 missing_images=40 reddit=0 ===
 
-FIXED: 14
+FIXED: 17
