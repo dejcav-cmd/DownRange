@@ -8,7 +8,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+
       - name: Check Amazon deals in Sanity
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: bash scripts/check-amazon-deals.sh
+        run: bash scripts/check-amazon-deals.sh | tee scripts/amazon-check-result.txt
+
+      - name: Commit results
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add scripts/amazon-check-result.txt
+          git commit -m "chore: amazon deals check result [skip ci]" || echo "nothing to commit"
+          git push origin main || echo "push skipped"
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
