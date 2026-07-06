@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef, Suspense } from 'react'
 import { useSearchParams, useRouter } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import EmailCapture from '../../components/ui/EmailCapture'
 import { sendGAEvent } from '@next/third-parties/google'
 
 const GOLD  = 'var(--gold)'
@@ -202,6 +203,7 @@ function DealsInner() {
   return (
     <>
       <Masthead />
+      <EmailCapture variant="banner" />
 
       <main style={{ background:'var(--bg)', minHeight:'100vh' }}>
 
