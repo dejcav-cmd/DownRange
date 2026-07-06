@@ -14,6 +14,6 @@ Needs image fix: 7 (null + gun.deals hotlink-blocked)
 
 Stats: uploaded=0 fallback=6 failed=1
 
-=== FINAL: total=4106 missing_images=0 reddit=0 ===
+=== FINAL: total=4107 missing_images=0 reddit=0 ===
 
 FIXED: 6
