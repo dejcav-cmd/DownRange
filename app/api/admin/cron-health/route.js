@@ -155,17 +155,49 @@ export async function GET() {
   if (!sanityStatus.connected)
     issues.push({ severity: 'CRITICAL', msg: `Sanity connection failed: ${sanityStatus.error}` })
 
-  if (sanityStatus.minutesSinceLastArticle !== null && sanityStatus.minutesSinceLastArticle > 480) {
-    // Check if the cron itself is still running before raising HIGH.
-    // If last cron run was < 90min ago (3× the 30min interval): cron is alive,
-    // sources are just quiet. Raise MEDIUM only — this is normal overnight behavior.
-    // If last cron run was > 90min ago (or unknown): cron itself has stopped → HIGH.
-    const cronStoppedToo = minutesSinceLastCronRun === null || minutesSinceLastCronRun > 90
-    if (cronStoppedToo) {
-      issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) AND news cron hasn't run in ${minutesSinceLastCronRun ?? 'unknown'} min — feed may have stopped. Check Vercel → Cron Jobs.` })
-    } else {
-      issues.push({ severity: 'MEDIUM', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) but news cron is running (last run ${minutesSinceLastCronRun}min ago, status: ${lastNewsCronRun?.status}). Sources may be quiet — normal overnight behavior.` })
+  if (sanityStatus.minutesSinceLastArticle !== null) {
+    // ── ADAPTIVE QUIET-PERIOD THRESHOLDS ────────────────────────────────
+    // Firearms media posts far less on weekends and US federal holidays.
+    // Using a flat 8h threshold causes constant false-WARNING noise all weekend.
+    // Rules:
+    //   Weekday (Mon-Fri), non-holiday : alert after 8h  (480 min)
+    //   Weekend (Sat-Sun)              : alert after 18h (1080 min) — media goes quiet
+    //   US federal holiday             : alert after 24h (1440 min) — essentially no posts
+    // Only raise HIGH if the cron ALSO stopped (both article gap + cron gap confirm breakage).
+    // Only raise MEDIUM if gap > threshold but cron is alive (sources quiet, not broken).
+    // Below threshold → no issue emitted at all (HEALTHY if nothing else is wrong).
+    const nowUtc = new Date()
+    const dayOfWeek = nowUtc.getUTCDay() // 0=Sun, 6=Sat
+    const mmdd = `${String(nowUtc.getUTCMonth()+1).padStart(2,'0')}-${String(nowUtc.getUTCDate()).padStart(2,'0')}`
+    // US federal holidays that fall on a fixed date (the actual calendar date, not observed)
+    const US_FEDERAL_HOLIDAYS = new Set([
+      '01-01', // New Year's Day
+      '06-19', // Juneteenth
+      '07-04', // Independence Day
+      '11-11', // Veterans Day
+      '12-25', // Christmas Day
+    ])
+    // Monday holidays (observed when fixed date falls on weekend) — approximate with fixed Mon dates
+    // MLK Day (3rd Mon Jan), Presidents Day (3rd Mon Feb), Memorial Day (last Mon May),
+    // Labor Day (1st Mon Sep), Columbus Day (2nd Mon Oct), Thanksgiving (4th Thu Nov)
+    // We can't compute "Nth Monday" cheaply here, so we cover them with the weekend threshold.
+    const isHoliday   = US_FEDERAL_HOLIDAYS.has(mmdd)
+    const isWeekend   = dayOfWeek === 0 || dayOfWeek === 6
+    const quietThresh = isHoliday ? 1440 : isWeekend ? 1080 : 480
+    const quietLabel  = isHoliday ? 'federal holiday' : isWeekend ? 'weekend' : 'weekday'
+
+    if (sanityStatus.minutesSinceLastArticle > quietThresh) {
+      // Gap exceeds even the expanded window — now check if cron also stopped.
+      // If cron ran within 90min (3× the 30min interval): cron is alive, sources are dry.
+      // If cron hasn't run in >90min: cron itself stopped → genuine HIGH alert.
+      const cronStoppedToo = minutesSinceLastCronRun === null || minutesSinceLastCronRun > 90
+      if (cronStoppedToo) {
+        issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) AND news cron hasn't run in ${minutesSinceLastCronRun ?? 'unknown'} min — feed may have stopped. Check Vercel → Cron Jobs.` })
+      } else {
+        issues.push({ severity: 'MEDIUM', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) but news cron is running (last run ${minutesSinceLastCronRun}min ago, status: ${lastNewsCronRun?.status}). Extended quiet period on ${quietLabel} — sources may simply not be posting.` })
+      }
     }
+    // Below threshold → no issue. HEALTHY unless something else is wrong.
   }
 
   if (!env.NEWSAPI_KEY.set && !env.GNEWS_KEY.set)
