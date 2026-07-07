@@ -43,13 +43,19 @@ const SOURCES = [
     // Extract product links from the deals page
     extractLinks(html) {
       const links = []
-      const re = /href="(https?:\/\/(?:www\.)?brownells\.com\/[^"?#]+(?:\/\d+\.aspx|\/[^"?#]+\.aspx)[^"]*)"/gi
+      // Match any brownells.com product link (various URL formats)
+      const re = /href="(https?:\/\/(?:www\.)?brownells\.com\/(?:firearms|handguns|rifles|shotguns|muzzleloaders|ammo|accessories|optics)[^\"?#]*[^\"?#\/])"/gi
       let m
       while ((m = re.exec(html)) !== null && links.length < 12) {
         const url = m[1]
-        if (!links.includes(url) && !url.includes('/search') && !url.includes('/department')) links.push(url)
+        if (!links.includes(url)) links.push(url)
       }
-      return links
+      // Also match /p/NNNNNN style product URLs
+      const re2 = /href="(https?:\/\/(?:www\.)?brownells\.com\/[^"?#]*\/[^"?#\/-]+(?:-\d+)?\.aspx[^"]*)"/gi
+      while ((m = re2.exec(html)) !== null && links.length < 12) {
+        if (!links.includes(m[1])) links.push(m[1])
+      }
+      return links.filter(u => !u.includes('/search') && !u.includes('/department') && !u.includes('/daily-deals'))
     },
   },
   {
@@ -125,7 +131,18 @@ const SOURCES = [
 
 // ── Fetch HTML from a deals page ──────────────────────────────────────────────
 async function fetchPage(url) {
-  // Direct fetch
+  // Jina first — deal pages are typically JS-rendered; Jina handles that.
+  try {
+    const h = { 'User-Agent': UA, 'x-respond-with': 'html', 'Accept': 'text/html' }
+    if (process.env.JINA_API_KEY) h['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
+    const res = await fetch('https://r.jina.ai/' + url, { headers: h, signal: AbortSignal.timeout(25000) })
+    if (res.ok) {
+      const html = await res.text()
+      if (html.length > 3000) return html
+    }
+  } catch {}
+
+  // Direct fetch fallback
   try {
     const res = await fetch(url, {
       headers: { 'User-Agent': UA, 'Accept': 'text/html', 'Cache-Control': 'no-cache' },
@@ -134,17 +151,6 @@ async function fetchPage(url) {
     if (res.ok) {
       const html = await res.text()
       if (html.length > 3000 && !/cf-browser-verification/i.test(html)) return html
-    }
-  } catch {}
-
-  // Jina fallback
-  try {
-    const h = { 'User-Agent': UA, 'x-respond-with': 'html', 'Accept': 'text/html' }
-    if (process.env.JINA_API_KEY) h['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
-    const res = await fetch('https://r.jina.ai/' + url, { headers: h, signal: AbortSignal.timeout(20000) })
-    if (res.ok) {
-      const html = await res.text()
-      if (html.length > 3000) return html
     }
   } catch {}
 

@@ -120,20 +120,66 @@ export async function GET(req) {
   const stats = { fetched: 0, skipped: 0, added: 0, imaged: 0, errors: 0 }
 
   try {
-    // 1. Fetch r/gundeals hot posts (raw_json=1 prevents &amp; encoding in URLs)
-    const res = await fetch(
-      'https://www.reddit.com/r/gundeals/hot.json?limit=100&raw_json=1',
+    // 1. Fetch r/gundeals via RSS feed
+    // Reddit's JSON API 403s from datacenter IPs; RSS is not rate-limited.
+    // RSS hot feed is sorted by Reddit's hot algorithm — same quality signal.
+    const rssRes = await fetch(
+      'https://www.reddit.com/r/gundeals/hot.rss?limit=100',
       {
         headers: {
-          'User-Agent': 'DownRange:downrange-deals-aggregator:v1.0 (by /u/downrange_deals)',
-          'Accept':     'application/json',
+          'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0; +https://downrangeco.com)',
+          'Accept':     'application/rss+xml, application/xml, text/xml, */*',
         },
         signal: AbortSignal.timeout(20000),
       }
     )
-    if (!res.ok) throw new Error(`Reddit API ${res.status}`)
-    const data  = await res.json()
-    const posts = (data?.data?.children || []).map(c => c.data)
+    if (!rssRes.ok) throw new Error(`Reddit RSS ${rssRes.status}`)
+    const xml = await rssRes.text()
+
+    // Parse RSS entries into post-like objects
+    // RSS <entry> fields: <title>, <link href="...">, <author>, <content>
+    // Score is not in RSS — but hot feed = community-filtered quality
+    const posts = []
+    const entryRe = /<entry>([\s\S]*?)<\/entry>/gi
+    let em
+    while ((em = entryRe.exec(xml)) !== null) {
+      const block   = em[1]
+      const titleM  = block.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i)
+      const linkM   = block.match(/<link[^>]*href="([^"]+)"/)
+      const authorM = block.match(/<name>([\s\S]*?)<\/name>/i)
+      const dateM   = block.match(/<updated>([\s\S]*?)<\/updated>/i)
+      if (!titleM || !linkM) continue
+
+      const title    = titleM[1].replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n)).trim()
+      const postUrl  = linkM[1]  // this is the reddit.com comments URL
+      // Extract the actual deal URL from the content block
+      const contentM = block.match(/<content[^>]*>([\s\S]*?)<\/content>/i)
+      const content  = contentM ? contentM[1].replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&') : ''
+      const dealUrlM = content.match(/href="(https?:\/\/(?!(?:www\.)?reddit\.com)[^"]+)"/)
+      const dealUrl  = dealUrlM ? dealUrlM[1] : null
+
+      // Get post ID from the reddit comments URL
+      const idM = postUrl.match(/comments\/([a-z0-9]+)\//)
+      const id  = idM ? idM[1] : null
+      if (!id || !dealUrl) continue
+
+      // Try to extract a thumbnail from content
+      const imgM = content.match(/<img[^>]+src="([^"]+)"/i)
+      const thumbnail = imgM ? imgM[1] : ''
+
+      posts.push({
+        id,
+        title,
+        url:              dealUrl,
+        score:            50,        // not available in RSS — assume hot = popular
+        num_comments:     0,
+        link_flair_text:  '',        // not in RSS — detect from title
+        is_self:          false,
+        created_utc:      dateM ? new Date(dateM[1]).getTime() / 1000 : Date.now() / 1000,
+        thumbnail,
+        preview:          null,
+      })
+    }
     stats.fetched = posts.length
 
     // 2. Load existing Reddit post IDs to skip duplicates

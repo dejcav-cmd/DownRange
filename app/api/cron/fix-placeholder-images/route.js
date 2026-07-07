@@ -312,11 +312,7 @@ async function handler(req) {
     console.log(`[FIX-IMAGES] Found ${articles.length} articles with broken/missing/external images`)
 
     if (articles.length === 0) {
-      await reportCronRun('fix-placeholder-images', {
-        status: 'success', ms: Date.now() - t0,
-        details: 'No placeholder images found — all clean',
-      }).catch(() => {})
-      return Response.json({ ok: true, ...stats, ms: Date.now() - t0, message: 'All clean — no placeholder images found' })
+      console.log('[FIX-IMAGES] Phase 1: no newsArticle placeholder images — continuing to Phases 2 & 3')
     }
 
     const mutations = []
