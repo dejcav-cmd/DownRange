@@ -72,7 +72,8 @@ export default function AmazonImportPanel({ adminKey }) {
       }
       if (!res.ok) { setState('error'); setMsg(data.error || 'Save failed'); return }
       setState('done')
-      setMsg(`✓ Saved — "${data.title}"`)
+      const pending = data.imagePending ? ' · image auto-fetching (~60s)' : ''
+      setMsg(`✓ Saved — "${data.title}"${pending}`)
       setHistory(h => [{ asin: data.asin, title: data.title, price: data.price, url: data.affiliateUrl }, ...h].slice(0, 5))
       setInput(''); setPreview(null); setManualTitle('')
       setTimeout(() => setState('idle'), 3000)

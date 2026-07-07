@@ -3,7 +3,7 @@ export const maxDuration = 60
 
 import { NextResponse }        from 'next/server'
 import { createClient }        from '@sanity/client'
-import { uploadImageToSanity, fetchAndUploadImage } from '@/lib/imageUpload'
+import { uploadImageToSanity } from '@/lib/imageUpload'
 
 const ADMIN_KEY  = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
@@ -176,18 +176,13 @@ export async function POST(req) {
     })
   }
 
-  // Upload image to Sanity CDN
-  // 1. Use Amazon OG image if available, 2. Fall back to Pexels/Pixabay search
+  // Upload image to Sanity CDN — Amazon OG image only, no Pexels fallback
+  // (Pexels keyword matching is too generic for tactical products)
+  // When Amazon blocks the scrape, imageUrl will be null here; the
+  // fix-asin-deal GHA workflow is dispatched below to fetch it asynchronously.
   let sanityImageUrl = null
   if (scrapedImg) {
     sanityImageUrl = await uploadImageToSanity(scrapedImg, `amazon-${asin}`).catch(() => null)
-  }
-  if (!sanityImageUrl) {
-    // Amazon blocked the image scrape — search Pexels/Pixabay using the title
-    sanityImageUrl = await fetchAndUploadImage(
-      title.split(' ').slice(0, 6).join(' '),  // first 6 words are enough for a good search
-      `amazon-${asin}`
-    ).catch(() => null)
   }
 
   const affiliateUrl = `https://www.amazon.com/dp/${asin}?tag=${ASSOCIATE_TAG}&linkCode=ogi&th=1&psc=1`
@@ -201,19 +196,38 @@ export async function POST(req) {
     price:       price || '',
     category,
     summary:     price ? `${price} · Amazon${html ? '' : ' (manually added)'}` : 'Amazon',
-    imageUrl:    sanityImageUrl || scrapedImg || null,
+    imageUrl:    sanityImageUrl || null,
     approved:    true,
     publishedAt: new Date().toISOString(),
     tags:        ['amazon', `asin:${asin}`, category, 'manual'],
   })
 
+  // No image yet — auto-dispatch fix-asin-deal GHA workflow.
+  // It uses Bing image search to find the real product photo and patches
+  // Sanity asynchronously (~60s). Fire and forget.
+  if (!sanityImageUrl && process.env.GH_PAT) {
+    fetch(
+      'https://api.github.com/repos/dejcav-cmd/DownRange/actions/workflows/308283731/dispatches',
+      {
+        method: 'POST',
+        headers: {
+          'Authorization': `token ${process.env.GH_PAT}`,
+          'Content-Type': 'application/json',
+          'Accept': 'application/vnd.github.v3+json',
+        },
+        body: JSON.stringify({ ref: 'main', inputs: { asin, image_url: '' } }),
+      }
+    ).catch(() => {})
+  }
+
   return NextResponse.json({
-    ok:    true,
-    id:    doc._id,
+    ok:           true,
+    id:           doc._id,
     asin,
     title,
     price,
-    imageUrl: sanityImageUrl || scrapedImg || null,
+    imageUrl:     sanityImageUrl || null,
+    imagePending: !sanityImageUrl,
     affiliateUrl,
     scraped: !!html,
   })
