@@ -1,22 +1,70 @@
-=== Cron Monitor Report ===
-Window: 12:43 UTC → 16:03 UTC
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-Total runs: 24  ✓ 20  ⚠ 4  ✗ 0
+=== STEP 2: FIX MISSING IMAGES ===
+Needs image fix: 58 (null + gun.deals hotlink-blocked)
+  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Athlon_Monoc
+  ✗ https://www.wistransfers.com/product/police-trade-in-glock-g19-gen5-co
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a84af172815bc0d395f421e3de429ed
+  ✗ https://defensemechanisms.com/
+  skip coupon: https://gun.deals/content/coupon-store-optics-planettuesday-
+  ✗ https://lokgrips.com/
+  ✗ https://www.3dgunman.com/product/aimpoint-acro-p2-red-dot-reflex-sight
+  ✗ https://dkgun.com/product/mr-desert-eagle-50ae-6-blk-integral-mb-blem-
+  ✗ https://www.nighthawkcustom.com/parts-and-accessories
+  ✗ https://shooterschoicesc.com/product/sco-scythe-ti-30-cal
+  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
+  ✗ https://www.208gunshop.com/glock/glock-17-gen-6-9mm-coa-959031
+  ✗ http://dwilsonmfg.com
+  ✗ https://akoptionsllc.com/slings-pouches/
+  ✗ https://skidtactical.com/firearms/sig-sauer/sig-sauer-rspear-762-16b-c
+  ✗ https://aimsurplus.com/products/leo-trade-in-griffin-armament-hrt556-2
+  ✗ https://clydearmory.com/agency-trade-in-mini-14-government-barrel-stai
+  ✗ https://lmtdefense.com/
+  ✗ https://deleonrxgunsandammo.com/product/osight-xe-reflex-red-dot-sight
+  ✗ https://unobtainiumgear.com/products/blem-sale
+  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
+  ✗ https://hansohnbrothers.com/shop/?_sfm__stock_status=instock&amp;_sft_
+  ✗ https://www.earthseedequipment.com/category/new-arrivals
+  ✗ https://glutenfreegear.com/4th-of-july-sale.html
+  ✗ https://www.bettergeiger.com/product-list
+  ✗ https://panthercitytactical.com/
+  ✗ https://ftw-arms.com/shop/best-sellers/ftw-og-22lr-suppressor/
+  ✗ https://checkmatedefense.us/optics/
+  ✗ http://www.deeznutztactical.com
+  ✗ https://flatlinefiberco.com/
+  ✗ https://notjustguns.com/product/wal-4797049-pdp-f-series-pro-x-pmm-9mm
+  ✗ https://notjustguns.com/product/aimpoint-coa-with-3.5-moa-enclosed-emi
+  ✗ https://sionicsweaponsystems.com/product-category/parts/barrels/
+  ✗ https://www.basspro.com/p/vortex-defender-st-red-dot-sight
+  ✗ https://doublemdefense.com/product/sco-spectre-9/
+  ✗ https://notjustguns.com/product/smith-wesson-csx-e-series-9mm-pistol-3
+  ✗ https://bansheedefense.com/product-category/use-code-taxthisdick/
+  ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
+  ✗ https://www.peppersgeneralstore.com/
+  ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
+  ✗ https://www.loudindustriesusa.com/padded-sling3b
+  ✗ https://drycreekarsenal.com/products?search_part=Noveske%20&amp;sort_t
+  ✗ https://www.eurooptic.com/barrett-model-82a1-50-bmg-rifle-system-29-ba
+  ✗ https://fiddlersdefense.com/search/Holosun?manufacturer=6152&amp;page=
+  ✗ https://www.scottsdale-tactical.com/product/daniel-defensescottsdale-t
+  ✗ https://kirammo.com/
+  ✗ https://www.sportsmansoutdoorsuperstore.com/black-friday.cfm/brand/mos
+  ✗ https://thegunshopusa.com/product/dair-silencer-mask-hd-22cal/
+  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
+  ✗ https://tmroom.com/
+  skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
+  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/Daniel-Lower-deal.
+  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Joelseph_Jen
+  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
+  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
+  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
+  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
+  → patched final 8
 
-JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
----------------------------------------------------------------------------
-  cron-health                           4    0     0     401ms  ⚠ warning @ 16:00
-  fetch-images                          1    1     0     870ms  ✓ success @ 14:20
-  fix-images                            1    1     0     870ms  ✓ success @ 15:01
-  fix-placeholder-images                1    1     0   37479ms  ✓ success @ 16:00
-  gun-deals                             7    7     0   14887ms  ✓ success @ 16:01
-  image-fix                             3    3     0     286ms  ✓ success @ 15:15
-  news                                  2    2     0  233553ms  ✓ success @ 14:04
-  reddit-deals                          4    4     0     208ms  ✓ success @ 16:00
-  video                                 1    1     0   21661ms  ✓ success @ 16:00
+Stats: uploaded=1 fallback=7 failed=48
 
-✓ No Sanity quota errors in window
+=== FINAL: total=4275 missing_images=49 reddit=0 ===
 
-quality-rewrite: no runs yet in window
-
-Report generated: 16:03:45 UTC
+FIXED: 8
