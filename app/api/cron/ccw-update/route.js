@@ -46,7 +46,7 @@ const CCW_STATE_DATA = {
     reciprocityCount:0, notes:'Hawaii does not honor any out-of-state permits. Despite shall-issue designation post-Bruen, carry is restricted to limited locations.' },
   ID:{ permitType:'Shall-Issue (optional)', cc:true, minAge:18, fee:'$20', validity:5, redFlag:false, magLimit:false, awb:false,
     reciprocityCount:37, notes:'Enhanced permit (21+) honored in more states. Basic permit (18+) for residents only. Permitless carry since 2016. Idaho honors all valid out-of-state permits.' },
-  IL:{ permitType:'Shall-Issue', cc:false, minAge:21, fee:'$150', validity:5, redFlag:true, magLimit:10, awb:false,
+  IL:{ permitType:'Shall-Issue', cc:false, minAge:21, fee:'$150', validity:5, redFlag:true, magLimit:10, awb:true,  // PICA 2023
     reciprocityCount:0, notes:'FOID card required to possess any firearm. CCW license available but Illinois does not honor any out-of-state permits. Magazine limits: 10 rounds (rifles) / 15 rounds (handguns). Some cities impose stricter local limits. Protect Illinois Communities Act (2023).' },
   IN:{ permitType:'Shall-Issue (optional)', cc:true, minAge:18, fee:'$0', validity:'Lifetime', redFlag:false, magLimit:false, awb:false,
     reciprocityCount:37, notes:'Permitless carry for lawful owners 18+ since 2022. Free lifetime LTCH available for reciprocity. Indiana honors all valid out-of-state permits.' },
@@ -114,7 +114,7 @@ const CCW_STATE_DATA = {
     reciprocityCount:34, notes:'Vermont is constitutional carry for residents 16+. Magazine limits: 10 rounds (long guns) / 15 rounds (handguns). Enacted 2018. Grandfather clause: lawfully possessed before April 11, 2018. Exemptions for LE, government, competitive shooters.' },
   VA:{ permitType:'Shall-Issue', cc:false, minAge:21, fee:'$50', validity:5, redFlag:true, magLimit:false, awb:false,
     reciprocityCount:30, notes:'Concealed Handgun Permit widely honored. Virginia does not honor VT (no permit issued). Red flag law enacted 2020.' },
-  WA:{ permitType:'Shall-Issue', cc:false, minAge:21, fee:'$50', validity:5, redFlag:true, magLimit:10, awb:false,
+  WA:{ permitType:'Shall-Issue', cc:false, minAge:21, fee:'$50', validity:5, redFlag:true, magLimit:10, awb:true,  // HB 1240 2023
     reciprocityCount:0, notes:'Washington does not honor any out-of-state permits. I-1639 semi-auto restrictions in effect. Red flag law active. Magazine capacity: 10 rounds max (RCW 9.41.370, effective July 1, 2022). Possession of pre-ban magazines legal. WA Supreme Court upheld ban (May 2025).' },
   WV:{ permitType:'Shall-Issue (optional)', cc:true, minAge:21, fee:'$25', validity:5, redFlag:false, magLimit:false, awb:false,
     reciprocityCount:35, notes:'Constitutional carry since 2016 for residents 21+. Concealed Handgun License available for travel. West Virginia honors all valid out-of-state permits.' },
@@ -216,6 +216,9 @@ export async function GET(req) {
           constitutionalCarry: data.cc,
           redFlagLaw:       data.redFlag,
           ccwFee:           String(data.fee),
+          // Restriction fields — auto-synced from verified CCW_STATE_DATA every weekly run
+          magLimit:   typeof data.magLimit === 'number' ? data.magLimit : null,
+          awbStatus:  data.awb === true ? 'Full' : 'none',
           ccwValidity:      String(data.validity),
           reciprocityCount: data.reciprocityCount,
           lastCcwUpdate:    new Date().toISOString(),

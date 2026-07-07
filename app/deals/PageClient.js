@@ -22,7 +22,8 @@ const FLAIR_META = {
   Archery:    { color:'#84CC16' },
 }
 
-// State magazine / AWB / suppressor rules — sourced from lib/stateSeed.js (April 2026 audit)
+// FALLBACK restriction rules — used until /api/state-rules responds.
+// The live rules are fetched on mount from /api/state-rules (Sanity + stateSeed merged).
 // OR: permanently enjoined Dec 2024. DC: struck down March 2026. Neither enforced.
 const STATE_RULES = {
   CA:{ name:'California',    magLimit:10,  awb:true,  noSuppressor:true  },
@@ -56,10 +57,10 @@ const ALL_STATES = [
 
 // Returns restriction alerts for a deal in a given state.
 // Severity: mag_banned / suppressor_banned (error) > awb (warning) — never conflates ban with permit requirement.
-function getStateAlerts(deal, stateCode) {
+function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
   if (!stateCode) return []
-  const rules = STATE_RULES[stateCode]
-  if (!rules) return [] // free state — no mag/awb/suppressor restrictions
+  const rules = rulesMap[stateCode]
+  if (!rules) return [] // free state — no restrictions
   const alerts = []
 
   // Magazine capacity — outright ban, highest severity
@@ -282,6 +283,15 @@ function DealsInner({ states = [] }) {
     return ''
   })
 
+  // Live rules fetched from /api/state-rules — Sanity + stateSeed merged, updated weekly
+  const [liveRules, setLiveRules] = useState(null) // null while loading; falls back to STATE_RULES
+  useEffect(() => {
+    fetch('/api/state-rules')
+      .then(r => r.ok ? r.json() : null)
+      .then(data => { if (data?.rules) setLiveRules(data.rules) })
+      .catch(() => {}) // silently fall back to STATE_RULES
+  }, [])
+
   // Persist state selection
   function handleStateChange(code) {
     setUserState(code)
@@ -477,8 +487,8 @@ function DealsInner({ states = [] }) {
                 onChange={e => handleStateChange(e.target.value)}
                 style={{
                   fontFamily:MONO, fontSize:10,
-                  background:'var(--bg)', border:`1px solid ${userState && STATE_RULES[userState] ? '#EF4444' : 'var(--border)'}`,
-                  color: userState && STATE_RULES[userState] ? '#EF4444' : 'var(--text-muted)',
+                  background:'var(--bg)', border:`1px solid ${userState && (liveRules || STATE_RULES)[userState] ? '#EF4444' : 'var(--border)'}`,
+                  color: userState && (liveRules || STATE_RULES)[userState] ? '#EF4444' : 'var(--text-muted)',
                   padding:'5px 8px', outline:'none', cursor:'pointer',
                 }}
               >
@@ -487,12 +497,16 @@ function DealsInner({ states = [] }) {
                   <option key={code} value={code}>{code} — {name}{STATE_RULES[code] ? ' ⚠' : ''}</option>
                 ))}
               </select>
-              {userState && STATE_RULES[userState] && (
-                <span style={{ fontFamily:MONO, fontSize:9, color:'#EF4444' }}>
-                  {STATE_RULES[userState].magLimit ? `${STATE_RULES[userState].magLimit}-rd limit` : ''}
-                  {STATE_RULES[userState].awb ? ' · AWB' : ''}
-                </span>
-              )}
+              {userState && (liveRules || STATE_RULES)[userState] && (() => {
+                const r = (liveRules || STATE_RULES)[userState]
+                return (
+                  <span style={{ fontFamily:MONO, fontSize:9, color:'#EF4444' }}>
+                    {r.magLimit ? `${r.magLimit}-rd limit` : ''}
+                    {r.awb ? ' · AWB' : ''}
+                    {liveRules ? '' : ' ·⏳'}
+                  </span>
+                )
+              })()}
             </div>
 
             </div>
