@@ -2,22 +2,42 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 11 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/85c4d0ff29724a0bd0d543a7b770325
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/64a18bd3304824526edc4144a699f7a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fa73dd49cd1a58e80093932a41c02fc
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cdd6916413044ab5b40e5eae693ab06
+Needs image fix: 31 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8281f834a4322004d4b4f12705f50ba
+  ~ og: http://www.nationalguntrusts.com/cdn/shop/products/Buy-NFA-Gun-Trust.j
+  ✗ https://www.loudindustriesusa.com/padded-sling3b
+  ~ og: https://www.americanexpress.comhttps://www.aexp-static.com/cdaas/one/s
+  ✗ https://drycreekarsenal.com/products?search_part=Noveske%20&amp;sort_t
+  ~ og: http://stopthebleed.com/cdn/shop/files/30-2400---Stop-the-Bleed-Module
+  ~ og: https://linemount.com/wp-content/uploads/2026/04/Muzzle-Crowning-Tool-
+  ✗ https://www.eurooptic.com/barrett-model-82a1-50-bmg-rifle-system-29-ba
+  ~ og: https://www.primaryarms.comundefined
+  ✗ https://fiddlersdefense.com/search/Holosun?manufacturer=6152&amp;page=
+  ~ og: https://www.revivaldefense.com/assets/images/REP100-155_1_HR.jpg
+  ✗ https://www.scottsdale-tactical.com/product/daniel-defensescottsdale-t
+  ✗ https://kirammo.com/
+  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/633155/images/577512/40
+  ~ og: https://cdn11.bigcommerce.com/s-l25bkhqrub/products/1129/images/5111/t
+  ~ og: https://www.gricegunshop.com/media/catalog/product/cache/6517c62f5899a
+  ✗ https://www.sportsmansoutdoorsuperstore.com/black-friday.cfm/brand/mos
+  ✗ https://thegunshopusa.com/product/dair-silencer-mask-hd-22cal/
+  ~ og: https://www.huberwerksusa.com/uploads/b/afd4e0e0-ffd5-11ee-b5a6-81a932
+  ~ og: https://cdn11.bigcommerce.com/s-quixg7v8hm/products/17366/images/41622
+  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
+  ✗ https://tmroom.com/
+  ~ og: https://d3ue8e8tc2my2n.cloudfront.net/product_images/569/thumb/lg_1781
   skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/Daniel-Lower-deal.
+  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Joelseph_Jen
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 9
+  → patched final 19
 
-Stats: uploaded=4 fallback=5 failed=1
+Stats: uploaded=1 fallback=18 failed=11
 
-=== FINAL: total=4129 missing_images=1 reddit=0 ===
+=== FINAL: total=4165 missing_images=11 reddit=0 ===
 
-FIXED: 9
+FIXED: 19
