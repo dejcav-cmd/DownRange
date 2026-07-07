@@ -1,10 +1,10 @@
 {
   "ok": true,
-  "ms": 846,
-  "fetched": 0,
-  "skipped": 0,
-  "added": 0,
-  "imaged": 0,
+  "ms": 26000,
+  "fetched": 98,
+  "skipped": 72,
+  "added": 26,
+  "imaged": 4,
   "errors": 0,
   "expired": 0
 }
