@@ -112,7 +112,7 @@ export async function GET() {
 
   // ── CRON SCHEDULE ─────────────────────────────────────────────────────
   const crons = [
-    { feed: 'news',       schedule: '*/30 * * * *', label: 'Every 30 min',  critical: true,  desc: 'RSS → AI rewrite → Sanity articles' },
+    { feed: 'news',       schedule: '0 * * * *',    label: 'Every hour',    critical: true,  desc: 'RSS → AI rewrite → Sanity articles' },
     { feed: 'laws',       schedule: '0 */2 * * *',  label: 'Every 2 hrs',   critical: true,  desc: 'Congress.gov + LegiScan → legislation feed' },
     { feed: 'releases',   schedule: '0 * * * *',    label: 'Every hour',    critical: false, desc: 'Manufacturer RSS → new product releases' },
     { feed: 'market',     schedule: '0 */2 * * *',  label: 'Every 2 hrs',   critical: false, desc: 'AmmoSeek + Reddit → ammo price index' },
@@ -188,9 +188,9 @@ export async function GET() {
 
     if (sanityStatus.minutesSinceLastArticle > quietThresh) {
       // Gap exceeds even the expanded window — now check if cron also stopped.
-      // If cron ran within 90min (3× the 30min interval): cron is alive, sources are dry.
-      // If cron hasn't run in >90min: cron itself stopped → genuine HIGH alert.
-      const cronStoppedToo = minutesSinceLastCronRun === null || minutesSinceLastCronRun > 90
+      // If cron ran within 180min (3× the 60min interval): cron is alive, sources are dry.
+      // If cron hasn't run in >180min: cron itself stopped → genuine HIGH alert.
+      const cronStoppedToo = minutesSinceLastCronRun === null || minutesSinceLastCronRun > 180
       if (cronStoppedToo) {
         issues.push({ severity: 'HIGH', msg: `Last article was ${sanityStatus.minutesSinceLastArticle} minutes ago (${Math.round(sanityStatus.minutesSinceLastArticle/60)}h) AND news cron hasn't run in ${minutesSinceLastCronRun ?? 'unknown'} min — feed may have stopped. Check Vercel → Cron Jobs.` })
       } else {
