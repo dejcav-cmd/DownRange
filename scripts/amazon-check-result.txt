@@ -1,8 +1,13 @@
-Total Amazon deals: 2
+Total Amazon deals: 3
+
+  asin:B07MS7G7RZ
+  title:    OLIGHT PL-Mini 2 Valkyrie Compact Weapon light
+  imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/79e6e695e71b6469bd028eff508713a92c0b2ead-1000x1000.jpg
+  affiliate:OK
 
   asin:B0DN2XGRTJ
   title:    Eberlestock Fade Sling Pack - EDC Crossbody Sling Backpack
-  imageUrl: (none)
+  imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/38eb7ebfbb986296f67910de6d025b1874dae1c7-1638x2048.png
   affiliate:OK
 
   asin:B0D1KXJYR6
