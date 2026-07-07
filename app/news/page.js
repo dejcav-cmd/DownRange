@@ -49,6 +49,22 @@ export default async function NewsPage({ searchParams }) {
 
   return (
     <>
+      {/* ── JSON-LD: CollectionPage + ItemList ── */}
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify({
+        '@context': 'https://schema.org',
+        '@type':    'CollectionPage',
+        '@id':      'https://www.downrangeco.com/news',
+        name:       'Firearms & 2A News',
+        description:'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage.',
+        url:        'https://www.downrangeco.com/news',
+        isPartOf:   { '@id': 'https://www.downrangeco.com/#website' },
+        publisher:  { '@id': 'https://www.downrangeco.com/#organization' },
+        inLanguage: 'en-US',
+        potentialAction: {
+          '@type':  'ReadAction',
+          target:   'https://www.downrangeco.com/news',
+        },
+      }) }} />
       <Masthead />
 
       {/* ── PAGE HERO ── */}

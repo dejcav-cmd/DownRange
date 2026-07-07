@@ -35,5 +35,21 @@ export default async function Page() {
       }
     }).filter(s => s.abbr && s.name).sort((a, b) => a.name.localeCompare(b.name))
   } catch { /* fall back to empty — filter simply won't show */ }
-  return <DealsPage states={states} />
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type':    'CollectionPage',
+    '@id':      'https://www.downrangeco.com/deals',
+    name:       'Gun & Ammo Deals',
+    description:"Today's best firearms, ammo, and accessories deals from top retailers — checked against your state's laws.",
+    url:        'https://www.downrangeco.com/deals',
+    isPartOf:   { '@id': 'https://www.downrangeco.com/#website' },
+    publisher:  { '@id': 'https://www.downrangeco.com/#organization' },
+    inLanguage: 'en-US',
+  }
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
+      <DealsPage states={states} />
+    </>
+  )
 }

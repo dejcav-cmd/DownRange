@@ -22,17 +22,21 @@ export async function GET(req) {
     revalidatePath('/sitemap.xml')
     revalidatePath('/news-sitemap.xml')
     revalidatePath('/blog')
+    revalidatePath('/news')
+    revalidatePath('/deals')
+    revalidatePath('/releases')
+    revalidatePath('/feed.xml')
 
     const ms = Date.now() - t0
     await reportCronRun('sitemap', {
       status: 'success', ms,
-      details: 'Revalidated: /sitemap.xml, /news-sitemap.xml, /blog',
+      details: 'Revalidated: /sitemap.xml, /news-sitemap.xml, /blog, /news, /deals, /releases, /feed.xml',
     }).catch(() => {})
 
     return NextResponse.json({
       ok: true,
       timestamp: new Date().toISOString(),
-      revalidated: ['/sitemap.xml', '/news-sitemap.xml', '/blog'],
+      revalidated: ['/sitemap.xml', '/news-sitemap.xml', '/blog', '/news', '/deals', '/releases', '/feed.xml'],
       message: 'Sitemap revalidated — fresh XML will be generated on next request',
     })
   } catch (err) {

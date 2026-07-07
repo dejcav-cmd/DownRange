@@ -64,6 +64,20 @@ const STATIC_PAGES = [
   { url: `${BASE}/contribute`,          priority: 0.5,  changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/privacy`,             priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
   { url: `${BASE}/terms`,               priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
+
+  // Market intelligence (missing from prior sitemap)
+  { url: `${BASE}/market`,              priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
+]
+
+// RSS / Atom feeds — helps Google discover and crawl them
+const FEED_URLS = [
+  { url: `${BASE}/feed.xml`,            priority: 0.5,  changeFrequency: 'hourly',  lastModified: NOW },
+  { url: `${BASE}/feeds/news`,          priority: 0.5,  changeFrequency: 'hourly',  lastModified: NOW },
+  { url: `${BASE}/feeds/releases`,      priority: 0.5,  changeFrequency: 'daily',   lastModified: NOW },
+  { url: `${BASE}/feeds/deals`,         priority: 0.4,  changeFrequency: 'hourly',  lastModified: NOW },
+  { url: `${BASE}/feeds/laws`,          priority: 0.4,  changeFrequency: 'daily',   lastModified: NOW },
+  { url: `${BASE}/feeds/blog`,          priority: 0.4,  changeFrequency: 'weekly',  lastModified: NOW },
+  { url: `${BASE}/feeds/opml`,          priority: 0.3,  changeFrequency: 'weekly',  lastModified: NOW },
 ]
 
 export default async function sitemap() {
@@ -127,6 +141,7 @@ export default async function sitemap() {
       ...articleUrls,
       ...blogUrls,
       ...releaseUrls,
+      ...FEED_URLS,
     ]
   } catch (e) {
     console.error('[SITEMAP] Error:', e.message)
