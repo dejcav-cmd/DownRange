@@ -2,7 +2,9 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 58 (null + gun.deals hotlink-blocked)
+Needs image fix: 60 (null + gun.deals hotlink-blocked)
+  ~ og: https://www.sportsmansoutdoorsuperstore.com/prodimages/148456-DEFAULT-
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/23dfa5b453fb6a0b416f8e7f844736f
   ✗ https://suppliessolutionsllc.com/product/pof-5-semi-automatic-pistol
   ✗ https://honeybadgerhaus.com/hk-parts
   ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
@@ -61,10 +63,10 @@ Needs image fix: 58 (null + gun.deals hotlink-blocked)
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 4
+  → patched final 6
 
-Stats: uploaded=0 fallback=4 failed=52
+Stats: uploaded=1 fallback=5 failed=52
 
-=== FINAL: total=4324 missing_images=53 reddit=0 ===
+=== FINAL: total=4334 missing_images=53 reddit=0 ===
 
-FIXED: 4
+FIXED: 6
