@@ -1,23 +1,13 @@
-name: Check Cron Runs
+name: check-cron-runs
 on:
   workflow_dispatch:
 jobs:
   check:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-        with:
-          token: ${{ secrets.GH_PAT }}
-      - name: Check
+      - uses: actions/checkout@v3
+      - name: Check cron run history
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/check-cron-runs.py | tee scripts/cron-runs-result.txt
-      - name: Commit
-        env:
           GH_PAT: ${{ secrets.GH_PAT }}
-        run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git remote set-url origin https://x-access-token:$GH_PAT@github.com/dejcav-cmd/DownRange.git
-          git add -f scripts/cron-runs-result.txt
-          git diff --staged --quiet || (git commit -m "ci: cron runs result" && git pull --rebase && git push) || true
+        run: bash scripts/check_cron_runs.sh
