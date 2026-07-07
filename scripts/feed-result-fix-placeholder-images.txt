@@ -3,9 +3,9 @@
   "scanned": 0,
   "upgraded": 0,
   "fallback": 0,
-  "skipped": 1,
+  "skipped": 23,
   "failed": 0,
   "samples": [],
-  "ms": 1048,
-  "message": "scanned:0 upgraded:0 fallback:0 skipped:1 failed:0 (1048ms)"
+  "ms": 23891,
+  "message": "scanned:0 upgraded:0 fallback:0 skipped:23 failed:0 (23891ms)"
 }
