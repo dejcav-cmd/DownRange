@@ -1,16 +1,32 @@
-Total Amazon deals: 3
+Total deals: 50
 
-  asin:B07MS7G7RZ
-  title:    OLIGHT PL-Mini 2 Valkyrie Compact Weapon light
-  imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/79e6e695e71b6469bd028eff508713a92c0b2ead-1000x1000.jpg
-  affiliate:OK
+  [AmmoLand] 2 deals
+    • Springfield Kuna 9mm Drops to $1,199 With FSA Brace—$300 Off
+      url: https://www.ammoland.com/2026/07/springfield-armory-kuna-9mm-w-brace-1
+      img: (none)  ✗
+    • Daniel Defense Complete Lower Receiver Group – $499.99
+      url: https://www.ammoland.com/2026/07/daniel-defense-complete-lower-receive
+      img: (none)  ✗
 
-  asin:B0DN2XGRTJ
-  title:    Eberlestock Fade Sling Pack - EDC Crossbody Sling Backpack
-  imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/38eb7ebfbb986296f67910de6d025b1874dae1c7-1638x2048.png
-  affiliate:OK
+  [amazon] 3 deals
+    • OLIGHT PL-Mini 2 Valkyrie Compact Weapon light
+      url: https://www.amazon.com/dp/B07MS7G7RZ?tag=downrangeco-20&linkCode=ogi&t
+      img: https://cdn.sanity.io/images/vbnsqnkg/production/79e6e695e71b6469bd028eff508713a  ✓
+    • Eberlestock Fade Sling Pack - EDC Crossbody Sling Backpack
+      url: https://www.amazon.com/dp/B0DN2XGRTJ?tag=downrangeco-20&linkCode=ogi&t
+      img: https://cdn.sanity.io/images/vbnsqnkg/production/38eb7ebfbb986296f67910de6d025b1  ✓
+    • Eberlestock Bando Bag Tactical Fanny Pack for Men
+      url: https://www.amazon.com/dp/B0D1KXJYR6?tag=downrangeco-20&linkCode=ogi&t
+      img: https://cdn.sanity.io/images/vbnsqnkg/production/b3203ad10c6df45ed5c205e4144a9ea  ✓
 
-  asin:B0D1KXJYR6
-  title:    Eberlestock Bando Bag Tactical Fanny Pack for Men
-  imageUrl: https://cdn.sanity.io/images/vbnsqnkg/production/b3203ad10c6df45ed5c205e4144a9eaf31d77146-449x210.jpg
-  affiliate:OK
+  [gun.deals] 45 deals
+    • Assembled ODG RMR Slide for Glock 17 Gen 3 — Oil Slick Barre
+      url: https://gun.deals/product/assembled-odg-rmr-slide-glock-17-gen-3-%E2%8
+      img: (none)  ✗
+    • PSA AK-102 Forged Classic Triangle Side Folding Pistol with 
+      url: https://gun.deals/product/psa-ak-102-forged-classic-triangle-side-fold
+      img: https://cdn.sanity.io/images/vbnsqnkg/production/d4d50606724c5ff084a25861cc1a2bb  ✓
+    • Soviet Arms Type 56 Blonde 7.62x39mm 16" Barrel 30 Rnd - $99
+      url: https://gun.deals/product/soviet-arms-type-56-blonde-762x39mm-16-barre
+      img: https://cdn.sanity.io/images/vbnsqnkg/production/298f44e46a2dbf225c60c923eb3870d  ✓
+    ... and 42 more
