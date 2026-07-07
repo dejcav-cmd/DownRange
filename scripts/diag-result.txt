@@ -2,15 +2,10 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 63 (null + gun.deals hotlink-blocked)
-  ~ og: https://www.primaryarms.comundefined
-  ~ og: https://cdn11.bigcommerce.com/s-h424xqhs5x/products/227024/images/4241
+Needs image fix: 57 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/057c524e442671d0d1180f2e1f95767
   ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
   ✗ https://shop.gafiringline.com/trijicon/rmr-hd-adj-3-25-moa-56754
-  ~ og: https://www.coastalcountry.com/globalassets/categories/circle-navigati
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ac0c3f97e7a0b8aab2693e8daadbd9c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1c5b13a1127ba8cbf4dc5e0ebfdf00d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2877bc11777d78403b473c3ba69a6c4
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Athlon_Monoc
   ✗ https://www.wistransfers.com/product/police-trade-in-glock-g19-gen5-co
   ✗ https://defensemechanisms.com/
@@ -61,15 +56,14 @@ Needs image fix: 63 (null + gun.deals hotlink-blocked)
   ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
   ✗ https://tmroom.com/
   skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 11
+  → patched final 5
 
-Stats: uploaded=3 fallback=8 failed=50
+Stats: uploaded=1 fallback=4 failed=50
 
-=== FINAL: total=4298 missing_images=51 reddit=0 ===
+=== FINAL: total=4315 missing_images=51 reddit=0 ===
 
-FIXED: 11
+FIXED: 5
