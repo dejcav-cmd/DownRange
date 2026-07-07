@@ -1,0 +1,33 @@
+name: Fetch r/gundeals → Sanity
+
+on:
+  schedule:
+    # Hourly, offset 3min to avoid thundering herd with other crons
+    - cron: '3 * * * *'
+  workflow_dispatch:
+
+jobs:
+  fetch:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GH_PAT }}
+
+      - name: Fetch Reddit RSS and write to Sanity
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/fetch_reddit_deals.py
+
+      - name: Commit result log
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add -f scripts/feed-result-reddit-deals.txt
+          git diff --staged --quiet || (
+            ADDED=$(grep -oP '(?<=added=)\d+' scripts/feed-result-reddit-deals.txt | tail -1 || echo '?')
+            git commit -m "feat: reddit deals fetch — ${ADDED} new [skip ci]"
+            git pull --rebase
+            git push
+          ) || true
