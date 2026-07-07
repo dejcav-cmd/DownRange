@@ -84,6 +84,16 @@ async function fetchSanityDeals() {
         source:    a.source || 'gun.deals',
         domain:    a.source === 'amazon'
           ? 'amazon.com'
+          : a.source === 'reddit'
+          ? 'r/gundeals'
+          : a.source === 'brownells'
+          ? 'brownells.com'
+          : a.source === 'psa'
+          ? 'palmettostatearmory.com'
+          : a.source === 'natchez'
+          ? 'natchezss.com'
+          : a.source === 'olight'
+          ? 'olight.com'
           : a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'gun.deals' } })() : 'gun.deals',
         imageUrl:  imgUrl,
         price:     a.price || extractPrice(title),
@@ -224,11 +234,15 @@ export async function GET(request) {
   // Filter
   const filtered = catFilter ? sorted.filter(d => d.flair === catFilter) : sorted
 
-  const amazonCount = deals.filter(d => d.source === 'amazon').length
+  const amazonCount  = deals.filter(d => d.source === 'amazon').length
+  const redditCount  = deals.filter(d => d.source === 'reddit').length
+  const webCount     = deals.filter(d => ['brownells','psa','natchez','olight'].includes(d.source)).length
   const sources = {
-    sanity:   sanityDeals.filter(d => d.source !== 'amazon').length,
+    sanity:   sanityDeals.filter(d => !['amazon','reddit','brownells','psa','natchez','olight'].includes(d.source)).length,
     gunDeals: gunDealsItems.length,
     amazon:   amazonCount,
+    reddit:   redditCount,
+    web:      webCount,
   }
   const live = gunDealsItems.length > 0
 
