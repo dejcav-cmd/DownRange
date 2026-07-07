@@ -1,68 +1,20 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== Cron Monitor Report ===
+Window: 14:57 UTC → 16:02 UTC
 
-=== STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 56 (null + gun.deals hotlink-blocked)
-  ~ og: https://www.wcarmory.com/image-smp/rise-armament-ra-535-blk-arp-rise-a
-  ~ og: https://www.primaryarms.comundefined
-  ✗ https://lokgrips.com/
-  ✗ https://www.3dgunman.com/product/aimpoint-acro-p2-red-dot-reflex-sight
-  ✗ https://dkgun.com/product/mr-desert-eagle-50ae-6-blk-integral-mb-blem-
-  ✗ https://www.nighthawkcustom.com/parts-and-accessories
-  ✗ https://shooterschoicesc.com/product/sco-scythe-ti-30-cal
-  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
-  ✗ https://www.208gunshop.com/glock/glock-17-gen-6-9mm-coa-959031
-  ✗ http://dwilsonmfg.com
-  ~ og: http://ltcreed.com/cdn/shop/files/RESPONDER_TRAUMA_KIT_1200x630.png?v=
-  ✗ https://akoptionsllc.com/slings-pouches/
-  ✗ https://skidtactical.com/firearms/sig-sauer/sig-sauer-rspear-762-16b-c
-  ✗ https://aimsurplus.com/products/leo-trade-in-griffin-armament-hrt556-2
-  ✗ https://clydearmory.com/agency-trade-in-mini-14-government-barrel-stai
-  ✗ https://lmtdefense.com/
-  ✗ https://deleonrxgunsandammo.com/product/osight-xe-reflex-red-dot-sight
-  ✗ https://unobtainiumgear.com/products/blem-sale
-  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
-  ✗ https://hansohnbrothers.com/shop/?_sfm__stock_status=instock&amp;_sft_
-  ✗ https://www.earthseedequipment.com/category/new-arrivals
-  ✗ https://glutenfreegear.com/4th-of-july-sale.html
-  ✗ https://www.bettergeiger.com/product-list
-  ✗ https://panthercitytactical.com/
-  ✗ https://ftw-arms.com/shop/best-sellers/ftw-og-22lr-suppressor/
-  ✗ https://checkmatedefense.us/optics/
-  ✗ http://www.deeznutztactical.com
-  ✗ https://flatlinefiberco.com/
-  ✗ https://notjustguns.com/product/wal-4797049-pdp-f-series-pro-x-pmm-9mm
-  ✗ https://notjustguns.com/product/aimpoint-coa-with-3.5-moa-enclosed-emi
-  ✗ https://sionicsweaponsystems.com/product-category/parts/barrels/
-  ✗ https://www.basspro.com/p/vortex-defender-st-red-dot-sight
-  ✗ https://doublemdefense.com/product/sco-spectre-9/
-  ✗ https://notjustguns.com/product/smith-wesson-csx-e-series-9mm-pistol-3
-  ✗ https://bansheedefense.com/product-category/use-code-taxthisdick/
-  ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
-  ✗ https://www.peppersgeneralstore.com/
-  ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
-  ✗ https://www.loudindustriesusa.com/padded-sling3b
-  ✗ https://drycreekarsenal.com/products?search_part=Noveske%20&amp;sort_t
-  ✗ https://www.eurooptic.com/barrett-model-82a1-50-bmg-rifle-system-29-ba
-  ✗ https://fiddlersdefense.com/search/Holosun?manufacturer=6152&amp;page=
-  ✗ https://www.scottsdale-tactical.com/product/daniel-defensescottsdale-t
-  ✗ https://kirammo.com/
-  ✗ https://www.sportsmansoutdoorsuperstore.com/black-friday.cfm/brand/mos
-  ✗ https://thegunshopusa.com/product/dair-silencer-mask-hd-22cal/
-  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
-  ✗ https://tmroom.com/
-  skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/Daniel-Lower-deal.
-  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Joelseph_Jen
-  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
-  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
-  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
-  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 9
+Total runs: 11  ✓ 9  ⚠ 2  ✗ 0
 
-Stats: uploaded=0 fallback=9 failed=46
+JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
+---------------------------------------------------------------------------
+  cron-health                           2    0     0     335ms  ⚠ warning @ 16:00
+  fix-images                            1    1     0     870ms  ✓ success @ 15:01
+  fix-placeholder-images                1    1     0   37479ms  ✓ success @ 16:00
+  gun-deals                             3    3     0   18129ms  ✓ success @ 16:01
+  image-fix                             1    1     0     321ms  ✓ success @ 15:15
+  reddit-deals                          2    2     0     199ms  ✓ success @ 16:00
+  video                                 1    1     0   21661ms  ✓ success @ 16:00
 
-=== FINAL: total=4251 missing_images=46 reddit=0 ===
+✓ No Sanity quota errors in window
 
-FIXED: 9
+quality-rewrite: no runs yet in window
+
+Report generated: 16:02:47 UTC
