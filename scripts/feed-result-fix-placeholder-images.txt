@@ -1,0 +1,11 @@
+{
+  "ok": true,
+  "scanned": 0,
+  "upgraded": 1,
+  "fallback": 0,
+  "skipped": 7,
+  "failed": 0,
+  "samples": [],
+  "ms": 8509,
+  "message": "scanned:0 upgraded:1 fallback:0 skipped:7 failed:0 (8509ms)"
+}
