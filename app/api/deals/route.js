@@ -45,6 +45,17 @@ function extractPrice(title = '') {
   return m ? m[0] : null
 }
 
+// Extract magazine capacity from title.
+// Handles: 13rd, 13-rd, 13 rd, 13rnd, 13+1, 30-round, 30 rounds, (17)rd
+function extractMagCapacity(title = '') {
+  if (!title) return null
+  const m = title.match(/\b(\d{1,3})(?:\+\d+)?[\s-]?(?:rd|rnd|rounds?)\b/i)
+          || title.match(/\b(\d{1,3})\+\d+\b/)
+  if (!m) return null
+  const cap = parseInt(m[1], 10)
+  return (cap >= 5 && cap <= 200) ? cap : null
+}
+
 // ── IMAGE PROXY ───────────────────────────────────────────────────────────────
 // gun.deals uses Cloudflare Image Resizing (cdn-cgi/image/*) which blocks hotlinking.
 // Rewrite those URLs through our server-side proxy so the browser gets the image.
@@ -97,6 +108,7 @@ async function fetchSanityDeals() {
           : a.externalUrl ? (() => { try { return new URL(a.externalUrl).hostname.replace('www.','') } catch { return 'gun.deals' } })() : 'gun.deals',
         imageUrl:  imgUrl,
         price:     a.price || extractPrice(title),
+        detectedCapacity: extractMagCapacity(title),
         fromSanity: true,
       }
     })
@@ -193,6 +205,7 @@ async function fetchGunDeals() {
         domain:    'gun.deals',
         imageUrl:  null, // filled below
         price:     extractPrice(title),
+        detectedCapacity: extractMagCapacity(title),
       })
       if (results.length >= 30) break
     }

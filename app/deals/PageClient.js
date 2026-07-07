@@ -22,6 +22,82 @@ const FLAIR_META = {
   Archery:    { color:'#84CC16' },
 }
 
+// State magazine / AWB / suppressor rules — sourced from lib/stateSeed.js (April 2026 audit)
+// OR: permanently enjoined Dec 2024. DC: struck down March 2026. Neither enforced.
+const STATE_RULES = {
+  CA:{ name:'California',    magLimit:10,  awb:true,  noSuppressor:true  },
+  CO:{ name:'Colorado',      magLimit:15,  awb:false, noSuppressor:false },
+  CT:{ name:'Connecticut',   magLimit:10,  awb:true,  noSuppressor:true  },
+  DE:{ name:'Delaware',      magLimit:17,  awb:false, noSuppressor:false },
+  HI:{ name:'Hawaii',        magLimit:10,  awb:true,  noSuppressor:true  },
+  IL:{ name:'Illinois',      magLimit:10,  awb:true,  noSuppressor:true  },
+  MA:{ name:'Massachusetts', magLimit:10,  awb:true,  noSuppressor:true  },
+  MD:{ name:'Maryland',      magLimit:10,  awb:true,  noSuppressor:true  },
+  NJ:{ name:'New Jersey',    magLimit:10,  awb:true,  noSuppressor:true  },
+  NY:{ name:'New York',      magLimit:10,  awb:true,  noSuppressor:true  },
+  RI:{ name:'Rhode Island',  magLimit:10,  awb:false, noSuppressor:true  },
+  VT:{ name:'Vermont',       magLimit:10,  awb:false, noSuppressor:false },
+  WA:{ name:'Washington',    magLimit:10,  awb:true,  noSuppressor:true  },
+}
+
+// All 50 state names for the selector
+const ALL_STATES = [
+  ['AL','Alabama'],['AK','Alaska'],['AZ','Arizona'],['AR','Arkansas'],['CA','California'],
+  ['CO','Colorado'],['CT','Connecticut'],['DE','Delaware'],['FL','Florida'],['GA','Georgia'],
+  ['HI','Hawaii'],['ID','Idaho'],['IL','Illinois'],['IN','Indiana'],['IA','Iowa'],
+  ['KS','Kansas'],['KY','Kentucky'],['LA','Louisiana'],['ME','Maine'],['MD','Maryland'],
+  ['MA','Massachusetts'],['MI','Michigan'],['MN','Minnesota'],['MS','Mississippi'],['MO','Missouri'],
+  ['MT','Montana'],['NE','Nebraska'],['NV','Nevada'],['NH','New Hampshire'],['NJ','New Jersey'],
+  ['NM','New Mexico'],['NY','New York'],['NC','North Carolina'],['ND','North Dakota'],['OH','Ohio'],
+  ['OK','Oklahoma'],['OR','Oregon'],['PA','Pennsylvania'],['RI','Rhode Island'],['SC','South Carolina'],
+  ['SD','South Dakota'],['TN','Tennessee'],['TX','Texas'],['UT','Utah'],['VT','Vermont'],
+  ['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming'],
+]
+
+// Returns restriction alerts for a deal in a given state.
+// Severity: mag_banned / suppressor_banned (error) > awb (warning) — never conflates ban with permit requirement.
+function getStateAlerts(deal, stateCode) {
+  if (!stateCode) return []
+  const rules = STATE_RULES[stateCode]
+  if (!rules) return [] // free state — no mag/awb/suppressor restrictions
+  const alerts = []
+
+  // Magazine capacity — outright ban, highest severity
+  if (rules.magLimit && deal.detectedCapacity && deal.detectedCapacity > rules.magLimit) {
+    alerts.push({
+      type: 'mag_banned',
+      color: '#EF4444',
+      bg:    'rgba(239,68,68,0.13)',
+      label: `\u{1F6AB} ${deal.detectedCapacity}-RD MAG BANNED IN ${stateCode}`,
+      detail:`${stateCode} limits magazines to ${rules.magLimit} rounds (purchase & possession)`,
+    })
+  }
+
+  // Suppressor ban
+  if (rules.noSuppressor && deal.flair === 'NFA') {
+    alerts.push({
+      type: 'suppressor_banned',
+      color: '#EF4444',
+      bg:    'rgba(239,68,68,0.13)',
+      label: `\u{1F6AB} SUPPRESSOR BANNED IN ${stateCode}`,
+      detail:`${stateCode} prohibits civilian suppressor ownership`,
+    })
+  }
+
+  // AWB — rifles only, lower severity than ban
+  if (rules.awb && deal.flair === 'Rifle') {
+    alerts.push({
+      type: 'awb',
+      color: '#F59E0B',
+      bg:    'rgba(245,158,11,0.13)',
+      label: `\u26A0\uFE0F AWB RESTRICTIONS IN ${stateCode}`,
+      detail:`${stateCode} restricts certain semi-automatic rifle features`,
+    })
+  }
+
+  return alerts
+}
+
 function timeAgo(ts) {
   if (!ts) return ''
   const d = Date.now() - Number(ts)
@@ -156,6 +232,25 @@ function DealCard({ deal, stateObj }) {
           )
         })()}
 
+        {/* State restriction alerts */}
+        {stateAlerts.length > 0 && (
+          <div style={{ padding:'0 14px 8px', display:'flex', flexDirection:'column', gap:4 }}>
+            {stateAlerts.map((a, i) => (
+              <div key={i} title={a.detail} style={{
+                background: a.bg,
+                border: `1px solid ${a.color}40`,
+                color: a.color,
+                fontFamily: MONO,
+                fontSize: 9,
+                padding: '3px 8px',
+                letterSpacing: '.06em',
+                lineHeight: 1.4,
+                cursor: 'help',
+              }}>{a.label}</div>
+            ))}
+          </div>
+        )}
+
         {/* CTA */}
         <div style={{ padding:'8px 14px 12px' }}>
           <div style={{
@@ -182,6 +277,19 @@ function DealsInner({ states = [] }) {
   const [stateFilter, setStateFilter] = useState('')
   const selState = states.find(s => s.abbr === stateFilter) || null
   const [lastFetch, setLastFetch] = useState(null)
+  const [userState, setUserState] = useState(() => {
+    if (typeof window !== 'undefined') return localStorage.getItem('dr_user_state') || ''
+    return ''
+  })
+
+  // Persist state selection
+  function handleStateChange(code) {
+    setUserState(code)
+    if (typeof window !== 'undefined') {
+      if (code) localStorage.setItem('dr_user_state', code)
+      else localStorage.removeItem('dr_user_state')
+    }
+  }
   const searchInput = useRef(null)
 
   // Sync URL
@@ -360,6 +468,32 @@ function DealsInner({ states = [] }) {
                     style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', background:'none', border:'none', cursor:'pointer' }}>✕ Clear</button>
                 )}
               </form>
+
+            {/* State filter */}
+            <div style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 0 8px 12px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+              <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563' }}>STATE:</span>
+              <select
+                value={userState}
+                onChange={e => handleStateChange(e.target.value)}
+                style={{
+                  fontFamily:MONO, fontSize:10,
+                  background:'var(--bg)', border:`1px solid ${userState && STATE_RULES[userState] ? '#EF4444' : 'var(--border)'}`,
+                  color: userState && STATE_RULES[userState] ? '#EF4444' : 'var(--text-muted)',
+                  padding:'5px 8px', outline:'none', cursor:'pointer',
+                }}
+              >
+                <option value="">All States</option>
+                {ALL_STATES.map(([code, name]) => (
+                  <option key={code} value={code}>{code} — {name}{STATE_RULES[code] ? ' ⚠' : ''}</option>
+                ))}
+              </select>
+              {userState && STATE_RULES[userState] && (
+                <span style={{ fontFamily:MONO, fontSize:9, color:'#EF4444' }}>
+                  {STATE_RULES[userState].magLimit ? `${STATE_RULES[userState].magLimit}-rd limit` : ''}
+                  {STATE_RULES[userState].awb ? ' · AWB' : ''}
+                </span>
+              )}
+            </div>
 
             </div>
           </div>
