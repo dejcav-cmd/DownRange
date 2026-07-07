@@ -2,8 +2,9 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 57 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/057c524e442671d0d1180f2e1f95767
+Needs image fix: 58 (null + gun.deals hotlink-blocked)
+  ✗ https://suppliessolutionsllc.com/product/pof-5-semi-automatic-pistol
+  ✗ https://honeybadgerhaus.com/hk-parts
   ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
   ✗ https://shop.gafiringline.com/trijicon/rmr-hd-adj-3-25-moa-56754
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Athlon_Monoc
@@ -60,10 +61,10 @@ Needs image fix: 57 (null + gun.deals hotlink-blocked)
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 5
+  → patched final 4
 
-Stats: uploaded=1 fallback=4 failed=50
+Stats: uploaded=0 fallback=4 failed=52
 
-=== FINAL: total=4315 missing_images=51 reddit=0 ===
+=== FINAL: total=4324 missing_images=53 reddit=0 ===
 
-FIXED: 5
+FIXED: 4
