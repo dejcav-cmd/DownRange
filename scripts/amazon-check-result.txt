@@ -1,12 +1,12 @@
 Total deals in Sanity: 50
 
-  [AmmoLand]  2 deals  (0 with images)
+  [AmmoLand]  2 deals  (2 with images)
     • Springfield Kuna 9mm Drops to $1,199 With FSA Brace—$30
       url: https://www.ammoland.com/2026/07/springfield-armory-kuna-9mm-w-brace-1
-      img: ✗
+      img: ✓
     • Daniel Defense Complete Lower Receiver Group – $499.99
       url: https://www.ammoland.com/2026/07/daniel-defense-complete-lower-receive
-      img: ✗
+      img: ✓
 
   [amazon]  3 deals  (3 with images)
     • OLIGHT PL-Mini 2 Valkyrie Compact Weapon light
@@ -17,16 +17,24 @@ Total deals in Sanity: 50
       img: ✓
     ... +1 more
 
-  [gun.deals]  45 deals  (40 with images)
+  [gun.deals]  45 deals  (44 with images)
     • Assembled ODG RMR Slide for Glock 17 Gen 3 — Oil Slick 
       url: https://gun.deals/product/assembled-odg-rmr-slide-glock-17-gen-3-%E2%8
-      img: ✗
+      img: ✓
     • PSA AK-102 Forged Classic Triangle Side Folding Pistol 
       url: https://gun.deals/product/psa-ak-102-forged-classic-triangle-side-fold
       img: ✓
     ... +43 more
 
 ── Recent cron runs ──
+  [gun-deals]  success  2026-07-07T04:30
+    fetched:445 added:0 skipped:80 healed:0 imaged:0
+  [fix-placeholder-images]  success  2026-07-07T04:27
+    scanned:0 upgraded:1 fallback:0 skipped:7 failed:0 (8509ms)
+  [web-deals]  success  2026-07-07T04:27
+    sources:5 links:2 added:0 skipped:2 imaged:0
+  [reddit-deals]  success  2026-07-07T04:26
+    fetched:0 added:0 skipped:0 imaged:0 expired:0
   [fix-placeholder-images]  success  2026-07-07T04:13
     No placeholder images found — all clean
   [web-deals]  success  2026-07-07T04:13
@@ -34,12 +42,4 @@ Total deals in Sanity: 50
   [reddit-deals]  failed  2026-07-07T04:13
     ERROR: Reddit API 403
   [fix-placeholder-images]  success  2026-07-07T04:10
-    No placeholder images found — all clean
-  [web-deals]  success  2026-07-07T04:10
-    sources:5 links:2 added:0 skipped:2 imaged:0
-  [reddit-deals]  failed  2026-07-07T04:09
-    ERROR: Reddit API 403
-  [gun-deals]  success  2026-07-07T04:00
-    fetched:445 added:0 skipped:80 healed:0 imaged:0
-  [fix-placeholder-images]  success  2026-07-07T04:00
     No placeholder images found — all clean
