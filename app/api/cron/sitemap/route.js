@@ -26,6 +26,9 @@ export async function GET(req) {
     revalidatePath('/deals')
     revalidatePath('/releases')
     revalidatePath('/feed.xml')
+    revalidatePath('/competitions')
+    revalidatePath('/blog')
+    revalidatePath('/news-sitemap.xml')
 
     const ms = Date.now() - t0
     await reportCronRun('sitemap', {

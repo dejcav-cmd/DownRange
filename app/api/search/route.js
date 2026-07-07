@@ -44,6 +44,13 @@ const TYPES = {
     project: '_id, _type, "title": brand + " " + model, "slug": slug.current, summary, category, publishedAt, imageUrl, brand, model, caliber, msrp',
     href: (r) => `/releases/${r.slug}`,
   },
+  gunDeal: {
+    label: 'Deals',
+    filter: 'approved == true',
+    fields: ['title','store','summary','tags'],
+    project: '_id, _type, title, externalUrl, price, store, category, publishedAt, imageUrl, source, summary',
+    href: (r) => r.externalUrl || '/deals',
+  },
   stateProfile: {
     label: 'State Laws',
     filter: 'defined(name)',
@@ -143,6 +150,7 @@ function buildHref(typeName, doc) {
     case 'blogPost':      return `/blog/${doc.slug}`
     case 'review':        return `/reviews/${doc.slug}`
     case 'firearmRelease':return `/releases/${doc.slug}`
+    case 'gunDeal':        return doc.externalUrl || '/deals'
     case 'stateProfile':  return `/state-hub/${(doc.abbr||'').toLowerCase()}`
     default:              return '/'
   }

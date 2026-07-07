@@ -8,7 +8,7 @@ export const metadata = {
   description: 'Expert analysis, industry commentary, and field intelligence from DJ Cavalcanti and the DownRange editorial team.',
   alternates: { canonical: 'https://www.downrangeco.com/blog' },
 }
-export const revalidate = 1
+export const revalidate = 300
 
 export const BLOG_POSTS = [
   {

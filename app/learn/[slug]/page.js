@@ -251,7 +251,7 @@ export async function generateMetadata({ params }) {
   }
 }
 
-export const revalidate = 1
+export const revalidate = 3600
 export default async function ArticlePage({ params }) {
   const DEFAULT_BIO = "DJ Cavalcanti is the founder of DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
   let authorBio = DEFAULT_BIO

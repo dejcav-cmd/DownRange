@@ -6,15 +6,15 @@ import Footer from '../../components/layout/Footer'
 
 const TYPE_COLORS = {
   News:'#9ca3af', Laws:'#60a5fa', Blog:'#c084fc',
-  Reviews:'#f59e0b', Releases:'#C8922A', 'State Laws':'#22c55e',
+  Reviews:'#f59e0b', Releases:'#C8922A', 'State Laws':'#22c55e', Deals:'#22c55e',
 }
 const TYPE_ICONS = {
-  News:'📰', Laws:'⚖', Blog:'✍', Reviews:'★', Releases:'🔫', 'State Laws':'🗺',
+  News:'📰', Laws:'⚖', Blog:'✍', Reviews:'★', Releases:'🔫', 'State Laws':'🗺', Deals:'🏷',
 }
-const ALL_TYPES = ['all','newsArticle','legislation','review','firearmRelease','blogPost','stateProfile']
+const ALL_TYPES = ['all','newsArticle','legislation','review','firearmRelease','blogPost','stateProfile','gunDeal']
 const TYPE_LABELS = {
   all:'All',newsArticle:'News',legislation:'Laws',
-  review:'Reviews',firearmRelease:'Releases',blogPost:'Blog',stateProfile:'State Laws',
+  review:'Reviews',firearmRelease:'Releases',blogPost:'Blog',stateProfile:'State Laws',gunDeal:'Deals',
 }
 
 function timeAgo(d) {
