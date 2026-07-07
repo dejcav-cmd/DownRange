@@ -2,30 +2,89 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 31 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8281f834a4322004d4b4f12705f50ba
-  ~ og: http://www.nationalguntrusts.com/cdn/shop/products/Buy-NFA-Gun-Trust.j
+Needs image fix: 90 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cd4497516a144fd5b7e667e029599ea
+  ✗ https://www.primaryarms.com/rugged-suppressors-oculus22-suppressor
+  ~ og: http://atlasdefense.co/cdn/shop/files/ATLAS_3_93e2b434-98bd-4651-b8e5-
+  ~ og: https://www.wojtekweaponry.com/wp-content/uploads/2026/03/26e9134d-486
+  ✗ https://lokgrips.com/
+  ~ og: https://www.sportsmansoutdoorsuperstore.com/prodimages/177417-DEFAULT-
+  ✗ https://www.3dgunman.com/product/aimpoint-acro-p2-red-dot-reflex-sight
+  ~ og: http://nighthawkvision.com/cdn/shop/products/BNVD-SG-2021-1.jpg?v=1651
+  ~ og: https://cdn.shopify.com/s/files/1/0253/0495/6982/files/Precision_Print
+  ✗ https://dkgun.com/product/mr-desert-eagle-50ae-6-blk-integral-mb-blem-
+  ✗ https://www.nighthawkcustom.com/parts-and-accessories
+  ~ og: http://centerfiresystems.com/cdn/shop/files/IMG_2601__70213.1758649574
+  ~ og: https://cdn11.bigcommerce.com/s-ff8jydw0zg/products/114/images/395/Atr
+  ✗ https://shooterschoicesc.com/product/sco-scythe-ti-30-cal
+  ~ og: https://dhgf5mcbrms62.cloudfront.net/110955514/global/2xGujF4-1200x120
+  ~ og: http://blackarchholsters.com/cdn/shop/files/Black_Arch_holsters_full_l
+  ~ og: https://cdn11.bigcommerce.com/s-aixvnkb2f1/products/114/images/495/Str
+  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
+  ✗ https://www.208gunshop.com/glock/glock-17-gen-6-9mm-coa-959031
+  ~ og: https://www.topgunammo.com/assets/images/T200BK.png
+  ~ og: https://ravenrocksprecision.com/wp-content/uploads/2026/06/AM-R-NORMA-
+  ✗ http://dwilsonmfg.com
+  ✗ https://ltcreed.com/collections/medical-kits
+  ✗ https://akoptionsllc.com/slings-pouches/
+  ~ og: https://appleseedinfo.org/wp-content/uploads/2024/04/Rifle_Target-scal
+  ✗ https://skidtactical.com/firearms/sig-sauer/sig-sauer-rspear-762-16b-c
+  ~ og: https://www.rooftopdefense.com/wp-content/uploads/2026/03/HK-SP5-RAL80
+  ✗ https://aimsurplus.com/products/leo-trade-in-griffin-armament-hrt556-2
+  ✗ https://clydearmory.com/agency-trade-in-mini-14-government-barrel-stai
+  ✗ https://lmtdefense.com/
+  ~ og: https://cdn11.bigcommerce.com/s-zoyqkj1bm2/products/525/images/2378/wi
+  ✗ https://deleonrxgunsandammo.com/product/osight-xe-reflex-red-dot-sight
+  ✗ https://unobtainiumgear.com/products/blem-sale
+  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
+  ~ og: http://www.skrpgear.com/cdn/shop/files/LogoSquare_15a3f513-402b-4c53-9
+  ✗ https://hansohnbrothers.com/shop/?_sfm__stock_status=instock&amp;_sft_
+  ✗ https://www.earthseedequipment.com/category/new-arrivals
+  ~ og: https://centerfirereserve.com/wp-content/uploads/2026/03/KVP-PLAN-B-TA
+  ✗ https://glutenfreegear.com/4th-of-july-sale.html
+  ✗ https://www.bettergeiger.com/product-list
+  ✗ https://panthercitytactical.com/
+  ✗ https://ftw-arms.com/shop/best-sellers/ftw-og-22lr-suppressor/
+  ✗ https://checkmatedefense.us/optics/
+  ✗ http://www.deeznutztactical.com
+  ~ og: https://podavach.store/cdn/shop/collections/all-products-706886.jpg?v=
+  ~ og: https://zastavaarmsusa.com/wp-content/uploads/2022/12/Zastava-Logo.jpg
+  ~ og: https://cdn.filestackcontent.com/7RQrckP7RfWP5j8atkAB
+  ~ og: http://thehobbyprinter.com/cdn/shop/files/ar-15-bolt-carrier-group-bcg
+  ✗ https://flatlinefiberco.com/
+  ✗ https://notjustguns.com/product/wal-4797049-pdp-f-series-pro-x-pmm-9mm
+  ~ og: https://gunmagwarehouse.com/media/catalog/product/cache/778ead6359b8bb
+  ✗ https://notjustguns.com/product/aimpoint-coa-with-3.5-moa-enclosed-emi
+  ~ og: https://cdn11.bigcommerce.com/s-doagzvzuk8/products/170/images/498/793
+  ~ og: http://centerfiresystems.com/cdn/shop/files/IMG_4310.jpg?crop=center&h
+  ✗ https://sionicsweaponsystems.com/product-category/parts/barrels/
+  ~ og: http://centerfiresystems.com/cdn/shop/files/MG_9150.jpg?crop=center&he
+  ✗ https://www.basspro.com/p/vortex-defender-st-red-dot-sight
+  ~ og: https://cdn33.coreware.com/cache/image-full-196961-62b078feb934bf82d99
+  ~ og: https://www.wcarmory.com/image-smp/rise-armament-ra-535-blk-arp-rise-a
+  ~ og: https://cdn11.bigcommerce.com/s-pompwzlgb8/products/3506/images/7203/C
+  ✗ https://doublemdefense.com/product/sco-spectre-9/
+  ✗ https://notjustguns.com/product/smith-wesson-csx-e-series-9mm-pistol-3
+  ~ og: https://cdn11.bigcommerce.com/s-5wwo7zvkwt/products/123/images/464/IMG
+  ~ og: https://dsarms.com/wp-content/uploads/2025/01/17313.jpg
+  ~ og: https://subrevtech.com/wp-content/themes/subrevtech-child/images/logo.
+  ~ og: http://www.machinecraftreplicas.com/cdn/shop/files/MCRLogoBW2_1200x120
+  ✗ https://bansheedefense.com/product-category/use-code-taxthisdick/
+  ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
+  ✗ https://www.peppersgeneralstore.com/
+  ~ og: https://ar15discounts.com/wp-content/uploads/2026/06/pipsqueak22compos
+  ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
+  ~ og: https://cdn11.bigcommerce.com/s-ua6zvruewu/products/586/images/2424/Bl
   ✗ https://www.loudindustriesusa.com/padded-sling3b
-  ~ og: https://www.americanexpress.comhttps://www.aexp-static.com/cdaas/one/s
   ✗ https://drycreekarsenal.com/products?search_part=Noveske%20&amp;sort_t
-  ~ og: http://stopthebleed.com/cdn/shop/files/30-2400---Stop-the-Bleed-Module
-  ~ og: https://linemount.com/wp-content/uploads/2026/04/Muzzle-Crowning-Tool-
   ✗ https://www.eurooptic.com/barrett-model-82a1-50-bmg-rifle-system-29-ba
-  ~ og: https://www.primaryarms.comundefined
   ✗ https://fiddlersdefense.com/search/Holosun?manufacturer=6152&amp;page=
-  ~ og: https://www.revivaldefense.com/assets/images/REP100-155_1_HR.jpg
   ✗ https://www.scottsdale-tactical.com/product/daniel-defensescottsdale-t
   ✗ https://kirammo.com/
-  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/633155/images/577512/40
-  ~ og: https://cdn11.bigcommerce.com/s-l25bkhqrub/products/1129/images/5111/t
-  ~ og: https://www.gricegunshop.com/media/catalog/product/cache/6517c62f5899a
   ✗ https://www.sportsmansoutdoorsuperstore.com/black-friday.cfm/brand/mos
   ✗ https://thegunshopusa.com/product/dair-silencer-mask-hd-22cal/
-  ~ og: https://www.huberwerksusa.com/uploads/b/afd4e0e0-ffd5-11ee-b5a6-81a932
-  ~ og: https://cdn11.bigcommerce.com/s-quixg7v8hm/products/17366/images/41622
   ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
   ✗ https://tmroom.com/
-  ~ og: https://d3ue8e8tc2my2n.cloudfront.net/product_images/569/thumb/lg_1781
   skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/SA-Kuna-Deal.jpg
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/04/Daniel-Lower-deal.
@@ -34,10 +93,10 @@ Needs image fix: 31 (null + gun.deals hotlink-blocked)
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 19
+  → patched final 41
 
-Stats: uploaded=1 fallback=18 failed=11
+Stats: uploaded=1 fallback=40 failed=48
 
-=== FINAL: total=4165 missing_images=11 reddit=0 ===
+=== FINAL: total=4249 missing_images=48 reddit=0 ===
 
-FIXED: 19
+FIXED: 41
