@@ -136,48 +136,83 @@ export async function GET(req) {
     if (!rssRes.ok) throw new Error(`Reddit RSS ${rssRes.status}`)
     const xml = await rssRes.text()
 
-    // Parse RSS entries into post-like objects
-    // RSS <entry> fields: <title>, <link href="...">, <author>, <content>
-    // Score is not in RSS — but hot feed = community-filtered quality
+    // Parse RSS — handle both RSS 2.0 (<item>) and Atom (<entry>) formats.
+    // For Reddit link posts: <link> IS the deal URL (not reddit.com).
+    // For self posts: <link> is reddit.com — skip those.
     const posts = []
-    const entryRe = /<entry>([\s\S]*?)<\/entry>/gi
+
+    function unescape(s = '') {
+      return s.replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&quot;/g,'"').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(+n)).trim()
+    }
+
+    // Try RSS 2.0 <item> blocks first, fall back to Atom <entry>
+    const blockTag  = xml.includes('<item>') ? 'item' : 'entry'
+    const blockRe   = new RegExp(`<${blockTag}>([\\s\\S]*?)<\\/${blockTag}>`, 'gi')
     let em
-    while ((em = entryRe.exec(xml)) !== null) {
-      const block   = em[1]
-      const titleM  = block.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i)
-      const linkM   = block.match(/<link[^>]*href="([^"]+)"/)
-      const authorM = block.match(/<name>([\s\S]*?)<\/name>/i)
-      const dateM   = block.match(/<updated>([\s\S]*?)<\/updated>/i)
-      if (!titleM || !linkM) continue
+    while ((em = blockRe.exec(xml)) !== null && posts.length < 100) {
+      const block = em[1]
 
-      const title    = titleM[1].replace(/&amp;/g,'&').replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&#(\d+);/g,(_,n)=>String.fromCharCode(n)).trim()
-      const postUrl  = linkM[1]  // this is the reddit.com comments URL
-      // Extract the actual deal URL from the content block
-      const contentM = block.match(/<content[^>]*>([\s\S]*?)<\/content>/i)
-      const content  = contentM ? contentM[1].replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&') : ''
-      const dealUrlM = content.match(/href="(https?:\/\/(?!(?:www\.)?reddit\.com)[^"]+)"/)
-      const dealUrl  = dealUrlM ? dealUrlM[1] : null
+      // Title
+      const titleM = block.match(/<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/title>/i)
+      if (!titleM) continue
+      const title = unescape(titleM[1])
+      if (!title || title.length < 10) continue
 
-      // Get post ID from the reddit comments URL
-      const idM = postUrl.match(/comments\/([a-z0-9]+)\//)
-      const id  = idM ? idM[1] : null
-      if (!id || !dealUrl) continue
+      // Link — RSS 2.0 uses <link>text</link>; Atom uses <link href="..."/>
+      let link = ''
+      const linkHrefM = block.match(/<link[^>]+href="([^"]+)"/i)
+      const linkTextM = block.match(/<link[^>]*>([^<]+)<\/link>/i)
+      if (linkHrefM)      link = unescape(linkHrefM[1])
+      else if (linkTextM) link = unescape(linkTextM[1])
+      if (!link) continue
 
-      // Try to extract a thumbnail from content
-      const imgM = content.match(/<img[^>]+src="([^"]+)"/i)
-      const thumbnail = imgM ? imgM[1] : ''
+      // Determine deal URL and post ID
+      // If link is a reddit.com comments URL, extract deal URL from description/content
+      let dealUrl = link
+      let id = ''
+
+      const redditComments = link.match(/reddit\.com\/r\/[^\/]+\/comments\/([a-z0-9]+)\//i)
+      if (redditComments) {
+        id = redditComments[1]
+        // Extract the actual deal link from description or content
+        const descM = block.match(/<description[^>]*>([\s\S]*?)<\/description>/i)
+                   || block.match(/<content[^>]*>([\s\S]*?)<\/content>/i)
+        if (descM) {
+          const decoded = unescape(descM[1])
+          const hrefM   = decoded.match(/href="(https?:\/\/(?!(?:www\.)?reddit)[^"]+)"/i)
+          if (hrefM) dealUrl = hrefM[1]
+          else {
+            // No external link in content = self post; skip
+            continue
+          }
+        } else continue
+      } else {
+        // Link is already the deal URL (non-reddit); extract ID from guid or URL
+        const guidM = block.match(/<guid[^>]*>([\s\S]*?)<\/guid>/i)
+        if (guidM) {
+          const gm = unescape(guidM[1]).match(/comments\/([a-z0-9]+)/i)
+          if (gm) id = gm[1]
+        }
+        if (!id) id = Math.abs(dealUrl.split('').reduce((h,c)=>(Math.imul(31,h)+c.charCodeAt(0))|0,0)).toString(36)
+      }
+
+      if (!dealUrl || dealUrl.includes('reddit.com')) continue
+
+      const dateM   = block.match(/<pubDate[^>]*>([^<]+)<\/pubDate>/i)
+                   || block.match(/<updated[^>]*>([^<]+)<\/updated>/i)
+      const imgM    = block.match(/<img[^>]+src="([^"]+)"/i)
 
       posts.push({
         id,
         title,
-        url:              dealUrl,
-        score:            50,        // not available in RSS — assume hot = popular
-        num_comments:     0,
-        link_flair_text:  '',        // not in RSS — detect from title
-        is_self:          false,
-        created_utc:      dateM ? new Date(dateM[1]).getTime() / 1000 : Date.now() / 1000,
-        thumbnail,
-        preview:          null,
+        url:             dealUrl,
+        score:           50,
+        num_comments:    0,
+        link_flair_text: '',
+        is_self:         false,
+        created_utc:     dateM ? new Date(unescape(dateM[1])).getTime() / 1000 : Date.now() / 1000,
+        thumbnail:       imgM ? imgM[1] : '',
+        preview:         null,
       })
     }
     stats.fetched = posts.length

@@ -32,6 +32,40 @@ const sanity = createClient({
 
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
 
+// ── Universal product link extractor ─────────────────────────────────────────
+// Extracts all same-domain hrefs from HTML, skips obvious non-product paths,
+// deduplicates, and caps at 12. Works for both server-rendered and Jina-rendered HTML.
+function extractDomainLinks(html = '', domain = '', skipPatterns = []) {
+  const links = []
+  const seen  = new Set()
+  const re    = /href="(https?:\/\/[^"#?][^"]*?)(?:[#?][^"]*)?"(?:[^>]*>)?/gi
+  let m
+  while ((m = re.exec(html)) !== null && links.length < 12) {
+    const url = m[1]
+    if (!url.includes(domain))    continue          // different domain
+    if (seen.has(url))            continue          // duplicate
+    if (skipPatterns.some(p => url.includes(p))) continue  // navigation/non-product
+    // Must look like a product URL: has a slug with hyphens or an ID in the path
+    const path = url.replace(/https?:\/\/[^\/]+/, '')
+    if (path.split('/').filter(Boolean).length < 2) continue  // too short
+    if (!path.match(/[a-z0-9]{4,}/i)) continue     // no meaningful segment
+    seen.add(url)
+    links.push(url)
+  }
+  // Also scan for relative links and make them absolute
+  const relRe = /href="(\/[^"#?][^"]*?)(?:[#?][^"]*)?"(?:[^>]*>)?/gi
+  while ((m = relRe.exec(html)) !== null && links.length < 12) {
+    const url = `https://www.${domain}${m[1]}`
+    if (seen.has(url)) continue
+    if (skipPatterns.some(p => url.includes(p))) continue
+    const path = m[1]
+    if (path.split('/').filter(Boolean).length < 2) continue
+    seen.add(url)
+    links.push(url)
+  }
+  return links
+}
+
 // ── Deal sources ──────────────────────────────────────────────────────────────
 const SOURCES = [
   {
@@ -40,23 +74,8 @@ const SOURCES = [
     dealPage: 'https://www.brownells.com/daily-deals/',
     domain:   'brownells.com',
     cat:      'accessory',
-    // Extract product links from the deals page
-    extractLinks(html) {
-      const links = []
-      // Match any brownells.com product link (various URL formats)
-      const re = /href="(https?:\/\/(?:www\.)?brownells\.com\/(?:firearms|handguns|rifles|shotguns|muzzleloaders|ammo|accessories|optics)[^\"?#]*[^\"?#\/])"/gi
-      let m
-      while ((m = re.exec(html)) !== null && links.length < 12) {
-        const url = m[1]
-        if (!links.includes(url)) links.push(url)
-      }
-      // Also match /p/NNNNNN style product URLs
-      const re2 = /href="(https?:\/\/(?:www\.)?brownells\.com\/[^"?#]*\/[^"?#\/-]+(?:-\d+)?\.aspx[^"]*)"/gi
-      while ((m = re2.exec(html)) !== null && links.length < 12) {
-        if (!links.includes(m[1])) links.push(m[1])
-      }
-      return links.filter(u => !u.includes('/search') && !u.includes('/department') && !u.includes('/daily-deals'))
-    },
+    extractLinks: (html) => extractDomainLinks(html, 'brownells.com',
+      ['/search', '/department', '/daily-deals', '/category', '/brand', '/customer', '/clearance']),
   },
   {
     id:       'psa',
@@ -64,16 +83,8 @@ const SOURCES = [
     dealPage: 'https://palmettostatearmory.com/deals.html',
     domain:   'palmettostatearmory.com',
     cat:      'rifle',
-    extractLinks(html) {
-      const links = []
-      const re = /href="(https?:\/\/(?:www\.)?palmettostatearmory\.com\/[a-z0-9-]+\.html[^"]*)"/gi
-      let m
-      while ((m = re.exec(html)) !== null && links.length < 12) {
-        const url = m[1]
-        if (!links.includes(url) && !url.includes('/deals.html') && !url.includes('/category')) links.push(url)
-      }
-      return links
-    },
+    extractLinks: (html) => extractDomainLinks(html, 'palmettostatearmory.com',
+      ['/deals.html', '/category', '/brand', '/search', '/customer']),
   },
   {
     id:       'natchez',
@@ -81,16 +92,8 @@ const SOURCES = [
     dealPage: 'https://www.natchezss.com/on-sale.html',
     domain:   'natchezss.com',
     cat:      'accessory',
-    extractLinks(html) {
-      const links = []
-      const re = /href="(https?:\/\/(?:www\.)?natchezss\.com\/[^"?#]+)"/gi
-      let m
-      while ((m = re.exec(html)) !== null && links.length < 12) {
-        const url = m[1]
-        if (!links.includes(url) && !url.includes('/on-sale') && url.match(/\/[a-z0-9-]{5,}$/)) links.push(url)
-      }
-      return links
-    },
+    extractLinks: (html) => extractDomainLinks(html, 'natchezss.com',
+      ['/on-sale', '/category', '/brand', '/search']),
   },
   {
     id:       'olight',
@@ -98,17 +101,8 @@ const SOURCES = [
     dealPage: 'https://www.olight.com/flash-sale.html',
     domain:   'olight.com',
     cat:      'accessory',
-    extractLinks(html) {
-      const links = []
-      // Olight product links: /store/product-name.html
-      const re = /href="(https?:\/\/(?:www\.)?olight\.com\/store\/[^"?#]+)"/gi
-      let m
-      while ((m = re.exec(html)) !== null && links.length < 10) {
-        const url = m[1]
-        if (!links.includes(url)) links.push(url)
-      }
-      return links
-    },
+    extractLinks: (html) => extractDomainLinks(html, 'olight.com',
+      ['/flash-sale', '/category', '/blog', '/about']),
   },
   {
     id:       'primary-arms',
@@ -116,16 +110,8 @@ const SOURCES = [
     dealPage: 'https://www.primaryarms.com/department/sales',
     domain:   'primaryarms.com',
     cat:      'optic',
-    extractLinks(html) {
-      const links = []
-      const re = /href="(https?:\/\/(?:www\.)?primaryarms\.com\/[a-z0-9-]+-\d+\.html[^"]*)"/gi
-      let m
-      while ((m = re.exec(html)) !== null && links.length < 12) {
-        const url = m[1]
-        if (!links.includes(url)) links.push(url)
-      }
-      return links
-    },
+    extractLinks: (html) => extractDomainLinks(html, 'primaryarms.com',
+      ['/department', '/brand', '/search', '/customer']),
   },
 ]
 
