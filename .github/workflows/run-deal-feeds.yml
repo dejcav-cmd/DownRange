@@ -3,43 +3,28 @@ on:
   workflow_dispatch:
     inputs:
       feeds:
-        description: 'Feeds to run: reddit | web | fix | all (default: all)'
+        description: 'Feeds to run: reddit | web | fix | all'
         required: false
         default: 'all'
 jobs:
   run:
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 20
     steps:
       - uses: actions/checkout@v3
       - name: Run deal feeds
         env:
           CRON_SECRET: ${{ secrets.CRON_SECRET }}
-          ADMIN_KEY:   ${{ secrets.ADMIN_KEY }}
           GH_PAT:      ${{ secrets.GH_PAT }}
         run: |
           FEEDS="${{ github.event.inputs.feeds }}"
-          BASE="https://www.downrangeco.com/api/cron"
-
           run_feed() {
-            local name=$1 url=$2
+            local name=$1 path=$2
             echo ""
             echo "━━━ $name ━━━"
-            RESULT=$(curl -s --max-time 300 \
-              -H "Authorization: Bearer ${CRON_SECRET}" \
-              "$url")
-            echo "$RESULT"
+            bash scripts/run_single_feed.sh "$path"
           }
-
-          if [[ "$FEEDS" == "all" || "$FEEDS" == "reddit" ]]; then
-            run_feed "r/gundeals" "$BASE/reddit-deals"
-          fi
-          if [[ "$FEEDS" == "all" || "$FEEDS" == "web" ]]; then
-            run_feed "Web Deals" "$BASE/web-deals"
-          fi
-          if [[ "$FEEDS" == "all" || "$FEEDS" == "fix" ]]; then
-            run_feed "Fix Placeholder Images" "https://www.downrangeco.com/api/cron/fix-placeholder-images"
-          fi
-
-          echo ""
+          [[ "$FEEDS" == "all" || "$FEEDS" == "reddit" ]] && run_feed "r/gundeals"   "reddit-deals"
+          [[ "$FEEDS" == "all" || "$FEEDS" == "web"    ]] && run_feed "Web Deals"    "web-deals"
+          [[ "$FEEDS" == "all" || "$FEEDS" == "fix"    ]] && run_feed "Fix Images"   "fix-placeholder-images"
           echo "Done."
