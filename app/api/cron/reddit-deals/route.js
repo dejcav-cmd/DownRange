@@ -10,10 +10,11 @@ export const maxDuration = 120
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { NextResponse }        from 'next/server'
-import { createClient }        from '@sanity/client'
-import { reportCronRun }       from '@/lib/cronReporter'
-import { uploadImageToSanity } from '@/lib/imageUpload'
+import { NextResponse }             from 'next/server'
+import { createClient }             from '@sanity/client'
+import { reportCronRun }            from '@/lib/cronReporter'
+import { uploadImageToSanity }      from '@/lib/imageUpload'
+import { scrapeProductImage }       from '@/lib/scrapeProductImage'
 
 const ADMIN_KEY  = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
@@ -168,12 +169,16 @@ export async function GET(req) {
       const score    = post.score
       const comments = post.num_comments || 0
 
-      // Upload image to Sanity CDN
+      // 1. Try Reddit preview image → Sanity CDN
+      // 2. Fall back to scraping OG image from the actual retailer product URL
       let sanityImg = null
       if (imgUrl) {
         sanityImg = await uploadImageToSanity(imgUrl, `reddit-${post.id}`).catch(() => null)
-        if (sanityImg) stats.imaged++
       }
+      if (!sanityImg && post.url) {
+        sanityImg = await scrapeProductImage(post.url, `reddit-${post.id}`).catch(() => null)
+      }
+      if (sanityImg) stats.imaged++
 
       const summaryParts = [
         price,

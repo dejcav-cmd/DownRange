@@ -2,26 +2,22 @@ export const dynamic    = 'force-dynamic'
 export const maxDuration = 300
 
 /**
- * Web deals scraper
+ * Web deals scraper — visits actual product pages for reliable URLs and images
  * ─────────────────────────────────────────────────────────────────────────────
- * Scrapes deal/sale pages from retailers and manufacturers NOT covered by
- * gun.deals RSS or the Amazon pipeline. Each source uses direct HTML fetch
- * with realistic browser headers (no Jina — these sites don't block crawlers
- * the way Amazon does). Jina used as fallback if direct fetch fails.
+ * Sources: Brownells Daily Deals · PSA Flash Sales · Natchez Shooters Supply
+ *          · Olight Flash Sale · Primary Arms Sale
  *
- * Sources:
- *   Brownells Daily Deals       brownells.com/daily-deals
- *   PSA Flash Sales             palmettostatearmory.com/deals
- *   Natchez Shooters Supply     natchezss.com/on-sale
- *   Olight Flash Sale           olight.com/flash-sale
- *   Primary Arms Sale           primaryarms.com/department/sales
+ * Strategy: fetch each source's deals page → extract product links →
+ * visit each product page for OG title + image + price → store as gunDeal.
+ * Only saves deals with a specific product URL (no source-page fallbacks).
  * ─────────────────────────────────────────────────────────────────────────────
  */
 
-import { NextResponse }        from 'next/server'
-import { createClient }        from '@sanity/client'
-import { reportCronRun }       from '@/lib/cronReporter'
-import { uploadImageToSanity } from '@/lib/imageUpload'
+import { NextResponse }             from 'next/server'
+import { createClient }             from '@sanity/client'
+import { reportCronRun }            from '@/lib/cronReporter'
+import { scrapeProductPage }        from '@/lib/scrapeProductImage'
+import { uploadImageToSanity }      from '@/lib/imageUpload'
 
 const ADMIN_KEY  = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const PROJECT_ID = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
@@ -34,234 +30,147 @@ const sanity = createClient({
   useCdn:     false,
 })
 
+const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
+
 // ── Deal sources ──────────────────────────────────────────────────────────────
 const SOURCES = [
   {
-    id:     'brownells-daily',
-    label:  'Brownells Daily Deals',
-    store:  'Brownells',
-    url:    'https://www.brownells.com/daily-deals/',
-    cat:    'accessory',
-    parse:  parseBrownells,
+    id:       'brownells',
+    store:    'Brownells',
+    dealPage: 'https://www.brownells.com/daily-deals/',
+    domain:   'brownells.com',
+    cat:      'accessory',
+    // Extract product links from the deals page
+    extractLinks(html) {
+      const links = []
+      const re = /href="(https?:\/\/(?:www\.)?brownells\.com\/[^"?#]+(?:\/\d+\.aspx|\/[^"?#]+\.aspx)[^"]*)"/gi
+      let m
+      while ((m = re.exec(html)) !== null && links.length < 12) {
+        const url = m[1]
+        if (!links.includes(url) && !url.includes('/search') && !url.includes('/department')) links.push(url)
+      }
+      return links
+    },
   },
   {
-    id:     'psa-deals',
-    label:  'PSA Flash Sales',
-    store:  'Palmetto State Armory',
-    url:    'https://palmettostatearmory.com/deals.html',
-    cat:    'rifle',
-    parse:  parsePSA,
+    id:       'psa',
+    store:    'Palmetto State Armory',
+    dealPage: 'https://palmettostatearmory.com/deals.html',
+    domain:   'palmettostatearmory.com',
+    cat:      'rifle',
+    extractLinks(html) {
+      const links = []
+      const re = /href="(https?:\/\/(?:www\.)?palmettostatearmory\.com\/[a-z0-9-]+\.html[^"]*)"/gi
+      let m
+      while ((m = re.exec(html)) !== null && links.length < 12) {
+        const url = m[1]
+        if (!links.includes(url) && !url.includes('/deals.html') && !url.includes('/category')) links.push(url)
+      }
+      return links
+    },
   },
   {
-    id:     'natchez-sale',
-    label:  'Natchez Shooters Supply',
-    store:  'Natchez Shooters Supply',
-    url:    'https://www.natchezss.com/on-sale.html',
-    cat:    'accessory',
-    parse:  parseNatchez,
+    id:       'natchez',
+    store:    'Natchez Shooters Supply',
+    dealPage: 'https://www.natchezss.com/on-sale.html',
+    domain:   'natchezss.com',
+    cat:      'accessory',
+    extractLinks(html) {
+      const links = []
+      const re = /href="(https?:\/\/(?:www\.)?natchezss\.com\/[^"?#]+)"/gi
+      let m
+      while ((m = re.exec(html)) !== null && links.length < 12) {
+        const url = m[1]
+        if (!links.includes(url) && !url.includes('/on-sale') && url.match(/\/[a-z0-9-]{5,}$/)) links.push(url)
+      }
+      return links
+    },
   },
   {
-    id:     'olight-flash',
-    label:  'Olight Flash Sale',
-    store:  'Olight',
-    url:    'https://www.olight.com/flash-sale.html',
-    cat:    'accessory',
-    parse:  parseOlight,
+    id:       'olight',
+    store:    'Olight',
+    dealPage: 'https://www.olight.com/flash-sale.html',
+    domain:   'olight.com',
+    cat:      'accessory',
+    extractLinks(html) {
+      const links = []
+      // Olight product links: /store/product-name.html
+      const re = /href="(https?:\/\/(?:www\.)?olight\.com\/store\/[^"?#]+)"/gi
+      let m
+      while ((m = re.exec(html)) !== null && links.length < 10) {
+        const url = m[1]
+        if (!links.includes(url)) links.push(url)
+      }
+      return links
+    },
+  },
+  {
+    id:       'primary-arms',
+    store:    'Primary Arms',
+    dealPage: 'https://www.primaryarms.com/department/sales',
+    domain:   'primaryarms.com',
+    cat:      'optic',
+    extractLinks(html) {
+      const links = []
+      const re = /href="(https?:\/\/(?:www\.)?primaryarms\.com\/[a-z0-9-]+-\d+\.html[^"]*)"/gi
+      let m
+      while ((m = re.exec(html)) !== null && links.length < 12) {
+        const url = m[1]
+        if (!links.includes(url)) links.push(url)
+      }
+      return links
+    },
   },
 ]
 
-// ── Generic HTML fetch (direct → Jina fallback) ───────────────────────────────
-const BROWSER_UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-
-async function fetchHtml(url) {
-  // Direct fetch first
+// ── Fetch HTML from a deals page ──────────────────────────────────────────────
+async function fetchPage(url) {
+  // Direct fetch
   try {
     const res = await fetch(url, {
-      headers: {
-        'User-Agent':      BROWSER_UA,
-        'Accept':          'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-        'Accept-Language': 'en-US,en;q=0.9',
-        'Cache-Control':   'no-cache',
-      },
+      headers: { 'User-Agent': UA, 'Accept': 'text/html', 'Cache-Control': 'no-cache' },
       signal: AbortSignal.timeout(15000),
     })
     if (res.ok) {
       const html = await res.text()
-      if (html.length > 2000 && !html.includes('cf-browser-verification')) return html
+      if (html.length > 3000 && !/cf-browser-verification/i.test(html)) return html
     }
   } catch {}
 
-  // Jina fallback (handles bot-detection redirects)
+  // Jina fallback
   try {
-    const headers = {
-      'User-Agent':     BROWSER_UA,
-      'x-respond-with': 'html',
-      'Accept':         'text/html',
-    }
-    if (process.env.JINA_API_KEY) headers['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
-    const res = await fetch('https://r.jina.ai/' + url, { headers, signal: AbortSignal.timeout(20000) })
+    const h = { 'User-Agent': UA, 'x-respond-with': 'html', 'Accept': 'text/html' }
+    if (process.env.JINA_API_KEY) h['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
+    const res = await fetch('https://r.jina.ai/' + url, { headers: h, signal: AbortSignal.timeout(20000) })
     if (res.ok) {
       const html = await res.text()
-      if (html.length > 2000) return html
+      if (html.length > 3000) return html
     }
   } catch {}
 
   return null
 }
 
-// ── Shared helpers ────────────────────────────────────────────────────────────
-function extractPrice(text = '') {
-  const m = text.match(/\$[\d,]+(?:\.\d{2})?/)
-  return m ? m[0] : null
-}
-
-function detectCat(title = '') {
+// ── Category detection ────────────────────────────────────────────────────────
+function detectCat(title = '', fallback = 'accessory') {
   const t = title.toLowerCase()
-  if (/ammo|rounds|grain|fmj|hollow/.test(t))                          return 'ammo'
-  if (/rifle|ar-?15|ak|carbine/.test(t))                               return 'rifle'
-  if (/pistol|handgun|glock|sig|1911/.test(t))                         return 'pistol'
-  if (/shotgun|mossberg|remington/.test(t))                            return 'shotgun'
-  if (/suppressor|silencer|nfa/.test(t))                               return 'suppressor'
-  if (/scope|optic|red dot|eotech|vortex|holosun|aimpoint/.test(t))   return 'optic'
-  if (/flashlight|weapon light|olight|streamlight/.test(t))            return 'accessory'
-  return null // use source default
+  if (/ammo|rounds|grain|fmj|hollow point/.test(t))                           return 'ammo'
+  if (/rifle|ar-?15|ak|carbine|sbr/.test(t))                                  return 'rifle'
+  if (/pistol|handgun|glock|sig |1911|revolver/.test(t))                       return 'pistol'
+  if (/shotgun|mossberg|remington/.test(t))                                    return 'shotgun'
+  if (/suppressor|silencer|nfa/.test(t))                                       return 'suppressor'
+  if (/scope|optic|red dot|eotech|vortex|holosun|aimpoint|lpvo/.test(t))      return 'optic'
+  if (/flashlight|weapon light|olight|streamlight|baldr/.test(t))             return 'accessory'
+  if (/bow|archery|broadhead|crossbow|arrow/.test(t))                          return 'archery'
+  return fallback
 }
 
-// ── Site-specific parsers ─────────────────────────────────────────────────────
-// Each returns an array of { title, url, price, imageUrl, cat }
-
-function parseBrownells(html) {
-  const items = []
-  // Brownells product cards: <a href="/..."><img ... alt="Product Name">/...$XX.XX
-  // Look for product links with prices
-  const linkRe = /<a[^>]+href="(\/[^"]*)"[^>]*>(?:[\s\S]*?<img[^>]+alt="([^"]+)"[\s\S]*?)?<\/a>/gi
-  const priceRe = /\$[\d,]+\.\d{2}/g
-  // Simpler approach: find product title + price + image patterns in the HTML
-  // Brownells uses structured JSON-LD or product schema
-  const ldMatch = html.match(/"@type"\s*:\s*"Product"[\s\S]*?"name"\s*:\s*"([^"]+)"[\s\S]*?"price"\s*:\s*"([^"]+)"[\s\S]*?"image"\s*:\s*"([^"]+)"/g)
-  if (ldMatch) {
-    for (const block of ldMatch.slice(0, 20)) {
-      const name  = block.match(/"name"\s*:\s*"([^"]+)"/)?.[1]
-      const price = block.match(/"price"\s*:\s*"([^"]+)"/)?.[1]
-      const img   = block.match(/"image"\s*:\s*"([^"]+)"/)?.[1]
-      if (name && price) items.push({ title: name, price: `$${price}`, imageUrl: img || null, url: null })
-    }
-    return items
-  }
-  // Fallback: grab product names from alt text near prices
-  const altRe = /<img[^>]+alt="([^"]{10,100})"[^>]*>/gi
-  let m
-  while ((m = altRe.exec(html)) !== null && items.length < 20) {
-    const title = m[1].trim()
-    if (!title || /logo|banner|icon/i.test(title)) continue
-    // Look for a price near this element
-    const nearby = html.slice(Math.max(0, m.index - 200), m.index + 500)
-    const price  = extractPrice(nearby)
-    if (!price) continue
-    items.push({ title, price, imageUrl: null, url: null })
-  }
-  return items
-}
-
-function parsePSA(html) {
-  const items = []
-  // PSA deal pages list products with prices in structured HTML
-  // Look for product titles (h2/h3/span with product name class) + price spans
-  const blockRe = /<div[^>]*class="[^"]*product[^"]*"[^>]*>([\s\S]*?)<\/div>/gi
-  let m
-  while ((m = blockRe.exec(html)) !== null && items.length < 30) {
-    const block = m[1]
-    const titleM = block.match(/<(?:h[123]|span|a)[^>]*class="[^"]*(?:name|title)[^"]*"[^>]*>([^<]+)</)
-              || block.match(/<a[^>]*>([^<]{10,100})<\/a>/)
-    const priceM = block.match(/\$[\d,]+\.\d{2}/)
-    const imgM   = block.match(/<img[^>]+src="(https?:[^"]+)"/)
-    if (titleM && priceM) {
-      items.push({
-        title:    titleM[1].trim(),
-        price:    priceM[0],
-        imageUrl: imgM ? imgM[1] : null,
-        url:      null,
-      })
-    }
-  }
-  return items
-}
-
-function parseNatchez(html) {
-  const items = []
-  // Natchez uses standard product grid with data-* attributes or structured HTML
-  const productRe = /<article[^>]*class="[^"]*product[^"]*"[^>]*>([\s\S]*?)<\/article>/gi
-  let m
-  while ((m = productRe.exec(html)) !== null && items.length < 25) {
-    const block = m[1]
-    const titleM = block.match(/<h[23][^>]*>([^<]{10,100})</)
-    const priceM = block.match(/\$[\d,]+\.\d{2}/)
-    const imgM   = block.match(/<img[^>]+src="(https?:[^"]+)"/)
-    const hrefM  = block.match(/<a[^>]+href="(https?:[^"]+)"/)
-    if (titleM && priceM) {
-      items.push({
-        title:    titleM[1].trim(),
-        price:    priceM[0],
-        imageUrl: imgM ? imgM[1] : null,
-        url:      hrefM ? hrefM[1] : null,
-      })
-    }
-  }
-  return items
-}
-
-function parseOlight(html) {
-  const items = []
-  // Olight flash sale page uses product cards with JSON data or structured divs
-  // Try JSON-LD first
-  const jsonBlocks = html.match(/<script[^>]*type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/gi) || []
-  for (const block of jsonBlocks) {
-    try {
-      const json = JSON.parse(block.replace(/<\/?script[^>]*>/g, '').trim())
-      const products = json['@graph']
-        ? json['@graph'].filter(x => x['@type'] === 'Product')
-        : (json['@type'] === 'Product' ? [json] : [])
-      for (const p of products.slice(0, 15)) {
-        const price = p.offers?.price || p.offers?.[0]?.price
-        items.push({
-          title:    p.name,
-          price:    price ? `$${price}` : null,
-          imageUrl: Array.isArray(p.image) ? p.image[0] : p.image,
-          url:      p.offers?.url || p.offers?.[0]?.url || null,
-        })
-      }
-    } catch {}
-  }
-  if (items.length > 0) return items
-
-  // Fallback: parse product cards
-  const cardRe = /<div[^>]*class="[^"]*(?:product-item|flash-item)[^"]*"[^>]*>([\s\S]*?)<\/div>/gi
-  let m
-  while ((m = cardRe.exec(html)) !== null && items.length < 20) {
-    const block = m[1]
-    const titleM = block.match(/<[^>]*class="[^"]*(?:name|title)[^"]*"[^>]*>([^<]{5,100})</)
-    const priceM = block.match(/\$[\d.]+/)
-    const imgM   = block.match(/<img[^>]+src="(https?:[^"]+)"/)
-    const hrefM  = block.match(/<a[^>]+href="(https?:[^"]+)"/)
-    if (titleM && priceM) {
-      items.push({
-        title:    titleM[1].trim(),
-        price:    priceM[0],
-        imageUrl: imgM ? imgM[1] : null,
-        url:      hrefM ? hrefM[1] : null,
-      })
-    }
-  }
-  return items
-}
-
-// ── Deal dedup by URL hash ────────────────────────────────────────────────────
-function urlTag(url = '', source = '') {
-  const clean = url.replace(/[?#].*$/, '').toLowerCase().trim()
-  // Simple 8-char hash from URL
+// ── Simple URL → dedup hash tag ───────────────────────────────────────────────
+function urlHash(url = '') {
+  const clean = url.replace(/[?#].*$/, '').toLowerCase()
   let h = 0
   for (const c of clean) h = (Math.imul(31, h) + c.charCodeAt(0)) | 0
-  return `${source}:${Math.abs(h).toString(36)}`
+  return Math.abs(h).toString(36)
 }
 
 // ── Main handler ──────────────────────────────────────────────────────────────
@@ -283,71 +192,71 @@ export async function GET(req) {
 
   const t0       = Date.now()
   const DEADLINE = 240_000
-  const stats    = { sources: 0, found: 0, added: 0, skipped: 0, imaged: 0 }
+  const stats    = { sources: 0, links: 0, added: 0, skipped: 0, imaged: 0 }
 
   try {
-    // Load existing web-deal URL tags to dedup
+    // Load existing web-deal URL hashes to skip duplicates
     const existingDocs = await sanity.fetch(
-      `*[_type == "gunDeal" && source in ["brownells","psa","natchez","olight-web"]] { tags }`,
+      `*[_type == "gunDeal" && source in ["brownells","psa","natchez","olight","primary-arms"]] { tags }`,
       {}
     ).catch(() => [])
-    const existingTags = new Set(
-      existingDocs.flatMap(d => d.tags || []).filter(t => t.includes(':'))
+    const existingHashes = new Set(
+      existingDocs.flatMap(d => d.tags || []).filter(t => /^[a-z]+-[0-9a-z]+$/.test(t))
     )
 
     for (const src of sources) {
       if (Date.now() - t0 > DEADLINE) break
       stats.sources++
-      await new Promise(r => setTimeout(r, 1500))
+      await new Promise(r => setTimeout(r, 2000))
 
-      const html = await fetchHtml(src.url)
-      if (!html) { console.error(`[web-deals] ${src.id}: fetch failed`); continue }
-
-      let items = []
-      try { items = src.parse(html) } catch (e) {
-        console.error(`[web-deals] ${src.id} parse error:`, e.message)
+      // Step 1: fetch the deals/sale listing page
+      const listHtml = await fetchPage(src.dealPage)
+      if (!listHtml) {
+        console.error(`[web-deals] ${src.id}: listing page fetch failed`)
         continue
       }
-      stats.found += items.length
+
+      // Step 2: extract product links from the listing
+      const links = src.extractLinks(listHtml)
+      stats.links += links.length
+      console.log(`[web-deals] ${src.id}: found ${links.length} product links`)
 
       const mutations = []
-      for (const item of items) {
-        if (!item.title || item.title.length < 8) continue
 
-        // Build a dedup tag from URL or title
-        const tag = item.url ? urlTag(item.url, src.id) : urlTag(item.title, src.id)
-        if (existingTags.has(tag)) { stats.skipped++; continue }
-        existingTags.add(tag)
+      for (const productUrl of links) {
+        if (Date.now() - t0 > DEADLINE) break
 
-        // Canonicalize URL — use source homepage if no product URL found
-        const dealUrl = item.url || src.url
+        const tag = `${src.id}-${urlHash(productUrl)}`
+        if (existingHashes.has(tag)) { stats.skipped++; continue }
+        existingHashes.add(tag)
 
-        // Upload image
-        let sanityImg = null
-        if (item.imageUrl) {
-          sanityImg = await uploadImageToSanity(item.imageUrl, `${src.id}-${tag}`).catch(() => null)
-          if (sanityImg) stats.imaged++
-          await new Promise(r => setTimeout(r, 300))
-        }
+        await new Promise(r => setTimeout(r, 1000))
 
-        const cat = (item.cat && item.cat !== 'inherit')
-          ? item.cat
-          : (detectCat(item.title) || src.cat)
+        // Step 3: visit the actual product page for OG metadata
+        const pageData = await scrapeProductPage(productUrl, `${src.id}-${urlHash(productUrl)}`).catch(() => null)
+        if (!pageData || !pageData.title) { stats.skipped++; continue }
+
+        const title   = pageData.title.slice(0, 200)
+        const price   = pageData.price || null
+        const cdnUrl  = pageData.cdnUrl || null
+        if (cdnUrl) stats.imaged++
+
+        const cat = detectCat(title, src.cat)
 
         mutations.push({
           create: {
             _type:       'gunDeal',
-            title:       item.title.slice(0, 200),
-            externalUrl: dealUrl,
-            source:      src.id.split('-')[0],   // 'brownells', 'psa', 'natchez', 'olight'
+            title,
+            externalUrl: productUrl,          // ← actual product page URL
+            source:      src.id,
             store:       src.store,
-            price:       item.price || '',
+            price:       price || '',
             category:    cat,
-            summary:     [item.price, src.store].filter(Boolean).join(' · '),
-            imageUrl:    sanityImg || null,
+            summary:     [price, src.store].filter(Boolean).join(' · '),
+            imageUrl:    cdnUrl,              // ← real product OG image
             approved:    true,
             publishedAt: new Date().toISOString(),
-            tags:        [src.id.split('-')[0], tag, cat],
+            tags:        [src.id, tag, cat],
           },
         })
         stats.added++
@@ -356,12 +265,13 @@ export async function GET(req) {
       for (let i = 0; i < mutations.length; i += 100) {
         await sanity.mutate(mutations.slice(i, i + 100))
       }
+      console.log(`[web-deals] ${src.id}: added ${mutations.length}`)
     }
 
     const ms = Date.now() - t0
     await reportCronRun('web-deals', {
       status: 'success', ms,
-      details: `sources:${stats.sources} found:${stats.found} added:${stats.added} skipped:${stats.skipped} imaged:${stats.imaged}`,
+      details: `sources:${stats.sources} links:${stats.links} added:${stats.added} skipped:${stats.skipped} imaged:${stats.imaged}`,
     }).catch(() => {})
 
     return NextResponse.json({ ok: true, ms, ...stats })

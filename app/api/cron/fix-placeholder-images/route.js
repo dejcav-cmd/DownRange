@@ -3,6 +3,7 @@ export const maxDuration = 300
 
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
+import { scrapeProductImage } from '@/lib/scrapeProductImage'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -373,6 +374,47 @@ async function handler(req) {
 
       // Avoid hammering sources
       await new Promise(r => setTimeout(r, 400))
+    }
+
+    // ── PHASE 3: Fix gunDeal docs with missing images (ALL sources) ───────────
+    // This covers deals from Reddit, web scrapers, Amazon manual imports, and
+    // any gun.deals item that slipped through without an image.
+    const badDeals = await sanity.fetch(
+      `*[_type == "gunDeal"
+          && approved == true
+          && defined(externalUrl)
+          && (imageUrl == null || imageUrl == "")
+        ] | order(publishedAt desc) [0...40] {
+          _id, title, externalUrl, category, source, store
+        }`
+    ).catch(() => [])
+
+    if (badDeals.length > 0) {
+      console.log(`[FIX-IMAGES] Phase 3: ${badDeals.length} gunDeal docs with missing images`)
+      const dealMutations = []
+
+      for (const deal of badDeals) {
+        if (!deal.externalUrl) { stats.skipped++; continue }
+        // Skip amazon.com links — those go through the separate fix-asin-deal workflow
+        if (deal.externalUrl.includes('amazon.com')) { stats.skipped++; continue }
+
+        const label  = `deal-${deal.source || 'web'}-${deal._id.slice(-6)}`
+        const cdnUrl = await scrapeProductImage(deal.externalUrl, label)
+
+        if (cdnUrl) {
+          dealMutations.push({ patch: { id: deal._id, set: { imageUrl: cdnUrl } } })
+          stats.upgraded++
+          console.log(`[FIX-IMAGES] ✓ Deal image: "${deal.title?.slice(0, 40)}"`)
+        } else {
+          stats.skipped++
+        }
+        await new Promise(r => setTimeout(r, 500))
+      }
+
+      if (dealMutations.length) {
+        await sanity.mutate(dealMutations)
+        console.log(`[FIX-IMAGES] Phase 3: wrote ${dealMutations.length} deal image patches`)
+      }
     }
 
     // ── PHASE 2: Fix firearmRelease docs with Google News logo image ──────────
