@@ -1,9 +1,9 @@
 {
   "ok": true,
-  "ms": 15464,
+  "ms": 48688,
   "sources": 5,
-  "links": 2,
+  "links": 27,
   "added": 0,
-  "skipped": 2,
+  "skipped": 27,
   "imaged": 0
 }
