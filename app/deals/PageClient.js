@@ -85,14 +85,14 @@ function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
     })
   }
 
-  // AWB — rifles only, lower severity than ban
-  if (rules.awb && deal.flair === 'Rifle') {
+  // AWB — rifles AND AR-pattern pistols (covered by most state AWBs, e.g. WA HB 1240, CA, NY)
+  if (rules.awb && isAssaultWeaponLike(deal.title, deal.flair)) {
     alerts.push({
       type: 'awb',
       color: '#F59E0B',
       bg:    'rgba(245,158,11,0.13)',
-      label: `\u26A0\uFE0F AWB RESTRICTIONS IN ${stateCode}`,
-      detail:`${stateCode} restricts certain semi-automatic rifle features`,
+      label: `\u26A0\uFE0F AWB RESTRICTED IN ${stateCode}`,
+      detail:`${stateCode} bans or restricts semi-automatic assault weapons incl. AR-pattern pistols`,
     })
   }
 
@@ -111,36 +111,21 @@ function timeAgo(ts) {
   return `${Math.floor(h / 24)}d ago`
 }
 
-// ── STATE LEGALITY VERDICT ────────────────────────────────────────────────────
-const V_STYLE = {
-  ok:   { bg:'rgba(34,197,94,.09)',  bd:'rgba(34,197,94,.28)',  fg:'#6ee7a3' },
-  warn: { bg:'rgba(245,158,11,.09)', bd:'rgba(245,158,11,.28)', fg:'#fbbf68' },
-  no:   { bg:'rgba(239,68,68,.09)',  bd:'rgba(239,68,68,.28)',  fg:'#fca5a5' },
-}
-function inferCat(title = '') {
-  const t = title.toLowerCase()
-  if (/magazine|pmag|\bmag\b|\bdrum\b/.test(t)) return 'MAGAZINE'
-  if (/suppressor|silencer|\bnfa\b|form ?4/.test(t)) return 'SUPPRESSOR'
-  if (/ar-?15|ak-?47|\brifle\b|carbine|\bsbr\b|upper|lower receiver/.test(t)) return 'RIFLE'
-  if (/\bammo\b|9mm|5\.56|\.223|\.308|7\.62|\.45|rounds|\bgr\b fmj/.test(t)) return 'AMMO'
-  if (/pistol|handgun|glock|sig ?p|revolver|1911/.test(t)) return 'HANDGUN'
-  return 'GENERAL'
-}
-function stateVerdict(title, s) {
-  if (!s) return null
-  const ok = t => ({ lvl:'ok', ico:'✓', text:t }), warn = t => ({ lvl:'warn', ico:'⚠', text:t }), no = t => ({ lvl:'no', ico:'✗', text:t })
-  switch (inferCat(title)) {
-    case 'RIFLE':      if (s.awbFull) return no(`Banned config in ${s.name}`); if (s.awbRestricted) return warn(`${s.name}: featureless required`); return ok(`Legal in ${s.name}`)
-    case 'MAGAZINE':   if (s.mag) return no(`Blocked — ${s.mag}-rd max in ${s.name}`); return ok(`Legal in ${s.name}`)
-    case 'SUPPRESSOR': if (!s.suppLegal) return no(`Illegal in ${s.name}`); return ok('Legal · NFA')
-    case 'AMMO':       if (s.abbr === 'CA') return warn('CA: in-person + background check'); if (s.abbr === 'NY') return warn('NY: dealer transfer only'); return ok('Ships to your door')
-    case 'HANDGUN':    if (s.abbr === 'CA') return warn('Must be on CA roster'); if (s.awbFull || s.abbr === 'NY') return warn(`${s.name}: permit required`); return ok(`Legal in ${s.name}`)
-    default:           return ok(`No state restriction`)
-  }
+// ── ASSAULT WEAPON DETECTION ─────────────────────────────────────────────────
+// Returns true if a deal should be checked against AWB rules.
+// Covers rifles AND AR/AK-pattern pistols (which AWB states like WA, CA, NY regulate).
+function isAssaultWeaponLike(title = '', flair = '') {
+  if (flair === 'Rifle' || flair === 'Shotgun') return true
+  if (flair !== 'Handgun' && flair !== 'Other') return false
+  const t = (title || '').toLowerCase()
+  // AR/AK-style pistols, PCCs, and semi-auto assault pistols explicitly covered by state AWBs
+  return /\b(?:ar[-\s]?pistol|ak[-\s]?pistol|banshee|draco|micro\s*draco|pcc|pistol\s+caliber\s+carbine|mp5.*pistol|mac-?\d|micro\s*uzi|cmmg|sig\s*mcx|galil\s*ace|tavor\s*x95|kel.?tec\s*sub|cz\s*scorpion.*(?:pistol|sbr)|vector.*pistol)\b/i.test(t)
+    // AR-pattern pistols: pistol + AR/AK calibers are strong signal
+    || (/\bpistol\b/i.test(t) && /\b(?:5\.56|223\s*rem|\.223|300\s*(?:blk|aac|blackout)|338\s*arc|7\.62x39|6\.5\s*grendel|6\.8\s*spc|224\s*valkyrie)\b/i.test(t))
 }
 
 // ── DEAL CARD ─────────────────────────────────────────────────────────────────
-function DealCard({ deal, stateObj }) {
+function DealCard({ deal, userState, liveRules }) {
   const [imgError, setImgError] = useState(false)
   const fm = FLAIR_META[deal.flair] || FLAIR_META.Other
   const hasImage = deal.imageUrl && !imgError
@@ -222,35 +207,62 @@ function DealCard({ deal, stateObj }) {
           )}
         </div>
 
-        {/* Per-state legality verdict */}
-        {stateObj && (() => {
-          const v = stateVerdict(deal.title || '', stateObj)
-          const vs = V_STYLE[v.lvl]
+        {/* ── Restriction badges — computed from DownRange's own engine, not gun.deals ── */}
+        {(() => {
+          const rulesMap = liveRules || STATE_RULES
+          // Compute alerts for every restricted state (13 states, lightweight)
+          const byState = Object.entries(rulesMap)
+            .map(([code]) => ({ code, alerts: getStateAlerts(deal, code, rulesMap) }))
+            .filter(x => x.alerts.length > 0)
+          if (byState.length === 0) return null
+
+          // Group by type for compact multi-state display
+          const magBanCodes = byState.filter(x => x.alerts.some(a => a.type === 'mag_banned')).map(x => x.code)
+          const awbCodes    = byState.filter(x => x.alerts.some(a => a.type === 'awb')).map(x => x.code)
+          const suppCodes   = byState.filter(x => x.alerts.some(a => a.type === 'suppressor_banned')).map(x => x.code)
+          // User's specific state alerts (shown first, prominently)
+          const myAlerts    = userState ? (byState.find(x => x.code === userState)?.alerts || []) : []
+          const myTypes     = new Set(myAlerts.map(a => a.type))
+
+          const fmt = (codes, max = 6) => codes.length <= max
+            ? codes.join(' · ')
+            : codes.slice(0, max).join(' · ') + ` +${codes.length - max}`
+
           return (
-            <div style={{ margin:'0 14px 8px', fontFamily:MONO, fontSize:9.5, lineHeight:1.4, padding:'6px 8px', display:'flex', gap:6, alignItems:'flex-start', background:vs.bg, border:`1px solid ${vs.bd}`, color:vs.fg }}>
-              <span style={{ fontWeight:700 }}>{v.ico}</span><span>{v.text}</span>
+            <div style={{ padding:'0 14px 8px', display:'flex', flexDirection:'column', gap:3 }}>
+              {/* User's state: full-detail alerts */}
+              {myAlerts.map((a, i) => (
+                <div key={i} title={a.detail} style={{
+                  background: a.bg, border:`1px solid ${a.color}40`,
+                  color: a.color, fontFamily:MONO, fontSize:9,
+                  padding:'4px 8px', letterSpacing:'.06em', lineHeight:1.4, cursor:'help',
+                }}>{a.label}</div>
+              ))}
+              {/* Compact multi-state summary (skip type if user's state already shows it) */}
+              {magBanCodes.length > 0 && !myTypes.has('mag_banned') && (
+                <div title={`Magazine banned: ${magBanCodes.join(', ')}`} style={{
+                  background:'rgba(239,68,68,0.07)', border:'1px solid rgba(239,68,68,0.22)',
+                  color:'#fca5a5', fontFamily:MONO, fontSize:8,
+                  padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
+                }}>🚫 MAG BANNED: {fmt(magBanCodes)}</div>
+              )}
+              {awbCodes.length > 0 && !myTypes.has('awb') && (
+                <div title={`AWB restrictions: ${awbCodes.join(', ')}`} style={{
+                  background:'rgba(245,158,11,0.07)', border:'1px solid rgba(245,158,11,0.22)',
+                  color:'#fbbf24', fontFamily:MONO, fontSize:8,
+                  padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
+                }}>⚠ AWB STATES: {fmt(awbCodes)}</div>
+              )}
+              {suppCodes.length > 0 && !myTypes.has('suppressor_banned') && (
+                <div title={`Suppressor banned: ${suppCodes.join(', ')}`} style={{
+                  background:'rgba(239,68,68,0.07)', border:'1px solid rgba(239,68,68,0.22)',
+                  color:'#fca5a5', fontFamily:MONO, fontSize:8,
+                  padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
+                }}>🚫 SUPPRESSOR BANNED: {fmt(suppCodes)}</div>
+              )}
             </div>
           )
         })()}
-
-        {/* State restriction alerts */}
-        {stateAlerts.length > 0 && (
-          <div style={{ padding:'0 14px 8px', display:'flex', flexDirection:'column', gap:4 }}>
-            {stateAlerts.map((a, i) => (
-              <div key={i} title={a.detail} style={{
-                background: a.bg,
-                border: `1px solid ${a.color}40`,
-                color: a.color,
-                fontFamily: MONO,
-                fontSize: 9,
-                padding: '3px 8px',
-                letterSpacing: '.06em',
-                lineHeight: 1.4,
-                cursor: 'help',
-              }}>{a.label}</div>
-            ))}
-          </div>
-        )}
 
         {/* CTA */}
         <div style={{ padding:'8px 14px 12px' }}>
@@ -549,7 +561,7 @@ function DealsInner({ states = [] }) {
               <>
                 {paginated.length > 0 ? (
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:12, marginBottom:32 }}>
-                    {paginated.map((deal, i) => <DealCard key={deal.id || i} deal={deal} stateObj={selState} />)}
+                    {paginated.map((deal, i) => <DealCard key={deal.id || i} deal={deal} userState={userState} liveRules={liveRules} />)}
                   </div>
                 ) : (
                   <div style={{ padding:'80px 0', textAlign:'center', color:'#4B5563', fontFamily:MONO, fontSize:12 }}>
