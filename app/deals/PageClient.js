@@ -22,23 +22,33 @@ const FLAIR_META = {
   Archery:    { color:'#84CC16' },
 }
 
-// FALLBACK restriction rules — used until /api/state-rules responds.
-// The live rules are fetched on mount from /api/state-rules (Sanity + stateSeed merged).
-// OR: permanently enjoined Dec 2024. DC: struck down March 2026. Neither enforced.
+// ── STATE RESTRICTION RULES ──────────────────────────────────────────────────
+// Fallback used until /api/state-rules responds (Sanity + stateSeed merged).
+// Split mag limits: many states have different limits for handguns vs long guns.
+//   magLimitHandgun — applies to pistols/revolvers
+//   magLimitLonggun — applies to rifles & shotguns
+//   (null = no state limit for that category)
+// Sources: NRA-ILA, Giffords, state statutes — verified July 2026.
+// DC: Benson v. United States (Mar 2026) struck down DC's ban — not enforced.
+// VA: SB 749 blocked by twin injunctions Jun 2026 — not in effect.
 const STATE_RULES = {
-  CA:{ name:'California',    magLimit:10,  awb:true,  noSuppressor:true  },
-  CO:{ name:'Colorado',      magLimit:15,  awb:false, noSuppressor:false },
-  CT:{ name:'Connecticut',   magLimit:10,  awb:true,  noSuppressor:true  },
-  DE:{ name:'Delaware',      magLimit:17,  awb:false, noSuppressor:false },
-  HI:{ name:'Hawaii',        magLimit:10,  awb:true,  noSuppressor:true  },
-  IL:{ name:'Illinois',      magLimit:10,  awb:true,  noSuppressor:true  },
-  MA:{ name:'Massachusetts', magLimit:10,  awb:true,  noSuppressor:true  },
-  MD:{ name:'Maryland',      magLimit:10,  awb:true,  noSuppressor:true  },
-  NJ:{ name:'New Jersey',    magLimit:10,  awb:true,  noSuppressor:true  },
-  NY:{ name:'New York',      magLimit:10,  awb:true,  noSuppressor:true  },
-  RI:{ name:'Rhode Island',  magLimit:10,  awb:false, noSuppressor:true  },
-  VT:{ name:'Vermont',       magLimit:10,  awb:false, noSuppressor:false },
-  WA:{ name:'Washington',    magLimit:10,  awb:true,  noSuppressor:true  },
+  // ── 10-round states (both gun types) ─────────────────────────────────────
+  CA:{ name:'California',    magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  CT:{ name:'Connecticut',   magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  HI:{ name:'Hawaii',        magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  MA:{ name:'Massachusetts', magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  MD:{ name:'Maryland',      magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  NJ:{ name:'New Jersey',    magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  NY:{ name:'New York',      magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  OR:{ name:'Oregon',        magLimitHandgun:10, magLimitLonggun:10,  awb:false, noSuppressor:false }, // BM114 eff Mar 15 2026; OR SC appeal pending
+  RI:{ name:'Rhode Island',  magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  }, // AWB eff Jul 1 2026 (Assault Weapons Ban Act)
+  WA:{ name:'Washington',    magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
+  // ── Split limits: handguns vs long guns differ ───────────────────────────
+  IL:{ name:'Illinois',      magLimitHandgun:15, magLimitLonggun:10,  awb:true,  noSuppressor:true  }, // PICA: 15 handgun, 10 long gun
+  VT:{ name:'Vermont',       magLimitHandgun:15, magLimitLonggun:10,  awb:false, noSuppressor:false }, // Act 94: 15 handgun, 10 long gun
+  // ── Higher limits ────────────────────────────────────────────────────────
+  CO:{ name:'Colorado',      magLimitHandgun:15, magLimitLonggun:15,  awb:false, noSuppressor:false },
+  DE:{ name:'Delaware',      magLimitHandgun:17, magLimitLonggun:17,  awb:false, noSuppressor:false },
 }
 
 // All 50 state names for the selector
@@ -63,14 +73,20 @@ function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
   if (!rules) return [] // free state — no restrictions
   const alerts = []
 
-  // Magazine capacity — outright ban, highest severity
-  if (rules.magLimit && deal.detectedCapacity && deal.detectedCapacity > rules.magLimit) {
+  // Magazine capacity — apply the correct limit based on firearm type.
+  // Many states have different limits for handguns vs long guns (IL: 15/10, VT: 15/10).
+  // liveRules from /api/state-rules may only have magLimit (legacy); split fields take priority.
+  const isLongGun = deal.flair === 'Rifle' || deal.flair === 'Shotgun'
+  const magLimit = isLongGun
+    ? (rules.magLimitLonggun ?? rules.magLimit ?? null)
+    : (rules.magLimitHandgun ?? rules.magLimit ?? null)
+  if (magLimit && deal.detectedCapacity && deal.detectedCapacity > magLimit) {
     alerts.push({
       type: 'mag_banned',
       color: '#EF4444',
       bg:    'rgba(239,68,68,0.13)',
       label: `\u{1F6AB} ${deal.detectedCapacity}-RD MAG BANNED IN ${stateCode}`,
-      detail:`${stateCode} limits magazines to ${rules.magLimit} rounds (purchase & possession)`,
+      detail:`${stateCode} limits magazines to ${magLimit} rounds for ${isLongGun ? 'long guns' : 'handguns'}`,
     })
   }
 
@@ -112,15 +128,29 @@ function timeAgo(ts) {
 }
 
 // ── ASSAULT WEAPON DETECTION ─────────────────────────────────────────────────
-// Returns true if a deal should be checked against AWB rules.
-// Covers rifles AND AR/AK-pattern pistols (which AWB states like WA, CA, NY regulate).
+// Returns true if a deal should trigger AWB restriction checks.
+// State AWBs target semi-automatic, military-style firearms — NOT traditional bolt-action,
+// lever-action, pump-action, or single-shot rifles. Shotguns only if semi-auto assault type.
 function isAssaultWeaponLike(title = '', flair = '') {
-  if (flair === 'Rifle' || flair === 'Shotgun') return true
-  if (flair !== 'Handgun' && flair !== 'Other') return false
   const t = (title || '').toLowerCase()
-  // AR/AK-style pistols, PCCs, and semi-auto assault pistols explicitly covered by state AWBs
-  return /\b(?:ar[-\s]?pistol|ak[-\s]?pistol|banshee|draco|micro\s*draco|pcc|pistol\s+caliber\s+carbine|mp5.*pistol|mac-?\d|micro\s*uzi|cmmg|sig\s*mcx|galil\s*ace|tavor\s*x95|kel.?tec\s*sub|cz\s*scorpion.*(?:pistol|sbr)|vector.*pistol)\b/i.test(t)
-    // AR-pattern pistols: pistol + AR/AK calibers are strong signal
+
+  if (flair === 'Rifle') {
+    // Traditional action types are NOT covered by any state AWB
+    if (/bolt.?action|lever.?action|pump.?action|single.?shot|muzzleload|double.?barrel/i.test(t)) return false
+    // Remaining rifles: AR/AK platform, semi-auto MSRs — covered by AWBs
+    return true
+  }
+
+  if (flair === 'Shotgun') {
+    // Only semi-auto, military-style shotguns are covered (Saiga, VEPR, Origin-12, etc.)
+    return /semi.?auto|saiga|vepr|fostech|aa-?12|origin.?12|box.?mag.*shotgun/i.test(t)
+  }
+
+  if (flair !== 'Handgun' && flair !== 'Other') return false
+
+  // AR/AK-pattern pistols + PCCs — classified as Handgun but covered by state AWBs
+  return /\b(?:ar[-\s]?pistol|ak[-\s]?pistol|banshee|draco|micro\s*draco|pcc|pistol\s+caliber\s+carbine|mp5.*pistol|sp5k?|mac-?\d|micro\s*uzi|cmmg|sig\s*mcx|galil\s*ace|tavor\s*x95|kel.?tec\s*sub|cz\s*scorpion.*(?:pistol|sbr)|vector.*pistol|angstadt|fm-?9.*pistol|foxtrot\s*mike|udp.*pistol|zpap.*pistol)\b/i.test(t)
+    // AR/AK calibers in a pistol = strong signal (5.56, 7.62x39, 300 BLK, etc.)
     || (/\bpistol\b/i.test(t) && /\b(?:5\.56|223\s*rem|\.223|300\s*(?:blk|aac|blackout)|338\s*arc|7\.62x39|6\.5\s*grendel|6\.8\s*spc|224\s*valkyrie)\b/i.test(t))
 }
 
