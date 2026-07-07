@@ -4,23 +4,31 @@ with open('/tmp/deals.json') as f:
     data = json.load(f)
 
 items = data.get('result', [])
-lines = [f"Total Amazon deals: {len(items)}", ""]
+by_source = {}
 for item in items:
-    tags  = item.get('tags') or []
-    asin  = next((t for t in tags if t.startswith('asin:')), '—')
-    img   = item.get('imageUrl') or '(none)'
-    title = (item.get('title') or '')[:70]
-    url   = item.get('externalUrl') or ''
-    flag  = 'OK' if 'downrangeco-20' in url else 'MISSING_TAG'
-    lines += [f"  {asin}", f"  title:    {title}", f"  imageUrl: {img[:120]}", f"  affiliate:{flag}", ""]
+    src = item.get('source','?')
+    by_source.setdefault(src, []).append(item)
+
+lines = [f"Total deals: {len(items)}", ""]
+for src, deals in sorted(by_source.items()):
+    lines.append(f"  [{src}] {len(deals)} deals")
+    for d in deals[:3]:
+        img = d.get('imageUrl') or '(none)'
+        url = d.get('externalUrl','')[:70]
+        title = (d.get('title') or '')[:60]
+        has_tag = 'downrangeco-20' in url if 'amazon' in (d.get('source','')) else True
+        lines.append(f"    • {title}")
+        lines.append(f"      url: {url}")
+        lines.append(f"      img: {img[:80]}  {'✓' if img != '(none)' else '✗'}")
+    if len(deals) > 3:
+        lines.append(f"    ... and {len(deals)-3} more")
+    lines.append("")
 
 content = "\n".join(lines)
 print(content)
 
-# Write to repo
 pat = os.environ.get('GH_PAT', '')
-if not pat:
-    print("No GH_PAT"); exit(0)
+if not pat: exit(0)
 
 path = "scripts/amazon-check-result.txt"
 req = urllib.request.Request(
@@ -44,7 +52,5 @@ req2 = urllib.request.Request(
     headers={"Authorization": f"token {pat}", "Content-Type": "application/json",
              "Accept": "application/vnd.github.v3+json"})
 try:
-    with urllib.request.urlopen(req2) as r:
-        print("Written to repo")
-except Exception as e:
-    print(f"Write failed: {e}")
+    with urllib.request.urlopen(req2) as r: print("Written to repo")
+except Exception as e: print(f"Write failed: {e}")
