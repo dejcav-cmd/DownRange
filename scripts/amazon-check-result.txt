@@ -1,32 +1,45 @@
-Total deals: 50
+Total deals in Sanity: 50
 
-  [AmmoLand] 2 deals
-    • Springfield Kuna 9mm Drops to $1,199 With FSA Brace—$300 Off
+  [AmmoLand]  2 deals  (0 with images)
+    • Springfield Kuna 9mm Drops to $1,199 With FSA Brace—$30
       url: https://www.ammoland.com/2026/07/springfield-armory-kuna-9mm-w-brace-1
-      img: (none)  ✗
+      img: ✗
     • Daniel Defense Complete Lower Receiver Group – $499.99
       url: https://www.ammoland.com/2026/07/daniel-defense-complete-lower-receive
-      img: (none)  ✗
+      img: ✗
 
-  [amazon] 3 deals
+  [amazon]  3 deals  (3 with images)
     • OLIGHT PL-Mini 2 Valkyrie Compact Weapon light
       url: https://www.amazon.com/dp/B07MS7G7RZ?tag=downrangeco-20&linkCode=ogi&t
-      img: https://cdn.sanity.io/images/vbnsqnkg/production/79e6e695e71b6469bd028eff508713a  ✓
-    • Eberlestock Fade Sling Pack - EDC Crossbody Sling Backpack
+      img: ✓
+    • Eberlestock Fade Sling Pack - EDC Crossbody Sling Backp
       url: https://www.amazon.com/dp/B0DN2XGRTJ?tag=downrangeco-20&linkCode=ogi&t
-      img: https://cdn.sanity.io/images/vbnsqnkg/production/38eb7ebfbb986296f67910de6d025b1  ✓
-    • Eberlestock Bando Bag Tactical Fanny Pack for Men
-      url: https://www.amazon.com/dp/B0D1KXJYR6?tag=downrangeco-20&linkCode=ogi&t
-      img: https://cdn.sanity.io/images/vbnsqnkg/production/b3203ad10c6df45ed5c205e4144a9ea  ✓
+      img: ✓
+    ... +1 more
 
-  [gun.deals] 45 deals
-    • Assembled ODG RMR Slide for Glock 17 Gen 3 — Oil Slick Barre
+  [gun.deals]  45 deals  (40 with images)
+    • Assembled ODG RMR Slide for Glock 17 Gen 3 — Oil Slick 
       url: https://gun.deals/product/assembled-odg-rmr-slide-glock-17-gen-3-%E2%8
-      img: (none)  ✗
-    • PSA AK-102 Forged Classic Triangle Side Folding Pistol with 
+      img: ✗
+    • PSA AK-102 Forged Classic Triangle Side Folding Pistol 
       url: https://gun.deals/product/psa-ak-102-forged-classic-triangle-side-fold
-      img: https://cdn.sanity.io/images/vbnsqnkg/production/d4d50606724c5ff084a25861cc1a2bb  ✓
-    • Soviet Arms Type 56 Blonde 7.62x39mm 16" Barrel 30 Rnd - $99
-      url: https://gun.deals/product/soviet-arms-type-56-blonde-762x39mm-16-barre
-      img: https://cdn.sanity.io/images/vbnsqnkg/production/298f44e46a2dbf225c60c923eb3870d  ✓
-    ... and 42 more
+      img: ✓
+    ... +43 more
+
+── Recent cron runs ──
+  [fix-placeholder-images]  success  2026-07-07T04:13
+    No placeholder images found — all clean
+  [web-deals]  success  2026-07-07T04:13
+    sources:5 links:2 added:0 skipped:2 imaged:0
+  [reddit-deals]  failed  2026-07-07T04:13
+    ERROR: Reddit API 403
+  [fix-placeholder-images]  success  2026-07-07T04:10
+    No placeholder images found — all clean
+  [web-deals]  success  2026-07-07T04:10
+    sources:5 links:2 added:0 skipped:2 imaged:0
+  [reddit-deals]  failed  2026-07-07T04:09
+    ERROR: Reddit API 403
+  [gun-deals]  success  2026-07-07T04:00
+    fetched:445 added:0 skipped:80 healed:0 imaged:0
+  [fix-placeholder-images]  success  2026-07-07T04:00
+    No placeholder images found — all clean
