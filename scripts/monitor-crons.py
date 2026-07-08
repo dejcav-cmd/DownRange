@@ -94,3 +94,28 @@ else:
 
 print()
 print(f"Report generated: {now.strftime('%H:%M:%S UTC')}")
+
+# ── NEWS ARTICLE SANITY QUERY ─────────────────────────────────────────────────
+print()
+print("=== NEWS ARTICLE COUNTS ===")
+try:
+    now_ts = datetime.now(timezone.utc)
+    for label, days in [("Last 48h", 2), ("Last 7 days", 7), ("Last 30 days", 30)]:
+        since = (now_ts - timedelta(days=days)).isoformat()
+        cnt = q(f'count(*[_type=="newsArticle"&&approved==true&&publishedAt>"{since}"])')
+        print(f"  {label}: {cnt}")
+    total = q('count(*[_type=="newsArticle"&&approved==true&&defined(slug.current)])')
+    print(f"  Total approved+slug: {total}")
+    recent = q('*[_type=="newsArticle"&&approved==true]|order(publishedAt desc)[0...5]{title,publishedAt,source}')
+    print()
+    print("  Most recent articles:")
+    for a in (recent or []):
+        pub = (a.get('publishedAt') or '?')[:16]
+        src = (a.get('source') or '?')[:18]
+        ttl = (a.get('title') or '?')[:55]
+        print(f"    {pub} | {src:<18} | {ttl}")
+    since7 = (now_ts - timedelta(days=7)).isoformat()
+    dedup_size = q(f'count(*[_type in ["newsArticle","gunDeal"]&&_createdAt>"{since7}"])')
+    print(f"\n  Dedup pool (newsArticle+gunDeal 7d): {dedup_size}")
+except Exception as e:
+    print(f"  ERROR: {e}")
