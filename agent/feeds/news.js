@@ -655,7 +655,7 @@ async function processNewsItem(item) {
     console.log(`[NEWS] ✓ "${item.title.slice(0, 60)}" [${category}]${ai ? ' +AI' : ' +raw'}`)
   } catch(publishErr) {
     _gateLog.threw++
-    _gateLog.lastError = publishErr.message?.slice(0,100)
+    _gateLog.lastError = publishErr.message
     console.error(`[NEWS] ✗ publishToSanity FAILED for "${item.title.slice(0,50)}": ${publishErr.message}`)
     return null
   }
