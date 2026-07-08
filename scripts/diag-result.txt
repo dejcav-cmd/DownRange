@@ -1,17 +1,13 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
-
-=== STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 5 (null + gun.deals hotlink-blocked)
-  ✗ https://midstatefirearms.com/?s=rg2&amp;post_type=product
-  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
-  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
-  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
-  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 3
-
-Stats: uploaded=0 fallback=3 failed=2
-
-=== FINAL: total=4442 missing_images=1 reddit=0 ===
-
-FIXED: 3
+Last 30 days needing fix: 9
+  ~ og no-dl: https://gun.deals/sites/default/files/b360e90254d1175febe4f4520de3398a
+  ok cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8c05e4d411a336cd6c2ca
+  ok cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4d2d4de44dd50397ff38a
+  ok cdn: https://cdn.sanity.io/images/vbnsqnkg/production/79c763ba3e3b9edd70349
+  X https://midstatefirearms.com/?s=rg2&amp;post_type=product
+  ~ og no-dl: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
+  ~ og no-dl: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
+  ~ og no-dl: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
+  X https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
+  wrote 7 mutations
+Stats: uploaded=3 fallback=4 failed=2 skipped=0
+FIXED: 7
