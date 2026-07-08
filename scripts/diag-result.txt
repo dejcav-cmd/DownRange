@@ -1,20 +1,18 @@
 === Cron Monitor Report ===
-Window: 14:49 UTC → 15:04 UTC
+Window: 15:09 UTC → 15:29 UTC
 
-Total runs: 5  ✓ 4  ⚠ 1  ✗ 0
+Total runs: 2  ✓ 1  ⚠ 1  ✗ 0
 
 JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
 ---------------------------------------------------------------------------
-  cron-health                           1    0     0     380ms  ⚠ warning @ 15:00
-  fix-images                            1    1     0     829ms  ✓ success @ 15:00
-  gun-deals                             2    2     0    8078ms  ✓ success @ 15:00
-  reddit-deals                          1    1     0     178ms  ✓ success @ 15:01
+  image-fix                             1    1     0     495ms  ✓ success @ 15:15
+  news                                  1    0     0  269771ms  ⚠ warning @ 15:11
 
 ✓ No Sanity quota errors in window
 
 quality-rewrite: no runs yet in window
 
-Report generated: 15:04:15 UTC
+Report generated: 15:29:11 UTC
 
 === NEWS ARTICLE COUNTS ===
   Last 48h: 0
@@ -29,4 +27,9 @@ Report generated: 15:04:15 UTC
     2026-07-03T18:35 | AmmoLand           | California Claims Glocks Aren't Protected Speech Under 
     2026-07-03T18:00 | Tactical Life      | Next Level Armaments Launches Phoenix 6ARC Rifle for Co
 
-  Dedup pool (newsArticle+gunDeal 7d): 855
+  Dedup pool (newsArticle+gunDeal 7d): 847
+
+=== DEDUP POOL BREAKDOWN ===
+  newsArticle in last 48h: 1
+  gunDeal in last 48h:     337
+  Total dedup pool (48h):  338
