@@ -1,9 +1,20 @@
-=== FULL GATE LOG ===
+=== NEWS FEED TRIGGER RESULT ===
+
+-- Sanity write test --
+Sanity write: HTTP 200 → update
+
+-- News feed trigger --
+HTTP 200 in 98.6s
+done=0 total=40 dupes=40
+headlines: []
+
+-- Last 3 news cron runs --
+2026-07-08T17:17 | warning | 95s
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityD
+  error: All 40 items were duplicates — dedup cache may be stale
+2026-07-08T17:02 | warning | 103s
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityD
+  error: All 40 items were duplicates — dedup cache may be stale
 2026-07-08T16:36 | warning | 123s
-  DETAILS: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityDup":0,"passedDedup":29,"published":29,"threw":29,"lastError":"{\"error\":{\"body\":\"{\\\"mutations\\\":[{\\\"createIfNotExists\\\":{\\\"_id\\\":\\\"news-2cf1c14857fae9be1fbb549d6e3"}
-  ERROR: All 40 items were duplicates — dedup cache may be stale
-
-2026-07-08T16:31 | warning | 65s
-  DETAILS: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":40,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityDup":0,"passedDedup":29,"published":29,"threw":29,"lastError":"{\"error\":{\"body\":\"{\\\"mutations\\\":[{\\\"createIfNotExists\\\":{\\\"_id\\\":\\\"news-2cf1c14857fae9be1fbb549d6e3"}
-  ERROR: All 40 items were duplicates — dedup cache may be stale
-
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityD
+  error: All 40 items were duplicates — dedup cache may be stale
