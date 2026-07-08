@@ -1,10 +1,25 @@
 === SANITY WRITE TEST ===
-Token: MISSING
+Token: SET (180 chars)
 Project: vbnsqnkg
 
-Write test result: HTTP 400
-  Response: {"statusCode":400,"message":"Invalid authorization header - please double-check token","error":"Bad Request"}
+Write test result: HTTP 200
+  Response: {'transactionId': 'XcAOAPaJfdo4R6DkPZafr0', 'results': [{'operation': 'create'}]}
 
+Cleanup: HTTP 200
 
 === LAST 5 NEWS CRON RUNS (full details) ===
-  QUERY ERROR: HTTP Error 400: Bad Request
+  2026-07-08T14:36 | warning | 280s
+    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+    Error: All 80 items were duplicates — dedup cache may be stale
+  2026-07-08T14:35 | warning | 291s
+    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+    Error: All 80 items were duplicates — dedup cache may be stale
+  2026-07-08T13:05 | warning | 290s
+    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+    Error: All 80 items were duplicates — dedup cache may be stale
+  2026-07-08T12:35 | warning | 298s
+    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+    Error: All 80 items were duplicates — dedup cache may be stale
+  2026-07-08T12:05 | warning | 280s
+    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+    Error: All 80 items were duplicates — dedup cache may be stale
