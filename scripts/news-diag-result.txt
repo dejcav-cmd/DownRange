@@ -1,1 +1,1 @@
-Reddit image backfill: 0 fixed, 71 no image found, 71 total
+Reddit image backfill: 0 fixed, 60 no image found, 60 total
