@@ -1,1 +1,7 @@
 Reddit image backfill: 0 fixed, 60 no image found, 60 total
+=== BING DEBUG ===
+Product: Springfield Kuna 9mm
+Query URL: https://www.bing.com/images/search?q=%22Springfield%20Kuna%209mm%22%20product&first=1&count=5
+Bing HTTP 200: 0 murl results found
+  turl (thumbnail) count: 0
+  page snippet: m:1,clickbackRSAfterOnP1:1,clickbackRSonTopW:1,cbRSHoveronTopW:1,clickbackRSonAdAlgo:1,cbrsmoprssup:1,enableClickbackRSInTab:1,isClickbackRSInTab:1,enableMultiCBRS:1,sharepreviewthumbnailid:1,rslinkcl
