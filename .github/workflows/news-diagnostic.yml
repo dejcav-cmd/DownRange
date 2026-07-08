@@ -11,11 +11,42 @@ jobs:
       - name: Run diagnostic
         env:
           SANITY_API_TOKEN: ${{ secrets.SANITY_API_TOKEN }}
-        run: python3 scripts/run_news_diag.py > scripts/news-diag-result.txt 2>&1 || true
-      - name: Commit result
+          GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git add scripts/news-diag-result.txt
-          git diff --staged --quiet || git commit -m "diag: news diagnostic result [skip ci]"
-          git push
+          python3 scripts/run_news_diag.py > /tmp/diag-out.txt 2>&1 || true
+          cat /tmp/diag-out.txt
+          python3 << 'PYEOF'
+import os, base64, json, urllib.request
+
+content = open('/tmp/diag-out.txt').read()
+encoded = base64.b64encode(content.encode()).decode()
+pat = os.environ['GH_PAT']
+
+# Get current SHA if file exists
+try:
+    req = urllib.request.Request(
+        'https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/news-diag-result.txt',
+        headers={'Authorization': f'Bearer {pat}', 'Accept': 'application/vnd.github.v3+json'}
+    )
+    with urllib.request.urlopen(req) as r:
+        sha = json.load(r)['sha']
+except:
+    sha = None
+
+payload = {'message': 'diag: news diagnostic result [skip ci]', 'content': encoded}
+if sha:
+    payload['sha'] = sha
+
+req = urllib.request.Request(
+    'https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/news-diag-result.txt',
+    data=json.dumps(payload).encode(),
+    headers={
+        'Authorization': f'Bearer {pat}',
+        'Content-Type': 'application/json',
+        'Accept': 'application/vnd.github.v3+json'
+    },
+    method='PUT'
+)
+with urllib.request.urlopen(req) as r:
+    print('Saved:', r.status)
+PYEOF
