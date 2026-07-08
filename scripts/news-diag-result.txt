@@ -1,11 +1,11 @@
-Direct patch results:
-✗ Springfield Kuna: no image found
-✗ Glock 19 Gen 5: no image found
-✗ Glock 22 Gen4: no image found
-✗ Glock 17 Gen 6: no image found
-✗ SilencerCo Scythe-Ti: no image found
-✗ Vortex Defender-ST: no image found
-✗ Ruger Mini-14: no image found
-✗ SilencerCo Spectre 9: no image found
-✗ SIG MCX SPEAR: no image found
-✗ Vortex Strike Eagle 1-8x24: no image found
+Patched 0 deals with known product page URLs:
+✗ Springfield Kuna 9mm $999: CDN upload failed
+✗ Glock 22 Gen4 LE Trade-in, $249 + S/H: no OG image
+✗ Police Trade-In Glock 19 Gen 5 w/ Front : no OG image
+✗ SilencerCo Scythe-Ti $699.99 + Free Ship: CDN upload failed
+✗ - GLOCK 17 GEN 6 9MM COA $858+shipping w: no OG image
+✗ Agency Trade-in Ruger Mini-14 Stainless : no OG image
+✗ Vortex Defender-ST Reflex Sight 3 MOA Re: no OG image
+✗ SilencerCo Spectre 9 Ti $599 + 16.99 Shi: download failed
+✗ Vortex Strike Eagle 1-8x24 FFP Rifle Sco: no OG image
+✗ Daniel Defense DDM4V7 Ambi with Geissele: no OG image
