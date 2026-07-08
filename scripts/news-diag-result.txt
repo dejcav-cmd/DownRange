@@ -1,88 +1,11 @@
-Reddit deals missing images: 60
-
-  [Springfield Kuna 9mm]
-    Search: https://staccato2011.com/search?q=Springfield%20Kuna%209mm
-    Found 5 product links
-    → https://staccato2011.com/products/staccato-thorns-horns-tee
-    OG: https://staccato2011.com/_next/image?url=https%3A%2F%2Fcdn11.bigcommer
-
-  [Glock 22 Gen4 LE Trade-in, + S/H]
-    Search: https://us.glock.com/en/search#?q=Glock%2022%20Gen4%20LE%20Trade-in%2C
-    Found 5 product links
-    → https://us.glock.com/products/law-enforcement/pistols/g20-gen4
-    OG: https://eu-images.contentstack.com/v3/assets/bltf7171cc1cfc1a31f/bltbf
-
-  [Police Trade-In Glock 19 Gen 5 w/ Front Slide Serr]
-    Search: https://us.glock.com/en/search#?q=Police%20Trade-In%20Glock%2019%20Gen
-    Found 5 product links
-    → https://us.glock.com/products/law-enforcement/pistols/g20-gen4
-    OG: https://eu-images.contentstack.com/v3/assets/bltf7171cc1cfc1a31f/bltbf
-
-  [SilencerCo Scythe-Ti]
-    Search: https://silencerco.com/search?type=product&q=SilencerCo%20Scythe-Ti
-    Found 0 product links
-  - no image
-
-  [Garmin Xero C2 + Free Hard Case Promo / Holosun EP]
-    Search: https://www.holosun.com/index.php?route=product/search&search=Garmin%2
-    Found 0 product links
-  - no image
-
-  [- GLOCK 17 GEN 6 9MM COA +shipping with]
-    Search: https://us.glock.com/en/search#?q=-%20GLOCK%2017%20GEN%206%209MM%20COA
-    Found 5 product links
-    → https://us.glock.com/products/law-enforcement/pistols/g20-gen4
-    OG: https://eu-images.contentstack.com/v3/assets/bltf7171cc1cfc1a31f/bltbf
-
-  [Sig Sauer MCX SPEAR 16″ .308 Winchester 20 Rounds ]
-    Search: https://www.sigsauer.com/search/?q=Sig%20Sauer%20MCX%20SPEAR%2016%E2%8
-    Found 5 product links
-    → https://www.sigsauer.com/firearms/pistols.html
-    OG: https://www.sigsauer.com/media/catalog/product/cache/348cf152b6975e7c8
-  - no image
-
-  [Agency Trade-in Ruger Mini-14 Stainless 18.5" Rifl]
-    Search: https://www.ruger.com/search/index.html#q=Agency%20Trade-in%20Ruger%20
-    Found 5 product links
-    → https://www.ruger.com/products/lcp/models.html
-    OG: https://www.ruger.com/img/nav/pistols/lcp.png
-  - no image
-
-  [All Holosun lineup available | 507Comp, Ronin AEMS]
-    Search: https://www.holosun.com/index.php?route=product/search&search=All%20Ho
-    Found 0 product links
-  - no image
-
-  [Vortex Defender-ST Reflex Sight 3 MOA Red Dot - Bl]
-    Search: https://www.vortexoptics.com/search?q=Vortex%20Defender-ST%20Reflex%20
-    Found 0 product links
-  - no image
-
-  [SilencerCo Spectre 9 Ti + 16.99 Shipping W/ . SAW ]
-    Search: https://silencerco.com/search?type=product&q=SilencerCo%20Spectre%209%
-    Found 0 product links
-  - no image
-
-  [Vortex Strike Eagle 1-8x24 FFP Rifle Scope - EBR-8]
-    Search: https://www.vortexoptics.com/search?q=Vortex%20Strike%20Eagle%201-8x24
-    Found 0 product links
-  - no image
-
-  [BLEM Geissele Automatics Super Duty Center Tab MK1]
-    Search: https://www.geissele.com/search?q=BLEM%20Geissele%20Automatics%20Super
-    Found 1 product links
-    → https://www.geissele.com/search?q=BLEM%20Geissele%20Automatics%20Super
-  - no image
-
-  [4th of July Site Wide Sale Cont’d | Holosun, OSigh]
-    Search: https://www.holosun.com/index.php?route=product/search&search=4th%20of
-    Found 0 product links
-  - no image
-
-  [Daniel Defense DDM4V7 Ambi with Geissele SSA trigg]
-    Search: https://www.geissele.com/search?q=Daniel%20Defense%20DDM4V7%20Ambi%20w
-    Found 1 product links
-    → https://www.geissele.com/search?q=Daniel%20Defense%20DDM4V7%20Ambi%20w
-  - no image
-
-Done: 0 fixed, 11 no image, 45 no brand match, 60 total
+Direct patch results:
+✗ Springfield Kuna: no image found
+✗ Glock 19 Gen 5: no image found
+✗ Glock 22 Gen4: no image found
+✗ Glock 17 Gen 6: no image found
+✗ SilencerCo Scythe-Ti: no image found
+✗ Vortex Defender-ST: no image found
+✗ Ruger Mini-14: no image found
+✗ SilencerCo Spectre 9: no image found
+✗ SIG MCX SPEAR: no image found
+✗ Vortex Strike Eagle 1-8x24: no image found
