@@ -189,9 +189,10 @@ export async function isSanityDuplicate(url, title) {
   const normTitle = (title || '').toLowerCase().slice(0,80)
   if (normUrl && _sanityDedup.urls.has(normUrl)) return true
   if (normTitle && _sanityDedup.titles.has(normTitle)) return true
-  // Add to cache so new items in same cycle are also deduped
+  // Add URL to in-session cache to prevent same URL appearing twice in one run
+  // Do NOT add title — different outlets legitimately cover the same news event
+  // with similar titles, and we want all outlets' versions published
   if (normUrl) _sanityDedup.urls.add(normUrl)
-  if (normTitle) _sanityDedup.titles.add(normTitle)
   return false
 }
 
