@@ -2,7 +2,11 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 61 (null + gun.deals hotlink-blocked)
+Needs image fix: 66 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54d2ae43873577f1987247cbe8426c3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/07aba51e36b0e07f23003a108001d15
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/693339d7fea217ae2404ade6631f9fd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d75d1a29c65b8d7d54acad0f366ced
   ✗ https://lanbosarmory.com/index.php?main_page=product_info&amp;cPath=15
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/tx22-compact-deal.
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/Remington-UmC-deal
@@ -60,14 +64,15 @@ Needs image fix: 61 (null + gun.deals hotlink-blocked)
   ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
   ✗ https://tmroom.com/
   skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
+  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Joelseph_Jen
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 6
+  → patched final 11
 
-Stats: uploaded=0 fallback=6 failed=53
+Stats: uploaded=4 fallback=7 failed=53
 
-=== FINAL: total=4359 missing_images=54 reddit=0 ===
+=== FINAL: total=4367 missing_images=54 reddit=0 ===
 
-FIXED: 6
+FIXED: 11
