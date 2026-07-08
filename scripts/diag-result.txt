@@ -1,24 +1,19 @@
 === Cron Monitor Report ===
-Window: 11:07 UTC → 14:27 UTC
+Window: 13:50 UTC → 14:50 UTC
 
-Total runs: 27  ✓ 20  ⚠ 7  ✗ 0
+Total runs: 9  ✓ 6  ⚠ 3  ✗ 0
 
 JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
 ---------------------------------------------------------------------------
-  amazon-deals                          1    1     0    3931ms  ✓ success @ 12:00
-  cron-health                           3    0     0     323ms  ⚠ warning @ 14:01
-  fetch-images                          2    2     0     624ms  ✓ success @ 14:20
-  fix-placeholder-images                1    1     0   39656ms  ✓ success @ 12:02
-  goa                                   1    1     0   71448ms  ✓ success @ 12:03
-  gun-deals                             6    6     0    5989ms  ✓ success @ 14:01
-  image-fix                             4    4     0     273ms  ✓ success @ 14:15
-  news                                  4    0     0  291097ms  ⚠ warning @ 13:05
-  reddit-deals                          3    3     0     182ms  ✓ success @ 14:00
-  video                                 1    1     0   15493ms  ✓ success @ 12:00
-  web-deals                             1    1     0   45839ms  ✓ success @ 12:01
+  cron-health                           1    0     0     276ms  ⚠ warning @ 14:01
+  fetch-images                          1    1     0     621ms  ✓ success @ 14:20
+  gun-deals                             3    3     0   14435ms  ✓ success @ 14:30
+  image-fix                             1    1     0     283ms  ✓ success @ 14:15
+  news                                  2    0     0  286183ms  ⚠ warning @ 14:36
+  reddit-deals                          1    1     0     202ms  ✓ success @ 14:00
 
 ✓ No Sanity quota errors in window
 
 quality-rewrite: no runs yet in window
 
-Report generated: 14:27:15 UTC
+Report generated: 14:50:42 UTC
