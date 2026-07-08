@@ -2,12 +2,7 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 24 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/efb5742f6834d23da5ccb16c4fd825d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/08b49033976bc616da8ae3657523664
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/tx22-compact-deal.
-  ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/Remington-UmC-deal
-  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Athlon_Monoc
+Needs image fix: 18 (null + gun.deals hotlink-blocked)
   ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
   ✗ https://www.peppersgeneralstore.com/
   ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
@@ -22,15 +17,14 @@ Needs image fix: 24 (null + gun.deals hotlink-blocked)
   ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
   ✗ https://tmroom.com/
   skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
-  ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Joelseph_Jen
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 9
+  → patched final 3
 
-Stats: uploaded=2 fallback=7 failed=14
+Stats: uploaded=0 fallback=3 failed=14
 
 === FINAL: total=4380 missing_images=14 reddit=0 ===
 
-FIXED: 9
+FIXED: 3
