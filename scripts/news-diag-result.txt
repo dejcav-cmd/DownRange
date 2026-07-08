@@ -1,21 +1,18 @@
 === NEWS FEED TRIGGER RESULT ===
-Status: HTTP 200
-Time: 289.4s
 
-done: 0
-total: 80
-dupes: 80
-withAI: 0
+-- Sanity write test --
+Sanity write: HTTP 200 → create
 
-headlines: []
+-- News feed trigger --
+Request failed after 273.0s: Remote end closed connection without response
 
-full result: {
-  "done": 0,
-  "withAI": 0,
-  "withRaw": 0,
-  "dupes": 80,
-  "total": 80,
-  "ms": 286502,
-  "claudeUp": true,
-  "headlines": []
-}
+-- Last 3 news cron runs --
+2026-07-08T15:36 | warning | 286s
+  details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+  error: All 80 items were duplicates — dedup cache may be stale
+2026-07-08T15:35 | warning | 286s
+  details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+  error: All 80 items were duplicates — dedup cache may be stale
+2026-07-08T15:34 | warning | 280s
+  details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+  error: All 80 items were duplicates — dedup cache may be stale
