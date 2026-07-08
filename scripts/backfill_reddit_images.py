@@ -1,22 +1,17 @@
 #!/usr/bin/env python3
 """
-Backfill Reddit deal images by searching manufacturer websites via Jina.
-Brand detected from title → search manufacturer site search page → scrape first product OG image.
+Backfill Reddit deal images via manufacturer websites through Jina.
+Jina returns Markdown-formatted content — links look like [text](url) or url).
 """
-import urllib.request, urllib.parse, json, os, base64, time, re, sys
+import urllib.request, urllib.parse, json, os, base64, time, re
 import html as html_mod
-
-# Capture all output for saving to GitHub
-_log_lines = []
-_orig_print = print
-def print(*args, **kwargs):
-    _orig_print(*args, **kwargs)
-    _log_lines.append(' '.join(str(a) for a in args))
-
 
 TOKEN  = os.environ.get("SANITY_API_TOKEN","").replace("ST=","").strip()
 GH_PAT = os.environ.get("GH_PAT","").strip()
 PROJECT = "vbnsqnkg"
+_log = []
+
+def log(msg): print(msg); _log.append(str(msg))
 
 def sq(q):
     url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(q)}&returnQuery=false"
@@ -42,99 +37,109 @@ def extract_product_name(title):
     clean = re.sub(r'\s*[-–]\s*\$.*', '', clean)
     return re.sub(r'\s+', ' ', clean).strip().rstrip(',.-')[:100]
 
-# Brand → (search URL template, link pattern to follow)
-BRAND_SEARCH = {
-    r'\bspringfield|springfield armory\b': (
-        'https://www.springfield-armory.com/search/?q={query}',
-        r'springfield-armory\.com/[^"\'<>\s]+(?:handgun|pistol|rifle|1911|hellcat|echelon|kuna|romulus)[^"\'<>\s]*'
-    ),
-    r'\bsig sauer|sig p\d{3}\b': (
-        'https://www.sigsauer.com/search/?q={query}',
-        r'sigsauer\.com/[^"\'<>\s]+(?:p\d{3}|pistol|rifle)[^"\'<>\s]*'
-    ),
+# Brand → (search URL, product URL pattern to follow)
+BRANDS = {
     r'\bglock\b': (
-        'https://us.glock.com/en/search#?q={query}',
-        r'us\.glock\.com/[^"\'<>\s]+pistols?[^"\'<>\s]*'
+        lambda p: f"https://us.glock.com/en/search#?q={urllib.parse.quote(p)}",
+        r'us\.glock\.com/products/[^\s)\]"\'<>]+'
     ),
     r'\bruger\b': (
-        'https://www.ruger.com/search/index.html#q={query}',
-        r'ruger\.com/products[^"\'<>\s]*'
+        lambda p: f"https://www.ruger.com/search/index.html#q={urllib.parse.quote(p)}",
+        r'ruger\.com/products/[^\s)\]"\'<>]+'
     ),
-    r'\btrijicon\b': (
-        'https://www.trijicon.com/search-results/?q={query}',
-        r'trijicon\.com/products[^"\'<>\s]*'
-    ),
-    r'\bvortex\b': (
-        'https://www.vortexoptics.com/search?q={query}',
-        r'vortexoptics\.com/product[^"\'<>\s]*'
-    ),
-    r'\bholosun\b': (
-        'https://www.holosun.com/index.php?route=product/search&search={query}',
-        r'holosun\.com/[^"\'<>\s]*product[^"\'<>\s]*'
-    ),
-    r'\bmagpul\b': (
-        'https://www.magpul.com/search/?q={query}',
-        r'magpul\.com/products[^"\'<>\s]*'
+    r'\bsig sauer|sig p\d{3}|mcx\b': (
+        lambda p: f"https://www.sigsauer.com/search/?q={urllib.parse.quote(p)}",
+        r'sigsauer\.com/firearms/[^\s)\]"\'<>]+'
     ),
     r'\bsilencerco\b': (
-        'https://silencerco.com/search?type=product&q={query}',
-        r'silencerco\.com/products[^"\'<>\s]*'
+        lambda p: f"https://silencerco.com/search?type=product&q={urllib.parse.quote(p)}",
+        r'silencerco\.com/products/[^\s)\]"\'<>]+'
+    ),
+    r'\bvortex\b': (
+        lambda p: f"https://www.vortexoptics.com/search?q={urllib.parse.quote(p)}",
+        r'vortexoptics\.com/product/[^\s)\]"\'<>]+'
+    ),
+    r'\btrijicon\b': (
+        lambda p: f"https://www.trijicon.com/search-results/?q={urllib.parse.quote(p)}",
+        r'trijicon\.com/products/[^\s)\]"\'<>]+'
+    ),
+    r'\bholosun\b': (
+        lambda p: f"https://www.holosun.com/index.php?route=product/search&search={urllib.parse.quote(p)}",
+        r'holosun\.com/index\.php\?route=product/product[^\s)\]"\'<>]+'
     ),
     r'\bgeissele\b': (
-        'https://www.geissele.com/search?q={query}',
-        r'geissele\.com/[^"\'<>\s]*(?:trigger|rail|charging|handguard)[^"\'<>\s]*'
+        lambda p: f"https://www.geissele.com/search?q={urllib.parse.quote(p)}",
+        r'geissele\.com/[^\s)\]"\'<>]+(?:trigger|rail|charging|handguard|upper)[^\s)\]"\'<>]*'
     ),
-    r'\bstaccato\b': (
-        'https://staccato2011.com/search?q={query}',
-        r'staccato2011\.com/products[^"\'<>\s]*'
+    r'\bstaccato|romulus|kuna\b': (
+        lambda p: f"https://staccato2011.com/search?q={urllib.parse.quote(p)}",
+        r'staccato2011\.com/products/[^\s)\]"\'<>]+'
+    ),
+    r'\bspringfield\b': (
+        lambda p: f"https://www.springfield-armory.com/search/?q={urllib.parse.quote(p.replace('Springfield','').strip())}",
+        r'springfield-armory\.com/(?!search)[^\s)\]"\'<>]+(?:pistol|rifle|1911|echelon|hellcat|kuna|romulus|prodigy)[^\s)\]"\'<>]*'
     ),
 }
 
-def get_brand_search(title):
+def get_brand_urls(title):
     tl = title.lower()
-    for pattern, (search_tpl, link_pat) in BRAND_SEARCH.items():
+    for pattern, (search_fn, link_pat) in BRANDS.items():
         if re.search(pattern, tl, re.I):
-            return search_tpl, link_pat
+            return search_fn, link_pat
     return None, None
 
 def jina_fetch(url):
-    """Fetch a page via Jina proxy."""
     jina_url = f"https://r.jina.ai/{url}"
+    req = urllib.request.Request(jina_url, headers={"User-Agent": "Mozilla/5.0", "Accept": "text/html"})
     try:
-        req = urllib.request.Request(jina_url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=15) as r:
             return r.read().decode("utf-8", errors="replace")
     except Exception as e:
         return None
 
-def extract_og_image(html_content, base_url=None):
-    """Extract og:image or first large product image from HTML."""
+def extract_links(content, pattern):
+    """Extract URLs from Jina Markdown output, stripping ]) suffixes."""
+    raw = re.findall(r'https?://[^\s"\'<>){]+', content, re.I)
+    cleaned = []
+    for u in raw:
+        u = re.sub(r'[\)\]\s]+$', '', u)  # strip trailing ) ] from Markdown
+        u = html_mod.unescape(u)
+        if re.search(pattern, u, re.I):
+            cleaned.append(u)
+    return list(dict.fromkeys(cleaned))[:5]  # dedupe, max 5
+
+def extract_og_image(content, base_url):
     patterns = [
         r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
         r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
         r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']',
     ]
     for pat in patterns:
-        m = re.search(pat, html_content, re.I)
+        m = re.search(pat, content, re.I)
         if m:
             url = html_mod.unescape(m.group(1)).strip()
             if url.startswith('//'): url = 'https:' + url
-            if url.startswith('/') and base_url:
-                from urllib.parse import urlparse
-                p = urlparse(base_url)
+            if url.startswith('/'):
+                p = urllib.parse.urlparse(base_url)
                 url = f"{p.scheme}://{p.netloc}{url}"
             if re.search(r'\.(jpg|jpeg|png|webp)', url, re.I) and 'logo' not in url.lower():
                 return url
+    # Also look for large image URLs in the Jina markdown output
+    imgs = re.findall(r'https?://[^\s"\'<>)\]]+\.(?:jpg|jpeg|png|webp)[^\s"\'<>)\]]*', content, re.I)
+    for img in imgs:
+        img = re.sub(r'[\)\]\s]+$', '', img)
+        if any(x in img.lower() for x in ['logo','icon','favicon','sprite','thumbnail']): continue
+        return img
     return None
 
-def validate_and_download(img_url):
+def validate_download(img_url):
     if any(d in img_url for d in ['shutterstock','getty','istock','alamy','dreamstime']): return None
     try:
         req = urllib.request.Request(img_url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=8) as r:
             data = r.read()
     except: return None
-    if len(data) < 10000: return None
+    if len(data) < 8000: return None
     b = bytearray(data); w, h = 0, 0
     try:
         if b[0]==0x89 and b[1]==0x50:
@@ -161,7 +166,8 @@ def upload_to_sanity(img_data, doc_id):
             return json.loads(r.read()).get("url")
     except: return None
 
-def save(content):
+def save():
+    content = "\n".join(_log) + "\n"
     encoded = base64.b64encode(content.encode()).decode()
     path = "scripts/news-diag-result.txt"
     try:
@@ -176,70 +182,60 @@ def save(content):
         headers={"Authorization": f"Bearer {GH_PAT}", "Content-Type": "application/json"})
     with urllib.request.urlopen(req) as r: return r.status
 
-def find_product_image(title):
-    """Full pipeline: brand detect → manufacturer search → OG image."""
+def find_image(title):
     product = extract_product_name(title)
-    search_tpl, link_pat = get_brand_search(title)
-    
-    if search_tpl:
-        search_url = search_tpl.format(query=urllib.parse.quote(product))
-        print(f"    Searching: {search_url[:70]}")
-        page = jina_fetch(search_url)
-        if page:
-            # Find first product link
-            links = re.findall(r'https?://[^\s"\'<>]+', page)
-            if link_pat:
-                prod_links = [l for l in links if re.search(link_pat, l, re.I)][:3]
-            else:
-                prod_links = links[:5]
-            
-            for prod_url in prod_links:
-                print(f"    Product page: {prod_url[:70]}")
-                prod_page = jina_fetch(prod_url)
-                if prod_page:
-                    og = extract_og_image(prod_page, prod_url)
-                    if og:
-                        print(f"    OG image: {og[:70]}")
-                        return validate_and_download(og)
-    
-    # Fallback: try direct URL construction for known models
-    # e.g. "Springfield Kuna 9mm" → search springfield-armory.com
+    search_fn, link_pat = get_brand_urls(title)
+    if not search_fn:
+        return None
+
+    search_url = search_fn(product)
+    log(f"    Search: {search_url[:70]}")
+    page = jina_fetch(search_url)
+    if not page:
+        return None
+
+    prod_links = extract_links(page, link_pat)
+    log(f"    Found {len(prod_links)} product links")
+
+    for prod_url in prod_links:
+        log(f"    → {prod_url[:70]}")
+        prod_page = jina_fetch(prod_url)
+        if not prod_page:
+            continue
+        og = extract_og_image(prod_page, prod_url)
+        if og:
+            log(f"    OG: {og[:70]}")
+            return validate_download(og)
     return None
 
-# ── TEST ──────────────────────────────────────────────────────────────────────
-print("=== TEST: Springfield Kuna 9mm ===")
-test_result = find_product_image("Springfield Kuna 9mm $999")
-print(f"Result: {'✓ image found' if test_result else '✗ no image'} ({len(test_result) if test_result else 0} bytes)")
-
-print("\n=== TEST: Romulus 3.5 Comp ===")
-test_result2 = find_product_image("Romulus 3.5 Comp promo pack, code: ROMMY for $1480")
-print(f"Result: {'✓ image found' if test_result2 else '✗ no image'} ({len(test_result2) if test_result2 else 0} bytes)")
-
-# ── BACKFILL ─────────────────────────────────────────────────────────────────
-deals = sq('*[_type=="gunDeal" && approved==true && (source=="reddit" || source=="r/gundeals") && (!defined(imageUrl) || imageUrl=="" || imageUrl==null)] | order(publishedAt desc)[0...100]{_id, title}')
+# ── Main ──────────────────────────────────────────────────────────────────────
+deals = sq('*[_type=="gunDeal" && approved==true && (source=="reddit" || source=="r/gundeals") && (!defined(imageUrl) || imageUrl=="" || imageUrl==null)] | order(publishedAt desc)[0...80]{_id, title}')
 total = len(deals or [])
-print(f"\nReddit deals to fix: {total}")
+log(f"Reddit deals missing images: {total}")
 
-fixed = 0; not_found = 0
+fixed = 0; not_found = 0; no_brand = 0
 t0 = time.time()
 
 for d in (deals or []):
-    if time.time() - t0 > 3000: break
+    if time.time() - t0 > 3200: log("Time limit"); break
     product = extract_product_name(d['title'])
-    print(f"\n  {product[:60]}")
-    img_data = find_product_image(d['title'])
+    search_fn, _ = get_brand_urls(d['title'])
+    if not search_fn:
+        no_brand += 1
+        continue
+    log(f"\n  [{product[:50]}]")
+    img_data = find_image(d['title'])
     if img_data:
         cdn = upload_to_sanity(img_data, d['_id'])
         if cdn:
             status = patch(d['_id'], cdn)
             if status == 200:
                 fixed += 1
-                print(f"  ✓ patched")
+                log(f"  ✓ {cdn[-40:]}")
     else:
         not_found += 1
+        log(f"  - no image")
     time.sleep(0.5)
 
-msg = f"Reddit image backfill: {fixed} fixed, {not_found} no image, {total} total"
-print(f"\n{msg}")
-full_log = "\n".join(_log_lines) + "\n"
-save(full_log)
+log(f"\nDone: {fixed} fixed, {not_found} no image, {no_brand} no brand match, {total} total")
+save()
