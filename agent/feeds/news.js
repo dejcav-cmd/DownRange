@@ -716,6 +716,7 @@ async function runNewsFeed() {
     ms:       Date.now() - t,
     claudeUp: !!process.env.ANTHROPIC_API_KEY,
     headlines: published.map(p => p.title || '').filter(Boolean).slice(0, 20),
+    gates:    _gateLog,
   }
   console.log(`[NEWS] ✓ Done: ${published.length} published, ${dupeCount} duped/skipped of ${all.length} fetched. ${summary.ms}ms`)
   console.log('[NEWS] Gate breakdown:', JSON.stringify(_gateLog))

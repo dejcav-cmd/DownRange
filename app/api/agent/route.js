@@ -18,7 +18,8 @@ function formatDetails(feed, result) {
   // News feed
   if (r.done != null && r.total != null && r.withAI != null) {
     const base = `${r.done} published (${r.withAI} AI, ${r.done - r.withAI} raw) of ${r.total} fetched · ${r.dupes || 0} dupes`
-    return withHeadlines(base)
+    const gateStr = r.gates ? ` | gates: ${JSON.stringify(r.gates)}` : ''
+    return withHeadlines(base) + gateStr
   }
 
   // Video feed
