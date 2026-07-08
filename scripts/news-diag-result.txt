@@ -1,20 +1,9 @@
-=== NEWS FEED TRIGGER RESULT ===
-
--- Sanity write test --
-Sanity write: HTTP 200 → update
-
--- News feed trigger --
-HTTP 200 in 103.8s
-done=0 total=40 dupes=40
-headlines: []
-
--- Last 3 news cron runs --
+=== FULL GATE LOG ===
 2026-07-08T17:33 | warning | 100s
-  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityD
-  error: All 40 items were duplicates — dedup cache may be stale
+  DETAILS: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityDup":0,"passedDedup":29,"published":29,"threw":29,"lastError":"{\"error\":{\"body\":\"{\\\"mutations\\\":[{\\\"createIfNotExists\\\":{\\\"_id\\\":\\\"news-48daf6ffd6c2e7261ad49887ba1ba905\\\",\\\"_type\\\":\\\"newsArticle\\\",\\\"title\\\":\\\"CrossBreed Rolls Out Five Holster Fitments for the Staccato HD C4X\\\",\\\"sourceTitle\\\":\\\"CrossBreed Rolls Out Five Holster Fitments for the Staccato HD C4X\\\",\\\"slug\\\":{\\\"_type\\\":\\\"slug\\\",\\\"current\\\":\\\"crossbreed-rolls-out-five-holster-fitments-for-the-staccato-hd-c4x-48daf6\\\"},\\\"excerpt\\\":\\\"CrossBreed's newly announced fitments for the Staccato HD C4X tell a familiar story in the holster market: a compac\",\"bodyTruncated\":true,\"description\":\"Unknown field \\\"imageUrl\\\"\",\"type\":\"httpInvalidRequestBody\"}}\n"}
+  ERROR: All 40 items were duplicates — dedup cache may be stale
+
 2026-07-08T17:31 | warning | 101s
-  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":9,"sanityDu
-  error: All 40 items were duplicates — dedup cache may be stale
-2026-07-08T17:28 | warning | 118s
-  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":10,"sanityD
-  error: All 40 items were duplicates — dedup cache may be stale
+  DETAILS: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled | gates: {"noTitle":0,"hashDup":0,"canada":0,"brazil":0,"gate3":0,"gate4":9,"sanityDup":0,"passedDedup":30,"published":30,"threw":30,"lastError":"{\"error\":{\"body\":\"{\\\"mutations\\\":[{\\\"createIfNotExists\\\":{\\\"_id\\\":\\\"news-48daf6ffd6c2e7261ad49887ba1ba905\\\",\\\"_type\\\":\\\"newsArticle\\\",\\\"title\\\":\\\"CrossBreed Expands Staccato HD C4X Holster Line to Five Options\\\",\\\"sourceTitle\\\":\\\"CrossBreed Rolls Out Five Holster Fitments for the Staccato HD C4X\\\",\\\"slug\\\":{\\\"_type\\\":\\\"slug\\\",\\\"current\\\":\\\"crossbreed-rolls-out-five-holster-fitments-for-the-staccato-hd-c4x-48daf6\\\"},\\\"excerpt\\\":\\\"CrossBreed Holsters announced five new fitments for the Staccato HD C4X compact pistol, signaling market confidence in\",\"bodyTruncated\":true,\"description\":\"Unknown field \\\"imageUrl\\\"\",\"type\":\"httpInvalidRequestBody\"}}\n"}
+  ERROR: All 40 items were duplicates — dedup cache may be stale
+
