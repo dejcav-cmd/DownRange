@@ -7,7 +7,7 @@ import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '.
 
 export const metadata = {
   title: 'Firearms & 2A News | DownRange',
-  description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage. Updated every 15 minutes.',
+  description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage. Updated every 30 minutes.',
   alternates: { canonical: 'https://www.downrangeco.com/news' },
   openGraph: {
     type: 'website', url: 'https://www.downrangeco.com/news',
