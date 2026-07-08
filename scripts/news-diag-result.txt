@@ -1,14 +1,11 @@
-SA Kuna: HTTP 200, 404711 chars, OG: none
-  First 300: <html lang="en"><head>     <meta charset="utf-8">     <meta http-equiv="x-ua-compatible" content="ie=edge">         <title>Page not found - Springfield Armory</title>     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     <link rel="icon" type="image/png" href
-
-SA Kuna 2: HTTP 200, 484128 chars, OG: https://springfieldarmory.b-cdn.net/wp-content/uploads/KN9069B.png
-  First 300: <html lang="en"><head>     <meta charset="utf-8">     <meta http-equiv="x-ua-compatible" content="ie=edge">         <title>KUNA 9mm Pistol - KN9069B - Springfield Armory</title>     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     <link rel="icon" type="imag
-
-Glock G19: HTTP 200, 45834 chars, OG: none
-  First 300: <html id="__next_error__"><head><meta charSet="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-776055c3a1b3f656.js?dpl=dpl_FFW3dWJhWnRoCteMj2XfBPtA3KAV"><script src="/_next/static/chunks
-
-Glock G19 gen5: HTTP 200, 45849 chars, OG: none
-  First 300: <html id="__next_error__"><head><meta charSet="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-776055c3a1b3f656.js?dpl=dpl_FFW3dWJhWnRoCteMj2XfBPtA3KAV"><script src="/_next/static/chunks
-
-Vortex Defender-ST: HTTP 200, 444496 chars, OG: none
-  First 300: <html lang="en" data-uw-w-loader=""><head><meta http-equiv="origin-trial" content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwa
+Patched 0 deals with known product page URLs:
+✗ Springfield Kuna 9mm $999: CDN upload failed
+✗ Glock 22 Gen4 LE Trade-in, $249 + S/H: no OG image
+✗ Police Trade-In Glock 19 Gen 5 w/ Front : no OG image
+✗ SilencerCo Scythe-Ti $699.99 + Free Ship: CDN upload failed
+✗ - GLOCK 17 GEN 6 9MM COA $858+shipping w: no OG image
+✗ Agency Trade-in Ruger Mini-14 Stainless : no OG image
+✗ Vortex Defender-ST Reflex Sight 3 MOA Re: no OG image
+✗ SilencerCo Spectre 9 Ti $599 + 16.99 Shi: download failed
+✗ Vortex Strike Eagle 1-8x24 FFP Rifle Sco: no OG image
+✗ Daniel Defense DDM4V7 Ambi with Geissele: no OG image
