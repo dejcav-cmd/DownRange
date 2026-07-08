@@ -1,1 +1,1 @@
-DDG returned 0 results — may be bot-blocked too. Need alternative approach.
+Jina+Google returned 0 images. Need to check Jina availability.
