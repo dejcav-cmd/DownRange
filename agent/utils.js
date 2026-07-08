@@ -149,10 +149,10 @@ async function loadSanityDedup() {
   try {
     // Use a fast count + recent-first approach instead of loading ALL articles
     // Only load last 2000 articles — anything older won't appear in RSS feeds anyway
-    // RSS feeds serve content from the past 24-48h; 7-day window caused all RSS items
-    // to be flagged as Sanity dupes since they'd all been ingested in the past week.
+    // newsArticle only — gunDeal URLs are completely different domains (gun.deals, brownells,
+    // etc.) and were causing 300+ false-positive dedup hits. Deals run via their own cron.
     const query = encodeURIComponent(
-      `*[_type in ["newsArticle","gunDeal"] && _createdAt > $since] | order(_createdAt desc)[0...2000]{ "u": externalUrl, "t": title, "c": _createdAt }`
+      `*[_type == "newsArticle" && _createdAt > $since] | order(_createdAt desc)[0...2000]{ "u": externalUrl, "t": title, "c": _createdAt }`
     )
     const res = await fetch(
       `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&%24since=${encodeURIComponent(new Date(Date.now()-48*60*60*1000).toISOString())}&returnQuery=false`,
