@@ -1,30 +1,24 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== Cron Monitor Report ===
+Window: 11:07 UTC → 14:27 UTC
 
-=== STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 18 (null + gun.deals hotlink-blocked)
-  ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
-  ✗ https://www.peppersgeneralstore.com/
-  ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
-  ✗ https://www.loudindustriesusa.com/padded-sling3b
-  ✗ https://drycreekarsenal.com/products?search_part=Noveske%20&amp;sort_t
-  ✗ https://www.eurooptic.com/barrett-model-82a1-50-bmg-rifle-system-29-ba
-  ✗ https://fiddlersdefense.com/search/Holosun?manufacturer=6152&amp;page=
-  ✗ https://www.scottsdale-tactical.com/product/daniel-defensescottsdale-t
-  ✗ https://kirammo.com/
-  ✗ https://www.sportsmansoutdoorsuperstore.com/black-friday.cfm/brand/mos
-  ✗ https://thegunshopusa.com/product/dair-silencer-mask-hd-22cal/
-  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
-  ✗ https://tmroom.com/
-  skip coupon: https://gun.deals/content/coupon-store-takedown-toolsmonday-
-  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
-  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
-  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
-  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 3
+Total runs: 27  ✓ 20  ⚠ 7  ✗ 0
 
-Stats: uploaded=0 fallback=3 failed=14
+JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
+---------------------------------------------------------------------------
+  amazon-deals                          1    1     0    3931ms  ✓ success @ 12:00
+  cron-health                           3    0     0     323ms  ⚠ warning @ 14:01
+  fetch-images                          2    2     0     624ms  ✓ success @ 14:20
+  fix-placeholder-images                1    1     0   39656ms  ✓ success @ 12:02
+  goa                                   1    1     0   71448ms  ✓ success @ 12:03
+  gun-deals                             6    6     0    5989ms  ✓ success @ 14:01
+  image-fix                             4    4     0     273ms  ✓ success @ 14:15
+  news                                  4    0     0  291097ms  ⚠ warning @ 13:05
+  reddit-deals                          3    3     0     182ms  ✓ success @ 14:00
+  video                                 1    1     0   15493ms  ✓ success @ 12:00
+  web-deals                             1    1     0   45839ms  ✓ success @ 12:01
 
-=== FINAL: total=4380 missing_images=14 reddit=0 ===
+✓ No Sanity quota errors in window
 
-FIXED: 3
+quality-rewrite: no runs yet in window
+
+Report generated: 14:27:15 UTC
