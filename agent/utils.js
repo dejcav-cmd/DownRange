@@ -485,8 +485,13 @@ async function publishToSanity(doc) {
     // For news articles: use createIfNotExists + patch to avoid overwriting
     // good imageUrls that were manually set by the patch-article job.
     // For other doc types (breakingAlert, etc.): still use createOrReplace.
-    // Strip null values — Sanity url/image fields reject null in createIfNotExists
-    const cleanDoc = Object.fromEntries(Object.entries(doc).filter(([, v]) => v !== null && v !== undefined))
+    // Strip null/undefined AND url-type fields from createIfNotExists.
+    // Sanity rejects: (1) null on url fields, (2) any field not in the deployed schema.
+    // imageUrl and externalUrl are url fields handled by the patch below — exclude from create.
+    const URL_FIELDS = new Set(['imageUrl', 'externalUrl'])
+    const cleanDoc = Object.fromEntries(
+      Object.entries(doc).filter(([k, v]) => v !== null && v !== undefined && !URL_FIELDS.has(k))
+    )
     const mutations = doc._type === 'newsArticle'
       ? [
           // Create if new (preserves all fields on first write)
