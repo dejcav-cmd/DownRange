@@ -2,19 +2,26 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 8 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6e75cefebe882da802e0b0c0cf8d64a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/26f65c5f5c36f4f086d8c1f37397c90
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7517ec1443c6c4fc62a407359017e2e
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/51ed5e2317da9c08d1158e9b280047a
+Needs image fix: 15 (null + gun.deals hotlink-blocked)
+  ~ og: https://www.APWFIREARMS.com/v/vspfiles/photos/APWPCC9LWRBLEM-2T.jpg
+  ~ og: https://palmettostatearmory.com/media/catalog/product/cache/1b1fb56c4a
+  ~ og: https://www.revivaldefense.com/assets/images/R2C1.jpg
+  ✗ https://midstatefirearms.com/?s=rg2&amp;post_type=product
+  ~ og: http://americanreloading.com/cdn/shop/files/12007.png?v=1749168196
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d8ae0bd4a88ae791506cd3b911034f6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0f76317c1739878db231022c49ea35a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/510af4463b1f1444c38ac6a4bc96aa4
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/dff9150c16ca0042979f31bb36e363b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/272f21d5f03018f7231bc094338c704
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9fccc070c5ef6e5dfa8dc2afef0e3d7
   ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 7
+  → patched final 13
 
-Stats: uploaded=4 fallback=3 failed=1
+Stats: uploaded=6 fallback=7 failed=2
 
-=== FINAL: total=4417 missing_images=0 reddit=0 ===
+=== FINAL: total=4436 missing_images=1 reddit=0 ===
 
-FIXED: 7
+FIXED: 13
