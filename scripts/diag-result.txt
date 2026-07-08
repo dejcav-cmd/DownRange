@@ -1,19 +1,30 @@
 === Cron Monitor Report ===
-Window: 13:50 UTC → 14:50 UTC
+Window: 14:22 UTC → 14:52 UTC
 
-Total runs: 9  ✓ 6  ⚠ 3  ✗ 0
+Total runs: 4  ✓ 2  ⚠ 2  ✗ 0
 
 JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
 ---------------------------------------------------------------------------
-  cron-health                           1    0     0     276ms  ⚠ warning @ 14:01
-  fetch-images                          1    1     0     621ms  ✓ success @ 14:20
-  gun-deals                             3    3     0   14435ms  ✓ success @ 14:30
-  image-fix                             1    1     0     283ms  ✓ success @ 14:15
+  gun-deals                             2    2     0    6903ms  ✓ success @ 14:30
   news                                  2    0     0  286183ms  ⚠ warning @ 14:36
-  reddit-deals                          1    1     0     202ms  ✓ success @ 14:00
 
 ✓ No Sanity quota errors in window
 
 quality-rewrite: no runs yet in window
 
-Report generated: 14:50:42 UTC
+Report generated: 14:52:38 UTC
+
+=== NEWS ARTICLE COUNTS ===
+  Last 48h: 1
+  Last 7 days: 19
+  Last 30 days: 225
+  Total approved+slug: 582
+
+  Most recent articles:
+    2026-07-06T14:55 | Gun Owners of Amer | VA: Major Victory – Court Rejects Richmond’s Attempt to
+    2026-07-04T13:00 | AmmoLand           | Second Amendment Movement Wins Heller, McDonald, Bruen,
+    2026-07-04T10:52 | Combat Handguns    | Desert Eagle Mark XIX Now Ships Threaded for Suppressor
+    2026-07-03T18:35 | AmmoLand           | California Claims Glocks Aren't Protected Speech Under 
+    2026-07-03T18:00 | Tactical Life      | Next Level Armaments Launches Phoenix 6ARC Rifle for Co
+
+  Dedup pool (newsArticle+gunDeal 7d): 852
