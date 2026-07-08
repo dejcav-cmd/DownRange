@@ -1,11 +1,53 @@
-Patched 0 deals with known product page URLs:
-✗ Springfield Kuna 9mm $999: CDN upload failed
-✗ Glock 22 Gen4 LE Trade-in, $249 + S/H: no OG image
-✗ Police Trade-In Glock 19 Gen 5 w/ Front : no OG image
-✗ SilencerCo Scythe-Ti $699.99 + Free Ship: CDN upload failed
-✗ - GLOCK 17 GEN 6 9MM COA $858+shipping w: no OG image
-✗ Agency Trade-in Ruger Mini-14 Stainless : no OG image
-✗ Vortex Defender-ST Reflex Sight 3 MOA Re: no OG image
-✗ SilencerCo Spectre 9 Ti $599 + 16.99 Shi: download failed
-✗ Vortex Strike Eagle 1-8x24 FFP Rifle Sco: no OG image
-✗ Daniel Defense DDM4V7 Ambi with Geissele: download failed
+Reddit deals without images: 60
+
+  [Springfield Kuna 9mm $999]
+  page: https://www.springfield-armory.com/1911-pistols/kuna-9mm/
+  OG: https://springfieldarmory.b-cdn.net/wp-content/uploads/KN9069B.png
+    downloaded 535528 bytes
+    CDN uploaded: 
+  ✗ CDN upload failed
+
+  [Glock 22 Gen4 LE Trade-in, $249 + S/H]
+  page: https://us.glock.com/products/pistols/g22
+  OG: none
+
+  [Police Trade-In Glock 19 Gen 5 w/ Front Slide Serration]
+  page: https://us.glock.com/products/pistols/g19-gen5
+  OG: none
+
+  [SilencerCo Scythe-Ti $699.99 + Free Shipping]
+  page: https://silencerco.com/products/scythe-ti/
+  OG: https://silencerco.com/wp-content/uploads/2023/09/SilencerCo-Scythe-Ti-feature.j
+    downloaded 123093 bytes
+    CDN uploaded: 
+  ✗ CDN upload failed
+
+  [- GLOCK 17 GEN 6 9MM COA $858+shipping with code DAD22]
+  page: https://us.glock.com/products/pistols/g17-gen5
+  OG: none
+
+  [Agency Trade-in Ruger Mini-14 Stainless 18.5" Rifle - $]
+  page: https://www.ruger.com/products/mini14RanchRifle/models.html
+  OG: none
+
+  [Vortex Defender-ST Reflex Sight 3 MOA Red Dot - Black O]
+  page: https://www.vortexoptics.com/product/vortex-defender-st-reflex-sight
+  OG: none
+
+  [SilencerCo Spectre 9 Ti $599 + 16.99 Shipping W/ code S]
+  page: https://silencerco.com/products/spectre-9/
+  OG: https://silencerco.com/wp-content/uploads/2023/08/download2.png
+    downloaded 802 bytes
+  ✗ download failed
+
+  [Vortex Strike Eagle 1-8x24 FFP Rifle Scope - EBR-8 MOA ]
+  page: https://www.vortexoptics.com/product/vortex-strike-eagle-1-8x24-second-focal-plane-riflescope
+  OG: none
+
+  [Daniel Defense DDM4V7 Ambi with Geissele SSA trigger $1]
+  page: https://www.geissele.com/geissele-ssa-trigger.html
+  OG: https://www.geissele.com/media/theme/logo.png
+    download error: HTTP Error 403: Forbidden
+  ✗ download failed
+
+Done: 0 fixed, 10 matched, 60 total
