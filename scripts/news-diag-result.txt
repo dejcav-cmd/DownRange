@@ -1,25 +1,21 @@
-=== SANITY WRITE TEST ===
-Token: SET (180 chars)
-Project: vbnsqnkg
+=== NEWS FEED TRIGGER RESULT ===
+Status: HTTP 200
+Time: 272.6s
 
-Write test result: HTTP 200
-  Response: {'transactionId': 'JNgRkgyBJg1tUe3UMK4VeT', 'results': [{'operation': 'create'}]}
+done: 0
+total: 80
+dupes: 80
+withAI: 0
 
-Cleanup: HTTP 200
+headlines: []
 
-=== LAST 5 NEWS CRON RUNS (full details) ===
-  2026-07-08T14:36 | warning | 280s
-    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
-    Error: All 80 items were duplicates — dedup cache may be stale
-  2026-07-08T14:35 | warning | 291s
-    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
-    Error: All 80 items were duplicates — dedup cache may be stale
-  2026-07-08T13:05 | warning | 290s
-    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
-    Error: All 80 items were duplicates — dedup cache may be stale
-  2026-07-08T12:35 | warning | 298s
-    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
-    Error: All 80 items were duplicates — dedup cache may be stale
-  2026-07-08T12:05 | warning | 280s
-    Details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
-    Error: All 80 items were duplicates — dedup cache may be stale
+full result: {
+  "done": 0,
+  "withAI": 0,
+  "withRaw": 0,
+  "dupes": 80,
+  "total": 80,
+  "ms": 269730,
+  "claudeUp": true,
+  "headlines": []
+}
