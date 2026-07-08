@@ -13,7 +13,7 @@ Quality gates (mirrors route.js logic):
 Called by .github/workflows/reddit-deals-fetch.yml
 """
 
-import os, json, urllib.request, urllib.parse, re, time, hashlib, html as html_mod
+import os, json, urllib.request, urllib.parse, re, time, hashlib
 from datetime import datetime, timezone, timedelta
 from email.utils import parsedate_to_datetime
 
@@ -91,62 +91,6 @@ def unescape(s=''):
 
 # ── Fetch RSS ─────────────────────────────────────────────────────────────────
 log("Fetching r/gundeals hot RSS...")
-# ── Image search via Bing ────────────────────────────────────────────────────
-def search_product_image(title):
-    """Search Bing for a product image using firearm-anchored query."""
-    # Extract the core product name — strip price, code, subreddit noise
-    clean = re.sub(r'\$[\d,]+(?:\.\d{2})?', '', title)
-    clean = re.sub(r'\b(no code|free ship|oos|[Ff][Ss][Ss]|percent off|%\s*off).*', '', clean, flags=re.I)
-    clean = re.sub(r'\s+', ' ', clean).strip()[:80]
-
-    # Anchor with firearm type to avoid animal/nature collisions
-    firearm_terms = ['pistol','rifle','shotgun','handgun','suppressor','silencer',
-                     'optic','scope','ammo','ammunition','magazine','holster','trigger',
-                     'barrel','muzzle','compensator','flashhider','bcg','upper','lower',
-                     'ar-15','ar15','ak','glock','sig','ruger','springfield','smith']
-    has_firearm = any(t in clean.lower() for t in firearm_terms)
-    query = clean + (" firearm" if not has_firearm else "")
-
-    try:
-        encoded = urllib.parse.quote(query)
-        url = f"https://www.bing.com/images/search?q={encoded}&first=1&count=3"
-        req = urllib.request.Request(url, headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
-            "Accept": "text/html",
-        })
-        with urllib.request.urlopen(req, timeout=8) as r:
-            page = r.read().decode("utf-8", errors="replace")
-        # Extract first murl (actual image URL) from Bing results
-        urls = re.findall(r'"murl":"([^"]+)"', page)
-        for img_url in urls[:5]:
-            img_url = html_mod.unescape(img_url)
-            if re.search(r'\.(jpg|jpeg|png|webp)(\?|$)', img_url, re.I):
-                return img_url
-    except Exception as e:
-        pass
-    return None
-
-def upload_image_to_sanity(img_url, deal_id):
-    """Download an image and upload it to Sanity CDN."""
-    try:
-        req = urllib.request.Request(img_url,
-            headers={"User-Agent": "Mozilla/5.0", "Referer": "https://www.bing.com"})
-        with urllib.request.urlopen(req, timeout=10) as r:
-            data = r.read()
-        if len(data) < 5000:
-            return None
-        fname = f"reddit-{deal_id[-8:]}.jpg"
-        upload_url = f"https://vbnsqnkg.api.sanity.io/v2024-01-01/assets/images/production?filename={fname}"
-        req2 = urllib.request.Request(upload_url, data=data, method="POST",
-            headers={"Authorization": f"Bearer {os.environ.get('SANITY_TOKEN','').replace('ST=','')}",
-                     "Content-Type": "image/jpeg",
-                     "Content-Disposition": f"attachment; filename={fname}"})
-        with urllib.request.urlopen(req2, timeout=20) as r:
-            result = json.loads(r.read())
-            return result.get("url")
-    except:
-        return None
-
 rss_url = 'https://www.reddit.com/r/gundeals/hot.rss?limit=100'
 
 req = urllib.request.Request(
@@ -295,7 +239,7 @@ for post in posts:
             'price':       price,
             'category':    category,
             'summary':     ' · '.join(summary_parts),
-            'imageUrl':    None,  # will be set after Bing search below
+            'imageUrl':    None,
             'approved':    True,
             'publishedAt': datetime.fromtimestamp(post['created'], tz=timezone.utc).isoformat(),
             'tags':        list(filter(None, [
@@ -307,24 +251,6 @@ for post in posts:
     added += 1
 
 log(f"  {added} new deals to add, {skipped} skipped")
-
-# ── Fetch images for new deals ───────────────────────────────────────────────
-imgs_found = 0
-new_docs_with_ids = []
-for mut in mutations:
-    doc = mut.get('create', {})
-    title = doc.get('title','')
-    img_url = search_product_image(title)
-    if img_url:
-        # Try to upload to Sanity CDN; fall back to direct URL
-        cdn = upload_image_to_sanity(img_url, doc.get('_id', str(time.time())))
-        doc['imageUrl'] = cdn or img_url
-        imgs_found += 1
-    else:
-        doc['imageUrl'] = None
-    time.sleep(0.3)  # rate limit Bing
-
-log(f"  Images found for {imgs_found}/{len(mutations)} new reddit deals")
 
 # ── Write to Sanity in batches ────────────────────────────────────────────────
 for i in range(0, len(mutations), 100):
