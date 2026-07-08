@@ -1,39 +1,17 @@
-=== Cron Monitor Report ===
-Window: 17:42 UTC → 18:12 UTC
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-Total runs: 8  ✓ 6  ⚠ 2  ✗ 0
+=== STEP 2: FIX MISSING IMAGES ===
+Needs image fix: 5 (null + gun.deals hotlink-blocked)
+  ✗ https://midstatefirearms.com/?s=rg2&amp;post_type=product
+  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
+  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
+  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
+  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
+  → patched final 3
 
-JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
----------------------------------------------------------------------------
-  amazon-deals                          1    1     0    3948ms  ✓ success @ 18:01
-  blog-writer                           1    1     0   79177ms  ✓ success @ 18:02
-  cron-health                           1    1     0     329ms  ✓ success @ 18:00
-  gun-deals                             1    1     0    6142ms  ✓ success @ 18:01
-  news                                  3    1     0   94607ms  ✓ success @ 18:11
-  reddit-deals                          1    1     0     177ms  ✓ success @ 18:00
+Stats: uploaded=0 fallback=3 failed=2
 
-✓ No Sanity quota errors in window
+=== FINAL: total=4442 missing_images=1 reddit=0 ===
 
-quality-rewrite: no runs yet in window
-
-Report generated: 18:12:03 UTC
-
-=== NEWS ARTICLE COUNTS ===
-  Last 48h: 20
-  Last 7 days: 38
-  Last 30 days: 239
-  Total approved+slug: 603
-
-  Most recent articles:
-    2026-07-08T18:11 | SAF                | The ATF is getting better, but …
-    2026-07-08T18:10 | SAF                | SAF SEEKS SUPREME COURT REVIEW IN NEW YORK CITY STUN GU
-    2026-07-08T18:10 | Bearing Arms       | How Virginia's Attempted Assault Weapon Ban Blew Up in 
-    2026-07-08T18:10 | Bearing Arms       | Why Outrage Over 3D-Printer Regulations Comes Not Just 
-    2026-07-08T18:10 | Bearing Arms       | NYTimes Clutches Pearls Over Trump Administration's 2A 
-
-  Dedup pool (newsArticle+gunDeal 7d): 882
-
-=== DEDUP POOL BREAKDOWN ===
-  newsArticle in last 48h: 22
-  gunDeal in last 48h:     350
-  Total dedup pool (48h):  372
+FIXED: 3
