@@ -119,3 +119,17 @@ try:
     print(f"\n  Dedup pool (newsArticle+gunDeal 7d): {dedup_size}")
 except Exception as e:
     print(f"  ERROR: {e}")
+
+print()
+print("=== DEDUP POOL BREAKDOWN ===")
+try:
+    from datetime import timedelta
+    now_ts = datetime.now(timezone.utc)
+    since48 = (now_ts - timedelta(hours=48)).isoformat()
+    news48  = q(f'count(*[_type=="newsArticle"&&_createdAt>"{since48}"])')
+    deals48 = q(f'count(*[_type=="gunDeal"&&_createdAt>"{since48}"])')
+    print(f"  newsArticle in last 48h: {news48}")
+    print(f"  gunDeal in last 48h:     {deals48}")
+    print(f"  Total dedup pool (48h):  {int(news48 or 0) + int(deals48 or 0)}")
+except Exception as e:
+    print(f"  ERROR: {e}")
