@@ -1,34 +1,20 @@
-=== RSS vs SANITY CHECK ===
-Time: 2026-07-08 15:52 UTC
+=== NEWS FEED TRIGGER RESULT ===
 
-TTAG: ERROR - The read operation timed out
-AmmoLand: 10/10 NEW
-  NEW: Wed, 08 Jul 2026 | Supreme Court AR-15 Case May Put Magazine Bans in the Crossh
-       https://www.ammoland.com/2026/07/supreme-court-ar-15-case-magazine-bans/
-  NEW: Tue, 07 Jul 2026 | Denver Gun Ban Faces New Lawsuit As Supreme Court Takes Up A
-       https://www.ammoland.com/2026/07/denver-gun-ban-lawsuit-scotus-ar15/
-  NEW: Tue, 07 Jul 2026 | Staccato Unveils HD P4X, a Steel-Frame Compensated 2011 Buil
-       https://www.ammoland.com/2026/07/staccato-hd-p4x-steel-frame-compensated-2011-du
-NRA-ILA: 7/10 NEW
-  NEW: Wed, 08 Jul 2026 | NRA Files Lawsuit Challenging Illinois’s Waiting Period Requ
-       https://www.nraila.org/articles/20260708/nra-files-lawsuit-challenging-illinois-
-  NEW: Mon, 06 Jul 2026 | Grassroots Spotlight: GunCon 2026
-       https://www.nraila.org/articles/20260706/grassroots-spotlight-guncon-2026
-  NEW: Mon, 06 Jul 2026 | Virginia Anti-gun Lawmakers Delay “Assault Firearm” Carry an
-       https://www.nraila.org/articles/20260706/virginia-anti-gun-lawmakers-delay-assau
-Bearing Arms: 10/10 NEW
-  NEW: Wed, 08 Jul 2026 | Virginia Judge Says Injunction on 'Assault Firearm' Ban Appl
-       https://bearingarms.com/camedwards/2026/07/08/virginia-judge-says-injunction-on-
-  NEW: Wed, 08 Jul 2026 | NYTimes Clutches Pearls Over Trump Administration's 2A Moves
-       https://bearingarms.com/camedwards/2026/07/08/nytimes-clutches-pearls-over-trump
-  NEW: Wed, 08 Jul 2026 | Platner Situation May End Badly for More than Just Him
-       https://bearingarms.com/tomknighton/2026/07/08/platner-situation-may-end-badly-f
-Gun News Daily: 10/10 NEW
-  NEW: Mon, 09 Feb 2026 | U.S. Reverses Land Mine Policy Under Hegseth
-       https://gunnewsdaily.com/u-s-reverses-land-mine-policy-under-hegseth/
-  NEW: Mon, 09 Feb 2026 | Armed Robbery Suspect Arrested After High-Speed Chase
-       https://gunnewsdaily.com/armed-robbery-suspect-arrested-after-high-speed-chase/
-  NEW: Mon, 09 Feb 2026 | Vigil Addresses Gun Violence After Brown Shooting
-       https://gunnewsdaily.com/vigil-addresses-gun-violence-after-brown-shooting/
+-- Sanity write test --
+Sanity write: HTTP 200 → update
 
-TOTAL NEW articles across 5 feeds: 37
+-- News feed trigger --
+HTTP 200 in 94.1s
+done=0 total=40 dupes=40
+headlines: []
+
+-- Last 3 news cron runs --
+2026-07-08T15:57 | warning | 91s
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled
+  error: All 40 items were duplicates — dedup cache may be stale
+2026-07-08T15:47 | warning | 87s
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled
+  error: All 40 items were duplicates — dedup cache may be stale
+2026-07-08T15:43 | warning | 288s
+  details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
+  error: All 80 items were duplicates — dedup cache may be stale
