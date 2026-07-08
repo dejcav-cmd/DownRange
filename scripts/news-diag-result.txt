@@ -1,1 +1,1 @@
-Cleared imageUrl on 5 hotlink-blocked deals (gun.deals/slickguns CDN)
+Reddit deals image backfill: 0/0 fixed
