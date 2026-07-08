@@ -159,7 +159,7 @@ function DealCard({ deal, userState, liveRules }) {
         deal_title: deal.title?.slice(0,100), deal_source: deal.source,
         deal_price: deal.price, deal_score: deal.score,
       })}
-      onMouseEnter={e => e.currentTarget.querySelector('.dc-inner').style.borderColor = fm.color}
+      onMouseEnter={e => e.currentTarget.querySelector('.dc-inner').style.borderColor = GOLD}
       onMouseLeave={e => e.currentTarget.querySelector('.dc-inner').style.borderColor = 'var(--border)'}>
       <div className="dc-inner" style={{
         background:'var(--bg2)', border:'1px solid var(--border)',
@@ -175,22 +175,14 @@ function DealCard({ deal, userState, liveRules }) {
           ) : (
             <div style={{
               width:'100%', height:'100%',
-              background:`linear-gradient(135deg, ${fm.bg} 0%, #0D0E10 72%)`,
+              background:'linear-gradient(135deg, #111318 0%, #0D0E10 72%)',
               display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', gap:7,
             }}>
-              <span style={{ fontFamily:BEBAS, fontSize:'1.5rem', color:fm.color, letterSpacing:'.04em', opacity:.6 }}>{fm.label}</span>
-              <span style={{ fontFamily:MONO, fontSize:9, color:'#4B5563', letterSpacing:'.14em' }}>DOWNRANGE</span>
+              <span style={{ fontFamily:BEBAS, fontSize:'1.5rem', color:'#374151', letterSpacing:'.04em' }}>DOWNRANGE</span>
+              <span style={{ fontFamily:MONO, fontSize:9, color:'#374151', letterSpacing:'.14em' }}>NO IMAGE</span>
             </div>
           )}
-          {/* Flair badge */}
-          {deal.flair && deal.flair !== 'Other' && (
-            <span style={{
-              position:'absolute', top:8, left:8,
-              background: fm.color + '22', border:`1px solid ${fm.color}55`,
-              color: fm.color, fontFamily:MONO, fontSize:9,
-              padding:'2px 7px', letterSpacing:'.08em', textTransform:'uppercase',
-            }}>{deal.flair}</span>
-          )}
+
           {isHot && (
             <span style={{
               position:'absolute', top:8, right:8,
