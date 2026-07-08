@@ -14,12 +14,10 @@ const PER_PAGE = 24
 
 // ── FLAIR META (for card badge color only) ────────────────────────────────────
 const FLAIR_META = {
-  Handgun:    { color:'#60A5FA' }, Rifle:      { color:'#34D399' },
-  Shotgun:    { color:'#FBBF24' }, Ammo:       { color:'#C8922A' },
-  Accessories:{ color:'#C084FC' }, NFA:        { color:'#EF4444' },
-  Optic:      { color:'#34D399' }, Gear:       { color:'#9CA3AF' },
-  Deals:      { color:'#FBBF24' }, Other:      { color:'#4B5563' },
-  Archery:    { color:'#84CC16' },
+  Firearm:    { color:'#60A5FA' }, Ammo:       { color:'#C8922A' },
+  Optic:      { color:'#34D399' }, NFA:        { color:'#EF4444' },
+  Accessories:{ color:'#C084FC' }, Gear:       { color:'#9CA3AF' },
+  Archery:    { color:'#84CC16' }, Deals:      { color:'#FBBF24' },
 }
 
 // ── STATE RESTRICTION RULES ──────────────────────────────────────────────────
@@ -76,7 +74,8 @@ function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
   // Magazine capacity — apply the correct limit based on firearm type.
   // Many states have different limits for handguns vs long guns (IL: 15/10, VT: 15/10).
   // liveRules from /api/state-rules may only have magLimit (legacy); split fields take priority.
-  const isLongGun = deal.flair === 'Rifle' || deal.flair === 'Shotgun'
+  // Determine long gun vs handgun from title (flair is now coarse 'Firearm')
+  const isLongGun = /\brifle\b|\bshotgun\b|\bcarbine\b|ar-15|ar15|ak-|\bsbr\b|lever.?action|bolt.?action|pump.?action/i.test(deal.title || '')
   const magLimit = isLongGun
     ? (rules.magLimitLonggun ?? rules.magLimit ?? null)
     : (rules.magLimitHandgun ?? rules.magLimit ?? null)
@@ -91,7 +90,7 @@ function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
   }
 
   // Suppressor ban
-  if (rules.noSuppressor && deal.flair === 'NFA') {
+  if (rules.noSuppressor && /suppressor|silencer/i.test(deal.title || '')) {
     alerts.push({
       type: 'suppressor_banned',
       color: '#EF4444',
@@ -102,7 +101,7 @@ function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
   }
 
   // AWB — rifles AND AR-pattern pistols (covered by most state AWBs, e.g. WA HB 1240, CA, NY)
-  if (rules.awb && isAssaultWeaponLike(deal.title, deal.flair)) {
+  if (rules.awb && isAssaultWeaponLike(deal.title)) {
     alerts.push({
       type: 'awb',
       color: '#F59E0B',
@@ -131,36 +130,25 @@ function timeAgo(ts) {
 // Returns true if a deal should trigger AWB restriction checks.
 // State AWBs target semi-automatic, military-style firearms — NOT traditional bolt-action,
 // lever-action, pump-action, or single-shot rifles. Shotguns only if semi-auto assault type.
-function isAssaultWeaponLike(title = '', flair = '') {
+function isAssaultWeaponLike(title = '') {
   const t = (title || '').toLowerCase()
-
-  if (flair === 'Rifle') {
-    // Traditional action types are NOT covered by any state AWB
-    if (/bolt.?action|lever.?action|pump.?action|single.?shot|muzzleload|double.?barrel/i.test(t)) return false
-    // Remaining rifles: AR/AK platform, semi-auto MSRs — covered by AWBs
-    return true
-  }
-
-  if (flair === 'Shotgun') {
-    // Only semi-auto, military-style shotguns are covered (Saiga, VEPR, Origin-12, etc.)
-    return /semi.?auto|saiga|vepr|fostech|aa-?12|origin.?12|box.?mag.*shotgun/i.test(t)
-  }
-
-  if (flair !== 'Handgun' && flair !== 'Other') return false
-
-  // AR/AK-pattern pistols + PCCs — classified as Handgun but covered by state AWBs
-  return /\b(?:ar[-\s]?pistol|ak[-\s]?pistol|banshee|draco|micro\s*draco|pcc|pistol\s+caliber\s+carbine|mp5.*pistol|sp5k?|mac-?\d|micro\s*uzi|cmmg|sig\s*mcx|galil\s*ace|tavor\s*x95|kel.?tec\s*sub|cz\s*scorpion.*(?:pistol|sbr)|vector.*pistol|angstadt|fm-?9.*pistol|foxtrot\s*mike|udp.*pistol|zpap.*pistol)\b/i.test(t)
-    // AR/AK calibers in a pistol = strong signal (5.56, 7.62x39, 300 BLK, etc.)
-    || (/\bpistol\b/i.test(t) && /\b(?:5\.56|223\s*rem|\.223|300\s*(?:blk|aac|blackout)|338\s*arc|7\.62x39|6\.5\s*grendel|6\.8\s*spc|224\s*valkyrie)\b/i.test(t))
+  // Skip traditional action types — never covered by AWBs
+  if (/bolt.?action|lever.?action|pump.?action|single.?shot|muzzleload|double.?barrel/i.test(t)) return false
+  // Skip clearly non-firearm items
+  if (/suppressor|silencer|\bscope\b|optic|red dot|\bammo\b|ammunition|\bfmj\b/i.test(t)) return false
+  // AR/AK platform rifles and pistols, PCCs, military-style semi-autos
+  return /ar-15|ar15|ak-47|ak47|\bak-\b|m4\s*(?:style|carbine|clone)|m16|\bpcc\b|pistol\s+caliber\s+carbine|banshee|draco|micro\s*draco|mp5|sp5k?|mac-?\d|micro\s*uzi|cmmg|sig\s*mcx|galil\s*ace|tavor|kel.?tec\s*sub|cz\s*scorpion|angstadt|foxtrot\s*mike|zpap|saiga|vepr|fostech|aa-?12|origin.?12/i.test(t)
+    // AR/AK calibers — strong signal for MSR
+    || /\b(?:5\.56|223\s*rem|\.223|300\s*(?:blk|aac|blackout)|338\s*arc|7\.62x39|6\.5\s*grendel|6\.8\s*spc|224\s*valkyrie)\b/i.test(t)
 }
 
 // ── DEAL CARD ─────────────────────────────────────────────────────────────────
 function DealCard({ deal, userState, liveRules }) {
   const [imgError, setImgError] = useState(false)
-  const fm = FLAIR_META[deal.flair] || FLAIR_META.Other
+  const fm = FLAIR_META[deal.flair] || FLAIR_META.Deals
   const hasImage = deal.imageUrl && !imgError
   const cleanTitle = (deal.title || '')
-    .replace(/^\[(handgun|rifle|shotgun|ammo|optic|nfa|accessories|gear|deal|deals?|other)\]\s*/i, '')
+    .replace(/^\[(firearm|handgun|rifle|shotgun|ammo|optic|nfa|accessories|gear|deal|deals?|other)\]\s*/i, '')
     .trim()
   const isHot = (deal.score || 0) >= 300
 
