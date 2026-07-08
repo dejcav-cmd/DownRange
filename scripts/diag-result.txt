@@ -1,22 +1,32 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
+=== Cron Monitor Report ===
+Window: 14:49 UTC → 15:04 UTC
 
-=== STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 10 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/89a53b21a3ba5d7985333809a4e6506
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b7a045c61fd8a342e860d75f0f0800c
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/859b2ef0530349f61a24ac0710409b4
-  ~ og: https://cdn.preppergunshop.com/media/catalog/product/cache/12059a5a81b
-  ✗ https://www.dahlonegaarmory.com/product/rossi-brawler-300-blackout-pis
-  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/629735/images/560611/20
-  ~ og: https://gun.deals/sites/default/files/V27%20mlok主图-SG.jpg
-  ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
-  ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
-  ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 8
+Total runs: 5  ✓ 4  ⚠ 1  ✗ 0
 
-Stats: uploaded=3 fallback=5 failed=2
+JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
+---------------------------------------------------------------------------
+  cron-health                           1    0     0     380ms  ⚠ warning @ 15:00
+  fix-images                            1    1     0     829ms  ✓ success @ 15:00
+  gun-deals                             2    2     0    8078ms  ✓ success @ 15:00
+  reddit-deals                          1    1     0     178ms  ✓ success @ 15:01
 
-=== FINAL: total=4392 missing_images=1 reddit=0 ===
+✓ No Sanity quota errors in window
 
-FIXED: 8
+quality-rewrite: no runs yet in window
+
+Report generated: 15:04:15 UTC
+
+=== NEWS ARTICLE COUNTS ===
+  Last 48h: 0
+  Last 7 days: 18
+  Last 30 days: 224
+  Total approved+slug: 582
+
+  Most recent articles:
+    2026-07-06T14:55 | Gun Owners of Amer | VA: Major Victory – Court Rejects Richmond’s Attempt to
+    2026-07-04T13:00 | AmmoLand           | Second Amendment Movement Wins Heller, McDonald, Bruen,
+    2026-07-04T10:52 | Combat Handguns    | Desert Eagle Mark XIX Now Ships Threaded for Suppressor
+    2026-07-03T18:35 | AmmoLand           | California Claims Glocks Aren't Protected Speech Under 
+    2026-07-03T18:00 | Tactical Life      | Next Level Armaments Launches Phoenix 6ARC Rifle for Co
+
+  Dedup pool (newsArticle+gunDeal 7d): 855
