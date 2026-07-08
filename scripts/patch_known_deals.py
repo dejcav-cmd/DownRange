@@ -51,11 +51,17 @@ def get_og_image(content, base_url):
 
 def download_img(url):
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36",
+            "Referer": "https://www.springfield-armory.com/",
+            "Accept": "image/webp,image/apng,image/*,*/*;q=0.8",
+        })
         with urllib.request.urlopen(req, timeout=10) as r:
             data = r.read()
+        print(f"    download: {len(data)} bytes from {url[:60]}")
         return data if len(data) > 8000 else None
-    except:
+    except Exception as e:
+        print(f"    download error: {e} for {url[:60]}")
         return None
 
 def upload_sanity(data, doc_id, img_url=""):
@@ -78,8 +84,11 @@ def upload_sanity(data, doc_id, img_url=""):
         "Content-Disposition": f"attachment; filename={fname}"})
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
-            return json.loads(r.read()).get("url")
-    except:
+            result = json.loads(r.read())
+            print(f"    CDN upload OK: {result.get('url','')[:60]}")
+            return result.get("url")
+    except Exception as e:
+        print(f"    CDN upload error: {e}")
         return None
 
 def save(msg):
