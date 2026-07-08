@@ -86,3 +86,46 @@ if GH_PAT:
         headers={"Authorization": f"Bearer {GH_PAT}", "Content-Type": "application/json"})
     with urllib.request.urlopen(req) as r:
         print(f"Saved: HTTP {r.status}")
+
+# ── RSS SPOT CHECK ───────────────────────────────────────────────────────────
+print()
+print("=== RSS SPOT CHECK (first 5 items from 3 feeds) ===")
+import urllib.request as ul
+
+feeds_to_check = [
+    ("TTAG", "https://www.thetruthaboutguns.com/feed/"),
+    ("AmmoLand", "https://www.ammoland.com/feed/"),
+    ("NRA-ILA", "https://www.nraila.org/XML/RSS.aspx"),
+]
+
+from xml.etree import ElementTree as ET
+
+for name, url in feeds_to_check:
+    try:
+        req = ul.Request(url, headers={"User-Agent": "DownRangeBot/1.0"})
+        with ul.urlopen(req, timeout=8) as r:
+            tree = ET.parse(r)
+        items = tree.findall(".//item")[:5]
+        print(f"\n  {name} ({len(items)} items sampled):")
+        for item in items:
+            title = (item.findtext("title") or "?")[:50]
+            link  = (item.findtext("link") or "?")
+            pub   = (item.findtext("pubDate") or "?")[:25]
+            # Check if URL is in Sanity dedup pool
+            check = sanity_query(f'count(*[_type=="newsArticle"&&externalUrl=="{link}"])')
+            in_sanity = "✓ IN SANITY" if check and int(check) > 0 else "✗ NEW"
+            print(f"    {pub[:16]} | {in_sanity} | {title}")
+    except Exception as e:
+        print(f"  {name}: ERROR - {e}")
+
+print()
+print("=== LAST SUCCESSFUL NEWS CRON RUN ===")
+last_ok = sanity_query('*[_type=="cronRun"&&jobId=="news"&&status=="success"]|order(at desc)[0]{at,status,ms,details}')
+if isinstance(last_ok, dict):
+    print(f"  Last success: {last_ok.get('at','?')[:16]}")
+    print(f"  Details: {str(last_ok.get('details',''))[:200]}")
+elif isinstance(last_ok, list) and last_ok:
+    r = last_ok[0]
+    print(f"  Last success: {r.get('at','?')[:16]}")
+else:
+    print(f"  {last_ok}")
