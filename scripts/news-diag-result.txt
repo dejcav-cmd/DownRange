@@ -1,19 +1,170 @@
-=== JINA MANUFACTURER TEST ===
+=== TEST: Springfield Kuna 9mm ===
+    Searching: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm
+    Product page: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm
+    Product page: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm#
+    Product page: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm#
+Result: ✗ no image (0 bytes)
 
-1. Springfield Armory - Kuna search:
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/saint-series-1600x800-3-1-400x200.p
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/hellcat-series-1600x1200-5-267x200.
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/echelon-model-1600x1200-4-267x200.p
-2. Springfield Armory - Kuna product page:
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/giveaway-monthly-july-2026-popup.pn
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/saint-series-1600x800-3-1-400x200.p
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/hellcat-series-1600x1200-5-267x200.
-3. Springfield Armory - Romulus:
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/saint-series-1600x800-3-1-400x200.p
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/hellcat-series-1600x1200-5-267x200.
-  https://springfieldarmory.b-cdn.net/wp-content/uploads/echelon-model-1600x1200-4-267x200.p
-4. SIG Sauer - P365:
-5. Ruger - 10/22:
-  https://www.ruger.com/img/nav/pistols/lcp.png)LCP®](https://www.ruger.com/products/lcp/mod
-  https://www.ruger.com/img/nav/pistols/lcpII-22.png)LCP®
-  https://www.ruger.com/img/nav/pistols/lcpMax.png)LCP®
+=== TEST: Romulus 3.5 Comp ===
+Result: ✗ no image (0 bytes)
+
+Reddit deals to fix: 60
+
+  Springfield Kuna 9mm
+    Searching: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm
+    Product page: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm
+    Product page: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm#
+    Product page: https://www.springfield-armory.com/search/?q=Springfield%20Kuna%209mm#
+
+  Upper & MLok RG2 WedgeLock Rail Combos
+
+  cart price ROSSI BRAWLER 300BLK 9” threaded barrel BLK
+
+  BUSHNELL POWER VIEW 2 12X50 BLK shipped, 322 Units Available
+
+  POF-5 MP5 clone
+
+  Honey Badger Haus – 17.76% OFF All
+
+  Primary Arms SLx 1X MicroPrism Scope - ACSS Cyclops Reticle 
+
+  Glock 22 Gen4 LE Trade-in, + S/H
+    Searching: https://us.glock.com/en/search#?q=Glock%2022%20Gen4%20LE%20Trade-in%2C
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g20-gen4)
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g19-gen5-mos)
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g17-v-mos)
+
+  RMR HD's and .50 CPR .223 Winchester Super X soft point's no
+
+  Police Trade-In Glock 19 Gen 5 w/ Front Slide Serrations (Ha
+    Searching: https://us.glock.com/en/search#?q=Police%20Trade-In%20Glock%2019%20Gen
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g20-gen4)
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g19-gen5-mos)
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g17-v-mos)
+
+  25% Off at Defense Mechanisms
+
+  Rugged Oculus22 Suppressor | +tax&ship | Primary Arms
+
+  LOK Grips 20% off July 3 - July 5 - LOK2026
+
+  Aimpoint Acro restock Add to cart, Osight X, S, SE email for
+
+  DESERT EAGLE 50AE 6” Black Integral Muzzle Break. MR anderso
+
+  25% off 1911 Nighthawk parts
+
+  SilencerCo Scythe-Ti
+    Searching: https://silencerco.com/search?type=product&q=SilencerCo%20Scythe-Ti
+
+  Garmin Xero C2 + Free Hard Case Promo / Holosun EPS Carry Go
+    Searching: https://www.holosun.com/index.php?route=product/search&search=Garmin%2
+    Product page: https://www.holosun.com/index.php?route=product/search&search=Garmin%2
+
+  - GLOCK 17 GEN 6 9MM COA +shipping with
+    Searching: https://us.glock.com/en/search#?q=-%20GLOCK%2017%20GEN%206%209MM%20COA
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g20-gen4)
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g19-gen5-mos)
+    Product page: https://us.glock.com/products/law-enforcement/pistols/g17-v-mos)
+
+  17.76% + S/H on D.Wilson Shop Services
+
+  20% off everything in our Slings and Pouches section with co
+
+  Sig Sauer MCX SPEAR 16″ .308 Winchester 20 Rounds – MultiCam
+    Searching: https://www.sigsauer.com/search/?q=Sig%20Sauer%20MCX%20SPEAR%2016%E2%8
+    Product page: https://www.sigsauer.com/firearms/pistols.html
+    Product page: https://www.sigsauer.com/firearms/pistols.html
+    Product page: https://www.sigsauer.com/firearms/pistols/p365.html
+
+  LEO Trade In Griffin Armament HRT556 .223/5.56 Silencer + Sh
+
+  Agency Trade-in Ruger Mini-14 Stainless 18.5" Rifle - + S/H
+    Searching: https://www.ruger.com/search/index.html#q=Agency%20Trade-in%20Ruger%20
+    Product page: https://www.ruger.com/img/nav/pistols/lcp.png)LCP®](https://www.ruger.
+    Product page: https://www.ruger.com/products/lcpII/models.html)
+    Product page: https://www.ruger.com/products/lcpMax/models.html)
+
+  15% off site wide at LMT July 3-7
+
+  Osight XE AMRS Red Dot Sight, RMR Footprint, Side-Loading Ba
+
+  BLEM Unobtainium Gear Chest Rigs/Placards/Pouches/etc. - 40%
+
+  Taurus 2TX 22 T.O.R.O. Single-Action Rimfire Optics-Ready Pi
+
+  All silencers, 17.76% off with
+
+  17.76% Off Custom Earthseed Equipment Packs
+
+  15% off Select Suppressors & Plan B Products - "FREEDOM"
+
+  Better Geiger Radiation Detector - to get free uranium ore s
+
+  PCT 4th of July Sale - 10% off site-wide w/ // See home page
+
+  FTW-Arms OG .22LR Suppressor - + Shipping (20% Off w/ FREEDO
+
+  All Holosun lineup available | 507Comp, Ronin AEMS Max, AEMS
+    Searching: https://www.holosun.com/index.php?route=product/search&search=All%20Ho
+    Product page: https://www.holosun.com/index.php?route=product/search&search=All%20Ho
+
+  Arcfire Partisan Disruptor 25% off almost everything else
+
+  Flatline Fiber Co sitewide 20% off pouches, bags, straps, et
+
+  Walther WALTHER F-SERIES PRO-X PMM 9MM
+
+  Aimpoint COA 3.5 MOA RDS
+
+  SIONICS standard gas port barrels
+
+  Vortex Defender-ST Reflex Sight 3 MOA Red Dot - Black Only -
+    Searching: https://www.vortexoptics.com/search?q=Vortex%20Defender-ST%20Reflex%20
+
+  SilencerCo Spectre 9 Ti + 16.99 Shipping W/ . SAW Shiv In-St
+    Searching: https://silencerco.com/search?type=product&q=SilencerCo%20Spectre%209%
+
+  Smith & Wesson, CSX E-Series, 9MM, 3.1" Barrel, Optic Ready 
+
+  22% off Rearden with code "TAXTHISDICK" - Atlas, R2S, & FHD
+
+  Vortex Strike Eagle 1-8x24 FFP Rifle Scope - EBR-8 MOA - + t
+    Searching: https://www.vortexoptics.com/search?q=Vortex%20Strike%20Eagle%201-8x24
+
+  Up to 50% off and
+
+  Hyperion K + B&T Tiger 22 - (for both)
+
+  Centurion Arms blem uppers - stripped, assembled
+
+  2 point padded quick adjust slings + flat rate shipping
+
+  In-Stock Noveske 15% off Through July 6th. Ship/No tax out o
+
+  BLEM Geissele Automatics Super Duty Center Tab MK16 Upper Ki
+    Searching: https://www.geissele.com/search?q=BLEM%20Geissele%20Automatics%20Super
+
+  Muzzle Crowning Tool | 110 Degree | 3 Pilots 9mm, .30 Cal / 
+
+  + shipping Barrett Model 82A1 50 BMG Tan
+
+  "freedom4" at KIR Ammo
+
+  4th of July Site Wide Sale Cont’d | Holosun, OSight, PA, EOT
+    Searching: https://www.holosun.com/index.php?route=product/search&search=4th%20of
+    Product page: https://www.holosun.com/index.php?route=product/search&search=4th%20of
+
+  Daniel Defense DDM4V7 Ambi with Geissele SSA trigger with
+    Searching: https://www.geissele.com/search?q=Daniel%20Defense%20DDM4V7%20Ambi%20w
+    Product page: https://www.geissele.com/search?q=Daniel%20Defense%20DDM4V7%20Ambi%20w
+
+  4th of sale with - 15% off site-wide
+
+  Dead Air Mask HD 22LR Suppressor
+
+  Garmin Xero C2 | no tax/shipping | Ibex Armament
+
+  Mossberg Patriot 338 Win Mag Bolt-Action Rifle with Black Sy
+
+Reddit image backfill: 0 fixed, 60 no image, 60 total
