@@ -556,12 +556,11 @@ async function processNewsItem(item) {
   }
 
   // Category resolution — strict deal gate:
-  // Only dedicated deals feeds OR a real price signal in the title can produce a 'deals' article.
-  // AI saying 'deals' is NOT sufficient on its own — it hallucinates this on opinion/history pieces.
-  const PRICE_SIGNAL = /\$\d+|\d+%\s*off|save\s+\$|ships for|only\s+\$|drops to\s+\$|priced at\s+\$|starting at\s+\$|\bdiscount\b|\bcoupon\b|sale price|free shipping|rebate/i
-  const titleHasPrice = PRICE_SIGNAL.test(item.title || '')
-  const feedIsDeal    = item.feedCat === 'deals'
-  const isDeal        = feedIsDeal || titleHasPrice
+  // ONLY cat:'deals' feeds route to gunDeal. Never use title price signals —
+  // news articles regularly mention prices (product launches, fines, awards).
+  // The dedicated /api/cron/gun-deals cron handles all deal sourcing.
+  const feedIsDeal = item.feedCat === 'deals'
+  const isDeal     = feedIsDeal
 
   // DEALS GO TO gunDeal, NOT newsArticle
   // This prevents image-fix crons from looping on them, deals page from polluting news, etc.
