@@ -1,13 +1,7 @@
 export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
-export async function GET(req) {
-  const adminKey = process.env.ADMIN_KEY
-  const provided = req.headers.get('x-admin-key')
-  if (adminKey && provided !== adminKey) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
+export async function GET() {
   const Parser = (await import('rss-parser')).default
   const parser = new Parser({
     timeout: 8000,
@@ -26,12 +20,13 @@ export async function GET(req) {
     { name: 'NRA-ILA',      url: 'https://www.nraila.org/XML/RSS.aspx' },
     { name: 'Gun Digest',   url: 'https://gundigest.com/feed/' },
     { name: 'Pew Pew',      url: 'https://www.pewpewtactical.com/feed/' },
+    { name: 'Slickguns',    url: 'https://www.slickguns.com/feed' },
   ]
 
   const results = await Promise.all(TEST_FEEDS.map(async feed => {
     try {
       const r = await parser.parseURL(feed.url)
-      const items = r.items.slice(0, 3).map(i => ({ title: i.title?.slice(0,60), pubDate: i.pubDate || i.isoDate }))
+      const items = r.items.slice(0, 2).map(i => ({ title: i.title?.slice(0,60), pubDate: i.pubDate || i.isoDate }))
       return { name: feed.name, ok: true, count: r.items.length, items }
     } catch (e) {
       return { name: feed.name, ok: false, error: e.message.slice(0,80) }
@@ -39,10 +34,9 @@ export async function GET(req) {
   }))
 
   return Response.json({
-    env: {
-      NEWSAPI_KEY: !!process.env.NEWSAPI_KEY,
-      ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY,
-    },
+    env: { NEWSAPI_KEY: !!process.env.NEWSAPI_KEY, ANTHROPIC_API_KEY: !!process.env.ANTHROPIC_API_KEY },
+    working: results.filter(r => r.ok).length,
+    failed: results.filter(r => !r.ok).length,
     feeds: results
   })
 }
