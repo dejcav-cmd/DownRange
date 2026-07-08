@@ -1,1 +1,1 @@
-Jina+Google returned 0 images. Need to check Jina availability.
+Reddit image backfill: 0 fixed, 60 no image, 60 total
