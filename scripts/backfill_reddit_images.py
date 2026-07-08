@@ -185,3 +185,44 @@ try:
 except:
     cur = ""
 save(msg.rstrip() + debug_str)
+
+# ── Debug 2: find actual URL patterns in Bing page ───────────────────────────
+try:
+    with urllib.request.urlopen(
+        urllib.request.Request(
+            f"https://www.bing.com/images/search?q={urllib.parse.quote('Springfield Kuna 9mm product')}&first=1&count=5",
+            headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+                     "Accept": "text/html", "Referer": "https://www.bing.com/"}),
+        timeout=12) as r2:
+        full_page = r2.read().decode("utf-8", errors="replace")
+
+    # Try multiple patterns
+    patterns = {
+        "murl": r'"murl":"([^"]+)"',
+        "imgurl": r'"imgurl":"([^"]+)"',
+        "iurl": r'"iurl":"([^"]+)"',
+        "src_https": r'src="(https://[^"]*\.(?:jpg|jpeg|png|webp)[^"]*)"',
+        "data-src": r'data-src="(https://[^"]*\.(?:jpg|jpeg|png|webp)[^"]*)"',
+        "media_url": r'"mediaUrl":"([^"]+)"',
+        "thumbnailUrl": r'"thumbnailUrl":"([^"]+)"',
+    }
+    debug2 = ["\n=== BING PAGE PATTERN SCAN ==="]
+    for name, pat in patterns.items():
+        found = re.findall(pat, full_page, re.I)
+        debug2.append(f"  {name}: {len(found)} matches")
+        for f in found[:2]:
+            debug2.append(f"    {html_mod_dbg.unescape(f)[:90]}")
+
+    # Look for any HTTPS image URLs in the page
+    all_https_imgs = re.findall(r'https://[^\s"\'<>]+\.(?:jpg|jpeg|png|webp)(?:[?&][^\s"\'<>]*)?', full_page, re.I)
+    debug2.append(f"\n  Any HTTPS image URLs: {len(all_https_imgs)}")
+    for u in all_https_imgs[:5]:
+        debug2.append(f"    {html_mod_dbg.unescape(u)[:90]}")
+
+    debug2_str = "\n".join(debug2) + "\n"
+    print(debug2_str)
+
+    # Save updated result
+    save(msg.rstrip() + debug_str + debug2_str)
+except Exception as e:
+    print(f"Debug 2 failed: {e}")
