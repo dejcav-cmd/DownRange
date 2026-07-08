@@ -3,6 +3,9 @@ import crypto from 'crypto'
 import { rewriteWithClaude, isDuplicate, isSanityDuplicate, resetDedup, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage, searchForImage } from '../utils.js'
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
+// Module-level gate counter — reset by runNewsFeed at the start of each run
+let _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, published:0, threw:0 }
+
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 5    // up from 3 — more parallel to fit within Vercel 300s limit
 const ITEMS_PER_FEED = 8    // back to 8 — 12 was too many when combined with image fetching
@@ -690,8 +693,8 @@ async function runNewsFeed() {
   resetDedup()
   console.log('[NEWS] ▶ Starting feed pull...')
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
-  // DEBUG: track gate counts
-  const _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, published:0, threw:0 }
+  // Reset gate log for this run
+  _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, published:0, threw:0 }
 
   // Fetch all sources in parallel
   const [newsapi, rss] = await Promise.all([fetchNewsAPI(), fetchRSS()])
