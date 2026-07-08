@@ -1,1 +1,1 @@
-External deal image fix: 0 uploaded to CDN, 113 failed/skipped of 113 total
+Cleared imageUrl on 5 hotlink-blocked deals (gun.deals/slickguns CDN)
