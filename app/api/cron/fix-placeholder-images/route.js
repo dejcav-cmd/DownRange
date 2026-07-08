@@ -402,7 +402,18 @@ async function handler(req) {
           stats.upgraded++
           console.log(`[FIX-IMAGES] ✓ Deal image: "${deal.title?.slice(0, 40)}"`)
         } else {
-          stats.skipped++
+          // OG scrape failed — fall back to Pexels/Pixabay with deal title
+          const searchUrl = await searchForImage(deal.title, deal.category)
+          if (searchUrl) {
+            const slug2    = (deal.title || 'deal').toLowerCase().replace(/[^a-z0-9]/g, '-').slice(0, 40)
+            const searchCdn = await uploadToSanity(searchUrl, `deal-search-${slug2}-${deal._id.slice(-6)}.jpg`)
+            const finalUrl  = searchCdn || searchUrl
+            dealMutations.push({ patch: { id: deal._id, set: { imageUrl: finalUrl } } })
+            stats.fallback++
+            console.log(`[FIX-IMAGES] ~ Deal search fallback: "${deal.title?.slice(0, 40)}"`)
+          } else {
+            stats.skipped++
+          }
         }
         await new Promise(r => setTimeout(r, 500))
       }

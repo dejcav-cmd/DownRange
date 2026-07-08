@@ -164,7 +164,9 @@ export default async function NewsPage({ searchParams }) {
                     style={{ display: 'block', padding: '12px 0', borderBottom: '1px solid var(--border)', textDecoration: 'none' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '6px', marginBottom: '4px' }}>
                       <span className="pulse-dot" />
-                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', color: '#EF4444' }}>{alert.urgencyScore}/10</span>
+                      <span style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '9px', color: '#EF4444' }}>
+                        {alert.publishedAt ? new Date(alert.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'BREAKING'}
+                      </span>
                     </div>
                     <div style={{ fontFamily: "'Barlow Condensed', sans-serif", fontSize: '14px', fontWeight: 600, color: '#F0EDE6', lineHeight: 1.3 }}>
                       {alert.headline}

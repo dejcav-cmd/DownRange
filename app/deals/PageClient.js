@@ -572,6 +572,7 @@ function DealsInner({ states = [] }) {
                 {paginated.length > 0 ? (
                   <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:12, marginBottom:32 }}>
                     {paginated.map((deal, i) => <DealCard key={deal.id || i} deal={deal} userState={userState} liveRules={liveRules} />)}
+                    {[0,1,2,3].map(i => <div key={'ghost-'+i} aria-hidden="true" style={{ visibility:'hidden', height:0, overflow:'hidden', padding:0, margin:0 }} />)}
                   </div>
                 ) : (
                   <div style={{ padding:'80px 0', textAlign:'center', color:'#4B5563', fontFamily:MONO, fontSize:12 }}>

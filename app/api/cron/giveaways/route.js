@@ -12,79 +12,232 @@ const sanity = createClient({
 // Category detection from title
 function detectCategory(title) {
   const t = title.toLowerCase()
-  if (t.includes('pistol') || t.includes('handgun') || t.includes('glock') || t.includes('sig') || t.includes('9mm') || t.includes('1911')) return 'pistol'
+  if (t.includes('pistol') || t.includes('handgun') || t.includes('glock') || t.includes('sig') || t.includes('9mm') || t.includes('1911') || t.includes('revolver')) return 'pistol'
   if (t.includes('ar-15') || t.includes('ar15') || t.includes('rifle') || t.includes('carbine') || t.includes('ak') || t.includes('m4')) return 'rifle'
   if (t.includes('shotgun') || t.includes('gauge')) return 'shotgun'
-  if (t.includes('ammo') || t.includes('rounds') || t.includes('brass')) return 'ammo'
+  if (t.includes('ammo') || t.includes('rounds') || t.includes('brass') || t.includes('ammunition')) return 'ammo'
   if (t.includes('optic') || t.includes('scope') || t.includes('red dot') || t.includes('lpvo') || t.includes('eotech') || t.includes('vortex')) return 'optics'
   if (t.includes('suppressor') || t.includes('silencer')) return 'nfa'
-  if (t.includes('gear') || t.includes('tactical') || t.includes('holster') || t.includes('light')) return 'gear'
+  if (t.includes('gear') || t.includes('tactical') || t.includes('holster') || t.includes('light') || t.includes('knife') || t.includes('bag')) return 'gear'
   return 'accessories'
 }
 
 function parseValue(str) {
   if (!str) return 0
-  const m = str.replace(/,/g, '').match(/[\d.]+/)
-  return m ? parseInt(m[0]) : 0
+  const m = str.replace(/[$,]/g, '').match(/[\d.]+/)
+  return m ? Math.round(parseFloat(m[0])) : 0
 }
 
 function parseEndDate(str) {
   if (!str) return null
+  str = str.trim()
   try {
-    // Format: M/D/YY — convert to ISO
-    const parts = str.split('/')
-    if (parts.length === 3) {
-      const y = parseInt(parts[2]) < 100 ? 2000 + parseInt(parts[2]) : parseInt(parts[2])
-      return new Date(y, parseInt(parts[0]) - 1, parseInt(parts[1])).toISOString().split('T')[0]
+    // M/D/YY or M/D/YYYY
+    const slashParts = str.split('/')
+    if (slashParts.length === 3) {
+      const y = parseInt(slashParts[2]) < 100 ? 2000 + parseInt(slashParts[2]) : parseInt(slashParts[2])
+      const m = parseInt(slashParts[0])
+      const d = parseInt(slashParts[1])
+      if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
+        return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`
+      }
+    }
+    // Try ISO or natural language date
+    const parsed = new Date(str)
+    if (!isNaN(parsed.getTime()) && parsed.getFullYear() >= 2025) {
+      return parsed.toISOString().split('T')[0]
     }
     return null
   } catch { return null }
 }
 
+function extractSponsor(title) {
+  const brands = [
+    'Glock','SIG Sauer','SIG','Ruger','Smith & Wesson','S&W','Springfield Armory',
+    'Taurus','Beretta','CZ','Heckler & Koch','H&K','Walther','Shadow Systems',
+    'Palmetto State Armory','PSA','Century Arms','Faxon','AT3','Mad Pig Customs',
+    'Bul Armory','EOTech','Vortex','Primary Arms','Dead Air','SilencerCo',
+    'Streamlight','Swampfox','Magpul','Kimber','Colt','Benelli','Mossberg',
+    'Remington','Winchester','Browning','Savage','Tikka','Christensen Arms',
+    'Daniel Defense','Aero Precision','BCM','Wilson Combat','Nightforce',
+    'Trijicon','Aimpoint','Holosun','Leupold','Burris','Bushnell',
+    'LWRCI','Noveske','Canik','FN America','Staccato','Kahr','Kel-Tec',
+    'CMMG','KRISS','B&T','IWI','Steyr',
+  ]
+  for (const b of brands) {
+    if (title.toLowerCase().includes(b.toLowerCase())) return b
+  }
+  return 'Various'
+}
+
+// ── SCRAPER: WinTheGuns.com ───────────────────────────────────────────────────
 async function scrapeWinTheGuns() {
   const res = await fetch('https://wintheguns.com/', {
-    headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
-    signal: AbortSignal.timeout(15000),
+    headers: {
+      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept-Language': 'en-US,en;q=0.9',
+    },
+    signal: AbortSignal.timeout(20000),
   })
   if (!res.ok) throw new Error('wintheguns.com returned ' + res.status)
   const html = await res.text()
 
   const giveaways = []
-  // Parse table rows: <tr><td><a href="...">Title</a></td><td>$Value</td><td>M/D/YY</td><td>M/D/YY</td></tr>
-  const rowRegex = /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>\s*<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>/gi
+
+  // Try multiple regex patterns for table rows with links
+  const patterns = [
+    // Pattern 1: full table row with 5 cells
+    /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>.*?<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>/gis,
+    // Pattern 2: just the link with title and value in adjacent cells
+    /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{10,120})<\/a><\/td>\s*<td[^>]*>\s*(\$[\d,]+)/gi,
+  ]
+
   let match
-  while ((match = rowRegex.exec(html)) !== null) {
-    const [, href, title, value, endDate, addedDate] = match
-    if (!href || !title || href.includes('avantlink') || href.includes('javascript')) continue
-    const cleanTitle = title.replace(/\*/g, '').trim()
-    if (cleanTitle.length < 10) continue
+  // Pattern 1
+  const re1 = /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/gi
+  while ((match = re1.exec(html)) !== null) {
+    const [, href, title] = match
+    if (!href || !title) continue
+    if (href.includes('avantlink') || href.includes('javascript') || href.startsWith('#')) continue
+    const cleanTitle = title.replace(/\*/g, '').replace(/&amp;/g, '&').trim()
+    if (cleanTitle.length < 8 || cleanTitle.toLowerCase().includes('sponsor')) continue
+    if (cleanTitle.toLowerCase().startsWith('click') || cleanTitle.toLowerCase().startsWith('enter')) continue
+
+    // Extract value and end date from surrounding context (after the href match)
+    const ctxStart = match.index
+    const ctx = html.slice(ctxStart, ctxStart + 400)
+    const valueMatch = ctx.match(/\$\s*([\d,]+)/)
+    const dateMatches = ctx.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/g)
+
+    const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
+    // End date is typically the 2nd date found (1st is start date)
+    const endDate = dateMatches?.length >= 2
+      ? parseEndDate(dateMatches[1])
+      : dateMatches?.length === 1 ? parseEndDate(dateMatches[0]) : null
+
     giveaways.push({
-      title:     cleanTitle,
-      entryUrl:  href.trim(),
-      prize:     cleanTitle,
-      prizeValue:parseValue(value),
-      endDate:   parseEndDate(endDate.trim()),
-      addedDate: parseEndDate(addedDate.trim()),
-      category:  detectCategory(cleanTitle),
-      sponsor:   extractSponsor(cleanTitle),
-      type:      'external',
-      featured:  parseValue(value) >= 2000,
-      active:    true,
-      source:    'wintheguns.com',
+      title: cleanTitle,
+      entryUrl: href.trim().startsWith('/') ? 'https://wintheguns.com' + href.trim() : href.trim(),
+      prize: cleanTitle,
+      prizeValue,
+      endDate,
+      category: detectCategory(cleanTitle),
+      sponsor: extractSponsor(cleanTitle),
+      type: 'external',
+      featured: prizeValue >= 1500,
+      active: true,
+      source: 'wintheguns.com',
     })
   }
-  return giveaways.slice(0, 50) // cap at 50
+
+  console.log('[GIVEAWAYS] wintheguns.com: scraped', giveaways.length, 'raw entries')
+  return giveaways.slice(0, 80)
 }
 
-function extractSponsor(title) {
-  const brands = ['Glock','SIG Sauer','Ruger','Smith & Wesson','Springfield Armory','Taurus',
-    'Beretta','CZ','Heckler & Koch','Walther','Shadow Systems','Palmetto State Armory','PSA',
-    'Century Arms','Faxon','AT3','Mad Pig Customs','Bul Armory','NDZ','EOTech','Vortex',
-    'Primary Arms','Dead Air','SilencerCo','Streamlight','Swampfox','Magpul']
-  for (const b of brands) {
-    if (title.toLowerCase().includes(b.toLowerCase())) return b
+// ── SCRAPER: GunGiveaways.net ────────────────────────────────────────────────
+async function scrapeGunGiveaways() {
+  try {
+    const res = await fetch('https://gungiveaways.net/', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      },
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!res.ok) return []
+    const html = await res.text()
+    const giveaways = []
+
+    // Look for giveaway links on the page
+    const re = /<a\s+href="(https?:\/\/[^"]+)"[^>]*[^>]*>([^<]{15,150})<\/a>/gi
+    let match
+    while ((match = re.exec(html)) !== null) {
+      const [, href, title] = match
+      if (!title || title.length < 15) continue
+      const cleanTitle = title.replace(/\s+/g, ' ').replace(/&amp;/g, '&').trim()
+      // Skip nav/footer links
+      if (/^(home|about|contact|privacy|terms|search|categories)/i.test(cleanTitle)) continue
+      if (!/(gun|pistol|rifle|shotgun|firearm|ammo|glock|sig|ruger|revolver|ar-15|45|9mm|357|44|22|mag|suppressor|optic|scope)/i.test(cleanTitle.toLowerCase())) continue
+
+      giveaways.push({
+        title: cleanTitle,
+        entryUrl: href,
+        prize: cleanTitle,
+        prizeValue: 0,
+        endDate: null,
+        category: detectCategory(cleanTitle),
+        sponsor: extractSponsor(cleanTitle),
+        type: 'external',
+        featured: false,
+        active: true,
+        source: 'gungiveaways.net',
+      })
+    }
+    console.log('[GIVEAWAYS] gungiveaways.net:', giveaways.length, 'entries')
+    return giveaways.slice(0, 30)
+  } catch (e) {
+    console.warn('[GIVEAWAYS] gungiveaways.net failed:', e.message)
+    return []
   }
-  return 'Various'
+}
+
+// ── SCRAPER: Manufacturer Giveaway Pages ─────────────────────────────────────
+const MANUFACTURER_PAGES = [
+  { name: 'Palmetto State Armory', url: 'https://palmettostatearmory.com/giveaways', type: 'retailer' },
+  { name: 'Springfield Armory',    url: 'https://www.springfield-armory.com/promotions/', type: 'manufacturer' },
+  { name: 'Taurus USA',            url: 'https://www.taurususa.com/promotions', type: 'manufacturer' },
+  { name: 'Brownells',             url: 'https://www.brownells.com/promotions/', type: 'retailer' },
+  { name: 'MidwayUSA',             url: 'https://www.midwayusa.com/promotions', type: 'retailer' },
+]
+
+async function scrapeManufacturerPages() {
+  const results = []
+  for (const page of MANUFACTURER_PAGES) {
+    try {
+      const res = await fetch(page.url, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0; +https://downrangeco.com)' },
+        signal: AbortSignal.timeout(10000),
+      })
+      if (!res.ok) continue
+      const html = await res.text()
+
+      // Look for giveaway/sweepstakes keywords near links
+      const giveawaySection = html.match(/(giveaway|sweepstake|win a|enter to win)[^]{0,2000}/gi) || []
+      for (const section of giveawaySection.slice(0, 3)) {
+        const linkMatch = section.match(/href="(https?:\/\/[^"]{20,150})"[^>]*>([^<]{10,100})</)
+        if (linkMatch) {
+          results.push({
+            title: `${page.name} Giveaway — ${linkMatch[2].trim()}`,
+            entryUrl: linkMatch[1],
+            prize: linkMatch[2].trim(),
+            prizeValue: 0,
+            endDate: null,
+            category: detectCategory(linkMatch[2]),
+            sponsor: page.name,
+            type: page.type,
+            featured: false,
+            active: true,
+            source: page.name,
+          })
+        }
+      }
+    } catch (e) {
+      console.warn(`[GIVEAWAYS] ${page.name} failed:`, e.message)
+    }
+    await new Promise(r => setTimeout(r, 500))
+  }
+  return results
+}
+
+function deduplicateGiveaways(giveaways) {
+  const seen = new Set()
+  return giveaways.filter(g => {
+    const key = (g.entryUrl || '').toLowerCase().replace(/[?#].*/, '').replace(/\/$/, '')
+    if (!key || key.length < 10) return false
+    if (seen.has(key)) return false
+    seen.add(key)
+    return true
+  })
 }
 
 export async function GET(req) {
@@ -97,20 +250,14 @@ export async function GET(req) {
   if (!isCron && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
   const t0 = Date.now()
-  const stats = { scraped: 0, added: 0, skipped: 0, expired: 0 }
+  const stats = { scraped: 0, added: 0, skipped: 0, expired: 0, sources: {} }
 
   try {
-    const giveaways = await scrapeWinTheGuns()
-    stats.scraped = giveaways.length
-
-    // Get existing giveaway URLs to avoid duplicates
-    const existing = await sanity.fetch(
-      '*[_type == "giveaway"] { _id, entryUrl, endDate }'
-    ).catch(() => [])
-    const existingUrls = new Set((existing || []).map(g => g.entryUrl))
-
-    // Mark expired giveaways
+    // Expire past giveaways
     const today = new Date().toISOString().split('T')[0]
+    const existing = await sanity.fetch('*[_type == "giveaway"] { _id, entryUrl, endDate }').catch(() => [])
+    const existingUrls = new Set((existing || []).map(g => (g.entryUrl || '').toLowerCase().replace(/\/$/, '')))
+
     for (const g of existing || []) {
       if (g.endDate && g.endDate < today) {
         await sanity.patch(g._id).set({ active: false }).commit().catch(() => {})
@@ -118,40 +265,64 @@ export async function GET(req) {
       }
     }
 
-    // Add new giveaways
+    // Scrape all sources
+    const [mainGiveaways, altGiveaways, mfrGiveaways] = await Promise.allSettled([
+      scrapeWinTheGuns(),
+      scrapeGunGiveaways(),
+      scrapeManufacturerPages(),
+    ])
+
+    const allRaw = [
+      ...(mainGiveaways.status === 'fulfilled' ? mainGiveaways.value : []),
+      ...(altGiveaways.status === 'fulfilled' ? altGiveaways.value : []),
+      ...(mfrGiveaways.status === 'fulfilled' ? mfrGiveaways.value : []),
+    ]
+
+    stats.scraped = allRaw.length
+    const giveaways = deduplicateGiveaways(allRaw)
+
     const mutations = []
     for (const g of giveaways) {
-      if (existingUrls.has(g.entryUrl)) { stats.skipped++; continue }
+      if (!g.entryUrl || !g.title) { stats.skipped++; continue }
+      // Skip expired
       if (g.endDate && g.endDate < today) { stats.expired++; continue }
+      // Skip if already in Sanity
+      const normUrl = g.entryUrl.toLowerCase().replace(/\/$/, '')
+      if (existingUrls.has(normUrl)) { stats.skipped++; continue }
+
+      try { new URL(g.entryUrl) } catch { stats.skipped++; continue }
+
       mutations.push({
         create: {
-          _type:      'giveaway',
-          title:      g.title,
-          entryUrl:   g.entryUrl,
-          prize:      g.prize,
-          prizeValue: g.prizeValue,
-          endDate:    g.endDate,
-          category:   g.category,
-          sponsor:    g.sponsor,
-          type:       g.type,
-          featured:   g.featured,
-          active:     g.active,
-          source:     g.source,
-          addedAt:    new Date().toISOString(),
+          _type:       'giveaway',
+          title:       g.title,
+          entryUrl:    g.entryUrl,
+          prize:       g.prize || g.title,
+          prizeValue:  g.prizeValue || 0,
+          endDate:     g.endDate || null,
+          category:    g.category || 'gear',
+          sponsor:     g.sponsor || 'Various',
+          sourceType:  g.type || 'external',
+          featured:    g.featured || false,
+          active:      true,
+          source:      g.source || 'web',
+          addedAt:     new Date().toISOString(),
         }
       })
       stats.added++
+      stats.sources[g.source] = (stats.sources[g.source] || 0) + 1
     }
 
     if (mutations.length > 0) {
       await sanity.mutate(mutations)
     }
 
+    console.log('[GIVEAWAYS] Done:', stats)
     return NextResponse.json({
       ok: true,
       ms: Date.now() - t0,
       ...stats,
-      message: stats.added + ' new giveaways added from wintheguns.com',
+      message: `${stats.added} new giveaways from ${Object.keys(stats.sources).join(', ')}`,
     })
   } catch (err) {
     console.error('[giveaways-cron]', err.message)

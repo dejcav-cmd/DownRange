@@ -93,6 +93,7 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
             <NewsCard article={article} />
           </div>
         ))}
+        {[0,1].map(i => <div key={'ghost-'+i} aria-hidden="true" style={{ visibility:'hidden', height:0, overflow:'hidden' }} />)}
       </div>
     </div>
   )

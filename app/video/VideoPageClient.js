@@ -394,6 +394,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
             {paged.map(v => (
               <VideoCard key={v._id || v.videoId} video={v} onClick={() => play(v)} />
             ))}
+            {[0,1,2].map(i => <div key={'ghost-'+i} aria-hidden="true" style={{ visibility:'hidden', height:0, overflow:'hidden' }} />)}
           </div>
 
           {filtered.length === 0 && (

@@ -60,7 +60,7 @@ export async function fetchArticlesPaginated({ page = 1, perPage = 20, category 
     filters += ` && (title match "*${q}*" || summary match "*${q}*" || source match "*${q}*")`
   }
   const [articles, total] = await Promise.all([
-    client.fetch(`*[${filters}] | order(_createdAt desc) [${offset}...${offset + perPage}] {
+    client.fetch(`*[${filters}] | order(publishedAt desc, _createdAt desc) [${offset}...${offset + perPage}] {
       _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
       heroImage { asset->{url}, alt },
       imageUrl, imageAlt,
