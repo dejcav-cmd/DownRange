@@ -1,11 +1,14 @@
-Direct patch results:
-✗ Springfield Kuna: no image found
-✗ Glock 19 Gen 5: no image found
-✗ Glock 22 Gen4: no image found
-✗ Glock 17 Gen 6: no image found
-✗ SilencerCo Scythe-Ti: no image found
-✗ Vortex Defender-ST: no image found
-✗ Ruger Mini-14: no image found
-✗ SilencerCo Spectre 9: no image found
-✗ SIG MCX SPEAR: no image found
-✗ Vortex Strike Eagle 1-8x24: no image found
+SA Kuna: HTTP 200, 404711 chars, OG: none
+  First 300: <html lang="en"><head>     <meta charset="utf-8">     <meta http-equiv="x-ua-compatible" content="ie=edge">         <title>Page not found - Springfield Armory</title>     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     <link rel="icon" type="image/png" href
+
+SA Kuna 2: HTTP 200, 484128 chars, OG: https://springfieldarmory.b-cdn.net/wp-content/uploads/KN9069B.png
+  First 300: <html lang="en"><head>     <meta charset="utf-8">     <meta http-equiv="x-ua-compatible" content="ie=edge">         <title>KUNA 9mm Pistol - KN9069B - Springfield Armory</title>     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">     <link rel="icon" type="imag
+
+Glock G19: HTTP 200, 45834 chars, OG: none
+  First 300: <html id="__next_error__"><head><meta charSet="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-776055c3a1b3f656.js?dpl=dpl_FFW3dWJhWnRoCteMj2XfBPtA3KAV"><script src="/_next/static/chunks
+
+Glock G19 gen5: HTTP 200, 45849 chars, OG: none
+  First 300: <html id="__next_error__"><head><meta charSet="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="preload" as="script" fetchPriority="low" href="/_next/static/chunks/webpack-776055c3a1b3f656.js?dpl=dpl_FFW3dWJhWnRoCteMj2XfBPtA3KAV"><script src="/_next/static/chunks
+
+Vortex Defender-ST: HTTP 200, 444496 chars, OG: none
+  First 300: <html lang="en" data-uw-w-loader=""><head><meta http-equiv="origin-trial" content="A7vZI3v+Gz7JfuRolKNM4Aff6zaGuT7X0mf3wtoZTnKv6497cVMnhy03KDqX7kBz/q/iidW7srW31oQbBt4VhgoAAACUeyJvcmlnaW4iOiJodHRwczovL3d3dy5nb29nbGUuY29tOjQ0MyIsImZlYXR1cmUiOiJEaXNhYmxlVGhpcmRQYXJ0eVN0b3JhZ2VQYXJ0aXRpb25pbmczIiwiZXhwa
