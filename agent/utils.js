@@ -149,12 +149,13 @@ async function loadSanityDedup() {
   try {
     // Use a fast count + recent-first approach instead of loading ALL articles
     // Only load last 2000 articles — anything older won't appear in RSS feeds anyway
-    // RSS feeds only serve the last 20-100 items, all published within days/weeks
+    // RSS feeds serve content from the past 24-48h; 7-day window caused all RSS items
+    // to be flagged as Sanity dupes since they'd all been ingested in the past week.
     const query = encodeURIComponent(
-      `*[_type in ["newsArticle","gunDeal"] && _createdAt > $since] | order(_createdAt desc)[0...2000]{ "u": externalUrl, "t": title }`
+      `*[_type in ["newsArticle","gunDeal"] && _createdAt > $since] | order(_createdAt desc)[0...2000]{ "u": externalUrl, "t": title, "c": _createdAt }`
     )
     const res = await fetch(
-      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&%24since=${encodeURIComponent(new Date(Date.now()-7*24*60*60*1000).toISOString())}&returnQuery=false`,
+      `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&%24since=${encodeURIComponent(new Date(Date.now()-48*60*60*1000).toISOString())}&returnQuery=false`,
       { headers: { Authorization: `Bearer ${process.env.SANITY_API_TOKEN}` }, signal: AbortSignal.timeout(10000) }
     )
     const data = await res.json()
@@ -162,9 +163,13 @@ async function loadSanityDedup() {
     // docs don't leave phantom entries behind indefinitely.
     _sanityDedup.urls = new Set()
     _sanityDedup.titles = new Set()
+    // Title dedup is kept to a 48h window — titles are often similar across outlets covering the
+    // same news event, and a 7-day title window causes false-positive dedup as RSS feeds
+    // continue serving old articles. URL dedup stays at 7 days since URLs are precise.
+    const titleCutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
     for (const doc of (data.result || [])) {
       if (doc.u) _sanityDedup.urls.add(doc.u.toLowerCase().replace(/\/+$/, ''))
-      if (doc.t) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0, 80))
+      if (doc.t && (doc.c || '') >= titleCutoff) _sanityDedup.titles.add(doc.t.toLowerCase().slice(0, 80))
     }
     _sanityDedup.loaded = true
     _sanityDedup.loadedAt = Date.now()
