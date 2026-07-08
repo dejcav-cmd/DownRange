@@ -1,9 +1,9 @@
 Fetching r/gundeals hot RSS...
-  RSS fetched — 180298 bytes
+  RSS fetched — 183366 bytes
   Parsed 97 posts from RSS
-  112 existing Reddit deal IDs in Sanity
-  2 new deals to add, 95 skipped
-  Wrote batch 1: 2 docs
+  114 existing Reddit deal IDs in Sanity
+  5 new deals to add, 92 skipped
+  Wrote batch 1: 5 docs
   No stale deals to expire
 
-DONE: added=2 skipped=95 expired=0
+DONE: added=5 skipped=92 expired=0
