@@ -58,11 +58,23 @@ def download_img(url):
     except:
         return None
 
-def upload_sanity(data, doc_id):
-    fname = f"reddit-{doc_id[-8:]}.jpg"
+def upload_sanity(data, doc_id, img_url=""):
+    # Detect content type from magic bytes or URL
+    b = bytearray(data[:4])
+    if b[0]==0x89 and b[1]==0x50:
+        ct, ext = "image/png", "png"
+    elif b[0]==0xFF and b[1]==0xD8:
+        ct, ext = "image/jpeg", "jpg"
+    elif b[0]==0x52 and b[1]==0x49:  # RIFF (webp)
+        ct, ext = "image/webp", "webp"
+    elif img_url.lower().endswith(".png"):
+        ct, ext = "image/png", "png"
+    else:
+        ct, ext = "image/jpeg", "jpg"
+    fname = f"reddit-{doc_id[-8:]}.{ext}"
     url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/assets/images/production?filename={fname}"
     req = urllib.request.Request(url, data=data, method="POST", headers={
-        "Authorization": f"Bearer {TOKEN}", "Content-Type": "image/jpeg",
+        "Authorization": f"Bearer {TOKEN}", "Content-Type": ct,
         "Content-Disposition": f"attachment; filename={fname}"})
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
@@ -158,7 +170,7 @@ for d in (deals or []):
         results.append(f"✗ {d['title'][:40]}: download failed")
         continue
 
-    cdn = upload_sanity(img_data, d['_id'])
+    cdn = upload_sanity(img_data, d['_id'], og)
     if not cdn:
         results.append(f"✗ {d['title'][:40]}: CDN upload failed")
         continue
