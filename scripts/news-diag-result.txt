@@ -1,1 +1,1 @@
-Cleared 121 wrong Bing images from Reddit deals. They now show branded placeholder.
+Reddit image backfill: 0 fixed, 71 no image found, 71 total
