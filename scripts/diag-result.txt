@@ -2,54 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 66 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/54d2ae43873577f1987247cbe8426c3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/07aba51e36b0e07f23003a108001d15
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/693339d7fea217ae2404ade6631f9fd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1d75d1a29c65b8d7d54acad0f366ced
-  ✗ https://lanbosarmory.com/index.php?main_page=product_info&amp;cPath=15
+Needs image fix: 24 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/efb5742f6834d23da5ccb16c4fd825d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/08b49033976bc616da8ae3657523664
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/tx22-compact-deal.
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/Remington-UmC-deal
-  ✗ https://suppliessolutionsllc.com/product/pof-5-semi-automatic-pistol
-  ✗ https://honeybadgerhaus.com/hk-parts
-  ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
-  ✗ https://shop.gafiringline.com/trijicon/rmr-hd-adj-3-25-moa-56754
   ~ og: https://gunsamerica.com/digest/wp-content/uploads/2026/07/Athlon_Monoc
-  ✗ https://www.wistransfers.com/product/police-trade-in-glock-g19-gen5-co
-  ✗ https://defensemechanisms.com/
-  skip coupon: https://gun.deals/content/coupon-store-optics-planettuesday-
-  ✗ https://lokgrips.com/
-  ✗ https://www.3dgunman.com/product/aimpoint-acro-p2-red-dot-reflex-sight
-  ✗ https://dkgun.com/product/mr-desert-eagle-50ae-6-blk-integral-mb-blem-
-  ✗ https://www.nighthawkcustom.com/parts-and-accessories
-  ✗ https://shooterschoicesc.com/product/sco-scythe-ti-30-cal
-  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
-  ✗ https://www.208gunshop.com/glock/glock-17-gen-6-9mm-coa-959031
-  ✗ http://dwilsonmfg.com
-  ✗ https://akoptionsllc.com/slings-pouches/
-  ✗ https://skidtactical.com/firearms/sig-sauer/sig-sauer-rspear-762-16b-c
-  ✗ https://aimsurplus.com/products/leo-trade-in-griffin-armament-hrt556-2
-  ✗ https://clydearmory.com/agency-trade-in-mini-14-government-barrel-stai
-  ✗ https://lmtdefense.com/
-  ✗ https://deleonrxgunsandammo.com/product/osight-xe-reflex-red-dot-sight
-  ✗ https://unobtainiumgear.com/products/blem-sale
-  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
-  ✗ https://hansohnbrothers.com/shop/?_sfm__stock_status=instock&amp;_sft_
-  ✗ https://www.earthseedequipment.com/category/new-arrivals
-  ✗ https://glutenfreegear.com/4th-of-july-sale.html
-  ✗ https://www.bettergeiger.com/product-list
-  ✗ https://panthercitytactical.com/
-  ✗ https://ftw-arms.com/shop/best-sellers/ftw-og-22lr-suppressor/
-  ✗ https://checkmatedefense.us/optics/
-  ✗ http://www.deeznutztactical.com
-  ✗ https://flatlinefiberco.com/
-  ✗ https://notjustguns.com/product/wal-4797049-pdp-f-series-pro-x-pmm-9mm
-  ✗ https://notjustguns.com/product/aimpoint-coa-with-3.5-moa-enclosed-emi
-  ✗ https://sionicsweaponsystems.com/product-category/parts/barrels/
-  ✗ https://www.basspro.com/p/vortex-defender-st-red-dot-sight
-  ✗ https://doublemdefense.com/product/sco-spectre-9/
-  ✗ https://notjustguns.com/product/smith-wesson-csx-e-series-9mm-pistol-3
-  ✗ https://bansheedefense.com/product-category/use-code-taxthisdick/
   ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
   ✗ https://www.peppersgeneralstore.com/
   ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
@@ -69,10 +27,10 @@ Needs image fix: 66 (null + gun.deals hotlink-blocked)
   ~ og: https://gun.deals/sites/default/files/223%20Wylde%2010.5″%20Pistol%20(
   ~ og: https://gun.deals/sites/default/files/V12-深褐色场景图.jpg
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
-  → patched final 11
+  → patched final 9
 
-Stats: uploaded=4 fallback=7 failed=53
+Stats: uploaded=2 fallback=7 failed=14
 
-=== FINAL: total=4367 missing_images=54 reddit=0 ===
+=== FINAL: total=4380 missing_images=14 reddit=0 ===
 
-FIXED: 11
+FIXED: 9
