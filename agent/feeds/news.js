@@ -4,7 +4,7 @@ import { rewriteWithClaude, isDuplicate, isSanityDuplicate, resetDedup, publishT
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // Module-level gate counter — reset by runNewsFeed at the start of each run
-let _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0 }
+let _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0, lastError:null }
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 5    // up from 3 — more parallel to fit within Vercel 300s limit
@@ -647,8 +647,15 @@ async function processNewsItem(item) {
   }
 
   _gateLog.published++
-  await publishToSanity(doc)
-  console.log(`[NEWS] ✓ "${item.title.slice(0, 60)}" [${category}]${ai ? ' +AI' : ' +raw'}`)
+  try {
+    await publishToSanity(doc)
+    console.log(`[NEWS] ✓ "${item.title.slice(0, 60)}" [${category}]${ai ? ' +AI' : ' +raw'}`)
+  } catch(publishErr) {
+    _gateLog.threw++
+    _gateLog.lastError = publishErr.message?.slice(0,100)
+    console.error(`[NEWS] ✗ publishToSanity FAILED for "${item.title.slice(0,50)}": ${publishErr.message}`)
+    return null
+  }
 
   // Breaking alert
   if (category !== 'deals' && (ai?.isBreaking || (ai?.urgencyScore || 0) >= 8)) {
@@ -696,7 +703,7 @@ async function runNewsFeed() {
   console.log('[NEWS] ▶ Starting feed pull...')
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
   // Reset gate log for this run
-  _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0 }
+  _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0, lastError:null }
 
   // Fetch all sources in parallel
   const [newsapi, rss] = await Promise.all([fetchNewsAPI(), fetchRSS()])
