@@ -1,0 +1,10 @@
+=== SANITY WRITE TEST ===
+Token: MISSING
+Project: vbnsqnkg
+
+Write test result: HTTP 400
+  Response: {"statusCode":400,"message":"Invalid authorization header - please double-check token","error":"Bad Request"}
+
+
+=== LAST 5 NEWS CRON RUNS (full details) ===
+  QUERY ERROR: HTTP Error 400: Bad Request
