@@ -32,8 +32,30 @@ def save_result(content):
     with urllib.request.urlopen(req) as r:
         return r.status
 
-# Trigger news feed
-print("Triggering news feed via preview URL...")
+lines = ["=== NEWS FEED TRIGGER RESULT ==="]
+
+# Test Sanity write directly first
+lines.append("\n-- Sanity write test --")
+try:
+    url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/mutate/production"
+    body = json.dumps({"mutations": [{"createIfNotExists": {
+        "_id": "news-test-diag-002", "_type": "newsArticle",
+        "title": "Diag test", "approved": True,
+        "slug": {"_type": "slug", "current": "diag-test-002"},
+        "publishedAt": "2026-01-01T00:00:00Z"
+    }}]}).encode()
+    req = urllib.request.Request(url, data=body, method="POST",
+        headers={"Authorization": f"Bearer {SANITY_TOKEN}", "Content-Type": "application/json"})
+    with urllib.request.urlopen(req, timeout=10) as r:
+        res = json.loads(r.read())
+        lines.append(f"Sanity write: HTTP 200 → {res.get('results', [{}])[0].get('operation','?')}")
+except urllib.request.HTTPError as e:
+    lines.append(f"Sanity write FAILED: HTTP {e.code} → {e.read().decode()[:200]}")
+except Exception as e:
+    lines.append(f"Sanity write ERROR: {e}")
+
+# Now trigger news feed
+lines.append("\n-- News feed trigger --")
 preview_url = "https://down-range-indol.vercel.app/api/agent?feed=news"
 req = urllib.request.Request(preview_url,
     headers={"Authorization": f"Bearer {CRON_SECRET}"})
@@ -42,29 +64,24 @@ try:
     with urllib.request.urlopen(req, timeout=310) as r:
         elapsed = time.time() - start
         body = json.loads(r.read())
-        result = f"""=== NEWS FEED TRIGGER RESULT ===
-Status: HTTP {r.status}
-Time: {elapsed:.1f}s
-
-done: {body.get('result', {}).get('done', '?')}
-total: {body.get('result', {}).get('total', '?')}
-dupes: {body.get('result', {}).get('dupes', '?')}
-withAI: {body.get('result', {}).get('withAI', '?')}
-
-headlines: {json.dumps(body.get('result', {}).get('headlines', [])[:10], indent=2)}
-
-full result: {json.dumps(body.get('result', {}), indent=2)[:500]}
-"""
-        print(result)
-        save_result(result)
+        result = body.get('result', {})
+        lines.append(f"HTTP {r.status} in {elapsed:.1f}s")
+        lines.append(f"done={result.get('done')} total={result.get('total')} dupes={result.get('dupes')}")
+        lines.append(f"headlines: {result.get('headlines', [])[:5]}")
 except Exception as e:
-    err = f"ERROR: {e}"
-    print(err)
-    # Still check last cron run
-    time.sleep(5)
-    runs = sanity_query('*[_type=="cronRun"&&jobId=="news"]|order(at desc)[0...3]{at,status,details,error}')
-    r2 = f"Trigger failed: {err}\n\nLast 3 cron runs:\n"
-    for r in (runs or []):
-        r2 += f"  {r.get('at','?')[:16]} | {r.get('status')} | {str(r.get('details',''))[:100]}\n"
-    print(r2)
-    save_result(r2)
+    elapsed = time.time() - start
+    lines.append(f"Request failed after {elapsed:.1f}s: {e}")
+
+# Check latest cron run for details
+time.sleep(3)
+lines.append("\n-- Last 3 news cron runs --")
+runs = sanity_query('*[_type=="cronRun"&&jobId=="news"]|order(at desc)[0...3]{at,status,ms,details,error}')
+for r in (runs or []):
+    lines.append(f"{r.get('at','?')[:16]} | {r.get('status')} | {int(r.get('ms',0)/1000)}s")
+    lines.append(f"  details: {str(r.get('details',''))[:150]}")
+    if r.get('error'):
+        lines.append(f"  error: {str(r.get('error'))[:150]}")
+
+output = "\n".join(lines) + "\n"
+print(output)
+save_result(output)
