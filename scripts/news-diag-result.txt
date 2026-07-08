@@ -5,3 +5,15 @@ Query URL: https://www.bing.com/images/search?q=%22Springfield%20Kuna%209mm%22%2
 Bing HTTP 200: 0 murl results found
   turl (thumbnail) count: 0
   page snippet: m:1,clickbackRSAfterOnP1:1,clickbackRSonTopW:1,cbRSHoveronTopW:1,clickbackRSonAdAlgo:1,cbrsmoprssup:1,enableClickbackRSInTab:1,isClickbackRSInTab:1,enableMultiCBRS:1,sharepreviewthumbnailid:1,rslinkcl
+
+=== BING PAGE PATTERN SCAN ===
+  murl: 0 matches
+  imgurl: 0 matches
+  iurl: 0 matches
+  src_https: 0 matches
+  data-src: 0 matches
+  media_url: 0 matches
+  thumbnailUrl: 0 matches
+
+  Any HTTPS image URLs: 1
+    https://jairelentess.itch.io/sprunkmod","murl":"https://img.itch.zone/aW1nLzE4NjE0MDY3LnBu
