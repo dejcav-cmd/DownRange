@@ -3,8 +3,16 @@
 Backfill Reddit deal images by searching manufacturer websites via Jina.
 Brand detected from title → search manufacturer site search page → scrape first product OG image.
 """
-import urllib.request, urllib.parse, json, os, base64, time, re
+import urllib.request, urllib.parse, json, os, base64, time, re, sys
 import html as html_mod
+
+# Capture all output for saving to GitHub
+_log_lines = []
+_orig_print = print
+def print(*args, **kwargs):
+    _orig_print(*args, **kwargs)
+    _log_lines.append(' '.join(str(a) for a in args))
+
 
 TOKEN  = os.environ.get("SANITY_API_TOKEN","").replace("ST=","").strip()
 GH_PAT = os.environ.get("GH_PAT","").strip()
@@ -231,6 +239,7 @@ for d in (deals or []):
         not_found += 1
     time.sleep(0.5)
 
-msg = f"Reddit image backfill: {fixed} fixed, {not_found} no image, {total} total\n"
+msg = f"Reddit image backfill: {fixed} fixed, {not_found} no image, {total} total"
 print(f"\n{msg}")
-save(msg)
+full_log = "\n".join(_log_lines) + "\n"
+save(full_log)
