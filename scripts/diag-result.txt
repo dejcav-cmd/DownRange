@@ -2,7 +2,8 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 60 (null + gun.deals hotlink-blocked)
+Needs image fix: 61 (null + gun.deals hotlink-blocked)
+  ✗ https://lanbosarmory.com/index.php?main_page=product_info&amp;cPath=15
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/tx22-compact-deal.
   ~ og: https://www.ammoland.com/wp-content/uploads/2026/07/Remington-UmC-deal
   ✗ https://suppliessolutionsllc.com/product/pof-5-semi-automatic-pistol
@@ -65,8 +66,8 @@ Needs image fix: 60 (null + gun.deals hotlink-blocked)
   ✗ https://gun.deals/product/rise-armament-rave-140-drop-trigger-flat-cur
   → patched final 6
 
-Stats: uploaded=0 fallback=6 failed=52
+Stats: uploaded=0 fallback=6 failed=53
 
-=== FINAL: total=4353 missing_images=53 reddit=0 ===
+=== FINAL: total=4359 missing_images=54 reddit=0 ===
 
 FIXED: 6
