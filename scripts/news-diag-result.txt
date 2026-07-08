@@ -1,6 +1,6 @@
 === NEWS FEED TRIGGER RESULT ===
 Status: HTTP 200
-Time: 272.6s
+Time: 289.4s
 
 done: 0
 total: 80
@@ -15,7 +15,7 @@ full result: {
   "withRaw": 0,
   "dupes": 80,
   "total": 80,
-  "ms": 269730,
+  "ms": 286502,
   "claudeUp": true,
   "headlines": []
 }
