@@ -140,3 +140,48 @@ for d in (deals or []):
 msg = f"Reddit image backfill: {fixed} fixed, {not_found} no image found, {total} total\n"
 print(f"\n{msg}")
 save(msg)
+
+# ── Debug: test Bing on one sample deal ──────────────────────────────────────
+import html as html_mod_dbg
+debug_out = ["", "=== BING DEBUG ==="]
+if deals:
+    test_product = extract_product_name(deals[0]["title"])
+    debug_out.append(f"Product: {test_product}")
+    test_query = f'"{test_product}" product'
+    encoded_dbg = urllib.parse.quote(test_query)
+    test_url = f"https://www.bing.com/images/search?q={encoded_dbg}&first=1&count=5"
+    debug_out.append(f"Query URL: {test_url[:100]}")
+    try:
+        req_dbg = urllib.request.Request(test_url, headers={
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+            "Accept": "text/html", "Referer": "https://www.bing.com/"})
+        with urllib.request.urlopen(req_dbg, timeout=12) as r_dbg:
+            page_dbg = r_dbg.read().decode("utf-8", errors="replace")
+        murls = [html_mod_dbg.unescape(u) for u in re.findall(r'"murl":"([^"]+)"', page_dbg)]
+        debug_out.append(f"Bing HTTP 200: {len(murls)} murl results found")
+        for mu in murls[:4]:
+            debug_out.append(f"  murl: {mu[:90]}")
+        if not murls:
+            # Check for alternative patterns
+            thm = re.findall(r'"turl":"([^"]+)"', page_dbg)
+            debug_out.append(f"  turl (thumbnail) count: {len(thm)}")
+            debug_out.append(f"  page snippet: {page_dbg[2000:2200]}")
+    except Exception as e_dbg:
+        debug_out.append(f"Bing error: {e_dbg}")
+
+debug_str = "\n".join(debug_out) + "\n"
+print(debug_str)
+
+# Append debug to saved result
+try:
+    cur = base64.b64decode(
+        urllib.request.urlopen(
+            urllib.request.Request(
+                f"https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/news-diag-result.txt",
+                headers={"Authorization": f"Bearer {GH_PAT}", "Accept": "application/vnd.github.v3+json"}
+            )
+        ).read()
+    ).get("content","")
+except:
+    cur = ""
+save(msg.rstrip() + debug_str)
