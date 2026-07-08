@@ -1,13 +1,1 @@
-=== DEAL IMAGE STATUS ===
-Time: 2026-07-08 19:41 UTC
-
-Total approved deals:  4452
-With images:           4451
-  → Sanity CDN:        4338
-  → External URL:      113
-Missing images:        1
-Coverage:              100%
-
-Sample missing (most recent 8):
-  [reddit] Upper & MLok RG2 WedgeLock Rail Combos $99 in various length
-    https://midstatefirearms.com/?s=rg2&amp;post_type=product
+External deal image fix: 0 uploaded to CDN, 113 failed/skipped of 113 total
