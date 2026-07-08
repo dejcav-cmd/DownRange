@@ -84,7 +84,7 @@ print(f"Dedup cache: {len(seen_urls)} URLs from last 48h")
 # Fetch key RSS feeds
 FEEDS = [
     ("TTAG", "https://www.thetruthaboutguns.com/feed/", "news"),
-    ("AmmoLand", "https://www.ammoland.com/feed/", "news"),
+    # AmmoLand removed per DJ request
     ("NRA-ILA", "https://www.nraila.org/XML/RSS.aspx", "law"),
     ("Bearing Arms", "https://bearingarms.com/feed/", "news"),
     ("FPC", "https://www.firearmspolicy.org/feed/", "law"),

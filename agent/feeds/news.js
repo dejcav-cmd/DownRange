@@ -69,7 +69,7 @@ const RSS_FEEDS = [
   { name: 'GOA Press',              url: 'https://www.gunowners.org/category/press/feed/',      cat: 'law'      },
   // ── NEW US SOURCES ────────────────────────────────────────────────────
   { name: 'Gun News Daily',         url: 'https://gunnewsdaily.com/feed/',                      cat: 'news'     },
-  { name: 'AmmoLand',               url: 'https://www.ammoland.com/feed/',                      cat: 'news'     },
+  // AmmoLand removed per DJ request
   { name: 'Gun Digest',             url: 'https://gundigest.com/feed/',                         cat: 'industry' },
   { name: 'Recoil Magazine',        url: 'https://www.recoilweb.com/feed/',                     cat: 'industry' },
   { name: 'Guns.com',               url: 'https://www.guns.com/feed',                           cat: 'industry' },
@@ -222,7 +222,7 @@ const ALLOWED_US_DOMAINS = new Set([
   'cleanupatf.org','firearmslaw.duke.edu','bearingarms.com','newsmax.com',
   'atf.gov','congress.gov','gunowners.org','pewpewtactical.com',
   'outdoorhub.com','thearmorylife.com','gunnewsdaily.com',
-  'ammoland.com','gundigest.com','recoilweb.com',
+  'gundigest.com','recoilweb.com',
   'dailycaller.com','freebeacon.com','nationalreview.com',
   'townhall.com','breitbart.com','nssf.org',
   'usconcealedcarry.com','luckygunner.com',

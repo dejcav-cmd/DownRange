@@ -34,7 +34,7 @@ lines = ["=== RSS vs SANITY CHECK ===", f"Time: {time.strftime('%Y-%m-%d %H:%M U
 
 feeds = [
     ("TTAG", "https://www.thetruthaboutguns.com/feed/"),
-    ("AmmoLand", "https://www.ammoland.com/feed/"),
+    # AmmoLand removed
     ("NRA-ILA", "https://www.nraila.org/XML/RSS.aspx"),
     ("Bearing Arms", "https://bearingarms.com/feed/"),
     ("Gun News Daily", "https://gunnewsdaily.com/feed/"),
