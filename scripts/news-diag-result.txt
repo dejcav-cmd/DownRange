@@ -8,4 +8,4 @@ Patched 0 deals with known product page URLs:
 ✗ Vortex Defender-ST Reflex Sight 3 MOA Re: no OG image
 ✗ SilencerCo Spectre 9 Ti $599 + 16.99 Shi: download failed
 ✗ Vortex Strike Eagle 1-8x24 FFP Rifle Sco: no OG image
-✗ Daniel Defense DDM4V7 Ambi with Geissele: no OG image
+✗ Daniel Defense DDM4V7 Ambi with Geissele: download failed
