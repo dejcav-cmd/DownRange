@@ -4,9 +4,10 @@ import { rewriteWithClaude, isDuplicate, isSanityDuplicate, resetDedup, publishT
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
-const CONCURRENCY    = 3
-const ITEMS_PER_FEED = 12   // 12 per feed — more lookahead to find new items past dupe noise
-const MAX_ITEMS      = 80   // 80 total cap — news-only feeds (deals removed), need more headroom
+const CONCURRENCY    = 5    // up from 3 — more parallel to fit within Vercel 300s limit
+const ITEMS_PER_FEED = 8    // back to 8 — 12 was too many when combined with image fetching
+const MAX_ITEMS      = 40   // 40 cap — image fetch per item can take 26s; 40/5=8 batches×26s=208s fits 300s
+const DEADLINE_MS    = 250 * 1000  // stop processing at 250s, leave time for reportCronRun
 const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────
@@ -658,16 +659,21 @@ async function processNewsItem(item) {
 }
 
 // Process items with concurrency cap — much faster than serial, won't flood APIs
-async function processWithConcurrency(items, concurrency) {
+async function processWithConcurrency(items, concurrency, startMs) {
   const results = []
   for (let i = 0; i < items.length; i += concurrency) {
+    // Deadline guard: stop processing if we're close to Vercel's 300s limit
+    if (Date.now() - startMs > DEADLINE_MS) {
+      console.warn(`[NEWS] ⏱ Deadline reached at item ${i}/${items.length} — stopping to allow reportCronRun`)
+      break
+    }
     const batch   = items.slice(i, i + concurrency)
     const settled = await Promise.allSettled(batch.map(item => processNewsItem(item)))
     for (const s of settled) {
       if (s.status === 'fulfilled' && s.value) results.push(s.value)
     }
     // Brief pause between batches to avoid Sanity rate limits
-    if (i + concurrency < items.length) await sleep(200)
+    if (i + concurrency < items.length) await sleep(100)
   }
   return results
 }
@@ -691,7 +697,7 @@ async function runNewsFeed() {
   console.log(`[NEWS] ${all.length} items to process (capped at ${MAX_ITEMS}). With images: ${all.filter(i => i.imageUrl).length}`)
 
   // Process with concurrency
-  const published = await processWithConcurrency(all, CONCURRENCY)
+  const published = await processWithConcurrency(all, CONCURRENCY, t)
   const withAI    = published.filter(p => p.hasAI).length
   const withRaw   = published.length - withAI
 
