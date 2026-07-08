@@ -28,12 +28,16 @@ const FLAIR_META = {
 
 function inferFlair(title = '') {
   const t = title.toLowerCase()
-  if (/handgun|pistol|glock|sig sauer|beretta|kimber|1911|revolver/.test(t)) return 'Handgun'
-  if (/rifle|ar-15|ar15|ak-|carbine|sbr|bolt.action|lever.action/.test(t))   return 'Rifle'
-  if (/shotgun|mossberg|remington 870|benelli/.test(t))                        return 'Shotgun'
-  if (/\bammo\b|9mm|\.223|\.308|5\.56|7\.62|\.45|\.357|rounds|gr fmj|gr hp/.test(t)) return 'Ammo'
-  if (/suppressor|silencer|\bnfa\b|form 4|form4/.test(t))                      return 'NFA'
-  if (/scope|optic|red dot|lpvo|vortex|leupold|eotech|aimpoint|holosun|burris|zeiss|monstrum/.test(t)) return 'Optic'
+  // Optics FIRST — "rifle scope", "pistol scope" must not match rifle/handgun
+  if (/\bscope\b|\boptic\b|red dot|\blpvo\b|\bprism\b|\bholographic\b|night vision|thermal.*scope|vortex|leupold|eotech|aimpoint|holosun|burris|zeiss|monstrum|trijicon|nightforce|primary arms.*scope|delta point|romeo|juliet.*scope|swampfox|sig.*optic|magnifier|riflescope|rifle scope|pistol scope|spotting scope/.test(t)) return 'Optic'
+  // NFA items before firearms (suppressor titles often include "rifle" or "pistol")
+  if (/suppressor|silencer|\bnfa\b|form 4|form4|short barrel|\bsbr\b|\bsbs\b/.test(t)) return 'NFA'
+  // Ammo before firearms — "pistol ammo", "rifle rounds" should be Ammo not Handgun/Rifle
+  if (/\bammo\b|\bammunition\b|gr fmj|gr hp|gr jhp|gr tmj|gr fsp|gr ftx|gr xtp|gr jsp|\bfmj\b|\bjhp\b|\btmj\b|\bfsp\b|\bftx\b|\bxtp\b|\bjsp\b|hollow\s*point|critical\s*defense|critical\s*duty|gold\s*dot|hydra.?shok|personal\s*defense|self.?defense\s*ammo|rounds\s+per\s+box|\d+\s*rd\s+box|mega\s*pack|value\s*pack|bulk\s*pack|per\s*round|\d+\s*rounds?\s+\$|\d+\s*count\s+box/.test(t)) return 'Ammo'
+  // Firearms — check brand/model/type signals
+  if (/handgun|\bpistol\b|glock|sig sauer|sig p\d|beretta|kimber|1911|2011|revolver|taurus|springfield|walther|cz 75|cz p-|shadow 2|p320|p365|p226|p229|p238|p938|hellcat|xd-?m?|fn 509|fn hx|fn five|canik|staccato|fusion firearms|nighthawk|wilson combat|les baer|dan wesson|rock island|charter arms|kahr|kel.?tec|sar usa|tisas|girsan|smith\s*&\s*wesson|s&w|\bm&p\b|\bshield\b|bodyguard|sw\d|colt python|colt cobra|colt king|full.?size.*9mm|full.?size.*45|[2345]["″']\s*barrel/.test(t)) return 'Handgun'
+  if (/\brifle\b|ar-15|ar15|ak-|\bcarbine\b|bolt.action|lever.action|semi.auto.*rifle|pump.*rifle|ar pistol/.test(t))   return 'Rifle'
+  if (/shotgun|mossberg|remington 870|benelli|o\/u|over.under|\d+.gauge/.test(t))     return 'Shotgun'
   if (/\bbow\b|archery|arrow|broadhead|quiver|recurve|compound bow|crossbow|nock|fletching|vane|mathews|hoyt|bowtech|pse bow|gold tip|carbon express|rage broadhead|barnett|tenpoint/.test(t)) return 'Archery'
   if (/holster|magazine|pmag|light|streamlight|sling|grip|trigger/.test(t))    return 'Accessories'
   if (/gear|vest|plate|carrier|bag|case|safe/.test(t))                         return 'Gear'
