@@ -184,14 +184,12 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
               {shownDeals.map((d, i) => {
                 const v = verdict(d.cat, s)
                 const vs = V_STYLE[v.lvl]
-                const badge = d.cat === 'GENERAL' ? 'DEAL' : d.cat
                 return (
                   <a key={i} href={d.url || '/deals'} target="_blank" rel="noopener noreferrer" className="release-card" style={{ background:'var(--bg2)', border:'1px solid var(--border-mid)', display:'flex', flexDirection:'column', overflow:'hidden', textDecoration:'none' }}>
                     <div style={{ height:120, background:'linear-gradient(135deg,#1a1f2a,#0c0f14)', position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
                       {d.imageUrl
                         ? <img src={d.imageUrl} alt="" onError={e => { e.currentTarget.style.display = 'none' }} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                         : <span style={{ fontSize:26, opacity:.18 }}>🎯</span>}
-                      <span style={{ position:'absolute', top:8, left:8, fontFamily:MONO, fontSize:8, fontWeight:700, letterSpacing:'.1em', color:'#C8922A', background:'rgba(8,8,10,.75)', border:'1px solid rgba(200,146,42,.3)', padding:'2px 6px' }}>{badge}</span>
                     </div>
                     <div style={{ padding:'12px 13px', display:'flex', flexDirection:'column', flex:1 }}>
                       <div style={{ fontFamily:MONO, fontSize:8.5, color:'#6B7280', marginBottom:3, letterSpacing:'.05em' }}>{d.brand}</div>

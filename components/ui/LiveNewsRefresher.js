@@ -93,7 +93,15 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
             <NewsCard article={article} />
           </div>
         ))}
-        {[0,1].map(i => <div key={'ghost-'+i} aria-hidden="true" style={{ visibility:'hidden', height:0, overflow:'hidden' }} />)}
+        {/* Skeleton cards to complete last row — only render if row is incomplete */}
+        {Array.from({ length: (3 - (displayArticles.length % 3)) % 3 }).map((_, i) => (
+          <div key={'skel-'+i} aria-hidden="true" style={{
+            background: 'var(--bg2)', border: '1px solid var(--border)',
+            minHeight: 280, opacity: 0.25,
+            backgroundImage: 'linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%)',
+            backgroundSize: '200% 100%',
+          }} />
+        ))}
       </div>
     </div>
   )

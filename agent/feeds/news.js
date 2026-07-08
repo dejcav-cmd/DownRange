@@ -5,8 +5,8 @@ import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 3
-const ITEMS_PER_FEED = 8    // 8 per feed — enough lookahead to find new items past dupe noise
-const MAX_ITEMS      = 60   // 60 total cap — feeds publish slowly, need more headroom
+const ITEMS_PER_FEED = 12   // 12 per feed — more lookahead to find new items past dupe noise
+const MAX_ITEMS      = 80   // 80 total cap — news-only feeds (deals removed), need more headroom
 const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────
@@ -76,15 +76,7 @@ const RSS_FEEDS = [
   { name: 'USCCA Blog',             url: 'https://www.usconcealedcarry.com/blog/feed/',         cat: 'industry' },
   { name: 'Pew Pew Tactical',       url: 'https://www.pewpewtactical.com/feed/',                cat: 'industry' },
   { name: 'Lucky Gunner',           url: 'https://www.luckygunner.com/lounge/feed/',            cat: 'industry' },
-  // ── DEALS — product sales, pricing, limited-time offers ─────────────
-  { name: 'Slickguns',              url: 'https://www.slickguns.com/feed',                      cat: 'deals'    },
-  { name: 'WikiArms',               url: 'https://www.wikiarms.com/feed',                       cat: 'deals'    },
-  { name: 'Brownells Blog',         url: 'https://www.brownells.com/blog/feed/',                cat: 'deals'    },
-  { name: 'Palmetto State Armory',  url: 'https://palmettostatearmory.com/blog/feed/',          cat: 'deals'    },
-  { name: 'Primary Arms Blog',      url: 'https://www.primaryarms.com/blog/feed/',              cat: 'deals'    },
-  { name: 'GrabAGun Blog',          url: 'https://www.grabaggun.com/blog/rss.xml',              cat: 'deals'    },
-  { name: 'Sportsmans Warehouse',   url: 'https://blog.sportsmanswarehouse.com/feed/',          cat: 'deals'    },
-  { name: 'Guns.com Deals',         url: 'https://www.guns.com/deals/feed',                     cat: 'deals'    },
+  // Deals feeds removed — handled by dedicated /api/cron/gun-deals cron (runs every 30min).
   // ── CANADA ONLY — routed to canadaContent, never newsArticle ──────────
   // Note: TheGunBlog.ca weekly digest round-ups ('Week of YYYY') are blocked in GATE 1
   { name: 'TheGunBlog.ca',          url: 'https://www.thegunblog.ca/feed/',                     cat: 'law',      region: 'canada' },
