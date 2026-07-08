@@ -1,1 +1,19 @@
-Reddit image backfill: 0 fixed, 60 no image, 60 total
+=== JINA MANUFACTURER TEST ===
+
+1. Springfield Armory - Kuna search:
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/saint-series-1600x800-3-1-400x200.p
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/hellcat-series-1600x1200-5-267x200.
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/echelon-model-1600x1200-4-267x200.p
+2. Springfield Armory - Kuna product page:
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/giveaway-monthly-july-2026-popup.pn
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/saint-series-1600x800-3-1-400x200.p
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/hellcat-series-1600x1200-5-267x200.
+3. Springfield Armory - Romulus:
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/saint-series-1600x800-3-1-400x200.p
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/hellcat-series-1600x1200-5-267x200.
+  https://springfieldarmory.b-cdn.net/wp-content/uploads/echelon-model-1600x1200-4-267x200.p
+4. SIG Sauer - P365:
+5. Ruger - 10/22:
+  https://www.ruger.com/img/nav/pistols/lcp.png)LCP®](https://www.ruger.com/products/lcp/mod
+  https://www.ruger.com/img/nav/pistols/lcpII-22.png)LCP®
+  https://www.ruger.com/img/nav/pistols/lcpMax.png)LCP®
