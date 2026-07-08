@@ -109,3 +109,21 @@ for d in (deals or []):
 msg = f"Reddit deals image backfill: {fixed}/{len(deals or [])} fixed"
 print(f"\n{msg}")
 save(msg)
+
+# ── Also patch any deals where source is reddit but imageUrl check was missed ──
+missed = sq('*[_type=="gunDeal" && approved==true && source=="reddit" && (!defined(imageUrl) || imageUrl == "" || imageUrl == null)]{_id, title}')
+if not missed:
+    # Try broader: any reddit deal from last 7 days without image
+    from datetime import datetime, timezone, timedelta
+    since = (datetime.now(timezone.utc) - timedelta(days=7)).isoformat()
+    missed = sq(f'*[_type=="gunDeal" && approved==true && (source=="reddit" || source=="r/gundeals") && (!defined(imageUrl) || imageUrl == "" || imageUrl == null) && publishedAt>"{since}"]{{_id, title}}')
+
+print(f"\nMissed deals to patch: {len(missed or [])}")
+for d in (missed or []):
+    img = search_product_image(d['title'])
+    if img:
+        cdn = upload_to_sanity(img, d['_id'])
+        final = cdn or img
+        status = patch(d['_id'], final)
+        print(f"  {'✓' if status==200 else '✗'} {d['title'][:60]}")
+    time.sleep(0.5)
