@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
-"""
-Patch Reddit deals with known working product page URLs.
-SA Kuna confirmed working: /1911-pistols/kuna-9mm/
-"""
+"""Patch Reddit deals using confirmed working manufacturer product page URLs via Jina."""
 import urllib.request, urllib.parse, json, os, base64, re, time
 import html as html_mod
 
 TOKEN  = os.environ.get("SANITY_API_TOKEN","").replace("ST=","").strip()
 GH_PAT = os.environ.get("GH_PAT","").strip()
 PROJECT = "vbnsqnkg"
+_LOG = []
+
+def log(msg):
+    print(msg)
+    _LOG.append(str(msg))
 
 def sq(q):
     url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/data/query/production?query={urllib.parse.quote(q)}&returnQuery=false"
@@ -30,7 +32,8 @@ def jfetch(url):
     try:
         with urllib.request.urlopen(req, timeout=15) as r:
             return r.read().decode("utf-8", errors="replace")
-    except:
+    except Exception as e:
+        log(f"    jfetch error: {e}")
         return ""
 
 def get_og_image(content, base_url):
@@ -58,25 +61,17 @@ def download_img(url):
         })
         with urllib.request.urlopen(req, timeout=10) as r:
             data = r.read()
-        print(f"    download: {len(data)} bytes from {url[:60]}")
-        return data if len(data) > 8000 else None
+        log(f"    downloaded {len(data)} bytes")
+        return data if len(data) > 5000 else None
     except Exception as e:
-        print(f"    download error: {e} for {url[:60]}")
+        log(f"    download error: {e}")
         return None
 
 def upload_sanity(data, doc_id, img_url=""):
-    # Detect content type from magic bytes or URL
     b = bytearray(data[:4])
-    if b[0]==0x89 and b[1]==0x50:
-        ct, ext = "image/png", "png"
-    elif b[0]==0xFF and b[1]==0xD8:
-        ct, ext = "image/jpeg", "jpg"
-    elif b[0]==0x52 and b[1]==0x49:  # RIFF (webp)
-        ct, ext = "image/webp", "webp"
-    elif img_url.lower().endswith(".png"):
-        ct, ext = "image/png", "png"
-    else:
-        ct, ext = "image/jpeg", "jpg"
+    if b[0]==0x89 and b[1]==0x50: ct, ext = "image/png", "png"
+    elif b[0]==0xFF and b[1]==0xD8: ct, ext = "image/jpeg", "jpg"
+    else: ct, ext = "image/png", "png"
     fname = f"reddit-{doc_id[-8:]}.{ext}"
     url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/assets/images/production?filename={fname}"
     req = urllib.request.Request(url, data=data, method="POST", headers={
@@ -85,14 +80,15 @@ def upload_sanity(data, doc_id, img_url=""):
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
             result = json.loads(r.read())
-            print(f"    CDN upload OK: {result.get('url','')[:60]}")
+            log(f"    CDN uploaded: {result.get('url','')[:60]}")
             return result.get("url")
     except Exception as e:
-        print(f"    CDN upload error: {e}")
+        log(f"    CDN upload error: {e}")
         return None
 
-def save(msg):
-    encoded = base64.b64encode(msg.encode()).decode()
+def save():
+    content = "\n".join(_LOG)
+    encoded = base64.b64encode(content.encode()).decode()
     path = "scripts/news-diag-result.txt"
     try:
         req = urllib.request.Request(f"https://api.github.com/repos/dejcav-cmd/DownRange/contents/{path}",
@@ -106,35 +102,30 @@ def save(msg):
         headers={"Authorization": f"Bearer {GH_PAT}", "Content-Type": "application/json"})
     with urllib.request.urlopen(req) as r: return r.status
 
-# Known working product page URLs (confirmed by Jina debug)
 KNOWN_PAGES = {
-    r'springfield kuna':       'https://www.springfield-armory.com/1911-pistols/kuna-9mm/',
-    r'springfield romulus':    'https://www.springfield-armory.com/1911-pistols/romulus/',
-    r'springfield prodigy':    'https://www.springfield-armory.com/1911-pistols/prodigy/',
-    r'springfield echelon':    'https://www.springfield-armory.com/xd-m-pistols/echelon/',
-    r'springfield hellcat':    'https://www.springfield-armory.com/hellcat-pistols/',
-    r'springfield saint':      'https://www.springfield-armory.com/saint-rifles/',
-    r'glock 19':               'https://us.glock.com/products/pistols/g19-gen5',
-    r'glock 17':               'https://us.glock.com/products/pistols/g17-gen5',
-    r'glock 22':               'https://us.glock.com/products/pistols/g22',
-    r'glock 43':               'https://us.glock.com/products/pistols/g43',
-    r'glock 26':               'https://us.glock.com/products/pistols/g26',
-    r'glock 20':               'https://us.glock.com/products/pistols/g20',
-    r'ruger mini-14':          'https://www.ruger.com/products/mini14RanchRifle/models.html',
-    r'ruger 10.?22':           'https://www.ruger.com/products/1022Carbine/models.html',
-    r'ruger lcr':              'https://www.ruger.com/products/lcr/models.html',
-    r'ruger lcp':              'https://www.ruger.com/products/lcp/models.html',
-    r'sig sauer p320':         'https://www.sigsauer.com/p320.html',
-    r'sig sauer p365':         'https://www.sigsauer.com/p365.html',
-    r'sig mcx spear':          'https://www.sigsauer.com/mcx-spear.html',
-    r'vortex defender.st':     'https://www.vortexoptics.com/product/vortex-defender-st-reflex-sight',
-    r'vortex strike eagle':    'https://www.vortexoptics.com/category/riflescopes/strike-eagle',
-    r'silencerco scythe':      'https://silencerco.com/products/scythe-ti/',
-    r'silencerco spectre':     'https://silencerco.com/products/spectre-9/',
-    r'trijicon rmr':           'https://www.trijicon.com/products/category/rmr',
-    r'trijicon acog':          'https://www.trijicon.com/products/category/acog',
-    r'geissele super duty':    'https://www.geissele.com/super-duty-lower-build-kit.html',
-    r'geissele ssa':           'https://www.geissele.com/geissele-ssa-trigger.html',
+    r'springfield kuna':        'https://www.springfield-armory.com/1911-pistols/kuna-9mm/',
+    r'springfield romulus':     'https://www.springfield-armory.com/1911-pistols/romulus/',
+    r'springfield prodigy':     'https://www.springfield-armory.com/1911-pistols/prodigy/',
+    r'springfield echelon':     'https://www.springfield-armory.com/xd-m-pistols/echelon/',
+    r'springfield hellcat':     'https://www.springfield-armory.com/hellcat-pistols/',
+    r'glock 19':                'https://us.glock.com/products/pistols/g19-gen5',
+    r'glock 17':                'https://us.glock.com/products/pistols/g17-gen5',
+    r'glock 22':                'https://us.glock.com/products/pistols/g22',
+    r'glock 43':                'https://us.glock.com/products/pistols/g43',
+    r'glock 26':                'https://us.glock.com/products/pistols/g26',
+    r'ruger mini.?14':          'https://www.ruger.com/products/mini14RanchRifle/models.html',
+    r'ruger 10.?22':            'https://www.ruger.com/products/1022Carbine/models.html',
+    r'sig.{1,4}mcx spear':     'https://www.sigsauer.com/mcx-spear.html',
+    r'sig.{1,4}p320':           'https://www.sigsauer.com/p320.html',
+    r'sig.{1,4}p365':           'https://www.sigsauer.com/p365.html',
+    r'vortex defender.st':      'https://www.vortexoptics.com/product/vortex-defender-st-reflex-sight',
+    r'vortex strike eagle 1.8': 'https://www.vortexoptics.com/product/vortex-strike-eagle-1-8x24-second-focal-plane-riflescope',
+    r'silencerco scythe':       'https://silencerco.com/products/scythe-ti/',
+    r'silencerco spectre 9':    'https://silencerco.com/products/spectre-9/',
+    r'geissele ssa':            'https://www.geissele.com/geissele-ssa-trigger.html',
+    r'geissele super duty':     'https://www.geissele.com/super-duty-lower-build-kit.html',
+    r'daniel defense ddm4':     'https://danieldefense.com/ar15-rifles/dd-m4v7.html',
+    r'trijicon rmr':            'https://www.trijicon.com/products/category/rmr',
 }
 
 def find_product_page(title):
@@ -144,56 +135,49 @@ def find_product_page(title):
             return url
     return None
 
-# Get all Reddit deals without images
 deals = sq('*[_type=="gunDeal" && approved==true && (source=="reddit"||source=="r/gundeals") && (!defined(imageUrl)||imageUrl==""||imageUrl==null)] | order(publishedAt desc)[0...100]{_id,title}')
 total = len(deals or [])
-print(f"Reddit deals without images: {total}")
+log(f"Reddit deals without images: {total}")
 
-results = []
 fixed = 0
+matched = 0
 
 for d in (deals or []):
     page_url = find_product_page(d['title'])
     if not page_url:
         continue
-
-    print(f"\n  {d['title'][:60]}")
-    print(f"  → {page_url}")
+    matched += 1
+    log(f"\n  [{d['title'][:55]}]")
+    log(f"  page: {page_url}")
 
     content = jfetch(page_url)
     if not content:
-        print(f"  ✗ Jina fetch failed")
-        results.append(f"✗ {d['title'][:40]}: jina failed")
+        log("  ✗ jfetch returned empty")
         continue
 
     og = get_og_image(content, page_url)
+    log(f"  OG: {og[:80] if og else 'none'}")
     if not og:
-        print(f"  ✗ no OG image in page ({len(content)} chars)")
-        results.append(f"✗ {d['title'][:40]}: no OG image")
         continue
 
-    print(f"  OG: {og[:80]}")
     img_data = download_img(og)
     if not img_data:
-        print(f"  ✗ image download failed")
-        results.append(f"✗ {d['title'][:40]}: download failed")
+        log("  ✗ download failed")
         continue
 
     cdn = upload_sanity(img_data, d['_id'], og)
     if not cdn:
-        results.append(f"✗ {d['title'][:40]}: CDN upload failed")
+        log("  ✗ CDN upload failed")
         continue
 
     status = patch_doc(d['_id'], cdn)
     if status == 200:
         fixed += 1
-        print(f"  ✓ PATCHED")
-        results.append(f"✓ {d['title'][:40]}")
+        log(f"  ✓ PATCHED")
     else:
-        results.append(f"✗ {d['title'][:40]}: patch HTTP {status}")
+        log(f"  ✗ patch HTTP {status}")
 
     time.sleep(0.5)
 
-msg = f"Patched {fixed} deals with known product page URLs:\n" + "\n".join(results) + "\n"
-print(f"\n{msg}")
-save(msg)
+log(f"\nDone: {fixed} fixed, {matched} matched, {total} total")
+save()
