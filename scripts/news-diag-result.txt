@@ -4,8 +4,8 @@ Reddit deals without images: 60
   page: https://www.springfield-armory.com/1911-pistols/kuna-9mm/
   OG: https://springfieldarmory.b-cdn.net/wp-content/uploads/KN9069B.png
     downloaded 535528 bytes
-    CDN uploaded: 
-  ✗ CDN upload failed
+    CDN result keys: ['document'], url: https://cdn.sanity.io/images/vbnsqnkg/production/03931a599b1
+  ✓ PATCHED
 
   [Glock 22 Gen4 LE Trade-in, $249 + S/H]
   page: https://us.glock.com/products/pistols/g22
@@ -19,8 +19,8 @@ Reddit deals without images: 60
   page: https://silencerco.com/products/scythe-ti/
   OG: https://silencerco.com/wp-content/uploads/2023/09/SilencerCo-Scythe-Ti-feature.j
     downloaded 123093 bytes
-    CDN uploaded: 
-  ✗ CDN upload failed
+    CDN result keys: ['document'], url: https://cdn.sanity.io/images/vbnsqnkg/production/e97c6068601
+  ✓ PATCHED
 
   [- GLOCK 17 GEN 6 9MM COA $858+shipping with code DAD22]
   page: https://us.glock.com/products/pistols/g17-gen5
@@ -50,4 +50,4 @@ Reddit deals without images: 60
     download error: HTTP Error 403: Forbidden
   ✗ download failed
 
-Done: 0 fixed, 10 matched, 60 total
+Done: 2 fixed, 10 matched, 60 total
