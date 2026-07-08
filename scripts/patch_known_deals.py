@@ -80,8 +80,10 @@ def upload_sanity(data, doc_id, img_url=""):
     try:
         with urllib.request.urlopen(req, timeout=20) as r:
             result = json.loads(r.read())
-            log(f"    CDN uploaded: {result.get('url','')[:60]}")
-            return result.get("url")
+            # Sanity returns { document: { url: "..." } } or { url: "..." }
+            cdn_url = result.get('url') or result.get('document', {}).get('url') or result.get('asset', {}).get('url') or ''
+            log(f"    CDN result keys: {list(result.keys())[:5]}, url: {cdn_url[:60]}")
+            return cdn_url or None
     except Exception as e:
         log(f"    CDN upload error: {e}")
         return None
