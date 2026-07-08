@@ -1,10 +1,7 @@
 #!/usr/bin/env python3
 """
-Backfill Reddit deal images by:
-1. Detecting the brand from the title
-2. Searching the manufacturer's own site via their search page
-3. Scraping OG image from the first product result
-Falls back to Google Images via Jina proxy if no brand match.
+Backfill Reddit deal images by searching manufacturer websites via Jina.
+Brand detected from title → search manufacturer site search page → scrape first product OG image.
 """
 import urllib.request, urllib.parse, json, os, base64, time, re
 import html as html_mod
@@ -30,91 +27,100 @@ def patch(doc_id, img_url):
 def extract_product_name(title):
     clean = re.sub(r'^\[[^\]]+\]\s*', '', title)
     clean = re.sub(r'\$[\d,]+(?:\.\d{2})?', '', clean)
-    clean = re.sub(r'\b(code:?\s*\w+|use code \w+|promo pack)\b', '', clean, flags=re.I)
+    clean = re.sub(r'\b(code:?\s*\w+|use code \w+|promo pack|promo code \w+)\b', '', clean, flags=re.I)
     clean = re.sub(r'\+\s*(free ship\w*|no tax\s+\w+(\s+\w+)?)\b.*', '', clean, flags=re.I)
     clean = re.sub(r'\b(no code needed|in stock|oos|fss|free shipping|in various lengths?)\b.*', '', clean, flags=re.I)
     clean = re.sub(r'\s+for\s+\$.*', '', clean, flags=re.I)
     clean = re.sub(r'\s*[-–]\s*\$.*', '', clean)
     return re.sub(r'\s+', ' ', clean).strip().rstrip(',.-')[:100]
 
-# Brand → Google site: search
-BRAND_SITES = {
-    r'\bspringfield\b':     'site:springfield-armory.com',
-    r'\bsig sauer|sig p\d':  'site:sigsauer.com',
-    r'\bglock\b':            'site:glock.com',
-    r'\bruger\b':            'site:ruger.com',
-    r'\bsmith.?wesson|s&w\b':'site:smith-wesson.com',
-    r'\bcolt\b':             'site:colt.com',
-    r'\bberetta\b':          'site:beretta.com',
-    r'\bfn\b|\bfns\b|\bfnx\b':'site:fnamerica.com',
-    r'\bhk\b|\bh&k\b':       'site:heckler-koch.com',
-    r'\bwalther\b':          'site:waltherarms.com',
-    r'\btaurus\b':           'site:taurususa.com',
-    r'\bkimber\b':           'site:kimberamerica.com',
-    r'\bcz\b':               'site:cz-usa.com',
-    r'\bstaccato\b':         'site:staccato2011.com',
-    r'\bvortex\b':           'site:vortexoptics.com',
-    r'\btrijicon\b':         'site:trijicon.com',
-    r'\bholosun\b':          'site:holosun.com',
-    r'\baimpoint\b':         'site:aimpoint.com',
-    r'\beotech\b':           'site:eotechinc.com',
-    r'\bsilencerco\b':       'site:silencerco.com',
-    r'\bdead air\b':         'site:deadairsilencers.com',
-    r'\bmagpul\b':           'site:magpul.com',
-    r'\bgeissele\b':         'site:geissele.com',
-    r'\bradian\b':           'site:radianweapons.com',
-    r'\bromulus\b|\bspringfield romulus\b': 'site:springfield-armory.com',
+# Brand → (search URL template, link pattern to follow)
+BRAND_SEARCH = {
+    r'\bspringfield|springfield armory\b': (
+        'https://www.springfield-armory.com/search/?q={query}',
+        r'springfield-armory\.com/[^"\'<>\s]+(?:handgun|pistol|rifle|1911|hellcat|echelon|kuna|romulus)[^"\'<>\s]*'
+    ),
+    r'\bsig sauer|sig p\d{3}\b': (
+        'https://www.sigsauer.com/search/?q={query}',
+        r'sigsauer\.com/[^"\'<>\s]+(?:p\d{3}|pistol|rifle)[^"\'<>\s]*'
+    ),
+    r'\bglock\b': (
+        'https://us.glock.com/en/search#?q={query}',
+        r'us\.glock\.com/[^"\'<>\s]+pistols?[^"\'<>\s]*'
+    ),
+    r'\bruger\b': (
+        'https://www.ruger.com/search/index.html#q={query}',
+        r'ruger\.com/products[^"\'<>\s]*'
+    ),
+    r'\btrijicon\b': (
+        'https://www.trijicon.com/search-results/?q={query}',
+        r'trijicon\.com/products[^"\'<>\s]*'
+    ),
+    r'\bvortex\b': (
+        'https://www.vortexoptics.com/search?q={query}',
+        r'vortexoptics\.com/product[^"\'<>\s]*'
+    ),
+    r'\bholosun\b': (
+        'https://www.holosun.com/index.php?route=product/search&search={query}',
+        r'holosun\.com/[^"\'<>\s]*product[^"\'<>\s]*'
+    ),
+    r'\bmagpul\b': (
+        'https://www.magpul.com/search/?q={query}',
+        r'magpul\.com/products[^"\'<>\s]*'
+    ),
+    r'\bsilencerco\b': (
+        'https://silencerco.com/search?type=product&q={query}',
+        r'silencerco\.com/products[^"\'<>\s]*'
+    ),
+    r'\bgeissele\b': (
+        'https://www.geissele.com/search?q={query}',
+        r'geissele\.com/[^"\'<>\s]*(?:trigger|rail|charging|handguard)[^"\'<>\s]*'
+    ),
+    r'\bstaccato\b': (
+        'https://staccato2011.com/search?q={query}',
+        r'staccato2011\.com/products[^"\'<>\s]*'
+    ),
 }
 
-def get_site_filter(title):
+def get_brand_search(title):
     tl = title.lower()
-    for pattern, site in BRAND_SITES.items():
+    for pattern, (search_tpl, link_pat) in BRAND_SEARCH.items():
         if re.search(pattern, tl, re.I):
-            return site
+            return search_tpl, link_pat
+    return None, None
+
+def jina_fetch(url):
+    """Fetch a page via Jina proxy."""
+    jina_url = f"https://r.jina.ai/{url}"
+    try:
+        req = urllib.request.Request(jina_url, headers={"User-Agent": "Mozilla/5.0"})
+        with urllib.request.urlopen(req, timeout=15) as r:
+            return r.read().decode("utf-8", errors="replace")
+    except Exception as e:
+        return None
+
+def extract_og_image(html_content, base_url=None):
+    """Extract og:image or first large product image from HTML."""
+    patterns = [
+        r'<meta[^>]+property=["\']og:image["\'][^>]+content=["\']([^"\']+)["\']',
+        r'<meta[^>]+content=["\']([^"\']+)["\'][^>]+property=["\']og:image["\']',
+        r'<meta[^>]+name=["\']twitter:image["\'][^>]+content=["\']([^"\']+)["\']',
+    ]
+    for pat in patterns:
+        m = re.search(pat, html_content, re.I)
+        if m:
+            url = html_mod.unescape(m.group(1)).strip()
+            if url.startswith('//'): url = 'https:' + url
+            if url.startswith('/') and base_url:
+                from urllib.parse import urlparse
+                p = urlparse(base_url)
+                url = f"{p.scheme}://{p.netloc}{url}"
+            if re.search(r'\.(jpg|jpeg|png|webp)', url, re.I) and 'logo' not in url.lower():
+                return url
     return None
 
-def google_search_via_jina(product_name, site_filter=None):
-    """
-    Use Jina proxy to hit Google Images search.
-    Jina routes through non-datacenter IPs — bypasses bot detection.
-    """
-    query = product_name
-    if site_filter:
-        query = f"{product_name} {site_filter}"
-    
-    # Google Images search via Jina
-    google_url = f"https://www.google.com/search?q={urllib.parse.quote(query)}&tbm=isch&num=5"
-    jina_url   = f"https://r.jina.ai/{google_url}"
-    
-    try:
-        req = urllib.request.Request(jina_url, headers={
-            "User-Agent": "Mozilla/5.0",
-            "Accept": "text/html",
-        })
-        with urllib.request.urlopen(req, timeout=15) as r:
-            content = r.read().decode("utf-8", errors="replace")
-        
-        # Extract image URLs from Jina-rendered content
-        img_urls = re.findall(r'https://[^\s"\'<>]+\.(?:jpg|jpeg|png|webp)(?:[?&][^\s"\'<>]*)?', content, re.I)
-        # Also check for escaped JSON URLs
-        escaped = re.findall(r'\\u0022(https://[^\\]+\.(?:jpg|jpeg|png|webp)[^\\]*)\\u0022', content, re.I)
-        img_urls += [html_mod.unescape(u) for u in escaped]
-        
-        # Filter: skip thumbnails, icons, favicons
-        filtered = []
-        for u in img_urls:
-            u = html_mod.unescape(u)
-            if any(x in u for x in ['favicon','logo','icon','sprite','1x1','pixel','blank']): continue
-            if 'encrypted-tbn' in u: continue  # Google thumbnail cache
-            if any(d in u for d in ['shutterstock','getty','istock','alamy']): continue
-            filtered.append(u)
-        
-        return filtered[:10]
-    except Exception as e:
-        return []
-
 def validate_and_download(img_url):
-    """Download image, validate dimensions. Returns bytes or None."""
+    if any(d in img_url for d in ['shutterstock','getty','istock','alamy','dreamstime']): return None
     try:
         req = urllib.request.Request(img_url, headers={"User-Agent": "Mozilla/5.0"})
         with urllib.request.urlopen(req, timeout=8) as r:
@@ -133,9 +139,7 @@ def validate_and_download(img_url):
                 if mk in (0xC0,0xC1,0xC2): h=(b[i+5]<<8)|b[i+6]; w=(b[i+7]<<8)|b[i+8]; break
                 seg=(b[i+2]<<8)|b[i+3]; i+=2+seg
     except: pass
-    if w>0 and h>0:
-        if w<200 or h<150: return None
-        if w/h>4 or h/w>4: return None
+    if w>0 and h>0 and (w<200 or h<150 or w/h>4 or h/w>4): return None
     return data
 
 def upload_to_sanity(img_data, doc_id):
@@ -164,50 +168,67 @@ def save(content):
         headers={"Authorization": f"Bearer {GH_PAT}", "Content-Type": "application/json"})
     with urllib.request.urlopen(req) as r: return r.status
 
-# ── Debug: verify Jina + Google works ────────────────────────────────────────
-print("=== JINA+GOOGLE TEST ===")
-test_product = "Springfield Kuna 9mm"
-test_site    = get_site_filter("Springfield Kuna 9mm")
-print(f"Product: {test_product}")
-print(f"Site filter: {test_site}")
-test_imgs = google_search_via_jina(test_product, test_site)
-print(f"Images found: {len(test_imgs)}")
-for u in test_imgs[:4]:
-    print(f"  {u[:90]}")
+def find_product_image(title):
+    """Full pipeline: brand detect → manufacturer search → OG image."""
+    product = extract_product_name(title)
+    search_tpl, link_pat = get_brand_search(title)
+    
+    if search_tpl:
+        search_url = search_tpl.format(query=urllib.parse.quote(product))
+        print(f"    Searching: {search_url[:70]}")
+        page = jina_fetch(search_url)
+        if page:
+            # Find first product link
+            links = re.findall(r'https?://[^\s"\'<>]+', page)
+            if link_pat:
+                prod_links = [l for l in links if re.search(link_pat, l, re.I)][:3]
+            else:
+                prod_links = links[:5]
+            
+            for prod_url in prod_links:
+                print(f"    Product page: {prod_url[:70]}")
+                prod_page = jina_fetch(prod_url)
+                if prod_page:
+                    og = extract_og_image(prod_page, prod_url)
+                    if og:
+                        print(f"    OG image: {og[:70]}")
+                        return validate_and_download(og)
+    
+    # Fallback: try direct URL construction for known models
+    # e.g. "Springfield Kuna 9mm" → search springfield-armory.com
+    return None
 
-if not test_imgs:
-    save("Jina+Google returned 0 images. Need to check Jina availability.\n")
-    exit(0)
+# ── TEST ──────────────────────────────────────────────────────────────────────
+print("=== TEST: Springfield Kuna 9mm ===")
+test_result = find_product_image("Springfield Kuna 9mm $999")
+print(f"Result: {'✓ image found' if test_result else '✗ no image'} ({len(test_result) if test_result else 0} bytes)")
 
-# ── Backfill ─────────────────────────────────────────────────────────────────
+print("\n=== TEST: Romulus 3.5 Comp ===")
+test_result2 = find_product_image("Romulus 3.5 Comp promo pack, code: ROMMY for $1480")
+print(f"Result: {'✓ image found' if test_result2 else '✗ no image'} ({len(test_result2) if test_result2 else 0} bytes)")
+
+# ── BACKFILL ─────────────────────────────────────────────────────────────────
 deals = sq('*[_type=="gunDeal" && approved==true && (source=="reddit" || source=="r/gundeals") && (!defined(imageUrl) || imageUrl=="" || imageUrl==null)] | order(publishedAt desc)[0...100]{_id, title}')
 total = len(deals or [])
-print(f"\nReddit deals missing images: {total}")
+print(f"\nReddit deals to fix: {total}")
 
 fixed = 0; not_found = 0
 t0 = time.time()
 
 for d in (deals or []):
     if time.time() - t0 > 3000: break
-    product    = extract_product_name(d['title'])
-    site_filter = get_site_filter(d['title'])
-    print(f"  [{site_filter or 'no brand'}] {product[:55]}")
-    
-    img_urls = google_search_via_jina(product, site_filter)
-    found = False
-    for img_url in img_urls:
-        img_data = validate_and_download(img_url)
-        if img_data:
-            cdn = upload_to_sanity(img_data, d['_id'])
-            if cdn:
-                status = patch(d['_id'], cdn)
-                if status == 200:
-                    fixed += 1; found = True
-                    print(f"    ✓ {cdn[-40:]}")
-                    break
-    if not found:
+    product = extract_product_name(d['title'])
+    print(f"\n  {product[:60]}")
+    img_data = find_product_image(d['title'])
+    if img_data:
+        cdn = upload_to_sanity(img_data, d['_id'])
+        if cdn:
+            status = patch(d['_id'], cdn)
+            if status == 200:
+                fixed += 1
+                print(f"  ✓ patched")
+    else:
         not_found += 1
-        print(f"    - no valid image")
     time.sleep(0.5)
 
 msg = f"Reddit image backfill: {fixed} fixed, {not_found} no image, {total} total\n"
