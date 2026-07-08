@@ -207,7 +207,7 @@ function isDuplicate(url) {
   return false
 }
 
-function resetDedup() { seenHashes.clear() }
+function resetDedup() { seenHashes.clear(); seenHashes._runId = Date.now() }
 
 // ── DISCORD NOTIFIER ─────────────────────────────────────────────────
 async function discordNotify(webhookUrl, embed) {

@@ -1,10 +1,12 @@
 import Parser from 'rss-parser'
 import crypto from 'crypto'
-import { rewriteWithClaude, isDuplicate, isSanityDuplicate, resetDedup, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage, searchForImage } from '../utils.js'
+import { rewriteWithClaude, isSanityDuplicate, resetDedup, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage, searchForImage } from '../utils.js'
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 
 // Module-level gate counter — reset by runNewsFeed at the start of each run
 let _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0, lastError:null }
+// Per-run URL dedup — reset each run, avoids cross-invocation collisions from module-level seenHashes
+let _runSeenUrls = new Set()
 
 // ── CONFIG ─────────────────────────────────────────────────────────────────────
 const CONCURRENCY    = 5    // up from 3 — more parallel to fit within Vercel 300s limit
@@ -285,7 +287,8 @@ function isFirearmsRelevant(item) {
 
 async function processNewsItem(item) {
   if (!item.title || !item.url) { _gateLog && _gateLog.noTitle++; return null }
-  if (isDuplicate(item.url)) { _gateLog && _gateLog.hashDup++; return }
+  if (_runSeenUrls.has(item.url)) { _gateLog && _gateLog.hashDup++; return }
+  _runSeenUrls.add(item.url)
 
   const region = item.region || 'us'
 
@@ -702,8 +705,9 @@ async function runNewsFeed() {
   resetDedup()
   console.log('[NEWS] ▶ Starting feed pull...')
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
-  // Reset gate log for this run
+  // Reset gate log and per-run URL dedup for this run
   _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0, lastError:null }
+  _runSeenUrls = new Set()  // fresh Set prevents cross-invocation hash collisions
 
   // Fetch all sources in parallel
   const [newsapi, rss] = await Promise.all([fetchNewsAPI(), fetchRSS()])
