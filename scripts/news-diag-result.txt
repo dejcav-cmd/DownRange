@@ -4,17 +4,17 @@
 Sanity write: HTTP 200 → update
 
 -- News feed trigger --
-HTTP 200 in 94.1s
+HTTP 200 in 105.0s
 done=0 total=40 dupes=40
 headlines: []
 
 -- Last 3 news cron runs --
+2026-07-08T16:07 | warning | 101s
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled
+  error: All 40 items were duplicates — dedup cache may be stale
+2026-07-08T16:01 | warning | 94s
+  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled
+  error: All 40 items were duplicates — dedup cache may be stale
 2026-07-08T15:57 | warning | 91s
   details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled
   error: All 40 items were duplicates — dedup cache may be stale
-2026-07-08T15:47 | warning | 87s
-  details: 0 published (0 AI, 0 raw) of 40 fetched · 40 dupes | None pulled
-  error: All 40 items were duplicates — dedup cache may be stale
-2026-07-08T15:43 | warning | 288s
-  details: 0 published (0 AI, 0 raw) of 80 fetched · 80 dupes | None pulled
-  error: All 80 items were duplicates — dedup cache may be stale
