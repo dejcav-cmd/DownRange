@@ -281,8 +281,8 @@ function isFirearmsRelevant(item) {
 }
 
 async function processNewsItem(item) {
-  if (!item.title || !item.url) return null
-  if (isDuplicate(item.url)) return
+  if (!item.title || !item.url) { _gateLog && _gateLog.noTitle++; return null }
+  if (isDuplicate(item.url)) { _gateLog && _gateLog.hashDup++; return }
 
   const region = item.region || 'us'
 
@@ -498,6 +498,7 @@ async function processNewsItem(item) {
 
   // Deals feeds always pass — pre-vetted sources, domain allowlist may not cover them
   if (item.feedCat !== 'deals' && !fromKnownRSS && !isAllowedUSUrl(item.url)) {
+    _gateLog && _gateLog.gate3++
     console.log('[NEWS] BLOCKED non-US/unknown source:', item.source, item.url?.slice(0,60))
     return
   }
@@ -507,12 +508,14 @@ async function processNewsItem(item) {
   // Townhall, National Review, etc.) that tag 2A articles but also publish
   // general news. Deals feeds skip this check (product titles often lack keywords).
   if (item.feedCat !== 'deals' && !isFirearmsRelevant(item)) {
+    _gateLog && _gateLog.gate4++
     console.log('[NEWS] BLOCKED off-topic:', item.source, '"' + (item.title || '').slice(0, 60) + '"')
     return
   }
 
   // Cross-cycle Sanity dedup
   if (await isSanityDuplicate(item.url, item.title)) {
+    _gateLog && _gateLog.sanityDup++
     console.log('[NEWS] Sanity-dup skip:', (item.title||'').slice(0,60))
     return
   }
@@ -687,6 +690,8 @@ async function runNewsFeed() {
   resetDedup()
   console.log('[NEWS] ▶ Starting feed pull...')
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
+  // DEBUG: track gate counts
+  const _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, published:0, threw:0 }
 
   // Fetch all sources in parallel
   const [newsapi, rss] = await Promise.all([fetchNewsAPI(), fetchRSS()])
@@ -713,6 +718,7 @@ async function runNewsFeed() {
     headlines: published.map(p => p.title || '').filter(Boolean).slice(0, 20),
   }
   console.log(`[NEWS] ✓ Done: ${published.length} published, ${dupeCount} duped/skipped of ${all.length} fetched. ${summary.ms}ms`)
+  console.log('[NEWS] Gate breakdown:', JSON.stringify(_gateLog))
   if (published.length === 0 && all.length > 0) {
     console.warn('[NEWS] ⚠️ All items were deduped — possible stale dedup cache or all sources returning old articles')
   }
