@@ -151,7 +151,7 @@ async function loadSanityDedup() {
     // Only load last 2000 articles — anything older won't appear in RSS feeds anyway
     // RSS feeds only serve the last 20-100 items, all published within days/weeks
     const query = encodeURIComponent(
-      `*[_type == "newsArticle" && _createdAt > $since] | order(_createdAt desc)[0...800]{ "u": externalUrl, "t": title }`
+      `*[_type in ["newsArticle","gunDeal"] && _createdAt > $since] | order(_createdAt desc)[0...1000]{ "u": externalUrl, "t": title }`
     )
     const res = await fetch(
       `https://${process.env.NEXT_PUBLIC_SANITY_PROJECT_ID}.api.sanity.io/v2024-01-01/data/query/production?query=${query}&%24since=${encodeURIComponent(new Date(Date.now()-48*60*60*1000).toISOString())}&returnQuery=false`,

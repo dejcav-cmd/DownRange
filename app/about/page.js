@@ -344,21 +344,7 @@ export default function AboutPage() {
                 the right, wear the right.
               </p>
 
-              <a
-                href="https://shop.downrangeco.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                style={{
-                  display: 'inline-block',
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: '12px', letterSpacing: '0.14em',
-                  background: '#C8922A', color: '#09090B',
-                  padding: '13px 28px', textDecoration: 'none',
-                  fontWeight: 700, textTransform: 'uppercase',
-                }}
-              >
-                Shop the Collection
-              </a>
+
             </div>
 
             {/* Right product tags */}
@@ -369,17 +355,13 @@ export default function AboutPage() {
                 { tag: 'VETERANS',     line: 'Built with the respect the service deserves.' },
                 { tag: '2A PATRIOTS',  line: 'Because some rights are worth putting on your chest.' },
               ].map(({ tag, line }) => (
-                <a
+                <div
                   key={tag}
-                  href="https://shop.downrangeco.com"
-                  target="_blank"
-                  rel="noopener noreferrer"
                   style={{
                     display: 'flex', alignItems: 'center', gap: '16px',
                     background: '#0d0e12',
                     border: '1px solid #1f2937',
                     padding: '16px 20px',
-                    textDecoration: 'none',
                   }}
                 >
                   <div style={{
@@ -398,7 +380,7 @@ export default function AboutPage() {
                     fontFamily: "'IBM Plex Mono', monospace",
                     fontSize: '11px', color: '#374151',
                   }}>&#8594;</div>
-                </a>
+                </div>
               ))}
             </div>
 

@@ -12,6 +12,10 @@ const RSS_TIMEOUT_MS = 8000 // per-feed fetch timeout
 // ── RSS PARSER ─────────────────────────────────────────────────────────────────
 const parser = new Parser({
   timeout: RSS_TIMEOUT_MS,
+  headers: {
+    'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0; +https://downrangeco.com/about)',
+    'Accept': 'application/rss+xml, application/atom+xml, application/xml, text/xml, */*',
+  },
   customFields: {
     item: [
       ['media:content',   'mediaContent',   { keepArray: false }],
