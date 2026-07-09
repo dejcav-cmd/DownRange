@@ -2,19 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 8 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/570685f8ce3bd6e27c37bd0ea59fd14
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/230c244d6ab4c12d6150412f1caf9dd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/edb6df94c2c591e3466702f23fc94a1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bef7ce934c6d355d4b3b6a02a158b18
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b9ee7bb49e7cb34f99dd358d17ad8b2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cd543e277b25f7477e2e828ea9f6c70
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e9655ff9038496086ec9182a22229f0
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b01ee0df9f5ecd608e0b6d9f6adc270
-  → patched final 8
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5792385483f70b155b09c42ea65f719
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f4df2cb2816bd2d41fa3aa0abbfe4a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/509f86171107e7d9b37a6282c2667d7
+  → patched final 3
 
-Stats: uploaded=8 fallback=0 failed=0
+Stats: uploaded=3 fallback=0 failed=0
 
-=== FINAL: total=4523 missing_images=0 reddit=0 ===
+=== FINAL: total=4542 missing_images=0 reddit=0 ===
 
-FIXED: 8
+FIXED: 3
