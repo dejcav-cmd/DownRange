@@ -2,50 +2,8 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 58 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/e158f33364925e7f309ca44dd8b5602
-  ✗ https://midstatefirearms.com/?s=rg2&amp;post_type=product
-  ✗ https://www.dahlonegaarmory.com/product/rossi-brawler-300-blackout-pis
-  ✗ https://lanbosarmory.com/index.php?main_page=product_info&amp;cPath=15
-  ✗ https://suppliessolutionsllc.com/product/pof-5-semi-automatic-pistol
-  ✗ https://honeybadgerhaus.com/hk-parts
-  ~ og: https://www.primaryarms.comundefined
-  ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
-  ✗ https://shop.gafiringline.com/trijicon/rmr-hd-adj-3-25-moa-56754
-  ✗ https://www.wistransfers.com/product/police-trade-in-glock-g19-gen5-co
-  ✗ https://defensemechanisms.com/
-  ~ og: https://www.primaryarms.comundefined
-  ✗ https://lokgrips.com/
-  ✗ https://www.3dgunman.com/product/aimpoint-acro-p2-red-dot-reflex-sight
-  ✗ https://dkgun.com/product/mr-desert-eagle-50ae-6-blk-integral-mb-blem-
-  ✗ https://www.nighthawkcustom.com/parts-and-accessories
-  ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
-  ✗ https://www.208gunshop.com/glock/glock-17-gen-6-9mm-coa-959031
-  ✗ http://dwilsonmfg.com
-  ✗ https://akoptionsllc.com/slings-pouches/
-  ✗ https://skidtactical.com/firearms/sig-sauer/sig-sauer-rspear-762-16b-c
-  ✗ https://aimsurplus.com/products/leo-trade-in-griffin-armament-hrt556-2
-  ✗ https://clydearmory.com/agency-trade-in-mini-14-government-barrel-stai
-  ✗ https://lmtdefense.com/
-  ✗ https://deleonrxgunsandammo.com/product/osight-xe-reflex-red-dot-sight
-  ✗ https://unobtainiumgear.com/products/blem-sale
-  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
-  ✗ https://hansohnbrothers.com/shop/?_sfm__stock_status=instock&amp;_sft_
-  ✗ https://www.earthseedequipment.com/category/new-arrivals
-  ✗ https://glutenfreegear.com/4th-of-july-sale.html
-  ✗ https://www.bettergeiger.com/product-list
-  ✗ https://panthercitytactical.com/
-  ✗ https://ftw-arms.com/shop/best-sellers/ftw-og-22lr-suppressor/
-  ✗ https://checkmatedefense.us/optics/
-  ✗ http://www.deeznutztactical.com
-  ✗ https://flatlinefiberco.com/
-  ✗ https://notjustguns.com/product/wal-4797049-pdp-f-series-pro-x-pmm-9mm
-  ✗ https://notjustguns.com/product/aimpoint-coa-with-3.5-moa-enclosed-emi
-  ✗ https://sionicsweaponsystems.com/product-category/parts/barrels/
-  ✗ https://www.basspro.com/p/vortex-defender-st-red-dot-sight
-  ✗ https://doublemdefense.com/product/sco-spectre-9/
-  ✗ https://notjustguns.com/product/smith-wesson-csx-e-series-9mm-pistol-3
-  ✗ https://bansheedefense.com/product-category/use-code-taxthisdick/
+Needs image fix: 16 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ff62bfbb3e889f1db9f6dc543f3816e
   ✗ https://www.basspro.com/p/vortex-strike-eagle-1-8x24-ffp-rifle-scope
   ✗ https://www.peppersgeneralstore.com/
   ✗ https://shooterschoicesc.com/product/cgs-hyperion-k-w-bt-tiger-22-for-
@@ -61,10 +19,10 @@ Needs image fix: 58 (null + gun.deals hotlink-blocked)
   ✗ https://thegunshopusa.com/product/dair-silencer-mask-hd-22cal/
   ✗ https://ibexarmament.com/product/garmin-xero-c2-chronograph/
   ✗ https://tmroom.com/
-  → patched final 3
+  → patched final 1
 
-Stats: uploaded=1 fallback=2 failed=55
+Stats: uploaded=1 fallback=0 failed=15
 
-=== FINAL: total=4471 missing_images=55 reddit=0 ===
+=== FINAL: total=4481 missing_images=15 reddit=0 ===
 
-FIXED: 3
+FIXED: 1
