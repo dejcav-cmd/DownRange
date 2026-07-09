@@ -35,14 +35,14 @@ export function resolveImage(article) {
 export async function fetchArticles(limit = 20, category = null) {
   const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
   return client.fetch(`
-    *[_type == "newsArticle" && approved == true && defined(slug.current) ${filter}] | order(_createdAt desc) [0...${limit}] {
+    *[_type == "newsArticle" && approved == true && defined(slug.current) ${filter}] | order(publishedAt desc, _createdAt desc) [0...${limit}] {
       _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
       author->{name, slug},
       heroImage { asset->{url}, alt },
       imageUrl, imageAlt,
       source, externalUrl, tags
     }
-  `)
+  `, {}, { next: { revalidate: 120 } })
 }
 
 
@@ -93,13 +93,13 @@ export async function getArticleBySlug(slug) {
 
 export async function getRecentArticles(limit = 6) {
   return client.fetch(`
-    *[_type == "newsArticle" && approved == true] | order(_createdAt desc) [0...${limit}] {
+    *[_type == "newsArticle" && approved == true] | order(publishedAt desc, _createdAt desc) [0...${limit}] {
       _id, title, slug, category, urgencyScore, publishedAt,
       heroImage { asset->{url}, alt },
       imageUrl, imageAlt,
       source
     }
-  `)
+  `, {}, { next: { revalidate: 120 } })
 }
 
 // ── BREAKING ─────────────────────────────────────────────────────────────────
