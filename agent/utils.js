@@ -499,20 +499,20 @@ async function publishToSanity(doc) {
           // Only update metadata fields — never overwrite body/summary if already written
           { patch: {
               id: doc._id,
-              set: Object.fromEntries(
-                Object.entries(doc)
-                  .filter(([k]) => !['_id','_type','imageUrl','body','summary','excerpt'].includes(k))
-              ),
+              set: {
+                ...Object.fromEntries(
+                  Object.entries(doc)
+                    .filter(([k]) => !['_id','_type','imageUrl','body','summary','excerpt'].includes(k))
+                ),
+                // Include imageUrl in set only if it's a real HTTP URL
+                ...(doc.imageUrl && doc.imageUrl.startsWith('http') ? { imageUrl: doc.imageUrl } : {}),
+              },
               // Fill in body/summary/excerpt ONLY if missing (don't destroy backfilled content)
               setIfMissing: {
-                // Only set imageUrl if not already set to a real external image
-                // (prevents overwriting Wikimedia/OG images with generic /img/photos/ fallbacks)
                 body:    doc.body,
                 summary: doc.summary,
                 excerpt: doc.excerpt,
               },
-              // Set imageUrl only if cron-provided value is a real external URL
-              ...(doc.imageUrl && doc.imageUrl.startsWith('http') ? { imageUrl: doc.imageUrl } : {}),
           }},
           // Force-overwrite imageUrl ONLY if it's a real CDN/Wikimedia URL (never for /img/photos/ local fallbacks)
           ...(isTrustedImage(doc.imageUrl) && doc.imageUrl?.startsWith('http') ? [{ patch: { id: doc._id, set: { imageUrl: doc.imageUrl } } }] : []),
