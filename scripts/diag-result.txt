@@ -1,4 +1,0 @@
-SANITY_TOKEN: len=180 prefix='skcYmswi'
-GH_PAT: len=40 prefix='ghp_zi'
-Sanity: OK — result='0DfywYI2b4bEPL4q6AHP8l'
-Reddit RSS: OK — 7240 bytes
