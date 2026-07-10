@@ -2,53 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 42 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5276762dd9a2c538750b3e8f47a6f18
-  ✗ https://guns.bridgeportequip.com/product/hk-81000481-sp5k-pdw-9mm-luge
-  ~ og: https://www.sportsmansoutdoorsuperstore.com/prodimages/179186-DEFAULT-
-  ~ og: https://www.rooftopdefense.com/wp-content/uploads/2025/02/Heckler-Koch
-  ✗ https://deleonrxgunsandammo.com/product/cent-star-30m-9mm-very-good-co
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  ✗ https://shooterschoicesc.com/product/bt-36039-apc9-9mm
+  ✗ https://www.recoilgunworks.com/search.php?search_query=%22P9hst%20duty
   ~ og: https://www.primaryarms.comundefined
-  ✗ https://notjustguns.com/product/boe-boe-il9m-incolite-9m-9mm-7.5-1-2x2
-  ✗ https://glutenfreegear.com/Stealth-Additive-Works_c_114.html
-  ✗ https://www.eurooptic.com/silencerco-spectre-9k-9mm-300-blackout-subso
-  ~ og: http://outofsightsolutions.net/cdn/shop/files/C97C5966-2E84-43A0-B8FF-
-  ~ og: https://cdn.kygunco.com/assets/products/65933/thumbnail.jpg?v=17809414
-  ✗ https://www.gunbuyer.com/ruger-rxm-steath-gray-9mm-4-barrel-15-1.html
-  ~ og: http://centerfiresystems.com/cdn/shop/files/IMG_8761__90468.1774878701
-  ~ og: https://cdn11.bigcommerce.com/s-5wwo7zvkwt/products/123/images/464/IMG
-  ✗ https://www.kombatsolutions.com/product/cat-super-thug-1.375x24-hub-bl
-  ~ og: https://nrammo.com/wp-content/uploads/2026/03/Hush9mm165-e177273895945
-  ~ og: http://cicadaresearch.com/cdn/shop/files/TX22StainlessSteelFRTPile.jpg
-  ~ og: https://ecomarms.nyc3.digitaloceanspaces.com/wp-content/uploads/202511
-  ✗ https://cdvs.us/product/sellier-and-bellot-9mm-brass-case-115-grain-fm
-  ✗ https://hansohnbrothers.com/shop/accessories/mounts-and-pistons/comsto
-  ~ og: http://shootingtargets7.com/cdn/shop/files/dueling-tree-cc.webp?crop=c
-  ✗ https://ravenrocksprecision.com/product/ginex-large-rifle-primer/?gine
-  ~ og: http://ltcreed.com/cdn/shop/files/RESPONDER_TRAUMA_KIT_1200x630.png?v=
-  ✗ https://www.208gunshop.com/springfield-armory/springfield-armory-hellc
-  ~ og: https://www.lakearmory.com/assets/images/RDN10258_1_HR.jpg
-  ~ og: https://cdn11.bigcommerce.com/s-g7v6ruoe7l/products/145510/images/2944
-  ✗ https://www.ammunitiondepot.com/sms9115fmj-200-sportsman-select-reman-
-  ✗ https://www.lakearmory.com/sale.html
-  ✗ https://bansheedefense.com/product/blemished-comstock-armory-low-profi
-  ~ og: https://i.imgur.com/xQk589b.gif?fb
-  ✗ https://www.libertyarmstn.com/product/iwi-us-z15tac16-zion-15-5.56x45m
-  ✗ https://www.gundealusa.com/pages/sig-optic-sale
-  ~ og: http://atlasdefense.co/cdn/shop/files/IMG-5008.jpg?v=1772125505
-  ~ og: https://cdn11.bigcommerce.com/s-bd012etngf/products/175262/images/4289
-  ~ og: https://cdn11.bigcommerce.com/s-zoyqkj1bm2/products/1510/images/3411/2
-  ~ og: https://www.northeastmunitions.com/ccms/default/assets/Image/webp/main
-  ~ og: https://www.sportoptics.com/media/catalog/product/cache/ce6ea7863b5966
-  ~ og: https://survivalready.com/wp-content/uploads/2026/06/250th-sale-unREDA
-  ~ og: https://cdn11.bigcommerce.com/s-drvgkd7lpg/products/32155/images/50270
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cb7cbd93255ec6c90c464f3f388763f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3861e745f64bb195abd84530b49a42f
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cb0ebbbf4d14eddb44c1c849619dffc
-  → patched final 26
+  → patched final 1
 
-Stats: uploaded=4 fallback=22 failed=16
+Stats: uploaded=0 fallback=1 failed=2
 
-=== FINAL: total=4685 missing_images=16 reddit=0 ===
+=== FINAL: total=4701 missing_images=2 reddit=0 ===
 
-FIXED: 26
+FIXED: 1
