@@ -4,14 +4,14 @@ import { getAllRuns, getAlertConfig, setAlertConfig, reportCronRun } from '@/lib
 
 // ── All cron jobs registry ────────────────────────────────────────────────────
 export const ALL_JOBS = [
-  { id:'news',             path:'/api/agent?feed=news',             schedule:'*/30 * * * *',  label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 30 min' },
+  { id:'news',             path:'/api/agent?feed=news',             schedule:'0 */2 * * *',   label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 2 hrs' },
   { id:'releases',         path:'/api/agent?feed=releases&phase=scrape', schedule:'45 6 * * 1,4',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
     { path:'/api/cron/releases-process',           schedule:'50 6 * * 1,4',     label:'Releases Process',        group:'Content',  icon:'⚙️',  critical:false, desc:'Phase 2: dequeue and process scraped candidates' },
   { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */12 * * *',  label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:false, desc:'Congress.gov + LegiScan → legislation every 12 hrs' },
   { id:'video',            path:'/api/agent?feed=video',            schedule:'0 */4 * * *',   label:'Video Feed',              group:'Content',  icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
   { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * 0',     label:'State Laws (Weekly)',     group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → 50-state law profiles updated every Sunday 8am UTC' },
   { id:'goa',              path:'/api/agent?feed=goa',              schedule:'2 */12 * * *',  label:'GOA Feed',                group:'Content',  icon:'🦅', critical:false, desc:'Gun Owners of America press feed every 12 hrs' },
-  { id:'quality-rewrite',  path:'/api/cron/quality-rewrite',        schedule:'10 */8 * * *',  label:'Quality Rewrite',         group:'Content',  icon:'✨', critical:false, desc:'Scans content for AI phrases + short bodies → rewrites failing items. 3x per day.' },
+  { id:'quality-rewrite',  path:'/api/cron/quality-rewrite',        schedule:'0 3 * * *',     label:'Quality Rewrite',         group:'Content',  icon:'✨', critical:false, desc:'Scans content for AI phrases + short bodies → rewrites failing items. 1x/day at 3am UTC.' },
   { id:'image-fix',        path:'/api/cron/image-fix',              schedule:'0 * * * *',     label:'Image Fix',               group:'Content',  icon:'🖼', critical:true,  desc:'Fetches OG images from source URLs, assigns real photo fallbacks. Every hour.' },
   { id:'fix-placeholder-images', path:'/api/cron/fix-placeholder-images', schedule:'0 */4 * * *', label:'Fix Placeholder Images', group:'Content', icon:'🔧', critical:false, desc:'Scans articles still using /img/photos/ fallbacks, fetches real OG image from source → uploads to Sanity CDN. Every hour.' },
   { id:'site_health',      path:'/api/site-health',                 schedule:'0 8,14,20 * * *', label:'Site Health',           group:'System',   icon:'🩺', critical:true,  desc:'Health checks 3x/day at 8am, 2pm, 8pm UTC' },
@@ -223,3 +223,4 @@ function parseScheduleInterval(schedule) {
   if (parts[2] === '*' && parts[3] === '*' && parts[4] === '*') return 86400000
   return null
 }
+
