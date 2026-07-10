@@ -17,7 +17,10 @@ jobs:
 
       - name: Fetch Reddit RSS and write to Sanity
         env:
-          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+          REDDIT_CLIENT_ID: ${{ secrets.REDDIT_CLIENT_ID }}
+          REDDIT_CLIENT_SECRET: ${{ secrets.REDDIT_CLIENT_SECRET }}
         run: python3 scripts/fetch_reddit_deals.py
 
       - name: Commit result log
