@@ -311,15 +311,39 @@ def extract_store(title):
     return None
 
 # ── Load existing deal IDs for dedup ─────────────────────────────────────────
+# ── Startup diagnostics ──────────────────────────────────────────────────────
+token_len = len(SANITY_TOKEN)
+token_prefix = SANITY_TOKEN[:6] if token_len > 6 else SANITY_TOKEN
+log(f"Config: SANITY_TOKEN={token_len}chars ({token_prefix}...), GH_PAT={len(GH_PAT)}chars, REDDIT_OAUTH={'yes' if REDDIT_CLIENT_ID else 'no'}")
+
 log("Loading existing Reddit deal IDs...")
-existing_docs = sanity_query(
-    '*[_type=="gunDeal" && (source=="reddit" || source=="r/gundeals")] | order(_createdAt desc) [0...500]'
-    '{ "id": tags[@ match "reddit:*"][0] }'
-)
+try:
+    existing_docs = sanity_query(
+        '*[_type=="gunDeal" && (source=="reddit" || source=="r/gundeals")] | order(_createdAt desc) [0...500]'
+        '{ "id": tags[@ match "reddit:*"][0] }'
+    )
+except Exception as e:
+    log(f"  FATAL: Sanity query failed: {e}")
+    result_text = '\n'.join(log_lines)
+    try:
+        encoded = base64.b64encode(result_text.encode()).decode()
+        _api = f"https://api.github.com/repos/dejcav-cmd/DownRange/contents/{RESULTS_FILE}"
+        try:
+            _req = urllib.request.Request(_api, headers={"Authorization": f"Bearer {GH_PAT}", "Accept": "application/vnd.github.v3+json"})
+            with urllib.request.urlopen(_req) as _r: _sha = json.load(_r)["sha"]
+        except: _sha = None
+        _payload = {"message": "fix: reddit deals fetch — SANITY FAIL [skip ci]", "content": encoded}
+        if _sha: _payload["sha"] = _sha
+        _req2 = urllib.request.Request(_api, data=json.dumps(_payload).encode(), method="PUT",
+            headers={"Authorization": f"Bearer {GH_PAT}", "Content-Type": "application/json"})
+        with urllib.request.urlopen(_req2) as _r: pass
+    except Exception as _log_err:
+        print(f"Result save failed: {_log_err}")
+    exit(1)
 existing_ids = set()
 for d in (existing_docs or []):
-    tag = d.get('id', '')
-    if tag.startswith('reddit:'):
+    tag = d.get("id", "")
+    if tag.startswith("reddit:"):
         existing_ids.add(tag[7:])
 log(f"  {len(existing_ids)} existing Reddit deal IDs loaded")
 
