@@ -2,12 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/196dbdd9b5632e3e604073546083b76
-  → patched final 1
+Needs image fix: 7 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0835d238f56c311870a8e0ef25980db
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fa4c32a6841244c3d45ab7a37936ce3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/74a809811441cf0863c71cce642b855
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b546740f557e6337438ecf26d471dcb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/881edd91cf4809299a8100a3e78dace
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c4b008015963d502b1cc7ba24641e0c
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/4a4981dcd761e7b3d5c62bdd5526dc4
+  → patched final 7
 
-Stats: uploaded=1 fallback=0 failed=0
+Stats: uploaded=7 fallback=0 failed=0
 
-=== FINAL: total=4598 missing_images=0 reddit=0 ===
+=== FINAL: total=4623 missing_images=0 reddit=0 ===
 
-FIXED: 1
+FIXED: 7
