@@ -1,34 +1,35 @@
-#!/usr/bin/env python3
 """
-Reddit deals fetcher — r/gundeals hot feed → Sanity gunDeal docs.
-Auth: Reddit OAuth app-only (REDDIT_CLIENT_ID + REDDIT_CLIENT_SECRET).
-      Falls back to direct RSS with browser UA if OAuth creds are absent.
-Images: extract product name from title, Bing image search, validate dimensions,
-upload to Sanity CDN. Wrong image = no image (never use generic stock photos).
+fetch_reddit_deals.py
+─────────────────────
+Fetches r/gundeals hot RSS feed and writes new deals to Sanity.
+Runs from GitHub Actions (IPs not blocked by Reddit's Cloudflare).
+
+Auth: SANITY_API_TOKEN env var (set in workflow from SANITY_TOKEN secret).
+Log:  Written to scripts/feed-result-reddit-deals.txt (committed by workflow step).
 """
-import os, json, urllib.request, urllib.parse, re, time, hashlib, base64
-import html as html_mod
-from datetime import datetime, timezone
-from xml.etree import ElementTree as ET
 
-# ── Config ────────────────────────────────────────────────────────────────────
-SANITY_TOKEN    = os.environ.get('SANITY_TOKEN', '').replace('ST=', '').strip()
-PROJECT         = 'vbnsqnkg'
-BASE            = f'https://{PROJECT}.api.sanity.io/v2024-01-01/data'
-H_READ          = {'Authorization': f'Bearer {SANITY_TOKEN}'}
-H_WRITE         = {'Authorization': f'Bearer {SANITY_TOKEN}', 'Content-Type': 'application/json'}
+import os, json, urllib.request, urllib.parse, re, time, hashlib
+from datetime import datetime, timezone, timedelta
+from email.utils import parsedate_to_datetime
 
-REDDIT_CLIENT_ID     = os.environ.get('REDDIT_CLIENT_ID', '').strip()
-REDDIT_CLIENT_SECRET = os.environ.get('REDDIT_CLIENT_SECRET', '').strip()
-GH_PAT          = os.environ.get('GH_PAT', '').strip()
-RESULTS_FILE    = 'scripts/feed-result-reddit-deals.txt'
+LOG = 'scripts/feed-result-reddit-deals.txt'
+open(LOG, 'w').close()
 
-log_lines = []
-def log(msg): print(msg); log_lines.append(msg)
+def log(msg):
+    print(msg, flush=True)
+    with open(LOG, 'a') as f:
+        f.write(msg + '\n')
 
-# ── Sanity helpers ────────────────────────────────────────────────────────────
+# ── Sanity setup ──────────────────────────────────────────────────────────────
+TOKEN = os.environ.get('SANITY_API_TOKEN', '').lstrip('ST=').strip()
+BASE  = 'https://vbnsqnkg.api.sanity.io/v2024-01-01/data'
+H_READ  = {'Authorization': f'Bearer {TOKEN}', 'Accept': 'application/json'}
+H_WRITE = {'Authorization': f'Bearer {TOKEN}', 'Accept': 'application/json', 'Content-Type': 'application/json'}
+
+log(f"Config: SANITY_API_TOKEN={'set (' + str(len(TOKEN)) + ' chars)' if TOKEN else 'MISSING'}")
+
 def sanity_query(groq):
-    url = f'{BASE}/query/production?query={urllib.parse.quote(groq)}&returnQuery=false'
+    url = f'{BASE}/query/production?query={urllib.parse.quote(groq)}'
     req = urllib.request.Request(url, headers=H_READ)
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read()).get('result', [])
@@ -40,377 +41,267 @@ def sanity_mutate(mutations):
     with urllib.request.urlopen(req, timeout=30) as r:
         return json.loads(r.read())
 
-# ── Reddit OAuth ──────────────────────────────────────────────────────────────
-def get_reddit_oauth_token():
-    """Get app-only OAuth token using client credentials."""
-    creds = base64.b64encode(f'{REDDIT_CLIENT_ID}:{REDDIT_CLIENT_SECRET}'.encode()).decode()
-    req = urllib.request.Request(
-        'https://www.reddit.com/api/v1/access_token',
-        data=b'grant_type=client_credentials',
-        method='POST',
-        headers={
-            'User-Agent': 'DownRangeBot/2.0 by /u/downrangeco',
-            'Authorization': f'Basic {creds}',
-            'Content-Type': 'application/x-www-form-urlencoded',
-        }
-    )
-    with urllib.request.urlopen(req, timeout=15) as r:
-        data = json.loads(r.read())
-    token = data.get('access_token')
-    if not token:
-        raise ValueError(f'No access_token in response: {data}')
-    return token
+# ── Category mapping ──────────────────────────────────────────────────────────
+FLAIR_MAP = {
+    'rifle':'rifle','rifles':'rifle',
+    'handgun':'pistol','handguns':'pistol','pistol':'pistol',
+    'shotgun':'shotgun','shotguns':'shotgun',
+    'ammo':'ammo','ammunition':'ammo',
+    'nfa':'suppressor','suppressor':'suppressor','silencer':'suppressor',
+    'optic':'optic','optics':'optic','scope':'optic',
+    'archery':'archery',
+    'accessory':'accessory','accessories':'accessory','gear':'accessory',
+}
+SKIP_FLAIRS   = {'discussion','meta','weekly thread','ban appeal','mod post','ama','megathread'}
+SKIP_TITLE_RE = re.compile(r'\[expired\]|\[removed\]|\[deleted\]|\bweekly\b|\bmonthly\b|\bmod post\b|\bdiscussion\b', re.I)
+IMAGE_URL_RE  = re.compile(r'\.(jpg|png|gif|webp|mp4)$|youtube\.com|youtu\.be|imgur\.com\/[^a]', re.I)
 
-def fetch_reddit_json_oauth(token):
-    """Fetch r/gundeals hot posts via OAuth JSON API."""
-    req = urllib.request.Request(
-        'https://oauth.reddit.com/r/gundeals/hot?limit=100&raw_json=1',
-        headers={
-            'User-Agent': 'DownRangeBot/2.0 by /u/downrangeco',
-            'Authorization': f'Bearer {token}',
-        }
-    )
-    with urllib.request.urlopen(req, timeout=25) as r:
-        return json.loads(r.read())
+def map_flair(raw=''):
+    return FLAIR_MAP.get(raw.lower().strip(), None)
 
-def fetch_reddit_rss_direct():
-    """Fallback: direct RSS fetch with browser UA (works if GHA IPs not blocked)."""
+def detect_category(title=''):
+    t = title.lower()
+    if re.search(r'\bnfa\b|suppressor|silencer|form 4', t):          return 'suppressor'
+    if re.search(r'\bammo\b|9mm|\.223|5\.56|\.308|7\.62|\.45|rounds|gr fmj', t): return 'ammo'
+    if re.search(r'rifle|ar-?15|ak-?47|carbine|sbr|bolt.action|lever.action', t): return 'rifle'
+    if re.search(r'pistol|handgun|glock|sig |beretta|1911|revolver', t): return 'pistol'
+    if re.search(r'shotgun|mossberg|remington 870|benelli', t):        return 'shotgun'
+    if re.search(r'scope|optic|red dot|lpvo|eotech|aimpoint|vortex|holosun', t): return 'optic'
+    if re.search(r'\bbow\b|archery|broadhead|crossbow|arrow ', t):     return 'archery'
+    return 'accessory'
+
+def extract_price(title=''):
+    m = re.search(r'\$[\d,]+(?:\.\d{2})?', title)
+    return m.group(0) if m else ''
+
+def extract_store(title=''):
+    m = re.search(r'(?:\bat\b|[@]|from)\s+([A-Z][A-Za-z0-9 &\'.]+?)(?:\s*[\[\(]|\s*$)', title, re.I)
+    if m:
+        return m.group(1).strip()[:40]
+    return ''
+
+def unescape(s=''):
+    named = {'amp':'&','lt':'<','gt':'>','quot':'"','apos':"'",'#39':"'",'nbsp':' '}
+    s = re.sub(r'&#(\d+);', lambda m: chr(int(m.group(1))), s)
+    s = re.sub(r'&([a-z0-9#]+);', lambda m: named.get(m.group(1).lower(), m.group(0)), s)
+    return s.strip()
+
+# ── Fetch RSS — try browser UA first, then OAuth if creds available ───────────
+log("Fetching r/gundeals hot RSS...")
+
+rss_url = 'https://www.reddit.com/r/gundeals/hot.rss?limit=100'
+xml = None
+
+# Attempt 1: Browser UA (works when GHA IPs aren't rate-limited)
+try:
     req = urllib.request.Request(
-        'https://www.reddit.com/r/gundeals/hot.rss?limit=100',
+        rss_url,
         headers={
             'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36',
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
             'Accept-Language': 'en-US,en;q=0.9',
+            'Accept-Encoding': 'identity',
         }
     )
     with urllib.request.urlopen(req, timeout=25) as r:
-        return r.read().decode('utf-8', errors='replace')
+        raw = r.read().decode('utf-8', errors='replace')
+    # Validate it's actually RSS — Reddit sometimes returns a 200 with an HTML error page
+    if '<entry' in raw or '<item>' in raw:
+        xml = raw
+        log(f"  RSS fetched via browser UA — {len(xml)} bytes")
+    else:
+        log(f"  Browser UA returned non-RSS response ({len(raw)} bytes) — Reddit is blocking GHA IPs")
+except Exception as e:
+    log(f"  Browser UA fetch failed: {e}")
 
-# ── Parse JSON API response ───────────────────────────────────────────────────
-def parse_oauth_json(data):
-    """Parse r/gundeals JSON API response into list of post dicts."""
+# Attempt 2: Reddit OAuth app-only (if client creds provided as secrets)
+if xml is None:
+    import base64 as _b64
+    REDDIT_CLIENT_ID     = os.environ.get('REDDIT_CLIENT_ID', '').strip()
+    REDDIT_CLIENT_SECRET = os.environ.get('REDDIT_CLIENT_SECRET', '').strip()
+    if REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET:
+        log("  Trying Reddit OAuth app-only flow...")
+        try:
+            creds = _b64.b64encode(f'{REDDIT_CLIENT_ID}:{REDDIT_CLIENT_SECRET}'.encode()).decode()
+            tok_req = urllib.request.Request(
+                'https://www.reddit.com/api/v1/access_token',
+                data=b'grant_type=client_credentials',
+                method='POST',
+                headers={
+                    'User-Agent': 'DownRangeBot/2.0 by /u/downrangeco',
+                    'Authorization': f'Basic {creds}',
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                }
+            )
+            with urllib.request.urlopen(tok_req, timeout=15) as r:
+                tok_data = json.loads(r.read())
+            access_token = tok_data.get('access_token')
+            if not access_token:
+                raise ValueError(f'No token: {tok_data}')
+            log(f"  OAuth token acquired")
+            api_req = urllib.request.Request(
+                'https://oauth.reddit.com/r/gundeals/hot?limit=100&raw_json=1',
+                headers={
+                    'User-Agent': 'DownRangeBot/2.0 by /u/downrangeco',
+                    'Authorization': f'Bearer {access_token}',
+                }
+            )
+            with urllib.request.urlopen(api_req, timeout=25) as r:
+                json_data = json.loads(r.read())
+            log(f"  OAuth JSON fetched — {len(json_data.get('data',{}).get('children',[]))} children")
+            # Convert JSON to unified post list (bypass XML parsing)
+            posts_from_oauth = []
+            for child in json_data.get('data', {}).get('children', []):
+                p = child.get('data', {})
+                post_id = p.get('id', '')
+                title   = p.get('title', '').strip()
+                if not post_id or not title:
+                    continue
+                # Use external URL if it's not a reddit.com link, else skip self posts
+                url = p.get('url', '')
+                if not url or 'reddit.com' in url:
+                    continue
+                if IMAGE_URL_RE.search(url):
+                    continue
+                flair = (p.get('link_flair_text') or '').lower().strip()
+                if flair in SKIP_FLAIRS:
+                    continue
+                if SKIP_TITLE_RE.search(title):
+                    continue
+                created_utc = p.get('created_utc', time.time())
+                posts_from_oauth.append({
+                    'id': post_id, 'title': title, 'url': url,
+                    'created': created_utc, 'flair': flair,
+                })
+            # Skip straight to dedup/mutations — set xml sentinel to skip XML parse below
+            xml = '__OAUTH_POSTS__'
+        except Exception as e:
+            log(f"  OAuth failed: {e}")
+    else:
+        log("  No REDDIT_CLIENT_ID/SECRET — skipping OAuth (add secrets to enable)")
+
+if xml is None:
+    log("FATAL: All Reddit fetch methods failed — no deals fetched this run")
+    raise SystemExit(1)
+
+# ── Parse RSS (or use OAuth posts) ───────────────────────────────────────────
+if xml == '__OAUTH_POSTS__':
+    posts = posts_from_oauth
+    log(f"  Using {len(posts)} posts from OAuth JSON API")
+else:
     posts = []
-    children = data.get('data', {}).get('children', [])
-    for child in children:
-        p = child.get('data', {})
-        post_id = p.get('id', '')
-        if not post_id:
-            continue
-        title = html_mod.unescape(p.get('title', '')).strip()
-        if not title or '[Meta]' in title or '[Discussion]' in title:
-            continue
-        # Skip non-deal posts
-        if re.search(r'\b(discussion|meta|weekly|monthly|question|help|looking for)\b', title, re.I):
-            continue
-        if not re.search(r'\$\d|%\s*off|free ship|deal|sale|oos', title, re.I):
-            continue
-        # Prefer external URL over reddit post URL
-        url = p.get('url', '') or f"https://reddit.com{p.get('permalink','')}"
-        if 'reddit.com' in url and p.get('url'):
-            url = p['url']  # direct product link
-        flair = (p.get('link_flair_text') or '').lower()
-        created = p.get('created_utc', time.time())
-        # Skip WTS/WTB posts
-        if re.search(r'\b(WTS|WTB|WTT|selling|ISO)\b', title, re.I):
-            continue
-        posts.append({'id': post_id, 'title': title, 'url': url, 'flair': flair, 'created': created})
-    return posts
+    block_tag = 'item' if '<item>' in xml else 'entry'
+    block_re  = re.compile(rf'<{block_tag}>([\s\S]*?)</{block_tag}>', re.I)
+    now_ts    = time.time()
 
-# ── Parse RSS response ────────────────────────────────────────────────────────
-def unescape(s): return html_mod.unescape(s) if s else s
+    for m in block_re.finditer(xml):
+        if len(posts) >= 100:
+            break
+        block = m.group(1)
 
-def parse_rss(raw):
-    """Parse RSS XML into list of post dicts."""
-    posts = []
-    entries = re.split(r'<entry[^>]*>', raw)[1:]
-    for block in entries:
-        post_id = ''
-        idm = re.search(r'<id[^>]*>([^<]+)</id>', block)
-        if idm:
-            m = re.search(r'comments/([a-z0-9]+)/', idm.group(1))
-            if m: post_id = m.group(1)
-        if not post_id: continue
-
-        titlem = re.search(r'<title[^>]*>([^<]+)</title>', block)
-        title = unescape(titlem.group(1)).strip() if titlem else ''
-        if not title or '[Meta]' in title or '[Discussion]' in title: continue
+        tm = re.search(r'<title[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?</title>', block, re.I)
+        if not tm:
+            continue
+        title = unescape(tm.group(1))
+        if len(title) < 10:
+            continue
 
         link = ''
         lhm = re.search(r'<link[^>]+href="([^"]+)"', block, re.I)
         ltm = re.search(r'<link[^>]*>([^<]+)</link>', block, re.I)
-        if lhm:   link = unescape(lhm.group(1))
-        elif ltm: link = unescape(ltm.group(1))
+        if lhm:      link = unescape(lhm.group(1))
+        elif ltm:    link = unescape(ltm.group(1))
         if not link: continue
 
         deal_url = link
+        post_id  = ''
         reddit_m = re.search(r'reddit\.com/r/[^/]+/comments/([a-z0-9]+)/', link, re.I)
         if reddit_m:
-            content_m = re.search(r'<content[^>]*>(.*?)</content>', block, re.DOTALL)
-            if content_m:
-                hm = re.search(r'href="(https?://(?!(?:www\.)?reddit\.com)[^"]+)"', content_m.group(1))
-                if hm: deal_url = unescape(hm.group(1))
+            post_id = reddit_m.group(1)
+            dm = re.search(r'<description[^>]*>([\s\S]*?)</description>', block, re.I) \
+              or re.search(r'<content[^>]*>([\s\S]*?)</content>', block, re.I)
+            if dm:
+                decoded = unescape(dm.group(1))
+                hm = re.search(r'href="(https?://(?!(?:www\.)?reddit)[^"]+)"', decoded, re.I)
+                if hm:
+                    deal_url = hm.group(1)
+                else:
+                    continue  # self post
+            else:
+                continue
+        else:
+            gm = re.search(r'<guid[^>]*>([\s\S]*?)</guid>', block, re.I)
+            if gm:
+                gid_m = re.search(r'comments/([a-z0-9]+)', unescape(gm.group(1)), re.I)
+                if gid_m:
+                    post_id = gid_m.group(1)
+            if not post_id:
+                post_id = hashlib.md5(deal_url.encode()).hexdigest()[:10]
 
-        if re.search(r'\b(discussion|meta|weekly|monthly|question|help|looking for)\b', title, re.I): continue
-        if not re.search(r'\$\d|%\s*off|free ship|deal|sale|oos', title, re.I): continue
+        if not deal_url or 'reddit.com' in deal_url:
+            continue
+        if IMAGE_URL_RE.search(deal_url):
+            continue
 
+        dm2 = re.search(r'<pubDate[^>]*>([^<]+)</pubDate>', block, re.I) \
+           or re.search(r'<updated[^>]*>([^<]+)</updated>', block, re.I)
+        created_utc = now_ts
+        if dm2:
+            try:
+                created_utc = parsedate_to_datetime(unescape(dm2.group(1))).timestamp()
+            except Exception:
+                pass
+
+        if SKIP_TITLE_RE.search(title):
+            continue
         flair_m = re.search(r'\[([^\]]+)\]', title)
-        flair_lc = flair_m.group(1).lower() if flair_m else ''
+        flair_lc = flair_m.group(1).lower().strip() if flair_m else ''
+        if flair_lc in SKIP_FLAIRS:
+            continue
 
-        created = time.time()
-        cm = re.search(r'<published[^>]*>([^<]+)</published>', block)
-        if cm:
-            try:
-                created = datetime.fromisoformat(cm.group(1).replace('Z', '+00:00')).timestamp()
-            except: pass
-
-        if re.search(r'\b(WTS|WTB|WTT|selling|ISO)\b', title, re.I): continue
-        posts.append({'id': post_id, 'title': title, 'url': deal_url, 'flair': flair_lc, 'created': created})
-    return posts
-
-# ── Product name extraction ───────────────────────────────────────────────────
-def extract_product_name(title):
-    """Strip price/promo/code noise, return the core product name for image search."""
-    clean = title
-    clean = re.sub(r'^\[[^\]]+\]\s*', '', clean)
-    clean = re.sub(r'\$[\d,]+(?:\.\d{2})?', '', clean)
-    clean = re.sub(r'\b(code:?\s*\w+|use code \w+|promo pack|promo code \w+)\b', '', clean, flags=re.I)
-    clean = re.sub(r'\+\s*(free ship\w*|no tax\s+\w+(\s+\w+)?)\b.*', '', clean, flags=re.I)
-    clean = re.sub(r'\b(no code needed|in stock|oos|[Ff][Ss][Ss]|free shipping|in various lengths?|w/\(?\d+\)?\s*\w+)\b.*', '', clean, flags=re.I)
-    clean = re.sub(r'\s+for\s+\$.*', '', clean, flags=re.I)
-    clean = re.sub(r'\s*[-–]\s*\$.*', '', clean)
-    clean = re.sub(r'\s+', ' ', clean).strip().rstrip(',.-')
-    return clean[:100]
-
-# ── Image search + validation ─────────────────────────────────────────────────
-def search_and_validate_image(product_name):
-    """
-    Bing image search for product_name. Returns validated image bytes or None.
-    Query anchored with brand/model terms — never generic stock terms.
-    Rejects: too small, wrong aspect ratio (banners/logos), generic stock photos.
-    """
-    query = f'"{product_name}" product'
-    encoded = urllib.parse.quote(query)
-    search_url = f"https://www.bing.com/images/search?q={encoded}&first=1&count=10&qft=+filterui:photo-photo"
-
-    try:
-        req = urllib.request.Request(search_url, headers={
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml",
-            "Accept-Language": "en-US,en;q=0.9",
-            "Referer": "https://www.bing.com/",
+        posts.append({
+            'id':      post_id,
+            'title':   title,
+            'url':     deal_url,
+            'created': created_utc,
+            'flair':   flair_lc,
         })
-        with urllib.request.urlopen(req, timeout=12) as r:
-            page = r.read().decode("utf-8", errors="replace")
-    except Exception as e:
-        log(f"    Bing search failed: {e}")
-        return None
 
-    img_urls = [html_mod.unescape(u) for u in re.findall(r'"murl":"([^"]+)"', page)]
+    log(f"  Parsed {len(posts)} posts from RSS")
 
-    for img_url in img_urls[:8]:
-        if not re.search(r'\.(jpg|jpeg|png|webp)(\?|$)', img_url, re.I):
-            continue
-        if any(d in img_url for d in ['shutterstock', 'getty', 'istock', 'alamy', 'dreamstime', 'stock.adobe', '123rf', 'depositphotos']):
-            continue
-
-        try:
-            req2 = urllib.request.Request(img_url, headers={
-                "User-Agent": "Mozilla/5.0",
-                "Referer": "https://www.bing.com"
-            })
-            with urllib.request.urlopen(req2, timeout=8) as r:
-                data = r.read()
-        except:
-            continue
-
-        if len(data) < 15000:
-            continue
-
-        b = bytearray(data)
-        w, h = 0, 0
-        try:
-            if b[0] == 0x89 and b[1] == 0x50:  # PNG
-                w = (b[16] << 24) | (b[17] << 16) | (b[18] << 8) | b[19]
-                h = (b[20] << 24) | (b[21] << 16) | (b[22] << 8) | b[23]
-            elif b[0] == 0xFF and b[1] == 0xD8:  # JPEG
-                i = 2
-                while i < len(b) - 9:
-                    if b[i] != 0xFF: i += 1; continue
-                    mk = b[i + 1]
-                    if mk in (0xC0, 0xC1, 0xC2):
-                        h = (b[i + 5] << 8) | b[i + 6]
-                        w = (b[i + 7] << 8) | b[i + 8]
-                        break
-                    seg = (b[i + 2] << 8) | b[i + 3]
-                    i += 2 + seg
-        except:
-            pass
-
-        if w < 300 or h < 200:
-            continue
-        if w > 0 and h > 0 and (w / h > 3.5 or h / w > 3.5):
-            continue
-
-        return data
-
-    return None
-
-def upload_to_sanity(img_data, deal_id):
-    """Upload image bytes to Sanity CDN, return CDN URL."""
-    fname = f"reddit-deal-{deal_id[-8:]}.jpg"
-    url = f"https://{PROJECT}.api.sanity.io/v2024-01-01/assets/images/production?filename={fname}"
-    req = urllib.request.Request(url, data=img_data, method='POST', headers={
-        'Authorization': f'Bearer {SANITY_TOKEN}',
-        'Content-Type': 'image/jpeg',
-        'Content-Disposition': f'attachment; filename={fname}',
-    })
-    try:
-        with urllib.request.urlopen(req, timeout=20) as r:
-            return json.loads(r.read()).get('url')
-    except:
-        return None
-
-# ── Flair / category mapping ──────────────────────────────────────────────────
-FLAIR_MAP = {
-    'handgun': 'handgun', 'pistol': 'handgun', 'revolver': 'handgun',
-    'rifle': 'rifle', 'ar': 'rifle', 'ak': 'rifle', 'carbine': 'rifle',
-    'shotgun': 'shotgun',
-    'ammo': 'ammo', 'ammunition': 'ammo',
-    'optic': 'optic', 'scope': 'optic', 'red dot': 'optic',
-    'suppressor': 'suppressor', 'silencer': 'suppressor',
-    'gear': 'accessories', 'accessory': 'accessories', 'accessories': 'accessories',
-    'nfa': 'nfa',
-}
-
-def map_flair(flair_lc):
-    for k, v in FLAIR_MAP.items():
-        if k in flair_lc: return v
-    return None
-
-def detect_category(title):
-    tl = title.lower()
-    if re.search(r'\bpistol|handgun|glock|sig|1911|2011|p365|hellcat|shield\b', tl): return 'handgun'
-    if re.search(r'\brifle|ar-?15|ak-?47|carbine|bolt action\b', tl): return 'rifle'
-    if re.search(r'\bshotgun|mossberg|remington 870|benelli\b', tl): return 'shotgun'
-    if re.search(r'\bammo|ammunition|rounds?|gr grain\b', tl): return 'ammo'
-    if re.search(r'\bscope|optic|red dot|eotech|aimpoint|vortex|trijicon\b', tl): return 'optic'
-    if re.search(r'\bsuppressor|silencer\b', tl): return 'suppressor'
-    return 'accessories'
-
-def extract_price(title):
-    m = re.search(r'\$([\d,]+(?:\.\d{2})?)', title)
-    return f"${m.group(1)}" if m else None
-
-def extract_store(title):
-    stores = ['brownells', 'palmetto', 'psa', 'primary arms', 'kygunco', 'opticsplanet',
-              'grabagun', 'midwayusa', 'cabelas', 'bass pro', 'sportsmans warehouse',
-              'sgammo', 'lucky gunner', 'cheaper than dirt', 'aim surplus', 'buds gun shop']
-    tl = title.lower()
-    for s in stores:
-        if s in tl: return s.title()
-    return None
-
-# ── Load existing deal IDs for dedup ─────────────────────────────────────────
-# ── Startup diagnostics ──────────────────────────────────────────────────────
-token_len = len(SANITY_TOKEN)
-token_prefix = SANITY_TOKEN[:6] if token_len > 6 else SANITY_TOKEN
-log(f"Config: SANITY_TOKEN={token_len}chars ({token_prefix}...), GH_PAT={len(GH_PAT)}chars, REDDIT_OAUTH={'yes' if REDDIT_CLIENT_ID else 'no'}")
-
-log("Loading existing Reddit deal IDs...")
-try:
-    existing_docs = sanity_query(
-        '*[_type=="gunDeal" && (source=="reddit" || source=="r/gundeals")] | order(_createdAt desc) [0...500]'
-        '{ "id": tags[@ match "reddit:*"][0] }'
-    )
-except Exception as e:
-    log(f"  FATAL: Sanity query failed: {e}")
-    result_text = '\n'.join(log_lines)
-    try:
-        encoded = base64.b64encode(result_text.encode()).decode()
-        _api = f"https://api.github.com/repos/dejcav-cmd/DownRange/contents/{RESULTS_FILE}"
-        try:
-            _req = urllib.request.Request(_api, headers={"Authorization": f"Bearer {GH_PAT}", "Accept": "application/vnd.github.v3+json"})
-            with urllib.request.urlopen(_req) as _r: _sha = json.load(_r)["sha"]
-        except: _sha = None
-        _payload = {"message": "fix: reddit deals fetch — SANITY FAIL [skip ci]", "content": encoded}
-        if _sha: _payload["sha"] = _sha
-        _req2 = urllib.request.Request(_api, data=json.dumps(_payload).encode(), method="PUT",
-            headers={"Authorization": f"Bearer {GH_PAT}", "Content-Type": "application/json"})
-        with urllib.request.urlopen(_req2) as _r: pass
-    except Exception as _log_err:
-        print(f"Result save failed: {_log_err}")
-    exit(1)
-existing_ids = set()
-for d in (existing_docs or []):
-    tag = d.get("id", "")
-    if tag.startswith("reddit:"):
-        existing_ids.add(tag[7:])
-log(f"  {len(existing_ids)} existing Reddit deal IDs loaded")
-
-# ── Fetch r/gundeals ─────────────────────────────────────────────────────────
-posts = []
-fetch_method = 'unknown'
-
-if REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET:
-    log("Fetching via Reddit OAuth (JSON API)...")
-    try:
-        token = get_reddit_oauth_token()
-        log(f"  OAuth token acquired")
-        data = fetch_reddit_json_oauth(token)
-        posts = parse_oauth_json(data)
-        fetch_method = 'oauth-json'
-        log(f"  {len(posts)} candidate posts via OAuth")
-    except Exception as e:
-        log(f"  OAuth fetch failed: {e} — falling back to direct RSS")
-        fetch_method = 'rss-fallback'
-
-if not posts:
-    log("Fetching via direct Reddit RSS...")
-    try:
-        raw = fetch_reddit_rss_direct()
-        log(f"  RSS fetched — {len(raw)} bytes")
-        posts = parse_rss(raw)
-        fetch_method = 'rss-direct'
-        log(f"  {len(posts)} candidate posts via RSS")
-    except Exception as e:
-        log(f"  RSS fetch failed: {e}")
-        log("FATAL: No Reddit data source succeeded")
-        # Write failure log before exiting
-        result_text = '\n'.join(log_lines)
-        try:
-            encoded = base64.b64encode(result_text.encode()).decode()
-            path = RESULTS_FILE
-            api = f"https://api.github.com/repos/dejcav-cmd/DownRange/contents/{path}"
-            try:
-                req = urllib.request.Request(api, headers={'Authorization': f'Bearer {GH_PAT}', 'Accept': 'application/vnd.github.v3+json'})
-                with urllib.request.urlopen(req) as r: sha = json.load(r)['sha']
-            except: sha = None
-            payload = {'message': 'fix: reddit deals fetch — FAILED [skip ci]', 'content': encoded}
-            if sha: payload['sha'] = sha
-            req = urllib.request.Request(api, data=json.dumps(payload).encode(), method='PUT',
-                headers={'Authorization': f'Bearer {GH_PAT}', 'Content-Type': 'application/json'})
-            with urllib.request.urlopen(req) as r: pass
-        except Exception as log_err:
-            print(f"Result save failed: {log_err}")
-        exit(1)
-
-log(f"Fetch method: {fetch_method} | {len(posts)} candidate posts")
+# ── Load existing Reddit IDs to dedup ────────────────────────────────────────
+existing_docs = sanity_query('*[_type == "gunDeal" && source == "reddit"] { tags }')
+existing_ids  = set()
+for d in existing_docs:
+    for t in (d.get('tags') or []):
+        if t.startswith('reddit:'):
+            existing_ids.add(t[7:])
+log(f"  {len(existing_ids)} existing Reddit deal IDs in Sanity")
 
 # ── Build mutations ───────────────────────────────────────────────────────────
+now_ts    = time.time()
+cutoff_ts = now_ts - 48 * 3600
 mutations = []
-skipped = 0
-added = 0
+skipped   = 0
+added     = 0
 
 for post in posts:
+    title    = post['title']
+    flair_lc = post.get('flair', '')
+
+    if post['created'] < cutoff_ts:
+        skipped += 1; continue
     if post['id'] in existing_ids:
-        skipped += 1
-        continue
+        skipped += 1; continue
 
     existing_ids.add(post['id'])
-    category = map_flair(post['flair']) or detect_category(post['title'])
-    price = extract_price(post['title'])
-    store = extract_store(post['title']) or 'r/gundeals'
-    clean_title = re.sub(r'^\[[^\]]+\]\s*', '', post['title'])[:200]
+
+    category = map_flair(flair_lc) or detect_category(title)
+    price    = extract_price(title)
+    store    = extract_store(title) or 'r/gundeals'
+
+    summary_parts = [p for p in [price, store, '▲50', 'r/gundeals'] if p]
+    clean_title   = re.sub(r'^\[[^\]]+\]\s*', '', title)[:200]
 
     mutations.append({
         'create': {
@@ -421,68 +312,44 @@ for post in posts:
             'store':       store,
             'price':       price,
             'category':    category,
-            'summary':     ' · '.join(filter(None, [price, store, 'r/gundeals'])),
+            'summary':     ' · '.join(summary_parts),
             'imageUrl':    None,
             'approved':    True,
             'publishedAt': datetime.fromtimestamp(post['created'], tz=timezone.utc).isoformat(),
-            'tags':        list(filter(None, ['reddit', 'r/gundeals', f'reddit:{post["id"]}', category, post['flair'] or 'deal'])),
+            'tags':        list(filter(None, [
+                'reddit', 'r/gundeals', f'reddit:{post["id"]}',
+                category, flair_lc or 'deal',
+            ])),
         }
     })
     added += 1
 
 log(f"  {added} new deals to add, {skipped} skipped")
 
-# ── Find product images ───────────────────────────────────────────────────────
-imgs_found = 0
-for mut in mutations:
-    doc = mut['create']
-    product_name = extract_product_name(doc['title'])
-    log(f"  Searching image for: {product_name[:60]}")
-
-    img_data = search_and_validate_image(product_name)
-    if img_data:
-        cdn_url = upload_to_sanity(img_data, hashlib.md5(doc['title'].encode()).hexdigest()[:8])
-        if cdn_url:
-            doc['imageUrl'] = cdn_url
-            imgs_found += 1
-            log(f"    ✓ uploaded to CDN")
-        else:
-            log(f"    - CDN upload failed, no image")
-    else:
-        log(f"    - no valid image found")
-
-    time.sleep(0.5)
-
-log(f"Images found: {imgs_found}/{len(mutations)}")
-
-# ── Write to Sanity ───────────────────────────────────────────────────────────
-written = 0
+# ── Write to Sanity in batches ────────────────────────────────────────────────
 for i in range(0, len(mutations), 100):
-    batch = mutations[i:i + 100]
+    batch = mutations[i:i+100]
     try:
         sanity_mutate(batch)
-        written += len(batch)
-        log(f"  Wrote batch {i // 100 + 1}: {len(batch)} docs")
+        log(f"  Wrote batch {i//100 + 1}: {len(batch)} docs")
     except Exception as e:
-        log(f"  Batch {i // 100 + 1} failed: {e}")
+        log(f"  ERROR batch {i//100 + 1}: {e}")
+    time.sleep(0.15)
 
-log(f"\nDone: {written} deals written, {imgs_found} with images")
-log(f"added={written} skipped={skipped} fetch_method={fetch_method}")
+# ── Expire stale Reddit deals (>5 days old) ───────────────────────────────────
+cutoff_iso = datetime.fromtimestamp(now_ts - 5 * 86400, tz=timezone.utc).isoformat()
+stale = sanity_query(
+    f'*[_type=="gunDeal" && source=="reddit" && approved==true && publishedAt < "{cutoff_iso}"]{{_id}}'
+)
+if stale:
+    exp_muts = [{'patch': {'id': d['_id'], 'set': {'approved': False}}} for d in stale]
+    for i in range(0, len(exp_muts), 100):
+        try:
+            sanity_mutate(exp_muts[i:i+100])
+        except Exception as e:
+            log(f"  EXPIRE ERROR: {e}")
+    log(f"  Expired {len(stale)} stale Reddit deals")
+else:
+    log("  No stale deals to expire")
 
-# ── Commit result ─────────────────────────────────────────────────────────────
-result_text = '\n'.join(log_lines)
-try:
-    encoded = base64.b64encode(result_text.encode()).decode()
-    path = RESULTS_FILE
-    api = f"https://api.github.com/repos/dejcav-cmd/DownRange/contents/{path}"
-    try:
-        req = urllib.request.Request(api, headers={'Authorization': f'Bearer {GH_PAT}', 'Accept': 'application/vnd.github.v3+json'})
-        with urllib.request.urlopen(req) as r: sha = json.load(r)['sha']
-    except: sha = None
-    payload = {'message': f'feat: reddit deals fetch — {written} new [skip ci]', 'content': encoded}
-    if sha: payload['sha'] = sha
-    req = urllib.request.Request(api, data=json.dumps(payload).encode(), method='PUT',
-        headers={'Authorization': f'Bearer {GH_PAT}', 'Content-Type': 'application/json'})
-    with urllib.request.urlopen(req) as r: pass
-except Exception as e:
-    print(f"Result save failed: {e}")
+log(f"\nDONE: added={added} skipped={skipped} expired={len(stale) if stale else 0}")
