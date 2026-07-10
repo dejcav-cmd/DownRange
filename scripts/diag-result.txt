@@ -1,16 +1,4 @@
-=== STEP 1: DELETE REDDIT DOCS ===
-No Reddit docs found ✓
-
-=== STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 4 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/37836db38544360fa2bb4c53b3d94b3
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0726f9b56cabcd6f1b654fd13f47e5b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c1e010edd9cfd40c170ab592696a994
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/44b5f88e1fe416d503dd5d67bf755e7
-  → patched final 4
-
-Stats: uploaded=4 fallback=0 failed=0
-
-=== FINAL: total=4637 missing_images=0 reddit=0 ===
-
-FIXED: 4
+SANITY_TOKEN: len=180 prefix='skcYmswi'
+GH_PAT: len=40 prefix='ghp_zi'
+Sanity: OK — result='0DfywYI2b4bEPL4q6AHP8l'
+Reddit RSS: OK — 7240 bytes
