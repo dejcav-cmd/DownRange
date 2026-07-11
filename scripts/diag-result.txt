@@ -2,14 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ~ og: https://ar15discounts.com/wp-content/uploads/2025/05/holosun-aro-advan
-  ~ og: https://oldsteelarsenal.com/wp-content/uploads/2026/07/IMG_0119-3.jpg
-  skip coupon: https://gun.deals/content/coupon-store-ar15discountssaturday
-  → patched final 2
+Needs image fix: 1 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b61d1f6bd4c90f094bd0ab2f2f83c4f
+  → patched final 1
 
-Stats: uploaded=0 fallback=2 failed=0
+Stats: uploaded=1 fallback=0 failed=0
 
-=== FINAL: total=4779 missing_images=1 reddit=0 ===
+=== FINAL: total=4787 missing_images=0 reddit=0 ===
 
-FIXED: 2
+FIXED: 1
