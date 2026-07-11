@@ -2,16 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 5 (null + gun.deals hotlink-blocked)
-  ~ og: https://centerfirereserve.com/wp-content/uploads/2025/08/LPM-LIBERTY-B
-  ✗ https://checkmatedefense.us/optics/
-  skip coupon: https://gun.deals/content/coupon-store-blackstone-shooting-s
-  ✗ https://shooterschoicesc.com/product/bt-36039-apc9-9mm
-  ✗ https://www.recoilgunworks.com/search.php?search_query=%22P9hst%20duty
-  → patched final 1
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  skip coupon: https://gun.deals/content/coupon-store-optics-planetsaturday
+  ~ og: http://dirtroadtherapyapparel.com/cdn/shop/files/FullSizeRender_f540a8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7494e7223ac5b7e05c4bb7262320163
+  → patched final 2
 
-Stats: uploaded=0 fallback=1 failed=3
+Stats: uploaded=1 fallback=1 failed=0
 
-=== FINAL: total=4711 missing_images=4 reddit=0 ===
+=== FINAL: total=4754 missing_images=1 reddit=0 ===
 
-FIXED: 1
+FIXED: 2
