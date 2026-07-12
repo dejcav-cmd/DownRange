@@ -3,11 +3,11 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ~ og: http://bingosslingos.com/cdn/shop/files/IMG_6660_ac27dbff-77dc-4134-ab
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ccbbf71accc0ba92d4a467a43220b0f
   → patched final 1
 
-Stats: uploaded=0 fallback=1 failed=0
+Stats: uploaded=1 fallback=0 failed=0
 
-=== FINAL: total=4844 missing_images=0 reddit=0 ===
+=== FINAL: total=4876 missing_images=0 reddit=0 ===
 
 FIXED: 1
