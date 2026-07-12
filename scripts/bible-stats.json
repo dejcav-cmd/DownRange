@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-07-05T07:01:04.873Z",
+  "generatedAt": "2026-07-12T07:00:22.883Z",
   "content": {
-    "newsArticles": 576,
-    "blogPosts": 144,
-    "legislation": 253,
+    "newsArticles": 666,
+    "blogPosts": 153,
+    "legislation": 257,
     "firearmReleases": 17,
-    "videos": 219,
+    "videos": 245,
     "reviews": 3,
-    "canadaArticles": 42,
-    "brazilArticles": 18
+    "canadaArticles": 48,
+    "brazilArticles": 24
   },
   "operations": {
-    "cronRuns": 1740,
+    "cronRuns": 1981,
     "outreachContacts": 221,
-    "socialPosts": 162,
-    "briefings": 41
+    "socialPosts": 174,
+    "briefings": 48
   },
   "latest": {
-    "newsTitle": "Desert Eagle Mark XIX Now Ships Threaded for Suppressors",
-    "newsDate": "2026-07-04T10:52:00.000Z",
-    "briefingDate": "2026-07-05",
+    "newsTitle": "FN Reflex Delivers Sub-Inch Groups From Pocket-Sized 9mm Frame",
+    "newsDate": "2026-07-12T02:50:00.000Z",
+    "briefingDate": "2026-07-12",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 1272
+  "totalContentDocs": 1413
 }
