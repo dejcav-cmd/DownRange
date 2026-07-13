@@ -2,17 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 6 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7ac35128a7c191f35217b81131f7810
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/046931f76d03fffa1256b1a6e73dd0c
-  ✗ https://shooterschoicesc.com/product/daniel-defense-12819153-ddm4-v7-3
-  ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
-  ✗ http://www.streamlight.com/support/service/warranty-information
-  ✗ https://promotions.thekineticgroup.com
-  → patched final 2
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b9b21caf4572c85dbfeb22cdbb63d2b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/375bcdd61f859551d57b4aab85758e2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/662709b544088e9d87c1608c0f0e752
+  → patched final 3
 
-Stats: uploaded=2 fallback=0 failed=4
+Stats: uploaded=3 fallback=0 failed=0
 
-=== FINAL: total=4999 missing_images=4 reddit=0 ===
+=== FINAL: total=5008 missing_images=0 reddit=0 ===
 
-FIXED: 2
+FIXED: 3
