@@ -2,12 +2,20 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/713bdb2726a0d964f11a85c4b4c6148
-  → patched final 1
+Needs image fix: 9 (null + gun.deals hotlink-blocked)
+  ✗ https://shooterschoicesc.com/product/daniel-defense-12819153-ddm4-v7-3
+  ~ og: https://ar15discounts.com/wp-content/uploads/2026/07/image35.jpeg.opti
+  ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
+  ~ og: http://athenatargets.com/cdn/shop/files/ATS-T12.jpg?v=1780328853
+  ~ og: https://cdn11.bigcommerce.com/s-h424xqhs5x/products/228638/images/4230
+  ~ og: https://armedinmichigan.com/wp-content/uploads/image-full-16201-801703
+  ✗ http://www.streamlight.com/support/service/warranty-information
+  ✗ https://promotions.thekineticgroup.com
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a53092aff5c86e3317861ee401944b4
+  → patched final 5
 
-Stats: uploaded=1 fallback=0 failed=0
+Stats: uploaded=1 fallback=4 failed=4
 
-=== FINAL: total=4933 missing_images=0 reddit=0 ===
+=== FINAL: total=4987 missing_images=4 reddit=0 ===
 
-FIXED: 1
+FIXED: 5
