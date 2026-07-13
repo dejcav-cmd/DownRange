@@ -2,14 +2,15 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b9b21caf4572c85dbfeb22cdbb63d2b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/375bcdd61f859551d57b4aab85758e2
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/662709b544088e9d87c1608c0f0e752
+Needs image fix: 4 (null + gun.deals hotlink-blocked)
+  ~ og: https://cdn11.bigcommerce.com/s-zcp1aelyjn/products/1910/images/11172/
+  ✗ http://guns3d.net/
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fa1a505f7143bf94e2d2a5ef72ab43b
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/38b46a269cc5a832d946473fe3b4fbc
   → patched final 3
 
-Stats: uploaded=3 fallback=0 failed=0
+Stats: uploaded=2 fallback=1 failed=1
 
-=== FINAL: total=5008 missing_images=0 reddit=0 ===
+=== FINAL: total=5018 missing_images=1 reddit=0 ===
 
 FIXED: 3
