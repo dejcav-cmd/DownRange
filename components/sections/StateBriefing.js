@@ -26,22 +26,30 @@ function verdict(cat, s) {
   if (!s) return ok('Legal')
   switch (cat) {
     case 'RIFLE':
-      if (s.awbFull)       return no(`Banned configuration in ${s.name}`)
+      if (s.awbFull)       return no(`Banned config in ${s.name}`)
       if (s.awbRestricted) return warn(`${s.name}: featureless build required`)
-      return ok(`Legal as-is in ${s.name}`)
+      return ok(`Legal in ${s.name}`)
     case 'MAGAZINE':
-      if (s.mag)           return no(`Blocked — ${s.mag}-rd max in ${s.name}`)
+      // Only flag if state has a mag cap AND the item is a detachable magazine.
+      // Revolvers/fixed-magazine firearms are already classified as HANDGUN/RIFLE,
+      // so MAGAZINE category here means a standalone feed device.
+      if (s.mag)           return no(`Blocked — ${s.mag}-rd mag limit in ${s.name}`)
       return ok(`Standard capacity legal in ${s.name}`)
     case 'SUPPRESSOR':
       if (!s.suppLegal)    return no(`Illegal to own in ${s.name}`)
-      return ok('Legal · Form 4 / NFA')
+      return ok('Legal · Form 4 required')
     case 'AMMO':
-      if (s.abbr === 'CA') return warn('CA: in-person pickup + background check')
-      if (s.abbr === 'NY') return warn('NY: dealer transfer only — no direct ship')
+      if (s.abbr === 'CA') return warn('CA: background check required at purchase')
+      if (s.abbr === 'NY') return warn('NY: FFL transfer only — no direct ship')
+      if (s.abbr === 'IL') return warn('IL: FOID required to purchase')
       return ok('Ships to your door')
     case 'HANDGUN':
-      if (s.abbr === 'CA') return warn('Must be on the CA approved roster')
-      if (s.awbFull || s.abbr === 'NY') return warn(`${s.name}: permit / registration required`)
+      // CA roster only applies to new semi-auto handguns sold by dealers —
+      // not revolvers, not private party, not used guns
+      if (s.abbr === 'CA') return warn('CA: verify CA-approved roster before purchase')
+      if (s.abbr === 'NY') return warn('NY: pistol permit required')
+      if (s.abbr === 'MA') return warn('MA: must be on MA approved list')
+      if (s.awbFull)       return warn(`${s.name}: check local permit requirements`)
       return ok(`Legal in ${s.name}`)
     case 'GENERAL':
       return ok(`No state restriction — ships to ${s.name}`)

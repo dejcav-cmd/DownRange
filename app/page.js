@@ -27,11 +27,33 @@ const SEED_STATES = [
 // Infer the legality-relevant category from a deal title
 function inferCat(title = '') {
   const t = title.toLowerCase()
-  if (/magazine|pmag|\bmag\b|\bdrum\b/.test(t))                              return 'MAGAZINE'
-  if (/suppressor|silencer|\bnfa\b|form ?4/.test(t))                         return 'SUPPRESSOR'
-  if (/ar-?15|ak-?47|\brifle\b|carbine|\bsbr\b|upper|lower receiver/.test(t)) return 'RIFLE'
-  if (/\bammo\b|9mm|5\.56|\.223|\.308|7\.62|\.45|rounds|\bgr\b fmj/.test(t))  return 'AMMO'
-  if (/pistol|handgun|glock|sig ?p|revolver|1911/.test(t))                   return 'HANDGUN'
+
+  // 1. Suppressors — unambiguous
+  if (/suppressor|silencer|\bnfa\b|form ?4/.test(t)) return 'SUPPRESSOR'
+
+  // 2. Magazines — checked BEFORE firearm brands so "Glock 17 Magazine" → MAGAZINE
+  // Matches: "magazine", "pmag", "30rd mag", "100rd drum", "feed device"
+  // Does NOT match: ".22 Mag", ".357 Mag", ".44 Mag" (caliber designations)
+  if (/\bmagazine\b|\bpmag\b|\bdrum mag\b|\bfeed device\b|\b\d+.?rd mag\b|\b\d+.?round mag\b|\b\d+.?rd drum\b/.test(t)) return 'MAGAZINE'
+
+  // 3. Handguns — specific type words + major brands (Ruger scoped to handgun models only)
+  if (/\brevolver\b|\bpistol\b|\bhandgun\b|\bderringer\b/.test(t)) return 'HANDGUN'
+  if (/\bglock\b|\bp365\b|\bp320\b|\bp226\b|\bp229\b|\bm&p\b|\bshield\b|\bhellcat\b|\bechelon\b|\bxd\b|\bxdm\b/.test(t)) return 'HANDGUN'
+  if (/\b1911\b|\b2011\b|\bberetta\b|\btaurus g\d|\bgx4\b|\bapx\b|\bwalther\b|\bppq\b|\bpdp\b|\bpps\b/.test(t)) return 'HANDGUN'
+  if (/\bkimber\b|\bspringfield armory\b|\bsig sauer\b|\bfn 509\b|\bfn five\b/.test(t)) return 'HANDGUN'
+  if (/\bnaa\b|north american arms|\bruger lcp\b|\bruger max\b|\bruger security\b|\bruger-57\b|\bruger sr\d/.test(t)) return 'HANDGUN'
+
+  // 4. Rifles & long guns (Ruger without handgun model = rifle; 10/22 explicit)
+  if (/ar-?15|ak-?47|\brifle\b|\bcarbine\b|\bsbr\b|lower receiver|\bm4\b|\bm16\b/.test(t)) return 'RIFLE'
+  if (/\bmini-?14\b|\bscar\b|bolt.action|lever.action|\b10\/22\b|\bruger american\b|\bruger precision\b/.test(t)) return 'RIFLE'
+  if (/\bshotgun\b|\bmossberg\b|\bremington 870\b|\bbenelli\b|\bberetta a300\b|\bberetta a400\b/.test(t)) return 'RIFLE'
+
+  // 5. Ammo — after all firearm checks so "9mm Glock pistol" → HANDGUN above, "9mm 1000rds" → AMMO
+  if (/\bammo\b|\bammunition\b|\bfmj\b|\bjhp\b|\bhollow.?point\b/.test(t)) return 'AMMO'
+  if (/\b9mm\b|\b5\.56\b|\.223\s*rem|\b\.308\b|\b7\.62\b|\b6\.5\s*creedmoor\b|\b300\s*blk\b|\b\.380\b|\b10mm\b/.test(t)) return 'AMMO'
+  if (/\b\.45\s*acp\b|\b\.44\s*mag\b|\b\.357\s*mag\b|\b\.38\s*spl\b|\b\.22\s*lr\b|\b\.22\s*wmr\b/.test(t)) return 'AMMO'
+  if (/\b\d+\s?gr(ain)?\b|\bper round\b|\bcase of \d|\b\d+\s*rounds?\b|\bbulk pack\b/.test(t)) return 'AMMO'
+
   return 'GENERAL'
 }
 
