@@ -19,7 +19,7 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
     const poll = async () => {
       try {
         setPolling(true)
-        const params = new URLSearchParams({ limit: '29' })
+        const params = new URLSearchParams({ limit: '21' })
         if (category) params.set('category', category)
         const res  = await fetch(`/api/news-feed?${params}`)
         const data = await res.json()
@@ -97,15 +97,24 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
             <NewsCard article={article} />
           </div>
         ))}
-        {/* Skeleton cards to complete last row — fills grid so last row is always full */}
+        {/* Placeholder cards to complete last row — always fills the 3-col grid */}
         {Array.from({ length: (3 - (displayArticles.length % 3)) % 3 }).map((_, i) => (
           <div key={'skel-'+i} aria-hidden="true" style={{
-            background: 'var(--bg2)', border: '1px solid var(--border)',
-            minHeight: 280, overflow: 'hidden', borderRadius: 3,
-            backgroundImage: 'linear-gradient(90deg, var(--bg2) 25%, var(--bg3,#1a1f2e) 50%, var(--bg2) 75%)',
-            backgroundSize: '200% 100%',
-            animation: 'skeletonShimmer 1.8s ease-in-out infinite',
-          }} />
+            background: '#111318', border: '1px solid var(--border)',
+            overflow: 'hidden', borderRadius: 3, display: 'flex', flexDirection: 'column',
+          }}>
+            <div style={{
+              width: '100%', aspectRatio: '16/9', minHeight: 200,
+              backgroundImage: 'linear-gradient(90deg, #111318 25%, #1a1f2e 50%, #111318 75%)',
+              backgroundSize: '200% 100%',
+              animation: 'skeletonShimmer 1.8s ease-in-out infinite',
+            }} />
+            <div style={{ padding: '14px 16px', display: 'flex', flexDirection: 'column', gap: 10 }}>
+              <div style={{ height: 12, width: '40%', background: '#1a1f2e', borderRadius: 2, backgroundImage: 'linear-gradient(90deg, #1a1f2e 25%, #222840 50%, #1a1f2e 75%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 1.8s ease-in-out infinite' }} />
+              <div style={{ height: 16, width: '90%', background: '#1a1f2e', borderRadius: 2, backgroundImage: 'linear-gradient(90deg, #1a1f2e 25%, #222840 50%, #1a1f2e 75%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 1.8s 0.1s ease-in-out infinite' }} />
+              <div style={{ height: 16, width: '70%', background: '#1a1f2e', borderRadius: 2, backgroundImage: 'linear-gradient(90deg, #1a1f2e 25%, #222840 50%, #1a1f2e 75%)', backgroundSize: '200% 100%', animation: 'skeletonShimmer 1.8s 0.2s ease-in-out infinite' }} />
+            </div>
+          </div>
         ))}
       </div>
     </div>

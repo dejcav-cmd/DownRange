@@ -28,7 +28,7 @@ const CATEGORIES = [
   { label: '★ Reviews', val: 'review' },
 ]
 
-const PER_PAGE = 20
+const PER_PAGE = 22
 
 export default async function NewsPage({ searchParams }) {
   const cat    = searchParams?.cat    || null
