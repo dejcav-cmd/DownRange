@@ -177,7 +177,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
         <div className="container">
           <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', gap:12, marginBottom:16, flexWrap:'wrap' }}>
             <h2 style={{ fontFamily:DISP, fontSize:22, letterSpacing:'.04em' }}>Deals you can actually buy in <span style={{ color:'#C8922A' }}>{s.name}</span>{flagged > 0 && <span style={{ fontFamily:MONO, fontSize:11, color:'#fbbf68', marginLeft:10, letterSpacing:'.04em' }}>· {flagged} flagged for your state</span>}</h2>
-            <Link href="/deals" className="section-link" style={{ fontFamily:MONO, fontSize:10, color:'#C8922A', letterSpacing:'.1em' }}>ALL LIVE DEALS →</Link>
+            <Link href="/deals" style={{ fontFamily:MONO, fontSize:11, fontWeight:700, color:'#000', background:'#C8922A', letterSpacing:'.12em', padding:'7px 18px', textDecoration:'none', display:'inline-block', whiteSpace:'nowrap', flexShrink:0 }}>ALL LIVE DEALS →</Link>
           </div>
           {deals.length > 0 ? (
             <div className="briefing-deals" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px,1fr))', gap:12 }}>
