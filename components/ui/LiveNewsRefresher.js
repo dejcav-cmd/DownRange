@@ -79,6 +79,10 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
           100% { opacity: 1; transform: translateY(0) scale(1); }
         }
         .article-new { animation: newArticlePop 0.5s ease forwards; }
+        @keyframes skeletonShimmer {
+          0%   { background-position: 200% 0; }
+          100% { background-position: -200% 0; }
+        }
       `}</style>
 
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'16px' }}>
@@ -93,13 +97,14 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
             <NewsCard article={article} />
           </div>
         ))}
-        {/* Skeleton cards to complete last row — only render if row is incomplete */}
+        {/* Skeleton cards to complete last row — fills grid so last row is always full */}
         {Array.from({ length: (3 - (displayArticles.length % 3)) % 3 }).map((_, i) => (
           <div key={'skel-'+i} aria-hidden="true" style={{
             background: 'var(--bg2)', border: '1px solid var(--border)',
-            minHeight: 280, opacity: 0.25,
-            backgroundImage: 'linear-gradient(90deg, var(--bg2) 25%, var(--bg3) 50%, var(--bg2) 75%)',
+            minHeight: 280, overflow: 'hidden', borderRadius: 3,
+            backgroundImage: 'linear-gradient(90deg, var(--bg2) 25%, var(--bg3,#1a1f2e) 50%, var(--bg2) 75%)',
             backgroundSize: '200% 100%',
+            animation: 'skeletonShimmer 1.8s ease-in-out infinite',
           }} />
         ))}
       </div>

@@ -21,8 +21,18 @@ const SEED_RELEASES = [
   { _id:'s12', brand:'Kimber',             model:'Rapide Black Ice',   category:'Pistol',  caliber:'9mm',       action:'Single Action', msrp:1599, isJustDropped:false, imageUrl:'/img/photos/pistol.jpg',                              summary:'1911-platform with KimPro II finish, ball-milled slide, optics-ready cut, match-grade trigger.',                   sourceUrl:'https://www.kimberamerica.com/rapide-black-ice' },
 ]
 
+const CAT_FALLBACKS = {
+  Pistol:     '/img/photos/pistol.jpg',
+  Revolver:   '/img/photos/pistol.jpg',
+  Rifle:      '/img/photos/rifle.jpg',
+  Shotgun:    '/img/photos/shotgun.jpg',
+  Suppressor: '/img/photos/suppressor.jpg',
+  Optic:      '/img/photos/rifle.jpg',
+  default:    '/img/photos/pistol.jpg',
+}
+
 function ReleaseCard({ release, size = 'normal', isNew = false }) {
-  const img = release.heroImage?.asset?.url || release.imageUrl || release.productImage?.asset?.url
+  const img = release.heroImage?.asset?.url || release.imageUrl || release.productImage?.asset?.url || null
   const isLarge = size === 'large'
 
   return (
@@ -33,15 +43,15 @@ function ReleaseCard({ release, size = 'normal', isNew = false }) {
 
         {/* Image */}
         <div style={{ width: '100%', height: isLarge ? '240px' : '150px', background: '#0D1117', position: 'relative', overflow: 'hidden' }}>
-          {img ? (
-            <img src={img} alt={`${release.brand} ${release.model}`}
-              style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
-              onError={e => { e.target.style.display='none'; e.target.parentElement.style.background='#16191F' }} />
-          ) : (
-            <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: 'linear-gradient(135deg, #111318, #1C2028)' }}>
-              <span style={{ fontSize: isLarge ? '60px' : '40px', opacity: 0.2 }}>◈</span>
-            </div>
-          )}
+          <img
+            src={img || CAT_FALLBACKS[release.category] || CAT_FALLBACKS.default}
+            alt={`${release.brand} ${release.model}`}
+            style={{ width: '100%', height: '100%', objectFit: 'cover', opacity: 0.85 }}
+            onError={e => {
+              const fb = CAT_FALLBACKS[release.category] || CAT_FALLBACKS.default
+              if (e.target.src !== fb) e.target.src = fb
+            }}
+          />
           {/* Badges */}
           <div style={{ position: 'absolute', top: 10, left: 10, display: 'flex', gap: 6 }}>
             {isNew && (
