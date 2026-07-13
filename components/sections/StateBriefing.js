@@ -84,6 +84,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
 
   const pick = a => {
     setAbbr(a)
+    setDealPage(0)
     try { localStorage.setItem('dr_state', a) } catch {}
   }
 
@@ -102,7 +103,10 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
   const carry = yn(s.carry)
   const rf    = yn(s.rf, false)
 
-  const shownDeals = deals.slice(0, 12)
+  const DEALS_PER_PAGE = 24
+  const [dealPage, setDealPage] = useState(0)
+  const totalDealPages = Math.ceil(deals.length / DEALS_PER_PAGE)
+  const shownDeals = deals.slice(dealPage * DEALS_PER_PAGE, (dealPage + 1) * DEALS_PER_PAGE)
   const flagged = shownDeals.filter(d => verdict(d.cat, s).lvl !== 'ok').length
 
   return (
@@ -208,8 +212,31 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
               Browse the full live deal feed on the deals page →
             </Link>
           )}
-          <p style={{ fontFamily:MONO, fontSize:9.5, color:'#4B5563', marginTop:12, letterSpacing:'.04em' }}>
-            Legality checks run on live 50-state law data. Featured picks refresh weekly — the full live feed is on the deals page.
+          {/* Pagination */}
+          {totalDealPages > 1 && (
+            <div style={{ display:'flex', alignItems:'center', gap:6, marginTop:20, flexWrap:'wrap' }}>
+              <button
+                onClick={() => setDealPage(p => Math.max(0, p - 1))}
+                disabled={dealPage === 0}
+                style={{ fontFamily:MONO, fontSize:10, fontWeight:700, padding:'7px 14px', background:'transparent', border:'1px solid var(--border-mid)', color: dealPage === 0 ? '#374151' : '#C8922A', cursor: dealPage === 0 ? 'default' : 'pointer', letterSpacing:'.06em' }}
+              >← PREV</button>
+              {Array.from({ length: totalDealPages }, (_, i) => (
+                <button key={i} onClick={() => setDealPage(i)}
+                  style={{ fontFamily:MONO, fontSize:10, fontWeight:700, padding:'7px 13px', border:'1px solid var(--border-mid)', background: i === dealPage ? '#C8922A' : 'transparent', color: i === dealPage ? '#000' : '#9CA3AF', cursor:'pointer', letterSpacing:'.04em' }}
+                >{i + 1}</button>
+              ))}
+              <button
+                onClick={() => setDealPage(p => Math.min(totalDealPages - 1, p + 1))}
+                disabled={dealPage === totalDealPages - 1}
+                style={{ fontFamily:MONO, fontSize:10, fontWeight:700, padding:'7px 14px', background:'transparent', border:'1px solid var(--border-mid)', color: dealPage === totalDealPages - 1 ? '#374151' : '#C8922A', cursor: dealPage === totalDealPages - 1 ? 'default' : 'pointer', letterSpacing:'.06em' }}
+              >NEXT →</button>
+              <span style={{ fontFamily:MONO, fontSize:9, color:'#4B5563', marginLeft:6, letterSpacing:'.04em' }}>
+                {dealPage * DEALS_PER_PAGE + 1}–{Math.min((dealPage + 1) * DEALS_PER_PAGE, deals.length)} of {deals.length} deals
+              </span>
+            </div>
+          )}
+          <p style={{ fontFamily:MONO, fontSize:9.5, color:'#4B5563', marginTop:10, letterSpacing:'.04em' }}>
+            Legality checks run on live 50-state law data. Full live feed on the deals page.
           </p>
         </div>
       </section>
