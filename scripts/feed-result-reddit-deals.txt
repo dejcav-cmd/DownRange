@@ -1,9 +1,10 @@
 Config: SANITY_API_TOKEN=set (180 chars)
 Fetching r/gundeals hot RSS...
-  RSS fetched via browser UA — 204552 bytes
+  RSS fetched via browser UA — 207343 bytes
   Parsed 98 posts from RSS
   209 existing Reddit deal IDs in Sanity
-  0 new deals to add, 98 skipped
+  1 new deals to add, 97 skipped
+  Wrote batch 1: 1 docs
   No stale deals to expire
 
-DONE: added=0 skipped=98 expired=0
+DONE: added=1 skipped=97 expired=0
