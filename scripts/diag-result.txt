@@ -2,15 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 4 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec30c8845381d1583f3aae723b661b1
+Needs image fix: 7 (null + gun.deals hotlink-blocked)
+  ✗ https://deleonrxgunsandammo.com/product/otter-creek-suppressor-infinit
+  ~ og: https://hk21.com/wp-content/uploads/2026/03/AS-Designs-ARC-Fire-AR-15-
+  ✗ https://glutenfreegear.com/Rampart-Range-Suppression_c_120.html
+  ✗ https://www.dahlonegaarmory.com/product/tti-combat-smoke-9mm-4.6-w-mo3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8eec7862617005b4615520d19173e1d
   skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb2aa3c4cf47b15b54a51d34fe86059
   ✗ https://www.wistransfers.com/police-trade-in-condition-grading
   → patched final 2
 
-Stats: uploaded=2 fallback=0 failed=1
+Stats: uploaded=1 fallback=1 failed=4
 
-=== FINAL: total=5154 missing_images=2 reddit=0 ===
+=== FINAL: total=5164 missing_images=5 reddit=0 ===
 
 FIXED: 2
