@@ -2,14 +2,15 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ✗ https://smith-sights.com/contact-smith-sights.php
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ed01765c653f2d47d929de83712248f
-  ✗ http://guns3d.net/
-  → patched final 1
+Needs image fix: 4 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/efdc97881840fe758fa01a0d9fb5783
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1bebce7c42e9b786713905c2a17d0ca
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/547594c30f0c350f1d69486947abd43
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ce8304144ec591403d52c332ce22119
+  → patched final 4
 
-Stats: uploaded=1 fallback=0 failed=2
+Stats: uploaded=4 fallback=0 failed=0
 
-=== FINAL: total=5026 missing_images=2 reddit=0 ===
+=== FINAL: total=5040 missing_images=0 reddit=0 ===
 
-FIXED: 1
+FIXED: 4
