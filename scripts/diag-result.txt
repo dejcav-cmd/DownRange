@@ -2,14 +2,13 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ~ og: http://cdnsp.previewbuilder.com/p/61331112089/8798190338201.png?v=864b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/effbb3e21129a0466c0e2bb562a500b
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/40e83751cbca0279706bfe8521cca34
-  → patched final 3
+Needs image fix: 2 (null + gun.deals hotlink-blocked)
+  ~ og: https://ravenrocksprecision.com/wp-content/uploads/2026/05/Email-Produ
+  ~ og: https://cdn.filestackcontent.com/MYLQbkSUCz8z2IfWLq5g
+  → patched final 2
 
-Stats: uploaded=2 fallback=1 failed=0
+Stats: uploaded=0 fallback=2 failed=0
 
-=== FINAL: total=5083 missing_images=0 reddit=0 ===
+=== FINAL: total=5114 missing_images=0 reddit=0 ===
 
-FIXED: 3
+FIXED: 2
