@@ -2,14 +2,15 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/633880/images/580799/27
-  ✗ https://ibexarmament.com/product/new-for-2026-holosun-technologies-eps
-  ✗ https://www.sportsmansoutdoorsuperstore.com/category.cfm/sportsman/fir
-  → patched final 1
+Needs image fix: 4 (null + gun.deals hotlink-blocked)
+  ✗ https://www.wistransfers.com/police-trade-in-condition-grading
+  ~ og: https://sharkcoasttactical.com/wp-content/uploads/2025/07/OCLPOLK_1_HR
+  ~ og: https://midstatefirearms.com/wp-content/uploads/2024/09/753d54c2-5303-
+  ~ og: https://blackrifledepot.com/wp-content/uploads/2026/01/307041.png
+  → patched final 3
 
-Stats: uploaded=0 fallback=1 failed=2
+Stats: uploaded=0 fallback=3 failed=1
 
-=== FINAL: total=5128 missing_images=2 reddit=0 ===
+=== FINAL: total=5139 missing_images=1 reddit=0 ===
 
-FIXED: 1
+FIXED: 3
