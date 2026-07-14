@@ -1,45 +1,16 @@
-=== Cron Monitor Report ===
-Window: 19:48 UTC → 20:53 UTC
+=== STEP 1: DELETE REDDIT DOCS ===
+No Reddit docs found ✓
 
-Total runs: 9  ✓ 8  ⚠ 0  ✗ 1
+=== STEP 2: FIX MISSING IMAGES ===
+Needs image fix: 4 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ec30c8845381d1583f3aae723b661b1
+  skip coupon: https://gun.deals/content/coupon-store-natchez-shooting-outd
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eb2aa3c4cf47b15b54a51d34fe86059
+  ✗ https://www.wistransfers.com/police-trade-in-condition-grading
+  → patched final 2
 
-JOB                                  RUNS   OK  FAIL  AVG_MS LAST STATUS
----------------------------------------------------------------------------
-  cron-health                           1    1     0     342ms  ✓ success @ 20:00
-  fetch-images                          1    1     0   10067ms  ✓ success @ 20:20
-  fix-placeholder-images                1    1     0   28883ms  ✓ success @ 20:01
-  gun-deals                             2    1     1    7983ms  ✗ failed @ 20:30
-  image-fix                             1    1     0     281ms  ✓ success @ 20:15
-  news                                  1    1     0  114173ms  ✓ success @ 20:02
-  reddit-deals                          1    1     0     219ms  ✓ success @ 20:00
-  video                                 1    1     0   15163ms  ✓ success @ 20:00
+Stats: uploaded=2 fallback=0 failed=1
 
-FAILURES:
-  ✗ [2026-07-14T20:30] gun-deals
-    gun.deals: all RSS URLs failed
+=== FINAL: total=5154 missing_images=2 reddit=0 ===
 
-✓ No Sanity quota errors in window
-
-quality-rewrite: no runs yet in window
-
-Report generated: 20:53:26 UTC
-
-=== NEWS ARTICLE COUNTS ===
-  Last 48h: 46
-  Last 7 days: 159
-  Last 30 days: 277
-  Total approved+slug: 723
-
-  Most recent articles:
-    2026-07-14T19:31 | Bearing Arms       | Giffords Backs Parents Suing California Gun Shop Over T
-    2026-07-14T18:29 | Bearing Arms       | Chicago's Soft-on-Crime Mayor Faces 15 Shooting Victims
-    2026-07-14T18:01 | Outdoor Life Guns  | Suppressors Actually Improve Rifle Accuracy—Here's Why
-    2026-07-14T18:00 | Tactical Life      | Canik Launches VOID Suppressor Series With Otter Creek 
-    2026-07-14T17:31 | Bearing Arms       | Eighth Circuit: Pot Smokers Lose Gun Rights Under Secti
-
-  Dedup pool (newsArticle+gunDeal 7d): 982
-
-=== DEDUP POOL BREAKDOWN ===
-  newsArticle in last 48h: 51
-  gunDeal in last 48h:     252
-  Total dedup pool (48h):  303
+FIXED: 2
