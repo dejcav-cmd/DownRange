@@ -2,13 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 2 (null + gun.deals hotlink-blocked)
-  ~ og: https://ravenrocksprecision.com/wp-content/uploads/2026/05/Email-Produ
-  ~ og: https://cdn.filestackcontent.com/MYLQbkSUCz8z2IfWLq5g
-  → patched final 2
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/633880/images/580799/27
+  ✗ https://ibexarmament.com/product/new-for-2026-holosun-technologies-eps
+  ✗ https://www.sportsmansoutdoorsuperstore.com/category.cfm/sportsman/fir
+  → patched final 1
 
-Stats: uploaded=0 fallback=2 failed=0
+Stats: uploaded=0 fallback=1 failed=2
 
-=== FINAL: total=5114 missing_images=0 reddit=0 ===
+=== FINAL: total=5128 missing_images=2 reddit=0 ===
 
-FIXED: 2
+FIXED: 1
