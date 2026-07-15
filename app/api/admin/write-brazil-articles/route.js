@@ -216,7 +216,9 @@ export async function POST(req) {
         }
       }
 
-      const body = await callAIText({ prompt: article.prompt, useCase: 'brazil', maxTokens: 2000 })
+      const rawBody = await callAIText({ prompt: article.prompt, useCase: 'brazil', maxTokens: 2000 })
+      // Strip any markdown fences GLM/Haiku may wrap the HTML in (```html ... ```)
+      const body = (rawBody || '').replace(/^```[a-z]*\r?\n?/im, '').replace(/\r?\n?```\s*$/im, '').trim()
       if (!body || body.length < 200) throw new Error('Empty AI response')
 
       const summary  = body.replace(/<[^>]+>/g, '').slice(0, 240).trim() + '...'

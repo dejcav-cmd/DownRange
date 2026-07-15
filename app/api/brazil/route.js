@@ -70,8 +70,10 @@ export async function POST(req) {
       default: `${langPrompt}\n\nEscreva um texto informativo (300-500 palavras) sobre: ${topic} — contexto de armas de fogo no Brasil.`,
     }
     const prompt = prompts[t] || prompts.default
-    const content = await callAIText({ prompt, useCase: 'brazil', maxTokens: 2000 })
-    if (!content) return Response.json({ error: 'AI returned empty' }, { status: 500 })
+    const rawContent = await callAIText({ prompt, useCase: 'brazil', maxTokens: 2000 })
+    if (!rawContent) return Response.json({ error: 'AI returned empty' }, { status: 500 })
+    // Strip any markdown fences (```html ... ```) the model may add
+    const content = rawContent.replace(/^```[a-z]*\r?\n?/im, '').replace(/\r?\n?```\s*$/im, '').trim()
     const imageUrl = await fetchAndUploadImage(topic + " firearms Brazil", "brazil-ai")
     await sanity.patch(id).set({ body: content, imageUrl: imageUrl || undefined, qualityReviewed: false }).commit()
     return Response.json({ ok: true, imageUrl })

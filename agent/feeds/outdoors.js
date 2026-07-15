@@ -59,8 +59,9 @@ Rules:
 
 Return ONLY the HTML body content. No markdown. No preamble.`
 
-  const body = await callAIText({ prompt, useCase: 'article', maxTokens: 1500 })
-  return body
+  const raw = await callAIText({ prompt, useCase: 'article', maxTokens: 1500 })
+  // Strip any markdown fences (```html ... ```) the model may add
+  return (raw || '').replace(/^```[a-z]*\r?\n?/im, '').replace(/\r?\n?```\s*$/im, '').trim()
 }
 
 export async function runOutdoorsFeed() {
