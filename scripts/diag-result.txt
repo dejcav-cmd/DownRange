@@ -2,24 +2,17 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 13 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6f1b9cd42c899c8e1f1ef97f4b1d809
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c9a791fa0f0c383ffe9e5ed24e3c627
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/f8f7b6bec2b6ce9ca1c1c223a5ead39
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/fed14e7dfd0e9d8f6322f46b5f53d5d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6151376211320196288bc244fbf9a26
+Needs image fix: 6 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ddd546b66acb54db2d0f4107c3272d
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/48942b8993dc7276dc9a3e1b722e768
   ✗ https://palmettostatearmory.com/2-pack-of-psa-ar-15-blem-stealth-strip
   ✗ https://www.gunbuyer.com/sig-sauer-p365-fde-2a-edition-9mm-3-1-barrel-
-  ~ og: https://cdn11.bigcommerce.com/s-lsmdvkgf/products/1882/images/3973/90-
-  ~ og: https://sharkcoasttactical.com/wp-content/uploads/2026/07/OCLMM_1_HR.j
   ✗ https://www.dvor.com/steiner-mps-2-0-1x-micro-pistol-reflex-red-dot-si
   ✗ https://www.gbaguns.com/weekly-deals/
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/57d0c9d78a23a560c8293a9587bf1cb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d3e4595fc0fd81d56375ac47ab2b427
-  → patched final 9
+  → patched final 2
 
-Stats: uploaded=7 fallback=2 failed=4
+Stats: uploaded=2 fallback=0 failed=4
 
-=== FINAL: total=5260 missing_images=4 reddit=0 ===
+=== FINAL: total=5263 missing_images=4 reddit=0 ===
 
-FIXED: 9
+FIXED: 2
