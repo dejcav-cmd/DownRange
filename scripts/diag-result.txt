@@ -2,14 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
+Needs image fix: 7 (null + gun.deals hotlink-blocked)
+  ~ og: https://cdn11.bigcommerce.com/s-sfsm2hl9s7/products/9600/images/14412/
+  ✗ https://www.northeastmunitions.com/product/784934/eotech-exps20-68%7C1
+  ~ og: https://www.sportsmansoutdoorsuperstore.com/prodimages/139361-DEFAULT-
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1a6aa2c20619157afdd5ccb5e55edac
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/3c44050877847579c6f0ec4ea18d4bd
   ✗ https://www.guns.com/used-guns/p/colt-law-enforcement-carbine-le-trade
-  ~ og: https://centerfirereserve.com/wp-content/uploads/2026/03/KVP-PLAN-B-BR
   ✗ https://www.runnings.com/current-flyer
-  → patched final 1
+  → patched final 4
 
-Stats: uploaded=0 fallback=1 failed=2
+Stats: uploaded=2 fallback=2 failed=3
 
-=== FINAL: total=5279 missing_images=2 reddit=0 ===
+=== FINAL: total=5289 missing_images=3 reddit=0 ===
 
-FIXED: 1
+FIXED: 4
