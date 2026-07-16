@@ -2,13 +2,18 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 2 (null + gun.deals hotlink-blocked)
-  ~ og: http://warpigarmory.com/wp-content/uploads/2026/05/IMG_6236-scaled.jpg
-  ~ og: https://www.revivaldefense.com/assets/images/rmr-hd-revival-1.jpg
-  → patched final 2
+Needs image fix: 7 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7c568b2fcdb3b06857726110759b990
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eed8762011a727561c64ab495696048
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/12442b3508fbe854b31bc6c863df174
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a9e7d809e6a6aabcced04dc097d017a
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b79f704b040cb1e11fd17fa5b2b2238
+  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d9f8fbac06212f3e12752588d93ce52
+  → patched final 6
 
-Stats: uploaded=0 fallback=2 failed=0
+Stats: uploaded=6 fallback=0 failed=1
 
-=== FINAL: total=5307 missing_images=0 reddit=0 ===
+=== FINAL: total=5346 missing_images=1 reddit=0 ===
 
-FIXED: 2
+FIXED: 6
