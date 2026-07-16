@@ -3,12 +3,12 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Needs image fix: 2 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5e1f2a7e404022483b7e98361ce907d
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9592158d1b76febc5dce9961e4ff8bf
+  ~ og: http://warpigarmory.com/wp-content/uploads/2026/05/IMG_6236-scaled.jpg
+  ~ og: https://www.revivaldefense.com/assets/images/rmr-hd-revival-1.jpg
   → patched final 2
 
-Stats: uploaded=2 fallback=0 failed=0
+Stats: uploaded=0 fallback=2 failed=0
 
-=== FINAL: total=5304 missing_images=0 reddit=0 ===
+=== FINAL: total=5307 missing_images=0 reddit=0 ===
 
 FIXED: 2
