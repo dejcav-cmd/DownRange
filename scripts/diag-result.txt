@@ -2,18 +2,22 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 7 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7c568b2fcdb3b06857726110759b990
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eed8762011a727561c64ab495696048
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/12442b3508fbe854b31bc6c863df174
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/a9e7d809e6a6aabcced04dc097d017a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b79f704b040cb1e11fd17fa5b2b2238
-  ✗ https://www.basspro.com/p/taurus-2tx-22-toro-single-action-rimfire-opt
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/d9f8fbac06212f3e12752588d93ce52
-  → patched final 6
+Needs image fix: 11 (null + gun.deals hotlink-blocked)
+  ~ og: https://dhgf5mcbrms62.cloudfront.net/110955514/global/2xGujF4-1200x120
+  ~ og: https://oldsteelarsenal.com/wp-content/uploads/2026/06/IMG_0023-20.jpe
+  ~ og: https://images.coreware.com/images/products/735765-14240521.jpg
+  ✗ https://shop.gafiringline.com/atlanta-arms-ammo/40-s-w-180gr-1000rd-ca
+  ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
+  ✗ https://www.alphashootingsports.com/ALPHA-Sig-P320-Compact-ECS-Optic-R
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/eec44298a62cae050fc0a40e25c810f
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2b3b1e913cd30daf9baca207a4c3470
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7d3602ca1a99f22a9120cebd40d61f6
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/7c92a43f5db1896620b8d0165aeffb3
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bd5f75df9c36a4b6353fe738732ebce
+  → patched final 8
 
-Stats: uploaded=6 fallback=0 failed=1
+Stats: uploaded=5 fallback=3 failed=3
 
-=== FINAL: total=5346 missing_images=1 reddit=0 ===
+=== FINAL: total=5381 missing_images=3 reddit=0 ===
 
-FIXED: 6
+FIXED: 8
