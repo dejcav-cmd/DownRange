@@ -2,15 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 4 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2359a5959404d774ad3d2669f33a3f2
-  ✗ https://shop.gafiringline.com/atlanta-arms-ammo/40-s-w-180gr-1000rd-ca
-  ✗ https://shop.parros.com/shooting-sports/handguns/semi-automatic/le-tra
-  ✗ https://www.alphashootingsports.com/ALPHA-Sig-P320-Compact-ECS-Optic-R
+Needs image fix: 1 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5648a955c69c719bb2f21b30bf9af49
   → patched final 1
 
-Stats: uploaded=1 fallback=0 failed=3
+Stats: uploaded=1 fallback=0 failed=0
 
-=== FINAL: total=5384 missing_images=3 reddit=0 ===
+=== FINAL: total=5402 missing_images=0 reddit=0 ===
 
 FIXED: 1
