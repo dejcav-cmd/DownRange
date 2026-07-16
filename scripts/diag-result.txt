@@ -2,12 +2,13 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/5648a955c69c719bb2f21b30bf9af49
+Needs image fix: 2 (null + gun.deals hotlink-blocked)
+  ~ og: https://www.ballisticadvantage.com/media/catalog/product/cache/5adadb4
+  ✗ https://www.msrdistribution.com/independence-day-celebration
   → patched final 1
 
-Stats: uploaded=1 fallback=0 failed=0
+Stats: uploaded=0 fallback=1 failed=1
 
-=== FINAL: total=5402 missing_images=0 reddit=0 ===
+=== FINAL: total=5407 missing_images=1 reddit=0 ===
 
 FIXED: 1
