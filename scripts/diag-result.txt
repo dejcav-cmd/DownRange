@@ -2,14 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/6e632a6df108ef4fe9063faa74b94d1
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/cc1bc8501dda470187b70ed46488572
-  ✗ https://www.msrdistribution.com/independence-day-celebration
-  → patched final 2
+Needs image fix: 1 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3e8e4fdb78ab249527f53f54404c89
+  → patched final 1
 
-Stats: uploaded=2 fallback=0 failed=1
+Stats: uploaded=1 fallback=0 failed=0
 
-=== FINAL: total=5419 missing_images=1 reddit=0 ===
+=== FINAL: total=5431 missing_images=0 reddit=0 ===
 
-FIXED: 2
+FIXED: 1
