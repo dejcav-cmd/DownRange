@@ -3,21 +3,21 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Needs image fix: 11 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/024804abe6df315412443d79ded9615
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69d5dc477b521f92faeecfde1516717
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bc5109132dcdf3d36c754c246ebdaa5
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8adef288e84f1d8bf5ceb4b594d6950
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ffae143567fab5e09e25a1fb542ceb8
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b82aec3ad73c0bd3958cf586f53fabb
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2623e887facb110f10fa669b946212f
-  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/633240/images/577924/25
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/9da55ac1d53f28947b6e8901f3ce516
+  ~ og: http://seattleengravingcenter.com/cdn/shop/files/century-arms-24-karat
+  ~ og: https://www.herogunshop.com/prodimages/64-default-L.jpg
+  ✗ https://www.dahlonegaarmory.com/product/clt-python-357mag-8-blk-matte-
+  ✗ https://wildhorseammunition.com/product/mfs-7-62x39mm-124gr-fmj/
+  ~ og: https://cdn11.bigcommerce.com/s-ftvyxc2jnx/images/stencil/%7B:size%7D/
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/35b3f13fe931c394429e3e32f30ddf8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/accb986022a5307a337e1f5b3db476c
   ✗ https://guns.bridgeportequip.com/product/marlin-336-ds-30-30-16.17-tb-
   ✗ https://www.repurposedmaterialsinc.com/?s=pelican%20cases&amp;post_typ
   ✗ https://deleonrxgunsandammo.com/product/agm-ratt35-384-v3-rattlerv3-lr
-  → patched final 8
+  → patched final 6
 
-Stats: uploaded=7 fallback=1 failed=3
+Stats: uploaded=3 fallback=3 failed=5
 
-=== FINAL: total=5514 missing_images=3 reddit=0 ===
+=== FINAL: total=5531 missing_images=5 reddit=0 ===
 
-FIXED: 8
+FIXED: 6
