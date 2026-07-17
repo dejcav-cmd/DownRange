@@ -2,12 +2,22 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8e11152b3fc61bd0f8e203dc57764e0
-  → patched final 1
+Needs image fix: 11 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/024804abe6df315412443d79ded9615
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/69d5dc477b521f92faeecfde1516717
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/bc5109132dcdf3d36c754c246ebdaa5
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8adef288e84f1d8bf5ceb4b594d6950
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/ffae143567fab5e09e25a1fb542ceb8
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b82aec3ad73c0bd3958cf586f53fabb
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2623e887facb110f10fa669b946212f
+  ~ og: https://cdn11.bigcommerce.com/s-yqqkx/products/633240/images/577924/25
+  ✗ https://guns.bridgeportequip.com/product/marlin-336-ds-30-30-16.17-tb-
+  ✗ https://www.repurposedmaterialsinc.com/?s=pelican%20cases&amp;post_typ
+  ✗ https://deleonrxgunsandammo.com/product/agm-ratt35-384-v3-rattlerv3-lr
+  → patched final 8
 
-Stats: uploaded=1 fallback=0 failed=0
+Stats: uploaded=7 fallback=1 failed=3
 
-=== FINAL: total=5496 missing_images=0 reddit=0 ===
+=== FINAL: total=5514 missing_images=3 reddit=0 ===
 
-FIXED: 1
+FIXED: 8
