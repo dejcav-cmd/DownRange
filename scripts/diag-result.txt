@@ -3,11 +3,11 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/c3e8e4fdb78ab249527f53f54404c89
+  ~ og: https://gunmagwarehouse.com/media/catalog/product/cache/778ead6359b8bb
   → patched final 1
 
-Stats: uploaded=1 fallback=0 failed=0
+Stats: uploaded=0 fallback=1 failed=0
 
-=== FINAL: total=5431 missing_images=0 reddit=0 ===
+=== FINAL: total=5450 missing_images=0 reddit=0 ===
 
 FIXED: 1
