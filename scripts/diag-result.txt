@@ -2,12 +2,13 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/18759f2ae361207d55987a14ca35e54
-  → patched final 1
+Needs image fix: 2 (null + gun.deals hotlink-blocked)
+  ~ og: http://shootingtargets7.com/cdn/shop/files/dueling-tree-cc.webp?crop=c
+  ~ og: https://cdn.media.amplience.net/i/scheelspoc/04770021271
+  → patched final 2
 
-Stats: uploaded=1 fallback=0 failed=0
+Stats: uploaded=0 fallback=2 failed=0
 
-=== FINAL: total=5659 missing_images=0 reddit=0 ===
+=== FINAL: total=5663 missing_images=0 reddit=0 ===
 
-FIXED: 1
+FIXED: 2
