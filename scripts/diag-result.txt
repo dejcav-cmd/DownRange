@@ -3,12 +3,12 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Needs image fix: 2 (null + gun.deals hotlink-blocked)
-  ~ og: http://shootingtargets7.com/cdn/shop/files/dueling-tree-cc.webp?crop=c
-  ~ og: https://cdn.media.amplience.net/i/scheelspoc/04770021271
-  → patched final 2
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/80c8b7a7e3eb86b82b8841b5f31a90e
+  ✗ https://www.alphadefenseonline.com/product/arex-zero-1-standard-9mm-da
+  → patched final 1
 
-Stats: uploaded=0 fallback=2 failed=0
+Stats: uploaded=1 fallback=0 failed=1
 
-=== FINAL: total=5663 missing_images=0 reddit=0 ===
+=== FINAL: total=5683 missing_images=1 reddit=0 ===
 
-FIXED: 2
+FIXED: 1
