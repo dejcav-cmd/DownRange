@@ -2,14 +2,12 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 3 (null + gun.deals hotlink-blocked)
-  ~ og: https://i0.wp.com/bansheedefense.com/wp-content/uploads/2026/01/RPA-Ma
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/2ac66b61bb436713291da9d54334b9f
-  ✗ https://shooterschoicesc.com/product/daniel-defense-12819153-ddm4-v7-3
-  → patched final 2
+Needs image fix: 1 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/18759f2ae361207d55987a14ca35e54
+  → patched final 1
 
-Stats: uploaded=1 fallback=1 failed=1
+Stats: uploaded=1 fallback=0 failed=0
 
-=== FINAL: total=5630 missing_images=1 reddit=0 ===
+=== FINAL: total=5659 missing_images=0 reddit=0 ===
 
-FIXED: 2
+FIXED: 1
