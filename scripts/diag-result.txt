@@ -2,15 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 4 (null + gun.deals hotlink-blocked)
-  ✗ https://gun.deals/product/111-111
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/37cf2e26ebc2f44ab2be0db1de40680
-  ✗ https://gun.deals/product/midten-75-9-rifle-bipod-compatible-m-rail-at
-  ✗ https://www.dollargeneral.com/p/academy-sports-outdoors-gift-card-50/7
-  → patched final 1
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  ✗ https://eleven26tactical.com/product/blackbird-f556h/
+  ~ og: https://ravenrocksprecision.com/wp-content/uploads/2025/03/300-Blackou
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/1ea4494e5e9a1bd152d4cd9541b49d8
+  → patched final 2
 
-Stats: uploaded=1 fallback=0 failed=3
+Stats: uploaded=1 fallback=1 failed=1
 
-=== FINAL: total=5713 missing_images=3 reddit=0 ===
+=== FINAL: total=5741 missing_images=1 reddit=0 ===
 
-FIXED: 1
+FIXED: 2
