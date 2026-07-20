@@ -2,13 +2,14 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 2 (null + gun.deals hotlink-blocked)
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/369eeaf915f9146b33de0f809cdf06a
-  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/8ac621e6ca8fe512252ad4dd98aa001
-  → patched final 2
+Needs image fix: 3 (null + gun.deals hotlink-blocked)
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/598978084a2c4e70f9af36a94265a3c
+  ~ og: https://www.sportoptics.com/media/catalog/product/cache/ce6ea7863b5966
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/b683fb40a5ae0e3d6d80a14cf6194ba
+  → patched final 3
 
-Stats: uploaded=2 fallback=0 failed=0
+Stats: uploaded=2 fallback=1 failed=0
 
-=== FINAL: total=5849 missing_images=0 reddit=0 ===
+=== FINAL: total=5865 missing_images=0 reddit=0 ===
 
-FIXED: 2
+FIXED: 3
