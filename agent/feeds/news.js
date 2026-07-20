@@ -496,6 +496,16 @@ async function processNewsItem(item) {
     return { id: 'br-' + hash, title: finalTitle, category: 'brazil', hasAI }
   }
 
+  // ── GATE 2.5: Block deals-roundup posts from news sources ────────────────
+  // TFB (and others) publish "Weekly Web Deals" aggregator posts through their
+  // main RSS feeds (cat:'industry'), NOT cat:'deals'. These pass all domain and
+  // keyword gates but are not news. Block by title pattern so they never reach
+  // newsArticle. The dedicated gun-deals cron handles all deal sourcing.
+  if (/weekly.{0,20}deals|web deals|deals.{0,20}roundup|deals.{0,15}for\s+\w+\s+\d/i.test(item.title || '')) {
+    console.log('[NEWS] BLOCKED deals-roundup:', item.source, '"' + (item.title || '').slice(0, 70) + '"')
+    return
+  }
+
   // ── GATE 3: US only — must be from an allowed US firearms domain ──────────
   // For RSS feeds (all pre-vetted in RSS_FEEDS), always allow.
   // For NewsAPI items, enforce domain allowlist.
@@ -696,6 +706,49 @@ async function processWithConcurrency(items, concurrency, startMs) {
   return results
 }
 
+// ── DEALS-ROUNDUP CLEANUP ─────────────────────────────────────────────────────
+// One-time (then no-op) cleanup: delete any newsArticle docs whose slug matches
+// the deals-roundup pattern that slipped through before GATE 2.5 was added.
+// Uses the same fetch-based Sanity mutation path as publishToSanity so it works
+// in all environments without importing @sanity/client.
+async function cleanupDealsRoundupArticles() {
+  try {
+    const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
+    const dataset   = process.env.NEXT_PUBLIC_SANITY_DATASET || 'production'
+    const token     = process.env.SANITY_API_TOKEN
+    if (!token) return
+
+    // Query for slipped-through deals-roundup articles
+    const query = encodeURIComponent(
+      '*[_type=="newsArticle" && (slug.current match "*weekly*deals*" || slug.current match "*web-deals*" || slug.current match "*deals*roundup*")]{_id,title,slug}'
+    )
+    const r = await fetch(
+      `https://${projectId}.api.sanity.io/v2024-01-01/data/query/${dataset}?query=${query}`,
+      { headers: { Authorization: `Bearer ${token}` } }
+    )
+    if (!r.ok) return
+
+    const { result } = await r.json()
+    if (!result?.length) return
+
+    for (const doc of result) {
+      const dr = await fetch(
+        `https://${projectId}.api.sanity.io/v2024-01-01/data/mutate/${dataset}`,
+        {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
+          body: JSON.stringify({ mutations: [{ delete: { id: doc._id } }] }),
+        }
+      )
+      if (dr.ok) {
+        console.log(`[NEWS] 🗑 Deleted deals-roundup article: "${(doc.title || doc.slug?.current || doc._id).slice(0, 70)}"`)
+      }
+    }
+  } catch (e) {
+    console.warn('[NEWS] Cleanup warning (non-critical):', e.message)
+  }
+}
+
 // ── MAIN ──────────────────────────────────────────────────────────────────────
 
 async function runNewsFeed() {
@@ -703,6 +756,8 @@ async function runNewsFeed() {
   // Clear in-memory dedup set — module-level Set persists across warm Lambda invocations.
   // Without this, every URL seen in prior runs gets permanently flagged as a dupe.
   resetDedup()
+  // Remove any deals-roundup articles that slipped through before GATE 2.5
+  await cleanupDealsRoundupArticles()
   console.log('[NEWS] ▶ Starting feed pull...')
   console.log(`[NEWS] Claude API: ${process.env.ANTHROPIC_API_KEY ? 'AVAILABLE' : 'MISSING — using raw data fallback'}`)
   // Reset gate log and per-run URL dedup for this run
@@ -711,11 +766,29 @@ async function runNewsFeed() {
 
   // Fetch all sources in parallel
   const [newsapi, rss] = await Promise.all([fetchNewsAPI(), fetchRSS()])
-  const all = [...newsapi, ...rss]
-    .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0))
-    .slice(0, MAX_ITEMS) // hard cap
+  const combined = [...newsapi, ...rss]
 
-  console.log(`[NEWS] ${all.length} items to process (capped at ${MAX_ITEMS}). With images: ${all.filter(i => i.imageUrl).length}`)
+  // ── REGIONAL SPLIT ────────────────────────────────────────────────────────
+  // Canada/Brazil items used to compete with US items in one combined slice,
+  // which meant they were almost always dropped — 30+ US feeds × 8 items = 240
+  // candidates for 40 slots, so international items never made the cut.
+  // Fix: give each region its own quota so Canada/Brazil always get processed.
+  const usItems = combined
+    .filter(i => i.region !== 'canada' && i.region !== 'brazil')
+    .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0))
+    .slice(0, 30)  // 30 US slots — 6 batches × 26s ≈ 156s
+  const caItems = combined
+    .filter(i => i.region === 'canada')
+    .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0))
+    .slice(0, 10)  // up to 10 Canada items per run
+  const brItems = combined
+    .filter(i => i.region === 'brazil')
+    .sort((a, b) => new Date(b.publishedAt || 0) - new Date(a.publishedAt || 0))
+    .slice(0, 10)  // up to 10 Brazil items per run
+  // Total ≤ 50 items. 10 batches × 26s = 260s < DEADLINE_MS (250s guard fires first if needed)
+  const all = [...usItems, ...caItems, ...brItems]
+
+  console.log(`[NEWS] ${all.length} items to process (US:${usItems.length} CA:${caItems.length} BR:${brItems.length}). With images: ${all.filter(i => i.imageUrl).length}`)
 
   // Process with concurrency
   const published = await processWithConcurrency(all, CONCURRENCY, t)

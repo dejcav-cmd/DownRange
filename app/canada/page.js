@@ -17,7 +17,7 @@ const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset: 'production',
   apiVersion: '2024-01-01',
-  useCdn: true,
+  useCdn: false,  // false required — useCdn:true bypasses auth token, causes 403 on Canada content
   token: process.env.SANITY_API_TOKEN,
 })
 
