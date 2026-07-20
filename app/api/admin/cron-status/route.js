@@ -3,7 +3,7 @@ export const dynamic = 'force-dynamic'
 import { getAllRuns, getAlertConfig, setAlertConfig, reportCronRun } from '@/lib/cronReporter'
 
 // ── All cron jobs registry ────────────────────────────────────────────────────
-export const ALL_JOBS = [
+const ALL_JOBS = [
   { id:'news',             path:'/api/agent?feed=news',             schedule:'0 */2 * * *',   label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 2 hrs' },
   { id:'releases',         path:'/api/agent?feed=releases&phase=scrape', schedule:'45 6 * * 1,4',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
     { path:'/api/cron/releases-process',           schedule:'50 6 * * 1,4',     label:'Releases Process',        group:'Content',  icon:'⚙️',  critical:false, desc:'Phase 2: dequeue and process scraped candidates' },
