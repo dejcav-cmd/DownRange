@@ -78,11 +78,11 @@ export default function Footer() {
           <div className="footer-brand">
             <div className="footer-logo">
               <Image
-                src="/logo-web.png"
+                src="/logo-web.webp"
                 alt="Arsenal Americano"
-                width={356}
-                height={200}
-                style={{ height: 56, width: 'auto', display: 'block' }}
+                width={800}
+                height={450}
+                style={{ height: 60, width: 'auto', display: 'block' }}
               />
             </div>
             <p className="footer-brand-desc">
