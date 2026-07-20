@@ -2,12 +2,13 @@
 No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
-Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ~ og: http://kffdef.com/cdn/shop/files/DSC01562-2.png?v=1774786653
-  → patched final 1
+Needs image fix: 2 (null + gun.deals hotlink-blocked)
+  ~ og: https://cdn11.bigcommerce.com/s-h424xqhs5x/products/228195/images/4211
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/73788d520ec9a074e3e635ad110ea94
+  → patched final 2
 
-Stats: uploaded=0 fallback=1 failed=0
+Stats: uploaded=1 fallback=1 failed=0
 
-=== FINAL: total=5802 missing_images=0 reddit=0 ===
+=== FINAL: total=5813 missing_images=0 reddit=0 ===
 
-FIXED: 1
+FIXED: 2
