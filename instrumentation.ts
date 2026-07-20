@@ -32,10 +32,10 @@ export async function register() {
         await sanity.patch(post._id).set({ body: art.body, published: art.published }).commit()
         console.log('[instrumentation] Seeded body for:', art.slug, art.body.length, 'chars')
       } catch(e) {
-        console.error('[instrumentation] Failed:', art.slug, e.message)
+        console.error('[instrumentation] Failed:', art.slug, (e as Error).message)
       }
     }
   } catch(e) {
-    console.error('[instrumentation] Startup seed failed:', e.message)
+    console.error('[instrumentation] Startup seed failed:', (e as Error).message)
   }
 }
