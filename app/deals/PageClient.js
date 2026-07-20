@@ -5,6 +5,7 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import EmailCapture from '../../components/ui/EmailCapture'
 import { sendGAEvent } from '@next/third-parties/google'
+import { isAWBWeapon } from '@/lib/gunCompliance'
 
 const GOLD  = 'var(--gold)'
 const MONO  = "'IBM Plex Mono',monospace"
@@ -101,13 +102,13 @@ function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
   }
 
   // AWB — rifles AND AR-pattern pistols (covered by most state AWBs, e.g. WA HB 1240, CA, NY)
-  if (rules.awb && isAssaultWeaponLike(deal.title)) {
+  if (rules.awb && isAWBWeapon(deal.title)) {
     alerts.push({
-      type: 'awb',
-      color: '#F59E0B',
-      bg:    'rgba(245,158,11,0.13)',
-      label: `\u26A0\uFE0F AWB RESTRICTED IN ${stateCode}`,
-      detail:`${stateCode} bans or restricts semi-automatic assault weapons incl. AR-pattern pistols`,
+      type: 'awb_banned',
+      color: '#EF4444',
+      bg:    'rgba(239,68,68,0.13)',
+      label: `🚫 BANNED — assault weapon in ${stateCode}`,
+      detail:`${stateCode} bans this semi-auto firearm under its assault weapons law. Not legal to purchase or receive here.`,
     })
   }
 
@@ -124,22 +125,6 @@ function timeAgo(ts) {
   const h = Math.floor(m / 60)
   if (h < 24) return `${h}h ago`
   return `${Math.floor(h / 24)}d ago`
-}
-
-// ── ASSAULT WEAPON DETECTION ─────────────────────────────────────────────────
-// Returns true if a deal should trigger AWB restriction checks.
-// State AWBs target semi-automatic, military-style firearms — NOT traditional bolt-action,
-// lever-action, pump-action, or single-shot rifles. Shotguns only if semi-auto assault type.
-function isAssaultWeaponLike(title = '') {
-  const t = (title || '').toLowerCase()
-  // Skip traditional action types — never covered by AWBs
-  if (/bolt.?action|lever.?action|pump.?action|single.?shot|muzzleload|double.?barrel/i.test(t)) return false
-  // Skip clearly non-firearm items
-  if (/suppressor|silencer|\bscope\b|optic|red dot|\bammo\b|ammunition|\bfmj\b/i.test(t)) return false
-  // AR/AK platform rifles and pistols, PCCs, military-style semi-autos
-  return /ar-15|ar15|ak-47|ak47|\bak-\b|m4\s*(?:style|carbine|clone)|m16|\bpcc\b|pistol\s+caliber\s+carbine|banshee|draco|micro\s*draco|mp5|sp5k?|mac-?\d|micro\s*uzi|cmmg|sig\s*mcx|galil\s*ace|tavor|kel.?tec\s*sub|cz\s*scorpion|angstadt|foxtrot\s*mike|zpap|saiga|vepr|fostech|aa-?12|origin.?12/i.test(t)
-    // AR/AK calibers — strong signal for MSR
-    || /\b(?:5\.56|223\s*rem|\.223|300\s*(?:blk|aac|blackout)|338\s*arc|7\.62x39|6\.5\s*grendel|6\.8\s*spc|224\s*valkyrie)\b/i.test(t)
 }
 
 // ── DEAL CARD ─────────────────────────────────────────────────────────────────
@@ -228,7 +213,7 @@ function DealCard({ deal, userState, liveRules }) {
 
           // Group by type for compact multi-state display
           const magBanCodes = byState.filter(x => x.alerts.some(a => a.type === 'mag_banned')).map(x => x.code)
-          const awbCodes    = byState.filter(x => x.alerts.some(a => a.type === 'awb')).map(x => x.code)
+          const awbCodes    = byState.filter(x => x.alerts.some(a => a.type === 'awb_banned')).map(x => x.code)
           const suppCodes   = byState.filter(x => x.alerts.some(a => a.type === 'suppressor_banned')).map(x => x.code)
           // User's specific state alerts (shown first, prominently)
           const myAlerts    = userState ? (byState.find(x => x.code === userState)?.alerts || []) : []
@@ -256,12 +241,12 @@ function DealCard({ deal, userState, liveRules }) {
                   padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
                 }}>🚫 MAG BANNED: {fmt(magBanCodes)}</div>
               )}
-              {awbCodes.length > 0 && !myTypes.has('awb') && (
-                <div title={`AWB restrictions: ${awbCodes.join(', ')}`} style={{
-                  background:'rgba(245,158,11,0.07)', border:'1px solid rgba(245,158,11,0.22)',
-                  color:'#fbbf24', fontFamily:MONO, fontSize:8,
+              {awbCodes.length > 0 && !myTypes.has('awb_banned') && (
+                <div title={`Assault weapon banned: ${awbCodes.join(', ')}`} style={{
+                  background:'rgba(239,68,68,0.07)', border:'1px solid rgba(239,68,68,0.22)',
+                  color:'#fca5a5', fontFamily:MONO, fontSize:8,
                   padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
-                }}>⚠ AWB STATES: {fmt(awbCodes)}</div>
+                }}>🚫 AWB BANNED: {fmt(awbCodes)}</div>
               )}
               {suppCodes.length > 0 && !myTypes.has('suppressor_banned') && (
                 <div title={`Suppressor banned: ${suppCodes.join(', ')}`} style={{

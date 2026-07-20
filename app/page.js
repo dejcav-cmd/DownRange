@@ -4,6 +4,7 @@ import NewsletterSignup from '../components/sections/NewsletterSignup'
 import StateBriefing from '../components/sections/StateBriefing'
 import Link from 'next/link'
 import { fetchArticles, fetchReleases, fetchAllStateProfiles, client } from '../sanity/lib/client'
+import { extractCapacity } from '../lib/gunCompliance'
 
 export const revalidate = 120
 
@@ -79,12 +80,13 @@ async function fetchBriefingDeals() {
       }`
     )
     return (rows || []).map(d => ({
-      cat:      inferCat(d.title),
-      brand:    d.source || 'gun.deals',
-      name:     cleanDealTitle(d.title || ''),
-      price:    d.price || null,
-      url:      d.externalUrl || '/deals',
-      imageUrl: proxyImg(d.imageUrl),
+      cat:              inferCat(d.title),
+      brand:            d.source || 'gun.deals',
+      name:             cleanDealTitle(d.title || ''),
+      price:            d.price || null,
+      url:              d.externalUrl || '/deals',
+      imageUrl:         proxyImg(d.imageUrl),
+      detectedCapacity: extractCapacity(d.title || ''),
     })).filter(d => d.name)
   } catch (e) {
     return []

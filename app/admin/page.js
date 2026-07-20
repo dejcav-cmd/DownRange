@@ -34,6 +34,7 @@ const DeploymentsPanel      = L(() => import('../../components/admin/Deployments
 const SourceManager         = L(() => import('../../components/admin/SourceManager'))
 const SMSAlertsPanel        = L(() => import('../../components/admin/SMSAlertsPanel'))
 const MailingListManager    = L(() => import('../../components/admin/MailingListManager'))
+const ComplianceRulesPanel  = L(() => import('../../components/admin/ComplianceRulesPanel'))
 
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
@@ -74,9 +75,10 @@ const NAV = [
     panels: [
       { id:'intel',        label:'Briefings',        icon:'🧠', badge:null },
       { id:'statelaws',    label:'State Laws',       icon:'🗺', badge:null },
+      { id:'compliance',   label:'Compliance Rules', icon:'⚖', badge:'new' },
       { id:'pulllog',      label:'Pull Log',         icon:'📡', badge:null },
       { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
-      { id:'copyright',  label:'Copyright',       icon:'⚖',  badge:null },
+      { id:'copyright',  label:'Copyright',       icon:'©',  badge:null },
     ]
   },
   {
@@ -2915,12 +2917,13 @@ export default function AdminPage() {
             {panel==='seo'        && <SEOPanel />}
 
             {/* ── INTELLIGENCE ── */}
-            {panel==='intel'     && <IntelligenceDashboard adminKey={adminKey} />}
-              {panel==='copyright' && <CopyrightReport adminKey={adminKey} />}
-            {panel==='statelaws' && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
-            {panel==='pulllog'   && <PullLogDashboard />}
-            {panel==='deals'   && <DealsManager adminKey={adminKey} />}
-            {panel==='feeds'        && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
+            {panel==='intel'      && <IntelligenceDashboard adminKey={adminKey} />}
+            {panel==='copyright'  && <CopyrightReport adminKey={adminKey} />}
+            {panel==='statelaws'  && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
+            {panel==='compliance' && <ComplianceRulesPanel adminKey={adminKey} />}
+            {panel==='pulllog'    && <PullLogDashboard />}
+            {panel==='deals'      && <DealsManager adminKey={adminKey} />}
+            {panel==='feeds'      && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
 
 
             {/* ── SYSTEM ── */}

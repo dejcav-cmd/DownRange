@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { getCompliance, COMPLIANCE_STYLES } from '@/lib/gunCompliance'
 
 const MONO = "'IBM Plex Mono',monospace"
 const DISP = "'Bebas Neue',cursive"
@@ -15,53 +16,6 @@ function timeAgo(iso) {
   if (diff < 60) return `${diff}m ago`
   if (diff < 1440) return `${Math.floor(diff / 60)}h ago`
   return `${Math.floor(diff / 1440)}d ago`
-}
-
-function ok(t)   { return { lvl: 'ok',   ico: '✓', text: t } }
-function warn(t) { return { lvl: 'warn', ico: '⚠', text: t } }
-function no(t)   { return { lvl: 'no',   ico: '✗', text: t } }
-
-// The differentiator: judge a deal category against the selected state's real attributes
-function verdict(cat, s) {
-  if (!s) return ok('Legal')
-  switch (cat) {
-    case 'RIFLE':
-      if (s.awbFull)       return no(`Banned config in ${s.name}`)
-      if (s.awbRestricted) return warn(`${s.name}: featureless build required`)
-      return ok(`Legal in ${s.name}`)
-    case 'MAGAZINE':
-      // Only flag if state has a mag cap AND the item is a detachable magazine.
-      // Revolvers/fixed-magazine firearms are already classified as HANDGUN/RIFLE,
-      // so MAGAZINE category here means a standalone feed device.
-      if (s.mag)           return no(`Blocked — ${s.mag}-rd mag limit in ${s.name}`)
-      return ok(`Standard capacity legal in ${s.name}`)
-    case 'SUPPRESSOR':
-      if (!s.suppLegal)    return no(`Illegal to own in ${s.name}`)
-      return ok('Legal · Form 4 required')
-    case 'AMMO':
-      if (s.abbr === 'CA') return warn('CA: background check required at purchase')
-      if (s.abbr === 'NY') return warn('NY: FFL transfer only — no direct ship')
-      if (s.abbr === 'IL') return warn('IL: FOID required to purchase')
-      return ok('Ships to your door')
-    case 'HANDGUN':
-      // CA roster only applies to new semi-auto handguns sold by dealers —
-      // not revolvers, not private party, not used guns
-      if (s.abbr === 'CA') return warn('CA: verify CA-approved roster before purchase')
-      if (s.abbr === 'NY') return warn('NY: pistol permit required')
-      if (s.abbr === 'MA') return warn('MA: must be on MA approved list')
-      if (s.awbFull)       return warn(`${s.name}: check local permit requirements`)
-      return ok(`Legal in ${s.name}`)
-    case 'GENERAL':
-      return ok(`No state restriction — ships to ${s.name}`)
-    default:
-      return ok(`Legal in ${s.name}`)
-  }
-}
-
-const V_STYLE = {
-  ok:   { bg:'rgba(34,197,94,.09)',  bd:'rgba(34,197,94,.22)',  fg:'#6ee7a3' },
-  warn: { bg:'rgba(245,158,11,.09)', bd:'rgba(245,158,11,.22)', fg:'#fbbf68' },
-  no:   { bg:'rgba(239,68,68,.09)',  bd:'rgba(239,68,68,.22)',  fg:'#fca5a5' },
 }
 const GRADE_COLOR = g => {
   const c = (g || '').charAt(0)
@@ -115,7 +69,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
   const [dealPage, setDealPage] = useState(0)
   const totalDealPages = Math.ceil(deals.length / DEALS_PER_PAGE)
   const shownDeals = deals.slice(dealPage * DEALS_PER_PAGE, (dealPage + 1) * DEALS_PER_PAGE)
-  const flagged = shownDeals.filter(d => verdict(d.cat, s).lvl !== 'ok').length
+  const flagged = shownDeals.filter(d => getCompliance(d, s).type !== 'ok').length
 
   return (
     <>
@@ -194,8 +148,8 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
           {deals.length > 0 ? (
             <div className="briefing-deals" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(190px,1fr))', gap:12 }}>
               {shownDeals.map((d, i) => {
-                const v = verdict(d.cat, s)
-                const vs = V_STYLE[v.lvl]
+                const v  = getCompliance(d, s)
+                const vs = COMPLIANCE_STYLES[v.type]
                 return (
                   <a key={i} href={d.url || '/deals'} target="_blank" rel="noopener noreferrer" className="release-card" style={{ background:'var(--bg2)', border:'1px solid var(--border-mid)', display:'flex', flexDirection:'column', overflow:'hidden', textDecoration:'none' }}>
                     <div style={{ height:120, background:'linear-gradient(135deg,#1a1f2a,#0c0f14)', position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
@@ -208,7 +162,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
                       <div style={{ fontFamily:COND, fontWeight:700, fontSize:14.5, lineHeight:1.14, marginBottom:8, display:'-webkit-box', WebkitLineClamp:2, WebkitBoxOrient:'vertical', overflow:'hidden' }}>{d.name}</div>
                       {d.price && <div style={{ fontFamily:DISP, fontSize:22, color:'#C8922A', letterSpacing:'.02em', marginBottom:10 }}>{d.price}</div>}
                       <div style={{ marginTop:'auto', fontFamily:MONO, fontSize:9.5, lineHeight:1.4, padding:'7px 8px', borderRadius:2, display:'flex', gap:6, alignItems:'flex-start', background:vs.bg, border:`1px solid ${vs.bd}`, color:vs.fg }}>
-                        <span style={{ fontWeight:700 }}>{v.ico}</span><span>{v.text}</span>
+                        <span style={{ fontWeight:700 }}>{vs.ico}</span><span>{v.label}</span>
                       </div>
                     </div>
                   </a>
