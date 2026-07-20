@@ -1,5 +1,5 @@
 import Masthead from './Masthead'
-import Footer from './Footer'
+import AAFooter from './AAFooter'
 import WhatsAppButton from '../ui/WhatsAppButton'
 
 /**
@@ -13,7 +13,7 @@ export default function PageLayout({ children }: { children: React.ReactNode }) 
       <Masthead />
       {children}
       <WhatsAppButton />
-      <Footer />
+      <AAFooter />
     </>
   )
 }
