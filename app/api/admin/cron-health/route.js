@@ -123,6 +123,7 @@ export async function GET() {
     { feed: 'intelligence',    schedule: '0 1 * * *',   label: 'Daily 1am',         critical: false, desc: 'Intelligence briefing generation' },
     { feed: 'image-fix',       schedule: '15 * * * *',  label: 'Hourly',            critical: false, desc: 'Fix placeholder images' },
     { feed: 'backup',          schedule: '0 10 * * *',  label: 'Daily 10am',        critical: false, desc: 'Full Sanity backup' },
+  { feed: 'giveaways',       schedule: '3 8 * * *',     label: 'Daily 8am',         critical: false, desc: 'Scrape gun giveaways → Sanity' },
   ]
 
   // ── MISSION CONTROL: LAST NEWS CRON RUN ──────────────────────────────
@@ -206,6 +207,22 @@ export async function GET() {
 
   // NEWSAPI_KEY / GNEWS_KEY are optional enrichment sources — RSS alone is sufficient.
   // Removed as an issue to prevent permanent WARNING status when these are not configured.
+
+  // ── Giveaways staleness (daily at 8am, warn if >30h since last run) ─────────
+  try {
+    const lastGiveawayRun = await sanityClient.fetch(
+      `*[_type == "cronRun" && jobId == "giveaways"] | order(_createdAt desc) [0] { status, _createdAt, details, error }`
+    )
+    if (lastGiveawayRun) {
+      const minsAgo = Math.round((Date.now() - new Date(lastGiveawayRun._createdAt)) / 60000)
+      if (minsAgo > 1800) { // 30h — daily feed + buffer
+        issues.push({ severity: 'LOW', msg: `Giveaways: last run ${Math.round(minsAgo/60)}h ago — expected daily at 8am UTC` })
+      }
+      if (lastGiveawayRun.status === 'failed') {
+        issues.push({ severity: 'MEDIUM', msg: `Giveaways feed failed: ${(lastGiveawayRun.error || lastGiveawayRun.details || '').slice(0, 80)}` })
+      }
+    }
+  } catch (e) { console.warn('[cron-health] giveaways check:', e.message) }
 
   const overallStatus = issues.some(i => i.severity === 'CRITICAL') ? 'BROKEN'
     : issues.some(i => i.severity === 'HIGH') ? 'DEGRADED'
