@@ -43,90 +43,86 @@ function PanelLoader() {
   </div>
 }
 
-// ── Navigation structure: sections → panels ──────────────────────────────────
+// ── Navigation structure: collapsible tree ────────────────────────────────────
+// Each section is a folder; panels are leaves shown inline when section is open.
+// Social + Outreach merged. sysalerts+smsalerts unified under Alerts.
+// copyright+compliance merged to Legal. mailing-list moved to Outreach.
 const NAV = [
   {
     id: 'content', label: 'Content', icon: '📰',
     panels: [
-      { id:'hub',          label:'Content Hub',      icon:'◈',  badge:null },
-      { id:'drafts',       label:'Draft Recovery',   icon:'🔍', badge:null },
-      { id:'news',         label:'News Articles',    icon:'📰', badge:null },
+      { id:'hub',          label:'Hub',              icon:'◈'  },
+      { id:'news',         label:'News Articles',    icon:'📰' },
       { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
-      { id:'blog',         label:'Blog',             icon:'✍',  badge:null },
-      { id:'reviews',      label:'Reviews',          icon:'★',  badge:null },
-      { id:'canada',       label:'Canada',           icon:'🇨🇦', badge:null },
-      { id:'brazil',       label:'Brasil',           icon:'🇧🇷', badge:null },
-      { id:'competitions', label:'Competitions',     icon:'🏆', badge:null },
-      { id:'deals',        label:'Deals Manager',    icon:'🔥', badge:null },
+      { id:'blog',         label:'Blog',             icon:'✍'  },
+      { id:'reviews',      label:'Reviews',          icon:'★'  },
+      { id:'deals',        label:'Deals',            icon:'🔥' },
+      { id:'canada',       label:'Canada',           icon:'🇨🇦' },
+      { id:'brazil',       label:'Brasil',           icon:'🇧🇷' },
+      { id:'competitions', label:'Competitions',     icon:'🏆' },
+      { id:'drafts',       label:'Draft Recovery',   icon:'🗂'  },
     ]
   },
   {
     id: 'publishing', label: 'Publishing', icon: '📅',
     panels: [
-      { id:'schedule',     label:'Schedule',         icon:'📅', badge:null },
-      { id:'breaking',     label:'Breaking Alerts',  icon:'🔴', badge:null },
-      { id:'newsletter',   label:'Newsletter',       icon:'📧', badge:null },
-      { id:'mailing-list', label:'Mailing List',     icon:'📬', badge:null },
-      { id:'seo',          label:'SEO & Meta',       icon:'🔍', badge:null },
+      { id:'breaking',     label:'Breaking Alerts',  icon:'🔴' },
+      { id:'newsletter',   label:'Newsletter',       icon:'📧' },
+      { id:'schedule',     label:'Schedule',         icon:'📅' },
+      { id:'seo',          label:'SEO & Meta',       icon:'🔍' },
     ]
   },
   {
     id: 'intelligence', label: 'Intelligence', icon: '🧠',
     panels: [
-      { id:'intel',        label:'Briefings',        icon:'🧠', badge:null },
-      { id:'statelaws',    label:'State Laws',       icon:'🗺', badge:null },
-      { id:'compliance',   label:'Compliance Rules', icon:'⚖', badge:'new' },
-      { id:'pulllog',      label:'Pull Log',         icon:'📡', badge:null },
-      { id:'feeds',        label:'Feed Agent',       icon:'⚡', badge:null },
-      { id:'copyright',  label:'Copyright',       icon:'©',  badge:null },
+      { id:'intel',        label:'Briefings',        icon:'📊' },
+      { id:'statelaws',    label:'State Laws',       icon:'🗺' },
+      { id:'feeds',        label:'Feed Agent',       icon:'⚡' },
+      { id:'pulllog',      label:'Pull Log',         icon:'📡' },
+      { id:'legal',        label:'Legal & Compliance',icon:'⚖', badge:'new' },
     ]
   },
   {
     id: 'system', label: 'System', icon: '⚙',
     panels: [
-      { id:'overview',     label:'Overview',         icon:'◈',  badge:null },
-      { id:'crons',        label:'Cron Jobs',        icon:'⏱', badge:null },
-      { id:'operations',   label:'Operations',       icon:'⚡', badge:'new' },
-      { id:'smsalerts',    label:'SMS Alerts',       icon:'📱', badge:'new' },
-      { id:'sysalerts',    label:'Cron Alerts',      icon:'🚨', badge:null },
-      { id:'agents',       label:'Content Agents',   icon:'🤖', badge:null },
-      { id:'sources',      label:'Source Manager',   icon:'📡', badge:'new' },
-      { id:'ranges',       label:'Ranges DB',        icon:'◎',  badge:null },
-      { id:'sitemap',      label:'Site Map',          icon:'🗺️', badge:null },
-      { id:'deployments',  label:'Deployments',      icon:'▲',  badge:null },
+      { id:'overview',     label:'Mission Control',  icon:'◈'  },
+      { id:'crons',        label:'Cron Jobs',        icon:'⏱' },
+      { id:'alerts',       label:'Alerts',           icon:'🚨', badge:'new' },
+      { id:'operations',   label:'Operations',       icon:'⚡' },
+      { id:'agents',       label:'Content Agents',   icon:'🤖' },
+      { id:'sources',      label:'Sources',          icon:'📡' },
+      { id:'deployments',  label:'Deployments',      icon:'▲'  },
+      { id:'sitemap',      label:'Site Map',         icon:'🗺️' },
+      { id:'ranges',       label:'Ranges DB',        icon:'◎'  },
     ]
   },
   {
-    id: 'social', label: 'Social Media', icon: '📣',
+    id: 'outreach', label: 'Outreach & Social', icon: '📬',
     panels: [
-      { id:'social',       label:'Command Center',   icon:'📣', badge:'new' },
-    ]
-  },
-  {
-    id: 'outreach', label: 'Outreach', icon: '📬',
-    panels: [
-      { id:'outreach',     label:'Campaigns',        icon:'📬', badge:null },
+      { id:'social',       label:'Social Media',     icon:'📣', badge:'new' },
+      { id:'outreach',     label:'Campaigns',        icon:'📬' },
+      { id:'mailing-list', label:'Mailing List',     icon:'📮' },
     ]
   },
   {
     id: 'media', label: 'Media', icon: '▶',
     panels: [
-      { id:'videos',       label:'Video Manager',    icon:'▶',  badge:null },
-      { id:'channels',     label:'Channels',         icon:'📺', badge:null },
-      { id:'imglib',       label:'Image Library',     icon:'📸', badge:null },
-      { id:'imgsearch',    label:'Image Finder',      icon:'🔍', badge:null },
+      { id:'videos',       label:'Videos',           icon:'▶'  },
+      { id:'channels',     label:'Channels',         icon:'📺' },
+      { id:'imglib',       label:'Image Library',    icon:'📸' },
+      { id:'imgsearch',    label:'Image Finder',     icon:'🔍' },
     ]
   },
   {
-    id: 'settings', label: 'Settings', icon: '⚙',
+    id: 'settings', label: 'Config', icon: '🔧',
     panels: [
-      { id:'ai',           label:'AI Models',        icon:'🤖', badge:null },
-      { id:'costs',        label:'Cost Center',      icon:'💰', badge:null },
-      { id:'keys',         label:'API Keys',         icon:'🔑', badge:null },
-      { id:'identity',     label:'Identity',         icon:'🎨', badge:null },
-      { id:'envcheck',     label:'Env Vars',         icon:'🔧', badge:null },
-      { id:'navvis',       label:'Nav Visibility',   icon:'👁', badge:null },
-      { id:'emails',       label:'Email Tests',       icon:'✉', badge:null },
+      { id:'ai',           label:'AI Models',        icon:'🤖' },
+      { id:'costs',        label:'Cost Center',      icon:'💰' },
+      { id:'keys',         label:'API Keys',         icon:'🔑' },
+      { id:'identity',     label:'Brand & Identity', icon:'🎨' },
+      { id:'envcheck',     label:'Env Vars',         icon:'🔧' },
+      { id:'navvis',       label:'Nav Visibility',   icon:'👁' },
+      { id:'emails',       label:'Email Test',       icon:'✉'  },
     ]
   },
 ]
@@ -191,24 +187,68 @@ const STYLES = `
     font-family:'IBM Plex Mono',monospace;
   }
 
-  /* Sidebar — full height of shell */
+  /* ── Sidebar tree ── */
   .adm-sidebar {
-    width:200px; flex-shrink:0;
+    width:220px; flex-shrink:0;
     background:var(--bg2); border-right:1px solid var(--border);
     display:flex; flex-direction:column;
     overflow-y:auto; overflow-x:hidden;
   }
-  .adm-section-btn {
-    width:100%; background:none; border:none; border-left:3px solid transparent;
-    color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px;
-    padding:11px 16px; cursor:pointer; text-align:left;
-    display:flex; align-items:center; gap:8px;
-    transition:all .12s; letter-spacing:.03em;
-    white-space:nowrap; overflow:hidden;
+
+  /* Section header (collapsible folder) */
+  .adm-tree-section {
+    border-bottom:1px solid rgba(30,41,59,.5);
   }
-  .adm-section-btn:hover { background:rgba(255,255,255,.03); color:var(--text); }
-  .adm-section-btn.active { border-left-color:var(--gold); color:var(--gold); background:rgba(200,146,42,.08); }
-  .adm-section-btn .adm-count { margin-left:auto; font-size:8px; background:rgba(200,146,42,.2); color:var(--gold); padding:1px 5px; border-radius:2px; flex-shrink:0; }
+  .adm-tree-hdr {
+    width:100%; background:none; border:none; border-left:3px solid transparent;
+    color:#9ca3af; font-family:'Barlow Condensed',sans-serif; font-size:13px;
+    font-weight:700; letter-spacing:.06em; text-transform:uppercase;
+    padding:10px 14px 10px 12px; cursor:pointer; text-align:left;
+    display:flex; align-items:center; gap:9px;
+    transition:all .12s;
+  }
+  .adm-tree-hdr:hover { color:var(--text); background:rgba(255,255,255,.025); }
+  .adm-tree-hdr.open  { color:var(--gold); border-left-color:var(--gold); background:rgba(200,146,42,.06); }
+  .adm-tree-hdr .tree-arrow {
+    margin-left:auto; font-size:9px; color:#4b5563;
+    transition:transform .18s; flex-shrink:0;
+  }
+  .adm-tree-hdr.open .tree-arrow { transform:rotate(90deg); color:var(--gold); }
+
+  /* Panel leaves inside a section */
+  .adm-tree-leaves {
+    overflow:hidden;
+    max-height:0;
+    transition:max-height .2s ease;
+  }
+  .adm-tree-leaves.open { max-height:600px; }
+  .adm-tree-leaf {
+    width:100%; background:none; border:none; border-left:3px solid transparent;
+    color:#6b7280; font-family:'IBM Plex Mono',monospace; font-size:10px;
+    padding:7px 14px 7px 34px; cursor:pointer; text-align:left;
+    display:flex; align-items:center; gap:7px;
+    transition:all .1s; letter-spacing:.02em; white-space:nowrap;
+  }
+  .adm-tree-leaf:hover { color:var(--text); background:rgba(255,255,255,.025); }
+  .adm-tree-leaf.active {
+    color:var(--gold); border-left-color:var(--gold);
+    background:rgba(200,146,42,.08);
+  }
+  .adm-tree-leaf .tree-badge {
+    margin-left:auto; font-size:7px; font-weight:700; letter-spacing:.04em;
+    background:#ef4444; color:#fff; padding:1px 4px; flex-shrink:0;
+  }
+  .adm-tree-leaf .tree-badge.new-badge { background:rgba(200,146,42,.9); color:#000; }
+
+  /* Breadcrumb strip */
+  .adm-breadcrumb {
+    flex-shrink:0; padding:6px 20px;
+    background:rgba(0,0,0,.2); border-bottom:1px solid var(--border);
+    font-family:'IBM Plex Mono',monospace; font-size:9px; color:#4b5563;
+    display:flex; align-items:center; gap:6px; letter-spacing:.04em;
+  }
+  .adm-breadcrumb .bc-sep { color:#1e293b; }
+  .adm-breadcrumb .bc-leaf { color:#9ca3af; }
 
   /* Main column */
   .adm-main {
@@ -216,27 +256,6 @@ const STYLES = `
     display:flex; flex-direction:column;
     overflow:hidden;
   }
-
-  /* Sub-tabs — sticky at top of main column, NOT full-page fixed */
-  .adm-subtabs {
-    flex-shrink:0;
-    display:flex; gap:0;
-    border-bottom:1px solid var(--border);
-    background:var(--bg2);
-    overflow-x:auto; overflow-y:hidden;
-    scrollbar-width:none;
-  }
-  .adm-subtabs::-webkit-scrollbar { display:none; }
-  .adm-subtab {
-    background:none; border:none; border-bottom:2px solid transparent;
-    color:var(--text-dim); font-family:'IBM Plex Mono',monospace; font-size:11px;
-    padding:10px 16px; cursor:pointer; white-space:nowrap;
-    letter-spacing:.03em; transition:all .12s;
-    display:flex; align-items:center; gap:5px; flex-shrink:0;
-  }
-  .adm-subtab:hover { color:var(--text); background:rgba(255,255,255,.02); }
-  .adm-subtab.active { border-bottom-color:var(--gold); color:var(--gold); }
-  .adm-subtab .badge { background:#ef4444; color:#fff; font-size:7px; padding:1px 4px; border-radius:2px; font-weight:700; }
 
   /* Scrollable panel area */
   .adm-panel { flex:1; overflow-y:auto; overflow-x:hidden; padding:28px 32px; }
@@ -2800,15 +2819,66 @@ function StateLawsPanel({ adminKey }) {
   )
 }
 
+// ── Unified Alerts Panel (SMS + System Alerts in one view) ───────────────────
+function UnifiedAlertsPanel({ adminKey }) {
+  const [tab, setTab] = React.useState('system')
+  const tabStyle = (t) => ({
+    background: 'none', border: 'none',
+    borderBottom: `2px solid ${tab===t ? 'var(--gold)' : 'transparent'}`,
+    color: tab===t ? 'var(--gold)' : '#6b7280',
+    fontFamily: "'IBM Plex Mono',monospace", fontSize: 11,
+    padding: '8px 18px', cursor: 'pointer', letterSpacing: '.03em',
+    transition: 'all .12s',
+  })
+  return (
+    <div>
+      <div className="panel-title">Alerts</div>
+      <div className="panel-sub">Cron run history and SMS alert configuration in one place.</div>
+      <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:20}}>
+        <button style={tabStyle('system')} onClick={()=>setTab('system')}>🚨 Cron Alerts</button>
+        <button style={tabStyle('sms')}    onClick={()=>setTab('sms')}>📱 SMS Config</button>
+      </div>
+      {tab === 'system' && <SystemAlertsPanel adminKey={adminKey} />}
+      {tab === 'sms'    && <SMSAlertsPanel    adminKey={adminKey} />}
+    </div>
+  )
+}
+
+// ── Legal Panel (Copyright + Compliance merged) ──────────────────────────────
+function LegalPanel({ adminKey }) {
+  const [tab, setTab] = React.useState('compliance')
+  const tabStyle = (t) => ({
+    background: 'none', border: 'none',
+    borderBottom: `2px solid ${tab===t ? 'var(--gold)' : 'transparent'}`,
+    color: tab===t ? 'var(--gold)' : '#6b7280',
+    fontFamily: "'IBM Plex Mono',monospace", fontSize: 11,
+    padding: '8px 18px', cursor: 'pointer', letterSpacing: '.03em',
+    transition: 'all .12s',
+  })
+  return (
+    <div>
+      <div className="panel-title">Legal & Compliance</div>
+      <div className="panel-sub">State compliance rules and copyright scanning tools.</div>
+      <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:20}}>
+        <button style={tabStyle('compliance')} onClick={()=>setTab('compliance')}>⚖ Compliance Rules</button>
+        <button style={tabStyle('copyright')}  onClick={()=>setTab('copyright')}>© Copyright Scan</button>
+      </div>
+      {tab === 'compliance' && <ComplianceRulesPanel adminKey={adminKey} />}
+      {tab === 'copyright'  && <CopyrightReport      adminKey={adminKey} />}
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
+  // openSections: Set of section IDs currently expanded in the tree
+  const [openSections, setOpenSections] = useState(new Set(['system']))
   const [section,  setSection]  = useState('system')
   const [panel,    setPanel]    = useState('overview')
   const [msg,      setMsg]      = useState('')
   const [msgType,  setMsgType]  = useState('info')
   const [health,   setHealth]   = useState(null)
 
-  // Load admin key from localStorage
   useEffect(() => {
     const k = localStorage.getItem('dr_admin_key') || ''
     setAdminKeyState(k)
@@ -2822,15 +2892,31 @@ export default function AdminPage() {
     if (!m.startsWith('⏳')) setTimeout(() => setMsg(''), 6000)
   }
 
-  // When switching section, default to first panel
-  function switchSection(id) {
-    setSection(id)
+  // Toggle a section open/closed; clicking its header navigates to first panel
+  function toggleSection(id) {
     const sec = NAV.find(s=>s.id===id)
-    if (sec?.panels?.length) setPanel(sec.panels[0].id)
+    const isOpen = openSections.has(id)
+    setOpenSections(prev => {
+      const next = new Set(prev)
+      if (isOpen) { next.delete(id) } else { next.add(id) }
+      return next
+    })
+    if (!isOpen && sec?.panels?.length) {
+      setSection(id)
+      setPanel(sec.panels[0].id)
+    }
+  }
+
+  // Navigate directly to a leaf panel
+  function openPanel(sectionId, panelId) {
+    setSection(sectionId)
+    setPanel(panelId)
+    // Ensure the section is open
+    setOpenSections(prev => { const next = new Set(prev); next.add(sectionId); return next })
   }
 
   const currentSection = NAV.find(s => s.id === section)
-  const isDeployed = typeof window !== 'undefined'
+  const currentPanel   = currentSection?.panels?.find(p => p.id === panel)
 
   const msgClass = msg.startsWith('✅') ? 'ok' : msg.startsWith('❌') ? 'err' : 'info'
 
@@ -2842,13 +2928,18 @@ export default function AdminPage() {
       <div className="adm-topbar">
         <div className="adm-logo">◈ DR Admin</div>
         <a href="https://downrangeco.com" target="_blank" rel="noreferrer" className="adm-site-link">downrangeco.com ↗</a>
-        <a href="https://down-range-indol.vercel.app" target="_blank" rel="noreferrer" className="adm-site-link">Vercel ↗</a>
+        <a href="https://vercel.com/dejcav-cmd/downrangeco" target="_blank" rel="noreferrer" className="adm-site-link">Vercel ↗</a>
         {health && health.status !== 'ok' && (
-          <div className="adm-status-pill" style={{borderColor:'rgba(239,68,68,.4)',color:'#ef4444'}}>
+          <div className="adm-status-pill" style={{borderColor:health.status==='BROKEN'?'rgba(239,68,68,.4)':'rgba(245,158,11,.4)',color:health.status==='BROKEN'?'#ef4444':'#f59e0b'}}>
             ⚠ {health.status?.toUpperCase()}
           </div>
         )}
-        {msg && <div className={`adm-msg ${msgClass}`}>{msg} {msg && <button onClick={()=>setMsg('')} style={{background:'none',border:'none',color:'inherit',cursor:'pointer',marginLeft:8,fontSize:12}}>✕</button>}</div>}
+        {health && health.status === 'ok' && (
+          <div className="adm-status-pill" style={{borderColor:'rgba(34,197,94,.3)',color:'#22c55e'}}>
+            ✓ HEALTHY
+          </div>
+        )}
+        {msg && <div className={`adm-msg ${msgClass}`}>{msg} <button onClick={()=>setMsg('')} style={{background:'none',border:'none',color:'inherit',cursor:'pointer',marginLeft:8,fontSize:12}}>✕</button></div>}
         <div style={{marginLeft:'auto',display:'flex',gap:8,alignItems:'center'}}>
           <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>KEY</span>
           <input type="password" value={adminKey} onChange={e=>setAdminKey(e.target.value)}
@@ -2859,39 +2950,53 @@ export default function AdminPage() {
 
       <div className="adm-shell">
 
-        {/* ── SIDEBAR ── */}
+        {/* ── SIDEBAR TREE ── */}
         <div className="adm-sidebar">
-          {NAV.map(s => (
-            <button key={s.id}
-              className={'adm-section-btn' + (section===s.id?' active':'')}
-              onClick={() => switchSection(s.id)}>
-              <span style={{fontSize:14}}>{s.icon}</span>
-              {s.label}
-              <span className="adm-count">{s.panels.length}</span>
-            </button>
-          ))}
+          {NAV.map(s => {
+            const isOpen = openSections.has(s.id)
+            return (
+              <div key={s.id} className="adm-tree-section">
+                {/* Section header — toggle open/closed */}
+                <button
+                  className={'adm-tree-hdr' + (isOpen ? ' open' : '')}
+                  onClick={() => toggleSection(s.id)}
+                  title={s.label}>
+                  <span style={{fontSize:14,flexShrink:0}}>{s.icon}</span>
+                  <span style={{flex:1,overflow:'hidden',textOverflow:'ellipsis'}}>{s.label}</span>
+                  <span className="tree-arrow">▶</span>
+                </button>
+                {/* Panel leaves */}
+                <div className={'adm-tree-leaves' + (isOpen ? ' open' : '')}>
+                  {s.panels.map(p => (
+                    <button key={p.id}
+                      className={'adm-tree-leaf' + (panel===p.id && section===s.id ? ' active' : '')}
+                      onClick={() => openPanel(s.id, p.id)}
+                      title={p.label}>
+                      <span style={{fontSize:12,flexShrink:0,width:16,textAlign:'center'}}>{p.icon}</span>
+                      <span style={{flex:1,overflow:'hidden',textOverflow:'ellipsis'}}>{p.label}</span>
+                      {p.badge && <span className={'tree-badge' + (p.badge==='new'?' new-badge':'')}>{p.badge.toUpperCase()}</span>}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )
+          })}
           <div style={{flex:1}} />
-          <div style={{padding:'12px 16px',borderTop:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',lineHeight:1.8}}>
-            <div>DownRange v2.0</div>
-            <div style={{color:'#1e293b'}}>Build: Next.js 14 + Sanity</div>
+          <div style={{padding:'10px 14px',borderTop:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:8,color:'#1e293b',lineHeight:1.9}}>
+            DownRange v2.0 · Next.js 14 + Sanity
           </div>
         </div>
 
         {/* ── MAIN ── */}
         <div className="adm-main">
 
-          {/* Sub-tabs */}
-          {currentSection && (
-            <div className="adm-subtabs">
-              {currentSection.panels.map(p => (
-                <button key={p.id}
-                  className={'adm-subtab' + (panel===p.id?' active':'')}
-                  onClick={() => setPanel(p.id)}>
-                  <span>{p.icon}</span>
-                  {p.label}
-                  {p.badge && <span className="badge">{p.badge}</span>}
-                </button>
-              ))}
+          {/* Breadcrumb */}
+          {currentSection && currentPanel && (
+            <div className="adm-breadcrumb">
+              <span>{currentSection.icon}</span>
+              <span>{currentSection.label}</span>
+              <span className="bc-sep">›</span>
+              <span className="bc-leaf">{currentPanel.icon} {currentPanel.label}</span>
             </div>
           )}
 
@@ -2919,29 +3024,29 @@ export default function AdminPage() {
             {/* ── INTELLIGENCE ── */}
             {panel==='intel'      && <IntelligenceDashboard adminKey={adminKey} />}
             {panel==='copyright'  && <CopyrightReport adminKey={adminKey} />}
-            {panel==='statelaws'  && <StateLawsPanel adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
+            {panel==='statelaws'  && <StateLawsPanel adminKey={adminKey} setPanel={p=>openPanel('intelligence',p)} setSection={s=>{ const sec=NAV.find(x=>x.id===s); openPanel(s, sec?.panels?.[0]?.id||s) }} />}
             {panel==='compliance' && <ComplianceRulesPanel adminKey={adminKey} />}
+            {panel==='legal'      && <LegalPanel adminKey={adminKey} />}
             {panel==='pulllog'    && <PullLogDashboard />}
             {panel==='deals'      && <DealsManager adminKey={adminKey} />}
             {panel==='feeds'      && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
 
 
             {/* ── SYSTEM ── */}
-            {panel==='overview'  && <OverviewDashboard adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
-            {panel==='crons'     && <CronDashboard adminKey={adminKey} />}
-            {panel==='operations' && <OperationsPanel adminKey={adminKey} setMsg={flash} />}
-            {panel==='smsalerts' && <SMSAlertsPanel adminKey={adminKey} />}
-            {panel==='sysalerts' && <SystemAlertsPanel adminKey={adminKey} />}
-            {panel==='sources' && <SourceManager adminKey={adminKey} />}
-            {panel==='sitemap' && <SiteMapPanel adminKey={adminKey} />}
-            {panel==='ranges'  && <RangesPanel />}
+            {panel==='overview'    && <OverviewDashboard adminKey={adminKey} setPanel={p=>openPanel('system',p)} setSection={s=>{ const sec=NAV.find(x=>x.id===s); openPanel(s, sec?.panels?.[0]?.id||s) }} />}
+            {panel==='crons'       && <CronDashboard adminKey={adminKey} />}
+            {panel==='operations'  && <OperationsPanel adminKey={adminKey} setMsg={flash} />}
+            {panel==='alerts'      && <UnifiedAlertsPanel adminKey={adminKey} />}
+            {panel==='smsalerts'   && <SMSAlertsPanel adminKey={adminKey} />}
+            {panel==='sysalerts'   && <SystemAlertsPanel adminKey={adminKey} />}
+            {panel==='sources'     && <SourceManager adminKey={adminKey} />}
+            {panel==='sitemap'     && <SiteMapPanel adminKey={adminKey} />}
+            {panel==='ranges'      && <RangesPanel />}
             {panel==='deployments' && <DeploymentsPanel adminKey={adminKey} />}
-            {panel==='agents'  && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
+            {panel==='agents'      && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
 
-            {/* ── SOCIAL MEDIA ── */}
+            {/* ── OUTREACH & SOCIAL ── */}
             {panel==='social'       && <SocialMediaManager adminKey={adminKey} />}
-
-            {/* ── OUTREACH ── */}
             {panel==='outreach'     && <OutreachCRM adminKey={adminKey} />}
 
             {/* ── MEDIA ── */}

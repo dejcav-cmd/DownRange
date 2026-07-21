@@ -188,3 +188,63 @@ The error page's "click here to confirm again" sometimes routes back to the JS m
 - Open a bug ticket
 
 Only act if failures cluster (3+ in a row).
+
+## Admin Navigation — Collapsible Tree (July 2026)
+
+**Web admin (`app/admin/page.js`):** Replaced horizontal section tabs + sub-tab strip with a collapsible sidebar tree. Sections are folders with `▶` arrow; panels are indented leaves. CSS classes: `.adm-tree-section`, `.adm-tree-hdr`, `.adm-tree-leaves`, `.adm-tree-leaf`. State: `openSections` (Set), `section`, `panel`. `toggleSection(id)` opens/closes a folder. `openPanel(sectionId, panelId)` navigates directly to a leaf. Breadcrumb bar (`adm-breadcrumb`) replaces the sub-tab strip. Topbar shows ✓ HEALTHY green pill when system is healthy.
+
+**PWA (`public/admin-app/index.html`):** Replaced bottom nav tabs + slide-up tray with a hamburger-triggered left drawer. `buildNavTree()` lazily renders the tree on first open using `NAV_TREE` const. `_openSecs` Set tracks expanded sections. `navToPanel(secId,panelId,label)` navigates + updates breadcrumb + closes drawer. Breadcrumb bar `#pwa-breadcrumb` with `#bc-section-label` and `#bc-panel-label`. `openSheet()`/`closeSheet()` are aliases for backwards compat.
+
+**Consolidations made:**
+- Social Media (1 panel) absorbed into Outreach → "Outreach & Social"
+- `sysalerts` + `smsalerts` → `UnifiedAlertsPanel` (internal tab strip)
+- `copyright` + `compliance` → `LegalPanel` (internal tab strip)  
+- `mailing-list` moved from Publishing to Outreach & Social
+- `overview` renamed to "Mission Control"
+- Settings renamed to "Config"
+
+**NAV_TREE** in PWA mirrors web admin `NAV` const exactly (7 sections, same IDs/labels).
+
+## Vercel Env Vars + SMS Configuration (July 2026)
+
+### SMS via Redis override (no Vercel deploy needed)
+`smsAlert.js` reads `getSMSOverrideConfig()` from Redis key `dr:sms:config` and spreads it over env var config. Phone fallbacks hardcoded: from=`+12062036281`, to=`+12066016076` (DJ).
+
+To update SMS config without a redeploy:
+```bash
+curl -sL -X POST "https://downrangeco.com/api/admin/sms-config" \
+  -H "Content-Type: application/json" \
+  -H "x-admin-key: $ADMIN_KEY" \
+  -H "x-vercel-protection-bypass: $VERCEL_BYPASS_SECRET" \
+  -d '{"sid":"AC[TWILIO_SID_IN_GITHUB_SECRETS]","token":"...","from":"+12062036281","to":"+12066016076","enabled":true,"criticalJobs":["news","cron-health","gun-deals","sanity"]}'
+```
+
+### Vercel env vars via GitHub Actions (requires VERCEL_TOKEN secret)
+```yaml
+env:
+  VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+run: |
+  P=$(curl -sf "https://api.vercel.com/v9/projects/downrangeco" -H "Authorization: Bearer $VERCEL_TOKEN")
+  PID=$(echo "$P" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+  TID=$(echo "$P" | python3 -c "import sys,json; print(json.load(sys.stdin)['accountId'])")
+  curl -sf -X POST "https://api.vercel.com/v10/projects/$PID/env?teamId=$TID" \
+    -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
+    -d '{"key":"MY_KEY","value":"myval","type":"encrypted","target":["production","preview","development"]}'
+```
+`VERCEL_TOKEN` is NOT currently in repo secrets (only `VERCEL_BYPASS_SECRET` is). Add it via: Vercel → Account → Settings → Tokens → Create Token → add as GitHub secret.
+
+### Push-branch workflow pattern (when no VERCEL_TOKEN)
+1. Create workflow file listening on `branches: [your-trigger-branch]`
+2. Push workflow file to `main` first
+3. Create trigger branch from main (so workflow file exists on it)
+4. Push a new commit to the trigger branch to fire the workflow
+5. **CRITICAL:** Never use inline `python3 << 'EOF'` heredocs or multiline `python3 -c "..."` in YAML — they parse as YAML keys and silently strip `workflow_dispatch` triggers. Always write Python to a temp file:
+   ```yaml
+   run: |
+     cat > /tmp/script.py << 'PYEOF'
+     import json, os
+     # ... your code ...
+     PYEOF
+     python3 /tmp/script.py
+   ```
+6. Always add `-H "x-vercel-protection-bypass: $BYPASS_SECRET"` to downrangeco.com API calls from GHA

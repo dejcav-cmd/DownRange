@@ -261,6 +261,31 @@ img{display:block;}
 .log-row{display:flex;align-items:center;gap:8px;margin-bottom:3px;}
 .log-detail{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);}
 .log-err{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--err);margin-top:3px;}
+
+/* ─── NAV DRAWER ────────────────────────────────────────────────── */
+#nav-drawer-overlay{position:fixed;inset:0;z-index:300;background:rgba(0,0,0,.65);backdrop-filter:blur(3px);display:none;}
+#nav-drawer-overlay.open{display:block;animation:fadeIn .18s ease;}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
+#nav-drawer{position:fixed;top:0;left:0;bottom:0;z-index:310;width:272px;background:var(--bg2);border-right:1px solid var(--border);display:flex;flex-direction:column;transform:translateX(-100%);transition:transform .22s cubic-bezier(.4,0,.2,1);}
+#nav-drawer.open{transform:translateX(0);}
+#drawer-header{padding:14px 14px 10px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-shrink:0;}
+#drawer-logo{font-family:'Bebas Neue',cursive;font-size:1.15rem;color:var(--gold);letter-spacing:.08em;flex:1;}
+#drawer-close{background:none;border:none;color:var(--dim2);font-size:17px;padding:5px 8px;cursor:pointer;-webkit-tap-highlight-color:transparent;}
+#nav-tree-scroll{flex:1;overflow-y:auto;-webkit-overflow-scrolling:touch;}
+.t-sec{border-bottom:1px solid rgba(30,41,59,.5);}
+.t-sec-hdr{width:100%;background:none;border:none;border-left:3px solid transparent;color:#9ca3af;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:11px 13px 11px 11px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:9px;transition:all .12s;-webkit-tap-highlight-color:transparent;}
+.t-sec-hdr.open{color:var(--gold);border-left-color:var(--gold);background:rgba(200,146,42,.07);}
+.t-sec-arrow{margin-left:auto;font-size:9px;color:#374151;transition:transform .18s;flex-shrink:0;}
+.t-sec-hdr.open .t-sec-arrow{transform:rotate(90deg);color:var(--gold);}
+.t-leaves{max-height:0;overflow:hidden;transition:max-height .22s ease;}
+.t-leaves.open{max-height:700px;}
+.t-leaf{width:100%;background:none;border:none;border-left:3px solid transparent;color:#6b7280;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:8px 13px 8px 34px;cursor:pointer;text-align:left;display:flex;align-items:center;gap:7px;transition:all .1s;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
+.t-leaf.active{color:var(--gold);border-left-color:var(--gold);background:rgba(200,146,42,.09);}
+.t-leaf-badge{margin-left:auto;font-size:7px;font-weight:700;letter-spacing:.04em;background:rgba(200,146,42,.9);color:#000;padding:1px 4px;flex-shrink:0;}
+#pwa-breadcrumb{padding:6px 14px;background:rgba(0,0,0,.2);border-bottom:1px solid var(--border);font-family:'IBM Plex Mono',monospace;font-size:9px;color:#4b5563;display:flex;align-items:center;gap:5px;}
+#pwa-breadcrumb .bc-section{color:#6b7280;}
+#pwa-breadcrumb .bc-sep{color:#1e293b;}
+#pwa-breadcrumb .bc-panel{color:#9ca3af;}
 </style>
 </head>
 <body>
@@ -293,10 +318,15 @@ if('serviceWorker' in navigator){
   <div id="topbar-logo">◈ DR</div>
   <div id="topbar-title">COMMAND CENTER</div>
   <div id="topbar-status">●</div>
-  <button id="topbar-menu-btn" onclick="openSheet()">☰</button>
+  <button id="topbar-menu-btn" onclick="openNavDrawer()">☰</button>
 </div>
 
 <div id="app">
+  <div id="pwa-breadcrumb">
+    <span class="bc-section" id="bc-section-label">System</span>
+    <span class="bc-sep">›</span>
+    <span class="bc-panel" id="bc-panel-label">Mission Control</span>
+  </div>
   <div id="content">
     <div id="screen-dashboard" class="screen active"></div>
     <div id="screen-content"   class="screen"></div>
@@ -308,35 +338,19 @@ if('serviceWorker' in navigator){
   </div>
 </div>
 
-<div id="bottom-nav">
-  <button class="nav-tab active" id="nt-dashboard" data-s="dashboard" onclick="navTo('dashboard',this);closeTray()"><span class="nav-tab-icon">◈</span><span class="nav-tab-label">Home</span></button>
-  <button class="nav-tab" id="nt-content"   data-s="content"   onclick="navTo('content',this);closeTray()"><span class="nav-tab-icon">📰</span><span class="nav-tab-label">Content</span></button>
-  <button class="nav-tab" id="nt-system"    data-s="system"    onclick="navTo('system',this);closeTray()"><span class="nav-tab-icon">⚙️</span><span class="nav-tab-label">System</span></button>
-  <button class="nav-tab" id="nt-intel"     data-s="intel"     onclick="navTo('intel',this);closeTray()"><span class="nav-tab-icon">🧠</span><span class="nav-tab-label">Intel</span></button>
-  <button class="nav-tab" id="nt-more"      onclick="toggleTray(this)"><span class="nav-tab-icon">☰</span><span class="nav-tab-label">More</span></button>
-</div>
+<!-- Nav drawer overlay -->
+<div id="nav-drawer-overlay" onclick="closeNavDrawer()"></div>
 
-<!-- NAV TRAY — slides up from bottom when ☰ is tapped -->
-<div id="nav-tray" onclick="if(event.target===this)closeTray()">
-  <div id="nav-tray-inner">
-    <div id="nav-tray-handle"></div>
-    <div id="nav-tray-title">All Sections</div>
-    <div id="nav-tray-body"></div>
+<!-- Left-slide nav drawer -->
+<div id="nav-drawer">
+  <div id="drawer-header">
+    <div id="drawer-logo">◈ DR Admin</div>
+    <button id="drawer-close" onclick="closeNavDrawer()">✕</button>
   </div>
+  <div id="drawer-scroll" id="nav-tree-scroll"></div>
 </div>
 
-<div id="drawer">
-  <div id="drawer-bar">
-    <button id="drawer-back" onclick="closeDrawer()">← Back</button>
-    <div id="drawer-title">Panel</div>
-    <div id="drawer-action-slot"></div>
-  </div>
-  <div id="drawer-content"></div>
-</div>
-
-<!-- section-sheet retained for compat, tray is used instead -->
-<div id="section-sheet" style="display:none!important"><div id="sheet-inner"><div id="sheet-handle"></div><div id="sheet-list"></div></div></div>
-
+<!-- Modal (kept for confirm dialogs) -->
 <div id="modal-overlay" onclick="if(event.target===this)closeModal()">
   <div id="modal-box">
     <div id="modal-title">Confirm</div>
@@ -434,63 +448,151 @@ function openDrawer(title,renderFn,actionHtml=''){
 function closeDrawer(){document.getElementById('drawer').classList.remove('open');}
 
 // ─── SHEET ────────────────────────────────────────────────────────────────────
-const SECTIONS=[
-  {id:'dashboard',label:'Home',icon:'◈',panels:[]},
-  {id:'content',label:'Content',icon:'📰',panels:[
-    {id:'news',l:'News Articles',i:'📰'},{id:'blog',l:'Blog Posts',i:'✍'},
-    {id:'releases',l:'Gun Releases',i:'🔫',b:'new'},{id:'reviews',l:'Reviews',i:'★'},
-    {id:'canada',l:'Canada',i:'🇨🇦'},{id:'brazil',l:'Brasil',i:'🇧🇷'},
-    {id:'competitions',l:'Competitions',i:'🏆'},{id:'drafts',l:'Draft Recovery',i:'🔍'},
-    {id:'hub',l:'Content Hub',i:'◈'},
+// Navigation tree — mirrors web admin (7 sections, consolidated panels)
+const NAV_TREE=[
+  {id:'content',  label:'Content',         icon:'📰',panels:[
+    {id:'hub',         l:'Hub',               i:'◈'},
+    {id:'news',        l:'News Articles',     i:'📰'},
+    {id:'releases',    l:'Gun Releases',      i:'🔫',b:'new'},
+    {id:'blog',        l:'Blog',              i:'✍'},
+    {id:'reviews',     l:'Reviews',           i:'★'},
+    {id:'deals',       l:'Deals',             i:'🔥'},
+    {id:'canada',      l:'Canada',            i:'🇨🇦'},
+    {id:'brazil',      l:'Brasil',            i:'🇧🇷'},
+    {id:'competitions',l:'Competitions',      i:'🏆'},
+    {id:'drafts',      l:'Draft Recovery',    i:'🗂'},
   ]},
-  {id:'publishing',label:'Publishing',icon:'📅',panels:[
-    {id:'breaking',l:'Breaking Alerts',i:'🔴'},{id:'newsletter',l:'Newsletter',i:'📧'},
-    {id:'schedule',l:'Schedule',i:'📅'},{id:'seo',l:'SEO & Meta',i:'🔍'},
+  {id:'publishing',label:'Publishing',     icon:'📅',panels:[
+    {id:'breaking',    l:'Breaking Alerts',   i:'🔴'},
+    {id:'newsletter',  l:'Newsletter',        i:'📧'},
+    {id:'schedule',    l:'Schedule',          i:'📅'},
+    {id:'seo',         l:'SEO & Meta',        i:'🔍'},
   ]},
-  {id:'intel',label:'Intelligence',icon:'🧠',panels:[
-    {id:'intel',l:'Briefings',i:'🧠'},{id:'marketbrief',l:'Market Brief',i:'📊',b:'live'},
-    {id:'statelaws',l:'State Laws',i:'🗺'},{id:'feeds',l:'Feed Agent',i:'⚙'},
-    {id:'copyright',l:'Copyright Scan',i:'⚖'},{id:'compliance',l:'Compliance Rules',i:'⚖',b:'new'},
-    {id:'sysalerts',l:'System Alerts',i:'🚨'},
-    {id:'pulllog',l:'Pull Log',i:'📡'},{id:'deals',l:'Deals Feed',i:'🔥'},
+  {id:'intelligence',label:'Intelligence', icon:'🧠',panels:[
+    {id:'intel',       l:'Briefings',         i:'📊'},
+    {id:'statelaws',   l:'State Laws',        i:'🗺'},
+    {id:'feeds',       l:'Feed Agent',        i:'⚡'},
+    {id:'pulllog',     l:'Pull Log',          i:'📡'},
+    {id:'legal',       l:'Legal & Compliance',i:'⚖',b:'new'},
   ]},
-  {id:'system',label:'System',icon:'⚙️',panels:[
-    {id:'overview',l:'System Overview',i:'◈'},{id:'crons',l:'Cron Jobs',i:'⏱'},
-    {id:'operations',l:'Operations',i:'⚡',b:'new'},
-    {id:'smsalerts',l:'SMS Alerts',i:'📱',b:'new'},{id:'deployments',l:'Deployments',i:'▲'},{id:'agents',l:'Content Agents',i:'🤖'},
-    {id:'sources',l:'Source Manager',i:'📡'},{id:'sitemap',l:'Site Map',i:'🗺️'},
-    {id:'ranges',l:'Ranges DB',i:'◎'},
+  {id:'system',   label:'System',          icon:'⚙️',panels:[
+    {id:'overview',    l:'Mission Control',   i:'◈'},
+    {id:'crons',       l:'Cron Jobs',         i:'⏱'},
+    {id:'alerts',      l:'Alerts',            i:'🚨',b:'new'},
+    {id:'operations',  l:'Operations',        i:'⚡'},
+    {id:'agents',      l:'Content Agents',    i:'🤖'},
+    {id:'sources',     l:'Sources',           i:'📡'},
+    {id:'deployments', l:'Deployments',       i:'▲'},
+    {id:'sitemap',     l:'Site Map',          i:'🗺️'},
+    {id:'ranges',      l:'Ranges DB',         i:'◎'},
   ]},
-  {id:'outreach',label:'Outreach',icon:'📬',panels:[
-    {id:'contacts',l:'Contacts',i:'👤'},{id:'queue',l:'Email Queue',i:'📤'},
-    {id:'history',l:'Sent History',i:'📋'},{id:'mailing-list',l:'Mailing List',i:'📬',b:'new'},
+  {id:'outreach', label:'Outreach & Social',icon:'📬',panels:[
+    {id:'social',      l:'Social Media',      i:'📣',b:'new'},
+    {id:'outreach',    l:'Campaigns',         i:'📬'},
+    {id:'mailing-list',l:'Mailing List',      i:'📮'},
   ]},
-  {id:'media',label:'Media',icon:'▶️',panels:[
-    {id:'videos',l:'Videos',i:'▶'},{id:'channels',l:'Channels',i:'📺'},
-    {id:'imgsearch',l:'Image Search',i:'🔍'},{id:'imglib',l:'Image Library',i:'📸'},
-    {id:'social',l:'Social Media',i:'📣'},
+  {id:'media',    label:'Media',           icon:'▶️',panels:[
+    {id:'videos',      l:'Videos',            i:'▶'},
+    {id:'channels',    l:'Channels',          i:'📺'},
+    {id:'imglib',      l:'Image Library',     i:'📸'},
+    {id:'imgsearch',   l:'Image Finder',      i:'🔍'},
   ]},
-  {id:'settings',label:'Settings',icon:'⚙️',panels:[
-    {id:'keys',l:'API Keys',i:'🔑'},{id:'ai',l:'AI Models',i:'🤖'},
-    {id:'costs',l:'Cost Center',i:'💰'},{id:'identity',l:'Identity',i:'🎨'},
-    {id:'navvis',l:'Nav Visibility',i:'👁'},{id:'siteconfig',l:'Site Settings',i:'⚙'},
-    {id:'alertconfig',l:'Alert Config',i:'🚨'},{id:'envcheck',l:'Env Vars',i:'🔧'},
-    {id:'emails',l:'Email Test',i:'✉'},
-    {id:'report',l:'Portal Report',i:'📧'},{id:'backup',l:'Backup',i:'📦'},
-    {id:'lockall',l:'Lock All',i:'🔒'},{id:'signout',l:'Sign Out',i:'🚪'},
+  {id:'settings', label:'Config',          icon:'🔧',panels:[
+    {id:'keys',        l:'API Keys',          i:'🔑'},
+    {id:'ai',          l:'AI Models',         i:'🤖'},
+    {id:'costs',       l:'Cost Center',       i:'💰'},
+    {id:'identity',    l:'Brand & Identity',  i:'🎨'},
+    {id:'navvis',      l:'Nav Visibility',    i:'👁'},
+    {id:'envcheck',    l:'Env Vars',          i:'🔧'},
+    {id:'emails',      l:'Email Test',        i:'✉'},
+    {id:'siteconfig',  l:'Site Settings',     i:'⚙'},
+    {id:'report',      l:'Portal Report',     i:'📧'},
+    {id:'backup',      l:'Backup',            i:'📦'},
+    {id:'lockall',     l:'Lock All',          i:'🔒'},
+    {id:'signout',     l:'Sign Out',          i:'🚪'},
   ]},
 ];
 
-function openSheet(){
-  const list=document.getElementById('sheet-list');
-  list.innerHTML=SECTIONS.map(sec=>{
-    if(!sec.panels.length) return `<button class="sheet-btn" onclick="navTo('${sec.id}',document.querySelector('[data-s=${sec.id}]'));closeSheet()"><span class="pi">${sec.icon}</span><span class="pl">${sec.label}</span></button>`;
-    return `<div class="sheet-hdr">${sec.icon} ${sec.label}</div>`+
-      sec.panels.map(p=>`<button class="sheet-btn" onclick="openPanel('${p.id}','${p.l||p.label}');closeSheet()"><span class="pi">${p.i||p.icon}</span><span class="pl">${p.l||p.label}</span>${p.b?`<span class="pb">${p.b}</span>`:''}</button>`).join('');
+// Keep SECTIONS alias for any existing code that references it
+const SECTIONS = NAV_TREE.map(s => ({
+  ...s, panels: s.panels.map(p => ({id:p.id, l:p.l, i:p.i, b:p.b, label:p.l, icon:p.i, badge:p.b}))
+}));
+
+// ─── NAV DRAWER ──────────────────────────────────────────────────────────────
+let _drawerBuilt = false;
+// Track open sections by ID
+const _openSecs = new Set(['system']);
+let _activeSec = 'system', _activePanel = 'overview';
+
+function buildNavTree() {
+  const scroll = document.getElementById('nav-tree-scroll');
+  if (!scroll) return;
+  scroll.innerHTML = NAV_TREE.map(sec => {
+    const isOpen = _openSecs.has(sec.id);
+    return `<div class="t-sec" id="tsec-${sec.id}">
+      <button class="t-sec-hdr${isOpen?' open':''}" onclick="toggleNavSec('${sec.id}')">
+        <span style="font-size:14px;flex-shrink:0">${sec.icon}</span>
+        <span style="flex:1;overflow:hidden;text-overflow:ellipsis">${sec.label}</span>
+        <span class="t-sec-arrow">▶</span>
+      </button>
+      <div class="t-leaves${isOpen?' open':''}">
+        ${sec.panels.map(p=>`<button class="t-leaf${_activePanel===p.id&&_activeSec===sec.id?' active':''}" id="tleaf-${sec.id}-${p.id}" onclick="navToPanel('${sec.id}','${p.id}','${p.l}')">
+          <span style="font-size:11px;flex-shrink:0;width:16px;text-align:center">${p.i}</span>
+          <span style="flex:1;overflow:hidden;text-overflow:ellipsis">${p.l}</span>
+          ${p.b?`<span class="t-leaf-badge">${p.b.toUpperCase()}</span>`:''}
+        </button>`).join('')}
+      </div>
+    </div>`;
   }).join('');
-  document.getElementById('section-sheet').classList.add('open');
+  _drawerBuilt = true;
 }
-function closeSheet(){document.getElementById('section-sheet').classList.remove('open');}
+
+function toggleNavSec(id) {
+  if (_openSecs.has(id)) {
+    _openSecs.delete(id);
+  } else {
+    _openSecs.add(id);
+  }
+  const hdr = document.querySelector(`#tsec-${id} .t-sec-hdr`);
+  const leaves = document.querySelector(`#tsec-${id} .t-leaves`);
+  if (hdr) hdr.classList.toggle('open', _openSecs.has(id));
+  if (leaves) leaves.classList.toggle('open', _openSecs.has(id));
+}
+
+function navToPanel(secId, panelId, label) {
+  _activeSec = secId; _activePanel = panelId;
+  // Update active leaf
+  document.querySelectorAll('.t-leaf').forEach(b=>b.classList.remove('active'));
+  const leaf = document.getElementById(`tleaf-${secId}-${panelId}`);
+  if (leaf) leaf.classList.add('active');
+  // Update breadcrumb
+  const sec = NAV_TREE.find(s=>s.id===secId);
+  const secLabel = document.getElementById('bc-section-label');
+  const panelLabel = document.getElementById('bc-panel-label');
+  if (secLabel) secLabel.textContent = sec?.label || secId;
+  if (panelLabel) panelLabel.textContent = label;
+  // Update topbar title
+  const topTitle = document.getElementById('topbar-title');
+  if (topTitle) topTitle.textContent = label.toUpperCase();
+  // Navigate
+  openPanel(panelId, label);
+  closeNavDrawer();
+}
+
+function openNavDrawer() {
+  if (!_drawerBuilt) buildNavTree();
+  document.getElementById('nav-drawer').classList.add('open');
+  document.getElementById('nav-drawer-overlay').classList.add('open');
+}
+
+function closeNavDrawer() {
+  document.getElementById('nav-drawer').classList.remove('open');
+  document.getElementById('nav-drawer-overlay').classList.remove('open');
+}
+
+// Keep openSheet/closeSheet as aliases for any legacy calls
+function openSheet(){ openNavDrawer(); }
+function closeSheet(){ closeNavDrawer(); }
 
 
 // ═══════════════════════════════════════════════════════════════════
