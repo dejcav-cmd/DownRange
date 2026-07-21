@@ -43,8 +43,35 @@ const STYLE = `
     border: 1px solid #1F2428;
     border-top: 3px solid #C8922A;
     width: 100%;
-    max-width: 380px;
+    max-width: 420px;
     padding: 32px;
+    /* Contain any child that tries to overflow */
+    overflow: hidden;
+  }
+
+  /* Force Clerk's rendered root + card to stay inside our card */
+  .login-card > div,
+  .login-card [data-clerk-component],
+  .login-card .cl-rootBox,
+  .login-card .cl-card,
+  .login-card .cl-signIn-root {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    box-shadow: none !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  /* Clerk inner form elements — full width */
+  .login-card .cl-formFieldInput,
+  .login-card .cl-formButtonPrimary,
+  .login-card .cl-socialButtonsBlockButton {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
   }
 
   .login-title {
@@ -253,15 +280,26 @@ function ClerkLogin() {
           borderRadius: '2px',
         },
         elements: {
-          card: { background: 'transparent', boxShadow: 'none', border: 'none', padding: 0 },
-          headerTitle: { display: 'none' },
+          rootBox:  { width: '100%', maxWidth: '100%', minWidth: 0 },
+          card:     { width: '100%', maxWidth: '100%', minWidth: 0, background: 'transparent', boxShadow: 'none', border: 'none', padding: 0, margin: 0 },
+          main:     { width: '100%' },
+          headerTitle:    { display: 'none' },
           headerSubtitle: { display: 'none' },
           socialButtonsBlockButton: {
+            width: '100%',
             background: '#111318',
             border: '1px solid #1F2428',
             color: '#F0EDE6',
           },
+          formFieldInput: {
+            width: '100%',
+            background: '#111318',
+            border: '1px solid #1F2428',
+            color: '#F0EDE6',
+            fontFamily: 'IBM Plex Mono, monospace',
+          },
           formButtonPrimary: {
+            width: '100%',
             background: '#C8922A',
             color: '#000',
             fontFamily: "'Barlow Condensed', sans-serif",
@@ -269,8 +307,8 @@ function ClerkLogin() {
             letterSpacing: '0.1em',
             textTransform: 'uppercase',
           },
-          dividerLine: { background: '#1F2428' },
-          dividerText: { color: '#374151' },
+          dividerLine:    { background: '#1F2428' },
+          dividerText:    { color: '#374151' },
           footerActionText: { color: '#4B5563' },
           footerActionLink: { color: '#C8922A' },
         },
