@@ -1,13 +1,15 @@
-name: Twilio Setup 20250721
+name: Twilio Init
 
 on:
-  workflow_dispatch:
+  push:
+    branches:
+      - twilio-init
 
 jobs:
   run:
     runs-on: ubuntu-latest
     steps:
-      - name: Write Twilio vars to Vercel and send test SMS
+      - name: Write Twilio vars to Vercel and test
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
@@ -18,14 +20,14 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           set -e
-          PROJECT=$(curl -sf "https://api.vercel.com/v9/projects/downrangeco" -H "Authorization: Bearer $VERCEL_TOKEN")
-          PID=$(echo "$PROJECT" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
-          TID=$(echo "$PROJECT" | python3 -c "import sys,json; print(json.load(sys.stdin)['accountId'])")
-          echo "Project=$PID Team=$TID"
+          P=$(curl -sf "https://api.vercel.com/v9/projects/downrangeco" -H "Authorization: Bearer $VERCEL_TOKEN")
+          PID=$(echo "$P" | python3 -c "import sys,json; print(json.load(sys.stdin)['id'])")
+          TID=$(echo "$P" | python3 -c "import sys,json; print(json.load(sys.stdin)['accountId'])")
+          echo "PID=$PID TID=$TID"
 
           upsert() {
             K="$1" V="$2"
-            echo "Setting $K..."
+            echo "→ $K"
             curl -s "https://api.vercel.com/v9/projects/$PID/env?teamId=$TID&limit=100" \
               -H "Authorization: Bearer $VERCEL_TOKEN" | \
               python3 -c "
@@ -34,32 +36,29 @@ for e in json.load(sys.stdin).get('envs',[]):
     if e['key']=='$K': print(e['id'])
 " | while read id; do
               curl -sf -X DELETE "https://api.vercel.com/v9/projects/$PID/env/$id?teamId=$TID" \
-                -H "Authorization: Bearer $VERCEL_TOKEN" >/dev/null
-              echo "  deleted $id"
+                -H "Authorization: Bearer $VERCEL_TOKEN" >/dev/null && echo "  deleted $id"
             done
-            RES=$(curl -sf -X POST "https://api.vercel.com/v10/projects/$PID/env?teamId=$TID" \
+            R=$(curl -sf -X POST "https://api.vercel.com/v10/projects/$PID/env?teamId=$TID" \
               -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
               -d "{\"key\":\"$K\",\"value\":\"$V\",\"type\":\"encrypted\",\"target\":[\"production\",\"preview\",\"development\"]}")
-            echo "  done: $(echo $RES | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','ERR')[:20])")"
+            echo "  created $(echo $R | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','ERR')[:20])")"
           }
 
           upsert "TWILIO_ACCOUNT_SID" "$TWILIO_ACCOUNT_SID"
           upsert "TWILIO_AUTH_TOKEN"  "$TWILIO_AUTH_TOKEN"
           upsert "TWILIO_FROM_NUMBER" "$TWILIO_FROM_NUMBER"
           upsert "ALERT_PHONE_NUMBER" "$ALERT_PHONE_NUMBER"
-          echo "All 4 vars written to Vercel."
+          echo "All 4 Twilio vars in Vercel ✓"
 
-          # Trigger redeploy
-          LATEST=$(curl -sf "https://api.vercel.com/v6/deployments?projectId=$PID&teamId=$TID&limit=1&state=READY" \
+          # Redeploy
+          L=$(curl -sf "https://api.vercel.com/v6/deployments?projectId=$PID&teamId=$TID&limit=1&state=READY" \
             -H "Authorization: Bearer $VERCEL_TOKEN")
-          DID=$(echo "$LATEST" | python3 -c "import sys,json; print(json.load(sys.stdin)['deployments'][0]['uid'])")
-          echo "Redeploying $DID..."
-          RDEP=$(curl -sf -X POST "https://api.vercel.com/v13/deployments?teamId=$TID&forceNew=1" \
+          DID=$(echo "$L" | python3 -c "import sys,json; print(json.load(sys.stdin)['deployments'][0]['uid'])")
+          echo "Redeploying from $DID"
+          NR=$(curl -sf -X POST "https://api.vercel.com/v13/deployments?teamId=$TID&forceNew=1" \
             -H "Authorization: Bearer $VERCEL_TOKEN" -H "Content-Type: application/json" \
             -d "{\"deploymentId\":\"$DID\",\"name\":\"downrangeco\",\"target\":\"production\"}")
-          echo "New deployment: $(echo $RDEP | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','ERR')[:30])")"
-
-          echo "Waiting 100s..."
+          echo "New: $(echo $NR | python3 -c "import sys,json; print(json.load(sys.stdin).get('id','ERR')[:30])")"
           sleep 100
 
           # Test SMS
@@ -69,21 +68,18 @@ for e in json.load(sys.stdin).get('envs',[]):
           echo "$SMS" | python3 -c "
 import sys,json
 d=json.load(sys.stdin)
-if d.get('sent'): print('SUCCESS sid='+str(d.get('sid')))
-else: print('FAIL: '+str(d.get('error',d.get('reason','?')))); exit(1)
+if d.get('sent'): print('✓ SMS SENT sid='+str(d.get('sid','')))
+else: print('✗ FAILED: '+str(d.get('error',d.get('reason','?')))); exit(1)
 "
-
       - name: Save result
         if: always()
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
-          TS=$(date -u '+%Y-%m-%d %H:%M UTC')
-          B64=$(echo "Twilio setup $TS" | base64 -w0)
+          B64=$(echo "Twilio init $(date -u)" | base64 -w0)
           SHA=$(curl -s "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/twilio-result.md" \
             -H "Authorization: Bearer $GH_PAT" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || true)
-          BODY="{\"message\":\"chore: twilio $TS\",\"content\":\"$B64\""
+          BODY="{\"message\":\"chore: twilio result\",\"content\":\"$B64\""
           [ -n "$SHA" ] && BODY="$BODY,\"sha\":\"$SHA\""
           curl -s -X PUT "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/twilio-result.md" \
             -H "Authorization: Bearer $GH_PAT" -H "Content-Type: application/json" -d "$BODY}" >/dev/null
-          echo "Saved."
