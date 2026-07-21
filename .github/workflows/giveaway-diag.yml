@@ -1,0 +1,49 @@
+name: Giveaway Diagnostic
+
+on:
+  push:
+    branches: [giveaway-fix]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check giveaway state and run feed
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          BYPASS: ${{ secrets.VERCEL_BYPASS_SECRET }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: |
+          echo "=== SANITY GIVEAWAY COUNT ===" > scripts/giveaway-diag.txt
+          curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=*[_type==%22giveaway%22]|order(addedAt+desc){_id,title,active,endDate,addedAt,category}" \
+            -H "Authorization: Bearer $SANITY_TOKEN" >> scripts/giveaway-diag.txt
+
+          echo "" >> scripts/giveaway-diag.txt
+          echo "=== LAST GIVEAWAY CRON RUNS ===" >> scripts/giveaway-diag.txt
+          curl -s 'https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=*[_type==%22cronRun%22+%26%26+jobId==%22giveaways%22]|order(_createdAt+desc){jobId,status,details,error,_createdAt}[0..10]' \
+            -H "Authorization: Bearer $SANITY_TOKEN" >> scripts/giveaway-diag.txt
+
+          echo "" >> scripts/giveaway-diag.txt
+          echo "=== TRIGGER GIVEAWAY CRON ===" >> scripts/giveaway-diag.txt
+          curl -sL --max-time 120 -X POST "https://downrangeco.com/api/agent?feed=giveaways" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "x-vercel-protection-bypass: $BYPASS" >> scripts/giveaway-diag.txt
+
+          echo "" >> scripts/giveaway-diag.txt
+          echo "=== SANITY COUNT AFTER ===" >> scripts/giveaway-diag.txt
+          curl -s "https://vbnsqnkg.api.sanity.io/v2024-01-01/data/query/production?query=count(*[_type==%22giveaway%22+%26%26+active==true])" \
+            -H "Authorization: Bearer $SANITY_TOKEN" >> scripts/giveaway-diag.txt
+
+          cat scripts/giveaway-diag.txt
+
+      - name: Commit result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git remote set-url origin "https://dejcav-cmd:${GH_PAT}@github.com/dejcav-cmd/DownRange.git"
+          git add scripts/giveaway-diag.txt
+          git diff --staged --quiet || git commit -m "chore: giveaway diag $(date -u +%H:%M)"
+          git push origin HEAD
