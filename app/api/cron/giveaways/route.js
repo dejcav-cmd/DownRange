@@ -72,46 +72,36 @@ function extractSponsor(title) {
 
 // ── SCRAPER: WinTheGuns.com ───────────────────────────────────────────────────
 async function scrapeWinTheGuns() {
-  const res = await fetch('https://wintheguns.com/', {
+  const res = await fetch('https://r.jina.ai/https://wintheguns.com/', {
     headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+      'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0)',
       'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
       'Accept-Language': 'en-US,en;q=0.9',
     },
-    signal: AbortSignal.timeout(20000),
+    signal: AbortSignal.timeout(25000),
   })
   if (!res.ok) throw new Error('wintheguns.com returned ' + res.status)
   const html = await res.text()
 
   const giveaways = []
 
-  // Try multiple regex patterns for table rows with links
-  const patterns = [
-    // Pattern 1: full table row with 5 cells
-    /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>.*?<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>/gis,
-    // Pattern 2: just the link with title and value in adjacent cells
-    /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{10,120})<\/a><\/td>\s*<td[^>]*>\s*(\$[\d,]+)/gi,
-  ]
-
+  // Jina returns markdown: parse [text](url) format
   let match
-  // Pattern 1
-  const re1 = /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/gi
-  while ((match = re1.exec(html)) !== null) {
-    const [, href, title] = match
+  const mdRe = /\[([^\]]{8,200})\]\((https?:\/\/[^\s\)]{10,300})\)/g
+  while ((match = mdRe.exec(html)) !== null) {
+    const [, title, href] = match
     if (!href || !title) continue
-    if (href.includes('avantlink') || href.includes('javascript') || href.startsWith('#')) continue
     const cleanTitle = title.replace(/\*/g, '').replace(/&amp;/g, '&').trim()
-    if (cleanTitle.length < 8 || cleanTitle.toLowerCase().includes('sponsor')) continue
-    if (cleanTitle.toLowerCase().startsWith('click') || cleanTitle.toLowerCase().startsWith('enter')) continue
+    if (cleanTitle.length < 8) continue
+    if (/^(home|about|contact|privacy|terms|search|subscribe|categories)/i.test(cleanTitle)) continue
+    if (!/(win|giveaway|enter|free|prize|firearm|gun|rifle|pistol|ammo|gear|suppressor)/i.test(cleanTitle)) continue
+    if (/\.(png|jpg|jpeg|gif|svg|webp)/i.test(href)) continue
 
-    // Extract value and end date from surrounding context (after the href match)
-    const ctxStart = match.index
+    const ctxStart = Math.max(0, match.index - 50)
     const ctx = html.slice(ctxStart, ctxStart + 400)
     const valueMatch = ctx.match(/\$\s*([\d,]+)/)
     const dateMatches = ctx.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/g)
-
     const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
-    // End date is typically the 2nd date found (1st is start date)
     const endDate = dateMatches?.length >= 2
       ? parseEndDate(dateMatches[1])
       : dateMatches?.length === 1 ? parseEndDate(dateMatches[0]) : null
@@ -138,11 +128,11 @@ async function scrapeWinTheGuns() {
 // ── SCRAPER: GunGiveaways.net ────────────────────────────────────────────────
 async function scrapeGunGiveaways() {
   try {
-    const res = await fetch('https://gungiveaways.net/', {
+    const res = await fetch('https://r.jina.ai/https://gungiveaways.net/', {
       headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0)',
       },
-      signal: AbortSignal.timeout(15000),
+      signal: AbortSignal.timeout(20000),
     })
     if (!res.ok) return []
     const html = await res.text()
