@@ -79,7 +79,13 @@ function extractGiveawayLinks(markdown, sourceName) {
     if (/^(home|about|contact|privacy|terms|menu|search|subscribe)/i.test(text.trim())) continue
     if (/\.(png|jpg|jpeg|gif|svg|webp|ico)(\?|$)/i.test(url)) continue
     if (/twitter\.com|facebook\.com|instagram\.com|youtube\.com\/channel|tiktok\.com/i.test(url)) continue
-    if (!/(win|giveaway|enter|sweepstake|contest|free|prize|firearm|gun|rifle|pistol|ammo|gear|suppressor)/i.test(text)) continue
+    // Must contain a genuine giveaway action word
+    const isGiveawayText = /(win a|win an|give ?away|enter to win|sweepstake|contest|free (gun|rifle|pistol|ammo|suppressor|firearm)|prize pack|enter now|enter here)/i.test(text)
+    // OR be a pure giveaway platform URL (gleam, rafflecopter, etc.)
+    const isGiveawayPlatform = /(gleam\.io|wn\.nr|swee\.ps|rafflecopter\.com|kingsumo\.com|share-w\.in|woobox\.com|viral-loops\.com)/i.test(url)
+    if (!isGiveawayText && !isGiveawayPlatform) continue
+    // Skip article titles masquerading as links
+    if (/^(how |why |what |the |a |an |inside |meet |review|guide|tips|podcast|blog|news|about|learn|shop|store|join|download|program|contact)/i.test(text.trim())) continue
 
     const ctxStart = Math.max(0, match.index - 50)
     const ctx = markdown.slice(ctxStart, match.index + text.length + 250)
@@ -106,7 +112,7 @@ function extractGiveawayLinks(markdown, sourceName) {
   while ((match = platformRe.exec(markdown)) !== null) {
     const url = match[0].replace(/[.,;:!?)]+$/, '')
     const ctx = markdown.slice(Math.max(0, match.index - 200), match.index + 300)
-    if (!/(win|giveaway|enter|free|prize|firearm|gun|rifle|pistol|ammo|gear)/i.test(ctx)) continue
+    if (!/(win a|giveaway|enter to win|sweepstake|contest|free (gun|rifle|pistol|ammo)|prize)/i.test(ctx)) continue
     const titleMatch = ctx.match(/#{1,3}\s+([^\n]{10,120})|(?:\*\*|__)([^\n*_]{10,120})(?:\*\*|__)/m)
     const title = titleMatch ? (titleMatch[1] || titleMatch[2] || '').trim() : ''
     if (!title) continue
