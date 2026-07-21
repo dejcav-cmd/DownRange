@@ -1,280 +1,91 @@
-import { createClient } from '@sanity/client'
-import Masthead from '../../components/layout/Masthead'
-import Footer from '../../components/layout/Footer'
+import { createClient }       from '@sanity/client'
+import Masthead               from '../../components/layout/Masthead'
+import Footer                 from '../../components/layout/Footer'
+import BreakingTicker         from '../../components/layout/BreakingTicker'
+import { fetchBreakingAlerts } from '../../sanity/lib/client'
+import GiveawaysClient        from './GiveawaysClient'
 
-// Seed data — always visible if Sanity returns nothing.
-// Updated by cron 3× daily; these are real perpetual/long-running giveaway sources.
+// ── Seed data — shown when Sanity returns nothing ─────────────────────────────
 const SEED_GIVEAWAYS = [
-  { _id:'seed-1',  title:'PSA Weekly Gun Giveaway',              sponsor:'Palmetto State Armory', prize:'AR-15 Rifle',        entryUrl:'https://palmettostatearmory.com/giveaways', category:'rifle',       value:799,  endDate:null, featured:true  },
-  { _id:'seed-2',  title:'Lucky Gunner Ammo Giveaway',           sponsor:'Lucky Gunner',          prize:'1,000 Rounds 9mm',   entryUrl:'https://www.luckygunner.com/blog/category/giveaway/', category:'ammo', value:350, endDate:null, featured:false },
-  { _id:'seed-3',  title:'GOA Member Gun Giveaway',              sponsor:'Gun Owners of America', prize:'Glock 19 Gen5',      entryUrl:'https://gunowners.org/goa-giveaway/', category:'pistol',        value:599,  endDate:null, featured:true  },
-  { _id:'seed-4',  title:'Taurus Win a G3c Sweepstakes',         sponsor:'Taurus USA',            prize:'Taurus G3c Pistol',  entryUrl:'https://www.taurususa.com/promotions', category:'pistol',       value:349,  endDate:null, featured:false },
-  { _id:'seed-5',  title:'Springfield Armory Giveaway',          sponsor:'Springfield Armory',    prize:'XD-M Elite Pistol',  entryUrl:'https://www.springfield-armory.com/promotions/', category:'pistol', value:699, endDate:null, featured:false },
-  { _id:'seed-6',  title:'Brownells Monthly Sweepstakes',        sponsor:'Brownells',             prize:'$500 Gift Card',     entryUrl:'https://www.brownells.com/promotions/', category:'accessories',  value:500,  endDate:null, featured:false },
-  { _id:'seed-7',  title:'Ammo.com Free Ammo Giveaway',          sponsor:'Ammo.com',              prize:'Free Ammo Box',      entryUrl:'https://www.ammo.com/giveaways', category:'ammo',             value:200,  endDate:null, featured:false },
-  { _id:'seed-8',  title:'Holosun Red Dot Giveaway',             sponsor:'Holosun',               prize:'Holosun 507C',       entryUrl:'https://wintheguns.com', category:'optics',                 value:299,  endDate:null, featured:false },
-  { _id:'seed-9',  title:'Warrior Poet Society Rifle Giveaway',  sponsor:'Warrior Poet Society',  prize:'Rifle + Gear Bundle',entryUrl:'https://www.warriorpoetsociety.net', category:'rifle',         value:1200, endDate:null, featured:true  },
-  { _id:'seed-10', title:'NRA Membership Firearm Sweepstakes',   sponsor:'NRA',                   prize:'Firearm of Choice',  entryUrl:'https://wintheguns.com', category:'rifle',                  value:1000, endDate:null, featured:false },
+  { _id:'seed-1',  title:'PSA Weekly Gun Giveaway',             sponsor:'Palmetto State Armory', entryUrl:'https://palmettostatearmory.com/giveaways',                    category:'rifle',       value:799,   endDate:null, featured:true  },
+  { _id:'seed-2',  title:'Lucky Gunner Ammo Giveaway',          sponsor:'Lucky Gunner',          entryUrl:'https://www.luckygunner.com/blog/category/giveaway/',          category:'ammo',        value:350,   endDate:null, featured:false },
+  { _id:'seed-3',  title:'GOA Member Gun Giveaway — Glock 19',  sponsor:'Gun Owners of America', entryUrl:'https://gunowners.org/goa-giveaway/',                          category:'pistol',      value:599,   endDate:null, featured:true  },
+  { _id:'seed-4',  title:'Taurus Win a G3c Sweepstakes',        sponsor:'Taurus USA',            entryUrl:'https://www.taurususa.com/promotions',                         category:'pistol',      value:349,   endDate:null, featured:false },
+  { _id:'seed-5',  title:'Springfield Armory XD-M Elite Giveaway', sponsor:'Springfield Armory', entryUrl:'https://www.springfield-armory.com/promotions/',               category:'pistol',      value:699,   endDate:null, featured:false },
+  { _id:'seed-6',  title:'Brownells Monthly Sweepstakes — $500 Gift Card', sponsor:'Brownells',  entryUrl:'https://www.brownells.com/promotions/',                        category:'accessories', value:500,   endDate:null, featured:false },
+  { _id:'seed-7',  title:'Holosun 507C Red Dot Giveaway',       sponsor:'Holosun',               entryUrl:'https://wintheguns.com',                                       category:'optics',      value:299,   endDate:null, featured:false },
+  { _id:'seed-8',  title:'Warrior Poet Society Rifle + Gear Bundle', sponsor:'Warrior Poet Society', entryUrl:'https://www.warriorpoetsociety.net',                      category:'rifle',       value:1200,  endDate:null, featured:true  },
+  { _id:'seed-9',  title:'NRA Foundation Firearm Sweepstakes',  sponsor:'NRA Foundation',        entryUrl:'https://wintheguns.com',                                       category:'rifle',       value:1000,  endDate:null, featured:false },
+  { _id:'seed-10', title:'Ammo.com Free Ammo Giveaway',         sponsor:'Ammo.com',              entryUrl:'https://www.ammo.com/giveaways',                               category:'ammo',        value:200,   endDate:null, featured:false },
 ]
 
+// ── Metadata ──────────────────────────────────────────────────────────────────
 export const metadata = {
-  title: 'Gun Giveaways 2026 — Free Firearm Giveaways | DownRange',
-  description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. Updated daily.',
+  title: 'Gun Giveaways 2026 — Win Free Firearms, Ammo & Gear | DownRange',
+  description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. Updated 3× daily — no spam, verified sources only.',
   alternates: { canonical: 'https://www.downrangeco.com/giveaways' },
   openGraph: {
     title: 'Gun Giveaways 2026 — Win Free Firearms | DownRange',
-    description: 'Active gun giveaways updated daily.',
+    description: 'Active gun giveaways updated 3× daily. Free firearms, ammo, and gear.',
     url: 'https://www.downrangeco.com/giveaways',
   },
 }
 
 export const revalidate = 0
-export const dynamic = 'force-dynamic'
+export const dynamic    = 'force-dynamic'
 
+// ── Sanity client ─────────────────────────────────────────────────────────────
 const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-  dataset: 'production', apiVersion: '2024-01-01', useCdn: true,
+  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+  dataset:    'production',
+  apiVersion: '2024-01-01',
+  useCdn:     true,
 })
 
-const CAT_COLOR = {
-  pistol: '#60A5FA', rifle: '#34D399', shotgun: '#FBBF24',
-  ammo: '#C8922A', gear: '#9CA3AF', accessories: '#C084FC',
-  nfa: '#EF4444', optics: '#34D399',
-}
-
-const CAT_ICON = {
-  pistol: '🔫', rifle: '🎯', shotgun: '💥', ammo: '🔴',
-  optics: '🔭', nfa: '🔇', gear: '⚙️', accessories: '🛒',
-}
-
-function daysLeft(endDate) {
-  if (!endDate) return null
-  // Compare date-only (ignore time) so "ends today" shows correctly
-  const end  = new Date(endDate + 'T23:59:59Z')
-  const now  = new Date()
-  const diff = end - now
-  if (diff < 0) return 'ended'
-  const days = Math.ceil(diff / 86400000)
-  if (days === 0) return 'ends today'
-  if (days === 1) return '1 day left'
-  if (days <= 7)  return `${days} days left`
-  if (days <= 30) return `${days}d left`
-  const weeks = Math.ceil(days / 7)
-  return `${weeks}w left`
-}
-
+// ── Page ──────────────────────────────────────────────────────────────────────
 export default async function GiveawaysPage() {
-  let giveaways = []
-  try {
-    const [live, lastLog] = await Promise.all([
-      sanity.fetch(
-        `*[_type == "giveaway" && active == true && (endDate == null || endDate >= $today)] | order(featured desc, _createdAt desc) [0...100] {
-          _id, title, sponsor, prize, entryUrl, category, sourceType, endDate, featured, value, prizeValue, imageUrl
-        }`,
-        { today: new Date().toISOString().split('T')[0] }
-      ),
-      sanity.fetch(
-        `*[_type == "cronRun" && jobId == "giveaways"] | order(_createdAt desc) [0] { _createdAt, ok, added }`
-      ).catch(() => null),
-    ])
-    // Normalize value field — agent saves prizeValue, old data may use value
-    giveaways = live.map(g => ({ ...g, value: g.value || g.prizeValue || 0 }))
-  } catch (e) { console.error('[giveaways page]', e.message); giveaways = [] }
-
-  // Rule #13: seed data fallback — page never shows empty
-  const display = giveaways.length > 0 ? giveaways : SEED_GIVEAWAYS
-
+  let giveaways   = []
   let lastUpdated = null
-  if (typeof lastLog !== 'undefined' && lastLog?._createdAt) {
+
+  const today = new Date().toISOString().split('T')[0]
+
+  const [alerts, live, lastLog] = await Promise.all([
+    fetchBreakingAlerts().catch(() => []),
+    sanity.fetch(
+      `*[_type == "giveaway" && active == true && (endDate == null || endDate >= $today)]
+       | order(featured desc, _createdAt desc) [0...120]
+       { _id, title, sponsor, prize, entryUrl, category, endDate, featured, value, prizeValue }`,
+      { today }
+    ).catch(() => []),
+    sanity.fetch(
+      `*[_type == "cronRun" && jobId == "giveaways"] | order(_createdAt desc) [0] { _createdAt }`
+    ).catch(() => null),
+  ])
+
+  // Normalise value field — agent uses prizeValue, older entries use value
+  giveaways = (live || []).map(g => ({ ...g, value: g.value || g.prizeValue || 0 }))
+
+  if (lastLog?._createdAt) {
     const d = new Date(lastLog._createdAt)
-    lastUpdated = d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'UTC' }) + ' UTC'
+    lastUpdated = d.toLocaleDateString('en-US', {
+      month: 'short', day: 'numeric', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', timeZone: 'UTC',
+    }) + ' UTC'
   }
 
-  const featured   = display.filter(g => g.featured)
-  const regular    = display.filter(g => !g.featured)
-  const cats       = ['all', ...new Set(display.map(g => g.category).filter(Boolean))]
-  const totalValue = display.reduce((s, g) => s + (g.value || 0), 0)
-  const isSeed     = giveaways.length === 0
+  // Rule #13: seed fallback — page is never empty
+  const display = giveaways.length > 0 ? giveaways : SEED_GIVEAWAYS
+  const isSeed  = giveaways.length === 0
 
   return (
     <>
       <Masthead />
-
-      <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-
-        {/* Hero */}
-        <div style={{
-          background: 'radial-gradient(ellipse at top, rgba(200,146,42,.12) 0%, transparent 65%)',
-          borderBottom: '1px solid var(--border)', padding: '48px 24px 32px',
-        }}>
-          <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-            <div style={{ display: 'flex', alignItems: 'flex-end', justifyContent: 'space-between', flexWrap: 'wrap', gap: 16, marginBottom: 20 }}>
-              <div>
-                <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: 'var(--gold)', letterSpacing: '.18em', textTransform: 'uppercase', marginBottom: 8 }}>
-                  Updated 3× Daily · {display.length} Active Giveaway{display.length !== 1 ? 's' : ''}{isSeed ? ' · Sample Listings' : ''}
-                </div>
-                {lastUpdated && (
-                  <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#4b5563', letterSpacing: '.1em', marginBottom: 6 }}>
-                    last updated {lastUpdated}
-                  </div>
-                )}
-                <h1 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: 'clamp(2.8rem,6vw,4.5rem)', color: 'var(--text)', lineHeight: 1, margin: 0, letterSpacing: '.04em' }}>
-                  GUN <span style={{ color: 'var(--gold)' }}>GIVEAWAYS</span>
-                </h1>
-                <p style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, color: 'var(--text-dim)', marginTop: 8, maxWidth: 520 }}>
-                  Free firearms, ammo, and gear from the top names in the industry. All giveaways verified — no spam, no sketchy sites.
-                </p>
-              </div>
-              <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap' }}>
-                {[
-                  ['🎯', display.length, 'Active'],
-                  ['⭐', featured.length, 'Featured'],
-                  ['💰', '$' + totalValue.toLocaleString(), 'Total Value'],
-                ].map(([icon, val, label]) => (
-                  <div key={label} style={{ background: 'rgba(200,146,42,.06)', border: '1px solid rgba(200,146,42,.2)', padding: '12px 20px', textAlign: 'center', minWidth: 80 }}>
-                    <div style={{ fontSize: 20 }}>{icon}</div>
-                    <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.4rem', color: 'var(--gold)', lineHeight: 1 }}>{val}</div>
-                    <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#4b5563', letterSpacing: '.1em', textTransform: 'uppercase', marginTop: 2 }}>{label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div style={{ maxWidth: 1200, margin: '0 auto', padding: '32px 24px' }}>
-
-          {/* Featured giveaways — top highlight row */}
-          {featured.length > 0 && (
-            <div style={{ marginBottom: 40 }}>
-              <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: 'var(--gold)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-                <span style={{ display: 'inline-block', width: 20, height: 1, background: 'var(--gold)' }} />
-                Featured Giveaways
-                <span style={{ display: 'inline-block', flex: 1, height: 1, background: 'rgba(200,146,42,.2)' }} />
-              </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill,minmax(320px,1fr))', gap: 12 }}>
-                {featured.map(g => (
-                  <a key={g._id} href={g.entryUrl} target="_blank" rel="noopener noreferrer"
-                    style={{ textDecoration: 'none', display: 'block', background: 'rgba(200,146,42,.04)', border: '1px solid rgba(200,146,42,.3)', padding: '16px 20px', transition: 'border-color .15s' }}>
-                    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
-                      <div style={{ fontSize: 28, flexShrink: 0 }}>{CAT_ICON[g.category] || '🎁'}</div>
-                      <div style={{ flex: 1 }}>
-                        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: CAT_COLOR[g.category] || '#9ca3af', letterSpacing: '.1em', textTransform: 'uppercase', marginBottom: 4 }}>
-                          ⭐ FEATURED · {g.category}
-                        </div>
-                        <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 16, fontWeight: 700, color: 'var(--text)', marginBottom: 4 }}>{g.title}</div>
-                        <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: 'var(--text-dim)' }}>
-                          🏆 {g.prize} {g.value ? `· ~$${g.value}` : ''} {daysLeft(g.endDate) ? `· ${daysLeft(g.endDate)}` : ''}
-                        </div>
-                      </div>
-                      <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '0.9rem', color: 'var(--gold)', letterSpacing: '.06em', flexShrink: 0 }}>ENTER ↗</div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
-
-          {/* Main table */}
-          <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: 'var(--text-dim)', letterSpacing: '.15em', textTransform: 'uppercase', marginBottom: 14, display: 'flex', alignItems: 'center', gap: 8 }}>
-            <span style={{ display: 'inline-block', width: 20, height: 1, background: 'var(--border)' }} />
-            All Active Giveaways
-            <span style={{ display: 'inline-block', flex: 1, height: 1, background: 'var(--border)' }} />
-          </div>
-
-          <div style={{ border: '1px solid var(--border)', overflowX: 'auto' }}>
-            <table style={{ width: '100%', borderCollapse: 'collapse' }}>
-              <thead>
-                <tr style={{ borderBottom: '1px solid var(--gold)', background: 'rgba(200,146,42,.04)' }}>
-                  {['', 'Giveaway', 'Prize', 'Sponsor', 'Category', 'Value', 'Ends', 'Enter'].map((h, i) => (
-                    <th key={i} style={{
-                      fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: 'var(--gold)',
-                      letterSpacing: '.12em', textTransform: 'uppercase', padding: '10px 14px',
-                      textAlign: i === 0 ? 'center' : 'left', whiteSpace: 'nowrap', fontWeight: 700,
-                    }}>{h}</th>
-                  ))}
-                </tr>
-              </thead>
-              <tbody>
-                {[...featured, ...regular].map((g, idx) => {
-                  const dl = daysLeft(g.endDate)
-                  const urgent = dl && dl !== 'ended' && g.endDate && (new Date(g.endDate + 'T23:59:59Z') - Date.now()) < 4 * 86400000
-                  const catColor = CAT_COLOR[g.category] || '#9CA3AF'
-                  return (
-                    <tr key={g._id} style={{
-                      borderBottom: '1px solid rgba(30,41,59,.5)',
-                      background: idx % 2 === 0 ? 'transparent' : 'rgba(255,255,255,.01)',
-                      transition: 'background .1s',
-                    }}>
-                      {/* Icon */}
-                      <td style={{ padding: '10px 14px', textAlign: 'center', fontSize: 18 }}>
-                        {CAT_ICON[g.category] || '🎁'}
-                      </td>
-                      {/* Title */}
-                      <td style={{ padding: '10px 14px', maxWidth: 300 }}>
-                        <a href={g.entryUrl} target="_blank" rel="noopener noreferrer"
-                          style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: 'var(--text)', textDecoration: 'none', lineHeight: 1.3, display: 'block' }}>
-                          {g.title}
-                          {g.featured && <span style={{ marginLeft: 6, fontFamily: "'IBM Plex Mono',monospace", fontSize: 8, color: 'var(--gold)', letterSpacing: '.08em' }}>⭐</span>}
-                        </a>
-                      </td>
-                      {/* Prize */}
-                      <td style={{ padding: '10px 14px', fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#9ca3af', maxWidth: 220, whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                        {g.prize || '—'}
-                      </td>
-                      {/* Sponsor */}
-                      <td style={{ padding: '10px 14px', fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: 'var(--text-dim)', whiteSpace: 'nowrap' }}>
-                        {g.sponsor || '—'}
-                      </td>
-                      {/* Category */}
-                      <td style={{ padding: '10px 14px' }}>
-                        <span style={{
-                          display: 'inline-block', fontFamily: "'IBM Plex Mono',monospace", fontSize: 9,
-                          color: catColor, border: `1px solid ${catColor}33`, padding: '2px 7px',
-                          letterSpacing: '.08em', textTransform: 'uppercase', whiteSpace: 'nowrap',
-                        }}>{g.category || 'gear'}</span>
-                      </td>
-                      {/* Value */}
-                      <td style={{ padding: '10px 14px', fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: g.value >= 500 ? '#22c55e' : '#6b7280', whiteSpace: 'nowrap' }}>
-                        {g.value ? `$${g.value.toLocaleString()}` : '—'}
-                      </td>
-                      {/* End date */}
-                      <td style={{ padding: '10px 14px', whiteSpace: 'nowrap' }}>
-                        {dl ? (
-                          <span style={{
-                            fontFamily: "'IBM Plex Mono',monospace", fontSize: 9,
-                            color: dl === 'ended' ? '#4b5563' : urgent ? '#ef4444' : '#f59e0b',
-                            background: dl === 'ended' ? 'transparent' : urgent ? 'rgba(239,68,68,.08)' : 'rgba(245,158,11,.06)',
-                            padding: '2px 6px', letterSpacing: '.06em',
-                          }}>{dl.toUpperCase()}</span>
-                        ) : (
-                          <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 9, color: '#374151' }}>ONGOING</span>
-                        )}
-                      </td>
-                      {/* CTA */}
-                      <td style={{ padding: '10px 14px' }}>
-                        <a href={g.entryUrl} target="_blank" rel="noopener noreferrer"
-                          style={{
-                            display: 'inline-block', fontFamily: "'Bebas Neue',cursive", fontSize: '0.85rem',
-                            letterSpacing: '.08em', color: '#000', background: 'var(--gold)',
-                            padding: '5px 12px', textDecoration: 'none', whiteSpace: 'nowrap',
-                            transition: 'opacity .12s',
-                          }}>ENTER ↗</a>
-                      </td>
-                    </tr>
-                  )
-                })}
-              </tbody>
-            </table>
-          </div>
-
-          {/* Disclaimer */}
-          <div style={{ marginTop: 24, fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#374151', lineHeight: 1.6 }}>
-            DownRange does not run these giveaways. All entries go directly to the sponsor. Read each giveaway&apos;s official rules before entering. Some links may be affiliate links.
-          </div>
-
-        </div>
-      </main>
+      <BreakingTicker alerts={alerts} />
+      <GiveawaysClient
+        giveaways={display}
+        isSeed={isSeed}
+        lastUpdated={lastUpdated}
+      />
       <Footer />
     </>
   )
