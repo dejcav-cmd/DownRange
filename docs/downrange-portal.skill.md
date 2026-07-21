@@ -166,3 +166,25 @@ The error page's "click here to confirm again" sometimes routes back to the JS m
 6. On success, AvantLink says the tag can be deleted; clean up leftover snippets (e.g. any dead `application_id` tag in `app/page.js`) and the debug workflow.
 
 **Fallback if automated verification keeps failing:** email `affiliateapps@avantlink.com` with Application ID, applied URL, applied email, and a screenshot of the placed tag for manual human confirmation. This is an AvantLink-sanctioned path, not a hack.
+
+## gun-deals Cron — Transient Cloudflare Block Pattern
+
+**Confirmed incidents:** July 14, 2026 and July 16, 2026.
+
+**Fingerprint:**
+- Duration: ~263ms (way too short to have fetched anything)
+- Error: `gun.deals: all RSS URLs failed`
+- Pattern: single isolated failure surrounded by successful runs
+
+**Diagnosis:** Transient Cloudflare block on gun.deals RSS endpoints. Not a code bug. gun.deals uses Cloudflare Bot Fight Mode; occasionally a cold Vercel Lambda hits a challenge and fails fast.
+
+**Action required:** None for isolated single-run failures — self-healing (next scheduled run succeeds automatically).
+
+**Escalation trigger:** 3+ consecutive failures → implement Jina proxy RSS fallback (`r.jina.ai/https://gun.deals/feed`) as the primary fetch path with direct RSS as fallback. Not yet implemented as of July 2026.
+
+**Do NOT:**
+- Roll back code
+- Change cron schedule
+- Open a bug ticket
+
+Only act if failures cluster (3+ in a row).
