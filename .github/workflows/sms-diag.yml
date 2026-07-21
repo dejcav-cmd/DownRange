@@ -1,0 +1,133 @@
+name: SMS Diagnostics
+
+on:
+  push:
+    branches:
+      - sms-diag
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Full SMS diagnostic
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          BYPASS: ${{ secrets.VERCEL_BYPASS_SECRET }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+        run: |
+          set -e
+          echo "=== 1. GET /api/admin/sms-config ==="
+          CFG=$(curl -sL --max-time 20 "https://downrangeco.com/api/admin/sms-config" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "x-vercel-protection-bypass: $BYPASS")
+          echo "$CFG"
+
+          echo ""
+          echo "=== 2. Parse config status ==="
+          echo "$CFG" | python3 -c "
+import sys, json
+try:
+    d = json.loads(sys.stdin.read())
+    s = d.get('status', {})
+    o = d.get('override', {})
+    print('configured:', s.get('configured'))
+    print('enabled:', s.get('enabled'))
+    print('sidSet:', s.get('sidSet'))
+    print('tokenSet:', s.get('tokenSet'))
+    print('from:', s.get('from'))
+    print('to:', s.get('to'))
+    print('cooldownSecs:', s.get('cooldownSecs'))
+    print('quietStart:', s.get('quietStart'), 'quietEnd:', s.get('quietEnd'))
+    print('criticalJobs:', s.get('criticalJobs'))
+    print('override keys:', list(o.keys()) if o else 'NONE - no Redis override!')
+    if o:
+        print('override.sid set:', bool(o.get('sid')))
+        print('override.token set:', bool(o.get('token')))
+        print('override.from:', o.get('from'))
+        print('override.to:', o.get('to'))
+        print('override.enabled:', o.get('enabled'))
+    log = d.get('log', [])
+    print()
+    print('--- Last 5 SMS log entries ---')
+    for entry in log[:5]:
+        print(entry)
+except Exception as e:
+    print('PARSE ERROR:', e)
+    print('RAW:', sys.stdin.read()[:500])
+"
+
+          echo ""
+          echo "=== 3. Send test SMS bypassing cooldown ==="
+          SMS=$(curl -sL --max-time 20 -X POST "https://downrangeco.com/api/admin/test-sms" \
+            -H "Content-Type: application/json" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "x-vercel-protection-bypass: $BYPASS" \
+            -d '{}')
+          echo "Test SMS result: $SMS"
+
+          echo ""
+          echo "=== 4. Direct Twilio API test ==="
+          DIRECT=$(curl -s --max-time 20 -X POST \
+            "https://api.twilio.com/2010-04-01/Accounts/${TWILIO_ACCOUNT_SID}/Messages.json" \
+            -u "${TWILIO_ACCOUNT_SID}:${TWILIO_AUTH_TOKEN}" \
+            --data-urlencode "To=+12066016076" \
+            --data-urlencode "From=+12062036281" \
+            --data-urlencode "Body=DownRange direct Twilio test $(date -u)")
+          echo "Direct Twilio: $DIRECT"
+
+          echo ""
+          echo "=== 5. Check current UTC hour for quiet hours ==="
+          python3 -c "
+from datetime import datetime, timezone
+now = datetime.now(timezone.utc)
+hour = now.hour
+print(f'UTC hour: {hour} ({now.strftime(\"%H:%M UTC\")})')
+print(f'Quiet window: 23:00-07:00 UTC')
+in_quiet = hour >= 23 or hour < 7
+print(f'Currently in quiet hours: {in_quiet}')
+print(f'PT hour approx: {(hour-7) % 24}:xx PT')
+"
+
+      - name: Save result
+        if: always()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          BYPASS: ${{ secrets.VERCEL_BYPASS_SECRET }}
+        run: |
+          CFG=$(curl -sL --max-time 20 "https://downrangeco.com/api/admin/sms-config" \
+            -H "x-admin-key: $ADMIN_KEY" -H "x-vercel-protection-bypass: $BYPASS" 2>/dev/null || echo "{}")
+          SMS=$(curl -sL --max-time 20 -X POST "https://downrangeco.com/api/admin/test-sms" \
+            -H "Content-Type: application/json" -H "x-admin-key: $ADMIN_KEY" \
+            -H "x-vercel-protection-bypass: $BYPASS" -d '{}' 2>/dev/null || echo "{}")
+          TS=$(date -u '+%Y-%m-%d %H:%M UTC')
+
+          cat > /tmp/write_result.py << 'PYEOF'
+import json, base64, urllib.request, os
+cfg = os.environ.get('CFG_RAW','{}')
+sms = os.environ.get('SMS_RAW','{}')
+ts  = os.environ.get('TS','')
+gh  = os.environ.get('GH_PAT','')
+repo = 'dejcav-cmd/DownRange'
+path = 'docs/sms-diag-result.md'
+content = f"# SMS Diag - {ts}\n\nConfig:\n```\n{cfg}\n```\n\nTest SMS:\n```\n{sms}\n```\n"
+enc = base64.b64encode(content.encode()).decode()
+sha = ''
+try:
+    req = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/{path}',
+        headers={'Authorization': f'Bearer {gh}'})
+    with urllib.request.urlopen(req) as r:
+        sha = json.load(r).get('sha','')
+except: pass
+body = {'message': f'chore: sms diag {ts}', 'content': enc}
+if sha: body['sha'] = sha
+req2 = urllib.request.Request(f'https://api.github.com/repos/{repo}/contents/{path}',
+    data=json.dumps(body).encode(), method='PUT',
+    headers={'Authorization': f'Bearer {gh}', 'Content-Type': 'application/json'})
+try:
+    with urllib.request.urlopen(req2) as r: print('Saved')
+except Exception as e: print('Save error:', e)
+PYEOF
+
+          CFG_RAW="$CFG" SMS_RAW="$SMS" TS="$TS" GH_PAT="$GH_PAT" python3 /tmp/write_result.py
