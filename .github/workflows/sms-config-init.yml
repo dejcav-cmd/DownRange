@@ -1,0 +1,118 @@
+name: SMS Config Init
+
+on:
+  push:
+    branches:
+      - sms-config-init
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Write Twilio credentials to Redis via admin API
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          TWILIO_ACCOUNT_SID: ${{ secrets.TWILIO_ACCOUNT_SID }}
+          TWILIO_AUTH_TOKEN: ${{ secrets.TWILIO_AUTH_TOKEN }}
+        run: |
+          set -e
+          echo "Writing Twilio credentials to Redis via /api/admin/sms-config..."
+
+          PAYLOAD=$(python3 -c "
+import json, os
+print(json.dumps({
+  'sid':     os.environ['TWILIO_ACCOUNT_SID'],
+  'token':   os.environ['TWILIO_AUTH_TOKEN'],
+  'from':    '+12062036281',
+  'to':      '+12066016076',
+  'enabled': True,
+  'cooldown': 900,
+  'quietStart': 23,
+  'quietEnd': 7,
+  'criticalJobs': ['news','cron-health','gun-deals','sanity']
+}))
+")
+
+          echo "Payload size: ${#PAYLOAD} chars"
+
+          RESULT=$(curl -s -X POST "https://downrangeco.com/api/admin/sms-config" \
+            -H "Content-Type: application/json" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -d "$PAYLOAD")
+
+          echo "Config write result: $RESULT"
+
+          OK=$(echo "$RESULT" | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('ok','false'))")
+          if [ "$OK" != "True" ] && [ "$OK" != "true" ]; then
+            echo "ERROR: Config write failed"
+            exit 1
+          fi
+          echo "✓ Twilio credentials written to Redis successfully"
+
+      - name: Send test SMS to verify
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          sleep 3
+          echo "Sending test SMS..."
+          SMS=$(curl -s -X POST "https://downrangeco.com/api/admin/test-sms" \
+            -H "Content-Type: application/json" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -d '{}')
+          echo "SMS result: $SMS"
+
+          echo "$SMS" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+if d.get('sent'):
+    print('✅ SUCCESS — SMS sent! Twilio SID:', d.get('sid','?'))
+    print('Status:', d.get('status','?'))
+    print('Latency:', str(d.get('ms','?'))+'ms')
+else:
+    print('❌ FAILED:', d.get('error', d.get('reason', 'unknown error')))
+    print('HTTP status:', d.get('httpStatus','?'))
+    exit(1)
+"
+
+      - name: Read back config to confirm
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          CFG=$(curl -s "https://downrangeco.com/api/admin/sms-config" \
+            -H "x-admin-key: $ADMIN_KEY")
+          echo "Config status:"
+          echo "$CFG" | python3 -c "
+import sys, json
+d = json.load(sys.stdin)
+s = d.get('status', {})
+print('  configured:', s.get('configured'))
+print('  enabled:', s.get('enabled'))
+print('  from:', s.get('from'))
+print('  to:', s.get('to'))
+o = d.get('override', {})
+if o:
+    print('  Redis override: sid set =', bool(o.get('sid')), ', token set =', bool(o.get('token')))
+"
+
+      - name: Save result
+        if: always()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          SMS=$(curl -s -X POST "https://downrangeco.com/api/admin/test-sms" \
+            -H "Content-Type: application/json" -H "x-admin-key: $ADMIN_KEY" -d '{}' 2>/dev/null || echo '{}')
+          SENT=$(echo "$SMS" | python3 -c "import sys,json; print(json.load(sys.stdin).get('sent','false'))" 2>/dev/null || echo false)
+          TS=$(date -u '+%Y-%m-%d %H:%M UTC')
+          CONTENT="# SMS Config Init — $TS\n\nResult: $SENT\nRaw: $SMS\n"
+          B64=$(echo -e "$CONTENT" | base64 -w0)
+          SHA=$(curl -s "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/sms-config-result.md" \
+            -H "Authorization: Bearer $GH_PAT" | \
+            python3 -c "import sys,json; print(json.load(sys.stdin).get('sha',''))" 2>/dev/null || true)
+          BODY="{\"message\":\"chore: sms config result $TS\",\"content\":\"$B64\""
+          [ -n "$SHA" ] && BODY="$BODY,\"sha\":\"$SHA\""
+          curl -s -X PUT "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/sms-config-result.md" \
+            -H "Authorization: Bearer $GH_PAT" -H "Content-Type: application/json" \
+            -d "$BODY}" > /dev/null
+          echo "Result saved to docs/sms-config-result.md"
+          echo "Final status: sent=$SENT"
