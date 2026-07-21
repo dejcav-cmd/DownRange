@@ -76,8 +76,24 @@ export async function GET(req) {
       ${row('Quiet Hours (UTC)',   `${cfg.quietStart}:00 – ${cfg.quietEnd}:00`, true)}
       ${row('Critical Jobs',       cfg.criticalJobs.join(', '), true)}
     </table>
-    ${!cfg.configured ? `<div class="card"><p class="bad">⚠ One or more Twilio env vars are missing.</p>
-      <p>Vercel → downrangeco (news portal) → Settings → Environment Variables → add TWILIO_* vars → Redeploy.</p></div>` : ''}
+    ${!cfg.configured ? `<div class="card">
+      <p class="bad">⚠ Twilio credentials not configured — SMS alerts cannot send.</p>
+      <h3 style="color:#ef4444;margin-top:12px">Setup Steps</h3>
+      <ol style="padding-left:16px;margin-top:8px;color:#9ca3af;font-size:12px;line-height:2">
+        <li>Go to <a href="https://console.twilio.com" target="_blank">console.twilio.com</a> → get Account SID + Auth Token</li>
+        <li>Buy or verify a Twilio phone number (or use the existing +12062036281)</li>
+        <li>Go to <a href="https://vercel.com/dejcav-cmd/downrangeco/settings/environment-variables" target="_blank">Vercel → downrangeco → Settings → Env Vars</a></li>
+        <li>Add these four variables (all environments):<br>
+          <code style="display:block;margin-top:6px;background:#1c2028;padding:10px;line-height:2.2">
+            TWILIO_ACCOUNT_SID = ACxxxxxxxxxxxxxxxx<br>
+            TWILIO_AUTH_TOKEN  = (from Twilio Console)<br>
+            TWILIO_FROM_NUMBER = +12062036281<br>
+            ALERT_PHONE_NUMBER = +12066016076
+          </code>
+        </li>
+        <li>Redeploy: Vercel → downrangeco → Deployments → ⋯ → Redeploy</li>
+      </ol>
+    </div>` : `<div class="card"><p class="ok">✓ All credentials configured. Ready to send.</p></div>`}
     <hr>
     <p style="font-size:11px;color:#4b5563">Configure alert preferences in Admin → System → SMS Alerts</p>
   `)
@@ -124,7 +140,10 @@ export async function POST(req) {
              <table>
                <tr><td>Error</td><td class="bad">${result.error ?? result.reason ?? 'Unknown'}</td></tr>
                <tr><td>HTTP Status</td><td class="warn">${result.httpStatus ?? '—'}</td></tr>
-             </table>`
+             </table>
+             ${(result.reason||'').includes('Missing') ? '<p class="warn" style="margin-top:12px">→ Twilio credentials not set in Vercel. See setup instructions on the diagnostic page.</p>' : ''}
+             ${result.httpStatus === 401 ? '<p class="warn" style="margin-top:8px">→ Wrong TWILIO_ACCOUNT_SID or TWILIO_AUTH_TOKEN. Check Twilio Console.</p>' : ''}
+             ${result.httpStatus === 400 ? '<p class="warn" style="margin-top:8px">→ Invalid phone number or Twilio config. Verify TWILIO_FROM_NUMBER and ALERT_PHONE_NUMBER.</p>' : ''}`
         }
       </div>
       <p><a href="/api/admin/test-sms?key=${key}">← Back to diagnostic</a></p>

@@ -2153,14 +2153,24 @@ function _smsRender(el){
 
   el.innerHTML=`
   <!-- Status + Spark -->
-  <div style="background:var(--bg2);border:1px solid var(--border);padding:12px;margin-bottom:12px;display:flex;align-items:center;gap:12px">
+  <div style="background:var(--bg2);border:1px solid ${isOk?'rgba(34,197,94,.25)':'rgba(239,68,68,.25)'};padding:12px;margin-bottom:${cfg.configured?'12px':'0'};display:flex;align-items:center;gap:12px">
     <span style="font-size:20px">${isOk?'🟢':cfg.configured?'🟡':'🔴'}</span>
     <div style="flex:1">
       <div style="font-family:'Bebas Neue',cursive;font-size:16px;letter-spacing:.06em;color:${statusColor}">${statusLabel}</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">${cfg.from||'—'} → ${cfg.to||'—'}${lastSent?` · last sent ${_fmtAge(lastSent.ts)}`:''}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">${cfg.from||'+12062036281'} → ${cfg.to||'+12066016076'}${lastSent?` · last sent ${_fmtAge(lastSent.ts)}`:''}</div>
     </div>
     <div style="display:flex;gap:2px;align-items:flex-end;height:20px">${sparkBars}</div>
   </div>
+  ${!cfg.configured?`<div style="padding:12px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-top:none;margin-bottom:12px">
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err);margin-bottom:6px">⚠ Twilio credentials missing — SMS cannot send</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">
+      Add these to <a href="https://vercel.com/dejcav-cmd" target="_blank" style="color:var(--gold)">Vercel → downrangeco → Settings → Env Vars</a> then redeploy:<br>
+      <span style="color:var(--text)">TWILIO_ACCOUNT_SID</span><br>
+      <span style="color:var(--text)">TWILIO_AUTH_TOKEN</span><br>
+      <span style="color:var(--gold)">TWILIO_FROM_NUMBER = +12062036281</span><br>
+      <span style="color:var(--gold)">ALERT_PHONE_NUMBER = +12066016076</span>
+    </div>
+  </div>`:''}
 
   <!-- Stats -->
   <div class="stat-grid" style="grid-template-columns:repeat(5,1fr);margin-bottom:12px">
@@ -2181,7 +2191,7 @@ function _smsRender(el){
 
   <!-- Config strip -->
   <div style="background:var(--bg2);border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;margin-bottom:12px">
-    ${[['From','+12062036281'],['To','+12066016076'],['Cooldown',(cfg.cooldownSecs||900)/60+'min'],['Quiet Hrs',(cfg.quietStart||23)+':00–'+(cfg.quietEnd||7)+':00 UTC']].map(([k,v],i)=>`
+    ${[['From',cfg.from||'+12062036281'],['To',cfg.to||'+12066016076'],['Cooldown',(cfg.cooldownSecs||900)/60+'min'],['Quiet Hrs',(cfg.quietStart||23)+':00–'+(cfg.quietEnd||7)+':00 UTC']].map(([k,v],i)=>`
     <div style="padding:8px 12px;border-right:${i%2===0?`1px solid var(--border)`:'none'};border-bottom:${i<2?`1px solid var(--border)`:'none'}">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${k}</div>
       <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold)">${v}</div>

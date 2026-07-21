@@ -360,11 +360,27 @@ export default function SMSAlertsPanel({ adminKey }) {
               <div key={k} className="sms-env-row">
                 <code style={{fontSize:9,color:v?'#C8922A':'#ef4444'}}>{k}</code>
                 <span style={{fontSize:9,color:v?'#22c55e':'#ef4444'}}>{v?'✓ Set':'✕ Missing'}</span>
-                {!v&&<a href="https://vercel.com/dashboard" target="_blank" rel="noopener noreferrer"
-                  style={{fontSize:9,color:'#C8922A',textDecoration:'none'}}>→ Add</a>}
+                {!v&&<a href="https://vercel.com/dejcav-cmd/downrangeco/settings/environment-variables" target="_blank" rel="noopener noreferrer"
+                  style={{fontSize:9,color:'#C8922A',textDecoration:'none'}}>→ Add in Vercel</a>}
               </div>
             ))}
           </div>
+          {!cfg.configured && (
+            <div style={{marginTop:12,padding:'10px 12px',background:'rgba(239,68,68,.07)',border:'1px solid rgba(239,68,68,.2)'}}>
+              <div style={{fontSize:10,color:'#ef4444',fontWeight:700,marginBottom:6}}>⚠ SMS cannot send until credentials are added</div>
+              <div style={{fontSize:10,color:'#6b7280',lineHeight:1.8}}>
+                1. Go to <a href="https://console.twilio.com" target="_blank" style={{color:'#C8922A'}}>console.twilio.com</a> → get SID + Auth Token<br/>
+                2. <a href="https://vercel.com/dejcav-cmd/downrangeco/settings/environment-variables" target="_blank" style={{color:'#C8922A'}}>Vercel → downrangeco → Settings → Env Vars</a> → add:<br/>
+                <code style={{display:'block',background:'#0a0f14',padding:'8px 10px',marginTop:6,fontSize:10,lineHeight:2,color:'#e5e7eb'}}>
+                  TWILIO_ACCOUNT_SID = AC…<br/>
+                  TWILIO_AUTH_TOKEN  = (from Twilio Console)<br/>
+                  TWILIO_FROM_NUMBER = +12062036281<br/>
+                  ALERT_PHONE_NUMBER = +12066016076
+                </code>
+                3. Redeploy (Vercel → Deployments → ⋯ → Redeploy)
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Right: critical jobs */}
