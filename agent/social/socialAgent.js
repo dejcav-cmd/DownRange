@@ -154,7 +154,7 @@ ${instructions}
 
 CHARACTER BUDGET REMINDER: ${budget} characters MAX for the copy body.
 Write the post body now. Return ONLY the post text. No quotes, no preamble, no "Here's a post:".`,
-    useCase: 'default',
+    useCase: 'social',
     maxTokens: 300,
   })
 

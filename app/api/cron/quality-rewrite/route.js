@@ -86,7 +86,7 @@ Content: ${src}
 Respond ONLY with valid JSON, no markdown fences, no preamble:
 {"title":"original DownRange headline max 12 words","body":"<full HTML with h2 tags 500-700 words>","summary":"2-3 sentence plain text under 300 chars"}`
 
-  const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 3500 })
+  const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 2500 })
   const clean  = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim()
   const m      = clean.match(/\{[\s\S]*\}/)
   if (!m) throw new Error(`No JSON in response: ${clean.slice(0, 200)}`)

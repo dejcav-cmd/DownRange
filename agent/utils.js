@@ -70,7 +70,7 @@ Return ONLY valid JSON:
 }
 Start with { end with }. No markdown fences.`
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1800 })
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1500 })
     // Strip markdown fences and extract JSON robustly
     let clean = text.split('```json').join('').split('```').join('').trim()
     // If response starts with prose before JSON, extract the JSON object

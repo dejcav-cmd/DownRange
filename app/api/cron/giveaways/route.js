@@ -1,73 +1,87 @@
 export const dynamic = 'force-dynamic'
-import { NextResponse } from 'next/server'
-import { createClient } from '@sanity/client'
+export const maxDuration = 60
+
+import { NextResponse }    from 'next/server'
+import { createClient }    from '@sanity/client'
+import { reportCronRun }   from '@/lib/cronReporter'
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const sanity = createClient({
-  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-  dataset: 'production', apiVersion: '2024-01-01',
-  token: process.env.SANITY_API_TOKEN, useCdn: false,
+  projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+  dataset:    'production',
+  apiVersion: '2024-01-01',
+  token:      process.env.SANITY_API_TOKEN,
+  useCdn:     false,
 })
 
-// Category detection from title
+// ── AUTH ──────────────────────────────────────────────────────────────────────
+function isAuthorized(req) {
+  const isVercel = req.headers.get('x-vercel-cron') === '1'
+  const isAuth   = process.env.CRON_SECRET && req.headers.get('authorization') === `Bearer ${process.env.CRON_SECRET}`
+  const isAdmin  = req.headers.get('x-admin-key') === ADMIN_KEY
+  return isVercel || isAuth || isAdmin
+}
+
+// ── HELPERS ───────────────────────────────────────────────────────────────────
 function detectCategory(title) {
-  const t = title.toLowerCase()
-  if (t.includes('pistol') || t.includes('handgun') || t.includes('glock') || t.includes('sig') || t.includes('9mm') || t.includes('1911') || t.includes('revolver')) return 'pistol'
-  if (t.includes('ar-15') || t.includes('ar15') || t.includes('rifle') || t.includes('carbine') || t.includes('ak') || t.includes('m4')) return 'rifle'
-  if (t.includes('shotgun') || t.includes('gauge')) return 'shotgun'
-  if (t.includes('ammo') || t.includes('rounds') || t.includes('brass') || t.includes('ammunition')) return 'ammo'
-  if (t.includes('optic') || t.includes('scope') || t.includes('red dot') || t.includes('lpvo') || t.includes('eotech') || t.includes('vortex')) return 'optics'
-  if (t.includes('suppressor') || t.includes('silencer')) return 'nfa'
-  if (t.includes('gear') || t.includes('tactical') || t.includes('holster') || t.includes('light') || t.includes('knife') || t.includes('bag')) return 'gear'
+  const t = (title || '').toLowerCase()
+  if (/pistol|handgun|glock|sig|9mm|1911|revolver|p365|hellcat|g19|g17|m&p/.test(t))  return 'pistol'
+  if (/ar-?15|ar-?10|rifle|carbine|\bak\b|m4|308|6\.5|bolt.?action/.test(t))          return 'rifle'
+  if (/shotgun|\bgauge\b|pump.?gun/.test(t))                                           return 'shotgun'
+  if (/ammo|rounds?|brass|ammunition|cartridge/.test(t))                               return 'ammo'
+  if (/optic|scope|red.?dot|lpvo|eotech|vortex|trijicon|aimpoint|holosun/.test(t))    return 'optics'
+  if (/suppressor|silencer|sbr|sbs|full.?auto/.test(t))                               return 'nfa'
+  if (/gear|tactical|holster|light|knife|bag|chest.?rig|plate.?carrier/.test(t))      return 'gear'
   return 'accessories'
 }
 
 function parseValue(str) {
   if (!str) return 0
-  const m = str.replace(/[$,]/g, '').match(/[\d.]+/)
+  const m = String(str).replace(/[$,]/g, '').match(/[\d.]+/)
   return m ? Math.round(parseFloat(m[0])) : 0
 }
 
 function parseEndDate(str) {
   if (!str) return null
-  str = str.trim()
-  try {
-    // M/D/YY or M/D/YYYY
-    const slashParts = str.split('/')
-    if (slashParts.length === 3) {
-      const y = parseInt(slashParts[2]) < 100 ? 2000 + parseInt(slashParts[2]) : parseInt(slashParts[2])
-      const m = parseInt(slashParts[0])
-      const d = parseInt(slashParts[1])
-      if (m >= 1 && m <= 12 && d >= 1 && d <= 31) {
-        return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`
-      }
+  str = String(str).trim()
+  // M/D/YY or M/D/YYYY
+  const slashParts = str.split('/')
+  if (slashParts.length === 3) {
+    const y = parseInt(slashParts[2]) < 100 ? 2000 + parseInt(slashParts[2]) : parseInt(slashParts[2])
+    const m = parseInt(slashParts[0])
+    const d = parseInt(slashParts[1])
+    if (m >= 1 && m <= 12 && d >= 1 && d <= 31 && y >= 2025) {
+      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`
     }
-    // Try ISO or natural language date
+  }
+  try {
     const parsed = new Date(str)
     if (!isNaN(parsed.getTime()) && parsed.getFullYear() >= 2025) {
       return parsed.toISOString().split('T')[0]
     }
-    return null
-  } catch { return null }
+  } catch { /* ignore */ }
+  return null
 }
 
 function extractSponsor(title) {
   const brands = [
     'Glock','SIG Sauer','SIG','Ruger','Smith & Wesson','S&W','Springfield Armory',
     'Taurus','Beretta','CZ','Heckler & Koch','H&K','Walther','Shadow Systems',
-    'Palmetto State Armory','PSA','Century Arms','Faxon','AT3','Mad Pig Customs',
+    'Palmetto State Armory','PSA','Century Arms','Faxon','AT3','Staccato',
     'Bul Armory','EOTech','Vortex','Primary Arms','Dead Air','SilencerCo',
     'Streamlight','Swampfox','Magpul','Kimber','Colt','Benelli','Mossberg',
     'Remington','Winchester','Browning','Savage','Tikka','Christensen Arms',
     'Daniel Defense','Aero Precision','BCM','Wilson Combat','Nightforce',
     'Trijicon','Aimpoint','Holosun','Leupold','Burris','Bushnell',
-    'LWRCI','Noveske','Canik','FN America','Staccato','Kahr','Kel-Tec',
-    'CMMG','KRISS','B&T','IWI','Steyr',
+    'LWRCI','Noveske','Canik','FN America','Kahr','Kel-Tec','CMMG',
+    'Lucky Gunner','Ammo.com','Brownells','MidwayUSA',
+    'Gun Owners of America','GOA','NRA','Second Amendment Foundation','SAF',
+    'Warrior Poet Society','Colion Noir','Garand Thumb',
   ]
   for (const b of brands) {
-    if (title.toLowerCase().includes(b.toLowerCase())) return b
+    if ((title || '').toLowerCase().includes(b.toLowerCase())) return b
   }
-  return 'Various'
+  return null
 }
 
 // ── SCRAPER: WinTheGuns.com ───────────────────────────────────────────────────
@@ -75,63 +89,80 @@ async function scrapeWinTheGuns() {
   const res = await fetch('https://wintheguns.com/', {
     headers: {
       'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.9',
+      'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
     },
     signal: AbortSignal.timeout(20000),
   })
   if (!res.ok) throw new Error('wintheguns.com returned ' + res.status)
   const html = await res.text()
-
   const giveaways = []
 
-  // Try multiple regex patterns for table rows with links
-  const patterns = [
-    // Pattern 1: full table row with 5 cells
-    /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>.*?<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>\s*<td[^>]*>([^<]*)<\/td>/gis,
-    // Pattern 2: just the link with title and value in adjacent cells
-    /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{10,120})<\/a><\/td>\s*<td[^>]*>\s*(\$[\d,]+)/gi,
-  ]
+  // Strategy 1: parse table rows with linked titles + adjacent date/value cells
+  const rowRe = /<tr[^>]*>([\s\S]*?)<\/tr>/gi
+  let rowMatch
+  while ((rowMatch = rowRe.exec(html)) !== null) {
+    const row = rowMatch[1]
+    const linkMatch = row.match(/<a\s+href="([^"]+)"[^>]*>([^<]{5,150})<\/a>/i)
+    if (!linkMatch) continue
+    const [, href, rawTitle] = linkMatch
+    if (!href || /javascript|^#/.test(href)) continue
 
-  let match
-  // Pattern 1
-  const re1 = /<tr[^>]*>\s*<td[^>]*>\s*<a\s+href="([^"]+)"[^>]*>([^<]+)<\/a>/gi
-  while ((match = re1.exec(html)) !== null) {
-    const [, href, title] = match
-    if (!href || !title) continue
-    if (href.includes('avantlink') || href.includes('javascript') || href.startsWith('#')) continue
-    const cleanTitle = title.replace(/\*/g, '').replace(/&amp;/g, '&').trim()
-    if (cleanTitle.length < 8 || cleanTitle.toLowerCase().includes('sponsor')) continue
-    if (cleanTitle.toLowerCase().startsWith('click') || cleanTitle.toLowerCase().startsWith('enter')) continue
+    const title = rawTitle.replace(/\*/g, '').replace(/&amp;/g, '&').replace(/&nbsp;/g, ' ').trim()
+    if (title.length < 8) continue
+    if (/^(home|about|contact|privacy|nav|menu|sponsor|click|enter|view all)/i.test(title)) continue
 
-    // Extract value and end date from surrounding context (after the href match)
-    const ctxStart = match.index
-    const ctx = html.slice(ctxStart, ctxStart + 400)
-    const valueMatch = ctx.match(/\$\s*([\d,]+)/)
-    const dateMatches = ctx.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/g)
+    // Extract all <td> text values from this row
+    const cells = []
+    const cellRe = /<td[^>]*>([\s\S]*?)<\/td>/gi
+    let cellMatch
+    while ((cellMatch = cellRe.exec(row)) !== null) {
+      cells.push(cellMatch[1].replace(/<[^>]+>/g, '').trim())
+    }
+    const dateCells   = cells.slice(1).filter(c => /\d/.test(c))
+    const valueCell   = cells.find(c => /\$[\d,]/.test(c))
+    const prizeValue  = parseValue(valueCell)
+    const endDate     = parseEndDate(dateCells[1]) || parseEndDate(dateCells[0])
 
-    const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
-    // End date is typically the 2nd date found (1st is start date)
-    const endDate = dateMatches?.length >= 2
-      ? parseEndDate(dateMatches[1])
-      : dateMatches?.length === 1 ? parseEndDate(dateMatches[0]) : null
+    const entryUrl = href.trim().startsWith('/')
+      ? 'https://wintheguns.com' + href.trim()
+      : href.trim()
+
+    try { new URL(entryUrl) } catch { continue }
 
     giveaways.push({
-      title: cleanTitle,
-      entryUrl: href.trim().startsWith('/') ? 'https://wintheguns.com' + href.trim() : href.trim(),
-      prize: cleanTitle,
-      prizeValue,
-      endDate,
-      category: detectCategory(cleanTitle),
-      sponsor: extractSponsor(cleanTitle),
-      type: 'external',
-      featured: prizeValue >= 1500,
-      active: true,
-      source: 'wintheguns.com',
+      title, entryUrl, prize: title, prizeValue, endDate,
+      category:   detectCategory(title),
+      sponsor:    extractSponsor(title) || 'Various',
+      sourceType: 'external',
+      featured:   prizeValue >= 1500,
+      active:     true,
+      source:     'wintheguns.com',
     })
   }
 
-  console.log('[GIVEAWAYS] wintheguns.com: scraped', giveaways.length, 'raw entries')
+  // Strategy 2: fallback — scan all firearm-keyword links on the page
+  if (giveaways.length < 3) {
+    const fbRe = /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{12,140})<\/a>/gi
+    let fm
+    while ((fm = fbRe.exec(html)) !== null) {
+      const [, href, rawTitle] = fm
+      const title = rawTitle.replace(/&amp;/g, '&').trim()
+      if (!/gun|pistol|rifle|shotgun|firearm|glock|sig|ruger|win a|giveaway/i.test(title)) continue
+      if (/^(home|about|contact|privacy)/i.test(title)) continue
+      try { new URL(href) } catch { continue }
+      giveaways.push({
+        title, entryUrl: href, prize: title, prizeValue: 0, endDate: null,
+        category:   detectCategory(title),
+        sponsor:    extractSponsor(title) || 'Various',
+        sourceType: 'external',
+        featured:   false,
+        active:     true,
+        source:     'wintheguns.com',
+      })
+    }
+  }
+
+  console.log('[GIVEAWAYS] wintheguns.com:', giveaways.length, 'entries')
   return giveaways.slice(0, 80)
 }
 
@@ -139,38 +170,28 @@ async function scrapeWinTheGuns() {
 async function scrapeGunGiveaways() {
   try {
     const res = await fetch('https://gungiveaways.net/', {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      },
+      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 Chrome/124.0.0.0 Safari/537.36' },
       signal: AbortSignal.timeout(15000),
     })
     if (!res.ok) return []
     const html = await res.text()
     const giveaways = []
-
-    // Look for giveaway links on the page
-    const re = /<a\s+href="(https?:\/\/[^"]+)"[^>]*[^>]*>([^<]{15,150})<\/a>/gi
-    let match
-    while ((match = re.exec(html)) !== null) {
-      const [, href, title] = match
-      if (!title || title.length < 15) continue
-      const cleanTitle = title.replace(/\s+/g, ' ').replace(/&amp;/g, '&').trim()
-      // Skip nav/footer links
-      if (/^(home|about|contact|privacy|terms|search|categories)/i.test(cleanTitle)) continue
-      if (!/(gun|pistol|rifle|shotgun|firearm|ammo|glock|sig|ruger|revolver|ar-15|45|9mm|357|44|22|mag|suppressor|optic|scope)/i.test(cleanTitle.toLowerCase())) continue
-
+    const re = /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{15,150})<\/a>/gi
+    let m
+    while ((m = re.exec(html)) !== null) {
+      const [, href, rawTitle] = m
+      const title = rawTitle.replace(/\s+/g, ' ').replace(/&amp;/g, '&').trim()
+      if (/^(home|about|contact|privacy|terms|search|categories|read more)/i.test(title)) continue
+      if (!/gun|pistol|rifle|shotgun|firearm|ammo|glock|sig|ruger|revolver|ar.15|handgun/i.test(title)) continue
+      try { new URL(href) } catch { continue }
       giveaways.push({
-        title: cleanTitle,
-        entryUrl: href,
-        prize: cleanTitle,
-        prizeValue: 0,
-        endDate: null,
-        category: detectCategory(cleanTitle),
-        sponsor: extractSponsor(cleanTitle),
-        type: 'external',
-        featured: false,
-        active: true,
-        source: 'gungiveaways.net',
+        title, entryUrl: href, prize: title, prizeValue: 0, endDate: null,
+        category:   detectCategory(title),
+        sponsor:    extractSponsor(title) || 'Various',
+        sourceType: 'external',
+        featured:   false,
+        active:     true,
+        source:     'gungiveaways.net',
       })
     }
     console.log('[GIVEAWAYS] gungiveaways.net:', giveaways.length, 'entries')
@@ -181,18 +202,18 @@ async function scrapeGunGiveaways() {
   }
 }
 
-// ── SCRAPER: Manufacturer Giveaway Pages ─────────────────────────────────────
-const MANUFACTURER_PAGES = [
-  { name: 'Palmetto State Armory', url: 'https://palmettostatearmory.com/giveaways', type: 'retailer' },
-  { name: 'Springfield Armory',    url: 'https://www.springfield-armory.com/promotions/', type: 'manufacturer' },
-  { name: 'Taurus USA',            url: 'https://www.taurususa.com/promotions', type: 'manufacturer' },
-  { name: 'Brownells',             url: 'https://www.brownells.com/promotions/', type: 'retailer' },
-  { name: 'MidwayUSA',             url: 'https://www.midwayusa.com/promotions', type: 'retailer' },
+// ── SCRAPER: Manufacturer Giveaway / Promotions Pages ────────────────────────
+const MFR_PAGES = [
+  { name: 'Palmetto State Armory', url: 'https://palmettostatearmory.com/blog/category/psa-giveaways/', type: 'retailer' },
+  { name: 'Lucky Gunner',          url: 'https://www.luckygunner.com/blog/category/giveaway/',         type: 'retailer' },
+  { name: 'Springfield Armory',    url: 'https://www.springfield-armory.com/promotions/',              type: 'manufacturer' },
+  { name: 'Gun Owners of America', url: 'https://gunowners.org/goa-giveaway/',                         type: 'organization' },
+  { name: 'Taurus USA',            url: 'https://www.taurususa.com/promotions',                        type: 'manufacturer' },
 ]
 
 async function scrapeManufacturerPages() {
   const results = []
-  for (const page of MANUFACTURER_PAGES) {
+  for (const page of MFR_PAGES) {
     try {
       const res = await fetch(page.url, {
         headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0; +https://downrangeco.com)' },
@@ -201,95 +222,88 @@ async function scrapeManufacturerPages() {
       if (!res.ok) continue
       const html = await res.text()
 
-      // Look for giveaway/sweepstakes keywords near links
-      const giveawaySection = html.match(/(giveaway|sweepstake|win a|enter to win)[^]{0,2000}/gi) || []
-      for (const section of giveawaySection.slice(0, 3)) {
-        const linkMatch = section.match(/href="(https?:\/\/[^"]{20,150})"[^>]*>([^<]{10,100})</)
-        if (linkMatch) {
-          results.push({
-            title: `${page.name} Giveaway — ${linkMatch[2].trim()}`,
-            entryUrl: linkMatch[1],
-            prize: linkMatch[2].trim(),
-            prizeValue: 0,
-            endDate: null,
-            category: detectCategory(linkMatch[2]),
-            sponsor: page.name,
-            type: page.type,
-            featured: false,
-            active: true,
-            source: page.name,
-          })
-        }
+      const re = /(giveaway|sweepstake|win a|enter to win)[^]{0,2000}/gi
+      let match
+      while ((match = re.exec(html)) !== null) {
+        const linkMatch = match[0].match(/<a\s+href="(https?:\/\/[^"]{20,200})"[^>]*>([^<]{10,120})</)
+        if (!linkMatch) continue
+        const title = `${page.name} — ${linkMatch[2].trim()}`
+        try { new URL(linkMatch[1]) } catch { continue }
+        results.push({
+          title, entryUrl: linkMatch[1], prize: linkMatch[2].trim(),
+          prizeValue: 0, endDate: null,
+          category:   detectCategory(title),
+          sponsor:    page.name,
+          sourceType: page.type,
+          featured:   false,
+          active:     true,
+          source:     page.name,
+        })
       }
     } catch (e) {
       console.warn(`[GIVEAWAYS] ${page.name} failed:`, e.message)
     }
-    await new Promise(r => setTimeout(r, 500))
+    await new Promise(r => setTimeout(r, 400))
   }
   return results
 }
 
-function deduplicateGiveaways(giveaways) {
+// ── DEDUP ─────────────────────────────────────────────────────────────────────
+function dedup(arr) {
   const seen = new Set()
-  return giveaways.filter(g => {
+  return arr.filter(g => {
     const key = (g.entryUrl || '').toLowerCase().replace(/[?#].*/, '').replace(/\/$/, '')
-    if (!key || key.length < 10) return false
-    if (seen.has(key)) return false
+    if (!key || key.length < 12 || seen.has(key)) return false
     seen.add(key)
     return true
   })
 }
 
-export async function GET(req) {
-  const cronSecret = process.env.CRON_SECRET
-  const auth = req.headers.get('authorization')
-  const adminKey = req.headers.get('x-admin-key')
+// ── HANDLER ───────────────────────────────────────────────────────────────────
+export async function GET(req)  { return handler(req) }
+export async function POST(req) { return handler(req) }
 
-  const isCron  = cronSecret && auth === 'Bearer ' + cronSecret
-  const isAdmin = adminKey === ADMIN_KEY
-  if (!isCron && !isAdmin) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+async function handler(req) {
+  if (!isAuthorized(req)) return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const t0 = Date.now()
-  const stats = { scraped: 0, added: 0, skipped: 0, expired: 0, sources: {} }
+  const t0    = Date.now()
+  const stats = { scraped: 0, added: 0, skipped: 0, expired: 0, errors: [], sources: {} }
 
   try {
-    // Expire past giveaways
-    const today = new Date().toISOString().split('T')[0]
-    const existing = await sanity.fetch('*[_type == "giveaway"] { _id, entryUrl, endDate }').catch(() => [])
-    const existingUrls = new Set((existing || []).map(g => (g.entryUrl || '').toLowerCase().replace(/\/$/, '')))
+    const today    = new Date().toISOString().split('T')[0]
+    const existing = await sanity.fetch('*[_type == "giveaway"] { _id, entryUrl, endDate, active }').catch(() => [])
+    const existingUrls = new Set(
+      (existing || []).map(g => (g.entryUrl || '').toLowerCase().replace(/\/$/, ''))
+    )
 
-    for (const g of existing || []) {
-      if (g.endDate && g.endDate < today) {
-        await sanity.patch(g._id).set({ active: false }).commit().catch(() => {})
-        stats.expired++
-      }
+    // Expire past giveaways
+    const toExpire = (existing || []).filter(g => g.active && g.endDate && g.endDate < today)
+    if (toExpire.length > 0) {
+      await sanity.mutate(toExpire.map(g => ({ patch: { id: g._id, set: { active: false } } })))
+      stats.expired = toExpire.length
     }
 
-    // Scrape all sources
-    const [mainGiveaways, altGiveaways, mfrGiveaways] = await Promise.allSettled([
+    // Scrape in parallel
+    const [mainRes, altRes, mfrRes] = await Promise.allSettled([
       scrapeWinTheGuns(),
       scrapeGunGiveaways(),
       scrapeManufacturerPages(),
     ])
-
     const allRaw = [
-      ...(mainGiveaways.status === 'fulfilled' ? mainGiveaways.value : []),
-      ...(altGiveaways.status === 'fulfilled' ? altGiveaways.value : []),
-      ...(mfrGiveaways.status === 'fulfilled' ? mfrGiveaways.value : []),
+      ...(mainRes.status === 'fulfilled' ? mainRes.value : (stats.errors.push('wintheguns: ' + mainRes.reason?.message), [])),
+      ...(altRes.status  === 'fulfilled' ? altRes.value  : (stats.errors.push('gungiveaways: ' + altRes.reason?.message),  [])),
+      ...(mfrRes.status  === 'fulfilled' ? mfrRes.value  : (stats.errors.push('mfr: ' + mfrRes.reason?.message), [])),
     ]
 
     stats.scraped = allRaw.length
-    const giveaways = deduplicateGiveaways(allRaw)
+    const giveaways = dedup(allRaw)
 
     const mutations = []
     for (const g of giveaways) {
       if (!g.entryUrl || !g.title) { stats.skipped++; continue }
-      // Skip expired
       if (g.endDate && g.endDate < today) { stats.expired++; continue }
-      // Skip if already in Sanity
       const normUrl = g.entryUrl.toLowerCase().replace(/\/$/, '')
       if (existingUrls.has(normUrl)) { stats.skipped++; continue }
-
       try { new URL(g.entryUrl) } catch { stats.skipped++; continue }
 
       mutations.push({
@@ -302,10 +316,9 @@ export async function GET(req) {
           endDate:     g.endDate || null,
           category:    g.category || 'gear',
           sponsor:     g.sponsor || 'Various',
-          sourceType:  g.type || 'external',
+          sourceType:  g.sourceType || 'external',
           featured:    g.featured || false,
           active:      true,
-          source:      g.source || 'web',
           addedAt:     new Date().toISOString(),
         }
       })
@@ -313,19 +326,17 @@ export async function GET(req) {
       stats.sources[g.source] = (stats.sources[g.source] || 0) + 1
     }
 
-    if (mutations.length > 0) {
-      await sanity.mutate(mutations)
-    }
+    if (mutations.length > 0) await sanity.mutate(mutations)
 
+    const ms = Date.now() - t0
     console.log('[GIVEAWAYS] Done:', stats)
-    return NextResponse.json({
-      ok: true,
-      ms: Date.now() - t0,
-      ...stats,
-      message: `${stats.added} new giveaways from ${Object.keys(stats.sources).join(', ')}`,
-    })
+    await reportCronRun('giveaways', { status: 'success', ms, added: stats.added, expired: stats.expired })
+    return NextResponse.json({ ok: true, ms, ...stats })
+
   } catch (err) {
+    const ms = Date.now() - t0
     console.error('[giveaways-cron]', err.message)
-    return NextResponse.json({ ok: false, error: err.message, ms: Date.now() - t0 }, { status: 500 })
+    await reportCronRun('giveaways', { status: 'failed', ms, error: err.message })
+    return NextResponse.json({ ok: false, error: err.message, ms }, { status: 500 })
   }
 }
