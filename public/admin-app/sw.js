@@ -1,5 +1,5 @@
-const CACHE = 'dr-admin-v1';
-const SHELL = ['/', '/index.html', '/manifest.json'];
+const CACHE = 'dr-admin-v3';
+const SHELL = ['/admin-app/', '/admin-app/manifest.json'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(SHELL)).catch(() => {}));
@@ -16,7 +16,8 @@ self.addEventListener('activate', e => {
 self.addEventListener('fetch', e => {
   // Only cache GET requests for the app shell, pass API calls through
   const url = new URL(e.request.url);
-  if (url.hostname === 'downrangeco.com') return; // never cache API
+  // Pass through all API calls and non-GET requests
+  if (url.pathname.startsWith('/api/')) return;
   if (e.request.method !== 'GET') return;
 
   e.respondWith(

@@ -7,8 +7,8 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black">
 <meta name="apple-mobile-web-app-title" content="DR Admin">
-<link rel="manifest" href="manifest.json">
-<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="/admin-app/manifest.json">
+<link rel="apple-touch-icon" href="/admin-app/icon-192.png">
 <title>DR Admin</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=IBM+Plex+Mono:wght@400;600&family=Barlow+Condensed:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
@@ -192,6 +192,15 @@ img{display:block;}
 </head>
 <body>
 
+<script>
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/admin-app/sw.js',{scope:'/admin-app/'})
+      .then(r=>console.log('[DR-PWA] SW registered, scope:',r.scope))
+      .catch(e=>console.warn('[DR-PWA] SW failed:',e));
+  });
+}
+</script>
 <div id="lock-screen">
   <div id="lock-logo">◈ DR Admin</div>
   <div id="lock-sub">DownRange Command Center<br>Enter your admin key to continue</div>
@@ -227,6 +236,8 @@ img{display:block;}
   <button class="nav-tab" data-s="outreach"  onclick="navTo('outreach',this)"><span class="nav-tab-icon">📬</span><span class="nav-tab-label">Outreach</span></button>
   <button class="nav-tab" data-s="intel"     onclick="navTo('intel',this)"><span class="nav-tab-icon">🧠</span><span class="nav-tab-label">Intel</span></button>
   <button class="nav-tab" data-s="system"    onclick="navTo('system',this)"><span class="nav-tab-icon">⚙️</span><span class="nav-tab-label">System</span></button>
+  <button class="nav-tab" data-s="media"    onclick="navTo('media',this)"><span class="nav-tab-icon">▶️</span><span class="nav-tab-label">Media</span></button>
+  <button class="nav-tab" data-s="settings" onclick="navTo('settings',this)"><span class="nav-tab-icon">🔧</span><span class="nav-tab-label">Settings</span></button>
 </div>
 
 <div id="drawer">
@@ -267,7 +278,7 @@ async function tryAuth() {
     const r = await fetch('/api/admin/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:val})});
     const d = await r.json();
     if (!d.ok) { err.textContent=d.error||'Invalid key'; err.style.display='block'; btn.disabled=false; btn.textContent='Unlock Portal'; return; }
-    adminKey=val; localStorage.setItem('dr_admin_key',val);
+    adminKey=val; window.ADMIN_KEY=val; window._adminKey=val; localStorage.setItem('dr_admin_key',val);
     document.getElementById('lock-screen').style.display='none';
     initApp();
   } catch(e) { err.textContent='Network error: '+e.message; err.style.display='block'; btn.disabled=false; btn.textContent='Unlock Portal'; }
@@ -278,7 +289,7 @@ window.addEventListener('load',async()=>{
   try {
     const r=await fetch('/api/admin/auth',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({password:k})});
     const d=await r.json();
-    if(d.ok){adminKey=k;document.getElementById('lock-screen').style.display='none';initApp();}
+    if(d.ok){adminKey=k;window.ADMIN_KEY=k;window._adminKey=k;document.getElementById('lock-screen').style.display='none';initApp();}
     else localStorage.removeItem('dr_admin_key');
   } catch { adminKey=k;document.getElementById('lock-screen').style.display='none';initApp(); }
 });
@@ -290,6 +301,12 @@ async function api(path,opts={}){
   return r.json();
 }
 
+// ─── apiPost helper (alias used by SMS panel) ────────────────────────────────
+async function apiPost(path, extraBody={}){
+  const body = JSON.stringify({...extraBody});
+  const r = await fetch(path,{method:'POST',headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},body});
+  return r.json();
+}
 // ─── FLASH ────────────────────────────────────────────────────────────────────
 function flash(msg,type='info'){
   const el=document.getElementById('flash');
@@ -315,7 +332,7 @@ function navTo(s,btn){
   document.getElementById('screen-'+s).classList.add('active');
   document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
   if(btn)btn.classList.add('active');
-  const T={dashboard:'Command Center',content:'Content Hub',outreach:'Outreach CRM',intel:'Intelligence',system:'System'};
+  const T={dashboard:'Command Center',content:'Content Hub',outreach:'Outreach CRM',intel:'Intelligence',system:'System',media:'Media',settings:'Settings'};
   document.getElementById('topbar-title').textContent=(T[s]||s).toUpperCase();
   if(!screenInited[s]){screenInited[s]=true;renderScreen(s);}
 }
@@ -345,20 +362,22 @@ const SECTIONS=[
     {id:'schedule',l:'Schedule',i:'📅'},{id:'seo',l:'SEO & Meta',i:'🔍'},
   ]},
   {id:'intel',label:'Intelligence',icon:'🧠',panels:[
-    {id:'briefings',l:'Briefings',i:'🧠'},{id:'marketbrief',l:'Market Brief',i:'📊',b:'live'},
+    {id:'intel',l:'Briefings',i:'🧠'},{id:'marketbrief',l:'Market Brief',i:'📊',b:'live'},
     {id:'statelaws',l:'State Laws',i:'🗺'},{id:'feeds',l:'Feed Agent',i:'⚙'},
-    {id:'copyright',l:'Copyright Scan',i:'⚖'},{id:'sysalerts',l:'System Alerts',i:'🚨'},
+    {id:'copyright',l:'Copyright Scan',i:'⚖'},{id:'compliance',l:'Compliance Rules',i:'⚖',b:'new'},
+    {id:'sysalerts',l:'System Alerts',i:'🚨'},
     {id:'pulllog',l:'Pull Log',i:'📡'},{id:'deals',l:'Deals Feed',i:'🔥'},
   ]},
   {id:'system',label:'System',icon:'⚙️',panels:[
     {id:'overview',l:'System Overview',i:'◈'},{id:'crons',l:'Cron Jobs',i:'⏱'},
+    {id:'operations',l:'Operations',i:'⚡',b:'new'},
     {id:'smsalerts',l:'SMS Alerts',i:'📱',b:'new'},{id:'deployments',l:'Deployments',i:'▲'},{id:'agents',l:'Content Agents',i:'🤖'},
-    {id:'rss',l:'Source Manager',i:'📡'},{id:'sitemap',l:'Site Map',i:'🗺️'},
+    {id:'sources',l:'Source Manager',i:'📡'},{id:'sitemap',l:'Site Map',i:'🗺️'},
     {id:'ranges',l:'Ranges DB',i:'◎'},
   ]},
   {id:'outreach',label:'Outreach',icon:'📬',panels:[
     {id:'contacts',l:'Contacts',i:'👤'},{id:'queue',l:'Email Queue',i:'📤'},
-    {id:'history',l:'Sent History',i:'📋'},
+    {id:'history',l:'Sent History',i:'📋'},{id:'mailing-list',l:'Mailing List',i:'📬',b:'new'},
   ]},
   {id:'media',label:'Media',icon:'▶️',panels:[
     {id:'videos',l:'Videos',i:'▶'},{id:'channels',l:'Channels',i:'📺'},
@@ -366,11 +385,11 @@ const SECTIONS=[
     {id:'social',l:'Social Media',i:'📣'},
   ]},
   {id:'settings',label:'Settings',icon:'⚙️',panels:[
-    {id:'aikeys',l:'API Keys',i:'🔑'},{id:'ai',l:'AI Models',i:'🤖'},
+    {id:'keys',l:'API Keys',i:'🔑'},{id:'ai',l:'AI Models',i:'🤖'},
     {id:'costs',l:'Cost Center',i:'💰'},{id:'identity',l:'Identity',i:'🎨'},
     {id:'navvis',l:'Nav Visibility',i:'👁'},{id:'siteconfig',l:'Site Settings',i:'⚙'},
     {id:'alertconfig',l:'Alert Config',i:'🚨'},{id:'envcheck',l:'Env Vars',i:'🔧'},
-    {id:'emails',l:'Email Test',i:'✉'},{id:'emailtest',l:'Email Test',i:'✉'},
+    {id:'emails',l:'Email Test',i:'✉'},
     {id:'report',l:'Portal Report',i:'📧'},{id:'backup',l:'Backup',i:'📦'},
     {id:'lockall',l:'Lock All',i:'🔒'},{id:'signout',l:'Sign Out',i:'🚪'},
   ]},
@@ -657,15 +676,17 @@ function openPanel(id,label){
     deployments:renderDeployments,agents:renderAgents,rss:renderRSSources,
     contacts:renderContacts,queue:renderQueue,history:renderHistory,
     videos:renderVideos,channels:renderChannels,
-    aikeys:renderAPIKeys,envcheck:renderEnvCheck,emailtest:renderEmailTest,
+    aikeys:renderAPIKeys,keys:renderAPIKeys,envcheck:renderEnvCheck,emailtest:renderEmailTest,
     emails:renderEmailTest,
     costs:renderCostCenter,siteconfig:renderSiteSettings,alertconfig:renderAlertConfig,
     report:renderPortalReport,backup:renderBackup,lockall:renderLockAll,
     marketbrief:renderMarketBrief,
     copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,smsalerts:renderSMSAlerts,
-    pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,
+    pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,intel:renderBriefings,
     seo:renderSEO,feeds:renderFeeds,sitemap:renderSitemap,ranges:renderRanges,
     imglib:renderImgLib,ai:renderAIModels,identity:renderIdentity,navvis:renderNavVis,
+    outreach:renderContacts,sources:renderRSSources,
+    operations:renderOperations,compliance:renderCompliance,'mailing-list':renderMailingList,
   };
   if(id==='signout'){confirmSignOut();return;}
   if(map[id]) openDrawer(label,map[id]);
@@ -2418,11 +2439,11 @@ async function renderDeals(el){
         });
         const d2 = await r2.json();
         if(res) res.innerHTML = d2.ok
-          ? \`<span style="color:var(--ok)">✓ Updated ${d2.updated}/${d2.total} images · ${d2.failed} failed. Reload to see.</span>\`
-          : \`<span style="color:var(--err)">✗ \${d2.error||'Error'}</span>\`;
+          ? '<span style="color:var(--ok)">✓ Updated '+d2.updated+'/'+d2.total+' images · '+d2.failed+' failed. Reload to see.</span>'
+          : '<span style="color:var(--err)">✗ '+(d2.error||'Error')+'</span>';
         if(btn){btn.textContent='🖼 Done';btn.disabled=false;}
       }catch(e){
-        if(res) res.innerHTML=\`<span style="color:var(--err)">✗ \${e.message}</span>\`;
+        if(res) res.innerHTML='<span style="color:var(--err)">✗ '+e.message+'</span>';
         if(btn){btn.disabled=false;btn.textContent='🖼 Retry';}
       }
     };
@@ -2977,6 +2998,164 @@ function renderMediaScreen(el){
      {id:'social',i:'📣',l:'Social Media',s:'Post log + analytics + platforms'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
 }
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — OPERATIONS (bulk ops: backfill releases, nuke, etc)
+// ═══════════════════════════════════════════════════════════════════
+function renderOperations(el){
+  const OPERATIONS=[
+    {group:'🔫 GUN RELEASES',ops:[
+      {id:'backfill-releases',label:'Backfill Releases (8 months)',desc:'Crawls manufacturer sources with pagination — pulls up to 300 releases from the last 8 months.',endpoint:'/api/admin/backfill-releases',method:'GET',color:'#c8922a',danger:false},
+      {id:'patch-release-images',label:'Patch Release Images',desc:'Finds real product images for releases missing verified images. Runs in batches.',endpoint:'/api/admin/patch-releases-images',method:'GET',color:'#60a5fa',danger:false},
+      {id:'nuke-releases',label:'☠ Nuke All Releases',desc:'Deletes EVERY firearmRelease from Sanity. Irreversible.',endpoint:'/api/admin/nuke-releases',method:'POST',color:'#ef4444',danger:true},
+    ]},
+    {group:'📰 NEWS & CONTENT',ops:[
+      {id:'run-news',label:'Pull News Now',desc:'Triggers the news agent feed immediately.',endpoint:'/api/agent?feed=news',method:'GET',color:'#c8922a',danger:false},
+      {id:'run-goa',label:'Pull GOA Feed',desc:'Pulls Gun Owners of America news.',endpoint:'/api/agent?feed=goa',method:'GET',color:'#c8922a',danger:false},
+      {id:'run-blog',label:'Write Blog Posts',desc:'Triggers AI blog writer — generates 3 draft articles.',endpoint:'/api/cron/blog-writer',method:'GET',color:'#a78bfa',danger:false},
+    ]},
+    {group:'🔧 SYSTEM',ops:[
+      {id:'fix-images',label:'Fix Placeholder Images',desc:'Scans all content and replaces placeholder images with real OG images.',endpoint:'/api/cron/fix-placeholder-images',method:'GET',color:'#60a5fa',danger:false},
+      {id:'rebuild-sitemap',label:'Rebuild Sitemap',desc:'Triggers sitemap regeneration cron.',endpoint:'/api/cron/sitemap',method:'GET',color:'#60a5fa',danger:false},
+    ]},
+  ];
+  el.innerHTML='<div style="font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--dim);margin-bottom:16px">Bulk operations — use with care</div>'+
+    OPERATIONS.map(grp=>`<div style="font-family:\'Barlow Condensed\',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin:12px 0 8px">${grp.group}</div>`+
+      grp.ops.map(op=>`<div style="background:var(--bg2);border:1px solid ${op.danger?'rgba(239,68,68,.3)':'var(--border)'};padding:14px;margin-bottom:6px">
+        <div style="font-family:\'Barlow Condensed\',sans-serif;font-size:15px;font-weight:700;color:${op.color};margin-bottom:4px">${op.label}</div>
+        <div style="font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim);margin-bottom:10px;line-height:1.6">${op.desc}</div>
+        <button id="ops-btn-${op.id}" class="${op.danger?'btn-danger':'btn'} btn-sm" onclick="runOperation('${op.endpoint}','${op.method}','${op.id}',this)">
+          ${op.danger?'⚠ ':'▶ '}${op.label}
+        </button>
+        <div id="ops-result-${op.id}" style="margin-top:6px;font-family:\'IBM Plex Mono\',monospace;font-size:9px;color:var(--dim)"></div>
+      </div>`).join('')
+    ).join('');
+}
+
+async function runOperation(endpoint, method, id, btn){
+  if(btn.classList.contains('btn-danger')){
+    if(!confirm('This is a destructive operation. Are you sure?')) return;
+  }
+  btn.disabled=true; btn.textContent='⏳ Running...';
+  const res=document.getElementById('ops-result-'+id);
+  try{
+    const r=await fetch(endpoint,{method,headers:{'x-admin-key':adminKey,'Authorization':'Bearer '+adminKey}});
+    const d=await r.json();
+    const ok=d.ok||d.success||r.ok;
+    if(res) res.innerHTML='<span style="color:'+(ok?'var(--ok)':'var(--err)')+'">'+( ok?'✓ Done':'✗ '+(d.error||'Failed'))+' — '+JSON.stringify(d).slice(0,80)+'</span>';
+  }catch(e){if(res)res.innerHTML='<span style="color:var(--err)">✗ '+e.message+'</span>';}
+  btn.disabled=false; btn.textContent='▶ '+id;
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — COMPLIANCE (50-state firearms law checker)
+// ═══════════════════════════════════════════════════════════════════
+function renderCompliance(el){
+  const RESTRICTED=[
+    {abbr:'CA',name:'California',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'CT',name:'Connecticut',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'HI',name:'Hawaii',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'IL',name:'Illinois',mag:15,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'MD',name:'Maryland',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'MA',name:'Massachusetts',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'NJ',name:'New Jersey',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'NY',name:'New York',mag:10,awb:'Full AWB',supp:false,carry:false},
+    {abbr:'WA',name:'Washington',mag:10,awb:'Restricted',supp:false,carry:true},
+    {abbr:'CO',name:'Colorado',mag:15,awb:null,supp:true,carry:true},
+    {abbr:'OR',name:'Oregon',mag:10,awb:null,supp:true,carry:true},
+    {abbr:'DE',name:'Delaware',mag:17,awb:null,supp:false,carry:false},
+    {abbr:'MN',name:'Minnesota',mag:null,awb:null,supp:true,carry:false},
+    {abbr:'NE',name:'Nebraska',mag:null,awb:null,supp:true,carry:false},
+  ];
+  el.innerHTML=`
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">50-state compliance reference for DownRange deals</div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Deal Title Compliance Checker</div>
+    <div style="display:flex;gap:8px;margin-bottom:16px">
+      <input id="compliance-q" class="inp" style="flex:1" placeholder="e.g. Magpul PMAG 30rd, AR-15 Lower...">
+      <button class="btn" onclick="checkCompliance()">Check</button>
+    </div>
+    <div id="compliance-result" style="margin-bottom:16px"></div>
+    <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Restricted States Reference (${RESTRICTED.length})</div>
+    ${RESTRICTED.map(s=>'<div class="row row-last"><div style="flex:1"><div class="row-label"><span style="color:var(--dim);font-family:\'IBM Plex Mono\',monospace;font-size:10px;margin-right:6px">'+s.abbr+'</span>'+s.name+'</div><div class="row-sub">'+(s.mag?'Mag: '+s.mag+'rd ':'')+(s.awb?s.awb+' ':'')+(!s.supp?'No Suppressor ':'')+(!s.carry?'No Carry':'')+'</div></div></div>').join('')}
+  `;
+}
+function checkCompliance(){
+  const q=(document.getElementById('compliance-q')?.value||'').toLowerCase();
+  const res=document.getElementById('compliance-result');
+  if(!q||!res) return;
+  const mag30=q.match(/(30|32|33|40|100)\s*(rd|round)/i);
+  const mag20=q.match(/(20|25)\s*(rd|round)/i);
+  const isAWB=/(ar-?15|ak-?47|ar-?10|m4|m16|m1a|pistol brace|stabilizing brace|sbr|suppressor|silencer)/i.test(q);
+  const isMag=mag30||mag20;
+  const flags=[];
+  if(mag30) flags.push({state:'CA,CT,CO,HI,IL,MD,MA,NJ,NY,OR,WA,DE',issue:'30rd mag restricted/banned'});
+  if(mag20) flags.push({state:'CA,CT,CO,HI,IL,MD,MA,NJ,NY,OR,WA',issue:'20rd mag restricted/banned'});
+  if(isAWB) flags.push({state:'CA,CT,HI,IL,MD,MA,NJ,NY',issue:'Possible AWB item — verify'});
+  if(!flags.length){
+    res.innerHTML='<div style="padding:10px;background:rgba(34,197,94,.08);border:1px solid var(--ok);font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--ok)">✓ No obvious restrictions detected — verify state-specific laws</div>';
+  } else {
+    res.innerHTML=flags.map(f=>'<div style="padding:10px;background:rgba(239,68,68,.08);border:1px solid var(--err);font-family:\'IBM Plex Mono\',monospace;font-size:10px;color:var(--err);margin-bottom:6px">⚠ '+f.issue+'<br><span style="color:var(--dim)">Affected: '+f.state+'</span></div>').join('');
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════════
+// PANEL — MAILING LIST
+// GET /api/admin/mailing-list → { subscribers: [...], total: N }
+// POST /api/admin/mailing-list { action:'add'|'remove', email, name }
+// ═══════════════════════════════════════════════════════════════════
+async function renderMailingList(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading subscribers...</div>';
+  try{
+    const d=await api('/api/admin/mailing-list');
+    const subs=d.subscribers||d.contacts||[];
+    const total=d.total||subs.length;
+    const active=subs.filter(s=>s.status==='active'||!s.status).length;
+    const unsub=subs.filter(s=>s.status==='unsubscribed').length;
+    el.innerHTML=`
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+        <div class="stat-box" style="text-align:center"><div class="stat-val">${total}</div><div class="stat-lbl">Total</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${active}</div><div class="stat-lbl">Active</div></div>
+        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--dim)">${unsub}</div><div class="stat-lbl">Unsub</div></div>
+      </div>
+      <div class="form-row"><span class="lbl">Add Subscriber</span>
+        <input id="ml-email" class="inp" type="email" placeholder="email@example.com" style="margin-bottom:6px">
+        <input id="ml-name" class="inp" placeholder="Name (optional)">
+      </div>
+      <button class="btn" style="width:100%;margin-bottom:20px" onclick="addSubscriber()">+ Add Subscriber</button>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">${subs.length} subscribers</div>
+      <input class="inp" id="ml-search" placeholder="Filter by email or name..." oninput="filterML(this.value)" style="margin-bottom:10px">
+      <div id="ml-list">
+        ${subs.map(s=>`<div class="row row-last" id="ml-${s._id||s.id||s.email}">
+          <div style="flex:1"><div class="row-label">${s.name||s.email||'—'}</div><div class="row-sub">${s.name?s.email:''} <span class="pill ${s.status==='unsubscribed'?'pill-dim':'pill-ok'}">${s.status||'active'}</span></div></div>
+          <button class="btn-danger btn-xs" onclick="removeSubscriber('${s._id||s.id}','${(s.email||'').replace(/'/g,'')}',this)">✕</button>
+        </div>`).join('')}
+      </div>`;
+    window._mlSubs=subs;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}<br><br><a href="https://downrangeco.com/admin" target="_blank" style="color:var(--gold)">Open Admin →</a></div>`;}
+}
+function filterML(q){
+  const list=document.querySelectorAll('#ml-list .row');
+  list.forEach(r=>{r.style.display=r.textContent.toLowerCase().includes(q.toLowerCase())?'':'none';});
+}
+async function addSubscriber(){
+  const email=document.getElementById('ml-email')?.value?.trim();
+  const name=document.getElementById('ml-name')?.value?.trim();
+  if(!email){flash('Enter an email','err');return;}
+  try{
+    const d=await api('/api/admin/mailing-list',{method:'POST',body:JSON.stringify({action:'add',email,name})});
+    flash(d.ok?'✅ Subscriber added':'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
+    if(d.ok) renderMailingList(document.getElementById('drawer-content'));
+  }catch(e){flash('Error: '+e.message,'err');}
+}
+async function removeSubscriber(id, email, btn){
+  btn.disabled=true;
+  try{
+    const d=await api('/api/admin/mailing-list',{method:'POST',body:JSON.stringify({action:'remove',id,email})});
+    if(d.ok){flash('✅ Removed','info');btn.closest('.row')?.remove();}
+    else flash('❌ '+(d.error||'Failed'),'err');
+  }catch(e){flash('Error: '+e.message,'err');btn.disabled=false;}
+}
+
 
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
