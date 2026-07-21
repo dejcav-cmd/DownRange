@@ -3,11 +3,11 @@ No Reddit docs found ✓
 
 === STEP 2: FIX MISSING IMAGES ===
 Needs image fix: 1 (null + gun.deals hotlink-blocked)
-  ~ og: https://ar15discounts.com/wp-content/uploads/2026/06/347891.png
+  ✓ cdn: https://cdn.sanity.io/images/vbnsqnkg/production/0feb90b3a12e75cf29e6fed6a489f73
   → patched final 1
 
-Stats: uploaded=0 fallback=1 failed=0
+Stats: uploaded=1 fallback=0 failed=0
 
-=== FINAL: total=5875 missing_images=0 reddit=0 ===
+=== FINAL: total=5887 missing_images=0 reddit=0 ===
 
 FIXED: 1
