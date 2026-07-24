@@ -103,7 +103,23 @@ export async function POST(req) {
   }
 
   const msg    = `DownRange — test alert OK\n${new Date().toLocaleString('en-US', { timeZone: 'America/Los_Angeles' })} PT`
-  const result = await sendCronAlert(msg, { jobId: 'alert-test', bypassCooldown: true })
+  const result = await sendCronAlert(msg, {
+    jobId: 'alert-test',
+    bypassCooldown: true,
+    context: {
+      error: 'TypeError: Cannot read properties of undefined (reading \'slug\')',
+      stack: `TypeError: Cannot read properties of undefined (reading 'slug')
+    at buildArticle (/app/api/agent/route.js:84:22)
+    at processQueue (/app/api/agent/route.js:142:18)
+    at async handler (/app/api/agent/route.js:31:5)`,
+      meta: {
+        triggeredBy: 'Manual test via /api/admin/test-sms',
+        env: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'unknown',
+        nodeVersion: process.version,
+        timestamp: new Date().toISOString(),
+      },
+    },
+  })
 
   const accept = req.headers.get('accept') ?? ''
   if (accept.includes('text/html') || ct.includes('form')) {

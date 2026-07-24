@@ -192,8 +192,20 @@ export async function GET(req) {
     if (CRITICAL_FEEDS.includes(feed)) {
       const shouldAlert = await shouldAlertConsecutive(feed, 3).catch(() => false)
       if (shouldAlert) {
-        const alertBody = `DownRange-News feed "${feed}" failed 3x in a row: ${err.message.slice(0, 100)}`
-        sendCronAlert(alertBody, { jobId: feed }).catch(() => {})
+        const alertBody = `DownRange feed "${feed}" failed 3x in a row: ${err.message.slice(0, 100)}`
+        sendCronAlert(alertBody, {
+          jobId: feed,
+          context: {
+            error: err.message,
+            stack: err.stack,
+            meta: {
+              feed,
+              consecutiveFailures: 3,
+              lastRunMs: Date.now() - t,
+              env: process.env.VERCEL_ENV ?? process.env.NODE_ENV ?? 'unknown',
+            },
+          },
+        }).catch(() => {})
       }
     }
     logPull({
