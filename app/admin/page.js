@@ -2819,7 +2819,7 @@ function StateLawsPanel({ adminKey }) {
   )
 }
 
-// ── Unified Alerts Panel (SMS + System Alerts in one view) ───────────────────
+// ── Unified Alerts Panel (Cron run history + Email alert config in one view) ──
 function UnifiedAlertsPanel({ adminKey }) {
   const [tab, setTab] = React.useState('system')
   const tabStyle = (t) => ({
@@ -2833,10 +2833,10 @@ function UnifiedAlertsPanel({ adminKey }) {
   return (
     <div>
       <div className="panel-title">Alerts</div>
-      <div className="panel-sub">Cron run history and SMS alert configuration in one place.</div>
+      <div className="panel-sub">Cron run history and Resend email alert configuration in one place.</div>
       <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:20}}>
-        <button style={tabStyle('system')} onClick={()=>setTab('system')}>🚨 Cron Alerts</button>
-        <button style={tabStyle('sms')}    onClick={()=>setTab('sms')}>📱 SMS Config</button>
+        <button style={tabStyle('system')} onClick={()=>setTab('system')}>🚨 Cron History</button>
+        <button style={tabStyle('sms')}    onClick={()=>setTab('sms')}>📧 Email Alerts</button>
       </div>
       {tab === 'system' && <SystemAlertsPanel adminKey={adminKey} />}
       {tab === 'sms'    && <SMSAlertsPanel    adminKey={adminKey} />}

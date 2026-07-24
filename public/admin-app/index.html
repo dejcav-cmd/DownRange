@@ -1037,7 +1037,7 @@ function renderSystemScreen(el){
      {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'},
      {id:'sitemap',i:'🗺️',l:'Site Map',s:'URL routes & indexing'},
      {id:'ranges',i:'◎',l:'Ranges DB',s:'Shooting range finder'},
-     {id:'smsalerts',i:'📱',l:'SMS Alerts',s:'Twilio log — sent, skipped & failed',b:'new'},
+     {id:'smsalerts',i:'📧',l:'Cron Alerts',s:'Resend email alert log — sent, skipped & failed'},
      {id:'sysalerts',i:'🚨',l:'System Alerts',s:'cronRun log — failures & warnings'},
      {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
@@ -2138,14 +2138,13 @@ async function renderDraftRecovery(el){
 // ═══════════════════════════════════════════════════════════════════
 
 // ═══════════════════════════════════════════════════════════════════
-// PANEL — SMS ALERTS (Twilio execution log)
+// PANEL — CRON ALERTS (Resend email alert log)
 // GET /api/admin/sms-config → { status, log }
-// POST /api/admin/test-sms  → { sent, sid, status, ms, error }
+// POST /api/admin/test-sms  → { sent, resendId, ms, error }
 // ═══════════════════════════════════════════════════════════════════
 let _smsState={tab:'all',search:'',expanded:null,autoRefresh:true,timer:null,data:null};
 
 async function renderSMSAlerts(el){
-  // stop old timer if any
   if(_smsState.timer){clearInterval(_smsState.timer);_smsState.timer=null;}
   await _smsLoad(el);
   if(_smsState.autoRefresh){
@@ -2154,7 +2153,7 @@ async function renderSMSAlerts(el){
 }
 
 async function _smsLoad(el,silent=false){
-  if(!silent) el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading SMS log...</div>';
+  if(!silent) el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading alert log...</div>';
   try{
     const d=await api('/api/admin/sms-config');
     _smsState.data=d;
@@ -2167,7 +2166,7 @@ async function _smsLoad(el,silent=false){
 function _smsClassify(l){
   if(l.sent) return 'sent';
   const t=(l.reason||'')+(l.message||'');
-  if(/cooldown|Cooldown|quiet|configured|skipped|isabled/i.test(t)) return 'skipped';
+  if(/cooldown|Cooldown|configured|skipped|isabled|Missing/i.test(t)) return 'skipped';
   return 'failed';
 }
 
@@ -2202,9 +2201,9 @@ function _smsRender(el){
   const tab=_smsState.tab;
   const search=_smsState.search.toLowerCase();
   const filtered=log.filter(l=>{
-    if(tab==='sent'    && !l.sent)                         return false;
-    if(tab==='failed'  && _smsClassify(l)!=='failed')     return false;
-    if(tab==='skipped' && _smsClassify(l)!=='skipped')    return false;
+    if(tab==='sent'    && !l.sent)                      return false;
+    if(tab==='failed'  && _smsClassify(l)!=='failed')  return false;
+    if(tab==='skipped' && _smsClassify(l)!=='skipped') return false;
     if(search && !((l.message||'').toLowerCase().includes(search)||(l.jobId||'').toLowerCase().includes(search)||(l.reason||'').toLowerCase().includes(search))) return false;
     return true;
   });
@@ -2231,15 +2230,13 @@ function _smsRender(el){
         ['Job',          l.jobId||'—'],
         ['Full Message', l.message||'—'],
         l.reason?['Reason',l.reason]:null,
-        l.twilioSid?['Twilio SID',l.twilioSid]:null,
-        l.twilioStatus?['Status',l.twilioStatus]:null,
+        l.resendId?['Resend ID',l.resendId]:null,
         l.httpStatus?['HTTP',String(l.httpStatus)]:null,
-        l.errCode?['Error Code',l.errCode+(l.errCode===30034?' — Toll-free verify needed':l.errCode===21608?' — Number not verified':'')]:null,
         l.ms?['Latency',l.ms+'ms']:null,
         ['ID',(l.id||'—').slice(0,20)],
       ].filter(Boolean).map(([k,v])=>`<div style="display:grid;grid-template-columns:100px 1fr;gap:4px 8px;margin-bottom:2px">
           <span style="color:var(--dim);font-size:9px;text-transform:uppercase;letter-spacing:.06em">${k}</span>
-          <span style="color:${k==='Full Message'?'var(--text)':k==='Twilio SID'||k==='Status'?'var(--ok)':k.includes('Error')||k==='HTTP'&&parseInt(v)>=400?'var(--err)':'var(--dim)'};word-break:break-all">${v}</span>
+          <span style="color:${k==='Full Message'?'var(--text)':k==='Resend ID'?'var(--ok)':k==='HTTP'&&parseInt(v)>=400?'var(--err)':'var(--dim)'};word-break:break-all">${v}</span>
         </div>`).join('')}
     </div>`:''
     return `<div onclick="_smsToggle('${l.id}',this.closest('[data-sms-log]'))" style="border-bottom:1px solid var(--border);background:${isExp?'#0d0d0f':'transparent'};cursor:pointer">
@@ -2259,18 +2256,14 @@ function _smsRender(el){
     <span style="font-size:20px">${isOk?'🟢':cfg.configured?'🟡':'🔴'}</span>
     <div style="flex:1">
       <div style="font-family:'Bebas Neue',cursive;font-size:16px;letter-spacing:.06em;color:${statusColor}">${statusLabel}</div>
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">${cfg.from||'+12062036281'} → ${cfg.to||'+12066016076'}${lastSent?` · last sent ${_fmtAge(lastSent.ts)}`:''}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:2px">Resend → ${cfg.alertEmail||'dejcav@gmail.com'}${lastSent?' · last sent '+_fmtAge(lastSent.ts):''}</div>
     </div>
     <div style="display:flex;gap:2px;align-items:flex-end;height:20px">${sparkBars}</div>
   </div>
   ${!cfg.configured?`<div style="padding:12px 14px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);border-top:none;margin-bottom:12px">
-    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err);margin-bottom:6px">⚠ Twilio credentials missing — SMS cannot send</div>
+    <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err);margin-bottom:6px">⚠ RESEND_API_KEY not set — alert emails cannot send</div>
     <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);line-height:1.8">
-      Add these to <a href="https://vercel.com/dejcav-cmd" target="_blank" style="color:var(--gold)">Vercel → downrangeco → Settings → Env Vars</a> then redeploy:<br>
-      <span style="color:var(--text)">TWILIO_ACCOUNT_SID</span><br>
-      <span style="color:var(--text)">TWILIO_AUTH_TOKEN</span><br>
-      <span style="color:var(--gold)">TWILIO_FROM_NUMBER = +12062036281</span><br>
-      <span style="color:var(--gold)">ALERT_PHONE_NUMBER = +12066016076</span>
+      Add <span style="color:var(--gold)">RESEND_API_KEY</span> in <a href="https://vercel.com/dejcav-cmd" target="_blank" style="color:var(--gold)">Vercel → Settings → Env Vars</a> then redeploy.
     </div>
   </div>`:''}
 
@@ -2285,7 +2278,7 @@ function _smsRender(el){
 
   <!-- Actions -->
   <div style="display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap">
-    <button class="btn" style="flex:1;background:rgba(34,197,94,.12);color:var(--ok);border:1px solid rgba(34,197,94,.25)" onclick="_smsSendTest(this)">📱 Send Test SMS</button>
+    <button class="btn" style="flex:1;background:rgba(34,197,94,.12);color:var(--ok);border:1px solid rgba(34,197,94,.25)" onclick="_smsSendTest(this)" ${!cfg.configured?'disabled':''}>📧 Send Test Email</button>
     <a href="/api/admin/test-sms" target="_blank" style="flex:1;display:flex;align-items:center;justify-content:center;background:var(--bg2);border:1px solid var(--border);color:var(--dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:9px;text-decoration:none">🔍 Diagnostic</a>
     <button class="btn-outline" onclick="renderSMSAlerts(this.closest('#drawer-content'))">↻</button>
   </div>
@@ -2293,8 +2286,8 @@ function _smsRender(el){
 
   <!-- Config strip -->
   <div style="background:var(--bg2);border:1px solid var(--border);display:grid;grid-template-columns:1fr 1fr;margin-bottom:12px">
-    ${[['From',cfg.from||'+12062036281'],['To',cfg.to||'+12066016076'],['Cooldown',(cfg.cooldownSecs||900)/60+'min'],['Quiet Hrs',(cfg.quietStart||23)+':00–'+(cfg.quietEnd||7)+':00 UTC']].map(([k,v],i)=>`
-    <div style="padding:8px 12px;border-right:${i%2===0?`1px solid var(--border)`:'none'};border-bottom:${i<2?`1px solid var(--border)`:'none'}">
+    ${[['Provider',cfg.provider||'resend'],['Alert Email',cfg.alertEmail||'dejcav@gmail.com'],['Cooldown',(cfg.cooldownSecs||900)/60+'min'],['Status',cfg.enabled?'Enabled ✓':'Disabled']].map(([k,v],i)=>`
+    <div style="padding:8px 12px;border-right:${i%2===0?'1px solid var(--border)':'none'};border-bottom:${i<2?'1px solid var(--border)':'none'}">
       <div style="font-family:'IBM Plex Mono',monospace;font-size:8px;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;margin-bottom:2px">${k}</div>
       <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--gold)">${v}</div>
     </div>`).join('')}
@@ -2320,13 +2313,13 @@ function _smsRender(el){
     </div>
     <div style="max-height:400px;overflow-y:auto;-webkit-overflow-scrolling:touch">
       ${filtered.length===0
-        ?`<div class="empty">${log.length===0?'No SMS events yet. Send a test SMS above.':`No ${tab} events${search?' matching "'+search+'"':''}.`}</div>`
+        ?`<div class="empty">${log.length===0?'No alert events yet. Send a test email above.':`No ${tab} events${search?' matching "'+search+'"':''}.`}</div>`
         :rows}
     </div>
   </div>
 
   <div style="margin-top:10px;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);border-top:1px solid var(--border);padding-top:8px;display:flex;justify-content:space-between">
-    <span>Upstash Redis · max 200 events · DownRange-News</span>
+    <span>Powered by Resend · Upstash Redis · max 200 events</span>
     <label style="display:flex;gap:5px;align-items:center;cursor:pointer">
       <input type="checkbox" ${_smsState.autoRefresh?'checked':''} onchange="_smsToggleRefresh(this.checked,this.closest('#drawer-content'))" style="accent-color:var(--gold)">
       auto 15s
@@ -2357,15 +2350,15 @@ async function _smsSendTest(btn){
   try{
     const d=await apiPost('/api/admin/test-sms',{key:window._adminKey||''});
     if(d.sent){
-      res.innerHTML=`<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ok)">✓ Sent · SID: ${d.sid||'—'} · ${d.status||''} · ${d.ms||'?'}ms</div>`;
+      res.innerHTML=`<div style="background:rgba(34,197,94,.08);border:1px solid rgba(34,197,94,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ok)">✓ Email sent to dejcav@gmail.com${d.ms?' · '+d.ms+'ms':''}</div>`;
     }else{
-      res.innerHTML=`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">✕ Failed · ${d.error||d.reason||'Unknown'} ${d.httpStatus?'(HTTP '+d.httpStatus+')':''}</div>`;
+      res.innerHTML=`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">✕ Failed · ${d.error||d.reason||'Unknown'}</div>`;
     }
     setTimeout(()=>_smsLoad(btn.closest('#drawer-content'),true),1200);
   }catch(e){
     res.innerHTML=`<div style="background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.25);padding:8px 12px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--err)">✕ ${e.message}</div>`;
   }
-  btn.disabled=false;btn.textContent='📱 Send Test SMS';
+  btn.disabled=false;btn.textContent='📧 Send Test Email';
 }
 
 async function renderSysAlerts(el){
