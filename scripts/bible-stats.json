@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-07-19T07:00:13.841Z",
+  "generatedAt": "2026-07-26T07:01:38.976Z",
   "content": {
-    "newsArticles": 825,
-    "blogPosts": 162,
-    "legislation": 268,
-    "firearmReleases": 17,
-    "videos": 273,
+    "newsArticles": 977,
+    "blogPosts": 171,
+    "legislation": 275,
+    "firearmReleases": 18,
+    "videos": 328,
     "reviews": 3,
-    "canadaArticles": 56,
-    "brazilArticles": 31
+    "canadaArticles": 63,
+    "brazilArticles": 46
   },
   "operations": {
-    "cronRuns": 2107,
+    "cronRuns": 2274,
     "outreachContacts": 221,
-    "socialPosts": 187,
-    "briefings": 55
+    "socialPosts": 206,
+    "briefings": 62
   },
   "latest": {
-    "newsTitle": "Third Circuit Kills New Jersey's Semiauto Ban in Historic 10-5 Ruling",
-    "newsDate": "2026-07-19T02:11:48.000Z",
-    "briefingDate": "2026-07-19",
+    "newsTitle": "ATF Silencer Backlog Clears: Six Months of Free Tax Stamps Data",
+    "newsDate": "2026-07-25T22:34:00.000Z",
+    "briefingDate": "2026-07-26",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 1635
+  "totalContentDocs": 1881
 }
