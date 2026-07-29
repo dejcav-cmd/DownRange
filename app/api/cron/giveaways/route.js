@@ -1,3 +1,15 @@
+/**
+ * Giveaways Cron — DownRange
+ *
+ * Real web scraping via Jina proxy (r.jina.ai) — no hallucination.
+ * Sources: wintheguns.com, gungiveaways.net, gunmade.com (dedicated
+ *          giveaways hub, ~30-40 live at once), PSA, Lucky Gunner,
+ *          Springfield Armory, GOA, Taurus USA.
+ * Every source is scraped for its clean, direct entry link (sponsor site
+ * or giveaway platform) — never a source's own tracking/listing URL.
+ *
+ * Runs: 8am, 2pm, 8pm UTC daily via vercel.json
+ */
 export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
@@ -239,6 +251,75 @@ async function scrapeManufacturerPages() {
   return results
 }
 
+// ── SCRAPER: GunMade.com (dedicated giveaways hub — 30-40 live at a time) ────
+// GunMade runs a big "Active Giveaways" table (name / value / dates / entry
+// frequency). Every row already links straight OUT to the sponsor's own entry
+// page or a giveaway platform (Gleam, SweepWidget, Woobox, wn.nr, swee.ps,
+// etc.) — we just need to keep those clean outbound links and throw away
+// anything that still points back at gunmade.com itself (nav chrome, their
+// own "how it works" / submission pages, tracking wrappers). That's the
+// "clean link" rule for this source: no gunmade.com URLs ever get saved.
+async function scrapeGunMade() {
+  try {
+    const res = await fetch('https://r.jina.ai/https://www.gunmade.com/gun-giveaways/', {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
+        'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      },
+      signal: AbortSignal.timeout(25000),
+    })
+    if (!res.ok) throw new Error('gunmade.com returned ' + res.status)
+    const md = await res.text()
+    const giveaways = []
+
+    const JUNK_TITLE = /^(home|about|contact|privacy|terms|search|subscribe|categories|menu|how it works|faq|submit|sign in|sign up|log ?in|enter now|enter to win|enter|view details?|view|see (the )?giveaway|claim|details|learn more|read more|next|previous|share|follow us|newsletter|gun ?made)\b/i
+
+    const linkRe = /\[([^\]]{6,150})\]\((https?:\/\/[^\s\)]{10,300})\)/g
+    let match
+    while ((match = linkRe.exec(md)) !== null) {
+      const [, rawTitle, href] = match
+      const title = rawTitle.replace(/\*/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim()
+      if (title.length < 6 || JUNK_TITLE.test(title)) continue
+      if (/\.(png|jpg|jpeg|gif|svg|webp|ico)(\?|$)/i.test(href)) continue
+      if (/twitter\.com|facebook\.com|instagram\.com|youtube\.com|tiktok\.com|linkedin\.com|gunmade\.com\/(?!gun-giveaways)/i.test(href)) continue
+
+      let host
+      try { host = new URL(href).hostname } catch { continue }
+      // Clean-link rule: skip anything still hosted on gunmade.com itself —
+      // only the direct sponsor/platform entry URL gets saved.
+      if (/(^|\.)gunmade\.com$/i.test(host)) continue
+
+      // Scope value/date lookup to this one line so a neighboring table row
+      // can't bleed its numbers into this entry.
+      const lineStart = md.lastIndexOf('\n', match.index) + 1
+      const lineEndIdx = md.indexOf('\n', match.index)
+      const line = md.slice(lineStart, lineEndIdx === -1 ? md.length : lineEndIdx)
+      const valueMatch = line.match(/\$\s*([\d,]+)/)
+      const dateMatches = line.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/g)
+      const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
+      const endDate = dateMatches?.length >= 2
+        ? parseEndDate(dateMatches[1])
+        : dateMatches?.length === 1 ? parseEndDate(dateMatches[0]) : null
+
+      giveaways.push({
+        title, entryUrl: href, prize: title, prizeValue, endDate,
+        category:   detectCategory(title),
+        sponsor:    extractSponsor(title) || 'Various',
+        sourceType: 'external',
+        featured:   prizeValue >= 1500,
+        active:     true,
+        source:     'gunmade.com',
+      })
+    }
+
+    console.log('[GIVEAWAYS] gunmade.com:', giveaways.length, 'entries')
+    return giveaways.slice(0, 60)
+  } catch (e) {
+    console.warn('[GIVEAWAYS] gunmade.com failed:', e.message)
+    return []
+  }
+}
+
 // ── DEDUP ─────────────────────────────────────────────────────────────────────
 function dedup(arr) {
   const seen = new Set()
@@ -275,15 +356,17 @@ async function handler(req) {
     }
 
     // Scrape in parallel
-    const [mainRes, altRes, mfrRes] = await Promise.allSettled([
+    const [mainRes, altRes, mfrRes, gunmadeRes] = await Promise.allSettled([
       scrapeWinTheGuns(),
       scrapeGunGiveaways(),
       scrapeManufacturerPages(),
+      scrapeGunMade(),
     ])
     const allRaw = [
       ...(mainRes.status === 'fulfilled' ? mainRes.value : (stats.errors.push('wintheguns: ' + mainRes.reason?.message), [])),
       ...(altRes.status  === 'fulfilled' ? altRes.value  : (stats.errors.push('gungiveaways: ' + altRes.reason?.message),  [])),
       ...(mfrRes.status  === 'fulfilled' ? mfrRes.value  : (stats.errors.push('mfr: ' + mfrRes.reason?.message), [])),
+      ...(gunmadeRes.status === 'fulfilled' ? gunmadeRes.value : (stats.errors.push('gunmade: ' + gunmadeRes.reason?.message), [])),
     ]
 
     stats.scraped = allRaw.length

@@ -2,7 +2,7 @@
  * Giveaways Feed — DownRange v3
  * 
  * Real web scraping via Jina proxy (r.jina.ai) — no hallucination.
- * Sources: wintheguns.com, gungiveaways.net, popularsuppressors.com,
+ * Sources: wintheguns.com, gungiveaways.net, gunmade.com, popularsuppressors.com,
  *          PSA, Lucky Gunner, Brownells, NRA, GOA, Honest Outlaw, Pew Pew Tactical
  * 
  * Runs: 8:03am + 8:03pm UTC daily via vercel.json
@@ -12,6 +12,7 @@ import { publishToSanity, sleep } from '../utils.js'
 const SOURCES = [
   { name: 'wintheguns.com',         url: 'https://r.jina.ai/https://wintheguns.com/',                         type: 'aggregator'   },
   { name: 'gungiveaways.net',        url: 'https://r.jina.ai/https://gungiveaways.net/',                       type: 'aggregator'   },
+  { name: 'gunmade.com',             url: 'https://r.jina.ai/https://www.gunmade.com/gun-giveaways/',         type: 'aggregator'   },
   { name: 'popularsuppressors.com',  url: 'https://r.jina.ai/https://popularsuppressors.com/',                 type: 'aggregator'   },
   { name: 'Palmetto State Armory',   url: 'https://r.jina.ai/https://palmettostatearmory.com/giveaways',       type: 'retailer'     },
   { name: 'Lucky Gunner',            url: 'https://r.jina.ai/https://www.luckygunner.com/lounge/giveaways/',   type: 'retailer'     },
@@ -68,7 +69,7 @@ function extractValue(text) {
   return Math.max(...m.map(v => parseInt(v.replace(/[$,]/g, ''))))
 }
 
-function extractGiveawayLinks(markdown, sourceName) {
+function extractGiveawayLinks(markdown, sourceName, sourceHost) {
   const results = []
   const today = new Date().toISOString().split('T')[0]
 
@@ -79,6 +80,11 @@ function extractGiveawayLinks(markdown, sourceName) {
     if (/^(home|about|contact|privacy|terms|menu|search|subscribe)/i.test(text.trim())) continue
     if (/\.(png|jpg|jpeg|gif|svg|webp|ico)(\?|$)/i.test(url)) continue
     if (/twitter\.com|facebook\.com|instagram\.com|youtube\.com\/channel|tiktok\.com/i.test(url)) continue
+    // Clean-link rule: never save a source's own URL as the entry link —
+    // only the outbound sponsor/platform link counts as a real entry.
+    if (sourceHost) {
+      try { if (new URL(url).hostname.replace(/^www\./, '') === sourceHost) continue } catch { continue }
+    }
     // Must contain a genuine giveaway action word
     const isGiveawayText = /(win a|win an|give ?away|enter to win|sweepstake|contest|free (gun|rifle|pistol|ammo|suppressor|firearm)|prize pack|enter now|enter here)/i.test(text)
     // OR be a pure giveaway platform URL (gleam, rafflecopter, etc.)
@@ -143,7 +149,10 @@ async function fetchSource(source) {
     if (!res.ok) { console.warn(`[GIVEAWAYS] ${source.name}: HTTP ${res.status}`); return [] }
     const text = await res.text()
     if (!text || text.length < 200) { console.warn(`[GIVEAWAYS] ${source.name}: empty`); return [] }
-    const results = extractGiveawayLinks(text, source.name)
+    const targetUrl = source.url.replace(/^https:\/\/r\.jina\.ai\//, '')
+    let sourceHost = ''
+    try { sourceHost = new URL(targetUrl).hostname.replace(/^www\./, '') } catch { /* not a proxied URL */ }
+    const results = extractGiveawayLinks(text, source.name, sourceHost)
     console.log(`[GIVEAWAYS] ${source.name}: ${results.length} found`)
     return results
   } catch (e) {
