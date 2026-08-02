@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-07-26T07:01:38.976Z",
+  "generatedAt": "2026-08-02T07:00:14.353Z",
   "content": {
-    "newsArticles": 977,
-    "blogPosts": 171,
-    "legislation": 275,
-    "firearmReleases": 18,
-    "videos": 328,
+    "newsArticles": 1136,
+    "blogPosts": 180,
+    "legislation": 278,
+    "firearmReleases": 19,
+    "videos": 384,
     "reviews": 3,
-    "canadaArticles": 63,
-    "brazilArticles": 46
+    "canadaArticles": 65,
+    "brazilArticles": 50
   },
   "operations": {
-    "cronRuns": 2274,
+    "cronRuns": 2386,
     "outreachContacts": 221,
-    "socialPosts": 206,
-    "briefings": 62
+    "socialPosts": 217,
+    "briefings": 69
   },
   "latest": {
-    "newsTitle": "ATF Silencer Backlog Clears: Six Months of Free Tax Stamps Data",
-    "newsDate": "2026-07-25T22:34:00.000Z",
-    "briefingDate": "2026-07-26",
+    "newsTitle": "Active Shooter Kills Three Near Twin Falls, Idaho In-N-Out Burger",
+    "newsDate": "2026-08-01T23:47:38.000Z",
+    "briefingDate": "2026-08-02",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 1881
+  "totalContentDocs": 2115
 }
