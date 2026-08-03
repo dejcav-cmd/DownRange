@@ -15,4 +15,13 @@ jobs:
         with:
           node-version: '20'
       - name: Live-test giveaway scrapers
-        run: node scripts/test_giveaway_sources.mjs
+        id: test
+        continue-on-error: true
+        run: node scripts/test_giveaway_sources.mjs 2>&1 | tee result.txt
+      - name: Publish result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/giveaway-test.txt
+      - name: Fail if test failed
+        if: steps.test.outcome == 'failure'
+        run: exit 1
