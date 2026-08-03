@@ -1,0 +1,41 @@
+(node:2406) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/DownRange/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+[GIVEAWAYS] wintheguns.com: 41 entries via direct
+[GIVEAWAYS] gungiveaways.net: 33 entries via direct
+
+=== wintheguns.com (required) ===
+   via=direct status=200 rows=41
+   • Win $400!                                                      | $400    | ends 2026-09-01 | accessories | https://sweepwidget.com/c/101388-tcg64wia/38e19f-101388
+   • Win a Browning X Bolt in 300 win mag! (Single entry)           | $1500   | ends 2026-08-31 | accessories | https://www.galleryofguns.com/ggg/
+   • Win a POF AR and a ton of Rise Armament gear!                  | $5000   | ends 2026-08-31 | gear        | https://swee.ps/FheQlL_UORrtne
+   • Win a Henry field rifle, suppressor, safe, ammo, and more! (Si | $11500  | ends 2026-08-31 | rifle       | https://swee.ps/VGcwyP_vwthNjT
+   • Win a 5 gram gold bar!                                         | $750    | ends 2026-08-31 | accessories | https://wn.nr/5ht4XGZ
+   • Win 1 of 3 high end collectors Kimbers!                        | $15000  | ends 2026-08-31 | accessories | https://swee.ps/fgdpMz_UZSLSoy
+   • Win 1 of 2 prizes of a Taurus TX-22 and suppressor!            | $2100   | ends 2026-08-31 | nfa         | https://grabagun.com/viral-giveaway
+   • Win a Canik Prime Radian and Holosun red dot!                  | $1500   | ends 2026-08-02 | optics      | https://wn.nr/Y2kVxj4
+
+=== gungiveaways.net (required) ===
+   via=direct status=200 rows=33
+   • Browning X-Bolt 2 Speed .300WinMag Rifle Giveaway              | $1520   | ends 2026-08-31 | rifle       | https://www.galleryofguns.com/ggg/?utm_source=Gungiveaw
+   • Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .22 | $11619  | ends 2026-08-31 | rifle       | https://swee.ps/eGCMJo_FNSvIWq
+   • Kimber Factory-Exclusive Pistols Giveaway (3 Winners)          | $5000   | ends 2026-09-06 | pistol      | https://www.collectorseliteauctions.com/sweepstakes/?ut
+   • POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway   | $5658   | ends 2026-08-31 | rifle       | https://risearmament.com/sweepstakes/?utm_source=Gungiv
+   • $5,000 Cash Giveaway                                           | $5000   | ends 2026-08-26 | accessories | https://ggn.fyi/4QqBmR3
+   • Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giveaw | $3324   | ends 2026-08-31 | optics      | https://www.midwayusa.com/sweepstakes?utm_source=Gungiv
+   • Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor  | $820    | ends 2026-08-31 | nfa         | https://grabagun.com/viral-giveaway?utm_source=Gungivea
+   • 5 Gram Gold Bar Giveaway                                       | $750    | ends 2026-08-31 | accessories | https://wn.nr/FbcWFxb
+
+=== gunmade.com (optional) ===
+   via=none status=direct 403 / jina 403 rows=0 reason=unreachable (direct 403 / jina 403)
+
+--- 74 raw -> 73 after dedup ---
+end dates parsed : 72/73
+values parsed    : 72/73
+already expired  : 3
+malformed dates  : 0
+self-links (bad) : 0
+unique norm urls : 73
+
+PASSED
