@@ -1,111 +1,32 @@
-=== TRANSPORTS AS SEEN FROM VERCEL ===
---- https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649
-{
-    "target": "https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649",
-    "runtime": "vercel",
-    "hasJinaKey": false,
-    "attempts": [
-        {
-            "label": "direct-browser-ua",
-            "status": 403,
-            "ms": 143,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "direct-googlebot-ua",
-            "status": 403,
-            "ms": 120,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "jina",
-            "status": 403,
-            "ms": 176,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "drupal-json",
-            "status": 403,
-            "ms": 156,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "amp",
-            "status": 403,
-            "ms": 137,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        }
-    ]
-}
---- https://gun.deals/
-{
-    "target": "https://gun.deals/",
-    "runtime": "vercel",
-    "hasJinaKey": false,
-    "attempts": [
-        {
-            "label": "direct-browser-ua",
-            "status": 403,
-            "ms": 37,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "direct-googlebot-ua",
-            "status": 403,
-            "ms": 41,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "jina",
-            "status": 403,
-            "ms": 39,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "drupal-json",
-            "status": 403,
-            "ms": 51,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        },
-        {
-            "label": "amp",
-            "status": 403,
-            "ms": 44,
-            "bytes": 0,
-            "challenge": false,
-            "ogImage": null
-        }
-    ]
-}
-=== Do any deals still point at gun.deals-hosted images? ===
-found 0
+key present: true (jina_02fee09…, 65 chars)
 
-=== Is the gun.deals IMAGE CDN blocked, or only HTML pages? ===
-   gun.deals favicon                  200  image/x-icon                 12014b IMAGE
-   gun.deals robots.txt               200  text/plain                   2173b
-   gun.deals sitemap.xml              403  text/html; charset=UTF-8     5774b
-   gun.deals rss.xml                  200  application/rss+xml; charset 340418b
+=== 1. Can we reach Jina at all? (example.com as control) ===
+  no key                         403     105ms     5798b [CF-WALL]
+       <!DOCTYPE html><html lang="en-US"><head><title>Just a moment...</title><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta http-equiv="X-UA
 
-=== Drupal node paths (RSS guid gives the node id) ===
-   node id: 1535781
-   /node/{id}                         403  text/html; charset=UTF-8     5777b
-   /node/{id}?_format=json            403  text/html; charset=UTF-8     5809b
-   /jsonapi/node/product              403  text/html; charset=UTF-8     5870b
+  with key                       200     588ms      317b
+       <html><head> <title>Test Document</title> </head> <body> <h1>Test Article</h1> <p>This is a test article with some
+
+
+=== 2. Can Jina reach gun.deals? ===
+
+  product 1: https://gun.deals/product/winchester-xpert-hv-12-ga-3-12-1-14-oz-shotshells-bb-shot-250-rounds-
+    html mode                    200    3575ms   254382b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sit
+
+    markdown mode                200     263ms    42533b
+       Title: Winchester Xpert HV 12-Ga. 3-1/2" 1-1/4 oz. Shotshells - BB Shot - 250 Rounds - $279.99 - $209.99 after 25% Back Rebate (Free S/H over $50) URL Source: 
+
+
+  product 2: https://gun.deals/product/cosmetic-blem-bcm-standard-145-mid-length-complete-upper-receiver-gro
+    html mode                    200    2487ms   200718b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sit
+
+    markdown mode                200    2583ms    37289b
+       Title: *COSMETIC BLEM* BCM Standard 14.5" Mid Length Complete Upper Receiver Group - $686.45 URL Source: https://gun.deals/product/cosmetic-blem-bcm-standard-1
+
+
+  product 3: https://gun.deals/product/kimber-2k11-pro-9mm-425-granite-191-174999
+    html mode                    200    5460ms   476113b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sit
+
+    markdown mode                200    3799ms    19153b
+       Title: Kimber 2K11 Pro 9mm 4.25" Granite 19+1 - $1749.99 URL Source: https://gun.deals/product/kimber-2k11-pro-9mm-425-granite-191-174999 Published Time: Mon,
+
