@@ -36,6 +36,7 @@ function isAuthorized(req) {
 
 import {
   SOURCES, scrapeAllSources, normalizeUrl, dedup, dedupSimilar, giveawayQualityIssue,
+  cleanStoredTitle,
 } from '@/lib/giveawaySources'
 
 // ── HANDLER ───────────────────────────────────────────────────────────────────
@@ -61,11 +62,18 @@ async function handler(req) {
     // stays on the page forever, which is exactly what happened with the July
     // batch of nav links and NRA contest pages.
     const retire = []
+    const repair = []
     for (const g of existing || []) {
       if (!g.active) continue
       if (g.endDate && g.endDate < today) { retire.push([g, 'ended ' + g.endDate]); continue }
       const issue = giveawayQualityIssue(g)
-      if (issue) retire.push([g, issue])
+      if (issue) { retire.push([g, issue]); continue }
+      const fixed = cleanStoredTitle(g.title)
+      if (fixed && fixed !== g.title) repair.push([g, fixed])
+    }
+    if (repair.length > 0) {
+      await sanity.mutate(repair.map(([g, title]) => ({ patch: { id: g._id, set: { title } } })))
+      stats.repaired = repair.length
     }
     if (retire.length > 0) {
       await sanity.mutate(retire.map(([g, reason]) => ({
