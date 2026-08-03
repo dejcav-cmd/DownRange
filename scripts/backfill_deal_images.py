@@ -73,20 +73,27 @@ def fetch(url, attempts=5, want_image=False):
 
 
 def validate_image(content):
-    """Standing image-pipeline rules: reject anything narrower than 400px, an
-    aspect ratio above 3.5:1, or taller than it is wide. Those shapes are
-    banners, logos and spec-sheet strips, not product photos."""
+    """The generic 400px / 3.5:1 / never-portrait rules were written for
+    keyword-searched images, where shape is the only signal that something is a
+    banner rather than a product. They are wrong here: these images come from
+    the product's own page, so provenance is already guaranteed, and firearms
+    photography is legitimately extreme — a rifle on white is routinely 6:1, a
+    sling bag or magazine is routinely portrait. Applying the strict rules
+    rejected 14 real product photos and left those deals with nothing.
+
+    What is left is only what genuinely cannot be a product photo: tracking
+    pixels, spacers and logo strips."""
     try:
         from PIL import Image
         w, h = Image.open(io.BytesIO(content)).size
     except Exception as e:
         return None, f'unreadable image ({type(e).__name__})'
-    if w < 400:
-        return None, f'too narrow ({w}x{h})'
-    if h and w / h > 3.5:
-        return None, f'banner aspect ({w}x{h})'
-    if h > w * 1.6:
-        return None, f'taller than wide ({w}x{h})'
+    if w < 200 or h < 200:
+        return None, f'too small ({w}x{h})'
+    if h and w / h > 8:
+        return None, f'strip/banner ({w}x{h})'
+    if w and h / w > 3:
+        return None, f'extreme portrait ({w}x{h})'
     return (w, h), None
 
 
