@@ -1,38 +1,37 @@
-=== RECENT gunDeal DOCS (last 5 days) ===
-count: 457
-by day: {"2026-08-03":36,"2026-08-02":78,"2026-08-01":85,"2026-07-31":96,"2026-07-30":109,"2026-07-29":53}
-by source: {"gun.deals":457}
-imageUrl: 452 non-search, 0 stock-search, 5 none
+457 deals, 38 distinct images
 
-sample (10):
-  NONE  Tactical Belt Heavy-Duty & Quick Release Militar 
-  NONE  Hawke Sport Optics Vantage IR Rifle Scope 3-9x40 
-  NONE  Brownells Oxpho-Blue Cold Bluing 4oz - $6.99     
-  NONE  Coupon for store Natchez Shooting & Outdoors Mon 
-  NONE  American Furniture Classics Gun Concealment Nigh 
-  real  FN AMERICA FN15 Patrol Carbine W/BUIS, 5.56 NATO c1658cfb8d077705d5ed2ca7addf474d9556b9c9-1880x12
-  real  Speer Lawman .45 ACP 230 Grain TMJ FN Brass 50 R d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x12
-  real  Jorviz Target Stand System 7x12 inch AR500 Steel d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x12
-  real  SOG Knives Adventurer Folding Drop Point Knife,  d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x12
-  real  Tactical Grip Camo Tape 1" Gun Grip Tape for Rif c1658cfb8d077705d5ed2ca7addf474d9556b9c9-1880x12
+=== most-reused images ===
+    81x  d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x1253.jpg
+    67x  ca969868415098cca998a729fcb0f8d1d092618a-1880x1253.jpg
+    51x  959419f5e5f9e3962a75fec12131e283d8d5dace-1880x1253.jpg
+    43x  c1658cfb8d077705d5ed2ca7addf474d9556b9c9-1880x1253.jpg
+    36x  336bae40775257d14e80b3881b4d3554f26eaaf4-1880x1253.jpg
+    21x  cfd19c47807297cdbdf167b50d8cd569f96cae97-1880x1255.jpg
+    20x  2b2abff7118a28ba00d356444d704fa74933508a-1880x1253.jpg
+    13x  22f704146d053bfc68e9ecebb233d01758d32fd7-1880x1253.jpg
+    12x  e582d80a43fcafd33a428ab942e89ec0b68ec53d-1880x1253.jpg
+    10x  2a7879e80843a442f343c74edb9e75d111377fba-1880x1253.jpg
+    10x  c173530bcd71b17066f9a6cd5f20bd2e56ef959b-1880x1253.jpg
+     8x  9be0e75bb80e83c17df3882960b3275605ae5a0a-1880x1253.jpg
 
-=== RSS ITEM STRUCTURE ===
+=== examples sharing the top image ===
+  Speer Lawman .45 ACP 230 Grain TMJ FN Brass 50 Rounds - $19.98
+  Jorviz Target Stand System 7x12 inch AR500 Steel Hostage Reactive Shoo
+  SOG Knives Adventurer Folding Drop Point Knife, Gray - $12.99
+  30% off CVLIFE Biometric Gun Safe, Fingerprint Gun Safe,3-in-1 Alarm C
+  Kershaw Knives Kingbolt Folder - $17.58
+  Bergara Divide 6.5 Creedmoor 24" barrel 3rd Brown/Black - $1999.99
+  NAA Black Widow .22 Mag 2" Barrel 5-Rounds Marble Arms Sights - $288.3
+  Atrius Development 3 Position Super Selector Safety - ADG-FRS-S - $159
 
- <title>Tactical Belt Heavy-Duty &amp; Quick Release Military, Work, Rigger, Duty &amp; Utility Belt - $6.49</title>
- <link>https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649</link>
- <description><![CDATA[<div>Price: $6.49</div> <div>Store: <a href="https://gun.deals/content/amazon">Amazon</a></div>]]></description>
- <category domain="https://gun.deals/category/caliber/apparel">Apparel</category>
- <comments>https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649#comments</comments>
- <pubDate>Mon, 03 Aug 2026 15:47:32 +0000</pubDate>
- <dc:creator>TerrySnyder</dc:creator>
- <guid isPermaLink="false">1535776 at https://gun.deals</guid>
+  full url: https://cdn.sanity.io/images/vbnsqnkg/production/d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x1253.jpg
 
+=== images used exactly once (likely genuine) ===
+  6 of 38
 
-=== TRANSPORT TESTS ===
-product link: https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649
-store href  : https://gun.deals/content/amazon
-   gun.deals direct               HTTP 403       0b og=none
-   gun.deals + jina               HTTP 403       0b og=none
-   gun.deals + allorigins         TimeoutError
-   gun.deals + codetabs           HTTP 521       0b og=none
-   merchant direct                HTTP 403       0b og=none
+=== asset metadata ===
+  deal-search-magazine-speed-loader-for-glock-9mm--40--hXa0OM.jpg 1880x1253 523767b
+  deal-search-tacfire-ar-10--308---7-62x51-unassembled-hUpriZ.jpg 1880x1253 190517b
+  deal-search-tactical-grip-camo-tape-1--gun-grip-tape-hXa0Lf.jpg 1880x1253 261884b
+  deal-search-range-day-upgrade---22-98-gps-quad-pisto-hXa0R3.jpg 1880x1253 90641b
+  deal-search-sog-knives-adventurer-folding-drop-point-hXvZGE.jpg 1880x1253 219681b
