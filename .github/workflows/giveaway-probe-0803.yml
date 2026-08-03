@@ -1,0 +1,21 @@
+name: Giveaway Source Probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run probe
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/giveaway_probe.py
+      - name: Publish result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_probe.py
