@@ -10,7 +10,7 @@ back to back, so it saw nothing but 403s and looked like a wall.
 Retry with backoff, pace the requests, and rotate the TLS fingerprint between
 attempts, and the site is readable for free.
 """
-import json, os, random, re, sys, time
+import io, json, os, random, re, sys, time
 from urllib.parse import quote
 
 from curl_cffi import requests as creq
@@ -72,6 +72,24 @@ def fetch(url, attempts=5, want_image=False):
     return (None, None) if want_image else (None, None)
 
 
+def validate_image(content):
+    """Standing image-pipeline rules: reject anything narrower than 400px, an
+    aspect ratio above 3.5:1, or taller than it is wide. Those shapes are
+    banners, logos and spec-sheet strips, not product photos."""
+    try:
+        from PIL import Image
+        w, h = Image.open(io.BytesIO(content)).size
+    except Exception as e:
+        return None, f'unreadable image ({type(e).__name__})'
+    if w < 400:
+        return None, f'too narrow ({w}x{h})'
+    if h and w / h > 3.5:
+        return None, f'banner aspect ({w}x{h})'
+    if h > w * 1.6:
+        return None, f'taller than wide ({w}x{h})'
+    return (w, h), None
+
+
 def native_url(og):
     """Prefer the untransformed original over the cdn-cgi social-card crop,
     which letterboxes tall product shots."""
@@ -114,10 +132,16 @@ for i, deal in enumerate(needs):
         print(f'  x {label} — image not downloadable')
         continue
 
+    dims, why = validate_image(content)
+    if not dims:
+        failed += 1
+        print(f'  x {label} — rejected: {why}')
+        continue
+
     sha = hashlib.sha1(content).hexdigest()[:12]
     hashes[sha] = hashes.get(sha, 0) + 1
     fixed += 1
-    print(f'  + {label} — {len(content)}b sha={sha}')
+    print(f'  + {label} — {len(content)}b {dims[0]}x{dims[1]} sha={sha}')
 
     if not DRY:
         name = deal['externalUrl'].rstrip('/').split('/')[-1][:60]

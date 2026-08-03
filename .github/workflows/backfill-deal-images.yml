@@ -24,7 +24,7 @@ jobs:
     timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-      - run: pip install curl_cffi --quiet
+      - run: pip install curl_cffi pillow --quiet
       - name: Backfill
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
