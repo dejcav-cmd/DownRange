@@ -1,0 +1,34 @@
+# Dispatch-only. Runs the real scrapers against the live sites and reports what
+# each source returned. This exists because the failure that took giveaways down
+# was silent: sources returned 0 rows for weeks without throwing, so nothing
+# surfaced until the blackout alarm was added. Run this after any scraper edit,
+# or when a source's numbers look wrong.
+name: Source Health Check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check giveaway sources
+        id: test
+        continue-on-error: true
+        run: node scripts/test_giveaway_sources.mjs 2>&1 | tee result.txt
+      - name: Check gun.deals image transport
+        run: node scripts/check_deal_images.mjs 2>&1 | tee -a result.txt || true
+      - name: Publish result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/source-health.txt
+      - name: Fail if a required source is down
+        if: steps.test.outcome == 'failure'
+        run: exit 1
