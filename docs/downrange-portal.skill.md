@@ -332,3 +332,46 @@ carry a second, separately-rotting copy). Rules that matter:
   no working image source for gun-deals. Options are a different reader proxy, a
   headless-render service, or accepting placeholders until one is chosen. Do not
   substitute stock photos — a placeholder beats a wrong product image.
+
+
+## Session 2026-08-03 (part 2) — junk giveaways on the live page
+
+Symptom: `/giveaways` showing "wintheguns.com", "More Giveaways Here!", "Youth
+Wildlife Art Contest" and two NRA scholarship pages as live ONGOING giveaways.
+
+Three independent root causes, all needed fixing:
+
+1. **The pre-rewrite scraper had no quality gate.** It saved the source's own
+   homepage and nav links as prizes. Fixing the parser stopped new junk but did
+   nothing about the 118 documents already in Sanity.
+2. **Documents with no `endDate` were immortal.** The expiry sweep filtered on
+   `g.endDate && g.endDate < today`, so a null end date never matched — and
+   `/giveaways` explicitly renders `endDate == null` rows as ONGOING. A July nav
+   link was still on the page in August.
+3. **The cron only ever added.** It had no path that could remove anything, so
+   every bug in every past version of the scraper was permanent.
+
+**The rule that prevents recurrence:** `giveawayQualityIssue()` in
+`lib/giveawaySources.js` is ONE definition applied at write time AND as a sweep
+over every stored document on every run. Any future scraper bug self-heals on
+the next cron. Retirement reasons:
+
+- entry URL points back at an aggregator instead of a sponsor
+- navigation / page-chrome title
+- title made entirely of generic words (a doc titled just "Giveaways" survived
+  the first pass because a dollar figure had bled in from a neighbouring row —
+  the value/date check alone is not sufficient)
+- neither a prize value nor an end date
+- no end date and older than `STALE_NO_END_DATE_DAYS` (45)
+
+Documents are deactivated, never deleted, with the reason written to
+`editorNote`. The sweep also repairs stored titles (`cleanStoredTitle`) rather
+than leaving old markup artifacts on the page until they expire.
+
+**General principle for any ingest cron in this repo:** a write-time filter is
+only half a fix. If the cron cannot retire what it previously wrote, bad data is
+permanent. Every ingest job should re-validate its own stored documents against
+the current bar on every run.
+
+`Giveaway Audit` workflow (dispatch-only) runs the cron then reports what
+survived — use it after any change to the quality gate.
