@@ -326,5 +326,9 @@ carry a second, separately-rotting copy). Rules that matter:
 
 - gun.deals product pages return 403 to BOTH direct fetch and Jina, so
   `scrapeOGImageViaJina()` in gun-deals returns null on every deal and the deals
-  page is serving placeholders. No working transport identified yet; the RSS feed
-  itself (200, ~330KB) is the most promising alternative image source.
+  page is serving placeholders. The RSS feed is reachable (200, ~330KB) but
+  carries NO images at all — no media:content, no media:thumbnail, no enclosure,
+  no <img> in the item bodies, zero image URLs of any kind. So there is currently
+  no working image source for gun-deals. Options are a different reader proxy, a
+  headless-render service, or accepting placeholders until one is chosen. Do not
+  substitute stock photos — a placeholder beats a wrong product image.
