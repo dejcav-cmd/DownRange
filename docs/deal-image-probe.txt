@@ -1,15 +1,25 @@
-  winchester-xpert-hv-12-ga-3-12-1-14-oz-shots   200 256304b image/png          sha=6cbb290dce21
-     og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/winchester-xpert-hv-12-ga-3-1-2-1-1-4-oz-shotshells-bb-sho
-  cosmetic-blem-bcm-standard-145-mid-length-co   200 19956b image/jpeg          sha=15fc69e9b57a
-     og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/Screenshot%202024-04-02%20at%2017.05.23.png
-  kimber-2k11-pro-9mm-425-granite-191-174999     200 49168b image/jpeg          sha=4a24a21050a4
-     og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/kim0585.jpg
-  sds-imports-tisas-px-57-57-x-28-48-barrel-20   200 27556b image/jpeg          sha=8cbf5505a198
-     og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/px5728mm.jpg
-  escort-sdx410-semi-automatic-shotgun-flat-da   200 15094b image/jpeg          sha=8064376e03ca
-     og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/gag_hesd412000f1-5663-0021.jpg
-  tisas-1911-duty-ds-night-stalker-9mm-5-171-g   200 28461b image/jpeg          sha=1619c28d8b01
-     og: https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/sites/default/files/129020e9b334b69d77f4764e12468189.png
+=== HTML mode (what the backfill used) ===
+  402     345b    413ms rl= og=NO
+     {"data":null,"code":402,"name":"InsufficientBalanceError","status":40203,"message":"Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6)","readableMessage":"Insuffici
+  402     345b    159ms rl= og=NO
+     {"data":null,"code":402,"name":"InsufficientBalanceError","status":40203,"message":"Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6)","readableMessage":"Insuffici
 
-  distinct images: 6 of 6
-  PASS — every product has its own image
+=== markdown + images summary (candidate: ~10x smaller) ===
+  402     133b    132ms imgs=0 pick=NONE
+     InsufficientBalanceError: Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6) 
+  402     133b    119ms imgs=0 pick=NONE
+     InsufficientBalanceError: Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6) 
+  402     133b    135ms imgs=0 pick=NONE
+     InsufficientBalanceError: Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6) 
+  402     133b    120ms imgs=0 pick=NONE
+     InsufficientBalanceError: Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6) 
+  402     133b    127ms imgs=0 pick=NONE
+     InsufficientBalanceError: Account balance not enough to run this query, please recharge. (uid: a1be1edd-408e-4c36-9cf7-c8c36bf56ad6) 
+
+=== Is JINA_API_KEY live on Vercel? ===
+  hasJinaKey: true
+    direct-browser-ua      403 
+    direct-googlebot-ua    403 
+    jina                   402 
+    drupal-json            403 
+    amp                    403 
