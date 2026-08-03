@@ -14,17 +14,362 @@ https://nextjs.org/telemetry
   ▲ Next.js 14.2.29
 
    Creating an optimized production build ...
-Failed to compile.
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (123kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ✓ Compiled successfully
+   Linting and checking validity of types ...
+   Collecting page data ...
+ ⚠ Using edge runtime on a page currently disables static generation for that page
+   Generating static pages (0/162) ...
+[debug] Error: B [Error]: Dynamic server usage: Route /api/admin/debug/subscribers couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error
+    at V (/home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:21778)
+    at Object.get (/home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:29465)
+    at c (/home/runner/work/DownRange/DownRange/.next/server/app/api/admin/debug/subscribers/route.js:1:1243)
+    at /home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38417
+    at /home/runner/work/DownRange/DownRange/node_modules/next/dist/server/lib/trace/tracer.js:140:36
+    at NoopContextManager.with (/home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:7062)
+    at ContextAPI.with (/home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:518)
+    at NoopTracer.startActiveSpan (/home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18093)
+    at ProxyTracer.startActiveSpan (/home/runner/work/DownRange/DownRange/node_modules/next/dist/compiled/@opentelemetry/api/index.js:1:18854)
+    at /home/runner/work/DownRange/DownRange/node_modules/next/dist/server/lib/trace/tracer.js:122:103 {
+  description: "Route /api/admin/debug/subscribers couldn't be rendered statically because it used `request.headers`. See more info here: https://nextjs.org/docs/messages/dynamic-server-error",
+  digest: 'DYNAMIC_SERVER_USAGE'
+}
+   Generating static pages (40/162) 
+   Generating static pages (80/162) 
+   Generating static pages (121/162) 
+ ✓ Generating static pages (162/162)
+   Finalizing page optimization ...
+   Collecting build traces ...
 
-./app/api/admin/run/route.js
-Module not found: Can't resolve '../../../../agent/feeds/market.js'
+Route (app)                                      Size     First Load JS
+┌ ○ /                                            7.87 kB         286 kB
+├ ○ /_not-found                                  143 B          88.7 kB
+├ ○ /about                                       400 B           279 kB
+├ ○ /admin                                       29 kB           127 kB
+├ ƒ /admin-app                                   0 B                0 B
+├ ○ /admin-login                                 2.23 kB        90.8 kB
+├ ○ /admin/pull-log                              6.25 kB        94.8 kB
+├ ● /ammo/[caliber]                              400 B           279 kB
+├   ├ /ammo/308
+├   ├ /ammo/556
+├   ├ /ammo/9mm
+├   └ [+2 more paths]
+├ ƒ /api/admin/ai-costs                          0 B                0 B
+├ ƒ /api/admin/ai-status                         0 B                0 B
+├ ƒ /api/admin/ai-test                           0 B                0 B
+├ ƒ /api/admin/alert-config                      0 B                0 B
+├ ƒ /api/admin/amazon-asin                       0 B                0 B
+├ ƒ /api/admin/amazon-diag                       0 B                0 B
+├ ƒ /api/admin/articles-list                     0 B                0 B
+├ ƒ /api/admin/auth                              0 B                0 B
+├ ƒ /api/admin/auth/signout                      0 B                0 B
+├ ƒ /api/admin/backfill-articles                 0 B                0 B
+├ ƒ /api/admin/backfill-images                   0 B                0 B
+├ ƒ /api/admin/backfill-releases                 0 B                0 B
+├ ƒ /api/admin/backfill-test                     0 B                0 B
+├ ƒ /api/admin/backup                            0 B                0 B
+├ ƒ /api/admin/blog-fetch-images                 0 B                0 B
+├ ƒ /api/admin/blog-fix-images                   0 B                0 B
+├ ƒ /api/admin/blog-image-search                 0 B                0 B
+├ ƒ /api/admin/blog-posts                        0 B                0 B
+├ ƒ /api/admin/blog-regen-body                   0 B                0 B
+├ ƒ /api/admin/breaking                          0 B                0 B
+├ ƒ /api/admin/breaking-alert                    0 B                0 B
+├ ƒ /api/admin/briefings                         0 B                0 B
+├ ƒ /api/admin/bulk-strip-attribution            0 B                0 B
+├ ƒ /api/admin/categorize                        0 B                0 B
+├ ƒ /api/admin/clean-attribution                 0 B                0 B
+├ ƒ /api/admin/config                            0 B                0 B
+├ ƒ /api/admin/content-scan                      0 B                0 B
+├ ƒ /api/admin/content-sources                   0 B                0 B
+├ ƒ /api/admin/cron-health                       0 B                0 B
+├ ƒ /api/admin/cron-status                       0 B                0 B
+├ ƒ /api/admin/deals-image-backfill              0 B                0 B
+├ ƒ /api/admin/deals-list                        0 B                0 B
+├ ƒ /api/admin/debug-feed                        0 B                0 B
+├ ƒ /api/admin/debug/mailerlite                  0 B                0 B
+├ ƒ /api/admin/debug/releases-test               0 B                0 B
+├ ƒ /api/admin/debug/subscribers                 0 B                0 B
+├ ƒ /api/admin/dedup-contacts                    0 B                0 B
+├ ƒ /api/admin/delete-gnews-releases             0 B                0 B
+├ ƒ /api/admin/deployments                       0 B                0 B
+├ ƒ /api/admin/drafts                            0 B                0 B
+├ ƒ /api/admin/env-check                         0 B                0 B
+├ ƒ /api/admin/fetch-article-images              0 B                0 B
+├ ƒ /api/admin/fetch-image                       0 B                0 B
+├ ƒ /api/admin/find-emails                       0 B                0 B
+├ ƒ /api/admin/fix-article-image                 0 B                0 B
+├ ƒ /api/admin/fix-blog-images                   0 B                0 B
+├ ƒ /api/admin/fix-canada-articles               0 B                0 B
+├ ƒ /api/admin/fix-deal-articles                 0 B                0 B
+├ ƒ /api/admin/fix-fences                        0 B                0 B
+├ ƒ /api/admin/fix-giveaways                     0 B                0 B
+├ ƒ /api/admin/fix-images                        0 B                0 B
+├ ƒ /api/admin/fix-images-intl                   0 B                0 B
+├ ƒ /api/admin/image-finder                      0 B                0 B
+├ ƒ /api/admin/image-repo                        0 B                0 B
+├ ƒ /api/admin/influencers                       0 B                0 B
+├ ƒ /api/admin/lock-all                          0 B                0 B
+├ ƒ /api/admin/migrate-ammoland                  0 B                0 B
+├ ƒ /api/admin/nav-config                        0 B                0 B
+├ ƒ /api/admin/newsletter-drafts                 0 B                0 B
+├ ƒ /api/admin/newsletter-schedule               0 B                0 B
+├ ƒ /api/admin/nuke-releases                     0 B                0 B
+├ ƒ /api/admin/one-time-cleanup                  0 B                0 B
+├ ƒ /api/admin/patch-ammo-article                0 B                0 B
+├ ƒ /api/admin/patch-article                     0 B                0 B
+├ ƒ /api/admin/patch-by-slug                     0 B                0 B
+├ ƒ /api/admin/patch-releases-images             0 B                0 B
+├ ƒ /api/admin/patch-specific                    0 B                0 B
+├ ƒ /api/admin/purge-intl-articles               0 B                0 B
+├ ƒ /api/admin/purge-shorts                      0 B                0 B
+├ ƒ /api/admin/quality-rewrite-single            0 B                0 B
+├ ƒ /api/admin/releases-manager                  0 B                0 B
+├ ƒ /api/admin/remove-ammoland                   0 B                0 B
+├ ƒ /api/admin/remove-short-videos               0 B                0 B
+├ ƒ /api/admin/reviews-manager                   0 B                0 B
+├ ƒ /api/admin/rewrite-releases                  0 B                0 B
+├ ƒ /api/admin/run                               0 B                0 B
+├ ƒ /api/admin/run-all-fixes                     0 B                0 B
+├ ƒ /api/admin/save-image-url                    0 B                0 B
+├ ƒ /api/admin/save-videos                       0 B                0 B
+├ ƒ /api/admin/schedule                          0 B                0 B
+├ ƒ /api/admin/scrape-releases                   0 B                0 B
+├ ƒ /api/admin/seed-all-content                  0 B                0 B
+├ ƒ /api/admin/seed-blog-bodies                  0 B                0 B
+├ ƒ /api/admin/seed-image-repo                   0 B                0 B
+├ ƒ /api/admin/seed-releases                     0 B                0 B
+├ ƒ /api/admin/send-portal-report                0 B                0 B
+├ ƒ /api/admin/set-env                           0 B                0 B
+├ ƒ /api/admin/setup/create-newsletter-schedule  0 B                0 B
+├ ƒ /api/admin/site-config                       0 B                0 B
+├ ƒ /api/admin/smart-image-fix                   0 B                0 B
+├ ƒ /api/admin/sms-config                        0 B                0 B
+├ ƒ /api/admin/state-profiles                    0 B                0 B
+├ ƒ /api/admin/status                            0 B                0 B
+├ ƒ /api/admin/strip-source-footer               0 B                0 B
+├ ƒ /api/admin/subscribers                       0 B                0 B
+├ ƒ /api/admin/system-alerts                     0 B                0 B
+├ ƒ /api/admin/test-emails                       0 B                0 B
+├ ƒ /api/admin/test-feeds                        0 B                0 B
+├ ƒ /api/admin/test-og-scrape                    0 B                0 B
+├ ƒ /api/admin/test-sms                          0 B                0 B
+├ ƒ /api/admin/test-welcome-email                0 B                0 B
+├ ƒ /api/admin/trigger                           0 B                0 B
+├ ƒ /api/admin/videos-manager                    0 B                0 B
+├ ƒ /api/admin/write-blog-articles               0 B                0 B
+├ ƒ /api/admin/write-brazil-articles             0 B                0 B
+├ ƒ /api/admin/write-canada-articles             0 B                0 B
+├ ƒ /api/admin/write-missing-bodies              0 B                0 B
+├ ƒ /api/admin/youtube-channels                  0 B                0 B
+├ ƒ /api/admin/zoho-draft                        0 B                0 B
+├ ƒ /api/agent                                   0 B                0 B
+├ ƒ /api/algolia-sync                            0 B                0 B
+├ ƒ /api/auth/zoho/accounts                      0 B                0 B
+├ ƒ /api/auth/zoho/callback                      0 B                0 B
+├ ƒ /api/blog-publish                            0 B                0 B
+├ ƒ /api/brazil                                  0 B                0 B
+├ ƒ /api/breaking-alerts                         0 B                0 B
+├ ƒ /api/canada                                  0 B                0 B
+├ ƒ /api/canada/seed                             0 B                0 B
+├ ƒ /api/competitions                            0 B                0 B
+├ ƒ /api/competitions/admin                      0 B                0 B
+├ ƒ /api/contact                                 0 B                0 B
+├ ƒ /api/cron/amazon-brands                      0 B                0 B
+├ ƒ /api/cron/amazon-deals                       0 B                0 B
+├ ƒ /api/cron/bible-update                       0 B                0 B
+├ ƒ /api/cron/blog-writer                        0 B                0 B
+├ ƒ /api/cron/carry-insurance                    0 B                0 B
+├ ƒ /api/cron/ccw-update                         0 B                0 B
+├ ƒ /api/cron/copyright-review                   0 B                0 B
+├ ƒ /api/cron/enrich-state-pages                 0 B                0 B
+├ ƒ /api/cron/fix-placeholder-images             0 B                0 B
+├ ƒ /api/cron/fix-slugs                          0 B                0 B
+├ ƒ /api/cron/giveaways                          0 B                0 B
+├ ƒ /api/cron/gun-deals                          0 B                0 B
+├ ƒ /api/cron/image-fix                          0 B                0 B
+├ ƒ /api/cron/nra-law-sync                       0 B                0 B
+├ ƒ /api/cron/nra-law-sync-enhanced              0 B                0 B
+├ ƒ /api/cron/quality-rewrite                    0 B                0 B
+├ ƒ /api/cron/reddit-deals                       0 B                0 B
+├ ƒ /api/cron/releases                           0 B                0 B
+├ ƒ /api/cron/releases-process                   0 B                0 B
+├ ƒ /api/cron/sitemap                            0 B                0 B
+├ ƒ /api/cron/sitemap-health                     0 B                0 B
+├ ƒ /api/cron/web-deals                          0 B                0 B
+├ ƒ /api/cron/weekly-gun-releases                0 B                0 B
+├ ƒ /api/cron/write-brazil-articles              0 B                0 B
+├ ƒ /api/cron/write-canada-articles              0 B                0 B
+├ ƒ /api/deals                                   0 B                0 B
+├ ƒ /api/feedback                                0 B                0 B
+├ ƒ /api/ffl                                     0 B                0 B
+├ ƒ /api/img-proxy                               0 B                0 B
+├ ƒ /api/intelligence                            0 B                0 B
+├ ƒ /api/law-assistant                           0 B                0 B
+├ ƒ /api/news-feed                               0 B                0 B
+├ ƒ /api/newsletter                              0 B                0 B
+├ ƒ /api/newsletter/content                      0 B                0 B
+├ ƒ /api/newsletter/preview                      0 B                0 B
+├ ƒ /api/newsletter/send                         0 B                0 B
+├ ƒ /api/newsletter/send-test                    0 B                0 B
+├ ƒ /api/newsletter/test                         0 B                0 B
+├ ƒ /api/nfa-wait-times                          0 B                0 B
+├ ƒ /api/nics                                    0 B                0 B
+├ ƒ /api/outreach/campaigns                      0 B                0 B
+├ ƒ /api/outreach/contacts                       0 B                0 B
+├ ƒ /api/outreach/dealers                        0 B                0 B
+├ ƒ /api/outreach/debug-send                     0 B                0 B
+├ ƒ /api/outreach/ffl-national                   0 B                0 B
+├ ƒ /api/outreach/first-wave                     0 B                0 B
+├ ƒ /api/outreach/history                        0 B                0 B
+├ ƒ /api/outreach/holsters                       0 B                0 B
+├ ƒ /api/outreach/import                         0 B                0 B
+├ ƒ /api/outreach/instructors                    0 B                0 B
+├ ƒ /api/outreach/internet-scan                  0 B                0 B
+├ ƒ /api/outreach/manufacturers                  0 B                0 B
+├ ƒ /api/outreach/queue                          0 B                0 B
+├ ƒ /api/outreach/queue/digest                   0 B                0 B
+├ ƒ /api/outreach/scrape                         0 B                0 B
+├ ƒ /api/outreach/seed-youtubers                 0 B                0 B
+├ ƒ /api/outreach/send                           0 B                0 B
+├ ƒ /api/outreach/send/direct                    0 B                0 B
+├ ƒ /api/outreach/send/preview                   0 B                0 B
+├ ƒ /api/outreach/templates                      0 B                0 B
+├ ƒ /api/outreach/templates/seed                 0 B                0 B
+├ ƒ /api/outreach/test-send                      0 B                0 B
+├ ƒ /api/outreach/unsubscribe                    0 B                0 B
+├ ƒ /api/outreach/update-youtubers               0 B                0 B
+├ ƒ /api/price-alert                             0 B                0 B
+├ ƒ /api/pull-log                                0 B                0 B
+├ ƒ /api/ranges                                  0 B                0 B
+├ ƒ /api/revalidate                              0 B                0 B
+├ ƒ /api/search                                  0 B                0 B
+├ ƒ /api/site-health                             0 B                0 B
+├ ƒ /api/social/analytics                        0 B                0 B
+├ ƒ /api/social/config                           0 B                0 B
+├ ƒ /api/social/cron/bluesky                     0 B                0 B
+├ ƒ /api/social/cron/facebook                    0 B                0 B
+├ ƒ /api/social/cron/reddit                      0 B                0 B
+├ ƒ /api/social/cron/threads                     0 B                0 B
+├ ƒ /api/social/cron/twitter                     0 B                0 B
+├ ƒ /api/social/links                            0 B                0 B
+├ ƒ /api/social/log                              0 B                0 B
+├ ƒ /api/social/post                             0 B                0 B
+├ ƒ /api/social/zernio-accounts                  0 B                0 B
+├ ƒ /api/state-rules                             0 B                0 B
+├ ƒ /api/submissions                             0 B                0 B
+├ ƒ /api/subscribe                               0 B                0 B
+├ ƒ /api/system/alert                            0 B                0 B
+├ ƒ /api/track-bill                              0 B                0 B
+├ ƒ /api/unsubscribe                             0 B                0 B
+├ ƒ /api/webhook                                 0 B                0 B
+├ ƒ /api/widget                                  0 B                0 B
+├ ƒ /api/youtube                                 0 B                0 B
+├ ○ /ballistics                                  10 kB           288 kB
+├ ƒ /blog                                        410 B           279 kB
+├ ● /blog/[slug]                                 1.71 kB         280 kB
+├   ├ /blog/suppressor-revolution-2026
+├   ├ /blog/micro-compact-pistol-market-2026
+├   ├ /blog/gun-prices-tariffs-2026
+├   └ [+5 more paths]
+├ ƒ /brazil                                      6.89 kB         285 kB
+├ ƒ /brazil/[slug]                               2.22 kB         280 kB
+├ ƒ /canada                                      6.82 kB         285 kB
+├ ƒ /canada/[slug]                               2.22 kB         280 kB
+├ ○ /carry-insurance                             400 B           279 kB
+├ ○ /catalogo                                    3.39 kB         106 kB
+├ ○ /ccw                                         18.5 kB         297 kB
+├ ƒ /compare/[guns]                              400 B           279 kB
+├ ○ /competitions                                7.15 kB         285 kB
+├ ○ /contact                                     2.47 kB         281 kB
+├ ○ /contato                                     5.53 kB         109 kB
+├ ○ /contribute                                  4.18 kB         282 kB
+├ ○ /deals                                       13.1 kB         294 kB
+├ ƒ /feed.xml                                    0 B                0 B
+├ ƒ /feeds/blog                                  0 B                0 B
+├ ƒ /feeds/canada                                0 B                0 B
+├ ƒ /feeds/competitions                          0 B                0 B
+├ ƒ /feeds/deals                                 0 B                0 B
+├ ƒ /feeds/giveaways                             0 B                0 B
+├ ƒ /feeds/hunting                               0 B                0 B
+├ ƒ /feeds/laws                                  0 B                0 B
+├ ƒ /feeds/news                                  0 B                0 B
+├ ƒ /feeds/opml                                  0 B                0 B
+├ ƒ /feeds/releases                              0 B                0 B
+├ ƒ /feeds/reviews                               0 B                0 B
+├ ƒ /feeds/video                                 0 B                0 B
+├ ○ /ffl-finder                                  4.29 kB         282 kB
+├ ƒ /giveaways                                   4.68 kB         283 kB
+├ ƒ /giveaways/opengraph-image                   0 B                0 B
+├ ○ /guia-importacao                             3.39 kB         106 kB
+├ ƒ /guns                                        2.2 kB          280 kB
+├ ● /guns/[model]                                410 B           279 kB
+├   ├ /guns/glock-17
+├   ├ /guns/glock-19
+├   ├ /guns/glock-43x
+├   └ [+20 more paths]
+├ ● /holsters/[model]                            400 B           279 kB
+├   ├ /holsters/glock-19
+├   ├ /holsters/glock-43x
+├   └ /holsters/sig-p365
+├ ƒ /hunting                                     410 B           279 kB
+├ ○ /laws                                        410 B           279 kB
+├ ƒ /laws/[state]                                410 B           279 kB
+├ ƒ /laws/federal                                400 B           279 kB
+├ ○ /laws/my-state                               4.13 kB         282 kB
+├ ○ /laws/states                                 410 B           279 kB
+├ ƒ /learn                                       410 B           279 kB
+├ ● /learn/[slug]                                410 B           279 kB
+├   ├ /learn/buying-your-first-gun
+├   ├ /learn/how-to-get-ccw-license
+├   ├ /learn/firearms-safety-four-rules
+├   └ [+9 more paths]
+├ ƒ /news                                        1.75 kB         283 kB
+├ ƒ /news-sitemap.xml                            0 B                0 B
+├ ƒ /news/[slug]                                 3.52 kB         285 kB
+├ ƒ /news/[slug]/opengraph-image                 0 B                0 B
+├ ○ /nfa-tracker                                 5.82 kB         284 kB
+├ ○ /precision                                   410 B           279 kB
+├ ƒ /preparedness                                410 B           279 kB
+├ ○ /press                                       217 B           284 kB
+├ ○ /privacy                                     400 B           279 kB
+├ ○ /ranges                                      6.13 kB         284 kB
+├ ƒ /releases                                    5.06 kB         283 kB
+├ ƒ /releases/[slug]                             1.05 kB         279 kB
+├ ƒ /reviews                                     2.2 kB          280 kB
+├ ƒ /reviews/[slug]                              400 B           279 kB
+├ ○ /robots.txt                                  0 B                0 B
+├ ○ /rss                                         5.97 kB         284 kB
+├ ○ /safe-storage                                400 B           279 kB
+├ ○ /search                                      2.88 kB         281 kB
+├ ○ /servicos                                    3.39 kB         106 kB
+├ ○ /sitemap.xml                                 0 B                0 B
+├ ○ /sobre                                       3.39 kB         106 kB
+├ ƒ /state-hub                                   6.03 kB         284 kB
+├ ƒ /state-hub/[state]                           2.49 kB         281 kB
+├ ƒ /state-intel                                 5.21 kB         283 kB
+├ ○ /state-news                                  410 B           279 kB
+├ ● /state-news/[state]                          410 B           279 kB
+├   ├ /state-news/al
+├   ├ /state-news/ak
+├   ├ /state-news/az
+├   └ [+47 more paths]
+├ ƒ /studio/[[...tool]]                          1.42 kB          90 kB
+├ ○ /terms                                       400 B           279 kB
+├ ○ /training                                    400 B           279 kB
+├ ○ /unsubscribe                                 1.99 kB        99.7 kB
+├ ○ /value-estimator                             4.32 kB         282 kB
+├ ƒ /video                                       5.3 kB          283 kB
+└ ○ /widget                                      400 B           279 kB
++ First Load JS shared by all                    88.6 kB
+  ├ chunks/2117-1a61d9c56c484818.js              31.8 kB
+  ├ chunks/fd9d1056-92d54e90a5176e2e.js          53.6 kB
+  └ other shared chunks (total)                  3.17 kB
 
-https://nextjs.org/docs/messages/module-not-found
 
-./app/api/admin/trigger/route.js
-Module not found: Can't resolve '../../../../agent/feeds/market.js'
+ƒ Middleware                                     71.1 kB
 
-https://nextjs.org/docs/messages/module-not-found
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses getStaticProps)
+ƒ  (Dynamic)  server-rendered on demand
 
-
-> Build failed because of webpack errors
