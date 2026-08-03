@@ -1,3 +1,100 @@
+=== TRANSPORTS AS SEEN FROM VERCEL ===
+--- https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649
+{
+    "target": "https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649",
+    "runtime": "vercel",
+    "hasJinaKey": false,
+    "attempts": [
+        {
+            "label": "direct-browser-ua",
+            "status": 403,
+            "ms": 201,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "direct-googlebot-ua",
+            "status": 403,
+            "ms": 160,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "jina",
+            "status": 403,
+            "ms": 167,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "drupal-json",
+            "status": 403,
+            "ms": 185,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "amp",
+            "status": 403,
+            "ms": 181,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        }
+    ]
+}
+--- https://gun.deals/
+{
+    "target": "https://gun.deals/",
+    "runtime": "vercel",
+    "hasJinaKey": false,
+    "attempts": [
+        {
+            "label": "direct-browser-ua",
+            "status": 403,
+            "ms": 51,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "direct-googlebot-ua",
+            "status": 403,
+            "ms": 41,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "jina",
+            "status": 403,
+            "ms": 43,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "drupal-json",
+            "status": 403,
+            "ms": 52,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        },
+        {
+            "label": "amp",
+            "status": 403,
+            "ms": 55,
+            "bytes": 0,
+            "challenge": false,
+            "ogImage": null
+        }
+    ]
+}
 457 deals, 38 distinct images
 
 === most-reused images ===
