@@ -1,9 +1,9 @@
-(node:2258) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
+(node:2060) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/DownRange/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-[GIVEAWAYS] wintheguns.com: 40 entries via direct
 [GIVEAWAYS] gungiveaways.net: 33 entries via direct
+[GIVEAWAYS] wintheguns.com: 40 entries via direct
 
 === wintheguns.com (required) ===
    via=direct status=200 rows=40
@@ -97,3 +97,10 @@ PASSED
    sample product: https://gun.deals/product/glock-traditional-hoodie-od-green-durable-soft-fabric-long-sleeve-small-3137
    direct                 HTTP 403        0b  og:image=none
    via r.jina.ai          HTTP 403        0b  og:image=none
+
+=== gun.deals RSS image content ===
+   media:content         0 hits  
+   media:thumbnail       0 hits  
+   enclosure             0 hits  
+   <img> in body         0 hits  
+   any image url         0 hits  
