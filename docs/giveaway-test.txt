@@ -1,4 +1,4 @@
-(node:2406) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
+(node:2293) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/DownRange/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
@@ -30,12 +30,71 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
 === gunmade.com (optional) ===
    via=none status=direct 403 / jina 403 rows=0 reason=unreachable (direct 403 / jina 403)
 
---- 74 raw -> 73 after dedup ---
-end dates parsed : 72/73
-values parsed    : 72/73
+--- 74 raw -> 73 url-dedup -> 57 cross-source dedup ---
+
+--- FINAL SET ---
+   2026-09-01 $400    accessories Win $400!
+   2026-08-31 $1520   accessories Win a Browning X Bolt in 300 win mag! (Single entry)
+   2026-08-31 $5658   rifle       POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway
+   2026-08-31 $11619  rifle       Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + G
+   2026-08-31 $750    accessories 5 Gram Gold Bar Giveaway
+   2026-08-31 $15000  accessories Win 1 of 3 high end collectors Kimbers!
+   2026-08-31 $2100   nfa         Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor Giveaway
+   2026-08-02 $1500   optics      Win a Canik Prime Radian and Holosun red dot!
+   2026-08-26 $5000   accessories Win $5,000! (Any gun you want!)
+   2026-08-12 $500    ammo        Win a $500 Walmart Gift card! (Ammo money!)
+   2026-08-19 $3800   nfa         Win 2x Zev Tech FDP9 SBRs!
+   2026-08-27 $2650   accessories Win a Daniel Defense SPR III AR!
+   2026-08-05 $2100   accessories Win 1 of 2 prizes of a S&W 357 or 38!
+   2026-08-04 $150    rifle       Savior Equipment Rifle Bag Giveaway
+   2026-08-31 $1200   pistol      CZ P-10 C Ported COA Pistol Giveaway
+   2026-08-31 $450    accessories Win a shooting tripod!
+   2026-08-03 $3050   accessories Win 1 of 2 prizes of a S&W 30-30 or 45-70!
+   2026-08-02 $2000   rifle       Win a Meridian AK-102!
+   2026-08-31 $800    accessories Win a 4.5" AR (click the giveaway on the scrolling banner)
+   2026-08-04 $550    rifle       Ruger Harrier AR-15 Rifle Giveaway
+   2027-08-20 $500    optics      Win a $500 Amazon Gift Card! (New optics!)
+   2026-09-15 $500    accessories Win a custom cerakoted upper, lower, and handguard!
+   2026-08-31 $100    accessories Win 4 Crusader PMAGs!
+   2026-08-07 $3800   optics      Stribog SP9A3S PCC, AnechoX 35 Suppressor, Aimpoint Duty PRO Optic + Gea
+   2026-08-04 $1500   accessories Win 1 of 3 classes for Online Civilian Medical Training!
+   2026-09-30 $500    shotgun     Camo Winchester SXP 12Ga Shotgun Giveaway
+   2026-08-07 $5700   accessories Win $1,500 in gift cards (and more) or 1 of 15 other cash prizes!
+   2026-09-19 $4300   pistol      Win 1 of 3 Glock's and a ton of gear!
+   2026-08-03 $3110   rifle       Rock River Arms ATH AR-15 Rifle, Compound Bow + Gear Giveaway
+   2026-08-03 $1400   accessories Win an AR, BB Gun, and Timney Trigger gift card!
+   2026-08-06 $3700   pistol      Win a Sig 516 AR, ammo, and weapon light!
+   2026-10-31 $5000   accessories Win an all expenses paid trip to Hawaii!
+   2026-08-02 $7350   rifle       Win 1 of 6 Rossi Lever Rifles!
+   2026-09-30 $2500   accessories $2,500 American Eagle Gold Coins Giveaway
+   2026-08-28 $100    accessories Win a weekly prize if a $100 Guns.com gift certificate!
+   2026-08-08 $8000   rifle       SOLGW Broadsword 5.56 Rifle, Thermal Optic, Strategic Sciences MD + Ammo
+   2026-08-09 $4000   rifle       Win a POF AR-10, suppressor, optics, ammo, armor, and more!
+   2026-08-08 $4000   rifle       Win a Zev folding rifle, suppressor and Louis Vuitton bag!
+   2026-12-07 $13000  accessories Win 1 of 4 prize packs that include $2,500 cash, a He Man sword (lol), a
+   2027-01-04 $25000  gear        Win one of many prizes packages of guns and gear!
+   — $0      accessories WordPress
+   2026-09-06 $5000   pistol      Kimber Factory-Exclusive Pistols Giveaway (3 Winners)
+   2026-08-26 $5000   accessories $5,000 Cash Giveaway
+   2026-08-31 $3324   optics      Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giveaway
+   2026-08-18 $3800   pistol      2x Zev Technologies FDP9 SBR + Sig ROMEO5 Red Dot Giveaway
+   2026-08-26 $2456   rifle       Daniel Defense SPR III AR-15 Rifle Giveaway
+   2026-08-05 $2456   pistol      S&W America 250 Model 66 & 642 Revolvers Giveaway (2 Winners)
+   2026-08-30 $450    accessories Sunwayfoto Shooting Tripod + Saddle Mount Giveaway
+   2026-08-03 $1579   rifle       S&W Model 1854 Lever Action Rifle w/Vortex Scope Giveaway (2 Winners)
+   2026-08-23 $7530   accessories Trip for 2 to Turks & Caicos Giveaway
+   2026-08-31 $6000   accessories Rhine River Cruise for 2 Giveaway
+   2026-08-31 $400    pistol      Moriarti 4.5″ AR-15 Pistol Giveaway
+   2026-08-12 $4000   gear        Hunting Gear Package Giveaway
+   2026-09-14 $400    rifle       Custom Cerakote AR-15 Builder’s Set Giveaway
+   2026-08-07 $3669   pistol      Sig 516 G3 Bronze Rifle, 1,000 Rounds Black Hills Ammo + WML Giveaway
+   2027-01-04 $25000  gear        America 250 Outdoor Adventure Gear Package Giveaway
+   2026-12-31 $15000  accessories 10 Guns or Kawasaki Side-by-Side Giveaway (9 Winners)
+end dates parsed : 56/57
+values parsed    : 56/57
 already expired  : 3
 malformed dates  : 0
 self-links (bad) : 0
-unique norm urls : 73
+unique norm urls : 57
 
 PASSED
