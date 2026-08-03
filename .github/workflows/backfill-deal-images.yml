@@ -1,5 +1,8 @@
-# Dispatch-only. Re-scrapes real product photos from gun.deals via the Jina
-# reader and replaces the stock images written while the site was unreachable.
+# Scrapes real product photos from gun.deals and writes them to Sanity.
+#
+# Runs here rather than on Vercel deliberately: gun.deals rate-limits, so the
+# job needs to retry with backoff and pace itself across many minutes. That
+# doesn't fit a serverless function's execution window, and it's free here.
 name: Backfill Deal Images
 
 on:
@@ -12,22 +15,22 @@ on:
       limit:
         description: 'Max deals to scan'
         default: '600'
+  schedule:
+    - cron: '30 5,17 * * *'   # twice daily, after the deal feeds have run
 
 jobs:
   backfill:
     runs-on: ubuntu-latest
-    timeout-minutes: 50
+    timeout-minutes: 120
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with: { node-version: '20' }
+      - run: pip install curl_cffi --quiet
       - name: Backfill
         env:
-          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-          DRY_RUN: ${{ inputs.dry_run }}
-          LIMIT: ${{ inputs.limit }}
-        run: node scripts/backfill_deal_images.mjs 2>&1 | tee result.txt
+          DRY_RUN: ${{ inputs.dry_run || 'false' }}
+          LIMIT: ${{ inputs.limit || '600' }}
+        run: python3 scripts/backfill_deal_images.py 2>&1 | tee result.txt
       - name: Publish
         if: always()
         env:
