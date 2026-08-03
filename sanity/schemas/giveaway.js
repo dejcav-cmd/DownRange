@@ -14,9 +14,14 @@ export default defineType({
       options: { list: ['pistol','rifle','shotgun','ammo','gear','accessories','nfa','optics'] }
     }),
     defineField({ name: 'sourceType', title: 'Source Type',  type: 'string',
-      options: { list: ['manufacturer','retailer','youtuber','organization'] }
+      // 'external' is retained for documents written before the scraper rewrite.
+      options: { list: ['aggregator','manufacturer','retailer','youtuber','organization','external'] }
     }),
-    defineField({ name: 'endDate',    title: 'End Date',     type: 'datetime'  }),
+    defineField({ name: 'prizeValue', title: 'Prize Value ($)', type: 'number' }),
+    // Deliberately `date`, not `datetime`: the cron writes bare YYYY-MM-DD and
+    // /giveaways does `new Date(endDate + 'T23:59:59Z')`, which yields Invalid
+    // Date if a full ISO timestamp is stored.
+    defineField({ name: 'endDate',    title: 'End Date',     type: 'date'      }),
     defineField({ name: 'active',     title: 'Active',       type: 'boolean',  initialValue: true }),
     defineField({ name: 'featured',   title: 'Featured',     type: 'boolean',  initialValue: false }),
     defineField({ name: 'addedAt',    title: 'Added At',     type: 'datetime'  }),
