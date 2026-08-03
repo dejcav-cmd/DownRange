@@ -1,4 +1,4 @@
-(node:2203) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
+(node:2231) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/DownRange/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
@@ -52,7 +52,7 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
    2026-08-03 $3050   accessories Win 1 of 2 prizes of a S&W 30-30 or 45-70!
    2026-08-02 $2000   rifle       Win a Meridian AK-102!
    2026-08-31 $800    rifle       Win a 4.5" AR (click the giveaway on the scrolling banner)
-   2026-08-03 $3110   rifle       Rock River Arms ATH AR-15 Rifle, Compound Bow + Gear Giveaway
+   2026-08-03 $1399   rifle       One Horse AR-15 Rifle, BB Gun + Gear Giveaway
    2027-08-20 $500    optics      Win a $500 Amazon Gift Card! (New optics!)
    2026-09-15 $500    rifle       Win a custom cerakoted upper, lower, and handguard!
    2026-08-31 $100    accessories Win 4 Crusader PMAGs!
@@ -65,27 +65,27 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
    2026-08-03 $1400   rifle       Win an AR, BB Gun, and Timney Trigger gift card!
    2026-08-07 $3700   rifle       Sig 516 G3 Bronze Rifle, 1,000 Rounds Black Hills Ammo + WML Giveaway
    2026-10-31 $5000   accessories Win an all expenses paid trip to Hawaii!
-   2026-08-03 $7350   rifle       S&W Model 1854 Lever Action Rifle w/Vortex Scope Giveaway (2 Winners)
+   2026-08-02 $7350   rifle       Win 1 of 6 Rossi Lever Rifles!
    2026-09-30 $2500   accessories $2,500 American Eagle Gold Coins Giveaway
    2026-08-28 $100    accessories Win a weekly prize if a $100 Guns.com gift certificate!
    2026-08-08 $8000   rifle       SOLGW Broadsword 5.56 Rifle, Thermal Optic, Strategic Sciences MD + Ammo
    2026-08-08 $4000   nfa         Win a Zev folding rifle, suppressor and Louis Vuitton bag!
    2026-12-07 $13000  accessories Win 1 of 4 prize packs that include $2,500 cash, a He Man sword (lol), a
-   2027-01-04 $25000  gear        Win one of many prizes packages of guns and gear!
+   2027-01-04 $25000  gear        America 250 Outdoor Adventure Gear Package Giveaway
    2026-09-06 $5000   pistol      Kimber Factory-Exclusive Pistols Giveaway (3 Winners)
-   2026-08-26 $5000   accessories $5,000 Cash Giveaway
    2026-08-31 $3324   optics      Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giveaway
    2026-08-05 $2456   pistol      S&W America 250 Model 66 & 642 Revolvers Giveaway (2 Winners)
+   2026-08-03 $1579   rifle       S&W Model 1854 Lever Action Rifle w/Vortex Scope Giveaway (2 Winners)
    2026-08-23 $7530   accessories Trip for 2 to Turks & Caicos Giveaway
    2026-08-31 $6000   accessories Rhine River Cruise for 2 Giveaway
    2026-08-31 $400    pistol      Moriarti 4.5″ AR-15 Pistol Giveaway
    2026-08-12 $4000   gear        Hunting Gear Package Giveaway
    2026-09-14 $400    rifle       Custom Cerakote AR-15 Builder’s Set Giveaway
-   2027-01-04 $25000  gear        America 250 Outdoor Adventure Gear Package Giveaway
+   2026-08-03 $3110   rifle       Rock River Arms ATH AR-15 Rifle, Compound Bow + Gear Giveaway
    2026-12-31 $15000  accessories 10 Guns or Kawasaki Side-by-Side Giveaway (9 Winners)
 end dates parsed : 50/50
 values parsed    : 50/50
-already expired  : 2
+already expired  : 3
 malformed dates  : 0
 self-links (bad) : 0
 unique norm urls : 50
