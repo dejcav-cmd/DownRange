@@ -35,7 +35,7 @@ function isAuthorized(req) {
 }
 
 import {
-  SOURCES, scrapeAllSources, normalizeUrl, dedup, dedupSimilar,
+  SOURCES, scrapeAllSources, normalizeUrl, dedup, dedupSimilar, giveawayQualityIssue,
 } from '@/lib/giveawaySources'
 
 // ── HANDLER ───────────────────────────────────────────────────────────────────
@@ -50,14 +50,29 @@ async function handler(req) {
 
   try {
     const today    = new Date().toISOString().split('T')[0]
-    const existing = await sanity.fetch('*[_type == "giveaway"] { _id, entryUrl, endDate, active }').catch(() => [])
+    const existing = await sanity.fetch(
+      '*[_type == "giveaway"] { _id, title, entryUrl, endDate, prizeValue, addedAt, active }'
+    ).catch(() => [])
     const existingUrls = new Set((existing || []).map(g => normalizeUrl(g.entryUrl)))
 
-    // Expire past giveaways
-    const toExpire = (existing || []).filter(g => g.active && g.endDate && g.endDate < today)
-    if (toExpire.length > 0) {
-      await sanity.mutate(toExpire.map(g => ({ patch: { id: g._id, set: { active: false } } })))
-      stats.expired = toExpire.length
+    // Retire anything that is finished, was never a giveaway, or can no longer
+    // be confirmed live. This runs over EVERY stored document, not just the ones
+    // we're about to write — otherwise a bug in a past version of the scraper
+    // stays on the page forever, which is exactly what happened with the July
+    // batch of nav links and NRA contest pages.
+    const retire = []
+    for (const g of existing || []) {
+      if (!g.active) continue
+      if (g.endDate && g.endDate < today) { retire.push([g, 'ended ' + g.endDate]); continue }
+      const issue = giveawayQualityIssue(g)
+      if (issue) retire.push([g, issue])
+    }
+    if (retire.length > 0) {
+      await sanity.mutate(retire.map(([g, reason]) => ({
+        patch: { id: g._id, set: { active: false, editorNote: `Auto-retired ${today}: ${reason}` } }
+      })))
+      stats.expired = retire.length
+      stats.retired = retire.slice(0, 20).map(([g, reason]) => `${(g.title || '').slice(0, 40)} — ${reason}`)
     }
 
     const settled = await scrapeAllSources()
@@ -83,9 +98,10 @@ async function handler(req) {
 
     const mutations = []
     for (const g of giveaways) {
-      if (!g.entryUrl || !g.title) { stats.skipped++; continue }
-      if (g.endDate && g.endDate < today) { stats.expired++; continue }
-      try { new URL(g.entryUrl) } catch { stats.skipped++; continue }
+      if (g.endDate && g.endDate < today) { stats.skipped++; continue }
+      // Same gate as the retirement sweep above — one definition, so nothing can
+      // be written that the sweep would immediately turn around and retire.
+      if (giveawayQualityIssue({ ...g, addedAt: new Date().toISOString() })) { stats.skipped++; continue }
 
       const normUrl = normalizeUrl(g.entryUrl)
       if (existingUrls.has(normUrl)) { stats.skipped++; continue }

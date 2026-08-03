@@ -10,7 +10,7 @@
  * source": lib/giveawaySources.js. This file is just the manual trigger and the
  * Sanity write.
  */
-import { scrapeAllSources, dedup, dedupSimilar, normalizeUrl } from '../../lib/giveawaySources.js'
+import { scrapeAllSources, dedup, dedupSimilar, normalizeUrl, giveawayQualityIssue } from '../../lib/giveawaySources.js'
 
 export async function runGiveawaysFeed() {
   console.log('[GIVEAWAYS] ===== Giveaways feed (manual) =====')
@@ -26,22 +26,29 @@ export async function runGiveawaysFeed() {
   })
   const today = new Date().toISOString().split('T')[0]
 
-  try {
-    const expiredDocs = await sanity.fetch(
-      `*[_type=="giveaway" && active==true && defined(endDate) && endDate < $today]{_id}`,
-      { today }
-    )
-    if (expiredDocs.length > 0) {
-      await sanity.mutate(expiredDocs.map(g => ({ patch: { id: g._id, set: { active: false } } })))
-      expired = expiredDocs.length
-    }
-  } catch (e) { errors.push('expiry: ' + e.message.slice(0, 80)) }
-
   let existingUrls = new Set()
   try {
-    const existing = await sanity.fetch('*[_type=="giveaway"]{entryUrl}')
+    const existing = await sanity.fetch(
+      '*[_type=="giveaway"]{_id,title,entryUrl,endDate,prizeValue,addedAt,active}'
+    )
     existingUrls = new Set((existing || []).map(g => normalizeUrl(g.entryUrl)))
-  } catch (e) { errors.push('existing: ' + e.message.slice(0, 80)) }
+
+    // Same retirement sweep as the cron — ended, never-a-giveaway, or too old to
+    // confirm. Shared gate so the two entry points cannot drift apart.
+    const retire = []
+    for (const g of existing || []) {
+      if (!g.active) continue
+      if (g.endDate && g.endDate < today) { retire.push([g, 'ended ' + g.endDate]); continue }
+      const issue = giveawayQualityIssue(g)
+      if (issue) retire.push([g, issue])
+    }
+    if (retire.length > 0) {
+      await sanity.mutate(retire.map(([g, reason]) => ({
+        patch: { id: g._id, set: { active: false, editorNote: `Auto-retired ${today}: ${reason}` } }
+      })))
+      expired = retire.length
+    }
+  } catch (e) { errors.push('existing/retire: ' + e.message.slice(0, 80)) }
 
   const results = await scrapeAllSources()
   const perSource = {}
@@ -57,8 +64,8 @@ export async function runGiveawaysFeed() {
 
   const mutations = []
   for (const g of giveaways) {
-    if (!g.entryUrl || !g.title) { skipped++; continue }
     if (g.endDate && g.endDate < today) { skipped++; continue }
+    if (giveawayQualityIssue({ ...g, addedAt: new Date().toISOString() })) { skipped++; continue }
     const normUrl = normalizeUrl(g.entryUrl)
     if (existingUrls.has(normUrl)) { skipped++; continue }
     existingUrls.add(normUrl)
