@@ -16,6 +16,7 @@ jobs:
       - name: Jina key test
         env:
           JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
         run: node scripts/jina_key_test.mjs 2>&1 | tee result.txt
       - name: Publish
         env:
