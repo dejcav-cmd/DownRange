@@ -170,6 +170,15 @@ async function scrapeWinTheGuns() {
 }
 
 // ── SCRAPER: GunGiveaways.net ────────────────────────────────────────────────
+// FIX (verified live 2026-08-03): r.jina.ai renders this site as MARKDOWN, not
+// raw HTML — the old regex hunted for `<a href="...">` tags and matched zero
+// rows on every run (confirmed: the live proxy response has 34 real
+// `[title](url)` markdown links and 0 raw anchor tags). That's why this
+// source has been silently contributing nothing since it was written. Titles
+// on this site carry a leading footnote marker (*, ¹, ²...) for entry
+// frequency — stripped below. Same clean-link rule as gunmade.com: keep the
+// outbound sponsor/platform URL, drop anything still hosted on
+// gungiveaways.net itself.
 async function scrapeGunGiveaways() {
   try {
     const res = await fetch('https://r.jina.ai/https://gungiveaways.net/', {
@@ -177,28 +186,43 @@ async function scrapeGunGiveaways() {
       signal: AbortSignal.timeout(20000),
     })
     if (!res.ok) return []
-    const html = await res.text()
+    const md = await res.text()
     const giveaways = []
-    const re = /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{15,150})<\/a>/gi
+    const JUNK_TITLE = /^(home|about|contact|privacy|terms|search|subscribe|categories|read more|menu|how it works|faq|submit|sign in|sign up|log ?in|previous|next|share|follow|newsletter)\b/i
+
+    const linkRe = /\[([^\]]{6,150})\]\((https?:\/\/[^\s\)]{10,300})\)/g
     let m
-    while ((m = re.exec(html)) !== null) {
-      const [, href, rawTitle] = m
-      const title = rawTitle.replace(/\s+/g, ' ').replace(/&amp;/g, '&').trim()
-      if (/^(home|about|contact|privacy|terms|search|categories|read more)/i.test(title)) continue
-      if (!/gun|pistol|rifle|shotgun|firearm|ammo|glock|sig|ruger|revolver|ar.15|handgun/i.test(title)) continue
-      try { new URL(href) } catch { continue }
+    while ((m = linkRe.exec(md)) !== null) {
+      const [, rawTitle, href] = m
+      const title = rawTitle.replace(/^[*¹²³†‡\s]+/, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim()
+      if (title.length < 6 || JUNK_TITLE.test(title)) continue
+      if (/\.(png|jpg|jpeg|gif|svg|webp|ico)(\?|$)/i.test(href)) continue
+      if (/twitter\.com|facebook\.com|instagram\.com|youtube\.com|tiktok\.com|linkedin\.com/i.test(href)) continue
+
+      let host
+      try { host = new URL(href).hostname } catch { continue }
+      // Clean-link rule: only the outbound sponsor/platform URL counts —
+      // never gungiveaways.net's own pages.
+      if (/(^|\.)gungiveaways\.net$/i.test(host)) continue
+
+      const lineStart = md.lastIndexOf('\n', m.index) + 1
+      const lineEndIdx = md.indexOf('\n', m.index)
+      const line = md.slice(lineStart, lineEndIdx === -1 ? md.length : lineEndIdx)
+      const valueMatch = line.match(/\$\s*([\d,]+)/)
+      const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
+
       giveaways.push({
-        title, entryUrl: href, prize: title, prizeValue: 0, endDate: null,
+        title, entryUrl: href, prize: title, prizeValue, endDate: null,
         category:   detectCategory(title),
         sponsor:    extractSponsor(title) || 'Various',
         sourceType: 'external',
-        featured:   false,
+        featured:   prizeValue >= 1500,
         active:     true,
         source:     'gungiveaways.net',
       })
     }
     console.log('[GIVEAWAYS] gungiveaways.net:', giveaways.length, 'entries')
-    return giveaways.slice(0, 30)
+    return giveaways.slice(0, 60)
   } catch (e) {
     console.warn('[GIVEAWAYS] gungiveaways.net failed:', e.message)
     return []
@@ -369,6 +393,25 @@ async function handler(req) {
       ...(gunmadeRes.status === 'fulfilled' ? gunmadeRes.value : (stats.errors.push('gunmade: ' + gunmadeRes.reason?.message), [])),
     ]
 
+    // Per-source raw counts, BEFORE dedup — this is the observability fix.
+    // Previously a source silently returning 0 rows (dead regex, site
+    // restructure, Cloudflare block) never surfaced anywhere: no exception
+    // was thrown, so reportCronRun always got status:'success' with no
+    // detail, and Mission Control showed a healthy green job while the feed
+    // quietly scraped nothing for weeks. Now every 0-result source gets
+    // logged, and a run where EVERY source comes back empty is reported as
+    // failed (with an email alert) instead of a silent false "success".
+    const perSource = {
+      'wintheguns.com':   mainRes.status    === 'fulfilled' ? mainRes.value.length    : 0,
+      'gungiveaways.net': altRes.status     === 'fulfilled' ? altRes.value.length     : 0,
+      'manufacturers':    mfrRes.status     === 'fulfilled' ? mfrRes.value.length     : 0,
+      'gunmade.com':      gunmadeRes.status === 'fulfilled' ? gunmadeRes.value.length : 0,
+    }
+    for (const [name, count] of Object.entries(perSource)) {
+      if (count === 0) stats.errors.push(`${name}: 0 results (dead selector, site changed, or blocked — check manually)`)
+    }
+    stats.perSource = perSource
+
     stats.scraped = allRaw.length
     const giveaways = dedup(allRaw)
 
@@ -404,7 +447,17 @@ async function handler(req) {
 
     const ms = Date.now() - t0
     console.log('[GIVEAWAYS] Done:', stats)
-    await reportCronRun('giveaways', { status: 'success', ms, added: stats.added, expired: stats.expired })
+
+    // Total blackout (every source returned 0) is a real failure, not a
+    // quiet no-op — flag it so Mission Control + the failure-email alert
+    // actually fire instead of masking it as another "success".
+    const allSourcesEmpty = Object.values(perSource).every(c => c === 0)
+    await reportCronRun('giveaways', {
+      status:  allSourcesEmpty ? 'failed' : 'success',
+      ms,
+      error:   allSourcesEmpty ? 'All giveaway sources returned 0 results this run — see details' : null,
+      details: JSON.stringify({ perSource, added: stats.added, skipped: stats.skipped, expired: stats.expired, errors: stats.errors.slice(0, 10) }),
+    })
     return NextResponse.json({ ok: true, ms, ...stats })
 
   } catch (err) {
