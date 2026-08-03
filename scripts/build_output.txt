@@ -134,6 +134,7 @@ Route (app)                                      Size     First Load JS
 ├ ƒ /api/admin/save-image-url                    0 B                0 B
 ├ ƒ /api/admin/save-videos                       0 B                0 B
 ├ ƒ /api/admin/schedule                          0 B                0 B
+├ ƒ /api/admin/scrape-diag                       0 B                0 B
 ├ ƒ /api/admin/scrape-releases                   0 B                0 B
 ├ ƒ /api/admin/seed-all-content                  0 B                0 B
 ├ ƒ /api/admin/seed-blog-bodies                  0 B                0 B
