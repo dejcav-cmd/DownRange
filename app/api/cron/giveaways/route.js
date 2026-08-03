@@ -34,326 +34,9 @@ function isAuthorized(req) {
   return isVercel || isAuth || isAdmin
 }
 
-// ── HELPERS ───────────────────────────────────────────────────────────────────
-function detectCategory(title) {
-  const t = (title || '').toLowerCase()
-  if (/pistol|handgun|glock|sig|9mm|1911|revolver|p365|hellcat|g19|g17|m&p/.test(t))  return 'pistol'
-  if (/ar-?15|ar-?10|rifle|carbine|\bak\b|m4|308|6\.5|bolt.?action/.test(t))          return 'rifle'
-  if (/shotgun|\bgauge\b|pump.?gun/.test(t))                                           return 'shotgun'
-  if (/ammo|rounds?|brass|ammunition|cartridge/.test(t))                               return 'ammo'
-  if (/optic|scope|red.?dot|lpvo|eotech|vortex|trijicon|aimpoint|holosun/.test(t))    return 'optics'
-  if (/suppressor|silencer|sbr|sbs|full.?auto/.test(t))                               return 'nfa'
-  if (/gear|tactical|holster|light|knife|bag|chest.?rig|plate.?carrier/.test(t))      return 'gear'
-  return 'accessories'
-}
-
-function parseValue(str) {
-  if (!str) return 0
-  const m = String(str).replace(/[$,]/g, '').match(/[\d.]+/)
-  return m ? Math.round(parseFloat(m[0])) : 0
-}
-
-function parseEndDate(str) {
-  if (!str) return null
-  str = String(str).trim()
-  // M/D/YY or M/D/YYYY
-  const slashParts = str.split('/')
-  if (slashParts.length === 3) {
-    const y = parseInt(slashParts[2]) < 100 ? 2000 + parseInt(slashParts[2]) : parseInt(slashParts[2])
-    const m = parseInt(slashParts[0])
-    const d = parseInt(slashParts[1])
-    if (m >= 1 && m <= 12 && d >= 1 && d <= 31 && y >= 2025) {
-      return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`
-    }
-  }
-  try {
-    const parsed = new Date(str)
-    if (!isNaN(parsed.getTime()) && parsed.getFullYear() >= 2025) {
-      return parsed.toISOString().split('T')[0]
-    }
-  } catch { /* ignore */ }
-  return null
-}
-
-function extractSponsor(title) {
-  const brands = [
-    'Glock','SIG Sauer','SIG','Ruger','Smith & Wesson','S&W','Springfield Armory',
-    'Taurus','Beretta','CZ','Heckler & Koch','H&K','Walther','Shadow Systems',
-    'Palmetto State Armory','PSA','Century Arms','Faxon','AT3','Staccato',
-    'Bul Armory','EOTech','Vortex','Primary Arms','Dead Air','SilencerCo',
-    'Streamlight','Swampfox','Magpul','Kimber','Colt','Benelli','Mossberg',
-    'Remington','Winchester','Browning','Savage','Tikka','Christensen Arms',
-    'Daniel Defense','Aero Precision','BCM','Wilson Combat','Nightforce',
-    'Trijicon','Aimpoint','Holosun','Leupold','Burris','Bushnell',
-    'LWRCI','Noveske','Canik','FN America','Kahr','Kel-Tec','CMMG',
-    'Lucky Gunner','Ammo.com','Brownells','MidwayUSA',
-    'Gun Owners of America','GOA','NRA','Second Amendment Foundation','SAF',
-    'Warrior Poet Society','Colion Noir','Garand Thumb',
-  ]
-  for (const b of brands) {
-    if ((title || '').toLowerCase().includes(b.toLowerCase())) return b
-  }
-  return null
-}
-
-// ── SCRAPER: WinTheGuns.com ───────────────────────────────────────────────────
-async function scrapeWinTheGuns() {
-  const res = await fetch('https://r.jina.ai/https://wintheguns.com/', {
-    headers: {
-      'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-      'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      'Accept-Language': 'en-US,en;q=0.9',
-    },
-    signal: AbortSignal.timeout(25000),
-  })
-  if (!res.ok) throw new Error('wintheguns.com returned ' + res.status)
-  const html = await res.text()
-  const giveaways = []
-
-  // Jina returns markdown — parse [text](url) links
-  let match
-  const mdRe = /\[([^\]]{8,200})\]\((https?:\/\/[^\s\)]{10,300})\)/g
-  while ((match = mdRe.exec(html)) !== null) {
-    const [, rawTitle, href] = match
-    if (!href || !rawTitle) continue
-    const title = rawTitle.replace(/\*/g, '').replace(/&amp;/g, '&').trim()
-    if (title.length < 8) continue
-    if (/^(home|about|contact|privacy|terms|search|subscribe|categories)/i.test(title)) continue
-    if (!/(win|giveaway|enter|free|prize|firearm|gun|rifle|pistol|ammo|gear|suppressor)/i.test(title)) continue
-    if (/\.(png|jpg|jpeg|gif|svg|webp)/i.test(href)) continue
-
-    const ctxStart = Math.max(0, match.index - 50)
-    const ctx = html.slice(ctxStart, ctxStart + 400)
-    const valueMatch = ctx.match(/\$\s*([\d,]+)/)
-    const dateMatches = ctx.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/g)
-    const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
-    const endDate = dateMatches?.length >= 2
-      ? parseEndDate(dateMatches[1])
-      : dateMatches?.length === 1 ? parseEndDate(dateMatches[0]) : null
-    const entryUrl = href
-
-    giveaways.push({
-      title, entryUrl, prize: title, prizeValue, endDate,
-      category:   detectCategory(title),
-      sponsor:    extractSponsor(title) || 'Various',
-      sourceType: 'external',
-      featured:   prizeValue >= 1500,
-      active:     true,
-      source:     'wintheguns.com',
-    })
-  }
-
-  // Strategy 2: fallback — scan all firearm-keyword links on the page
-  if (giveaways.length < 3) {
-    const fbRe = /<a\s+href="(https?:\/\/[^"]+)"[^>]*>([^<]{12,140})<\/a>/gi
-    let fm
-    while ((fm = fbRe.exec(html)) !== null) {
-      const [, href, rawTitle] = fm
-      const title = rawTitle.replace(/&amp;/g, '&').trim()
-      if (!/gun|pistol|rifle|shotgun|firearm|glock|sig|ruger|win a|giveaway/i.test(title)) continue
-      if (/^(home|about|contact|privacy)/i.test(title)) continue
-      try { new URL(href) } catch { continue }
-      giveaways.push({
-        title, entryUrl: href, prize: title, prizeValue: 0, endDate: null,
-        category:   detectCategory(title),
-        sponsor:    extractSponsor(title) || 'Various',
-        sourceType: 'external',
-        featured:   false,
-        active:     true,
-        source:     'wintheguns.com',
-      })
-    }
-  }
-
-  console.log('[GIVEAWAYS] wintheguns.com:', giveaways.length, 'entries')
-  return giveaways.slice(0, 80)
-}
-
-// ── SCRAPER: GunGiveaways.net ────────────────────────────────────────────────
-// FIX (verified live 2026-08-03): r.jina.ai renders this site as MARKDOWN, not
-// raw HTML — the old regex hunted for `<a href="...">` tags and matched zero
-// rows on every run (confirmed: the live proxy response has 34 real
-// `[title](url)` markdown links and 0 raw anchor tags). That's why this
-// source has been silently contributing nothing since it was written. Titles
-// on this site carry a leading footnote marker (*, ¹, ²...) for entry
-// frequency — stripped below. Same clean-link rule as gunmade.com: keep the
-// outbound sponsor/platform URL, drop anything still hosted on
-// gungiveaways.net itself.
-async function scrapeGunGiveaways() {
-  try {
-    const res = await fetch('https://r.jina.ai/https://gungiveaways.net/', {
-      headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36' },
-      signal: AbortSignal.timeout(20000),
-    })
-    if (!res.ok) return []
-    const md = await res.text()
-    const giveaways = []
-    const JUNK_TITLE = /^(home|about|contact|privacy|terms|search|subscribe|categories|read more|menu|how it works|faq|submit|sign in|sign up|log ?in|previous|next|share|follow|newsletter)\b/i
-
-    const linkRe = /\[([^\]]{6,150})\]\((https?:\/\/[^\s\)]{10,300})\)/g
-    let m
-    while ((m = linkRe.exec(md)) !== null) {
-      const [, rawTitle, href] = m
-      const title = rawTitle.replace(/^[*¹²³†‡\s]+/, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim()
-      if (title.length < 6 || JUNK_TITLE.test(title)) continue
-      if (/\.(png|jpg|jpeg|gif|svg|webp|ico)(\?|$)/i.test(href)) continue
-      if (/twitter\.com|facebook\.com|instagram\.com|youtube\.com|tiktok\.com|linkedin\.com/i.test(href)) continue
-
-      let host
-      try { host = new URL(href).hostname } catch { continue }
-      // Clean-link rule: only the outbound sponsor/platform URL counts —
-      // never gungiveaways.net's own pages.
-      if (/(^|\.)gungiveaways\.net$/i.test(host)) continue
-
-      const lineStart = md.lastIndexOf('\n', m.index) + 1
-      const lineEndIdx = md.indexOf('\n', m.index)
-      const line = md.slice(lineStart, lineEndIdx === -1 ? md.length : lineEndIdx)
-      const valueMatch = line.match(/\$\s*([\d,]+)/)
-      const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
-
-      giveaways.push({
-        title, entryUrl: href, prize: title, prizeValue, endDate: null,
-        category:   detectCategory(title),
-        sponsor:    extractSponsor(title) || 'Various',
-        sourceType: 'external',
-        featured:   prizeValue >= 1500,
-        active:     true,
-        source:     'gungiveaways.net',
-      })
-    }
-    console.log('[GIVEAWAYS] gungiveaways.net:', giveaways.length, 'entries')
-    return giveaways.slice(0, 60)
-  } catch (e) {
-    console.warn('[GIVEAWAYS] gungiveaways.net failed:', e.message)
-    return []
-  }
-}
-
-// ── SCRAPER: Manufacturer Giveaway / Promotions Pages ────────────────────────
-const MFR_PAGES = [
-  { name: 'Palmetto State Armory', url: 'https://palmettostatearmory.com/blog/category/psa-giveaways/', type: 'retailer' },
-  { name: 'Lucky Gunner',          url: 'https://www.luckygunner.com/blog/category/giveaway/',         type: 'retailer' },
-  { name: 'Springfield Armory',    url: 'https://www.springfield-armory.com/promotions/',              type: 'manufacturer' },
-  { name: 'Gun Owners of America', url: 'https://gunowners.org/goa-giveaway/',                         type: 'organization' },
-  { name: 'Taurus USA',            url: 'https://www.taurususa.com/promotions',                        type: 'manufacturer' },
-]
-
-async function scrapeManufacturerPages() {
-  const results = []
-  for (const page of MFR_PAGES) {
-    try {
-      const res = await fetch(page.url, {
-        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRangeBot/1.0; +https://downrangeco.com)' },
-        signal: AbortSignal.timeout(10000),
-      })
-      if (!res.ok) continue
-      const html = await res.text()
-
-      const re = /(giveaway|sweepstake|win a|enter to win)[^]{0,2000}/gi
-      let match
-      while ((match = re.exec(html)) !== null) {
-        const linkMatch = match[0].match(/<a\s+href="(https?:\/\/[^"]{20,200})"[^>]*>([^<]{10,120})</)
-        if (!linkMatch) continue
-        const title = `${page.name} — ${linkMatch[2].trim()}`
-        try { new URL(linkMatch[1]) } catch { continue }
-        results.push({
-          title, entryUrl: linkMatch[1], prize: linkMatch[2].trim(),
-          prizeValue: 0, endDate: null,
-          category:   detectCategory(title),
-          sponsor:    page.name,
-          sourceType: page.type,
-          featured:   false,
-          active:     true,
-          source:     page.name,
-        })
-      }
-    } catch (e) {
-      console.warn(`[GIVEAWAYS] ${page.name} failed:`, e.message)
-    }
-    await new Promise(r => setTimeout(r, 400))
-  }
-  return results
-}
-
-// ── SCRAPER: GunMade.com (dedicated giveaways hub — 30-40 live at a time) ────
-// GunMade runs a big "Active Giveaways" table (name / value / dates / entry
-// frequency). Every row already links straight OUT to the sponsor's own entry
-// page or a giveaway platform (Gleam, SweepWidget, Woobox, wn.nr, swee.ps,
-// etc.) — we just need to keep those clean outbound links and throw away
-// anything that still points back at gunmade.com itself (nav chrome, their
-// own "how it works" / submission pages, tracking wrappers). That's the
-// "clean link" rule for this source: no gunmade.com URLs ever get saved.
-async function scrapeGunMade() {
-  try {
-    const res = await fetch('https://r.jina.ai/https://www.gunmade.com/gun-giveaways/', {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36',
-        'Accept':     'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-      },
-      signal: AbortSignal.timeout(25000),
-    })
-    if (!res.ok) throw new Error('gunmade.com returned ' + res.status)
-    const md = await res.text()
-    const giveaways = []
-
-    const JUNK_TITLE = /^(home|about|contact|privacy|terms|search|subscribe|categories|menu|how it works|faq|submit|sign in|sign up|log ?in|enter now|enter to win|enter|view details?|view|see (the )?giveaway|claim|details|learn more|read more|next|previous|share|follow us|newsletter|gun ?made)\b/i
-
-    const linkRe = /\[([^\]]{6,150})\]\((https?:\/\/[^\s\)]{10,300})\)/g
-    let match
-    while ((match = linkRe.exec(md)) !== null) {
-      const [, rawTitle, href] = match
-      const title = rawTitle.replace(/\*/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim()
-      if (title.length < 6 || JUNK_TITLE.test(title)) continue
-      if (/\.(png|jpg|jpeg|gif|svg|webp|ico)(\?|$)/i.test(href)) continue
-      if (/twitter\.com|facebook\.com|instagram\.com|youtube\.com|tiktok\.com|linkedin\.com|gunmade\.com\/(?!gun-giveaways)/i.test(href)) continue
-
-      let host
-      try { host = new URL(href).hostname } catch { continue }
-      // Clean-link rule: skip anything still hosted on gunmade.com itself —
-      // only the direct sponsor/platform entry URL gets saved.
-      if (/(^|\.)gunmade\.com$/i.test(host)) continue
-
-      // Scope value/date lookup to this one line so a neighboring table row
-      // can't bleed its numbers into this entry.
-      const lineStart = md.lastIndexOf('\n', match.index) + 1
-      const lineEndIdx = md.indexOf('\n', match.index)
-      const line = md.slice(lineStart, lineEndIdx === -1 ? md.length : lineEndIdx)
-      const valueMatch = line.match(/\$\s*([\d,]+)/)
-      const dateMatches = line.match(/(\d{1,2}\/\d{1,2}\/\d{2,4})/g)
-      const prizeValue = valueMatch ? parseValue(valueMatch[0]) : 0
-      const endDate = dateMatches?.length >= 2
-        ? parseEndDate(dateMatches[1])
-        : dateMatches?.length === 1 ? parseEndDate(dateMatches[0]) : null
-
-      giveaways.push({
-        title, entryUrl: href, prize: title, prizeValue, endDate,
-        category:   detectCategory(title),
-        sponsor:    extractSponsor(title) || 'Various',
-        sourceType: 'external',
-        featured:   prizeValue >= 1500,
-        active:     true,
-        source:     'gunmade.com',
-      })
-    }
-
-    console.log('[GIVEAWAYS] gunmade.com:', giveaways.length, 'entries')
-    return giveaways.slice(0, 60)
-  } catch (e) {
-    console.warn('[GIVEAWAYS] gunmade.com failed:', e.message)
-    return []
-  }
-}
-
-// ── DEDUP ─────────────────────────────────────────────────────────────────────
-function dedup(arr) {
-  const seen = new Set()
-  return arr.filter(g => {
-    const key = (g.entryUrl || '').toLowerCase().replace(/[?#].*/, '').replace(/\/$/, '')
-    if (!key || key.length < 12 || seen.has(key)) return false
-    seen.add(key)
-    return true
-  })
-}
+import {
+  SOURCES, scrapeAllSources, normalizeUrl, dedup,
+} from '@/lib/giveawaySources'
 
 // ── HANDLER ───────────────────────────────────────────────────────────────────
 export async function GET(req)  { return handler(req) }
@@ -368,9 +51,7 @@ async function handler(req) {
   try {
     const today    = new Date().toISOString().split('T')[0]
     const existing = await sanity.fetch('*[_type == "giveaway"] { _id, entryUrl, endDate, active }').catch(() => [])
-    const existingUrls = new Set(
-      (existing || []).map(g => (g.entryUrl || '').toLowerCase().replace(/\/$/, ''))
-    )
+    const existingUrls = new Set((existing || []).map(g => normalizeUrl(g.entryUrl)))
 
     // Expire past giveaways
     const toExpire = (existing || []).filter(g => g.active && g.endDate && g.endDate < today)
@@ -379,83 +60,88 @@ async function handler(req) {
       stats.expired = toExpire.length
     }
 
-    // Scrape in parallel
-    const [mainRes, altRes, mfrRes, gunmadeRes] = await Promise.allSettled([
-      scrapeWinTheGuns(),
-      scrapeGunGiveaways(),
-      scrapeManufacturerPages(),
-      scrapeGunMade(),
-    ])
-    const allRaw = [
-      ...(mainRes.status === 'fulfilled' ? mainRes.value : (stats.errors.push('wintheguns: ' + mainRes.reason?.message), [])),
-      ...(altRes.status  === 'fulfilled' ? altRes.value  : (stats.errors.push('gungiveaways: ' + altRes.reason?.message),  [])),
-      ...(mfrRes.status  === 'fulfilled' ? mfrRes.value  : (stats.errors.push('mfr: ' + mfrRes.reason?.message), [])),
-      ...(gunmadeRes.status === 'fulfilled' ? gunmadeRes.value : (stats.errors.push('gunmade: ' + gunmadeRes.reason?.message), [])),
-    ]
+    const settled = await scrapeAllSources()
 
-    // Per-source raw counts, BEFORE dedup — this is the observability fix.
-    // Previously a source silently returning 0 rows (dead regex, site
-    // restructure, Cloudflare block) never surfaced anywhere: no exception
-    // was thrown, so reportCronRun always got status:'success' with no
-    // detail, and Mission Control showed a healthy green job while the feed
-    // quietly scraped nothing for weeks. Now every 0-result source gets
-    // logged, and a run where EVERY source comes back empty is reported as
-    // failed (with an email alert) instead of a silent false "success".
-    const perSource = {
-      'wintheguns.com':   mainRes.status    === 'fulfilled' ? mainRes.value.length    : 0,
-      'gungiveaways.net': altRes.status     === 'fulfilled' ? altRes.value.length     : 0,
-      'manufacturers':    mfrRes.status     === 'fulfilled' ? mfrRes.value.length     : 0,
-      'gunmade.com':      gunmadeRes.status === 'fulfilled' ? gunmadeRes.value.length : 0,
-    }
-    for (const [name, count] of Object.entries(perSource)) {
-      if (count === 0) stats.errors.push(`${name}: 0 results (dead selector, site changed, or blocked — check manually)`)
+    // Per-source detail, BEFORE dedup. A source that quietly returns 0 is the
+    // failure mode that hid the Jina outage for weeks, so every source reports
+    // how it was reached, what HTTP status it got, and why it came back empty.
+    const perSource = {}
+    const allRaw = []
+    for (const r of settled) {
+      perSource[r.name] = { count: r.giveaways.length, via: r.via, status: r.status }
+      if (r.reason) {
+        perSource[r.name].reason = r.reason
+        stats.errors.push(`${r.name}: ${r.reason}`)
+      }
+      allRaw.push(...r.giveaways)
     }
     stats.perSource = perSource
+    stats.scraped   = allRaw.length
 
-    stats.scraped = allRaw.length
     const giveaways = dedup(allRaw)
 
     const mutations = []
     for (const g of giveaways) {
       if (!g.entryUrl || !g.title) { stats.skipped++; continue }
       if (g.endDate && g.endDate < today) { stats.expired++; continue }
-      const normUrl = g.entryUrl.toLowerCase().replace(/\/$/, '')
-      if (existingUrls.has(normUrl)) { stats.skipped++; continue }
       try { new URL(g.entryUrl) } catch { stats.skipped++; continue }
 
-      mutations.push({
-        create: {
-          _type:       'giveaway',
-          title:       g.title,
-          entryUrl:    g.entryUrl,
-          prize:       g.prize || g.title,
-          prizeValue:  g.prizeValue || 0,
-          endDate:     g.endDate || null,
-          category:    g.category || 'gear',
-          sponsor:     g.sponsor || 'Various',
-          sourceType:  g.sourceType || 'external',
-          featured:    g.featured || false,
-          active:      true,
-          addedAt:     new Date().toISOString(),
-        }
-      })
+      const normUrl = normalizeUrl(g.entryUrl)
+      if (existingUrls.has(normUrl)) { stats.skipped++; continue }
+      existingUrls.add(normUrl)
+
+      // Deterministic _id derived from the normalized entry URL + createIfNotExists.
+      // The old code used a bare `create` with a Sanity-assigned random _id, so any
+      // gap in the existing-URL check produced a duplicate document instead of a
+      // no-op.
+      const _id = 'giveaway-' + Buffer.from(normUrl).toString('base64')
+        .replace(/[^a-zA-Z0-9]/g, '').slice(0, 32)
+
+      const doc = {
+        _id, _type: 'giveaway',
+        title:      g.title.slice(0, 200),
+        entryUrl:   g.entryUrl,
+        prize:      (g.prize || g.title).slice(0, 200),
+        prizeValue: g.prizeValue || 0,
+        category:   g.category || 'accessories',
+        sponsor:    g.sponsor || 'Various',
+        sourceType: g.sourceType || 'aggregator',
+        featured:   g.featured || false,
+        active:     true,
+        addedAt:    new Date().toISOString(),
+      }
+      // endDate is written as bare YYYY-MM-DD on purpose — the /giveaways page
+      // does `new Date(endDate + 'T23:59:59Z')`, which yields Invalid Date if a
+      // full ISO timestamp is stored. Omit the key entirely when unknown rather
+      // than sending null.
+      if (g.endDate) doc.endDate = g.endDate
+
+      mutations.push({ createIfNotExists: doc })
       stats.added++
       stats.sources[g.source] = (stats.sources[g.source] || 0) + 1
     }
 
-    if (mutations.length > 0) await sanity.mutate(mutations)
+    for (let i = 0; i < mutations.length; i += 50) {
+      try {
+        await sanity.mutate(mutations.slice(i, i + 50), { returnDocuments: false })
+      } catch (e) {
+        stats.errors.push('sanity: ' + e.message.slice(0, 120))
+      }
+    }
 
     const ms = Date.now() - t0
-    console.log('[GIVEAWAYS] Done:', stats)
+    console.log('[GIVEAWAYS] Done:', JSON.stringify(stats))
 
-    // Total blackout (every source returned 0) is a real failure, not a
-    // quiet no-op — flag it so Mission Control + the failure-email alert
-    // actually fire instead of masking it as another "success".
-    const allSourcesEmpty = Object.values(perSource).every(c => c === 0)
+    // Only REQUIRED sources count toward the blackout alarm. gunmade.com sits
+    // behind Cloudflare and can't be reached from a datacenter IP, so letting it
+    // vote would keep the alarm permanently red and train us to ignore it.
+    const requiredEmpty = SOURCES.filter(s => s.required)
+      .every(s => (perSource[s.name]?.count || 0) === 0)
+
     await reportCronRun('giveaways', {
-      status:  allSourcesEmpty ? 'failed' : 'success',
+      status:  requiredEmpty ? 'failed' : 'success',
       ms,
-      error:   allSourcesEmpty ? 'All giveaway sources returned 0 results this run — see details' : null,
+      error:   requiredEmpty ? 'All required giveaway sources returned 0 results this run — see details' : null,
       details: JSON.stringify({ perSource, added: stats.added, skipped: stats.skipped, expired: stats.expired, errors: stats.errors.slice(0, 10) }),
     })
     return NextResponse.json({ ok: true, ms, ...stats })

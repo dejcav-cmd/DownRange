@@ -4,18 +4,15 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
 
 jobs:
   probe:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Run probe
-        env:
-          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: python3 scripts/giveaway_probe.py
-      - name: Publish result
-        env:
-          GH_PAT: ${{ secrets.GH_PAT }}
-        run: python3 scripts/publish_probe.py
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Live-test giveaway scrapers
+        run: node scripts/test_giveaway_sources.mjs
