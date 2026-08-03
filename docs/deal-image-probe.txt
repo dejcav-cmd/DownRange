@@ -1,0 +1,38 @@
+=== RECENT gunDeal DOCS (last 5 days) ===
+count: 457
+by day: {"2026-08-03":36,"2026-08-02":78,"2026-08-01":85,"2026-07-31":96,"2026-07-30":109,"2026-07-29":53}
+by source: {"gun.deals":457}
+imageUrl: 452 non-search, 0 stock-search, 5 none
+
+sample (10):
+  NONE  Tactical Belt Heavy-Duty & Quick Release Militar 
+  NONE  Hawke Sport Optics Vantage IR Rifle Scope 3-9x40 
+  NONE  Brownells Oxpho-Blue Cold Bluing 4oz - $6.99     
+  NONE  Coupon for store Natchez Shooting & Outdoors Mon 
+  NONE  American Furniture Classics Gun Concealment Nigh 
+  real  FN AMERICA FN15 Patrol Carbine W/BUIS, 5.56 NATO c1658cfb8d077705d5ed2ca7addf474d9556b9c9-1880x12
+  real  Speer Lawman .45 ACP 230 Grain TMJ FN Brass 50 R d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x12
+  real  Jorviz Target Stand System 7x12 inch AR500 Steel d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x12
+  real  SOG Knives Adventurer Folding Drop Point Knife,  d238fb4c1f8d84b53008230e42b48250c9d743e7-1880x12
+  real  Tactical Grip Camo Tape 1" Gun Grip Tape for Rif c1658cfb8d077705d5ed2ca7addf474d9556b9c9-1880x12
+
+=== RSS ITEM STRUCTURE ===
+
+ <title>Tactical Belt Heavy-Duty &amp; Quick Release Military, Work, Rigger, Duty &amp; Utility Belt - $6.49</title>
+ <link>https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649</link>
+ <description><![CDATA[<div>Price: $6.49</div> <div>Store: <a href="https://gun.deals/content/amazon">Amazon</a></div>]]></description>
+ <category domain="https://gun.deals/category/caliber/apparel">Apparel</category>
+ <comments>https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649#comments</comments>
+ <pubDate>Mon, 03 Aug 2026 15:47:32 +0000</pubDate>
+ <dc:creator>TerrySnyder</dc:creator>
+ <guid isPermaLink="false">1535776 at https://gun.deals</guid>
+
+
+=== TRANSPORT TESTS ===
+product link: https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649
+store href  : https://gun.deals/content/amazon
+   gun.deals direct               HTTP 403       0b og=none
+   gun.deals + jina               HTTP 403       0b og=none
+   gun.deals + allorigins         TimeoutError
+   gun.deals + codetabs           HTTP 521       0b og=none
+   merchant direct                HTTP 403       0b og=none
