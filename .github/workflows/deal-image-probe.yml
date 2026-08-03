@@ -1,0 +1,23 @@
+name: Deal Image Probe
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Probe
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: node scripts/deal_image_probe.mjs 2>&1 | tee result.txt
+      - name: Publish
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/deal-image-probe.txt
