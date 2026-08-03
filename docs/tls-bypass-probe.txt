@@ -1,0 +1,18 @@
+4 product urls from RSS
+
+=== 1. stock urllib (control — expect 403) ===
+  urllib                             200      103ms   183414b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/
+
+=== 2. curl_cffi impersonating Chrome ===
+  -- impersonate=chrome124
+      ultimate-knife-999-opus-kn     403       59ms     6096b CHALLENGE
+      troy-industries-m5-carbine     403       59ms     6406b CHALLENGE
+  -- impersonate=chrome120
+      ultimate-knife-999-opus-kn     200      127ms   183414b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/
+      troy-industries-m5-carbine     403       53ms     6385b CHALLENGE
+  -- impersonate=safari17_0
+      ultimate-knife-999-opus-kn     200       82ms   183414b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/
+      troy-industries-m5-carbine     200      128ms   224180b og=https://gun.deals/cdn-cgi/image/w=1200,h=630,f=auto/
+
+  successes: 3
+  PASS — gun.deals is reachable without Jina
