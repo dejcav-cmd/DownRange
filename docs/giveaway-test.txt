@@ -1,4 +1,4 @@
-(node:2231) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
+(node:2288) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///home/runner/work/DownRange/DownRange/lib/giveawaySources.js is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/DownRange/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
@@ -10,7 +10,7 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
    • Win $400!                                                      | $400    | ends 2026-09-01 | accessories | https://sweepwidget.com/c/101388-tcg64wia/38e19f-101388
    • Win a Browning X Bolt in 300 win mag! (Single entry)           | $1500   | ends 2026-08-31 | accessories | https://www.galleryofguns.com/ggg/
    • Win a POF AR and a ton of Rise Armament gear!                  | $5000   | ends 2026-08-31 | rifle       | https://swee.ps/FheQlL_UORrtne
-   • Win a Henry field rifle, suppressor, safe, ammo, and more! (Si | $11500  | ends 2026-08-31 | nfa         | https://swee.ps/VGcwyP_vwthNjT
+   • Win a Henry field rifle, suppressor, safe, ammo, and more! (Si | $11500  | ends 2026-08-31 | rifle       | https://swee.ps/VGcwyP_vwthNjT
    • Win a 5 gram gold bar!                                         | $750    | ends 2026-08-31 | accessories | https://wn.nr/5ht4XGZ
    • Win 1 of 3 high end collectors Kimbers!                        | $15000  | ends 2026-08-31 | pistol      | https://swee.ps/fgdpMz_UZSLSoy
    • Win 1 of 2 prizes of a Taurus TX-22 and suppressor!            | $2100   | ends 2026-08-31 | nfa         | https://grabagun.com/viral-giveaway
@@ -19,7 +19,7 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
 === gungiveaways.net (required) ===
    via=direct status=200 rows=33
    • Browning X-Bolt 2 Speed .300WinMag Rifle Giveaway              | $1520   | ends 2026-08-31 | rifle       | https://www.galleryofguns.com/ggg/?utm_source=Gungiveaw
-   • Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .22 | $11619  | ends 2026-08-31 | nfa         | https://swee.ps/eGCMJo_FNSvIWq
+   • Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .22 | $11619  | ends 2026-08-31 | rifle       | https://swee.ps/eGCMJo_FNSvIWq
    • Kimber Factory-Exclusive Pistols Giveaway (3 Winners)          | $5000   | ends 2026-09-06 | pistol      | https://www.collectorseliteauctions.com/sweepstakes/?ut
    • POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway   | $5658   | ends 2026-08-31 | rifle       | https://risearmament.com/sweepstakes/?utm_source=Gungiv
    • $5,000 Cash Giveaway                                           | $5000   | ends 2026-08-26 | accessories | https://ggn.fyi/4QqBmR3
@@ -36,7 +36,7 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
    2026-09-01 $400    accessories Win $400!
    2026-08-31 $1520   accessories Win a Browning X Bolt in 300 win mag! (Single entry)
    2026-08-31 $5658   rifle       POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway
-   2026-08-31 $11619  nfa         Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + G
+   2026-08-31 $11619  rifle       Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + G
    2026-08-31 $750    accessories 5 Gram Gold Bar Giveaway
    2026-08-31 $15000  pistol      Win 1 of 3 high end collectors Kimbers!
    2026-08-31 $2100   nfa         Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor Giveaway
@@ -56,7 +56,7 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
    2027-08-20 $500    optics      Win a $500 Amazon Gift Card! (New optics!)
    2026-09-15 $500    rifle       Win a custom cerakoted upper, lower, and handguard!
    2026-08-31 $100    accessories Win 4 Crusader PMAGs!
-   2026-08-07 $3800   nfa         Stribog SP9A3S PCC, AnechoX 35 Suppressor, Aimpoint Duty PRO Optic + Gea
+   2026-08-07 $3800   rifle       Stribog SP9A3S PCC, AnechoX 35 Suppressor, Aimpoint Duty PRO Optic + Gea
    2026-08-04 $1500   accessories Win 1 of 3 classes for Online Civilian Medical Training!
    2026-09-30 $500    shotgun     Camo Winchester SXP 12Ga Shotgun Giveaway
    2026-08-07 $5700   accessories Win $1,500 in gift cards (and more) or 1 of 15 other cash prizes!
@@ -69,7 +69,7 @@ To eliminate this warning, add "type": "module" to /home/runner/work/DownRange/D
    2026-09-30 $2500   accessories $2,500 American Eagle Gold Coins Giveaway
    2026-08-28 $100    accessories Win a weekly prize if a $100 Guns.com gift certificate!
    2026-08-08 $8000   rifle       SOLGW Broadsword 5.56 Rifle, Thermal Optic, Strategic Sciences MD + Ammo
-   2026-08-08 $4000   nfa         Win a Zev folding rifle, suppressor and Louis Vuitton bag!
+   2026-08-08 $4000   rifle       Win a Zev folding rifle, suppressor and Louis Vuitton bag!
    2026-12-07 $13000  accessories Win 1 of 4 prize packs that include $2,500 cash, a He Man sword (lol), a
    2027-01-04 $25000  gear        America 250 Outdoor Adventure Gear Package Giveaway
    2026-09-06 $5000   pistol      Kimber Factory-Exclusive Pistols Giveaway (3 Winners)
@@ -91,3 +91,39 @@ self-links (bad) : 0
 unique norm urls : 50
 
 PASSED
+
+=== PRODUCTION CRON RUN ===
+{
+    "ok": true,
+    "ms": 2782,
+    "scraped": 73,
+    "added": 41,
+    "skipped": 6,
+    "expired": 3,
+    "errors": [
+        "gunmade.com: unreachable (direct 403 / jina 403)"
+    ],
+    "sources": {
+        "wintheguns.com": 16,
+        "gungiveaways.net": 25
+    },
+    "perSource": {
+        "wintheguns.com": {
+            "count": 40,
+            "via": "direct",
+            "status": 200
+        },
+        "gungiveaways.net": {
+            "count": 33,
+            "via": "direct",
+            "status": 200
+        },
+        "gunmade.com": {
+            "count": 0,
+            "via": "none",
+            "status": "direct 403 / jina 403",
+            "reason": "unreachable (direct 403 / jina 403)"
+        }
+    },
+    "deduped": 23
+}
