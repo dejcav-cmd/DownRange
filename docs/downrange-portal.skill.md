@@ -248,3 +248,83 @@ run: |
      python3 /tmp/script.py
    ```
 6. Always add `-H "x-vercel-protection-bypass: $BYPASS_SECRET"` to downrangeco.com API calls from GHA
+
+
+## Session 2026-08-03 — Giveaways blackout / r.jina.ai outage
+
+**r.jina.ai is dead as a scraping transport.** It moved behind Cloudflare and now
+returns a 403 "Just a moment..." interstitial to every datacenter IP (verified
+from both Vercel and a GitHub Actions runner) in 15-40ms. Anything in this repo
+that reaches the web through `https://r.jina.ai/` should be assumed broken until
+proven otherwise. `JINA_API_KEY` does not help — the block is at Cloudflare's
+edge, before auth.
+
+Known consumers still pointing at it: `app/api/cron/web-deals/route.js`,
+`app/api/cron/gun-deals/route.js`, `lib/scrapeProductImage.js`,
+`app/api/admin/amazon-asin/route.js`, `app/api/admin/amazon-diag/route.js`,
+several `scripts/*.py`.
+
+**Giveaways cron — what was wrong and what changed**
+
+Three of four sources were Jina-proxied, so all three 403'd instantly and the run
+finished in 973ms. The manufacturer scraper's five URLs were all dead
+independently (PSA 403, Lucky Gunner 404, Springfield 404, GOA 404, Taurus
+202/empty JS shell) — removed. The parsers only spoke markdown (Jina's output),
+so even swapping transport would have matched zero rows against real HTML.
+
+Scrapers now live in `lib/giveawaySources.js`, imported by both
+`app/api/cron/giveaways/route.js` and `agent/feeds/giveaways.js` (which used to
+carry a second, separately-rotting copy). Rules that matter:
+
+- `fetchPage()` = direct fetch with a browser UA first, Jina only as fallback.
+  Direct returns 200 on wintheguns.com and gungiveaways.net. gunmade.com is
+  Cloudflare-blocked both ways and is marked `required: false` so it cannot hold
+  the blackout alarm permanently red.
+- `extractLinks()` parses HTML anchors AND markdown. Keep both. A transport
+  change silently zeroing out extraction is exactly how this broke.
+- End date = the LATER of the first two dates after a row's link. wintheguns
+  prints "$value end start", gungiveaways prints "start $value end" — taking the
+  max resolves both without per-site logic. Dates >400 days out are discarded as
+  bleed from a neighbouring row.
+- A row with neither a prize value nor an end date is page furniture, not a
+  giveaway (the WordPress footer credit was being saved as one).
+- Cross-source dedup is mandatory: both aggregators wrap the same prize in their
+  own tracking short-link, so URL dedup alone leaves ~30 rows duplicated. Merge
+  requires same end date (+/-1 day), 2+ shared title tokens, 45% coverage of the
+  shorter title, no brand conflict. The brand-mismatch veto is what stops "Win 1
+  of 6 Rossi Lever Rifles" merging into "S&W Model 1854 Lever Action Rifle".
+- One `normalizeUrl()` for both in-run dedup and the existing-doc check. They
+  previously disagreed (dedup stripped the query string, the existing check kept
+  it), so utm-tagged duplicates were re-created every run.
+- `createIfNotExists` with a deterministic `_id`, never bare `create`.
+
+**giveaway schema gotchas**
+
+- `endDate` is `date` (bare YYYY-MM-DD), NOT `datetime`. `/giveaways` does
+  `new Date(endDate + 'T23:59:59Z')`, which is Invalid Date against a full ISO
+  timestamp. Never write a timestamp here.
+- Omit `endDate` entirely when unknown. Do not send null.
+- `prizeValue` and `sourceType: 'aggregator'` were missing from the schema and
+  have been added.
+
+**Build / tooling**
+
+- `package-lock.json` had drifted from `package.json` on `@types/*` and
+  `typescript`, so `npm ci` failed EUSAGE and the Build Check workflow never got
+  past install. It had been publishing a stale `scripts/build_output.txt` from
+  July 24 on every run — a green-looking workflow reporting a month-old build.
+  Resynced with `npm install --package-lock-only --legacy-peer-deps`.
+- `Source Health Check` workflow (dispatch-only) runs the real scrapers against
+  live sites via `scripts/test_giveaway_sources.mjs` and fails if a required
+  source returns 0. Run it after any scraper edit.
+- Sandbox network allowlist blocks Sanity, Vercel and all scrape targets — only
+  api.github.com, npm and pypi are reachable. Live verification has to go through
+  a dispatch-only GitHub Actions workflow that writes results back via the
+  Contents API (Azure blob log URLs are unreachable from the sandbox).
+
+**Open**
+
+- gun.deals product pages return 403 to BOTH direct fetch and Jina, so
+  `scrapeOGImageViaJina()` in gun-deals returns null on every deal and the deals
+  page is serving placeholders. No working transport identified yet; the RSS feed
+  itself (200, ~330KB) is the most promising alternative image source.
