@@ -47,15 +47,44 @@ async function uploadToSanity(buf, contentType, filename) {
   return j?.document?.url || null
 }
 
+// Markdown mode first. HTML mode returns 200-476KB per product page and Jina
+// bills by token — the first backfill burned the entire account balance after
+// 178 pages and then reported 297 false "no image" results, because a 402 was
+// being swallowed as "not found". Markdown with an image summary is ~19-42KB
+// for the same page, roughly a tenth the cost, and still carries the image URL.
 async function ogImageFor(productUrl) {
-  const res = await fetch('https://r.jina.ai/' + productUrl, {
-    headers: { 'User-Agent': UA, 'x-respond-with': 'html', Accept: 'text/html', Authorization: 'Bearer ' + KEY },
-    signal: AbortSignal.timeout(60000),
-  })
-  if (!res.ok) return null
-  const html = await res.text()
-  return (html.match(/og:image["'\s]+content=["']([^"']+)["']/i)
-       || html.match(/content=["']([^"']+)["'][^>]*property=["']og:image["']/i) || [])[1] || null
+  const attempt = async (headers) => {
+    const res = await fetch('https://r.jina.ai/' + productUrl, {
+      headers: { 'User-Agent': UA, Authorization: 'Bearer ' + KEY, ...headers },
+      signal: AbortSignal.timeout(60000),
+    })
+    const body = await res.text()
+    if (!res.ok) {
+      // Surface quota and rate-limit failures instead of letting them look like
+      // products that genuinely have no picture.
+      const code = res.status === 402 ? 'QUOTA_EXHAUSTED'
+                 : res.status === 429 ? 'RATE_LIMITED'
+                 : `HTTP_${res.status}`
+      throw Object.assign(new Error(code), { fatal: res.status === 402 })
+    }
+    return body
+  }
+
+  let body
+  try {
+    body = await attempt({ 'x-with-images-summary': 'true', Accept: 'text/plain' })
+  } catch (e) {
+    if (e.fatal) throw e
+    body = await attempt({ 'x-respond-with': 'html', Accept: 'text/html' })
+  }
+
+  const og = body.match(/og:image["'\s]+content=["']([^"']+)["']/i)
+          || body.match(/content=["']([^"']+)["'][^>]*property=["']og:image["']/i)
+  if (og) return og[1]
+
+  // Markdown mode: pick the first gun.deals-hosted product image.
+  const imgs = [...body.matchAll(/https?:\/\/[^\s)\]"']+/gi)].map(m => m[0])
+  return imgs.find(u => /gun\.deals\/(cdn-cgi\/image|sites\/default\/files)/.test(u)) || null
 }
 
 // gun.deals wraps its og:image in a Cloudflare image transform sized for social
@@ -120,6 +149,11 @@ for (const [i, deal] of needsFix.entries()) {
   } catch (e) {
     failed++
     console.log(`  ✗ ${label} — ${e.message.slice(0, 90)}`)
+    if (e.fatal) {
+      console.log(`\n  STOPPING: Jina account balance exhausted after ${fixed} deals.`)
+      console.log('  Recharge, then re-run — already-fixed deals are skipped automatically.')
+      break
+    }
   }
   if (i % 25 === 24) console.log(`  … ${i + 1}/${needsFix.length}`)
 }
