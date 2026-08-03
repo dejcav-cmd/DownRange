@@ -13,10 +13,23 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with: { node-version: '20' }
-      - name: Probe
+      - name: Probe from Vercel egress
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          echo "=== TRANSPORTS AS SEEN FROM VERCEL ===" > result.txt
+          for U in \
+            "https://gun.deals/product/tactical-belt-heavy-duty-quick-release-military-work-rigger-duty-utility-belt-649" \
+            "https://gun.deals/" ; do
+            echo "--- $U" >> result.txt
+            curl -s -G "https://www.downrangeco.com/api/admin/scrape-diag" \
+              --data-urlencode "url=$U" -H "x-admin-key: $ADMIN_KEY" --max-time 90 \
+              | python3 -m json.tool >> result.txt 2>&1 || echo "call failed" >> result.txt
+          done
+      - name: Probe from this runner
         env:
           SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
-        run: node scripts/deal_image_probe.mjs 2>&1 | tee result.txt
+        run: node scripts/deal_image_probe.mjs >> result.txt 2>&1 || true
       - name: Publish
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
