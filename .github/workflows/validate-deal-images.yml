@@ -1,0 +1,28 @@
+name: Validate Deal Images
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: pip install curl_cffi --quiet
+      - name: Validate
+        id: v
+        continue-on-error: true
+        env:
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/validate_deal_images.py 2>&1 | tee result.txt
+      - name: Publish
+        if: always()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/deal-image-validation.txt
+      - name: Fail if checks failed
+        if: steps.v.outcome == 'failure'
+        run: exit 1
