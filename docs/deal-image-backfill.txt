@@ -1,0 +1,21 @@
+12 gun.deals docs scanned
+  5 with no image
+  7 carrying a stock search image
+  12 to fix  (DRY RUN)
+
+  ✓ Tactical Belt Heavy-Duty & Quick Release Military, — 123073b sha=d225c61e4328
+  ✓ Hawke Sport Optics Vantage IR Rifle Scope 3-9x40 1 — 72569b sha=c30afbdf65e5
+  ✓ Brownells Oxpho-Blue Cold Bluing 4oz - $6.99 — 53470b sha=020ff7edbf8c
+  ✗ Coupon for store Natchez Shooting & Outdoors Monda — no og:image
+  ✓ American Furniture Classics Gun Concealment Nights — 28909b sha=49ef52c9c991
+  ✓ FN AMERICA FN15 Patrol Carbine W/BUIS, 5.56 NATO,  — 17189b sha=251c88c1a181
+  ✓ Speer Lawman .45 ACP 230 Grain TMJ FN Brass 50 Rou — 172071b sha=c183409a940d
+  ✓ Jorviz Target Stand System 7x12 inch AR500 Steel H — 25282b sha=085faac6fd36
+  ✓ SOG Knives Adventurer Folding Drop Point Knife, Gr — 64689b sha=11de6808ed5c
+  ✓ Tactical Grip Camo Tape 1" Gun Grip Tape for Rifle — 56015b sha=5e7b9e6c2859
+  ✓ Magazine Speed Loader for Glock 9mm/.40 S&W With B — 23704b sha=c89acf549b83
+  ✗ Range Day Upgrade: $22.98 GPS Quad Pistol Range Ba — image not downloadable
+
+fixed 10, failed 2
+distinct images: 10 across 10 deals
+PASS — no image is shared between products
