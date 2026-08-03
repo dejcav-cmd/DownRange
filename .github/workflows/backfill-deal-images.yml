@@ -1,0 +1,35 @@
+# Dispatch-only. Re-scrapes real product photos from gun.deals via the Jina
+# reader and replaces the stock images written while the site was unreachable.
+name: Backfill Deal Images
+
+on:
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, write nothing'
+        type: boolean
+        default: true
+      limit:
+        description: 'Max deals to scan'
+        default: '600'
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 50
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: '20' }
+      - name: Backfill
+        env:
+          JINA_API_KEY: ${{ secrets.JINA_API_KEY }}
+          SANITY_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          DRY_RUN: ${{ inputs.dry_run }}
+          LIMIT: ${{ inputs.limit }}
+        run: node scripts/backfill_deal_images.mjs 2>&1 | tee result.txt
+      - name: Publish
+        if: always()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/deal-image-backfill.txt
