@@ -35,7 +35,7 @@ function isAuthorized(req) {
 }
 
 import {
-  SOURCES, scrapeAllSources, normalizeUrl, dedup,
+  SOURCES, scrapeAllSources, normalizeUrl, dedup, dedupSimilar,
 } from '@/lib/giveawaySources'
 
 // ── HANDLER ───────────────────────────────────────────────────────────────────
@@ -78,7 +78,8 @@ async function handler(req) {
     stats.perSource = perSource
     stats.scraped   = allRaw.length
 
-    const giveaways = dedup(allRaw)
+    const giveaways = dedupSimilar(dedup(allRaw))
+    stats.deduped = allRaw.length - giveaways.length
 
     const mutations = []
     for (const g of giveaways) {

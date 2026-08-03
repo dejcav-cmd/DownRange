@@ -4,7 +4,7 @@
  * cron runs under. Fails loudly if a required source comes back empty or if the
  * rows it produces don't look like giveaways.
  */
-import { scrapeAllSources, SOURCES, dedup, normalizeUrl } from '../lib/giveawaySources.js'
+import { scrapeAllSources, SOURCES, dedup, dedupSimilar, normalizeUrl } from '../lib/giveawaySources.js'
 
 const results = await scrapeAllSources()
 let fatal = 0
@@ -22,8 +22,11 @@ for (const r of results) {
   }
 }
 
-const all = dedup(results.flatMap(r => r.giveaways))
-console.log(`\n--- ${results.reduce((n, r) => n + r.giveaways.length, 0)} raw -> ${all.length} after dedup ---`)
+const byUrl = dedup(results.flatMap(r => r.giveaways))
+const all = dedupSimilar(byUrl)
+console.log(`\n--- ${results.reduce((n, r) => n + r.giveaways.length, 0)} raw -> ${byUrl.length} url-dedup -> ${all.length} cross-source dedup ---`)
+console.log('\n--- FINAL SET ---')
+for (const g of all) console.log(`   ${(g.endDate||'—')} $${String(g.prizeValue).padEnd(6)} ${g.category.padEnd(11)} ${g.title.slice(0,72)}`)
 
 const today = new Date().toISOString().split('T')[0]
 const withDate = all.filter(g => g.endDate)
@@ -42,6 +45,7 @@ console.log(`self-links (bad) : ${selfLink.length}`)
 console.log(`unique norm urls : ${new Set(all.map(g => normalizeUrl(g.entryUrl))).size}`)
 
 if (all.length < 15) { console.error(`!! FATAL: only ${all.length} total giveaways, expected 15+`); fatal++ }
+if (byUrl.length - all.length < 3) { console.error(`!! WARN: cross-source dedup only merged ${byUrl.length - all.length} rows — both aggregators overlap heavily, expected more`) }
 if (withDate.length < all.length * 0.5) { console.error('!! FATAL: fewer than half the rows have an end date'); fatal++ }
 if (badDate.length) { console.error('!! FATAL: malformed end dates present'); fatal++ }
 if (selfLink.length) { console.error('!! FATAL: clean-link rule violated'); fatal++ }
