@@ -1,610 +1,265 @@
 {
-  "ran_at": "2026-08-03T14:19:46Z",
   "wintheguns.com": {
-    "status": 200,
-    "bytes": 85322,
-    "anchors": 65,
-    "offsite": 46,
-    "platform_links": 26,
-    "sample_all": [
-      {
-        "text": "Skip to content",
-        "url": "https://wintheguns.com/#content",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "Marketing",
-        "url": "https://wintheguns.com/home-page/grow-your-brand-with-wintheguns-com-firearms-industry-marketing/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "More Giveaways",
-        "url": "https://wintheguns.com/more-giveaways/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "Blog",
-        "url": "https://wintheguns.com/blog/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "Contact",
-        "url": "https://wintheguns.com/contact/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "About",
-        "url": "https://wintheguns.com/about/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "Marketing",
-        "url": "https://wintheguns.com/home-page/grow-your-brand-with-wintheguns-com-firearms-industry-marketing/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "More Giveaways",
-        "url": "https://wintheguns.com/more-giveaways/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "Blog",
-        "url": "https://wintheguns.com/blog/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "Contact",
-        "url": "https://wintheguns.com/contact/",
-        "host": "wintheguns.com"
-      },
-      {
-        "text": "About",
-        "url": "https://wintheguns.com/about/",
-        "host": "wintheguns.com"
-      },
+    "rows": [
       {
         "text": "Win $400!",
         "url": "https://sweepwidget.com/c/101388-tcg64wia/38e19f-101388",
-        "host": "sweepwidget.com"
-      }
-    ],
-    "sample_offsite": [
-      {
-        "text": "Win $400!",
-        "url": "https://sweepwidget.com/c/101388-tcg64wia/38e19f-101388",
-        "host": "sweepwidget.com"
+        "before_tail": " Giveaway (click link) Prize Value Contests Ends Date Added ",
+        "after_head": " $400 9/1/26 8/2/26 Win a Browning X Bolt in 300 win mag! (Single entry) $1,500 8/31/26 8/2/26 <a href=\"",
+        "dates_before": [],
+        "dates_after": [
+          "9/1/26",
+          "8/2/26",
+          "8/31/26",
+          "8/2/26"
+        ],
+        "money_before": [],
+        "money_after": [
+          "$400",
+          "$1,500"
+        ]
       },
       {
         "text": "Win a Browning X Bolt in 300 win mag! (Single entry)",
         "url": "https://www.galleryofguns.com/ggg/",
-        "host": "www.galleryofguns.com"
+        "before_tail": "ss=\"column-4\">Date Added Win $400! $400 9/1/26 8/2/26 ",
+        "after_head": " $1,500 8/31/26 8/2/26 Win a POF AR and a ton of Rise Armament gear! $5,000 8/31/26 8/1/26 <a href=\"https://swee.ps",
+        "dates_before": [
+          "9/1/26",
+          "8/2/26"
+        ],
+        "dates_after": [
+          "8/31/26",
+          "8/2/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "money_before": [
+          "$400",
+          "$400"
+        ],
+        "money_after": [
+          "$1,500",
+          "$5,000"
+        ]
       },
       {
         "text": "Win a POF AR and a ton of Rise Armament gear!",
         "url": "https://swee.ps/FheQlL_UORrtne",
-        "host": "swee.ps"
+        "before_tail": "/26 Win a Browning X Bolt in 300 win mag! (Single entry) $1,500 8/31/26 8/2/26 ",
+        "after_head": " $5,000 8/31/26 8/1/26 Win a Henry field rifle, suppressor, safe, ammo, and more! (Single entry) $11,500 8/31/26 8/1/26 <tr clas",
+        "dates_before": [
+          "8/31/26",
+          "8/2/26"
+        ],
+        "dates_after": [
+          "8/31/26",
+          "8/1/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "money_before": [
+          "$1,500"
+        ],
+        "money_after": [
+          "$5,000",
+          "$11,500"
+        ]
       },
       {
         "text": "Win a Henry field rifle, suppressor, safe, ammo, and more! (Single entry)",
         "url": "https://swee.ps/VGcwyP_vwthNjT",
-        "host": "swee.ps"
+        "before_tail": "ass=\"column-4\">8/2/26 Win a POF AR and a ton of Rise Armament gear! $5,000 8/31/26 8/1/26 ",
+        "after_head": " $11,500 8/31/26 8/1/26 *Win a 5 gram gold bar! $750 8/31/26 8/1/26 <a href=\"https://swee.ps/fgdpMz_UZSLSoy\" target=\"_blank\" title=\"*Win 1 of 3 hi",
+        "dates_before": [
+          "8/2/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "dates_after": [
+          "8/31/26",
+          "8/1/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "money_before": [
+          "$5,000"
+        ],
+        "money_after": [
+          "$11,500",
+          "$750"
+        ]
       },
       {
         "text": "*Win a 5 gram gold bar!",
         "url": "https://wn.nr/5ht4XGZ",
-        "host": "wn.nr"
+        "before_tail": "class=\"column-1\"> Win a Henry field rifle, suppressor, safe, ammo, and more! (Single entry) $11,500 8/31/26 8/1/26 ",
+        "after_head": " $750 8/31/26 8/1/26 *Win 1 of 3 high end collectors Kimbers! $15,000 8/31/26 8/1/26 <a href=\"https://woobox.com/oakhek/",
+        "dates_before": [
+          "8/31/26",
+          "8/1/26"
+        ],
+        "dates_after": [
+          "8/31/26",
+          "8/1/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "money_before": [
+          "$11,500"
+        ],
+        "money_after": [
+          "$750",
+          "$15,000"
+        ]
       },
       {
         "text": "*Win 1 of 3 high end collectors Kimbers!",
         "url": "https://swee.ps/fgdpMz_UZSLSoy",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win a Burris rifle scope and binos! (Single entry)",
-        "url": "https://woobox.com/oakhek/rsl2hb",
-        "host": "woobox.com"
-      },
-      {
-        "text": "Win 1 of 2 prizes of a Taurus TX-22 and suppressor!",
-        "url": "https://grabagun.com/viral-giveaway",
-        "host": "grabagun.com"
-      },
-      {
-        "text": "Win a Canik Prime Radian and Holosun red dot!",
-        "url": "https://wn.nr/Y2kVxj4",
-        "host": "wn.nr"
-      },
-      {
-        "text": "Win $5,000! (Any gun you want!)",
-        "url": "http://folioweekly.secondstreetapp.com/og/97551798-733a-45a7-87eb-5a87ad4140aa/referrals/c6447be4-a738-470e-8657-2a5f1be90b4d",
-        "host": "folioweekly.secondstreetapp.com"
-      },
-      {
-        "text": "Win a $500 Walmart Gift card! (Ammo money!)",
-        "url": "https://swee.ps/vguGBl_eYDshpS",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win 2x Zev Tech FDP9 SBRs!",
-        "url": "https://wn.nr/kV2DA57",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Win a Daniel Defense SPR III AR!",
-        "url": "https://wn.nr/KcryhpT",
-        "host": "wn.nr"
-      },
-      {
-        "text": "Win 1 of 2 prizes of a S&amp;W 357 or 38!",
-        "url": "https://swee.ps/ExFtgQ_vaSunSU",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win a Savior Defense rifle bag!",
-        "url": "https://swee.ps/fGDraJ_dPARPQf",
-        "host": "swee.ps"
-      },
-      {
-        "text": "*Win a ported CZ P-10c!",
-        "url": "https://www.gunsinternational.com/contest/",
-        "host": "www.gunsinternational.com"
-      },
-      {
-        "text": "Win a shooting tripod!",
-        "url": "https://wn.nr/qK2Mf3f",
-        "host": "wn.nr"
-      },
-      {
-        "text": "Win 1 of 2 prizes of a S&amp;W 30-30 or 45-70!",
-        "url": "https://swee.ps/vxEjTy_UsboPxd",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win a Meridian AK-102!",
-        "url": "https://wn.nr/KcrhvHR",
-        "host": "wn.nr"
-      },
-      {
-        "text": "Win a 4.5\" AR (click the giveaway on the scrolling banner)",
-        "url": "https://wn.nr/MnB9bnZ",
-        "host": "wn.nr"
+        "before_tail": "-2\">$11,500 8/31/26 8/1/26 *Win a 5 gram gold bar! $750 8/31/26 8/1/26 ",
+        "after_head": " $15,000 8/31/26 8/1/26 Win a Burris rifle scope and binos! (Single entry) $3,250 8/31/26 8/1/26 <a href=\"ht",
+        "dates_before": [
+          "8/31/26",
+          "8/1/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "dates_after": [
+          "8/31/26",
+          "8/1/26",
+          "8/31/26",
+          "8/1/26"
+        ],
+        "money_before": [
+          "$11,500",
+          "$750"
+        ],
+        "money_after": [
+          "$15,000",
+          "$3,250"
+        ]
       }
-    ],
-    "sample_platform": [
-      {
-        "text": "Win $400!",
-        "url": "https://sweepwidget.com/c/101388-tcg64wia/38e19f-101388",
-        "host": "sweepwidget.com"
-      },
-      {
-        "text": "Win a POF AR and a ton of Rise Armament gear!",
-        "url": "https://swee.ps/FheQlL_UORrtne",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win a Henry field rifle, suppressor, safe, ammo, and more! (Single entry)",
-        "url": "https://swee.ps/VGcwyP_vwthNjT",
-        "host": "swee.ps"
-      },
-      {
-        "text": "*Win a 5 gram gold bar!",
-        "url": "https://wn.nr/5ht4XGZ",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Win 1 of 3 high end collectors Kimbers!",
-        "url": "https://swee.ps/fgdpMz_UZSLSoy",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win a Burris rifle scope and binos! (Single entry)",
-        "url": "https://woobox.com/oakhek/rsl2hb",
-        "host": "woobox.com"
-      },
-      {
-        "text": "Win a Canik Prime Radian and Holosun red dot!",
-        "url": "https://wn.nr/Y2kVxj4",
-        "host": "wn.nr"
-      },
-      {
-        "text": "Win a $500 Walmart Gift card! (Ammo money!)",
-        "url": "https://swee.ps/vguGBl_eYDshpS",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win 2x Zev Tech FDP9 SBRs!",
-        "url": "https://wn.nr/kV2DA57",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Win a Daniel Defense SPR III AR!",
-        "url": "https://wn.nr/KcryhpT",
-        "host": "wn.nr"
-      },
-      {
-        "text": "Win 1 of 2 prizes of a S&amp;W 357 or 38!",
-        "url": "https://swee.ps/ExFtgQ_vaSunSU",
-        "host": "swee.ps"
-      },
-      {
-        "text": "Win a Savior Defense rifle bag!",
-        "url": "https://swee.ps/fGDraJ_dPARPQf",
-        "host": "swee.ps"
-      }
-    ],
-    "dollar_hits": 58,
-    "date_hits": [
-      "9/1/26",
-      "8/2/26",
-      "8/31/26",
-      "8/2/26",
-      "8/31/26",
-      "8/1/26",
-      "8/31/26",
-      "8/1/26",
-      "8/31/26",
-      "8/1/26"
     ]
   },
   "gungiveaways.net": {
-    "status": 200,
-    "bytes": 23770,
-    "anchors": 41,
-    "offsite": 34,
-    "platform_links": 11,
-    "sample_all": [
-      {
-        "text": "Gun Giveaways",
-        "url": "https://gungiveaways.net/",
-        "host": "gungiveaways.net"
-      },
-      {
-        "text": "Tips",
-        "url": "https://gungiveaways.net/tips/",
-        "host": "gungiveaways.net"
-      },
-      {
-        "text": "Winner\u2019s Circle",
-        "url": "https://gungiveaways.net/winners-circle/",
-        "host": "gungiveaways.net"
-      },
-      {
-        "text": "Submit a Giveaway",
-        "url": "https://gungiveaways.net/contact-us/",
-        "host": "gungiveaways.net"
-      },
+    "rows": [
       {
         "text": "*Browning X-Bolt 2 Speed .300WinMag Rifle Giveaway",
         "url": "https://www.galleryofguns.com/ggg/?utm_source=Gungiveaways.net",
-        "host": "www.galleryofguns.com"
+        "before_tail": "h style=\"border: 1px solid #000; padding: 5px;\">Giveaway (Click title to enter) Added Prize ARV End Date ",
+        "after_head": " 8/3/26 $1,520 8/31/26 *Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + Gear Giveaway </stro",
+        "dates_before": [],
+        "dates_after": [
+          "8/3/26",
+          "8/31/26"
+        ],
+        "money_before": [],
+        "money_after": [
+          "$1,520"
+        ]
       },
       {
         "text": "*Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + Gear Giveaway",
         "url": "https://swee.ps/eGCMJo_FNSvIWq",
-        "host": "swee.ps"
+        "before_tail": "l=\"noopener noreferrer\">*Browning X-Bolt 2 Speed .300WinMag Rifle Giveaway 8/3/26 $1,520 8/31/26 ",
+        "after_head": " 8/2/26 $11,619 8/31/26 \u00b9Kimber Factory-Exclusive Pistols G",
+        "dates_before": [
+          "8/3/26",
+          "8/31/26"
+        ],
+        "dates_after": [
+          "8/2/26",
+          "8/31/26"
+        ],
+        "money_before": [
+          "$1,520"
+        ],
+        "money_after": [
+          "$11,619"
+        ]
       },
       {
         "text": "\u00b9Kimber Factory-Exclusive Pistols Giveaway (3 Winners)",
         "url": "https://www.collectorseliteauctions.com/sweepstakes/?utm_source=Gungiveaways.net#f1596381",
-        "host": "www.collectorseliteauctions.com"
+        "before_tail": "PD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + Gear Giveaway 8/2/26 $11,619 8/31/26 ",
+        "after_head": " 8/2/26 $5,000 9/6/26 \u00b9POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear",
+        "dates_before": [
+          "8/2/26",
+          "8/31/26"
+        ],
+        "dates_after": [
+          "8/2/26",
+          "9/6/26"
+        ],
+        "money_before": [
+          "$11,619"
+        ],
+        "money_after": [
+          "$5,000"
+        ]
       },
       {
         "text": "\u00b9POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway",
         "url": "https://risearmament.com/sweepstakes/?utm_source=Gungiveaways.net#f1789100",
-        "host": "risearmament.com"
+        "before_tail": "noopener noreferrer\">\u00b9Kimber Factory-Exclusive Pistols Giveaway (3 Winners) 8/2/26 $5,000 9/6/26 ",
+        "after_head": " 8/1/26 $5,658 8/31/26 \u00b9$5,000 Cash Giveaway 8/1/",
+        "dates_before": [
+          "8/2/26",
+          "9/6/26"
+        ],
+        "dates_after": [
+          "8/1/26",
+          "8/31/26"
+        ],
+        "money_before": [
+          "$5,000"
+        ],
+        "money_after": [
+          "$5,658",
+          "$5,000"
+        ]
       },
       {
         "text": "\u00b9$5,000 Cash Giveaway",
         "url": "https://ggn.fyi/4QqBmR3",
-        "host": "ggn.fyi"
+        "before_tail": " noreferrer\">\u00b9POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway 8/1/26 $5,658 8/31/26 ",
+        "after_head": " 8/1/26 $5,000 8/26/26 *Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giv",
+        "dates_before": [
+          "8/1/26",
+          "8/31/26"
+        ],
+        "dates_after": [
+          "8/1/26",
+          "8/26/26"
+        ],
+        "money_before": [
+          "$5,658"
+        ],
+        "money_after": [
+          "$5,000"
+        ]
       },
       {
         "text": "*Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giveaway",
         "url": "https://www.midwayusa.com/sweepstakes?utm_source=Gungiveaways.net",
-        "host": "www.midwayusa.com"
-      },
-      {
-        "text": "*Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor Giveaway",
-        "url": "https://grabagun.com/viral-giveaway?utm_source=Gungiveaways.net",
-        "host": "grabagun.com"
-      },
-      {
-        "text": "*5 Gram Gold Bar Giveaway",
-        "url": "https://wn.nr/FbcWFxb",
-        "host": "wn.nr"
+        "before_tail": "i/4QqBmR3\" target=\"_blank\" rel=\"noopener noreferrer\">\u00b9$5,000 Cash Giveaway 8/1/26 $5,000 8/26/26 ",
+        "after_head": " 8/1/26 $3,324 8/31/26 *Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor",
+        "dates_before": [
+          "8/1/26",
+          "8/26/26"
+        ],
+        "dates_after": [
+          "8/1/26",
+          "8/31/26"
+        ],
+        "money_before": [
+          "$5,000",
+          "$5,000"
+        ],
+        "money_after": [
+          "$3,324"
+        ]
       }
-    ],
-    "sample_offsite": [
-      {
-        "text": "*Browning X-Bolt 2 Speed .300WinMag Rifle Giveaway",
-        "url": "https://www.galleryofguns.com/ggg/?utm_source=Gungiveaways.net",
-        "host": "www.galleryofguns.com"
-      },
-      {
-        "text": "*Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + Gear Giveaway",
-        "url": "https://swee.ps/eGCMJo_FNSvIWq",
-        "host": "swee.ps"
-      },
-      {
-        "text": "\u00b9Kimber Factory-Exclusive Pistols Giveaway (3 Winners)",
-        "url": "https://www.collectorseliteauctions.com/sweepstakes/?utm_source=Gungiveaways.net#f1596381",
-        "host": "www.collectorseliteauctions.com"
-      },
-      {
-        "text": "\u00b9POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway",
-        "url": "https://risearmament.com/sweepstakes/?utm_source=Gungiveaways.net#f1789100",
-        "host": "risearmament.com"
-      },
-      {
-        "text": "\u00b9$5,000 Cash Giveaway",
-        "url": "https://ggn.fyi/4QqBmR3",
-        "host": "ggn.fyi"
-      },
-      {
-        "text": "*Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giveaway",
-        "url": "https://www.midwayusa.com/sweepstakes?utm_source=Gungiveaways.net",
-        "host": "www.midwayusa.com"
-      },
-      {
-        "text": "*Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor Giveaway",
-        "url": "https://grabagun.com/viral-giveaway?utm_source=Gungiveaways.net",
-        "host": "grabagun.com"
-      },
-      {
-        "text": "*5 Gram Gold Bar Giveaway",
-        "url": "https://wn.nr/FbcWFxb",
-        "host": "wn.nr"
-      },
-      {
-        "text": "\u00b92x Zev Technologies FDP9 SBR + Sig ROMEO5 Red Dot Giveaway",
-        "url": "https://ggn.fyi/iqsLB8E",
-        "host": "ggn.fyi"
-      },
-      {
-        "text": "\u00b9Daniel Defense SPR III AR-15 Rifle Giveaway",
-        "url": "https://wn.nr/MnByLdQ",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*S&amp;W America 250 Model 66 &amp; 642 Revolvers Giveaway (2 Winners)",
-        "url": "https://www.smith-wesson.com/giveaway2?utm_source=Gungiveaways.net#f2092854",
-        "host": "www.smith-wesson.com"
-      },
-      {
-        "text": "*CZ P-10 C Ported COA Pistol Giveaway",
-        "url": "https://www.gunsinternational.com/contest/?utm_source=Gungiveaways.net",
-        "host": "www.gunsinternational.com"
-      },
-      {
-        "text": "*Sunwayfoto Shooting Tripod + Saddle Mount Giveaway",
-        "url": "https://wn.nr/qK2MqPq",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Savior Equipment Rifle Bag Giveaway",
-        "url": "https://readygunner.com/giveaway/?utm_source=Gungiveaways.net",
-        "host": "readygunner.com"
-      },
-      {
-        "text": "*S&amp;W Model 1854 Lever Action Rifle w/Vortex Scope Giveaway (2 Winners)",
-        "url": "https://www.smith-wesson.com/giveaway?utm_source=Gungiveaways.net#f1910722",
-        "host": "www.smith-wesson.com"
-      },
-      {
-        "text": "*Trip for 2 to Turks &amp; Caicos Giveaway",
-        "url": "https://swee.ps/ffQgfR_FJAtYfe",
-        "host": "swee.ps"
-      },
-      {
-        "text": "\u00b9Rhine River Cruise for 2 Giveaway",
-        "url": "https://ggn.fyi/5H5cqv7",
-        "host": "ggn.fyi"
-      },
-      {
-        "text": "*Moriarti 4.5&#8243; AR-15 Pistol Giveaway",
-        "url": "https://moriartiarmaments.com/monthly-giveaway?utm_source=Gungiveaways.net",
-        "host": "moriartiarmaments.com"
-      },
-      {
-        "text": "*Hunting Gear Package Giveaway",
-        "url": "https://ggn.fyi/3bC4mpZ",
-        "host": "ggn.fyi"
-      },
-      {
-        "text": "*Ruger Harrier AR-15 Rifle Giveaway",
-        "url": "https://ggn.fyi/N5rvVtu",
-        "host": "ggn.fyi"
-      }
-    ],
-    "sample_platform": [
-      {
-        "text": "*Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + Gear Giveaway",
-        "url": "https://swee.ps/eGCMJo_FNSvIWq",
-        "host": "swee.ps"
-      },
-      {
-        "text": "*5 Gram Gold Bar Giveaway",
-        "url": "https://wn.nr/FbcWFxb",
-        "host": "wn.nr"
-      },
-      {
-        "text": "\u00b9Daniel Defense SPR III AR-15 Rifle Giveaway",
-        "url": "https://wn.nr/MnByLdQ",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Sunwayfoto Shooting Tripod + Saddle Mount Giveaway",
-        "url": "https://wn.nr/qK2MqPq",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Trip for 2 to Turks &amp; Caicos Giveaway",
-        "url": "https://swee.ps/ffQgfR_FJAtYfe",
-        "host": "swee.ps"
-      },
-      {
-        "text": "\u00b9Sig 516 G3 Bronze Rifle, 1,000 Rounds Black Hills Ammo + WML Giveaway",
-        "url": "https://wn.nr/Wrz8D8s",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Trip for 2 to Hawaii Giveaway",
-        "url": "https://wn.nr/qK2VWVq",
-        "host": "wn.nr"
-      },
-      {
-        "text": "*Year Supply of Old Trapper Beef Jerky Giveaway",
-        "url": "https://woobox.com/u8pt3b/rrpbgl",
-        "host": "woobox.com"
-      },
-      {
-        "text": "*POF Revolution .308 Rifle, PST-7 Suppressor, Optic, Ammo, Armor + Gear Giveaway",
-        "url": "https://gleam.io/CUrA5/patriot-ordinance-factoryamericas-250-giveaway",
-        "host": "gleam.io"
-      },
-      {
-        "text": "*$10,000 Cash Giveaway (4 Winners of $2,500)",
-        "url": "https://swee.ps/EeJilE_uiBFTaD",
-        "host": "swee.ps"
-      },
-      {
-        "text": "*America 250 Outdoor Adventure Gear Package Giveaway",
-        "url": "https://share-w.in/jeremyls4p-98128",
-        "host": "share-w.in"
-      }
-    ],
-    "dollar_hits": 38,
-    "date_hits": [
-      "8/3/26",
-      "8/3/26",
-      "8/31/26",
-      "8/2/26",
-      "8/31/26",
-      "8/2/26",
-      "9/6/26",
-      "8/1/26",
-      "8/31/26",
-      "8/1/26"
     ]
-  },
-  "candidates": {
-    "PSA giveaways": {
-      "url": "https://palmettostatearmory.com/giveaways",
-      "status": 403,
-      "bytes": 0
-    },
-    "Lucky Gunner lounge": {
-      "url": "https://www.luckygunner.com/lounge/category/giveaways/",
-      "status": 404,
-      "bytes": 0
-    },
-    "Springfield promos": {
-      "url": "https://www.springfield-armory.com/promotions/",
-      "status": 404,
-      "bytes": 0
-    },
-    "GOA sweepstakes": {
-      "url": "https://www.gunowners.org/giveaway/",
-      "status": 404,
-      "bytes": 0
-    },
-    "Taurus promotions": {
-      "url": "https://www.taurususa.com/promotions/",
-      "status": 404,
-      "bytes": 0
-    },
-    "Ruger promotions": {
-      "url": "https://ruger.com/promotions/",
-      "status": 200,
-      "bytes": 67251,
-      "anchors": 405,
-      "giveawayish": [],
-      "platform": []
-    },
-    "Brownells sweeps": {
-      "url": "https://www.brownells.com/aspx/general/sweepstakes.aspx",
-      "status": 200,
-      "bytes": 946239,
-      "anchors": 1165,
-      "giveawayish": [],
-      "platform": []
-    },
-    "SAF sweepstakes": {
-      "url": "https://www.saf.org/sweepstakes/",
-      "status": 404,
-      "bytes": 0
-    },
-    "Pew Pew giveaway": {
-      "url": "https://www.pewpewtactical.com/giveaway/",
-      "status": 200,
-      "bytes": 59664,
-      "anchors": 6,
-      "giveawayish": [],
-      "platform": []
-    },
-    "Popular Suppressors": {
-      "url": "https://popularsuppressors.com/",
-      "status": 200,
-      "bytes": 183388,
-      "anchors": 91,
-      "giveawayish": [
-        {
-          "text": "APRIL \u2192 MAY \u2192 JUNE \u2192 JULY 100 Days of Silence The Biggest Suppressor Giveaway in History Presented by Silencer",
-          "url": "https://popularsuppressors.com/100-days-of-silence/",
-          "host": "popularsuppressors.com"
-        },
-        {
-          "text": "Giveaways",
-          "url": "https://popularsuppressors.com/articles/100th-day-of-silence-grand-finale/",
-          "host": "popularsuppressors.com"
-        },
-        {
-          "text": "APRIL &rarr; MAY &rarr; JUNE &rarr; JULY 100 Days of Silence The Biggest Suppressor Giveaway in History Presen",
-          "url": "https://popularsuppressors.com/100-days-of-silence/",
-          "host": "popularsuppressors.com"
-        },
-        {
-          "text": "Giveaways",
-          "url": "https://popularsuppressors.com/articles/banish-suppressor-banish-30-gold-v2/",
-          "host": "popularsuppressors.com"
-        },
-        {
-          "text": "Giveaways",
-          "url": "https://popularsuppressors.com/articles/wilson-combat-silent-bandit-suppressor/",
-          "host": "popularsuppressors.com"
-        },
-        {
-          "text": "Giveaways",
-          "url": "https://popularsuppressors.com/articles/300-blackout-subsonic-ammo-winchester-super-suppressed/",
-          "host": "popularsuppressors.com"
-        }
-      ],
-      "platform": []
-    },
-    "Gun Giveaways gunsam": {
-      "url": "https://www.gunsamerica.com/digest/gun-giveaways/",
-      "status": 404,
-      "bytes": 0
-    },
-    "Sweepstakes Fanatics": {
-      "url": "https://www.sweepstakesfanatics.com/gun-sweepstakes/",
-      "status": 404,
-      "bytes": 0
-    },
-    "OutdoorLife giveaway": {
-      "url": "https://www.outdoorlife.com/giveaways/",
-      "status": 404,
-      "bytes": 0
-    },
-    "AmmoToGo giveaway": {
-      "url": "https://www.ammunitiontogo.com/lodge/giveaways/",
-      "status": 404,
-      "bytes": 0
-    },
-    "Firearms News": {
-      "url": "https://www.firearmsnews.com/sweepstakes",
-      "status": 403,
-      "bytes": 0
-    }
   }
 }
