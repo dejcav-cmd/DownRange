@@ -1,11 +1,11 @@
 === CRON RUN ===
 {
     "ok": true,
-    "ms": 3149,
+    "ms": 4212,
     "scraped": 73,
     "added": 4,
     "skipped": 46,
-    "expired": 5,
+    "expired": 1,
     "errors": [
         "gunmade.com: unreachable (direct 403 / jina 403)"
     ],
@@ -13,12 +13,9 @@
         "wintheguns.com": 2,
         "gungiveaways.net": 2
     },
+    "repaired": 1,
     "retired": [
-        "wintheguns.com \u2014 entry URL points back at an aggregator, not a sponsor",
-        "More Giveaways Here! \u2014 entry URL points back at an aggregator, not a sponsor",
-        "Scholarships, Awards and Contests \u2014 no prize value and no end date",
-        "Youth Wildlife Art Contest \u2014 no prize value and no end date",
-        "Scholarships, Awards & Contests \u2014 no prize value and no end date"
+        "Giveaways \u2014 title has no distinctive content"
     ],
     "perSource": {
         "wintheguns.com": {
@@ -42,7 +39,7 @@
 }
 
 total giveaway docs: 118
-  active: 42
+  active: 41
   no endDate: 6
   no prizeValue: 5
   neither: 5
@@ -62,8 +59,7 @@ total giveaway docs: 118
   2026-05-29 2026-12-07 $13000  Win 1 of 4 prize packs that include $2,500 cash, a He Man sw
   2026-05-29 2027-01-04 $25000  Win one of many prizes packages of guns and gear!
   2026-06-08 2026-08-08 $4000   Win a Zev folding rifle, suppressor and Louis Vuitton bag!
-  2026-07-21 2026-08-09 $25000  [¹100 Days of Silence Suppressor Giveaway (100 Suppressor Wi
-  2026-07-21 —          $2752   Giveaways
+  2026-07-21 2026-08-09 $25000  100 Days of Silence Suppressor Giveaway (100 Suppressor Winn
   2026-08-03 2026-08-31 $5658   POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway
   2026-08-03 2026-09-01 $400    Win $400!
   2026-08-03 2026-09-30 $2500   $2,500 American Eagle Gold Coins Giveaway
@@ -99,3 +95,4 @@ total giveaway docs: 118
   2026-08-03 2026-08-31 $6000   Rhine River Cruise for 2 Giveaway
   2026-08-03 2026-08-31 $400    Moriarti 4.5″ AR-15 Pistol Giveaway
   2026-08-03 2026-12-31 $15000  10 Guns or Kawasaki Side-by-Side Giveaway (9 Winners)
+  2026-08-03 2026-08-05 $2456   S&W America 250 Model 66 & 642 Revolvers Giveaway (2 Winners
