@@ -88,11 +88,18 @@ def validate_image(content):
         w, h = Image.open(io.BytesIO(content)).size
     except Exception as e:
         return None, f'unreadable image ({type(e).__name__})'
-    if w < 200 or h < 200:
+    # A rifle photographed on white is genuinely 1000x163. A Glock magazine is
+    # genuinely 169x417. Earlier floors of 400px then 200px were both set
+    # without checking the catalogue's actual shape distribution, and both
+    # rejected real long-gun photos. Judge on area and extremity, not on either
+    # dimension alone.
+    if w < 150 or h < 110:
         return None, f'too small ({w}x{h})'
-    if h and w / h > 8:
+    if w * h < 30000:
+        return None, f'too few pixels ({w}x{h})'
+    if h and w / h > 10:
         return None, f'strip/banner ({w}x{h})'
-    if w and h / w > 3:
+    if w and h / w > 3.5:
         return None, f'extreme portrait ({w}x{h})'
     return (w, h), None
 
@@ -109,12 +116,24 @@ targets = sanity_query(f'''*[_type=="gunDeal" && source=="gun.deals" && defined(
   "orig": *[_type=="sanity.imageAsset" && url == ^.imageUrl][0].originalFilename
 }} | order(_createdAt desc)[0...{LIMIT}]''')
 
-needs = [d for d in targets if not d.get('imageUrl') or (d.get('orig') or '').startswith('deal-search-')]
-print(f'{len(targets)} scanned, {len(needs)} need a real image{"  (DRY RUN)" if DRY else ""}\n')
+COUPON = re.compile(r'^\s*coupon for store\b', re.I)
+
+candidates = [d for d in targets
+              if not d.get('imageUrl') or (d.get('orig') or '').startswith('deal-search-')]
+coupons = [d for d in candidates if COUPON.match(d.get('title') or '')]
+needs = [d for d in candidates if not COUPON.match(d.get('title') or '')]
+
+print(f'{len(targets)} scanned, {len(needs)} need a real image, '
+      f'{len(coupons)} coupon posts skipped{"  (DRY RUN)" if DRY else ""}\n')
+
+# Coupon posts have no product image and never will. Any stock photo sitting on
+# one is simply wrong, so strip it rather than leave it on the page.
+stock_to_clear = [d for d in coupons if d.get('imageUrl')]
 
 fixed = failed = 0
 hashes = {}
 batch = []
+unfixed = []
 import hashlib
 
 for i, deal in enumerate(needs):
@@ -122,11 +141,13 @@ for i, deal in enumerate(needs):
     html, _ = fetch(deal['externalUrl'])
     if not html:
         failed += 1
+        unfixed.append(deal)
         print(f'  x {label} — unreachable after retries')
         continue
     m = OG.search(html)
     if not m:
         failed += 1
+        unfixed.append(deal)
         print(f'  x {label} — no og:image on page')
         continue
     og = m.group(1)
@@ -136,12 +157,14 @@ for i, deal in enumerate(needs):
         content, ct = fetch(og, want_image=True)
     if not content:
         failed += 1
+        unfixed.append(deal)
         print(f'  x {label} — image not downloadable')
         continue
 
     dims, why = validate_image(content)
     if not dims:
         failed += 1
+        unfixed.append(deal)
         print(f'  x {label} — rejected: {why}')
         continue
 
@@ -164,6 +187,19 @@ for i, deal in enumerate(needs):
 
 if batch and not DRY:
     sanity_mutate(batch)
+
+# Anything still unfixed that is showing a stock photo gets it removed. The
+# standing rule is that a wrong image is worse than no image, and a Pexels
+# picture of generic ammunition on a Remington 783 listing is a wrong image.
+clear = stock_to_clear + [d for d in unfixed if (d.get('orig') or '').startswith('deal-search-')]
+if clear:
+    print(f'\nclearing {len(clear)} stock image(s) from deals that have no real photo')
+    for d in clear[:10]:
+        print(f'  - {(d.get("title") or "")[:60]}')
+    if not DRY:
+        for i in range(0, len(clear), 50):
+            sanity_mutate([{'patch': {'id': d['_id'], 'unset': ['imageUrl']}}
+                           for d in clear[i:i+50]])
 
 total = fixed + failed
 print(f'\nfixed {fixed}, failed {failed}  ({100*fixed//total if total else 0}% success)')

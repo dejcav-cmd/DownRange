@@ -86,9 +86,10 @@ for d in real:
     w, h = dm.get('width'), dm.get('height')
     if not w or not h:
         bad.append((d, 'no dimensions')); continue
-    if w < 200 or h < 200: bad.append((d, f'{w}x{h} too small'))
-    elif w / h > 8: bad.append((d, f'{w}x{h} strip/banner'))
-    elif h / w > 3: bad.append((d, f'{w}x{h} extreme portrait'))
+    if w < 150 or h < 110: bad.append((d, f'{w}x{h} too small'))
+    elif w * h < 30000: bad.append((d, f'{w}x{h} too few pixels'))
+    elif w / h > 10: bad.append((d, f'{w}x{h} strip/banner'))
+    elif h / w > 3.5: bad.append((d, f'{w}x{h} extreme portrait'))
 check('all images pass the size/aspect rules', not bad, f'{len(bad)} violations')
 for d, why in bad[:5]:
     print(f'        {d["title"][:44]} — {why}')
