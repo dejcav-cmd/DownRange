@@ -1,35 +1,22 @@
 600 gun.deals docs examined
 
 1. Stock photo removal
-  [FAIL] no Pexels/Pixabay stock images remain  — 22 left
-        Remington 783 Full Size .270 WIN Rifle, 22" BBL, 4+1 Rounds,
-        Tristar LR94 410-Bore Lever-Action Shotgun w/ Nickel Finish 
-        Matador Arms MAT9-K Roller Pistol 9mm 5.5" 22-Rds Black - $9
-        Smith & Wesson Executive 1227056 Pocket Knife 3.5" Spear Poi
-        Coupon for store Optics Planet Saturday, August 1, 2026
+  [PASS] no Pexels/Pixabay stock images remain  — 0 left
 
 2. Coverage
-  [PASS] most deals have an image  — 598/600 (99%)
-        474 carry a freshly scraped gun.deals image
+  [PASS] most deals have an image  — 578/600 (96%)
+        503 carry a freshly scraped gun.deals image
 
 3. Image uniqueness
-  [FAIL] no image used by more than 3 deals  — worst: 8x
-        8x  Century Arms CA-3 OD Green / Black 7.62x51mm | Coupon for store Shooters Gate Thursday, Jul | Coupon for store Brownells Thursday, July 30
-        2x  Atrius Development 3 Position Super Selector | Atrius Development 3 Position Super Selector
-        2x  Remington 783 Full Size .270 WIN Rifle, 22"  | HIPERFIRE XAKM2, Single Stage Trigger, Black
-        2x  Matador Arms MAT9-K Roller Pistol 9mm 5.5" 2 | GForce Jawbone w/Brace 9mm 5" 34+1 - $399.99
-        2x  Smith & Wesson Executive 1227056 Pocket Knif | S&W M&P Folding Spear Point 8Cr13MoV Stainle
+  [PASS] no image used by more than 3 deals  — worst: 3x
+        3x  Atrius Development 3 Position Super Selector | Atrius Development 3 Position Super Selector | Atrius Development 3 Position Super Selector
+        2x  Griffin Armament MK2 AR-15 Ambidextrous Stri | Griffin Armament MK2 AR-15 Ambidextrous Stri
 
 4. Image provenance (asset filename vs deal URL slug)
   [PASS] every scraped image traces to its own product page  — 0 mismatched
 
 5. Dimensions
-  [FAIL] all images pass the size/aspect rules  — 19 violations
-        Winchester Firearms SXP Extreme Deer 12 Gaug — 863x154 too small
-        SGM Tactical Magazine For GLOCK 21/30/41 .45 — 169x417 too small
-        Seekins Precision Havak PH3 Pro Hunter 3 Bol — 680x127 too small
-        Browning X-Bolt Max Long Range Hunter 6.5 Cr — 1000x163 too small
-        Browning X- Bolt Speed LR 6.5 Creedmoor 26 " — 1000x151 too small
+  [PASS] all images pass the size/aspect rules  — 0 violations
 
 6. Live URL check (sample of 15)
   [PASS] sampled image URLs return a real image  — 0 broken
@@ -38,13 +25,13 @@
   [PASS] homepage returns a full set of deals  — 12 returned
 
    what the homepage will show:
-     The Ultimate Knife: $9.99 Opus Knives
-     Troy Industries M5 Carbine 9mm LRBHO 10.5″ Barrel OR Pistol, SBA3 
-     Beretta 92X Performance $599 after rebate - $899
-     GRS Warg Remington 700 BDL SA, Brown - $369.99
-     Franklin Armory BFSIII M4 Lower, Aluminum Receiver, A2 Pistol Grip
-     Uberti 1873 Cattleman El Patron .357 Mag 4.75" Bbl Blued C/H Frame
-     Beretta APX A1 Full Size, 9MM, 4.25" Barrel, 17 Rds, Black - $350 
-     Beretta APX A1 Tactical 9mm 4.8" 21+1 3-Mags - $439.99 ($339.99 af
+     FEDERAL AMMO Premium Law Enforcement 9mm 147Gr HST JHP 50rd - $27.
+     Ruger Mini 14 Tactical Rifle 5.56mm 20rd Magazine 18.5" Barrel Sid
+     Springfield Armory SA-35 9mm Pistol - 4.7" 15+1 - Used - $569.99
+     FN America 509 Tactical NMS 9mm 10-Round Pistol - $509
+     Springfield Armory Defender XD Sub-Compact 9mm 3" Barrel 13-Rounds
+     CCI Blazer Brass 9mm 124 gr FMJ 1090 fps 1000 rounds - $256.49 wit
+     HK VP9A1 F / VP9 / P30 / 9mm 17-Round Magazine - $38.99
+     TacFire Gen 3 Glock 17 / 22 Slide Completion Parts Kit w/ Stainles
 
-FAILED: no Pexels/Pixabay stock images remain, no image used by more than 3 deals, all images pass the size/aspect rules
+ALL CHECKS PASSED
