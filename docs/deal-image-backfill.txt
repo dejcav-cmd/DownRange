@@ -1,37 +1,19 @@
-600 scanned, 48 need a real image, 6 coupon posts skipped
+600 scanned, 28 need a real image, 6 coupon posts skipped
 
-  + FEDERAL AMMO Premium Law Enforcement 9mm 147Gr H — 34024b 600x462 sha=23948feea99c
-  + Ruger Mini 14 Tactical Rifle 5.56mm 20rd Magazin — 243955b 1500x339 sha=01e7c0b261b2
-  + Springfield Armory SA-35 9mm Pistol - 4.7" 15+1  — 84468b 1046x722 sha=bd41e9c43219
-  + FN America 509 Tactical NMS 9mm 10-Round Pistol  — 47441b 800x595 sha=af8560ab20c7
-  + Springfield Armory Defender XD Sub-Compact 9mm 3 — 70200b 800x605 sha=6de4571e8ebd
-  + CCI Blazer Brass 9mm 124 gr FMJ 1090 fps 1000 ro — 33629b 908x547 sha=837ffb269cba
-  + FN SCAR 15P VPR NRCH 300BLK 7.5" BLACK 1-30RD MA — 47898b 938x476 sha=f017573c5cf2
-  + HK VP9A1 F / VP9 / P30 / 9mm 17-Round Magazine - — 11832b 300x513 sha=9f529d675957
-  + TacFire Gen 3 Glock 17 / 22 Slide Completion Par — 15351b 266x521 sha=880d176f3702
-  + Glock 17 Gen 5 RMR Cut Serrated Slide – Slant Po — 460197b 1500x1500 sha=000a7e2eb87f
-  + Atrius Development 3 Position Super Selector Saf — 14510b 945x630 sha=f60fc46ed6b6
-  + PSA 36" Rifle Bag, ODG & 7 Magpul PMAG 30rd GEN  — 36464b 546x546 sha=93a8ed0a005c
-  + American Tactical Triple Barrel Walnut / Black 1 — 16906b 800x185 sha=b33ddf0c0b7a
+  + CVLIFE Low Profile Laser Sight for Pistol with H — 18063b 500x500 sha=ba9cdbaf2b0f
+  + CVLIFE 12 Gauge Shotgun Cleaning Kit Double Cons — 39363b 500x500 sha=5b86f649424d
+  + 39% off CVLIFE WildHawk X Solar Auto Brightness  — 19725b 500x500 sha=8f8b9b8b7f93
+  + 35% off CVLIFE Laser Sight for Rifle, Rechargeab — 25105b 500x500 sha=a7ba64b594ec
+  + 50% off CVLIFE Rifle Bipod 30% Carbon Fiber Pica — 19724b 500x500 sha=35943ab3d069
+  + 40% off CVLIFE Soft Rifle Case, Rifle Bag Sling  — 34376b 500x500 sha=ef4a4bf8ea2e
+  + 50% off Scope Leveling Kit with Precision Bubble — 28132b 500x500 sha=7d193731ab13
+  + 80% Off All Ballistic Advantage Barrels + Free S — 48781b 1500x338 sha=349ac1aa633a
+  + Radian Weapons Model 1 Carbine OD Green .223 Wyl — 283497b 1372x574 sha=5452a0c070ca
+  x Smith & Wesson P.C. Bodyguard 2.0 Carry Comp, .3 — image not downloadable
+  + GUNTEC USA Micro Compensator 1/2"-28 Thread 223  — 23252b 600x484 sha=b6d4ba3a4d87
+  + SB Tactical Brace Sale — SBA3 / SBA4 / SBA5 / SB — 386974b 1000x1000 sha=940b776641f5
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD FDE — image not downloadable
-  + Rise Armament RA-524 Blitz Elite Performance Dro — 16845b 510x340 sha=af6d091e3957
-  + KCI AR-15 Magazine 5.56 NATO / .223 Rem 30-Round — 201454b 1022x772 sha=bf3d2f20cafc
-  + Beretta 92FS Brigadier INOX 9mm 4.9" 15rd Pistol — 15574b 500x326 sha=4e7ca89220d2
-  + Winchester M855 5.56 Bulk Ammo 62 Grain FMJ 1000 — 57275b 800x600 sha=04491aa7c0d4
-  + Davidson Defense Front & Rear Low Profile Polyme — 115975b 1200x1200 sha=fd9099d8010f
-  + Glock Store M1X Frame for Glock 26 Gen 3-5 - $14 — 81681b 1200x1200 sha=0f1526af5e60
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 101413b 1500x1000 sha=b7818d068f16
-  + OPMOD Atrius Ambidextrious Forced Reset Selector — 45127b 978x565 sha=e790c3996e39
-  + Davidson Defense AR-15 Ambidextrous Bolt Catch L — 54314b 1200x1200 sha=de33cceacd96
   x Dirty Bird Mil-Spec Style Ambidextrous Safety Se — image not downloadable
-  + SK Semi-Auto Rifle .22 Long Rifle 40 grain Lead  — 23700b 636x407 sha=61e9904f6300
-  ... 25/48  ok=23 fail=2
-  + Battle Arms Development Bad-Ass-Pro AR-15 Black  — 36478b 777x550 sha=f4c21a20c836
-  + Brownells BRN-4 Stripped Barrel for HK 416 / HK  — 21512b 700x700 sha=0a013cb750ce
-  + Winchester USA3501 USA 350 Legend 145 GR FMJ 20  — 22568b 386x386 sha=c0ac485e726a
-  + Howa M1500 APC Chassis 6.5 Creedmoor 10RD 24" Th — 226566b 1340x393 sha=26934f23583e
-  + Taurus 942 Ultra-Lite 22 WMR 2" Bbl 8rd Revolver — 149041b 615x450 sha=dd59928eb16e
-  + The Triggered Company The Disruptor AR-15 FRT 3  — 201244b 837x540 sha=9a9af226bb88
   x Tuna Cans FAT9 9mm Silencer 6 Baffle - $211.75 — image not downloadable
   x Remington 783 Full Size .270 WIN Rifle, 22" BBL, — image not downloadable
   x Tristar LR94 410-Bore Lever-Action Shotgun w/ Ni — image not downloadable
@@ -39,29 +21,14 @@
   x Smith & Wesson Executive 1227056 Pocket Knife 3. — image not downloadable
   x Dirty Bird AR-15 5.5oz H3 Buffer - $79.95 — image not downloadable
   x Off Grid Operator Inconel 5.56 - $749.99 *Discou — image not downloadable
-  + TacFire AR-10 .308 / 7.62x51 Upper Receiver with — 10951b 703x115 sha=04572dd96f5b
-  + Century Arms CA-3 OD Green / Black 7.62x51mm 18" — 13126b 749x164 sha=d8b23a576953
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Benelli Nova 3 Tactical 12ga 18.5in Black - $519 — image not downloadable
-  + Sauer 100 Classic XT 6.5 Creedmoor 22" Barrel 5- — 10085b 800x151 sha=f88d4c1c0430
   x Beretta 30X Tomcat, .32 ACP, 2.4" Barrel, 8 Rds, — image not downloadable
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
   x GForce Jawbone w/Brace 9mm 5" 34+1 - $399.99 — image not downloadable
   x S&W M&P Folding Spear Point 8Cr13MoV Stainless S — image not downloadable
-  x Stevens 560 Field Compact Walnut 12 GA 26" Barre — image not downloadable
+  + Stevens 560 Field Compact Walnut 12 GA 26" Barre — 9167b 800x145 sha=e5e8d7a89fcc
 
-clearing 18 stock image(s) from deals that have no real photo
-  - Coupon for store Optics Planet Saturday, August 1, 2026
-  - Coupon for store Shooters Gate Thursday, July 30, 2026
-  - Coupon for store Brownells Thursday, July 30, 2026
-  - Coupon for store Brownells Thursday, July 30, 2026
-  - Coupon for store Brownells Wednesday, July 29, 2026
-  - Remington 783 Full Size .270 WIN Rifle, 22" BBL, 4+1 Rounds,
-  - Tristar LR94 410-Bore Lever-Action Shotgun w/ Nickel Finish 
-  - Matador Arms MAT9-K Roller Pistol 9mm 5.5" 22-Rds Black - $9
-  - Smith & Wesson Executive 1227056 Pocket Knife 3.5" Spear Poi
-  - Dirty Bird AR-15 5.5oz H3 Buffer - $79.95
-
-fixed 32, failed 16  (66% success)
-distinct images: 32 across 32 deals
+fixed 12, failed 16  (42% success)
+distinct images: 12 across 12 deals
 PASS — no image shared between products
