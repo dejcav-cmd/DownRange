@@ -633,14 +633,13 @@ function renderSEO(el){
 
 function renderFeeds(el){
   const feeds=[
-    {key:'news',    l:'News Feed',     i:'📰', sched:'Every 15m', desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', c:'#22c55e'},
-    {key:'laws',    l:'Laws Feed',     i:'⚖️', sched:'Every 2h',  desc:'Congress.gov + LegiScan → bill analysis',      c:'#3b82f6'},
-    {key:'releases',l:'Releases Feed', i:'🔫', sched:'Hourly',    desc:'PRNewswire + manufacturer RSS → gun releases',   c:'#C8922A'},
-    {key:'market',  l:'Market Feed',   i:'📊', sched:'Every 30m', desc:'Ammo prices + market data → analysis',           c:'#f59e0b'},
+    {key:'news',    l:'News Feed',     i:'📰', sched:'Every 2h' , desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', c:'#22c55e'},
+    {key:'laws',    l:'Laws Feed',     i:'⚖️', sched:'Every 12h',  desc:'Congress.gov + LegiScan → bill analysis',      c:'#3b82f6'},
+    {key:'releases',l:'Releases Feed', i:'🔫', sched:'Mon/Thu',    desc:'PRNewswire + manufacturer RSS → gun releases',   c:'#C8922A'},
     {key:'video',   l:'Video Feed',    i:'▶️', sched:'Every 4h',  desc:'YouTube API → channel videos + thumbnails',      c:'#ef4444'},
-    {key:'state',   l:'State Feed',    i:'🗺️', sched:'Daily 8am', desc:'State legislation + profiles → 50-state DB',    c:'#a855f7'},
-    {key:'goa',     l:'GOA Press',     i:'⚖️', sched:'Every 2h',  desc:'Gun Owners of America press center',             c:'#ef4444'},
-    {key:'gun-deals',l:'Gun Deals',    i:'🔥', sched:'Every 4h',  desc:'gun.deals RSS + OG image scrape → gunDeal docs', c:'#C8922A'},
+    {key:'state',   l:'State Feed',    i:'🗺️', sched:'Sun 8am'  , desc:'State legislation + profiles → 50-state DB',    c:'#a855f7'},
+    {key:'goa',     l:'GOA Press',     i:'⚖️', sched:'Every 12h',  desc:'Gun Owners of America press center',             c:'#ef4444'},
+    {key:'gun-deals',l:'Gun Deals',    i:'🔥', sched:'Every 30m',  desc:'gun.deals RSS + OG image scrape → gunDeal docs', c:'#C8922A'},
   ];
   const running={};
   function renderAll(){
@@ -868,7 +867,6 @@ function openPanel(id,label){
     emails:renderEmailTest,
     costs:renderCostCenter,siteconfig:renderSiteSettings,alertconfig:renderAlertConfig,
     report:renderPortalReport,backup:renderBackup,lockall:renderLockAll,
-    marketbrief:renderMarketBrief,
     copyright:renderCopyright,statelaws:renderStateLaws,sysalerts:renderSysAlerts,smsalerts:renderSMSAlerts,
     pulllog:renderPullLog,imgsearch:renderImageSearch,briefings:renderBriefings,intel:renderBriefings,
     seo:renderSEO,feeds:renderFeeds,sitemap:renderSitemap,ranges:renderRanges,
@@ -1018,7 +1016,6 @@ function renderPublishingScreen(el){
 function renderIntelScreen(el){
   el.innerHTML=`<div class="section-title">Intelligence</div><div class="section-sub">Data feeds, copyright & briefings</div>`+
     [{id:'briefings',i:'🧠',l:'Briefings',s:'AI intelligence reports'},
-     {id:'marketbrief',i:'📊',l:'Market Brief',s:'Ammo & firearms market analysis',b:'live'},
      {id:'statelaws',i:'🗺',l:'State Laws',s:'50-state firearms database'},
      {id:'feeds',i:'⚙️',l:'Feed Agent',s:'Run AI content pipelines'},
      {id:'copyright',i:'⚖',l:'Copyright Scan',s:'Risk analysis & rewrites'},
@@ -2958,31 +2955,6 @@ async function renderCostCenter(el){
           <span style="color:var(--dim2)">${h.calls||0} calls</span>
         </div>`).join('')}`:''}
     `;
-  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
-}
-
-// ═══════════════════════════════════════════════════════════════════
-// PANEL — MARKET BRIEF (investment intelligence)
-// ═══════════════════════════════════════════════════════════════════
-async function renderMarketBrief(el){
-  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
-  try{
-    const d=await api('/api/admin/market-brief-list');
-    const briefs=d.briefs||[];
-    el.innerHTML=`
-      <button class="btn" style="width:100%;margin-bottom:16px" onclick="triggerCron('market',this)">📊 Generate New Brief</button>
-      ${!briefs.length?'<div class="empty">No market briefs yet</div>':
-        briefs.map(b=>`
-          <div style="background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px">
-            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
-              <span class="pill ${b.signal==='BULLISH'?'pill-ok':b.signal==='BEARISH'?'pill-err':'pill-warn'}">${b.signal||'NEUTRAL'}</span>
-              <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;flex:1">${b.title||'Market Brief'}</span>
-              <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${b.publishedAt?new Date(b.publishedAt).toLocaleDateString():''}</span>
-            </div>
-            ${b.summary?`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim2);line-height:1.6;margin-bottom:8px">${b.summary.slice(0,200)}…</div>`:''}
-            ${b.bullets?.length?`<ul style="margin:0;padding-left:16px">${b.bullets.slice(0,3).map(x=>`<li style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:2px">${x}</li>`).join('')}</ul>`:''}
-            ${b.signalReason?`<div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);margin-top:6px;font-style:italic">${b.signalReason}</div>`:''}
-          </div>`).join('')}`;
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 

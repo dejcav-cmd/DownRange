@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect, useCallback } from 'react'
+import vercelConfig from '@/vercel.json'
 
 // Complete DownRange page-to-cron dependency map
 // Each entry: page URL, what data it shows, which crons feed it, revalidation
@@ -58,9 +59,9 @@ const SITE_MAP = [
         title: 'Deals',
         desc: 'Live ammo and gear deals',
         revalidate: 1800,
-        crons: ['market (*/30min)'],
-        sanityType: 'ammoPrice',
-        dataSource: 'r/gundeals JSON, gun.deals RSS, GunBroker API',
+        crons: ['gun-deals (*/30min)', 'reddit-deals (hourly)', 'web-deals (every 12h)', 'amazon-deals (every 6h)'],
+        sanityType: 'gunDeal',
+        dataSource: 'gun.deals RSS, r/gundeals RSS, Amazon PA/affiliate feeds',
       },
     ]
   },
@@ -102,22 +103,13 @@ const SITE_MAP = [
     color: '#C8922A',
     pages: [
       {
-        url: '/market',
-        title: 'Market Watch',
-        desc: 'Ammo prices, NICS data, AI market brief',
-        revalidate: 1800,
-        crons: ['market (*/30min)', 'cron/market-brief (6am PST + 1pm PST)', 'nics (1st of month)'],
-        sanityType: 'ammoPrice + marketAnalysis',
-        dataSource: 'AmmoSeek RSS, gun.deals RSS, FBI NICS CSV',
-      },
-      {
         url: '/ammo/9mm',
         title: 'Ammo Guides',
-        desc: 'Per-caliber ammo pricing and guide',
+        desc: 'Per-caliber ammo reference guide (static)',
         revalidate: 1800,
-        crons: ['market (*/30min)'],
-        sanityType: 'ammoPrice',
-        dataSource: 'AmmoSeek RSS',
+        crons: [],
+        sanityType: '—',
+        dataSource: 'Static editorial content',
       },
       {
         url: '/carry-insurance',
@@ -222,30 +214,69 @@ const SITE_MAP = [
   },
 ]
 
-const ALL_CRONS = [
-  { path: '/api/agent?feed=news',              schedule: '*/15 * * * *',    label: 'News',              color: '#3b82f6' },
-  { path: '/api/agent?feed=laws',              schedule: '0 */2 * * *',     label: 'Laws',              color: '#60a5fa' },
-  { path: '/api/agent?feed=releases',          schedule: '0 * * * *',       label: 'Releases',          color: '#C8922A' },
-  { path: '/api/agent?feed=market',            schedule: '*/30 * * * *',    label: 'Market',            color: '#f59e0b' },
-  { path: '/api/agent?feed=goa',               schedule: '0 */2 * * *',     label: 'GOA',               color: '#60a5fa' },
-  { path: '/api/agent?feed=video',             schedule: '0 */4 * * *',     label: 'Video',             color: '#ef4444' },
-  { path: '/api/agent?feed=state',             schedule: '0 8 * * 0',       label: 'State (weekly)',    color: '#22c55e' },
-  { path: '/api/intelligence',                 schedule: '0 1 * * *',       label: 'Intelligence',      color: '#a78bfa' },
-  { path: '/api/cron/quality-rewrite',         schedule: '0 * * * *',       label: 'Quality Rewrite',   color: '#6b7280' },
-  { path: '/api/cron/image-fix',               schedule: '0 * * * *',       label: 'Image Fix',         color: '#6b7280' },
-  { path: '/api/admin/fetch-article-images',   schedule: '*/30 * * * *',    label: 'Fetch OG Images',   color: '#6b7280' },
-  { path: '/api/admin/fix-images',             schedule: '0 12-23,0-3 * * *', label: 'Batch Fix Images', color: '#6b7280' },
-  { path: '/api/admin/backfill-articles',      schedule: '0 12-23,0-3 * * *', label: 'Backfill Articles', color: '#3b82f6' },
-  { path: '/api/cron/market-brief',            schedule: '0 14,21 * * *',   label: 'Market Brief (2x)', color: '#C8922A' },
-  { path: '/api/cron/carry-insurance',         schedule: '0 6 * * 1',       label: 'Insurance Check',   color: '#C8922A' },
-  { path: '/api/cron/ccw-update',              schedule: '0 5 * * 0',       label: 'CCW Update (weekly)', color: '#22c55e' },
-  { path: '/api/nfa-wait-times',               schedule: '0 6 * * *',       label: 'NFA Wait Times',    color: '#6b7280' },
-  { path: '/api/site-health',                  schedule: '0 8,14,20 * * *', label: 'Site Health',       color: '#22c55e' },
-  { path: '/api/newsletter',                   schedule: '0 7 * * *',       label: 'Newsletter',        color: '#f59e0b' },
-  { path: '/api/nics',                         schedule: '0 10 1 * *',      label: 'NICS (monthly)',    color: '#6b7280' },
-  { path: '/api/admin/cron-health',            schedule: '*/30 * * * *',    label: 'Cron Health',       color: '#22c55e' },
-  { path: '/api/admin/patch-ammo-article',     schedule: '*/10 * * * *',    label: 'Patch Ammo Article',color: '#f59e0b' },
-]
+// Label + color metadata only. Schedules are NEVER hardcoded here — they are read
+// straight from vercel.json (the single source of truth) so this panel cannot drift.
+const CRON_META = {
+  '/api/agent?feed=news':                 { label:'News',                color:'#3b82f6' },
+  '/api/agent?feed=laws':                 { label:'Laws',                color:'#60a5fa' },
+  '/api/agent?feed=goa':                  { label:'GOA',                 color:'#60a5fa' },
+  '/api/agent?feed=video':                { label:'Video',               color:'#ef4444' },
+  '/api/agent?feed=state':                { label:'State (weekly)',      color:'#22c55e' },
+  '/api/agent?feed=outdoors':             { label:'Outdoors',            color:'#22c55e' },
+  '/api/agent?feed=releases&phase=scrape':{ label:'Releases (scrape)',   color:'#C8922A' },
+  '/api/cron/releases-process':           { label:'Releases (process)',  color:'#C8922A' },
+  '/api/cron/weekly-gun-releases':        { label:'Weekly Releases',     color:'#C8922A' },
+  '/api/cron/gun-deals':                  { label:'Gun Deals',           color:'#C8922A' },
+  '/api/cron/reddit-deals':               { label:'Reddit Deals',        color:'#C8922A' },
+  '/api/cron/web-deals':                  { label:'Web Deals',           color:'#C8922A' },
+  '/api/cron/amazon-deals':               { label:'Amazon Deals',        color:'#C8922A' },
+  '/api/cron/amazon-brands':              { label:'Amazon Brands',       color:'#C8922A' },
+  '/api/cron/giveaways':                  { label:'Giveaways',           color:'#C8922A' },
+  '/api/cron/blog-writer':                { label:'Blog Writer',         color:'#a78bfa' },
+  '/api/cron/quality-rewrite':            { label:'Quality Rewrite',     color:'#a78bfa' },
+  '/api/cron/copyright-review':           { label:'Copyright Review',    color:'#a78bfa' },
+  '/api/cron/enrich-state-pages':         { label:'Enrich State Pages',  color:'#a78bfa' },
+  '/api/cron/write-canada-articles':      { label:'Canada Writer',       color:'#a78bfa' },
+  '/api/cron/write-brazil-articles':      { label:'Brazil Writer',       color:'#a78bfa' },
+  '/api/intelligence':                    { label:'Intelligence',        color:'#a78bfa' },
+  '/api/cron/nra-law-sync':               { label:'NRA Law Sync',        color:'#60a5fa' },
+  '/api/cron/nra-law-sync-enhanced':      { label:'NRA Law Sync (enh.)', color:'#60a5fa' },
+  '/api/cron/carry-insurance':            { label:'Insurance Check',     color:'#60a5fa' },
+  '/api/cron/bible-update':               { label:'Bible Update',        color:'#60a5fa' },
+  '/api/nfa-wait-times':                  { label:'NFA Wait Times',      color:'#6b7280' },
+  '/api/admin/fetch-article-images':      { label:'Fetch OG Images',     color:'#6b7280' },
+  '/api/admin/fix-images?batch=500&force=false&cron=1': { label:'Batch Fix Images', color:'#6b7280' },
+  '/api/cron/image-fix':                  { label:'Image Fix',           color:'#6b7280' },
+  '/api/cron/fix-placeholder-images':     { label:'Fix Placeholders',    color:'#6b7280' },
+  '/api/cron/fix-slugs':                  { label:'Fix Slugs',           color:'#6b7280' },
+  '/api/cron/sitemap':                    { label:'Sitemap',             color:'#6b7280' },
+  '/api/cron/sitemap-health':             { label:'Sitemap Health',      color:'#22c55e' },
+  '/api/admin/cron-health':               { label:'Cron Health',         color:'#22c55e' },
+  '/api/site-health':                     { label:'Site Health',         color:'#22c55e' },
+  '/api/admin/backup':                    { label:'Backup',              color:'#6b7280' },
+  '/api/newsletter':                      { label:'Newsletter (build)',  color:'#f59e0b' },
+  '/api/newsletter/send':                 { label:'Newsletter (send)',   color:'#f59e0b' },
+  '/api/outreach/queue/digest':           { label:'Outreach Digest',     color:'#f59e0b' },
+  '/api/social/cron/bluesky':             { label:'Social: Bluesky',     color:'#f59e0b' },
+  '/api/social/cron/twitter':             { label:'Social: Twitter',     color:'#f59e0b' },
+  '/api/social/cron/facebook':            { label:'Social: Facebook',    color:'#f59e0b' },
+  '/api/social/cron/threads':             { label:'Social: Threads',     color:'#f59e0b' },
+  '/api/social/cron/reddit':              { label:'Social: Reddit',      color:'#f59e0b' },
+  '/api/social/analytics?refresh=1':      { label:'Social Analytics',    color:'#f59e0b' },
+}
+
+function labelFromPath(path) {
+  const q = path.includes('feed=') ? path.split('feed=')[1].split('&')[0] : path.split('?')[0].split('/').pop()
+  return q.replace(/-/g, ' ').replace(/\b\w/g, ch => ch.toUpperCase())
+}
+
+// Derived from vercel.json at build time — always in sync with what actually runs.
+const ALL_CRONS = (vercelConfig.crons || []).map(c => ({
+  path: c.path,
+  schedule: c.schedule,
+  label: (CRON_META[c.path] || {}).label || labelFromPath(c.path),
+  color: (CRON_META[c.path] || {}).color || '#6b7280',
+}))
 
 function fmtRevalidate(s) {
   if (!s) return '—'

@@ -68,7 +68,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/terms`,               priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
 
   // Market intelligence (missing from prior sitemap)
-  { url: `${BASE}/market`,              priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
 ]
 
 // RSS / Atom feeds — helps Google discover and crawl them
