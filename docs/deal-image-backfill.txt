@@ -1,43 +1,57 @@
-600 scanned, 51 need a real image, 8 coupon posts skipped
+600 scanned, 64 need a real image, 9 coupon posts skipped
 
-  + Retay RXP22 .22 LR Tactical Suppressor Package w — 268697b 1000x493 sha=dd8a7a193c00
-  + Geissele URGI-14.5 Rifle 5.56 x 45mm NATO 14.5"  — 27444b 1000x418 sha=ce82bf2c287f
-  + FOCLMP Mens Fleece Quarter Zip Pullover American — 25638b 500x500 sha=69a0531ad401
-  + BROWNELLS - Aluma-Hyde II, Matte Black, 12 Oz Ae — 59869b 1000x1000 sha=c0524efb3158
-  + Voidspec AR-15 Active Cam Reset Device + 3-Posit — 80451b 1000x666 sha=b37154833bf1
-  + PSA Dagger Compact 9mm Pistol With Extreme Carry — 704756b 1500x1074 sha=086a378867d3
-  + FN 509 9mm Pistol, 4.2" Barrel, Fiber Optic Fron — 16192b 497x380 sha=e6973e92f961
-  + PSA 16" Mid Length 1/7 Nitride 15" Lightweight H — 21451b 1000x500 sha=062a861d09a0
-  + PARD Ocelot Zoom Thermal Rifle Scope w/Laser Ran — 13858b 506x274 sha=81ef6cb7debd
-  + Crimson Trace Corporation Heavy Recoil Optic (HR — 18625b 497x431 sha=1f0ff65b0974
-  + HOT ITEM Thompson Center Arms Llc 8330R Encore P — 13386b 380x120 sha=f7dfaba1307d
-  + Desert Tech SRSA2 Covert .308 Win 6rd Bolt Actio — 36652b 1327x394 sha=09cc25dce315
-  + CZ 75 BD 50th Anniversary Elite 16Rd 9mm Handgun — 912897b 1500x1024 sha=5756f63ef477
-  + Tactical Solutions Suppressor Axiom 22LR - $396. — 18573b 550x550 sha=1bf2d7605de0
-  + Taurus GX4 3.06" Micro-Compact 11+1 Semi-Auto Pi — 44510b 1000x666 sha=d08fa2b9d238
-  + Omega Stock - Black - $18.95 — 68238b 1052x735 sha=6beee2e17ce2
-  + Beretta JS92M9A1CA M9A1 9mm 10+1 Pistol: CA Comp — 425321b 1000x642 sha=4be55616c134
-  + Buck Knives 812 Trace Knife - $42.95 — 20656b 599x501 sha=5ff8763b02bb
+  + Weatherby 18i Deluxe 20 Ga 28" barrel 2 Rnds Wal — 8745b 680x120 sha=a62aa18c51cc
+  + Stoeger M3000 Sporting 30" 12 Ga 4 Rds - $659.99 — 26137b 1280x495 sha=6a7f8694dee0
+  + Stoeger M3000 12 Ga 28" Barrel 2-3/4", 3" Chambe — 28380b 1280x505 sha=03defe3ce022
+  + Sig Sauer P229/P228 9mm LE/GOVT Marked Magazine  — 46884b 823x548 sha=b0f90135595a
+  + DMA Inc. XTS AR-15 Mil-Spec Carbine Stock w/ Che — 76388b 1200x864 sha=7de4f3236e75
+  + DMA Inc. XTS AR-15 Mil-Spec Carbine Stock w/ Che — 32503b 700x459 sha=3b13cde8a9a5
+  + Heckler and Koch VP9A1 F OR 9mm 4.5" Barrel 17/2 — 176199b 1500x1008 sha=a3e81caf0119
+  + Toros Arms Copolla TR12 - 12 Ga 18.5" 5-Rd Semi  — 26637b 805x313 sha=4280b34c3403
+  + PSA "Sabre" Forged 13.7" FN CHF CL 5.56 w/ 13" S — 28762b 1000x500 sha=68c2520ac15b
+  + Daniel Defense DD5 V3 7.62x51 12.5" Bbl M-LOK Co — 23105b 1000x666 sha=cb161b297b08
+  + Lone Wolf Arms Glock 22/31 9mm Luger Conversion  — 27398b 1000x666 sha=f6c2f30840d9
+  + Winchester Model 70 Super Grade .30-06 24" Barre — 10235b 800x140 sha=976555f907ee
+  + *Blem* Griffin Armament MK2 Ambi Warhawk Green S — 70623b 1500x872 sha=61ee43f55910
+  + Voidspec TX22 Active Reset Trigger + Guide Rod K — 200187b 1500x1000 sha=da6ef2ee4615
+  + NcSTAR 3-9X42 USS Gen II/Micro Red Dot - $99.95 — 92597b 1500x1500 sha=df09b53fa3f8
+  + Rise Armament Rev 535 Slide and Snap AR-15 Drop- — 28397b 945x630 sha=b185ab717ca9
+  + COAST PTX65R 1000lm Focusing Pistol Light BLK -  — 9664b 455x270 sha=46324029b8c4
+  + Sig P365-380 Optics Ready .380 ACP 3.1" 10-Rd Pi — 57868b 800x700 sha=e5e2d8c73454
+  + PSA Sabre-15 Forged 5.56 14.5" CHF CL M4A1 Rifle — 53756b 1500x578 sha=08ee4eaa276f
+  + Taurus TX22 Gen 2 TORO .22 LR 4.1" Barrel 16/22- — 76553b 1000x740 sha=ffe8a6b58605
+  + North American Arms Mini-Revolver Stainless .22  — 37069b 790x656 sha=c414261a5f1f
+  + Hornady Bullets .22 cal .224" 55 gr FMJBT CANN 1 — 33662b 640x368 sha=0f4dbd8717b2
+  + Strike Industries MLOK Rail Covers - V2 - (Black — 76647b 933x700 sha=2dfd4ef095e6
+  + Charles Daly 101 20 Gauge 26" 3-Inch Single Shot — 8418b 737x140 sha=75a217afff3b
+  + Ruger 10/22 Sporter 22 LR 18.5" 10-Rd 75th Anniv — 19220b 1000x518 sha=7746676c4b80
+  ... 25/64  ok=25 fail=0
+  + Lone Wolf Alpha Wolf 9mm Fluted For Glock 22/31  — 280869b 1446x1012 sha=10bfd0b217eb
+  x Springfield Armory Kuna Magazine .40SW Transluce — image not downloadable
+  + Springfield Hellcat Pro OSP Gear Pac 9mm 3.7" 15 — 42144b 265x265 sha=639cf86f3c34
+  + TISAS 1911 Duty DS 9mm 5" 18rd Optic Ready Pisto — 24334b 601x405 sha=cb548ab8ef45
+  + Mace Pepper Gel Magnum 3, 1.59 oz, 20 Feet Range — 20061b 500x500 sha=fa3aef466b38
+  + Lone Wolf Arms Glock 22/31 9mm Threaded Conversi — 31957b 1000x666 sha=9ea0b6eb3ec6
+  + Magpul MOE Stock Mil-Spec (Black, Gray, OD Green — 53006b 1000x853 sha=1f034275f21d
+  + ODIN Works 21" 6mm ARC XL Rifle DMR Profile Stai — 13082b 800x347 sha=9d9c80f657ee
+  + VIPERTEK VTS-880 Mini Stun Gun for Self Defense  — 22520b 827x955 sha=a3a44da7c99f
+  + UTG Super Slim RMR Mount, 45 Degree Angle, Picat — 13696b 500x500 sha=84e42bb5fc5f
+  + Dirty Bird AR-15 Single Stage Quick Reset Drop-I — 23210b 442x510 sha=3fbaa85616a4
+  + Dogwood Armory FKT-15 AR-15 Drop-In Forced Reset — 15953b 422x615 sha=6c0e9c2c62b7
+  + NcSTAR 3-9X42 USS Gen II/Micro Red Dot - Mil-Dot — 21032b 586x419 sha=72b8e3ec0b59
+  + Real Avid Handgun Maintenance Pack - AVHGMP - $5 — 51627b 1000x666 sha=ddfd7d4e3aba
+  + BCA BC-15 AR-15 Forged Stripped Lower Receiver - — 8270b 397x246 sha=ab976df32483
+  + Luth-AR MBA-1 Fixed Stock for AR-15 & AR-10 Rifl — 20805b 608x406 sha=30bb112e7241
+  + One Horse 16" 5.56 SOCOM Midlength 1:8 M-LOK Com — 70883b 1000x666 sha=cdc4bea70f57
+  x Dirty Bird AR-15 5.5oz H3 Buffer - $84.95 — image not downloadable
+  + NBS Slick Side Billet Upper Receiver - Black - $ — 32542b 1200x1024 sha=3ec1d1e66237
+  + CZ Drake All-Terrain 12 Gauge 28" 2 3" OD Green  — 9793b 648x254 sha=2ac8568de5d3
+  + Charter Arms Mag Pug .357 Mag 3" 5rd Revolver, B — 20724b 517x423 sha=2c9552b82b16
+  + G-Force Saddlehorn Walnut / Nickel .410 GA-2.5 2 — 12744b 799x216 sha=3e92cd91b7ed
+  + MAGPUL - PMAG GEN M3 5.56/.223 30RD for AR-15 Co — 24733b 700x700 sha=9e93dd1e5cf3
+  + Norma Whitetail 6.5 PRC Ammo 140gr SP 20 Rounds  — 43763b 677x446 sha=c6128ab2ea92
   x Anarchy Outdoors Penguin Precision Rifle Grip -  — image not downloadable
-  + Beretta 92FS 9mm 4.9" Barrel 15-Rounds 3-Dot Sig — 35226b 800x544 sha=b231b1ac6523
-  + Century Arms Micro Draco Black 7.62x39mm 6.25" B — 35520b 800x513 sha=42f192f5f418
-  + 26% off CVLIFE WolfCloak Motion Awake 12-Brightn — 26233b 500x500 sha=693339d7fea2
-  + 35% off Bore Cleaner, Bore Cleaning Kit for .223 — 46900b 500x500 sha=4bd0abed88c1
-  + 50% off CVLIFE Two Point Sling Quick Adjust Rifl — 52949b 679x679 sha=482697634107
-  + 50% off CVLIFE Rifle Bipod with Tiltable Head Bi — 16622b 500x500 sha=729c9c2c179d
-  ... 25/51  ok=24 fail=1
-  + 20% off CVLIFE EagleBlaze 5-25x56 FFP Rifle Scop — 19323b 500x500 sha=f4afd0603a9a
-  + 15% off CVLIFE EagleTalon LPVO Rifle Scope with  — 33055b 679x416 sha=7efd334576ee
   x Walther PDP Pro 9mm 18 Round Magazine - $34.99 — image not downloadable
-  + Sig Sauer P365 Optic Ready "Guns & Roses" Mongoo — 50820b 656x575 sha=5a12d94a3775
-  + FN 509 Compact MRD 9mm NMS FDE/FDE Pistol w/ (2) — 40190b 650x479 sha=c423e00ce4c8
-  + 38% off CVLIFE EagleTalon Solar Multiple Reticle — 25510b 500x500 sha=839df0ef9e9d
-  + Rock River Arms LAR-15 Elite CAR A4 5.56 / .222  — 18310b 800x256 sha=bf05a4dce8ed
-  + SDS Imports PX-9 Gen3 Duty OR 9mm, 4.1" Barrel,  — 120632b 1280x1031 sha=2e3a495c04da
-  + TacFire AR-15 5" 7.62x39 Unassembled Pistol Kit  — 78708b 1500x772 sha=f4feadae2e53
-  + Beretta 30X Tomcat Just In Case 32 ACP Pistol wi — 75201b 800x712 sha=02a5a93ea727
-  + NAA Mini Revolver Stainless .22 LR 1.125" Barrel — 83629b 745x554 sha=20da7ab0c22c
-  + Limited-Time Offer! AR-15 Ultra-Light Suppressor — 232788b 1500x1500 sha=0f0c2c1a0908
   x Eotech EXPS3-0, 68 MOA Ring w/ 1 MOA Dot Reticle — image not downloadable
   x Taurus TX, 9mm, 4.5" Barrel, 2-17rd Magazines, O — rejected: too few pixels (150x125)
   x Zastava Arms ZPAPM70 7.62 39 16in 30rd M81 - $14 — image not downloadable
@@ -51,8 +65,7 @@
   x Tristar LR94 410-Bore Lever-Action Shotgun w/ Ni — image not downloadable
   x Matador Arms MAT9-K Roller Pistol 9mm 5.5" 22-Rd — image not downloadable
   x Smith & Wesson Executive 1227056 Pocket Knife 3. — image not downloadable
-  x Dirty Bird AR-15 5.5oz H3 Buffer - $79.95 — image not downloadable
 
-fixed 35, failed 16  (68% success)
-distinct images: 35 across 35 deals
+fixed 47, failed 17  (73% success)
+distinct images: 47 across 47 deals
 PASS — no image shared between products
