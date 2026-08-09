@@ -1,46 +1,62 @@
-600 scanned, 57 need a real image, 8 coupon posts skipped
+600 scanned, 68 need a real image, 8 coupon posts skipped
 
-  + Stoeger P3000 Freedom Series Tactical OD Green / — 45390b 736x282 sha=a0ca4ccbec12
-  + Tokarev USA TAR 12 SP Splatter Camo 12 GA-3" 18. — 100541b 779x295 sha=e92e3b5b8cc0
-  + Stoeger M3K 3-Gun Freedom Series 12 GA 24" Barre — 33601b 721x271 sha=13f1fd95040f
-  + Diamondback SDR 357 Mag, 2" Barrel, 6-Rd Revolve — 29697b 785x557 sha=91b4ea63d746
-  + Taurus TX22 T.O.R.O. .22 LR 4.6" Semi-Auto Rimfi — 168181b 729x528 sha=92f6deb320a5
-  + FN 509 9mm 4" 17RD Pistol, 2 Mags, FDE - $549 — 164251b 681x492 sha=d85c098bd3c6
-  + Silver Eagle LT 12 Gauge 28" Break Action Over U — 42615b 685x289 sha=a6dea604ba2a
-  + Century Arms MICRO DRACO 7.62x39mm 6.25" 30rd AK — 54377b 1000x666 sha=af247b8e8327
-  + Crimson Trace LaserSaddle Laser Sight Mossberg 5 — 17003b 680x510 sha=cd8d2c730012
-  + Mauser 1911 .22 LR 5" BBL 10+1 Rds Semi-Auto Pis — 96202b 1280x827 sha=227b2713ebff
-  + Mossberg 500 20 Gauge 22" 5RD Pump Action Shotgu — 23805b 554x235 sha=831cee4d6264
-  + Ruger LCP 380 ACP 2.75" 6RD Pistol, ODG - $203.2 — 51276b 1000x666 sha=efe7e04407fd
-  + Sig Sauer P226-XCarry 9mm 3.8" 10RD w/ Romeo-X P — 377284b 1238x984 sha=351e118c6f7b
-  + Beneli M2 Tactical 12 GA 18.5" 7+1 Rds LE w/ Ove — 15415b 1000x231 sha=7e2d80a99bbc
-  + Arsenal AR-M14SF TACT 7.62x39mm 8.5" 30rd SBR, F — 9729b 600x400 sha=a847bd0ca286
-  + GOSAFE Mobile Safe - Locking Mag Design for Gloc — 62054b 722x516 sha=aafe22f757e9
-  + Glock 21 V MOS .45 ACP 4.61" Barrel 13-Rounds -  — 149595b 1500x1033 sha=e3360f633b4e
-  + Smith & Wesson M&P9 Shield Plus Sight and Case B — 27734b 600x394 sha=31dffe47d06a
-  + Smith & Wesson M&P9 M2.0 Competitor 9mm 5." Barr — 457650b 950x717 sha=dc55fa32f0df
-  + 50% off Trakiom Hunting Rest Shooting Tripod Rif — 15203b 500x500 sha=cc0c449bf18a
-  + 45% off 2500 Lumens Laser Light Combo for Rifle  — 21868b 500x500 sha=56f23aacde40
-  + 20% off CVLIFE EagleFeather 3-9x40 AO Rifle Scop — 18717b 500x500 sha=c980facca31d
-  + 46% off CVLIFE Rechargeable Picatinny Red/Green  — 19716b 500x500 sha=517fb9f449dc
-  + CVLIFE BearMight Solar Enclosed Green Dot Sight  — 25889b 500x500 sha=62f747eafa93
-  + 50% off CVLIFE Blaze Orange Hunting Vest with Mu — 41374b 500x500 sha=b74107c2231c
-  ... 25/57  ok=25 fail=0
-  + 39% off CVLIFE FoxSpook Rechargeable red dot wit — 24362b 500x500 sha=ece89b7270c5
+  + Canik METE SFT 9mm 4.46" barrel 10 Rnds Black -  — 30209b 680x510 sha=176517c066c1
+  + Noveske Gen 4 5.56 NATO 16" barrel 30 Rnds Snipe — 14476b 680x245 sha=0bda3f265892
+  + BENELLI Super Black Eagle 3 12 Ga 3.5" 26" 3rd - — 38348b 1500x311 sha=1572f978b690
+  x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD DLC — image not downloadable
+  + Guntec USA AR-15 Charging Handle Latches - Your  — 45568b 1000x1000 sha=bbcee7c6101d
+  x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Coppe — image not downloadable
+  + MidwayUSA Adjustable Target Stand - $17.99 — 20122b 680x510 sha=0469aeed13ce
+  + NBS Mil-Spec AR-15 Receiver Extension Buffer Tub — 28609b 1000x853 sha=bafbff85acb4
+  + Glock 20/40 Gen5 Magazine 10mm 15-Rounds - $22.6 — 9339b 571x431 sha=99827ed95ea1
+  + Ruger American Rifle Green Splatter Generation I — 28908b 1280x441 sha=b143ee94e7af
+  + EAA Girsan MC1911S Govt Influencer 45 ACP 5" 8rd — 29582b 656x442 sha=a25152c88806
+  + B&T USA Hush Puppy Ammo & Suppressor Combo 9mm 4 — 69133b 647x509 sha=8392ac834f72
+  + S&W Big Benji Featuring 8Cr13MoV Stainless Steel — 16479b 500x382 sha=b5b47ca80bd6
+  + Ruger Mark IV Hunter Stainless .22 LR 6.88" Barr — 28922b 800x413 sha=e524f9c4ad18
+  + North American Arms MINI 22 Short Revolver 1-1/8 — 28393b 844x547 sha=40c309fb9575
+  + PSA Sabre AR-10 Upper Forged 13.7" .308 Mid-Leng — 46571b 1500x596 sha=77d2679403e8
+  + IWI Galil ACE Pistol GEN2 .223 REM 13" BBL. 30-R — 19524b 800x383 sha=b46789966706
+  + Tubb SpeedLock Systems Flat Wire AR-15 Rifle Buf — 34971b 1500x500 sha=292bd4c13b71
+  + Rattlesnake Tactical 17-Rnd Glock 9mm Magazine D — 57064b 1343x1052 sha=db4202173075
+  + Freedom Finger Triggers 22TY TaurusTX 22 Forced  — 85664b 1500x929 sha=546f31d6b79d
+  + The Triggered Company Disruptor AR-15 3 Position — 94072b 706x390 sha=69163d0709bf
+  + Trijicon ACOG 4x32mm Illuminated Red Chevron Rif — 67065b 1000x691 sha=6a7fd0e6597a
+  + TR IMPORTS INERTIA ONE 12GA 18.5IN SEMI AUTO - $ — 16311b 1000x374 sha=4784d5e34c87
+  + Tisas 1911 Carry Double Stack 4.25" 9mm 18rd Pis — 86646b 1500x1071 sha=0d3078bff8eb
+  + Taurus TX22 Gen 2 T.O.R.O. 22LR 4.6" Barrel Opti — 105201b 1280x856 sha=257ca82fecf9
+  ... 25/68  ok=23 fail=2
+  + Glock 9mm G49 MOS w/FS 4.5" Barrel Black G19 / G — 65999b 792x642 sha=9b4c57c3f2a6
+  + Winchester SXP Extreme Defender Compact Carbon G — 17564b 810x403 sha=b8128ba75a94
+  + Athlon Optics Argos BTR GEN2 6-24x50mm APLR2 FFP — 66812b 1500x872 sha=2104e0047e08
+  + VISM AK KeyMod Handguard, Standard Length, 6.3", — 67654b 596x361 sha=7162350b7ecb
+  + FAB Defense Aluminum Tactical Rail System - SVD, — 232392b 934x461 sha=c8288c7cb80d
+  + FAB Defense Top Mounted Deployable Front and Rea — 382251b 713x478 sha=09711b1a1652
+  + ODIN Works Baja 5.56 223 Rem / 5.56 NATO Direct  — 123555b 545x396 sha=ad668b7d1695
+  + Q LLC Half Nelson 30 Caliber / 7.62mm Suppressor — 53436b 506x289 sha=26ec3c4bd1de
+  + Strike Industries KRISS Vector SDP Handguard, Bl — 35664b 1000x667 sha=2194692b0074
+  + Scalarworks LEAP Aimpoint Micro QD Picatinny Red — 30615b 680x510 sha=f9952adf10e0
+  x Maverick Arms 88 All Purpose 20 Gauge 26" 5+1 3" — image not downloadable
+  + Winchester Xpert High-Velocity Steel Waterfowl 1 — 262181b 803x519 sha=d56913c0a4ea
+  + HEVI-Shot HEVI-Bismuth 12-Ga. 2-3/4" 1-1/4 oz. W — 506228b 750x520 sha=5f5c7767de63
+  + Garmin Xero C1 Pro, Compact Chronograph, Simple  — 16989b 500x500 sha=dc2a438eaa7a
+  + Benelli M4 Ext 12 Gauge 18.5" Barrel Titanium Ce — 87053b 947x280 sha=f5647d20473f
+  + Ballistic Advantage 16" 5.56 Government Profile  — 27534b 791x490 sha=0352333afc0b
+  + Dead Air DA455 Xeno Adapter for 1-3/8-24 HUB Bas — 86334b 380x363 sha=3044b8147e92
+  + Taurus GX2 T.O.R.O. Compact 9mm 3.38" BBL 13RD O — 155749b 597x451 sha=843487445f3d
+  + Hunters Specialties Shotgun Shell Belt - $5.29 — 32675b 1000x351 sha=606cc82ab094
+  + 8-12 Fingerprint Gun Safe for Rifles and Pistols — 34884b 500x500 sha=266dca88f29f
+  + Stoeger M3000 Freedom Series Tactical Black / Tu — 45544b 750x267 sha=3b4c5d34d0c3
+  + Springfield Armory Echelon 4.0C Comp Gear Pac 9m — 177705b 564x491 sha=1a72c6babdda
+  + Henry Repeating Arms Standard Lever "Squirrel Ma — 51211b 647x281 sha=812baeb6d884
+  + Ruger M77 Hawkeye Predator Wood / Stainless .204 — 18874b 435x167 sha=7ae24be95124
+  + Gunwerks 6IX 30 Caliber 6mm w/ Thread Adapters - — 27247b 758x404 sha=271dc7791646
+  ... 50/68  ok=47 fail=3
+  + Guntec USA MIL-SPEC 6 Position Buffer Tube with  — 161425b 1000x1000 sha=14da27e915b7
+  + Mossberg 940 Pro Field 12 Ga 28" 4 rd Woodland C — 16546b 781x528 sha=25b27e20e428
+  + Federal Premium Law Enforcement .45 ACP 230 Gr H — 26177b 600x343 sha=e4cb1d25605f
+  + Anarchy Outdoors Penguin Precision Rifle Grip, R — 11098b 500x500 sha=ad4a264b5cbf
   x Adaptive Tactical Arkus AR-15 Pistol Grip - $11. — image not downloadable
-  + Anarchy Outdoors Tuxedo Precision Rifle Grip Rig — 40485b 443x765 sha=bcae9432fff6
-  + G-Force Jawbone Hybrid .45 ACP 7" Barrel 26-Roun — 15915b 656x308 sha=5c43ff9e4dc1
-  + Mossberg 940 Pro Tactical 12-Gauge Semi-Auto Sho — 29074b 1326x257 sha=f6cfd74ca7a6
-  + 50% off CVLIFE Recoil Pad for Shotgun Recoil Pad — 20937b 500x500 sha=683bb48d021b
-  + Kel-Tec P-32 Flat Dark Earth .32 ACP 2.7" Barrel — 24168b 608x414 sha=e08c935889b2
-  + Pietta Migliore .357 Mag 4.75" barrel 6 Rnds Col — 57139b 1275x641 sha=db4a2ac687ba
-  + TacFire AR-10 .308 / 7.62x51 Unassembled Rifle K — 21329b 698x262 sha=bec91894e9b4
-  + Howard Leight Shooting Sports Safety Combo Kit - — 50879b 809x900 sha=3e14505834b3
-  + Alpha Foxtrot AF1911 Romulus Bundle 9mm 4.25" Co — 58302b 800x527 sha=5fca08746499
-  + Sig Sauer P226X Legion Grey 9mm 4.4" Barrel 18-R — 36738b 741x533 sha=bbb28eb48c8b
-  + Benelli 11242 Super Black Eagle 3 20ga 3" 28" Bb — 15659b 921x159 sha=848ace5d7a85
-  + Factory BLEM Beretta 1301 Tactical C Mod 2 OD Gr — 12337b 769x173 sha=7a6cb2341dc8
-  + Rattlesnake Tactical 34-Round 9mm Magazine Desig — 56941b 1200x412 sha=ef35e05ac771
   x Springfield Armory Kuna Magazine .40SW Transluce — image not downloadable
   x Dirty Bird AR-15 5.5oz H3 Buffer - $84.95 — image not downloadable
   x Anarchy Outdoors Penguin Precision Rifle Grip -  — image not downloadable
@@ -54,11 +70,7 @@
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD FDE — image not downloadable
   x Dirty Bird Mil-Spec Style Ambidextrous Safety Se — image not downloadable
   x Tuna Cans FAT9 9mm Silencer 6 Baffle - $211.75 — image not downloadable
-  x Remington 783 Full Size .270 WIN Rifle, 22" BBL, — image not downloadable
-  x Tristar LR94 410-Bore Lever-Action Shotgun w/ Ni — image not downloadable
-  x Matador Arms MAT9-K Roller Pistol 9mm 5.5" 22-Rd — image not downloadable
-  x Smith & Wesson Executive 1227056 Pocket Knife 3. — image not downloadable
 
-fixed 39, failed 18  (68% success)
-distinct images: 39 across 39 deals
+fixed 51, failed 17  (75% success)
+distinct images: 51 across 51 deals
 PASS — no image shared between products
