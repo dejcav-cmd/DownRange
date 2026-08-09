@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-08-02T07:00:14.353Z",
+  "generatedAt": "2026-08-09T07:00:50.616Z",
   "content": {
-    "newsArticles": 1136,
-    "blogPosts": 180,
-    "legislation": 278,
+    "newsArticles": 1304,
+    "blogPosts": 189,
+    "legislation": 306,
     "firearmReleases": 19,
-    "videos": 384,
+    "videos": 428,
     "reviews": 3,
-    "canadaArticles": 65,
-    "brazilArticles": 50
+    "canadaArticles": 72,
+    "brazilArticles": 58
   },
   "operations": {
-    "cronRuns": 2386,
+    "cronRuns": 2477,
     "outreachContacts": 221,
-    "socialPosts": 217,
-    "briefings": 69
+    "socialPosts": 234,
+    "briefings": 76
   },
   "latest": {
-    "newsTitle": "Active Shooter Kills Three Near Twin Falls, Idaho In-N-Out Burger",
-    "newsDate": "2026-08-01T23:47:38.000Z",
-    "briefingDate": "2026-08-02",
+    "newsTitle": "Taylor Swift Song Yanked From Trump TikTok After Copyright Claim",
+    "newsDate": "2026-08-08T23:42:48.000Z",
+    "briefingDate": "2026-08-09",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 2115
+  "totalContentDocs": 2379
 }
