@@ -17,7 +17,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const d = CALIBER_DATA[params.caliber]
   if (!d) return { title: 'Ammo Guide — DownRange' }
-  return { title:`${d.name} Guide — DownRange Ammo`, description:`Complete ${d.name} guide: ballistics, best loads, price history, and availability.` }
+  return { title:`${d.name} Guide — DownRange Ammo`, description:`Complete ${d.name} guide: ballistics, best loads, price history, and availability.`, alternates: { canonical: `https://www.downrangeco.com/ammo/${params.caliber}` } }
 }
 
 export default async function CaliberPage({ params }) {

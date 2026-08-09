@@ -7,6 +7,7 @@ import { fetchBreakingAlerts } from '../../sanity/lib/client'
 export const metadata = {
   title: 'Firearm Encyclopedia — DownRange',
   description: 'Complete database of firearm specs, history, variants, and buying guides. Pistols, rifles, shotguns, suppressors — every major platform covered.',
+  alternates: { canonical: 'https://www.downrangeco.com/guns' },
 }
 export const revalidate = 86400
 

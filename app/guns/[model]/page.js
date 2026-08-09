@@ -496,6 +496,7 @@ export async function generateMetadata({ params }) {
   return {
     title: `${g.name} — DownRange Encyclopedia`,
     description: `Complete specs, variants, and review of the ${g.name}. History, pros/cons, buying guide.`,
+    alternates: { canonical: `https://www.downrangeco.com/guns/${params.model}` },
     openGraph: { title: g.name, description: g.summary?.slice(0, 200), images: g.image ? [{ url: g.image }] : [] }
   }
 }

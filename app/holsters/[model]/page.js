@@ -40,7 +40,7 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const d = HOLSTER_DB[params.model]
   if (!d) return { title:'Holster Guide — DownRange' }
-  return { title:`Best Holsters for ${d.name} — DownRange`, description:`Top-rated IWB, AIWB, and OWB holsters for the ${d.name}. Expert recommendations and comparisons.` }
+  return { title:`Best Holsters for ${d.name} — DownRange`, description:`Top-rated IWB, AIWB, and OWB holsters for the ${d.name}. Expert recommendations and comparisons.`, alternates: { canonical: `https://www.downrangeco.com/holsters/${params.model}` } }
 }
 
 export default async function HolsterPage({ params }) {

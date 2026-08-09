@@ -38,7 +38,14 @@ export async function generateMetadata({ params }) {
   const guns = params.guns?.split('-vs-') || []
   const g1 = GUN_DB[guns[0]]?.name || guns[0]
   const g2 = GUN_DB[guns[1]]?.name || guns[1]
-  return { title:`${g1} vs ${g2} — DownRange Comparison`, description:`Head-to-head comparison: ${g1} vs ${g2}. Specs, pros, cons, and AI verdict.` }
+  // Reciprocal pairs (glock-19-vs-sig-p320 / sig-p320-vs-glock-19) render identical
+  // content, so both canonicalize to a single alphabetically-sorted URL.
+  const canonicalSlug = guns.length === 2 ? [...guns].sort().join('-vs-') : params.guns
+  return {
+    title:`${g1} vs ${g2} — DownRange Comparison`,
+    description:`Head-to-head comparison: ${g1} vs ${g2}. Specs, pros, cons, and AI verdict.`,
+    alternates: { canonical: `https://www.downrangeco.com/compare/${canonicalSlug}` },
+  }
 }
 
 export default async function ComparePage({ params }) {
