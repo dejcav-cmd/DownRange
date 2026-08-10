@@ -1,31 +1,68 @@
-600 scanned, 41 need a real image, 7 coupon posts skipped
+600 scanned, 74 need a real image, 7 coupon posts skipped
 
-  + SB Tactical SBA3 / SBA4 / SBA5 / SBA6 Brace + Bu — 417502b 1000x1000 sha=4911a7fa09de
-  + Panzer Arms ARP9 9mm Luger 33+1 6.50" Black Barr — 13768b 463x320 sha=495b1c8a3e97
-  + Speer LE - 223 Rem - 55 Grain Gold Dot SP - 500  — 38631b 867x515 sha=7a95aea15122
-  + Grunt 556 16i 10RD FDE15i Handguard California - — 42651b 800x800 sha=74c012be0058
-  + TriggerTech AR10 Single Stage Black/Blue Diamond — 31365b 546x700 sha=c7ee0b5fe4bd
-  + Glock 23 *LE TRADED* .40 S&W Mix of Gen 3 / Gen  — 27939b 605x405 sha=a17a77587afd
-  + Hi-Point YC9 9mm 3.93" Barrel Black Picatinny Ra — 99830b 1350x900 sha=b8cae0033c98
-  + Barnes VOR-TX Rifle .300 Blackout Ammo 110gr TAC — 39764b 700x562 sha=644be017c5f8
-  + SBG-M Stubby Broomstick Grip - $26.40 (Add to Ca — 11061b 630x630 sha=b2b8d585537f
-  + AR-STONER Customizable AR-15 Lower Receiver Part — 26103b 680x510 sha=405c99e316da
-  + Griffin Armament Dual-Lok Optimus 6 6mm Fits 6.6 — 74025b 1500x621 sha=3bf06732bdff
-  + Guntec USA 1326-MB Slip Over Barrel Shroud With  — 38033b 1000x849 sha=c06295aef8ae
-  + FEDERAL AMMO Law Enforcement HST 9mm Luger 124 G — 37385b 600x429 sha=8b878d056488
-  + Glock 19 17-Round +2 9mm Gen4 Magazine Factory O — 19894b 333x742 sha=32d452f3bcf7
-  + .44 Mag/.44 Spl Speed Loader for 6-Cylinder Revo — 28369b 479x480 sha=cf86191ce3da
-  + 38 Spc/ 357 Mag SpeedLoader for 6-Shot Revolvers — 154464b 1484x1500 sha=20300f1612ce
-  + BLEM PSA Gen3 PA10 18" Mid-Length .308 WIN 1/10  — 28102b 1032x348 sha=67457c79e78d
-  + Sig Sauer SLXMG NG QD Suppressor 6.8mm Coyote/Bl — 90109b 873x338 sha=7aa142f03fb5
-  + HUXWRX Flow762 Flash Cap Suppressor with Muzzle  — 39849b 1000x1000 sha=755662503025
-  + CGS Hyperion K Suppressor + 200 Rds of Hornady F — 371754b 817x603 sha=c8489b4f9771
-  + Velo 338 Lapua Magnum 300 Grain Solid Copper Bal — 229920b 749x482 sha=48f61a181435
-  + Tacfire MAR123 A2 Style Complete Fixed Buttstock — 35879b 800x800 sha=f42849d22509
-  + Springfield 2020 Rimfire Classic .22 LR 10 + 1 C — 56618b 504x431 sha=12fc8b3b530b
-  + Walther P22 Pistol .22 LR 3.42 " Barrel 10 Rds A — 124355b 463x349 sha=54b75e749a69
-  + FN SCAR 15P VPR 5.56x45mm 7.5" Pistol 30rd - $18 — 118204b 768x426 sha=d1494e56c6c8
-  ... 25/41  ok=25 fail=0
+  + BROWNELLS - Field Maintenance Pack for M16/M4 -  — 104971b 583x283 sha=db4ad43b9f15
+  + Athlon Cronus BTR GEN2 4.5-29x56mm FFP Illuminat — 76101b 704x410 sha=35b412a0f6af
+  x S&W Executive Barlow 6.25" S.S. Assisted Opening — image not downloadable
+  + B&T VERS36-Ti 36 Cal Titanium Firearm Suppressor — 63128b 1000x666 sha=757b912a63b7
+  + Beretta M9A1 9mm 4.9" 10rd Semi-Auto Pistol, Ful — 16026b 550x550 sha=c606c0bf1a8b
+  + Springfield Hellion 5.56 BLK 18" 30+1 - $1179.99 — 39632b 1000x437 sha=1cbd3111c034
+  + GLOCK Field Knife with Saw - Black - $27.99 — 23380b 1100x734 sha=87fa41fb6045
+  + Ballistic Advantage 16" 5.56 NATO AR-15 Pencil B — 20161b 1100x582 sha=1c2f1be27e00
+  + Spikes Tactical Assembled AR-15 Upper Receiver - — 38642b 1100x734 sha=8939792e56b5
+  + North American Rescue Combat Application Tourniq — 63416b 1100x614 sha=b0ad19b1c46b
+  + Hornady Frontier FR100 223 Rem 55 GR FMJ 20 Roun — 8272b 210x210 sha=e36c4ebeb582
+  + BHA Precision AR-15 10.5" .300 Blackout, 10" Han — 79679b 733x431 sha=027fd37114e7
+  + BHA Precision AR-15 16" Gov Profile 5.56 NATO 15 — 18530b 1000x149 sha=7240dcbf9256
+  + BHA Precision 5.56 NATO AR-15 10.5" Carbine Gov  — 17878b 1000x185 sha=57552cea1ef3
+  + BHA Precision AR-15 16" Government Profile 5.56m — 16612b 1000x126 sha=df375905a986
+  + Winchester USA 7.62 Nato 147g FMJ Ammunition 20r — 303653b 922x780 sha=7845748d9e72
+  + Fiocchi Range Dynamics 45 ACP Ammo 230 Grain Ful — 51486b 680x510 sha=13db023585d6
+  + AAC 38 Special Ammo 125gr XTP Hollow Point 50rd  — 24210b 546x362 sha=b6c4282c66f6
+  + Glock Gen 5 Glock 19 9mm 15-Round Factory Magazi — 14349b 700x700 sha=1baac614849a
+  + Andro Corp Industries AR-15 Bravo, 5.56 NATO, 16 — 55697b 636x297 sha=c4be1202c110
+  + Backorder - Taurus 2TX22 .22 LR 4.1" ODG/BK TORO — 248241b 676x536 sha=76dfe7b00fe1
+  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 376474b 1000x666 sha=44efda0bf54d
+  + Geissele 5.56mm Reliability Enhanced Bolt Carrie — 61922b 1500x1500 sha=1ce2a3376d59
+  + Ruger 10/22 Magazine BX-1 22 LR 10 Rounds Clear  — 56199b 800x817 sha=4d80614556e1
+  + American Tactical Imports Milsport AR-15 Lower R — 203019b 1057x621 sha=60aeb12013d1
+  ... 25/74  ok=24 fail=1
+  + Taurus 2TX 22 22LR 4.6'' Bbl 2x10 rd Mags w/ Opt — 39044b 656x656 sha=f59fc766be29
+  + Backorder - Taurus TX22 Competition 22LR 5.4" Bk — 366439b 1000x730 sha=0196502500f4
+  + Aimpoint 6XMag-1 6x Magnifier (No Mount) 200272  — 54730b 1200x1200 sha=84d8bbd19f0e
+  + Beretta A300 Ultima Patrol 12ga 3" 19" Bbl Ghost — 38156b 1200x1200 sha=ce00c76f77b1
+  + Taurus TX22 Competition Optics Ready .22 LR 5.25 — 554704b 1230x864 sha=85cd152ade21
+  + Century Arms AP5-P 9mm 5.8" 30rd Pistol w/ Foldi — 13966b 1000x489 sha=e2a96321816a
+  + Vortex Razor HD Gen 2 Spotting Scope - Angled -  — 43008b 1000x1000 sha=f65981a5439a
+  + Geissele Super Duty MOD1-A 5.56mm Ambidextrous 1 — 40876b 1200x1200 sha=7cb200b1ad04
+  x Taurus TX22 Competition Black 22LR 5.25" Barrel  — image not downloadable
+  + Underwood Ammo Controlled Chaos Ammunition .223  — 27465b 640x640 sha=f75e306deaf9
+  + Sig Sauer P211-GT4 Carry 9mm 4.2" 17/21 Rds OR P — 32273b 820x616 sha=62b6559d35e7
+  + Sig Sauer P211-GT5 9mm 5" Barrel (2) 21RD (1) 17 — 20472b 664x620 sha=20afc3256d31
+  + Uncle Mike's Tactical Reflex Open Top Holster (S — 166267b 1038x1355 sha=8079407c3cf3
+  + Springfield Edge EVAC 7.5" Barrel 5.56 NATO 20rd — 80234b 673x270 sha=cf973d1efa89
+  + Heritage Rough Rider .22LR 6rd 6.5" Doc Holliday — 8859b 465x258 sha=e8cefb2c0532
+  + Glock Fast Action Trigger v2 Billet Aluminum Fla — 22036b 379x307 sha=64fe509ab4b5
+  + Faxon Firearms Flame Fluted for Glock 19 Match B — 26004b 1000x614 sha=506e22193953
+  + Comstock Armory Full Size 9mm Flash Hider 5/8x24 — 21206b 424x661 sha=4de9ca91da31
+  + Sig Sauer MCX Pistol 7.62x39mm 11.5" Barrel 28-R — 17632b 758x273 sha=ed93b5a8162e
+  + SPRINGFIELD ARMORY Hellcat OSP 9mm 3" 13rd GEAR  — 56481b 800x571 sha=e2a34f506094
+  + Smith and Wesson Bodyguard 2.0 Cow Print .380 AC — 47713b 898x670 sha=7d22e81f288c
+  + CNC Firearms Colt BOA .357 Mag 4.25" Barrel 6-Ro — 34388b 702x413 sha=ab9134a7913f
+  + Browning BAR Mark III Walnut / Stainless / Black — 9389b 775x141 sha=f3fb6ace7c2c
+  + Franchi Momentum Elite .300 WM Biome/Patriot Bro — 18019b 916x172 sha=a0c74ed3c0a1
+  + Franchi Momentum Elite 6.5 PRC Biome/Patriot Bro — 18019b 916x172 sha=a0c74ed3c0a1
+  ... 50/74  ok=48 fail=2
+  + TacFire AR-15 300 Blackout Unassembled Pistol Ki — 23184b 698x398 sha=50970883a65a
+  + Columbia River Knife Bona Fide Silver Folding Po — 34970b 1000x666 sha=acc99f1aa5aa
+  + 35% off CVLIFE Professional Laser Bore Sight Kit — 33219b 406x500 sha=e29110643e7a
+  + 41% off 500 Lumens Pistol Light Compatible with  — 19274b 500x500 sha=40a99f60395a
+  + 40% off Laser Sight for Pistol, Sub Compact Red/ — 23868b 500x500 sha=1e5c596dca8f
+  + CVLIFE 3-9x40 Optics R4 Reticle Crosshair Scope  — 16563b 500x385 sha=2be5a5c9b126
+  + 40% off Trakiom Clamp Rest Head Universal Clamp  — 26136b 500x500 sha=21232ca993e0
+  + 50% off CVLIFE 30mm Scope Level Anti-cant, 2 Mag — 31281b 500x500 sha=316da8d79d2a
+  + 28% off CVLIFE WildHawk Multiple Reticle Solar G — 21649b 500x500 sha=9a2d0c861a2e
+  + Sig Sauer P320F Certified Pre-Owned 9mm Luger Pi — 26083b 680x510 sha=8380fe126d6c
+  + Sig Sauer P320CA Certified Pre-Owned 9mm Luger P — 29407b 680x510 sha=a2fff8517d38
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD DLC — image not downloadable
   x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Coppe — image not downloadable
   x Maverick Arms 88 All Purpose 20 Gauge 26" 5+1 3" — image not downloadable
@@ -39,10 +76,7 @@
   x Zastava Arms ZPAPM70 7.62 39 16in 30rd M81 - $14 — image not downloadable
   x Winchester Model 70 Extreme 6.5 Creedmoor 22" ba — image not downloadable
   x 11" 9mm SOCOM QPQ Nitride Barrel 1:10 Twist - $6 — image not downloadable
-  x Smith & Wesson P.C. Bodyguard 2.0 Carry Comp, .3 — image not downloadable
-  x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD FDE — image not downloadable
-  x Dirty Bird Mil-Spec Style Ambidextrous Safety Se — image not downloadable
 
-fixed 25, failed 16  (60% success)
-distinct images: 25 across 25 deals
-PASS — no image shared between products
+fixed 59, failed 15  (79% success)
+distinct images: 58 across 59 deals
+NOTE — 1 image(s) on multiple deals (duplicate listings are normal)
