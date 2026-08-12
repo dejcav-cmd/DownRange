@@ -5,6 +5,7 @@ import { ThemeProvider } from '../components/ui/ThemeProvider'
 import Script from 'next/script'
 import PageViewTracker from '../components/ui/PageViewTracker'
 import GlobalBreakingTicker from '../components/layout/GlobalBreakingTicker'
+import { Analytics } from '@vercel/analytics/next'
 
 const GA_ID = 'G-KDGZX3CLEC'
 
@@ -123,6 +124,7 @@ export default function RootLayout({ children }) {
           <MobileTabBar />
         </ThemeProvider>
         <PageViewTracker />
+        <Analytics />
       </body>
       </ClerkWrapper>
     </html>
