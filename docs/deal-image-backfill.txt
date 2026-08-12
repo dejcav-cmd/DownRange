@@ -1,50 +1,64 @@
-600 scanned, 58 need a real image, 9 coupon posts skipped
+600 scanned, 71 need a real image, 7 coupon posts skipped
 
-  + Pietta Martial Revolver, 9mm, 3.5" Barrel, 6 Rd  — 26658b 852x445 sha=c92ffd9af07d
-  + Trijicon RMRcc Sight Adjustable LED 3.25 MOA Red — 66815b 925x580 sha=b7c9aa46733c
-  + Assembled Windowed Nitride Slide for Glock 43/43 — 43278b 1000x1000 sha=0986a5bd5765
-  + Franklin Armory CVR FAI-15 5.56 NATO 16" Rifle:  — 23592b 852x262 sha=6447eaafae2c
-  + Griffin EXPLORR 224 - $584.20 — 21895b 966x489 sha=b906393e6c34
-  + Crimson Trace Brushline Pro Rifle Scope 3-9x50mm — 38718b 1000x1000 sha=463d4103ab72
-  + Fix It Sticks Long Range Rifle Kit w/ Torque Lim — 99739b 1000x814 sha=ae7015340533
-  + Ruger RXM Exclusive 9MM Pistol 4" SCT Greasy Sli — 243418b 1000x425 sha=55d04ea8e869
-  + Mossberg Patriot Super Bantam 350 Legend Bolt-Ac — 24255b 1000x666 sha=d8f53388b085
-  + NOCPIX Bolt Thermal Sight 384x288 35mm LRF - $16 — 43346b 1042x522 sha=e281cc672b87
+  + Springfield XD Mod 3 9mm 4" 16rd Semi-Auto Pisto — 41814b 675x450 sha=5de78ddfa25e
+  + Federal BallistiClean .40 S&W 135 Grain Lead-Fre — 21256b 586x358 sha=b7da8b1951ed
+  + Federal 12Ga 00 Buckshot 8 Pellet Flightcontrol  — 20893b 600x400 sha=c05034f6ebfc
+  + Gerber StrongArm Camp Fixed Blade Knife - $54.99 — 17503b 555x510 sha=a7e08793336b
+  + Remington 870 Police Magnum 12 Ga 18,5" 4-rds Sh — 24390b 823x315 sha=9ffe6cd6e053
+  + Ruger American Rifle Generation II Bolt Action 2 — 31329b 1280x423 sha=1ec5cb4d3071
+  + RUGER American Prairie Gen II 308 Win 20" 3rd -  — 43780b 1500x373 sha=6ae702fff507
+  + Federal American Eagle 40 S&W Ammo 180 Grain Ful — 44573b 823x550 sha=4498b9567c6d
+  + Daniel Defense DEF DD5 V5 S2W .260 Remington 20r — 39099b 1500x479 sha=40d99fe5ddad
+  + Springfield Armory 1911 DS Prodigy 9mm 5" 17rd & — 43036b 800x445 sha=f387d6099a2d
+  + NBS 9mm 1/2-28 A2 Birdcage Flash Hider - 4214 -  — 30998b 1000x1000 sha=09a057fe7c29
+  + Smith and Wesson M&P9 2.0 OD Green 9mm 4.8" Thre — 58476b 1000x864 sha=ae971a11850a
+  + Blackhawk STRIKE Gen-4 Molle System Elite Black  — 37972b 431x608 sha=ce5a45386154
+  + Toolcraft .223/5.56/300BLK M16 Profile Left-Hand — 24022b 1000x630 sha=c7e9714a9999
+  + Beretta 20X Bobcat 22 LR 2.8" Barrel 8 Rounds EL — 74854b 484x349 sha=742459b9542d
+  + Sportsman's Select Remanufactured 223 Remington  — 46639b 1000x655 sha=121f5edf4b54
+  + Strike Industries Ambidextrous Magazine Release  — 37211b 1000x853 sha=6f56e420da07
+  + Active Safety ARC Fire V2 Non-Ambi Trigger Kit 9 — 220724b 950x809 sha=09ec5d530d9d
+  + Voidspec TX22 Active Reset Trigger + Guide Rod K — 110104b 1000x666 sha=1be21304bc3f
+  + FN FN15 Guardian 5.56 NATO Semi-Automatic Rifle  — 207950b 1350x700 sha=b335509036f0
+  + Soviet Arms 7.62 Krink 7.62x39mm 8.4" 30-Rd Tria — 49332b 1500x681 sha=ed26386f360d
+  + Geissele Automatics 2 Stage Trigger - 05-145 - $ — 19810b 500x500 sha=866ceba5d7d9
+  + Atrius Development 3 Position Super Selector Saf — 14510b 945x630 sha=f60fc46ed6b6
+  + Kaw Valley Precision AR-15 Trigger Reduced Power — 43780b 1200x873 sha=e339688d7fbb
+  + Wolfpack Armory AR45 Rifle Lower Build Kit w/ Mi — 11378b 630x630 sha=5a47c7fe1776
+  ... 25/71  ok=25 fail=0
+  + PSA Dagger Compact 9mm 4.5" 15-rd RMR Pistol w/  — 559670b 1500x1033 sha=6a48895d1c48
+  + FN SCAR 17S NRCH 16" 7.62x51 20-Rds Rifle, Black — 41562b 1500x525 sha=97a4215a97f7
+  + EAA Corp Girsan Witness 2311 Negotiator Black /  — 122144b 1500x1160 sha=75ab86f245a8
+  + IWI Galil Ace Gen 2 Semi-automatic Rifle in 556  — 12450b 608x343 sha=36b1ad206509
+  + Classic Firearms AR-15 30 Round Enhanced Magazin — 61601b 569x599 sha=20b22ea162db
+  + Marlin 1895 Trapper Stainless .45-70 16.1" Barre — 29546b 1280x447 sha=7bf0be717ec9
+  + Federal American Eagle 45 ACP Auto Ammo 230 Grai — 337586b 598x429 sha=c01a0bb639fa
+  + Banish 30 V2 Direct Thread Titanium Suppressor 1 — 68850b 429x576 sha=cb2b0e474c4b
+  + Silencer Central Banish Speed K 5.56 1/2x28 Dire — 32033b 400x812 sha=ab79a44a1482
+  + Beretta 92FS M9A1 9mm LTD 15+1 Rds 4.9" Bbl, Bla — 320090b 951x660 sha=4ae0a8f60194
+  + Live Free Armoty Apollo 11 V2 Full Size 4.9″ 9mm — 88409b 579x443 sha=0dc39bd8834a
+  + Taurus 856 .38 Special + P 2" Bbl 6rd Stainless  — 180982b 757x585 sha=071ab117e1a4
+  + FosTech Drone Predator 9mm 3.9" 17rd GRY - $1454 — 17934b 430x330 sha=347936f595d4
+  + FosTech Raptor 10.5" 5.56 30rd GRY - $1163.47 — 16084b 430x430 sha=f738dc14980d
+  + CZ Dan Wesson Valor .45 ACP 5" 8rd Pistol - FNS  — 21688b 500x343 sha=d511304430f3
+  + Grand Power Stribog SP9A1 9mm 16" 30rd Semi-Auto — 32274b 1000x332 sha=1edf44a404eb
+  + IWI MASADA Tactical LE 9mm 4.6" 17rd - $396.87 — 24347b 709x503 sha=7463ba08cce4
+  + IWI Carmel LE 223/5.56 16" 30rd - $1037.33 — 150057b 1000x666 sha=c11bd4ee5baa
+  + Great Lakes GLFA AR10 .308 Rifle 18" 10rd Nitrid — 16116b 800x184 sha=f5893b1c7a1b
+  + Canik Prime Radian Gray 9mm 3.8" Barrel 17-Round — 436818b 830x631 sha=e4ae3fd2c2be
+  + Magpul PMAG LWRC Six8 6.8mm SPC 30-Round Magazin — 490509b 519x965 sha=53fc62cc851f
+  + Magpul ACS-L Carbine Stock, Mil-Spec, FDE - $65. — 454927b 1118x772 sha=a1aa948e475f
+  + Ammo Inc. 9mm Ammo 115gr FMJ 50 Rounds - $10.99 — 157122b 928x526 sha=a6240c797df4
+  + Taurus Tx22 Toro 4.6in Barrel 22rd Black W/Virid — 31292b 570x570 sha=4d5f16fe09f1
+  + NcSTAR VG011 Mil Spec Modular Precision Buttstoc — 69386b 1000x907 sha=ee7eb2e23936
+  ... 50/71  ok=50 fail=0
+  + Asian Military AK47 7.62x39mm 30-Round Steel Mag — 174794b 525x690 sha=428f84b87a65
+  + AK47 7.62x39mm 20-Round Steel Magazine Asian - $ — 184410b 714x896 sha=32423b2e759f
+  + EAA Corp Girsan MC1911 Match Noel Matte Stainles — 63773b 1000x675 sha=47891589e82a
+  x Trijicon HD-XR Night Sight Set For CZ P-10 / P-1 — image not downloadable
+  x Dead Air Armament Nomad Ti XC .30/7.62mm 6.74" D — image not downloadable
   x Ruger Mark IV Target 22LR 10" 10+1 - $639.99 — image not downloadable
-  + Pietta 1851 Navy Yank Pepperbox Black Powder Rev — 19520b 680x510 sha=324f2914fa30
-  + NBS Budget AR-15 Mil-Spec Charging Handle - $7.9 — 20186b 900x600 sha=72fc26c8927c
-  + OTX Plan B Castle Blast Shield - $54.95 — 67692b 1500x1500 sha=c25fba3b52ab
-  + Swarovski Z5 Ballistic Turret Rifle Scope 2.4-12 — 14322b 680x510 sha=f9dfa9ce5394
-  + Kahles K525i 5-25x56mm Illuminated FFP MOAK Reti — 28422b 890x745 sha=d9e8e1c7a75f
-  + USED - SIG Sauer ROMEO5 Gen II 1x20mm 2 MOA Gree — 39716b 1000x700 sha=22fdfda6d1d6
-  + Geissele Low Profile Super Gas Block (SGB) - Nit — 37276b 1200x1024 sha=1fba623ef48b
-  + BCA BC-15 AR-15 Forged Stripped Lower Receiver - — 12877b 945x630 sha=da39f8418682
-  + Global Ordnance 5.56/.223 AR-15 30rd Steel Magaz — 44353b 1500x1000 sha=ec6b62da7f47
   x TacFire A.C.E. Series AR-10 Low Profile M-LOK Ha — image not downloadable
-  + Springfield Armory Kuna 9mm Pistol W/ Strike Ind — 21505b 570x570 sha=745fc326adaa
-  + Suunto Core 2 All Black - $179 — 85364b 630x630 sha=85b6abdf3447
-  + PSA 16" M4 Carbine-Length 5.56 NATO 1/7 Nitride  — 27512b 1000x500 sha=52d6a6d64038
-  + Maxim Defense CQB Stock w/ Standard Buffer & Spr — 41331b 480x250 sha=67805b52e41b
-  ... 25/58  ok=23 fail=2
-  + Fiocchi - Range Dynamics - 5.56x45mm - 55 Grain  — 19570b 504x280 sha=be2cba694dc7
-  + Taran Tactical Glock 43X Combat Carry Copperhead — 96077b 900x900 sha=837f7651d596
-  + Daniel Defense DD4 RIII 5.56mm 16" M-LOK Semi-Au — 129628b 1000x666 sha=b9690007999e
-  + Taurus TX22 Competition Black .22 LR 5.25" Barre — 530979b 1307x859 sha=d0f94dd4f1e2
-  + SIG SAUER TANGO-MSR LPVO 1-10x28mm Rifle Scope,  — 36826b 826x347 sha=06cef94e01ad
-  + FN High Power 9mm 4.7" 17RD Pistol, Black, Drift — 156508b 643x462 sha=b53f9a4560e9
-  + Daniel Defense DDM4 V7P Exclusive 5.56 NATO 30+1 — 132174b 926x374 sha=fc3fb6dedacd
-  + AK47 30RD 7.62x39mm Magazine POLY METAL TAB Euro — 99036b 436x535 sha=40bc4972fdf4
-  + Remington 740 742 4RD 30-06 Magazine - $24.99 — 302311b 857x655 sha=dae39d2c5272
-  + Springfield Armory Hellion Bullpup 5.56 NATO Rif — 336668b 1500x646 sha=143435382760
-  + PSA 570 12 Gauge 7RD Pump-Action 18.5-Inch Barre — 167849b 1500x425 sha=71c9d6fade5c
-  + FULL FORGE GEAR Hurricane Backpack Black - $39.9 — 21955b 374x500 sha=5c75d8d37d19
-  + Norma A-Strike 9mm 158 Grain TMJ 1000 Rounds - $ — 39894b 940x506 sha=0903dbcc03b0
-  + Taurus TX 22 .22 LR Semi Auto Pistol 22 Rounds B — 144839b 1280x973 sha=81a0c1c337c8
-  + BACKPACK DEAL: Black Full Forge Gear Backpack an — 292330b 913x741 sha=691a2138a645
-  + Glock 19 GEN 6 9mm 4" (3) 15 Round Magazines Amb — 42427b 800x600 sha=58ece3555822
-  + AR15 30RD 5.56/.223 Aluminum Duramag C Products  — 19869b 700x700 sha=5b277fe46a64
-  + AR15 30rd 5.56/223 Steel Extreme Duty Military M — 26671b 700x700 sha=8dd51126351c
-  + Athlon 5-25x56 Midas TAC 34mm Riflescope - $479. — 59186b 646x400 sha=4e83cf987cae
   x S&W Executive Barlow 6.25" S.S. Assisted Opening — image not downloadable
   x Taurus TX22 Competition Black 22LR 5.25" Barrel  — image not downloadable
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD DLC — image not downloadable
@@ -60,6 +74,6 @@
   x Zastava Arms ZPAPM70 7.62 39 16in 30rd M81 - $14 — image not downloadable
   x Winchester Model 70 Extreme 6.5 Creedmoor 22" ba — image not downloadable
 
-fixed 42, failed 16  (72% success)
-distinct images: 42 across 42 deals
+fixed 53, failed 18  (74% success)
+distinct images: 53 across 53 deals
 PASS — no image shared between products
