@@ -1,54 +1,46 @@
-600 scanned, 62 need a real image, 6 coupon posts skipped
+600 scanned, 51 need a real image, 6 coupon posts skipped
 
-  + Ballistic Advantage 16" EPC 9mm Straight 4150 CM — 9836b 800x316 sha=5644cb780c8b
-  + Ballistic Advantage 16″ 5.56 Government Profile  — 20639b 1000x853 sha=bb503740f1bb
-  + Bersa Thunder 22 Pistol – Duo-Tone .22LR 3.5″ -  — 49396b 1000x666 sha=21b5c881c692
-  + Grand Power Stribog SP45A3 .45 ACP 8" Barrel 20- — 133121b 849x456 sha=9a961e2ff4e9
-  + IWI Zion Z-15 Semi-Automatic AR-15 Pistol 12.5"  — 209857b 962x343 sha=a9e9045a7256
-  + Recover Tactical - 20/21B Stabilizer Brace - Fit — 34536b 800x591 sha=165ed846e1db
-  + Expo Arms 7075 Stripped AR-15 Upper Receiver - $ — 42614b 1004x666 sha=781698c27346
-  + Timney Alpha Glock5-Blackout G5 9mm/40 Triggr -  — 9788b 500x410 sha=7714eb32f4ba
-  + TELUHA Night Vision Goggles 4K Binoculars 5000mA — 32640b 500x500 sha=dd77eee528d6
-  + PSA 36" Single Rifle Bag & 7 Magpul PMAG Gen2 5. — 29489b 464x456 sha=4f64fbb231b1
-  + Savage Axis 2 Pro Forest SP 270 Win - $469.99 — 41311b 1500x307 sha=7fb4d93e848d
-  + PSA 16" 5.56 NATO 17" LSA M-LOK Upper With Linea — 30941b 1500x274 sha=038fa90d9df5
-  + BLEM JAKL-10 Stripped Lower Assembly w/ Bolt Cat — 30833b 1000x500 sha=033f5fdda112
-  + Springfield Kuna 6.125" 9mm 30rd Pistol, Black w — 21505b 570x570 sha=745fc326adaa
-  + BROWNELLS - BRN AR-15 Takedown Pin Tool, Black - — 37266b 1000x1000 sha=a5d104b270f5
-  + US Cartridge 5.56 Steel Core 62 Gr FMJ - 200 Rd  — 69733b 614x661 sha=83bbacf24421
-  + SZCO ULU Hunting Knife 5.5" Camping Knife with A — 77280b 1500x1002 sha=392b494d821f
-  + Maxpedition Jumbo Versipack, Black - $85.08 — 28683b 500x500 sha=b3c11767305d
-  + AR15 Barrel 223 Wylde/5.56 16" Dual Spiral 1/8 - — 13356b 757x181 sha=c89c48c85f7d
-  + Dead Foot Arms SCW 2.5 Tailhook Pistol Brace For — 25922b 665x454 sha=56483b66bbea
-  + MACE 15" Spiked Handguard - M-LOK - $116.95 — 27001b 1000x479 sha=9b1243816601
-  + Geissele Automatics 2 Stage Trigger - $139.95 — 96632b 608x608 sha=36d93421393c
+  x HI-P 4595TS4X25 45ACP CARBINE TS SCOPE - $321.62 — image not downloadable
+  + Kite Optics APC Image Stabilized Binoculars - $9 — 28873b 680x510 sha=e1191d60c08f
+  + Holosun ARO-RD2, AEMS-PRO-X2-GR, AEMS-PRO-X2-RD, — 451661b 1000x1000 sha=33f02017f866
+  + PSA AK-104 7.62x39 12.5" 30-Rds Triangle Side Fo — 54729b 1500x580 sha=fc51c610bada
+  + PSAK-47 GF3-R Romanian Build w/ Dong and Wire Fo — 25417b 1000x500 sha=0a6f0d0265ae
+  + Winchester Ammunition, USA65CMVP, USA, 6.5 Creed — 282413b 1000x666 sha=b67d0d1c4340
+  + Pulsar Telos LRF XP50 Monocular - Thermal Monocu — 196610b 587x490 sha=555418af1f70
+  + Dirty Bird AR-15 Single Stage Quick Reset Drop-I — 26815b 766x617 sha=0518fd2d0290
+  + Taurus GX2 9mm Pistol - 3.4" Barrel, 13rd - $199 — 61520b 1000x825 sha=0ca2406da523
+  + Lone Wolf Arms TWF Full/Full Textured Assembled  — 41464b 1000x666 sha=7b56a13e825c
+  + SONICORE Skarv 22 - 22LR 1/2-28 Direct Thread Su — 56604b 1161x498 sha=fab81ca8d380
+  + FN America 509 Compact 9mm Pistol - 3.7" - FDE - — 16036b 426x311 sha=71f3342104e3
+  + Arken EP-5 GENII 7-35x56 FFP with illuminated VP — 91786b 713x713 sha=39b29be819c8
+  + Leapers UTG 30-Round Polymer AR-15 Magazine - RB — 22887b 1000x666 sha=37e181857f99
+  x EOTECH EXPS3 Holographic Weapon Sight - $399 — unreachable after retries
+  + Smith and Wesson M&P5.7 Flat Dark Earth / Black  — 195213b 1500x1319 sha=48e77b6b714d
+  + Atrius Development 3 Position Super Selector Saf — 14510b 945x630 sha=f60fc46ed6b6
+  + Rise Armament RAVE 140 Drop-in Trigger Flat / Cu — 65570b 1500x1000 sha=4328ecfc1415
+  + Beretta 92XI SQUALO 9mm 4.7" 22rd Pistol, Black  — 65525b 1000x1000 sha=1df463daea7e
+  + NBS AR-15 Stripped Upper - AR15-Stripped-Upper-R — 31474b 800x800 sha=04fa63b5158c
+  + Heritage Rough Rider .22LR Revolver 4.75" 6rd, B — 41756b 1123x596 sha=f5e632bdb72d
+  + Fusion XP Comp 4.6" 9mm (2)17rd 4.6" Optic Ready — 55672b 992x657 sha=d74d9ce64441
+  + Cold Steel Limited Edition Recon 1 Pocket Knife  — 13827b 682x152 sha=96d2741063a6
+  + Vortex Crossfire II 3-9 40 V-Plex Scope - $94.95 — 26399b 1000x666 sha=1f7a30eff07c
+  + Nobel Sport - Due Trap - 12 Gauge - #8 Shot - 2. — 58700b 1000x1000 sha=bb14cf2e9b73
+  ... 25/51  ok=23 fail=2
+  + Zero Tech Optics Thrive Hd 1x28mm 3 MoA Red Dot  — 25363b 485x571 sha=a862d7880289
+  + Beretta 92XI SAO Corsa 9mm 5.1" Barrel 22 Round  — 42108b 834x614 sha=c7dbb3a2de0b
+  + UTG PRO AR-15 Ambidextrous Billet Lower Receiver — 20530b 785x587 sha=c6899359b463
+  + Strike Industries Strike Billet Magazine Catch - — 50657b 1000x667 sha=94c41f6aa503
+  + Slate Black Industries M-LOK Slate Stop - $15.95 — 48921b 1500x674 sha=c226a5e722e6
+  + Barnes VOR-TX Rifle .243 Winchester Ammo 80gr TT — 38661b 700x610 sha=ef3bd83a05a3
+  + Springfield Armory Saint Victor Gear Pac, .300bl — 25028b 831x301 sha=4720e496a838
+  + Winchester Target & Practice 9mm, 115gr FMJ, 100 — 87835b 916x461 sha=7d55aeaa93ab
+  + Wicked Ridge by TenPoint Invader M1 Crossbow Pac — 223249b 683x409 sha=1360a6c74e24
+  + Taurus TX22 Gen 2 TORO 22 LR 4.1in Barrel (1)16+ — 73716b 1000x1000 sha=15233994cbcf
   x AB Suppressor LB Little Bird 22 1/2-28 - $320 — image not downloadable
   x Toolcraft .223/5.56/300BLK M16 Profile 9310 BCG  — image not downloadable
-  + PSA AK-103 GF3 Forged Nitride Barrel Classic Sid — 23397b 1000x500 sha=56bca7dc96b8
-  ... 25/62  ok=23 fail=2
-  + SB Tactical SBA4 Brace Only - $69.95 — 38432b 1000x666 sha=cd0b53c39e2f
-  + PSA AK-104 SBA3 ALG Pistol with JL Billet Rail - — 31148b 1000x499 sha=39320c429d1b
-  + 30% off CVLIFE 5.2" D2 Full Tang Fixed Blade Bus — 197182b 1500x1190 sha=760e6ba159eb
-  + 40% off CVLIFE Solar Enclosed Red Dot, 2MOA/30MO — 195293b 1500x1347 sha=d5597ba8d44a
-  + 50% off EZshoot Shotgun Sling Adjustable Length  — 39889b 679x664 sha=191bd912d812
-  + 10% off CVLIFE 62" Recurve Bow and Arrow Set for — 69307b 679x686 sha=394751aa369f
-  + 30% off CVLIFE Biometric Gun Safe with 2-in-1 Wa — 61591b 679x743 sha=8761a0b13401
-  + 50% off MidTen Bipod Compatible with M-Rail Bipo — 34008b 679x848 sha=3cd1934da648
-  + Anarchy Outdoors Titanium Full Port Muzzle Brake — 35990b 873x525 sha=4d6ec7c217e2
   x Anarchy Outdoors Penguin Precision Rifle Grip RI — image not downloadable
-  + Ruger RXM Tan 9mm 4.5" Threaded Barrel 15-Rounds — 26384b 656x447 sha=a9feccf1d02a
-  + Tikka T3x Lite Veil Wideland / Midnight Bronze . — 19492b 800x215 sha=be1dc01002d8
-  + Savage 25 LTWT Varminter 17 Hornet 24" barrel 4r — 17345b 1000x163 sha=39f24c4db620
-  + Franchi Momentum Elite .308 Win 22" True Timber  — 19396b 914x166 sha=6ed96808dc5c
-  + 1 - $1 — 244863b 1500x1500 sha=4ba0c91789b9
-  + 40% off CVLIFE Solar Auto-Brightness Red/Green D — 200841b 1500x1161 sha=ddafd5e492da
-  + Savior Equipment American Classic Shorty Double  — 18756b 506x268 sha=d8fb2e55d807
-  + DAC Technologies Universal 18 Piece Gun Cleaning — 68757b 901x641 sha=0452ae0f14ab
-  + Ruger LCP MAX Stealth Grey .380 ACP 2.8" Barrel  — 47482b 651x574 sha=afe271a12042
-  + Beretta 20X Bobcat Magazine .22 LR 8-Rounds - $2 — 33080b 606x618 sha=12cafb24e094
   x Trijicon HD-XR Night Sight Set For CZ P-10 / P-1 — image not downloadable
   x Dead Air Armament Nomad Ti XC .30/7.62mm 6.74" D — image not downloadable
-  + Ruger Mark IV Target 22LR 10" 10+1 - $639.99 — 12713b 595x289 sha=1494509aa857
   x TacFire A.C.E. Series AR-10 Low Profile M-LOK Ha — image not downloadable
   x S&W Executive Barlow 6.25" S.S. Assisted Opening — image not downloadable
   x Taurus TX22 Competition Black 22LR 5.25" Barrel  — image not downloadable
@@ -60,10 +52,7 @@
   x Dirty Bird AR-15 5.5oz H3 Buffer - $84.95 — image not downloadable
   x Anarchy Outdoors Penguin Precision Rifle Grip -  — image not downloadable
   x Walther PDP Pro 9mm 18 Round Magazine - $34.99 — image not downloadable
-  x Eotech EXPS3-0, 68 MOA Ring w/ 1 MOA Dot Reticle — image not downloadable
-  x Taurus TX, 9mm, 4.5" Barrel, 2-17rd Magazines, O — rejected: too few pixels (150x125)
-  x Zastava Arms ZPAPM70 7.62 39 16in 30rd M81 - $14 — image not downloadable
 
-fixed 43, failed 19  (69% success)
-distinct images: 43 across 43 deals
+fixed 33, failed 18  (64% success)
+distinct images: 33 across 33 deals
 PASS — no image shared between products
