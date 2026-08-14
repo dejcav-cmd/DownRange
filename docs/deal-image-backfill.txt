@@ -1,45 +1,73 @@
-600 scanned, 56 need a real image, 5 coupon posts skipped
+600 scanned, 82 need a real image, 4 coupon posts skipped
 
-  + Warrior Systems Legionary .22 LR 1/2x28 Suppress — 13583b 588x420 sha=41a6a15cb73c
-  + Federal Law Enforcement 40 S&W Ammo 165 Grain HS — 59846b 823x550 sha=eee6b8cc505d
-  + Federal American Eagle 40 S&W Ammo 165 Grain Ful — 64566b 823x593 sha=23d9eb016d56
-  + BENELLI M2 Field 12 Ga 28" 3rd - MO Bottomland - — 24530b 1251x260 sha=9370e1b939ee
-  + Beretta AX800 Suprema Black Synthetic 12 Ga 28"  — 28168b 1280x406 sha=4279948b7421
-  + The Triggered Company Disruptor AR-15 3 Position — 26092b 914x450 sha=d37b8afa65af
-  + American Tactical Alpha MAXX 5.56/.223 Rem 16" B — 208639b 1486x660 sha=31ba12a26b1c
-  + Galil ACE GEN II 7.62x39mm 16" 30-Rds with Side  — 12712b 608x185 sha=dd1aca677c1d
-  + NBS Free Float M-LOK Handguard - $59.95 — 46987b 1200x755 sha=effdcb2272a1
-  + Discount Mil-Spec Carbine Buffer / Receiver Exte — 35992b 1200x1024 sha=d17551c725ab
-  + Springfield Model 2020 Rimfire Classic .22 LR 20 — 21302b 1000x518 sha=be1dedbd8514
-  + Winchester XPR 6.5 Creedmoor with Vortex Crossfi — 20036b 1000x518 sha=ff2e5c0e2bdc
-  + Resilient Jolene S .30 Cal Titanium Rifle Suppre — 41245b 1387x1092 sha=eb44ee9beecb
-  + Tactical MOLLE Clip T-Mount Clash Hook, Gloves C — 31999b 500x500 sha=906428ba7fc2
-  + Taurus TX22 Magazine .22 LR 22 Rounds Black - $2 — 80154b 917x664 sha=e849d0fa32e2
-  + Benelli R1 Endurance Walnut .30-06 22" Barrel 5- — 27481b 1500x345 sha=639c51232b11
-  + FN 15 Guardian 5.56 NATO / .223 Rem 16" Barrel 3 — 50672b 1280x579 sha=04fcd5fffda9
-  + Canik TTI Combat 4.6" 9mm 18rd Pistol - Smoke/OD — 40636b 898x775 sha=321c69b29ac4
-  + Rise Armament PSA Custom Flat Trigger - RA-140F- — 56467b 1000x1000 sha=1b419b092bb3
-  + BLEM Primary Arms SLx 1X MicroPrism with Green I — 190909b 1092x780 sha=0a118d34b75a
-  + Ruger Mark IV 22/45 4.4" Barrel .22 LR 10+1 Roun — 71158b 1289x865 sha=12526bd01288
-  + Vortex Crossfire II 2 MOA Red Dot - CF2-RD2 - $1 — 341010b 1000x666 sha=76063b0b7b13
-  + Crimson Trace Brushline Pro Rifle Scope 3-9x40 - — 19956b 1000x500 sha=6b9343c81505
-  + PSA 7.5" 5.56 NATO 1/7 Nitride Suppressor Ready  — 9008b 546x202 sha=48eb82a2a895
-  + PSA AR15 Complete MOE SL Stealth Lower, Black -  — 72804b 1500x749 sha=b782c1d75968
-  ... 25/56  ok=25 fail=0
-  + PSA AR-15 Pistol 7.5" 300 Blackout 30-Rnd Nitrid — 30196b 1000x500 sha=22eefd9d4b9b
-  + Trijicon ACOG 4x32 Red Chevron Weapon Sight TA31 — 9382b 555x370 sha=3aa1a6508583
-  + Gun Holster IWB/OWB 9mm 380 Concealed Carry Pist — 31969b 500x500 sha=c83c96ad8b90
-  + Q The Fix Grey .308 Win 16" Barrel 10-Rds - $312 — 28805b 1200x290 sha=56f81b6f791d
-  + Thril RTG Rugged Tactical AR Grip 19.5-Degree -  — 623085b 1500x1062 sha=2f9c3ad32428
-  + Flyfan 4 Pack 52 x 4.5 in Gun Socks for Rifles a — 413413b 1500x1490 sha=c0162457d2f3
-  + Pridefend Chamber Safety Flag for Rifle Handgun  — 37828b 500x500 sha=b584cd1d655d
-  + BARSKA Varmint 10-40x60 Rifle Scope Trace MOA V2 — 11544b 500x211 sha=cf7f465303db
-  + Mossy Oak 9" Hunting Knife with Sheath, 14C28N F — 19818b 500x500 sha=c3b87a97de7f
+  + Smith & Wesson M&P 15 Sport III, 5.56mm, 16" Bar — 22161b 895x332 sha=51c354d05e83
+  + Magtech Steel Case 9mm, 124gr FMJ, 1,000rd Case  — 41285b 541x519 sha=1f5c3da3652b
+  + Nightforce SHV F1 Rifle Scope - $1150.00 — 18648b 680x510 sha=b56b8bd034f1
+  + Colt 1911 Government Competition Blue .45 ACP 5" — 312951b 800x522 sha=d029d9aca686
+  + X-VISION IMPACT 100 SCOPE 3-9.2X35MM 203200 Ts1  — 16276b 525x362 sha=77dc4b307435
+  + CZ, P-10C, Semi-automatic, Striker Fired, Compac — 26107b 560x465 sha=9b4894f00516
+  + Panzer HAN9 MP5 Style Pistol - $499 — 868495b 1500x846 sha=5e075bebf649
+  + Hatsan USA Optima 30mm Red Dot 4 reticle Weaver/ — 14030b 435x341 sha=66d02e911b9a
+  + PSA AR-15 Pistol 10.5" 300 Blackout 30-Rds 1:8 N — 25727b 1000x355 sha=8f6fd832795c
+  + Silver Eagle LT 28 Gauge 28" Break Action Over U — 13667b 1000x217 sha=aee9b303c065
+  + Pulsar Talion XQ38 Thermal Riflescope - $1299.99 — 51647b 1000x1000 sha=92ca59f097b9
+  + Barska 1x50mm Red Dot Sight - $52.99 — 26648b 538x518 sha=ab80d76bce1b
+  + Browning Defender Pro Scout Max Extreme HD Trail — 137267b 1000x1000 sha=7f861bda46d0
+  + PPU 357 Magnum Ammo 158 Grain Full Metal Jacket  — 39869b 680x510 sha=6fce4544d371
+  + Truglo Ignite 30mm Red Dot Sentinel Cantilever P — 22439b 626x448 sha=5bcf6dee150b
+  + Savior Equipment Specialist Covert Single Rifle  — 30124b 700x700 sha=f54c57809fb9
+  + Knights Armament QD Sling Mount M-LOK - $90.22 — 23100b 706x417 sha=b57fda249975
+  + MasterPiece Arms Polymer Magazine for MPA Defend — 19519b 800x600 sha=1a06fe825a7c
+  + Mec-Gar Magazine for Glock 19 9mm 18-Rounds - $1 — 70900b 1137x1206 sha=d0974a0276f9
+  + AR-STONER Crucial AR-15 Parts Kit - $8.04 — 46207b 680x510 sha=20a11dc5e4d0
+  + Glock 43X MOS Glitter Gunz TactiCow Twilight 9mm — 100684b 1000x797 sha=f54d1808e778
+  + Rossi GALLERY 22LR 18" 15 Rd Wood Stock Pump Rif — 22320b 1000x666 sha=674feb58db5c
+  + Remington Range 9mm 124gr Brass FMJ 1000 Count C — 706194b 1190x768 sha=7424a9e9799d
+  + Norma Range & Training 5.56mm, 55gr FMJ, Ammunit — 484631b 822x514 sha=bbe9f495ea71
+  + Staccato 9mm Match 136gr OTM Subsonic Ammunition — 32807b 465x492 sha=6ad0716fc2ad
+  ... 25/82  ok=25 fail=0
+  + End Of Summer Sale at Boss Firearms! 15% Off LMT — 105591b 1500x750 sha=af55e63e2849
+  + KAHR ARMS P9 3.6" 9mm 7 Rd Black - $400.99 — 29990b 522x438 sha=47ca5d39e7c6
+  x American Tactical Imports SGP DF-12 12 Ga 18" 5  — image not downloadable
+  + Korth Mongoose Revolver 357 Magnum 6" Barrel 6-R — 1017348b 1400x930 sha=5bc0fa601a35
+  + Griffin Armament MK1 RECCE 5.56 NATO 16" BBL 30r — 61778b 742x327 sha=76fab4d00c86
+  + Cooper Firearms Montana Heritage Bolt Action Rif — 9047b 680x116 sha=b33ae0f7cf5b
+  + SOG Pentagon Mk3 Pocket Knife - $77.69 — 11249b 680x130 sha=8d52192f6360
+  + THRiL Not So Vertical Foregrip Flat Top M-LOK BL — 57706b 510x371 sha=eeb8d432ed6e
+  + THRiL PMX SM9 Magazine MPX-Compatible 9mm 35rd B — 12550b 217x580 sha=e74f05f4929c
+  + Hogue 15 Degree Pistol Grip OD GREEN - $16.96 — 70404b 532x1000 sha=9c2bb404dcbe
+  + Buck Knives 105 Pathfinder - $79.99 — 13943b 748x319 sha=876c866b7fb3
+  + Black Rain Ordnance BRO Spec 15 w/Zerotech Trace — 18774b 755x257 sha=8dc17768e39f
+  + Black Rain Ordnance BRO Spec 15 w/Zerotech Trace — 18638b 747x253 sha=a42f9f4b8566
+  + TriggerTech AR-10 Black Adaptable Trigger CURVED — 17907b 395x491 sha=cca6f042d7bb
+  + Live Free Apollo 11 9MM Pistol With Elite Rose C — 55404b 1000x666 sha=217eced7fc1c
+  + North American Arms Mini Revolver 22 Mag 1.625"  — 29272b 906x509 sha=5beb0ec80281
+  + B5 Systems AK-47, AK-74 Stock Black for 5.5mm Mo — 11704b 680x340 sha=da1d3630fe4f
+  + Glock Performance Trigger Fits Gen 4/5 9mm Fulls — 20706b 598x478 sha=a16390ffa584
+  x Springfield Armory Hellcat Pro 4.4" Threaded Bar — image not downloadable
+  + HOLOSUN Aro Evo 2 MOA Red Dot - $148.58 (Email P — 22154b 456x472 sha=4a3aafd4e3fa
+  + PSA PA10 MIAD EPT Complete Lower w/ SBA5 Brace,  — 52374b 1000x1000 sha=927f7adfdf9c
+  + Amend2 Mod-3 AR-15 .223/5.56 30 Round Magazine ( — 47516b 719x725 sha=af79e903d6c2
+  + Springfield Armory Hellcat Pro FDE 9mm 3.7" Barr — 73096b 1500x1059 sha=02c91512760d
+  + Glock 19X Coyote Tan 9mm 4.02" Barrel 19-Rounds  — 26252b 656x517 sha=efeba766d38c
+  + American Tactical Imports Alpha Max 5.56 7.5" Ba — 10846b 430x430 sha=0bfcb0fb9438
+  ... 50/82  ok=48 fail=2
+  + G-Force GFBP Bronze 12 GA 18.5" Barrel 5 Rounds  — 33751b 1000x349 sha=97c7b1f86b7a
+  + Browning BGC 410 Gauge 2.5" 1/2oz #8 1300FPS 250 — 317901b 493x474 sha=6fc430130f72
+  + 40% off CVLIFE 800 Lumen Pistol Light Rechargeab — 27619b 500x500 sha=a7a988782498
+  + 26% off CVLIFE WolfCloak Motion Awake 12-Brightn — 26233b 500x500 sha=693339d7fea2
+  + 45% off CVLIFE Rechargeable Bore Sight Laser Kit — 35891b 500x500 sha=ce81875ec300
+  + 50% off CVLIFE Rifle Bipod with Tiltable Head Bi — 17145b 500x500 sha=e8674b5a69b8
+  + 50% off EZshoot Two Point Sling 550 Paracord Sli — 46455b 500x500 sha=fe00deef81e0
+  + Birchwood Casey Wire Clay Target Holders for Sho — 18128b 500x500 sha=ac3ed41ea159
+  + Purple Dragon Fixed Blade Knife -Full Tang Outdo — 28595b 500x500 sha=a70412b734bd
+  + 30% off CVLIFE EagleFeather Side Focus Parallax  — 35233b 679x590 sha=88e15a807a0f
+  + Smith & Wesson CKLPB 5.3in High Carbon S.S. Fold — 13933b 500x500 sha=0b8981524bab
+  + 30% off Midten 3-9x40 Compact Rifle Scope, Mil-D — 21614b 500x500 sha=c2f5d4dc33fb
+  + SKB iSeries 2015-10 8 Gun Pistol Case Polymer Bl — 36231b 568x510 sha=1aa99de958bc
+  + 45% off MidTen Bore Sight Laser 9mm/223 5.56mm/3 — 16615b 500x500 sha=f370eb2efed3
   x Springfield 1911 Magazine Black .45ACP 7rd - $12 — image not downloadable
   x Desert Tech WLVRFB1630T WLVRN 5.56 NATO 30+1 16" — image not downloadable
-  + CMMG MK4 22LR 4.5" 25RD & ZEROED 22LR SUPPRESSOR — 42588b 752x502 sha=ecbc74134474
-  + Trijicon Credo 1-4x24mm Red MRAD Ranging Reticle — 22602b 1000x376 sha=21f91263d6f7
-  + Springfield Armory 1911 Ds Prodigy Aos Compact 9 — 27820b 570x570 sha=1884ebfc631e
   x Dead Air Armament Sandman-L 7.62x51mm NATO 8.9in — image not downloadable
   x LMT Defense L7LA2BAT, SOPMOD Buttstock, Flat Dar — image not downloadable
   x REAPR TAC Javelin Serrated Spear, Accurate Stain — image not downloadable
@@ -56,8 +84,7 @@
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD DLC — image not downloadable
   x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Coppe — image not downloadable
   x Maverick Arms 88 All Purpose 20 Gauge 26" 5+1 3" — image not downloadable
-  x Adaptive Tactical Arkus AR-15 Pistol Grip - $11. — image not downloadable
 
-fixed 37, failed 19  (66% success)
-distinct images: 37 across 37 deals
+fixed 62, failed 20  (75% success)
+distinct images: 62 across 62 deals
 PASS — no image shared between products
