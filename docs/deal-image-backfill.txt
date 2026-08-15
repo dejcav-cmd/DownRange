@@ -1,32 +1,55 @@
-600 scanned, 45 need a real image, 5 coupon posts skipped
+600 scanned, 66 need a real image, 5 coupon posts skipped
 
-  + Fiocchi Range Dynamics 5.7x28mm 40 Grain FMJ 450 — 49388b 599x596 sha=c4ba3a954b1e
-  + Kimber 1911 Custom LW Shadow Ghost 45 ACP 5" 7-R — 99206b 1350x900 sha=08381999fccc
-  + Backorder - Advantage Arms 1.75-.308 Stainless S — 75947b 1500x1041 sha=b2a6b911c245
-  + Tuna Cans .22XL Silencer (10 Baffle) - $199.95 — 28115b 1000x666 sha=53bc91b4cc7a
-  + BOE Suppression IncoLite 9 9mm Inconel Suppresso — 48571b 1390x1050 sha=9dfad10ca400
-  + Glock G19 Gen5 Compact 9mm Luger 4.02" 15-Rd Bla — 71975b 1000x666 sha=9d4d6a6cd490
-  + Winchester Model 70 Alaskan 30-06 Springfield 25 — 9469b 680x214 sha=674ab5321bc6
-  + NBS OOPS! Kit - AM-556-LW-OOPS-KIT - $5.95 — 22140b 738x630 sha=4fd834da1f1b
-  + Daniel Defense DDM4 V7P 5.56 NATO 10.3" 32rd Sem — 34533b 1000x666 sha=a07ec22dfee5
-  + Magpul MOE Stock Mil-Spec - $29.95 — 34323b 738x630 sha=7536324ee368
-  + Glock G49 G5 9mm 15-Rd 4.49" MOS FS - $549.99 — 59086b 1000x731 sha=25424995cba5
-  + Soviet Arms "Stizon" AK-V 9mm 55-Rd 9.75" Pistol — 29783b 1000x500 sha=c0833a8fa974
-  + PROOF RESEARCH Elevation 2.0 7mm BC 16.5" Tactic — 21276b 1003x203 sha=ba10a3588e4e
-  + Assembled Chamfered Iron-Sight Slide for Glock 1 — 40501b 1000x1000 sha=1777b2a94ae1
-  + THRiL Not So Vertical Foregrip Flat Top M-LOK, D — 57333b 510x389 sha=665c7fa6ac49
-  + Sabre-15 Ambi Lower Receiver, FDE - $113.99 w/ C — 46912b 1406x744 sha=717478c2dcaa
-  + Ruger Single-Six Convertible Stainless .22 LR /  — 83439b 1500x730 sha=3312ff9f6c71
-  + Ruger 10/22 22 LR 16.1" Barrel 10-Rd Carbon Fibe — 30313b 1280x440 sha=3e0c244ecd6b
-  + One Horse 16" 5.56 SOCOM Midlength 1:8 M-LOK Com — 106404b 1350x900 sha=8058e88fdf12
-  + Winchester USA 9mm Bulk Ammo 115 Grain FMJ, 200r — 20733b 347x364 sha=8bc0a8636d3e
-  + Zev Tech FDP Foldable 7.05" 9mm 21rd Pistol - $1 — 28308b 976x362 sha=9e5e7e592ddb
-  + OSIGHT SE Enclosed Red Dot Sight, 2 MOA Dot & 32 — 35793b 679x489 sha=da396919bc85
-  + Sabre-15 Ambi Lower Receiver, Black - $94.99 w/  — 28111b 1000x500 sha=3e2b8ce719b6
-  + Tiger Rock Inc. A2FS AR-15 A2 Front Sight Gas Bl — 23534b 1000x1000 sha=c6d7a0c0422f
-  + Speer Gold Dot LE Duty 357 SIG Ammo 125 Grain Ja — 18167b 420x420 sha=5b5a9d8cd621
-  ... 25/45  ok=25 fail=0
-  + Winchester Ammo Q4170 USA 45ACP 230gr FMJ - 50 R — 99269b 518x353 sha=d1c154c1b0ab
+  + Rossi Tuffy Survival 410Ga/45LC 16.5" Barrel 1rd — 41575b 606x238 sha=3526985f4aed
+  + S&W M&P Shield Plus NTS Savior Bundle 9mm 3.1" B — 300075b 792x530 sha=12429fe664f1
+  + Taurus TX22 Competition 22LR 6.5" 16rd Optic Rea — 602189b 954x725 sha=d7ba8e273ac3
+  + Savage Arms 110 Apex Hunter XP 6.5x284 Norma 24" — 54206b 770x308 sha=9c0f8db6bb81
+  + Trailblazer Lifecard LC1-P-T Polymer 22LR 2.5" T — 56889b 471x354 sha=214af4a0cf07
+  + Packs That Punch Above Their Weight Class! From  — 93230b 589x586 sha=cb9fe0d1bf0f
+  + Savage Arms Mark II - BTV 22 LR 21" Barrel 5 Rds — 112524b 968x320 sha=86f3e1504960
+  + Nosler SR-33 ALTi Direct Thread Suppressor .338  — 35750b 444x651 sha=0e465350e661
+  + Nosler SR-30ALTiH Suppressor, From .17 to .308,  — 21604b 315x531 sha=b16cc25a9b65
+  + Sig Sauer P365X Shark Coast Tactical Debacle 9mm — 89076b 1000x908 sha=6817466e24b8
+  + Banish 30 V2 FDE Direct Thread Titanium Suppress — 58497b 393x541 sha=34aa5d204fa3
+  + Springfield Armory XD-S Mod.2 9mm 3.3" Black 9+1 — 14409b 400x300 sha=1c8dd855aa55
+  + Kimber Stainless Ultra Carry II 9mm 8+1 Rds 3" B — 62279b 828x630 sha=db8e837def92
+  + Girsan MC9 Disruptor 9mm 4.6" Barrel 17RD Black  — 96336b 552x393 sha=fc522f06cb1e
+  + Kimber Micro 9 Stainless 9mm 3.15" BBL 7+1 Rds,  — 92081b 452x321 sha=6c38f7542c6b
+  + Cadex Defense Kraken 6.5 Creedmoor 24" Match Gra — 64738b 792x258 sha=db4e77152c4e
+  + Blem PSA 5.7 Rock Complete Optics Ready Pistol , — 18061b 521x332 sha=6a618dd5ffc3
+  + Crimson Trace Brushline Pro Rifle Scope 4-12x40m — 136949b 1044x615 sha=054ca9bbda56
+  + Benelli M2 Tactical 12 Gauge 18.5" Barrel 5+1rd  — 68306b 1065x416 sha=8a35294f8e72
+  + BCM Multi-Cal Complete Lower Receiver, MK2 RMS & — 81267b 735x402 sha=c2d49eb1444c
+  + Grand Power Stribog SP9A3S 9mm 5" Threaded Barre — 77544b 675x378 sha=14766ae547f5
+  + Ruger 10/22 TALO 22LR 16.12″ Barrel 12+1 Rds Rif — 20924b 1000x209 sha=92dc83228c8c
+  + Canik METE MC9 9mm 3.18" 12+1/15+1 Rds Optic Rea — 371522b 909x691 sha=fdd3868d33b8
+  + Propper Unisex Bail Out Bag, Coyote, One Size -  — 22773b 500x353 sha=6b3a657e6bb2
+  + Lancer L5AWM AR-15 30 Round Translucent Purple M — 951597b 1500x1499 sha=6b7c6a8b8973
+  ... 25/66  ok=25 fail=0
+  + Black River Manufacturing Magazine for AK-47 7.6 — 16865b 352x510 sha=e5baeb3ed73c
+  + Thril RTG Rugged Tactical AR Grip 19.5-Degree BL — 17746b 301x507 sha=1cd8c43f21f3
+  + THRiL PMX Magazine Flat Dark Earth 5.56 / .223 R — 15163b 332x642 sha=df6c60abe03b
+  x Ballistic Advantage 16" 6.5 Creedmoor BA Hanson  — image not downloadable
+  + Faxon 10.5" Gunner Profile AR15 Barrel 300 BLK P — 8528b 703x110 sha=33b75585a5a7
+  + FN Scar 20S Non-Reciprocating Charging Handle 6. — 29435b 1166x237 sha=8b3be9c351f3
+  + Radical Firearms RF-10 308 Win 18" 20+1 Black An — 14745b 802x168 sha=0a540296b829
+  + 50% off EZshoot Shotgun Sling Adjustable with Co — 17659b 406x500 sha=5994b4526301
+  + Sig Sauer P320 X-Series 9mm 4.7" Bbl Optic Ready — 38775b 895x624 sha=2b9f756279ed
+  + EAA Girsan P35 9mm MCP35 Black & Gold P-35 - $59 — 55691b 1000x669 sha=eef2093648e6
+  + 45% off CVLIFE Picatinny Laser Sight Rechargeabl — 26834b 500x500 sha=7fe89ebe2551
+  + 50% off CVLIFE 36" 42" 46'' Soft Rifle Case Trip — 13301b 500x500 sha=16c042bcaa21
+  + Kimber Custom LW NightStar 1911 9mm 5" barrel 9r — 56974b 1023x651 sha=552df6485543
+  + 20% off CVLIFE 6-24x50 Side Focus FFP Riflescope — 16457b 500x500 sha=b07ad74d81f6
+  + Mossberg 940 Tactical 12 Gauge 18.5" 7rd - Flat  — 19937b 1187x236 sha=dd29b84bc420
+  + 20% off EZshoot 1-4x24 LPVO Rifle Scope - Second — 19816b 500x500 sha=37d88f9bf9ba
+  + Black Rain Ordnance BRO Spec 15 w/Zerotech Trace — 16269b 680x227 sha=02d900dd5dce
+  + Mec-Gar Beretta 84 Cheetah .380 ACP 10-Round Mag — 12380b 354x650 sha=0c5b106dd8fb
+  + Live Free Apollo 11 9mm Pistol With Elite Rose C — 50924b 800x623 sha=71f25cf7e9ed
+  + 39% off CVLIFE Solar Enclosed Red/Green Dot for  — 25889b 500x500 sha=62f747eafa93
+  + Ruger 10/22 22 LR Autoloading Rifle with Pink La — 24243b 1327x260 sha=c9c01c87fa06
+  + 40% off CVLIFE Green/Red Laser Sight Compatible  — 29495b 500x500 sha=c83d73fd7bd6
+  + 23% off CVLIFE WildHawk Multi- Reticle Red/Green — 148979b 1500x1195 sha=9f437890254e
+  + Shaw Barrels AR-15 Barrel 6.5 Grendel 18" HBAR C — 12409b 680x406 sha=6ad2d4aba29c
   x American Tactical Imports SGP DF-12 12 Ga 18" 5  — image not downloadable
   x Springfield Armory Hellcat Pro 4.4" Threaded Bar — image not downloadable
   x Springfield 1911 Magazine Black .45ACP 7rd - $12 — image not downloadable
@@ -44,9 +67,7 @@
   x TacFire A.C.E. Series AR-10 Low Profile M-LOK Ha — image not downloadable
   x S&W Executive Barlow 6.25" S.S. Assisted Opening — image not downloadable
   x Taurus TX22 Competition Black 22LR 5.25" Barrel  — image not downloadable
-  x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD DLC — image not downloadable
-  x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Coppe — image not downloadable
 
-fixed 26, failed 19  (57% success)
-distinct images: 26 across 26 deals
+fixed 48, failed 18  (72% success)
+distinct images: 48 across 48 deals
 PASS — no image shared between products
