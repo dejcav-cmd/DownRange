@@ -1,59 +1,69 @@
-600 scanned, 67 need a real image, 9 coupon posts skipped
+600 scanned, 77 need a real image, 9 coupon posts skipped
 
-  + Magnum Research Desert Eagle Caliber Combo 50ae  — 20890b 596x376 sha=8f4c968540ac
-  + Archon Type B Gen 1 4.3" 9mm 15rd Semi-Auto Pist — 43028b 1000x666 sha=3570f29f336e
-  + PSA 10.5" Pistol Length 300AAC Blackout 1:8 Nitr — 18475b 1000x271 sha=5699ea106ceb
-  + BCMGUNFIGHTER MOD 0 SOPMOD Stock & Buffer Kit (B — 36138b 1000x630 sha=c8f0a767a823
-  + Kimber RAPIDE 10mm 1911 G10 Grips and Front Slid — 72674b 1000x666 sha=e7d3c1741563
-  + CZ Shadow 2 Target Limited 9mm 6" Barrel 17rd Pi — 299615b 847x532 sha=2f438677fa65
-  + GForce GF25 12 Gauge AR-12 Shotgun with American — 30064b 1000x518 sha=e8881aa66441
-  + Walther Hammerli Arms Force B1 .22LR 16.1" 10rd  — 57795b 945x347 sha=ada318814416
-  + CZ Shadow 2, DA/SA, Full Size, 9mm, 4.89", Black — 401792b 1000x769 sha=ce36d22b3ffe
-  + Guntec USA AR-15 Charging Handle Latches ( Choic — 18748b 1000x1000 sha=8b15da1c35fc
-  + Swenson M2 Series Slide for Glock RMR Optic Cut  — 16649b 680x510 sha=f25ac6f23413
-  + BOE Suppression BOE-IL9 IncoLite 9 9mm 1.50" 718 — 24406b 561x1000 sha=b21b4e19d47e
-  + BYOC BUILD YOUR OWN COMBO: Pick your Disruptor,  — 60842b 940x788 sha=8f5101dd2b53
-  + Sonicore Rekkr DT - 30 Cal 5/8-24 Direct Thread  — 14941b 557x266 sha=79aad837ee5a
-  + VZ 61 Skorpion Easy Build Kit Blued Frame - $299 — 68645b 1500x1000 sha=35204cf21c88
-  + Vortex Venom 1-6-24 SFP 30mm AR-BDC3 LPVO w/ 2"  — 386164b 1000x666 sha=b4869fb38032
-  + Vortex Crossfire II 2 MOA Red Dot + 5 Magpul PMA — 224586b 1000x666 sha=d03e0a50f81c
-  + ODIN Works AR-15 H-FRT Forced Reset Trigger Heav — 89107b 531x549 sha=c69ec94b39c4
-  + Mars Trigger Ruger 10/22 Adjustable FRT Trigger, — 125656b 637x435 sha=a4f1f1d2f89d
-  + GearLight LED Tactical Mini Flashlight EDC Alumi — 23132b 375x500 sha=c7956998a1cf
-  + CZ-USA 600 Plus Trail .300 AAC 10rd 16.2" Bbl 5/ — 25815b 1000x666 sha=461f98bb5079
-  + Magpul PMAG MOE 5.56 30RD - Black - MAG571-BLK - — 18091b 630x630 sha=31e5d90c62ca
-  + Vortex Razor HD LHT Riflescope 4.5-22x50 FFP XLR — 41086b 1000x1000 sha=2d32b8d33598
-  + NBS OOPS! Kit - AM-556-LW-OOPS-KIT - $5.95 — 22140b 738x630 sha=4fd834da1f1b
-  + Vortex Fury HD 5000 Laser Rangefinder Binoculars — 48994b 840x630 sha=8d0ab551a9ba
-  ... 25/67  ok=25 fail=0
-  + Vortex Crossfire II 1-4x24mm SFP V-Brite MOA LPV — 28698b 945x630 sha=2c1c8512e79d
-  + Federal Law Enforcement .38 Special +P, 129 Grai — 132909b 502x335 sha=8a1b9603884f
-  + SMITH & WESSON M&P9 M2.0 OR Compact 9mm 4" 15 Rd — 110064b 1280x944 sha=96cbd38ebac7
-  + AR15 Custom Upper 7.5" Barrel 7.62x39mm 7" MLOK  — 98119b 946x344 sha=749c6dc1cf9c
-  + AR15 Custom Upper 16" Barrel 223 Wylde 15" Samso — 82190b 969x337 sha=67a83547eaa9
-  + Panzer HAN9 Folding Brace, 1913 Compatible, Blac — 20731b 852x435 sha=396bc3f9f536
-  + AR15 Custom Upper 7.62x39mm 16" Barrel 15" SXT M — 74098b 962x399 sha=40df38e12338
-  + AR308 Custom Upper 6.5 Creedmoor 20" Barrel 13.5 — 63793b 957x341 sha=a80b8dfd59a1
-  + Amend2 Mod-3 A2-17 9mm 17 Round Magazine - Fits  — 18836b 926x678 sha=38f78a7cb35b
-  + Amend2 Mod-2 30-Round AR-15 Magazine - Black - $ — 21567b 1000x666 sha=0f120c637ea3
-  + Sons of Liberty Gun Works L89 Barreled AR-15 Upp — 42840b 1500x591 sha=f38e824e4740
-  + Mimtac OK-AY AR-15 Ambidextrous Charging Handle  — 30717b 1100x734 sha=05a6aa7cafe0
-  + AR-308 Complete Upper, 20" Anderson Heavy Barrel — 67566b 997x407 sha=263c8ae0904c
-  + AR-308 16" HBAR Custom Upper Receiver - .308 Win — 70988b 917x390 sha=fe58dc189340
-  + AR15 Custom Upper 16" 300 BLackout Keymod Handgu — 71752b 955x393 sha=46d2b184302a
-  + Meta Tactical MX-1 Conversion Kit for Glock Gen3 — 44274b 1500x609 sha=0065e18cd4ce
-  + GLOCK G19X 9mm 4" Barrel 5 Mag Package - $596 — 66591b 1075x666 sha=a4d05631d350
-  + KEL-TEC SUB-SDP 9mm 17rd 6" Theaded Barrel with  — 81907b 1267x896 sha=ba54dede4372
-  + AR15 Custom Upper 5.56 16" Barrel Red 12.5" Keym — 108400b 1059x398 sha=ec3e678b9346
-  + AR15 Custom Upper 5.56 16.5" Keymod 16" Colt Com — 91472b 983x378 sha=b113d2e52cca
-  + Sig Sauer MPX K Pistol 9mm 4.5" 35rd - $1996.8 ( — 14055b 550x303 sha=4bd5731db896
-  + Stoeger STR-9 Mid-Size 9mm 4.17" 15rd Tungsten G — 17617b 506x381 sha=7a31ce424c24
-  + Ruger SR1911 SR1911 45 ACP SS/WD 5" Western Edit — 147275b 1500x952 sha=8b9d3d38d1f5
-  + Brownells BRN-15 13.7" Upper Receiver 5.56mm .75 — 52206b 576x318 sha=f55ac972457d
-  + Benelli Super Nova 3 12 GA 18.5" Barrel 7-Rounds — 39338b 1415x525 sha=5e2f3dd23b28
-  ... 50/67  ok=50 fail=0
-  + BENELLI M2-G1 922r 12ga 18.5" 7rd Gray Std. Stoc — 16831b 887x311 sha=9cdfe0cc57f9
-  + Brownells Bundles BRN-601 5.56mm 20" Upper Recei — 148244b 904x493 sha=434f6c23501d
+  + DPMS Kitty Kat DP-15 .338 ARC 8.5" 10rd AR Pisto — 102316b 814x326 sha=5bdd9dea810c
+  + CVA Cascade XT 6.5 PRC 24" Barrel 3rd Rifle, Bla — 55462b 806x268 sha=4f898f7e32cb
+  + Primary Weapons Systems A5 Enhanced A5H2 Buffer  — 100219b 1500x1142 sha=d6deba074a41
+  + Magpul PMAG MOE 5.56 30RD - Black - $9.95 — 18402b 608x608 sha=68c35b554723
+  + BACKPACK DEAL: Black Glock Multipurpose Backpack — 249209b 868x693 sha=9aa79f8f5b03
+  + CCI Ammunition .22 Winchester Magnum Rimfire 30  — 46466b 765x550 sha=373e07515580
+  + Panzer Defense - Lequian HV - 12 Gauge - Slug -  — 242558b 760x476 sha=abe98bde6b90
+  + 2 Pack Of PSA AR-15 "Stealth" Stripped Lower Rec — 283440b 1032x711 sha=4bc4498b8cc8
+  + Bushnell Vert Bone Collector 32mp Trail Camera,  — 35928b 858x867 sha=8625906ec6fe
+  + pxton Walkie Talkies Rechargeable Long Range Two — 30427b 500x500 sha=6de1aaf39335
+  + Daniel Defense PCC, Limited Series By the People — 1081504b 1500x595 sha=af4d9df302b9
+  + Daniel Defense DDM4 V9, 5.56mm, 16" Barrel, 1-32 — 61102b 1500x576 sha=40161365ad49
+  + Mercury Precision G19 Compatible Assembled Porte — 12593b 630x630 sha=597be70d7c4f
+  + Vortex Viper PST Gen II 1-6x24 SFP Riflescope -  — 12320b 386x386 sha=11de9d45d8bb
+  + Daniel Defense DD4 MK18 RIII 5.56 NATO 10.3" Bar — 57688b 1500x600 sha=62a460444555
+  + VOTATU G2L-G Pistol Light Laser Combo, 1000 Lume — 88170b 1482x926 sha=4fa35460bf7e
+  + FN SCAR 15P 5.56 NATO 7.5" BBL 10rd Black - $210 — 148829b 872x526 sha=f43c794e19ba
+  + Spikes Tactical No Logo AR-15 Stripped Lower Rec — 20425b 800x441 sha=512c04c578aa
+  + Ruger Mark IV 22/45 250th Anniversary 22 LR 4.4" — 76019b 489x325 sha=7e596bff010d
+  + Volquartsen Mamba-TF .22 LR 4.5" Barrel 10rd Pis — 284302b 771x494 sha=fc72988414b2
+  + Stoeger STR-9 9mm Pistol - $199.99 — 62309b 1000x1000 sha=e69dfd506b1a
+  + Luth-AR 5.56 Stripped A2 Upper Receiver w/ Rear  — 30303b 1000x666 sha=4b218646fc98
+  + Stoeger Coach Gun 12 GA 20" Barrel 2rd Side By S — 12662b 570x570 sha=a3e1752c6f3a
+  + Watchtower / F1 Firearms FDR-15 16" 223 Wylde Fo — 387291b 1500x412 sha=c272f753b6a8
+  + Springfield Echelon 4.0C Comp Gear Pac 9mm 4" BB — 17210b 525x461 sha=7893a2db387f
+  ... 25/77  ok=25 fail=0
+  + Colt King Cobra 357Mag/38Spl 3" Barrel 6 Rd - $7 — 8210b 555x370 sha=bf2e4340710e
+  + Springfield SAINT Edge EVAC 5.56 NATO 7.5" 20rd  — 81419b 667x293 sha=0876f9f29c81
+  + Shield Arms Z9 9mm 9-Rd Magazine For Glock 43, 3 — 115873b 735x545 sha=465e83dc68d5
+  + IWI US Masada Tactical 9mm 4.60" Threaded Barrel — 126536b 705x538 sha=a1d9af29bd5f
+  + Franklin Armory Binary Trigger System - $319.95  — 214533b 806x636 sha=46ba9e3ac39b
+  + Canik SFX Rival Fast Action Trigger - $74.99 — 10279b 720x480 sha=d48e924db297
+  + Vortex Crossfire HD Rifle Scope - 2-7x32mm - V-P — 106648b 795x422 sha=223448dd3fae
+  + Flip Up Backup Battle Sights by Ozark Armament P — 85832b 1500x1300 sha=d63f40f29840
+  + Glock G20 G5 MOS 10mm 4.6" barrel 15+1 Optic Rea — 32949b 896x630 sha=9d731912b604
+  + Tisas PX-9 Duty Raptor Comp 9mm Integrated 4.1"  — 72502b 900x731 sha=f3726940e66e
+  + Walther Hammerli Arms Force B1 .22LR 16.1" 10rd  — 24562b 565x199 sha=f145952fabc3
+  + 35% off MidTen Bore Sight Laser Kit, 64 Adapters — 35604b 500x500 sha=760c4f86af71
+  + Griffin Armament Extra Power +15% M4 Carbine Buf — 32791b 943x522 sha=2de0df10f172
+  + Griffin Armament Extra Power AR-15 A2 Buffer Spr — 33476b 894x544 sha=29e1a24eaa08
+  + 50% off CVLIFE Rifle Bipod Quick Release Picatin — 14239b 406x500 sha=e685692bacbe
+  + Vortex Triumph 2 MOA Red Dot Sight with 5 Magpul — 65550b 1000x552 sha=a62f3202e5f7
+  + 50% off EZshoot Two Point Sling with Swivels and — 26185b 500x500 sha=a48e5e1ad47c
+  + Vortex Venom 1-6x24 LPVO with 10 Magpul PMAG MOE — 161864b 1500x1060 sha=74c3529e7efc
+  + Buck Knives 726 Mini Spitfire 0726BKS-B Black -  — 76968b 1427x1100 sha=db6746b67190
+  + Mimtac F3X 45/90 AR-15 Ambidextrous Safety Selec — 8928b 400x233 sha=0a5503005c7f
+  + Kimber Mountain Ascent Peak Tan .300 Win 26" Bar — 36894b 1396x229 sha=567f13e23b40
+  + 50% off CVLIFE Soft Shotgun Case with External A — 22321b 500x500 sha=ce10806fead3
+  + Holosun HE515CT MRS 2 MOA Dot / 65 MOA Circle En — 42785b 700x700 sha=357aadd9aa4a
+  + Fortis Manufacturing .223/ 5.56mm Red Stainless  — 31830b 1000x666 sha=edab665552ff
+  + Winchester SX4 Waterfowl Hunter 28" 20 Gauge Sho — 14075b 900x141 sha=6e32eb4ec003
+  ... 50/77  ok=50 fail=0
+  + Ruger Hawkeye Alaskan Black / Stainless .375 Rug — 9487b 744x135 sha=51c240d4e3f6
+  + 40% off CVLIFE Solar Enclosed Red Dot, 2MOA/30MO — 31776b 500x500 sha=1958696866ee
+  + Benelli M2-G1 922r 12ga 18.5" barrel MC Blk 7rd  — 11107b 738x148 sha=97ac6a73cccb
+  + 30% off CVLIFE Gun Cleaning Kit for .177, .22/9m — 42275b 500x500 sha=a3b5130d8207
+  + Benelli M4 EXT H2O Titanium 12 Ga 18.5" Barrel 7 — 12359b 800x171 sha=e1fcc98a55dc
+  + Mec-Gar Glock 17 Magazine Flat Dark Earth 9mm 20 — 24513b 358x620 sha=4b6126a807ea
+  + 50% off CVLIFE Recoil Pad for Shotgun Shoulder P — 190939b 1500x1500 sha=b8b97c713ecb
+  + AAC Muzzle Break 7.62mm 51T 5/8-24 - $97.99 — 13565b 510x510 sha=44424d3eb69e
+  + 40% off CVLIFE BearMight 3 MOA Red/Green Dot Sig — 17870b 500x500 sha=0a70a5f8eb4b
+  + Sig Sauer SLH 7.62mm Direct Thread Suppressor NF — 30513b 1000x666 sha=ed972f1d4b32
+  + Federal Premium Law Enforcement P9HST1 9mm Ammo  — 40925b 600x389 sha=1e5a34ed48e0
+  + Mec-Gar Magazine Taurus Competition PT 92/99 10  — 10839b 266x516 sha=93e9336c95f9
   x Dead Air Primal 46Cal Silencer - .458 Caliber, 7 — image not downloadable
   x Silencer Central Banish 9mm 1.30' Black Titanium — rejected: extreme portrait (195x1000)
   x Ballistic Advantage 16" 6.5 Creedmoor BA Hanson  — image not downloadable
@@ -70,6 +80,6 @@
   x Toolcraft .223/5.56/300BLK M16 Profile 9310 BCG  — image not downloadable
   x Anarchy Outdoors Penguin Precision Rifle Grip RI — image not downloadable
 
-fixed 52, failed 15  (77% success)
-distinct images: 52 across 52 deals
+fixed 62, failed 15  (80% success)
+distinct images: 62 across 62 deals
 PASS — no image shared between products
