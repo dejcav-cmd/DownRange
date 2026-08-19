@@ -22,20 +22,21 @@ jobs:
         run: |
           DRY="${{ github.event.inputs.dryRun }}"
           CB=$(date +%s%N)
-          echo "--- Response headers ---"
-          curl -s -D - -o /tmp/body.json -L -X POST \
+          curl -s -D /tmp/headers.txt -o /tmp/body.json -L -X POST \
             -H "x-admin-key: $ADMIN_KEY" \
             -H "Content-Type: application/json" \
             -H "Cache-Control: no-cache, no-store" \
             -H "Pragma: no-cache" \
             -d "{\"count\":1,\"dryRun\":$DRY}" \
             "https://downrangeco.com/api/social/cron/facebook?cb=$CB"
-          echo "--- Body ---"
-          cat /tmp/body.json
-          RESP=$(cat /tmp/body.json)
-          echo "$RESP"
-          mkdir -p docs
-          echo "$RESP" > docs/facebook-post-test-result.txt
+          {
+            echo "--- Response headers ---"
+            cat /tmp/headers.txt
+            echo "--- Body ---"
+            cat /tmp/body.json
+          } > docs/facebook-post-test-result.txt
+          cat docs/facebook-post-test-result.txt
+          RESP=$(cat docs/facebook-post-test-result.txt)
           B64=$(base64 -w0 docs/facebook-post-test-result.txt)
           SHA=$(curl -s -H "Authorization: Bearer $GH_PAT" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/facebook-post-test-result.txt" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
           if [ -n "$SHA" ]; then
