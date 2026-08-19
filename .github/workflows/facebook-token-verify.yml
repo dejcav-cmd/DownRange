@@ -1,10 +1,10 @@
-name: Facebook Token Setup
+name: Facebook Token Verify
 
 on:
   workflow_dispatch:
 
 jobs:
-  setup:
+  verify:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -18,8 +18,9 @@ jobs:
       - name: Install deps
         run: pip install requests pynacl
 
-      - name: Resolve Facebook token and store secrets
+      - name: Verify Facebook page token
         env:
           GH_PAT_ENV: ${{ secrets.GH_PAT }}
-          FB_RAW_TOKEN: ${{ secrets.FACEBOOK_TEMP_TOKEN }}
-        run: python3 scripts/facebook_token_setup.py
+          FB_PAGE_TOKEN: ${{ secrets.FACEBOOK_PAGE_ACCESS_TOKEN }}
+          FB_PAGE_ID: ${{ secrets.FACEBOOK_PAGE_ID }}
+        run: python3 scripts/facebook_token_verify.py

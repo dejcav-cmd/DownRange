@@ -41,6 +41,22 @@ def gh_delete_secret(name):
     return r.status_code
 
 
+def gh_put_file(path, content_str, message):
+    url = f"https://api.github.com/repos/{OWNER}/{REPO}/contents/{path}"
+    sha = None
+    r = requests.get(url, headers=gh_headers)
+    if r.status_code == 200:
+        sha = r.json().get("sha")
+    payload = {
+        "message": message,
+        "content": base64.b64encode(content_str.encode("utf-8")).decode("utf-8"),
+    }
+    if sha:
+        payload["sha"] = sha
+    r2 = requests.put(url, headers=gh_headers, json=payload)
+    return r2.status_code, r2.text
+
+
 def mask(tok):
     if not tok or len(tok) < 12:
         return "***"
@@ -128,8 +144,8 @@ else:
 del_status = gh_delete_secret("FACEBOOK_TEMP_TOKEN")
 result["steps"].append(f"Deleted FACEBOOK_TEMP_TOKEN (status {del_status})")
 
-os.makedirs("docs", exist_ok=True)
-with open("docs/facebook-token-check.json", "w") as f:
-    json.dump(result, f, indent=2)
+summary_json = json.dumps(result, indent=2)
+status, resp_text = gh_put_file("docs/facebook-token-check.json", summary_json, "chore: facebook token setup result")
+print("Contents API PUT status:", status)
 
 print(json.dumps({k: v for k, v in result.items() if k not in ("debug_token", "accounts", "me_as_page")}, indent=2))
