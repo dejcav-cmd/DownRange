@@ -1,0 +1,54 @@
+{
+  "debug_token_data": {
+    "app_id": "935598359559361",
+    "type": "PAGE",
+    "application": "DownRanceCo",
+    "data_access_expires_at": 1794953836,
+    "expires_at": 1787184000,
+    "is_valid": true,
+    "profile_id": "1142984005570525",
+    "scopes": [
+      "pages_show_list",
+      "business_management",
+      "pages_read_engagement",
+      "pages_manage_posts",
+      "public_profile"
+    ],
+    "granular_scopes": [
+      {
+        "scope": "pages_show_list",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      },
+      {
+        "scope": "business_management",
+        "target_ids": [
+          "1361346806152211"
+        ]
+      },
+      {
+        "scope": "pages_read_engagement",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      },
+      {
+        "scope": "pages_manage_posts",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      }
+    ],
+    "user_id": "1687146749017354"
+  },
+  "me": {
+    "id": "1142984005570525",
+    "name": "DownRange Co.",
+    "category": "News & media website",
+    "link": "https://www.facebook.com/1142984005570525",
+    "fan_count": 0
+  },
+  "page_id_secret": "1142984005570525",
+  "id_matches": true
+}
