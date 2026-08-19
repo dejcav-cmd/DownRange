@@ -316,16 +316,16 @@ async function postFacebook(content, imageUrl) {
   // With image: use /photos endpoint for richer post
   if (imageUrl) {
     const res = await fetch(`https://graph.facebook.com/v20.0/${pageId}/photos`, {
-      method: 'POST', headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ url: imageUrl, caption: content, access_token: token }),
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ url: imageUrl, caption: content, access_token: token }),
     }).then(r => r.json())
     if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook photo post failed' }
     return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/photo?fbid=${res.id}`, hasImage: true }
   }
 
   const res = await fetch(`https://graph.facebook.com/v20.0/${pageId}/feed`, {
-    method: 'POST', headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ message: content, access_token: token }),
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ message: content, access_token: token }),
   }).then(r => r.json())
   if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook post failed' }
   const [pid, eid] = res.id.split('_')
