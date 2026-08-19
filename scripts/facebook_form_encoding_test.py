@@ -13,11 +13,12 @@ GRAPH_VERSION = "v20.0"
 
 result = {}
 
-# Form-encoded POST (not JSON) - this is the actual fix under test
+# Test the /photos endpoint specifically, since that's the branch actually failing in prod
 post_resp = requests.post(
-    f"https://graph.facebook.com/{GRAPH_VERSION}/{PAGE_ID}/feed",
-    data={  # form-encoded, not json=
-        "message": "Testing our automated posting system — please disregard, will be removed shortly.",
+    f"https://graph.facebook.com/{GRAPH_VERSION}/{PAGE_ID}/photos",
+    data={
+        "url": "https://cdn.sanity.io/images/vbnsqnkg/production/e8730ce9ccc0f86511960c4770aa06c3ec5ab3de-1920x1080.jpg",
+        "caption": "Testing our automated posting system — please disregard, will be removed shortly.",
         "access_token": PAGE_TOKEN,
     },
 ).json()
