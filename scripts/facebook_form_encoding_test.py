@@ -18,7 +18,7 @@ post_resp = requests.post(
     f"https://graph.facebook.com/{GRAPH_VERSION}/{PAGE_ID}/photos",
     data={
         "url": "https://cdn.sanity.io/images/vbnsqnkg/production/e8730ce9ccc0f86511960c4770aa06c3ec5ab3de-1920x1080.jpg",
-        "caption": "Testing our automated posting system — please disregard, will be removed shortly.",
+        "caption": "BREAKING: The DOJ just let its stay expire on Silencer Shop's federal injunction—suppressors are NOW legal to transfer without Form 4, NFA registration, or the $200 tax stamp. \U0001F6A8 This is the first time in 90 years that suppressors have been available outside the NFA framework. The ruling stems from a successful constitutional challenge to the 1934 law. If you've been waiting to add a can to your setup, the legal landscape just changed. Will you take advantage of this? \U0001F52B\n\nFull article: https://downrangeco.com/news/doj-lets-the-stay-expire-silencer-shop-s-nfa-injunction-takes-effect-b63384\n#2A #GunRights #SecondAmendment #ConstitutionalCarry [TEST - will be deleted]",
         "access_token": PAGE_TOKEN,
     },
 ).json()
