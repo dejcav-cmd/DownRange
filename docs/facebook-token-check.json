@@ -1,58 +1,54 @@
 {
-  "steps": [
-    "debug_token: type=SYSTEM_USER valid=True expires_at=0 scopes=['read_insights', 'pages_show_list', 'business_management', 'pages_read_engagement', 'pages_manage_metadata', 'pages_read_user_content', 'pages_manage_posts', 'pages_manage_engagement', 'facebook_branded_content_ads_brand', 'public_profile']",
-    "Deleted FACEBOOK_TEMP_TOKEN (status 204)"
-  ],
-  "debug_token": {
-    "data": {
-      "app_id": "935598359559361",
-      "type": "SYSTEM_USER",
-      "application": "DownRanceCo",
-      "data_access_expires_at": 0,
-      "expires_at": 0,
-      "is_valid": true,
-      "issued_at": 1787178569,
-      "scopes": [
-        "read_insights",
-        "pages_show_list",
-        "business_management",
-        "pages_read_engagement",
-        "pages_manage_metadata",
-        "pages_read_user_content",
-        "pages_manage_posts",
-        "pages_manage_engagement",
-        "facebook_branded_content_ads_brand",
-        "public_profile"
-      ],
-      "granular_scopes": [
-        {
-          "scope": "pages_show_list"
-        },
-        {
-          "scope": "business_management"
-        },
-        {
-          "scope": "pages_read_engagement"
-        },
-        {
-          "scope": "pages_manage_metadata"
-        },
-        {
-          "scope": "pages_read_user_content"
-        },
-        {
-          "scope": "pages_manage_posts"
-        },
-        {
-          "scope": "pages_manage_engagement"
-        },
-        {
-          "scope": "facebook_branded_content_ads_brand"
-        }
-      ],
-      "user_id": "122098682013447302"
-    }
+  "debug_token_data": {
+    "app_id": "935598359559361",
+    "type": "PAGE",
+    "application": "DownRanceCo",
+    "data_access_expires_at": 1794953836,
+    "expires_at": 1787184000,
+    "is_valid": true,
+    "profile_id": "1142984005570525",
+    "scopes": [
+      "pages_show_list",
+      "business_management",
+      "pages_read_engagement",
+      "pages_manage_posts",
+      "public_profile"
+    ],
+    "granular_scopes": [
+      {
+        "scope": "pages_show_list",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      },
+      {
+        "scope": "business_management",
+        "target_ids": [
+          "1361346806152211"
+        ]
+      },
+      {
+        "scope": "pages_read_engagement",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      },
+      {
+        "scope": "pages_manage_posts",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      }
+    ],
+    "user_id": "1687146749017354"
   },
-  "error": "Unexpected token type: SYSTEM_USER",
-  "success": false
+  "me": {
+    "id": "1142984005570525",
+    "name": "DownRange Co.",
+    "category": "News & media website",
+    "link": "https://www.facebook.com/1142984005570525",
+    "fan_count": 0
+  },
+  "page_id_secret": "1142984005570525",
+  "id_matches": true
 }
