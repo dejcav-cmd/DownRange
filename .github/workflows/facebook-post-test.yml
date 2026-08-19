@@ -21,7 +21,7 @@ jobs:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: |
           DRY="${{ github.event.inputs.dryRun }}"
-          RESP=$(curl -s -w "\n---HTTP_STATUS:%{http_code}---\n" -X POST \
+          RESP=$(curl -s -L -w "\n---HTTP_STATUS:%{http_code}---\n" -X POST \
             -H "x-admin-key: $ADMIN_KEY" \
             -H "Content-Type: application/json" \
             -d "{\"count\":1,\"dryRun\":$DRY}" \
