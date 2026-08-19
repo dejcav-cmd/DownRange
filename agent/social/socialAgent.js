@@ -319,7 +319,10 @@ async function postFacebook(content, imageUrl) {
       method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ url: imageUrl, caption: content, access_token: token }),
     }).then(r => r.json())
-    if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook photo post failed' }
+    if (!res.id) {
+      const dbg = `len=${token.length} start=${token.slice(0,8)} end=${token.slice(-6)} pageId=${pageId} imageUrl=${imageUrl}`
+      return { ok: false, error: (res?.error?.message || 'Facebook photo post failed') + ' | TOKEN_DEBUG: ' + dbg }
+    }
     return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/photo?fbid=${res.id}`, hasImage: true }
   }
 
