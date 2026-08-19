@@ -1,0 +1,58 @@
+{
+  "page_tasks": {
+    "error": {
+      "message": "(#100) Tried accessing nonexisting field (tasks)",
+      "type": "OAuthException",
+      "code": 100,
+      "fbtrace_id": "AtKjnqSvh7ryk_7qMPgKq5r"
+    }
+  },
+  "debug_token": {
+    "app_id": "935598359559361",
+    "type": "PAGE",
+    "application": "DownRanceCo",
+    "data_access_expires_at": 1794953836,
+    "expires_at": 1787184000,
+    "is_valid": true,
+    "profile_id": "1142984005570525",
+    "scopes": [
+      "pages_show_list",
+      "business_management",
+      "pages_read_engagement",
+      "pages_manage_posts",
+      "public_profile"
+    ],
+    "granular_scopes": [
+      {
+        "scope": "pages_show_list",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      },
+      {
+        "scope": "business_management",
+        "target_ids": [
+          "1361346806152211"
+        ]
+      },
+      {
+        "scope": "pages_read_engagement",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      },
+      {
+        "scope": "pages_manage_posts",
+        "target_ids": [
+          "1142984005570525"
+        ]
+      }
+    ],
+    "user_id": "1687146749017354"
+  },
+  "app_identity": {
+    "link": "https://www.facebook.com/games/?app_id=935598359559361",
+    "name": "DownRanceCo",
+    "id": "935598359559361"
+  }
+}
