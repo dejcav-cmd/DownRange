@@ -1,0 +1,33 @@
+name: Facebook Token Setup
+
+on:
+  workflow_dispatch:
+
+jobs:
+  setup:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install deps
+        run: pip install requests pynacl
+
+      - name: Resolve Facebook token and store secrets
+        env:
+          GH_PAT_ENV: ${{ secrets.GH_PAT }}
+          FB_RAW_TOKEN: ${{ secrets.FACEBOOK_TEMP_TOKEN }}
+        run: python3 scripts/facebook_token_setup.py
+
+      - name: Commit results file
+        run: |
+          git config user.email "dj@downrangeco.com"
+          git config user.name "DJ Cavalcanti"
+          git add docs/facebook-token-check.json
+          git commit -m "chore: facebook token setup result" || echo "no changes"
+          git push
