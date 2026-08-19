@@ -2,16 +2,16 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Wed, 19 Aug 2026 23:25:43 GMT
-location: https://www.downrangeco.com/api/social/cron/facebook?cb=1787181942932628540
+date: Wed, 19 Aug 2026 23:28:42 GMT
+location: https://www.downrangeco.com/api/social/cron/facebook?cb=1787182122367464708
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: iad1::7nq5n-1787181943053-23e4de471f36
+x-vercel-id: sfo1::l9pt4-1787182122553-6b47b611a295
 
 HTTP/2 200 
 cache-control: public, max-age=0, must-revalidate
 content-type: application/json
-date: Wed, 19 Aug 2026 23:25:50 GMT
+date: Wed, 19 Aug 2026 23:28:50 GMT
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
@@ -22,8 +22,8 @@ x-dns-prefetch-control: on
 x-frame-options: SAMEORIGIN
 x-matched-path: /api/social/cron/facebook
 x-vercel-cache: MISS
-x-vercel-id: iad1::iad1::p79jt-1787181943219-46c1956a885b
+x-vercel-id: sfo1::iad1::96hx7-1787182122762-895f607afe61
 x-xss-protection: 1; mode=block
 
 --- Body ---
-{"ok":true,"posted":0,"total":1,"results":[{"platform":"facebook","title":"DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp","status":"failed","error":"(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead.","hasImage":false,"docId":"uBwiUtn9Wx8WqRIUPqexUx"}],"dryRun":false}
+{"ok":true,"posted":0,"total":1,"results":[{"platform":"facebook","title":"DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp","status":"failed","error":"(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead. | TOKEN_DEBUG: len=206 start=EAANS6ZC end=BAZDZD pageId=1142984005570525 imageUrl=https://cdn.sanity.io/images/vbnsqnkg/production/e8730ce9ccc0f86511960c4770aa06c3ec5ab3de-1920x1080.jpg","hasImage":false,"docId":"sZarkGCWKodXiPseaWSggb"}],"dryRun":false}
