@@ -327,7 +327,10 @@ async function postFacebook(content, imageUrl) {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ message: content, access_token: token }),
   }).then(r => r.json())
-  if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook post failed' }
+  if (!res.id) {
+    const dbg = `len=${token.length} start=${token.slice(0,8)} end=${token.slice(-6)} pageId=${pageId}`
+    return { ok: false, error: (res?.error?.message || 'Facebook post failed') + ' | TOKEN_DEBUG: ' + dbg }
+  }
   const [pid, eid] = res.id.split('_')
   return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}`, hasImage: false }
 }
