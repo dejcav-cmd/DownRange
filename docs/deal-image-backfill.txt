@@ -1,49 +1,55 @@
-600 scanned, 53 need a real image, 7 coupon posts skipped
+600 scanned, 57 need a real image, 7 coupon posts skipped
 
-  + FRANCHI Instinct L 20 Ga 3" 26" Over / Under Sho — 23754b 1500x273 sha=81a84dc20050
-  + Glock V-Series Model 20 10mm 4.61" barrel 15 Rnd — 38233b 824x564 sha=99cc49f39c23
-  + CZ 457 American 22 LR 5-rd Bolt-Action Rifle w/  — 31756b 1350x464 sha=987924eac9e3
-  + Trijicon MRO SD 1x25 Optic, 2.0 MOA Adjustable D — 39790b 888x597 sha=550b00354384
-  + COLLECTIBLE only 200 made CNCLEGACY45 Kimber 191 — 569321b 996x796 sha=35821791ddba
-  + Trijicon MRO SD 1x25 Optic, 2.0 MOA Adjustable D — 46798b 1175x763 sha=9306b6eb0001
-  + Rossi R95 30-30 Lever Action 20" Barrel 5-Shot - — 31406b 1500x317 sha=6bfaea4d2b85
-  + FN USA Five-Seven MRD 5.7x28mm 4.8" 20-Rds - $82 — 94675b 1280x954 sha=10d82746287c
-  + Traditions Inc FR18602 15 1860 Colt Army Steel . — 38599b 1280x660 sha=31a49b2bc757
-  + Die Free Co Tiger Claw AR-15 Angled Foregrip BLA — 437448b 657x607 sha=08843b872c14
-  + NBS Upper Parts Kit for Glock 17 - $29.95 — 22952b 608x608 sha=cae727042cb4
-  + Griffin Armament Maritime AR-15 Receiver Extensi — 8810b 510x340 sha=4deb303d87c4
-  + Dirty Bird ACCU-Wedge for AR-15 - Fixes Upper /  — 52413b 1000x853 sha=6564ab62f8bf
-  + Lone Wolf Arms TWF Large/Large Textured Assemble — 33367b 1000x666 sha=b598e0976f27
-  + Springfield 1911 Emissary 9mm 5" 9-Rnd - $699.99 — 44441b 1000x1000 sha=e6190cb24a1a
-  + Mimtac F35 45/90 AR-15 Ambidextrous Safety Selec — 86290b 1000x666 sha=89d87f36997e
-  + Comstock Armory Low Profile Rearden/Plan-B Reces — 212539b 768x768 sha=b94ba0839fa9
-  + H2 heavy duty steel buffer with reciprocating we — 48141b 1500x1500 sha=91ed668c8f6f
-  + Vltor A5 Light Weight Buffer - 4.56 Oz. - A5H1 - — 28862b 1000x649 sha=3c794569ae4c
-  + B&T USA TiGER 22 Ti Silencer - $356.99 (See Pric — 107441b 1500x464 sha=4acc720f9d75
-  + FN America 509 9mm Pistol - 3.7" - FDE - 2x 10rd — 77863b 1301x895 sha=6dfddf36130c
-  + Kaw Valley Precision 22 Caliber Linear Comp - $3 — 29494b 912x900 sha=b4a0b3ab9c72
-  + Diamondback DB-15 300 Blackout 10" 30-Rds Semi-A — 36084b 1000x666 sha=5d40edffb411
-  + PSAK-47 GF5-E 7.62x39 30-Rds with ALG Trigger an — 23374b 1000x500 sha=de223a162434
-  + FN 509 Midsize 9mm 10-Rd 4" Pistol, Black - $449 — 245398b 1500x1150 sha=5e122fb198aa
-  ... 25/53  ok=25 fail=0
-  + ATN Thor 5 320 Smart HD Thermal Rifle Scope 4-16 — 20975b 1000x500 sha=f68150ecc542
-  + NBS Mil-Spec LE Style Carbine Stock & Buffer Kit — 59859b 1200x1024 sha=aff97a79b98c
-  + PANZER ARMS RANCH 12 Gauge 18.5" 5rd - Black w/  — 9942b 640x182 sha=5e36895b2e6c
-  + Springfield 1911 Prodigy 4.25" 9mm 20rd / 17rd P — 16327b 424x277 sha=10ddc54ba63c
-  + SIG Sauer P365X Komodo Anime 9mm 3.1" Barrel 17  — 74198b 1086x840 sha=a067bc278c95
-  + Diamondback DB10 .308 Win 16", Black/OD Green -  — 9518b 546x131 sha=55a9e241f80b
-  + Winchester XPR Hunter TrueTimber Strata .350 Leg — 42373b 1500x382 sha=4efac812abfc
-  + Dead Air Nomad-30 Multi-Caliber Direct Thread Ri — 13957b 600x276 sha=ae13d06915b6
-  + Geissele Premium MIL-SPEC Buffer Tube Assembly w — 48357b 1200x1024 sha=9771b39251cd
-  + Scorpion 300 Blackout 147 gr FMJ Range Training  — 68640b 1000x666 sha=7239a8f4957e
-  + Tippmann Arms A101175 M4-22 Micro Elite SBR 22 L — 51428b 1128x562 sha=a0129ec23cfb
-  + TISAS Carry 9 DS Comp NJG Exclusive V2C 9mm SAO  — 76590b 1070x643 sha=2f1d4feb6ff2
-  + Advanced Armament Ti- Rant 9m- Hd 9mm Modular Su — 13351b 558x656 sha=57b2c4620b32
-  + CMC Triggers Wedge Lock AR-15 Free-Float M-LOK 1 — 16922b 708x322 sha=87839610370d
+  + MAC CERBERUS 9MM 4.4" 17RD BLK - $800.00 — 10410b 600x486 sha=8e7d12d05edf
+  + Glitter Gunz Glock 43X MOS, Pixie, 9mm, 10+1 - $ — 38787b 600x470 sha=d7929c5eff55
+  + Kel-Tec Sub-SDP, 9mm, 6" Barrel, 1- 17rd Magazin — 31386b 1000x370 sha=ece806238927
+  + Silencer Central BANISH VRMT 223 TI DT Suppresso — 15124b 338x573 sha=50bd0a10f070
+  + SDS Imports NK1 Radikal NK--1 12 Gauge 3" 19" 5+ — 18158b 728x321 sha=dc636e308082
+  + Sabre AK-47 GF4 7.62x39mm 30rd Rifle Non-matchin — 297664b 1500x529 sha=457396dcc0de
+  + Kimber Rapide Heat OR .45 ACP 5" 8rds, Black - $ — 67817b 1000x684 sha=e4bf0794c8f6
+  + Canik Prime Radian 3.8" 9mm (2)17rd Pistol, Blac — 349141b 976x723 sha=4972cf02d438
+  + Benelli M2-G1 12 GA 18.5" 7rd Semi-Auto Shotgun  — 190203b 1474x394 sha=b07a1ba5587a
+  + AR15 Lightweight Upper 16" 5.56 Colt-Style Compe — 76247b 981x266 sha=d738738da868
+  + CBC Industries AR15 Upper 7.62x39mm 16" Barrel,  — 86966b 980x398 sha=5af219e7c0b2
+  + Monstrum Challenger Micro 1-6x LPVO Scope with H — 15949b 500x500 sha=71fdfb54c53e
+  + Dead Air Xeno Muzzle Brake 5/8x24 - $65.99 — 35629b 700x700 sha=12ce458fc1ce
+  + HK USP9 Expert 9mm with Jet Funnel 18-Round Maga — 14953b 700x700 sha=0b9068a2034e
+  + AR15 Custom Upper 7.5" 5.56 NATO Barrel 7" MLOK  — 102226b 985x353 sha=8f0209025b46
+  + Burris Xtreme Tactical XTR III 5.5-30x56mm 34mm  — 144874b 994x643 sha=73b343aa17a3
+  + Bushnell Elite Tactical 8-40x60mm LMSS2 H322 FDE — 384491b 1386x862 sha=d021a872e82b
+  + Burris FastFire E Enclosed Reflex Red Dot Sight  — 64869b 609x427 sha=caf0c0b54caa
+  + 3rd Generation Dry Fire Training System,Portable — 35762b 483x500 sha=5ef18bf03605
+  + VEVOR Hard Pistol Case with Pre-cut PU Foam, Wat — 39789b 500x500 sha=4a2603bae4cc
+  + GOYOJO GNG2K Night Vision Monocular 2K / 60Hz Re — 28711b 500x500 sha=075f1e619ea8
+  + Arken EP-5 GENII 5-25x56 FFP Illuminated VPR/TOR — 90000b 630x630 sha=ee51fcde23ed
+  + ATI GSG M1911 HGA .22 LR 5" 10rd Pistol, Tan - $ — 240431b 796x525 sha=dbec5d556156
+  + Kimber Micro 9 Rapide Black Ice 9mm 3.15" 7rd Pi — 12415b 450x281 sha=f2c991fdaf62
+  + Glock G45 Gen 5 Factory Refurbished 9mm 4.02" Ba — 444863b 898x766 sha=56f53ab2a58d
+  ... 25/57  ok=25 fail=0
+  + Ruger 10/22 Competition Wood .22 LR 16" Barrel 1 — 99851b 1000x340 sha=3eecc32fb631
+  + 25% off CVLIFE Indoor Gun Rack for Wall Mount, 5 — 27847b 500x500 sha=92a9f4807b95
+  + 44% off EZshoot 800 Lumens Pistol Light Laser Co — 20813b 500x500 sha=dd6280bc3cbf
+  + HOWA M1500 6.5 Creedmoor 24" Carbon Fiber Barrel — 20716b 1500x245 sha=7701eb09c2d5
+  + NBS .223/5.56/300 BLK Complete Bolt Carrier Grou — 25066b 1000x666 sha=2154d8e16039
+  + Buck Knives 108 COMPADRE FROE - $179.99 — 23717b 1000x666 sha=70a43f4e586c
+  + 40% off Folding Pocket Knife with 3.46" D2 Steel — 22499b 500x500 sha=fe5e98f57945
+  + 45% off CVLIFE 28" Soft Rifle Case Pistol Shotgu — 13601b 500x500 sha=b6f3938a149b
+  + FN FIVE-SEVEN 5.7x28mm Semi-Auto Pistol - $819.9 — 110918b 1239x861 sha=22ec3d6af646
+  + Mossberg 505 20 Gauge Pump-Action Shotgun - $319 — 26137b 1311x254 sha=b849eacacab1
+  + Uberti 1866 Yellowboy Walnut / Brass .45 Colt 20 — 9354b 658x149 sha=90b0f9085f85
+  + Springfield Armory Saint Victor Pistol 5.56 11.5 — 21548b 770x287 sha=1085a4741029
+  + CVLIFE Bipods for Rifles M-Rail Rifle Bipod Quic — 16395b 500x500 sha=3796552b5070
+  + TacFire AR-10 .308 / 7.62x51mm Low Profile Unass — 21425b 785x198 sha=6719aab0772a
+  + Timber Creek .308 Heart Breaker Muzzle Brake (Cl — 50659b 800x533 sha=ef7e6de8f623
+  + 22% off CVLIFE WolfCloak Motion Awake 12-Brightn — 20603b 500x500 sha=e5a4c95051d8
+  + PSA AK-103 GF3 Forged Rifle with ALG Trigger, JL — 16418b 483x389 sha=09a8efefccb0
+  + 40% off CVLIFE Shotgun Cleaning Kit 12 20 410 Ga — 43051b 500x500 sha=f42748c1bdfe
+  + Heckler & Koch MR556 A4 Pistol 5.56 NATO Factory — 22409b 809x281 sha=ceb857b715a7
+  + CVLIFE Two Point Sling Quick Adjustment with Rem — 25735b 500x500 sha=9e93d6b7d403
+  + Remington 870 Police Magnum - LE Trade-In Ruther — 12834b 562x157 sha=06ca27f2e1cc
+  + ZEV Aluminum X Grip BLACK/GREEN - $550 — 26789b 607x517 sha=01f3dae42baa
+  + Fenix LD36R Rechargeable Flashlight BLACK - $82. — 30429b 680x275 sha=1e64ab75ff64
   x Lyman Sonicore Paradox Modular Direct Thread, .2 — rejected: extreme portrait (212x758)
-  + Federal American Eagle 223 Rem 55 gr FMJBT 500rd — 58159b 851x501 sha=5a864c3b4ee4
-  + Plano Field Locker Element Gun Case, Black with  — 56379b 1024x553 sha=28a72b4d24ed
-  + KELTEC SUB-SDP 6" 9mm 17rd Semi-Auto Pistol, Bla — 81907b 1267x896 sha=ba54dede4372
   x Springfield 1911 DS Prodigy AOS 9mm 4.25” 17+1/2 — image not downloadable
   x 20" Black Nitride 4150 Steel Government Barrel 5 — image not downloadable
   x Savage 110 Trail Hunter OD Green .270 Win 22" Ba — image not downloadable
@@ -52,9 +58,7 @@
   x Ballistic Advantage 16" 6.5 Creedmoor BA Hanson  — image not downloadable
   x American Tactical Imports SGP DF-12 12 Ga 18" 5  — image not downloadable
   x Springfield Armory Hellcat Pro 4.4" Threaded Bar — image not downloadable
-  x Springfield 1911 Magazine Black .45ACP 7rd - $12 — image not downloadable
-  x Desert Tech WLVRFB1630T WLVRN 5.56 NATO 30+1 16" — image not downloadable
 
-fixed 42, failed 11  (79% success)
-distinct images: 42 across 42 deals
+fixed 48, failed 9  (84% success)
+distinct images: 48 across 48 deals
 PASS — no image shared between products
