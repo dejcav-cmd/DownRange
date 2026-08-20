@@ -1,49 +1,50 @@
-600 scanned, 55 need a real image, 8 coupon posts skipped
+600 scanned, 53 need a real image, 7 coupon posts skipped
 
-  + Glock OEM Extractor Depressor Plunger - $3.99 — 18765b 1000x666 sha=aafdf0aa212e
-  + Blackhawk Single Point Sling Adapter - $6.99 — 37933b 900x600 sha=472b98f0f8f7
-  + Opsol Mini-Clip for Mossberg 500/590/Maverick 88 — 29711b 900x600 sha=b1d91533b98c
-  + PMC X-Tac Match .308 Winchester Ammo 168gr OTM 2 — 34365b 700x384 sha=a10bf0b5a820
-  + Boe Suppression BOE-IL9S IncoLite 9 9mmLuger 1.5 — 35608b 659x1000 sha=d99b5c23f096
-  + TRYBE Defense Standard AR-15 Handguard Barrel Nu — 341443b 603x485 sha=12afadeeeb73
-  + HENRY America's 250th Anniv 22 S/L/LR 20" 16/17/ — 9422b 591x124 sha=e9dcdaf22b60
-  + Freedom Munitions .44 Special 240 Grain Round No — 25532b 594x371 sha=0b297ac382da
-  + Ruger LC Carbine .45 ACP Semi-Automatic Rifle, 1 — 131460b 1000x278 sha=e47d176a3095
+  + FRANCHI Instinct L 20 Ga 3" 26" Over / Under Sho — 23754b 1500x273 sha=81a84dc20050
+  + Glock V-Series Model 20 10mm 4.61" barrel 15 Rnd — 38233b 824x564 sha=99cc49f39c23
+  + CZ 457 American 22 LR 5-rd Bolt-Action Rifle w/  — 31756b 1350x464 sha=987924eac9e3
+  + Trijicon MRO SD 1x25 Optic, 2.0 MOA Adjustable D — 39790b 888x597 sha=550b00354384
+  + COLLECTIBLE only 200 made CNCLEGACY45 Kimber 191 — 569321b 996x796 sha=35821791ddba
+  + Trijicon MRO SD 1x25 Optic, 2.0 MOA Adjustable D — 46798b 1175x763 sha=9306b6eb0001
+  + Rossi R95 30-30 Lever Action 20" Barrel 5-Shot - — 31406b 1500x317 sha=6bfaea4d2b85
+  + FN USA Five-Seven MRD 5.7x28mm 4.8" 20-Rds - $82 — 94675b 1280x954 sha=10d82746287c
+  + Traditions Inc FR18602 15 1860 Colt Army Steel . — 38599b 1280x660 sha=31a49b2bc757
+  + Die Free Co Tiger Claw AR-15 Angled Foregrip BLA — 437448b 657x607 sha=08843b872c14
+  + NBS Upper Parts Kit for Glock 17 - $29.95 — 22952b 608x608 sha=cae727042cb4
+  + Griffin Armament Maritime AR-15 Receiver Extensi — 8810b 510x340 sha=4deb303d87c4
+  + Dirty Bird ACCU-Wedge for AR-15 - Fixes Upper /  — 52413b 1000x853 sha=6564ab62f8bf
+  + Lone Wolf Arms TWF Large/Large Textured Assemble — 33367b 1000x666 sha=b598e0976f27
+  + Springfield 1911 Emissary 9mm 5" 9-Rnd - $699.99 — 44441b 1000x1000 sha=e6190cb24a1a
+  + Mimtac F35 45/90 AR-15 Ambidextrous Safety Selec — 86290b 1000x666 sha=89d87f36997e
+  + Comstock Armory Low Profile Rearden/Plan-B Reces — 212539b 768x768 sha=b94ba0839fa9
+  + H2 heavy duty steel buffer with reciprocating we — 48141b 1500x1500 sha=91ed668c8f6f
+  + Vltor A5 Light Weight Buffer - 4.56 Oz. - A5H1 - — 28862b 1000x649 sha=3c794569ae4c
+  + B&T USA TiGER 22 Ti Silencer - $356.99 (See Pric — 107441b 1500x464 sha=4acc720f9d75
+  + FN America 509 9mm Pistol - 3.7" - FDE - 2x 10rd — 77863b 1301x895 sha=6dfddf36130c
+  + Kaw Valley Precision 22 Caliber Linear Comp - $3 — 29494b 912x900 sha=b4a0b3ab9c72
+  + Diamondback DB-15 300 Blackout 10" 30-Rds Semi-A — 36084b 1000x666 sha=5d40edffb411
+  + PSAK-47 GF5-E 7.62x39 30-Rds with ALG Trigger an — 23374b 1000x500 sha=de223a162434
+  + FN 509 Midsize 9mm 10-Rd 4" Pistol, Black - $449 — 245398b 1500x1150 sha=5e122fb198aa
+  ... 25/53  ok=25 fail=0
+  + ATN Thor 5 320 Smart HD Thermal Rifle Scope 4-16 — 20975b 1000x500 sha=f68150ecc542
+  + NBS Mil-Spec LE Style Carbine Stock & Buffer Kit — 59859b 1200x1024 sha=aff97a79b98c
+  + PANZER ARMS RANCH 12 Gauge 18.5" 5rd - Black w/  — 9942b 640x182 sha=5e36895b2e6c
+  + Springfield 1911 Prodigy 4.25" 9mm 20rd / 17rd P — 16327b 424x277 sha=10ddc54ba63c
+  + SIG Sauer P365X Komodo Anime 9mm 3.1" Barrel 17  — 74198b 1086x840 sha=a067bc278c95
+  + Diamondback DB10 .308 Win 16", Black/OD Green -  — 9518b 546x131 sha=55a9e241f80b
+  + Winchester XPR Hunter TrueTimber Strata .350 Leg — 42373b 1500x382 sha=4efac812abfc
+  + Dead Air Nomad-30 Multi-Caliber Direct Thread Ri — 13957b 600x276 sha=ae13d06915b6
+  + Geissele Premium MIL-SPEC Buffer Tube Assembly w — 48357b 1200x1024 sha=9771b39251cd
+  + Scorpion 300 Blackout 147 gr FMJ Range Training  — 68640b 1000x666 sha=7239a8f4957e
+  + Tippmann Arms A101175 M4-22 Micro Elite SBR 22 L — 51428b 1128x562 sha=a0129ec23cfb
+  + TISAS Carry 9 DS Comp NJG Exclusive V2C 9mm SAO  — 76590b 1070x643 sha=2f1d4feb6ff2
+  + Advanced Armament Ti- Rant 9m- Hd 9mm Modular Su — 13351b 558x656 sha=57b2c4620b32
+  + CMC Triggers Wedge Lock AR-15 Free-Float M-LOK 1 — 16922b 708x322 sha=87839610370d
+  x Lyman Sonicore Paradox Modular Direct Thread, .2 — rejected: extreme portrait (212x758)
+  + Federal American Eagle 223 Rem 55 gr FMJBT 500rd — 58159b 851x501 sha=5a864c3b4ee4
+  + Plano Field Locker Element Gun Case, Black with  — 56379b 1024x553 sha=28a72b4d24ed
+  + KELTEC SUB-SDP 6" 9mm 17rd Semi-Auto Pistol, Bla — 81907b 1267x896 sha=ba54dede4372
   x Springfield 1911 DS Prodigy AOS 9mm 4.25” 17+1/2 — image not downloadable
-  + Blazer 22LR Ammo 40 Grain Round Nose - $4.99 — 52628b 680x510 sha=0c13c4b38081
-  + Daniel Defense DDM4 MK18 5.56 NATO 10.3" Barrel  — 170872b 956x385 sha=bf9cdc18df1c
-  + Heritage Firearms Rough Rider Rancher Wood / Cas — 17026b 800x181 sha=fc07c0b22d12
-  + Charles Daly N4S G3 Bullpup 12 Gauge 18.5" 5rd S — 30888b 1000x625 sha=4dbea924f03c
-  + PSA Dagger Complete SW6 RMR Slide Assembly With  — 47007b 1000x1000 sha=7bdf16f787cb
-  + Colt King Cobra 3" .357 Magnum Matte Stainless S — 231073b 873x693 sha=833b301580fe
-  + Colt ZO1070CCS 1911 Government Competition .45 A — 34005b 669x435 sha=87f893825071
-  + Hump Day Overstock Bonanza: 50 Select Top Brands — 74321b 566x598 sha=1b2ec929b380
-  + Davidson Defense AR15 Complete Lower - Rare Bree — 46676b 1200x1200 sha=988ba08058ed
-  + Centurion Arms CM4 5.56 Forged AR-15 Receiver Se — 26167b 1000x666 sha=a7c875d2a2a9
-  + Bundle* NBS 16″ 5.56 Gov / SOCOM Midlength M-LOK — 151808b 1000x666 sha=4f0d01eeb552
-  + Wyoming Cartridge Company 9mm 124gr FMJ (1000 Ro — 30388b 539x377 sha=cc8b12da2ea0
-  + 27% off CVLIFE 1X22X33 Red Green Dot Gun Sight S — 25379b 500x500 sha=301c1f9b7e63
-  + 50% off CVLIFE Two Point Rifle Sling with 45° An — 33276b 453x500 sha=20be0058db4d
-  + Smith & Wesson Model 350 7.5" Barrel .350 Legend — 64113b 1279x855 sha=3fc2e074b13c
-  ... 25/55  ok=24 fail=1
-  + 30% off CVLIFE Gun Cleaning Kit Magnetic Mat Bru — 24088b 500x500 sha=d0abd0e6ede7
-  + JP Enterprises JPoint Micro Electronic Reflex Re — 36704b 831x546 sha=291f7b481526
-  + Presma Skeletonized Pistol Grip SILVER - $39.99 — 126852b 888x746 sha=abdcd83b032e
-  + Cimarron Pistoleer .357 Mag 4.75" barrel 6rd Rev — 14429b 519x268 sha=4d9e026966f5
-  + Braztech/Rossi RS22P .22 LR 6" Barrel 10-Rounds  — 26163b 773x343 sha=3add206d496c
-  + 50% off CVLIFE Rifle Bipod 30% Carbon Fiber Pica — 19724b 500x500 sha=35943ab3d069
-  + Glock 45 Gen 6 9mm 4.02" Barrel 10-Rounds w/ Aim — 38867b 656x562 sha=3cb4ee065692
-  + CMMG Banshee MKGs Midnight Bronze 9mm 5" Barrel  — 17427b 599x288 sha=237949ff9dd2
-  + Radical RPR 5.56 NATO 10.5" barrel 30 Rnds Black — 24921b 873x292 sha=1d8984dbb7f6
-  + Kimber Mountain Acsent Peak 7mm Rem Mag 4+1 26″  — 36179b 1396x223 sha=e8f5215d3cea
-  + TacFire AR-10 20" 6.5 Creedmoor Unassembled Uppe — 24683b 830x283 sha=40c17f678e9c
-  + 30% off CVLIFE BearMight Enclosed Solar Multi Re — 19648b 500x500 sha=4e1910662968
-  + Mossberg 500 Super Bantam 20 Gauge Pump Action S — 45873b 1316x277 sha=8b7c53f8d965
-  + B&T Folding Stock for HK MP5K Black - $275 — 19470b 681x396 sha=758a7b7acd4a
-  + ZEV Combat Hypercomp Slide Kit, Compact, Black D — 54206b 442x331 sha=6f3be0965a10
-  + CVLIFE EagleVanta 6-24x50 FFP Rifle Scope with E — 17584b 500x500 sha=110271c85196
-  + Smith & Wesson M&P Tactical Axe - $45.89 — 10710b 681x322 sha=71b815493ae0
-  + Holosun EPS & EPS Carry Sale – EPS Carry Red 2 / — 467897b 1000x1000 sha=46b6745c11b8
   x 20" Black Nitride 4150 Steel Government Barrel 5 — image not downloadable
   x Savage 110 Trail Hunter OD Green .270 Win 22" Ba — image not downloadable
   x Dead Air Primal 46Cal Silencer - .458 Caliber, 7 — image not downloadable
@@ -53,10 +54,7 @@
   x Springfield Armory Hellcat Pro 4.4" Threaded Bar — image not downloadable
   x Springfield 1911 Magazine Black .45ACP 7rd - $12 — image not downloadable
   x Desert Tech WLVRFB1630T WLVRN 5.56 NATO 30+1 16" — image not downloadable
-  x Dead Air Armament Sandman-L 7.62x51mm NATO 8.9in — image not downloadable
-  x LMT Defense L7LA2BAT, SOPMOD Buttstock, Flat Dar — image not downloadable
-  x REAPR TAC Javelin Serrated Spear, Accurate Stain — image not downloadable
 
-fixed 42, failed 13  (76% success)
+fixed 42, failed 11  (79% success)
 distinct images: 42 across 42 deals
 PASS — no image shared between products
