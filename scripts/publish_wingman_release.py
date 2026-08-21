@@ -72,7 +72,7 @@ def sanity_query(groq, token):
 BLOG_BODY = """
 <h2>A Full-Size Rifle That Fits Behind the Seat</h2>
 <p>Fierce Firearms has never been shy about building precision rifles that punch above their category, and the new Wingman SBR is the clearest example yet of where that philosophy is headed. At 5.4 pounds bare, with a titanium action and a 12.5-inch carbon-fiber barrel, the Wingman is built on the company's CT Mini Rogue platform, shortened into a package that rides under a truck seat, behind a UTV bench, or in a daypack, and comes out shooting.</p>
-<img src="{secondary_img}" alt="Fierce Firearms Wingman SBR precision rifle" style="width:100%;border-radius:6px;margin:16px 0;" />
+{secondary_img_tag}
 <p>I've spent enough time around varmint and predator rigs to know the tradeoff this segment usually forces on a shooter: carry a full-size precision rifle and accept the bulk, or carry something light and give up accuracy at distance. The Wingman is Fierce's answer to that tradeoff, and on paper it's a serious one &mdash; a titanium action with a 70-degree bolt throw, a TriggerTech Primary Pro trigger, and three purpose-built Creedmoor chamberings that cover everything from ground squirrels to deer.</p>
 <h2>Three Chamberings, Three Jobs</h2>
 <p>What stands out about the Wingman isn't just the weight &mdash; it's how deliberately Fierce spread the chambering options across use cases instead of offering one caliber and calling it done:</p>
@@ -119,10 +119,13 @@ def main():
 
     result = {"ok": False, "steps": []}
 
-    # 1. Upload hero + secondary images to Sanity CDN
+    # 1. Upload hero + secondary images to Sanity CDN (secondary is best-effort)
     hero = upload_image_to_sanity(HERO_IMAGE_URL, SANITY_TOKEN, "fierce-wingman-sbr-hero.jpg")
     result["steps"].append({"upload_hero": hero})
-    secondary = upload_image_to_sanity(SECONDARY_IMAGE_URL, SANITY_TOKEN, "fierce-wingman-sbr-2.jpg")
+    try:
+        secondary = upload_image_to_sanity(SECONDARY_IMAGE_URL, SANITY_TOKEN, "fierce-wingman-sbr-2.jpg")
+    except Exception as e:
+        secondary = {"asset_id": None, "cdn_url": hero["cdn_url"], "error": str(e)}
     result["steps"].append({"upload_secondary": secondary})
 
     now_iso = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
@@ -173,7 +176,14 @@ def main():
         "publishedAt": now_iso,
     }
 
-    blog_body_final = BLOG_BODY.format(secondary_img=secondary["cdn_url"])
+    if secondary.get("asset_id"):
+        img_tag = (
+            f'<img src="{secondary["cdn_url"]}" alt="Fierce Firearms Wingman SBR precision rifle" '
+            'style="width:100%;border-radius:6px;margin:16px 0;" />'
+        )
+    else:
+        img_tag = ""
+    blog_body_final = BLOG_BODY.format(secondary_img_tag=img_tag)
     plain_words = len(re.sub("<[^>]+>", " ", blog_body_final).split())
     read_time = max(1, -(-plain_words // 200))  # ceil division
 
