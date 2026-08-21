@@ -1,5 +1,60 @@
 {
-  "ok": false,
-  "error": "result file not produced",
-  "log": "Traceback (most recent call last):\n  File \"/home/runner/work/DownRange/DownRange/scripts/publish_wingman_release.py\", line 228, in <module>\n    main()\n  File \"/home/runner/work/DownRange/DownRange/scripts/publish_wingman_release.py\", line 125, in main\n    secondary = upload_image_to_sanity(SECONDARY_IMAGE_URL, SANITY_TOKEN, \"fierce-wingman-sbr-2.jpg\")\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/DownRange/DownRange/scripts/publish_wingman_release.py\", line 48, in upload_image_to_sanity\n    raise RuntimeError(f\"Downloaded image too small ({len(body)} bytes) from {image_url}\")\nRuntimeError: Downloaded image too small (4449 bytes) from https://soldiersystems.net/wp-content/uploads/2026/08/img_6589.jpeg\n"
+  "ok": true,
+  "steps": [
+    {
+      "upload_hero": {
+        "asset_id": "image-268d0bde3a831f7067517845e4f37580911b0b4f-440x293-jpg",
+        "cdn_url": "https://cdn.sanity.io/images/vbnsqnkg/production/268d0bde3a831f7067517845e4f37580911b0b4f-440x293.jpg",
+        "size": 19023
+      }
+    },
+    {
+      "upload_secondary": {
+        "asset_id": null,
+        "cdn_url": "https://cdn.sanity.io/images/vbnsqnkg/production/268d0bde3a831f7067517845e4f37580911b0b4f-440x293.jpg",
+        "error": "Downloaded image too small (4449 bytes) from https://soldiersystems.net/wp-content/uploads/2026/08/img_6589.jpeg"
+      }
+    },
+    {
+      "mutate_result": {
+        "transactionId": "I3Ef5RIrs4lB0Q3ZbNiISC",
+        "results": [
+          {
+            "operation": "create"
+          },
+          {
+            "operation": "create"
+          }
+        ]
+      }
+    }
+  ],
+  "verify": {
+    "blog": {
+      "_id": "blog-fierce-wingman-sbr-2026",
+      "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/268d0bde3a831f7067517845e4f37580911b0b4f-440x293.jpg",
+      "slug": {
+        "_type": "slug",
+        "current": "fierce-firearms-wingman-sbr-2026"
+      },
+      "status": "published",
+      "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+    },
+    "release": {
+      "_id": "release-88c40ff6a52f",
+      "approved": true,
+      "heroImage": {
+        "asset": {
+          "url": "https://cdn.sanity.io/images/vbnsqnkg/production/268d0bde3a831f7067517845e4f37580911b0b4f-440x293.jpg"
+        }
+      },
+      "slug": {
+        "_type": "slug",
+        "current": "fierce-firearms-wingman-sbr"
+      },
+      "title": "Fierce Firearms Wingman SBR"
+    }
+  },
+  "release_url": "https://www.downrangeco.com/releases/fierce-firearms-wingman-sbr",
+  "blog_url": "https://www.downrangeco.com/blog/fierce-firearms-wingman-sbr-2026"
 }
