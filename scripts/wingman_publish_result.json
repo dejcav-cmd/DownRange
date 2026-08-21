@@ -1,0 +1,5 @@
+{
+  "ok": false,
+  "error": "result file not produced",
+  "log": "Traceback (most recent call last):\n  File \"/home/runner/work/DownRange/DownRange/scripts/publish_wingman_release.py\", line 228, in <module>\n    main()\n  File \"/home/runner/work/DownRange/DownRange/scripts/publish_wingman_release.py\", line 125, in main\n    secondary = upload_image_to_sanity(SECONDARY_IMAGE_URL, SANITY_TOKEN, \"fierce-wingman-sbr-2.jpg\")\n                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/DownRange/DownRange/scripts/publish_wingman_release.py\", line 48, in upload_image_to_sanity\n    raise RuntimeError(f\"Downloaded image too small ({len(body)} bytes) from {image_url}\")\nRuntimeError: Downloaded image too small (4449 bytes) from https://soldiersystems.net/wp-content/uploads/2026/08/img_6589.jpeg\n"
+}
