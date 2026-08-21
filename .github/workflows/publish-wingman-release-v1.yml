@@ -1,0 +1,58 @@
+name: Publish Wingman SBR Release
+
+on:
+  push:
+    paths:
+      - '.github/workflows/publish-wingman-release-v1.yml'
+  workflow_dispatch: {}
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run publish script
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
+        run: |
+          cd scripts
+          python3 publish_wingman_release.py > publish_output.log 2>&1 || true
+          cat publish_output.log
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          cd scripts
+          RESULT_FILE="wingman_publish_result.json"
+          if [ ! -f "$RESULT_FILE" ]; then
+            echo '{"ok": false, "error": "result file not produced"}' > "$RESULT_FILE"
+            cat publish_output.log >> "$RESULT_FILE" || true
+          fi
+          CONTENT_B64=$(base64 -w 0 "$RESULT_FILE")
+          # Get existing sha if present
+          SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/$RESULT_FILE" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
+          if [ -n "$SHA" ]; then
+            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/$RESULT_FILE" \
+              -d "{\"message\":\"chore: wingman publish result\",\"content\":\"$CONTENT_B64\",\"sha\":\"$SHA\"}"
+          else
+            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/$RESULT_FILE" \
+              -d "{\"message\":\"chore: wingman publish result\",\"content\":\"$CONTENT_B64\"}"
+          fi
