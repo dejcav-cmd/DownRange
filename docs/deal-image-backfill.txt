@@ -1,54 +1,39 @@
-600 scanned, 57 need a real image, 7 coupon posts skipped
+600 scanned, 40 need a real image, 7 coupon posts skipped
 
-  + MAC CERBERUS 9MM 4.4" 17RD BLK - $800.00 — 10410b 600x486 sha=8e7d12d05edf
-  + Glitter Gunz Glock 43X MOS, Pixie, 9mm, 10+1 - $ — 38787b 600x470 sha=d7929c5eff55
-  + Kel-Tec Sub-SDP, 9mm, 6" Barrel, 1- 17rd Magazin — 31386b 1000x370 sha=ece806238927
-  + Silencer Central BANISH VRMT 223 TI DT Suppresso — 15124b 338x573 sha=50bd0a10f070
-  + SDS Imports NK1 Radikal NK--1 12 Gauge 3" 19" 5+ — 18158b 728x321 sha=dc636e308082
-  + Sabre AK-47 GF4 7.62x39mm 30rd Rifle Non-matchin — 297664b 1500x529 sha=457396dcc0de
-  + Kimber Rapide Heat OR .45 ACP 5" 8rds, Black - $ — 67817b 1000x684 sha=e4bf0794c8f6
-  + Canik Prime Radian 3.8" 9mm (2)17rd Pistol, Blac — 349141b 976x723 sha=4972cf02d438
-  + Benelli M2-G1 12 GA 18.5" 7rd Semi-Auto Shotgun  — 190203b 1474x394 sha=b07a1ba5587a
-  + AR15 Lightweight Upper 16" 5.56 Colt-Style Compe — 76247b 981x266 sha=d738738da868
-  + CBC Industries AR15 Upper 7.62x39mm 16" Barrel,  — 86966b 980x398 sha=5af219e7c0b2
-  + Monstrum Challenger Micro 1-6x LPVO Scope with H — 15949b 500x500 sha=71fdfb54c53e
-  + Dead Air Xeno Muzzle Brake 5/8x24 - $65.99 — 35629b 700x700 sha=12ce458fc1ce
-  + HK USP9 Expert 9mm with Jet Funnel 18-Round Maga — 14953b 700x700 sha=0b9068a2034e
-  + AR15 Custom Upper 7.5" 5.56 NATO Barrel 7" MLOK  — 102226b 985x353 sha=8f0209025b46
-  + Burris Xtreme Tactical XTR III 5.5-30x56mm 34mm  — 144874b 994x643 sha=73b343aa17a3
-  + Bushnell Elite Tactical 8-40x60mm LMSS2 H322 FDE — 384491b 1386x862 sha=d021a872e82b
-  + Burris FastFire E Enclosed Reflex Red Dot Sight  — 64869b 609x427 sha=caf0c0b54caa
-  + 3rd Generation Dry Fire Training System,Portable — 35762b 483x500 sha=5ef18bf03605
-  + VEVOR Hard Pistol Case with Pre-cut PU Foam, Wat — 39789b 500x500 sha=4a2603bae4cc
-  + GOYOJO GNG2K Night Vision Monocular 2K / 60Hz Re — 28711b 500x500 sha=075f1e619ea8
-  + Arken EP-5 GENII 5-25x56 FFP Illuminated VPR/TOR — 90000b 630x630 sha=ee51fcde23ed
-  + ATI GSG M1911 HGA .22 LR 5" 10rd Pistol, Tan - $ — 240431b 796x525 sha=dbec5d556156
-  + Kimber Micro 9 Rapide Black Ice 9mm 3.15" 7rd Pi — 12415b 450x281 sha=f2c991fdaf62
-  + Glock G45 Gen 5 Factory Refurbished 9mm 4.02" Ba — 444863b 898x766 sha=56f53ab2a58d
-  ... 25/57  ok=25 fail=0
-  + Ruger 10/22 Competition Wood .22 LR 16" Barrel 1 — 99851b 1000x340 sha=3eecc32fb631
-  + 25% off CVLIFE Indoor Gun Rack for Wall Mount, 5 — 27847b 500x500 sha=92a9f4807b95
-  + 44% off EZshoot 800 Lumens Pistol Light Laser Co — 20813b 500x500 sha=dd6280bc3cbf
-  + HOWA M1500 6.5 Creedmoor 24" Carbon Fiber Barrel — 20716b 1500x245 sha=7701eb09c2d5
-  + NBS .223/5.56/300 BLK Complete Bolt Carrier Grou — 25066b 1000x666 sha=2154d8e16039
-  + Buck Knives 108 COMPADRE FROE - $179.99 — 23717b 1000x666 sha=70a43f4e586c
-  + 40% off Folding Pocket Knife with 3.46" D2 Steel — 22499b 500x500 sha=fe5e98f57945
-  + 45% off CVLIFE 28" Soft Rifle Case Pistol Shotgu — 13601b 500x500 sha=b6f3938a149b
-  + FN FIVE-SEVEN 5.7x28mm Semi-Auto Pistol - $819.9 — 110918b 1239x861 sha=22ec3d6af646
-  + Mossberg 505 20 Gauge Pump-Action Shotgun - $319 — 26137b 1311x254 sha=b849eacacab1
-  + Uberti 1866 Yellowboy Walnut / Brass .45 Colt 20 — 9354b 658x149 sha=90b0f9085f85
-  + Springfield Armory Saint Victor Pistol 5.56 11.5 — 21548b 770x287 sha=1085a4741029
-  + CVLIFE Bipods for Rifles M-Rail Rifle Bipod Quic — 16395b 500x500 sha=3796552b5070
-  + TacFire AR-10 .308 / 7.62x51mm Low Profile Unass — 21425b 785x198 sha=6719aab0772a
-  + Timber Creek .308 Heart Breaker Muzzle Brake (Cl — 50659b 800x533 sha=ef7e6de8f623
-  + 22% off CVLIFE WolfCloak Motion Awake 12-Brightn — 20603b 500x500 sha=e5a4c95051d8
-  + PSA AK-103 GF3 Forged Rifle with ALG Trigger, JL — 16418b 483x389 sha=09a8efefccb0
-  + 40% off CVLIFE Shotgun Cleaning Kit 12 20 410 Ga — 43051b 500x500 sha=f42748c1bdfe
-  + Heckler & Koch MR556 A4 Pistol 5.56 NATO Factory — 22409b 809x281 sha=ceb857b715a7
-  + CVLIFE Two Point Sling Quick Adjustment with Rem — 25735b 500x500 sha=9e93d6b7d403
-  + Remington 870 Police Magnum - LE Trade-In Ruther — 12834b 562x157 sha=06ca27f2e1cc
-  + ZEV Aluminum X Grip BLACK/GREEN - $550 — 26789b 607x517 sha=01f3dae42baa
-  + Fenix LD36R Rechargeable Flashlight BLACK - $82. — 30429b 680x275 sha=1e64ab75ff64
+  + American Tactical Alpha Maxx 5.56 16" Barrel 60- — 45932b 1500x555 sha=07eab1e0aac3
+  + Radical Firearms M4 Profile 5.56mm Short Barrele — 46936b 1350x638 sha=f6904d578402
+  + BM-59 7.62 NATO/.308 Caliber Mag Fed Semi-Auto " — 173502b 1500x511 sha=8b95133f726d
+  + PSAK-47 GF4 Forged "MOEkov" 7.62x39mm 16" 30-Rds — 44522b 1200x628 sha=7e60c53685dd
+  + PSA "Sabre" Forged 16" FN CHF CL Mid-Length 5.56 — 27524b 1000x500 sha=00492268523e
+  + Henry Repeating Arms H10 Explorer Carbine Burnt  — 18755b 900x365 sha=b7abb24f2ce7
+  + Glock G19C V 9mm 4.02" Barrel 10-Rounds - $539.9 — 42109b 762x549 sha=2694a407b1a0
+  + Dead Air Wolfman 9mm Modular Suppressor for 1/2- — 36705b 1095x900 sha=764f5f236641
+  + American Tactical ALPHA MAXX Omni Hybrid 5" 5.56 — 25540b 800x600 sha=5f37862fb3ed
+  + ProMag AK-47 7.62x39mm 30-Round Magazine Polymer — 14292b 359x363 sha=758196b57a9b
+  + Atrius Development 3 Position Super Selector G-L — 195533b 1500x1000 sha=30d02893ebc3
+  + Swiss M1957 Bayonet & Scabbard — Waffenfabrik Ne — 45305b 600x450 sha=ddb66598fc8f
+  + Vortex Triumph 2 MOA Red Dot Sight - TRI-RD2 - $ — 32355b 945x630 sha=f1e601a6b349
+  + Glock 43X/48 Magazine 9mm 15-Rounds - $34.99 + $ — 10728b 558x437 sha=960afcda4e2e
+  + Century Arms Centurion BP-12 Semi Auto Bullpup 1 — 20561b 1000x300 sha=b153024b1aa8
+  + Panzer M4 Pro Speed A.R.G.O. 12 Ga 18.5" 5-Rd Se — 26025b 1197x321 sha=36b4c5609eb4
+  + Trijicon ACOG 4 x 32 Scope USMC Rifle Combat Opt — 67065b 1000x691 sha=dc68a48dcee0
+  + Strike Industries Extended Latch Charging Handle — 36771b 1200x1024 sha=515d90e6c21b
+  + Colt M4 Commando 5.56mm Semi-Auto Lower Receiver — 28490b 1000x500 sha=e2dab1a78621
+  + Vortex Razor AMG UH-1 Gen II Holographic Sight - — 233905b 1480x1128 sha=8e7c262c7456
+  + EOTech EXPS3-DCR 1x Illuminated DCR Reticle, Red — 26922b 657x500 sha=39cd7759124f
+  + Trijicon TA31F-G ACOG Riflescope 4x32mm, Dual Il — 431507b 942x694 sha=c76b7e514706
+  + Guntec USA AR-15 M4 Mil-Spec Complete Six Positi — 64308b 1000x1000 sha=634252c73bd3
+  + MTM 4 or 5 Can Ammo Crates 30 Cal Stackable, Eas — 109151b 1500x760 sha=de9edf324ca3
+  + FIOCCHI AMMUNITION - Golden Pheasant Extreme 12  — 74667b 828x828 sha=8adadb18b852
+  ... 25/40  ok=25 fail=0
+  + Hornady Outfitter .308 Winchester Ammo 150gr CX  — 42780b 696x457 sha=f4e6691df4ee
+  x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Black  — image not downloadable
+  + NLA AR15 13″ MLOK Blackout Handguard - $50 — 36862b 1200x600 sha=d2e14d9811a6
+  + NLX Prime Stripped Billet AR15 Upper - $50 — 51885b 1200x900 sha=eadc82814e22
+  + IWI Tavor SAR IDF 30rd 5.56mm 16" Rifle, MEPRO 2 — 70914b 1174x674 sha=a7a3c7d65f1e
+  + Muddy Pro Cam 24 Trail Camera Combo 2 Pack with  — 81699b 1000x1000 sha=d4985f0fad9b
+  + Davidson Defense 30rd Steel AR15 Magazines - 5 P — 64402b 1200x600 sha=4c04d658d4bd
+  + Remington UMC 9mm 115 Grain FMJ - 1000 Rds - $24 — 33008b 766x523 sha=ab25f27d1841
   x Lyman Sonicore Paradox Modular Direct Thread, .2 — rejected: extreme portrait (212x758)
   x Springfield 1911 DS Prodigy AOS 9mm 4.25” 17+1/2 — image not downloadable
   x 20" Black Nitride 4150 Steel Government Barrel 5 — image not downloadable
@@ -56,9 +41,7 @@
   x Dead Air Primal 46Cal Silencer - .458 Caliber, 7 — image not downloadable
   x Silencer Central Banish 9mm 1.30' Black Titanium — rejected: extreme portrait (195x1000)
   x Ballistic Advantage 16" 6.5 Creedmoor BA Hanson  — image not downloadable
-  x American Tactical Imports SGP DF-12 12 Ga 18" 5  — image not downloadable
-  x Springfield Armory Hellcat Pro 4.4" Threaded Bar — image not downloadable
 
-fixed 48, failed 9  (84% success)
-distinct images: 48 across 48 deals
+fixed 32, failed 8  (80% success)
+distinct images: 32 across 32 deals
 PASS — no image shared between products
