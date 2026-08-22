@@ -1,20 +1,23 @@
 #!/usr/bin/env python3
 """Reports the wingman publish result back to the repo via the GitHub Contents API."""
 import os
+import sys
 import json
 import base64
 import urllib.request
 import urllib.error
 
 REPO = "dejcav-cmd/DownRange"
-RESULT_FILE = "wingman_publish_result.json"
+RESULT_FILE = sys.argv[1] if len(sys.argv) > 1 else "wingman_publish_result.json"
 GH_TOKEN = os.environ["GH_TOKEN"]
 
 if not os.path.exists(RESULT_FILE):
     log = ""
-    if os.path.exists("publish_output.log"):
-        with open("publish_output.log") as f:
-            log = f.read()
+    for log_candidate in ("publish_output.log", "patch_output.log"):
+        if os.path.exists(log_candidate):
+            with open(log_candidate) as f:
+                log = f.read()
+            break
     with open(RESULT_FILE, "w") as f:
         json.dump({"ok": False, "error": "result file not produced", "log": log}, f, indent=2)
 
