@@ -125,7 +125,7 @@ const TOPIC_BUCKETS = [
     tags: ['Ammo', 'Tariffs', 'Pricing', 'Bulk Buying'],
     angle: 'Which calibers got hit hardest by tariffs, when to stock up',
     imageQuery: 'ammunition bullets cartridges firearm',
-    baseSlug: 'ammo-pricing-tariffs-2026',
+    baseSlug: 'ammo-pricing-tariffs',
   },
   {
     id: 9,
