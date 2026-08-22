@@ -1,0 +1,39 @@
+name: Verify Related Posts Fix
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-related-posts-fix.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch JRC article page
+        run: |
+          curl -s "https://www.downrangeco.com/blog/jrc-guns-glock-frame-weight-2026" -o scripts/jrc_page.html
+          echo "length: $(wc -c < scripts/jrc_page.html)"
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          COMMIT_PATH: scripts/jrc_page.html
+          LOCAL_FILE: jrc_page.html
+        working-directory: scripts
+        run: python3 commit_atf_html.py
