@@ -1,0 +1,54 @@
+name: Fix Brazil English Articles
+
+on:
+  push:
+    paths:
+      - '.github/workflows/fix-brazil-english.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Call fix-brazil-english on live site
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          curl -s -X POST "https://www.downrangeco.com/api/admin/fix-brazil-english" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "Content-Type: application/json" \
+            -d '{}' \
+            -w "\nHTTP_STATUS:%{http_code}\n" \
+            -o result.json
+          cat result.json
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          mv result.json scripts/fix_brazil_english_result.json
+          CONTENT_B64=$(base64 -w 0 scripts/fix_brazil_english_result.json)
+          SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/fix_brazil_english_result.json" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
+          if [ -n "$SHA" ]; then
+            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/fix_brazil_english_result.json" \
+              -d "{\"message\":\"chore: fix-brazil-english result\",\"content\":\"$CONTENT_B64\",\"sha\":\"$SHA\"}"
+          else
+            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/fix_brazil_english_result.json" \
+              -d "{\"message\":\"chore: fix-brazil-english result\",\"content\":\"$CONTENT_B64\"}"
+          fi
