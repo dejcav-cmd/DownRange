@@ -8,7 +8,12 @@ export const metadata = {
   description: 'Expert analysis, industry commentary, and field intelligence from DJ Cavalcanti and the DownRange editorial team.',
   alternates: { canonical: 'https://www.downrangeco.com/blog' },
 }
-export const revalidate = 300
+// Reduced from 300s: after fixing category normalization + featured-post ordering
+// (2026-08-22), the blog listing was still showing pre-fix results long after
+// deploy, strongly suggesting Sanity fetch results were being cached across
+// deployments. Forcing a much shorter window here while that's under
+// investigation so DJ isn't looking at stale data.
+export const revalidate = 10
 
 export const BLOG_POSTS = [
   {
@@ -394,7 +399,8 @@ export default async function BlogPage({ searchParams }) {
   const cat    = searchParams?.cat   || null
   const sort   = searchParams?.sort  || 'newest'
   const search = searchParams?.q     || null
-  const page   = Math.max(1, parseInt(searchParams?.page || '1'))
+  const parsedPage = parseInt(searchParams?.page || '1', 10)
+  const page = Math.max(1, Number.isFinite(parsedPage) ? parsedPage : 1)
 
   // Fetch Sanity blog posts (published ones)
   const { posts: sanityPosts, total, pages } = await fetchBlogPostsPaginated({
@@ -430,7 +436,11 @@ export default async function BlogPage({ searchParams }) {
 
   function buildUrl(overrides) {
     const merged = { ...(cat && { cat }), ...(sort !== 'newest' && { sort }), ...(search && { q: search }), page: String(page), ...overrides }
-    if (merged.page === '1') delete merged.page
+    // Bug fix: category/sort chip links intentionally pass page: undefined to reset
+    // pagination, but URLSearchParams coerces `undefined` to the literal string
+    // "undefined" instead of dropping it — producing ?page=undefined&cat=... links.
+    // parseInt("undefined") is NaN, which broke every category filter's pagination.
+    if (merged.page === '1' || merged.page === undefined) delete merged.page
     if (!merged.sort || merged.sort === 'newest') delete merged.sort
     if (!merged.cat) delete merged.cat
     if (!merged.q) delete merged.q
