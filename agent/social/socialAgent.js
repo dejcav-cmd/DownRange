@@ -471,8 +471,13 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
 
   let articles
   if (forceArticleId) {
-    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id,"type":_type,title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`, { id: forceArticleId })
-    articles = a ? [a] : []
+    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id, _type, title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`, { id: forceArticleId })
+    // Normalize _type to the 'blog'/'news' string used everywhere else in this
+    // file (fetchCandidates aliases it the same way) — using the raw _type
+    // value here ("blogPost") instead of 'blog' made generateCopy's
+    // `contentType === 'blog'` check always fail for forced blog posts,
+    // silently building a /news/<slug> URL instead of /blog/<slug> (404).
+    articles = a ? [{ ...a, type: a._type === 'blogPost' ? 'blog' : 'news' }] : []
   } else {
     const pool = await fetchCandidates(minUrgency)
     // Filter out articles already posted to THIS platform
