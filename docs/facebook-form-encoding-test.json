@@ -1,11 +1,9 @@
 {
-  "post_response": {
-    "id": "122130724785341798",
-    "post_id": "1142984005570525_122130724809341798"
-  },
-  "success": true,
-  "post_id": "122130724785341798",
-  "delete_response": {
-    "success": true
+  "error": {
+    "message": "Error validating access token: Session has expired on Wednesday, 19-Aug-26 17:00:00 PDT. The current time is Saturday, 22-Aug-26 11:58:13 PDT.",
+    "type": "OAuthException",
+    "code": 190,
+    "error_subcode": 463,
+    "fbtrace_id": "AIWAVGJAfgjMnMNGktVYaKX"
   }
 }
