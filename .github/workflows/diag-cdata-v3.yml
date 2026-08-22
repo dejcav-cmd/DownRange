@@ -1,9 +1,9 @@
-name: Diag CDATA Bug V2
+name: Diag CDATA V3
 
 on:
   push:
     paths:
-      - '.github/workflows/diag-cdata-bug-v2.yml'
+      - '.github/workflows/diag-cdata-v3.yml'
   workflow_dispatch: {}
 
 permissions:
@@ -24,26 +24,15 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: '3.11'
-
-      - name: Check Sanity for CDATA leakage
+      - name: Run diagnostic
         env:
           SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
           NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
         working-directory: scripts
         run: python3 diag_cdata_bug.py > diag_output.log 2>&1 || true
-
-      - name: Fetch real Bearing Arms RSS feed raw XML
-        working-directory: scripts
-        run: curl -s "https://bearingarms.com/feed/" -H "User-Agent: Mozilla/5.0" -o bearingarms_raw.xml
-
-      - name: Extract snippet
-        working-directory: scripts
-        run: python3 extract_bearingarms_snippet.py
-
       - name: Show log
         working-directory: scripts
         run: cat diag_output.log
-
       - name: Report result
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}

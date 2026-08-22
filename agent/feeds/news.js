@@ -1,7 +1,7 @@
 import Parser from 'rss-parser'
 import crypto from 'crypto'
 import { rewriteWithClaude, isSanityDuplicate, resetDedup, publishToSanity, notifyBreaking, notifyError, sleep, fetchAndUploadOgImage, searchForImage } from '../utils.js'
-import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
+import { decodeHtmlEntities, stripCdata } from '../../lib/decodeEntities.js'
 
 // Module-level gate counter — reset by runNewsFeed at the start of each run
 let _gateLog = { noTitle:0, hashDup:0, canada:0, brazil:0, gate3:0, gate4:0, sanityDup:0, passedDedup:0, published:0, threw:0, lastError:null }
@@ -180,8 +180,8 @@ async function fetchOneFeed(feed) {
   try {
     const result = await parser.parseURL(feed.url)
     const items = result.items.slice(0, ITEMS_PER_FEED).map(i => ({
-      title:       decodeHtmlEntities(i.title),
-      description: i.contentSnippet || i.summary || i.content?.slice(0, 400),
+      title:       stripCdata(decodeHtmlEntities(i.title)),
+      description: stripCdata(i.contentSnippet || i.summary || i.content?.slice(0, 400)),
       url:         i.link,
       source:      feed.name,
       feedCat:     feed.cat,
