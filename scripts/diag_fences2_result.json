@@ -1,0 +1,1062 @@
+{
+  "total_scanned": 209,
+  "fenced_count": 132,
+  "fenced": [
+    {
+      "_id": "15WtsI1oB7MJHyDrDe2gaV",
+      "title": "States Test Bruen: Which Gun Laws Survive Legal Challenge",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p>It's been almost four years since the Supreme Cou"
+    },
+    {
+      "_id": "15WtsI1oB7MJHyDrDe39Kl",
+      "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women now account for roughly 32% of new "
+    },
+    {
+      "_id": "1akGM3l8TFqXYysf5ZJ7Gj",
+      "title": "Build Your First AR-15 in 2026: Tariffs, Smart Parts Choices, Cheap Skips.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>ARs cost 18-22% more today than they did two year"
+    },
+    {
+      "_id": "2I2YrLIfyTxQVbMSBbwik8",
+      "title": "Tariffs Hit Ammo Prices Hard in 2026. Here's What to Stock.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices hit a 14-month high in "
+    },
+    {
+      "_id": "2I2YrLIfyTxQVbMSBbwvgQ",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Sells You",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last month, a homeowner in Spokane Valley"
+    },
+    {
+      "_id": "2sLO0bw8DHYNpmh0ySkIQP",
+      "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Garbage Parts",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>I built my first AR in 2009 for $680. Last week, "
+    },
+    {
+      "_id": "312SfLbdvykybLI81U1c3G",
+      "title": "States Test Bruen Standard: Some Gun Laws Survive, Others Fall in Court",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after New York State Rifle & "
+    },
+    {
+      "_id": "35w5XNZ7FdqQ96xmc4ZzI4",
+      "title": "States Test Bruen Limits: Which Gun Laws Survive Court Challenges",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after New York State Rifle &a"
+    },
+    {
+      "_id": "35w5XNZ7FdqQ96xmc4aOwO",
+      "title": "AR-15 Build Guide 2026: Navigate Tariffs, Skip the Hype, Keep Costs Real",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>AR-15 parts pricing hit a wall in Q2 2026 when th"
+    },
+    {
+      "_id": "35w5XNZ7FdqQ96xmc4aibk",
+      "title": "Women Gun Owners Surge: Industry Bets Right on Access, Wrong on Marketing",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women bought more firearms in 2025 than a"
+    },
+    {
+      "_id": "4smu7Ks5k1PWjXUh531CCq",
+      "title": "Constitutional Carry Spreads to 29 States: What Changed for Carriers",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "61upfteONQjGxA8VDz5ckP",
+      "title": "Concealed Carry Across State Lines: Your 2026 Navigation Guide",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Forty-two states now recognize Constituti"
+    },
+    {
+      "_id": "83r8eyX5LKThsFjoTCt7E5",
+      "title": "Suppressors Post-NFA Repeal: What Costs What, Where It's Legal",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal excise tax on suppressor"
+    },
+    {
+      "_id": "C0XX6mYY1zJvgDyAaOjOuW",
+      "title": "Building Your First AR-15 in 2026: Tariffs, Parts, Smart Skips",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>I built my first AR-15 in 2009 with a stripped lo"
+    },
+    {
+      "_id": "C9kRM0yIrVzAHS6D3ihK1B",
+      "title": "Build Your First AR-15 in 2026: Skip the Hype, Watch the Tariffs",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>I built my first AR-15 in 2009 for $650. Last mon"
+    },
+    {
+      "_id": "C9kRM0yIrVzAHS6D4KIjIn",
+      "title": "Women Gun Owners Surge: Why the Industry Is Finally Getting It Right",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women now represent 32% of new gun purcha"
+    },
+    {
+      "_id": "DSWdK6PpmWSvFrGNT3h6Lm",
+      "title": "Tariff Hit List: Which Ammo Calibers Got Slammed Hardest in 2026.",
+      "status": null,
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices jumped 18-22% across mo"
+    },
+    {
+      "_id": "DSWdK6PpmWSvFrGNT3hEw6",
+      "title": "Home Defense: What Actually Works Beyond the YouTube Hype",
+      "status": null,
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last year, a homeowner in Portland stoppe"
+    },
+    {
+      "_id": "DWAKInilfCb7lVPJgTOZ18",
+      "title": "NFA Suppressors Post-Tax Elimination: What Changed, What It Costs, State Bans",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 NFA tax stamp is dead.</strong> "
+    },
+    {
+      "_id": "FVNP6r5cO7N0o7HVua3OkK",
+      "title": "Suppressors Post-NFA: What's Legal, What It Costs, What You Can Buy",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 tax stamp is dead.</strong> As o"
+    },
+    {
+      "_id": "FVNP6r5cO7N0o7HVua4TMX",
+      "title": "Building Your First AR-15 in 2026: Navigate Tariffs, Skip the Hype",
+      "status": null,
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p><strong>A stripped lower receiver costs $90 to $1"
+    },
+    {
+      "_id": "FVNP6r5cO7N0o7HVua5sNJ",
+      "title": "Tariffs Hit Ammo Hard in 2026: Best Calibers to Stock Now",
+      "status": null,
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>9mm ammo jumped 22 percent in six months."
+    },
+    {
+      "_id": "FVNP6r5cO7N0o7HVua6BKU",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Sells You",
+      "status": null,
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>The home invasion rate in 2025 climbed 12"
+    },
+    {
+      "_id": "GyT1R4SjsF3JFZ0OLBqpXN",
+      "title": "Tariffs Hammer Ammo Prices in 2026: Stock Up Now on These Calibers",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices hit a three-year high i"
+    },
+    {
+      "_id": "GyT1R4SjsF3JFZ0OLBqtYL",
+      "title": "Home Defense: Ditch the Tactics Channels, Follow This Instead",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p>Last month, a homeowner in Spokane County stopped"
+    },
+    {
+      "_id": "GyT1R4SjsF3JFZ0OLLSkoj",
+      "title": "Glock 19, SIG P365 XL, Hellcat: Which EDC Actually Wins in 2026",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Three guns dominate every carry discussio"
+    },
+    {
+      "_id": "Hj76D8TA9yGzj4qHLMSJtv",
+      "title": "Suppressors Post-NFA Repeal: What's Legal, What It Costs, Where It's Banned",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal tax stamp on suppressors"
+    },
+    {
+      "_id": "Hj76D8TA9yGzj4qHLMU9cu",
+      "title": "States Test Bruen Standard: Which Gun Laws Survive Court Challenges",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>New York's \"Sensitive Places\" law just go"
+    },
+    {
+      "_id": "Hj76D8TA9yGzj4qHLMVAB8",
+      "title": "Nearly 30 States Now Allow Constitutional Carry. Here's What Changed.",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "I3Ef5RIrs4lB0Q3ZbKBprM",
+      "title": "Constitutional Carry Spreads to 29 States. Here's What Changed.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "IoWKiU0kOAfd5HEDUJbSMi",
+      "title": "Nearly Half the Country Now Has Constitutional Carry Laws",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow you to carry"
+    },
+    {
+      "_id": "IuK2abzZBGOYd51ySRuQkJ",
+      "title": "Three EDC Kings Face Off: Glock 19, SIG P365 XL, Hellcat Ranked.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>I carried a Glock 19 for eight years befo"
+    },
+    {
+      "_id": "IuK2abzZBGOYd51ySteDqp",
+      "title": "Twenty-Nine States Now Allow Constitutional Carry Without Permits",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "JGL0huXkJ0GLhKCwlvQVyl",
+      "title": "States Test Bruen: Which Gun Laws Survive, Which Collapse",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after New York State Rifle & "
+    },
+    {
+      "_id": "JGL0huXkJ0GLhKCwlvQmrQ",
+      "title": "AR-15 Build Guide 2026: Parts, Tariffs, and What to Skip",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p><strong>The 25% tariff on steel and aluminum hit "
+    },
+    {
+      "_id": "JXmke4KmnpBv7IhAyOBqpC",
+      "title": "USCCA vs CCW Safe: Which Actually Covers Your Defense",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>I got a call last month from a carrier wh"
+    },
+    {
+      "_id": "JxwjFSEaofXCdbIRTnQst9",
+      "title": "Tariffs Crush Ammo Prices: Which Calibers Got Hit Hardest, When to Buy",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices hit a seven-year high i"
+    },
+    {
+      "_id": "KKcvU66zXy02imQ9hDlNni",
+      "title": "Nearly 30 States Now Allow Constitutional Carry Without Permits",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "KQ3nrn0ldkUORQvBnGKTAn",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: The Real Cost of Legal Defense",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Three years ago, I watched a friend post "
+    },
+    {
+      "_id": "KtBy4YB66kH33JX4YwYUan",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Sells You",
+      "status": "published",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last month, a homeowner in Portland stopp"
+    },
+    {
+      "_id": "LbIpwM7idIgSCZSGoEMbQ3",
+      "title": "Tariffs Hammer Ammo Prices: Which Calibers to Buy Now Before 2026 Spikes",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>9mm ammo jumped 18% in six months.</stron"
+    },
+    {
+      "_id": "MECluzFa3Vcy7Sp4bOOLm3",
+      "title": "Navigating Concealed Carry Across State Lines in 2026",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Forty-two states now recognize permitless"
+    },
+    {
+      "_id": "MECluzFa3Vcy7Sp4bOOgP1",
+      "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women now account for roughly 32% of all "
+    },
+    {
+      "_id": "MECluzFa3Vcy7Sp4bVdgIx",
+      "title": "Tariffs Reshape 2026 Ammo Market: Caliber Winners, Stockpile Strategy.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammo prices hit a 12-year high in May 202"
+    },
+    {
+      "_id": "OSfm8s9GVcB4f0nvJYYPLY",
+      "title": "USCCA vs. CCW Safe vs. Armed Citizens Legal Defense: 2026 Coverage Breakdown",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>A defensive shooting in a grocery store p"
+    },
+    {
+      "_id": "PeESsP9WIHBoPAyjLyg5Qd",
+      "title": "States Test Bruen Limits: Which Gun Laws Survive Court Challenges",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<h2>What the Bruen Standard Actually Changed</h2>\n\n<"
+    },
+    {
+      "_id": "PoYi8mUZ02KBIukuavDcGW",
+      "title": "USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Breakdown",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>A shooting in self-defense isn't the end "
+    },
+    {
+      "_id": "Q8KryWCEhbKpFoiEd8porw",
+      "title": "Suppressors Post-NFA: What Changed, What They Cost, State Bans Remain",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal excise tax on suppressor"
+    },
+    {
+      "_id": "Q8KryWCEhbKpFoiEd8qssG",
+      "title": "Glock 19, SIG P365 XL, Hellcat: Which EDC Reigns Supreme",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>I've carried the same Glock 19 for eight "
+    },
+    {
+      "_id": "Q8KryWCEhbKpFoiEd8v3gw",
+      "title": "Home Defense That Actually Works: Skip the YouTube Hype",
+      "status": null,
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last month a homeowner in Spokane County "
+    },
+    {
+      "_id": "QR3knQwiU7hQ2mmjtLnwIO",
+      "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Trash",
+      "status": null,
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p><strong>AR-15 parts are 18-22% more expensive tha"
+    },
+    {
+      "_id": "QR3knQwiU7hQ2mmjtLo2dO",
+      "title": "Women Gun Owners Are Growing Fastest. Here's What the Industry Misses.",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women now represent 32% of new gun owners"
+    },
+    {
+      "_id": "QR3knQwiU7hQ2mmjtLoCPO",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: 2026 Coverage Breakdown",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>I got a call last month from someone who fired in"
+    },
+    {
+      "_id": "QR3knQwiU7hQ2mmjtLoHzO",
+      "title": "Tariff Shock Hits Ammo Prices: Which Calibers to Stock Now",
+      "status": null,
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>The 25% tariff on ammunition imported fro"
+    },
+    {
+      "_id": "QR3knQwiU7hQ2mmjtLoLlO",
+      "title": "Home Defense Setup: Skip the YouTube Hype, Master What Actually Works",
+      "status": null,
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p>Last month, a homeowner in Spokane called 911 aft"
+    },
+    {
+      "_id": "Qi99oWPenHHgrpR8WUA5yC",
+      "title": "States Test Gun Limits After Bruen: Early Wins and Losses Emerge",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>New York's Concealed Carry Improvement Ac"
+    },
+    {
+      "_id": "Qi99oWPenHHgrpR8WUAEmC",
+      "title": "Build Your First AR-15 in 2026: Smart Parts Choices, Tariff Realities",
+      "status": null,
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>I built my first AR in 2009 for $680. Last month,"
+    },
+    {
+      "_id": "Qi99oWPenHHgrpR8WUBJUC",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: 2026 Coverage Showdown",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Last month, a USCCA member in Ohio was ch"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwVHqV6",
+      "title": "Suppressors Post-NFA Reform: What's Legal, What It Costs, What You Need",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal tax stamp on suppressors"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwVI1en",
+      "title": "States Test Bruen: Which Gun Laws Survive Judicial Review",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after New York State Rifle &a"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwVIDnS",
+      "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Junk",
+      "status": null,
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>A customer walked into my local FFL three weeks a"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwdlM4M",
+      "title": "Concealed Carry Across State Lines: Your 2026 Reciprocity Roadmap",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Thirty-seven states now recognize constit"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwdlP0X",
+      "title": "Glock 19 vs P365 XL vs Hellcat: Your Next Carry Gun",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Two years ago, the EDC handgun market loo"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwdlX7W",
+      "title": "Build Your First AR-15 in 2026: Tariffs, Parts, and Hard Truths",
+      "status": null,
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>I built my first AR-15 in 2009 for $650. Last mon"
+    },
+    {
+      "_id": "S5bzMTDRifCZEnNLwdle11",
+      "title": "Nearly 30 States Now Allow Constitutional Carry. Here's What Changed.",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "S5cUUMsZa96UQf9Qu9xQyG",
+      "title": "Three EDC Kings: Glock 19, SIG P365 XL, Springfield Hellcat Ranked",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>The three pistols people actually carry s"
+    },
+    {
+      "_id": "SKDVlyMd9FiV3xrtgTmRIx",
+      "title": "Three Carry Guns That Actually Matter: Glock 19, SIG P365 XL, Hellcat Ranked",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>The Glock 19 has been the carry gun of ch"
+    },
+    {
+      "_id": "TIBCjBXK449ndn4nYa8NXd",
+      "title": "Tariffs Hammer Ammo Prices in 2026. Here's What to Stock Now.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>9mm rounds hit $0.42 per round this week "
+    },
+    {
+      "_id": "TueRWwOFfXHQmyWay5qI0Q",
+      "title": "Concealed Carry Reciprocity 2026: Navigate the State-by-State Maze",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>You're heading to your sister's wedding i"
+    },
+    {
+      "_id": "TuqgMeh8LqtvbNzmQBZIA3",
+      "title": "Women Gun Owners Are Booming. Here's What the Industry Needs to Know.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p>The National Shooting Sports Foundation reported "
+    },
+    {
+      "_id": "U5bwFiwsdnUkP1ofQJecCT",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Sells You",
+      "status": "published",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last year, a homeowner in suburban Portla"
+    },
+    {
+      "_id": "U5bwFiwsdnUkP1ofQJenHR",
+      "title": "NFA Tax Eliminated: Suppressors Now Cheaper, But State Bans Remain",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 NFA tax stamp is gone.</strong> "
+    },
+    {
+      "_id": "UD016w0eXmLhxwQLbskzFt",
+      "title": "Glock 19, SIG P365 XL, Springfield Hellcat: Which One You Should Carry",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>I've carried the same Glock 19 for eight years. L"
+    },
+    {
+      "_id": "UD016w0eXmLhxwQLbsmUKz",
+      "title": "Women Gun Owners Are Booming. The Industry Is Finally Listening.",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women now represent roughly 32% of new gu"
+    },
+    {
+      "_id": "VoOtV9CudNsDJXNHZuwOPr",
+      "title": "Glock 19 vs P365 XL vs Hellcat: The Carry Gun Showdown That Matters",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Glock 19s have been stolen from parked ca"
+    },
+    {
+      "_id": "VrXtJET951nNPZwlQ1v0HU",
+      "title": "Home Defense Setup: Cut Through the Tactics YouTube Won't Tell You",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Two months ago, a guy from Spokane called"
+    },
+    {
+      "_id": "VrXtJET951nNPZwlQ1v9Mu",
+      "title": "NFA Suppressors Post-Tax Repeal: What's Legal, What It Costs, Where to Buy",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal tax stamp on suppressors"
+    },
+    {
+      "_id": "W7AwKLzR5SfvBUTE0JKsN2",
+      "title": "Tariffs Hammer Ammo Prices: Which Calibers Cost Most in 2026",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p>In March 2026, a single box of Federal 9mm ammo j"
+    },
+    {
+      "_id": "WCbnToM3Id5hklBj3pv7Uj",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: 2026 Coverage Breakdown",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>I got a call last month from a guy I met "
+    },
+    {
+      "_id": "WCbnToM3Id5hklBj4Pt8bq",
+      "title": "Constitutional Carry Spreads to 29 States. Here's What Changed.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now have constitutiona"
+    },
+    {
+      "_id": "WCbnToM3Id5hklBj4Pth1J",
+      "title": "Tariffs Drive 2026 Ammo Prices Higher\u2014Which Calibers to Stockpile Now",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices spiked 18-24% across mo"
+    },
+    {
+      "_id": "X3hCWippD6zjeklfwPfZ7w",
+      "title": "Home Defense Setup: What Actually Works Beyond the YouTube Hype",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Your home got broken into last week. The "
+    },
+    {
+      "_id": "X3hCWippD6zjeklfwPg2IC",
+      "title": "Suppressors Post-NFA: What's Legal Now, What It Costs, What States Still Ban",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p>The $200 federal tax stamp on suppressors is gone"
+    },
+    {
+      "_id": "XcAOAPaJfdo4R6DkPaqo46",
+      "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p>The numbers don't lie. Women now account for roug"
+    },
+    {
+      "_id": "XcAOAPaJfdo4R6DkPar0c0",
+      "title": "Constitutional Carry Spreads to 29 States. Here's What Changed.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now recognize permitle"
+    },
+    {
+      "_id": "XrIa6L80Bcx8vyWWgHfgR0",
+      "title": "Carry Across State Lines: Your 2026 Reciprocity Roadmap",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p>Last month, I drove from Washington to Montana fo"
+    },
+    {
+      "_id": "XrIa6L80Bcx8vyWWgHftGF",
+      "title": "Glock 19, SIG P365 XL, Hellcat: Which EDC Actually Wins in 2026",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>Last month I sat down with three guns that have b"
+    },
+    {
+      "_id": "Y1eSEYchYFHYmiQcsYrI7X",
+      "title": "Concealed Carry Reciprocity in 2026: Your State-by-State Crossing Guide",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>The reciprocity mess is still a mess.</st"
+    },
+    {
+      "_id": "Y1eSEYchYFHYmiQcsYruKZ",
+      "title": "States Test Bruen Standard: Early Wins, Quick Losses in Gun Cases",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after the Supreme Court hande"
+    },
+    {
+      "_id": "e2bvSi16WY3JfP20soKZhD",
+      "title": "Suppressors Post-NFA: What's Legal Now, What It Costs, Where It's Banned",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal excise tax on suppressor"
+    },
+    {
+      "_id": "ea3WAUgOibFNKEs8s3chdy",
+      "title": "Three Carry Guns That Actually Earn Their Belt Space",
+      "status": "published",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Three guns dominate EDC talk in 2026, and"
+    },
+    {
+      "_id": "efIL9atErlEJMtXFFbGeoX",
+      "title": "NFA Tax Gone: Suppressors Now Cheaper, But Some States Still Ban Them",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p>Congress finally killed the $200 NFA tax stamp in"
+    },
+    {
+      "_id": "efIL9atErlEJMtXFGL0Tkv",
+      "title": "States Test Bruen Limits: Which Gun Laws Survive Court Challenges",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years out from New York State Rifle"
+    },
+    {
+      "_id": "gg7RnZRpI6fQeqXVUfaCtW",
+      "title": "Concealed Carry Reciprocity 2026: Your State-by-State Crossing Guide",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Thirty-one states recognize your permit. "
+    },
+    {
+      "_id": "gg7RnZRpI6fQeqXVUucs97",
+      "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women bought more guns in 2025 than in an"
+    },
+    {
+      "_id": "gg7RnZRpI6fQeqXVVEPwIX",
+      "title": "AR-15 Build Guide 2026: Navigate Tariffs, Choose Parts Wisely",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p>I built my first AR-15 in 2009 for under $700. To"
+    },
+    {
+      "_id": "gobPlfpfIs8bjVPFSGz85M",
+      "title": "NFA Suppressors Post-Tax Repeal: What's Legal Now, What It Costs",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal tax stamp on suppressors"
+    },
+    {
+      "_id": "jKEbOVwedHVBNMrN8ckAnx",
+      "title": "Nearly 30 States Now Allow Permitless Carry. Here's What Changed.",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "jR36JPyYnZ2kFBEbLQ7kxC",
+      "title": "Glock 19 vs P365 XL vs Hellcat: The Real EDC Standoff",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>I carried a Glock 19 for eight years befo"
+    },
+    {
+      "_id": "jSUAAkvsHz1jD955BSuwPZ",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: 2026 Coverage Breakdown Matters",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>A guy I know shot an attacker in self-defense two"
+    },
+    {
+      "_id": "lg64LqhNQW43wulO6U0x2s",
+      "title": "Tariffs Gut 2026 Ammo Prices: Which Calibers to Stockpile Now",
+      "status": null,
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices just hit their highest "
+    },
+    {
+      "_id": "m7fEXI562H8PSJXLLyddLv",
+      "title": "Three EDC Kings: Glock 19, SIG P365 XL, Springfield Hellcat Ranked",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>I carried a Glock 19 for eight years befo"
+    },
+    {
+      "_id": "mADhWsD6Yva65eamICZ1x1",
+      "title": "Carry Across State Lines: Your 2026 Reciprocity Roadmap",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Forty-two states now have constitutional "
+    },
+    {
+      "_id": "mADhWsD6Yva65eamICZ93I",
+      "title": "Glock 19, SIG P365 XL, Hellcat: The Real EDC Shootout",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Two years ago I stopped recommending the "
+    },
+    {
+      "_id": "mB5SX091O5zS0c2QtEHLFv",
+      "title": "Constitutional Carry Expands to 29 States: Here's What Changed",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now allow permitless c"
+    },
+    {
+      "_id": "nwmgP0yEQuFb1sNPr2KWzH",
+      "title": "USCCA vs CCW Safe vs Armed Citizens Legal: 2026 Cost and Coverage Reality",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>I get asked this question roughly twice a month: "
+    },
+    {
+      "_id": "nwmgP0yEQuFb1sNPr2Kl6t",
+      "title": "Tariff Shock Hits Ammo Prices: Which Calibers to Stockpile Now",
+      "status": null,
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices hit a ten-year high in "
+    },
+    {
+      "_id": "nwmgP0yEQuFb1sNPr2LEoh",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Gets Wrong",
+      "status": null,
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p>Your home defense setup is probably wrong. Not ca"
+    },
+    {
+      "_id": "nwmgP0yEQuFb1sNPrPP7Nn",
+      "title": "Stop Buying Gear. Here's What Actually Protects Your Home.",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p>Last month, a homeowner in Portland stopped an in"
+    },
+    {
+      "_id": "oCp2KJ15s65qjchemduyWw",
+      "title": "States Test Bruen Standard: Which Gun Laws Survive Court Challenges",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Two years after New York State Rifle &amp"
+    },
+    {
+      "_id": "ojrzAEl0JDS7M43TSwD1ka",
+      "title": "Home Defense Setup: What Actually Works, What Doesn't",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last month, a homeowner in Spokane stoppe"
+    },
+    {
+      "_id": "rhMI06j2e0dNGX3sDFGrDd",
+      "title": "Tariffs Hammer Ammo Prices: Which Calibers Got Crushed, When to Buy",
+      "status": null,
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices have climbed 18-24% sin"
+    },
+    {
+      "_id": "rhMI06j2e0dNGX3sDFGwn7",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Oversells",
+      "status": null,
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p><strong>Last month, a homeowner in Spokane Valley"
+    },
+    {
+      "_id": "rhMI06j2e0dNGX3sDcmRRP",
+      "title": "Suppressors Post-NFA Tax: What's Legal, What It Costs, State Bans Remain",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p>The NFA tax stamp is gone. After 88 years, the $2"
+    },
+    {
+      "_id": "rhMI06j2e0dNGX3sDcnRQP",
+      "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>Women now account for roughly 32% of all "
+    },
+    {
+      "_id": "sVU37pFU2OqK39XHdqIZN6",
+      "title": "Constitutional Carry Spreads to 29 States: What Changed for Carriers",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Twenty-nine states now have constitutiona"
+    },
+    {
+      "_id": "sZarkGCWKodXiPseaW3N2Y",
+      "title": "Glock 19, SIG P365 XL, Hellcat: Which Compact Carries Best",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Three guns are having the most honest con"
+    },
+    {
+      "_id": "sZarkGCWKodXiPseaW3Tkj",
+      "title": "States Test Bruen's Limits: Which Gun Laws Survive Court Challenges",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after New York State Rifle & "
+    },
+    {
+      "_id": "sahDx1NHv0IhD71sXd7hsX",
+      "title": "Suppressors Post-NFA: What Actually Changed, State Bans, Best Buys",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 NFA tax stamp is dead.</strong> "
+    },
+    {
+      "_id": "tgV5p4sNg9Q2AEoVAmqpbq",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: 2026 Coverage Showdown",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>Three carriers control 80% of the CCW insurance m"
+    },
+    {
+      "_id": "u75mToG9K5BBbxvpcZFjBf",
+      "title": "Build Your First AR-15 in 2026: Skip the Hype, Navigate Tariffs Smart",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p><strong>AR-15 parts prices jumped 18-22% between "
+    },
+    {
+      "_id": "v8p3KAncgjT5f7voAK7aAv",
+      "title": "Suppressors Post-NFA Tax: What's Legal, What's Available, What States Still Ban",
+      "status": null,
+      "editorLocked": false,
+      "category": "opinion",
+      "bodyStart": "```html\n<p><strong>The $200 federal excise tax on suppressor"
+    },
+    {
+      "_id": "v8p3KAncgjT5f7voAK85ZO",
+      "title": "Concealed Carry Reciprocity in 2026: Your State-by-State Survival Map",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>You're carrying in Washington. You drive "
+    },
+    {
+      "_id": "v8p3KAncgjT5f7voAK8oXD",
+      "title": "States Test Bruen: Which Gun Laws Survive Court Challenges",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>Three years after New York State Rifle & "
+    },
+    {
+      "_id": "x00OEcPfpMIR2fGGTXlVgk",
+      "title": "Tariffs Hammer Ammo Prices: Which Calibers to Stockpile Now",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "market",
+      "bodyStart": "```html\n<p><strong>Ammunition prices jumped 23% between Janu"
+    },
+    {
+      "_id": "y9A2MPodEpAzmcIZdKI91S",
+      "title": "USCCA vs CCW Safe vs Armed Citizens: 2026 Coverage Breakdown",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p><strong>Last month, a defensive shooter in Oregon"
+    },
+    {
+      "_id": "yCI02xKbYgk1bUSaiprgyd",
+      "title": "Home Defense That Actually Works: Ditch the Hype, Keep What Matters",
+      "status": "draft",
+      "editorLocked": false,
+      "category": "training",
+      "bodyStart": "```html\n<p>Last month, a homeowner in Tacoma called me after"
+    },
+    {
+      "_id": "yhpCEZyZLzjFQvYoEhFqxE",
+      "title": "Glock 19, SIG P365 XL, Springfield Hellcat: The Real EDC Rankings",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>I carried a Glock 19 for eight years before switc"
+    },
+    {
+      "_id": "yhpCEZyZLzjFQvYoEhHW2a",
+      "title": "Build Your First AR-15 in 2026: Skip the Hype, Navigate the Tariffs",
+      "status": null,
+      "editorLocked": false,
+      "category": "builds",
+      "bodyStart": "```html\n<p><strong>The tariff situation on imported firearms"
+    },
+    {
+      "_id": "z9Xto3jVXEoMqihBRXv02n",
+      "title": "Carry Across State Lines: Navigate the 2026 Reciprocity Maze",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p>Last month, a guy I know got pulled over in Nevad"
+    },
+    {
+      "_id": "z9Xto3jVXEoMqihBRXvxYn",
+      "title": "States Split on Gun Laws After Bruen: Winners and Losers in Court",
+      "status": null,
+      "editorLocked": false,
+      "category": "laws",
+      "bodyStart": "```html\n<p><strong>New York's handgun licensing law got shre"
+    },
+    {
+      "_id": "z9Xto3jVXEoMqihBRXwmqn",
+      "title": "USCCA vs CCW Safe vs Armed Citizens Legal Defense: Coverage Costs Compared",
+      "status": null,
+      "editorLocked": false,
+      "category": "gear",
+      "bodyStart": "```html\n<p>A defensive shooting happens. Your lawyer costs $"
+    }
+  ]
+}
