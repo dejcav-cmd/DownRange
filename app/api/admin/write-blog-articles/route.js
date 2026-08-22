@@ -26,15 +26,15 @@ const BLOG_IMAGES = {
 }
 
 const ARTICLES = [
-  { slug:'home-defense-basics',           title:'Home Defense Basics: What You Actually Need',       category:'home-defense', readTime:'11 min' },
-  { slug:'safe-storage-guide-beginners',  title:'Safe Storage 101: Secure and Accessible',           category:'safety',       readTime:'9 min'  },
-  { slug:'ammo-guide-beginners',          title:'Ammunition Explained: What to Buy and Why',          category:'ammunition',   readTime:'10 min' },
-  { slug:'shooting-range-first-visit',    title:'Your First Time at a Shooting Range',               category:'beginner',     readTime:'7 min'  },
-  { slug:'cleaning-maintaining-your-gun', title:'How to Clean and Maintain Your Firearm',            category:'maintenance',  readTime:'10 min' },
-  { slug:'understanding-gun-laws',        title:'Understanding Gun Laws: Beginner Overview',          category:'legal',        readTime:'13 min' },
-  { slug:'choosing-holster-beginners',    title:'How to Choose a Holster for Concealed Carry',       category:'carry',        readTime:'11 min' },
-  { slug:'dry-fire-training-beginners',   title:'Dry Fire Training: Get Better Without Ammo',        category:'training',     readTime:'9 min'  },
-  { slug:'what-is-nfa',                   title:'What Is the NFA? Suppressors, SBRs, and More',      category:'legal',        readTime:'12 min' },
+  { slug:'home-defense-basics',           title:'Home Defense Basics: What You Actually Need',       category:'TRAINING', readTime:'11 min' },
+  { slug:'safe-storage-guide-beginners',  title:'Safe Storage 101: Secure and Accessible',           category:'TRAINING',       readTime:'9 min'  },
+  { slug:'ammo-guide-beginners',          title:'Ammunition Explained: What to Buy and Why',          category:'MARKET',   readTime:'10 min' },
+  { slug:'shooting-range-first-visit',    title:'Your First Time at a Shooting Range',               category:'TRAINING',     readTime:'7 min'  },
+  { slug:'cleaning-maintaining-your-gun', title:'How to Clean and Maintain Your Firearm',            category:'TRAINING',  readTime:'10 min' },
+  { slug:'understanding-gun-laws',        title:'Understanding Gun Laws: Beginner Overview',          category:'LAW',        readTime:'13 min' },
+  { slug:'choosing-holster-beginners',    title:'How to Choose a Holster for Concealed Carry',       category:'OPINION',        readTime:'11 min' },
+  { slug:'dry-fire-training-beginners',   title:'Dry Fire Training: Get Better Without Ammo',        category:'TRAINING',     readTime:'9 min'  },
+  { slug:'what-is-nfa',                   title:'What Is the NFA? Suppressors, SBRs, and More',      category:'LAW',        readTime:'12 min' },
 ]
 
 async function writeArticle(article) {

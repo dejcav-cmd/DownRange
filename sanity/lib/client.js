@@ -232,7 +232,11 @@ export async function fetchBlogPosts(limit = 50, category = null) {
 
 export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category = null, search = null, sort = 'newest' }) {
   const offset = (page - 1) * perPage
-  const catFilter = category ? `&& category == "${category}"` : ''
+  // Case-insensitive category match — categories have historically been saved in mixed
+  // case ("laws" vs "LAW", "gear" vs "GEAR"), which broke exact-string chip filtering.
+  // upper(category) == $cat (with $cat always uppercase) makes this resilient regardless
+  // of stored casing, on top of the one-time data normalization pass.
+  const catFilter = category ? `&& upper(category) == $cat` : ''
 
   let query, params
   if (search) {
@@ -247,7 +251,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
       "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)])
     }`
-    params = { q: safe, offset, end: offset + perPage }
+    params = { q: safe, offset, end: offset + perPage, cat: category ? category.toUpperCase() : undefined }
   } else {
     const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
     // Featured posts always sort first (page 1, position 0). Must stay consistent across
@@ -263,7 +267,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
         },
       "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}])
     }`
-    params = { offset, end: offset + perPage }
+    params = { offset, end: offset + perPage, cat: category ? category.toUpperCase() : undefined }
   }
   const result = await client.fetch(query, params).catch(() => ({ posts: [], total: 0 }))
   return {

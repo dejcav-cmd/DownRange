@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
+import { stripMarkdownFences } from '@/lib/aiClient.js'
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const ANTHROPIC = process.env.ANTHROPIC_API_KEY
@@ -32,7 +33,7 @@ Format: HTML with h2 headers and p tags. 900-1100 words. No title tag — start 
       signal: AbortSignal.timeout(45000),
     })
     const d = await res.json()
-    return d.content?.[0]?.text || null
+    return stripMarkdownFences(d.content?.[0]?.text) || null
   }
   if (GLM_KEY) {
     const res = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
@@ -42,7 +43,7 @@ Format: HTML with h2 headers and p tags. 900-1100 words. No title tag — start 
       signal: AbortSignal.timeout(30000),
     })
     const d = await res.json()
-    return d.choices?.[0]?.message?.content || null
+    return stripMarkdownFences(d.choices?.[0]?.message?.content) || null
   }
   return null
 }

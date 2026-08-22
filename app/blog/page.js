@@ -358,6 +358,8 @@ const CATS = [
   { label: 'Training',   val: 'TRAINING' },
   { label: 'Market',     val: 'MARKET' },
   { label: 'Industry',   val: 'INDUSTRY' },
+  { label: 'Gear',       val: 'GEAR' },
+  { label: 'Builds',     val: 'BUILDS' },
 ]
 
 const SORT_OPTS = [

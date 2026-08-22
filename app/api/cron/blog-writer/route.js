@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
+import { stripMarkdownFences } from '@/lib/aiClient.js'
 
 // DownRange Weekly Blog Writer — Fridays 10am PST (18:00 UTC)
 // Writes 10 original, human-sounding articles on trending 2A topics
@@ -22,61 +23,61 @@ const sanity = createClient({
 const TOPIC_BUCKETS = [
   {
     topic: 'suppressors and NFA after the One Big Beautiful Bill tax elimination',
-    category: 'opinion',
+    category: 'OPINION',
     tags: ['NFA', 'Suppressors', 'One Big Beautiful Bill', 'Tax Stamps'],
     angle: 'What changed, what it costs now, which states still ban it, what to buy',
   },
   {
     topic: 'concealed carry reciprocity and the state-by-state patchwork in 2026',
-    category: 'laws',
+    category: 'LAW',
     tags: ['CCW', 'Reciprocity', 'Concealed Carry', 'State Laws'],
     angle: 'Practical guide for people who carry and cross state lines',
   },
   {
     topic: 'best EDC handguns in 2026 — real comparisons for real carry',
-    category: 'gear',
+    category: 'GEAR',
     tags: ['EDC', 'Pistols', 'Concealed Carry', 'Handguns'],
     angle: 'Glock 19 vs SIG P365 XL vs Springfield Hellcat — specific, opinionated picks',
   },
   {
     topic: 'the Bruen standard and how states are trying to work around it',
-    category: 'laws',
+    category: 'LAW',
     tags: ['Bruen', 'Second Amendment', 'SCOTUS', 'Constitutional Carry'],
     angle: 'Which state laws are winning in court, which are getting struck down',
   },
   {
     topic: 'building your first AR-15 in 2026 — parts, tariffs, and what to skip',
-    category: 'builds',
+    category: 'BUILDS',
     tags: ['AR-15', 'Build Guide', 'Tariffs', 'Parts'],
     angle: 'Real build advice including the tariff impact on parts pricing',
   },
   {
     topic: 'women and firearms — the fastest growing demographic in gun ownership',
-    category: 'opinion',
+    category: 'OPINION',
     tags: ['Women', 'New Gun Owners', '2A', 'Training'],
     angle: 'Why the numbers are moving, what the industry is getting right and wrong',
   },
   {
     topic: 'constitutional carry — 29 states and counting, what it actually means',
-    category: 'laws',
+    category: 'LAW',
     tags: ['Constitutional Carry', 'Permitless Carry', 'State Laws'],
     angle: 'Which states passed it recently, what changed for carriers on the ground',
   },
   {
     topic: 'CCW insurance in 2026 — USCCA vs CCW Safe vs Armed Citizens Legal Defense',
-    category: 'gear',
+    category: 'GEAR',
     tags: ['CCW Insurance', 'USCCA', 'CCW Safe', 'Legal Defense'],
     angle: 'Hard comparison of costs, coverage, and real claim scenarios',
   },
   {
     topic: 'ammo pricing in 2026 — tariffs, bulk buying strategy, and caliber choices',
-    category: 'market',
+    category: 'MARKET',
     tags: ['Ammo', 'Tariffs', 'Pricing', 'Bulk Buying'],
     angle: 'Which calibers got hit hardest by tariffs, when to stock up',
   },
   {
     topic: 'home defense setup — what actually works vs what YouTube sells you',
-    category: 'training',
+    category: 'TRAINING',
     tags: ['Home Defense', 'Shotgun', 'AR-15', 'Training'],
     angle: 'Practical advice on guns, staging, lighting, and communication',
   },
@@ -200,6 +201,11 @@ Start directly with the first section h2 or a strong opening paragraph.`
     }
   }
 
+  // CRITICAL: both providers occasionally wrap the response in ```html ... ``` fences
+  // despite instructions not to — this was leaking literal fence text onto published
+  // pages. Always strip before using.
+  body = stripMarkdownFences(body)
+
   if (!body) return null
 
   // Generate slug from topic
@@ -228,7 +234,7 @@ Return ONLY the headline, nothing else.`
         signal: AbortSignal.timeout(10000),
       })
       const td = await tr.json()
-      title = td.content?.[0]?.text?.trim().replace(/^["']|["']$/g, '') || title
+      title = stripMarkdownFences(td.content?.[0]?.text)?.trim().replace(/^["']|["']$/g, '') || title
     }
   } catch {}
 

@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
+import { stripMarkdownFences } from '@/lib/aiClient.js'
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const ANTHROPIC  = process.env.ANTHROPIC_API_KEY
@@ -33,7 +34,7 @@ async function writeArticle(title, category, tags) {
       body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2500,system:SYSTEM,messages:[{role:'user',content:prompt}]})
     })
     const d = await r.json()
-    const txt = d.content?.[0]?.text || ''
+    const txt = stripMarkdownFences(d.content?.[0]?.text) || ''
     if (txt.length > 200) return txt
   }
   if (GLM_KEY) {
@@ -43,7 +44,7 @@ async function writeArticle(title, category, tags) {
       body:JSON.stringify({model:'glm-4-air',max_tokens:2000,messages:[{role:'system',content:SYSTEM},{role:'user',content:prompt}]})
     })
     const d = await r.json()
-    const txt = d.choices?.[0]?.message?.content || ''
+    const txt = stripMarkdownFences(d.choices?.[0]?.message?.content) || ''
     if (txt.length > 200) return txt
   }
   return null
