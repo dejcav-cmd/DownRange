@@ -240,9 +240,9 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)]
-        | order(_createdAt desc) [$offset...$end] {
+        | order(featured desc, _createdAt desc) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
-          status, publishedAt, readTime, _createdAt, tags
+          status, publishedAt, readTime, _createdAt, tags, featured
         },
       "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)])
@@ -250,11 +250,15 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     params = { q: safe, offset, end: offset + perPage }
   } else {
     const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
+    // Featured posts always sort first (page 1, position 0). Must stay consistent across
+    // every page — mixing orderings between pages would duplicate/skip results under
+    // offset-based pagination.
+    const orderClause = `featured desc, ${orderField}`
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}]
-        | order(${orderField}) [$offset...$end] {
+        | order(${orderClause}) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
-          status, publishedAt, readTime, _createdAt, tags
+          status, publishedAt, readTime, _createdAt, tags, featured
         },
       "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}])
     }`

@@ -379,7 +379,7 @@ function normalizeSanityPost(p) {
     readTime:   typeof p.readTime === 'number' ? p.readTime + ' min read' : (p.readTime || '8 min read'),
     category:   (p.category || 'general').toUpperCase(),
     catColor:   '#C8922A',
-    featured:   false,
+    featured:   !!p.featured,
     img:        p.imageUrl || '/img/photos/blog-edc-pistol.jpg',
     excerpt:    p.excerpt || '',
     tags:       p.tags || [],
