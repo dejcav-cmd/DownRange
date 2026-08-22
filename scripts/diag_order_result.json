@@ -1,0 +1,287 @@
+{
+  "query": "{\n  \"posts\": *[_type == \"blogPost\" && (status == \"published\" || published == true) ]\n    | order(featured desc, _createdAt desc) [$offset...$end] {\n      _id, title, slug, category, excerpt, imageUrl, author,\n      status, publishedAt, readTime, _createdAt, tags, featured\n    },\n  \"total\": count(*[_type == \"blogPost\" && (status == \"published\" || published == true) ])\n}",
+  "result": {
+    "posts": [
+      {
+        "_createdAt": "2026-08-21T18:01:59Z",
+        "_id": "Y6XoXLprsW0XEk8cvplTJa",
+        "author": "DJ Cavalcanti",
+        "category": "gear",
+        "excerpt": "Hard comparison of costs, coverage, and real claim scenarios",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/427cc562012ead25243d4d983487e4cbb9fe8bd0-5100x3825.jpg",
+        "publishedAt": "2026-08-21T18:01:38.378Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-ccw-insurance-in-2026-uscca-vs-ccw-safe-vs-armed-citizens-le-2026"
+        },
+        "status": "published",
+        "tags": [
+          "CCW Insurance",
+          "USCCA",
+          "CCW Safe",
+          "Legal Defense"
+        ],
+        "title": "USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Costs and Coverage Compared"
+      },
+      {
+        "_createdAt": "2026-08-21T18:01:09Z",
+        "_id": "tUgkK4x2jCQXvq6Lz789nd",
+        "author": "DJ Cavalcanti",
+        "category": "opinion",
+        "excerpt": "Why the numbers are moving, what the industry is getting right and wrong",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/5624c6f3095fe71fad3afc427f44bbe934fb9afe-5852x3901.jpg",
+        "publishedAt": "2026-08-21T18:00:43.476Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-women-and-firearms-the-fastest-growing-demographic-in-gun-ow-2026"
+        },
+        "status": "published",
+        "tags": [
+          "Women",
+          "New Gun Owners",
+          "2A",
+          "Training"
+        ],
+        "title": "Women Gun Owners: The Industry's Fastest-Growing Market\u2014and Its Blind Spots"
+      },
+      {
+        "_createdAt": "2026-08-19T18:02:27Z",
+        "_id": "sZarkGCWKodXiPseaW3a9x",
+        "author": "DJ Cavalcanti",
+        "category": "builds",
+        "excerpt": "Real build advice including the tariff impact on parts pricing",
+        "featured": null,
+        "imageUrl": "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1280&q=80",
+        "publishedAt": "2026-08-19T18:02:01.563Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-building-your-first-ar-15-in-2026-parts-tariffs-and-what-to--2026"
+        },
+        "status": "published",
+        "tags": [
+          "AR-15",
+          "Build Guide",
+          "Tariffs",
+          "Parts"
+        ],
+        "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Fluff"
+      },
+      {
+        "_createdAt": "2026-08-12T18:02:37Z",
+        "_id": "VrXtJET951nNPZwlQ1vEXY",
+        "author": "DJ Cavalcanti",
+        "category": "laws",
+        "excerpt": "Practical guide for people who carry and cross state lines",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/76bd351b6c2fbb9fad176a49266b5b3883c21e00-3786x2840.jpg",
+        "publishedAt": "2026-08-12T18:02:16.474Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-concealed-carry-reciprocity-and-the-state-by-state-patchwork-2026"
+        },
+        "status": "published",
+        "tags": [
+          "CCW",
+          "Reciprocity",
+          "Concealed Carry",
+          "State Laws"
+        ],
+        "title": "Forty-Two States Allow Carry; Your Permit Still Won't Work Everywhere"
+      },
+      {
+        "_createdAt": "2026-08-07T18:01:38Z",
+        "_id": "U5bwFiwsdnUkP1ofQJecCT",
+        "author": "DJ Cavalcanti",
+        "category": "training",
+        "excerpt": "Practical advice on guns, staging, lighting, and communication",
+        "featured": null,
+        "imageUrl": "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1280&q=80",
+        "publishedAt": "2026-08-07T18:01:12.678Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-home-defense-setup-what-actually-works-vs-what-youtube-sells-2026"
+        },
+        "status": "published",
+        "tags": [
+          "Home Defense",
+          "Shotgun",
+          "AR-15",
+          "Training"
+        ],
+        "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+      },
+      {
+        "_createdAt": "2026-07-01T18:02:03Z",
+        "_id": "gg7RnZRpI6fQeqXVUfagOB",
+        "author": "DJ Cavalcanti",
+        "category": "laws",
+        "excerpt": "Which state laws are winning in court, which are getting struck down",
+        "featured": null,
+        "imageUrl": "https://images.unsplash.com/photo-1589829545856-d10d557cf95f?w=1280&q=80",
+        "publishedAt": "2026-07-01T18:01:41.660Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-the-bruen-standard-and-how-states-are-trying-to-work-around--2026"
+        },
+        "status": "published",
+        "tags": [
+          "Bruen",
+          "Second Amendment",
+          "SCOTUS",
+          "Constitutional Carry"
+        ],
+        "title": "States Test Bruen: Which Gun Laws Survive Court Challenges"
+      },
+      {
+        "_createdAt": "2026-06-29T18:02:28Z",
+        "_id": "ea3WAUgOibFNKEs8s3chdy",
+        "author": "DJ Cavalcanti",
+        "category": "gear",
+        "excerpt": "Glock 19 vs SIG P365 XL vs Springfield Hellcat \u2014 specific, opinionated picks",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/ddce95a4fd6476a3aa5ae847db020a0ca8262553-1280x853.jpg",
+        "publishedAt": "2026-06-29T18:02:05.030Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-best-edc-handguns-in-2026-real-comparisons-for-real-carry-2026"
+        },
+        "status": "published",
+        "tags": [
+          "EDC",
+          "Pistols",
+          "Concealed Carry",
+          "Handguns"
+        ],
+        "title": "Three Carry Guns That Actually Earn Their Belt Space"
+      },
+      {
+        "_createdAt": "2026-06-26T10:00:55Z",
+        "_id": "blog-draft-dry-fire-in-2026-the-apps-the-tools-and-the-routines-that-actually-build-skill-2026-2947",
+        "author": "DJ Cavalcanti",
+        "category": "TRAINING",
+        "excerpt": "Your Dry Fire Setup Sucks. Here's Why That's Actually Good News.\n\nI've been carrying a gun every single day for over a decade. I've also spent the last three years watching dry fire training go from s...",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/b584c89d607ff335db6196cb4605d040ba9dc143-6720x4480.jpg",
+        "publishedAt": "2026-06-29T10:01:51.400Z",
+        "readTime": "6 min read",
+        "slug": {
+          "current": "dry-fire-in-2026-the-apps-the-tools-and-the-routines-that-actually-build-skill-2026"
+        },
+        "status": "published",
+        "tags": [
+          "dry fire",
+          "training",
+          "SIRT",
+          "MantisX",
+          "Strikeman"
+        ],
+        "title": "Dry fire in 2026: the apps, the tools, and the routines that actually build skill"
+      },
+      {
+        "_createdAt": "2026-06-22T18:01:32Z",
+        "_id": "KtBy4YB66kH33JX4YwYUan",
+        "author": "DJ Cavalcanti",
+        "category": "training",
+        "excerpt": "Practical advice on guns, staging, lighting, and communication",
+        "featured": null,
+        "imageUrl": "https://images.unsplash.com/photo-1595590424283-b8f17842773f?w=1280&q=80",
+        "publishedAt": "2026-06-22T18:01:07.009Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-home-defense-setup-what-actually-works-vs-what-youtube-sells-2026"
+        },
+        "status": "published",
+        "tags": [
+          "Home Defense",
+          "Shotgun",
+          "AR-15",
+          "Training"
+        ],
+        "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+      },
+      {
+        "_createdAt": "2026-06-19T10:01:22Z",
+        "_id": "blog-draft-suppressors-in-2026-no-200-stamp-6-million-registered-and-what-comes-next-2026-2946",
+        "author": "DJ Cavalcanti",
+        "category": "ANALYSIS",
+        "excerpt": "The Suppressor Tax Stamp Just Died \u2014 Here's What Actually Happened\n\nI got the call on a Tuesday afternoon. A contact in DC sent me the summary before the official release hit the wire. The $200 NFA ta...",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/83c138cc6161a441abd59a7691baf12c6914ca48-5721x3218.jpg",
+        "publishedAt": "2026-06-24T10:01:05.966Z",
+        "readTime": "6 min read",
+        "slug": {
+          "current": "suppressors-in-2026-no-200-stamp-6-million-registered-and-what-comes-next-2026"
+        },
+        "status": "published",
+        "tags": [
+          "suppressors",
+          "NFA",
+          "tax stamp",
+          "common use",
+          "Bruen"
+        ],
+        "title": "Suppressors in 2026: no $200 stamp, 6 million registered, and what comes next"
+      },
+      {
+        "_createdAt": "2026-06-10T18:03:48Z",
+        "_id": "SKDVlyMd9FiV3xrtgTmeoN",
+        "author": "DJ Cavalcanti",
+        "category": "opinion",
+        "excerpt": "Which states passed it recently, what changed for carriers on the ground",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/c53600f573ef450ddccc614d74bbf4edaaae4176-6720x4480.jpg",
+        "publishedAt": "2026-06-10T18:03:25.657Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-constitutional-carry-29-states-and-counting-what-it-actually-2026"
+        },
+        "status": "published",
+        "tags": [
+          "Constitutional Carry",
+          "Permitless Carry",
+          "State Laws"
+        ],
+        "title": "Constitutional Carry Now the Law in 29 States\u2014Here's the Real Map"
+      },
+      {
+        "_createdAt": "2026-06-10T18:03:22Z",
+        "_id": "FVNP6r5cO7N0o7HVua4qwH",
+        "author": "DJ Cavalcanti",
+        "category": "opinion",
+        "excerpt": "Why the numbers are moving, what the industry is getting right and wrong",
+        "featured": null,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/b48bc8ffb9ead69dc2756e6aac9ee1b82f4fbb3c-5718x3812.jpg",
+        "publishedAt": "2026-06-10T18:02:57.383Z",
+        "readTime": "8 min read",
+        "slug": {
+          "_type": "slug",
+          "current": "dj-women-and-firearms-the-fastest-growing-demographic-in-gun-ow-2026"
+        },
+        "status": "published",
+        "tags": [
+          "Women",
+          "New Gun Owners",
+          "2A",
+          "Training"
+        ],
+        "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong"
+      }
+    ],
+    "total": 29
+  },
+  "syncTags": [
+    "s1:NTw64g"
+  ],
+  "ms": 34
+}
