@@ -105,29 +105,30 @@ async function scrapeATF() {
   }
 }
 
-// ── Accurate current ATF figures (May 2026 report) as the reliable baseline ──
+// ── Accurate current ATF figures (July 2026 report, confirmed 2026-08-22) as the
+// reliable baseline used only when the live scrape fails ──────────────────────
 const BASE_STATS = {
-  reportMonth: 'May 2026',
-  lastUpdated: 'June 24, 2026',
-  silencerAppsReceived: 116821,
-  totalNfaReceived: 222550,
-  nfaFinalized: 216669,
+  reportMonth: 'July 2026',
+  lastUpdated: 'August 17, 2026',
+  silencerAppsReceived: 120623,
+  totalNfaReceived: 225231,
+  nfaFinalized: 254639,
   medianEForm4: 8,
-  silencersRegistered: 6439813,
-  sbrRegistered: 1178348,
+  silencersRegistered: 6654209,
+  sbrRegistered: 1227044,
 }
 
 function getFallbackData() {
   const rows = [
-    ['Form 4 Individual', 8, 63],
-    ['Form 4 Trust', 25, 25],
-    ['Form 1', 62, 33],
-    ['Form 3', 1, 8],
-    ['Form 5', 2, 9],
-    ['Form 2', 1, 8],
-    ['Form 9', 1, 6],
-    ['Form 10', 6, 9],
-    ['Form 20', 2, 6],
+    ['Form 4 Individual', 9, 28],
+    ['Form 4 Trust', 33, 34],
+    ['Form 1', 57, 38],
+    ['Form 3', 1, 7],
+    ['Form 5', 1, 6],
+    ['Form 2', 1, 6],
+    ['Form 9', 1, 3],
+    ['Form 10', 22, 6],
+    ['Form 20', 2, 7],
     ['Form 7', null, 60],
   ]
   const forms = rows.map(([n, e, p]) => buildForm(n, e, p)).filter(Boolean)
@@ -202,6 +203,7 @@ async function doScrapeAndSave(t0) {
     }
   } catch {}
 
+  const usedFallback = result.source !== 'atf.gov'
   const doc = {
     _id:            `nfa-wait-${Date.now()}`,
     _type:          'nfaWaitTime',
@@ -211,14 +213,21 @@ async function doScrapeAndSave(t0) {
     sourceUrl:      ATF_URL,
     forms:          result.forms,
     atfStats:       result.stats,
-    communityNotes: `Fetched from ATF.gov in ${Date.now() - t0}ms`,
+    communityNotes: usedFallback
+      ? `WARNING: live ATF scrape failed — served hardcoded baseline (${result.reportMonth}) in ${Date.now() - t0}ms`
+      : `Fetched from ATF.gov in ${Date.now() - t0}ms`,
   }
   await sanity.create(doc)
 
+  // CRITICAL: report a distinct 'warning' status when we fall back to the
+  // baseline — this was previously always reported as 'success', which let
+  // the live ATF scrape silently break for a month while Mission Control
+  // showed HEALTHY the whole time. A fallback run is not a healthy run.
   await reportCronRun('nfa-wait-times', {
-    status: 'success',
+    status: usedFallback ? 'warning' : 'success',
     ms: Date.now() - t0,
     details: `${result.forms.length} forms from ${result.source}, month: ${result.reportMonth}`,
+    error: usedFallback ? 'Live ATF scrape failed — served hardcoded fallback baseline instead of fresh data' : null,
   })
 
   return Response.json({ ok: true, source: result.source, official: true, forms: result.forms.length, month: result.reportMonth, ms: Date.now() - t0, data: result })

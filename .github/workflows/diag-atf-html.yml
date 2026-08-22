@@ -1,0 +1,50 @@
+name: Diag ATF HTML
+
+on:
+  push:
+    paths:
+      - '.github/workflows/diag-atf-html.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch raw ATF HTML
+        working-directory: scripts
+        run: python3 diag_atf_html.py > diag_output.log 2>&1 || true
+      - name: Show snippet
+        working-directory: scripts
+        run: cat diag_output.log
+      - name: Commit raw HTML back to repo
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          cd scripts
+          CONTENT_B64=$(base64 -w 0 atf_raw.html)
+          SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
+            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/atf_raw.html" \
+            | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
+          if [ -n "$SHA" ]; then
+            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/atf_raw.html" \
+              -d "{\"message\":\"chore: atf raw html snapshot\",\"content\":\"$CONTENT_B64\",\"sha\":\"$SHA\"}"
+          else
+            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
+              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/atf_raw.html" \
+              -d "{\"message\":\"chore: atf raw html snapshot\",\"content\":\"$CONTENT_B64\"}"
+          fi
