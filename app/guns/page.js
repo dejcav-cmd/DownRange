@@ -324,8 +324,6 @@ export default async function GunsPage({ searchParams }) {
           <div style={{ marginTop:52, display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:12 }}>
             {[
               { label:'⚖ Compare Guns',     href:'/compare/glock-19-vs-sig-p320', desc:'AI head-to-head specs' },
-              { label:'$ Value Estimator',   href:'/value-estimator',              desc:'What is your gun worth?' },
-              { label:'🔫 Holster Finder',   href:'/holsters/glock-19',            desc:'IWB/OWB by model' },
               { label:'⚙ NFA Tracker',       href:'/nfa-tracker',                  desc:'Form 4 wait times' },
               { label:'🔖 New Releases',     href:'/releases',                     desc:'Latest launches' },
               { label:'📚 Ammo Guide',       href:'/ammo/9mm',                     desc:'9mm, 5.56, .308 & more' },

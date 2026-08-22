@@ -26,11 +26,11 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://downrangeco.com'
 // All known valid routes
 const VALID_ROUTES = new Set([
   '/','/about','/admin','/ammo','/canada','/carry-insurance','/compare',
-  '/contact','/contribute','/deals','/ffl-finder','/guns','/holsters',
+  '/contact','/contribute','/deals','/ffl-finder','/guns',
   '/hunting','/laws','/learn','/market','/news','/nfa-tracker',
   '/precision','/preparedness','/press','/privacy','/ranges',
   '/releases','/reviews','/safe-storage','/search','/state-hub',
-  '/state-news','/terms','/training','/value-estimator','/video','/widget',
+  '/state-news','/terms','/training','/video','/widget',
 ])
 
 // Firearm-related image check — keywords that should appear in alt text or URL

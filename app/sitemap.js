@@ -44,7 +44,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/ballistics`,          priority: 0.85, changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/ranges`,              priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/nfa-tracker`,         priority: 0.8,  changeFrequency: 'weekly',  lastModified: NOW },
-  { url: `${BASE}/value-estimator`,     priority: 0.8,  changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/ffl-finder`,          priority: 0.8,  changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/safe-storage`,        priority: 0.75, changeFrequency: 'monthly', lastModified: NOW },
 
