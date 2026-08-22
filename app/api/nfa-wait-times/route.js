@@ -56,13 +56,15 @@ function buildForm(name, eform, paper) {
 // bot/WAF protection around their Drupal 10 site redesign. Routed through the
 // Jina reader proxy (same pattern already used for gun.deals elsewhere in this
 // codebase) with X-Return-Format: html so the existing table-parsing regex
-// below keeps working unchanged.
+// below keeps working unchanged. Deliberately anonymous (no Authorization
+// header): the JINA_API_KEY secret currently on file returns 402 Payment
+// Required on this endpoint, while an unauthenticated request succeeds on
+// Jina's free tier. Do not re-add the API key here without verifying it's
+// valid again first.
 async function scrapeATF() {
   try {
-    const jinaHeaders = { 'X-Return-Format': 'html' }
-    if (process.env.JINA_API_KEY) jinaHeaders['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
     let res = await fetch('https://r.jina.ai/' + ATF_URL, {
-      headers: jinaHeaders,
+      headers: { 'X-Return-Format': 'html' },
       signal: AbortSignal.timeout(25000),
     })
     // Fall back to a direct fetch in case ATF ever lifts the block, or Jina is down
