@@ -1,0 +1,42 @@
+name: Verify Compare Removed
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-compare-removed.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Check compare page status
+        run: |
+          STATUS=$(curl -s -o /dev/null -w "%{http_code}" "https://www.downrangeco.com/compare/glock-19-vs-sig-p320")
+          echo "compare page status: $STATUS" > scripts/verify_compare_removed.txt
+          STATUS2=$(curl -s -o /dev/null -w "%{http_code}" "https://www.downrangeco.com/guns")
+          echo "guns page status: $STATUS2" >> scripts/verify_compare_removed.txt
+          cat scripts/verify_compare_removed.txt
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          COMMIT_PATH: scripts/verify_compare_removed.txt
+          LOCAL_FILE: verify_compare_removed.txt
+        working-directory: scripts
+        run: python3 commit_atf_html.py
