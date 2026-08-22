@@ -1,0 +1,220 @@
+{
+  "nfa_snapshots": {
+    "query": "*[_type == \"nfaWaitTime\"] | order(fetchedAt desc) [0...10] {_id, fetchedAt, reportMonth, sourceUrl, communityNotes, \"formCount\": count(forms)}",
+    "result": [
+      {
+        "_id": "nfa-wait-1787292042711",
+        "communityNotes": "Fetched from ATF.gov in 270ms",
+        "fetchedAt": "2026-08-21T06:00:42.711Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1787119200640",
+        "communityNotes": "Fetched from ATF.gov in 269ms",
+        "fetchedAt": "2026-08-19T06:00:00.640Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1786946498488",
+        "communityNotes": "Fetched from ATF.gov in 233ms",
+        "fetchedAt": "2026-08-17T06:01:38.488Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1786773767920",
+        "communityNotes": "Fetched from ATF.gov in 226ms",
+        "fetchedAt": "2026-08-15T06:02:47.920Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1786600890453",
+        "communityNotes": "Fetched from ATF.gov in 269ms",
+        "fetchedAt": "2026-08-13T06:01:30.453Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1786428062157",
+        "communityNotes": "Fetched from ATF.gov in 234ms",
+        "fetchedAt": "2026-08-11T06:01:02.157Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1786255270555",
+        "communityNotes": "Fetched from ATF.gov in 241ms",
+        "fetchedAt": "2026-08-09T06:01:10.555Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1786082478170",
+        "communityNotes": "Fetched from ATF.gov in 305ms",
+        "fetchedAt": "2026-08-07T06:01:18.170Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1785909700382",
+        "communityNotes": "Fetched from ATF.gov in 202ms",
+        "fetchedAt": "2026-08-05T06:01:40.382Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      },
+      {
+        "_id": "nfa-wait-1785736803940",
+        "communityNotes": "Fetched from ATF.gov in 238ms",
+        "fetchedAt": "2026-08-03T06:00:03.940Z",
+        "formCount": 10,
+        "reportMonth": "May 2026",
+        "sourceUrl": "https://www.atf.gov/resource-center/current-processing-times"
+      }
+    ],
+    "syncTags": [
+      "s1:YcEeqg"
+    ],
+    "ms": 12
+  },
+  "cron_runs": {
+    "query": "*[_type == \"cronRun\" && jobId == \"nfa-wait-times\"] | order(_createdAt desc) [0...15] {_id, _createdAt, status, ms, error, details}",
+    "result": [
+      {
+        "_createdAt": "2026-08-21T06:00:43Z",
+        "_id": "cron-run-nfa-wait-times-1787292043936",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1494,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-19T06:00:02Z",
+        "_id": "cron-run-nfa-wait-times-1787119202152",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1781,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-17T06:01:39Z",
+        "_id": "cron-run-nfa-wait-times-1786946499494",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1239,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-15T06:02:49Z",
+        "_id": "cron-run-nfa-wait-times-1786773769050",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1355,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-13T06:01:31Z",
+        "_id": "cron-run-nfa-wait-times-1786600891826",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1641,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-11T06:01:03Z",
+        "_id": "cron-run-nfa-wait-times-1786428063594",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1670,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-09T06:01:11Z",
+        "_id": "cron-run-nfa-wait-times-1786255271756",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1442,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-07T06:01:19Z",
+        "_id": "cron-run-nfa-wait-times-1786082479414",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1548,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-05T06:01:41Z",
+        "_id": "cron-run-nfa-wait-times-1785909701679",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1499,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-03T06:00:05Z",
+        "_id": "cron-run-nfa-wait-times-1785736805354",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1652,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-08-01T06:00:47Z",
+        "_id": "cron-run-nfa-wait-times-1785564047335",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1211,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-07-31T06:01:42Z",
+        "_id": "cron-run-nfa-wait-times-1785477702154",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1695,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-07-29T06:01:36Z",
+        "_id": "cron-run-nfa-wait-times-1785304896134",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1278,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-07-27T06:00:06Z",
+        "_id": "cron-run-nfa-wait-times-1785132006087",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1693,
+        "status": "success"
+      },
+      {
+        "_createdAt": "2026-07-25T06:01:16Z",
+        "_id": "cron-run-nfa-wait-times-1784959276464",
+        "details": "10 forms from atf.gov-baseline, month: May 2026",
+        "error": null,
+        "ms": 1639,
+        "status": "success"
+      }
+    ],
+    "syncTags": [
+      "s1:rgLKAw"
+    ],
+    "ms": 18
+  }
+}
