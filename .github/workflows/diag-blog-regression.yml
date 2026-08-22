@@ -1,0 +1,40 @@
+name: Diag Blog Regression
+
+on:
+  push:
+    paths:
+      - '.github/workflows/diag-blog-regression.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Run diagnostic
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
+        working-directory: scripts
+        run: python3 diag_blog_regression.py > diag_output.log 2>&1 || true
+      - name: Show log
+        working-directory: scripts
+        run: cat diag_output.log
+      - name: Report result
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        working-directory: scripts
+        run: python3 report_blog_regression.py
