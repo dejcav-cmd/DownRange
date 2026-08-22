@@ -151,15 +151,6 @@ const SITE_MAP = [
         dataSource: 'NFATracker.com scrape',
       },
       {
-        url: '/compare/:guns',
-        title: 'Gun Compare',
-        desc: 'Head-to-head AI gun comparison',
-        revalidate: 3600,
-        crons: [],
-        sanityType: 'none (AI on-demand)',
-        dataSource: 'AI on-demand query',
-      },
-      {
         url: '/ffl-finder',
         title: 'FFL Finder',
         desc: 'Licensed dealer locator',

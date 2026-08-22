@@ -35,7 +35,6 @@ const NAV = [
     children: [
       { label: '📖 Encyclopedia',      href: '/guns',                          desc: 'Specs, history, variants' },
       { label: '🆕 New Releases',      href: '/releases',                      desc: 'Latest manufacturer launches' },
-      { label: '⚖️ Compare Guns',      href: '/compare/glock-19-vs-sig-p320', desc: 'Head-to-head with AI' },
       { label: '⚙️ NFA Tracker',       href: '/nfa-tracker',                  desc: 'Form 4 wait times' },
       { label: '🎯 Ballistics Calc',    href: '/ballistics',                   desc: 'Drop tables, wind drift, MOA/MRAD to 1,000 yards' },
     ]

@@ -25,7 +25,7 @@ const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://downrangeco.com'
 
 // All known valid routes
 const VALID_ROUTES = new Set([
-  '/','/about','/admin','/ammo','/canada','/carry-insurance','/compare',
+  '/','/about','/admin','/ammo','/canada','/carry-insurance',
   '/contact','/contribute','/deals','/ffl-finder','/guns',
   '/hunting','/laws','/learn','/market','/news','/nfa-tracker',
   '/precision','/preparedness','/press','/privacy','/ranges',

@@ -186,10 +186,6 @@ export default async function GunsPage({ searchParams }) {
                   {c.label}
                 </a>
               ))}
-              <a href="/guns/compare"
-                style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:'2px solid transparent', color:'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em' }}>
-                ⚖ Compare →
-              </a>
             </div>
             {/* Sort */}
             <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
@@ -323,7 +319,6 @@ export default async function GunsPage({ searchParams }) {
           {/* ── QUICK-ACCESS TOOLS ── */}
           <div style={{ marginTop:52, display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:12 }}>
             {[
-              { label:'⚖ Compare Guns',     href:'/compare/glock-19-vs-sig-p320', desc:'AI head-to-head specs' },
               { label:'⚙ NFA Tracker',       href:'/nfa-tracker',                  desc:'Form 4 wait times' },
               { label:'🔖 New Releases',     href:'/releases',                     desc:'Latest launches' },
               { label:'📚 Ammo Guide',       href:'/ammo/9mm',                     desc:'9mm, 5.56, .308 & more' },

@@ -35,7 +35,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/blog`,                priority: 0.8,  changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/giveaways`,           priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/competitions`,         priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
-  { url: `${BASE}/compare`,              priority: 0.7,  changeFrequency: 'weekly',  lastModified: NOW },
 
   // CCW / Carry tools — high-intent search queries
   { url: `${BASE}/carry-insurance`,     priority: 0.85, changeFrequency: 'monthly', lastModified: NOW },
