@@ -1,7 +1,55 @@
 {
-  "query": "{\n  \"posts\": *[_type == \"blogPost\" && (status == \"published\" || published == true) ]\n    | order(featured desc, _createdAt desc) [$offset...$end] {\n      _id, title, slug, category, excerpt, imageUrl, author,\n      status, publishedAt, readTime, _createdAt, tags, featured\n    },\n  \"total\": count(*[_type == \"blogPost\" && (status == \"published\" || published == true) ])\n}",
+  "query": "{\n  \"posts\": *[_type == \"blogPost\" && (status == \"published\" || published == true) ]\n    | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {\n      _id, title, slug, category, excerpt, imageUrl, author,\n      status, publishedAt, readTime, _createdAt, tags, featured\n    },\n  \"total\": count(*[_type == \"blogPost\" && (status == \"published\" || published == true) ])\n}",
   "result": {
     "posts": [
+      {
+        "_createdAt": "2026-08-21T23:49:07Z",
+        "_id": "blog-fierce-wingman-sbr-2026",
+        "author": "DJ Cavalcanti",
+        "category": "review",
+        "excerpt": "Fierce Firearms just launched a 5.4-pound titanium SBR in three Creedmoor chamberings, landing exactly as the $200 NFA tax disappears. Here's why the timing, not just the rifle, is the story.",
+        "featured": true,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/51eb7970eac3eba869c8137c9ff1e3187de0c93e-1920x1283.jpg",
+        "publishedAt": "2026-08-21T23:49:07Z",
+        "readTime": 4,
+        "slug": {
+          "_type": "slug",
+          "current": "fierce-firearms-wingman-sbr-2026"
+        },
+        "status": "published",
+        "tags": [
+          "SBR",
+          "NFA",
+          "Fierce Firearms",
+          "Precision Rifle",
+          "Creedmoor"
+        ],
+        "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+      },
+      {
+        "_createdAt": "2026-08-22T00:24:21Z",
+        "_id": "blog-jrc-glock-frame-weight-2026",
+        "author": "DJ Cavalcanti",
+        "category": "GEAR",
+        "excerpt": "JRC Guns just launched a USA-made frame weight that adds 6 ounces to the front of your Glock without touching the slide. Here's why non-reciprocating mass is the whole point.",
+        "featured": false,
+        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/ce7527a81608b48cdd18e7816486282f864c9766-1448x1086.webp",
+        "publishedAt": "2026-08-22T00:24:21Z",
+        "readTime": 3,
+        "slug": {
+          "_type": "slug",
+          "current": "jrc-guns-glock-frame-weight-2026"
+        },
+        "status": "published",
+        "tags": [
+          "Glock",
+          "Frame Weight",
+          "Competition",
+          "Recoil Control",
+          "JRC Guns"
+        ],
+        "title": "JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps"
+      },
       {
         "_createdAt": "2026-08-21T18:01:59Z",
         "_id": "Y6XoXLprsW0XEk8cvplTJa",
@@ -231,51 +279,6 @@
           "Bruen"
         ],
         "title": "Suppressors in 2026: no $200 stamp, 6 million registered, and what comes next"
-      },
-      {
-        "_createdAt": "2026-06-10T18:03:48Z",
-        "_id": "SKDVlyMd9FiV3xrtgTmeoN",
-        "author": "DJ Cavalcanti",
-        "category": "opinion",
-        "excerpt": "Which states passed it recently, what changed for carriers on the ground",
-        "featured": null,
-        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/c53600f573ef450ddccc614d74bbf4edaaae4176-6720x4480.jpg",
-        "publishedAt": "2026-06-10T18:03:25.657Z",
-        "readTime": "8 min read",
-        "slug": {
-          "_type": "slug",
-          "current": "dj-constitutional-carry-29-states-and-counting-what-it-actually-2026"
-        },
-        "status": "published",
-        "tags": [
-          "Constitutional Carry",
-          "Permitless Carry",
-          "State Laws"
-        ],
-        "title": "Constitutional Carry Now the Law in 29 States\u2014Here's the Real Map"
-      },
-      {
-        "_createdAt": "2026-06-10T18:03:22Z",
-        "_id": "FVNP6r5cO7N0o7HVua4qwH",
-        "author": "DJ Cavalcanti",
-        "category": "opinion",
-        "excerpt": "Why the numbers are moving, what the industry is getting right and wrong",
-        "featured": null,
-        "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/b48bc8ffb9ead69dc2756e6aac9ee1b82f4fbb3c-5718x3812.jpg",
-        "publishedAt": "2026-06-10T18:02:57.383Z",
-        "readTime": "8 min read",
-        "slug": {
-          "_type": "slug",
-          "current": "dj-women-and-firearms-the-fastest-growing-demographic-in-gun-ow-2026"
-        },
-        "status": "published",
-        "tags": [
-          "Women",
-          "New Gun Owners",
-          "2A",
-          "Training"
-        ],
-        "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong"
       }
     ],
     "total": 29
@@ -283,5 +286,5 @@
   "syncTags": [
     "s1:NTw64g"
   ],
-  "ms": 34
+  "ms": 54
 }
