@@ -1,0 +1,37 @@
+name: Test ATF Median
+
+on:
+  push:
+    paths:
+      - '.github/workflows/test-atf-median.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Test median
+        working-directory: scripts
+        run: python3 test_atf_median.py > test_output_median.log 2>&1 || true
+      - name: Show log
+        working-directory: scripts
+        run: cat test_output_median.log
+      - name: Report result
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        working-directory: scripts
+        run: python3 report_atf_median.py
