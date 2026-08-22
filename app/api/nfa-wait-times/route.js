@@ -55,16 +55,28 @@ function buildForm(name, eform, paper) {
 // NOTE: as of 2026-08-22, direct fetches to ATF_URL return HTTP 403 — ATF added
 // bot/WAF protection around their Drupal 10 site redesign. Routed through the
 // Jina reader proxy (same pattern already used for gun.deals elsewhere in this
-// codebase) with X-Return-Format: html so the existing table-parsing regex
-// below keeps working unchanged. Deliberately anonymous (no Authorization
-// header): the JINA_API_KEY secret currently on file returns 402 Payment
-// Required on this endpoint, while an unauthenticated request succeeds on
-// Jina's free tier. Do not re-add the API key here without verifying it's
-// valid again first.
+// codebase). Deliberately anonymous (no Authorization header) and requesting
+// the DEFAULT markdown format, not X-Return-Format: html — two things changed
+// from the original approach after live testing:
+//   1. The JINA_API_KEY secret on file returns 402 Payment Required; an
+//      unauthenticated request succeeds on Jina's free tier. Do not re-add
+//      the key here without verifying it's valid again first.
+//   2. ATF's page now uses a "Tablesaw" responsive-table library that makes
+//      the raw HTML unreliable to regex against (duplicated/reordered cells
+//      for the mobile stacked view). Jina's cleaned markdown is far more
+//      stable, but it also duplicates each cell's column-label as a bold
+//      prefix (e.g. "**eForms****57 days") — the regexes below are written
+//      to tolerate that specific artifact. Verified against a live fetch on
+//      2026-08-22: all 10 forms and all 6 headline stats matched the ATF
+//      page exactly.
+const FORM_LABELS = [
+  'Form 4 Trust', 'Form 4 Individual', 'Form 1', 'Form 2', 'Form 3',
+  'Form 5', 'Form 7', 'Form 9', 'Form 10', 'Form 20',
+]
+
 async function scrapeATF() {
   try {
     let res = await fetch('https://r.jina.ai/' + ATF_URL, {
-      headers: { 'X-Return-Format': 'html' },
       signal: AbortSignal.timeout(25000),
     })
     // Fall back to a direct fetch in case ATF ever lifts the block, or Jina is down
@@ -75,42 +87,38 @@ async function scrapeATF() {
       })
     }
     if (!res.ok) throw new Error(`ATF returned ${res.status}`)
-    const html = await res.text()
+    const md = await res.text()
 
-    const period = html.match(/applications finalized in ([A-Za-z]+ \d{4})/i)
+    const period = md.match(/applications finalized in ([A-Za-z]+ \d{4})/i)
     const reportMonth = period ? period[1] : ''
 
     const forms = []
-    const dayVal = (c) => {
-      const s = c.replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim()
-      if (s === '-' || s === '—' || s === '') return null
-      const m = s.match(/(\d+)/)
-      return m ? parseInt(m[1]) : null
-    }
-    for (const row of html.matchAll(/<tr[^>]*>([\s\S]*?)<\/tr>/gi)) {
-      const cells = [...row[1].matchAll(/<t[dh][^>]*>([\s\S]*?)<\/t[dh]>/gi)]
-        .map(m => m[1].replace(/<[^>]+>/g, '').replace(/&nbsp;/g, ' ').trim())
-      if (cells.length < 3) continue
-      const name = cells[0]
-      if (!/^form\s/i.test(name)) continue
-      // last two cells that look like a day count or dash = eForms, Paper
-      const dayCells = cells.filter(c => /^\d+\s*days?$/i.test(c) || /^\d+$/.test(c) || c === '-' || c === '—')
-      if (dayCells.length < 2) continue
-      const eform = dayVal(dayCells[dayCells.length - 2])
-      const paper = dayVal(dayCells[dayCells.length - 1])
-      const f = buildForm(name, eform, paper)
+    const lines = md.split('\n')
+    const dataLines = lines.filter(ln => ln.trim().startsWith('|') && /\*\*Form\s/.test(ln))
+    for (const ln of dataLines) {
+      const matchedLabel = FORM_LABELS.find(label => new RegExp('\\*\\*' + label.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\*\\*').test(ln))
+      if (!matchedLabel) continue
+      const eformM = ln.match(/eForms\*+\s*(-|\d+)/)
+      const paperM = ln.match(/Paper\*+\s*(-|\d+)/)
+      const eform = (!eformM || eformM[1] === '-') ? null : parseInt(eformM[1])
+      const paper = (!paperM || paperM[1] === '-') ? null : parseInt(paperM[1])
+      const f = buildForm(matchedLabel, eform, paper)
       if (f) forms.push(f)
     }
 
-    // Parse headline stats
+    // Parse headline stats — tolerate the repeated bold-label prefix and
+    // trailing " day"/"days" suffix that Jina's markdown conversion adds.
     const stats = { ...BASE_STATS }
-    const grab = (re) => { const m = html.match(re); return m ? parseInt(m[1].replace(/,/g, '')) : null }
-    stats.silencerAppsReceived = grab(/Form 4 silencer applications received[^\d]*([\d,]+)/i) ?? stats.silencerAppsReceived
-    stats.totalNfaReceived      = grab(/Total number of NFA applications received[^\d]*([\d,]+)/i) ?? stats.totalNfaReceived
-    stats.nfaFinalized          = grab(/Total number of NFA applications finalized[^\d]*([\d,]+)/i) ?? stats.nfaFinalized
-    stats.medianEForm4          = grab(/Median processing times for individual eForm 4 applications[^\d]*([\d,]+)/i) ?? stats.medianEForm4
-    stats.silencersRegistered   = grab(/Silencers[^\d]*([\d,]{6,})/i) ?? stats.silencersRegistered
-    stats.sbrRegistered         = grab(/Short-Barreled Rifles[^\d]*([\d,]+)/i) ?? stats.sbrRegistered
+    const grab = (labelPattern) => {
+      const m = md.match(new RegExp(labelPattern + '\\s*\\|[^|\\n]*?(\\d+(?:,\\d{3})*)(?:\\s*days?)?\\s*\\|', 'i'))
+      return m ? parseInt(m[1].replace(/,/g, '')) : null
+    }
+    stats.totalNfaReceived    = grab('Total number of NFA applications received') ?? stats.totalNfaReceived
+    stats.silencerAppsReceived = grab('Total number of Form 4 silencer applications received') ?? stats.silencerAppsReceived
+    stats.nfaFinalized        = grab('Total number of NFA applications finalized') ?? stats.nfaFinalized
+    stats.medianEForm4        = grab('Median processing times for individual eForm 4 applications') ?? stats.medianEForm4
+    stats.silencersRegistered = grab('\\bSilencers\\b') ?? stats.silencersRegistered
+    stats.sbrRegistered       = grab('Short-Barreled Rifles') ?? stats.sbrRegistered
     if (reportMonth) stats.reportMonth = reportMonth
 
     if (forms.length < 3) throw new Error(`Only parsed ${forms.length} forms`)
