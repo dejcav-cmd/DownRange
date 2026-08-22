@@ -1,0 +1,44 @@
+name: Trigger Live NFA Scrape
+
+on:
+  push:
+    paths:
+      - '.github/workflows/trigger-live-nfa-scrape.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Call live nfa-wait-times endpoint (forces real scrape)
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        working-directory: scripts
+        run: |
+          curl -s "https://www.downrangeco.com/api/nfa-wait-times" \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -o live_nfa_result.json
+          cat live_nfa_result.json
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          COMMIT_PATH: scripts/live_nfa_result.json
+          LOCAL_FILE: live_nfa_result.json
+        working-directory: scripts
+        run: python3 commit_atf_html.py
