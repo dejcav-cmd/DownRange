@@ -1,0 +1,42 @@
+name: Verify Live Blog Page HTML
+
+on:
+  push:
+    paths:
+      - '.github/workflows/verify-live-blog-html.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Fetch live blog page HTML
+        run: |
+          curl -s "https://www.downrangeco.com/blog" -H "Cache-Control: no-cache" -o scripts/live_blog_page.html
+          echo "--- Article count line ---"
+          grep -o '[0-9]* articles' scripts/live_blog_page.html | head -1
+          echo "--- First 3 article titles found ---"
+          grep -oE 'READ →' scripts/live_blog_page.html | wc -l
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          COMMIT_PATH: scripts/live_blog_page.html
+          LOCAL_FILE: live_blog_page.html
+        working-directory: scripts
+        run: python3 commit_atf_html.py
