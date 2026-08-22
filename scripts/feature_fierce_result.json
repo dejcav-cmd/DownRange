@@ -1,0 +1,16 @@
+{
+  "ok": true,
+  "mutate_result": {
+    "transactionId": "tUgkK4x2jCQXvq6Lz8KyHL",
+    "results": [
+      {
+        "operation": "update"
+      }
+    ]
+  },
+  "verify": {
+    "_id": "blog-fierce-wingman-sbr-2026",
+    "featured": true,
+    "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+  }
+}
