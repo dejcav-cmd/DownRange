@@ -1,0 +1,106 @@
+{
+  "all_page1": {
+    "query": "{\n      \"posts\": *[_type == \"blogPost\" && (status == \"published\" || published == true) ]\n        | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {\n          _id, title, category, status, published\n        },\n      \"total\": count(*[_type == \"blogPost\" && (status == \"published\" || published == true) ])\n    }",
+    "result": {
+      "posts": [
+        {
+          "_id": "blog-fierce-wingman-sbr-2026",
+          "category": "GEAR",
+          "published": true,
+          "status": "published",
+          "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+        },
+        {
+          "_id": "blog-static-bruen-standard-state-battles-2026",
+          "category": "LAW",
+          "published": true,
+          "status": "published",
+          "title": "The Bruen Battles of 2026 \u2014 Every Court Fight That Will Determine Your Rights"
+        },
+        {
+          "_id": "blog-static-red-dot-carry-guide-2026",
+          "category": "TRAINING",
+          "published": true,
+          "status": "published",
+          "title": "How to Actually Run a Red Dot on Your Carry Gun \u2014 The No-BS Guide"
+        },
+        {
+          "_id": "blog-static-suppressor-revolution-2026",
+          "category": "OPINION",
+          "published": true,
+          "status": "published",
+          "title": "The Suppressor Revolution Is Here \u2014 and Most Gun Owners Are Missing It"
+        },
+        {
+          "_id": "blog-jrc-glock-frame-weight-2026",
+          "category": "GEAR",
+          "published": true,
+          "status": "published",
+          "title": "JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps"
+        },
+        {
+          "_id": "Y6XoXLprsW0XEk8cvplTJa",
+          "category": "GEAR",
+          "published": null,
+          "status": "published",
+          "title": "USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Costs and Coverage Compared"
+        },
+        {
+          "_id": "tUgkK4x2jCQXvq6Lz789nd",
+          "category": "OPINION",
+          "published": null,
+          "status": "published",
+          "title": "Women Gun Owners: The Industry's Fastest-Growing Market\u2014and Its Blind Spots"
+        },
+        {
+          "_id": "sZarkGCWKodXiPseaW3a9x",
+          "category": "BUILDS",
+          "published": null,
+          "status": "published",
+          "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Fluff"
+        },
+        {
+          "_id": "VrXtJET951nNPZwlQ1vEXY",
+          "category": "LAW",
+          "published": null,
+          "status": "published",
+          "title": "Forty-Two States Allow Carry; Your Permit Still Won't Work Everywhere"
+        },
+        {
+          "_id": "U5bwFiwsdnUkP1ofQJecCT",
+          "category": "TRAINING",
+          "published": null,
+          "status": "published",
+          "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+        },
+        {
+          "_id": "gg7RnZRpI6fQeqXVUfagOB",
+          "category": "LAW",
+          "published": null,
+          "status": "published",
+          "title": "States Test Bruen: Which Gun Laws Survive Court Challenges"
+        },
+        {
+          "_id": "ea3WAUgOibFNKEs8s3chdy",
+          "category": "GEAR",
+          "published": null,
+          "status": "published",
+          "title": "Three Carry Guns That Actually Earn Their Belt Space"
+        }
+      ],
+      "total": 32
+    },
+    "syncTags": [
+      "s1:NTw64g"
+    ],
+    "ms": 51
+  },
+  "count_OPINION": 11,
+  "count_ANALYSIS": 1,
+  "count_LAW": 7,
+  "count_TRAINING": 6,
+  "count_MARKET": 0,
+  "count_INDUSTRY": 0,
+  "count_GEAR": 6,
+  "count_BUILDS": 1
+}
