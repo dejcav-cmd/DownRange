@@ -1,0 +1,64 @@
+{
+  "opinion_page1_proper": {
+    "query": "{\n      \"posts\": *[_type == \"blogPost\" && (status == \"published\" || published == true) && upper(category) == $cat]\n        | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {\n          _id, title, category\n        },\n      \"total\": count(*[_type == \"blogPost\" && (status == \"published\" || published == true) && upper(category) == $cat])\n    }",
+    "result": {
+      "posts": [
+        {
+          "_id": "tUgkK4x2jCQXvq6Lz789nd",
+          "category": "OPINION",
+          "title": "Women Gun Owners: The Industry's Fastest-Growing Market\u2014and Its Blind Spots"
+        },
+        {
+          "_id": "SKDVlyMd9FiV3xrtgTmeoN",
+          "category": "OPINION",
+          "title": "Constitutional Carry Now the Law in 29 States\u2014Here's the Real Map"
+        },
+        {
+          "_id": "FVNP6r5cO7N0o7HVua4qwH",
+          "category": "OPINION",
+          "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong"
+        },
+        {
+          "_id": "nN27B2ANLaElWH46BQiJcS",
+          "category": "OPINION",
+          "title": "Women Gun Owners Surge: What the Industry Understands and Misses"
+        },
+        {
+          "_id": "NyhsWmN0U96DiE4MOsdouz",
+          "category": "OPINION",
+          "title": "Concealed Carry Reciprocity 2026: Navigate Every State's Carry Laws"
+        },
+        {
+          "_id": "blog-draft-how-tariffs-are-hitting-gun-prices-in-2026-and-what-smart-buyers-are-doing-about-2026-2943",
+          "category": "OPINION",
+          "title": "How tariffs are hitting gun prices in 2026 \u2014 and what smart buyers are doing about it"
+        },
+        {
+          "_id": "blog-draft-constitutional-carry-in-2026-which-29-states-allow-it-and-what-changed-this-year-2026-2943",
+          "category": "OPINION",
+          "title": "Constitutional carry in 2026: which 29 states allow it and what changed this year"
+        },
+        {
+          "_id": "blog-draft-the-bruen-standard-is-reshaping-gun-law-in-every-state-here-is-the-current-map-2026-2943",
+          "category": "OPINION",
+          "title": "The Bruen standard is reshaping gun law in every state \u2014 here is the current map"
+        },
+        {
+          "_id": "blog-draft-suppressors-in-2026-no-200-stamp-6-million-registered-and-what-comes-next-2026-2943",
+          "category": "OPINION",
+          "title": "Suppressors in 2026: no $200 stamp, 6 million registered, and what comes next"
+        },
+        {
+          "_id": "seed-blog-002",
+          "category": "OPINION",
+          "title": "Why I Switched from OWB to AIWB Carry"
+        }
+      ],
+      "total": 10
+    },
+    "syncTags": [
+      "s1:NTw64g"
+    ],
+    "ms": 111
+  }
+}
