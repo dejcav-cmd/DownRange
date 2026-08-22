@@ -30,7 +30,16 @@ jobs:
       - name: Show snippet
         working-directory: scripts
         run: cat diag_output.log
-      - name: Commit raw HTML back to repo
+      - name: Commit diag log back to repo (small, reliable)
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          COMMIT_PATH: scripts/diag_output.log
+          LOCAL_FILE: diag_output.log
+        working-directory: scripts
+        run: python3 commit_atf_html.py
+
+      - name: Commit raw HTML back to repo (best-effort, may be large)
+        continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
         working-directory: scripts

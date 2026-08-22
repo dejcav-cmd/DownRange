@@ -3,9 +3,10 @@ import os, json, base64, urllib.request, urllib.error
 
 GH_TOKEN = os.environ["GH_TOKEN"]
 REPO = "dejcav-cmd/DownRange"
-PATH_IN_REPO = "scripts/atf_raw.html"
+PATH_IN_REPO = os.environ.get("COMMIT_PATH", "scripts/atf_raw.html")
+LOCAL_FILE = os.environ.get("LOCAL_FILE", "atf_raw.html")
 
-with open("atf_raw.html", "rb") as f:
+with open(LOCAL_FILE, "rb") as f:
     content_b64 = base64.b64encode(f.read()).decode("ascii")
 
 api_url = f"https://api.github.com/repos/{REPO}/contents/{PATH_IN_REPO}"
