@@ -31,8 +31,16 @@ async function getAllPosts() {
       body:       p.body || p.summary || p.excerpt || '',
       _fromSanity: true,
     }))
-    const staticSlugs = new Set(BLOG_POSTS.map(p => p.slug))
-    const merged = [...BLOG_POSTS, ...sanityMapped.filter(p => !staticSlugs.has(p.slug))]
+    const sanitySlugs = new Set(sanityMapped.map(p => p.slug))
+    // Sanity wins on slug collision (matches app/blog/page.js's precedence). The static
+    // array is now only a fallback for slugs that were never migrated to Sanity — three
+    // entries (suppressor-revolution-2026, red-dot-carry-guide-2026,
+    // bruen-standard-state-battles-2026) were migrated with real CDN images on
+    // 2026-08-22 but share their slug with the old static entry, so this precedence
+    // must stay Sanity-first or the "More From DJ" sidebar shows the old placeholder
+    // image again even though the article's own page (which fetches Sanity directly)
+    // is correct.
+    const merged = [...sanityMapped, ...BLOG_POSTS.filter(p => !sanitySlugs.has(p.slug))]
     return merged
   } catch {
     return BLOG_POSTS
