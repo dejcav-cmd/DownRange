@@ -1,0 +1,44 @@
+name: Patch Wingman SBR SourceUrl
+
+on:
+  push:
+    paths:
+      - '.github/workflows/patch-wingman-sourceurl.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Run patch script
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
+        working-directory: scripts
+        run: python3 patch_wingman_sourceurl.py > patch_output.log 2>&1 || true
+
+      - name: Show patch log
+        working-directory: scripts
+        run: cat patch_output.log
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        working-directory: scripts
+        run: python3 report_wingman_patch.py
