@@ -1,0 +1,11 @@
+{
+  "default_format_with_key": {
+    "status": "error",
+    "error": "HTTP Error 402: Payment Required"
+  },
+  "default_format_no_key": {
+    "status": "ok",
+    "length": 61890,
+    "snippet": "Title: Current Processing Times | ATF\n\nURL Source: https://www.atf.gov/resource-center/current-processing-times\n\nMarkdown Content:\n[Skip to main content](https://www.atf.gov/resource-center/current-processing-times#main-content)\n\n![Image 1: U.S. flag](https://www.atf.gov/themes/custom/athena/assets/img/us_flag_small.png)\n\nAn official website of the United States government\n\nHere\u2019s how you know\n\nHere\u2019s how you know\n\n![Image 2](https://www.atf.gov/themes/custom/athena/assets/img/icon-dot-gov.svg)\n\n**Official websites use .gov**\n\nA **.gov** website belongs to an official government organization in the United States.\n\n![Image 3](https://www.atf.gov/themes/custom/athena/assets/img/icon-https.svg)\n\n**Secure .gov websites use HTTPS**\n\nA **lock** (  ) or **https://** means you\u2019ve safely connected to the .gov website. Share sensitive information only on official, secure websites.\n\n![Image 4: ATF Seal image](https://www.atf.gov/themes/custom/athena/assets/atf/images/atf-seal.png)\n\n_## [ATF](https://www.atf.gov/ \"ATF\")_\n\n_##### Bureau of Alcohol, Tobacco, Firearms and Explosives_\n\n Menu \n\n![Image 5](https://www.atf.gov/themes/custom/athena/assets/img/usa-icons/close.svg)\n\n Search  ![Image 6: Search](https://www.atf.gov/themes/custom/athena/assets/img/usa-icons-bg/search--white.svg)\n\n*   Who We Are\n\n**[About](https://www.atf.gov/about)** \n    *   [Leadership](https://www.atf.gov/about/leadership)\n    *   [Organization Structure](https://www.atf.gov/about/organization-structure)\n\n**[Conta"
+  }
+}
