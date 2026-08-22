@@ -93,6 +93,10 @@
       "schedule": "32 14 * * 2,4"
     },
     {
+      "path": "/api/cron/blog-twitter-promo",
+      "schedule": "0 15 * * 2,4"
+    },
+    {
       "path": "/api/social/cron/bluesky",
       "schedule": "2 13 * * *"
     },

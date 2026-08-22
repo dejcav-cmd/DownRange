@@ -41,6 +41,11 @@ export async function GET(req) {
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   const body   = await req.json().catch(() => ({}))
-  const result = await runSocialAgent({ platform: 'twitter', count: body.count ?? 2, dryRun: body.dryRun ?? false }).catch(e => ({ ok: false, error: e.message }))
+  const result = await runSocialAgent({
+    platform: 'twitter',
+    count: body.count ?? 2,
+    dryRun: body.dryRun ?? false,
+    forceArticleId: body.forceArticleId ?? null,
+  }).catch(e => ({ ok: false, error: e.message }))
   return Response.json(result)
 }
