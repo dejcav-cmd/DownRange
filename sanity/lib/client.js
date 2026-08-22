@@ -240,7 +240,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)]
-        | order(featured desc, _createdAt desc) [$offset...$end] {
+        | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
           status, publishedAt, readTime, _createdAt, tags, featured
         },
@@ -252,8 +252,9 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
     // Featured posts always sort first (page 1, position 0). Must stay consistent across
     // every page — mixing orderings between pages would duplicate/skip results under
-    // offset-based pagination.
-    const orderClause = `featured desc, ${orderField}`
+    // offset-based pagination. GROQ sorts null FIRST in desc order, so coalesce to false
+    // or every post lacking a `featured` value would outrank an actual featured:true post.
+    const orderClause = `coalesce(featured, false) desc, ${orderField}`
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}]
         | order(${orderClause}) [$offset...$end] {

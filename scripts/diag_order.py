@@ -20,7 +20,7 @@ def sanity_query(groq, params, token):
 # Exact query the app builds for page=1, no cat/search, sort=newest
 query = '''{
   "posts": *[_type == "blogPost" && (status == "published" || published == true) ]
-    | order(featured desc, _createdAt desc) [$offset...$end] {
+    | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {
       _id, title, slug, category, excerpt, imageUrl, author,
       status, publishedAt, readTime, _createdAt, tags, featured
     },
