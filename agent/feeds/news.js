@@ -459,8 +459,8 @@ async function processNewsItem(item) {
     try {
       const ai = await rewriteWithClaude({
         ...item,
-        description: (item.description || item.content || '') + `\n\nSource: ${item.source} (Brazil — may be in Portuguese, write article in English for DownRange audience)`,
-      })
+        description: (item.description || item.content || '') + `\n\nFonte: ${item.source} (Brasil)`,
+      }, { lang: 'pt-BR' })
       if (ai?.body && ai.body.length > 300) {
         finalBody    = ai.body
         finalTitle   = ai.title   || item.title

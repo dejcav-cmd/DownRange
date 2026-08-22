@@ -2,9 +2,103 @@ import { callAIText } from '@/lib/aiClient.js'
 import crypto from 'crypto'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
-async function rewriteWithClaude(item) {
+// opts.lang: 'en' (default) or 'pt-BR'. Brazil content MUST use 'pt-BR' —
+// the site's /brazil section is entirely Portuguese-language; passing the
+// default English prompt here was the root cause of Brazil articles
+// publishing in English (fixed 2026-08-22).
+async function rewriteWithClaude(item, opts = {}) {
+  const lang = opts.lang || 'en'
   // Copyright-safe: extract facts only, use max 400 chars of source to avoid derivative work
   const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 400)
+
+  if (lang === 'pt-BR') {
+    const promptPt = `Você está escrevendo um resumo de notícia para a DownRange Brasil — um portal sobre armas de fogo e legislação no Brasil.
+
+REGRAS DE DIREITOS AUTORAIS — OBRIGATÓRIO:
+- Isto é um RESUMO DE NOTÍCIA, não uma tradução ou reescrita do artigo-fonte.
+- Extraia APENAS FATOS: quem, o quê, quando, onde, números, nomes, datas, números de decreto/lei.
+- NÃO reproduza a estrutura, o fluxo ou as palavras do artigo-fonte.
+- NÃO faça uma tradução parágrafo por parágrafo da fonte.
+- Construa um artigo NOVO na estrutura própria da DownRange, com análise original.
+- O leitor deve ainda se beneficiar de visitar a fonte original para mais detalhes.
+
+REGRA DE IDIOMA — OBRIGATÓRIO E INEGOCIÁVEL:
+- Escreva TUDO em português brasileiro fluente e natural — título, resumo e corpo do artigo.
+- Isso vale mesmo que a fonte esteja em português ou em qualquer outro idioma.
+- NUNCA escreva em inglês. Nenhuma palavra do artigo final deve estar em inglês.
+
+VOZ E ESTILO:
+- Escreva como um atirador que conhece a lei de armas de cor. Direto. Específico. Voz ativa.
+- PROIBIDO: "abrangente", "mergulhar em", "robusto", "alavancar", "empoderar", "game-changer", "sinergias", "panorama", "navegar", "paradigma", "inovador", "sem precedentes", "partes interessadas", "holístico", "daqui para frente"
+- Comece com o fato mais forte. A primeira frase diz quem fez o quê.
+- Sem voz passiva. Sem qualificações vagas. Sem introduções genéricas.
+- Frases curtas. Nomes reais, números específicos, calibres, valores em reais.
+
+REGRA DE TÍTULO — OBRIGATÓRIO:
+- NUNCA use o título da fonte. Escreva uma manchete totalmente original da DownRange.
+- Máximo 12 palavras. Voz ativa. Preciso — sem exagero.
+
+ESTRUTURA OBRIGATÓRIA DO ARTIGO — use exatamente esta estrutura:
+
+<h2>[Manchete original — declare o fato principal com as próprias palavras da DownRange]</h2>
+<p>[Parágrafo de abertura: o essencial (quem/o quê/quando/onde) em 80-100 palavras. Só fatos, redação original.]</p>
+
+<h2>Detalhes Importantes</h2>
+<p>[2-3 fatos específicos, números ou desdobramentos do evento. 80-120 palavras.]</p>
+
+<h2>Por Que Isso Importa para o Atirador</h2>
+<p>[Impacto prático. O que isso significa para quem é CAC, atira ou coleciona no Brasil? ANÁLISE ORIGINAL — não da fonte. 100-130 palavras.]</p>
+
+<h2>Análise DownRange</h2>
+<p>[Perspectiva original da DownRange. O que o atirador brasileiro deve fazer agora? 80-110 palavras. Comentário totalmente original.]</p>
+
+REQUISITOS:
+- 500-800 palavras no total. Conciso, sem enchimento.
+- APENAS HTML: h2, p, strong, em, ul, li, a. Sem div, span, br.
+- strong = nomes, números de lei/decreto, fatos-chave apenas.
+- O artigo deve ser CONTEÚDO ORIGINAL, não uma tradução da fonte.
+
+FATOS-FONTE (extraia fatos disso — não reproduza a redação):
+Título: ${item.title}
+Fonte: ${item.source || 'Desconhecida'}
+Publicado: ${item.publishedAt || new Date().toISOString()}
+Fatos principais: ${inputContent}
+
+Retorne APENAS um JSON válido, com todo o texto em português:
+{
+  "title": "Manchete ORIGINAL da DownRange em português — NÃO o título da fonte. Máximo 12 palavras.",
+  "summary": "2-3 frases em português. Fatos principais. Máximo 300 caracteres.",
+  "body": "<artigo completo em HTML na estrutura acima, tudo em português>",
+  "category": "law",
+  "urgencyScore": 1-10,
+  "tags": ["4-8 tags em kebab-case"],
+  "relatedStates": [],
+  "isBreaking": false
+}
+Comece com { termine com }. Sem markdown, sem crases.`
+
+    try {
+      const text = await callAIText({ prompt: promptPt, useCase: 'news', maxTokens: 1500 })
+      let clean = text.split('```json').join('').split('```').join('').trim()
+      const jsonStart = clean.indexOf('{')
+      const jsonEnd   = clean.lastIndexOf('}')
+      if (jsonStart > 0 && jsonEnd > jsonStart) clean = clean.slice(jsonStart, jsonEnd + 1)
+      const parsed = JSON.parse(clean)
+      if (typeof parsed.body !== 'string') parsed.body = null
+      if (parsed.body) {
+        const wordCount = parsed.body.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
+        if (wordCount < 150) {
+          console.warn(`[REWRITE-PT] Body too short (${wordCount} words) for "${(item.title || '').slice(0, 50)}" — discarding`)
+          parsed.body = null
+        }
+      }
+      return parsed
+    } catch (err) {
+      console.error('Claude PT-BR rewrite error:', err.message)
+      return null
+    }
+  }
+
   const prompt = `You are writing a news summary for DownRange — a firearms and Second Amendment portal.
 
 COPYRIGHT RULES — MANDATORY:
