@@ -1,0 +1,39 @@
+{
+  "results": [
+    {
+      "slug": "suppressor-revolution-2026",
+      "status": "ready",
+      "cdnUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/61c782114d0c4a8ba8e6031cf3db8a787db8e645-1600x1201.jpg",
+      "title": "The Suppressor Revolution Is Here — and Most Gun Owners Are Missing It",
+      "readTime": 5
+    },
+    {
+      "slug": "red-dot-carry-guide-2026",
+      "status": "ready",
+      "cdnUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/5522e3bba5191c8830f7c1d30678cac8677aebbb-1600x1600.jpg",
+      "title": "How to Actually Run a Red Dot on Your Carry Gun — The No-BS Guide",
+      "readTime": 5
+    },
+    {
+      "slug": "bruen-standard-state-battles-2026",
+      "status": "ready",
+      "cdnUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/05c650530d6bff11c807fe37db6650a60a30f7cb-1600x1185.jpg",
+      "title": "The Bruen Battles of 2026 — Every Court Fight That Will Determine Your Rights",
+      "readTime": 4
+    }
+  ],
+  "mutateResult": {
+    "transactionId": "I3Ef5RIrs4lB0Q3ZbOlg1o",
+    "results": [
+      {
+        "operation": "create"
+      },
+      {
+        "operation": "create"
+      },
+      {
+        "operation": "create"
+      }
+    ]
+  }
+}
