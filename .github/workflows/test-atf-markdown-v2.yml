@@ -1,0 +1,37 @@
+name: Test ATF Markdown V2
+
+on:
+  push:
+    paths:
+      - '.github/workflows/test-atf-markdown-v2.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  guard:
+    if: github.event_name == 'push'
+    runs-on: ubuntu-latest
+    steps:
+      - run: echo "Workflow registered. Trigger via workflow_dispatch to run."
+
+  run:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Fetch markdown table v2
+        working-directory: scripts
+        run: python3 test_atf_markdown2.py > test_output_md2.log 2>&1 || true
+      - name: Show log
+        working-directory: scripts
+        run: cat test_output_md2.log
+      - name: Report result
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        working-directory: scripts
+        run: python3 report_test_atf_markdown2.py
