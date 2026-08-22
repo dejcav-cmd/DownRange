@@ -1,0 +1,51 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "upload_hero": {
+        "asset_id": "image-ce7527a81608b48cdd18e7816486282f864c9766-1448x1086-webp",
+        "cdn_url": "https://cdn.sanity.io/images/vbnsqnkg/production/ce7527a81608b48cdd18e7816486282f864c9766-1448x1086.webp",
+        "size": 113842,
+        "source": "https://jrcguns.com/airo-assets/images/products/jrc-glock-frame-weight-2"
+      }
+    },
+    {
+      "upload_secondary": {
+        "asset_id": "image-089a976e1ed6b7dd4f86ab43e6993fbbd5eb5b84-1448x1086-jpg",
+        "cdn_url": "https://cdn.sanity.io/images/vbnsqnkg/production/089a976e1ed6b7dd4f86ab43e6993fbbd5eb5b84-1448x1086.jpg",
+        "size": 146512,
+        "source": "https://jrcguns.com/airo-assets/images/products/jrc-glock-frame-weight"
+      }
+    },
+    {
+      "mutate_result": {
+        "transactionId": "tUgkK4x2jCQXvq6Lz8KHDF",
+        "results": [
+          {
+            "operation": "create"
+          }
+        ]
+      }
+    }
+  ],
+  "verify": {
+    "_id": "blog-jrc-glock-frame-weight-2026",
+    "category": "GEAR",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/ce7527a81608b48cdd18e7816486282f864c9766-1448x1086.webp",
+    "readTime": 3,
+    "slug": {
+      "_type": "slug",
+      "current": "jrc-guns-glock-frame-weight-2026"
+    },
+    "status": "published",
+    "tags": [
+      "Glock",
+      "Frame Weight",
+      "Competition",
+      "Recoil Control",
+      "JRC Guns"
+    ],
+    "title": "JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps"
+  },
+  "blog_url": "https://www.downrangeco.com/blog/jrc-guns-glock-frame-weight-2026"
+}
