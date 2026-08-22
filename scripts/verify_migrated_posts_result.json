@@ -1,0 +1,31 @@
+{
+  "suppressor-revolution-2026": {
+    "_id": "blog-static-suppressor-revolution-2026",
+    "category": "OPINION",
+    "editorLocked": true,
+    "featured": false,
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/61c782114d0c4a8ba8e6031cf3db8a787db8e645-1600x1201.jpg",
+    "status": "published",
+    "title": "The Suppressor Revolution Is Here \u2014 and Most Gun Owners Are Missing It"
+  },
+  "red-dot-carry-guide-2026": {
+    "_id": "blog-static-red-dot-carry-guide-2026",
+    "category": "TRAINING",
+    "editorLocked": true,
+    "featured": false,
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/5522e3bba5191c8830f7c1d30678cac8677aebbb-1600x1600.jpg",
+    "status": "published",
+    "title": "How to Actually Run a Red Dot on Your Carry Gun \u2014 The No-BS Guide"
+  },
+  "bruen-standard-state-battles-2026": {
+    "_id": "blog-static-bruen-standard-state-battles-2026",
+    "category": "LAW",
+    "editorLocked": true,
+    "featured": false,
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/05c650530d6bff11c807fe37db6650a60a30f7cb-1600x1185.jpg",
+    "status": "published",
+    "title": "The Bruen Battles of 2026 \u2014 Every Court Fight That Will Determine Your Rights"
+  },
+  "_check_featured": 1,
+  "_total_published": 32
+}
