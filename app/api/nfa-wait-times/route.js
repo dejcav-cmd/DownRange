@@ -52,12 +52,26 @@ function buildForm(name, eform, paper) {
 }
 
 // ── ATF scrape: parse the official processing-times table ──────────────────
+// NOTE: as of 2026-08-22, direct fetches to ATF_URL return HTTP 403 — ATF added
+// bot/WAF protection around their Drupal 10 site redesign. Routed through the
+// Jina reader proxy (same pattern already used for gun.deals elsewhere in this
+// codebase) with X-Return-Format: html so the existing table-parsing regex
+// below keeps working unchanged.
 async function scrapeATF() {
   try {
-    const res = await fetch(ATF_URL, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0 NFA Tracker; +https://downrangeco.com)' },
-      signal: AbortSignal.timeout(15000),
+    const jinaHeaders = { 'X-Return-Format': 'html' }
+    if (process.env.JINA_API_KEY) jinaHeaders['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
+    let res = await fetch('https://r.jina.ai/' + ATF_URL, {
+      headers: jinaHeaders,
+      signal: AbortSignal.timeout(25000),
     })
+    // Fall back to a direct fetch in case ATF ever lifts the block, or Jina is down
+    if (!res.ok) {
+      res = await fetch(ATF_URL, {
+        headers: { 'User-Agent': 'Mozilla/5.0 (compatible; DownRange/1.0 NFA Tracker; +https://downrangeco.com)' },
+        signal: AbortSignal.timeout(15000),
+      })
+    }
     if (!res.ok) throw new Error(`ATF returned ${res.status}`)
     const html = await res.text()
 
