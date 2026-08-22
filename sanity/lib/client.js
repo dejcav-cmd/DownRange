@@ -251,7 +251,8 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
       "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)])
     }`
-    params = { q: safe, offset, end: offset + perPage, cat: category ? category.toUpperCase() : undefined }
+    params = { q: safe, offset, end: offset + perPage }
+    if (category) params.cat = category.toUpperCase()
   } else {
     const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
     // Featured posts always sort first (page 1, position 0). Must stay consistent across
@@ -267,9 +268,13 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
         },
       "total": count(*[_type == "blogPost" && (status == "published" || published == true) ${catFilter}])
     }`
-    params = { offset, end: offset + perPage, cat: category ? category.toUpperCase() : undefined }
+    params = { offset, end: offset + perPage }
+    if (category) params.cat = category.toUpperCase()
   }
-  const result = await client.fetch(query, params).catch(() => ({ posts: [], total: 0 }))
+  const result = await client.fetch(query, params).catch((err) => {
+    console.error('[fetchBlogPostsPaginated] Sanity fetch failed, falling back to empty:', err?.message || err)
+    return { posts: [], total: 0 }
+  })
   return {
     posts:  result.posts || [],
     total:  result.total || 0,
