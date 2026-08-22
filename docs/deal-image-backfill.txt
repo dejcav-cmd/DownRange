@@ -1,69 +1,51 @@
-600 scanned, 70 need a real image, 7 coupon posts skipped
+600 scanned, 52 need a real image, 7 coupon posts skipped
 
-  + ARC-Fire Trigger V2 - Non-Ambi Kit (0° - 90° - 1 — 49290b 1280x1280 sha=e6aeefd4f294
-  + Dirty Bird ACCU-Wedge for AR-15 - Fixes Upper /  — 109954b 696x481 sha=96a02f85782f
-  + IWI Galil ACE Gen II 7.62x51 16" Rifle + IWI IWS — 36036b 1280x451 sha=728ec030b578
-  + Dirty Bird Industries Single Stage Nickel Teflon — 47188b 1280x853 sha=6b79f05639c9
-  + MasterPiece Arms 30K 9mm Luger 30+1 4.50" Black  — 90345b 1500x1119 sha=da7265776508
-  + Century Arms Draco Tactical 7.62x39mm 30+1 7.5"  — 73465b 1500x872 sha=e5bb474519dd
-  + Glock G17 Gen4 9mm 4.5" 17rd w/ Night Sights Pol — 614931b 1500x1014 sha=4694cafdecaa
-  + Factory Blem Beretta M9A4-G Full Size 9mm FDE 18 — 203676b 1000x697 sha=8048a87157b5
-  + Beretta A400 Xtreme Plus 12 Ga Mossy Oak Bottoml — 13179b 853x170 sha=73d737cfa545
-  + Beretta 1301 Tactical Mod 2 12 Ga Semi Auto 18"  — 40118b 1500x637 sha=217ce07cf00f
-  + Beretta A400 Xtreme Plus 12 Ga Optifade Timber 2 — 24301b 1000x659 sha=1a018b43bdde
-  + Shield Arms S15 Gen 3 9mm 17 Round Magazine for  — 32894b 1000x1000 sha=bf7317e8ba40
-  + Toolman Tactical AR-15 .223/5.56 32 Round Magazi — 15928b 570x570 sha=1187533ed78f
-  + FIX IT STICKS - Field Armorer's Kit for AR-15 &  — 40105b 526x318 sha=69963d48ae26
-  + SIG Sauer Juliet 3 Magnifier Micro 3X, Black - $ — 26311b 546x546 sha=ddd46a817144
-  + Mec-Gar Witness / Tanfoglio - Large Frame .45 AC — 18021b 700x700 sha=39a648e94737
-  + Federal PWBX142BB Black Cloud FS Steel 12 Gauge  — 41800b 386x386 sha=a0720567fe67
-  + Mec-Gar 1911 .45 ACP 8-Round Match Magazine - $2 — 17400b 700x700 sha=6e8e188d0e79
-  + Smith & Wesson M&P15 M4E Muzzle Brake Flash Hide — 59503b 1146x688 sha=02253b89a83b
-  + Anderson AR15 5.56 3-Prong Flash Hider Compensat — 42661b 1050x737 sha=f7e6a3908867
-  + Anderson AR15 5.56 Muzzle Brake DR20 No Rise - $ — 18407b 685x453 sha=427d3c1b974e
-  + Anderson Knight Stalker Flash Hider AR-15 5.56 1 — 40236b 1068x714 sha=03f5cf3612b9
-  + AR15 9mm Knight Compensator 2 Port TAC 1/2-36 -  — 18284b 663x402 sha=58c99cc823ac
-  + AR15 Handguard MLOK 10in C-CUT Full Pic Rail CBC — 19258b 700x355 sha=5f55e9d687f7
-  + Anderson AR15 M16 BCG Complete 5.56mm - $54.99 + — 37698b 1145x652 sha=a68595929df5
-  ... 25/70  ok=25 fail=0
-  + SONICORE (LYMAN) Rekkr OB - 223/5.56 - $289.99 + — 45404b 1058x663 sha=97ba3ced2f8c
-  + The Triggered Company Disruptor AR-15 FRT 3 Posi — 23681b 804x507 sha=755cd7a99a9f
-  + M79 Thumper 40mm Grenade Launcher M79-used - $10 — 15271b 630x630 sha=eaa7ff597d5b
-  + Underwood 9x25mm Dillon Ammo 124 Grain Hornady X — 38911b 680x510 sha=24797590696a
-  + Speer Gold Dot Nickel Plated Brass 5.7x28 40-Gra — 14759b 450x178 sha=369d4692b826
-  + SIG SAUER, INC. - P226 9mm Luger 20Rd Steel Mag  — 39759b 1500x1070 sha=1715d79abc08
-  + Federal P771 Premium V Shok 17 HMR 17 GR Hornady — 16181b 386x386 sha=cbea4c5bd055
-  + PMC Bronze Pistol Ammo 45 ACP Jacketed Hollow-Po — 161311b 500x327 sha=e9a180e73232
-  + Hornady 2L sonic cleaner - $83.27 — 126946b 1320x1320 sha=39a132c608d8
-  + PMC Bronze 308 Win 147 gr Full Metal Jacket Boat — 199077b 544x414 sha=3d7a89bde139
-  + 32% off CVLIFE WolfCloak X03 Motion Awake Green  — 17300b 500x500 sha=4fc659e66ccb
-  + Heritage Rough Rider Western .22 LR 6.5" barrel  — 53303b 1500x618 sha=f08efe9ca043
-  + 50% off CVLIFE 6-9 Inches Bipod Adjustable Sprin — 26997b 500x500 sha=403f90a28931
-  + Tyrant Designs Glock Compensator Nickel/Black -  — 14238b 337x371 sha=60377a4bb7be
-  + 50% off CVLIFE Rifle Bipod with Tiltable Head Bi — 16622b 500x500 sha=729c9c2c179d
-  + Lantac SF15 Forged Receiver Set - $269.99 — 45087b 1000x666 sha=ba3ecaef6401
-  + Heritage Firearms Rough Rider Nickel .22 LR 4.75 — 20231b 630x308 sha=c49386c77f3b
-  + Christensen Arms Mesa Burnt Bronze 6.5 Creedmoor — 16744b 908x144 sha=34d7e7718b01
-  + 35% off EZshoot Bore Cleaner, Bore Cleaning Kit  — 46900b 500x500 sha=4bd0abed88c1
-  + 38% off CVLIFE FoxSpook Rechargeable red dot wit — 148979b 1500x1195 sha=9f437890254e
-  + 50% off EZshoot Scope Level Scope Bubble Level A — 22001b 459x500 sha=35b13336f7e1
-  + TacFire AR-10 .308 / 7.62x51mm Low Profile Unass — 45370b 1500x349 sha=e76ad387110f
-  + 22% off EZshoot 5-25x56 FFP Rifle Scope with Zer — 19257b 500x500 sha=a7a6586e5a09
-  + Sig Sauer P365-XMACRO 9mm Optic Ready Pistol wit — 57272b 800x635 sha=4593b3279dc1
-  + 30% off CVLIFE BearMight Enclosed Multi Reticle  — 20442b 500x500 sha=a6773c202dda
-  ... 50/70  ok=50 fail=0
-  + Sig Sauer MCX Spear-LT IR Coyote Brown .300 AAC  — 20194b 776x268 sha=8803efb7861d
-  + Vortex Venom 1-6-24 SFP 30mm AR-BDC3 LPVO w/ 2"  — 47650b 818x488 sha=96a7f7b5104f
-  + North American Arms Mini-Master Stainless .22 Ma — 25154b 800x446 sha=e058d21e669e
-  + Patriot Sports .223 Remington 55gr FMJ Ammo 1000 — 59019b 1019x552 sha=56acaf86a134
-  + Sellier & Bellot Pistol & Revolver Ammo 9mm Luge — 15694b 480x480 sha=a5b4a06c41d8
-  + PMC X-Tac Rifle Ammunition 5.56x45mm 55 gr FMJBT — 112142b 1000x772 sha=03425f605cd0
-  + Sellier & Bellot Handgun Ammunition .45 ACP FMJ  — 56013b 827x484 sha=e745883570a5
-  + PMC X-Tac Rifle Ammunition 5.56 NATO 62 gr Green — 109146b 1000x810 sha=ec6b571d9be6
-  + Bulk Ammo Flash Sale With Free Shipping @ Natche — 130676b 1500x375 sha=2a13bcb1681e
-  + Atrius Development Ambi 3 Position Forced Reset  — 30294b 905x707 sha=2d92a2225016
-  + Sig Sauer P365 Handgun Grip 9mm Luger/380 Manual — 48298b 1000x1000 sha=a1e295479502
-  + Henry Long Ranger Deluxe Lever Action 5.56 NATO  — 9979b 682x134 sha=eb65fc4b04ec
+  + Chiappa Firearms Honcho Tactical 12 GA 14.5" Bar — 11529b 711x155 sha=c368370e53bd
+  + NBS 16" 5.56 NATO 1:7 Twist 4150V Black Nitride  — 209601b 1500x1138 sha=de9c83eca3d4
+  + Assembled Mercury Precision Speed RMR Slide for  — 40992b 1000x1000 sha=e08185cc9dda
+  + Savage Arms 1911 Government Rail 9mm 5" 10rd Pis — 205349b 752x500 sha=7a0d749075e9
+  + AR-15 5.56/.223 1/2X28 Muzzle Device Crush Washe — 42720b 1000x750 sha=35108913d6ac
+  + CZ P-10 C OR Ported 9mm 4″ FS 15-Rnd, Black - $4 — 23497b 500x377 sha=fa312800be5b
+  + SONICORE Rekkr DT - 30 Cal 5/8-24 Direct Thread  — 15865b 557x266 sha=e7a53ac17710
+  + Tisas 1911 Duty 45 ACP 5" 8-Rd Optic Ready FDE P — 89024b 1500x1056 sha=d742a1e738c9
+  + Ruger Security-9 Compact Flat Dark Earth / Black — 40920b 800x621 sha=e1d18a58d497
+  + SB Tactical SBA3 5-Position Adjustable Stock for — 35861b 1000x1000 sha=cd3552637fe3
+  + TAURUS 605 357 Mag 2" 5rd - Stainless - $402.99 — 146936b 1500x1110 sha=18965c930217
+  + SONICORE Rekkr OB - 30 Caliber 5/8-24 Suppressor — 59655b 1500x714 sha=87e871889312
+  + AR-9 4.5" Complete Upper Receiver Build Kit - 4. — 53952b 1280x1094 sha=aa190bbb2332
+  + Smith & Wesson Model 29 Classic .44 Mag/.44 Spec — 58232b 1280x795 sha=616b185a4d43
+  + Magnum Research Desert Eagle Mark XIX L6 50 AE 6 — 115795b 1500x1011 sha=9b3db71de9ce
+  + Kimber Rapide Dawn 10mm Pistol 5" 8-Rds TiN Barr — 50081b 800x600 sha=17153c87f91d
+  + Winchester 5.56mm M855 62 Grain Green Tip FMJ La — 31556b 608x608 sha=5c1d89c90297
+  + Moultrie Edge Solar Game Camera, Mossy Oak Botto — 47199b 1000x946 sha=3144c67d1d5f
+  + PSA AR-15 Complete Lower Magpul MOE Edition, No  — 20427b 677x331 sha=92d1612c6ede
+  + Otter Creek Polonium K Suppressor - $439.99 (dis — 45930b 1280x1280 sha=b7a6227e9d09
+  + CZ Shadow 2 Compact PBJ Tan / Purple 9mm 4" Barr — 33349b 800x527 sha=307f25a89e05
+  + Benelli Super Black Eagle 3 28 Ga Semi Auto 26"  — 29764b 1177x361 sha=e3ed7e27d249
+  + Iver Johnson 1911 A1 Eagle Lr .45 Acp 5" 8-rd Br — 42558b 800x537 sha=75c3a9338ba7
+  + Springfield Hellion Bullpup 5.56 NATO 16" Barrel — 125532b 1500x916 sha=356eb7527b21
+  + Precision Defense 5.56 NATO Chrome Lined Barrel  — 21961b 1019x627 sha=3bad1ee47cde
+  ... 25/52  ok=25 fail=0
+  + Vortex Defender-ST 1x23mm Reflex Red Dot Sight,  — 48812b 978x603 sha=91db21f806ac
+  + ATI Alpha MAX 7.5" 5.56 60RD - $313.84 — 10271b 429x276 sha=5c2a739d4af7
+  + Burnt Bronze 80% Lower Receiver Optional Engravi — 36163b 1000x562 sha=425dbef7cb83
+  + BN AR15 Complete LPK (Includes Oversized Trigger — 56732b 1000x1000 sha=ee66f75b78d0
+  + Panzer Arms M4 Pro Speed A.R.G.O. Walnut / Grey  — 11651b 719x205 sha=be7fb10eb00b
+  + Glock 23 13Rd 40SW 4TH Gen Magazine - $16.99 — 17589b 733x600 sha=4717b2060972
+  + MasterPiece Arms 30K 9mm Luger 30+1 4.5" Aluminu — 90345b 1500x1119 sha=da7265776508
+  + Police Trade - Glock 45 Gen 5 MOS 9mm 3-Dot Nigh — 136448b 1500x1265 sha=d02f298eacf4
+  + SB Tactical SBA3 AR Pistol Stabilizing Brace Fla — 27404b 1100x734 sha=d8b4d914ac0d
+  + Alpha Foxtrot AF1911 Attila Compact 9mm 15+1 3.5 — 40178b 1000x752 sha=f599e541ab43
+  + CMMG 5/8-24 Direct Thread HUB Mount - $59.95 — 11280b 333x264 sha=7f0cb74df6e3
+  + Alpha Foxtrot AF1911 Romulus 10mm 4.25" Threaded — 137135b 1500x1057 sha=cbc7b39689f5
+  + Chiappa M1-9 MBR 9mm 19" 10rd - $628.33 — 16167b 905x325 sha=37f4018f3e61
+  + RIA USA PK-12 Pak-Out Short 12 Gauge 4+1 14.25"  — 38311b 1500x433 sha=9a6c4def9b19
+  + Walther Force B1 .22 LR 16" Barrel 10-Rounds All — 9060b 653x238 sha=9df8568be43f
+  + Daniel Defense DDM4 V7P Sports South Exclusive 5 — 66026b 1200x645 sha=d3e5998ae370
+  + PTR 9CT MAGPUL 9mm Roller-Delayed Blowback 8.86" — 53451b 1200x649 sha=5444674aa566
+  + PTR Industries, 9CT Pistol, 9MM, 8.86 Barrel, 3  — 24483b 676x417 sha=2125788d0e16
+  + Springfield 1911 DS Prodigy 9mm, 20+1 4.25" Blac — 70552b 900x900 sha=97030eec2a7f
+  + Rugged Suppressors Obsidian 9 9mm 6.5" 17-4PH St — 21429b 1000x625 sha=5c64c72b5c8a
   x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Black  — image not downloadable
   x Lyman Sonicore Paradox Modular Direct Thread, .2 — rejected: extreme portrait (212x758)
   x Springfield 1911 DS Prodigy AOS 9mm 4.25” 17+1/2 — image not downloadable
@@ -71,8 +53,7 @@
   x Savage 110 Trail Hunter OD Green .270 Win 22" Ba — image not downloadable
   x Dead Air Primal 46Cal Silencer - .458 Caliber, 7 — image not downloadable
   x Silencer Central Banish 9mm 1.30' Black Titanium — rejected: extreme portrait (195x1000)
-  x Ballistic Advantage 16" 6.5 Creedmoor BA Hanson  — image not downloadable
 
-fixed 62, failed 8  (88% success)
-distinct images: 62 across 62 deals
+fixed 45, failed 7  (86% success)
+distinct images: 45 across 45 deals
 PASS — no image shared between products
