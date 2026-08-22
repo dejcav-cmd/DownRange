@@ -1,0 +1,147 @@
+{
+  "socialConfig": {
+    "_createdAt": "2026-06-04T04:30:57Z",
+    "_id": "hVoWPVwtvV4ERgm271V9aB",
+    "_rev": "QtigWmHnuCUPgXN8k0OlbP",
+    "_type": "socialConfig",
+    "_updatedAt": "2026-06-04T06:56:35Z",
+    "enabled": false,
+    "minUrgencyScore": 6,
+    "platforms": [
+      "bluesky",
+      "twitter"
+    ],
+    "platforms_config": {
+      "bluesky": {
+        "enabled": true,
+        "postsPerRun": 1,
+        "times": [
+          13,
+          17,
+          23
+        ]
+      },
+      "twitter": {
+        "enabled": true,
+        "postsPerRun": 1,
+        "times": [
+          13,
+          18,
+          2
+        ]
+      }
+    },
+    "platforms_config_json": "{\"bluesky\":{\"enabled\":true,\"postsPerRun\":3,\"times\":[13,17,23]},\"twitter\":{\"enabled\":true,\"postsPerRun\":1,\"times\":[13,18,2]}}",
+    "postTimes": [
+      13,
+      23
+    ],
+    "postsPerDay": 4,
+    "socialLinks": {
+      "bluesky": "https://bsky.app/profile/downrangeco.bsky.social",
+      "twitter": "https://x.com/DownRangeNews2A"
+    }
+  },
+  "recent_social_posts": [
+    {
+      "_createdAt": "2026-08-21T13:04:51Z",
+      "_id": "50DFEVev7pUJEZFRxed7g3",
+      "articleTitle": "Tenth Circuit Kills New Mexico's 7-Day Gun Wait",
+      "error": null,
+      "platform": "twitter",
+      "postedAt": "2026-08-21T13:04:55.902Z",
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-08-21T13:02:30Z",
+      "_id": "50DFEVev7pUJEZFRxeadXt",
+      "articleTitle": "Tenth Circuit Kills New Mexico's 7-Day Gun Wait",
+      "error": null,
+      "platform": "bluesky",
+      "postedAt": "2026-08-21T13:02:32.648Z",
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-08-20T13:04:29Z",
+      "_id": "I3Ef5RIrs4lB0Q3ZaywZq4",
+      "articleTitle": "Federal Judge Voids Biden Ghost Gun Rule on Second, Fifth Amendment Grounds",
+      "error": null,
+      "platform": "twitter",
+      "postedAt": "2026-08-20T13:04:35.254Z",
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-08-20T13:02:27Z",
+      "_id": "I3Ef5RIrs4lB0Q3ZayvxSs",
+      "articleTitle": "Federal Judge Kills Biden's Expanded Frame and Receiver Definition",
+      "error": null,
+      "platform": "bluesky",
+      "postedAt": "2026-08-20T13:02:29.691Z",
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-08-20T13:02:22Z",
+      "_id": "r506ORX06Z9TVnQN3ovFSI",
+      "articleTitle": "Federal Judge Voids Biden Ghost Gun Rule on Second, Fifth Amendment Grounds",
+      "error": null,
+      "platform": "bluesky",
+      "postedAt": "2026-08-20T13:02:24.433Z",
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-08-19T23:28:48Z",
+      "_id": "sZarkGCWKodXiPseaWSggb",
+      "articleTitle": "DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp",
+      "error": "(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead. | TOKEN_DEBUG: len=206 start=EAANS6ZC end=BAZDZD pageId=1142984005570525 imageUrl=https://cdn.sanity.io/images/vbnsqnkg/production/e8730ce9ccc0f86511960c4770aa06c3ec5ab3de-1920x1080.jpg",
+      "platform": "facebook",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "_createdAt": "2026-08-19T23:25:48Z",
+      "_id": "uBwiUtn9Wx8WqRIUPqexUx",
+      "articleTitle": "DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp",
+      "error": "(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead.",
+      "platform": "facebook",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "_createdAt": "2026-08-19T23:24:50Z",
+      "_id": "sZarkGCWKodXiPseaWScXc",
+      "articleTitle": "DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp",
+      "error": "(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead.",
+      "platform": "facebook",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "_createdAt": "2026-08-19T23:22:05Z",
+      "_id": "uBwiUtn9Wx8WqRIUPqdzHB",
+      "articleTitle": "DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp",
+      "error": "(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead.",
+      "platform": "facebook",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "_createdAt": "2026-08-19T23:18:34Z",
+      "_id": "otUyWOFVcxQBV4wYWtDMhv",
+      "articleTitle": "DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp",
+      "error": "(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead.",
+      "platform": "facebook",
+      "postedAt": null,
+      "status": "failed"
+    }
+  ],
+  "fierce_doc": {
+    "_id": "blog-fierce-wingman-sbr-2026",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/51eb7970eac3eba869c8137c9ff1e3187de0c93e-1920x1283.jpg",
+    "slug": {
+      "_type": "slug",
+      "current": "fierce-firearms-wingman-sbr-2026"
+    },
+    "status": "published",
+    "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+  }
+}
