@@ -4,7 +4,7 @@ export const maxDuration = 60
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
-import { runSocialAgent } from '../../../../../agent/social/socialAgent.js'
+import { runSocialAgent } from '../../../../agent/social/socialAgent.js'
 
 // DownRange Blog → Twitter Promotion — Tuesdays + Thursdays, 8:00 AM Pacific
 // (28 min after blog-writer publishes at 7:32 AM Pacific, so the article is
