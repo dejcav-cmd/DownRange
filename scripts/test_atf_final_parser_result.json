@@ -1,0 +1,64 @@
+{
+  "reportMonth": "July 2026",
+  "forms_found": 10,
+  "forms": [
+    {
+      "label": "Form 1",
+      "eform": 57,
+      "paper": 38
+    },
+    {
+      "label": "Form 2",
+      "eform": 1,
+      "paper": 6
+    },
+    {
+      "label": "Form 3",
+      "eform": 1,
+      "paper": 7
+    },
+    {
+      "label": "Form 4 Trust",
+      "eform": 33,
+      "paper": 34
+    },
+    {
+      "label": "Form 4 Individual",
+      "eform": 9,
+      "paper": 28
+    },
+    {
+      "label": "Form 5",
+      "eform": 1,
+      "paper": 6
+    },
+    {
+      "label": "Form 7",
+      "eform": null,
+      "paper": 60
+    },
+    {
+      "label": "Form 9",
+      "eform": 1,
+      "paper": 3
+    },
+    {
+      "label": "Form 10",
+      "eform": 22,
+      "paper": 6
+    },
+    {
+      "label": "Form 20",
+      "eform": 2,
+      "paper": 7
+    }
+  ],
+  "stats": {
+    "totalNfaReceived": null,
+    "silencerAppsReceived": null,
+    "nfaFinalized": null,
+    "medianEForm4": null,
+    "silencersRegistered": null,
+    "sbrRegistered": null
+  }
+}
