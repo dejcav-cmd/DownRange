@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "upload_hero": {
+        "asset_id": "image-51eb7970eac3eba869c8137c9ff1e3187de0c93e-1920x1283-jpg",
+        "cdn_url": "https://cdn.sanity.io/images/vbnsqnkg/production/51eb7970eac3eba869c8137c9ff1e3187de0c93e-1920x1283.jpg",
+        "size": 186595,
+        "source": "https://fiercearms.com/wp-content/uploads/2026/08/DSC09418.jpg"
+      }
+    },
+    {
+      "upload_secondary": {
+        "asset_id": "image-d181cb2204bcf63da7ada77cde0ad208baaf99c8-1920x1283-jpg",
+        "cdn_url": "https://cdn.sanity.io/images/vbnsqnkg/production/d181cb2204bcf63da7ada77cde0ad208baaf99c8-1920x1283.jpg",
+        "size": 305061,
+        "source": "https://fiercearms.com/wp-content/uploads/2026/08/DSC09446-1.jpg"
+      }
+    },
+    {
+      "mutate_result": {
+        "transactionId": "r506ORX06Z9TVnQN3wW5vq",
+        "results": [
+          {
+            "operation": "update"
+          },
+          {
+            "operation": "update"
+          }
+        ]
+      }
+    }
+  ],
+  "verify": {
+    "blog": {
+      "_id": "blog-fierce-wingman-sbr-2026",
+      "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/51eb7970eac3eba869c8137c9ff1e3187de0c93e-1920x1283.jpg"
+    },
+    "release": {
+      "_id": "release-88c40ff6a52f",
+      "heroImage": {
+        "asset": {
+          "url": "https://cdn.sanity.io/images/vbnsqnkg/production/51eb7970eac3eba869c8137c9ff1e3187de0c93e-1920x1283.jpg"
+        }
+      },
+      "sourceUrl": "https://fiercearms.com/firearm/wingman-sbr/"
+    }
+  }
+}
