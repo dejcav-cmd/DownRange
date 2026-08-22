@@ -1,0 +1,153 @@
+{
+  "total_published": {
+    "query": "count(*[_type == \"blogPost\" && (status == \"published\" || published == true)])",
+    "result": 29,
+    "syncTags": [
+      "s1:NTw64g"
+    ],
+    "ms": 7
+  },
+  "opinion_published": {
+    "query": "count(*[_type == \"blogPost\" && (status == \"published\" || published == true) && upper(category) == $cat])",
+    "result": 10,
+    "syncTags": [
+      "s1:NTw64g"
+    ],
+    "ms": 69
+  },
+  "default_page1": {
+    "query": "{\n      \"posts\": *[_type == \"blogPost\" && (status == \"published\" || published == true) ]\n        | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {\n          _id, title, category, status, published, publishedAt, _createdAt, featured\n        },\n      \"total\": count(*[_type == \"blogPost\" && (status == \"published\" || published == true) ])\n    }",
+    "result": {
+      "posts": [
+        {
+          "_createdAt": "2026-08-21T23:49:07Z",
+          "_id": "blog-fierce-wingman-sbr-2026",
+          "category": "GEAR",
+          "featured": true,
+          "published": true,
+          "publishedAt": "2026-08-21T23:49:07Z",
+          "status": "published",
+          "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+        },
+        {
+          "_createdAt": "2026-08-22T00:24:21Z",
+          "_id": "blog-jrc-glock-frame-weight-2026",
+          "category": "GEAR",
+          "featured": false,
+          "published": true,
+          "publishedAt": "2026-08-22T00:24:21Z",
+          "status": "published",
+          "title": "JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps"
+        },
+        {
+          "_createdAt": "2026-08-21T18:01:59Z",
+          "_id": "Y6XoXLprsW0XEk8cvplTJa",
+          "category": "GEAR",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-08-21T18:01:38.378Z",
+          "status": "published",
+          "title": "USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Costs and Coverage Compared"
+        },
+        {
+          "_createdAt": "2026-08-21T18:01:09Z",
+          "_id": "tUgkK4x2jCQXvq6Lz789nd",
+          "category": "OPINION",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-08-21T18:00:43.476Z",
+          "status": "published",
+          "title": "Women Gun Owners: The Industry's Fastest-Growing Market\u2014and Its Blind Spots"
+        },
+        {
+          "_createdAt": "2026-08-19T18:02:27Z",
+          "_id": "sZarkGCWKodXiPseaW3a9x",
+          "category": "BUILDS",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-08-19T18:02:01.563Z",
+          "status": "published",
+          "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Fluff"
+        },
+        {
+          "_createdAt": "2026-08-12T18:02:37Z",
+          "_id": "VrXtJET951nNPZwlQ1vEXY",
+          "category": "LAW",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-08-12T18:02:16.474Z",
+          "status": "published",
+          "title": "Forty-Two States Allow Carry; Your Permit Still Won't Work Everywhere"
+        },
+        {
+          "_createdAt": "2026-08-07T18:01:38Z",
+          "_id": "U5bwFiwsdnUkP1ofQJecCT",
+          "category": "TRAINING",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-08-07T18:01:12.678Z",
+          "status": "published",
+          "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+        },
+        {
+          "_createdAt": "2026-07-01T18:02:03Z",
+          "_id": "gg7RnZRpI6fQeqXVUfagOB",
+          "category": "LAW",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-07-01T18:01:41.660Z",
+          "status": "published",
+          "title": "States Test Bruen: Which Gun Laws Survive Court Challenges"
+        },
+        {
+          "_createdAt": "2026-06-29T18:02:28Z",
+          "_id": "ea3WAUgOibFNKEs8s3chdy",
+          "category": "GEAR",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-06-29T18:02:05.030Z",
+          "status": "published",
+          "title": "Three Carry Guns That Actually Earn Their Belt Space"
+        },
+        {
+          "_createdAt": "2026-06-26T10:00:55Z",
+          "_id": "blog-draft-dry-fire-in-2026-the-apps-the-tools-and-the-routines-that-actually-build-skill-2026-2947",
+          "category": "TRAINING",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-06-29T10:01:51.400Z",
+          "status": "published",
+          "title": "Dry fire in 2026: the apps, the tools, and the routines that actually build skill"
+        },
+        {
+          "_createdAt": "2026-06-22T18:01:32Z",
+          "_id": "KtBy4YB66kH33JX4YwYUan",
+          "category": "TRAINING",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-06-22T18:01:07.009Z",
+          "status": "published",
+          "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+        },
+        {
+          "_createdAt": "2026-06-19T10:01:22Z",
+          "_id": "blog-draft-suppressors-in-2026-no-200-stamp-6-million-registered-and-what-comes-next-2026-2946",
+          "category": "ANALYSIS",
+          "featured": null,
+          "published": null,
+          "publishedAt": "2026-06-24T10:01:05.966Z",
+          "status": "published",
+          "title": "Suppressors in 2026: no $200 stamp, 6 million registered, and what comes next"
+        }
+      ],
+      "total": 29
+    },
+    "syncTags": [
+      "s1:NTw64g"
+    ],
+    "ms": 44
+  },
+  "nan_offset_test": {
+    "error": "HTTP Error 400: Bad Request"
+  }
+}
