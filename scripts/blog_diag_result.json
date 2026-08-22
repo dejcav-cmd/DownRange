@@ -1,0 +1,299 @@
+{
+  "query": "*[_type == \"blogPost\" && (status == \"published\" || published == true)] | order(_createdAt desc) [0...30] {_id, title, publishedAt, _createdAt, _updatedAt, status, published, featured}",
+  "result": [
+    {
+      "_createdAt": "2026-08-22T00:24:21Z",
+      "_id": "blog-jrc-glock-frame-weight-2026",
+      "_updatedAt": "2026-08-22T00:24:21Z",
+      "featured": false,
+      "published": true,
+      "publishedAt": "2026-08-22T00:24:21Z",
+      "status": "published",
+      "title": "JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps"
+    },
+    {
+      "_createdAt": "2026-08-21T23:49:07Z",
+      "_id": "blog-fierce-wingman-sbr-2026",
+      "_updatedAt": "2026-08-22T00:33:22Z",
+      "featured": true,
+      "published": true,
+      "publishedAt": "2026-08-21T23:49:07Z",
+      "status": "published",
+      "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now"
+    },
+    {
+      "_createdAt": "2026-08-21T18:01:59Z",
+      "_id": "Y6XoXLprsW0XEk8cvplTJa",
+      "_updatedAt": "2026-08-21T23:39:59Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-08-21T18:01:38.378Z",
+      "status": "published",
+      "title": "USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Costs and Coverage Compared"
+    },
+    {
+      "_createdAt": "2026-08-21T18:01:09Z",
+      "_id": "tUgkK4x2jCQXvq6Lz789nd",
+      "_updatedAt": "2026-08-21T23:41:47Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-08-21T18:00:43.476Z",
+      "status": "published",
+      "title": "Women Gun Owners: The Industry's Fastest-Growing Market\u2014and Its Blind Spots"
+    },
+    {
+      "_createdAt": "2026-08-19T18:02:27Z",
+      "_id": "sZarkGCWKodXiPseaW3a9x",
+      "_updatedAt": "2026-08-21T23:41:34Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-08-19T18:02:01.563Z",
+      "status": "published",
+      "title": "Build Your First AR-15 in 2026: Navigate Tariffs, Skip the Fluff"
+    },
+    {
+      "_createdAt": "2026-08-12T18:02:37Z",
+      "_id": "VrXtJET951nNPZwlQ1vEXY",
+      "_updatedAt": "2026-08-13T04:03:31Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-08-12T18:02:16.474Z",
+      "status": "published",
+      "title": "Forty-Two States Allow Carry; Your Permit Still Won't Work Everywhere"
+    },
+    {
+      "_createdAt": "2026-08-07T18:01:38Z",
+      "_id": "U5bwFiwsdnUkP1ofQJecCT",
+      "_updatedAt": "2026-08-13T04:02:41Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-08-07T18:01:12.678Z",
+      "status": "published",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+    },
+    {
+      "_createdAt": "2026-07-01T18:02:03Z",
+      "_id": "gg7RnZRpI6fQeqXVUfagOB",
+      "_updatedAt": "2026-07-02T20:35:43Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-07-01T18:01:41.660Z",
+      "status": "published",
+      "title": "States Test Bruen: Which Gun Laws Survive Court Challenges"
+    },
+    {
+      "_createdAt": "2026-06-29T18:02:28Z",
+      "_id": "ea3WAUgOibFNKEs8s3chdy",
+      "_updatedAt": "2026-07-01T21:10:13Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-06-29T18:02:05.030Z",
+      "status": "published",
+      "title": "Three Carry Guns That Actually Earn Their Belt Space"
+    },
+    {
+      "_createdAt": "2026-06-26T10:00:55Z",
+      "_id": "blog-draft-dry-fire-in-2026-the-apps-the-tools-and-the-routines-that-actually-build-skill-2026-2947",
+      "_updatedAt": "2026-07-02T20:46:30Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-06-29T10:01:51.400Z",
+      "status": "published",
+      "title": "Dry fire in 2026: the apps, the tools, and the routines that actually build skill"
+    },
+    {
+      "_createdAt": "2026-06-22T18:01:32Z",
+      "_id": "KtBy4YB66kH33JX4YwYUan",
+      "_updatedAt": "2026-06-22T20:51:47Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-06-22T18:01:07.009Z",
+      "status": "published",
+      "title": "Home Defense Setup: What Actually Works, What YouTube Sells You"
+    },
+    {
+      "_createdAt": "2026-06-19T10:01:22Z",
+      "_id": "blog-draft-suppressors-in-2026-no-200-stamp-6-million-registered-and-what-comes-next-2026-2946",
+      "_updatedAt": "2026-07-02T20:36:08Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-06-24T10:01:05.966Z",
+      "status": "published",
+      "title": "Suppressors in 2026: no $200 stamp, 6 million registered, and what comes next"
+    },
+    {
+      "_createdAt": "2026-06-10T18:03:48Z",
+      "_id": "SKDVlyMd9FiV3xrtgTmeoN",
+      "_updatedAt": "2026-06-15T17:41:58Z",
+      "featured": null,
+      "published": false,
+      "publishedAt": "2026-06-10T18:03:25.657Z",
+      "status": "published",
+      "title": "Constitutional Carry Now the Law in 29 States\u2014Here's the Real Map"
+    },
+    {
+      "_createdAt": "2026-06-10T18:03:22Z",
+      "_id": "FVNP6r5cO7N0o7HVua4qwH",
+      "_updatedAt": "2026-06-11T06:39:44Z",
+      "featured": null,
+      "published": false,
+      "publishedAt": "2026-06-10T18:02:57.383Z",
+      "status": "published",
+      "title": "Women Gun Owners Surge: What the Industry Gets Right and Wrong"
+    },
+    {
+      "_createdAt": "2026-05-29T18:03:08Z",
+      "_id": "nN27B2ANLaElWH46BQiJcS",
+      "_updatedAt": "2026-06-01T18:51:22Z",
+      "featured": null,
+      "published": false,
+      "publishedAt": "2026-05-29T18:02:43.654Z",
+      "status": "published",
+      "title": "Women Gun Owners Surge: What the Industry Understands and Misses"
+    },
+    {
+      "_createdAt": "2026-05-29T18:02:12Z",
+      "_id": "NyhsWmN0U96DiE4MOsf6F3",
+      "_updatedAt": "2026-06-11T05:13:20Z",
+      "featured": null,
+      "published": false,
+      "publishedAt": "2026-05-29T18:01:47.713Z",
+      "status": "published",
+      "title": "States Test Bruen: Which Gun Laws Survive Court Challenges"
+    },
+    {
+      "_createdAt": "2026-05-29T18:01:17Z",
+      "_id": "NyhsWmN0U96DiE4MOsdouz",
+      "_updatedAt": "2026-06-11T05:12:10Z",
+      "featured": null,
+      "published": false,
+      "publishedAt": "2026-05-29T18:00:54.557Z",
+      "status": "published",
+      "title": "Concealed Carry Reciprocity 2026: Navigate Every State's Carry Laws"
+    },
+    {
+      "_createdAt": "2026-05-29T06:14:56Z",
+      "_id": "blog-draft-the-real-cost-of-suppressor-ownership-in-2026-stamp-gone-but-what-about-everythi-2026-2943",
+      "_updatedAt": "2026-05-31T03:44:18Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-31T03:44:18.624Z",
+      "status": "published",
+      "title": "The real cost of suppressor ownership in 2026: stamp gone, but what about everything else"
+    },
+    {
+      "_createdAt": "2026-05-29T06:14:08Z",
+      "_id": "blog-draft-how-tariffs-are-hitting-gun-prices-in-2026-and-what-smart-buyers-are-doing-about-2026-2943",
+      "_updatedAt": "2026-06-08T20:46:56Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:03:48.238Z",
+      "status": "published",
+      "title": "How tariffs are hitting gun prices in 2026 \u2014 and what smart buyers are doing about it"
+    },
+    {
+      "_createdAt": "2026-05-29T06:13:43Z",
+      "_id": "blog-draft-red-dot-sights-for-carry-guns-the-definitive-guide-to-mounting-zeroing-and-train-2026-2943",
+      "_updatedAt": "2026-06-08T14:58:28Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:03:24.410Z",
+      "status": "published",
+      "title": "Red dot sights for carry guns: the definitive guide to mounting, zeroing, and training"
+    },
+    {
+      "_createdAt": "2026-05-29T06:13:16Z",
+      "_id": "blog-draft-best-edc-handguns-of-2026-what-i-actually-carry-and-why-i-switched-2026-2943",
+      "_updatedAt": "2026-06-07T14:53:01Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:02:56.177Z",
+      "status": "published",
+      "title": "I ditched my Glock 43X for Springfield's Hellcat Pro"
+    },
+    {
+      "_createdAt": "2026-05-29T06:12:51Z",
+      "_id": "blog-draft-the-ar15-in-2026-assault-weapons-bans-court-rulings-and-where-things-stand-2026-2943",
+      "_updatedAt": "2026-06-05T14:03:13Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:02:32.500Z",
+      "status": "published",
+      "title": "The AR-15 in 2026: assault weapons bans, court rulings, and where things stand"
+    },
+    {
+      "_createdAt": "2026-05-29T06:12:26Z",
+      "_id": "blog-draft-constitutional-carry-in-2026-which-29-states-allow-it-and-what-changed-this-year-2026-2943",
+      "_updatedAt": "2026-06-05T14:58:39Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:02:07.444Z",
+      "status": "published",
+      "title": "Constitutional carry in 2026: which 29 states allow it and what changed this year"
+    },
+    {
+      "_createdAt": "2026-05-29T06:12:02Z",
+      "_id": "blog-draft-the-bruen-standard-is-reshaping-gun-law-in-every-state-here-is-the-current-map-2026-2943",
+      "_updatedAt": "2026-06-05T14:03:40Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:01:43.826Z",
+      "status": "published",
+      "title": "The Bruen standard is reshaping gun law in every state \u2014 here is the current map"
+    },
+    {
+      "_createdAt": "2026-05-29T06:11:40Z",
+      "_id": "blog-draft-suppressors-in-2026-no-200-stamp-6-million-registered-and-what-comes-next-2026-2943",
+      "_updatedAt": "2026-06-04T23:01:47Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:01:19.279Z",
+      "status": "published",
+      "title": "Suppressors in 2026: no $200 stamp, 6 million registered, and what comes next"
+    },
+    {
+      "_createdAt": "2026-05-29T06:11:15Z",
+      "_id": "blog-draft-the-atfs-34-new-rulemakings-what-actually-changed-for-everyday-gun-owners-2026-2943",
+      "_updatedAt": "2026-06-05T00:01:53Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T10:00:55.211Z",
+      "status": "published",
+      "title": "ATF's 34 New Rules: Which Actually Affect Your Carry Gun"
+    },
+    {
+      "_createdAt": "2026-05-28T14:29:33Z",
+      "_id": "seed-blog-003",
+      "_updatedAt": "2026-05-31T12:00:22Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-23T03:26:26.694Z",
+      "status": "published",
+      "title": "ATF's Pistol Brace Rule: Two Years Later"
+    },
+    {
+      "_createdAt": "2026-05-28T14:29:32Z",
+      "_id": "seed-blog-002",
+      "_updatedAt": "2026-05-31T12:00:24Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-26T03:26:26.694Z",
+      "status": "published",
+      "title": "Why I Switched from OWB to AIWB Carry"
+    },
+    {
+      "_createdAt": "2026-05-28T14:29:31Z",
+      "_id": "seed-blog-001",
+      "_updatedAt": "2026-05-31T06:45:44Z",
+      "featured": null,
+      "published": null,
+      "publishedAt": "2026-05-29T03:26:26.692Z",
+      "status": "published",
+      "title": "Home Defense Basics: What You Actually Need"
+    }
+  ],
+  "syncTags": [
+    "s1:NTw64g"
+  ],
+  "ms": 43
+}
