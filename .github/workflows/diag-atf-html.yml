@@ -33,18 +33,5 @@ jobs:
       - name: Commit raw HTML back to repo
         env:
           GH_TOKEN: ${{ secrets.GH_PAT }}
-        run: |
-          cd scripts
-          CONTENT_B64=$(base64 -w 0 atf_raw.html)
-          SHA=$(curl -s -H "Authorization: Bearer $GH_TOKEN" \
-            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/atf_raw.html" \
-            | python3 -c "import sys,json; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
-          if [ -n "$SHA" ]; then
-            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
-              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/atf_raw.html" \
-              -d "{\"message\":\"chore: atf raw html snapshot\",\"content\":\"$CONTENT_B64\",\"sha\":\"$SHA\"}"
-          else
-            curl -s -X PUT -H "Authorization: Bearer $GH_TOKEN" \
-              "https://api.github.com/repos/dejcav-cmd/DownRange/contents/scripts/atf_raw.html" \
-              -d "{\"message\":\"chore: atf raw html snapshot\",\"content\":\"$CONTENT_B64\"}"
-          fi
+        working-directory: scripts
+        run: python3 commit_atf_html.py
