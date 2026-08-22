@@ -1,0 +1,2 @@
+compare page status: 404
+guns page status: 200
