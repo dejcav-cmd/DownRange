@@ -1,0 +1,284 @@
+{
+  "fixed": [
+    {
+      "_id": "news-0e5137a3cfcc6f867fbba9f7da8def0b",
+      "title": "Australia's 1996 Gun Laws Show How Restrictions Escalate Into Confiscation",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-1ddb6532c657a3171c3ac6f815a928d7",
+      "title": "USA Today Pushes Chainsaw Bayonet Myth in Assault Weapon Debate",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-2303f0622a7d440c0b6c4197e9922e3f",
+      "title": "Toronto Police Target Alleged Contract Killing Ring Operating in City",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-272a34fd238983e22c95d9f007353dea",
+      "title": "Paxton Trounces Cornyn in Run-Off. What That Means for 2A.",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-29f3832fe09e893570e7119b19da36fb",
+      "title": "ATF Backs Off Dealer Transfer Modernization Push",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-29f8a88b885078c8d4fc705e0af9cf49",
+      "title": "Maine's 2A Divide: Both Candidates Claim Gun Rights, History Says Otherwise",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-317a61ab69c015cfa3d9c328664a1c8b",
+      "title": "An Interview With Eric Wesson: Being a Wesson, Dan, D.B., & More!",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-3457e109b7d70f158ec14dc4fee8604a",
+      "title": "Virginia Governor, AG Respond After Prosecutors Refuse to Enforce Gun, Magazine Ban",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-3784b0f120ded43c464063b7ea2e50d0",
+      "title": "ATF Director Blocks Gun Control Lobby Push Against Regulatory Rollbacks",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-3adf228d26421e2c344ce7afcda8f104",
+      "title": "USA Today Praises Armed Citizen Defense Over Gun Control",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-45391718fbdaefbac5c55c8feea17ae2",
+      "title": "Wolford Ruling Wasn't About Property Rights\u2014And Anti-Gunners Know It",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-457aabb0b512c0eab3299e936899d18d",
+      "title": "Biden Judge Torpedoes New Jersey's Gun Storage Mandate Again",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-48d2862f36dfa4a02fb2d8e046ba014a",
+      "title": "Idaho Police Chief Credits Armed Citizen in In-N-Out Shooting Response",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-4f2a2999c066e5011a22c50d3e69961b",
+      "title": "Ireland's Disarmed Population Faces Unrest With No Self-Defense Option",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-5aadb4445f31aea9924640255f6ce54b",
+      "title": "New York Criminalizes 3D Gun Files Nationwide Starting 2027",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-63086a3a59f9a3a4890d60395c80149f",
+      "title": "Heller and Bruen Reshaped Gun Rights. Here's What Changed.",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-693e28a80441602735e035b52012d9a0",
+      "title": "Massachusetts Gun Owner Fights 900-Day License Fight, Wins Nothing",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-69d873f92323b6c014ff67e396d26af1",
+      "title": "New Lawsuit Filed Against New York's Glock Ban",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-78eb0035ae1b2fa3e362800891d99ced",
+      "title": "Why Europeans Should Shut Their Mouths About 'Gun Violence' In US",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-7f55e42d2273265af98e3f1c45f1cdac",
+      "title": "Not All Moms Support Connecticut's Glock Ban",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-8ac1ac2c528d519c0965406a54d955b0",
+      "title": "Illinois Range Offers 'Pistols and Pilates' Course",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-9a5d8a29610a9034671a206dc7e41a00",
+      "title": "Armed Citizen Stops Active Shooter at Idaho Restaurant",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-9efbb73d6647c0a57c5d9ecedf3abcc4",
+      "title": "Colorado Sheriffs Back NRA Against New Gun Training Mandate",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-a0496b7389b01d3223bccd7fca40a485",
+      "title": "New Lawsuits Filed Against Maryland Glock Ban, Post Office Carry Ban",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-a959b0c0ead621bf7c5bd57228445ffa",
+      "title": "NH University Presidents Used Bogus Arguments to Counter Campus Carry Push",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-b705361225b166f570fc8ac2722a16a0",
+      "title": "E-Reader Precedent Torches 3D Printer Gun Control Bills",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-b92c7ec9b8eac5dd4d9910539eca134f",
+      "title": "Kentucky Opens Carry Rights to Adults Under 21 This Week",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-b930b6a35e358f35536fe24f2b2cdbdc",
+      "title": "How the Media Distorts Perceptions on Guns and Safety",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-ca96d292b3d2977ce942c245b963eeed",
+      "title": "Florida's Permitless Carry Law Correlates With Declining Gun Homicides",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-d1de2f05ff6dba3b7c074bd3c3ba7a63",
+      "title": "Louisiana Loosens Campus Carry Rules\u2014But Gaps Remain",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-d63fc1da65ed2b115f53ea321b3afb22",
+      "title": "NYPD Won't Credit Bruen for Ending Subjective Carry Permits",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-dfc7b4ec21cebc7ab1aa6d74cd0b6dab",
+      "title": "The Pathway Forward for Constitutional Carry",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-e709721a646fae79cfdfa5727fd29330",
+      "title": "Media Bias Against Gun Rights Remains Systematic Across U.S. Newsrooms",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-ecbed7062fae9d94f0626a578f4249a4",
+      "title": "Colorado's Permit-to-Purchase Law Fails to Stop Criminals, Gun Rights Experts Say",
+      "fields": [
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-eef6847f7295dbfe14f61381a8a88124",
+      "title": "SAF Files for Summary Judgment in Illegal Search of Student Case",
+      "fields": [
+        "summary",
+        "excerpt"
+      ]
+    },
+    {
+      "_id": "news-f5c778331b6c4b4d7dd831e29bb16efa",
+      "title": "Gun Owners of America\u2019s Empowered 2A National Women\u2019s Range Day 2026",
+      "fields": [
+        "excerpt"
+      ]
+    }
+  ],
+  "errors": [],
+  "screenshot_article": {
+    "_id": "news-9efbb73d6647c0a57c5d9ecedf3abcc4",
+    "body": "<h2>Colorado sheriffs and NRA defeat state training mandate for permit holders</h2>\n\n<p>Colorado law enforcement and the National Rifle Association successfully opposed a state proposal requiring mandatory firearms training for concealed carry permit applicants. The training requirement would have forced gun owners to complete certified courses before obtaining carry permits, raising costs and creating barriers to constitutional carry rights.</p>\n\n<p>Sheriffs across Colorado's 64 counties joined the NRA in formal opposition. Their unified stance carried weight with state officials considering the rule. Local law enforcement argued the mandate exceeded authority granted under existing statutes and would burden both gun owners and sheriff departments processing applications.</p>\n\n<h2>Why It Matters for Gun Owners</h2>\n\n<p>This victory protects Colorado carriers from additional costs and delays. Mandatory training requirements typically force gun owners to spend $100-$300 on certified courses before they can legally carry. Many rural Coloradans live hours from training facilities, creating practical barriers to exercising Second Amendment rights.</p>\n\n<p>The sheriffs' position affirmed a crucial principle: permit-issuing authorities should process applications based on statutory requirements, not additional regulations invented by administrators. Colorado's existing law already requires sheriffs to issue permits unless applicants fall into prohibited categories. Adding training mandates would effectively rewrite that statute without legislative action.</p>\n\n<p>Gun owners benefit when law enforcement publicly supports their rights. Sheriffs understand their communities' needs better than state bureaucrats. Rural Colorado sheriffs especially recognize that one-size-fits-all training mandates punish responsible citizens in sparsely populated areas where certified instructors barely exist.</p>\n\n<p>This fight also sets precedent. Other states watch Colorado closely. Blocking training requirements here prevents similar proposals in neighboring states from gaining traction. Training mandates have failed in multiple legislatures specifically because sheriffs testified about implementation problems and constitutional concerns.</p>\n\n<h2>Background</h2>\n\n<p>Colorado permits concealed carry under shall-issue rules established in 2003. Applicants submit fingerprints, pass background checks, and pay permit fees\u2014currently around $110-$155 depending on county. Sheriffs must issue permits within 90 days absent disqualifying factors.</p>\n\n<p>The state proposal would have inserted mandatory training into this process. Supporters claimed training requirements would reduce accidents and improve public safety. They pointed to other states' training mandates as proof the system \"works.\"</p>\n\n<p>Colorado sheriffs rejected that logic. They noted that their current permitting system functions efficiently without training mandates. Background checks already screen for dangerous individuals. Training mandates add cost and delay without measurable safety improvements.</p>\n\n<p>The NRA's position aligned with sheriffs. The organization opposes training requirements because they function as de facto taxes on constitutional rights. Poor and rural Americans suffer most when financial and logistical barriers prevent carry permits.</p>\n\n<p>State officials ultimately abandoned the proposal. Without sheriffs' cooperation and facing organized NRA opposition, lawmakers recognized pushing the mandate would face certain defeat or litigation.</p>\n\n<h2>DownRange Bottom Line</h2>\n\n<p>Colorado gun owners keep their current permit process intact. No new training requirements. No additional costs. No delays beyond existing 90-day timelines.</p>\n\n<p>This outcome shows why gun owners should support sheriff candidates who defend constitutional rights. Local law enforcement matters. Sheriffs who oppose unconstitutional mandates protect their constituents far better than state regulators ever will.</p>\n\n<p>Colorado carriers maintain straightforward access to concealed carry permits. That's the system working as intended.</p>",
+    "excerpt": "<![CDATA[When law enforcement opposes some pro-gun measure, the anti-gunners will run with that stuff like they're a combination of David Goggins and Usain Bolt: fast as hell and for days on end. But what happens when law enforcement groups don't support a measure?]]>",
+    "summary": "Colorado sheriffs and the NRA defeated a state proposal requiring mandatory firearms training for concealed carry permits. The victory protects gun owners from additional costs and delays while maintaining efficient permit processing under existing law.",
+    "title": "Colorado Sheriffs Back NRA Against New Gun Training Mandate"
+  },
+  "total_docs_found": 36,
+  "total_fixed": 36
+}
