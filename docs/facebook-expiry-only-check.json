@@ -1,5 +1,5 @@
 {
-  "type": "SYSTEM_USER",
+  "type": "PAGE",
   "is_valid": true,
   "scopes": [
     "read_insights",
@@ -13,11 +13,11 @@
     "facebook_branded_content_ads_brand",
     "public_profile"
   ],
-  "profile_id": null,
+  "profile_id": "1142984005570525",
   "expires_at_raw": 0,
   "expires_at_readable": "NEVER (0)",
   "me_identity": {
-    "id": "122098682013447302",
-    "name": "DownRange Automation"
+    "id": "1142984005570525",
+    "name": "DownRange Co."
   }
 }
