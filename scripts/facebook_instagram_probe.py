@@ -31,7 +31,9 @@ ig_identity = requests.get(
 ).json()
 result["ig_identity"] = ig_identity
 
-# Step 3: try creating a real media container (does NOT publish yet)
+# Step 3: try creating a real media container (does NOT publish yet — stopping
+# here deliberately, since Instagram posts can't be cleanly deleted via API
+# the way Facebook posts can. Confirm this works before any real publish.)
 create_resp = requests.post(
     f"https://graph.facebook.com/{GRAPH_VERSION}/{ig_user_id}/media",
     data={
@@ -41,5 +43,22 @@ create_resp = requests.post(
     },
 ).json()
 result["container_create_response"] = create_resp
+
+if create_resp.get("id"):
+    container_id = create_resp["id"]
+    # Poll for readiness — but do NOT publish. Confirms the flow works up to
+    # the point of no return without leaving a permanent post behind.
+    status = None
+    for i in range(5):
+        s = requests.get(
+            f"https://graph.facebook.com/{GRAPH_VERSION}/{container_id}",
+            params={"fields": "status_code", "access_token": TOKEN},
+        ).json()
+        status = s.get("status_code")
+        if status in ("FINISHED", "ERROR"):
+            break
+        time.sleep(1.5)
+    result["container_status"] = status
+    result["note"] = "Container created and processed successfully. Not published — this container will simply expire unused (Instagram containers auto-expire after ~24h if unpublished)."
 
 print(json.dumps(result, indent=2))
