@@ -126,7 +126,8 @@ async function generateCopy(article, platform, contentType) {
     ? article.slug
     : null
   if (!slugStr) throw new Error(`Article "${article.title?.slice(0,50)}" has no valid slug — skipping to avoid broken URL`)
-  const url    = `https://downrangeco.com/${contentType === 'blog' ? 'blog' : 'news'}/${slugStr}`
+  const urlPath = contentType === 'blog' ? 'blog' : contentType === 'release' ? 'releases' : 'news'
+  const url    = `https://downrangeco.com/${urlPath}/${slugStr}`
   const tags   = ['twitter','threads','facebook'].includes(platform)
     ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
   const budget = CHAR_BUDGETS[platform] || 200
@@ -137,7 +138,7 @@ async function generateCopy(article, platform, contentType) {
     `TITLE: ${article.title}`,
     summary ? `SUMMARY: ${summary.slice(0, 400)}` : '',
     `CATEGORY: ${article.category || 'news'}`,
-    `TYPE: ${contentType === 'blog' ? 'DownRange Analysis / Blog' : 'Breaking News from DownRange'}`,
+    `TYPE: ${contentType === 'blog' ? 'DownRange Analysis / Blog' : contentType === 'release' ? 'New Firearm Release' : 'Breaking News from DownRange'}`,
     article.source ? `SOURCE: ${article.source} (original reporting — DownRange portal link added in footer)` : '',
     article.urgencyScore >= 8 ? `URGENCY: HIGH (${article.urgencyScore}/10) — treat as breaking` : '',
   ].filter(Boolean).join('\n')
@@ -452,10 +453,18 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
     }`
   ).catch(() => [])
 
+  // Firearm releases (approved only)
+  const releases = await sanity.fetch(
+    `*[_type == "firearmRelease" && approved == true && defined(slug.current)] | order(publishedAt desc)[0...10]{
+      _id, "type":"release", title, summary, category,
+      "urgencyScore": 6, "slug": slug.current, imageUrl
+    }`
+  ).catch(() => [])
+
   // Merge + filter: exclude articles already posted to this specific platform
   // minUrgency applied, with fallback to latest 10 if all filtered out
-  const all = [...news, ...blogs].filter(a => (a.urgencyScore ?? 5) >= minUrgency)
-  return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3)]
+  const all = [...news, ...blogs, ...releases].filter(a => (a.urgencyScore ?? 5) >= minUrgency)
+  return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3), ...releases.slice(0,2)]
 }
 
 // ── Main run — single platform ────────────────────────────────────────────────
@@ -497,7 +506,7 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
   for (const article of articles) {
     try {
       const imageUrl    = getImage(article)
-      const contentType = article.type === 'blog' ? 'blog' : 'news'
+      const contentType = article.type === 'blog' ? 'blog' : article.type === 'release' ? 'release' : 'news'
       const content     = await generateCopy(article, platform, contentType)
 
       const logDoc = await sanity.create({
