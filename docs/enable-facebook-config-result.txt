@@ -3,4 +3,4 @@ Current doc: {
   "platforms_config_json": "{\"bluesky\": {\"enabled\": true, \"postsPerRun\": 3, \"times\": [13, 17, 23]}, \"twitter\": {\"enabled\": true, \"postsPerRun\": 1, \"times\": [13, 18, 2]}, \"facebook\": {\"enabled\": true}}"
 }
 Mutation status: 200
-{"transactionId":"r506ORX06Z9TVnQN40hB0c","results":[{"operation":"update"}]}
+{"transactionId":"r506ORX06Z9TVnQN40oWdu","results":[{"operation":"update"}]}
