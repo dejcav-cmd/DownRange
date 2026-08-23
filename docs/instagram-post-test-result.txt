@@ -2,16 +2,16 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Sun, 23 Aug 2026 04:08:15 GMT
-location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787458094796423584
+date: Sun, 23 Aug 2026 04:08:55 GMT
+location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787458135015060716
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: sfo1::r6rs2-1787458094860-d670ba7948ba
+x-vercel-id: cle1::xbjhw-1787458135195-d5c38bb41ebe
 
 HTTP/2 200 
 cache-control: public, max-age=0, must-revalidate
 content-type: application/json
-date: Sun, 23 Aug 2026 04:08:21 GMT
+date: Sun, 23 Aug 2026 04:09:14 GMT
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
@@ -22,8 +22,8 @@ x-dns-prefetch-control: on
 x-frame-options: SAMEORIGIN
 x-matched-path: /api/social/cron/instagram
 x-vercel-cache: MISS
-x-vercel-id: sfo1::iad1::frsgt-1787458095069-d73ae14f89d5
+x-vercel-id: cle1::iad1::h4ff2-1787458135473-72e790ff9976
 x-xss-protection: 1; mode=block
 
 --- Body ---
-{"ok":true,"posted":0,"total":1,"results":[{"platform":"instagram","title":"DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp","status":"draft","content":"🚨 BREAKING: Suppressors just went legal without Form 4 or tax stamp.\n\nDOJ dropped their stay. Silencer Shop's injunction is now in effect.\n\nFor the first time since 1934, NFA registration on suppressors is gone. 🔇\n\nThis changes everything for carriers. Read the full breakdown 🔗 🇺🇸\n\n📖 Full story — link in bio\n#2A #GunRights #SecondAmendment #ConstitutionalCarry","imageUrl":"https://cdn.sanity.io/images/vbnsqnkg/production/e8730ce9ccc0f86511960c4770aa06c3ec5ab3de-1920x1080.jpg","docId":"tUgkK4x2jCQXvq6LzCl6Kl"}],"dryRun":true}
+{"ok":true,"posted":1,"total":1,"results":[{"platform":"instagram","title":"DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp","status":"posted","postUrl":"https://www.instagram.com/p/DcXmFTaIGuo/","hasImage":true,"docId":"r506ORX06Z9TVnQN40o16e"}],"dryRun":false}
