@@ -1,0 +1,23 @@
+[
+  {
+    "category": "pistol",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/942fa904ff8c008a6ceea7b55654834459d759aa-1280x960.jpg",
+    "publishedAt": "2026-05-28T03:26:26.694Z",
+    "slug": "glock-43x-mos-review",
+    "title": "Glock G43X MOS Review"
+  },
+  {
+    "category": "rifle",
+    "imageUrl": "https://images.pexels.com/photos/5202396/pexels-photo-5202396.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=650&w=940",
+    "publishedAt": "2026-05-21T03:26:26.694Z",
+    "slug": "daniel-defense-ddm4-v7-review",
+    "title": "Daniel Defense DDM4 V7 Review"
+  },
+  {
+    "category": "suppressor",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/8ff427bbdd0c99aa90bd7a2c0c2f8d713a63738f-1880x1253.jpg",
+    "publishedAt": "2026-05-17T03:26:26.694Z",
+    "slug": "silencerco-omega-9k-review",
+    "title": "SilencerCo Omega 9K Review"
+  }
+]
