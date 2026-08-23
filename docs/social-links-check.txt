@@ -1,0 +1,15 @@
+Current socialLinks doc:
+{
+  "_id": "hVoWPVwtvV4ERgm271V9aB",
+  "socialLinks": {
+    "bluesky": "https://bsky.app/profile/downrangeco.bsky.social",
+    "twitter": "https://x.com/DownRangeNews2A"
+  }
+}
+
+Facebook page public info:
+{
+  "link": "https://www.facebook.com/1142984005570525",
+  "name": "DownRange Co.",
+  "id": "1142984005570525"
+}
