@@ -1,0 +1,32 @@
+[
+  {
+    "content": "BREAKING: A federal judge in Texas just struck down the Biden ATF's expanded frame and receiver rule. The Second Amendment Foundation and Defense Distributed won in court, blocking the agency from redefining what counts as a regulated firearm. This is a major win for 2A rights and DIY builders. \u2696\ufe0f\ud83d\udd2b What does this mean for your firearms freedom? Thoughts?\n\nFull article: https://downrangeco.com/news/saf-win-judge-rules-biden-era-atf-frame-and-receiver-rule-unconstitutional-73c4f7\n#2A #GunRights #SecondAmendment #ConstitutionalCarry",
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122131413969341798",
+    "postedAt": "2026-08-23T04:10:45.173Z"
+  },
+  {
+    "content": "A Texas federal judge just struck down Biden's ATF rule that tried to regulate 80% lowers and unfinished frames as \"firearms.\" \ud83d\udd28 The admin's expanded definition would've given feds power over partially manufactured parts\u2014essentially trying to close the \"ghost gun\" loophole through bureaucracy. This is a major win for 2A advocates and DIY builders. The ruling protects your right to manufacture without federal interference. \ud83c\uddfa\ud83c\uddf8 How does this decision impact your plans\u2014are you a builder, or does this matter more to you from a principle standpoint? \ud83e\udd14\n\nFull article: https://downrangeco.com/news/another-biden-era-gun-regulation-goes-down-in-flames-d1f1d9\n#2A #GunRights #SecondAmendment #ConstitutionalCarry",
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122131413903341798",
+    "postedAt": "2026-08-23T04:10:29.942Z"
+  },
+  {
+    "content": "\ud83d\udea8 BREAKING: Suppressors now legal without Form 4 or tax stamp.\n\nDOJ just surrendered. Their stay expired. Silencer Shop's injunction takes effect immediately.\n\n56 years of NFA suppressor rules just collapsed. \ud83d\udd07\n\nThis changes everything for carriers.\n\nFull breakdown on DownRange. \ud83d\udd17\n\n\ud83d\udcd6 Full story \u2014 link in bio\n#2A #GunRights #SecondAmendment #ConstitutionalCarry",
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/DcXmFTaIGuo/",
+    "postedAt": "2026-08-23T04:09:12.701Z"
+  },
+  {
+    "content": "The Tenth Circuit just struck down New Mexico's 7-day gun waiting period as unconstitutional. \ud83d\udcf0 This is a major win for Second Amendment rights \u2014 and Colorado's 3-day wait is likely next on the chopping block. The court found waiting periods impose an unconstitutional burden on the right to bear arms. If this holds, similar laws across the circuit could fall. \u2696\ufe0f Are you in a state with a waiting period? How has it affected your ability to carry? \ud83c\uddfa\ud83c\uddf8\n\nFull article: https://downrangeco.com/news/is-federal-judge-telegraphing-his-intent-in-waiting-period-case-d37233\n#2A #GunRights #SecondAmendment #ConstitutionalCarry",
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122131410945341798",
+    "postedAt": "2026-08-23T03:50:52.690Z"
+  },
+  {
+    "content": "A federal judge just struck down Biden's ghost gun rule on constitutional grounds. Judge O'Connor ruled the regulation violated both the Second and Fifth Amendments, granting summary judgment to Defense Distributed and the Second Amendment Foundation. \u2696\ufe0f This is a major win for Second Amendment rights and a setback for the administration's regulatory overreach. What does this mean for your right to build? \ud83c\uddfa\ud83c\uddf8\ud83d\udd2b\n\nFull article: https://downrangeco.com/news/federal-judge-rules-biden-era-ghost-gun-rule-unconstitutional-39b574\n#2A #GunRights #SecondAmendment #ConstitutionalCarry",
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122131409373341798",
+    "postedAt": "2026-08-23T03:41:16.183Z"
+  }
+]
