@@ -375,3 +375,161 @@ the current bar on every run.
 
 `Giveaway Audit` workflow (dispatch-only) runs the cron then reports what
 survived — use it after any change to the quality gate.
+
+## Session 2026-08-22/23 — Facebook + Instagram auto-posting fully live
+
+Built and shipped end-to-end auto-posting of new blog posts, news, gun releases,
+and gun reviews to both the DownRange Facebook Page and Instagram
+(@downrangeconews). Both platforms are confirmed live with real posts. This
+took a long debugging arc — the notes below exist so the next session doesn't
+repeat it.
+
+### What's live now
+
+- `agent/social/socialAgent.js` — `postFacebook()` and `postInstagram()`, both
+  wired into `dispatch()`. Content pool (`fetchCandidates()`) pulls from
+  `newsArticle`, `blogPost` (status==published), `firearmRelease`
+  (approved==true), and `review` (defined publishedAt) — all four content
+  types flow through the same pipeline with per-type URL routing
+  (`/news`, `/blog`, `/releases`, `/reviews`) and per-type AI prompt framing.
+- `app/api/social/cron/facebook/route.js` and `.../instagram/route.js` — GET
+  (real cron, gated on `socialConfig.platforms_config_json.<platform>.enabled`)
+  and POST (manual trigger, supports `dryRun`, bypasses the enabled gate —
+  useful for testing without flipping the live switch).
+- `vercel.json` crons: facebook `*/10 * * * *`, instagram `5-55/10 * * * *`
+  (offset 5 min so they don't compete for the same top-ranked article in the
+  same tick).
+- Dedup is per-platform (`socialPost` docs with `status=='posted'`, matched on
+  `platform + articleSlug`), so Facebook and Instagram each get their own
+  independent posting history and won't skip an article just because the
+  other platform already posted it.
+- Hashtags: `HASHTAG_POOLS` + `pickHashtags(category, platform)` — larger
+  per-category pools (including review categories: pistol/rifle/shotgun/
+  optic/suppressor/accessory/ammo) with random rotation, so posts aren't
+  identical every time. Instagram gets 8 tags, other platforms get 4 — IG's
+  algorithm rewards tag volume, FB/Twitter don't.
+- UTM tracking: every article link now carries
+  `?utm_source=<platform>&utm_medium=social&utm_campaign=auto_post`. Doesn't
+  help Instagram captions specifically (see below) — the IG *bio* link needs
+  its own UTM tag set manually in the Instagram app, which is outside what
+  this repo can automate.
+- Social icons (`components/ui/SocialIcons.js`, used by both `Masthead.js` and
+  `Footer.js`): full SVG icon set for all 7 platforms (was a mix of emoji and
+  text glyphs before — the Instagram camera emoji in particular looked out of
+  place). All use `currentColor` so the existing per-platform tint/border/hover
+  styling still works. `socialConfig.socialLinks` in Sanity now has `facebook`
+  and `instagram` URLs set alongside the pre-existing `bluesky`/`twitter`.
+- Facebook Page has no vanity username yet, so its link is
+  `https://www.facebook.com/1142984005570525` — update if DJ sets one via Page
+  Settings → Username.
+
+### The actual root causes (read this before touching Facebook/IG posting again)
+
+**Three separate, unrelated bugs, not one.** Each looked like it could explain
+the whole failure, and fixing it alone didn't fix the symptom — don't stop at
+the first plausible cause:
+
+1. **Code bug:** `postFacebook`/`postInstagram` were sending
+   `Content-Type: application/json` with a JSON body to Graph API's `/feed` and
+   `/photos` endpoints. Graph API does not reliably parse a JSON body for these
+   endpoints — `access_token` silently fails to be read from it, and Facebook
+   returns a **generic, misleading `(#200) publish_actions... deprecated`
+   error** that has nothing to do with the actual cause. Fix: form-encoded
+   body via `new URLSearchParams(...)`, not `JSON.stringify`. This error text
+   will reappear if anyone ever "cleans up" the fetch calls back to JSON —
+   don't.
+
+2. **Facebook-side gap #1 — System User token ≠ Page token.** Generating a
+   token from Business Settings → System Users → Generate Token gives a token
+   typed `SYSTEM_USER` (confirmed via `debug_token`), not `PAGE`. Its `/me`
+   identity resolves to the System User itself ("DownRange Automation"), not
+   the Page. Using it directly against `/{pageId}/feed` fails with the same
+   misleading `(#200)` error even though `debug_token` shows all the right
+   scopes. **The fix is the same trick used for a personal user token:** call
+   `GET /me/accounts` with the raw token — it returns the Page's own derived
+   `access_token`, and *that* is what actually works for posting as the Page.
+   `debug_token` on the derived token then correctly shows `type: PAGE` and
+   `/me` resolves to the Page itself. Scripted in
+   `scripts/facebook_token_setup.py` (resolves either a USER or already-PAGE
+   token via `/me/accounts`, sets `FACEBOOK_PAGE_ACCESS_TOKEN` +
+   `FACEBOOK_PAGE_ID` as GitHub secrets automatically).
+
+3. **Facebook-side gap #2 — Page must be a Business Portfolio asset, not just
+   Page-admin-accessible.** A Facebook Page you administer via your personal
+   account is NOT automatically a Business Portfolio asset. The System User
+   can only be assigned Pages that the Business itself owns. Symptom: `/me/
+   accounts` on the System User token returns `{"data": []}` — empty — even
+   though the token is valid and correctly scoped. Fix: Business Settings →
+   Accounts → **Pages** → Add → Add a Page (not "Request access") → search and
+   add the Page. Only then does it show up to be assigned to the System User
+   under System Users → [user] → Assigned Assets, and only then does `/me/
+   accounts` return it.
+
+4. **Meta App Dashboard gotcha (recurring, applies to both Facebook Pages and
+   Instagram permissions):** `pages_manage_posts` / `pages_read_engagement` /
+   `instagram_basic` / `instagram_content_publish` do not appear as selectable
+   permissions in Graph API Explorer's picker, or in the System User's
+   "Generate Token" screen, until the app has the matching **Use Case** added
+   under App Dashboard → Use Cases → Add Use Case:
+   - Pages: **"Manage everything on your Page"**
+   - Instagram: **"Manage messaging & content on Instagram"**
+   Adding permissions to an *already-added* use case happens from the app's
+   **Dashboard** (home) screen, not from the Use Cases list screen — the two
+   look similar and it's easy to end up on the wrong one. No formal Meta App
+   Review was needed for either — Standard/Development access was sufficient
+   throughout, since DJ is both the app admin and the account owner.
+
+5. **Instagram-specific: Page ↔ Instagram link is separate from Business
+   Portfolio asset assignment.** Adding the Instagram account under Business
+   Settings → Accounts → Instagram Accounts (so the System User can be
+   assigned to it) does NOT automatically link it to the Facebook Page. Graph
+   API's standard resolution path (`GET /{pageId}?fields=
+   instagram_business_account`) depends on that Page-level link, which is
+   configured separately — from the Instagram app itself (Settings → Account →
+   linked/connected accounts → choose the Facebook Page), not from Business
+   Settings. Symptom before this was linked: the field come back completely
+   absent from the Page object (not null — absent).
+
+**Diagnostic pattern worth reusing:** when a Graph API write silently fails
+with a permissions-flavored error but everything upstream (`debug_token`,
+scopes, asset assignment) checks out, test with a bare `requests.post(...,
+data={...})` from a GitHub Actions runner *before* touching any app code —
+isolates whether it's the token/account state or the code. Every fix in this
+session was confirmed this way before being wired into `socialAgent.js`.
+
+### Testing pattern for Instagram specifically
+
+Unlike Facebook, a published Instagram post **cannot be deleted via the Graph
+API** — there's no delete endpoint for content published through Content
+Publishing. Never run a full container→publish test with throwaway content.
+The safe pattern:
+1. Test container creation + status poll only (`POST /{ig-user-id}/media`,
+   then poll `GET /{container-id}?fields=status_code` until `FINISHED`) —
+   confirms the whole chain works without publishing anything. An unpublished
+   container simply expires on its own (~24h).
+2. Only call `/media_publish` once that's confirmed, and only with real,
+   already-published article content — never a "please disregard" test
+   string, since it can't be taken back down.
+
+### Cron monitoring — deliberately NOT wired in
+
+Facebook/Instagram cron routes are not added to `cron-status`/`cron-health`'s
+job lists. Neither route writes a `cronRun` Sanity document the way the
+content-ingest crons do, so adding them would just produce permanent false
+OVERDUE alerts — same category of issue documented above for other jobs. If
+real monitoring is wanted later, it needs `cronRun` logging added to both
+routes first, then entries in all three sync files (`vercel.json`,
+`cron-status/route.js`, `cron-health/route.js`).
+
+### Key secrets (GitHub Actions + Vercel, both needed — separate stores)
+
+- `FACEBOOK_PAGE_ACCESS_TOKEN` / `FACEBOOK_PAGE_ID` — derived Page token (see
+  above), never expires (`expires_at: 0`).
+- `INSTAGRAM_ACCESS_TOKEN` / `INSTAGRAM_BUSINESS_ACCOUNT_ID` — for Instagram,
+  the *raw* System User token works directly for posting (no `/me/accounts`
+  derivation needed, unlike Facebook) once the Page↔IG link and Business
+  Portfolio asset assignment are both in place. IG Business Account ID:
+  `17841433323046880`.
+- Adding/changing a Vercel env var does not retroactively apply to an
+  already-running deployment — needs a fresh deploy (an empty/no-op commit
+  works fine as a forcing function) before testing.
