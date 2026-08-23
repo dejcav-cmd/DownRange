@@ -3,6 +3,8 @@ Current socialLinks doc:
   "_id": "hVoWPVwtvV4ERgm271V9aB",
   "socialLinks": {
     "bluesky": "https://bsky.app/profile/downrangeco.bsky.social",
+    "facebook": "https://www.facebook.com/1142984005570525",
+    "instagram": "https://www.instagram.com/downrangeconews/",
     "twitter": "https://x.com/DownRangeNews2A"
   }
 }
