@@ -1,0 +1,46 @@
+name: Instagram Post Test
+
+on:
+  workflow_dispatch:
+    inputs:
+      dryRun:
+        description: 'true for dry run, false for a real live post'
+        required: true
+        default: 'true'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Call Instagram social route
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: |
+          DRY="${{ github.event.inputs.dryRun }}"
+          CB=$(date +%s%N)
+          curl -s -D /tmp/headers.txt -o /tmp/body.json -L -X POST \
+            -H "x-admin-key: $ADMIN_KEY" \
+            -H "Content-Type: application/json" \
+            -H "Cache-Control: no-cache, no-store" \
+            -d "{\"count\":1,\"dryRun\":$DRY}" \
+            "https://downrangeco.com/api/social/cron/instagram?cb=$CB"
+          {
+            echo "--- Response headers ---"
+            cat /tmp/headers.txt
+            echo "--- Body ---"
+            cat /tmp/body.json
+          } > docs/instagram-post-test-result.txt
+          cat docs/instagram-post-test-result.txt
+          B64=$(base64 -w0 docs/instagram-post-test-result.txt)
+          SHA=$(curl -s -H "Authorization: Bearer $GH_PAT" -H "Accept: application/vnd.github+json" "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/instagram-post-test-result.txt" | python3 -c "import json,sys; d=json.load(sys.stdin); print(d.get('sha',''))" 2>/dev/null || echo "")
+          if [ -n "$SHA" ]; then
+            PAYLOAD="{\"message\":\"chore: instagram post test result\",\"content\":\"$B64\",\"sha\":\"$SHA\"}"
+          else
+            PAYLOAD="{\"message\":\"chore: instagram post test result\",\"content\":\"$B64\"}"
+          fi
+          curl -s -X PUT -H "Authorization: Bearer $GH_PAT" -H "Accept: application/vnd.github+json" \
+            -d "$PAYLOAD" \
+            "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/instagram-post-test-result.txt"
