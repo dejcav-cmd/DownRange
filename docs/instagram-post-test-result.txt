@@ -1,0 +1,29 @@
+--- Response headers ---
+HTTP/2 307 
+cache-control: public, max-age=0, must-revalidate
+content-type: text/plain
+date: Sun, 23 Aug 2026 04:03:05 GMT
+location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787457785384013818
+server: Vercel
+strict-transport-security: max-age=63072000
+x-vercel-id: pdx1::n9bnr-1787457785483-7442e02a20c9
+
+HTTP/2 200 
+cache-control: public, max-age=0, must-revalidate
+content-type: application/json
+date: Sun, 23 Aug 2026 04:03:12 GMT
+permissions-policy: camera=(), microphone=(), geolocation=()
+referrer-policy: strict-origin-when-cross-origin
+server: Vercel
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+x-content-type-options: nosniff
+x-dns-prefetch-control: on
+x-frame-options: SAMEORIGIN
+x-matched-path: /api/social/cron/instagram
+x-vercel-cache: MISS
+x-vercel-id: pdx1::iad1::wqnt4-1787457785758-b4f2b0445cb6
+x-xss-protection: 1; mode=block
+
+--- Body ---
+{"ok":true,"posted":0,"total":1,"results":[{"platform":"instagram","title":"DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp","status":"draft","content":"🚨 **BREAKING: Suppressors Legal Without Tax Stamp**\n\nThe DOJ just surrendered. Silencer Shop's injunction takes effect NOW—suppressors transfer legally without Form 4, registration, or the $200 NFA stamp. 🔫\n\nFirst time since 1934.\n\nThis changes everything for suppressor owners. Full story — link in bio 🔗\n\n📖 Full story — link in bio\n#2A #GunRights #SecondAmendment #ConstitutionalCarry","imageUrl":"https://cdn.sanity.io/images/vbnsqnkg/production/e8730ce9ccc0f86511960c4770aa06c3ec5ab3de-1920x1080.jpg","docId":"r506ORX06Z9TVnQN40mGWg"}],"dryRun":true}
