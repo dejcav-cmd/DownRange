@@ -1,7 +1,20 @@
 {
   "page_instagram_lookup": {
+    "instagram_business_account": {
+      "id": "17841433323046880"
+    },
     "name": "DownRange Co.",
     "id": "1142984005570525"
   },
-  "error": "Could not resolve instagram_business_account from the Page \u2014 stopping here."
+  "ig_user_id": "17841433323046880",
+  "ig_identity": {
+    "username": "downrangeconews",
+    "name": "DownRange Co.",
+    "id": "17841433323046880"
+  },
+  "container_create_response": {
+    "id": "18093083252110769"
+  },
+  "container_status": "FINISHED",
+  "note": "Container created and processed successfully. Not published \u2014 this container will simply expire unused (Instagram containers auto-expire after ~24h if unpublished)."
 }
