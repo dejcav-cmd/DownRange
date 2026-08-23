@@ -1,6 +1,6 @@
 Current doc: {
   "_id": "hVoWPVwtvV4ERgm271V9aB",
-  "platforms_config_json": "{\"bluesky\": {\"enabled\": true, \"postsPerRun\": 3, \"times\": [13, 17, 23]}, \"twitter\": {\"enabled\": true, \"postsPerRun\": 1, \"times\": [13, 18, 2]}, \"facebook\": {\"enabled\": true}, \"instagram\": {\"enabled\": true, \"postsPerRun\": 1, \"times\": [11, 16, 19, 22, 1]}}"
+  "platforms_config_json": "{\"bluesky\": {\"enabled\": true, \"postsPerRun\": 3, \"times\": [13, 17, 23]}, \"twitter\": {\"enabled\": true, \"postsPerRun\": 1, \"times\": [13, 18, 2]}, \"facebook\": {\"enabled\": true, \"postsPerRun\": 1, \"times\": [11, 16, 19, 22, 1]}, \"instagram\": {\"enabled\": true, \"postsPerRun\": 1, \"times\": [11, 16, 19, 22, 1]}}"
 }
 Mutation status: 200
-{"transactionId":"I3Ef5RIrs4lB0Q3ZbinfrY","results":[{"operation":"update"}]}
+{"transactionId":"I3Ef5RIrs4lB0Q3ZbipHRk","results":[{"operation":"update"}]}
