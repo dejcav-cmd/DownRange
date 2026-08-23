@@ -1,53 +1,35 @@
-600 scanned, 53 need a real image, 7 coupon posts skipped
+600 scanned, 35 need a real image, 8 coupon posts skipped
 
-  + Auto-Ordnance Model 1911 .45 ACP Pistol 5" 7rds, — 354370b 917x624 sha=4c013cef6431
-  + LE Trade in Glock 17 Gen 3 4.49" 9mm 17rd Pistol — 56077b 1000x703 sha=a27ca693c89a
-  + PSA 5.7 Rock Complete RK1 Optics Ready Pistol Wi — 49876b 1000x1000 sha=7d21d27b2be2
-  + DelTon Echo 316M 5.56 AR-15 Rifle - 16" - 1x 30r — 97452b 1086x498 sha=1ad9531dec1a
-  + Faxon Firearms 5.56 NATO Pencil Profile Mid-Leng — 87841b 1137x598 sha=12496226191f
+  + HENRY Big Boy Steel 357 Mag 20" 10rd Large Loop  — 49560b 1400x920 sha=35de9b775ff2
+  x Daniel Defense SoundGuard SG-30Ti 7.75" .30 Cal  — image not downloadable
+  + Springfield Hellion 5.56 30-rd Bullpup Rifle, 18 — 54193b 380x191 sha=e3fea8ffb4ae
+  + IWI IWS762 7.62mm 6" Suppressor W/ Direct Thread — 34863b 1077x740 sha=d6e989941b57
+  + Glock 19 Gen 6 MOS 9mm 4.02" Barrel 15-Rounds -  — 60879b 792x656 sha=d754d725c16b
+  + Gforce Arms GFP3 20 Gauge 28" 4rd - Walnut w/ Cr — 25029b 1500x262 sha=f3ff16755bda
+  + Trijicon SRO Adjustable 2.5 MOA Red Dot Coyote B — 89072b 1500x910 sha=826e6eca6171
+  + NBS AR-15 4.6oz H2 Buffer - $29.95 — 30744b 1372x985 sha=9910c1ece5af
+  + CCI 0035 Standard Velocity 22LR 40 GR LRN 50 Rou — 16008b 386x386 sha=ed1dcae1da29
+  + Hammerli Forge H1 Pistol, .22LR, 4.25" Barrel, ( — 91198b 1500x928 sha=2b5956bce859
+  + PSA 8.5" Pistol-length 300AAC Blackout 1/7 Nitri — 22424b 1000x500 sha=2c63f7bdcc98
+  + PSA PA-15 7" 300AAC 7" BBL 30-Rd MOE EPT AR-15 M — 29734b 1000x500 sha=6b3de403b4ef
+  + Sig Sauer P365 Fuse 9mm 3.7" 21rd Sugar Bear Pis — 32707b 690x600 sha=289e1517455d
+  + Ruger 10/22 22 LR 18.5" 10-rds Semi Automatic Ri — 9705b 680x296 sha=53041241143f
+  + Tippmann Arms M4 Micro Elite 22 LR 25+1 Rds 7" T — 23206b 1000x499 sha=9b9da3785436
+  + Tippmann Arms M4-22 PRO Rifle .22 LR 16" Barrel  — 208899b 1190x449 sha=4ab4c50104e8
+  + Rugged Alaskan360 Suppressor, Up To 338 Lapua, B — 18648b 473x900 sha=615ce899ecde
+  + Nightforce NX8 1-8x24mm F1 - ZeroStop - .5 MOA C — 82379b 625x384 sha=3a817554d130
+  + SilencerCo Scythe-Ti 30 Cal (7.62mm), Rated Up T — 28206b 348x1000 sha=4ca89b7ad31a
+  + Tippmann Arms M4-22 PRO TS20 .22 LR 16" BBL 25 R — 168314b 1171x444 sha=246b922b2b8e
+  + TR Imports MAG 35 12 Gauge 28" Barrel 4+1 Rds Pu — 105759b 1044x324 sha=94ca9fc639eb
+  + White Label Armory Stampede AR-15 Complete Lower — 580696b 1399x735 sha=a49eda347dd1
+  + Taurus TX22 Compact 22 LR 3.5" Barrel 13rd Pisto — 72642b 1000x740 sha=edad20129d6a
+  + SigTac Grip Module Assembly 250/320 45 Compact S — 33790b 1000x625 sha=6ad1ec367243
+  + AR15 Custom Upper 7.62x39mm 16" Barrel MLOK A2 F — 72556b 949x343 sha=7705fbf2359c
+  ... 25/35  ok=24 fail=1
+  + AR15 Custom Upper 5.56 NATO 24" Target Fluted Ba — 69237b 1001x371 sha=ea25ed0a023e
+  + Del-Ton Echo 316M 5.56 AR-15 Rifle - 16" - 1x 30 — 189516b 981x423 sha=719ff4ee2023
   x Amend2 A2-Stick 9mm 32-Round Black Magazine For  — image not downloadable
-  + Fort Scott Munitions TUI 125 gr Subsonic 9mm Amm — 625572b 1089x722 sha=817c01f51811
-  + Unity Tactical FAST Holosun AEMS Mount - 2.26” - — 261170b 966x730 sha=b9350e206bee
-  + Osight XR Enclosed Red Dot Sight with Ruggedized — 48484b 1000x1000 sha=7f368882dd19
-  + Tippmann M4-22 Pro TS20 .22 LR 16" 25rd Semi-Aut — 136314b 947x442 sha=96bd135fe873
-  + BHA Precision H3 AR-15 Carbine Buffer – 5.6 oz - — 93072b 532x850 sha=ebdc1eb06fa1
-  + BHA Precision H2 AR-15 Carbine Buffer – 4.7 oz - — 93072b 532x850 sha=ebdc1eb06fa1
   x S&W Performance Center M&P9 M2.0 Metal Full Size — image not downloadable
-  + Smith & Wesson M&P 5.56 16" BBL 30rd Rifle, Blac — 361185b 1495x467 sha=53ff8cb938bb
-  + Rock Island Armory Pro Match Ultra 1911A1 10mm,  — 44304b 1000x623 sha=290f738aeb82
-  + XM42-X Spark Ignition Flamethrower - Stealth Gra — 280176b 1038x641 sha=33110e3aa565
-  + Wraithworks WARP-15 Polymer Stripped AR15 Lower  — 14556b 1000x364 sha=32a7bb594227
-  + CANIK Prime Radian 9mm 3.8″ NS 2 x 10rnd Black - — 252024b 784x575 sha=76fcd79e2f3a
-  + Kel-Tec P17 22 LR 16+1 Rds 3.80" w/Optic & Holst — 52983b 1000x846 sha=6acd5b4c8549
-  + Sellier & Bellot - 45 ACP - 230 Grain - FMJ - $3 — 154423b 744x411 sha=d4c6424a853b
-  + Panzer Arms EGX500 12 Gauge 18.5" 5 Rd US Flag - — 169959b 1000x488 sha=a9df00992aeb
-  + One Horse AR-15 Multi Cal Complete Lower Receive — 37017b 1000x518 sha=8b8724765d39
-  + Otter Creek Polonium K Suppressor - Add To Cart  — 45930b 1280x1280 sha=b7a6227e9d09
-  + Speer Gold Dot 9mm +P 124gr 9mm - $29.99 — 89168b 1350x900 sha=64d4fbfd86e9
-  + Shadow Systems MR920 9mm 4.5" 15rd Semi-Auto Pis — 583597b 949x725 sha=3e4743ae88f7
-  ... 25/53  ok=23 fail=2
-  + Tyrant Designs Glock Compensator Gen5 Gold/Black — 22257b 468x512 sha=12ad0e5d5309
-  + Tuna Cans 30 Cal Stainless Steel Silencer L (9 B — 35620b 415x800 sha=cd9ab8750704
-  + Mossberg 590 Shockwave 20 Gauge Pump-Action with — 13545b 800x138 sha=6d0235335ac8
-  + Taurus 605 Defender OD Green .357 Mag / .38 SPL  — 24774b 678x422 sha=e7f4e30fe1b9
-  + Mossberg Firearms 590M 12 Ga Pump Action Mag Fed — 17251b 800x217 sha=5b3c260c0fdd
-  + TacFire AR-10 .308 / 7.62x51mm Low Profile Unass — 41507b 1500x330 sha=18e5b9bd4258
-  + Canik TTI Combat 9mm Optic Ready Pistol with Com — 41248b 800x585 sha=2ab18bba12aa
-  + 35% off CVLIFE Gun Cleaning Kit for Hunting and  — 44026b 500x500 sha=c71a6c2fa7f3
-  + Bersa 1911 Stainless / Black .45 ACP 5" Barrel 8 — 38400b 800x502 sha=01cdff9b4241
-  + Bersa 1911 Stainless / Black .45 ACP 5" Barrel 8 — 18266b 510x323 sha=1071d648fa36
-  + 30% off Clamping Tripod Rest Aluminum Frame with — 14881b 500x500 sha=9ddebfee2e51
-  + 40% off CVLIFE Sight Pusher Tool with Tool Kit,  — 29942b 500x500 sha=868e138d7d4b
-  + Canik METE MC9 PRIME Ghost 9mm Optic Ready Pisto — 26429b 600x533 sha=e939724d575e
-  + Canik METE MC9 Prime Ghost White 9mm 3.64" Barre — 22006b 497x402 sha=d1faaca4ea06
-  + Mars Trigger Position AR FRT Super Safety - $121 — 12220b 455x368 sha=217cabc9ae02
-  + 50% off CVLIFE Rifle Sling with Quick Adjust Loo — 20137b 500x500 sha=67a214220fc9
-  + Taurus G2C 9mm 3.2" Barrel 12+1 1G2C93112 - $202 — 63334b 1200x628 sha=a56c4cd2aac0
-  + Springfield Armory Kuna 9mm AR Pistol, 6.125" Ba — 70286b 720x480 sha=c66d9a3e0d0a
-  + 20% off CVLIFE JackalHowl 1-4x20 LPVO Rifle Scop — 29115b 679x400 sha=effe8ba1eae2
-  + 39% off CVLIFE WildHawk Enclosed Circle & 2 MOA  — 22717b 500x500 sha=3bee9af26648
-  + Henry Long Ranger Deluxe Lever Action .243 Win 2 — 9736b 680x137 sha=7d1b701ba1e3
-  + SB Tactical SBA3 / SBA4 / SBA5 / SBA6 — Individu — 813777b 1200x900 sha=881f31a93264
   x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Black  — image not downloadable
   x Lyman Sonicore Paradox Modular Direct Thread, .2 — rejected: extreme portrait (212x758)
   x Springfield 1911 DS Prodigy AOS 9mm 4.25” 17+1/2 — image not downloadable
@@ -55,6 +37,6 @@
   x Savage 110 Trail Hunter OD Green .270 Win 22" Ba — image not downloadable
   x Dead Air Primal 46Cal Silencer - .458 Caliber, 7 — image not downloadable
 
-fixed 45, failed 8  (84% success)
-distinct images: 44 across 45 deals
-NOTE — 1 image(s) on multiple deals (duplicate listings are normal)
+fixed 26, failed 9  (74% success)
+distinct images: 26 across 26 deals
+PASS — no image shared between products
