@@ -23,11 +23,17 @@ const FALLBACK_IMAGES = {
   industry:   'https://downrangeco.com/img/photos/rifle.jpg',
   training:   'https://downrangeco.com/img/photos/training.jpg',
   hunting:    'https://downrangeco.com/img/photos/hunting.jpg',
+  pistol:     'https://downrangeco.com/img/photos/rifle.jpg',
+  rifle:      'https://downrangeco.com/img/photos/rifle.jpg',
+  shotgun:    'https://downrangeco.com/img/photos/rifle.jpg',
+  optic:      'https://downrangeco.com/img/photos/rifle.jpg',
+  suppressor: 'https://downrangeco.com/img/photos/rifle.jpg',
   default:    'https://downrangeco.com/img/photos/news.jpg',
 }
 
 function getImage(article) {
-  return article.imageUrl || FALLBACK_IMAGES[article.category] || FALLBACK_IMAGES.default
+  const key = (article.category || '').toLowerCase()
+  return article.imageUrl || FALLBACK_IMAGES[key] || FALLBACK_IMAGES.default
 }
 
 // ── Platform copy config ──────────────────────────────────────────────────────
@@ -60,15 +66,41 @@ const CHAR_BUDGETS = {
   reddit:   250,  // post title only
 }
 
-const HASHTAGS = {
-  law:      '#2A #GunRights #SecondAmendment #ConstitutionalCarry',
-  news:     '#Firearms #2A #GunNews #GunOwners',
-  review:   '#GunReview #EDC #Firearms #GearReview',
-  industry: '#GunIndustry #2A #Firearms #SHOT',
-  breaking: '#Breaking #2A #GunNews #Firearms',
-  training: '#CCW #SelfDefense #Firearms #GunTraining',
-  hunting:  '#Hunting #2A #Outdoors #HuntingLife',
-  default:  '#2A #Firearms #GunOwners #SecondAmendment',
+const HASHTAG_POOLS = {
+  law:       ['#2A', '#GunRights', '#SecondAmendment', '#ConstitutionalCarry', '#GunLaw', '#2ANews', '#RightToBear', '#GunPolicy'],
+  news:      ['#2A', '#Firearms', '#GunNews', '#GunOwners', '#BreakingNews', '#2ACommunity', '#SecondAmendment'],
+  review:    ['#GunReview', '#EDC', '#Firearms', '#GearReview', '#2A', '#RangeDay', '#GunTest', '#WeaponsReview'],
+  industry:  ['#GunIndustry', '#2A', '#Firearms', '#SHOT', '#GunMaker', '#2AIndustry'],
+  breaking:  ['#Breaking', '#2A', '#GunNews', '#Firearms', '#BreakingNews2A'],
+  training:  ['#CCW', '#SelfDefense', '#Firearms', '#GunTraining', '#EDC', '#ConcealedCarry', '#TacticalTraining'],
+  hunting:   ['#Hunting', '#2A', '#Outdoors', '#HuntingLife', '#HuntingSeason', '#Sportsman'],
+  pistol:    ['#Pistol', '#Handgun', '#EDC', '#GunReview', '#2A', '#ConcealedCarry', '#CCW'],
+  rifle:     ['#Rifle', '#AR15', '#GunReview', '#2A', '#RifleReview', '#PrecisionRifle'],
+  shotgun:   ['#Shotgun', '#GunReview', '#2A', '#ShotgunLife', '#Scattergun'],
+  optic:     ['#Optics', '#GunReview', '#2A', '#RedDot', '#Scope', '#PrecisionShooting'],
+  suppressor:['#Suppressor', '#Silencer', '#NFA', '#2A', '#SuppressedLife', '#SilencerShop'],
+  accessory: ['#GunAccessories', '#2A', '#EDC', '#GearReview', '#Firearms'],
+  ammo:      ['#Ammo', '#Reloading', '#2A', '#Ammunition', '#GunReview'],
+  default:   ['#2A', '#Firearms', '#GunOwners', '#SecondAmendment', '#2ACommunity'],
+}
+
+// Core tags included on every post for brand consistency; remaining slots
+// filled from the category pool at random so posts aren't identical every time.
+const CORE_TAGS = ['#2A', '#SecondAmendment']
+
+function pickHashtags(category, platform) {
+  const pool = HASHTAG_POOLS[(category || '').toLowerCase()] || HASHTAG_POOLS.default
+  const targetCount = platform === 'instagram' ? 8 : 4
+  const core = CORE_TAGS.filter(t => pool.includes(t) || true) // always include core tags
+  const rest = pool.filter(t => !core.includes(t))
+  // Fisher-Yates shuffle the remaining pool for variety
+  const shuffled = [...rest]
+  for (let i = shuffled.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]]
+  }
+  const picked = [...new Set([...core, ...shuffled])].slice(0, targetCount)
+  return picked.join(' ')
 }
 
 // Per-platform writing instructions — what the AI must produce
@@ -136,10 +168,12 @@ async function generateCopy(article, platform, contentType) {
     ? article.slug
     : null
   if (!slugStr) throw new Error(`Article "${article.title?.slice(0,50)}" has no valid slug — skipping to avoid broken URL`)
-  const urlPath = contentType === 'blog' ? 'blog' : contentType === 'release' ? 'releases' : 'news'
-  const url    = `https://downrangeco.com/${urlPath}/${slugStr}`
+  const urlPath = contentType === 'blog' ? 'blog' : contentType === 'release' ? 'releases' : contentType === 'review' ? 'reviews' : 'news'
+  // UTM params so traffic from each platform is actually measurable in analytics
+  const utm = `utm_source=${platform}&utm_medium=social&utm_campaign=auto_post`
+  const url    = `https://downrangeco.com/${urlPath}/${slugStr}?${utm}`
   const tags   = ['twitter','threads','facebook','instagram'].includes(platform)
-    ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
+    ? '\n' + pickHashtags(article.category, platform) : ''
   const budget = CHAR_BUDGETS[platform] || 200
 
   // Build a rich article brief for the AI — the more context, the better the copy
@@ -148,7 +182,8 @@ async function generateCopy(article, platform, contentType) {
     `TITLE: ${article.title}`,
     summary ? `SUMMARY: ${summary.slice(0, 400)}` : '',
     `CATEGORY: ${article.category || 'news'}`,
-    `TYPE: ${contentType === 'blog' ? 'DownRange Analysis / Blog' : contentType === 'release' ? 'New Firearm Release' : 'Breaking News from DownRange'}`,
+    `TYPE: ${contentType === 'blog' ? 'DownRange Analysis / Blog' : contentType === 'release' ? 'New Firearm Release' : contentType === 'review' ? 'DownRange Gun Review' : 'Breaking News from DownRange'}`,
+    article.score ? `REVIEW SCORE: ${article.score}/10` : '',
     article.source ? `SOURCE: ${article.source} (original reporting — DownRange portal link added in footer)` : '',
     article.urgencyScore >= 8 ? `URGENCY: HIGH (${article.urgencyScore}/10) — treat as breaking` : '',
   ].filter(Boolean).join('\n')
@@ -541,10 +576,18 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
     }`
   ).catch(() => [])
 
+  // Gun reviews (published only)
+  const reviews = await sanity.fetch(
+    `*[_type == "review" && defined(publishedAt) && defined(slug.current)] | order(publishedAt desc)[0...10]{
+      _id, "type":"review", title, summary, category, score,
+      "urgencyScore": 6, "slug": slug.current, imageUrl
+    }`
+  ).catch(() => [])
+
   // Merge + filter: exclude articles already posted to this specific platform
   // minUrgency applied, with fallback to latest 10 if all filtered out
-  const all = [...news, ...blogs, ...releases].filter(a => (a.urgencyScore ?? 5) >= minUrgency)
-  return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3), ...releases.slice(0,2)]
+  const all = [...news, ...blogs, ...releases, ...reviews].filter(a => (a.urgencyScore ?? 5) >= minUrgency)
+  return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3), ...releases.slice(0,2), ...reviews.slice(0,2)]
 }
 
 // ── Main run — single platform ────────────────────────────────────────────────
@@ -586,7 +629,7 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
   for (const article of articles) {
     try {
       const imageUrl    = getImage(article)
-      const contentType = article.type === 'blog' ? 'blog' : article.type === 'release' ? 'release' : 'news'
+      const contentType = article.type === 'blog' ? 'blog' : article.type === 'release' ? 'release' : article.type === 'review' ? 'review' : 'news'
       const content     = await generateCopy(article, platform, contentType)
 
       const logDoc = await sanity.create({
