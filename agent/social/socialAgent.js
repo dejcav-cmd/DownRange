@@ -56,6 +56,7 @@ const CHAR_BUDGETS = {
   bluesky:  215,  // 300 grapheme limit - 14 - 55 - 2 - 14 (safety)
   threads:  360,  // 500 limit - 14 - 55 - 2 - 55 (tags) - 14 (safety)
   facebook: 580,  // soft cap for quality, well under any limit
+  instagram: 400, // captions can run to 2200, but keep it tight and scannable
   reddit:   250,  // post title only
 }
 
@@ -111,6 +112,16 @@ const PLATFORM_PROMPTS = {
 - Use 2-3 emojis naturally
 - DO NOT include the URL or hashtags — added automatically`,
 
+  instagram: `INSTAGRAM CAPTION RULES:
+- Copy budget: 350 characters MAX for the main caption (not counting hashtags)
+- The first ~125 characters are what shows before "more" gets tapped — put the hook there
+- Punchy, visual, scannable — short paragraphs/line breaks, not a wall of text
+- Lead with the most striking fact, then 2-3 sentences of context and 2A impact
+- Use 3-4 emojis naturally throughout
+- End with a short call-to-action line like "Full story — link in bio 🔗" (this exact style, adjust wording naturally)
+- Do NOT write out the raw URL — Instagram captions don't make links clickable, so we handle that separately
+- DO NOT include hashtags — added automatically`,
+
   reddit: `REDDIT POST TITLE RULES:
 - This is the LINK POST TITLE — 300 characters MAX
 - Reddit titles must be factual and specific — no clickbait, no hype words
@@ -128,7 +139,7 @@ async function generateCopy(article, platform, contentType) {
   if (!slugStr) throw new Error(`Article "${article.title?.slice(0,50)}" has no valid slug — skipping to avoid broken URL`)
   const urlPath = contentType === 'blog' ? 'blog' : contentType === 'release' ? 'releases' : 'news'
   const url    = `https://downrangeco.com/${urlPath}/${slugStr}`
-  const tags   = ['twitter','threads','facebook'].includes(platform)
+  const tags   = ['twitter','threads','facebook','instagram'].includes(platform)
     ? '\n' + (HASHTAGS[article.category] || HASHTAGS.default) : ''
   const budget = CHAR_BUDGETS[platform] || 200
 
@@ -172,7 +183,11 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
   const sourceLabel = article.source && !['DownRange','downrangeco.com'].includes(article.source)
     ? ` (via ${article.source})`
     : ''
-  const suffix = `\n\nFull article: ${url}${sourceLabel}${tags}`
+  // Instagram doesn't render URLs as clickable links in captions, so we point
+  // to the bio link instead of writing out a dead-looking raw URL.
+  const suffix = platform === 'instagram'
+    ? `\n\n📖 Full story — link in bio${sourceLabel}${tags}`
+    : `\n\nFull article: ${url}${sourceLabel}${tags}`
 
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
     const segmenter = new Intl.Segmenter()
@@ -333,6 +348,58 @@ async function postFacebook(content, imageUrl) {
   return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}`, hasImage: false }
 }
 
+// ── INSTAGRAM ─────────────────────────────────────────────────────────────────
+// Graph API content publishing is a two-step flow: create a media container,
+// then publish it. Instagram requires an image (no text-only posts), and
+// container creation is asynchronous — we poll status_code before publishing
+// to avoid publishing a container that isn't ready yet (documented Meta behavior).
+async function postInstagram(content, imageUrl) {
+  const token = process.env.INSTAGRAM_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN
+  const igUserId = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID
+  if (!token || !igUserId) return { ok: false, error: 'Missing INSTAGRAM_ACCESS_TOKEN/FACEBOOK_PAGE_ACCESS_TOKEN or INSTAGRAM_BUSINESS_ACCOUNT_ID.' }
+  if (!imageUrl) return { ok: false, error: 'Instagram requires an image — no image available for this article.' }
+
+  const createRes = await fetch(`https://graph.facebook.com/v20.0/${igUserId}/media`, {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ image_url: imageUrl, caption: content, access_token: token }),
+  }).then(r => r.json())
+  if (!createRes.id) return { ok: false, error: createRes?.error?.message || 'Instagram media container creation failed' }
+  const containerId = createRes.id
+
+  // Poll for container readiness — usually near-instant for images, but Meta
+  // recommends checking status_code before publish rather than assuming FINISHED
+  let ready = false
+  for (let i = 0; i < 5; i++) {
+    const statusRes = await fetch(
+      `https://graph.facebook.com/v20.0/${containerId}?fields=status_code&access_token=${token}`
+    ).then(r => r.json())
+    if (statusRes.status_code === 'FINISHED') { ready = true; break }
+    if (statusRes.status_code === 'ERROR') {
+      return { ok: false, error: 'Instagram container processing failed (status_code ERROR)' }
+    }
+    await new Promise(r => setTimeout(r, 1500))
+  }
+  if (!ready) return { ok: false, error: 'Instagram container did not finish processing in time' }
+
+  const publishRes = await fetch(`https://graph.facebook.com/v20.0/${igUserId}/media_publish`, {
+    method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams({ creation_id: containerId, access_token: token }),
+  }).then(r => r.json())
+  if (!publishRes.id) return { ok: false, error: publishRes?.error?.message || 'Instagram publish failed' }
+
+  // media_publish returns a media ID, not the public permalink shortcode —
+  // fetch the actual permalink so postUrl is real and clickable
+  let permalink = null
+  try {
+    const permRes = await fetch(
+      `https://graph.facebook.com/v20.0/${publishRes.id}?fields=permalink&access_token=${token}`
+    ).then(r => r.json())
+    permalink = permRes.permalink || null
+  } catch {}
+
+  return { ok: true, postId: publishRes.id, postUrl: permalink || `https://www.instagram.com/${igUserId}/`, hasImage: true }
+}
+
 // ── TWITTER via Zernio ────────────────────────────────────────────────────────
 async function postViaZernio(content, imageUrl) {
   const apiKey    = (process.env.ZERNIO_API_KEY || '').trim()
@@ -419,6 +486,7 @@ async function dispatch(platform, content, imageUrl, category) {
     case 'bluesky':  return postBluesky(content, imageUrl)
     case 'threads':  return postThreads(content, imageUrl)
     case 'facebook': return postFacebook(content, imageUrl)
+    case 'instagram': return postInstagram(content, imageUrl)
     case 'twitter':  return postViaZernio(content, imageUrl)
     case 'reddit':   return postReddit(content, imageUrl, category)
     default:         return { ok: false, error: `${platform} not supported` }

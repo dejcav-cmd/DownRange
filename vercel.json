@@ -109,6 +109,10 @@
       "schedule": "*/10 * * * *"
     },
     {
+      "path": "/api/social/cron/instagram",
+      "schedule": "5-55/10 * * * *"
+    },
+    {
       "path": "/api/social/cron/threads",
       "schedule": "4 14 * * *"
     },
