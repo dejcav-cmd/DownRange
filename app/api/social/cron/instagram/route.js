@@ -44,3 +44,4 @@ export async function POST(req) {
   const result = await runSocialAgent({ platform: 'instagram', count: body.count ?? 2, dryRun: body.dryRun ?? false }).catch(e => ({ ok: false, error: e.message }))
   return Response.json(result)
 }
+
