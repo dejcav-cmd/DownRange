@@ -1,12 +1,37 @@
 {
-  "data": []
+  "data": [
+    {
+      "access_token": "EAANS6ZCffvMEBSU9lvkolPynTpoKaNZAHHgArI84LqJ8Nmid2wvCHEFZAfZCk2PECMNBLP9wwRmZCddcAbHk6mFexwosIG3ul7B9qpS6Or7E0qeeX71Us3qeUCDcAecY6bZAelwq5wJ6O2Yi6Ai8jY3iVZCQf5ivTq5miPwj8k1ZCpXE9nOVFNW4NuXFQoMH6sPylWrKoD2J",
+      "category": "News & media website",
+      "category_list": [
+        {
+          "id": "2709",
+          "name": "News & media website"
+        }
+      ],
+      "name": "DownRange Co.",
+      "id": "1142984005570525",
+      "tasks": [
+        "MANAGE",
+        "CREATE_CONTENT",
+        "MODERATE",
+        "MESSAGING",
+        "ADVERTISE",
+        "ANALYZE",
+        "VIEW_MONETIZATION_INSIGHTS"
+      ]
+    }
+  ],
+  "paging": {
+    "cursors": {
+      "before": "QVFIVEF0dXNPY3E1ak42QXl3QkhvTGNWc21sQjdOQ1JFX21rVUdFTEU3X0JPTkNrcjVjZAlBSU1ZAqQ093RU9ZASEhGZADN2TGtIcW5jTkl0LXBaZAHJsTVNIVFN3",
+      "after": "QVFIVEF0dXNPY3E1ak42QXl3QkhvTGNWc21sQjdOQ1JFX21rVUdFTEU3X0JPTkNrcjVjZAlBSU1ZAqQ093RU9ZASEhGZADN2TGtIcW5jTkl0LXBaZAHJsTVNIVFN3"
+    }
+  }
 }
 --- direct page access_token field ---
 {
-  "error": {
-    "message": "(#10) This endpoint requires the 'pages_read_engagement' permission or the 'Page Public Content Access' feature or the 'Page Public Metadata Access' feature. Refer to https://developers.facebook.com/docs/apps/review/login-permissions#manage-pages, https://developers.facebook.com/docs/apps/review/feature#reference-PAGES_ACCESS and https://developers.facebook.com/docs/apps/review/feature#page-public-metadata-access for details.",
-    "type": "OAuthException",
-    "code": 10,
-    "fbtrace_id": "ARYLKG-UoZaKF2KHcWGcEkj"
-  }
+  "access_token": "EAANS6ZCffvMEBSR57BoHhZCZA0b0dqjtafAdbZAMrhzT7EjkjdDZAh1tIyvKkcRRZAZCeAEcQ4csJ9In7xj3RBwEd9Y2ZCXLPOyosZBX889fcUvOVMNuSRpY4fZCGVH4FGJTmkDnfn6ZCDGxUdogXieUadcFSIsyJww8OznZCfmNXzzbnlFeM4kFZCkdeNDgHfKNlRh8ZC6VKlZB9AQ",
+  "name": "DownRange Co.",
+  "id": "1142984005570525"
 }
