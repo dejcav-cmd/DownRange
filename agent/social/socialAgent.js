@@ -319,20 +319,7 @@ async function postFacebook(content, imageUrl) {
       method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
       body: new URLSearchParams({ url: imageUrl, caption: content, access_token: token }),
     }).then(r => r.json())
-    if (!res.id) {
-      let ipCheck = 'unknown'
-      let fbSelfCheck = 'unknown'
-      try {
-        const ipRes = await fetch('https://api.ipify.org?format=json').then(r => r.json())
-        ipCheck = ipRes.ip
-      } catch (e) { ipCheck = 'ip-check-failed: ' + e.message }
-      try {
-        const meRes = await fetch(`https://graph.facebook.com/v20.0/me?fields=id,name&access_token=${token}`).then(r => r.json())
-        fbSelfCheck = JSON.stringify(meRes)
-      } catch (e) { fbSelfCheck = 'fb-self-check-failed: ' + e.message }
-      const dbg = `len=${token.length} start=${token.slice(0,8)} end=${token.slice(-6)} pageId=${pageId} imageUrl=${imageUrl} vercelOutboundIp=${ipCheck} fbSelfCheckFromVercel=${fbSelfCheck}`
-      return { ok: false, error: (res?.error?.message || 'Facebook photo post failed') + ' | TOKEN_DEBUG: ' + dbg }
-    }
+    if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook photo post failed' }
     return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/photo?fbid=${res.id}`, hasImage: true }
   }
 
@@ -340,10 +327,7 @@ async function postFacebook(content, imageUrl) {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
     body: new URLSearchParams({ message: content, access_token: token }),
   }).then(r => r.json())
-  if (!res.id) {
-    const dbg = `len=${token.length} start=${token.slice(0,8)} end=${token.slice(-6)} pageId=${pageId}`
-    return { ok: false, error: (res?.error?.message || 'Facebook post failed') + ' | TOKEN_DEBUG: ' + dbg }
-  }
+  if (!res.id) return { ok: false, error: res?.error?.message || 'Facebook post failed' }
   const [pid, eid] = res.id.split('_')
   return { ok: true, postId: res.id, postUrl: `https://www.facebook.com/permalink.php?story_fbid=${eid}&id=${pid}`, hasImage: false }
 }
