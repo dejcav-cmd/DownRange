@@ -74,6 +74,7 @@ export const socialConfig = defineType({
         { name: 'bluesky',  type: 'url', title: '🦋 Bluesky URL',          description: 'e.g. https://bsky.app/profile/downrangeco.bsky.social' },
         { name: 'twitter',  type: 'url', title: '𝕏 X/Twitter URL',         description: 'e.g. https://x.com/DownRangeCo' },
         { name: 'facebook', type: 'url', title: 'f Facebook Page URL',      description: 'e.g. https://www.facebook.com/downrangeco' },
+        { name: 'instagram', type: 'url', title: '📷 Instagram Profile URL', description: 'e.g. https://www.instagram.com/downrangeconews' },
         { name: 'threads',  type: 'url', title: '@ Threads URL',            description: 'e.g. https://www.threads.net/@downrangeco' },
         { name: 'reddit',   type: 'url', title: '🔴 Reddit Profile/Sub URL', description: 'e.g. https://www.reddit.com/user/DownRangeCo' },
         { name: 'youtube',  type: 'url', title: '▶ YouTube Channel URL',    description: 'e.g. https://www.youtube.com/@DownRangeCo' },

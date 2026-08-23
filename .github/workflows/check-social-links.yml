@@ -34,3 +34,8 @@ jobs:
           curl -s -X PUT -H "Authorization: Bearer $GH_PAT" -H "Accept: application/vnd.github+json" \
             -d "$PAYLOAD" \
             "https://api.github.com/repos/dejcav-cmd/DownRange/contents/docs/social-links-check.txt"
+
+      - name: Set social links
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: python3 scripts/set_social_links.py

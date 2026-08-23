@@ -5,6 +5,7 @@ const ICON_DEFS = {
   bluesky:  { label:'Bluesky',   symbol:'🦋', color:'#0085FF', ariaLabel:'Follow on Bluesky' },
   twitter:  { label:'X/Twitter', symbol:'𝕏',  color:'#e5e5e5', ariaLabel:'Follow on X' },
   facebook: { label:'Facebook',  symbol:'f',  color:'#1877F2', ariaLabel:'Follow on Facebook' },
+  instagram:{ label:'Instagram', symbol:'📷', color:'#E4405F', ariaLabel:'Follow on Instagram' },
   threads:  { label:'Threads',   symbol:'@',  color:'#aaaaaa', ariaLabel:'Follow on Threads' },
   reddit:   { label:'Reddit',    symbol:'🔴', color:'#FF4500', ariaLabel:'Follow on Reddit' },
   youtube:  { label:'YouTube',   symbol:'▶',  color:'#FF0000', ariaLabel:'Watch on YouTube' },
