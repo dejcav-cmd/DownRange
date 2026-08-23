@@ -118,9 +118,8 @@ const PLATFORM_PROMPTS = {
 - Punchy, visual, scannable — short paragraphs/line breaks, not a wall of text
 - Lead with the most striking fact, then 2-3 sentences of context and 2A impact
 - Use 3-4 emojis naturally throughout
-- End with a short call-to-action line like "Full story — link in bio 🔗" (this exact style, adjust wording naturally)
-- Do NOT write out the raw URL — Instagram captions don't make links clickable, so we handle that separately
-- DO NOT include hashtags — added automatically`,
+- DO NOT write your own "link in bio" or call-to-action line — that's added automatically below your caption
+- DO NOT include the URL or hashtags — added automatically`,
 
   reddit: `REDDIT POST TITLE RULES:
 - This is the LINK POST TITLE — 300 characters MAX
