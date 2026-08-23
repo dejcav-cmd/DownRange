@@ -33,6 +33,9 @@ except Exception:
 if PLATFORM not in cfg:
     cfg[PLATFORM] = {}
 cfg[PLATFORM]["enabled"] = True
+if PLATFORM in ("facebook", "instagram"):
+    cfg[PLATFORM]["postsPerRun"] = 1
+    cfg[PLATFORM]["times"] = [11, 16, 19, 22, 1]  # UTC hours, 5x/day cap per user request
 
 mutation = {
     "mutations": [
