@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-08-16T07:01:17.069Z",
+  "generatedAt": "2026-08-23T07:03:32.493Z",
   "content": {
-    "newsArticles": 1463,
-    "blogPosts": 198,
-    "legislation": 313,
-    "firearmReleases": 22,
-    "videos": 475,
+    "newsArticles": 1608,
+    "blogPosts": 213,
+    "legislation": 320,
+    "firearmReleases": 23,
+    "videos": 513,
     "reviews": 3,
-    "canadaArticles": 83,
-    "brazilArticles": 71
+    "canadaArticles": 88,
+    "brazilArticles": 79
   },
   "operations": {
-    "cronRuns": 2561,
+    "cronRuns": 2646,
     "outreachContacts": 221,
-    "socialPosts": 252,
-    "briefings": 83
+    "socialPosts": 337,
+    "briefings": 90
   },
   "latest": {
-    "newsTitle": "Larry Correia Launches Kickstarter for New Pro-Gun Science Fiction",
-    "newsDate": "2026-08-15T20:30:00.000Z",
-    "briefingDate": "2026-08-16",
+    "newsTitle": "Emmer: Walz Mining Ban Hands Rare Earths Dominance to China",
+    "newsDate": "2026-08-22T22:01:26.000Z",
+    "briefingDate": "2026-08-23",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 2628
+  "totalContentDocs": 2847
 }
