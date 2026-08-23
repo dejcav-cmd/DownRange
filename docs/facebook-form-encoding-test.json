@@ -1,3 +1,11 @@
 {
-  "data": []
+  "post_response": {
+    "error": {
+      "message": "(#200) The permission(s) publish_actions are not available. It has been deprecated. If you want to provide a way for your app users to share content to Facebook, we encourage you to use our Sharing products instead.",
+      "type": "OAuthException",
+      "code": 200,
+      "fbtrace_id": "AnCGRfUEqf72WgXUdoeuzFr"
+    }
+  },
+  "success": false
 }
