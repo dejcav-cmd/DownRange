@@ -1,10 +1,12 @@
 import os
 import json
 import requests
+import sys
 
 SANITY_PROJECT = "vbnsqnkg"
 SANITY_DATASET = "production"
 TOKEN = os.environ["SANITY_API_TOKEN"].replace("ST=", "").strip()
+PLATFORM = sys.argv[1] if len(sys.argv) > 1 else "facebook"
 
 headers = {"Authorization": f"Bearer {TOKEN}", "Content-Type": "application/json"}
 
@@ -28,9 +30,9 @@ try:
 except Exception:
     cfg = {}
 
-if "facebook" not in cfg:
-    cfg["facebook"] = {}
-cfg["facebook"]["enabled"] = True
+if PLATFORM not in cfg:
+    cfg[PLATFORM] = {}
+cfg[PLATFORM]["enabled"] = True
 
 mutation = {
     "mutations": [
