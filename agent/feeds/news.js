@@ -678,9 +678,14 @@ async function processNewsItem(item) {
       url: item.url, source: item.source, urgencyScore: ai?.urgencyScore || 8,
       active: true, publishedAt: doc.publishedAt,
     })
-    if (process.env.DISCORD_BREAKING_WEBHOOK) {
-      await notifyBreaking({ title: item.title, url: item.url, urgencyScore: ai?.urgencyScore })
-    }
+    // Discord breaking-alert notifications disabled 2026-08-23 (DJ request) —
+    // was re-notifying the same headline on every 2h cron run instead of once,
+    // flooding #breaking-alerts. The on-site breakingAlert doc above is
+    // unaffected. Re-enable by uncommenting below (and fixing the underlying
+    // re-notify-on-every-run issue first, or it'll just flood again).
+    // if (process.env.DISCORD_BREAKING_WEBHOOK) {
+    //   await notifyBreaking({ title: item.title, url: item.url, urgencyScore: ai?.urgencyScore })
+    // }
   }
 
   return { id: doc._id, title: item.title, category, hasAI: !!ai }
