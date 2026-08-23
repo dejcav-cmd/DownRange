@@ -2,16 +2,16 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Sun, 23 Aug 2026 02:59:38 GMT
-location: https://www.downrangeco.com/api/social/cron/facebook?cb=1787453978663731020
+date: Sun, 23 Aug 2026 04:19:06 GMT
+location: https://www.downrangeco.com/api/social/cron/facebook?cb=1787458746280065554
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: cle1::4d2sc-1787453978924-8b6ca099b79e
+x-vercel-id: cle1::db2hh-1787458746428-1019619fdd00
 
 HTTP/2 200 
 cache-control: public, max-age=0, must-revalidate
 content-type: application/json
-date: Sun, 23 Aug 2026 02:59:51 GMT
+date: Sun, 23 Aug 2026 04:19:13 GMT
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
@@ -22,8 +22,8 @@ x-dns-prefetch-control: on
 x-frame-options: SAMEORIGIN
 x-matched-path: /api/social/cron/facebook
 x-vercel-cache: MISS
-x-vercel-id: cle1::iad1::wqn4v-1787453979192-cdfb9ab803c7
+x-vercel-id: cle1::iad1::g2kw2-1787458746731-acd96fd56f72
 x-xss-protection: 1; mode=block
 
 --- Body ---
-{"ok":true,"posted":1,"total":1,"results":[{"platform":"facebook","title":"DOJ Surrenders: Suppressors Now Legal Without Form 4 or Tax Stamp","status":"posted","postUrl":"https://www.facebook.com/photo?fbid=122131403727341798","hasImage":true,"docId":"tUgkK4x2jCQXvq6LzCcdQB"}],"dryRun":false}
+{"ok":true,"posted":0,"total":1,"results":[{"platform":"facebook","title":"GOA Backs Donalds for Florida Governor in Primary Vote Today","status":"draft","content":"Gun Owners of America just backed Byron Donalds for Florida governor in today's primary 🔥 Donalds has committed to opposing red-flag laws and reversing restrictions Florida imposed since 2018. This is a significant endorsement for 2A voters in the state. With GOA's backing, Donalds is positioning himself as the pro-gun candidate in this race 🇺🇸 Are you voting today, and does this endorsement influence your decision? 🗳️\n\nFull article: https://downrangeco.com/news/florida-vote-goa-on-august-18-f4bb75?utm_source=facebook&utm_medium=social&utm_campaign=auto_post\n#2A #SecondAmendment #2ACommunity #Firearms","imageUrl":"https://cdn.sanity.io/images/vbnsqnkg/production/f1d9a885beb9208b2d9b6c90ccdc902745e872cb-270x225.png","docId":"r506ORX06Z9TVnQN40rOtm"}],"dryRun":true}
