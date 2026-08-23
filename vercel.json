@@ -106,7 +106,7 @@
     },
     {
       "path": "/api/social/cron/facebook",
-      "schedule": "2 14 * * *"
+      "schedule": "*/10 * * * *"
     },
     {
       "path": "/api/social/cron/threads",
