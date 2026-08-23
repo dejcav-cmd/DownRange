@@ -174,6 +174,19 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
     .replace(/^(Here'?s?( a| the)?( draft| post| copy)?:?\s*)/i, '')
     .trim()
 
+  // Safety net: strip any hashtag line(s) the model wrote on its own despite
+  // instructions not to — hashtags are appended once, automatically, below.
+  // Prevents duplicate hashtag blocks, which look sloppy on platforms like
+  // Instagram where a bad post can't be cleanly deleted after the fact.
+  if (tags) {
+    body = body
+      .split('\n')
+      .filter(line => !/^\s*(#\w+\s*)+$/.test(line))
+      .join('\n')
+      .replace(/\n{3,}/g, '\n\n')
+      .trim()
+  }
+
   // Grapheme-aware truncation
   // For Bluesky: the 300 grapheme limit applies to the ENTIRE post including URL
   // We must enforce this on the full assembled string, not just the body
