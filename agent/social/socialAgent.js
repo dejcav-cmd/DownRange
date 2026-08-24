@@ -543,6 +543,13 @@ async function dispatch(platform, content, imageUrl, category) {
 // ── Article + Blog fetcher ────────────────────────────────────────────────────
 async function fetchCandidates(minUrgency = 5, limit = 20) {
   const today = new Date(); today.setHours(0,0,0,0)
+  // Hard freshness cutoff — nothing older than this is ever eligible for
+  // social posting, regardless of urgency score. Fixes old backlog articles
+  // (sitting unposted with a stale high urgencyScore) from outranking
+  // today's actual news just because urgency used to be sorted before date.
+  const FRESHNESS_DAYS = 5
+  const cutoff = new Date(Date.now() - FRESHNESS_DAYS * 24 * 60 * 60 * 1000).toISOString()
+
   // Per-platform dedup: track platform+slug pairs already posted (ever, not just today)
   // This prevents reposting the same article to the same platform
   // We do allow re-posting to a DIFFERENT platform (e.g. Bluesky can post what X already did)
@@ -552,42 +559,53 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
     ).catch(() => [])).map(p => `${p.platform}::${p.articleSlug}`)
   )
 
-  // News articles
+  // News articles — sorted by recency, NOT urgency. Urgency is still used
+  // as a filter (minUrgency) and for "BREAKING" framing in the AI prompt,
+  // but must not let an old high-urgency article outrank fresh news.
   const news = await sanity.fetch(
-    `*[_type == "newsArticle" && defined(slug.current) && defined(publishedAt)] | order(coalesce(urgencyScore,5) desc, publishedAt desc)[0...${limit}]{
-      _id, "type":"news", title, summary, excerpt, category, urgencyScore,
+    `*[_type == "newsArticle" && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...${limit}]{
+      _id, "type":"news", title, summary, excerpt, category, urgencyScore, publishedAt,
       "slug": slug.current, imageUrl
-    }`
+    }`, { cutoff }
   ).catch(() => [])
 
   // Blog posts (published only)
   const blogs = await sanity.fetch(
-    `*[_type == "blogPost" && status == "published" && defined(slug.current)] | order(publishedAt desc)[0...10]{
-      _id, "type":"blog", title, "summary": excerpt, excerpt, category,
+    `*[_type == "blogPost" && status == "published" && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
+      _id, "type":"blog", title, "summary": excerpt, excerpt, category, publishedAt,
       "urgencyScore": 6, "slug": slug.current, imageUrl
-    }`
+    }`, { cutoff }
   ).catch(() => [])
 
   // Firearm releases (approved only)
   const releases = await sanity.fetch(
-    `*[_type == "firearmRelease" && approved == true && defined(slug.current)] | order(publishedAt desc)[0...10]{
-      _id, "type":"release", title, summary, category,
+    `*[_type == "firearmRelease" && approved == true && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
+      _id, "type":"release", title, summary, category, publishedAt,
       "urgencyScore": 6, "slug": slug.current, imageUrl
-    }`
+    }`, { cutoff }
   ).catch(() => [])
 
   // Gun reviews (published only)
   const reviews = await sanity.fetch(
-    `*[_type == "review" && defined(publishedAt) && defined(slug.current)] | order(publishedAt desc)[0...10]{
-      _id, "type":"review", title, summary, category, score,
+    `*[_type == "review" && defined(publishedAt) && defined(slug.current) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
+      _id, "type":"review", title, summary, category, score, publishedAt,
       "urgencyScore": 6, "slug": slug.current, imageUrl
-    }`
+    }`, { cutoff }
   ).catch(() => [])
 
-  // Merge + filter: exclude articles already posted to this specific platform
-  // minUrgency applied, with fallback to latest 10 if all filtered out
-  const all = [...news, ...blogs, ...releases, ...reviews].filter(a => (a.urgencyScore ?? 5) >= minUrgency)
-  return all.length ? all : [...news.slice(0,5), ...blogs.slice(0,3), ...releases.slice(0,2), ...reviews.slice(0,2)]
+  // Merge ALL types into one pool and sort by true recency (publishedAt),
+  // not by concatenation order. Previously news was always first in the
+  // array, so with count=1/run, blog/release/review content was almost
+  // never actually selected even when it was fresher — fixed by sorting
+  // the merged pool globally rather than taking whichever type happened
+  // to be listed first.
+  const merged = [...news, ...blogs, ...releases, ...reviews]
+    .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
+
+  const filtered = merged.filter(a => (a.urgencyScore ?? 5) >= minUrgency)
+  // Fallback if urgency filter removes everything: use the freshest available
+  // regardless of urgency, but NEVER relax the freshness cutoff itself.
+  return filtered.length ? filtered : merged.slice(0, 10)
 }
 
 // ── Main run — single platform ────────────────────────────────────────────────
