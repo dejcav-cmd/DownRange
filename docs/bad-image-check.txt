@@ -1,0 +1,5 @@
+{
+  "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/165a1b3ddc6470e7ff1a90344053cd5ee019cef2-1500x583.png",
+  "slug": "california-multiple-anti-gun-bills-still-alive-as-legislature-enters-final-week-de3357",
+  "title": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending"
+}
