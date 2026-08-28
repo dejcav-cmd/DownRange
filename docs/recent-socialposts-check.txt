@@ -1,0 +1,152 @@
+[
+  {
+    "_createdAt": "2026-08-28T11:20:22Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-28T11:20:22.204Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-28T01:20:21Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-28T01:20:21.129Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-27T22:20:22Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-27T22:20:22.467Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-27T19:20:21Z",
+    "articleTitle": "Tenth Circuit Guns Down New Mexico's 7-Day Wait; Maine Next",
+    "error": null,
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/Dcjhj2tIBrd/",
+    "postedAt": "2026-08-27T19:20:31.848Z",
+    "scheduledAt": "2026-08-27T19:20:21.576Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-27T19:02:32Z",
+    "articleTitle": "Tenth Circuit Guns Down New Mexico's 7-Day Wait; Maine Next",
+    "error": null,
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122132292783341798",
+    "postedAt": "2026-08-27T19:02:39.854Z",
+    "scheduledAt": "2026-08-27T19:02:32.760Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-27T16:20:21Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-27T16:20:21.629Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-27T16:02:33Z",
+    "articleTitle": "Concealed Carry Reciprocity 2026: Navigate the State-by-State Maze",
+    "error": null,
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122132271537341798",
+    "postedAt": "2026-08-27T16:02:40.300Z",
+    "scheduledAt": "2026-08-27T16:02:33.897Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-27T11:20:21Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-27T11:20:21.702Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-27T01:20:21Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-27T01:20:21.857Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-26T22:20:21Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-26T22:20:21.283Z",
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-08-26T19:20:23Z",
+    "articleTitle": "DOJ Sues California Over Glock Ban; State Denies Second Amendment Applies",
+    "error": null,
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/Dcg8xMJIMra/",
+    "postedAt": "2026-08-26T19:20:34.989Z",
+    "scheduledAt": "2026-08-26T19:20:23.875Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-26T19:02:34Z",
+    "articleTitle": "DOJ Sues California Over Glock Ban; State Denies Second Amendment Applies",
+    "error": null,
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122132116509341798",
+    "postedAt": "2026-08-26T19:02:41.439Z",
+    "scheduledAt": "2026-08-26T19:02:34.082Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-26T16:20:21Z",
+    "articleTitle": "Supreme Court Poised to Strike Down Assault Weapon Bans",
+    "error": null,
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/DcgoKuGGeZQ/",
+    "postedAt": "2026-08-26T16:20:37.831Z",
+    "scheduledAt": "2026-08-26T16:20:21.744Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-26T16:02:33Z",
+    "articleTitle": "Supreme Court Poised to Strike Down Assault Weapon Bans",
+    "error": null,
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122132086839341798",
+    "postedAt": "2026-08-26T16:02:42.927Z",
+    "scheduledAt": "2026-08-26T16:02:33.594Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-26T11:20:22Z",
+    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
+    "error": "The aspect ratio is not supported.",
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-26T11:20:22.667Z",
+    "status": "failed"
+  }
+]
