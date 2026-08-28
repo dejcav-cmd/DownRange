@@ -230,11 +230,11 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
   const sourceLabel = article.source && !['DownRange','downrangeco.com'].includes(article.source)
     ? ` (via ${article.source})`
     : ''
-  // Instagram doesn't render URLs as clickable links in captions, so we point
-  // to the bio link instead of writing out a dead-looking raw URL.
-  const suffix = platform === 'instagram'
-    ? `\n\n📖 Full story — link in bio${sourceLabel}${tags}`
-    : `\n\nFull article: ${url}${sourceLabel}${tags}`
+  // Instagram doesn't render URLs as clickable links in captions, but DJ
+  // wants the readable URL shown anyway (some readers copy/paste it
+  // manually) — so Instagram now gets the same "Full article: <url>"
+  // footer as every other platform.
+  const suffix = `\n\nFull article: ${url}${sourceLabel}${tags}`
 
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
     const segmenter = new Intl.Segmenter()
