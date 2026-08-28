@@ -1,5 +1,35 @@
 [
   {
+    "_createdAt": "2026-08-28T16:20:17Z",
+    "articleTitle": "Federal Court Kills New Mexico's 7-Day Gun Waiting Period",
+    "error": null,
+    "platform": "instagram",
+    "postUrl": "https://www.instagram.com/p/Dclxv6SI4B9/",
+    "postedAt": "2026-08-28T16:20:32.882Z",
+    "scheduledAt": "2026-08-28T16:20:17.259Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-28T16:02:23Z",
+    "articleTitle": "Federal Court Kills New Mexico's 7-Day Gun Waiting Period",
+    "error": null,
+    "platform": "facebook",
+    "postUrl": "https://www.facebook.com/photo?fbid=122132452455341798",
+    "postedAt": "2026-08-28T16:02:32.742Z",
+    "scheduledAt": "2026-08-28T16:02:23.159Z",
+    "status": "posted"
+  },
+  {
+    "_createdAt": "2026-08-28T15:27:10Z",
+    "articleTitle": "FBI Data Gutted 'More Guns, More Crime' Narrative\u2014Again",
+    "error": null,
+    "platform": "instagram",
+    "postUrl": null,
+    "postedAt": null,
+    "scheduledAt": "2026-08-28T15:27:10.202Z",
+    "status": "draft"
+  },
+  {
     "_createdAt": "2026-08-28T11:20:22Z",
     "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
     "error": "The aspect ratio is not supported.",
@@ -118,35 +148,5 @@
     "postedAt": "2026-08-26T19:02:41.439Z",
     "scheduledAt": "2026-08-26T19:02:34.082Z",
     "status": "posted"
-  },
-  {
-    "_createdAt": "2026-08-26T16:20:21Z",
-    "articleTitle": "Supreme Court Poised to Strike Down Assault Weapon Bans",
-    "error": null,
-    "platform": "instagram",
-    "postUrl": "https://www.instagram.com/p/DcgoKuGGeZQ/",
-    "postedAt": "2026-08-26T16:20:37.831Z",
-    "scheduledAt": "2026-08-26T16:20:21.744Z",
-    "status": "posted"
-  },
-  {
-    "_createdAt": "2026-08-26T16:02:33Z",
-    "articleTitle": "Supreme Court Poised to Strike Down Assault Weapon Bans",
-    "error": null,
-    "platform": "facebook",
-    "postUrl": "https://www.facebook.com/photo?fbid=122132086839341798",
-    "postedAt": "2026-08-26T16:02:42.927Z",
-    "scheduledAt": "2026-08-26T16:02:33.594Z",
-    "status": "posted"
-  },
-  {
-    "_createdAt": "2026-08-26T11:20:22Z",
-    "articleTitle": "California's Final Week: 3D-Printed Gun Ban and Two More Bills Pending",
-    "error": "The aspect ratio is not supported.",
-    "platform": "instagram",
-    "postUrl": null,
-    "postedAt": null,
-    "scheduledAt": "2026-08-26T11:20:22.667Z",
-    "status": "failed"
   }
 ]
