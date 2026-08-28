@@ -400,15 +400,36 @@ async function postFacebook(content, imageUrl) {
 // then publish it. Instagram requires an image (no text-only posts), and
 // container creation is asynchronous — we poll status_code before publishing
 // to avoid publishing a container that isn't ready yet (documented Meta behavior).
-async function postInstagram(content, imageUrl) {
+async function postInstagram(content, imageUrl, category) {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN
   const igUserId = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID
   if (!token || !igUserId) return { ok: false, error: 'Missing INSTAGRAM_ACCESS_TOKEN/FACEBOOK_PAGE_ACCESS_TOKEN or INSTAGRAM_BUSINESS_ACCOUNT_ID.' }
   if (!imageUrl) return { ok: false, error: 'Instagram requires an image — no image available for this article.' }
 
+  // Instagram only accepts images between 4:5 (0.8) and 1.91:1. Wide banner/
+  // header-style article images fail with a generic "aspect ratio is not
+  // supported" error — and since a failed post is never marked posted, the
+  // same article gets re-selected and re-fails on every subsequent run,
+  // burning through the day's limited posting slots indefinitely. Sanity's
+  // CDN embeds pixel dimensions in the asset filename itself
+  // (…-{width}x{height}.{ext}), so we can check this without an extra
+  // fetch. If dimensions can't be confirmed (e.g. an external/scraped
+  // image) we play it safe and use the category fallback rather than risk
+  // repeating that failure loop on an unknown ratio.
+  const dims = imageUrl.match(/-(\d+)x(\d+)\.\w+(?:\?.*)?$/)
+  let safeImageUrl = imageUrl
+  if (dims) {
+    const ratio = parseInt(dims[1], 10) / parseInt(dims[2], 10)
+    if (ratio < 0.8 || ratio > 1.91) {
+      safeImageUrl = FALLBACK_IMAGES[(category || '').toLowerCase()] || FALLBACK_IMAGES.default
+    }
+  } else {
+    safeImageUrl = FALLBACK_IMAGES[(category || '').toLowerCase()] || FALLBACK_IMAGES.default
+  }
+
   const createRes = await fetch(`https://graph.facebook.com/v20.0/${igUserId}/media`, {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-    body: new URLSearchParams({ image_url: imageUrl, caption: content, access_token: token }),
+    body: new URLSearchParams({ image_url: safeImageUrl, caption: content, access_token: token }),
   }).then(r => r.json())
   if (!createRes.id) return { ok: false, error: createRes?.error?.message || 'Instagram media container creation failed' }
   const containerId = createRes.id
@@ -533,7 +554,7 @@ async function dispatch(platform, content, imageUrl, category) {
     case 'bluesky':  return postBluesky(content, imageUrl)
     case 'threads':  return postThreads(content, imageUrl)
     case 'facebook': return postFacebook(content, imageUrl)
-    case 'instagram': return postInstagram(content, imageUrl)
+    case 'instagram': return postInstagram(content, imageUrl, category)
     case 'twitter':  return postViaZernio(content, imageUrl)
     case 'reddit':   return postReddit(content, imageUrl, category)
     default:         return { ok: false, error: `${platform} not supported` }
