@@ -2,16 +2,16 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Fri, 28 Aug 2026 15:27:06 GMT
-location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787930826040068822
+date: Fri, 28 Aug 2026 17:25:00 GMT
+location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787937900347026953
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: iad1::tlhkg-1787930826120-79ce79eccd0c
+x-vercel-id: iad1::7jvnk-1787937900422-d7a479b30b71
 
 HTTP/2 200 
 cache-control: public, max-age=0, must-revalidate
 content-type: application/json
-date: Fri, 28 Aug 2026 15:27:11 GMT
+date: Fri, 28 Aug 2026 17:25:17 GMT
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
@@ -22,8 +22,8 @@ x-dns-prefetch-control: on
 x-frame-options: SAMEORIGIN
 x-matched-path: /api/social/cron/instagram
 x-vercel-cache: MISS
-x-vercel-id: iad1::iad1::pscm9-1787930826300-a5f03ea362c7
+x-vercel-id: iad1::iad1::dnltg-1787937900696-da07994ea1f1
 x-xss-protection: 1; mode=block
 
 --- Body ---
-{"ok":true,"posted":0,"total":1,"results":[{"platform":"instagram","title":"FBI Data Gutted 'More Guns, More Crime' Narrative—Again","status":"draft","content":"Gun sales up. Violent crime down. 📈📉\n\nPost-Bruen data just demolished the \"more guns = more crime\" myth. Again.\n\nFBI numbers show what we already knew: Constitutional carry works. 🔍\n\nMore guns in lawful hands ≠ chaos. It equals freedom. 🇺🇸\n\n📖 Full story — link in bio\n#2A #SecondAmendment #GunPolicy #RightToBear #GunLaw #ConstitutionalCarry #GunRights #2ANews","imageUrl":"https://cdn.sanity.io/images/vbnsqnkg/production/64bcdc624aab648d925541dd92a3021c4ac3344d-650x335.jpg","docId":"vffm7lAPj6ZlYitxB2k8qU"}],"dryRun":true}
+{"ok":true,"posted":1,"total":1,"results":[{"platform":"instagram","title":"Supreme Court Guts Drug User Gun Ban — Except for Hard Drugs","status":"posted","postUrl":"https://www.instagram.com/p/Dcl5KW9G9pc/","hasImage":true,"docId":"zvTTs4C2GL7q2tLCLtBIhb"}],"dryRun":false}
