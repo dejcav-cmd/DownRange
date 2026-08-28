@@ -2,16 +2,16 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Fri, 28 Aug 2026 17:53:46 GMT
-location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787939625967028446
+date: Fri, 28 Aug 2026 17:58:29 GMT
+location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787939909517868023
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: iad1::wjcxx-1787939626050-bae8de6ef39c
+x-vercel-id: iad1::ls4g9-1787939909574-3850888d526b
 
 HTTP/2 200 
 cache-control: public, max-age=0, must-revalidate
 content-type: application/json
-date: Fri, 28 Aug 2026 17:53:51 GMT
+date: Fri, 28 Aug 2026 17:58:49 GMT
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
@@ -22,8 +22,8 @@ x-dns-prefetch-control: on
 x-frame-options: SAMEORIGIN
 x-matched-path: /api/social/cron/instagram
 x-vercel-cache: MISS
-x-vercel-id: iad1::iad1::xj7bj-1787939626283-11a39532e27b
+x-vercel-id: iad1::iad1::7l9fc-1787939909798-2b0037514833
 x-xss-protection: 1; mode=block
 
 --- Body ---
-{"ok":true,"posted":0,"total":1,"results":[{"platform":"instagram","title":"FBI Data Demolishes 'More Guns Equal More Crime' Narrative","status":"draft","content":"Gun sales up. Violent crime down. 📊\n\nPost-Bruen data just demolished the \"more guns = more crime\" myth. The Supreme Court struck down subjective permitting in 2022. Years later, FBI numbers tell the story anti-2A activists don't want told. 🔫\n\nReal data. Real freedom. 🇺🇸\n\nFull article: https://downrangeco.com/news/fbi-report-really-does-throw-water-on-whole-more-guns-equal-more-crime-thing-4477ed?utm_source=instagram&utm_medium=social&utm_campaign=auto_post\n#2A #SecondAmendment #RightToBear #ConstitutionalCarry #GunLaw #GunRights #2ANews #GunPolicy","imageUrl":"https://cdn.sanity.io/images/vbnsqnkg/production/64bcdc624aab648d925541dd92a3021c4ac3344d-650x335.jpg","docId":"zvTTs4C2GL7q2tLCLtI303"}],"dryRun":true}
+{"ok":true,"posted":1,"total":1,"results":[{"platform":"instagram","title":"FBI Data Demolishes 'More Guns Equal More Crime' Narrative","status":"posted","postUrl":"https://www.instagram.com/p/Dcl8_tREjeD/","hasImage":true,"docId":"vffm7lAPj6ZlYitxB3ipjK"}],"dryRun":false}
