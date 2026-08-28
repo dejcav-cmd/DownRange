@@ -2,16 +2,16 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Fri, 28 Aug 2026 17:58:29 GMT
-location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787939909517868023
+date: Fri, 28 Aug 2026 18:03:16 GMT
+location: https://www.downrangeco.com/api/social/cron/instagram?cb=1787940196434310015
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: iad1::ls4g9-1787939909574-3850888d526b
+x-vercel-id: iad1::689pd-1787940196509-b4022187a457
 
 HTTP/2 200 
 cache-control: public, max-age=0, must-revalidate
 content-type: application/json
-date: Fri, 28 Aug 2026 17:58:49 GMT
+date: Fri, 28 Aug 2026 18:03:21 GMT
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
@@ -22,8 +22,8 @@ x-dns-prefetch-control: on
 x-frame-options: SAMEORIGIN
 x-matched-path: /api/social/cron/instagram
 x-vercel-cache: MISS
-x-vercel-id: iad1::iad1::7l9fc-1787939909798-2b0037514833
+x-vercel-id: iad1::iad1::h9vh4-1787940196663-79092f4d7614
 x-xss-protection: 1; mode=block
 
 --- Body ---
-{"ok":true,"posted":1,"total":1,"results":[{"platform":"instagram","title":"FBI Data Demolishes 'More Guns Equal More Crime' Narrative","status":"posted","postUrl":"https://www.instagram.com/p/Dcl8_tREjeD/","hasImage":true,"docId":"vffm7lAPj6ZlYitxB3ipjK"}],"dryRun":false}
+{"ok":true,"posted":0,"total":1,"results":[{"platform":"instagram","title":"Kansas Congressman Demands ATF Clarity on NFA Injunction Enforcement","status":"draft","content":"Two weeks in. No clarity. 🚨\n\nFederal judge halts NFA registration requirements—but ATF stays silent on enforcement.\n\nGun owners and dealers left in legal limbo while Kansas congressman demands answers. 🇺🇸\n\nWhat happens next could reshape how the NFA operates. 📋\n\nFollow the case. ⚖️\n\n📖 Full story — link in bio\n#2A #SecondAmendment #GunRights #RightToBear #2ANews #GunLaw #ConstitutionalCarry #GunPolicy","imageUrl":"https://cdn.sanity.io/images/vbnsqnkg/production/f99d93eeac7501718d1cfd8565a286d43cac4e17-650x466.jpg","docId":"Vo9870X8gUaINlZHJnKfiv"}],"dryRun":true}
