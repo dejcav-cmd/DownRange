@@ -1,0 +1,5 @@
+https://downrangeco.com/img/photos/law.jpg: 1280x720 ratio=1.78 SAFE
+https://downrangeco.com/img/photos/news.jpg: 1200x800 ratio=1.50 SAFE
+https://downrangeco.com/img/photos/rifle.jpg: 1200x800 ratio=1.50 SAFE
+https://downrangeco.com/img/photos/training.jpg: 1200x800 ratio=1.50 SAFE
+https://downrangeco.com/img/photos/hunting.jpg: 1200x800 ratio=1.50 SAFE
