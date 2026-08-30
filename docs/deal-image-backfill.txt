@@ -1,53 +1,43 @@
-600 scanned, 70 need a real image, 12 coupon posts skipped
+600 scanned, 60 need a real image, 5 coupon posts skipped
 
-  + Sightmark Mini Shot M-Spec M3 Solar (RMS-C footp — 648175b 1500x1004 sha=d109f7830426
-  + Ar-15 Speed loader 556 223 300BO - $30.95 Free S — 2505630b 1448x1086 sha=7f0de12a4787
-  + 33% off CVLIFE WolfCovert 4-Reticle 2000G Shockp — 18108b 500x500 sha=4aedf61aacc5
-  + Tyrant Designs Concept One M-LOK/Keymod HandStop — 15760b 400x331 sha=2563077120c7
-  + CVLIFE Biometric Gun Safe with 2-in-1 Charging a — 27108b 500x500 sha=227ed3e134bf
-  + CVLIFE 42" Soft Rifle Case Double Rifle Bag Long — 16996b 500x500 sha=3915c1c9599d
-  + MidTen Bore Sight Laser, 30-06 Laser Bore Sight  — 16615b 500x500 sha=f370eb2efed3
-  + Maxim Defense CQB Gen 6 Stock for AR-15 BLACK -  — 13127b 600x259 sha=f13a8ed74fe6
-  + EZshoot 1600 Lumens 4-in-1 Ar Flashlight/IR Illu — 27637b 500x500 sha=aee5dcede8f6
-  + Ruger 10/22 .22 LR 16.2" Threaded barrel 25rd Da — 37563b 1318x296 sha=056f70e32892
-  + CVLIFE 8-11 Inches Bipod Picatinny Bipod Quick R — 17145b 500x500 sha=e8674b5a69b8
-  + 45% off CVLIFE Solar Red/Green Dot Sight for RMS — 21319b 500x500 sha=c40d46b2d0e5
-  + CMMG Dissent MK4 556 Nato 6.5" Barrel Tungsten G — 20088b 600x351 sha=7c5a4fe2bd6e
-  + 40% off EZshoot Laser Sight for Pistol, Sub Comp — 23868b 500x500 sha=1e5c596dca8f
-  + Mossberg 590A1 Security SPX 12ga 20" Bbl 8+1 Sho — 11984b 902x178 sha=49e0b80ece67
-  + Standard Manufacturing STD-15 AR15 223/5.56x45mm — 33807b 1256x323 sha=196add685a04
-  + Primary Weapons Systems UXR .223 Wylde 14.5" P&W — 13533b 656x182 sha=5420251dc8d2
-  + FN FN-15 SRP SAU Tactical Carbine 556 Nato MLok  — 12135b 617x188 sha=8c28ceef2499
-  + North American Arms Mini-Revolver USA 250th .22  — 63696b 756x439 sha=41b967aed7ff
-  + Century Arms MB47 7.62x39mm 16.25" Barrel 30-Rou — 36011b 1500x402 sha=82d7b5af98fa
-  + TacFire AR-15 .45 ACP Unassembled Upper Receiver — 61875b 1500x602 sha=5f99dd08ac4c
-  + Henry Original Iron Frame .44-40 - $2009.99 — 14049b 900x185 sha=9baf1c000e36
-  + SnapSafe Pistol Safe - $25.84 — 16065b 683x401 sha=d021894af85c
-  + Browning AB3 Micro Stalker 7mm-08 20" Barrel 5-R — 16642b 1298x247 sha=c74fbfea6f06
-  + Glock 43X Hoth Grey 9mm 3.4" Barrel 10-Rds - $59 — 41444b 656x513 sha=0193d6cbe174
-  ... 25/70  ok=25 fail=0
-  + Smith & Wesson Bodyguard 2.0 .380 ACP Pistol, 2. — 53260b 307x237 sha=f923a9476cca
-  + Beretta 1301 Tactical Mod.2 12-Ga 18.5" Semi-Aut — 28640b 1350x463 sha=26b683e40638
-  + Remington Golden Saber 9mm Luger +P 124 Grain Bo — 15440b 380x208 sha=696b80353175
-  + Panzer Arms FS1 Pro Flat Dark Earth / Black 12 G — 11800b 546x264 sha=c127e6dec761
-  + CNCDDPDW300 Daniel Defense PPW Regulator 300 BO  — 482825b 990x770 sha=079f51ed1e58
-  + Griffin Armament EXPLORR 300 30 Caliber Suppress — 40859b 1221x468 sha=691be23a2749
-  + KIMBER KHX Custom 10mm 5" 8rd Pistol - Gray / G- — 58326b 800x589 sha=0eec650d2d1e
-  + UBERTI 1873 Cattleman El Patron 357 Mag 4.8" 6rd — 12803b 500x241 sha=abb4f089dbae
-  + TISAS 1911 Carry B45 45ACP 4.25" 8rd Pistol - Bl — 39067b 1000x781 sha=5cb392063972
-  + THOMPSON M1 Carbine Tommy Gun 45 ACP SBR 10.5" 3 — 46244b 1500x499 sha=e7ae60771811
-  + Voidspec AR-15 Active Cam Reset Device w/ Lever  — 226428b 1000x666 sha=804c2305e04b
-  + Glock 23 V .40 SW 4.02" Barrel 13-Rounds - $488. — 77200b 1000x706 sha=a46b044fa3c3
-  + Auto Ordnance 1911 45 ACP 5" 7rds Pistol - $549. — 100840b 1200x752 sha=d4102ab84f96
-  + PSA Classic AR-15 Complete Pistol Lower W/HAR-15 — 66713b 1500x750 sha=6ea7a70cd55d
-  + Daniel Defense DDM4 V7 Pro, 5.56mm, 18" Barrel,  — 27426b 944x432 sha=085b80a0a6d3
-  + Sig Sauer Whiskey5 1-5x20mm Riflescope, 1in, Qua — 59181b 688x329 sha=61cd3b606100
-  + Lone Wolf Dusk19 9mm 4.02" 15rd Black / FDE - $4 — 217517b 1146x772 sha=3928b1a6b73d
-  + Rock Island Rock Tactical FS 45 ACP 5: Bbl 8RD S — 11697b 400x250 sha=0ea3e2d8ebfc
-  + Pointer Field Tek 4 12 Gauge 28 Barrel 3RD Semi- — 17548b 1200x308 sha=55ad54e73da9
-  + AKKAR Churchill 220 Combo 2 Barrels 20GA 18.5"/2 — 48611b 1200x232 sha=627a02b9a2a9
-  + FAB Defense Opposite Magazine Coupler for Two, 2 — 25793b 978x550 sha=a4f4694bed0d
-  + UTG Pro 30mm Flip-to-Side, Picatinny/Weaver QD R — 99495b 466x386 sha=6713092c40fc
+  + Federal Cartridge AE380AP 380 Automatic 380 Auto — 12691b 400x233 sha=ac98b0267295
+  + Kimber Stainless Target II 10mm 5" 8rd Pistol -  — 155725b 735x480 sha=be24d2bd70b6
+  + Savage 1911 Govt 9mm Pistol - 5" Barrel, 10rd -  — 36314b 800x537 sha=5331bb5df49d
+  + Mossberg 590 Mariner 12GA 20" 8rd Shotgun - Mari — 17322b 1000x324 sha=5a7555f1a867
+  + Tisas 1911 Night Stalker SF .45 ACP 5" TB 8rd Pi — 25252b 800x492 sha=d80c498896d8
+  + Meprolight MOR PRO 4.3 Red Dot Sight with Laser  — 45553b 680x510 sha=1642dd02996c
+  + TacFire 6 Prong Flash Hider .308 Win 5/8x24 - $1 — 18510b 369x656 sha=cd104a73b691
+  + MDT ACC Elite Chassis Titanium Blue Fits R700 SA — 15740b 800x169 sha=94f0bbadf397
+  + Winchester XPR Hunter Full Size 308 Win 3+1 22"  — 29247b 1280x379 sha=3d45853f3804
+  + KAK Industry AR15 Lower Parts Kit, Complete, Bla — 11485b 450x281 sha=a27d909d2617
+  + Adamson Giray G-40 Marine 12 Gauge 18.5" barrel  — 12323b 1000x181 sha=c29e0a07be85
+  + S&W M&P M2.0 Metal Compact 9mm 4" Barrel 15+1 -  — 178632b 616x459 sha=2eef7421a5fe
+  + CVA Scout Spur Patriot Brown 410Ga 22" Barrel 1R — 60725b 706x303 sha=c8e898a1a867
+  x Rugged Suppressors Razor 556 Rifle Suppressor, 2 — image not downloadable
+  + Savage Arms 110 Hunter 25-06 Rem 22" Barrel 4rd  — 33109b 776x261 sha=32fbbf0092f4
+  + Mossberg 990 Aftershock SPX 12ga 14.38" M-LOK Fo — 47947b 731x292 sha=ac6e52df8099
+  + Taurus RPC 9mm 4.5" Barrel W/ Folding Brace 32 R — 26626b 800x394 sha=9d6f2fe26a05
+  + Kimber Mountain Ascent Peak 30-06 Springfield 24 — 40242b 1500x341 sha=d6bda42dcdd2
+  + Wilson Combat P320C Carry 9mm 3.9" 17rd Pistol,  — 772828b 772x607 sha=30778fbd8438
+  + Browning T-Bolt Sporter .22 LR 22" Barrel 10rd R — 40726b 747x268 sha=bf9942b28f07
+  + Unique-AR's Ultra-Light 223 Wylde 16" 30+1 Black — 22424b 1000x276 sha=d5a96713e582
+  + Shadow Systems XR920 Elite 4" 9mm 17rd Pistol, B — 143824b 528x396 sha=00d93a200a54
+  + LFA Apollo 11 V2 Compact 4.15" 9mm 18rd Pistol,  — 124782b 564x423 sha=ea320b1a525e
+  + PSA Dagger Compact 9mm Pistol With Extreme Carry — 65507b 1000x1000 sha=aa073dac374c
+  + Arken EP-5 GENII 5-25x56 FFP Illuminated VPR/TOR — 89573b 630x630 sha=2b5e6ac4038b
+  ... 25/60  ok=24 fail=1
+  + Sig Sauer P320 Compact w/Night Sights Manual Saf — 114335b 646x498 sha=ae3064fbe59b
+  + Vortex Strike Eagle 1-8x24 FFP Rifle Scope - EBR — 152071b 813x423 sha=9d0eb2e882f3
+  + Vortex Optics Defender-ST Enclosed Solar Micro R — 335157b 666x509 sha=7eaefb3d22fc
+  + Voidspec AR-15 Active Cam Reset Device w/ Lever  — 457383b 1500x1000 sha=2f33ecf9c634
+  + Cosmetic Blem BCM MCMR-13 (M-LOK Compatible Modu — 13924b 500x333 sha=a8a1980970f4
+  x CVA Cascade Veil Wideland .308 Win 22" TB 4rd Ri — rejected: too small (600x97)
+  + Beretta Beretta 92XI Chocolate Chip 9mm 4.7" Bbl — 45176b 1000x666 sha=40ff475f4053
+  + Century Arms LFA Apollo 11 V2 Full Size 9mm 4.9" — 50421b 449x342 sha=bb55a968c37a
+  + Bushmaster QRC 16" 5.56 NATO Rifle, (1) 30rd Mag — 81376b 775x254 sha=9f96e7df2583
+  + Feyachi Iron Sight Flip Up Sight Front and Rear  — 337445b 1500x1033 sha=6a9078d1c7b6
+  + Feyachi Soft 42" Backpack Case MOLLE System Back — 229690b 1500x1039 sha=06c4149a79fc
+  + Marlin Model 1894 Guide Gun Rifle .44 Rem Mag 10 — 21055b 1000x437 sha=a7a478fff37c
   x Savage Arms 220 Slug Gun Left Hand 20 Gauge 22"  — image not downloadable
   x Radical firearms ar15 - $399 — unreachable after retries
   x 7.5" 5.56 NATO QpQ Nitride 1:7 Twist Barrel - $5 — image not downloadable
@@ -72,6 +62,6 @@
   x Sig Sauer SP2022 PRO 10 Rd 40S&W 357 Sig Magazin — image not downloadable
   x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
 
-fixed 47, failed 23  (67% success)
-distinct images: 47 across 47 deals
+fixed 35, failed 25  (58% success)
+distinct images: 35 across 35 deals
 PASS — no image shared between products
