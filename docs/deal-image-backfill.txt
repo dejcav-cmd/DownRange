@@ -1,43 +1,57 @@
-600 scanned, 60 need a real image, 5 coupon posts skipped
+600 scanned, 72 need a real image, 4 coupon posts skipped
 
-  + Federal Cartridge AE380AP 380 Automatic 380 Auto — 12691b 400x233 sha=ac98b0267295
-  + Kimber Stainless Target II 10mm 5" 8rd Pistol -  — 155725b 735x480 sha=be24d2bd70b6
-  + Savage 1911 Govt 9mm Pistol - 5" Barrel, 10rd -  — 36314b 800x537 sha=5331bb5df49d
-  + Mossberg 590 Mariner 12GA 20" 8rd Shotgun - Mari — 17322b 1000x324 sha=5a7555f1a867
-  + Tisas 1911 Night Stalker SF .45 ACP 5" TB 8rd Pi — 25252b 800x492 sha=d80c498896d8
+  + Texas Triggers TX22 FRT Handgun Trigger – TT-TX2 — 27539b 600x600 sha=804340aa93c4
+  + Savage Arms Axis 2 Pro Woodland 308 Win 20" 4rd  — 34766b 1500x312 sha=e2f2db5eefa5
+  + 30% off CVLIFE BearMight Enclosed Solar Multi Re — 19648b 500x500 sha=4e1910662968
+  + Sparrow Dynamics CRG-15 Compliant Rifle Grip OD  — 63946b 759x558 sha=d1d6dac0572f
+  + Battle Arms Enhanced Modular Magazine Release ME — 22110b 600x461 sha=5e1f7ddebd0d
+  + AR-15 10.5" 5.56 & .300 BLK Build Kits w/ SB Tac — 425590b 1000x1000 sha=8bb989a4f1fa
+  + 15% off CVLIFE EagleVanta FFP Rifle Scope for Hu — 17584b 500x500 sha=110271c85196
+  + 40% off CVLIFE Green/Red Laser Sight Compatible  — 29495b 500x500 sha=c83d73fd7bd6
+  + Kimber Rapide Scorpius Black / Stainless .45 ACP — 16368b 400x264 sha=e953114df151
+  + Browning BAR Mark3 Walnut .308 Win 18" Barrel 10 — 35517b 1500x303 sha=64cd9262cf38
+  + 50% off MidTen Bipod Compatible with M-Rail Bipo — 15715b 500x500 sha=320cc9365902
+  + 50% off CVLIFE Two Point Sling Rifle Sling Strap — 23390b 500x500 sha=8e38adf86637
+  + Sig Sauer P320 AXG Carry 9mm 3.9" Bbl Optics Rea — 55349b 901x693 sha=d4ee7c2c6cf5
+  + Kimber CDP Ultra Gray .45 ACP 3" Barrel 7-Rounds — 62152b 800x627 sha=ff54bbd93714
+  + Ruger Blackhawk Convertible .45 Colt /.45 ACP 4. — 27709b 800x469 sha=a2e76b036061
+  + Ruger Security-9 American Flag 9mm 4" Barrel 15- — 37168b 709x518 sha=fc9f65f37a7e
+  + 30% off CVLIFE Biometric Gun Safe for Handgun, F — 28350b 500x500 sha=e095350582b8
+  + TacFire AR-15 16" .350 Legend Unassembled Upper  — 46631b 1200x432 sha=1cff8b038bc2
+  + Tisas 1911 Night Stalker SF 10mm Optic Ready Pis — 44904b 1197x770 sha=634881a14ac5
+  + Henry Repeating Arms SPD Hush Series .357 Mag /  — 40463b 1500x350 sha=a84067845de9
+  + Geissele Automatics Super Duty MOD1 Desert Dirt  — 18637b 800x169 sha=e1ae5c37412b
+  + Cold Steel Special Forces Entrenching Tool - $24 — 21733b 500x510 sha=087c87e05e5b
+  + Precision Rifle Scope Mounts - 6061-T6 Aluminum  — 90096b 1500x1500 sha=3d2144f07a7a
+  + Remington 1911 R1S 5" Slide Kit .45 ACP Polished — 48855b 823x702 sha=fe01f52db8ca
+  + CZ Scorpion 3+ .22 LR 16" Barrel 10 Rounds - $48 — 251200b 1500x542 sha=d6691d1915db
+  ... 25/72  ok=25 fail=0
+  + LWRC IC-Discovery 5.56 NATO 16" OD Green - $1391 — 16491b 751x220 sha=09f40f6a21d7
+  + Tikka T3X Ace Game LH 308 Win - $1699.99 — 16468b 977x269 sha=f538abbad5ee
+  + Ruger 10/22 Sporter 22LR Eighth Edition Collecto — 29302b 1000x666 sha=a7fe649e9701
+  + Ruger 10/22 22LR Semi-Auto Rifle with Black and  — 22176b 1000x666 sha=c79313f34fe9
   + Meprolight MOR PRO 4.3 Red Dot Sight with Laser  — 45553b 680x510 sha=1642dd02996c
-  + TacFire 6 Prong Flash Hider .308 Win 5/8x24 - $1 — 18510b 369x656 sha=cd104a73b691
-  + MDT ACC Elite Chassis Titanium Blue Fits R700 SA — 15740b 800x169 sha=94f0bbadf397
-  + Winchester XPR Hunter Full Size 308 Win 3+1 22"  — 29247b 1280x379 sha=3d45853f3804
-  + KAK Industry AR15 Lower Parts Kit, Complete, Bla — 11485b 450x281 sha=a27d909d2617
-  + Adamson Giray G-40 Marine 12 Gauge 18.5" barrel  — 12323b 1000x181 sha=c29e0a07be85
-  + S&W M&P M2.0 Metal Compact 9mm 4" Barrel 15+1 -  — 178632b 616x459 sha=2eef7421a5fe
-  + CVA Scout Spur Patriot Brown 410Ga 22" Barrel 1R — 60725b 706x303 sha=c8e898a1a867
+  + Bulgaria Makarov 9x18mm Makarov Surplus Pistols  — 136469b 1000x666 sha=c9879bc4b55c
+  + AB Suppressor A-10 5.56 Duty Can 1/2-28 - $377.7 — 9283b 175x513 sha=c655c5bb6445
+  + Beretta 92XI SAO Squalo 9mm 4.90" 3-22 Rd - $127 — 64181b 1000x791 sha=c0b07d2051c4
+  + Apex Tactical Glock Gen3/4 Action Enhancement Ki — 12070b 425x319 sha=613d73850838
+  + Taurus 1-GX4M931-EN4 GX4 Micro-Compact Frame 9mm — 32706b 1000x755 sha=06efa39467c4
+  + Cold Steel Mini Tac Series Fixed Blade Knife wit — 60680b 1060x886 sha=31e59c7af561
+  + Winchester 9mm NATO 124 Grain FMJ 1000 Rounds -  — 25396b 420x420 sha=c47c4e57fef1
+  + Beretta 500th Anniversary Limited Edition 12 Gau — 22618b 440x400 sha=b76ea1b680d0
+  + 5 Pack RUBY.Q Handgun Socks, 16" Silicone Treate — 55226b 500x500 sha=7478946a2498
+  + 1911 9mm 4" Stainless Conversion Kit with Novak  — 49987b 793x826 sha=f0613735e761
+  + 1911 .45 ACP 4" Parkerized Conversion Kit w/ Nov — 44516b 768x793 sha=b27520445971
+  + BOG DeathGrip Aluminum Tripod Gunmetal Grey - $1 — 24397b 526x1000 sha=87d7bfd1eb0a
+  + Taurus TX, 9mm, 4.5" Barrel, 2-17rd Magazines, O — 99689b 1500x999 sha=b3687f4434f6
+  + Dead Air CT5P Patrol 5.56 Suppressor, Haynes 282 — 21497b 250x366 sha=67f3d88d8084
+  + Dead Air Sandman X 7.62mm Suppressor KeyMo Adapt — 153751b 1001x422 sha=7451ab53a275
+  x Dead Air Nomad LTI XC Suppressor, FDE, 7.62mm, w — image not downloadable
+  + Dead Air Nomad LTI XC Xeno Adapter 7.62mm Black  — 18922b 656x656 sha=acafc1212b6e
+  + Global Ordnance Monolith 5.56 NATO 16" 30rd Semi — 12904b 703x264 sha=14b0e18c435a
+  + Holosun Red 2 MOA dot & 65 MOA Circle Aluminum R — 14391b 400x250 sha=4167a0e29d9d
   x Rugged Suppressors Razor 556 Rifle Suppressor, 2 — image not downloadable
-  + Savage Arms 110 Hunter 25-06 Rem 22" Barrel 4rd  — 33109b 776x261 sha=32fbbf0092f4
-  + Mossberg 990 Aftershock SPX 12ga 14.38" M-LOK Fo — 47947b 731x292 sha=ac6e52df8099
-  + Taurus RPC 9mm 4.5" Barrel W/ Folding Brace 32 R — 26626b 800x394 sha=9d6f2fe26a05
-  + Kimber Mountain Ascent Peak 30-06 Springfield 24 — 40242b 1500x341 sha=d6bda42dcdd2
-  + Wilson Combat P320C Carry 9mm 3.9" 17rd Pistol,  — 772828b 772x607 sha=30778fbd8438
-  + Browning T-Bolt Sporter .22 LR 22" Barrel 10rd R — 40726b 747x268 sha=bf9942b28f07
-  + Unique-AR's Ultra-Light 223 Wylde 16" 30+1 Black — 22424b 1000x276 sha=d5a96713e582
-  + Shadow Systems XR920 Elite 4" 9mm 17rd Pistol, B — 143824b 528x396 sha=00d93a200a54
-  + LFA Apollo 11 V2 Compact 4.15" 9mm 18rd Pistol,  — 124782b 564x423 sha=ea320b1a525e
-  + PSA Dagger Compact 9mm Pistol With Extreme Carry — 65507b 1000x1000 sha=aa073dac374c
-  + Arken EP-5 GENII 5-25x56 FFP Illuminated VPR/TOR — 89573b 630x630 sha=2b5e6ac4038b
-  ... 25/60  ok=24 fail=1
-  + Sig Sauer P320 Compact w/Night Sights Manual Saf — 114335b 646x498 sha=ae3064fbe59b
-  + Vortex Strike Eagle 1-8x24 FFP Rifle Scope - EBR — 152071b 813x423 sha=9d0eb2e882f3
-  + Vortex Optics Defender-ST Enclosed Solar Micro R — 335157b 666x509 sha=7eaefb3d22fc
-  + Voidspec AR-15 Active Cam Reset Device w/ Lever  — 457383b 1500x1000 sha=2f33ecf9c634
-  + Cosmetic Blem BCM MCMR-13 (M-LOK Compatible Modu — 13924b 500x333 sha=a8a1980970f4
   x CVA Cascade Veil Wideland .308 Win 22" TB 4rd Ri — rejected: too small (600x97)
-  + Beretta Beretta 92XI Chocolate Chip 9mm 4.7" Bbl — 45176b 1000x666 sha=40ff475f4053
-  + Century Arms LFA Apollo 11 V2 Full Size 9mm 4.9" — 50421b 449x342 sha=bb55a968c37a
-  + Bushmaster QRC 16" 5.56 NATO Rifle, (1) 30rd Mag — 81376b 775x254 sha=9f96e7df2583
-  + Feyachi Iron Sight Flip Up Sight Front and Rear  — 337445b 1500x1033 sha=6a9078d1c7b6
-  + Feyachi Soft 42" Backpack Case MOLLE System Back — 229690b 1500x1039 sha=06c4149a79fc
-  + Marlin Model 1894 Guide Gun Rifle .44 Rem Mag 10 — 21055b 1000x437 sha=a7a478fff37c
   x Savage Arms 220 Slug Gun Left Hand 20 Gauge 22"  — image not downloadable
   x Radical firearms ar15 - $399 — unreachable after retries
   x 7.5" 5.56 NATO QpQ Nitride 1:7 Twist Barrel - $5 — image not downloadable
@@ -59,9 +73,7 @@
   x The Continental (TP9 Series) Fast Action Trigger — image not downloadable
   x Desantis Gunhide Uni-Tuk Kydex IWB Holster - $59 — image not downloadable
   x ODIN Works 18" 223 Wylde Rifle Length 3-Gun Prof — image not downloadable
-  x Sig Sauer SP2022 PRO 10 Rd 40S&W 357 Sig Magazin — image not downloadable
-  x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
 
-fixed 35, failed 25  (58% success)
-distinct images: 35 across 35 deals
+fixed 48, failed 24  (66% success)
+distinct images: 48 across 48 deals
 PASS — no image shared between products
