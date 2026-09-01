@@ -1,42 +1,47 @@
-600 scanned, 62 need a real image, 9 coupon posts skipped
+600 scanned, 61 need a real image, 9 coupon posts skipped
 
-  + Henry Frontier Lever Action 22WMR 24" 12rd w/ Oc — 13970b 1000x180 sha=fb4035e83f8b
-  + Colt 1911 Government 45 ACP Black DLC Gold Scrol — 36714b 690x428 sha=f1ac145978e9
-  + Sig Sauer XSERIES .45 ACP 4.3" barrel 8rd Black  — 39898b 800x586 sha=7b74f6fc3dd3
-  + FN 509 Midsize Tactical 9mm Optic Ready Pistol w — 50683b 600x583 sha=5b516f9f8934
-  + Taurus G3c 9mm Compact Striker-Fired Pistol with — 62206b 800x636 sha=a2e7ad2a28f7
-  + Walther PPK/S 380 ACP Pistol with Black Finish a — 34630b 800x615 sha=ed87d272866d
-  + TacFire AR-15 16" 5.56 Unassembled Upper Receive — 47538b 1200x449 sha=f58507c516ad
-  + Overwatch Precision TAC Trigger for SW MP Shield — 55224b 1069x830 sha=42d1129c33ce
-  + 30% off Midten 3-9x40 Compact Rifle Scope for .2 — 20672b 500x500 sha=3631f716cb30
-  + Sellier & Bellot Pistol & Revolver Ammo 9mm Luge — 20519b 437x248 sha=b92dd224be80
-  + EOTech XPS2-0 Holographic Sight Circle Dot Tan - — 40833b 656x519 sha=699b3e82684e
-  + 51% off EZshoot 800 Lumens Compact Pistol Light  — 20882b 500x500 sha=63bf93277d0c
-  + 40% off Folding Pocket Knife with 3.46" D2 Steel — 22499b 500x500 sha=fe5e98f57945
-  + 50% off CVLIFE 6-9 Inches Bipod Adjustable Sprin — 26997b 500x500 sha=403f90a28931
-  + 50% offCVLIFE Two Point Rifle Sling, Anti-Slip D — 18377b 500x500 sha=a14db991fa8f
-  + Ruger Vaquero with Rosewood Grip Stainless .45 L — 25149b 800x405 sha=5e4e53ab2895
-  + MidwayUSA Universal Gun Cleaning Kit - $27.99 — 39703b 442x472 sha=d2f4f2b8b9da
-  + Blackhawk Universal Swift 3-Point Single Black S — 193303b 1000x666 sha=7eafefa8e9c1
-  + Walker's Razor Electronic Ear Muffs with Shootin — 27295b 541x510 sha=ea08e6bbed7f
-  + 23% off CVLIFE WildHawk Multi- Reticle Red/Green — 20965b 500x500 sha=10bafcd88719
-  + 40% off CVLIFE Solar Enclosed Red Dot, 2MOA/30MO — 31776b 500x500 sha=1958696866ee
-  + Spike's Tactical AR-15 Upper Receiver Assembly - — 32833b 500x335 sha=3ff4b2f65694
-  + CVLIFE Gun Cleaning Kit 9mm, .45 Cleaning Kit fo — 42275b 500x500 sha=a3b5130d8207
-  + Amend2 Mod 3 Magazine AR-15 5.56x45mm, 223 Remin — 13728b 239x514 sha=15a9a44dc7df
-  + FN 66100718 FN 509 MRD 9mm 17rd Semi-Automatic:  — 20187b 504x365 sha=696b61191bf8
-  ... 25/62  ok=25 fail=0
-  + S&W Equalizer 9mm 3.7" Barrel 15 Rounds w/ Crims — 79153b 1000x792 sha=3d04ac6f2be4
-  + Ruger GP100 357 Mag 3″ Adj. – Blue Rubber w/Wood — 10189b 337x265 sha=f5ca3428891f
+  + Rost Martin RM1CX 9mm 4" Barrel 19-Rounds OR Ful — 55724b 800x614 sha=f67b9bb0cd4e
+  + T&K VORIX 30 Ti Suppressor .30 Caliber HUB - $89 — 53274b 634x339 sha=5fc5d394ef6f
+  + CCI Blazer 9mm 124 Grain FMJ 1000 rounds - $255  — 284353b 1084x700 sha=4d61edb0b8da
+  + Pioneer Arms Hellpup Pro - 11.25" 7.62x39mm, 30  — 19825b 600x342 sha=b9fb02a8e5a2
+  + Guntec USA 1POINT One Point Bungee Sling With QD — 100166b 1000x1000 sha=9030f5f936e8
+  + Springfield Hellcat 9mm 1-11, 3-13rd Mags, 3" Ba — 1004508b 1460x848 sha=a0708f03eadf
+  + Tyrant Designs I.T.T.S. Trigger for Glock Gen 3  — 17807b 308x499 sha=f0cb857743eb
+  + ProMag 9mm 50-Round Drum Magazine For Sig P320 - — 181577b 815x803 sha=9eada75cd522
+  + BUNDLE DEAL: Holosun 507C Green Dot Pistol Sight — 255203b 843x593 sha=a20e6b5800e7
+  x Bushnell Engage DX 10x42mm Binocular, Black - $1 — unreachable after retries
+  + Browning - BPT - 45 Auto - FMJ - 230 Grain - $20 — 213474b 905x472 sha=0e81c54a6dec
+  + Off Grid Trident Ti Flat Dark Earth .30 Caliber  — 116846b 668x237 sha=87027ca052ad
+  + Shooting Targets USA Official USPSA/IPSC Torso T — 27000b 612x513 sha=81e894e6d468
+  + Beretta 80X Cheetah .380 ACP 4.4" TB 10rd Semi A — 129791b 619x448 sha=26b22e188d4f
+  + Zastava ZPAPM70 7.62x39, 16.5" Barrel, Black, Qu — 174139b 1000x303 sha=d0dc25edfe14
+  + TriggerTech Tango Competitive Trigger Group AR-1 — 74588b 651x491 sha=a9d32817512b
+  + Heritage Badlander 20 Gauge 28" Break Action/Sid — 56880b 931x313 sha=c88303636e20
+  + SIG Sauer Tango-MSR Compact 1-6x24mm SFP Ill BDC — 52612b 596x322 sha=f923e579db2c
+  + Smith & Wesson M&P Shield CA Compliant 40 S&W 3. — 11326b 500x373 sha=9d2bb2c20d76
+  + Shark Coast Tactical Templar AR15 Carbine 5.56 N — 13788b 500x149 sha=849d7d09b4a5
+  + Griffin Armament Recce 5K 223/5.56 Suppressor -  — 71590b 688x323 sha=02148985f23c
+  + Benelli Nova 3 Tactical 12 GA 18.5" 4RD Pump Sho — 55461b 771x318 sha=32ec557dbaf5
+  + Smith & Wesson SW22 Victory .22 LR 5.5" 10RD Pis — 39557b 1000x646 sha=2ff4c7623ce3
+  + Thril PMX 223 Rem / 5.56 NATO AR15 / M4 Platform — 23374b 664x656 sha=59fa864481b2
+  + Thril PMX AR Magazine 5.56x45mm 30rd Olive Drab  — 63653b 319x445 sha=22eb1e91c9e7
+  ... 25/61  ok=24 fail=1
+  + Q Mini Fix .300 AAC Blackout 8" 10rd SBR - $3146 — 161531b 1029x484 sha=ff8b19afcd52
+  + Smith & Wesson Model 610 10mm 6.5" Barrel 6RD St — 77542b 1500x786 sha=18246dfa94b4
+  + Federal 12ga 2.75" 3DE 1-1/8oz #8 Ultra Clay & F — 16938b 546x291 sha=252c12e4ac0f
+  + Federal 25 Auto 45 gr Jacketed Solid Punch 20/Bo — 85901b 1000x666 sha=332834655591
+  + Sig Sauer ROMEO5 Gen II Red Dot Sight w/JULIET3- — 18949b 608x426 sha=2c0a9039a3ab
+  + Springfield Saint Edge 223 Wylde Rifle w/ Red-Do — 34782b 1344x421 sha=884139985fd6
+  + Burris USM S35 V3 Thermal Rifle Scope Black - $1 — 19549b 691x312 sha=bb571904fa45
+  + SnapSafe Premium In-Swing Vault Door with Electr — 8197b 218x504 sha=563ed89babc0
+  + Magpul PMAG 12 GL9 Magazine for Glock 26 - 12 Ro — 27561b 1100x734 sha=6a10959a86ad
+  + Winchester 25 Auto 50 gr FMJ 50/Box - $21.54 — 50366b 1000x666 sha=9eed94ef6daf
+  + Mossberg MC2sc 9mm Optic Ready Subcompact Pistol — 78156b 1000x666 sha=44cb03300c82
+  + Kimber Rampart 10mm Semi-Auto OD Green Pistol wi — 342347b 1000x666 sha=12093fa9f993
+  + BRG USA BRG9 Elite 9mm Pistol with 4 Inch Barrel — 39244b 1000x666 sha=1457c6d2916b
+  + Springfield Saint Victor 5.56mm 30-Rds 16" Gear  — 64545b 1350x783 sha=cd7b9851b427
+  + Callahan 123-Piece Gunsmith Screwdriver Set - $4 — 39454b 680x510 sha=05896c8b206d
   x Tikka T3x Hunter 308 Win 20" 3rd - Walnut - $999 — image not downloadable
-  + Kimber Rose Gold Ultra Ii 9mm Luger 3in Rose Gol — 16208b 378x296 sha=b967573f33d7
-  + SIG Sauer P238 380 ACP Pistol with Night Sights  — 22808b 500x358 sha=697fa6d6ff22
-  + HK CC9 9mm Handgun Bazooka Green 12-Round - $553 — 10875b 400x250 sha=397d82b3a676
-  + GForce Arms GFA BLADE6 9mm 33RD Handgun - $403.9 — 50591b 1000x787 sha=c3ff53693e0f
-  + Labor Day Sale! @AR15Discounts — 60028b 427x442 sha=a271a0d49157
-  + Federal American Eagle 45 ACP 230gr FMJ - 50 Rd  — 49452b 523x506 sha=7ea1e3e704fa
-  + *Patriotic Bundle* Hornady Frontier 250th Annive — 24993b 466x414 sha=962af41800c4
-  + TacFire Gen 3 Glock 19 / 23 Slide Completion Par — 14814b 230x512 sha=ad0f5c8f0754
   x Dead Air MOJAVE9 Suppressor, 9MM/.300 Blackout,  — rejected: extreme portrait (278x1406)
   x Strike Industries Triple Crown 223/556 Compensat — image not downloadable
   x SGM Tactical 10mm Auto 10-Round Extended Magazin — rejected: too small (138x722)
@@ -57,13 +62,7 @@
   x Tuna Cans Blaackfin 300blk/8.6blk (6 Baffle) - - — image not downloadable
   x REMINGTON - 223 Rem 24" BBL Action No-Thrd 1-8 T — image not downloadable
   x Ruger 10/22 MOE-X .22 LR 18.5" TB 10rd Semi Auto — image not downloadable
-  x Mossberg 590RM 12 Gauge 18.5 Inch Magazine Fed S — image not downloadable
-  x BREDA B3 5SM 12ga MOBL 3.5" 26" - $1802.99 — image not downloadable
-  x CMC Drop-in Trigger Glock 17/19/26/34 Gen4, 9mm  — image not downloadable
-  x Otter Creek Labs Lithium 9mm Silencer DT 1/2X28  — image not downloadable
-  x The Continental (TP9 Series) Fast Action Trigger — image not downloadable
-  x Desantis Gunhide Uni-Tuk Kydex IWB Holster - $59 — image not downloadable
 
-fixed 35, failed 27  (56% success)
-distinct images: 35 across 35 deals
+fixed 39, failed 22  (63% success)
+distinct images: 39 across 39 deals
 PASS — no image shared between products
