@@ -1,6 +1,7 @@
 import base64
 import json
 import os
+import urllib.error
 import urllib.request
 
 from PIL import Image, ImageDraw
@@ -36,8 +37,13 @@ req = urllib.request.Request(
     method="POST",
     headers={"Content-Type": "application/json", "x-admin-key": ADMIN_KEY},
 )
-with urllib.request.urlopen(req, timeout=60) as resp:
-    result = json.loads(resp.read())
+try:
+    with urllib.request.urlopen(req, timeout=60) as resp:
+        result = json.loads(resp.read())
+except urllib.error.HTTPError as e:
+    result = {"ok": False, "http_error": e.code, "body": e.read().decode(errors="replace")[:2000]}
+except Exception as e:
+    result = {"ok": False, "error": f"{type(e).__name__}: {e}"}
 
 with open("docs/image_classify_test_result.json", "w") as f:
     json.dump(result, f, indent=2)
