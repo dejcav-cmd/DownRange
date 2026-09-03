@@ -141,19 +141,35 @@ async function handler(req) {
   const stats = { scanned: 0, fullRewrite: 0, titleOnly: 0, skipped: 0, failed: 0 }
 
   try {
-    const [articles, blogs, releases, canada] = await Promise.all([
+    const [articles, blogs, releases, canada, staleBacklog] = await Promise.all([
       sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
       sanity.fetch(`*[_type=="blogPost"       && defined(title) && editorLocked != true] | order(publishedAt desc) [0...10] { _id, title, sourceTitle, body, excerpt, qualityReviewed }`),
       sanity.fetch(`*[_type=="firearmRelease" && defined(brand) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, "title": brand+" "+model, body, summary, brand, model, caliber, msrp, category, qualityReviewed }`),
       sanity.fetch(`*[_type=="canadaContent"  && defined(title) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, title, sourceTitle, body, summary, type, status, qualityReviewed }`),
+      // ── BACKLOG DRAIN ──────────────────────────────────────────────────────
+      // The freshness query above orders by publishedAt desc, which is the
+      // RSS source's original publish date, not ingestion time. An article
+      // with an older publishedAt gets permanently pushed out of that top-N
+      // window by newer articles and NEVER gets picked up, no matter how
+      // often this cron runs. This explicit query targets missing bodies
+      // directly, with no recency assumption, oldest first (FIFO), so the
+      // backlog actually drains instead of accumulating forever.
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < 100)] | order(_createdAt asc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
     ])
 
-    const allDocs = [
+    const seen = new Set()
+    const allDocs = []
+    for (const d of [
       ...articles.map(d => ({ ...d, _stype: 'newsArticle' })),
       ...blogs.map(d    => ({ ...d, _stype: 'blogPost' })),
       ...releases.map(d => ({ ...d, _stype: 'firearmRelease' })),
       ...canada.map(d   => ({ ...d, _stype: 'canadaContent' })),
-    ]
+      ...staleBacklog.map(d => ({ ...d, _stype: 'newsArticle' })),
+    ]) {
+      if (seen.has(d._id)) continue
+      seen.add(d._id)
+      allDocs.push(d)
+    }
 
     stats.scanned = allDocs.length
 
