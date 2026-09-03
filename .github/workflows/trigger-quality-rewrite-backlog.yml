@@ -10,6 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+      GH_PAT: ${{ secrets.GH_PAT }}
     steps:
       - uses: actions/checkout@v4
       - name: Trigger quality-rewrite 4x to clear backlog
@@ -17,15 +18,11 @@ jobs:
           for i in 1 2 3 4; do
             echo "=== Run $i ==="
             curl -sL --max-time 280 "https://downrangeco.com/api/cron/quality-rewrite" \
-              -H "x-admin-key: $ADMIN_KEY" | tee -a docs/quality_rewrite_backlog_trigger.log
+              -H "x-admin-key: $ADMIN_KEY"
             echo ""
             sleep 5
           done
       - name: Run diagnostic re-check
         run: python3 scripts/diag_missing_body.py
-      - run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git add docs/quality_rewrite_backlog_trigger.log docs/diag_missing_body_result.json
-          git commit -m "chore: quality-rewrite backlog clear trigger + recheck" || echo "no changes"
-          git push
+      - name: Push result via Contents API
+        run: python3 scripts/push_diag_result.py
