@@ -559,5 +559,121 @@
     "missingBodyLocked": 0,
     "missingBodyReviewed": 0,
     "total": 1878
-  }
+  },
+  "recent_quality_rewrite_runs": [
+    {
+      "at": "2026-09-03T03:02:25.425Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 7/7 \u00b7 title-only 2/2 \u00b7 skipped 41 \u00b7 failed 0 \u00b7 remaining 0",
+      "error": null,
+      "ms": 127297,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-02T03:02:15.746Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 5/6 \u00b7 title-only 5/5 \u00b7 skipped 39 \u00b7 failed 1 \u00b7 remaining 0",
+      "error": null,
+      "ms": 112989,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-01T03:02:01.425Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 6/6 \u00b7 title-only 1/1 \u00b7 skipped 43 \u00b7 failed 0 \u00b7 remaining 0",
+      "error": null,
+      "ms": 106987,
+      "status": "success"
+    },
+    {
+      "at": "2026-08-31T03:02:18.090Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 4/6 \u00b7 title-only 8/8 \u00b7 skipped 36 \u00b7 failed 2 \u00b7 remaining 0",
+      "error": null,
+      "ms": 112927,
+      "status": "success"
+    },
+    {
+      "at": "2026-08-30T03:03:09.309Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 4/5 \u00b7 title-only 6/6 \u00b7 skipped 39 \u00b7 failed 1 \u00b7 remaining 0",
+      "error": null,
+      "ms": 90416,
+      "status": "success"
+    },
+    {
+      "at": "2026-08-29T03:03:44.655Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 7/8 \u00b7 title-only 0/0 \u00b7 skipped 42 \u00b7 failed 1 \u00b7 remaining 0",
+      "error": null,
+      "ms": 128067,
+      "status": "success"
+    },
+    {
+      "at": "2026-08-28T03:03:34.774Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 7/8 \u00b7 title-only 1/1 \u00b7 skipped 41 \u00b7 failed 1 \u00b7 remaining 0",
+      "error": null,
+      "ms": 133104,
+      "status": "success"
+    },
+    {
+      "at": "2026-08-27T03:02:56.641Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 9/9 \u00b7 title-only 2/2 \u00b7 skipped 39 \u00b7 failed 0 \u00b7 remaining 0",
+      "error": null,
+      "ms": 144210,
+      "status": "success"
+    }
+  ],
+  "recent_news_runs": [
+    {
+      "at": "2026-09-03T14:03:25.628Z",
+      "details": "26 published (20 AI, 6 raw) of 50 fetched \u00b7 24 dupes | Two Dead, Plus Gunman, Multiple People Injured in Minneapolis Shooting \u00b7 Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 FireStick Muzzleloader Gets Green Light in 4 More States \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 It\u2019s Official: Aero Precision Is Back [NEWS] \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":11,\"sanityDup\":0,\"passedDedup\":19,\"published\":19,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 129133,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T12:03:06.574Z",
+      "details": "25 published (22 AI, 3 raw) of 50 fetched \u00b7 25 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 It\u2019s Official: Aero Precision Is Back [NEWS] \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 Walk The Talk America Launches 2026 Survey \u00b7 MKU Netro NW-3000 Night Vision Sights for Indian Army's SIG 716 Rifles \u00b7 Armed Customer Stops Robbery: Knife-Wielding Suspect Fatally Shot Inside Cedar Hill Chase Bank \u00b7 SAF FILES AMICUS BRIEF IN MASSACHUSETTS CHALLENGING CARRY PERMIT DENIALS | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":11,\"sanityDup\":0,\"passedDedup\":19,\"published\":19,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 111649,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T10:03:13.237Z",
+      "details": "26 published (23 AI, 3 raw) of 50 fetched \u00b7 24 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 It\u2019s Official: Aero Precision Is Back [NEWS] \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 Walk The Talk America Launches 2026 Survey \u00b7 MKU Netro NW-3000 Night Vision Sights for Indian Army's SIG 716 Rifles \u00b7 Armed Customer Stops Robbery: Knife-Wielding Suspect Fatally Shot Inside Cedar Hill Chase Bank \u00b7 SAF FILES AMICUS BRIEF IN MASSACHUSETTS CHALLENGING CARRY PERMIT DENIALS | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":11,\"sanityDup\":0,\"passedDedup\":19,\"published\":19,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 113125,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T08:02:21.695Z",
+      "details": "28 published (23 AI, 5 raw) of 50 fetched \u00b7 22 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 FireStick Muzzleloader Gets Green Light in 4 More States \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":10,\"sanityDup\":0,\"passedDedup\":20,\"published\":20,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 117614,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T06:02:22.050Z",
+      "details": "28 published (23 AI, 5 raw) of 50 fetched \u00b7 22 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 FireStick Muzzleloader Gets Green Light in 4 More States \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":10,\"sanityDup\":0,\"passedDedup\":20,\"published\":20,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 117790,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T04:02:19.823Z",
+      "details": "27 published (24 AI, 3 raw) of 50 fetched \u00b7 23 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? \u00b7 Walk The Talk America Launches 2026 Survey | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":10,\"sanityDup\":0,\"passedDedup\":20,\"published\":20,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 115631,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T02:03:18.830Z",
+      "details": "28 published (23 AI, 5 raw) of 50 fetched \u00b7 22 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? \u00b7 Walk The Talk America Launches 2026 Survey | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":10,\"sanityDup\":0,\"passedDedup\":20,\"published\":20,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 124907,
+      "status": "success"
+    },
+    {
+      "at": "2026-09-03T00:03:19.573Z",
+      "details": "28 published (25 AI, 3 raw) of 50 fetched \u00b7 22 dupes | The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? \u00b7 Walk The Talk America Launches 2026 Survey \u00b7 MKU Netro NW-3000 Night Vision Sights for Indian Army's SIG 716 Rifles \u00b7 Armed Customer Stops Robbery: Knife-Wielding Suspect Fatally Shot Inside Cedar Hill Chase Bank \u00b7 WA Concealed Carry Licenses Drop 5,000-Plus in August \u00b7 SAF FILES AMICUS BRIEF IN MASSACHUSETTS CHALLENGING CARRY PERMIT DENIALS | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":9,\"sanityDup\":0,\"passedDedup\":21,\"published\":21,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 126076,
+      "status": "success"
+    }
+  ]
 }
