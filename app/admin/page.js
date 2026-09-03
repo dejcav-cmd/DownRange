@@ -295,6 +295,48 @@ const STYLES = `
   .health-ok { color:#22c55e; } .health-warn { color:#f59e0b; } .health-err { color:#ef4444; }
 
   scrollbar-width: thin; scrollbar-color: #1e293b transparent;
+
+  /* ── Mobile nav toggle (hidden on desktop) ── */
+  .adm-nav-toggle { display:none; }
+  .adm-sidebar-close { display:none; }
+  .adm-sidebar-overlay { display:none; }
+
+  @media (max-width: 860px) {
+    .adm-nav-toggle {
+      display:flex; align-items:center; justify-content:center;
+      width:34px; height:34px; flex-shrink:0;
+      background:none; border:1px solid var(--border); color:var(--text-dim);
+      font-size:14px; cursor:pointer;
+    }
+    .adm-site-link { display:none; }
+
+    .adm-sidebar {
+      position:fixed; top:52px; bottom:0; left:0; z-index:150;
+      width:260px;
+      transform:translateX(-100%);
+      transition:transform .22s cubic-bezier(.4,0,.2,1);
+      box-shadow:2px 0 24px rgba(0,0,0,.5);
+    }
+    .adm-sidebar.open { transform:translateX(0); }
+
+    .adm-sidebar-close {
+      display:flex; align-items:center; justify-content:space-between;
+      padding:10px 14px; border-bottom:1px solid var(--border);
+      font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:13px;
+      color:var(--gold); letter-spacing:.06em; text-transform:uppercase;
+    }
+    .adm-sidebar-close button {
+      background:none; border:none; color:var(--text-dim); font-size:18px;
+      padding:4px 8px; cursor:pointer;
+    }
+
+    .adm-sidebar-overlay {
+      display:block; position:fixed; top:52px; left:0; right:0; bottom:0;
+      z-index:140; background:rgba(0,0,0,.6);
+    }
+
+    .adm-main { width:100%; }
+  }
 `
 
 // ── Inline: Overview Dashboard ───────────────────────────────────────────────
@@ -2875,6 +2917,7 @@ export default function AdminPage() {
   const [openSections, setOpenSections] = useState(new Set(['system']))
   const [section,  setSection]  = useState('system')
   const [panel,    setPanel]    = useState('overview')
+  const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [msg,      setMsg]      = useState('')
   const [msgType,  setMsgType]  = useState('info')
   const [health,   setHealth]   = useState(null)
@@ -2913,6 +2956,7 @@ export default function AdminPage() {
     setPanel(panelId)
     // Ensure the section is open
     setOpenSections(prev => { const next = new Set(prev); next.add(sectionId); return next })
+    setMobileNavOpen(false)
   }
 
   const currentSection = NAV.find(s => s.id === section)
@@ -2926,6 +2970,7 @@ export default function AdminPage() {
 
       {/* ── TOP BAR ── */}
       <div className="adm-topbar">
+        <button className="adm-nav-toggle" onClick={() => setMobileNavOpen(v => !v)} title="Menu">☰</button>
         <div className="adm-logo">◈ DR Admin</div>
         <a href="https://downrangeco.com" target="_blank" rel="noreferrer" className="adm-site-link">downrangeco.com ↗</a>
         <a href="https://vercel.com/dejcav-cmd/downrangeco" target="_blank" rel="noreferrer" className="adm-site-link">Vercel ↗</a>
@@ -2950,8 +2995,15 @@ export default function AdminPage() {
 
       <div className="adm-shell">
 
+        {/* Mobile overlay — tapping it closes the nav */}
+        {mobileNavOpen && <div className="adm-sidebar-overlay" onClick={() => setMobileNavOpen(false)} />}
+
         {/* ── SIDEBAR TREE ── */}
-        <div className="adm-sidebar">
+        <div className={'adm-sidebar' + (mobileNavOpen ? ' open' : '')}>
+          <div className="adm-sidebar-close">
+            <span>◈ DR Admin</span>
+            <button onClick={() => setMobileNavOpen(false)}>✕</button>
+          </div>
           {NAV.map(s => {
             const isOpen = openSections.has(s.id)
             return (
