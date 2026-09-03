@@ -32,7 +32,7 @@ payload = {
 }
 
 req = urllib.request.Request(
-    "https://downrangeco.com/api/admin/test-image-classify",
+    "https://www.downrangeco.com/api/admin/test-image-classify",
     data=json.dumps(payload).encode(),
     method="POST",
     headers={"Content-Type": "application/json", "x-admin-key": ADMIN_KEY},
