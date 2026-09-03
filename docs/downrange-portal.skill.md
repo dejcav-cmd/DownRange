@@ -584,3 +584,62 @@ workflow (python script + Contents API push back to repo — git push from
 within Actions kept failing even with `permissions: contents: write` set,
 Contents API PUT worked reliably). Workflow/script files removed after
 the fix was confirmed; this note is the durable record.
+
+## Instagram/social posts using vector images instead of article photos (Sept 3 2026) — fixed
+
+Reported via screenshot: an Instagram post showed a flat vector illustration
+(scales of justice + gavel icon) instead of a real article photo.
+
+Root cause was in `agent/social/socialAgent.js`, not the news ingestion
+pipeline. Two separate fallback paths both pointed at local files —
+`/img/photos/law.jpg`, `rifle.jpg`, `news.jpg` — which turned out to NOT be
+photos at all despite the "photos" directory name:
+  - `law.jpg` = flat scales-of-justice/gavel icon illustration (the exact
+    image from the bug report)
+  - `rifle.jpg` = flat firearm silhouette diagram
+  - `news.jpg` = a website UI mockup screenshot
+
+1. `getImage()` used these as the fallback whenever `article.imageUrl` was
+   empty. Fixed: now does a live Pexels/Pixabay photo search (reusing
+   `searchForImage` from `agent/utils.js`, same function news ingestion
+   uses) instead, returning null (skip posting) if no real photo exists.
+2. `postInstagram()`'s aspect-ratio safety check (Instagram requires
+   0.8–1.91 ratio, detected via Sanity CDN's `-{width}x{height}.{ext}`
+   filename convention) ALSO substituted these same files whenever the
+   ratio was confirmed bad OR — critically — whenever it couldn't be
+   confirmed at all, which is the case for any external URL not hosted on
+   Sanity's CDN, including raw Pexels/Pixabay results from fix #1's live
+   search. This path could silently undo fix #1. Fixed: confirmed-bad
+   ratio now skips the post with a clear error; unconfirmable ratio now
+   trusts the real image and lets Instagram's own validation catch genuine
+   problems (retried next cron cycle via the existing failed-post retry
+   path) instead of ever substituting a placeholder.
+
+Also investigated (as a possible contributing cause, defense in depth):
+`fetchAndUploadOgImage()` in `agent/utils.js` only filtered candidate
+OG-scraped images by file extension and pixel dimensions — a PNG-rendered
+vector illustration from a source site would pass every check. Added
+`isPhotographicImage()`, a Claude-vision binary classifier (photo vs.
+illustration), gating the OG-image upload path. A pixel-color-variety
+heuristic was tried first and rejected: dark/moody product photography
+(common in this niche) has similarly low color variety to flat vector art
+and got false-positive-rejected in testing (ammo.jpg, homedefense.jpg,
+suppressor.jpg — note suppressor.jpg turned out to ALSO be a vector
+diagram, not a real photo, on inspection). Fails open on any API error so
+a transient hiccup never blocks a legitimate photo.
+
+Verified live via a dry-run of the actual Instagram cron route
+(`POST /api/social/cron/instagram` with `dryRun: true`) — all 5 candidate
+articles, including law/policy content that previously would have hit the
+broken fallback, showed real Sanity CDN image URLs with valid embedded
+dimensions and in-range aspect ratios. None fell back to the vector files.
+
+NOT fixed (explicitly out of scope, flagged for later): the same
+`/img/photos/{law,rifle,news}.jpg` files are referenced across dozens of
+other components and routes site-wide (NewsCard, ReleaseCard, IntlArticleCard,
+blog/news/canada/brazil pages, many admin fix-image routes,
+`app/api/admin/fix-images/route.js`'s own `BAD_URLS` list oddly already
+contains these same paths as "bad" while other code still points to them
+as fallbacks). Worth a dedicated site-wide sweep at some point — real
+photos need to replace the whole `/img/photos/` category-fallback set, not
+just be avoided in the social pipeline.
