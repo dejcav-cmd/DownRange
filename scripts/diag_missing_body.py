@@ -46,6 +46,16 @@ counts = sanity_query(
 )
 out["counts"] = counts
 
+recent_qr = sanity_query(
+    '*[_type=="cronRun" && jobId=="quality-rewrite"] | order(at desc) [0...8] { at, status, details, error, ms }'
+)
+out["recent_quality_rewrite_runs"] = recent_qr
+
+recent_news = sanity_query(
+    '*[_type=="cronRun" && jobId=="news"] | order(at desc) [0...8] { at, status, details, error, ms }'
+)
+out["recent_news_runs"] = recent_news
+
 with open("docs/diag_missing_body_result.json", "w") as f:
     json.dump(out, f, indent=2, default=str)
 
