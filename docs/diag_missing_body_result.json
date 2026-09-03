@@ -6,8 +6,8 @@
       "bodyLen": 2339,
       "editorLocked": null,
       "publishedAt": "2026-09-03T12:30:44.000Z",
-      "qualityReviewed": null,
-      "title": "Minneapolis Shooting Leaves Two Dead, Six Wounded, Three Officers Hit"
+      "qualityReviewed": true,
+      "title": "Minneapolis Shooting Kills Two, Wounds Six Including Three Officers"
     },
     {
       "_createdAt": "2026-09-03T10:02:27Z",
@@ -15,34 +15,34 @@
       "bodyLen": 2092,
       "editorLocked": null,
       "publishedAt": "2026-09-02T10:52:00.000Z",
-      "qualityReviewed": null,
+      "qualityReviewed": true,
       "title": "Colt Releases Optics-Ready Lightweight Commander in .45 ACP"
     },
     {
       "_createdAt": "2026-09-03T10:02:21Z",
       "_id": "news-a4cba8923aabc66a7408a9a4cd780635",
-      "bodyLen": null,
+      "bodyLen": 3580,
       "editorLocked": null,
       "publishedAt": "2026-09-02T13:17:00.000Z",
-      "qualityReviewed": null,
-      "title": "Double-Action Autos: The Long Pull"
+      "qualityReviewed": true,
+      "title": "Double-Action Pistols Demand Different Training Than Single-Action Guns"
     },
     {
       "_createdAt": "2026-09-03T10:01:55Z",
       "_id": "news-aecb1803971b25c2eabf62ce1574d559",
-      "bodyLen": null,
+      "bodyLen": 4025,
       "editorLocked": null,
       "publishedAt": "2026-09-02T17:04:52.000Z",
-      "qualityReviewed": null,
+      "qualityReviewed": true,
       "title": "It\u2019s Official: Aero Precision Is Back [NEWS]"
     },
     {
       "_createdAt": "2026-09-03T06:00:47Z",
       "_id": "news-86edd8b346db61315531717c28b984df",
-      "bodyLen": null,
+      "bodyLen": 4301,
       "editorLocked": null,
       "publishedAt": "2026-09-02T22:30:00.000Z",
-      "qualityReviewed": null,
+      "qualityReviewed": true,
       "title": "FireStick Muzzleloader Gets Green Light in 4 More States"
     },
     {
@@ -61,7 +61,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T21:00:00.000Z",
       "qualityReviewed": true,
-      "title": "Black Hills Revives .32-20 Shooting with New Cowboy Action Load"
+      "title": "Black Hills Revives .32-20 Surplus\u2014120-Year-Old Smith Still Runs"
     },
     {
       "_createdAt": "2026-09-03T02:01:34Z",
@@ -70,7 +70,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-03T00:00:00.000Z",
       "qualityReviewed": true,
-      "title": "Bullpups Divide Gun Owners: Love It or Leave It"
+      "title": "Bullpup Rifles Split Gun Owners: Love It or Leave It"
     },
     {
       "_createdAt": "2026-09-03T02:01:33Z",
@@ -79,7 +79,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-03T00:30:26.000Z",
       "qualityReviewed": true,
-      "title": "Minnesota Court Gun Ban Extended"
+      "title": "Bruen Affirms Courthouse Gun Bans as Sensitive Place Exception"
     },
     {
       "_createdAt": "2026-09-03T00:01:57Z",
@@ -88,7 +88,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T18:00:00.000Z",
       "qualityReviewed": true,
-      "title": "CZ TS 3 ORANGE Lands in US \u2014 Grauffel's 11th World Title Gun"
+      "title": "CZ TS 3 ORANGE Ships Stateside \u2014 IPSC Champion Eric Grauffel Wins 11th Title"
     },
     {
       "_createdAt": "2026-09-03T00:01:33Z",
@@ -97,7 +97,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T22:30:16.000Z",
       "qualityReviewed": true,
-      "title": "New Survey: Defensive Gun Uses Hit Six Figures Annually in U.S."
+      "title": "Defensive Gun Uses Hit Six Figures Yearly, Even Anti-Gun Data Shows"
     },
     {
       "_createdAt": "2026-09-03T00:01:32Z",
@@ -106,7 +106,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T22:49:43.000Z",
       "qualityReviewed": true,
-      "title": "Modern vs. Classic: Which Hunting Rifle Actually Wins"
+      "title": "Modern vs. Classic: Which Hunting Rifle Actually Performs"
     },
     {
       "_createdAt": "2026-09-02T22:02:09Z",
@@ -142,7 +142,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T20:30:15.000Z",
       "qualityReviewed": true,
-      "title": "New York Court Overturns Weapons Conviction, Affirms Fourth Amendment Protection"
+      "title": "NY Man's Weapons Conviction Overturned by Court"
     },
     {
       "_createdAt": "2026-09-02T20:00:43Z",
@@ -151,7 +151,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T18:30:57.000Z",
       "qualityReviewed": true,
-      "title": "Illinois Gun Control Failed to Stop Granite City Officer Shooting"
+      "title": "Illinois Gun Control Laws Failed to Stop Officer Shooting in Granite City"
     },
     {
       "_createdAt": "2026-09-02T20:00:42Z",
@@ -160,7 +160,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T18:45:56.000Z",
       "qualityReviewed": true,
-      "title": "SAF Pushes Supreme Court to Strike Maryland's Gun-Free Zones"
+      "title": "SAF Takes Maryland's 'Sensitive Places' Ban to Supreme Court"
     },
     {
       "_createdAt": "2026-09-02T18:03:49Z",
@@ -196,7 +196,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T16:30:55.000Z",
       "qualityReviewed": true,
-      "title": "Gun-Free Zones Keep Failing\u2014Here's the Data That Proves It"
+      "title": "Gun-Free Zones Keep Failing\u2014Social Media Finally Admits It"
     },
     {
       "_createdAt": "2026-09-02T16:01:33Z",
@@ -223,7 +223,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T15:30:02.000Z",
       "qualityReviewed": true,
-      "title": "Walk the Talk America Opens Mental Health Gun Survey Through September"
+      "title": "Walk The Talk America Opens Annual Guns and Mental Health Survey"
     },
     {
       "_createdAt": "2026-09-02T14:00:45Z",
@@ -278,8 +278,8 @@
       "bodyLen": 2339,
       "editorLocked": null,
       "publishedAt": "2026-09-03T12:30:44.000Z",
-      "qualityReviewed": null,
-      "title": "Minneapolis Shooting Leaves Two Dead, Six Wounded, Three Officers Hit"
+      "qualityReviewed": true,
+      "title": "Minneapolis Shooting Kills Two, Wounds Six Including Three Officers"
     },
     {
       "_createdAt": "2026-09-03T02:01:33Z",
@@ -288,7 +288,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-03T00:30:26.000Z",
       "qualityReviewed": true,
-      "title": "Minnesota Court Gun Ban Extended"
+      "title": "Bruen Affirms Courthouse Gun Bans as Sensitive Place Exception"
     },
     {
       "_createdAt": "2026-09-03T02:01:34Z",
@@ -297,7 +297,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-03T00:00:00.000Z",
       "qualityReviewed": true,
-      "title": "Bullpups Divide Gun Owners: Love It or Leave It"
+      "title": "Bullpup Rifles Split Gun Owners: Love It or Leave It"
     },
     {
       "_createdAt": "2026-09-03T00:01:32Z",
@@ -306,7 +306,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T22:49:43.000Z",
       "qualityReviewed": true,
-      "title": "Modern vs. Classic: Which Hunting Rifle Actually Wins"
+      "title": "Modern vs. Classic: Which Hunting Rifle Actually Performs"
     },
     {
       "_createdAt": "2026-09-03T00:01:33Z",
@@ -315,15 +315,15 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T22:30:16.000Z",
       "qualityReviewed": true,
-      "title": "New Survey: Defensive Gun Uses Hit Six Figures Annually in U.S."
+      "title": "Defensive Gun Uses Hit Six Figures Yearly, Even Anti-Gun Data Shows"
     },
     {
       "_createdAt": "2026-09-03T06:00:47Z",
       "_id": "news-86edd8b346db61315531717c28b984df",
-      "bodyLen": null,
+      "bodyLen": 4301,
       "editorLocked": null,
       "publishedAt": "2026-09-02T22:30:00.000Z",
-      "qualityReviewed": null,
+      "qualityReviewed": true,
       "title": "FireStick Muzzleloader Gets Green Light in 4 More States"
     },
     {
@@ -333,7 +333,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T21:00:00.000Z",
       "qualityReviewed": true,
-      "title": "Black Hills Revives .32-20 Shooting with New Cowboy Action Load"
+      "title": "Black Hills Revives .32-20 Surplus\u2014120-Year-Old Smith Still Runs"
     },
     {
       "_createdAt": "2026-09-02T22:01:41Z",
@@ -342,7 +342,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T20:30:15.000Z",
       "qualityReviewed": true,
-      "title": "New York Court Overturns Weapons Conviction, Affirms Fourth Amendment Protection"
+      "title": "NY Man's Weapons Conviction Overturned by Court"
     },
     {
       "_createdAt": "2026-09-03T02:02:01Z",
@@ -360,7 +360,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T18:45:56.000Z",
       "qualityReviewed": true,
-      "title": "SAF Pushes Supreme Court to Strike Maryland's Gun-Free Zones"
+      "title": "SAF Takes Maryland's 'Sensitive Places' Ban to Supreme Court"
     },
     {
       "_createdAt": "2026-09-02T20:00:43Z",
@@ -369,7 +369,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T18:30:57.000Z",
       "qualityReviewed": true,
-      "title": "Illinois Gun Control Failed to Stop Granite City Officer Shooting"
+      "title": "Illinois Gun Control Laws Failed to Stop Officer Shooting in Granite City"
     },
     {
       "_createdAt": "2026-09-03T00:01:57Z",
@@ -378,7 +378,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T18:00:00.000Z",
       "qualityReviewed": true,
-      "title": "CZ TS 3 ORANGE Lands in US \u2014 Grauffel's 11th World Title Gun"
+      "title": "CZ TS 3 ORANGE Ships Stateside \u2014 IPSC Champion Eric Grauffel Wins 11th Title"
     },
     {
       "_createdAt": "2026-09-02T22:01:44Z",
@@ -392,10 +392,10 @@
     {
       "_createdAt": "2026-09-03T10:01:55Z",
       "_id": "news-aecb1803971b25c2eabf62ce1574d559",
-      "bodyLen": null,
+      "bodyLen": 4025,
       "editorLocked": null,
       "publishedAt": "2026-09-02T17:04:52.000Z",
-      "qualityReviewed": null,
+      "qualityReviewed": true,
       "title": "It\u2019s Official: Aero Precision Is Back [NEWS]"
     },
     {
@@ -414,7 +414,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T16:30:55.000Z",
       "qualityReviewed": true,
-      "title": "Gun-Free Zones Keep Failing\u2014Here's the Data That Proves It"
+      "title": "Gun-Free Zones Keep Failing\u2014Social Media Finally Admits It"
     },
     {
       "_createdAt": "2026-09-02T22:01:47Z",
@@ -432,7 +432,7 @@
       "editorLocked": null,
       "publishedAt": "2026-09-02T15:30:02.000Z",
       "qualityReviewed": true,
-      "title": "Walk the Talk America Opens Mental Health Gun Survey Through September"
+      "title": "Walk The Talk America Opens Annual Guns and Mental Health Survey"
     },
     {
       "_createdAt": "2026-09-02T18:03:38Z",
@@ -473,11 +473,11 @@
     {
       "_createdAt": "2026-09-03T10:02:21Z",
       "_id": "news-a4cba8923aabc66a7408a9a4cd780635",
-      "bodyLen": null,
+      "bodyLen": 3580,
       "editorLocked": null,
       "publishedAt": "2026-09-02T13:17:00.000Z",
-      "qualityReviewed": null,
-      "title": "Double-Action Autos: The Long Pull"
+      "qualityReviewed": true,
+      "title": "Double-Action Pistols Demand Different Training Than Single-Action Guns"
     },
     {
       "_createdAt": "2026-09-02T18:03:49Z",
@@ -512,7 +512,7 @@
       "bodyLen": 2092,
       "editorLocked": null,
       "publishedAt": "2026-09-02T10:52:00.000Z",
-      "qualityReviewed": null,
+      "qualityReviewed": true,
       "title": "Colt Releases Optics-Ready Lightweight Commander in .45 ACP"
     },
     {
@@ -555,70 +555,77 @@
     }
   ],
   "counts": {
-    "missingBody": 29,
+    "missingBody": 26,
     "missingBodyLocked": 0,
     "missingBodyReviewed": 0,
     "total": 1878
   },
   "recent_quality_rewrite_runs": [
     {
-      "at": "2026-09-03T03:02:25.425Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 7/7 \u00b7 title-only 2/2 \u00b7 skipped 41 \u00b7 failed 0 \u00b7 remaining 0",
+      "at": "2026-09-03T16:05:49.639Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 127297,
+      "ms": 174,
       "status": "success"
     },
     {
-      "at": "2026-09-02T03:02:15.746Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 5/6 \u00b7 title-only 5/5 \u00b7 skipped 39 \u00b7 failed 1 \u00b7 remaining 0",
+      "at": "2026-09-03T16:05:41.582Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 112989,
+      "ms": 221,
       "status": "success"
     },
     {
-      "at": "2026-09-01T03:02:01.425Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 6/6 \u00b7 title-only 1/1 \u00b7 skipped 43 \u00b7 failed 0 \u00b7 remaining 0",
+      "at": "2026-09-03T16:05:33.359Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 106987,
+      "ms": 397,
       "status": "success"
     },
     {
-      "at": "2026-08-31T03:02:18.090Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 4/6 \u00b7 title-only 8/8 \u00b7 skipped 36 \u00b7 failed 2 \u00b7 remaining 0",
+      "at": "2026-09-03T16:05:24.813Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 112927,
+      "ms": 335,
       "status": "success"
     },
     {
-      "at": "2026-08-30T03:03:09.309Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 4/5 \u00b7 title-only 6/6 \u00b7 skipped 39 \u00b7 failed 1 \u00b7 remaining 0",
+      "at": "2026-09-03T16:00:43.344Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 90416,
+      "ms": 252,
       "status": "success"
     },
     {
-      "at": "2026-08-29T03:03:44.655Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 7/8 \u00b7 title-only 0/0 \u00b7 skipped 42 \u00b7 failed 1 \u00b7 remaining 0",
+      "at": "2026-09-03T16:00:35.345Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 128067,
+      "ms": 233,
       "status": "success"
     },
     {
-      "at": "2026-08-28T03:03:34.774Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 7/8 \u00b7 title-only 1/1 \u00b7 skipped 41 \u00b7 failed 1 \u00b7 remaining 0",
+      "at": "2026-09-03T16:00:27.163Z",
+      "details": "skipped \u2014 queue empty (50 docs already reviewed)",
       "error": null,
-      "ms": 133104,
+      "ms": 254,
       "status": "success"
     },
     {
-      "at": "2026-08-27T03:02:56.641Z",
-      "details": "Scanned 50 \u00b7 full-rewrite 9/9 \u00b7 title-only 2/2 \u00b7 skipped 39 \u00b7 failed 0 \u00b7 remaining 0",
+      "at": "2026-09-03T16:00:19.115Z",
+      "details": "Scanned 50 \u00b7 full-rewrite 3/3 \u00b7 title-only 4/4 \u00b7 skipped 43 \u00b7 failed 0 \u00b7 remaining 0",
       "error": null,
-      "ms": 144210,
+      "ms": 65746,
       "status": "success"
     }
   ],
   "recent_news_runs": [
+    {
+      "at": "2026-09-03T16:02:17.242Z",
+      "details": "24 published (18 AI, 6 raw) of 50 fetched \u00b7 26 dupes | Two Dead, Plus Gunman, Multiple People Injured in Minneapolis Shooting \u00b7 Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 FireStick Muzzleloader Gets Green Light in 4 More States \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 It\u2019s Official: Aero Precision Is Back [NEWS] \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":12,\"sanityDup\":0,\"passedDedup\":18,\"published\":18,\"threw\":0,\"lastError\":null}",
+      "error": null,
+      "ms": 112689,
+      "status": "success"
+    },
     {
       "at": "2026-09-03T14:03:25.628Z",
       "details": "26 published (20 AI, 6 raw) of 50 fetched \u00b7 24 dupes | Two Dead, Plus Gunman, Multiple People Injured in Minneapolis Shooting \u00b7 Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 FireStick Muzzleloader Gets Green Light in 4 More States \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 It\u2019s Official: Aero Precision Is Back [NEWS] \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":11,\"sanityDup\":0,\"passedDedup\":19,\"published\":19,\"threw\":0,\"lastError\":null}",
@@ -666,13 +673,6 @@
       "details": "28 published (23 AI, 5 raw) of 50 fetched \u00b7 22 dupes | Minnesota Court Gun Ban Extended \u00b7 Truck Guns, Part 4: Bullpups \u00b7 The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 Black Hills .32-20 Ammo Brings a 120-Year-Old Smith Back to Life \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 Magpul\u2019s Modified Coyote Brown \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? \u00b7 Walk The Talk America Launches 2026 Survey | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":10,\"sanityDup\":0,\"passedDedup\":20,\"published\":20,\"threw\":0,\"lastError\":null}",
       "error": null,
       "ms": 124907,
-      "status": "success"
-    },
-    {
-      "at": "2026-09-03T00:03:19.573Z",
-      "details": "28 published (25 AI, 3 raw) of 50 fetched \u00b7 22 dupes | The Truth About Traditional Hunting Rifles (and New Ones) \u00b7 Anti-Gunners Won't Like Latest Defensive Gun Use Survey \u00b7 NY Man's Weapons Conviction Overturned by Court \u00b7 SAF FILES REPLY BRIEF WITH SUPREME COURT IN \u2018SENSITIVE PLACES\u2019 CHALLENGE \u00b7 Officer-Involved Shooting Shows Failure of Illinois Gun Laws \u00b7 CZ TS 3 ORANGE Competition Pistol Now Available In The US \u00b7 Aero Precision Says \u2018We\u2019re Coming Back\u2019 as Manufacturing Ramps Up \u00b7 Springfield's New Super Grip Cerakote Model 2020 Waypoints \u00b7 Video: The Idiocy of Gun-Free Zones \u00b7 TacPack Plus Review: Four Months Later, Is It Actually Worth It? \u00b7 Walk The Talk America Launches 2026 Survey \u00b7 MKU Netro NW-3000 Night Vision Sights for Indian Army's SIG 716 Rifles \u00b7 Armed Customer Stops Robbery: Knife-Wielding Suspect Fatally Shot Inside Cedar Hill Chase Bank \u00b7 WA Concealed Carry Licenses Drop 5,000-Plus in August \u00b7 SAF FILES AMICUS BRIEF IN MASSACHUSETTS CHALLENGING CARRY PERMIT DENIALS | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":9,\"sanityDup\":0,\"passedDedup\":21,\"published\":21,\"threw\":0,\"lastError\":null}",
-      "error": null,
-      "ms": 126076,
       "status": "success"
     }
   ]
