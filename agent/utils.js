@@ -530,6 +530,9 @@ async function fetchAndUploadOgImage(pageUrl, articleId) {
     if (buf.byteLength < 8000) return null // skip tiny placeholders
     if (!isPhotoSized(buf)) return null    // skip logos/banners by pixel dimensions
 
+    const contentType = imgRes.headers.get('content-type') || 'image/jpeg'
+    if (!(await isPhotographicImage(buf, contentType))) return null // skip vector/illustration art
+
     // Upload to Sanity CDN
     const projectId = process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg'
     const filename = `article-${articleId.slice(-8)}.jpg`
@@ -554,6 +557,49 @@ async function fetchAndUploadOgImage(pageUrl, articleId) {
 function isTrustedImage(url) {
   if (!url) return false
   return TRUSTED_IMAGE_DOMAINS.some(d => url.includes(d))
+}
+
+// ── VECTOR/ILLUSTRATION DETECTION ─────────────────────────────────────────
+// The old "never fall back to SVG" filter only checked file extension and
+// pixel dimensions — it let through PNG-rendered vector illustrations
+// (flat icon-style graphics some sites use as og:image for legal-analysis/
+// opinion content) since those pass every extension/size/aspect-ratio check
+// a real photo would. A pixel-color-variety heuristic was tried and
+// rejected: dark/moody product photography (common in this niche) lands in
+// the same low-color-variety range as flat vector art, so it false-positive
+// rejected real photos too often. Vision classification is the reliable
+// option — cheap/fast model, binary question, fail-open on any API error
+// so a transient hiccup never blocks a legitimate photo.
+async function isPhotographicImage(buf, contentType) {
+  const key = process.env.ANTHROPIC_API_KEY
+  if (!key) return true // can't classify — don't block on missing config
+  try {
+    const mediaType = (contentType || 'image/jpeg').split(';')[0].trim()
+    const base64 = Buffer.from(buf).toString('base64')
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-haiku-4-5-20251001',
+        max_tokens: 5,
+        messages: [{
+          role: 'user',
+          content: [
+            { type: 'image', source: { type: 'base64', media_type: mediaType, data: base64 } },
+            { type: 'text', text: 'Reply with exactly one word: PHOTO if this is a real photograph, or ILLUSTRATION if it is a vector graphic, icon, clipart, cartoon, drawing, or other non-photographic illustration.' },
+          ],
+        }],
+      }),
+      signal: AbortSignal.timeout(10000),
+    })
+    if (!res.ok) return true // fail open
+    const d = await res.json()
+    const text = (d.content?.[0]?.text || '').trim().toUpperCase()
+    if (text.includes('ILLUSTRATION')) return false
+    return true // default to accepting unless clearly flagged
+  } catch {
+    return true // fail open — non-critical, never block on classifier error
+  }
 }
 
 // ── SLUG GUARD: detect and fix hash-style slugs (type-prefix + 32hex) ──────
@@ -646,4 +692,4 @@ async function rateLimitedBatch(items, fn, delayMs = 1000) {
   return results
 }
 
-export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch, fetchAndUploadOgImage, searchForImage }
+export { rewriteWithClaude, enrichLawWithClaude, hashUrl, isDuplicate, resetDedup, discordNotify, notifyStatus, notifyBreaking, notifyError, publishToSanity, sleep, rateLimitedBatch, fetchAndUploadOgImage, searchForImage, isPhotographicImage }
