@@ -533,3 +533,13 @@ routes first, then entries in all three sync files (`vercel.json`,
 - Adding/changing a Vercel env var does not retroactively apply to an
   already-running deployment — needs a fresh deploy (an empty/no-op commit
   works fine as a forcing function) before testing.
+
+## GitHub Push PAT (Sept 2026)
+
+The classic PAT (stored in memory as `DOWNRANGE_GH_PAT`) clones/fetches only — push requires a separate fine-grained PAT.
+
+Neither token value is stored here — GitHub secret scanning blocks any push that introduces a recognizable token string into this repo, even in docs. Look up the current fine-grained PAT via memory or by searching past Claude chat history for "fine-grained PAT" before starting push work.
+
+Use: `git remote set-url origin "https://x-access-token:{PAT}@github.com/dejcav-cmd/DownRange.git"` before `git push`.
+
+Has a built-in expiration — if push starts returning "Bad credentials," it's rotated. Check recent chats for the latest value before asking DJ.
