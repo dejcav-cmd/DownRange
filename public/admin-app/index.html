@@ -44,57 +44,6 @@ img{display:block;}
 #flash.info{background:rgba(200,146,42,.1);border-bottom:1px solid rgba(200,146,42,.3);color:var(--gold);}
 #flash-close{margin-left:auto;background:none;border:none;color:inherit;font-size:16px;}
 
-/* ─── BOTTOM NAV ─────────────────────────────────────────────── */
-#bottom-nav{
-  position:fixed;bottom:0;left:0;right:0;z-index:200;
-  height:calc(var(--nav-h) + var(--safe-b));
-  padding-bottom:var(--safe-b);
-  background:var(--bg2);border-top:1px solid var(--border);
-  display:flex;
-}
-.nav-tab{
-  flex:1;background:none;border:none;border-top:2px solid transparent;
-  color:var(--dim2);display:flex;flex-direction:column;
-  align-items:center;justify-content:center;gap:3px;padding:0;
-  touch-action:manipulation;-webkit-tap-highlight-color:transparent;
-}
-.nav-tab.active{color:var(--gold);border-top-color:var(--gold);}
-.nav-tab-icon{font-size:20px;line-height:1;}
-.nav-tab-label{font-size:8px;letter-spacing:.06em;text-transform:uppercase;font-weight:700;}
-
-/* ─── NAV TRAY (full-screen collapsible section picker) ─────── */
-#nav-tray{
-  position:fixed;inset:0;z-index:290;
-  background:rgba(0,0,0,.7);backdrop-filter:blur(6px);
-  display:none;
-  flex-direction:column;
-  justify-content:flex-end;
-}
-#nav-tray.open{display:flex;animation:trayIn .22s ease;}
-@keyframes trayIn{from{opacity:0}to{opacity:1}}
-#nav-tray-inner{
-  background:var(--bg2);border-top:1px solid var(--border);
-  border-radius:16px 16px 0 0;
-  max-height:78vh;overflow-y:auto;-webkit-overflow-scrolling:touch;
-  padding-bottom:calc(var(--nav-h) + var(--safe-b) + 8px);
-  animation:traySlide .22s cubic-bezier(.4,0,.2,1);
-}
-@keyframes traySlide{from{transform:translateY(40px)}to{transform:none}}
-#nav-tray-handle{width:36px;height:4px;background:var(--border2);border-radius:2px;margin:12px auto 4px;}
-#nav-tray-title{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);letter-spacing:.12em;text-transform:uppercase;text-align:center;margin-bottom:12px;padding:0 16px;}
-.tray-section{padding:0 0 8px 0;}
-.tray-section-hdr{font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim2);letter-spacing:.12em;text-transform:uppercase;padding:8px 20px 4px;}
-.tray-btn{
-  width:100%;background:none;border:none;border-bottom:1px solid rgba(30,41,59,.4);
-  color:var(--text);display:flex;align-items:center;gap:14px;padding:13px 20px;
-  text-align:left;touch-action:manipulation;
-}
-.tray-btn:active{background:rgba(200,146,42,.08);}
-.tray-btn-icon{font-size:20px;flex-shrink:0;width:24px;text-align:center;}
-.tray-btn-label{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;letter-spacing:.04em;flex:1;}
-.tray-btn-badge{background:var(--err);color:#fff;font-family:'IBM Plex Mono',monospace;font-size:7px;font-weight:700;padding:2px 5px;flex-shrink:0;}
-.tray-btn-arrow{color:var(--dim2);font-size:14px;flex-shrink:0;}
-
 /* APP SHELL */
 #app{display:flex;flex-direction:column;height:100vh;height:100dvh;padding-top:calc(var(--topbar-h) + var(--safe-t));padding-bottom:calc(var(--nav-h) + var(--safe-b));}
 #content{flex:1;overflow:hidden;position:relative;}
@@ -347,7 +296,17 @@ if('serviceWorker' in navigator){
     <div id="drawer-logo">◈ DR Admin</div>
     <button id="drawer-close" onclick="closeNavDrawer()">✕</button>
   </div>
-  <div id="drawer-scroll" id="nav-tree-scroll"></div>
+  <div id="nav-tree-scroll"></div>
+</div>
+
+<!-- Panel drawer: slides in from the right to show individual panel content -->
+<div id="drawer">
+  <div id="drawer-bar">
+    <button id="drawer-back" onclick="closeDrawer()">‹ Back</button>
+    <div id="drawer-title"></div>
+    <div id="drawer-action-slot"></div>
+  </div>
+  <div id="drawer-content"></div>
 </div>
 
 <!-- Modal (kept for confirm dialogs) -->
@@ -433,8 +392,6 @@ function navTo(s,btn){
   const T={dashboard:'Command Center',content:'Content Hub',outreach:'Outreach CRM',intel:'Intelligence',system:'System',media:'Media',settings:'Settings'};
   document.getElementById('topbar-title').textContent=(T[s]||s).toUpperCase();
   if(!screenInited[s]){screenInited[s]=true;renderScreen(s);}
-  // Close tray when switching main sections
-  if(_trayOpen) closeTray();
 }
 
 // ─── DRAWER ───────────────────────────────────────────────────────────────────
@@ -574,9 +531,10 @@ function navToPanel(secId, panelId, label) {
   // Update topbar title
   const topTitle = document.getElementById('topbar-title');
   if (topTitle) topTitle.textContent = label.toUpperCase();
+  // Close the nav menu first so it can never get stuck open if panel rendering throws
+  closeNavDrawer();
   // Navigate
   openPanel(panelId, label);
-  closeNavDrawer();
 }
 
 function openNavDrawer() {
@@ -3320,85 +3278,11 @@ async function removeSubscriber(id, email, btn){
 }
 
 
-// ═══════════════════════════════════════════════════════════════════
-// NAV TRAY — full section picker, slides up from ☰ button
-// ═══════════════════════════════════════════════════════════════════
-
-const TRAY_SECTIONS = [
-  { id:'outreach', label:'Outreach & CRM', icon:'📬', desc:'Contacts, email queue, mailing list',
-    panels:[{id:'contacts',l:'Contacts',i:'👤'},{id:'queue',l:'Email Queue',i:'📤'},{id:'history',l:'Sent History',i:'📋'},{id:'mailing-list',l:'Mailing List',i:'📬',b:'new'}]},
-  { id:'publishing', label:'Publishing', icon:'📅', desc:'Alerts, newsletter, schedule & SEO',
-    panels:[{id:'breaking',l:'Breaking Alerts',i:'🔴'},{id:'newsletter',l:'Newsletter',i:'📧'},{id:'schedule',l:'Schedule',i:'📅'},{id:'seo',l:'SEO & Meta',i:'🔍'}]},
-  { id:'media', label:'Media', icon:'▶️', desc:'Videos, images & social media',
-    panels:[{id:'videos',l:'Videos',i:'▶'},{id:'channels',l:'Channels',i:'📺'},{id:'imgsearch',l:'Image Finder',i:'🔍'},{id:'imglib',l:'Image Library',i:'📸'},{id:'social',l:'Social Media',i:'📣'}]},
-  { id:'settings', label:'Settings', icon:'🔧', desc:'API keys, AI models, config & tools',
-    panels:[{id:'keys',l:'API Keys',i:'🔑'},{id:'ai',l:'AI Models',i:'🤖'},{id:'costs',l:'Cost Center',i:'💰'},{id:'identity',l:'Identity',i:'🎨'},{id:'navvis',l:'Nav Visibility',i:'👁'},{id:'siteconfig',l:'Site Settings',i:'⚙'},{id:'alertconfig',l:'Alert Config',i:'🚨'},{id:'envcheck',l:'Env Vars',i:'🔧'},{id:'emails',l:'Email Test',i:'✉'},{id:'report',l:'Portal Report',i:'📧'},{id:'backup',l:'Backup',i:'📦'},{id:'lockall',l:'Lock All',i:'🔒'},{id:'signout',l:'Sign Out',i:'🚪'}]},
-];
-
-let _trayOpen = false;
-let _trayInited = false;
-
-function toggleTray(btn) {
-  if (_trayOpen) { closeTray(); return; }
-  openTray(btn);
-}
-
-function openTray(btn) {
-  // Mark ☰ active
-  document.querySelectorAll('.nav-tab').forEach(b=>b.classList.remove('active'));
-  if(btn) btn.classList.add('active');
-
-  // Build tray content once
-  if (!_trayInited) {
-    const body = document.getElementById('nav-tray-body');
-    if (body) {
-      body.innerHTML = TRAY_SECTIONS.map(sec => `
-        <div class="tray-section">
-          <div class="tray-section-hdr">${sec.icon} ${sec.label}</div>
-          ${sec.panels.map(p => `
-            <button class="tray-btn" onclick="openPanel('${p.id}','${p.l}');closeTray()">
-              <span class="tray-btn-icon">${p.i}</span>
-              <span class="tray-btn-label">${p.l}${p.b?` <span class="tray-btn-badge">${p.b}</span>`:''}</span>
-              <span class="tray-btn-arrow">›</span>
-            </button>`).join('')}
-        </div>`).join('');
-    }
-    _trayInited = true;
-  }
-
-  document.getElementById('nav-tray').classList.add('open');
-  _trayOpen = true;
-}
-
-function closeTray() {
-  document.getElementById('nav-tray').classList.remove('open');
-  _trayOpen = false;
-  // If ☰ was active, revert to dashboard active if no screen is selected
-  const moreBtn = document.getElementById('nt-more');
-  if (moreBtn && moreBtn.classList.contains('active')) {
-    moreBtn.classList.remove('active');
-    // Re-activate the currently visible screen's tab if possible
-    const active = document.querySelector('.screen.active');
-    if (active) {
-      const sid = active.id.replace('screen-','');
-      const tab = document.querySelector('[data-s="'+sid+'"]');
-      if (tab) tab.classList.add('active');
-    }
-  }
-}
-
-// Override openSheet to use the tray instead of the old section sheet
-function openSheet() { openTray(document.getElementById('nt-more')); }
-
-// Override navTo to also deactivate the ☰ button
-const _origNavTo = navTo;
-
-
 document.addEventListener('keydown',e=>{
   if(e.key==='Escape'){
     if(document.getElementById('modal-overlay').classList.contains('open'))closeModal();
     else if(document.getElementById('drawer').classList.contains('open'))closeDrawer();
-    else closeSheet();
+    else if(document.getElementById('nav-drawer').classList.contains('open'))closeNavDrawer();
   }
 });
 </script>
