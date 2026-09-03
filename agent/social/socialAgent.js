@@ -7,6 +7,7 @@
  */
 import { createClient } from '@sanity/client'
 import { callAIText }   from '../../lib/aiClient.js'
+import { searchForImage } from '../utils.js'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -14,26 +15,25 @@ const sanity = createClient({
   useCdn: false, token: process.env.SANITY_API_TOKEN,
 })
 
-// ── Category image fallbacks ─────────────────────────────────────────────────
-const FALLBACK_IMAGES = {
-  law:        'https://downrangeco.com/img/photos/law.jpg',
-  breaking:   'https://downrangeco.com/img/photos/law.jpg',
-  news:       'https://downrangeco.com/img/photos/news.jpg',
-  review:     'https://downrangeco.com/img/photos/rifle.jpg',
-  industry:   'https://downrangeco.com/img/photos/rifle.jpg',
-  training:   'https://downrangeco.com/img/photos/training.jpg',
-  hunting:    'https://downrangeco.com/img/photos/hunting.jpg',
-  pistol:     'https://downrangeco.com/img/photos/rifle.jpg',
-  rifle:      'https://downrangeco.com/img/photos/rifle.jpg',
-  shotgun:    'https://downrangeco.com/img/photos/rifle.jpg',
-  optic:      'https://downrangeco.com/img/photos/rifle.jpg',
-  suppressor: 'https://downrangeco.com/img/photos/rifle.jpg',
-  default:    'https://downrangeco.com/img/photos/news.jpg',
-}
-
-function getImage(article) {
-  const key = (article.category || '').toLowerCase()
-  return article.imageUrl || FALLBACK_IMAGES[key] || FALLBACK_IMAGES.default
+// ── Image resolution ──────────────────────────────────────────────────────
+// Previously fell back to local files (/img/photos/law.jpg, rifle.jpg,
+// news.jpg, etc.) whenever article.imageUrl was empty. Those files turned
+// out to be auto-generated vector/wireframe placeholder graphics, not real
+// photos -- law.jpg is a flat scales-of-justice/gavel icon illustration,
+// rifle.jpg is a flat firearm silhouette diagram, news.jpg is a site UI
+// mockup screenshot. Posting any of these to Instagram/Facebook as "the
+// article image" is exactly the wrong-image-worse-than-no-image failure
+// mode. Now: use the real article image if present, otherwise do a live
+// Pexels/Pixabay search (same function news ingestion uses) for an actual
+// photo, otherwise return null and let dispatch()/postInstagram's existing
+// "no image" handling skip the post rather than ever using a fake fallback.
+async function getImage(article) {
+  if (article.imageUrl) return article.imageUrl
+  try {
+    return await searchForImage(article.title, article.category || 'default')
+  } catch {
+    return null
+  }
 }
 
 // ── Platform copy config ──────────────────────────────────────────────────────
@@ -409,24 +409,24 @@ async function postInstagram(content, imageUrl, category) {
 
   // Instagram only accepts images between 4:5 (0.8) and 1.91:1. Wide banner/
   // header-style article images fail with a generic "aspect ratio is not
-  // supported" error — and since a failed post is never marked posted, the
-  // same article gets re-selected and re-fails on every subsequent run,
-  // burning through the day's limited posting slots indefinitely. Sanity's
-  // CDN embeds pixel dimensions in the asset filename itself
-  // (…-{width}x{height}.{ext}), so we can check this without an extra
-  // fetch. If dimensions can't be confirmed (e.g. an external/scraped
-  // image) we play it safe and use the category fallback rather than risk
-  // repeating that failure loop on an unknown ratio.
+  // supported" error. Sanity's CDN embeds pixel dimensions in the asset
+  // filename itself (…-{width}x{height}.{ext}), so we can check this without
+  // an extra fetch for CDN-hosted images. Previously, when the ratio was
+  // confirmed bad OR couldn't be confirmed at all (any external URL — e.g.
+  // live Pexels/Pixabay results, which don't follow Sanity's naming
+  // convention), this substituted a local "category fallback" image. Those
+  // files turned out to be vector/wireframe placeholder graphics, not real
+  // photos — that's the direct cause of vector images appearing on
+  // Instagram. Skip the post instead: a skipped post is retried next run
+  // once a usable image exists; a fake image posted is permanent.
   const dims = imageUrl.match(/-(\d+)x(\d+)\.\w+(?:\?.*)?$/)
-  let safeImageUrl = imageUrl
   if (dims) {
     const ratio = parseInt(dims[1], 10) / parseInt(dims[2], 10)
     if (ratio < 0.8 || ratio > 1.91) {
-      safeImageUrl = FALLBACK_IMAGES[(category || '').toLowerCase()] || FALLBACK_IMAGES.default
+      return { ok: false, error: `Image aspect ratio ${ratio.toFixed(2)} outside Instagram's 0.8–1.91 range.` }
     }
-  } else {
-    safeImageUrl = FALLBACK_IMAGES[(category || '').toLowerCase()] || FALLBACK_IMAGES.default
   }
+  const safeImageUrl = imageUrl
 
   const createRes = await fetch(`https://graph.facebook.com/v20.0/${igUserId}/media`, {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -668,7 +668,7 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
   const results = []; let posted = 0
   for (const article of articles) {
     try {
-      const imageUrl    = getImage(article)
+      const imageUrl    = await getImage(article)
       const contentType = article.type === 'blog' ? 'blog' : article.type === 'release' ? 'release' : article.type === 'review' ? 'review' : 'news'
       const content     = await generateCopy(article, platform, contentType)
 
