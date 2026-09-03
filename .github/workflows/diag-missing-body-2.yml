@@ -1,6 +1,9 @@
-name: diag-missing-body-1
+name: diag-missing-body-2
 on:
   workflow_dispatch: {}
+
+permissions:
+  contents: write
 
 jobs:
   run:
