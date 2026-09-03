@@ -119,7 +119,7 @@ export async function GET() {
     { feed: 'state',       schedule: '0 8 * * 0',      label: 'Sunday 8am',        critical: false, desc: 'LegiScan → per-state bill updates weekly' },
     { feed: 'newsletter',  schedule: '0 7 * * *',      label: 'Daily 7am',         critical: false, desc: 'Resend → weekly digest email' },
     { feed: 'gun-deals',   schedule: '*/30 * * * *',   label: 'Every 30 min',      critical: false, desc: 'gun.deals RSS + OG image scrape' },
-    { feed: 'quality-rewrite', schedule: '0 3 * * *',  label: 'Daily 3am',         critical: false, desc: 'AI phrase cleanup on recent articles' },
+    { feed: 'quality-rewrite', schedule: '20 */2 * * *', label: 'Every 2 hrs',       critical: false, desc: 'AI phrase cleanup + bodyless-article backfill on recent articles' },
     { feed: 'intelligence',    schedule: '0 1 * * *',   label: 'Daily 1am',         critical: false, desc: 'Intelligence briefing generation' },
     { feed: 'image-fix',       schedule: '15 * * * *',  label: 'Hourly',            critical: false, desc: 'Fix placeholder images' },
     { feed: 'backup',          schedule: '0 10 * * *',  label: 'Daily 10am',        critical: false, desc: 'Full Sanity backup' },
