@@ -8,12 +8,9 @@ permissions:
 jobs:
   run:
     runs-on: ubuntu-latest
+    env:
+      GH_PAT: ${{ secrets.GH_PAT }}
     steps:
       - uses: actions/checkout@v4
       - run: python3 scripts/diag_missing_body.py
-      - run: |
-          git config user.email "dj@downrangeco.com"
-          git config user.name "DJ Cavalcanti"
-          git add docs/diag_missing_body_result.json
-          git commit -m "chore: diag_missing_body result" || echo "no changes"
-          git push
+      - run: python3 scripts/push_diag_result.py

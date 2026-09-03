@@ -46,6 +46,20 @@ counts = sanity_query(
 )
 out["counts"] = counts
 
+# Precise check: fetch ALL missing-body newsArticle ids/publishedAt/qualityReviewed,
+# and see how many actually fall inside quality-rewrite's own operating window
+# (top 30 by publishedAt desc, editorLocked != true — exactly its own query).
+all_missing = sanity_query(
+    '*[_type=="newsArticle" && (!defined(body) || length(body) < 100)]'
+    '{ _id, title, publishedAt, _createdAt, editorLocked, qualityReviewed } | order(publishedAt desc)'
+)
+out["all_missing_body_articles"] = all_missing
+
+qr_window_ids = {d["_id"] for d in by_published}
+in_window = [d for d in all_missing if d["_id"] in qr_window_ids]
+out["missing_body_inside_qr_window"] = in_window
+out["missing_body_outside_qr_window_count"] = len(all_missing) - len(in_window)
+
 recent_qr = sanity_query(
     '*[_type=="cronRun" && jobId=="quality-rewrite"] | order(at desc) [0...8] { at, status, details, error, ms }'
 )
