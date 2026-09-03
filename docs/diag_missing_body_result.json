@@ -560,6 +560,218 @@
     "missingBodyReviewed": 0,
     "total": 1878
   },
+  "all_missing_body_articles": [
+    {
+      "_createdAt": "2026-09-02T10:01:27Z",
+      "_id": "news-e59fc11ae7efdf95dd0f2f093ba4bdd6",
+      "editorLocked": null,
+      "publishedAt": "2026-09-01T15:32:31.000Z",
+      "qualityReviewed": null,
+      "title": "[CABINET OF CURIOSITIES] Kriss Vector: All Business"
+    },
+    {
+      "_createdAt": "2026-09-01T04:00:57Z",
+      "_id": "news-2c6a20f05972ad2f3f02be581b849632",
+      "editorLocked": null,
+      "publishedAt": "2026-08-31T23:30:00.000Z",
+      "qualityReviewed": null,
+      "title": "POTD: The Mk 11 and Close-Quarters Combat In King Crab Competition"
+    },
+    {
+      "_createdAt": "2026-09-01T04:01:10Z",
+      "_id": "news-970d4b4750107c0ea22ed4f238d14af5",
+      "editorLocked": null,
+      "publishedAt": "2026-08-31T23:00:00.000Z",
+      "qualityReviewed": null,
+      "title": "The Rimfire Report: PMAC Supernova .22LR Tracer - Plink In Color"
+    },
+    {
+      "_createdAt": "2026-08-31T20:01:24Z",
+      "_id": "news-b454341382a90456ee577f3b507d5441",
+      "editorLocked": null,
+      "publishedAt": "2026-08-31T14:00:24.000Z",
+      "qualityReviewed": null,
+      "title": "Feds Reopen Rights Restoration After 34-Year Freeze"
+    },
+    {
+      "_createdAt": "2026-08-31T18:02:20Z",
+      "_id": "news-b9f63e1442250fee86aad033fac14352",
+      "editorLocked": null,
+      "publishedAt": "2026-08-31T04:00:00.000Z",
+      "qualityReviewed": null,
+      "title": "SCOTUS Gun Watch 8/31/2026"
+    },
+    {
+      "_createdAt": "2026-08-30T20:00:46Z",
+      "_id": "news-b0ddcb5d7d93d5a636b2ec2586baa025",
+      "editorLocked": null,
+      "publishedAt": "2026-08-30T18:02:12.000Z",
+      "qualityReviewed": null,
+      "title": "Leupold VX Scope Buyer\u2019s Guide 2026: Which Wins?"
+    },
+    {
+      "_createdAt": "2026-09-02T00:02:52Z",
+      "_id": "goa-7dbb045a69bac218df7bdd37b4962b57",
+      "editorLocked": null,
+      "publishedAt": "2026-08-29T11:20:38",
+      "qualityReviewed": null,
+      "title": "This Week In Gun Control"
+    },
+    {
+      "_createdAt": "2026-08-26T10:01:14Z",
+      "_id": "news-127d5ab97c9329cf53aea967e037c592",
+      "editorLocked": null,
+      "publishedAt": "2026-08-25T13:10:00.000Z",
+      "qualityReviewed": null,
+      "title": "First Look: MFT Sticky Pocket Holsters"
+    },
+    {
+      "_createdAt": "2026-08-28T00:02:54Z",
+      "_id": "goa-cc52973aba44f4973f0c022cf8838168",
+      "editorLocked": null,
+      "publishedAt": "2026-08-25T13:08:03",
+      "qualityReviewed": null,
+      "title": "ATF MUST PROVIDE GUIDANCE TO GUN DEALERS!"
+    },
+    {
+      "_createdAt": "2026-08-24T20:01:19Z",
+      "_id": "news-6511e947794a77f104c52a6952f81f95",
+      "editorLocked": null,
+      "publishedAt": "2026-08-24T04:00:00.000Z",
+      "qualityReviewed": null,
+      "title": "SCOTUS Gun Watch 8/24/2026"
+    },
+    {
+      "_createdAt": "2026-08-24T04:00:39Z",
+      "_id": "news-4783178529d0621b52de2d8a08f034a2",
+      "editorLocked": null,
+      "publishedAt": "2026-08-23T10:52:00.000Z",
+      "qualityReviewed": null,
+      "title": "You\u2019ve Heard These Tactical Phrases. But Are They Actually Good Advice?"
+    },
+    {
+      "_createdAt": "2026-08-21T10:01:20Z",
+      "_id": "news-c7aa2ce28a6506938c367d944bccdca7",
+      "editorLocked": null,
+      "publishedAt": "2026-08-20T13:42:18.000Z",
+      "qualityReviewed": null,
+      "title": "Carrying with an Empty Chamber"
+    },
+    {
+      "_createdAt": "2026-08-19T10:02:13Z",
+      "_id": "news-340a82795e430b7b91c217f828e90ea1",
+      "editorLocked": null,
+      "publishedAt": "2026-08-18T19:52:06.000Z",
+      "qualityReviewed": null,
+      "title": "Aero Precision Is Coming Back!"
+    },
+    {
+      "_createdAt": "2026-08-22T00:03:02Z",
+      "_id": "goa-06c205c4c0c0ca04084882d00fca0316",
+      "editorLocked": null,
+      "publishedAt": "2026-08-15T10:20:41",
+      "qualityReviewed": null,
+      "title": "Here\u2019s How Gun Shops Can Transfer NFA Items"
+    },
+    {
+      "_createdAt": "2026-08-14T10:00:51Z",
+      "_id": "news-1800d151d735a5653d7eb22b780212e0",
+      "editorLocked": null,
+      "publishedAt": "2026-08-13T21:24:46.000Z",
+      "qualityReviewed": null,
+      "title": "NFA Lawsuit Victory: First Suppressors Transferred Without Registration Since 1934"
+    },
+    {
+      "_createdAt": "2026-08-13T12:02:12Z",
+      "_id": "goa-1c11d0c7439b697ca9ef85c41ec71840",
+      "editorLocked": null,
+      "publishedAt": "2026-08-13T01:40:28",
+      "qualityReviewed": null,
+      "title": "GOA Members Make History With First Suppressor Transfers Without NFA Registration Since 1934"
+    },
+    {
+      "_createdAt": "2026-08-12T00:01:21Z",
+      "_id": "news-825260b3ef537e2d5de91db338efcc3d",
+      "editorLocked": null,
+      "publishedAt": "2026-08-11T04:00:00.000Z",
+      "qualityReviewed": null,
+      "title": "Eighth Circuit Reverses and Remands Meth User's \u00a7 922(g)(3) Conviction on Second Amendment Grounds"
+    },
+    {
+      "_createdAt": "2026-08-11T10:00:52Z",
+      "_id": "news-73625be80b7d13df28a2064bade73792",
+      "editorLocked": null,
+      "publishedAt": "2026-08-10T16:19:02.000Z",
+      "qualityReviewed": null,
+      "title": "The Luger P08: The Legendary Masterpiece"
+    },
+    {
+      "_createdAt": "2026-08-06T16:03:13Z",
+      "_id": "news-a03b7ae87754e5baee61f7624acee13f",
+      "editorLocked": null,
+      "publishedAt": "2026-08-06T13:20:28.000Z",
+      "qualityReviewed": null,
+      "title": "Federal Judge Strikes Down NFA Registration for Suppressors, SBRs"
+    },
+    {
+      "_createdAt": "2026-08-06T04:00:50Z",
+      "_id": "news-a1b90abcee3a6cde9d96de1151d9f5ca",
+      "editorLocked": null,
+      "publishedAt": "2026-08-06T01:25:40.000Z",
+      "qualityReviewed": null,
+      "title": "Federal Judge Strikes Down the NFA\u2019s Registration Scheme for Suppressors and SBRs"
+    },
+    {
+      "_createdAt": "2026-07-30T04:02:21Z",
+      "_id": "news-3660328722a4d0fbfacc30fa14e07203",
+      "editorLocked": null,
+      "publishedAt": "2026-07-29T10:52:00.000Z",
+      "qualityReviewed": null,
+      "title": "Simplicity Upgraded: Vortex Optics Releases the Crossfire II"
+    },
+    {
+      "_createdAt": "2026-07-23T10:01:20Z",
+      "_id": "news-5ae713cb3be3ffbfccc4ce3f2da003a7",
+      "editorLocked": null,
+      "publishedAt": "2026-07-22T21:23:34.000Z",
+      "qualityReviewed": null,
+      "title": "The Rise Of Mag-Na-Port"
+    },
+    {
+      "_createdAt": "2026-07-22T16:01:06Z",
+      "_id": "news-43a19a7993a906aa935ccf85911b178a",
+      "editorLocked": null,
+      "publishedAt": "2026-07-22T13:00:00.000Z",
+      "qualityReviewed": null,
+      "title": "New Jersey AWB Ruling Puts States On Notice"
+    },
+    {
+      "_createdAt": "2026-07-24T00:02:41Z",
+      "_id": "goa-828eefff81e7afc9c8f3df322a1a16ae",
+      "editorLocked": null,
+      "publishedAt": "2026-07-22T11:27:00",
+      "qualityReviewed": null,
+      "title": "Gun Owners of America Gun Giveaway Official Rules"
+    },
+    {
+      "_createdAt": "2026-07-22T10:01:03Z",
+      "_id": "news-10efdf2032894e2c06436197440f60ee",
+      "editorLocked": null,
+      "publishedAt": "2026-07-21T21:45:24.000Z",
+      "qualityReviewed": null,
+      "title": "The 370 Sako Magnum"
+    },
+    {
+      "_createdAt": "2026-07-08T15:38:43Z",
+      "_id": "news-test-diag-002",
+      "editorLocked": null,
+      "publishedAt": "2026-01-01T00:00:00Z",
+      "qualityReviewed": null,
+      "title": "Diag test"
+    }
+  ],
+  "missing_body_inside_qr_window": [],
+  "missing_body_outside_qr_window_count": 26,
   "recent_quality_rewrite_runs": [
     {
       "at": "2026-09-03T16:05:49.639Z",
