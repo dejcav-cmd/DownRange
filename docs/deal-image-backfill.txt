@@ -1,49 +1,49 @@
 600 scanned, 60 need a real image, 15 coupon posts skipped
 
+  + ABCSportZ 15% OFF Site Wide Through Sept 8th - C — 336729b 1500x1500 sha=7cc96104137e
+  + Sig Sauer Tango MSR 1-6x24mm Illuminated MSR-BDC — 17927b 608x400 sha=05549749018a
+  + Sig Sauer FOXTROT1X Rail Mounted 450 Lumen Tacti — 33091b 608x393 sha=5d1793db9738
+  + Sig Sauer 1911 X-Series 45 ACP Pistol 5" Barrel  — 49739b 1000x700 sha=15b7c704210b
+  + Sig Sauer P365 9mm 3.1" Barrel 10-Rounds Optic R — 59768b 993x700 sha=0740c4fe0db3
+  + Ohio Ordnance Works HCAR .30-06 Spr 20" 30rd - $ — 38078b 1169x475 sha=7a07c4b5bbb9
+  + Zastava Cz999Sc Cz999 9mm 4.25 Blued Serbian Cre — 42041b 756x578 sha=3d566639fa1e
+  + Geissele Automatics LLC - Brownells Geissele 5.5 — 24756b 804x357 sha=ce510378cd2e
+  + Glock 19 Gen 6 9mm 4.02" Barrel 15-Rounds w/Aimp — 36147b 697x564 sha=b8a01e2c3cd0
+  + Diamondback DB15 5.56 NATO 16" AR Rifle - $558.9 — 8905b 400x250 sha=0d245d983e8a
+  + Labor Day Sale! @Grab A Gun — 37971b 525x628 sha=fee580874275
+  + Talon Armament Gryphon GAR15 5.56 NATO 16" Barre — 28422b 1000x359 sha=78062ea484b9
+  + (1) One USED Restricted Marked Colt CRB Tactical — 93714b 1283x822 sha=c47750fe7588
+  + Panzer Arms CQB Tactical 12 Gauge 18.5″ Disrupti — 19100b 1000x227 sha=5fcb3c58d2de
+  + BHA Precision Complete M16 AR-15 5.56/300 Black  — 32617b 1000x609 sha=cc07ca40b1bf
+  + FTA Tactical MPA Defender Forced Reset Trigger - — 10368b 376x341 sha=db463a94d031
+  x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
+  + Dirty Bird Patriot 7.5" 5.56 NATO 100RD Semi-Aut — 204916b 1000x666 sha=d83524a3493f
+  + CMC Triggers Two-Stage Drop In Trigger - Combat  — 35435b 549x630 sha=36ee95043c7f
+  + SB Tactical SBA6 Pistol Brace & Buffer Kit - Bla — 159045b 1000x666 sha=d3e30df835d6
+  + Hornady Match 50 BMG 750 GR AMax 10 Rounds - $82 — 20914b 386x386 sha=eb97277e8b4a
+  + Marlin 1895 Dark .45-70 Government 16.1" 5rd Lev — 16091b 800x278 sha=7e26d4862200
+  x Heritage Badlander SxS 18.5" 20ga Shotgun - Nick — image not downloadable
+  + FLUX Defense Raider X - BLK - $356.99 + Free Shi — 35278b 888x569 sha=b2364508f2f4
+  + Springfield Armory Bundle* 2020 Waypoint 6.5 Cre — 13163b 495x275 sha=ebf7637d155c
+  ... 25/60  ok=23 fail=2
+  + Magpul PMAG 30 Gen M3 300 Blackout AR-15 Magazin — 18287b 684x682 sha=7108c1075cc9
+  + Arsenal SAM7SF 7.62x39mm Semi-Auto Side Folding  — 32740b 1263x494 sha=fee30d6d8ffe
+  + Archon Firearms Type B RMR 9mm 4.3" FDE - $899.9 — 11155b 350x266 sha=ac3145c04e36
+  + Glock 43X MOS Glitter Gunz Black Cherry 9mm Pist — 48793b 672x517 sha=cfb2e4696c2d
+  + Century Arms Micro Draco 7.62x39mm 6" 30 Rd - $7 — 11471b 400x246 sha=f21ae56dadf9
+  + H&R Retro DOE 300BLK Pistol 7" A2 Carry Handle H — 13436b 486x289 sha=a5b64be57d5b
+  + Charter Arms Boomer Revolver, .44SPL, 2-inch Bar — 27601b 599x454 sha=a347dff08f86
+  + Labor Day Sale! @ Beretta — 49666b 531x734 sha=f455d69031d1
+  + Partisan Triggers Disruptor AR-15 3 Position Dro — 109878b 1000x666 sha=a99600210829
+  + Fort Scott Munitions TUI 235 gr Solid Copper 8.6 — 71439b 1100x734 sha=f150de88485f
+  + PMC - X-TAC - 5.56x45mm - 62 Grain - FMJ M855 -  — 26532b 621x398 sha=af9dbf2c49d5
+  + Mec-Gar 2011 / 2311 / Prodigy 9mm 22rd Magazine  — 18794b 842x585 sha=ca8744804d0e
+  + Magpul PMAG 20 LR/SR GEN M3 7.62 NATO Magazine - — 25017b 1100x703 sha=cfa8ab102848
+  + SAVAGE ARMS A17 Magazine 17HMR 10RD ROTARY - $19 — 63325b 600x900 sha=4d87c780a3a8
+  + Hornady 338 ARC 307 gr Sub-X Subsonic 20/Box - $ — 208727b 1000x666 sha=037b55fe86e4
+  + Winchester X450DS Deer Season XP 450 Bushmaster  — 131938b 1280x1280 sha=9c7e3305f98e
+  + Gen II AR-15 / M16 100 Round Dual Drum Magazine  — 76642b 795x569 sha=1b0b37daf82a
   x Atlas Gunworks 140mm 9mm Magazine with Alphalock — image not downloadable
-  + 15% off CVLIFE EagleBlaze 5-25x56 FFP Rifle Scop — 19323b 500x500 sha=f4afd0603a9a
-  + 50% off CVLIFE 30% Carbon Fiber Bipod for M-Rail — 19814b 500x500 sha=d78424470bb2
-  + 50% off EZshoot Scope Leveling Kit with Precisio — 28132b 500x500 sha=7d193731ab13
-  + 20% off CVLIFE 2-7x32 Crossbow Scope for Hunting — 14375b 406x500 sha=a6dc5a5c2246
-  + 50% off CVLIFE 36" 42" 46'' Soft Rifle Case Trip — 13301b 500x500 sha=16c042bcaa21
-  + 29% off CVLIFE EagleTalon Solar Multiple Reticle — 25510b 500x500 sha=839df0ef9e9d
-  + 40% off CVLIFE WolfCovert 4-Reticle 2000G Shockp — 17568b 500x500 sha=ca6ddc952b7c
-  + Stoeger Coach Gun Supreme 20ga 3" 20" AA Gloss W — 15356b 895x191 sha=036b425a0584
-  + Smith and Wesson M&P40 M2.0 Metal OR Tungsten .4 — 50851b 754x565 sha=efe7f59172b7
-  + CVLIFE WildHawk Enclosed Multi-Reticle Red Dot S — 19203b 500x500 sha=c9cd5e4b386a
-  + Tyrant Designs I.T.T.S. Trigger for Glock Gen 3  — 13602b 255x437 sha=854318c49237
-  + NAA FOLDING HOLSTER GRIP 22MAG 1 5/8 IRIS - $255 — 20250b 1000x440 sha=33d7e5a0162a
-  + NexGen Arms NG-15 300 Blackout Semi-Auto Rifle w — 18065b 800x235 sha=e838167eea5d
-  + Smith and Wesson M&P FPC 10mm 16.25" Barrel 15-R — 12847b 638x189 sha=05c873f7076a
-  + Ruger Mark IV 22/45 Tactical Flat Dark Earth .22 — 44575b 800x494 sha=749809cdb9f4
-  + Springfield KUNA Tri-lug 9mm 6.125" barrel 30rd  — 59813b 856x821 sha=6f66a5668890
-  + Smith and Wesson 396 Nightguard Black .44 SPC 3" — 15834b 534x385 sha=14d7375425ff
-  + Sellier & Bellot Pistol & Revolver Ammo 9mm Luge — 65786b 800x529 sha=9bb4a300ff90
-  + Rise Armament Patriot High Performance Trigger 3 — 19865b 683x528 sha=e73759bf721e
-  + Springfield Armory 2020 WayPoint Ridgeline Camo  — 33545b 1500x219 sha=8aba501d69ea
-  + Gforce Arms BLADE6 9mm Semi-Auto Pistol with OD  — 49986b 1000x666 sha=bec13b9de16e
-  + Ruger Harrier AR Rifle 5.56 NATO 16.1″ 30-Rnd -  — 41414b 1500x490 sha=752702c95bd6
-  + Taylor's & Co The Ranch Hand .357 Mag 4.75" barr — 22230b 680x358 sha=1ac154185c32
-  + Springfield Armory Echelon 4.5F Low Capacity Opt — 125991b 1000x1000 sha=87e880800218
-  ... 25/60  ok=24 fail=1
-  + Colt M4 Carbine OEM1 No Furniture 5.56mm NATO 16 — 35238b 1000x1000 sha=b59f5e95073f
-  + Christensen Arms Evoke 300 Winchester Magnum OD  — 34180b 1000x1000 sha=95a696872150
-  + Traditions US Marshall 36 Caliber Black Powder R — 48175b 494x339 sha=9397c6016f14
-  + Savage 11/111 Lady Hunter Bolt Action Rifle - $9 — 21662b 738x738 sha=75b5c183f23c
-  + Walther PD380 380 Auto (ACP) 3.7in Military Gree — 122370b 527x438 sha=0a05e366d470
-  + Traditions Wildcard 36 Caliber Black Powder Revo — 52762b 468x288 sha=307247eb666c
-  + Rock Island Armory M1911-A1 Tactical VZ 9mm 5" 1 — 221363b 931x739 sha=d40bf1bfbe4b
-  + Cimarron El Malo Pre-War 357 Magnum 4.75in Blued — 47229b 1000x1000 sha=02d619b6d33f
-  + Walther WMP Military 22 WMR (22 Mag) 4.5in Black — 47320b 1000x1000 sha=50d9fb17028b
-  + Winchester SXP Hybrid Field 20 Gauge 3in Gray Pe — 37621b 1000x1000 sha=92f64a166c52
-  + Firefield Agility II 4-12x40mm Duplex Reticle Ri — 19135b 719x447 sha=b3175b71b612
-  + Heritage Badlander .410 Bore 28" - $399.99 — 47558b 818x281 sha=74117f602f23
-  + CZ 712 G3 12 Gauge Semi-Auto Shotgun, 20" - $479 — 34098b 730x287 sha=ec85e8e49cc6
-  + Beretta Model 1934-1 Used, Semi-Auto, .380 ACP,  — 121453b 534x435 sha=0124657fdac1
-  + NexGen Arms NG-15 223 Wylde Semi-Auto AR-15 Pist — 32909b 1000x666 sha=015c292b5301
-  + Sig Sauer P226 4.4" Barrel .40 S&W 12 Round Maga — 30703b 774x570 sha=8dfe0028d6a3
-  + Zastava M70 Semi Auto Pistol, 7.65/.32 ACP - 1-8 — 235025b 720x539 sha=da66ef67167b
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 31759b 945x630 sha=dc6c56517b40
   x Ruger Wrangler 22 Long Rifle 3.75in 6 Rounds Cer — image not downloadable
   x Colt King Cobra Carry, .357 Magnum, 2.00" Barrel — image not downloadable
   x 20% OFF SALE - SJ Precision Parts Glock FRT V3 w — image not downloadable
@@ -62,6 +62,6 @@
   x CVA Cascade Veil Wideland .308 Win 22" TB 4rd Ri — rejected: too small (600x97)
   x Savage Arms 220 Slug Gun Left Hand 20 Gauge 22"  — image not downloadable
 
-fixed 42, failed 18  (70% success)
-distinct images: 42 across 42 deals
+fixed 40, failed 20  (66% success)
+distinct images: 40 across 40 deals
 PASS — no image shared between products
