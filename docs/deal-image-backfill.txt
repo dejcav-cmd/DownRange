@@ -1,46 +1,51 @@
-600 scanned, 57 need a real image, 13 coupon posts skipped
+600 scanned, 60 need a real image, 15 coupon posts skipped
 
-  + Atrius Development 3 Position Super Selector Saf — 14510b 945x630 sha=f60fc46ed6b6
-  + POF LMR BASE 308 16.5CF 20R DE (Add to Cart) - $ — 55572b 1500x357 sha=293355068018
-  + SB Tactical HBPDW 5.56 Pistol Stabilizing Brace  — 42624b 1500x1000 sha=47cdbb68dcbb
-  + FN Reflex Replacement Magazine 15rd 9mm Luger FD — 11938b 386x386 sha=f00deb073620
-  + NBS Stainless Steel Micro Gas Tube - $11.4 after — 15299b 1000x666 sha=eb1dece4228f
-  + CCI Suppressor Max Rimfire .22 LR 45gr HP 970 fp — 52366b 800x800 sha=c1adbe50391e
+  x Atlas Gunworks 140mm 9mm Magazine with Alphalock — image not downloadable
+  + 15% off CVLIFE EagleBlaze 5-25x56 FFP Rifle Scop — 19323b 500x500 sha=f4afd0603a9a
+  + 50% off CVLIFE 30% Carbon Fiber Bipod for M-Rail — 19814b 500x500 sha=d78424470bb2
+  + 50% off EZshoot Scope Leveling Kit with Precisio — 28132b 500x500 sha=7d193731ab13
+  + 20% off CVLIFE 2-7x32 Crossbow Scope for Hunting — 14375b 406x500 sha=a6dc5a5c2246
+  + 50% off CVLIFE 36" 42" 46'' Soft Rifle Case Trip — 13301b 500x500 sha=16c042bcaa21
+  + 29% off CVLIFE EagleTalon Solar Multiple Reticle — 25510b 500x500 sha=839df0ef9e9d
+  + 40% off CVLIFE WolfCovert 4-Reticle 2000G Shockp — 17568b 500x500 sha=ca6ddc952b7c
+  + Stoeger Coach Gun Supreme 20ga 3" 20" AA Gloss W — 15356b 895x191 sha=036b425a0584
+  + Smith and Wesson M&P40 M2.0 Metal OR Tungsten .4 — 50851b 754x565 sha=efe7f59172b7
+  + CVLIFE WildHawk Enclosed Multi-Reticle Red Dot S — 19203b 500x500 sha=c9cd5e4b386a
+  + Tyrant Designs I.T.T.S. Trigger for Glock Gen 3  — 13602b 255x437 sha=854318c49237
+  + NAA FOLDING HOLSTER GRIP 22MAG 1 5/8 IRIS - $255 — 20250b 1000x440 sha=33d7e5a0162a
+  + NexGen Arms NG-15 300 Blackout Semi-Auto Rifle w — 18065b 800x235 sha=e838167eea5d
+  + Smith and Wesson M&P FPC 10mm 16.25" Barrel 15-R — 12847b 638x189 sha=05c873f7076a
+  + Ruger Mark IV 22/45 Tactical Flat Dark Earth .22 — 44575b 800x494 sha=749809cdb9f4
+  + Springfield KUNA Tri-lug 9mm 6.125" barrel 30rd  — 59813b 856x821 sha=6f66a5668890
+  + Smith and Wesson 396 Nightguard Black .44 SPC 3" — 15834b 534x385 sha=14d7375425ff
+  + Sellier & Bellot Pistol & Revolver Ammo 9mm Luge — 65786b 800x529 sha=9bb4a300ff90
+  + Rise Armament Patriot High Performance Trigger 3 — 19865b 683x528 sha=e73759bf721e
+  + Springfield Armory 2020 WayPoint Ridgeline Camo  — 33545b 1500x219 sha=8aba501d69ea
+  + Gforce Arms BLADE6 9mm Semi-Auto Pistol with OD  — 49986b 1000x666 sha=bec13b9de16e
+  + Ruger Harrier AR Rifle 5.56 NATO 16.1″ 30-Rnd -  — 41414b 1500x490 sha=752702c95bd6
+  + Taylor's & Co The Ranch Hand .357 Mag 4.75" barr — 22230b 680x358 sha=1ac154185c32
+  + Springfield Armory Echelon 4.5F Low Capacity Opt — 125991b 1000x1000 sha=87e880800218
+  ... 25/60  ok=24 fail=1
+  + Colt M4 Carbine OEM1 No Furniture 5.56mm NATO 16 — 35238b 1000x1000 sha=b59f5e95073f
+  + Christensen Arms Evoke 300 Winchester Magnum OD  — 34180b 1000x1000 sha=95a696872150
+  + Traditions US Marshall 36 Caliber Black Powder R — 48175b 494x339 sha=9397c6016f14
+  + Savage 11/111 Lady Hunter Bolt Action Rifle - $9 — 21662b 738x738 sha=75b5c183f23c
+  + Walther PD380 380 Auto (ACP) 3.7in Military Gree — 122370b 527x438 sha=0a05e366d470
+  + Traditions Wildcard 36 Caliber Black Powder Revo — 52762b 468x288 sha=307247eb666c
+  + Rock Island Armory M1911-A1 Tactical VZ 9mm 5" 1 — 221363b 931x739 sha=d40bf1bfbe4b
+  + Cimarron El Malo Pre-War 357 Magnum 4.75in Blued — 47229b 1000x1000 sha=02d619b6d33f
+  + Walther WMP Military 22 WMR (22 Mag) 4.5in Black — 47320b 1000x1000 sha=50d9fb17028b
+  + Winchester SXP Hybrid Field 20 Gauge 3in Gray Pe — 37621b 1000x1000 sha=92f64a166c52
+  + Firefield Agility II 4-12x40mm Duplex Reticle Ri — 19135b 719x447 sha=b3175b71b612
+  + Heritage Badlander .410 Bore 28" - $399.99 — 47558b 818x281 sha=74117f602f23
+  + CZ 712 G3 12 Gauge Semi-Auto Shotgun, 20" - $479 — 34098b 730x287 sha=ec85e8e49cc6
+  + Beretta Model 1934-1 Used, Semi-Auto, .380 ACP,  — 121453b 534x435 sha=0124657fdac1
+  + NexGen Arms NG-15 223 Wylde Semi-Auto AR-15 Pist — 32909b 1000x666 sha=015c292b5301
+  + Sig Sauer P226 4.4" Barrel .40 S&W 12 Round Maga — 30703b 774x570 sha=8dfe0028d6a3
+  + Zastava M70 Semi Auto Pistol, 7.65/.32 ACP - 1-8 — 235025b 720x539 sha=da66ef67167b
+  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 31759b 945x630 sha=dc6c56517b40
   x Ruger Wrangler 22 Long Rifle 3.75in 6 Rounds Cer — image not downloadable
-  + ATN THOR LTV 3-9X Thermal Scope - 256x192 Resolu — 24169b 1000x496 sha=63bcc2908cc6
-  + Springfield Armory TRP Commander Coyote Brown .4 — 74268b 1000x666 sha=750290843ba9
-  + Heckler and Koch VP9A1 K Midnight Bronze 9mm 4.0 — 59517b 904x757 sha=7adec2eb9c83
-  + Bundle* VKTR VK-1, 5.56mm, 16" A2, Black, Comple — 34491b 859x264 sha=bc64ebbf5c61
-  + Taurus PT92 AF-D, 9mm, 5" Barrel, 2- 17rd Magazi — 53384b 1000x660 sha=7725ea6c3d37
-  + Expo Arms Mil-Spec Enhanced Builder AR-15 Lower  — 43282b 882x643 sha=2180af3054a9
-  + Expo Arms 5.56 AR-15 Bolt Carrier Group - Phosph — 29481b 1000x666 sha=2f4780a77dfd
-  + Springfield XD and XD Mod.2 Full-Size 9mm 16-Rou — 17633b 900x563 sha=e213c0610827
   x Colt King Cobra Carry, .357 Magnum, 2.00" Barrel — image not downloadable
-  + Marlin SBL 336 30-30 Win 19.1" 6rd Lever Action  — 21025b 1000x346 sha=460d96e8ffbd
-  + PSA Dagger Compact 9mm Pistol With C-1 RMR Compe — 66720b 1000x1000 sha=6b4871a918c4
-  + Great Lakes Ar-15 223Wyl 16 Serpent Bronze Camo  — 28219b 1056x250 sha=733818638abb
-  + Pedersoli Howdah Alaskan .45 / .410 10.25" 3" Sy — 14023b 800x293 sha=d51c969e5476
-  + Orthos Arms Joker 12-Gauge Semi-Auto Shotgun Bla — 37813b 1000x666 sha=bc0e05e62045
-  + Tisas 1911 Yukon C10 4.25" 10mm 8 Rd - $601.79 — 22551b 530x408 sha=6854948c6e4d
-  + Winchester Super Suppressed 9mm 147 Gr Subsonic  — 276519b 868x476 sha=a370a7c42572
-  + Glock 19 Gen 1-3 KRUSHER Complete Slide with RMR — 1864286b 1199x1196 sha=f783adbd0572
-  + FAB Defense Glock Safety Cord Attachment, Gen 2- — 35928b 793x550 sha=8c4aec21391d
-  ... 25/57  ok=23 fail=2
-  + FAB Defense OPMOD 4 Round Magazine Extension For — 40389b 742x550 sha=194d1d666897
-  + Tikka T3x Lite Roughtech 7mm PRC Green Sniper Gr — 45021b 1000x1000 sha=54cbb353d2ae
-  + Fortis RED Mod 2 9mm Muzzle Brake 1/2x36 - Black — 67471b 400x275 sha=e29957aabe4a
-  + FN Reflex MRD with IWB Holster 9mm Luger 3.3in B — 96172b 1000x1000 sha=153230bd847d
-  + Chiappa 1873 22 Long Rifle 7.5in Blued Revolver  — 49270b 1200x512 sha=b1b911aa03e6
-  + Rival Arms 9mm Luger Glock 43/43X Drop-In Handgu — 485611b 1500x879 sha=b59b6ab933df
-  + Hornady Frontier 5.56mm, 55gr FMJ, 500rd Case -  — 77598b 886x474 sha=835ddac3bb70
-  + Pelican Vault v200 Universal Pistol Case (Hard S — 41491b 500x442 sha=4a711012449b
-  + KAER 8-12 Fingerprint Long Gun Safe Password Loc — 32637b 500x500 sha=e4e458a4ec85
-  + KAER 3 Gun Safe for Rifles and Pistols,Fully Ass — 26844b 500x500 sha=79d11b1e2504
-  + ULTRAFIRE WF-501BX Rechargeable Tactical LED Fla — 34705b 500x499 sha=cadf2192012c
-  + Labor Day Sale! @Shooters Gate – Holosun, SB Tac — 419559b 704x528 sha=91d0f9a31b07
-  + CCI Mini-Mag .22 LR 40-gr. Copper Plated Round N — 28463b 272x775 sha=d9900f34d5eb
-  + Retay Arms RA15-22 .22 LR 8" Barrel 25-Rounds -  — 18067b 721x289 sha=2aff66cefd09
-  + Heckler and Koch Mark 23 .45 ACP 5.9" Barrel 12- — 37975b 800x510 sha=698d1bfa76d1
   x 20% OFF SALE - SJ Precision Parts Glock FRT V3 w — image not downloadable
   x Savage 10/110 Long Range Hunter 300 Win Mag, 26" — image not downloadable
   x Ruger American Rifle, .308 Win, 22" Barrel, Vort — image not downloadable
@@ -56,9 +61,7 @@
   x Rugged Suppressors Razor 556 Rifle Suppressor, 2 — image not downloadable
   x CVA Cascade Veil Wideland .308 Win 22" TB 4rd Ri — rejected: too small (600x97)
   x Savage Arms 220 Slug Gun Left Hand 20 Gauge 22"  — image not downloadable
-  x Radical firearms ar15 - $399 — unreachable after retries
-  x 7.5" 5.56 NATO QpQ Nitride 1:7 Twist Barrel - $5 — image not downloadable
 
-fixed 38, failed 19  (66% success)
-distinct images: 38 across 38 deals
+fixed 42, failed 18  (70% success)
+distinct images: 42 across 42 deals
 PASS — no image shared between products
