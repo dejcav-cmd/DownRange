@@ -129,7 +129,12 @@ export default async function ArticlePage({ params }) {
     if (!article && /^[a-z]+-[a-f0-9]{20,}$/.test(params.slug)) {
       const byId = await getArticleById(params.slug).catch(() => null)
       if (byId?.slug?.current) {
+        // Article exists — redirect to its current slug (fix-slugs may have changed it)
         redirect(`/news/${byId.slug.current}`)
+      } else {
+        // Article doesn't exist in Sanity (write failure or deleted)
+        // Redirect hash-slug URLs to news feed rather than hard 404
+        redirect('/news')
       }
     }
 

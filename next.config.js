@@ -55,6 +55,11 @@ const nextConfig = {
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'scotus' }],    destination: '/laws/federal#scotus', permanent: true },
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'reciprocity' }], destination: '/laws/my-state', permanent: true },
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'assistant' }], destination: '/laws/federal', permanent: true },
+      // Dead hash-slug articles — write failures from imageUrl bug (fixed 2026-09-04)
+      // These _id-based URLs were crawled but the Sanity write failed; redirect to news feed
+      { source: '/news/news-46f10f745d37100085dc8b6915ca845c', destination: '/news', permanent: true },
+      { source: '/news/news-e32d11ef403f472a30e869d2897fc4f4', destination: '/news', permanent: true },
+      { source: '/news/news-f4dc390e9a56a2c70117294d87a6905b', destination: '/news', permanent: true },
       // Old pages → new routes
       { source: '/ccw',                        destination: '/laws/my-state',           permanent: true },
       { source: '/state-hub',                  destination: '/laws/states',             permanent: true },
