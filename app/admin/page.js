@@ -419,7 +419,7 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
       </div>
 
       {/* Health banner */}
-      {health && health.status !== 'ok' && (
+      {health && health.status !== 'HEALTHY' && (
         <div style={{marginBottom:20,padding:'12px 18px',background:'rgba(239,68,68,.08)',border:'1px solid rgba(239,68,68,.3)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
           <span style={{color:'#ef4444',fontWeight:700,marginRight:10}}>⚠ SYSTEM DEGRADED</span>
           {(health.issues||[]).map((i,x)=><span key={x} style={{color:'#fca5a5',marginRight:8}}>{typeof i==='object'?i.msg||i.severity||JSON.stringify(i):i}</span>)}
@@ -461,7 +461,7 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
       <div style={{marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>System Status</div>
       <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(180px,1fr))',gap:10}}>
         {[
-          {label:'News Feed', status: health?.status==='ok'?'Healthy': health?.issues?.[0]?.msg?.slice(0,40)||'Check required', ok:health?.status==='ok', icon:'📰', action: runNewsFeed, actionLabel: feedRunning?'Running…':'▶ Run Now'},
+          {label:'News Feed', status: health?.status==='HEALTHY'?'Healthy': health?.issues?.[0]?.msg?.slice(0,40)||'Check required', ok:health?.status==='HEALTHY', icon:'📰', action: runNewsFeed, actionLabel: feedRunning?'Running…':'▶ Run Now'},
           {label:'Cron Jobs',     status:'Running',     ok:true,  icon:'⏱'},
           {label:'AI Pipeline',   status:'Active',      ok:true,  icon:'🤖'},
           {label:'Sanity CMS',    status:'Connected',   ok:true,  icon:'📦'},
@@ -2974,12 +2974,12 @@ export default function AdminPage() {
         <div className="adm-logo">◈ DR Admin</div>
         <a href="https://downrangeco.com" target="_blank" rel="noreferrer" className="adm-site-link">downrangeco.com ↗</a>
         <a href="https://vercel.com/dejcav-cmd/downrangeco" target="_blank" rel="noreferrer" className="adm-site-link">Vercel ↗</a>
-        {health && health.status !== 'ok' && (
+        {health && health.status !== 'HEALTHY' && (
           <div className="adm-status-pill" style={{borderColor:health.status==='BROKEN'?'rgba(239,68,68,.4)':'rgba(245,158,11,.4)',color:health.status==='BROKEN'?'#ef4444':'#f59e0b'}}>
             ⚠ {health.status?.toUpperCase()}
           </div>
         )}
-        {health && health.status === 'ok' && (
+        {health && health.status === 'HEALTHY' && (
           <div className="adm-status-pill" style={{borderColor:'rgba(34,197,94,.3)',color:'#22c55e'}}>
             ✓ HEALTHY
           </div>
