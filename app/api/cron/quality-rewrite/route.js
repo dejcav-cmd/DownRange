@@ -137,7 +137,7 @@ async function handler(req) {
   const isVercel = req.headers.get('x-vercel-cron') === '1'
   if (!isCron && !isAdmin && !isVercel) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  const BATCH = 15
+  const BATCH = 30
   const stats = { scanned: 0, fullRewrite: 0, titleOnly: 0, skipped: 0, failed: 0 }
 
   try {
@@ -220,6 +220,18 @@ async function handler(req) {
         console.log(`[QR] FULL "${ai.title.slice(0,60)}"`)
       } catch (e) {
         console.error('[QR] FULL FAIL', item._id, e.message)
+        // If article has no body at all, save fallback body from raw description
+        // so it doesn't stay broken/red in admin forever
+        if (!item.body || item.body.length < 100) {
+          const fallback = item.description || item.summary || ''
+          if (fallback.length > 50) {
+            try {
+              const fallbackBody = `<p>${fallback.replace(/\n\n/g, '</p><p>').replace(/\n/g, ' ')}</p>`
+              await sanity.patch(item._id).set({ body: fallbackBody, qualityReviewed: false }).commit()
+              console.log('[QR] Saved fallback body for', item._id)
+            } catch (_) {}
+          }
+        }
         stats.failed++
       }
       await new Promise(r => setTimeout(r, 800))

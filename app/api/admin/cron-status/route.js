@@ -12,9 +12,9 @@ const ALL_JOBS = [
   { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * 0',     label:'State Laws (Weekly)',     group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → 50-state law profiles updated every Sunday 8am UTC' },
   { id:'goa',              path:'/api/agent?feed=goa',              schedule:'2 */12 * * *',  label:'GOA Feed',                group:'Content',  icon:'🦅', critical:false, desc:'Gun Owners of America press feed every 12 hrs' },
   { id:'quality-rewrite',  path:'/api/cron/quality-rewrite',        schedule:'20 */2 * * *',  label:'Quality Rewrite',         group:'Content',  icon:'✨', critical:false, desc:'Scans content for AI phrases + short bodies → rewrites failing items. Every 2h (12x/day) — matches news ingestion cadence so bodyless articles never queue up.' },
-  { id:'image-fix',        path:'/api/cron/image-fix',              schedule:'0 * * * *',     label:'Image Fix',               group:'Content',  icon:'🖼', critical:true,  desc:'Fetches OG images from source URLs, assigns real photo fallbacks. Every hour.' },
+  { id:'image-fix',        path:'/api/cron/image-fix',              schedule:'15 * * * *',     label:'Image Fix',               group:'Content',  icon:'🖼', critical:true,  desc:'Fetches OG images from source URLs, assigns real photo fallbacks. Every hour.' },
   { id:'fix-placeholder-images', path:'/api/cron/fix-placeholder-images', schedule:'0 */4 * * *', label:'Fix Placeholder Images', group:'Content', icon:'🔧', critical:false, desc:'Scans articles still using /img/photos/ fallbacks, fetches real OG image from source → uploads to Sanity CDN. Every hour.' },
-  { id:'site_health',      path:'/api/site-health',                 schedule:'0 8,14,20 * * *', label:'Site Health',           group:'System',   icon:'🩺', critical:true,  desc:'Health checks 3x/day at 8am, 2pm, 8pm UTC' },
+  { id:'site_health',      path:'/api/site-health',                 schedule:'0 8 * * *', label:'Site Health',           group:'System',   icon:'🩺', critical:true,  desc:'Health checks 3x/day at 8am, 2pm, 8pm UTC' },
   { id:'intelligence',     path:'/api/intelligence',                schedule:'0 1 * * *',     label:'Intelligence Briefing',   group:'System',   icon:'🧠', critical:true,  desc:'Daily AI briefing at 1am UTC → email digest' },
   { id:'nics',             path:'/api/nics',                        schedule:'0 10 1 * *',    label:'NICS Data',               group:'System',   icon:'📈', critical:false, desc:'FBI NICS background check data — 1st of each month' },
   { id:'nfa-wait-times',   path:'/api/nfa-wait-times',              schedule:'0 6 */2 * *',   label:'NFA Wait Times',          group:'System',   icon:'⏳', critical:false, desc:'Pulls NFA processing times directly from ATF.gov every 2 days, 6am UTC' },
@@ -24,9 +24,9 @@ const ALL_JOBS = [
   { id:'prn_releases',     path:'/api/cron/releases',               schedule:'0 12 * * *',    label:'PRN Scraper',             group:'Outreach', icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases at noon UTC' },
   { id:'fetch-images',     path:'/api/admin/fetch-article-images',  schedule:'20 */2 * * *', label:'Fetch Article Images',    group:'System',   icon:'📷', critical:false, desc:'Fetch og:image from source URLs → Sanity CDN every 30 min' },
   { id:'cron-health',      path:'/api/admin/cron-health',           schedule:'0 * * * *',    label:'Cron Health Check',       group:'System',   icon:'❤', critical:true,  desc:'System health check + email alerts every 30 min' },
-  { id:'copyright-review', path:'/api/cron/copyright-review', schedule:'0 6 * * *', label:'Copyright Compliance', group:'System', icon:'⚖', critical:true, desc:'Daily scan of last 48h articles for copyright risk — old structure, no source, no analysis. Emails report.' },
-  { id:'backup',           path:'/api/admin/backup',                schedule:'0 10,15 * * *', label:'Sanity Backup',           group:'System',   icon:'💾', critical:true,  desc:'Full Sanity export → GitHub backup repo at 10am & 3pm UTC. No AI cost.' },
-  { id:'fix-images',       path:'/api/admin/fix-images',            schedule:'0 6,11,15 * * *',   label:'Image Patcher (legacy)',    group:'System',  icon:'🖼', critical:false, desc:'Legacy image patcher — replaced by image-fix' },
+  { id:'copyright-review', path:'/api/cron/copyright-review', schedule:'30 6 * * *', label:'Copyright Compliance', group:'System', icon:'⚖', critical:true, desc:'Daily scan of last 48h articles for copyright risk — old structure, no source, no analysis. Emails report.' },
+  { id:'backup',           path:'/api/admin/backup',                schedule:'0 10 * * *', label:'Sanity Backup',           group:'System',   icon:'💾', critical:true,  desc:'Full Sanity export → GitHub backup repo at 10am & 3pm UTC. No AI cost.' },
+  // fix-images removed from monitoring: not in vercel.json (legacy — replaced by image-fix cron)
   // patch-ammo-article removed from monitoring: one-time fixer for 8 hardcoded slugs,
   // never scheduled in vercel.json, was showing false OVERDUE every run since it has no recurring purpose.
   // Route still exists at /api/admin/patch-ammo-article for manual re-run if needed.
@@ -43,9 +43,9 @@ const ALL_JOBS = [
   { id:'amazon-brands',   path:'/api/cron/amazon-brands',          schedule:'0 4,16 * * *',    label:'Amazon Brand Scraper',     group:'Content', icon:'🚫', critical:false, desc:'DISABLED — Amazon CAPTCHAs Jina proxy. Brand queries now in amazon-deals PA API slots 4-7.' },
   { id:'reddit-deals',    path:'/api/cron/reddit-deals',           schedule:'0 * * * *',       label:'r/gundeals Scraper',       group:'Content', icon:'🟠', critical:false, desc:'r/gundeals hot posts hourly — score≥10, non-expired, <48h old; community upvotes as quality signal' },
   { id:'web-deals',       path:'/api/cron/web-deals',              schedule:'0 */12 * * *',    label:'Web Deals Scraper',        group:'Content', icon:'🌐', critical:false, desc:'Brownells Daily Deals, PSA Flash Sales, Natchez, Olight Flash — direct HTML scrape twice daily' },
-  { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'0 8,20 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
-  { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'0 9,21 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
-  { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 9 * * 1',
+  { id:'write-canada',     path:'/api/cron/write-canada-articles',  schedule:'20 8 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
+  { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'40 9 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
+  { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 6 * * 1,4',
     label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
     desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
   // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
