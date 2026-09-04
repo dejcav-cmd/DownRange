@@ -12,6 +12,7 @@ export const dynamic    = 'force-dynamic'
 export const maxDuration = 300
 
 import { processReleases } from '@/agent/feeds/releases.js'
+import { reportCronRun } from '@/lib/cronReporter'
 
 function isAuth(req) {
   const cron   = req.headers.get('x-vercel-cron')
@@ -27,8 +28,14 @@ function isAuth(req) {
 export async function GET(req) {
   if (!isAuth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
+  const t0 = Date.now()
   const backfill = req.nextUrl?.searchParams?.get('backfill') === '1'
-  const result   = await processReleases({ backfill })
-
-  return Response.json({ ok: true, ...result })
+  try {
+    const result = await processReleases({ backfill })
+    await reportCronRun('releases-process', { status: 'success', ms: Date.now() - t0, details: JSON.stringify(result).slice(0, 100) }).catch(() => {})
+    return Response.json({ ok: true, ...result })
+  } catch (err) {
+    await reportCronRun('releases-process', { status: 'failed', ms: Date.now() - t0, error: err.message }).catch(() => {})
+    return Response.json({ error: err.message }, { status: 500 })
+  }
 }

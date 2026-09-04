@@ -94,3 +94,19 @@ export async function POST(req) {
     return Response.json({ error: error.message }, { status: 500 })
   }
 }
+
+// Vercel crons always invoke via GET — delegate to POST handler with cron auth
+export async function GET(req) {
+  const isVercel = req.headers.get('x-vercel-cron') === '1'
+  if (!isVercel) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  // Build a synthetic POST request with CRON_SECRET auth so the POST handler accepts it
+  const syntheticReq = new Request(req.url, {
+    method: 'POST',
+    headers: {
+      'authorization': `Bearer ${process.env.CRON_SECRET}`,
+      'content-type': 'application/json',
+    },
+    body: JSON.stringify({}),
+  })
+  return POST(syntheticReq)
+}
