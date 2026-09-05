@@ -1,21 +1,28 @@
-600 scanned, 29 need a real image, 16 coupon posts skipped
+600 scanned, 35 need a real image, 16 coupon posts skipped
 
-  + Faxon Firearms Match Series 9" 300 BLK Gunner Pr — 14979b 851x352 sha=4285086f0eb2
-  x Tuna Cans BlackFin L Silencer (9 Baffle), .300 B — image not downloadable
-  + Kinetic Development Group FN Scar Brace BLACK -  — 18105b 600x279 sha=9347cd64414e
-  + Garaysar FEAR-125 AR-Style 12 Gauge 3" 20" 5rd S — 18806b 800x190 sha=f94f39f9f223
-  + Kel-Tec R50D SBR 5.7x28mm 9.6" Barrel 50-Rounds  — 19606b 1000x245 sha=eaa5f2977b34
-  + Kimber Stainless II .38 Super 5" Barrel 9-Rounds — 135044b 1500x969 sha=3432910867ce
-  + Global Ordnance Monolith 15P 5.56 12.5" Barrel 3 — 20380b 800x235 sha=d5daea26a940
-  + Beretta 3032 Tomcat .32 ACP 2.4" barrel 7 Rnds S — 82906b 1000x782 sha=eddc197ab676
-  + Kimber Eclipse Ultra II Silver .45 ACP 5" Barrel — 55299b 800x544 sha=3ae4c345771a
+  + Colt AR-15 A3 Tactical Carbine 5.56 NATO 16" Bar — 163005b 1500x999 sha=6a38a8ab5a26
+  + Nobel NSI American Trap Shotshell 12 GA 2-3/4" 1 — 117300b 1000x1000 sha=53810f9d852f
+  + MidwayUSA Men's Ambush Hoodie Realtree APX (Larg — 387459b 539x547 sha=c9793ba27eb7
+  + ISSC M22 Omni SD 22 LR 4.5" Barrel 10 Rds Matte  — 23651b 635x431 sha=26838f3a1415
+  + Shadow Systems MR920 9mm 4" 15rd Pistol, Optic C — 123012b 530x400 sha=2b220ed1f3b0
+  + DPMS DP-15 Shortacle 223/5.56 10.5" 30rd AR Pist — 23484b 800x339 sha=fbcfb4c71f9b
+  + HK VP9-B 9mm 4.09" 17rd Black Pistol, 2 Mags, In — 8006b 500x434 sha=6664b7567f0f
+  + Colt 1911 Combat Commander OR 45 ACP 4.25" Barre — 12386b 850x553 sha=6e4f60a40320
+  + Ruger Mark IV 22/45 22 LR 5.5" Bbl 10+1 Rds Blue — 12654b 600x388 sha=a723186841dd
+  + Heritage Badlander 12 Gauge 28" Break Action/Sid — 54799b 981x459 sha=1bec93a57ae6
+  + Benelli Nova LE Tactical 7 RD 12 Gauge 18.5" - $ — 12220b 359x150 sha=f4dd48685a9a
+  + Strike Industries Angled Vertical Grip with Cabl — 168362b 840x688 sha=aa2cdaeed3c0
+  + Griffin Armament EZ-LOK Universal QD Barrel Adap — 19184b 680x510 sha=d695da15ec32
+  + Glock 17 Gen 2 9mm 4.4" Barrel 17-Rounds Law Enf — 41739b 800x565 sha=14f0e1ef2473
+  + Mars Trigger Spring-Loaded AK-47 FRT Parts Kit V — 15503b 639x382 sha=26b170af4be3
+  + Heckler & Koch MR762 A4 7.62x51 16.5" 20rd - Bla — 49197b 1500x486 sha=922089d1d4c3
+  + Glock 43X M.O.S Yellow / Black 9mm 3.4" Barrel 1 — 62681b 870x744 sha=610a8b84b9d1
+  + Taurus RPC w/ Brace, 9mm, 4.5" Barrel, (2) 32rd, — 265526b 1007x609 sha=884204f8836e
+  + Ambient Arms EXO, 5.56 NATO, Titanium - $999.99 — 28448b 800x800 sha=5e99eef904b1
+  + Sig Sauer M400 Tread 5.56mm NATO 16" 30-Rds Anod — 54092b 1289x1064 sha=6a39c292daf1
+  + Dirty Bird Industries Single Stage Nickel Teflon — 151009b 1000x666 sha=396d3d91b719
   x SilencerCo Hybrid 46M, Modular Suppressor, Black — image not downloadable
   x SilencerCo Omega 36M Suppressor, Modular and Mul — image not downloadable
-  + WEATHERBY Model 307 Range CS BG 25 Creedmoor 22" — 29494b 477x229 sha=9bab360a23e5
-  + SPRINGFIELD ARMORY Echelon Alpha 4.0C 9mm 4" U-D — 168666b 443x382 sha=5673d7ddf9f0
-  + Heckler & Koch VP9A1 F Midnight Bronze 9mm 4.5"  — 262035b 754x576 sha=1e3e7657156e
-  + Colt 1911 Ejercito Mexicano 5" .38 Super Auto 9r — 105324b 570x383 sha=c00ada4be635
-  + FNH FN 509 Midsize Tactical 9mm 4.50" 15/24rds - — 50666b 600x583 sha=c02cccb904ba
   x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
   x Heritage Badlander SxS 18.5" 20ga Shotgun - Nick — image not downloadable
   x Atlas Gunworks 140mm 9mm Magazine with Alphalock — image not downloadable
@@ -28,8 +35,7 @@
   x Tikka T3x Hunter 308 Win 20" 3rd - Walnut - $999 — image not downloadable
   x Strike Industries Triple Crown 223/556 Compensat — image not downloadable
   x Rugged Suppressors Razor 556 Rifle Suppressor, 2 — image not downloadable
-  x CVA Cascade Veil Wideland .308 Win 22" TB 4rd Ri — rejected: too small (600x97)
 
-fixed 13, failed 16  (44% success)
-distinct images: 13 across 13 deals
+fixed 21, failed 14  (60% success)
+distinct images: 21 across 21 deals
 PASS — no image shared between products
