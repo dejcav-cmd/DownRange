@@ -1,67 +1,35 @@
-600 scanned, 60 need a real image, 15 coupon posts skipped
+600 scanned, 29 need a real image, 16 coupon posts skipped
 
-  + ABCSportZ 15% OFF Site Wide Through Sept 8th - C — 336729b 1500x1500 sha=7cc96104137e
-  + Sig Sauer Tango MSR 1-6x24mm Illuminated MSR-BDC — 17927b 608x400 sha=05549749018a
-  + Sig Sauer FOXTROT1X Rail Mounted 450 Lumen Tacti — 33091b 608x393 sha=5d1793db9738
-  + Sig Sauer 1911 X-Series 45 ACP Pistol 5" Barrel  — 49739b 1000x700 sha=15b7c704210b
-  + Sig Sauer P365 9mm 3.1" Barrel 10-Rounds Optic R — 59768b 993x700 sha=0740c4fe0db3
-  + Ohio Ordnance Works HCAR .30-06 Spr 20" 30rd - $ — 38078b 1169x475 sha=7a07c4b5bbb9
-  + Zastava Cz999Sc Cz999 9mm 4.25 Blued Serbian Cre — 42041b 756x578 sha=3d566639fa1e
-  + Geissele Automatics LLC - Brownells Geissele 5.5 — 24756b 804x357 sha=ce510378cd2e
-  + Glock 19 Gen 6 9mm 4.02" Barrel 15-Rounds w/Aimp — 36147b 697x564 sha=b8a01e2c3cd0
-  + Diamondback DB15 5.56 NATO 16" AR Rifle - $558.9 — 8905b 400x250 sha=0d245d983e8a
-  + Labor Day Sale! @Grab A Gun — 37971b 525x628 sha=fee580874275
-  + Talon Armament Gryphon GAR15 5.56 NATO 16" Barre — 28422b 1000x359 sha=78062ea484b9
-  + (1) One USED Restricted Marked Colt CRB Tactical — 93714b 1283x822 sha=c47750fe7588
-  + Panzer Arms CQB Tactical 12 Gauge 18.5″ Disrupti — 19100b 1000x227 sha=5fcb3c58d2de
-  + BHA Precision Complete M16 AR-15 5.56/300 Black  — 32617b 1000x609 sha=cc07ca40b1bf
-  + FTA Tactical MPA Defender Forced Reset Trigger - — 10368b 376x341 sha=db463a94d031
+  + Faxon Firearms Match Series 9" 300 BLK Gunner Pr — 14979b 851x352 sha=4285086f0eb2
+  x Tuna Cans BlackFin L Silencer (9 Baffle), .300 B — image not downloadable
+  + Kinetic Development Group FN Scar Brace BLACK -  — 18105b 600x279 sha=9347cd64414e
+  + Garaysar FEAR-125 AR-Style 12 Gauge 3" 20" 5rd S — 18806b 800x190 sha=f94f39f9f223
+  + Kel-Tec R50D SBR 5.7x28mm 9.6" Barrel 50-Rounds  — 19606b 1000x245 sha=eaa5f2977b34
+  + Kimber Stainless II .38 Super 5" Barrel 9-Rounds — 135044b 1500x969 sha=3432910867ce
+  + Global Ordnance Monolith 15P 5.56 12.5" Barrel 3 — 20380b 800x235 sha=d5daea26a940
+  + Beretta 3032 Tomcat .32 ACP 2.4" barrel 7 Rnds S — 82906b 1000x782 sha=eddc197ab676
+  + Kimber Eclipse Ultra II Silver .45 ACP 5" Barrel — 55299b 800x544 sha=3ae4c345771a
+  x SilencerCo Hybrid 46M, Modular Suppressor, Black — image not downloadable
+  x SilencerCo Omega 36M Suppressor, Modular and Mul — image not downloadable
+  + WEATHERBY Model 307 Range CS BG 25 Creedmoor 22" — 29494b 477x229 sha=9bab360a23e5
+  + SPRINGFIELD ARMORY Echelon Alpha 4.0C 9mm 4" U-D — 168666b 443x382 sha=5673d7ddf9f0
+  + Heckler & Koch VP9A1 F Midnight Bronze 9mm 4.5"  — 262035b 754x576 sha=1e3e7657156e
+  + Colt 1911 Ejercito Mexicano 5" .38 Super Auto 9r — 105324b 570x383 sha=c00ada4be635
+  + FNH FN 509 Midsize Tactical 9mm 4.50" 15/24rds - — 50666b 600x583 sha=c02cccb904ba
   x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
-  + Dirty Bird Patriot 7.5" 5.56 NATO 100RD Semi-Aut — 204916b 1000x666 sha=d83524a3493f
-  + CMC Triggers Two-Stage Drop In Trigger - Combat  — 35435b 549x630 sha=36ee95043c7f
-  + SB Tactical SBA6 Pistol Brace & Buffer Kit - Bla — 159045b 1000x666 sha=d3e30df835d6
-  + Hornady Match 50 BMG 750 GR AMax 10 Rounds - $82 — 20914b 386x386 sha=eb97277e8b4a
-  + Marlin 1895 Dark .45-70 Government 16.1" 5rd Lev — 16091b 800x278 sha=7e26d4862200
   x Heritage Badlander SxS 18.5" 20ga Shotgun - Nick — image not downloadable
-  + FLUX Defense Raider X - BLK - $356.99 + Free Shi — 35278b 888x569 sha=b2364508f2f4
-  + Springfield Armory Bundle* 2020 Waypoint 6.5 Cre — 13163b 495x275 sha=ebf7637d155c
-  ... 25/60  ok=23 fail=2
-  + Magpul PMAG 30 Gen M3 300 Blackout AR-15 Magazin — 18287b 684x682 sha=7108c1075cc9
-  + Arsenal SAM7SF 7.62x39mm Semi-Auto Side Folding  — 32740b 1263x494 sha=fee30d6d8ffe
-  + Archon Firearms Type B RMR 9mm 4.3" FDE - $899.9 — 11155b 350x266 sha=ac3145c04e36
-  + Glock 43X MOS Glitter Gunz Black Cherry 9mm Pist — 48793b 672x517 sha=cfb2e4696c2d
-  + Century Arms Micro Draco 7.62x39mm 6" 30 Rd - $7 — 11471b 400x246 sha=f21ae56dadf9
-  + H&R Retro DOE 300BLK Pistol 7" A2 Carry Handle H — 13436b 486x289 sha=a5b64be57d5b
-  + Charter Arms Boomer Revolver, .44SPL, 2-inch Bar — 27601b 599x454 sha=a347dff08f86
-  + Labor Day Sale! @ Beretta — 49666b 531x734 sha=f455d69031d1
-  + Partisan Triggers Disruptor AR-15 3 Position Dro — 109878b 1000x666 sha=a99600210829
-  + Fort Scott Munitions TUI 235 gr Solid Copper 8.6 — 71439b 1100x734 sha=f150de88485f
-  + PMC - X-TAC - 5.56x45mm - 62 Grain - FMJ M855 -  — 26532b 621x398 sha=af9dbf2c49d5
-  + Mec-Gar 2011 / 2311 / Prodigy 9mm 22rd Magazine  — 18794b 842x585 sha=ca8744804d0e
-  + Magpul PMAG 20 LR/SR GEN M3 7.62 NATO Magazine - — 25017b 1100x703 sha=cfa8ab102848
-  + SAVAGE ARMS A17 Magazine 17HMR 10RD ROTARY - $19 — 63325b 600x900 sha=4d87c780a3a8
-  + Hornady 338 ARC 307 gr Sub-X Subsonic 20/Box - $ — 208727b 1000x666 sha=037b55fe86e4
-  + Winchester X450DS Deer Season XP 450 Bushmaster  — 131938b 1280x1280 sha=9c7e3305f98e
-  + Gen II AR-15 / M16 100 Round Dual Drum Magazine  — 76642b 795x569 sha=1b0b37daf82a
   x Atlas Gunworks 140mm 9mm Magazine with Alphalock — image not downloadable
-  x Ruger Wrangler 22 Long Rifle 3.75in 6 Rounds Cer — image not downloadable
   x Colt King Cobra Carry, .357 Magnum, 2.00" Barrel — image not downloadable
-  x 20% OFF SALE - SJ Precision Parts Glock FRT V3 w — image not downloadable
   x Savage 10/110 Long Range Hunter 300 Win Mag, 26" — image not downloadable
   x Ruger American Rifle, .308 Win, 22" Barrel, Vort — image not downloadable
   x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Gold  — image not downloadable
   x Nano Roni, Glock 17/19/19X/22/23/25/31/32/45 - F — image not downloadable
-  x Griffin Armament Revolution 9 Mod 4 9mm Suppress — image not downloadable
   x Bushnell Engage DX 10x42mm Binocular, Black - $1 — unreachable after retries
   x Tikka T3x Hunter 308 Win 20" 3rd - Walnut - $999 — image not downloadable
-  x Dead Air MOJAVE9 Suppressor, 9MM/.300 Blackout,  — rejected: extreme portrait (278x1406)
   x Strike Industries Triple Crown 223/556 Compensat — image not downloadable
-  x SGM Tactical 10mm Auto 10-Round Extended Magazin — rejected: too small (138x722)
-  x Dead Air Nomad LTI XC Suppressor, FDE, 7.62mm, w — image not downloadable
   x Rugged Suppressors Razor 556 Rifle Suppressor, 2 — image not downloadable
   x CVA Cascade Veil Wideland .308 Win 22" TB 4rd Ri — rejected: too small (600x97)
-  x Savage Arms 220 Slug Gun Left Hand 20 Gauge 22"  — image not downloadable
 
-fixed 40, failed 20  (66% success)
-distinct images: 40 across 40 deals
+fixed 13, failed 16  (44% success)
+distinct images: 13 across 13 deals
 PASS — no image shared between products
