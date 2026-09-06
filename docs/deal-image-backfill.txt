@@ -1,9 +1,36 @@
-600 scanned, 17 need a real image, 16 coupon posts skipped
+600 scanned, 43 need a real image, 16 coupon posts skipped
 
-  + G-Force GF9 Rapture Gray / Nickel 9mm 3.25" Barr — 281827b 813x651 sha=ce2439b5e9a7
-  + Christensen Ridgeline FFT Left Hand 308 20" Carb — 27467b 582x170 sha=edaa010d5de4
-  + Henry Repeating Arms Big Boy Brass 357 Mag 20" B — 39715b 563x170 sha=96fe6334259d
-  + Canik Prime Radian 9mm 3.8" Barrel 17rd Pistol,  — 22772b 492x433 sha=355777a6d1e3
+  + Howa 1500 6.5 Creedmoor 24" TB 10rd Rifle Black, — 8027b 500x125 sha=8e87e7dabdb8
+  + Sig Sauer P320 Pro Full Size 9mm 4.7" 17rd OR Pi — 53890b 1280x853 sha=10a62584793b
+  + Off Grid Operator Inconel 5.56 Suppressor, Black — 17480b 800x710 sha=a99740a96250
+  + Bulgarian AK-74 5.56x45mm 30-Round Reinforced St — 32495b 700x685 sha=0ad3750c49c0
+  + Amazon Haul Portable Binoculars, 3000x25 Long-Fo — 15316b 500x500 sha=65bae2305583
+  + Amazon Haul 2 Pack Flashlights, Military Grade 5 — 39392b 500x500 sha=e2fc0f25ecdd
+  + Tippmann M4-22 Pro .22 LE 16" 25rd FDE Rifle Ran — 32604b 1350x900 sha=c91913689269
+  + MAC Cowboy Puncher 12 GA 3" 5+1 Rds 18.5" Semi-A — 10680b 968x193 sha=8bf0422ef0fd
+  x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
+  + Sig Sauer P365 9mm 3.1" Bbl 10rd Micro-Compact P — 267183b 847x709 sha=58cc4a569675
+  + Primary Arms SLx 1-10x28mm SFP Rifle Scope – Ill — 32483b 1000x649 sha=147312f5427c
+  + Tactical Solutions ASCENT22 Rimfire Suppressor 2 — 15274b 886x210 sha=7ce10dfc5648
+  + Tisas PX-9 9mm Gen 3 Duty 4.69" Threaded FDE Cer — 93931b 585x421 sha=6568f11fe1cc
+  + ACRD15 - Active Cam Reset Device - $179.99 — 26083b 750x1000 sha=5df114058f41
+  + EOTech 5x Power Magnifier with Quick Disconnect, — 32816b 880x660 sha=543c5809d1a8
+  + 5.11 Tactical Shirts & Hoodies from $14.99. Up t — 65958b 600x600 sha=3308d7de7b04
+  + Tokarev TX112 12 GA 18.5" 5rd Pump Action Shotgu — 13526b 800x401 sha=4e83069b7afc
+  + Century Arms Micro Draco 6.25" 7.62x39mm 30rd Pi — 760630b 1410x904 sha=2b8e68ac35e3
+  + Ruger American Predator Gen II Full Size 204 Rug — 15143b 1000x186 sha=47b6afa7e11a
+  + Taurus 856 38SPL 2" Barrel 6rd Rose Gold / Stain — 15628b 488x325 sha=1fc3fa4508b5
+  + Taurus G3 9mm 4" Bbl 17RD Semi-Auto Pistol, Full — 122543b 571x470 sha=b48ae044e15f
+  + Sig Sauer P320 Spectre Slide / Barrel Assembly,  — 25951b 700x700 sha=ae29108ed3a7
+  + Geissele Super Duty 5.56 NATO 14.5" 1:7" CHF Bbl — 81069b 996x247 sha=8cdbd6af77c3
+  + AR 308 Magpul PRS Stock Assembly Mil-Spec - $99. — 507940b 1297x954 sha=1ef7ff5ee8ff
+  + AR-15 Furniture Kit with Black Magpul MOE Stock  — 430898b 1183x880 sha=8a8f5c999924
+  ... 25/43  ok=24 fail=1
+  + Magpul MOE Mil-Spec Carbine Stock Flat Dark Eart — 361377b 1034x772 sha=55ee262f6757
+  + AR15 Complete Furniture Set with Magpul MOE Stoc — 507656b 1184x959 sha=6f7b30b29ecf
+  + Aim Sports A2 Muzzle Brake - $7.95 — 44268b 1000x1000 sha=a6e2bfadedd2
+  + Sons Of Liberty Gun Works H3 Buffer for AR-15 -  — 13334b 580x269 sha=3d09eadbb903
+  + Walker's Ultimate Quad Connect Electronic Earmuf — 22425b 680x510 sha=7e1aa5fa4488
   x SilencerCo Hybrid 46M, Modular Suppressor, Black — image not downloadable
   x SilencerCo Omega 36M Suppressor, Modular and Mul — image not downloadable
   x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
@@ -18,6 +45,6 @@
   x Tikka T3x Hunter 308 Win 20" 3rd - Walnut - $999 — image not downloadable
   x Strike Industries Triple Crown 223/556 Compensat — image not downloadable
 
-fixed 4, failed 13  (23% success)
-distinct images: 4 across 4 deals
+fixed 29, failed 14  (67% success)
+distinct images: 29 across 29 deals
 PASS — no image shared between products
