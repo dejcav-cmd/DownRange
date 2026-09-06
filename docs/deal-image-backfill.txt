@@ -1,26 +1,9 @@
-600 scanned, 35 need a real image, 16 coupon posts skipped
+600 scanned, 17 need a real image, 16 coupon posts skipped
 
-  + Colt AR-15 A3 Tactical Carbine 5.56 NATO 16" Bar — 163005b 1500x999 sha=6a38a8ab5a26
-  + Nobel NSI American Trap Shotshell 12 GA 2-3/4" 1 — 117300b 1000x1000 sha=53810f9d852f
-  + MidwayUSA Men's Ambush Hoodie Realtree APX (Larg — 387459b 539x547 sha=c9793ba27eb7
-  + ISSC M22 Omni SD 22 LR 4.5" Barrel 10 Rds Matte  — 23651b 635x431 sha=26838f3a1415
-  + Shadow Systems MR920 9mm 4" 15rd Pistol, Optic C — 123012b 530x400 sha=2b220ed1f3b0
-  + DPMS DP-15 Shortacle 223/5.56 10.5" 30rd AR Pist — 23484b 800x339 sha=fbcfb4c71f9b
-  + HK VP9-B 9mm 4.09" 17rd Black Pistol, 2 Mags, In — 8006b 500x434 sha=6664b7567f0f
-  + Colt 1911 Combat Commander OR 45 ACP 4.25" Barre — 12386b 850x553 sha=6e4f60a40320
-  + Ruger Mark IV 22/45 22 LR 5.5" Bbl 10+1 Rds Blue — 12654b 600x388 sha=a723186841dd
-  + Heritage Badlander 12 Gauge 28" Break Action/Sid — 54799b 981x459 sha=1bec93a57ae6
-  + Benelli Nova LE Tactical 7 RD 12 Gauge 18.5" - $ — 12220b 359x150 sha=f4dd48685a9a
-  + Strike Industries Angled Vertical Grip with Cabl — 168362b 840x688 sha=aa2cdaeed3c0
-  + Griffin Armament EZ-LOK Universal QD Barrel Adap — 19184b 680x510 sha=d695da15ec32
-  + Glock 17 Gen 2 9mm 4.4" Barrel 17-Rounds Law Enf — 41739b 800x565 sha=14f0e1ef2473
-  + Mars Trigger Spring-Loaded AK-47 FRT Parts Kit V — 15503b 639x382 sha=26b170af4be3
-  + Heckler & Koch MR762 A4 7.62x51 16.5" 20rd - Bla — 49197b 1500x486 sha=922089d1d4c3
-  + Glock 43X M.O.S Yellow / Black 9mm 3.4" Barrel 1 — 62681b 870x744 sha=610a8b84b9d1
-  + Taurus RPC w/ Brace, 9mm, 4.5" Barrel, (2) 32rd, — 265526b 1007x609 sha=884204f8836e
-  + Ambient Arms EXO, 5.56 NATO, Titanium - $999.99 — 28448b 800x800 sha=5e99eef904b1
-  + Sig Sauer M400 Tread 5.56mm NATO 16" 30-Rds Anod — 54092b 1289x1064 sha=6a39c292daf1
-  + Dirty Bird Industries Single Stage Nickel Teflon — 151009b 1000x666 sha=396d3d91b719
+  + G-Force GF9 Rapture Gray / Nickel 9mm 3.25" Barr — 281827b 813x651 sha=ce2439b5e9a7
+  + Christensen Ridgeline FFT Left Hand 308 20" Carb — 27467b 582x170 sha=edaa010d5de4
+  + Henry Repeating Arms Big Boy Brass 357 Mag 20" B — 39715b 563x170 sha=96fe6334259d
+  + Canik Prime Radian 9mm 3.8" Barrel 17rd Pistol,  — 22772b 492x433 sha=355777a6d1e3
   x SilencerCo Hybrid 46M, Modular Suppressor, Black — image not downloadable
   x SilencerCo Omega 36M Suppressor, Modular and Mul — image not downloadable
   x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
@@ -34,8 +17,7 @@
   x Bushnell Engage DX 10x42mm Binocular, Black - $1 — unreachable after retries
   x Tikka T3x Hunter 308 Win 20" 3rd - Walnut - $999 — image not downloadable
   x Strike Industries Triple Crown 223/556 Compensat — image not downloadable
-  x Rugged Suppressors Razor 556 Rifle Suppressor, 2 — image not downloadable
 
-fixed 21, failed 14  (60% success)
-distinct images: 21 across 21 deals
+fixed 4, failed 13  (23% success)
+distinct images: 4 across 4 deals
 PASS — no image shared between products
