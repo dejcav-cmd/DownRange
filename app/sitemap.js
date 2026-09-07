@@ -64,6 +64,8 @@ const STATIC_PAGES = [
   { url: `${BASE}/contribute`,          priority: 0.5,  changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/privacy`,             priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
   { url: `${BASE}/terms`,               priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
+  { url: `${BASE}/dmca`,                priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
+  { url: `${BASE}/cookies`,             priority: 0.3,  changeFrequency: 'yearly',  lastModified: NOW },
 
   // Market intelligence (missing from prior sitemap)
 ]
