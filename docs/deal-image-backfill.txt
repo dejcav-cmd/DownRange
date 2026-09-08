@@ -1,15 +1,8 @@
-600 scanned, 24 need a real image, 9 coupon posts skipped
+600 scanned, 17 need a real image, 10 coupon posts skipped
 
-  + Heritage Badlander 28 Gauge 28" Break Action/Sid — 9810b 801x213 sha=afa43cc3d022
-  + Sig Sauer P320 X-Compact 9mm 3.6" 15+1 Semi Auto — 151611b 581x424 sha=f95e98639e1e
-  + Century Arms C39 V2 7.62x39mm 10.5" BBL 30RD Bla — 96221b 900x675 sha=dabe7766e5d8
-  + Walther PPQ Q5 Match 9mm 5" Bbl (2) 15rd (1) 21r — 132123b 900x675 sha=126154ab7851
-  + Tisas 1911 A1 Tank Commander 4.25" Barrel 9mm 9r — 1027737b 818x731 sha=147984a2bbd5
-  + Springfield Armory Kuna 9mm 30rd Magazine Transl — 50485b 441x372 sha=9625c7cf7f28
-  + Breek Arms Warhammer AR-15 Charging Handle Black — 34345b 1000x666 sha=0def5f3523b3
-  + Magpul AMAG 15 SG9 9mm 15-Round Magazine for Sig — 15018b 700x700 sha=1f8dbdddd604
-  + BCM Recce 9 QRF 300 Blackout 9" Barrel 30rd Semi — 26961b 550x350 sha=bcd2d479b1ac
-  + Primary Arms SLx 5x36mm Gen III Prism Scope - AC — 102220b 1382x973 sha=44fbf5c59890
+  + TECEUM Micro Paracord Rope 1.18 mm x 125 ft Thin — 46350b 500x500 sha=c38ab6e6e460
+  + Advantage Arms 1.50X2.5 Super Short 5.56 Stainle — 8942b 259x442 sha=31920824e913
+  + Advantage Arms 5.56 Lightweight Hunter Suppresso — 31163b 394x669 sha=2c546447255f
   x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
   x SILENCERCO Hybrid 46M - $701.99 + Free Shipping — image not downloadable
   x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
@@ -25,6 +18,6 @@
   x Nano Roni, Glock 17/19/19X/22/23/25/31/32/45 - F — image not downloadable
   x Bushnell Engage DX 10x42mm Binocular, Black - $1 — unreachable after retries
 
-fixed 10, failed 14  (41% success)
-distinct images: 10 across 10 deals
+fixed 3, failed 14  (17% success)
+distinct images: 3 across 3 deals
 PASS — no image shared between products
