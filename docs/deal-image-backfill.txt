@@ -1,7 +1,39 @@
-600 scanned, 15 need a real image, 9 coupon posts skipped
+600 scanned, 45 need a real image, 10 coupon posts skipped
 
-  + F-1 Firearms Surplus FU King F-15 Stripped Lower — 15816b 676x361 sha=b894f2099aae
-  + PSA Dagger Compact Complete Polymer Frame, Snipe — 56090b 1052x619 sha=5a90db693a8e
+  + FN Scar 15P VPR 300 Blackout 7.5" Barrel - $1949 — 39347b 800x401 sha=7401ad041a3d
+  + FN SCAR 17S Next Gen 308 16" Barrel FDE Gen 2 ML — 14906b 640x291 sha=cba41eba7ab4
+  + FN FN15 5.56 NATO / 223 Rem 16" 30rd Semi-Auto A — 21119b 891x288 sha=eb0891622b78
+  + FN 309 MRD 9mm Optics Ready 20 Round Capacity NM — 51121b 755x546 sha=eb9f5cdecc3c
+  x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
+  + Henry H006G Big Boy Brass .44 Mag 20" Octagon Wa — 176873b 1500x307 sha=798ef8589c39
+  + Sig Sauer P365 XMACRO Debacle Brown 9mm 3.7" Bar — 22319b 446x378 sha=ec3b599d21f4
+  + Heckler and Koch VP9A1 F OR 9mm 4.5" Barrel 15-R — 43906b 658x539 sha=043f773f6877
+  + Springfield Armory Hellcat Pro Osp Gear Pac 9mm  — 206528b 560x424 sha=eb66858fc657
+  x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
+  + GFORCE ARMS GForce One 12Ga 28" 3+1 Shotgun - FD — 8006b 712x213 sha=29e8b335be9c
+  + Remington - Thunderbolt - 22 Long Rifle - 40 Gra — 8417b 223x182 sha=78210e3ee704
+  + Remington Overrun Mil/LE Division Training 9mm,  — 77474b 838x521 sha=934f11192a99
+  + Bundle* 2011 / 1911 Doublestack Starter Kit HS40 — 329252b 896x834 sha=ab985d73dde4
+  + TRUGLO - Dual Color 30 MM Red Dot Sight Black -  — 11575b 325x310 sha=c422acd9cc37
+  + Benchmade SOCP Dagger Combo 3.22" Black Blade wi — 30491b 800x498 sha=cd4ed484679b
+  + Taran Tactical Innovations PMAG AR-10 Rifle Maga — 25442b 647x550 sha=479aa15e824c
+  + Browning BAR MK 3 Stalker 300 Win Mag 3 Round Se — 26676b 1496x444 sha=035e67c53091
+  + MAGPUL PMag D-50rd EV9 9x19 CZ Scorpion EVO 3 -  — 31837b 600x912 sha=850fa6263b67
+  + PSA Dagger Compact Complete Polymer Frame & PSA  — 17504b 546x464 sha=34d592a059da
+  + PSA AR-15 10.5" 5.56 NATO 1/7 Nitride LSA 11" Ra — 43945b 1477x339 sha=39f7eb405f6d
+  + Volquartsen Black Mamba 22 LR Magazine with Base — 18906b 680x510 sha=de872ff15acf
+  + USED Sig P226R US MADE .40S&W 4.4" 12rd Semi-Aut — 49076b 841x602 sha=6d5089607b14
+  + GFA Blade6 9mm 6B 33 Rd FDE DE - $419.03 with co — 49531b 1000x787 sha=337da98765b7
+  + Smith & Wesson Bodyguard 2.0 Performance Center  — 16690b 408x330 sha=b7ee2caab120
+  ... 25/45  ok=23 fail=2
+  + CZ 600 Alpha 7.62 39 18″ 4 Rd Black - $699 — 30139b 1455x279 sha=4b8f364f857b
+  + Beretta 92XI Frog Skin Camo 9MM 15-Round Handgun — 135203b 1500x1500 sha=bdbe5a19f74e
+  + Aero Precision M4 Sliding Stock (BLACK) - $25 — 47190b 900x900 sha=f1d0b79cfd7c
+  + Federal 9mm Luger 124 gr HST JHP Personal Defens — 81189b 1000x666 sha=831bfef98e5d
+  + Sig Sauer Varmint & Predator .223rem, 40gr Nosle — 43255b 431x500 sha=718083cb8987
+  + Beretta A400 Xtreme Plus 12 Ga and 20 Ga $200 Be — 228828b 1500x1125 sha=664c4835f40a
+  + Sig Sauer Elite V-Crown Competition 9mm, 115gr J — 53291b 913x467 sha=794f3f6efc54
+  + Ruger 10/22 Black / Stainless .22 LR 16.4" Threa — 9212b 736x148 sha=42274f2f0b8b
   x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
   x SILENCERCO Hybrid 46M - $701.99 + Free Shipping — image not downloadable
   x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
@@ -14,8 +46,7 @@
   x Savage 10/110 Long Range Hunter 300 Win Mag, 26" — image not downloadable
   x Ruger American Rifle, .308 Win, 22" Barrel, Vort — image not downloadable
   x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Gold  — image not downloadable
-  x Nano Roni, Glock 17/19/19X/22/23/25/31/32/45 - F — image not downloadable
 
-fixed 2, failed 13  (13% success)
-distinct images: 2 across 2 deals
+fixed 31, failed 14  (68% success)
+distinct images: 31 across 31 deals
 PASS — no image shared between products
