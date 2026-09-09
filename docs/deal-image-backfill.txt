@@ -1,13 +1,7 @@
-600 scanned, 21 need a real image, 10 coupon posts skipped
+600 scanned, 15 need a real image, 9 coupon posts skipped
 
-  + Glock 43X Hush Puppy 9mm 3.9" Bbl 15rd FDE Pisto — 11996b 400x250 sha=e305b9c80783
-  + Rise Armament RAVE 140 Drop-in Trigger Flat / Cu — 103300b 1500x1000 sha=289ec8ba6f7d
-  + Sig Sauer P938 Legion 9mm 3" 7rd Pistol, 3 Mags, — 161253b 593x426 sha=e08d701e082f
-  + Slick Side Billet Upper Receiver - $49.95 — 44022b 1200x1024 sha=c10d027bbe05
-  x Bear Creek Arsenal AR-15 223 Wylde 16" Barrel W/ — image not downloadable
-  + Amend2 AR-15 Mod-C 5.56 NATO 30rd Magazine, Tran — 38964b 520x1000 sha=c9e8a775121d
-  + Killer Instinct Vital-X 405 with Crank - $299.99 — 25102b 425x305 sha=886da18545c5
-  + Hi-Point FG 2XRB 45 ACP Carbine 17.5" Black Poly — 15720b 601x246 sha=13b35f478528
+  + F-1 Firearms Surplus FU King F-15 Stripped Lower — 15816b 676x361 sha=b894f2099aae
+  + PSA Dagger Compact Complete Polymer Frame, Snipe — 56090b 1052x619 sha=5a90db693a8e
   x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
   x SILENCERCO Hybrid 46M - $701.99 + Free Shipping — image not downloadable
   x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
@@ -22,6 +16,6 @@
   x Ballistic Advantage 9mm Glock 17 Gen 5 PVD Gold  — image not downloadable
   x Nano Roni, Glock 17/19/19X/22/23/25/31/32/45 - F — image not downloadable
 
-fixed 7, failed 14  (33% success)
-distinct images: 7 across 7 deals
+fixed 2, failed 13  (13% success)
+distinct images: 2 across 2 deals
 PASS — no image shared between products
