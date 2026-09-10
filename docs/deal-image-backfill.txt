@@ -1,17 +1,24 @@
-600 scanned, 23 need a real image, 8 coupon posts skipped
+600 scanned, 29 need a real image, 8 coupon posts skipped
 
-  + aiGear 50L Military Tactical Backpack 3 Days Ass — 37899b 500x500 sha=a3ca207bae86
-  + Comstock Armory Hybrid 9mm Flash Hider/Muzzle Br — 22111b 484x738 sha=eddde9e712d8
-  + CMC Triggers Drop-In AK-47 Trigger - $89.95 — 22993b 668x371 sha=f77ca0bb4d5c
-  + PWS Enhanced Steel Body Buffer Carbine H3 5.5 oz — 13016b 452x362 sha=9e7e7563d9b8
-  + PODAVACH U-LOADER AR-15/AK Magazine Speed Loader — 39553b 600x475 sha=155b6317f2db
-  + Smith & Wesson M&P9 M2.0 9mm Performance Center  — 57539b 1000x666 sha=4efb32b7a135
-  + Kimber MICRO 9 BLACK DIAMOND 9mm 7rd Two Tone Sl — 72167b 1000x753 sha=02c417d5a751
-  + Heritage Rough Rider .22 LR 4.75" barrel 6rd Nic — 41687b 1000x488 sha=fad76295e698
-  + Shadow Systems CR920 Combat 9mm 3.75" Barrel 13- — 24564b 557x381 sha=96944960cf7f
-  + Charles Daly 1911 Superior Grade .45 ACP, 5" Bar — 41720b 800x599 sha=5f9351aee359
-  + Colt Firearms Single Action Army Peacemaker Colo — 30804b 800x423 sha=4abe2d352d9e
-  + ORTHOS Raider S4 SBS 12GA 14" 5rd - Black - $128 — 14154b 644x161 sha=40e16d2483bd
+  + Tippmann M4-22 22LR 25 Round Factory Magazine -  — 30218b 1000x666 sha=7b46532b4d12
+  + Apollo Custom Glock 43XMOSUS 9mm 10R ORCH SA - $ — 45373b 1000x776 sha=fe5107ed8766
+  + Griffin Armament MK2 Ambi Black Stripped Lower - — 32145b 1000x666 sha=0394141ed175
+  + ATI Schmeisser S50 9mm 50 Round Glock Style Maga — 11939b 265x265 sha=6a1ff9a823ae
+  + Taurus GX4 Carry Comp TORO 9mm 3.7" 2x15Rd BLK - — 30864b 800x534 sha=7c172377523d
+  x FN 15 Military Collector M16 5.56x45mm NATO Stri — image not downloadable
+  x FN 15 Military Collector M4 5.56x45mm NATO Strip — image not downloadable
+  + Gerber Downwind Caper Black & Green - $19.99 — 10051b 639x296 sha=5b4b74aadd23
+  + Rise Armament Rave 140 Drop In Trigger With Anti — 8126b 367x267 sha=bd2381c417a7
+  + Winchester 300 Blackout 200 gr Open Tip Subsonic — 60834b 900x550 sha=1d54875d6c6f
+  + Hornady 6.5 Grendel 123 gr ELD Match Black 20/bo — 34137b 900x600 sha=8ed0910af249
+  + Silencer BOGO Deal @ Sportsman's Outdoor Superst — 116454b 869x790 sha=cfea08682fdd
+  + Warrior Systems Legionary Multi-Caliber Rimfire  — 50404b 1000x666 sha=f26d1107b2d1
+  + HK 416 .22 LR 30 Round Magazine, Black - $29.99  — 22321b 700x700 sha=0d12b4b4e067
+  + USED LE Trade-In Sig P229 US MADE .40S&W 12rd 3. — 16680b 418x337 sha=b19e46f4d052
+  + Glock Gen 5 Glock 17 9mm 17-Round Factory Magazi — 20755b 700x700 sha=958db71d1bd4
+  + Retay Usa RXP22 22LR Semi-Auto Pistol w/ OD Gree — 22752b 593x460 sha=236a775f4c8c
+  + Citadel PAX 12-Gauge Pistol Grip Pump-Action Sho — 10636b 646x252 sha=219d1dfd0527
+  + Sig Sauer SURG556 5.56mm Inconel Steel High Flow — 32244b 614x298 sha=0205ee9c041f
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
   x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
@@ -22,8 +29,7 @@
   x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
   x Heritage Badlander SxS 18.5" 20ga Shotgun - Nick — image not downloadable
   x Atlas Gunworks 140mm 9mm Magazine with Alphalock — image not downloadable
-  x Colt King Cobra Carry, .357 Magnum, 2.00" Barrel — image not downloadable
 
-fixed 12, failed 11  (52% success)
-distinct images: 12 across 12 deals
+fixed 17, failed 12  (58% success)
+distinct images: 17 across 17 deals
 PASS — no image shared between products
