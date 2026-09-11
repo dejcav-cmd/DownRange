@@ -1,11 +1,31 @@
-600 scanned, 15 need a real image, 6 coupon posts skipped
+600 scanned, 33 need a real image, 8 coupon posts skipped
 
-  + CMC Glock 19 Fluted Barrel UNTHREADED STAINLESS  — 74752b 1500x696 sha=284fa634c726
-  + PMC X-TAC 5.56x45mm 62 Grain FMJBT M855 Bandolie — 24436b 549x444 sha=253d2b2cfb0f
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 101413b 1500x1000 sha=b7818d068f16
-  + Volquartsen Black Mamba 22 LR 4.5" 10 Rd - $1320 — 19666b 536x344 sha=bcc77d602c38
-  + Sig Sauer P320 AXG Classic 9mm 3.9" 17 Rd - $101 — 14089b 380x327 sha=9922bd75e1ca
-  + Hungarian FEG AP-MBP Pistol, .32 ACP, 3.9" Barre — 40175b 714x494 sha=35bac67284ad
+  + CAT MOB HUB Ti Suppressor - $899.95 — 111310b 1000x474 sha=8b68762f0ab9
+  x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
+  + Vortex Crossfire 3-9 40 - V-Plex - $89.95 — 34672b 1254x498 sha=7ddcfe7dfeaf
+  + KCI AR-15 .223 / 5.56mm 100-Round Gen 2 Drum Mag — 12030b 510x340 sha=2f24e9cf24b1
+  + Dogwood Armory Aluminum G Spot V2 Forced Reset T — 108549b 510x518 sha=9bb5e9f4955f
+  + Dogwood Armory Aluminum G Spot V2 Forced Reset T — 125663b 510x517 sha=21cb225e0c5e
+  + Dogwood Armory Taurus TX22 Forced Reset Trigger  — 624815b 818x1301 sha=3dfbd5a94bc3
+  + Tuna Cans .22XL Silencer (10 Baffle) - 850082202 — 33119b 755x397 sha=6416ca85a001
+  + Tuna Cans .22 Silencer (5 Baffle) - 850082202003 — 25743b 628x424 sha=a064c39ef98e
+  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 422180b 1000x666 sha=ad4ce5de4c32
+  + Federal Gold Medal .223 Remington 77 Grain Sierr — 24001b 549x321 sha=739f4f688a1f
+  + Smith & Wesson Bodyguard 2.0 MS Leopard Print 38 — 26516b 529x395 sha=9d5e3924d6c0
+  + IWI Masada LE 9mm 4.1" 17rd Pistol, FDE - $377.0 — 415712b 1016x751 sha=c4483d9da1dc
+  + TAURUS TTX22 22 LR Suppressor - $252.99 — 15264b 764x284 sha=41496314b159
+  x Springfield Echelon 4.5F COA 9mm 4.5" Barrel 17+ — image not downloadable
+  + Davidson Defense No-Logo AR-15 Rifle Lower Build — 11324b 630x630 sha=c898f644301b
+  + Davidson Defense 16" Mid-Gas 1:7 5.56 NATO AR15  — 64689b 1200x1200 sha=3164901af625
+  + Taurus 856 38 Special +P 6rd 3" Barrel Two-Tone  — 21946b 1000x726 sha=725f42085d75
+  + Springfield Armory "Vault Gun" Saint Victor Carb — 21304b 1000x368 sha=990a27713254
+  + Pioneer Arms AK0031KPROW Micro Hellpup 7.62x39mm — 45661b 1000x615 sha=f9bc73902040
+  + PSA AR-15 10.5" 5.56 NATO 1/7 Nitride Hex 11" Gr — 39853b 1500x340 sha=4462f703783a
+  + Ruger Wrangler 3.75" .22 LR Revolver With Birdsh — 59486b 1159x672 sha=b8a8d30ddffa
+  + Armscor - 22 Long Rifle - 36 Grain - HVHP - 2000 — 30334b 627x478 sha=8c868a5cd94d
+  + Knights Armament SR-15 KS-4 5.56 Nato 16" Barrel — 22347b 852x335 sha=9347ebcf6875
+  x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
+  + Survival Gear and Equipment 12 in 1 Survival Kit — 104333b 1045x778 sha=f2d9ad2587c1
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
   x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
@@ -13,9 +33,7 @@
   x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
   x SilencerCo Hybrid 46M, Modular Suppressor, Black — image not downloadable
   x SilencerCo Omega 36M Suppressor, Modular and Mul — image not downloadable
-  x PWS BDE 22 Ti Titanium 22 Cal 3D Printed - BDE-2 — image not downloadable
-  x Heritage Badlander SxS 18.5" 20ga Shotgun - Nick — image not downloadable
 
-fixed 6, failed 9  (40% success)
-distinct images: 6 across 6 deals
+fixed 23, failed 10  (69% success)
+distinct images: 23 across 23 deals
 PASS — no image shared between products
