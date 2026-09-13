@@ -1,44 +1,45 @@
-600 scanned, 37 need a real image, 7 coupon posts skipped
+600 scanned, 38 need a real image, 9 coupon posts skipped
 
-  + Escort BullTac OD Green 12 GA 18" Barrel 5-Round — 20113b 787x278 sha=cabc1a695c14
-  + Browning Buck Mark Contour Stainless SR 22LR Sem — 39282b 1000x478 sha=138d99122ec1
-  + Sig Sauer MCX Rattler LT Pistol .300 AAC Blackou — 18819b 739x275 sha=3dfc6be6f486
-  + ColtCQBP Marine M45-A1 Zinc Brown Ion Bond .45 A — 29426b 634x444 sha=c14659c613c5
-  + Troy PAR Pump-Action Rifle .223 Rem 16" Barrel 1 — 23107b 1000x266 sha=18c3918bd5cd
-  + SAR USA SAR9 Sport 9mm 5.2" Barrel 17-Rounds 2 M — 40381b 800x528 sha=889be15dc957
-  + Winchester Ranger 12 Gauge 2 3/4" 00 Buckshot 9  — 57298b 800x592 sha=f1515b25d627
-  + 30% off CVLIFE 36” Gun Cleaning Rod with Bore Br — 18201b 500x500 sha=0a6daeadd418
-  + 30% off CVLIFE 2-7x32 Crossbow Scope for Hunting — 14375b 406x500 sha=a6dc5a5c2246
-  + ProMag Archangel OPFOR AK-Series 4-Position Adju — 22227b 576x353 sha=d3aaccab6e5c
-  + 40% off Universal Tripods Clamp Rest Head for Mo — 26879b 500x500 sha=0fa2a35b037f
-  + CVLIFE WildHawk Enclosed Multi-Reticle Green Dot — 18726b 500x500 sha=b65422060378
-  + Chiappa Rhino 50 DS Revolver 9mm 5" barrel 6 Rnd — 24581b 673x398 sha=d6232f44e4ca
-  + Arken Outrider 2-12x SFP Hunting Rifle Scope wit — 70606b 630x630 sha=a59cf5d354b1
-  + Winchester Ammo XSC10BB Drylok Super Steel Magnu — 36144b 386x386 sha=eb3910ead98f
-  + Silencerco Omega 300 DTM .30 Cal Suppressor, 5/8 — 59412b 1500x1266 sha=b63037df8f72
-  + BENELLI Nova Pump 20 Ga 26" 4rd - Mossy Oak Bott — 11459b 680x220 sha=69cc6bb81535
-  + Savage Arms 110 Core Predator 6mm ARC 22" 10rd H — 22143b 987x265 sha=39b09f3864db
-  + FRANCHI Affinity 3 12 Ga 26" 4rd - Black - $792. — 23260b 1500x273 sha=84950e9256d5
-  + Rattlesnake Tactical Fixed 3.7" Blade Knife - $1 — 44755b 1500x555 sha=1028ab764761
-  + Browning A5 Wicked Wing 12 Ga Shotgun 28" Semi-A — 13782b 835x130 sha=9c8cd9aaa30b
-  + Vortex Optics Venom Enclosed Pistol Red Dot Sigh — 44902b 1100x734 sha=45bec3c95abc
-  + Bear Creek Arsenal BC-15 5.56 NATO Upper Receive — 25726b 1100x734 sha=505da3167308
+  + Guns Com Stopbox Pro Full-Size - $109.99 (Buy Tw — 127307b 900x900 sha=c60a9891bb77
+  + Silencer Central Banish 45 Suppressor Rimfire -  — 102740b 900x900 sha=fe6340d90bac
+  + Sig Sauer P320 X-Carry 9mm 4.6" 21rd Pistol, USE — 109892b 900x675 sha=bd15d86fe845
+  + Glock 43 9mm 3.39" 6rd Pistol, Orchid Satin, Alu — 146193b 658x499 sha=94953778d820
+  + Bushmaster XM15 A3 M4 5.56mm 16" 30rd Rifle, USE — 381243b 1200x900 sha=30aa1765ecb1
+  + Ammo Inc STREAK 9mm 115GR TMC Visual Ammunition, — 408724b 845x642 sha=432469a01c49
+  + Diamondback DB15 223 Rem/5.56 NATO 16" TB 30rd R — 61464b 691x227 sha=d50ad2b5fe84
+  + Diamondback DB-15 5.56 NATO 16" 30rd Semi-Auto R — 75241b 660x309 sha=7315cc6f0c3d
+  + Nexgen NG-15 300 Blackout 7.5" TB 30rd Semi-Auto — 31729b 1000x666 sha=71c2967ce12f
+  + Lyman Sonicore Paradox DT 30 Cal 5/8x24 Modular  — 260434b 295x1000 sha=9fdf5e53bd40
+  + TacFire AR-10 Freefloat M-LOK 15" Handguard - $4 — 54248b 1500x460 sha=c9173a9a9040
+  + Under $40: Hunting & Shooting Gear Blowout - Up  — 83525b 600x600 sha=f7db2225ed0e
+  + Glock Multitool, Engineering-Grade Composite, In — 92827b 574x396 sha=bceee378ab29
+  + Forward Controls Design GSA-2 Short A2 Pistol Gr — 20513b 1000x562 sha=be3f9c796d8b
+  + Forward Controls Design GSA-1 Short A1 Pistol Gr — 24253b 1000x562 sha=3762d918a85f
+  + Forward Controls Design TDP Spec Ejection Port C — 198181b 799x519 sha=1779a7e006ec
+  + Comstock Armory Plan B Hybrid Muzzle Device, 5/8 — 27485b 421x319 sha=6ff488032747
+  + Thril PMX SM9 Magazine MPX-Compatible 9mm 35rd D — 104742b 934x642 sha=8deb0521727a
+  + Springfield Armory Kuna 9mm 6" 30rd Tri-Lug Pist — 33072b 1000x418 sha=3403f2a2811e
+  + Sig Sauer P365 9mm 3.1" 10rd Optic Ready 2A Edit — 52635b 1000x666 sha=9024de4b5bf7
+  + Vortex Viper 6.5-20x44 PA Riflescope Dead-Hold B — 17875b 800x467 sha=55ffb1b4d498
+  + Sharpen Your Aim: Backup & Iron Sights Sale — 33603b 978x579 sha=8ce41c50a5ed
+  + USED LE Trade-In Sig P229 .40S&W 12rd 3.9" Semi- — 103404b 523x393 sha=5b98b8e0b123
+  + Vortex Radian Carbon Fiber Tripod Kit 7.8" - 64. — 35087b 1000x1000 sha=8681296b05fd
+  + Allen ULTRX Heavy Sound Defender Passive Ear Muf — 56873b 1000x1000 sha=7ddcc86e78c7
+  ... 25/38  ok=25 fail=0
+  + SDS Imports T-1919 Pattern 12 GA 3" 5-rd Magazin — 59926b 337x379 sha=c83de92b1304
+  x GPS Medium Range Bag, Green/Tan - $73.99 — image not downloadable
+  + Glock Gun Case, OEM, 10.5"x9"x2.5", Single Pisto — 139963b 518x402 sha=df5a1267567f
+  + Winchester XPR 350 Legend 4-Round Magazine, Poly — 24392b 550x350 sha=a4f96c690671
+  + Birchwood Casey EZE Scorer Silhouette, Paper Tar — 20658b 550x350 sha=09dd7fcf9069
+  + Upbci Gun Rack for Wall, Upgrade Heavy Duty Stee — 33356b 500x500 sha=b74abcd89d75
   x HUXWRX Flow 556 Ti Suppressor, FDE - $985 — image not downloadable
-  + Sig Sauer SLH 300 Ti QD Suppressor, 30 Cal / 7.6 — 13607b 675x450 sha=520052e63de6
-  ... 25/37  ok=24 fail=1
-  + Griffin Armament DUAL-LOK 5 AM 5.56mm Suppressor — 35920b 1500x316 sha=39bc71d1c6cf
-  + Marlin 336 Dark Series 30-30 Win 16.17" Barrel 5 — 18299b 1000x203 sha=ad5a7f0e4e9e
-  + HUXWRX Flow Ti 5.56 Suppressor, Black - $900 (Em — 57976b 410x628 sha=695112d1e83c
-  + Nowindsy Camo Silencing Tape for Hunting Gear an — 40867b 500x500 sha=8a1425a16fc9
-  + Morakniv Companion Spark Stainless Steel Fixed-B — 19957b 500x500 sha=4c4d5c9c2eae
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
   x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
   x SILENCERCO Hybrid 46M - $701.99 + Free Shipping — image not downloadable
-  x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
 
-fixed 29, failed 8  (78% success)
-distinct images: 29 across 29 deals
+fixed 30, failed 8  (78% success)
+distinct images: 30 across 30 deals
 PASS — no image shared between products
