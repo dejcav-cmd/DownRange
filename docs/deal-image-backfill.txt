@@ -1,26 +1,36 @@
-600 scanned, 28 need a real image, 7 coupon posts skipped
+600 scanned, 37 need a real image, 7 coupon posts skipped
 
-  + BILLCONCH Gun Safe for Handgun with Fingerprint, — 19559b 400x500 sha=57679ba6c60d
-  + MixMatch Clear/Black/FDE 300 Blackout Ar15 Upper — 228836b 1500x1500 sha=cedfd49720fb
-  + CGS Helios QD Inconel Suppressor, DLC Finish - $ — 106452b 688x575 sha=20d3a0867dff
-  + Sig Sauer SLXC 5.56MM INC Direct Thread Compact  — 38920b 900x900 sha=772f096b2b89
-  + Aero Precision LAHAR-36 Suppressor w/ HUB Compat — 130094b 862x625 sha=99a4305154eb
-  + XTS AR-15 Charging Handle, Anodized, Bronze - $1 — 65207b 560x488 sha=9ef7bb497813
-  + TacFire AR-15 5" 7.62x39 Upper Receiver - $279.9 — 38974b 544x267 sha=a20735f1c2d7
-  + Winchester Wildcat SR 22 LR 16.5" TB 10rd Semi-A — 73923b 890x318 sha=1bf3cf14e588
-  + Weatherby Mark V Camilla Ultra Lightweight 243 W — 26286b 900x161 sha=582dd52942fd
-  + Tanfoglio Stock Master 9mm Pistol 4.75" Barrel 1 — 128098b 674x488 sha=27d8e3554832
-  + Weatherby Mark V Live Wild 270 Win 24" Barrel 4r — 110246b 1428x325 sha=46e6f334dc27
-  + Kel-Tec RFB Riser - $14.33 w/ Code: "DG5" — 24601b 450x550 sha=eae06d21b82a
-  + Sig Sauer Handgun Magazine for Subcompact P365 w — 42690b 1000x1000 sha=f22179727788
-  + Ruger GP100 Blued 357 Mag 2.5" Barrel 6Rd Revolv — 139416b 772x538 sha=121c37ded52b
-  + Leupold Ringmount Rings Leupold Cross Slot Base  — 177147b 674x500 sha=d6912ceebbbd
-  + Kimber 2K11 9mm 5" Semi-Auto Pistol - 20+1 Capac — 94098b 546x436 sha=7e05e4017970
-  + Kel-Tec SUB SDP 9mm 6" 17rd Foldable "Nub Sub" P — 73559b 579x275 sha=f758134b0d33
-  + Otter Creek Labs Polonium 5.56 Duty Suppressor - — 28291b 1000x1000 sha=013bc558997e
-  + USED LE Trade-In Sig P229 .40S&W 12rd 3.9" Semi- — 85783b 517x417 sha=1d39b4fc4c51
-  + NOVX Close Encounter 110gr .300BLK Ammo, rangibl — 118050b 548x347 sha=9bd8436892e1
-  + Winchester Ammo 22 LR USA 36Gr Copper Plated HP  — 216457b 459x423 sha=af05dff0199d
+  + Escort BullTac OD Green 12 GA 18" Barrel 5-Round — 20113b 787x278 sha=cabc1a695c14
+  + Browning Buck Mark Contour Stainless SR 22LR Sem — 39282b 1000x478 sha=138d99122ec1
+  + Sig Sauer MCX Rattler LT Pistol .300 AAC Blackou — 18819b 739x275 sha=3dfc6be6f486
+  + ColtCQBP Marine M45-A1 Zinc Brown Ion Bond .45 A — 29426b 634x444 sha=c14659c613c5
+  + Troy PAR Pump-Action Rifle .223 Rem 16" Barrel 1 — 23107b 1000x266 sha=18c3918bd5cd
+  + SAR USA SAR9 Sport 9mm 5.2" Barrel 17-Rounds 2 M — 40381b 800x528 sha=889be15dc957
+  + Winchester Ranger 12 Gauge 2 3/4" 00 Buckshot 9  — 57298b 800x592 sha=f1515b25d627
+  + 30% off CVLIFE 36” Gun Cleaning Rod with Bore Br — 18201b 500x500 sha=0a6daeadd418
+  + 30% off CVLIFE 2-7x32 Crossbow Scope for Hunting — 14375b 406x500 sha=a6dc5a5c2246
+  + ProMag Archangel OPFOR AK-Series 4-Position Adju — 22227b 576x353 sha=d3aaccab6e5c
+  + 40% off Universal Tripods Clamp Rest Head for Mo — 26879b 500x500 sha=0fa2a35b037f
+  + CVLIFE WildHawk Enclosed Multi-Reticle Green Dot — 18726b 500x500 sha=b65422060378
+  + Chiappa Rhino 50 DS Revolver 9mm 5" barrel 6 Rnd — 24581b 673x398 sha=d6232f44e4ca
+  + Arken Outrider 2-12x SFP Hunting Rifle Scope wit — 70606b 630x630 sha=a59cf5d354b1
+  + Winchester Ammo XSC10BB Drylok Super Steel Magnu — 36144b 386x386 sha=eb3910ead98f
+  + Silencerco Omega 300 DTM .30 Cal Suppressor, 5/8 — 59412b 1500x1266 sha=b63037df8f72
+  + BENELLI Nova Pump 20 Ga 26" 4rd - Mossy Oak Bott — 11459b 680x220 sha=69cc6bb81535
+  + Savage Arms 110 Core Predator 6mm ARC 22" 10rd H — 22143b 987x265 sha=39b09f3864db
+  + FRANCHI Affinity 3 12 Ga 26" 4rd - Black - $792. — 23260b 1500x273 sha=84950e9256d5
+  + Rattlesnake Tactical Fixed 3.7" Blade Knife - $1 — 44755b 1500x555 sha=1028ab764761
+  + Browning A5 Wicked Wing 12 Ga Shotgun 28" Semi-A — 13782b 835x130 sha=9c8cd9aaa30b
+  + Vortex Optics Venom Enclosed Pistol Red Dot Sigh — 44902b 1100x734 sha=45bec3c95abc
+  + Bear Creek Arsenal BC-15 5.56 NATO Upper Receive — 25726b 1100x734 sha=505da3167308
+  x HUXWRX Flow 556 Ti Suppressor, FDE - $985 — image not downloadable
+  + Sig Sauer SLH 300 Ti QD Suppressor, 30 Cal / 7.6 — 13607b 675x450 sha=520052e63de6
+  ... 25/37  ok=24 fail=1
+  + Griffin Armament DUAL-LOK 5 AM 5.56mm Suppressor — 35920b 1500x316 sha=39bc71d1c6cf
+  + Marlin 336 Dark Series 30-30 Win 16.17" Barrel 5 — 18299b 1000x203 sha=ad5a7f0e4e9e
+  + HUXWRX Flow Ti 5.56 Suppressor, Black - $900 (Em — 57976b 410x628 sha=695112d1e83c
+  + Nowindsy Camo Silencing Tape for Hunting Gear an — 40867b 500x500 sha=8a1425a16fc9
+  + Morakniv Companion Spark Stainless Steel Fixed-B — 19957b 500x500 sha=4c4d5c9c2eae
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
@@ -29,6 +39,6 @@
   x SILENCERCO Hybrid 46M - $701.99 + Free Shipping — image not downloadable
   x Glock OEM Barrel G17, 9MM, 4.49" Barrel, Black - — image not downloadable
 
-fixed 21, failed 7  (75% success)
-distinct images: 21 across 21 deals
+fixed 29, failed 8  (78% success)
+distinct images: 29 across 29 deals
 PASS — no image shared between products
