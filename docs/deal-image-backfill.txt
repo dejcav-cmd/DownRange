@@ -1,22 +1,32 @@
-600 scanned, 16 need a real image, 9 coupon posts skipped
+600 scanned, 26 need a real image, 9 coupon posts skipped
 
-  + Tikka T1X .22 LR 20" Barrel 10rd Bolt-Action Rif — 8389b 800x131 sha=24705e251b2e
-  + CZ 91531 P-10 C 9mm Luger 4" 15+1 Black Black Po — 244308b 820x593 sha=6d9fcf8f5f9e
-  + Beretta USA 92FS *CA Compliant 9mm 4.90" barrel  — 39807b 765x506 sha=886344728944
-  + CZ Bren 2 MS Carbine 5.56 NATO / .223 Rem 16.5"  — 24751b 1000x504 sha=228e37635020
-  + Smith &amp; Wesson CSX LE Micro-Compact 9mm 3.1" — 43627b 775x604 sha=087eb0be2561
-  + TAURUS 856 38 Special 2" 6rd Revolver w/ Laser G — 9573b 431x287 sha=50d7d8cb44dd
-  + Springfield Echelon Alpha 4.0C 9mm Black w/ Viri — 168666b 443x382 sha=5673d7ddf9f0
-  + Smith & Wesson M&P 17 Rd 9mm Magazine ACT-MAG -  — 28313b 419x840 sha=eda3e5c7f794
-  + VKTR VK1, 5.56mm, 13.7" P&W Barrel, 2- 30rd PMAG — 51888b 1500x455 sha=10504c96c28c
-  + PSA 20" Rifle-Length 5.56 NATO 1/7 Stainless Ste — 14702b 369x211 sha=6757dd1ecaa5
-  + CANIK TTI Combat 4.74" Comp 9mm (2)18rd Pistol,  — 41224b 867x811 sha=28a8c6c358e6
-  + Blem PSA AK-47 GF3 Forged Classic Polymer Rifle  — 40378b 1500x499 sha=2a0ad901c6ff
+  + Maxim Defense PDX 300 Blackout Short Barreled Ri — 34540b 1000x666 sha=dc7e6da506ff
+  + Heritage Rough Rider 22LR Revolver with American — 54064b 1251x517 sha=f85fed4239ae
+  + Mossberg Patriot Super Bantam 308 Winchester Bol — 29886b 1000x666 sha=169167f213f5
+  + Charles Daly Honcho Tactical 12 Ga, 3" Chamber 1 — 19636b 1000x212 sha=3919e9d010c8
+  + Rock Island Armory M206 38 Special 2" Barrel W/  — 21312b 500x343 sha=bf9049182cc7
+  + Rock Island M1911-A1 Tactical II 45 ACP 4.25" 8r — 896548b 1500x1092 sha=2a712e4e50d8
+  + Tactical Sports 6-Position M4 Stock Kit - $24.95 — 39559b 860x698 sha=764f6250beba
+  + Anechoic AnechoX 30 Compact .30 Cal Titanium Sup — 80565b 1000x666 sha=71b30bcbdfb5
+  + CAT KK QD Inconel 718 5.56mm Suppressor Includin — 66493b 708x1000 sha=a01657e98b68
+  + KAK Industry 1/2-28 Slimline Flash Can - $21.95 — 20691b 1000x853 sha=8faf99a2952c
+  + Dogwood Armory Aluminum G Spot V2 Forced Reset T — 262157b 783x796 sha=afd9818b3d81
+  + Vortex Crossfire HD 3-9x40 Straight-Wall BDC (MO — 133833b 942x532 sha=cd8cf8de97f0
+  + Leupold Factory Blemished Mark 3HD M5C3 Rifle Sc — 20261b 680x510 sha=c03b3e1b4109
+  + Cold Steel Limited Edition Recon 1 Pocket Knife  — 18348b 680x510 sha=67b73a687087
+  + Benchmade Custom Bugout Pocket Knife 3.25" Drop  — 16088b 680x510 sha=0e3c9b933e1d
+  + Atflbox Silhouette Paper Target for The Range, 1 — 30611b 500x500 sha=9e9857249311
+  + Used Sig Sauer P226 Full-Size 9mm 4.4" Alloy Fra — 241845b 960x1280 sha=738d6d62f011
+  + Leupold 177910 VX-Freedom Rifle Scope 350 Legend — 398110b 1030x934 sha=58bd0399244c
+  + Sellier & Bellot 7.62x39mm 124gr FMJ 20 Rounds A — 26192b 566x374 sha=7d6d755eade2
+  + Davidson Defense "Hermits" AR-15 Pistol Upper 7. — 9208b 450x225 sha=51ec5044b28d
+  + James Madison Tactical AR-15 80% Gen 2 Carbon Po — 16505b 630x630 sha=4163f64b5c2d
+  + FN Reflex XL MRD Flat Dark Earth 9mm 3.8" Barrel — 29270b 445x454 sha=60c616b62cd5
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
 
-fixed 12, failed 4  (75% success)
-distinct images: 12 across 12 deals
+fixed 22, failed 4  (84% success)
+distinct images: 22 across 22 deals
 PASS — no image shared between products
