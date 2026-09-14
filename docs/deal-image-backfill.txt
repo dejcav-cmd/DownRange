@@ -1,45 +1,22 @@
-600 scanned, 38 need a real image, 9 coupon posts skipped
+600 scanned, 16 need a real image, 9 coupon posts skipped
 
-  + Guns Com Stopbox Pro Full-Size - $109.99 (Buy Tw — 127307b 900x900 sha=c60a9891bb77
-  + Silencer Central Banish 45 Suppressor Rimfire -  — 102740b 900x900 sha=fe6340d90bac
-  + Sig Sauer P320 X-Carry 9mm 4.6" 21rd Pistol, USE — 109892b 900x675 sha=bd15d86fe845
-  + Glock 43 9mm 3.39" 6rd Pistol, Orchid Satin, Alu — 146193b 658x499 sha=94953778d820
-  + Bushmaster XM15 A3 M4 5.56mm 16" 30rd Rifle, USE — 381243b 1200x900 sha=30aa1765ecb1
-  + Ammo Inc STREAK 9mm 115GR TMC Visual Ammunition, — 408724b 845x642 sha=432469a01c49
-  + Diamondback DB15 223 Rem/5.56 NATO 16" TB 30rd R — 61464b 691x227 sha=d50ad2b5fe84
-  + Diamondback DB-15 5.56 NATO 16" 30rd Semi-Auto R — 75241b 660x309 sha=7315cc6f0c3d
-  + Nexgen NG-15 300 Blackout 7.5" TB 30rd Semi-Auto — 31729b 1000x666 sha=71c2967ce12f
-  + Lyman Sonicore Paradox DT 30 Cal 5/8x24 Modular  — 260434b 295x1000 sha=9fdf5e53bd40
-  + TacFire AR-10 Freefloat M-LOK 15" Handguard - $4 — 54248b 1500x460 sha=c9173a9a9040
-  + Under $40: Hunting & Shooting Gear Blowout - Up  — 83525b 600x600 sha=f7db2225ed0e
-  + Glock Multitool, Engineering-Grade Composite, In — 92827b 574x396 sha=bceee378ab29
-  + Forward Controls Design GSA-2 Short A2 Pistol Gr — 20513b 1000x562 sha=be3f9c796d8b
-  + Forward Controls Design GSA-1 Short A1 Pistol Gr — 24253b 1000x562 sha=3762d918a85f
-  + Forward Controls Design TDP Spec Ejection Port C — 198181b 799x519 sha=1779a7e006ec
-  + Comstock Armory Plan B Hybrid Muzzle Device, 5/8 — 27485b 421x319 sha=6ff488032747
-  + Thril PMX SM9 Magazine MPX-Compatible 9mm 35rd D — 104742b 934x642 sha=8deb0521727a
-  + Springfield Armory Kuna 9mm 6" 30rd Tri-Lug Pist — 33072b 1000x418 sha=3403f2a2811e
-  + Sig Sauer P365 9mm 3.1" 10rd Optic Ready 2A Edit — 52635b 1000x666 sha=9024de4b5bf7
-  + Vortex Viper 6.5-20x44 PA Riflescope Dead-Hold B — 17875b 800x467 sha=55ffb1b4d498
-  + Sharpen Your Aim: Backup & Iron Sights Sale — 33603b 978x579 sha=8ce41c50a5ed
-  + USED LE Trade-In Sig P229 .40S&W 12rd 3.9" Semi- — 103404b 523x393 sha=5b98b8e0b123
-  + Vortex Radian Carbon Fiber Tripod Kit 7.8" - 64. — 35087b 1000x1000 sha=8681296b05fd
-  + Allen ULTRX Heavy Sound Defender Passive Ear Muf — 56873b 1000x1000 sha=7ddcc86e78c7
-  ... 25/38  ok=25 fail=0
-  + SDS Imports T-1919 Pattern 12 GA 3" 5-rd Magazin — 59926b 337x379 sha=c83de92b1304
-  x GPS Medium Range Bag, Green/Tan - $73.99 — image not downloadable
-  + Glock Gun Case, OEM, 10.5"x9"x2.5", Single Pisto — 139963b 518x402 sha=df5a1267567f
-  + Winchester XPR 350 Legend 4-Round Magazine, Poly — 24392b 550x350 sha=a4f96c690671
-  + Birchwood Casey EZE Scorer Silhouette, Paper Tar — 20658b 550x350 sha=09dd7fcf9069
-  + Upbci Gun Rack for Wall, Upgrade Heavy Duty Stee — 33356b 500x500 sha=b74abcd89d75
-  x HUXWRX Flow 556 Ti Suppressor, FDE - $985 — image not downloadable
+  + Tikka T1X .22 LR 20" Barrel 10rd Bolt-Action Rif — 8389b 800x131 sha=24705e251b2e
+  + CZ 91531 P-10 C 9mm Luger 4" 15+1 Black Black Po — 244308b 820x593 sha=6d9fcf8f5f9e
+  + Beretta USA 92FS *CA Compliant 9mm 4.90" barrel  — 39807b 765x506 sha=886344728944
+  + CZ Bren 2 MS Carbine 5.56 NATO / .223 Rem 16.5"  — 24751b 1000x504 sha=228e37635020
+  + Smith &amp; Wesson CSX LE Micro-Compact 9mm 3.1" — 43627b 775x604 sha=087eb0be2561
+  + TAURUS 856 38 Special 2" 6rd Revolver w/ Laser G — 9573b 431x287 sha=50d7d8cb44dd
+  + Springfield Echelon Alpha 4.0C 9mm Black w/ Viri — 168666b 443x382 sha=5673d7ddf9f0
+  + Smith & Wesson M&P 17 Rd 9mm Magazine ACT-MAG -  — 28313b 419x840 sha=eda3e5c7f794
+  + VKTR VK1, 5.56mm, 13.7" P&W Barrel, 2- 30rd PMAG — 51888b 1500x455 sha=10504c96c28c
+  + PSA 20" Rifle-Length 5.56 NATO 1/7 Stainless Ste — 14702b 369x211 sha=6757dd1ecaa5
+  + CANIK TTI Combat 4.74" Comp 9mm (2)18rd Pistol,  — 41224b 867x811 sha=28a8c6c358e6
+  + Blem PSA AK-47 GF3 Forged Classic Polymer Rifle  — 40378b 1500x499 sha=2a0ad901c6ff
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
-  x Volquartsen 10/22 HP Action Kit Plus for Ruger 1 — image not downloadable
-  x SILENCERCO Hybrid 46M - $701.99 + Free Shipping — image not downloadable
 
-fixed 30, failed 8  (78% success)
-distinct images: 30 across 30 deals
+fixed 12, failed 4  (75% success)
+distinct images: 12 across 12 deals
 PASS — no image shared between products
