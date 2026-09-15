@@ -1,32 +1,26 @@
-600 scanned, 26 need a real image, 9 coupon posts skipped
+600 scanned, 20 need a real image, 9 coupon posts skipped
 
-  + Maxim Defense PDX 300 Blackout Short Barreled Ri — 34540b 1000x666 sha=dc7e6da506ff
-  + Heritage Rough Rider 22LR Revolver with American — 54064b 1251x517 sha=f85fed4239ae
-  + Mossberg Patriot Super Bantam 308 Winchester Bol — 29886b 1000x666 sha=169167f213f5
-  + Charles Daly Honcho Tactical 12 Ga, 3" Chamber 1 — 19636b 1000x212 sha=3919e9d010c8
-  + Rock Island Armory M206 38 Special 2" Barrel W/  — 21312b 500x343 sha=bf9049182cc7
-  + Rock Island M1911-A1 Tactical II 45 ACP 4.25" 8r — 896548b 1500x1092 sha=2a712e4e50d8
-  + Tactical Sports 6-Position M4 Stock Kit - $24.95 — 39559b 860x698 sha=764f6250beba
-  + Anechoic AnechoX 30 Compact .30 Cal Titanium Sup — 80565b 1000x666 sha=71b30bcbdfb5
-  + CAT KK QD Inconel 718 5.56mm Suppressor Includin — 66493b 708x1000 sha=a01657e98b68
-  + KAK Industry 1/2-28 Slimline Flash Can - $21.95 — 20691b 1000x853 sha=8faf99a2952c
-  + Dogwood Armory Aluminum G Spot V2 Forced Reset T — 262157b 783x796 sha=afd9818b3d81
-  + Vortex Crossfire HD 3-9x40 Straight-Wall BDC (MO — 133833b 942x532 sha=cd8cf8de97f0
-  + Leupold Factory Blemished Mark 3HD M5C3 Rifle Sc — 20261b 680x510 sha=c03b3e1b4109
-  + Cold Steel Limited Edition Recon 1 Pocket Knife  — 18348b 680x510 sha=67b73a687087
-  + Benchmade Custom Bugout Pocket Knife 3.25" Drop  — 16088b 680x510 sha=0e3c9b933e1d
-  + Atflbox Silhouette Paper Target for The Range, 1 — 30611b 500x500 sha=9e9857249311
-  + Used Sig Sauer P226 Full-Size 9mm 4.4" Alloy Fra — 241845b 960x1280 sha=738d6d62f011
-  + Leupold 177910 VX-Freedom Rifle Scope 350 Legend — 398110b 1030x934 sha=58bd0399244c
-  + Sellier & Bellot 7.62x39mm 124gr FMJ 20 Rounds A — 26192b 566x374 sha=7d6d755eade2
-  + Davidson Defense "Hermits" AR-15 Pistol Upper 7. — 9208b 450x225 sha=51ec5044b28d
-  + James Madison Tactical AR-15 80% Gen 2 Carbon Po — 16505b 630x630 sha=4163f64b5c2d
-  + FN Reflex XL MRD Flat Dark Earth 9mm 3.8" Barrel — 29270b 445x454 sha=60c616b62cd5
+  + STOEGER P3000 12 Gauge 3" 26" 5+1 Pump Black - $ — 13513b 1000x168 sha=ce9881650115
+  + AR-15 Assembled Upper Receiver T Marked - $59.95 — 10212b 510x340 sha=dd849d6d2701
+  + Black Dog Machine Ruger M&P 15-22 22 Long Rifle  — 26888b 398x800 sha=24e5c2352520
+  + Primary Weapons Systems MK114 Mod 2-M 6mm ARC 14 — 10502b 581x134 sha=2605fec3f3af
+  + Heritage Rough Rider Small Bore 22LR / 22 WMR 12 — 10606b 600x167 sha=1a203dd30125
+  x Stoeger M3000 12 GA 18.5" Barrel 4-Rounds w/ Pis — image not downloadable
+  + Iver Johnson 1911 A1 Government Chrome .45 ACP 5 — 30610b 766x449 sha=52d54464ed38
+  + DMA Inc. XTS AR-15 Anodized Bolt Catch Assembly  — 33777b 681x474 sha=6e9b4ad7248c
+  + Vanguard Equalizer 1QS Pivoting Bipod with Picat — 16955b 481x528 sha=d19744cd392a
+  + B5 Systems BRV1082 Bravo Stock Black for AR Mil- — 20467b 550x379 sha=22b450b9b248
+  + Federal Premium LE556DMR — 5.56x45mm 77 Grain Si — 16226b 367x359 sha=d9c2ae4de34a
+  + WOLF - 7.62x39 - 122 gr FMJ - 1000 Rounds - $610 — 16784b 300x300 sha=8aa0a4ec4546
+  + Pioneer Arms Forged Series AK-47 Sporter Rifle,  — 12034b 603x269 sha=f815fceb6034
+  + LUTH-AR M16A1 Handguard - HG-A1 - $39.95 — 12069b 492x267 sha=310c6b8c5323
+  + Dirty Bird M16 Bolt Carrier Group - Polished Nic — 10162b 496x237 sha=d2172e5cee73
+  + Armscor USA Pistol .50 AE, 300gr JHP, 400rd Case — 83122b 916x491 sha=4181e1606eb4
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
 
-fixed 22, failed 4  (84% success)
-distinct images: 22 across 22 deals
+fixed 15, failed 5  (75% success)
+distinct images: 15 across 15 deals
 PASS — no image shared between products
