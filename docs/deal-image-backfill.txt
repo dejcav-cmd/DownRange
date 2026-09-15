@@ -1,26 +1,10 @@
-600 scanned, 20 need a real image, 9 coupon posts skipped
+600 scanned, 4 need a real image, 10 coupon posts skipped
 
-  + STOEGER P3000 12 Gauge 3" 26" 5+1 Pump Black - $ — 13513b 1000x168 sha=ce9881650115
-  + AR-15 Assembled Upper Receiver T Marked - $59.95 — 10212b 510x340 sha=dd849d6d2701
-  + Black Dog Machine Ruger M&P 15-22 22 Long Rifle  — 26888b 398x800 sha=24e5c2352520
-  + Primary Weapons Systems MK114 Mod 2-M 6mm ARC 14 — 10502b 581x134 sha=2605fec3f3af
-  + Heritage Rough Rider Small Bore 22LR / 22 WMR 12 — 10606b 600x167 sha=1a203dd30125
-  x Stoeger M3000 12 GA 18.5" Barrel 4-Rounds w/ Pis — image not downloadable
-  + Iver Johnson 1911 A1 Government Chrome .45 ACP 5 — 30610b 766x449 sha=52d54464ed38
-  + DMA Inc. XTS AR-15 Anodized Bolt Catch Assembly  — 33777b 681x474 sha=6e9b4ad7248c
-  + Vanguard Equalizer 1QS Pivoting Bipod with Picat — 16955b 481x528 sha=d19744cd392a
-  + B5 Systems BRV1082 Bravo Stock Black for AR Mil- — 20467b 550x379 sha=22b450b9b248
-  + Federal Premium LE556DMR — 5.56x45mm 77 Grain Si — 16226b 367x359 sha=d9c2ae4de34a
-  + WOLF - 7.62x39 - 122 gr FMJ - 1000 Rounds - $610 — 16784b 300x300 sha=8aa0a4ec4546
-  + Pioneer Arms Forged Series AK-47 Sporter Rifle,  — 12034b 603x269 sha=f815fceb6034
-  + LUTH-AR M16A1 Handguard - HG-A1 - $39.95 — 12069b 492x267 sha=310c6b8c5323
-  + Dirty Bird M16 Bolt Carrier Group - Polished Nic — 10162b 496x237 sha=d2172e5cee73
-  + Armscor USA Pistol .50 AE, 300gr JHP, 400rd Case — 83122b 916x491 sha=4181e1606eb4
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
   x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
 
-fixed 15, failed 5  (75% success)
-distinct images: 15 across 15 deals
+fixed 0, failed 4  (0% success)
+distinct images: 0 across 0 deals
 PASS — no image shared between products
