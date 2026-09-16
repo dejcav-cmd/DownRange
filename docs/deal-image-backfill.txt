@@ -1,10 +1,13 @@
-600 scanned, 4 need a real image, 10 coupon posts skipped
+600 scanned, 7 need a real image, 9 coupon posts skipped
 
+  + Savage 110 Varmint .204 RUG 26" Barrel 4-Rounds  — 17322b 1200x291 sha=7abdb9490c76
+  + AR57 16" Complete ULT M-LOK Upper Receiver 5.7x2 — 14235b 735x220 sha=7890ef84793e
+  + Rise Armament Rave PCC AR Trigger - Curved Bow - — 34919b 635x684 sha=61d54d1d4d18
+  + Burris AR-332 3x32mm Prism RDS Ballistic CQ Reti — 32449b 946x594 sha=6c798e6f7a81
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
   x G-Force Refuge Bronze Cerakote 20 GA 28" Barrel  — image not downloadable
-  x CVA Cascade XT 350 Legend 22" 4 Rd - $799 — image not downloadable
 
-fixed 0, failed 4  (0% success)
-distinct images: 0 across 0 deals
+fixed 4, failed 3  (57% success)
+distinct images: 4 across 4 deals
 PASS — no image shared between products
