@@ -1,19 +1,8 @@
-600 scanned, 13 need a real image, 9 coupon posts skipped
+600 scanned, 2 need a real image, 9 coupon posts skipped
 
-  + Springfield Armory - $489.14 — 29645b 630x630 sha=f66c6d28b802
-  + Dogwood Armory Aluminum G Spot V2 Forced Reset T — 28456b 693x743 sha=f33ef67f92ae
-  + Odin Works Enduro Multi-Caliber Suppressor - Bla — 23471b 862x494 sha=1f2bc897d581
-  + Staccato Pistol P Dlc Barrel With X-Series Serra — 8659b 266x216 sha=4b04bdc1ffae
-  + CVA Cascade 6.5 Creedmoor 22" 4rd Bolt Action Ri — 34260b 1500x298 sha=4870558fba8c
-  + USED LE Trade-In Glock 22 Gen4 4.49" .40 S&W 15r — 75933b 1006x726 sha=7b5626179940
-  + Sulun Arms SPAS-12 Shotgun 21.5" 12 Gauge 5rd Sh — 57756b 1498x558 sha=3cf11dc577ba
-  + HORNADY - V-MAX 6mm Cal. (0.243") 58gr Polymer T — 48775b 449x643 sha=8600b4578f18
-  + WALTHER ARMS Meister PDP FS SF Match OR 9mm 5" 2 — 51445b 719x540 sha=259cac39035d
-  + Sig Sauer P320 Pro X-Fullsize 9mm Romeo 1 Pro -  — 46596b 855x671 sha=47a01955d66d
-  + Beretta USA 92G Elite LTT Compact 9mm Luger 4.25 — 38540b 682x508 sha=4c27a56d222f
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
 
-fixed 11, failed 2  (84% success)
-distinct images: 11 across 11 deals
+fixed 0, failed 2  (0% success)
+distinct images: 0 across 0 deals
 PASS — no image shared between products
