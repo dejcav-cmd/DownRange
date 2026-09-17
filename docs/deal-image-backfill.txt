@@ -1,8 +1,27 @@
-600 scanned, 2 need a real image, 9 coupon posts skipped
+600 scanned, 21 need a real image, 8 coupon posts skipped
 
+  + Rise Armament Iconic 2-Stage 3lb Trigger w/ Anti — 11773b 330x394 sha=1ceb0cb9dab0
+  + Colt Combat Commander .45 ACP 4.25" Barrel Semi- — 32715b 764x553 sha=03a1008f7fca
+  + Smith & Wesson M&P 22X, .22lr, 4.1" Barrel, 2- 2 — 26866b 871x493 sha=c8ab47505719
+  + Sig Sauer Buckmasters 3-9x50mm Illuminated BDC S — 25209b 961x336 sha=528082ee3c70
+  + Federal American Eagle 9mm Luger 115 gr Full Met — 48327b 778x487 sha=838e2b8bb1db
+  + Taurus TX Compact, 9mm, 4" Barrel, 2-15rd Magazi — 24904b 572x437 sha=c253b8985f75
+  + S&W Bodyguard 2.0 Pistol 380 ACP 2.75 in Brown w — 46702b 596x462 sha=54a1f55af44c
+  + Springfield 1911 GI 45ACP 5" 7RD Parkerized Forg — 21321b 591x403 sha=a1aebd72df3d
+  + Rise Armament PSA Custom Curved Trigger - $79.99 — 22338b 385x533 sha=e5a243cc6f5d
+  + Pulsar Thermion 2 Pro LRF XQ50 Rangefinder - $20 — 48074b 911x438 sha=47fe465a01a5
+  + Blue Line GSG-16P 9.12" .22LR 22rd Pistol, Pink  — 28590b 651x399 sha=fecbffe06618
+  + PSA Complete Lower w/Barrage Grip AR-15 Classic  — 64869b 1322x614 sha=317a01f3bd1e
+  + PSA 16" 5.56 NATO 17" LSA Ravage M-LOK Upper Wit — 35809b 1500x355 sha=65bac469bbd5
+  + EYLAR - USA Printed 16" Pistol Case with Pre-Cut — 102527b 1032x955 sha=8ce8fc348a25
+  + Blackhawk FormLok Holsters $14.99 Each or Buy 3+ — 73801b 561x576 sha=752605abbef9
+  + Geissele Automatics Border Patrol(NFA) 5.56mm 14 — 25547b 972x271 sha=d27f56cabfdb
+  + Morakniv Companion Fixed Blade Outdoor Knife wit — 108093b 781x436 sha=5a60e10b75a8
+  + Trijicon MRO SD 1x25 Optic, 2.0 MOA Adjustable D — 10422b 300x274 sha=98b2d9d1fdde
+  + Arsenal SAM7SF 7.62 39 10rd Side-Folding AK47 -  — 29509b 1291x297 sha=13cc40f0b5af
   x Wolfpack Armory Disruptor 556K Suppressor - Blac — image not downloadable
   x Ruger American 270 Win 4+1 22" Blk Syn w/ 3-9X40 — image not downloadable
 
-fixed 0, failed 2  (0% success)
-distinct images: 0 across 0 deals
+fixed 19, failed 2  (90% success)
+distinct images: 19 across 19 deals
 PASS — no image shared between products
