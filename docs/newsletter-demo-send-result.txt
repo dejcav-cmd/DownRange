@@ -1,0 +1,29 @@
+--- Response headers ---
+HTTP/2 307 
+cache-control: public, max-age=0, must-revalidate
+content-type: text/plain
+date: Fri, 18 Sep 2026 20:44:26 GMT
+location: https://www.downrangeco.com/api/newsletter/send-test
+server: Vercel
+strict-transport-security: max-age=63072000
+x-vercel-id: sfo1::9n2gw-1789764266422-8748a7003341
+
+HTTP/2 200 
+cache-control: public, max-age=0, must-revalidate
+content-type: application/json
+date: Fri, 18 Sep 2026 20:44:27 GMT
+permissions-policy: camera=(), microphone=(), geolocation=()
+referrer-policy: strict-origin-when-cross-origin
+server: Vercel
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+x-content-type-options: nosniff
+x-dns-prefetch-control: on
+x-frame-options: SAMEORIGIN
+x-matched-path: /api/newsletter/send-test
+x-vercel-cache: MISS
+x-vercel-id: sfo1::iad1::b9gkk-1789764266574-cfe00db39241
+x-xss-protection: 1; mode=block
+
+--- Body ---
+{"success":true,"message":"Test newsletter sent to dejcav@gmail.com","id":"01a0b643-6d72-764f-8adb-871dc3eaa5cd"}
