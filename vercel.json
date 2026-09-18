@@ -26,11 +26,7 @@
     },
     {
       "path": "/api/newsletter",
-      "schedule": "0 7 * * *"
-    },
-    {
-      "path": "/api/newsletter/send",
-      "schedule": "0 7 * * 1,4"
+      "schedule": "0 7 * * 4"
     },
     {
       "path": "/api/site-health",

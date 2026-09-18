@@ -17,14 +17,15 @@ export async function POST(req) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { email } = await req.json()
+    const { email, state } = await req.json()
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       return Response.json({ error: 'Invalid email' }, { status: 400 })
     }
 
-    // Fetch newsletter content
+    // Fetch newsletter content — optional ?state= override so DJ can preview any state's personalization
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://downrangeco.com'
-    const contentRes = await fetch(`${baseUrl}/api/newsletter/content`)
+    const stateParam = state ? `?state=${encodeURIComponent(state)}` : ''
+    const contentRes = await fetch(`${baseUrl}/api/newsletter/content${stateParam}`)
     if (!contentRes.ok) throw new Error('Failed to fetch newsletter content')
     const content = await contentRes.json()
 
@@ -34,9 +35,9 @@ export async function POST(req) {
     // Send via Resend
     const resend = getResend()
     const result = await resend.emails.send({
-      from: 'DownRange Daily <news@downrangeco.com>',
+      from: 'DownRange <news@downrangeco.com>',
       to: email,
-      subject: `📰 DownRange Daily TEST — ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
+      subject: `📰 DownRange Weekly TEST — ${new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`,
       html,
     })
 
