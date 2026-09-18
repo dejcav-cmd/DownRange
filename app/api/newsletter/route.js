@@ -1,6 +1,6 @@
 import { reportCronRun } from '@/lib/cronReporter'
 import { generateNewsletterHTML } from '@/lib/emailTemplates'
-import { fetchStateProfiles, getWeeklyOutlook } from '@/lib/newsletterPersonalization'
+import { getWeeklyOutlook } from '@/lib/newsletterPersonalization'
 export const dynamic = 'force-dynamic'
 import { createClient } from '@sanity/client'
 
@@ -91,7 +91,7 @@ export async function GET(req) {
         `*[_type == "breakingAlert" && active == true] | order(_createdAt desc) [0...3] { text, title }`
       ).catch(() => []),
       sanity.fetch(
-        `*[_type == "newsletterSubscriber" && status == "active"] { email, _id, state }`
+        `*[_type == "newsletterSubscriber" && status == "active"] { email, _id }`
       ).catch(() => []),
       sanity.fetch(
         `*[_type == "video" && active == true] | order(addedAt desc, publishedAt desc) [0...3] { title, youtubeId, videoId, channelName, thumbnail, thumbnailUrl, category, duration }`
@@ -131,29 +131,16 @@ export async function GET(req) {
       subject = `DownRange Weekly Brief — Week of ${weekOf}`
     }
 
-    // One AI "What to Watch Next" teaser per send — shared across every subscriber/state
+    // One AI "What to Watch Next" teaser per send
     const outlookContext = stories.slice(0, 5).map(s => s.title).concat(deals.slice(0, 3).map(d => d.title || d.name)).filter(Boolean).join(' | ')
     const outlook = await getWeeklyOutlook(outlookContext)
 
-    // Group active subscribers by state so each group gets its own personalized lead block
-    const distinctStates = [...new Set(subscribers.map(s => s.state).filter(Boolean))]
-    const stateProfiles = await fetchStateProfiles(distinctStates)
-
-    const groups = new Map() // stateAbbr|'NATIONAL' -> [emails]
-    for (const s of subscribers) {
-      if (!s.email) continue
-      const key = (s.state && stateProfiles[s.state.toUpperCase()]) ? s.state.toUpperCase() : 'NATIONAL'
-      if (!groups.has(key)) groups.set(key, [])
-      groups.get(key).push(s.email)
-    }
-
     const baseContent = { news: stories, deals, alerts, videos, ammo: ammoFinal, nfa: nfaSnap, outlook, unsubUrl: 'https://www.downrangeco.com/unsubscribe' }
 
-    // Test send first — uses the NATIONAL variant (or the first state group, if configured) so DJ sees the real personalization
+    // Test send first
     const testEmails = (process.env.NEWSLETTER_TEST_EMAILS || '').split(',').filter(Boolean)
     if (testEmails.length) {
-      const previewState = distinctStates.length ? stateProfiles[distinctStates[0].toUpperCase()] : null
-      const testHtml = generateNewsletterHTML({ ...baseContent, state: previewState }, true)
+      const testHtml = generateNewsletterHTML(baseContent, true)
       for (const email of testEmails) {
         await resend.emails.send({
           from: 'DownRange <news@downrangeco.com>',
@@ -164,13 +151,14 @@ export async function GET(req) {
       }
     }
 
-    // Send one personalized variant per state group, batched in chunks of 40
+    // Send to subscribers in batches of 40
     let sent = 0, failed = 0
-    for (const [key, emails] of groups.entries()) {
-      const stateData = key === 'NATIONAL' ? null : stateProfiles[key]
-      const html = generateNewsletterHTML({ ...baseContent, state: stateData }, false)
-      for (let i = 0; i < emails.length; i += 40) {
-        const batch = emails.slice(i, i + 40)
+    const allEmails = subscribers.map(s => s.email).filter(Boolean)
+
+    if (allEmails.length > 0) {
+      const html = generateNewsletterHTML(baseContent, false)
+      for (let i = 0; i < allEmails.length; i += 40) {
+        const batch = allEmails.slice(i, i + 40)
         const batchPayload = batch.map(email => ({
           from: 'DownRange <news@downrangeco.com>',
           to: email,
@@ -181,19 +169,19 @@ export async function GET(req) {
           await resend.batch.send(batchPayload)
           sent += batch.length
         } catch (err) {
-          console.error(`Batch ${key} ${i}-${i+40} error:`, err.message)
+          console.error(`Batch ${i}-${i+40} error:`, err.message)
           failed += batch.length
         }
-        if (i + 40 < emails.length) await new Promise(r => setTimeout(r, 300))
+        if (i + 40 < allEmails.length) await new Promise(r => setTimeout(r, 300))
       }
     }
 
     await reportCronRun('newsletter', {
       status: 'success', ms: Date.now() - t0,
-      details: `sent=${sent} failed=${failed} stories=${stories.length} deals=${deals.length} videos=${videos.length} segments=${groups.size}`,
+      details: `sent=${sent} failed=${failed} stories=${stories.length} deals=${deals.length} videos=${videos.length}`,
     })
 
-    return Response.json({ success: true, sent, failed, stories: stories.length, deals: deals.length, videos: videos.length, subscribers: subscribers.length, segments: groups.size })
+    return Response.json({ success: true, sent, failed, stories: stories.length, deals: deals.length, videos: videos.length, subscribers: allEmails.length })
 
   } catch (err) {
     console.error('Newsletter cron error:', err)

@@ -50,23 +50,15 @@ export default {
       type: 'text',
       rows: 3,
     },
-    {
-      name: 'state',
-      title: 'State (2-letter code)',
-      type: 'string',
-      description: 'Personalizes the weekly brief with this state\'s law/bill updates. Optional.',
-      validation: (Rule) => Rule.max(2).uppercase(),
-    },
   ],
   preview: {
     select: {
       email: 'email',
       status: 'status',
       date: 'subscribedAt',
-      state: 'state',
     },
     prepare(selection) {
-      const { email, status, date, state } = selection;
+      const { email, status, date } = selection;
       const dateStr = new Date(date).toLocaleDateString('en-US', {
         month: 'short',
         day: 'numeric',
@@ -74,7 +66,7 @@ export default {
       });
       return {
         title: email,
-        subtitle: `${status} • ${dateStr}${state ? ` • ${state}` : ''}`,
+        subtitle: `${status} • ${dateStr}`,
       };
     },
   },

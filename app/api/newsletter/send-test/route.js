@@ -17,15 +17,14 @@ export async function POST(req) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
 
-    const { email, state } = await req.json()
+    const { email } = await req.json()
     if (!email || !email.match(/^[^\s@]+@[^\s@]+\.[^\s@]+$/)) {
       return Response.json({ error: 'Invalid email' }, { status: 400 })
     }
 
-    // Fetch newsletter content — optional ?state= override so DJ can preview any state's personalization
+    // Fetch newsletter content
     const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://downrangeco.com'
-    const stateParam = state ? `?state=${encodeURIComponent(state)}` : ''
-    const contentRes = await fetch(`${baseUrl}/api/newsletter/content${stateParam}`)
+    const contentRes = await fetch(`${baseUrl}/api/newsletter/content`)
     if (!contentRes.ok) throw new Error('Failed to fetch newsletter content')
     const content = await contentRes.json()
 

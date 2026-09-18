@@ -1,7 +1,7 @@
 // app/api/newsletter/content/route.js
 export const dynamic = 'force-dynamic'
 import { client } from '@/sanity/lib/client'
-import { getStateBlockData, getWeeklyOutlook } from '@/lib/newsletterPersonalization'
+import { getWeeklyOutlook } from '@/lib/newsletterPersonalization'
 
 export async function GET(req) {
   try {
@@ -10,9 +10,6 @@ export async function GET(req) {
     if (adminKey && adminKey !== process.env.ADMIN_KEY) {
       return Response.json({ error: 'Unauthorized' }, { status: 401 })
     }
-    // Preview/demo personalization — defaults to WA (DJ's home state) unless overridden,
-    // e.g. /api/newsletter/content?state=TX
-    const previewState = (searchParams.get('state') || 'WA').toUpperCase()
 
     // Newsletter moved from daily to weekly (Thursdays) — window widened from 48h to 7 days
     const sevenDaysAgo = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
@@ -43,16 +40,14 @@ export async function GET(req) {
       }
     `)
 
-    const [state, outlook] = await Promise.all([
-      getStateBlockData(previewState),
-      getWeeklyOutlook(news.slice(0, 5).map(a => a.title).concat(deals.slice(0, 3).map(d => d.title)).filter(Boolean).join(' | ')),
-    ])
+    const outlook = await getWeeklyOutlook(
+      news.slice(0, 5).map(a => a.title).concat(deals.slice(0, 3).map(d => d.title)).filter(Boolean).join(' | ')
+    )
 
     return Response.json({
       news,
       blogs,
       deals,
-      state,
       outlook,
       generatedAt: new Date().toISOString(),
     })
