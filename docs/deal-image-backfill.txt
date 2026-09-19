@@ -1,37 +1,7 @@
-600 scanned, 30 need a real image, 7 coupon posts skipped
+600 scanned, 1 need a real image, 7 coupon posts skipped
 
-  + SZCO Supplies 13" M-9 Bayonet Military Style Tac — 177525b 1500x1384 sha=082416696a38
-  + Dirty Bird AR-15 Single Stage Quick Reset Drop-I — 24160b 501x610 sha=2be661a6dee8
-  + Strike Industries AR-10 Enhanced Lower Parts Kit — 21705b 608x405 sha=58a071fa4379
-  + KGM Suppressors Rogue-Alpha CORE-556 4.75" 5.56  — 43160b 1000x666 sha=655e8ecec60e
-  + Nightforce ATACR 1-8x24mm FFP Rifle Scope - FC-D — 38156b 1000x1000 sha=0c704d218c76
-  + Nightforce NX8 1-8X24mm FFP Rifle Scope - FC-DMX — 32888b 1000x1000 sha=66c749f57e51
-  + Toolcraft 9mm Bolt Carrier Group Gen 2 - Black N — 23081b 1000x853 sha=fd4cbd7434d6
-  + Hawke Optics Prism Sight 4x24 - 12054 - $229.95 — 42867b 671x666 sha=28ce9d3d8944
-  + Federal Ammunition GM205M Premium Gold Medal Sma — 85417b 1000x1000 sha=10e2b99b585d
-  + Texas Triggers 1911/2011 Forced Reset Trigger -  — 263970b 886x782 sha=c1ae1526e191
-  + Texas Triggers SIG P320 Reaper Forced Reset Trig — 178080b 1000x508 sha=1c23a5ad1c67
-  + US Palm 7.62x39mm Black Polymer 30 Round Magazin — 87892b 1500x1500 sha=d21934430f94
-  + Derya Arms TM22 Standard, .22 LR, 18" Barrel, 10 — 14079b 797x208 sha=8059bdfb8f8b
-  + Winchester 38 Special 130 gr FMJ 50/Box - $18.99 — 49806b 1000x666 sha=67652ae3327f
-  + Mec-Gar 9mm 20-Round Anti-Friction Magazine for  — 32648b 700x700 sha=252ae7f524c1
-  + CZ 527 Carbine 7.62 39 – 18.5″ Walnut Stock, Iro — 23368b 600x338 sha=80565918e906
-  + Lancer L5AWM AR-15 30RD Magazine - $14.95 — 112886b 1500x1000 sha=fa4d4e0fe69a
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 376474b 1000x666 sha=44efda0bf54d
-  + Rise Armament T24 Blitz G2 Drop-In AR-15 Trigger — 279558b 1500x1000 sha=bfe3fc15ef8f
-  + Stainless steel speed loader for 9mm and .40s&w  — 72887b 1086x1448 sha=82de1296b2e5
-  + Bushnell Trophy TRS-25 Red Dot Sight Riflescope, — 17295b 300x300 sha=21798cdd3a74
-  + Century Arms AP5 NAVY 9MM 8.9" 30RD BLK - $1188. — 24556b 781x439 sha=3ce0fa41a5cf
-  + Taurus G3C 9mm 3.2" Barrel 10-Rounds with Three  — 10319b 300x300 sha=6a983ffdfadf
-  + Browning 051913492 1911-380 Black Label Medallio — 14156b 550x550 sha=655c137df5fa
-  + Taurus TX22 Compact 22LR 3.6" 13+1rd Optic Ready — 47392b 945x630 sha=2ccd0a11ed96
-  ... 25/30  ok=25 fail=0
-  + Tanfoglio Stock 1 Xtrm 9mm 17rd 4.45in Chrome -  — 64327b 1170x799 sha=14b0a2b1b8fe
-  + Beretta APX-A1 Carry 9mm ODG 8rd - $229.99 — 38419b 650x524 sha=1ffe4f9e2772
-  + CMC Triggers Single-Stage Drop-in Small Pin Curv — 444558b 1060x871 sha=63fb2a6e099f
-  + TMC ENCORE-PH Predator 25 Creedmoor 1 Rd Green C — 24470b 1000x238 sha=51ac97bd7970
-  + KelTec SUB-2000 G2 9mm Rifle 10rd M-LOK M&P Mags — 23288b 1003x252 sha=e8537f5da08c
+  + Canik Prime Radian 9mm 3.8" Barrel 17-Rounds OR  — 72105b 800x646 sha=ff218bd8bb1e
 
-fixed 30, failed 0  (100% success)
-distinct images: 30 across 30 deals
+fixed 1, failed 0  (100% success)
+distinct images: 1 across 1 deals
 PASS — no image shared between products
