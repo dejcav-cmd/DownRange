@@ -1,23 +1,6 @@
-600 scanned, 17 need a real image, 7 coupon posts skipped
+600 scanned, 0 need a real image, 7 coupon posts skipped
 
-  + Kimber 2K11 Pro Comp Royal 9mm 4.25" 19rd Pistol — 46608b 800x630 sha=014ccc2db7ef
-  + Strike Industries Picatinny Stock Adapter for AR — 37226b 600x411 sha=4ec265b2a4b8
-  + Springfield Armory Hellcat Pro OSP 9mm 3.7" 10rd — 282435b 739x529 sha=512f7f6c3c2b
-  + Beretta, Apx A1 Full Size, 9mm, 4.17" Barrel, 17 — 247547b 1000x631 sha=a14ad03df2e7
-  + Charles Daly CDLY 301 12 Gauge 18.5" 4rd Nickel  — 37055b 632x267 sha=4304aa6436ae
-  + Glock Dummy Rounds, 9mm, Orange, 50-Round Pack - — 95881b 591x384 sha=024c93b576ce
-  + Springfield Echelon 4.5F 9mm 4.5" Barrel, 17+1,  — 125982b 1500x1022 sha=6c89a121fcc7
-  + FSDC MLC9000 Keyed Lockable Steel Case with Secu — 24692b 500x500 sha=7520a9116b75
-  + Glock G19 GEN6 9mm 4.02" TB 15rd OR Pistol, Ambi — 62682b 1000x750 sha=9e8b2d75d914
-  + Springfield 1911 Loaded Operator *CA Compliant 4 — 9976b 400x250 sha=53a912fa7128
-  + Smith & Wesson M&P 9 Compact M2.0 9mm 4" 15rd Pi — 73567b 1000x744 sha=1a1dd634d2d8
-  + Heckler & Koch MR762 A4 7.62 NATO 16.5" 20rd Rif — 8195b 400x250 sha=64aa0afb6458
-  + Aim Sports Ring Set 1 in High Black Picatinny -  — 183316b 775x549 sha=b769d4277f4d
-  + Aim Sports Ring Set 1" Medium Picatinny Compatib — 163019b 748x491 sha=e26898c83155
-  + Under Armor ColdGear, Hot Deal: UA Hoodie - $27. — 51445b 600x600 sha=513c459b2632
-  + Winchester 94 Short Rifle 450 Marlin 20" 7rd Hun — 12632b 1000x227 sha=2ac0a7e1ad8b
-  + Glock G43X MOS8 9mm 3.41" Black GMB Barrel, 15 R — 8042b 505x422 sha=7dd754bb9d01
 
-fixed 17, failed 0  (100% success)
-distinct images: 17 across 17 deals
+fixed 0, failed 0  (0% success)
+distinct images: 0 across 0 deals
 PASS — no image shared between products
