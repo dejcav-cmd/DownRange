@@ -1,37 +1,21 @@
-600 scanned, 30 need a real image, 4 coupon posts skipped
+600 scanned, 15 need a real image, 4 coupon posts skipped
 
-  + Comstock Armory Compact 22 Cal Muzzle Brake - 1/ — 154517b 768x768 sha=926470339ff8
-  + HUXWRX FLOW 9K Ti Suppressor - Black - $489 — 19943b 1000x666 sha=d4a56ad1e0f2
-  + Advantage Arms 1.50x2.5 Super Short AR 9mm Suppr — 56554b 576x614 sha=33467bd1102f
-  + Mec-Gar Taurus PT92 / PT99 9mm 10-Round Magazine — 17908b 700x700 sha=92bdf37d8eb4
-  x Glock Gen 5 Glock 19 9mm 10-Round Factory Magazi — image not downloadable
-  + Walther PPQ M2 Sub-Compact 9mm 15-Round Blued St — 12334b 700x700 sha=6f7765d45acb
-  + SOG Flash I Assisted Opening Pocket Knife - $14. — 15544b 680x510 sha=07bec8a99b01
-  + Assembled AlphaWolf RMR Slide for Glock 19 Gen 1 — 18150b 1000x1000 sha=54abbc49b1d1
-  + Yankee Hill Machine Co, Fat Cat, Suppressor, 556 — 162718b 853x479 sha=e361ffea6dfe
-  + Sig Sauer P365 380 ACP 3.1" Bbl (2) 10rd Pistol, — 124123b 544x375 sha=f34ab38064d9
-  + Springfield Hellcat PRO OSP 9mm 3.7" Barrel 10rd — 78028b 467x350 sha=a892fb60688d
-  + Daniel Defense, DDM4V7 SLW, Semi-automatic Rifle — 26012b 1000x300 sha=05037bd2ad3e
-  + Daniel Defense M4A1 RIII 5.56 NATO 14.5" Bbl 32r — 8201b 450x149 sha=f270c8a15083
-  + Dirty Bird 4 Piece Roll Pin Starter Punch Set -  — 11353b 510x435 sha=39e57d2be402
-  + Daniel Defense DD5 V4 7.62 x 51mm NATO 18" 20rd  — 41425b 618x254 sha=b88025b40079
-  + Sig Sauer Hexium 300 .300 AAC Blackout Suppresso — 62839b 1200x308 sha=035ff51a3aa7
-  + SilencerCo Spectre 9K Ti - 9mm / 300 BLK - Black — 9462b 1500x665 sha=b35cad56f174
-  + Deployment Bag Waist Tactical Pack Small Sling P — 31693b 500x500 sha=3893be4e70e3
-  + Outdoor Airtight Storage Case Container Fishing  — 28053b 500x500 sha=95eb2d547f1b
-  + Mini Tactical MOLLE Pouch - Resistant EDC Pouch  — 33182b 500x500 sha=e023ce4e3e36
-  + Lightning Nuggets Firestarters Super Economy Box — 181429b 1500x885 sha=b60858ca5c4d
-  + Tactical Chest Mini Rig 1000D Quick Release Mult — 32996b 595x740 sha=8a8e198fdbba
-  + Trijicon MRO SD 1x25 Green Dot Sight w/ 2.0 MOA  — 143846b 696x522 sha=7cfd12ff2ca2
-  + Trijicon MRO SD 1x25 Green Dot Sight w/ 2.0 MOA  — 131939b 589x457 sha=267cf65292fe
-  + Pre-Order - Mustang Armament Honest Outlaw Signa — 306049b 1500x569 sha=d6b13e458bd8
-  ... 25/30  ok=24 fail=1
-  + Pre-Order - Mustang Armament Honest Outlaw Signa — 44195b 1500x501 sha=dcdd980f8996
-  + KAK Industry “Lite” Lower Parts Kit – Green Bag  — 58844b 1500x843 sha=11ea0fb07623
-  + CZ P-09 F Nocturne, 9mm, 5.3" Barrel, 2-21rd Mag — 440670b 1127x750 sha=247e750e047d
-  + CZ P-09 F Nocturne, 9mm, 5.3" Barrel, 2-21rd Mag — 23592b 1306x706 sha=605b81c6aa6e
-  + BOE Suppression IncoLite 9S 9mm Inconel Suppress — 72043b 1000x666 sha=b3588193591f
+  + ODIN Works AR-10 Adjustable Rifle Buffer - $79.9 — 21881b 599x597 sha=f69b7a129b5b
+  + Xtech Tactical Steel Reinforced 10/17 10rd 9mm M — 80169b 845x1229 sha=d1bb711c7042
+  + Springfield M1A 50th Anniversary .308 Win 22" ba — 73666b 1000x385 sha=fd77df48df0e
+  + Ruger Vaquero with Rosewood Grip Stainless .45 L — 24685b 787x383 sha=a0467f125eae
+  + Kimber K6S 357 Mag 2" barrel 6rd Revolver Stainl — 34691b 751x520 sha=73c037d9ce1a
+  + Taurus G3 Tungsten 9mm 4" Barrel 17-Rounds OR -  — 50137b 800x587 sha=e729f111632a
+  + Alpha Foxtrot AF1911 Romulus 9mm 4.25" Threaded  — 45882b 731x567 sha=657adcf4d39c
+  x TR Imports XT3C 410 Ga Semi Auto 24" Barrel Bott — rejected: too small (600x101)
+  + CHIAPPA FIREARMS 1873 22 LR, 4.75in, 6rd - Black — 13663b 503x305 sha=9f79d354aee8
+  + GLOCK 43 9mm 6rd 3.39" 2-mags FACTORY REBUILT -  — 14183b 425x346 sha=ab58a837a4e4
+  + GLOCK Blue Label G19 Gen 6 9mm 4.02" - Fixed Sig — 59835b 946x657 sha=da386cfbe101
+  + Smith & Wesson CSX 9mm 3.1" 10/12 Rd - Range Kit — 30826b 477x397 sha=b180f6e3a5a6
+  + Sig Sauer P365 Fuse 9mm 4.3" 17/21 Rd - Custom D — 27204b 510x406 sha=c1b04704f058
+  + Rock Island M206 Spurless Single/Double 38 Speci — 23064b 619x330 sha=14859842f766
+  + Tisas USA 1911 Night Stalker SF 9mm 5" 8rd Pisto — 27317b 761x517 sha=a16ed9ac6272
 
-fixed 29, failed 1  (96% success)
-distinct images: 29 across 29 deals
+fixed 14, failed 1  (93% success)
+distinct images: 14 across 14 deals
 PASS — no image shared between products
