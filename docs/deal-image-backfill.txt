@@ -1,21 +1,39 @@
-600 scanned, 15 need a real image, 4 coupon posts skipped
+600 scanned, 32 need a real image, 10 coupon posts skipped
 
-  + ODIN Works AR-10 Adjustable Rifle Buffer - $79.9 — 21881b 599x597 sha=f69b7a129b5b
-  + Xtech Tactical Steel Reinforced 10/17 10rd 9mm M — 80169b 845x1229 sha=d1bb711c7042
-  + Springfield M1A 50th Anniversary .308 Win 22" ba — 73666b 1000x385 sha=fd77df48df0e
-  + Ruger Vaquero with Rosewood Grip Stainless .45 L — 24685b 787x383 sha=a0467f125eae
-  + Kimber K6S 357 Mag 2" barrel 6rd Revolver Stainl — 34691b 751x520 sha=73c037d9ce1a
-  + Taurus G3 Tungsten 9mm 4" Barrel 17-Rounds OR -  — 50137b 800x587 sha=e729f111632a
-  + Alpha Foxtrot AF1911 Romulus 9mm 4.25" Threaded  — 45882b 731x567 sha=657adcf4d39c
-  x TR Imports XT3C 410 Ga Semi Auto 24" Barrel Bott — rejected: too small (600x101)
-  + CHIAPPA FIREARMS 1873 22 LR, 4.75in, 6rd - Black — 13663b 503x305 sha=9f79d354aee8
-  + GLOCK 43 9mm 6rd 3.39" 2-mags FACTORY REBUILT -  — 14183b 425x346 sha=ab58a837a4e4
-  + GLOCK Blue Label G19 Gen 6 9mm 4.02" - Fixed Sig — 59835b 946x657 sha=da386cfbe101
-  + Smith & Wesson CSX 9mm 3.1" 10/12 Rd - Range Kit — 30826b 477x397 sha=b180f6e3a5a6
-  + Sig Sauer P365 Fuse 9mm 4.3" 17/21 Rd - Custom D — 27204b 510x406 sha=c1b04704f058
-  + Rock Island M206 Spurless Single/Double 38 Speci — 23064b 619x330 sha=14859842f766
-  + Tisas USA 1911 Night Stalker SF 9mm 5" 8rd Pisto — 27317b 761x517 sha=a16ed9ac6272
+  + Swampfox Raider 1x20 Micro Prism Sight w/ Red IR — 20832b 389x417 sha=991416522e82
+  + Tisas 1911 Night Stalker Comp 4.25" 9mm 10rd Pis — 241500b 955x611 sha=36b56d0d2b30
+  + NBS Free Float M-LOK Elite Series Dual Rail QD H — 172922b 1000x666 sha=0ef8e1abc2bb
+  + Rise Armament T24 Blitz G2 Drop-In AR-15 Trigger — 112554b 1000x666 sha=3d85df51cb48
+  + Sig Sauer ROMEO-MSR Gen II JULIET5-Micro COMBO 2 — 121459b 690x432 sha=6bebbaa02244
+  + Shadow Systems MR920 Combat 9mm 4" Bronze Spiral — 31848b 635x493 sha=e555d2450344
+  + Comstock Armory Full Size 22 Cal Muzzle Brake &  — 117828b 1000x718 sha=ca6881cc04cd
+  + Duramag C Products Defense 5.56 30 Round Stainle — 33341b 666x1000 sha=cc5954627013
+  + Griffin Armament Enhanced AR-15 Bolt Carrier Gro — 26721b 680x510 sha=c4710c4f93a7
+  + Leupold Factory Blemished Mark 3HD Rifle Scope 3 — 75530b 601x433 sha=5032744a6928
+  + Rise Armament T24 Blitz G2 Drop-In AR-15 Trigger — 279558b 1500x1000 sha=bfe3fc15ef8f
+  + Dirty Bird Industries Single Stage Nickel Teflon — 69529b 1500x1000 sha=38ccbdb899d7
+  + Magpul MOE-K2+ Grip - $18.95 — 53182b 1200x1024 sha=4fbccf71203a
+  + Taurus RPC 9mm 4.5" Bbl 32rd w/ Pistol Brace - $ — 18650b 1000x485 sha=e7c5a3db34b6
+  + Rugged Suppressors Surge762 7.62mm Silencer Blac — 10034b 550x550 sha=8fdd675ca608
+  x FRANCHI Affinity 3 ST 12Ga 30" 4rd - Black Synth — image not downloadable
+  + Sig Sauer P211-GTO Spectre Comp 9mm 4.4" Bbl, (1 — 8672b 300x235 sha=0343279a11f6
+  + Leupold VX5-HD G2 3-15x44mm 30mm Rifle Scope Win — 45993b 817x414 sha=8dca6b3bde2d
+  + Otter Creek Labs Milkman 99mm Suppressor, FDE -  — 14216b 909x282 sha=96b66fa5c421
+  + Otter Creek Labs OCL Hydrogen S 308 WIN Suppress — 23430b 900x900 sha=60b4ab2aca87
+  + Breek Arms Sledgehammer Omni-Buster Ambidextrous — 17571b 700x700 sha=53407ffcf4a1
+  + Savage Arms 93 XP .17 HMR 21" Bbl 10rd Bolt Acti — 280805b 1500x501 sha=48a9ef96f147
+  + PSA 16" M4 Carbine Length 5.56 NATO 1:7 Nitride  — 45207b 1000x500 sha=ca8fc2f7eb67
+  + Sellier & Bellot Subsonic 9mm Luger Ammo 150gr F — 37795b 700x424 sha=96a1259b86df
+  + Gideon Optics Advocate Micro Prism Scope, Red -  — 179371b 613x451 sha=8bb12b82c47a
+  ... 25/32  ok=24 fail=1
+  + Gideon Optics Advocate Micro Prism Scope, Green, — 30654b 978x550 sha=857166d6dd0e
+  + CMC Triggers AR-15 Tactical Single Stage Curved  — 44916b 1000x684 sha=78357fa1dd1c
+  + Beretta 92Xi Combat Series Vegetato 9mm 4.7" 18r — 51569b 800x570 sha=738fdb9aec61
+  + Beretta 3032 Tomcat Covert .32 ACP 2.9" barrel 7 — 31439b 656x481 sha=7e6291987542
+  + Bowden Tactical AR-15 Foundation Series 7" Handg — 123875b 703x357 sha=b405bceec215
+  + 4 Slot Pistol Rack, Solid Wood Handgun Pistol Gu — 108174b 1169x783 sha=7444ae73fce7
+  + Acer - .22 LR Suppressor Deal - One of the quiet — 25519b 1392x736 sha=66241dee44db
 
-fixed 14, failed 1  (93% success)
-distinct images: 14 across 14 deals
+fixed 31, failed 1  (96% success)
+distinct images: 31 across 31 deals
 PASS — no image shared between products
