@@ -1,39 +1,22 @@
-600 scanned, 32 need a real image, 10 coupon posts skipped
+600 scanned, 16 need a real image, 10 coupon posts skipped
 
-  + Swampfox Raider 1x20 Micro Prism Sight w/ Red IR — 20832b 389x417 sha=991416522e82
-  + Tisas 1911 Night Stalker Comp 4.25" 9mm 10rd Pis — 241500b 955x611 sha=36b56d0d2b30
-  + NBS Free Float M-LOK Elite Series Dual Rail QD H — 172922b 1000x666 sha=0ef8e1abc2bb
-  + Rise Armament T24 Blitz G2 Drop-In AR-15 Trigger — 112554b 1000x666 sha=3d85df51cb48
-  + Sig Sauer ROMEO-MSR Gen II JULIET5-Micro COMBO 2 — 121459b 690x432 sha=6bebbaa02244
-  + Shadow Systems MR920 Combat 9mm 4" Bronze Spiral — 31848b 635x493 sha=e555d2450344
-  + Comstock Armory Full Size 22 Cal Muzzle Brake &  — 117828b 1000x718 sha=ca6881cc04cd
-  + Duramag C Products Defense 5.56 30 Round Stainle — 33341b 666x1000 sha=cc5954627013
-  + Griffin Armament Enhanced AR-15 Bolt Carrier Gro — 26721b 680x510 sha=c4710c4f93a7
-  + Leupold Factory Blemished Mark 3HD Rifle Scope 3 — 75530b 601x433 sha=5032744a6928
-  + Rise Armament T24 Blitz G2 Drop-In AR-15 Trigger — 279558b 1500x1000 sha=bfe3fc15ef8f
-  + Dirty Bird Industries Single Stage Nickel Teflon — 69529b 1500x1000 sha=38ccbdb899d7
-  + Magpul MOE-K2+ Grip - $18.95 — 53182b 1200x1024 sha=4fbccf71203a
-  + Taurus RPC 9mm 4.5" Bbl 32rd w/ Pistol Brace - $ — 18650b 1000x485 sha=e7c5a3db34b6
-  + Rugged Suppressors Surge762 7.62mm Silencer Blac — 10034b 550x550 sha=8fdd675ca608
-  x FRANCHI Affinity 3 ST 12Ga 30" 4rd - Black Synth — image not downloadable
-  + Sig Sauer P211-GTO Spectre Comp 9mm 4.4" Bbl, (1 — 8672b 300x235 sha=0343279a11f6
-  + Leupold VX5-HD G2 3-15x44mm 30mm Rifle Scope Win — 45993b 817x414 sha=8dca6b3bde2d
-  + Otter Creek Labs Milkman 99mm Suppressor, FDE -  — 14216b 909x282 sha=96b66fa5c421
-  + Otter Creek Labs OCL Hydrogen S 308 WIN Suppress — 23430b 900x900 sha=60b4ab2aca87
-  + Breek Arms Sledgehammer Omni-Buster Ambidextrous — 17571b 700x700 sha=53407ffcf4a1
-  + Savage Arms 93 XP .17 HMR 21" Bbl 10rd Bolt Acti — 280805b 1500x501 sha=48a9ef96f147
-  + PSA 16" M4 Carbine Length 5.56 NATO 1:7 Nitride  — 45207b 1000x500 sha=ca8fc2f7eb67
-  + Sellier & Bellot Subsonic 9mm Luger Ammo 150gr F — 37795b 700x424 sha=96a1259b86df
-  + Gideon Optics Advocate Micro Prism Scope, Red -  — 179371b 613x451 sha=8bb12b82c47a
-  ... 25/32  ok=24 fail=1
-  + Gideon Optics Advocate Micro Prism Scope, Green, — 30654b 978x550 sha=857166d6dd0e
-  + CMC Triggers AR-15 Tactical Single Stage Curved  — 44916b 1000x684 sha=78357fa1dd1c
-  + Beretta 92Xi Combat Series Vegetato 9mm 4.7" 18r — 51569b 800x570 sha=738fdb9aec61
-  + Beretta 3032 Tomcat Covert .32 ACP 2.9" barrel 7 — 31439b 656x481 sha=7e6291987542
-  + Bowden Tactical AR-15 Foundation Series 7" Handg — 123875b 703x357 sha=b405bceec215
-  + 4 Slot Pistol Rack, Solid Wood Handgun Pistol Gu — 108174b 1169x783 sha=7444ae73fce7
-  + Acer - .22 LR Suppressor Deal - One of the quiet — 25519b 1392x736 sha=66241dee44db
+  + Holosun Sights Sale – EPS CORE RD 3, EPS CORE RD — 1819685b 1500x1125 sha=5d9aa7328658
+  + Taurus GX4 T.O.R.O. 9mm 3.06" barrel 13 Rds Grap — 95166b 1000x847 sha=e4edac96859f
+  + Ruger Super GP100 .357 Mag 5.5" Barrel 8-Rounds  — 37917b 800x550 sha=5d929c762405
+  + Winchester Model 70 Alaskan 375 HH Mag Bolt-Acti — 23272b 1303x211 sha=c95ee0699b21
+  + SK Standard Plus .22 Long Rifle 40 grain Lead Ro — 52574b 752x550 sha=37977a83da94
+  + SK Rifle Match .22 Long Rifle 40 grain Lead Roun — 44403b 747x550 sha=a91ea622354d
+  + Eley Ammunition Outlaw .22 LR 42-Gr. Lead Solid  — 38876b 508x376 sha=f4a0aaabfffd
+  + Cimarron Firearms US 7th Cavalry Blue .45 LC 7.5 — 55256b 1500x636 sha=f4f1531cbe06
+  + CMMG Gun Parts Sale @ Brownells — 127949b 1190x1054 sha=746aa994e648
+  + Volquartsen Gun Parts Sale @ Brownells — 143022b 1188x1078 sha=9e6571d8acf8
+  + Magazine Bundles Sale @ Brownells — 164455b 1184x1141 sha=c04ed192164c
+  + Mossberg MC1SC 9mm 3.4" 6/7 Rd - $339.99 — 65828b 798x540 sha=9caa6fe7a39f
+  + CZ CUSTOM A01 9mm 4.925" 19rd - Black - $2281.99 — 27872b 538x487 sha=9ae671ddd2ae
+  + Taurus TTX22 22LR/5.7x28FN 5.5" Titanium *NFA It — 23009b 730x341 sha=04f06068885c
+  + Radical Firearms, AR-15 Rifle 5.56 Nato, 16" Soc — 18537b 797x225 sha=c6d0fa4276e1
+  + Taylors & Company Uberti Stallion 38 Special 6 S — 13912b 490x297 sha=5e0a0190e48b
 
-fixed 31, failed 1  (96% success)
-distinct images: 31 across 31 deals
+fixed 16, failed 0  (100% success)
+distinct images: 16 across 16 deals
 PASS — no image shared between products
