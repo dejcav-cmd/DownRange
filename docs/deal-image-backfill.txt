@@ -1,22 +1,27 @@
-600 scanned, 16 need a real image, 10 coupon posts skipped
+600 scanned, 21 need a real image, 11 coupon posts skipped
 
-  + Holosun Sights Sale – EPS CORE RD 3, EPS CORE RD — 1819685b 1500x1125 sha=5d9aa7328658
-  + Taurus GX4 T.O.R.O. 9mm 3.06" barrel 13 Rds Grap — 95166b 1000x847 sha=e4edac96859f
-  + Ruger Super GP100 .357 Mag 5.5" Barrel 8-Rounds  — 37917b 800x550 sha=5d929c762405
-  + Winchester Model 70 Alaskan 375 HH Mag Bolt-Acti — 23272b 1303x211 sha=c95ee0699b21
-  + SK Standard Plus .22 Long Rifle 40 grain Lead Ro — 52574b 752x550 sha=37977a83da94
-  + SK Rifle Match .22 Long Rifle 40 grain Lead Roun — 44403b 747x550 sha=a91ea622354d
-  + Eley Ammunition Outlaw .22 LR 42-Gr. Lead Solid  — 38876b 508x376 sha=f4a0aaabfffd
-  + Cimarron Firearms US 7th Cavalry Blue .45 LC 7.5 — 55256b 1500x636 sha=f4f1531cbe06
-  + CMMG Gun Parts Sale @ Brownells — 127949b 1190x1054 sha=746aa994e648
-  + Volquartsen Gun Parts Sale @ Brownells — 143022b 1188x1078 sha=9e6571d8acf8
-  + Magazine Bundles Sale @ Brownells — 164455b 1184x1141 sha=c04ed192164c
-  + Mossberg MC1SC 9mm 3.4" 6/7 Rd - $339.99 — 65828b 798x540 sha=9caa6fe7a39f
-  + CZ CUSTOM A01 9mm 4.925" 19rd - Black - $2281.99 — 27872b 538x487 sha=9ae671ddd2ae
-  + Taurus TTX22 22LR/5.7x28FN 5.5" Titanium *NFA It — 23009b 730x341 sha=04f06068885c
-  + Radical Firearms, AR-15 Rifle 5.56 Nato, 16" Soc — 18537b 797x225 sha=c6d0fa4276e1
-  + Taylors & Company Uberti Stallion 38 Special 6 S — 13912b 490x297 sha=5e0a0190e48b
+  + RUGER 22 Charger 22 LR 8" 15rd w/ Threaded Barre — 13693b 539x272 sha=3537d05b1de9
+  + KAK AR-15 Standard Carbine Buffer - AR-LP-105 -  — 33783b 1280x853 sha=f7fa4993928f
+  + Taurus RPC 9mm 32-Round Web Exclusive Polymer Ma — 28799b 714x1000 sha=b703325cc373
+  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 101413b 1500x1000 sha=b7818d068f16
+  x Dirty Bird Mil-Spec Style Ambidextrous Safety Se — image not downloadable
+  + Springfield Armory M1A Socom 16 CQB 308 16" Barr — 22917b 800x600 sha=fc91974a95c9
+  + Comstock Armory Compact 45 Cal Muzzle Brake - .5 — 275044b 845x1000 sha=4636c5065822
+  + Hornady 223 Rem 55 gr FMJ Frontier 20/Box - $8.9 — 80260b 1000x666 sha=06a4e15cd352
+  + Texas Triggers Diablo AK-47 Forced Reset Trigger — 129224b 1000x666 sha=c87edec1db2c
+  + Unity Tactical VFG M-LOK Black Vertical Grip - $ — 63033b 458x447 sha=f418b5066f08
+  + Federal - Law Enforcement - 9mm - 147 Grain - HS — 209353b 772x522 sha=f6d4753f5581
+  + Kahr Arms P9 9mm 3.5" 6rd Pistol, Night Sights,  — 395062b 798x669 sha=25a33e9b5678
+  + SW M&P Bodyguard 2.0 .380 ACP 2.75" Compact 10/1 — 112618b 1500x1116 sha=8032736c3e2a
+  + Under Armour Sunglasses 60% Off - from $24.99 — 68070b 600x600 sha=6828c066d8d6
+  + Dirty Bird Magpul MOE Fixed 2-Stage Lower Build  — 86065b 1200x1024 sha=9eeeedd68d98
+  + PSAK-47 GF3-R BFPU Romanian Kit Build with Dong  — 306254b 1500x516 sha=4a42358a0a5f
+  + PSA 7.5" 300 Blackout Nitride 6" Lightweight M-L — 32042b 1000x500 sha=5a3fe2b27d36
+  + Ruger American Ranch Gen2 7.62x39mm 16.1" TB 5rd — 13609b 849x225 sha=c50800cf78f5
+  + Springfield 2020 WayPoint 308 Win 20" Bbl 5rd Ri — 12194b 1000x160 sha=3d4e68555010
+  + Sig Sauer MCX Rattler-LT Pistol 300 AAC Blackout — 18327b 680x360 sha=8146136b686d
+  + Sig Sauer P320 9mm Carry NS - Like New + New Hol — 19015b 489x427 sha=057c524e4426
 
-fixed 16, failed 0  (100% success)
-distinct images: 16 across 16 deals
+fixed 20, failed 1  (95% success)
+distinct images: 20 across 20 deals
 PASS — no image shared between products
