@@ -1,19 +1,37 @@
-600 scanned, 13 need a real image, 10 coupon posts skipped
+600 scanned, 30 need a real image, 10 coupon posts skipped
 
-  + MFT Flip Up Front Sight SDE - $32.95 — 13079b 500x383 sha=b118c4e38e9c
-  + Real Avid RAV-5 Folding Knife Drop Point Black - — 11126b 841x132 sha=45e04a629d2c
-  + ProMag M1 .30 Carbine 50-Round Polymer Drum Maga — 44419b 518x827 sha=9c433f0da7f8
-  + 45% off CVLIFE Rechargeable Bore Sight Laser Kit — 35891b 500x500 sha=ce81875ec300
-  + Colt Single Action Army 45 Long Colt Revolver wi — 14346b 600x245 sha=7eb5e48b7e32
-  + Heckler and Koch VP9A1 K OR 9mm 4.09" Barrel 10- — 37949b 625x491 sha=8a1535301a7e
-  + Canik Prime Radian 9mm 3.8" Barrel 17-Rounds OR  — 72105b 800x646 sha=ff218bd8bb1e
-  + 30% off EZshoot Bore Cleaner, Bore Cleaning Kit  — 89951b 500x500 sha=eb636940f340
-  + Alpha Foxtrot AF1911 Romulus 10mm 4.25" Threaded — 42758b 750x532 sha=636b01930dce
-  + 40% off CVLIFE Pickleball Paddle Thermoformed Ca — 24629b 500x500 sha=507b0f50e71b
-  + CZ-USA P-10 C Reverse and Ambi 9mm 17rd Mag - $3 — 29866b 516x893 sha=154d13c2b560
-  + Seekins Precision Havak PH3 Pro Hunter 3 .300 Wi — 12744b 682x119 sha=d405b79a2340
-  + LE TRADE IN Speer Ammo Gold Dot Personal Protect — 34234b 640x358 sha=f82a182fcb2c
+  + WELIDAY Tactical Gun Range Bag for 4 Handguns, L — 31220b 500x500 sha=b4c7657bd27d
+  + Geissele Automatics AR 15 Super Charging Handle  — 39011b 1200x1024 sha=3f490418a2ca
+  + Vortex Triumph 2 MOA Red Dot Sight - TRI-RD2 - $ — 32355b 945x630 sha=f1e601a6b349
+  + Wolf Bi-Metal Case Non-Corrosive 9mm, 115gr FMJ, — 65347b 1000x666 sha=70b03be208f3
+  + Discount Mil-Spec Lower Build Kit - AR15-Lower-B — 75881b 1200x1024 sha=0c75e974e201
+  x Howa M1500 Hogue 6.5 PRC 24" 3 Rd - $710.99 — image not downloadable
+  x Gemtech Lunar-9 9mm/300 Blackout Suppressor 1/2x — image not downloadable
+  x Asian Military GLOCK 31 Rd 40S&W - Fits 22 23 27 — rejected: extreme portrait (171x855)
+  x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Pink C — image not downloadable
+  + ATI Alpha Maxx 5.56 NATO Semi-Auto Pistol 7.5" B — 128121b 686x392 sha=9e549f595506
+  + Shadow Systems CR920 Magazine 9MM 13 Rounds - $2 — 22218b 657x656 sha=def49b9dda46
+  + Savage Arms BMAG .17 Winchester Super Magnum 8-R — 28060b 700x578 sha=f4ed42385915
+  + DPMS Panther Arms DP-15 Multi-Cal, AR-15 Classic — 83443b 613x338 sha=badd8f8905ae
+  x Henry Repeating Arms Varmint Express Large Loop  — image not downloadable
+  + CZ P-10 Semi-Compact 9mm 4.5" Black Nitride 15+1 — 62713b 1000x1000 sha=6f0645d55f11
+  + Sig Sauer Romeo8T Red Dot Sight 65 MOA Circle 1x — 64162b 1000x1000 sha=908408c8f0f5
+  + Steiner Predator 4 4-16x50mm E3 MOA Reticle Blac — 9566b 680x510 sha=b33d67ba0cc1
+  + GSL Technology Python Suppressor .45 ACP Lightwe — 25020b 720x397 sha=280f170970e5
+  + Sig Sauer P320 M17 9mm 3.9" 17Rd COY NS - $700 + — 52206b 700x700 sha=b026f3fe2757
+  + ZBULAR Flip Up Iron Sights for Picatinny Rail, F — 669500b 1500x995 sha=0013ff68c91c
+  + Soviet Arms 5.56 Krink SBR Ready Pistol, Plum Gl — 78651b 1455x773 sha=a408bba49031
+  + Ruger RXM 4" 9mm 15rd Pistol, Black/ODG w/Aimpoi — 22795b 559x469 sha=484df0cb62b4
+  + Swampfox Raider 1x20 Micro Prism Sight w/ Green  — 20601b 372x404 sha=ec8c21ad912d
+  + Arken Optics EP5 GEN2 5-25x56 FFP Rifle Scope, V — 12899b 500x298 sha=0eea526d7f09
+  + FN 509C Pistol 9mm (2)10rd Magazines 3.70" - 66- — 14716b 416x302 sha=7b2acae675a9
+  ... 25/30  ok=20 fail=5
+  + Gladiator GarageWorks Premier 30-Inch Wall GearB — 48347b 432x423 sha=7833526d5cbb
+  + Heritage Mfg 92 Ranch Hand 357 Magnum 6rd 12" Ba — 9830b 497x281 sha=de70345f5f01
+  + Heritage Mfg 92 .357 Magnum 12rd 24" Stainless S — 14917b 863x314 sha=9973e87d57a1
+  + Heritage Mfg Rough Rider Black Pearl .22LR 6.5"  — 64515b 1500x861 sha=835f1a077171
+  + Colt Kodiak, .44 Magnum, 6" Ported Barrel, 6rd C — 67879b 1337x696 sha=a645cfc4ab87
 
-fixed 13, failed 0  (100% success)
-distinct images: 13 across 13 deals
+fixed 25, failed 5  (83% success)
+distinct images: 25 across 25 deals
 PASS — no image shared between products
