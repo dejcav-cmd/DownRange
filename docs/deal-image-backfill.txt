@@ -1,9 +1,21 @@
-600 scanned, 3 need a real image, 9 coupon posts skipped
+600 scanned, 15 need a real image, 10 coupon posts skipped
 
+  + AR 15 Lower Parts Kit - AR15-LP-KT-010 - $34.95 — 53031b 1000x1000 sha=53a0033d6e26
+  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 101413b 1500x1000 sha=b7818d068f16
+  + NBS AR-15 Ultralight M-LOK Free Float Handguard  — 75052b 1500x1000 sha=5be006ba5078
+  + Sig Sauer P365 DH3 9mm 3.7" (2) 21Rd (1) 17Rd Co — 46692b 1000x700 sha=c8ea46f541d0
+  + Sig Sauer P365 AXG Luxe 380 ACP 3.1" (3) 12Rd X- — 25878b 856x616 sha=84c8ec12c15b
+  x Wraithworks WARP15-UP-A Billet AR-15 Upper Recei — image not downloadable
+  + Sig Sauer P365 X-Macro 9mm 21-Round Magazine, Co — 106307b 492x510 sha=b4ea78ccc5ef
+  + Ruger RXM Threaded 9mm 4.5" BBL OD Green Tiger S — 20358b 678x318 sha=e4709d1648f4
+  + BROWNELLS - BRN Slide Parts Kit With Billet Firi — 23238b 618x387 sha=a409b94850c4
+  x Winchester Repeating Arms 535204139 Model 70 Saf — image not downloadable
+  + Sellier & Bellot 7x57mm Rimmed 173gr Spce Ammo - — 12502b 481x339 sha=94ef1848de95
+  + Sig Sauer P365 XMacro TacPro Nightmare 9mm 2-17/ — 30307b 616x495 sha=a2358b4848e8
   x Howa M1500 Hogue 6.5 PRC 24" 3 Rd - $710.99 — image not downloadable
   x Asian Military GLOCK 31 Rd 40S&W - Fits 22 23 27 — rejected: extreme portrait (171x855)
   x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Pink C — image not downloadable
 
-fixed 0, failed 3  (0% success)
-distinct images: 0 across 0 deals
+fixed 10, failed 5  (66% success)
+distinct images: 10 across 10 deals
 PASS — no image shared between products
