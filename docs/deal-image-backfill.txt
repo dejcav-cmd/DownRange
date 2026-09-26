@@ -1,31 +1,20 @@
-600 scanned, 25 need a real image, 11 coupon posts skipped
+600 scanned, 14 need a real image, 10 coupon posts skipped
 
-  + Speer 53395 Lawman Training RHT 45ACP 155gr Sint — 25260b 609x384 sha=b3a5e815e0b4
-  + PSA 16" 5.56 NATO Hex 17" LSA Grunt M-LOK Upper  — 36434b 1500x358 sha=9fa90162b57b
-  + Tradesman Agency MAC 2 12-Gauge Semi Auto Inerti — 41002b 731x202 sha=fe94a422606a
-  + Glock Factory 9mm 43X/48 15 Round Magazine Bulk  — 35464b 1000x1000 sha=466ce09fc44c
-  + Stoeger Coach Gun 12gauge 20in Barrel 2rd Side B — 9094b 385x463 sha=7615db4b267e
-  + Ruger RXM Pistol, 9mm, 4" Barrel, Stealth Gray,  — 28759b 643x476 sha=de0c5d5b6461
-  + Gforce Arms Jawbone Hybrid 45 ACP - $512.29 — 22533b 798x414 sha=981df997935c
-  + Winchester Ammo USA 250th Tribute Target & Pract — 48280b 913x317 sha=f2e14bca7369
-  + Kimber Micro 9 Desert Range, 9mm, 3.15" Barrel,  — 21365b 542x431 sha=02de1750511f
-  + Strike Industries Triple Crown Comp Muzzle Brake — 10616b 330x328 sha=b3638a3c616a
-  + Strike Industries Ambidextrous Magazine Release  — 9184b 367x338 sha=4ceaf6a8246f
-  + Centurion Arms C4 Quad Rail Handguard - Carbine  — 28071b 797x436 sha=87cdd012257c
-  + Advantage Arms 5.56 Lightweight Hunter Suppresso — 31926b 374x732 sha=e7476fe2724a
-  + Advantage Arms 1.75x5 Fully Modular Suppressor - — 37257b 637x445 sha=473d59fc09ed
-  + PSA Mixtape .300 Blackout 220 Grain OTM Ammo, 20 — 26359b 498x352 sha=6237d8e4c6de
-  + Swampfox - Arrowhead 1-10 BDC, w/ Freedom Mount, — 15773b 504x295 sha=c19759d1527d
-  + Sig Sauer Buckmaster 3-9x40mm Riflescope & Range — 20396b 507x367 sha=56e8d5907c37
-  + Centurion Arms AR-15 Advanced Sniper Trigger (AS — 29613b 834x647 sha=c3a95b661276
-  + Sig Sauer Suppressor, Hexium, 7.62mm, TI, HUB DI — 9175b 346x210 sha=275de914f3b7
-  + POF USA Renegade+ DI SBR 556 10.5' 30 Rd BRZ - $ — 14323b 563x222 sha=e052862b1dba
+  + Canik METE MC9 Prime 9mm 3.64" 17-Rds Optic Read — 106092b 1307x854 sha=fc76eceeaa61
+  + Smith & Wesson M&P380 Shield EZ .380 ACP 3.7" 8r — 292493b 670x500 sha=eae4f280df74
+  + Rugged Suppressors, Obsidian 9 with ADAPT Modula — 11530b 680x268 sha=8cf383bf5bac
+  + Centurion Arms C4 5.56 M16 Bolt Carrier Group -  — 19131b 919x377 sha=8c48e7365f48
+  + Vortex Triumph 2 MOA Red Dot Sight - TRI-RD2 - $ — 32355b 945x630 sha=f1e601a6b349
+  + Vortex Optics Strike Eagle 1-8x24mm Rifle Scope, — 92224b 604x355 sha=16d5e6cb95e0
+  + Presma AR-10 Ambidextrous Charging Handle - Blac — 27347b 1000x698 sha=f2ac32b05b2a
+  + Hornady 5.56 NATO 62 gr FMJ Frontier 20/Box - $9 — 124233b 1350x900 sha=100c21b65d28
+  + Springfield Saint B5 Furniture 556 NATO 16" 30 R — 42171b 1500x460 sha=45b0ca5c2cb6
   x Wraithworks WARP15-UP-A Billet AR-15 Upper Recei — image not downloadable
   x Winchester Repeating Arms 535204139 Model 70 Saf — image not downloadable
   x Howa M1500 Hogue 6.5 PRC 24" 3 Rd - $710.99 — image not downloadable
   x Asian Military GLOCK 31 Rd 40S&W - Fits 22 23 27 — rejected: extreme portrait (171x855)
   x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Pink C — image not downloadable
 
-fixed 20, failed 5  (80% success)
-distinct images: 20 across 20 deals
+fixed 9, failed 5  (64% success)
+distinct images: 9 across 9 deals
 PASS — no image shared between products
