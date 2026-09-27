@@ -1,18 +1,40 @@
-600 scanned, 12 need a real image, 11 coupon posts skipped
+600 scanned, 33 need a real image, 11 coupon posts skipped
 
-  + Pioneer Arms Sporter Underfolder Ak47 7.62x39mm  — 50043b 1195x472 sha=b7dc004ebd38
-  + Heckler and Koch HK45C V1 Flat Dark Earth .45 AC — 32689b 626x482 sha=c0c1479bdafb
-  + HK MP5 22LR Steel FRT + 2 Bonus PET-CF FRTs - $6 — 188631b 1500x1329 sha=db341469f411
-  + Century VSKA White Distressed 7.62x39mm 16" Barr — 64526b 1500x443 sha=6f45158aded9
-  + Traditions 1858 Army Break Open Blued .44 Cal 8" — 23958b 784x310 sha=7e746aff6e8e
-  + Henry Repeating Mini Bolt Youth Single Shot 22 L — 14513b 800x308 sha=99212b66c9b2
-  + Magpul Large DAKA Can OD Green - $18.99 — 29538b 562x1000 sha=f2b272420a22
+  + AR-15 Range Ready Bundle – Savior 42" Black Rifl — 23422b 1000x614 sha=3a99f358013a
+  + Federal Premium 7mm PRC 155gr Terminal Ascent Am — 60909b 1100x384 sha=67f3f27e318d
+  + Walther P38/P1 Post-War 11-Piece Parts Kit - New — 490655b 1307x937 sha=953efc8a44ec
+  + Remington 870 12 GA Complete Metal Trigger Pack  — 190626b 1070x643 sha=2eb2ec7cd297
+  + SDS 1911 9mm 5" Parkerized Slide with Sights - S — 99557b 971x377 sha=355741d611c0
+  + Uncle Mikes Super Swivels For 20GA Remington 870 — 92307b 1200x1200 sha=5502a43ee807
+  + Faxon Firearms 24" Target 6.5 Creedmoor Rifle 41 — 63940b 1275x439 sha=5665ac076a19
+  + Ruger RXM 9mm 4 5" TB 15rd OR Pistol, 2 Mags, Ma — 303289b 878x633 sha=2a8d27807705
+  + Savage Arms Stance MC9MS 9mm 3.2" 8rd Pistol, Ni — 160436b 596x452 sha=bc160f1d46c6
+  + Henry Big Boy X Model 357 Mag 7+1 Rds 17.40" Bbl — 13624b 1000x215 sha=cbf8770573ea
+  + Kimber Eclipse Custom 45 ACP 5" Bbl 8+1 Rds Pist — 583542b 952x697 sha=dc670382b1bb
+  + GSL Technology Tundra 9mm Suppressor - $591 — 184363b 1000x645 sha=ab862e3b0a6f
+  + Girsan MCP 35 PI Lightweight 9mm 3.88" Matte Bla — 137334b 547x403 sha=adbfcdecc623
+  + Sig Sauer P320 X-Compact 9mm 3.6" Black Nitron P — 103138b 534x432 sha=0c0a5e2bf180
+  + Tee'd up and ready to go. NRA, RWB & Browning Te — 65975b 600x600 sha=d44e97ee2026
+  + Beretta A300/1301 Tactical Pro Style 3" Lifter - — 44573b 691x287 sha=578671e88682
+  + Briley 28 Gauge Choke Tube Wrench for Remington  — 112379b 738x526 sha=93f896814786
+  + Remington 20 Gauge Choke Tube Wrench for Remingt — 147997b 771x444 sha=42eda2f1b524
+  + Mossberg 590R 12 GA 18.5" 7RD Shotgun, Picatinny — 59920b 744x295 sha=7c09c8569ba8
+  + Berger Bullets Fullbore Target 30 Caliber (0.308 — 79406b 661x306 sha=cc5978a0c089
+  + Sig Sauer P320 M18 9mm 3.9" 17/21RD Off Duty w/  — 34490b 1350x900 sha=3e59d8a6b328
+  + Sig Sauer P320 M17 9mm 4.7" 17/21RD Off Duty w/  — 215758b 928x711 sha=5b0a54c3c4de
+  + Radical Defense CS 30 Suppressor, 300 Blackout w — 74769b 552x334 sha=5d199186a97d
+  + Kriss Vector CRB G2 .22 LR 16" 10rd Semi Auto Ri — 56799b 578x239 sha=d6517774df0b
+  + Rock Island TAC Ultra FSHC .45 ACP 5" 14rd 2011  — 52253b 1000x672 sha=1e5617b7436c
+  ... 25/33  ok=25 fail=0
+  + Glock G27 Magazine Gen 5 40 S&W 9-Round Magazine — 49969b 900x900 sha=5f710f7c46b2
+  + Dead Air Ghost 45M Suppressor, Modular, 22LR/10m — 29662b 1000x565 sha=e1739ad02673
+  + Swarovski Z5i 2.4-12x50 Riflescope, Illuminated  — 61392b 1200x900 sha=b0e68aae4e89
   x Wraithworks WARP15-UP-A Billet AR-15 Upper Recei — image not downloadable
   x Winchester Repeating Arms 535204139 Model 70 Saf — image not downloadable
   x Howa M1500 Hogue 6.5 PRC 24" 3 Rd - $710.99 — image not downloadable
   x Asian Military GLOCK 31 Rd 40S&W - Fits 22 23 27 — rejected: extreme portrait (171x855)
   x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Pink C — image not downloadable
 
-fixed 7, failed 5  (58% success)
-distinct images: 7 across 7 deals
+fixed 28, failed 5  (84% success)
+distinct images: 28 across 28 deals
 PASS — no image shared between products
