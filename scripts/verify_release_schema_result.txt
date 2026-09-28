@@ -1,0 +1,2 @@
+['NewsArticle', 'BreadcrumbList']
+False False False False
