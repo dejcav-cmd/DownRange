@@ -1,0 +1,14 @@
+name: Verify Batch
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/verify_batch.py > /tmp/out.txt 2>&1 || true
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/put_result.py /tmp/out.txt scripts/verify_batch_result.txt
