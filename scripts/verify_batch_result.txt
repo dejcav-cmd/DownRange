@@ -1,0 +1,12 @@
+sitemap urls 2196 state-hub 0 guns 38
+/guns 200 
+/guns/glock-19 200 
+/laws/TX 200 
+/laws/states 200 
+/state-hub 308 /laws/states
+/state-hub/TX 308 /laws/TX
+/ccw 308 /laws/my-state
+/state-intel 308 /laws/my-state
+/ranges 200 
+/ffl-finder 200 
+/learn 200 
