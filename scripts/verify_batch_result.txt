@@ -1,12 +1,19 @@
-sitemap urls 2196 state-hub 0 guns 38
-/guns 200 
-/guns/glock-19 200 
-/laws/TX 200 
-/laws/states 200 
-/state-hub 308 /laws/states
-/state-hub/TX 308 /laws/TX
-/ccw 308 /laws/my-state
-/state-intel 308 /laws/my-state
-/ranges 200 
-/ffl-finder 200 
-/learn 200 
+/competitions 404
+/ammo/9mm 404
+/reviews 404
+/reviews/sig-p365xl 404
+/preparedness 404
+/feeds/reviews 404
+/feeds/competitions 404
+/api/competitions 404
+/hunting 200
+/video 200
+/video?cat=review 200
+sitemap 2193 reviews 0 competitions 0 preparedness 0
+video has >Reviews< False
+video has >Training< False
+video has >Builds< False
+video has >Competition< False
+video has >History< False
+video has VIDEOS True
+nav Reviews link False | nav Preparedness False | nav Hunting True
