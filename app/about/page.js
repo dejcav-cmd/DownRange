@@ -31,7 +31,7 @@ const ABOUT_SCHEMA = {
     areaServed: 'United States',
     knowsAbout: [
       'Second Amendment', 'Firearms Law', 'Concealed Carry',
-      'ATF Regulations', 'Gun Deals', 'Gun Reviews',
+      'ATF Regulations', 'Gun Deals', 'New Firearm Releases',
       'National Firearms Act', '2A Legislation', 'SCOTUS Cases',
     ],
     founder: {

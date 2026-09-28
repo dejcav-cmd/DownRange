@@ -412,11 +412,9 @@ const NAV_TREE=[
     {id:'news',        l:'News Articles',     i:'📰'},
     {id:'releases',    l:'Gun Releases',      i:'🔫',b:'new'},
     {id:'blog',        l:'Blog',              i:'✍'},
-    {id:'reviews',     l:'Reviews',           i:'★'},
     {id:'deals',       l:'Deals',             i:'🔥'},
     {id:'canada',      l:'Canada',            i:'🇨🇦'},
     {id:'brazil',      l:'Brasil',            i:'🇧🇷'},
-    {id:'competitions',l:'Competitions',      i:'🏆'},
     {id:'drafts',      l:'Draft Recovery',    i:'🗂'},
   ]},
   {id:'publishing',label:'Publishing',     icon:'📅',panels:[
@@ -567,7 +565,6 @@ function renderSEO(el){
     {p:'/deals',   t:'Gun Deals | DownRange',                             ga:'Active',idx:'Indexed'},
     {p:'/blog',    t:'Blog | DownRange',                                  ga:'Active',idx:'Indexed'},
     {p:'/canada',  t:'Canadian Firearms Law | DownRange',                 ga:'Active',idx:'Indexed'},
-    {p:'/competitions',t:'Shooting Competitions | DownRange',             ga:'Active',idx:'Indexed'},
   ];
   el.innerHTML=`
     <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">GA4: G-KDGZX3CLEC · Sitemap: downrangeco.com/sitemap.xml</div>
@@ -650,7 +647,6 @@ function renderSitemap(el){
     {url:'/blog',          type:'page',    freq:'weekly',  priority:'0.7'},
     {url:'/blog/[slug]',   type:'dynamic', freq:'monthly', priority:'0.6'},
     {url:'/canada',        type:'page',    freq:'daily',   priority:'0.7'},
-    {url:'/competitions',  type:'page',    freq:'weekly',  priority:'0.6'},
     {url:'/states/[state]',type:'dynamic', freq:'weekly',  priority:'0.6'},
     {url:'/about',         type:'page',    freq:'monthly', priority:'0.4'},
     {url:'/sitemap.xml',   type:'sitemap', freq:'—',       priority:'—'},
@@ -776,10 +772,10 @@ async function renderNavVis(el){
     const cfg=d.config||{};
     const navItems=cfg.navVisibility||{};
     const ALL_NAV=[
-      {label:'Home',always:true},{label:'News',always:false},{label:'Market',always:false},
-      {label:'Releases',always:false},{label:'Laws',always:false},{label:'Deals',always:false},
-      {label:'Blog',always:false},{label:'Canada',always:false},{label:'Competitions',always:false},
-      {label:'About',always:false},
+      {label:'Home',always:true},{label:'News',always:false},{label:'Laws',always:false},
+      {label:'Guns',always:false},{label:'Outdoors',always:false},{label:'Learn',always:false},
+      {label:'🌎 International',always:false},{label:'Blog',always:false},
+      {label:'📺 Video',always:false},{label:'🏆 Giveaways',always:false},
     ];
     const saving={};
     function renderItems(){
@@ -813,10 +809,10 @@ async function renderNavVis(el){
 // ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
 function openPanel(id,label){
   const map={
-    news:renderNews,blog:renderBlog,releases:renderReleases,reviews:renderReviews,
+    news:renderNews,blog:renderBlog,releases:renderReleases,
     breaking:renderBreaking,newsletter:renderNewsletter,social:renderSocialLog,
     drafts:renderDraftRecovery,hub:renderContentHub,canada:renderCanada,
-    brazil:renderBrazil,competitions:renderCompetitions,deals:renderDeals,
+    brazil:renderBrazil,deals:renderDeals,
     schedule:renderSchedule,crons:renderCrons,overview:renderSysOverview,
     deployments:renderDeployments,agents:renderAgents,rss:renderRSSources,
     contacts:renderContacts,queue:renderQueue,history:renderHistory,
@@ -912,9 +908,8 @@ async function runFeedNow(){
 function renderContent(el){
   el.innerHTML=`<div class="section-title">Content</div><div class="section-sub">Manage all content types</div>`+
     [{id:'news',i:'📰',l:'News Articles',s:'Pull & manage news'},{id:'blog',i:'✍',l:'Blog Posts',s:'Editorial posts'},
-     {id:'releases',i:'🔫',l:'Gun Releases',s:'New product releases',b:'new'},{id:'reviews',i:'★',l:'Reviews',s:'Gear reviews'},
-     {id:'canada',i:'🇨🇦',l:'Canada',s:'Canadian firearms news'},{id:'brazil',i:'🇧🇷',l:'Brasil',s:'Brazilian firearms news'},
-     {id:'competitions',i:'🏆',l:'Competitions',s:'Shooting competition calendar'},{id:'deals',i:'🔥',l:'Deals Feed',s:'Gun deals & ammo'},
+     {id:'releases',i:'🔫',l:'Gun Releases',s:'New product releases',b:'new'},{id:'canada',i:'🇨🇦',l:'Canada',s:'Canadian firearms news'},{id:'brazil',i:'🇧🇷',l:'Brasil',s:'Brazilian firearms news'},
+     {id:'deals',i:'🔥',l:'Deals Feed',s:'Gun deals & ammo'},
      {id:'breaking',i:'🔴',l:'Breaking Alerts',s:'Ticker alerts'},{id:'drafts',i:'🔍',l:'Draft Recovery',s:'Unpublished drafts'},
      {id:'hub',i:'◈',l:'Content Hub',s:'All content overview'}]
     .map(p=>`<div class="row row-last" onclick="openPanel('${p.id}','${p.l}')" style="cursor:pointer"><span style="font-size:20px">${p.i}</span><div style="flex:1"><div class="row-label">${p.l}${p.b?` <span class="pill pill-gold">${p.b}</span>`:''}</div><div class="row-sub">${p.s}</div></div><span style="color:var(--dim)">›</span></div>`).join('');
@@ -1958,37 +1953,6 @@ function escHtml(s){return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').re
 // ═══════════════════════════════════════════════════════════════════
 // PANEL — REVIEWS
 // ═══════════════════════════════════════════════════════════════════
-async function renderReviews(el){
-  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
-  try{
-    const d=await api('/api/admin/reviews-manager');
-    const reviews=d.reviews||[];
-    if(!reviews.length){el.innerHTML='<div class="empty">No reviews</div>';return;}
-    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${reviews.length} reviews</div>`+
-      reviews.map(r=>{
-        const isLive=!!(r.publishedAt&&r.slug?.current);
-        const imgSrc=r.imageUrl||r.heroImage?.asset?.url||null;
-        return `<div class="art-card" id="card-${r._id}">
-          <div class="art-card-top">
-            ${imgSrc?`<img class="art-thumb" src="${imgSrc}" alt="" onerror="this.parentNode.innerHTML='<div class=art-thumb-ph>🔫</div>'">`:'<div class="art-thumb-ph">🔫</div>'}
-            <div class="art-info">
-              <div class="art-title">${r.title||'Untitled'}</div>
-              <div class="art-meta">
-                <span class="pill ${isLive?'pill-ok':'pill-warn'}">${isLive?'live':'draft'}</span>
-                ${r.brand?`<span class="tag">${r.brand}</span>`:''}
-                ${r.rating?`<span>★ ${r.rating}/10</span>`:''}
-              </div>
-            </div>
-          </div>
-          <div class="art-actions">
-            ${!isLive?`<button class="btn btn-xs" onclick="artAction('${r._id}','release','approve',this)">✓ Publish</button>`:''}
-            <button class="btn-outline btn-xs" onclick="fixImage('${r._id}','${encodeURIComponent(r.title||'')}','${r.category||''}',this)">📷 Fix Img</button>
-            ${r.slug?.current?`<a href="https://downrangeco.com/reviews/${r.slug.current}" target="_blank" class="btn-outline btn-xs">↗ View</a>`:''}
-          </div>
-        </div>`;
-      }).join('');
-  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
-}
 
 // ═══════════════════════════════════════════════════════════════════
 // PANEL — NEWSLETTER DRAFTS
@@ -2505,33 +2469,6 @@ async function renderBrazil(el){
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
-// ═══════════════════════════════════════════════════════════════════
-// PANEL — COMPETITIONS
-// GET /api/competitions → { matches: [...] }
-// ═══════════════════════════════════════════════════════════════════
-async function renderCompetitions(el){
-  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading...</div>';
-  try{
-    const d = await api('/api/competitions');
-    const items = d.matches||d.competitions||d.items||[];
-    if(!items.length){
-      el.innerHTML=`<div class="empty">No competition data</div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);text-align:center;margin-top:8px">Competitions are auto-populated from USPSA, IDPA, and 3-Gun feeds</div>`;
-      return;
-    }
-    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} competitions</div>`+
-      items.map(c=>`
-        <div style="background:var(--bg2);border:1px solid var(--border);padding:14px;margin-bottom:8px">
-          <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;margin-bottom:4px">${c.name||c.title||'—'}</div>
-          <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);display:flex;gap:8px;flex-wrap:wrap">
-            ${c.type?`<span class="tag">${c.type}</span>`:''}
-            ${c.date||c.startDate?`<span>📅 ${new Date(c.date||c.startDate).toLocaleDateString()}</span>`:''}
-            ${c.location?`<span>📍 ${c.location}</span>`:''}
-            ${c.active!==undefined?`<span class="pill ${c.active?'pill-ok':'pill-dim'}">${c.active?'active':'inactive'}</span>`:''}
-          </div>
-        </div>`).join('');
-  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
-}
 
 // ═══════════════════════════════════════════════════════════════════
 // PANEL — DEALS FEED

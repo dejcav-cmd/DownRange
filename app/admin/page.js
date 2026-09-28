@@ -1493,17 +1493,16 @@ function PublicationSchedule({ secret, setMsg }) {
 function NavVisibilityPanel({ adminKey, setMsg }) {
   // Labels must exactly match the label property in components/layout/Masthead.js NAV array
   const NAV_ITEMS = [
-    { label:'Home',                   desc:'Homepage link',            always:true },
-    { label:'News',                   desc:'News feed & articles' },
-    { label:'Laws',                   desc:'Federal & state gun laws' },
-    { label:'Reviews',                desc:'Gear & gun reviews' },
-    { label:'Guns',                   desc:'Encyclopedia, releases, compare' },
-    { label:'Market',                 desc:'Deals, ammo guide, ranges' },
-    { label:'Outdoors',               desc:'Hunting, competitions, training' },
-    { label:'Learn',                  desc:'Guides & education' },
-    { label:'🇨🇦 International', desc:'Canada / international firearms law' },
-    { label:'Blog',                   desc:'Blog posts & editorial' },
-    { label:'Video',                  desc:'Video content & channels' },
+    { label:'Home',             desc:'Homepage link',            always:true },
+    { label:'News',             desc:'News feed & articles' },
+    { label:'Laws',             desc:'Federal & state gun laws, reciprocity' },
+    { label:'Guns',             desc:'Encyclopedia, releases, NFA tracker, ballistics' },
+    { label:'Outdoors',         desc:'Hunting' },
+    { label:'Learn',            desc:'Guides & education' },
+    { label:'🌎 International', desc:'Canada & Brasil' },
+    { label:'Blog',             desc:'Blog posts & editorial' },
+    { label:'📺 Video',         desc:'Video library' },
+    { label:'🏆 Giveaways',     desc:'Active firearm giveaways' },
   ]
 
   const [hidden, setHidden] = useState(() => {

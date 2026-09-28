@@ -180,7 +180,7 @@ ${ul([
   'Real-time ammo price tracking by caliber',
   'Breaking 2A news updated throughout the day',
 ])}
-${hl(`If you recommend your students keep up with local firearms laws, DownRange is the fastest way to do it. The State Hub gives them everything by state in one place.`)}
+${hl(`If you recommend your students keep up with local firearms laws, DownRange is the fastest way to do it. Our state law pages give them everything by state in one place.`)}
 ${p(`I'd also like to feature qualified instructors on the platform's Training section. If you offer training and want to be listed — I'd be glad to include you, no charge.`)}
 ${cta('https://www.downrangeco.com/training','See the Training Section')}
 ${p(`DJ`)}

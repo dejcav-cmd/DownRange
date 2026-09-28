@@ -18,7 +18,7 @@ export const viewport = {
 
 export const metadata = {
   title: { default: "DownRange — America's Firearms Intelligence Hub", template: '%s | DownRange' },
-  description: 'The central source for U.S. firearms news, Second Amendment law, gun reviews, new releases, ammo prices, and state-by-state carry information.',
+  description: 'The central source for U.S. firearms news, Second Amendment law, new gun releases, live deals, and state-by-state carry information.',
   metadataBase: new URL('https://www.downrangeco.com'),
   icons: {
     icon:    [{ url: '/favicon.svg', type: 'image/svg+xml' }],
@@ -29,7 +29,7 @@ export const metadata = {
     type:'website', locale:'en_US', url:'https://www.downrangeco.com',
     siteName:'DownRange',
     title:"DownRange — America's Firearms Intelligence Hub",
-    description:'Live. Loaded. Lawful. Real-time 2A news, gun laws, ammo prices, and new releases.',
+    description:'Live. Loaded. Lawful. Real-time 2A news, gun laws, ammo deals, and new releases.',
     // PNG fallback — SVGs don't render on all social platforms
     images:[{ url:'https://www.downrangeco.com/og-default.png', width:1200, height:630, alt:"DownRange — America's Firearms Intelligence Hub" }],
   },
@@ -55,7 +55,7 @@ const ROOT_SCHEMA = [
       url: 'https://www.downrangeco.com/img/logo.png',
       width: 560, height: 162,
     },
-    description: "America's central intelligence hub for firearms news, Second Amendment law, ammo prices, and state gun laws.",
+    description: "America's central intelligence hub for firearms news, Second Amendment law, gun & ammo deals, and state gun laws.",
     foundingDate: '2026',
     areaServed: 'United States',
     knowsAbout: [

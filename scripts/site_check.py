@@ -14,7 +14,7 @@ PAGES = [
     "/value-estimator",
     "/learn",
     "/video",
-    "/state-hub/TX",
+    "/laws/TX",
     "/canada",
     "/brazil",
     "/ffl-finder",

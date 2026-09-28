@@ -195,7 +195,7 @@ ${trending.slice(0, 3000)}
 ═══════════════════════════════════════════
 DOWNRANGE PLATFORM
 ═══════════════════════════════════════════
-Pages: News, Laws, Reviews, Guns (encyclopedia), Releases, Market, Deals, Ranges, FFL Finder, CCW Insurance, Video, Learning Center, Training, Hunting, Precision, Preparedness, Safe Storage, State Hub, NFA Tracker, Compare, Value Estimator, Holsters, Blog, Press, Canada.
+Pages: News, Laws (federal, 50 states, my-state, reciprocity), Guns (encyclopedia), Releases, Deals, Ranges, FFL Finder, CCW Insurance, Video, Learning Center, Training, Hunting, Precision, Safe Storage, NFA Tracker, Ballistics, Compare, Value Estimator, Holsters, Blog, Giveaways, Press, Canada, Brazil.
 Mission: Independent firearms media. No manufacturer funding. No political money. Audience: gun owners, dealers, instructors, 2A advocates.
 
 Return ONLY a valid JSON object — no markdown, no preamble, no explanation:
