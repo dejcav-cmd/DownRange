@@ -1,15 +1,15 @@
 /laws/TX 200 news-block True link True lowercase-recip-links 0
-    - Austin Activists Reoccupy ICE Shooting Site One Week Later
-    - PSL Protests ICE Shooting in San Antonio; Turnout Minimal
-    - 41st Gun Rights Policy Conference Convenes in Dallas This Weekend
     - Fletcher Rifle Works Texas Flood Suppressor Survives 5,000-Round Durability Test
     - Herrera Maintains Lead in Texas 23rd Congressional Race
+    - Fifth Circuit Kills Federal Ban on Out-of-State Handgun Sales
+    - Austin Activists Reoccupy ICE Shooting Site One Week Later
+    - PSL Protests ICE Shooting in San Antonio; Turnout Minimal
 /laws/WA 200 news-block True link True lowercase-recip-links 0
+    - Washington State Implements $126 Permit Fee Starting May 2027
+    - Washington State Patrol Reverses Course on NRA Firearms Instructors
+    - Washington State Slaps Tax on Gun Purchases—Second Amendment Toll Begins
     - Ninth Circuit Ignores Bruen Ruling on State Gun Restrictions
     - SAF's 41st Gun Rights Policy Conference Kicks Off Friday in Bellevue
-    - Trump Opens Federal Lands to Hunters, Strips Decade-Old Restrictions
-    - Washington State Implements $126 Permit Fee Starting May 2027
-    - Seattle Doubles Down on Gun Control—Again, With No Results
 /laws/VA 200 news-block True link True lowercase-recip-links 0
     - Virginia AG Creates Unit to Sue Gun Makers Over New Liability Law
     - Virginia AG Creates Unit to Sue Gun Dealers Out of Business
@@ -17,17 +17,14 @@
     - Virginia Democrat's Reddit AMA Backfires on Gun Control Record
     - Virginia Gun Case Exposes Control Tactics Target Law-Abiding Citizens
 /laws/CA 200 news-block True link True lowercase-recip-links 0
-    - Supreme Court Takes Assault Weapon Ban Cases—Bruen Test Looms
-    - Ninth Circuit Ignores Bruen Ruling on State Gun Restrictions
     - Newsom's Silent Stance on Dozen California Gun Bills Revealed
-    - Viramontes Case Forces SCOTUS to Pick a Constitutional Lane
+    - SAF Fights California's Barrel Background Check Mandate
+    - California's Barrel Registry Law Draws SAF Opposition Comments
     - Virginia AG Creates Unit to Sue Gun Dealers Out of Business
+    - Santa Clara Sheriff's Undersheriff Guilty in CCW Permit Bribery Scheme
 /laws/WY 200 news-block True link True lowercase-recip-links 0
     - Cody Firearms Museum Publishes Winchester Collection Drawing Book
-    - Trump Opens Federal Lands to Hunters, Strips Decade-Old Restrictions
     - Mossberg Maverick SA 12-Gauge Handles High-Low Pairs at Athlon Rendezvous
-    - Supreme Court NFA Ruling Opens Door for Suppressed Hunting
-    - Trump DOI Opens Federal Lands to Hunting Access Nationwide
 /state-news 200 ['NewsMediaOrganization', 'WebSite', 'CollectionPage', 'BreadcrumbList']
 /state-news/tx 200 ['NewsMediaOrganization', 'WebSite', 'CollectionPage', 'BreadcrumbList']
 /state-news/wa 200 ['NewsMediaOrganization', 'WebSite', 'CollectionPage', 'BreadcrumbList']
