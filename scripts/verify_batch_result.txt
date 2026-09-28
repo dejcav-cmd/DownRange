@@ -1,19 +1,28 @@
-/competitions 404
-/ammo/9mm 404
-/reviews 404
-/reviews/sig-p365xl 404
-/preparedness 404
-/feeds/reviews 404
-/feeds/competitions 404
-/api/competitions 404
-/hunting 200
-/video 200
-/video?cat=review 200
-sitemap 2193 reviews 0 competitions 0 preparedness 0
-video has >Reviews< False
-video has >Training< False
-video has >Builds< False
-video has >Competition< False
-video has >History< False
-video has VIDEOS True
-nav Reviews link False | nav Preparedness False | nav Hunting True
+desktop / 200 removed-refs: none
+desktop /news 200 removed-refs: none
+desktop /video 200 removed-refs: none
+desktop /hunting 200 removed-refs: none
+desktop /guns 200 removed-refs: none
+desktop /laws/TX 200 removed-refs: none
+desktop /precision 200 removed-refs: none
+desktop /training 200 removed-refs: none
+desktop /safe-storage 200 removed-refs: none
+desktop /about 200 removed-refs: none
+mobile / 200 removed-refs: none
+mobile /news 200 removed-refs: none
+mobile /video 200 removed-refs: none
+mobile /hunting 200 removed-refs: none
+mobile /guns 200 removed-refs: none
+mobile /laws/TX 200 removed-refs: none
+mobile /precision 200 removed-refs: none
+mobile /training 200 removed-refs: none
+mobile /safe-storage 200 removed-refs: none
+mobile /about 200 removed-refs: none
+home meta: The only 2A hub that checks every gun &amp; ammo deal, release, and law against your state. Live deals, NFA wait times, ballistics tools, an
+about knowsAbout has Gun Reviews: False
+admin-app 200 False False False False
+/sitemap.xml 200 removed-refs: none
+/robots.txt 200 removed-refs: none
+/feeds/opml 200 removed-refs: none
+/rss 200 removed-refs: none
+/api/admin/reviews-manager 404
