@@ -605,6 +605,8 @@ RULES:
     // Merge validation fields
     obj.category = obj.category || validation.category
     obj.caliber  = obj.caliber  || validation.caliber
+    if (obj.brand) obj.brand = String(obj.brand).replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim()
+    if (obj.model) obj.model = String(obj.model).replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim()
     obj.msrp = normalizeMsrp(obj.msrp) || normalizeMsrp(validation.msrp) || extractMsrp(cleanText)
     return obj
   } catch (e) {

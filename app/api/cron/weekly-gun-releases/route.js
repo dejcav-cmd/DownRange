@@ -258,6 +258,9 @@ Return ONLY valid JSON (no markdown, no preamble):
     const parsed = JSON.parse(clean)
     if (parsed.skip || !parsed.brand || !parsed.model) return null
     // Validate model name — must look like a real gun model
+    // Strip trademark symbols so "FN 309™ MRD" and "FN 309 MRD" dedupe to one record
+    parsed.brand = parsed.brand.replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim()
+    parsed.model = parsed.model.replace(/[™®©]/g, '').replace(/\s+/g, ' ').trim()
     if (parsed.model.split(' ').length > 8) return null  // too long = probably a headline
     if (/horoscope|today|june|attorney|lawsuit|congress|senate|ford|toyota/i.test(parsed.model)) return null
     return parsed
