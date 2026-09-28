@@ -4,6 +4,7 @@ export const maxDuration = 300
 import crypto from 'crypto'
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
+import { extractMsrp, normalizeMsrp } from '@/lib/extractMsrp'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -104,16 +105,6 @@ const EXCLUDE_KEYWORDS = [
   // REMOVED — these words appear in virtually every legitimate gun product article
   // and cause massive false-positive exclusions. AI validates content instead.
 ]
-
-// ── CATEGORY FALLBACK IMAGES (only used if OG fetch fails) ───────────────────
-const CAT_IMGS = {
-  Pistol:     '/img/photos/pistol.jpg',
-  Revolver:   '/img/photos/pistol.jpg',
-  Rifle:      '/img/photos/rifle.jpg',
-  Shotgun:    '/img/photos/shotgun.jpg',
-  Suppressor: '/img/photos/suppressor.jpg',
-  default:    '/img/photos/pistol.jpg',
-}
 
 // ── FETCH PAGE (HTML or RSS) ──────────────────────────────────────────────────
 async function fetchPage(url) {
@@ -218,7 +209,7 @@ async function extractAndWrite(title, pageText, sourceUrl, knownBrand) {
 Article Title: ${title}
 Source URL: ${sourceUrl}
 ${knownBrand ? `Known Manufacturer: ${knownBrand}` : ''}
-Article Text: ${pageText.slice(0, 2000)}
+Article Text: ${pageText.slice(0, 4000)}
 
 STRICT RULES:
 - Only extract if this announces a SPECIFIC new firearm product (pistol, rifle, shotgun, revolver)
@@ -228,6 +219,8 @@ STRICT RULES:
 - Do NOT extract: stripped lowers, complete uppers, brace kits, furniture kits — these are parts not firearms
 - Do NOT extract if you cannot confirm a COMPLETE, NAMED firearm model (e.g. "Glock 19 Gen5 MOS" is valid, "AR-15 Rifle Kit" is NOT)
 - If not a new COMPLETE firearm product announcement: return {"skip": true}
+- msrp: the manufacturer's suggested retail price in whole US dollars exactly as stated in the article text (e.g. "$579 MSRP" -> 579). Use 0 ONLY if no price appears in the text. Never estimate.
+- Use ONLY facts stated in the article text. Do not invent history, anniversaries, specs, or features. If a spec is not stated, leave it out.
 
 Return ONLY valid JSON (no markdown, no preamble):
 {
@@ -282,26 +275,56 @@ async function loadExistingKeys() {
   } catch { return new Set() }
 }
 
+// ── IMAGE → SANITY CDN (rule 21: never hotlink) ──────────────────────────────
+async function uploadImageAsset(imageUrl, label) {
+  if (!imageUrl || !process.env.SANITY_API_TOKEN) return null
+  try {
+    const res = await fetch(imageUrl, {
+      headers: { 'User-Agent': 'Mozilla/5.0', Accept: 'image/*,*/*' },
+      signal: AbortSignal.timeout(15000),
+    })
+    if (!res.ok) return null
+    const ct = res.headers.get('content-type') || 'image/jpeg'
+    if (!ct.startsWith('image/') || ct.includes('svg')) return null
+    const buf = Buffer.from(await res.arrayBuffer())
+    if (buf.length < 8000) return null // icons, pixels, logos
+    const slug = label.toLowerCase().replace(/[^a-z0-9]+/g, '-').slice(0, 40)
+    const asset = await sanity.assets.upload('image', buf, { contentType: ct, filename: `release-${slug}.jpg` })
+    return asset?._id || null
+  } catch { return null }
+}
+
 // ── SAVE ──────────────────────────────────────────────────────────────────────
-async function saveRelease(extracted, sourceUrl, imageUrl, pubDate) {
-  const slug = `${extracted.brand}-${extracted.model}`
+async function saveRelease(extracted, sourceUrl, imageUrl, pubDate, articleText) {
+  const productName = `${extracted.brand} ${extracted.model}`.replace(/\s+/g, ' ').trim()
+  const slug = productName
     .toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 90)
   const _id = 'release-' + crypto.createHash('md5')
     .update(`${extracted.brand}::${extracted.model}`.toLowerCase()).digest('hex').slice(0, 12)
 
+  // AI value first, deterministic regex on the source as the backstop
+  const msrp = normalizeMsrp(extracted.msrp) || extractMsrp(articleText)
+
+  // Upload to Sanity. If the upload fails, leave the image empty — the
+  // fix-placeholder-images cron retries from sourceUrl. A wrong image or a
+  // hotlink is worse than none.
+  const assetId = await uploadImageAsset(imageUrl, productName)
+
   return sanity.createOrReplace({
     _id, _type: 'firearmRelease',
-    title:    `${extracted.brand} ${extracted.model}: ${extracted.summary?.split('.')[0] || 'New Release'}`.slice(0, 120),
+    // title is the schema's "Product Name". It used to be brand + model + the
+    // first summary sentence cut at 120 chars, which produced broken titles.
+    title:    productName,
     slug:     { _type: 'slug', current: slug },
     brand:    extracted.brand,
     model:    extracted.model,
     category: extracted.category || 'Pistol',
     caliber:  extracted.caliber  || null,
     action:   extracted.action   || null,
-    msrp:     typeof extracted.msrp === 'number' ? extracted.msrp : 0,
+    msrp,
     summary:  extracted.summary  || '',
     body:     extracted.body     || null,
-    imageUrl: imageUrl || CAT_IMGS[extracted.category] || CAT_IMGS.default,
+    ...(assetId ? { heroImage: { _type: 'image', asset: { _type: 'reference', _ref: assetId } } } : {}),
     specs:    (extracted.specs || []).map(s => ({
       _type: 'object',
       _key:  s.label.toLowerCase().replace(/\s+/g, '-'),
@@ -396,7 +419,7 @@ async function processSource(source, existingKeys, seenKeys, stats) {
     try {
       const pub = candidate.pubDate ? new Date(candidate.pubDate) : null
       const validPub = pub && pub > cutoff ? pub.toISOString() : new Date().toISOString()
-      await saveRelease(extracted, candidate.url, ogImage, validPub)
+      await saveRelease(extracted, candidate.url, ogImage, validPub, articleText)
       stats.created++
       stats.saved.push(`${extracted.brand} — ${extracted.model}`)
       console.log(`[RELEASES] ✓ SAVED: ${extracted.brand} — ${extracted.model} (${extracted.category})`)
@@ -425,17 +448,24 @@ export async function GET(req) {
   const existingKeys = await loadExistingKeys()
   console.log(`[RELEASES] ${existingKeys.size} existing releases in Sanity`)
 
-  // Rotate through sources in batches — avoids 300s timeout on 41 sources
-  const offset = Math.floor(Date.now() / (1000 * 60 * 60 * 6)) % Math.ceil(SOURCES.length / MAX_SOURCES_PER_RUN)
-  const start  = offset * MAX_SOURCES_PER_RUN
-  const batch  = SOURCES.slice(start, start + MAX_SOURCES_PER_RUN)
-  console.log(`[RELEASES] Batch ${offset + 1}: sources ${start + 1}-${start + batch.length} of ${SOURCES.length}`)
+  try {
+    // Rotate through sources in batches — avoids 300s timeout on 41 sources
+    const offset = Math.floor(Date.now() / (1000 * 60 * 60 * 6)) % Math.ceil(SOURCES.length / MAX_SOURCES_PER_RUN)
+    const start  = offset * MAX_SOURCES_PER_RUN
+    const batch  = SOURCES.slice(start, start + MAX_SOURCES_PER_RUN)
+    console.log(`[RELEASES] Batch ${offset + 1}: sources ${start + 1}-${start + batch.length} of ${SOURCES.length}`)
 
-  // Process sources sequentially (respect rate limits)
-  for (const source of batch) {
-    if (stats.created >= stats.maxCreate) break
-    await processSource(source, existingKeys, seenKeys, stats)
-    await sleep(500)
+    // Process sources sequentially (respect rate limits)
+    for (const source of batch) {
+      if (stats.created >= stats.maxCreate) break
+      await processSource(source, existingKeys, seenKeys, stats)
+      await sleep(500)
+    }
+  } catch (err) {
+    const ms = Date.now() - t0
+    console.error('[RELEASES] crash:', err.message)
+    await reportCronRun('weekly-gun-releases', { status: 'failed', ms, error: err.message }).catch(() => {})
+    return Response.json({ ok: false, error: err.message, ms }, { status: 500 })
   }
 
   const ms      = Date.now() - t0

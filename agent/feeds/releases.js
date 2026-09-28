@@ -44,6 +44,7 @@ import { matchManufacturer } from '../../lib/manufacturers.js'
 import { decodeHtmlEntities } from '../../lib/decodeEntities.js'
 import { sleep } from '../utils.js'
 import { reportCronRun } from '../../lib/cronReporter.js'
+import { extractMsrp, normalizeMsrp } from '../../lib/extractMsrp.js'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -581,7 +582,7 @@ Write a complete DownRange release article. Return ONLY valid JSON, no markdown 
 
 RULES:
 - specs: list every spec stated in the source, 3–10 items, exact values only
-- msrp: integer, 0 if not stated
+- msrp: whole US dollars exactly as stated in the source ("$579 MSRP" -> 579); 0 ONLY if no price appears. Never estimate.
 - body: use the section structure above, HTML only, 900–1100 words — hit that range
 - If the source is thin on specs, say so directly in the article: "FN hasn't released full specs yet"
 - Do not invent specs. Do not paraphrase specs from sections you wrote yourself.`
@@ -604,7 +605,7 @@ RULES:
     // Merge validation fields
     obj.category = obj.category || validation.category
     obj.caliber  = obj.caliber  || validation.caliber
-    if (!obj.msrp && validation.msrp) obj.msrp = validation.msrp
+    obj.msrp = normalizeMsrp(obj.msrp) || normalizeMsrp(validation.msrp) || extractMsrp(cleanText)
     return obj
   } catch (e) {
     console.error('[RELEASES v7] Write error:', e.message)
@@ -658,11 +659,11 @@ async function saveRelease(extracted, sourceUrl, imageAssetId, imageUrl, pubDate
       label: s.label,
       value: s.value,
     })),
-    // Prefer Sanity CDN heroImage; fall back to hotlink imageUrl as last resort
+    // Sanity CDN only (rule 21: never hotlink). If the upload failed, the image
+    // stays empty and fix-placeholder-images retries from sourceUrl.
     ...(imageAssetId
       ? { heroImage: { _type: 'image', asset: { _type: 'reference', _ref: imageAssetId } } }
       : {}),
-    imageUrl:        (!imageAssetId && imageUrl) ? imageUrl : null,
     sourceUrl,
     availableDate:   extracted.availableDate || null,
     isJustDropped:   true,

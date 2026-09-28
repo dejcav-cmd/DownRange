@@ -433,20 +433,23 @@ async function handler(req) {
       'news.google.com',
       'gstatic.com/news',
     ]
+    // Any release without a Sanity-hosted image needs repair: missing, empty,
+    // local /img placeholder, Google News logo, Wikimedia stock, or any other
+    // hotlink. (The old filter required defined(imageUrl) AND imageUrl == null,
+    // which can never be true, so image-less releases were never repaired.)
+    // Releases checked in the last 7 days with no usable og:image are skipped
+    // so they don't hold the 30 slots every hour.
+    const recheckCutoff = new Date(Date.now() - 7 * 24 * 60 * 60 * 1000).toISOString()
     const badReleases = await sanity.fetch(
       `*[_type == "firearmRelease"
         && defined(sourceUrl)
-        && defined(imageUrl)
-        && (
-          imageUrl match "*googleusercontent.com*"
-          || imageUrl match "*news.google.com*"
-          || imageUrl match "*gstatic.com/news*"
-          || imageUrl == null
-          || imageUrl == ""
-        )
+        && !defined(heroImage.asset)
+        && (!defined(imageUrl) || imageUrl == "" || !string::startsWith(imageUrl, "https://cdn.sanity.io"))
+        && (!defined(imageFixCheckedAt) || imageFixCheckedAt < $recheckCutoff)
       ] | order(_createdAt desc) [0...30] {
         _id, brand, model, sourceUrl, imageUrl
-      }`
+      }`,
+      { recheckCutoff }
     )
 
     if (badReleases.length > 0) {
@@ -465,15 +468,16 @@ async function handler(req) {
             stats.upgraded++
             console.log(`[FIX-IMAGES] ✓ Release CDN: "${label}"`)
           }
+          else releaseMutations.push({ patch: { id: rel._id, set: { imageFixCheckedAt: new Date().toISOString() } } })
         } else {
           stats.skipped++
+          releaseMutations.push({ patch: { id: rel._id, set: { imageFixCheckedAt: new Date().toISOString() } } })
         }
         await new Promise(r => setTimeout(r, 400))
       }
       if (releaseMutations.length) {
         await sanity.mutate(releaseMutations)
         console.log(`[FIX-IMAGES] Wrote ${releaseMutations.length} release mutations to Sanity`)
-        mutations.push(...releaseMutations)
       }
     }
 
