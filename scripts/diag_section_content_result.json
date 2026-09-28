@@ -1,0 +1,2144 @@
+{
+ "types": {
+  "sanity.imageAsset": {
+   "n": 14015,
+   "last_created": "2026-09-28T16:01:43Z",
+   "last_pub": "",
+   "c30": 2941,
+   "c90": 10298,
+   "sub": {}
+  },
+  "gunDeal": {
+   "n": 12312,
+   "last_created": "2026-09-28T16:00:26Z",
+   "last_pub": "2026-09-28T15:30:37.000Z",
+   "c30": 2675,
+   "c90": 8950,
+   "sub": {
+    "category=ammo": 4527,
+    "category=rifle": 1941,
+    "category=deal": 1885,
+    "category=pistol": 1364,
+    "category=accessory": 1003,
+    "category=optic": 847,
+    "category=shotgun": 406,
+    "category=suppressor": 338
+   }
+  },
+  "cronRun": {
+   "n": 2877,
+   "last_created": "2026-09-28T16:15:21Z",
+   "last_pub": "",
+   "c30": 1669,
+   "c90": 2566,
+   "sub": {
+    "status=success": 2751,
+    "status=warning": 119,
+    "status=failed": 7
+   }
+  },
+  "newsArticle": {
+   "n": 2399,
+   "last_created": "2026-09-28T16:00:54Z",
+   "last_pub": "2026-09-28T13:51:53.000Z",
+   "c30": 645,
+   "c90": 1861,
+   "sub": {
+    "category=law": 840,
+    "category=industry": 718,
+    "category=news": 596,
+    "category=opinion": 103,
+    "category=training": 94,
+    "category=breaking": 45,
+    "category=history": 2
+   }
+  },
+  "socialPost": {
+   "n": 907,
+   "last_created": "2026-09-28T16:02:21Z",
+   "last_pub": "",
+   "c30": 435,
+   "c90": 756,
+   "sub": {
+    "status=posted": 739,
+    "category=law": 633,
+    "status=failed": 141,
+    "category=news": 92,
+    "category=breaking": 31,
+    "status=draft": 27,
+    "category=industry": 24,
+    "category=opinion": 24
+   }
+  },
+  "video": {
+   "n": 718,
+   "last_created": "2026-09-28T12:00:19Z",
+   "last_pub": "2026-09-28T11:00:06Z",
+   "c30": 179,
+   "c90": 526,
+   "sub": {
+    "category=review": 602,
+    "category=hunting": 46,
+    "category=build": 18,
+    "category=training": 18,
+    "category=comparison": 16,
+    "category=news": 6,
+    "category=history": 5,
+    "category=ammo": 4
+   }
+  },
+  "breakingAlert": {
+   "n": 549,
+   "last_created": "2026-09-28T16:01:11Z",
+   "last_pub": "2026-09-27T20:30:49.000Z",
+   "c30": 148,
+   "c90": 429,
+   "sub": {}
+  },
+  "legislation": {
+   "n": 351,
+   "last_created": "2026-09-25T00:00:37Z",
+   "last_pub": "2026-09-27T12:30:09.000Z",
+   "c30": 24,
+   "c90": 103,
+   "sub": {
+    "status=pending": 344,
+    "status=failed": 7
+   }
+  },
+  "giveaway": {
+   "n": 224,
+   "last_created": "2026-09-27T20:00:45Z",
+   "last_pub": "",
+   "c30": 46,
+   "c90": 152,
+   "sub": {
+    "type=external": 72,
+    "category=accessories": 71,
+    "category=rifle": 41,
+    "category=pistol": 40,
+    "category=optics": 21,
+    "category=gear": 17,
+    "category=nfa": 15,
+    "category=shotgun": 10
+   }
+  },
+  "blogPost": {
+   "n": 222,
+   "last_created": "2026-09-24T14:32:38Z",
+   "last_pub": "2026-09-24T14:32:35.925Z",
+   "c30": 7,
+   "c90": 84,
+   "sub": {
+    "status=draft": 115,
+    "category=LAW": 63,
+    "category=OPINION": 46,
+    "category=GEAR": 43,
+    "status=published": 42,
+    "category=TRAINING": 28,
+    "category=MARKET": 19,
+    "category=BUILDS": 17
+   }
+  },
+  "outreachContact": {
+   "n": 221,
+   "last_created": "2026-06-02T05:07:40Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {
+    "status=active": 221,
+    "type=organization": 104,
+    "type=youtuber": 35,
+    "type=ffl_dealer": 33,
+    "type=youtube_emerging": 32,
+    "type=press": 17
+   }
+  },
+  "dailyBriefing": {
+   "n": 126,
+   "last_created": "2026-09-28T01:00:12Z",
+   "last_pub": "",
+   "c30": 31,
+   "c90": 91,
+   "sub": {
+    "status=complete": 124,
+    "status=failed": 2
+   }
+  },
+  "cronRunStore": {
+   "n": 122,
+   "last_created": "2026-09-28T06:30:03Z",
+   "last_pub": "",
+   "c30": 31,
+   "c90": 91,
+   "sub": {}
+  },
+  "imageAsset": {
+   "n": 115,
+   "last_created": "2026-05-28T01:12:54Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {
+    "category=rifle": 32,
+    "category=pistol": 30,
+    "category=ammo": 14,
+    "category=news": 12,
+    "category=law": 11,
+    "category=shotgun": 8,
+    "category=suppressor": 7,
+    "category=homedefense": 1
+   }
+  },
+  "canadaContent": {
+   "n": 108,
+   "last_created": "2026-09-20T08:20:25Z",
+   "last_pub": "2026-09-20T08:20:01.428Z",
+   "c30": 20,
+   "c90": 66,
+   "sub": {
+    "type=article": 85,
+    "type=province": 7,
+    "type=ammo": 7,
+    "type=law": 6,
+    "status=IN FORCE": 4,
+    "status=REQUIRED": 2,
+    "type=alert": 1,
+    "type=legislation": 1
+   }
+  },
+  "brazilContent": {
+   "n": 103,
+   "last_created": "2026-09-23T09:40:29Z",
+   "last_pub": "2026-09-23T09:40:06.165Z",
+   "c30": 23,
+   "c90": 85,
+   "sub": {
+    "type=artigo": 103
+   }
+  },
+  "nfaWaitTime": {
+   "n": 54,
+   "last_created": "2026-09-27T06:00:28Z",
+   "last_pub": "",
+   "c30": 16,
+   "c90": 45,
+   "sub": {}
+  },
+  "stateProfile": {
+   "n": 50,
+   "last_created": "2026-05-25T20:39:03Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {}
+  },
+  "outreachSendLog": {
+   "n": 40,
+   "last_created": "2026-06-03T05:52:17Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {
+    "status=sent": 38,
+    "status=skipped": 2
+   }
+  },
+  "firearmRelease": {
+   "n": 28,
+   "last_created": "2026-09-28T06:01:45Z",
+   "last_pub": "2026-09-28T06:01:45.100Z",
+   "c30": 5,
+   "c90": 12,
+   "sub": {
+    "category=Rifle": 16,
+    "category=Pistol": 9,
+    "category=Revolver": 2,
+    "category=Shotgun": 1
+   }
+  },
+  "huntingContent": {
+   "n": 18,
+   "last_created": "2026-09-28T09:10:34Z",
+   "last_pub": "2026-09-28T09:10:34.788Z",
+   "c30": 5,
+   "c90": 13,
+   "sub": {
+    "category=hunting": 18
+   }
+  },
+  "prepContent": {
+   "n": 18,
+   "last_created": "2026-09-28T09:10:53Z",
+   "last_pub": "2026-09-28T09:10:53.261Z",
+   "c30": 5,
+   "c90": 13,
+   "sub": {
+    "category=preparedness": 18
+   }
+  },
+  "outreachTemplate": {
+   "n": 11,
+   "last_created": "2026-05-31T03:50:14Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {
+    "type=organization": 4,
+    "type=youtuber": 3,
+    "type=instructor": 1,
+    "type=gun_shop": 1,
+    "type=all": 1,
+    "type=ffl_dealer": 1
+   }
+  },
+  "system.group": {
+   "n": 11,
+   "last_created": "2026-05-25T19:56:11Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {}
+  },
+  "ammoPrice": {
+   "n": 7,
+   "last_created": "2026-05-25T20:39:11Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {}
+  },
+  "competition": {
+   "n": 5,
+   "last_created": "2026-05-28T14:29:43Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {
+    "status=upcoming": 5,
+    "type=Pistol": 1,
+    "type=Steel": 1,
+    "type=Bullseye": 1,
+    "type=Action Pistol": 1,
+    "type=BUG": 1
+   }
+  },
+  "newsletterSubscriber": {
+   "n": 3,
+   "last_created": "2026-07-02T18:25:00Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 2,
+   "sub": {
+    "status=active": 2,
+    "status=unsubscribed": 1
+   }
+  },
+  "review": {
+   "n": 3,
+   "last_created": "2026-05-28T14:29:36Z",
+   "last_pub": "2026-05-28T03:26:26.694Z",
+   "c30": 0,
+   "c90": 0,
+   "sub": {
+    "status=published": 3,
+    "category=pistol": 1,
+    "category=rifle": 1,
+    "category=suppressor": 1
+   }
+  },
+  "newsletterDraft": {
+   "n": 2,
+   "last_created": "2026-07-04T06:31:06Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 2,
+   "sub": {
+    "status=draft": 2
+   }
+  },
+  "siteConfig": {
+   "n": 2,
+   "last_created": "2026-05-29T02:22:14Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {}
+  },
+  "system.retention": {
+   "n": 1,
+   "last_created": "2026-05-25T19:56:11Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {}
+  },
+  "socialConfig": {
+   "n": 1,
+   "last_created": "2026-06-04T04:30:57Z",
+   "last_pub": "",
+   "c30": 0,
+   "c90": 0,
+   "sub": {}
+  }
+ },
+ "giveaways": [
+  {
+   "_updatedAt": "2026-07-05T08:03:26Z",
+   "active": false,
+   "endDate": "2026-07-04",
+   "status": null,
+   "title": "Win a Daniel Defense DD4 RIII!"
+  },
+  {
+   "_updatedAt": "2026-06-30T08:03:41Z",
+   "active": false,
+   "endDate": "2026-06-29",
+   "status": null,
+   "title": "Win a Geissele Super Duty 14.5, Walther PDP, HUXWRX suppressor, Leupold Mark 5, and more! Plus 10 winners of a SSA-E trigger!"
+  },
+  {
+   "_updatedAt": "2026-06-12T08:00:16Z",
+   "active": false,
+   "endDate": "2026-06-11",
+   "status": null,
+   "title": "Win a Springfield Hellcat and Veridian Green Dot!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a Beretta BRX1 and a Pulsar thermal optic!"
+  },
+  {
+   "_updatedAt": "2026-06-23T08:03:01Z",
+   "active": false,
+   "endDate": "2026-06-22",
+   "status": null,
+   "title": "Win a Springfield Echelon, handgun safe, and more!"
+  },
+  {
+   "_updatedAt": "2026-07-02T08:03:17Z",
+   "active": false,
+   "endDate": "2026-07-01",
+   "status": null,
+   "title": "Win a Sig P365 XMACRO, ammo, and more! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-23T08:03:01Z",
+   "active": false,
+   "endDate": "2026-06-22",
+   "status": null,
+   "title": "Win a Ruger American Gen 2 and more!"
+  },
+  {
+   "_updatedAt": "2026-07-09T08:03:24Z",
+   "active": false,
+   "endDate": "2026-07-08",
+   "status": null,
+   "title": "Win 1 of 4 Leupold Prize Packs!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Exclusive Tacdial.com (a WTG company) Win a Timex Expedition Watch!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a Canik TTI Combat, ammo, optic, and more! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a fully kitted out ADM AR (rifle, suppressor, optics, and more!)"
+  },
+  {
+   "_updatedAt": "2026-06-23T08:03:01Z",
+   "active": false,
+   "endDate": "2026-06-22",
+   "status": null,
+   "title": "Win a S&amp;W 1854 lever in 45LC and suppressor!"
+  },
+  {
+   "_updatedAt": "2026-08-09T08:00:48Z",
+   "active": false,
+   "endDate": "2026-08-08",
+   "status": null,
+   "title": "Win a Zev folding rifle, suppressor and Louis Vuitton bag!"
+  },
+  {
+   "_updatedAt": "2026-07-02T08:03:17Z",
+   "active": false,
+   "endDate": "2026-07-01",
+   "status": null,
+   "title": "Win $400 cash!"
+  },
+  {
+   "_updatedAt": "2026-07-04T08:03:10Z",
+   "active": false,
+   "endDate": "2026-07-03",
+   "status": null,
+   "title": "Win a Colt M5 AR, optics, and ammo!"
+  },
+  {
+   "_updatedAt": "2026-06-17T08:03:27Z",
+   "active": false,
+   "endDate": "2026-06-16",
+   "status": null,
+   "title": "Win a custom PB&amp;J AR!"
+  },
+  {
+   "_updatedAt": "2026-06-06T14:00:45Z",
+   "active": false,
+   "endDate": "2026-06-05",
+   "status": null,
+   "title": "Win a Springfield Echelon, chassis, and Banish 9 suppressor!"
+  },
+  {
+   "_updatedAt": "2026-06-15T08:03:25Z",
+   "active": false,
+   "endDate": "2026-06-14",
+   "status": null,
+   "title": "Win $250! (Ammo money!)"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win 1 of 2 Canik handguns! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a Beretta A300 and Burris optic!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a $1,500 Moriarti Gift Card! (Click enter to win, it is a link)"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a fully kitted out Honeybadger!"
+  },
+  {
+   "_updatedAt": "2026-07-06T08:03:39Z",
+   "active": false,
+   "endDate": "2026-07-05",
+   "status": null,
+   "title": "Win an HK MR556 or a suppressor!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a Barrett MRAD or AR!"
+  },
+  {
+   "_updatedAt": "2026-07-11T08:03:02Z",
+   "active": false,
+   "endDate": "2026-07-10",
+   "status": null,
+   "title": "Win 10ozs of silver!"
+  },
+  {
+   "_updatedAt": "2026-07-07T08:03:48Z",
+   "active": false,
+   "endDate": "2026-07-06",
+   "status": null,
+   "title": "Win a special President edition 30 cal Banish suppressor!"
+  },
+  {
+   "_updatedAt": "2026-08-03T15:37:01Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "wintheguns.com"
+  },
+  {
+   "_updatedAt": "2026-09-07T20:01:04Z",
+   "active": true,
+   "endDate": "2026-10-30",
+   "status": null,
+   "title": "Grizzly Scout 40 Rolling Cooler, MKC Knife, Turtlebox Speaker + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-09T08:00:48Z",
+   "active": false,
+   "endDate": "2026-08-08",
+   "status": null,
+   "title": "Liberty Centurion 250 Commemorative Gun Safe Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-03T14:45:33Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "$2,500 American Eagle Gold Coins Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-02T14:01:45Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Ruger American Ranch II 6.5CM Rifle, Banish Suppressor + Leupold VX-3HD Scope Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-29T08:00:34Z",
+   "active": false,
+   "endDate": "2026-08-28",
+   "status": null,
+   "title": "Win $2,000!"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win an Aimpoint Pro, Streamlight weapon light, ear pro, holster, and Agilite gear! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-08-18T08:00:58Z",
+   "active": false,
+   "endDate": "2026-08-17",
+   "status": null,
+   "title": "Walther PDP F-Series 9mm Pistol Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-05T08:00:58Z",
+   "active": false,
+   "endDate": "2026-08-04",
+   "status": null,
+   "title": "Win 1 of 3 classes for Online Civilian Medical Training!"
+  },
+  {
+   "_updatedAt": "2026-08-03T15:37:01Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "More Giveaways Here!"
+  },
+  {
+   "_updatedAt": "2026-09-25T20:00:45Z",
+   "active": true,
+   "endDate": "2026-10-15",
+   "status": null,
+   "title": "Win 1 of 3 $2k gaming computers or you can take the cash. Cash = guns!"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Microtech Hera II D/E Tactical Knife Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Ruger American Rifle, Suppressor, Tripod, Optics + Camo Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-27T08:00:46Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Win an FRT, BCG, and buffer!"
+  },
+  {
+   "_updatedAt": "2026-09-16T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-15",
+   "status": null,
+   "title": "Win a 14 day supply of survival food!"
+  },
+  {
+   "_updatedAt": "2026-09-25T20:00:45Z",
+   "active": true,
+   "endDate": "2026-10-31",
+   "status": null,
+   "title": "Win a Daniel Defense PCC, 4k rounds of ammo, a Holosun optic, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-01T14:00:22Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Shooting Tripod Package Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-11T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-10",
+   "status": null,
+   "title": "Win 1 of 5 Prizes of Shadow Systems pistols, optics, a suppressor, and more!"
+  },
+  {
+   "_updatedAt": "2026-08-16T14:00:05Z",
+   "active": true,
+   "endDate": "2026-10-14",
+   "status": null,
+   "title": "Win a braced Taurus GX4!"
+  },
+  {
+   "_updatedAt": "2026-09-23T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-22",
+   "status": null,
+   "title": "2 Spearguns, 2 Sets of Diving Gear + YETI Tundra 65 Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-19T08:00:46Z",
+   "active": false,
+   "endDate": "2026-09-18",
+   "status": null,
+   "title": "EOTECH EFLX-CE Red Dot Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-08T08:00:01Z",
+   "active": false,
+   "endDate": "2026-08-07",
+   "status": null,
+   "title": "Sig 516 G3 Bronze Rifle, 1,000 Rounds Black Hills Ammo + WML Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-11T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-10",
+   "status": null,
+   "title": "Win 1 of multiple prizes of hand guns, suppressors, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-22T20:00:45Z",
+   "active": true,
+   "endDate": "2026-09-28",
+   "status": null,
+   "title": "Vector Optics Scopes Giveaway (15 Winners)"
+  },
+  {
+   "_updatedAt": "2026-08-03T14:45:33Z",
+   "active": true,
+   "endDate": "2027-08-20",
+   "status": null,
+   "title": "Win a $500 Amazon Gift Card! (New optics!)"
+  },
+  {
+   "_updatedAt": "2026-09-25T20:00:45Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Win a Tiger Claw AFG and a $250 gift card to diefree dot com!"
+  },
+  {
+   "_updatedAt": "2026-09-19T08:00:46Z",
+   "active": false,
+   "endDate": "2026-09-18",
+   "status": null,
+   "title": "Win a PSA AR, FRT, optics, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-05T20:00:46Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Mossberg 990 Aftershock SPX Shotgun Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-25T08:01:33Z",
+   "active": false,
+   "endDate": "2026-08-24",
+   "status": null,
+   "title": "Win a helmet and armor combo, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-05T14:00:46Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Win a Mossberg 990 Aftershock SPX!"
+  },
+  {
+   "_updatedAt": "2026-08-19T08:01:41Z",
+   "active": false,
+   "endDate": "2026-08-18",
+   "status": null,
+   "title": "EOTECH Vudu 4-12x Scope Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-19T08:00:46Z",
+   "active": false,
+   "endDate": "2026-09-18",
+   "status": null,
+   "title": "PSA Guardsman-15 Rifle, Layer X Suppression Raster 5K, FRT + Osight R Optic Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-25T14:00:47Z",
+   "active": true,
+   "endDate": "2026-10-21",
+   "status": null,
+   "title": "Daniel Defense DD PCC, Holosun ARO-EVO Red Dot + 4k Rounds of 9mm Ammo Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "5 Gram Gold Bar Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-12T08:01:40Z",
+   "active": true,
+   "endDate": "2026-10-09",
+   "status": null,
+   "title": "Win a Stream light, duty belt, and a ton more!"
+  },
+  {
+   "_updatedAt": "2026-09-20T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-19",
+   "status": null,
+   "title": "Win 1 of 3 prizes of over 10ozs of silver each!"
+  },
+  {
+   "_updatedAt": "2026-08-30T08:00:13Z",
+   "active": true,
+   "endDate": "2026-10-01",
+   "status": null,
+   "title": "Win a DB-15 AR!"
+  },
+  {
+   "_updatedAt": "2026-09-12T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-11",
+   "status": null,
+   "title": "Win a kitted out Daniel Defense AR pistol package!"
+  },
+  {
+   "_updatedAt": "2026-08-12T14:00:44Z",
+   "active": true,
+   "endDate": "2026-10-09",
+   "status": null,
+   "title": "Streamlight TLR-7 HL-X, BFG Belt + Trauma Kit, Cleaning Kit + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-25T14:00:45Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "Win an EOtech Vudu Super Short Scope!"
+  },
+  {
+   "_updatedAt": "2026-09-20T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-19",
+   "status": null,
+   "title": "Mossberg 500 Combo Field/Deer 12Ga Shotgun Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-14T14:00:46Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Trip for 2 to St Vincent + The Grenadines and VIP Nascar Experience Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-29T14:00:05Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Win an AR upgrade package!"
+  },
+  {
+   "_updatedAt": "2026-08-28T08:01:32Z",
+   "active": false,
+   "endDate": "2026-08-27",
+   "status": null,
+   "title": "Win a Daniel Defense SPR III AR!"
+  },
+  {
+   "_updatedAt": "2026-09-01T20:00:20Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Win 8 grams of platinum, gold, and silver!"
+  },
+  {
+   "_updatedAt": "2026-08-20T08:00:47Z",
+   "active": false,
+   "endDate": "2026-08-19",
+   "status": null,
+   "title": "Win 2x Zev Tech FDP9 SBRs!"
+  },
+  {
+   "_updatedAt": "2026-09-10T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-09",
+   "status": null,
+   "title": "Sig P211 GTO, Q Suppressor, Aimpoint T2 + Unity Mount, Prodigy Comp Giveaway (4 Winners)"
+  },
+  {
+   "_updatedAt": "2026-09-11T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-10",
+   "status": null,
+   "title": "Daniel Defense DDM4 V7P, Meprolight Tru-Vision Red Dot + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win a 4.5\" AR (click the giveaway on the scrolling banner)"
+  },
+  {
+   "_updatedAt": "2026-08-18T14:03:00Z",
+   "active": true,
+   "endDate": "2026-11-15",
+   "status": null,
+   "title": "$500 Cabela\u2019s Gift Card Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-27T08:00:39Z",
+   "active": false,
+   "endDate": "2026-08-26",
+   "status": null,
+   "title": "Daniel Defense SPR III AR-15 Rifle Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-27T20:00:45Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Disruptor FRT, BCG + Buffer Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-21T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-20",
+   "status": null,
+   "title": "Win 1 of 8 prizes of a Buds Gun Shop Gift Certificate, top prize is $1k!"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win a shooting tripod!"
+  },
+  {
+   "_updatedAt": "2026-08-31T08:01:07Z",
+   "active": false,
+   "endDate": "2026-08-30",
+   "status": null,
+   "title": "Sunwayfoto Shooting Tripod + Saddle Mount Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-18T14:03:00Z",
+   "active": true,
+   "endDate": "2026-12-31",
+   "status": null,
+   "title": "Trip for 2 to Palma Mallorca Island Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-29T20:01:02Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Unity FAST FTC 4x Magnifier, Optic Riser, AXON SL + Gascap Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-03T14:45:33Z",
+   "active": true,
+   "endDate": "2026-10-31",
+   "status": null,
+   "title": "Win an all expenses paid trip to Hawaii!"
+  },
+  {
+   "_updatedAt": "2026-08-03T15:37:01Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "Scholarships, Awards and Contests"
+  },
+  {
+   "_updatedAt": "2026-09-23T14:00:45Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Christiansen Arms Evoke 6.5CM Rifle, Vortex Viper HD 3.5-14x, Suppressor + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T20:00:20Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Win a Glock 17 Gen 6! (Click black giveaway bubble at bottom)"
+  },
+  {
+   "_updatedAt": "2026-08-09T08:00:48Z",
+   "active": false,
+   "endDate": "2026-08-08",
+   "status": null,
+   "title": "SOLGW Broadsword 5.56 Rifle, Thermal Optic, Strategic Sciences MD + Ammo Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Geissele Super Duty Mod1 SBR, SilenceCo Velos LBP Suppressor, Trijicon Scope + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-08T14:00:45Z",
+   "active": true,
+   "endDate": "2026-10-30",
+   "status": null,
+   "title": "STT-15 Rifle, MP5 Lower w/FRT, P320 Pistol, P320 FRT + Optics Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-03T15:37:01Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "Youth Wildlife Art Contest"
+  },
+  {
+   "_updatedAt": "2026-08-03T15:37:01Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "Scholarships, Awards & Contests"
+  },
+  {
+   "_updatedAt": "2026-08-28T20:00:34Z",
+   "active": true,
+   "endDate": "2026-10-31",
+   "status": null,
+   "title": "Win one of many prizes of night vision, a Zev pistol, thermal optics, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-19T14:00:46Z",
+   "active": true,
+   "endDate": "2026-10-31",
+   "status": null,
+   "title": "Win $12,500 (it's toward a vacation, but awarded as cash)"
+  },
+  {
+   "_updatedAt": "2026-08-04T08:00:04Z",
+   "active": false,
+   "endDate": "2026-08-03",
+   "status": null,
+   "title": "Win an RRA AR-15 and a compound bow!"
+  },
+  {
+   "_updatedAt": "2026-09-10T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-09",
+   "status": null,
+   "title": "Weatherby Orion Matte Blue 20g 26\u2033 O/U Shotgun, Earpro + Hunting Gear Package Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-08T08:00:01Z",
+   "active": false,
+   "endDate": "2026-08-07",
+   "status": null,
+   "title": "Win $1,500 in gift cards (and more) or 1 of 15 other cash prizes!"
+  },
+  {
+   "_updatedAt": "2026-09-07T08:00:46Z",
+   "active": false,
+   "endDate": "2026-09-06",
+   "status": null,
+   "title": "Kimber Factory-Exclusive Pistols Giveaway (3 Winners)"
+  },
+  {
+   "_updatedAt": "2026-09-11T08:00:47Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "FN PS90 Rifle + Sig Romeo 5 Red Dot Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-31T08:01:07Z",
+   "active": false,
+   "endDate": "2026-08-30",
+   "status": null,
+   "title": "Diamondback DB15 Diamond Series AR-15 Rifle Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-04T20:01:44Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Custom MDT Rifle, Suppressor, Optics, Shotgun, Gun Safe, Handgun + Hunting Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-28T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-27",
+   "status": null,
+   "title": "Custom Faxon .300BLK AR-15 Build Parts, Ammo + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-21T08:00:02Z",
+   "active": false,
+   "endDate": "2026-08-20",
+   "status": null,
+   "title": "Gen6 Glock 17 Pistol Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-23T14:00:45Z",
+   "active": true,
+   "endDate": "2026-10-12",
+   "status": null,
+   "title": "Whitetail Hunt, Sig Sawtooth Rifle, Mathews ARC 30 Bow + Hunting Gear Package Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-27T08:00:39Z",
+   "active": false,
+   "endDate": "2026-08-26",
+   "status": null,
+   "title": "Win $5,000! (Any gun you want!)"
+  },
+  {
+   "_updatedAt": "2026-09-16T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-15",
+   "status": null,
+   "title": "Win a custom cerakoted upper, lower, and handguard!"
+  },
+  {
+   "_updatedAt": "2026-09-01T14:00:22Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Sig P365 Fuse Pistol Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-05T08:00:58Z",
+   "active": false,
+   "endDate": "2026-08-04",
+   "status": null,
+   "title": "Ruger Harrier AR-15 Rifle Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-25T08:01:33Z",
+   "active": false,
+   "endDate": "2026-08-24",
+   "status": null,
+   "title": "Ballistic Helmet, Plate Carrier, RF2 Plates, Tactical Belt + Gear Giveaway (2 Winners)"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Spotting Scope, Camo + Hunting Gear Package Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-02T08:01:02Z",
+   "active": false,
+   "endDate": "2026-09-01",
+   "status": null,
+   "title": "Sig P365 TacPac + Romeo Zero Red Dot Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-15T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-14",
+   "status": null,
+   "title": "Custom Cerakote AR-15 Builder\u2019s Set Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-10T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-09",
+   "status": null,
+   "title": "H&K MR556 Pistol, Dead Air CT5P Suppressor, EOTECH EXPS3-1 Optic + Unity Mount Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Sons of Liberty Gunworks L89 Rifle + Liberty Suppressor Agent Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-19T08:01:41Z",
+   "active": false,
+   "endDate": "2026-08-18",
+   "status": null,
+   "title": "2x Zev Technologies FDP9 SBR + Sig ROMEO5 Red Dot Giveaway"
+  },
+  {
+   "_updatedAt": "2026-07-22T08:01:10Z",
+   "active": false,
+   "endDate": "2026-07-21",
+   "status": null,
+   "title": "S&W M&P15 AXE .300BLK Pistol + Gemtech Neutrino Suppressor Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-16T20:00:07Z",
+   "active": true,
+   "endDate": "2026-10-14",
+   "status": null,
+   "title": "Taurus GX4 Pistol + Strike Bravo Chassis Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-14T20:01:21Z",
+   "active": true,
+   "endDate": "2027-01-31",
+   "status": null,
+   "title": "Custom GatorTail Boat, Benelli SBE3 Shotgun + Duck Hunting Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-07-22T08:01:10Z",
+   "active": false,
+   "endDate": "2026-07-21",
+   "status": null,
+   "title": "Stribog SP9A3S PCC, AnechoX 35 Suppressor, Aimpoint Duty PRO Optic + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-13T08:01:11Z",
+   "active": false,
+   "endDate": "2026-08-12",
+   "status": null,
+   "title": "Hunting Gear Package Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Rhine River Cruise for 2 Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-03T14:00:46Z",
+   "active": true,
+   "endDate": "2026-10-07",
+   "status": null,
+   "title": "Mathews ARC Compound Bow, QAD rest, Dialed Sight, Black Eagle Arrows + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-14T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-13",
+   "status": null,
+   "title": "EXCLUSIVE: Win a Shift Zer0 Ballistics Suppressor!"
+  },
+  {
+   "_updatedAt": "2026-09-19T08:00:48Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Exclusive: Win gun lube, a custom AR magazine, and more! (3 winners)"
+  },
+  {
+   "_updatedAt": "2026-09-19T20:00:46Z",
+   "active": true,
+   "endDate": "2026-10-09",
+   "status": null,
+   "title": "Custom Christiansen Arms 6.5CM Rifle, Vortex VX-6HD 3-18x Scope + Hornady Ammo Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-10T08:00:56Z",
+   "active": false,
+   "endDate": "2026-08-09",
+   "status": null,
+   "title": "Win a POF AR-10, suppressor, optics, ammo, armor, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win a custom Beretta M9A4! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-09-27T20:00:45Z",
+   "active": true,
+   "endDate": "2026-10-04",
+   "status": null,
+   "title": "Vortex Crossfire 3-9x Scope, Streamlight Weaponlight, Ammo + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-19T08:00:48Z",
+   "active": true,
+   "endDate": "2026-10-31",
+   "status": null,
+   "title": "Win a $250 Amazon Gift Card! (New optics money)"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Taurus TX22 Competition + Backwoods Marksman Ti 22 Suppressor Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win a Savage 110 Carbon Hunter and Zeiss scope!"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Savage 110 Carbon Hunter Rifle + Zeiss V3 3.5-10x Scope Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-09T20:00:45Z",
+   "active": true,
+   "endDate": "2026-10-27",
+   "status": null,
+   "title": "Black Aces Tactical Pro Series L Lever-Action 12 GA Shotgun Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-31T08:01:07Z",
+   "active": false,
+   "endDate": "2026-08-30",
+   "status": null,
+   "title": "Henry SPD HUSH Series .45-70 Lever Action Rifle, 1k Rounds of Ammo + Burris 2-8x Optic Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "CZ P-10 C Ported COA Pistol Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-20T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-19",
+   "status": null,
+   "title": "Win 1 of 3 Glock's and a ton of gear!"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Hold Up Displays Gun Wall Giveaway (6 Winners)"
+  },
+  {
+   "_updatedAt": "2026-08-06T14:00:59Z",
+   "active": true,
+   "endDate": "2026-10-10",
+   "status": null,
+   "title": "5-Day Guided Whitetail Hunt, Savage 110 Core Hunter Rifle + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-02T14:01:45Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "M1 Carbine SBR .30Carbine Giveaway (3 Winners)"
+  },
+  {
+   "_updatedAt": "2026-09-05T20:00:46Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Medical Gear Giveaway (61 Winners)"
+  },
+  {
+   "_updatedAt": "2026-08-03T14:45:33Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Camo Winchester SXP 12Ga Shotgun Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-22T08:00:04Z",
+   "active": false,
+   "endDate": "2026-08-21",
+   "status": null,
+   "title": "Win a $400 Amazon Gift Card! (Optics money!)"
+  },
+  {
+   "_updatedAt": "2026-08-22T08:00:04Z",
+   "active": false,
+   "endDate": "2026-08-21",
+   "status": null,
+   "title": "Win a $500 Visa! (New gun?)"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win a SOLGW AR and suppressor! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-09-16T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-15",
+   "status": null,
+   "title": "McMillan Game Warden Universal SA Stock + Canis Camping Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-22T08:00:46Z",
+   "active": false,
+   "endDate": "2026-09-21",
+   "status": null,
+   "title": "Custom MDT .22CM Rifle, Kahles 3.5-18x Scope, NOCPIX Thermal Clip-On + SilencerCo Scythe Ti Suppressor Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Burris Eliminator 6 4-20x Rangefinding Scope + HD Binos Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Moriarti 4.5\u2033 AR-15 Pistol Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-03T14:45:33Z",
+   "active": true,
+   "endDate": "2026-12-31",
+   "status": null,
+   "title": "10 Guns or Kawasaki Side-by-Side Giveaway (9 Winners)"
+  },
+  {
+   "_updatedAt": "2026-09-23T14:00:45Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Benelli SBE3 12Ga, 20Ga + 28Ga Shotguns + Lifetime onX Hunt Elite Membership Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-26T08:00:39Z",
+   "active": false,
+   "endDate": "2026-08-25",
+   "status": null,
+   "title": "Vortex Strike Eagle 1-10x Scope, Defender CCW Red Dot + More Vortex Optics Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-03T15:43:51Z",
+   "active": false,
+   "endDate": null,
+   "status": null,
+   "title": "Giveaways"
+  },
+  {
+   "_updatedAt": "2026-08-05T08:00:58Z",
+   "active": false,
+   "endDate": "2026-08-04",
+   "status": null,
+   "title": "Savior Equipment Rifle Bag Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-25T08:01:33Z",
+   "active": false,
+   "endDate": "2026-08-24",
+   "status": null,
+   "title": "Ruger American Gen II Predator 6.5CM Rifle, Dead Air RXD30Ti Suppressor + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "POF USA P-15 Rifle, 1-6x Scope, Rise Trigger + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Colt Optics Ready Combat Elite 1911 Pistol Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-04T08:00:04Z",
+   "active": false,
+   "endDate": "2026-08-03",
+   "status": null,
+   "title": "One Horse AR-15 Rifle, BB Gun + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-10T08:00:56Z",
+   "active": false,
+   "endDate": "2026-08-09",
+   "status": null,
+   "title": "100 Days of Silence Suppressor Giveaway (100 Suppressor Winners)](https://wn.nr/KcrwF3R)"
+  },
+  {
+   "_updatedAt": "2026-09-13T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-12",
+   "status": null,
+   "title": "Win a $500 gift card (you can choose Walmart and buy ammo!) and more!"
+  },
+  {
+   "_updatedAt": "2026-08-06T08:01:31Z",
+   "active": false,
+   "endDate": "2026-08-05",
+   "status": null,
+   "title": "S&W America 250 Model 66 & 642 Revolvers Giveaway (2 Winners)"
+  },
+  {
+   "_updatedAt": "2026-08-26T08:00:39Z",
+   "active": false,
+   "endDate": "2026-08-25",
+   "status": null,
+   "title": "Springfield Echelon 4.0C Pistol, Viridian RFX11 Green Dot + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-06T08:01:31Z",
+   "active": false,
+   "endDate": "2026-08-05",
+   "status": null,
+   "title": "Win 1 of 2 prizes of a S&W 357 or 38!"
+  },
+  {
+   "_updatedAt": "2026-09-19T08:00:46Z",
+   "active": false,
+   "endDate": "2026-09-18",
+   "status": null,
+   "title": "Win a GIGANTIC package from S&W including a trip to their HQ, 2x pistol, 2x ARs, suppressors, optics, ammo, and a ton more!"
+  },
+  {
+   "_updatedAt": "2026-08-05T14:00:09Z",
+   "active": true,
+   "endDate": "2027-01-31",
+   "status": null,
+   "title": "Custom GatorTail Boat, Benelli SBE3 Shotgun + Duck Hunting Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Henry H23 SPD Predator Rifle, Scope, Suppressor, 1k Rounds .223 Ammo + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-05T20:00:46Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Custom MDT Rifle, Suppressor, Optics, Shotgun, Gun Safe, Handgun + Hunting Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-21T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-20",
+   "status": null,
+   "title": "Century Arms AP5, Rare Breed RD3 FRT, SB Tactical Brace + Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-05T08:01:07Z",
+   "active": true,
+   "endDate": "2027-01-31",
+   "status": null,
+   "title": "Win a custom boat, Benelli shotgun, and more!"
+  },
+  {
+   "_updatedAt": "2026-08-24T08:03:35Z",
+   "active": false,
+   "endDate": "2026-08-23",
+   "status": null,
+   "title": "Trip for 2 to Turks & Caicos Giveaway"
+  },
+  {
+   "_updatedAt": "2026-09-01T08:00:15Z",
+   "active": false,
+   "endDate": "2026-08-31",
+   "status": null,
+   "title": "Win 1 of 3 high end collectors Kimbers!"
+  },
+  {
+   "_updatedAt": "2026-09-08T08:00:47Z",
+   "active": true,
+   "endDate": "2026-10-02",
+   "status": null,
+   "title": "Custom MDT Rifle, Suppressor, Optics, Shotgun, Gun Safe, Handgun + Hunting Gear Giveaway"
+  },
+  {
+   "_updatedAt": "2026-08-04T08:00:04Z",
+   "active": false,
+   "endDate": "2026-08-03",
+   "status": null,
+   "title": "Win 1 of 2 prizes of a S&W 30-30 or 45-70!"
+  },
+  {
+   "_updatedAt": "2026-08-26T14:01:32Z",
+   "active": true,
+   "endDate": "2026-11-11",
+   "status": null,
+   "title": "Win a Colt .45 ACP D-Day Commemorative Engraved 1911!"
+  },
+  {
+   "_updatedAt": "2026-09-01T20:00:20Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Win a M1A SBR or 1 of 2 1911's!"
+  },
+  {
+   "_updatedAt": "2026-09-05T14:00:46Z",
+   "active": true,
+   "endDate": "2026-09-30",
+   "status": null,
+   "title": "Win 1 of over 60 prizes of emergency/medical supplies!"
+  },
+  {
+   "_updatedAt": "2026-08-13T08:01:11Z",
+   "active": false,
+   "endDate": "2026-08-12",
+   "status": null,
+   "title": "Win a $500 Walmart Gift card! (Ammo money!)"
+  },
+  {
+   "_updatedAt": "2026-09-08T08:00:45Z",
+   "active": false,
+   "endDate": "2026-09-07",
+   "status": null,
+   "title": "Win a Faxon 300blk build, suppressor, ammo, optics, and more!"
+  },
+  {
+   "_updatedAt": "2026-09-02T08:01:02Z",
+   "active": false,
+   "endDate": "2026-09-01",
+   "status": null,
+   "title": "Win $400!"
+  },
+  {
+   "_updatedAt": "2026-05-30T14:00:44Z",
+   "active": false,
+   "endDate": "2026-05-29",
+   "status": null,
+   "title": "Win a Magnum Research MLR-22 SwitchBolt, BANISH 22, optics, and more!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win $500 of ammo!"
+  },
+  {
+   "_updatedAt": "2026-06-29T08:03:27Z",
+   "active": false,
+   "endDate": "2026-06-28",
+   "status": null,
+   "title": "Exclusive: Win an AT3 Prowler AR pistol, AT3 Alpha Green Dot, FRT, and RETCORD!"
+  },
+  {
+   "_updatedAt": "2026-06-18T08:03:45Z",
+   "active": false,
+   "endDate": "2026-06-17",
+   "status": null,
+   "title": "Win an AR, EOtech, and suppressor!"
+  },
+  {
+   "_updatedAt": "2026-06-29T08:03:27Z",
+   "active": false,
+   "endDate": "2026-06-28",
+   "status": null,
+   "title": "Win a flared magwell lower, buffer tube, grip, and more!"
+  },
+  {
+   "_updatedAt": "2026-06-04T14:01:26Z",
+   "active": false,
+   "endDate": "2026-06-03",
+   "status": null,
+   "title": "Win a Century Arms AP5! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-22T08:03:03Z",
+   "active": false,
+   "endDate": "2026-06-21",
+   "status": null,
+   "title": "Win a Faxon AR and suppressor, Primary Arms LPVO, and a ton more!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:09Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Mad Pig Customs 30-30, with a suppressor and an EOTech!"
+  },
+  {
+   "_updatedAt": "2026-06-02T14:00:38Z",
+   "active": false,
+   "endDate": "2026-06-01",
+   "status": null,
+   "title": "Win tactical gear and survival food!"
+  },
+  {
+   "_updatedAt": "2026-06-02T14:00:39Z",
+   "active": false,
+   "endDate": "2026-06-01",
+   "status": null,
+   "title": "Win a Ruger RXM and Streamlight!"
+  },
+  {
+   "_updatedAt": "2026-07-06T08:03:39Z",
+   "active": false,
+   "endDate": "2026-07-05",
+   "status": null,
+   "title": "Win a custom NDZ Glock 43x, Swampfox optic, and more!"
+  },
+  {
+   "_updatedAt": "2026-07-20T08:03:50Z",
+   "active": false,
+   "endDate": "2026-07-19",
+   "status": null,
+   "title": "Win a Taurus RPC!"
+  },
+  {
+   "_updatedAt": "2026-06-20T08:03:08Z",
+   "active": false,
+   "endDate": "2026-06-19",
+   "status": null,
+   "title": "Win a Ruger Harrier AR and Sig ROMEO optic!"
+  },
+  {
+   "_updatedAt": "2026-06-21T08:03:39Z",
+   "active": false,
+   "endDate": "2026-06-20",
+   "status": null,
+   "title": "Win a Shadow Systems MR920 and a Dead Air suppressor!"
+  },
+  {
+   "_updatedAt": "2026-06-20T08:03:08Z",
+   "active": false,
+   "endDate": "2026-06-19",
+   "status": null,
+   "title": "Win $35k in guns and gear!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:10Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a custom engraved Colt Python!"
+  },
+  {
+   "_updatedAt": "2026-05-29T14:00:46Z",
+   "active": true,
+   "endDate": "2026-12-07",
+   "status": null,
+   "title": "Win 1 of 4 prize packs that include $2,500 cash, a He Man sword (lol), and more!"
+  },
+  {
+   "_updatedAt": "2026-05-29T14:00:46Z",
+   "active": true,
+   "endDate": "2027-01-04",
+   "status": null,
+   "title": "Win one of many prizes packages of guns and gear!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:11Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Ruger Harrier AR and RXM pistol, EOTech optics, and gear!"
+  },
+  {
+   "_updatedAt": "2026-07-02T08:03:17Z",
+   "active": false,
+   "endDate": "2026-07-01",
+   "status": null,
+   "title": "Win a Bul Armory Ultralight Pro!"
+  },
+  {
+   "_updatedAt": "2026-06-11T08:00:37Z",
+   "active": false,
+   "endDate": "2026-06-10",
+   "status": null,
+   "title": "Win some shooting and fishing gear!"
+  },
+  {
+   "_updatedAt": "2026-07-07T08:03:48Z",
+   "active": false,
+   "endDate": "2026-07-06",
+   "status": null,
+   "title": "Win an EAA 2311, optics, armor, FRT, and more!"
+  },
+  {
+   "_updatedAt": "2026-06-09T08:01:33Z",
+   "active": false,
+   "endDate": "2026-06-08",
+   "status": null,
+   "title": "Win a S&amp;W Bodyguard 2.0, ammo, and gear!"
+  },
+  {
+   "_updatedAt": "2026-06-29T08:03:27Z",
+   "active": false,
+   "endDate": "2026-06-28",
+   "status": null,
+   "title": "Win 1 of 3 prizes of a Sig P365, Beretta 92FS, and Benelli Nova 3 shotgun!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:12Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Springfield Heatseeker 308 pistol! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:13Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Big Horn Armory AR and more! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:14Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a $500 Amazon Gift Card! (New optics money - click the black giveaway button on bottom left)"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:15Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win 2 ARs from AT3 and Luth AR! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:16Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Sig Rose prize pack! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:17Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a 16ga shotgun! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:18Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win an Other Creek Polonium 30 suppressor!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:19Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Taurus GX2, ammo, and red dot!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:20Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win 10ozs of silver!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:21Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a $15k PSA shopping spree and a trip to Myrtle Beach!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:22Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win 1 of 5 Henry firearms!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:23Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Canik TTI Combat!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a S&amp;W Shield in 30 Super Carry!"
+  },
+  {
+   "_updatedAt": "2026-07-26T08:00:57Z",
+   "active": false,
+   "endDate": "2026-07-25",
+   "status": null,
+   "title": "Win 1 of 200 suppressors!"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win a PWS Mk118, Trijicon MRO, Arex Delta patrol, and more!"
+  },
+  {
+   "_updatedAt": "2026-06-06T14:01:05Z",
+   "active": false,
+   "endDate": "2026-06-05",
+   "status": null,
+   "title": "Win a Rost Martin 9mm pistol, ammo, and more!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:24Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Liberty Gun safe, Decked truck bed system, Gunner kennel, and more!"
+  },
+  {
+   "_updatedAt": "2026-05-31T14:00:17Z",
+   "active": false,
+   "endDate": "2026-05-30",
+   "status": null,
+   "title": "Win 1 of 11 guns.com gift cards!"
+  },
+  {
+   "_updatedAt": "2026-06-01T14:01:26Z",
+   "active": false,
+   "endDate": "2026-05-31",
+   "status": null,
+   "title": "Win a Keystone Passport Camper! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-07-04T08:03:10Z",
+   "active": false,
+   "endDate": "2026-07-03",
+   "status": null,
+   "title": "Win a Saricam S2 shotgun! (Single entry)"
+  },
+  {
+   "_updatedAt": "2026-07-01T08:03:09Z",
+   "active": false,
+   "endDate": "2026-06-30",
+   "status": null,
+   "title": "Win 100 Ounces of Silver!"
+  },
+  {
+   "_updatedAt": "2026-07-04T08:03:10Z",
+   "active": false,
+   "endDate": "2026-07-03",
+   "status": null,
+   "title": "Win a Beretta Shotgun, Sig P320 X5 Legion, Springfield 1911, AR-15, and Ruger American .22 (5 Winners)"
+  }
+ ],
+ "cron_last": {
+  "image-fix": {
+   "_updatedAt": "2026-09-28T16:15:21Z",
+   "details": "Scanned 85 \u00b7 ok: 80 \u00b7 OG: 5 \u00b7 fallback: 0 \u00b7 failed: 0",
+   "jobId": "image-fix",
+   "status": "success"
+  },
+  "news": {
+   "_updatedAt": "2026-09-28T16:02:23Z",
+   "details": "27 published (22 AI, 5 raw) of 50 fetched \u00b7 23 dupes | Chicago: At Least 16 Shot Friday Through Sunday Morning \u00b7 Confrontation on Bowers Street: Georgia Property Owner Shoots Intruder Inside Vacant Bowman Home \u00b7 Everytown Attack on Handgun Sales for Adults Under 21 Starts With Status Quo's Failure \u00b7 Photos: Activists Reoccupy ICE Shooting Scene in Austin One Week Later \u00b7 The SIG P385 Is Here \u2014 But Would You Buy One Yet? \u00b7 Judge Allows Maryland's Glock Ban to Go Into Effect \u00b7 Detroit\u2019s ShotStoppers Cuts Shootings 45%, No Gun Control Needed \u00b7 If 40 Million AR-15s in Circulation Isn't 'in Common Use,' What Is? \u00b7 Colombia\u2019s President Straps On a Sidearm Amid Cartel Siege \u00b7 NRA, SAF Ask SCOTUS to Shield Gun Ads From Liability \u00b7 What Did Newsom Do on Gun Bills? Now We Know. \u00b7 Giffords Claims Trump Is Terrible on Crime Despite Evidence \u00b7 Behind Locked Doors at Holland & Holland\u2019s London Gunroom \u00b7 Viramontes a Test for SCOTUS Justices' Originalism \u00b7 SAF Presses DOJ: Since When Is a Patent Fight ATF\u2019s Job? | gates: {\"noTitle\":0,\"hashDup\":0,\"canada\":0,\"brazil\":0,\"gate3\":0,\"gate4\":6,\"sanityDup\":0,\"passedDedup\":23,\"published\":23,\"threw\":0,\"lastError\":null}",
+   "jobId": "news",
+   "status": "success"
+  },
+  "fix-placeholder-images": {
+   "_updatedAt": "2026-09-28T16:01:50Z",
+   "details": "scanned:0 upgraded:12 fallback:0 skipped:50 failed:0 (84106ms)",
+   "jobId": "fix-placeholder-images",
+   "status": "success"
+  },
+  "gun-deals": {
+   "_updatedAt": "2026-09-28T16:01:00Z",
+   "details": "fetched:415 added:1 skipped:79 healed:0 imaged:0",
+   "jobId": "gun-deals",
+   "status": "success"
+  },
+  "reddit-deals": {
+   "_updatedAt": "2026-09-28T16:00:46Z",
+   "details": "actions-managed; 0 reddit deals in last 2h",
+   "jobId": "reddit-deals",
+   "status": "success"
+  },
+  "video": {
+   "_updatedAt": "2026-09-28T16:00:27Z",
+   "details": "0 new videos | 52 already existed | 16/16 channels | 0 errors | [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object] \u00b7 [object Object]",
+   "jobId": "video",
+   "status": "success"
+  },
+  "cron-health": {
+   "_updatedAt": "2026-09-28T16:00:13Z",
+   "details": "HEALTHY \u2014 0 issue(s)",
+   "jobId": "cron-health",
+   "status": "success"
+  },
+  "fix-images": {
+   "_updatedAt": "2026-09-28T15:00:22Z",
+   "details": "290 scanned \u00b7 0 OG images fetched \u00b7 0 photos assigned \u00b7 290 already ok \u00b7 0 failed",
+   "jobId": "fix-images",
+   "status": "success"
+  },
+  "fetch-images": {
+   "_updatedAt": "2026-09-28T14:20:59Z",
+   "details": "fetched:10 uploaded:7 failed:2",
+   "jobId": "fetch-images",
+   "status": "success"
+  },
+  "quality-rewrite": {
+   "_updatedAt": "2026-09-28T14:20:50Z",
+   "details": "Scanned 80 \u00b7 full-rewrite 2/2 \u00b7 title-only 8/8 \u00b7 skipped 70 \u00b7 failed 0 \u00b7 remaining 0",
+   "jobId": "quality-rewrite",
+   "status": "success"
+  },
+  "giveaways": {
+   "_updatedAt": "2026-09-28T14:00:46Z",
+   "details": "{\"perSource\":{\"wintheguns.com\":{\"count\":45,\"via\":\"direct\",\"status\":200},\"gungiveaways.net\":{\"count\":49,\"via\":\"direct\",\"status\":200},\"gunmade.com\":{\"count\":0,\"via\":\"none\",\"status\":\"direct 403 / jina 402\",\"reason\":\"unreachable (direct 403 / jina 402)\"}},\"added\":8,\"skipped\":51,\"expired\":0,\"errors\":[\"gunmade.com: unreachable (direct 403 / jina 402)\"]}",
+   "jobId": "giveaways",
+   "status": "success"
+  },
+  "goa": {
+   "_updatedAt": "2026-09-28T12:03:08Z",
+   "details": "20 of 20 saved | Take Action: Stop State Gun Taxes & Fix the SHOT Act \u00b7 Gun Owners of America Endorses Victoria Spartz \u00b7 GOA LEADS INDUSTRY COALITION IN SUPREME COURT FIGHT TO DEFEND AR-15s \u00b7 This Week In Gun Control \u00b7 PA: Legalize Suppressors \u00b7 ATF MUST PROVIDE GUIDANCE TO GUN DEALERS! \u00b7 NFA Victory FAQ: What Gun Owners Need to Know \u00b7 THIS WEEK: Here\u2019s Where Things Stand! \u00b7 FL VICTORY: Byron Donalds Wins Primary Election \u00b7 Florida: Vote GOA on August 18 \u00b7 Here\u2019s How Gun Shops Can Transfer NFA Items \u00b7 GOA Members Make History With First Suppressor Transfers Without NFA Registration Since 1934 \u00b7 Tell The White House: Do Not Appeal GOA\u2019s NFA Win! \u00b7 Don\u2019t Let DOJ Appeal GOA\u2019s NFA Win! \u00b7 WE WON OUR CASE AGAINST THE NATIONAL FIREARMS ACT!",
+   "jobId": "goa",
+   "status": "success"
+  },
+  "web-deals": {
+   "_updatedAt": "2026-09-28T12:00:52Z",
+   "details": "sources:5 links:17 added:0 skipped:17 imaged:0",
+   "jobId": "web-deals",
+   "status": "success"
+  },
+  "amazon-deals": {
+   "_updatedAt": "2026-09-28T12:00:06Z",
+   "details": "queries:4 found:0 added:0 skipped:0 imaged:0 expired:0",
+   "jobId": "amazon-deals",
+   "status": "success"
+  },
+  "backup": {
+   "_updatedAt": "2026-09-28T10:00:51Z",
+   "details": "5124 docs (20113 KB) \u00b7 25 types \u00b7 GitHub push failed \u26a0 \u2014 GitHub API 401: {\r\n  \"message\": \"Bad credentials\",\r\n  \"documentation_url\": \"https://docs.github.com/rest\",\r\n  \"status\": \"401\"\r\n} \u00b7 0 errors",
+   "jobId": "backup",
+   "status": "success"
+  },
+  "write-brazil": {
+   "_updatedAt": "2026-09-28T09:40:06Z",
+   "details": "0 articles created",
+   "jobId": "write-brazil",
+   "status": "success"
+  },
+  "outdoors": {
+   "_updatedAt": "2026-09-28T09:10:56Z",
+   "details": "2 saved \u00b7 0 skipped \u00b7 0 errors | Archery elk: calling sequences that work during the rut \u00b7 Home defense gun selection: shotgun vs. carbine vs. pistol",
+   "jobId": "outdoors",
+   "status": "success"
+  },
+  "write-canada": {
+   "_updatedAt": "2026-09-28T08:20:01Z",
+   "details": "0 articles created",
+   "jobId": "write-canada",
+   "status": "success"
+  },
+  "sitemap-health": {
+   "_updatedAt": "2026-09-28T08:00:49Z",
+   "details": "All 85 static URLs healthy. No issues found.",
+   "jobId": "sitemap-health",
+   "status": "success"
+  },
+  "site_health": {
+   "_updatedAt": "2026-09-28T08:00:31Z",
+   "details": "issues:14 fixed:14",
+   "jobId": "site_health",
+   "status": "warning"
+  },
+  "releases-process": {
+   "_updatedAt": "2026-09-28T06:50:06Z",
+   "details": "{\"phase\":\"process\",\"done\":0,\"failed\":0,\"skipped\":0,\"noImage\":0,\"saved\":[],\"errors\":[],\"ms\":56,\"remai",
+   "jobId": "releases-process",
+   "status": "success"
+  },
+  "releases": {
+   "_updatedAt": "2026-09-28T06:50:03Z",
+   "details": "0 saved | 0 skipped | 0 failed | 0 no-image | 11 still queued | 56ms",
+   "jobId": "releases",
+   "status": "success"
+  },
+  "copyright-review": {
+   "_updatedAt": "2026-09-28T06:30:05Z",
+   "details": "0% compliant \u00b7 0 clean \u00b7 0 high-risk \u00b7 0 AI verdicts",
+   "jobId": "copyright-review",
+   "status": "success"
+  },
+  "weekly-gun-releases": {
+   "_updatedAt": "2026-09-28T06:02:29Z",
+   "details": "created:1 skipped:31 failed:0 (144239ms) | Saved: Bergara \u2014 Premier Competition Elite",
+   "jobId": "weekly-gun-releases",
+   "status": "success"
+  },
+  "carry-insurance": {
+   "_updatedAt": "2026-09-28T06:00:50Z",
+   "details": "1 plan(s) need price update: Second Call Defense",
+   "jobId": "carry-insurance",
+   "status": "success"
+  },
+  "fix-slugs": {
+   "_updatedAt": "2026-09-28T04:30:25Z",
+   "details": "Fixed 0/0 hash slugs",
+   "jobId": "fix-slugs",
+   "status": "success"
+  },
+  "sitemap": {
+   "_updatedAt": "2026-09-28T02:00:12Z",
+   "details": "Revalidated: /sitemap.xml, /news-sitemap.xml, /blog, /news, /deals, /releases, /feed.xml",
+   "jobId": "sitemap",
+   "status": "success"
+  },
+  "intelligence": {
+   "_updatedAt": "2026-09-28T01:00:49Z",
+   "details": "score:undefined recs:0 gaps:0",
+   "jobId": "intelligence",
+   "status": "success"
+  },
+  "state": {
+   "_updatedAt": "2026-09-27T08:04:04Z",
+   "details": null,
+   "jobId": "state",
+   "status": "success"
+  },
+  "bible-update": {
+   "_updatedAt": "2026-09-27T07:00:22Z",
+   "details": "totalDocs:3903 github:GitHub API 401: {\r\n  \"message\": \"Bad credentials\",\r\n  \"documentation_url\": \"https://docs.github.com/rest\",\r\n  \"status\": \"401\"\r\n} errors:0",
+   "jobId": "bible-update",
+   "status": "success"
+  },
+  "nfa-wait-times": {
+   "_updatedAt": "2026-09-27T06:00:30Z",
+   "details": "10 forms from atf.gov, month: July 2026",
+   "jobId": "nfa-wait-times",
+   "status": "success"
+  }
+ }
+}
