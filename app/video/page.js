@@ -3,7 +3,7 @@ import { fetchVideos, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
   title: 'Video — DownRange',
-  description: 'Firearms video reviews, training, news, and interviews from trusted channels.',
+  description: 'The DownRange video library — the latest firearms videos from trusted channels, in one feed.',
   alternates: { canonical: 'https://www.downrangeco.com/video' },
 }
 export const revalidate = 3600
@@ -22,7 +22,6 @@ const SEED_VIDEOS = [
 ]
 
 export default async function VideoPage({ searchParams }) {
-  const cat    = searchParams?.cat  || null
   const sort   = searchParams?.sort || 'newest'
   const search = searchParams?.q    || null
 
@@ -33,5 +32,5 @@ export default async function VideoPage({ searchParams }) {
 
   const videos = sanityVideos.length > 0 ? sanityVideos : SEED_VIDEOS
 
-  return <VideoPageClient videos={videos} alerts={alerts} initialCat={cat} initialSort={sort} initialSearch={search} />
+  return <VideoPageClient videos={videos} alerts={alerts} initialSort={sort} initialSearch={search} />
 }

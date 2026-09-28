@@ -1,7 +1,6 @@
 /**
  * Outdoors Weekly Content Feed — DownRange
- * Publishes fresh hunting + preparedness content every week.
- * Alternates between hunting and preparedness topics.
+ * Publishes one fresh hunting article every week.
  * Runs: 0 9 * * 1 (9am every Monday)
  */
 import { callAIText } from '../../lib/aiClient.js'
@@ -22,20 +21,6 @@ const HUNTING_TOPICS = [
   'Winter coyote hunting tactics and gear recommendations',
 ]
 
-const PREP_TOPICS = [
-  'How to build a 72-hour emergency kit for a family of four under $200',
-  'Home security audit: what most gun owners get wrong about their perimeter',
-  'HAM radio for preppers: getting your Technician license in 30 days',
-  'IFAK build guide: what goes in your individual first aid kit and why',
-  'Water storage and purification for grid-down scenarios',
-  'Food storage on a budget: what to buy first and how to rotate it',
-  'Vehicle emergency kit: what belongs in every truck bed',
-  'Grid-down communication plan for families',
-  'Home defense gun selection: shotgun vs. carbine vs. pistol',
-  'Generator selection guide: what size do you actually need',
-  'Building a neighborhood preparedness network',
-  'Power bank and solar charging: keeping devices alive off-grid',
-]
 
 async function generateContent(topic, type) {
   const prompt = `Write a practical, no-nonsense article for DownRange about: "${topic}"
@@ -55,7 +40,6 @@ Rules:
 - Specific details only — brand names, distances, weights, prices where relevant
 - Active voice
 - If it's a hunting article, include specific states/seasons/cartridges where relevant
-- If it's a preparedness article, include specific products/prices/sources where relevant
 
 Return ONLY the HTML body content. No markdown. No preamble.`
 
@@ -71,17 +55,13 @@ export async function runOutdoorsFeed() {
   const errors = []
   const saved = []
 
-  // Alternate: week number determines hunting vs prep
   const weekNumber = Math.floor(Date.now() / (7 * 24 * 3600 * 1000))
-  const isHuntingWeek = weekNumber % 2 === 0
 
-  // Pick 2 topics: 1 hunting + 1 prep every week
+  // Outdoors = Hunting only (Preparedness section removed Sep 2026)
   const huntingTopic = HUNTING_TOPICS[weekNumber % HUNTING_TOPICS.length]
-  const prepTopic    = PREP_TOPICS[weekNumber % PREP_TOPICS.length]
 
   const topics = [
-    { topic: huntingTopic, type: 'hunting',      docType: 'huntingContent'  },
-    { topic: prepTopic,    type: 'preparedness', docType: 'prepContent'     },
+    { topic: huntingTopic, type: 'hunting', docType: 'huntingContent' },
   ]
 
   for (const { topic, type, docType } of topics) {

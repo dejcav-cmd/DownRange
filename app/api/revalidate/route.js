@@ -14,7 +14,6 @@ export async function POST(req) {
     if (type === 'newsArticle')    paths.push('/news', slug ? `/news/${slug}` : null)
     if (type === 'breakingAlert')  paths.push('/')
     if (type === 'legislation')    paths.push('/laws', '/')
-    if (type === 'review')         paths.push('/reviews', slug ? `/reviews/${slug}` : null)
     if (type === 'firearmRelease') paths.push('/releases', '/')
     if (type === 'stateProfile')   paths.push('/laws/states', slug ? `/laws/${String(slug).toUpperCase()}` : null)
     if (type === 'ammoPrice')      paths.push('/market', '/')

@@ -321,7 +321,6 @@ export default async function GunsPage({ searchParams }) {
             {[
               { label:'⚙ NFA Tracker',       href:'/nfa-tracker',                  desc:'Form 4 wait times' },
               { label:'🔖 New Releases',     href:'/releases',                     desc:'Latest launches' },
-              { label:'📚 Ammo Guide',       href:'/ammo/9mm',                     desc:'9mm, 5.56, .308 & more' },
             ].map(t => (
               <Link key={t.href} href={t.href} className="tool-link"
                 style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'18px 20px', textDecoration:'none', display:'block', transition:'border-color 0.2s' }}>

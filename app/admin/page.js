@@ -19,8 +19,6 @@ const ReleaseManager        = L(() => import('../../components/admin/ReleaseMana
 const OperationsPanel        = L(() => import('../../components/admin/OperationsPanel'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
 const BrazilManager         = L(() => import('../../components/admin/BrazilManager'))
-const CompetitionManager    = L(() => import('../../components/admin/CompetitionManager'))
-const ReviewManager         = L(() => import('../../components/admin/ReviewManager'))
 const BlogManagerFull       = L(() => import('../../components/admin/BlogManager'))
 const AICostDashboard       = L(() => import('../../components/admin/AICostDashboard'))
 const EnvChecker            = L(() => import('../../components/admin/EnvChecker'))
@@ -55,11 +53,9 @@ const NAV = [
       { id:'news',         label:'News Articles',    icon:'📰' },
       { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍'  },
-      { id:'reviews',      label:'Reviews',          icon:'★'  },
       { id:'deals',        label:'Deals',            icon:'🔥' },
       { id:'canada',       label:'Canada',           icon:'🇨🇦' },
       { id:'brazil',       label:'Brasil',           icon:'🇧🇷' },
-      { id:'competitions', label:'Competitions',     icon:'🏆' },
       { id:'drafts',       label:'Draft Recovery',   icon:'🗂'  },
     ]
   },
@@ -395,7 +391,6 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
     { label:'News Articles', icon:'📰', url:'/news',        editFn:()=>{ setSection('content'); setPanel('news') } },
     { label:'Gun Releases',  icon:'🔫', url:'/releases',    editFn:()=>{ setSection('content'); setPanel('releases') } },
     { label:'Blog Posts',    icon:'✍',  url:'/blog',        editFn:()=>{ setSection('content'); setPanel('blog') } },
-    { label:'Competitions',  icon:'🏆', url:'/competitions',editFn:()=>{ setSection('content'); setPanel('competitions') } },
     { label:'Canada',        icon:'🇨🇦', url:'/canada',      editFn:()=>{ setSection('content'); setPanel('canada') } },
     { label:'Brasil',        icon:'🇧🇷', url:'/brazil',      editFn:()=>{ setSection('content'); setPanel('brazil') } },
     { label:'Videos',        icon:'▶',  url:'/video',       editFn:()=>{ setSection('media');   setPanel('videos') } },
@@ -766,7 +761,6 @@ function SEOPanel() {
     { path:'/news', title:'Firearms News | DownRange', desc:'Live 2A and gun news from 30+ sources.', ga:'Active', search:'Indexed' },
     { path:'/blog', title:'Blog | DownRange', desc:'In-depth firearms analysis.', ga:'Active', search:'Indexed' },
     { path:'/canada', title:'Canadian Firearms Law | DownRange', desc:'PAL, C-21, province ratings.', ga:'Active', search:'Indexed' },
-    { path:'/competitions', title:'Shooting Competitions | DownRange', desc:'NRA, USPSA, PRS, IDPA calendar.', ga:'Active', search:'Indexed' },
     { path:'/releases', title:'New Gun Releases | DownRange', desc:'Latest firearm launches.', ga:'Active', search:'Indexed' },
   ]
   return (
@@ -1408,11 +1402,9 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
             { key:'patch-article',       label:'🔧 Patch SVG Fallbacks',        color:'#f59e0b',  path:'patch-article',        actions:[{label:'Patch All',params:''}] },
             { key:'seed-image-repo',     label:'🗃 Seed Image Repository',      color:'#64748b',  path:'seed-image-repo',      actions:[{label:'Seed Images',params:''}] },
             { key:'seed-all-content',    label:'🌱 Seed All Content Panels',    color:'#22c55e',  path:'seed-all-content',     actions:[
-              {label:'Seed Everything (blog+reviews+canada+competitions+releases)', params:''},
+              {label:'Seed Everything (blog+canada+releases)', params:''},
               {label:'Blog only', params:'?types=blog'},
-              {label:'Reviews only', params:'?types=reviews'},
               {label:'Canada only', params:'?types=canada'},
-              {label:'Competitions only', params:'?types=competitions'},
               {label:'Gun Releases only', params:'?types=releases'},
             ]},
           ].map(agent => {
@@ -2293,16 +2285,6 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       aiAction: { label: 'Generate Posts', path: 'write-blog-articles' },
     },
     {
-      key:      'review',
-      id:       'reviews',
-      label:    'Reviews',
-      icon:     '★',
-      color:    '#f59e0b',
-      desc:     'Gear · Guns · Field-tested · Scored 0–10',
-      seedType: 'reviews',
-      aiAction: null,
-    },
-    {
       key:      'canadaContent',
       id:       'canada',
       label:    'Canada',
@@ -2311,16 +2293,6 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       desc:     'C-21 · PAL · Provincial law · Restricted/prohibited',
       seedType: 'canada',
       aiAction: { label: 'AI Write Articles', path: 'write-canada-articles' },
-    },
-    {
-      key:      'competition',
-      id:       'competitions',
-      label:    'Competitions',
-      icon:     '🏆',
-      color:    '#a855f7',
-      desc:     'USPSA · IDPA · Steel Challenge · NRA · 3-Gun',
-      seedType: 'competitions',
-      aiAction: null,
     },
   ]
 
@@ -3063,8 +3035,6 @@ export default function AdminPage() {
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
             {panel==='canada'       && <CanadaManager       adminKey={adminKey} />}
             {panel==='brazil'       && <BrazilManager       adminKey={adminKey} />}
-            {panel==='competitions' && <CompetitionManager  adminKey={adminKey} />}
-            {panel==='reviews'      && <ReviewManager       adminKey={adminKey} />}
 
             {/* ── PUBLISHING ── */}
             {panel==='schedule'   && <PublicationSchedule secret={adminKey} setMsg={flash} />}

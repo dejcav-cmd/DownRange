@@ -37,15 +37,6 @@ const SITE_MAP = [
         dataSource: 'Manual + AI rewrite',
       },
       {
-        url: '/reviews',
-        title: 'Reviews',
-        desc: 'Gear and gun reviews',
-        revalidate: 3600,
-        crons: ['image-fix (hourly)'],
-        sanityType: 'review',
-        dataSource: 'Manual',
-      },
-      {
         url: '/video',
         title: 'Video',
         desc: 'YouTube channel feed',
@@ -84,15 +75,6 @@ const SITE_MAP = [
     section: 'Market & Prices',
     color: '#C8922A',
     pages: [
-      {
-        url: '/ammo/9mm',
-        title: 'Ammo Guides',
-        desc: 'Per-caliber ammo reference guide (static)',
-        revalidate: 1800,
-        crons: [],
-        sanityType: '—',
-        dataSource: 'Static editorial content',
-      },
       {
         url: '/carry-insurance',
         title: 'CCW Insurance',

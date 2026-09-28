@@ -20,17 +20,6 @@ const NAV = [
     ]
   },
   {
-    label: 'Reviews', href: '/reviews',
-    children: [
-      { label: '★ All Reviews',        href: '/reviews',                desc: 'Field-tested, documented' },
-      { label: '🔫 Pistols',           href: '/reviews?cat=pistol',     desc: 'Handguns & subcompacts' },
-      { label: '🎯 Rifles',            href: '/reviews?cat=rifle',      desc: 'ARs, AKs, bolt guns' },
-      { label: '💥 Shotguns',          href: '/reviews?cat=shotgun',    desc: 'Defense & hunting' },
-      { label: '🔭 Optics',            href: '/reviews?cat=optic',      desc: 'Scopes & red dots' },
-      { label: '🔇 Suppressors',       href: '/reviews?cat=suppressor', desc: 'NFA items reviewed' },
-    ]
-  },
-  {
     label: 'Guns', href: '/guns',
     children: [
       { label: '📖 Encyclopedia',      href: '/guns',                          desc: 'Specs, history, variants' },
@@ -44,7 +33,6 @@ const NAV = [
     label: 'Outdoors', href: '/hunting',
     children: [
       { label: '🦌 Hunting',      href: '/hunting',      desc: 'Season dates, game by state, cartridge guides' },
-      { label: '🎒 Preparedness', href: '/preparedness', desc: 'Home defense, go-bag, grid-down protocols'     },
     ]
   },
   {

@@ -52,7 +52,7 @@ export default function PrecisionPage() {
           <h1 className="page-hero-title">Precision Shooting Hub</h1>
           <p className="page-hero-sub">PRS competition · Long range · Ballistics · Equipment · Training drills</p>
           <div style={{ display:'flex', gap:'8px', marginTop:'16px', flexWrap:'wrap' }}>
-            {[['Hunting Hub','/hunting'],['Training & Drills','/training'],['Preparedness','/preparedness']].map(([l,h])=>(
+            {[['Hunting Hub','/hunting'],['Training & Drills','/training']].map(([l,h])=>(
               <Link key={h} href={h} className="dr-btn-outline" style={{ padding:'5px 14px', fontSize:'11px' }}>{l} →</Link>
             ))}
           </div>

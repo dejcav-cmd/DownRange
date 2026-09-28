@@ -30,13 +30,6 @@ const TYPES = {
     project: '_id, _type, title, "slug": slug.current, summary, category, publishedAt, imageUrl, "heroImg": heroImage.asset->url',
     href: (r) => `/blog/${r.slug}`,
   },
-  review: {
-    label: 'Reviews',
-    filter: 'defined(title)',
-    fields: ['title','brand','model','caliber','summary','body'],
-    project: '_id, _type, "title": brand + " " + model, "slug": slug.current, summary, category, score, publishedAt, imageUrl, brand, model',
-    href: (r) => `/reviews/${r.slug}`,
-  },
   firearmRelease: {
     label: 'Releases',
     filter: 'defined(brand)',
@@ -148,7 +141,6 @@ function buildHref(typeName, doc) {
     case 'newsArticle':   return `/news/${doc.slug}`
     case 'legislation':   return doc.url || '/laws'
     case 'blogPost':      return `/blog/${doc.slug}`
-    case 'review':        return `/reviews/${doc.slug}`
     case 'firearmRelease':return `/releases/${doc.slug}`
     case 'gunDeal':        return doc.externalUrl || '/deals'
     case 'stateProfile':  return `/laws/${(doc.abbr||'').toUpperCase()}`

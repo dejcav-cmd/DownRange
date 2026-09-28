@@ -231,9 +231,7 @@ export async function POST(req) {
 
   const all = [
     ...(types === 'all' || types.includes('blog') ? BLOG_POSTS.map(d => ({ ...d, _section: 'blog' })) : []),
-    ...(types === 'all' || types.includes('reviews') ? REVIEWS.map(d => ({ ...d, _section: 'reviews' })) : []),
     ...(types === 'all' || types.includes('canada') ? CANADA.map(d => ({ ...d, _section: 'canada' })) : []),
-    ...(types === 'all' || types.includes('competitions') ? COMPETITIONS.map(d => ({ ...d, _section: 'competitions' })) : []),
     ...(types === 'all' || types.includes('releases') ? RELEASES.map(d => ({ ...d, _section: 'releases' })) : []),
   ]
 

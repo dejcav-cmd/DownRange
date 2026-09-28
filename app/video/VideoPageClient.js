@@ -6,17 +6,6 @@ import Footer from '../../components/layout/Footer'
 
 const PER_PAGE = 24  // videos per page in browse grid
 
-const CATS = [
-  { label: 'All',         val: null },
-  { label: 'Reviews',     val: 'review' },
-  { label: 'Training',    val: 'training' },
-  { label: 'Builds',      val: 'build' },
-  { label: 'News',        val: 'news' },
-  { label: 'Competition', val: 'competition' },
-  { label: 'History',     val: 'history' },
-  { label: 'Ammo',        val: 'ammo' },
-  { label: '🦌 Hunting',  val: 'hunting' },
-]
 
 const SORT_OPTS = [
   { label: '📅 Newest', val: 'newest' },
@@ -24,7 +13,6 @@ const SORT_OPTS = [
   { label: '🔤 A–Z', val: 'alpha' },
 ]
 
-const CAT_C = { review:'#C8922A', training:'#22C55E', news:'#3B82F6', build:'#A855F7', interview:'#F97316', competition:'#06B6D4', history:'#84CC16', ammo:'#F59E0B', comparison:'#EC4899', hunting:'#65A30D' }
 
 function fmt(n) {
   if (!n) return ''
@@ -104,7 +92,6 @@ function isNewVideo(dateStr) {
 
 function VideoCard({ video, onClick }) {
   const thumb = video.thumbnail || video.thumbnailUrl || 'https://i.ytimg.com/vi/' + (video.videoId || video.youtubeId) + '/hqdefault.jpg'
-  const catColor = CAT_C[video.category] || '#9CA3AF'
   return (
     <div onClick={onClick} style={{ cursor:'pointer', background:'#111318', border:'1px solid var(--border)', transition:'border-color .15s' }}
       onMouseEnter={e => e.currentTarget.style.borderColor = '#C8922A'}
@@ -120,12 +107,6 @@ function VideoCard({ video, onClick }) {
           <div style={{ position:'absolute', bottom:6, right:6, background:'rgba(0,0,0,.85)',
             fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'2px 6px', color:'#fff' }}>
             {video.duration}
-          </div>
-        )}
-        {video.category && (
-          <div style={{ position:'absolute', top:6, left:6, background:catColor + 'dd',
-            fontFamily:"'IBM Plex Mono',monospace", fontSize:8, padding:'2px 6px', color:'#000', fontWeight:700, letterSpacing:'.06em', textTransform:'uppercase' }}>
-            {video.category}
           </div>
         )}
       </div>
@@ -155,9 +136,8 @@ function VideoCard({ video, onClick }) {
   )
 }
 
-export default function VideoPageClient({ videos = [], alerts = [], initialCat = null, initialSort = 'newest', initialSearch = null }) {
+export default function VideoPageClient({ videos = [], alerts = [], initialSort = 'newest', initialSearch = null }) {
   const [active,   setActive]   = useState(null)
-  const [cat,      setCat]      = useState(initialCat)
   const [sort,     setSort]     = useState(initialSort)
   const [search,   setSearch]   = useState(initialSearch || '')
   const [autoplay, setAutoplay] = useState(false)
@@ -169,9 +149,8 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
   }, [])
 
   // Apply filters & sort
-  const applyFilters = useCallback((vids, catFilter, sortOpt, searchQ) => {
+  const applyFilters = useCallback((vids, sortOpt, searchQ) => {
     let result = [...vids]
-    if (catFilter) result = result.filter(v => v.category === catFilter)
     if (searchQ) {
       const q = searchQ.toLowerCase()
       result = result.filter(v =>
@@ -186,7 +165,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
     return result
   }, [])
 
-  const filtered   = applyFilters(videos, cat, sort, search)
+  const filtered   = applyFilters(videos, sort, search)
   const totalPages = Math.max(1, Math.ceil(filtered.length / PER_PAGE))
   const paged      = filtered.slice((page - 1) * PER_PAGE, page * PER_PAGE)
   const queue    = active ? filtered.filter(v => v._id !== active._id) : filtered.slice(1)
@@ -204,9 +183,8 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
 
   function buildUrl(overrides) {
     const params = {}
-    const current = { cat, sort, q: search }
+    const current = { sort, q: search }
     const merged = { ...current, ...overrides }
-    if (merged.cat) params.cat = merged.cat
     if (merged.sort && merged.sort !== 'newest') params.sort = merged.sort
     if (merged.q) params.q = merged.q
     const qs = new URLSearchParams(params).toString()
@@ -250,18 +228,8 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
           <div style={{ display:'flex', gap:0, overflowX:'auto', justifyContent:'space-between', alignItems:'stretch' }}>
-            {/* Category tabs */}
-            <div style={{ display:'flex', gap:0, overflowX:'auto' }}>
-              {CATS.map(c => (
-                <a key={c.val || 'all'} href={c.val ? buildUrl({ cat: c.val, q: search }) : buildUrl({ cat: null, q: search })}
-                  style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px',
-                    fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px',
-                    borderBottom: '2px solid ' + ((cat===c.val || (!cat && !c.val)) ? 'var(--gold)' : 'transparent'),
-                    color: (cat===c.val || (!cat && !c.val)) ? 'var(--gold)' : 'var(--text-dim)',
-                    textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
-                  {c.label}
-                </a>
-              ))}
+            <div style={{ display:'flex', alignItems:'center', padding:'12px 0', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'var(--text-dim)', letterSpacing:'0.05em' }}>
+              {filtered.length} VIDEOS
             </div>
 
             {/* Sort */}
@@ -281,7 +249,6 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
 
             {/* Search */}
             <form action="/video" method="get" style={{ display:'flex', alignItems:'center', gap:6, padding:'0 0 0 12px', borderLeft:'1px solid var(--border)' }}>
-              {cat && <input type="hidden" name="cat" value={cat} />}
               {sort && sort !== 'newest' && <input type="hidden" name="sort" value={sort} />}
               <input
                 type="search" name="q"
@@ -334,12 +301,6 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
                         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#C8922A', fontWeight:700 }}>{active.channelName}</span>
                         {active.viewCount > 0 && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6B7280' }}>{fmt(active.viewCount)}</span>}
                         {active.duration && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4B5563' }}>{active.duration}</span>}
-                        {active.category && (
-                          <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700,
-                            color: CAT_C[active.category] || '#9CA3AF', letterSpacing:'.06em', textTransform:'uppercase' }}>
-                            {active.category}
-                          </span>
-                        )}
                       </div>
                     </div>
                     <div style={{ display:'flex', gap:8, alignItems:'center' }}>
@@ -384,7 +345,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:14, marginBottom:12, paddingTop:16 }}>
             <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.4rem', color:'#F0EDE6', letterSpacing:'.05em' }}>
-              {search ? 'Search Results' : cat ? cat.charAt(0).toUpperCase() + cat.slice(1) + ' Videos' : active ? 'More Videos' : 'All Videos'}
+              {search ? 'Search Results' : active ? 'More Videos' : 'All Videos'}
             </div>
             <div style={{ flex:1, height:1, background:'var(--border)' }} />
             <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4B5563' }}>{filtered.length} videos</span>
@@ -399,7 +360,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialCat =
 
           {filtered.length === 0 && (
             <div style={{ textAlign:'center', padding:'60px 0', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4B5563' }}>
-              {search ? 'No videos match "' + search + '"' : 'No videos in this category yet.'}
+              {search ? 'No videos match "' + search + '"' : 'No videos yet.'}
             </div>
           )}
 

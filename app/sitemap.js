@@ -31,11 +31,9 @@ const STATIC_PAGES = [
   { url: `${BASE}/laws/my-state`,       priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/deals`,               priority: 0.9,  changeFrequency: 'hourly',  lastModified: NOW },
   { url: `${BASE}/releases`,            priority: 0.85, changeFrequency: 'daily',   lastModified: NOW },
-  { url: `${BASE}/reviews`,             priority: 0.85, changeFrequency: 'weekly',  lastModified: NOW },
   { url: `${BASE}/video`,               priority: 0.8,  changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/blog`,                priority: 0.8,  changeFrequency: 'daily',   lastModified: NOW },
   { url: `${BASE}/giveaways`,           priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
-  { url: `${BASE}/competitions`,         priority: 0.75, changeFrequency: 'daily',   lastModified: NOW },
 
   // CCW / Carry tools — high-intent search queries
   { url: `${BASE}/carry-insurance`,     priority: 0.85, changeFrequency: 'monthly', lastModified: NOW },
@@ -52,7 +50,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/hunting`,             priority: 0.75, changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/precision`,           priority: 0.75, changeFrequency: 'monthly', lastModified: NOW },
   { url: `${BASE}/training`,            priority: 0.75, changeFrequency: 'monthly', lastModified: NOW },
-  { url: `${BASE}/preparedness`,        priority: 0.7,  changeFrequency: 'monthly', lastModified: NOW },
 
   // International
   { url: `${BASE}/canada`,              priority: 0.7,  changeFrequency: 'daily',   lastModified: NOW },
