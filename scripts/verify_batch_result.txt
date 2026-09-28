@@ -1,28 +1,34 @@
-desktop / 200 removed-refs: none
-desktop /news 200 removed-refs: none
-desktop /video 200 removed-refs: none
-desktop /hunting 200 removed-refs: none
-desktop /guns 200 removed-refs: none
-desktop /laws/TX 200 removed-refs: none
-desktop /precision 200 removed-refs: none
-desktop /training 200 removed-refs: none
-desktop /safe-storage 200 removed-refs: none
-desktop /about 200 removed-refs: none
-mobile / 200 removed-refs: none
-mobile /news 200 removed-refs: none
-mobile /video 200 removed-refs: none
-mobile /hunting 200 removed-refs: none
-mobile /guns 200 removed-refs: none
-mobile /laws/TX 200 removed-refs: none
-mobile /precision 200 removed-refs: none
-mobile /training 200 removed-refs: none
-mobile /safe-storage 200 removed-refs: none
-mobile /about 200 removed-refs: none
-home meta: The only 2A hub that checks every gun &amp; ammo deal, release, and law against your state. Live deals, NFA wait times, ballistics tools, an
-about knowsAbout has Gun Reviews: False
-admin-app 200 False False False False
-/sitemap.xml 200 removed-refs: none
-/robots.txt 200 removed-refs: none
-/feeds/opml 200 removed-refs: none
-/rss 200 removed-refs: none
-/api/admin/reviews-manager 404
+/laws/TX 200 news-block True link True lowercase-recip-links 0
+    - Austin Activists Reoccupy ICE Shooting Site One Week Later
+    - PSL Protests ICE Shooting in San Antonio; Turnout Minimal
+    - 41st Gun Rights Policy Conference Convenes in Dallas This Weekend
+    - Fletcher Rifle Works Texas Flood Suppressor Survives 5,000-Round Durability Test
+    - Herrera Maintains Lead in Texas 23rd Congressional Race
+/laws/WA 200 news-block True link True lowercase-recip-links 0
+    - Ninth Circuit Ignores Bruen Ruling on State Gun Restrictions
+    - SAF's 41st Gun Rights Policy Conference Kicks Off Friday in Bellevue
+    - Trump Opens Federal Lands to Hunters, Strips Decade-Old Restrictions
+    - Washington State Implements $126 Permit Fee Starting May 2027
+    - Seattle Doubles Down on Gun Control—Again, With No Results
+/laws/VA 200 news-block True link True lowercase-recip-links 0
+    - Virginia AG Creates Unit to Sue Gun Makers Over New Liability Law
+    - Virginia AG Creates Unit to Sue Gun Dealers Out of Business
+    - Virginia AG Launches Firearm Manufacturer Investigation Unit
+    - Virginia Democrat's Reddit AMA Backfires on Gun Control Record
+    - Virginia Gun Case Exposes Control Tactics Target Law-Abiding Citizens
+/laws/CA 200 news-block True link True lowercase-recip-links 0
+    - Supreme Court Takes Assault Weapon Ban Cases—Bruen Test Looms
+    - Ninth Circuit Ignores Bruen Ruling on State Gun Restrictions
+    - Newsom's Silent Stance on Dozen California Gun Bills Revealed
+    - Viramontes Case Forces SCOTUS to Pick a Constitutional Lane
+    - Virginia AG Creates Unit to Sue Gun Dealers Out of Business
+/laws/WY 200 news-block True link True lowercase-recip-links 0
+    - Cody Firearms Museum Publishes Winchester Collection Drawing Book
+    - Trump Opens Federal Lands to Hunters, Strips Decade-Old Restrictions
+    - Mossberg Maverick SA 12-Gauge Handles High-Low Pairs at Athlon Rendezvous
+    - Supreme Court NFA Ruling Opens Door for Suppressed Hunting
+    - Trump DOI Opens Federal Lands to Hunting Access Nationwide
+/state-news 200 ['NewsMediaOrganization', 'WebSite', 'CollectionPage', 'BreadcrumbList']
+/state-news/tx 200 ['NewsMediaOrganization', 'WebSite', 'CollectionPage', 'BreadcrumbList']
+/state-news/wa 200 ['NewsMediaOrganization', 'WebSite', 'CollectionPage', 'BreadcrumbList']
+sitemap state-news urls 51
