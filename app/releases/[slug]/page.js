@@ -11,7 +11,7 @@ const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
   dataset:   'production',
   apiVersion:'2024-01-01',
-  useCdn:    true,
+  useCdn:    false,
   token:     process.env.SANITY_API_TOKEN,
 })
 
@@ -49,7 +49,7 @@ export default async function ReleasePage({ params }) {
     sanity.fetch(
       `*[_type=="firearmRelease" && slug.current==$slug][0]{
         _id, title, brand, model, category, caliber, action, msrp, body, summary,
-        specs, sourceUrl, availableDate, isJustDropped, publishedAt,
+        specs, sourceUrl, availableDate, isJustDropped, publishedAt, _createdAt,
         imageUrl, heroImage{asset->{url}}, pressReleaseExcerpt
       }`,
       { slug: params.slug }
@@ -74,106 +74,109 @@ export default async function ReleasePage({ params }) {
   ].filter(Boolean)
 
   const releaseUrl = `https://www.downrangeco.com/releases/${params.slug}`
-  const releaseSchema = [
-    {
-      '@context': 'https://schema.org',
-      '@type':    'Product',
-      '@id':      `${releaseUrl}#product`,
-      name:       `${release.brand} ${release.model || release.title}`,
-      description: (release.summary || '').slice(0, 500),
-      brand:      { '@type': 'Brand', name: release.brand },
-      image:      img,
-      url:        releaseUrl,
-      category:   release.category || 'Firearm',
-      offers: {
-        '@type':        'Offer',
+  // ── Structured data ─────────────────────────────────────────────────────
+  // Release pages are editorial coverage, not a store and not a review. The old
+  // markup invented a 4.5-star AggregateRating + Review on every release and a
+  // $0 Offer "sold" by DownRange with fake shipping/returns. Google flagged it
+  // (Review has multiple aggregate ratings, Duplicate field "brand") and it is a
+  // manual-action risk under the review-snippet policy. Now:
+  //   - NewsArticle is always emitted (what the page actually is).
+  //   - Product is only a top-level item when a real MSRP exists, with the
+  //     manufacturer as the offerer. No ratings, no reviews, no merchant claims.
+  //   - Without an MSRP there is no Product node at all (a Product with no
+  //     offers/review/rating is an invalid rich result).
+  const productName = `${release.brand} ${release.model || release.title}`
+  const msrpNum = (() => {
+    const raw = typeof release.msrp === 'number' ? release.msrp
+      : typeof release.msrp === 'string' ? parseFloat(release.msrp.replace(/[^0-9.]/g, '')) : NaN
+    return Number.isFinite(raw) && raw > 0 ? Math.round(raw * 100) / 100 : null
+  })()
+  const isoDay = (v) => {
+    if (!v) return undefined
+    const d = new Date(v)
+    return isNaN(d.getTime()) ? undefined : d.toISOString().split('T')[0]
+  }
+  const publishedDay = isoDay(release.publishedAt || release._createdAt)
+  const availableDay = isoDay(release.availableDate)
+  const today = new Date().toISOString().split('T')[0]
+  const brandOrg = { '@type': 'Brand', name: release.brand }
+  const absImg = img.startsWith('http') ? img : `https://www.downrangeco.com${img}`
+
+  const productNode = {
+    '@type':     'Product',
+    '@id':       `${releaseUrl}#product`,
+    name:        productName,
+    description: (release.summary || '').slice(0, 500) || undefined,
+    brand:       brandOrg,
+    image:       absImg,
+    url:         releaseUrl,
+    category:    release.category || 'Firearm',
+    additionalProperty: specRows.length > 0 ? specRows.map(s => ({
+      '@type': 'PropertyValue',
+      name:    s.label,
+      value:   String(s.value),
+    })) : undefined,
+  }
+  if (msrpNum) {
+    const preorder = availableDay && availableDay > today
+    productNode.offers = {
+      '@type':        'Offer',
+      price:          msrpNum,
+      priceCurrency:  'USD',
+      priceSpecification: {
+        '@type':        'UnitPriceSpecification',
+        price:          msrpNum,
         priceCurrency:  'USD',
-        price:          typeof release.msrp === 'number'
-                          ? release.msrp
-                          : typeof release.msrp === 'string' && /[\d]+/.test(release.msrp)
-                            ? parseFloat(release.msrp.replace(/[^0-9.]/g, ''))
-                            : 0,
-        priceValidUntil: new Date(new Date().setFullYear(new Date().getFullYear() + 1)).toISOString().split('T')[0],
-        availability:   'https://schema.org/PreOrder',
-        url:            releaseUrl,
-        seller: {
-          '@type': 'Organization',
-          name:    'DownRange Co.',
-          url:     'https://www.downrangeco.com',
-        },
-        hasMerchantReturnPolicy: {
-          '@type':                 'MerchantReturnPolicy',
-          applicableCountry:       'US',
-          returnPolicyCategory:    'https://schema.org/MerchantReturnNotPermitted',
-          merchantReturnDays:      0,
-          returnMethod:            'https://schema.org/ReturnNotSupported',
-          returnFees:              'https://schema.org/FreeReturn',
-        },
-        shippingDetails: {
-          '@type': 'OfferShippingDetails',
-          shippingRate: {
-            '@type':   'MonetaryAmount',
-            value:     '0',
-            currency:  'USD',
-          },
-          shippingDestination: {
-            '@type':           'DefinedRegion',
-            addressCountry:    'US',
-          },
-          deliveryTime: {
-            '@type':          'ShippingDeliveryTime',
-            handlingTime: {
-              '@type':    'QuantitativeValue',
-              minValue:   0,
-              maxValue:   1,
-              unitCode:   'DAY',
-            },
-            transitTime: {
-              '@type':    'QuantitativeValue',
-              minValue:   3,
-              maxValue:   7,
-              unitCode:   'DAY',
-            },
-          },
-        },
+        priceType:      'https://schema.org/ListPrice',
       },
-      aggregateRating: {
-        '@type':      'AggregateRating',
-        ratingValue:  '4.5',
-        reviewCount:  '1',
-        bestRating:   '5',
-        worstRating:  '1',
-      },
-      review: {
-        '@type': 'Review',
-        reviewRating: {
-          '@type':      'Rating',
-          ratingValue:  '4.5',
-          bestRating:   '5',
-          worstRating:  '1',
-        },
-        author: {
-          '@type': 'Organization',
-          name:    'DownRange Co.',
-        },
-        reviewBody: release.summary
-          ? String(release.summary).slice(0, 300)
-          : `Editorial coverage of the ${release.brand} ${release.model || release.title}.`,
-        datePublished: (release.publishedAt || release._createdAt || new Date().toISOString()).split('T')[0],
-      },
-      additionalProperty: specRows.map(s => ({
-        '@type':    'PropertyValue',
-        name:       s.label,
-        value:      s.value,
-      })),
+      validFrom:      publishedDay,
+      url:            release.sourceUrl || releaseUrl,
+      offeredBy:      { '@type': 'Organization', name: release.brand },
+      ...(preorder
+        ? { availability: 'https://schema.org/PreOrder', availabilityStarts: availableDay }
+        : {}),
+    }
+  }
+
+  const articleNode = {
+    '@context':       'https://schema.org',
+    '@type':          'NewsArticle',
+    '@id':            `${releaseUrl}#article`,
+    headline:         `${productName} — New Release`.slice(0, 110),
+    description:      (release.summary || '').slice(0, 300) || undefined,
+    image:            [absImg],
+    datePublished:    release.publishedAt || undefined,
+    dateModified:     release.publishedAt || undefined,
+    mainEntityOfPage: releaseUrl,
+    author: {
+      '@type': 'Person',
+      name:    'DJ Cavalcanti',
+      jobTitle:'DownRange Founder',
+      url:     'https://www.downrangeco.com/about',
     },
+    publisher: {
+      '@type': 'Organization',
+      name:    'DownRange',
+      url:     'https://www.downrangeco.com',
+      logo:    { '@type': 'ImageObject', url: 'https://www.downrangeco.com/img/logo.png', width: 560, height: 162 },
+    },
+    // Nested Products are still picked up by Google's Product validator, so the
+    // no-MSRP case describes the gun as a plain Thing instead.
+    about: msrpNum
+      ? { '@id': `${releaseUrl}#product` }
+      : { '@type': 'Thing', name: productName, description: productNode.description, image: absImg, url: releaseUrl },
+  }
+
+  const releaseSchema = [
+    articleNode,
+    ...(msrpNum ? [{ '@context': 'https://schema.org', ...productNode }] : []),
     {
       '@context': 'https://schema.org',
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'Home',     item: 'https://www.downrangeco.com' },
         { '@type': 'ListItem', position: 2, name: 'Releases', item: 'https://www.downrangeco.com/releases' },
-        { '@type': 'ListItem', position: 3, name: `${release.brand} ${release.model || release.title}`, item: releaseUrl },
+        { '@type': 'ListItem', position: 3, name: productName, item: releaseUrl },
       ],
     },
   ]
