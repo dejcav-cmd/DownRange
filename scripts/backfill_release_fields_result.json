@@ -1,0 +1,201 @@
+{
+ "total": 28,
+ "titles": [
+  {
+   "id": "release-09bac85a5738",
+   "was": "Bergara Premier Platinum Stalker: The Bergara Premier Platinum Stalker is a bolt-action hunting rifle that combines trad",
+   "now": "Bergara Premier Platinum Stalker"
+  },
+  {
+   "id": "release-0ae2ccf71214",
+   "was": "Bergara Premier MgLite: The Bergara Premier MgLite is an ultra-lightweight precision hunting rifle built on an XLR magne",
+   "now": "Bergara Premier MgLite"
+  },
+  {
+   "id": "release-0ae6fc473711",
+   "was": "Smith & Wesson Model 642 America 250 Edition: The Smith & Wesson Model 642 America 250 Edition is a commemorative varian",
+   "now": "Smith & Wesson Model 642 America 250 Edition"
+  },
+  {
+   "id": "release-17290f3b518b",
+   "was": "CZ-USA CZ 457 TARGET: CZ announces the new CZ 457 TARGET, a bolt-action rimfire rifle designed for precision shooting",
+   "now": "CZ-USA CZ 457 TARGET"
+  },
+  {
+   "id": "release-2b060727a79d",
+   "was": "Smith & Wesson M&P 9 M2.0 Optic Ready No Thumb Safety: The M&P 9 M2",
+   "now": "Smith & Wesson M&P 9 M2.0 Optic Ready No Thumb Safety"
+  },
+  {
+   "id": "release-2c3951ec5f8a",
+   "was": "FN America FN 309 MRD: The FN 309 MRD is listed as part of FN America's pistol lineup",
+   "now": "FN America FN 309 MRD"
+  },
+  {
+   "id": "release-2fbb5e2ef300",
+   "was": "Bergara Premier Cima Pro: The Premier Cima Pro is a lightweight hunting rifle engineered around Bergara's proprietary CU",
+   "now": "Bergara Premier Cima Pro"
+  },
+  {
+   "id": "release-2ff3313dfeb6",
+   "was": "FN America FN 309\u2122 MRD: The FN 309\u2122 MRD is listed on FN America's official product lineup as a new pistol offering",
+   "now": "FN America FN 309\u2122 MRD"
+  },
+  {
+   "id": "release-5e121c955bd6",
+   "was": "Bergara Premier MgMicro Lite: The Bergara Premier MgMicro Lite is an ultralight bolt-action rifle designed for weight-se",
+   "now": "Bergara Premier MgMicro Lite"
+  },
+  {
+   "id": "release-65fee3efe7bf",
+   "was": "Savage Arms Model 334: Savage Arms expands its Model 334 bolt-action rifle lineup with new cartridge options and compact",
+   "now": "Savage Arms Model 334"
+  },
+  {
+   "id": "release-698971729371",
+   "was": "Smith & Wesson M&P 9 M2.0 Optic Ready Thumb Safety: The M&P 9 M2",
+   "now": "Smith & Wesson M&P 9 M2.0 Optic Ready Thumb Safety"
+  },
+  {
+   "id": "release-7aa967aa5cd6",
+   "was": "CZ-USA CZ 600+ Series: CZ introduces the CZ 600+ bolt-action rifle series as a new centerfire rifle offering",
+   "now": "CZ-USA CZ 600+ Series"
+  },
+  {
+   "id": "release-8dd73e3dc848",
+   "was": "Smith & Wesson Bodyguard 38 2.0 Integrated Crimson Trace Laser: The S&W Bodyguard 38 2",
+   "now": "Smith & Wesson Bodyguard 38 2.0 Integrated Crimson Trace Laser"
+  },
+  {
+   "id": "release-98d8f77af5a7",
+   "was": "CZ CZ 457 TARGET: CZ introduces the CZ 457 TARGET, a new addition to the CZ 457 rimfire rifle series",
+   "now": "CZ CZ 457 TARGET"
+  },
+  {
+   "id": "release-999b66f56513",
+   "was": "Bergara Premier Competition Rifle: Bergara's Premier Competition Rifle is a factory-built precision rifle purpose-built ",
+   "now": "Bergara Premier Competition Rifle"
+  },
+  {
+   "id": "release-9ee783fce1a7",
+   "was": "Savage Arms 212/220 Harvester and Harvester Woodland: Savage Arms announces upgraded 212/220 Harvester and Harvester Woo",
+   "now": "Savage Arms 212/220 Harvester and Harvester Woodland"
+  },
+  {
+   "id": "release-a08fd70bda7a",
+   "was": "Bergara Premier Competition Elite: The Bergara Premier Competition Elite is a precision rifle built specifically for PRS",
+   "now": "Bergara Premier Competition Elite"
+  },
+  {
+   "id": "release-a5fdb787622e",
+   "was": "Bergara Premier Competition: The Bergara Premier Competition is a purpose-built competition rifle leveraging Bergara's a",
+   "now": "Bergara Premier Competition"
+  },
+  {
+   "id": "release-b693d55b1ef1",
+   "was": "FN America FN 502: The FN 502 is a purpose-built ",
+   "now": "FN America FN 502"
+  },
+  {
+   "id": "release-bd0923724ad1",
+   "was": "Staccato HD P4X: The Staccato HD P4X is a 2011-pattern semi-automatic pistol engineered for shooters demanding control, ",
+   "now": "Staccato HD P4X"
+  },
+  {
+   "id": "release-d56c8be2e4ed",
+   "was": "FN America FN 502\u00ae Series: The FN 502\u00ae Series is a ",
+   "now": "FN America FN 502\u00ae Series"
+  },
+  {
+   "id": "release-d9aa8fed20bd",
+   "was": "Springfield Armory Model 2020 Waypoint: The Model 2020 Waypoint is Springfield Armory's premium bolt-action hunting rifl",
+   "now": "Springfield Armory Model 2020 Waypoint"
+  },
+  {
+   "id": "release-f0c81ccb63cc",
+   "was": "Bergara Premier HMR Pro: The Bergara Premier HMR Pro (Hunting and Match Rifle) is a precision bolt-action rifle featurin",
+   "now": "Bergara Premier HMR Pro"
+  },
+  {
+   "id": "release-ff508d47e965",
+   "was": "Savage Arms Model 110 RF Series: Savage Arms announced the Model 110 RF Series as part of a comprehensive reimagining of",
+   "now": "Savage Arms Model 110 RF Series"
+  }
+ ],
+ "msrp": [
+  {
+   "id": "release-0ae6fc473711",
+   "name": "Smith & Wesson Model 642 America 250 Edition",
+   "msrp": 579
+  },
+  {
+   "id": "release-2c3951ec5f8a",
+   "name": "FN America FN 309 MRD",
+   "msrp": 549
+  },
+  {
+   "id": "release-2ff3313dfeb6",
+   "name": "FN America FN 309\u2122 MRD",
+   "msrp": 549
+  },
+  {
+   "id": "release-65fee3efe7bf",
+   "name": "Savage Arms Model 334",
+   "msrp": 459
+  }
+ ],
+ "images": [
+  {
+   "id": "release-0ae6fc473711",
+   "name": "Smith & Wesson Model 642 America 250 Edition",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  {
+   "id": "release-17290f3b518b",
+   "name": "CZ-USA CZ 457 TARGET",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  {
+   "id": "release-2b060727a79d",
+   "name": "Smith & Wesson M&P 9 M2.0 Optic Ready No Thumb Safety",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  {
+   "id": "release-58baee637165",
+   "name": "CZ-USA CZ 75 Legend",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  {
+   "id": "release-698971729371",
+   "name": "Smith & Wesson M&P 9 M2.0 Optic Ready Thumb Safety",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG?utm_source=commons.wikimedia.org&utm_campaign=imageinfo&utm_content=thumbnail_unscaled"
+  },
+  {
+   "id": "release-7aa967aa5cd6",
+   "name": "CZ-USA CZ 600+ Series",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG"
+  },
+  {
+   "id": "release-98d8f77af5a7",
+   "name": "CZ CZ 457 TARGET",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG"
+  },
+  {
+   "id": "release-b693d55b1ef1",
+   "name": "FN America FN 502",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG"
+  },
+  {
+   "id": "release-d56c8be2e4ed",
+   "name": "FN America FN 502\u00ae Series",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG"
+  },
+  {
+   "id": "release-e2ff7ace5320",
+   "name": "CZ CZ 600+ Series",
+   "was": "https://upload.wikimedia.org/wikipedia/commons/7/7b/Handgun_collection.JPG"
+  }
+ ],
+ "msrp_not_found": 12,
+ "mutations": 34
+}
