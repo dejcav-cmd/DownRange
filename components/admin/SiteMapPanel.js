@@ -69,6 +69,15 @@ const SITE_MAP = [
         sanityType: 'legislation',
         dataSource: 'Congress.gov API, ATF RSS, LegiScan, GOA WordPress API, SCOTUSblog',
       },
+      {
+        url: '/state-news',
+        title: 'State News',
+        desc: 'State-filtered firearms news; linked from every /laws/[state] page',
+        revalidate: 180,
+        crons: ['news (via agent)'],
+        sanityType: 'newsArticle',
+        dataSource: 'Sanity newsArticle (relatedStates / state name) + state RSS feeds',
+      },
     ]
   },
   {

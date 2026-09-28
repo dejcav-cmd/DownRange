@@ -125,6 +125,15 @@ export default async function sitemap() {
       lastModified:    NOW,
     }))
 
+    // State news — linked from every /laws/[state] page; lowercase matches page canonical
+    const stateNewsUrls = [
+      { url: `${BASE}/state-news`, priority: 0.6, changeFrequency: 'daily', lastModified: NOW },
+      ...US_STATE_CODES.map(code => ({
+        url: `${BASE}/state-news/${code.toLowerCase()}`,
+        priority: 0.6, changeFrequency: 'daily', lastModified: NOW,
+      })),
+    ]
+
     // Firearm encyclopedia — ranked in Google without ever being in the sitemap
     const gunUrls = [
       { url: `${BASE}/guns`, priority: 0.7, changeFrequency: 'monthly', lastModified: NOW },
@@ -135,6 +144,7 @@ export default async function sitemap() {
       ...STATIC_PAGES,
       ...stateUrls,
       ...gunUrls,
+      ...stateNewsUrls,
       ...articleUrls,
       ...blogUrls,
       ...releaseUrls,

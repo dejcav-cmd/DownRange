@@ -29,6 +29,14 @@ const ACTIVITY_COLORS = { HIGH:'#EF4444', MED:'#FBBF24', LOW:'#34D399' }
 export default function StateNewsIndex() {
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
+        { '@context':'https://schema.org', '@type':'CollectionPage', name:'State Firearms News', url:'https://www.downrangeco.com/state-news',
+          description:'Firearms news for all 50 states.', isPartOf:{ '@type':'WebSite', name:'DownRange', url:'https://www.downrangeco.com' } },
+        { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[
+          { '@type':'ListItem', position:1, name:'Home', item:'https://www.downrangeco.com' },
+          { '@type':'ListItem', position:2, name:'State News', item:'https://www.downrangeco.com/state-news' },
+        ]},
+      ]) }} />
       <Masthead />
       <div className="page-hero" data-title="STATE NEWS">
         <div className="container">

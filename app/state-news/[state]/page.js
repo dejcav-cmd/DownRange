@@ -3,6 +3,7 @@ import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { notFound } from 'next/navigation'
+import { fetchStateNews, STATE_NAMES } from '../../../lib/stateNews'
 
 export const revalidate = 180 // 3 min
 
@@ -31,38 +32,7 @@ const STATE_FEEDS = {
   TX2: null,
 }
 
-const STATE_NAMES = {
-  AL:'Alabama',AK:'Alaska',AZ:'Arizona',AR:'Arkansas',CA:'California',CO:'Colorado',
-  CT:'Connecticut',DE:'Delaware',FL:'Florida',GA:'Georgia',HI:'Hawaii',ID:'Idaho',
-  IL:'Illinois',IN:'Indiana',IA:'Iowa',KS:'Kansas',KY:'Kentucky',LA:'Louisiana',
-  ME:'Maine',MD:'Maryland',MA:'Massachusetts',MI:'Michigan',MN:'Minnesota',MS:'Mississippi',
-  MO:'Missouri',MT:'Montana',NE:'Nebraska',NV:'Nevada',NH:'New Hampshire',NJ:'New Jersey',
-  NM:'New Mexico',NY:'New York',NC:'North Carolina',ND:'North Dakota',OH:'Ohio',
-  OK:'Oklahoma',OR:'Oregon',PA:'Pennsylvania',RI:'Rhode Island',SC:'South Carolina',
-  SD:'South Dakota',TN:'Tennessee',TX:'Texas',UT:'Utah',VT:'Vermont',VA:'Virginia',
-  WA:'Washington',WV:'West Virginia',WI:'Wisconsin',WY:'Wyoming'
-}
 
-// Fetch news from our Sanity database filtered by state
-async function fetchStateNews(abbr, sort = 'newest') {
-  const { createClient } = await import('@sanity/client')
-  const client = createClient({
-    projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
-    dataset: 'production', apiVersion: '2024-01-01', useCdn: true,
-  })
-
-  const orderBy = sort === 'urgency' ? 'urgencyScore desc' : 'publishedAt desc'
-
-  try {
-    return await client.fetch(`
-      *[_type=="newsArticle" && approved==true && ($state in relatedStates || title match $pattern || summary match $pattern)] | order(${orderBy}) [0...30] {
-        _id, title, slug, summary, excerpt, category, urgencyScore, publishedAt, source, externalUrl, imageUrl
-      }
-    `, { state: abbr, pattern: `*${STATE_NAMES[abbr]}*` })
-  } catch { return [] }
-}
-
-// Fetch from RSS in real-time for additional state coverage
 async function fetchStateRSS(abbr) {
   const stateFeeds = STATE_FEEDS[abbr]
   if (!stateFeeds) return []
@@ -132,7 +102,7 @@ export default async function StateNewsPage({ params, searchParams }) {
   const cat  = searchParams?.cat || null
 
   const [sanityNews, rssNews, alerts] = await Promise.all([
-    fetchStateNews(abbr, sort).catch(() => []),
+    fetchStateNews(abbr, { sort }).catch(() => []),
     fetchStateRSS(abbr).catch(() => []),
     fetchBreakingAlerts(3).catch(() => []),
   ])
@@ -150,6 +120,18 @@ export default async function StateNewsPage({ params, searchParams }) {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
+        { '@context':'https://schema.org', '@type':'CollectionPage', name:`${stateName} Firearms News`,
+          url:`https://www.downrangeco.com/state-news/${abbr.toLowerCase()}`,
+          about:{ '@type':'State', name: stateName },
+          mainEntity:{ '@type':'ItemList', itemListElement: allNews.filter(a => !a.fromRSS && a.slug?.current).slice(0, 10).map((a, idx) => ({
+            '@type':'ListItem', position: idx + 1, url:`https://www.downrangeco.com/news/${a.slug.current}`, name: a.title })) } },
+        { '@context':'https://schema.org', '@type':'BreadcrumbList', itemListElement:[
+          { '@type':'ListItem', position:1, name:'Home', item:'https://www.downrangeco.com' },
+          { '@type':'ListItem', position:2, name:'State News', item:'https://www.downrangeco.com/state-news' },
+          { '@type':'ListItem', position:3, name: stateName, item:`https://www.downrangeco.com/state-news/${abbr.toLowerCase()}` },
+        ]},
+      ]) }} />
       <Masthead />
 
       <div className="page-hero" data-title={abbr}>

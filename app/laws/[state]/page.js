@@ -4,6 +4,7 @@ import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { STATE_SEED } from '../../../lib/stateSeed'
+import { fetchStateNews } from '../../../lib/stateNews'
 
 export const revalidate = 3600
 
@@ -61,7 +62,10 @@ export default async function StateLawPage({ params }) {
   if (raw !== abbr) redirect(`/laws/${abbr}`)
   const stateName = STATE_NAMES[abbr]
 
-  const profile = await fetchStateProfile(abbr).catch(() => null)
+  const [profile, stateNews] = await Promise.all([
+    fetchStateProfile(abbr).catch(() => null),
+    fetchStateNews(abbr, { limit: 5 }).catch(() => []),
+  ])
   const data = profile || STATE_SEED[abbr] || { name: stateName, abbr }
 
   const faqItems = [
@@ -141,7 +145,7 @@ export default async function StateLawPage({ params }) {
                 </p>
                 <div style={{ display:'flex', flexWrap:'wrap', gap:4, marginBottom:24 }}>
                   {data.reciprocityStates.map(s => (
-                    <Link key={s} href={`/laws/${s.toLowerCase()}`}
+                    <Link key={s} href={`/laws/${s.toUpperCase()}`}
                       style={{ fontFamily:S.mono, fontSize:11, fontWeight:700, color:'#34D399', background:'#0A1F0A', border:'1px solid #34D39930', padding:'4px 10px', textDecoration:'none' }}>
                       {s}
                     </Link>
@@ -167,6 +171,32 @@ export default async function StateLawPage({ params }) {
                 ))}
               </>
             )}
+
+            {/* Latest state news — links the state law page to /state-news/[state] */}
+            <div style={{ fontFamily:S.mono, fontSize:10, color:'#C8922A', letterSpacing:'0.15em', marginTop:32, marginBottom:16, paddingBottom:8, borderBottom:'2px solid #C8922A' }}>
+              LATEST {stateName.toUpperCase()} NEWS
+            </div>
+            {stateNews.length > 0 ? (
+              stateNews.map(a => (
+                <Link key={a._id} href={`/news/${a.slug?.current || a._id}`}
+                  style={{ display:'block', padding:'12px 0', borderBottom:'1px solid #1a1a1a', textDecoration:'none' }}>
+                  <div style={{ fontFamily:S.cond, fontSize:15, fontWeight:700, color:'#E5E5E5', lineHeight:1.3 }}>{a.title}</div>
+                  {a.publishedAt && (
+                    <div style={{ fontFamily:S.mono, fontSize:9, color:'#6B7280', marginTop:4, letterSpacing:'0.05em' }}>
+                      {new Date(a.publishedAt).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })}{a.source ? ` · ${a.source}` : ''}
+                    </div>
+                  )}
+                </Link>
+              ))
+            ) : (
+              <p style={{ fontFamily:S.sans, fontSize:13, color:'#6B7280', margin:'0 0 8px' }}>
+                No recent {stateName}-specific stories. State and national coverage updates throughout the day.
+              </p>
+            )}
+            <Link href={`/state-news/${abbr.toLowerCase()}`}
+              style={{ display:'inline-block', marginTop:12, fontFamily:S.mono, fontSize:11, color:'#C8922A', textDecoration:'none', letterSpacing:'0.08em' }}>
+              All {stateName} firearms news →
+            </Link>
 
             {/* Related links */}
             <div style={{ marginTop:32, display:'flex', flexDirection:'column', gap:8 }}>
