@@ -84,7 +84,7 @@ function StatCard({ profile, abbr }) {
       )}
 
       <div style={{ marginTop: '20px' }}>
-        <a href={`/state-hub/${abbr.toLowerCase()}`} className="btn-outline">
+        <a href={`/laws/${abbr.toUpperCase()}`} className="btn-outline">
           Full {profile.name || STATE_NAMES[abbr]} Guide →
         </a>
       </div>
@@ -142,7 +142,7 @@ export default function StateHub({ profiles = {} }) {
           </div>
         </div>
 
-        <a href="/state-hub" className="btn-ghost" style={{ justifyContent: 'center' }}>
+        <a href="/laws/states" className="btn-ghost" style={{ justifyContent: 'center' }}>
           View All 50 States →
         </a>
       </div>

@@ -16,7 +16,7 @@ export async function POST(req) {
     if (type === 'legislation')    paths.push('/laws', '/')
     if (type === 'review')         paths.push('/reviews', slug ? `/reviews/${slug}` : null)
     if (type === 'firearmRelease') paths.push('/releases', '/')
-    if (type === 'stateProfile')   paths.push('/state-hub', slug ? `/state-hub/${slug}` : null)
+    if (type === 'stateProfile')   paths.push('/laws/states', slug ? `/laws/${String(slug).toUpperCase()}` : null)
     if (type === 'ammoPrice')      paths.push('/market', '/')
     if (type === 'video')          paths.push('/video')
     const { revalidatePath } = await import('next/cache')

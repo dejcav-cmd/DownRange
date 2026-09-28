@@ -213,7 +213,7 @@ ${ul([
   'Holster section listing for relevant models',
   'Press release distribution to our audience',
 ])}
-${cta('https://www.downrangeco.com/ccw','See the CCW Section')}
+${cta('https://www.downrangeco.com/laws/my-state','See the CCW Section')}
 ${p(`Press info: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>DJ`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],

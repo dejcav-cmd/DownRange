@@ -155,9 +155,9 @@ export default async function StateNewsPage({ params, searchParams }) {
       <div className="page-hero" data-title={abbr}>
         <div className="container">
           <div style={{ display:'flex', alignItems:'center', gap:'10px', marginBottom:'8px' }}>
-            <Link href="/state-hub" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>← STATE HUB</Link>
+            <Link href="/laws/states" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>← STATE LAWS</Link>
             <span style={{ color:'#1F2428' }}>›</span>
-            <Link href={`/state-hub/${params.state}`} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>{stateName} Laws</Link>
+            <Link href={`/laws/${String(params.state).toUpperCase()}`} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#4B5563', textDecoration:'none' }}>{stateName} Laws</Link>
             <span style={{ color:'#1F2428' }}>›</span>
             <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#C8922A' }}>News</span>
           </div>
@@ -272,7 +272,7 @@ export default async function StateNewsPage({ params, searchParams }) {
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.12em', marginBottom:'12px', fontWeight:700 }}>
                     {stateName.toUpperCase()} QUICK LAWS
                   </div>
-                  <Link href={`/state-hub/${params.state}`}
+                  <Link href={`/laws/${String(params.state).toUpperCase()}`}
                     style={{ display:'block', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#60A5FA', marginBottom:'10px', textDecoration:'none' }}>
                     View full {stateName} law profile →
                   </Link>

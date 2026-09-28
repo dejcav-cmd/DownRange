@@ -37,7 +37,7 @@ export async function GET(req) {
     (data.magLimit ? '<div><span style="color:#6B7280">Mag Limit:</span> <span style="color:#FBBF24">' + data.magLimit + ' rounds</span></div>' : '') +
     (data.waitPeriod ? '<div><span style="color:#6B7280">Wait Period:</span> <span style="color:#FBBF24">' + data.waitPeriod + '</span></div>' : '') +
     '</div>' +
-    '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #1F2428"><a href="https://downrangeco.com/state-hub/' + data.abbr.toLowerCase() + '" target="_blank" style="color:#C8922A;font-size:11px;text-decoration:none">Full ' + data.name + ' law guide → downrangeco.com</a></div>' +
+    '<div style="margin-top:12px;padding-top:10px;border-top:1px solid #1F2428"><a href="https://www.downrangeco.com/laws/' + data.abbr.toUpperCase() + '" target="_blank" style="color:#C8922A;font-size:11px;text-decoration:none">Full ' + data.name + ' law guide → downrangeco.com</a></div>' +
     '</div>';
 })();`
     return new Response(js, { headers: { 'Content-Type': 'application/javascript', 'Access-Control-Allow-Origin': '*', 'Cache-Control': 'public, max-age=3600' } })

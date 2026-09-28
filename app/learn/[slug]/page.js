@@ -48,7 +48,7 @@ const ARTICLES = {
     keyTakeaways: ['29 states are constitutional carry — but a permit still has major advantages for reciprocity', 'Meeting eligibility requirements is mandatory — lying on your application is a felony', 'State-required training is the minimum — invest in additional training', 'CCW reciprocity means your permit works in other states — check before you travel', 'After Bruen (2022), most states must issue permits on an objective criteria basis'],
     relatedLinks: [
       { label: 'CCW Reciprocity Map', href: '/laws?tab=reciprocity' },
-      { label: 'State Laws by State', href: '/state-hub' },
+      { label: 'State Laws by State', href: '/laws/states' },
       { label: 'How to Choose a Holster', href: '/learn/choosing-holster-beginners' },
       { label: 'CCW Insurance Comparison', href: '/carry-insurance' },
     ],

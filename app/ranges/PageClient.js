@@ -394,7 +394,7 @@ export default function RangesPage() {
             </p>
           </div>
           <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6B7280', lineHeight:1.7, margin:0 }}>
-            Range data sourced from our curated database, OpenStreetMap community contributions, and Google Places. Coverage spans all 50 states with indoor and outdoor facilities. Use the <a href="/state-hub" style={{ color:'#C8922A', textDecoration:'none' }}>State Hub</a> to review your state&apos;s specific range regulations, or the <a href="/laws" style={{ color:'#C8922A', textDecoration:'none' }}>Laws page</a> for federal and state firearms statutes.
+            Range data sourced from our curated database, OpenStreetMap community contributions, and Google Places. Coverage spans all 50 states with indoor and outdoor facilities. Use the <a href="/laws/states" style={{ color:'#C8922A', textDecoration:'none' }}>State Laws</a> to review your state&apos;s specific range regulations, or the <a href="/laws" style={{ color:'#C8922A', textDecoration:'none' }}>Laws page</a> for federal and state firearms statutes.
           </p>
         </div>
       </div>

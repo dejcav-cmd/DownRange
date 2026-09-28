@@ -1,4 +1,5 @@
 import { createClient } from '@sanity/client'
+import { GUN_MODELS } from '../lib/gunData'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -9,7 +10,7 @@ const sanity = createClient({
 
 const BASE = 'https://www.downrangeco.com'
 
-// 2-letter state codes — matches /state-hub/[state] route params
+// 2-letter state codes — matches /laws/[state] route params
 const US_STATE_CODES = [
   'AL','AK','AZ','AR','CA','CO','CT','DE','FL','GA',
   'HI','ID','IL','IN','IA','KS','KY','LA','ME','MD',
@@ -127,18 +128,16 @@ export default async function sitemap() {
       lastModified:    NOW,
     }))
 
-    // State hub pages — news + laws + resources combined view (lower priority than /laws/)
-    const stateHubUrls = US_STATE_CODES.map(code => ({
-      url:             `${BASE}/state-hub/${code}`,
-      priority:        0.65,
-      changeFrequency: 'daily',
-      lastModified:    NOW,
-    }))
+    // Firearm encyclopedia — ranked in Google without ever being in the sitemap
+    const gunUrls = [
+      { url: `${BASE}/guns`, priority: 0.7, changeFrequency: 'monthly', lastModified: NOW },
+      ...GUN_MODELS.map(m => ({ url: `${BASE}/guns/${m}`, priority: 0.6, changeFrequency: 'monthly', lastModified: NOW })),
+    ]
 
     return [
       ...STATIC_PAGES,
       ...stateUrls,
-      ...stateHubUrls,
+      ...gunUrls,
       ...articleUrls,
       ...blogUrls,
       ...releaseUrls,

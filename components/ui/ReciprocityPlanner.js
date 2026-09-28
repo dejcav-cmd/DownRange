@@ -61,7 +61,7 @@ export default function ReciprocityPlanner({ stateProfiles = [] }) {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {allHonored.map(s => (
-                  <a key={s} href={`/state-hub/${s.toLowerCase()}`}
+                  <a key={s} href={`/laws/${s.toUpperCase()}`}
                     style={{ background: '#001A0A', border: '1px solid #166534', color: '#34D399', padding: '4px 10px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', textDecoration: 'none' }}>
                     {s}
                   </a>
@@ -74,7 +74,7 @@ export default function ReciprocityPlanner({ stateProfiles = [] }) {
               </div>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
                 {notHonored.map(s => (
-                  <a key={s} href={`/state-hub/${s.toLowerCase()}`}
+                  <a key={s} href={`/laws/${s.toUpperCase()}`}
                     style={{ background: '#1A0000', border: '1px solid #7F1D1D', color: '#EF4444', padding: '4px 10px', fontFamily: "'IBM Plex Mono',monospace", fontSize: '11px', textDecoration: 'none' }}>
                     {s}
                   </a>

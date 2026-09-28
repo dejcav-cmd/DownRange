@@ -111,7 +111,7 @@ export default function StateMap({ profiles = [] }) {
   }
 
   function handleClick(abbr) {
-    router.push(`/state-hub/${abbr.toLowerCase()}`)
+    router.push(`/laws/${abbr.toUpperCase()}`)
   }
 
   function handleMouseMove(e, abbr) {

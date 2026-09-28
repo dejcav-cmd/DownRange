@@ -373,7 +373,7 @@ export default function CcwMap({ profiles = [] }) {
           </div>
 
           <div style={{ marginTop:16, display:'flex', gap:8 }}>
-            <a href={`/state-hub/${selected.toLowerCase()}`}
+            <a href={`/laws/${selected.toUpperCase()}`}
               style={{ ...M, fontSize:11, padding:'8px 16px', border:'1px solid #C8922A', color:'#C8922A', textDecoration:'none' }}>
               Full {selData.name} Gun Laws →
             </a>

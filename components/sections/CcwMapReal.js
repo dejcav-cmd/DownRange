@@ -400,7 +400,7 @@ export default function CcwMapReal() {
               {selData.notes}
             </div>
 
-            <a href={'/state-hub/'+sel.toLowerCase()} target="_blank" rel="noreferrer"
+            <a href={'/laws/'+sel.toUpperCase()} target="_blank" rel="noreferrer"
               style={{display:'inline-block', marginTop:12, fontFamily:mono, fontSize:10, color:'#C8922A', textDecoration:'none', border:'1px solid rgba(200,146,42,.4)', padding:'6px 12px'}}>
               Full {selData.name} Gun Laws →
             </a>

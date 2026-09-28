@@ -56,7 +56,7 @@ const TYPES = {
     filter: 'defined(name)',
     fields: ['name','abbr','summary'],
     project: '_id, _type, name, abbr, rating, summary, "slug": lower(abbr)',
-    href: (r) => `/state-hub/${r.slug}`,
+    href: (r) => `/laws/${String(r.slug||'').toUpperCase()}`,
   },
 }
 
@@ -151,7 +151,7 @@ function buildHref(typeName, doc) {
     case 'review':        return `/reviews/${doc.slug}`
     case 'firearmRelease':return `/releases/${doc.slug}`
     case 'gunDeal':        return doc.externalUrl || '/deals'
-    case 'stateProfile':  return `/state-hub/${(doc.abbr||'').toLowerCase()}`
+    case 'stateProfile':  return `/laws/${(doc.abbr||'').toUpperCase()}`
     default:              return '/'
   }
 }

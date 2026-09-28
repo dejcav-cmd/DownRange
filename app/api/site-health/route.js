@@ -29,7 +29,7 @@ const VALID_ROUTES = new Set([
   '/contact','/contribute','/deals','/ffl-finder','/guns',
   '/hunting','/laws','/learn','/market','/news','/nfa-tracker',
   '/precision','/preparedness','/press','/privacy','/ranges',
-  '/releases','/reviews','/safe-storage','/search','/state-hub',
+  '/releases','/reviews','/safe-storage','/search',
   '/state-news','/terms','/training','/video','/widget',
 ])
 

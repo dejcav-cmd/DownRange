@@ -149,7 +149,7 @@ export default function FFLFinder() {
             </p>
           </div>
           <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'#6B7280', lineHeight:1.7, margin:0 }}>
-            FFL data sourced from the ATF Federal Firearms Licensee database. For state-specific carry and purchase laws, visit the <a href="/state-hub" style={{ color:'#C8922A', textDecoration:'none' }}>State Hub</a>. Track NFA suppressor and SBR wait times on the <a href="/nfa-tracker" style={{ color:'#C8922A', textDecoration:'none' }}>NFA Tracker</a>.
+            FFL data sourced from the ATF Federal Firearms Licensee database. For state-specific carry and purchase laws, visit the <a href="/laws/states" style={{ color:'#C8922A', textDecoration:'none' }}>State Laws</a>. Track NFA suppressor and SBR wait times on the <a href="/nfa-tracker" style={{ color:'#C8922A', textDecoration:'none' }}>NFA Tracker</a>.
           </p>
         </div>
       </div>

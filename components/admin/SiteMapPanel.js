@@ -78,24 +78,6 @@ const SITE_MAP = [
         sanityType: 'legislation',
         dataSource: 'Congress.gov API, ATF RSS, LegiScan, GOA WordPress API, SCOTUSblog',
       },
-      {
-        url: '/state-hub',
-        title: 'State Hub',
-        desc: '50-state firearms law profiles',
-        revalidate: 1800,
-        crons: ['state (Sun 8am)', 'cron/ccw-update (Sun 5am)'],
-        sanityType: 'stateProfile',
-        dataSource: 'LegiScan API + AI law enrichment',
-      },
-      {
-        url: '/ccw',
-        title: 'CCW Reciprocity Map',
-        desc: 'Interactive carry permit reciprocity map',
-        revalidate: 604800,
-        crons: ['cron/ccw-update (Sun 5am)'],
-        sanityType: 'stateProfile',
-        dataSource: 'AI-rewritten from ATF + AG sources',
-      },
     ]
   },
   {
