@@ -1,0 +1,17 @@
+name: Lighthouse Mobile Audit
+on:
+  workflow_dispatch: {}
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - run: bash scripts/lh_audit.sh || true
+      - env:
+          GH_TOKEN: ${{ github.token }}
+        run: python3 scripts/put_result.py /tmp/out.txt scripts/lh_audit_result.json
