@@ -163,10 +163,6 @@
     {
       "path": "/api/nics",
       "schedule": "0 10 1 * *"
-    },
-    {
-      "path": "/api/cron/releases",
-      "schedule": "0 12 * * *"
     }
   ],
   "headers": [
