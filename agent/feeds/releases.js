@@ -697,7 +697,12 @@ async function queuePop(key, count) {
   for (let i = 0; i < count; i++) {
     const raw = await redis.lpop(key)
     if (!raw) break
-    try { items.push(JSON.parse(raw)) } catch {}
+    // @upstash/redis auto-deserializes JSON, so lpop already returns the object.
+    // The old JSON.parse(object) threw, the empty catch swallowed it, and every
+    // queued release was popped and silently discarded ("done 0 in 56ms").
+    if (typeof raw === 'object') { items.push(raw); continue }
+    try { items.push(JSON.parse(raw)) }
+    catch (e) { console.warn('[RELEASES v7] Dropped unparseable queue item:', String(raw).slice(0, 80)) }
   }
   return items
 }

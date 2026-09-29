@@ -175,6 +175,12 @@ async function fetchLawsFromRSS() {
 async function runLawsFeed() {
   console.log('[LAWS] Starting laws feed...')
   const t = Date.now()
+  // Vercel kills this function at 300s. Previously 5 state batches x 30s sleep plus
+  // per-bill Claude calls ran past that on every run, so the job never reported and
+  // late-alphabet states were never processed. Stop starting new work at 240s.
+  const DEADLINE = t + 240_000
+  const outOfTime = () => Date.now() > DEADLINE
+  let timedOut = false
   let done = 0, failed = 0
   const saved = []
 
@@ -214,6 +220,7 @@ async function runLawsFeed() {
   // Federal bills (requires CONGRESS_GOV_KEY)
   const federal = await fetchCongressBills()
   for (const bill of federal) {
+    if (outOfTime()) { timedOut = true; break }
     try {
       // Enrich with Claude extended summary + analysis — only if not already enriched
       if (process.env.ANTHROPIC_API_KEY && !enrichedIds.has(bill._id)) {
@@ -240,11 +247,20 @@ async function runLawsFeed() {
   for (let i = 0; i < US_STATES.length; i += 10) {
     batches.push(US_STATES.slice(i, i + 10))
   }
+  // Rotate the starting batch each 12h run so every state gets covered even when a
+  // run stops early.
+  const startAt = Math.floor(Date.now() / (12 * 3600_000)) % batches.length
+  const ordered = [...batches.slice(startAt), ...batches.slice(0, startAt)]
+  const statesCovered = []
 
-  for (const batch of batches) {
+  for (const batch of ordered) {
+    if (timedOut || outOfTime()) { timedOut = true; break }
     const results = await Promise.all(batch.map(s => fetchLegiScanState(s)))
+    statesCovered.push(...batch)
     for (const bills of results) {
+      if (timedOut) break
       for (const bill of bills) {
+        if (outOfTime()) { timedOut = true; break }
         try {
           // Enrich with Claude extended summary — only if not already enriched
           if (process.env.ANTHROPIC_API_KEY && !enrichedIds.has(bill._id)) {
@@ -264,11 +280,11 @@ async function runLawsFeed() {
         } catch (err) { failed++ }
       }
     }
-    await sleep(30000) // 30s between batches to respect LegiScan limits
+    if (!outOfTime()) await sleep(10000) // pause between batches for LegiScan
   }
 
-  console.log(`[LAWS] Done. ${done} published, ${failed} failed. ${Date.now() - t}ms`)
-  return { done, failed, saved, headlines: saved.slice(0, 20) }
+  console.log(`[LAWS] Done. ${done} published, ${failed} failed. states ${statesCovered.length}/50${timedOut ? ' (time budget reached)' : ''}. ${Date.now() - t}ms`)
+  return { done, failed, saved, headlines: saved.slice(0, 20), statesCovered: statesCovered.length, timedOut }
 }
 
 export { runLawsFeed }

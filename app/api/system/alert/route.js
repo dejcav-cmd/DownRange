@@ -186,7 +186,7 @@ async function sendAlertEmail({ type, source, error, consecutiveFails, recovered
     <div style="margin-top:10px;font-size:11px;color:#6b7280;line-height:1.6;">
       This alert triggers after <strong style="color:#e5e7eb;">${FAIL_THRESHOLD} consecutive failures</strong>. 
       You will receive follow-up alerts every 10 failures. 
-      A recovery email is sent automatically when the feed resumes.
+      Recovery is logged in Mission Control when the feed resumes.
     </div>
   </div>` : `
   <div style="background:#0A0B0C;border-bottom:1px solid #1f2428;padding:20px 32px;">
@@ -252,7 +252,8 @@ export async function POST(request) {
       }
     } else if (isSuccess && sourceState.consecutiveFails >= FAIL_THRESHOLD) {
       alertType   = 'recovery'
-      emailResult = await sendAlertEmail({ type: 'recovery', source, recoveredFrom: sourceState.consecutiveFails, failStartedAt: sourceState.failStartedAt })
+      // Recovery emails disabled (no action needed) — recovery is still logged below.
+      emailResult = { skipped: true, reason: 'recovery-email-disabled' }
       sourceState.consecutiveFails = 0
       sourceState.alertSent        = false
       sourceState.failStartedAt    = null

@@ -43,9 +43,10 @@ const ST = {
   running: { color:'#3b82f6', bg:'rgba(59,130,246,.12)', icon:'◉', label:'RUNNING'   },
   overdue: { color:'#f97316', bg:'rgba(249,115,22,.12)', icon:'⚠', label:'OVERDUE'   },
   never:   { color:'#6b7280', bg:'rgba(107,114,128,.1)', icon:'○', label:'NEVER RUN' },
+  paused:  { color:'#6b7280', bg:'rgba(107,114,128,.08)', icon:'⏸', label:'PAUSED'    },
 }
 
-const GC = { Content:'#3b82f6', System:'#22c55e', Outreach:'#C8922A' }
+const GC = { Content:'#3b82f6', System:'#22c55e', Outreach:'#C8922A', Social:'#a855f7' }
 
 function fmtMs(ms) {
   if (!ms && ms !== 0) return '—'
@@ -287,7 +288,7 @@ export default function CronDashboard({ adminKey }) {
           </button>
         ))}
         <span style={{fontSize:10,color:'#6b7280',marginLeft:8}}>Status:</span>
-        {['All','failed','overdue','success','never'].map(s => (
+        {['All','failed','overdue','success','never','paused'].map(s => (
           <button key={s} className="cd-ghost"
             onClick={()=>setFilterStatus(s)}
             style={{

@@ -1,6 +1,7 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
+import { withCronReport } from '../../../../lib/withCronReport'
 
 // NRA-ILA State Gun Laws Sync
 // Scrapes https://www.nraila.org/gun-laws/state-gun-laws/ every 10 days
@@ -223,7 +224,7 @@ async function postToDiscord(changes) {
   }
 }
 
-export async function GET(req) {
+async function _GET(req) {
   const { searchParams } = new URL(req.url)
   const key = req.headers.get('x-admin-key') || searchParams.get('key')
   const stateFilter = searchParams.get('state')?.toUpperCase()
@@ -326,3 +327,5 @@ export async function GET(req) {
     results,
   })
 }
+
+export const GET = withCronReport('nra-law-sync', _GET)

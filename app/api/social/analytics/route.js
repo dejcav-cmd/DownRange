@@ -6,6 +6,7 @@
 export const dynamic = 'force-dynamic'
 
 import { createClient } from '@sanity/client'
+import { withCronReport } from '../../../../lib/withCronReport'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -66,7 +67,7 @@ async function fetchBlueskyAnalytics(postUri) {
   } catch { return null }
 }
 
-export async function GET(req) {
+async function _GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const { searchParams } = new URL(req.url)
@@ -136,3 +137,5 @@ export async function GET(req) {
 
   return Response.json({ ok: true, posts, totals })
 }
+
+export const GET = withCronReport('social-analytics', _GET)

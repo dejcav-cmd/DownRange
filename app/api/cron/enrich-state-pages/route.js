@@ -3,6 +3,7 @@ export const maxDuration = 300
 
 import { createClient } from '@sanity/client'
 import { callAIText }   from '../../../../lib/aiClient.js'
+import { withCronReport } from '../../../../lib/withCronReport'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -98,7 +99,7 @@ Return only HTML paragraphs and h2 tags. No intro text, no markdown, no code fen
   return html.replace(/```html?/g, '').replace(/```/g, '').trim()
 }
 
-export async function GET(req) {
+async function _GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const url     = new URL(req.url)
@@ -166,3 +167,5 @@ export async function GET(req) {
     message: `${done} states enriched. ${total - enriched} remaining.`,
   })
 }
+
+export const GET = withCronReport('enrich-state-pages', _GET)

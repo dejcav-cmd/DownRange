@@ -3,6 +3,7 @@ export const maxDuration = 120
 
 import { runSocialAgent } from '../../../../../agent/social/socialAgent.js'
 import { createClient }   from '@sanity/client'
+import { withCronReport } from '../../../../../lib/withCronReport'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -16,7 +17,7 @@ function auth(req) {
   return key === process.env.ADMIN_KEY || cron === 'Bearer ' + process.env.CRON_SECRET
 }
 
-export async function GET(req) {
+async function _GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   // Load config — platforms_config is stored as JSON string in Sanity
@@ -45,5 +46,4 @@ export async function POST(req) {
   return Response.json(result)
 }
 
-
-
+export const GET = withCronReport('social-facebook', _GET)
