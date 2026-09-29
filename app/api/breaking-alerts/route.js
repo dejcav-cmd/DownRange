@@ -27,8 +27,13 @@ export async function GET() {
       *[_type == "breakingAlert" && active == true && publishedAt > $cutoff]
       | order(publishedAt desc) [0...10] {
         _id, headline, articleSlug, sourceUrl, url, urgencyScore, publishedAt,
-        // Older alerts have no articleSlug — match our article by headline
-        "matchedSlug": *[_type == "newsArticle" && approved == true && title == ^.headline][0].slug.current
+        // Older alerts have no articleSlug — match our article by source URL / headline
+        // Our articles are AI-retitled, so match on the original source URL first
+        "matchedSlug": coalesce(
+          *[_type == "newsArticle" && approved == true && defined(externalUrl)
+            && (externalUrl == ^.sourceUrl || externalUrl == ^.url)][0].slug.current,
+          *[_type == "newsArticle" && approved == true && title == ^.headline][0].slug.current
+        )
       }
     `, { cutoff }).catch(() => [])
 
