@@ -1,0 +1,180 @@
+[
+ {
+  "url": "/",
+  "scores": {
+   "performance": 47,
+   "accessibility": 96,
+   "best-practices": 96,
+   "seo": 100
+  },
+  "lcp": "12.5\u00a0s",
+  "tbt": "630\u00a0ms",
+  "cls": "0",
+  "fcp": "4.3\u00a0s",
+  "lcpEl": "<div style=\"position: absolute; inset: 0px; background-image: url(&quot;/img/photos/militar\u2026&quot;);\">",
+  "issues": [
+   "largest-contentful-paint (12.5\u00a0s)",
+   "errors-in-console",
+   "mainthread-work-breakdown (5.8\u00a0s)",
+   "bootup-time (1.9\u00a0s)",
+   "uses-rel-preconnect (Est savings of 300\u00a0ms)",
+   "largest-contentful-paint-element (12,530\u00a0ms)",
+   "valid-source-maps",
+   "color-contrast",
+   "label-content-name-mismatch",
+   "render-blocking-resources (Est savings of 1,370\u00a0ms)",
+   "unused-javascript (Est savings of 395\u00a0KiB)",
+   "modern-image-formats (Est savings of 2,142\u00a0KiB)"
+  ],
+  "bytes": "Total size was 3,986\u00a0KiB",
+  "unusedJs": "Est savings of 395\u00a0KiB",
+  "thirdParty": [
+   "Google Tag Manager 168ms",
+   "sanity.io 0ms",
+   "Google Fonts 0ms",
+   "Google Analytics 0ms"
+  ]
+ },
+ {
+  "url": "/ballistics",
+  "scores": {
+   "performance": 47,
+   "accessibility": 87,
+   "best-practices": 93,
+   "seo": 100
+  },
+  "lcp": "9.1\u00a0s",
+  "tbt": "660\u00a0ms",
+  "cls": "0",
+  "fcp": "4.0\u00a0s",
+  "lcpEl": "<p>",
+  "issues": [
+   "errors-in-console",
+   "mainthread-work-breakdown (5.0\u00a0s)",
+   "bootup-time (1.7\u00a0s)",
+   "uses-rel-preconnect (Est savings of 300\u00a0ms)",
+   "largest-contentful-paint-element (9,100\u00a0ms)",
+   "valid-source-maps",
+   "color-contrast",
+   "label-content-name-mismatch",
+   "label",
+   "select-name",
+   "render-blocking-resources (Est savings of 1,060\u00a0ms)",
+   "unused-javascript (Est savings of 395\u00a0KiB)"
+  ],
+  "bytes": "Total size was 1,060\u00a0KiB",
+  "unusedJs": "Est savings of 395\u00a0KiB",
+  "thirdParty": [
+   "Google Tag Manager 159ms",
+   "Google Fonts 0ms",
+   "Google Analytics 0ms"
+  ]
+ },
+ {
+  "url": "/deals",
+  "scores": {
+   "performance": 54,
+   "accessibility": 92,
+   "best-practices": 96,
+   "seo": 100
+  },
+  "lcp": "9.2\u00a0s",
+  "tbt": "350\u00a0ms",
+  "cls": "0.052",
+  "fcp": "5.0\u00a0s",
+  "lcpEl": "<h1 style=\"font-family: &quot;Bebas Neue&quot;, cursive; font-size: clamp(2.8rem, 6vw, 4.5rem);\">",
+  "issues": [
+   "errors-in-console",
+   "mainthread-work-breakdown (5.3\u00a0s)",
+   "bootup-time (1.8\u00a0s)",
+   "uses-rel-preconnect (Est savings of 310\u00a0ms)",
+   "largest-contentful-paint-element (9,160\u00a0ms)",
+   "valid-source-maps",
+   "color-contrast",
+   "label-content-name-mismatch",
+   "select-name",
+   "render-blocking-resources (Est savings of 1,690\u00a0ms)",
+   "unused-javascript (Est savings of 322\u00a0KiB)",
+   "modern-image-formats (Est savings of 550\u00a0KiB)"
+  ],
+  "bytes": "Total size was 1,674\u00a0KiB",
+  "unusedJs": "Est savings of 322\u00a0KiB",
+  "thirdParty": [
+   "Google Tag Manager 152ms",
+   "sanity.io 0ms",
+   "Google Fonts 0ms",
+   "Google Analytics 0ms"
+  ]
+ },
+ {
+  "url": "/laws/TX",
+  "scores": {
+   "performance": 57,
+   "accessibility": 95,
+   "best-practices": 96,
+   "seo": 100
+  },
+  "lcp": "9.0\u00a0s",
+  "tbt": "250\u00a0ms",
+  "cls": "0",
+  "fcp": "5.2\u00a0s",
+  "lcpEl": "<h1 style=\"font-family: &quot;Bebas Neue&quot;, sans-serif;\">",
+  "issues": [
+   "errors-in-console",
+   "mainthread-work-breakdown (4.9\u00a0s)",
+   "bootup-time (1.7\u00a0s)",
+   "uses-rel-preconnect (Est savings of 300\u00a0ms)",
+   "largest-contentful-paint-element (9,030\u00a0ms)",
+   "valid-source-maps",
+   "color-contrast",
+   "label-content-name-mismatch",
+   "render-blocking-resources (Est savings of 1,830\u00a0ms)",
+   "unused-javascript (Est savings of 322\u00a0KiB)",
+   "legacy-javascript (Est savings of 11\u00a0KiB)",
+   "bf-cache (3 failure reasons)"
+  ],
+  "bytes": "Total size was 1,058\u00a0KiB",
+  "unusedJs": "Est savings of 322\u00a0KiB",
+  "thirdParty": [
+   "Google Tag Manager 130ms",
+   "Google Fonts 0ms",
+   "Google Analytics 0ms"
+  ]
+ },
+ {
+  "url": "/news/law-firm-files-amicus-brief-in-washington-state-s-lifetime-gun-ban-for-dui-case-40e349",
+  "scores": {
+   "performance": 53,
+   "accessibility": 95,
+   "best-practices": 96,
+   "seo": 100
+  },
+  "lcp": "10.6\u00a0s",
+  "tbt": "560\u00a0ms",
+  "cls": "0.065",
+  "fcp": "3.2\u00a0s",
+  "lcpEl": "<img src=\"https://cdn.sanity.io/images/vbnsqnkg/production/413f613f60f6c1db597cd0d76\u2026\" alt=\"Law Firm Files Amicus Brief in Washington State'",
+  "issues": [
+   "largest-contentful-paint (10.6\u00a0s)",
+   "errors-in-console",
+   "mainthread-work-breakdown (5.5\u00a0s)",
+   "bootup-time (1.8\u00a0s)",
+   "uses-rel-preconnect (Est savings of 320\u00a0ms)",
+   "largest-contentful-paint-element (10,570\u00a0ms)",
+   "valid-source-maps",
+   "color-contrast",
+   "label-content-name-mismatch",
+   "render-blocking-resources (Est savings of 2,160\u00a0ms)",
+   "unused-javascript (Est savings of 394\u00a0KiB)",
+   "modern-image-formats (Est savings of 165\u00a0KiB)"
+  ],
+  "bytes": "Total size was 1,413\u00a0KiB",
+  "unusedJs": "Est savings of 394\u00a0KiB",
+  "thirdParty": [
+   "Google Tag Manager 144ms",
+   "sanity.io 0ms",
+   "Google Fonts 0ms",
+   "Google Analytics 0ms"
+  ]
+ }
+]
