@@ -1,37 +1,62 @@
-600 scanned, 38 need a real image, 8 coupon posts skipped
+600 scanned, 62 need a real image, 8 coupon posts skipped
 
-  + Comstock Armory Compact 9mm Muzzle Brake 1/2x28  — 22601b 470x683 sha=bf075ff22a24
-  + Comstock Armory Compact 30 Cal Muzzle Brake 5/8x — 12086b 280x417 sha=5f17d126da2e
-  + Stuff and Things CARL Cam Activated Reset Limite — 11273b 510x340 sha=1b9051d59299
-  + Armaspec Buffer Retainer Stainless Steel w/ Spri — 17160b 356x545 sha=844ea8ab2168
-  + Fortis Switch AR-15 Rail System 556MM M-LOK Hand — 27819b 788x376 sha=ad2ca2ebb4d4
-  + Butler Creek Savage A17 .17 HMR 25-Round Magazin — 21916b 315x700 sha=4cc17a3d67b1
-  + Smith & Wesson 642 America 250 Edition 38 Specia — 20971b 600x390 sha=a48d8541e811
-  + KCI Magazine 9mm 30rd Fits Beretta 92/M9 Black - — 11440b 292x684 sha=39b25a2b7e98
-  + Beretta 80X RDO Kit for Holosun 407K - $29.98 — 8095b 170x265 sha=7ca08567e982
-  + Heritage Firearms Rough Rider .22 LR 4.75" Barre — 32749b 800x508 sha=88bdc192bfcb
-  + CMMG DL-44 Suppressor .22 LR 1/2x28 - $237.99 — 13096b 590x186 sha=0599d9cfaae2
-  + Leupold BX-4 Binos and SX-4 Spotting Scopes on S — 148880b 1185x1099 sha=ba785c4311cc
-  + Cleaning Stations, Mats, Kits on SALE @ Brownell — 142916b 1183x1062 sha=be7783433163
-  + Deer Hunting Ammo on SALE @ Brownells — 187485b 1186x1166 sha=f5e931750a55
-  + Sig Whiskey Series Rifle Scopes on SALE @ Browne — 100707b 1186x1076 sha=4545acb56bb1
-  + Springfield Armory First Line 9mm Pistol, 6” Thr — 22192b 608x384 sha=8c2e06df7ee2
-  + 50% off CVLIFE Shooting Bag, Pre-Filled Shooting — 59180b 406x500 sha=246c951fad5a
-  + 42% off CVLIFE Solar Enclosed Red/Green Dot for  — 25889b 500x500 sha=62f747eafa93
-  + 49% off EZshoot 800 Lumens Compact Pistol Light  — 20882b 500x500 sha=63bf93277d0c
-  + 32% off CVLIFE WolfCloak X03 Motion Awake Green  — 18872b 500x500 sha=c72ffb9830ea
-  + 50% off CVLIFE Folding Serrated Pocket Knife, 3. — 21379b 500x500 sha=fd5e1ab20c72
-  + 50% off CVLIFE Bipod for M-Rail 30% Carbon Fiber — 20203b 500x500 sha=1ddfd95361cf
-  + 50% off CVLIFE Recoil Pad for Shotgun Shoulder P — 15864b 500x500 sha=8c6d164a9301
-  + 31% off Midten 3-9x40 Compact Rifle Scope, Locki — 21614b 500x500 sha=c2f5d4dc33fb
-  + Schrade Shudder Assisted Opening Pocket Knife 3. — 8532b 682x131 sha=645abb2761bf
-  ... 25/38  ok=25 fail=0
-  + Preorder - SIG SAUER P385 9mm 4" Blk X-Ray 3 17r — 15827b 600x420 sha=b9af4ae9794d
-  + Beretta 80X Cheetah .380 ACP 3.9" 13+1 - $760.83 — 35913b 572x583 sha=a340a2a2acc1
-  + Andro Corp Industries ACI-15 5.56x45mm 30-Rds 10 — 16238b 681x241 sha=d03716674f85
-  + Kel-Tec P32BBLK P-32 32 ACP 2.68" 7+1 Blued Blac — 64488b 892x630 sha=492a0596b017
+  + Arsenal SAM7K 7.62x39mm 8.5" 30rd AK Pistol w/ H — 19914b 650x434 sha=ed70e36ea4ba
+  + Leupold SX-4 Pro Guide 15-45x65mm HD Straight Sp — 267229b 1000x720 sha=c56716c36a2a
+  + Crimson Trace RAD Micro 5 MOA RMS Footprint Gree — 64601b 457x316 sha=c3b9178b6e99
+  + Burris BTH 35 v2 Handheld Thermal 1-4x Digital Z — 231447b 930x630 sha=feb5d043651b
+  + Marlin 1894 SBL 357 Mag 16.1" 8rrd Rifle, Fixed  — 300080b 1488x345 sha=7e9d945df5f7
+  + Sonicore Skarv 22 Silencer / Suppressor 1/2x28 D — 128542b 618x345 sha=6fedcb972731
+  + Federal Champion Training 22 Lr 36gr Lead Hp Rim — 881219b 1000x674 sha=2f7e4391b57e
+  + NBS Tanker (Barrett .50 Cal Style) Muzzle Brake  — 33042b 1200x1024 sha=66bbf189e57f
+  + Smith & Wesson Model 610 Mountain Gun, 10MM, 4.2 — 35360b 1365x844 sha=d9e938681a29
+  + Smith & Wesson M&P 9 M2.0 9mm 3.6in Barrel 12rd  — 33469b 570x570 sha=e15544111ca4
+  + Holosun 509 Enclosed Solar Powered Red Dot Sight — 47010b 1100x734 sha=ad8073ce1d53
+  + Holosun 509 Enclosed Solar Powered Red Dot Sight — 47010b 1100x734 sha=ad8073ce1d53
+  + Rain Ponchos for Adults, Reusable Emergency Myla — 91445b 679x679 sha=55d40ef2475f
+  + Geissele Super 42 Braided Wire Buffer Spring/Buf — 67336b 1500x1000 sha=7febe534c6eb
+  + Vortex Triumph 2 MOA Red Dot Sight - TRI-RD2 — 32355b 945x630 sha=f1e601a6b349
+  + Primary Arms SLx 1X MicroPrism with Red Illumina — 49217b 1070x756 sha=51b7a44747e5
+  + Primary Arms SLx 1-6x24 SFP Rifle Scope Gen IV - — 36770b 1090x725 sha=38374fe3d9fe
+  + Primary Arms SLx 3X Micro Magnifier ACSS Pegasus — 47221b 944x630 sha=6bea9e1d8b9b
+  + Primary Arms Classic Series 3-9x44mm SFP Small-C — 1453380b 4000x2666 sha=4f24b02ca6b1
+  + Presma Muzzle Brake 5/8x24 w/ Blast Forwarding D — 51247b 1000x868 sha=ff251bac55e3
+  + BCA M16 Profile 5.56 NATO Complete Bolt Carrier  — 40321b 1200x1024 sha=38260a40067e
+  + Primary Arms SLx MD-21 Push Button 21mm Microdot — 41508b 651x648 sha=8b3f785a4858
+  + Men's Tactical Belt, Military Hiking Rigger (Kha — 59246b 500x500 sha=5a42f393ec1f
+  + Tactical Molle Pouch Outdoor Sports Waist Bag, H — 34663b 500x500 sha=04cb8db3b5b7
+  + Taurus GX4XL T.O.R.O. 9mm 1x11 1x13rd Mags 3.7"  — 84624b 1350x900 sha=d84b82893877
+  ... 25/62  ok=25 fail=0
+  + B&T Print-X Tiger Ti, .22lr, Black Anodized, Sup — 80871b 929x1500 sha=a418de2d0691
+  + Casio TRT110H Series Mud Resistant Digital Watch — 26622b 375x500 sha=f6b8f4e6e877
+  + Springfield Saint 5.56 NATO AR-15 Rifle 16" 30rd — 44176b 1350x620 sha=42f3ec4d249c
+  + Cold Steel Secret Edge Durable Lightweight Japan — 21749b 500x500 sha=1c46591522b8
+  + Dead Air Armament Mask-22 Suppressor .22LR 5.1"  — 12127b 600x133 sha=417a17dd793a
+  + Ruger American 6.5 Creedmoor 20" 5rd Rifle, FDE  — 8486b 1000x196 sha=e598df9025c3
+  + AIM Sports Russian AK Rifle Long Keymod Handguar — 31558b 800x800 sha=e1d8590dd276
+  + Sig Sauer Grip Module Assy, P320, 9/40/357, Full — 9470b 599x342 sha=5676b2c2261c
+  + SilencerCo Hybrid 46M Multi-Caliber Suppressor,  — 27851b 800x591 sha=e75d0cd5dc89
+  + Otter Creek Labs Polonium 5.56 Suppressor - $499 — 179031b 1086x615 sha=132b0b06686b
+  + Marlin 1894 SBL 357 Mag 8+1 Rds 16.10" Stainless — 48689b 584x244 sha=c5d7bd4b8390
+  + Sig Sauer P365 9mm 3.1" 12rd Optic Ready TACPAC  — 43665b 808x763 sha=7d1545c46b96
+  + GSL Technology GT-H Suppressor, 5.56 NATO - $869 — 31081b 540x212 sha=c8e7dfda6f78
+  + Kriss Vector CRB 9mm 16" 10rd FDE, CA Compliant  — 79892b 856x356 sha=a8ba8e1f5999
+  + Corn Gunworks TX22 Active Reset Conversion V2 -  — 111011b 1000x666 sha=591b3222ba8c
+  + Advanced Reset Technology A.R.T. Trigger Kit for — 133341b 1000x666 sha=66a9f58e76e4
+  + Advanced Reset Technology Universal Glock Trigge — 73102b 1000x666 sha=1866dc79ca7e
+  + ETS Group Omega Glock 17/19 9mm Luger Magazines  — 53197b 1158x1172 sha=ae8096769b3c
+  + HK HK45C / USP45 Compact .45 ACP 8-Round Magazin — 18430b 700x700 sha=ce2702847e87
+  + Glock Gen 4 Glock 17 9mm 15-Round Blocked Factor — 15895b 700x700 sha=d5b99a0fac26
+  + Clwryviduu Survival Fire Starter, 4 Inch Ferro R — 274026b 1460x1500 sha=b97f89a58587
+  + Speed loader metal strong - $16.99 — 72887b 1086x1448 sha=82de1296b2e5
+  + Allen Company Vanish Hunting Blind Camo Burlap B — 31483b 500x500 sha=590c23b278be
+  + VEVOR Rifle Hard Case with 4 Layers Fully-protec — 233955b 1500x1442 sha=a1d22a822f90
+  + Molle Mag Pouch Open Top Double Magazine Pouch H — 26603b 500x500 sha=080951c028f0
+  ... 50/62  ok=50 fail=0
+  + FMATAL GEAR Tactical Quick-Draw Sling Bag EDC Cr — 31503b 500x500 sha=5f0736406f60
+  + Hunting Hand Warmer Pouch, Fleece Waist Hand War — 215606b 1500x1069 sha=6df782a9181c
+  + Federal American Eagle - 40 S&W - 180 Grain FMJ  — 52445b 898x493 sha=af811a160f6f
+  + JOMGAND K15 Car Battery Jumper Starter Jump Box  — 25081b 500x500 sha=ec27679653b2
   x Tikka T1x RoughTech 17 HMR 20" Threaded 10 Rd Bl — image not downloadable
-  + Springfield Hellcat PRO Gear UP 2025 9mm OSP 9MM — 76894b 952x664 sha=4050624b5afc
   x Thompson 1927A-1 Deluxe 45 ACP 16.5" Bbl Rifle w — image not downloadable
   x Ruger 10/22 Takedown 22LR 18.5″ - $736676320288 — image not downloadable
   x Wraithworks WARP15-UP-A Billet AR-15 Upper Recei — image not downloadable
@@ -40,6 +65,6 @@
   x Asian Military GLOCK 31 Rd 40S&W - Fits 22 23 27 — rejected: extreme portrait (171x855)
   x Glock 43X MOS, 9mm, 3.41" Barrel, 10 Rds, Pink C — image not downloadable
 
-fixed 30, failed 8  (78% success)
-distinct images: 30 across 30 deals
-PASS — no image shared between products
+fixed 54, failed 8  (87% success)
+distinct images: 53 across 54 deals
+NOTE — 1 image(s) on multiple deals (duplicate listings are normal)
