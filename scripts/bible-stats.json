@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-08-23T07:03:32.493Z",
+  "generatedAt": "2026-09-29T19:17:49.876Z",
   "content": {
-    "newsArticles": 1608,
-    "blogPosts": 213,
-    "legislation": 320,
-    "firearmReleases": 23,
-    "videos": 513,
+    "newsArticles": 2430,
+    "blogPosts": 222,
+    "legislation": 351,
+    "firearmReleases": 28,
+    "videos": 723,
     "reviews": 3,
-    "canadaArticles": 88,
-    "brazilArticles": 79
+    "canadaArticles": 108,
+    "brazilArticles": 103
   },
   "operations": {
-    "cronRuns": 2646,
+    "cronRuns": 2908,
     "outreachContacts": 221,
-    "socialPosts": 337,
-    "briefings": 90
+    "socialPosts": 924,
+    "briefings": 126
   },
   "latest": {
-    "newsTitle": "Emmer: Walz Mining Ban Hands Rare Earths Dominance to China",
-    "newsDate": "2026-08-22T22:01:26.000Z",
-    "briefingDate": "2026-08-23",
+    "newsTitle": "ATF Claims 1.4 Billion Records Aren't a Gun Registry",
+    "newsDate": "2026-09-29T17:31:59.000Z",
+    "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 2847
+  "totalContentDocs": 3968
 }
