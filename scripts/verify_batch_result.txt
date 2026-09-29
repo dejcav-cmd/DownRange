@@ -1,4 +1,4 @@
-== laws success
-    {"_id": "cron-run-laws-1790642339187", "at": "2026-09-29T00:38:59.186Z", "details": "63 saved \u00b7 0 failed | Take Action: Stop State Gun Taxes & Fix the SHOT Act \u00b7 Gun Owners of America Endorses Victoria Spartz \u00b7 GOA LEADS INDUSTRY COALITION IN SUPREME COURT FIGHT TO DEFEND AR-15s \u00b7 This Week In Gun Control \u00b7 PA: Legalize Suppressors \u00b7 SAF FILES BRIEF URGING SUPREME COU
-== prn_releases failed
-    {"_id": "cron-run-prn_releases-1790642127283", "at": "2026-09-29T00:35:27.281Z", "details": null, "error": "HTTP 500: ", "jobId": "prn_releases", "ms": 31651, "status": "failed", "trigger": "manual"}
+TRIGGER backup 200 {"ok":true,"ms":15544,"status":200,"details":"5179 docs (20312 KB) · 25 types · Pushed to GitHub ✅ · 0 errors"}
+TRIGGER bible-update 200 {"ok":true,"ms":2740,"status":200,"details":"{\"ok\":true,\"stats\":{\"generatedAt\":\"2026-09-29T19:17:49.876Z\",\"content\":{\"newsArticles\":2430,\"blogPosts\":222,\"legislation\":351,\"firearmReleases\":28,\"videos\":723,\"reviews\":3,\"canadaArticles\":108,\"brazilArticles\":103},\"operations\"
+STATUS backup success {"at": "2026-09-29T19:17:47.466Z", "status": "success", "details": "5179 docs (20312 KB) \u00b7 25 types \u00b7 Pushed to GitHub \u2705 \u00b7 0 errors", "error": null}
+STATUS bible-update success {"at": "2026-09-29T19:17:52.409Z", "status": "success", "details": "{\"ok\":true,\"stats\":{\"generatedAt\":\"2026-09-29T19:17:49.876Z\",\"content\":{\"newsArticles\":2430,\"blogPosts\":222,\"legislation\":351,\"firearmReleases\":28,\"videos\":723,\"reviews\":3,\"canadaArticles\":108,\"brazilArticles\":103},\"operations\":{\"cronRuns\":2908,\"outreachContacts\":221,\"socialPosts\":924,\"briefings\
