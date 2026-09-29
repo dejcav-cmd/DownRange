@@ -1,8 +1,9 @@
 /* ═══════════════════════════════════════════════════════════════════════════
-   ARSENAL AMERICANO — Global Styles
-   Design system: DownRange exact token match (sourced from DownRange repo)
-   All :root variables, utility classes, and component styles are 1:1 with
-   the DownRange portal. Arsenal-specific extensions start at the bottom.
+   DOWNRANGE — Global Styles
+   :root tokens, utility classes, and component styles for downrangeco.com.
+   Note: the block below labelled "ARSENAL AMERICANO" also defines core DownRange
+   classes (container, page-hero, masthead, dr-*, aa-breadcrumb*) — do not delete
+   it wholesale. The Arsenal Americano pages were removed from this repo Sep 2026.
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Google Fonts — same stack as DownRange */

@@ -214,11 +214,11 @@ export default function VideoPageClient({ videos = [], alerts = [], initialSort 
               </span>
             </div>
             <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
-              Firearms &amp; Training<br />
+              DownRange<br />
               <span style={{ color:'var(--gold)' }}>Video Library</span>
             </h1>
             <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
-              Reviews, training, builds, and tactical education from trusted channels. Updated every 4 hours.
+              The latest firearms videos from trusted channels, in one feed. Updated every 4 hours.
             </p>
           </div>
         </div>
