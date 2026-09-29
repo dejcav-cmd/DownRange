@@ -1,282 +1,55 @@
-[
-{
-"id": "news",
-"status": "success",
-"age_min": 23,
-"schedule": "0 */2 * * *",
-"rate": null,
-"details": "27 published (21 AI, 6 raw) of 50 fetched \u00b7 23 dupes | How Winchester Spent a Century Chasing the Perfect Auto"
-},
-{
-"id": "releases",
-"status": "success",
-"age_min": 1056,
-"schedule": "45 6 * * 1,4",
-"rate": null,
-"details": "0 saved | 0 skipped | 0 failed | 0 no-image | 11 still queued | 56ms"
-},
-{
-"id": "releases-process",
-"status": "success",
-"age_min": 1056,
-"schedule": "50 6 * * 1,4",
-"rate": null,
-"details": "{\"phase\":\"process\",\"done\":0,\"failed\":0,\"skipped\":0,\"noImage\":0,\"saved\":[],\"errors\":[],\"ms\":56,\"remai"
-},
-{
-"id": "laws",
-"status": "never",
-"age_min": null,
-"schedule": "0 */12 * * *",
-"rate": null,
-"details": ""
-},
-{
-"id": "video",
-"status": "success",
-"age_min": 26,
-"schedule": "0 */4 * * *",
-"rate": null,
-"details": "2 new videos | 51 already existed | 16/16 channels | 0 errors | [object Object] \u00b7 [object Object] \u00b7 [object Ob"
-},
-{
-"id": "state",
-"status": "success",
-"age_min": 2422,
-"schedule": "0 8 * * 0",
-"rate": null,
-"details": ""
-},
-{
-"id": "goa",
-"status": "success",
-"age_min": 23,
-"schedule": "2 */12 * * *",
-"rate": null,
-"details": "20 of 20 saved | Take Action: Stop State Gun Taxes & Fix the SHOT Act \u00b7 Gun Owners of America Endorses Victori"
-},
-{
-"id": "quality-rewrite",
-"status": "success",
-"age_min": 5,
-"schedule": "20 */2 * * *",
-"rate": null,
-"details": "Scanned 80 \u00b7 full-rewrite 1/1 \u00b7 title-only 5/5 \u00b7 skipped 74 \u00b7 failed 0 \u00b7 remaining 0"
-},
-{
-"id": "image-fix",
-"status": "success",
-"age_min": 10,
-"schedule": "15 * * * *",
-"rate": null,
-"details": "Scanned 85 \u00b7 ok: 79 \u00b7 OG: 6 \u00b7 fallback: 0 \u00b7 failed: 0"
-},
-{
-"id": "fix-placeholder-images",
-"status": "success",
-"age_min": 25,
-"schedule": "0 */4 * * *",
-"rate": null,
-"details": "scanned:0 upgraded:0 fallback:0 skipped:40 failed:0 (26344ms)"
-},
-{
-"id": "site_health",
-"status": "warning",
-"age_min": 985,
-"schedule": "0 8 * * *",
-"rate": null,
-"details": "issues:14 fixed:14"
-},
-{
-"id": "intelligence",
-"status": "success",
-"age_min": 1405,
-"schedule": "0 1 * * *",
-"rate": null,
-"details": "score:undefined recs:0 gaps:0"
-},
-{
-"id": "nics",
-"status": "never",
-"age_min": null,
-"schedule": "0 10 1 * *",
-"rate": null,
-"details": ""
-},
-{
-"id": "nfa-wait-times",
-"status": "success",
-"age_min": 2545,
-"schedule": "0 6 */2 * *",
-"rate": null,
-"details": "10 forms from atf.gov, month: July 2026"
-},
-{
-"id": "newsletter",
-"status": "success",
-"age_min": 6806,
-"schedule": "0 7 * * 4",
-"rate": null,
-"details": "sent=2 failed=0 stories=10 deals=4 videos=3"
-},
-{
-"id": "queue_digest",
-"status": "never",
-"age_min": null,
-"schedule": "0 13 * * *",
-"rate": null,
-"details": ""
-},
-{
-"id": "prn_releases",
-"status": "never",
-"age_min": null,
-"schedule": "0 12 * * *",
-"rate": null,
-"details": ""
-},
-{
-"id": "fetch-images",
-"status": "success",
-"age_min": 5,
-"schedule": "20 */2 * * *",
-"rate": null,
-"details": "fetched:10 uploaded:4 failed:3"
-},
-{
-"id": "cron-health",
-"status": "success",
-"age_min": 26,
-"schedule": "0 * * * *",
-"rate": null,
-"details": "HEALTHY \u2014 0 issue(s)"
-},
-{
-"id": "copyright-review",
-"status": "success",
-"age_min": 1076,
-"schedule": "30 6 * * *",
-"rate": null,
-"details": "0% compliant \u00b7 0 clean \u00b7 0 high-risk \u00b7 0 AI verdicts"
-},
-{
-"id": "backup",
-"status": "success",
-"age_min": 865,
-"schedule": "0 10 * * *",
-"rate": null,
-"details": "5124 docs (20113 KB) \u00b7 25 types \u00b7 GitHub push failed \u26a0 \u2014 GitHub API 401: {\r\n  \"message\": \"Bad credentials\",\r\n "
-},
-{
-"id": "carry-insurance",
-"status": "success",
-"age_min": 1105,
-"schedule": "0 6 * * 1",
-"rate": null,
-"details": "1 plan(s) need price update: Second Call Defense"
-},
-{
-"id": "sitemap",
-"status": "success",
-"age_min": 1346,
-"schedule": "0 2 * * *",
-"rate": null,
-"details": "Revalidated: /sitemap.xml, /news-sitemap.xml, /blog, /news, /deals, /releases, /feed.xml"
-},
-{
-"id": "giveaways",
-"status": "success",
-"age_min": 265,
-"schedule": "0 8,14,20 * * *",
-"rate": null,
-"details": "{\"perSource\":{\"wintheguns.com\":{\"count\":45,\"via\":\"direct\",\"status\":200},\"gungiveaways.net\":{\"count\":49,\"via\":\""
-},
-{
-"id": "blog-writer",
-"status": "success",
-"age_min": 6353,
-"schedule": "32 14 * * 2,4",
-"rate": null,
-"details": "Published live: \"Home Defense That Works: Skip the Tactics, Focus on Fundamentals\" [dj-home-defense-setup-real"
-},
-{
-"id": "blog-twitter-promo",
-"status": "success",
-"age_min": 6325,
-"schedule": "0 15 * * 2,4",
-"rate": null,
-"details": "Promoted \"Home Defense That Works: Skip the Tactics, Focus on Fundamentals\" \u2192 posted"
-},
-{
-"id": "gun-deals",
-"status": "success",
-"age_min": 25,
-"schedule": "*/30 * * * *",
-"rate": null,
-"details": "fetched:463 added:2 skipped:78 healed:0 imaged:0"
-},
-{
-"id": "amazon-deals",
-"status": "success",
-"age_min": 26,
-"schedule": "0 */6 * * *",
-"rate": null,
-"details": "queries:4 found:0 added:0 skipped:0 imaged:0 expired:0"
-},
-{
-"id": "reddit-deals",
-"status": "success",
-"age_min": 25,
-"schedule": "0 * * * *",
-"rate": null,
-"details": "actions-managed; 0 reddit deals in last 2h"
-},
-{
-"id": "web-deals",
-"status": "success",
-"age_min": 25,
-"schedule": "0 */12 * * *",
-"rate": null,
-"details": "sources:5 links:17 added:0 skipped:17 imaged:0"
-},
-{
-"id": "write-canada",
-"status": "success",
-"age_min": 966,
-"schedule": "20 8 * * *",
-"rate": null,
-"details": "0 articles created"
-},
-{
-"id": "write-brazil",
-"status": "success",
-"age_min": 886,
-"schedule": "40 9 * * *",
-"rate": null,
-"details": "0 articles created"
-},
-{
-"id": "weekly-gun-releases",
-"status": "success",
-"age_min": 1103,
-"schedule": "0 6 * * 1,4",
-"rate": null,
-"details": "created:1 skipped:31 failed:0 (144239ms) | Saved: Bergara \u2014 Premier Competition Elite"
-},
-{
-"id": "sitemap-health",
-"status": "success",
-"age_min": 985,
-"schedule": "0 8 * * 1",
-"rate": null,
-"details": "All 85 static URLs healthy. No issues found."
-},
-{
-"id": "bible-update",
-"status": "success",
-"age_min": 2486,
-"schedule": "0 7 * * 0",
-"rate": null,
-"details": "totalDocs:3903 github:GitHub API 401: {\r\n  \"message\": \"Bad credentials\",\r\n  \"documentation_url\": \"https://docs"
-}
-]
+TRIGGER laws ERR 61 HTTP Error 504: Gateway Timeout
+TRIGGER prn_releases 200 34 {"ok":false,"ms":31651,"status":500,"details":""}
+TRIGGER releases-process 200 16 {"ok":true,"ms":13508,"status":200,"details":"skipped:11 | failed:0 | done:0"}
+failed   prn_releases                  1m  HTTP 500: 
+never    enrich-state-pages         Nonem  
+never    laws                       Nonem  
+never    nics                       Nonem  
+never    nra-law-sync               Nonem  
+never    nra-law-sync-enhanced      Nonem  
+never    social-analytics           Nonem  
+never    social-bluesky             Nonem  
+never    social-facebook            Nonem  
+never    social-instagram           Nonem  
+never    social-reddit              Nonem  
+never    social-threads             Nonem  
+never    social-twitter             Nonem  
+paused   amazon-brands              Nonem  
+paused   amazon-deals                 36m  queries:4 found:0 added:0 skipped:0 imaged:0 expired:0
+paused   copyright-review           1086m  0% compliant · 0 clean · 0 high-risk · 0 AI verdicts
+paused   intelligence               1415m  score:undefined recs:0 gaps:0
+paused   queue_digest               Nonem  
+paused   web-deals                    35m  sources:5 links:17 added:0 skipped:17 imaged:0
+paused   write-canada                976m  0 articles created
+success  backup                      875m  5124 docs (20113 KB) · 25 types · GitHub push failed ⚠ — GitHub API 401: {
+  "message": "Bad creden
+success  bible-update               2496m  totalDocs:3903 github:GitHub API 401: {
+  "message": "Bad credentials",
+  "documentation_url": "ht
+success  blog-twitter-promo         6335m  Promoted "Home Defense That Works: Skip the Tactics, Focus on Fundamentals" → posted
+success  blog-writer                6363m  Published live: "Home Defense That Works: Skip the Tactics, Focus on Fundamentals" [dj-home-defense-
+success  carry-insurance            1115m  1 plan(s) need price update: Second Call Defense
+success  cron-health                  36m  HEALTHY — 0 issue(s)
+success  fetch-images                 16m  fetched:10 uploaded:4 failed:3
+success  fix-images                  576m  290 scanned · 0 OG images fetched · 0 photos assigned · 290 already ok · 0 failed
+success  fix-placeholder-images       35m  scanned:0 upgraded:0 fallback:0 skipped:40 failed:0 (26344ms)
+success  fix-slugs                  1206m  Fixed 0/0 hash slugs
+success  giveaways                   275m  {"perSource":{"wintheguns.com":{"count":45,"via":"direct","status":200},"gungiveaways.net":{"count":
+success  goa                          33m  20 of 20 saved | Take Action: Stop State Gun Taxes & Fix the SHOT Act · Gun Owners of America Endors
+success  gun-deals                     5m  fetched:458 added:0 skipped:80 healed:0 imaged:0
+success  image-fix                    21m  Scanned 85 · ok: 79 · OG: 6 · fallback: 0 · failed: 0
+success  news                         34m  27 published (21 AI, 6 raw) of 50 fetched · 23 dupes | How Winchester Spent a Century Chasing the Pe
+success  newsletter                 6816m  sent=2 failed=0 stories=10 deals=4 videos=3
+success  nfa-wait-times             2556m  10 forms from atf.gov, month: July 2026
+success  outdoors                    925m  2 saved · 0 skipped · 0 errors | Archery elk: calling sequences that work during the rut · Home defe
+success  quality-rewrite              15m  Scanned 80 · full-rewrite 1/1 · title-only 5/5 · skipped 74 · failed 0 · remaining 0
+success  reddit-deals                 35m  actions-managed; 0 reddit deals in last 2h
+success  releases                      1m  0 saved | 11 skipped | 0 failed | 0 no-image | 0 still queued | 9949ms
+success  releases-process              1m  skipped:11 | failed:0 | done:0
+success  sitemap                    1356m  Revalidated: /sitemap.xml, /news-sitemap.xml, /blog, /news, /deals, /releases, /feed.xml
+success  sitemap-health              995m  All 85 static URLs healthy. No issues found.
+success  state                      2432m  
+success  video                        36m  2 new videos | 51 already existed | 16/16 channels | 0 errors | [object Object] · [object Object] · 
+success  weekly-gun-releases        1114m  created:1 skipped:31 failed:0 (144239ms) | Saved: Bergara — Premier Competition Elite
+success  write-brazil                896m  0 articles created
+warning  site_health                 996m  issues:14 fixed:14
