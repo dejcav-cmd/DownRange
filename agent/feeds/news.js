@@ -675,7 +675,10 @@ async function processNewsItem(item) {
     await publishToSanity({
       _id: 'alert-' + hash, _type: 'breakingAlert',
       headline: item.title, summary: ai?.summary || item.description?.slice(0, 200),
-      url: item.url, source: item.source, urgencyScore: ai?.urgencyScore || 8,
+      // articleSlug links the ticker to our own article; sourceUrl is the schema's field
+      // (the ticker API reads sourceUrl — writing only `url` left every alert unlinked).
+      articleSlug: slug, sourceUrl: item.url, url: item.url,
+      source: item.source, urgencyScore: ai?.urgencyScore || 8,
       active: true, publishedAt: doc.publishedAt,
     })
     // Discord breaking-alert notifications disabled 2026-08-23 (DJ request) —

@@ -20,20 +20,41 @@ const client = createClient({
 
 export async function GET() {
   try {
-    // Source 1: dedicated breaking alert docs
-    const dedicated = await client.fetch(`
-      *[_type == "breakingAlert" && active == true]
-      | order(publishedAt desc) [0...8] {
-        _id, headline, "url": sourceUrl, urgencyScore, publishedAt
+    // Source 1: dedicated breaking alert docs — last 48h only, so stale alerts left
+    // active can never freeze the ticker.
+    const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
+    const raw = await client.fetch(`
+      *[_type == "breakingAlert" && active == true && publishedAt > $cutoff]
+      | order(publishedAt desc) [0...10] {
+        _id, headline, articleSlug, sourceUrl, url, urgencyScore, publishedAt,
+        // Older alerts have no articleSlug — match our article by headline
+        "matchedSlug": *[_type == "newsArticle" && approved == true && title == ^.headline][0].slug.current
       }
-    `).catch(() => [])
+    `, { cutoff }).catch(() => [])
+
+    // Link priority: our article -> matched article -> original source (external)
+    const seen = new Set()
+    const dedicated = []
+    for (const a of raw) {
+      const slug = a.articleSlug || a.matchedSlug
+      const url = slug ? `/news/${slug}` : (a.sourceUrl || a.url || null)
+      const key = slug || (a.headline || '').toLowerCase()
+      if (seen.has(key)) continue
+      seen.add(key)
+      dedicated.push({
+        _id: a._id, headline: a.headline, url,
+        external: !slug && !!url,
+        urgencyScore: a.urgencyScore, publishedAt: a.publishedAt,
+      })
+      if (dedicated.length >= 8) break
+    }
 
     if (dedicated.length >= 3) {
-      return Response.json({ alerts: dedicated, source: 'breakingAlert' })
+      return Response.json({ alerts: dedicated, source: 'breakingAlert' },
+        { headers: { 'Cache-Control': 'no-store' } })
     }
 
     // Source 2: high-urgency articles from last 48h
-    const cutoff = new Date(Date.now() - 48 * 60 * 60 * 1000).toISOString()
     const urgent = await client.fetch(`
       *[_type == "newsArticle" && approved == true
         && urgencyScore >= 7

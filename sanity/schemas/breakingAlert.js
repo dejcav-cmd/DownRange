@@ -10,6 +10,7 @@ export const breakingAlert = defineType({
     defineField({ name: 'urgencyScore', title: 'Urgency Score (1-10)', type: 'number',
       validation: R => R.min(1).max(10) }),
     defineField({ name: 'sourceUrl', title: 'Source URL', type: 'url' }),
+    defineField({ name: 'articleSlug', title: 'DownRange Article Slug', type: 'string', description: 'Ticker links to /news/{slug} when set' }),
     defineField({ name: 'active', title: 'Active (show in ticker)', type: 'boolean', initialValue: true }),
     defineField({ name: 'category', title: 'Category', type: 'string',
       options: { list: ['ATF Ruling','SCOTUS','Legislation','State Law','Industry','Safety'] } }),

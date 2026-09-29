@@ -106,6 +106,7 @@ export default function GlobalBreakingTicker() {
                   {isHot && <span style={{ background:'#fff', color:'#B91C1C', fontSize:'9px', fontWeight:700, padding:'1px 5px', letterSpacing:'0.1em' }}>HOT</span>}
                   {url
                     ? <a href={url} style={{ color:'#fff', textDecoration:'none' }}
+                        {...(item.external ? { target:'_blank', rel:'noopener noreferrer' } : {})}
                         onMouseEnter={e => e.target.style.textDecoration='underline'}
                         onMouseLeave={e => e.target.style.textDecoration='none'}>{headline}</a>
                     : <span>{headline}</span>
