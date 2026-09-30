@@ -20,7 +20,7 @@ export async function GET(req) {
     // 1. ALL blogPosts regardless of status (including unpublished)
     const blogPosts = await sanity.fetch(
       `*[_type == "blogPost"] | order(_createdAt desc) [0...500] {
-        _id, _type, title, slug, status, publishedAt, excerpt, body, category,
+        _id, _type, title, slug, status, published, publishedAt, excerpt, body, category,
         approved, editorLocked, author, _createdAt, imageUrl
       }`
     )
@@ -52,7 +52,9 @@ export async function GET(req) {
     }
 
     // Classify blog posts
-    const published    = blogPosts.filter(p => p.status === 'published' || p.publishedAt)
+    // Live = what /blog actually shows (status published or published:true). The old
+    // `|| p.publishedAt` counted drafts/archived posts that merely had a date as published.
+    const published    = blogPosts.filter(p => p.status === 'published' || p.published === true)
     const drafts       = blogPosts.filter(p => p.status === 'draft' || p.status === 'review' || (!p.status && !p.publishedAt))
     const unpublished  = blogPosts.filter(p => p.status === 'unpublished' || p.status === 'archived')
 
@@ -107,6 +109,18 @@ export async function POST(req) {
   if (action === 'delete') {
     await sanity.delete(id)
     return Response.json({ ok: true, deleted: id })
+  }
+
+  // Bulk: permanently delete every blog post with status 'archived'.
+  // Triggered only by the admin's own confirmed click in Draft Recovery.
+  if (action === 'purge-archived') {
+    const ids = await sanity.fetch('*[_type=="blogPost" && status=="archived"]._id')
+    for (let i = 0; i < ids.length; i += 100) {
+      const tx = sanity.transaction()
+      ids.slice(i, i + 100).forEach(x => tx.delete(x))
+      await tx.commit()
+    }
+    return Response.json({ ok: true, deleted: ids.length })
   }
 
   return Response.json({ error: 'Unknown action' }, { status: 400 })

@@ -79,6 +79,20 @@ export default function DraftRecovery({ adminKey }) {
 
   useEffect(() => { load() }, [load])
 
+  const purgeArchived = async () => {
+    const n = data?.blogUnpublished?.length || 0
+    if (!n) return
+    if (!window.confirm(`Permanently delete ${n} archived blog posts? A JSON backup is in the DownRange-Backups repo (blog-archive/). This cannot be undone here.`)) return
+    setFlash({ type: 'info', msg: `⏳ Deleting ${n} archived posts…` })
+    try {
+      const res = await fetch('/api/admin/drafts', { method: 'POST', headers: H, body: JSON.stringify({ action: 'purge-archived' }) })
+      const d = await res.json()
+      if (!d.ok) throw new Error(d.error || 'HTTP ' + res.status)
+      setFlash({ type: 'success', msg: `✅ Deleted ${d.deleted} archived blog posts` })
+      load()
+    } catch (e) { setFlash({ type: 'error', msg: '❌ ' + e.message }) }
+  }
+
   const act = async (action, id, type) => {
     setActing(prev => new Set([...prev, id]))
     try {
@@ -116,6 +130,7 @@ export default function DraftRecovery({ adminKey }) {
   const tabs = [
     { id:'blog-drafts',  label:'Blog Drafts',      count: data?.blogDrafts?.length || 0,        color: data?.blogDrafts?.length ? '#f59e0b' : '#374151' },
     { id:'blog-all',     label:'All Blog Posts',   count: data?.blogPublished?.length || 0,      color: '#374151' },
+    { id:'blog-archived', label:'Archived Blog',   count: data?.blogUnpublished?.length || 0,    color: data?.blogUnpublished?.length ? '#ef4444' : '#374151' },
     { id:'news-unapproved', label:'Unapproved News', count: data?.unapprovedNews?.length || 0,   color: data?.unapprovedNews?.length > 0 ? '#ef4444' : '#374151' },
     { id:'releases',     label:'Unapproved Releases', count: data?.unapprovedReleases?.length || 0, color: '#374151' },
     { id:'sanity-drafts', label:'Sanity Drafts',   count: data?.sanityDrafts?.length || 0,       color: data?.sanityDrafts?.length ? '#fb923c' : '#374151' },
@@ -124,6 +139,7 @@ export default function DraftRecovery({ adminKey }) {
   const currentItems = {
     'blog-drafts':    data?.blogDrafts      || [],
     'blog-all':       data?.blogPublished   || [],
+    'blog-archived':  data?.blogUnpublished || [],
     'news-unapproved': data?.unapprovedNews || [],
     'releases':       data?.unapprovedReleases || [],
     'sanity-drafts':  data?.sanityDrafts    || [],
@@ -274,6 +290,17 @@ export default function DraftRecovery({ adminKey }) {
             </button>
           ))}
         </div>
+
+        {tab === 'blog-archived' && (data?.blogUnpublished?.length || 0) > 0 && (
+          <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, padding:'12px 16px', margin:'0 0 12px', border:'1px solid #ef4444', background:'rgba(239,68,68,.06)' }}>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:11, color:'#fca5a5' }}>
+              {data.blogUnpublished.length} archived blog posts — not visible anywhere on the site. Backup: DownRange-Backups/blog-archive/
+            </span>
+            <button onClick={purgeArchived} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:13, letterSpacing:'.05em', padding:'7px 16px', background:'#ef4444', color:'#fff', border:'none', cursor:'pointer' }}>
+              🗑 DELETE ALL ARCHIVED
+            </button>
+          </div>
+        )}
 
         {/* Table */}
         <div style={{ overflow:'auto' }}>
