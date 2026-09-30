@@ -1,6 +1,0 @@
-== nra-law-sync failed
-    {"at": "2026-09-30T00:00:11.129Z", "status": "failed", "ms": 0, "trigger": "cron", "details": "{\"error\":\"Unauthorized\"}", "error": "HTTP 401 {\"error\":\"Unauthorized\"}"}
-== nra-law-sync-enhanced success
-    {"at": "2026-09-30T00:33:08.810Z", "status": "success", "ms": 18219, "trigger": "manual", "details": "{\"processed\":50,\"timedOut\":false,\"ok\":true,\"version\":\"2.0\",\"timestamp\":\"2026-09-30T00:33:07.165Z\",\"source\":\"NRA-ILA Enhanced (court cases, use cases, local restrictions)\",\"updated\":0,\"dry\":false,\"enhancements\":[\"Core Laws\",\"Local Restrictions\",\"Court Cases\",\"Use Cases\",\"Reciprocity\",
-    {"at": "2026-09-30T00:33:07.168Z", "status": "success", "ms": 15919, "trigger": "cron", "details": "{\"processed\":50,\"timedOut\":false,\"ok\":true,\"version\":\"2.0\",\"timestamp\":\"2026-09-30T00:33:07.165Z\",\"source\":\"NRA-ILA Enhanced (court cases, use cases, local rest", "error": null}
-    {"at": "2026-09-30T00:15:17.104Z", "status": "failed", "ms": 1, "trigger": "cron", "details": "{\"error\":\"Unauthorized\"}", "error": "HTTP 401 {\"error\":\"Unauthorized\"}"}
