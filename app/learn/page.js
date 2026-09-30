@@ -1,9 +1,10 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
+import JsonLd, { breadcrumb, collectionPage } from '../../components/seo/JsonLd'
 
 export const metadata = {
-  title: 'Firearms Learning Center — DownRange',
+  title: 'Firearms Learning Center',
   description: 'Guides on buying your first gun, getting a carry permit, safe storage, and understanding gun laws. Written for new gun owners, not gun writers.',
   alternates: { canonical: 'https://www.downrangeco.com/learn' },
 }
@@ -38,6 +39,10 @@ export default function LearnPage({ searchParams }) {
 
   return (
     <>
+      <JsonLd data={[
+        collectionPage({ name: 'DownRange Learning Center', path: '/learn', description: 'Firearms guides: buying, carry, safety, laws, and training.' }),
+        breadcrumb([{ name: 'Learn', path: '/learn' }]),
+      ]} />
       <Masthead />
 
       {/* ── HERO ── */}

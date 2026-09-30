@@ -1,8 +1,9 @@
 import VideoPageClient from './VideoPageClient'
+import JsonLd, { breadcrumb, collectionPage } from '../../components/seo/JsonLd'
 import { fetchVideos, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
-  title: 'Video — DownRange',
+  title: 'Video',
   description: 'The DownRange video library — the latest firearms videos from trusted channels, in one feed.',
   alternates: { canonical: 'https://www.downrangeco.com/video' },
 }
@@ -32,5 +33,39 @@ export default async function VideoPage({ searchParams }) {
 
   const videos = sanityVideos.length > 0 ? sanityVideos : SEED_VIDEOS
 
-  return <VideoPageClient videos={videos} alerts={alerts} initialSort={sort} initialSearch={search} />
+  // VideoObject needs name, thumbnailUrl and uploadDate — only include videos that have them
+  const toIsoDuration = d => {
+    if (!d) return undefined
+    const p = String(d).split(':').map(Number)
+    if (!p.length || p.some(isNaN) || p.every(n => n === 0)) return undefined
+    const [h, m, sec] = p.length === 3 ? p : [0, ...(p.length === 2 ? p : [0, p[0]])]
+    return `PT${h ? h + 'H' : ''}${m ? m + 'M' : ''}${sec || 0}S`
+  }
+  const videoItems = videos
+    .map(v => ({ v, id: v.youtubeId || v.videoId, date: v.publishedAt || v.addedAt }))
+    .filter(({ v, id, date }) => id && v.title && date)
+    .slice(0, 20)
+    .map(({ v, id, date }, i) => ({
+      '@type': 'ListItem', position: i + 1,
+      item: {
+        '@type': 'VideoObject', name: v.title,
+        description: `${v.title}${v.channelName ? ' — ' + v.channelName : ''}`,
+        thumbnailUrl: v.thumbnail || `https://i.ytimg.com/vi/${id}/hqdefault.jpg`,
+        uploadDate: date,
+        embedUrl: `https://www.youtube.com/embed/${id}`,
+        contentUrl: `https://www.youtube.com/watch?v=${id}`,
+        ...(toIsoDuration(v.duration) ? { duration: toIsoDuration(v.duration) } : {}),
+      },
+    }))
+
+  return (
+    <>
+      <JsonLd data={[
+        { ...collectionPage({ name: 'DownRange Video Library', path: '/video', description: 'The latest firearms videos from trusted channels, in one feed.' }),
+          mainEntity: { '@type': 'ItemList', itemListElement: videoItems } },
+        breadcrumb([{ name: 'Video', path: '/video' }]),
+      ]} />
+      <VideoPageClient videos={videos} alerts={alerts} initialSort={sort} initialSearch={search} />
+    </>
+  )
 }

@@ -154,7 +154,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
                   <a key={i} href={d.url || '/deals'} target="_blank" rel="noopener noreferrer" className="release-card" style={{ background:'var(--bg2)', border:'1px solid var(--border-mid)', display:'flex', flexDirection:'column', overflow:'hidden', textDecoration:'none' }}>
                     <div style={{ height:120, background:'linear-gradient(135deg,#1a1f2a,#0c0f14)', position:'relative', overflow:'hidden', display:'flex', alignItems:'center', justifyContent:'center' }}>
                       {d.imageUrl
-                        ? <img src={d.imageUrl} alt="" onError={e => { e.currentTarget.style.display = 'none' }} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
+                        ? <img src={d.imageUrl} alt={d.title || d.name || 'Firearm deal'} loading="lazy" onError={e => { e.currentTarget.style.display = 'none' }} style={{ width:'100%', height:'100%', objectFit:'cover' }} />
                         : <span style={{ fontSize:26, opacity:.18 }}>🎯</span>}
                     </div>
                     <div style={{ padding:'12px 13px', display:'flex', flexDirection:'column', flex:1 }}>

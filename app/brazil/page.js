@@ -4,11 +4,12 @@ import IntlArticleCard, { IntlFeaturedArticle } from '../../components/ui/IntlAr
 import BrazilExtras from './BrazilExtras'
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import { createClient } from '@sanity/client'
+import JsonLd, { breadcrumb, collectionPage } from '../../components/seo/JsonLd'
 
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Brasil — Notícias sobre Armas, CAC, Leis | DownRange',
+  title: 'Brasil — Notícias sobre Armas, CAC, Leis',
   description: 'Notícias sobre armas de fogo no Brasil, legislação, guia CAC, análise por estado — tudo em português.',
   alternates: { canonical: 'https://www.downrangeco.com/brazil' },
 }
@@ -50,6 +51,11 @@ export default async function BrazilPage({ searchParams }) {
 
   return (
     <>
+      <JsonLd data={[
+        collectionPage({ name: 'Brasil — Notícias sobre Armas, CAC e Leis', path: '/brazil', inLanguage: 'pt-BR',
+          description: 'Notícias sobre armas, CAC, legislação e mercado de armas no Brasil.', about: { '@type': 'Country', name: 'Brasil' } }),
+        breadcrumb([{ name: 'Brasil', path: '/brazil' }]),
+      ]} />
       <Masthead />
 
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>

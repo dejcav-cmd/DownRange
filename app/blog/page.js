@@ -2,6 +2,7 @@ import Masthead    from '../../components/layout/Masthead'
 import Footer      from '../../components/layout/Footer'
 import Link        from 'next/link'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../sanity/lib/client'
+import JsonLd, { breadcrumb, collectionPage } from '../../components/seo/JsonLd'
 
 export const metadata = {
   title: 'The Range Report — DownRange Blog',
@@ -450,6 +451,15 @@ export default async function BlogPage({ searchParams }) {
 
   return (
     <>
+      <JsonLd data={[
+        { '@context': 'https://schema.org', '@type': 'Blog', name: 'DownRange Blog', url: 'https://www.downrangeco.com/blog',
+          publisher: { '@type': 'Organization', name: 'DownRange', url: 'https://www.downrangeco.com' },
+          blogPost: (sanityPosts || []).slice(0, 10).filter(p => p?.slug?.current).map(p => ({
+            '@type': 'BlogPosting', headline: p.title, url: `https://www.downrangeco.com/blog/${p.slug.current}`,
+            ...(p.publishedAt ? { datePublished: p.publishedAt } : {}),
+          })) },
+        breadcrumb([{ name: 'Blog', path: '/blog' }]),
+      ]} />
       <Masthead />
 
       <style>{`

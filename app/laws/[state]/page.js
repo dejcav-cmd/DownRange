@@ -1,10 +1,11 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { STATE_SEED } from '../../../lib/stateSeed'
 import { fetchStateNews } from '../../../lib/stateNews'
+import JsonLd, { breadcrumb, collectionPage } from '../../../components/seo/JsonLd'
 
 export const revalidate = 3600
 
@@ -29,7 +30,7 @@ export async function generateMetadata({ params }) {
   const abbr = params.state?.toUpperCase()
   const name = STATE_NAMES[abbr] || abbr
   return {
-    title: `${name} Gun Laws ${new Date().getFullYear()} | DownRange`,
+    title: `${name} Gun Laws ${new Date().getFullYear()}`,
     description: `${name} firearms laws: constitutional carry, CCW permit, magazine limits, AWB status, waiting period, red flag law, and reciprocity.`,
     alternates: { canonical: `https://www.downrangeco.com/laws/${params.state.toUpperCase()}` },
   }
@@ -54,12 +55,12 @@ export default async function StateLawPage({ params }) {
   // Redirect full state names: /laws/Alabama → /laws/AL
   if (!STATE_NAMES[abbr]) {
     const fromFullName = NAME_TO_ABBR[raw.toLowerCase()]
-    if (fromFullName) redirect(`/laws/${fromFullName}`)
+    if (fromFullName) permanentRedirect(`/laws/${fromFullName}`)
     notFound()
   }
 
   // Redirect lowercase codes: /laws/al → /laws/AL
-  if (raw !== abbr) redirect(`/laws/${abbr}`)
+  if (raw !== abbr) permanentRedirect(`/laws/${abbr}`)  // 308, so Google consolidates
   const stateName = STATE_NAMES[abbr]
 
   const [profile, stateNews] = await Promise.all([
@@ -78,6 +79,16 @@ export default async function StateLawPage({ params }) {
 
   return (
     <>
+      <JsonLd data={[
+        {
+          '@context': 'https://schema.org', '@type': 'WebPage',
+          name: `${stateName} Gun Laws`, url: `https://www.downrangeco.com/laws/${abbr}`,
+          about: { '@type': 'State', name: stateName },
+          isPartOf: { '@type': 'WebSite', name: 'DownRange', url: 'https://www.downrangeco.com' },
+          ...(data?.updatedAt || data?._updatedAt ? { dateModified: data.updatedAt || data._updatedAt } : {}),
+        },
+        breadcrumb([{ name: 'Laws', path: '/laws' }, { name: 'States', path: '/laws/states' }, { name: stateName, path: `/laws/${abbr}` }]),
+      ]} />
       <Masthead />
 
       {/* HERO */}

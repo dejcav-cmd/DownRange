@@ -3,9 +3,10 @@ import Link from 'next/link'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
+import JsonLd, { breadcrumb, collectionPage } from '../../components/seo/JsonLd'
 
 export const metadata = {
-  title: 'Hunting — Season Dates, Game by State, Cartridge Guides | DownRange',
+  title: 'Hunting — Season Dates, Game by State, Cartridge Guides',
   description: 'Complete hunting resource: 2025-2026 season dates for all 50 states, species guides, cartridge selection, draw deadlines, field skills, and gear recommendations.',
   alternates: { canonical: 'https://www.downrangeco.com/hunting' },
   openGraph: {
@@ -183,6 +184,10 @@ export default async function HuntingPage({ searchParams }) {
 
   return (
     <>
+      <JsonLd data={[
+        collectionPage({ name: 'Hunting — Guides, Seasons & Gear', path: '/hunting', description: 'Hunting guides, seasons, gear, and firearms for hunters.' }),
+        breadcrumb([{ name: 'Hunting', path: '/hunting' }]),
+      ]} />
       <Masthead />
 
       {/* HERO */}

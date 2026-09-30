@@ -4,6 +4,7 @@ import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 import { GUN_DATA } from '../../../lib/gunData'
+import JsonLd, { breadcrumb, collectionPage } from '../../../components/seo/JsonLd'
 
 export const revalidate = 86400
 
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }) {
   const g = GUN_DATA[params.model]
   if (!g) return { title: 'Firearm Encyclopedia — DownRange' }
   return {
-    title: `${g.name} — DownRange Encyclopedia`,
+    title: `${g.name} — Specs, History & Variants`,
     description: `Complete specs, variants, and review of the ${g.name}. History, pros/cons, buying guide.`,
     alternates: { canonical: `https://www.downrangeco.com/guns/${params.model}` },
     openGraph: { title: g.name, description: g.summary?.slice(0, 200), images: g.image ? [{ url: g.image }] : [] }
@@ -35,6 +36,12 @@ export default async function GunPage({ params }) {
 
   return (
     <>
+      <JsonLd data={[
+        { '@context': 'https://schema.org', '@type': 'WebPage', name: `${g.name} — Specs, History & Variants`,
+          url: `https://www.downrangeco.com/guns/${params.model}`, description: g.summary?.slice(0, 300),
+          about: { '@type': 'Thing', name: g.name }, isPartOf: { '@type': 'WebSite', name: 'DownRange', url: 'https://www.downrangeco.com' } },
+        breadcrumb([{ name: 'Guns', path: '/guns' }, { name: g.name, path: `/guns/${params.model}` }]),
+      ]} />
 
       <Masthead />
       <div style={{ width:'100%', height:'clamp(280px, 40vw, 460px)', overflow:'hidden', position:'relative' }}>
