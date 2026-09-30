@@ -101,7 +101,9 @@ export default function RootLayout({ children }) {
         <link rel="alternate" type="application/rss+xml" title="DownRange — Gun Deals" href="https://www.downrangeco.com/feeds/deals" />
         <link rel="alternate" type="application/rss+xml" title="DownRange — Gun Laws & Legislation" href="https://www.downrangeco.com/feeds/laws" />
         <link rel="alternate" type="application/rss+xml" title="DownRange — Blog & Analysis" href="https://www.downrangeco.com/feeds/blog" />
-        <link rel="preconnect" href="https://fonts.googleapis.com" />
+        <link rel="preload" href="/fonts/bebas-neue-latin-400-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preload" href="/fonts/ibm-plex-sans-latin-400-normal.woff2" as="font" type="font/woff2" crossOrigin="anonymous" />
+        <link rel="preconnect" href="https://cdn.sanity.io" crossOrigin="anonymous" />
 
         <Script
           src={`https://www.googletagmanager.com/gtag/js?id=${GA_ID}`}

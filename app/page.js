@@ -1,3 +1,4 @@
+import { preload } from 'react-dom'
 import Masthead from '../components/layout/Masthead'
 import Footer from '../components/layout/Footer'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
@@ -102,6 +103,9 @@ const TOOLS = [
 ]
 
 export default async function HomePage() {
+  // Hero background is the homepage LCP element (Lighthouse mobile: 12.5s). Preload it
+  // so the browser fetches it with the HTML instead of after the CSS/JS.
+  preload('/img/photos/military.jpg', { as: 'image', fetchPriority: 'high' })
   const [articles, releases, stateProfiles, briefingDeals] = await Promise.allSettled([
     fetchArticles(24), fetchReleases(6), fetchAllStateProfiles(), fetchBriefingDeals(),
   ]).then(r => r.map(p => (p.status === 'fulfilled' ? p.value : [])))

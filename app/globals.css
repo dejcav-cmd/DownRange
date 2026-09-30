@@ -7,7 +7,20 @@
    ═══════════════════════════════════════════════════════════════════════════ */
 
 /* Google Fonts — same stack as DownRange */
-@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* Self-hosted fonts (Sep 2026). The Google Fonts @import was a render-blocking chain
+   (HTML -> CSS -> fonts.googleapis CSS -> font files) that pushed mobile LCP to 9-12s.
+   Family names are unchanged so every existing inline fontFamily keeps working. */
+@font-face { font-family: 'Bebas Neue'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/bebas-neue-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/barlow-condensed-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/barlow-condensed-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/barlow-condensed-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'Barlow Condensed'; font-style: normal; font-weight: 700; font-display: swap; src: url('/fonts/barlow-condensed-latin-700-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 300; font-display: swap; src: url('/fonts/ibm-plex-sans-latin-300-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/ibm-plex-sans-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/ibm-plex-sans-latin-500-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Sans'; font-style: normal; font-weight: 600; font-display: swap; src: url('/fonts/ibm-plex-sans-latin-600-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 400; font-display: swap; src: url('/fonts/ibm-plex-mono-latin-400-normal.woff2') format('woff2'); }
+@font-face { font-family: 'IBM Plex Mono'; font-style: normal; font-weight: 500; font-display: swap; src: url('/fonts/ibm-plex-mono-latin-500-normal.woff2') format('woff2'); }
 
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 button, input, select, textarea { font-family: inherit; font-size: inherit; }
@@ -1659,4 +1672,30 @@ a.contact-info-val:hover { color: var(--gold); }
 @media (max-width: 768px) {
   .footer-dr-inner { flex-direction: column; gap: 1.5rem; }
   .footer-dr-divider { display: none; }
+}
+
+
+/* ── Mobile readability (Sep 2026) ───────────────────────────────────────────
+   Many components set 8-10px inline font sizes. On phones that made core content
+   (state-legality labels on deals, state scorecards, badges) hard to read.
+   Floor inline sizes at 11px under 640px. Desktop is unchanged. */
+@media (max-width: 640px) {
+  [style*="font-size: 6px;"], [style*="font-size:6px;"], [style$="font-size: 6px"], [style$="font-size:6px"],
+  [style*="font-size: 6.5px;"], [style*="font-size:6.5px;"], [style$="font-size: 6.5px"], [style$="font-size:6.5px"],
+  [style*="font-size: 7px;"], [style*="font-size:7px;"], [style$="font-size: 7px"], [style$="font-size:7px"],
+  [style*="font-size: 7.5px;"], [style*="font-size:7.5px;"], [style$="font-size: 7.5px"], [style$="font-size:7.5px"],
+  [style*="font-size: 8px;"], [style*="font-size:8px;"], [style$="font-size: 8px"], [style$="font-size:8px"],
+  [style*="font-size: 8.5px;"], [style*="font-size:8.5px;"], [style$="font-size: 8.5px"], [style$="font-size:8.5px"],
+  [style*="font-size: 9px;"], [style*="font-size:9px;"], [style$="font-size: 9px"], [style$="font-size:9px"],
+  [style*="font-size: 9.5px;"], [style*="font-size:9.5px;"], [style$="font-size: 9.5px"], [style$="font-size:9.5px"],
+  [style*="font-size: 10px;"], [style*="font-size:10px;"], [style$="font-size: 10px"], [style$="font-size:10px"],
+  [style*="font-size: 10.5px;"], [style*="font-size:10.5px;"], [style$="font-size: 10.5px"], [style$="font-size:10.5px"] {
+    font-size: 11px !important;
+  }
+  /* Footer links: 17px-tall tap targets -> 36px */
+  .footer-link {
+    display: inline-flex !important;
+    align-items: center;
+    min-height: 36px;
+  }
 }

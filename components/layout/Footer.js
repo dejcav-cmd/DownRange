@@ -43,7 +43,7 @@ export default function Footer() {
               <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '8px' }}>
                 {col.links.map(([label, href]) => (
                   <li key={href}>
-                    <Link href={href} style={{ fontSize: '13px', color: '#6B7280', transition: 'color 0.2s' }}
+                    <Link href={href} className="footer-link" style={{ fontSize: '13px', color: '#6B7280', transition: 'color 0.2s' }}
                       onMouseEnter={e => e.target.style.color = '#C8922A'}
                       onMouseLeave={e => e.target.style.color = '#6B7280'}>
                       {label}
@@ -61,7 +61,7 @@ export default function Footer() {
           </div>
           <div style={{ display: 'flex', gap: '20px' }}>
             {[['Privacy Policy','/privacy'],['Terms','/terms'],['DMCA','/dmca'],['Cookies','/cookies']].map(([l,h]) => (
-              <Link key={h} href={h} style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>{l}</Link>
+              <Link key={h} href={h} className="footer-link" style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#6B7280', letterSpacing: '0.06em' }}>{l}</Link>
             ))}
           </div>
           <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: '10px', color: '#8A6320', letterSpacing: '0.06em' }}>
