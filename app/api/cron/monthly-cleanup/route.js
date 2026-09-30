@@ -7,7 +7,7 @@ import { reportCronRun } from '@/lib/cronReporter'
 // Monthly cleanup (1st of each month, 09:20 UTC):
 //   - deals older than dealsDays (default 60): deleted, no backup (deals have no pages of
 //     their own, so there is no SEO impact)
-//   - news older than newsDays (default 90): full JSON backup to DownRange-Backups, then
+//   - news older than newsDays (default 180): full JSON backup to DownRange-Backups, then
 //     deleted. News articles linked from published blog posts are KEPT so blog posts
 //     never contain broken internal links. Editor-locked items are kept.
 // After deleting: revalidate the deleted /news paths (fast 404), /news and sitemaps so
@@ -81,7 +81,7 @@ export async function GET(req) {
       return Response.json({ ok: true, skipped: 'disabled' })
     }
     const dealsDays = Math.max(7, parseInt(cfg.dealsDays, 10) || 60)
-    const newsDays  = Math.max(7, parseInt(cfg.newsDays, 10) || 90)
+    const newsDays  = Math.max(7, parseInt(cfg.newsDays, 10) || 180)
     const ago = d => new Date(Date.now() - d * 86400000).toISOString()
 
     // ── Deals ────────────────────────────────────────────────────────────────

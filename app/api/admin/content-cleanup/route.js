@@ -60,7 +60,7 @@ export async function GET(req) {
   const sp = new URL(req.url).searchParams
   if (sp.get('settings')) {
     const cfg = await sanity.fetch('*[_id==$id][0]', { id: SETTINGS_ID }).catch(() => null)
-    return Response.json({ ok: true, monthlyEnabled: cfg?.monthlyEnabled !== false, dealsDays: cfg?.dealsDays || 60, newsDays: cfg?.newsDays || 90, lastRun: cfg?.monthlyLastRun || null })
+    return Response.json({ ok: true, monthlyEnabled: cfg?.monthlyEnabled !== false, dealsDays: cfg?.dealsDays || 60, newsDays: cfg?.newsDays || 180, lastRun: cfg?.monthlyLastRun || null })
   }
   const p = parse(sp.get('type'), sp.get('days'))
   if (p.error) return Response.json({ error: p.error }, { status: 400 })

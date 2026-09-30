@@ -65,7 +65,7 @@ const ALL_JOBS = [
   { id:'social-threads', path:'/api/social/cron/threads', schedule:'4 14 * * *', label:'Threads Post', group:'Social', icon:'🧵', critical:false, desc:'Daily post' },
   { id:'social-reddit', path:'/api/social/cron/reddit', schedule:'0 12 * * *', label:'Reddit Post', group:'Social', icon:'👽', critical:false, desc:'Daily post' },
   { id:'social-analytics', path:'/api/social/analytics?refresh=1', schedule:'35 */2 * * *', label:'Social Analytics Refresh', group:'Social', icon:'📊', critical:false, desc:'Engagement stats every 2h' },
-  { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >90d (keeps news linked from blog posts)' },
+  { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >180d (keeps news linked from blog posts)' },
 ]
 
 function auth(req) {
