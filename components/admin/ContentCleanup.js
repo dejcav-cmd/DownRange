@@ -1,5 +1,5 @@
 'use client'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 const MONO = "'IBM Plex Mono',monospace"
 const COND = "'Barlow Condensed',sans-serif"
@@ -12,6 +12,25 @@ export default function ContentCleanup({ adminKey }) {
   const [busy, setBusy] = useState(false)
   const [msg, setMsg] = useState(null)
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
+  const [auto, setAuto] = useState(null)       // { dealsAutoEnabled, dealsAutoDays, lastRun }
+  const [autoMsg, setAutoMsg] = useState(null)
+
+  useEffect(() => {
+    if (!adminKey) return
+    fetch('/api/admin/content-cleanup?settings=1', { headers: H }).then(r => r.json()).then(j => j.ok && setAuto(j)).catch(() => {})
+  }, [adminKey])
+
+  const saveAuto = async (next) => {
+    setAutoMsg(null)
+    if (next.dealsAutoEnabled && !auto?.dealsAutoEnabled &&
+        !window.confirm(`Turn on automatic deletion of deals older than ${next.dealsAutoDays} days?\n\nRuns daily at 2:20 AM PT. Deals are deleted permanently (no backup).`)) return
+    try {
+      const r = await fetch('/api/admin/content-cleanup', { method: 'PUT', headers: H, body: JSON.stringify(next) })
+      const j = await r.json()
+      if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status)
+      setAuto(a => ({ ...a, ...j })); setAutoMsg({ text: '✅ Saved' })
+    } catch (e) { setAutoMsg({ err: true, text: '❌ ' + e.message }) }
+  }
 
   const doPreview = async (t = type, d = days) => {
     setBusy(true); setMsg(null); setPreview(null)
@@ -26,13 +45,16 @@ export default function ContentCleanup({ adminKey }) {
 
   const doDelete = async () => {
     if (!preview?.count) return
-    if (!window.confirm(`Permanently delete ${preview.count} ${preview.type.toLowerCase()} older than ${preview.days} days?\n\nA full JSON backup is saved to DownRange-Backups/cleanup/ first. Deleted pages will return 404 and drop out of Google over time.`)) return
+    const note = type === 'news'
+      ? 'A full JSON backup is saved to DownRange-Backups/cleanup/ first. Deleted pages return 404 and drop out of Google over time.'
+      : 'Deals are deleted permanently — no backup.'
+    if (!window.confirm(`Permanently delete ${preview.count} ${preview.type.toLowerCase()} older than ${preview.days} days?\n\n${note}`)) return
     setBusy(true); setMsg({ text: `⏳ Backing up and deleting ${preview.count}…` })
     try {
       const r = await fetch('/api/admin/content-cleanup', { method: 'POST', headers: H, body: JSON.stringify({ type, days, confirmCount: preview.count }) })
       const j = await r.json()
       if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status)
-      setMsg({ text: `✅ Deleted ${j.deleted} ${j.type?.toLowerCase() || ''}. Backup: ${j.backup}` })
+      setMsg({ text: `✅ Deleted ${j.deleted} ${j.type?.toLowerCase() || ''}.${j.backup ? ' Backup: ' + j.backup : ''}` })
       setPreview(null)
     } catch (e) { setMsg({ err: true, text: '❌ ' + e.message }) }
     setBusy(false)
@@ -45,7 +67,32 @@ export default function ContentCleanup({ adminKey }) {
     <div style={{ maxWidth:760 }}>
       <div style={{ fontFamily:COND, fontSize:22, fontWeight:700, marginBottom:4 }}>🧹 Content Cleanup</div>
       <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280', marginBottom:16 }}>
-        Delete news articles or deals older than a number of days. Preview first; every delete is backed up to GitHub. Editor-locked items are never deleted. Minimum 7 days.
+        Delete news articles or deals older than a number of days. Preview first. News is backed up to GitHub before deleting; deals are not. Editor-locked items are never deleted. Minimum 7 days.
+      </div>
+
+      <div style={{ ...box, borderColor: auto?.dealsAutoEnabled ? '#C8922A' : 'var(--border, #1f2937)' }}>
+        <div style={{ fontFamily:COND, fontSize:16, fontWeight:700, marginBottom:8 }}>⏱ Automatic deal cleanup</div>
+        {auto ? (
+          <>
+            <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap' }}>
+              <label style={{ fontFamily:MONO, fontSize:12, color:'#d1d5db', display:'flex', alignItems:'center', gap:8, cursor:'pointer' }}>
+                <input type="checkbox" checked={!!auto.dealsAutoEnabled}
+                  onChange={e => saveAuto({ dealsAutoEnabled: e.target.checked, dealsAutoDays: auto.dealsAutoDays })} />
+                Delete deals older than
+              </label>
+              <input type="number" min={7} value={auto.dealsAutoDays}
+                onChange={e => setAuto(a => ({ ...a, dealsAutoDays: e.target.value }))}
+                style={{ width:70, fontFamily:MONO, fontSize:13, padding:'6px 8px', background:'#000', color:'#fff', border:'1px solid #374151' }} />
+              <span style={{ fontFamily:MONO, fontSize:12, color:'#9ca3af' }}>days, daily at 2:20 AM PT</span>
+              <button onClick={() => saveAuto({ dealsAutoEnabled: auto.dealsAutoEnabled, dealsAutoDays: auto.dealsAutoDays })} style={btn('#e5e7eb')}>SAVE</button>
+            </div>
+            <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280', marginTop:8 }}>
+              {auto.dealsAutoEnabled ? '● ON' : '○ OFF'} · No backup for deals.
+              {auto.lastRun ? ` Last run ${fmt(auto.lastRun.at)}: deleted ${auto.lastRun.deleted}${auto.lastRun.remaining ? `, ${auto.lastRun.remaining} left for next run` : ''}.` : ' Not run yet.'}
+            </div>
+            {autoMsg && <div style={{ fontFamily:MONO, fontSize:11, marginTop:6, color: autoMsg.err ? '#fca5a5' : '#86efac' }}>{autoMsg.text}</div>}
+          </>
+        ) : <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280' }}>Loading settings…</div>}
       </div>
 
       <div style={box}>

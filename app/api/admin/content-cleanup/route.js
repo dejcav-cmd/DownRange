@@ -7,6 +7,9 @@ import { createClient } from '@sanity/client'
 //   POST { type, days, confirmCount } -> backup to GitHub, then delete
 // confirmCount must equal the current match count, so a purge can never remove
 // more than the admin previewed. Editor-locked items are never deleted.
+// News is backed up to GitHub before deleting; deals are not (DJ, Sep 2026).
+//   GET  ?settings=1            -> automatic deal cleanup settings + last run
+//   PUT  { dealsAutoEnabled, dealsAutoDays } -> save settings (cron: /api/cron/cleanup-deals)
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -35,9 +38,15 @@ function parse(type, days) {
   return { t, d, cutoff, filter }
 }
 
+const SETTINGS_ID = 'cleanupSettings'
+
 export async function GET(req) {
   if (!authed(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   const sp = new URL(req.url).searchParams
+  if (sp.get('settings')) {
+    const cfg = await sanity.fetch('*[_id==$id][0]', { id: SETTINGS_ID }).catch(() => null)
+    return Response.json({ ok: true, dealsAutoEnabled: !!cfg?.dealsAutoEnabled, dealsAutoDays: cfg?.dealsAutoDays || 30, lastRun: cfg?.lastRun || null })
+  }
   const p = parse(sp.get('type'), sp.get('days'))
   if (p.error) return Response.json({ error: p.error }, { status: 400 })
   const r = await sanity.fetch(`{
@@ -72,14 +81,17 @@ export async function POST(req) {
   const p = parse(type, days)
   if (p.error) return Response.json({ error: p.error }, { status: 400 })
 
-  const docs = await sanity.fetch(`*[${p.filter}]`, { cutoff: p.cutoff })
+  const docs = await sanity.fetch(type === 'news' ? `*[${p.filter}]` : `*[${p.filter}]{_id}`, { cutoff: p.cutoff })
   if (!docs.length) return Response.json({ ok: true, deleted: 0 })
   if (Number(confirmCount) !== docs.length) {
     return Response.json({ error: `Count changed since preview (${confirmCount} → ${docs.length}). Preview again.` }, { status: 409 })
   }
 
-  const backup = await backupToGitHub(docs, type, p.d).catch(e => ({ error: e.message }))
-  if (backup?.error) return Response.json({ error: backup.error }, { status: 502 })
+  let backup = null
+  if (type === 'news') {
+    backup = await backupToGitHub(docs, type, p.d).catch(e => ({ error: e.message }))
+    if (backup?.error) return Response.json({ error: backup.error }, { status: 502 })
+  }
 
   let deleted = 0
   const ids = docs.map(d => d._id)
@@ -90,4 +102,14 @@ export async function POST(req) {
     deleted += Math.min(100, ids.length - i)
   }
   return Response.json({ ok: true, deleted, backup, type: p.t.label, days: p.d })
+}
+
+export async function PUT(req) {
+  if (!authed(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const { dealsAutoEnabled, dealsAutoDays } = await req.json().catch(() => ({}))
+  const d = parseInt(dealsAutoDays, 10)
+  if (!Number.isFinite(d) || d < MIN_DAYS) return Response.json({ error: `days must be at least ${MIN_DAYS}` }, { status: 400 })
+  await sanity.createIfNotExists({ _id: SETTINGS_ID, _type: 'cleanupSettings' })
+  await sanity.patch(SETTINGS_ID).set({ dealsAutoEnabled: !!dealsAutoEnabled, dealsAutoDays: d, updatedAt: new Date().toISOString() }).commit()
+  return Response.json({ ok: true, dealsAutoEnabled: !!dealsAutoEnabled, dealsAutoDays: d })
 }

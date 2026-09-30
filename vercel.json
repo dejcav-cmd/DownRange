@@ -163,6 +163,10 @@
     {
       "path": "/api/nics",
       "schedule": "0 10 1 * *"
+    },
+    {
+      "path": "/api/cron/cleanup-deals",
+      "schedule": "20 9 * * *"
     }
   ],
   "headers": [
@@ -319,6 +323,9 @@
       "maxDuration": 300
     },
     "app/api/cron/giveaways/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/cron/cleanup-deals/route.js": {
       "maxDuration": 300
     }
   }
