@@ -254,7 +254,8 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     params = { q: safe, offset, end: offset + perPage }
     if (category) params.cat = category.toUpperCase()
   } else {
-    const orderField = sort === 'oldest' ? '_createdAt asc' : '_createdAt desc'
+    // publishedAt, not _createdAt: posts can be (re)published long after the document was created
+    const orderField = sort === 'oldest' ? 'coalesce(publishedAt, _createdAt) asc' : 'coalesce(publishedAt, _createdAt) desc'
     // Featured posts always sort first (page 1, position 0). Must stay consistent across
     // every page — mixing orderings between pages would duplicate/skip results under
     // offset-based pagination. GROQ sorts null FIRST in desc order, so coalesce to false
