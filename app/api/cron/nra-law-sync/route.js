@@ -230,11 +230,25 @@ async function _GET(req) {
   const stateFilter = searchParams.get('state')?.toUpperCase()
   const dry = searchParams.get('dry') === '1'
   
-  if (key !== ADMIN_KEY) {
+  // Accept the admin key (manual runs) OR Vercel's scheduler, which sends
+  // Authorization: Bearer $CRON_SECRET. Admin-key-only auth rejected every
+  // scheduled run with a 401 since this cron was added.
+  const cronSecret = process.env.CRON_SECRET
+  const isVercelCron = !!cronSecret && req.headers.get('authorization') === `Bearer ${cronSecret}`
+  if (!isVercelCron && (!ADMIN_KEY || key !== ADMIN_KEY)) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
   }
   
-  const statesToProcess = stateFilter ? [stateFilter] : STATE_CODES
+  // Vercel stops the function at 300s; 50 states x (page fetch + Claude call)
+  // can take far longer. Stop starting new states at 240s and rotate the start
+  // point daily so every state is covered across runs.
+  const deadline = Date.now() + 240_000
+  const dayOffset = Math.floor(Date.now() / 86_400_000) % STATE_CODES.length
+  const statesToProcess = stateFilter
+    ? [stateFilter]
+    : [...STATE_CODES.slice(dayOffset), ...STATE_CODES.slice(0, dayOffset)]
+  let timedOut = false
+  let processed = 0
   const results = []
   const changes = []
   let updated = 0
@@ -242,6 +256,8 @@ async function _GET(req) {
   console.log(`[nra-sync] Starting NRA-ILA sync for ${statesToProcess.length} state(s)`)
   
   for (const stateCode of statesToProcess) {
+    if (Date.now() > deadline) { timedOut = true; break }
+    processed++
     try {
       // Fetch NRA-ILA page
       const scraped = await scrapeNRAILAState(stateCode)
@@ -317,6 +333,8 @@ async function _GET(req) {
   console.log(`[nra-sync] Completed: ${updated} state(s) updated`)
   
   return NextResponse.json({
+    processed,
+    timedOut,
     ok: true,
     timestamp: new Date().toISOString(),
     source: 'NRA-ILA (https://www.nraila.org/gun-laws/state-gun-laws/)',
