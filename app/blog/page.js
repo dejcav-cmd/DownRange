@@ -352,6 +352,19 @@ export const BLOG_POSTS = [
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
+// Same relative-time format as news cards (components/ui/NewsCard.js)
+function timeAgo(date) {
+  if (!date) return ''
+  const t = new Date(date).getTime()
+  if (!Number.isFinite(t)) return ''
+  const diff = Math.max(0, Date.now() - t)
+  const min  = Math.floor(diff / 60000)
+  if (min < 60) return `${min}m ago`
+  const hr = Math.floor(min / 60)
+  if (hr < 24) return `${hr}h ago`
+  return `${Math.floor(hr / 24)}d ago`
+}
+
 function readingMins(body) {
   return Math.max(1, Math.round((body || '').replace(/<[^>]+>/g,'').split(/\s+/).length / 200))
 }
@@ -384,6 +397,7 @@ function normalizeSanityPost(p) {
     author:     p.author || 'DJ Cavalcanti',
     authorRole: 'DownRange Editorial',
     date:       p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : (p._createdAt ? new Date(p._createdAt).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : ''),
+    iso:        p.publishedAt || p._createdAt || null,
     readTime:   typeof p.readTime === 'number' ? p.readTime + ' min read' : (p.readTime || '8 min read'),
     category:   (p.category || 'general').toUpperCase(),
     catColor:   '#C8922A',
@@ -585,7 +599,7 @@ export default async function BlogPage({ searchParams }) {
                           </div>
                         </div>
                         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155' }}>·</span>
-                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{featured.date}</span>
+                        <time dateTime={featured.iso || undefined} title={featured.date} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{timeAgo(featured.iso || featured.date) || featured.date}</time>
                         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#C8922A' }}>{featured.readTime}</span>
                       </div>
                       <div style={{ marginTop:20 }}>
@@ -621,7 +635,7 @@ export default async function BlogPage({ searchParams }) {
                         </div>
                         <div style={{ position:'absolute', bottom:12, left:12, right:12 }}>
                           <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'rgba(255,255,255,0.5)' }}>
-                            {post.date} · {post.readTime}
+                            <time dateTime={post.iso || undefined} title={post.date}>{timeAgo(post.iso || post.date) || post.date}</time> · {post.readTime}
                           </div>
                         </div>
                       </div>
