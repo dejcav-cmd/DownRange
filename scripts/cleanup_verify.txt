@@ -1,0 +1,7 @@
+GET news 30d -> 200 count=1593 total=2467 oldest=2026-01-01 newest=2026-08-31
+GET news 90d -> 200 count=336 total=2467 oldest=2026-01-01 newest=2026-07-02
+GET deals 30d -> 200 count=9917 total=12518 oldest=2026-06-09 newest=2026-08-31
+GET deals 90d -> 200 count=3730 total=12518 oldest=2026-06-09 newest=2026-07-02
+GET news 3d (below min) -> 400 {'error': 'days must be at least 7'}
+GET bad key -> 401
+POST wrong confirmCount -> 409 {'error': 'Count changed since preview (-1 → 3730). Preview again.'}
