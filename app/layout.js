@@ -5,6 +5,7 @@ import { ThemeProvider } from '../components/ui/ThemeProvider'
 import Script from 'next/script'
 import PageViewTracker from '../components/ui/PageViewTracker'
 import GlobalBreakingTicker from '../components/layout/GlobalBreakingTicker'
+import JsonLdDedupe from '../components/seo/JsonLdDedupe'
 
 const GA_ID = 'G-KDGZX3CLEC'
 
@@ -117,6 +118,7 @@ export default function RootLayout({ children }) {
       </head>
       <ClerkWrapper>
       <body>
+        <JsonLdDedupe />
         <ThemeProvider>
           <GlobalBreakingTicker />
           {children}
