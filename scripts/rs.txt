@@ -1,0 +1,4 @@
+PUT  200 {'ok': True, 'monthlyEnabled': True, 'dealsDays': 60, 'newsDays': 180}
+GET  200 {'ok': True, 'monthlyEnabled': True, 'dealsDays': 60, 'newsDays': 180, 'lastRun': None}
+PREVIEW news >180d: 200 count=0 of 2131 oldest=None newest=None
+PREVIEW deals >60d: 200 count=3378 of 8811 oldest=2026-07-02 newest=2026-08-01
