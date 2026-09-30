@@ -240,7 +240,7 @@ export async function generateMetadata({ params }) {
   if (!a) return { title: 'Article — DownRange Learning Center' }
   const img = HERO_IMAGES[params.slug] || a.heroImage
   return {
-    title: `${a.title} — DownRange`,
+    title: `${a.title}`,
     description: a.subtitle,
     alternates: { canonical: `https://www.downrangeco.com/learn/${params.slug}` },
     openGraph: {

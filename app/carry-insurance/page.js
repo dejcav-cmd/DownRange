@@ -3,7 +3,7 @@ import Footer from '../../components/layout/Footer'
 export const revalidate = 604800  // Weekly — updated by /api/cron/carry-insurance
 
 export const metadata = {
-  title: 'Best CCW Insurance 2026 — USCCA vs CCW Safe vs US Law Shield | DownRange',
+  title: 'Best CCW Insurance 2026 — USCCA vs CCW Safe vs US Law Shield',
   description: 'Side-by-side comparison of USCCA, CCW Safe, Second Call Defense, and US Law Shield concealed carry insurance. Coverage limits, attorney fees, bail bond, and pricing compared.',
   keywords: 'CCW insurance, USCCA review, CCW Safe review, concealed carry insurance, self-defense insurance, gun owner insurance',
   alternates: { canonical: 'https://www.downrangeco.com/carry-insurance' },

@@ -55,10 +55,10 @@ export async function generateStaticParams() {
 export async function generateMetadata({ params }) {
   const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
   const post = allPosts.find(p => p.slug === params.slug)
-  if (!post) return { title: 'Article Not Found | DownRange' }
+  if (!post) return { title: 'Article Not Found' }
   const url = `https://www.downrangeco.com/blog/${params.slug}`
   return {
-    title:       `${post.title} | DownRange Blog`,
+    title:       `${post.title}`,
     description: post.excerpt,
     alternates:  { canonical: url },
     openGraph: {

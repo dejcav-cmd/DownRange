@@ -5,7 +5,7 @@ import Link from 'next/link'
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
-  title: 'Firearm Encyclopedia — DownRange',
+  title: 'Firearm Encyclopedia',
   description: 'Complete database of firearm specs, history, variants, and buying guides. Pistols, rifles, shotguns, suppressors — every major platform covered.',
   alternates: { canonical: 'https://www.downrangeco.com/guns' },
 }

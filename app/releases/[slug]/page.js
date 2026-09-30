@@ -25,7 +25,7 @@ export async function generateMetadata({ params }) {
   const title = `${r.brand} ${r.model || r.title}`
   const url   = `https://www.downrangeco.com/releases/${params.slug}`
   return {
-    title: `${title} | DownRange`,
+    title: `${title}`,
     description: (r.summary || `${r.brand} ${r.model} — new firearm release. Full specs, MSRP, and availability on DownRange.`).slice(0, 160),
     alternates: { canonical: url },
     openGraph: {

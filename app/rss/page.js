@@ -2,7 +2,7 @@ import RSSPageClient from './PageClient'
 
 export const metadata = {
   robots: { index: false, follow: true },
-  title:       'RSS Feeds — DownRange',
+  title:       'RSS Feeds',
   description: 'Subscribe to DownRange RSS feeds — firearms news, legislation, new releases, giveaways, deals, videos, hunting, competitions, Canada, and more. 12 feeds updated continuously.',
   alternates: {
     types: {

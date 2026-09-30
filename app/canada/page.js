@@ -8,7 +8,7 @@ import { createClient } from '@sanity/client'
 export const dynamic = 'force-dynamic'
 
 export const metadata = {
-  title: 'Canada — Firearms News, PAL, C-21 | DownRange',
+  title: 'Canada — Firearms News, PAL, C-21',
   description: 'Canadian firearms news, PAL licensing, Bill C-21 updates, and province-by-province laws.',
   alternates: { canonical: 'https://www.downrangeco.com/canada' },
 }

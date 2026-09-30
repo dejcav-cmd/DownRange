@@ -1,4 +1,4 @@
-import { notFound, redirect } from 'next/navigation'
+import { notFound, permanentRedirect } from 'next/navigation'
 import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
@@ -63,11 +63,11 @@ export const revalidate = 120
 
 export async function generateMetadata({ params }) {
   const article = await getArticleBySlug(params.slug).catch(() => null)
-  if (!article) return { title: 'Article Not Found | DownRange' }
+  if (!article) return { title: 'Article Not Found' }
   const img = article?.heroImage?.asset?.url || article?.imageUrl || null
   const url = `https://www.downrangeco.com/news/${params.slug}`
   return {
-    title:       `${article.title} | DownRange`,
+    title:       `${article.title}`,
     description: article.summary || article.excerpt || article.title,
     alternates:  { canonical: url },
     openGraph: {
@@ -130,11 +130,11 @@ export default async function ArticlePage({ params }) {
       const byId = await getArticleById(params.slug).catch(() => null)
       if (byId?.slug?.current) {
         // Article exists — redirect to its current slug (fix-slugs may have changed it)
-        redirect(`/news/${byId.slug.current}`)
+        permanentRedirect(`/news/${byId.slug.current}`)
       } else {
-        // Article doesn't exist in Sanity (write failure or deleted)
-        // Redirect hash-slug URLs to news feed rather than hard 404
-        redirect('/news')
+        // Article doesn't exist (write failure or deleted): a real 404, not a
+        // redirect to /news, which Google treats as a soft 404. No-redirect policy.
+        notFound()
       }
     }
 
@@ -154,11 +154,11 @@ export default async function ArticlePage({ params }) {
 
   // AmmoLand articles belong in /deals — redirect permanently
   if (article.source && article.source.toLowerCase().includes('ammoland')) {
-    redirect('/deals')
+    permanentRedirect('/deals')
   }
   // Also redirect any article explicitly categorized as deals
   if (article.category === 'deals') {
-    redirect('/deals')
+    permanentRedirect('/deals')
   }
 
   const cat      = CAT_STYLE[article.category] || CAT_STYLE.news

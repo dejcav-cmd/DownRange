@@ -6,7 +6,7 @@ import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
 import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
 
 export const metadata = {
-  title: 'Firearms & 2A News | DownRange',
+  title: 'Firearms & 2A News',
   description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage. Updated every 30 minutes.',
   alternates: { canonical: 'https://www.downrangeco.com/news' },
   openGraph: {

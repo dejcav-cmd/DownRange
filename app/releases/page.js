@@ -2,7 +2,7 @@ import ReleasesPage from './ReleasesPage'
 import { fetchReleases, searchReleases, fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
-  title: 'New Gun Releases 2026 | DownRange',
+  title: 'New Gun Releases 2026',
   description: 'Latest firearm announcements, new pistol, rifle, and shotgun releases. Full specs, MSRP, and availability — updated daily.',
   alternates: { canonical: 'https://www.downrangeco.com/releases' },
   openGraph: {

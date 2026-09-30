@@ -87,7 +87,7 @@ export async function generateMetadata({ params }) {
   const name = STATE_NAMES[abbr]
   if (!name) return { title: 'State News — DownRange' }
   return {
-    title: `${name} Firearms News — DownRange`,
+    title: `${name} Firearms News`,
     description: `Latest firearms news, laws, and legislation for ${name}. Updated every 15 minutes.`,
     alternates: { canonical: `https://www.downrangeco.com/state-news/${abbr.toLowerCase()}` },
   }

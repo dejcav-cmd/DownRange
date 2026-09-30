@@ -1,7 +1,7 @@
 import RangesPage from "./PageClient"
 
 export const metadata = {
-  title:       "Shooting Ranges Near Me — Find Gun Ranges | DownRange",
+  title:       "Shooting Ranges Near Me — Find Gun Ranges",
   description: "Find shooting ranges near you. Search 86+ curated indoor and outdoor gun ranges by location, with hours, amenities, and directions.",
   keywords:    'shooting ranges near me, gun range finder, indoor shooting range, outdoor gun range, pistol range',
   alternates:  { canonical: "https://www.downrangeco.com/ranges" },

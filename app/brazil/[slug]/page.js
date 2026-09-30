@@ -71,7 +71,7 @@ async function getRelated(slug) {
 
 export async function generateMetadata({ params }) {
   const article = await getArtigo(params.slug)
-  if (!article) return { title: 'Artigo não encontrado | DownRange' }
+  if (!article) return { title: 'Artigo não encontrado' }
   const url = `https://www.downrangeco.com/brazil/${params.slug}`
   return {
     title:       `${article.title} | DownRange Brasil`,

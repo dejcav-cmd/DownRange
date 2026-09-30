@@ -1,7 +1,7 @@
 import FFLFinderPage from "./PageClient"
 
 export const metadata = {
-  title:       "FFL Dealer Finder — 60,000+ Licensed Dealers Near You | DownRange",
+  title:       "FFL Dealer Finder — 60,000+ Licensed Dealers Near You",
   description: "Find licensed FFL firearms dealers by ZIP code. Search 60,000+ ATF-licensed dealers nationwide.",
   alternates:  { canonical: "https://www.downrangeco.com/ffl-finder" },
   openGraph: {

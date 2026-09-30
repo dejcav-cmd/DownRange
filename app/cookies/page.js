@@ -1,7 +1,7 @@
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-export const metadata = { title: 'Cookie Policy — DownRange', description: 'How DownRange uses cookies and similar technologies across the site.', alternates: { canonical: 'https://www.downrangeco.com/cookies' } }
+export const metadata = { title: 'Cookie Policy', description: 'How DownRange uses cookies and similar technologies across the site.', alternates: { canonical: 'https://www.downrangeco.com/cookies' } }
 export default async function Cookies() {
   const sections = [
     ['What Are Cookies','Cookies are small text files stored on your device when you visit a website. They help sites remember information about your visit, like preferences and session state.'],

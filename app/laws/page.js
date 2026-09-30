@@ -5,7 +5,7 @@ import { fetchLegislation, fetchBreakingAlerts, fetchAllStateProfiles } from '..
 import { STATE_SEED } from '../../lib/stateSeed'
 
 export const metadata = {
-  title: '2A Legal Intelligence | DownRange',
+  title: '2A Legal Intelligence',
   description: 'Second Amendment law command center. Your state\'s gun laws, federal bills in Congress, ATF rules, and active SCOTUS cases — all in one place.',
   keywords: 'gun laws by state, Second Amendment law, ATF regulations, concealed carry laws, state firearms laws, gun control legislation 2026',
   alternates: { canonical: 'https://www.downrangeco.com/laws' },
@@ -221,7 +221,7 @@ export default async function LawsHub() {
               const tier = getTier(p)
               const color = FREEDOM_TIER[tier].color
               return (
-                <Link key={p.abbr} href={`/laws/${p.abbr?.toLowerCase()}`}
+                <Link key={p.abbr} href={`/laws/${p.abbr?.toUpperCase()}`}
                   style={{ textDecoration: 'none', background: '#111318', border: `1px solid ${color}30`, padding: '10px 4px', textAlign: 'center', transition: 'all 150ms', display: 'block' }}
                   title={`${p.name} — ${FREEDOM_TIER[tier].label}`}
                 >

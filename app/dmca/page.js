@@ -1,7 +1,7 @@
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
-export const metadata = { title: 'DMCA Policy — DownRange', description: 'DownRange\u2019s DMCA copyright policy and process for submitting takedown notices.', alternates: { canonical: 'https://www.downrangeco.com/dmca' } }
+export const metadata = { title: 'DMCA Policy', description: 'DownRange\u2019s DMCA copyright policy and process for submitting takedown notices.', alternates: { canonical: 'https://www.downrangeco.com/dmca' } }
 export default async function DMCA() {
   const sections = [
     ['Copyright Policy','DownRange respects the intellectual property rights of others and expects users of its platform to do the same. In accordance with the Digital Millennium Copyright Act ("DMCA"), we will respond to valid notices of alleged copyright infringement.'],

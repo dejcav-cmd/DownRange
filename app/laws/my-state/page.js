@@ -5,7 +5,7 @@ import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../../sanity/lib/
 import { STATE_SEED } from '../../../lib/stateSeed'
 
 export const metadata = {
-  title: "Your State's Gun Laws | DownRange",
+  title: "Your State\'s Gun Laws",
   description: "Your state's concealed carry laws, magazine limits, AWB status, waiting periods, and reciprocity — auto-detected from your location.",
   alternates: { canonical: 'https://www.downrangeco.com/laws/my-state' },
 }

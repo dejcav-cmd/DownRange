@@ -4,7 +4,7 @@ import { fetchAllStateProfiles } from "../../sanity/lib/client"
 export const revalidate = 3600
 
 export const metadata = {
-  title:       "Gun & Ammo Deals — Best Prices Live | DownRange",
+  title:       "Gun & Ammo Deals — Best Prices Live",
   description: "Today's best firearms, ammo, and accessories deals from top retailers. Real-time pricing on guns, bulk ammo, and gear — checked against your state's laws.",
   alternates:  { canonical: "https://www.downrangeco.com/deals" },
   openGraph: {
@@ -22,7 +22,7 @@ export const metadata = {
 
 const BAN_SUPP = new Set(['CA', 'DE', 'HI', 'IL', 'MA', 'NJ', 'NY', 'RI'])
 
-export default async function Page() {
+export default async function Page({ searchParams = {} }) {
   let states = []
   try {
     const profiles = await fetchAllStateProfiles()
@@ -49,7 +49,12 @@ export default async function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
-      <DealsPage states={states} />
+      <DealsPage
+        states={states}
+        initialSort={typeof searchParams.sort === 'string' ? searchParams.sort : 'hot'}
+        initialQuery={typeof searchParams.q === 'string' ? searchParams.q : ''}
+        initialPage={parseInt(searchParams.p || '1', 10) || 1}
+      />
     </>
   )
 }

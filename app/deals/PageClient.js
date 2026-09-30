@@ -1,6 +1,6 @@
 'use client'
-import { useState, useEffect, useCallback, useRef, Suspense } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
+import { useState, useEffect, useCallback, useRef } from 'react'
+import { useRouter } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import EmailCapture from '../../components/ui/EmailCapture'
@@ -271,17 +271,19 @@ function DealCard({ deal, userState, liveRules }) {
   )
 }
 
-// ── INNER PAGE (uses useSearchParams — must be inside Suspense) ───────────────
-function DealsInner({ states = [] }) {
-  const searchParams = useSearchParams()
+// ── INNER PAGE ─────────────────────────────────────────────────────────────────
+// Initial sort/q/p come from the server page's searchParams. Reading them with
+// useSearchParams forced a client-only render behind <Suspense>, so the server
+// HTML Google received was just "Loading deals…" (no H1, no content).
+function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initialPage = 1 }) {
   const router = useRouter()
 
   const [deals,     setDeals]     = useState([])
   const [status,    setStatus]    = useState('loading')
   const [meta,      setMeta]      = useState(null)
-  const [sort,      setSort]      = useState(() => searchParams.get('sort') || 'hot')
-  const [search,    setSearch]    = useState(() => searchParams.get('q') || '')
-  const [page,      setPage]      = useState(() => parseInt(searchParams.get('p') || '1'))
+  const [sort,      setSort]      = useState(initialSort || 'hot')
+  const [search,    setSearch]    = useState(initialQuery || '')
+  const [page,      setPage]      = useState(Number(initialPage) || 1)
   const [stateFilter, setStateFilter] = useState('')
   const selState = states.find(s => s.abbr === stateFilter) || null
   const [lastFetch, setLastFetch] = useState(null)
@@ -619,15 +621,7 @@ function DealsInner({ states = [] }) {
   )
 }
 
-// ── EXPORT — wraps inner in Suspense (required for useSearchParams in Next 14) ─
-export default function DealsPage({ states = [] }) {
-  return (
-    <Suspense fallback={
-      <div style={{ background:'var(--bg)', minHeight:'100vh', display:'flex', alignItems:'center', justifyContent:'center' }}>
-        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#4B5563' }}>Loading deals…</span>
-      </div>
-    }>
-      <DealsInner states={states} />
-    </Suspense>
-  )
+// ── EXPORT ─────────────────────────────────────────────────────────────────────
+export default function DealsPage(props) {
+  return <DealsInner {...props} />
 }

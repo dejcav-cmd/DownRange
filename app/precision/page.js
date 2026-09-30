@@ -3,7 +3,7 @@ import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
 
 export const metadata = {
-  title: 'Precision Shooting Hub — DownRange',
+  title: 'Precision Shooting Hub',
   description: 'Long-range ballistics, PRS competition, optics, and precision rifle. Data-driven and written by people who actually shoot past 500 yards.',
   alternates: { canonical: 'https://www.downrangeco.com/precision' },
 }

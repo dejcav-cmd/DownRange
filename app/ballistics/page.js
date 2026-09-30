@@ -5,7 +5,7 @@ import BreakingTicker from '../../components/layout/BreakingTicker'
 import { fetchBreakingAlerts } from '../../sanity/lib/client'
 
 export const metadata = {
-  title: 'Ballistics Calculator — Free Drop Tables & Wind Drift | DownRange',
+  title: 'Ballistics Calculator — Free Drop Tables & Wind Drift',
   description: 'Free G1 external ballistics calculator. Bullet drop tables, wind drift, MOA/MRAD scope corrections, and trajectory charts for 38 calibers out to 1,000 yards. Compare two loads.',
   keywords: 'ballistics calculator, bullet drop calculator, external ballistics, MOA calculator, wind drift, trajectory chart, scope correction',
   alternates: { canonical: 'https://www.downrangeco.com/ballistics' },
