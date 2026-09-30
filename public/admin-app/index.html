@@ -695,7 +695,7 @@ function renderRanges(el){
 async function renderImgLib(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
   try{
-    const d=await api('/api/admin/image-assets');
+    const d=await api('/api/admin/image-repo');
     const imgs=d.assets||d.images||[];
     if(!imgs.length){el.innerHTML='<div class="empty">No images in repository</div>';return;}
     el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${imgs.length} images in Sanity CDN</div>
@@ -1487,7 +1487,7 @@ function renderAgents(el){
 
 function renderRSSources(el){
   const SOURCES=[
-    {id:'newsapi',    page:'News',      type:'API',    label:'NewsAPI',              cron:'15m',  url:'/api/cron/news'},
+    {id:'newsapi',    page:'News',      type:'API',    label:'NewsAPI',              cron:'15m',  url:'/api/agent?feed=news'},
     {id:'tfb',        page:'News',      type:'RSS',    label:'The Firearm Blog',     cron:'15m',  url:null},
     {id:'ttag',       page:'News',      type:'RSS',    label:'TTAG',                 cron:'15m',  url:null},
     {id:'bearingarms',page:'News',      type:'RSS',    label:'Bearing Arms',         cron:'15m',  url:null},
@@ -1495,18 +1495,16 @@ function renderRSSources(el){
     {id:'nraila',     page:'Laws',      type:'RSS',    label:'NRA-ILA',              cron:'2h',   url:null},
     {id:'atf',        page:'Laws',      type:'RSS',    label:'ATF News',             cron:'2h',   url:null},
     {id:'goa',        page:'Laws',      type:'RSS',    label:'Gun Owners of America',cron:'2h',   url:null},
-    {id:'releases_ai',page:'Releases',  type:'AI',     label:'DownRange AI',         cron:'1h',   url:'/api/cron/releases'},
+    {id:'releases_ai',page:'Releases',  type:'AI',     label:'DownRange AI',         cron:'Mon/Thu',   url:'/api/cron/weekly-gun-releases'},
     {id:'gundeals',   page:'Deals',     type:'RSS',    label:'gun.deals + OG Scrape',cron:'4h',   url:'/api/cron/gun-deals'},
     {id:'reddit_gd',  page:'Deals',     type:'Reddit', label:'r/gundeals',           cron:'Live', url:null},
     {id:'reddit_ammo',page:'Deals',     type:'Reddit', label:'r/ammo',               cron:'Live', url:null},
-    {id:'ammoprices', page:'Market',    type:'Scrape', label:'Ammo Price Tracker',   cron:'30m',  url:'/api/cron/ammo-prices'},
-    {id:'market_ai',  page:'Market',    type:'AI',     label:'Market Analysis AI',   cron:'30m',  url:'/api/cron/market'},
-    {id:'youtube',    page:'Videos',    type:'API',    label:'YouTube Data API',     cron:'4h',   url:'/api/cron/video'},
+    {id:'youtube',    page:'Videos',    type:'API',    label:'YouTube Data API',     cron:'4h',   url:'/api/agent?feed=video'},
     {id:'gunblogca',  page:'Canada',    type:'RSS',    label:'TheGunBlog.ca',        cron:'2h',   url:null},
-    {id:'brazil_ai',  page:'Brazil',    type:'AI',     label:'Brazil AI Feed',       cron:'2h',   url:'/api/cron/brazil'},
-    {id:'intel_ai',   page:'Intel',     type:'AI',     label:'Intelligence AI',      cron:'Daily',url:'/api/cron/intelligence'},
-    {id:'newsletter', page:'Newsletter',type:'AI',     label:'Newsletter AI',        cron:'Daily',url:'/api/cron/newsletter'},
-    {id:'states_ai',  page:'States',    type:'AI',     label:'State Profile AI',     cron:'Weekly',url:'/api/cron/state'},
+    {id:'brazil_ai',  page:'Brazil',    type:'AI',     label:'Brazil AI Feed',       cron:'Daily',   url:'/api/cron/write-brazil-articles'},
+    {id:'intel_ai',   page:'Intel',     type:'AI',     label:'Intelligence AI',      cron:'Paused',url:'/api/intelligence'},
+    {id:'newsletter', page:'Newsletter',type:'AI',     label:'Newsletter AI',        cron:'Thu',url:'/api/newsletter'},
+    {id:'states_ai',  page:'States',    type:'AI',     label:'State Profile AI',     cron:'Daily',url:'/api/cron/enrich-state-pages'},
   ];
   const TYPE_C={RSS:'#60A5FA',API:'#34D399',AI:'#C8922A',Scrape:'#C084FC',Reddit:'#F97316'};
   const PAGE_I={News:'📰',Laws:'⚖️',Releases:'🔫',Deals:'🔥',Market:'📊',Videos:'▶️',Canada:'🇨🇦',Brazil:'🇧🇷',Intel:'🧠',Newsletter:'✉️',States:'🗺️'};
@@ -3160,13 +3158,13 @@ function checkCompliance(){
 
 // ═══════════════════════════════════════════════════════════════════
 // PANEL — MAILING LIST
-// GET /api/admin/mailing-list → { subscribers: [...], total: N }
-// POST /api/admin/mailing-list { action:'add'|'remove', email, name }
+// GET /api/admin/subscribers → { subscribers: [...], total: N }
+// POST /api/admin/subscribers { action:'add'|'remove', email, name }
 // ═══════════════════════════════════════════════════════════════════
 async function renderMailingList(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading subscribers...</div>';
   try{
-    const d=await api('/api/admin/mailing-list');
+    const d=await api('/api/admin/subscribers');
     const subs=d.subscribers||d.contacts||[];
     const total=d.total||subs.length;
     const active=subs.filter(s=>s.status==='active'||!s.status).length;
@@ -3202,7 +3200,7 @@ async function addSubscriber(){
   const name=document.getElementById('ml-name')?.value?.trim();
   if(!email){flash('Enter an email','err');return;}
   try{
-    const d=await api('/api/admin/mailing-list',{method:'POST',body:JSON.stringify({action:'add',email,name})});
+    const d=await api('/api/admin/subscribers',{method:'POST',body:JSON.stringify({action:'add',email,name})});
     flash(d.ok?'✅ Subscriber added':'❌ '+(d.error||'Failed'),d.ok?'ok':'err');
     if(d.ok) renderMailingList(document.getElementById('drawer-content'));
   }catch(e){flash('Error: '+e.message,'err');}
@@ -3210,7 +3208,7 @@ async function addSubscriber(){
 async function removeSubscriber(id, email, btn){
   btn.disabled=true;
   try{
-    const d=await api('/api/admin/mailing-list',{method:'POST',body:JSON.stringify({action:'remove',id,email})});
+    const d=await api('/api/admin/subscribers',{method:'POST',body:JSON.stringify({action:'remove',id,email})});
     if(d.ok){flash('✅ Removed','info');btn.closest('.row')?.remove();}
     else flash('❌ '+(d.error||'Failed'),'err');
   }catch(e){flash('Error: '+e.message,'err');btn.disabled=false;}

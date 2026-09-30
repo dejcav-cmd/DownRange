@@ -88,12 +88,7 @@ export default function CopyrightReport({ adminKey }) {
       if (job?.lastData) {
         try { setReport(JSON.parse(job.lastData)) } catch {}
       }
-      // Also try to load historical reports
-      const histRes = await fetch('/api/admin/copyright-history', { headers: H })
-      if (histRes.ok) {
-        const hd = await histRes.json()
-        setHistory(hd.reports || [])
-      }
+      // (Historical reports endpoint never existed; copyright-review is paused.)
     } catch (e) {}
     setLoading(false)
   }, [adminKey])

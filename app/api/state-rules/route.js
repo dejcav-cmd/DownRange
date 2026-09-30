@@ -106,3 +106,34 @@ export async function GET() {
     })
   }
 }
+
+// ── POST: save admin edits from the Compliance Rules panel ─────────────────────
+// Previously the panel POSTed to a route that didn't exist and swallowed the error,
+// so rule edits were never saved. rulesOverride tells the weekly ccw-update cron
+// not to overwrite these fields with its hardcoded data.
+export async function POST(req) {
+  const key = req.headers.get('x-admin-key')
+  if (!key || key !== (process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY)) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+  }
+  try {
+    const { abbr, mag, awbFull, awbRestricted, suppLegal } = await req.json()
+    const code = String(abbr || '').toUpperCase()
+    if (!STATE_SEED[code]) return NextResponse.json({ error: 'Unknown state' }, { status: 400 })
+    const profile = await sanity.fetch('*[_type=="stateProfile" && abbr==$abbr][0]{_id}', { abbr: code })
+    if (!profile?._id) return NextResponse.json({ error: 'No stateProfile for ' + code }, { status: 404 })
+    const magLimit = mag === '' || mag == null || mag === false ? null : Number(mag)
+    const awbStatus = awbFull ? 'Full' : awbRestricted ? 'partial' : 'none'
+    const suppressors = suppLegal !== false
+    const now = new Date().toISOString()
+    await sanity.patch(profile._id).set({
+      magLimit: Number.isFinite(magLimit) ? magLimit : null,
+      awbStatus, suppressors,
+      rulesOverride: { by: 'admin', at: now },
+      lastUpdated: now,
+    }).commit()
+    return NextResponse.json({ ok: true, abbr: code, magLimit, awbStatus, suppressors })
+  } catch (e) {
+    return NextResponse.json({ error: e.message }, { status: 500 })
+  }
+}

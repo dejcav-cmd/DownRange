@@ -2892,14 +2892,26 @@ export default function AdminPage() {
   const [msg,      setMsg]      = useState('')
   const [msgType,  setMsgType]  = useState('info')
   const [health,   setHealth]   = useState(null)
+  // 'checking' | 'missing' | 'invalid' | 'ok' — panels used to render blank with no
+  // message when the key was missing (UniversalContentEditor bails out silently).
+  const [keyStatus, setKeyStatus] = useState('checking')
+
+  async function verifyKey(k) {
+    if (!k) { setKeyStatus('missing'); return }
+    try {
+      const r = await fetch('/api/admin/cron-status', { headers: { 'x-admin-key': k } })
+      setKeyStatus(r.status === 401 || r.status === 403 ? 'invalid' : 'ok')
+    } catch { setKeyStatus('ok') } // network hiccup: don't lock the user out
+  }
 
   useEffect(() => {
     const k = localStorage.getItem('dr_admin_key') || ''
     setAdminKeyState(k)
+    verifyKey(k)
     fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
   }, [])
 
-  function setAdminKey(v) { setAdminKeyState(v); localStorage.setItem('dr_admin_key', v) }
+  function setAdminKey(v) { setAdminKeyState(v); localStorage.setItem('dr_admin_key', v); verifyKey(v) }
 
   function flash(m, type = 'info') {
     setMsg(m); setMsgType(type)
@@ -3025,6 +3037,17 @@ export default function AdminPage() {
 
           {/* Panel content */}
           <div className="adm-panel">
+
+            {(keyStatus === 'missing' || keyStatus === 'invalid') && (
+              <div style={{ margin:'0 0 16px', padding:'14px 16px', border:'1px solid #ef4444', background:'rgba(239,68,68,.08)', display:'flex', alignItems:'center', justifyContent:'space-between', gap:12, flexWrap:'wrap' }}>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#fca5a5' }}>
+                  {keyStatus === 'missing'
+                    ? '🔒 Not signed in on this browser — panels can’t load content without the admin key.'
+                    : '🔒 The saved admin key was rejected — it may have changed. Sign in again.'}
+                </div>
+                <a href="/admin-login" style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:13, letterSpacing:'.05em', padding:'7px 16px', background:'#C8922A', color:'#000', textDecoration:'none' }}>SIGN IN →</a>
+              </div>
+            )}
 
             {/* ── CONTENT ── */}
             {panel==='hub'          && <ContentHub         adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}

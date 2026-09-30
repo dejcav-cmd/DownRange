@@ -114,12 +114,13 @@ function StateRulesTab({ adminKey }) {
     if (!s) return
     setSaving(p => ({ ...p, [abbr]: true }))
     try {
-      await fetch('/api/admin/state-rules', {
+      const res = await fetch('/api/state-rules', {
         method: 'POST',
         headers: { 'content-type':'application/json', 'x-admin-key': adminKey },
         body: JSON.stringify({ abbr, mag: s.mag, awbFull: s.awbFull, awbRestricted: s.awbRestricted, suppLegal: s.suppLegal }),
       })
-    } catch { /* ignore */ }
+      if (!res.ok) alert(`Save failed for ${abbr} (HTTP ${res.status})`)
+    } catch (e) { alert(`Save failed for ${abbr}: ${e.message}`) }
     setSaving(p => ({ ...p, [abbr]: false }))
   }, [rules, adminKey])
 
@@ -383,7 +384,7 @@ function DealAuditTab({ adminKey }) {
     setLoading(true)
     setAudited([])
     try {
-      const r = await fetch(`/api/deals/list?limit=200`, {
+      const r = await fetch(`/api/deals?limit=200`, {
         headers: { 'x-admin-key': adminKey }
       })
       const json = await r.json().catch(() => ({ items: [] }))

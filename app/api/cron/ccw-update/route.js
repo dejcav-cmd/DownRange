@@ -181,7 +181,7 @@ export async function GET(req) {
     try {
       // Fetch current Sanity record
       const existing = await sanity.fetch(
-        '*[_type == "stateProfile" && abbr == $abbr][0]{ _id, ccwSummary, permitType, constitutionalCarry, lastCcwUpdate }',
+        '*[_type == "stateProfile" && abbr == $abbr][0]{ _id, ccwSummary, permitType, constitutionalCarry, lastCcwUpdate, rulesOverride }',
         { abbr: stateAbbr }
       )
 
@@ -216,9 +216,12 @@ export async function GET(req) {
           constitutionalCarry: data.cc,
           redFlagLaw:       data.redFlag,
           ccwFee:           String(data.fee),
-          // Restriction fields — auto-synced from verified CCW_STATE_DATA every weekly run
-          magLimit:   typeof data.magLimit === 'number' ? data.magLimit : null,
-          awbStatus:  data.awb === true ? 'Full' : 'none',
+          // Restriction fields — auto-synced from CCW_STATE_DATA weekly, unless an admin
+          // saved a manual override in the Compliance Rules panel.
+          ...(existing.rulesOverride ? {} : {
+            magLimit:   typeof data.magLimit === 'number' ? data.magLimit : null,
+            awbStatus:  data.awb === true ? 'Full' : 'none',
+          }),
           ccwValidity:      String(data.validity),
           reciprocityCount: data.reciprocityCount,
           lastCcwUpdate:    new Date().toISOString(),

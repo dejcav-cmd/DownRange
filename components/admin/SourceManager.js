@@ -24,14 +24,12 @@ const SOURCE_REGISTRY = [
   { id:'goa',         page:'Laws',      section:'RSS',        type:'RSS',     label:'Gun Owners of America',cron:'0 */2 * * *', url:'https://www.gunowners.org/feed/',         cat:'law',      desc:'GOA legislative and 2A news' },
   { id:'thegunfeed',  page:'Laws',      section:'RSS',        type:'RSS',     label:'TheGunFeed',        cron:'0 */2 * * *',   url:'https://thegunfeed.com/feed/',             cat:'law',      desc:'Gun rights news aggregator' },
   // ── GUN RELEASES ──────────────────────────────────────────────────────────
-  { id:'releases_ai', page:'Releases',  section:'AI',         type:'AI',      label:'DownRange AI',      cron:'0 * * * *',     url:'/api/cron/releases',                       cat:'releases', desc:'AI-generated new gun release intelligence' },
+  { id:'releases_ai', page:'Releases',  section:'AI',         type:'AI',      label:'Manufacturer Releases',      cron:'0 6 * * 1,4',     url:'/api/cron/weekly-gun-releases',                       cat:'releases', desc:'AI-generated new gun release intelligence' },
   // ── DEALS ─────────────────────────────────────────────────────────────────
   { id:'gundeals',    page:'Deals',     section:'RSS+Scrape', type:'RSS',     label:'gun.deals',         cron:'0 */4 * * *',   url:'https://gun.deals/rss.xml',                cat:'deals',    desc:'Gun deals RSS with OG image scraping per product' },
   { id:'reddit_gd',   page:'Deals',     section:'Live',       type:'Reddit',  label:'r/gundeals',        cron:'live',          url:'https://reddit.com/r/gundeals',            cat:'deals',    desc:'Reddit r/gundeals live hot/new posts' },
   { id:'reddit_ammo', page:'Deals',     section:'Live',       type:'Reddit',  label:'r/ammo',            cron:'live',          url:'https://reddit.com/r/ammo',                cat:'deals',    desc:'Reddit r/ammo live hot posts' },
   // ── MARKET ────────────────────────────────────────────────────────────────
-  { id:'ammoprices',  page:'Market',    section:'Scrape',     type:'Scrape',  label:'Ammo Price Tracker',cron:'*/30 * * * *',  url:'/api/cron/ammo-prices',                    cat:'market',   desc:'Live ammo price indexing across major retailers' },
-  { id:'market_ai',   page:'Market',    section:'AI',         type:'AI',      label:'Market Analysis AI',cron:'*/30 * * * *',  url:'/api/cron/market',                         cat:'market',   desc:'AI-generated market analysis and commentary' },
   // ── VIDEO ─────────────────────────────────────────────────────────────────
   { id:'youtube',     page:'Videos',    section:'YouTube',    type:'API',     label:'YouTube Data API',  cron:'0 */4 * * *',   url:'https://www.googleapis.com/youtube/v3',    cat:'video',    desc:'Firearms channel video indexing' },
   // ── CANADA ────────────────────────────────────────────────────────────────
@@ -39,12 +37,12 @@ const SOURCE_REGISTRY = [
   { id:'nfaca',       page:'Canada',    section:'RSS',        type:'RSS',     label:'NFA Canada',        cron:'0 */2 * * *',   url:'https://www.nfa.ca/feed/',                 cat:'canada',   desc:'National Firearms Association Canada' },
   { id:'cssa',        page:'Canada',    section:'RSS',        type:'RSS',     label:'CSSA',              cron:'0 */2 * * *',   url:'https://www.cdnshootingsports.org/feed/',  cat:'canada',   desc:'Canadian Shooting Sports Association' },
   // ── BRAZIL ────────────────────────────────────────────────────────────────
-  { id:'brazil_ai',   page:'Brazil',    section:'AI',         type:'AI',      label:'Brazil AI Feed',    cron:'0 */2 * * *',   url:'/api/cron/brazil',                         cat:'brazil',   desc:'AI-curated Brazilian firearms and legislation news' },
+  { id:'brazil_ai',   page:'Brazil',    section:'AI',         type:'AI',      label:'Brazil AI Feed',    cron:'40 9 * * *',   url:'/api/cron/write-brazil-articles',                         cat:'brazil',   desc:'AI-curated Brazilian firearms and legislation news' },
   // ── INTELLIGENCE / NEWSLETTER ─────────────────────────────────────────────
-  { id:'intel_ai',    page:'Intel',     section:'AI',         type:'AI',      label:'Intelligence AI',   cron:'0 1 * * *',     url:'/api/cron/intelligence',                   cat:'intel',    desc:'Daily AI intelligence briefing generation' },
-  { id:'newsletter',  page:'Newsletter',section:'AI',         type:'AI',      label:'Newsletter AI',     cron:'0 7 * * *',     url:'/api/cron/newsletter',                     cat:'intel',    desc:'Weekly newsletter generation and dispatch' },
+  { id:'intel_ai',    page:'Intel',     section:'AI',         type:'AI',      label:'Intelligence AI',   cron:'paused',     url:'/api/intelligence',                   cat:'intel',    desc:'Daily AI intelligence briefing generation' },
+  { id:'newsletter',  page:'Newsletter',section:'AI',         type:'AI',      label:'Newsletter AI',     cron:'0 7 * * 4',     url:'/api/newsletter',                     cat:'intel',    desc:'Weekly newsletter generation and dispatch' },
   // ── STATE PROFILES ────────────────────────────────────────────────────────
-  { id:'states_ai',   page:'States',    section:'AI',         type:'AI',      label:'State Profile AI',  cron:'0 8 * * 0',     url:'/api/cron/state',                          cat:'law',      desc:'Weekly AI update of per-state gun law profiles' },
+  { id:'states_ai',   page:'States',    section:'AI',         type:'AI',      label:'State Profile AI',  cron:'30 3 * * *',     url:'/api/cron/enrich-state-pages',                          cat:'law',      desc:'Weekly AI update of per-state gun law profiles' },
   // ── COMMUNITY ─────────────────────────────────────────────────────────────
   { id:'rguns',       page:'Community', section:'RSS',        type:'Reddit',  label:'r/guns',            cron:'live',          url:'https://reddit.com/r/guns',                cat:'community',desc:'Reddit r/guns community feed' },
   { id:'rfirearms',   page:'Community', section:'RSS',        type:'Reddit',  label:'r/firearms',        cron:'live',          url:'https://reddit.com/r/firearms',            cat:'community',desc:'Reddit r/firearms community feed' },

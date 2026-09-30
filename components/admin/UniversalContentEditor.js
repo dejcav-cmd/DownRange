@@ -184,12 +184,13 @@ export default function UniversalContentEditor({
 
   // ── Load ──────────────────────────────────────────────────────────────────
   const load = useCallback(async () => {
-    if (!adminKey) return           // wait until key is loaded from localStorage
+    if (!adminKey) { setLoading(false); return }  // no key yet — the admin shell shows a sign-in banner
     setLoading(true)
     try {
       const qs = type ? '?all=1&type=' + encodeURIComponent(type) : '?all=1'
       const r = await fetch(api + qs, { headers: H })
-      if (r.status === 401) { flash('Auth error — check admin key', 'error'); setLoading(false); return }
+      if (r.status === 401) { flash('Admin key rejected — sign in again at /admin-login', 'error'); setLoading(false); return }
+      if (!r.ok) { flash(`Failed to load (HTTP ${r.status})`, 'error'); setLoading(false); return }
       const d = await r.json()
       const key = config.responseKey || 'items'
       const raw = d[key] || d.items || d.posts || d.articles || d.releases || d.reviews || []
