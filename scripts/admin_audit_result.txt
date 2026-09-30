@@ -1,0 +1,22 @@
+## Content panel APIs (as the admin UI calls them)
+/api/admin/articles-list?all=1&type=newsArticle: 200 1824ms 2049KB {"ok": true, "articles": 500, "total": 500}
+/api/admin/releases-manager?all=1&type=firearmRelease: 200 298ms 79KB {"ok": true, "releases": 28}
+/api/admin/blog-posts?all=1&type=blogPost: 200 1116ms 1656KB {"ok": true, "posts": 222}
+/api/canada?all=1: 200 616ms 663KB {"ok": true, "items": 108}
+/api/brazil?all=1: 200 631ms 666KB {"ok": true, "items": 103}
+/api/admin/drafts: 200 1125ms 2519KB {"ok": true, "blogDrafts": 115, "blogPublished": 222, "blogUnpublished": 0, "unapprovedNews": 0, "unapprovedReleases": 0, "sanityDrafts": 0}
+## Blog writer cron history
+blog-writer status=success lastRunAge=1900m
+   {"at": "2026-09-29T14:32:39.723Z", "status": "success", "ms": 30325, "trigger": "cron", "details": "Published live: \"Suppressors Off the NFA Registry: Your Complete Buying Guide and State Restrictions\" [dj-suppressors-nfa-tax-elimination-2026]", "error": null}
+   {"at": "2026-09-24T14:32:39.400Z", "status": "success", "ms": 29991, "trigger": "cron", "details": "Published live: \"Home Defense That Works: Skip the Tactics, Focus on Fundamentals\" [dj-home-defense-setup-reality-check-2026]", "error": null}
+   {"at": "2026-09-22T14:32:39.114Z", "status": "success", "ms": 29735, "trigger": "cron", "details": "Published live: \"Tariffs Hit Ammo Prices Hard: Which Calibers to Stock Now\" [dj-ammo-pricing-tariffs-2026]", "error": null}
+   {"at": "2026-09-17T14:32:37.233Z", "status": "success", "ms": 27703, "trigger": "cron", "details": "Published live: \"USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Coverage Breakdown\" [dj-ccw-insurance-comparison-2026]", "error": null}
+   {"at": "2026-09-15T14:32:36.043Z", "status": "success", "ms": 26852, "trigger": "cron", "details": "Published live: \"Constitutional Carry Now Law in 29 States. Here's What Changed.\" [dj-constitutional-carry-29-states-2026]", "error": null}
+   {"at": "2026-09-10T14:32:37.258Z", "status": "success", "ms": 28026, "trigger": "cron", "details": "Published live: \"Women Gun Owners Surge: Industry Cashing In, Missing the Mark\" [dj-women-firearms-growing-demographic-2026]", "error": null}
+blog-twitter-promo status=success lastRunAge=1871m
+   {"at": "2026-09-29T15:01:24.619Z", "status": "success", "ms": 54436, "trigger": "cron", "details": "Promoted \"Suppressors Off the NFA Registry: Your Complete Buying Guide and State Restrictions\" \u2192 posted", "error": null}
+   {"at": "2026-09-24T15:00:39.010Z", "status": "success", "ms": 8730, "trigger": "cron", "details": "Promoted \"Home Defense That Works: Skip the Tactics, Focus on Fundamentals\" \u2192 posted", "error": null}
+   {"at": "2026-09-22T15:00:39.138Z", "status": "success", "ms": 8693, "trigger": "cron", "details": "Promoted \"Tariffs Hit Ammo Prices Hard: Which Calibers to Stock Now\" \u2192 posted", "error": null}
+   {"at": "2026-09-17T15:00:40.011Z", "status": "success", "ms": 9666, "trigger": "cron", "details": "Promoted \"USCCA vs CCW Safe vs Armed Citizens Legal Defense: 2026 Coverage Breakdown\" \u2192 posted", "error": null}
+   {"at": "2026-09-15T15:00:39.893Z", "status": "success", "ms": 9691, "trigger": "cron", "details": "Promoted \"Constitutional Carry Now Law in 29 States. Here's What Changed.\" \u2192 posted", "error": null}
+   {"at": "2026-09-10T15:00:38.875Z", "status": "success", "ms": 8661, "trigger": "cron", "details": "Promoted \"Women Gun Owners Surge: Industry Cashing In, Missing the Mark\" \u2192 posted", "error": null}
