@@ -223,7 +223,7 @@ export async function searchReviews(q, limit = 20) {
 export async function fetchBlogPosts(limit = 50, category = null) {
   const filter = category ? `&& category == "${category}"` : ''
   return client.fetch(
-    `*[_type == "blogPost" && status == "published" ${filter}] | order(_createdAt desc) [0...$lim] {
+    `*[_type == "blogPost" && status == "published" ${filter}] | order(coalesce(publishedAt, _createdAt) desc) [0...$lim] {
        _id, title, slug, category, excerpt, body, imageUrl, author,
        status, publishedAt, readTime, _createdAt, tags
      }`, { lim: limit }
@@ -244,7 +244,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)]
-        | order(coalesce(featured, false) desc, _createdAt desc) [$offset...$end] {
+        | order(coalesce(featured, false) desc, coalesce(publishedAt, _createdAt) desc) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
           status, publishedAt, readTime, _createdAt, tags, featured
         },

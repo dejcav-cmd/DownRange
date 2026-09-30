@@ -1,5 +1,5 @@
 export const dynamic = 'force-dynamic'
-export const maxDuration = 60
+export const maxDuration = 120
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
 import { reportCronRun } from '@/lib/cronReporter'
@@ -13,10 +13,14 @@ import { fetchAndUploadImage } from '@/lib/imageUpload.js'
 // topic-relevant image downloaded and uploaded to the Sanity CDN (never a
 // generic hotlinked stock photo).
 //
-// Rotation: 10 evergreen topics, 2 consumed per week (Tue/Thu) = full cycle
-// every 5 weeks. Each topic has a STABLE _id, so a repeat cycle refreshes
-// that topic's article in place (same URL, updated content) via
-// createOrReplace, rather than piling up duplicate documents.
+// Topic selection (Sep 2026 rewrite):
+//   Tuesday  -> the week's biggest firearms story from our own news feed
+//   Thursday -> roundup of the week's new gun releases
+//   Fallback -> the other type, then the evergreen TOPIC_BUCKETS rotation
+// Every run creates a NEW post (unique _id + slug). The old design gave each
+// evergreen topic a fixed _id and used createOrReplace, so posts overwrote each
+// other, kept their original _createdAt and sank out of the /blog listing, and
+// at most 10 writer posts could ever exist.
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 
@@ -181,7 +185,12 @@ ARTICLE REQUIREMENTS:
 Key angle: ${topicData.angle}
 Tags: ${topicData.tags.join(', ')}
 Date: ${dateStr}
-
+${topicData.context ? `
+BASE THE ARTICLE ON THESE REAL, CURRENT DEVELOPMENTS (from DownRange's own coverage this week).
+Use these facts; do not invent specs, prices, dates, case names or quotes beyond them.
+When you reference one of these items, link it with its DownRange URL using <a href="...">.
+${topicData.context}
+` : ''}
 Write the full article in HTML. Use <h2> for section headers, <p> for paragraphs, <ul>/<li> for lists when appropriate, <strong> for emphasis on key terms.
 
 Do not add a main title — that comes separately.
@@ -237,12 +246,18 @@ async function writeArticle(topicData) {
 
   const today = new Date()
   const year = today.getUTCFullYear()
-  const slug = `dj-${topicData.baseSlug}-${year}`
+  const stamp = today.toISOString().slice(0, 10).replace(/-/g, '')
+  const baseSlug = topicData.baseSlug || slugify(title)
+  let slug = `dj-${baseSlug}-${year}`
+  // Never overwrite an existing post: add the date if the slug is taken
+  const taken = await sanity.fetch('count(*[_type=="blogPost" && slug.current==$s])', { s: slug }).catch(() => 0)
+  if (taken) slug = `dj-${baseSlug}-${stamp}`
 
   // Real, topic-relevant image — searched and uploaded to the Sanity CDN, not
   // a generic hotlinked stock photo. If the search comes back empty, we skip
   // this run rather than publish with no image or a wrong one.
-  const imageUrl = await fetchAndUploadImage(topicData.imageQuery, slug).catch(() => null)
+  const imageUrl = topicData.imageUrl
+    || await fetchAndUploadImage(topicData.imageQuery, slug).catch(() => null)
   if (!imageUrl) {
     console.error('[blog-writer] no image found for', slug)
     return null
@@ -251,7 +266,9 @@ async function writeArticle(topicData) {
   const readTime = Math.max(1, Math.ceil(gen.wordCount / 200))
 
   return {
-    _id:         `blog-dj-topic-${topicData.id}`,
+    _id:         `blog-dj-${stamp}-${Math.random().toString(36).slice(2, 8)}`,
+    topicSource: topicData.source || 'evergreen',
+    sourceRefs:  topicData.sourceRefs || [],
     _type:       'blogPost',
     slug:        { _type: 'slug', current: slug },
     title,
@@ -272,6 +289,94 @@ async function writeArticle(topicData) {
   }
 }
 
+// ── Topic builders ─────────────────────────────────────────────────────────────
+function slugify(t) {
+  return String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 70)
+}
+
+async function usedSourceRefs() {
+  const rows = await sanity.fetch(
+    `*[_type=="blogPost" && defined(sourceRefs) && _createdAt > $since].sourceRefs[]`,
+    { since: new Date(Date.now() - 60 * 86400000).toISOString() }
+  ).catch(() => [])
+  return new Set(rows || [])
+}
+
+// Tuesday: the week's biggest story, plus related coverage for context
+async function buildNewsTopic(used) {
+  const since = new Date(Date.now() - 7 * 86400000).toISOString()
+  const rows = await sanity.fetch(
+    `*[_type=="newsArticle" && approved==true && publishedAt > $since && defined(slug.current)
+       && category in ["law","breaking","policy","industry","legal","news"]]
+     | order(coalesce(urgencyScore,0) desc, publishedAt desc)[0...25]
+     { title, summary, category, source, "slug": slug.current, relatedStates, urgencyScore }`,
+    { since }
+  ).catch(() => [])
+  const fresh = (rows || []).filter(r => !used.has('news:' + r.slug) && r.title && r.summary)
+  if (fresh.length < 2) return null
+  const lead = fresh[0]
+  const related = fresh.filter(r => r !== lead && (r.category === lead.category ||
+    (r.relatedStates || []).some(s => (lead.relatedStates || []).includes(s)))).slice(0, 3)
+  const items = [lead, ...related]
+  const context = items.map(r =>
+    `- ${r.title} (${r.source || 'DownRange'}) — https://www.downrangeco.com/news/${r.slug}\n  ${String(r.summary).slice(0, 400)}`
+  ).join('\n')
+  const states = [...new Set(items.flatMap(r => r.relatedStates || []))].slice(0, 6)
+  return {
+    source: 'news',
+    topic: lead.title,
+    angle: `What this week's development means for gun owners${states.length ? ` (especially in ${states.join(', ')})` : ''}, what happens next, and what readers should do now. Link the relevant DownRange state law pages (https://www.downrangeco.com/laws/XX) where states are involved.`,
+    category: 'ANALYSIS',
+    tags: [lead.category, ...states].filter(Boolean).slice(0, 6),
+    imageQuery: `${lead.title.split(' ').slice(0, 6).join(' ')} firearm`,
+    context,
+    sourceRefs: items.map(r => 'news:' + r.slug),
+  }
+}
+
+// Thursday: this week's new gun releases
+async function buildReleasesTopic(used) {
+  const since = new Date(Date.now() - 10 * 86400000).toISOString()
+  const rows = await sanity.fetch(
+    `*[_type=="firearmRelease" && publishedAt > $since && defined(slug.current)]
+     | order(publishedAt desc)[0...8]
+     { brand, model, category, caliber, msrp, summary, "slug": slug.current, "img": heroImage.asset->url }`,
+    { since }
+  ).catch(() => [])
+  const fresh = (rows || []).filter(r => !used.has('release:' + r.slug) && r.brand && r.model)
+  if (fresh.length < 2) return null
+  const picks = fresh.slice(0, 5)
+  const names = picks.map(r => `${r.brand} ${r.model}`)
+  const context = picks.map(r =>
+    `- ${r.brand} ${r.model}${r.category ? ' — ' + r.category : ''}${r.caliber ? ', ' + r.caliber : ''}${r.msrp ? ', MSRP $' + r.msrp : ''} — https://www.downrangeco.com/releases/${r.slug}\n  ${String(r.summary || '').slice(0, 350)}`
+  ).join('\n')
+  return {
+    source: 'releases',
+    topic: `new gun releases this week: ${names.join(', ')}`,
+    angle: 'A roundup of this week\'s new guns: who each one is for, what stands out, price where known, and which one DJ would actually buy. One h2 section per gun plus the bottom line. Note state legality issues (magazine limits, assault-weapon bans) where relevant.',
+    category: 'RELEASES',
+    tags: ['New Releases', ...picks.map(r => r.brand)].slice(0, 6),
+    imageUrl: picks.find(r => r.img)?.img || null,
+    imageQuery: `${names[0]} firearm`,
+    baseSlug: `new-gun-releases-week-${new Date().toISOString().slice(0, 10)}`,
+    context,
+    sourceRefs: picks.map(r => 'release:' + r.slug),
+  }
+}
+
+// Fallback: evergreen rotation, skipping topics written in the last 60 days
+async function buildEvergreenTopic(week, isThursday) {
+  const recent = await sanity.fetch(
+    `*[_type=="blogPost" && _createdAt > $since].slug.current`,
+    { since: new Date(Date.now() - 60 * 86400000).toISOString() }
+  ).catch(() => [])
+  for (let i = 0; i < TOPIC_BUCKETS.length; i++) {
+    const t = TOPIC_BUCKETS[(week * 2 + (isThursday ? 1 : 0) + i) % TOPIC_BUCKETS.length]
+    if (!(recent || []).some(sl => sl && sl.includes(t.baseSlug))) return { ...t, source: 'evergreen' }
+  }
+  return null
+}
+
 export async function GET(req) {
   const cronSecret = process.env.CRON_SECRET
   const auth = req.headers.get('authorization')
@@ -288,8 +393,18 @@ export async function GET(req) {
     const now = new Date()
     const isThursday = now.getUTCDay() === 4 // cron fires 14:32 UTC = 7:32 AM PDT, same calendar day both zones
     const week = getISOWeek(now)
-    const slot = (week * 2 + (isThursday ? 1 : 0)) % TOPIC_BUCKETS.length
-    const topicData = TOPIC_BUCKETS[slot]
+    const used = await usedSourceRefs()
+    const forced = new URL(req.url).searchParams.get('mode') // manual: ?mode=news|releases|evergreen
+    const order = forced ? [forced]
+      : isThursday ? ['releases', 'news', 'evergreen'] : ['news', 'releases', 'evergreen']
+    let topicData = null
+    for (const mode of order) {
+      if (mode === 'news')      topicData = await buildNewsTopic(used)
+      if (mode === 'releases')  topicData = await buildReleasesTopic(used)
+      if (mode === 'evergreen') topicData = await buildEvergreenTopic(week, isThursday)
+      if (topicData) break
+    }
+    if (!topicData) topicData = TOPIC_BUCKETS[(week * 2 + (isThursday ? 1 : 0)) % TOPIC_BUCKETS.length]
 
     const article = await writeArticle(topicData)
 
@@ -302,12 +417,12 @@ export async function GET(req) {
       return NextResponse.json({ ok: false, error: 'Article failed quality gate or image search', topic: topicData.topic }, { status: 500 })
     }
 
-    await sanity.createOrReplace(article)
+    await sanity.create(article)
 
     await reportCronRun('blog-writer', {
       status: 'success',
       ms: Date.now() - t0,
-      details: `Published live: "${article.title}" [${article.slug.current}]`,
+      details: `Published live (${article.topicSource}): "${article.title}" [${article.slug.current}]`,
     })
     return NextResponse.json({
       ok: true,
