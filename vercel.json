@@ -165,8 +165,8 @@
       "schedule": "0 10 1 * *"
     },
     {
-      "path": "/api/cron/cleanup-deals",
-      "schedule": "20 9 * * *"
+      "path": "/api/cron/monthly-cleanup",
+      "schedule": "20 9 1 * *"
     }
   ],
   "headers": [
@@ -325,7 +325,7 @@
     "app/api/cron/giveaways/route.js": {
       "maxDuration": 300
     },
-    "app/api/cron/cleanup-deals/route.js": {
+    "app/api/cron/monthly-cleanup/route.js": {
       "maxDuration": 300
     }
   }

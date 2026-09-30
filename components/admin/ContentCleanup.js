@@ -22,13 +22,23 @@ export default function ContentCleanup({ adminKey }) {
 
   const saveAuto = async (next) => {
     setAutoMsg(null)
-    if (next.dealsAutoEnabled && !auto?.dealsAutoEnabled &&
-        !window.confirm(`Turn on automatic deletion of deals older than ${next.dealsAutoDays} days?\n\nRuns daily at 2:20 AM PT. Deals are deleted permanently (no backup).`)) return
     try {
       const r = await fetch('/api/admin/content-cleanup', { method: 'PUT', headers: H, body: JSON.stringify(next) })
       const j = await r.json()
       if (!r.ok) throw new Error(j.error || 'HTTP ' + r.status)
       setAuto(a => ({ ...a, ...j })); setAutoMsg({ text: '✅ Saved' })
+    } catch (e) { setAutoMsg({ err: true, text: '❌ ' + e.message }) }
+  }
+
+  const runNow = async () => {
+    if (!window.confirm(`Run the monthly cleanup now?\n\nDeletes deals older than ${auto.dealsDays} days (no backup) and news older than ${auto.newsDays} days (backed up; articles linked from blog posts are kept).`)) return
+    setAutoMsg({ text: '⏳ Running…' })
+    try {
+      const r = await fetch('/api/cron/monthly-cleanup', { headers: { 'x-admin-key': adminKey } })
+      const j = await r.json()
+      if (!r.ok || !j.ok) throw new Error(j.error || 'HTTP ' + r.status)
+      setAuto(a => ({ ...a, lastRun: j }))
+      setAutoMsg({ text: `✅ Deleted ${j.dealsDeleted} deals and ${j.newsDeleted} news articles${j.continued ? ' — still running in the background' : ''}` })
     } catch (e) { setAutoMsg({ err: true, text: '❌ ' + e.message }) }
   }
 
@@ -70,25 +80,27 @@ export default function ContentCleanup({ adminKey }) {
         Delete news articles or deals older than a number of days. Preview first. News is backed up to GitHub before deleting; deals are not. Editor-locked items are never deleted. Minimum 7 days.
       </div>
 
-      <div style={{ ...box, borderColor: auto?.dealsAutoEnabled ? '#C8922A' : 'var(--border, #1f2937)' }}>
-        <div style={{ fontFamily:COND, fontSize:16, fontWeight:700, marginBottom:8 }}>⏱ Automatic deal cleanup</div>
+      <div style={{ ...box, borderColor: auto?.monthlyEnabled ? '#C8922A' : 'var(--border, #1f2937)' }}>
+        <div style={{ fontFamily:COND, fontSize:16, fontWeight:700, marginBottom:8 }}>📅 Monthly cleanup — 1st of each month, 2:20 AM PT</div>
         {auto ? (
           <>
-            <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap' }}>
-              <label style={{ fontFamily:MONO, fontSize:12, color:'#d1d5db', display:'flex', alignItems:'center', gap:8, cursor:'pointer' }}>
-                <input type="checkbox" checked={!!auto.dealsAutoEnabled}
-                  onChange={e => saveAuto({ dealsAutoEnabled: e.target.checked, dealsAutoDays: auto.dealsAutoDays })} />
-                Delete deals older than
+            <div style={{ display:'flex', gap:10, alignItems:'center', flexWrap:'wrap', fontFamily:MONO, fontSize:12, color:'#d1d5db' }}>
+              <label style={{ display:'flex', alignItems:'center', gap:6, cursor:'pointer' }}>
+                <input type="checkbox" checked={!!auto.monthlyEnabled}
+                  onChange={e => saveAuto({ monthlyEnabled: e.target.checked, dealsDays: auto.dealsDays, newsDays: auto.newsDays })} />
+                On
               </label>
-              <input type="number" min={7} value={auto.dealsAutoDays}
-                onChange={e => setAuto(a => ({ ...a, dealsAutoDays: e.target.value }))}
-                style={{ width:70, fontFamily:MONO, fontSize:13, padding:'6px 8px', background:'#000', color:'#fff', border:'1px solid #374151' }} />
-              <span style={{ fontFamily:MONO, fontSize:12, color:'#9ca3af' }}>days, daily at 2:20 AM PT</span>
-              <button onClick={() => saveAuto({ dealsAutoEnabled: auto.dealsAutoEnabled, dealsAutoDays: auto.dealsAutoDays })} style={btn('#e5e7eb')}>SAVE</button>
+              <span>· Deals older than</span>
+              <input type="number" min={7} value={auto.dealsDays} onChange={e => setAuto(a => ({ ...a, dealsDays: e.target.value }))} style={{ width:64, fontFamily:MONO, fontSize:13, padding:'6px 8px', background:'#000', color:'#fff', border:'1px solid #374151' }} />
+              <span>days · News older than</span>
+              <input type="number" min={7} value={auto.newsDays} onChange={e => setAuto(a => ({ ...a, newsDays: e.target.value }))} style={{ width:64, fontFamily:MONO, fontSize:13, padding:'6px 8px', background:'#000', color:'#fff', border:'1px solid #374151' }} />
+              <span>days</span>
+              <button onClick={() => saveAuto({ monthlyEnabled: auto.monthlyEnabled, dealsDays: auto.dealsDays, newsDays: auto.newsDays })} style={btn('#e5e7eb')}>SAVE</button>
+              <button onClick={runNow} style={btn('transparent', '#fca5a5')}>RUN NOW</button>
             </div>
-            <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280', marginTop:8 }}>
-              {auto.dealsAutoEnabled ? '● ON' : '○ OFF'} · No backup for deals.
-              {auto.lastRun ? ` Last run ${fmt(auto.lastRun.at)}: deleted ${auto.lastRun.deleted}${auto.lastRun.remaining ? `, ${auto.lastRun.remaining} left for next run` : ''}.` : ' Not run yet.'}
+            <div style={{ fontFamily:MONO, fontSize:11, color:'#6b7280', marginTop:8, lineHeight:1.6 }}>
+              {auto.monthlyEnabled ? '● ON' : '○ OFF'} · Deals: no backup · News: backed up to GitHub; articles linked from blog posts are kept.
+              <br />{auto.lastRun ? `Last run ${fmt(auto.lastRun.at)}: ${auto.lastRun.dealsDeleted} deals, ${auto.lastRun.newsDeleted} news deleted (${auto.lastRun.newsKeptForBlogLinks || 0} kept for blog links).` : 'Not run yet — first run on the 1st.'}
             </div>
             {autoMsg && <div style={{ fontFamily:MONO, fontSize:11, marginTop:6, color: autoMsg.err ? '#fca5a5' : '#86efac' }}>{autoMsg.text}</div>}
           </>
