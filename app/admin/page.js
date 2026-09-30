@@ -9,6 +9,7 @@ const L = (fn) => dynamic(fn, { ssr:false, loading: () => <PanelLoader /> })
 const PullLogDashboard      = L(() => import('./pull-log/page'))
 const OutreachCRM           = L(() => import('../../components/admin/OutreachCRM'))
 const DraftRecovery         = L(() => import('../../components/admin/DraftRecovery'))
+const ContentCleanup        = L(() => import('../../components/admin/ContentCleanup'))
 const IntelligenceDashboard = L(() => import('../../components/admin/IntelligenceDashboard'))
 const CopyrightReport      = L(() => import('../../components/admin/CopyrightReport'))
 const AIProviderSettings    = L(() => import('../../components/admin/AIProviderSettings'))
@@ -57,6 +58,7 @@ const NAV = [
       { id:'canada',       label:'Canada',           icon:'🇨🇦' },
       { id:'brazil',       label:'Brasil',           icon:'🇧🇷' },
       { id:'drafts',       label:'Draft Recovery',   icon:'🗂'  },
+      { id:'cleanup',      label:'Cleanup',          icon:'🧹' },
     ]
   },
   {
@@ -3058,6 +3060,7 @@ export default function AdminPage() {
             {/* ── CONTENT ── */}
             {panel==='hub'          && <ContentHub         adminKey={adminKey} setPanel={setPanel} setSection={setSection} />}
             {panel==='drafts'       && <DraftRecovery      adminKey={adminKey} />}
+            {panel==='cleanup'      && <ContentCleanup     adminKey={adminKey} />}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
