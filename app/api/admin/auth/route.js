@@ -33,3 +33,21 @@ export async function POST(req) {
 
   return Response.json({ ok: true, adminKey })
 }
+
+// ── GET: verify the caller's admin credentials ─────────────────────────────────
+// Used by the admin shell on load. Accepts the x-admin-key header or the httpOnly
+// dr_admin_session cookie set at login. If the header key is stale but the session
+// cookie is valid, returns the current key so the client can repair localStorage
+// (a stale stored key made every Content panel 401 and show "0 items").
+export async function GET(req) {
+  const adminKey = process.env.ADMIN_KEY || ''
+  if (!adminKey) return Response.json({ ok: false, error: 'ADMIN_KEY not configured' }, { status: 500 })
+  const header = req.headers.get('x-admin-key') || ''
+  if (header && header === adminKey) return Response.json({ ok: true, via: 'key' })
+  const cookieStore = await cookies()
+  const session = cookieStore.get('dr_admin_session')?.value || ''
+  if (session && session === adminKey) {
+    return Response.json({ ok: true, via: 'session', adminKey, repaired: !!header })
+  }
+  return Response.json({ ok: false, error: header ? 'Admin key rejected' : 'Not signed in' }, { status: 401 })
+}

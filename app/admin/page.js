@@ -2897,10 +2897,16 @@ export default function AdminPage() {
   const [keyStatus, setKeyStatus] = useState('checking')
 
   async function verifyKey(k) {
-    if (!k) { setKeyStatus('missing'); return }
     try {
-      const r = await fetch('/api/admin/cron-status', { headers: { 'x-admin-key': k } })
-      setKeyStatus(r.status === 401 || r.status === 403 ? 'invalid' : 'ok')
+      const r = await fetch('/api/admin/auth', { headers: k ? { 'x-admin-key': k } : {} })
+      const d = await r.json().catch(() => ({}))
+      if (d.ok) {
+        // Stored key was stale but the login session is valid: repair it silently
+        if (d.adminKey && d.adminKey !== k) { setAdminKeyState(d.adminKey); localStorage.setItem('dr_admin_key', d.adminKey) }
+        setKeyStatus('ok')
+      } else {
+        setKeyStatus(k ? 'invalid' : 'missing')
+      }
     } catch { setKeyStatus('ok') } // network hiccup: don't lock the user out
   }
 

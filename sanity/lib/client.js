@@ -244,7 +244,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}
         && (title match $q || excerpt match $q || body match $q || tags[] match $q)]
-        | order(coalesce(featured, false) desc, coalesce(publishedAt, _createdAt) desc) [$offset...$end] {
+        | order(coalesce(publishedAt, _createdAt) desc) [$offset...$end] {
           _id, title, slug, category, excerpt, imageUrl, author,
           status, publishedAt, readTime, _createdAt, tags, featured
         },
@@ -260,7 +260,8 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     // every page — mixing orderings between pages would duplicate/skip results under
     // offset-based pagination. GROQ sorts null FIRST in desc order, so coalesce to false
     // or every post lacking a `featured` value would outrank an actual featured:true post.
-    const orderClause = `coalesce(featured, false) desc, ${orderField}`
+    // Newest post always leads (DJ, Sep 2026): no featured pinning
+    const orderClause = orderField
     query = `{
       "posts": *[_type == "blogPost" && (status == "published" || published == true) ${catFilter}]
         | order(${orderClause}) [$offset...$end] {
