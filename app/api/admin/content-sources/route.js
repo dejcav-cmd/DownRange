@@ -53,7 +53,7 @@ const DEFAULT_SOURCES = {
     { id: 'daniel-defense', name: 'Daniel Defense', url: 'https://danieldefense.com/blogs/news.atom', cat: 'releases', type: 'rss' },
   ],
   market: [
-    { id: 'gundeals-rss', name: 'gun.deals RSS', url: 'https://gun.deals/feed/syndication', cat: 'market', type: 'rss' },
+    { id: 'gundeals-rss', name: 'gun.deals RSS', url: 'https://gun.deals/rss.xml', cat: 'market', type: 'rss' },
     { id: 'reddit-gundeals', name: 'r/gundeals JSON', url: 'https://www.reddit.com/r/gundeals/new.json', cat: 'market', type: 'api' },
     { id: 'ammoseek', name: 'AmmoSeek API', url: 'https://ammoseek.com/api/', cat: 'market', type: 'api' },
     { id: 'nics', name: 'FBI NICS CSV (GitHub)', url: 'https://raw.githubusercontent.com/BuzzFeedNews/nics-firearm-background-checks/master/data/nics-firearm-background-checks.csv', cat: 'market', type: 'api' },

@@ -81,7 +81,7 @@ export async function POST(req) {
 
   // 3. Import gun.deals
   try {
-    const res = await fetch('https://gun.deals/feed/syndication/rss', {
+    const res = await fetch('https://gun.deals/rss.xml', {
       headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
       signal: AbortSignal.timeout(12000),
     })

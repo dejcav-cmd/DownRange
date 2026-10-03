@@ -156,10 +156,7 @@ async function scrapeOGBatch(urls, concurrency = 4) {
 
 // ── SOURCE 3: gun.deals RSS (direct fetch, no proxy) ─────────────────────────
 const GUN_DEALS_RSS_URLS = [
-  'https://gun.deals/feed/syndication/rss',
-  'https://gun.deals/rss.xml',
-  'https://gun.deals/feed',
-  'https://gun.deals/feeds/items.rss',
+  'https://gun.deals/rss.xml',  // only live feed (others 404 since Oct 2026)
 ]
 
 async function fetchGunDeals() {

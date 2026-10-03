@@ -12,25 +12,37 @@ const sanity = createClient({
   token: process.env.SANITY_API_TOKEN, useCdn: false,
 })
 
-const GUN_DEALS_URLS = [
-  'https://gun.deals/feed/syndication/rss',
-  'https://gun.deals/rss.xml',
-  'https://gun.deals/feed',
-  'https://gun.deals/rss',
-  'https://gun.deals/feed.rss',
-]
+// gun.deals publishes a single feed at /rss.xml (Oct 2026). The other candidates
+// (/feed/syndication/rss, /feed, /rss, /feed.rss) now 404. Cloudflare in front of
+// gun.deals occasionally rejects a datacenter request, so retry once with a short
+// backoff and keep every status code so a failure alert says why.
+const GUN_DEALS_URLS = ['https://gun.deals/rss.xml']
+const RSS_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36 DownRangeBot/1.0 (+https://www.downrangeco.com)',
+  'Accept': 'application/rss+xml, application/xml;q=0.9, */*;q=0.8',
+  'Accept-Language': 'en-US,en;q=0.9',
+}
 
 async function fetchRSS() {
+  const attempts = []
   for (const url of GUN_DEALS_URLS) {
-    try {
-      const res = await fetch(url, {
-        headers: { 'User-Agent': 'DownRange/1.0 (+https://downrangeco.com)' },
-        signal: AbortSignal.timeout(12000),
-      })
-      if (res.ok) return res.text()
-    } catch (_e) { /* try next */ }
+    for (let attempt = 1; attempt <= 2; attempt++) {
+      try {
+        const res = await fetch(url, { headers: RSS_HEADERS, cache: 'no-store', signal: AbortSignal.timeout(15000) })
+        if (res.ok) {
+          const text = await res.text()
+          if (text.includes('<item')) return text
+          attempts.push(`${url} #${attempt}: 200 but no <item> (${text.length}b)`)
+        } else {
+          attempts.push(`${url} #${attempt}: HTTP ${res.status}${res.headers.get('cf-mitigated') ? ' (cloudflare challenge)' : ''}`)
+        }
+      } catch (e) {
+        attempts.push(`${url} #${attempt}: ${e.name === 'TimeoutError' ? 'timeout' : e.message}`)
+      }
+      if (attempt === 1) await new Promise(r => setTimeout(r, 4000))
+    }
   }
-  throw new Error('gun.deals: all RSS URLs failed')
+  throw new Error('gun.deals RSS unavailable — ' + attempts.join('; '))
 }
 
 function decodeEntities(s = '') {
