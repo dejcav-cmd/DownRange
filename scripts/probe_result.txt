@@ -1,0 +1,16 @@
+404 cron    https://gun.deals/feed/syndication/rss server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+404 browser https://gun.deals/feed/syndication/rss server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+200 cron    https://gun.deals/rss.xml ct=application/rss+xml; charset=u items=414 server=cloudflare final=https://gun.deals/rss.xml
+200 browser https://gun.deals/rss.xml ct=application/rss+xml; charset=u items=414 server=cloudflare final=https://gun.deals/rss.xml
+404 cron    https://gun.deals/feed server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+404 browser https://gun.deals/feed server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+404 cron    https://gun.deals/rss server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+404 browser https://gun.deals/rss server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+404 cron    https://gun.deals/feed.rss server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+404 browser https://gun.deals/feed.rss server=cloudflare cf-mitigated=None body=b'<!DOCTYPE html>\n<html lang="en">\n<head>\n<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />\n    <meta charset="UTF-8">\n    <meta name="viewpor'
+200 cron    https://gun.deals/ ct=text/html; charset=utf-8 items=0 server=cloudflare final=https://gun.deals/
+200 browser https://gun.deals/ ct=text/html; charset=utf-8 items=0 server=cloudflare final=https://gun.deals/
+   rss links: /rss.xml
+200 cron    https://gun.deals/robots.txt ct=text/plain items=0 server=cloudflare final=https://gun.deals/robots.txt
+200 browser https://gun.deals/robots.txt ct=text/plain items=0 server=cloudflare final=https://gun.deals/robots.txt
+   robots: # Sitemap | Sitemap: https://gun.deals/sites/default/files/xmlsitemap/sitemap.xml
