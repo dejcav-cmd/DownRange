@@ -1,64 +1,74 @@
-600 scanned, 79 need a real image, 2 coupon posts skipped
+600 scanned, 87 need a real image, 3 coupon posts skipped
 
-  + .458 SOCOM / .450 Bushmaster Bolt Carrier Group  — 8509b 485x485 sha=d9f8fbac0621
-  + Olight Baldr Mini 600 Lumens LED Light With Gree — 51441b 800x593 sha=d434749d0d0b
-  + Ruger Wrangler .22 LR 3.75" Barrel 6-Rounds - $1 — 21086b 575x410 sha=e7394500c785
-  + Ruger Mark IV 22 LR 4" barrel 10rd Black / Walnu — 42874b 800x539 sha=d081c2966a82
-  + Century Arms SFx Rival Black / Red 9mm 5" Barrel — 42026b 780x656 sha=d55d35c90843
-  + Kimber K6S DC (Deep Cover) .357 Mag 2" 6rd Revol — 108002b 1350x900 sha=0e767ea535d3
-  + American Tactical Alpha Maxx .300 AAC Blackout 8 — 23638b 800x450 sha=037637b381d4
-  + Civivi Cogent Folding Pocket Knife – Green Micar — 54135b 686x782 sha=e556c815fe52
-  + ProMag Shadow Systems CR920 9mm 15-Round Extende — 13736b 338x656 sha=00f79206f89c
-  + Walther PPQ M2 Magazine Stainless .22 LR 12Rd -  — 19071b 261x656 sha=efb73b99a923
-  + FAB Defense Remington 870 Solid Piece Pistol Gri — 21311b 418x333 sha=b572c5919bfb
-  + Hornady Subsonic 9mm 147-Gr. XTP JHP 25 Rnds - $ — 49148b 619x510 sha=7b692f03ec42
-  + 16% off CVLIFE WolfCloak Motion Awake 2 & 32 MOA — 20603b 500x500 sha=e5a4c95051d8
-  + 15% off EZshoot 3-12x44 Rifle Scope with Paralla — 14908b 500x500 sha=b2786450c2e2
-  + Bergara Premier Mountain 6.5 Creedmoor 4+1 22" B — 15780b 1000x180 sha=91c829ce07a5
-  + Savage Impulse Big Game Woodland 7mm PRC 22" Bar — 11769b 800x153 sha=bb9773e46ad4
-  + Taurus RPC 9MM 4.5" Black 32+1 2-Magazines with  — 31186b 945x630 sha=a3679c67fc50
-  + FN 509 Compact MRD 9mm 3.7" Barrel 12 / 15rd Pis — 503148b 1157x873 sha=055ac43d35b5
-  + 24% off CVLIFE 4-16x44 FFP Rifle Scope with Zero — 12863b 406x500 sha=8278f4d4a0f9
-  + 40% off EZshoot Compact Pistol Laser Sight with  — 24310b 500x500 sha=a3227838313b
-  + 40% off CVLIFE Shooting Rest Tripod Gun Rifle Re — 25390b 500x500 sha=d53ef781d78d
-  + 45% off CVLIFE Rechargeable Bore Sight Laser Kit — 35891b 500x500 sha=ce81875ec300
-  + OLIGHT PL X Tactical Flashlight Rechargeable USB — 147261b 1480x1358 sha=575e3d5ddde4
-  + Cooper Firearms Montana Heritage .308 Win 22" ba — 10426b 682x114 sha=fde2554422a1
-  + Triton RangeViper PRS Distance Measuring System  — 16886b 500x500 sha=089df675a917
-  ... 25/79  ok=25 fail=0
-  + Glock 42 Custom "Glock & Roses Medusa Pink" .380 — 115163b 1000x766 sha=8112b9ae9ad7
-  + Ruger Mark IV 22/45 250th Anniversary .22 LR 4.4 — 79479b 1280x784 sha=b4139606897e
-  + Magpul PRS Lower Build Kit Minus FCG - $279.95 — 51898b 1000x666 sha=bdba52b36ee0
-  + Magpul SL Lower Build Kit Minus FCG Various Colo — 43991b 1000x666 sha=5764ccb607d3
-  + Century Arms Centurion 11 1911 45 ACP 5.01" 8-Rd — 44932b 1000x666 sha=8dc0fb92615e
-  + Kriss Vector SDP Gen 2 45 ACP 5.5" 13rd FDE - $1 — 41274b 1000x542 sha=73cb69a47d0b
-  + Black Rain Spec15 Battleworn White 5.56 NATO 16" — 48314b 1500x523 sha=dd03e9aa1151
-  + H&K CC9 HGA 9mm Pistol 3.2" Barrel 12rd Optic Re — 82748b 1000x756 sha=7d06d026c49b
-  + Savage Arms 1911 Government Rail 45 ACP 5" 8rd P — 50643b 1000x695 sha=03d0ea194bce
-  + Savage Impulse Mountain Hunter Gray .300 PRC 24" — 10376b 800x151 sha=aa555966970a
+  + Feyachi HL-20 Pistol Light 1500 Lumen Upgrade LE — 103184b 1500x1132 sha=da0cf68b052f
+  + Buffalo Cartridge Co. 9mm BRG9 Elite 4" Barrel G — 349723b 1198x940 sha=a5cd34ce8c82
+  + North American Arms Guardian Stainless .32 ACP 2 — 39494b 653x656 sha=f19ffe606dd2
+  + Griffin Armament MK1 Stripped AR-15 Lower Receiv — 11353b 560x329 sha=c8b0a364f82d
+  + Colt Grizzly Ported Revolver, 357 Mag / 38 Spl,  — 154621b 795x572 sha=768fdc8a60c2
+  + Glock 43X MOS The Rose, 9mm, 3.41" Barrel, 15 Rd — 50775b 788x630 sha=7ff53b918a20
+  + CNC Firearms DDM4 V7P w/ Vortex AMG UH-1, 5.56 N — 95060b 694x382 sha=39195cafe8b8
+  + Guntec USA AR-15 Trigger & Hammer Kit - US Made  — 38988b 1000x1000 sha=061b31a2a2a9
+  + Vertx Urban Ghost 20L Backpack, Spine Grey - $12 — 229229b 534x705 sha=f5a309661d1a
+  + ATI Nomad SGS 12 GA Single-Shot Folding Shotgun, — 93113b 986x347 sha=6a2e4519d27f
+  + Gforce Arms GFP3 12 Ga 28" Pump Shotgun Two Barr — 10548b 754x273 sha=88afddd16ed1
+  + Stoeger STR- 9F 9mm 4.68" 17rd - $249.99 — 34520b 668x492 sha=db9601e96f01
+  + Frontier Cartridge 5.56x45mm NATO Ammo 55gr FMJ  — 43424b 600x600 sha=92c9889335a2
+  + Magpul DAKA Can 2.0 Protective Storage Container — 1416310b 1500x973 sha=5d4b4518b09e
+  + Holosun Micro Red Dot Sight, 2 MOA, Solar Fail-s — 20984b 550x550 sha=7afb4435d700
+  + Pulsar IPS7 Battery Pack 3.7v 6400 mAh - $76.09  — 50982b 1000x810 sha=abd351a44d38
+  + Lion Gears Cantilever Riser Mount 1/2" Riser, 10 — 59189b 637x313 sha=2c8d9f19594a
+  + Guard Dog Katana with HV Stun Gun 400 Lumens Cre — 89819b 569x326 sha=5efc084b90b4
+  + UTAS XTR-12 Standard 12 Gauge 20.5" 5rd Semi-Aut — 11094b 1000x666 sha=021b3fd86980
+  + Ammo Inc. Signature 380 ACP 90 Gr JHP Ammo 20 Rd — 116454b 591x452 sha=4a232505c29c
+  + Aero Precision Ultralight Scope Mount AR Platfor — 55055b 540x377 sha=25d65d96d831
+  + Kizer SMKW Exclusive Halloween Drop Bear 2 Folde — 9037b 386x386 sha=9de2208097c0
+  x Vosteed Corgi V Vanchor Lock Folder Orange Alumi — rejected: too small (386x106)
+  + Zeus Arms Boba Fett .223/5.56 Rifle, 16" Barrel, — 33836b 1280x302 sha=439735793a95
+  + S&W Model 48 Classic .22 WMR 4" Bbl 6rd Revolver — 106785b 589x366 sha=2d930bbb4983
+  ... 25/87  ok=24 fail=1
+  + Ruger LCP Max .380 ACP 2.8" 10rd Pistol, Manual  — 183724b 1500x1184 sha=8f528c2d7a64
+  + Radical Defense Patrol MK1 MOD1 5.56 NATO 14 5"  — 53420b 634x249 sha=40ee1e5fe77b
+  + ZEV AR15 Forged Upper Receiver 223 Remington/5.5 — 49815b 514x236 sha=ae3f04a4a51b
+  + PMC Bronze 9mm 124 Grain FMJ 1000 Rounds - $259. — 19608b 591x356 sha=9e4e218451a0
+  + SOG Specialty Knives & Tools Ninja Tactical Day  — 21832b 500x500 sha=ffb354792c51
+  + Smith & Wesson M&P FPC 9mm 16.25" OD Green Moder — 56681b 1000x1000 sha=0d602b522ddb
+  + PSA AR-15 Complete Stealth Lower Magpul MOE Edit — 23009b 677x331 sha=c3487e8bcce0
+  + Vortex Strikefire II Red Dot Sight 1x30mm 4 MOA  — 47378b 900x600 sha=c754cfa537e3
+  + Witt Machine Tu-Tu-Three 223 / 556 Ultra Compact — 40843b 1200x1200 sha=f5e9b703754e
+  + Shadow Systems MR920 Elite Optic Threaded 9mm 4. — 22640b 519x357 sha=ffea15f000af
+  + Walther PPS M2 9mm 3.18" Barrel Pistol, Tenifer  — 50138b 800x600 sha=89916e19f364
+  + Glock 19 Gen 6 9mm 4.02" Barrel 15-Rounds w/Aimp — 43042b 656x532 sha=2fab04ebdd3f
+  + Glock 43X MOS 9mm 3.4" Barrel 15-Rounds w/Aimpoi — 42732b 656x593 sha=ff7c57b1ab71
+  + Fall Clearance Frenzy: 100+ Garage Sale Deals! @ — 93265b 600x600 sha=0124118f76b6
+  + Canik Prime Radian 9mm Compact, Semi-Auto, 3.8"  — 407818b 865x691 sha=c7640c5b28d5
+  + Smith & Wesson M&P 40 Shield .40 S&W 3.1 in Blac — 72648b 1000x1000 sha=888a4ab557dc
+  + 22LR ammo as low as $0.05/rd — 54289b 800x600 sha=326ffffffec9
+  + S&W M&P Shield 45 ACP from - $314.99 — 37170b 645x456 sha=112d985e9dd5
+  + 1911 Handguns In 9 Calibers Roundup — 79706b 620x397 sha=66c7de1bf171
+  + PSA Sabre WBP 5.56 30rd AK Rifle, Plan B Flash H — 95128b 831x361 sha=b7ea5ee25edf
+  + Olight Baldr Pro R Rechargeable Tactical Light w — 82977b 559x298 sha=108d150808b2
+  + Sig Sauer P365 Grip Module Gray - $35.03 — 160766b 828x495 sha=da2645073c5d
+  + Vortex Strike Eagle 5-25x56 Riflescope with FFP  — 31110b 630x630 sha=0f4382112509
+  + Spring Assisted Heavy Duty Pocket Knife 3.5" Tan — 30771b 500x500 sha=1e44cb595ab6
+  x Mossberg 500 Super Bantam 20 GA 22" Vent Rib / 2 — image not downloadable
+  + BROWNELLS - BRN AR-15 Charging Handle - $15.99 — 30590b 635x331 sha=8458b8d75523
+  + Burris Fullfield 3-12x42mm MOA SFP Riflescope Bl — 50230b 554x329 sha=898829744128
+  + Winchester Defender Ammunition 9mm Luger 124 Gra — 118483b 1000x1000 sha=20c13c958337
+  + Fishing Tool Kit, 7-Piece Fillet Knife, Pliers,  — 223039b 1464x1488 sha=fe81967ca9d1
+  + BROWNELLS - AR-15 Model 601/M16A1 Pistol Grip Bl — 116248b 680x565 sha=4f8e20c42716
+  + Sig Sauer P365XL 9mm 3.7" Barrel 12+1 Rnd - $549 — 685477b 1500x1027 sha=014c11ba52d9
+  + Grab Bag / Clearance / Blem Ar15 RIFLE Upper w/  — 221254b 740x555 sha=3c1bbb8369d5
+  + Sig M400 5.56 NATO Rifle 16in Forge FDE Romeo-MS — 19856b 1500x542 sha=33baba6f059a
+  + Sig Sauer MPX PCC 9mm 16" 35 Rd - $1991.47 (Add  — 11710b 527x205 sha=1c7b48fb8924
+  + Thompson 1927A-1 Deluxe Case Hardened 45 ACP 18" — 21475b 991x219 sha=fcd326710fad
+  + GSL Technology GT-450 450 Bushmaster Suppressor  — 313353b 1000x750 sha=3418b31d2323
+  + Hi Point Hush Point .22 Rimfire Monocore Suppres — 20131b 1000x666 sha=150e0dec367b
+  + GSL Technology GT-308 Suppressor .308 Win Black  — 75467b 549x222 sha=ac85f62b5f53
+  + GSL Technology GT-MAG 350 Legend Suppressor - $8 — 273444b 855x419 sha=bd48e604d336
+  + Prices Slashed on Gerber Blades – Built to Last, — 87231b 600x600 sha=abcd99b48c6e
+  + Beretta APX Compact Magazine 9mm 13 Rounds Unpac — 14079b 442x444 sha=38651ee71bd8
+  + Winchester M855 Ammo 5.56x45mm 62 Grain FMJ 800  — 842860b 1029x662 sha=b136bd3253d5
   x Trijicon MRO SD Black 1x25mm 2 MOA Green Dot Ret — image not downloadable
-  + HUXWRX Flow Range 36 Ti .36 Caliber w/ 1/2x28 &  — 19378b 1000x394 sha=53c4d9481c54
-  + Springfield Hellion 5.56mm 30rd Bullpup Rifle, C — 70241b 1280x705 sha=1f46d614cd00
-  + The Triggered Company Disruptor AR-15 3 Position — 48786b 1192x852 sha=d3684ff7e55b
-  + Backorder - SONICORE Rekkr DT - 223/5.56 1/2-28  — 15764b 554x342 sha=faf27cc6b39b
-  + Ridgeback Defense RHODIE 6 6mm/6.5mm Suppressor  — 154157b 1000x666 sha=179ff29a516d
-  + Microbest C158 HPT/MPI 5.56 Bolt Carrier Group - — 28377b 1000x666 sha=3edcf3c3e9c2
-  + Dirty Bird AR-15 Anti-Walk Pin Set Black - $7.95 — 44568b 1000x943 sha=f96f85a7a778
-  + Ruger 10/22 Carbon Fiber Takedown 22LR Semi-Auto — 31970b 1350x436 sha=61e03dbe4dd1
-  + PSA 16" Mid-Length 5.56 NATO 16" 30rd 13.5" Ligh — 27192b 1000x500 sha=11d4be1142f1
-  + Dirty Bird AR-15 Anti-Walk Pin Set Stainless Ste — 52614b 1000x962 sha=d708ecf2eb07
-  + Andro Corp ACI-15 Partial Complete M4 Lower Rece — 176091b 1000x666 sha=e4cbcf1fbc95
-  + Tisas 1911 Government .45 ACP 5" 7rd Pistol, Par — 22065b 600x449 sha=68a7de5bb686
-  + Ruger 10/22 Takedown Backpacker .22 LR 16.4" Thr — 32235b 1500x306 sha=450b8c6530bf
-  + VLTOR AR-15 Free-Float Freedom M-LOK Rail - $189 — 16774b 1500x1000 sha=c1ab1ce7146a
-  ... 50/79  ok=49 fail=1
-  + Griffin Armament Resistance 22 Modular QD Suppre — 32774b 1183x707 sha=06fce03872c0
-  + SCT Manufacturing SCT 19 Assembled Pistol Frame  — 40533b 945x630 sha=af3ad4a05892
-  + Soviet Arms 300 Blk 8.4" 30-Rd Krink Triangle Si — 25977b 1000x500 sha=f56820335f72
-  + PSA Sabre Enhanced Mixtape Vol. 1 10.3" 5.56 Pis — 59610b 1500x617 sha=d9afe851ca45
-  + SDS Tokarev TBP 12P 12G Bullpup 18.5" FL CK 5rd  — 34882b 1000x455 sha=a585c167b996
-  + SOG Pinnacle Bowie Fixed Blade Knife 7.5" Clip P — 9851b 689x128 sha=13d71c6150f5
-  + Smith & Wesson M&P FPC 22LR Bundle with Crimson  — 74239b 1280x607 sha=e6cb4858481b
   x Daniel Defense DDM4 GL/SSC 5.56mm Complete Upper — image not downloadable
   x *Cosmetic Blem* BCM MK2 Receiver Extension - $33 — image not downloadable
   x Bergara HMR Carbon Wilderness 308 Win 20" Woodla — image not downloadable
@@ -78,10 +88,7 @@
   x Tyrant Designs Non-Threaded Barrel for Gen 1-5 G — image not downloadable
   x Sig Sauer PMCX300B6BLTPCB MCX Rattler LT 300 Bla — image not downloadable
   x Glock G21 G5 MOS FS 45 Acp 4.61" 13 Rd - $649.99 — image not downloadable
-  x Ruger AR-556 556 Nato 16" Barrel AR15 AR-15 - $5 — image not downloadable
-  x Primary Weapons Systems MK1 Mod 1-M Upper .223 W — rejected: too small (800x105)
-  x Sons of Liberty Gun Works NOX9 5.56 9-Port Flash — no og:image on page
 
-fixed 56, failed 23  (70% success)
-distinct images: 56 across 56 deals
+fixed 65, failed 22  (74% success)
+distinct images: 65 across 65 deals
 PASS — no image shared between products
