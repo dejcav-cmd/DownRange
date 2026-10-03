@@ -1,0 +1,6 @@
+trigger 200 {"ok":true,"ms":40530,"status":200,"details":"skipped:78"}
+status=success
+   {"at": "2026-10-03T18:33:46.823Z", "status": "success", "ms": 40530, "trigger": "manual", "details": "skipped:78", "error": null}
+   {"at": "2026-10-03T18:33:44.041Z", "status": "success", "ms": 37320, "trigger": "cron", "details": "fetched:425 added:2 skipped:78 healed:0 imaged:0", "error": null}
+   {"at": "2026-10-03T18:31:47.298Z", "status": "success", "ms": 83730, "trigger": "cron", "details": "fetched:413 added:10 skipped:70 healed:0 imaged:0", "error": null}
+   {"at": "2026-10-03T18:00:23.320Z", "status": "failed", "ms": 167, "trigger": "cron", "details": null, "error": "gun.deals: all RSS URLs failed"}
