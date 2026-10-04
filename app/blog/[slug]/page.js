@@ -274,7 +274,7 @@ export default async function BlogArticlePage({ params }) {
       {/* ── ARTICLE BODY ── */}
       <main style={{ background:'var(--bg)' }}>
         <div style={{ maxWidth:900, margin:'0 auto', padding:'3rem 1.5rem' }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 240px', gap:'3rem', alignItems:'start' }}>
+          <div className="dr-article-layout" style={{ display:'grid', gridTemplateColumns:'1fr 240px', gap:'3rem', alignItems:'start' }}>
 
             {/* Main content */}
             <article>
@@ -336,7 +336,7 @@ export default async function BlogArticlePage({ params }) {
             </article>
 
             {/* Sidebar */}
-            <aside style={{ position:'sticky', top:80 }}>
+            <aside className="dr-article-aside" style={{ position:'sticky', top:80 }}>
               <div style={{ marginBottom:24 }}>
                 <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', letterSpacing:'0.1em', marginBottom:12 }}>MORE FROM DJ</div>
                 <div style={{ display:'flex', flexDirection:'column', gap:10 }}>

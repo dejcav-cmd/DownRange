@@ -201,7 +201,7 @@ export default async function CanadaArticlePage({ params }) {
         </div>
 
         {/* Body + Sidebar */}
-        <div style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 280px', gap: '2.5rem' }}>
+        <div className="dr-article-layout" style={{ maxWidth: 900, margin: '0 auto', padding: '2rem 1.5rem', display: 'grid', gridTemplateColumns: '1fr 280px', gap: '2.5rem' }}>
 
           {/* Main */}
           <div>
@@ -297,7 +297,7 @@ export default async function CanadaArticlePage({ params }) {
           </div>
 
           {/* Sidebar */}
-          <aside style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+          <aside className="dr-article-aside" style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
             <div style={{ background: '#111318', border: '1px solid var(--border)', padding: '1.25rem' }}>
               <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: '0.68rem', color: '#C8922A', letterSpacing: '0.12em', marginBottom: '1rem', fontWeight: 700 }}>🇨🇦 MORE FROM CANADA</div>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>

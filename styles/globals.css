@@ -865,3 +865,18 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
     min-height: 36px;
   }
 }
+
+/* ── Article pages on phones (Oct 2026) ──────────────────────────────────────
+   News/blog/Canada/Brazil article pages used a fixed 2-column grid (body + 240-280px
+   sidebar) with no breakpoint, squeezing the article text on phones. Under 768px:
+   single column, full-width body, sidebar (More Stories, newsletter) hidden, related
+   stories stacked. Desktop unchanged. */
+@media (max-width: 768px) {
+  .dr-article-layout {
+    display: block !important;
+    padding-left: 1rem !important;
+    padding-right: 1rem !important;
+  }
+  .dr-article-aside { display: none !important; }
+  .dr-related-grid { grid-template-columns: 1fr !important; }
+}
