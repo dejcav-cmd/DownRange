@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-09-29T19:17:49.876Z",
+  "generatedAt": "2026-10-04T07:00:21.645Z",
   "content": {
-    "newsArticles": 2430,
-    "blogPosts": 222,
-    "legislation": 351,
+    "newsArticles": 2539,
+    "blogPosts": 43,
+    "legislation": 395,
     "firearmReleases": 28,
-    "videos": 723,
+    "videos": 754,
     "reviews": 3,
     "canadaArticles": 108,
-    "brazilArticles": 103
+    "brazilArticles": 106
   },
   "operations": {
-    "cronRuns": 2908,
+    "cronRuns": 3059,
     "outreachContacts": 221,
-    "socialPosts": 924,
+    "socialPosts": 986,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "ATF Claims 1.4 Billion Records Aren't a Gun Registry",
-    "newsDate": "2026-09-29T17:31:59.000Z",
+    "newsTitle": "FN 309 MRD fires 300 rounds flawlessly, costs under $400",
+    "newsDate": "2026-10-04T02:00:16.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 3968
+  "totalContentDocs": 3976
 }
