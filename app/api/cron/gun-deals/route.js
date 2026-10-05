@@ -23,6 +23,26 @@ const RSS_HEADERS = {
   'Accept-Language': 'en-US,en;q=0.9',
 }
 
+// Cloudflare 403s Vercel datacenter IPs on gun.deals (same block the product-page
+// scrape already works around). Order: direct fetch (2 tries) -> Jina reader proxy
+// (raw body, then default render). The proxy may hand the XML back HTML-escaped or
+// wrapped, so normalizeFeedText() un-wraps it before the <item> check.
+function normalizeFeedText(t = '') {
+  if (t.includes('<item')) return t
+  const un = t.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&quot;/g, '"').replace(/&#39;/g, "'").replace(/&amp;/g, '&')
+  return un.includes('<item') ? un : t
+}
+
+async function fetchRSSViaJina(url, mode) {
+  const headers = { 'User-Agent': DEAL_UA_RSS, 'Accept': '*/*' }
+  if (mode === 'raw') headers['x-respond-with'] = 'html'
+  if (process.env.JINA_API_KEY) headers['Authorization'] = 'Bearer ' + process.env.JINA_API_KEY
+  const res = await fetch('https://r.jina.ai/' + url, { headers, cache: 'no-store', signal: AbortSignal.timeout(30000) })
+  if (!res.ok) throw new Error('HTTP ' + res.status)
+  return res.text()
+}
+const DEAL_UA_RSS = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/126.0.0.0 Safari/537.36'
+
 async function fetchRSS() {
   const attempts = []
   for (const url of GUN_DEALS_URLS) {
@@ -39,7 +59,17 @@ async function fetchRSS() {
       } catch (e) {
         attempts.push(`${url} #${attempt}: ${e.name === 'TimeoutError' ? 'timeout' : e.message}`)
       }
-      if (attempt === 1) await new Promise(r => setTimeout(r, 4000))
+      if (attempt === 1) await new Promise(r => setTimeout(r, 2000))
+    }
+    // Direct fetch blocked — go through the Jina reader proxy
+    for (const mode of ['raw', 'default']) {
+      try {
+        const text = normalizeFeedText(await fetchRSSViaJina(url, mode))
+        if (text.includes('<item')) return text
+        attempts.push(`jina-${mode}: 200 but no <item> (${text.length}b)`)
+      } catch (e) {
+        attempts.push(`jina-${mode}: ${e.name === 'TimeoutError' ? 'timeout' : e.message}`)
+      }
     }
   }
   throw new Error('gun.deals RSS unavailable — ' + attempts.join('; '))
