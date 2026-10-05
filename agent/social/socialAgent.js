@@ -199,7 +199,7 @@ ${brief}
 ${instructions}
 
 CHARACTER BUDGET REMINDER: ${budget} characters MAX for the copy body.
-Write the post body now. Return ONLY the post text. No quotes, no preamble, no "Here's a post:".`,
+Write the post body now. Return ONLY the post text as plain text. No quotes, no preamble, no "Here's a post:". NO markdown: no headings, no "# Post Body" or any title/label line, no bold/asterisks. The very first character of your reply must be the first word or emoji of the post itself.`,
     useCase: 'social',
     maxTokens: 300,
   })
@@ -208,6 +208,19 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
     .replace(/^["'`]|["'`]$/g, '')
     .replace(/^(Here'?s?( a| the)?( draft| post| copy)?:?\s*)/i, '')
     .trim()
+
+  // Safety net: strip markdown heading / label lines the model sometimes emits
+  // at the top (e.g. "# Post Body", "## Facebook Post", "**Post Body:**",
+  // "Post Body:"). Real hashtags like "#2A" have no space after the "#", so
+  // they are untouched. Loop because the model may stack more than one.
+  const LABEL_LINE = /^\s*(?:#{1,6}\s+.*|(?:\*\*|__)?\s*(?:post\s*body|post\s*copy|post\s*text|post|copy|caption|body|draft|facebook(?:\s+post)?|twitter(?:\s+post)?|instagram(?:\s+caption)?|threads(?:\s+post)?|bluesky(?:\s+post)?)\s*:?\s*(?:\*\*|__)?\s*:?\s*)$/i
+  {
+    const lines = body.split('\n')
+    while (lines.length && (LABEL_LINE.test(lines[0]) || lines[0].trim() === '---')) lines.shift()
+    body = lines.join('\n').trim()
+  }
+  // Strip stray markdown bold/heading markers left inside the copy
+  body = body.replace(/\*\*(.+?)\*\*/g, '$1').replace(/^\s{0,3}#{1,6}\s+/gm, '').trim()
 
   // Safety net: strip any hashtag line(s) the model wrote on its own despite
   // instructions not to — hashtags are appended once, automatically, below.
