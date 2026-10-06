@@ -1,58 +1,24 @@
-600 scanned, 51 need a real image, 11 coupon posts skipped
+600 scanned, 18 need a real image, 11 coupon posts skipped
 
-  + HORIZON FIREARMS Vandal 2.0 22 Creedmoor 18" - $ — 9585b 579x221 sha=228c0b3943fd
-  + TISAS 1911 Carry B9R 9mm 4.25" 17rd - Black - $6 — 52604b 1000x750 sha=7696c6f8efaf
-  + Wolf 9mm 124 Grain FMJ Steel Case (Brass Plated) — 419420b 1218x692 sha=25c5ea6fd027
-  + FN 545 MRD .45 ACP 4.1" Barrel 10-Rounds w/ Holo — 122042b 1264x1500 sha=41545ab37c26
-  + Dead Air Armament Sierra 5 XM 5.56 w/ Xeno QD Ad — 27306b 899x717 sha=9d0cfa7f26a0
-  + Smith & Wesson Volunteer X 6.5 Creedmoor Rifle - — 25703b 1000x260 sha=19ee871f35e4
-  + Panzer Arms Lever 12 Tactical, Lever Action Mag- — 11478b 639x279 sha=615b16b6be6b
-  + Tokarev TBP12UC 12 Gauge 18.5" 5rd, Urban Camo/G — 115534b 628x285 sha=d2d7180d4818
-  + Sig Sauer Electro-Optics ROMEO8T 1x38mm Red Dot  — 62828b 886x1000 sha=25b4d50710cd
-  + CCI 9mm Bulk Ammo 115gr FMJ 1,000rds Bulk Pack - — 46037b 1000x835 sha=c724ea89dfe1
-  + PSA Mixtape .300 Blackout 220 Grain TMJ Bulk Amm — 55156b 1000x1000 sha=31a80607877e
-  + PSA 8.5" 300 Blackout Nitride 7" Lightweight M-L — 31636b 1000x500 sha=470fef1051ca
-  + Holosun 507 Pro Max Red Open Pistol Sight 2 MOA  — 12687b 362x318 sha=d8c016c0f73b
-  + Springfield Armory Saint Edge 5.56x45mm NATO 7.5 — 31502b 1000x518 sha=ad24b22e917e
-  + Leupold BX-4 Pro Guide HD Binocular 10x42mm Shad — 19010b 386x386 sha=ad303409d60f
-  + Sig Sauer P365 9MM 3.1" 12Rd Optic Ready Tacpac  — 84169b 1280x1280 sha=d45754bdff7b
-  + Oakley Sunglasses 50% Off — 66883b 600x600 sha=3360a496ca13
-  + NBS Mil-Spec LE Style Carbine Stock & Buffer Kit — 59859b 1200x1024 sha=aff97a79b98c
-  + Springfield Armory Bundle 2020 Waypoint 6.5 Cree — 42930b 556x556 sha=1d6569954441
-  + Crimson Trace RAD Micro Pro 1x 3 MOA Carbon Red  — 9052b 400x250 sha=d0a3312de32c
-  + Dirty Bird AR-15 SMRS Handguard – Slim M-LOK Rai — 26088b 1500x1000 sha=d20cb08f76d6
-  + Partisan Triggers Disruptor AR-15 3 Position Dro — 27362b 945x630 sha=3dbdaed28b02
-  + USED POLICE TRADE-IN VKTR VK-1, 5.56x45mm, 11.5" — 20516b 1000x127 sha=54af1d1d00b7
+  + Olight Osight 3 MOA Rechargeable Open Reflex Sig — 22208b 770x432 sha=813cdcce8236
+  + OSIGHT SE Enclosed Micro Reflex Sight – 2 MOA Do — 57332b 1190x1124 sha=0d9d6b239828
+  + OLIGHT Baldr Pro R 1350 Lumens Magnetic USB Rech — 74987b 1395x823 sha=b29a1d14f569
+  + OLIGHT Baldr S 800 Lumens Compact Rail Mount Wea — 14713b 300x267 sha=506d1ebac310
+  + OLIGHT Odin Mini 1250 Lumens Ultra Compact Recha — 58522b 1129x597 sha=a345ff068483
+  + Olight Odin S Tactical Rechargeable Weapon Light — 36149b 976x543 sha=efb62ad5f4dc
+  + OLIGHT Odin GL M 1500 Lumens MLOK Mount Recharge — 95280b 1500x1044 sha=bbccdca53366
+  + OSIGHT XE AMRS Enclosed Red Dot Sight, 2/6 MOA D — 129171b 1500x1030 sha=850504470526
+  + OSIGHT C Multi-Reticle 3 MOA Dot & 32 MOA Circle — 154502b 1500x1161 sha=6e88e7a6a718
+  + OSIGHT K Micro Red Dot Sight, Green 6 MOA Open R — 38697b 679x508 sha=cd904fb66d94
+  + Osight SE 2 MOA Dot & 32 MOA Circle Dual Reticle — 86724b 405x333 sha=cd3b77905897
+  + Tisas 1911 A1 US Army 45 ACP 5" 7rd Pistol - $39 — 14938b 507x340 sha=85e7a783732b
+  + Sig Sauer Electro-Optics Kilo BDX Combo Laser Ra — 19385b 633x439 sha=40ac310ff0fb
   x B&T XH-556 SC 5.56 NATO 223 Suppressor 5" Titani — image not downloadable
-  + Plano Shaped Pistol Case (Medium) Black - $6.79 — 18373b 500x500 sha=42fa0aaacb6f
-  ... 25/51  ok=24 fail=1
-  + Desert Tech WLVRN 7.62 NATO 16" 30rd Conversion  — 49328b 608x342 sha=60cdc7915b02
-  + Winchester Defender 9mm 147 Grain PDX1 Bonded Ja — 119294b 1000x1000 sha=c0c040db35ce
-  + Plano All-Weather 2 Four Pistol Case Watertight  — 52481b 583x427 sha=42cfc6c690a0
-  + CNC Gunworks Daniel Defense "MK18 Gold" 5.56 NAT — 61269b 533x297 sha=8608c5cfc715
-  + Plano Field Ammo Box .30 Cal, Lockable Heavy-Dut — 39032b 634x671 sha=6823f3d8b8b2
-  + Partisan Triggers Disruptor AR-15 3 Position Dro — 274577b 986x834 sha=746f9c84e6a7
-  + Mossberg MC2sc Optics Ready 9mm 3.4" Barrel 3-Do — 618827b 1021x753 sha=a56340f1bd20
-  + Hornady Frontier 223 Remington 55 Gr FMJ Ammunit — 628762b 1022x639 sha=b1ebd22c0e7a
-  x sale Sig Sauer PMCX300B6BLTPCB MCX Rattler LT 30 — image not downloadable
-  x Q Long Chop 8.6 Blackout Suppressor, Melonite, R — image not downloadable
-  x Evolution Outdoor Recon LR Rifle Case Brown 54 i — image not downloadable
-  x Savage 555 Sporting Compact Walnut 12 GA 26" Bar — rejected: too small (654x101)
   x ORTHOS Raider S4 12 Gauge 18.5" 6rd - FDE - $128 — image not downloadable
-  x Vosteed Corgi V Vanchor Lock Folder Orange Alumi — rejected: too small (386x106)
-  x Mossberg 500 Super Bantam 20 GA 22" Vent Rib / 2 — image not downloadable
-  x Trijicon MRO SD Black 1x25mm 2 MOA Green Dot Ret — image not downloadable
-  x Daniel Defense DDM4 GL/SSC 5.56mm Complete Upper — image not downloadable
-  x *Cosmetic Blem* BCM MK2 Receiver Extension - $33 — image not downloadable
-  x Bergara HMR Carbon Wilderness 308 Win 20" Woodla — image not downloadable
   x Colt Python .357 Magnum 6rd 3" Bead Blasted Stai — image not downloadable
-  x Stoeger M3020 Compact 20 GA 26" Barrel 4-Rounds  — image not downloadable
   x Glock 19G5 9mm 15Rd Black Cherry - $539.99 — image not downloadable
   x Mars Trigger Pulse22 FRT Taurus TX-22 Trigger Co — image not downloadable
-  x Mossberg Maverick 88 12 GA Field/Security Combo  — image not downloadable
-  x Tuna Cans FAT9 9mm Silencer (6 Baffle) - $229.95 — image not downloadable
-  x Stag Arms Prefit Fluted Barrel for Solus, Zermat — image not downloadable
 
-fixed 32, failed 19  (62% success)
-distinct images: 32 across 32 deals
+fixed 13, failed 5  (72% success)
+distinct images: 13 across 13 deals
 PASS — no image shared between products
