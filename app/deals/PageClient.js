@@ -384,12 +384,10 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
       <main style={{ background:'var(--bg)', minHeight:'100vh' }}>
 
         {/* Hero */}
-        <div style={{
-          background:'radial-gradient(ellipse at top, rgba(200,146,42,.1) 0%, transparent 60%)',
-          borderBottom:'1px solid var(--border)', padding:'48px 24px 32px',
-        }}>
+        <div className="dh" style={{ borderBottom:'1px solid var(--border)' }}>
+          <style>{`.dh{padding:56px 24px 36px;background:linear-gradient(90deg,#09090B 0%,#09090B 42%,rgba(9,9,11,.5) 56%,rgba(9,9,11,0) 72%),linear-gradient(0deg,rgba(9,9,11,.5) 0%,rgba(9,9,11,0) 25%),url(/img/deals-hero.jpg) right center/auto 100% no-repeat,#09090B;min-height:470px;display:flex;align-items:flex-end}.dh>.container{width:100%}@media(max-width:700px){.dh{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/deals-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(66vw + 10px) 16px 28px;min-height:0}}`}</style>
           <div className="container">
-            <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', flexWrap:'wrap', gap:16 }}>
+            <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:22 }}>
               <div>
                 <div style={{ fontFamily:MONO, fontSize:11, color:GOLD, letterSpacing:'.18em', textTransform:'uppercase', marginBottom:8 }}>
                   {status === 'live' && (
