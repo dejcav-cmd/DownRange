@@ -38,6 +38,7 @@ const STATIC_PAGES = [
   { url: `${BASE}/video`,               priority: 0.8,  changeFrequency: 'daily' },
   { url: `${BASE}/blog`,                priority: 0.8,  changeFrequency: 'daily' },
   { url: `${BASE}/giveaways`,           priority: 0.75, changeFrequency: 'daily' },
+  { url: `${BASE}/second-amendment`,    priority: 0.8,  changeFrequency: 'monthly' },
 
   // CCW / Carry tools — high-intent search queries
   { url: `${BASE}/carry-insurance`,     priority: 0.85, changeFrequency: 'monthly' },
