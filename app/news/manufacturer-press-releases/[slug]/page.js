@@ -8,7 +8,7 @@ import PressStyles    from '../../../../components/press/PressStyles'
 import PressCard      from '../../../../components/press/PressCard'
 import ReadProgress   from '../../../../components/press/ReadProgress'
 import { getPressBySlug, getPressNeighbors, getMoreFromBrand } from '../../../../lib/pressData'
-import { KIND_META, photoFor, fmtDate, pressHref, PRESS_BASE } from '../../../../lib/pressUi'
+import { KIND_META, fmtDate, pressHref, PRESS_BASE } from '../../../../lib/pressUi'
 
 export const revalidate = 300
 
@@ -41,7 +41,7 @@ export default async function PressArticlePage({ params }) {
   ])
 
   const kind = KIND_META[r.kind] || KIND_META.product
-  const img = r.image || photoFor(r.category, r.kind)
+  const img = r.image
   const url = `${SITE}${PRESS_BASE}/${r.slug}`
   let sourceHost = ''
   try { sourceHost = new URL(r.sourceUrl).hostname.replace(/^www\./, '') } catch {}
@@ -50,7 +50,7 @@ export default async function PressArticlePage({ params }) {
     {
       '@context': 'https://schema.org', '@type': 'NewsArticle', '@id': url + '#article',
       headline: r.title, description: (r.summary || r.title).slice(0, 160),
-      image: [img.startsWith('http') ? img : SITE + img],
+      image: [img],
       datePublished: r.publishedAt, dateModified: r._updatedAt || r.publishedAt,
       author: [{ '@type': 'Person', name: 'DJ Cavalcanti', url: SITE + '/about', jobTitle: 'DownRange Founder' }],
       publisher: { '@type': 'Organization', '@id': SITE + '/#organization', name: 'DownRange', url: SITE,
@@ -79,7 +79,7 @@ export default async function PressArticlePage({ params }) {
       <ReadProgress />
 
       <main style={{ background: 'var(--bg)', minHeight: '100vh', paddingBottom: 56 }}>
-        <div className="pr-art-hero"><img src={img} alt="" decoding="async" /></div>
+        <div className="pr-art-hero"><img src={img + '?w=1600&auto=format&q=82'} alt={r.title} decoding="async" fetchPriority="high" /></div>
 
         <header className="pr-art-head">
           <nav className="pr-crumbs" aria-label="Breadcrumb">

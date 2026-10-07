@@ -112,6 +112,10 @@ export default function PressStyles() {
 .pr-more h2{font-family:'Bebas Neue',cursive;font-weight:400;font-size:28px;letter-spacing:.04em;color:var(--text);margin:0 0 14px}
 .dr-article-body h2{font-family:'Bebas Neue',sans-serif;font-weight:400;font-size:1.6rem;letter-spacing:.04em;color:var(--text);margin:2.2rem 0 .7rem;padding-bottom:.4rem;border-bottom:2px solid var(--gold);line-height:1.1}
 .dr-article-body h2:first-child{margin-top:0}
+.dr-article-body figure.pr-fig{margin:1.8rem -4px;padding:0}
+.dr-article-body figure.pr-fig img{display:block;width:100%;height:auto;background:var(--bg3);border:1px solid var(--border)}
+.dr-article-body figure.pr-fig figcaption{font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:1.6;color:var(--text-dim);padding:8px 2px 0}
+.dr-article-body figure.pr-fig figcaption span{color:var(--gold);letter-spacing:.04em}
 .dr-article-body p{font-size:1.05rem;line-height:1.85;color:var(--text-muted);margin:0 0 1.35rem;font-family:'IBM Plex Sans',Arial,sans-serif;text-align:justify;hyphens:auto}
 .dr-article-body strong{color:var(--text);font-weight:700}
 .dr-article-body a{color:var(--gold);text-decoration:underline;text-underline-offset:3px;word-break:break-word}

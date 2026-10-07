@@ -1,13 +1,14 @@
 name: Press Releases Pull
 
 # Runs the manufacturer press release pull against production.
-# - Automatically once when this file lands on main (first pull).
+# - Automatically when this file or lib/pressImages.js changes on main (image repair + pull).
 # - Manually any time from the Actions tab.
 on:
   push:
     branches: [main]
     paths:
       - '.github/workflows/press-releases-first-pull.yml'
+      - 'lib/pressImages.js'
   workflow_dispatch:
     inputs:
       brand:
@@ -23,6 +24,22 @@ jobs:
       - name: Wait for the deploy to go live
         if: github.event_name == 'push'
         run: sleep 240
+
+      - name: Fix images on existing articles (real manufacturer photos only)
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          set -u
+          for round in 1 2 3 4 5 6 7 8 9 10; do
+            echo "=== image repair round $round ==="
+            code=$(curl -s -o out.json -w '%{http_code}' --max-time 295 \
+              -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/cron/press-releases?mode=images&max=30" || echo 000)
+            echo "HTTP $code"; head -c 1200 out.json || true; echo
+            if [ "$code" != "200" ]; then sleep 90; continue; fi
+            if python3 -c 'import json,sys; d=json.load(open("out.json")); sys.exit(0 if d.get("done") or not d.get("remaining") else 1)'; then
+              echo "All articles have real images."; break
+            fi
+          done
 
       - name: Pull until every manufacturer is processed
         env:

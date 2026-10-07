@@ -28,7 +28,16 @@ export default function PressReleaseManager({ adminKey }) {
         failed  += d.failed  || 0
         if (d.done || !d.remaining) break
       }
-      flash('✅ Done: ' + created + ' new articles published' + (failed ? ', ' + failed + ' failed' : ''))
+      let fixed = 0
+      for (let k = 0; k < 12; k++) {
+        flash('⏳ Adding real manufacturer images to articles, round ' + (k + 1) + '...')
+        const r2 = await fetch('/api/cron/press-releases?mode=images&max=30', { headers: { 'x-admin-key': adminKey } })
+        const d2 = await r2.json().catch(() => ({}))
+        if (!r2.ok) break
+        fixed += d2.fixed || 0
+        if (d2.done || !d2.remaining) break
+      }
+      flash('✅ Done: ' + created + ' new articles, ' + fixed + ' articles updated with real images' + (failed ? ', ' + failed + ' failed' : ''))
     } catch {
       flash('❌ Request failed or timed out')
     }
