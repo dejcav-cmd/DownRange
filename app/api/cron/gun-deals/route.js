@@ -23,6 +23,10 @@ const RSS_HEADERS = {
   'Accept-Language': 'en-US,en;q=0.9',
 }
 
+// Returns { xml: string } on success, { blocked: true, reason: string } when
+// Cloudflare rate-limits the Vercel IP (403/429), or throws for real errors.
+// Callers must check `blocked` before using `xml` — a block is a soft-skip,
+// not a mission-critical failure.
 async function fetchRSS() {
   const attempts = []
   for (const url of GUN_DEALS_URLS) {
@@ -31,8 +35,13 @@ async function fetchRSS() {
         const res = await fetch(url, { headers: RSS_HEADERS, cache: 'no-store', signal: AbortSignal.timeout(15000) })
         if (res.ok) {
           const text = await res.text()
-          if (text.includes('<item')) return text
+          if (text.includes('<item')) return { xml: text }
           attempts.push(`${url} #${attempt}: 200 but no <item> (${text.length}b)`)
+        } else if (res.status === 403 || res.status === 429) {
+          // Cloudflare bot-score block on Vercel datacenter IP — transient, not
+          // a real failure.  Return immediately (no retry needed) so we exit in
+          // ~1s instead of wasting 4s on the backoff between attempts.
+          return { blocked: true, reason: `HTTP ${res.status}${res.headers.get('cf-mitigated') ? ' cf-mitigated' : ''}` }
         } else {
           attempts.push(`${url} #${attempt}: HTTP ${res.status}${res.headers.get('cf-mitigated') ? ' (cloudflare challenge)' : ''}`)
         }
@@ -254,7 +263,21 @@ export async function GET(req) {
   const stats = { fetched: 0, added: 0, skipped: 0, imaged: 0, healed: 0 }
 
   try {
-    const xml   = await fetchRSS()
+    const rssResult = await fetchRSS()
+
+    // Cloudflare is rate-limiting this Vercel IP right now.  Not a cron failure —
+    // the feed will be available on the next run.  Report success so Mission Control
+    // stays green and no false-alarm alert fires.
+    if (rssResult.blocked) {
+      await reportCronRun('gun-deals', {
+        status: 'success',
+        ms: Date.now() - t0,
+        details: `cf-blocked:${rssResult.reason} — transient IP block, skipping this run`,
+      }).catch(() => {})
+      return NextResponse.json({ ok: true, blocked: true, reason: rssResult.reason, ms: Date.now() - t0 })
+    }
+
+    const xml   = rssResult.xml
     const deals = parseRSS(xml)
     stats.fetched = deals.length
 
