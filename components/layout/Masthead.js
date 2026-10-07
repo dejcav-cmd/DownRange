@@ -7,6 +7,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV = [
+  { label: '🏠 Home', href: '/', exact: true },
   {
     label: 'News', href: '/news',
     children: [

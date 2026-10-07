@@ -5,6 +5,7 @@ export const dynamic = 'force-dynamic'
 const ALLOWED_HOSTS = [
   'gun.deals',
   'www.gun.deals',
+  'cdn.sanity.io', // our own image CDN: same-origin fallback when a browser or extension blocks the direct request
 ]
 
 export async function GET(request) {
@@ -24,6 +25,10 @@ export async function GET(request) {
   }
 
   const hostname = parsed.hostname.replace(/^www\./, '')
+  // Sanity: only our own project's images
+  if (hostname === 'cdn.sanity.io' && !parsed.pathname.startsWith('/images/vbnsqnkg/')) {
+    return new Response('Host not allowed', { status: 403 })
+  }
   if (!ALLOWED_HOSTS.some(h => h.replace(/^www\./, '') === hostname)) {
     return new Response('Host not allowed', { status: 403 })
   }
@@ -32,7 +37,7 @@ export async function GET(request) {
     const res = await fetch(url, {
       headers: {
         'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Referer': 'https://gun.deals/',
+        ...(hostname === 'gun.deals' ? { 'Referer': 'https://gun.deals/' } : {}),
         'Accept': 'image/webp,image/apng,image/*,*/*;q=0.8',
         'Accept-Language': 'en-US,en;q=0.5',
       },

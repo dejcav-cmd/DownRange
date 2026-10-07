@@ -129,7 +129,9 @@ function timeAgo(ts) {
 
 // ── DEAL CARD ─────────────────────────────────────────────────────────────────
 function DealCard({ deal, userState, liveRules }) {
-  const [imgError, setImgError] = useState(false)
+  // 0 = direct image, 1 = same-origin proxy retry, 2 = give up (show placeholder)
+  const [imgTry, setImgTry] = useState(0)
+  const imgError = imgTry >= 2
   const fm = FLAIR_META[deal.flair] || FLAIR_META.Deals
   const hasImage = deal.imageUrl && !imgError
   const cleanTitle = (deal.title || '')
@@ -154,7 +156,7 @@ function DealCard({ deal, userState, liveRules }) {
         {/* Image */}
         <div style={{ width:'100%', height:160, background:'#0D0E10', overflow:'hidden', flexShrink:0, position:'relative' }}>
           {hasImage ? (
-            <img src={deal.imageUrl} alt={cleanTitle} onError={() => setImgError(true)}
+            <img key={imgTry} src={imgTry === 0 ? deal.imageUrl : '/api/img-proxy?url=' + encodeURIComponent(deal.imageUrl)} alt={cleanTitle} onError={() => setImgTry(t => t + 1)}
               loading="lazy" referrerPolicy="no-referrer"
               style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
           ) : (

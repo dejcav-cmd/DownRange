@@ -1,3 +1,4 @@
+import { preload } from 'react-dom'
 import Masthead from '../components/layout/Masthead'
 import Footer from '../components/layout/Footer'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
@@ -82,6 +83,7 @@ const TOOLS = [
 ]
 
 export default async function HomePage() {
+  preload('/img/home-hero.jpg', { as: 'image', fetchPriority: 'high' })
   const [news, deals, press, stats] = await Promise.allSettled([loadNews(), loadDeals(), loadPress(), loadStats()])
     .then(r => r.map((p, i) => (p.status === 'fulfilled' ? p.value : (i === 3 ? {} : []))))
 
