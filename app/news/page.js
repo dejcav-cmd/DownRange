@@ -68,11 +68,8 @@ export default async function NewsPage({ searchParams }) {
       <Masthead />
 
       {/* ── PAGE HERO ── */}
-      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 20% 50%, rgba(200,146,42,0.07) 0%, transparent 55%)', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'50%', overflow:'hidden', opacity:0.04, pointerEvents:'none' }}>
-          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'18vw', color:'var(--gold)', lineHeight:0.85, textAlign:'right', paddingRight:'20px', paddingTop:'10px' }}>NEWS</div>
-        </div>
+      <div className="nh" style={{ borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
+        <style>{`.nh{background:linear-gradient(90deg,rgba(9,9,11,.95) 0%,rgba(9,9,11,.8) 30%,rgba(9,9,11,.12) 62%,rgba(9,9,11,0) 100%),linear-gradient(0deg,rgba(9,9,11,.55) 0%,rgba(9,9,11,0) 30%),url(/img/news-hero.jpg) right bottom/cover no-repeat,#09090B;padding:84px 0 60px;min-height:420px;display:flex;align-items:flex-end}.nh>.container{width:100%}@media(max-width:700px){.nh{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/news-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(100vw - 20px) 0 28px;min-height:0}}`}</style>
         <div className="container" style={{ position:'relative' }}>
           <div style={{ maxWidth:640 }}>
             <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap', alignItems:'center' }}>
@@ -86,7 +83,7 @@ export default async function NewsPage({ searchParams }) {
               <span style={{ color:'var(--gold)' }}>Intelligence Feed</span>
             </h1>
             <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
-              {total > 0 ? total : '—'} stories in last 30 days · Updated every 15 minutes · All sources aggregatedregated
+              {total > 0 ? total : '—'} stories in last 30 days · Updated every 15 minutes · All sources aggregated
             </p>
           </div>
         </div>
