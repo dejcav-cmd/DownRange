@@ -1,0 +1,15 @@
+=== REPAIR ===
+{
+    "ok": true,
+    "dryRun": false,
+    "checked": 1,
+    "report": [
+        {
+            "slug": "dj-new-gun-releases-week-2026-10-01-2026",
+            "before": "https://cdn.sanity.io/images/vbnsqnkg/production/e97b93cbd00f0f10030c5c1119af6b3e1c9bd39f-1280x853.jpg",
+            "status": "replaced",
+            "source": "stock-validated",
+            "after": "https://cdn.sanity.io/images/vbnsqnkg/production/f0bc6f191fb0ece75320779eff8095bbbc1e77ca-940x627.jpg"
+        }
+    ]
+}
