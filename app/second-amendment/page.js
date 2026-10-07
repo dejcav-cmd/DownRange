@@ -6,7 +6,7 @@ export const revalidate = 86400
 
 const URL = 'https://www.downrangeco.com/second-amendment'
 export const metadata = {
-  title: 'The Second Amendment: Text, History and Why It Matters | DownRange',
+  title: 'The Second Amendment: Text, History and Why It Matters',
   description: 'The full text of the Second Amendment, how it came to be, the Supreme Court cases that shaped it (Heller, McDonald, Bruen, Rahimi), and what rights and responsibilities it carries today.',
   alternates: { canonical: URL },
   openGraph: {
@@ -14,7 +14,7 @@ export const metadata = {
     description: 'The text, the history, the landmark Supreme Court cases, and the responsibility that comes with the right.',
     url: URL, type: 'article',
   },
-  twitter: { card: 'summary', title: 'The Second Amendment | DownRange', description: 'The text, the history, the landmark cases, and the responsibility that comes with the right.' },
+  twitter: { card: 'summary', title: 'The Second Amendment', description: 'The text, the history, the landmark cases, and the responsibility that comes with the right.' },
 }
 
 const TIMELINE = [
