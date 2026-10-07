@@ -1,9 +1,8 @@
 export default function HomeStyles() {
   return (
     <style>{`
-.hh{position:relative;overflow:hidden;background:radial-gradient(1200px 420px at 85% -10%,rgba(200,146,42,.16),transparent 60%),linear-gradient(180deg,#0d0f13 0%,var(--bg) 100%);border-bottom:1px solid var(--border)}
-.hh::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(90deg,rgba(255,255,255,.018) 0 1px,transparent 1px 84px);pointer-events:none}
-.hh-in{position:relative;padding:54px 16px 36px}
+.hh{position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(9,9,11,.94) 0%,rgba(9,9,11,.78) 38%,rgba(9,9,11,.18) 78%,rgba(9,9,11,.05) 100%),linear-gradient(0deg,rgba(9,9,11,.85) 0%,rgba(9,9,11,0) 38%),url(/img/home-hero.jpg) 70% center/cover no-repeat,#09090B;border-bottom:1px solid var(--border)}
+.hh-in{position:relative;padding:72px 16px 40px;min-height:430px;display:flex;flex-direction:column;justify-content:flex-end}
 .hh-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
 .hh-title{font-family:'Bebas Neue',cursive;font-weight:400;font-size:clamp(3.2rem,9vw,6.6rem);line-height:.92;letter-spacing:.015em;color:var(--text);margin:0 0 16px}
 .hh-title span{color:var(--gold)}
@@ -18,7 +17,7 @@ export default function HomeStyles() {
 .hh-chips li{display:flex;align-items:baseline;gap:8px}
 .hh-chips b{font-family:'Bebas Neue',cursive;font-weight:400;font-size:30px;color:var(--gold);line-height:1}
 .hh-chips span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim)}
-@media(max-width:600px){.hh-in{padding:36px 16px 26px}.hh-btn{flex:1 1 auto;justify-content:center}.hh-btn-ghost{flex-basis:100%;justify-content:flex-start}}
+@media(max-width:600px){.hh{background:linear-gradient(0deg,rgba(9,9,11,.97) 0%,rgba(9,9,11,.86) 45%,rgba(9,9,11,.35) 100%),url(/img/home-hero-sm.jpg) 72% top/cover no-repeat,#09090B}.hh-in{padding:120px 16px 26px;min-height:0}.hh-btn{flex:1 1 auto;justify-content:center}.hh-btn-ghost{flex-basis:100%;justify-content:flex-start}}
 .hr-sec{padding:34px 0 8px;background:var(--bg);border-bottom:1px solid var(--border)}
 .hr-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
 .hr-title{font-family:'Bebas Neue',cursive;font-size:clamp(1.9rem,4vw,2.6rem);letter-spacing:.03em;line-height:1;color:var(--text);margin:0}

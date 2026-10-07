@@ -1,0 +1,42 @@
+name: Blog Image Repair
+
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: 'Single post slug (blank = scan recent posts)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run (report only)'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+
+jobs:
+  repair:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run repair
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          SLUG: ${{ inputs.slug }}
+          DRY: ${{ inputs.dry_run }}
+        run: |
+          python3 - <<'PY' > body.json
+          import json, os
+          b = {"dryRun": os.environ["DRY"] == "true"}
+          if os.environ["SLUG"]: b["slug"] = os.environ["SLUG"]
+          print(json.dumps(b))
+          PY
+          echo "=== REPAIR ===" > result.txt
+          curl -s -X POST "https://www.downrangeco.com/api/admin/blog-image-repair" \
+            -H "x-admin-key: $ADMIN_KEY" -H "content-type: application/json" \
+            -d @body.json --max-time 290 | python3 -m json.tool >> result.txt 2>&1 || echo "call failed" >> result.txt
+      - name: Publish
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/blog-image-repair.txt
