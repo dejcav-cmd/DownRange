@@ -1,19 +1,16 @@
 import BallisticsCalc from './BallisticsCalc'
-import Masthead from '../../components/layout/Masthead'
-import Footer from '../../components/layout/Footer'
-import BreakingTicker from '../../components/layout/BreakingTicker'
-import { fetchBreakingAlerts } from '../../sanity/lib/client'
+import ToolShell from '../../components/tools/ToolShell'
 
 export const metadata = {
-  title: 'Ballistics Calculator — Free Drop Tables & Wind Drift',
-  description: 'Free G1 external ballistics calculator. Bullet drop tables, wind drift, MOA/MRAD scope corrections, and trajectory charts for 38 calibers out to 1,000 yards. Compare two loads.',
+  title: 'Precision Ballistics Calculator: 188 Bullets, G1 and G7, Wind and DOPE Card',
+  description: 'Free precision ballistics calculator with a library of 188 bullets from Hornady, Berger, Nosler, Lapua and Warner. G1 and G7 drag, wind, slope, altitude and temperature. Printable DOPE card and shareable setups.',
   keywords: 'ballistics calculator, bullet drop calculator, external ballistics, MOA calculator, wind drift, trajectory chart, scope correction',
   alternates: { canonical: 'https://www.downrangeco.com/ballistics' },
   openGraph: {
     type: 'website',
     url: 'https://www.downrangeco.com/ballistics',
-    title: 'Free Ballistics Calculator — Drop Tables, Wind Drift & MOA | DownRange',
-    description: 'G1 ballistics engine: bullet drop tables, wind drift, MOA/MRAD corrections, and trajectory charts for 38 calibers to 1,000 yards.',
+    title: 'Precision Ballistics Calculator: 188 Bullets, G1 and G7 | DownRange',
+    description: 'Pick your bullet, enter your muzzle velocity and get a drop and wind table with turret clicks. G1 and G7, 188 bullets.',
     images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange Ballistics Calculator' }],
   },
   twitter: { card: 'summary_large_image', title: 'Free Ballistics Calculator | DownRange', description: 'Drop tables, wind drift, MOA corrections for 38 calibers.' },
@@ -23,22 +20,22 @@ const SCHEMA = [
   {
     '@context': 'https://schema.org',
     '@type': 'SoftwareApplication',
-    name: 'DownRange Ballistics Calculator',
+    name: 'DownRange Precision Ballistics Calculator',
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
     url: 'https://www.downrangeco.com/ballistics',
-    description: 'Free G1 external ballistics calculator with drop tables, wind drift, MOA/MRAD scope corrections, and dual-load comparison for 38 calibers out to 1,000 yards.',
+    description: 'Free precision ballistics calculator: 188 bullets with published G1 and G7 coefficients, wind, slope, altitude, turret clicks, dual-load comparison and a printable DOPE card.',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     featureList: [
-      '38 caliber presets from .17 HMR to .338 Lapua',
-      'Full PRC family (6.5 PRC, 7mm PRC, .300 PRC)',
-      'Bullet drop tables in inches',
-      'Wind drift for any crosswind speed',
-      'MOA and MRAD scope correction values',
-      'Compare two loads side-by-side',
-      'Trajectory chart with subsonic zone',
-      'Altitude and temperature corrections',
+      '188 bullets with published G1 and G7 ballistic coefficients',
+      'Hornady, Berger, Nosler, Lapua and Warner bullet lines',
+      'G1 and G7 drag models',
+      'Wind drift for any speed and direction',
+      'Slope, altitude, temperature and humidity corrections',
+      'Turret clicks in MOA or MRAD',
+      'Compare two loads side by side',
+      'Printable DOPE card and shareable link',
     ],
   },
   {
@@ -56,7 +53,7 @@ const SCHEMA = [
       {
         '@type': 'Question',
         name: 'How do I pick a load in the ballistics calculator?',
-        acceptedAnswer: { '@type': 'Answer', text: 'Choose a preset from the category dropdown (Rimfire through Magnum, including the full PRC family) or switch to Custom and enter your own bullet weight, ballistic coefficient, and muzzle velocity. Presets use published G1 BCs; for G7 BC bullets, multiply by roughly 2.0 to approximate G1.' },
+        acceptedAnswer: { '@type': 'Answer', text: 'Pick a maker, caliber and bullet from the library, then enter your chronographed muzzle velocity. You can also choose a factory load or enter a custom ballistic coefficient. Library bullets use the BC published by the manufacturer, with G7 used when the maker publishes it.' },
       },
       {
         '@type': 'Question',
@@ -70,22 +67,20 @@ const SCHEMA = [
       },
       {
         '@type': 'Question',
-        name: 'How accurate is a G1 ballistics calculator for long-range shooting?',
-        acceptedAnswer: { '@type': 'Answer', text: 'G1 models are solid for hunting and general-purpose loads but less precise for very-low-drag long-range bullets, where a true G7 calculator tracks closer to observed drop past 600-700 yards. Use the output as a strong starting point and confirm final corrections with verified dope at the range.' },
+        name: 'Should I use G1 or G7 for long-range shooting?',
+        acceptedAnswer: { '@type': 'Answer', text: 'G7 matches the shape of modern boat-tail match bullets, so it tracks real drop more closely past 600 yards. G1 is fine for flat-base hunting bullets. Use the BC model the manufacturer publishes for your bullet, and confirm final corrections with verified dope at the range.' },
       },
     ],
   },
 ]
 
-export default async function Page() {
-  const alerts = await fetchBreakingAlerts().catch(() => [])
+export default function Page() {
   return (
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(SCHEMA) }} />
-      <Masthead />
-      <BreakingTicker alerts={alerts} />
-      <BallisticsCalc />
-      <Footer />
+      <ToolShell schema={false} path="/ballistics" name="Precision Ballistics Calculator" headline="Precision" accent="calculator" intro="Pick your bullet, enter your chronographed velocity, and get a drop and wind table with turret clicks. 188 bullets, G1 and G7, one printable DOPE card.">
+        <BallisticsCalc />
+      </ToolShell>
     </>
   )
 }
