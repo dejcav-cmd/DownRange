@@ -222,7 +222,12 @@ const RELEASES = [
   },
 ]
 
-export async function POST(req) {
+// Retired: seeding re-created content for sections that were removed (reviews, competitions). Kept as a stub so old links return a clear answer.
+export async function POST() {
+  return Response.json({ error: 'seed-all-content has been retired' }, { status: 410 })
+}
+
+async function _retiredSeed(req) {
   const key = req.headers.get('x-admin-key')
   if (key !== process.env.ADMIN_KEY) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 

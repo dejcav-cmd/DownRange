@@ -1406,12 +1406,6 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
             { key:'fetch-article-images',label:'📷 Fetch OG Images',            color:'#a855f7',  path:'fetch-article-images', actions:[{label:'Fetch Now (30)',params:'?limit=30'}] },
             { key:'patch-article',       label:'🔧 Patch SVG Fallbacks',        color:'#f59e0b',  path:'patch-article',        actions:[{label:'Patch All',params:''}] },
             { key:'seed-image-repo',     label:'🗃 Seed Image Repository',      color:'#64748b',  path:'seed-image-repo',      actions:[{label:'Seed Images',params:''}] },
-            { key:'seed-all-content',    label:'🌱 Seed All Content Panels',    color:'#22c55e',  path:'seed-all-content',     actions:[
-              {label:'Seed Everything (blog+canada+releases)', params:''},
-              {label:'Blog only', params:'?types=blog'},
-              {label:'Canada only', params:'?types=canada'},
-              {label:'Gun Releases only', params:'?types=releases'},
-            ]},
           ].map(agent => {
             const res  = agentResults[agent.key]
             const busy = agentRunning[agent.key]
@@ -2355,15 +2349,12 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       {/* ── Seed All banner ── */}
       <div style={{ marginBottom: 28, padding: '20px 24px', background: 'linear-gradient(135deg, rgba(34,197,94,.07) 0%, rgba(34,197,94,.03) 100%)', border: '1px solid rgba(34,197,94,.2)', display:'flex', alignItems:'center', gap:20, flexWrap:'wrap' }}>
         <div style={{ flex:1, minWidth:240 }}>
-          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'#22c55e', letterSpacing:'.06em', marginBottom:4 }}>🌱 SEED ALL CONTENT</div>
+          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'#22c55e', letterSpacing:'.06em', marginBottom:4 }}>🧰 CONTENT MAINTENANCE</div>
           <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.8 }}>
-            Populates every empty section with curated starter content — blog posts, reviews, Canada articles, competitions, gun releases.
+            Image repair and footer cleanup. Starter-content seeding was removed so it cannot refill sections that were retired.
           </div>
         </div>
         <div style={{ display:'flex', gap:10, alignItems:'center' }}>
-          <button onClick={seedAll} disabled={seeding.all} style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'.08em', padding:'10px 28px', background:seeding.all?'#374151':'#22c55e', color:seeding.all?'#6b7280':'#000', border:'none', cursor:seeding.all?'default':'pointer' }}>
-            {seeding.all ? '⏳ SEEDING...' : '▶ SEED EVERYTHING'}
-          </button>
           <button disabled={seeding.fixImages} onClick={async ()=>{
             setSeeding(s=>({...s,fixImages:true})); setResults(r=>({...r,fixImages:null}))
             try {
