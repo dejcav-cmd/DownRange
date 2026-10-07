@@ -71,11 +71,14 @@ function proxyImage(url) {
   return url
 }
 
+// Only deals with a real product image are listed (no placeholders). A deal
+// still waiting on its image appears once the gun-deals cron self-heals it.
+// gun.deals coupon pages are store promos, not products: never listed.
 // ── SOURCE 1: Sanity gunDeal docs ────────────────────────────────────────────
 async function fetchSanityDeals() {
   try {
     const articles = await sanity.fetch(
-      `*[_type=="gunDeal" && approved==true] | order(publishedAt desc) [0..200] {
+      `*[_type=="gunDeal" && approved==true && defined(imageUrl) && imageUrl != "" && !(title match "Coupon for store*")] | order(publishedAt desc) [0..200] {
         _id, title, source, imageUrl, externalUrl, publishedAt, summary, price, store
       }`
     )
