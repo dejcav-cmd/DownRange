@@ -5,7 +5,7 @@ import Footer         from '../../../../components/layout/Footer'
 import BreakingTicker from '../../../../components/layout/BreakingTicker'
 import { fetchBreakingAlerts } from '../../../../sanity/lib/client'
 import PressStyles    from '../../../../components/press/PressStyles'
-import PressCard      from '../../../../components/press/PressCard'
+import PressGrid      from '../../../../components/press/PressGrid'
 import ReadProgress   from '../../../../components/press/ReadProgress'
 import { getPressBySlug, getPressNeighbors, getMoreFromBrand } from '../../../../lib/pressData'
 import { KIND_META, fmtDate, pressHref, PRESS_BASE } from '../../../../lib/pressUi'
@@ -134,7 +134,7 @@ export default async function PressArticlePage({ params }) {
         {more.length > 0 && (
           <section className="pr-more">
             <h2>More from {r.brand}</h2>
-            <div className="pr-grid">{more.map(it => <PressCard key={it._id} item={it} />)}</div>
+            <PressGrid items={more} />
           </section>
         )}
 

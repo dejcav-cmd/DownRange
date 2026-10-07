@@ -38,7 +38,28 @@ export default function PressStyles() {
 @keyframes prUp{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
 
 .pr-results-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin:26px 0 16px;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--text-dim);text-transform:uppercase}
-.pr-grid{display:grid;gap:18px;grid-template-columns:repeat(auto-fill,minmax(290px,1fr))}
+.pr-grid{display:grid;gap:18px;grid-template-columns:1fr}
+@media(min-width:640px){
+  .pr-grid{grid-template-columns:repeat(2,1fr)}
+  .pr-grid[data-r2="1"]>.pr-card:last-child{grid-column:1/-1}
+}
+@media(min-width:1000px){
+  .pr-grid{grid-template-columns:repeat(6,1fr)}
+  .pr-grid>.pr-card{grid-column:span 2}
+  .pr-grid[data-r3="1"]>.pr-card:last-child{grid-column:span 6}
+  .pr-grid[data-r3="2"]>.pr-card:nth-last-child(-n+2){grid-column:span 3}
+}
+/* a stretched last-row card lays out as image left, text right so it never gets tall */
+@media(min-width:640px) and (max-width:999px){
+  .pr-grid[data-r2="1"]>.pr-card:last-child{flex-direction:row}
+  .pr-grid[data-r2="1"]>.pr-card:last-child .pr-card-img{flex:0 0 46%;aspect-ratio:auto;min-height:230px}
+  .pr-grid[data-r2="1"]>.pr-card:last-child .pr-card-body{justify-content:center}
+}
+@media(min-width:1000px){
+  .pr-grid[data-r3="1"]>.pr-card:last-child,.pr-grid[data-r3="2"]>.pr-card:nth-last-child(-n+2){flex-direction:row}
+  .pr-grid[data-r3="1"]>.pr-card:last-child .pr-card-img,.pr-grid[data-r3="2"]>.pr-card:nth-last-child(-n+2) .pr-card-img{flex:0 0 46%;aspect-ratio:auto;min-height:250px}
+  .pr-grid[data-r3="1"]>.pr-card:last-child .pr-card-body,.pr-grid[data-r3="2"]>.pr-card:nth-last-child(-n+2) .pr-card-body{justify-content:center}
+}
 .pr-card{display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--border);text-decoration:none;color:inherit;transition:transform .15s ease,border-color .15s ease;-webkit-tap-highlight-color:transparent;min-width:0}
 .pr-card:active{transform:scale(.99)}
 @media (hover:hover){.pr-card:hover{border-color:var(--gold);transform:translateY(-2px)}}
