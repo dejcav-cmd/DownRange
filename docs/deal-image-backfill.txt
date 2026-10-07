@@ -1,20 +1,36 @@
-600 scanned, 14 need a real image, 13 coupon posts skipped
+600 scanned, 29 need a real image, 15 coupon posts skipped
 
-  + DMA Inc. Threaded Match Barrel for Gen 1-5 Glock — 18677b 630x341 sha=d8b1a7b83fb6
-  + CZ Duty 4.0C 9mm Optic Ready Compact Pistol with — 38892b 600x492 sha=929bc61093cb
-  + Cimarron Firearms Old Model Wyatt Earp Color Cas — 18702b 800x276 sha=817eda79ebd2
-  + Kimber Aegis Elite Ultra Silver / Black .45 ACP  — 41189b 600x454 sha=0d1e92025b86
-  + Kimber 1911 .45 ACP 5" Bbl Custom TLE/RL Boot Ca — 38099b 883x562 sha=d3310de74be0
-  + Springfield Armory M1A Standard Cracked Earth .3 — 16322b 800x183 sha=e9043825353d
-  + Kimber CDS9 Classic 9mm 3.18" barrel 15 Rnds Gre — 27480b 600x542 sha=2c56c11bf754
-  + Kimber Micro 9 ESV 9mm 3.2" barrel 7rd Black & G — 81400b 1000x741 sha=e60d83a819f1
-  + Ruger Mark IV Target Stainless .22 LR 5.5" Barre — 51005b 800x613 sha=86c8193b94d7
-  + Bushmaster XM15-CA AR-15 Lower Receiver - Stripp — 19796b 700x393 sha=d5e035d84ed1
+  + HOT ITEM Thompson Center Arms Llc 8330R Encore P — 52375b 1134x952 sha=1843913911d3
+  + PSA JAKL 300 Blackout 8.5" 30-Rd Pistol, Flat Da — 28856b 1000x500 sha=a188255391c2
+  + SentrySafe Fireproof Waterproof Safe Dial Combin — 27670b 500x500 sha=f142328e47d0
+  + Alpha Foxtrot 1911 .45 ACP 5" barrel 7-Rds, Blac — 42525b 818x507 sha=8678cc26af08
+  + Dirty Bird Industries Single Stage Nickel Teflon — 23273b 945x630 sha=4358457a8a5d
+  + Hoffman Tactical Trigger Kicker - TK-15 - $37.95 — 14957b 945x630 sha=6cf09be78e0c
+  + Daniel Defense DDM4 V7 5.56 NATO 16" Barrel 32 R — 40726b 1280x569 sha=84d118633845
+  + Sonicore Rekkr DT .223 Rem / 5.56 1/2x28 Direct  — 77258b 1500x754 sha=00da40b67f81
+  + PINTY Rangefinder Riflescope with Red Dot Sight  — 21822b 500x500 sha=8d25416aa86d
+  + Uberti 1873 Cattleman 45 LC 5.5" 6rd - Nickle &  — 61258b 1323x762 sha=15734fa78246
+  + PMC Bronze .223 Rem Ammo 55 Grain FMJ-BT 20rds - — 567544b 1306x764 sha=8ee6a2c4b437
+  + Springfield 1911 DS Prodigy Comp 9mm 4.25" 17-rd — 105803b 1350x900 sha=2ecae630223c
+  + Springfield 1911 Defender Mil-Spec .45ACP 7rd 5" — 68064b 855x862 sha=8eec78626170
+  + Hard Pistol Case with Pre-cut PU Foam, Waterproo — 29756b 500x500 sha=c914e676cb0e
+  + Partisan Triggers Disruptor AR-15 3 Position Dro — 503928b 1500x1000 sha=f0a035bf2047
+  + Walther PPQ M2 Black .45 ACP 4.25-inch 12Rd Adju — 20406b 500x398 sha=1edaf60d0f7b
+  + Buy a B&T Suppressor and get special pricing on  — 118175b 986x947 sha=5bed8accba97
+  + TriStar Viper G2 Viper G2 Youth Realtree Edge 20 — 10221b 549x173 sha=4c134e7763fa
+  + Farmhouse Night Stand with Gun Drawer, Bedside T — 38823b 500x500 sha=0ee0fe7b11b7
+  + Q Speak Easy 7.62 Suppressor w/ Case (200rd) Hor — 46220b 535x633 sha=41732654887f
+  + Remington Range 9mm, 115gr FMJ, 1000 Case - $249 — 42890b 928x407 sha=462120edc8b6
+  + M16A2 Stripped Upper Receiver - $109.95 — 33909b 791x558 sha=7831832d0606
+  + Taurus TX Compact 22 Pistol - Black .22LR 3.6" B — 9816b 283x243 sha=3fc75c19455b
+  + Norma 6.5 PRC 140 PSP Pointed Softpoint Whitetai — 30664b 822x314 sha=649cb775bfd4
+  + Bushnell TRS-26 1x26 Red Dot Aimpoint Base, Blac — 44248b 1186x751 sha=b6e3474df798
+  ... 25/29  ok=25 fail=0
   x Vortex Crossfire II Solar 2 MOA Red Dot with Mot — image not downloadable
   x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
   x B&T XH-556 SC 5.56 NATO 223 Suppressor 5" Titani — image not downloadable
   x ORTHOS Raider S4 12 Gauge 18.5" 6rd - FDE - $128 — image not downloadable
 
-fixed 10, failed 4  (71% success)
-distinct images: 10 across 10 deals
+fixed 25, failed 4  (86% success)
+distinct images: 25 across 25 deals
 PASS — no image shared between products
