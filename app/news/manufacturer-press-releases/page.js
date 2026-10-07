@@ -1,5 +1,6 @@
 import Masthead       from '../../../components/layout/Masthead'
 import Footer         from '../../../components/layout/Footer'
+import PageHero      from '../../../components/home/PageHero'
 import BreakingTicker from '../../../components/layout/BreakingTicker'
 import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import PressStyles    from '../../../components/press/PressStyles'
@@ -78,18 +79,17 @@ export default async function PressReleasesPage({ searchParams }) {
       <PressStyles />
       <PressKeys newer={newerHref} older={olderHref} />
 
-      <div className="page-hero" data-title="PRESS" id="pr-top">
-        <div className="container">
-          <h1 className="page-hero-title">Manufacturer Press Releases</h1>
-          <p className="page-hero-sub">Straight from the makers. New announcements from the major US firearm manufacturers, rewritten for readers and linked back to the original release.</p>
-          <div className="pr-pills">
-            <span className="pr-pill pr-pill-live">● UPDATED TWICE WEEKLY</span>
-            <span className="pr-pill"><b>{PRESS_SOURCES.length}</b> MANUFACTURERS TRACKED</span>
-            {hasLive && <span className="pr-pill"><b>{facets.total}</b> RELEASES</span>}
-            {facets.latest && <span className="pr-pill">LATEST {timeAgo(facets.latest).toUpperCase()}</span>}
-          </div>
+      <PageHero id="pr-top"
+        eyebrow="From the makers"
+        title={<>Manufacturer <span>press releases.</span></>}
+        sub="Straight from the makers. New announcements from the major US firearm manufacturers, rewritten for readers and linked back to the original release.">
+        <div className="pr-pills" style={{ marginBottom: 0 }}>
+          <span className="pr-pill pr-pill-live">● UPDATED TWICE WEEKLY</span>
+          <span className="pr-pill"><b>{PRESS_SOURCES.length}</b> MANUFACTURERS TRACKED</span>
+          {hasLive && <span className="pr-pill"><b>{facets.total}</b> RELEASES</span>}
+          {facets.latest && <span className="pr-pill">LATEST {timeAgo(facets.latest).toUpperCase()}</span>}
         </div>
-      </div>
+      </PageHero>
 
       {hasLive && (
         <PressFilterBar brands={facets.brands} activeBrand={brand} activeKind={kind} month={month} total={facets.total} />

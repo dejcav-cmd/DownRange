@@ -3,6 +3,7 @@ import { useState, useCallback, useEffect, useMemo } from 'react'
 import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import PageHero from '../../components/home/PageHero'
 
 const PER_PAGE = 24  // videos per page in browse grid
 
@@ -200,29 +201,10 @@ export default function VideoPageClient({ videos = [], alerts = [], initialSort 
       <Masthead />
 
       {/* ── PAGE HERO ── */}
-      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 20% 50%, rgba(200,146,42,0.07) 0%, transparent 55%)', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'50%', overflow:'hidden', opacity:0.04, pointerEvents:'none' }}>
-          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'18vw', color:'var(--gold)', lineHeight:0.85, textAlign:'right', paddingRight:'20px', paddingTop:'10px' }}>VIDEO</div>
-        </div>
-        <div className="container" style={{ position:'relative' }}>
-          <div style={{ maxWidth:640 }}>
-            <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap', alignItems:'center' }}>
-              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>FIREARMS VIDEO</span>
-              <span style={{ display:'flex', alignItems:'center', gap:5, background:'#1a0a00', color:'#C8922A', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid rgba(200,146,42,.3)' }}>
-                ▶ {videos.length} VIDEOS
-              </span>
-            </div>
-            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
-              DownRange<br />
-              <span style={{ color:'var(--gold)' }}>Video Library</span>
-            </h1>
-            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
-              The latest firearms videos from trusted channels, in one feed. Updated every 4 hours.
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHero
+        eyebrow={`Video library · ${videos.length} videos`}
+        title={<>DownRange <span>video library.</span></>}
+        sub="The latest firearms videos from trusted channels, in one feed. Updated every 4 hours." />
 
       {/* ── STICKY NAV BAR — matches News pattern ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Masthead from '../../components/layout/Masthead'
+import PageHero from '../../components/home/PageHero'
 import Footer from '../../components/layout/Footer'
 
 export const revalidate = 86400
@@ -98,14 +99,10 @@ export default function SecondAmendmentPage() {
 @media(max-width:640px){.sa-grid{grid-template-columns:1fr}.sa-hero{padding:44px 16px 38px}.sa-p{font-size:16px}}
 `}</style>
 
-      <header className="sa-hero">
-        <div className="sa-eyebrow">The Bill of Rights · Amendment II</div>
-        <h1 className="sa-h1">Shall not <span>be infringed.</span></h1>
-        <blockquote className="sa-quote" style={{ margin: '0 auto' }}>
-          &ldquo;A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed.&rdquo;
-        </blockquote>
-        <div className="sa-cite">U.S. Constitution · ratified December 15, 1791</div>
-      </header>
+      <PageHero
+        eyebrow="The Bill of Rights · Amendment II"
+        title={<>Shall not <span>be infringed.</span></>}
+        sub={<>&ldquo;A well regulated Militia, being necessary to the security of a free State, the right of the people to keep and bear Arms, shall not be infringed.&rdquo; <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'var(--text-dim)', display:'block', marginTop:10 }}>U.S. Constitution · ratified December 15, 1791</span></>} />
 
       <main className="sa-wrap">
         <section className="sa-sec" aria-labelledby="sa-why">

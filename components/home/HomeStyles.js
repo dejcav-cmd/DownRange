@@ -1,23 +1,6 @@
 export default function HomeStyles() {
   return (
     <style>{`
-.hh{position:relative;overflow:hidden;background:linear-gradient(90deg,rgba(9,9,11,.94) 0%,rgba(9,9,11,.78) 38%,rgba(9,9,11,.18) 78%,rgba(9,9,11,.05) 100%),linear-gradient(0deg,rgba(9,9,11,.85) 0%,rgba(9,9,11,0) 38%),url(/img/home-hero.jpg) 70% center/cover no-repeat,#09090B;border-bottom:1px solid var(--border)}
-.hh-in{position:relative;padding:72px 16px 40px;min-height:430px;display:flex;flex-direction:column;justify-content:flex-end}
-.hh-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
-.hh-title{font-family:'Bebas Neue',cursive;font-weight:400;font-size:clamp(3.2rem,9vw,6.6rem);line-height:.92;letter-spacing:.015em;color:var(--text);margin:0 0 16px}
-.hh-title span{color:var(--gold)}
-.hh-sub{max-width:640px;font-size:clamp(15px,2vw,18px);line-height:1.55;color:var(--text-muted);margin:0 0 24px}
-.hh-cta{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-bottom:28px}
-.hh-btn{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:16px;letter-spacing:.1em;text-transform:uppercase;text-decoration:none;color:var(--text);border:1px solid var(--border-mid);padding:12px 20px;min-height:44px;display:inline-flex;align-items:center;transition:border-color .15s,background .15s}
-.hh-btn:hover{border-color:var(--gold)}
-.hh-btn-main{background:var(--gold);border-color:var(--gold);color:#09090B}
-.hh-btn-main:hover{background:var(--gold-light)}
-.hh-btn-ghost{border-color:transparent;color:var(--gold);padding-left:6px}
-.hh-chips{list-style:none;margin:0;padding:18px 0 0;border-top:1px solid var(--border);display:flex;flex-wrap:wrap;gap:10px 34px}
-.hh-chips li{display:flex;align-items:baseline;gap:8px}
-.hh-chips b{font-family:'Bebas Neue',cursive;font-weight:400;font-size:30px;color:var(--gold);line-height:1}
-.hh-chips span{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--text-dim)}
-@media(max-width:600px){.hh{background:linear-gradient(0deg,rgba(9,9,11,.97) 0%,rgba(9,9,11,.86) 45%,rgba(9,9,11,.35) 100%),url(/img/home-hero-sm.jpg) 72% top/cover no-repeat,#09090B}.hh-in{padding:120px 16px 26px;min-height:0}.hh-btn{flex:1 1 auto;justify-content:center}.hh-btn-ghost{flex-basis:100%;justify-content:flex-start}}
 .hr-sec{padding:34px 0 8px;background:var(--bg);border-bottom:1px solid var(--border)}
 .hr-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:14px}
 .hr-title{font-family:'Bebas Neue',cursive;font-size:clamp(1.9rem,4vw,2.6rem);letter-spacing:.03em;line-height:1;color:var(--text);margin:0}
