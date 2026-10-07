@@ -36,7 +36,8 @@ export default function ToolShell({ path, name, headline, accent, intro, descrip
 }
 
 const CSS = `
-.tl-hero{padding:46px 0 30px;background:radial-gradient(900px 300px at 80% -20%,rgba(200,146,42,.16),transparent 60%),var(--bg);border-bottom:1px solid var(--border)}
+.tl-hero{padding:56px 0 40px;min-height:400px;display:flex;align-items:flex-end;background:linear-gradient(90deg,#09090B 0%,#09090B 40%,rgba(9,9,11,.5) 55%,rgba(9,9,11,0) 72%),linear-gradient(0deg,rgba(9,9,11,.5) 0%,rgba(9,9,11,0) 25%),url(/img/tools-hero.jpg) right center/auto 100% no-repeat,#09090B;border-bottom:1px solid var(--border)}
+.tl-hero>.container{width:100%}
 .tl-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 .tl-h1{font-family:'Bebas Neue',cursive;font-weight:400;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.95;margin:0 0 12px;color:var(--text)}
 .tl-h1 span{color:var(--gold)}
@@ -61,5 +62,5 @@ const CSS = `
 .tl-link p{font-size:14px;line-height:1.5;color:var(--text-muted);margin:0}
 .tl-link i{display:inline-block;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#09090B;background:var(--gold);padding:2px 6px;margin-bottom:8px}
 @media(max-width:900px){.tl-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.tl-grid,.tl-links{grid-template-columns:1fr}.tl-hero{padding:32px 0 22px}}
+@media(max-width:700px){.tl-grid,.tl-links{grid-template-columns:1fr}.tl-hero{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/tools-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(60vw + 10px) 0 24px;min-height:0}}
 `
