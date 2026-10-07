@@ -29,6 +29,7 @@ import { gunDeal } from './gunDeal'
 import newsletterSubscriber from './newsletterSubscriber'
 import newsletterSchedule from './newsletterSchedule'
 import { newsletterDraft } from './newsletterDraft'
+import { pressRelease, pressPullState } from './pressRelease'
 
 export const schemaTypes = [
   feedConfig,
@@ -51,4 +52,6 @@ export const schemaTypes = [
   newsletterSubscriber,
   newsletterSchedule,
   newsletterDraft,
+  pressRelease,
+  pressPullState,
 ]

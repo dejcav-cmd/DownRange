@@ -8,7 +8,13 @@ import { usePathname } from 'next/navigation'
 
 const NAV = [
   { label: 'Home', href: '/', icon: '◉', exact: true },
-  { label: 'News', href: '/news' },
+  {
+    label: 'News', href: '/news',
+    children: [
+      { label: '📰 Latest News',                   href: '/news',                          desc: 'Breaking stories and daily coverage' },
+      { label: '🏭 Manufacturer Press Releases',   href: '/news/manufacturer-press-releases', desc: 'New announcements straight from the makers' },
+    ]
+  },
   {
     label: 'Laws', href: '/laws',
     children: [

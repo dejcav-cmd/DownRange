@@ -1,0 +1,48 @@
+name: Press Releases Pull
+
+# Runs the manufacturer press release pull against production.
+# - Automatically once when this file lands on main (first pull).
+# - Manually any time from the Actions tab.
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/press-releases-first-pull.yml'
+  workflow_dispatch:
+    inputs:
+      brand:
+        description: 'Optional: only this manufacturer (exact name, e.g. Ruger)'
+        required: false
+        default: ''
+
+jobs:
+  pull:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Wait for the deploy to go live
+        if: github.event_name == 'push'
+        run: sleep 240
+
+      - name: Pull until every manufacturer is processed
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          BRAND: ${{ github.event.inputs.brand }}
+        run: |
+          set -u
+          for round in 1 2 3 4 5 6 7 8; do
+            echo "=== round $round ==="
+            if [ -n "$BRAND" ]; then Q="?max=24&brand=$(python3 -c 'import urllib.parse,os;print(urllib.parse.quote(os.environ["BRAND"]))')"; else Q="?max=24"; fi
+            code=$(curl -s -o out.json -w '%{http_code}' --max-time 295 \
+              -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/cron/press-releases$Q" || echo 000)
+            echo "HTTP $code"
+            head -c 1500 out.json || true; echo
+            if [ "$code" != "200" ]; then
+              # endpoint not live yet (deploy still building) or transient error: wait and retry
+              sleep 120; continue
+            fi
+            if python3 -c 'import json,sys; d=json.load(open("out.json")); sys.exit(0 if d.get("done") or not d.get("remaining") else 1)'; then
+              echo "All manufacturers processed."; exit 0
+            fi
+          done
+          echo "Stopped after 8 rounds; the next scheduled run (Tue/Fri) continues the rest."

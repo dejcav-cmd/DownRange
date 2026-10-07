@@ -47,6 +47,9 @@ const ALL_JOBS = [
   { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 6 * * 1,4',
     label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
     desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
+  { id:'press-releases', path:'/api/cron/press-releases', schedule:'30 5 * * 2,5',
+    label:'Manufacturer Press Releases', group:'Content', icon:'🏭', critical:false,
+    desc:'Tuesday + Friday 5:30am UTC — pulls new press releases from 30 US firearm manufacturers, writes articles linked to the original, publishes to News → Manufacturer Press Releases.' },
   // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
   // {type: 'canada'|'brazil'|'both'} body param (no default cron would send this usefully).
   // Manual admin tool, not a scheduled job. Was showing permanent false OVERDUE.

@@ -17,6 +17,7 @@ const VideoManager          = L(() => import('../../components/admin/VideoManage
 const NewsletterManager     = L(() => import('../../components/admin/NewsletterManager'))
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
 const ReleaseManager        = L(() => import('../../components/admin/ReleaseManager'))
+const PressReleaseManager   = L(() => import('../../components/admin/PressReleaseManager'))
 const OperationsPanel        = L(() => import('../../components/admin/OperationsPanel'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
 const BrazilManager         = L(() => import('../../components/admin/BrazilManager'))
@@ -53,6 +54,7 @@ const NAV = [
       { id:'hub',          label:'Hub',              icon:'◈'  },
       { id:'news',         label:'News Articles',    icon:'📰' },
       { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
+      { id:'press',        label:'Press Releases',   icon:'🏭', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍'  },
       { id:'deals',        label:'Deals',            icon:'🔥' },
       { id:'canada',       label:'Canada',           icon:'🇨🇦' },
@@ -392,6 +394,7 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
   const contentSections = [
     { label:'News Articles', icon:'📰', url:'/news',        editFn:()=>{ setSection('content'); setPanel('news') } },
     { label:'Gun Releases',  icon:'🔫', url:'/releases',    editFn:()=>{ setSection('content'); setPanel('releases') } },
+    { label:'Press Releases', icon:'🏭', url:'/news/manufacturer-press-releases', editFn:()=>{ setSection('content'); setPanel('press') } },
     { label:'Blog Posts',    icon:'✍',  url:'/blog',        editFn:()=>{ setSection('content'); setPanel('blog') } },
     { label:'Canada',        icon:'🇨🇦', url:'/canada',      editFn:()=>{ setSection('content'); setPanel('canada') } },
     { label:'Brasil',        icon:'🇧🇷', url:'/brazil',      editFn:()=>{ setSection('content'); setPanel('brazil') } },
@@ -3063,6 +3066,7 @@ export default function AdminPage() {
             {panel==='cleanup'      && <ContentCleanup     adminKey={adminKey} />}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
+            {panel==='press'        && <PressReleaseManager adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
             {panel==='canada'       && <CanadaManager       adminKey={adminKey} />}
             {panel==='brazil'       && <BrazilManager       adminKey={adminKey} />}
