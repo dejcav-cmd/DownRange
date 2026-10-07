@@ -1,97 +1,62 @@
-import { preload } from 'react-dom'
 import Masthead from '../components/layout/Masthead'
 import Footer from '../components/layout/Footer'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
-import StateBriefing from '../components/sections/StateBriefing'
+import HomeStyles from '../components/home/HomeStyles'
+import { NewsSection, DealsSection, PressSection } from '../components/home/HomeSections'
 import Link from 'next/link'
-import { fetchArticles, fetchReleases, fetchAllStateProfiles, client } from '../sanity/lib/client'
-import { extractCapacity } from '../lib/gunCompliance'
+import { fetchArticles, client } from '../sanity/lib/client'
+import { getPressPage } from '../lib/pressData'
 
 export const revalidate = 120
 
 export const metadata = {
-  title: 'DownRange — Gun & Ammo Deals Checked Against Your State',
-  description: 'The only 2A hub that checks every gun & ammo deal, release, and law against your state. Live deals, NFA wait times, ballistics tools, and state-filtered news. Free weekly briefing.',
+  title: 'DownRange — Gun & Ammo Deals, News and Press Releases',
+  description: 'Latest firearms news, the newest gun and ammo deals, and manufacturer press releases, checked against your state. Free weekly briefing.',
   alternates: { canonical: 'https://www.downrangeco.com' },
 }
 
-// Suppressors illegal to own for civilians in these states
-const BAN_SUPP = new Set(['CA', 'DE', 'HI', 'IL', 'MA', 'NJ', 'NY', 'RI'])
-
-// Fallback if state profiles fail to load
-const SEED_STATES = [
-  { abbr:'CA', name:'California', grade:'F',  carry:false, mag:10,  awbFull:false, awbRestricted:true,  suppLegal:false, rf:true  },
-  { abbr:'FL', name:'Florida',    grade:'B+', carry:true,  mag:null, awbFull:false, awbRestricted:false, suppLegal:true,  rf:true  },
-  { abbr:'NY', name:'New York',   grade:'F',  carry:false, mag:10,  awbFull:true,  awbRestricted:false, suppLegal:false, rf:true  },
-  { abbr:'TX', name:'Texas',      grade:'A',  carry:true,  mag:null, awbFull:false, awbRestricted:false, suppLegal:true,  rf:false },
-]
-
-// Infer the legality-relevant category from a deal title
-function inferCat(title = '') {
-  const t = title.toLowerCase()
-
-  // 1. Suppressors — unambiguous
-  if (/suppressor|silencer|\bnfa\b|form ?4/.test(t)) return 'SUPPRESSOR'
-
-  // 2. Magazines — checked BEFORE firearm brands so "Glock 17 Magazine" → MAGAZINE
-  // Matches: "magazine", "pmag", "30rd mag", "100rd drum", "feed device"
-  // Does NOT match: ".22 Mag", ".357 Mag", ".44 Mag" (caliber designations)
-  if (/\bmagazine\b|\bpmag\b|\bdrum mag\b|\bfeed device\b|\b\d+.?rd mag\b|\b\d+.?round mag\b|\b\d+.?rd drum\b/.test(t)) return 'MAGAZINE'
-
-  // 3. Handguns — specific type words + major brands (Ruger scoped to handgun models only)
-  if (/\brevolver\b|\bpistol\b|\bhandgun\b|\bderringer\b/.test(t)) return 'HANDGUN'
-  if (/\bglock\b|\bp365\b|\bp320\b|\bp226\b|\bp229\b|\bm&p\b|\bshield\b|\bhellcat\b|\bechelon\b|\bxd\b|\bxdm\b/.test(t)) return 'HANDGUN'
-  if (/\b1911\b|\b2011\b|\bberetta\b|\btaurus g\d|\bgx4\b|\bapx\b|\bwalther\b|\bppq\b|\bpdp\b|\bpps\b/.test(t)) return 'HANDGUN'
-  if (/\bkimber\b|\bspringfield armory\b|\bsig sauer\b|\bfn 509\b|\bfn five\b/.test(t)) return 'HANDGUN'
-  if (/\bnaa\b|north american arms|\bruger lcp\b|\bruger max\b|\bruger security\b|\bruger-57\b|\bruger sr\d/.test(t)) return 'HANDGUN'
-
-  // 4. Rifles & long guns (Ruger without handgun model = rifle; 10/22 explicit)
-  if (/ar-?15|ak-?47|\brifle\b|\bcarbine\b|\bsbr\b|lower receiver|\bm4\b|\bm16\b/.test(t)) return 'RIFLE'
-  if (/\bmini-?14\b|\bscar\b|bolt.action|lever.action|\b10\/22\b|\bruger american\b|\bruger precision\b/.test(t)) return 'RIFLE'
-  if (/\bshotgun\b|\bmossberg\b|\bremington 870\b|\bbenelli\b|\bberetta a300\b|\bberetta a400\b/.test(t)) return 'RIFLE'
-
-  // 5. Ammo — after all firearm checks so "9mm Glock pistol" → HANDGUN above, "9mm 1000rds" → AMMO
-  if (/\bammo\b|\bammunition\b|\bfmj\b|\bjhp\b|\bhollow.?point\b/.test(t)) return 'AMMO'
-  if (/\b9mm\b|\b5\.56\b|\.223\s*rem|\b\.308\b|\b7\.62\b|\b6\.5\s*creedmoor\b|\b300\s*blk\b|\b\.380\b|\b10mm\b/.test(t)) return 'AMMO'
-  if (/\b\.45\s*acp\b|\b\.44\s*mag\b|\b\.357\s*mag\b|\b\.38\s*spl\b|\b\.22\s*lr\b|\b\.22\s*wmr\b/.test(t)) return 'AMMO'
-  if (/\b\d+\s?gr(ain)?\b|\bper round\b|\bcase of \d|\b\d+\s*rounds?\b|\bbulk pack\b/.test(t)) return 'AMMO'
-
-  return 'GENERAL'
-}
-
-function cleanDealTitle(t = '') {
-  return t.replace(/^\[(handgun|rifle|shotgun|ammo|optic|nfa|accessories|gear|deals?|other)\]\s*/i, '').trim()
-}
-
-// gun.deals images are hotlink-blocked → route through our proxy
+// gun.deals images are hotlink-blocked, so route them through our proxy
 function proxyImg(url) {
   if (!url) return null
   try {
     const host = new URL(url).hostname.replace(/^www\./, '')
-    if (host === 'gun.deals') return `/api/img-proxy?url=${encodeURIComponent(url)}`
+    if (host === 'gun.deals') return '/api/img-proxy?url=' + encodeURIComponent(url)
   } catch { /* ignore */ }
   return url
 }
 
-async function fetchBriefingDeals() {
-  try {
-    const rows = await client.fetch(
-      `*[_type=="gunDeal" && approved==true && defined(imageUrl) && imageUrl match "*cdn.sanity.io*"] | order(publishedAt desc)[0..119]{
-        _id, title, price, imageUrl, externalUrl, source
-      }`
-    )
-    return (rows || []).map(d => ({
-      cat:              inferCat(d.title),
-      brand:            d.source || 'gun.deals',
-      name:             cleanDealTitle(d.title || ''),
-      price:            d.price || null,
-      url:              d.externalUrl || '/deals',
-      imageUrl:         proxyImg(d.imageUrl),
-      detectedCapacity: extractCapacity(d.title || ''),
-    })).filter(d => d.name)
-  } catch (e) {
-    return []
-  }
+const cleanDealTitle = (t = '') => t.replace(/^\[(handgun|rifle|shotgun|ammo|optic|nfa|accessories|gear|deals?|other)\]\s*/i, '').trim()
+
+// Rule: every card has a real image. Items without one are skipped, never given a placeholder.
+async function loadNews() {
+  const rows = await fetchArticles(40)
+  return (rows || [])
+    .filter(a => a.slug?.current)
+    .filter(a => !((a.source || '').toLowerCase().includes('ammoland') || a.category === 'deals'))
+    .map(a => ({
+      _id: a._id, title: a.title, slug: a.slug.current, category: a.category, source: a.source,
+      summary: a.summary || a.excerpt || '', publishedAt: a.publishedAt,
+      image: a.heroImage?.asset?.url || (a.imageUrl && a.imageUrl.includes('cdn.sanity.io') ? a.imageUrl : null),
+    }))
+    .filter(a => a.image)
+    .slice(0, 8)
+}
+
+// Latest 10 deals, newest first
+async function loadDeals() {
+  const rows = await client.fetch(
+    `*[_type=="gunDeal" && approved==true && defined(imageUrl) && imageUrl match "*cdn.sanity.io*" && defined(externalUrl)] | order(publishedAt desc)[0..9]{
+      _id, title, price, imageUrl, externalUrl, source, store, summary, publishedAt
+    }`, {}, { next: { revalidate: 120 } })
+  return (rows || []).map(d => ({
+    _id: d._id, title: cleanDealTitle(d.title), price: d.price || null, image: proxyImg(d.imageUrl),
+    url: d.externalUrl, source: d.source, store: d.store, summary: d.summary || '', publishedAt: d.publishedAt,
+  })).filter(d => d.title)
+}
+
+async function loadPress() {
+  const { items } = await getPressPage({ page: 1 })
+  return (items || []).filter(p => p.image).slice(0, 8)
 }
 
 const TOOLS = [
@@ -103,42 +68,26 @@ const TOOLS = [
 ]
 
 export default async function HomePage() {
-  // Hero background is the homepage LCP element (Lighthouse mobile: 12.5s). Preload it
-  // so the browser fetches it with the HTML instead of after the CSS/JS.
-  preload('/img/photos/military.jpg', { as: 'image', fetchPriority: 'high' })
-  const [articles, releases, stateProfiles, briefingDeals] = await Promise.allSettled([
-    fetchArticles(24), fetchReleases(6), fetchAllStateProfiles(), fetchBriefingDeals(),
-  ]).then(r => r.map(p => (p.status === 'fulfilled' ? p.value : [])))
-
-  const built = (stateProfiles || []).map(p => {
-    const awb = (p.awbStatus || '').toLowerCase()
-    return {
-      abbr: p.abbr, name: p.name, grade: p.rating,
-      carry: !!p.constitutionalCarry, mag: p.magLimit || null,
-      awbFull: awb === 'full', awbRestricted: awb === 'banned',
-      suppLegal: !BAN_SUPP.has(p.abbr), rf: !!p.redFlagLaw,
-    }
-  }).filter(s => s.abbr && s.name).sort((a, b) => a.name.localeCompare(b.name))
-  const states = built.length >= 10 ? built : SEED_STATES
-
-  const news = (articles || [])
-    .filter(a => {
-      const redirects = (a.source || '').toLowerCase().includes('ammoland') || a.category === 'deals'
-      return !redirects || a.externalUrl   // drop redirect-bound articles that have no real link
-    })
-    .slice(0, 24)
-    .map(a => ({
-      _id: a._id, title: a.title, source: a.source, category: a.category,
-      slug: a.slug?.current || null, tags: a.tags || [], publishedAt: a.publishedAt || null,
-      externalUrl: a.externalUrl || null,
-    }))
+  const [news, deals, press] = await Promise.allSettled([loadNews(), loadDeals(), loadPress()])
+    .then(r => r.map(p => (p.status === 'fulfilled' ? p.value : [])))
 
   return (
     <>
       <Masthead />
+      <HomeStyles />
 
-      {/* THE PAGE: one state-aware briefing */}
-      <StateBriefing states={states} deals={briefingDeals} articles={news} heroImage="/img/photos/military.jpg" />
+      <NewsSection items={news} />
+      <DealsSection items={deals} />
+      <PressSection items={press} />
+
+      <section style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
+        <div className="container">
+          <div className="hr-state">
+            <span>Gun laws differ by state. Check yours before you buy or carry.</span>
+            <Link href="/laws/my-state">CHECK MY STATE →</Link>
+          </div>
+        </div>
+      </section>
 
       {/* SECONDARY — quiet tools row */}
       <section style={{ padding:'28px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>

@@ -60,6 +60,7 @@ const NAV = [
       { label: '🇧🇷 Brasil',            href: '/brazil', desc: 'CAC, Estatuto, legislação BR' },
     ]
   },
+  { label: '💰 Deals', href: '/deals' },
   { label: 'Blog', href: '/blog' },
   { label: '📺 Video',     href: '/video'     },
   { label: '🏆 Giveaways', href: '/giveaways' },
