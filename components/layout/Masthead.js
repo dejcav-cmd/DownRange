@@ -15,6 +15,20 @@ const NAV = [
     ]
   },
   { label: '💰 Deals', href: '/deals' },
+  {
+    label: '🎯 Tools', href: '/tools',
+    children: [
+      { label: '🎯 Precision Calculator',  href: '/ballistics',            desc: '188 match and hunting bullets, G1/G7, wind, DOPE card' },
+      { label: '🔭 Scope & Mil Tools',     href: '/tools/scope-tools',     desc: 'MOA/MRAD, range from mils, slope angle, clicks' },
+      { label: '💵 Ammo Cost Calculator',  href: '/tools/ammo-cost',       desc: 'Cost per round, per year, factory vs reloading' },
+      { label: '⏱️ NFA Wait Times',        href: '/nfa-tracker',           desc: 'Live Form 4 approval times' },
+      { label: '📍 FFL Finder',            href: '/ffl-finder',            desc: 'Transfer dealers near you' },
+      { label: '🏟️ Range Finder',          href: '/ranges',                desc: 'Shooting ranges near you' },
+      { label: '🛡️ Carry Insurance',       href: '/carry-insurance',       desc: 'Compare concealed carry coverage' },
+      { label: '🗺️ My State Laws',         href: '/laws/my-state',         desc: 'Carry, magazine and transport rules for your state' },
+      { label: 'All tools →',              href: '/tools',                 desc: 'Every DownRange tool in one place' },
+    ]
+  },
   { label: 'Blog', href: '/blog' },
   { label: '📺 Videos',    href: '/video'     },
   { label: '🏆 Giveaways', href: '/giveaways' },
@@ -156,8 +170,9 @@ export default function Masthead() {
         </div>
 
         {/* ── Desktop nav ── */}
-        <nav className="nav-desktop" style={{ borderTop:'1px solid #1F2428', display:'flex', alignItems:'stretch' }}>
-          <ul style={{ display:'flex', listStyle:'none', flex:1, margin:0, padding:0 }}>
+        <nav className="nav-desktop" style={{ borderTop:'1px solid #1F2428', display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'stretch' }}>
+          <div aria-hidden="true" />
+          <ul style={{ display:'flex', justifyContent:'center', listStyle:'none', margin:0, padding:0 }}>
             {NAV.filter(item => !hiddenNav.includes(item.label)).map(item => {
               const active = isActive(item)
               const hasChildren = item.children?.length > 0
@@ -188,7 +203,7 @@ export default function Masthead() {
               )
             })}
           </ul>
-          <div style={{ padding:'0 12px', display:'flex', alignItems:'center', gap:'10px', borderLeft:'1px solid #1F2428' }}>
+          <div style={{ padding:'0 12px', display:'flex', alignItems:'center', justifyContent:'flex-end', gap:'10px' }}>
             <button
               onClick={() => setFeedbackOpen(true)}
               style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'13px', fontWeight:700, letterSpacing:'0.1em', textTransform:'uppercase', padding:'6px 14px', cursor:'pointer', whiteSpace:'nowrap' }}
