@@ -28,6 +28,7 @@ const STATIC_PAGES = [
   // Core — highest traffic
   { url: BASE,                          priority: 1.0,  changeFrequency: 'daily' },
   { url: `${BASE}/news`,                priority: 0.9,  changeFrequency: 'hourly' },
+  { url: `${BASE}/news/manufacturer-press-releases`, priority: 0.8, changeFrequency: 'daily' },
   { url: `${BASE}/laws`,                priority: 0.9,  changeFrequency: 'daily' },
   { url: `${BASE}/laws/federal`,        priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/laws/states`,         priority: 0.85, changeFrequency: 'weekly' },
@@ -75,7 +76,7 @@ const STATIC_PAGES = [
 
 export default async function sitemap() {
   try {
-    const [articles, blogPosts, releases, stateProfiles, canada, brazil] = await Promise.all([
+    const [articles, blogPosts, releases, stateProfiles, canada, brazil, pressReleases] = await Promise.all([
       // No cap: the old [0...2000] silently dropped ~470 older articles
       sanity.fetch(
         `*[_type == "newsArticle" && approved == true && defined(slug.current)]
@@ -99,6 +100,10 @@ export default async function sitemap() {
         `*[_type == "brazilContent" && type == "artigo" && active == true && defined(slug.current)]
          | order(publishedAt desc) { slug, publishedAt, _createdAt }`
       ).catch(() => []),
+      sanity.fetch(
+        `*[_type == "pressRelease" && approved == true && defined(slug.current)]
+         | order(publishedAt desc) [0...5000] { slug, publishedAt }`
+      ).catch(() => []),
     ])
 
     // lastmod must be a real content date. It used to be NOW (every static/state/gun page
@@ -112,6 +117,13 @@ export default async function sitemap() {
       lastModified:    d(a.publishedAt),
       priority:        0.7,
       changeFrequency: 'weekly',
+    }))
+
+    const pressUrls = pressReleases.map(p => ({
+      url:             `${BASE}/news/manufacturer-press-releases/${p.slug.current}`,
+      lastModified:    d(p.publishedAt),
+      priority:        0.6,
+      changeFrequency: 'monthly',
     }))
 
     const blogUrls = blogPosts.map(p => ({
@@ -166,6 +178,7 @@ export default async function sitemap() {
       ...gunUrls,
       ...stateNewsUrls,
       ...articleUrls,
+      ...pressUrls,
       ...blogUrls,
       ...releaseUrls,
       ...intlUrls,

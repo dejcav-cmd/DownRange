@@ -49,6 +49,10 @@
       "schedule": "0 6 * * 1,4"
     },
     {
+      "path": "/api/cron/press-releases",
+      "schedule": "30 5 * * 2,5"
+    },
+    {
       "path": "/api/admin/backup",
       "schedule": "0 10 * * *"
     },
@@ -302,6 +306,9 @@
       "maxDuration": 300
     },
     "app/api/cron/weekly-gun-releases/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/cron/press-releases/route.js": {
       "maxDuration": 300
     },
     "app/api/admin/backfill-releases/route.js": {
