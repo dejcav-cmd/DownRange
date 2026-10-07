@@ -5,6 +5,7 @@ import { fetchBreakingAlerts } from '../../../sanity/lib/client'
 import PressStyles    from '../../../components/press/PressStyles'
 import PressFilterBar from '../../../components/press/PressFilterBar'
 import PressCard      from '../../../components/press/PressCard'
+import PressGrid      from '../../../components/press/PressGrid'
 import PressPager     from '../../../components/press/PressPager'
 import PressKeys      from '../../../components/press/PressKeys'
 import { getPressPage, getPressFacets } from '../../../lib/pressData'
@@ -41,7 +42,7 @@ export default async function PressReleasesPage({ searchParams }) {
 
   const [alerts, data, facets] = await Promise.all([
     fetchBreakingAlerts(5).catch(() => []),
-    getPressPage({ page, brand, kind, month }).catch(() => ({ items: [], total: 0, pages: 1, page: 1 })),
+    getPressPage({ page, brand, kind, month, featured: !brand && !kind && !month }).catch(() => ({ items: [], total: 0, pages: 1, page: 1 })),
     getPressFacets().catch(() => ({ total: 0, brands: [], months: [], kinds: {}, latest: null })),
   ])
 
@@ -117,11 +118,7 @@ export default async function PressReleasesPage({ searchParams }) {
                 <span>Page {page} / {pages}</span>
               </div>
               {featured && <PressCard item={featured} featured />}
-              {rest.length > 0 && (
-                <div className="pr-grid" style={featured ? { marginTop: 18 } : undefined}>
-                  {rest.map(it => <PressCard key={it._id} item={it} />)}
-                </div>
-              )}
+              <PressGrid items={rest} style={featured ? { marginTop: 18 } : undefined} />
               <PressPager page={page} pages={pages} total={total} brand={brand} kind={kind} month={month} months={facets.months} />
             </>
           )}
