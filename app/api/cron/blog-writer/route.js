@@ -256,8 +256,9 @@ async function writeArticle(topicData) {
   // Real, topic-relevant image — searched and uploaded to the Sanity CDN, not
   // a generic hotlinked stock photo. If the search comes back empty, we skip
   // this run rather than publish with no image or a wrong one.
+  // Releases posts must use a real release image. Never a stock search.
   const imageUrl = topicData.imageUrl
-    || await fetchAndUploadImage(topicData.imageQuery, slug).catch(() => null)
+    || (topicData.requireRealImage ? null : await fetchAndUploadImage(topicData.imageQuery, slug, topicData.imageTopic).catch(() => null))
   if (!imageUrl) {
     console.error('[blog-writer] no image found for', slug)
     return null
@@ -343,7 +344,8 @@ async function buildReleasesTopic(used) {
      { brand, model, category, caliber, msrp, summary, "slug": slug.current, "img": heroImage.asset->url }`,
     { since }
   ).catch(() => [])
-  const fresh = (rows || []).filter(r => !used.has('release:' + r.slug) && r.brand && r.model)
+  // Only releases with a real image: the post hero must be a real product photo
+  const fresh = (rows || []).filter(r => !used.has('release:' + r.slug) && r.brand && r.model && r.img)
   if (fresh.length < 2) return null
   const picks = fresh.slice(0, 5)
   const names = picks.map(r => `${r.brand} ${r.model}`)
@@ -358,6 +360,8 @@ async function buildReleasesTopic(used) {
     tags: ['New Releases', ...picks.map(r => r.brand)].slice(0, 6),
     imageUrl: picks.find(r => r.img)?.img || null,
     imageQuery: `${names[0]} firearm`,
+    imageTopic: `new gun releases: ${names.join(', ')}`,
+    requireRealImage: true,
     baseSlug: `new-gun-releases-week-${new Date().toISOString().slice(0, 10)}`,
     context,
     sourceRefs: picks.map(r => 'release:' + r.slug),
