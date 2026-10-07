@@ -3,6 +3,7 @@ import { useState, useEffect, useCallback, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import PageHero from '../../components/home/PageHero'
 import EmailCapture from '../../components/ui/EmailCapture'
 import { sendGAEvent } from '@next/third-parties/google'
 import { isAWBWeapon } from '@/lib/gunCompliance'
@@ -384,48 +385,16 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
       <main style={{ background:'var(--bg)', minHeight:'100vh' }}>
 
         {/* Hero */}
-        <div className="dh" style={{ borderBottom:'1px solid var(--border)' }}>
-          <style>{`.dh{padding:72px 24px 40px;min-height:clamp(430px,34vw,700px);display:flex;align-items:flex-end;background:linear-gradient(90deg,rgba(9,9,11,.95) 0%,rgba(9,9,11,.82) 28%,rgba(9,9,11,.2) 58%,rgba(9,9,11,.05) 100%),linear-gradient(0deg,rgba(9,9,11,.8) 0%,rgba(9,9,11,0) 35%),url(/img/deals-hero.jpg) center 58%/cover no-repeat,#09090B}.dh>.container{width:100%}@media(max-width:700px){.dh{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/deals-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(66vw + 10px) 16px 28px;min-height:0}}`}</style>
-          <div className="container">
-            <div style={{ display:'flex', flexDirection:'column', alignItems:'flex-start', gap:22 }}>
-              <div>
-                <div style={{ fontFamily:MONO, fontSize:11, color:GOLD, letterSpacing:'.18em', textTransform:'uppercase', marginBottom:8 }}>
-                  {status === 'live' && (
-                    <span style={{ display:'inline-flex', alignItems:'center', gap:5, marginRight:10,
-                      color:'#22C55E', background:'#001A0A', border:'1px solid #22C55E40',
-                      padding:'2px 8px', fontSize:10 }}>
-                      <span style={{ width:5, height:5, borderRadius:'50%', background:'#22C55E',
-                        animation:'pulse 1.2s infinite', display:'inline-block' }} /> LIVE
-                    </span>
-                  )}
-                  Live Deals · Updated every 30 min
-                </div>
-                <h1 style={{ fontFamily:BEBAS, fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'.02em', lineHeight:0.95, marginBottom:12 }}>
-                  Firearms &amp; Ammo<br />
-                  <span style={{ color:GOLD }}>Best Deals Today</span>
-                </h1>
-                <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:15, color:'var(--text-muted)', lineHeight:1.6, maxWidth:500 }}>
-                  {filtered.length > 0 ? `${filtered.length} deals` : status === 'loading' ? 'Loading…' : 'No deals found'}
-                  {sources && <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563', marginLeft:8 }}>· {sources}</span>}
-                </p>
-              </div>
-              {/* Stats */}
-              <div style={{ display:'flex', gap:12, flexWrap:'wrap' }}>
-                {[
-                  ['🔥', deals.length, 'Total Deals'],
-                  ['⭐', deals.filter(d => (d.score||0) >= 300).length, 'Hot'],
-                  ['🆕', deals.filter(d => Date.now() - d.created < 3600000 * 6).length, 'Last 6h'],
-                ].map(([icon, val, label]) => (
-                  <div key={label} style={{ background:'rgba(200,146,42,.06)', border:'1px solid rgba(200,146,42,.18)', padding:'10px 18px', textAlign:'center', minWidth:72 }}>
-                    <div style={{ fontSize:18 }}>{icon}</div>
-                    <div style={{ fontFamily:BEBAS, fontSize:'1.3rem', color:GOLD, lineHeight:1 }}>{val}</div>
-                    <div style={{ fontFamily:MONO, fontSize:9, color:'#4b5563', letterSpacing:'.1em', textTransform:'uppercase', marginTop:2 }}>{label}</div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-        </div>
+        <PageHero img="/img/deals-hero.jpg" imgSm="/img/deals-hero-sm.jpg" pos="70% 58%"
+          eyebrow={<>{status === 'live' && <span className="hh-live"><span style={{ width:5, height:5, borderRadius:'50%', background:'#22C55E', animation:'pulse 1.2s infinite', display:'inline-block' }} /> LIVE</span>}Live deals · Updated every 30 min</>}
+          title={<>Firearms &amp; ammo <span>best deals today.</span></>}
+          sub={`${filtered.length > 0 ? filtered.length + ' deals' : status === 'loading' ? 'Loading…' : 'No deals found'}${sources ? ' · ' + sources : ''}`}>
+          <ul className="hh-chips">
+            <li><b>{deals.length}</b><span>total deals</span></li>
+            <li><b>{deals.filter(d => (d.score||0) >= 300).length}</b><span>hot</span></li>
+            <li><b>{deals.filter(d => Date.now() - d.created < 3600000 * 6).length}</b><span>last 6h</span></li>
+          </ul>
+        </PageHero>
 
         {/* ── STICKY TOOLBAR ── */}
         <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>

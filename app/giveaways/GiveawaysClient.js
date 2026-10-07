@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useMemo } from 'react'
+import PageHero from '../../components/home/PageHero'
 
 // ── Design tokens ─────────────────────────────────────────────────────────────
 const CAT_COLOR = {
@@ -224,75 +225,19 @@ export default function GiveawaysClient({ giveaways, isSeed, lastUpdated }) {
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
 
-      {/* ── HERO ──────────────────────────────────────────────────────── */}
-      <div style={{
-        background: 'radial-gradient(ellipse at top, rgba(200,146,42,.11) 0%, transparent 60%)',
-        borderBottom: '1px solid var(--border)',
-        padding: '44px 24px 36px',
-      }}>
-        <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-          <div style={{
-            fontFamily: "'IBM Plex Mono', monospace",
-            fontSize: 10, letterSpacing: '.2em', color: 'var(--gold)',
-            textTransform: 'uppercase', marginBottom: 10,
-          }}>
-            Updated 3× Daily{isSeed ? ' · Sample Listings' : ''}
-          </div>
-
-          <h1 style={{
-            fontFamily: "'Bebas Neue', cursive",
-            fontSize: 'clamp(3rem,7vw,5.2rem)',
-            color: 'var(--text)', letterSpacing: '.04em',
-            lineHeight: 1, margin: '0 0 10px',
-          }}>
-            GUN <span style={{ color: 'var(--gold)' }}>GIVEAWAYS</span>
-          </h1>
-
-          <p style={{
-            fontFamily: "'Barlow Condensed', sans-serif",
-            fontSize: 15, color: 'var(--text-dim)',
-            margin: '0 0 28px', maxWidth: 520, lineHeight: 1.5,
-          }}>
-            Free firearms, ammo &amp; gear from the top names in the industry —
-            verified sources only. No spam. No sketchy links.
-          </p>
-
-          {/* Stat tiles */}
-          <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>
-            {[
-              { v: clean.length,          l: 'Active'        },
-              { v: spotlight.length,      l: 'Featured'      },
-              { v: expiringSoon,          l: 'Expiring Soon' },
-              { v: '$' + Math.round(totalValue / 1000) + 'K+', l: 'Total Value' },
-            ].map(s => (
-              <div key={s.l} style={{
-                background: 'rgba(200,146,42,.06)',
-                border: '1px solid rgba(200,146,42,.15)',
-                padding: '10px 18px',
-                minWidth: 80,
-              }}>
-                <div style={{
-                  fontFamily: "'Bebas Neue', cursive",
-                  fontSize: '1.6rem', color: 'var(--gold)', lineHeight: 1,
-                }}>{s.v}</div>
-                <div style={{
-                  fontFamily: "'IBM Plex Mono', monospace",
-                  fontSize: 8, letterSpacing: '.12em',
-                  color: '#4B5563', textTransform: 'uppercase', marginTop: 3,
-                }}>{s.l}</div>
-              </div>
-            ))}
-          </div>
-
-          {lastUpdated && (
-            <div style={{
-              fontFamily: "'IBM Plex Mono', monospace",
-              fontSize: 9, color: '#374151',
-              letterSpacing: '.06em', marginTop: 14,
-            }}>LAST UPDATED · {lastUpdated}</div>
-          )}
-        </div>
-      </div>
+      {/* ── HERO ── */}
+      <PageHero
+        eyebrow={`Updated 3× daily${isSeed ? ' · Sample listings' : ''}`}
+        title={<>Gun <span>giveaways.</span></>}
+        sub="Free firearms, ammo & gear from the top names in the industry. Verified sources only. No spam. No sketchy links.">
+        <ul className="hh-chips">
+          <li><b>{clean.length}</b><span>active</span></li>
+          <li><b>{spotlight.length}</b><span>featured</span></li>
+          <li><b>{expiringSoon}</b><span>expiring soon</span></li>
+          <li><b>{'$' + Math.round(totalValue / 1000) + 'K+'}</b><span>total value</span></li>
+        </ul>
+        {lastUpdated ? <div className="hh-eyebrow" style={{ marginTop: 14, marginBottom: 0 }}>Last updated · {lastUpdated}</div> : null}
+      </PageHero>
 
       <div style={{ maxWidth: 1200, margin: '0 auto', padding: '28px 24px 64px' }}>
 

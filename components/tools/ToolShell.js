@@ -1,5 +1,6 @@
 import Masthead from '../layout/Masthead'
 import Footer from '../layout/Footer'
+import PageHero from '../home/PageHero'
 
 const BASE = 'https://www.downrangeco.com'
 
@@ -22,13 +23,10 @@ export default function ToolShell({ path, name, headline, accent, intro, descrip
       {schema ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} /> : null}
       <Masthead />
       <style>{CSS}</style>
-      <header className="tl-hero">
-        <div className="container">
-          <div className="tl-eyebrow">DownRange Tools</div>
-          <h1 className="tl-h1">{headline} <span>{accent}</span></h1>
-          <p className="tl-intro">{intro}</p>
-        </div>
-      </header>
+      <PageHero img="/img/tools-hero.jpg" imgSm="/img/tools-hero-sm.jpg" pos="70% 60%"
+        eyebrow="DownRange tools"
+        title={<>{headline} <span>{accent}</span></>}
+        sub={intro} />
       <main className="container tl-main">{children}</main>
       <Footer />
     </>
@@ -36,12 +34,6 @@ export default function ToolShell({ path, name, headline, accent, intro, descrip
 }
 
 const CSS = `
-.tl-hero{padding:72px 0 40px;min-height:clamp(430px,34vw,700px);display:flex;align-items:flex-end;background:linear-gradient(90deg,rgba(9,9,11,.95) 0%,rgba(9,9,11,.82) 28%,rgba(9,9,11,.2) 58%,rgba(9,9,11,.05) 100%),linear-gradient(0deg,rgba(9,9,11,.8) 0%,rgba(9,9,11,0) 35%),url(/img/tools-hero.jpg) center 60%/cover no-repeat,#09090B;border-bottom:1px solid var(--border)}
-.tl-hero>.container{width:100%}
-.tl-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
-.tl-h1{font-family:'Bebas Neue',cursive;font-weight:400;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.95;margin:0 0 12px;color:var(--text)}
-.tl-h1 span{color:var(--gold)}
-.tl-intro{max-width:680px;font-size:16px;line-height:1.6;color:var(--text-muted);margin:0}
 .tl-main{padding-top:26px;padding-bottom:60px}
 .tl-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
 .tl-card{background:var(--bg2);border:1px solid var(--border);border-top:2px solid var(--gold);padding:18px}
@@ -62,5 +54,5 @@ const CSS = `
 .tl-link p{font-size:14px;line-height:1.5;color:var(--text-muted);margin:0}
 .tl-link i{display:inline-block;font-style:normal;font-family:'IBM Plex Mono',monospace;font-size:9.5px;letter-spacing:.1em;text-transform:uppercase;color:#09090B;background:var(--gold);padding:2px 6px;margin-bottom:8px}
 @media(max-width:900px){.tl-links{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media(max-width:700px){.tl-grid,.tl-links{grid-template-columns:1fr}.tl-hero{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/tools-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(60vw + 10px) 0 24px;min-height:0}}
+@media(max-width:700px){.tl-grid,.tl-links{grid-template-columns:1fr}}
 `

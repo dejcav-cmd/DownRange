@@ -1,6 +1,7 @@
 // deploy trigger
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
+import PageHero from '../../components/home/PageHero'
 import NewsCard from '../../components/ui/NewsCard'
 import LiveNewsRefresher from '../../components/ui/LiveNewsRefresher'
 import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '../../sanity/lib/client'
@@ -68,26 +69,10 @@ export default async function NewsPage({ searchParams }) {
       <Masthead />
 
       {/* ── PAGE HERO ── */}
-      <div className="nh" style={{ borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
-        <style>{`.nh{background:linear-gradient(90deg,rgba(9,9,11,.95) 0%,rgba(9,9,11,.8) 30%,rgba(9,9,11,.12) 62%,rgba(9,9,11,0) 100%),linear-gradient(0deg,rgba(9,9,11,.55) 0%,rgba(9,9,11,0) 30%),url(/img/news-hero.jpg) right bottom/cover no-repeat,#09090B;padding:84px 0 60px;min-height:420px;display:flex;align-items:flex-end}.nh>.container{width:100%}@media(max-width:700px){.nh{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/news-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(100vw - 20px) 0 28px;min-height:0}}`}</style>
-        <div className="container" style={{ position:'relative' }}>
-          <div style={{ maxWidth:640 }}>
-            <div style={{ display:'flex', gap:'8px', marginBottom:'16px', flexWrap:'wrap', alignItems:'center' }}>
-              <span style={{ background:'var(--gold)', color:'#09090B', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'11px', fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>LATEST NEWS</span>
-              <span style={{ display:'flex', alignItems:'center', gap:5, background:'#001A0A', color:'#22C55E', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', fontWeight:700, padding:'3px 10px', border:'1px solid #22C55E40' }}>
-                <span className="pulse-dot" /> LIVE FEED
-              </span>
-            </div>
-            <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'var(--text)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:'14px' }}>
-              Firearms &amp; 2A<br />
-              <span style={{ color:'var(--gold)' }}>Intelligence Feed</span>
-            </h1>
-            <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'16px', color:'var(--text-muted)', lineHeight:1.7 }}>
-              {total > 0 ? total : '—'} stories in last 30 days · Updated every 15 minutes · All sources aggregated
-            </p>
-          </div>
-        </div>
-      </div>
+      <PageHero img="/img/news-hero.jpg" imgSm="/img/news-hero-sm.jpg" pos="70% center"
+        eyebrow="Latest news · Live feed"
+        title={<>Firearms &amp; 2A <span>intelligence feed.</span></>}
+        sub={`${total > 0 ? total : '—'} stories in the last 30 days. Updated every 15 minutes, all sources aggregated.`} />
 
       {/* ── STICKY CATEGORY BAR (Learn pattern) ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
