@@ -29,7 +29,7 @@ export async function GET(req) {
     // mode=images: only fix/add real images on existing articles. Otherwise pull new releases,
     // then spend any leftover time repairing images.
     if (url.searchParams.get('mode') === 'images') {
-      const rep = await runPressRepair({ max: parseInt(url.searchParams.get('max') || '30', 10), force: url.searchParams.get('force') === '1' })
+      const rep = await runPressRepair({ max: parseInt(url.searchParams.get('max') || '30', 10), force: url.searchParams.get('force') === '1', redo: url.searchParams.get('redo') === '1', after: url.searchParams.get('after') || '' })
       const details = `images fixed:${rep.fixed} missing:${rep.missing} failed:${rep.failed} remaining:${rep.remaining} (${rep.ms}ms)`
       await reportCronRun('press-releases', { status: 'success', ms: Date.now() - t0, details }).catch(() => {})
       return Response.json({ ok: true, mode: 'images', ...rep, message: details })

@@ -26,6 +26,8 @@ export const pressRelease = {
     { name: 'imagesDone',  title: 'Images processed',        type: 'boolean', initialValue: false },
     { name: 'imageStatus', title: 'Image status',            type: 'string' },
     { name: 'imageTries',  title: 'Image attempts',          type: 'number' },
+    { name: 'imagesVersion', title: 'Image rules version',   type: 'number' },
+    { name: 'imageHashes', title: 'Image hashes',            type: 'array', of: [{ type: 'string' }] },
   ],
   preview: { select: { title: 'title', subtitle: 'brand' } },
 }
