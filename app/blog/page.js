@@ -484,20 +484,17 @@ export default async function BlogPage({ searchParams }) {
       `}</style>
 
       {/* ── HERO ── */}
-      <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', padding:'52px 0 36px', position:'relative', overflow:'hidden' }}>
-        <div style={{ position:'absolute', inset:0, backgroundImage:'radial-gradient(ellipse at 20% 50%, rgba(200,146,42,0.07) 0%, transparent 55%)', pointerEvents:'none' }} />
-        <div style={{ position:'absolute', right:0, top:0, bottom:0, width:'40%', overflow:'hidden', opacity:0.04, pointerEvents:'none' }}>
-          <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'16vw', color:'var(--gold)', lineHeight:0.85, textAlign:'right', paddingRight:'20px', paddingTop:'10px' }}>BLOG</div>
-        </div>
+      <div className="bh" style={{ borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
+        <style>{`.bh{padding:72px 0 40px;min-height:clamp(430px,40vw,800px);display:flex;align-items:flex-end;background:linear-gradient(90deg,rgba(9,9,11,.95) 0%,rgba(9,9,11,.85) 30%,rgba(9,9,11,.15) 62%,rgba(9,9,11,0) 100%),linear-gradient(0deg,rgba(9,9,11,.8) 0%,rgba(9,9,11,0) 35%),url(/img/blog-hero.jpg) center 28%/cover no-repeat,#09090B}.bh>.container{width:100%}@media(max-width:700px){.bh{background:linear-gradient(0deg,#09090B 0%,rgba(9,9,11,0) 20vw),url(/img/blog-hero-sm.jpg) center top/100% auto no-repeat,#09090B;padding:calc(67vw + 10px) 0 28px;min-height:0}}`}</style>
         <div className="container">
           <div style={{ display:'flex', gap:8, marginBottom:16, alignItems:'center' }}>
             <span style={{ background:'var(--gold)', color:'#000', fontFamily:"'Barlow Condensed',sans-serif", fontSize:11, fontWeight:700, letterSpacing:'0.2em', padding:'3px 12px' }}>THE RANGE REPORT</span>
-            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#475569' }}>Expert analysis · Industry commentary · Field intelligence</span>
+            <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'var(--text-muted)' }}>Expert analysis · Industry commentary · Field intelligence</span>
           </div>
           <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2.6rem,5vw,3.8rem)', color:'var(--foreground)', letterSpacing:'0.02em', lineHeight:0.95, marginBottom:12 }}>
             DownRange Blog<br /><span style={{ color:'var(--gold)' }}>By DJ Cavalcanti</span>
           </h1>
-          <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#475569', lineHeight:1.7, maxWidth:520 }}>
+          <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'var(--text-muted)', lineHeight:1.7, maxWidth:520 }}>
             {totalDisplay > 0 ? totalDisplay : BLOG_POSTS.length} articles · Firearms industry analysis, legal intelligence, and buyer guidance
           </p>
         </div>

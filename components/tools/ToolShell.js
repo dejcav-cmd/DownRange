@@ -36,7 +36,7 @@ export default function ToolShell({ path, name, headline, accent, intro, descrip
 }
 
 const CSS = `
-.tl-hero{padding:56px 0 40px;min-height:400px;display:flex;align-items:flex-end;background:linear-gradient(90deg,#09090B 0%,#09090B 40%,rgba(9,9,11,.5) 55%,rgba(9,9,11,0) 72%),linear-gradient(0deg,rgba(9,9,11,.5) 0%,rgba(9,9,11,0) 25%),url(/img/tools-hero.jpg) right center/auto 100% no-repeat,#09090B;border-bottom:1px solid var(--border)}
+.tl-hero{padding:72px 0 40px;min-height:clamp(430px,34vw,700px);display:flex;align-items:flex-end;background:linear-gradient(90deg,rgba(9,9,11,.95) 0%,rgba(9,9,11,.82) 28%,rgba(9,9,11,.2) 58%,rgba(9,9,11,.05) 100%),linear-gradient(0deg,rgba(9,9,11,.8) 0%,rgba(9,9,11,0) 35%),url(/img/tools-hero.jpg) center 60%/cover no-repeat,#09090B;border-bottom:1px solid var(--border)}
 .tl-hero>.container{width:100%}
 .tl-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:10px}
 .tl-h1{font-family:'Bebas Neue',cursive;font-weight:400;font-size:clamp(2.6rem,7vw,4.6rem);line-height:.95;margin:0 0 12px;color:var(--text)}
