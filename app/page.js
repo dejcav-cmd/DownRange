@@ -2,6 +2,7 @@ import Masthead from '../components/layout/Masthead'
 import Footer from '../components/layout/Footer'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
 import HomeStyles from '../components/home/HomeStyles'
+import HomeHero from '../components/home/HomeHero'
 import { NewsSection, DealsSection, PressSection } from '../components/home/HomeSections'
 import Link from 'next/link'
 import { fetchArticles, client } from '../sanity/lib/client'
@@ -54,6 +55,19 @@ async function loadDeals() {
   })).filter(d => d.title)
 }
 
+// Live counts for the hero. Any failure just hides that chip.
+async function loadStats() {
+  const since = new Date(Date.now() - 24 * 3600 * 1000).toISOString()
+  try {
+    const r = await client.fetch(
+      `{"newsToday": count(*[_type=="newsArticle" && approved==true && defined(slug.current) && category!="deals" && publishedAt>=$since]),
+        "dealsToday": count(*[_type=="gunDeal" && approved==true && publishedAt>=$since]),
+        "press": count(*[_type=="pressRelease" && approved==true && defined(slug.current) && (defined(heroImage.asset) || imageUrl match "https://cdn.sanity.io/*")])}`,
+      { since }, { next: { revalidate: 300 } })
+    return { newsToday: r.newsToday || null, dealsToday: r.dealsToday || null, press: r.press || null }
+  } catch { return {} }
+}
+
 async function loadPress() {
   const { items } = await getPressPage({ page: 1 })
   return (items || []).filter(p => p.image).slice(0, 8)
@@ -68,13 +82,14 @@ const TOOLS = [
 ]
 
 export default async function HomePage() {
-  const [news, deals, press] = await Promise.allSettled([loadNews(), loadDeals(), loadPress()])
-    .then(r => r.map(p => (p.status === 'fulfilled' ? p.value : [])))
+  const [news, deals, press, stats] = await Promise.allSettled([loadNews(), loadDeals(), loadPress(), loadStats()])
+    .then(r => r.map((p, i) => (p.status === 'fulfilled' ? p.value : (i === 3 ? {} : []))))
 
   return (
     <>
       <Masthead />
       <HomeStyles />
+      <HomeHero stats={stats} />
 
       <NewsSection items={news} />
       <DealsSection items={deals} />

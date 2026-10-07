@@ -7,7 +7,6 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 const NAV = [
-  { label: 'Home', href: '/', icon: '◉', exact: true },
   {
     label: 'News', href: '/news',
     children: [
@@ -15,54 +14,9 @@ const NAV = [
       { label: '🏭 Manufacturer Press Releases',   href: '/news/manufacturer-press-releases', desc: 'New announcements straight from the makers' },
     ]
   },
-  {
-    label: 'Laws', href: '/laws',
-    children: [
-      { label: '🗺️ My State',          href: '/laws/my-state', desc: 'Your state\'s carry laws, restrictions & reciprocity' },
-      { label: '🏛️ Federal & SCOTUS',  href: '/laws/federal',  desc: 'Bills in Congress, ATF rules, active SCOTUS cases' },
-      { label: '📋 All 50 States',     href: '/laws/states',   desc: 'Compare gun laws across every state' },
-      { label: '🔄 CCW Reciprocity',   href: '/laws/my-state#reciprocity', desc: 'Where your permit is honored' },
-      { label: '⚖️ NFA Rules',         href: '/laws/federal#nfa',          desc: 'Suppressors, SBRs, machine guns' },
-    ]
-  },
-  {
-    label: 'Guns', href: '/guns',
-    children: [
-      { label: '📖 Encyclopedia',      href: '/guns',                          desc: 'Specs, history, variants' },
-      { label: '🆕 New Releases',      href: '/releases',                      desc: 'Latest manufacturer launches' },
-      { label: '⚙️ NFA Tracker',       href: '/nfa-tracker',                  desc: 'Form 4 wait times' },
-      { label: '🎯 Ballistics Calc',    href: '/ballistics',                   desc: 'Drop tables, wind drift, MOA/MRAD to 1,000 yards' },
-    ]
-  },
-  
-  {
-    label: 'Outdoors', href: '/hunting',
-    children: [
-      { label: '🦌 Hunting',      href: '/hunting',      desc: 'Season dates, game by state, cartridge guides' },
-    ]
-  },
-  {
-    label: 'Learn', href: '/learn',
-    children: [
-      { label: '📚 Learning Center',   href: '/learn',                              desc: 'All beginner guides' },
-      { label: '🔫 First Gun Guide',   href: '/learn/buying-your-first-gun',        desc: 'How to buy your first firearm' },
-      { label: '🪪 CCW License Guide', href: '/learn/how-to-get-ccw-license',       desc: 'State-by-state carry permit guide' },
-      { label: '🛡️ Safety Rules',      href: '/learn/firearms-safety-four-rules',   desc: 'The four rules that prevent accidents' },
-      { label: '🏠 Home Defense',      href: '/learn/home-defense-basics',          desc: 'Practical home protection guide' },
-      { label: '🎯 Dry Fire Training', href: '/learn/dry-fire-training-beginners',  desc: 'Free practice without ammo' },
-      { label: '⚖️ Gun Laws 101',      href: '/learn/understanding-gun-laws',        desc: 'Federal & state law for beginners' },
-    ]
-  },
-  {
-    label: '🌎 International', href: '/canada',
-    children: [
-      { label: '🇨🇦 Canada',           href: '/canada', desc: 'PAL, C-21, province laws' },
-      { label: '🇧🇷 Brasil',            href: '/brazil', desc: 'CAC, Estatuto, legislação BR' },
-    ]
-  },
   { label: '💰 Deals', href: '/deals' },
   { label: 'Blog', href: '/blog' },
-  { label: '📺 Video',     href: '/video'     },
+  { label: '📺 Videos',    href: '/video'     },
   { label: '🏆 Giveaways', href: '/giveaways' },
 ]
 
