@@ -1,13 +1,13 @@
 import Link from 'next/link'
-import { KIND_META, photoFor, timeAgo, PRESS_BASE } from '../../lib/pressUi'
+import { KIND_META, timeAgo, PRESS_BASE } from '../../lib/pressUi'
 
 export default function PressCard({ item, featured = false }) {
   const kind = KIND_META[item.kind] || KIND_META.product
-  const img = item.image || photoFor(item.category, item.kind)
+  const img = item.image
   return (
     <Link href={`${PRESS_BASE}/${item.slug}`} className={`pr-card${featured ? ' pr-card-featured' : ''}`}>
       <div className="pr-card-img">
-        <img src={img} alt="" loading={featured ? 'eager' : 'lazy'} decoding="async" />
+        {img && <img src={img + '?w=900&auto=format&q=80'} alt={item.title} loading={featured ? 'eager' : 'lazy'} decoding="async" />}
         <span className="pr-badge-brand">{item.brand}</span>
         <span className="pr-badge-kind" style={{ color: kind.color, borderColor: kind.color }}>{kind.label}</span>
       </div>

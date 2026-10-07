@@ -22,6 +22,10 @@ export const pressRelease = {
     { name: 'approved',    title: 'Published',               type: 'boolean', initialValue: true },
     { name: 'editorLocked', title: 'Editor locked (no AI changes)', type: 'boolean', initialValue: false },
     { name: 'publishedAt', title: 'Published at',            type: 'datetime' },
+    { name: 'heroSourceUrl', title: 'Hero image source URL', type: 'url' },
+    { name: 'imagesDone',  title: 'Images processed',        type: 'boolean', initialValue: false },
+    { name: 'imageStatus', title: 'Image status',            type: 'string' },
+    { name: 'imageTries',  title: 'Image attempts',          type: 'number' },
   ],
   preview: { select: { title: 'title', subtitle: 'brand' } },
 }
