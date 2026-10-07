@@ -1,69 +1,20 @@
-600 scanned, 61 need a real image, 13 coupon posts skipped
+600 scanned, 14 need a real image, 13 coupon posts skipped
 
-  + NBS Mil-Spec AR-15 Bolt Catch Spring - $1.04 w/  — 24063b 823x440 sha=bd39c98a6d0b
-  + Braztech/Rossi Circuit Judge Blued .45 Colt / .4 — 14138b 800x183 sha=b63f37725347
-  + Smith & Wesson M&P9 Metal 9mm 3.6" TS ODG Frame, — 27266b 600x471 sha=db379bf565f6
-  + Ruger 10/22 Takedown 22 LR 16.4" 10rd w/ X-22 Ba — 35242b 1500x437 sha=9d67b3fb0d4b
-  + Podavach U-LOADER AR-10 Magazine Speed Loader -  — 47898b 1000x666 sha=b13030cbe1b4
-  + Lancer AR-15 LCS Carbon Fiber Stock, A2 (10.8")  — 30118b 1000x666 sha=8c0fe3914c40
-  + Plano Single Scoped or Double Non-Scoped Rifle C — 13929b 500x334 sha=e8617ef8be81
-  + Springfield Armory First Line Kuna 40 S&W Pistol — 80410b 663x329 sha=95297a531f9d
-  + Presma AR-15 Ambidextrous Charging Handle - $16. — 42685b 1500x1000 sha=f0041f330069
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 31759b 945x630 sha=dc6c56517b40
-  + Atrius Development 3 Position Super Selector Saf — 14510b 945x630 sha=f60fc46ed6b6
-  + NcSTAR 3 Day Tactical Camping Hiking Backpack, B — 216874b 693x685 sha=0478bcf34a66
-  + Vortex Venom Enclosed 1x Reflex Micro Red Dot Si — 50465b 803x585 sha=6047e77dfdd3
-  + Die Free Co Kung Fu AR-15 Pistol Grip - $12.95 — 33484b 433x445 sha=9711b2253ae9
-  + Dirty Bird 2-Stage Trigger Group Curved - $69.95 — 33193b 1000x666 sha=35465c454fd3
-  + TIPTON Best Gun Vise - $49.95 — 145582b 1000x666 sha=d80480df7877
-  + Strike Industries M-LOK Rail Covers – V2 – (Blac — 83672b 1000x750 sha=f396689d7164
-  + Soviet Arms 7.62 Krink Triangle Side Folding Pis — 28511b 1000x500 sha=48c756d6244c
-  + FRANKLIN ARMORY F17-X 17 WSM 16" 10rd Piston Bla — 32413b 1190x317 sha=7bc0ba8ce5d6
-  + Franklin Armory M4-HTF .350 Legend 16" Barrel 10 — 13405b 619x183 sha=d4abaab76377
-  + Feyachi HL-20 Pistol Light 1500 Lumen Upgrade LE — 20092b 500x326 sha=a25691fd2883
-  + CCI - #200 Large Rifle Primers 1,000/Box - $49.9 — 27067b 828x828 sha=913415da2585
-  + BROWNELLS - Glock17/19 Lower Parts Kit - $29.22 — 17034b 624x624 sha=f7d68a0ea729
-  + Streamlight TLR-3X USB Tactical Gun Mount Flashl — 117165b 1200x1200 sha=8614a79ae0af
-  + Vortex Razor HD Gen III 1-10 24 Scope, EBR-9 BDC — 36527b 1000x585 sha=93faae425840
-  ... 25/61  ok=25 fail=0
-  + Ruger Mark IV 22/45 Lite TB .22 LR 4.4" 10rd Pis — 679859b 1191x923 sha=58b280aa83d2
-  + Ruger MKIV 22/45 .22 LR 4.4" Barrel 10-Rounds -  — 35948b 758x492 sha=a46e759d2a87
-  + Active Safety Designs Ambidextrous ARC-Fire Trig — 57966b 1340x894 sha=7550e8a9a94f
-  + Winchester .22 LR 36 gr CPHP 500 Rounds Ammuniti — 94033b 1000x1000 sha=91a5e5c9907b
-  + Norma NXD 9mm 65gr NXD 1730 fps 20/ct - $9.49 w/ — 42574b 600x368 sha=845f68f037b5
-  + Anechoic AnechoX 30 Compact .30 Cal Titanium Sup — 98503b 1000x666 sha=a9461c476b0d
-  + Sig M400 Tread V2 Pistol 5.56NATO 11.5" Barrel 3 — 189164b 1500x577 sha=54784ab42bdd
-  + Aero Precision M4E1 Pro Kodiak Brown 5.56 16" Ba — 55185b 1500x533 sha=1ae4311245cd
-  + KAER Biometric Gun Safe for Rifles and Pistols,  — 32481b 500x500 sha=758ed268a33e
-  + OSIGHT X Multi-Reticle 3 MOA Dot & 32 MOA Circle — 47760b 1176x812 sha=e7a24a9b9069
-  + Walker's Razor Quad Electronic Bluetooth Muff-Bl — 19881b 500x500 sha=74dd2db81be7
-  + Osight X Black Multi-Reticle 3 MOA Dot & 32 MOA  — 60411b 1172x802 sha=baff86ed575a
-  + Osight S Multi-Reticle Micro Enclosed Sight with — 60972b 1046x721 sha=5085032cda70
-  + OSIGHT XR Enclosed Red Dot Sight, 2/6 MOA Dot &  — 86768b 1268x857 sha=dc3577d071b3
-  + Osight C Micro Red Dot Sight, 3 MOA Dot & 32 MOA — 167592b 1500x1161 sha=f6ee99207190
-  + OSIGHT K Micro Red Dot Sight, 6 MOA Open Reflex  — 93461b 1154x863 sha=96d014f403cf
-  + OSIGHT SE 6 MOA Green Dot Enclosed Micro Sight w — 152596b 1500x1070 sha=1e36e7d30eb8
-  + Aero Precision AR-15 Stripped Upper Receiver, No — 29185b 1000x853 sha=c33a6681fbbd
-  + CZ Duty 4.0F 9mm Optic Ready Pistol with Night S — 63464b 1000x666 sha=b3499799943c
-  + CZ Duty 4.0F 9mm Optic Ready Pistol with Night S — 65979b 1000x666 sha=b3dc78f3d0e3
-  + OLIGHT I3T EOS 180 Lumens Dual-Output Slim EDC F — 32518b 901x345 sha=513df70bd988
-  + Tuna Can Welded Stainless Steel 5.56 Suppressor  — 97434b 1000x666 sha=6d8c8f46ad67
-  + Primary Arms CLx 1X Prism Scope - Circle Dot Ret — 218808b 1000x666 sha=1e252b87f9c5
-  + Primary Arms CLx 3X Prism Scope - Cross Dot Reti — 266230b 1000x666 sha=171dc9a9818d
-  + Black Dog Machine Sonic X AR-15 22 Long Rifle 25 — 345811b 870x674 sha=1e9b94870957
-  ... 50/61  ok=50 fail=0
-  + Odin Works Baja 5.56 Direct Thread Suppressor Bl — 15348b 629x397 sha=3f1cf671938b
-  + Zaffiri Precision Hellcat Barrel - Flush and Cro — 19577b 576x340 sha=07a2db3b758c
-  + Stuff and Things CARL Cam Activated Reset Limite — 129167b 1000x666 sha=656bfe0fe52f
-  + Mossberg 510 Mini Super Bantam .410 Gauge 18.5"  — 40488b 1500x404 sha=f1ee9169c486
-  + Radian Sale @ Brownells - 17% Off w/ Coupon Code — 166803b 1004x955 sha=69293c874793
-  + Double the Barrel, Double the Power - KelTec KSG — 1448125b 1500x657 sha=2ce1e5de8de8
-  + All Glock 19 models on Sale (TRUMP, Black, FDE,  — 44497b 1000x714 sha=818f96bf8fd0
-  + Glock 43 Handguns Roundup — 71288b 679x381 sha=3d74596f1c39
-  + Christensen Arms Modern Precision Pistol 6.5 Cre — 114836b 939x359 sha=d78573d69057
+  + DMA Inc. Threaded Match Barrel for Gen 1-5 Glock — 18677b 630x341 sha=d8b1a7b83fb6
+  + CZ Duty 4.0C 9mm Optic Ready Compact Pistol with — 38892b 600x492 sha=929bc61093cb
+  + Cimarron Firearms Old Model Wyatt Earp Color Cas — 18702b 800x276 sha=817eda79ebd2
+  + Kimber Aegis Elite Ultra Silver / Black .45 ACP  — 41189b 600x454 sha=0d1e92025b86
+  + Kimber 1911 .45 ACP 5" Bbl Custom TLE/RL Boot Ca — 38099b 883x562 sha=d3310de74be0
+  + Springfield Armory M1A Standard Cracked Earth .3 — 16322b 800x183 sha=e9043825353d
+  + Kimber CDS9 Classic 9mm 3.18" barrel 15 Rnds Gre — 27480b 600x542 sha=2c56c11bf754
+  + Kimber Micro 9 ESV 9mm 3.2" barrel 7rd Black & G — 81400b 1000x741 sha=e60d83a819f1
+  + Ruger Mark IV Target Stainless .22 LR 5.5" Barre — 51005b 800x613 sha=86c8193b94d7
+  + Bushmaster XM15-CA AR-15 Lower Receiver - Stripp — 19796b 700x393 sha=d5e035d84ed1
+  x Vortex Crossfire II Solar 2 MOA Red Dot with Mot — image not downloadable
+  x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
   x B&T XH-556 SC 5.56 NATO 223 Suppressor 5" Titani — image not downloadable
   x ORTHOS Raider S4 12 Gauge 18.5" 6rd - FDE - $128 — image not downloadable
 
-fixed 59, failed 2  (96% success)
-distinct images: 59 across 59 deals
+fixed 10, failed 4  (71% success)
+distinct images: 10 across 10 deals
 PASS — no image shared between products
