@@ -116,3 +116,16 @@ export function PressSection({ items }) {
     </Section>
   )
 }
+
+export function BlogSection({ items }) {
+  if (!items.length) return null
+  return (
+    <Section id="hr-blog" title="Latest" accent="Blog Articles" sub="Guides, analysis and buyer advice from the DownRange blog" allHref="/blog" allLabel="All articles">
+      {items.map(b => (
+        <Card key={b._id} href={'/blog/' + b.slug} img={b.image}
+          tag={b.category} title={b.title}
+          left={timeAgo(b.publishedAt)} right={b.readTime ? String(b.readTime).replace(/\s*min.*$/i, '') + ' min read' : ''} />
+      ))}
+    </Section>
+  )
+}
