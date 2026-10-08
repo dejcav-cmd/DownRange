@@ -161,7 +161,7 @@ export async function fetchStateProfile(abbr) {
   return client.fetch(`
     *[_type == "stateProfile" && abbr == $abbr][0] {
       _id, name, abbr, rating,
-      constitutionalCarry, ccwPermit, redFlagLaw, magLimit, waitPeriod,
+      constitutionalCarry, ccwPermit, redFlagLaw, magLimit, waitPeriod, lawsVerified,
       awbStatus, suppressors, openCarry, bgcPrivate,
       reciprocityStates[], reciprocityHonors[], reciprocityNotes, reciprocityVerified, recentBills[], summary, lastUpdated,
       richContent, updatedAt
@@ -173,7 +173,7 @@ export async function fetchAllStateProfiles() {
   return client.fetch(`
     *[_type == "stateProfile"] | order(name asc) {
       _id, name, abbr, rating,
-      constitutionalCarry, redFlagLaw, magLimit, awbStatus,
+      constitutionalCarry, redFlagLaw, magLimit, awbStatus, waitPeriod, lawsVerified,
       reciprocityStates[], reciprocityHonors[], reciprocityNotes, reciprocityVerified
     }
   `)

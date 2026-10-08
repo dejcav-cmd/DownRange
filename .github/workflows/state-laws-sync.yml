@@ -1,0 +1,28 @@
+name: State Laws Sync (monthly)
+on:
+  schedule:
+    - cron: '30 14 8 * *'
+  workflow_dispatch:
+    inputs:
+      dry:
+        description: 'Dry run (1 = do not write to Sanity)'
+        default: '0'
+permissions:
+  contents: read
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y poppler-utils >/dev/null
+      - name: Collect and ingest
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          DRY: ${{ github.event.inputs.dry }}
+        run: python3 scripts/state_laws_extract.py 2>&1 | tee result.txt
+      - name: Publish result
+        if: always()
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/state-laws-sync.txt

@@ -68,6 +68,7 @@ const ALL_JOBS = [
   { id:'social-reddit', path:'/api/social/cron/reddit', schedule:'0 12 * * *', label:'Reddit Post', group:'Social', icon:'👽', critical:false, desc:'Daily post' },
   { id:'social-analytics', path:'/api/social/analytics?refresh=1', schedule:'35 */2 * * *', label:'Social Analytics Refresh', group:'Social', icon:'📊', critical:false, desc:'Engagement stats every 2h' },
   { id:'reciprocity-sync', path:'/api/admin/reciprocity-ingest', schedule:'0 14 8 * *', label:'CCW Reciprocity Sync (8th, 7am PT)', group:'Content', icon:'🔄', critical:false, desc:'Monthly: handgunlaw.us state PDFs → AI parse → Sanity (runs from GitHub Actions, not vercel.json)' },
+  { id:'state-laws-sync', path:'/api/admin/state-laws-ingest', schedule:'30 14 8 * *', label:'State Laws Sync (8th, 7:30am PT)', group:'Content', icon:'⚖️', critical:false, desc:'Monthly: Wikipedia state summary tables + handgunlaw.us permitless list → Sanity (runs from GitHub Actions)' },
   { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >180d (keeps news linked from blog posts)' },
 ]
 
