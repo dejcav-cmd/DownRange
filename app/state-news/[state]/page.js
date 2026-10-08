@@ -82,14 +82,19 @@ export async function generateStaticParams() {
   return Object.keys(STATE_NAMES).map(s => ({ state: s.toLowerCase() }))
 }
 
-export async function generateMetadata({ params }) {
+export async function generateMetadata({ params, searchParams }) {
   const abbr = params.state.toUpperCase()
   const name = STATE_NAMES[abbr]
   if (!name) return { title: 'State News — DownRange' }
+  // Filtered/sorted views (?cat=, ?sort=) are crawlable links but often render
+  // zero articles, which Google reports as Soft 404. Keep them out of the index
+  // and let the base state page carry the canonical.
+  const isFilteredView = Boolean(searchParams?.cat) || (searchParams?.sort && searchParams.sort !== 'newest')
   return {
     title: `${name} Firearms News`,
     description: `Latest firearms news, laws, and legislation for ${name}. Updated every 15 minutes.`,
     alternates: { canonical: `https://www.downrangeco.com/state-news/${abbr.toLowerCase()}` },
+    ...(isFilteredView ? { robots: { index: false, follow: true } } : {}),
   }
 }
 

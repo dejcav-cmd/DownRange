@@ -50,6 +50,8 @@ const nextConfig = {
     return [
       // Legacy laws tabs → new routes
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'federal' }],   destination: '/laws/federal', permanent: true },
+      // ?tab=state&state=OH → that state page (was landing on the generic table, flagged Soft 404)
+      { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'state' }, { type: 'query', key: 'state', value: '(?<st>[A-Za-z]{2})' }], destination: '/laws/:st', permanent: true },
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'state' }],     destination: '/laws/states',  permanent: true },
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'atf' }],       destination: '/laws/federal', permanent: true },
       { source: '/laws', has: [{ type: 'query', key: 'tab', value: 'scotus' }],    destination: '/laws/federal#scotus', permanent: true },
