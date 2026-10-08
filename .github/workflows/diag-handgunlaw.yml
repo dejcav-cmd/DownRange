@@ -1,0 +1,21 @@
+name: Diag Handgunlaw
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: sudo apt-get install -y poppler-utils >/dev/null
+      - name: fetch
+        run: |
+          for s in washington florida texas newyork; do
+            curl -sS -A "Mozilla/5.0 DownRangeBot" -o $s.pdf -w "$s %{http_code} %{size_download}\n" https://www.handgunlaw.us/states/$s.pdf >> result.txt
+            pdftotext -layout $s.pdf $s.txt 2>>result.txt; echo "=== $s" >> result.txt; head -c 3500 $s.txt >> result.txt
+          done
+          curl -sS -o r.txt -w "robots %{http_code}\n" https://www.handgunlaw.us/robots.txt >> result.txt; head -c 600 r.txt >> result.txt
+      - env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/diag-handgunlaw.txt
