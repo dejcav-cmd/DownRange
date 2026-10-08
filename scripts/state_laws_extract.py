@@ -59,7 +59,11 @@ def permitless_list():
     m = re.search(r'Note:\s*([A-Z][^"]{20,700}?)\s+have\s+"?Permitless', flat)
     if not m: return [], None
     seg = m.group(1)
-    names = [n for n in sorted(NAMES.values(), key=len, reverse=True) if re.search(r'\b' + re.escape(n) + r'\b', seg)]
+    names = []
+    for n in sorted(NAMES.values(), key=len, reverse=True):
+        if re.search(r'\b' + re.escape(n) + r'\b', seg):
+            names.append(n)
+            seg = re.sub(r'\b' + re.escape(n) + r'\b', ' ', seg)  # so 'Virginia' does not match inside 'West Virginia'
     names = sorted(set(names))
     upd = re.search(r'Last Updated:\s*([0-9/]+)', txt)
     return names, upd.group(1) if upd else None
