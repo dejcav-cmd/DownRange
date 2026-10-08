@@ -74,7 +74,7 @@ export async function generateMetadata({ params }) {
   if (!article) return { title: 'Article Not Found' }
   const url = `https://www.downrangeco.com/canada/${params.slug}`
   return {
-    title:       `${article.title} | DownRange Canada`,
+    title:       article.title,
     description: article.summary || article.title,
     alternates:  { canonical: url },
     openGraph: {
@@ -248,7 +248,7 @@ export default async function CanadaArticlePage({ params }) {
                     top: 0.45rem;
                   }
                 `}</style>
-                <div className="dr-article-body" dangerouslySetInnerHTML={{ __html: article.body }} />
+                <div className="dr-article-body" dangerouslySetInnerHTML={{ __html: String(article.body).replace(/<h1(\s|>)/gi, '<h2$1').replace(/<\/h1>/gi, '</h2>') }} />
 
                 {article.sourceUrl && (
                   <div style={{ margin: '2.5rem 0 0', padding: '1.25rem 1.5rem', background: 'rgba(200,146,42,0.06)', border: '1px solid rgba(200,146,42,0.25)', borderLeft: '4px solid #C8922A', display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: 12 }}>

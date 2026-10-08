@@ -21,7 +21,7 @@ export async function generateMetadata({ params }) {
   const img = r.image || SITE + '/og-default.png'
   const desc = (r.summary || r.title).slice(0, 160)
   return {
-    title: `${r.title} — ${r.brand}`,
+    title: r.title,
     description: desc,
     alternates: { canonical: url },
     openGraph: { type: 'article', url, title: r.title, description: desc, publishedTime: r.publishedAt, section: r.brand,

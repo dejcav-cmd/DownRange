@@ -105,7 +105,7 @@ export default async function sitemap() {
          | order(publishedAt desc) { slug, publishedAt, _createdAt }`
       ).catch(() => []),
       sanity.fetch(
-        `*[_type == "pressRelease" && approved == true && defined(slug.current)]
+        `*[_type == "pressRelease" && approved == true && defined(slug.current) && (defined(heroImage.asset) || imageUrl match "https://cdn.sanity.io/*")]
          | order(publishedAt desc) [0...5000] { slug, publishedAt }`
       ).catch(() => []),
     ])

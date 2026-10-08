@@ -1,7 +1,7 @@
 import NFATrackerPage from "./PageClient"
 
 export const metadata = {
-  title:       "NFA Wait Time Tracker — Form 4 & Form 1 ATF Approval Times",
+  title:       "NFA Wait Times: Form 4 & Form 1 Approval Tracker",
   description: "Current ATF NFA wait times for Form 4 suppressors, SBRs, SBSs, and Form 1 builds. Community-sourced approval data updated weekly.",
   keywords:    'NFA wait times, Form 4 wait time, ATF approval time, suppressor wait time, SBR Form 4, NFA tracker',
   alternates:  { canonical: "https://www.downrangeco.com/nfa-tracker" },

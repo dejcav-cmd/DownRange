@@ -2,7 +2,7 @@ import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
 export const metadata = {
-  title: 'About DownRange — Built for Gun Owners | Independent 2A Intelligence',
+  title: 'About DownRange: Independent 2A Intelligence',
   description: 'DownRange checks every gun and ammo deal, new release, and law against your state — independent 2A intelligence with no manufacturer money and no paywalls.',
   alternates: { canonical: 'https://www.downrangeco.com/about' },
   openGraph: {

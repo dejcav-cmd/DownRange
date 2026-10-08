@@ -2,7 +2,7 @@ import BallisticsCalc from './BallisticsCalc'
 import ToolShell from '../../components/tools/ToolShell'
 
 export const metadata = {
-  title: 'Precision Ballistics Calculator: 188 Bullets, G1 and G7, Wind and DOPE Card',
+  title: 'Precision Ballistics Calculator: 188 Bullets, G1 and G7',
   description: 'Free precision ballistics calculator with a library of 188 bullets from Hornady, Berger, Nosler, Lapua and Warner. G1 and G7 drag, wind, slope, altitude and temperature. Printable DOPE card and shareable setups.',
   keywords: 'ballistics calculator, bullet drop calculator, external ballistics, MOA calculator, wind drift, trajectory chart, scope correction',
   alternates: { canonical: 'https://www.downrangeco.com/ballistics' },

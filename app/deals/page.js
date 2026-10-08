@@ -7,7 +7,7 @@ export const metadata = {
   title:       "Gun & Ammo Deals — Best Prices Live",
   description: "Today's best firearms, ammo, and accessories deals from top retailers. Real-time pricing on guns, bulk ammo, and gear — checked against your state's laws.",
   alternates:  { canonical: "https://www.downrangeco.com/deals" },
-  openGraph: {
+  openGraph: { images:[{url:'https://www.downrangeco.com/og-default.png',width:1200,height:630,alt:'DownRange'}], 
     title:       "Gun & Ammo Deals — Best Prices Live | DownRange",
     description: "Today's best firearms, ammo, and accessories deals from top retailers, checked against your state's laws.",
     url:         "https://www.downrangeco.com/deals",
