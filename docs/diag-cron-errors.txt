@@ -1,0 +1,21 @@
+===== blog-twitter-promo
+{"_createdAt": "2026-10-08T15:00:33Z", "details": "Promoted \"Federal Judge Blocks Connecticut's Glock Ban; Gun Owners Win Reprieve\" \u2192 error \u2014 All AI providers failed for useCase=\"social\":\nanthropic/claude-haiku-5-5: Anthropic returned empty response", "error": "All AI providers failed for useCase=\"social\":\nanthropic/claude-haiku-5-5: Anthropic returned empty response", "status": "warning"}
+===== blog-writer
+{"_createdAt": "2026-10-08T14:32:35Z", "details": null, "error": "Failed to produce a publishable article for topic \"FBI Stops ISIS-Linked Mall of America Attack Plot in Minnesota\" (quality gate or image search failed)", "status": "failed"}
+===== quality-rewrite
+{"_createdAt": "2026-10-08T14:22:16Z", "details": "Scanned 80 \u00b7 full-rewrite 0/6 \u00b7 title-only 11/17 \u00b7 skipped 57 \u00b7 failed 12 \u00b7 remaining 0", "error": null, "status": "warning"}
+===== site_health
+{"_createdAt": "2026-10-08T08:00:36Z", "details": "issues:19 fixed:19", "error": null, "status": "warning"}
+{"_createdAt": "2026-10-07T08:00:50Z", "details": "issues:29 fixed:29", "error": null, "status": "warning"}
+===== market-brief
+{"_createdAt": "2026-07-04T14:06:14Z", "details": "0 prices updated", "error": "AI brief generation failed", "status": "warning"}
+{"_createdAt": "2026-07-03T14:06:33Z", "details": "0 prices updated", "error": "AI brief generation failed", "status": "warning"}
+===== prn_releases
+{"_createdAt": "2026-09-29T00:35:27Z", "details": null, "error": "HTTP 500: ", "status": "failed"}
+===== sitemap-health
+{"_createdAt": "2026-08-17T08:01:49Z", "details": "1 issue categories detected across 85 checked URLs. 1 auto-fix(es) applied.", "error": null, "status": "warning"}
+{"_createdAt": "2026-08-10T08:01:39Z", "details": "1 issue categories detected across 85 checked URLs. 1 auto-fix(es) applied.", "error": null, "status": "warning"}
+===== nra-law-sync
+{"_createdAt": "2026-09-30T00:00:11Z", "details": "{\"error\":\"Unauthorized\"}", "error": "HTTP 401 {\"error\":\"Unauthorized\"}", "status": "failed"}
+===== blog
+{"_createdAt": "2026-06-19T10:04:42Z", "details": null, "error": "saved is not defined", "status": "failed"}
