@@ -1,6 +1,7 @@
 import { preload } from 'react-dom'
 import Masthead from '../components/layout/Masthead'
 import Footer from '../components/layout/Footer'
+import SocialIcons from '../components/ui/SocialIcons'
 import NewsletterSignup from '../components/sections/NewsletterSignup'
 import HomeStyles from '../components/home/HomeStyles'
 import HomeHero from '../components/home/HomeHero'
@@ -75,11 +76,12 @@ async function loadPress() {
 }
 
 const TOOLS = [
-  { ic:'⏱️', t:'NFA Wait Times', d:'Live suppressor & SBR approval tracker', h:'/nfa-tracker' },
-  { ic:'🎯', t:'Ballistics Calc', d:'Drop, drift & energy · 38 loads',       h:'/ballistics' },
-  { ic:'🔫', t:'New Releases',    d:'Just-dropped firearms & gear',          h:'/releases' },
-  { ic:'📍', t:'FFL Finder',      d:'Nearest transfer dealer near you',      h:'/ffl-finder' },
-  { ic:'🎁', t:'Giveaways',       d:'Live gun & gear giveaways to enter',    h:'/giveaways' },
+  { t:'Precision Calculator', h:'/ballistics' },
+  { t:'Scope & Mil Tools',    h:'/tools/scope-tools' },
+  { t:'Ammo Cost',            h:'/tools/ammo-cost' },
+  { t:'NFA Wait Times',       h:'/nfa-tracker' },
+  { t:'FFL Finder',           h:'/ffl-finder' },
+  { t:'Range Finder',         h:'/ranges' },
 ]
 
 export default async function HomePage() {
@@ -106,23 +108,18 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* SECONDARY — quiet tools row */}
-      <section style={{ padding:'28px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
+      {/* Tools: one slim row, links to the Tools menu pages */}
+      <section style={{ padding:'18px 0', background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
-          <div className="home-tools" style={{ display:'grid', gridTemplateColumns:'repeat(auto-fit, minmax(180px,1fr))', gap:12 }}>
-            {TOOLS.map(t => (
-              <Link key={t.t} href={t.h} className="tool-sq" style={{ background:'var(--bg)', border:'1px solid var(--border)', padding:'18px 16px', textDecoration:'none', display:'block' }}>
-                <div style={{ fontSize:19, marginBottom:8 }}>{t.ic}</div>
-                <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontWeight:700, fontSize:16, letterSpacing:'0.03em', color:'#F0EDE6', marginBottom:3 }}>{t.t}</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9.5, color:'#6B7280', lineHeight:1.5 }}>{t.d}</div>
-              </Link>
-            ))}
+          <div className="home-tools">
+            <Link href="/tools" className="home-tools-h">Shooter tools</Link>
+            {TOOLS.map(t => (<Link key={t.t} href={t.h} className="tool-chip">{t.t}</Link>))}
           </div>
         </div>
       </section>
 
       {/* NEWSLETTER — honest */}
-      <section style={{ padding:'52px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
+      <section style={{ padding:'36px 0', background:'var(--bg)', borderBottom:'1px solid var(--border)', position:'relative', overflow:'hidden' }}>
         <div style={{ position:'absolute', fontFamily:"'Bebas Neue',cursive", fontSize:'20vw', color:'rgba(200,146,42,0.03)', top:'50%', left:'50%', transform:'translate(-50%,-50%)', whiteSpace:'nowrap', pointerEvents:'none' }}>DOWNRANGE</div>
         <div className="container" style={{ position:'relative' }}>
           <div className="newsletter-split" style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:56, alignItems:'center' }}>
@@ -138,17 +135,13 @@ export default async function HomePage() {
             <div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
                 {[['50','State Guides'],['Weekly','Deal Drop'],['Free','No Spam']].map(([n, l]) => (
-                  <div key={l} style={{ textAlign:'center', padding:'18px 10px', background:'var(--bg2)', border:'1px solid var(--border)' }}>
-                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.1rem', color:'#C8922A', lineHeight:1 }}>{n}</div>
+                  <div key={l} style={{ textAlign:'center', padding:'12px 8px', background:'var(--bg2)', border:'1px solid var(--border)' }}>
+                    <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.7rem', color:'#C8922A', lineHeight:1 }}>{n}</div>
                     <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#6B7280', letterSpacing:'0.1em', textTransform:'uppercase', marginTop:3 }}>{l}</div>
                   </div>
                 ))}
               </div>
-              <div style={{ display:'flex', gap:6, flexWrap:'wrap' }}>
-                {[['𝕏 Twitter','#'],['▶ YouTube','#'],['📡 Rumble','#'],['✈ Telegram','#']].map(([l, h]) => (
-                  <a key={l} href={h} style={{ background:'var(--bg2)', border:'1px solid var(--border)', color:'#6B7280', fontFamily:"'IBM Plex Mono',monospace", fontSize:10, padding:'7px 12px', textDecoration:'none' }}>{l}</a>
-                ))}
-              </div>
+              <SocialIcons size="md" />
             </div>
           </div>
         </div>
@@ -157,9 +150,11 @@ export default async function HomePage() {
       <Footer />
 
       <style>{`
-        .tool-sq { transition: border-color .15s, transform .15s; }
-        .tool-sq:hover { border-color:#C8922A !important; transform:translateY(-2px); }
-        @media(max-width:760px){ .home-tools{ grid-template-columns:repeat(2,1fr) !important; } .newsletter-split{ grid-template-columns:1fr !important; } }
+        .home-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+        .home-tools-h{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;margin-right:6px}
+        .tool-chip{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--text);text-decoration:none;border:1px solid var(--border-mid);background:var(--bg);padding:7px 12px;min-height:36px;display:inline-flex;align-items:center;transition:border-color .15s}
+        .tool-chip:hover{border-color:var(--gold)}
+        @media(max-width:760px){ .newsletter-split{ grid-template-columns:1fr !important; gap:24px !important; } }
       `}</style>
     </>
   )
