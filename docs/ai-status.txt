@@ -21,18 +21,14 @@
         "anthropic": {
             "ok": true,
             "model": "claude-haiku-5-5"
-        },
-        "glm": {
-            "ok": false,
-            "error": "\u4f59\u989d\u4e0d\u8db3\u6216\u65e0\u53ef\u7528\u8d44\u6e90\u5305,\u8bf7\u5145\u503c\u3002"
         }
     },
     "routing": {
-        "news": "glm/glm-4.5-air",
-        "backfill": "glm/glm-4.5-air",
+        "news": "anthropic/claude-haiku-5-5",
+        "backfill": "anthropic/claude-haiku-5-5",
         "intel": "anthropic/claude-sonnet-4-5",
-        "article": "glm/glm-4.5-air",
+        "article": "anthropic/claude-haiku-5-5",
         "newsletter": "anthropic/claude-sonnet-4-5",
-        "outreach": "anthropic/claude-haiku"
+        "outreach": "anthropic/claude-haiku-5-5"
     }
 }
