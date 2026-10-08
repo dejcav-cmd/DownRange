@@ -1,0 +1,2 @@
+collected 50 problems []
+500 {"ok":false,"error":"parsed only 44/50: CO: no JSON; NE: no JSON; NH: no JSON; ND: All AI providers failed for useCase=\"fast\":\nanthropic/claude-haiku-5-5: Anthropic returned empty response (stop_reason=max_tokens, blocks=thinking); PA: no JSON"}
