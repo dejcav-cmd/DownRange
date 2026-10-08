@@ -15,7 +15,7 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@v4
-      - run: sudo apt-get install -y poppler-utils >/dev/null
+      - run: sudo apt-get update -qq && sudo apt-get install -y -qq poppler-utils
       - name: Download, extract, ingest
         env:
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
