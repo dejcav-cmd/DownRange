@@ -96,8 +96,8 @@ export function DealsSection({ items }) {
   return (
     <Section id="hr-deals" title="Latest" accent="Deals" sub="Newest 10 deals, checked and refreshed all day" allHref="/deals" allLabel="All deals">
       {items.map((d, i) => (
-        <Card key={d._id} external lead={i === 0} href={d.url} img={d.image} rank={i + 1}
-          tag={d.store || d.source} title={d.title} summary={i === 0 ? d.summary : null}
+        <Card key={d._id} external href={d.url} img={d.image} rank={i + 1}
+          tag={d.store || d.source} title={d.title} 
           left={timeAgo(d.publishedAt)} right={d.price ? <span className="hr-price">{d.price}</span> : 'See deal'} />
       ))}
     </Section>
@@ -109,8 +109,8 @@ export function PressSection({ items }) {
   return (
     <Section id="hr-press" title="Manufacturer" accent="Press Releases" sub="Straight from the makers, with their photos" allHref="/news/manufacturer-press-releases" allLabel="All press releases">
       {items.map((p, i) => (
-        <Card key={p._id} lead={i === 0} priority={false} href={'/news/manufacturer-press-releases/' + p.slug} img={p.image}
-          tag={p.brand} title={p.title} summary={i === 0 ? p.summary : null}
+        <Card key={p._id} href={'/news/manufacturer-press-releases/' + p.slug} img={p.image}
+          tag={p.brand} title={p.title} 
           left={timeAgo(p.publishedAt)} right={p.readTime ? p.readTime + ' min read' : ''} />
       ))}
     </Section>
