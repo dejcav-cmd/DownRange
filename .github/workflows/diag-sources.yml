@@ -11,23 +11,17 @@ jobs:
       - uses: actions/checkout@v4
       - name: probe
         run: |
-          UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 Chrome/124.0 Safari/537.36"
-          echo "== ATF via jina html" >> result.txt
-          curl -sSL -H "X-Return-Format: html" -o a.html -w "%{http_code} %{size_download}\n" https://r.jina.ai/https://www.atf.gov/firearms/listing-federal-firearms-licensees >> result.txt
-          grep -o 'href="[^"]*"' a.html | grep -i "ffl\|xlsx\|\.txt\|\.zip\|docs/" | sort -u | head -40 >> result.txt
-          grep -o '<option[^>]*>[^<]*' a.html | head -40 >> result.txt
-          grep -i -o '[^>]\{0,80\}ffl-list[^<]\{0,80\}' a.html | head -10 >> result.txt
-          echo "== ATF jina markdown links" >> result.txt
-          curl -sSL -H "X-With-Links-Summary: true" -o a.md https://r.jina.ai/https://www.atf.gov/firearms/listing-federal-firearms-licensees
-          grep -n "Links/Buttons" -A200 a.md | grep -i "ffl\|docs\|xlsx\|download" | head -30 >> result.txt
-          echo "== jina on file guesses" >> result.txt
-          for u in https://www.atf.gov/firearms/docs/undefined/1025-ffl-list-xlsx/download https://www.atf.gov/firearms/docs/202509-ffl-list/download https://www.atf.gov/firearms/docs/undefined/0925-ffl-list-wa-xlsx/download; do
-            curl -sSL -o g.bin -w "$u %{http_code} %{size_download}\n" "https://r.jina.ai/$u" >> result.txt; head -c 200 g.bin >> result.txt; echo >> result.txt
-          done
-          echo "== wikipedia" >> result.txt
-          curl -sSL -A "DownRangeBot/1.0 (https://www.downrangeco.com; dj@downrangeco.com)" -o w.txt -w "wiki raw %{http_code} %{size_download}\n" "https://en.wikipedia.org/w/index.php?title=Gun_laws_in_the_United_States_by_state&action=raw" >> result.txt
-          grep -n "^==\|^{|" w.txt | head -40 >> result.txt
-          grep -n -i "magazine\|waiting\|red flag" w.txt | head -20 >> result.txt
+          curl -sSL -H "X-Return-Format: html" -o a.html https://r.jina.ai/https://www.atf.gov/firearms/listing-federal-firearms-licensees
+          python3 - <<'PY' >> result.txt
+          import re
+          h=open('a.html',encoding='utf8',errors='ignore').read()
+          for m in re.finditer(r'<form[^>]*ffl-listing-export-form[^>]*>.*?</form>',h,re.S):
+              f=m.group(0)
+              print(re.sub(r'\s+',' ',f)[:200])
+              for t in re.findall(r'<(?:input|select|button)[^>]*>',f): print(re.sub(r'\s+',' ',t)[:300])
+          PY
+          curl -sSL -A "DownRangeBot/1.0" -o w.txt "https://en.wikipedia.org/w/index.php?title=Gun_laws_in_the_United_States_by_state&action=raw"
+          sed -n 37,100p w.txt | cut -c1-400 >> result.txt
       - env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: python3 scripts/publish_result.py result.txt docs/diag-sources.txt
