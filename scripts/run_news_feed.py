@@ -40,7 +40,7 @@ Start with {{ end with }}. No markdown."""
     # Try Anthropic
     if ANTHROPIC_KEY:
         try:
-            body = json.dumps({"model": "claude-haiku-4-5-20251001", "max_tokens": 300,
+            body = json.dumps({"model": "claude-haiku-5-5", "max_tokens": 300,
                 "messages": [{"role": "user", "content": prompt}]}).encode()
             req = urllib.request.Request("https://api.anthropic.com/v1/messages",
                 data=body, method="POST",

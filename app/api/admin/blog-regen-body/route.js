@@ -29,7 +29,7 @@ Format: HTML with h2 headers and p tags. 900-1100 words. No title tag — start 
     const res = await fetch('https://api.anthropic.com/v1/messages', {
       method: 'POST',
       headers: { 'x-api-key': ANTHROPIC, 'anthropic-version': '2023-06-01', 'Content-Type': 'application/json' },
-      body: JSON.stringify({ model: 'claude-haiku-4-5-20251001', max_tokens: 2500, system: SYSTEM, messages: [{ role: 'user', content: prompt }] }),
+      body: JSON.stringify({ model: 'claude-haiku-5-5', max_tokens: 2500, system: SYSTEM, messages: [{ role: 'user', content: prompt }] }),
       signal: AbortSignal.timeout(45000),
     })
     const d = await res.json()

@@ -109,7 +109,7 @@ print("── Anthropic (Haiku) fallback test ───────────�
 if ANTHROPIC_KEY:
     try:
         payload = json.dumps({
-            "model": "claude-haiku-4-5-20251001",
+            "model": "claude-haiku-5-5",
             "max_tokens": 30,
             "messages": [{"role":"user","content":"Say only: Haiku fallback working"}]
         }).encode()

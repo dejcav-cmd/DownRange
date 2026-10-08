@@ -5,7 +5,7 @@ const ALL_MODELS = {
   anthropic: [
     { id: 'claude-sonnet-4-5',         label: 'Claude Sonnet 4.6',  cost: '$$'   },
     { id: 'claude-opus-4-5',           label: 'Claude Opus 4.6',    cost: '$$$$' },
-    { id: 'claude-haiku-4-5-20251001', label: 'Claude Haiku 4.5',   cost: '$'    },
+    { id: 'claude-haiku-5-5', label: 'Claude Haiku 5.5',   cost: '$'    },
   ],
   openai: [
     { id: 'gpt-4o',      label: 'GPT-4o',       cost: '$$$' },
@@ -44,7 +44,7 @@ const PRESETS = {
   claudeFirst: [{ provider:'anthropic', model:'claude-sonnet-4-5' }, { provider:'glm', model:'glm-4.7' }],
   balanced:    [{ provider:'glm', model:'glm-4.7' },       { provider:'anthropic', model:'claude-sonnet-4-5' }, { provider:'openai', model:'gpt-4o-mini' }],
   quality:     [{ provider:'anthropic', model:'claude-opus-4-5' }, { provider:'glm', model:'glm-4.7' }, { provider:'openai', model:'gpt-4o' }],
-  cheap:       [{ provider:'glm', model:'glm-4.5-air' },   { provider:'anthropic', model:'claude-haiku-4-5-20251001' }, { provider:'openai', model:'gpt-4o-mini' }],
+  cheap:       [{ provider:'glm', model:'glm-4.5-air' },   { provider:'anthropic', model:'claude-haiku-5-5' }, { provider:'openai', model:'gpt-4o-mini' }],
 }
 
 const S = `
@@ -74,14 +74,14 @@ export default function AIProviderSettings({ adminKey }) {
   const [activeUC, setActiveUC] = useState('default')
   const [chains,   setChains]   = useState({
     default:    [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
-    news:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
-    backfill:   [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
-    law:        [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
+    news:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-5-5'}],
+    backfill:   [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-5-5'}],
+    law:        [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-haiku-5-5'}],
     article:    [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
     intel:      [{provider:'anthropic',model:'claude-sonnet-4-5'},{provider:'glm',model:'glm-4.7'}],
     newsletter: [{provider:'anthropic',model:'claude-sonnet-4-5'},{provider:'glm',model:'glm-4.7'}],
     outreach:   [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
-    fast:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-4-5-20251001'}],
+    fast:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-5-5'}],
   })
   const [keys,     setKeys]     = useState({ openai:'', glm:'' })
   const [saved,    setSaved]    = useState(false)
