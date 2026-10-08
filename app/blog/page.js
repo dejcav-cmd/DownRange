@@ -387,7 +387,8 @@ const SORT_OPTS = [
   { label: '🕰 Oldest', val: 'oldest' },
 ]
 
-const PER_PAGE = 12
+// 13 = one wide lead card + 12 grid cards (fills 1, 2, 3 and 4 columns evenly)
+const PER_PAGE = 13
 
 // Convert a Sanity blog post to the same shape as a static BLOG_POSTS entry
 function normalizeSanityPost(p) {
@@ -561,7 +562,7 @@ export default async function BlogPage({ searchParams }) {
           {allPosts.length > 0 && (
             <>
               {/* ── FEATURED ARTICLE (only on page 1, no search) ── */}
-              {page === 1 && !search && featured && (
+              {featured && (
                 <Link href={'/blog/' + featured.slug} style={{ textDecoration:'none', display:'block', marginBottom:40 }} className="blog-card">
                   <div style={{ display:'grid', gridTemplateColumns:'1fr 480px', gap:0, border:'1px solid var(--border)', overflow:'hidden', borderRadius:4 }}>
                     <div style={{ padding:'40px 44px', background:'var(--bg2)', display:'flex', flexDirection:'column', justifyContent:'center' }}>
@@ -569,7 +570,7 @@ export default async function BlogPage({ searchParams }) {
                         <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color: featured.catColor === '#C8922A' ? '#000' : '#fff', background:featured.catColor, padding:'2px 10px', letterSpacing:'0.08em' }}>
                           {featured.category}
                         </span>
-                        <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>FEATURED</span>
+                        {page === 1 && !search && <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>FEATURED</span>}
                       </div>
                       <h2 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2.4rem', color:'var(--foreground)', letterSpacing:'0.02em', lineHeight:1, marginBottom:14 }}>
                         {featured.title}
@@ -605,8 +606,8 @@ export default async function BlogPage({ searchParams }) {
               )}
 
               {/* ── ARTICLE GRID ── */}
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px,1fr))', gap:20 }}>
-                {(page === 1 && !search ? rest : allPosts).map(post => (
+              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(340px,1fr))', gap:20 }} className="blog-grid">
+                {rest.map(post => (
                   <Link key={post.slug} href={'/blog/' + post.slug} style={{ textDecoration:'none' }} className="blog-card">
                     <div style={{ border:'1px solid var(--border)', borderRadius:4, overflow:'hidden', height:'100%', display:'flex', flexDirection:'column', background:'var(--bg2)' }}>
                       <div style={{ height:220, overflow:'hidden', position:'relative' }}>

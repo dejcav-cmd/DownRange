@@ -1,0 +1,34 @@
+name: Blog Dedupe Images
+on:
+  schedule:
+    - cron: '0 15 * * 1'
+  workflow_dispatch:
+    inputs:
+      slugs:
+        description: 'Comma-separated slugs to force-replace (blank = only duplicates)'
+        required: false
+        default: ''
+      dry_run:
+        description: 'Dry run'
+        required: false
+        default: 'false'
+permissions:
+  contents: read
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          SLUGS: ${{ inputs.slugs }}
+          DRY: ${{ inputs.dry_run }}
+        run: |
+          python3 - <<'PY' > body.json
+          import json, os
+          print(json.dumps({"dryRun": os.environ["DRY"] == "true", "slugs": [s.strip() for s in os.environ["SLUGS"].split(",") if s.strip()]}))
+          PY
+          curl -s -X POST "https://www.downrangeco.com/api/admin/blog-dedupe-images" -H "x-admin-key: $ADMIN_KEY" -H "content-type: application/json" -d @body.json --max-time 290 | python3 -m json.tool > result.txt 2>&1 || echo "call failed" > result.txt
+      - env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/blog-dedupe-images.txt
