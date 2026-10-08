@@ -46,14 +46,48 @@ function Section({ id, title, accent, sub, allHref, allLabel, children }) {
 
 export function NewsSection({ items }) {
   if (!items.length) return null
+  const [lead, ...rest] = items
+  const list = rest.slice(0, 10)
   return (
-    <Section id="hr-news" title="Top" accent="New" sub="Latest stories, newest first" allHref="/news" allLabel="All news">
-      {items.map((a, i) => (
-        <Card key={a._id} lead={i === 0} priority={i === 0} href={'/news/' + a.slug} img={a.image}
-          tag={a.category} title={a.title} summary={i === 0 ? a.summary : null}
-          left={timeAgo(a.publishedAt)} right={a.source || 'DownRange'} />
-      ))}
-    </Section>
+    <section className="hr-sec" aria-labelledby="hr-news">
+      <div className="container">
+        <div className="hr-head">
+          <div>
+            <h2 className="hr-title" id="hr-news">Top <span>New</span></h2>
+            <div className="hr-sub">Newest story on top, updated as it publishes</div>
+          </div>
+          <Link href="/news" className="hr-all">All news →</Link>
+        </div>
+        <div className="tn">
+          <Link href={'/news/' + lead.slug} className="tn-lead">
+            <img src={sized(lead.image, true)} alt={lead.title} loading="eager" fetchPriority="high" decoding="async" />
+            <div className="tn-shade" />
+            <div className="tn-copy">
+              {lead.category ? <span className="hr-tag tn-tag">{lead.category}</span> : null}
+              <h3 className="tn-h">{lead.title}</h3>
+              {lead.summary ? <p className="tn-sum">{lead.summary}</p> : null}
+              <div className="tn-meta">{timeAgo(lead.publishedAt)} · {lead.source || 'DownRange'}</div>
+            </div>
+          </Link>
+          <aside className="tn-side" aria-label="Latest 10 stories">
+            <div className="tn-side-h">Latest 10 stories</div>
+            <ol className="tn-list">
+              {list.map(a => (
+                <li key={a._id}>
+                  <Link href={'/news/' + a.slug} className="tn-item">
+                    <img src={sized(a.image)} alt="" loading="lazy" decoding="async" />
+                    <span className="tn-it">
+                      <span className="tn-ih">{a.title}</span>
+                      <span className="tn-im">{timeAgo(a.publishedAt)} · {a.source || 'DownRange'}</span>
+                    </span>
+                  </Link>
+                </li>
+              ))}
+            </ol>
+          </aside>
+        </div>
+      </div>
+    </section>
   )
 }
 
