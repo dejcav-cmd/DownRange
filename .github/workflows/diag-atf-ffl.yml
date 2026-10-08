@@ -1,0 +1,21 @@
+name: Diag ATF FFL Listing
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: probe
+        run: |
+          UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
+          for u in https://www.atf.gov/firearms/listing-federal-firearms-licensees https://www.atf.gov/firearms/federal-firearms-listings; do
+            curl -sSL -A "$UA" -o p.html -w "$u %{http_code} %{size_download}\n" "$u" >> result.txt
+            grep -o 'href="[^"]*"' p.html | grep -i "ffl\|listing\|xlsx\|\.txt\|\.zip\|\.csv\|docs/" | sort -u | head -80 >> result.txt
+            grep -i -o "updated[^<]\{0,80\}\|20[0-9][0-9] [^<]\{0,40\}listing[^<]\{0,40\}" p.html | head -10 >> result.txt
+          done
+      - env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/diag-atf-ffl.txt
