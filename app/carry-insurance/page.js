@@ -1,4 +1,5 @@
 import Masthead from '../../components/layout/Masthead'
+import PageHero from '../../components/home/PageHero'
 import Footer from '../../components/layout/Footer'
 export const revalidate = 604800  // Weekly — updated by /api/cron/carry-insurance
 
@@ -50,12 +51,10 @@ export default function CarryInsurancePage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(CARRY_SCHEMA) }} />
       <Masthead />
-      <div className="page-hero" data-title="INSURANCE">
-        <div className="container">
-          <h1 className="page-hero-title">CCW Insurance Comparison</h1>
-          <p className="page-hero-sub">USCCA · CCW Safe · Second Call Defense · US Law Shield — what you actually get</p>
-        </div>
-      </div>
+      <PageHero img="/img/tools-hero.jpg" imgSm="/img/tools-hero-sm.jpg" pos="70% 60%"
+        eyebrow="DownRange tools"
+        title={<>CCW insurance <span>comparison</span></>}
+        sub="USCCA, CCW Safe, Second Call Defense and US Law Shield: what you actually get." />
       <div style={{ padding:'40px 0' }}>
         <div className="container">
           <div style={{ background:'#1A0000', border:'1px solid #7F1D1D', padding:'14px 20px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', color:'#FCA5A5', marginBottom:'28px', lineHeight:1.7 }}>

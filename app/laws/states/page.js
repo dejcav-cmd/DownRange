@@ -47,7 +47,7 @@ export default async function StatesPage() {
   return (
     <>
       <Masthead />
-      <PageHero
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
         eyebrow="Laws · State by state"
         title={<>Gun laws, <span>all 50 states.</span></>}
         sub="Carry rules, magazine limits, assault weapon bans, waiting periods, red flag laws and permit reciprocity. Search, filter and sort to compare."

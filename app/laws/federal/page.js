@@ -1,4 +1,5 @@
 import Masthead from '../../../components/layout/Masthead'
+import PageHero from '../../../components/home/PageHero'
 import Footer from '../../../components/layout/Footer'
 import { fetchLegislation, fetchBreakingAlerts } from '../../../sanity/lib/client'
 
@@ -77,17 +78,10 @@ export default async function FederalPage({ searchParams }) {
       <Masthead />
 
       {/* HERO */}
-      <div style={{ background: '#0d0d10', borderBottom: '1px solid #1a1a1a', padding: '52px 0 32px' }}>
-        <div className="container">
-          <div style={{ fontFamily:S.mono, fontSize:10, color:'#60A5FA', letterSpacing:'0.15em', marginBottom:12 }}>FEDERAL INTELLIGENCE</div>
-          <h1 style={{ fontFamily:S.bebas, fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'#fff', lineHeight:0.92, margin:'0 0 16px', letterSpacing:'0.02em' }}>
-            Federal 2A<br /><span style={{ color:'#60A5FA' }}>Intelligence</span>
-          </h1>
-          <p style={{ fontFamily:S.sans, fontSize:15, color:'#6B7280', margin:0, maxWidth:480 }}>
-            Bills in Congress, ATF rules that changed what's legal, and the SCOTUS cases that will define your rights for a generation.
-          </p>
-        </div>
-      </div>
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+        eyebrow="Federal intelligence"
+        title={<>Federal 2A <span>intelligence</span></>}
+        sub="Bills in Congress, ATF rules that changed what's legal, and the SCOTUS cases that will define your rights for a generation." />
 
       {/* FILTER BAR */}
       <div style={{ background:'#111318', borderBottom:'1px solid #1a1a1a', position:'sticky', top:60, zIndex:20 }}>

@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Masthead from '../../components/layout/Masthead'
+import PageHero from '../../components/home/PageHero'
 import Footer from '../../components/layout/Footer'
 
 const FORM_TYPES = [
@@ -147,25 +148,10 @@ export default function NFATracker() {
       <Masthead />
 
       {/* HERO */}
-      <div style={{ background: '#0a0a0a', borderBottom: '2px solid #c8922a', padding: '56px 0 44px', position:'relative', overflow:'hidden' }}>
-        <div aria-hidden style={{ position:'absolute', inset:0, backgroundImage:'url(/img/photos/rifle.jpg)', backgroundSize:'cover', backgroundPosition:'center', opacity:.5, pointerEvents:'none' }} />
-        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(95deg, rgba(10,10,10,.9) 0%, rgba(10,10,10,.6) 48%, rgba(10,10,10,.28) 100%)', pointerEvents:'none' }} />
-        <div aria-hidden style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(10,10,10,.88) 0%, transparent 58%)', pointerEvents:'none' }} />
-        <div aria-hidden style={{ position:'absolute', inset:0, background:'radial-gradient(ellipse 70% 90% at 12% 0%, rgba(200,146,42,.12), transparent 60%)', pointerEvents:'none' }} />
-        <div className="container" style={{ position:'relative' }}>
-          <div style={{ display:'flex', alignItems:'center', gap:12, marginBottom:12 }}>
-            <span style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#c8922a', letterSpacing: '.2em' }}>⏱ NFA PROCESSING INTELLIGENCE</span>
-            <span style={{ display:'flex', alignItems:'center', gap:6, fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#22C55E', letterSpacing:'.1em' }}><span className="nfa-live-dot" /> LIVE</span>
-          </div>
-          <h1 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: 'clamp(2.8rem,6vw,5rem)', color: '#fff', lineHeight: 1, margin: '0 0 16px', letterSpacing: '.02em' }}>
-            NFA WAIT TIME<br /><span style={{ color: '#c8922a' }}>TRACKER</span>
-          </h1>
-          <p style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 12, color: '#cbd5e1', maxWidth: 600, lineHeight: 1.8, margin: 0 }}>
-            Live ATF processing times for every NFA form · Straight from ATF.gov · Estimate your approval date
-          </p>
-        </div>
-        <style>{`@keyframes nfaPulse{0%,100%{opacity:1}50%{opacity:.35}} .nfa-live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#22c55e;animation:nfaPulse 1.6s infinite}`}</style>
-      </div>
+      <PageHero img="/img/tools-hero.jpg" imgSm="/img/tools-hero-sm.jpg" pos="70% 60%"
+        eyebrow={<><span className="hh-live">● Live</span>NFA processing intelligence</>}
+        title={<>NFA wait time <span>tracker</span></>}
+        sub="Live ATF processing times for every NFA form, straight from ATF.gov. Estimate your approval date." />
 
       <div style={{ padding: '40px 0 80px' }}>
         <div className="container">
