@@ -93,7 +93,7 @@ export default async function StateLawPage({ params }) {
       <Masthead />
 
       {/* HERO */}
-      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="58% 55%" posSm="82% 50%"
         eyebrow={<><Link href="/laws" style={{ color:'inherit', textDecoration:'none' }}>Laws</Link> › <Link href="/laws/states" style={{ color:'inherit', textDecoration:'none' }}>All states</Link> › {abbr}</>}
         title={<>{stateName} <span>gun laws {new Date().getFullYear()}</span></>}>
         {data.rating && (
