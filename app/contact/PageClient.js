@@ -1,5 +1,4 @@
 'use client'
-import Script from 'next/script'
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 
@@ -15,23 +14,16 @@ export default function ContactPage() {
         </div>
       </div>
       <div style={{ padding:'60px 0', background:'var(--bg)' }}>
-        <div className="container" style={{ maxWidth:800 }}>
-          <div style={{ display:'grid', gridTemplateColumns:'1fr 280px', gap:'48px' }}>
+        <div className="container" style={{ maxWidth:1000 }}>
+          <div className="dr-contact-grid">
             <div>
+              <style>{`.dr-contact-frame{width:100%;height:1050px;border:0;border-radius:4px;background:#fff;display:block}@media(max-width:640px){.dr-contact-frame{height:1250px}}.dr-contact-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:48px}@media(max-width:820px){.dr-contact-grid{grid-template-columns:minmax(0,1fr);gap:28px}}`}</style>
               <iframe
                 src="https://api.vantaroai.com/widget/form/fRndUSjTcnfRXJAQ7qKo"
-                id="inline-fRndUSjTcnfRXJAQ7qKo"
                 title="Contact DownRange"
-                data-layout="{'id':'INLINE'}"
-                data-trigger-type="alwaysShow"
-                data-activation-type="alwaysActivated"
-                data-deactivation-type="neverDeactivate"
-                data-form-id="fRndUSjTcnfRXJAQ7qKo"
-                data-layout-iframe-id="inline-fRndUSjTcnfRXJAQ7qKo"
+                className="dr-contact-frame"
                 loading="lazy"
-                style={{ width:'100%', minHeight:620, border:'none', borderRadius:4, background:'#fff' }}
               />
-              <Script src="https://api.vantaroai.com/js/form_embed.js" strategy="lazyOnload" />
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#6B7280', lineHeight:1.6, marginTop:12 }}>
                 Your email is used only to respond to your inquiry. We never share contact information with third parties.
               </p>
