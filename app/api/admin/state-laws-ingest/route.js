@@ -4,6 +4,7 @@ export const maxDuration = 300
 import { createClient } from '@sanity/client'
 import { callAIText } from '../../../../lib/aiClient.js'
 import { reportCronRun } from '../../../../lib/cronReporter'
+import { STATE_SEED } from '../../../../lib/stateSeed.js'
 
 // Monthly state-law data sync (runs from GitHub Actions: state-data-sync.yml, 8th of each month).
 // Inputs per state: the "Summary table" rows from Wikipedia's "Gun laws in <state>" article, and
@@ -101,35 +102,50 @@ export async function POST(req) {
 
     const current = await sanity.fetch(`*[_type=="stateProfile"]{abbr,constitutionalCarry,magLimit,awbStatus,redFlagLaw,waitPeriod}`).catch(() => [])
     const curMap = Object.fromEntries((current || []).map(c => [c.abbr, c]))
-    const changes = []
+    const changes = [], reviews = []
     const checkedAt = new Date().toISOString()
     let tx = sanity.transaction()
     for (const code of Object.keys(parsed)) {
       const p = parsed[code]
       const cc = permitless.has(NAMES[code]) || permitless.has(code)
-      const doc = {
-        constitutionalCarry: cc,
-        magLimit: p.magLimit,
-        awbStatus: p.awb,
-        redFlagLaw: p.redFlag,
-        waitPeriod: p.waitDays ? `${p.waitDays} days` : 'None',
-        lawsVerified: verified,
-        lawsCheckedAt: checkedAt,
+      const c0 = curMap[code] || {}
+      const sd = STATE_SEED[code] || {}
+      // baseline = what the site shows now (Sanity value, else seed)
+      const base = {
+        mag: c0.magLimit ?? sd.magLimit ?? 0,
+        awb: String(c0.awbStatus ?? sd.awbStatus ?? 'none').toLowerCase(),
+        rf: c0.redFlagLaw ?? sd.redFlagLaw,
       }
-      const c = curMap[code] || {}
-      const diff = []
-      if (c.constitutionalCarry !== undefined && !!c.constitutionalCarry !== cc) diff.push(`carry ${c.constitutionalCarry}->${cc}`)
-      if (c.magLimit !== undefined && (c.magLimit || 0) !== p.magLimit) diff.push(`mag ${c.magLimit}->${p.magLimit}`)
-      if (c.awbStatus !== undefined && String(c.awbStatus).toLowerCase() !== p.awb.toLowerCase()) diff.push(`awb ${c.awbStatus}->${p.awb}`)
-      if (c.redFlagLaw !== undefined && !!c.redFlagLaw !== p.redFlag) diff.push(`redflag ${c.redFlagLaw}->${p.redFlag}`)
+      const g = p.gates
+      const doc = { constitutionalCarry: cc, lawsVerified: verified, lawsCheckedAt: checkedAt }
+      const diff = [], review = []
+      // Only definite Yes/No answers from the source table are applied. Unknown rows are left alone,
+      // and anything that would REMOVE a restriction the site currently shows is held for review.
+      if (g.mag) {
+        if (p.magLimit === 0 && (base.mag || 0) > 0) review.push(`mag ${base.mag}->none`)
+        else { doc.magLimit = p.magLimit; if ((base.mag || 0) !== p.magLimit) diff.push(`mag ${base.mag || 0}->${p.magLimit}`) }
+      }
+      if (g.awb) {
+        const nb = p.awb.toLowerCase(), cur = base.awb === 'full' ? 'banned' : base.awb
+        if (nb === 'none' && cur !== 'none') review.push(`awb ${cur}->none`)
+        else { doc.awbStatus = p.awb; if (nb !== cur) diff.push(`awb ${cur}->${nb}`) }
+      }
+      if (g.rf) {
+        if (!p.redFlag && base.rf) review.push('redflag true->false')
+        else { doc.redFlagLaw = p.redFlag; if (!!base.rf !== p.redFlag) diff.push(`redflag ${!!base.rf}->${p.redFlag}`) }
+      }
+      if (g.wait === 'no') { doc.waitPeriod = 'None' }
+      else if (g.wait && p.waitDays) { doc.waitPeriod = `${p.waitDays} days` }
+      if (c0.constitutionalCarry !== undefined ? !!c0.constitutionalCarry !== cc : !!sd.constitutionalCarry !== cc) diff.push(`carry ${c0.constitutionalCarry ?? sd.constitutionalCarry}->${cc}`)
+      if (review.length) reviews.push(`${code}: ${review.join(', ')}`)
       if (diff.length) changes.push(`${code}: ${diff.join(', ')}`)
       tx = tx.createIfNotExists({ _id: `state-${code.toLowerCase()}`, _type: 'stateProfile', name: NAMES[code], abbr: code })
         .patch(`state-${code.toLowerCase()}`, { set: doc })
     }
     if (!dry) await tx.commit()
-    const summary = `${Object.keys(parsed).length} states parsed, ${changes.length} changed${errors.length ? `, ${errors.length} errors` : ''}${dry ? ' (dry run)' : ''}`
+    const summary = `${Object.keys(parsed).length} states parsed, ${changes.length} changed, ${reviews.length} held for review${errors.length ? `, ${errors.length} errors` : ''}${dry ? ' (dry run)' : ''}`
     await reportCronRun('state-laws-sync', { status: errors.length ? 'warning' : 'success', ms: Date.now() - t0, details: summary, error: errors.length ? errors.slice(0, 3).join('; ') : null })
-    return Response.json({ ok: true, summary, errors, changes, audit: Object.fromEntries(Object.entries(parsed).map(([c, p]) => [c, `${p.magLimit}/${p.awb}/${p.waitDays}/${p.redFlag ? 'RF' : '-'} g=${Object.values(p.gates).map(x => x || '?').join(',')}`])) })
+    return Response.json({ ok: true, summary, errors, changes, reviews, audit: Object.fromEntries(Object.entries(parsed).map(([c, p]) => [c, `${p.magLimit}/${p.awb}/${p.waitDays}/${p.redFlag ? 'RF' : '-'} g=${Object.values(p.gates).map(x => x || '?').join(',')}`])) })
   } catch (e) {
     await reportCronRun('state-laws-sync', { status: 'failed', ms: Date.now() - t0, error: e.message }).catch(() => {})
     return Response.json({ ok: false, error: e.message }, { status: 500 })
