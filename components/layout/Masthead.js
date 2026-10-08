@@ -17,6 +17,16 @@ const NAV = [
   },
   { label: '💰 Deals', href: '/deals' },
   {
+    label: 'Laws', href: '/laws',
+    children: [
+      { label: '🗺️ My State',          href: '/laws/my-state', desc: 'Your state\'s carry laws, restrictions & reciprocity' },
+      { label: '🏛️ Federal & SCOTUS',  href: '/laws/federal',  desc: 'Bills in Congress, ATF rules, active SCOTUS cases' },
+      { label: '📋 All 50 States',     href: '/laws/states',   desc: 'Compare gun laws across every state' },
+      { label: '🔄 CCW Reciprocity',   href: '/laws/my-state?view=reciprocity', desc: 'Where your permit is honored' },
+      { label: '⚖️ NFA Rules',         href: '/laws/federal#nfa',          desc: 'Suppressors, SBRs, machine guns' },
+    ]
+  },
+  {
     label: '🎯 Tools', href: '/tools',
     children: [
       { label: '🎯 Precision Calculator',  href: '/ballistics',            desc: '188 match and hunting bullets, G1/G7, wind, DOPE card' },
@@ -26,8 +36,6 @@ const NAV = [
       { label: '📍 FFL Finder',            href: '/ffl-finder',            desc: 'Transfer dealers near you' },
       { label: '🏟️ Range Finder',          href: '/ranges',                desc: 'Shooting ranges near you' },
       { label: '🛡️ Carry Insurance',       href: '/carry-insurance',       desc: 'Compare concealed carry coverage' },
-      { label: '🔄 CCW Reciprocity',       href: '/laws/my-state?view=reciprocity', desc: 'Where your carry permit is honored' },
-      { label: '📋 All 50 States Laws',    href: '/laws/states',           desc: 'Compare gun laws across every state' },
       { label: '🗺️ My State Laws',         href: '/laws/my-state',         desc: 'Carry, magazine and transport rules for your state' },
       { label: 'All tools →',              href: '/tools',                 desc: 'Every DownRange tool in one place' },
     ]
