@@ -2,7 +2,6 @@ import { preload } from 'react-dom'
 import Masthead from '../components/layout/Masthead'
 import Footer from '../components/layout/Footer'
 import SocialIcons from '../components/ui/SocialIcons'
-import NewsletterSignup from '../components/sections/NewsletterSignup'
 import HomeStyles from '../components/home/HomeStyles'
 import HomeHero from '../components/home/HomeHero'
 import { NewsSection, DealsSection, PressSection } from '../components/home/HomeSections'
@@ -130,7 +129,12 @@ export default async function HomePage() {
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#9CA3AF', lineHeight:1.7, marginBottom:22 }}>
                 One weekly briefing: the best deals you can actually buy where you live, new releases, and the law changes that hit your state. Free, no spam.
               </p>
-              <NewsletterSignup variant="compact" />
+              <iframe
+                src="https://api.vantaroai.com/widget/form/VE52z36NXq734ty7pkHH"
+                title="Get the weekly DownRange briefing"
+                className="home-form-frame"
+                loading="lazy"
+              />
             </div>
             <div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(3,1fr)', gap:10, marginBottom:16 }}>
@@ -150,6 +154,8 @@ export default async function HomePage() {
       <Footer />
 
       <style>{`
+        .home-form-frame{width:100%;height:880px;border:0;border-radius:4px;background:transparent;color-scheme:normal;display:block}
+        @media(max-width:640px){.home-form-frame{height:1060px}}
         .home-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
         .home-tools-h{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;margin-right:6px}
         .tool-chip{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--text);text-decoration:none;border:1px solid var(--border-mid);background:var(--bg);padding:7px 12px;min-height:36px;display:inline-flex;align-items:center;transition:border-color .15s}
