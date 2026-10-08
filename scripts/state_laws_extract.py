@@ -33,10 +33,12 @@ def wiki_rows(name):
         pages = d.get('query', {}).get('pages', [])
         if not pages or pages[0].get('missing'): continue
         txt = pages[0]['revisions'][0]['slots']['main']['content']
-        a = txt.find('==Summary table==')
-        if a < 0: continue
-        b = txt.find('\n==', a + 20)
-        tbl = txt[a:b if b > 0 else a + 40000]
+        m = re.search(r'^=+\s*Summary table\s*=+\s*$', txt, re.M)
+        if not m: continue
+        a = m.start()
+        mb = re.search(r'^==[^=]', txt[m.end():], re.M)
+        b = m.end() + mb.start() if mb else a + 40000
+        tbl = txt[a:b]
         out = []
         for line in tbl.split('\n'):
             if not line.startswith('| ') or '||' not in line: continue
@@ -56,8 +58,9 @@ def permitless_list():
     flat = re.sub(r'\s+', ' ', txt)
     m = re.search(r'Note:\s*([A-Z][^"]{20,700}?)\s+have\s+"?Permitless', flat)
     if not m: return [], None
-    names = re.split(r',\s*|\s+and\s+', m.group(1))
-    names = [n.strip() for n in names if n.strip()]
+    seg = m.group(1)
+    names = [n for n in sorted(NAMES.values(), key=len, reverse=True) if re.search(r'\b' + re.escape(n) + r'\b', seg)]
+    names = sorted(set(names))
     upd = re.search(r'Last Updated:\s*([0-9/]+)', txt)
     return names, upd.group(1) if upd else None
 
@@ -65,7 +68,7 @@ states, problems = {}, []
 for code, name in NAMES.items():
     try:
         rows = wiki_rows(name)
-        if len(rows) < 80: problems.append(f'{code}: summary table not found'); continue
+        if len(rows) < 60: problems.append(f'{code}: summary table not found'); continue
         states[code] = {'rows': rows}
     except Exception as e:
         problems.append(f'{code}: {e}')
