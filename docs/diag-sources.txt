@@ -1,0 +1,119 @@
+== ATF via jina html
+200 127424
+href="/firearms/tools-and-services-firearms-industry/current-licensees/ffl-ez-check-application"
+href="/firearms/tools-and-services-firearms-industry/current-licensees/firearms/discontinue-being-a-federal-firearms-licensee-ffl"
+<option value="21">2021
+<option value="22">2022
+<option value="23">2023
+<option value="24">2024
+<option value="25">2025
+<option value="26" selected="selected">2026
+<option value="01" selected="selected">January
+<option value="02">February
+<option value="03">March
+<option value="04">April
+<option value="05">May
+<option value="06">June
+<option value="07">July
+<option value="08">August
+<option value="09">September
+<option value="10">October
+<option value="11">November
+<option value="12">December
+<option value="21">2021
+<option value="22">2022
+<option value="23">2023
+<option value="24">2024
+<option value="25">2025
+<option value="26" selected="selected">2026
+<option value="01" selected="selected">January
+<option value="02">February
+<option value="03">March
+<option value="04">April
+<option value="05">May
+<option value="06">June
+<option value="07">July
+<option value="08">August
+<option value="09">September
+<option value="10">October
+<option value="11">November
+<option value="12">December
+<option value="AL" selected="selected">Alabama
+<option value="AK">Alaska
+<option value="AZ">Arizona
+<option value="AR">Arkansas
+<div class="ffl-listing-export-form block block-atf-tweaks block-ffl-listing-export-block" data-drupal-selector="ffl-listing-export-form" id="block-fflli
+ols-and-services-firearms-industry/federal-firearms-listings" method="post" id="ffl-listing-export-form" accept-charset="UTF-8" class="usa-form">
+  <input data-drupal-selector="edit-ffl-listing-export-form" type="hidden" name="form_id" value="ffl-listing-export-form" cl
+== ATF jina markdown links
+480-- [U.S. Firearms Commerce Report](https://www.atf.gov/media/30936/download)
+481-- [AFMER](https://www.atf.gov/media/15716/download)
+507-- [Applications - FFL eZ Check](https://www.atf.gov/firearms/tools-and-services-firearms-industry/current-licensees/ffl-ez-check-application)
+510-- [Discontinue Being a Federal Firearms Licensee (FFL)](https://www.atf.gov/firearms/tools-and-services-firearms-industry/current-licensees/firearms/discontinue-being-a-federal-firearms-licensee-ffl)
+532-- [eForm 4473 Application Download](https://www.atf.gov/firearms/forms/eform-4473-application-download)
+== jina on file guesses
+https://www.atf.gov/firearms/docs/undefined/1025-ffl-list-xlsx/download 200 2100
+Title: 404 - Page not found
+
+URL Source: https://www.atf.gov/firearms/docs/undefined/1025-ffl-list-xlsx/download
+
+Markdown Content:
+![Image 1: U.S. flag](https://www.atf.gov/themes/custom/athena/asset
+https://www.atf.gov/firearms/docs/202509-ffl-list/download 200 2087
+Title: 404 - Page not found
+
+URL Source: https://www.atf.gov/firearms/docs/202509-ffl-list/download
+
+Markdown Content:
+![Image 1: U.S. flag](https://www.atf.gov/themes/custom/athena/assets/img/us_flag
+https://www.atf.gov/firearms/docs/undefined/0925-ffl-list-wa-xlsx/download 200 2103
+Title: 404 - Page not found
+
+URL Source: https://www.atf.gov/firearms/docs/undefined/0925-ffl-list-wa-xlsx/download
+
+Markdown Content:
+![Image 1: U.S. flag](https://www.atf.gov/themes/custom/athena/as
+== wikipedia
+wiki raw 200 14875
+17:==Common subjects of state laws==
+37:==Overview==
+68:==Alabama==
+72:==Alaska==
+76:==Arizona==
+80:==Arkansas==
+84:==California==
+88:==Colorado==
+92:==Connecticut==
+96:==Delaware==
+100:==District of Columbia==
+104:==Florida==
+108:==Georgia==
+112:==Hawaii==
+116:==Idaho==
+120:==Illinois==
+124:==Indiana==
+128:==Iowa==
+132:==Kansas==
+136:==Kentucky==
+140:==Louisiana==
+144:==Maine==
+148:==Maryland==
+152:==Massachusetts==
+156:==Michigan==
+160:==Minnesota==
+164:==Mississippi==
+168:==Missouri==
+172:==Montana==
+176:==Nebraska==
+180:==Nevada==
+184:==New Hampshire==
+188:==New Jersey==
+192:==New Mexico==
+196:==New York==
+200:==North Carolina==
+204:==North Dakota==
+208:==Ohio==
+212:==Oklahoma==
+216:==Oregon==
+25:* Some states and localities place additional restrictions on certain [[semi-automatic firearm]]s that they have defined as [[assault weapon]]s, or on [[magazine (firearms)|magazines]] that can hold more than a certain number of rounds of ammunition.
+30:* Some states have enacted  [[red flag law]]s that enable a judge to issue an order to temporarily confiscate the firearms of a person who presents an imminent threat to others or to themselves.
