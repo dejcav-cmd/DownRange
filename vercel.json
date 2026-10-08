@@ -25,6 +25,10 @@
       "schedule": "0 8 * * 0"
     },
     {
+      "path": "/api/newsletter",
+      "schedule": "0 7 * * 4"
+    },
+    {
       "path": "/api/site-health",
       "schedule": "0 8 * * *"
     },
@@ -43,10 +47,6 @@
     {
       "path": "/api/cron/weekly-gun-releases",
       "schedule": "0 6 * * 1,4"
-    },
-    {
-      "path": "/api/cron/press-releases",
-      "schedule": "30 5 * * 2,5"
     },
     {
       "path": "/api/admin/backup",
@@ -86,27 +86,19 @@
     },
     {
       "path": "/api/social/cron/twitter",
-      "schedule": "4 13 * * *"
+      "schedule": "4 11,16,19,22 * * *"
     },
     {
       "path": "/api/social/cron/facebook",
-      "schedule": "2 11,16,19,22 * * *"
-    },
-    {
-      "path": "/api/social/cron/facebook",
-      "schedule": "27 0 * * *"
+      "schedule": "2 11,16,19,22,1 * * *"
     },
     {
       "path": "/api/social/cron/instagram",
-      "schedule": "20 11,16,19,22 * * *"
-    },
-    {
-      "path": "/api/social/cron/instagram",
-      "schedule": "27 0 * * *"
+      "schedule": "20 11,16,19,22,1 * * *"
     },
     {
       "path": "/api/social/cron/threads",
-      "schedule": "4 14 * * *"
+      "schedule": "4 12,17,20,23 * * *"
     },
     {
       "path": "/api/social/cron/reddit",
@@ -310,9 +302,6 @@
       "maxDuration": 300
     },
     "app/api/cron/weekly-gun-releases/route.js": {
-      "maxDuration": 300
-    },
-    "app/api/cron/press-releases/route.js": {
       "maxDuration": 300
     },
     "app/api/admin/backfill-releases/route.js": {

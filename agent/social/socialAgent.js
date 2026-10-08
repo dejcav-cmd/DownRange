@@ -86,11 +86,12 @@ const HASHTAG_POOLS = {
 
 // Core tags included on every post for brand consistency; remaining slots
 // filled from the category pool at random so posts aren't identical every time.
-const CORE_TAGS = ['#2A', '#SecondAmendment']
+const CORE_TAGS = ['#2A', '#SecondAmendment', '#DownRange']
 
 function pickHashtags(category, platform) {
   const pool = HASHTAG_POOLS[(category || '').toLowerCase()] || HASHTAG_POOLS.default
-  const targetCount = platform === 'instagram' ? 8 : 4
+  // Instagram: 20 tags in first comment (caption is clean). All others: 4.
+  const targetCount = platform === 'instagram' ? 20 : 4
   const core = CORE_TAGS.filter(t => pool.includes(t) || true) // always include core tags
   const rest = pool.filter(t => !core.includes(t))
   // Fisher-Yates shuffle the remaining pool for variety
@@ -170,18 +171,25 @@ async function generateCopy(article, platform, contentType) {
   if (!slugStr) throw new Error(`Article "${article.title?.slice(0,50)}" has no valid slug — skipping to avoid broken URL`)
   const urlPath = contentType === 'blog' ? 'blog' : contentType === 'release' ? 'releases' : contentType === 'review' ? 'reviews' : 'news'
   // UTM params so traffic from each platform is actually measurable in analytics
-  const utm = `utm_source=${platform}&utm_medium=social&utm_campaign=auto_post`
+  // Campaign encodes content type + category for granular analytics segmentation
+  const cat = (article.category || 'general').toLowerCase().replace(/[^a-z0-9]/g, '_')
+  const utm = `utm_source=${platform}&utm_medium=social&utm_campaign=${contentType}_${cat}`
   const url    = `https://downrangeco.com/${urlPath}/${slugStr}?${utm}`
-  const tags   = ['twitter','threads','facebook','instagram'].includes(platform)
+  // Instagram: hashtags go in first comment (not caption) — caption stays clean
+  // All other platforms with tag support: hashtags appended to post body
+  const tags   = ['twitter','threads','facebook'].includes(platform)
     ? '\n' + pickHashtags(article.category, platform) : ''
   const budget = CHAR_BUDGETS[platform] || 200
 
   // Build a rich article brief for the AI — the more context, the better the copy
   const summary = article.summary || article.excerpt || ''
+  // Normalize tags array: Sanity stores as array of strings
+  const articleTags = Array.isArray(article.tags) ? article.tags : []
   const brief = [
     `TITLE: ${article.title}`,
     summary ? `SUMMARY: ${summary.slice(0, 400)}` : '',
     `CATEGORY: ${article.category || 'news'}`,
+    articleTags.length ? `KEYWORDS: ${articleTags.slice(0, 8).join(', ')}` : '',
     `TYPE: ${contentType === 'blog' ? 'DownRange Analysis / Blog' : contentType === 'release' ? 'New Firearm Release' : contentType === 'review' ? 'DownRange Gun Review' : 'Breaking News from DownRange'}`,
     article.score ? `REVIEW SCORE: ${article.score}/10` : '',
     article.source ? `SOURCE: ${article.source} (original reporting — DownRange portal link added in footer)` : '',
@@ -233,8 +241,10 @@ Write the post body now. Return ONLY the post text. No quotes, no preamble, no "
   // Instagram doesn't render URLs as clickable links in captions — showing
   // a dead-looking raw link just reads as broken. Reverted back to pointing
   // readers to the bio link instead (2026-08-28, DJ request after testing).
+  // Instagram hashtags are posted as a first comment (see postInstagram) —
+  // the caption stays clean so the hook shows fully before "more" is tapped.
   const suffix = platform === 'instagram'
-    ? `\n\n📖 Full story — link in bio${sourceLabel}${tags}`
+    ? `\n\n📖 Full story — link in bio${sourceLabel}`
     : `\n\nFull article: ${url}${sourceLabel}${tags}`
 
   if (typeof Intl !== 'undefined' && Intl.Segmenter) {
@@ -279,7 +289,7 @@ async function uploadImageBluesky(imageUrl, accessJwt) {
   } catch { return null }
 }
 
-async function postBluesky(content, imageUrl) {
+async function postBluesky(content, imageUrl, article) {
   let handle = (process.env.BLUESKY_HANDLE || '').trim()
     .replace(/[\u0000-\u001F\u007F-\u00A0\u200B-\u200F\u202A-\u202E\u2060-\u206F\uFEFF]/g, '')
     .replace(/^https?:\/\/(www\.)?(bsky\.app\/profile\/)?/i, '')
@@ -296,14 +306,17 @@ async function postBluesky(content, imageUrl) {
   const auth = await authRes.json()
   if (!auth.accessJwt) return { ok: false, error: `Bluesky auth failed: ${auth.message}` }
 
-  // Image embed (required)
+  // Image embed — use article title as alt text for accessibility + SEO
   let embed
   if (imageUrl) {
     const blob = await uploadImageBluesky(imageUrl, auth.accessJwt)
-    if (blob) embed = { $type: 'app.bsky.embed.images', images: [{ image: blob, alt: 'DownRange — 2A News' }] }
+    if (blob) {
+      const altText = ((article?.title || 'DownRange — 2A News').slice(0, 300))
+      embed = { $type: 'app.bsky.embed.images', images: [{ image: blob, alt: altText }] }
+    }
   }
 
-  // URL facets
+  // URL facets (link detection) — processed before safe-content truncation
   const urlRegex = /https?:\/\/[^\s]+/g
   const facets = [], encoder = new TextEncoder()
   let match
@@ -321,14 +334,27 @@ async function postBluesky(content, imageUrl) {
   } catch { if (safeContent.length > 298) safeContent = safeContent.slice(0, 297) + '…' }
 
   // Recompute facets on the safe content (positions may have shifted after truncation)
+  // Includes both URL link facets and hashtag tag facets for Bluesky discovery
   const safeFacets = []
-  const urlRegex2 = /https?:\/\/[^\s]+/g
   const enc2 = new TextEncoder()
+
+  // URL link facets
+  const urlRegex2 = /https?:\/\/[^\s]+/g
   let m2
   while ((m2 = urlRegex2.exec(safeContent)) !== null) {
     const start = enc2.encode(safeContent.slice(0, m2.index)).length
     const end   = enc2.encode(safeContent.slice(0, m2.index + m2[0].length)).length
     safeFacets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#link', uri: m2[0] }] })
+  }
+
+  // Hashtag tag facets — enables Bluesky hashtag search/discovery
+  // AT Protocol: facet#tag value must NOT include the leading '#'
+  const tagRegex2 = /#([a-zA-Z][a-zA-Z0-9_]*)/g
+  let t2
+  while ((t2 = tagRegex2.exec(safeContent)) !== null) {
+    const start = enc2.encode(safeContent.slice(0, t2.index)).length
+    const end   = enc2.encode(safeContent.slice(0, t2.index + t2[0].length)).length
+    safeFacets.push({ index: { byteStart: start, byteEnd: end }, features: [{ $type: 'app.bsky.richtext.facet#tag', tag: t2[1] }] })
   }
 
   const postRes = await fetch('https://bsky.social/xrpc/com.atproto.repo.createRecord', {
@@ -401,7 +427,7 @@ async function postFacebook(content, imageUrl) {
 // then publish it. Instagram requires an image (no text-only posts), and
 // container creation is asynchronous — we poll status_code before publishing
 // to avoid publishing a container that isn't ready yet (documented Meta behavior).
-async function postInstagram(content, imageUrl, category) {
+async function postInstagram(content, imageUrl, category, hashtags) {
   const token = process.env.INSTAGRAM_ACCESS_TOKEN || process.env.FACEBOOK_PAGE_ACCESS_TOKEN
   const igUserId = process.env.INSTAGRAM_BUSINESS_ACCOUNT_ID
   if (!token || !igUserId) return { ok: false, error: 'Missing INSTAGRAM_ACCESS_TOKEN/FACEBOOK_PAGE_ACCESS_TOKEN or INSTAGRAM_BUSINESS_ACCOUNT_ID.' }
@@ -466,6 +492,18 @@ async function postInstagram(content, imageUrl, category) {
     permalink = permRes.permalink || null
   } catch {}
 
+  // Post hashtags as a first comment — keeps caption clean (hook visible before
+  // "more" tap) while still getting full hashtag discovery on Instagram.
+  // 20 tags in comment vs 8 in caption = ~2.5× the hashtag surface area.
+  if (hashtags) {
+    try {
+      await fetch(`https://graph.facebook.com/v20.0/${publishRes.id}/comments`, {
+        method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: new URLSearchParams({ message: hashtags, access_token: token }),
+      })
+    } catch { /* best-effort — don't fail the post if first comment fails */ }
+  }
+
   return { ok: true, postId: publishRes.id, postUrl: permalink || `https://www.instagram.com/${igUserId}/`, hasImage: true }
 }
 
@@ -511,10 +549,23 @@ async function postViaZernio(content, imageUrl) {
 }
 
 // ── REDDIT ────────────────────────────────────────────────────────────────────
+// Expanded subreddit map — each category gets up to 3 targets, top 2 are used.
+// Order matters: most relevant / best-fit subreddit first.
 const SUBREDDITS = {
-  law:['CCW','2ALiberals','guns'], breaking:['guns','CCW','2ALiberals'],
-  news:['guns','CCW'], review:['guns','EDC'], training:['CCW','guns'],
-  hunting:['hunting','guns'], default:['guns'],
+  law:       ['2Aliberals', 'CCW', 'guns'],
+  breaking:  ['guns', 'CCW', '2Aliberals'],
+  news:      ['guns', 'CCW', 'Firearms'],
+  review:    ['guns', 'GunAccessoriesForSale', 'EDC'],
+  training:  ['CCW', 'guns', 'Firearms'],
+  hunting:   ['hunting', 'guns', 'Fishing_Hunting'],
+  industry:  ['guns', 'Firearms', 'CCW'],
+  ammo:      ['guns', 'Firearms', 'CCW'],
+  suppressor:['NFA', 'guns', 'Suppressors'],
+  pistol:    ['guns', 'EDC', 'CCW'],
+  rifle:     ['guns', 'ar15', 'Firearms'],
+  shotgun:   ['guns', 'Firearms', 'CCW'],
+  optic:     ['guns', 'longrange', 'Firearms'],
+  default:   ['guns', 'Firearms'],
 }
 
 async function postReddit(content, imageUrl, category) {
@@ -536,26 +587,38 @@ async function postReddit(content, imageUrl, category) {
   const urlMatch  = content.match(/https?:\/\/[^\s]+/)
   const url       = urlMatch?.[0] || null
   const title     = content.split('\n')[0].replace(/https?:\/\/[^\s]+/g, '').trim().slice(0, 299) || 'DownRange Intel'
-  const subreddit = (SUBREDDITS[category] || SUBREDDITS.default)[0]
 
-  const submitRes = await fetch('https://oauth.reddit.com/api/submit', {
-    method: 'POST',
-    headers: { 'Authorization': `Bearer ${tokenData.access_token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'DownRange/1.0 by u/DownRangeCo' },
-    body: new URLSearchParams({ sr: subreddit, kind: url ? 'link' : 'self', title, ...(url ? { url } : { text: content }), resubmit: 'true', nsfw: 'false' }),
-  })
-  const submitData = await submitRes.json()
-  if (submitData?.json?.errors?.length) return { ok: false, error: submitData.json.errors[0][1] }
-  const postUrl = submitData?.data?.url || null
-  return { ok: true, postId: subreddit, postUrl, hasImage: false }
+  // Post to top 2 subreddits for the category — cross-posting 2× the reach
+  // Brief delay between posts to avoid Reddit's duplicate-link spam filter
+  const targets   = (SUBREDDITS[category] || SUBREDDITS.default).slice(0, 2)
+  const postUrls  = []
+  for (const subreddit of targets) {
+    try {
+      const submitRes = await fetch('https://oauth.reddit.com/api/submit', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${tokenData.access_token}`, 'Content-Type': 'application/x-www-form-urlencoded', 'User-Agent': 'DownRange/1.0 by u/DownRangeCo' },
+        body: new URLSearchParams({ sr: subreddit, kind: url ? 'link' : 'self', title, ...(url ? { url } : { text: content }), resubmit: 'true', nsfw: 'false' }),
+      })
+      const submitData = await submitRes.json()
+      if (!submitData?.json?.errors?.length && submitData?.data?.url) {
+        postUrls.push(submitData.data.url)
+      }
+      // Brief pause between subreddit submissions
+      if (targets.length > 1) await new Promise(r => setTimeout(r, 1500))
+    } catch { /* non-fatal: continue to next subreddit */ }
+  }
+
+  if (!postUrls.length) return { ok: false, error: 'Reddit: all subreddit submissions failed' }
+  return { ok: true, postId: targets.join(','), postUrl: postUrls[0], postUrls, hasImage: false }
 }
 
 // ── Dispatcher ────────────────────────────────────────────────────────────────
-async function dispatch(platform, content, imageUrl, category) {
+async function dispatch(platform, content, imageUrl, category, hashtags, article) {
   switch (platform) {
-    case 'bluesky':  return postBluesky(content, imageUrl)
+    case 'bluesky':  return postBluesky(content, imageUrl, article)
     case 'threads':  return postThreads(content, imageUrl)
     case 'facebook': return postFacebook(content, imageUrl)
-    case 'instagram': return postInstagram(content, imageUrl, category)
+    case 'instagram': return postInstagram(content, imageUrl, category, hashtags)
     case 'twitter':  return postViaZernio(content, imageUrl)
     case 'reddit':   return postReddit(content, imageUrl, category)
     default:         return { ok: false, error: `${platform} not supported` }
@@ -587,7 +650,7 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
   const news = await sanity.fetch(
     `*[_type == "newsArticle" && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...${limit}]{
       _id, "type":"news", title, summary, excerpt, category, urgencyScore, publishedAt,
-      "slug": slug.current, imageUrl
+      "slug": slug.current, imageUrl, tags
     }`, { cutoff }
   ).catch(() => [])
 
@@ -595,7 +658,7 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
   const blogs = await sanity.fetch(
     `*[_type == "blogPost" && status == "published" && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
       _id, "type":"blog", title, "summary": excerpt, excerpt, category, publishedAt,
-      "urgencyScore": 6, "slug": slug.current, imageUrl
+      "urgencyScore": 6, "slug": slug.current, imageUrl, tags
     }`, { cutoff }
   ).catch(() => [])
 
@@ -603,7 +666,7 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
   const releases = await sanity.fetch(
     `*[_type == "firearmRelease" && approved == true && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
       _id, "type":"release", title, summary, category, publishedAt,
-      "urgencyScore": 6, "slug": slug.current, imageUrl
+      "urgencyScore": 6, "slug": slug.current, imageUrl, tags
     }`, { cutoff }
   ).catch(() => [])
 
@@ -611,7 +674,7 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
   const reviews = await sanity.fetch(
     `*[_type == "review" && defined(publishedAt) && defined(slug.current) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
       _id, "type":"review", title, summary, category, score, publishedAt,
-      "urgencyScore": 6, "slug": slug.current, imageUrl
+      "urgencyScore": 6, "slug": slug.current, imageUrl, tags
     }`, { cutoff }
   ).catch(() => [])
 
@@ -637,7 +700,7 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
 
   let articles
   if (forceArticleId) {
-    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id, _type, title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl}`, { id: forceArticleId })
+    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id, _type, title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl,tags}`, { id: forceArticleId })
     // Normalize _type to the 'blog'/'news' string used everywhere else in this
     // file (fetchCandidates aliases it the same way) — using the raw _type
     // value here ("blogPost") instead of 'blog' made generateCopy's
@@ -671,6 +734,8 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
       const imageUrl    = await getImage(article)
       const contentType = article.type === 'blog' ? 'blog' : article.type === 'release' ? 'release' : article.type === 'review' ? 'review' : 'news'
       const content     = await generateCopy(article, platform, contentType)
+      // Instagram: generate 20-tag hashtag block for first comment (caption stays clean)
+      const igHashtags  = platform === 'instagram' ? pickHashtags(article.category, 'instagram') : null
 
       const logDoc = await sanity.create({
         _type: 'socialPost', platform,
@@ -685,7 +750,7 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
         continue
       }
 
-      const result = await dispatch(platform, content, imageUrl, article.category || 'default')
+      const result = await dispatch(platform, content, imageUrl, article.category || 'default', igHashtags, article)
       await sanity.patch(logDoc._id).set({
         status: result.ok ? 'posted' : 'failed',
         postId: result.postId || null, postUrl: result.postUrl || null,

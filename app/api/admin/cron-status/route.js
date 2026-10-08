@@ -18,6 +18,7 @@ const ALL_JOBS = [
   { id:'intelligence', paused:true,     path:'/api/intelligence',                schedule:'0 1 * * *',     label:'Intelligence Briefing',   group:'System',   icon:'🧠', critical:true,  desc:'Daily AI briefing at 1am UTC → email digest' },
   { id:'nics',             path:'/api/nics',                        schedule:'0 10 1 * *',    label:'NICS Data',               group:'System',   icon:'📈', critical:false, desc:'FBI NICS background check data — 1st of each month' },
   { id:'nfa-wait-times',   path:'/api/nfa-wait-times',              schedule:'0 6 */2 * *',   label:'NFA Wait Times',          group:'System',   icon:'⏳', critical:false, desc:'Pulls NFA processing times directly from ATF.gov every 2 days, 6am UTC' },
+  { id:'newsletter',       path:'/api/newsletter',                  schedule:'0 7 * * 4',     label:'Newsletter',              group:'Outreach', icon:'📧', critical:false, desc:'Weekly Resend brief, state-personalized, Thursdays 7am UTC' },
   { id:'queue_digest', paused:true,     path:'/api/outreach/queue/digest',       schedule:'0 13 * * *',    label:'Outreach Queue Digest',   group:'Outreach', icon:'📬', critical:false, desc:'Email pending approval queue summary at 1pm UTC' },
   { id:'prn_releases',     paused:true, path:'/api/cron/releases',               schedule:'0 12 * * *',    label:'PRN Scraper',             group:'Outreach', icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases at noon UTC' },
   { id:'fetch-images',     path:'/api/admin/fetch-article-images',  schedule:'20 */2 * * *', label:'Fetch Article Images',    group:'System',   icon:'📷', critical:false, desc:'Fetch og:image from source URLs → Sanity CDN every 30 min' },
@@ -46,9 +47,6 @@ const ALL_JOBS = [
   { id:'weekly-gun-releases', path:'/api/cron/weekly-gun-releases', schedule:'0 6 * * 1,4',
     label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
     desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
-  { id:'press-releases', path:'/api/cron/press-releases', schedule:'30 5 * * 2,5',
-    label:'Manufacturer Press Releases', group:'Content', icon:'🏭', critical:false,
-    desc:'Tuesday + Friday 5:30am UTC — pulls new press releases from 30 US firearm manufacturers, writes articles linked to the original, publishes to News → Manufacturer Press Releases.' },
   // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
   // {type: 'canada'|'brazil'|'both'} body param (no default cron would send this usefully).
   // Manual admin tool, not a scheduled job. Was showing permanent false OVERDUE.
@@ -60,17 +58,13 @@ const ALL_JOBS = [
   { id:'enrich-state-pages', path:'/api/cron/enrich-state-pages?batch=5', schedule:'30 3 * * *', label:'State Page Enrichment', group:'Content', icon:'🗺', critical:false, desc:'AI enrichment of /laws/[state] profiles, 5/day' },
   { id:'nra-law-sync', path:'/api/cron/nra-law-sync', schedule:'0 0 * * 0,3,6', label:'NRA-ILA Law Sync', group:'Content', icon:'⚖️', critical:false, desc:'NRA-ILA state law data sync (Sun/Wed/Sat)' },
   { id:'nra-law-sync-enhanced', path:'/api/cron/nra-law-sync-enhanced', schedule:'15 0 * * 0,3,6', label:'NRA-ILA Law Sync (Enhanced)', group:'Content', icon:'⚖️', critical:false, desc:'Enhanced NRA-ILA sync pass (Sun/Wed/Sat)' },
-  { id:'social-facebook', path:'/api/social/cron/facebook', schedule:'2 11,16,19,22 * * *', label:'Facebook Posts', group:'Social', icon:'📘', critical:false, desc:'5 posts/day (4 on this schedule plus a 5:27pm PT slot in vercel.json)' },
-  { id:'social-instagram', path:'/api/social/cron/instagram', schedule:'20 11,16,19,22 * * *', label:'Instagram Posts', group:'Social', icon:'📸', critical:false, desc:'5 posts/day (4 on this schedule plus a 5:27pm PT slot in vercel.json)' },
-  { id:'social-twitter', path:'/api/social/cron/twitter', schedule:'4 13 * * *', label:'X / Twitter Post', group:'Social', icon:'𝕏', critical:false, desc:'Daily post' },
+  { id:'social-facebook', path:'/api/social/cron/facebook', schedule:'2 11,16,19,22,1 * * *', label:'Facebook Posts', group:'Social', icon:'📘', critical:false, desc:'5 posts/day' },
+  { id:'social-instagram', path:'/api/social/cron/instagram', schedule:'20 11,16,19,22,1 * * *', label:'Instagram Posts', group:'Social', icon:'📸', critical:false, desc:'5 posts/day' },
+  { id:'social-twitter', path:'/api/social/cron/twitter', schedule:'4 11,16,19,22 * * *', label:'X / Twitter Post', group:'Social', icon:'𝕏', critical:false, desc:'4× daily post' },
   { id:'social-bluesky', path:'/api/social/cron/bluesky', schedule:'2 13 * * *', label:'Bluesky Post', group:'Social', icon:'🦋', critical:false, desc:'Daily post' },
-  { id:'social-threads', path:'/api/social/cron/threads', schedule:'4 14 * * *', label:'Threads Post', group:'Social', icon:'🧵', critical:false, desc:'Daily post' },
+  { id:'social-threads', path:'/api/social/cron/threads', schedule:'4 12,17,20,23 * * *', label:'Threads Post', group:'Social', icon:'🧵', critical:false, desc:'4× daily post' },
   { id:'social-reddit', path:'/api/social/cron/reddit', schedule:'0 12 * * *', label:'Reddit Post', group:'Social', icon:'👽', critical:false, desc:'Daily post' },
   { id:'social-analytics', path:'/api/social/analytics?refresh=1', schedule:'35 */2 * * *', label:'Social Analytics Refresh', group:'Social', icon:'📊', critical:false, desc:'Engagement stats every 2h' },
-  { id:'reciprocity-sync', path:'/api/admin/reciprocity-ingest', schedule:'0 14 8 * *', label:'CCW Reciprocity Sync (8th, 7am PT)', group:'Content', icon:'🔄', critical:false, desc:'Monthly: handgunlaw.us state PDFs → AI parse → Sanity (runs from GitHub Actions, not vercel.json)' },
-  { id:'state-laws-sync', path:'/api/admin/state-laws-ingest', schedule:'30 14 8 * *', label:'State Laws Sync (8th, 7:30am PT)', group:'Content', icon:'⚖️', critical:false, desc:'Monthly: Wikipedia state summary tables + handgunlaw.us permitless list → Sanity (runs from GitHub Actions)' },
-  { id:'ffl-sync', path:'/api/admin/ffl-ingest', schedule:'0 16 20 * *', label:'ATF FFL Import (20th)', group:'Content', icon:'🏪', critical:false, desc:'Monthly: ATF FFL listings by state, fetched by scripts/atf_ffl_fetch.py on the Mac mini (atf.gov blocks cloud IPs) → Sanity' },
-  { id:'blog-dedupe-images', path:'/api/admin/blog-dedupe-images', schedule:'0 15 * * 1', label:'Blog Image Dedupe (Mon)', group:'Content', icon:'🖼️', critical:false, desc:'Weekly: replaces blog hero images that more than one post uses (GitHub Actions)' },
   { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >180d (keeps news linked from blog posts)' },
 ]
 

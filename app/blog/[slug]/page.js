@@ -70,7 +70,7 @@ export async function generateMetadata({ params }) {
       authors:     [post.author],
       tags:        post.tags || [],
       images: post.img
-        ? [{ url: post.img, width: 1400, height: 900, alt: post.title }]
+        ? [{ url: post.img, width: 1200, height: 630, alt: post.title }]
         : [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: post.title }],
     },
     twitter: {
