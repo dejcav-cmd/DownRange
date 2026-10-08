@@ -1,0 +1,32 @@
+=== Texas 50094
+10:== Summary table ==
+23:| Assault weapon law? || No || No || ||
+25:| Magazine capacity restriction? || No || No || ||
+{{short description|none}} <!-- "none" is preferred when the title is sufficiently descriptive; see [[WP:SDNONE]] -->
+{{Use mdy dates|date=April 2021}}
+[[File:Map of USA TX.svg|thumb|Location of Texas in the United States]]
+'''Gun laws in Texas''' regulate the sale, possession, and use of [[firearm]]s and [[ammunition]] in the U.S. state of [[Texas]].
+
+Texas is often perceived to have some of the most permissive gun laws in the United States.<ref>{{cite news | url=https://www.nytimes.com/2022/05/24/us/texas-gun-laws.html | title=In Texas, lenient gun laws are woven into the fabric of the state=== Florida 26477
+6:== Summary table ==
+17:| Waiting period? || Yes || Yes || [http://www.leg.state.fl.us/statutes/index.cfm?submenu=3#A8S05 Fla. Const. Article VIII § 5(b)]<br />[http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Disp
+21:| Assault weapon law? || No || No || ||
+23:| Magazine capacity restriction? || No || No || ||
+27:| Red Flag law? || Yes || Yes || [http://www.leg.state.fl.us/statutes/index.cfm?App_mode=Display_Statute&Search_String=&URL=0700-0799/0790/Sections/0790.401.html Fla. Stat. § 790.401] || The polic
+{{short description|none}} <!-- "none" is preferred when the title is sufficiently descriptive; see [[WP:SDNONE]] -->
+{{Use mdy dates|date=May 2021}}
+[[File:Map of USA FL.svg |thumb|Location of Florida in the United States]]
+'''Gun laws in Florida''' regulate the sale, possession, and use of [[firearm]]s and [[ammunition]] in the state of [[Florida]] in the United States.
+
+== Summary table ==
+<!-- Transcludes to [[Gun laws in the United States (by state)]] --><onlyinclude>
+{| class="wikitable" style="font-size:85%; width:95%;"
+! scope="col" style="width:260px;" | Subject / law 
+! scope="col" s=== Ohio 14523
+6:== Summary table ==
+19:| Assault weapon law? || No || No || [https://codes.ohio.gov/ohio-revised-code/section-2923.11 O.R.C. 2923.11] ||
+21:| Magazine capacity restriction? || No || No || ||
+{{short description|none}} <!-- "none" is preferred when the title is sufficiently descriptive; see [[WP:SDNONE]] -->
+{{Use mdy dates|date=April 2021}}
+[[File:Map of USA OH.svg|thumb|Location of Ohio in the United States]]
+'''Gun laws in Ohio''' regulate the sale, possession, and use of [[firearm]]s and [[ammunition]] in the [[U.S. state]] of [[Ohio]].<ref name=NRALaws>[http://www.nraila.org/gun-laws/state-laws/ohio.aspx "State Gun Laws of Ohio"], National Rifle Association – Institute for Legislative Action (NRA-ILA), November 1, 2011. Retrieved January 26, 2014.</ref><ref name=LCPGVLaws>[h
