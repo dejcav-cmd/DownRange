@@ -1,0 +1,21 @@
+name: Diag Wiki2
+on:
+  push:
+    branches: [diag/wiki2]
+permissions:
+  contents: read
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          for st in Texas Florida Ohio; do
+            curl -sSL -A "DownRangeBot/1.0" -o w.txt "https://en.wikipedia.org/w/index.php?title=Gun_laws_in_$st&action=raw"
+            echo "=== $st $(wc -c < w.txt)" >> result.txt
+            grep -n -i "^=\+ *summary\|{{.*summary\|magazine capacity\|Red flag law?\|Waiting period?\|Assault weapon law" w.txt | cut -c1-200 | head -12 >> result.txt
+            head -c 600 w.txt >> result.txt
+          done
+      - env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/diag-wiki2.txt
