@@ -55,9 +55,23 @@ ${rows.slice(0, 6000)}`
   const mag = Number.isFinite(+j.magLimit) ? Math.max(0, Math.round(+j.magLimit)) : 0
   const wait = Number.isFinite(+j.waitDays) ? Math.max(0, Math.round(+j.waitDays)) : 0
   const awb = ['Banned', 'Partial', 'None'].includes(j.awb) ? j.awb : 'None'
-  if (mag > 0 && (mag < 5 || mag > 30)) throw new Error(`implausible magLimit ${mag}`)
-  if (wait > 30) throw new Error(`implausible waitDays ${wait}`)
-  return { magLimit: mag, awb, waitDays: wait, redFlag: !!j.redFlag }
+  // The table's Yes/No column is the gate; the AI only supplies the numbers behind a "Yes".
+  const gate = re => {
+    const line = rows.split('\n').find(l => re.test(l.split('|')[0]))
+    if (!line) return null
+    const c = (line.split('|')[1] || '').trim().toLowerCase()
+    return c.startsWith('yes') ? 'yes' : c.startsWith('partial') ? 'partial' : c.startsWith('no') ? 'no' : null
+  }
+  const gMag = gate(/magazine/i), gAwb = gate(/assault/i), gRf = gate(/red flag/i), gWait = gate(/waiting/i)
+  const out = { magLimit: mag, awb, waitDays: wait, redFlag: !!j.redFlag, gates: { mag: gMag, awb: gAwb, rf: gRf, wait: gWait } }
+  if (gMag === 'no') out.magLimit = 0
+  if (gAwb === 'no') out.awb = 'None'; else if (gAwb === 'partial') out.awb = 'Partial'; else if (gAwb === 'yes' && out.awb === 'None') out.awb = 'Banned'
+  if (gRf) out.redFlag = gRf !== 'no'
+  if (gWait === 'no') out.waitDays = 0
+  if (out.magLimit > 0 && (out.magLimit < 5 || out.magLimit > 30)) throw new Error(`implausible magLimit ${out.magLimit}`)
+  if (out.waitDays > 30) throw new Error(`implausible waitDays ${out.waitDays}`)
+  if (gMag === 'yes' && out.magLimit === 0) throw new Error('magazine restriction Yes but no limit found')
+  return out
 }
 
 async function mapLimit(items, n, fn) {
@@ -115,7 +129,7 @@ export async function POST(req) {
     if (!dry) await tx.commit()
     const summary = `${Object.keys(parsed).length} states parsed, ${changes.length} changed${errors.length ? `, ${errors.length} errors` : ''}${dry ? ' (dry run)' : ''}`
     await reportCronRun('state-laws-sync', { status: errors.length ? 'warning' : 'success', ms: Date.now() - t0, details: summary, error: errors.length ? errors.slice(0, 3).join('; ') : null })
-    return Response.json({ ok: true, summary, errors, changes })
+    return Response.json({ ok: true, summary, errors, changes, audit: Object.fromEntries(Object.entries(parsed).map(([c, p]) => [c, `${p.magLimit}/${p.awb}/${p.waitDays}/${p.redFlag ? 'RF' : '-'} g=${Object.values(p.gates).map(x => x || '?').join(',')}`])) })
   } catch (e) {
     await reportCronRun('state-laws-sync', { status: 'failed', ms: Date.now() - t0, error: e.message }).catch(() => {})
     return Response.json({ ok: false, error: e.message }, { status: 500 })
