@@ -55,10 +55,15 @@ Rules:
 
 TEXT:
 ${section.slice(0, 5000)}`
-  const raw = await callAIText({ prompt, useCase: 'fast', maxTokens: 700 })
-  const m = raw.match(/\{[\s\S]*\}/)
-  if (!m) throw new Error('no JSON')
-  const j = JSON.parse(m[0])
+  let j = null, raw = ''
+  for (let attempt = 0; attempt < 3 && !j; attempt++) {
+    try {
+      raw = await callAIText({ prompt, useCase: 'fast', maxTokens: 1500 })
+      const m = raw.match(/\{[\s\S]*\}/)
+      if (m) j = JSON.parse(m[0])
+    } catch (e) { if (attempt === 2) throw e }
+  }
+  if (!j) throw new Error(`no JSON (got: ${raw.slice(0, 80).replace(/\s+/g, ' ')})`)
   let honors = Array.isArray(j.honors) ? j.honors.map(x => String(x).toUpperCase()) : []
   const lower = section.toLowerCase()
   // Safety net: keep only valid codes whose full state name really appears in the source text
