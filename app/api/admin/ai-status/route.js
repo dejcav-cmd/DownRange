@@ -41,7 +41,7 @@ export async function GET(req) {
     } catch(e) { tests.anthropic = { ok: false, error: e.message } }
   }
 
-  if (status.GLM_API_KEY) {
+  if (false && status.GLM_API_KEY) { // GLM disabled
     try {
       const r = await fetch('https://open.bigmodel.cn/api/paas/v4/chat/completions', {
         method: 'POST',
@@ -79,12 +79,12 @@ export async function GET(req) {
   }
 
   const routing = {
-    news:       resolveFirst(process.env.AI_CHAIN_NEWS)     || (glm ? 'glm/glm-4.5-air' : anth ? 'anthropic/claude-haiku' : 'none'),
-    backfill:   resolveFirst(process.env.AI_CHAIN_BACKFILL) || (glm ? 'glm/glm-4.5-air' : anth ? 'anthropic/claude-haiku' : 'none'),
-    intel:      resolveFirst(process.env.AI_CHAIN_INTEL)    || (anth ? 'anthropic/claude-sonnet-4-5' : glm ? 'glm/glm-4.7' : 'none'),
-    article:    resolveFirst(process.env.AI_CHAIN_ARTICLE)  || (glm ? 'glm/glm-4.5-air' : anth ? 'anthropic/claude-haiku' : 'none'),
+    news:       resolveFirst(process.env.AI_CHAIN_NEWS)     || (anth ? 'anthropic/claude-haiku-5-5' : 'none'),
+    backfill:   resolveFirst(process.env.AI_CHAIN_BACKFILL) || (anth ? 'anthropic/claude-haiku-5-5' : 'none'),
+    intel:      resolveFirst(process.env.AI_CHAIN_INTEL)    || (anth ? 'anthropic/claude-sonnet-4-5' : 'none'),
+    article:    resolveFirst(process.env.AI_CHAIN_ARTICLE)  || (anth ? 'anthropic/claude-haiku-5-5' : 'none'),
     newsletter: resolveFirst(process.env.AI_CHAIN_NEWSLETTER) || (anth ? 'anthropic/claude-sonnet-4-5' : 'none'),
-    outreach:   resolveFirst(process.env.AI_CHAIN_OUTREACH) || (anth ? 'anthropic/claude-haiku' : glm ? 'glm/glm-4.7' : 'none'),
+    outreach:   resolveFirst(process.env.AI_CHAIN_OUTREACH) || (anth ? 'anthropic/claude-haiku-5-5' : 'none'),
   }
 
   return Response.json({ ok: true, status, tests, routing })

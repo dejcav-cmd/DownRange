@@ -5,7 +5,7 @@ import { stripMarkdownFences } from '@/lib/aiClient.js'
 
 const ADMIN_KEY = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
 const ANTHROPIC = process.env.ANTHROPIC_API_KEY
-const GLM_KEY   = process.env.GLM_API_KEY
+const GLM_KEY   = null // GLM disabled: Haiku 5.5 is the cheapest route
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
