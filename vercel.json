@@ -94,11 +94,19 @@
     },
     {
       "path": "/api/social/cron/facebook",
-      "schedule": "2 11,16,19,22,1 * * *"
+      "schedule": "2 11,16,19,22 * * *"
+    },
+    {
+      "path": "/api/social/cron/facebook",
+      "schedule": "27 0 * * *"
     },
     {
       "path": "/api/social/cron/instagram",
-      "schedule": "20 11,16,19,22,1 * * *"
+      "schedule": "20 11,16,19,22 * * *"
+    },
+    {
+      "path": "/api/social/cron/instagram",
+      "schedule": "27 0 * * *"
     },
     {
       "path": "/api/social/cron/threads",
