@@ -1,2 +1,12 @@
-https://www.atf.gov/firearms/listing-federal-firearms-licensees 403 424
-https://www.atf.gov/firearms/federal-firearms-listings 403 411
+jina page 200 48640
+            *   [Applications - FFL eZ Check](https://www.atf.gov/firearms/tools-and-services-firearms-industry/current-licensees/ffl-ez-check-application)
+            *   [Discontinue Being a Federal Firearms Licensee (FFL)](https://www.atf.gov/firearms/tools-and-services-firearms-industry/current-licensees/firearms/discontinue-being-a-federal-firearms-licensee-ffl)
+## Download a complete list of FFLs
+## Download a list of FFLs by U.S. State / Territory
+## Download a list of FFL Types by State
+- [Applications - FFL eZ Check](https://www.atf.gov/firearms/tools-and-services-firearms-industry/current-licensees/ffl-ez-check-application)
+- [Discontinue Being a Federal Firearms Licensee (FFL)](https://www.atf.gov/firearms/tools-and-services-firearms-industry/current-licensees/firearms/discontinue-being-a-federal-firearms-licensee-ffl)
+https://www.atf.gov/firearms/docs/202610-ffl-list/download 403 423 text/html
+https://www.atf.gov/firearms/docs/undefined/1026-ffl-list-wa-xlsx/download 403 451 text/html
+listing w/ referer 403
+plain curl UA 403
