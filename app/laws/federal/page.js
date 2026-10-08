@@ -78,7 +78,7 @@ export default async function FederalPage({ searchParams }) {
       <Masthead />
 
       {/* HERO */}
-      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="58% 55%" posSm="82% 50%"
         eyebrow="Federal intelligence"
         title={<>Federal 2A <span>intelligence</span></>}
         sub="Bills in Congress, ATF rules that changed what's legal, and the SCOTUS cases that will define your rights for a generation." />

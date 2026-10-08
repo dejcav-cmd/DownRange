@@ -84,7 +84,7 @@ export default async function LawsHub() {
       <Masthead />
 
       {/* ── HERO ── */}
-      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="58% 55%" posSm="82% 50%"
         eyebrow="Second Amendment legal intelligence"
         title={<>Know the law. <span>Know your rights.</span></>}
         sub="Federal bills, your state's gun laws, ATF rulemaking, and active SCOTUS cases. Updated continuously.">

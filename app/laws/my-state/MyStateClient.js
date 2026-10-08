@@ -65,7 +65,7 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
 
   return (
     <div>
-      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="58% 55%" posSm="82% 50%"
         eyebrow="Your state"
         title={<>{statName} <span>gun laws</span></>}
         sub="Carry rules, magazine limits, assault weapon bans, waiting periods and permit reciprocity. Detected from your location; switch state below." />
