@@ -11,11 +11,13 @@ jobs:
       - name: probe
         run: |
           UA="Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"
-          for u in https://www.atf.gov/firearms/listing-federal-firearms-licensees https://www.atf.gov/firearms/federal-firearms-listings; do
-            curl -sSL -A "$UA" -o p.html -w "$u %{http_code} %{size_download}\n" "$u" >> result.txt
-            grep -o 'href="[^"]*"' p.html | grep -i "ffl\|listing\|xlsx\|\.txt\|\.zip\|\.csv\|docs/" | sort -u | head -80 >> result.txt
-            grep -i -o "updated[^<]\{0,80\}\|20[0-9][0-9] [^<]\{0,40\}listing[^<]\{0,40\}" p.html | head -10 >> result.txt
+          curl -sSL -H "X-With-Links-Summary: true" -H "X-Return-Format: markdown" -o j.md -w "jina page %{http_code} %{size_download}\n" https://r.jina.ai/https://www.atf.gov/firearms/listing-federal-firearms-licensees >> result.txt
+          grep -i "ffl\|xlsx\|\.txt\|zip\|csv\|docs/\|2026\|2025" j.md | head -60 >> result.txt
+          for u in https://www.atf.gov/firearms/docs/202610-ffl-list/download https://www.atf.gov/firearms/docs/undefined/1026-ffl-list-wa-xlsx/download; do
+            curl -sSL -A "$UA" -o f.bin -w "$u %{http_code} %{size_download} %{content_type}\n" "$u" >> result.txt
           done
+          curl -sSL -A "$UA" -e https://www.atf.gov/ -o f2.bin -w "listing w/ referer %{http_code}\n" https://www.atf.gov/firearms/listing-federal-firearms-licensees >> result.txt
+          curl -sSL -x "" --http1.1 -A "curl/8.5.0" -o f3.bin -w "plain curl UA %{http_code}\n" https://www.atf.gov/firearms/listing-federal-firearms-licensees >> result.txt
       - env:
           GH_PAT: ${{ secrets.GH_PAT }}
         run: python3 scripts/publish_result.py result.txt docs/diag-atf-ffl.txt
