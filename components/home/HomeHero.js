@@ -19,7 +19,7 @@ export default function HomeHero({ stats }) {
           <Link href="/deals" className="hh-btn">Shop new deals</Link>
           <Link href="/second-amendment" className="hh-btn hh-btn-ghost">Why the Second Amendment matters →</Link>
         </div>
-        <ul className="hh-chips">
+        <ul className="hh-chips hh-chips-stats">
           {chips.map(c => (<li key={c.l}><b>{c.n}</b><span>{c.l}</span></li>))}
         </ul>
       </div>
