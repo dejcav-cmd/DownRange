@@ -40,9 +40,10 @@ const NAV = [
       { label: 'All tools →',              href: '/tools',                 desc: 'Every DownRange tool in one place' },
     ]
   },
-  { label: 'Blog', href: '/blog' },
+  { label: '📖 Blog', href: '/blog' },
   { label: '📺 Videos',    href: '/video'     },
   { label: '🏆 Giveaways', href: '/giveaways' },
+  { label: '🔩 Ferrum Arms ↗', href: 'https://ferrumarms.com', external: true },
 ]
 
 import GlobalSearchBar from '../ui/GlobalSearchBar'
@@ -192,7 +193,7 @@ export default function Masthead() {
                 <li key={item.label} className="nav-item-wrap"
                   onMouseEnter={() => hasChildren && openDropdown(item.label)}
                   onMouseLeave={closeDropdown}>
-                  <Link href={item.href}
+                  <Link href={item.href} {...(item.external ? { target: '_blank', rel: 'noopener' } : {})}
                     className={`nav-top-link${active ? ' active' : ''}`}
                     style={{ color: active ? '#E5E5E5' : '#9CA3AF' }}>
                     {item.label}
@@ -274,7 +275,7 @@ export default function Masthead() {
           // Items with no children = direct link, no expand button, no "View All"
           if (!hasChildren) {
             return (
-              <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="mob-child"
+              <Link key={item.label} href={item.href} {...(item.external ? { target: '_blank', rel: 'noopener' } : {})} onClick={() => setMenuOpen(false)} className="mob-child"
                 style={{ padding:'14px 16px', fontSize:'14px', fontWeight:700, color:'var(--text)', borderBottom:'1px solid var(--border)', display:'flex', alignItems:'center' }}>
                 {item.label}
               </Link>
