@@ -1,0 +1,24 @@
+name: AI Status Check
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Call ai-status
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          echo "=== AI STATUS ===" > result.txt
+          curl -s "https://www.downrangeco.com/api/admin/ai-status" \
+            -H "x-admin-key: $ADMIN_KEY" --max-time 60 | python3 -m json.tool >> result.txt 2>&1 || echo "call failed" >> result.txt
+      - name: Publish
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/ai-status.txt
