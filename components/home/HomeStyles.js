@@ -30,7 +30,7 @@ export default function HomeStyles() {
 .hr-all{font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.1em;font-size:14px;color:var(--gold);text-decoration:none;white-space:nowrap}
 .hr-all:hover{color:var(--gold-light)}
 .hr-wrap{position:relative;margin:0 -16px}
-.hr-rail{display:flex;align-items:flex-start;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;padding:4px 16px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--border-mid) transparent;overscroll-behavior-x:contain}
+.hr-rail{display:flex;align-items:stretch;gap:14px;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;padding:4px 16px 18px;-webkit-overflow-scrolling:touch;scrollbar-width:thin;scrollbar-color:var(--border-mid) transparent;overscroll-behavior-x:contain}
 .hr-rail:focus-visible{outline:2px solid var(--gold);outline-offset:-2px}
 .hr-card{position:relative;flex:0 0 56vw;max-width:220px;scroll-snap-align:start;display:flex;flex-direction:column;background:var(--bg2);border:1px solid var(--border);text-decoration:none;color:var(--text);transition:border-color .15s,transform .15s}
 .hr-card:hover{border-color:var(--gold);transform:translateY(-2px)}
