@@ -12,7 +12,7 @@ export const metadata = {
 }
 export const revalidate = 1800
 
-export default async function MyStatePage() {
+export default async function MyStatePage({ initialView } = {}) {
   const [sanityProfiles, alerts] = await Promise.all([
     fetchAllStateProfiles().catch(() => []),
     fetchBreakingAlerts(3).catch(() => []),
@@ -43,7 +43,7 @@ export default async function MyStatePage() {
   return (
     <>
       <Masthead />
-      <Suspense fallback={null}><MyStateClient profiles={profiles} profileMap={profileMap} reciprocityMatrix={reciprocityMatrix} alerts={alerts} /></Suspense>
+      <Suspense fallback={null}><MyStateClient profiles={profiles} profileMap={profileMap} reciprocityMatrix={reciprocityMatrix} alerts={alerts} initialView={initialView} /></Suspense>
       <Footer />
     </>
   )

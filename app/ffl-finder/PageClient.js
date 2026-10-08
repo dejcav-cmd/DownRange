@@ -118,7 +118,7 @@ export default function FFLFinder() {
             <div style={{ textAlign:'center', padding:'80px 0', color:'#374151' }}>
               <div style={{ fontFamily:"'Bebas Neue', sans-serif", fontSize:'4rem', color:'#1F2428', marginBottom:'16px', lineHeight:1 }}>◈</div>
               <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'13px', color:'#4B5563' }}>Enter a ZIP code to find licensed FFL dealers near you</p>
-              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#374151', marginTop:'8px' }}>Data from ATF Federal Firearms Licensee database · 60,000+ dealers</p>
+              <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', color:'#374151', marginTop:'8px' }}>Dealer data from the ATF Federal Firearms Licensee listing</p>
             </div>
           )}
         </div>

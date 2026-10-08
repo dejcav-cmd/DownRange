@@ -32,6 +32,7 @@ const STATIC_PAGES = [
   { url: `${BASE}/laws`,                priority: 0.9,  changeFrequency: 'daily' },
   { url: `${BASE}/laws/federal`,        priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/laws/states`,         priority: 0.85, changeFrequency: 'weekly' },
+  { url: `${BASE}/laws/reciprocity`,    priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/laws/my-state`,       priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/deals`,               priority: 0.9,  changeFrequency: 'hourly' },
   { url: `${BASE}/releases`,            priority: 0.85, changeFrequency: 'daily' },

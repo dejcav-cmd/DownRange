@@ -24,6 +24,7 @@ export const metadata = {
   title: 'Gun Giveaways 2026 — Win Free Firearms, Ammo & Gear',
   description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. No spam, verified sources only.',
   alternates: { canonical: 'https://www.downrangeco.com/giveaways' },
+  twitter: { card: 'summary_large_image', title: 'Gun Giveaways | DownRange', description: 'Active gun, ammo and gear giveaways. Verified sources only.' },
   openGraph: {
     title: 'Gun Giveaways 2026 — Win Free Firearms | DownRange',
     description: 'Active gun giveaways. Free firearms, ammo, and gear.',
@@ -79,6 +80,14 @@ export default async function GiveawaysPage() {
 
   return (
     <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify([
+        { '@context': 'https://schema.org', '@type': 'CollectionPage', name: 'Gun Giveaways', url: 'https://www.downrangeco.com/giveaways',
+          description: 'Active gun, ammo and gear giveaways from manufacturers, retailers and 2A organizations.',
+          isPartOf: { '@type': 'WebSite', name: 'DownRange', url: 'https://www.downrangeco.com' } },
+        { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
+          { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
+          { '@type': 'ListItem', position: 2, name: 'Giveaways', item: 'https://www.downrangeco.com/giveaways' } ] },
+      ]) }} />
       <Masthead />
       <BreakingTicker alerts={alerts} />
       <GiveawaysClient
