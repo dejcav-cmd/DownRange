@@ -22,7 +22,7 @@ const NAV = [
       { label: '🗺️ My State',          href: '/laws/my-state', desc: 'Your state\'s carry laws, restrictions & reciprocity' },
       { label: '🏛️ Federal & SCOTUS',  href: '/laws/federal',  desc: 'Bills in Congress, ATF rules, active SCOTUS cases' },
       { label: '📋 All 50 States',     href: '/laws/states',   desc: 'Compare gun laws across every state' },
-      { label: '🔄 CCW Reciprocity',   href: '/laws/my-state?view=reciprocity', desc: 'Where your permit is honored' },
+      { label: '🔄 CCW Reciprocity',   href: '/laws/reciprocity', desc: 'Where your permit is honored' },
       { label: '⚖️ NFA Rules',         href: '/laws/federal#nfa',          desc: 'Suppressors, SBRs, machine guns' },
     ]
   },

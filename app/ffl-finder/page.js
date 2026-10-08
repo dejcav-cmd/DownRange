@@ -1,20 +1,20 @@
 import FFLFinderPage from "./PageClient"
 
 export const metadata = {
-  title:       "FFL Dealer Finder — 60,000+ Licensed Dealers Near You",
-  description: "Find licensed FFL firearms dealers by ZIP code. Search 60,000+ ATF-licensed dealers nationwide.",
+  title:       "FFL Dealer Finder — Licensed Dealers Near You",
+  description: "Find licensed FFL firearms dealers by ZIP code. Search federally licensed firearms dealers nationwide.",
   alternates:  { canonical: "https://www.downrangeco.com/ffl-finder" },
   openGraph: {
-    title:       "FFL Dealer Finder — 60,000+ Licensed Dealers Near You | DownRange",
-    description: "Find licensed FFL firearms dealers by ZIP code. Search 60,000+ ATF-licensed dealers nationwide.",
+    title:       "FFL Dealer Finder — Licensed Dealers Near You | DownRange",
+    description: "Find licensed FFL firearms dealers by ZIP code. Search federally licensed firearms dealers nationwide.",
     url:         "https://www.downrangeco.com/ffl-finder",
     type:        "website",
     images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630 }],
   },
   twitter: {
     card:        "summary_large_image",
-    title:       "FFL Dealer Finder — 60,000+ Licensed Dealers Near You | DownRange",
-    description: "Find licensed FFL firearms dealers by ZIP code. Search 60,000+ ATF-licensed dealers nationwide.",
+    title:       "FFL Dealer Finder — Licensed Dealers Near You | DownRange",
+    description: "Find licensed FFL firearms dealers by ZIP code. Search federally licensed firearms dealers nationwide.",
   },
 }
 
@@ -26,15 +26,15 @@ const SCHEMA = [
     applicationCategory: 'UtilitiesApplication',
     operatingSystem: 'Web',
     url: 'https://www.downrangeco.com/ffl-finder',
-    description: 'Search 60,000+ ATF-licensed FFL dealers by ZIP code. Find the nearest licensed firearms dealer for transfers, purchases, and services.',
+    description: 'Search federally licensed (FFL) dealers by ZIP code. Find the nearest licensed firearms dealer for transfers, purchases, and services.',
     offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
     publisher: { '@id': 'https://www.downrangeco.com/#organization' },
     featureList: [
-      'Search 60,000+ ATF-licensed FFL dealers',
+      'Search federally licensed FFL dealers',
       'Filter by ZIP code and radius',
       'See dealer license type (Type 01, 07, 08, etc.)',
       'Find dealers for transfers, purchases, and NFA items',
-      'Updated from ATF Federal Firearms Licensee database',
+      'Built from the ATF Federal Firearms Licensee listing',
     ],
   },
   {

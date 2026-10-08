@@ -33,10 +33,10 @@ function Row({ label, value, good }) {
   )
 }
 
-export default function MyStateClient({ profiles, profileMap, reciprocityMatrix, alerts }) {
+export default function MyStateClient({ profiles, profileMap, reciprocityMatrix, alerts, initialView }) {
   const [abbr, setAbbr] = useState('TX')
   const [detected, setDetected] = useState(null)
-  const [view, setView] = useState('laws') // 'laws' | 'reciprocity' | 'states'
+  const [view, setView] = useState(initialView || 'laws') // 'laws' | 'reciprocity' | 'states'
   const [search, setSearch] = useState('')
   const sp = useSearchParams()
   const wanted = sp ? sp.get('view') : null
