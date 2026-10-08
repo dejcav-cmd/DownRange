@@ -92,7 +92,7 @@ export async function generateMetadata({ params, searchParams }) {
   const isFilteredView = Boolean(searchParams?.cat) || (searchParams?.sort && searchParams.sort !== 'newest')
   return {
     title: `${name} Firearms News`,
-    description: `Latest firearms news, laws, and legislation for ${name}. Updated every 15 minutes.`,
+    description: `Latest firearms news, laws, and legislation for ${name}.`,
     alternates: { canonical: `https://www.downrangeco.com/state-news/${abbr.toLowerCase()}` },
     ...(isFilteredView ? { robots: { index: false, follow: true } } : {}),
   }
@@ -151,7 +151,7 @@ export default async function StateNewsPage({ params, searchParams }) {
           <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', flexWrap:'wrap', gap:12 }}>
             <div>
               <h1 className="page-hero-title">{stateName} Firearms News</h1>
-              <p className="page-hero-sub">{allNews.length} articles · Updated every 15 min · Sorted by {sort}</p>
+              <p className="page-hero-sub">{allNews.length} articles · Sorted by {sort}</p>
             </div>
             <div className="live-badge"><span className="pulse-dot" />Live Feed</div>
           </div>

@@ -3,7 +3,7 @@ import { fetchReleases, searchReleases, fetchBreakingAlerts } from '../../sanity
 
 export const metadata = {
   title: 'New Gun Releases 2026',
-  description: 'Latest firearm announcements, new pistol, rifle, and shotgun releases. Full specs, MSRP, and availability — updated daily.',
+  description: 'Latest firearm announcements, new pistol, rifle, and shotgun releases. Full specs, MSRP, and availability.',
   alternates: { canonical: 'https://www.downrangeco.com/releases' },
   openGraph: {
     type: 'website', url: 'https://www.downrangeco.com/releases',
