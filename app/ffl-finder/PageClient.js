@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
+import PageHero from '../../components/home/PageHero'
 import Footer from '../../components/layout/Footer'
 
 const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || ''
@@ -36,12 +37,10 @@ export default function FFLFinder() {
     <>
 
       <Masthead />
-      <div className="page-hero" data-title="FFL">
-        <div className="container">
-          <h1 className="page-hero-title">FFL Dealer Finder</h1>
-          <p className="page-hero-sub">Find licensed firearms dealers near you · 60,000+ dealers nationwide · ATF database</p>
-        </div>
-      </div>
+      <PageHero img="/img/tools-hero.jpg" imgSm="/img/tools-hero-sm.jpg" pos="70% 60%"
+        eyebrow="DownRange tools"
+        title={<>FFL dealer <span>finder</span></>}
+        sub="Find licensed firearms dealers near you for transfers and purchases." />
       <div style={{ padding:'40px 0' }}>
         <div className="container" style={{ maxWidth:800 }}>
           <form onSubmit={search} style={{ display:'flex', gap:'12px', marginBottom:'32px', flexWrap:'wrap' }}>

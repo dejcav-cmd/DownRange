@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import PageHero from '../../../components/home/PageHero'
 import { useSearchParams } from 'next/navigation'
 
 const S = {
@@ -64,7 +65,11 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
 
   return (
     <div>
-      {/* HERO */}
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+        eyebrow="Your state"
+        title={<>{statName} <span>gun laws</span></>}
+        sub="Carry rules, magazine limits, assault weapon bans, waiting periods and permit reciprocity. Detected from your location; switch state below." />
+      {/* CONTROLS */}
       <div style={{ background: '#0d0d10', borderBottom: '1px solid #1a1a1a', padding: '40px 0 0' }}>
         <div className="container">
           {/* Geo banner */}
@@ -81,13 +86,7 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
 
           {/* State name + selector */}
           <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', gap: 24, flexWrap: 'wrap', paddingBottom: 32 }}>
-            <div>
-              <div style={{ fontFamily: S.mono, fontSize: 10, color: '#4B5563', letterSpacing: '0.15em', marginBottom: 8 }}>YOUR STATE</div>
-              <h1 style={{ fontFamily: S.bebas, fontSize: 'clamp(2.5rem, 6vw, 4.5rem)', color: '#fff', lineHeight: 0.92, margin: 0, letterSpacing: '0.02em' }}>
-                {statName}<br />
-                <span style={{ color: '#C8922A' }}>Gun Laws</span>
-              </h1>
-            </div>
+            <div />
             <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', alignItems: 'center' }}>
               <input
                 value={search}

@@ -1,6 +1,7 @@
 import { notFound, permanentRedirect } from 'next/navigation'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
+import PageHero from '../../../components/home/PageHero'
 import Link from 'next/link'
 import { fetchStateProfile, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { STATE_SEED } from '../../../lib/stateSeed'
@@ -92,30 +93,13 @@ export default async function StateLawPage({ params }) {
       <Masthead />
 
       {/* HERO */}
-      <div style={{ background:'#0d0d10', borderBottom:'1px solid #1a1a1a', padding:'52px 0 32px' }}>
-        <div className="container">
-          <div style={{ fontFamily:S.mono, fontSize:10, color:'#4B5563', letterSpacing:'0.15em', marginBottom:8 }}>
-            <Link href="/laws" style={{ color:'#4B5563', textDecoration:'none' }}>Laws</Link>
-            <span style={{ margin:'0 8px' }}>›</span>
-            <Link href="/laws/states" style={{ color:'#4B5563', textDecoration:'none' }}>All States</Link>
-            <span style={{ margin:'0 8px' }}>›</span>
-            <span style={{ color:'#C8922A' }}>{abbr}</span>
-          </div>
-          <div style={{ display:'flex', justifyContent:'space-between', alignItems:'flex-end', flexWrap:'wrap', gap:16 }}>
-            <div>
-              <h1 style={{ fontFamily:S.bebas, fontSize:'clamp(2.8rem,6vw,4.5rem)', color:'#fff', lineHeight:0.92, margin:0, letterSpacing:'0.02em' }}>
-                {stateName}<br /><span style={{ color:'#C8922A' }}>Gun Laws {new Date().getFullYear()}</span>
-              </h1>
-            </div>
-            {data.rating && (
-              <div style={{ textAlign:'center', background:'#111318', border:'1px solid #1a1a1a', padding:'16px 24px' }}>
-                <div style={{ fontFamily:S.bebas, fontSize:48, color: data.rating.startsWith('A') ? '#34D399' : data.rating.startsWith('B') ? '#60A5FA' : data.rating.startsWith('C') ? '#FBBF24' : '#EF4444', lineHeight:1 }}>{data.rating}</div>
-                <div style={{ fontFamily:S.mono, fontSize:9, color:'#4B5563', letterSpacing:'0.1em' }}>FREEDOM RATING</div>
-              </div>
-            )}
-          </div>
-        </div>
-      </div>
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+        eyebrow={<><Link href="/laws" style={{ color:'inherit', textDecoration:'none' }}>Laws</Link> › <Link href="/laws/states" style={{ color:'inherit', textDecoration:'none' }}>All states</Link> › {abbr}</>}
+        title={<>{stateName} <span>gun laws {new Date().getFullYear()}</span></>}>
+        {data.rating && (
+          <ul className="hh-chips"><li><b>{data.rating}</b><span>Freedom rating</span></li></ul>
+        )}
+      </PageHero>
 
       <div className="container" style={{ padding:'48px 0 64px' }}>
         <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:48 }}>

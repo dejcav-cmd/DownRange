@@ -1,6 +1,7 @@
 'use client'
 import { useState } from 'react'
 import Masthead from '../../components/layout/Masthead'
+import PageHero from '../../components/home/PageHero'
 import Footer from '../../components/layout/Footer'
 
 const mapsKey = process.env.NEXT_PUBLIC_GOOGLE_PLACES_API_KEY || ''
@@ -87,12 +88,10 @@ export default function RangesPage() {
     <>
 
       <Masthead />
-      <div className="page-hero" data-title="RANGES">
-        <div className="container">
-          <h1 className="page-hero-title">Shooting Range Finder</h1>
-          <p className="page-hero-sub">Curated database · OpenStreetMap · Google Places · All in one search</p>
-        </div>
-      </div>
+      <PageHero img="/img/tools-hero.jpg" imgSm="/img/tools-hero-sm.jpg" pos="70% 60%"
+        eyebrow="DownRange tools"
+        title={<>Shooting range <span>finder</span></>}
+        sub="Curated database, OpenStreetMap and Google Places in one search." />
 
       <div style={{ padding:'28px 0', background:'var(--bg)', minHeight:'80vh' }}>
         <div className="container">

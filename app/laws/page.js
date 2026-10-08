@@ -1,6 +1,7 @@
 import Masthead from '../../components/layout/Masthead'
 import Footer from '../../components/layout/Footer'
 import Link from 'next/link'
+import PageHero from '../../components/home/PageHero'
 import { fetchLegislation, fetchBreakingAlerts, fetchAllStateProfiles } from '../../sanity/lib/client'
 import { STATE_SEED } from '../../lib/stateSeed'
 
@@ -83,24 +84,16 @@ export default async function LawsHub() {
       <Masthead />
 
       {/* ── HERO ── */}
-      <div style={{
-        background: 'linear-gradient(180deg, #0d0d10 0%, #09090B 100%)',
-        borderBottom: '1px solid #1a1a1a',
-        padding: '64px 0 48px',
-      }}>
-        <div className="container">
-          <div style={{ fontFamily: "'IBM Plex Mono', monospace", fontSize: 11, color: '#C8922A', letterSpacing: '0.15em', textTransform: 'uppercase', marginBottom: 16 }}>
-            Second Amendment Legal Intelligence
-          </div>
-          <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: 'clamp(3rem, 7vw, 5.5rem)', color: '#fff', lineHeight: 0.92, letterSpacing: '0.02em', margin: '0 0 20px' }}>
-            Know the Law.<br />
-            <span style={{ color: '#C8922A' }}>Know Your Rights.</span>
-          </h1>
-          <p style={{ fontFamily: "'IBM Plex Sans', sans-serif", fontSize: 16, color: '#6B7280', lineHeight: 1.7, maxWidth: 520, margin: 0 }}>
-            Federal bills, your state's gun laws, ATF rulemaking, and active SCOTUS cases. Updated continuously.
-          </p>
+      <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="55% 82%" posSm="62% 88%"
+        eyebrow="Second Amendment legal intelligence"
+        title={<>Know the law. <span>Know your rights.</span></>}
+        sub="Federal bills, your state's gun laws, ATF rulemaking, and active SCOTUS cases. Updated continuously.">
+        <div className="hh-cta">
+          <Link href="/laws/my-state" className="hh-btn hh-btn-main">My state</Link>
+          <Link href="/laws/states" className="hh-btn">All 50 states</Link>
+          <Link href="/laws/federal" className="hh-btn">Federal &amp; SCOTUS</Link>
         </div>
-      </div>
+      </PageHero>
 
       {/* ── BREAKING ALERTS ── */}
       {alerts.length > 0 && (
