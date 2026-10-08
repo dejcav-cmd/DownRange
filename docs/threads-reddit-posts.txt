@@ -1,0 +1,20 @@
+[
+  {
+    "_createdAt": "2026-06-04T14:00:27Z",
+    "articleTitle": "Virginia State Police Defies Federal Court Order on Background Checks",
+    "error": "Missing THREADS_ACCESS_TOKEN or THREADS_USER_ID.",
+    "platform": "threads",
+    "postUrl": null,
+    "postedAt": null,
+    "status": "failed"
+  },
+  {
+    "_createdAt": "2026-06-04T12:00:05Z",
+    "articleTitle": "VA: GOA and VCDL Just Had a Major Win Against Universal Background Check Enforcement in Court!",
+    "error": "Missing Reddit env vars. See Setup Guide in admin.",
+    "platform": "reddit",
+    "postUrl": null,
+    "postedAt": null,
+    "status": "failed"
+  }
+]
