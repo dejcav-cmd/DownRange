@@ -1,71 +1,79 @@
-<form action="/firearms/tools-and-services-firearms-industry/federal-firearms-listings" method="post" id="ffl-listing-export-form" accept-charset="UTF-8" class="usa-form"> <h2>Download a list of FFLs 
-<select data-drupal-selector="edit-year" id="edit-year--2" name="year" class="form-select required usa-select" required="required">
-<select data-drupal-selector="edit-month" id="edit-month--2" name="month" class="form-select required usa-select" required="required">
-<select data-drupal-selector="edit-state" id="edit-state" name="state" class="form-select required usa-select" required="required">
-<input autocomplete="off" data-drupal-selector="form-lguevrftur0d7gnhxftifywjns6xqg4elseabf0y4jy" type="hidden" name="form_build_id" value="form-LGUEVRFtUR0d7gNhXFTIFywJNs6XqG4elSEaBf0Y4JY" class="usa-input">
-<input data-drupal-selector="edit-ffl-listing-export-form" type="hidden" name="form_id" value="ffl-listing-export-form" class="usa-input">
-<input data-drupal-selector="edit-submit" type="submit" id="edit-submit--2" name="op" value="Apply" class="button button--primary js-form-submit form-submit usa-button">
-==Overview==
-{{gallery
-|File:Right to Carry, timeline.gif
-|Recent history of state concealed carry laws
-{{legend|#00ff00|Unrestricted}}
-{{legend|#0000ff|"Shall issue", generally meaning obtaining a permit is straightforward}}
-{{legend|#ffff00|"May issue", meaning permits are at the discretion of the state}}
-{{legend|#ff0000|Banned}}
-|File:Minimum purchase age of long guns in the United States.svg
-|Minimum age to purchase [[long guns]]
-{{legend|#000008|21}}
-{{legend|#0000b0|21, 18 with parental consent}}
-{{legend|#377eb8|18}}
-{{legend|#ffff33|18 in cities, otherwise 16}}
-{{legend|#984ea3|18, 16 to transfer}}
-{{legend|#e41a1c|No minimum age}}
-{{legend|#b0b0b0|No information available}}
-Note that federal law sets a minimum age of 18.
-|File:Minimum purchase age of handguns in the United States.svg
-|Minimum age to purchase handguns
-{{legend|#000008|21}}
-{{legend|#984ea3|21 for purchases from dealers, 18 for private sales}}
-{{legend|#377eb8|18}}
-{{legend|#e41a1c|No minimum age}}
-{{legend|#b0b0b0|No information available}}
-Note that federal law sets a minimum age of 21. In September 2026 the DOJ stated that the law is unconstitutional and cannot be enforced. State age limits still apply.<ref>{{cite web |date=September 18, 2026 |url=https://www.justice.gov/opa/pr/justice-department-concludes-federal-ban-handgun-sales-18-20-year-olds-unconstitutional-and |title=Press Release: Justice Department Concludes Federal Ban o
-|File:US assault weapons bans.svg
-|Assault weapons bans
-{{legend|#f00|Long guns and handguns}}
-{{legend|#00f|Handguns only}}}}
-
-==Alabama==
-{{Main |Gun laws in Alabama}}
-{{:Gun laws in Alabama}}
-
-==Alaska==
-{{Main|Gun laws in Alaska}}
-{{:Gun laws in Alaska}}
-
-==Arizona==
-{{Main|Gun laws in Arizona}}
-{{:Gun laws in Arizona}}
-
-==Arkansas==
-{{Main|Gun laws in Arkansas}}
-{{:Gun laws in Arkansas}}
-
-==California==
-{{Main|Gun laws in California}}
-{{:Gun laws in California}}
-
-==Colorado==
-{{Main|Gun laws in Colorado}}
-{{:Gun laws in Colorado}}
-
-==Connecticut==
-{{Main|Gun laws in Connecticut}}
-{{:Gun laws in Connecticut}}
-
-==Delaware==
-{{Main|Gun laws in Delaware}}
-{{:Gun laws in Delaware}}
-
-==District of Columbia==
+Illinois 200 93176
+4:'''Gun laws in Illinois''' regulate the sale, possession, and use of [[firearm]]s and [[ammunition]] in the state of [[Illinois]] in the United States.<ref name=NRA-ILA-IL>[https://www.nraila.org/gun-laws/state-gun-laws/illinois/ "State Gun Laws: Illinois"],
+10:Private sales of firearms must be done through a gun dealer with a [[Federal Firearms License]] (FFL).  Lost or stolen guns must be reported to the police. There is a waiting period of 72 hours to take possession after purchasing a firearm. Possession of [[
+12:As of January 10, 2023, the state bans the sale of firearms that have been defined as [[assault weapon]]s, but allows the possession of any that were registered with the state police by January 1, 2024.  The sale of rifle [[magazine (firearms)|magazines]] t
+16:==Summary table==
+26:| Firearm registration? || Partial || Partial || [https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=072000050K24-1.9 720 ILCS 5/24-1.9] || Firearms legally defined as assault weapons possessed within Illinois before January 10, 2023, must have been
+28:| License required for concealed carry? || N/A || Yes || [https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=3497&ChapAct=430%A0ILCS%A066/&ChapterID=39&ChapterName=PUBLIC%20SAFETY&ActName=Firearm%20Concealed%20Carry%20Act 430 ILCS 66] || Shall-issue with
+32:| Vehicle carry allowed? || No || Yes || [https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=3497&ChapAct=430%A0ILCS%A066/&ChapterID=39&ChapterName=PUBLIC%20SAFETY&ActName=Firearm%20Concealed%20Carry%20Act 430 ILCS 66] || An Illinois concealed carry lice
+34:| State preemption of local restrictions? || Partial || Partial || [https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=3497&ChapAct=430%A0ILCS%A066/&ChapterID=39&ChapterName=PUBLIC%20SAFETY&ActName=Firearm%20Concealed%20Carry%20Act 430 ILCS 66] || Preemp
+36:| Assault weapon law? || Yes || Yes || [https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=072000050K24-1.9 720 ILCS 5/24-1.9] || The sale of firearms defined as assault weapons is prohibited as of January 10, 2023. Existing assault weapons are gran
+38:| Magazine capacity restriction? || Yes || Yes || [https://www.ilga.gov/legislation/ilcs/fulltext.asp?DocName=072000050K24-1.9 720 ILCS 5/24-1.9] || Limit of 10 rounds for long guns and 15 rounds for handguns as of January 10, 2023. These restrictions are b
+44:| Peaceable journey laws? || Partial || Yes || [https://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=3497&ChapAct=430%A0ILCS%A066/&ChapterID=39&ChapterName=PUBLIC%20SAFETY&ActName=Firearm%20Concealed%20Carry%20Act 430 ILCS 66] || Illinois has state preempt
+48:| Red flag law? || Yes || Yes || [http://www.ilga.gov/legislation/ilcs/ilcs3.asp?ActID=1657&ChapAct=430%26nbsp%3BILCS%26nbsp%3B65%2F&ChapterID=39&ChapterName=PUBLIC%2BSAFETY&ActName=Firearm%2BOwners%2BIdentification%2BCard%2BAct%2E 430 ILCS 65]<br>[https://
+52:| Waiting period? || Yes || Yes || [https://www.ilga.gov/legislation/ilcs/documents/072000050K24-3.htm 720 ILCS 5/24-3] || After purchasing a firearm, the waiting period before the buyer can take possession is 72 hours.
+60:==FOID cards==
+62:To legally possess or purchase firearms or ammunition, Illinois residents must have a [[FOID (firearms)|Firearm Owner's Identification (FOID) card]], which is issued by the [[Illinois State Police]].<ref name=FOIDCardAct>{{cite web|url=http://www.ilga.gov/l
+72:On February 14, 2018, in a ruling that applies only to the defendant, a [[Illinois circuit courts|circuit court in Illinois]] found that the requirement to obtain a FOID card in order to acquire or possess a firearm is unconstitutional. The court ruled that
+74:==Concealed and open carry==
+86:Concealed carry is prohibited on public transportation, at a bar or restaurant that gets more than half its revenue from the sale of alcohol, at a public gathering or special event that requires a permit (e.g. a street fair or festival), at a place where al
+100:===Historical state prohibition of concealed carry===
+101:Illinois was the last state to pass a law to allow the [[Concealed carry in the United States|concealed carry]] of firearms by citizens.<ref name=USATodayIllinoisEnacts>Associated Press (July 9, 2013). [https://www.usatoday.com/story/news/2013/07/09/illino
+103:==Other state laws==
+106:Private sales of firearms must be done through a gun dealer with a [[Federal Firearms License]] (FFL).<ref>{{cite web |first=Manny |last=Ramos |date=August 2, 2021 |url=https://chicago.suntimes.com/politics/2021/8/2/22606411/illinois-gun-laws-universal-bac
+108:When purchasing a firearm in Illinois there is a 72-hour waiting period after the sale before the buyer can take possession.<ref name=red-flag-law/>
+114:Under a law passed on January 10, 2023, Illinois has defined certain firearms as [[assault weapon]]s. It is illegal to manufacture, deliver, sell, or purchase an assault weapon. Any assault weapons that are already owned by residents are legal to possess i
+116:The law banning the sale of assault weapons has been the subject of a number of challenges in state and federal courts.  At the state level, on January 20, 2023, a circuit court issued a temporary restraining order against the law, which was upheld on appe
+118:Some local governments have banned the possession of assault weapons, prior to the preemption deadline of July 20, 2013 (see below).  On June 30, 2026, the U.S. Supreme Court agreed to consider ''[[Viramontes v. Cook County]]'', a challenge to Cook County'
+120:It is illegal to manufacture, deliver, sell, or purchase a [[magazine (firearms)|magazine]] for a rifle or shotgun that holds more than 10 rounds of ammunition, or a magazine for a handgun that holds more than 15 rounds.  The possession of such magazines i
+128:Illinois has a [[red flag law]] that allows family members, police, or state's attorneys to petition a judge to issue an order to confiscate the firearms of a person deemed an immediate and present danger to themselves or others. The petitioner must prove 
+144:==Local laws==
+145:Illinois has state preemption of firearm laws for "the regulation, licensing, possession, and registration of handguns and ammunition for a handgun, and the transportation of any firearm and ammunition". There is also state preemption for "the regulation o
+147:[[Chicago]] has banned the possession of certain [[semi-automatic firearm]]s that it defines as [[assault weapon]]s, as well as [[List of laser applications#Laser sight|laser sights]].<ref>[http://chicago.cbslocal.com/2013/07/17/city-expands-assault-weapon
+150:Chicago formerly prohibited the sale of firearms within city limits, but on January 6, 2014, a federal judge ruled that this was unconstitutional.<ref>Glanton, Dahleen, and Meisner, Jason (January 6, 2014). [http://www.chicagotribune.com/news/local/breakin
+152:[[Cook County, Illinois|Cook County]] has banned the possession of certain semi-automatic firearms that it has defined as assault weapons.<ref>{{cite web|url=http://library.municode.com/HTML/13805/level4/PTIGEOR_CH54LIPEMIBURE_ARTIIIDEWEDE_DIV4BLHOASWEBA.h
+154:The possession of firearms that have been variously defined as assault weapons is also illegal in [[Lincolnwood, Illinois|Lincolnwood]], [[Skokie, Illinois|Skokie]], [[Evanston, Illinois|Evanston]], [[Highland Park, Illinois|Highland Park]], [[North Chicag
+156:The [[East St. Louis, Illinois|East St. Louis]] Housing Authority's ban on firearm possession by residents of public housing was struck down by a federal judge on April 11, 2019.<ref>{{cite news |first=Kavahn |last=Mansouri |date=April 11, 2019 |url=https:
+160:Some counties have adopted [[Second Amendment sanctuary]] resolutions in opposition to some gun control laws.<ref>{{Cite web|url=https://herald-review.com/news/state-and-regional/illinois-counties-have-passed-gun-sanctuary-resolutions-are-they-constitution
+162:===Historical restrictions on the possession of handguns===
+165:By the late 1980s, several Illinois municipalities had banned the possession of handguns. Chicago required the registration of all firearms but did not allow handguns to be registered, which had the effect of outlawing their possession, unless they were [[
+169:On June 28, 2010, in the case of ''[[McDonald v. Chicago]]'', the U.S. Supreme Court ruled the handgun bans of Chicago and Oak Park to be unconstitutional.<ref>Liptak, Adam (June 28, 2010). [https://www.nytimes.com/2010/06/29/us/29scotus.html "Justices Ext
+179:==Air guns==
+Texas 200 50094
+10:== Summary table ==
+23:| Assault weapon law? || No || No || ||
+25:| Magazine capacity restriction? || No || No || ||
+29:| [[Red flag law]]? || No || No || ||(Also known as the Extreme Risk law.) Texas doesn't have a red-flag law, which allows for temporary firearm removal from individuals believed to be at risk of harming themselves or others.
+31:| Permit required for concealed carry? || N/A || No || [https://statutes.capitol.texas.gov/Docs/GV/htm/GV.411.htm#411.172 Tex. Government Code § 411.172]<br>[https://statutes.capitol.texas.gov/Docs/PE/htm/PE.46.htm#46.02 Tex. Penal Code § 46.02] || Texas 
+33:| Permit required for open carry? || No || No || [https://statutes.capitol.texas.gov/docs/PE/htm/PE.42.htm#42.01 Tex. Penal Code § 42.01(a)(8)]<br>[https://statutes.capitol.texas.gov/Docs/PE/htm/PE.46.htm#46.02 Tex. Penal Code § 46.02] || Handguns must be
+51:==Background checks and private sales==
+54:==Possession of firearms==
+59:==Firearms carry==
+61:Texas concealed carry laws underwent significant changes with the introduction of permitless carry in 2021. This allows most Texans to carry handguns without a permit, provided they are not prohibited by state or federal laws. This shift has prompted debate
+63:==Gun violence rates and trends==
+66:===License to carry===
+88:===College carry laws===
+92:==Red flag laws==
+93:Texas does not have red flag laws, also known as Extreme Risk Protection Orders, which allow courts to temporarily remove firearms from individuals deemed a threat to themselves or others. While these laws have proven effective in other states, Texas lawmak
+95:===Restrictions on licensed carry===
+111:====30.06 signage====
+132:===Open carry===
+133:Per House Bill 1927 signed into law by Gov. Abbott, [[Open carry in the United States|open carry]] is fully legal for anyone over 21 years of age since September 1, 2021. Known by supporters as "[[constitutional carry]]", House Bill 1927 allows Texans 21 a
+144:====30.07 signage====
+166:==Castle doctrine==
+167:On March 27, 2007, Governor [[Rick Perry]] signed Senate Bill 378 into law, making Texas a "[[Castle Doctrine in the US|Castle Doctrine]]" state which came into effect September 1, 2007.<ref>{{cite web|url=http://www.capitol.state.tx.us/BillLookup/History.
+169:===Stand Your Ground===
+173:===Civil immunity===
+179:==Motorists Protection Act==
+184:==National Firearms Act==
+187:==State preemption of local laws==
+207:==See also==
+211:==References==
+Louisiana 200 5164
+4:'''Gun laws in Louisiana''' regulate the sale, possession, and use of [[firearm]]s and [[ammunition]] in the state of [[Louisiana]] in the United States.<ref name=NRA>[https://www.nraila.org/gun-laws/state-gun-laws/louisiana/ "State Gun Laws: Louisiana"], Na
+6:== Summary table ==
+19:| Assault weapon law? || No || No || ||
+21:| Magazine capacity restriction? || No || No || ||
+45:==Louisiana's gun laws==
+52:==See also==
+55:==References==
