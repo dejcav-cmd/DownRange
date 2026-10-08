@@ -42,7 +42,7 @@ async function loadNews() {
       image: a.heroImage?.asset?.url || (a.imageUrl && a.imageUrl.includes('cdn.sanity.io') ? a.imageUrl : null),
     }))
     .filter(a => a.image)
-    .slice(0, 8)
+    .slice(0, 11)
 }
 
 // Latest 10 deals, newest first
