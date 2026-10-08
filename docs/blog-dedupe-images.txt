@@ -1,0 +1,18 @@
+{
+    "ok": true,
+    "summary": "2 duplicate/forced, 2 replaced",
+    "report": [
+        {
+            "slug": "dj-constitutional-carry-29-states-2026",
+            "before": "https://cdn.sanity.io/images/vbnsqnkg/production/9ae7e917ac8991c5806d0293d88abea64ae1c11b-1880x1251.jpg",
+            "after": "https://cdn.sanity.io/images/vbnsqnkg/production/5887fef11c295103cb735cbe0cad7fe32b153346-1280x853.jpg",
+            "status": "replaced"
+        },
+        {
+            "slug": "dj-ccw-insurance-comparison-2026",
+            "before": "https://cdn.sanity.io/images/vbnsqnkg/production/9ae7e917ac8991c5806d0293d88abea64ae1c11b-1880x1251.jpg",
+            "after": "https://cdn.sanity.io/images/vbnsqnkg/production/86304e794c7918989a48238c77b24dec0d6669f8-1280x853.jpg",
+            "status": "replaced"
+        }
+    ]
+}
