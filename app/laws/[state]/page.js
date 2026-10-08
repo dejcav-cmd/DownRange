@@ -169,6 +169,12 @@ export default async function StateLawPage({ params }) {
               </p>
             )}
 
+            {data.reciprocityVerified && (
+              <p style={{ fontFamily:S.mono, fontSize:10, color:'#4B5563', margin:'-12px 0 24px', lineHeight:1.6 }}>
+                Source: handgunlaw.us, last updated {data.reciprocityVerified}. Re-checked monthly.{data.reciprocityNotes ? ` ${data.reciprocityNotes}` : ''}
+              </p>
+            )}
+
             {/* Recent bills */}
             {data.recentBills?.length > 0 && (
               <>

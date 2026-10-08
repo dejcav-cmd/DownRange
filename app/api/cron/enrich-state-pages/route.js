@@ -130,9 +130,9 @@ async function _GET(req) {
       }
 
       // Upsert state profile with rich content
-      await sanity.createOrReplace({
-        _type:        'stateProfile',
-        _id:          `state-${state.abbr.toLowerCase()}`,
+      const _sid = `state-${state.abbr.toLowerCase()}`
+      await sanity.createIfNotExists({ _id: _sid, _type: 'stateProfile', name: state.name, abbr: state.abbr })
+      await sanity.patch(_sid).set({
         name:         state.name,
         abbr:         state.abbr,
         richContent,
@@ -146,7 +146,7 @@ async function _GET(req) {
         bgcPrivate:          ['CA','CO','IL','NY','NJ','MA','MD','OR','WA'].includes(state.abbr),
         rating:              state.rating,
         updatedAt:           new Date().toISOString(),
-      })
+      }).commit()
       results.push({ abbr: state.abbr, status: 'enriched', chars: richContent.length })
     } catch (e) {
       results.push({ abbr: state.abbr, status: 'error', error: e.message })

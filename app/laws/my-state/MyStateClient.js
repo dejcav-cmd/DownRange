@@ -209,6 +209,12 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
                   : `${abbr} does not have formal reciprocity with other states, or this state uses constitutional carry.`}
               </p>
             </div>
+            {(p.reciprocityVerified || p.reciprocityNotes) && (
+              <p style={{ fontFamily: S.mono, fontSize: 11, color: '#4B5563', lineHeight: 1.7, margin: '0 0 16px' }}>
+                {p.reciprocityVerified ? `Source: handgunlaw.us, last updated ${p.reciprocityVerified}. Re-checked monthly. ` : ''}
+                {p.reciprocityNotes ? `${p.name} honors: ${p.reciprocityNotes}` : ''}
+              </p>
+            )}
             <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(110px, 1fr))', gap: 6 }}>
               {profiles.sort((a, b) => a.name?.localeCompare(b.name)).map(s => {
                 const honors = recip.honorsStates.includes(s.abbr)

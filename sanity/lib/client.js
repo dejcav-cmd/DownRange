@@ -163,7 +163,7 @@ export async function fetchStateProfile(abbr) {
       _id, name, abbr, rating,
       constitutionalCarry, ccwPermit, redFlagLaw, magLimit, waitPeriod,
       awbStatus, suppressors, openCarry, bgcPrivate,
-      reciprocityStates[], recentBills[], summary, lastUpdated,
+      reciprocityStates[], reciprocityHonors[], reciprocityNotes, reciprocityVerified, recentBills[], summary, lastUpdated,
       richContent, updatedAt
     }
   `, { abbr: abbr.toUpperCase() })
@@ -173,7 +173,8 @@ export async function fetchAllStateProfiles() {
   return client.fetch(`
     *[_type == "stateProfile"] | order(name asc) {
       _id, name, abbr, rating,
-      constitutionalCarry, redFlagLaw, magLimit, awbStatus
+      constitutionalCarry, redFlagLaw, magLimit, awbStatus,
+      reciprocityStates[], reciprocityHonors[], reciprocityNotes, reciprocityVerified
     }
   `)
 }
