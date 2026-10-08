@@ -497,6 +497,10 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
               @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
               @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
               .dc-inner:hover { transform: translateY(-2px); }
+              .dc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:12px; }
+              @media (max-width:1100px){ .dc-grid{ grid-template-columns:repeat(3,1fr) } }
+              @media (max-width:760px){ .dc-grid{ grid-template-columns:repeat(2,1fr) } }
+              @media (max-width:420px){ .dc-grid{ grid-template-columns:1fr } }
             `}</style>
 
             {/* Count + last fetch */}
@@ -515,7 +519,7 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
 
             {/* Loading skeleton */}
             {status === 'loading' && (
-              <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:12, marginBottom:24 }}>
+              <div className="dc-grid" style={{ marginBottom:24 }}>
                 {[...Array(PER_PAGE)].map((_,i) => (
                   <div key={i} style={{ height:320, background:'linear-gradient(90deg, var(--bg2) 25%, var(--bg3,#1a1d22) 50%, var(--bg2) 75%)', backgroundSize:'200% 100%', animation:'shimmer 1.5s infinite', border:'1px solid var(--border)' }} />
                 ))}
@@ -526,9 +530,8 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
             {status !== 'loading' && (
               <>
                 {paginated.length > 0 ? (
-                  <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(220px, 1fr))', gap:12, marginBottom:32 }}>
+                  <div className="dc-grid" style={{ marginBottom:32 }}>
                     {paginated.map((deal, i) => <DealCard key={deal.id || i} deal={deal} userState={userState} liveRules={liveRules} />)}
-                    {[0,1,2,3].map(i => <div key={'ghost-'+i} aria-hidden="true" style={{ visibility:'hidden', height:0, overflow:'hidden', padding:0, margin:0 }} />)}
                   </div>
                 ) : (
                   <div style={{ padding:'80px 0', textAlign:'center', color:'#4B5563', fontFamily:MONO, fontSize:12 }}>

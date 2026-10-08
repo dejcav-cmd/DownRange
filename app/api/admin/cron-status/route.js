@@ -70,6 +70,7 @@ const ALL_JOBS = [
   { id:'reciprocity-sync', path:'/api/admin/reciprocity-ingest', schedule:'0 14 8 * *', label:'CCW Reciprocity Sync (8th, 7am PT)', group:'Content', icon:'🔄', critical:false, desc:'Monthly: handgunlaw.us state PDFs → AI parse → Sanity (runs from GitHub Actions, not vercel.json)' },
   { id:'state-laws-sync', path:'/api/admin/state-laws-ingest', schedule:'30 14 8 * *', label:'State Laws Sync (8th, 7:30am PT)', group:'Content', icon:'⚖️', critical:false, desc:'Monthly: Wikipedia state summary tables + handgunlaw.us permitless list → Sanity (runs from GitHub Actions)' },
   { id:'ffl-sync', path:'/api/admin/ffl-ingest', schedule:'0 16 20 * *', label:'ATF FFL Import (20th)', group:'Content', icon:'🏪', critical:false, desc:'Monthly: ATF FFL listings by state, fetched by scripts/atf_ffl_fetch.py on the Mac mini (atf.gov blocks cloud IPs) → Sanity' },
+  { id:'blog-dedupe-images', path:'/api/admin/blog-dedupe-images', schedule:'0 15 * * 1', label:'Blog Image Dedupe (Mon)', group:'Content', icon:'🖼️', critical:false, desc:'Weekly: replaces blog hero images that more than one post uses (GitHub Actions)' },
   { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >180d (keeps news linked from blog posts)' },
 ]
 
