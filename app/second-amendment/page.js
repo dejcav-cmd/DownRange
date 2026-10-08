@@ -7,10 +7,10 @@ export const revalidate = 86400
 
 const URL = 'https://www.downrangeco.com/second-amendment'
 export const metadata = {
-  title: 'The Second Amendment: Text, History and Why It Matters',
+  title: 'The Second Amendment: Text, History, Why It Matters',
   description: 'The full text of the Second Amendment, how it came to be, the Supreme Court cases that shaped it (Heller, McDonald, Bruen, Rahimi), and what rights and responsibilities it carries today.',
   alternates: { canonical: URL },
-  openGraph: {
+  openGraph: { images:[{url:'https://www.downrangeco.com/og-default.png',width:1200,height:630,alt:'DownRange'}], 
     title: 'The Second Amendment: Text, History and Why It Matters',
     description: 'The text, the history, the landmark Supreme Court cases, and the responsibility that comes with the right.',
     url: URL, type: 'article',
@@ -31,7 +31,7 @@ const RESPONSIBILITY = [
   ['Know the four rules', 'Treat every firearm as loaded. Never point it at anything you are not willing to destroy. Keep your finger off the trigger until sights are on target. Know your target and what is behind it.', '/learn/firearms-safety-four-rules'],
   ['Know your state', 'Carry, magazine, transport and purchase rules differ from state to state, and they change. Check yours before you buy or travel.', '/laws/my-state'],
   ['Train', 'A right you have never practiced is a right you cannot use well. Dry fire costs nothing. Range time and a good class cost little compared to a mistake.', '/learn/dry-fire-training-beginners'],
-  ['Stay informed', 'Bills move, courts rule, agencies change rules. Follow the cases that decide how far the right reaches.', '/laws?tab=scotus'],
+  ['Stay informed', 'Bills move, courts rule, agencies change rules. Follow the cases that decide how far the right reaches.', '/laws/federal?tab=scotus'],
 ]
 
 const jsonLd = {
@@ -146,7 +146,7 @@ export default function SecondAmendmentPage() {
           <div className="sa-btns">
             <Link href="/laws/my-state" className="sa-btn sa-btn-main">Check my state</Link>
             <Link href="/news" className="sa-btn">Latest news</Link>
-            <Link href="/laws?tab=scotus" className="sa-btn">Supreme Court cases</Link>
+            <Link href="/laws/federal?tab=scotus" className="sa-btn">Supreme Court cases</Link>
           </div>
         </div>
         <p className="sa-note">This page is general information about the Constitution and published court decisions. It is not legal advice. Laws differ by state and change often; confirm current rules with the official source or a licensed attorney.</p>

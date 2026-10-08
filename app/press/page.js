@@ -7,7 +7,7 @@ export const metadata = {
   title: 'Press & Media Kit — DownRange Intelligence Hub',
   description: "DownRange is America's independent firearms and Second Amendment intelligence platform. Press kit, media contacts, brand guidelines, partnership inquiries, and manufacturer PR submissions.",
   alternates: { canonical: 'https://www.downrangeco.com/press' },
-  openGraph: {
+  openGraph: { images:[{url:'https://www.downrangeco.com/og-default.png',width:1200,height:630,alt:'DownRange'}], 
     title: 'DownRange Press Kit — Media Resources',
     description: "America's firearms intelligence hub. Brand assets, editorial guidelines, partnership inquiries, and press contacts.",
     url: 'https://www.downrangeco.com/press',

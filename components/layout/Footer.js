@@ -5,7 +5,7 @@ import SocialIcons from '../ui/SocialIcons'
 const FOOTER_COLS = [
   { title: 'News & Intel', links: [['Latest News','/news'],['Press Releases','/news/manufacturer-press-releases'],['Live Deals','/deals'],['Video','/video'],['Blog','/blog'],['Giveaways','/giveaways']] },
   { title: 'Tools', links: [['NFA Tracker','/nfa-tracker'],['CCW Insurance','/carry-insurance'],['FFL Finder','/ffl-finder'],['Range Finder','/ranges']] },
-  { title: 'Laws & States', links: [['Federal Bills','/laws?tab=federal'],['State Laws','/laws?tab=state'],['ATF Rules','/laws?tab=atf'],['SCOTUS Cases','/laws?tab=scotus'],['State Map','/laws/states'],['AI Law Assistant','/laws?tab=assistant']]},
+  { title: 'Laws & States', links: [['Federal Bills','/laws/federal'],['State Laws','/laws/states'],['ATF Rules','/laws/federal?tab=atf'],['SCOTUS Cases','/laws/federal?tab=scotus'],['State Map','/laws/states'],['AI Law Assistant','/laws/federal?tab=assistant']]},
   { title: 'Learn & Guns', links: [['Learning Center','/learn'],['Gun Encyclopedia','/guns'],['New Releases','/releases'],['Canada','/canada'],['Brasil','/brazil']] },
   { title: 'Community', links: [['Write For Us','/contribute'],['Contact','/contact'],['Press Kit','/press'],['Hunting','/hunting'],['Precision','/precision'],['About','/about'],['Second Amendment','/second-amendment']] },
 ]

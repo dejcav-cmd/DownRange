@@ -3,7 +3,7 @@ import ToolShell from '../../components/tools/ToolShell'
 
 const URL_PATH = '/tools'
 export const metadata = {
-  title: 'Firearms Tools: Ballistics, Scope, Ammo Cost, NFA, FFL and More',
+  title: 'Firearms Tools: Ballistics, Scope, Ammo, NFA, FFL',
   description: 'Free tools for shooters: a precision ballistics calculator with 188 bullets, scope and mil tools, an ammo cost calculator, NFA wait times, an FFL finder, a range finder and carry insurance comparison.',
   alternates: { canonical: 'https://www.downrangeco.com' + URL_PATH },
 }

@@ -2,7 +2,7 @@ import ToolShell from '../../../components/tools/ToolShell'
 import ScopeTools from './ScopeTools'
 
 export const metadata = {
-  title: 'Scope and Mil Tools: MOA, MRAD, Range from Mils, Slope Angle',
+  title: 'Scope and Mil Tools: MOA, MRAD, Slope, Range',
   description: 'Free scope tools: convert MOA, MRAD and inches at any range, estimate distance from mils or MOA, correct for slope angle, and work out how many turret clicks to dial.',
   alternates: { canonical: 'https://www.downrangeco.com/tools/scope-tools' },
 }

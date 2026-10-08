@@ -2,7 +2,7 @@ import ToolShell from '../../../components/tools/ToolShell'
 import AmmoCost from './AmmoCost'
 
 export const metadata = {
-  title: 'Ammo Cost Calculator: Cost per Round, Per Year and Reloading Savings',
+  title: 'Ammo Cost Calculator: Per Round, Per Year, Reloading',
   description: 'Free ammo cost calculator. Work out cost per round, cost per range trip and per year, and compare factory ammo with reloading including your break-even point.',
   alternates: { canonical: 'https://www.downrangeco.com/tools/ammo-cost' },
 }

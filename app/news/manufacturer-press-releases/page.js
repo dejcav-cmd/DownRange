@@ -24,7 +24,7 @@ export async function generateMetadata({ searchParams }) {
     description: 'Every new press release from the major US firearm manufacturers, rewritten as short articles and linked to the original source. Filter by manufacturer and browse back through time.',
     alternates: { canonical: SITE + PRESS_BASE },
     robots: filtered ? { index: false, follow: true } : undefined,
-    openGraph: {
+    openGraph: { images:[{url:'https://www.downrangeco.com/og-default.png',width:1200,height:630,alt:'DownRange'}], 
       title: 'Manufacturer Press Releases — DownRange',
       description: 'New product, corporate and industry announcements from the top US firearm makers, updated twice a week.',
       url: SITE + PRESS_BASE,
