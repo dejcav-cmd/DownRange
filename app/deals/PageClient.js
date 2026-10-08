@@ -386,7 +386,7 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
 
         {/* Hero */}
         <PageHero img="/img/deals-hero.jpg" imgSm="/img/deals-hero-sm.jpg" pos="70% 58%"
-          eyebrow={<>{status === 'live' && <span className="hh-live"><span style={{ width:5, height:5, borderRadius:'50%', background:'#22C55E', animation:'pulse 1.2s infinite', display:'inline-block' }} /> LIVE</span>}Live deals · Updated every 30 min</>}
+          eyebrow={<>{status === 'live' && <span className="hh-live"><span style={{ width:5, height:5, borderRadius:'50%', background:'#22C55E', animation:'pulse 1.2s infinite', display:'inline-block' }} /> LIVE</span>}Live deals</>}
           title={<>Firearms &amp; ammo <span>best deals today.</span></>}
           sub={`${filtered.length > 0 ? filtered.length + ' deals' : status === 'loading' ? 'Loading…' : 'No deals found'}${sources ? ' · ' + sources : ''}`}>
           <ul className="hh-chips">

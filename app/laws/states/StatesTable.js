@@ -124,7 +124,7 @@ export default function StatesTable({ rows, verified }) {
         {shown.length === 0 && <p className="st-note" style={{ textAlign: 'center', marginTop: 40 }}>No states match those filters.</p>}
 
         <p className="st-note">
-          Ratings, carry, magazine, assault weapon and red flag data come from state statutes and NRA-ILA summaries. Reciprocity comes from <a href="https://www.handgunlaw.us" rel="noopener">handgunlaw.us</a>{verified ? `, last updated ${verified}` : ''}, and is re-checked monthly. Laws change; confirm with the state before you travel or buy. For your own state, use <Link href="/laws/my-state">My State</Link>. This is information, not legal advice.
+          Ratings, carry, magazine, assault weapon and red flag data come from state statutes and NRA-ILA summaries. Reciprocity comes from <a href="https://www.handgunlaw.us" rel="noopener">handgunlaw.us</a>{verified ? `, last updated ${verified}` : ''}. Laws change; confirm with the state before you travel or buy. For your own state, use <Link href="/laws/my-state">My State</Link>. This is information, not legal advice.
         </p>
       </div>
     </>

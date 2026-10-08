@@ -204,7 +204,7 @@ export default function VideoPageClient({ videos = [], alerts = [], initialSort 
       <PageHero
         eyebrow={`Video library · ${videos.length} videos`}
         title={<>DownRange <span>video library.</span></>}
-        sub="The latest firearms videos from trusted channels, in one feed. Updated every 4 hours." />
+        sub="The latest firearms videos from trusted channels, in one feed." />
 
       {/* ── STICKY NAV BAR — matches News pattern ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>

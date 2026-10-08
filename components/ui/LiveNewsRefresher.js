@@ -68,7 +68,7 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
         )}
         {lastPoll && (
           <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#334155', marginLeft:'auto' }}>
-            {displayArticles.length} stories · refreshes every 2 min
+            {displayArticles.length} stories
           </span>
         )}
       </div>

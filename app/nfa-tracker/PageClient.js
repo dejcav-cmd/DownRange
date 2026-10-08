@@ -376,7 +376,7 @@ export default function NFATracker() {
           <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#666', lineHeight: 2, borderTop: '1px solid #222', paddingTop: 20 }}>
             <strong style={{ color: '#999', letterSpacing: '.08em' }}>DATA SOURCE:</strong>{' '}
             <a href="https://www.atf.gov/resource-center/current-processing-times" target="_blank" rel="noreferrer" style={{ color: '#c8922a', textDecoration: 'none' }}>ATF.gov — official current processing times</a>.{' '}
-            Averages reflect ATF&rsquo;s most recently finalized applications. Refreshed every 2 days · individual results vary.
+            Averages reflect ATF&rsquo;s most recently finalized applications. Individual results vary.
           </div>
 
         </div>

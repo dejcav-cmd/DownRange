@@ -8,12 +8,12 @@ import { fetchArticlesPaginated, fetchBreakingAlerts, fetchLegislation } from '.
 
 export const metadata = {
   title: 'Firearms & 2A News',
-  description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage. Updated every 30 minutes.',
+  description: 'Real-time Second Amendment news, ATF updates, gun legislation, and firearms industry coverage.',
   alternates: { canonical: 'https://www.downrangeco.com/news' },
   openGraph: {
     type: 'website', url: 'https://www.downrangeco.com/news',
     title: 'Firearms & 2A News | DownRange',
-    description: 'Real-time 2A news, ATF updates, and gun legislation — updated every 15 minutes.',
+    description: 'Real-time 2A news, ATF updates, and gun legislation.',
     images: [{ url: 'https://www.downrangeco.com/og-default.png', width: 1200, height: 630, alt: 'DownRange News' }],
   },
 }
@@ -72,7 +72,7 @@ export default async function NewsPage({ searchParams }) {
       <PageHero img="/img/news-hero.jpg" imgSm="/img/news-hero-sm.jpg" pos="70% center"
         eyebrow="Latest news · Live feed"
         title={<>Firearms &amp; 2A <span>intelligence feed.</span></>}
-        sub={`${total > 0 ? total : '—'} stories in the last 30 days. Updated every 15 minutes, all sources aggregated.`} />
+        sub={`${total > 0 ? total : '—'} stories in the last 30 days. All sources aggregated.`} />
 
       {/* ── STICKY CATEGORY BAR (Learn pattern) ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>

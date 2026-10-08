@@ -210,7 +210,7 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
             </div>
             {(p.reciprocityVerified || p.reciprocityNotes) && (
               <p style={{ fontFamily: S.mono, fontSize: 11, color: '#4B5563', lineHeight: 1.7, margin: '0 0 16px' }}>
-                {p.reciprocityVerified ? `Source: handgunlaw.us, last updated ${p.reciprocityVerified}. Re-checked monthly. ` : ''}
+                {p.reciprocityVerified ? `Source: handgunlaw.us, last updated ${p.reciprocityVerified}. ` : ''}
                 {p.reciprocityNotes ? `${p.name} honors: ${p.reciprocityNotes}` : ''}
               </p>
             )}

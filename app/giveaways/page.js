@@ -22,11 +22,11 @@ const SEED_GIVEAWAYS = [
 // ── Metadata ──────────────────────────────────────────────────────────────────
 export const metadata = {
   title: 'Gun Giveaways 2026 — Win Free Firearms, Ammo & Gear',
-  description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. Updated 3× daily — no spam, verified sources only.',
+  description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. No spam, verified sources only.',
   alternates: { canonical: 'https://www.downrangeco.com/giveaways' },
   openGraph: {
     title: 'Gun Giveaways 2026 — Win Free Firearms | DownRange',
-    description: 'Active gun giveaways updated 3× daily. Free firearms, ammo, and gear.',
+    description: 'Active gun giveaways. Free firearms, ammo, and gear.',
     url: 'https://www.downrangeco.com/giveaways',
   },
 }

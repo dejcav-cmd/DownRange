@@ -143,7 +143,7 @@ export default function GiveawaysClient({ giveaways, isSeed, lastUpdated }) {
       `}</style>
 
       <PageHero
-        eyebrow={`Updated 3× daily${isSeed ? ' · Sample listings' : ''}`}
+        eyebrow={isSeed ? 'Giveaways · Sample listings' : 'Giveaways'}
         title={<>Gun <span>giveaways.</span></>}
         sub="Free firearms, ammo & gear from the top names in the industry. Verified sources only. No spam. No sketchy links.">
         <ul className="hh-chips">
