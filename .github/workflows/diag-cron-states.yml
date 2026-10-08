@@ -1,0 +1,23 @@
+name: Diag Cron and State Data
+on:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  d:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: '3.11' }
+      - run: pip install requests
+      - env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          python3 scripts/diag_cron_states.py > result.txt 2>&1
+          echo "== cron-status endpoint" >> result.txt
+          curl -s -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/admin/cron-status" | head -c 20000 >> result.txt
+      - env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py result.txt docs/diag-cron-states.txt
