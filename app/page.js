@@ -99,7 +99,7 @@ export default async function HomePage() {
       <DealsSection items={deals} />
       <PressSection items={press} />
 
-      <section style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
+      <section className="home-state" style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
           <div className="hr-state">
             <span>Gun laws differ by state. Check yours before you buy or carry.</span>

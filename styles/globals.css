@@ -909,3 +909,4 @@ table.data-table tr:hover td { background: #111318; color: #F0EDE6; }
 .page-hero .page-hero-sub{max-width:640px;font-family:'IBM Plex Sans',sans-serif;font-size:clamp(15px,2vw,18px);line-height:1.55;color:var(--text-muted);letter-spacing:0;text-transform:none;margin:0 0 24px}
 @media(max-width:600px){.page-hero{background:linear-gradient(0deg,rgba(9,9,11,.97) 0%,rgba(9,9,11,.86) 45%,rgba(9,9,11,.35) 100%),url(/img/home-hero-sm.jpg) 72% top/cover no-repeat,#09090B;padding:120px 0 26px;min-height:380px}}
 @media(max-width:700px){.hh-chips-stats{display:none}}
+@media(max-width:700px){.hh-btn-ghost{display:none}.home-state{display:none}}
