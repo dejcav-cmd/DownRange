@@ -1,0 +1,38 @@
+=== AI STATUS ===
+{
+    "ok": true,
+    "status": {
+        "ANTHROPIC_API_KEY": true,
+        "OPENAI_API_KEY": false,
+        "GLM_API_KEY": true,
+        "GLM_MODEL": null,
+        "AI_CHAIN": null,
+        "AI_CHAIN_NEWS": null,
+        "AI_CHAIN_BACKFILL": null,
+        "AI_CHAIN_INTEL": null,
+        "AI_CHAIN_ARTICLE": null,
+        "AI_CHAIN_OUTREACH": null,
+        "AI_CHAIN_LAW": null,
+        "AI_CHAIN_NEWSLETTER": null,
+        "AI_CHAIN_FAST": null,
+        "VERCEL_TOKEN": true
+    },
+    "tests": {
+        "anthropic": {
+            "ok": true,
+            "model": "claude-haiku-5-5"
+        },
+        "glm": {
+            "ok": false,
+            "error": "\u4f59\u989d\u4e0d\u8db3\u6216\u65e0\u53ef\u7528\u8d44\u6e90\u5305,\u8bf7\u5145\u503c\u3002"
+        }
+    },
+    "routing": {
+        "news": "glm/glm-4.5-air",
+        "backfill": "glm/glm-4.5-air",
+        "intel": "anthropic/claude-sonnet-4-5",
+        "article": "glm/glm-4.5-air",
+        "newsletter": "anthropic/claude-sonnet-4-5",
+        "outreach": "anthropic/claude-haiku"
+    }
+}
