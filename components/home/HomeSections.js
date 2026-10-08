@@ -53,8 +53,8 @@ export function NewsSection({ items }) {
       <div className="container">
         <div className="hr-head">
           <div>
-            <h2 className="hr-title" id="hr-news">Top <span>New</span></h2>
-            <div className="hr-sub">Newest story on top, updated as it publishes</div>
+            <h2 className="hr-title" id="hr-news">Top <span>News</span></h2>
+            <div className="hr-sub">Today's biggest story, plus the 10 latest</div>
           </div>
           <Link href="/news" className="hr-all">All news →</Link>
         </div>
