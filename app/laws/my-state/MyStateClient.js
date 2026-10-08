@@ -1,6 +1,7 @@
 'use client'
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 
 const S = {
   mono: "'IBM Plex Mono', monospace",
@@ -36,6 +37,11 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
   const [detected, setDetected] = useState(null)
   const [view, setView] = useState('laws') // 'laws' | 'reciprocity' | 'states'
   const [search, setSearch] = useState('')
+  const sp = useSearchParams()
+  const wanted = sp ? sp.get('view') : null
+  useEffect(() => {
+    if (wanted === 'reciprocity' || wanted === 'states' || wanted === 'laws') setView(wanted)
+  }, [wanted])
 
   useEffect(() => {
     fetch('https://ipapi.co/json/')

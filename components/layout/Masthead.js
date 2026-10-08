@@ -26,6 +26,8 @@ const NAV = [
       { label: '📍 FFL Finder',            href: '/ffl-finder',            desc: 'Transfer dealers near you' },
       { label: '🏟️ Range Finder',          href: '/ranges',                desc: 'Shooting ranges near you' },
       { label: '🛡️ Carry Insurance',       href: '/carry-insurance',       desc: 'Compare concealed carry coverage' },
+      { label: '🔄 CCW Reciprocity',       href: '/laws/my-state?view=reciprocity', desc: 'Where your carry permit is honored' },
+      { label: '📋 All 50 States Laws',    href: '/laws/states',           desc: 'Compare gun laws across every state' },
       { label: '🗺️ My State Laws',         href: '/laws/my-state',         desc: 'Carry, magazine and transport rules for your state' },
       { label: 'All tools →',              href: '/tools',                 desc: 'Every DownRange tool in one place' },
     ]

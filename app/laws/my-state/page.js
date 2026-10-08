@@ -1,5 +1,6 @@
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
+import { Suspense } from 'react'
 import MyStateClient from './MyStateClient'
 import { fetchAllStateProfiles, fetchBreakingAlerts } from '../../../sanity/lib/client'
 import { STATE_SEED } from '../../../lib/stateSeed'
@@ -42,7 +43,7 @@ export default async function MyStatePage() {
   return (
     <>
       <Masthead />
-      <MyStateClient profiles={profiles} profileMap={profileMap} reciprocityMatrix={reciprocityMatrix} alerts={alerts} />
+      <Suspense fallback={null}><MyStateClient profiles={profiles} profileMap={profileMap} reciprocityMatrix={reciprocityMatrix} alerts={alerts} /></Suspense>
       <Footer />
     </>
   )
