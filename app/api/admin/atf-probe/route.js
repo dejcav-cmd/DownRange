@@ -4,6 +4,8 @@ export const maxDuration = 60
 const URL0 = 'https://www.atf.gov/firearms/tools-and-services-firearms-industry/federal-firearms-listings'
 const UA = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36'
 export async function GET(req) {
+  const adm = process.env.DR_ADMIN_KEY || process.env.ADMIN_KEY
+  if (!adm || req.headers.get('x-admin-key') !== adm) return Response.json({ error: 'no' }, { status: 401 })
   const out = {}
   try {
     const g = await fetch(URL0, { headers: { 'user-agent': UA, accept: 'text/html,*/*', 'accept-language': 'en-US,en;q=0.9' }, redirect: 'follow' })

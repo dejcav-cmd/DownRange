@@ -1,0 +1,13 @@
+name: Diag ATF probe
+on: workflow_dispatch
+jobs:
+  go:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: |
+          curl -s -m 70 -H "x-admin-key: ${{ secrets.ADMIN_KEY }}" https://www.downrangeco.com/api/admin/atf-probe > out.json || true
+          cat out.json
+      - env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+        run: python3 scripts/publish_result.py out.json docs/atf-probe.txt
