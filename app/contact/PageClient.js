@@ -17,7 +17,7 @@ export default function ContactPage() {
         <div className="container" style={{ maxWidth:1000 }}>
           <div className="dr-contact-grid">
             <div>
-              <style>{`.dr-contact-frame{width:100%;height:1050px;border:0;border-radius:4px;background:transparent;color-scheme:normal;display:block}@media(max-width:640px){.dr-contact-frame{height:1250px}}.dr-contact-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:48px}@media(max-width:820px){.dr-contact-grid{grid-template-columns:minmax(0,1fr);gap:28px}}`}</style>
+              <style>{`.dr-contact-frame{width:100%;height:1280px;border:0;border-radius:4px;background:transparent;color-scheme:normal;display:block}@media(max-width:640px){.dr-contact-frame{height:1600px}}.dr-contact-grid{display:grid;grid-template-columns:minmax(0,1fr) 280px;gap:48px}@media(max-width:820px){.dr-contact-grid{grid-template-columns:minmax(0,1fr);gap:28px}}`}</style>
               <iframe
                 src="https://api.vantaroai.com/widget/form/fRndUSjTcnfRXJAQ7qKo"
                 title="Contact DownRange"
