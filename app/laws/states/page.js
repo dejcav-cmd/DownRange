@@ -34,7 +34,7 @@ export default async function StatesPage() {
 
   const rows = profiles.map(p => ({
     abbr: p.abbr, name: p.name, rating: p.rating || null,
-    cc: !!p.constitutionalCarry, mag: num(p.magLimit) || null, awb: hasBan(p.awbStatus),
+    cc: !!p.constitutionalCarry, mag: num(p.magLimit) || null, awb: hasBan(p.awbStatus), awbLabel: /partial/i.test(String(p.awbStatus)) ? 'Partial' : 'Banned',
     wait: num(p.waitPeriod), rf: !!p.redFlagLaw, recip: (p.reciprocityStates || []).length,
   }))
   const verified = profiles.map(p => p.reciprocityVerified).filter(Boolean).sort().pop() || null

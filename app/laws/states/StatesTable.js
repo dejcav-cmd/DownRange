@@ -95,7 +95,7 @@ export default function StatesTable({ rows, verified }) {
                   <td><span className={`st-pill st-${gradeTone(p.rating)}`}>{p.rating || '—'}</span></td>
                   <td><span className={`st-pill ${p.cc ? 'st-g' : 'st-n'}`}>{p.cc ? 'Permitless' : 'Permit'}</span></td>
                   <td><span className={`st-pill ${p.mag ? 'st-r' : 'st-g'}`}>{p.mag ? `${p.mag} rounds` : 'No limit'}</span></td>
-                  <td><span className={`st-pill ${p.awb ? 'st-r' : 'st-g'}`}>{p.awb ? 'Banned' : 'None'}</span></td>
+                  <td><span className={`st-pill ${p.awb ? 'st-r' : 'st-g'}`}>{p.awb ? p.awbLabel : 'None'}</span></td>
                   <td><span className={`st-pill ${p.wait > 0 ? 'st-y' : 'st-g'}`}>{p.wait > 0 ? `${p.wait} day${p.wait > 1 ? 's' : ''}` : 'None'}</span></td>
                   <td><span className={`st-pill ${p.rf ? 'st-r' : 'st-g'}`}>{p.rf ? 'Yes' : 'No'}</span></td>
                   <td style={{ color: 'var(--text-muted)' }}>{p.recip ? `${p.recip} states` : '—'}</td>
@@ -112,7 +112,7 @@ export default function StatesTable({ rows, verified }) {
               <div className="st-card-g">
                 <div><span>Carry</span><b className={`st-pill ${p.cc ? 'st-g' : 'st-n'}`}>{p.cc ? 'Permitless' : 'Permit'}</b></div>
                 <div><span>Magazines</span><b className={`st-pill ${p.mag ? 'st-r' : 'st-g'}`}>{p.mag ? `${p.mag} rounds` : 'No limit'}</b></div>
-                <div><span>Assault weapon ban</span><b className={`st-pill ${p.awb ? 'st-r' : 'st-g'}`}>{p.awb ? 'Banned' : 'None'}</b></div>
+                <div><span>Assault weapon ban</span><b className={`st-pill ${p.awb ? 'st-r' : 'st-g'}`}>{p.awb ? p.awbLabel : 'None'}</b></div>
                 <div><span>Waiting period</span><b className={`st-pill ${p.wait > 0 ? 'st-y' : 'st-g'}`}>{p.wait > 0 ? `${p.wait} day${p.wait > 1 ? 's' : ''}` : 'None'}</b></div>
                 <div><span>Red flag law</span><b className={`st-pill ${p.rf ? 'st-r' : 'st-g'}`}>{p.rf ? 'Yes' : 'No'}</b></div>
                 <div><span>Honors my permit</span><b style={{ font: "400 12px 'IBM Plex Mono',monospace", color: 'var(--text-muted)' }}>{p.recip ? `${p.recip} states` : '—'}</b></div>
