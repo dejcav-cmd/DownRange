@@ -4,7 +4,7 @@ import Footer from '../components/layout/Footer'
 import SocialIcons from '../components/ui/SocialIcons'
 import HomeStyles from '../components/home/HomeStyles'
 import HomeHero from '../components/home/HomeHero'
-import { NewsSection, DealsSection, PressSection } from '../components/home/HomeSections'
+import { NewsSection, DealsSection, PressSection, BlogSection } from '../components/home/HomeSections'
 import Link from 'next/link'
 import { fetchArticles, client } from '../sanity/lib/client'
 import { getPressPage } from '../lib/pressData'
@@ -74,6 +74,18 @@ async function loadPress() {
   return (items || []).filter(p => p.image).slice(0, 8)
 }
 
+// Latest 10 published blog articles that have a real hosted image
+async function loadBlog() {
+  const rows = await client.fetch(
+    `*[_type=="blogPost" && (status=="published" || published==true) && defined(slug.current) && defined(imageUrl) && imageUrl match "*cdn.sanity.io*"] | order(coalesce(publishedAt,_createdAt) desc)[0..9]{
+      _id, title, "slug": slug.current, category, imageUrl, publishedAt, _createdAt, readTime
+    }`, {}, { next: { revalidate: 120 } })
+  return (rows || []).map(b => ({
+    _id: b._id, title: b.title, slug: b.slug, category: b.category ? String(b.category).replace(/-/g, ' ') : 'Blog',
+    image: b.imageUrl, publishedAt: b.publishedAt || b._createdAt, readTime: b.readTime,
+  })).filter(b => b.title)
+}
+
 const TOOLS = [
   { t:'Precision Calculator', h:'/ballistics' },
   { t:'Scope & Mil Tools',    h:'/tools/scope-tools' },
@@ -85,7 +97,7 @@ const TOOLS = [
 
 export default async function HomePage() {
   preload('/img/home-hero.jpg', { as: 'image', fetchPriority: 'high' })
-  const [news, deals, press, stats] = await Promise.allSettled([loadNews(), loadDeals(), loadPress(), loadStats()])
+  const [news, deals, press, stats, blog] = await Promise.allSettled([loadNews(), loadDeals(), loadPress(), loadStats(), loadBlog()])
     .then(r => r.map((p, i) => (p.status === 'fulfilled' ? p.value : (i === 3 ? {} : []))))
 
   return (
@@ -97,6 +109,7 @@ export default async function HomePage() {
       <NewsSection items={news} />
       <DealsSection items={deals} />
       <PressSection items={press} />
+      <BlogSection items={blog} />
 
       <section style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
