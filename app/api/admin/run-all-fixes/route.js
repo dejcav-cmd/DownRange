@@ -22,7 +22,7 @@ async function genBody(title, category, tags) {
     const r = await fetch('https://api.anthropic.com/v1/messages', {
       method:'POST', signal:AbortSignal.timeout(50000),
       headers:{'x-api-key':ANTHROPIC,'anthropic-version':'2023-06-01','Content-Type':'application/json'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:2500,system:SYSTEM,messages:[{role:'user',content:prompt}]})
+      body:JSON.stringify({model:'claude-haiku-5-5',max_tokens:2500,system:SYSTEM,messages:[{role:'user',content:prompt}]})
     })
     const d = await r.json()
     return d.content?.[0]?.text || null

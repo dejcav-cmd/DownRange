@@ -580,7 +580,7 @@ async function isPhotographicImage(buf, contentType) {
       method: 'POST',
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-haiku-5-5',
         max_tokens: 5,
         messages: [{
           role: 'user',

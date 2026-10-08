@@ -23,7 +23,7 @@ async function webSearch(query, maxTokens = 1200) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'x-api-key': process.env.ANTHROPIC_API_KEY, 'anthropic-version': '2023-06-01' },
       body: JSON.stringify({
-        model: 'claude-haiku-4-5-20251001',
+        model: 'claude-haiku-5-5',
         max_tokens: maxTokens,
         tools: [{ type: 'web_search_20250305', name: 'web_search' }],
         messages: [{ role: 'user', content: `Search for: ${query}\n\nReturn a detailed, factual summary of key findings. Include specific features, dates, article titles, and metrics where available.` }],

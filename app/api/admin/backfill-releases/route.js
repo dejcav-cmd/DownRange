@@ -241,7 +241,7 @@ Return ONLY valid JSON (no markdown):
     const res=await fetch('https://api.anthropic.com/v1/messages',{
       method:'POST',
       headers:{'Content-Type':'application/json','x-api-key':process.env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},
-      body:JSON.stringify({model:'claude-haiku-4-5-20251001',max_tokens:1500,messages:[{role:'user',content:prompt}]}),
+      body:JSON.stringify({model:'claude-haiku-5-5',max_tokens:1500,messages:[{role:'user',content:prompt}]}),
       signal:AbortSignal.timeout(30000),
     })
     const data=await res.json()
@@ -450,7 +450,7 @@ export async function GET(req) {
               method:'POST',
               headers:{'Content-Type':'application/json','x-api-key':process.env.ANTHROPIC_API_KEY,'anthropic-version':'2023-06-01'},
               body: JSON.stringify({
-                model:'claude-haiku-4-5-20251001', max_tokens:80,
+                model:'claude-haiku-5-5', max_tokens:80,
                 messages:[{ role:'user', content:[
                   { type:'image', source:{ type:'url', url:cand.url }},
                   { type:'text', text:`Does this image show the ${ext.brand} ${ext.model} firearm (or any firearm)? Reply ONLY: {"gun":true/false,"correct":true/false,"confidence":0-100}` }

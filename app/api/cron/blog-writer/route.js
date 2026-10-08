@@ -33,7 +33,7 @@ const sanity = createClient({
 // Use the flagship model first for this job specifically — every other
 // useCase in lib/aiClient.js defaults to Haiku-primary for cost reasons, but
 // this content carries DJ's signature and must be the best the site produces.
-const QUALITY_CHAIN = 'anthropic:claude-sonnet-4-5-20251022,anthropic:claude-haiku-4-5-20251001'
+const QUALITY_CHAIN = 'anthropic:claude-sonnet-4-5-20251022,anthropic:claude-haiku-5-5'
 
 const BANNED_PHRASES = [
   'comprehensive guide', 'dive into', 'cutting-edge', 'robust', 'seamlessly',

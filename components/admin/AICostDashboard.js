@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 const TIER_META = {
   nano:  { color:'#22c55e', label:'GLM-4.5 Air',      useCase:'News rewrites, backfill', costPer1M:'$0.14' },
   cheap: { color:'#3b82f6', label:'GLM-4.7',           useCase:'Laws, summaries',         costPer1M:'$0.28' },
-  mid:   { color:'#f59e0b', label:'Claude Haiku 4.5',  useCase:'Releases, outreach',      costPer1M:'$4.00' },
+  mid:   { color:'#f59e0b', label:'Claude Haiku 5.5',  useCase:'Releases, outreach',      costPer1M:'$4.00' },
   smart: { color:'#C8922A', label:'Claude Sonnet 4.6', useCase:'Intel, blog, releases',   costPer1M:'$15.00'},
 }
 
