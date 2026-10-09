@@ -1,34 +1,12 @@
-600 scanned, 28 need a real image, 16 coupon posts skipped
+600 scanned, 6 need a real image, 15 coupon posts skipped
 
-  + Sig Sauer P320 9mm Carry NS - Good Condition - $ — 21247b 489x418 sha=979dec5bc1e7
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 63082b 1500x1000 sha=9a961ad058a1
-  + Burris AR-P.E.P.R. 30mm 1.6" AR Scope Mount, Mat — 126157b 1500x969 sha=7b06cb74432a
-  + Global Ordnance 5.56/.223 AR-15 30rd Steel Magaz — 44353b 1500x1000 sha=ec6b62da7f47
-  + Ruger LC Charger 5.7X28mm 10.3" 20rd Pistol, Bla — 180290b 1000x410 sha=f71faa60cd9f
-  + Sig Sauer P320 9mm 3.9" 17-Rd Carry NS - Very Go — 19000b 524x403 sha=0df17cae1ae7
-  + Holosun ARO 2 MOA Red Dot w/ HM3X Magnifier Comb — 150637b 743x522 sha=a1898b107a88
-  + Beretta Italian LE Trade In 3.7" 9 Corto / 380ac — 86119b 1000x1000 sha=062b98b08ca5
-  + Partisan Triggers Disruptor AR-15 3 Position Dro — 27362b 945x630 sha=3dbdaed28b02
-  + Springfield Armory Prodigy Compact 9mm 3.5" 15rd — 177110b 653x501 sha=284810349419
-  + Springfield 1911 Prodigy Compact 4.25" 9mm 15rd  — 335797b 795x597 sha=0682d2f8ce98
-  + Springfield 1911 DS Prodigy 9mm 20+1 Black Doubl — 109013b 1500x1036 sha=e6eb0dcbc671
-  + NPJY Sun Fishing Hats with Neck Flap for Men Pur — 14499b 500x500 sha=986639de4c0d
-  + Springfield 1911 Operator AOS 45 ACP 5" 8-rd Gea — 101088b 1350x900 sha=54bf880b04f6
-  + FNH 5.7x28 mm 40gr V-MAX 50 Rounds Ammunition -  — 155523b 1500x750 sha=2cbbd9275cc2
-  + Night Vision Goggles, 4K 40MP Binoculars with 10 — 28192b 500x500 sha=b2238077fc12
-  + Bundle Deal * Daniel Defense DD PCC 9mm 8.3" Pis — 24126b 880x417 sha=b79f0d1e36e8
-  + CZ Shadow 2 Carry, 9mm, 4" Barrel, 2- 15rd Magaz — 46500b 735x547 sha=a42530daa2f6
-  + Winchester USA Forged 9mm, 115gr FMJ, Steel Case — 62304b 888x407 sha=56148b81a9f9
-  + CNC Colt BOA 357 Mag Blued 6" Barrel Rosewood Gr — 15374b 533x271 sha=c89885d3ab6f
-  + Matador Arms MAT-9 Blowback AR Upper Receiver Ni — 17182b 678x255 sha=d8a9d7e13ec2
-  + AR-15 Pistol Build Kit 5.56 MAGPUL MOE Lower Par — 59380b 825x689 sha=46451450a7f0
-  + Preorder * Primary Arms GLx RS-15R Pistol Red Do — 65627b 1006x656 sha=c702a6df338e
+  x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
   x Beretta A400 Xcel Sporting KO 12 Gauge 30" 2 Rd  — image not downloadable
   x Division 3 INC OLVR .22 Heater Suppressor 22LR 1 — image not downloadable
   x Vortex Crossfire II Solar 2 MOA Red Dot with Mot — image not downloadable
   x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
   x B&T XH-556 SC 5.56 NATO 223 Suppressor 5" Titani — image not downloadable
 
-fixed 23, failed 5  (82% success)
-distinct images: 23 across 23 deals
+fixed 0, failed 6  (0% success)
+distinct images: 0 across 0 deals
 PASS — no image shared between products
