@@ -7,7 +7,6 @@ import { getArticleBySlug, getArticleById, getRecentArticles, getRelatedArticles
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 import EmailCapture from '../../../components/ui/EmailCapture'
 import ShareButtons from '../../../components/ui/ShareButtons'
-import NewsletterSlideUp from '../../../components/layout/NewsletterSlideUp'
 
 // Local photo fallbacks — always available, no hotlink risk
 const ARTICLE_FALLBACKS = {
@@ -465,7 +464,6 @@ export default async function ArticlePage({ params }) {
 
       </main>
       <Footer />
-      <NewsletterSlideUp />
     </>
   )
 }
