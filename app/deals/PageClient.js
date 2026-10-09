@@ -287,8 +287,6 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
   const [sort,      setSort]      = useState(initialSort || 'hot')
   const [search,    setSearch]    = useState(initialQuery || '')
   const [page,      setPage]      = useState(Number(initialPage) || 1)
-  const [stateFilter, setStateFilter] = useState('')
-  const selState = states.find(s => s.abbr === stateFilter) || null
   const [lastFetch, setLastFetch] = useState(null)
   const [userState, setUserState] = useState(() => {
     if (typeof window !== 'undefined') return localStorage.getItem('dr_user_state') || ''
@@ -419,21 +417,6 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
                   style={{ fontFamily:MONO, fontSize:11, padding:'5px 10px', border:'1px solid var(--border)', background:'transparent', color:'var(--text-dim)', cursor:'pointer' }}>↺</button>
               </div>
 
-              {/* State legality filter */}
-              {states.length > 0 && (
-                <div style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 0 8px 12px', borderLeft:'1px solid var(--border)' }}>
-                  <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563' }}>STATE:</span>
-                  <select value={stateFilter} onChange={e => setStateFilter(e.target.value)}
-                    style={{ fontFamily:MONO, fontSize:10, background:'var(--bg)', color:'var(--text)', border:`1px solid ${stateFilter ? GOLD : 'var(--border)'}`, padding:'5px 8px', cursor:'pointer', maxWidth:150 }}>
-                    <option value="">Check legality…</option>
-                    {states.map(s => <option key={s.abbr} value={s.abbr}>{s.name}</option>)}
-                  </select>
-                  {stateFilter && (
-                    <button onClick={() => setStateFilter('')}
-                      style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', background:'none', border:'none', cursor:'pointer' }}>✕</button>
-                  )}
-                </div>
-              )}
 
               {/* Search */}
               <form onSubmit={handleSearch}
@@ -457,34 +440,40 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
                 )}
               </form>
 
-            {/* State filter */}
+            {/* State legality filter — drives restriction badges on every card */}
             <div style={{ display:'flex', alignItems:'center', gap:6, padding:'8px 0 8px 12px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
-              <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563' }}>STATE:</span>
+              <span style={{ fontFamily:MONO, fontSize:10, color:'#4B5563' }}>MY STATE:</span>
               <select
                 value={userState}
                 onChange={e => handleStateChange(e.target.value)}
                 style={{
                   fontFamily:MONO, fontSize:10,
-                  background:'var(--bg)', border:`1px solid ${userState && (liveRules || STATE_RULES)[userState] ? '#EF4444' : 'var(--border)'}`,
-                  color: userState && (liveRules || STATE_RULES)[userState] ? '#EF4444' : 'var(--text-muted)',
+                  background:'var(--bg)', border:`1px solid ${userState && (liveRules || STATE_RULES)[userState] ? '#EF4444' : userState ? GOLD : 'var(--border)'}`,
+                  color: userState && (liveRules || STATE_RULES)[userState] ? '#EF4444' : userState ? GOLD : 'var(--text-muted)',
                   padding:'5px 8px', outline:'none', cursor:'pointer',
                 }}
               >
-                <option value="">All States</option>
+                <option value="">Select your state…</option>
                 {ALL_STATES.map(([code, name]) => (
                   <option key={code} value={code}>{code} — {name}{STATE_RULES[code] ? ' ⚠' : ''}</option>
                 ))}
               </select>
-              {userState && (liveRules || STATE_RULES)[userState] && (() => {
+              {userState && (() => {
                 const r = (liveRules || STATE_RULES)[userState]
+                if (!r) return <span style={{ fontFamily:MONO, fontSize:9, color:'#22C55E' }}>✓ Free state</span>
+                const magH = r.magLimitHandgun ?? r.magLimit
+                const magL = r.magLimitLonggun ?? r.magLimit
+                const magStr = magH === magL ? (magH ? `${magH}-rd mag limit` : '') : `${magH}-rd handgun / ${magL}-rd long gun`
                 return (
                   <span style={{ fontFamily:MONO, fontSize:9, color:'#EF4444' }}>
-                    {r.magLimit ? `${r.magLimit}-rd limit` : ''}
-                    {r.awb ? ' · AWB' : ''}
-                    {liveRules ? '' : ' ·⏳'}
+                    {magStr}{r.awb ? ' · AWB' : ''}{r.noSuppressor ? ' · no NFA' : ''}
                   </span>
                 )
               })()}
+              {userState && (
+                <button onClick={() => handleStateChange('')}
+                  style={{ fontFamily:MONO, fontSize:10, color:'#6b7280', background:'none', border:'none', cursor:'pointer' }}>✕</button>
+              )}
             </div>
 
             </div>
