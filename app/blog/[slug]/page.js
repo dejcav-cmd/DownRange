@@ -5,6 +5,7 @@ import BreakingTicker  from '../../../components/layout/BreakingTicker'
 import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated, fetchBlogPostBySlug } from '../../../sanity/lib/client'
+import NewsletterSlideUp from '../../../components/layout/NewsletterSlideUp'
 
 export const revalidate = 60
 export const dynamicParams = true // render unknown slugs on-demand, not 404
@@ -372,6 +373,7 @@ export default async function BlogArticlePage({ params }) {
       </main>
 
       <Footer />
+      <NewsletterSlideUp />
     </>
   )
 }
