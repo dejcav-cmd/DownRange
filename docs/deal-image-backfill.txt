@@ -1,5 +1,21 @@
-600 scanned, 6 need a real image, 15 coupon posts skipped
+600 scanned, 22 need a real image, 17 coupon posts skipped
 
+  + Athlon Optics Ares ETR 4.5-30x56mm APLR2 MOA Ret — 67938b 683x471 sha=a4aa1af1e496
+  + Heckler & Koch HK45 (V1) 45 ACP 4.46" 10rd - $74 — 30335b 722x521 sha=e4ae2b60bcda
+  + BOMTURN Tactical Battle Belt Military Molle War  — 22097b 500x500 sha=8dba67bad856
+  + Benelli M4 Entry 14.5" Semi-Auto 12 Gauge Short  — 300363b 1500x1500 sha=2878267c69f7
+  + Panzer Arms CQB Tactical 12 Gauge 18.5″ Marine G — 17874b 890x300 sha=08c892e4ccb0
+  + Daniel Defense AR-15 Performance Upgrade Kit – C — 13000b 297x497 sha=0ec367ae66c3
+  + Daniel Defense DDM4 V7k, 5.56mm, 10.3" Barrel, S — 20247b 892x330 sha=ae2dd9273cd8
+  + Night Fision Night Sight Set Square Front/U-Notc — 20082b 541x547 sha=af0562939fac
+  + PSA AR-15 Rifle Kit 5.56 16" Nitride 1:7 Mid-Lgt — 21534b 531x303 sha=633a9a3cecd8
+  + Burris AR-P.E.P.R. QD Mount - 1'' - $29.99 — 12436b 348x259 sha=d15fc98d8a28
+  x CRKT 7600K SLAG - $42 — image not downloadable
+  + POLITE SOCIETY Fortitude 5.56 HD Inconel Silence — 50250b 1244x451 sha=9778cef830b0
+  + Bergara BTi-30 30 Cal HUB Grade 5 Titanium 3D-Pr — 10238b 176x447 sha=03e05935fb19
+  + Bergara BTI30, .30cal, FDE, Suppressor - $699.99 — 18974b 301x820 sha=62763815bee7
+  + Bergara BTi30, .30cal, Black, Suppressor - $699. — 8189b 255x472 sha=29bfc3c97c07
+  + Sig Sauer 1911 X-Series .45 ACP, 4.2" 8 Rd OR FR — 23431b 571x435 sha=b5b18b45f7d2
   x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
   x Beretta A400 Xcel Sporting KO 12 Gauge 30" 2 Rd  — image not downloadable
   x Division 3 INC OLVR .22 Heater Suppressor 22LR 1 — image not downloadable
@@ -7,6 +23,6 @@
   x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
   x B&T XH-556 SC 5.56 NATO 223 Suppressor 5" Titani — image not downloadable
 
-fixed 0, failed 6  (0% success)
-distinct images: 0 across 0 deals
+fixed 15, failed 7  (68% success)
+distinct images: 15 across 15 deals
 PASS — no image shared between products
