@@ -1,21 +1,39 @@
-600 scanned, 22 need a real image, 17 coupon posts skipped
+600 scanned, 39 need a real image, 14 coupon posts skipped
 
-  + Athlon Optics Ares ETR 4.5-30x56mm APLR2 MOA Ret — 67938b 683x471 sha=a4aa1af1e496
-  + Heckler & Koch HK45 (V1) 45 ACP 4.46" 10rd - $74 — 30335b 722x521 sha=e4ae2b60bcda
-  + BOMTURN Tactical Battle Belt Military Molle War  — 22097b 500x500 sha=8dba67bad856
-  + Benelli M4 Entry 14.5" Semi-Auto 12 Gauge Short  — 300363b 1500x1500 sha=2878267c69f7
-  + Panzer Arms CQB Tactical 12 Gauge 18.5″ Marine G — 17874b 890x300 sha=08c892e4ccb0
-  + Daniel Defense AR-15 Performance Upgrade Kit – C — 13000b 297x497 sha=0ec367ae66c3
-  + Daniel Defense DDM4 V7k, 5.56mm, 10.3" Barrel, S — 20247b 892x330 sha=ae2dd9273cd8
-  + Night Fision Night Sight Set Square Front/U-Notc — 20082b 541x547 sha=af0562939fac
-  + PSA AR-15 Rifle Kit 5.56 16" Nitride 1:7 Mid-Lgt — 21534b 531x303 sha=633a9a3cecd8
-  + Burris AR-P.E.P.R. QD Mount - 1'' - $29.99 — 12436b 348x259 sha=d15fc98d8a28
+  + Faxon Firearms Factory Trued Stripped Upper Rece — 25517b 814x418 sha=1ff0302f1291
+  + 1/2-28 Extended Flash Hider for 13.7" Barrels .2 — 22792b 577x680 sha=ca1cfb8a5f2b
+  + Active Safety ARC-Fire V2 Trigger Kit - $199.99 — 29671b 705x662 sha=d6a9b111fd85
+  + Active Safety ARC Fire V2 Non-Ambi Trigger Kit 9 — 22381b 734x566 sha=e0c9e94af9fe
+  + Taurus 942 .22 LR 2" Barrel 8-Rounds Adjustable  — 37807b 752x656 sha=302054ca8dd0
+  + Rock Island Rock Standard .45 ACP 5" barrel 8 Rn — 64233b 921x614 sha=257b6537ecd8
+  + Chiappa Firearms Rhino 60DS .44 Mag 6" Barrel 6- — 27077b 638x362 sha=08df550d9f7f
+  + Ruger Mark IV 22/45 Pygmy Shark Black .22 LR 3.1 — 31272b 656x429 sha=e68ab504b108
+  + TacFire AR-10 A2-Style Mil-Spec Buffer Tube Kit  — 18037b 664x296 sha=04d06269a746
+  + Smith & Wesson/Battenfeld Smith and Wesson MP M2 — 17093b 800x146 sha=2c37b223bd0c
+  + KCI Magazine 9mm 30rd Fits HK MP5 Black - $32.36 — 11363b 249x800 sha=6400380c48ed
+  + CompMag AK-47 Fixed 10-Round Magazine - $61.75 — 24944b 370x800 sha=f83757b1ba68
+  + Wise Arms Whisper Rimfire Suppressor USE CODE :  — 14265b 720x480 sha=fe7bfa3de27e
+  + Beretta A400 Solo KO 12Ga 26" Black OCHP (C,M,F) — 15215b 1000x160 sha=28cd12c1ba0a
+  + Sig Sauer P365 FLUX Sentry 9mm 6" Barrel 17/21-R — 30624b 800x448 sha=cf3487aabc1c
+  + 50% off CVLIFE 7.5-9 Inches Bipod for M-Rail Bip — 16540b 500x500 sha=0fba330130d9
+  + 16% off CVLIFE WolfCloak Motion Awake 2 & 32 MOA — 20603b 500x500 sha=e5a4c95051d8
+  + 45% off CVLIFE Shotgun Cleaning Kit 12 20 410 Ga — 43051b 500x500 sha=f42748c1bdfe
+  + 30% off CVLIFE 2.5-10x40e Red & Green Illuminate — 24071b 500x402 sha=2b350a4b45c7
+  + 40% off EZshoot Sub-Compact Picatinny Laser Sigh — 21956b 500x500 sha=b9fa59905599
+  + 37% off CVLIFE WildHawk Enclosed Multi-Reticle R — 18726b 500x500 sha=b65422060378
+  + Hornady Frontier XM193 5.56 NATO 55 Grain FMJ Am — 469229b 1000x1000 sha=0ed331ec222a
+  + Vortex Defender-ST Enclosed Solar 3 MOA Red Dot  — 35588b 945x630 sha=429bd6f31663
+  + Taurus TX22 Gen2 .22 LR 4.6" barrel 22 Rnds w/ R — 79805b 1000x804 sha=943fb7d08ae3
+  + 2 Pack Of PSA AR-15 Blem "Stealth" Stripped Lowe — 451258b 1000x759 sha=b92568bf3636
+  ... 25/39  ok=25 fail=0
+  + Ruger 77/17 Green Mountain Wood Laminate .17 Hor — 35751b 1500x456 sha=548de498bfaf
+  + Dueling Tree Target 6"x3/8" 100% USA AR500 Zinc  — 10488b 630x630 sha=76574deca75b
+  + Soviet Arms 5.56x45mm 8.4" 30-Rds Krink Triangle — 47733b 1500x594 sha=71785edb7e08
+  + Active Safety ARC Fire V2 Non-Ambi Trigger Kit 9 — 16981b 739x630 sha=fec77a483e7d
+  + Talon Diode 7.62 Low Back Pressure Suppressor -  — 58227b 1441x1110 sha=600670ce0edb
+  x Heritage Rough Rider, .22lr, 16" Barrel, 6rd Cyl — image not downloadable
+  + North Reach MFG Micro-Pew 22 Black Cerakote Stai — 9814b 630x630 sha=ff0ba2b0bda3
   x CRKT 7600K SLAG - $42 — image not downloadable
-  + POLITE SOCIETY Fortitude 5.56 HD Inconel Silence — 50250b 1244x451 sha=9778cef830b0
-  + Bergara BTi-30 30 Cal HUB Grade 5 Titanium 3D-Pr — 10238b 176x447 sha=03e05935fb19
-  + Bergara BTI30, .30cal, FDE, Suppressor - $699.99 — 18974b 301x820 sha=62763815bee7
-  + Bergara BTi30, .30cal, Black, Suppressor - $699. — 8189b 255x472 sha=29bfc3c97c07
-  + Sig Sauer 1911 X-Series .45 ACP, 4.2" 8 Rd OR FR — 23431b 571x435 sha=b5b18b45f7d2
   x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
   x Beretta A400 Xcel Sporting KO 12 Gauge 30" 2 Rd  — image not downloadable
   x Division 3 INC OLVR .22 Heater Suppressor 22LR 1 — image not downloadable
@@ -23,6 +41,6 @@
   x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
   x B&T XH-556 SC 5.56 NATO 223 Suppressor 5" Titani — image not downloadable
 
-fixed 15, failed 7  (68% success)
-distinct images: 15 across 15 deals
+fixed 31, failed 8  (79% success)
+distinct images: 31 across 31 deals
 PASS — no image shared between products
