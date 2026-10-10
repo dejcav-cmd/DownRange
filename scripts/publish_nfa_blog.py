@@ -13,6 +13,7 @@ import datetime
 import urllib.parse
 import struct
 import urllib.request
+import urllib.error
 
 PROJECT = os.environ.get("NEXT_PUBLIC_SANITY_PROJECT_ID", "vbnsqnkg")
 DATASET = "production"
@@ -199,91 +200,44 @@ def atf_gov_candidates():
 
 
 def upload_atf(c, filename):
-    last = None
-    for u in (c["url"], c["fallback_url"]):
+    last = []
+    urls = [c["url"], c["fallback_url"]]
+    base = c["url"].split("?")[0]
+    urls += [base, base + "?w=1920"]
+    seen = set()
+    for u in urls:
+        if u in seen:
+            continue
+        seen.add(u)
         try:
-            body, _ = get(u, BROWSER)
+            hdr = dict(BROWSER)
+            hdr["Referer"] = "https://giffords.org/" if "giffords" in u else "https://www.atf.gov/"
+            try:
+                body, _ = get(u, hdr)
+            except Exception as e:
+                last.append(f"GET {u[:80]}: {str(e)[:80]}")
+                continue
             d = img_dims(body)
             if len(body) < 15000 or (d and (d[0] < 400 or d[1] < 240)):
-                last = f"too small {len(body)} {d}"
+                last.append(f"small {len(body)} {d} {u[:60]}")
                 continue
             if not (body[:3] == b"\xff\xd8\xff" or body[:8] == b"\x89PNG\r\n\x1a\n"):
-                last = "not jpeg/png"
+                last.append(f"not jpeg/png head={body[:12]!r}")
                 continue
             ctype = "image/jpeg" if body[:3] == b"\xff\xd8\xff" else "image/png"
             req = urllib.request.Request(f"{ASSET_URL}?filename={filename}", data=body, method="POST")
             req.add_header("Content-Type", ctype)
             req.add_header("Authorization", f"Bearer {TOKEN}")
-            with urllib.request.urlopen(req, timeout=90) as r:
-                doc = json.loads(r.read().decode()).get("document", {})
-            return {"cdn_url": doc.get("url"), "asset_id": doc.get("_id"), "size": doc.get("size")}
+            try:
+                with urllib.request.urlopen(req, timeout=90) as r:
+                    doc = json.loads(r.read().decode()).get("document", {})
+            except urllib.error.HTTPError as e:
+                last.append(f"SANITY {e.code}: {e.read().decode()[:200]}")
+                continue
+            return {"cdn_url": doc.get("url"), "asset_id": doc.get("_id"), "size": doc.get("size"), "bytes": len(body), "dims": d}
         except Exception as e:
-            last = str(e)
-    raise ValueError(last or "failed")
-
-
-HERO_OVERRIDE = "https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg?strip=all&w=1920"  # chosen by DJ
-FORCE_HERO_PREFIX = "File:A DSS agent coordinates with ATF and USSS special agents"
-ATF_CATS = [
-    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives",
-    "Category:Bureau of Alcohol, Tobacco, Firearms, and Explosives",
-    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives buildings",
-    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives personnel",
-    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives vehicles",
-    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives headquarters",
-]
-
-
-def category_candidates():
-    out, seen, subcats = [], set(), []
-    CAT_DEBUG = []
-
-    def members(cat, mtype):
-        params = {"action": "query", "format": "json", "generator": "categorymembers", "gcmtitle": cat,
-                  "gcmtype": mtype, "gcmlimit": "60", "prop": "imageinfo", "iiprop": "url|size|mime|extmetadata",
-                  "iiurlwidth": "1600", "iiextmetadatafilter": "LicenseShortName|Artist|Credit|ImageDescription"}
-        try:
-            body, _ = get(COMMONS + "?" + urllib.parse.urlencode(params))
-            return list(((json.loads(body).get("query") or {}).get("pages") or {}).values())
-        except Exception as e:
-            CAT_DEBUG.append({"cat": cat, "error": str(e)[:120]})
-            return []
-
-    def consider(p):
-        title = p.get("title", "")
-        if title in seen or not title.startswith("File:"):
-            return
-        seen.add(title)
-        ii = (p.get("imageinfo") or [{}])[0]
-        meta = ii.get("extmetadata") or {}
-        lic = strip_html((meta.get("LicenseShortName") or {}).get("value", ""))
-        w, h = ii.get("width") or 0, ii.get("height") or 0
-        desc = strip_html((meta.get("ImageDescription") or {}).get("value", ""))
-        row = {"title": title[:90], "lic": lic, "w": w, "h": h}
-        forced = title.startswith(FORCE_HERO_PREFIX) and re.search(r"public domain", lic, re.I) and w >= 1600
-        ok = forced or (re.search(r"public domain|cc0|pd", lic, re.I) and not re.search(r"cc[- ]by|sa", lic, re.I)
-              and re.search(r"\bATF\b|\bBATF|Alcohol,? Tobacco", f"{title} {desc}") and not re.search(r"\bICE\b|FEMA|Immigration", f"{title} {desc}")
-              and w >= 800 and h >= 500 and ii.get("mime") in ("image/jpeg", "image/png")
-              and 0.45 <= (w / h if h else 0) <= 3.3 and not ATF_BAD.search(f"{title} {desc}"))
-        row["ok"] = bool(ok)
-        CAT_DEBUG.append(row)
-        if ok:
-            out.append({"title": title, "url": ii.get("thumburl") or ii.get("url"), "page": ii.get("descriptionurl"),
-                        "license": lic, "credit": strip_html((meta.get("Artist") or {}).get("value", "")) or
-                        strip_html((meta.get("Credit") or {}).get("value", "")) or "U.S. government photographer",
-                        "desc": desc[:160], "landscape": w / h >= 1.2})
-
-    for cat in ATF_CATS:
-        for p in members(cat, "file"):
-            consider(p)
-        for p in members(cat, "subcat"):
-            subcats.append(p.get("title"))
-    for sub in subcats[:12]:
-        for p in members(sub, "file"):
-            consider(p)
-    DEBUG.append({"category_scan": CAT_DEBUG, "subcats": subcats[:20]})
-    out.sort(key=lambda c: (not c["landscape"], c["title"]))
-    return out
+            last.append(str(e)[:120])
+    raise ValueError(" | ".join(last) or "failed")
 
 
 def upload(c, filename):
