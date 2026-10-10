@@ -222,6 +222,7 @@ def upload_atf(c, filename):
     raise ValueError(last or "failed")
 
 
+HERO_OVERRIDE = "https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg?strip=all&w=1920"  # chosen by DJ
 FORCE_HERO_PREFIX = "File:A DSS agent coordinates with ATF and USSS special agents"
 ATF_CATS = [
     "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives",
@@ -385,10 +386,14 @@ def main():
             result["steps"].append({"uploaded": c["title"], "role": tag, "cdn": up["cdn_url"], "license": c["license"]})
         return got
 
-    atf_gov = atf_gov_candidates()
+    heroes = pull([{"title": "DJ-supplied ATF agent photo", "url": HERO_OVERRIDE, "fallback_url": HERO_OVERRIDE,
+                    "page": HERO_OVERRIDE, "license": "supplied by DJ", "credit": ""}], 1, "djhero", 0, upload_atf)
+    override_used = bool(heroes)
+    atf_gov = [] if override_used else atf_gov_candidates()
     result["steps"].append({"atf_gov_debug": DEBUG})
     result["steps"].append({"atf_gov_candidates": [(c["alt"] or c["url"])[:90] for c in atf_gov[:12]]})
-    heroes = pull(atf_gov, 1, "atfgov", 0, upload_atf)
+    if not heroes:
+        heroes = pull(atf_gov, 1, "atfgov", 0, upload_atf)
     if not heroes:
         atf = [c for c in category_candidates() if c["landscape"]]
         atf.sort(key=lambda c: not c["title"].startswith(FORCE_HERO_PREFIX))
@@ -411,7 +416,7 @@ def main():
     # hero is shown by the page template; body images must be different photos
     body = BODY.replace("{IMG_ONE}", fig(uploaded[1], "Rifle training photo") if len(uploaded) > 1 else "")
     body = body.replace("{IMG_TWO}", fig(uploaded[2], "Rifle training photo") if len(uploaded) > 2 else "")
-    if atf_hero_found:
+    if atf_hero_found and not override_used:
         hc = (f'<p style="font-size:12px;color:var(--text-dim);">Header photo: {hero["credit"]} via '
               f'<a href="{hero["page"]}" target="_blank" rel="noopener">Wikimedia Commons</a> ({hero["license"]})</p>')
     else:
