@@ -156,15 +156,21 @@ def img_dims(b):
     return None
 
 
+DEBUG = []
+
+
 def atf_gov_candidates():
     out, seen = [], set()
     for page in ATF_PAGES:
         try:
             html = get(page, BROWSER)[0].decode("utf-8", "ignore")
         except Exception as e:
-            print("atf.gov fetch failed", page, e)
+            DEBUG.append({"page": page, "error": str(e)[:200]})
             continue
-        for tag in re.findall(r"<img\b[^>]*>", html, re.I):
+        tags = re.findall(r"<img\b[^>]*>", html, re.I)
+        DEBUG.append({"page": page, "html_len": len(html), "img_tags": len(tags),
+                      "sample": [t[:220] for t in tags[:6]]})
+        for tag in tags:
             alt = (re.search(r'alt="([^"]*)"', tag, re.I) or [None, ""])[1]
             srcs = []
             for attr in ("src", "data-src", "data-lazy-src"):
@@ -316,6 +322,7 @@ def main():
         return got
 
     atf_gov = atf_gov_candidates()
+    result["steps"].append({"atf_gov_debug": DEBUG})
     result["steps"].append({"atf_gov_candidates": [(c["alt"] or c["url"])[:90] for c in atf_gov[:12]]})
     heroes = pull(atf_gov, 1, "atfgov", 0, upload_atf)
     if not heroes:
