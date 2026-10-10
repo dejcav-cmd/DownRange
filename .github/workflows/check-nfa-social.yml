@@ -1,6 +1,9 @@
 name: Check NFA Social
 on:
-  workflow_dispatch: {}
+  workflow_dispatch:
+    inputs:
+      script:
+        default: check_nfa_social.py
 permissions:
   contents: write
 jobs:
@@ -12,7 +15,7 @@ jobs:
         env:
           SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
         working-directory: scripts
-        run: python3 check_nfa_social.py || echo '{"error":"script failed"}' > nfa_social_check.json
+        run: python3 ${{ github.event.inputs.script || 'check_nfa_social.py' }} || echo '{"error":"script failed"}' > nfa_social_check.json
       - name: Commit result
         run: |
           git config user.name "dr-bot"; git config user.email "bot@downrangeco.com"

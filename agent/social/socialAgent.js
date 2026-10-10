@@ -464,7 +464,7 @@ async function postInstagram(content, imageUrl, category, hashtags) {
   // Poll for container readiness — usually near-instant for images, but Meta
   // recommends checking status_code before publish rather than assuming FINISHED
   let ready = false
-  for (let i = 0; i < 5; i++) {
+  for (let i = 0; i < 40; i++) {
     const statusRes = await fetch(
       `https://graph.facebook.com/v20.0/${containerId}?fields=status_code&access_token=${token}`
     ).then(r => r.json())
@@ -472,7 +472,7 @@ async function postInstagram(content, imageUrl, category, hashtags) {
     if (statusRes.status_code === 'ERROR') {
       return { ok: false, error: 'Instagram container processing failed (status_code ERROR)' }
     }
-    await new Promise(r => setTimeout(r, 1500))
+    await new Promise(r => setTimeout(r, 2000))
   }
   if (!ready) return { ok: false, error: 'Instagram container did not finish processing in time' }
 
