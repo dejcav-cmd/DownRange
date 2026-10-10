@@ -1177,10 +1177,10 @@
       "atf_gov_candidates": []
     },
     {
-      "uploaded": "File:090813-M-8109S-013.jpg",
-      "role": "rifle",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
-      "license": "Public domain"
+      "uploaded": "DJ-supplied body photo (guns.com)",
+      "role": "gunscom",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/7c8b0620caa519c8d998157ae0f5bb8e0823831f-640x360.jpg",
+      "license": "supplied by DJ"
     },
     {
       "uploaded": "File:A DSS agent coordinates with ATF and USSS special agents to secure delegate arrivals at UNGA in NYC, Sept. 23, 2019. (48788736523).jpg",
@@ -1190,7 +1190,7 @@
     },
     {
       "mutate": {
-        "transactionId": "MkeIIDuGc7PHMsbgNTyNSj",
+        "transactionId": "infT1bNDKJbVdCXG2DBw1P",
         "results": [
           {
             "operation": "update"
@@ -1199,6 +1199,7 @@
       }
     }
   ],
+  "body_override_used": true,
   "verify": {
     "_id": "blog-nfa-transfer-guidance-2026",
     "category": "LAW",
