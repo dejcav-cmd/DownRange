@@ -2,16 +2,10 @@
   "ok": true,
   "steps": [
     {
-      "atf_candidates": [
-        "File:U.S. Immigration and Customs Enforcement (ICE) Enforcement and Removal Operations' (ERO) officers in West Palm Beach, Florida on February 14, 2025 - 29.jpg",
-        "File:FEMA - 3908 - Photograph by SFC Thomas R. Roberts taken on 09-14-2001 in New York.jpg"
-      ]
+      "atf_gov_candidates": []
     },
     {
-      "uploaded": "File:U.S. Immigration and Customs Enforcement (ICE) Enforcement and Removal Operations' (ERO) officers in West Palm Beach, Florida on February 14, 2025 - 29.jpg",
-      "role": "atf",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/ae05e6a1d3863bd923848e142f86cc44a2da5f12-1920x1281.jpg",
-      "license": "Public domain"
+      "atf_commons_candidates": []
     },
     {
       "uploaded": "File:090813-M-8109S-013.jpg",
@@ -26,8 +20,14 @@
       "license": "Public domain"
     },
     {
+      "uploaded": "File:170608-A-IY962-003 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 3 of 8).jpg",
+      "role": "rifle",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/237884192e7948cf6910685f384f595fb79677ae-1920x1281.jpg",
+      "license": "Public domain"
+    },
+    {
       "mutate": {
-        "transactionId": "71MFNdPZqN73n9slX4PpJs",
+        "transactionId": "71MFNdPZqN73n9slX4Q67q",
         "results": [
           {
             "operation": "update"
@@ -36,10 +36,11 @@
       }
     }
   ],
+  "atf_hero": false,
   "verify": {
     "_id": "blog-nfa-transfer-guidance-2026",
     "category": "LAW",
-    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/ae05e6a1d3863bd923848e142f86cc44a2da5f12-1920x1281.jpg",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
     "publishedAt": "2026-10-10T05:49:39Z",
     "readTime": 6,
     "slug": "nfa-transfer-guidance-suppressors-sbrs-2026",
