@@ -6,7 +6,7 @@ import Footer from '../../components/layout/Footer'
 import PageHero from '../../components/home/PageHero'
 import EmailCapture from '../../components/ui/EmailCapture'
 import { sendGAEvent } from '@next/third-parties/google'
-import { isAWBWeapon } from '@/lib/gunCompliance'
+import { DEAL_STATE_RULES, mergeStateRules, getDealStateAlerts, describeStateRules } from '@/lib/dealStateRules'
 
 const GOLD  = 'var(--gold)'
 const MONO  = "'IBM Plex Mono',monospace"
@@ -22,34 +22,8 @@ const FLAIR_META = {
   Archery:    { color:'#84CC16' }, Deals:      { color:'#FBBF24' },
 }
 
-// ── STATE RESTRICTION RULES ──────────────────────────────────────────────────
-// Fallback used until /api/state-rules responds (Sanity + stateSeed merged).
-// Split mag limits: many states have different limits for handguns vs long guns.
-//   magLimitHandgun — applies to pistols/revolvers
-//   magLimitLonggun — applies to rifles & shotguns
-//   (null = no state limit for that category)
-// Sources: NRA-ILA, Giffords, state statutes — verified July 2026.
-// DC: Benson v. United States (Mar 2026) struck down DC's ban — not enforced.
-// VA: SB 749 blocked by twin injunctions Jun 2026 — not in effect.
-const STATE_RULES = {
-  // ── 10-round states (both gun types) ─────────────────────────────────────
-  CA:{ name:'California',    magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  CT:{ name:'Connecticut',   magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  HI:{ name:'Hawaii',        magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  MA:{ name:'Massachusetts', magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  MD:{ name:'Maryland',      magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  NJ:{ name:'New Jersey',    magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  NY:{ name:'New York',      magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  OR:{ name:'Oregon',        magLimitHandgun:10, magLimitLonggun:10,  awb:false, noSuppressor:false }, // BM114 eff Mar 15 2026; OR SC appeal pending
-  RI:{ name:'Rhode Island',  magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  }, // AWB eff Jul 1 2026 (Assault Weapons Ban Act)
-  WA:{ name:'Washington',    magLimitHandgun:10, magLimitLonggun:10,  awb:true,  noSuppressor:true  },
-  // ── Split limits: handguns vs long guns differ ───────────────────────────
-  IL:{ name:'Illinois',      magLimitHandgun:15, magLimitLonggun:10,  awb:true,  noSuppressor:true  }, // PICA: 15 handgun, 10 long gun
-  VT:{ name:'Vermont',       magLimitHandgun:15, magLimitLonggun:10,  awb:false, noSuppressor:false }, // Act 94: 15 handgun, 10 long gun
-  // ── Higher limits ────────────────────────────────────────────────────────
-  CO:{ name:'Colorado',      magLimitHandgun:15, magLimitLonggun:15,  awb:false, noSuppressor:false },
-  DE:{ name:'Delaware',      magLimitHandgun:17, magLimitLonggun:17,  awb:false, noSuppressor:false },
-}
+// State restriction rules + reasons live in lib/dealStateRules.js (merged with /api/state-rules).
+const STATE_RULES = DEAL_STATE_RULES
 
 // All 50 state names for the selector
 const ALL_STATES = [
@@ -65,56 +39,7 @@ const ALL_STATES = [
   ['VA','Virginia'],['WA','Washington'],['WV','West Virginia'],['WI','Wisconsin'],['WY','Wyoming'],
 ]
 
-// Returns restriction alerts for a deal in a given state.
-// Severity: mag_banned / suppressor_banned (error) > awb (warning) — never conflates ban with permit requirement.
-function getStateAlerts(deal, stateCode, rulesMap = STATE_RULES) {
-  if (!stateCode) return []
-  const rules = rulesMap[stateCode]
-  if (!rules) return [] // free state — no restrictions
-  const alerts = []
-
-  // Magazine capacity — apply the correct limit based on firearm type.
-  // Many states have different limits for handguns vs long guns (IL: 15/10, VT: 15/10).
-  // liveRules from /api/state-rules may only have magLimit (legacy); split fields take priority.
-  // Determine long gun vs handgun from title (flair is now coarse 'Firearm')
-  const isLongGun = /\brifle\b|\bshotgun\b|\bcarbine\b|ar-15|ar15|ak-|\bsbr\b|lever.?action|bolt.?action|pump.?action/i.test(deal.title || '')
-  const magLimit = isLongGun
-    ? (rules.magLimitLonggun ?? rules.magLimit ?? null)
-    : (rules.magLimitHandgun ?? rules.magLimit ?? null)
-  if (magLimit && deal.detectedCapacity && deal.detectedCapacity > magLimit) {
-    alerts.push({
-      type: 'mag_banned',
-      color: '#EF4444',
-      bg:    'rgba(239,68,68,0.13)',
-      label: `\u{1F6AB} ${deal.detectedCapacity}-RD MAG BANNED IN ${stateCode}`,
-      detail:`${stateCode} limits magazines to ${magLimit} rounds for ${isLongGun ? 'long guns' : 'handguns'}`,
-    })
-  }
-
-  // Suppressor ban
-  if (rules.noSuppressor && /suppressor|silencer/i.test(deal.title || '')) {
-    alerts.push({
-      type: 'suppressor_banned',
-      color: '#EF4444',
-      bg:    'rgba(239,68,68,0.13)',
-      label: `\u{1F6AB} SUPPRESSOR BANNED IN ${stateCode}`,
-      detail:`${stateCode} prohibits civilian suppressor ownership`,
-    })
-  }
-
-  // AWB — rifles AND AR-pattern pistols (covered by most state AWBs, e.g. WA HB 1240, CA, NY)
-  if (rules.awb && isAWBWeapon(deal.title)) {
-    alerts.push({
-      type: 'awb_banned',
-      color: '#EF4444',
-      bg:    'rgba(239,68,68,0.13)',
-      label: `🚫 BANNED — assault weapon in ${stateCode}`,
-      detail:`${stateCode} bans this semi-auto firearm under its assault weapons law. Not legal to purchase or receive here.`,
-    })
-  }
-
-  return alerts
-}
+const getStateAlerts = (deal, code, rulesMap) => getDealStateAlerts(deal, code, rulesMap)
 
 function timeAgo(ts) {
   if (!ts) return ''
@@ -215,8 +140,8 @@ function DealCard({ deal, userState, liveRules }) {
           if (byState.length === 0) return null
 
           // Group by type for compact multi-state display
-          const magBanCodes = byState.filter(x => x.alerts.some(a => a.type === 'mag_banned')).map(x => x.code)
-          const awbCodes    = byState.filter(x => x.alerts.some(a => a.type === 'awb_banned')).map(x => x.code)
+          const magBanCodes = byState.filter(x => x.alerts.some(a => a.type === 'mag_banned' || a.type === 'mag_included')).map(x => x.code)
+          const awbCodes    = byState.filter(x => x.alerts.some(a => a.type === 'awb')).map(x => x.code)
           const suppCodes   = byState.filter(x => x.alerts.some(a => a.type === 'suppressor_banned')).map(x => x.code)
           // User's specific state alerts (shown first, prominently)
           const myAlerts    = userState ? (byState.find(x => x.code === userState)?.alerts || []) : []
@@ -237,26 +162,26 @@ function DealCard({ deal, userState, liveRules }) {
                 }}>{a.label}</div>
               ))}
               {/* Compact multi-state summary (skip type if user's state already shows it) */}
-              {magBanCodes.length > 0 && !myTypes.has('mag_banned') && (
-                <div title={`Magazine banned: ${magBanCodes.join(', ')}`} style={{
+              {magBanCodes.length > 0 && !(myTypes.has('mag_banned') || myTypes.has('mag_included')) && (
+                <div title={`Magazine over state limit: ${magBanCodes.join(', ')}`} style={{
                   background:'rgba(239,68,68,0.07)', border:'1px solid rgba(239,68,68,0.22)',
                   color:'#fca5a5', fontFamily:MONO, fontSize:8,
                   padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
-                }}>🚫 MAG BANNED: {fmt(magBanCodes)}</div>
+                }}>🚫 OVER-LIMIT MAG: {fmt(magBanCodes)}</div>
               )}
-              {awbCodes.length > 0 && !myTypes.has('awb_banned') && (
+              {awbCodes.length > 0 && !myTypes.has('awb') && (
                 <div title={`Assault weapon banned: ${awbCodes.join(', ')}`} style={{
                   background:'rgba(239,68,68,0.07)', border:'1px solid rgba(239,68,68,0.22)',
                   color:'#fca5a5', fontFamily:MONO, fontSize:8,
                   padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
-                }}>🚫 AWB BANNED: {fmt(awbCodes)}</div>
+                }}>🚫 ASSAULT WEAPON BAN: {fmt(awbCodes)}</div>
               )}
               {suppCodes.length > 0 && !myTypes.has('suppressor_banned') && (
-                <div title={`Suppressor banned: ${suppCodes.join(', ')}`} style={{
+                <div title={`Suppressors prohibited: ${suppCodes.join(', ')}`} style={{
                   background:'rgba(239,68,68,0.07)', border:'1px solid rgba(239,68,68,0.22)',
                   color:'#fca5a5', fontFamily:MONO, fontSize:8,
                   padding:'3px 8px', letterSpacing:'.05em', cursor:'help',
-                }}>🚫 SUPPRESSOR BANNED: {fmt(suppCodes)}</div>
+                }}>🚫 SUPPRESSORS PROHIBITED: {fmt(suppCodes)}</div>
               )}
             </div>
           )
@@ -298,7 +223,7 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
   useEffect(() => {
     fetch('/api/state-rules')
       .then(r => r.ok ? r.json() : null)
-      .then(data => { if (data?.rules) setLiveRules(data.rules) })
+      .then(data => { if (data?.rules) setLiveRules(mergeStateRules(data.rules)) })
       .catch(() => {}) // silently fall back to STATE_RULES
   }, [])
 
@@ -455,18 +380,15 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
               >
                 <option value="">Select your state…</option>
                 {ALL_STATES.map(([code, name]) => (
-                  <option key={code} value={code}>{code} — {name}{STATE_RULES[code] ? ' ⚠' : ''}</option>
+                  <option key={code} value={code}>{code} — {name}{(liveRules || STATE_RULES)[code] ? ' ⚠' : ''}</option>
                 ))}
               </select>
               {userState && (() => {
                 const r = (liveRules || STATE_RULES)[userState]
                 if (!r) return <span style={{ fontFamily:MONO, fontSize:9, color:'#22C55E' }}>✓ Free state</span>
-                const magH = r.magLimitHandgun ?? r.magLimit
-                const magL = r.magLimitLonggun ?? r.magLimit
-                const magStr = magH === magL ? (magH ? `${magH}-rd mag limit` : '') : `${magH}-rd handgun / ${magL}-rd long gun`
                 return (
                   <span style={{ fontFamily:MONO, fontSize:9, color:'#EF4444' }}>
-                    {magStr}{r.awb ? ' · AWB' : ''}{r.noSuppressor ? ' · no NFA' : ''}
+                    {describeStateRules(r)}
                   </span>
                 )
               })()}
