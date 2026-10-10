@@ -4,7 +4,7 @@
     {
       "uploaded": "DJ-supplied ATF agents photo",
       "role": "djhero",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/e4ce149727eef082c44f7004bb37cae2c77989b5-1280x816.png",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg",
       "license": "supplied by DJ"
     },
     {
@@ -1190,7 +1190,7 @@
     },
     {
       "mutate": {
-        "transactionId": "71MFNdPZqN73n9slX4bEsu",
+        "transactionId": "MkeIIDuGc7PHMsbgNTyNSj",
         "results": [
           {
             "operation": "update"
@@ -1202,7 +1202,7 @@
   "verify": {
     "_id": "blog-nfa-transfer-guidance-2026",
     "category": "LAW",
-    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/e4ce149727eef082c44f7004bb37cae2c77989b5-1280x816.png",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg",
     "publishedAt": "2026-10-10T05:49:39Z",
     "readTime": 6,
     "slug": "nfa-transfer-guidance-suppressors-sbrs-2026",
