@@ -192,13 +192,13 @@ def main():
         result["error"] = "SANITY_API_TOKEN not set"
         return finish()
 
-    used = set(sanity_query('*[_type=="blogPost" && defined(imageUrl)].imageUrl') or [])
+    used = set(sanity_query('*[_type=="blogPost" && defined(imageUrl) && _id != "%s"].imageUrl' % BLOG_ID) or [])
     cands = commons_candidates()
     result["steps"].append({"candidates_found": len(cands), "top": [c["title"] for c in cands[:8]]})
 
     uploaded = []
     for i, c in enumerate(cands):
-        if len(uploaded) >= 2:
+        if len(uploaded) >= 3:
             break
         try:
             up = upload(c, f"nfa-guidance-{len(uploaded)+1}.jpg")
@@ -217,8 +217,9 @@ def main():
         return finish()
 
     hero = uploaded[0]
-    body = BODY.replace("{IMG_ONE}", fig(hero, "Suppressed rifle"))
-    body = body.replace("{IMG_TWO}", fig(uploaded[1], "Rifle with suppressor") if len(uploaded) > 1 else "")
+    # hero is shown by the page template; body images must be different photos
+    body = BODY.replace("{IMG_ONE}", fig(uploaded[1], "Rifle training photo") if len(uploaded) > 1 else "")
+    body = body.replace("{IMG_TWO}", fig(uploaded[2], "Rifle training photo") if len(uploaded) > 2 else "")
     words = len(strip_html(body).split())
     now_iso = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
