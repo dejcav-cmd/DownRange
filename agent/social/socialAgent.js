@@ -452,7 +452,9 @@ async function postInstagram(content, imageUrl, category, hashtags) {
       return { ok: false, error: `Image aspect ratio ${ratio.toFixed(2)} outside Instagram's 0.8–1.91 range.` }
     }
   }
-  const safeImageUrl = imageUrl
+  // Sanity CDN: ask for a normalized 1080px JPEG (Instagram stalls on some originals)
+  const safeImageUrl = /cdn\.sanity\.io\/images\//.test(imageUrl) && !imageUrl.includes('?')
+    ? `${imageUrl}?w=1080&fm=jpg&q=85` : imageUrl
 
   const createRes = await fetch(`https://graph.facebook.com/v20.0/${igUserId}/media`, {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
@@ -464,17 +466,19 @@ async function postInstagram(content, imageUrl, category, hashtags) {
   // Poll for container readiness — usually near-instant for images, but Meta
   // recommends checking status_code before publish rather than assuming FINISHED
   let ready = false
+  let lastStatus = null
   for (let i = 0; i < 40; i++) {
     const statusRes = await fetch(
-      `https://graph.facebook.com/v20.0/${containerId}?fields=status_code&access_token=${token}`
+      `https://graph.facebook.com/v20.0/${containerId}?fields=status,status_code&access_token=${token}`
     ).then(r => r.json())
+    lastStatus = statusRes
     if (statusRes.status_code === 'FINISHED') { ready = true; break }
     if (statusRes.status_code === 'ERROR') {
-      return { ok: false, error: 'Instagram container processing failed (status_code ERROR)' }
+      return { ok: false, error: `Instagram container processing failed (ERROR): ${statusRes.status || ''}` }
     }
     await new Promise(r => setTimeout(r, 2000))
   }
-  if (!ready) return { ok: false, error: 'Instagram container did not finish processing in time' }
+  if (!ready) return { ok: false, error: `Instagram container did not finish processing in time (${lastStatus?.status_code || 'no status'}: ${lastStatus?.status || lastStatus?.error?.message || 'n/a'}) img=${safeImageUrl}` }
 
   const publishRes = await fetch(`https://graph.facebook.com/v20.0/${igUserId}/media_publish`, {
     method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
