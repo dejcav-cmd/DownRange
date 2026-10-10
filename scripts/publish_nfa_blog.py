@@ -259,7 +259,8 @@ def category_candidates():
         desc = strip_html((meta.get("ImageDescription") or {}).get("value", ""))
         row = {"title": title[:90], "lic": lic, "w": w, "h": h}
         ok = (re.search(r"public domain|cc0|pd", lic, re.I) and not re.search(r"cc[- ]by|sa", lic, re.I)
-              and w >= 1000 and h >= 600 and ii.get("mime") in ("image/jpeg", "image/png")
+              and re.search(r"\bATF\b|\bBATF|Alcohol,? Tobacco", f"{title} {desc}") and not re.search(r"\bICE\b|FEMA|Immigration", f"{title} {desc}")
+              and w >= 800 and h >= 500 and ii.get("mime") in ("image/jpeg", "image/png")
               and 0.45 <= (w / h if h else 0) <= 3.3 and not ATF_BAD.search(f"{title} {desc}"))
         row["ok"] = bool(ok)
         CAT_DEBUG.append(row)
@@ -277,7 +278,7 @@ def category_candidates():
     for sub in subcats[:12]:
         for p in members(sub, "file"):
             consider(p)
-    DEBUG.append({"category_scan": CAT_DEBUG[:60], "subcats": subcats[:20]})
+    DEBUG.append({"category_scan": CAT_DEBUG, "subcats": subcats[:20]})
     out.sort(key=lambda c: (not c["landscape"], c["title"]))
     return out
 
