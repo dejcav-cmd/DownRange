@@ -9,12 +9,12 @@
   },
   "posts": [
     {
-      "error": null,
-      "hasImage": null,
+      "error": "Instagram container did not finish processing in time (IN_PROGRESS: In Progress: Media is still being processed.) img=https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg?w=1080&fm=jpg&q=85",
+      "hasImage": false,
       "platform": "instagram",
       "postUrl": null,
       "postedAt": null,
-      "status": "scheduled"
+      "status": "failed"
     },
     {
       "error": "Instagram container did not finish processing in time (IN_PROGRESS: In Progress: Media is still being processed.) img=https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg?w=1080&fm=jpg&q=85",
@@ -83,6 +83,20 @@
   ],
   "cron": [
     {
+      "_createdAt": "2026-10-10T15:48:54Z",
+      "_id": "cron-run-social-scheduled-1791647334721",
+      "_rev": "MkeIIDuGc7PHMsbgNWKrqc",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:48:54Z",
+      "at": "2026-10-10T15:48:54.721Z",
+      "details": "{\"ok\":true,\"due\":1,\"out\":[{\"slug\":\"nfa-transfer-guidance-suppressors-sbrs-2026\",\"results\":[{\"platform\":\"instagram\",\"posted\":0,\"error\":\"Instagram container did n",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 204223,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
       "_createdAt": "2026-10-10T15:40:30Z",
       "_id": "cron-run-social-scheduled-1791646830302",
       "_rev": "71MFNdPZqN73n9slX7thS6",
@@ -109,29 +123,15 @@
       "ms": 182,
       "status": "success",
       "trigger": "cron"
-    },
-    {
-      "_createdAt": "2026-10-10T15:30:30Z",
-      "_id": "cron-run-social-scheduled-1791646230373",
-      "_rev": "MkeIIDuGc7PHMsbgNWJIE1",
-      "_type": "cronRun",
-      "_updatedAt": "2026-10-10T15:30:30Z",
-      "at": "2026-10-10T15:30:30.373Z",
-      "details": "{\"ok\":true,\"due\":0}",
-      "error": null,
-      "jobId": "social-scheduled",
-      "ms": 117,
-      "status": "success",
-      "trigger": "cron"
     }
   ],
   "recent": [
     {
       "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
-      "error": null,
+      "error": "Instagram container did not finish processing in time (IN_PROGRESS: In Progress: Media is still being processed.) img=https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg?w=1080&fm=jpg&q=85",
       "platform": "instagram",
       "postedAt": null,
-      "status": "scheduled"
+      "status": "failed"
     },
     {
       "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
