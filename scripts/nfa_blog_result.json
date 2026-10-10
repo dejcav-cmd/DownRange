@@ -2,6 +2,10 @@
   "ok": true,
   "steps": [
     {
+      "skip": "DJ-supplied ATF agent photo",
+      "why": "HTTP Error 400: Bad Request"
+    },
+    {
       "atf_gov_debug": [
         {
           "page": "https://www.atf.gov/",
@@ -1204,7 +1208,7 @@
     {
       "uploaded": "File:090813-M-8109S-013.jpg",
       "role": "rifle",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/3569c9fddeddcf2ce00f25499b33ea2aff6b3b5f-1920x1280.jpg",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
       "license": "Public domain"
     },
     {
@@ -1215,7 +1219,7 @@
     },
     {
       "mutate": {
-        "transactionId": "MkeIIDuGc7PHMsbgNTt5QQ",
+        "transactionId": "71MFNdPZqN73n9slX4V0Ru",
         "results": [
           {
             "operation": "update"
