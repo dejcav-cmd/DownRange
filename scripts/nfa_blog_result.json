@@ -2,31 +2,13 @@
   "ok": true,
   "steps": [
     {
-      "skip": "DJ-supplied ATF agent photo",
-      "why": "GET https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg?strip=all&w=: HTTP Error 400: Bad Request | GET https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg: HTTP Error 400: Bad Request | GET https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg?w=1920: HTTP Error 400: Bad Request"
+      "uploaded": "DJ-supplied ATF agents photo",
+      "role": "djhero",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/e4ce149727eef082c44f7004bb37cae2c77989b5-1280x816.png",
+      "license": "supplied by DJ"
     },
     {
       "atf_gov_debug": [
-        {
-          "page": "https://www.atf.gov/",
-          "error": "HTTP Error 403: Forbidden"
-        },
-        {
-          "page": "https://www.atf.gov/careers",
-          "error": "HTTP Error 403: Forbidden"
-        },
-        {
-          "page": "https://www.atf.gov/firearms",
-          "error": "HTTP Error 403: Forbidden"
-        },
-        {
-          "page": "https://www.atf.gov/about/leadership",
-          "error": "HTTP Error 403: Forbidden"
-        },
-        {
-          "page": "https://www.atf.gov/careers/special-agents",
-          "error": "HTTP Error 403: Forbidden"
-        },
         {
           "category_scan": [
             {
@@ -1195,31 +1177,20 @@
       "atf_gov_candidates": []
     },
     {
-      "atf_commons_candidates": [
-        "File:A DSS agent coordinates with ATF and USSS special agents to secure delegate arrivals at UNGA in NYC, Sept. 23, 2019. (48788736523).jpg"
-      ]
-    },
-    {
-      "uploaded": "File:A DSS agent coordinates with ATF and USSS special agents to secure delegate arrivals at UNGA in NYC, Sept. 23, 2019. (48788736523).jpg",
-      "role": "atf",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/709bf046e38568a137a0fcd82dac647e8c343c47-1920x1280.jpg",
-      "license": "Public domain"
-    },
-    {
       "uploaded": "File:090813-M-8109S-013.jpg",
       "role": "rifle",
       "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
       "license": "Public domain"
     },
     {
-      "uploaded": "File:170608-A-IY962-002 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 2 of 8).jpg",
-      "role": "rifle",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/ad86d8e1f48032246dd78ccfd8139045e445ca56-1920x1275.jpg",
+      "uploaded": "File:A DSS agent coordinates with ATF and USSS special agents to secure delegate arrivals at UNGA in NYC, Sept. 23, 2019. (48788736523).jpg",
+      "role": "dss",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/709bf046e38568a137a0fcd82dac647e8c343c47-1920x1280.jpg",
       "license": "Public domain"
     },
     {
       "mutate": {
-        "transactionId": "MkeIIDuGc7PHMsbgNTvLGT",
+        "transactionId": "71MFNdPZqN73n9slX4bEsu",
         "results": [
           {
             "operation": "update"
@@ -1231,7 +1202,7 @@
   "verify": {
     "_id": "blog-nfa-transfer-guidance-2026",
     "category": "LAW",
-    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/709bf046e38568a137a0fcd82dac647e8c343c47-1920x1280.jpg",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/e4ce149727eef082c44f7004bb37cae2c77989b5-1280x816.png",
     "publishedAt": "2026-10-10T05:49:39Z",
     "readTime": 6,
     "slug": "nfa-transfer-guidance-suppressors-sbrs-2026",
