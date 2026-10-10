@@ -211,7 +211,7 @@ def upload_atf(c, filename):
         seen.add(u)
         try:
             hdr = dict(BROWSER)
-            hdr["Referer"] = "https://giffords.org/" if "giffords" in u else "https://www.atf.gov/"
+            hdr["Referer"] = "https://" + u.split("/")[2] + "/"
             try:
                 body, _ = get(u, hdr)
             except Exception as e:
@@ -257,6 +257,7 @@ def upload_local(c, filename):
     return {"cdn_url": doc.get("url"), "asset_id": doc.get("_id"), "size": doc.get("size"), "bytes": len(body)}
 
 
+BODY_ONE_OVERRIDE = "https://images.guns.com/wordpress/2016/09/DOJ.finds_.troubling.problems.with_.ATF_.undercover.storefront.000.ops_.jpg"  # chosen by DJ
 HERO_OVERRIDE = "https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg?strip=all&w=1920"  # chosen by DJ
 FORCE_HERO_PREFIX = "File:A DSS agent coordinates with ATF and USSS special agents"
 ATF_CATS = [
@@ -381,6 +382,10 @@ BODY = """
 
 
 def fig(img, alt):
+    if img.get("custom_credit"):
+        return (f'<figure class="pr-fig" style="margin:20px 0;"><img src="{img["cdn_url"]}" alt="{alt}" '
+                f'style="width:100%;border-radius:6px;" /><figcaption style="font-size:12px;color:var(--text-dim);margin-top:6px;">'
+                f'{img["custom_credit"]}</figcaption></figure>')
     credit = f'Image: {img["credit"]} via <a href="{img["page"]}" target="_blank" rel="noopener">Wikimedia Commons</a> ({img["license"]})'
     return (f'<figure class="pr-fig" style="margin:20px 0;"><img src="{img["cdn_url"]}" alt="{alt}" '
             f'style="width:100%;border-radius:6px;" />'
@@ -441,7 +446,14 @@ def main():
     if atf_hero_found and override_used:
         dss = [dict(c, alt_text="ATF and Secret Service special agents on a security detail")
                for c in category_candidates() if c["title"].startswith(FORCE_HERO_PREFIX)]
-        body_imgs = pull(rifles, 1, "rifle", 0) + pull(dss, 1, "dss", 0)
+        first = pull([{"title": "DJ-supplied body photo (guns.com)", "url": BODY_ONE_OVERRIDE, "fallback_url": BODY_ONE_OVERRIDE,
+                       "page": BODY_ONE_OVERRIDE, "license": "supplied by DJ", "credit": "guns.com",
+                       "custom_credit": "Image: guns.com", "alt_text": "ATF undercover storefront operation"}],
+                     1, "gunscom", 0, upload_atf)
+        result["body_override_used"] = bool(first)
+        if not first:
+            first = pull(rifles, 1, "rifle", 0)
+        body_imgs = first + pull(dss, 1, "dss", 0)
         uploaded = heroes + body_imgs
     elif atf_hero_found:
         body_imgs = pull(rifles, 2, "rifle", 0)
@@ -456,7 +468,7 @@ def main():
 
     hero = uploaded[0]
     # hero is shown by the page template; body images must be different photos
-    body = BODY.replace("{IMG_ONE}", fig(uploaded[1], "Rifle training photo") if len(uploaded) > 1 else "")
+    body = BODY.replace("{IMG_ONE}", fig(uploaded[1], uploaded[1].get("alt_text", "Rifle training photo")) if len(uploaded) > 1 else "")
     body = body.replace("{IMG_TWO}", fig(uploaded[2], uploaded[2].get("alt_text", "Rifle training photo")) if len(uploaded) > 2 else "")
     if atf_hero_found and not override_used:
         hc = (f'<p style="font-size:12px;color:var(--text-dim);">Header photo: {hero["credit"]} via '
