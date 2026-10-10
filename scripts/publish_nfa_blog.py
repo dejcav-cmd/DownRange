@@ -222,6 +222,66 @@ def upload_atf(c, filename):
     raise ValueError(last or "failed")
 
 
+ATF_CATS = [
+    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives",
+    "Category:Bureau of Alcohol, Tobacco, Firearms, and Explosives",
+    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives buildings",
+    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives personnel",
+    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives vehicles",
+    "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives headquarters",
+]
+
+
+def category_candidates():
+    out, seen, subcats = [], set(), []
+    CAT_DEBUG = []
+
+    def members(cat, mtype):
+        params = {"action": "query", "format": "json", "generator": "categorymembers", "gcmtitle": cat,
+                  "gcmtype": mtype, "gcmlimit": "60", "prop": "imageinfo", "iiprop": "url|size|mime|extmetadata",
+                  "iiurlwidth": "1600", "iiextmetadatafilter": "LicenseShortName|Artist|Credit|ImageDescription"}
+        try:
+            body, _ = get(COMMONS + "?" + urllib.parse.urlencode(params))
+            return list(((json.loads(body).get("query") or {}).get("pages") or {}).values())
+        except Exception as e:
+            CAT_DEBUG.append({"cat": cat, "error": str(e)[:120]})
+            return []
+
+    def consider(p):
+        title = p.get("title", "")
+        if title in seen or not title.startswith("File:"):
+            return
+        seen.add(title)
+        ii = (p.get("imageinfo") or [{}])[0]
+        meta = ii.get("extmetadata") or {}
+        lic = strip_html((meta.get("LicenseShortName") or {}).get("value", ""))
+        w, h = ii.get("width") or 0, ii.get("height") or 0
+        desc = strip_html((meta.get("ImageDescription") or {}).get("value", ""))
+        row = {"title": title[:90], "lic": lic, "w": w, "h": h}
+        ok = (re.search(r"public domain|cc0|pd", lic, re.I) and not re.search(r"cc[- ]by|sa", lic, re.I)
+              and w >= 1000 and h >= 600 and ii.get("mime") in ("image/jpeg", "image/png")
+              and 0.45 <= (w / h if h else 0) <= 3.3 and not ATF_BAD.search(f"{title} {desc}"))
+        row["ok"] = bool(ok)
+        CAT_DEBUG.append(row)
+        if ok:
+            out.append({"title": title, "url": ii.get("thumburl") or ii.get("url"), "page": ii.get("descriptionurl"),
+                        "license": lic, "credit": strip_html((meta.get("Artist") or {}).get("value", "")) or
+                        strip_html((meta.get("Credit") or {}).get("value", "")) or "U.S. government photographer",
+                        "desc": desc[:160], "landscape": w / h >= 1.2})
+
+    for cat in ATF_CATS:
+        for p in members(cat, "file"):
+            consider(p)
+        for p in members(cat, "subcat"):
+            subcats.append(p.get("title"))
+    for sub in subcats[:12]:
+        for p in members(sub, "file"):
+            consider(p)
+    DEBUG.append({"category_scan": CAT_DEBUG[:60], "subcats": subcats[:20]})
+    out.sort(key=lambda c: (not c["landscape"], c["title"]))
+    return out
+
+
 def upload(c, filename):
     body, headers = get(c["url"])
     if len(body) < 15000:
@@ -326,7 +386,7 @@ def main():
     result["steps"].append({"atf_gov_candidates": [(c["alt"] or c["url"])[:90] for c in atf_gov[:12]]})
     heroes = pull(atf_gov, 1, "atfgov", 0, upload_atf)
     if not heroes:
-        atf = commons_candidates(ATF_SEARCHES, ATF_OK, ATF_BAD, ok_on_title=True)
+        atf = category_candidates() or commons_candidates(ATF_SEARCHES, ATF_OK, ATF_BAD, ok_on_title=True)
         result["steps"].append({"atf_commons_candidates": [c["title"] for c in atf[:10]]})
         heroes = pull(atf, 1, "atf", 0)
     atf_hero_found = bool(heroes)
