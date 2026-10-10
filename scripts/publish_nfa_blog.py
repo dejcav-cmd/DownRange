@@ -240,7 +240,7 @@ def upload_atf(c, filename):
     raise ValueError(" | ".join(last) or "failed")
 
 
-LOCAL_HERO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "nfa-hero.png")
+LOCAL_HERO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "nfa-hero.jpg")
 
 
 def upload_local(c, filename):
