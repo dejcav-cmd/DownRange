@@ -222,6 +222,7 @@ def upload_atf(c, filename):
     raise ValueError(last or "failed")
 
 
+FORCE_HERO_PREFIX = "File:A DSS agent coordinates with ATF and USSS special agents"
 ATF_CATS = [
     "Category:Bureau of Alcohol, Tobacco, Firearms and Explosives",
     "Category:Bureau of Alcohol, Tobacco, Firearms, and Explosives",
@@ -258,7 +259,8 @@ def category_candidates():
         w, h = ii.get("width") or 0, ii.get("height") or 0
         desc = strip_html((meta.get("ImageDescription") or {}).get("value", ""))
         row = {"title": title[:90], "lic": lic, "w": w, "h": h}
-        ok = (re.search(r"public domain|cc0|pd", lic, re.I) and not re.search(r"cc[- ]by|sa", lic, re.I)
+        forced = title.startswith(FORCE_HERO_PREFIX) and re.search(r"public domain", lic, re.I) and w >= 1600
+        ok = forced or (re.search(r"public domain|cc0|pd", lic, re.I) and not re.search(r"cc[- ]by|sa", lic, re.I)
               and re.search(r"\bATF\b|\bBATF|Alcohol,? Tobacco", f"{title} {desc}") and not re.search(r"\bICE\b|FEMA|Immigration", f"{title} {desc}")
               and w >= 800 and h >= 500 and ii.get("mime") in ("image/jpeg", "image/png")
               and 0.45 <= (w / h if h else 0) <= 3.3 and not ATF_BAD.search(f"{title} {desc}"))
@@ -337,6 +339,7 @@ BODY = """
 <p>Not on paper. The law is still on the books, and ATF itself says things could change. In practice, for the first time in ninety years, the federal government has stopped enforcing the heart of it against suppressors, SBRs, SBSs and AOWs. That is the biggest crack in the NFA since it was passed, and it came from the courts, Congress and the executive branch all moving the same direction. Enjoy the win, follow the rules that remain, and keep an eye on your state law.</p>
 <p><strong>DownRange Bottom Line:</strong> The federal permission slip for suppressors and short-barreled guns is gone for now. The rest of the legal framework is not, and the guidance can be pulled back. Read ATF's FAQ before you buy, build or ship anything.</p>
 <p>Source: <a href="https://www.atf.gov/news/press-releases/atf-issues-guidance-national-firearms-act-transfers-short-barreled-rifles-short-barreled-shotguns-suppressors-and-certain-other-firearms" target="_blank" rel="noopener">ATF press release</a> and <a href="https://www.atf.gov/firearms/update-to-nfa-transfer-guidance" target="_blank" rel="noopener">Update to NFA Transfer Guidance FAQ</a>, October 9, 2026.</p>
+{HERO_CREDIT}
 <p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; DJ Cavalcanti</em><br/><strong>DJ Cavalcanti, DownRange Founder</strong></p>
 """.strip()
 
@@ -387,7 +390,8 @@ def main():
     result["steps"].append({"atf_gov_candidates": [(c["alt"] or c["url"])[:90] for c in atf_gov[:12]]})
     heroes = pull(atf_gov, 1, "atfgov", 0, upload_atf)
     if not heroes:
-        atf = category_candidates() or commons_candidates(ATF_SEARCHES, ATF_OK, ATF_BAD, ok_on_title=True)
+        atf = [c for c in category_candidates() if c["landscape"]]
+        atf.sort(key=lambda c: not c["title"].startswith(FORCE_HERO_PREFIX))
         result["steps"].append({"atf_commons_candidates": [c["title"] for c in atf[:10]]})
         heroes = pull(atf, 1, "atf", 0)
     atf_hero_found = bool(heroes)
@@ -407,6 +411,12 @@ def main():
     # hero is shown by the page template; body images must be different photos
     body = BODY.replace("{IMG_ONE}", fig(uploaded[1], "Rifle training photo") if len(uploaded) > 1 else "")
     body = body.replace("{IMG_TWO}", fig(uploaded[2], "Rifle training photo") if len(uploaded) > 2 else "")
+    if atf_hero_found:
+        hc = (f'<p style="font-size:12px;color:var(--text-dim);">Header photo: {hero["credit"]} via '
+              f'<a href="{hero["page"]}" target="_blank" rel="noopener">Wikimedia Commons</a> ({hero["license"]})</p>')
+    else:
+        hc = ""
+    body = body.replace("{HERO_CREDIT}", hc)
     words = len(strip_html(body).split())
     existing = sanity_query('*[_id=="%s"][0]{publishedAt}' % BLOG_ID) or {}
     now_iso = existing.get("publishedAt") or datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
