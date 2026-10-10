@@ -103,6 +103,24 @@ body::before {
 }
 
 a { color: inherit; text-decoration: none; }
+
+/* Links inside article bodies (blog, news, Canada/Brazil, press releases, releases) must always look like links.
+   The global reset above strips link styling, so restore it here. Standing site rule. */
+.blog-article-body a,
+.dr-article-body a,
+.pr-art-body a {
+  color: var(--gold-light, #E5A83A);
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.blog-article-body a:hover,
+.dr-article-body a:hover,
+.pr-art-body a:hover {
+  color: var(--gold, #C8922A);
+  text-decoration-thickness: 2px;
+}
 img { max-width: 100%; }
 button { cursor: pointer; }
 
