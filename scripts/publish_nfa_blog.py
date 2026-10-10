@@ -240,6 +240,23 @@ def upload_atf(c, filename):
     raise ValueError(" | ".join(last) or "failed")
 
 
+LOCAL_HERO = os.path.join(os.path.dirname(os.path.abspath(__file__)), "assets", "nfa-hero.png")
+
+
+def upload_local(c, filename):
+    with open(c["path"], "rb") as f:
+        body = f.read()
+    if body[:8] != b"\x89PNG\r\n\x1a\n" and body[:3] != b"\xff\xd8\xff":
+        raise ValueError("local hero is not png/jpeg")
+    ctype = "image/png" if body[:8] == b"\x89PNG\r\n\x1a\n" else "image/jpeg"
+    req = urllib.request.Request(f"{ASSET_URL}?filename={filename}", data=body, method="POST")
+    req.add_header("Content-Type", ctype)
+    req.add_header("Authorization", f"Bearer {TOKEN}")
+    with urllib.request.urlopen(req, timeout=90) as r:
+        doc = json.loads(r.read().decode()).get("document", {})
+    return {"cdn_url": doc.get("url"), "asset_id": doc.get("_id"), "size": doc.get("size"), "bytes": len(body)}
+
+
 HERO_OVERRIDE = "https://files.giffords.org/wp-content/uploads/2019/03/ATF-AGENT.jpg?strip=all&w=1920"  # chosen by DJ
 FORCE_HERO_PREFIX = "File:A DSS agent coordinates with ATF and USSS special agents"
 ATF_CATS = [
@@ -404,8 +421,10 @@ def main():
             result["steps"].append({"uploaded": c["title"], "role": tag, "cdn": up["cdn_url"], "license": c["license"]})
         return got
 
-    heroes = pull([{"title": "DJ-supplied ATF agent photo", "url": HERO_OVERRIDE, "fallback_url": HERO_OVERRIDE,
-                    "page": HERO_OVERRIDE, "license": "supplied by DJ", "credit": ""}], 1, "djhero", 0, upload_atf)
+    heroes = []
+    if os.path.exists(LOCAL_HERO):
+        heroes = pull([{"title": "DJ-supplied ATF agents photo", "path": LOCAL_HERO, "page": "", "license": "supplied by DJ",
+                        "credit": ""}], 1, "djhero", 0, upload_local)
     override_used = bool(heroes)
     atf_gov = [] if override_used else atf_gov_candidates()
     result["steps"].append({"atf_gov_debug": DEBUG})
@@ -419,7 +438,12 @@ def main():
         heroes = pull(atf, 1, "atf", 0)
     atf_hero_found = bool(heroes)
     rifles = commons_candidates()
-    if atf_hero_found:
+    if atf_hero_found and override_used:
+        dss = [dict(c, alt_text="ATF and Secret Service special agents on a security detail")
+               for c in category_candidates() if c["title"].startswith(FORCE_HERO_PREFIX)]
+        body_imgs = pull(rifles, 1, "rifle", 0) + pull(dss, 1, "dss", 0)
+        uploaded = heroes + body_imgs
+    elif atf_hero_found:
         body_imgs = pull(rifles, 2, "rifle", 0)
         uploaded = heroes + body_imgs
     else:
@@ -433,7 +457,7 @@ def main():
     hero = uploaded[0]
     # hero is shown by the page template; body images must be different photos
     body = BODY.replace("{IMG_ONE}", fig(uploaded[1], "Rifle training photo") if len(uploaded) > 1 else "")
-    body = body.replace("{IMG_TWO}", fig(uploaded[2], "Rifle training photo") if len(uploaded) > 2 else "")
+    body = body.replace("{IMG_TWO}", fig(uploaded[2], uploaded[2].get("alt_text", "Rifle training photo")) if len(uploaded) > 2 else "")
     if atf_hero_found and not override_used:
         hc = (f'<p style="font-size:12px;color:var(--text-dim);">Header photo: {hero["credit"]} via '
               f'<a href="{hero["page"]}" target="_blank" rel="noopener">Wikimedia Commons</a> ({hero["license"]})</p>')
