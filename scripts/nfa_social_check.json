@@ -5,9 +5,17 @@
     "socialSchedulePlatforms": [
       "instagram"
     ],
-    "socialScheduleStartedAt": "2026-10-10T15:20:30.895Z"
+    "socialScheduleStartedAt": "2026-10-10T15:45:30.692Z"
   },
   "posts": [
+    {
+      "error": null,
+      "hasImage": null,
+      "platform": "instagram",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "scheduled"
+    },
     {
       "error": "Instagram container did not finish processing in time (IN_PROGRESS: In Progress: Media is still being processed.) img=https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg?w=1080&fm=jpg&q=85",
       "hasImage": false,
@@ -75,49 +83,56 @@
   ],
   "cron": [
     {
-      "_createdAt": "2026-10-10T15:21:58Z",
-      "_id": "cron-run-social-scheduled-1791645718731",
-      "_rev": "MkeIIDuGc7PHMsbgNWIhwq",
+      "_createdAt": "2026-10-10T15:40:30Z",
+      "_id": "cron-run-social-scheduled-1791646830302",
+      "_rev": "71MFNdPZqN73n9slX7thS6",
       "_type": "cronRun",
-      "_updatedAt": "2026-10-10T15:21:58Z",
-      "at": "2026-10-10T15:21:58.731Z",
-      "details": "{\"ok\":true,\"due\":1,\"out\":[{\"slug\":\"nfa-transfer-guidance-suppressors-sbrs-2026\",\"results\":[{\"platform\":\"instagram\",\"posted\":0,\"error\":\"Instagram container did n",
-      "error": null,
-      "jobId": "social-scheduled",
-      "ms": 88033,
-      "status": "success",
-      "trigger": "cron"
-    },
-    {
-      "_createdAt": "2026-10-10T15:16:54Z",
-      "_id": "cron-run-social-scheduled-1791645414646",
-      "_rev": "infT1bNDKJbVdCXG2HYtYd",
-      "_type": "cronRun",
-      "_updatedAt": "2026-10-10T15:16:54Z",
-      "at": "2026-10-10T15:16:54.646Z",
-      "details": "{\"ok\":true,\"due\":1,\"out\":[{\"slug\":\"nfa-transfer-guidance-suppressors-sbrs-2026\",\"results\":[{\"platform\":\"instagram\",\"posted\":0,\"error\":\"Instagram container did n",
-      "error": null,
-      "jobId": "social-scheduled",
-      "ms": 84400,
-      "status": "success",
-      "trigger": "cron"
-    },
-    {
-      "_createdAt": "2026-10-10T15:10:30Z",
-      "_id": "cron-run-social-scheduled-1791645030731",
-      "_rev": "71MFNdPZqN73n9slX7oOV4",
-      "_type": "cronRun",
-      "_updatedAt": "2026-10-10T15:10:30Z",
-      "at": "2026-10-10T15:10:30.731Z",
+      "_updatedAt": "2026-10-10T15:40:30Z",
+      "at": "2026-10-10T15:40:30.302Z",
       "details": "{\"ok\":true,\"due\":0}",
       "error": null,
       "jobId": "social-scheduled",
-      "ms": 127,
+      "ms": 121,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
+      "_createdAt": "2026-10-10T15:35:30Z",
+      "_id": "cron-run-social-scheduled-1791646530802",
+      "_rev": "infT1bNDKJbVdCXG2HexUJ",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:35:30Z",
+      "at": "2026-10-10T15:35:30.802Z",
+      "details": "{\"ok\":true,\"due\":0}",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 182,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
+      "_createdAt": "2026-10-10T15:30:30Z",
+      "_id": "cron-run-social-scheduled-1791646230373",
+      "_rev": "MkeIIDuGc7PHMsbgNWJIE1",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:30:30Z",
+      "at": "2026-10-10T15:30:30.373Z",
+      "details": "{\"ok\":true,\"due\":0}",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 117,
       "status": "success",
       "trigger": "cron"
     }
   ],
   "recent": [
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": null,
+      "platform": "instagram",
+      "postedAt": null,
+      "status": "scheduled"
+    },
     {
       "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
       "error": "Instagram container did not finish processing in time (IN_PROGRESS: In Progress: Media is still being processed.) img=https://cdn.sanity.io/images/vbnsqnkg/production/bf2d0b57e6c2554ab81e834cc6a6ec6e6145f3aa-1280x816.jpg?w=1080&fm=jpg&q=85",
@@ -152,13 +167,6 @@
       "platform": "threads",
       "postedAt": null,
       "status": "failed"
-    },
-    {
-      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
-      "error": null,
-      "platform": "twitter",
-      "postedAt": "2026-10-10T15:01:10.333Z",
-      "status": "posted"
     }
   ]
 }
