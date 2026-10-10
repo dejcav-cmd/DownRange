@@ -2,6 +2,30 @@
   "ok": true,
   "steps": [
     {
+      "atf_gov_debug": [
+        {
+          "page": "https://www.atf.gov/",
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "page": "https://www.atf.gov/careers",
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "page": "https://www.atf.gov/firearms",
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "page": "https://www.atf.gov/about/leadership",
+          "error": "HTTP Error 403: Forbidden"
+        },
+        {
+          "page": "https://www.atf.gov/careers/special-agents",
+          "error": "HTTP Error 403: Forbidden"
+        }
+      ]
+    },
+    {
       "atf_gov_candidates": []
     },
     {
@@ -10,7 +34,7 @@
     {
       "uploaded": "File:090813-M-8109S-013.jpg",
       "role": "rifle",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/3569c9fddeddcf2ce00f25499b33ea2aff6b3b5f-1920x1280.jpg",
       "license": "Public domain"
     },
     {
@@ -27,7 +51,7 @@
     },
     {
       "mutate": {
-        "transactionId": "71MFNdPZqN73n9slX4Q67q",
+        "transactionId": "infT1bNDKJbVdCXG2CuDjz",
         "results": [
           {
             "operation": "update"
@@ -40,7 +64,7 @@
   "verify": {
     "_id": "blog-nfa-transfer-guidance-2026",
     "category": "LAW",
-    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/3569c9fddeddcf2ce00f25499b33ea2aff6b3b5f-1920x1280.jpg",
     "publishedAt": "2026-10-10T05:49:39Z",
     "readTime": 6,
     "slug": "nfa-transfer-guidance-suppressors-sbrs-2026",
