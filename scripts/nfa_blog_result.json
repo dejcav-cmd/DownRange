@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "candidates_found": 43,
+      "top": [
+        "File:090813-M-8109S-013.jpg",
+        "File:170608-A-IY962-002 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 2 of 8).jpg",
+        "File:170608-A-IY962-003 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 3 of 8).jpg",
+        "File:170608-A-IY962-004 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 4 of 8).jpg",
+        "File:170608-A-IY962-005 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 5 of 8).jpg",
+        "File:170608-A-IY962-006 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 6 of 8).jpg",
+        "File:170608-A-IY962-007 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 8 of 8).jpg",
+        "File:170629-M-AS864-049 (34891975204).jpg"
+      ]
+    },
+    {
+      "uploaded": "File:090813-M-8109S-013.jpg",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
+      "license": "Public domain"
+    },
+    {
+      "uploaded": "File:170608-A-IY962-002 - Battle Group Poland M2010 Enhanced Sniper Rifle Training (Image 2 of 8).jpg",
+      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/ad86d8e1f48032246dd78ccfd8139045e445ca56-1920x1275.jpg",
+      "license": "Public domain"
+    },
+    {
+      "mutate": {
+        "transactionId": "71MFNdPZqN73n9slX4PEvq",
+        "results": [
+          {
+            "operation": "create"
+          }
+        ]
+      }
+    }
+  ],
+  "verify": {
+    "_id": "blog-nfa-transfer-guidance-2026",
+    "category": "LAW",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/fb111a7aca3d9f029c303fa438b93520ce76eb37-1920x1280.jpg",
+    "publishedAt": "2026-10-10T05:46:55Z",
+    "readTime": 6,
+    "slug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+    "status": "published",
+    "title": "The NFA Just Lost Its Teeth: ATF Stops Enforcing the Registry on Suppressors and Short-Barreled Guns"
+  },
+  "blog_url": "https://www.downrangeco.com/blog/nfa-transfer-guidance-suppressors-sbrs-2026"
+}
