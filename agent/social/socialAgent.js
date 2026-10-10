@@ -467,7 +467,7 @@ async function postInstagram(content, imageUrl, category, hashtags) {
   // recommends checking status_code before publish rather than assuming FINISHED
   let ready = false
   let lastStatus = null
-  for (let i = 0; i < 40; i++) {
+  for (let i = 0; i < 100; i++) {
     const statusRes = await fetch(
       `https://graph.facebook.com/v20.0/${containerId}?fields=status,status_code&access_token=${token}`
     ).then(r => r.json())
