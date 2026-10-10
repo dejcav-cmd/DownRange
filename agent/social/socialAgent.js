@@ -656,7 +656,7 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
 
   // Blog posts (published only)
   const blogs = await sanity.fetch(
-    `*[_type == "blogPost" && status == "published" && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
+    `*[_type == "blogPost" && status == "published" && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff && !defined(socialScheduleAt)] | order(publishedAt desc)[0...10]{
       _id, "type":"blog", title, "summary": excerpt, excerpt, category, publishedAt,
       "urgencyScore": 6, "slug": slug.current, imageUrl, tags
     }`, { cutoff }

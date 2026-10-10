@@ -17,6 +17,9 @@ export const blogPost = {
     { name: 'tags',        title: 'Tags',           type: 'array', of: [{ type: 'string' }] },
         { name: 'editorLocked', title: '🔒 Editor Locked (no AI changes)', type: 'boolean', initialValue: false },
 { name: 'qualityReviewed', title: 'Quality Reviewed (AI standard met)', type: 'boolean', initialValue: false },
+    { name: 'socialScheduleAt', title: 'Post to Social At (UTC)', type: 'datetime', description: 'Held out of regular social crons; posted to all platforms once this time passes.' },
+    { name: 'socialSchedulePlatforms', title: 'Social Platforms', type: 'array', of: [{ type: 'string' }] },
+    { name: 'socialScheduleDone', title: 'Scheduled Social Post Done', type: 'boolean', initialValue: false },
   ],
   preview: {
     select: { title: 'title', subtitle: 'category' },

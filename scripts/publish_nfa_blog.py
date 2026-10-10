@@ -36,6 +36,15 @@ SEARCHES = [
     "M4 carbine suppressor",
     "silencer firearm",
 ]
+ATF_SEARCHES = [
+    "ATF headquarters building Washington",
+    "Bureau of Alcohol, Tobacco, Firearms and Explosives agents",
+    "ATF special agent",
+    "Bureau of Alcohol Tobacco Firearms and Explosives",
+]
+ATF_OK = re.compile(r"\bATF\b|Bureau of Alcohol|Alcohol,? Tobacco", re.I)
+ATF_BAD = re.compile(r"logo|seal|emblem|badge|patch|insignia|waco|davidian|fire|burn|arson|explos|bomb|blast|"
+                     r"rubble|damage|dead|victim|fatal|casualt|suspect|arrest|raid|seiz|drug|cocaine|heroin", re.I)
 TITLE_OK = re.compile(r"suppress|silenc|short[- ]barrel|sbr|carbine|m4|rifle", re.I)
 TITLE_BAD = re.compile(r"logo|icon|diagram|drawing|patent|svg|map|flag|poster|cartoon|toy|airsoft|paintball|"
                        r"crime|victim|dead|body|funeral|riot|protest|shooting at|massacre|police", re.I)
@@ -66,9 +75,12 @@ def strip_html(s):
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s or "")).strip()
 
 
-def commons_candidates():
+def commons_candidates(searches=None, ok=None, bad=None):
+    searches = searches or SEARCHES
+    ok = ok or TITLE_OK
+    bad = bad or TITLE_BAD
     seen, out = set(), []
-    for q in SEARCHES:
+    for q in searches:
         params = {
             "action": "query", "format": "json", "generator": "search",
             "gsrsearch": f"filetype:bitmap {q}", "gsrnamespace": "6", "gsrlimit": "20",
@@ -99,7 +111,7 @@ def commons_candidates():
                 continue
             desc = strip_html((meta.get("ImageDescription") or {}).get("value", ""))
             blob = f"{title} {desc}"
-            if not TITLE_OK.search(blob) or TITLE_BAD.search(blob):
+            if not ok.search(blob) or bad.search(blob):
                 continue
             out.append({
                 "title": title,
@@ -193,35 +205,43 @@ def main():
         return finish()
 
     used = set(sanity_query('*[_type=="blogPost" && defined(imageUrl) && _id != "%s"].imageUrl' % BLOG_ID) or [])
-    cands = commons_candidates()
-    result["steps"].append({"candidates_found": len(cands), "top": [c["title"] for c in cands[:8]]})
 
-    uploaded = []
-    for i, c in enumerate(cands):
-        if len(uploaded) >= 3:
-            break
-        try:
-            up = upload(c, f"nfa-guidance-{len(uploaded)+1}.jpg")
-        except Exception as e:
-            result["steps"].append({"skip": c["title"], "why": str(e)})
-            continue
-        if up["cdn_url"] in used:
-            result["steps"].append({"skip": c["title"], "why": "already used as a blog hero"})
-            continue
-        up.update(c)
-        uploaded.append(up)
-        result["steps"].append({"uploaded": c["title"], "cdn": up["cdn_url"], "license": c["license"]})
+    def pull(cands, want, tag, start_index):
+        got = []
+        for c in cands:
+            if len(got) >= want:
+                break
+            try:
+                up = upload(c, f"nfa-guidance-{tag}-{start_index+len(got)+1}.jpg")
+            except Exception as e:
+                result["steps"].append({"skip": c["title"], "why": str(e)})
+                continue
+            if up["cdn_url"] in used:
+                result["steps"].append({"skip": c["title"], "why": "already used as a blog hero"})
+                continue
+            used.add(up["cdn_url"])
+            up.update(c)
+            got.append(up)
+            result["steps"].append({"uploaded": c["title"], "role": tag, "cdn": up["cdn_url"], "license": c["license"]})
+        return got
 
-    if not uploaded:
-        result["error"] = "No suitable real image found; article NOT published (no image = no article)."
+    atf = commons_candidates(ATF_SEARCHES, ATF_OK, ATF_BAD)
+    result["steps"].append({"atf_candidates": [c["title"] for c in atf[:10]]})
+    heroes = pull(atf, 1, "atf", 0)
+    if not heroes:
+        result["error"] = "No ATF-related public-domain photo found; post left unchanged."
         return finish()
+    rifles = commons_candidates()
+    body_imgs = pull(rifles, 2, "rifle", 0)
+    uploaded = heroes + body_imgs
 
     hero = uploaded[0]
     # hero is shown by the page template; body images must be different photos
     body = BODY.replace("{IMG_ONE}", fig(uploaded[1], "Rifle training photo") if len(uploaded) > 1 else "")
     body = body.replace("{IMG_TWO}", fig(uploaded[2], "Rifle training photo") if len(uploaded) > 2 else "")
     words = len(strip_html(body).split())
-    now_iso = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
+    existing = sanity_query('*[_id=="%s"][0]{publishedAt}' % BLOG_ID) or {}
+    now_iso = existing.get("publishedAt") or datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
 
     doc = {
         "_id": BLOG_ID,
@@ -244,6 +264,10 @@ def main():
         "tags": ["NFA", "Suppressors", "SBR", "ATF", "Second Amendment", "Silencer Shop Foundation"],
         "editorLocked": True,
         "qualityReviewed": True,
+        # Held out of the regular social crons; posted to every platform at 8:00 AM PDT (15:00 UTC) Oct 10, 2026
+        "socialScheduleAt": "2026-10-10T15:00:00Z",
+        "socialSchedulePlatforms": ["facebook", "instagram", "twitter", "threads", "bluesky", "reddit"],
+        "socialScheduleDone": False,
     }
     result["steps"].append({"mutate": post_json(MUTATE_URL, {"mutations": [{"createOrReplace": doc}]})})
     result["verify"] = sanity_query(

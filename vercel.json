@@ -105,6 +105,10 @@
       "schedule": "0 12 * * *"
     },
     {
+      "path": "/api/social/cron/scheduled",
+      "schedule": "*/5 * * * *"
+    },
+    {
       "path": "/api/admin/fix-images?batch=500&force=false&cron=1",
       "schedule": "0 6,11,15 * * *"
     },
@@ -326,6 +330,9 @@
       "maxDuration": 300
     },
     "app/api/cron/monthly-cleanup/route.js": {
+      "maxDuration": 300
+    },
+    "app/api/social/cron/scheduled/route.js": {
       "maxDuration": 300
     }
   }

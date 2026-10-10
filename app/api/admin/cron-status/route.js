@@ -64,6 +64,7 @@ const ALL_JOBS = [
   { id:'social-bluesky', path:'/api/social/cron/bluesky', schedule:'2 13 * * *', label:'Bluesky Post', group:'Social', icon:'🦋', critical:false, desc:'Daily post' },
   { id:'social-threads', path:'/api/social/cron/threads', schedule:'4 12,17,20,23 * * *', label:'Threads Post', group:'Social', icon:'🧵', critical:false, desc:'4× daily post' },
   { id:'social-reddit', path:'/api/social/cron/reddit', schedule:'0 12 * * *', label:'Reddit Post', group:'Social', icon:'👽', critical:false, desc:'Daily post' },
+  { id:'social-scheduled', path:'/api/social/cron/scheduled', schedule:'*/5 * * * *', label:'Scheduled Social Posts', group:'Social', icon:'⏰', critical:false, desc:'Posts items with a set social time to all platforms' },
   { id:'social-analytics', path:'/api/social/analytics?refresh=1', schedule:'35 */2 * * *', label:'Social Analytics Refresh', group:'Social', icon:'📊', critical:false, desc:'Engagement stats every 2h' },
   { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >180d (keeps news linked from blog posts)' },
 ]
