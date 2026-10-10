@@ -1,0 +1,153 @@
+{
+  "article": {
+    "socialScheduleAt": "2026-10-10T15:00:00Z",
+    "socialScheduleDone": true,
+    "socialSchedulePlatforms": [
+      "facebook",
+      "instagram",
+      "twitter",
+      "threads",
+      "bluesky",
+      "reddit"
+    ],
+    "socialScheduleStartedAt": "2026-10-10T15:00:30.276Z"
+  },
+  "posts": [
+    {
+      "error": "Missing Reddit env vars. See Setup Guide in admin.",
+      "hasImage": false,
+      "platform": "reddit",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "error": null,
+      "hasImage": true,
+      "platform": "bluesky",
+      "postUrl": "https://bsky.app/profile/did:plc:foglakvv2bev6skq6uzecqrl/post/3mxjqyizquq2j",
+      "postedAt": "2026-10-10T15:01:22.827Z",
+      "status": "posted"
+    },
+    {
+      "error": "Missing THREADS_ACCESS_TOKEN or THREADS_USER_ID.",
+      "hasImage": false,
+      "platform": "threads",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "error": null,
+      "hasImage": true,
+      "platform": "twitter",
+      "postUrl": null,
+      "postedAt": "2026-10-10T15:01:10.333Z",
+      "status": "posted"
+    },
+    {
+      "error": "Instagram container did not finish processing in time",
+      "hasImage": false,
+      "platform": "instagram",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "error": null,
+      "hasImage": true,
+      "platform": "facebook",
+      "postUrl": "https://www.facebook.com/photo?fbid=122141121009341798",
+      "postedAt": "2026-10-10T15:00:40.649Z",
+      "status": "posted"
+    }
+  ],
+  "cron": [
+    {
+      "_createdAt": "2026-10-10T15:05:30Z",
+      "_id": "cron-run-social-scheduled-1791644730700",
+      "_rev": "71MFNdPZqN73n9slX7mQWC",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:05:30Z",
+      "at": "2026-10-10T15:05:30.700Z",
+      "details": "{\"ok\":true,\"due\":0}",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 113,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
+      "_createdAt": "2026-10-10T15:01:31Z",
+      "_id": "cron-run-social-scheduled-1791644491054",
+      "_rev": "infT1bNDKJbVdCXG2HSbwR",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:01:31Z",
+      "at": "2026-10-10T15:01:31.054Z",
+      "details": "{\"ok\":true,\"due\":1,\"out\":[{\"slug\":\"nfa-transfer-guidance-suppressors-sbrs-2026\",\"results\":[{\"platform\":\"facebook\",\"posted\":1,\"error\":null},{\"platform\":\"instagra",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 60891,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
+      "_createdAt": "2026-10-10T14:55:30Z",
+      "_id": "cron-run-social-scheduled-1791644130352",
+      "_rev": "71MFNdPZqN73n9slX7k3YS",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T14:55:30Z",
+      "at": "2026-10-10T14:55:30.352Z",
+      "details": "{\"ok\":true,\"due\":0}",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 119,
+      "status": "success",
+      "trigger": "cron"
+    }
+  ],
+  "recent": [
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": "Missing Reddit env vars. See Setup Guide in admin.",
+      "platform": "reddit",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": null,
+      "platform": "bluesky",
+      "postedAt": "2026-10-10T15:01:22.827Z",
+      "status": "posted"
+    },
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": "Missing THREADS_ACCESS_TOKEN or THREADS_USER_ID.",
+      "platform": "threads",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": null,
+      "platform": "twitter",
+      "postedAt": "2026-10-10T15:01:10.333Z",
+      "status": "posted"
+    },
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": "Instagram container did not finish processing in time",
+      "platform": "instagram",
+      "postedAt": null,
+      "status": "failed"
+    },
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": null,
+      "platform": "facebook",
+      "postedAt": "2026-10-10T15:00:40.649Z",
+      "status": "posted"
+    }
+  ]
+}
