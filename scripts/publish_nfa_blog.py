@@ -11,6 +11,7 @@ import re
 import json
 import datetime
 import urllib.parse
+import struct
 import urllib.request
 
 PROJECT = os.environ.get("NEXT_PUBLIC_SANITY_PROJECT_ID", "vbnsqnkg")
@@ -75,7 +76,7 @@ def strip_html(s):
     return re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", s or "")).strip()
 
 
-def commons_candidates(searches=None, ok=None, bad=None):
+def commons_candidates(searches=None, ok=None, bad=None, ok_on_title=False):
     searches = searches or SEARCHES
     ok = ok or TITLE_OK
     bad = bad or TITLE_BAD
@@ -111,7 +112,7 @@ def commons_candidates(searches=None, ok=None, bad=None):
                 continue
             desc = strip_html((meta.get("ImageDescription") or {}).get("value", ""))
             blob = f"{title} {desc}"
-            if not ok.search(blob) or bad.search(blob):
+            if not ok.search(title if ok_on_title else blob) or bad.search(blob):
                 continue
             out.append({
                 "title": title,
@@ -125,6 +126,94 @@ def commons_candidates(searches=None, ok=None, bad=None):
             })
     out.sort(key=lambda c: (not c["landscape"], c["title"]))
     return out
+
+
+BROWSER = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36",
+           "Accept": "text/html,image/*,*/*"}
+ATF_PAGES = ["https://www.atf.gov/", "https://www.atf.gov/careers", "https://www.atf.gov/firearms",
+             "https://www.atf.gov/about/leadership", "https://www.atf.gov/careers/special-agents"]
+ATF_IMG_BAD = re.compile(r"logo|seal|icon|flag|sprite|avatar|favicon|badge|doj|social|facebook|twitter|instagram|"
+                         r"explos|smoke|arson|fire|bomb|burn|cigarette|alcohol|tobacco|scale|books|phone|notebook|tip", re.I)
+
+
+def img_dims(b):
+    try:
+        if b[:8] == b"\x89PNG\r\n\x1a\n":
+            return struct.unpack(">II", b[16:24])
+        if b[:3] == b"\xff\xd8\xff":
+            i = 2
+            while i < len(b) - 9:
+                if b[i] != 0xFF:
+                    i += 1
+                    continue
+                m = b[i + 1]
+                if m in (0xC0, 0xC1, 0xC2):
+                    h, w = struct.unpack(">HH", b[i + 5:i + 9])
+                    return w, h
+                i += 2 + struct.unpack(">H", b[i + 2:i + 4])[0]
+    except Exception:
+        pass
+    return None
+
+
+def atf_gov_candidates():
+    out, seen = [], set()
+    for page in ATF_PAGES:
+        try:
+            html = get(page, BROWSER)[0].decode("utf-8", "ignore")
+        except Exception as e:
+            print("atf.gov fetch failed", page, e)
+            continue
+        for tag in re.findall(r"<img\b[^>]*>", html, re.I):
+            alt = (re.search(r'alt="([^"]*)"', tag, re.I) or [None, ""])[1]
+            srcs = []
+            for attr in ("src", "data-src", "data-lazy-src"):
+                m = re.search(attr + r'="([^"]+)"', tag, re.I)
+                if m:
+                    srcs.append(m.group(1))
+            m = re.search(r'srcset="([^"]+)"', tag, re.I)
+            if m:
+                srcs += [x.strip().split(" ")[0] for x in m.group(1).split(",")]
+            for src in srcs:
+                url = urllib.parse.urljoin(page, src.replace("&amp;", "&"))
+                if "atf.gov" not in url or url in seen:
+                    continue
+                if not re.search(r"\.(jpe?g|png)(\?|$)", url, re.I) and "/media/" not in url and "/files/" not in url:
+                    continue
+                if ATF_IMG_BAD.search(url) or ATF_IMG_BAD.search(alt):
+                    continue
+                seen.add(url)
+                # original instead of Drupal image-style derivative
+                orig = re.sub(r"/styles/[^/]+/public/", "/", url)
+                out.append({"title": alt or url.rsplit("/", 1)[-1], "url": orig, "fallback_url": url,
+                            "page": page, "alt": alt, "license": "Public domain (U.S. government work)",
+                            "credit": "ATF", "agent": bool(re.search(r"agent", alt, re.I))})
+    out.sort(key=lambda c: (not c["agent"], c["title"]))
+    return out
+
+
+def upload_atf(c, filename):
+    last = None
+    for u in (c["url"], c["fallback_url"]):
+        try:
+            body, _ = get(u, BROWSER)
+            d = img_dims(body)
+            if len(body) < 15000 or (d and (d[0] < 400 or d[1] < 240)):
+                last = f"too small {len(body)} {d}"
+                continue
+            if not (body[:3] == b"\xff\xd8\xff" or body[:8] == b"\x89PNG\r\n\x1a\n"):
+                last = "not jpeg/png"
+                continue
+            ctype = "image/jpeg" if body[:3] == b"\xff\xd8\xff" else "image/png"
+            req = urllib.request.Request(f"{ASSET_URL}?filename={filename}", data=body, method="POST")
+            req.add_header("Content-Type", ctype)
+            req.add_header("Authorization", f"Bearer {TOKEN}")
+            with urllib.request.urlopen(req, timeout=90) as r:
+                doc = json.loads(r.read().decode()).get("document", {})
+            return {"cdn_url": doc.get("url"), "asset_id": doc.get("_id"), "size": doc.get("size")}
+        except Exception as e:
+            last = str(e)
+    raise ValueError(last or "failed")
 
 
 def upload(c, filename):
@@ -206,13 +295,14 @@ def main():
 
     used = set(sanity_query('*[_type=="blogPost" && defined(imageUrl) && _id != "%s"].imageUrl' % BLOG_ID) or [])
 
-    def pull(cands, want, tag, start_index):
+    def pull(cands, want, tag, start_index, uploader=None):
+        uploader = uploader or upload
         got = []
         for c in cands:
             if len(got) >= want:
                 break
             try:
-                up = upload(c, f"nfa-guidance-{tag}-{start_index+len(got)+1}.jpg")
+                up = uploader(c, f"nfa-guidance-{tag}-{start_index+len(got)+1}.jpg")
             except Exception as e:
                 result["steps"].append({"skip": c["title"], "why": str(e)})
                 continue
@@ -225,15 +315,25 @@ def main():
             result["steps"].append({"uploaded": c["title"], "role": tag, "cdn": up["cdn_url"], "license": c["license"]})
         return got
 
-    atf = commons_candidates(ATF_SEARCHES, ATF_OK, ATF_BAD)
-    result["steps"].append({"atf_candidates": [c["title"] for c in atf[:10]]})
-    heroes = pull(atf, 1, "atf", 0)
+    atf_gov = atf_gov_candidates()
+    result["steps"].append({"atf_gov_candidates": [(c["alt"] or c["url"])[:90] for c in atf_gov[:12]]})
+    heroes = pull(atf_gov, 1, "atfgov", 0, upload_atf)
     if not heroes:
-        result["error"] = "No ATF-related public-domain photo found; post left unchanged."
-        return finish()
+        atf = commons_candidates(ATF_SEARCHES, ATF_OK, ATF_BAD, ok_on_title=True)
+        result["steps"].append({"atf_commons_candidates": [c["title"] for c in atf[:10]]})
+        heroes = pull(atf, 1, "atf", 0)
+    atf_hero_found = bool(heroes)
     rifles = commons_candidates()
-    body_imgs = pull(rifles, 2, "rifle", 0)
-    uploaded = heroes + body_imgs
+    if atf_hero_found:
+        body_imgs = pull(rifles, 2, "rifle", 0)
+        uploaded = heroes + body_imgs
+    else:
+        # no genuine ATF photo found: restore the rifle photos rather than keep a wrong image
+        result["atf_hero"] = False
+        uploaded = pull(rifles, 3, "rifle", 0)
+    if not uploaded:
+        result["error"] = "No images available; post left unchanged."
+        return finish()
 
     hero = uploaded[0]
     # hero is shown by the page template; body images must be different photos
