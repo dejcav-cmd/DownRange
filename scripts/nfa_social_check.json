@@ -3,16 +3,19 @@
     "socialScheduleAt": "2026-10-10T15:00:00Z",
     "socialScheduleDone": true,
     "socialSchedulePlatforms": [
-      "facebook",
-      "instagram",
-      "twitter",
-      "threads",
-      "bluesky",
-      "reddit"
+      "instagram"
     ],
-    "socialScheduleStartedAt": "2026-10-10T15:00:30.276Z"
+    "socialScheduleStartedAt": "2026-10-10T15:15:30.352Z"
   },
   "posts": [
+    {
+      "error": "Instagram container did not finish processing in time",
+      "hasImage": false,
+      "platform": "instagram",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "failed"
+    },
     {
       "error": "Missing Reddit env vars. See Setup Guide in admin.",
       "hasImage": false,
@@ -64,6 +67,34 @@
   ],
   "cron": [
     {
+      "_createdAt": "2026-10-10T15:16:54Z",
+      "_id": "cron-run-social-scheduled-1791645414646",
+      "_rev": "infT1bNDKJbVdCXG2HYtYd",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:16:54Z",
+      "at": "2026-10-10T15:16:54.646Z",
+      "details": "{\"ok\":true,\"due\":1,\"out\":[{\"slug\":\"nfa-transfer-guidance-suppressors-sbrs-2026\",\"results\":[{\"platform\":\"instagram\",\"posted\":0,\"error\":\"Instagram container did n",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 84400,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
+      "_createdAt": "2026-10-10T15:10:30Z",
+      "_id": "cron-run-social-scheduled-1791645030731",
+      "_rev": "71MFNdPZqN73n9slX7oOV4",
+      "_type": "cronRun",
+      "_updatedAt": "2026-10-10T15:10:30Z",
+      "at": "2026-10-10T15:10:30.731Z",
+      "details": "{\"ok\":true,\"due\":0}",
+      "error": null,
+      "jobId": "social-scheduled",
+      "ms": 127,
+      "status": "success",
+      "trigger": "cron"
+    },
+    {
       "_createdAt": "2026-10-10T15:05:30Z",
       "_id": "cron-run-social-scheduled-1791644730700",
       "_rev": "71MFNdPZqN73n9slX7mQWC",
@@ -76,37 +107,16 @@
       "ms": 113,
       "status": "success",
       "trigger": "cron"
-    },
-    {
-      "_createdAt": "2026-10-10T15:01:31Z",
-      "_id": "cron-run-social-scheduled-1791644491054",
-      "_rev": "infT1bNDKJbVdCXG2HSbwR",
-      "_type": "cronRun",
-      "_updatedAt": "2026-10-10T15:01:31Z",
-      "at": "2026-10-10T15:01:31.054Z",
-      "details": "{\"ok\":true,\"due\":1,\"out\":[{\"slug\":\"nfa-transfer-guidance-suppressors-sbrs-2026\",\"results\":[{\"platform\":\"facebook\",\"posted\":1,\"error\":null},{\"platform\":\"instagra",
-      "error": null,
-      "jobId": "social-scheduled",
-      "ms": 60891,
-      "status": "success",
-      "trigger": "cron"
-    },
-    {
-      "_createdAt": "2026-10-10T14:55:30Z",
-      "_id": "cron-run-social-scheduled-1791644130352",
-      "_rev": "71MFNdPZqN73n9slX7k3YS",
-      "_type": "cronRun",
-      "_updatedAt": "2026-10-10T14:55:30Z",
-      "at": "2026-10-10T14:55:30.352Z",
-      "details": "{\"ok\":true,\"due\":0}",
-      "error": null,
-      "jobId": "social-scheduled",
-      "ms": 119,
-      "status": "success",
-      "trigger": "cron"
     }
   ],
   "recent": [
+    {
+      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
+      "error": "Instagram container did not finish processing in time",
+      "platform": "instagram",
+      "postedAt": null,
+      "status": "failed"
+    },
     {
       "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
       "error": "Missing Reddit env vars. See Setup Guide in admin.",
@@ -141,13 +151,6 @@
       "platform": "instagram",
       "postedAt": null,
       "status": "failed"
-    },
-    {
-      "articleSlug": "nfa-transfer-guidance-suppressors-sbrs-2026",
-      "error": null,
-      "platform": "facebook",
-      "postedAt": "2026-10-10T15:00:40.649Z",
-      "status": "posted"
     }
   ]
 }
