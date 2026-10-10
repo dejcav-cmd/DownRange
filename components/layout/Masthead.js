@@ -6,10 +6,13 @@ import { useState, useEffect, useRef } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
+// Admin hides nav items by plain label ('Laws'); compare without the leading emoji so both stay in sync.
+const navKey = (l) => String(l || '').replace(/^[^A-Za-z0-9]+/, '').trim().toLowerCase()
+
 const NAV = [
   { label: '🏠 Home', href: '/', exact: true },
   {
-    label: 'News', href: '/news',
+    label: '📰 News', href: '/news',
     children: [
       { label: '📰 Latest News',                   href: '/news',                          desc: 'Breaking stories and daily coverage' },
       { label: '🏭 Manufacturer Press Releases',   href: '/news/manufacturer-press-releases', desc: 'New announcements straight from the makers' },
@@ -17,7 +20,7 @@ const NAV = [
   },
   { label: '💰 Deals', href: '/deals' },
   {
-    label: 'Laws', href: '/laws',
+    label: '📜 Laws', href: '/laws',
     children: [
       { label: '🗺️ My State',          href: '/laws/my-state', desc: 'Your state\'s carry laws, restrictions & reciprocity' },
       { label: '🏛️ Federal & SCOTUS',  href: '/laws/federal',  desc: 'Bills in Congress, ATF rules, active SCOTUS cases' },
@@ -185,7 +188,7 @@ export default function Masthead() {
         <nav className="nav-desktop" style={{ borderTop:'1px solid #1F2428', display:'grid', gridTemplateColumns:'1fr auto 1fr', alignItems:'stretch' }}>
           <div aria-hidden="true" />
           <ul style={{ display:'flex', justifyContent:'center', listStyle:'none', margin:0, padding:0 }}>
-            {NAV.filter(item => !hiddenNav.includes(item.label)).map(item => {
+            {NAV.filter(item => !hiddenNav.map(navKey).includes(navKey(item.label))).map(item => {
               const active = isActive(item)
               const hasChildren = item.children?.length > 0
               const isOpen = openDrop === item.label
@@ -269,7 +272,7 @@ export default function Masthead() {
           ◉ Home
         </Link>
 
-        {NAV.slice(1).filter(item => !hiddenNav.includes(item.label)).map(item => {
+        {NAV.slice(1).filter(item => !hiddenNav.map(navKey).includes(navKey(item.label))).map(item => {
           const hasChildren = item.children?.length > 0
           const exp = mobileExpanded === item.label
           // Items with no children = direct link, no expand button, no "View All"
