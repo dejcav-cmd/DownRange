@@ -1,50 +1,26 @@
-600 scanned, 51 need a real image, 14 coupon posts skipped
+600 scanned, 28 need a real image, 13 coupon posts skipped
 
-  + Thermold Magazine For FN FAL 7.62x51mm NATO 20-R — 13354b 680x510 sha=c23b9d44d016
-  + Shield Sights Mini Compact RMSc Reflex Red Dot S — 93277b 576x386 sha=cafafd84860b
-  x BENELLI Montefeltro Silver 12Ga 28" 4rd - Blued/ — image not downloadable
-  x BENELLI Super Black Eagle 3 20 Gauge 3" 26" 3rd  — image not downloadable
-  + Glock Apollo 42 .380 ACP 3.25" 6rd Pistol, Pink, — 45683b 900x675 sha=43abcc289d3d
-  + North American Arms Mini-Revolver 22 WMR 1.63" B — 78365b 530x335 sha=dd36f0aa8e0d
-  + Sig Sauer P320 Carry 9mm 3.9" 17rd, Factory Refu — 103481b 900x675 sha=e20ebf513aa3
-  + Heavy Duty Stun Gun with LED Flashlight, Recharg — 18151b 500x413 sha=ac11950360da
-  + FMATAL GEAR Portable Tactical Helmet Storage Bag — 30397b 500x500 sha=1ea2661f7e8c
-  + Waist Pack Beer Belt Can Holder, Black - $5.15 — 51830b 778x401 sha=fcfb07a71837
-  + ZRO Delta ZULU 2, 223 Wylde, 16" Barrel, 30 Rds, — 42986b 606x267 sha=5b92f065305e
-  + S&W PC Bodyguard 2.0 Carry Comp .380 ACP 3" Bbl  — 179331b 616x498 sha=5d9dc9762a3a
-  + Colt Combat Commander 45 ACP 4.25" 8rd Pistol, B — 32710b 764x553 sha=1584b4cbbf97
-  + Howa M1500 25 Creedmoor 24" 5rd Bolt Action Rifl — 15805b 591x186 sha=aabafa5d083f
-  + Citadel M1911 Gray Flag Cerakote 45ACP 5" Barrel — 187300b 861x563 sha=bb317724bcfe
-  + Proof Research Elevation 2.0 7mm PRC 20" 3rd - F — 70407b 783x263 sha=cb0f7229b721
-  + Howa 1500M Carbon Stalker 7.62x39mm Black/Altitu — 37736b 1000x1000 sha=87c9932529e5
-  + DRD Tactical CDR15 5.56mm NATO 16in Black Anodiz — 55526b 1000x1000 sha=d60fcf26112c
-  + Sako 85 6.5 Creedmoor Finnlight II Stainless Bol — 32806b 1000x1000 sha=038e1ca3d39f
-  + Radical Firearms AR15 Stripped Upper Receiver, B — 50727b 633x331 sha=84e7edb0197a
-  + Phoenix Arms HP22A 22 Long Rifle 3in Satin Nicke — 112237b 537x417 sha=ae7a6b017569
-  + Century DRACO TAC7.5" Barrel Black MLOK 7.62X39  — 38679b 1000x581 sha=0d440fbf462c
-  + SIG SAUER MPX 9mm 6" 35rd Black - $2199.99 — 114330b 814x425 sha=1322f65da962
-  + Brownells BRN-180 SCNR 223 Wylde 16” Complete Up — 43089b 697x223 sha=04cebabc168e
-  + BCM Upper Receiver - M4 Flat Top (M4 Feedramps)  — 203319b 1280x960 sha=aa3c6ed1f88a
-  ... 25/51  ok=23 fail=2
-  + Gear up: Shooting & hunting under $60! — 76989b 600x600 sha=e947a46f4d1b
-  + Hi-Point Carbines Roundup — 62589b 745x420 sha=fda2aea21963
-  + DIY Bundle i3T 2 EOS Small EDC Flashlight - $17. — 10524b 422x251 sha=dec47356111b
-  + Hoppe's No. 9 Lubricating Oil, 2-1/4 oz. Bottle  — 18219b 500x500 sha=315f0fc2c316
-  + Springfield Armory Hellcat Micro-Compact 9mm 3"  — 146128b 565x424 sha=eb507da3c6d9
-  + GLORYFIRE Universal Gun Cleaning Kit with Case T — 38016b 500x500 sha=745fe00794ff
-  + Live Free Armory Apollo 11 Full Size 9mm 5" 17rd — 13737b 600x433 sha=3dbf05cccc2f
-  + Arsenal SAS M-7 Classic 7.62x39mm 16.3" 30rd AK4 — 12557b 600x338 sha=d787d5f12732
-  + Raptor Defense RD15 LPVO Package 5.56mm, 16" Bar — 211469b 1106x448 sha=7bd06aae256b
-  + Magtech Handgun Ammunition .38 Spl 125gr FMJ Fla — 217263b 696x402 sha=fc30629aac5e
-  + Weatherby Vanguard Outfitter 7mm-08 Rem Mag 26"  — 28594b 547x201 sha=faeb28a629d7
-  + Beretta 3032 Tomcat / 21A Bobcat G10 Kale Slushy — 454473b 929x562 sha=2a7e80a8af94
-  + Aero Precision 16" .350 Legend Hanson CMV Carbin — 18317b 702x253 sha=597c96d0ea70
-  + Thompson Machine Neptune 9mm suppressor - $495 — 219053b 1500x940 sha=b134fbe3eaf0
-  + Classic Firearms Merch Bundle - Military Green T — 36718b 480x360 sha=365c9141e3f9
-  + Charter Arms Pink Lady Undercover Lite .38 Speci — 58667b 430x330 sha=2594fc73e046
-  + Fiocchi - Range Dynamics - 5.7x28mm - 62 Grain - — 216511b 759x548 sha=d9b4b76dfc12
-  + CCI Blazer Brass 9mm, 124gr FMJ, 1000rd Case - $ — 81456b 915x464 sha=ecd77e55d179
-  + Glock 43X MOS 9mm Pistol with Trump Victory Gold — 55947b 1000x666 sha=bb33c17bac62
+  + Swiss Safe 2-in-1 First Aid Kit for Car, Travel  — 43862b 400x500 sha=84d4f9301daa
+  + WALKER'S XCEL 100 Digital Electronic Muff W/Voic — 17965b 500x500 sha=2015b64997f6
+  + SOLOFISH 800 Lumens Pistol Light and Green Laser — 19994b 500x500 sha=50b51817cab8
+  + Maxpedition Pistol Case/Gun Rug, Black, 8 -Inch  — 66535b 500x500 sha=7699aff84199
+  + Taurus TTX22 .22 LR / 5.7x28 1/2x28 Direct Threa — 42370b 1017x443 sha=cb8c284d97e1
+  + Q Literally The Best AR-15 Drop-In 2-Stage Trigg — 70273b 962x896 sha=9b7dbca4f910
+  + North American Arms 1860 The Earl Stainless .22  — 33269b 1000x468 sha=487ee50946e0
+  + Heckler & Koch VP9 9mm 4.09" barrel 17rd w/Night — 21698b 561x419 sha=ea8b92eb5f4a
+  + Rossi Gallery .22 LR 18" Barrel 15Rd - $195.49 — 11785b 800x169 sha=4492305f772b
+  + Glock G43X 9mm 3.4" 10rd - Galactic June Bug Cer — 93308b 1000x858 sha=54bfc6825f72
+  + Winchester 40 S&W 155 gr Jacketed Hollow Point S — 87833b 1000x666 sha=9fb65c9beaae
+  + Bravo Company Gunfighter Mod 0 SOPMOD Stock For  — 47171b 937x612 sha=3cea125b0920
+  + Noveske Rifleworks AR-15 Buffer Tube - Carbine - — 31369b 1013x541 sha=17c0154bffa3
+  + Rise Armament Premium Lower Parts Kit for AR-15  — 23541b 321x526 sha=42c7a8b1b656
+  + Dead Air KeyMount Muzzle Brake 223/5.56 1/2-28 - — 19291b 682x315 sha=48bf1fa806d7
+  + Fiocchi Hyperformance .300 Blackout Ammo 125gr S — 67289b 800x757 sha=e9aee8a2eb2b
+  + 50% off CVLIFE Two Point Sling with Shell Holder — 22468b 500x500 sha=8c36b1cb3fe7
+  + 30% off CVLIFE BearMight Enclosed Red/Green Dot  — 20442b 500x500 sha=a6773c202dda
+  + Holosun Pistol Optics Sale HE407K-GR X2, HS407K  — 1615933b 1500x1125 sha=d43c012a1222
+  + Tokarev USA TAR 12MP Silver/Black 12 GA 18.5" Ba — 40649b 1307x503 sha=859655ffa9ce
+  + ATI GSG-16 16.25" .22 LR 22-Rd Carbine Rifle, Bl — 40193b 1326x587 sha=e8d5922768ff
   x Heritage Rough Rider, .22lr, 16" Barrel, 6rd Cyl — image not downloadable
   x CRKT 7600K SLAG - $42 — image not downloadable
   x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
@@ -53,6 +29,6 @@
   x Vortex Crossfire II Solar 2 MOA Red Dot with Mot — image not downloadable
   x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
 
-fixed 42, failed 9  (82% success)
-distinct images: 42 across 42 deals
+fixed 21, failed 7  (75% success)
+distinct images: 21 across 21 deals
 PASS — no image shared between products
