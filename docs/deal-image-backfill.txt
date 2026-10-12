@@ -1,29 +1,50 @@
-600 scanned, 23 need a real image, 14 coupon posts skipped
+600 scanned, 43 need a real image, 11 coupon posts skipped
 
-  + Brownells Gun Cleaning products on SALE — 139422b 1180x1067 sha=fc6274c3f90f
-  + Primer Days @ Brownells — 152559b 1186x1059 sha=aa5257cddb84
-  + Fall Clearance Sale @ Brownells — 28157b 656x257 sha=ec9bff4f4a39
-  + Ruger Blackhawk 41 Magnum 6.5" 6 Rd Black - $659 — 18756b 705x330 sha=7d794c44ad7f
+  + Kel-Tec P17 22 Long Rifle 3.80 In Barrel 16 Roun — 295113b 807x684 sha=76bb6aa38589
+  + Burris USM S35 640 V3 Thermal Rifle Scope Black  — 19596b 696x311 sha=ae97b0ce08ee
+  + Colt BOA 357 Magnum 6-Shot Blued DA/SA Revolver  — 62718b 1235x700 sha=3d45e4e343ba
+  + SAR SAR9 Compact LX Package 4.1" 9mm 15rd Pistol — 90215b 1000x1000 sha=0d598ee1c499
+  + PSA 11.5" Carbine 5.56 1/7 Nitride 10.5" Lightwe — 29221b 1000x500 sha=1b55d057fb96
+  + Stoeger STR-9 Mid-Size Pistol - Optic Ready - FD — 19084b 479x386 sha=04cbd150b2ed
+  + PSA AR-15 Complete Classic Lower w/o Stock, Blac — 12928b 535x326 sha=b640e2475b62
+  + PSA 11.5" 5.56 1/7 Nitride 10.5" Lightweight MLO — 19809b 1000x254 sha=13b75a8dc829
+  + Smith & Wesson M&P 15-22 Sport Rifle .22lr 16.50 — 30621b 1000x500 sha=977c567af153
+  + Chiappa Charles Daly 500 28-Ga 26" 2-rds Side-By — 23324b 1350x443 sha=edf10e48322b
+  + Warrior Systems Legionary .22 LR 1/2x28 Suppress — 35264b 1080x658 sha=345ee4343792
+  + Centurion Arms CM4 5.56 Forged AR-15 Lower Recei — 52165b 1500x1000 sha=48c92b8cf1dc
+  + CMC Triggers Lower Parts Kit no Grip/Fire Contro — 60578b 1150x1150 sha=1e8ddd4f3788
+  + Dirty Bird Industries Single Stage Nickel Teflon — 23273b 945x630 sha=4358457a8a5d
+  + EOTech EXPS2-0 Holographic Weapon Sight w/ QD Le — 42225b 1500x1000 sha=a1292b11ce01
+  + Magpul PMAG 30 AR/M4 GEN M2 MOE Magazine - 30-Ro — 102780b 1000x1000 sha=b450d734d86a
+  + Aero Precision 5.56 BCG Bolt Carrier Group Black — 122002b 465x440 sha=08e9b6048dbf
+  + Wolfpack Armory Disruptor 556K Suppressor - FDE  — 250107b 972x608 sha=f496e5dd94d8
+  + NBS 20" 5.56 NATO 1:7 Twist Parkerized Heavy Rif — 32696b 1000x666 sha=07b6110ca26d
+  + Trinity Force Alpha Stock - Black W/ Buffer Tube — 38954b 1000x666 sha=6651f0f6e280
+  + Resilient Stacy's Mom K 5.56/6mm Cal 17-4 SS Sup — 92226b 1000x666 sha=2a76dfaf276b
+  + Resilient Suppressors Titanium Tri-Lug (Gen 2) - — 91107b 1000x666 sha=639b4af30327
+  + Wolfpack Armory Disruptor 30 .30 Cal Suppressor  — 48962b 499x247 sha=fbdf1a23e727
+  + NBS Mil-Spec Semi-Auto Safety Selector - $5.24 a — 30180b 1000x853 sha=a93a6292843e
+  + PWS UXR Elite .223 / 5.56 14.5" Barrel 30rd Rifl — 77046b 777x321 sha=4009485a42aa
+  ... 25/43  ok=25 fail=0
+  + Breek Arms Plan B Echo Single-Port Muzzle Brake  — 127580b 901x937 sha=e9c05b905052
+  + A.S. Designs 4140 Super Safety Kit - Black Oxide — 135621b 1001x466 sha=ff8e004be72c
+  + HM Defense AR-15 QD End Plate - $4.95 — 202688b 1082x858 sha=8ba864dd9102
+  x Griffin Sportsman Ultra Lite HD Silencer 36CAL B — image not downloadable
+  + Scalarworks KICK/04 Offset Aimpoint Micro Right  — 77908b 569x384 sha=fb83d583fc10
+  + Retay RXP22, .22LR. 4.35" Threaded Barrel, 2 Mag — 25191b 1000x607 sha=5b480db83f62
+  + Canik TP9 All Variants Roundup — 81961b 630x441 sha=226a8d4c9e86
+  + Black Aces Shotguns Roundup — 81633b 1045x499 sha=d8c8245feb90
+  + Ruger 10/22 Tactical, Takedown, Target, Competit — 100812b 1607x788 sha=dab81a693905
+  + Beretta 92XI Desert DPM Camo 9MM 15-Round Handgu — 20807b 414x428 sha=df6d6c0dcfeb
   x TriStar Raptor ATAC 12 Gauge 20" 5 Rd Black Synt — image not downloadable
-  + Glock 43X 9mm 3.41" 15 Rd BRN COW PRINT - $550 — 13103b 456x377 sha=abe36b6c0160
-  + Tikka T3x Hunter 6.5 Creedmoor 22" Bolt Hardwood — 10597b 789x265 sha=b8df68a28f0d
-  + Federal Power Shok - 12 ga - 2-3/4" 00 Buck - 25 — 77184b 876x683 sha=bff186c3153f
   x Heritage Settler 22 LR, 16.5" Barrel, Case Harde — image not downloadable
-  + BERETTA 92G Elite 9mm 4.7" 10rd - Black - $1679  — 10210b 325x332 sha=1fceb6778176
-  + Colt AR15 30RD 22LR Magazine AR22 M4 - $28.99 — 12193b 219x514 sha=6367e9891203
-  + FN FNP9M Compact 15 Rd 9mm Stainless Magazine -  — 9776b 207x443 sha=db6c298dd3ab
-  + Trijicon 2500003 SRO31x 5 MOA Dot Red CR2032 Lit — 24728b 620x425 sha=66551ca979c0
-  + Trijicon 100153 ACOG 3.5x 35mm Obj 28.90 ft @ 10 — 13879b 431x328 sha=2a308bd9ecc0
-  + Trijicon 200001 AccuPoint 3-9x 40mm Obj 33.80-11 — 8385b 440x260 sha=c939416f21d5
   x Glock 43x/48 15rd Magazine 9mm Black Steel - $29 — image not downloadable
   x Heritage Rough Rider, .22lr, 16" Barrel, 6rd Cyl — image not downloadable
   x CRKT 7600K SLAG - $42 — image not downloadable
   x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
   x Beretta A400 Xcel Sporting KO 12 Gauge 30" 2 Rd  — image not downloadable
   x Division 3 INC OLVR .22 Heater Suppressor 22LR 1 — image not downloadable
-  x Vortex Crossfire II Solar 2 MOA Red Dot with Mot — image not downloadable
-  x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
 
-fixed 13, failed 10  (56% success)
-distinct images: 13 across 13 deals
+fixed 34, failed 9  (79% success)
+distinct images: 34 across 34 deals
 PASS — no image shared between products
