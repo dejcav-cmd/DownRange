@@ -1,13 +1,21 @@
-600 scanned, 15 need a real image, 12 coupon posts skipped
+600 scanned, 23 need a real image, 14 coupon posts skipped
 
-  + Trijicon RMR Type 2 Adj 3.25 MOA GRY - $439.99 — 18199b 500x500 sha=c9614354c56e
-  + Noreen ULR .50 BMG 1rd 34" Barrel Timney Trigger — 16364b 1024x186 sha=5bd076a56d69
-  + PSA 10.5" 5.56 NATO 1/7 Stainless Steel 10.5" Li — 26688b 1000x500 sha=93a03fa6c147
-  + Smith & Wesson Model 629 Deluxe STS Limited Edit — 95874b 1451x743 sha=9c26bdd44ad3
-  + CZ Used Surplus C&R Eligible CZ82 3.82" 9x18mm M — 129612b 540x409 sha=fe22631f1e4a
-  + Superlative Arms Adjustable Bleed Off Gas Block, — 106899b 587x463 sha=db1d4cede40b
+  + Brownells Gun Cleaning products on SALE — 139422b 1180x1067 sha=fc6274c3f90f
+  + Primer Days @ Brownells — 152559b 1186x1059 sha=aa5257cddb84
+  + Fall Clearance Sale @ Brownells — 28157b 656x257 sha=ec9bff4f4a39
+  + Ruger Blackhawk 41 Magnum 6.5" 6 Rd Black - $659 — 18756b 705x330 sha=7d794c44ad7f
+  x TriStar Raptor ATAC 12 Gauge 20" 5 Rd Black Synt — image not downloadable
+  + Glock 43X 9mm 3.41" 15 Rd BRN COW PRINT - $550 — 13103b 456x377 sha=abe36b6c0160
+  + Tikka T3x Hunter 6.5 Creedmoor 22" Bolt Hardwood — 10597b 789x265 sha=b8df68a28f0d
+  + Federal Power Shok - 12 ga - 2-3/4" 00 Buck - 25 — 77184b 876x683 sha=bff186c3153f
+  x Heritage Settler 22 LR, 16.5" Barrel, Case Harde — image not downloadable
+  + BERETTA 92G Elite 9mm 4.7" 10rd - Black - $1679  — 10210b 325x332 sha=1fceb6778176
+  + Colt AR15 30RD 22LR Magazine AR22 M4 - $28.99 — 12193b 219x514 sha=6367e9891203
+  + FN FNP9M Compact 15 Rd 9mm Stainless Magazine -  — 9776b 207x443 sha=db6c298dd3ab
+  + Trijicon 2500003 SRO31x 5 MOA Dot Red CR2032 Lit — 24728b 620x425 sha=66551ca979c0
+  + Trijicon 100153 ACOG 3.5x 35mm Obj 28.90 ft @ 10 — 13879b 431x328 sha=2a308bd9ecc0
+  + Trijicon 200001 AccuPoint 3-9x 40mm Obj 33.80-11 — 8385b 440x260 sha=c939416f21d5
   x Glock 43x/48 15rd Magazine 9mm Black Steel - $29 — image not downloadable
-  + Ruger 10/22 Rifles Roundup — 38154b 819x342 sha=5a6c5126a24c
   x Heritage Rough Rider, .22lr, 16" Barrel, 6rd Cyl — image not downloadable
   x CRKT 7600K SLAG - $42 — image not downloadable
   x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
@@ -16,6 +24,6 @@
   x Vortex Crossfire II Solar 2 MOA Red Dot with Mot — image not downloadable
   x Vortex Diamondback 3-9x40 Riflescope (Dead-Hold  — image not downloadable
 
-fixed 7, failed 8  (46% success)
-distinct images: 7 across 7 deals
+fixed 13, failed 10  (56% success)
+distinct images: 13 across 13 deals
 PASS — no image shared between products
