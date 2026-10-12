@@ -2,23 +2,13 @@
   "ok": true,
   "steps": [
     {
-      "uploaded": "File:090813-M-8109S-013.jpg",
-      "license": "Public domain",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/3569c9fddeddcf2ce00f25499b33ea2aff6b3b5f-1920x1280.jpg"
-    },
-    {
       "uploaded": "File:AOW and SBR suppressed.jpg",
       "license": "CC0",
       "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/b479bdad3ffd3bba82bc5345672943ebd03f8636-1920x1440.jpg"
     },
     {
-      "uploaded": "File:ARTP 25 1- 12th LCT Executes a Platoon Sized Live-Fire Range (9231577).jpg",
-      "license": "Public domain",
-      "cdn": "https://cdn.sanity.io/images/vbnsqnkg/production/1813dd8fb08219afa840442ed0de4a514740980e-1920x1280.jpg"
-    },
-    {
       "mutate": {
-        "transactionId": "DJbfSLnRy3scRAYOi08ZKe",
+        "transactionId": "KNNaIaoxoS5ACNptKfrOjZ",
         "results": [
           {
             "operation": "update"
@@ -28,22 +18,11 @@
     }
   ],
   "candidates": [
-    "File:090813-M-8109S-013.jpg",
-    "File:AOW and SBR suppressed.jpg",
-    "File:ARTP 25 1- 12th LCT Executes a Platoon Sized Live-Fire Range (9231577).jpg",
-    "File:Accuracy International AXMC.jpg",
-    "File:Exercise DEFENDEREurope 20-Allied Spirit begins (6238469).jpg",
-    "File:Exercise Southern Jackaroo- trilateral support to ground maneuvers (6704802).jpg",
-    "File:Exercise Southern Jackaroo- trilateral support to ground maneuvers (6704804).jpg",
-    "File:Exercise Southern Jackaroo- trilateral support to ground maneuvers (6711159).jpg",
-    "File:Exercise Southern Jackaroo- trilateral support to ground maneuvers (6711169).jpg",
-    "File:Mangudai Challege 2024 (8717995).jpg",
-    "File:Senior Enlisted Leaders participate in Mangudai 2024 (8734163).jpg",
-    "File:Senior Enlisted Leaders participate in Mangudai 2024 (8734164).jpg"
+    "File:AOW and SBR suppressed.jpg"
   ],
   "verify": {
     "_id": "blog-4473-vs-form-4-suppressors-2026",
-    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/3569c9fddeddcf2ce00f25499b33ea2aff6b3b5f-1920x1280.jpg",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/b479bdad3ffd3bba82bc5345672943ebd03f8636-1920x1440.jpg",
     "readTime": 6,
     "slug": "4473-only-vs-form-4-suppressors-after-nfa-change",
     "socialScheduleAt": "2026-10-13T14:00:00Z",
