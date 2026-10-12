@@ -63,6 +63,7 @@ def main():
         result["error"] = "no token"; return finish()
     used = set(B.sanity_query('*[_type=="blogPost" && defined(imageUrl) && _id != "%s"].imageUrl' % BLOG_ID) or [])
     cands = B.commons_candidates(SEARCHES)
+    cands = [c for c in cands if re.search(r"suppress|silenc", c['title'] + ' ' + c.get('desc', ''), re.I) and not re.search(r'fire suppression|bambi', c['title'], re.I)]
     cands.sort(key=lambda c: (not re.search(r"suppress|silenc", c["title"] + c.get("desc", ""), re.I), not c["landscape"]))
     result["candidates"] = [c["title"] for c in cands[:12]]
     got = []
