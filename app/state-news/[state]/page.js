@@ -90,11 +90,13 @@ export async function generateMetadata({ params, searchParams }) {
   // zero articles, which Google reports as Soft 404. Keep them out of the index
   // and let the base state page carry the canonical.
   const isFilteredView = Boolean(searchParams?.cat) || (searchParams?.sort && searchParams.sort !== 'newest')
+  // A state with zero stories renders "No X firearms news indexed yet" — Google reports that as a Soft 404.
+  const hasStories = STATE_FEEDS[abbr] ? true : (await fetchStateNews(abbr).catch(() => [])).length > 0
   return {
     title: `${name} Firearms News`,
     description: `Latest firearms news, laws, and legislation for ${name}.`,
     alternates: { canonical: `https://www.downrangeco.com/state-news/${abbr.toLowerCase()}` },
-    ...(isFilteredView ? { robots: { index: false, follow: true } } : {}),
+    ...((isFilteredView || !hasStories) ? { robots: { index: false, follow: true } } : {}),
   }
 }
 

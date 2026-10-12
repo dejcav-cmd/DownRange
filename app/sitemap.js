@@ -155,9 +155,17 @@ export default async function sitemap() {
     }))
 
     // State news — linked from every /laws/[state] page; lowercase matches page canonical
+    const stateNewsCounts = {}
+    try {
+      const { fetchStateNews } = await import('../lib/stateNews')
+      await Promise.all(US_STATE_CODES.map(async code => {
+        try { stateNewsCounts[code] = (await fetchStateNews(code)).length } catch {}
+      }))
+    } catch {}
     const stateNewsUrls = [
       { url: `${BASE}/state-news`, priority: 0.6, changeFrequency: 'daily', lastModified: d(latestNews) },
-      ...US_STATE_CODES.map(code => ({
+      // Only states that actually have stories — empty ones are noindex (Soft 404 otherwise)
+      ...US_STATE_CODES.filter(code => stateNewsCounts[code] !== 0).map(code => ({
         url: `${BASE}/state-news/${code.toLowerCase()}`,
         priority: 0.6, changeFrequency: 'daily',
       })),

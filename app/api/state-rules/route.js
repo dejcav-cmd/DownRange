@@ -4,6 +4,7 @@ export const revalidate = 0
 import { NextResponse } from 'next/server'
 import { createClient } from '@sanity/client'
 import { STATE_SEED } from '@/lib/stateSeed'
+import { hasAwb } from '@/lib/awb'
 
 // ── State Restriction Rules API ───────────────────────────────────────────────
 // Returns restriction-relevant fields for all 50 states.
@@ -26,8 +27,7 @@ const sanity = createClient({
 
 function normAwb(awbStatus) {
   if (!awbStatus) return false
-  const s = String(awbStatus).toLowerCase()
-  return s === 'full' || s === 'partial' || s === 'true'
+  return hasAwb(awbStatus)
 }
 
 export async function GET() {
@@ -57,7 +57,7 @@ export async function GET() {
       // awbStatus: Sanity wins if set; else stateSeed
       const awb = sanity_.awbStatus != null
         ? normAwb(sanity_.awbStatus)
-        : (seed.awbStatus && seed.awbStatus !== 'none')
+        : hasAwb(seed.awbStatus)
 
       // suppressors: Sanity wins if set; else stateSeed (true = legal, false = banned)
       const suppressorLegal = sanity_.suppressors != null
@@ -95,7 +95,7 @@ export async function GET() {
     const rules = {}
     for (const [abbr, seed] of Object.entries(STATE_SEED)) {
       const magLimit = seed.magLimit ?? null
-      const awb = seed.awbStatus && seed.awbStatus !== 'none'
+      const awb = hasAwb(seed.awbStatus)
       const noSuppressor = seed.suppressors === false
       if (magLimit || awb || noSuppressor) {
         rules[abbr] = { name: seed.name, magLimit, awb, noSuppressor }

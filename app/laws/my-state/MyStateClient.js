@@ -1,5 +1,6 @@
 'use client'
 import { useState, useEffect } from 'react'
+import { hasAwb } from '../../../lib/awb'
 import Link from 'next/link'
 import PageHero from '../../../components/home/PageHero'
 import { useSearchParams } from 'next/navigation'
@@ -135,7 +136,7 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
 
               <div style={{ fontFamily: S.mono, fontSize: 10, color: '#C8922A', letterSpacing: '0.15em', marginTop: 32, marginBottom: 20, paddingBottom: 8, borderBottom: '1px solid #1a1a1a' }}>RESTRICTIONS</div>
               <Row label="Magazine Limit" value={p.magLimit ? `${p.magLimit} rounds max` : 'None'} good={!p.magLimit} />
-              <Row label="Assault Weapon Ban" value={p.awbStatus === 'none' || !p.awbStatus ? 'None' : p.awbStatus} good={p.awbStatus === 'none' || !p.awbStatus} />
+              <Row label="Assault Weapon Ban" value={!hasAwb(p.awbStatus) ? 'None' : p.awbStatus} good={!hasAwb(p.awbStatus)} />
               <Row label="Suppressors" value={p.suppressors ? 'Legal (NFA rules apply)' : 'Restricted'} good={!!p.suppressors} />
               <Row label="Red Flag Law" value={p.redFlagLaw ? 'Yes (ERPO)' : 'No'} good={!p.redFlagLaw} />
 
@@ -154,7 +155,7 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
                   { label: 'Freedom Rating', value: p.rating || 'N/A', color: p.rating?.startsWith('A') ? '#34D399' : p.rating?.startsWith('B') ? '#60A5FA' : p.rating?.startsWith('C') ? '#FBBF24' : '#EF4444' },
                   { label: 'Const. Carry', value: p.constitutionalCarry ? 'YES' : 'NO', color: p.constitutionalCarry ? '#34D399' : '#EF4444' },
                   { label: 'Mag Limit', value: p.magLimit ? `${p.magLimit}rd` : 'None', color: p.magLimit ? '#EF4444' : '#34D399' },
-                  { label: 'AWB', value: p.awbStatus === 'none' || !p.awbStatus ? 'None' : 'Yes', color: p.awbStatus && p.awbStatus !== 'none' ? '#EF4444' : '#34D399' },
+                  { label: 'AWB', value: !hasAwb(p.awbStatus) ? 'None' : 'Yes', color: hasAwb(p.awbStatus) ? '#EF4444' : '#34D399' },
                   { label: 'Red Flag', value: p.redFlagLaw ? 'Yes' : 'No', color: p.redFlagLaw ? '#EF4444' : '#34D399' },
                   { label: 'Honors', value: `${recip.honorsStates.length} states`, color: '#60A5FA' },
                 ].map(item => (

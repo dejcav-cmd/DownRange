@@ -1,4 +1,4 @@
-import { notFound, permanentRedirect } from 'next/navigation'
+import { hasAwb } from '../../../lib/awb'
 import Masthead from '../../../components/layout/Masthead'
 import Footer from '../../../components/layout/Footer'
 import PageHero from '../../../components/home/PageHero'
@@ -74,7 +74,7 @@ export default async function StateLawPage({ params }) {
     { question: `Do I need a permit to carry a concealed firearm in ${stateName}?`, answer: data.constitutionalCarry ? `No. ${stateName} is a constitutional carry state — you can carry concealed without a permit if you're legally allowed to possess a firearm. A permit is still available and useful for reciprocity.` : `Yes. ${stateName} requires a ${data.ccwPermit || 'concealed carry permit'} to carry a concealed handgun.` },
     { question: `What is the magazine capacity limit in ${stateName}?`, answer: data.magLimit ? `${stateName} limits magazine capacity to ${data.magLimit} rounds. Magazines over this limit cannot be manufactured, sold, or imported into the state.` : `There is no magazine capacity limit in ${stateName}.` },
     { question: `Is there a waiting period to buy a gun in ${stateName}?`, answer: data.waitPeriod > 0 ? `Yes. ${stateName} has a ${data.waitPeriod}-day waiting period on certain firearm purchases.` : `${stateName} does not have a state waiting period on firearm purchases.` },
-    { question: `Are assault weapons banned in ${stateName}?`, answer: data.awbStatus && data.awbStatus !== 'none' ? `${stateName} has an assault weapons ban in effect. This restricts semi-automatic firearms with certain features. Always check current statute for specifics.` : `${stateName} does not have a state-level assault weapons ban.` },
+    { question: `Are assault weapons banned in ${stateName}?`, answer: hasAwb(data.awbStatus) ? `${stateName} has an assault weapons ban in effect. This restricts semi-automatic firearms with certain features. Always check current statute for specifics.` : `${stateName} does not have a state-level assault weapons ban.` },
     { question: `Does ${stateName} have a red flag law?`, answer: data.redFlagLaw ? `Yes. ${stateName} has an Extreme Risk Protection Order (ERPO) law that allows courts to temporarily remove firearms from individuals deemed a risk.` : `No. ${stateName} does not have a red flag or ERPO law.` },
   ]
 
@@ -115,7 +115,7 @@ export default async function StateLawPage({ params }) {
 
             <div style={{ fontFamily:S.mono, fontSize:10, color:'#C8922A', letterSpacing:'0.15em', margin:'32px 0 16px', paddingBottom:8, borderBottom:'2px solid #C8922A' }}>RESTRICTIONS</div>
             <Row label="Magazine Limit" value={data.magLimit ? `${data.magLimit} rounds max` : 'None'} good={!data.magLimit} />
-            <Row label="Assault Weapon Ban" value={!data.awbStatus || data.awbStatus === 'none' ? 'None' : data.awbStatus} good={!data.awbStatus || data.awbStatus === 'none'} />
+            <Row label="Assault Weapon Ban" value={!hasAwb(data.awbStatus) ? 'None' : data.awbStatus} good={!hasAwb(data.awbStatus)} />
             <Row label="Suppressors" value={data.suppressors ? 'Legal (NFA rules apply)' : 'Restricted / Prohibited'} good={!!data.suppressors} />
             <Row label="Red Flag Law" value={data.redFlagLaw ? 'Yes (ERPO)' : 'No'} good={!data.redFlagLaw} />
 
