@@ -1,0 +1,262 @@
+{
+  "rss_status": 200,
+  "rss_items": 478,
+  "rss_sample_fields": [
+    "title",
+    "link",
+    "description",
+    "comments",
+    "pubDate",
+    "guid"
+  ],
+  "rss_first_item": "\n <title>Coupon for store Blackstone Shooting Sports Tuesday, October 13, 2026</title>\n <link>https://gun.deals/content/coupon-store-blackstone-shooting-sportstuesday-october-13-2026</link>\n <description><![CDATA[ Coupon code: NFA, Type of discount: Free Shipping on NFA Items (Some Excl. May Appply)]]></description>\n <comments>https://gun.deals/content/coupon-store-blackstone-shooting-sportstuesday-october-13-2026#comments</comments>\n <pubDate>Tue, 13 Oct 2026 19:17:13 +0000</pubDate>\n <dc:creator>Bruce_J</dc:creator>\n <guid isPermaLink=\"false\">1562131 at https://gun.deals</guid>\n",
+  "page_robots.txt": {
+    "status": 200,
+    "len": 2201,
+    "head": "#\n# robots.txt\n#\n# This file is to prevent the crawling and indexing of certain parts\n# of your site by web crawlers and spiders run by sites like Yahoo!\n# and Google. By telling these \"robots\" where not to go on your site,\n# you save bandwidth and server resources.\n#\n# This file will be ignored unless it is at the root of your host:\n# Used:    http://example.com/robots.txt\n# Ignored: http://example.com/site/robots.txt\n#\n# For more information about the robots.txt standard, see:\n# http://www.robotstxt.org/robotstxt.html\n#\n# For syntax checking, see:\n# http://www.frobee.com/robots-txt-check\n\nUser-agent: *\nDisallow: /cdn-cgi/rum\n# Directories\nDisallow: /includes/\nDisallow: /misc/\nDisallow: /modules/\nDisallow: /profiles/\nDisallow: /scripts/\nDisallow: /themes/\n# Files\nDisallow: /CHANGELOG.txt\nDisallow: /cron.php\nDisallow: /INSTALL.mysql.txt\nDisallow: /INSTALL.pgsql.txt\nDisallow: /install.php\nDisallow: /INSTALL.txt\nDisallow: /LICENSE.txt\nDisallow: /MAINTAINERS.txt\nDisallow: /update.php\nDisallow: /UPGRADE.txt\nDisallow: /xmlrpc.php\n# Paths (clean URLs)\nDisallow: /admin/\nDisallow: /comment/reply/\nDisallow: /filter/tips/\nDisallow: /logout/\nDisallow: /node/add/\nDisallow: /user/register/\nDisa"
+  },
+  "page_terms": {
+    "status": 404,
+    "len": 20000,
+    "head": " (window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:true},ajax:{deny_list:[\"bam.nr-data.net\"]},distributed_tracing:{enabled:true}};(window.NREUM||(NREUM={})).loader_config={agentID:\"524839\",accountID:\"150966\",trustKey:\"150966\",xpid:\"VQMHWFBVGwYCUFZWBw==\",licenseKey:\"a30a78426f\",applicationID:\"524740\",browserID:\"524839\"};;/*! For license information please see nr-loader-full-1.323.0.min.js.LICENSE.txt */ (()=>{var e={8122(e,t,r){\"use strict\";r.d(t,{a:()=>i});var n=r(944);function i(e,t){try{if(!e||\"object\"!=typeof e)return(0,n.R)(3);if(!t||\"object\"!=typeof t)return(0,n.R)(4);const r=Obje"
+  },
+  "page_terms-of-service": {
+    "status": 404,
+    "len": 20000,
+    "head": " (window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:true},ajax:{deny_list:[\"bam.nr-data.net\"]},distributed_tracing:{enabled:true}};(window.NREUM||(NREUM={})).loader_config={agentID:\"524839\",accountID:\"150966\",trustKey:\"150966\",xpid:\"VQMHWFBVGwYCUFZWBw==\",licenseKey:\"a30a78426f\",applicationID:\"524740\",browserID:\"524839\"};;/*! For license information please see nr-loader-full-1.323.0.min.js.LICENSE.txt */ (()=>{var e={8122(e,t,r){\"use strict\";r.d(t,{a:()=>i});var n=r(944);function i(e,t){try{if(!e||\"object\"!=typeof e)return(0,n.R)(3);if(!t||\"object\"!=typeof t)return(0,n.R)(4);const r=Obje"
+  },
+  "page_about": {
+    "status": 404,
+    "len": 20000,
+    "head": " (window.NREUM||(NREUM={})).init={privacy:{cookies_enabled:true},ajax:{deny_list:[\"bam.nr-data.net\"]},distributed_tracing:{enabled:true}};(window.NREUM||(NREUM={})).loader_config={agentID:\"524839\",accountID:\"150966\",trustKey:\"150966\",xpid:\"VQMHWFBVGwYCUFZWBw==\",licenseKey:\"a30a78426f\",applicationID:\"524740\",browserID:\"524839\"};;/*! For license information please see nr-loader-full-1.323.0.min.js.LICENSE.txt */ (()=>{var e={8122(e,t,r){\"use strict\";r.d(t,{a:()=>i});var n=r(944);function i(e,t){try{if(!e||\"object\"!=typeof e)return(0,n.R)(3);if(!t||\"object\"!=typeof t)return(0,n.R)(4);const r=Obje"
+  },
+  "deals": [
+    {
+      "deal_page": "https://gun.deals/content/coupon-store-blackstone-shooting-sportstuesday-october-13-2026",
+      "status": 200,
+      "title": "Coupon for store Blackstone Shooting SportsTuesday, October 13, 2026 | gun.deals",
+      "candidate_outbound": [
+        "/users/goosemagoo",
+        "https://www.amazon.com/dp/B0794LFXDJ?tag=gunpl-20",
+        "/content/affiliate-program"
+      ],
+      "external_links": [
+        "https://www.youtube.com/channel/UC46n7nnw8S-eGa_gXPF51Hw/videos",
+        "https://twitter.com/_gundeals",
+        "https://www.beretta.com/en-us/rebates",
+        "https://www.beretta.com/en-us/rebates",
+        "https://savagearms.com/content/promotions-and-rebates",
+        "https://savagearms.com/content/promotions-and-rebates",
+        "https://www.springfield-armory.com/gear-up-2026-model-2020/",
+        "https://rapid-rebates.com/Lupo",
+        "https://rapid-rebates.com/Franchi",
+        "https://normausa.com/rebate/"
+      ],
+      "hops": [
+        {
+          "url": "https://gun.deals/users/goosemagoo",
+          "status": 200,
+          "location": ""
+        },
+        {
+          "js_or_meta_redirect": "/content/apps"
+        }
+      ]
+    },
+    {
+      "deal_page": "https://gun.deals/product/strategic-sciences-mdsd-556-00-otb-12x28-direct-thread-hybrid-muzzle-device-brake-flash-hide",
+      "status": 200,
+      "title": "Strategic Sciences MD+SD 5.56 0.0 OTB 1/2x28 Direct Thread Hybrid Muzzle Device - Brake/ Flash Hider/ Suppressor, Black ",
+      "candidate_outbound": [
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2F&amp;title=",
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fstrategic-sciences-mdsd-556-00-otb-12x28-direct-thread-hybrid-muzzle-device-brake-flash-hide&amp;description=Strategic%20Sciences%20MD%2BSD%205.56%200.0%20OTB%201%2F2x28%20Direct%20Thread%20Hybrid%20Muzzle%20Device%20-%20Brake%2F%20Flash%20Hider%2F%20Suppressor%2C%20Black%20%242093%2099%20%28FREE%20Shipping%20on%20Firearms%29&amp;amp;media=https%3A%2F%2Fgun.deals%2Fcdn-cgi%2Fimage%2Fw%3D1200%2Ch%3D630%2Cf%3Dauto%2Fsites%2Fdefault%2Ffiles%2Fstrategic-sciences-md-%2B-sd-556-00-otb-1-2x28-direct-thread-suppressor-black.png&amp;amp;summary=Strategic%20Sciences%20MD%2BSD%205.56%200.0%20OTB%201%2F2x28%20Direct%20Thread%20Hybrid%20Muzzle%20Device%20-%20Brake%2F%20Flash%20Hider%2F%20Suppressor%2C%20Black%20%242093%2099%20%28FREE%20Shipping%20on%20Firearms%29",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fstrategic-sciences-mdsd-556-00-otb-12x28-direct-thread-hybrid-muzzle-device-brake-flash-hide&amp;title=Strategic%20Sciences%20MD%2BSD%205.56%200.0%20OTB%201%2F2x28%20Direct%20Thread%20Hybrid%20Muzzle%20Device%20-%20Brake%2F%20Flash%20Hider%2F%20Suppressor%2C%20Black%20%242093%2099%20%28FREE%20Shipping%20on%20Firearms%29",
+        "https://gun.deals/merchant-deals/238b3112c365f615344cef761132516b66a45d8c?slot=1",
+        "https://gun.deals/merchant-deals/602428826a50f99f01c2b5d94a1cc2a2568c3447?slot=2",
+        "https://gun.deals/merchant-deals/0deefb1ed210321b3e70b32854e6c41c0fca7282?slot=3",
+        "https://schema.org/OutOfStock"
+      ],
+      "external_links": [
+        "https://www.youtube.com/channel/UC46n7nnw8S-eGa_gXPF51Hw/videos",
+        "https://twitter.com/_gundeals",
+        "https://schema.org/OutOfStock",
+        "https://www.beretta.com/en-us/rebates",
+        "https://www.beretta.com/en-us/rebates",
+        "https://savagearms.com/content/promotions-and-rebates",
+        "https://savagearms.com/content/promotions-and-rebates",
+        "https://www.springfield-armory.com/gear-up-2026-model-2020/",
+        "https://rapid-rebates.com/Lupo",
+        "https://rapid-rebates.com/Franchi"
+      ],
+      "hops": [
+        {
+          "url": "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 308,
+          "location": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary="
+        },
+        {
+          "url": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 200,
+          "location": ""
+        }
+      ]
+    },
+    {
+      "deal_page": "https://gun.deals/product/baofeng-uv-5r-136-174400-480-mhz-dual-band-dtmf-ctcss-dcs-fm-ham-two-way-radio-free-shipping",
+      "status": 200,
+      "title": "BaoFeng UV-5R Dual Band Two Way Radio 144-148MHz & 420-450MHz - $16.99 + FREE Shipping | gun.deals",
+      "candidate_outbound": [
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2F&amp;title=",
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fbaofeng-uv-5r-136-174400-480-mhz-dual-band-dtmf-ctcss-dcs-fm-ham-two-way-radio-free-shipping&amp;description=BaoFeng%20UV-5R%20Dual%20Band%20Two%20Way%20Radio%20144-148MHz%20%26amp%3B%20420-450MHz%20-%20%2416.99%20%2B%20FREE%20Shipping&amp;amp;media=https%3A%2F%2Fgun.deals%2Fcdn-cgi%2Fimage%2Fw%3D1200%2Ch%3D630%2Cf%3Dauto%2Fsites%2Fdefault%2Ffiles%2FScreenshot%25202026-07-22%2520at%252007.52.07.png&amp;amp;summary=BaoFeng%20UV-5R%20Dual%20Band%20Two%20Way%20Radio%20144-148MHz%20%26amp%3B%20420-450MHz%20-%20%2416.99%20%2B%20FREE%20Shipping",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fbaofeng-uv-5r-136-174400-480-mhz-dual-band-dtmf-ctcss-dcs-fm-ham-two-way-radio-free-shipping&amp;title=BaoFeng%20UV-5R%20Dual%20Band%20Two%20Way%20Radio%20144-148MHz%20%26amp%3B%20420-450MHz%20-%20%2416.99%20%2B%20FREE%20Shipping",
+        "https://www.amazon.com/dp/B007H4VT7A?tag=apps47-20&amp;linkCode=osi&amp;th=1&amp;psc=1",
+        "/external-link?url=http%3A%2F%2Fecx.images-amazon.com%2Fimages%2FI%2F91qBzKP%252BndL._SL1500_.jpg",
+        "/external-link?url=http%3A%2F%2Fwww.amazon.com%2FBaofeng-UV5RA-136-174-Dual-Band-Transceiver%2Fdp%2FB009MAKWC0%2Fref%3Dpd_cp_e_3",
+        "/external-link?url=http%3A%2F%2FUV5R.net"
+      ],
+      "external_links": [
+        "https://www.youtube.com/channel/UC46n7nnw8S-eGa_gXPF51Hw/videos",
+        "https://twitter.com/_gundeals",
+        "https://www.amazon.com/dp/B007H4VT7A?tag=apps47-20&amp;linkCode=osi&amp;th=1&amp;psc=1",
+        "https://schema.org/InStock",
+        "https://www.beretta.com/en-us/rebates",
+        "https://www.beretta.com/en-us/rebates",
+        "https://savagearms.com/content/promotions-and-rebates",
+        "https://savagearms.com/content/promotions-and-rebates",
+        "https://www.springfield-armory.com/gear-up-2026-model-2020/",
+        "https://rapid-rebates.com/Lupo"
+      ],
+      "hops": [
+        {
+          "url": "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 308,
+          "location": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary="
+        },
+        {
+          "url": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 200,
+          "location": ""
+        }
+      ]
+    },
+    {
+      "deal_page": "https://gun.deals/product/magpul-moe-sl-carbine-stock-mil-spec-black-ar-15-3499",
+      "status": 200,
+      "title": "Magpul MOE SL Carbine Stock Mil-Spec - Black, AR-15 - $34.99 | gun.deals",
+      "candidate_outbound": [
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2F&amp;title=",
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fmagpul-moe-sl-carbine-stock-mil-spec-black-ar-15-3499&amp;description=Magpul%20MOE%20SL%20Carbine%20Stock%20Mil-Spec%20-%20Black%2C%20AR-15%20-%20%2434.99&amp;amp;media=https%3A%2F%2Fgun.deals%2Fcdn-cgi%2Fimage%2Fw%3D1200%2Ch%3D630%2Cf%3Dauto%2Fsites%2Fdefault%2Ffiles%2FMagpul-MOE-SL-Carbine-Stock.jpg&amp;amp;summary=Magpul%20MOE%20SL%20Carbine%20Stock%20Mil-Spec%20-%20Black%2C%20AR-15%20-%20%2434.99",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fmagpul-moe-sl-carbine-stock-mil-spec-black-ar-15-3499&amp;title=Magpul%20MOE%20SL%20Carbine%20Stock%20Mil-Spec%20-%20Black%2C%20AR-15%20-%20%2434.99",
+        "https://gun.deals/merchant-deals/99d0532f0b9de665ac3ba58e673e605f699d8153?slot=1",
+        "https://gun.deals/merchant-deals/98c9b8e8138965202a856ffe1b9802023159825e?slot=2",
+        "https://gun.deals/merchant-deals/e3697585cbf05dc4842b18c7f0eb35f0b37315a6?slot=3",
+        "https://gun.deals/merchant-deals/2061e04a8cb088c5754b041de40a22ea630aa690?slot=4"
+      ],
+      "external_links": [
+        "https://www.youtube.com/channel/UC46n7nnw8S-eGa_gXPF51Hw/videos",
+        "https://twitter.com/_gundeals",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock"
+      ],
+      "hops": [
+        {
+          "url": "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 308,
+          "location": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary="
+        },
+        {
+          "url": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 200,
+          "location": ""
+        }
+      ]
+    },
+    {
+      "deal_page": "https://gun.deals/product/cci-5203-blazer-brass-9mm-147-gr-fmj-50-rounds-1249",
+      "status": 200,
+      "title": "CCI 5203 Blazer Brass 9mm 147 GR FMJ 50 Rounds - $12.49 | gun.deals",
+      "candidate_outbound": [
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2F&amp;title=",
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fcci-5203-blazer-brass-9mm-147-gr-fmj-50-rounds-1249&amp;description=CCI%205203%20Blazer%20Brass%209mm%20147%20GR%20FMJ%2050%20Rounds%20-%20%2412.49&amp;amp;media=https%3A%2F%2Fgun.deals%2Fcdn-cgi%2Fimage%2Fw%3D1200%2Ch%3D630%2Cf%3Dauto%2Fsites%2Fdefault%2Ffiles%2Fjo05640xhgggf.jpg&amp;amp;summary=CCI%205203%20Blazer%20Brass%209mm%20147%20GR%20FMJ%2050%20Rounds%20-%20%2412.49",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fcci-5203-blazer-brass-9mm-147-gr-fmj-50-rounds-1249&amp;title=CCI%205203%20Blazer%20Brass%209mm%20147%20GR%20FMJ%2050%20Rounds%20-%20%2412.49",
+        "https://gun.deals/merchant-deals/bd3892ca607d4646bd941c614c2d1273c2507391?slot=1",
+        "https://gun.deals/merchant-deals/93d05a1ee6c94971741ac99ff3c5211232cf81d9?slot=2",
+        "https://gun.deals/merchant-deals/be480378089903abfd99662f4b975f7681496085?slot=3",
+        "https://gun.deals/merchant-deals/c16abd56a01fd21111dfc984b083c348caf5b1a4?slot=4"
+      ],
+      "external_links": [
+        "https://www.youtube.com/channel/UC46n7nnw8S-eGa_gXPF51Hw/videos",
+        "https://twitter.com/_gundeals",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock"
+      ],
+      "hops": [
+        {
+          "url": "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 308,
+          "location": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary="
+        },
+        {
+          "url": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 200,
+          "location": ""
+        }
+      ]
+    },
+    {
+      "deal_page": "https://gun.deals/product/mossberg-930-tactical-12-ga-3-185-barrel-8rd-black-55899",
+      "status": 200,
+      "title": "Mossberg 930 Tactical 12 Ga 3\" 18.5\" barrel 8rd Black - $558.99 ($14.99 flat rate shipping) | gun.deals",
+      "candidate_outbound": [
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2F&amp;title=",
+        "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fmossberg-930-tactical-12-ga-3-185-barrel-8rd-black-55899&amp;description=Mossberg%20930%20Tactical%2012%20Ga%203%26quot%3B%2018.5%26quot%3B%20barrel%208rd%20Black%20-%20%24558.99%20%28%2414.99%20flat%20rate%20shipping%29&amp;amp;media=https%3A%2F%2Fgun.deals%2Fcdn-cgi%2Fimage%2Fw%3D1200%2Ch%3D630%2Cf%3Dauto%2Fsites%2Fdefault%2Ffiles%2F015813853224.jpg&amp;amp;summary=Mossberg%20930%20Tactical%2012%20Ga%203%26quot%3B%2018.5%26quot%3B%20barrel%208rd%20Black%20-%20%24558.99%20%28%2414.99%20flat%20rate%20shipping%29",
+        "http://www.reddit.com/submit?url=https%3A%2F%2Fgun.deals%2Fproduct%2Fmossberg-930-tactical-12-ga-3-185-barrel-8rd-black-55899&amp;title=Mossberg%20930%20Tactical%2012%20Ga%203%26quot%3B%2018.5%26quot%3B%20barrel%208rd%20Black%20-%20%24558.99%20%28%2414.99%20flat%20rate%20shipping%29",
+        "https://gun.deals/merchant-deals/d198372d88944a78b116dc2688e623ec622b8e57?slot=1",
+        "https://gun.deals/merchant-deals/f55dca821e0e8e7e5457157a22d510293a179fde?slot=2",
+        "https://gun.deals/merchant-deals/34f693073e6e1f0217eae149af47e70120816ab7?slot=3",
+        "https://schema.org/OutOfStock"
+      ],
+      "external_links": [
+        "https://www.youtube.com/channel/UC46n7nnw8S-eGa_gXPF51Hw/videos",
+        "https://twitter.com/_gundeals",
+        "https://schema.org/InStock",
+        "https://schema.org/InStock",
+        "https://schema.org/OutOfStock",
+        "https://schema.org/OutOfStock",
+        "https://schema.org/OutOfStock",
+        "https://schema.org/OutOfStock",
+        "https://schema.org/OutOfStock",
+        "https://schema.org/OutOfStock"
+      ],
+      "hops": [
+        {
+          "url": "https://pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 308,
+          "location": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary="
+        },
+        {
+          "url": "https://www.pinterest.com/pin/create/link/?url=https%3A%2F%2Fgun.deals%2F&amp;description=&amp;amp;summary=",
+          "status": 200,
+          "location": ""
+        }
+      ]
+    }
+  ]
+}
