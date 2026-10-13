@@ -95,6 +95,8 @@ export default function RootLayout({ children }) {
     <html lang="en" data-theme="dark">
       <head>
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ROOT_SCHEMA) }} />
+        {/* AvantLink affiliate verification — remove after approval */}
+        <script type="text/javascript" src="https://classic.avantlink.com/affiliate_app_confirm.php?mode=js&authResponse=10b37297371e89b008e7a9c39958b54e6340e46a" />
         <link rel="alternate" type="application/rss+xml" title="DownRange — All Content" href="https://www.downrangeco.com/feed.xml" />
         <link rel="alternate" type="application/rss+xml" title="DownRange — Firearms News" href="https://www.downrangeco.com/feeds/news" />
         <link rel="alternate" type="application/rss+xml" title="DownRange — New Gun Releases" href="https://www.downrangeco.com/feeds/releases" />
