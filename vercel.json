@@ -1,8 +1,12 @@
 {
   "crons": [
     {
-      "path": "/api/cron/legal-radar",
+      "path": "/api/cron/legal-radar?mode=light",
       "schedule": "20 6 * * *"
+    },
+    {
+      "path": "/api/cron/legal-radar?mode=full",
+      "schedule": "40 6 * * 1"
     },
     {
       "path": "/api/agent?feed=news",

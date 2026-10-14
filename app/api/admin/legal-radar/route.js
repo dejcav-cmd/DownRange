@@ -22,7 +22,7 @@ export async function GET(req) {
   const [docs, state, runs] = await Promise.all([
     sanity.fetch(`*[_type == "legalCase"]{ ..., "inSanity": true }`),
     sanity.fetch(`*[_id == "legal-radar-state"][0]{ lastRunAt, mode, result }`).catch(() => null),
-    sanity.fetch(`*[_type == "cronRun" && jobId == "legal-radar"] | order(at desc)[0...12]{ at, status, ms, trigger, details, error }`).catch(() => []),
+    sanity.fetch(`*[_type == "cronRun" && jobId in ["legal-radar","legal-radar-weekly"]] | order(at desc)[0...12]{ at, status, ms, trigger, details, error }`).catch(() => []),
   ])
   const map = new Map(SEED.map(s => [s._id, { ...s, inSanity: false }]))
   for (const d of docs) map.set(d._id, { ...(map.get(d._id) || {}), ...d })

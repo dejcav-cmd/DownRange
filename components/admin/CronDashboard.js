@@ -204,7 +204,7 @@ export default function CronDashboard({ adminKey }) {
   )
 
   const jobs     = data?.jobs || []
-  const groups   = ['Content', 'System', 'Outreach']
+  const groups   = ['Content', 'System', 'Outreach', 'Social']
   const failing  = jobs.filter(j => j.status === 'failed' || j.status === 'overdue')
   const running  = jobs.filter(j => j.status === 'running')
   const healthy  = jobs.filter(j => j.status === 'success')

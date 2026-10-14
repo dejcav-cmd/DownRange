@@ -5,13 +5,13 @@ import { timeAgo } from '../../lib/pressUi'
 const SIZE = 'w=900&auto=format&q=80'
 const sized = (u, lead) => (u && u.includes('cdn.sanity.io') ? u + (u.includes('?') ? '&' : '?') + (lead ? 'w=1400&auto=format&q=80' : SIZE) : u)
 
-function Card({ href, external, lead, img, alt, tag, rank, title, summary, left, right, priority }) {
+export function Card({ href, external, lead, img, alt, tag, rank, title, summary, left, right, priority, pos }) {
   const props = external ? { target: '_blank', rel: 'noopener nofollow sponsored' } : {}
   const Tag = external ? 'a' : Link
   return (
     <Tag href={href} className={'hr-card' + (lead ? ' hr-card-lead' : '')} {...props}>
       <div className="hr-img">
-        <img src={sized(img, lead)} alt={alt || title} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} decoding="async" />
+        <img src={sized(img, lead)} alt={alt || title} loading={priority ? 'eager' : 'lazy'} fetchPriority={priority ? 'high' : undefined} decoding="async" style={pos ? { objectPosition: pos } : undefined} />
         {tag ? <span className="hr-tag">{tag}</span> : null}
         {rank ? <span className="hr-rank">{rank}</span> : null}
       </div>
@@ -24,7 +24,7 @@ function Card({ href, external, lead, img, alt, tag, rank, title, summary, left,
   )
 }
 
-function Section({ id, title, accent, sub, allHref, allLabel, children }) {
+export function Section({ id, title, accent, sub, allHref, allLabel, children }) {
   return (
     <section className="hr-sec" aria-labelledby={id}>
       <div className="container">

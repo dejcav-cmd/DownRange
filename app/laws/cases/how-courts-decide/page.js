@@ -17,7 +17,7 @@ const STEPS = [
   ['A petition goes to the Supreme Court', 'The losing side asks the justices to take the case. It is called a petition for certiorari.'],
   ['Conference', 'The justices vote privately. Four votes are enough to take a case. A petition can be granted, denied, held for another case, or relisted.'],
   ['Briefs and argument', 'If granted, both sides file written briefs and argue for about an hour. Outside groups file friend-of-the-court briefs.'],
-  ['The opinion', 'The Court issues its decision, almost always by the end of June. It then controls every court in the country.'],
+  ['The opinion', 'The Court issues its decision, usually by the end of June or the first days of July. It then controls every court in the country.'],
 ]
 
 export default function Page() {
@@ -28,6 +28,7 @@ export default function Page() {
       sub="Three Supreme Court rulings and one test explain almost every case on this radar.">
       <div className="cx-block"><h2>The three rulings that matter</h2>
         <dl className="cx-terms">
+          <div><dt>McDonald (2010)</dt><dd>The Supreme Court case (5-4) that held the Second Amendment applies to state and local governments, not just federal law.</dd></div>
           {['heller', 'bruen', 'rahimi'].map(k => <div key={k}><dt>{GLOSSARY[k][0]}</dt><dd>{GLOSSARY[k][1]}</dd></div>)}
         </dl>
       </div>
@@ -35,8 +36,8 @@ export default function Page() {
       <div className="cx-plain">
         <h2>The test, in plain English</h2>
         <div className="tag">What judges ask after Bruen</div>
-        <p style={{ marginBottom: 12 }}><b>1. Does the Second Amendment cover what you were doing?</b> Carrying a handgun, owning a rifle and buying a magazine are the sort of conduct the text covers. If not, the law is fine.</p>
-        <p style={{ marginBottom: 12 }}><b>2. If it does, can the government show the law fits our history?</b> The government has to point to older laws that are a fair match for the modern one in why they were passed and how much they burden the right. A close match is not required, but a loose one is not enough either.</p>
+        <p style={{ marginBottom: 12 }}><b>1. Does the Second Amendment cover what you were doing?</b> Carrying a handgun for self-defense clearly does. Whether other things are covered, such as AR-15-style rifles or high-capacity magazines, is being fought out in court, and the Supreme Court has agreed to hear two assault-weapon cases. If the text does not cover the conduct, the Second Amendment does not protect it.</p>
+        <p style={{ marginBottom: 12 }}><b>2. If it does, can the government show the law fits our history?</b> The government has to point to older laws that are relevantly similar to the modern one in how and why they burden the right. A close match is not required, but a loose one is not enough either.</p>
         <p><b>3. Cost and benefit does not count.</b> Before Bruen, courts weighed a law's public-safety benefit against its burden. The Court threw that out. A law that seems sensible can still fail if history does not support it.</p>
       </div>
 
@@ -52,7 +53,7 @@ export default function Page() {
         </dl>
       </div>
 
-      <p className="cx-sum">Ready to see the cases? Start with the <Link href="/laws/cases/supreme-court" style={{ color: 'var(--gold)' }}>Supreme Court docket</Link> or find <Link href="/laws/cases" style={{ color: 'var(--gold)' }}>your state</Link>. This guide is general information, not legal advice.</p>
+      <p className="cx-sum">Ready to see the cases? Start with the <Link href="/laws/cases/supreme-court" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>Supreme Court docket</Link> or find <Link href="/laws/cases" style={{ color: 'var(--gold)', textDecoration: 'underline' }}>your state</Link>. This guide is general information, not legal advice.</p>
     </CasesShell>
   )
 }

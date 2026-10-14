@@ -50,56 +50,28 @@ function isFirearmRelated(url, alt) {
 
 async function checkBrokenLinks() {
   const broken = []
-  
-  // Check articles for broken/missing image URLs
+
+  // Article images: REPORT ONLY. This job never writes images. Real-image repair belongs to the
+  // image-fix and fix-placeholder-images crons (real photos only, no fallback art).
   try {
     const articles = await sanity.fetch(`
-      *[_type == "newsArticle" && approved == true] | order(publishedAt desc) [0...100] {
-        _id, title, imageUrl, imageAlt, heroImage, source, publishedAt
+      *[_type == "newsArticle" && defined(slug.current) && defined(publishedAt)] | order(publishedAt desc) [0...100] {
+        _id, title, imageUrl, "heroUrl": heroImage.asset->url
       }
     `)
-
     let missingImages = 0
-    let nonFirearmImages = 0
-    const fixes = []
-
-    for (const article of articles) {
-      const hasImage = article.imageUrl || article.heroImage?.asset?.url
-      const imgUrl   = article.imageUrl || article.heroImage?.asset?.url || ''
-      const imgAlt   = article.imageAlt || article.title || ''
-
-      if (!hasImage) {
-        missingImages++
-        // Auto-assign a relevant fallback based on title keywords
-        const fallback = getFirearmFallback(article.title)
-        if (fallback && process.env.SANITY_API_TOKEN) {
-          try {
-            await sanity.patch(article._id).set({ imageUrl: fallback, imageAlt: article.title }).commit()
-            fixes.push({ id: article._id, title: article.title.slice(0,60), fix: 'assigned fallback image' })
-          } catch (e) {
-            fixes.push({ id: article._id, title: article.title.slice(0,60), fix: `failed: ${e.message}` })
-          }
-        }
-      } else if (imgUrl && !isFirearmRelated(imgUrl, imgAlt)) {
-        nonFirearmImages++
-        // Replace with firearm-relevant fallback
-        const fallback = getFirearmFallback(article.title)
-        if (fallback && fallback !== imgUrl && process.env.SANITY_API_TOKEN) {
-          try {
-            await sanity.patch(article._id).set({ imageUrl: fallback, imageAlt: article.title }).commit()
-            fixes.push({ id: article._id, title: article.title.slice(0,60), fix: 'replaced non-firearm image' })
-          } catch (e) {}
-        }
-      }
+    let placeholderImages = 0
+    for (const a of articles) {
+      const url = a.heroUrl || a.imageUrl || ''
+      if (!url) missingImages++
+      else if (/^\/img\/photos\//.test(url) || /\.svg(\?|$)/i.test(url)) placeholderImages++
     }
-
     broken.push({
       check: 'Article Images',
       total: articles.length,
-      issues: missingImages + nonFirearmImages,
-      detail: `${missingImages} missing, ${nonFirearmImages} non-firearm images`,
-      fixed: fixes.length,
-      fixes: fixes.slice(0, 10),
+      issues: missingImages + placeholderImages,
+      detail: `${missingImages} missing, ${placeholderImages} placeholder (handled by image-fix)`,
+      fixed: 0,
     })
   } catch (err) {
     broken.push({ check: 'Article Images', error: err.message })
@@ -197,11 +169,16 @@ export async function GET(req) {
   const t = Date.now()
   console.log('[site-health] Scan starting...')
 
-  const checks = await checkBrokenLinks()
+  let checks
+  try { checks = await checkBrokenLinks() } catch (err) {
+    await reportCronRun('site_health', { status: 'failed', ms: Date.now() - t, error: err.message }).catch(() => {})
+    return Response.json({ error: err.message }, { status: 500 })
+  }
   const ms = Date.now() - t
 
   const totalIssues = checks.reduce((s, c) => s + (c.issues || 0), 0)
   const totalFixed  = checks.reduce((s, c) => s + (c.fixed || 0), 0)
+  const hardErrors  = checks.filter(c => c.error)
 
   const report = {
     timestamp: new Date().toISOString(),
@@ -217,17 +194,19 @@ export async function GET(req) {
   // Log to pull log
   await logPull({
     sourceId:  'site_health',
-    status:    totalIssues === 0 ? STATUS.SUCCESS : totalFixed > 0 ? STATUS.PARTIAL : STATUS.FAILED,
+    status:    hardErrors.length ? STATUS.FAILED : totalIssues === 0 ? STATUS.SUCCESS : STATUS.PARTIAL,
     itemCount: checks.reduce((s, c) => s + (c.total || 0), 0),
     newItems:  totalFixed,
     duration:  ms,
-    error:     null,
+    error:     hardErrors.map(c => c.check + ': ' + c.error).join('; ') || null,
     headlines: checks.filter(c => c.issues > 0).map(c => `${c.check}: ${c.issues} issues, ${c.fixed||0} fixed`),
     meta:      { triggeredBy: cronHeader === '1' ? 'cron' : 'manual', totalIssues, totalFixed },
-  })
+  }).catch(() => {})
 
   await notifyDiscord(report)
-  await reportCronRun('site_health', { status: totalIssues === 0 ? 'success' : 'warning', ms, details:`issues:${totalIssues} fixed:${totalFixed}` })
+  await reportCronRun('site_health', hardErrors.length
+    ? { status: 'failed', ms, error: hardErrors.map(c => c.check + ': ' + c.error).join('; ').slice(0, 300) }
+    : { status: 'success', ms, details: `issues:${totalIssues} (report only)` }).catch(() => {})
 
   console.log(`[site-health] Done. ${totalIssues} issues, ${totalFixed} fixed. ${ms}ms`)
   return Response.json(report)

@@ -15,14 +15,16 @@ export const maxDuration = 300
 import { scrapeReleases } from '@/lib/scrapeReleases'
 
 export async function GET(request) {
-  // Verify cron secret
-  const authHeader = request.headers.get('authorization')
+  // Accept the Vercel scheduler, the CRON_SECRET bearer, or the admin key (Mission Control "Run now")
+  const h = request.headers
   const cronSecret = process.env.CRON_SECRET
+  const ok = h.get('x-vercel-cron') === '1'
+    || (cronSecret && h.get('authorization') === `Bearer ${cronSecret}`)
+    || (process.env.ADMIN_KEY && h.get('x-admin-key') === process.env.ADMIN_KEY)
+    || !cronSecret
+  if (!ok) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
-  if (cronSecret && authHeader !== `Bearer ${cronSecret}`) {
-    return Response.json({ error: 'Unauthorized' }, { status: 401 })
-  }
-
+  const start = Date.now()
   try {
     console.log('[releases-cron] Starting scrape:', new Date().toISOString())
 
@@ -30,14 +32,14 @@ export async function GET(request) {
 
     console.log('[releases-cron] Done:', results)
 
-    const status = results.added.length > 0 ? 'success' : results.failed.length > 0 ? 'failed' : 'partial'
+    const status = results.failed.length > 0 && results.added.length === 0 ? 'failed' : results.added.length > 0 ? 'success' : 'partial'
     fetch('https://www.downrangeco.com/api/system/alert', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ source: 'prn_scraper', sourceLabel: 'PRN Releases Scraper', status, error: results.failed.map(f=>f.error).join('; ') || null }),
     }).catch(() => {})
 
-    await reportCronRun('prn_releases', { status:'success', ms:Date.now()-start, details: results.added.length+' added, '+results.failed.length+' failed' }).catch(()=>{})
+    await reportCronRun('prn_releases', { status: status === 'failed' ? 'failed' : 'success', error: status === 'failed' ? results.failed.map(f => f.error).join('; ').slice(0, 300) : null, ms:Date.now()-start, details: results.added.length+' added, '+results.failed.length+' failed' }).catch(()=>{})
     return Response.json({
       success: true,
       timestamp: new Date().toISOString(),
