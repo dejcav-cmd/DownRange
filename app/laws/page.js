@@ -92,6 +92,7 @@ export default async function LawsHub() {
           <Link href="/laws/my-state" className="hh-btn hh-btn-main">My state</Link>
           <Link href="/laws/states" className="hh-btn">All 50 states</Link>
           <Link href="/laws/federal" className="hh-btn">Federal &amp; SCOTUS</Link>
+          <Link href="/laws/cases" className="hh-btn">2A cases radar</Link>
         </div>
       </PageHero>
 
