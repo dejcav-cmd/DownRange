@@ -105,6 +105,14 @@ const ALL_VARS = [
     howTo: 'gnews.io → Get API Key (free tier: 100 req/day)',
   },
   {
+    key: 'COURTLISTENER_TOKEN',
+    group: 'News Sources',
+    critical: false,
+    priority: 'medium',
+    desc: 'CourtListener API token. Powers new circuit opinions on the 2A cases radar (Monday sweep). Free at courtlistener.com/help/api.',
+    howTo: 'courtlistener.com → sign in → Profile → API token',
+  },
+  {
     key: 'LEGISCAN_KEY',
     group: 'News Sources',
     critical: false,

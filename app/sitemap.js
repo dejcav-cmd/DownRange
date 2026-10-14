@@ -32,6 +32,11 @@ const STATIC_PAGES = [
   { url: `${BASE}/laws`,                priority: 0.9,  changeFrequency: 'daily' },
   { url: `${BASE}/laws/federal`,        priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/laws/states`,         priority: 0.85, changeFrequency: 'weekly' },
+  { url: `${BASE}/laws/cases`, priority: 0.85, changeFrequency: 'daily' },
+  { url: `${BASE}/laws/cases/supreme-court`, priority: 0.85, changeFrequency: 'daily' },
+  { url: `${BASE}/laws/cases/circuits`, priority: 0.7, changeFrequency: 'daily' },
+  { url: `${BASE}/laws/cases/doj`, priority: 0.7, changeFrequency: 'daily' },
+  { url: `${BASE}/laws/cases/rules-and-bills`, priority: 0.7, changeFrequency: 'daily' },
   { url: `${BASE}/laws/reciprocity`,    priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/laws/my-state`,       priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/deals`,               priority: 0.9,  changeFrequency: 'hourly' },
@@ -154,6 +159,8 @@ export default async function sitemap() {
       lastModified:    d(profileDate[code]),
     }))
 
+    const caseStateUrls = US_STATE_CODES.map(code => ({ url: `${BASE}/laws/cases/states/${code}`, priority: 0.6, changeFrequency: 'weekly' }))
+
     // State news — linked from every /laws/[state] page; lowercase matches page canonical
     const stateNewsCounts = {}
     try {
@@ -188,6 +195,7 @@ export default async function sitemap() {
     return [
       ...staticPages,
       ...stateUrls,
+      ...caseStateUrls,
       ...gunUrls,
       ...stateNewsUrls,
       ...articleUrls,
