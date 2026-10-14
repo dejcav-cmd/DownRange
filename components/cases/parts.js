@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { STATES, TOPICS, TOPIC_IMPACT, circuitLabel } from '../../lib/legalRadar/constants'
+import { STATES, TOPICS, TOPIC_IMPACT, GLOSSARY, circuitLabel } from '../../lib/legalRadar/constants'
 
 export const fmt = (d) => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''
 
@@ -30,6 +30,18 @@ export function Impact({ item }) {
     <div className="cx-impact">
       <b>Why it matters</b>
       <p>{text}</p>
+    </div>
+  )
+}
+
+export const Paras = ({ text }) => String(text || '').split(/\n\s*\n/).filter(Boolean).map((t, i) => <p key={i} style={{ marginBottom: 12 }}>{t}</p>)
+
+export function Glossary({ keys }) {
+  const rows = (keys || []).map(k => GLOSSARY[k]).filter(Boolean)
+  if (!rows.length) return null
+  return (
+    <div className="cx-block"><h2>Key terms</h2>
+      <dl className="cx-terms">{rows.map(([t, d]) => <div key={t}><dt>{t}</dt><dd>{d}</dd></div>)}</dl>
     </div>
   )
 }

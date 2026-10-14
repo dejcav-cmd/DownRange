@@ -36,6 +36,7 @@ const STATIC_PAGES = [
   { url: `${BASE}/laws/cases`, priority: 0.85, changeFrequency: 'daily' },
   { url: `${BASE}/laws/cases/supreme-court`, priority: 0.85, changeFrequency: 'daily' },
   { url: `${BASE}/laws/cases/circuits`, priority: 0.7, changeFrequency: 'daily' },
+  { url: `${BASE}/laws/cases/how-courts-decide`, priority: 0.7, changeFrequency: 'monthly' },
   { url: `${BASE}/laws/cases/doj`, priority: 0.7, changeFrequency: 'daily' },
   { url: `${BASE}/laws/cases/rules-and-bills`, priority: 0.7, changeFrequency: 'daily' },
   { url: `${BASE}/laws/reciprocity`,    priority: 0.85, changeFrequency: 'weekly' },

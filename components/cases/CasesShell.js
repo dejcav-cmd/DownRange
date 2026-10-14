@@ -11,6 +11,7 @@ const NAV = [
   ['/laws/cases/circuits', 'Circuits'],
   ['/laws/cases/doj', 'DOJ'],
   ['/laws/cases/rules-and-bills', 'Rules and bills'],
+  ['/laws/cases/how-courts-decide', 'Guide'],
 ]
 
 // Every portal page renders through this shell, so the hero (same component, image,

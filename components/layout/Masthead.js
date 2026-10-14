@@ -37,6 +37,7 @@ const NAV = [
       { label: '🏛️ Supreme Court',   href: '/laws/cases/supreme-court',      desc: 'Granted cases, conferences and timelines' },
       { label: '🗺️ Circuits',        href: '/laws/cases/circuits',           desc: 'Appeals-court cases by circuit' },
       { label: '🛡️ DOJ Actions',     href: '/laws/cases/doj',                desc: 'Justice Department suits and letters' },
+      { label: '📖 How Courts Decide', href: '/laws/cases/how-courts-decide', desc: 'Heller, Bruen and the 2A tests in plain English' },
       { label: '📋 Rules & Bills',   href: '/laws/cases/rules-and-bills',    desc: 'ATF rules and bills in Congress' },
     ]
   },
