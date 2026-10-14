@@ -1,14 +1,15 @@
 import Link from 'next/link'
 import CasesShell from '../../../../components/cases/CasesShell'
 import { Row, Section, Empty } from '../../../../components/cases/parts'
+import { pageMeta, crumbs } from '../../../../lib/legalRadar/seo'
 import { fetchRadarItems, ofKind, sortRecent } from '../../../../sanity/lib/legalCases'
 
 export const revalidate = 900
-export const metadata = {
+export const metadata = pageMeta({
   title: 'Federal Gun Rules and Bills Tracker',
   description: 'ATF and Federal Register actions plus firearm bills moving in Congress.',
-  alternates: { canonical: 'https://www.downrangeco.com/laws/cases/rules-and-bills' },
-}
+  path: '/laws/cases/rules-and-bills',
+})
 
 export default async function Page() {
   const items = await fetchRadarItems()
@@ -16,6 +17,7 @@ export default async function Page() {
   const bills = sortRecent(ofKind(items, 'bill')).slice(0, 30)
   return (
     <CasesShell active="/laws/cases/rules-and-bills" eyebrow="Rules and bills"
+      jsonLd={[crumbs([['Home', '/'], ['2A Cases Radar', '/laws/cases'], ['Rules and bills', '/laws/cases/rules-and-bills']])]}
       title={<>Federal rules and <span>bills</span></>}
       sub="What ATF has changed and which firearm bills are moving in the 119th Congress.">
       <Section title="Rules and notices">

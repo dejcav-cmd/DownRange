@@ -411,6 +411,7 @@ const NAV_TREE=[
     {id:'hub',         l:'Hub',               i:'◈'},
     {id:'news',        l:'News Articles',     i:'📰'},
     {id:'releases',    l:'Gun Releases',      i:'🔫',b:'new'},
+    {id:'radar',       l:'2A Radar',          i:'⚖️',b:'new'},
     {id:'blog',        l:'Blog',              i:'✍'},
     {id:'deals',       l:'Deals',             i:'🔥'},
     {id:'canada',      l:'Canada',            i:'🇨🇦'},
@@ -811,7 +812,7 @@ async function renderNavVis(el){
 // ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
 function openPanel(id,label){
   const map={
-    news:renderNews,blog:renderBlog,releases:renderReleases,
+    news:renderNews,blog:renderBlog,releases:renderReleases,radar:renderRadar,
     breaking:renderBreaking,newsletter:renderNewsletter,social:renderSocialLog,
     drafts:renderDraftRecovery,hub:renderContentHub,canada:renderCanada,
     brazil:renderBrazil,deals:renderDeals,
@@ -1321,6 +1322,117 @@ async function delAlert(id,btn){
 // ═══════════════════════════════════════════════════════════════════
 // PANELS — SYSTEM
 // ═══════════════════════════════════════════════════════════════════
+
+// ─── 2A RADAR PANEL ──────────────────────────────────────────────────────────
+let _radarItems=[], _radarFilter='all';
+function radarAgo(d){
+  if(!d) return '—';
+  const n=Math.max(0,Math.round((Date.now()-Date.parse(d+'T12:00:00Z'))/864e5));
+  return n===0?'today':n===1?'1 day ago':n+' days ago';
+}
+async function renderRadar(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+  try{
+    const d=await api('/api/admin/legal-radar');
+    if(d.error){el.innerHTML=`<div class="empty">${escHtml(d.error)}</div>`;return;}
+    _radarItems=d.items||[];
+    const last=(d.runs||[])[0];
+    const st=last?(last.status==='success'?'pill-ok':'pill-err'):'pill-dim';
+    const keys=Object.entries(d.env||{}).map(([k,v])=>`<span class="pill ${v?'pill-ok':'pill-err'}" style="margin:0 4px 4px 0">${v?'OK':'MISSING'} ${k.replace(/_/g,' ')}</span>`).join('');
+    const res=d.state?.result;
+    el.innerHTML=`
+      <div class="stat-box" style="margin-bottom:10px">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px">
+          <span style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;flex:1">Cron: 2A Legal Radar</span>
+          <span class="pill ${st}">${last?last.status.toUpperCase():'NEVER RUN'}</span>
+        </div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);line-height:1.7">
+          ⏱ ${escHtml(d.schedule?.label||'')} (${escHtml(d.schedule?.cron||'')})<br>
+          Last: ${last?new Date(last.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})+' · '+last.ms+'ms · '+escHtml(last.trigger||'cron'):'never. Tap Load seed first.'}<br>
+          ${d.counts.total} items · ${d.counts.unverified} unverified · ${d.counts.locked} locked · ${d.counts.notSaved} not in Sanity
+          ${res?`<br>Last result: +${res.created} new, ${res.updated} updated, ${res.unchanged} unchanged, dockets read ${res.scotusParsed}/${res.scotusChecked}`:''}
+          ${res&&res.errors&&res.errors.length?`<br><span style="color:var(--err)">${escHtml(res.errors.join(' | '))}</span>`:''}
+        </div>
+        <div style="margin-top:8px">${keys}</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:8px">
+          <button class="btn btn-sm" onclick="radarRun('light',false,this)">▶ Light</button>
+          <button class="btn btn-sm" onclick="radarRun('full',false,this)">▶ Full</button>
+          <button class="btn btn-outline" onclick="radarRun('full',true,this)">Dry run</button>
+          <button class="btn btn-outline" onclick="radarRun('seed',false,this)">Load seed</button>
+          <a class="btn btn-outline" href="/laws/cases" target="_blank" style="text-decoration:none">View site</a>
+        </div>
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px" id="radar-filters">
+        ${[['all','All'],['review','Unverified'],['case','Cases'],['doj','DOJ'],['rule','Rules'],['bill','Bills']].map(([k,l])=>`<button class="btn btn-outline" style="${k===_radarFilter?'border-color:var(--gold);color:var(--gold)':''}" onclick="radarFilter('${k}')">${l}</button>`).join('')}
+      </div>
+      <div id="radar-list"></div>
+      <div class="stat-box" style="margin-top:10px">
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:6px">RUN HISTORY</div>
+        ${(d.runs||[]).map(r=>`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:${r.status==='success'?'var(--dim)':'var(--err)'};padding:2px 0">${r.status.toUpperCase()} · ${new Date(r.at).toLocaleString(undefined,{month:'short',day:'numeric',hour:'2-digit',minute:'2-digit'})} · ${r.ms}ms · ${escHtml(r.trigger||'cron')}${r.error?' · '+escHtml(r.error):''}</div>`).join('')||'<div style="font-size:10px;color:var(--dim)">No runs yet.</div>'}
+      </div>`;
+    radarList();
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${escHtml(e.message)}</div>`;}
+}
+function radarFilter(k){
+  _radarFilter=k;
+  document.querySelectorAll('#radar-filters .btn').forEach(b=>{const on=b.textContent===({all:'All',review:'Unverified','case':'Cases',doj:'DOJ',rule:'Rules',bill:'Bills'}[k]);b.style.borderColor=on?'var(--gold)':'';b.style.color=on?'var(--gold)':'';});
+  radarList();
+}
+function radarList(){
+  const box=document.getElementById('radar-list'); if(!box) return;
+  const rows=_radarItems.map((it,idx)=>({it,idx})).filter(({it})=>_radarFilter==='all'?true:_radarFilter==='review'?it.needsReview:it.kind===_radarFilter);
+  box.innerHTML=rows.map(({it,idx})=>`
+    <div class="cron-card" id="rc-${idx}">
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;margin-bottom:3px">${escHtml(it.title)}</div>
+      <div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-bottom:6px">${escHtml(it.kind)} · ${escHtml(it.stageLabel||it.stage||'—')} · last activity ${radarAgo(it.activity)}${it.nextDate?' · next '+escHtml(it.nextDate):''}</div>
+      <div style="margin-bottom:8px">
+        ${it.needsReview?'<span class="pill pill-gold" style="margin-right:4px">UNVERIFIED</span>':''}
+        ${it.locked?'<span class="pill pill-warn" style="margin-right:4px">LOCKED</span>':''}
+        ${!it.inSanity?'<span class="pill pill-dim" style="margin-right:4px">SEED ONLY</span>':''}
+        ${!it.hasWriteup?'<span class="pill pill-dim">NO WRITE-UP</span>':''}
+      </div>
+      <div style="display:flex;gap:6px;flex-wrap:wrap">
+        ${it.needsReview?`<button class="btn btn-xs" onclick="radarAct(${idx},'verify')">Verify</button>`:''}
+        <button class="btn btn-outline" onclick="radarAct(${idx},'lock')">${it.locked?'Unlock':'Lock'}</button>
+        <button class="btn btn-outline" onclick="radarEdit(${idx})">Edit</button>
+        <a class="btn btn-outline" href="/laws/cases/${encodeURIComponent(it.slug)}" target="_blank" style="text-decoration:none">View</a>
+      </div>
+      <div id="re-${idx}"></div>
+    </div>`).join('')||'<div class="empty">Nothing here.</div>';
+}
+async function radarRun(mode,dry,btn){
+  const old=btn.textContent; btn.disabled=true; btn.textContent='⏳';
+  try{
+    const d=await api('/api/admin/legal-radar',{method:'POST',body:JSON.stringify({action:'run',mode,dry})});
+    flash(d.ok?`✓ ${mode}${dry?' (dry)':''}: +${d.result.created} new, ${d.result.updated} updated${d.result.errors&&d.result.errors.length?' · '+d.result.errors.length+' errors':''}`:'✕ '+(d.error||'Failed'),d.ok?'ok':'err');
+    if(d.ok) openPanel('radar','2A Radar');
+  }catch(e){flash('Error: '+e.message,'err');}
+  btn.disabled=false; btn.textContent=old;
+}
+async function radarAct(idx,action){
+  const it=_radarItems[idx];
+  try{
+    const d=await api('/api/admin/legal-radar',{method:'POST',body:JSON.stringify({action,id:it._id,value:!it.locked})});
+    flash(d.ok?'✓ Saved':'✕ '+(d.error||'Failed'),d.ok?'ok':'err');
+    if(d.ok){ if(action==='verify') it.needsReview=false; else it.locked=!it.locked; radarList(); }
+  }catch(e){flash('Error: '+e.message,'err');}
+}
+function radarEdit(idx){
+  const it=_radarItems[idx], box=document.getElementById('re-'+idx);
+  if(box.innerHTML){box.innerHTML='';return;}
+  const f=(k,l,area)=>`<label style="display:block;font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim);margin-top:8px">${l}${area?`<textarea id="rf-${idx}-${k}" rows="3" style="width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px;font-size:13px">${escHtml(it[k]||'')}</textarea>`:`<input id="rf-${idx}-${k}" value="${escHtml(it[k]||'')}" style="width:100%;background:var(--bg);color:var(--text);border:1px solid var(--border);padding:8px;font-size:13px">`}</label>`;
+  box.innerHTML=f('stageLabel','Stage label')+f('status','Status (active, decided, denied)')+f('nextDate','Next date (YYYY-MM-DD)')+f('nextLabel','Next event')+f('summary','Summary',true)+`<button class="btn btn-sm" style="margin-top:10px" onclick="radarSave(${idx})">Save</button>`;
+}
+async function radarSave(idx){
+  const it=_radarItems[idx], fields={};
+  ['stageLabel','status','nextDate','nextLabel','summary'].forEach(k=>{const v=document.getElementById('rf-'+idx+'-'+k).value; if(v!==(it[k]||'')) fields[k]=v;});
+  if(!Object.keys(fields).length){flash('No changes','info');return;}
+  try{
+    const d=await api('/api/admin/legal-radar',{method:'POST',body:JSON.stringify({action:'patch',id:it._id,fields})});
+    flash(d.ok?'✓ Saved':'✕ '+(d.error||'Failed'),d.ok?'ok':'err');
+    if(d.ok) openPanel('radar','2A Radar');
+  }catch(e){flash('Error: '+e.message,'err');}
+}
 
 async function renderCrons(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';

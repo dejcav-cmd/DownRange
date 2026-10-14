@@ -18,6 +18,7 @@ const NewsletterManager     = L(() => import('../../components/admin/NewsletterM
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
 const ReleaseManager        = L(() => import('../../components/admin/ReleaseManager'))
 const PressReleaseManager   = L(() => import('../../components/admin/PressReleaseManager'))
+const LegalRadarManager     = L(() => import('../../components/admin/LegalRadarManager'))
 const OperationsPanel        = L(() => import('../../components/admin/OperationsPanel'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
 const BrazilManager         = L(() => import('../../components/admin/BrazilManager'))
@@ -55,6 +56,7 @@ const NAV = [
       { id:'news',         label:'News Articles',    icon:'📰' },
       { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
       { id:'press',        label:'Press Releases',   icon:'🏭', badge:'new' },
+      { id:'radar',        label:'2A Radar',         icon:'⚖️', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍'  },
       { id:'deals',        label:'Deals',            icon:'🔥' },
       { id:'canada',       label:'Canada',           icon:'🇨🇦' },
@@ -3058,6 +3060,7 @@ export default function AdminPage() {
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
             {panel==='press'        && <PressReleaseManager adminKey={adminKey} />}
+            {panel==='radar'        && <LegalRadarManager adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
             {panel==='canada'       && <CanadaManager       adminKey={adminKey} />}
             {panel==='brazil'       && <BrazilManager       adminKey={adminKey} />}

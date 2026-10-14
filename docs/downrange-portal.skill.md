@@ -643,3 +643,14 @@ contains these same paths as "bad" while other code still points to them
 as fallbacks). Worth a dedicated site-wide sweep at some point — real
 photos need to replace the whole `/img/photos/` category-fallback set, not
 just be avoided in the social pipeline.
+
+## 2A Cases Radar (/laws/cases) — added Oct 2026
+
+- Pages: `/laws/cases` (hub), `/supreme-court`, `/circuits`, `/doj`, `/rules-and-bills`, `/how-courts-decide`, `/states/[state]`, `/[slug]` (case detail). All render through `components/cases/CasesShell.js` (same `PageHero` as /laws).
+- Data: Sanity `legalCase` (kind: case|doj|rule|bill; deterministic `_id` `lc-<slug>`), plus singleton `legal-radar-state`. Curated seed + hand-written write-ups in `lib/legalRadar/seed.js` and `enrich.js` render even when Sanity is empty.
+- Cron: `/api/cron/legal-radar`, `20 6 * * *` (vercel.json + ALL_JOBS + JOB_CONTEXT). Mondays full sweep (Congress.gov, CourtListener), other days light (SCOTUS dockets, Federal Register, DOJ). Auth: x-vercel-cron, CRON_SECRET bearer, or x-admin-key. `?mode=seed|light|full`, `?dry=1`. Returns 502 (so Mission Control shows FAILING) if no source worked or the SCOTUS docket parser read zero rows.
+- Token rules: AI only in one batched call (max 8 items, 700 tokens) on grant/denial/new DOJ items; everything else is keyword + hash diffing. Do not add per-item AI.
+- Env: CONGRESS_GOV_KEY, COURTLISTENER_TOKEN, optional DISCORD_WEBHOOK_ALERTS (milestone alerts).
+- Admin: `/admin` > Content > 2A Radar and `/admin-app` > Content > 2A Radar (api `/api/admin/legal-radar`): run light/full/dry/seed, verify, lock, edit, run history, key health.
+- Home page: `components/home/RadarSection.js` (text only, shows days since last update; no images or placeholders).
+- SEO: `lib/legalRadar/seo.js` (pageMeta with OG/Twitter, BreadcrumbList, Dataset on the hub, FAQPage on the guide, ItemList on /supreme-court). Sitemap includes every case page with real lastmod. Do not put cadence text ("updated daily") on public pages.

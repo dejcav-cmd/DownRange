@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { lastActivity, agoLabel, inLabel, freshness } from '../../lib/legalRadar/dates'
 import { STATES, TOPICS, TOPIC_IMPACT, GLOSSARY, circuitLabel } from '../../lib/legalRadar/constants'
 
 export const fmt = (d) => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''
@@ -10,10 +11,16 @@ export function Badge({ item }) {
 
 export function Row({ item, showDate = 'lastDate' }) {
   const meta = [item.docket, item.circuit && circuitLabel(item.circuit), (item.states || []).map(s => STATES[s]).join(', '), TOPICS[item.topic]].filter(Boolean).join('  ·  ')
-  const d = showDate === 'next' ? item.nextDate : item.lastDate
+  const act = lastActivity(item)
+  const d = showDate === 'next' ? item.nextDate : (act || item.lastDate)
   return (
     <div className="cx-row">
-      <div className="cx-date">{fmt(d)}</div>
+      <div>
+        <div className="cx-date">{fmt(d)}</div>
+        {showDate === 'next'
+          ? (d ? <div className="cx-ago warm">{inLabel(d)}</div> : null)
+          : (act ? <div className={`cx-ago ${freshness(act)}`}>{agoLabel(act)}</div> : null)}
+      </div>
       <div>
         <h3 className="cx-title"><Link href={`/laws/cases/${item.slug}`}>{item.title}</Link></h3>
         {item.summary ? <p className="cx-sum">{item.summary}</p> : null}

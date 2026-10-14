@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import CasesShell from '../../../../../components/cases/CasesShell'
 import { Row, Section, Empty } from '../../../../../components/cases/parts'
 import { fetchRadarItems, forState, sortRecent } from '../../../../../sanity/lib/legalCases'
+import { pageMeta, crumbs } from '../../../../../lib/legalRadar/seo'
 import { STATES, STATE_CODES, circuitOfState, circuitLabel } from '../../../../../lib/legalRadar/constants'
 
 export const revalidate = 900
@@ -10,11 +11,11 @@ export function generateStaticParams() { return STATE_CODES.map(state => ({ stat
 export function generateMetadata({ params }) {
   const code = params.state.toUpperCase(), name = STATES[code]
   if (!name) return {}
-  return {
+  return pageMeta({
     title: `${name} Second Amendment Cases and Litigation`,
     description: `Pending Second Amendment cases, DOJ actions and circuit rulings that affect gun owners in ${name}.`,
-    alternates: { canonical: `https://www.downrangeco.com/laws/cases/states/${code}` },
-  }
+    path: `/laws/cases/states/${code}`,
+  })
 }
 
 export default async function Page({ params }) {
@@ -26,7 +27,7 @@ export default async function Page({ params }) {
   const circ = sortRecent(items.filter(i => i.circuit === circuit && !(i.states || []).includes(code) && i.kind === 'case')).slice(0, 5)
   const scotus = items.filter(i => i.court === 'scotus' && i.stage === 'granted' && !(i.states || []).includes(code))
   return (
-    <CasesShell active="" eyebrow={circuit ? circuitLabel(circuit) : 'State'}
+    <CasesShell active="" jsonLd={[crumbs([['Home', '/'], ['2A Cases Radar', '/laws/cases'], [name, `/laws/cases/states/${code}`]])]} eyebrow={circuit ? circuitLabel(circuit) : 'State'}
       title={<>{name} <span>cases</span></>}
       sub={`Second Amendment litigation touching ${name}, plus rulings from its circuit that apply there.`}>
       <Section title={`Cases and actions in ${name}`}>

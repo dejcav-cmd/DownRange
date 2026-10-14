@@ -1,13 +1,14 @@
 import CasesShell from '../../../../components/cases/CasesShell'
 import { Row, Section, Timeline, Badge, Empty, Impact, fmt } from '../../../../components/cases/parts'
+import { pageMeta, crumbs, itemList } from '../../../../lib/legalRadar/seo'
 import { fetchRadarItems, sortUpcoming } from '../../../../sanity/lib/legalCases'
 
 export const revalidate = 900
-export const metadata = {
+export const metadata = pageMeta({
   title: 'Supreme Court Second Amendment Cases: Timelines and Conference Dates',
   description: 'Every Second Amendment case at the Supreme Court with argument dates, conferences and decisions.',
-  alternates: { canonical: 'https://www.downrangeco.com/laws/cases/supreme-court' },
-}
+  path: '/laws/cases/supreme-court',
+})
 
 export default async function Page() {
   const all = (await fetchRadarItems()).filter(i => i.kind === 'case' && i.court === 'scotus')
@@ -17,6 +18,7 @@ export default async function Page() {
   const done = all.filter(i => i.status !== 'active' || i.stage === 'decided').sort((a, b) => String(b.lastDate).localeCompare(String(a.lastDate)))
   return (
     <CasesShell active="/laws/cases/supreme-court" eyebrow="Supreme Court"
+      jsonLd={[crumbs([['Home', '/'], ['2A Cases Radar', '/laws/cases'], ['Supreme Court', '/laws/cases/supreme-court']]), itemList('Supreme Court Second Amendment cases', all)]}
       title={<>Supreme Court <span>docket</span></>}
       sub="Cases the Court has taken, petitions waiting on a conference, and what it has already decided.">
       <Section title="Granted: on the argument calendar">

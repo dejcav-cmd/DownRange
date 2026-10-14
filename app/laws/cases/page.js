@@ -2,14 +2,16 @@ import Link from 'next/link'
 import CasesShell from '../../../components/cases/CasesShell'
 import { Row, Section, Stats, Empty } from '../../../components/cases/parts'
 import { fetchRadarItems, sortRecent, sortUpcoming, summarize, ofKind } from '../../../sanity/lib/legalCases'
+import { pageMeta, crumbs, dataset } from '../../../lib/legalRadar/seo'
+import { lastActivity } from '../../../lib/legalRadar/dates'
 import { STATE_CODES } from '../../../lib/legalRadar/constants'
 
 export const revalidate = 900
-export const metadata = {
+export const metadata = pageMeta({
   title: 'Second Amendment Cases Radar: Supreme Court, Circuits, DOJ and States',
   description: 'National tracker for Second Amendment litigation. Supreme Court timelines, circuit cases, DOJ actions, federal rules and a page for every state.',
-  alternates: { canonical: 'https://www.downrangeco.com/laws/cases' },
-}
+  path: '/laws/cases',
+})
 
 export default async function Page() {
   const items = await fetchRadarItems()
@@ -19,6 +21,7 @@ export default async function Page() {
   const hot = new Set(items.flatMap(i => i.states || []))
   return (
     <CasesShell active="/laws/cases" eyebrow="Legal radar"
+      jsonLd={[crumbs([['Home', '/'], ['Laws', '/laws'], ['2A Cases Radar', '/laws/cases']]), dataset({ name: 'Second Amendment cases radar', description: 'Tracked Second Amendment cases, DOJ actions and federal rules with status and timelines.', path: '/laws/cases', modified: items.map(lastActivity).filter(Boolean).sort().pop() })]}
       title={<>2A cases <span>radar</span></>}
       sub="Every Second Amendment case, filing and federal action we track, from the Supreme Court down to your state.">
       <Stats s={stats} />

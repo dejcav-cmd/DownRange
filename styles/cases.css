@@ -64,3 +64,7 @@
 .cx-watch{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--gold);margin:0 0 28px}
 @media(max-width:700px){.cx-two{grid-template-columns:1fr}}
 .cx-prose p{font-family:'IBM Plex Sans',sans-serif;font-size:15px;line-height:1.75;color:var(--text-muted)}
+
+.cx-foot a,.cx-meta a,.cx-sum a,.cx-prose a{color:var(--gold);text-decoration:underline;text-underline-offset:2px}
+.cx-ago{font-family:'IBM Plex Mono',monospace;font-size:10px;margin-top:4px;color:var(--text-dim)}
+.cx-ago.fresh{color:var(--green)}.cx-ago.warm{color:var(--gold)}

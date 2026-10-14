@@ -31,6 +31,7 @@ import newsletterSchedule from './newsletterSchedule'
 import { newsletterDraft } from './newsletterDraft'
 import { pressRelease, pressPullState } from './pressRelease'
 import { legalCase } from './legalCase'
+import { legalRadarState } from './legalRadarState'
 
 export const schemaTypes = [
   feedConfig,
@@ -56,4 +57,5 @@ export const schemaTypes = [
   pressRelease,
   pressPullState,
   legalCase,
+  legalRadarState,
 ]

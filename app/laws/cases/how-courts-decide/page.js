@@ -1,13 +1,14 @@
 import Link from 'next/link'
 import CasesShell from '../../../../components/cases/CasesShell'
+import { pageMeta, crumbs, faq } from '../../../../lib/legalRadar/seo'
 import { GLOSSARY } from '../../../../lib/legalRadar/constants'
 
 export const revalidate = 86400
-export const metadata = {
+export const metadata = pageMeta({
   title: 'How Courts Decide Second Amendment Cases: A Plain-English Guide',
   description: 'Heller, Bruen and Rahimi explained without legalese, plus how a case gets to the Supreme Court and what the terms mean.',
-  alternates: { canonical: 'https://www.downrangeco.com/laws/cases/how-courts-decide' },
-}
+  path: '/laws/cases/how-courts-decide',
+})
 
 const STEPS = [
   ['Someone sues', 'A gun owner or group challenges a law in federal district court.'],
@@ -22,6 +23,7 @@ const STEPS = [
 export default function Page() {
   return (
     <CasesShell active="/laws/cases/how-courts-decide" eyebrow="Guide"
+      jsonLd={[crumbs([['Home', '/'], ['2A Cases Radar', '/laws/cases'], ['How courts decide', '/laws/cases/how-courts-decide']]), faq(['heller', 'bruen', 'rahimi', 'cert', 'circuit', 'split', 'enbanc'].map(k => [`What is ${GLOSSARY[k][0].replace(/\s*\(.*\)/, '')}?`, GLOSSARY[k][1]]))]}
       title={<>How courts decide <span>2A cases</span></>}
       sub="Three Supreme Court rulings and one test explain almost every case on this radar.">
       <div className="cx-block"><h2>The three rulings that matter</h2>

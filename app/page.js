@@ -7,6 +7,8 @@ import { NewsSection, DealsSection, PressSection, BlogSection } from '../compone
 import Link from 'next/link'
 import { fetchArticles, client } from '../sanity/lib/client'
 import { getPressPage } from '../lib/pressData'
+import RadarSection from '../components/home/RadarSection'
+import { fetchRadarItems } from '../sanity/lib/legalCases'
 
 export const revalidate = 120
 
@@ -96,7 +98,7 @@ const TOOLS = [
 
 export default async function HomePage() {
   preload('/img/home-hero.jpg', { as: 'image', fetchPriority: 'high' })
-  const [news, deals, press, stats, blog] = await Promise.allSettled([loadNews(), loadDeals(), loadPress(), loadStats(), loadBlog()])
+  const [news, deals, press, stats, blog, radar] = await Promise.allSettled([loadNews(), loadDeals(), loadPress(), loadStats(), loadBlog(), fetchRadarItems()])
     .then(r => r.map((p, i) => (p.status === 'fulfilled' ? p.value : (i === 3 ? {} : []))))
 
   return (
@@ -106,6 +108,7 @@ export default async function HomePage() {
       <HomeHero stats={stats} />
 
       <NewsSection items={news} />
+      <RadarSection items={radar} />
       <DealsSection items={deals} />
       <PressSection items={press} />
       <BlogSection items={blog} />

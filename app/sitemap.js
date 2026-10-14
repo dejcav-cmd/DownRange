@@ -161,7 +161,12 @@ export default async function sitemap() {
       lastModified:    d(profileDate[code]),
     }))
 
-    const caseDetailUrls = SEED.map(c => ({ url: `${BASE}/laws/cases/${c.slug}`, priority: 0.6, changeFrequency: 'weekly' }))
+    // Radar case pages: curated seed plus anything the cron has added, with real last-activity dates
+    let radarRows = []
+    try { radarRows = await sanity.fetch(`*[_type == "legalCase" && defined(slug)]{ slug, lastDate }`) } catch {}
+    const radarMap = new Map(SEED.map(c => [c.slug, c.lastDate]))
+    for (const r of radarRows || []) radarMap.set(r.slug, r.lastDate || radarMap.get(r.slug))
+    const caseDetailUrls = [...radarMap].map(([slug, last]) => ({ url: `${BASE}/laws/cases/${slug}`, priority: 0.6, changeFrequency: 'weekly', ...(last ? { lastModified: d(last) } : {}) }))
     const caseStateUrls = US_STATE_CODES.map(code => ({ url: `${BASE}/laws/cases/states/${code}`, priority: 0.6, changeFrequency: 'weekly' }))
 
     // State news — linked from every /laws/[state] page; lowercase matches page canonical

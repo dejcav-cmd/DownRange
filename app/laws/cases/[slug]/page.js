@@ -4,6 +4,8 @@ import CasesShell from '../../../../components/cases/CasesShell'
 import { Badge, Impact, Row, Timeline, Section, Paras, Glossary, fmt } from '../../../../components/cases/parts'
 import { fetchRadarItems } from '../../../../sanity/lib/legalCases'
 import { SEED } from '../../../../lib/legalRadar/seed'
+import { pageMeta, crumbs, webPage } from '../../../../lib/legalRadar/seo'
+import { lastActivity, agoLabel, freshness } from '../../../../lib/legalRadar/dates'
 import { STATES, TOPICS, TOPIC_PLAIN, circuitLabel } from '../../../../lib/legalRadar/constants'
 
 export const revalidate = 900
@@ -17,11 +19,11 @@ async function load(slug) {
 export async function generateMetadata({ params }) {
   const { item } = await load(params.slug)
   if (!item) return {}
-  return {
+  return pageMeta({
     title: `${item.title}: Status and Impact`,
     description: (item.impact || item.summary || '').slice(0, 155),
-    alternates: { canonical: `https://www.downrangeco.com/laws/cases/${item.slug}` },
-  }
+    path: `/laws/cases/${item.slug}`,
+  })
 }
 
 const KIND = { case: 'Case', doj: 'DOJ action', rule: 'Federal rule', bill: 'Bill' }
@@ -34,12 +36,14 @@ export default async function Page({ params }) {
   const related = items.filter(i => i._id !== item._id && i.topic === item.topic).slice(0, 4)
   return (
     <CasesShell active="" eyebrow={KIND[item.kind] || 'Case'}
+      jsonLd={[crumbs([['Home', '/'], ['2A Cases Radar', '/laws/cases'], [item.title, `/laws/cases/${item.slug}`]]), webPage({ name: item.title, description: (item.impact || item.summary || '').slice(0, 300), path: `/laws/cases/${item.slug}`, modified: lastActivity(item) })]}
       title={<>{item.title}</>}
       sub={item.docket ? `Docket ${item.docket}` : 'Second Amendment legal radar'}>
       <p style={{ marginBottom: 20 }}><Badge item={item} /> <span className="cx-meta">
-        {[item.circuit && circuitLabel(item.circuit), TOPICS[item.topic], item.lastDate && `Updated ${fmt(item.lastDate)}`].filter(Boolean).join('  ·  ')}
+        {[item.circuit && circuitLabel(item.circuit), TOPICS[item.topic], lastActivity(item) && `Last activity ${fmt(lastActivity(item))}`].filter(Boolean).join('  ·  ')}
         {item.needsReview ? '  ·  Unverified' : ''}
-      </span></p>
+      </span>
+      {lastActivity(item) ? <span className={`cx-ago ${freshness(lastActivity(item))}`} style={{ marginLeft: 10 }}>{agoLabel(lastActivity(item))}</span> : null}</p>
 
       {item.summary ? <div className="cx-block"><h2>Where it stands</h2><p>{item.summary}</p></div> : null}
       {item.question ? <div className="cx-block"><h2>The legal question</h2><p>{item.question}</p></div> : null}

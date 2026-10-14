@@ -16,9 +16,10 @@ const NAV = [
 
 // Every portal page renders through this shell, so the hero (same component, image,
 // dimensions and CSS as the rest of /laws) and the sub menu never drift apart.
-export default function CasesShell({ active, eyebrow, title, sub, children }) {
+export default function CasesShell({ active, eyebrow, title, sub, jsonLd, children }) {
   return (
     <>
+      {(jsonLd || []).map((d, i) => <script key={i} type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(d) }} />)}
       <Masthead />
       <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="58% 55%" posSm="82% 50%"
         eyebrow={eyebrow} title={title} sub={sub} />
@@ -34,7 +35,7 @@ export default function CasesShell({ active, eyebrow, title, sub, children }) {
         </div>
       </nav>
       <main className="cx-wrap"><div className="container">{children}
-        <p className="cx-foot">Tracked from court dockets, the Federal Register, DOJ releases and Congress.gov, refreshed daily with a full sweep on Mondays. Informational only, not legal advice. Items marked Unverified are awaiting review.</p>
+        <p className="cx-foot">Sources: court dockets, the Federal Register, DOJ releases and Congress.gov. Informational only, not legal advice. Items marked Unverified are awaiting review.</p>
       </div></main>
       <Footer />
     </>
