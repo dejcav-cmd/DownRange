@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { STATES, TOPICS, circuitLabel } from '../../lib/legalRadar/constants'
+import { STATES, TOPICS, TOPIC_IMPACT, circuitLabel } from '../../lib/legalRadar/constants'
 
 export const fmt = (d) => d ? new Date(d + 'T12:00:00Z').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric', timeZone: 'UTC' }) : ''
 
@@ -15,11 +15,21 @@ export function Row({ item, showDate = 'lastDate' }) {
     <div className="cx-row">
       <div className="cx-date">{fmt(d)}</div>
       <div>
-        <h3 className="cx-title">{item.url ? <a href={item.url} target="_blank" rel="noopener noreferrer">{item.title}</a> : item.title}</h3>
+        <h3 className="cx-title"><Link href={`/laws/cases/${item.slug}`}>{item.title}</Link></h3>
         {item.summary ? <p className="cx-sum">{item.summary}</p> : null}
         <div className="cx-meta">{meta}{item.needsReview ? '  ·  Unverified' : ''}</div>
       </div>
       <Badge item={item} />
+    </div>
+  )
+}
+
+export function Impact({ item }) {
+  const text = item.impact || TOPIC_IMPACT[item.topic] || TOPIC_IMPACT.other
+  return (
+    <div className="cx-impact">
+      <b>Why it matters</b>
+      <p>{text}</p>
     </div>
   )
 }

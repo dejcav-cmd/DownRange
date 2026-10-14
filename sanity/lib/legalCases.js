@@ -4,7 +4,7 @@ import { client } from './client'
 import { SEED } from '../../lib/legalRadar/seed'
 
 const FIELDS = `_id, kind, title, slug, docket, court, circuit, states, topic, stage, stageLabel, status,
-  outcome, summary, nextDate, nextLabel, lastDate, events, url, source, needsReview`
+  outcome, summary, question, ruling, impact, nextDate, nextLabel, lastDate, events, url, source, needsReview`
 
 export async function fetchRadarItems() {
   let live = []

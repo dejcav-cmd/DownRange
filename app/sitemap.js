@@ -1,5 +1,6 @@
 import { createClient } from '@sanity/client'
 import { GUN_MODELS } from '../lib/gunData'
+import { SEED } from '../lib/legalRadar/seed'
 
 const sanity = createClient({
   projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -159,6 +160,7 @@ export default async function sitemap() {
       lastModified:    d(profileDate[code]),
     }))
 
+    const caseDetailUrls = SEED.map(c => ({ url: `${BASE}/laws/cases/${c.slug}`, priority: 0.6, changeFrequency: 'weekly' }))
     const caseStateUrls = US_STATE_CODES.map(code => ({ url: `${BASE}/laws/cases/states/${code}`, priority: 0.6, changeFrequency: 'weekly' }))
 
     // State news — linked from every /laws/[state] page; lowercase matches page canonical
@@ -196,6 +198,7 @@ export default async function sitemap() {
       ...staticPages,
       ...stateUrls,
       ...caseStateUrls,
+      ...caseDetailUrls,
       ...gunUrls,
       ...stateNewsUrls,
       ...articleUrls,

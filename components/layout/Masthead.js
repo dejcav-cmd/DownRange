@@ -31,6 +31,16 @@ const NAV = [
     ]
   },
   {
+    label: '⚖️ 2A Radar', href: '/laws/cases',
+    children: [
+      { label: '📡 Overview',        href: '/laws/cases',                    desc: 'What is moving in 2A litigation right now' },
+      { label: '🏛️ Supreme Court',   href: '/laws/cases/supreme-court',      desc: 'Granted cases, conferences and timelines' },
+      { label: '🗺️ Circuits',        href: '/laws/cases/circuits',           desc: 'Appeals-court cases by circuit' },
+      { label: '🛡️ DOJ Actions',     href: '/laws/cases/doj',                desc: 'Justice Department suits and letters' },
+      { label: '📋 Rules & Bills',   href: '/laws/cases/rules-and-bills',    desc: 'ATF rules and bills in Congress' },
+    ]
+  },
+  {
     label: '🎯 Tools', href: '/tools',
     children: [
       { label: '🎯 Precision Calculator',  href: '/ballistics',            desc: '188 match and hunting bullets, G1/G7, wind, DOPE card' },

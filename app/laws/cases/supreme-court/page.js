@@ -1,5 +1,5 @@
 import CasesShell from '../../../../components/cases/CasesShell'
-import { Row, Section, Timeline, Badge, Empty, fmt } from '../../../../components/cases/parts'
+import { Row, Section, Timeline, Badge, Empty, Impact, fmt } from '../../../../components/cases/parts'
 import { fetchRadarItems, sortUpcoming } from '../../../../sanity/lib/legalCases'
 
 export const revalidate = 900
@@ -23,7 +23,9 @@ export default async function Page() {
         {granted.length ? granted.map(i => (
           <div key={i._id} style={{ marginBottom: 28 }}>
             <h3 className="cx-title">{i.title} <Badge item={i} /></h3>
-            <p className="cx-sum" style={{ marginBottom: 16 }}>{i.summary}</p>
+            <p className="cx-sum">{i.summary}</p>
+            {i.question ? <p className="cx-sum" style={{ marginTop: 8 }}><b style={{ color: 'var(--text)' }}>The question: </b>{i.question}</p> : null}
+            <Impact item={i} />
             <Timeline item={i} today={today} />
           </div>
         )) : <Empty>No cases are currently granted.</Empty>}
