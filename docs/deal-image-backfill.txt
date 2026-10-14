@@ -1,20 +1,8 @@
-600 scanned, 23 need a real image, 12 coupon posts skipped
+600 scanned, 10 need a real image, 11 coupon posts skipped
 
-  + SB Tactical SBA5 Brace Only - $65.95 — 69587b 1500x1000 sha=cceab0218578
-  + Hoffman Tactical Trigger Kicker - TK-15 - $37.95 — 14957b 945x630 sha=6cf09be78e0c
-  + Aero Precision AR-15 Quantum M-LOK Handguard (w/ — 25999b 640x403 sha=3837c7c17d3e
-  + Vortex Crossfire HD 3-9x40 Dead-Hold BDC (MOA) R — 150367b 1027x577 sha=8831b45cf972
-  + Vortex Sport Riflescope Rings 1" Low .80" Elevat — 72685b 653x382 sha=a5e69314e27d
-  + Otter Creek Labs Polonium 30 Caliber 5.8" Silenc — 14806b 286x434 sha=67b1cc593a71
-  + MidwayUSA Essential Range Bag (Olive Drab, Coyot — 18576b 500x375 sha=41ba9c132d7c
-  + 3D Head-Mounted Night Vision Goggles White Light — 27896b 500x500 sha=8b2ead571aa2
+  + Browning BPR Performance 22LR 36 Grain Copper Pl — 97687b 730x715 sha=72f21362e136
   x Glock Compatible 9mm 10 Rd Capacity Steel Lined  — image not downloadable
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
-  + CZ 75 Compact 9mm 3.75" 14 Rds Pistol, Black - $ — 53632b 1000x702 sha=44edb76b29fe
-  + CMMG 22LR AR Conversion Kit, Bravo, W/ 3 25rd Ma — 58692b 1200x705 sha=880ea13a1c61
-  + CCI Suppressor Subsonic Hollow Point 22 Long Rif — 30371b 500x500 sha=3d6479c84701
-  + TAURUS TX22 22 Long 4.6" 22rd - Black w/ Threade — 163745b 664x530 sha=60c965c8faa8
-  + Taurus Judge Revolvers Roundup — 232449b 946x717 sha=bba7c0836d9c
   x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
   x TriStar Raptor ATAC 12 Gauge 20" 5 Rd Black Synt — image not downloadable
   x Heritage Settler 22 LR, 16.5" Barrel, Case Harde — image not downloadable
@@ -22,8 +10,7 @@
   x Heritage Rough Rider, .22lr, 16" Barrel, 6rd Cyl — image not downloadable
   x CRKT 7600K SLAG - $42 — image not downloadable
   x Mossberg 590 Retrograde 12 Ga Pump 3" 8-Rd 20" M — image not downloadable
-  x Beretta A400 Xcel Sporting KO 12 Gauge 30" 2 Rd  — image not downloadable
 
-fixed 13, failed 10  (56% success)
-distinct images: 13 across 13 deals
+fixed 1, failed 9  (10% success)
+distinct images: 1 across 1 deals
 PASS — no image shared between products
