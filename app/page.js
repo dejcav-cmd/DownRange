@@ -108,10 +108,10 @@ export default async function HomePage() {
       <HomeHero stats={stats} />
 
       <NewsSection items={news} />
-      <RadarSection items={radar} />
       <DealsSection items={deals} />
       <PressSection items={press} />
       <BlogSection items={blog} />
+      <RadarSection items={radar} />
 
       <section style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)' }}>
         <div className="container">
