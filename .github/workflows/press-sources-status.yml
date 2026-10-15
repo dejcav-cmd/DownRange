@@ -1,0 +1,28 @@
+name: Press Sources Status
+
+# Saves the admin Manufacturers view (per-manufacturer pull status) to scripts/press_sources_status.json.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Fetch status
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          curl -s --max-time 60 -H "x-admin-key: $ADMIN_KEY" https://www.downrangeco.com/api/admin/press-sources > scripts/press_sources_status.json || echo '{"ok":false}' > scripts/press_sources_status.json
+          head -c 400 scripts/press_sources_status.json; echo
+      - name: Commit
+        run: |
+          git config user.name "claude-bot"; git config user.email "noreply@anthropic.com"
+          git add scripts/press_sources_status.json
+          git commit -m "chore: press sources status snapshot" || echo "nothing to commit"
+          git pull --rebase -q || true
+          git push || true
