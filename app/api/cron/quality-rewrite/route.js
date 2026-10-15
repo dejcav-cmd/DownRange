@@ -160,7 +160,7 @@ async function handler(req) {
 
   try {
     const [articles, blogs, releases, canada, staleBacklog] = await Promise.all([
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
       sanity.fetch(`*[_type=="blogPost"       && defined(title) && editorLocked != true] | order(publishedAt desc) [0...10] { _id, title, sourceTitle, body, excerpt, qualityReviewed }`),
       sanity.fetch(`*[_type=="firearmRelease" && defined(brand) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, "title": brand+" "+model, body, summary, brand, model, caliber, msrp, category, qualityReviewed }`),
       sanity.fetch(`*[_type=="canadaContent"  && defined(title) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, title, sourceTitle, body, summary, type, status, qualityReviewed }`),
@@ -172,7 +172,7 @@ async function handler(req) {
       // often this cron runs. This explicit query targets missing bodies
       // directly, with no recency assumption, oldest first (FIFO), so the
       // backlog actually drains instead of accumulating forever.
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < 2500)] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < 2500)] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
     ])
 
     const seen = new Set()
@@ -189,6 +189,10 @@ async function handler(req) {
       allDocs.push(d)
     }
 
+    // Cool-off: an article that failed 3 times (unreadable source, AI error) is parked for 24h so it
+    // cannot block the queue, then retried. Everything else keeps flowing.
+    const cooling = d => (d.qrAttempts || 0) >= 3 && d.qrLastTryAt && Date.now() - new Date(d.qrLastTryAt).getTime() < 24 * 3600 * 1000
+    for (let i = allDocs.length - 1; i >= 0; i--) if (cooling(allDocs[i])) allDocs.splice(i, 1)
     stats.scanned = allDocs.length
 
     // ── EARLY EXIT: skip AI entirely if nothing needs work ────────────────────
@@ -225,7 +229,9 @@ async function handler(req) {
     const titleBatch = needsTitleRewrite.slice(0, Math.max(0, BATCH - fullBatch.length))
 
     // ── Full rewrites ────────────────────────────────────────────────────────
+    const DEADLINE = t0 + 230000 // stay well inside maxDuration so the run is always reported
     for (const item of fullBatch) {
+      if (Date.now() > DEADLINE) break
       try {
         const ai = await rewriteFull(item)
         await sanity.patch(item._id).set({
@@ -233,6 +239,7 @@ async function handler(req) {
           title:           ai.title,
           ...(ai.summary ? { summary: ai.summary } : {}),
           qualityReviewed: true,
+          qrAttempts: 0,
         }).commit()
         stats.fullRewrite++
         console.log(`[QR] FULL "${ai.title.slice(0,60)}"`)
@@ -240,6 +247,7 @@ async function handler(req) {
         console.error('[QR] FULL FAIL', item._id, e.message)
         // Never save the raw RSS excerpt as the body: that is what produced one-paragraph articles.
         // The article stays queued and is retried on the next run.
+        await sanity.patch(item._id).set({ qrAttempts: (item.qrAttempts || 0) + 1, qrLastTryAt: new Date().toISOString() }).commit().catch(() => {})
         stats.failed++
       }
       await new Promise(r => setTimeout(r, 800))
@@ -247,6 +255,7 @@ async function handler(req) {
 
     // ── Title-only rewrites ──────────────────────────────────────────────────
     for (const item of titleBatch) {
+      if (Date.now() > DEADLINE) break
       try {
         const newTitle = await rewriteTitleOnly(item)
         await sanity.patch(item._id).set({
@@ -267,7 +276,7 @@ async function handler(req) {
     const ms  = Date.now() - t0
     const msg = `Scanned ${stats.scanned} · full-rewrite ${stats.fullRewrite}/${needsFullRewrite.length} · title-only ${stats.titleOnly}/${needsTitleRewrite.length} · skipped ${stats.skipped} · failed ${stats.failed} · remaining ${remainingFull + remainingTitle}`
 
-    await reportCronRun('quality-rewrite', { status: stats.failed > stats.fullRewrite + stats.titleOnly ? 'warning' : 'success', ms, details: msg })
+    await reportCronRun('quality-rewrite', { status: stats.failed > 0 && stats.fullRewrite + stats.titleOnly === 0 ? 'failed' : stats.failed > stats.fullRewrite + stats.titleOnly ? 'warning' : 'success', ms, details: msg, error: stats.failed > 0 && stats.fullRewrite + stats.titleOnly === 0 ? msg : null })
     return Response.json({ ok: true, ...stats, remainingFull, remainingTitle, ms, message: msg })
 
   } catch (e) {
