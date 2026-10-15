@@ -1,4 +1,4 @@
-const CACHE = 'dr-admin-v5';
+const CACHE = 'dr-admin-v6';
 const SHELL = ['/admin-app/', '/admin-app/manifest.json'];
 
 self.addEventListener('install', e => {

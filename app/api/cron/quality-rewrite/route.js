@@ -162,7 +162,7 @@ async function handler(req) {
     const [articles, blogs, releases, canada, staleBacklog] = await Promise.all([
       sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
       sanity.fetch(`*[_type=="blogPost"       && defined(title) && editorLocked != true] | order(publishedAt desc) [0...10] { _id, title, sourceTitle, body, excerpt, qualityReviewed }`),
-      sanity.fetch(`*[_type=="firearmRelease" && defined(brand) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, "title": brand+" "+model, body, summary, brand, model, caliber, msrp, category, qualityReviewed }`),
+      Promise.resolve([]),
       sanity.fetch(`*[_type=="canadaContent"  && defined(title) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, title, sourceTitle, body, summary, type, status, qualityReviewed }`),
       // ── BACKLOG DRAIN ──────────────────────────────────────────────────────
       // The freshness query above orders by publishedAt desc, which is the

@@ -436,7 +436,7 @@ const NAV_TREE=[
     {id:'crons',       l:'Cron Jobs',         i:'⏱'},
     {id:'alerts',      l:'Alerts',            i:'🚨',b:'new'},
     {id:'operations',  l:'Operations',        i:'⚡'},
-    {id:'agents',      l:'Content Agents',    i:'🤖'},
+    {id:'agents',      l:'Content Quality',   i:'✅'},
     {id:'sources',     l:'Sources',           i:'📡'},
     {id:'deployments', l:'Deployments',       i:'▲'},
     {id:'sitemap',     l:'Site Map',          i:'🗺️'},
@@ -866,7 +866,7 @@ async function renderDashboard(el){
       <button class="qa-btn" onclick="openPanel('news','News Articles')"><span class="qa-icon">📰</span><span class="qa-label">News Articles</span></button>
       <button class="qa-btn" onclick="openPanel('crons','Cron Jobs')"><span class="qa-icon">⏱</span><span class="qa-label">Cron Jobs</span></button>
       <button class="qa-btn" onclick="openPanel('breaking','Breaking Alerts')"><span class="qa-icon">🔴</span><span class="qa-label">Alerts</span></button>
-      <button class="qa-btn" onclick="openPanel('agents','Content Agents')"><span class="qa-icon">🤖</span><span class="qa-label">AI Agents</span></button>
+      <button class="qa-btn" onclick="openPanel('agents','Content Quality')"><span class="qa-icon">✅</span><span class="qa-label">Quality</span></button>
       <button class="qa-btn" onclick="openPanel('copyright','Copyright Scan')"><span class="qa-icon">⚖</span><span class="qa-label">Copyright</span></button>
       <button class="qa-btn" onclick="openPanel('imgsearch','Image Search')"><span class="qa-icon">🔍</span><span class="qa-label">Image Search</span></button>
       <button class="qa-btn" onclick="openPanel('deployments','Deployments')"><span class="qa-icon">▲</span><span class="qa-label">Deployments</span></button>
@@ -979,7 +979,7 @@ function renderSystemScreen(el){
     [{id:'overview',i:'◈',l:'System Overview',s:'Full health dashboard'},
      {id:'crons',i:'⏱',l:'Cron Jobs',s:'Run & monitor all jobs'},
      {id:'deployments',i:'▲',l:'Deployments',s:'Vercel build history & logs'},
-     {id:'agents',i:'🤖',l:'Content Agents',s:'Trigger AI pipelines'},
+     {id:'agents',i:'✅',l:'Content Quality',s:'Thin articles and auto-fix jobs'},
      {id:'rss',i:'📡',l:'Source Manager',s:'All portal data sources'},
      {id:'sitemap',i:'🗺️',l:'Site Map',s:'URL routes & indexing'},
      {id:'ranges',i:'◎',l:'Ranges DB',s:'Shooting range finder'},
@@ -1585,23 +1585,30 @@ async function renderSysOverview(el){
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
-function renderAgents(el){
-  const agents=[
-    {id:'news',i:'📰',n:'News Feed',d:'Pull & AI-rewrite news articles'},
-    {id:'video',i:'▶',n:'Video Feed',d:'Sync YouTube channels'},
-    {id:'laws',i:'⚖',n:'Laws Feed',d:'Congress.gov + LegiScan'},
-    {id:'state',i:'🗺',n:'State Laws',d:'50-state law profiles'},
-    {id:'intelligence',i:'🧠',n:'Intel Brief',d:'Generate AI intelligence briefings'},
-    {id:'giveaways',i:'🎁',n:'Giveaways',d:'Daily giveaway scan'},
-    {id:'quality-rewrite',i:'✨',n:'Quality Rewrite',d:'AI-phrase article cleanup'},
-    {id:'image-fix',i:'📸',n:'Image Fix',d:'Fetch OG images → Sanity'},
-  ];
-  el.innerHTML=`<div class="section-sub">Trigger AI content pipeline agents</div>`+
-    agents.map(a=>`<div style="display:flex;align-items:center;gap:12px;padding:14px;background:var(--bg2);border:1px solid var(--border);margin-bottom:6px">
-      <span style="font-size:22px">${a.i}</span>
-      <div style="flex:1"><div style="font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700">${a.n}</div><div style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--dim)">${a.d}</div></div>
-      <button class="btn btn-sm" id="agent-btn-${a.id}" onclick="triggerCron('${a.id}',this)">▶</button>
-    </div>`).join('');
+async function renderAgents(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading content quality...</div>';
+  try{
+    const d=await api('/api/admin/content-quality');
+    if(!d.ok){el.innerHTML=`<div class="empty">Error: ${d.error||'failed'}</div>`;return;}
+    const c=d.counts, ago=iso=>{if(!iso)return 'never';const m=Math.round((Date.now()-new Date(iso))/60000);return m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' d ago';};
+    const tile=(l,v,bad)=>`<div class="stat-box"><div class="stat-val" style="${bad&&v?'color:var(--err)':''}">${v}</div><div class="stat-lbl">${l}</div></div>`;
+    el.innerHTML=`<div class="section-title">Content Quality</div><div class="section-sub">Short, unreviewed or image-less live articles</div>
+      <div class="stat-grid">${tile('Live',c.live,0)}${tile('Thin',c.thin,1)}${tile('Unreviewed',c.unreviewed,1)}${tile('Bad images',c.badImage,1)}</div>
+      ${d.jobs.map(j=>`<div class="art-card"><div class="art-title">${j.label}</div><div class="art-meta"><span class="pill ${j.last?.status==='success'?'pill-ok':'pill-warn'}">${j.last?j.last.status:'no run'}</span><span>${ago(j.last?.at)}</span></div><div class="art-actions"><button class="btn btn-xs" onclick="qualityRun('${j.id}',this)">▶ Run now</button></div></div>`).join('')}
+      <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 8px">Weakest live articles</div>
+      ${d.weakest.length?d.weakest.map(a=>`<div class="art-card" id="q-${a._id}"><div class="art-title">${a.title||'Untitled'}</div><div class="art-meta"><span>${(a.chars/1000).toFixed(1)}k chars</span>${a.source?`<span>${a.source}</span>`:''}${a.qrAttempts?`<span>${a.qrAttempts} failed tries</span>`:''}</div><div class="art-actions"><button class="btn btn-xs" onclick="qualityRewrite('${a.slug}',this)">✍ Rewrite now</button><a class="btn-outline btn-xs" target="_blank" href="https://downrangeco.com/news/${a.slug}">View</a></div></div>`).join(''):'<div class="empty">All live articles are long enough ✓</div>'}`;
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+async function qualityRewrite(slug,btn){
+  btn.disabled=true;btn.textContent='⏳';
+  try{const d=await api('/api/cron/quality-rewrite?slug='+encodeURIComponent(slug));
+    if(d.ok){flash('Rewritten: '+d.words+' words','ok');btn.textContent='✓ Done';}else{flash(d.error||'Failed','err');btn.disabled=false;btn.textContent='✍ Rewrite now';}
+  }catch(e){flash(e.message,'err');btn.disabled=false;btn.textContent='✍ Rewrite now';}
+}
+async function qualityRun(id,btn){
+  btn.disabled=true;btn.textContent='⏳';
+  try{const d=await api('/api/cron/'+id);flash(d.ok===false?(d.error||'Failed'):(d.message||'Done'),d.ok===false?'err':'ok');}catch(e){flash(e.message,'err');}
+  btn.disabled=false;btn.textContent='▶ Run now';
 }
 
 function renderRSSources(el){

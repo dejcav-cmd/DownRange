@@ -188,7 +188,6 @@ const CRON_META = {
   '/api/cron/bible-update':               { label:'Bible Update',        color:'#60a5fa' },
   '/api/nfa-wait-times':                  { label:'NFA Wait Times',      color:'#6b7280' },
   '/api/admin/fetch-article-images':      { label:'Fetch OG Images',     color:'#6b7280' },
-  '/api/admin/fix-images?batch=500&force=false&cron=1': { label:'Batch Fix Images', color:'#6b7280' },
   '/api/cron/image-fix':                  { label:'Image Fix',           color:'#6b7280' },
   '/api/cron/fix-placeholder-images':     { label:'Fix Placeholders',    color:'#6b7280' },
   '/api/cron/fix-slugs':                  { label:'Fix Slugs',           color:'#6b7280' },
