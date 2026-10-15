@@ -50,7 +50,7 @@ export async function GET(req) {
         'content-type': 'application/json',
       },
       body: JSON.stringify({
-        model: 'claude-sonnet-4-5',
+        model: 'claude-haiku-5-5',
         max_tokens: 10,
         messages: [{ role: 'user', content: 'say ok' }],
       }),

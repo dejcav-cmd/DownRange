@@ -1,521 +1,286 @@
 'use client'
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useCallback } from 'react'
+import { CLAUDE_MODELS, OPENAI_MODELS, USE_CASES, labelFor } from '../../lib/aiModels'
 
-const ALL_MODELS = {
-  anthropic: [
-    { id: 'claude-sonnet-4-5',         label: 'Claude Sonnet 4.6',  cost: '$$'   },
-    { id: 'claude-opus-4-5',           label: 'Claude Opus 4.6',    cost: '$$$$' },
-    { id: 'claude-haiku-5-5', label: 'Claude Haiku 5.5',   cost: '$'    },
-  ],
-  openai: [
-    { id: 'gpt-4o',      label: 'GPT-4o',       cost: '$$$' },
-    { id: 'gpt-4o-mini', label: 'GPT-4o Mini',  cost: '$'   },
-    { id: 'o1-mini',     label: 'o1-mini',       cost: '$$'  },
-  ],
-  glm: [
-    { id: 'glm-4.7',     label: 'GLM-4.7',       cost: '$$'  },
-    { id: 'glm-4.5',     label: 'GLM-4.5',        cost: '$$'  },
-    { id: 'glm-4.5-air', label: 'GLM-4.5 Air',    cost: '$'   },
-    { id: 'glm-4.6',     label: 'GLM-4.6',        cost: '$'   },
-  ],
+const MONO = "'IBM Plex Mono',monospace"
+const COND = "'Barlow Condensed',sans-serif"
+
+const PROVIDERS = {
+  anthropic: { name: 'Anthropic', color: '#f97316', models: CLAUDE_MODELS },
+  openai:    { name: 'OpenAI',    color: '#22c55e', models: OPENAI_MODELS },
 }
 
-const PROV_META = {
-  anthropic: { icon: '🟠', name: 'Anthropic', color: '#f97316', env: 'ANTHROPIC_API_KEY' },
-  openai:    { icon: '🟢', name: 'OpenAI',    color: '#22c55e', env: 'OPENAI_API_KEY'    },
-  glm:       { icon: '🔵', name: 'Z.ai GLM',  color: '#3b82f6', env: 'GLM_API_KEY'       },
-}
-
-const USE_CASES = [
-  { key: 'default',       label: 'Default',              env: 'AI_CHAIN',                desc: 'Fallback for unspecified tasks', tier: 'mid' },
-  { key: 'news',          label: 'News Feed ×96/day',    env: 'AI_CHAIN_NEWS',           desc: '🔥 Highest volume — use cheapest model', tier: 'cheap' },
-  { key: 'backfill',      label: 'Backfill ×12/day',     env: 'AI_CHAIN_BACKFILL',       desc: 'Hourly article backfill — cheap tier', tier: 'cheap' },
-  { key: 'law',           label: 'Laws ×12/day',         env: 'AI_CHAIN_LAW',            desc: 'Bill analysis every 2h — mid tier', tier: 'mid' },
-  { key: 'law-assistant', label: '⚖ Law Assistant',     env: 'AI_CHAIN_LAW_ASSISTANT',  desc: 'Live Q&A on /laws page — GLM-4.5 Air by default (cheapest)', tier: 'cheap' },
-  { key: 'article',       label: 'Articles',              env: 'AI_CHAIN_ARTICLE',        desc: 'Blog posts, releases — mid tier', tier: 'mid' },
-  { key: 'intel',         label: 'Intel ×1/day',          env: 'AI_CHAIN_INTEL',          desc: '✨ Daily briefing — use best model', tier: 'best' },
-  { key: 'newsletter',    label: 'Newsletter ×1/day',     env: 'AI_CHAIN_NEWSLETTER',     desc: '✨ Goes to subscribers — use best', tier: 'best' },
-  { key: 'outreach',      label: 'Outreach',               env: 'AI_CHAIN_OUTREACH',       desc: 'Email drafts — mid tier', tier: 'mid' },
-  { key: 'fast',          label: 'Fast / Bulk',            env: 'AI_CHAIN_FAST',           desc: 'Bulk ops — absolute cheapest', tier: 'cheap' },
+const PRESETS = [
+  ['Cheapest',  [{ provider: 'anthropic', model: 'claude-haiku-5-5' }]],
+  ['Balanced',  [{ provider: 'anthropic', model: 'claude-haiku-5-5' }, { provider: 'anthropic', model: 'claude-sonnet-5-5' }]],
+  ['Quality',   [{ provider: 'anthropic', model: 'claude-sonnet-5-5' }, { provider: 'anthropic', model: 'claude-haiku-5-5' }]],
+  ['Max',       [{ provider: 'anthropic', model: 'claude-opus-5-5' }, { provider: 'anthropic', model: 'claude-sonnet-5-5' }, { provider: 'anthropic', model: 'claude-haiku-5-5' }]],
 ]
 
-const PRESETS = {
-  glmFirst:    [{ provider:'glm', model:'glm-4.7' },       { provider:'anthropic', model:'claude-sonnet-4-5' }],
-  claudeFirst: [{ provider:'anthropic', model:'claude-sonnet-4-5' }, { provider:'glm', model:'glm-4.7' }],
-  balanced:    [{ provider:'glm', model:'glm-4.7' },       { provider:'anthropic', model:'claude-sonnet-4-5' }, { provider:'openai', model:'gpt-4o-mini' }],
-  quality:     [{ provider:'anthropic', model:'claude-opus-4-5' }, { provider:'glm', model:'glm-4.7' }, { provider:'openai', model:'gpt-4o' }],
-  cheap:       [{ provider:'glm', model:'glm-4.5-air' },   { provider:'anthropic', model:'claude-haiku-5-5' }, { provider:'openai', model:'gpt-4o-mini' }],
+const HEALTH = {
+  ok:       { label: 'OK',                  color: '#22c55e' },
+  retired:  { label: 'RETIRED ID (auto-mapped)', color: '#f59e0b' },
+  unknown:  { label: 'UNKNOWN MODEL',       color: '#ef4444' },
+  invalid:  { label: 'NOT IN ANTHROPIC LIST', color: '#ef4444' },
+  nokey:    { label: 'NO API KEY',          color: '#ef4444' },
+  disabled: { label: 'GLM DISABLED',        color: '#6b7280' },
 }
 
 const S = `
-.cp-slot{display:flex;gap:8px;align-items:center;padding:10px 12px;background:var(--bg3);border:1px solid var(--border)}
-.cp-slot.primary{border-color:var(--gold);background:rgba(200,146,42,.05)}
-.cp-sel{background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:6px 8px;outline:none}
-.cp-sel:focus{border-color:var(--gold)}
-.cp-inp{background:var(--bg2);border:1px solid var(--border);color:var(--text);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:8px 10px;width:100%;outline:none}
-.cp-inp:focus{border-color:var(--gold)}
-.cp-btn{background:var(--gold);color:#000;border:none;font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:9px 18px;cursor:pointer}
-.cp-btn:hover{opacity:.85}
-.cp-btn:disabled{opacity:.35;cursor:not-allowed}
-.cp-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:10px;padding:5px 10px;cursor:pointer;transition:all .15s}
-.cp-ghost:hover{border-color:var(--gold);color:var(--gold)}
-.cp-del{background:none;border:none;color:#4b5563;cursor:pointer;font-size:13px;padding:2px 6px}
-.cp-del:hover{color:#ef4444}
-.cp-mv{background:none;border:1px solid var(--border);color:#4b5563;cursor:pointer;font-size:9px;padding:3px 6px}
-.cp-mv:hover{border-color:var(--gold);color:var(--gold)}
-.cp-tab{background:none;border:none;border-bottom:2px solid transparent;color:var(--text-dim);font-family:'IBM Plex Mono',monospace;font-size:11px;padding:9px 14px;cursor:pointer;transition:all .15s;white-space:nowrap}
-.cp-tab.on{border-bottom-color:var(--gold);color:var(--gold)}
-.cp-lbl{font-family:'IBM Plex Mono',monospace;font-size:9px;color:#64748b;letter-spacing:.1em;text-transform:uppercase;margin-bottom:4px;display:block}
-.cp-tag{font-family:'IBM Plex Mono',monospace;font-size:8px;font-weight:700;padding:2px 5px;border-radius:2px;text-transform:uppercase;letter-spacing:.06em}
-.cp-divider{text-align:center;font-family:'IBM Plex Mono',monospace;font-size:9px;color:#374151;padding:3px 0;letter-spacing:.06em}
+.am-card{background:var(--bg2);border:1px solid var(--border);padding:14px 18px;margin-bottom:14px}
+.am-h{font-family:${COND};font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--text);margin-bottom:10px}
+.am-sel{background:var(--bg3);border:1px solid var(--border);color:var(--text);font-family:${MONO};font-size:11px;padding:7px 8px;outline:none}
+.am-sel:focus{border-color:var(--gold)}
+.am-btn{background:var(--gold);color:#000;border:none;font-family:${COND};font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:9px 18px;cursor:pointer}
+.am-btn:disabled{opacity:.4;cursor:not-allowed}
+.am-ghost{background:none;border:1px solid var(--border);color:var(--text-dim);font-family:${MONO};font-size:10px;padding:6px 11px;cursor:pointer}
+.am-ghost:hover{border-color:var(--gold);color:var(--gold)}
+.am-row{display:grid;grid-template-columns:150px 1fr auto;gap:12px;align-items:center;padding:10px 12px;border:1px solid var(--border);background:var(--bg3);margin-bottom:6px;cursor:pointer}
+.am-row.on{border-color:var(--gold);background:rgba(200,146,42,.06)}
+.am-pill{display:inline-block;font-family:${MONO};font-size:10px;padding:2px 7px;border:1px solid var(--border);margin:2px 4px 2px 0;color:var(--text)}
+.am-pill.p{border-color:var(--gold);color:var(--gold)}
+.am-tag{font-family:${MONO};font-size:9px;font-weight:700;letter-spacing:.05em;padding:2px 6px}
+@media(max-width:760px){.am-row{grid-template-columns:1fr}}
 `
 
 export default function AIProviderSettings({ adminKey }) {
-  const [activeUC, setActiveUC] = useState('default')
-  const [chains,   setChains]   = useState({
-    default:    [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
-    news:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-5-5'}],
-    backfill:   [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-5-5'}],
-    law:        [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-haiku-5-5'}],
-    article:    [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
-    intel:      [{provider:'anthropic',model:'claude-sonnet-4-5'},{provider:'glm',model:'glm-4.7'}],
-    newsletter: [{provider:'anthropic',model:'claude-sonnet-4-5'},{provider:'glm',model:'glm-4.7'}],
-    outreach:   [{provider:'glm',model:'glm-4.7'},{provider:'anthropic',model:'claude-sonnet-4-5'}],
-    fast:       [{provider:'glm',model:'glm-4.5-air'},{provider:'anthropic',model:'claude-haiku-5-5'}],
-  })
-  const [keys,     setKeys]     = useState({ openai:'', glm:'' })
-  const [saved,    setSaved]    = useState(false)
-  const [saving,   setSaving]   = useState(false)
-  const [vercelResult, setVercelResult] = useState(null)
-  const [srvStatus,   setSrvStatus]   = useState(null)
-  const [srvLoading,  setSrvLoading]  = useState(false)
-  const [serverStatus, setServerStatus] = useState(null)
-  const [statusLoading, setStatusLoading] = useState(false)
-  const [testing,  setTesting]  = useState(false)
-  const [testLog,  setTestLog]  = useState([])
-  const [testRes,  setTestRes]  = useState('')
-  const [msg,      setMsg]      = useState('')
+  const [data, setData] = useState(null)
+  const [loading, setLoading] = useState(true)
+  const [verifying, setVerifying] = useState(false)
+  const [activeUC, setActiveUC] = useState('news')
+  const [draft, setDraft] = useState({})            // useCase -> edited slots
+  const [msg, setMsg] = useState('')
+  const [pushing, setPushing] = useState(false)
+  const [pushRes, setPushRes] = useState(null)
+  const [testLog, setTestLog] = useState([])
+  const [testing, setTesting] = useState(false)
 
-  useEffect(() => {
+  const H = { 'x-admin-key': adminKey }
+  const flash = (m) => { setMsg(m); setTimeout(() => setMsg(''), 6000) }
+
+  const load = useCallback(async (live = false) => {
+    live ? setVerifying(true) : setLoading(true)
     try {
-      const s = localStorage.getItem('dr_ai_chains')
-      if (s) setChains(JSON.parse(s))
-      setKeys({ openai: localStorage.getItem('dr_openai_key')||'', glm: localStorage.getItem('dr_glm_key')||'' })
-    } catch {}
-  }, [])
+      const r = await fetch('/api/admin/ai-status' + (live ? '?live=1' : ''), { headers: H })
+      const d = await r.json()
+      if (d.ok) setData(d); else flash('❌ ' + (d.error || 'Failed to load'))
+    } catch (e) { flash('❌ ' + e.message) }
+    setLoading(false); setVerifying(false)
+  }, [adminKey])
 
-  const flash = m => { setMsg(m); setTimeout(()=>setMsg(''), 4000) }
-  const chainStr = c => c.map(s=>s.provider+':'+s.model).join(',')
+  useEffect(() => { load(false) }, [load])
 
-  function saveLocal() {
-    localStorage.setItem('dr_ai_chains', JSON.stringify(chains))
-    if (keys.openai) localStorage.setItem('dr_openai_key', keys.openai)
-    if (keys.glm)    localStorage.setItem('dr_glm_key',    keys.glm)
-    setSaved(true); setTimeout(()=>setSaved(false), 2500)
+  const routing = data?.routing || []
+  const current = routing.find(r => r.useCase === activeUC)
+  const uc = USE_CASES.find(u => u.key === activeUC)
+  // edited chain, else what the server really uses (retired IDs shown as their replacement)
+  const chain = draft[activeUC] || (current?.slots || []).filter(s => s.provider !== 'glm').map(s => ({ provider: s.provider, model: s.effective || s.model }))
+  const setChain = (fn) => setDraft(p => ({ ...p, [activeUC]: fn(chain) }))
+  const dirty = !!draft[activeUC]
+  const chainStr = (c) => c.map(s => s.provider + ':' + s.model).join(',')
+
+  async function push(vars, label) {
+    setPushing(true); setPushRes(null)
+    try {
+      const r = await fetch('/api/admin/set-env', { method: 'POST', headers: { ...H, 'Content-Type': 'application/json' }, body: JSON.stringify({ vars }) })
+      const d = await r.json()
+      setPushRes(d)
+      if (d.ok) flash('✅ ' + label + ' pushed to Vercel. Redeploy to activate.')
+      else if (d.manual) flash('⚠ VERCEL_TOKEN not set. Copy the values below into Vercel by hand.')
+      else flash('❌ ' + (d.error || d.message || 'Push failed'))
+    } catch (e) { flash('❌ ' + e.message) }
+    setPushing(false)
   }
 
-  async function pushToVercel() {
-    setSaving(true); setVercelResult(null)
-    const vars = {}
-    for (const u of USE_CASES) { if (chains[u.key]?.length > 0) vars[u.env] = chainStr(chains[u.key]) }
-    if (keys.openai) vars.OPENAI_API_KEY = keys.openai
-    if (keys.glm)    vars.GLM_API_KEY    = keys.glm
-    try {
-      const res = await fetch('/api/admin/set-env', {
-        method:'POST',
-        headers:{'x-admin-key':adminKey,'Content-Type':'application/json'},
-        body:JSON.stringify({vars})
-      })
-      const d = await res.json()
-      setVercelResult(d)
-      if (d.ok) flash('✅ Pushed to Vercel — trigger a redeploy to activate')
-      else if (d.manual) flash('⚠ VERCEL_TOKEN not set — see manual instructions below')
-      else flash('❌ ' + (d.error || d.message || 'Push failed — see details below'))
-    } catch(e) {
-      setVercelResult({ ok:false, error: e.message, httpError: true })
-      flash('❌ Network error: ' + e.message)
-    }
-    setSaving(false)
+  const saveChain = async () => {
+    if (!uc?.env) return flash('⚠ This task has no env var. It follows the built-in default.')
+    if (!chain.length) return flash('⚠ Chain is empty')
+    await push({ [uc.env]: chainStr(chain) }, uc.label)
+    setDraft(p => { const n = { ...p }; delete n[activeUC]; return n })
   }
+  const fixAll = () => push(Object.fromEntries((data.fixes || []).map(f => [f.env, f.to])), 'Corrected model IDs')
 
   async function testChain() {
-    const chain = chains[activeUC]
-    if (!chain.length) { setTestRes('⚠ Chain is empty'); return }
-    setTesting(true); setTestLog([]); setTestRes('')
+    setTesting(true); setTestLog([])
     const logs = []
-    for (let i = 0; i < chain.length; i++) {
-      const { provider, model } = chain[i]
-      logs.push({ status:'testing', provider, model })
-      setTestLog([...logs])
+    for (const s of chain) {
+      logs.push({ ...s, status: 'testing' }); setTestLog([...logs])
       try {
-        const res = await fetch('/api/admin/ai-test', { method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'}, body:JSON.stringify({provider,model,openaiKey:keys.openai,glmKey:keys.glm}) })
-        const d = await res.json()
-        if (d.ok) { logs[i]={...logs[i],status:'ok',response:d.response}; setTestLog([...logs]); setTestRes('✅ Working — primary: '+provider+'/'+model); break }
-        else       { logs[i]={...logs[i],status:'fail',error:d.error};    setTestLog([...logs]); if(i===chain.length-1) setTestRes('❌ All models failed') }
-      } catch(e)   { logs[i]={...logs[i],status:'fail',error:e.message};  setTestLog([...logs]); if(i===chain.length-1) setTestRes('❌ All models failed') }
+        const r = await fetch('/api/admin/ai-test', { method: 'POST', headers: { ...H, 'Content-Type': 'application/json' }, body: JSON.stringify({ provider: s.provider, model: s.model }) })
+        const d = await r.json()
+        logs[logs.length - 1] = d.ok ? { ...s, status: 'ok', note: d.response } : { ...s, status: 'fail', note: d.error }
+      } catch (e) { logs[logs.length - 1] = { ...s, status: 'fail', note: e.message } }
+      setTestLog([...logs])
     }
     setTesting(false)
   }
 
-  async function checkServer() {
-    setSrvLoading(true); setSrvStatus(null)
-    try {
-      const r = await fetch('/api/admin/ai-status', {headers:{'x-admin-key':adminKey}})
-      const d = await r.json()
-      if (d.ok) setSrvStatus(d)
-      else flash('❌ ' + d.error)
-    } catch(e) { flash('❌ ' + e.message) }
-    setSrvLoading(false)
+  const needFix = (data?.fixes || []).length
+  const newModels = (data?.liveModels || []).filter(m => !(data.catalog || []).some(c => c.id === m.id) && /^claude-/.test(m.id) && !/-\d{8}$/.test(m.id))
+  const keyCard = (p, label, color) => {
+    const has = data?.keys?.[p], t = data?.tests?.[p]
+    const state = !has ? ['NOT SET', '#6b7280'] : !t ? ['KEY PRESENT', '#9ca3af'] : t.ok ? ['LIVE', '#22c55e'] : ['ERROR', '#ef4444']
+    return (
+      <div style={{ padding: '10px 12px', border: '1px solid var(--border)', background: 'var(--bg3)' }}>
+        <div style={{ fontFamily: MONO, fontSize: 9, color, letterSpacing: '.08em', marginBottom: 4 }}>{label}</div>
+        <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: state[1] }}>{state[0]}</div>
+        {t?.ok && <div style={{ fontFamily: MONO, fontSize: 9, color: '#6b7280', marginTop: 2 }}>{t.model} · {t.ms}ms</div>}
+        {t?.error && <div style={{ fontFamily: MONO, fontSize: 9, color: '#f87171', marginTop: 2, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{t.error}</div>}
+      </div>
+    )
   }
-
-  function upd(uc, fn) { setChains(p=>({...p,[uc]:fn(p[uc]||[])})) }
-  function addSlot(uc) {
-    const cur = chains[uc]||[]
-    const prov = ['glm','anthropic','openai'].find(p=>!cur.some(s=>s.provider===p))||'anthropic'
-    upd(uc, c=>[...c,{provider:prov,model:ALL_MODELS[prov][0].id}])
-  }
-
-  const uc = USE_CASES.find(u=>u.key===activeUC)
-  const chain = chains[activeUC]||[]
 
   return (
     <div>
       <style>{S}</style>
-
-      <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.5rem',color:'var(--gold)',letterSpacing:'.05em',marginBottom:4}}>🤖 AI Model Chain</div>
-      <p style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#64748b',marginBottom:20,lineHeight:1.8}}>
-        Configure an ordered fallback chain. Primary model runs first — if it fails, the next is tried automatically. Set per use case.
-      </p>
-
-      {msg && <div style={{padding:'9px 14px',marginBottom:14,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:msg.startsWith('✅')?'#22c55e':msg.startsWith('❌')?'#f87171':'#f59e0b',background:'var(--bg2)',border:'1px solid var(--border)'}}>{msg}</div>}
-
-      {/* ── SERVER STATUS PANEL ── */}
-      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:serverStatus?12:0}}>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>
-            🖥 Live Server Status
-          </div>
-          <button className="cp-ghost" onClick={checkServer} disabled={srvLoading} style={{fontSize:10}}>
-            {statusLoading ? '⏳ Checking...' : '🔍 Check Live Keys'}
-          </button>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 10, marginBottom: 14 }}>
+        <div>
+          <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.7rem', color: 'var(--gold)', letterSpacing: '.05em', lineHeight: 1 }}>🤖 AI Models</div>
+          <div style={{ fontFamily: MONO, fontSize: 11, color: '#64748b', marginTop: 4 }}>What the server really uses for each task, checked against Anthropic&apos;s live model list.</div>
         </div>
-
-        {serverStatus && (
-          <div style={{display:'flex',flexDirection:'column',gap:8}}>
-            {/* Key presence */}
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-              {[
-                {label:'Anthropic',key:'ANTHROPIC_API_KEY',color:'#f97316',provider:'anthropic'},
-                {label:'Z.ai GLM', key:'GLM_API_KEY',       color:'#3b82f6',provider:'glm'},
-                {label:'OpenAI',   key:'OPENAI_API_KEY',    color:'#22c55e',provider:'openai'},
-              ].map(p=>{
-                const has   = serverStatus.status[p.key]
-                const test  = serverStatus.tests[p.provider]
-                const state = !has ? 'missing' : test?.ok ? 'live' : 'error'
-                return (
-                  <div key={p.key} style={{padding:'10px 12px',background:state==='live'?'rgba(34,197,94,.08)':state==='error'?'rgba(239,68,68,.08)':'rgba(0,0,0,.2)',border:`1px solid ${state==='live'?'rgba(34,197,94,.3)':state==='error'?'rgba(239,68,68,.3)':'var(--border)'}`}}>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.color,letterSpacing:'.08em',textTransform:'uppercase',marginBottom:4}}>{p.label}</div>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,fontWeight:700,color:state==='live'?'#22c55e':state==='error'?'#ef4444':'#4b5563'}}>
-                      {state==='live'?'✅ LIVE':state==='error'?'❌ KEY ERROR':'— NOT SET'}
-                    </div>
-                    {test?.ok && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:2}}>tested: {test.model}</div>}
-                    {test?.error && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#f87171',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{test.error}</div>}
-                    {!has && <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:2}}>Add to Vercel env vars</div>}
-                  </div>
-                )
-              })}
-            </div>
-            {/* Active routing */}
-            <div style={{padding:'10px 12px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)'}}>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6}}>Active Routing on This Server</div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:4}}>
-                {Object.entries(serverStatus.routing).map(([uc,model])=>(
-                  <div key={uc} style={{display:'flex',gap:6,alignItems:'baseline'}}>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',minWidth:70}}>{uc}:</span>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:model.includes('⚠')?'#f59e0b':model==='none'?'#ef4444':'#22c55e',fontWeight:700}}>{model}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {!serverStatus.status.VERCEL_TOKEN && (
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#f59e0b',padding:'8px 10px',background:'rgba(245,158,11,.08)',border:'1px solid rgba(245,158,11,.2)'}}>
-                ⚠ VERCEL_TOKEN not set — Push to Vercel button will show manual instructions instead of auto-pushing.
-              </div>
-            )}
-          </div>
-        )}
+        <button className="am-btn" disabled={verifying || loading} onClick={() => load(true)}>{verifying ? '⏳ Verifying…' : '🔍 Verify with providers'}</button>
       </div>
 
-      {/* ── LIVE SERVER STATUS ── */}
-      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>🖥 Live Server Status</div>
-          <button className="cp-ghost" onClick={checkServer} disabled={srvLoading} style={{fontSize:10}}>
-            {srvLoading ? '⏳ Checking...' : '🔍 Check Live Keys & Routing'}
-          </button>
-        </div>
-        {srvStatus && (
-          <div style={{marginTop:12,display:'flex',flexDirection:'column',gap:8}}>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-              {[
-                {label:'Anthropic', k:'ANTHROPIC_API_KEY', color:'#f97316', prov:'anthropic'},
-                {label:'Z.ai GLM',  k:'GLM_API_KEY',       color:'#3b82f6', prov:'glm'},
-                {label:'OpenAI',    k:'OPENAI_API_KEY',    color:'#22c55e', prov:'openai'},
-              ].map(p=>{
-                const has  = srvStatus.status[p.k]
-                const test = srvStatus.tests?.[p.prov]
-                const st   = !has ? 'none' : test?.ok ? 'ok' : 'err'
-                return (
-                  <div key={p.k} style={{padding:'10px 12px',background:st==='ok'?'rgba(34,197,94,.07)':st==='err'?'rgba(239,68,68,.07)':'rgba(0,0,0,.2)',border:`1px solid ${st==='ok'?'rgba(34,197,94,.3)':st==='err'?'rgba(239,68,68,.3)':'var(--border)'}`}}>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.color,letterSpacing:'.08em',marginBottom:4}}>{p.label}</div>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,fontWeight:700,color:st==='ok'?'#22c55e':st==='err'?'#ef4444':'#4b5563'}}>
-                      {st==='ok'?'✅ LIVE':st==='err'?'❌ BAD KEY':'— NOT SET'}
-                    </div>
-                    {test?.ok&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:2}}>tested: {test.model}</div>}
-                    {test?.error&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#f87171',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{test.error}</div>}
-                    {!has&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:2}}>Add {p.k} in Vercel</div>}
-                  </div>
-                )
-              })}
+      {msg && <div className="am-card" style={{ fontFamily: MONO, fontSize: 11, color: msg.startsWith('✅') ? '#22c55e' : msg.startsWith('⚠') ? '#f59e0b' : '#f87171' }}>{msg}</div>}
+      {loading && <div className="am-card" style={{ fontFamily: MONO, fontSize: 11, color: '#6b7280' }}>Loading…</div>}
+
+      {data && (
+        <>
+          {/* Providers */}
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(170px,1fr))', gap: 8, marginBottom: 14 }}>
+            {keyCard('anthropic', 'ANTHROPIC', '#f97316')}
+            {keyCard('openai', 'OPENAI', '#22c55e')}
+            <div style={{ padding: '10px 12px', border: '1px solid var(--border)', background: 'var(--bg3)' }}>
+              <div style={{ fontFamily: MONO, fontSize: 9, color: '#3b82f6', letterSpacing: '.08em', marginBottom: 4 }}>Z.AI GLM</div>
+              <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: '#6b7280' }}>OFF SITE-WIDE</div>
+              <div style={{ fontFamily: MONO, fontSize: 9, color: '#6b7280', marginTop: 2 }}>Haiku 5.5 is cheaper and better</div>
             </div>
-            <div style={{padding:'10px 12px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)'}}>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6}}>Active Routing on This Server</div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:6}}>
-                {Object.entries(srvStatus.routing||{}).map(([uc,model])=>(
-                  <div key={uc} style={{display:'flex',gap:5,alignItems:'baseline'}}>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',minWidth:68,flexShrink:0}}>{uc}:</span>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:model==='none'?'#ef4444':model.includes('⚠')?'#f59e0b':'#22c55e'}}>{model}</span>
-                  </div>
-                ))}
+            <div style={{ padding: '10px 12px', border: '1px solid var(--border)', background: 'var(--bg3)' }}>
+              <div style={{ fontFamily: MONO, fontSize: 9, color: '#9ca3af', letterSpacing: '.08em', marginBottom: 4 }}>VERCEL PUSH</div>
+              <div style={{ fontFamily: MONO, fontSize: 12, fontWeight: 700, color: data.keys.vercel ? '#22c55e' : '#f59e0b' }}>{data.keys.vercel ? 'ENABLED' : 'NEEDS VERCEL_TOKEN'}</div>
+            </div>
+          </div>
+
+          {/* Fix banner */}
+          {needFix > 0 && (
+            <div className="am-card" style={{ borderLeft: '3px solid #f59e0b' }}>
+              <div className="am-h" style={{ color: '#f59e0b' }}>{needFix} setting{needFix > 1 ? 's' : ''} use retired or unavailable models</div>
+              <div style={{ fontFamily: MONO, fontSize: 10, color: '#9ca3af', marginBottom: 10, lineHeight: 1.7 }}>
+                These still run: the server maps old IDs to the current model on every call. Updating them removes the warning and keeps the settings honest.
               </div>
+              {data.fixes.map(f => (
+                <div key={f.env} style={{ fontFamily: MONO, fontSize: 10, marginBottom: 6, wordBreak: 'break-all' }}>
+                  <span style={{ color: 'var(--gold)' }}>{f.env}</span>{' '}
+                  <span style={{ color: '#f87171', textDecoration: 'line-through' }}>{f.from}</span>{' → '}
+                  <span style={{ color: '#22c55e' }}>{f.to}</span>
+                </div>
+              ))}
+              <button className="am-btn" style={{ marginTop: 8 }} disabled={pushing} onClick={fixAll}>{pushing ? 'Pushing…' : 'Fix all in Vercel'}</button>
             </div>
-            {!srvStatus.status.VERCEL_TOKEN&&(
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#f59e0b',padding:'8px 10px',background:'rgba(245,158,11,.08)',border:'1px solid rgba(245,158,11,.2)'}}>
-                ⚠ VERCEL_TOKEN not set — "Push to Vercel" will show manual instructions. Add VERCEL_TOKEN to Vercel env vars to enable auto-push.
-              </div>
-            )}
-          </div>
-        )}
-      </div>
+          )}
 
-      {/* ── LIVE SERVER STATUS ── */}
-      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center'}}>
-          <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>🖥 Live Server Status</div>
-          <button className="cp-ghost" onClick={checkServer} disabled={srvLoading} style={{fontSize:10}}>
-            {srvLoading ? '⏳ Checking...' : '🔍 Check Live Keys'}
-          </button>
-        </div>
-        {srvStatus && (
-          <div style={{marginTop:12,display:'flex',flexDirection:'column',gap:8}}>
-            <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:8}}>
-              {[
-                {label:'Anthropic',k:'ANTHROPIC_API_KEY',color:'#f97316',prov:'anthropic'},
-                {label:'Z.ai GLM', k:'GLM_API_KEY',      color:'#3b82f6',prov:'glm'},
-                {label:'OpenAI',   k:'OPENAI_API_KEY',   color:'#22c55e',prov:'openai'},
-              ].map(p=>{
-                const has=srvStatus.status[p.k], test=srvStatus.tests?.[p.prov]
-                const st=!has?'none':test?.ok?'ok':'err'
-                return (
-                  <div key={p.k} style={{padding:'10px 12px',background:st==='ok'?'rgba(34,197,94,.07)':st==='err'?'rgba(239,68,68,.07)':'rgba(0,0,0,.2)',border:`1px solid ${st==='ok'?'rgba(34,197,94,.3)':st==='err'?'rgba(239,68,68,.3)':'var(--border)'}`}}>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:p.color,letterSpacing:'.08em',marginBottom:3}}>{p.label}</div>
-                    <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,fontWeight:700,color:st==='ok'?'#22c55e':st==='err'?'#ef4444':'#4b5563'}}>
-                      {st==='ok'?'✅ LIVE':st==='err'?'❌ BAD KEY':'— NOT SET'}
-                    </div>
-                    {test?.ok&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',marginTop:2}}>tested: {test.model}</div>}
-                    {test?.error&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#f87171',marginTop:2,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{test.error}</div>}
-                    {!has&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:2}}>Add {p.k} to Vercel</div>}
-                  </div>
-                )
-              })}
+          {/* New models */}
+          {newModels.length > 0 && (
+            <div className="am-card" style={{ borderLeft: '3px solid #22c55e' }}>
+              <div className="am-h" style={{ color: '#22c55e' }}>New Anthropic models available</div>
+              {newModels.map(m => <div key={m.id} style={{ fontFamily: MONO, fontSize: 11, color: 'var(--text)' }}>{m.name || m.id} <span style={{ color: '#6b7280' }}>({m.id})</span></div>)}
+              <div style={{ fontFamily: MONO, fontSize: 10, color: '#6b7280', marginTop: 6 }}>Add them to lib/aiModels.js to make them selectable here.</div>
             </div>
-            <div style={{padding:'10px 12px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)'}}>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#64748b',letterSpacing:'.08em',textTransform:'uppercase',marginBottom:6}}>Active Routing on This Server</div>
-              <div style={{display:'grid',gridTemplateColumns:'repeat(3,1fr)',gap:6}}>
-                {Object.entries(srvStatus.routing||{}).map(([uc,model])=>(
-                  <div key={uc} style={{display:'flex',gap:5}}>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563',minWidth:68,flexShrink:0}}>{uc}:</span>
-                    <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,fontWeight:700,color:model==='none'?'#ef4444':model.includes('warning')?'#f59e0b':'#22c55e'}}>{model}</span>
-                  </div>
-                ))}
-              </div>
-            </div>
-            {!srvStatus.status.VERCEL_TOKEN&&<div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#f59e0b',padding:'8px 10px',background:'rgba(245,158,11,.08)',border:'1px solid rgba(245,158,11,.2)'}}>
-              ⚠ VERCEL_TOKEN not set — Push button will show manual instructions.
-            </div>}
-          </div>
-        )}
-      </div>
+          )}
+          {data.liveModelsError && <div className="am-card" style={{ fontFamily: MONO, fontSize: 10, color: '#f87171' }}>Could not read Anthropic&apos;s model list: {data.liveModelsError}</div>}
 
-    {/* API Keys */}
-      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:18}}>
-        <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:13,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase',marginBottom:12}}>🔑 API Keys</div>
-        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:12}}>
-          <div>
-            <span className="cp-lbl" style={{color:'#f97316'}}>Anthropic</span>
-            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'8px 10px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)',color:'#64748b'}}>
-              Set <code style={{color:'#f97316'}}>ANTHROPIC_API_KEY</code> in Vercel
-            </div>
-          </div>
-          {[
-            {k:'openai',label:'OpenAI',color:'#22c55e',ph:'sk-proj-...',env:'OPENAI_API_KEY',link:'platform.openai.com/api-keys'},
-            {k:'glm',   label:'Z.ai GLM',color:'#3b82f6',ph:'GLM API key...',env:'GLM_API_KEY',link:'bigmodel.cn or z.ai'},
-          ].map(x=>(
-            <div key={x.k}>
-              <span className="cp-lbl" style={{color:x.color}}>{x.label}</span>
-              <input className="cp-inp" type="password" value={keys[x.k]} onChange={e=>setKeys(p=>({...p,[x.k]:e.target.value}))} placeholder={x.ph} />
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',marginTop:3}}>Vercel: <code style={{color:x.color}}>{x.env}</code> · {x.link}</div>
-            </div>
-          ))}
-        </div>
-      </div>
-
-      {/* Tabs */}
-      <div style={{display:'flex',borderBottom:'1px solid var(--border)',marginBottom:14,overflowX:'auto'}}>
-        {USE_CASES.map(u=>(
-          <button key={u.key} className={'cp-tab'+(activeUC===u.key?' on':'')} onClick={()=>setActiveUC(u.key)}>
-            <span style={{color: u.tier==='cheap'?'#22c55e':u.tier==='best'?'#C8922A':'var(--text-dim)'}}>{u.label}</span>
-            {chains[u.key]?.length>0&&<span style={{marginLeft:4,fontFamily:"'IBM Plex Mono',monospace",fontSize:8,background:'rgba(200,146,42,.15)',color:'var(--gold)',padding:'1px 4px'}}>{chains[u.key].length}</span>}
-          </button>
-        ))}
-      </div>
-
-      {/* Chain editor */}
-      <div style={{background:'var(--bg2)',border:'1px solid var(--border)',padding:'14px 18px',marginBottom:14}}>
-        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:12,flexWrap:'wrap',gap:8}}>
-          <div>
-            <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',letterSpacing:'.04em',textTransform:'uppercase'}}>{uc?.label} Chain</div>
-            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#4b5563'}}>{uc?.desc} · <code style={{color:'var(--gold)'}}>{uc?.env}</code></div>
-          </div>
-          <div style={{display:'flex',gap:5,flexWrap:'wrap'}}>
-            <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151',alignSelf:'center'}}>Presets:</span>
-            {[['glmFirst','GLM First'],['claudeFirst','Claude First'],['balanced','Balanced'],['quality','Max Quality'],['cheap','Cheapest']].map(([k,l])=>(
-              <button key={k} className="cp-ghost" style={{fontSize:9,padding:'3px 8px'}} onClick={()=>upd(activeUC,()=>PRESETS[k])}>{l}</button>
-            ))}
-          </div>
-        </div>
-
-        {chain.length===0 ? (
-          <div style={{padding:'20px',textAlign:'center',border:'1px dashed var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#374151'}}>
-            Empty — falls back to <strong style={{color:'var(--gold)'}}>Default</strong> chain
-          </div>
-        ) : (
-          <div style={{display:'flex',flexDirection:'column',gap:6}}>
-            {chain.map((slot,idx)=>{
-              const pm = PROV_META[slot.provider]
-              const models = ALL_MODELS[slot.provider]||[]
+          {/* Routing table */}
+          <div className="am-card">
+            <div className="am-h">What runs each task {data.liveModels ? <span style={{ color: '#22c55e', fontFamily: MONO, fontSize: 9, marginLeft: 8 }}>VERIFIED {new Date(data.checkedAt).toLocaleTimeString()}</span> : <span style={{ color: '#6b7280', fontFamily: MONO, fontSize: 9, marginLeft: 8 }}>NOT VERIFIED YET</span>}</div>
+            {routing.map(r => {
+              const bad = r.slots.filter(s => s.health !== 'ok')
               return (
-                <div key={idx}>
-                  {idx>0 && <div className="cp-divider">↓ FALLBACK IF ABOVE FAILS</div>}
-                  <div className={'cp-slot'+(idx===0?' primary':'')}>
-                    {/* Position */}
-                    <div style={{width:20,height:20,borderRadius:'50%',background:idx===0?'var(--gold)':'#1e293b',color:idx===0?'#000':'#64748b',display:'flex',alignItems:'center',justifyContent:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,fontWeight:700,flexShrink:0}}>{idx+1}</div>
-                    {/* Provider */}
-                    <select className="cp-sel" value={slot.provider} onChange={e=>{const p=e.target.value;const m=ALL_MODELS[p]?.[0]?.id||'';upd(activeUC,c=>c.map((s,i)=>i===idx?{provider:p,model:m}:s))}}>
-                      {Object.entries(PROV_META).map(([k,v])=><option key={k} value={k}>{v.icon} {v.name}</option>)}
-                    </select>
-                    {/* Model */}
-                    <select className="cp-sel" style={{flex:1}} value={slot.model} onChange={e=>upd(activeUC,c=>c.map((s,i)=>i===idx?{...s,model:e.target.value}:s))}>
-                      {models.map(m=><option key={m.id} value={m.id}>{m.label} {m.cost}</option>)}
-                    </select>
-                    {/* Tags */}
-                    {pm&&<span className="cp-tag" style={{background:pm.color+'22',color:pm.color,flexShrink:0}}>{pm.env.replace('_API_KEY','')}</span>}
-                    {idx===0&&<span className="cp-tag" style={{background:'rgba(200,146,42,.15)',color:'#C8922A',flexShrink:0}}>PRIMARY</span>}
-                    {/* Controls */}
-                    <div style={{display:'flex',gap:3,flexShrink:0}}>
-                      <button className="cp-mv" onClick={()=>upd(activeUC,c=>{const n=[...c];if(idx>0)[n[idx-1],n[idx]]=[n[idx],n[idx-1]];return n})} disabled={idx===0}>↑</button>
-                      <button className="cp-mv" onClick={()=>upd(activeUC,c=>{const n=[...c];if(idx<c.length-1)[n[idx],n[idx+1]]=[n[idx+1],n[idx]];return n})} disabled={idx===chain.length-1}>↓</button>
-                      <button className="cp-del" onClick={()=>upd(activeUC,c=>c.filter((_,i)=>i!==idx))}>✕</button>
-                    </div>
+                <div key={r.useCase} className={'am-row' + (activeUC === r.useCase ? ' on' : '')} onClick={() => setActiveUC(r.useCase)}>
+                  <div>
+                    <div style={{ fontFamily: COND, fontSize: 14, fontWeight: 700, color: 'var(--text)', textTransform: 'uppercase' }}>{r.label}</div>
+                    <div style={{ fontFamily: MONO, fontSize: 9, color: '#6b7280' }}>{r.desc}</div>
                   </div>
+                  <div>
+                    {r.slots.filter(s => s.provider !== 'glm').map((s, i) => (
+                      <span key={i} className={'am-pill' + (i === 0 ? ' p' : '')}>{i === 0 ? '▶ ' : '↳ '}{labelFor(s.effective || s.model)}</span>
+                    ))}
+                    {bad.map((s, i) => <span key={'b' + i} className="am-tag" style={{ color: HEALTH[s.health]?.color, border: `1px solid ${HEALTH[s.health]?.color}55`, marginLeft: 4 }}>{HEALTH[s.health]?.label}{s.health === 'retired' ? ` ${s.model}` : ''}</span>)}
+                  </div>
+                  <div style={{ fontFamily: MONO, fontSize: 9, color: '#6b7280' }}>{r.source}</div>
                 </div>
               )
             })}
           </div>
-        )}
 
-        <button className="cp-ghost" style={{marginTop:10}} onClick={()=>addSlot(activeUC)}>+ Add Fallback Model</button>
-
-        {chain.length>0&&(
-          <div style={{marginTop:10,padding:'8px 10px',background:'rgba(0,0,0,.2)',border:'1px solid var(--border)',fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#374151'}}>
-            <span style={{color:'var(--gold)'}}>{uc?.env}</span> = <span style={{color:'#6b7280'}}>{chainStr(chain)}</span>
-          </div>
-        )}
-      </div>
-
-      {/* Test chain */}
-      <div style={{marginBottom:18,padding:'12px 16px',background:'var(--bg2)',border:'1px solid var(--border)'}}>
-        <div style={{display:'flex',gap:10,alignItems:'center',marginBottom:testLog.length?10:0,flexWrap:'wrap'}}>
-          <button className="cp-ghost" onClick={testChain} disabled={testing}>{testing?'⏳ Testing...':'🔬 Test Chain'}</button>
-          {testRes&&<span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:testRes.startsWith('✅')?'#22c55e':testRes.startsWith('⚠')?'#f59e0b':'#f87171'}}>{testRes}</span>}
-        </div>
-        {testLog.map((log,i)=>{
-          const pm = PROV_META[log.provider]
-          return (
-            <div key={i} style={{display:'flex',gap:10,alignItems:'center',padding:'6px 10px',marginBottom:4,background:log.status==='ok'?'rgba(34,197,94,.06)':log.status==='fail'?'rgba(239,68,68,.06)':'rgba(0,0,0,.15)',border:`1px solid ${log.status==='ok'?'rgba(34,197,94,.2)':log.status==='fail'?'rgba(239,68,68,.2)':'var(--border)'}`}}>
-              <span style={{fontSize:12,flexShrink:0}}>{log.status==='testing'?'⏳':log.status==='ok'?'✅':'❌'}</span>
-              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:pm?.color||'var(--text)',flexShrink:0}}>{pm?.icon} {log.provider}/{log.model}</span>
-              <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:log.status==='ok'?'#22c55e':log.status==='fail'?'#f87171':'#4b5563',flex:1,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>
-                {log.status==='ok'?log.response:log.status==='fail'?log.error:'connecting...'}
-              </span>
+          {/* Editor */}
+          <div className="am-card">
+            <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 10 }}>
+              <div>
+                <div className="am-h" style={{ marginBottom: 2 }}>Edit: {uc?.label}</div>
+                <div style={{ fontFamily: MONO, fontSize: 10, color: '#6b7280' }}>{uc?.desc} · <span style={{ color: 'var(--gold)' }}>{uc?.env || 'built-in default (lib/aiClient.js)'}</span></div>
+              </div>
+              <div style={{ display: 'flex', gap: 5, flexWrap: 'wrap', alignItems: 'center' }}>
+                {PRESETS.map(([l, c]) => <button key={l} className="am-ghost" onClick={() => setChain(() => c)}>{l}</button>)}
+              </div>
             </div>
-          )
-        })}
-      </div>
 
-      {/* Save buttons */}
-      <div style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
-        <button className="cp-btn" onClick={saveLocal}>{saved?'✅ Saved':'💾 Save Locally'}</button>
-        <button className="cp-btn" style={{background:saving?'#374151':'#1e3a5f',color:'#fff'}} onClick={pushToVercel} disabled={saving}>{saving?'Pushing...':'🚀 Push to Vercel'}</button>
-      </div>
-
-      {/* ── VERCEL PUSH RESULT ── */}
-      {vercelResult && (
-        <div style={{marginTop:14,padding:'12px 16px',background:'var(--bg2)',border:`1px solid ${vercelResult.ok?'rgba(34,197,94,.3)':vercelResult.manual?'rgba(245,158,11,.3)':'rgba(239,68,68,.3)'}`,fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
-          <div style={{fontWeight:700,color:vercelResult.ok?'#22c55e':vercelResult.manual?'#f59e0b':'#f87171',marginBottom:8}}>
-            {vercelResult.ok ? '✅ Pushed successfully' : vercelResult.manual ? '⚠ Manual setup required' : '❌ Push failed'}
-          </div>
-          <div style={{color:'#6b7280',marginBottom:vercelResult.manual||vercelResult.results?8:0}}>{vercelResult.message}</div>
-
-          {/* Manual env var instructions */}
-          {vercelResult.manual && vercelResult.envLines && (
-            <div style={{marginTop:8}}>
-              <div style={{color:'#f59e0b',marginBottom:6}}>Add these to Vercel → Project → Settings → Environment Variables:</div>
-              <div style={{background:'rgba(0,0,0,.4)',padding:'10px 12px',borderLeft:'3px solid #f59e0b',overflowX:'auto'}}>
-                {vercelResult.envLines.split('\n').map((line,i) => (
-                  <div key={i} style={{display:'flex',justifyContent:'space-between',gap:16,marginBottom:3}}>
-                    <code style={{color:'#C8922A'}}>{line.split('=')[0]}</code>
-                    <code style={{color:'#9ca3af',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap',maxWidth:320}}>{line.split('=').slice(1).join('=')}</code>
+            {chain.map((slot, idx) => {
+              const pv = PROVIDERS[slot.provider] || PROVIDERS.anthropic
+              const inList = pv.models.some(m => m.id === slot.model)
+              return (
+                <div key={idx}>
+                  {idx > 0 && <div style={{ textAlign: 'center', fontFamily: MONO, fontSize: 9, color: '#4b5563', padding: '3px 0' }}>↓ IF ABOVE FAILS</div>}
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'center', padding: '8px 10px', background: 'var(--bg3)', border: `1px solid ${idx === 0 ? 'var(--gold)' : 'var(--border)'}`, flexWrap: 'wrap' }}>
+                    <select className="am-sel" value={slot.provider} onChange={e => { const p = e.target.value; setChain(c => c.map((s, i) => i === idx ? { provider: p, model: PROVIDERS[p].models[0].id } : s)) }}>
+                      {Object.entries(PROVIDERS).map(([k, v]) => <option key={k} value={k}>{v.name}</option>)}
+                    </select>
+                    <select className="am-sel" style={{ flex: 1, minWidth: 160 }} value={slot.model} onChange={e => setChain(c => c.map((s, i) => i === idx ? { ...s, model: e.target.value } : s))}>
+                      {!inList && <option value={slot.model}>{slot.model} (not in catalog)</option>}
+                      {pv.models.map(m => <option key={m.id} value={m.id}>{m.label} · {m.cost} · {m.note || m.tier}</option>)}
+                    </select>
+                    {idx === 0 && <span className="am-tag" style={{ background: 'rgba(200,146,42,.15)', color: 'var(--gold)' }}>PRIMARY</span>}
+                    <button className="am-ghost" disabled={idx === 0} onClick={() => setChain(c => { const n = [...c]; [n[idx - 1], n[idx]] = [n[idx], n[idx - 1]]; return n })}>↑</button>
+                    <button className="am-ghost" onClick={() => setChain(c => c.filter((_, i) => i !== idx))}>✕</button>
                   </div>
-                ))}
-              </div>
-              <div style={{marginTop:8,color:'#4b5563',fontSize:10}}>
-                To enable auto-push: add <code style={{color:'var(--gold)'}}>VERCEL_TOKEN</code> to Vercel env vars.
-                Get a token at <a href="https://vercel.com/account/tokens" target="_blank" rel="noreferrer" style={{color:'var(--gold)'}}>vercel.com/account/tokens</a>.
-              </div>
-            </div>
-          )}
-
-          {/* Per-var results when token is set */}
-          {vercelResult.results?.length > 0 && (
-            <div style={{marginTop:8,display:'flex',flexDirection:'column',gap:3}}>
-              {vercelResult.results.map((r,i) => (
-                <div key={i} style={{display:'flex',gap:10,alignItems:'center'}}>
-                  <span style={{color:r.ok?'#22c55e':'#f87171',flexShrink:0}}>{r.ok?'✅':'❌'}</span>
-                  <code style={{color:'#C8922A',flexShrink:0}}>{r.name}</code>
-                  {r.error && <span style={{color:'#f87171',flex:1}}>{r.error}</span>}
-                  {r.status && !r.ok && <span style={{color:'#6b7280'}}>HTTP {r.status}</span>}
                 </div>
-              ))}
+              )
+            })}
+            <button className="am-ghost" style={{ marginTop: 8 }} onClick={() => setChain(c => [...c, { provider: 'anthropic', model: 'claude-sonnet-5-5' }])}>+ Add fallback</button>
+            {chain.length > 0 && uc?.env && <div style={{ marginTop: 10, fontFamily: MONO, fontSize: 10, color: '#6b7280', wordBreak: 'break-all' }}><span style={{ color: 'var(--gold)' }}>{uc.env}</span> = {chainStr(chain)}</div>}
+
+            <div style={{ display: 'flex', gap: 8, marginTop: 12, flexWrap: 'wrap' }}>
+              <button className="am-ghost" disabled={testing || !chain.length} onClick={testChain}>{testing ? '⏳ Testing…' : '🔬 Test chain'}</button>
+              <button className="am-btn" disabled={pushing || !dirty || !uc?.env} onClick={saveChain}>{pushing ? 'Pushing…' : !uc?.env ? 'Built-in default' : dirty ? 'Push to Vercel' : 'No changes'}</button>
+              {dirty && <button className="am-ghost" onClick={() => setDraft(p => { const n = { ...p }; delete n[activeUC]; return n })}>Discard</button>}
+            </div>
+            {testLog.map((l, i) => (
+              <div key={i} style={{ fontFamily: MONO, fontSize: 10, marginTop: 6, color: l.status === 'ok' ? '#22c55e' : l.status === 'fail' ? '#f87171' : '#9ca3af', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>
+                {l.status === 'ok' ? '✅' : l.status === 'fail' ? '❌' : '⏳'} {l.provider}/{l.model} {l.note ? '· ' + l.note : ''}
+              </div>
+            ))}
+          </div>
+
+          {pushRes && (
+            <div className="am-card" style={{ fontFamily: MONO, fontSize: 10 }}>
+              <div style={{ fontWeight: 700, color: pushRes.ok ? '#22c55e' : pushRes.manual ? '#f59e0b' : '#f87171', marginBottom: 6 }}>{pushRes.ok ? 'Pushed' : pushRes.manual ? 'Manual step needed' : 'Push failed'}</div>
+              {pushRes.message && <div style={{ color: '#9ca3af', marginBottom: 6 }}>{pushRes.message}</div>}
+              {pushRes.envLines && <pre style={{ margin: 0, padding: 10, background: 'rgba(0,0,0,.35)', color: 'var(--gold)', whiteSpace: 'pre-wrap', wordBreak: 'break-all' }}>{pushRes.envLines}</pre>}
+              {(pushRes.results || []).map((r, i) => <div key={i} style={{ color: r.ok ? '#22c55e' : '#f87171' }}>{r.ok ? '✅' : '❌'} {r.name} {r.error || ''}</div>)}
             </div>
           )}
-        </div>
-      )}
 
-      <div style={{marginTop:12,fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#374151',lineHeight:1.9}}>
-        <strong style={{color:'var(--gold)'}}>How fallback works:</strong> Slot 1 is always tried first. If it fails (rate limit, quota, API error, timeout), the next slot runs automatically. All failures are logged to the cron dashboard.
-        Push to Vercel writes the chain as env vars — redeploy to activate for server-side cron jobs.
-      </div>
+          {/* Live model list */}
+          {data.liveModels && (
+            <div className="am-card">
+              <div className="am-h">Models your Anthropic key can call</div>
+              <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                {data.liveModels.map(m => <span key={m.id} className="am-pill" style={{ borderColor: (data.catalog || []).some(c => c.id === m.id) ? 'var(--gold)' : 'var(--border)' }}>{m.id}</span>)}
+              </div>
+              <div style={{ fontFamily: MONO, fontSize: 9, color: '#6b7280', marginTop: 6 }}>Gold = selectable above.</div>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }

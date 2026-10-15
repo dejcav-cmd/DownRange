@@ -707,33 +707,22 @@ async function renderImgLib(el){
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
-async function renderAIModels(el){
-  el.innerHTML='<div class="loading"><span class="spinner">◈</span></div>';
+async function renderAIModels(el,live){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> '+(live?'Verifying with Anthropic...':'Loading...')+'</div>';
   try{
-    const d=await api('/api/admin/ai-status');
-    const status=d.status||{};
-    const tiers=[
-      {id:'nano',  l:'Nano',  model:'GLM-4.5 Air', use:'Ultra-low-cost bulk ops', color:'#34D399'},
-      {id:'cheap', l:'Cheap', model:'GLM-4.7',     use:'Summaries, tags, scoring',color:'#60A5FA'},
-      {id:'mid',   l:'Mid',   model:'Haiku 3.5',   use:'Most content generation', color:'#C8922A'},
-      {id:'smart', l:'Smart', model:'Sonnet 4',    use:'Complex reasoning, intel', color:'#C084FC'},
-    ];
-    el.innerHTML=`
-      <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:16px">4-tier AI cost router · lib/aiRouter.js</div>
-      ${tiers.map(t=>`<div class="adm-card" style="margin-bottom:8px;border-left:3px solid ${t.color}">
-        <div style="display:flex;align-items:center;gap:10px;margin-bottom:4px">
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:9px;padding:2px 8px;background:${t.color}22;color:${t.color};border:1px solid ${t.color}44">${t.id.toUpperCase()}</span>
-          <span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text)">${t.model}</span>
-        </div>
-        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#6b7280">${t.use}</div>
-      </div>`).join('')}
-      <div class="adm-card" style="margin-top:12px">
-        <div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:8px">API Status</div>
-        ${['ANTHROPIC_API_KEY','GLM_API_KEY','OPENAI_API_KEY'].map(k=>`<div class="row row-last">
-          <span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">${k}</span>
-          <span class="pill ${status[k]?'pill-ok':'pill-err'}">${status[k]?'Set':'Missing'}</span>
-        </div>`).join('')}
-      </div>`;
+    const d=await api('/api/admin/ai-status'+(live?'?live=1':''));
+    if(!d.ok){el.innerHTML=`<div class="empty">Error: ${d.error||'failed'}</div>`;return;}
+    const H={ok:['OK','#22c55e'],retired:['RETIRED ID','#f59e0b'],unknown:['UNKNOWN','#ef4444'],invalid:['NOT IN LIST','#ef4444'],nokey:['NO KEY','#ef4444'],disabled:['GLM OFF','#6b7280']};
+    const lab=id=>({'claude-haiku-5-5':'Haiku 5.5','claude-sonnet-5-5':'Sonnet 5.5','claude-opus-5-5':'Opus 5.5','claude-fable-5-1':'Fable 5.1','gpt-4o-mini':'GPT-4o Mini','gpt-4o':'GPT-4o'})[id]||id;
+    const keyPill=(n,has,t)=>`<div class="row row-last"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">${n}${t?` · ${t.ok?(t.model+' '+t.ms+'ms'):(t.error||'error')}`:''}</span><span class="pill ${!has?'pill-err':t&&!t.ok?'pill-err':'pill-ok'}">${!has?'Missing':t?(t.ok?'LIVE':'ERROR'):'Set'}</span></div>`;
+    el.innerHTML=`<div class="section-title">AI Models</div><div class="section-sub">What the server really uses for each task</div>
+      <button class="btn" style="width:100%;margin-bottom:12px" onclick="renderAIModels(document.getElementById('${el.id||''}')||this.parentNode,true)">🔍 Verify with providers</button>
+      <div class="adm-card" style="margin-bottom:10px">${keyPill('Anthropic',d.keys.anthropic,d.tests.anthropic)}${keyPill('OpenAI',d.keys.openai,d.tests.openai)}<div class="row row-last"><span style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim)">Z.ai GLM</span><span class="pill pill-dim">OFF</span></div></div>
+      ${d.fixes&&d.fixes.length?`<div class="adm-card" style="margin-bottom:10px;border-left:3px solid #f59e0b"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:#f59e0b;margin-bottom:6px">${d.fixes.length} setting(s) use retired models</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:8px">They still run (auto-mapped). Fix them from the desktop admin: AI Models tab.</div>${d.fixes.map(f=>`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;word-break:break-all;margin-bottom:4px"><span style="color:var(--gold)">${f.env}</span> <s style="color:#f87171">${f.from}</s> → <span style="color:#22c55e">${f.to}</span></div>`).join('')}</div>`:''}
+      ${d.routing.map(r=>`<div class="adm-card" style="margin-bottom:8px"><div style="display:flex;justify-content:space-between;gap:8px;margin-bottom:4px"><span style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;color:var(--text);text-transform:uppercase">${r.label}</span><span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:#6b7280">${r.source}</span></div>
+        <div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:#6b7280;margin-bottom:6px">${r.desc}</div>
+        ${r.slots.filter(s=>s.provider!=='glm').map((s,i)=>`<span style="display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10px;padding:2px 7px;margin:2px 4px 2px 0;border:1px solid ${i?'var(--border)':'var(--gold)'};color:${i?'var(--text)':'var(--gold)'}">${i?'↳ ':'▶ '}${lab(s.effective||s.model)}</span>${s.health!=='ok'?`<span style="font-family:'IBM Plex Mono',monospace;font-size:9px;color:${H[s.health][1]}">${H[s.health][0]}${s.health==='retired'?' '+s.model:''}</span>`:''}`).join('')}</div>`).join('')}
+      ${d.liveModels?`<div class="adm-card"><div style="font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:13px;color:var(--text);margin-bottom:6px">Models your key can call</div><div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);word-break:break-word">${d.liveModels.map(m=>m.id).join(' · ')}</div></div>`:''}`;
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 

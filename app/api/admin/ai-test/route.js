@@ -1,4 +1,5 @@
 export const dynamic = 'force-dynamic'
+import { resolveModel } from '@/lib/aiModels'
 
 export async function POST(req) {
   const key     = req.headers.get('x-admin-key')
@@ -19,7 +20,7 @@ export async function POST(req) {
         method: 'POST',
         headers: { 'x-api-key': apiKey, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
         body: JSON.stringify({
-          model:      model || 'claude-sonnet-4-5',
+          model:      resolveModel('anthropic', model) || 'claude-haiku-5-5',
           max_tokens: 50,
           messages:   [{ role: 'user', content: 'Reply with only: "DownRange Anthropic OK"' }],
         }),

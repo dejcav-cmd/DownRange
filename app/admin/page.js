@@ -116,7 +116,7 @@ const NAV = [
   {
     id: 'settings', label: 'Config', icon: '🔧',
     panels: [
-      { id:'ai',           label:'AI Models',        icon:'✅' },
+      { id:'ai',           label:'AI Models',        icon:'🤖' },
       { id:'costs',        label:'Cost Center',      icon:'💰' },
       { id:'keys',         label:'API Keys',         icon:'🔑' },
       { id:'identity',     label:'Brand & Identity', icon:'🎨' },

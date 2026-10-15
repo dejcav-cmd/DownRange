@@ -50,10 +50,10 @@ export async function GET(req) {
       savedVsSonnet: Math.max(0, (todayCalls * 0.005) - todayTotal), // vs all-Sonnet estimate
     },
     tiers: {
-      nano:  { model: 'GLM-4.5 Air',        costPer1k: '$0.000014' },
-      cheap: { model: 'GLM-4.7',             costPer1k: '$0.000028' },
-      mid:   { model: 'Claude Haiku 5.5',    costPer1k: '$0.00048'  },
-      smart: { model: 'Claude Sonnet 4.6',   costPer1k: '$0.009'    },
+      nano:  { model: 'Claude Haiku 5.5',  costPer1k: '$0.00048' },
+      cheap: { model: 'Claude Haiku 5.5',  costPer1k: '$0.00048' },
+      mid:   { model: 'Claude Haiku 5.5',  costPer1k: '$0.00048' },
+      smart: { model: 'Claude Sonnet 5.5', costPer1k: '$0.009'   },
     }
   })
 }
