@@ -54,7 +54,6 @@ const NAV = [
     panels: [
       { id:'hub',          label:'Hub',              icon:'◈'  },
       { id:'news',         label:'News Articles',    icon:'📰' },
-      { id:'releases',     label:'Gun Releases',     icon:'🔫', badge:'new' },
       { id:'press',        label:'Press Releases',   icon:'🏭', badge:'new' },
       { id:'radar',        label:'2A Radar',         icon:'⚖️', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍'  },
@@ -395,7 +394,6 @@ function OverviewDashboard({ adminKey, setPanel, setSection }) {
 
   const contentSections = [
     { label:'News Articles', icon:'📰', url:'/news',        editFn:()=>{ setSection('content'); setPanel('news') } },
-    { label:'Gun Releases',  icon:'🔫', url:'/releases',    editFn:()=>{ setSection('content'); setPanel('releases') } },
     { label:'Press Releases', icon:'🏭', url:'/news/manufacturer-press-releases', editFn:()=>{ setSection('content'); setPanel('press') } },
     { label:'Blog Posts',    icon:'✍',  url:'/blog',        editFn:()=>{ setSection('content'); setPanel('blog') } },
     { label:'Canada',        icon:'🇨🇦', url:'/canada',      editFn:()=>{ setSection('content'); setPanel('canada') } },
@@ -768,7 +766,6 @@ function SEOPanel() {
     { path:'/news', title:'Firearms News | DownRange', desc:'Live 2A and gun news from 30+ sources.', ga:'Active', search:'Indexed' },
     { path:'/blog', title:'Blog | DownRange', desc:'In-depth firearms analysis.', ga:'Active', search:'Indexed' },
     { path:'/canada', title:'Canadian Firearms Law | DownRange', desc:'PAL, C-21, province ratings.', ga:'Active', search:'Indexed' },
-    { path:'/releases', title:'New Gun Releases | DownRange', desc:'Latest firearm launches.', ga:'Active', search:'Indexed' },
   ]
   return (
     <div>

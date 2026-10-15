@@ -42,7 +42,6 @@ const STATIC_PAGES = [
   { url: `${BASE}/laws/reciprocity`,    priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/laws/my-state`,       priority: 0.85, changeFrequency: 'weekly' },
   { url: `${BASE}/deals`,               priority: 0.9,  changeFrequency: 'hourly' },
-  { url: `${BASE}/releases`,            priority: 0.85, changeFrequency: 'daily' },
   { url: `${BASE}/video`,               priority: 0.8,  changeFrequency: 'daily' },
   { url: `${BASE}/blog`,                priority: 0.8,  changeFrequency: 'daily' },
   { url: `${BASE}/giveaways`,           priority: 0.75, changeFrequency: 'daily' },
@@ -145,13 +144,6 @@ export default async function sitemap() {
       changeFrequency: 'monthly',
     }))
 
-    const releaseUrls = releases.map(r => ({
-      url:             `${BASE}/releases/${r.slug.current}`,
-      lastModified:    d(r.publishedAt),
-      priority:        0.75,
-      changeFrequency: 'weekly',
-    }))
-
     // Individual state law pages — canonical destination for all state traffic
     const profileDate = Object.fromEntries(stateProfiles.map(p => [p.abbr, p._updatedAt]))
     const stateUrls = US_STATE_CODES.map(code => ({
@@ -210,7 +202,6 @@ export default async function sitemap() {
       ...articleUrls,
       ...pressUrls,
       ...blogUrls,
-      ...releaseUrls,
       ...intlUrls,
     ]
   } catch (e) {

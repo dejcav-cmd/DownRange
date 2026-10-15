@@ -12,7 +12,6 @@ export async function GET() {
   const items = [
     ...news.map(a => ({ title:a.title, url:`https://www.downrangeco.com/news/${a.slug?.current}`, description:a.summary||a.excerpt||'', date:a.publishedAt, category:a.category, author:a.source||'DownRange', image:a.imageUrl })),
     ...blog.map(a => ({ title:a.title, url:`https://www.downrangeco.com/blog/${a.slug?.current}`, description:a.excerpt||'', date:a.publishedAt, category:a.category, author:a.author||'DJ Cavalcanti', image:a.imageUrl })),
-    ...releases.map(r => ({ title:`NEW: ${r.brand} ${r.model||r.title}`, url:`https://www.downrangeco.com/releases/${r.slug?.current}`, description:r.summary||'', date:r.publishedAt, category:'release', author:r.brand, image:r.imageUrl })),
   ]
   .filter(i => i.url && !i.url.includes('undefined'))
   .sort((a,b) => new Date(b.date||0) - new Date(a.date||0))

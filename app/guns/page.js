@@ -320,7 +320,7 @@ export default async function GunsPage({ searchParams }) {
           <div style={{ marginTop:52, display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(200px,1fr))', gap:12 }}>
             {[
               { label:'⚙ NFA Tracker',       href:'/nfa-tracker',                  desc:'Form 4 wait times' },
-              { label:'🔖 New Releases',     href:'/releases',                     desc:'Latest launches' },
+              { label:'🏭 Press Releases',   href:'/news/manufacturer-press-releases', desc:'Manufacturer announcements' },
             ].map(t => (
               <Link key={t.href} href={t.href} className="tool-link"
                 style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'18px 20px', textDecoration:'none', display:'block', transition:'border-color 0.2s' }}>

@@ -410,7 +410,7 @@ const NAV_TREE=[
   {id:'content',  label:'Content',         icon:'📰',panels:[
     {id:'hub',         l:'Hub',               i:'◈'},
     {id:'news',        l:'News Articles',     i:'📰'},
-    {id:'releases',    l:'Gun Releases',      i:'🔫',b:'new'},
+    {id:'press',       l:'Press Releases',    i:'🏭',b:'new'},
     {id:'radar',       l:'2A Radar',          i:'⚖️',b:'new'},
     {id:'blog',        l:'Blog',              i:'✍'},
     {id:'deals',       l:'Deals',             i:'🔥'},
@@ -812,7 +812,7 @@ async function renderNavVis(el){
 // ─── PANEL ROUTER ─────────────────────────────────────────────────────────────
 function openPanel(id,label){
   const map={
-    news:renderNews,blog:renderBlog,releases:renderReleases,radar:renderRadar,
+    news:renderNews,blog:renderBlog,press:renderPress,radar:renderRadar,
     breaking:renderBreaking,newsletter:renderNewsletter,social:renderSocialLog,
     drafts:renderDraftRecovery,hub:renderContentHub,canada:renderCanada,
     brazil:renderBrazil,deals:renderDeals,
@@ -911,7 +911,7 @@ async function runFeedNow(){
 function renderContent(el){
   el.innerHTML=`<div class="section-title">Content</div><div class="section-sub">Manage all content types</div>`+
     [{id:'news',i:'📰',l:'News Articles',s:'Pull & manage news'},{id:'blog',i:'✍',l:'Blog Posts',s:'Editorial posts'},
-     {id:'releases',i:'🔫',l:'Gun Releases',s:'New product releases',b:'new'},{id:'canada',i:'🇨🇦',l:'Canada',s:'Canadian firearms news'},{id:'brazil',i:'🇧🇷',l:'Brasil',s:'Brazilian firearms news'},
+     {id:'press',i:'🏭',l:'Press Releases',s:'Manufacturer announcements',b:'new'},{id:'canada',i:'🇨🇦',l:'Canada',s:'Canadian firearms news'},{id:'brazil',i:'🇧🇷',l:'Brasil',s:'Brazilian firearms news'},
      {id:'deals',i:'🔥',l:'Deals Feed',s:'Gun deals & ammo'},
      {id:'breaking',i:'🔴',l:'Breaking Alerts',s:'Ticker alerts'},{id:'drafts',i:'🔍',l:'Draft Recovery',s:'Unpublished drafts'},
      {id:'hub',i:'◈',l:'Content Hub',s:'All content overview'}]
@@ -1029,7 +1029,34 @@ async function renderBlog(el){
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
-// RELEASES — with thumbnails + approve/fix-image
+// PRESS RELEASES
+async function renderPress(el){
+  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading press releases...</div>';
+  try{
+    const d=await api('/api/admin/press-releases-manager');
+    const items=d.releases||[];
+    if(!items.length){el.innerHTML='<div class="empty">No press releases</div>';return;}
+    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} press releases</div>`+items.slice(0,100).map(a=>{
+      const live=!!a.approved;
+      return `<div class="art-card" id="card-${a._id}"><div class="art-card-top">${a.imageUrl?`<img class="art-thumb" src="${a.imageUrl}" alt="">`:`<div class="art-thumb-ph">📷</div>`}<div class="art-info"><div class="art-title">${a.title||'Untitled'}</div><div class="art-meta"><span class="pill ${live?'pill-ok':'pill-warn'}">${live?'live':'draft'}</span>${a.brand?`<span>${a.brand}</span>`:''}${a.publishedAt?`<span>${new Date(a.publishedAt).toLocaleDateString()}</span>`:''}</div></div></div><div class="art-actions">${!live?`<button class="btn btn-xs" onclick="pressAction('${a._id}','patch',this)">✓ Publish</button>`:`<button class="btn-outline btn-xs" onclick="pressAction('${a._id}','unpublish',this)">Unpublish</button>`}<button class="btn-blue btn-xs" onclick="pressAction('${a._id}','ai-write',this)">✏ Write AI</button>${a.slug?.current?`<a class="btn-outline btn-xs" target="_blank" href="https://downrangeco.com/news/manufacturer-press-releases/${a.slug.current}">View</a>`:''}<button class="btn-outline btn-xs" onclick="pressAction('${a._id}','delete',this)">🗑</button></div></div>`;
+    }).join('');
+  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
+}
+async function pressAction(id,action,btn){
+  if(action==='delete'&&!confirm('Delete this press release?'))return;
+  const orig=btn.textContent;btn.disabled=true;btn.textContent='⏳';
+  try{
+    let body;
+    if(action==='patch')body={action:'patch',id,fields:{approved:true,publishedAt:new Date().toISOString()}};
+    else if(action==='unpublish')body={action:'patch',id,fields:{approved:false}};
+    else body={action,id};
+    const d=await api('/api/admin/press-releases-manager',{method:'POST',body:JSON.stringify(body)});
+    if(d.ok){flash('Done','ok');if(action!=='ai-write'){const c=document.getElementById('card-'+id);if(action==='delete'&&c)c.remove();else if(c)renderPress(c.parentNode);}else{btn.disabled=false;btn.textContent=orig;}}
+    else{flash(d.error||'Failed','err');btn.disabled=false;btn.textContent=orig;}
+  }catch(e){flash(e.message,'err');btn.disabled=false;btn.textContent=orig;}
+}
+
+// RELEASES (retired) — with thumbnails + approve/fix-image
 async function renderReleases(el){
   el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading releases...</div>';
   try{

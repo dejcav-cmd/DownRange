@@ -63,6 +63,10 @@ const nextConfig = {
       { source: '/news/news-46f10f745d37100085dc8b6915ca845c', destination: '/news', permanent: true },
       { source: '/news/news-e32d11ef403f472a30e869d2897fc4f4', destination: '/news', permanent: true },
       { source: '/news/news-f4dc390e9a56a2c70117294d87a6905b', destination: '/news', permanent: true },
+      // Gun Releases section retired — press releases live under News
+      { source: '/releases',        destination: '/news/manufacturer-press-releases', permanent: true },
+      { source: '/releases/:slug*', destination: '/news/manufacturer-press-releases', permanent: true },
+      { source: '/feeds/releases',  destination: '/feed.xml', permanent: true },
       // Old pages → new routes
       { source: '/ccw',                        destination: '/laws/my-state',           permanent: true },
       { source: '/state-hub',                  destination: '/laws/states',             permanent: true },
