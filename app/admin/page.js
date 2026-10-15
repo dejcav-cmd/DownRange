@@ -1015,13 +1015,15 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
   const [loading, setLoading] = useState(false)
   const [busy,    setBusy]    = useState({})
   const [errs,    setErrs]    = useState({})
+  const [sort,    setSort]    = useState('newest')
+  const [bulkErrs, setBulkErrs] = useState([])
 
   const H = { 'x-admin-key': adminKey, 'Content-Type': 'application/json' }
 
-  async function load() {
+  async function load(sortBy = sort) {
     setLoading(true)
     try {
-      const d = await (await fetch('/api/admin/content-quality', { headers: H })).json()
+      const d = await (await fetch('/api/admin/content-quality?sort=' + sortBy, { headers: H })).json()
       if (d.ok) setData(d); else setMsg('❌ ' + (d.error || 'Load failed'))
     } catch (e) { setMsg('❌ ' + e.message) }
     setLoading(false)
@@ -1046,6 +1048,21 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
     setMsg(`✅ Rewritten: ${d.words} words`)
     await load()
   })
+  const hideOne = (a) => act(a._id, async () => {
+    if (!window.confirm('Take this article off the site? You can restore it later from the Hidden list.\n\n' + a.title)) return
+    await fetch('/api/admin/content-quality', { method: 'POST', headers: H, body: JSON.stringify({ action: 'hide', id: a._id, reason: 'Hidden by admin from Content Quality' }) })
+    await load()
+  })
+  const restoreOne = (a) => act(a._id, async () => {
+    await fetch('/api/admin/content-quality', { method: 'POST', headers: H, body: JSON.stringify({ action: 'restore', id: a._id }) })
+    await load()
+  })
+  const retryHidden = (a) => act(a._id, async () => {
+    const d = await (await fetch('/api/cron/quality-rewrite?force=1&slug=' + encodeURIComponent(a.slug), { headers: H })).json()
+    if (!d.ok) throw new Error(d.error || 'Rewrite failed')
+    setMsg(`✅ Rewritten and back on the site: ${d.words} words`)
+    await load()
+  })
   const markReviewed = (a) => act(a._id, async () => {
     await fetch('/api/admin/content-quality', { method: 'POST', headers: H, body: JSON.stringify({ action: 'mark-reviewed', id: a._id }) })
     await load()
@@ -1058,13 +1075,15 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
   const rewriteAll = () => act('all', async () => {
     const list = (data?.weakest || []).filter(a => !a.editorLocked)
     let ok = 0, fail = 0
+    const failed = []
     for (let i = 0; i < list.length; i++) {
       setMsg(`⏳ Rewriting ${i + 1} of ${list.length}...`)
       try {
         const d = await (await fetch('/api/cron/quality-rewrite?force=1&slug=' + encodeURIComponent(list[i].slug), { headers: H })).json()
-        if (d.ok) ok++; else fail++
-      } catch { fail++ }
+        if (d.ok) ok++; else { fail++; failed.push({ title: list[i].title, error: d.error || 'Failed' }) }
+      } catch (e) { fail++; failed.push({ title: list[i].title, error: e.message }) }
     }
+    setBulkErrs(failed)
     setMsg(`✅ Rewrote ${ok} article${ok !== 1 ? 's' : ''}${fail ? `, ${fail} could not be read from their source` : ''}`)
     await load()
   })
@@ -1097,7 +1116,7 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
         {tile('Thin', c?.thin, c?.thin ? '#ef4444' : '#22c55e', 'under ~2,500 characters')}
         {tile('Unreviewed', c?.unreviewed, c?.unreviewed ? '#f59e0b' : '#22c55e', 'waiting for the rewriter')}
         {tile('Bad images', c?.badImage, c?.badImage ? '#ef4444' : '#22c55e', 'missing, SVG or stock path')}
-        <button onClick={load} disabled={loading} style={{ ...btn(loading, '#64748b'), alignSelf: 'center' }}>{loading ? '⏳' : '↺ Refresh'}</button>
+        <button onClick={() => load()} disabled={loading} style={{ ...btn(loading, '#64748b'), alignSelf: 'center' }}>{loading ? '⏳' : '↺ Refresh'}</button>
       </div>
 
       <div className="dr-section-title" style={{ marginBottom: 10 }}>Auto-fix jobs</div>
@@ -1121,8 +1140,25 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
 
       <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 10 }}>
         <div className="dr-section-title">Weakest live articles ({data?.weakest?.length ?? 0} shown)</div>
+        <label style={{ display: 'flex', alignItems: 'center', gap: 8, fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#6b7280' }}>
+          SORT
+          <select value={sort} onChange={e => { setSort(e.target.value); load(e.target.value) }}
+            style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, padding: '6px 8px', background: 'var(--bg)', color: 'var(--text)', border: '1px solid var(--border)' }}>
+            <option value="newest">Release date: newest first</option>
+            <option value="oldest">Release date: oldest first</option>
+            <option value="shortest">Shortest first</option>
+          </select>
+        </label>
         {!!data?.weakest?.length && <button disabled={busy.all} onClick={rewriteAll} style={btn(busy.all, '#ef4444')}>{busy.all ? '⏳ Rewriting...' : '✍ Rewrite all shown'}</button>}
       </div>
+      {bulkErrs.length > 0 && (
+        <div className="adm-card" style={{ borderLeft: '3px solid #ef4444', marginBottom: 12 }}>
+          <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 14, fontWeight: 700, color: '#f87171', marginBottom: 6 }}>{bulkErrs.length} could not be rewritten</div>
+          {bulkErrs.map((f, i) => (
+            <div key={i} style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 11, color: '#fca5a5', marginBottom: 8, whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}><b>{f.title}</b>{'\n'}{f.error}</div>
+          ))}
+        </div>
+      )}
       {data && !data.weakest.length && <div className="adm-card" style={{ color: '#4ade80' }}>All live articles are long enough ✓</div>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 28 }}>
         {(data?.weakest || []).map(a => (
@@ -1130,18 +1166,40 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
             <div style={{ flex: 1, minWidth: 260 }}>
               <a href={'https://www.downrangeco.com/news/' + a.slug} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: 'var(--gold)', textDecoration: 'underline' }}>{a.title} ↗</a>
               <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#6b7280' }}>
-                {(a.chars / 1000).toFixed(1)}k chars · {a.source || 'no source'} · {ago(a.publishedAt)}{a.qrAttempts ? ` · ${a.qrAttempts} failed tries` : ''}{a.editorLocked ? ' · 🔒 locked' : ''}
+                {(a.chars / 1000).toFixed(1)}k chars · {a.source || 'no source'} · released {a.publishedAt ? new Date(a.publishedAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' }) : 'unknown'} ({ago(a.publishedAt)}){a.qrAttempts ? ` · ${a.qrAttempts} failed tries` : ''}{a.editorLocked ? ' · 🔒 locked' : ''}
               </div>
-              {errs[a._id] && <div style={{ color: '#f87171', fontSize: 11 }}>{errs[a._id]}</div>}
+              {errs[a._id] && <div style={{ color: '#f87171', fontSize: 11, fontFamily: "'IBM Plex Mono',monospace", whiteSpace: 'pre-wrap', wordBreak: 'break-word', marginTop: 6 }}>{errs[a._id]}</div>}
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button disabled={busy[a._id]} onClick={() => rewriteOne(a)} style={btn(busy[a._id])}>{busy[a._id] ? '⏳' : '✍ Rewrite now'}</button>
               <a href={'/news/' + a.slug} target="_blank" rel="noreferrer" style={{ ...btn(false, '#3b82f6'), textDecoration: 'none' }}>View</a>
               <button disabled={busy[a._id]} onClick={() => markReviewed(a)} style={btn(busy[a._id], '#64748b')}>✓ Reviewed</button>
+              <button disabled={busy[a._id]} onClick={() => hideOne(a)} style={btn(busy[a._id], '#7f1d1d')}>Hide</button>
             </div>
           </div>
         ))}
       </div>
+
+      {!!data?.hidden?.length && (
+        <>
+          <div className="dr-section-title" style={{ marginBottom: 10 }}>Hidden from the site ({data.hidden.length})</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 28 }}>
+            {data.hidden.map(a => (
+              <div key={a._id} className="adm-card" style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', borderLeft: '3px solid #7f1d1d' }}>
+                <div style={{ flex: 1, minWidth: 260 }}>
+                  <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: 'var(--text)' }}>{a.title}</div>
+                  <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#9ca3af', whiteSpace: 'pre-wrap', wordBreak: 'break-word' }}>{a.source || 'no source'} · {(a.chars / 1000).toFixed(1)}k chars · {a.qrHiddenReason}</div>
+                  {errs[a._id] && <div style={{ color: '#f87171', fontSize: 11, fontFamily: "'IBM Plex Mono',monospace", whiteSpace: 'pre-wrap', wordBreak: 'break-word', marginTop: 6 }}>{errs[a._id]}</div>}
+                </div>
+                <div style={{ display: 'flex', gap: 8 }}>
+                  <button disabled={busy[a._id]} onClick={() => retryHidden(a)} style={btn(busy[a._id])}>{busy[a._id] ? '⏳' : '✍ Rewrite & restore'}</button>
+                  <button disabled={busy[a._id]} onClick={() => restoreOne(a)} style={btn(busy[a._id], '#64748b')}>Restore as is</button>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       <div className="dr-section-title" style={{ marginBottom: 10 }}>Writers</div>
       <div style={{ display: 'flex', gap: 10, flexWrap: 'wrap' }}>

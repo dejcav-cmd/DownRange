@@ -1585,10 +1585,12 @@ async function renderSysOverview(el){
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
 
+let qSort='newest',qEl=null;
 async function renderAgents(el){
+  qEl=el;
   el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading content quality...</div>';
   try{
-    const d=await api('/api/admin/content-quality');
+    const d=await api('/api/admin/content-quality?sort='+qSort);
     if(!d.ok){el.innerHTML=`<div class="empty">Error: ${d.error||'failed'}</div>`;return;}
     const c=d.counts, ago=iso=>{if(!iso)return 'never';const m=Math.round((Date.now()-new Date(iso))/60000);return m<60?m+' min ago':m<1440?Math.round(m/60)+' h ago':Math.round(m/1440)+' d ago';};
     const tile=(l,v,bad)=>`<div class="stat-box"><div class="stat-val" style="${bad&&v?'color:var(--err)':''}">${v}</div><div class="stat-lbl">${l}</div></div>`;
@@ -1596,14 +1598,26 @@ async function renderAgents(el){
       <div class="stat-grid">${tile('Live',c.live,0)}${tile('Thin',c.thin,1)}${tile('Unreviewed',c.unreviewed,1)}${tile('Bad images',c.badImage,1)}</div>
       ${d.jobs.map(j=>`<div class="art-card"><div class="art-title">${j.label}</div><div class="art-meta"><span class="pill ${j.last?.status==='success'?'pill-ok':'pill-warn'}">${j.last?j.last.status:'no run'}</span><span>${ago(j.last?.at)}</span></div><div class="art-actions"><button class="btn btn-xs" onclick="qualityRun('${j.id}',this)">▶ Run now</button></div></div>`).join('')}
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:14px 0 8px">Weakest live articles</div>
-      ${d.weakest.length?d.weakest.map(a=>`<div class="art-card" id="q-${a._id}"><a class="art-title" style="color:var(--gold);text-decoration:underline" target="_blank" rel="noopener" href="https://downrangeco.com/news/${a.slug}">${a.title||'Untitled'} ↗</a><div class="art-meta"><span>${(a.chars/1000).toFixed(1)}k chars</span>${a.source?`<span>${a.source}</span>`:''}${a.qrAttempts?`<span>${a.qrAttempts} failed tries</span>`:''}</div><div class="art-actions"><button class="btn btn-xs" onclick="qualityRewrite('${a.slug}',this)">✍ Rewrite now</button><a class="btn-outline btn-xs" target="_blank" href="https://downrangeco.com/news/${a.slug}">View</a></div></div>`).join(''):'<div class="empty">All live articles are long enough ✓</div>'}`;
+      <select onchange="qSort=this.value;renderAgents(qEl)" style="width:100%;padding:10px;margin-bottom:10px;background:var(--bg2);color:var(--text);border:1px solid var(--border)"><option value="newest" ${qSort==='newest'?'selected':''}>Release date: newest first</option><option value="oldest" ${qSort==='oldest'?'selected':''}>Release date: oldest first</option><option value="shortest" ${qSort==='shortest'?'selected':''}>Shortest first</option></select>
+      ${d.weakest.length?d.weakest.map(a=>`<div class="art-card" id="q-${a._id}"><a class="art-title" style="color:var(--gold);text-decoration:underline" target="_blank" rel="noopener" href="https://downrangeco.com/news/${a.slug}">${a.title||'Untitled'} ↗</a><div class="art-meta"><span>${a.publishedAt?new Date(a.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}):'no date'}</span><span>${(a.chars/1000).toFixed(1)}k chars</span>${a.source?`<span>${a.source}</span>`:''}${a.qrAttempts?`<span>${a.qrAttempts} failed tries</span>`:''}</div><div class="art-actions"><button class="btn btn-xs" onclick="qualityRewrite('${a.slug}',this)">✍ Rewrite now</button><a class="btn-outline btn-xs" target="_blank" href="https://downrangeco.com/news/${a.slug}">View</a><button class="btn btn-xs" onclick="qualityHide('${a._id}')">Hide</button></div><div class="q-err" style="display:none;white-space:pre-wrap;word-break:break-word;user-select:text;color:var(--err);font-size:12px;margin-top:8px"></div></div>`).join(''):'<div class="empty">All live articles are long enough ✓</div>'}
+      ${(d.hidden||[]).length?`<div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin:18px 0 8px">Hidden from the site (${d.hidden.length})</div>`+d.hidden.map(a=>`<div class="art-card" id="q-${a._id}"><div class="art-title">${a.title||'Untitled'}</div><div class="art-meta"><span>${a.qrHiddenReason||''}</span></div><div class="art-actions"><button class="btn btn-xs" onclick="qualityRewrite('${a.slug}',this,true)">✍ Rewrite & restore</button><button class="btn btn-xs" onclick="qualityRestore('${a._id}')">Restore as is</button></div><div class="q-err" style="display:none;white-space:pre-wrap;word-break:break-word;user-select:text;color:var(--err);font-size:12px;margin-top:8px"></div></div>`).join(''):''}`;
   }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
 }
-async function qualityRewrite(slug,btn){
+function qualityErr(btn,msg){const box=btn.closest('.art-card')?.querySelector('.q-err');if(box){box.textContent=msg;box.style.display='block';}}
+async function qualityRewrite(slug,btn,force){
   btn.disabled=true;btn.textContent='⏳';
-  try{const d=await api('/api/cron/quality-rewrite?slug='+encodeURIComponent(slug));
-    if(d.ok){flash('Rewritten: '+d.words+' words','ok');btn.textContent='✓ Done';}else{flash(d.error||'Failed','err');btn.disabled=false;btn.textContent='✍ Rewrite now';}
-  }catch(e){flash(e.message,'err');btn.disabled=false;btn.textContent='✍ Rewrite now';}
+  try{const d=await api('/api/cron/quality-rewrite?'+(force?'force=1&':'')+'slug='+encodeURIComponent(slug));
+    if(d.ok){flash('Rewritten: '+d.words+' words','ok');btn.textContent='✓ Done';}else{qualityErr(btn,d.error||'Failed');btn.disabled=false;btn.textContent='✍ Rewrite now';}
+  }catch(e){qualityErr(btn,e.message);btn.disabled=false;btn.textContent='✍ Rewrite now';}
+}
+async function qualityHide(id){
+  if(!confirm('Take this article off the site? You can restore it from the Hidden list.'))return;
+  await api('/api/admin/content-quality',{method:'POST',body:JSON.stringify({action:'hide',id,reason:'Hidden by admin from Content Quality'})});
+  renderAgents(qEl);
+}
+async function qualityRestore(id){
+  await api('/api/admin/content-quality',{method:'POST',body:JSON.stringify({action:'restore',id})});
+  renderAgents(qEl);
 }
 async function qualityRun(id,btn){
   btn.disabled=true;btn.textContent='⏳';

@@ -75,6 +75,15 @@ STRUCTURE — 5 <h2> sections, each 2-3 solid paragraphs:
 STYLE: First sentence = hardest fact. Sentences avg under 15 words. Active voice. Specific names/calibers/prices. No padding.
 LENGTH: ${TARGET_WORDS} words. Never under 450.`
 
+// An article that cannot be rewritten after repeated tries and is still a teaser must not stay live.
+// It is taken off the site (kept in Sanity, restorable from the admin Content Quality tab).
+async function hideTeaser(item, reason) {
+  const cur = await sanity.fetch('*[_id == $id][0]{ publishedAt }', { id: item._id }).catch(() => null)
+  await sanity.patch(item._id)
+    .set({ approved: false, qrHidden: true, qrHiddenReason: String(reason).slice(0, 300), ...(cur?.publishedAt ? { prevPublishedAt: cur.publishedAt } : {}) })
+    .unset(['publishedAt']).commit()
+}
+
 // Full rewrite — body + title
 async function rewriteFull(item) {
   // Work from the real source article when we have its URL. Rewriting a one-paragraph excerpt
@@ -101,8 +110,8 @@ Respond ONLY with valid JSON, no markdown fences, no preamble:
     const raw   = await callAIText({ prompt: prompt + extra, useCase: 'backfill', maxTokens: 6000 })
     const clean = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim()
     const m     = clean.match(/\{[\s\S]*\}/)
-    if (!m) throw new Error(`No JSON in response: ${clean.slice(0, 200)}`)
-    return JSON.parse(m[0])
+    if (!m) throw new Error(`The AI did not return an article. It said: ${clean.slice(0, 1200)}`)
+    try { return JSON.parse(m[0]) } catch (e) { throw new Error(`The AI returned malformed JSON (${e.message}). Start of reply: ${clean.slice(0, 400)}`) }
   }
   let parsed = await ask()
   // One expansion pass when the draft comes back short.
@@ -115,8 +124,9 @@ Respond ONLY with valid JSON, no markdown fences, no preamble:
   }
 
   const { score, issues } = scoreBody(parsed.body || '')
-  if (score < 70) throw new Error(`Output still fails quality (score=${score}): ${issues.join(', ')}`)
   const wordCount = (parsed.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
+  if (wordCount < MIN_ACCEPT_WORDS) throw new Error(`The AI could only write ${wordCount} words from this source (${src.length} characters of source text were readable, ${MIN_ACCEPT_WORDS}+ words needed). The page is probably paywalled, too short or not really a firearms story. Hide it from the site or edit it by hand.`)
+  if (score < 70) throw new Error(`Output still fails quality (score=${score}): ${issues.join(', ')}`)
   if (wordCount < MIN_ACCEPT_WORDS) throw new Error(`Too short: ${wordCount} words (need ${MIN_ACCEPT_WORDS}+)`)
   if (!parsed.title || parsed.title.trim() === (item.sourceTitle || '').trim())
     throw new Error('AI returned source title unchanged')
@@ -163,11 +173,14 @@ async function handler(req) {
   // Targeted rewrite: ?slug=<slug> (or ?id=<_id>) rewrites that one article now, regardless of review state.
   const qs = new URL(req.url).searchParams
   if (qs.get('slug') || qs.get('id')) {
-    const doc = await sanity.fetch(`*[_type=="newsArticle" && (slug.current==$slug || _id==$id)][0]{ _id, title, sourceTitle, body, summary, description, source, externalUrl }`, { slug: qs.get('slug') || '', id: qs.get('id') || '' })
+    const doc = await sanity.fetch(`*[_type=="newsArticle" && (slug.current==$slug || _id==$id)][0]{ _id, title, sourceTitle, body, summary, description, source, externalUrl, qrHidden, prevPublishedAt }`, { slug: qs.get('slug') || '', id: qs.get('id') || '' })
     if (!doc) return Response.json({ ok: false, error: 'article not found' }, { status: 404 })
     try {
       const ai = await rewriteFull({ ...doc, _stype: 'newsArticle' })
-      await sanity.patch(doc._id).set({ body: ai.body, title: ai.title, ...(ai.summary ? { summary: ai.summary, excerpt: ai.summary } : {}), qualityReviewed: true }).commit()
+      let patch = sanity.patch(doc._id).set({ body: ai.body, title: ai.title, ...(ai.summary ? { summary: ai.summary, excerpt: ai.summary } : {}), qualityReviewed: true, qrAttempts: 0 })
+      // A hidden article that now has a real body goes back on the site.
+      if (doc.qrHidden) patch = patch.set({ approved: true, publishedAt: doc.prevPublishedAt || new Date().toISOString() }).unset(['qrHidden', 'qrHiddenReason', 'prevPublishedAt'])
+      await patch.commit()
       return Response.json({ ok: true, id: doc._id, title: ai.title, words: ai.body.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length })
     } catch (e) { return Response.json({ ok: false, error: e.message }, { status: 502 }) }
   }
@@ -175,7 +188,7 @@ async function handler(req) {
 
   try {
     const [articles, blogs, releases, canada, staleBacklog] = await Promise.all([
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && qrHidden != true] | order(publishedAt desc) [0...${BATCH * 2}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
       sanity.fetch(`*[_type=="blogPost"       && defined(title) && editorLocked != true] | order(publishedAt desc) [0...10] { _id, title, sourceTitle, body, excerpt, qualityReviewed }`),
       Promise.resolve([]),
       sanity.fetch(`*[_type=="canadaContent"  && defined(title) && editorLocked != true] | order(_createdAt desc)  [0...5]  { _id, title, sourceTitle, body, summary, type, status, qualityReviewed }`),
@@ -187,7 +200,7 @@ async function handler(req) {
       // often this cron runs. This explicit query targets missing bodies
       // directly, with no recency assumption, oldest first (FIFO), so the
       // backlog actually drains instead of accumulating forever.
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < ${THIN_CHARS})] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && qrHidden != true && (!defined(body) || length(body) < ${THIN_CHARS})] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
     ])
 
     const seen = new Set()
@@ -265,6 +278,10 @@ async function handler(req) {
         // The article stays queued and is retried on the next run.
         await sanity.patch(item._id).set({ qrAttempts: (item.qrAttempts || 0) + 1, qrLastTryAt: new Date().toISOString() }).commit().catch(() => {})
         stats.failed++
+        if (item._stype === 'newsArticle' && (item.qrAttempts || 0) + 1 >= 3 && wordsOf(item.body) < 250) {
+          await hideTeaser(item, `Could not be rewritten after 3 tries: ${String(e.message).slice(0, 200)}`).catch(() => {})
+          stats.hidden = (stats.hidden || 0) + 1
+        }
         if (stats.errors.length < 10) stats.errors.push(`${(item.title || item._id).slice(0, 50)}: ${String(e.message).slice(0, 90)}`)
       }
     }
