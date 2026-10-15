@@ -87,7 +87,7 @@ const STATIC_PAGES = [
 
 export default async function sitemap() {
   try {
-    const [articles, blogPosts, releases, stateProfiles, canada, brazil, pressReleases] = await Promise.all([
+    const [articles, blogPosts, stateProfiles, canada, brazil, pressReleases] = await Promise.all([
       // No cap: the old [0...2000] silently dropped ~470 older articles
       sanity.fetch(
         `*[_type == "newsArticle" && approved == true && defined(slug.current)]
@@ -95,10 +95,6 @@ export default async function sitemap() {
       ).catch(() => []),
       sanity.fetch(
         `*[_type == "blogPost" && status == "published" && defined(slug.current)]
-         | order(publishedAt desc) [0...2000] { slug, publishedAt }`
-      ).catch(() => []),
-      sanity.fetch(
-        `*[_type == "firearmRelease" && defined(slug.current)]
          | order(publishedAt desc) [0...2000] { slug, publishedAt }`
       ).catch(() => []),
       sanity.fetch(`*[_type == "stateProfile" && defined(abbr)]{ abbr, _updatedAt }`).catch(() => []),

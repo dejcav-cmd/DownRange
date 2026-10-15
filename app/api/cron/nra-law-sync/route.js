@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
+import crypto from 'crypto'
 import { createClient } from '@sanity/client'
 import { withCronReport } from '../../../../lib/withCronReport'
 
@@ -229,6 +230,7 @@ async function _GET(req) {
   const key = req.headers.get('x-admin-key') || searchParams.get('key')
   const stateFilter = searchParams.get('state')?.toUpperCase()
   const dry = searchParams.get('dry') === '1'
+  const force = searchParams.get('force') === '1'
   
   // Accept the admin key (manual runs) OR Vercel's scheduler, which sends
   // Authorization: Bearer $CRON_SECRET. Admin-key-only auth rejected every
@@ -268,7 +270,7 @@ async function _GET(req) {
       
       // Get existing Sanity record
       const existing = await sanity.fetch(
-        '*[_type == "stateProfile" && abbr == $abbr][0]{ _id, name, nraLawSummary, lastNRAUpdate }',
+        '*[_type == "stateProfile" && abbr == $abbr][0]{ _id, name, nraLawSummary, lastNRAUpdate, nraSourceHash }',
         { abbr: stateCode }
       )
       
@@ -277,6 +279,13 @@ async function _GET(req) {
         continue
       }
       
+      // Skip the AI entirely when the NRA-ILA source text has not changed since the last run
+      const srcHash = crypto.createHash('md5').update(JSON.stringify(scraped.laws)).digest('hex')
+      if (!force && existing.nraSourceHash === srcHash && existing.nraLawSummary) {
+        results.push({ state: stateCode, status: 'no_change', note: 'source unchanged, AI skipped' })
+        continue
+      }
+
       // Build law summary by paraphrasing each category
       const lawCategories = []
       for (const [key, text] of Object.entries(scraped.laws)) {
@@ -297,9 +306,13 @@ async function _GET(req) {
       // Check if changed
       const changed = existing.nraLawSummary !== newSummary
       
+      if (!dry && !changed && existing.nraSourceHash !== srcHash) {
+        await sanity.patch(existing._id).set({ nraSourceHash: srcHash }).commit()
+      }
       if (!dry && changed) {
         await sanity.patch(existing._id).set({
           nraLawSummary: newSummary,
+          nraSourceHash: srcHash,
           lastNRAUpdate: new Date().toISOString(),
         }).commit()
         

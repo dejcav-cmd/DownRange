@@ -113,15 +113,6 @@ export async function GET(req) {
     switch (feed) {
       case 'news':     { const { runNewsFeed }     = await import('../../../agent/feeds/news.js');     result = await runNewsFeed();     break }
       case 'laws':     { const { runLawsFeed }     = await import('../../../agent/feeds/laws.js');     result = await runLawsFeed();     break }
-      case 'releases': {
-        const { scrapeReleases, processReleases, runReleasesFeed } = await import('../../../agent/feeds/releases.js')
-        const phase    = req.nextUrl?.searchParams?.get('phase') || 'both'
-        const backfill = req.nextUrl?.searchParams?.get('backfill') === '1'
-        if (phase === 'scrape')       result = await scrapeReleases({ backfill })
-        else if (phase === 'process') result = await processReleases({ backfill })
-        else                          result = await runReleasesFeed()
-        break
-      }
       case 'video':    { const { runVideoFeed }    = await import('../../../agent/feeds/video.js');    result = await runVideoFeed();    break }
       case 'state':    { const { runStateFeed }    = await import('../../../agent/feeds/state.js');    result = await runStateFeed();    break }
       case 'goa':      { const { runGOAFeed }      = await import('../../../agent/feeds/goa.js');      result = await runGOAFeed();      break }

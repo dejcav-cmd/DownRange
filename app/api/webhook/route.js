@@ -37,7 +37,6 @@ export async function POST(req) {
         newsArticle: 'news',
         legislation: 'laws',
         review: 'reviews',
-        firearmRelease: 'releases',
         stateProfile: 'states',
         video: 'videos',
       }

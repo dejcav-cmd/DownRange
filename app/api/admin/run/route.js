@@ -33,7 +33,6 @@ export async function POST(req) {
     switch (feed) {
       case 'news':     { const { runNewsFeed }     = await import('../../../../agent/feeds/news.js');     result = await runNewsFeed();     break }
       case 'laws':     { const { runLawsFeed }     = await import('../../../../agent/feeds/laws.js');     result = await runLawsFeed();     break }
-      case 'releases': { const { runReleasesFeed } = await import('../../../../agent/feeds/releases.js'); result = await runReleasesFeed(); break }
       case 'video':    { const { runVideoFeed }    = await import('../../../../agent/feeds/video.js');    result = await runVideoFeed();    break }
       case 'state':    { const { runStateFeed }    = await import('../../../../agent/feeds/state.js');    result = await runStateFeed();    break }
       default: return Response.json({ error: `Unknown feed: ${feed}` }, { status: 400 })

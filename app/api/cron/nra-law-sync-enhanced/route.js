@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { NextResponse } from 'next/server'
+import crypto from 'crypto'
 import { createClient } from '@sanity/client'
 import { withCronReport } from '../../../../lib/withCronReport'
 
@@ -343,6 +344,7 @@ async function _GET(req) {
   const key = req.headers.get('x-admin-key') || searchParams.get('key')
   const stateFilter = searchParams.get('state')?.toUpperCase()
   const dry = searchParams.get('dry') === '1'
+  const force = searchParams.get('force') === '1'
   
   // Accept the admin key (manual runs) OR Vercel's scheduler, which sends
   // Authorization: Bearer $CRON_SECRET. Admin-key-only auth rejected every
@@ -380,7 +382,7 @@ async function _GET(req) {
       }
       
       const existing = await sanity.fetch(
-        '*[_type == "stateProfile" && abbr == $abbr][0]{ _id, name, nraEnhancedData }',
+        '*[_type == "stateProfile" && abbr == $abbr][0]{ _id, name, nraEnhancedData, nraEnhancedHash }',
         { abbr: stateCode }
       )
       
@@ -389,6 +391,16 @@ async function _GET(req) {
         continue
       }
       
+      // Skip the AI when the scraped source data is identical to the last run
+      const srcHash = crypto.createHash('md5').update(JSON.stringify({
+        c: scraped.coreLaws, l: scraped.localRestrictions, r: scraped.recentCaseLaw,
+        u: scraped.useCases, n: scraped.reciprocityNotes, s: scraped.resources,
+      })).digest('hex')
+      if (!force && existing.nraEnhancedHash === srcHash && existing.nraEnhancedData) {
+        results.push({ state: stateCode, status: 'no_change', note: 'source unchanged, AI skipped' })
+        continue
+      }
+
       // Generate enhanced summary
       const summary = await generateEnhancedSummary(scraped)
       
@@ -406,11 +418,17 @@ async function _GET(req) {
       }
       
       // Check if changed
-      const changed = JSON.stringify(existing.nraEnhancedData) !== JSON.stringify(enhancedData)
+      const { updatedAt: _u1, ...oldCmp } = existing.nraEnhancedData || {}
+      const { updatedAt: _u2, ...newCmp } = enhancedData
+      const changed = JSON.stringify(oldCmp) !== JSON.stringify(newCmp)
       
+      if (!dry && !changed) {
+        await sanity.patch(existing._id).set({ nraEnhancedHash: srcHash }).commit()
+      }
       if (!dry && changed) {
         await sanity.patch(existing._id).set({
           nraEnhancedData: enhancedData,
+          nraEnhancedHash: srcHash,
           lastNRAUpdate: new Date().toISOString(),
         }).commit()
         

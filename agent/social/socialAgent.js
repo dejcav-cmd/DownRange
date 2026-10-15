@@ -666,29 +666,13 @@ async function fetchCandidates(minUrgency = 5, limit = 20) {
     }`, { cutoff }
   ).catch(() => [])
 
-  // Firearm releases (approved only)
-  const releases = await sanity.fetch(
-    `*[_type == "firearmRelease" && approved == true && defined(slug.current) && defined(publishedAt) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
-      _id, "type":"release", title, summary, category, publishedAt,
-      "urgencyScore": 6, "slug": slug.current, imageUrl, tags
-    }`, { cutoff }
-  ).catch(() => [])
-
-  // Gun reviews (published only)
-  const reviews = await sanity.fetch(
-    `*[_type == "review" && defined(publishedAt) && defined(slug.current) && publishedAt > $cutoff] | order(publishedAt desc)[0...10]{
-      _id, "type":"review", title, summary, category, score, publishedAt,
-      "urgencyScore": 6, "slug": slug.current, imageUrl, tags
-    }`, { cutoff }
-  ).catch(() => [])
-
   // Merge ALL types into one pool and sort by true recency (publishedAt),
   // not by concatenation order. Previously news was always first in the
   // array, so with count=1/run, blog/release/review content was almost
   // never actually selected even when it was fresher — fixed by sorting
   // the merged pool globally rather than taking whichever type happened
   // to be listed first.
-  const merged = [...news, ...blogs, ...releases, ...reviews]
+  const merged = [...news, ...blogs]
     .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
 
   const filtered = merged.filter(a => (a.urgencyScore ?? 5) >= minUrgency)

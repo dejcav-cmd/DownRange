@@ -37,7 +37,6 @@ export default function robots() {
       'https://www.downrangeco.com/news-sitemap.xml',
       'https://www.downrangeco.com/feed.xml',
       'https://www.downrangeco.com/feeds/news',
-      'https://www.downrangeco.com/feeds/releases',
       'https://www.downrangeco.com/feeds/deals',
       'https://www.downrangeco.com/feeds/laws',
       'https://www.downrangeco.com/feeds/blog',

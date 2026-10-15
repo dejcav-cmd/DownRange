@@ -8,7 +8,6 @@ const cron = require('node-cron')
 const { discordNotify } = require('./utils')
 const { runNewsFeed }     = require('./feeds/news')
 const { runLawsFeed }     = require('./feeds/laws')
-const { runReleasesFeed } = require('./feeds/releases')
 const { runMarketFeed }   = require('./feeds/market')
 const { runVideoFeed }    = require('./feeds/video')
 const { runStateFeed }    = require('./feeds/state')
@@ -41,9 +40,6 @@ cron.schedule('*/15 * * * *', () => safeRun('News Feed',     runNewsFeed))
 
 // Laws:     every 2 hours
 cron.schedule('0 */2 * * *',  () => safeRun('Laws Feed',     runLawsFeed))
-
-// Releases: every hour
-cron.schedule('0 * * * *',    () => safeRun('Releases Feed', runReleasesFeed))
 
 // Market:   every 30 min
 cron.schedule('*/30 * * * *', () => safeRun('Market Feed',   runMarketFeed))
@@ -80,7 +76,6 @@ console.log('   Discord:  status every 60 min\n')
   await discordNotify('status', '🚀 **DownRange Agent started** — Running initial feed pass...')
   await safeRun('News Feed',     runNewsFeed)
   await safeRun('Laws Feed',     runLawsFeed)
-  await safeRun('Releases Feed', runReleasesFeed)
   await safeRun('Market Feed',   runMarketFeed)
   await safeRun('Video Feed',    runVideoFeed)
   await safeRun('State Feed',    runStateFeed)

@@ -56,7 +56,6 @@ export async function GET(req) {
     // Use _createdAt desc so newly ingested articles always appear regardless of their publishedAt
     { type:'newsArticle',    label:'News Articles',  q:`*[_type=="newsArticle" && defined(title)] | order(_createdAt desc) [0...500] { _id, title, body, qualityReviewed, publishedAt, _createdAt, "slug": slug.current, category }` },
     { type:'blogPost',       label:'Blog Posts',     q:`*[_type=="blogPost" && defined(title)] | order(_createdAt desc) [0...100] { _id, title, body, qualityReviewed, "slug": slug.current }` },
-    { type:'firearmRelease', label:'Gun Releases',   q:`*[_type=="firearmRelease" && defined(brand)] | order(_createdAt desc) [0...100] { _id, "title": brand + " " + model, body, qualityReviewed }` },
     { type:'canadaContent',  label:'Canada',         q:`*[_type=="canadaContent" && defined(title)] | order(_createdAt desc) [0...100] { _id, title, body, qualityReviewed }` },
   ]
 

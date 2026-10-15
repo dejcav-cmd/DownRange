@@ -32,13 +32,6 @@ export async function GET(req) {
       }`
     )
 
-    // 3. ALL firearmRelease drafts
-    const releases = await sanity.fetch(
-      `*[_type == "firearmRelease" && (approved != true || !defined(approved))] | order(_createdAt desc) [0...200] {
-        _id, _type, title, slug, brand, approved, publishedAt, _createdAt
-      }`
-    )
-
     // 4. Try to access Sanity draft documents (ids starting with "drafts.")
     // These are auto-created by Sanity Studio when editing
     const draftQuery = `*[_id in path("drafts.**")] | order(_createdAt desc) [0...200] {
@@ -63,14 +56,12 @@ export async function GET(req) {
       summary: {
         blogPosts:       { total: blogPosts.length, published: published.length, drafts: drafts.length, unpublished: unpublished.length },
         newsArticles:    { unapproved: newsArticles.length },
-        releases:        { unapproved: releases.length },
         sanityDrafts:    { total: sanityDrafts.length },
       },
       blogDrafts:        drafts,
       blogPublished:     published,
       blogUnpublished:   unpublished,
       unapprovedNews:    newsArticles.slice(0, 50),
-      unapprovedReleases: releases.slice(0, 50),
       sanityDrafts:      sanityDrafts.slice(0, 50),
     })
   } catch (e) {

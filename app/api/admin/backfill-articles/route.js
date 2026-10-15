@@ -125,51 +125,6 @@ Return ONLY valid JSON: { "body": "<full HTML blog post>", "excerpt": "1 sentenc
     patch: (ai) => ({ body: ai.body, excerpt: ai.excerpt }),
   },
 
-  firearmRelease: {
-    label: 'Gun Release',
-    query: (force, limit) => {
-      const f = force
-        ? '_type == "firearmRelease" && defined(brand) && editorLocked != true'
-        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 100) && editorLocked != true'
-      return `*[${f}] | order(_createdAt desc) [0...${limit}] { _id, brand, model, caliber, action, msrp, category, summary, body, description, pressReleaseExcerpt, specUrl }`
-    },
-    countQuery: (force) => {
-      const f = force
-        ? '_type == "firearmRelease" && defined(brand) && editorLocked != true'
-        : '_type == "firearmRelease" && defined(brand) && (!defined(body) || length(body) < 100) && editorLocked != true'
-      return `count(*[${f}])`
-    },
-    buildPrompt: (item) => `
-You are writing a gun product article for DownRange, a firearms news site.
-${VOICE}
-
-Write a product article for the ${item.brand} ${item.model}. This is not marketing copy — it's an honest assessment for gun owners deciding whether to buy it.
-
-STRUCTURE (HTML, 500-700 words):
-<h2>${item.brand} ${item.model}: [One-line honest verdict]</h2>
-<p>[Opening: 80-100 words. What this gun is, who it's for, what makes it worth talking about — or not.]</p>
-<h2>Specs That Matter</h2>
-<p>[80-100 words. Caliber, capacity, weight, barrel length, MSRP. Only real numbers. Skip any you don't know.]</p>
-<h2>In the Field</h2>
-<p>[120-150 words. Who would actually carry or use this. Comparable guns. Where it fits in the market.]</p>
-<h2>DownRange Take</h2>
-<p>[80-100 words. Honest opinion. Is it worth $${item.msrp || '?'}? Who should buy it? Who shouldn't?]</p>
-
-PRODUCT DATA:
-Brand: ${item.brand}
-Model: ${item.model}
-Caliber: ${item.caliber || 'Unknown'}
-Action: ${item.action || 'Unknown'}
-MSRP: $${item.msrp || 'Unknown'}
-Category: ${item.category || 'Pistol'}
-Summary: ${item.summary || item.description || 'N/A'}
-Press excerpt: ${item.pressReleaseExcerpt || 'N/A'}
-
-Return ONLY valid JSON: { "body": "<full HTML article>", "summary": "1-2 sentence plain description under 300 chars" }
-`,
-    patch: (ai) => ({ body: ai.body, summary: ai.summary }),
-  },
-
   canadaContent: {
     label: 'Canada Article',
     query: (force, limit) => {
@@ -253,7 +208,7 @@ export async function POST(req) {
     const force  = url.searchParams.get('force') === 'true'
     const singleId = url.searchParams.get('id') || null
     // Which content types to process — default all
-    const types  = (url.searchParams.get('types') || 'newsArticle,blogPost,firearmRelease,canadaContent').split(',')
+    const types  = (url.searchParams.get('types') || 'newsArticle,blogPost,canadaContent').split(',')
 
     // Single article rewrite mode
     if (singleId) {

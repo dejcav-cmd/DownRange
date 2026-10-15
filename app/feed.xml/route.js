@@ -2,11 +2,10 @@ export const dynamic = 'force-dynamic'
 import { buildFeed, sanity } from '@/lib/feedHelper'
 
 export async function GET() {
-  // Master feed — combines news + blog + releases, most recent 60 items
-  const [news, blog, releases] = await Promise.all([
+  // Master feed — combines news + blog, most recent 60 items
+  const [news, blog] = await Promise.all([
     sanity.fetch('*[_type=="newsArticle"&&approved==true]|order(publishedAt desc)[0...40]{title,slug,summary,excerpt,category,publishedAt,imageUrl,source}').catch(()=>[]),
     sanity.fetch('*[_type=="blogPost"&&status=="published"]|order(publishedAt desc)[0...10]{title,slug,excerpt,category,publishedAt,imageUrl,author}').catch(()=>[]),
-    sanity.fetch('*[_type=="firearmRelease"&&approved==true]|order(publishedAt desc)[0...10]{title,slug,brand,model,category,publishedAt,imageUrl,summary}').catch(()=>[]),
   ])
 
   const items = [

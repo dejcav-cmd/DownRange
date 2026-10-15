@@ -41,18 +41,6 @@ const FEEDS = [
     tags:   ['law','ATF','court','SCOTUS'],
   },
   {
-    id:     'releases',
-    title:  'New Gun Releases',
-    emoji:  '◈',
-    url:    '/feeds/releases',
-    color:  '#C8922A',
-    desc:   'New firearm releases and product announcements from 16+ manufacturers — Glock, SIG, S&W, Ruger, Daniel Defense, and more.',
-    badge:  null,
-    count:  '30 items',
-    update: 'Hourly',
-    tags:   ['pistol','rifle','new','manufacturer'],
-  },
-  {
     id:     'blog',
     title:  'Blog & Analysis',
     emoji:  '✍',

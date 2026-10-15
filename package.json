@@ -11,7 +11,6 @@
     "agent": "node -r dotenv/config agent/index.js",
     "agent:news": "node -r dotenv/config agent/feeds/news.js",
     "agent:laws": "node -r dotenv/config agent/feeds/laws.js",
-    "agent:releases": "node -r dotenv/config agent/feeds/releases.js",
     "agent:market": "node -r dotenv/config agent/feeds/market.js",
     "agent:video": "node -r dotenv/config agent/feeds/video.js",
     "agent:state": "node -r dotenv/config agent/feeds/state.js",

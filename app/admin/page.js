@@ -1794,39 +1794,6 @@ function ContentHub({ adminKey, setPanel, setSection }) {
     setItemsLoading(false)
   }
 
-  async function seed(type) {
-    setSeeding(s => ({...s, [type]: true}))
-    setResults(r => ({...r, [type]: null}))
-    try {
-      const res = await fetch('/api/admin/seed-all-content', {
-        method: 'POST', headers: H,
-        body: JSON.stringify({ types: type })
-      })
-      const d = await res.json()
-      setResults(r => ({...r, [type]: d}))
-      await fetchCounts()
-    } catch (e) {
-      setResults(r => ({...r, [type]: { ok: false, message: e.message }}))
-    }
-    setSeeding(s => ({...s, [type]: false}))
-  }
-
-  async function seedAll() {
-    setSeeding(s => ({...s, all: true}))
-    setResults(r => ({...r, all: null}))
-    try {
-      const res = await fetch('/api/admin/seed-all-content', {
-        method: 'POST', headers: H, body: JSON.stringify({})
-      })
-      const d = await res.json()
-      setResults(r => ({...r, all: d}))
-      await fetchCounts()
-    } catch (e) {
-      setResults(r => ({...r, all: { ok: false, message: e.message }}))
-    }
-    setSeeding(s => ({...s, all: false}))
-  }
-
   async function runAI(key, path, params = '') {
     setAiRunning(a => ({...a, [key]: true}))
     setAiResults(a => ({...a, [key]: null}))
@@ -1848,7 +1815,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       label:    'News Articles',
       icon:     '📰',
       color:    '#3b82f6',
-      desc:     'Live RSS feed · AI rewritten · Updates every 15 min',
+      desc:     'Live RSS feed · AI rewritten · Updates every 2 hours',
       seedType: null,   // fed by cron, not seeded
       aiAction: { label: 'Backfill Missing', path: 'backfill-articles', params: '?limit=10&types=newsArticle' },
       liveIndicator: true,
@@ -1997,7 +1964,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
               {/* Filters row */}
               <div style={{ display:'flex', gap:6, padding:'10px 20px', borderBottom:'1px solid var(--border)', flexWrap:'wrap', alignItems:'center', background:'rgba(0,0,0,.1)' }}>
                 {/* Type filter */}
-                {[['ALL','All'], ['newsArticle','News'], ['blogPost','Blog'], ['firearmRelease','Releases'], ['canadaContent','Canada']].map(([k,l]) => (
+                {[['ALL','All'], ['newsArticle','News'], ['blogPost','Blog'], ['canadaContent','Canada']].map(([k,l]) => (
                   <button key={k} onClick={() => { setActiveType(k); setArtPage(1) }}
                     style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, padding:'3px 9px', cursor:'pointer', letterSpacing:'.07em', textTransform:'uppercase', background: activeType===k ? 'rgba(200,146,42,.15)' : 'none', border:`1px solid ${activeType===k ? '#C8922A' : 'rgba(255,255,255,.08)'}`, color: activeType===k ? '#C8922A' : '#6b7280' }}>
                     {l}
@@ -2051,8 +2018,8 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                         <tbody>
                           {pageItems.map((a, idx) => {
                             const scoreColor = a.score >= 70 ? '#22c55e' : a.score >= 50 ? '#f59e0b' : '#ef4444'
-                            const typeLabel = { newsArticle:'NEWS', blogPost:'BLOG', firearmRelease:'RELEASE', canadaContent:'CANADA' }[a.type] || a.type.toUpperCase()
-                            const typeColor = { newsArticle:'#3b82f6', blogPost:'#22c55e', firearmRelease:'#C8922A', canadaContent:'#ef4444' }[a.type] || '#6b7280'
+                            const typeLabel = { newsArticle:'NEWS', blogPost:'BLOG', canadaContent:'CANADA' }[a.type] || a.type.toUpperCase()
+                            const typeColor = { newsArticle:'#3b82f6', blogPost:'#22c55e', canadaContent:'#ef4444' }[a.type] || '#6b7280'
                             return (
                               <tr key={a._id} style={{ borderBottom:'1px solid rgba(255,255,255,.03)' }}>
                                 <td style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#374151', padding:'8px 12px', textAlign:'center', width:36 }}>
@@ -2207,13 +2174,6 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                 <button onClick={() => { setSection('content'); setPanel(section.id) }} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, letterSpacing:'.05em', padding:'6px 14px', background:section.color, color: section.color === '#C8922A' || section.color === '#f59e0b' ? '#000' : '#fff', border:'none', cursor:'pointer' }}>
                   ✏ Manage
                 </button>
-
-                {/* Seed button */}
-                {section.seedType && (
-                  <button onClick={() => seed(section.seedType)} disabled={isBusy} style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, letterSpacing:'.05em', padding:'6px 14px', background:'transparent', border:`1px solid ${section.color}66`, color:section.color, cursor:isBusy?'default':'pointer', opacity:isBusy?.5:1 }}>
-                    {seeding[section.seedType] ? '⏳ Seeding...' : '🌱 Seed'}
-                  </button>
-                )}
 
                 {/* AI action */}
                 {section.aiAction && (

@@ -18,11 +18,8 @@ export async function GET(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   try {
     // Pull drafts + scheduled from all content types
-    const [blogs, releases, news] = await Promise.all([
+    const [blogs, news] = await Promise.all([
       sanity.fetch(`*[_type == "blogPost" && status in ["draft","scheduled"]] | order(_createdAt desc) [0...50] {
-        _id, title, slug, status, scheduledAt, _createdAt
-      }`),
-      sanity.fetch(`*[_type == "firearmRelease" && status in ["draft","scheduled"]] | order(_createdAt desc) [0...50] {
         _id, title, slug, status, scheduledAt, _createdAt
       }`),
       sanity.fetch(`*[_type == "newsArticle" && approved != true] | order(publishedAt desc) [0...50] {
@@ -32,7 +29,6 @@ export async function GET(req) {
 
     const schedules = [
       ...blogs.map(p => ({ ...p, type: 'Blog Post' })),
-      ...releases.map(p => ({ ...p, type: 'Gun Release' })),
       ...news.map(p => ({ ...p, type: 'News Article', status: 'pending-approval', scheduledAt: p.publishedAt })),
     ].sort((a, b) => new Date(b._createdAt || b.scheduledAt) - new Date(a._createdAt || a.scheduledAt))
 

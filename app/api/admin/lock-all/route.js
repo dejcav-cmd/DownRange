@@ -7,7 +7,7 @@ const sanity = createClient({
   token: process.env.SANITY_API_TOKEN,
 })
 
-const VALID_TYPES = ['newsArticle','firearmRelease','blogPost','review','canadaContent','competition']
+const VALID_TYPES = ['newsArticle','blogPost','review','canadaContent','competition']
 
 export async function POST(req) {
   const key = req.headers.get('x-admin-key')
