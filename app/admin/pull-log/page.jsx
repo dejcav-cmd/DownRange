@@ -11,7 +11,7 @@
  *   - NO hardcoded hex except --gold #C8922A references
  */
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import React, { useState, useEffect, useCallback, useRef } from 'react'
 
 // ─── Constants ────────────────────────────────────────────────────────────────
 
@@ -44,6 +44,33 @@ const CATEGORY_COLOR = {
 
 const REFRESH_INTERVALS = [0, 15000, 30000, 60000]
 const REFRESH_LABELS    = ['Off', '15s', '30s', '1m']
+
+// Old log entries may hold objects where text is expected; React crashes rendering those.
+const asText = (v) => {
+  if (v == null) return ''
+  if (typeof v === 'string') return v
+  if (typeof v === 'object') return String(v.title || v.headline || v.name || v.message || JSON.stringify(v)).slice(0, 300)
+  return String(v)
+}
+function sanitizeEntry(e) {
+  const ts = new Date(e?.timestamp)
+  return {
+    ...e,
+    id: asText(e?.id) || Math.random().toString(36).slice(2),
+    timestamp: isNaN(ts) ? new Date(0).toISOString() : ts.toISOString(),
+    source: asText(e?.source) || 'unknown',
+    sourceLabel: asText(e?.sourceLabel) || asText(e?.source) || 'unknown',
+    type: asText(e?.type) || 'unknown',
+    category: asText(e?.category) || 'unknown',
+    status: asText(e?.status) || 'skipped',
+    itemCount: Number(e?.itemCount) || 0,
+    newItems: Number(e?.newItems) || 0,
+    duration: Number(e?.duration) || 0,
+    error: e?.error == null ? null : asText(e.error),
+    headlines: (Array.isArray(e?.headlines) ? e.headlines : []).map(asText).filter(Boolean),
+    meta: e?.meta && typeof e.meta === 'object' ? e.meta : {},
+  }
+}
 
 // ─── Sub-components ──────────────────────────────────────────────────────────
 
@@ -186,8 +213,8 @@ export default function PullLogPage() {
       const res  = await fetch('/api/pull-log?limit=500', { headers: { 'x-admin-key': key } })
       const data = await res.json()
       if (data.ok) {
-        setEntries(data.entries || [])
-        setStats(data.stats || null)
+        setEntries((data.entries || []).map(sanitizeEntry))
+        setStats(data.stats ? { ...data.stats, recentErrors: (data.stats.recentErrors || []).map(sanitizeEntry) } : null)
         setLastRefresh(new Date())
         setLiveActivity(true)
         setTimeout(() => setLiveActivity(false), 1200)
@@ -397,7 +424,7 @@ export default function PullLogPage() {
           <StatCard label="Total Pulls"    value={stats.total}                icon="📊" />
           <StatCard label="Last 24h"       value={stats.last24h}              icon="🕐" accent="#C8922A" />
           <StatCard label="Success Rate"   value={`${stats.successRate}%`}    icon="✅" accent={stats.successRate >= 80 ? '#22c55e' : '#f59e0b'} sub={`${stats.last7d} pulls this week`} />
-          <StatCard label="Items Ingested" value={stats.totalItems.toLocaleString()} icon="📦" sub={`${stats.totalNew.toLocaleString()} net new`} />
+          <StatCard label="Items Ingested" value={(stats.totalItems || 0).toLocaleString()} icon="📦" sub={`${(stats.totalNew || 0).toLocaleString()} net new`} />
           <StatCard label="Avg Duration"   value={`${stats.avgDuration}ms`}   icon="⏱" accent="#94a3b8" />
           <StatCard label="Recent Errors"  value={stats.recentErrors?.length || 0} icon="🚨" accent={stats.recentErrors?.length ? '#ef4444' : '#22c55e'} />
         </div>
@@ -570,9 +597,8 @@ export default function PullLogPage() {
                   const isExpanded = expandedId === e.id
                   const ts = new Date(e.timestamp)
                   return (
-                    <>
+                    <React.Fragment key={e.id}>
                       <tr
-                        key={e.id}
                         className="log-row"
                         style={{ cursor: 'pointer', transition: 'background 0.1s' }}
                         onClick={() => setExpandedId(isExpanded ? null : e.id)}
@@ -714,7 +740,7 @@ export default function PullLogPage() {
                           </td>
                         </tr>
                       )}
-                    </>
+                    </React.Fragment>
                   )
                 })}
               </tbody>
