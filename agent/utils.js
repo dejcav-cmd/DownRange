@@ -175,7 +175,7 @@ Return ONLY valid JSON:
 }
 Start with { end with }. No markdown fences.`
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 3600 })
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 6000 })
     // Strip markdown fences and extract JSON robustly
     let clean = text.split('```json').join('').split('```').join('').trim()
     // If response starts with prose before JSON, extract the JSON object
@@ -193,7 +193,7 @@ Start with { end with }. No markdown fences.`
       try {
         const again = await callAIText({
           prompt: `${prompt}\n\nYOUR PREVIOUS DRAFT WAS ONLY ${words} WORDS. Write the full article again at ${TARGET_WORDS} words using every section in the structure. Expand Key Details, Background and the analysis with facts you are sure of. Return the same JSON shape.`,
-          useCase: 'news', maxTokens: 3600,
+          useCase: 'news', maxTokens: 6000,
         })
         let c2 = again.split('```json').join('').split('```').join('').trim()
         const s2 = c2.indexOf('{'), e2 = c2.lastIndexOf('}')
