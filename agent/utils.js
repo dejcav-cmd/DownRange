@@ -1,5 +1,6 @@
 import { callAIText } from '@/lib/aiClient.js'
 import crypto from 'crypto'
+import { fetchSourceFacts } from '@/lib/sourceFacts.js'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 // opts.lang: 'en' (default) or 'pt-BR'. Brazil content MUST use 'pt-BR' —
@@ -9,7 +10,13 @@ import crypto from 'crypto'
 async function rewriteWithClaude(item, opts = {}) {
   const lang = opts.lang || 'en'
   // Copyright-safe: extract facts only, use max 400 chars of source to avoid derivative work
-  const inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 400)
+  let inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 400)
+  // A 400-char RSS snippet is not enough to write a full article from. Pull the source page text
+  // (facts only; the prompt forbids copying structure or wording) so the body is built on real details.
+  if (inputContent.length < 1200 && item.url) {
+    const facts = await fetchSourceFacts(item.url, { maxChars: 3500 })
+    if (facts) inputContent = facts
+  }
 
   if (lang === 'pt-BR') {
     const promptPt = `Você está escrevendo um resumo de notícia para a DownRange Brasil — um portal sobre armas de fogo e legislação no Brasil.
@@ -164,7 +171,7 @@ Return ONLY valid JSON:
 }
 Start with { end with }. No markdown fences.`
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 1500 })
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 2200 })
     // Strip markdown fences and extract JSON robustly
     let clean = text.split('```json').join('').split('```').join('').trim()
     // If response starts with prose before JSON, extract the JSON object

@@ -4,6 +4,7 @@ export const maxDuration = 300
 import { reportCronRun } from '@/lib/cronReporter'
 import { createClient }  from '@sanity/client'
 import { callAIText }    from '@/lib/aiClient.js'
+import { fetchSourceFacts } from '@/lib/sourceFacts.js'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -72,12 +73,18 @@ LENGTH: 500-700 words minimum.`
 
 // Full rewrite — body + title
 async function rewriteFull(item) {
-  const src = (item.body || item.summary || item.description || '').replace(/<[^>]+>/g, '').slice(0, 2000)
+  // Work from the real source article when we have its URL. Rewriting a one-paragraph excerpt
+  // cannot produce a 500-word article, which is how thin articles stayed thin.
+  const own = (item.body || item.summary || item.description || '').replace(/<[^>]+>/g, '').slice(0, 2000)
+  const facts = await fetchSourceFacts(item.externalUrl || item.sourceUrl, { maxChars: 4000 })
+  const src = facts || own
+  if (src.length < 600 && (item._stype === 'newsArticle' || item._stype === 'canadaContent'))
+    throw new Error('not enough source material to write a full article (source page unreadable)')
   const typeLabel = { newsArticle:'news article', blogPost:'blog post', firearmRelease:'gun release article', canadaContent:'Canada firearms article' }[item._stype] || 'article'
 
   const prompt = `${VOICE}
 
-Rewrite this ${typeLabel} for DownRange. Must be 500-700 words. Must have 3-4 <h2> sections. Must NOT use any banned words.
+Rewrite this ${typeLabel} for DownRange as original reporting and analysis built on the facts below (names, numbers, dates, places). Do not copy sentences or the source structure. Must be 500-700 words. Must have 3-4 <h2> sections. Must NOT use any banned words.
 
 Source title (do NOT use this as your headline): ${item.sourceTitle || item.title || ''}
 Source URL: ${item.externalUrl || item.sourceUrl || ''}
@@ -138,6 +145,17 @@ async function handler(req) {
   if (!isCron && !isAdmin && !isVercel) return Response.json({ error: 'Unauthorized' }, { status: 401 })
 
   const BATCH = 30
+  // Targeted rewrite: ?slug=<slug> (or ?id=<_id>) rewrites that one article now, regardless of review state.
+  const qs = new URL(req.url).searchParams
+  if (qs.get('slug') || qs.get('id')) {
+    const doc = await sanity.fetch(`*[_type=="newsArticle" && (slug.current==$slug || _id==$id)][0]{ _id, title, sourceTitle, body, summary, description, source, externalUrl }`, { slug: qs.get('slug') || '', id: qs.get('id') || '' })
+    if (!doc) return Response.json({ ok: false, error: 'article not found' }, { status: 404 })
+    try {
+      const ai = await rewriteFull({ ...doc, _stype: 'newsArticle' })
+      await sanity.patch(doc._id).set({ body: ai.body, title: ai.title, ...(ai.summary ? { summary: ai.summary, excerpt: ai.summary } : {}), qualityReviewed: true }).commit()
+      return Response.json({ ok: true, id: doc._id, title: ai.title, words: ai.body.replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length })
+    } catch (e) { return Response.json({ ok: false, error: e.message }, { status: 502 }) }
+  }
   const stats = { scanned: 0, fullRewrite: 0, titleOnly: 0, skipped: 0, failed: 0 }
 
   try {
@@ -154,7 +172,7 @@ async function handler(req) {
       // often this cron runs. This explicit query targets missing bodies
       // directly, with no recency assumption, oldest first (FIFO), so the
       // backlog actually drains instead of accumulating forever.
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < 100)] | order(_createdAt asc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < 2500)] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed }`),
     ])
 
     const seen = new Set()
@@ -176,7 +194,7 @@ async function handler(req) {
     // ── EARLY EXIT: skip AI entirely if nothing needs work ────────────────────
     // Prevents ghost invocations — tokens burned re-evaluating already-good articles.
     // Returns immediately when qualityReviewed is already set on all fetched docs.
-    const unreviewed = allDocs.filter(d => !d.qualityReviewed)
+    const unreviewed = allDocs.filter(d => !d.qualityReviewed || scoreBody(d.body).score < 70)
     if (unreviewed.length === 0) {
       const ms = Date.now() - t0
       console.log(`[QR] Early exit — all ${allDocs.length} docs already reviewed`)
@@ -220,18 +238,8 @@ async function handler(req) {
         console.log(`[QR] FULL "${ai.title.slice(0,60)}"`)
       } catch (e) {
         console.error('[QR] FULL FAIL', item._id, e.message)
-        // If article has no body at all, save fallback body from raw description
-        // so it doesn't stay broken/red in admin forever
-        if (!item.body || item.body.length < 100) {
-          const fallback = item.description || item.summary || ''
-          if (fallback.length > 50) {
-            try {
-              const fallbackBody = `<p>${fallback.replace(/\n\n/g, '</p><p>').replace(/\n/g, ' ')}</p>`
-              await sanity.patch(item._id).set({ body: fallbackBody, qualityReviewed: false }).commit()
-              console.log('[QR] Saved fallback body for', item._id)
-            } catch (_) {}
-          }
-        }
+        // Never save the raw RSS excerpt as the body: that is what produced one-paragraph articles.
+        // The article stays queued and is retried on the next run.
         stats.failed++
       }
       await new Promise(r => setTimeout(r, 800))

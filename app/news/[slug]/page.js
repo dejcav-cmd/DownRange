@@ -70,6 +70,8 @@ export async function generateMetadata({ params }) {
     title:       `${article.title}`,
     description: article.summary || article.excerpt || article.title,
     alternates:  { canonical: url },
+    // Thin articles (no real body yet) stay out of search until the repair job fills them in.
+    ...((article.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length < 150 ? { robots: { index: false, follow: true } } : {}),
     openGraph: {
       type:        'article',
       url,

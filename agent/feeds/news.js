@@ -611,6 +611,14 @@ async function processNewsItem(item) {
     return { id: dealDoc._id, title: item.title, category: 'deals', hasAI: false }
   }
 
+  // Never publish a news article without a real body. A missing body renders the RSS excerpt as a
+  // one-paragraph article. Skipping here is safe: the item is not stored, so the next run retries it.
+  if (!ai?.body) {
+    _gateLog && (_gateLog.noBody = (_gateLog.noBody || 0) + 1)
+    console.warn(`[NEWS] NOT PUBLISHED (no usable body, will retry next run): "${(item.title || '').slice(0, 60)}"`)
+    return null
+  }
+
   const category = ai?.category === 'deals' ? 'news' : (ai?.category || item.feedCat || 'news')
 
   const doc = {
@@ -621,7 +629,7 @@ async function processNewsItem(item) {
     slug:          { _type: 'slug', current: slug },
     excerpt:       ai?.summary || item.description?.slice(0, 300) || item.title,
     summary:       ai?.summary || item.description?.slice(0, 300) || item.title,
-    body:          (ai?.body && ai.body.length > 50) ? ai.body : null,
+    body:          ai.body,
     category,
     urgencyScore:  ai?.urgencyScore || (item.feedCat === 'law' ? 5 : 3),
     tags:          ai?.tags         || [],
