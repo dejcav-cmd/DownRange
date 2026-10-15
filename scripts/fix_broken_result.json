@@ -1,0 +1,16 @@
+{
+  "preview": {
+    "ok": true,
+    "total": 0,
+    "repair": 0,
+    "delete": 0,
+    "skip": 0,
+    "items": []
+  },
+  "apply": {
+    "ok": true,
+    "deleted": 0,
+    "repaired": 0,
+    "backup": null
+  }
+}
