@@ -14,6 +14,7 @@ const ContentCleanup        = L(() => import('../../components/admin/ContentClea
 const IntelligenceDashboard = L(() => import('../../components/admin/IntelligenceDashboard'))
 const CopyrightReport      = L(() => import('../../components/admin/CopyrightReport'))
 const AIProviderSettings    = L(() => import('../../components/admin/AIProviderSettings'))
+const PressSourcesPanel     = L(() => import('../../components/admin/PressSourcesPanel'))
 const VideoManager          = L(() => import('../../components/admin/VideoManager'))
 const NewsletterManager     = L(() => import('../../components/admin/NewsletterManager'))
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
@@ -60,6 +61,7 @@ const NAV = [
       { id:'hub',          label:'Hub',              icon:'◈'  },
       { id:'news',         label:'News Articles',    icon:'📰' },
       { id:'press',        label:'Press Releases',   icon:'🏭', badge:'new' },
+      { id:'presssources', label:'Manufacturers',    icon:'🏷️', badge:'new' },
       { id:'radar',        label:'2A Radar',         icon:'⚖️', badge:'new' },
       { id:'blog',         label:'Blog',             icon:'✍'  },
       { id:'deals',        label:'Deals',            icon:'🔥' },
@@ -2459,7 +2461,7 @@ function LegalPanel({ adminKey }) {
 
 // ── Command palette (Cmd/Ctrl+K or "/"): jump to any panel by typing a few letters ──────────
 const PALETTE_KEYWORDS = {
-  today:'home dashboard overview attention status mission control',  hub:'content health scan', news:'articles feed stories', press:'manufacturer releases prn', radar:'2a legal cases scotus courts',
+  today:'home dashboard overview attention status mission control',  hub:'content health scan', news:'articles feed stories', press:'manufacturer releases prn', presssources:'manufacturers brands pull status sources press', radar:'2a legal cases scotus courts',
   blog:'posts writing', deals:'ammo prices gun deals', drafts:'recover lost', cleanup:'delete purge duplicates',
   breaking:'alert ticker banner', newsletter:'email digest subscribers send', schedule:'calendar publish',
   seo:'search google meta sitemap', intel:'briefing daily intelligence', statelaws:'states legislation',
@@ -2740,6 +2742,7 @@ export default function AdminPage() {
             {panel==='cleanup'      && <ContentCleanup     adminKey={adminKey} />}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
             {panel==='press'        && <PressReleaseManager adminKey={adminKey} />}
+            {panel==='presssources' && <PressSourcesPanel adminKey={adminKey} />}
             {panel==='radar'        && <LegalRadarManager adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}
             {panel==='canada'       && <CanadaManager       adminKey={adminKey} />}
