@@ -25,6 +25,7 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
 import { callAIText } from '@/lib/aiClient.js'
+import { aiWriteDoc } from '@/lib/adminAiWrite.js'
 import { createClient } from '@sanity/client'
 
 const sanity = createClient({
@@ -102,6 +103,18 @@ export async function POST(req) {
       publishedAt: new Date().toISOString(),
     })
     return Response.json({ ok:true, id:doc._id })
+  }
+
+  // ── AI-WRITE — editor "Write with AI" button ─────────────────────────────
+  if (action === 'ai-write') {
+    if (!id) return Response.json({ error: 'id required' }, { status: 400 })
+    const doc = await sanity.fetch('*[_id==$id][0]{ _id, brand, model, body, summary, sourceUrl }', { id })
+    if (!doc) return Response.json({ error: 'Release not found' }, { status: 404 })
+    try {
+      const out = await aiWriteDoc(doc, { topic: body.topic })
+      await sanity.patch(id).set({ body: out.body, ...(out.summary ? { summary: out.summary } : {}) }).commit()
+      return Response.json({ ok: true, body: out.body })
+    } catch (e) { return Response.json({ error: e.message }, { status: 502 }) }
   }
 
   // ── AI-REWRITE — write full article body ───────────────────────────────────

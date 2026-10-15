@@ -1,4 +1,5 @@
 import { callAIText } from '@/lib/aiClient.js'
+import { aiWriteDoc } from '@/lib/adminAiWrite.js'
 
 async function fetchImageForItem(title, category) {
   const pKey = process.env.PEXELS_API_KEY
@@ -112,6 +113,18 @@ export async function POST(req) {
     const imageUrl = autoPickImage(title, category)
     if (id) await sanity.patch(id).set({ imageUrl }).commit()
     return Response.json({ ok: true, imageUrl })
+  }
+
+  // ── AI-WRITE — editor "Write with AI" button: full article from the source page ──
+  if (action === 'ai-write') {
+    if (!id) return Response.json({ error: 'id required' }, { status: 400 })
+    const doc = await sanity.fetch('*[_id==$id][0]{ _id, title, body, summary, excerpt, externalUrl }', { id })
+    if (!doc) return Response.json({ error: 'Article not found' }, { status: 404 })
+    try {
+      const out = await aiWriteDoc(doc, { topic: body.topic })
+      await sanity.patch(id).set({ body: out.body, ...(out.summary ? { summary: out.summary, excerpt: out.summary } : {}), qualityReviewed: true }).commit()
+      return Response.json({ ok: true, body: out.body })
+    } catch (e) { return Response.json({ error: e.message }, { status: 502 }) }
   }
 
   // ── AI-REWRITE — Claude rewrites the article body ───────────────────────

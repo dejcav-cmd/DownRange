@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 60
 
 import { createClient } from '@sanity/client'
+import { aiWriteDoc } from '@/lib/adminAiWrite.js'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -51,6 +52,15 @@ export async function POST(req) {
     fields.editorLocked = true
     await sanity.patch(id).set(fields).commit()
     return Response.json({ ok: true })
+  }
+  if (action === 'ai-write') {
+    const doc = await sanity.fetch('*[_id==$id][0]{ _id, title, brand, body, summary, sourceUrl }', { id })
+    if (!doc) return Response.json({ error: 'Press release not found' }, { status: 404 })
+    try {
+      const out = await aiWriteDoc(doc, { topic: body.topic })
+      await sanity.patch(id).set({ body: out.body, ...(out.summary ? { summary: out.summary } : {}), editorLocked: true }).commit()
+      return Response.json({ ok: true, body: out.body })
+    } catch (e) { return Response.json({ error: e.message }, { status: 502 }) }
   }
   if (action === 'delete') {
     await sanity.delete(id)
