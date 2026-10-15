@@ -5,20 +5,34 @@ name: Quality Rewrite Drain
 on:
   workflow_dispatch: {}
 
+permissions:
+  contents: write
+
 jobs:
   drain:
     runs-on: ubuntu-latest
     timeout-minutes: 55
     steps:
+      - uses: actions/checkout@v4
       - name: Drain thin articles
         env:
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
         run: |
+          : > scripts/quality_drain_result.txt
           for i in $(seq 1 12); do
             out=$(curl -s --max-time 290 -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/cron/quality-rewrite?force=1" || true)
-            echo "run $i: $(echo "$out" | head -c 400)"
+            echo "run $i: $(echo "$out" | head -c 600)" | tee -a scripts/quality_drain_result.txt
             if echo "$out" | grep -q '"remainingFull":0' ; then
               if echo "$out" | grep -q '"remainingTitle":0'; then echo "queue empty"; break; fi
             fi
             if echo "$out" | grep -q 'queue empty'; then break; fi
           done
+      - name: Save result to the repo
+        if: always()
+        run: |
+          git config user.name "github-actions"
+          git config user.email "actions@github.com"
+          git add scripts/quality_drain_result.txt
+          git commit -m "chore: quality drain result" || true
+          git pull --rebase -q || true
+          git push || true
