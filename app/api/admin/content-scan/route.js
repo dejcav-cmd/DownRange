@@ -72,6 +72,7 @@ export async function GET(req) {
           type,
           label,
           title: (doc.title || '').slice(0, 80),
+          slug: doc.slug || null,
           score,
           issues,
           words: words || 0,

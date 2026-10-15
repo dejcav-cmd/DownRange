@@ -15,6 +15,7 @@ const IntelligenceDashboard = L(() => import('../../components/admin/Intelligenc
 const CopyrightReport      = L(() => import('../../components/admin/CopyrightReport'))
 const AIProviderSettings    = L(() => import('../../components/admin/AIProviderSettings'))
 const PressSourcesPanel     = L(() => import('../../components/admin/PressSourcesPanel'))
+const BrokenArticlesFixer   = L(() => import('../../components/admin/BrokenArticlesFixer'))
 const VideoManager          = L(() => import('../../components/admin/VideoManager'))
 const NewsletterManager     = L(() => import('../../components/admin/NewsletterManager'))
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
@@ -1852,7 +1853,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
         <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:12 }}>
           <div>
             <div className="panel-title">◈ Content Hub</div>
-            <div className="panel-sub">Manage, seed, and monitor every content section from one place.</div>
+            <div className="panel-sub">Manage and monitor every content section from one place.</div>
           </div>
           {/* View switcher */}
           <div style={{ display:'flex', gap:0, border:'1px solid var(--border)', overflow:'hidden' }}>
@@ -1871,6 +1872,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
 
       {hubView === 'sources' && (<><AuthorBioPanel adminKey={adminKey} /><ContentSourcesPanel adminKey={adminKey} /></>)}
       {hubView !== 'sources' && (<>
+      <BrokenArticlesFixer adminKey={adminKey} onDone={() => fetchCounts()} />
 
       {/* ── Summary bar ── */}
       {counts && (
@@ -2026,6 +2028,9 @@ function ContentHub({ adminKey, setPanel, setSection }) {
                                   {(safeArtPage-1)*ART_PAGE_SIZE + idx + 1}
                                 </td>
                                 <td style={{ padding:'8px 12px', maxWidth:320 }}>
+                                  {!a.slug && a.type !== 'canadaContent' && (
+                                    <span title="No URL slug, so this page 404s. Use Fix 404 articles above." style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'#ef4444', border:'1px solid #ef444455', padding:'1px 5px', marginBottom:3, display:'inline-block' }}>404 · NO LINK</span>
+                                  )}
                                   <a href={a.type === 'blogPost' ? `/blog/${a.slug || a._id}` : a.type === 'canadaContent' ? `/canada` : `/news/${a.slug || a._id}`} target="_blank" rel="noopener noreferrer"
                                     style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--text)', lineHeight:1.3, textDecoration:'none', display:'block' }}>
                                     {a.title.slice(0,72)}{a.title.length>72?'…':''}
