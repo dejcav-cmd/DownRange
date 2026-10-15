@@ -25,10 +25,6 @@
       "schedule": "0 8 * * 0"
     },
     {
-      "path": "/api/newsletter",
-      "schedule": "0 7 * * 4"
-    },
-    {
       "path": "/api/site-health",
       "schedule": "0 8 * * *"
     },

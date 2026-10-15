@@ -1,0 +1,53 @@
+name: Blog Audit
+
+# Lists published blog posts that look cut off (no closing tag / no Bottom Line) and unpublishes the one named in the dispatch input.
+on:
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Slug to unpublish (set to draft)"
+        required: false
+        default: ""
+
+permissions:
+  contents: write
+
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Audit
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          SLUG: ${{ inputs.slug }}
+        run: |
+          curl -s --max-time 120 -H "x-admin-key: $ADMIN_KEY" https://www.downrangeco.com/api/admin/blog-posts > posts.json
+          python3 - <<'PY'
+          import json, os, re, subprocess
+          d = json.load(open("posts.json")); posts = d.get("posts", [])
+          slug = os.environ.get("SLUG", "").strip()
+          out = {"total": len(posts), "suspect": [], "unpublished": None}
+          for p in posts:
+              b = (p.get("body") or "").strip()
+              if p.get("status") != "published" or not b: continue
+              plain = re.sub(r"<[^>]+>", " ", b)
+              bad = []
+              if not re.search(r"</(p|ul|ol|li)>\s*$", b, re.I): bad.append("no closing tag")
+              if len(plain.split()) < 400: bad.append("short")
+              if re.search(r"Link the relevant DownRange", (p.get("excerpt") or "") + (p.get("metaDesc") or "")): bad.append("instruction leaked in description")
+              if bad: out["suspect"].append({"slug": p["slug"], "id": p["_id"], "words": len(plain.split()), "why": bad})
+              if slug and p["slug"] == slug:
+                  r = subprocess.run(["curl","-s","-X","POST","-H","x-admin-key: "+os.environ["ADMIN_KEY"],"-H","Content-Type: application/json","-d",json.dumps({"action":"patch","id":p["_id"],"fields":{"status":"draft","published":False}}),"https://www.downrangeco.com/api/admin/blog-posts"],capture_output=True,text=True)
+                  out["unpublished"] = {"slug": slug, "response": r.stdout[:200]}
+          json.dump(out, open("scripts/blog_audit_result.json","w"), indent=2)
+          print(json.dumps(out, indent=2)[:3000])
+          PY
+      - name: Commit result
+        run: |
+          git config user.name "claude-bot"; git config user.email "noreply@anthropic.com"
+          git add scripts/blog_audit_result.json
+          git commit -m "chore: blog audit result" || echo "nothing to commit"
+          git pull --rebase -q || true
+          git push || true

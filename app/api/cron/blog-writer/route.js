@@ -207,7 +207,7 @@ Start directly with the first section h2 or a strong opening paragraph.`
 
     let body
     try {
-      body = await callAIText({ prompt, systemPrompt, maxTokens: 2500, chain: QUALITY_CHAIN })
+      body = await callAIText({ prompt, systemPrompt, maxTokens: 5000, chain: QUALITY_CHAIN })
     } catch (e) {
       console.error(`[blog-writer] generation attempt ${attempt} failed:`, e.message)
       continue
@@ -216,10 +216,13 @@ Start directly with the first section h2 or a strong opening paragraph.`
     const plainWords = (body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
     const banned = findBannedPhrase(body)
 
-    if (body && plainWords >= 500 && !banned) {
+    // A cut-off article (token limit) must never publish: it has to end on a closed tag with the Bottom Line paragraph.
+    const tail = (body || '').trim().slice(-400)
+    const complete = /<\/(p|ul|ol|li)>\s*$/i.test(tail) && /Bottom Line/i.test(body || '') && /[.!?)"'”’]\s*(<\/\w+>\s*)*$/.test(tail)
+    if (body && plainWords >= 500 && !banned && complete) {
       return { body, wordCount: plainWords }
     }
-    console.warn(`[blog-writer] attempt ${attempt} rejected — words:${plainWords} banned:"${banned}"`)
+    console.warn(`[blog-writer] attempt ${attempt} rejected — words:${plainWords} banned:"${banned}" complete:${complete}`)
   }
   return null
 }
@@ -273,7 +276,7 @@ async function writeArticle(topicData) {
     _type:       'blogPost',
     slug:        { _type: 'slug', current: slug },
     title,
-    excerpt:     topicData.angle,
+    excerpt:     topicData.excerpt || (topicData.angle || '').replace(/\s*Link the relevant[^.]*\.?/i, '').trim(),
     body:        gen.body,
     imageUrl,
     author:      'DJ Cavalcanti',
