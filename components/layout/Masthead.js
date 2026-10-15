@@ -74,17 +74,15 @@ export default function Masthead() {
   const [hiddenNav, setHiddenNav] = useState([])
 
   useEffect(() => {
-    // Load hidden nav items from localStorage (set by admin)
-    try {
-      const stored = localStorage.getItem('dr_hidden_nav')
-      if (stored) setHiddenNav(JSON.parse(stored))
-    } catch {}
-    // Also listen for changes (admin updates)
-    const handler = () => {
-      try { setHiddenNav(JSON.parse(localStorage.getItem('dr_hidden_nav') || '[]')) } catch {}
+    // Hidden tabs are stored server-side (Admin > Config > Nav Visibility) so every visitor sees the same menu.
+    const load = () => {
+      fetch('/api/nav-config').then(r => r.json())
+        .then(d => setHiddenNav(Array.isArray(d.hiddenItems) ? d.hiddenItems : []))
+        .catch(() => {})
     }
-    window.addEventListener('dr_nav_updated', handler)
-    return () => window.removeEventListener('dr_nav_updated', handler)
+    load()
+    window.addEventListener('dr_nav_updated', load)
+    return () => window.removeEventListener('dr_nav_updated', load)
   }, [])
   const closeTimer    = useRef(null)
   const touchStartY   = useRef(0)   // fix: was never declared — swipe-to-close was broken on all touch devices

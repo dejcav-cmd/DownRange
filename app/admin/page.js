@@ -109,7 +109,6 @@ const NAV = [
     id: 'media', label: 'Media', icon: '▶',
     panels: [
       { id:'videos',       label:'Videos',           icon:'▶'  },
-      { id:'channels',     label:'Channels',         icon:'📺' },
       { id:'imglib',       label:'Image Library',    icon:'📸' },
       { id:'imgsearch',    label:'Image Finder',     icon:'🔍' },
     ]
@@ -144,16 +143,6 @@ const API_KEYS = [
   { key:'DISCORD_WEBHOOK_URL',  label:'Discord Webhook',           required:false, url:null },
 ]
 
-const VIDEO_SOURCES = [
-  { name:'Military Arms Channel', handle:'@MilitaryArmsChannel', cat:'Reviews & Industry', subs:'~860K' },
-  { name:'Lucky Gunner',          handle:'@LuckyGunner',         cat:'Ammo & Testing',    subs:'~600K' },
-  { name:'Brownells',             handle:'@Brownells',            cat:'Industry & Gear',   subs:'~260K' },
-  { name:'IraqVeteran8888',       handle:'@IraqVeteran8888',      cat:'General Firearms',  subs:'~2.6M' },
-  { name:'Hickok45',              handle:'@hickok45',             cat:'Demonstrations',    subs:'~6.6M' },
-  { name:'Mr. Guns N Gear',       handle:'@MrGunsNGear',          cat:'Reviews',           subs:'~1.3M' },
-  { name:'Garand Thumb',          handle:'@GarandThumb',          cat:'Reviews & Training',subs:'~2.5M' },
-  { name:'Paul Harrell',          handle:'@PaulHarrell',          cat:'Demonstrations',    subs:'~1.1M' },
-]
 
 // ── Styles ───────────────────────────────────────────────────────────────────
 const STYLES = `
@@ -393,30 +382,6 @@ function RSSSourcesPanel() {
               <td style={{fontWeight:700,color:'var(--text)'}}>{f.name}</td>
               <td><span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,padding:'2px 6px',background:'rgba(200,146,42,.1)',color:'#C8922A'}}>{f.cat}</span></td>
               <td><a href={f.url} target="_blank" rel="noreferrer" style={{color:'#4b5563',fontSize:10,textDecoration:'none'}}>{f.url.slice(0,45)}…</a></td>
-              <td><span style={{color:'#22c55e',fontSize:10}}>● Active</span></td>
-            </tr>
-          ))}</tbody>
-        </table>
-      </div>
-    </div>
-  )
-}
-
-// ── Inline: Channels panel ────────────────────────────────────────────────────
-function ChannelsPanel() {
-  return (
-    <div>
-      <div className="panel-title">YouTube Channels</div>
-      <div className="panel-sub">Channels powering the Video section. Synced via YouTube Data API every 4 hours.</div>
-      <div className="adm-card" style={{padding:0,overflow:'hidden'}}>
-        <table className="adm-table">
-          <thead><tr><th>Channel</th><th>Handle</th><th>Category</th><th>Subscribers</th><th>Status</th></tr></thead>
-          <tbody>{VIDEO_SOURCES.map(c=>(
-            <tr key={c.name}>
-              <td style={{fontWeight:700}}>{c.name}</td>
-              <td style={{color:'#C8922A'}}>{c.handle}</td>
-              <td style={{color:'#6b7280'}}>{c.cat}</td>
-              <td style={{color:'var(--text)'}}>{c.subs}</td>
               <td><span style={{color:'#22c55e',fontSize:10}}>● Active</span></td>
             </tr>
           ))}</tbody>
@@ -1127,10 +1092,25 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
     { label:'🏆 Giveaways',     desc:'Active firearm giveaways' },
   ]
 
-  const [hidden, setHidden] = useState(() => {
-    try { return JSON.parse(localStorage.getItem('dr_hidden_nav') || '[]') } catch { return [] }
-  })
+  const [hidden, setHidden] = useState([])
   const [saved, setSaved] = useState(false)
+  const [loaded, setLoaded] = useState(false)
+  useEffect(() => {
+    if (!adminKey) return
+    fetch('/api/admin/nav-config', { headers:{'x-admin-key':adminKey} })
+      .then(r=>r.json()).then(d=>{ setHidden(d.hiddenItems||[]); setLoaded(true) })
+      .catch(()=>setLoaded(true))
+  }, [adminKey])
+  async function persist(next, okMsg) {
+    try {
+      const r = await fetch('/api/admin/nav-config', { method:'POST', headers:{'x-admin-key':adminKey,'Content-Type':'application/json'}, body:JSON.stringify({hiddenItems:next}) })
+      const d = await r.json()
+      if (!r.ok || !d.ok) throw new Error(d.error || 'Save failed')
+      window.dispatchEvent(new Event('dr_nav_updated'))
+      setSaved(true); setMsg(okMsg)
+      setTimeout(() => setSaved(false), 3000)
+    } catch (e) { setMsg('❌ ' + e.message) }
+  }
 
   function toggle(label) {
     setHidden(prev => prev.includes(label) ? prev.filter(l => l !== label) : [...prev, label])
@@ -1138,19 +1118,12 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
   }
 
   function save() {
-    localStorage.setItem('dr_hidden_nav', JSON.stringify(hidden))
-    window.dispatchEvent(new Event('dr_nav_updated'))
-    setSaved(true)
-    setMsg('✅ Saved for this browser only. Visitors are not affected.')
-    setTimeout(() => setSaved(false), 3000)
+    persist(hidden, '✅ Saved. Visitors see the change within a minute.')
   }
 
   function reset() {
     setHidden([])
-    localStorage.setItem('dr_hidden_nav', '[]')
-    window.dispatchEvent(new Event('dr_nav_updated'))
-    setMsg('✅ All nav items restored')
-    setSaved(true)
+    persist([], '✅ All nav items restored')
   }
 
   const visible = NAV_ITEMS.filter(i => !hidden.includes(i.label))
@@ -1159,7 +1132,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
   return (
     <div>
       <div className="panel-title">👁 Nav Visibility</div>
-      <div className="panel-sub">Show or hide top navigation tabs. Changes apply immediately without a deploy. Home is always visible.</div>
+      <div className="panel-sub">Show or hide top navigation tabs. Changes apply to all visitors within a minute, no deploy needed. Home is always visible.</div>
 
       <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, marginTop:20}}>
         {/* Left: toggle list */}
@@ -1259,7 +1232,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
           </div>
 
           <div style={{fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#4b5563', marginTop:12, lineHeight:1.8}}>
-            Changes are stored in the browser and applied instantly via localStorage. No deploy needed. All visitors on this device see the updated nav.
+            Saved to the site database. All visitors see the updated nav within a minute. No deploy needed.
           </div>
         </div>
       </div>
@@ -2500,7 +2473,7 @@ const PALETTE_KEYWORDS = {
   crons:'jobs cron schedule overdue failing run now feeds operations manual', alerts:'errors failures sms email', agents:'quality weak articles rewrite thin',
   sources:'feeds rss sources', deployments:'vercel deploy builds', ranges:'range finder database',
   social:'twitter facebook instagram post', outreach:'crm campaigns contacts dealers', 'mailing-list':'subscribers email list',
-  videos:'youtube', channels:'youtube channels', imglib:'photos images library', imgsearch:'find images photos',
+  videos:'youtube', imglib:'photos images library', imgsearch:'find images photos',
   ai:'models claude anthropic routing chain', costs:'spend money tokens usage', keys:'api secrets', identity:'brand logo colors',
   envcheck:'environment variables vercel', navvis:'menu navigation hide', emails:'test resend',
 }
@@ -2603,10 +2576,9 @@ export default function AdminPage() {
   }, [])
 
   // Deep links: /admin#crons opens that panel, and reloading keeps you where you were
+  const initialHash = React.useRef(typeof window !== 'undefined' ? (window.location.hash || '').replace('#', '') : '')
   useEffect(() => {
-    const id = (window.location.hash || '').replace('#', '')
-    if (!id) return
-    openById(id)
+    if (initialHash.current) openById(initialHash.current)
   }, [])
   useEffect(() => {
     const onHash = () => { const id = (window.location.hash || '').replace('#', ''); if (id) openById(id) }
@@ -2614,7 +2586,7 @@ export default function AdminPage() {
     return () => window.removeEventListener('hashchange', onHash)
   }, [])
   useEffect(() => {
-    if (panel) { try { window.history.replaceState(null, '', '#' + panel) } catch {} }
+    if (panel && !(panel === 'today' && initialHash.current && initialHash.current !== 'today')) { try { window.history.replaceState(null, '', '#' + panel) } catch {} }
   }, [panel])
 
   function setAdminKey(v) { setAdminKeyState(v); localStorage.setItem('dr_admin_key', v); verifyKey(v) }
@@ -2649,7 +2621,7 @@ export default function AdminPage() {
   }
 
   // Open a panel by id alone (finds its section). Used by Today and old deep links.
-  const PANEL_ALIASES = { overview:'today', operations:'crons', feeds:'crons', sitemap:'crons' }
+  const PANEL_ALIASES = { overview:'today', operations:'crons', feeds:'crons', sitemap:'crons', channels:'videos' }
   function openById(id) {
     const pid = PANEL_ALIASES[id] || id
     const sec = NAV.find(x => x.panels.some(p => p.id === pid))
@@ -2813,7 +2785,6 @@ export default function AdminPage() {
 
             {/* ── MEDIA ── */}
             {panel==='videos'   && <VideoManager adminKey={adminKey} />}
-            {panel==='channels' && <ChannelsPanel />}
             {panel==='imglib'   && <ImageRepository adminKey={adminKey} />}
             {panel==='imgsearch'&& <ImageFinder adminKey={adminKey} />}
 
