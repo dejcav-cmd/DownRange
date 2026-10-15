@@ -24,9 +24,11 @@ export default function CasesShell({ active, eyebrow, title, sub, jsonLd, childr
       <PageHero img="/img/laws-hero.jpg" imgSm="/img/laws-hero-sm.jpg" pos="58% 55%" posSm="82% 50%"
         eyebrow={eyebrow} title={title} sub={sub} />
       <nav className="cx-nav" aria-label="Cases portal">
-        <div className="container cx-nav-in">
-          {NAV.map(([href, label]) => <Link key={href} href={href} className={active === href ? 'on' : ''}>{label}</Link>)}
-          <details style={{ marginLeft: 'auto' }}>
+        <div className="container cx-nav-row">
+          <div className="cx-nav-in">
+            {NAV.map(([href, label]) => <Link key={href} href={href} className={active === href ? 'on' : ''}>{label}</Link>)}
+          </div>
+          <details className="cx-state-menu">
             <summary>By state</summary>
             <div className="cx-pop">
               {STATE_CODES.map(c => <Link key={c} href={`/laws/cases/states/${c}`}>{c}</Link>)}
