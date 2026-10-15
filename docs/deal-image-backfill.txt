@@ -1,50 +1,14 @@
-600 scanned, 43 need a real image, 11 coupon posts skipped
+600 scanned, 8 need a real image, 9 coupon posts skipped
 
-  + Griffin Armament MK2 AR-15 Ambidextrous Stripped — 95669b 1000x666 sha=366cd7ee5396
-  + Vortex Crossfire II 2 MOA Solar Green Dot - $139 — 12584b 275x311 sha=63af4019652b
-  + Dogwood Armory Aluminum G Spot V2 Forced Reset T — 262157b 783x796 sha=afd9818b3d81
-  + Dogwood Armory Taurus TX22 Forced Reset Trigger  — 412075b 628x1000 sha=31fa874c1850
-  + Aero Precision AR-15 Quantum M-LOK Handguard (w/ — 27158b 929x286 sha=6fe8be2200ac
-  + Atrius Development 3 Position Mil-Spec Style Amb — 10826b 328x416 sha=44ca6ebe9cdb
-  + ODIN Works Oversize Bolt Catch - $17.95 — 14499b 510x510 sha=406987114dc5
-  + Breek Arms Warhammer AR-15 Charging Handle - Bla — 38367b 1200x1200 sha=5b1cbb332b5d
-  + BRD Mil-Spec Carbine Buffer Kit - $29.95 — 17379b 608x519 sha=37851f89dec4
-  + Dirty Bird Industries Single Stage Nickel Teflon — 40443b 878x687 sha=8b2bfd59b97f
-  + Holosun ARO Advanced Rifle Enclosed Sight - from — 89942b 1500x1000 sha=c765652d8d8e
-  + TR Imports RZ17 Tactical 12 GA 18.5" Barrel 4rd  — 12885b 550x316 sha=b22848459ea6
-  + NBS Lower Parts Kit w/ Polymer Trigger For Glock — 27463b 554x606 sha=ee16836b2acc
-  + ODIN Works Enhanced 9mm Stainless Steel Bolt Car — 24679b 1171x295 sha=e8a0e40f3153
-  + Faxon Firearms Factory Trued Stripped Upper Rece — 21001b 718x407 sha=35d7ce62ac10
-  + CMMG Zeroed 22 MUTE-ISH 22LR Suppressor - $149.9 — 10749b 343x546 sha=38f853bdae38
-  + Weatherby Vanguard Black Hills 26" 6.5 PRC Threa — 18764b 1175x286 sha=b257ae318aae
-  + Sig Sauer P320 M18 9mm 3.9in 10+1 Coyote - $649. — 22974b 456x392 sha=74fdaf18227d
-  + Federal Champion Training Brass .380acp, 95gr FM — 42087b 914x367 sha=40cd8109336f
-  + Military Armament Corporation MAC-5K, 9mm, 5.8"  — 19653b 563x404 sha=839b0762eb93
-  + Savior Eq Mobile Firearm Rack 6 Rifle + 8 Pistol — 81266b 1291x874 sha=1c5b13a1127b
-  + Outdoor Edge SlideWinder Utility Knife Multitool — 47764b 818x458 sha=f96dd083dacf
-  + PSA Guardsman-15 10.3" 5.56 NATO 1/7 CL Phosphat — 45300b 1498x326 sha=493cff075732
-  + Keltec PR57 4.64" 5.7X28 Tungsten 20rd Pistol -  — 22580b 498x400 sha=4ffd3fc06c88
-  + 100 Rounds of Federal American Eagle .223Rem FMJ — 30164b 458x468 sha=808d99b372aa
-  ... 25/43  ok=25 fail=0
-  + PSA 7.5" 300 Blackout Nitride 6" Lightweight Hex — 31358b 1000x500 sha=5cdf4583df54
-  + Colt Al Capone Sweetheart 1911 5" .45 Auto 7rd P — 76453b 1102x740 sha=2c7491fbef92
-  + GlowShot 75 Pack - 8" Reactive Splatter Targets  — 38513b 480x500 sha=eb8204bc17eb
-  + 3 Pack Tactical Belt Military Style Webbing Rigg — 90147b 679x640 sha=a59e7e4c68cf
-  + Magnum Research Desert Eagle Mark XIX 50 AE 6 Po — 11989b 493x396 sha=1b0d978cbeef
-  + Charles Daly 528 Superior 28Ga 26 Side By Side S — 9108b 655x257 sha=9170ec1086f2
-  + Griffin Optimus Micro Suppressor - $359.99 — 21787b 734x328 sha=3645d69f5f14
-  + Ruger AR-556 223 Rem/556NATO 16.1" 30 Rd B5 Brav — 10420b 522x259 sha=f93f9102e93b
-  + Springfield XDM Elite CA Comp 9mm 4.5" 10+1 - $4 — 25097b 556x414 sha=929d3e24772f
-  + Uncle Mike’s Gear Dump: Holsters, Slings, Pouche — 88220b 587x587 sha=1d8388d9ad94
-  + Ruger American Rifle Gray Splatter Generation II — 13992b 796x220 sha=157976845759
+  x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
+  + Trijicon SRO Adjustable, 2.5 MOA, Coyote Brown,  — 28570b 672x489 sha=7001a574b8ef
   x Glock Compatible 9mm 10 Rd Capacity Steel Lined  — image not downloadable
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
   x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
   x TriStar Raptor ATAC 12 Gauge 20" 5 Rd Black Synt — image not downloadable
   x Heritage Settler 22 LR, 16.5" Barrel, Case Harde — image not downloadable
   x Glock 43x/48 15rd Magazine 9mm Black Steel - $29 — image not downloadable
-  x Heritage Rough Rider, .22lr, 16" Barrel, 6rd Cyl — image not downloadable
 
-fixed 36, failed 7  (83% success)
-distinct images: 36 across 36 deals
+fixed 1, failed 7  (12% success)
+distinct images: 1 across 1 deals
 PASS — no image shared between products
