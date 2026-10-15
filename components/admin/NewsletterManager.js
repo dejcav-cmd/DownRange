@@ -119,7 +119,7 @@ export default function NewsletterManager({ adminKey }) {
 
   return (
     <div>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       {/* ── HEADER ── */}
       <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:12 }}>

@@ -23,7 +23,7 @@ export default function MobileTabBar() {
       WebkitBackdropFilter: 'blur(12px)',
       paddingBottom: 'env(safe-area-inset-bottom, 0px)',
     }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @media (max-width: 900px) {
           .mobile-tab-bar { display: flex !important; }
         }
@@ -67,7 +67,7 @@ export default function MobileTabBar() {
           line-height: 1;
           font-family: system-ui, sans-serif;
         }
-      `}</style>
+      ` }} />
       {TABS.map(tab => {
         const active = tab.href === '/'
           ? pathname === '/'

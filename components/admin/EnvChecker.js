@@ -99,7 +99,7 @@ export default function EnvChecker({ adminKey }) {
 
   return (
     <div style={{ maxWidth: 1000 }}>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <div style={{ marginBottom: 20 }}>
         <h1 style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '2rem', letterSpacing: '.06em', color: 'var(--gold)', margin: 0, lineHeight: 1 }}>

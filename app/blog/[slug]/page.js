@@ -175,7 +175,7 @@ export default async function BlogArticlePage({ params }) {
         },
       ]) }} />
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .blog-article-body h2 {
           font-family: 'Bebas Neue', sans-serif;
           font-size: 1.55rem;
@@ -221,7 +221,7 @@ export default async function BlogArticlePage({ params }) {
         }
         .related-card:hover { border-color: var(--gold) !important; }
         .related-card { transition: border-color 0.2s; }
-      `}</style>
+      ` }} />
 
       {/* ── HERO ── */}
       <div style={{ width:'100%', height:'clamp(320px, 50vw, 580px)', position:'relative', overflow:'hidden' }}>

@@ -56,7 +56,7 @@ export default function GlobalBreakingTicker() {
         document.documentElement.style.setProperty('--ticker-height', el.offsetHeight + 'px')
       }
     }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes scrollLeft {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -70,7 +70,7 @@ export default function GlobalBreakingTicker() {
           animation: flashPulse 1s infinite;
           display: inline-block; flex-shrink: 0;
         }
-      `}</style>
+      ` }} />
       <div style={{ display:'flex', alignItems:'center' }}>
         <div style={{
           background:'#7F1D1D', color:'#fff',

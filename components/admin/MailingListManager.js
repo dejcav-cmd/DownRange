@@ -486,7 +486,7 @@ export default function MailingListManager({ adminKey }) {
 
   return (
     <div className="ml-container">
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <div className="ml-header">
         <h3>📬 Mailing List</h3>

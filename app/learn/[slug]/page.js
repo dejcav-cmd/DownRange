@@ -355,7 +355,7 @@ export default async function ArticlePage({ params }) {
         <div className="container" style={{ maxWidth:900 }}>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 260px', gap:'48px', paddingTop:'40px' }}
                className="article-layout">
-            <style>{`@media(max-width:768px){.article-layout{grid-template-columns:1fr!important} .article-aside{display:none!important}}`}</style>
+            <style dangerouslySetInnerHTML={{ __html: `@media(max-width:768px){.article-layout{grid-template-columns:1fr!important} .article-aside{display:none!important}}` }} />
 
             {/* Main content */}
             <article>

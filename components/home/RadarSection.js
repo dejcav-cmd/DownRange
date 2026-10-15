@@ -37,7 +37,7 @@ export default function RadarSection({ items }) {
           </ul>
         </div>
       </div>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .hx-wrap{padding:36px 0;background:var(--bg);border-bottom:1px solid var(--border)}
         .hx-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:18px;flex-wrap:wrap}
         .hx-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold)}
@@ -60,7 +60,7 @@ export default function RadarSection({ items }) {
         .hx-ago{grid-column:2;grid-row:1/3;align-self:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--text-dim);white-space:nowrap}
         .hx-ago.fresh{color:var(--green)}.hx-ago.warm{color:var(--gold)}
         @media(max-width:760px){.hx-grid{grid-template-columns:1fr}}
-      `}</style>
+      ` }} />
     </section>
   )
 }

@@ -7,59 +7,8 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
 // Admin hides nav items by plain label ('Laws'); compare without the leading emoji so both stay in sync.
-const navKey = (l) => String(l || '').replace(/^[^A-Za-z0-9]+/, '').trim().toLowerCase()
+import { NAV, navKey } from './navData'
 
-const NAV = [
-  { label: '🏠 Home', href: '/', exact: true },
-  {
-    label: '📰 News', href: '/news',
-    children: [
-      { label: '📰 Latest News',                   href: '/news',                          desc: 'Breaking stories and daily coverage' },
-      { label: '🏭 Manufacturer Press Releases',   href: '/news/manufacturer-press-releases', desc: 'New announcements straight from the makers' },
-    ]
-  },
-  { label: '💰 Deals', href: '/deals' },
-  {
-    label: '📜 Laws', href: '/laws',
-    children: [
-      { label: '🗺️ My State',          href: '/laws/my-state', desc: 'Your state\'s carry laws, restrictions & reciprocity' },
-      { label: '⚖️ 2A Cases Radar',    href: '/laws/cases',    desc: 'Supreme Court, circuits, DOJ and state-by-state litigation' },
-      { label: '🏛️ Federal & SCOTUS',  href: '/laws/federal',  desc: 'Bills in Congress, ATF rules, active SCOTUS cases' },
-      { label: '📋 All 50 States',     href: '/laws/states',   desc: 'Compare gun laws across every state' },
-      { label: '🔄 CCW Reciprocity',   href: '/laws/reciprocity', desc: 'Where your permit is honored' },
-      { label: '⚖️ NFA Rules',         href: '/laws/federal#nfa',          desc: 'Suppressors, SBRs, machine guns' },
-    ]
-  },
-  {
-    label: '⚖️ 2A Radar', href: '/laws/cases',
-    children: [
-      { label: '📡 Overview',        href: '/laws/cases',                    desc: 'What is moving in 2A litigation right now' },
-      { label: '🏛️ Supreme Court',   href: '/laws/cases/supreme-court',      desc: 'Granted cases, conferences and timelines' },
-      { label: '🗺️ Circuits',        href: '/laws/cases/circuits',           desc: 'Appeals-court cases by circuit' },
-      { label: '🛡️ DOJ Actions',     href: '/laws/cases/doj',                desc: 'Justice Department suits and letters' },
-      { label: '📖 How Courts Decide', href: '/laws/cases/how-courts-decide', desc: 'Heller, Bruen and the 2A tests in plain English' },
-      { label: '📋 Rules & Bills',   href: '/laws/cases/rules-and-bills',    desc: 'ATF rules and bills in Congress' },
-    ]
-  },
-  {
-    label: '🎯 Tools', href: '/tools',
-    children: [
-      { label: '🎯 Precision Calculator',  href: '/ballistics',            desc: '188 match and hunting bullets, G1/G7, wind, DOPE card' },
-      { label: '🔭 Scope & Mil Tools',     href: '/tools/scope-tools',     desc: 'MOA/MRAD, range from mils, slope angle, clicks' },
-      { label: '💵 Ammo Cost Calculator',  href: '/tools/ammo-cost',       desc: 'Cost per round, per year, factory vs reloading' },
-      { label: '⏱️ NFA Wait Times',        href: '/nfa-tracker',           desc: 'Live Form 4 approval times' },
-      { label: '📍 FFL Finder',            href: '/ffl-finder',            desc: 'Transfer dealers near you' },
-      { label: '🏟️ Range Finder',          href: '/ranges',                desc: 'Shooting ranges near you' },
-      { label: '🛡️ Carry Insurance',       href: '/carry-insurance',       desc: 'Compare concealed carry coverage' },
-      { label: '🗺️ My State Laws',         href: '/laws/my-state',         desc: 'Carry, magazine and transport rules for your state' },
-      { label: 'All tools →',              href: '/tools',                 desc: 'Every DownRange tool in one place' },
-    ]
-  },
-  { label: '📖 Blog', href: '/blog' },
-  { label: '📺 Videos',    href: '/video'     },
-  { label: '🏆 Giveaways', href: '/giveaways' },
-  { label: '🔩 Ferrum Arms ↗', href: 'https://ferrumarms.com', external: true },
-]
 
 import GlobalSearchBar from '../ui/GlobalSearchBar'
 import SocialIcons from '../ui/SocialIcons'
@@ -75,9 +24,14 @@ export default function Masthead() {
 
   useEffect(() => {
     // Hidden tabs are stored server-side (Admin > Config > Nav Visibility) so every visitor sees the same menu.
+    try { const c = JSON.parse(localStorage.getItem('dr_nav_cache') || '[]'); if (Array.isArray(c) && c.length) setHiddenNav(c) } catch {}
     const load = () => {
-      fetch('/api/nav-config').then(r => r.json())
-        .then(d => setHiddenNav(Array.isArray(d.hiddenItems) ? d.hiddenItems : []))
+      fetch('/api/nav-config', { cache: 'no-store' }).then(r => r.json())
+        .then(d => {
+          const list = Array.isArray(d.hiddenItems) ? d.hiddenItems : []
+          setHiddenNav(list)
+          try { localStorage.setItem('dr_nav_cache', JSON.stringify(list)) } catch {}
+        })
         .catch(() => {})
     }
     load()
@@ -119,7 +73,7 @@ export default function Masthead() {
     <header style={{ background:'#111318', borderBottom:'1px solid #1F2428', position:'sticky', top:'var(--ticker-height, 37px)', zIndex:50, overflow:'visible' }}>
       <DottedSurface style={{ position:'absolute', inset:0, width:'100%', height:'100%', pointerEvents:'none' }} />
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         /* Dropdown */
         .nav-drop { display:none; position:absolute; top:calc(100% + 1px); left:0; background:#0A0B0C; border:1px solid #1F2428; border-top:2px solid var(--gold); padding:6px; min-width:240px; z-index:200; box-shadow:0 12px 40px rgba(0,0,0,0.9); }
         .nav-drop.open { display:block; }
@@ -145,7 +99,7 @@ export default function Masthead() {
         .mob-child:hover { color:var(--gold); background:var(--bg3); }
         /* Bottom safe area */
         .mob-safe-bottom { height:env(safe-area-inset-bottom, 0px); }
-      `}</style>
+      ` }} />
 
       <div className="container" style={{ position:'relative', zIndex:1 }}>
         {/* ── Logo row — logo centered, dateline overlaid with position:absolute so it NEVER affects logo */}
@@ -248,7 +202,7 @@ export default function Masthead() {
               style={{ background:'var(--gold)', color:'#09090B', border:'none', fontFamily:"'Barlow Condensed',sans-serif", fontSize:'12px', fontWeight:700, letterSpacing:'0.08em', textTransform:'uppercase', padding:'6px 10px', cursor:'pointer' }}>
               Feedback
             </button>
-            <Link href="/search" style={{ color:'#6B7280', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Search">⌕</Link>
+            <Link href="/search" className="mast-search" aria-label="Search" style={{ color:'#6B7280', textDecoration:'none', fontSize:'16px', padding:'4px 8px', fontFamily:"'IBM Plex Mono',monospace" }} title="Search">⌕</Link>
             <ThemeToggle />
             <button onClick={() => setMenuOpen(!menuOpen)}
               style={{ background:'none', border:'1px solid #1F2428', color:'#9CA3AF', padding:'7px 14px', cursor:'pointer', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', letterSpacing:'0.05em' }}>

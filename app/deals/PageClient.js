@@ -404,7 +404,7 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
 
         <div className="dr-page">
           <div className="container">
-            <style>{`
+            <style dangerouslySetInnerHTML={{ __html: `
               @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
               @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
               .dc-inner:hover { transform: translateY(-2px); }
@@ -412,7 +412,7 @@ function DealsInner({ states = [], initialSort = 'hot', initialQuery = '', initi
               @media (max-width:1100px){ .dc-grid{ grid-template-columns:repeat(3,1fr) } }
               @media (max-width:760px){ .dc-grid{ grid-template-columns:repeat(2,1fr) } }
               @media (max-width:420px){ .dc-grid{ grid-template-columns:1fr } }
-            `}</style>
+            ` }} />
 
             {/* Count + last fetch */}
             <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', marginBottom:16, flexWrap:'wrap', gap:8 }}>

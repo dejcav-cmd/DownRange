@@ -185,7 +185,7 @@ export default function PrecisionCalc() {
 
   return (
     <div className="pc">
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="pc-layout">
         <div className="pc-panel">
           <div className="pc-h">Bullet</div>

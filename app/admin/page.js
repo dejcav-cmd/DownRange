@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect, useCallback } from 'react'
+import { NAV as SITE_NAV, navKey } from '../../components/layout/navData'
 import Link from 'next/link'
 import dynamic from 'next/dynamic'
 
@@ -38,7 +39,7 @@ const ComplianceRulesPanel  = L(() => import('../../components/admin/ComplianceR
 function PanelLoader() {
   return <div style={{padding:60,textAlign:'center',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,color:'#4b5563',display:'flex',gap:8,alignItems:'center',justifyContent:'center'}}>
     <span style={{animation:'spin 1s linear infinite',display:'inline-block'}}>◈</span> Loading...
-    <style>{`@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}`}</style>
+    <style dangerouslySetInnerHTML={{ __html: `@keyframes spin{from{transform:rotate(0)}to{transform:rotate(360deg)}}` }} />
   </div>
 }
 
@@ -1078,19 +1079,12 @@ function PublicationSchedule({ secret, setMsg }) {
 
 // ── Main Admin App ────────────────────────────────────────────────────────────
 function NavVisibilityPanel({ adminKey, setMsg }) {
-  // Labels must exactly match the label property in components/layout/Masthead.js NAV array
-  const NAV_ITEMS = [
-    { label:'Home',             desc:'Homepage link',            always:true },
-    { label:'News',             desc:'News feed & articles' },
-    { label:'Laws',             desc:'Federal & state gun laws, reciprocity' },
-    { label:'Guns',             desc:'Encyclopedia, NFA tracker, ballistics' },
-    { label:'Outdoors',         desc:'Hunting' },
-    { label:'Learn',            desc:'Guides & education' },
-    { label:'🌎 International', desc:'Canada & Brasil' },
-    { label:'Blog',             desc:'Blog posts & editorial' },
-    { label:'📺 Video',         desc:'Video library' },
-    { label:'🏆 Giveaways',     desc:'Active firearm giveaways' },
-  ]
+  // Built from components/layout/navData.js, the same list the public menu renders, so it cannot go stale.
+  const NAV_ITEMS = SITE_NAV.map(n => ({
+    label: n.label, key: navKey(n.label), always: !!n.exact,
+    desc: n.children ? n.children.filter(c => c.href !== n.href).map(c => c.label.replace(/^[^A-Za-z0-9]+/, '')).join(' · ') : (n.external ? 'External link' : n.href),
+  }))
+  const VALID = NAV_ITEMS.map(i => i.key)
 
   const [hidden, setHidden] = useState([])
   const [saved, setSaved] = useState(false)
@@ -1098,7 +1092,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
   useEffect(() => {
     if (!adminKey) return
     fetch('/api/admin/nav-config', { headers:{'x-admin-key':adminKey} })
-      .then(r=>r.json()).then(d=>{ setHidden(d.hiddenItems||[]); setLoaded(true) })
+      .then(r=>r.json()).then(d=>{ setHidden((d.hiddenItems||[]).map(navKey).filter(k=>VALID.includes(k))); setLoaded(true) })
       .catch(()=>setLoaded(true))
   }, [adminKey])
   async function persist(next, okMsg) {
@@ -1126,23 +1120,23 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
     persist([], '✅ All nav items restored')
   }
 
-  const visible = NAV_ITEMS.filter(i => !hidden.includes(i.label))
-  const hiddenItems = NAV_ITEMS.filter(i => hidden.includes(i.label))
+  const visible = NAV_ITEMS.filter(i => !hidden.includes(i.key))
+  const hiddenItems = NAV_ITEMS.filter(i => hidden.includes(i.key))
 
   return (
     <div>
       <div className="panel-title">👁 Nav Visibility</div>
       <div className="panel-sub">Show or hide top navigation tabs. Changes apply to all visitors within a minute, no deploy needed. Home is always visible.</div>
 
-      <div style={{display:'grid', gridTemplateColumns:'1fr 1fr', gap:24, marginTop:20}}>
+      <div style={{display:'grid', gridTemplateColumns:'repeat(auto-fit,minmax(min(100%,340px),1fr))', gap:24, marginTop:20}}>
         {/* Left: toggle list */}
-        <div>
+        <div style={{minWidth:0}}>
           <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--text-dim)', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:12}}>
             All Navigation Items
           </div>
           <div style={{display:'flex', flexDirection:'column', gap:8}}>
             {NAV_ITEMS.map(item => {
-              const isHidden = hidden.includes(item.label)
+              const isHidden = hidden.includes(item.key)
               const isAlways = item.always
               return (
                 <div key={item.label} style={{
@@ -1153,7 +1147,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
                 }}>
                   {/* Toggle switch */}
                   <div
-                    onClick={() => !isAlways && toggle(item.label)}
+                    onClick={() => !isAlways && toggle(item.key)}
                     style={{
                       width:40, height:22, borderRadius:11, flexShrink:0,
                       background: isHidden ? '#374151' : '#16a34a',
@@ -1185,7 +1179,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
         </div>
 
         {/* Right: live preview */}
-        <div>
+        <div style={{minWidth:0}}>
           <div style={{fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--text-dim)', letterSpacing:'.06em', textTransform:'uppercase', marginBottom:12}}>
             Nav Preview
           </div>
@@ -2635,7 +2629,7 @@ export default function AdminPage() {
 
   return (
     <>
-      <style>{STYLES}</style>
+      <style dangerouslySetInnerHTML={{ __html: STYLES }} />
       <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onPick={openPanel} />
 
       {/* ── TOP BAR ── */}

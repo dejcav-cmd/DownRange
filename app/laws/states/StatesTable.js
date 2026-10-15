@@ -36,7 +36,7 @@ export default function StatesTable({ rows, verified }) {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .st-bar{position:sticky;top:0;z-index:20;background:rgba(9,9,11,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--border);padding:14px 0}
         .st-search{width:100%;max-width:340px;background:var(--bg2);border:1px solid var(--border-mid);color:var(--text);font:400 14px 'IBM Plex Mono',monospace;padding:11px 14px;border-radius:4px;outline:none}
         .st-search:focus{border-color:var(--gold)}
@@ -68,7 +68,7 @@ export default function StatesTable({ rows, verified }) {
         .st-note{font:400 11px/1.7 'IBM Plex Mono',monospace;color:var(--text-dim);margin-top:22px}
         .st-note a{color:var(--gold)}
         @media(max-width:760px){.st-wrap{display:none}.st-cards{display:block}.st-search{max-width:none}}
-      `}</style>
+      ` }} />
 
       <div className="st-bar">
         <div className="container">

@@ -73,7 +73,7 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
         )}
       </div>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes newArticlePop {
           0%   { opacity: 0; transform: translateY(8px) scale(0.99); }
           100% { opacity: 1; transform: translateY(0) scale(1); }
@@ -83,7 +83,7 @@ export default function LiveNewsRefresher({ initialArticles = [], category = nul
           0%   { background-position: 200% 0; }
           100% { background-position: -200% 0; }
         }
-      `}</style>
+      ` }} />
 
       <div style={{ display:'grid', gridTemplateColumns:'repeat(3, 1fr)', gap:'16px' }}>
         {displayArticles.map(article => (

@@ -255,7 +255,7 @@ export default function ApprovalQueue({ adminKey }) {
   if (!adminKey) {
     return (
       <div style={{maxWidth:600}}>
-        <style>{AQ_S}</style>
+        <style dangerouslySetInnerHTML={{ __html: AQ_S }} />
         <div style={{padding:'40px 32px',background:'var(--bg2)',border:'1px solid var(--border)',borderTop:'3px solid var(--gold)',textAlign:'center'}}>
           <div style={{fontSize:40,marginBottom:12}}>🔑</div>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.6rem',color:'var(--gold)',letterSpacing:'.05em',marginBottom:8}}>Admin Key Required</div>
@@ -269,7 +269,7 @@ export default function ApprovalQueue({ adminKey }) {
 
   return (
     <div style={{maxWidth:1200,height:'100%'}}>
-      <style>{AQ_S}</style>
+      <style dangerouslySetInnerHTML={{ __html: AQ_S }} />
 
       {msg&&<div style={{position:'fixed',top:20,right:20,zIndex:2000,background:msg.ok?'#14532d':'#7f1d1d',border:`1px solid ${msg.ok?'#22c55e':'#ef4444'}`,color:msg.ok?'#4ade80':'#f87171',fontFamily:"'IBM Plex Mono',monospace",fontSize:12,padding:'10px 18px',boxShadow:'0 4px 20px rgba(0,0,0,.6)',borderRadius:2}}>{msg.m}</div>}
       {showGenerate&&<GenerateModal templates={templates} adminKey={adminKey} onClose={()=>setShowGenerate(false)} onGenerated={()=>{setShowGenerate(false);load()}} />}

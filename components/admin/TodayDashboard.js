@@ -74,7 +74,7 @@ export default function TodayDashboard({ adminKey, onOpen, jumpGroups }) {
 
   return (
     <div>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 10, marginBottom: 16 }}>
         <div>
           <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.9rem', color: 'var(--gold)', letterSpacing: '.05em', lineHeight: 1 }}>Today</div>

@@ -181,7 +181,7 @@ export default function RSSPageClient() {
 
   return (
     <>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <Masthead />
 

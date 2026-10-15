@@ -184,7 +184,7 @@ export default function CopyrightReport({ adminKey }) {
 
   return (
     <>
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="cr-wrap">
 
         {/* Topbar */}

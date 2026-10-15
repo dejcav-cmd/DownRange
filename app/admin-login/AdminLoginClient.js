@@ -325,7 +325,7 @@ export default function AdminLoginClient() {
 
   return (
     <>
-      <style>{STYLE}</style>
+      <style dangerouslySetInnerHTML={{ __html: STYLE }} />
       <div className="login-wrap">
         <div className="login-logo">
           <h1>DOWNRANGE</h1>

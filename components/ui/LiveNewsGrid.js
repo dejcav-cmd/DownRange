@@ -79,7 +79,7 @@ export default function LiveNewsGrid({ articles: initialArticles = [] }) {
 
   return (
     <section style={{ padding:'36px 0', borderBottom:'1px solid var(--border)', background:'var(--bg)' }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .story-card { transition: transform 0.2s, border-color 0.2s; }
         .story-card:hover { transform: translateY(-3px); border-color: #C8922A !important; }
         .story-card:hover .story-img { transform: scale(1.04); }
@@ -89,7 +89,7 @@ export default function LiveNewsGrid({ articles: initialArticles = [] }) {
         .spinner { animation: spin 1s linear infinite; }
         @keyframes pulseGreen { 0%,100%{opacity:1}50%{opacity:.4} }
         .pulse-green { animation: pulseGreen 1.5s infinite; }
-      `}</style>
+      ` }} />
 
       <div className="container">
         {/* Header */}

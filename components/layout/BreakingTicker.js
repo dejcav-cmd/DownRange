@@ -56,7 +56,7 @@ export default function BreakingTicker({ alerts: initialAlerts = [] }) {
       padding: '8px 0', overflow: 'hidden', position: 'relative', zIndex: 100,
       transition: 'background 0.4s ease',
     }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes scrollLeft {
           0%   { transform: translateX(0); }
           100% { transform: translateX(-50%); }
@@ -70,7 +70,7 @@ export default function BreakingTicker({ alerts: initialAlerts = [] }) {
           animation: flashPulse 1s infinite;
           display: inline-block; flex-shrink: 0;
         }
-      `}</style>
+      ` }} />
 
       <div style={{ display: 'flex', alignItems: 'center' }}>
         {/* BREAKING label */}

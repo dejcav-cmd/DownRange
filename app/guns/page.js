@@ -208,11 +208,11 @@ export default async function GunsPage({ searchParams }) {
       <div className="dr-page">
         <div className="container">
 
-          <style>{`
+          <style dangerouslySetInnerHTML={{ __html: `
             .tool-link:hover { border-color: var(--gold) !important; }
             .learn-card-img:hover { transform: scale(1.04); }
             .gun-card:hover .learn-card-img { transform: scale(1.04); }
-          `}</style>
+          ` }} />
 
           {/* ── ALL VIEW: Featured mosaic + section grids ── */}
           {!cat && (

@@ -8,7 +8,7 @@ import { STATE_CODES } from '../../../lib/legalRadar/constants'
 
 export const revalidate = 900
 export const metadata = pageMeta({
-  title: 'Second Amendment Cases Radar: Supreme Court, Circuits, DOJ and States',
+  title: '2A Cases Radar: Supreme Court, Circuits, DOJ',
   description: 'National tracker for Second Amendment litigation. Supreme Court timelines, circuit cases, DOJ actions, federal rules and a page for every state.',
   path: '/laws/cases',
 })

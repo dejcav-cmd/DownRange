@@ -345,7 +345,7 @@ export default function VideoManager({ adminKey }) {
 
   return (
     <div className="vm-wrap">
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <div style={{ display:'flex', alignItems:'flex-end', justifyContent:'space-between', marginBottom:20, flexWrap:'wrap', gap:10 }}>
         <div>

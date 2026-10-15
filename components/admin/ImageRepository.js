@@ -159,7 +159,7 @@ export default function ImageRepository({ adminKey }) {
 
   return (
     <div className="ir-shell">
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <div style={{ marginBottom:16 }}>
         <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'2rem', color:'var(--gold)', letterSpacing:'.06em', lineHeight:1, marginBottom:4 }}>

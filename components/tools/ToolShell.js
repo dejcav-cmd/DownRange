@@ -22,7 +22,7 @@ export default function ToolShell({ path, name, headline, accent, intro, descrip
     <>
       {schema ? <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }} /> : null}
       <Masthead />
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <PageHero img="/img/tools-hero.jpg" imgSm="/img/tools-hero-sm.jpg" pos="70% 60%"
         eyebrow="DownRange tools"
         title={<>{headline} <span>{accent}</span></>}

@@ -207,7 +207,7 @@ export default async function CanadaArticlePage({ params }) {
           <div>
             {article.body ? (
               <>
-                <style>{`
+                <style dangerouslySetInnerHTML={{ __html: `
                   .dr-article-body h2 {
                     font-family: 'Bebas Neue', sans-serif;
                     font-size: 1.5rem;
@@ -247,7 +247,7 @@ export default async function CanadaArticlePage({ params }) {
                     font-size: 0.7rem;
                     top: 0.45rem;
                   }
-                `}</style>
+                ` }} />
                 <div className="dr-article-body" dangerouslySetInnerHTML={{ __html: String(article.body).replace(/<h1(\s|>)/gi, '<h2$1').replace(/<\/h1>/gi, '</h2>') }} />
 
                 {article.sourceUrl && (

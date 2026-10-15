@@ -502,7 +502,7 @@ export default function UniversalContentEditor({
   // ── RENDER ────────────────────────────────────────────────────────────────
   return (
     <>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
       <div className="uce-wrap">
 
         {/* ── TOP BAR ── */}

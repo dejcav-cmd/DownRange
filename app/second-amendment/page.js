@@ -61,7 +61,7 @@ export default function SecondAmendmentPage() {
     <>
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Masthead />
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
 .sa-hero{position:relative;overflow:hidden;text-align:center;padding:64px 16px 56px;background:radial-gradient(900px 380px at 50% -20%,rgba(200,146,42,.2),transparent 65%),var(--bg);border-bottom:1px solid var(--border)}
 .sa-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
 .sa-h1{font-family:'Bebas Neue',cursive;font-weight:400;font-size:clamp(3rem,9vw,6.2rem);line-height:.92;margin:0 0 20px;color:var(--text)}
@@ -97,7 +97,7 @@ export default function SecondAmendmentPage() {
 .sa-btn-main{background:var(--gold);border-color:var(--gold);color:#09090B}
 .sa-note{font-size:12.5px;line-height:1.6;color:var(--text-dim);padding:6px 0 48px}
 @media(max-width:640px){.sa-grid{grid-template-columns:1fr}.sa-hero{padding:44px 16px 38px}.sa-p{font-size:16px}}
-`}</style>
+` }} />
 
       <PageHero
         eyebrow="The Bill of Rights · Amendment II"

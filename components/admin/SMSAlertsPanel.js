@@ -185,7 +185,7 @@ export default function SMSAlertsPanel({ adminKey }) {
 
   return (
     <div className="sms-wrap">
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <div className="panel-title">Cron Alerts</div>
       <div className="panel-sub">

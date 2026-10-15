@@ -227,7 +227,7 @@ export default function DraftRecovery({ adminKey }) {
 
   return (
     <>
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
       <div className="dr-wrap">
 
         {/* Topbar */}

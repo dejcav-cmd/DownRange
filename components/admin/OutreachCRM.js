@@ -554,7 +554,7 @@ export default function OutreachCRM({ adminKey }) {
 
   return(
     <>
-    <style>{CSS}</style>
+    <style dangerouslySetInnerHTML={{ __html: CSS }} />
     <div className="crm-app">
 
       {/* RAIL */}

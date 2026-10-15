@@ -112,7 +112,7 @@ export default function ImageFinder({ adminKey }) {
 
   return (
     <div className="ifdr-shell">
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       <div className="panel-title">Image Finder</div>
       <div className="panel-sub">

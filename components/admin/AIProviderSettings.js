@@ -132,7 +132,7 @@ export default function AIProviderSettings({ adminKey }) {
 
   return (
     <div>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', flexWrap: 'wrap', gap: 10, marginBottom: 14 }}>
         <div>
           <div style={{ fontFamily: "'Bebas Neue',cursive", fontSize: '1.7rem', color: 'var(--gold)', letterSpacing: '.05em', lineHeight: 1 }}>🤖 AI Models</div>

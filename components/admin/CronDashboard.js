@@ -219,7 +219,7 @@ export default function CronDashboard({ adminKey }) {
 
   return (
     <div className="cd-wrap">
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       {/* ── Top bar ── */}
       <div className="cd-topbar">

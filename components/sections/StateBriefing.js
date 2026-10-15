@@ -237,7 +237,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
         </div>
       </section>
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
         .pulse-dot { display:inline-block; width:6px; height:6px; border-radius:50%; background:#22c55e; animation:pulse 1.6s infinite; }
         .release-card:hover { border-color:#C8922A !important; }
@@ -245,7 +245,7 @@ export default function StateBriefing({ states = [], deals = [], articles = [], 
         .news-row:hover { background:rgba(200,146,42,.04); }
         .news-row:hover .news-row-title { color:#C8922A !important; }
         @media(max-width:760px){ .briefing-stats{ grid-template-columns:repeat(2,1fr) !important; } }
-      `}</style>
+      ` }} />
     </>
   )
 }

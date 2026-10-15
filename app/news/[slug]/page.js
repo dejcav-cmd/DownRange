@@ -297,7 +297,7 @@ export default async function ArticlePage({ params }) {
           <div>
             {article.body ? (
               <>
-                <style>{`
+                <style dangerouslySetInnerHTML={{ __html: `
                   .dr-article-body h2 {
                     font-family: 'Bebas Neue', sans-serif;
                     font-size: 1.5rem;
@@ -337,7 +337,7 @@ export default async function ArticlePage({ params }) {
                     font-size: 0.7rem;
                     top: 0.45rem;
                   }
-                `}</style>
+                ` }} />
                 <div
                   className="dr-article-body"
                   dangerouslySetInnerHTML={{ __html: article.body }}

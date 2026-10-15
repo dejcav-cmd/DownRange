@@ -478,12 +478,12 @@ export default async function BlogPage({ searchParams }) {
       ]} />
       <Masthead />
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .blog-card:hover { border-color: var(--gold) !important; transform: translateY(-2px); }
         .blog-card:hover .blog-img { transform: scale(1.03); }
         .blog-img { transition: transform 0.4s ease; }
         .blog-card { transition: border-color 0.2s, transform 0.2s; }
-      `}</style>
+      ` }} />
 
       {/* ── HERO ── */}
       <PageHero img="/img/blog-hero.jpg" imgSm="/img/blog-hero-sm.jpg" pos="70% 28%" posSm="70% top"

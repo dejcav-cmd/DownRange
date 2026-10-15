@@ -127,7 +127,7 @@ export default function CopyrightPanel({ adminKey }) {
 
   return (
     <div>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .cp-tbl { width:100%; border-collapse:collapse; }
         .cp-tbl th { font-family:${MONO}; font-size:9px; color:#64748b; letter-spacing:.1em; text-transform:uppercase; padding:9px 12px; border-bottom:2px solid var(--border); text-align:left; background:rgba(0,0,0,.25); white-space:nowrap; }
         .cp-tbl td { padding:9px 12px; border-bottom:1px solid rgba(255,255,255,.04); vertical-align:middle; }
@@ -145,7 +145,7 @@ export default function CopyrightPanel({ adminKey }) {
         .flt:hover,.flt.on { border-color:${GOLD}; color:${GOLD}; background:rgba(200,146,42,.08); }
         .bulk { border:none; font-family:${BARL}; font-size:11px; font-weight:700; letter-spacing:.07em; text-transform:uppercase; padding:5px 10px; cursor:pointer; white-space:nowrap; transition:opacity .12s; }
         .bulk:disabled { opacity:.3; cursor:not-allowed; }
-      `}</style>
+      ` }} />
 
       {/* Flash */}
       {flash.msg && (

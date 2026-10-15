@@ -1,6 +1,6 @@
 export default function HomeStyles() {
   return (
-    <style>{`
+    <style dangerouslySetInnerHTML={{ __html: `
 .hr-sec{padding:26px 0 4px;background:var(--bg);border-bottom:1px solid var(--border)}
 .tn{display:grid;grid-template-columns:minmax(0,1.7fr) minmax(0,1fr);gap:16px;margin-bottom:18px}
 .tn-lead{position:relative;display:block;min-height:440px;background:var(--bg3);border:1px solid var(--border);overflow:hidden;text-decoration:none;color:var(--text)}
@@ -63,6 +63,6 @@ export default function HomeStyles() {
 @media(prefers-reduced-motion:reduce){.hr-card{transition:none}.hr-rail{scroll-behavior:auto}}
 .hr-state{display:flex;flex-wrap:wrap;gap:10px 18px;align-items:center;justify-content:space-between;padding:16px 0;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--text-muted)}
 .hr-state a{color:var(--gold);text-decoration:none;font-family:'Barlow Condensed',sans-serif;font-weight:700;letter-spacing:.08em;font-size:15px}
-`}</style>
+` }} />
   )
 }

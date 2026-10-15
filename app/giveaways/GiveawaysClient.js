@@ -108,7 +108,7 @@ export default function GiveawaysClient({ giveaways, isSeed, lastUpdated }) {
 
   return (
     <main style={{ background: 'var(--bg)', minHeight: '100vh' }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .gw-bar{background:var(--bg);border-bottom:1px solid var(--border);padding:16px 0}
         .gw-search{width:100%;max-width:340px;background:var(--bg2);border:1px solid var(--border-mid);color:var(--text);font:400 14px 'IBM Plex Mono',monospace;padding:11px 14px;border-radius:4px;outline:none}
         .gw-search:focus{border-color:var(--gold)}
@@ -140,7 +140,7 @@ export default function GiveawaysClient({ giveaways, isSeed, lastUpdated }) {
         .gw-card+.gw-card{margin-top:10px}
         .gw-card-m{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:center;margin:10px 0 12px}
         @media(max-width:760px){.gw-wrap{display:none}.gw-cards{display:block}.gw-search{max-width:none}}
-      `}</style>
+      ` }} />
 
       <PageHero
         eyebrow={isSeed ? 'Giveaways · Sample listings' : 'Giveaways'}

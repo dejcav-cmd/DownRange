@@ -727,7 +727,7 @@ export default function SocialMediaManager({ adminKey }) {
 
   return (
     <div>
-      <style>{`.soc-tab{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;border:none;background:none;color:#4b5563;border-bottom:2px solid transparent;transition:all 0.15s;}.soc-tab:hover{color:#e5e5e5;}.soc-tab.active{color:#c8922a;border-bottom-color:#c8922a;}`}</style>
+      <style dangerouslySetInnerHTML={{ __html: `.soc-tab{display:inline-flex;align-items:center;gap:5px;padding:7px 14px;cursor:pointer;font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:0.05em;border:none;background:none;color:#4b5563;border-bottom:2px solid transparent;transition:all 0.15s;}.soc-tab:hover{color:#e5e5e5;}.soc-tab.active{color:#c8922a;border-bottom-color:#c8922a;}` }} />
 
       {/* Header */}
       <div style={{ display:'flex', alignItems:'flex-start', justifyContent:'space-between', marginBottom:16 }}>

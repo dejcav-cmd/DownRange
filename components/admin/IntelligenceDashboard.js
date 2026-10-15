@@ -192,7 +192,7 @@ export default function IntelligenceDashboard({ adminKey }) {
 
   return (
     <div style={{ maxWidth: 1200 }}>
-      <style>{S}</style>
+      <style dangerouslySetInnerHTML={{ __html: S }} />
 
       {msg && <div style={{ position:'fixed', top:20, right:20, zIndex:2000, background:msg.ok?'#14532d':'#7f1d1d', border:`1px solid ${msg.ok?'#22c55e':'#ef4444'}`, color:msg.ok?'#4ade80':'#f87171', fontFamily:"'IBM Plex Mono',monospace", fontSize:12, padding:'10px 18px', boxShadow:'0 4px 20px rgba(0,0,0,.6)', borderRadius:2 }}>{msg.m}</div>}
 

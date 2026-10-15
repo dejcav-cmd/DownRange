@@ -155,14 +155,14 @@ export default async function HomePage() {
 
       <Footer />
 
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .home-form-frame{width:100%;height:880px;border:0;border-radius:4px;background:transparent;color-scheme:normal;display:block}
         @media(max-width:640px){.home-form-frame{height:1060px}}
         .home-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
         .home-tools-h{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;margin-right:6px}
         .tool-chip{font-family:'Barlow Condensed',sans-serif;font-weight:700;font-size:14px;letter-spacing:.06em;color:var(--text);text-decoration:none;border:1px solid var(--border-mid);background:var(--bg);padding:7px 12px;min-height:36px;display:inline-flex;align-items:center;transition:border-color .15s}
         .tool-chip:hover{border-color:var(--gold)}
-      `}</style>
+      ` }} />
     </>
   )
 }

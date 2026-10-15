@@ -1,6 +1,6 @@
 // Scoped styles for the Manufacturer Press Releases section (all classes prefixed pr-).
 export default function PressStyles() {
-  return <style>{`
+  return <style dangerouslySetInnerHTML={{ __html: `
 .pr-wrap{max-width:1180px;margin:0 auto;padding:0 16px}
 .pr-pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}
 .pr-pill{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.06em;color:var(--text-muted);border:1px solid var(--border);background:var(--bg);padding:6px 11px}
@@ -149,5 +149,5 @@ export default function PressStyles() {
   .pr-card-title{font-size:25px}
 }
 @media (prefers-reduced-motion:reduce){.pr-sheet{animation:none}.pr-card{transition:none}}
-`}</style>
+` }} />
 }

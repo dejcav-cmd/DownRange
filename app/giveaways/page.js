@@ -21,7 +21,7 @@ const SEED_GIVEAWAYS = [
 
 // ── Metadata ──────────────────────────────────────────────────────────────────
 export const metadata = {
-  title: 'Gun Giveaways 2026 — Win Free Firearms, Ammo & Gear',
+  title: 'Gun Giveaways 2026: Win Free Firearms & Gear',
   description: 'Active gun giveaways from top manufacturers, retailers, and 2A organizations. Win free firearms, ammo, and gear. No spam, verified sources only.',
   alternates: { canonical: 'https://www.downrangeco.com/giveaways' },
   twitter: { card: 'summary_large_image', title: 'Gun Giveaways | DownRange', description: 'Active gun, ammo and gear giveaways. Verified sources only.' },

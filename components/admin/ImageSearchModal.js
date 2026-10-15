@@ -171,7 +171,7 @@ export default function ImageSearchModal({
 
   return (
     <div className="ism-overlay" onClick={e => e.target === e.currentTarget && onClose()}>
-      <style>{CSS}</style>
+      <style dangerouslySetInnerHTML={{ __html: CSS }} />
 
       {/* Header */}
       <div className="ism-header">

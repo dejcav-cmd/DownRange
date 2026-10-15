@@ -171,12 +171,12 @@ function LivePulse({ active }) {
         animation: active ? 'pulse 1.5s infinite' : 'none',
         display: 'inline-block',
       }} />
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         @keyframes pulse {
           0%,100% { box-shadow: 0 0 0 2px #22c55e44; }
           50%      { box-shadow: 0 0 0 6px #22c55e22; }
         }
-      `}</style>
+      ` }} />
     </span>
   )
 }
@@ -305,7 +305,7 @@ export default function PullLogPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'var(--background)', padding: '24px 20px' }}>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .dr-card { background: var(--card, #0d1117); border: 1px solid var(--border, #1e293b); border-radius: 8px; }
         .log-row:hover { background: rgba(200,146,42,0.04) !important; }
         .sort-btn { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 10px; padding: 0; margin-left: 4px; }
@@ -373,7 +373,7 @@ export default function PullLogPage() {
         }
         td { padding: 10px 12px; border-bottom: 1px solid rgba(30,41,59,0.5); vertical-align: top; }
         .expand-row td { background: rgba(200,146,42,0.04); border-left: 2px solid #C8922A; }
-      `}</style>
+      ` }} />
 
       {/* ── Header ── */}
       <div style={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', marginBottom: 24, flexWrap: 'wrap', gap: 12 }}>

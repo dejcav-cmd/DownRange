@@ -83,7 +83,7 @@ export default function FeedbackModal({ isOpen, onClose }) {
 
   return (
     <>
-      <style>{`
+      <style dangerouslySetInnerHTML={{ __html: `
         .fb-overlay {
           position: fixed; inset: 0; z-index: 1000;
           background: rgba(0,0,0,0.75);
@@ -231,7 +231,7 @@ export default function FeedbackModal({ isOpen, onClose }) {
           text-align: right;
           margin-top: 4px;
         }
-      `}</style>
+      ` }} />
 
       {/* Overlay */}
       <div
