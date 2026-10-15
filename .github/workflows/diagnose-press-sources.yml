@@ -13,11 +13,11 @@ jobs:
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@v4
-      - run: python3 scripts/diagnose_press_sources.py
+      - run: python3 scripts/diagnose_press_sources2.py
       - name: Commit
         run: |
           git config user.name "claude-bot"; git config user.email "noreply@anthropic.com"
-          git add scripts/press_sources_diagnosis.json
+          git add scripts/press_sources_diagnosis2.json
           git commit -m "chore: press sources diagnosis" || echo "nothing to commit"
           git pull --rebase -q || true
           git push || true
