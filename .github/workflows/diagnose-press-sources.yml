@@ -1,0 +1,23 @@
+name: Diagnose Press Sources
+
+# Reads each problem manufacturer page from a normal internet connection and records what it sees.
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  diagnose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 scripts/diagnose_press_sources.py
+      - name: Commit
+        run: |
+          git config user.name "claude-bot"; git config user.email "noreply@anthropic.com"
+          git add scripts/press_sources_diagnosis.json
+          git commit -m "chore: press sources diagnosis" || echo "nothing to commit"
+          git pull --rebase -q || true
+          git push || true
