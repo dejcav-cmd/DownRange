@@ -16,7 +16,6 @@ const AIProviderSettings    = L(() => import('../../components/admin/AIProviderS
 const VideoManager          = L(() => import('../../components/admin/VideoManager'))
 const NewsletterManager     = L(() => import('../../components/admin/NewsletterManager'))
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
-const ReleaseManager        = L(() => import('../../components/admin/ReleaseManager'))
 const PressReleaseManager   = L(() => import('../../components/admin/PressReleaseManager'))
 const LegalRadarManager     = L(() => import('../../components/admin/LegalRadarManager'))
 const OperationsPanel        = L(() => import('../../components/admin/OperationsPanel'))
@@ -962,7 +961,6 @@ function FeedsPanel({ adminKey, setMsg }) {
   const feeds = [
     { key:'news',     label:'News Feed',     icon:'📰', schedule:'Every 15 min', desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', color:'#22c55e' },
     { key:'laws',     label:'Laws Feed',     icon:'⚖',  schedule:'Every 2 hrs',  desc:'Congress.gov + LegiScan → bill analysis', color:'#3b82f6' },
-    { key:'releases', label:'Releases Feed', icon:'🔫', schedule:'Every 1 hr',   desc:'PRNewswire + manufacturer RSS → new gun releases', color:'#C8922A' },
     { key:'video',    label:'Video Feed',    icon:'▶',  schedule:'Every 4 hrs',  desc:'YouTube API → channel videos + thumbnails', color:'#ef4444' },
     { key:'state',    label:'State Feed',    icon:'🗺', schedule:'Daily 8am',    desc:'State legislation + profiles → 50-state database', color:'#a855f7' },
     { key:'goa',      label:'GOA Press',     icon:'⚖', schedule:'Every 2 hrs',  desc:'Gun Owners of America press center — no-compromise 2A advocacy', color:'#ef4444' },
@@ -1494,7 +1492,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
     { label:'Home',             desc:'Homepage link',            always:true },
     { label:'News',             desc:'News feed & articles' },
     { label:'Laws',             desc:'Federal & state gun laws, reciprocity' },
-    { label:'Guns',             desc:'Encyclopedia, releases, NFA tracker, ballistics' },
+    { label:'Guns',             desc:'Encyclopedia, NFA tracker, ballistics' },
     { label:'Outdoors',         desc:'Hunting' },
     { label:'Learn',            desc:'Guides & education' },
     { label:'🌎 International', desc:'Canada & Brasil' },
@@ -1849,7 +1847,7 @@ function ContentSourcesPanel({ adminKey }) {
   }
 
   const TAB_LABELS = {
-    news: '📰 News', laws: '⚖️ Laws', releases: '🔫 Releases',
+    news: '📰 News', laws: '⚖️ Laws',
      video: '📹 Video',
   }
 
@@ -2259,17 +2257,6 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       seedType: null,   // fed by cron, not seeded
       aiAction: { label: 'Backfill Missing', path: 'backfill-articles', params: '?limit=10&types=newsArticle' },
       liveIndicator: true,
-    },
-    {
-      key:      'firearmRelease',
-      id:       'releases',
-      label:    'Gun Releases',
-      icon:     '🔫',
-      color:    '#C8922A',
-      desc:     'New product announcements · Manufacturer RSS',
-      seedType: 'releases',
-      aiAction: { label: 'AI Write Articles', path: 'backfill-articles', params: '?limit=5&types=firearmRelease' },
-      seedAction: { label: 'Seed Releases', path: 'seed-releases' },
     },
     {
       key:      'blogPost',
@@ -3055,7 +3042,6 @@ export default function AdminPage() {
             {panel==='drafts'       && <DraftRecovery      adminKey={adminKey} />}
             {panel==='cleanup'      && <ContentCleanup     adminKey={adminKey} />}
             {panel==='news'         && <NewsArticleManager  adminKey={adminKey} />}
-            {panel==='releases'     && <ReleaseManager      adminKey={adminKey} />}
             {panel==='press'        && <PressReleaseManager adminKey={adminKey} />}
             {panel==='radar'        && <LegalRadarManager adminKey={adminKey} />}
             {panel==='blog'         && <BlogManagerFull     adminKey={adminKey} setMsg={flash} />}

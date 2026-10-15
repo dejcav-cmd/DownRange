@@ -23,8 +23,6 @@ const SOURCE_REGISTRY = [
   { id:'saf',         page:'Laws',      section:'RSS',        type:'RSS',     label:'SAF',               cron:'0 */2 * * *',   url:'https://www.saf.org/feed/',                cat:'law',      desc:'Second Amendment Foundation alerts' },
   { id:'goa',         page:'Laws',      section:'RSS',        type:'RSS',     label:'Gun Owners of America',cron:'0 */2 * * *', url:'https://www.gunowners.org/feed/',         cat:'law',      desc:'GOA legislative and 2A news' },
   { id:'thegunfeed',  page:'Laws',      section:'RSS',        type:'RSS',     label:'TheGunFeed',        cron:'0 */2 * * *',   url:'https://thegunfeed.com/feed/',             cat:'law',      desc:'Gun rights news aggregator' },
-  // ── GUN RELEASES ──────────────────────────────────────────────────────────
-  { id:'releases_ai', page:'Releases',  section:'AI',         type:'AI',      label:'Manufacturer Releases',      cron:'0 6 * * 1,4',     url:'/api/cron/weekly-gun-releases',                       cat:'releases', desc:'AI-generated new gun release intelligence' },
   // ── DEALS ─────────────────────────────────────────────────────────────────
   { id:'gundeals',    page:'Deals',     section:'RSS+Scrape', type:'RSS',     label:'gun.deals',         cron:'0 */4 * * *',   url:'https://gun.deals/rss.xml',                cat:'deals',    desc:'Gun deals RSS with OG image scraping per product' },
   { id:'reddit_gd',   page:'Deals',     section:'Live',       type:'Reddit',  label:'r/gundeals',        cron:'live',          url:'https://reddit.com/r/gundeals',            cat:'deals',    desc:'Reddit r/gundeals live hot/new posts' },
@@ -57,7 +55,7 @@ const TYPE_COLORS = {
 }
 
 const PAGE_ICONS = {
-  News:'📰', Laws:'⚖️', Releases:'🔫', Deals:'🔥', Market:'📊',
+  News:'📰', Laws:'⚖️', Deals:'🔥', Market:'📊',
   Videos:'▶️', Canada:'🇨🇦', Brazil:'🇧🇷', Intel:'🧠',
   Newsletter:'✉️', States:'🗺️', Community:'👥',
 }

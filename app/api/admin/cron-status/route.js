@@ -7,8 +7,6 @@ const ALL_JOBS = [
   { id:'legal-radar',      path:'/api/cron/legal-radar?mode=light', schedule:'20 6 * * *',    label:'2A Radar: Daily Sweep',   group:'Content',  icon:'⚖',  critical:false, desc:'Daily: Supreme Court dockets, Federal Register and DOJ actions → 2A Radar cases' },
   { id:'legal-radar-weekly', path:'/api/cron/legal-radar?mode=full', schedule:'40 6 * * 1',   label:'2A Radar: Weekly Sweep',  group:'Content',  icon:'⚖',  critical:false, desc:'Mondays: adds Congress.gov bills and CourtListener circuit rulings to the daily sweep' },
   { id:'news',             path:'/api/agent?feed=news',             schedule:'0 */2 * * *',   label:'News Feed',               group:'Content',  icon:'📰', critical:true,  desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity every 2 hrs' },
-  { id:'releases', paused:true,         path:'/api/agent?feed=releases&phase=scrape', schedule:'45 6 * * 1,4',     label:'Releases Feed',           group:'Content',  icon:'🔫', critical:false, desc:'Manufacturer RSS → new product releases hourly' },
-    { id:'releases-process', paused:true, path:'/api/cron/releases-process', schedule:'50 6 * * 1,4',     label:'Releases Process',        group:'Content',  icon:'⚙️',  critical:false, desc:'Phase 2: dequeue and process scraped candidates' },
   { id:'laws',             path:'/api/agent?feed=laws',             schedule:'0 */12 * * *',  label:'Laws Feed',               group:'Content',  icon:'⚖',  critical:false, desc:'Congress.gov + LegiScan → legislation every 12 hrs' },
   { id:'video',            path:'/api/agent?feed=video',            schedule:'0 */4 * * *',   label:'Video Feed',              group:'Content',  icon:'▶',  critical:false, desc:'YouTube RSS → video index every 4 hrs' },
   { id:'state',            path:'/api/agent?feed=state',            schedule:'0 8 * * 0',     label:'State Laws (Weekly)',     group:'Content',  icon:'🗺',  critical:false, desc:'LegiScan → 50-state law profiles updated every Sunday 8am UTC' },
@@ -22,7 +20,6 @@ const ALL_JOBS = [
   { id:'nfa-wait-times',   path:'/api/nfa-wait-times',              schedule:'0 6 */2 * *',   label:'NFA Wait Times',          group:'System',   icon:'⏳', critical:false, desc:'Pulls NFA processing times directly from ATF.gov every 2 days, 6am UTC' },
   { id:'newsletter',       path:'/api/newsletter',                  schedule:'0 7 * * 4',     label:'Newsletter',              group:'Outreach', icon:'📧', critical:false, desc:'Weekly Resend brief, state-personalized, Thursdays 7am UTC' },
   { id:'queue_digest', paused:true,     path:'/api/outreach/queue/digest',       schedule:'0 13 * * *',    label:'Outreach Queue Digest',   group:'Outreach', icon:'📬', critical:false, desc:'Email pending approval queue summary at 1pm UTC' },
-  { id:'prn_releases',     paused:true, path:'/api/cron/releases',               schedule:'0 12 * * *',    label:'PRN Scraper',             group:'Outreach', icon:'🔍', critical:false, desc:'PRNewswire manufacturer press releases at noon UTC' },
   { id:'fetch-images',     path:'/api/admin/fetch-article-images',  schedule:'20 */2 * * *', label:'Fetch Article Images',    group:'System',   icon:'📷', critical:false, desc:'Fetch og:image from source URLs → Sanity CDN every 30 min' },
   { id:'cron-health',      path:'/api/admin/cron-health',           schedule:'0 * * * *',    label:'Cron Health Check',       group:'System',   icon:'❤', critical:true,  desc:'System health check + email alerts every 30 min' },
   { id:'copyright-review', paused:true, path:'/api/cron/copyright-review', schedule:'30 6 * * *', label:'Copyright Compliance', group:'System', icon:'⚖', critical:true, desc:'Daily scan of last 48h articles for copyright risk — old structure, no source, no analysis. Emails report.' },
@@ -31,7 +28,7 @@ const ALL_JOBS = [
   // patch-ammo-article removed from monitoring: one-time fixer for 8 hardcoded slugs,
   // never scheduled in vercel.json, was showing false OVERDUE every run since it has no recurring purpose.
   // Route still exists at /api/admin/patch-ammo-article for manual re-run if needed.
-  // ccw-update removed from monitoring: explicitly replaced by weekly-gun-releases
+  // ccw-update removed from monitoring (Gun Releases section retired)
   // (commit 1e27b7a). Never in vercel.json. Its own auth check doesn't accept
   // x-vercel-cron or CRON_SECRET — admin-key only — so it couldn't be cron-invoked anyway.
   { id:'carry-insurance',  path:'/api/cron/carry-insurance',        schedule:'0 6 * * 1',         label:'Carry Insurance Update',   group:'Content', icon:'🛡', critical:false, desc:'Updates carry insurance comparison data every Monday 6am UTC' },
@@ -45,11 +42,7 @@ const ALL_JOBS = [
   { id:'reddit-deals',    path:'/api/cron/reddit-deals',           schedule:'0 * * * *',       label:'r/gundeals Scraper',       group:'Content', icon:'🟠', critical:false, desc:'r/gundeals hot posts hourly — score≥10, non-expired, <48h old; community upvotes as quality signal' },
   { id:'web-deals', paused:true,       path:'/api/cron/web-deals',              schedule:'0 */12 * * *',    label:'Web Deals Scraper',        group:'Content', icon:'🌐', critical:false, desc:'Brownells Daily Deals, PSA Flash Sales, Natchez, Olight Flash — direct HTML scrape twice daily' },
   { id:'write-canada', paused:true,     path:'/api/cron/write-canada-articles',  schedule:'20 8 * * *',      label:'Canada Articles',          group:'Content', icon:'🇨🇦', critical:false, desc:'AI-written Canadian firearms articles at 8am and 8pm UTC' },
-  { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'40 9 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },
-  { id:'weekly-gun-releases', paused:true, path:'/api/cron/weekly-gun-releases', schedule:'0 6 * * 1,4',
-    label:'Weekly Gun Releases', group:'Content', icon:'🔫', critical:false,
-    desc:'Every Monday 9am UTC — AI discovers new firearm releases, writes articles with real images, publishes to Gun Releases section.' },
-  // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
+  { id:'write-brazil',     path:'/api/cron/write-brazil-articles',  schedule:'40 9 * * *',      label:'Brazil Articles',          group:'Content', icon:'🇧🇷', critical:false, desc:'AI-written Brazilian firearms articles at 9am and 9pm UTC' },  // fix-images-intl removed from monitoring: not in vercel.json, requires a manual
   // {type: 'canada'|'brazil'|'both'} body param (no default cron would send this usefully).
   // Manual admin tool, not a scheduled job. Was showing permanent false OVERDUE.
   { id:'sitemap-health',   path:'/api/cron/sitemap-health',          schedule:'0 8 * * 1',         label:'Sitemap & SEO Health',     group:'System',  icon:'🗺', critical:false, desc:'Every Monday 8am UTC — fetches live sitemap.xml, HEAD-checks all static URLs, detects 404s/redirects/non-www leakage, runs AI nano analysis, auto-revalidates sitemap on any finding.' },

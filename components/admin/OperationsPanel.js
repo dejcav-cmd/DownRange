@@ -8,51 +8,6 @@ const OPERATIONS = [
   {
     group: '🔫 GUN RELEASES',
     ops: [
-      {
-        id: 'backfill-releases',
-        label: 'Backfill Releases (8 months)',
-        desc: 'Crawls all 41 manufacturer sources with pagination — pulls up to 300 real gun releases from the last 8 months. Runs in 3 batches automatically.',
-        endpoint: '/api/admin/backfill-releases',
-        method: 'GET',
-        color: '#c8922a',
-        danger: false,
-        timeout: 290000,
-        batched: true,
-      },
-      {
-        id: 'nuke-releases',
-        label: '☠ Nuke All Releases',
-        desc: 'Deletes EVERY firearmRelease document from Sanity. Irreversible. Run before a clean backfill.',
-        endpoint: '/api/admin/nuke-releases',
-        method: 'POST',
-        color: '#ef4444',
-        danger: true,
-        timeout: 60000,
-      },
-      {
-        id: 'patch-release-images',
-        label: 'Patch Release Images',
-        desc: 'Finds real product images for releases missing verified images. Runs in batches of 25. Skips already-verified (score ≥60). Steps: article OG → manufacturer page → Google.',
-        endpoint: '/api/admin/patch-releases-images',
-        method: 'GET',
-        color: '#60a5fa',
-        danger: false,
-        timeout: 290000,
-        batchedImages: true,
-        batchParam: '',
-      },
-      {
-        id: 'patch-release-images-force',
-        label: 'Force Re-scan All Images',
-        desc: 'Re-scans ALL releases including already-verified. Runs in batches of 25 automatically.',
-        endpoint: '/api/admin/patch-releases-images?force=true',
-        method: 'GET',
-        color: '#a78bfa',
-        danger: true,
-        timeout: 290000,
-        batchedImages: true,
-        batchParam: 'force=true',
-      },
     ],
   },
   {
@@ -63,16 +18,6 @@ const OPERATIONS = [
         label: 'Pull News Now',
         desc: 'Triggers the news agent feed immediately.',
         endpoint: '/api/agent?feed=news',
-        method: 'GET',
-        color: '#c8922a',
-        danger: false,
-        timeout: 290000,
-      },
-      {
-        id: 'run-releases-feed',
-        label: 'Run Releases Feed',
-        desc: 'Triggers the weekly-gun-releases cron manually.',
-        endpoint: '/api/cron/weekly-gun-releases',
         method: 'GET',
         color: '#c8922a',
         danger: false,
@@ -465,13 +410,6 @@ export default function OperationsPanel({ adminKey, setMsg }) {
         </div>
       ))}
 
-      {/* Backfill tip */}
-      <div style={{ background: '#0a0a0a', border: '1px solid #c8922a33', padding: '20px 24px', fontFamily: mono, fontSize: 11, color: '#666', lineHeight: 1.9 }}>
-        <strong style={{ color: '#c8922a', letterSpacing: '.05em' }}>RELEASES WORKFLOW:</strong>
-        {' '}To reset and repopulate: run <strong style={{ color: '#fff' }}>☠ Nuke All Releases</strong> first,
-        wait for it to finish, then run <strong style={{ color: '#fff' }}>Backfill Releases</strong>.
-        The backfill takes 3-5 min and pulls up to 60 real gun releases from 41 manufacturer sources.
-      </div>
     </div>
   )
 }

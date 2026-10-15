@@ -560,8 +560,6 @@ function renderSEO(el){
   const pages=[
     {p:'/',        t:'DownRange — America\'s Firearms Intelligence Hub', ga:'Active',idx:'Indexed'},
     {p:'/news',    t:'Firearms News | DownRange',                         ga:'Active',idx:'Indexed'},
-    {p:'/market',  t:'Firearms Market | DownRange',                       ga:'Active',idx:'Indexed'},
-    {p:'/releases',t:'New Gun Releases | DownRange',                      ga:'Active',idx:'Indexed'},
     {p:'/laws',    t:'2A Laws & Legislation | DownRange',                 ga:'Active',idx:'Indexed'},
     {p:'/deals',   t:'Gun Deals | DownRange',                             ga:'Active',idx:'Indexed'},
     {p:'/blog',    t:'Blog | DownRange',                                  ga:'Active',idx:'Indexed'},
@@ -591,7 +589,6 @@ function renderFeeds(el){
   const feeds=[
     {key:'news',    l:'News Feed',     i:'📰', sched:'Every 2h' , desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', c:'#22c55e'},
     {key:'laws',    l:'Laws Feed',     i:'⚖️', sched:'Every 12h',  desc:'Congress.gov + LegiScan → bill analysis',      c:'#3b82f6'},
-    {key:'releases',l:'Releases Feed', i:'🔫', sched:'Mon/Thu',    desc:'PRNewswire + manufacturer RSS → gun releases',   c:'#C8922A'},
     {key:'video',   l:'Video Feed',    i:'▶️', sched:'Every 4h',  desc:'YouTube API → channel videos + thumbnails',      c:'#ef4444'},
     {key:'state',   l:'State Feed',    i:'🗺️', sched:'Sun 8am'  , desc:'State legislation + profiles → 50-state DB',    c:'#a855f7'},
     {key:'goa',     l:'GOA Press',     i:'⚖️', sched:'Every 12h',  desc:'Gun Owners of America press center',             c:'#ef4444'},
@@ -641,8 +638,6 @@ function renderSitemap(el){
     {url:'/',              type:'page',    freq:'daily',   priority:'1.0'},
     {url:'/news',          type:'page',    freq:'hourly',  priority:'0.9'},
     {url:'/news/[slug]',   type:'dynamic', freq:'weekly',  priority:'0.8'},
-    {url:'/market',        type:'page',    freq:'hourly',  priority:'0.8'},
-    {url:'/releases',      type:'page',    freq:'daily',   priority:'0.8'},
     {url:'/laws',          type:'page',    freq:'daily',   priority:'0.8'},
     {url:'/deals',         type:'page',    freq:'hourly',  priority:'0.7'},
     {url:'/blog',          type:'page',    freq:'weekly',  priority:'0.7'},
@@ -864,7 +859,6 @@ async function renderDashboard(el){
       <div class="stat-box"><div class="stat-val" id="ds-art">—</div><div class="stat-lbl">Articles</div></div>
       <div class="stat-box"><div class="stat-val" id="ds-cont">—</div><div class="stat-lbl">Contacts</div></div>
       <div class="stat-box"><div class="stat-val" id="ds-cron">—</div><div class="stat-lbl">Cron Jobs</div></div>
-      <div class="stat-box"><div class="stat-val" id="ds-rel">—</div><div class="stat-lbl">Releases</div></div>
     </div>
     <div id="sys-banner" style="margin-bottom:12px"></div>
     <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Quick Actions</div>
@@ -888,7 +882,6 @@ async function renderDashboard(el){
   api('/api/admin/articles-list').then(d=>{const e=document.getElementById('ds-art');if(e)e.textContent=d.total??'—';}).catch(()=>{});
   api('/api/outreach/contacts?limit=1').then(d=>{const e=document.getElementById('ds-cont');if(e)e.textContent=d.count??'—';}).catch(()=>{});
   api('/api/admin/cron-status').then(d=>{const e=document.getElementById('ds-cron');if(e)e.textContent=d.jobs?.length??'—';}).catch(()=>{});
-  api('/api/admin/releases-manager').then(d=>{const e=document.getElementById('ds-rel');if(e)e.textContent=d.releases?.length??'—';}).catch(()=>{});
   api('/api/admin/cron-health').then(d=>{
     const b=document.getElementById('sys-banner');if(!b)return;
     const ok=d.status==='HEALTHY'||d.status==='ok';
@@ -1056,24 +1049,12 @@ async function pressAction(id,action,btn){
   }catch(e){flash(e.message,'err');btn.disabled=false;btn.textContent=orig;}
 }
 
-// RELEASES (retired) — with thumbnails + approve/fix-image
-async function renderReleases(el){
-  el.innerHTML='<div class="loading"><span class="spinner">◈</span> Loading releases...</div>';
-  try{
-    const d=await api('/api/admin/releases-manager');
-    const items=d.releases||[];
-    if(!items.length){el.innerHTML='<div class="empty">No releases</div>';return;}
-    el.innerHTML=`<div style="font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--dim);margin-bottom:12px">${items.length} releases</div>`+items.map(a=>artCard(a,'release')).join('');
-  }catch(e){el.innerHTML=`<div class="empty">Error: ${e.message}</div>`;}
-}
-
 // ─── ARTICLE CARD BUILDER (used by news/blog/releases) ───────────────────────
 function artCard(a, type){
   const isLive = type==='blog' ? a.status==='published' : !!(a.publishedAt && a.slug?.current);
   const slug = a.slug?.current||a.slug||'';
   const imgSrc = a.imageUrl || a.heroImage?.asset?.url || null;
   const viewUrl = type==='blog' ? `https://downrangeco.com/blog/${slug}` :
-                  type==='release' ? `https://downrangeco.com/releases/${slug}` :
                   `https://downrangeco.com/news/${slug}`;
   const approveAction = type==='blog'
     ? `artAction('${a._id}','blog','publish',this)`
@@ -1607,7 +1588,6 @@ async function renderSysOverview(el){
 function renderAgents(el){
   const agents=[
     {id:'news',i:'📰',n:'News Feed',d:'Pull & AI-rewrite news articles'},
-    {id:'releases',i:'🔫',n:'Releases',d:'Scrape new product releases'},
     {id:'video',i:'▶',n:'Video Feed',d:'Sync YouTube channels'},
     {id:'laws',i:'⚖',n:'Laws Feed',d:'Congress.gov + LegiScan'},
     {id:'state',i:'🗺',n:'State Laws',d:'50-state law profiles'},
@@ -1634,7 +1614,6 @@ function renderRSSources(el){
     {id:'nraila',     page:'Laws',      type:'RSS',    label:'NRA-ILA',              cron:'2h',   url:null},
     {id:'atf',        page:'Laws',      type:'RSS',    label:'ATF News',             cron:'2h',   url:null},
     {id:'goa',        page:'Laws',      type:'RSS',    label:'Gun Owners of America',cron:'2h',   url:null},
-    {id:'releases_ai',page:'Releases',  type:'AI',     label:'DownRange AI',         cron:'Mon/Thu',   url:'/api/cron/weekly-gun-releases'},
     {id:'gundeals',   page:'Deals',     type:'RSS',    label:'gun.deals + OG Scrape',cron:'4h',   url:'/api/cron/gun-deals'},
     {id:'reddit_gd',  page:'Deals',     type:'Reddit', label:'r/gundeals',           cron:'Live', url:null},
     {id:'reddit_ammo',page:'Deals',     type:'Reddit', label:'r/ammo',               cron:'Live', url:null},
@@ -1646,7 +1625,7 @@ function renderRSSources(el){
     {id:'states_ai',  page:'States',    type:'AI',     label:'State Profile AI',     cron:'Daily',url:'/api/cron/enrich-state-pages'},
   ];
   const TYPE_C={RSS:'#60A5FA',API:'#34D399',AI:'#C8922A',Scrape:'#C084FC',Reddit:'#F97316'};
-  const PAGE_I={News:'📰',Laws:'⚖️',Releases:'🔫',Deals:'🔥',Market:'📊',Videos:'▶️',Canada:'🇨🇦',Brazil:'🇧🇷',Intel:'🧠',Newsletter:'✉️',States:'🗺️'};
+  const PAGE_I={News:'📰',Laws:'⚖️',Deals:'🔥',Videos:'▶️',Canada:'🇨🇦',Brazil:'🇧🇷',Intel:'🧠',Newsletter:'✉️',States:'🗺️'};
   const enabled={};
   SOURCES.forEach(s=>{enabled[s.id]=localStorage.getItem('src_'+s.id)!=='0';});
   
@@ -1746,7 +1725,7 @@ async function renderCopyright(el){
     const d=await api('/api/admin/content-scan');
     const items=d.items||d.articles||[];
     const h=items.filter(i=>i.risk==='HIGH').length,m=items.filter(i=>i.risk==='MEDIUM').length,l=items.filter(i=>i.risk==='LOW').length;
-    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${h}</div><div class="stat-lbl">High</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${m}</div><div class="stat-lbl">Medium</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${l}</div><div class="stat-lbl">Low</div></div>
@@ -1984,7 +1963,7 @@ async function renderDeployments(el){
       </div>
 
       <!-- Stats -->
-      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val">${deps.length}</div><div class="stat-lbl">Total</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${ready}</div><div class="stat-lbl">Ready</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${errored}</div><div class="stat-lbl">Errors</div></div>
@@ -2137,7 +2116,7 @@ async function renderSocialLog(el){
     const posts=d.posts||[];
     if(!posts.length){el.innerHTML='<div class="empty">No social posts yet</div>';return;}
     const stats=d.stats||{};
-    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val">${stats.total||posts.length}</div><div class="stat-lbl">Total</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${stats.success||0}</div><div class="stat-lbl">Success</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${stats.failed||0}</div><div class="stat-lbl">Failed</div></div>
@@ -2165,11 +2144,10 @@ async function renderDraftRecovery(el){
   try{
     const d=await api('/api/admin/drafts');
     const s=d.summary||{};
-    const all=[...(d.drafts||[]),...(d.newsArticles||[]),...(d.releases||[])];
-    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+    const all=[...(d.drafts||[]),...(d.newsArticles||[])];
+    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${s.blogPosts?.drafts||0}</div><div class="stat-lbl">Blog Drafts</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${s.newsArticles?.unapproved||0}</div><div class="stat-lbl">Unapproved</div></div>
-        <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${s.releases?.unapproved||0}</div><div class="stat-lbl">Rel. Drafts</div></div>
       </div>`+
       (!all.length?'<div class="empty">All caught up ✓</div>':
         all.slice(0,30).map(a=>`<div class="art-card" id="card-${a._id}">
@@ -2427,7 +2405,7 @@ async function renderSysAlerts(el){
     const failed=runs.filter(r=>r.status==='failed');
     const warned=runs.filter(r=>r.status==='warning');
     if(!runs.length){el.innerHTML='<div class="empty">No system alert logs</div>';return;}
-    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+    el.innerHTML=`<div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val">${runs.length}</div><div class="stat-lbl">Runs</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${failed.length}</div><div class="stat-lbl">Failed</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${warned.length}</div><div class="stat-lbl">Warnings</div></div>
@@ -2732,7 +2710,7 @@ async function renderSourcesLive(el){
     const pausedCount = allSources.filter(s=>s.status==='paused').length;
 
     el.innerHTML=`
-      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val">${allSources.length}</div><div class="stat-lbl">Total</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${activeCount}</div><div class="stat-lbl">Active</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--warn)">${pausedCount}</div><div class="stat-lbl">Paused</div></div>
@@ -2819,12 +2797,12 @@ async function renderSocialLog(el){
 
       <!-- Analytics totals -->
       <div style="font-family:'Barlow Condensed',sans-serif;font-size:13px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--dim);margin-bottom:8px">Analytics (All Time)</div>
-      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.3rem">${fmtN(totals.impressions||0)}</div><div class="stat-lbl">Impressions</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.3rem">${fmtN(totals.likes||0)}</div><div class="stat-lbl">Likes</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="font-size:1.3rem">${fmtN(totals.reposts||0)}</div><div class="stat-lbl">Reposts</div></div>
       </div>
-      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val">${stats.total||0}</div><div class="stat-lbl">Posted</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${stats.posted||stats.success||0}</div><div class="stat-lbl">Today</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--err)">${stats.failed||0}</div><div class="stat-lbl">Failed</div></div>
@@ -3076,7 +3054,6 @@ async function renderLockAll(el){
       <select id="lock-type" class="inp">
         <option value="newsArticle">News Articles</option>
         <option value="blogPost">Blog Posts</option>
-        <option value="firearmRelease">Firearm Releases</option>
         <option value="socialPost">Social Posts</option>
       </select>
     </div>
@@ -3201,11 +3178,6 @@ function renderMediaScreen(el){
 // ═══════════════════════════════════════════════════════════════════
 function renderOperations(el){
   const OPERATIONS=[
-    {group:'🔫 GUN RELEASES',ops:[
-      {id:'backfill-releases',label:'Backfill Releases (8 months)',desc:'Crawls manufacturer sources with pagination — pulls up to 300 releases from the last 8 months.',endpoint:'/api/admin/backfill-releases',method:'GET',color:'#c8922a',danger:false},
-      {id:'patch-release-images',label:'Patch Release Images',desc:'Finds real product images for releases missing verified images. Runs in batches.',endpoint:'/api/admin/patch-releases-images',method:'GET',color:'#60a5fa',danger:false},
-      {id:'nuke-releases',label:'☠ Nuke All Releases',desc:'Deletes EVERY firearmRelease from Sanity. Irreversible.',endpoint:'/api/admin/nuke-releases',method:'POST',color:'#ef4444',danger:true},
-    ]},
     {group:'📰 NEWS & CONTENT',ops:[
       {id:'run-news',label:'Pull News Now',desc:'Triggers the news agent feed immediately.',endpoint:'/api/agent?feed=news',method:'GET',color:'#c8922a',danger:false},
       {id:'run-goa',label:'Pull GOA Feed',desc:'Pulls Gun Owners of America news.',endpoint:'/api/agent?feed=goa',method:'GET',color:'#c8922a',danger:false},
@@ -3309,7 +3281,7 @@ async function renderMailingList(el){
     const active=subs.filter(s=>s.status==='active'||!s.status).length;
     const unsub=subs.filter(s=>s.status==='unsubscribed').length;
     el.innerHTML=`
-      <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;margin-bottom:16px">
+      <div class="stat-grid" style="grid-template-columns:1fr 1fr;margin-bottom:16px">
         <div class="stat-box" style="text-align:center"><div class="stat-val">${total}</div><div class="stat-lbl">Total</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--ok)">${active}</div><div class="stat-lbl">Active</div></div>
         <div class="stat-box" style="text-align:center"><div class="stat-val" style="color:var(--dim)">${unsub}</div><div class="stat-lbl">Unsub</div></div>
