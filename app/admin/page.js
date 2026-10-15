@@ -760,35 +760,69 @@ function SystemAlertsPanel({ adminKey }) {
 
 // ── Inline: SEO panel ─────────────────────────────────────────────────────────
 function SEOPanel() {
-  const pages = [
-    { path:'/', title:'DownRange — America\'s Firearms Intelligence Hub', desc:'Live 2A news, legislation, gear, and market intelligence.', ga:'Active', search:'Indexed' },
-    { path:'/news', title:'Firearms News | DownRange', desc:'Live 2A and gun news from 30+ sources.', ga:'Active', search:'Indexed' },
-    { path:'/blog', title:'Blog | DownRange', desc:'In-depth firearms analysis.', ga:'Active', search:'Indexed' },
-    { path:'/canada', title:'Canadian Firearms Law | DownRange', desc:'PAL, C-21, province ratings.', ga:'Active', search:'Indexed' },
-  ]
+  // Live check: fetches each page from this site and reads what Google would read. No hard-coded statuses.
+  const PAGES = ['/', '/news', '/blog', '/laws', '/laws/cases', '/guns', '/deals', '/ranges', '/ballistics', '/canada', '/brazil', '/video', '/news/manufacturer-press-releases']
+  const [rows, setRows] = useState([])
+  const [busy, setBusy] = useState(false)
+
+  async function check() {
+    setBusy(true); setRows([])
+    const out = []
+    for (const path of PAGES) {
+      try {
+        const t0 = Date.now()
+        const r = await fetch(path, { cache: 'no-store' })
+        const html = await r.text()
+        const doc = new DOMParser().parseFromString(html, 'text/html')
+        const title = doc.querySelector('title')?.textContent?.trim() || ''
+        const desc  = doc.querySelector('meta[name="description"]')?.getAttribute('content')?.trim() || ''
+        const canon = doc.querySelector('link[rel="canonical"]')?.getAttribute('href') || ''
+        const robots = doc.querySelector('meta[name="robots"]')?.getAttribute('content') || ''
+        const h1 = doc.querySelectorAll('h1').length
+        const ld = doc.querySelectorAll('script[type="application/ld+json"]').length
+        const og = !!doc.querySelector('meta[property="og:image"]')
+        const issues = []
+        if (r.status !== 200) issues.push('HTTP ' + r.status)
+        if (!title) issues.push('no title'); else if (title.length > 65) issues.push('title ' + title.length + ' chars')
+        if (!desc) issues.push('no description'); else if (desc.length > 170) issues.push('description ' + desc.length + ' chars')
+        if (!canon) issues.push('no canonical')
+        if (/noindex/i.test(robots)) issues.push('NOINDEX')
+        if (h1 !== 1) issues.push(h1 + ' H1')
+        if (!ld) issues.push('no JSON-LD')
+        if (!og) issues.push('no og:image')
+        out.push({ path, title, issues, ms: Date.now() - t0 })
+      } catch (e) { out.push({ path, title: '', issues: ['fetch failed: ' + e.message], ms: 0 }) }
+      setRows([...out])
+    }
+    setBusy(false)
+  }
+
   return (
     <div>
       <div className="panel-title">SEO & Indexing</div>
-      <div className="panel-sub">GA4: G-KDGZX3CLEC · Sitemap: downrangeco.com/sitemap.xml · News sitemap: /news-sitemap.xml</div>
-      <div style={{display:'flex',gap:8,marginBottom:20}}>
+      <div className="panel-sub">Sitemap: downrangeco.com/sitemap.xml · News sitemap: /news-sitemap.xml. The table below is read live from each page.</div>
+      <div style={{display:'flex',gap:8,marginBottom:20,flexWrap:'wrap'}}>
+        <button className="btn-outline" style={{fontSize:10}} onClick={check} disabled={busy}>{busy ? 'Checking…' : '🔍 Check pages now'}</button>
         <a href="https://search.google.com/search-console" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>Google Search Console ↗</a>
         <a href="https://analytics.google.com" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>Google Analytics ↗</a>
         <a href="/sitemap.xml" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>Sitemap ↗</a>
         <a href="/news-sitemap.xml" target="_blank" rel="noreferrer" className="btn-outline" style={{textDecoration:'none',fontSize:10}}>News Sitemap ↗</a>
       </div>
-      <div className="adm-card" style={{padding:0,overflow:'hidden'}}>
-        <table className="adm-table">
-          <thead><tr><th>Page</th><th>Title</th><th>GA4</th><th>Search</th></tr></thead>
-          <tbody>{pages.map(p=>(
-            <tr key={p.path}>
-              <td><a href={p.path} target="_blank" rel="noreferrer" style={{color:'#C8922A',textDecoration:'none'}}>{p.path}</a></td>
-              <td style={{color:'#9ca3af',maxWidth:300,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title}</td>
-              <td><span className="health-ok">● {p.ga}</span></td>
-              <td><span className="health-ok">● {p.search}</span></td>
-            </tr>
-          ))}</tbody>
-        </table>
-      </div>
+      {rows.length > 0 && (
+        <div className="adm-card" style={{padding:0,overflow:'hidden'}}>
+          <table className="adm-table">
+            <thead><tr><th>Page</th><th>Title</th><th>Result</th></tr></thead>
+            <tbody>{rows.map(p=>(
+              <tr key={p.path}>
+                <td><a href={p.path} target="_blank" rel="noreferrer" style={{color:'#C8922A',textDecoration:'none'}}>{p.path}</a></td>
+                <td style={{color:'#9ca3af',maxWidth:300,overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.title || '—'}</td>
+                <td>{p.issues.length === 0 ? <span className="health-ok">● All good</span> : <span style={{color:'#f59e0b',fontSize:11}}>{p.issues.join(' · ')}</span>}</td>
+              </tr>
+            ))}</tbody>
+          </table>
+        </div>
+      )}
+      {!rows.length && !busy && <div className="adm-card" style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:'#6b7280'}}>Press “Check pages now” to read title, description, canonical, H1, JSON-LD and og:image from {PAGES.length} key pages.</div>}
     </div>
   )
 }
@@ -1293,7 +1327,7 @@ function NavVisibilityPanel({ adminKey, setMsg }) {
     localStorage.setItem('dr_hidden_nav', JSON.stringify(hidden))
     window.dispatchEvent(new Event('dr_nav_updated'))
     setSaved(true)
-    setMsg('✅ Nav visibility saved — changes apply site-wide instantly')
+    setMsg('✅ Saved for this browser only. Visitors are not affected.')
     setTimeout(() => setSaved(false), 3000)
   }
 
@@ -2642,6 +2676,70 @@ function LegalPanel({ adminKey }) {
   )
 }
 
+// ── Command palette (Cmd/Ctrl+K or "/"): jump to any panel by typing a few letters ──────────
+const PALETTE_KEYWORDS = {
+  hub:'overview content health scan', news:'articles feed stories', press:'manufacturer releases prn', radar:'2a legal cases scotus courts',
+  blog:'posts writing', deals:'ammo prices gun deals', drafts:'recover lost', cleanup:'delete purge duplicates',
+  breaking:'alert ticker banner', newsletter:'email digest subscribers send', schedule:'calendar publish',
+  seo:'search google meta sitemap', intel:'briefing daily intelligence', statelaws:'states legislation', feeds:'rss agent pull run',
+  pulllog:'history ingestion log', legal:'compliance copyright', overview:'mission control status health home dashboard',
+  crons:'jobs schedule overdue failing', alerts:'errors failures sms email', operations:'run now manual jobs', agents:'quality weak articles rewrite thin',
+  sources:'feeds rss sources', deployments:'vercel deploy builds', sitemap:'pages map crons', ranges:'range finder database',
+  social:'twitter facebook instagram post', outreach:'crm campaigns contacts dealers', 'mailing-list':'subscribers email list',
+  videos:'youtube', channels:'youtube channels', imglib:'photos images library', imgsearch:'find images photos',
+  ai:'models claude anthropic routing chain', costs:'spend money tokens usage', keys:'api secrets', identity:'brand logo colors',
+  envcheck:'environment variables vercel', navvis:'menu navigation hide', emails:'test resend',
+}
+
+function CommandPalette({ open, onClose, onPick }) {
+  const [q, setQ] = useState('')
+  const [idx, setIdx] = useState(0)
+  const inputRef = React.useRef(null)
+  const items = React.useMemo(() => NAV.flatMap(s => s.panels.map(p => ({
+    sectionId: s.id, section: s.label, id: p.id, label: p.label, icon: p.icon,
+    hay: (p.label + ' ' + s.label + ' ' + (PALETTE_KEYWORDS[p.id] || '')).toLowerCase(),
+  }))), [])
+  const results = React.useMemo(() => {
+    const terms = q.toLowerCase().split(/\s+/).filter(Boolean)
+    if (!terms.length) return items
+    return items
+      .map(it => ({ it, score: terms.every(t => it.hay.includes(t)) ? terms.reduce((n, t) => n + (it.label.toLowerCase().startsWith(t) ? 3 : it.label.toLowerCase().includes(t) ? 2 : 1), 0) : 0 }))
+      .filter(x => x.score > 0).sort((a, b) => b.score - a.score).map(x => x.it)
+  }, [q, items])
+
+  useEffect(() => { if (open) { setQ(''); setIdx(0); setTimeout(() => inputRef.current?.focus(), 30) } }, [open])
+  useEffect(() => { setIdx(0) }, [q])
+  if (!open) return null
+
+  const pick = (it) => { if (it) { onPick(it.sectionId, it.id); onClose() } }
+  const onKey = (e) => {
+    if (e.key === 'Escape') onClose()
+    else if (e.key === 'ArrowDown') { e.preventDefault(); setIdx(i => Math.min(i + 1, results.length - 1)) }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); setIdx(i => Math.max(i - 1, 0)) }
+    else if (e.key === 'Enter') { e.preventDefault(); pick(results[idx]) }
+  }
+  return (
+    <div onClick={onClose} style={{ position:'fixed', inset:0, background:'rgba(0,0,0,.65)', zIndex:9999, display:'flex', justifyContent:'center', alignItems:'flex-start', paddingTop:'12vh' }}>
+      <div onClick={e => e.stopPropagation()} style={{ width:'min(560px,92vw)', background:'var(--bg2)', border:'1px solid var(--gold)', boxShadow:'0 20px 60px rgba(0,0,0,.6)' }}>
+        <input ref={inputRef} value={q} onChange={e => setQ(e.target.value)} onKeyDown={onKey} placeholder="Jump to a panel... (try: cron, images, quality, ai)"
+          style={{ width:'100%', padding:'16px 18px', background:'transparent', border:'none', borderBottom:'1px solid var(--border)', color:'var(--text)', fontFamily:"'IBM Plex Mono',monospace", fontSize:14, outline:'none' }} />
+        <div style={{ maxHeight:'50vh', overflowY:'auto' }}>
+          {results.length === 0 && <div style={{ padding:18, fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'#6b7280' }}>Nothing matches "{q}"</div>}
+          {results.map((it, i) => (
+            <div key={it.sectionId + it.id} onClick={() => pick(it)} onMouseEnter={() => setIdx(i)}
+              style={{ display:'flex', gap:10, alignItems:'center', padding:'10px 18px', cursor:'pointer', background: i === idx ? 'rgba(200,146,42,.12)' : 'transparent', borderLeft: i === idx ? '2px solid var(--gold)' : '2px solid transparent' }}>
+              <span style={{ width:20, textAlign:'center' }}>{it.icon}</span>
+              <span style={{ flex:1, fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'var(--text)' }}>{it.label}</span>
+              <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#6b7280' }}>{it.section}</span>
+            </div>
+          ))}
+        </div>
+        <div style={{ padding:'8px 18px', borderTop:'1px solid var(--border)', fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4b5563' }}>↑↓ move · Enter open · Esc close</div>
+      </div>
+    </div>
+  )
+}
+
 export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
   // openSections: Set of section IDs currently expanded in the tree
@@ -2649,6 +2747,7 @@ export default function AdminPage() {
   const [section,  setSection]  = useState('system')
   const [panel,    setPanel]    = useState('overview')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
+  const [paletteOpen, setPaletteOpen] = useState(false)
   const [msg,      setMsg]      = useState('')
   const [msgType,  setMsgType]  = useState('info')
   const [health,   setHealth]   = useState(null)
@@ -2676,6 +2775,28 @@ export default function AdminPage() {
     verifyKey(k)
     fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
   }, [])
+
+  // Cmd/Ctrl+K (or "/" outside inputs) opens the palette
+  useEffect(() => {
+    const onKey = (e) => {
+      const tag = (e.target?.tagName || '').toLowerCase()
+      const typing = tag === 'input' || tag === 'textarea' || tag === 'select' || e.target?.isContentEditable
+      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') { e.preventDefault(); setPaletteOpen(o => !o) }
+      else if (e.key === '/' && !typing) { e.preventDefault(); setPaletteOpen(true) }
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
+  // Deep links: /admin#crons opens that panel, and reloading keeps you where you were
+  useEffect(() => {
+    const id = (window.location.hash || '').replace('#', '')
+    if (!id) return
+    for (const sec of NAV) if (sec.panels.some(p => p.id === id)) { openPanel(sec.id, id); break }
+  }, [])
+  useEffect(() => {
+    if (panel) { try { window.history.replaceState(null, '', '#' + panel) } catch {} }
+  }, [panel])
 
   function setAdminKey(v) { setAdminKeyState(v); localStorage.setItem('dr_admin_key', v); verifyKey(v) }
 
@@ -2716,6 +2837,7 @@ export default function AdminPage() {
   return (
     <>
       <style>{STYLES}</style>
+      <CommandPalette open={paletteOpen} onClose={() => setPaletteOpen(false)} onPick={openPanel} />
 
       {/* ── TOP BAR ── */}
       <div className="adm-topbar">
@@ -2735,6 +2857,10 @@ export default function AdminPage() {
         )}
         {msg && <div className={`adm-msg ${msgClass}`}>{msg} <button onClick={()=>setMsg('')} style={{background:'none',border:'none',color:'inherit',cursor:'pointer',marginLeft:8,fontSize:12}}>✕</button></div>}
         <div style={{marginLeft:'auto',display:'flex',gap:8,alignItems:'center'}}>
+          <button onClick={() => setPaletteOpen(true)} title="Jump to any panel"
+            style={{background:'rgba(0,0,0,.4)',border:'1px solid var(--border)',color:'var(--text-dim)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'4px 10px',cursor:'pointer'}}>
+            🔍 Jump to… <span style={{color:'var(--gold)',marginLeft:6}}>⌘K</span>
+          </button>
           <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>KEY</span>
           <input type="password" value={adminKey} onChange={e=>setAdminKey(e.target.value)}
             placeholder="Admin key..."

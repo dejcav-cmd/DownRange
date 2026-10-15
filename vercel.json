@@ -198,12 +198,6 @@
     "app/api/agent/route.js": {
       "maxDuration": 300
     },
-    "app/api/admin/trigger/route.js": {
-      "maxDuration": 300
-    },
-    "app/api/admin/status/route.js": {
-      "maxDuration": 30
-    },
     "app/api/deals/route.js": {
       "maxDuration": 30
     },
@@ -215,9 +209,6 @@
     },
     "app/api/admin/backfill-articles/route.js": {
       "maxDuration": 60
-    },
-    "app/api/admin/scrape-releases/route.js": {
-      "maxDuration": 300
     },
     "app/api/system/alert/route.js": {
       "maxDuration": 30
@@ -277,9 +268,6 @@
       "maxDuration": 60
     },
     "app/api/admin/backup/route.js": {
-      "maxDuration": 300
-    },
-    "app/api/admin/one-time-cleanup/route.js": {
       "maxDuration": 300
     },
     "app/api/cron/copyright-review/route.js": {
