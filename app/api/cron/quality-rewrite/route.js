@@ -245,8 +245,9 @@ async function handler(req) {
 
     // ── Full rewrites ────────────────────────────────────────────────────────
     const DEADLINE = t0 + 230000 // stay well inside maxDuration so the run is always reported
-    for (const item of fullBatch) {
-      if (Date.now() > DEADLINE) break
+    stats.errors = []
+    const doFull = async (item) => {
+      if (Date.now() > DEADLINE) return
       try {
         const ai = await rewriteFull(item)
         await sanity.patch(item._id).set({
@@ -264,9 +265,12 @@ async function handler(req) {
         // The article stays queued and is retried on the next run.
         await sanity.patch(item._id).set({ qrAttempts: (item.qrAttempts || 0) + 1, qrLastTryAt: new Date().toISOString() }).commit().catch(() => {})
         stats.failed++
+        if (stats.errors.length < 10) stats.errors.push(`${(item.title || item._id).slice(0, 50)}: ${String(e.message).slice(0, 90)}`)
       }
-      await new Promise(r => setTimeout(r, 800))
     }
+    // Three at a time: each rewrite spends most of its time waiting on the source page and the model.
+    const queue = [...fullBatch]
+    await Promise.all([0, 1, 2].map(async () => { while (queue.length && Date.now() < DEADLINE) await doFull(queue.shift()) }))
 
     // ── Title-only rewrites ──────────────────────────────────────────────────
     for (const item of titleBatch) {

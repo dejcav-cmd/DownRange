@@ -22,10 +22,7 @@ jobs:
           for i in $(seq 1 12); do
             out=$(curl -s --max-time 290 -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/cron/quality-rewrite?force=1" || true)
             echo "run $i: $(echo "$out" | head -c 600)" | tee -a scripts/quality_drain_result.txt
-            if echo "$out" | grep -q '"remainingFull":0' ; then
-              if echo "$out" | grep -q '"remainingTitle":0'; then echo "queue empty"; break; fi
-            fi
-            if echo "$out" | grep -q 'queue empty'; then break; fi
+            if echo "$out" | grep -q 'queue empty\|full-rewrite [0-9]*/0 '; then echo "queue empty"; break; fi
           done
       - name: Save result to the repo
         if: always()
