@@ -2,15 +2,6 @@
   "total": 48,
   "suspect": [
     {
-      "slug": "dj-atf-ends-nfa-enforcement-on-suppressors-and-sbrs-nationwide-2026",
-      "id": "blog-dj-20261015-2k45cz",
-      "words": 516,
-      "why": [
-        "no closing tag",
-        "instruction leaked in description"
-      ]
-    },
-    {
       "slug": "dj-erie-home-shooting-leaves-seven-dead-handgun-law-under-scrutiny-2026",
       "id": "blog-dj-20261013-5ge19s",
       "words": 640,
@@ -101,7 +92,7 @@
     }
   ],
   "unpublished": {
-    "slug": "dj-atf-ends-nfa-enforcement-on-suppressors-and-sbrs-nationwide-2026",
+    "slug": "dj-erie-home-shooting-leaves-seven-dead-handgun-law-under-scrutiny-2026",
     "response": "{\"ok\":true}"
   }
 }
