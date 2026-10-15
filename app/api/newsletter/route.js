@@ -123,9 +123,9 @@ export async function GET(req) {
     // Build subject from top story / alerts (weekly framing)
     const weekOf = new Date().toLocaleDateString('en-US', { month: 'long', day: 'numeric' })
     let subject
-    if (alerts.length > 0) {
-      subject = `⚡ ${(alerts[0].text || alerts[0].title || '').slice(0, 60)} — DownRange Alert`
-    } else if (stories.length > 0) {
+    // Always framed as the weekly brief. It used to switch to a "⚡ ... — DownRange Alert" subject whenever a
+    // breaking alert was active, which made the weekly newsletter look like a one-off alert email.
+    if (stories.length > 0) {
       subject = `${stories[0].title.slice(0, 60)} — DownRange Weekly Brief`
     } else {
       subject = `DownRange Weekly Brief — Week of ${weekOf}`

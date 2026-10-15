@@ -43,11 +43,9 @@ export async function POST(req) {
   const html = generateNewsletterHTML({ news: stories, deals, alerts, videos, ammo, nfa,
     unsubUrl: `https://www.downrangeco.com/unsubscribe` }, true)
 
-  const subject = alerts.length > 0
-    ? `[PREVIEW] ⚡ ${(alerts[0].text||alerts[0].title||'').slice(0,60)} — DownRange Alert`
-    : stories.length > 0
-      ? `[PREVIEW] ${stories[0].title.slice(0,68)} — DownRange Brief`
-      : '[PREVIEW] DownRange Weekly Brief'
+  const subject = stories.length > 0
+    ? `[PREVIEW] ${stories[0].title.slice(0,68)} — DownRange Brief`
+    : '[PREVIEW] DownRange Weekly Brief'
 
   const resend = getResend()
   const result = await resend.emails.send({
