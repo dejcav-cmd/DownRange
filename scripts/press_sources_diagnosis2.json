@@ -1,0 +1,238 @@
+{
+  "Remington": {
+    "status": 200,
+    "final": "https://www.remington.com/news",
+    "page_news_links": [
+      "https://www.remington.com/news?q=newsCategories",
+      "https://www.remington.com/news?q=newsCategories&amp;start=12&amp;sz=12&amp;page=2",
+      "https://www.remington.com/news?q=newsCategories&amp;start=24&amp;sz=12&amp;page=3",
+      "https://www.remington.com/news?q=newsCategories&amp;start=36&amp;sz=12&amp;page=4",
+      "https://www.remington.com/news.html"
+    ],
+    "sitemap_news_urls": []
+  },
+  "CZ-USA": {
+    "status": 200,
+    "final": "https://www.czfirearms.com/en-us/news/",
+    "page_news_links": [
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=",
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=cz-shooting-team",
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=news",
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=press-releases",
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=products",
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=blog",
+      "https://www.czfirearms.com/en-us/news/?%5Bobject+Object%5D=&amp;category=events"
+    ],
+    "sitemap_news_urls": [
+      "https://www.czfirearms.com/cs/newsletter-dekujeme",
+      "https://www.czfirearms.com/en-us/news/10-tips-for-choosing-the-right-gun",
+      "https://www.czfirearms.com/en-us/news/1760",
+      "https://www.czfirearms.com/en-us/news/2022-ipsc-handgun-world-shoot-elite-competitors-and-a-worlds-first",
+      "https://www.czfirearms.com/en-us/news/2024-african-handgun-championship",
+      "https://www.czfirearms.com/en-us/news/3010",
+      "https://www.czfirearms.com/en-us/news/3045",
+      "https://www.czfirearms.com/en-us/news/3112",
+      "https://www.czfirearms.com/en-us/news/85-let-ceske-zbrojovky-uhersky-brod",
+      "https://www.czfirearms.com/en-us/news/a-day-in-the-field-with-larry-case",
+      "https://www.czfirearms.com/en-us/news/a-firearm-configurator-was-launched-in-the-czech-republic",
+      "https://www.czfirearms.com/en-us/news/a-game-getting-grendel"
+    ]
+  },
+  "Canik": {
+    "status": 200,
+    "final": "https://www.canik.com/blogs/news",
+    "page_news_links": [],
+    "sitemap_news_urls": []
+  },
+  "Tikka": {
+    "status": 200,
+    "final": "https://www.sako.global/en/news",
+    "page_news_links": [],
+    "sitemap_news_urls": []
+  },
+  "Henry": {
+    "status": 200,
+    "final": "https://www.henryusa.com/about-us/henry-news/",
+    "page_news_links": [
+      "https://www.henryusa.com/news/henry-serial-no-1-collection-raises-23526-for-gun-owners-of-america/",
+      "https://www.henryusa.com/news/henry-introduces-the-founding-fathers-collection/",
+      "https://www.henryusa.com/news/henry-donates-serial-no-1-of-all-three-americas-250th-anniversary-rifles-to-benefit-gun-owners-of-america/",
+      "https://www.henryusa.com/news/henry-honors-americas-250th-with-a-collector-grade-rifle-collection/",
+      "https://www.henryusa.com/news/henry-and-big-woods-bucks-launch-a-specialized-308-carbine-for-deer-season/",
+      "https://www.henryusa.com/news/henry-chosen-to-commemorate-the-massachusetts-rifle-associations-150th-anniversary/",
+      "https://www.henryusa.com/news/a-pioneer-in-the-firearms-industry-anthony-imperato-honored-by-nra/",
+      "https://www.henryusa.com/news/four-texan-heroes-receive-henry-repeating-arms-tribute/",
+      "https://www.henryusa.com/news/henrys-announces-major-expansion-of-rimfire-lever-action-platform/",
+      "https://www.henryusa.com/about-us/henry-news/page/2/",
+      "https://www.henryusa.com/about-us/henry-news/page/3/",
+      "https://www.henryusa.com/about-us/henry-news/page/23/"
+    ],
+    "sitemap_news_urls": [],
+    "feed": {
+      "status": 200,
+      "items": 85,
+      "sample": [
+        [
+          "Henry H9 Provider Review: .360 Buckhammer at 100 Yards",
+          "https://www.henryusa.com/the-henry-repeater/henry-h9-provider-review-360-buckhammer-at-100-yards/",
+          "Fri, 24 Jul 2026 15:45:47 +0000"
+        ],
+        [
+          "The First Henry Ever Made Just Became the Most Valuable Rifle in Histo",
+          "https://www.henryusa.com/the-henry-repeater/the-first-henry-ever-made-just-became-the-most-valuable-rifle-in-history/",
+          "Tue, 07 Jul 2026 14:29:01 +0000"
+        ],
+        [
+          "Anthony Imperato Is the Spring 2026 Cover Story for Inside Firearms",
+          "https://www.henryusa.com/the-henry-repeater/anthony-imperato-is-the-spring-2026-cover-story-for-inside-firearms/",
+          "Tue, 23 Jun 2026 19:15:11 +0000"
+        ],
+        [
+          "They Brought a Lever Action to a Precision Rifle Class",
+          "https://www.henryusa.com/the-henry-repeater/they-brought-a-lever-action-to-a-precision-rifle-class/",
+          "Wed, 27 May 2026 22:38:13 +0000"
+        ]
+      ]
+    }
+  },
+  "Barrett": {
+    "feed": {
+      "status": 200,
+      "items": 10,
+      "sample": [
+        [
+          "Northrop Grumman and Barrett Firearms Forge Strategic Collaboration on",
+          "https://barrett.net/2026/10/14/northrop-grumman-and-barrett-firearms-forge-strategic-collaboration-on-precision-grenadier-system/",
+          "Wed, 14 Oct 2026 15:16:32 +0000"
+        ],
+        [
+          "Barrett\u00ae Developing MRAD\u00ae MK 22\u2122 6.8x51mm Capability",
+          "https://barrett.net/2026/06/08/developing-mk22-6-8x51mm-capability/",
+          "Mon, 08 Jun 2026 15:32:39 +0000"
+        ],
+        [
+          "U.S. Marine Corps Team wins International Sniper Competition with MRAD",
+          "https://barrett.net/2026/05/18/u-s-marine-corps-team-wins-international-sniper-competition-with-mrad-mk-22/",
+          "Mon, 18 May 2026 21:57:22 +0000"
+        ],
+        [
+          "NEW BARRETT DEFENSE MANUFACTURING CENTER OF EXCELLENCE TO AID US AND A",
+          "https://barrett.net/2026/04/14/new-barrett-defense-manufacturing-center-of-excellence-to-aid-us-and-allied-warfighter/",
+          "Tue, 14 Apr 2026 22:52:10 +0000"
+        ]
+      ]
+    }
+  },
+  "Weatherby": {
+    "feed": {
+      "status": 200,
+      "items": 10,
+      "sample": [
+        [
+          "Weatherby Standard Cartridges: Premium Performance, Updated Pricing",
+          "https://weatherby.com/weatherby-standard-cartridges-premium-performance-updated-pricing/",
+          "Wed, 14 Oct 2026 15:41:40 +0000"
+        ],
+        [
+          "Barrel Break-In Procedure and Maintenance",
+          "https://weatherby.com/barrel-break-in-procedure-and-maintenance/",
+          "Thu, 09 Apr 2026 17:56:30 +0000"
+        ],
+        [
+          "Proper Rifle Cleaning and Maintenance Procedures",
+          "https://weatherby.com/proper-rifle-cleaning-and-maintenance-procedures/",
+          "Thu, 09 Apr 2026 17:38:17 +0000"
+        ],
+        [
+          "The 300 Weatherby Magnum: The Ultimate All-Around Cartridge",
+          "https://weatherby.com/the-300-weatherby-magnum-the-ultimate-all-around-cartridge/",
+          "Wed, 08 Apr 2026 18:01:51 +0000"
+        ]
+      ]
+    }
+  },
+  "H&K": {
+    "feed": {
+      "status": 200,
+      "items": 9,
+      "sample": [
+        [
+          "Heckler &#038; Koch Launches New VP9CC Micro-compact Pistol",
+          "https://hk-usa.com/2026/04/08/heckler-koch-usa-introduces-the-vp9a1-f-vp9a1-k-duplicate-5668/",
+          "Wed, 08 Apr 2026 15:39:53 +0000"
+        ],
+        [
+          "HK Individual Officer Program for Law Enforcement",
+          "https://hk-usa.com/2026/04/08/hk-expands-individual-officer-program-for-law-enforcement-duplicate-882/",
+          "Wed, 08 Apr 2026 15:11:30 +0000"
+        ],
+        [
+          "HK MR556 A4 Upper Receiver Kits Now Available",
+          "https://hk-usa.com/2025/05/19/hk-mr556-a4-upper-receiver-kits-now-available/",
+          "Mon, 19 May 2025 18:26:27 +0000"
+        ],
+        [
+          "Heckler &#038; Koch USA Introduces the G36 .22 LR",
+          "https://hk-usa.com/2025/03/24/heckler-koch-usa-introduces-the-g36-22-lr/",
+          "Mon, 24 Mar 2025 17:08:16 +0000"
+        ]
+      ]
+    }
+  },
+  "Colt": {
+    "feed": {
+      "status": 200,
+      "items": 9,
+      "sample": [
+        [
+          "dummy title",
+          "https://www.colt.com/2025/10/03/dummy-title/",
+          "Fri, 03 Oct 2025 20:26:35 +0000"
+        ],
+        [
+          "Colt Announces Closing of Acquisition by CZG",
+          "https://www.colt.com/2021/05/24/colt-announces-closing-of-acquisition-by-czg/",
+          "Mon, 24 May 2021 19:32:00 +0000"
+        ],
+        [
+          "CZG \u2013 \u010cesk\u00e1 zbrojovka Group SE to acquire Colt",
+          "https://www.colt.com/2021/02/12/czg-ceska-zbrojovka-group-se-to-acquire-colt/",
+          "Fri, 12 Feb 2021 19:51:00 +0000"
+        ],
+        [
+          "Colt Secures Joint Foreign Military Sales Contract for M16A4 Rifles",
+          "https://www.colt.com/2020/05/04/colt-secures-joint-foreign-military-sales-contract-for-m16a4-rifles/",
+          "Mon, 04 May 2020 20:16:00 +0000"
+        ]
+      ]
+    }
+  },
+  "Kel-Tec": {
+    "feed": {
+      "status": 200,
+      "items": 60,
+      "sample": [
+        [
+          "Maine Department of Corrections Expands Longstanding Use of KelTec KSG",
+          "https://www.keltecweapons.com/blog/maine-department-of-corrections-expands-longstanding-use-of-keltec-ksg-platform-for-less-lethal-applications/",
+          "Tue, 13 Oct 2026 17:45:47 +0000"
+        ],
+        [
+          "What To Look For In a Home Defense Shotgun",
+          "https://www.keltecweapons.com/blog/what-to-look-for-in-a-home-defense-shotgun/",
+          "Tue, 04 Aug 2026 17:26:54 +0000"
+        ],
+        [
+          "Korea Coast Guard Again Selects KelTec KSG Tactical for Maritime Opera",
+          "https://www.keltecweapons.com/blog/korea-coast-guard-again-selects-keltec-ksg-tactical-for-maritime-operations/",
+          "Fri, 31 Jul 2026 18:27:31 +0000"
+        ],
+        [
+          "What Makes a Great Backpack Gun?",
+          "https://www.keltecweapons.com/blog/what-makes-a-great-backpack-gun/",
+          "Tue, 28 Jul 2026 17:20:19 +0000"
+        ]
+      ]
+    }
+  }
+}
