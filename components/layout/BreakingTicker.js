@@ -91,7 +91,7 @@ export default function BreakingTicker({ alerts: initialAlerts = [] }) {
           <div
             style={{
               display: 'flex',
-              animation: `scrollLeft ${Math.max(16, doubled.length * 4)}s linear infinite`,
+              animation: `scrollLeft ${Math.max(32, doubled.length * 8)}s linear infinite`,
               whiteSpace: 'nowrap',
               paddingLeft: '40px',
             }}
