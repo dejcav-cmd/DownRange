@@ -61,6 +61,8 @@ const ALL_JOBS = [
   { id:'social-scheduled', path:'/api/social/cron/scheduled', schedule:'*/5 * * * *', label:'Scheduled Social Posts', group:'Social', icon:'⏰', critical:false, desc:'Posts items with a set social time to all platforms' },
   { id:'social-analytics', path:'/api/social/analytics?refresh=1', schedule:'35 */2 * * *', label:'Social Analytics Refresh', group:'Social', icon:'📊', critical:false, desc:'Engagement stats every 2h' },
   { id:'monthly-cleanup', path:'/api/cron/monthly-cleanup', schedule:'20 9 1 * *', label:'Monthly Cleanup (1st, 2:20am PT)', group:'System', icon:'🧹', critical:false, desc:'Deletes deals >60d and news >180d (keeps news linked from blog posts)' },
+  // Manual tools: not scheduled, never flagged OVERDUE. Shown in Jobs so every runnable thing lives in one place.
+  { id:'fix-canada-articles', manual:true, path:'/api/admin/fix-canada-articles', schedule:null, label:'Fix Canada Articles (manual)', group:'System', icon:'🔧', critical:false, desc:'Rewrites Canada articles that have no body. Run by hand when needed.' },
 ]
 
 function auth(req) {
@@ -81,7 +83,7 @@ export async function GET(req) {
     // Parse schedule to determine expected interval
     const intervalMs = parseScheduleInterval(job.schedule)
     const lastRunAge = lastRun ? now - new Date(lastRun.at).getTime() : Infinity
-    const isOverdue  = intervalMs && lastRunAge > intervalMs * 2.5
+    const isOverdue  = !job.manual && intervalMs && lastRunAge > intervalMs * 2.5
 
     // Compute streak (consecutive successes from latest)
     let streak = 0
@@ -100,6 +102,8 @@ export async function GET(req) {
       // Paused Sep 2026 (no output / informational-only email). Code kept; re-enable
       // by restoring the schedule in vercel.json and removing paused:true here.
       status = 'paused'
+    } else if (job.manual && !lastRun) {
+      status = 'manual'
     } else if (lastRun) {
       if (lastRun.status === 'failed') status = 'failed'
       else if (isOverdue) status = 'overdue'

@@ -44,6 +44,7 @@ const ST = {
   overdue: { color:'#f97316', bg:'rgba(249,115,22,.12)', icon:'⚠', label:'OVERDUE'   },
   never:   { color:'#6b7280', bg:'rgba(107,114,128,.1)', icon:'○', label:'NEVER RUN' },
   paused:  { color:'#6b7280', bg:'rgba(107,114,128,.08)', icon:'⏸', label:'PAUSED'    },
+  manual:  { color:'#6b7280', bg:'rgba(107,114,128,.08)', icon:'✋', label:'MANUAL'    },
 }
 
 const GC = { Content:'#3b82f6', System:'#22c55e', Outreach:'#C8922A', Social:'#a855f7' }
@@ -224,7 +225,7 @@ export default function CronDashboard({ adminKey }) {
       <div className="cd-topbar">
         <div style={{flex:1}}>
           <div style={{fontFamily:"'Bebas Neue',cursive",fontSize:'1.4rem',color:'var(--gold)',letterSpacing:'.05em',lineHeight:1}}>
-            🛰 CRON MISSION CONTROL
+            ⏱ JOBS
           </div>
           <div style={{fontSize:10,color:'#4b5563',marginTop:3}}>
             {jobs.length} jobs · {lastFetched ? `refreshed ${fmtAge(lastFetched.toISOString())}` : ''} ·{' '}
@@ -288,7 +289,7 @@ export default function CronDashboard({ adminKey }) {
           </button>
         ))}
         <span style={{fontSize:10,color:'#6b7280',marginLeft:8}}>Status:</span>
-        {['All','failed','overdue','success','never','paused'].map(s => (
+        {['All','failed','overdue','success','never','paused','manual'].map(s => (
           <button key={s} className="cd-ghost"
             onClick={()=>setFilterStatus(s)}
             style={{

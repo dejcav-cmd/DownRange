@@ -18,7 +18,7 @@ const NewsletterManager     = L(() => import('../../components/admin/NewsletterM
 const NewsArticleManager    = L(() => import('../../components/admin/NewsArticleManager'))
 const PressReleaseManager   = L(() => import('../../components/admin/PressReleaseManager'))
 const LegalRadarManager     = L(() => import('../../components/admin/LegalRadarManager'))
-const OperationsPanel        = L(() => import('../../components/admin/OperationsPanel'))
+const TodayDashboard        = L(() => import('../../components/admin/TodayDashboard'))
 const CanadaManager         = L(() => import('../../components/admin/CanadaManager'))
 const BrazilManager         = L(() => import('../../components/admin/BrazilManager'))
 const BlogManagerFull       = L(() => import('../../components/admin/BlogManager'))
@@ -27,7 +27,6 @@ const EnvChecker            = L(() => import('../../components/admin/EnvChecker'
 const CronDashboard         = L(() => import('../../components/admin/CronDashboard'))
 const ImageRepository       = L(() => import('../../components/admin/ImageRepository'))
 const ImageFinder           = L(() => import('../../components/admin/ImageFinder'))
-const SiteMapPanel          = L(() => import('../../components/admin/SiteMapPanel'))
 const DealsManager          = L(() => import('../../components/admin/DealsManager'))
 const SocialMediaManager    = L(() => import('../../components/admin/SocialMediaManager'))
 const DeploymentsPanel      = L(() => import('../../components/admin/DeploymentsPanel'))
@@ -48,6 +47,12 @@ function PanelLoader() {
 // Social + Outreach merged. sysalerts+smsalerts unified under Alerts.
 // copyright+compliance merged to Legal. mailing-list moved to Outreach.
 const NAV = [
+  {
+    id: 'home', label: 'Today', icon: '☀',
+    panels: [
+      { id:'today',        label:'Today',            icon:'☀'  },
+    ]
+  },
   {
     id: 'content', label: 'Content', icon: '📰',
     panels: [
@@ -77,7 +82,6 @@ const NAV = [
     panels: [
       { id:'intel',        label:'Briefings',        icon:'📊' },
       { id:'statelaws',    label:'State Laws',       icon:'🗺' },
-      { id:'feeds',        label:'Feed Agent',       icon:'⚡' },
       { id:'pulllog',      label:'Pull Log',         icon:'📡' },
       { id:'legal',        label:'Legal & Compliance',icon:'⚖', badge:'new' },
     ]
@@ -85,14 +89,11 @@ const NAV = [
   {
     id: 'system', label: 'System', icon: '⚙',
     panels: [
-      { id:'overview',     label:'Mission Control',  icon:'◈'  },
-      { id:'crons',        label:'Cron Jobs',        icon:'⏱' },
+      { id:'crons',        label:'Jobs',             icon:'⏱' },
       { id:'alerts',       label:'Alerts',           icon:'🚨', badge:'new' },
-      { id:'operations',   label:'Operations',       icon:'⚡' },
       { id:'agents',       label:'Content Quality',   icon:'✅' },
       { id:'sources',      label:'Sources',          icon:'📡' },
       { id:'deployments',  label:'Deployments',      icon:'▲'  },
-      { id:'sitemap',      label:'Site Map',         icon:'🗺️' },
       { id:'ranges',       label:'Ranges DB',        icon:'◎'  },
     ]
   },
@@ -340,149 +341,6 @@ const STYLES = `
 `
 
 // ── Inline: Overview Dashboard ───────────────────────────────────────────────
-function OverviewDashboard({ adminKey, setPanel, setSection }) {
-  const [health, setHealth
-    ]         = useState(null)
-  const [migrateResult, setMigrateResult] = useState(null)
-  const [migrating, setMigrating]   = useState(false)
-  const [feedRunning, setFeedRunning] = useState(false)
-  const [feedResult, setFeedResult]   = useState(null)
-
-  useEffect(() => {
-    fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
-  }, [])
-
-  async function runNewsFeed() {
-    setFeedRunning(true); setFeedResult(null)
-    try {
-      const res = await fetch('/api/admin/cron-status?trigger=true', {
-        method: 'POST',
-        headers: { 'x-admin-key': adminKey, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ jobId: 'news' }),
-      })
-      const d = await res.json()
-      setFeedResult({ ok: d.ok, msg: d.ok ? `✓ News feed ran in ${d.ms}ms` : '✕ ' + (d.error || d.response || 'Failed') })
-      fetch('/api/admin/cron-health').then(r=>r.json()).then(d=>setHealth(d)).catch(()=>{})
-    } catch(e) { setFeedResult({ ok: false, msg: 'Error: ' + e.message }) }
-    setFeedRunning(false)
-  }
-
-  async function migrateAmmoland() {
-    setMigrating(true); setMigrateResult(null)
-    try {
-      const preview = await fetch('/api/admin/migrate-ammoland', { headers:{'x-admin-key':adminKey} })
-      const pd = await preview.json()
-      if (pd.wrongCategory === 0) {
-        setMigrateResult({ ok:true, msg:'Nothing to migrate — all AmmoLand articles already in deals ✓' })
-        setMigrating(false); return
-      }
-      const r = await fetch('/api/admin/migrate-ammoland', { method:'POST', headers:{'x-admin-key':adminKey} })
-      const d = await r.json()
-      setMigrateResult({ ok:d.ok, msg: d.ok ? `✓ Migrated ${d.migrated} AmmoLand articles → deals category` : '✕ ' + (d.errors?.[0] || 'Error') })
-    } catch(e) { setMigrateResult({ ok:false, msg:'Error: '+e.message }) }
-    setMigrating(false)
-  }
-
-  const quickLinks = [
-    { label:'View Site',    url:'https://downrangeco.com', icon:'🌐' },
-    { label:'View News',    url:'https://downrangeco.com/news', icon:'📰' },
-    { label:'Blog',         url:'https://downrangeco.com/blog', icon:'✍' },
-    { label:'Sanity Studio',url:'/studio', icon:'📝' },
-    { label:'Vercel',       url:'https://vercel.com', icon:'▲' },
-  ]
-
-  const contentSections = [
-    { label:'News Articles', icon:'📰', url:'/news',        editFn:()=>{ setSection('content'); setPanel('news') } },
-    { label:'Press Releases', icon:'🏭', url:'/news/manufacturer-press-releases', editFn:()=>{ setSection('content'); setPanel('press') } },
-    { label:'Blog Posts',    icon:'✍',  url:'/blog',        editFn:()=>{ setSection('content'); setPanel('blog') } },
-    { label:'Canada',        icon:'🇨🇦', url:'/canada',      editFn:()=>{ setSection('content'); setPanel('canada') } },
-    { label:'Brasil',        icon:'🇧🇷', url:'/brazil',      editFn:()=>{ setSection('content'); setPanel('brazil') } },
-    { label:'Videos',        icon:'▶',  url:'/video',       editFn:()=>{ setSection('media');   setPanel('videos') } },
-  ]
-
-  return (
-    <div>
-      <div className="panel-title">DownRange Command Center</div>
-      <div className="panel-sub">Enterprise firearms media management platform</div>
-
-      {/* AmmoLand migration */}
-      <div style={{marginBottom:16,padding:'12px 18px',background:'rgba(200,146,42,.05)',border:'1px solid rgba(200,146,42,.2)',display:'flex',alignItems:'center',gap:12,flexWrap:'wrap'}}>
-        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#C8922A',fontWeight:700}}>AMMOLAND FIX</span>
-        <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#64748b',flex:1}}>Migrate AmmoLand articles from news → deals category. Run once to fix existing articles.</span>
-        <button className="btn-primary" style={{fontSize:10,padding:'5px 14px'}} onClick={migrateAmmoland} disabled={migrating}>
-          {migrating ? '⏳ Migrating...' : '▶ Run Migration'}
-        </button>
-        {migrateResult && (
-          <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:migrateResult.ok?'#22c55e':'#ef4444'}}>{migrateResult.msg}</span>
-        )}
-      </div>
-
-      {/* Health banner */}
-      {health && health.status !== 'HEALTHY' && (
-        <div style={{marginBottom:20,padding:'12px 18px',background:'rgba(239,68,68,.08)',border:'1px solid rgba(239,68,68,.3)',fontFamily:"'IBM Plex Mono',monospace",fontSize:11}}>
-          <span style={{color:'#ef4444',fontWeight:700,marginRight:10}}>⚠ SYSTEM DEGRADED</span>
-          {(health.issues||[]).map((i,x)=><span key={x} style={{color:'#fca5a5',marginRight:8}}>{typeof i==='object'?i.msg||i.severity||JSON.stringify(i):i}</span>)}
-        </div>
-      )}
-
-      {/* Quick links */}
-      <div style={{display:'flex',gap:8,marginBottom:24,flexWrap:'wrap'}}>
-        {quickLinks.map(l=>(
-          <a key={l.label} href={l.url} target="_blank" rel="noreferrer"
-            style={{display:'flex',alignItems:'center',gap:6,fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#6b7280',padding:'6px 12px',border:'1px solid var(--border)',textDecoration:'none',transition:'all .15s'}}
-            onMouseEnter={e=>{e.currentTarget.style.borderColor='#C8922A';e.currentTarget.style.color='#C8922A'}}
-            onMouseLeave={e=>{e.currentTarget.style.borderColor='var(--border)';e.currentTarget.style.color='#6b7280'}}>
-            <span>{l.icon}</span>{l.label} ↗
-          </a>
-        ))}
-      </div>
-
-      {/* Content grid */}
-      <div style={{marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>Content Sections</div>
-      <div className="adm-card-grid" style={{marginBottom:32}}>
-        {contentSections.map(s=>(
-          <div key={s.label} className="adm-card" style={{display:'flex',gap:12,alignItems:'center',transition:'border-color .15s',cursor:'pointer'}}
-            onMouseEnter={e=>e.currentTarget.style.borderColor='#C8922A'}
-            onMouseLeave={e=>e.currentTarget.style.borderColor='var(--border)'}>
-            <span style={{fontSize:24,flexShrink:0}}>{s.icon}</span>
-            <div style={{flex:1}}>
-              <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',marginBottom:4}}>{s.label}</div>
-              <div style={{display:'flex',gap:8}}>
-                <a href={s.url} target="_blank" rel="noreferrer" className="btn-outline" style={{padding:'3px 8px',fontSize:9,textDecoration:'none'}}>View ↗</a>
-                <button className="btn-outline" style={{padding:'3px 8px',fontSize:9}} onClick={s.editFn}>Manage →</button>
-              </div>
-            </div>
-          </div>
-        ))}
-      </div>
-
-      {/* System status */}
-      <div style={{marginBottom:8,fontFamily:"'Barlow Condensed',sans-serif",fontSize:14,fontWeight:700,color:'var(--text)',letterSpacing:'.05em',textTransform:'uppercase'}}>System Status</div>
-      <div style={{display:'grid',gridTemplateColumns:'repeat(auto-fill,minmax(180px,1fr))',gap:10}}>
-        {[
-          {label:'News Feed', status: health?.status==='HEALTHY'?'Healthy': health?.issues?.[0]?.msg?.slice(0,40)||'Check required', ok:health?.status==='HEALTHY', icon:'📰', action: runNewsFeed, actionLabel: feedRunning?'Running…':'▶ Run Now'},
-          {label:'Cron Jobs',     status:'Running',     ok:true,  icon:'⏱'},
-          {label:'AI Pipeline',   status:'Active',      ok:true,  icon:'🤖'},
-          {label:'Sanity CMS',    status:'Connected',   ok:true,  icon:'📦'},
-        ].map(s=>(
-          <div key={s.label} className="adm-card" style={{display:'flex',gap:10,alignItems:'center',flexWrap:'wrap'}}>
-            <span style={{fontSize:18}}>{s.icon}</span>
-            <div style={{flex:1,minWidth:0}}>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'var(--text)',marginBottom:2}}>{s.label}</div>
-              <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:s.ok?'#22c55e':'#f59e0b'}}>{s.ok?'●':''} {s.status}</div>
-              {s.action && <button className="btn-primary" style={{marginTop:6,fontSize:9,padding:'3px 8px'}} onClick={s.action} disabled={feedRunning}>{s.actionLabel}</button>}
-            </div>
-          </div>
-        ))}
-      </div>
-      {feedResult && (
-        <div style={{marginTop:10,padding:'8px 14px',background:feedResult.ok?'rgba(34,197,94,.08)':'rgba(239,68,68,.08)',border:`1px solid ${feedResult.ok?'#22c55e':'#ef4444'}`,fontFamily:"'IBM Plex Mono',monospace",fontSize:11,color:feedResult.ok?'#22c55e':'#f87171'}}>
-          {feedResult.msg}
-        </div>
-      )}
-    </div>
-  )
-}
 
 // ── Inline: RSS Sources tab ───────────────────────────────────────────────────
 function RSSSourcesPanel() {
@@ -990,55 +848,6 @@ function IdentityPanel({ adminKey }) {
 }
 
 // ── Inline: Feeds panel ───────────────────────────────────────────────────────
-function FeedsPanel({ adminKey, setMsg }) {
-  const [running, setRunning] = useState({})
-  const feeds = [
-    { key:'news',     label:'News Feed',     icon:'📰', schedule:'Every 15 min', desc:'RSS + NewsAPI + GNews → AI rewrite → Sanity', color:'#22c55e' },
-    { key:'laws',     label:'Laws Feed',     icon:'⚖',  schedule:'Every 2 hrs',  desc:'Congress.gov + LegiScan → bill analysis', color:'#3b82f6' },
-    { key:'video',    label:'Video Feed',    icon:'▶',  schedule:'Every 4 hrs',  desc:'YouTube API → channel videos + thumbnails', color:'#ef4444' },
-    { key:'state',    label:'State Feed',    icon:'🗺', schedule:'Daily 8am',    desc:'State legislation + profiles → 50-state database', color:'#a855f7' },
-    { key:'goa',      label:'GOA Press',     icon:'⚖', schedule:'Every 2 hrs',  desc:'Gun Owners of America press center — no-compromise 2A advocacy', color:'#ef4444' },
-  ]
-
-  async function run(key) {
-    setRunning(r=>({...r,[key]:true}))
-    setMsg(`Running ${key} feed...`)
-    try {
-      const r = await fetch(`/api/admin/run?feed=${key}`, { method:'POST', headers:{'x-admin-key':adminKey} })
-      const d = await r.json()
-      if (d.success) {
-        const res = d.result || {}
-        setMsg(`✅ ${key}: ${res.done ?? res.published ?? '?'} published · ${d.ms}ms`)
-      } else setMsg(`❌ ${key}: ${d.error}`)
-    } catch(e) { setMsg(`❌ Error: ${e.message}`) }
-    setRunning(r=>({...r,[key]:false}))
-  }
-
-  return (
-    <div>
-      <div className="panel-title">AI Feed Agent</div>
-      <div className="panel-sub">Automated content ingestion pipelines. Each feed pulls, processes, and publishes to Sanity on schedule.</div>
-      <div className="adm-card-grid">
-        {feeds.map(f=>(
-          <div key={f.key} className="adm-card" style={{borderLeft:`3px solid ${f.color}`}}>
-            <div style={{display:'flex',gap:10,alignItems:'flex-start',marginBottom:10}}>
-              <span style={{fontSize:20}}>{f.icon}</span>
-              <div style={{flex:1}}>
-                <div style={{fontFamily:"'Barlow Condensed',sans-serif",fontSize:15,fontWeight:700,color:'var(--text)',marginBottom:2}}>{f.label}</div>
-                <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:f.color}}>{f.schedule}</div>
-              </div>
-            </div>
-            <div style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:10,color:'#6b7280',marginBottom:12,lineHeight:1.6}}>{f.desc}</div>
-            <button className="btn-primary" onClick={()=>run(f.key)} disabled={running[f.key]}
-              style={{width:'100%',fontSize:11,background:running[f.key]?'#374151':f.color}}>
-              {running[f.key] ? '⏳ Running...' : '▶ Run Now'}
-            </button>
-          </div>
-        ))}
-      </div>
-    </div>
-  )
-}
 
 // ── Inline: Deals panel ───────────────────────────────────────────────────────
 // DealsPanel replaced by DealsManager component
@@ -2678,13 +2487,13 @@ function LegalPanel({ adminKey }) {
 
 // ── Command palette (Cmd/Ctrl+K or "/"): jump to any panel by typing a few letters ──────────
 const PALETTE_KEYWORDS = {
-  hub:'overview content health scan', news:'articles feed stories', press:'manufacturer releases prn', radar:'2a legal cases scotus courts',
+  today:'home dashboard overview attention status mission control',  hub:'content health scan', news:'articles feed stories', press:'manufacturer releases prn', radar:'2a legal cases scotus courts',
   blog:'posts writing', deals:'ammo prices gun deals', drafts:'recover lost', cleanup:'delete purge duplicates',
   breaking:'alert ticker banner', newsletter:'email digest subscribers send', schedule:'calendar publish',
-  seo:'search google meta sitemap', intel:'briefing daily intelligence', statelaws:'states legislation', feeds:'rss agent pull run',
-  pulllog:'history ingestion log', legal:'compliance copyright', overview:'mission control status health home dashboard',
-  crons:'jobs schedule overdue failing', alerts:'errors failures sms email', operations:'run now manual jobs', agents:'quality weak articles rewrite thin',
-  sources:'feeds rss sources', deployments:'vercel deploy builds', sitemap:'pages map crons', ranges:'range finder database',
+  seo:'search google meta sitemap', intel:'briefing daily intelligence', statelaws:'states legislation',
+  pulllog:'history ingestion log', legal:'compliance copyright',
+  crons:'jobs cron schedule overdue failing run now feeds operations manual', alerts:'errors failures sms email', agents:'quality weak articles rewrite thin',
+  sources:'feeds rss sources', deployments:'vercel deploy builds', ranges:'range finder database',
   social:'twitter facebook instagram post', outreach:'crm campaigns contacts dealers', 'mailing-list':'subscribers email list',
   videos:'youtube', channels:'youtube channels', imglib:'photos images library', imgsearch:'find images photos',
   ai:'models claude anthropic routing chain', costs:'spend money tokens usage', keys:'api secrets', identity:'brand logo colors',
@@ -2743,9 +2552,9 @@ function CommandPalette({ open, onClose, onPick }) {
 export default function AdminPage() {
   const [adminKey, setAdminKeyState] = useState('')
   // openSections: Set of section IDs currently expanded in the tree
-  const [openSections, setOpenSections] = useState(new Set(['system']))
-  const [section,  setSection]  = useState('system')
-  const [panel,    setPanel]    = useState('overview')
+  const [openSections, setOpenSections] = useState(new Set(['home']))
+  const [section,  setSection]  = useState('home')
+  const [panel,    setPanel]    = useState('today')
   const [mobileNavOpen, setMobileNavOpen] = useState(false)
   const [paletteOpen, setPaletteOpen] = useState(false)
   const [msg,      setMsg]      = useState('')
@@ -2792,7 +2601,12 @@ export default function AdminPage() {
   useEffect(() => {
     const id = (window.location.hash || '').replace('#', '')
     if (!id) return
-    for (const sec of NAV) if (sec.panels.some(p => p.id === id)) { openPanel(sec.id, id); break }
+    openById(id)
+  }, [])
+  useEffect(() => {
+    const onHash = () => { const id = (window.location.hash || '').replace('#', ''); if (id) openById(id) }
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
   }, [])
   useEffect(() => {
     if (panel) { try { window.history.replaceState(null, '', '#' + panel) } catch {} }
@@ -2827,6 +2641,14 @@ export default function AdminPage() {
     // Ensure the section is open
     setOpenSections(prev => { const next = new Set(prev); next.add(sectionId); return next })
     setMobileNavOpen(false)
+  }
+
+  // Open a panel by id alone (finds its section). Used by Today and old deep links.
+  const PANEL_ALIASES = { overview:'today', operations:'crons', feeds:'crons', sitemap:'crons' }
+  function openById(id) {
+    const pid = PANEL_ALIASES[id] || id
+    const sec = NAV.find(x => x.panels.some(p => p.id === pid))
+    if (sec) openPanel(sec.id, pid)
   }
 
   const currentSection = NAV.find(s => s.id === section)
@@ -2967,18 +2789,15 @@ export default function AdminPage() {
             {panel==='legal'      && <LegalPanel adminKey={adminKey} />}
             {panel==='pulllog'    && <PullLogDashboard />}
             {panel==='deals'      && <DealsManager adminKey={adminKey} />}
-            {panel==='feeds'      && <FeedsPanel adminKey={adminKey} setMsg={flash} />}
 
 
             {/* ── SYSTEM ── */}
-            {panel==='overview'    && <OverviewDashboard adminKey={adminKey} setPanel={p=>openPanel('system',p)} setSection={s=>{ const sec=NAV.find(x=>x.id===s); openPanel(s, sec?.panels?.[0]?.id||s) }} />}
+            {panel==='today'       && <TodayDashboard adminKey={adminKey} onOpen={openById} jumpGroups={NAV.filter(x=>x.id!=='home')} />}
             {panel==='crons'       && <CronDashboard adminKey={adminKey} />}
-            {panel==='operations'  && <OperationsPanel adminKey={adminKey} setMsg={flash} />}
             {panel==='alerts'      && <UnifiedAlertsPanel adminKey={adminKey} />}
             {panel==='smsalerts'   && <SMSAlertsPanel adminKey={adminKey} />}
             {panel==='sysalerts'   && <SystemAlertsPanel adminKey={adminKey} />}
             {panel==='sources'     && <SourceManager adminKey={adminKey} />}
-            {panel==='sitemap'     && <SiteMapPanel adminKey={adminKey} />}
             {panel==='ranges'      && <RangesPanel />}
             {panel==='deployments' && <DeploymentsPanel adminKey={adminKey} />}
             {panel==='agents'      && <ContentAgentsPanel adminKey={adminKey} setMsg={flash} />}
