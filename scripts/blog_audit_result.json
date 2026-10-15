@@ -1,0 +1,107 @@
+{
+  "total": 48,
+  "suspect": [
+    {
+      "slug": "dj-atf-ends-nfa-enforcement-on-suppressors-and-sbrs-nationwide-2026",
+      "id": "blog-dj-20261015-2k45cz",
+      "words": 516,
+      "why": [
+        "no closing tag",
+        "instruction leaked in description"
+      ]
+    },
+    {
+      "slug": "dj-erie-home-shooting-leaves-seven-dead-handgun-law-under-scrutiny-2026",
+      "id": "blog-dj-20261013-5ge19s",
+      "words": 640,
+      "why": [
+        "no closing tag",
+        "instruction leaked in description"
+      ]
+    },
+    {
+      "slug": "dj-federal-judge-blocks-connecticut-s-glock-ban-gun-owners-win-reprieve-2026",
+      "id": "blog-dj-20261006-e3v1c0",
+      "words": 1139,
+      "why": [
+        "instruction leaked in description"
+      ]
+    },
+    {
+      "slug": "dj-constitutional-carry-29-states-2026",
+      "id": "blog-dj-topic-6",
+      "words": 1161,
+      "why": [
+        "no closing tag"
+      ]
+    },
+    {
+      "slug": "dj-building-your-first-ar-15-in-2026-parts-tariffs-and-what-to--2026",
+      "id": "sZarkGCWKodXiPseaW3a9x",
+      "words": 1043,
+      "why": [
+        "no closing tag"
+      ]
+    },
+    {
+      "slug": "dj-home-defense-setup-what-actually-works-vs-what-youtube-sells-2026",
+      "id": "U5bwFiwsdnUkP1ofQJecCT",
+      "words": 1254,
+      "why": [
+        "no closing tag"
+      ]
+    },
+    {
+      "slug": "dj-home-defense-setup-what-actually-works-vs-what-youtube-sells-2026",
+      "id": "KtBy4YB66kH33JX4YwYUan",
+      "words": 1125,
+      "why": [
+        "no closing tag"
+      ]
+    },
+    {
+      "slug": "dj-the-bruen-standard-and-how-states-are-trying-to-work-around--2026",
+      "id": "NyhsWmN0U96DiE4MOsf6F3",
+      "words": 1261,
+      "why": [
+        "no closing tag"
+      ]
+    },
+    {
+      "slug": "dj-concealed-carry-reciprocity-and-the-state-by-state-patchwork-2026",
+      "id": "NyhsWmN0U96DiE4MOsdouz",
+      "words": 1210,
+      "why": [
+        "no closing tag"
+      ]
+    },
+    {
+      "slug": "atf-pistol-brace-rule-two-years",
+      "id": "seed-blog-003",
+      "words": 221,
+      "why": [
+        "short"
+      ]
+    },
+    {
+      "slug": "owb-to-aiwb-carry-switch",
+      "id": "seed-blog-002",
+      "words": 193,
+      "why": [
+        "short"
+      ]
+    },
+    {
+      "slug": "home-defense-basics",
+      "id": "seed-blog-001",
+      "words": 224,
+      "why": [
+        "short"
+      ]
+    }
+  ],
+  "unpublished": {
+    "slug": "dj-atf-ends-nfa-enforcement-on-suppressors-and-sbrs-nationwide-2026",
+    "response": "{\"ok\":true}"
+  }
+}
