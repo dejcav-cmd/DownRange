@@ -1,0 +1,52 @@
+name: Press Releases Backfill
+
+# Deep history pull: reads several listing pages per manufacturer, up to 3 years back, 12 new releases
+# per brand per round. Run manually from the Actions tab; it is safe to re-run (known releases are skipped).
+on:
+  workflow_dispatch:
+    inputs:
+      brand:
+        description: 'Optional: only this manufacturer (exact name)'
+        required: false
+        default: ''
+      window:
+        description: 'How many days back to accept releases'
+        required: false
+        default: '1095'
+
+jobs:
+  backfill:
+    runs-on: ubuntu-latest
+    timeout-minutes: 180
+    steps:
+      - name: Backfill rounds
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          BRAND: ${{ github.event.inputs.brand }}
+          WINDOW: ${{ github.event.inputs.window }}
+        run: |
+          set -u
+          Q="?max=24&per=12&listing=30&depth=6&window=${WINDOW:-1095}"
+          if [ -n "$BRAND" ]; then Q="$Q&brand=$(python3 -c 'import urllib.parse,os;print(urllib.parse.quote(os.environ["BRAND"]))')"; fi
+          idle=0
+          for round in $(seq 1 40); do
+            echo "=== round $round ==="
+            code=$(curl -s -o out.json -w '%{http_code}' --max-time 295 \
+              -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/cron/press-releases$Q" || echo 000)
+            echo "HTTP $code"
+            python3 - <<'PY'
+          import json
+          try:
+              d = json.load(open("out.json"))
+              print({k: d.get(k) for k in ("created","noImage","skipped","stale","failed","remaining","done")})
+              for s in d.get("sources", []):
+                  print(" ", s.get("brand"), s.get("status"), "cand", s.get("candidates"), "created", s.get("created"), s.get("note",""))
+          except Exception as e:
+              print("unparseable response", e)
+          PY
+            if [ "$code" != "200" ]; then sleep 90; continue; fi
+            created=$(python3 -c 'import json; print(json.load(open("out.json")).get("created",0))')
+            if python3 -c 'import json,sys; d=json.load(open("out.json")); sys.exit(0 if d.get("done") else 1)'; then echo "Backfill complete."; exit 0; fi
+            if [ "$created" = "0" ]; then idle=$((idle+1)); else idle=0; fi
+            if [ "$idle" -ge 3 ]; then echo "No new releases for 3 rounds; stopping."; exit 0; fi
+          done

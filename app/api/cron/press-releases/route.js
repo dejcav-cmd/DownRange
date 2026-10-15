@@ -22,8 +22,11 @@ export async function GET(req) {
   const url = new URL(req.url)
   const opts = {
     maxCreate:  Math.min(40, parseInt(url.searchParams.get('max') || '24', 10) || 24),
-    windowDays: Math.min(365, parseInt(url.searchParams.get('window') || '120', 10) || 120),
+    windowDays: Math.min(1095, parseInt(url.searchParams.get('window') || '120', 10) || 120),
     brand:      url.searchParams.get('brand') || null,
+    perBrand:   Math.min(30, parseInt(url.searchParams.get('per') || '3', 10) || 3),
+    perListing: Math.min(60, parseInt(url.searchParams.get('listing') || '8', 10) || 8),
+    depth:      Math.min(8, parseInt(url.searchParams.get('depth') || '1', 10) || 1),
   }
   try {
     // mode=images: only fix/add real images on existing articles. Otherwise pull new releases,
