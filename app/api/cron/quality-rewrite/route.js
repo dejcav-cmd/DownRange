@@ -5,6 +5,7 @@ import { reportCronRun } from '@/lib/cronReporter'
 import { createClient }  from '@sanity/client'
 import { callAIText }    from '@/lib/aiClient.js'
 import { fetchSourceFacts } from '@/lib/sourceFacts.js'
+import { THIN_CHARS, MIN_ACCEPT_WORDS, TARGET_WORDS, wordsOf } from '@/lib/articleQuality.js'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -30,6 +31,8 @@ function scoreBody(body) {
   if (!body || body.length < 100) return { score: 0, issues: ['missing body'] }
   const text  = body.replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').toLowerCase()
   const words = text.split(/\s+/).filter(Boolean)
+  // A teaser is never "good": under 250 words always needs a full rewrite (it used to score 75 and only get a new title).
+  if (words.length < 250) return { score: 30, issues: [`teaser body (${words.length} words)`], words: words.length }
   const issues = []
   if (words.length < 400) issues.push(`too short (${words.length} words, need 400+)`)
   const found = AI_PHRASES.filter(p => text.includes(p.toLowerCase()))
@@ -62,14 +65,15 @@ TITLE: Original headline only — never source title. Max 12 words. Active voice
 
 BANNED WORDS (fail if any appear): comprehensive, dive into, robust, seamlessly, leverage, empower, game-changer, landscape, delve, utilize, unprecedented, synergy, moving forward, it remains to be seen, stakeholders, holistic, groundbreaking, pivotal, notably, furthermore, in conclusion, in summary, a wide range of, in the realm of, when it comes to
 
-STRUCTURE — must have 3+ <h2> tags:
-<h2>[Lead — hardest fact]</h2>
-<h2>Why It Matters for Gun Owners</h2>
+STRUCTURE — 5 <h2> sections, each 2-3 solid paragraphs:
+<h2>[Lead — hardest fact: who, what, when, where, numbers]</h2>
+<h2>Key Details</h2>
 <h2>Background</h2>
+<h2>Why It Matters for Gun Owners</h2>
 <h2>DownRange Bottom Line</h2>
 
 STYLE: First sentence = hardest fact. Sentences avg under 15 words. Active voice. Specific names/calibers/prices. No padding.
-LENGTH: 500-700 words minimum.`
+LENGTH: ${TARGET_WORDS} words. Never under 450.`
 
 // Full rewrite — body + title
 async function rewriteFull(item) {
@@ -84,25 +88,36 @@ async function rewriteFull(item) {
 
   const prompt = `${VOICE}
 
-Rewrite this ${typeLabel} for DownRange as original reporting and analysis built on the facts below (names, numbers, dates, places). Do not copy sentences or the source structure. Must be 500-700 words. Must have 3-4 <h2> sections. Must NOT use any banned words.
+Rewrite this ${typeLabel} for DownRange as original reporting and analysis built on the facts below (names, numbers, dates, places). Do not copy sentences or the source structure. Must be ${TARGET_WORDS} words. Must have 5 <h2> sections (lead, Key Details, Background, Why It Matters for Gun Owners, DownRange Bottom Line). If the source facts are thin, spend the words on background and analysis you are sure of; never invent facts, quotes or numbers. Must NOT use any banned words.
 
 Source title (do NOT use this as your headline): ${item.sourceTitle || item.title || ''}
 Source URL: ${item.externalUrl || item.sourceUrl || ''}
 Content: ${src}
 
 Respond ONLY with valid JSON, no markdown fences, no preamble:
-{"title":"original DownRange headline max 12 words","body":"<full HTML with h2 tags 500-700 words>","summary":"2-3 sentence plain text under 300 chars"}`
+{"title":"original DownRange headline max 12 words","body":"<full HTML with 5 h2 sections, ${TARGET_WORDS} words>","summary":"2-3 sentence plain text under 300 chars"}`
 
-  const raw    = await callAIText({ prompt, useCase: 'backfill', maxTokens: 2500 })
-  const clean  = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim()
-  const m      = clean.match(/\{[\s\S]*\}/)
-  if (!m) throw new Error(`No JSON in response: ${clean.slice(0, 200)}`)
-  const parsed = JSON.parse(m[0])
+  const ask = async (extra = '') => {
+    const raw   = await callAIText({ prompt: prompt + extra, useCase: 'backfill', maxTokens: 3600 })
+    const clean = raw.replace(/```json\s*/g, '').replace(/```\s*/g, '').trim()
+    const m     = clean.match(/\{[\s\S]*\}/)
+    if (!m) throw new Error(`No JSON in response: ${clean.slice(0, 200)}`)
+    return JSON.parse(m[0])
+  }
+  let parsed = await ask()
+  // One expansion pass when the draft comes back short.
+  const firstWords = wordsOf(parsed.body)
+  if (firstWords < MIN_ACCEPT_WORDS) {
+    try {
+      const again = await ask(`\n\nYOUR PREVIOUS DRAFT WAS ONLY ${firstWords} WORDS. Write it again at ${TARGET_WORDS} words with all 5 sections, expanding Key Details, Background and the analysis with facts you are sure of. Same JSON shape.`)
+      if (wordsOf(again.body) > firstWords) parsed = again
+    } catch { /* keep the first draft; the length check below decides */ }
+  }
 
   const { score, issues } = scoreBody(parsed.body || '')
   if (score < 70) throw new Error(`Output still fails quality (score=${score}): ${issues.join(', ')}`)
   const wordCount = (parsed.body || '').replace(/<[^>]+>/g, ' ').split(/\s+/).filter(Boolean).length
-  if (wordCount < 300) throw new Error(`Too short: ${wordCount} words`)
+  if (wordCount < MIN_ACCEPT_WORDS) throw new Error(`Too short: ${wordCount} words (need ${MIN_ACCEPT_WORDS}+)`)
   if (!parsed.title || parsed.title.trim() === (item.sourceTitle || '').trim())
     throw new Error('AI returned source title unchanged')
   return parsed
@@ -172,7 +187,7 @@ async function handler(req) {
       // often this cron runs. This explicit query targets missing bodies
       // directly, with no recency assumption, oldest first (FIFO), so the
       // backlog actually drains instead of accumulating forever.
-      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < 2500)] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
+      sanity.fetch(`*[_type=="newsArticle" && defined(title) && editorLocked != true && (!defined(body) || length(body) < ${THIN_CHARS})] | order(_createdAt desc) [0...${BATCH}] { _id, title, sourceTitle, body, summary, description, source, externalUrl, qualityReviewed, qrAttempts, qrLastTryAt }`),
     ])
 
     const seen = new Set()
@@ -192,7 +207,7 @@ async function handler(req) {
     // Cool-off: an article that failed 3 times (unreadable source, AI error) is parked for 24h so it
     // cannot block the queue, then retried. Everything else keeps flowing.
     const cooling = d => (d.qrAttempts || 0) >= 3 && d.qrLastTryAt && Date.now() - new Date(d.qrLastTryAt).getTime() < 24 * 3600 * 1000
-    for (let i = allDocs.length - 1; i >= 0; i--) if (cooling(allDocs[i])) allDocs.splice(i, 1)
+    if (qs.get('force') !== '1') for (let i = allDocs.length - 1; i >= 0; i--) if (cooling(allDocs[i])) allDocs.splice(i, 1)
     stats.scanned = allDocs.length
 
     // ── EARLY EXIT: skip AI entirely if nothing needs work ────────────────────

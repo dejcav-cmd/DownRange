@@ -1055,6 +1055,19 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
     setMsg(d.ok === false ? '❌ ' + (d.error || 'Failed') : '✅ ' + job.label + ': ' + (d.message || 'done'))
     await load()
   })
+  const rewriteAll = () => act('all', async () => {
+    const list = (data?.weakest || []).filter(a => !a.editorLocked)
+    let ok = 0, fail = 0
+    for (let i = 0; i < list.length; i++) {
+      setMsg(`⏳ Rewriting ${i + 1} of ${list.length}...`)
+      try {
+        const d = await (await fetch('/api/cron/quality-rewrite?force=1&slug=' + encodeURIComponent(list[i].slug), { headers: H })).json()
+        if (d.ok) ok++; else fail++
+      } catch { fail++ }
+    }
+    setMsg(`✅ Rewrote ${ok} article${ok !== 1 ? 's' : ''}${fail ? `, ${fail} could not be read from their source` : ''}`)
+    await load()
+  })
   const runWriter = (key, path) => act(key, async () => {
     const d = await (await fetch('/api/admin/' + path, { method: 'POST', headers: H })).json()
     setMsg(d.ok === false ? '❌ ' + (d.error || 'Failed') : '✅ ' + (d.message || 'Done'))
@@ -1106,7 +1119,10 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
         })}
       </div>
 
-      <div className="dr-section-title" style={{ marginBottom: 10 }}>Weakest live articles ({data?.weakest?.length ?? 0} shown)</div>
+      <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap', marginBottom: 10 }}>
+        <div className="dr-section-title">Weakest live articles ({data?.weakest?.length ?? 0} shown)</div>
+        {!!data?.weakest?.length && <button disabled={busy.all} onClick={rewriteAll} style={btn(busy.all, '#ef4444')}>{busy.all ? '⏳ Rewriting...' : '✍ Rewrite all shown'}</button>}
+      </div>
       {data && !data.weakest.length && <div className="adm-card" style={{ color: '#4ade80' }}>All live articles are long enough ✓</div>}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, marginBottom: 28 }}>
         {(data?.weakest || []).map(a => (

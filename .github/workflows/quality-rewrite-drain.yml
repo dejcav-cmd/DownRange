@@ -1,0 +1,24 @@
+name: Quality Rewrite Drain
+
+# Manually triggered: calls the live quality-rewrite job repeatedly (cool-off ignored) until the thin-article
+# queue is empty. Used after changing the writer so the backlog is rewritten right away instead of over days.
+on:
+  workflow_dispatch: {}
+
+jobs:
+  drain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 55
+    steps:
+      - name: Drain thin articles
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          for i in $(seq 1 12); do
+            out=$(curl -s --max-time 290 -H "x-admin-key: $ADMIN_KEY" "https://www.downrangeco.com/api/cron/quality-rewrite?force=1" || true)
+            echo "run $i: $(echo "$out" | head -c 400)"
+            if echo "$out" | grep -q '"remainingFull":0' ; then
+              if echo "$out" | grep -q '"remainingTitle":0'; then echo "queue empty"; break; fi
+            fi
+            if echo "$out" | grep -q 'queue empty'; then break; fi
+          done

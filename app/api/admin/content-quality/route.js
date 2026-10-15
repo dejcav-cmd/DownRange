@@ -2,6 +2,7 @@ export const dynamic = 'force-dynamic'
 export const maxDuration = 30
 
 import { createClient } from '@sanity/client'
+import { THIN_CHARS } from '@/lib/articleQuality.js'
 
 const sanity = createClient({
   projectId:  process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
@@ -17,7 +18,7 @@ function auth(req) {
 
 // Live articles only: slug + publishedAt, same rule the public site uses.
 const LIVE = '_type == "newsArticle" && defined(slug.current) && defined(publishedAt)'
-const THIN = '(!defined(body) || length(body) < 2500)'
+const THIN = `(!defined(body) || length(body) < ${THIN_CHARS})`
 const BAD_IMG = '(!defined(imageUrl) || imageUrl == "" || string::startsWith(imageUrl, "/img/") || imageUrl match "*.svg*")'
 
 const JOBS = [

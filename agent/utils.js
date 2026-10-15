@@ -1,6 +1,7 @@
 import { callAIText } from '@/lib/aiClient.js'
 import crypto from 'crypto'
 import { fetchSourceFacts } from '@/lib/sourceFacts.js'
+import { MIN_PUBLISH_WORDS, TARGET_WORDS, wordsOf } from '@/lib/articleQuality.js'
 
 // ── CLAUDE REWRITER ───────────────────────────────────────────────────
 // opts.lang: 'en' (default) or 'pt-BR'. Brazil content MUST use 'pt-BR' —
@@ -13,8 +14,8 @@ async function rewriteWithClaude(item, opts = {}) {
   let inputContent = (item.description || item.content || item.contentSnippet || '').slice(0, 400)
   // A 400-char RSS snippet is not enough to write a full article from. Pull the source page text
   // (facts only; the prompt forbids copying structure or wording) so the body is built on real details.
-  if (inputContent.length < 1200 && item.url) {
-    const facts = await fetchSourceFacts(item.url, { maxChars: 3500 })
+  if (inputContent.length < 2500 && item.url) {
+    const facts = await fetchSourceFacts(item.url, { maxChars: 6000 })
     if (facts) inputContent = facts
   }
 
@@ -132,22 +133,25 @@ TITLE RULE — MANDATORY:
 - Max 12 words. Active voice. Present tense preferred. Accurate — no overpromising.
 - NEVER: "Everything You Need to Know", vague openers like "New Developments in...", or "Update on..."
 
-MANDATORY ARTICLE STRUCTURE — use this exact structure, not the source's:
+MANDATORY ARTICLE STRUCTURE — use this exact structure, not the source's. Word counts are minimums per section, the whole article must land at ${TARGET_WORDS} words:
 
 <h2>[Original headline — state the key fact in DownRange's own words]</h2>
-<p>[Lead paragraph: the essential who/what/when/where in 80-100 words. Key facts only, original phrasing.]</p>
+<p>[Lead paragraph: who, what, when, where. Name the people, agencies, courts, models, numbers. 100-130 words.]</p>
 
 <h2>Key Details</h2>
-<p>[2-3 specific facts, numbers, or developments from the event. Bullet points allowed. 80-120 words.]</p>
+<p>[Every specific fact from the source facts: dates, figures, names, specs, quotes paraphrased. Use a short <ul> where it helps. 150-200 words.]</p>
+
+<h2>Background</h2>
+<p>[How we got here: the prior ruling, earlier model, previous rule or earlier incident, and what changed. Only context you are confident is accurate. 120-170 words.]</p>
 
 <h2>Why It Matters for Gun Owners</h2>
-<p>[Practical impact. What does this mean for someone who carries, competes, or collects? Which states, which guns, what to do. 100-130 words. ORIGINAL ANALYSIS — not from source.]</p>
+<p>[Practical impact. Who is affected, which states, which guns, what to do or watch for. 130-170 words. ORIGINAL ANALYSIS, not from the source.]</p>
 
 <h2>DownRange Analysis</h2>
-<p>[Original DownRange perspective. Does this survive Bruen scrutiny? Market implications? What should a gun owner actually do right now? 80-110 words. Pure original commentary.]</p>
+<p>[Original DownRange perspective. Does this survive Bruen scrutiny? Market implications? What should a gun owner actually do right now? 100-140 words. Pure original commentary.]</p>
 
 REQUIREMENTS:
-- 500-800 words total. Concise, not padded to fill space.
+- ${TARGET_WORDS} words total. Never under ${MIN_PUBLISH_WORDS}. If the source facts are thin, spend the words on background, context and analysis you are sure of. Never invent facts, quotes, numbers or events.
 - HTML ONLY: h2, p, strong, em, ul, li, a. No div, span, br.
 - strong = names, bill numbers, key facts only.
 - The article must read as ORIGINAL CONTENT, not a rephrasing of the source.
@@ -162,7 +166,7 @@ Return ONLY valid JSON:
 {
   "title": "ORIGINAL DownRange headline — NOT the source title. Specific, active, click-worthy, max 12 words.",
   "summary": "2-3 sentences. Key facts in original language. Max 300 chars. No AI phrases.",
-  "body": "<full HTML article in the structure above>",
+  "body": "<full HTML article in the structure above, ${TARGET_WORDS} words>",
   "category": "one of: breaking|news|law|industry|opinion|training|deals — STRICT RULES: use 'deals' ONLY for articles primarily about a product sale, discount, price drop, coupon, rebate, or limited-time price offer. Court cases, legislation, product announcements, reviews, history pieces, and company news are NEVER deals even if they mention a price.",
   "urgencyScore": 1-10,
   "tags": ["4-8 kebab-case tags"],
@@ -171,7 +175,7 @@ Return ONLY valid JSON:
 }
 Start with { end with }. No markdown fences.`
   try {
-    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 2200 })
+    const text = await callAIText({ prompt, useCase: 'news', maxTokens: 3600 })
     // Strip markdown fences and extract JSON robustly
     let clean = text.split('```json').join('').split('```').join('').trim()
     // If response starts with prose before JSON, extract the JSON object
@@ -183,14 +187,25 @@ Start with { end with }. No markdown fences.`
     const parsed = JSON.parse(clean)
     // Ensure body is a string
     if (typeof parsed.body !== 'string') parsed.body = null
-    // Validate body length — must be at least 150 words to be usable
-    // (short-but-complete articles are valid; only discard truly empty/placeholder responses)
-    if (parsed.body) {
-      const wordCount = parsed.body.replace(/<[^>]+>/g,' ').split(/\s+/).filter(Boolean).length
-      if (wordCount < 150) {
-        console.warn(`[REWRITE] Body too short (${wordCount} words) for "${(item.title||'').slice(0,50)}" — discarding`)
-        parsed.body = null
-      }
+    // A short draft gets one expansion pass before it is given up on, so articles are not published thin.
+    let words = parsed.body ? wordsOf(parsed.body) : 0
+    if (parsed.body && words < MIN_PUBLISH_WORDS) {
+      try {
+        const again = await callAIText({
+          prompt: `${prompt}\n\nYOUR PREVIOUS DRAFT WAS ONLY ${words} WORDS. Write the full article again at ${TARGET_WORDS} words using every section in the structure. Expand Key Details, Background and the analysis with facts you are sure of. Return the same JSON shape.`,
+          useCase: 'news', maxTokens: 3600,
+        })
+        let c2 = again.split('```json').join('').split('```').join('').trim()
+        const s2 = c2.indexOf('{'), e2 = c2.lastIndexOf('}')
+        if (s2 >= 0 && e2 > s2) c2 = c2.slice(s2, e2 + 1)
+        const p2 = JSON.parse(c2)
+        if (typeof p2.body === 'string' && wordsOf(p2.body) > words) { Object.assign(parsed, p2); words = wordsOf(p2.body) }
+      } catch (e) { console.warn('[REWRITE] expansion pass failed:', e.message) }
+    }
+    // Still short after the retry: do not publish. The item is retried on the next run.
+    if (parsed.body && words < MIN_PUBLISH_WORDS) {
+      console.warn(`[REWRITE] Body too short (${words} words, need ${MIN_PUBLISH_WORDS}) for "${(item.title||'').slice(0,50)}" - discarding`)
+      parsed.body = null
     }
     // Attribution is rendered by the page component — not baked into body HTML
     return parsed

@@ -26,6 +26,7 @@ function scoreBody(body, title) {
   if (!body || body.length < 100) return { score: 0, issues: ['missing body'] }
   const text = body.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').toLowerCase()
   const words = text.split(/\s+/).filter(Boolean)
+  if (words.length < 250) return { score: 30, issues: [`teaser body (${words.length} words)`], words: words.length }
   const issues = []
 
   if (words.length < 400) issues.push(`too short (${words.length} words, need 400+)`)
