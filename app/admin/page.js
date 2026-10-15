@@ -1128,7 +1128,7 @@ function ContentAgentsPanel({ adminKey, setMsg }) {
         {(data?.weakest || []).map(a => (
           <div key={a._id} className="adm-card" style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
             <div style={{ flex: 1, minWidth: 260 }}>
-              <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: 'var(--text)' }}>{a.title}</div>
+              <a href={'https://www.downrangeco.com/news/' + a.slug} target="_blank" rel="noopener noreferrer" style={{ fontFamily: "'Barlow Condensed',sans-serif", fontSize: 15, fontWeight: 700, color: 'var(--gold)', textDecoration: 'underline' }}>{a.title} ↗</a>
               <div style={{ fontFamily: "'IBM Plex Mono',monospace", fontSize: 10, color: '#6b7280' }}>
                 {(a.chars / 1000).toFixed(1)}k chars · {a.source || 'no source'} · {ago(a.publishedAt)}{a.qrAttempts ? ` · ${a.qrAttempts} failed tries` : ''}{a.editorLocked ? ' · 🔒 locked' : ''}
               </div>
