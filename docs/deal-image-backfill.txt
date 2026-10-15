@@ -1,7 +1,26 @@
-600 scanned, 8 need a real image, 9 coupon posts skipped
+600 scanned, 27 need a real image, 10 coupon posts skipped
 
+  + FN SCAR 15P 5.56x45mm 30+1 7.50" Chrome Lined St — 47428b 1026x506 sha=db877cbe8dfb
+  + Cnc Firearms Colt BOA 357 Mag 6 Shot 6" Vent Rib — 38809b 957x496 sha=69d3779eb02e
+  + Wise Arms Whisper .22 LR - $189.99 (Grab a Quote — 11035b 357x422 sha=553ea2eb2523
+  + VEVOR 6L Sonic Cleaner with Heater Timer & Baske — 736468b 1500x917 sha=2d54f251608d
+  + Ruger Precision Rimfire 17 HMR 18" Barrel Synthe — 40170b 1280x657 sha=76ffbf3040db
+  + Browning T-Bolt Speed OVIX, 22 LR, 22.00" Thread — 9187b 593x254 sha=c6e9e9a1d52f
+  + Kaiser - 7.62x39 - 123 Grain FMJ - 1000 Rounds - — 119478b 880x646 sha=b55677082eda
+  + CZ SP-01 Tactical 50th Anniversary Elite Pistol  — 26406b 559x439 sha=2c6202ba489a
+  + Warfighter Armory AK Magazine 7.62 X 39 30-Round — 17411b 350x525 sha=61ab2bbba350
+  x Dead Air Nomad TI XC 7.62mm Xeno Black 7"/9.7 oz — image not downloadable
+  + Winchester USA Forged 9mm, 115gr FMJ, Steel Case — 59377b 885x372 sha=4f46ac353946
+  + Angstadt Arms UDP-9 Billet Aluminum AR SBR - Bla — 9791b 389x189 sha=5470f5a67061
+  + Swampfox Raider 1x20 Micro Prism Sight w/ Green  — 11313b 244x286 sha=ed927b8ad56b
+  + PSA 11.5" 5.56 NATO 1/7 Nitride 10.5" Lightweigh — 31180b 1500x266 sha=89243a319fc5
+  + Keltec PR57 4.64" 5.7X28 Burnt Bronze 20rd Pisto — 24128b 482x398 sha=ef77561df401
+  + BROWNELLS - BRN AR-15 A2 Buttstock Black - $147. — 17625b 605x461 sha=e666dc0f55ea
+  + Century CANIK TTI Combat TOPO Engraved Bronze/BL — 13212b 509x280 sha=045d1f1881b7
+  + PRIMARY WEAPONS - MK116 MOD 1-M 223 Wylde Upper  — 15475b 660x202 sha=3e28ee32d1c5
+  + IWI US GALIL ACE Rifle GEN2- 5.45x39mm, 16" Barr — 13295b 640x326 sha=3c6277d514f2
+  + Used Century Arms CANIK METE MC9 12 Rd 3" FDE Sh — 18877b 429x370 sha=29682091ffe4
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
-  + Trijicon SRO Adjustable, 2.5 MOA, Coyote Brown,  — 28570b 672x489 sha=7001a574b8ef
   x Glock Compatible 9mm 10 Rd Capacity Steel Lined  — image not downloadable
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
   x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
@@ -9,6 +28,6 @@
   x Heritage Settler 22 LR, 16.5" Barrel, Case Harde — image not downloadable
   x Glock 43x/48 15rd Magazine 9mm Black Steel - $29 — image not downloadable
 
-fixed 1, failed 7  (12% success)
-distinct images: 1 across 1 deals
+fixed 19, failed 8  (70% success)
+distinct images: 19 across 19 deals
 PASS — no image shared between products
