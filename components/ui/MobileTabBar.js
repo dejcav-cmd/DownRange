@@ -11,6 +11,7 @@ const TABS = [
 
 export default function MobileTabBar() {
   const pathname = usePathname()
+  if (pathname && pathname.startsWith('/admin')) return null
 
   return (
     <nav className="mobile-tab-bar" style={{

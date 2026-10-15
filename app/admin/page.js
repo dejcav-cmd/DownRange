@@ -310,6 +310,11 @@ const STYLES = `
       font-size:14px; cursor:pointer;
     }
     .adm-site-link { display:none; }
+    .adm-jump-t { display:none; }
+    .adm-jump { padding:6px 10px !important; font-size:14px !important; }
+    .adm-key { width:70px !important; }
+    .adm-main { padding-bottom:calc(24px + env(safe-area-inset-bottom,0px)); }
+    .adm-main table { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
 
     .adm-sidebar {
       position:fixed; top:52px; bottom:0; left:0; z-index:150;
@@ -2679,12 +2684,12 @@ export default function AdminPage() {
         )}
         {msg && <div className={`adm-msg ${msgClass}`}>{msg} <button onClick={()=>setMsg('')} style={{background:'none',border:'none',color:'inherit',cursor:'pointer',marginLeft:8,fontSize:12}}>✕</button></div>}
         <div style={{marginLeft:'auto',display:'flex',gap:8,alignItems:'center'}}>
-          <button onClick={() => setPaletteOpen(true)} title="Jump to any panel"
+          <button className="adm-jump" onClick={() => setPaletteOpen(true)} title="Jump to any panel"
             style={{background:'rgba(0,0,0,.4)',border:'1px solid var(--border)',color:'var(--text-dim)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'4px 10px',cursor:'pointer'}}>
-            🔍 Jump to… <span style={{color:'var(--gold)',marginLeft:6}}>⌘K</span>
+            🔍<span className="adm-jump-t"> Jump to… <span style={{color:'var(--gold)',marginLeft:6}}>⌘K</span></span>
           </button>
           <span style={{fontFamily:"'IBM Plex Mono',monospace",fontSize:9,color:'#4b5563'}}>KEY</span>
-          <input type="password" value={adminKey} onChange={e=>setAdminKey(e.target.value)}
+          <input className="adm-key" type="password" value={adminKey} onChange={e=>setAdminKey(e.target.value)}
             placeholder="Admin key..."
             style={{background:'rgba(0,0,0,.4)',border:'1px solid var(--border)',color:'var(--text)',fontFamily:"'IBM Plex Mono',monospace",fontSize:10,padding:'4px 10px',width:160,outline:'none'}} />
         </div>
