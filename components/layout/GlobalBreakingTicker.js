@@ -86,7 +86,7 @@ export default function GlobalBreakingTicker() {
           <div
             style={{
               display:'flex',
-              animation: `scrollLeft ${Math.max(8, doubled.length * 2)}s linear infinite`,
+              animation: `scrollLeft ${Math.max(16, doubled.length * 4)}s linear infinite`,
               whiteSpace:'nowrap', paddingLeft:'40px',
             }}
             onMouseEnter={e => e.currentTarget.style.animationPlayState = 'paused'}
