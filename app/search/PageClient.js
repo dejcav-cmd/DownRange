@@ -6,15 +6,27 @@ import Footer from '../../components/layout/Footer'
 
 const TYPE_COLORS = {
   News:'#9ca3af', Laws:'#60a5fa', Blog:'#c084fc',
-  Reviews:'#f59e0b', Releases:'#C8922A', 'State Laws':'#22c55e', Deals:'#22c55e',
+  'Press Releases':'#C8922A', 'State Laws':'#22c55e', Deals:'#22c55e',
 }
 const TYPE_ICONS = {
-  News:'📰', Laws:'⚖', Blog:'✍', Reviews:'★', Releases:'🔫', 'State Laws':'🗺', Deals:'🏷',
+  News:'📰', Laws:'⚖', Blog:'✍', 'Press Releases':'🏭', 'State Laws':'🗺', Deals:'🏷',
 }
-const ALL_TYPES = ['all','newsArticle','legislation','review','firearmRelease','blogPost','stateProfile','gunDeal']
+const ALL_TYPES = ['all','newsArticle','legislation','pressRelease','blogPost','stateProfile','gunDeal']
 const TYPE_LABELS = {
   all:'All',newsArticle:'News',legislation:'Laws',
-  review:'Reviews',firearmRelease:'Releases',blogPost:'Blog',stateProfile:'State Laws',gunDeal:'Deals',
+  pressRelease:'Press Releases',blogPost:'Blog',stateProfile:'State Laws',gunDeal:'Deals',
+}
+const SORTS = [['relevance','Best match'],['newest','Newest first'],['oldest','Oldest first']]
+const WHENS = [['0','Any time'],['1','Past 24 hours'],['7','Past week'],['30','Past month'],['365','Past year']]
+
+function fullDate(d) {
+  if (!d) return ''
+  const t = new Date(d); if (isNaN(t)) return ''
+  return t.toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' })
+}
+function monthLabel(d) {
+  const t = new Date(d); if (!d || isNaN(t)) return 'Undated'
+  return t.toLocaleDateString('en-US', { month:'long', year:'numeric' })
 }
 
 function timeAgo(d) {
@@ -33,6 +45,8 @@ export default function SearchPage() {
   const [type, setType]     = useState('all')
   const [total, setTotal]   = useState(0)
   const [searched, setSearched] = useState('')
+  const [sort, setSortState] = useState('relevance')
+  const [days, setDaysState] = useState('0')
   const inputRef = useRef(null)
   const timerRef = useRef(null)
 
@@ -40,20 +54,32 @@ export default function SearchPage() {
     if (typeof window !== 'undefined') {
       const params = new URLSearchParams(window.location.search)
       const initial = params.get('q') || ''
-      if (initial) { setQ(initial); doSearch(initial, 'all') }
+      const t0 = TYPE_LABELS[params.get('type')] ? params.get('type') : 'all'
+      const s0 = SORTS.some(x => x[0] === params.get('sort')) ? params.get('sort') : 'relevance'
+      const d0 = WHENS.some(x => x[0] === params.get('days')) ? params.get('days') : '0'
+      setType(t0); setSortState(s0); setDaysState(d0)
+      if (initial) { setQ(initial); doSearch(initial, t0, s0, d0) }
       setTimeout(() => inputRef.current?.focus(), 100)
     }
   }, [])
 
-  const doSearch = useCallback(async (query, t) => {
+  const doSearch = useCallback(async (query, t, s = 'relevance', d = '0') => {
     if (!query?.trim() || query.length < 2) { setRes([]); setTotal(0); return }
     setLoad(true)
     try {
       const typeParam = t && t !== 'all' ? `&type=${t}` : ''
-      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=40${typeParam}`)
-      const d = await res.json()
-      setRes(d.results || [])
-      setTotal(d.total || 0)
+      const sortParam = s !== 'relevance' ? `&sort=${s}` : ''
+      const daysParam = d !== '0' ? `&days=${d}` : ''
+      // keep the URL shareable
+      const u = new URLSearchParams({ q: query })
+      if (t && t !== 'all') u.set('type', t)
+      if (s !== 'relevance') u.set('sort', s)
+      if (d !== '0') u.set('days', d)
+      try { window.history.replaceState(null, '', '/search?' + u.toString()) } catch {}
+      const res = await fetch(`/api/search?q=${encodeURIComponent(query)}&limit=40${typeParam}${sortParam}${daysParam}`)
+      const data = await res.json()
+      setRes(data.results || [])
+      setTotal(data.total || 0)
       setSearched(query)
     } catch { setRes([]); setTotal(0) }
     setLoad(false)
@@ -62,15 +88,17 @@ export default function SearchPage() {
   function onChange(e) {
     const v = e.target.value; setQ(v)
     clearTimeout(timerRef.current)
-    timerRef.current = setTimeout(() => doSearch(v, type), 280)
+    timerRef.current = setTimeout(() => doSearch(v, type, sort, days), 280)
   }
 
   function onTypeChange(t) {
     setType(t)
-    if (q) doSearch(q, t)
+    if (q) doSearch(q, t, sort, days)
   }
+  function onSortChange(v) { setSortState(v); if (q) doSearch(q, type, v, days) }
+  function onDaysChange(v) { setDaysState(v); if (q) doSearch(q, type, sort, v) }
 
-  function onSubmit(e) { e.preventDefault(); doSearch(q, type) }
+  function onSubmit(e) { e.preventDefault(); doSearch(q, type, sort, days) }
 
   const mono   = "'IBM Plex Mono',monospace"
   const bebas  = "'Bebas Neue',cursive"
@@ -84,6 +112,19 @@ export default function SearchPage() {
     grouped[tl].push(r)
   })
 
+  // Date sorts show one timeline grouped by month; best-match keeps grouping by type.
+  const byDate = sort !== 'relevance'
+  let groups = Object.entries(grouped)
+  if (byDate) {
+    const m = new Map()
+    results.forEach(r => {
+      const k = monthLabel(r._date || r.publishedAt)
+      if (!m.has(k)) m.set(k, [])
+      m.get(k).push(r)
+    })
+    groups = [...m.entries()]
+  }
+
   return (
     <>
 
@@ -96,7 +137,7 @@ export default function SearchPage() {
               Search DownRange
             </h1>
             <p style={{ fontFamily:mono, fontSize:11, color:'#6b7280', marginBottom:20 }}>
-              News · Laws · Reviews · Releases · Blog · State profiles — all searchable
+              News · Laws · Press releases · Blog · Deals · State profiles — all searchable
             </p>
             <form onSubmit={onSubmit} style={{ display:'flex', gap:0 }}>
               <div style={{ display:'flex', alignItems:'center', flex:1, background:'var(--bg)', border:'1px solid var(--border)', borderRight:'none' }}>
@@ -105,7 +146,7 @@ export default function SearchPage() {
                   ref={inputRef}
                   value={q}
                   onChange={onChange}
-                  placeholder="Search firearms, laws, reviews, releases…"
+                  placeholder="Search firearms, laws, press releases, deals…"
                   style={{ flex:1, background:'none', border:'none', outline:'none', color:'var(--text)', fontFamily:mono, fontSize:12, padding:'12px 0' }}
                 />
                 {q && <button type="button" onClick={()=>{setQ('');setRes([]);setTotal(0)}} style={{background:'none',border:'none',color:'#6b7280',cursor:'pointer',padding:'0 12px',fontSize:14}}>✕</button>}
@@ -126,6 +167,24 @@ export default function SearchPage() {
                 </button>
               ))}
             </div>
+
+            {/* Sort + date range */}
+            <div style={{ display:'flex', gap:14, marginTop:14, flexWrap:'wrap', alignItems:'center' }}>
+              <label style={{ display:'flex', alignItems:'center', gap:8, fontFamily:mono, fontSize:10, color:'#6b7280' }}>
+                SORT
+                <select value={sort} onChange={e => onSortChange(e.target.value)}
+                  style={{ fontFamily:mono, fontSize:11, padding:'8px 10px', minHeight:40, background:'var(--bg)', color:'var(--text)', border:'1px solid var(--border)' }}>
+                  {SORTS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+              </label>
+              <label style={{ display:'flex', alignItems:'center', gap:8, fontFamily:mono, fontSize:10, color:'#6b7280' }}>
+                DATE
+                <select value={days} onChange={e => onDaysChange(e.target.value)}
+                  style={{ fontFamily:mono, fontSize:11, padding:'8px 10px', minHeight:40, background:'var(--bg)', color:'var(--text)', border:'1px solid var(--border)' }}>
+                  {WHENS.map(([v, l]) => <option key={v} value={v}>{l}</option>)}
+                </select>
+              </label>
+            </div>
           </div>
         </div>
 
@@ -142,10 +201,10 @@ export default function SearchPage() {
             )}
 
             {/* Grouped results */}
-            {Object.entries(grouped).map(([typeLabel, items]) => (
+            {groups.map(([typeLabel, items]) => (
               <div key={typeLabel} style={{ marginBottom:32 }}>
                 <div style={{ display:'flex', alignItems:'center', gap:8, marginBottom:12, paddingBottom:6, borderBottom:'1px solid var(--border)' }}>
-                  <span style={{ fontSize:14 }}>{TYPE_ICONS[typeLabel] || '◈'}</span>
+                  <span style={{ fontSize:14 }}>{TYPE_ICONS[typeLabel] || '📅'}</span>
                   <span style={{ fontFamily:barlow, fontSize:14, fontWeight:700, color:TYPE_COLORS[typeLabel]||'#9ca3af', letterSpacing:'.04em' }}>{typeLabel.toUpperCase()}</span>
                   <span style={{ fontFamily:mono, fontSize:9, color:'#4b5563', marginLeft:'auto' }}>{items.length} result{items.length!==1?'s':''}</span>
                 </div>
@@ -167,9 +226,10 @@ export default function SearchPage() {
                         </div>
                       )}
                       <div style={{ display:'flex', gap:8, marginTop:4, alignItems:'center' }}>
+                        {byDate && r._typeLabel && <span style={{ fontFamily:mono, fontSize:8, padding:'1px 5px', border:'1px solid var(--border)', color:TYPE_COLORS[r._typeLabel]||'#9ca3af' }}>{r._typeLabel}</span>}
                         {r.category && <span style={{ fontFamily:mono, fontSize:8, padding:'1px 5px', background:'rgba(200,146,42,.1)', color:'#C8922A' }}>{r.category}</span>}
                         {r.state && <span style={{ fontFamily:mono, fontSize:8, color:'#6b7280' }}>{r.state}</span>}
-                        {r.publishedAt && <span style={{ fontFamily:mono, fontSize:8, color:'#4b5563', marginLeft:'auto' }}>{timeAgo(r.publishedAt)}</span>}
+                        {(r._date || r.publishedAt) && <span style={{ fontFamily:mono, fontSize:9, color:'#6b7280', marginLeft:'auto' }}>{fullDate(r._date || r.publishedAt)} · {timeAgo(r._date || r.publishedAt)}</span>}
                       </div>
                     </div>
                   </Link>
@@ -187,8 +247,8 @@ export default function SearchPage() {
             {!searched && !loading && (
               <div style={{ padding:'60px 0', textAlign:'center' }}>
                 <div style={{ fontFamily:mono, fontSize:11, color:'#4b5563', lineHeight:2 }}>
-                  Search across news articles, laws, gun reviews, new releases, blog posts, and state profiles.<br/>
-                  Results are ranked by relevance — title matches appear first.
+                  Search across news articles, laws, manufacturer press releases, blog posts, deals, and state profiles.<br/>
+                  Sort by best match or by date, and narrow to the past day, week, month or year.
                 </div>
               </div>
             )}

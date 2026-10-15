@@ -12,7 +12,7 @@ import Link from 'next/link'
  *   paramName  - URL search param name (default 'q')
  *   onSearch   - optional callback(q) for server-side navigation mode
  */
-export default function SectionSearch({ type, placeholder = 'Search…', defaultValue = '', paramName = 'q', compact = false }) {
+export default function SectionSearch({ type, placeholder = 'Search…', defaultValue = '', paramName = 'q', compact = false, live = true }) {
   const [q, setQ]             = useState(defaultValue)
   const [results, setResults] = useState([])
   const [loading, setLoading] = useState(false)
@@ -34,7 +34,7 @@ export default function SectionSearch({ type, placeholder = 'Search…', default
   }, [])
 
   const doSearch = useCallback(async (query) => {
-    if (!query || query.length < 2) { setResults([]); setOpen(false); return }
+    if (!live || !query || query.length < 2) { setResults([]); setOpen(false); return }
     setLoading(true)
     try {
       const url = type
@@ -47,7 +47,7 @@ export default function SectionSearch({ type, placeholder = 'Search…', default
       setFocused(0)
     } catch { setResults([]) }
     setLoading(false)
-  }, [type])
+  }, [type, live])
 
   function onChange(e) {
     const v = e.target.value

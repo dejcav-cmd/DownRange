@@ -172,9 +172,9 @@ export default async function GunsPage({ searchParams }) {
       {/* ── STICKY CATEGORY + SORT + SEARCH BAR ── */}
       <div style={{ background:'var(--bg2)', borderBottom:'1px solid var(--border)', position:'sticky', top:'60px', zIndex:20 }}>
         <div className="container">
-          <div style={{ display:'flex', alignItems:'stretch', overflowX:'auto' }}>
+          <div style={{ display:'flex', alignItems:'stretch', flexWrap:'wrap' }}>
             {/* Category tabs */}
-            <div style={{ display:'flex', gap:0, flex:1, overflowX:'auto' }}>
+            <div style={{ display:'flex', gap:0, flex:'1 1 480px', minWidth:0, overflowX:'auto' }}>
               <a href="/guns"
                 style={{ display:'inline-flex', alignItems:'center', padding:'12px 16px', fontFamily:"'IBM Plex Mono',monospace", fontSize:'11px', borderBottom:`2px solid ${!cat?'var(--gold)':'transparent'}`, color:!cat?'var(--gold)':'var(--text-dim)', textDecoration:'none', whiteSpace:'nowrap', letterSpacing:'0.05em', transition:'color 0.15s' }}>
                 All ({Object.values(ALL_ITEMS).reduce((s,a) => s + a.length, 0)})
@@ -188,7 +188,7 @@ export default async function GunsPage({ searchParams }) {
               ))}
             </div>
             {/* Sort */}
-            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'0 8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
+            <div style={{ display:'flex', gap:'5px', alignItems:'center', padding:'8px', borderLeft:'1px solid var(--border)', flexShrink:0 }}>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#4B5563' }}>SORT:</span>
               {[['rating','★ Rating'],['alpha','🔤 A–Z'],['price','💰 Price']].map(([key,label]) => (
                 <a key={key} href={'/guns?' + new URLSearchParams({ ...(cat&&{cat}), ...(q&&{q}), sort:key }).toString()}
@@ -199,7 +199,7 @@ export default async function GunsPage({ searchParams }) {
             </div>
             {/* Search */}
             <div style={{ flexShrink:0, padding:'0 0 0 8px', borderLeft:'1px solid var(--border)', display:'flex', alignItems:'center' }}>
-              <SectionSearch type="firearmRelease" placeholder="Search platforms…" defaultValue={q||''} compact />
+              <SectionSearch live={false} placeholder="Search platforms…" defaultValue={q||''} compact />
             </div>
           </div>
         </div>

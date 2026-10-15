@@ -14,63 +14,67 @@ const TYPES = {
     filter: 'approved == true',
     fields: ['title','summary','body','source','tags'],
     project: '_id, _type, title, "slug": slug.current, summary, category, publishedAt, imageUrl, "heroImg": heroImage.asset->url, source',
-    href: (r) => `/news/${r.slug}`,
+    date: 'publishedAt',
   },
   legislation: {
     label: 'Laws',
     filter: 'defined(title)',
     fields: ['title','summary','billNumber','state'],
     project: '_id, _type, title, "slug": _id, summary, status, level, state, lastActionDate, billNumber, url',
-    href: (r) => r.url || `/laws`,
+    date: 'lastActionDate',
   },
   blogPost: {
     label: 'Blog',
     filter: 'defined(title)',
     fields: ['title','summary','body','tags'],
     project: '_id, _type, title, "slug": slug.current, summary, category, publishedAt, imageUrl, "heroImg": heroImage.asset->url',
-    href: (r) => `/blog/${r.slug}`,
+    date: 'publishedAt',
   },
-  firearmRelease: {
-    label: 'Releases',
-    filter: 'defined(brand)',
-    fields: ['brand','model','caliber','summary','pressReleaseExcerpt'],
-    project: '_id, _type, "title": brand + " " + model, "slug": slug.current, summary, category, publishedAt, imageUrl, brand, model, caliber, msrp',
-    href: (r) => `/releases/${r.slug}`,
+  pressRelease: {
+    label: 'Press Releases',
+    filter: 'approved == true && defined(slug.current)',
+    fields: ['title','brand','summary','body'],
+    project: '_id, _type, title, "slug": slug.current, summary, category, brand, publishedAt, "imageUrl": coalesce(heroImage.asset->url, imageUrl)',
+    date: 'publishedAt',
   },
   gunDeal: {
     label: 'Deals',
     filter: 'approved == true',
     fields: ['title','store','summary','tags'],
     project: '_id, _type, title, externalUrl, price, store, category, publishedAt, imageUrl, source, summary',
-    href: (r) => r.externalUrl || '/deals',
+    date: 'publishedAt',
   },
   stateProfile: {
     label: 'State Laws',
     filter: 'defined(name)',
     fields: ['name','abbr','summary'],
     project: '_id, _type, name, abbr, rating, summary, "slug": lower(abbr)',
-    href: (r) => `/laws/${String(r.slug||'').toUpperCase()}`,
+    date: '_updatedAt',
   },
 }
 
 // Build GROQ with score() for ranked results
 // Sanity score() boosts documents where terms appear in title vs body
-function buildQuery(type, config, q, limit = 10) {
-  const safe = q.replace(/['"\\]/g, '').slice(0, 80)
+function buildQuery(type, config, q, limit = 10, sort = 'relevance', since = null) {
   const titleField = config.fields[0]  // first field = title, highest boost
   const bodyFields = config.fields.slice(1)
+  const dateExpr   = `coalesce(${config.date}, _updatedAt)`
 
-  // Build score expression: title match gets 10x boost, other fields 1x
   const boosts = [
     `boost(${titleField} match $q, 10)`,
     ...bodyFields.map(f => `boost(${f} match $q, 1)`),
   ].join(', ')
 
-  return `*[_type == "${type}" && ${config.filter} && (${config.fields.map(f => `${f} match $q`).join(' || ')})]
-    | score(${boosts})
-    | order(_score desc)
+  const sinceClause = since ? ` && ${dateExpr} >= $since` : ''
+  const order = sort === 'newest' ? `| order(${dateExpr} desc)`
+              : sort === 'oldest' ? `| order(${dateExpr} asc)`
+              : `| score(${boosts}) | order(_score desc)`
+
+  return `*[_type == "${type}" && ${config.filter} && (${config.fields.map(f => `${f} match $q`).join(' || ')})${sinceClause}]
+    ${order}
     [0...${limit}] {
-      _score,
+      ${sort === 'relevance' ? '_score,' : ''}
+      "_date": ${dateExpr},
       ${config.project}
     }`
 }
@@ -80,6 +84,10 @@ export async function GET(req) {
   const q = (searchParams.get('q') || '').trim()
   const type = searchParams.get('type') || 'all'
   const limit = Math.min(50, parseInt(searchParams.get('limit') || '20'))
+  const sort  = ['newest', 'oldest'].includes(searchParams.get('sort')) ? searchParams.get('sort') : 'relevance'
+  const days  = parseInt(searchParams.get('days') || '0')
+  const since = days > 0 ? new Date(Date.now() - days * 86400000).toISOString() : null
+  const params = (qv) => (since ? { q: qv, since } : { q: qv })
 
   if (!q || q.length < 2) return Response.json({ results: [], total: 0, q })
 
@@ -93,11 +101,11 @@ export async function GET(req) {
       const typeQueries = Object.entries(TYPES).map(([typeName, config]) => ({
         typeName,
         config,
-        query: buildQuery(typeName, config, searchQ, 8),
+        query: buildQuery(typeName, config, searchQ, sort === 'relevance' ? 8 : 15, sort, since),
       }))
 
       const responses = await Promise.allSettled(
-        typeQueries.map(({ query }) => sanity.fetch(query, { q: searchQ }))
+        typeQueries.map(({ query }) => sanity.fetch(query, params(searchQ)))
       )
 
       responses.forEach((res, i) => {
@@ -113,15 +121,15 @@ export async function GET(req) {
         }
       })
 
-      // Sort by _score descending
-      results.sort((a, b) => (b._score || 0) - (a._score || 0))
+      if (sort === 'relevance') results.sort((a, b) => (b._score || 0) - (a._score || 0))
+      else results.sort((a, b) => (new Date(b._date || 0) - new Date(a._date || 0)) * (sort === 'newest' ? 1 : -1))
       results = results.slice(0, limit)
 
     } else if (TYPES[type]) {
       // Single-type search
       const config = TYPES[type]
-      const query = buildQuery(type, config, searchQ, limit)
-      const docs = await sanity.fetch(query, { q: searchQ })
+      const query = buildQuery(type, config, searchQ, limit, sort, since)
+      const docs = await sanity.fetch(query, params(searchQ))
       results = docs.map(doc => ({
         ...doc,
         _typeLabel: config.label,
@@ -129,7 +137,7 @@ export async function GET(req) {
       }))
     }
 
-    return Response.json({ results, total: results.length, q })
+    return Response.json({ results, total: results.length, q, sort, days })
   } catch (err) {
     console.error('[search]', err.message)
     return Response.json({ results: [], total: 0, q, error: err.message })
@@ -141,7 +149,7 @@ function buildHref(typeName, doc) {
     case 'newsArticle':   return `/news/${doc.slug}`
     case 'legislation':   return doc.url || '/laws'
     case 'blogPost':      return `/blog/${doc.slug}`
-    case 'firearmRelease':return `/releases/${doc.slug}`
+    case 'pressRelease':  return `/news/manufacturer-press-releases/${doc.slug}`
     case 'gunDeal':        return doc.externalUrl || '/deals'
     case 'stateProfile':  return `/laws/${(doc.abbr||'').toUpperCase()}`
     default:              return '/'
