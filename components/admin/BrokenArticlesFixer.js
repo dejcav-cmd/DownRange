@@ -47,7 +47,7 @@ export default function BrokenArticlesFixer({ adminKey, onDone }) {
         <div style={{ flex: 1, minWidth: 220 }}>
           <div style={{ fontFamily: "'Barlow Condensed',sans-serif", fontWeight: 700, fontSize: 15, color: 'var(--text)' }}>🔗 Fix 404 articles</div>
           <div style={{ fontFamily: MONO, fontSize: 10, color: 'var(--text-dim)' }}>
-            Articles with no URL slug open a 404 page. This gives each a working link, and deletes the ones that are thin (under 250 words) and over 7 days old. Deleted articles are backed up first.
+            Articles with no URL slug open a 404 page. This gives each a working link and deletes the thin ones (under 250 words) over 7 days old. It also clears old dead ends the rewriter gave up on. Deleted articles are backed up first.
           </div>
         </div>
         <button style={btn(false)} disabled={busy} onClick={scan}>{busy && !plan ? '⏳ Scanning...' : '🔎 Scan'}</button>

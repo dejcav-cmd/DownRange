@@ -7,6 +7,8 @@ import { revalidatePath } from 'next/cache'
 // Finds articles whose public page 404s because they have no URL slug, then:
 //   - too thin to publish (under 250 words) and older than 7 days  -> deleted (JSON backup first)
 //   - otherwise                                                      -> given a proper slug (and a publish date)
+// It also clears old dead ends: news the rewriter gave up on (hidden after repeated failures), still under
+// 250 words and older than 30 days, unless a published blog post links to it.
 // GET previews the plan. POST { confirm: true } applies it. Editor-locked items are never touched.
 
 const sanity = createClient({
@@ -29,7 +31,31 @@ function slugify(title, id) {
   return base ? `${base}-${suffix}` : `article-${suffix}`
 }
 
+async function protectedSlugs() {
+  const posts = await sanity.fetch(`*[_type=="blogPost" && (status=="published" || published==true)]{ sourceRefs, "h": body }`).catch(() => [])
+  const set = new Set()
+  for (const p of posts || []) {
+    for (const r of p.sourceRefs || []) if (String(r).startsWith('news:')) set.add(String(r).slice(5))
+    if (typeof p.h === 'string') for (const m of p.h.matchAll(/\/news\/([a-z0-9][a-z0-9-]+)/g)) set.add(m[1])
+  }
+  return set
+}
+
 async function plan() {
+  const keep = await protectedSlugs()
+  const dead = await sanity.fetch(
+    `*[_type == "newsArticle" && !(_id in path("drafts.**")) && defined(slug.current) && qrHidden == true && editorLocked != true]
+      | order(_createdAt asc) [0...300] { _id, _type, title, sourceTitle, body, approved, _createdAt, "slug": slug.current }`
+  ).catch(() => [])
+  const deadItems = dead.map(d => {
+    const words = wordCount(d.body)
+    const ageDays = Math.floor((Date.now() - new Date(d._createdAt).getTime()) / 86400000)
+    const protectedBy = keep.has(d.slug)
+    const action = words < MIN_WORDS && ageDays > 30 && !protectedBy ? 'delete' : 'skip'
+    const why = action === 'delete' ? `rewriter gave up, thin (${words} words), ${ageDays} days old` : protectedBy ? 'linked from a published blog post' : 'not old/thin enough to delete'
+    return { _id: d._id, type: d._type, title: (d.title || d.sourceTitle || '').slice(0, 110), words, ageDays, approved: d.approved === true, action, why }
+  }).filter(i => i.action === 'delete')
+
   const docs = await sanity.fetch(
     `*[_type in ["newsArticle","blogPost"] && !(_id in path("drafts.**")) && !defined(slug.current)]
       | order(_createdAt desc) [0...500] {
@@ -37,7 +63,7 @@ async function plan() {
     }`
   )
   const now = Date.now()
-  return docs.map(d => {
+  const noSlug = docs.map(d => {
     const words = wordCount(d.body)
     const ageDays = Math.floor((now - new Date(d._createdAt).getTime()) / 86400000)
     const title = d.title || d.sourceTitle || ''
@@ -48,6 +74,8 @@ async function plan() {
     else if (words < MIN_WORDS && ageDays > OLD_DAYS) { action = 'delete'; why = `no slug, thin body (${words} words), ${ageDays} days old` }
     return { _id: d._id, type: d._type, title: title.slice(0, 110), words, ageDays, approved: d.approved === true, action, why }
   })
+  const seen = new Set(noSlug.map(i => i._id))
+  return [...noSlug, ...deadItems.filter(i => !seen.has(i._id))]
 }
 
 export async function GET(req) {
