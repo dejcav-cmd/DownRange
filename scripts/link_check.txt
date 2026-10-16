@@ -2,25 +2,25 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Fri, 16 Oct 2026 03:20:15 GMT
+date: Fri, 16 Oct 2026 03:25:48 GMT
 location: https://www.downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a?utm_source=facebook
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: sfo1::tjs8n-1792120815083-842f0227c9c8
+x-vercel-id: iad1::t9vh6-1792121147966-2f8816d91c55
 
-HTTP/2 404 
+HTTP/2 308 
 age: 0
 cache-control: private, no-cache, no-store, max-age=0, must-revalidate
 content-type: text/html; charset=utf-8
-date: Fri, 16 Oct 2026 03:20:15 GMT
+date: Fri, 16 Oct 2026 03:25:48 GMT
+location: /news/four-killed-in-shooting-at-oregon-elementary-school-update-shooter-taken-down-by-122a0a
 permissions-policy: camera=(), microphone=(), geolocation=()
 referrer-policy: strict-origin-when-cross-origin
 server: Vercel
 strict-transport-security: max-age=63072000; includeSubDomains; preload
 vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
-x-content-type-options: nosniff
 == www
-404
+308
 == scan
 236706 bytes; keys: ['ok', 'total', 'needsRewrite', 'passing', 'reviewed', 'summary', 'items']
 {"ok": true, "total": 648, "needsRewrite": 0, "passing": 643, "reviewed": 636, "summary": {"newsArticle": {"label": "News Articles", "total": 500, "reviewed": 500, "needsRewrite": 0, "passing": 499}, "blogPost": {"label": "Blog Posts", "total": 48, "reviewed": 41, "needsRewrite": 0, "passing": 44}, "canadaContent": {"label": "Canada", "total": 100, "reviewed": 95, "needsRewrite": 0, "passing": 100}}, "items": [{"_id": "news-aa511c1a5589edc387d7a89a08837ce8", "type": "newsArticle", "label": "News Articles", "title": "Banish Launches COMP 6.5 Competition Suppressor Series", "slug": "banish-unveils-dedicated-competition-silencer-aa511c", "score": 30, "issues": ["teaser body (247 words)"], "words": 247, "aiPhrases": 0, "qualityReviewed": true, "needsRewrite": false}, {"_id": "seed-blog-003", "
