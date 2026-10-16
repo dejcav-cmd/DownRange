@@ -49,6 +49,11 @@ export async function POST(req) {
       let res = await fetch(`${GRAPH}/${b.postId}`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ message: newContent, access_token: token }) }).then(x => x.json()).catch(e => ({ error: { message: e.message } }))
       if (!res.success) res = await fetch(`${GRAPH}/${b.postId}`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ name: newContent, access_token: token }) }).then(x => x.json()).catch(e => ({ error: { message: e.message } }))
       r.facebook = res.success ? 'edited' : (res.error?.message || 'edit failed')
+      if (!res.success) {
+        // Facebook will not let the API edit this post: pin the working link as a comment instead
+        const c = await fetch(`${GRAPH}/${b.postId}/comments`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ message: 'Full story: ' + b.newUrl.split('?')[0], access_token: token }) }).then(x => x.json()).catch(e => ({ error: { message: e.message } }))
+        r.comment = c.id ? 'comment added' : (c.error?.message || 'comment failed')
+      }
       await fetch(`${GRAPH}/`, { method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ id: b.newUrl.split('?')[0], scrape: 'true', access_token: token }) }).catch(() => {})
       if (res.success) await sanity.patch(b.docId).set({ content: newContent }).commit().catch(() => {})
     } else {
