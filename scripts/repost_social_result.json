@@ -1,0 +1,55 @@
+{
+  "preview": {
+    "ok": true,
+    "count": 3,
+    "broken": [
+      {
+        "docId": "BsXSCuV2G2SrOoSc2V2Vzk",
+        "platform": "facebook",
+        "postId": "122142103689341798",
+        "oldSlug": "four-killed-in-shooting-at-oregon-elementary-school-122a0a",
+        "newSlug": "four-killed-in-shooting-at-oregon-elementary-school-update-shooter-taken-down-by-122a0a",
+        "oldUrl": "https://downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a?utm_source=facebook&utm_medium=social&utm_campaign=news_news",
+        "newUrl": "https://www.downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-update-shooter-taken-down-by-122a0a?utm_source=facebook&utm_medium=social&utm_campaign=news_news"
+      },
+      {
+        "docId": "71MFNdPZqN73n9slX8dn4A",
+        "platform": "twitter",
+        "postId": "6aca8c39660efb8a69a85ff3",
+        "oldSlug": "eight-people-suspect-dead-in-eerie-pa-mass-shooting-fe6023",
+        "newSlug": "eight-people-suspect-dead-in-erie-pa-mass-shooting-fe6023",
+        "oldUrl": "https://downrangeco.com/news/eight-people-suspect-dead-in-eerie-pa-mass-shooting-fe6023?utm_source=twitter&utm_medium=social&utm_campaign=news_news",
+        "newUrl": "https://www.downrangeco.com/news/eight-people-suspect-dead-in-erie-pa-mass-shooting-fe6023?utm_source=twitter&utm_medium=social&utm_campaign=news_news"
+      },
+      {
+        "docId": "9Gse719UhgBLON4pL80imx",
+        "platform": "facebook",
+        "postId": "122141150445341798",
+        "oldSlug": "eight-people-suspect-dead-in-eerie-pa-mass-shooting-fe6023",
+        "newSlug": "eight-people-suspect-dead-in-erie-pa-mass-shooting-fe6023",
+        "oldUrl": "https://downrangeco.com/news/eight-people-suspect-dead-in-eerie-pa-mass-shooting-fe6023?utm_source=facebook&utm_medium=social&utm_campaign=news_news",
+        "newUrl": "https://www.downrangeco.com/news/eight-people-suspect-dead-in-erie-pa-mass-shooting-fe6023?utm_source=facebook&utm_medium=social&utm_campaign=news_news"
+      }
+    ]
+  },
+  "apply": {
+    "ok": true,
+    "count": 2,
+    "results": [
+      {
+        "docId": "BsXSCuV2G2SrOoSc2V2Vzk",
+        "oldPostId": "122142103689341798",
+        "deleted": "already gone",
+        "status": "reposted",
+        "newPostId": "122142119697341798"
+      },
+      {
+        "docId": "9Gse719UhgBLON4pL80imx",
+        "oldPostId": "122141150445341798",
+        "deleted": true,
+        "status": "reposted",
+        "newPostId": "122142119787341798"
+      }
+    ]
+  }
+}
