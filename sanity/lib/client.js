@@ -79,6 +79,15 @@ export async function getArticleById(id) {
   )
 }
 
+// Old links keep working after a title/slug change: slugs end in the first 6 hex chars of the article _id.
+export async function getArticleBySuffix(suffix) {
+  if (!/^[a-f0-9]{6}$/.test(suffix || '')) return null
+  return client.fetch(
+    `*[_type == "newsArticle" && _id match $p && defined(slug.current)][0] { _id, slug }`,
+    { p: 'news-' + suffix + '*' }
+  )
+}
+
 export async function getArticleBySlug(slug) {
   return client.fetch(`
     *[_type == "newsArticle" && slug.current == $slug][0] {

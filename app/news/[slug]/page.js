@@ -3,7 +3,7 @@ import Masthead            from '../../../components/layout/Masthead'
 import Footer              from '../../../components/layout/Footer'
 import BreakingTicker      from '../../../components/layout/BreakingTicker'
 import NewsCard            from '../../../components/ui/NewsCard'
-import { getArticleBySlug, getArticleById, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
+import { getArticleBySlug, getArticleBySuffix, getArticleById, getRecentArticles, getRelatedArticles, fetchBreakingAlerts, resolveImage } from '../../../sanity/lib/client'
 import ArticleHeroImage from '../../../components/ui/ArticleHeroImage'
 import EmailCapture from '../../../components/ui/EmailCapture'
 import ShareButtons from '../../../components/ui/ShareButtons'
@@ -138,6 +138,13 @@ export default async function ArticlePage({ params }) {
         // redirect to /news, which Google treats as a soft 404. No-redirect policy.
         notFound()
       }
+    }
+
+    // Slug changed after the link was shared (title update): find it by the id suffix and redirect.
+    if (!article) {
+      const m = /-([a-f0-9]{6})$/.exec(params.slug)
+      const moved = m ? await getArticleBySuffix(m[1]).catch(() => null) : null
+      if (moved?.slug?.current && moved.slug.current !== params.slug) permanentRedirect(`/news/${moved.slug.current}`)
     }
 
     ;[related, alerts] = await Promise.all([

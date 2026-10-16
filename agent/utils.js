@@ -664,13 +664,14 @@ async function publishToSanity(doc) {
               set: {
                 ...Object.fromEntries(
                   Object.entries(doc)
-                    .filter(([k]) => !['_id','_type','imageUrl','body','summary','excerpt'].includes(k))
+                    .filter(([k]) => !['_id','_type','imageUrl','body','summary','excerpt','slug'].includes(k))
                 ),
                 // Include imageUrl in set only if it's a real HTTP URL
                 ...(doc.imageUrl && doc.imageUrl.startsWith('http') ? { imageUrl: doc.imageUrl } : {}),
               },
               // Fill in body/summary/excerpt ONLY if missing (don't destroy backfilled content)
               setIfMissing: {
+                slug:    doc.slug,   // a published URL must never change: social posts and Google already point at it
                 body:    doc.body,
                 summary: doc.summary,
                 excerpt: doc.excerpt,
