@@ -1,0 +1,29 @@
+name: Fix Social Links
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Preview and apply
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          curl -s --max-time 120 -H "x-admin-key: $ADMIN_KEY" https://www.downrangeco.com/api/admin/fix-social-links > preview.json || echo '{}' > preview.json
+          curl -s --max-time 120 -X POST -H "x-admin-key: $ADMIN_KEY" https://www.downrangeco.com/api/admin/fix-social-links > apply.json || echo '{}' > apply.json
+          python3 - <<'PY'
+          import json
+          def load(p):
+              try: return json.load(open(p))
+              except Exception as e: return {"error": str(e)}
+          json.dump({"preview": load("preview.json"), "apply": load("apply.json")}, open("scripts/fix_social_links_result.json","w"), indent=2)
+          PY
+      - name: Commit
+        run: |
+          git config user.name "claude-bot"; git config user.email "noreply@anthropic.com"
+          git add scripts/fix_social_links_result.json; git commit -m "chore: social links result" || true
+          git pull --rebase -q || true; git push || true
