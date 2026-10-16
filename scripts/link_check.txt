@@ -2,12 +2,23 @@
 HTTP/2 307 
 cache-control: public, max-age=0, must-revalidate
 content-type: text/plain
-date: Fri, 16 Oct 2026 03:17:15 GMT
-location: https://www.downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a
+date: Fri, 16 Oct 2026 03:20:15 GMT
+location: https://www.downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a?utm_source=facebook
 server: Vercel
 strict-transport-security: max-age=63072000
-x-vercel-id: iad1::rtbl5-1792120635946-187916a8ea3f
+x-vercel-id: sfo1::tjs8n-1792120815083-842f0227c9c8
 
+HTTP/2 404 
+age: 0
+cache-control: private, no-cache, no-store, max-age=0, must-revalidate
+content-type: text/html; charset=utf-8
+date: Fri, 16 Oct 2026 03:20:15 GMT
+permissions-policy: camera=(), microphone=(), geolocation=()
+referrer-policy: strict-origin-when-cross-origin
+server: Vercel
+strict-transport-security: max-age=63072000; includeSubDomains; preload
+vary: RSC, Next-Router-State-Tree, Next-Router-Prefetch
+x-content-type-options: nosniff
 == www
 404
 == scan
