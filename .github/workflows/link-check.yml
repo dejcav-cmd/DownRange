@@ -13,8 +13,8 @@ jobs:
         env:
           ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
         run: |
-          U="https://downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a"
-          { echo "== page"; curl -s -o /dev/null -D - --max-time 30 "$U" | head -20; echo "== www"; curl -s -o /dev/null -w '%{http_code}\n' --max-time 30 "${U/https:\/\/downrangeco/https://www.downrangeco}"; } > scripts/link_check.txt 2>&1
+          U="https://downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a?utm_source=facebook"
+          { echo "== page"; curl -sL -o /dev/null -D - --max-time 30 "$U" | head -20; echo "== www"; curl -s -o /dev/null -w '%{http_code}\n' --max-time 30 "${U/https:\/\/downrangeco/https://www.downrangeco}"; } > scripts/link_check.txt 2>&1
           curl -s --max-time 120 -H "x-admin-key: $ADMIN_KEY" https://www.downrangeco.com/api/admin/content-scan > scan.json
           python3 - <<'PY' >> scripts/link_check.txt
           import json
