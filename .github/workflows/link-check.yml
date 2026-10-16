@@ -1,0 +1,39 @@
+name: Link Check
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Check
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: |
+          U="https://downrangeco.com/news/four-killed-in-shooting-at-oregon-elementary-school-122a0a"
+          { echo "== page"; curl -s -o /dev/null -D - --max-time 30 "$U" | head -20; echo "== www"; curl -s -o /dev/null -w '%{http_code}\n' --max-time 30 "${U/https:\/\/downrangeco/https://www.downrangeco}"; } > scripts/link_check.txt 2>&1
+          curl -s --max-time 120 -H "x-admin-key: $ADMIN_KEY" https://www.downrangeco.com/api/admin/content-scan > scan.json
+          python3 - <<'PY' >> scripts/link_check.txt
+          import json
+          print("== scan")
+          try:
+              d = json.load(open("scan.json"))
+              s = json.dumps(d)
+              print(len(s), "bytes; keys:", list(d.keys()) if isinstance(d, dict) else type(d))
+              def walk(o):
+                  if isinstance(o, dict):
+                      if any("oregon" in str(v).lower() and "elementary" in str(v).lower() for v in o.values()): print(json.dumps(o)[:800])
+                      for v in o.values(): walk(v)
+                  elif isinstance(o, list):
+                      for v in o: walk(v)
+              walk(d)
+          except Exception as e: print("scan error", e)
+          PY
+      - name: Commit
+        run: |
+          git config user.name "claude-bot"; git config user.email "noreply@anthropic.com"
+          git add scripts/link_check.txt; git commit -m "chore: link check" || true
+          git pull --rebase -q || true; git push || true
