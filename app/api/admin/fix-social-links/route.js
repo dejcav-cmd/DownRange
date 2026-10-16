@@ -63,3 +63,33 @@ export async function POST(req) {
   }
   return Response.json({ ok: true, count: broken.length, results })
 }
+
+// PUT: for Facebook posts with a stale link: delete the old post (if still there) and repost with the working link.
+export async function PUT(req) {
+  if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
+  const token = process.env.FACEBOOK_PAGE_ACCESS_TOKEN, pageId = process.env.FACEBOOK_PAGE_ID
+  if (!token || !pageId) return Response.json({ error: 'Facebook env missing' }, { status: 400 })
+  const form = (o) => ({ method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, body: new URLSearchParams({ ...o, access_token: token }) })
+  const broken = (await scan()).filter(b => b.platform === 'facebook' && b.newUrl)
+  const results = []
+  for (const b of broken) {
+    const r = { docId: b.docId, oldPostId: b.postId }
+    const doc = await sanity.fetch(`*[_id==$id][0]{ mediaUrl }`, { id: b.docId })
+    const still = await fetch(`${GRAPH}/${b.postId}?fields=id&access_token=${token}`).then(x => x.json()).catch(() => ({}))
+    if (still.id) {
+      const del = await fetch(`${GRAPH}/${b.postId}?access_token=${token}`, { method: 'DELETE' }).then(x => x.json()).catch(e => ({ error: { message: e.message } }))
+      if (!del.success) { r.status = 'old post could not be deleted: ' + (del.error?.message || 'unknown') + ' (not reposted, to avoid a duplicate)'; results.push(r); continue }
+      r.deleted = true
+    } else r.deleted = 'already gone'
+    const text = b.content.replace(b.oldUrl, b.newUrl)
+    let res = doc?.mediaUrl ? await fetch(`${GRAPH}/${pageId}/photos`, form({ url: doc.mediaUrl, caption: text })).then(x => x.json()).catch(e => ({ error: { message: e.message } })) : {}
+    if (!res.id) res = await fetch(`${GRAPH}/${pageId}/feed`, form({ message: text })).then(x => x.json()).catch(e => ({ error: { message: e.message } }))
+    if (res.id) {
+      await sanity.patch(b.docId).set({ content: text, postId: res.id, postedAt: new Date().toISOString() }).commit().catch(() => {})
+      await fetch(`${GRAPH}/`, form({ id: b.newUrl.split('?')[0], scrape: 'true' })).catch(() => {})
+      r.status = 'reposted'; r.newPostId = res.id
+    } else r.status = 'repost failed: ' + (res.error?.message || 'unknown')
+    results.push(r)
+  }
+  return Response.json({ ok: true, count: broken.length, results })
+}
