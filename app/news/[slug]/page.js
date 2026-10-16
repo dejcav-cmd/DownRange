@@ -121,6 +121,7 @@ function timeAgo(date) {
 
 export default async function ArticlePage({ params }) {
   let article, related, alerts
+  let redirectTo = null // redirect() throws, so it must run outside the try/catch below
 
   try {
     // article must resolve first so its category can be used for related articles
@@ -132,7 +133,7 @@ export default async function ArticlePage({ params }) {
       const byId = await getArticleById(params.slug).catch(() => null)
       if (byId?.slug?.current) {
         // Article exists — redirect to its current slug (fix-slugs may have changed it)
-        permanentRedirect(`/news/${byId.slug.current}`)
+        redirectTo = `/news/${byId.slug.current}`
       } else {
         // Article doesn't exist (write failure or deleted): a real 404, not a
         // redirect to /news, which Google treats as a soft 404. No-redirect policy.
@@ -144,10 +145,10 @@ export default async function ArticlePage({ params }) {
     if (!article) {
       const m = /-([a-f0-9]{6})$/.exec(params.slug)
       const moved = m ? await getArticleBySuffix(m[1]).catch(() => null) : null
-      if (moved?.slug?.current && moved.slug.current !== params.slug) permanentRedirect(`/news/${moved.slug.current}`)
+      if (moved?.slug?.current && moved.slug.current !== params.slug) redirectTo = `/news/${moved.slug.current}`
     }
 
-    ;[related, alerts] = await Promise.all([
+    if (!redirectTo) ;[related, alerts] = await Promise.all([
       article
         ? getRelatedArticles(article.category || 'news', params.slug, 8).catch(() => [])
         : getRecentArticles(8).catch(() => []),
@@ -159,6 +160,7 @@ export default async function ArticlePage({ params }) {
     alerts  = []
   }
 
+  if (redirectTo) permanentRedirect(redirectTo)
   if (!article) notFound()
 
   // AmmoLand articles belong in /deals — redirect permanently
