@@ -1,29 +1,10 @@
-600 scanned, 33 need a real image, 9 coupon posts skipped
+600 scanned, 13 need a real image, 9 coupon posts skipped
 
-  + Bundle* The Triggered Company LAT Trigger, H2 Bu — 31230b 1000x562 sha=d0c81b687d23
-  + Holosun ARO-CORE-GD2 Micro Reflex Sight Gold Dot — 143500b 547x546 sha=4f944daf2f08
-  + TMP Suppressors Wylde 556 SS K, 5.56mm, Black, S — 10744b 206x489 sha=0ea296c5fa99
-  + Buy a Grand Power Xcalibur MK12 and get a FREE K — 199337b 656x268 sha=381895833a55
-  + Sig Sauer P322 .22 LR 4-Inch Optic-Ready Pistol  — 51419b 1000x700 sha=aba5402a82ad
-  + GO BELOM 9mm 124 Gr FMJ Brass 1000/1 (100) - $42 — 18245b 468x330 sha=666d1cc4ea3b
-  + Strike Industries SI-FSA-S-STAB Strike FSA Singl — 39390b 1000x667 sha=dc8e9f25df47
-  + SB Tactical SBA4 AR Pistol Brace - Stealth Grey  — 34548b 749x625 sha=7487cf2ec3b5
-  + FAB Defense AR-15/M4 Stock With Battery Storage  — 45946b 704x559 sha=17e8b7668edb
-  + FAB Defense Ergonomic Pistol Grip for AK-47 - Ta — 41181b 399x560 sha=74b4f2da4425
-  + Heckler & Koch VP9 9mm 4.09" 17rd Optic Ready Pi — 53188b 900x600 sha=418f5bdf6b42
-  + Blue Line GSG-16P 9.12" .22LR 22rd Pistol, Smoke — 28080b 666x410 sha=3d13b46d747e
-  + BLEM Sabre-15 Stripped Lower Receiver - $59.99 — 33364b 1000x500 sha=18920a97c191
-  + PSA "M4A1" 14.5" P&W Quad Rail Upper w/ BCG & CH — 22632b 1000x500 sha=0e4a8c9216c0
-  + PSA 8.5" Pistol-length 300AAC Blackout Nitride 7 — 21506b 1000x281 sha=4daa9f0671a0
-  + Active Safety Designs Ambidextrous ARC-Fire Trig — 41555b 1054x535 sha=a830afc8322b
-  + Partisan Disruptor Black Forced Reset Trigger +  — 54344b 1032x593 sha=0197e6a1d4d0
-  + Partisan Disruptor Black Forced Reset Trigger +  — 48590b 1023x762 sha=0f129755a94d
-  + Partisan Disruptor Black Forced Reset Trigger +  — 39026b 999x514 sha=3b9efc2d2f0c
+  + .223/5.56/300BLK M16 Profile Left-Handed Bolt Ca — 17247b 825x414 sha=073b41ed0285
+  + G-Force GFP3 12 GA 20" Barrel 3"-Chamber 4-Round — 20226b 1139x265 sha=7b8cac170dc8
+  x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
   x Magpul PMAG D-60 5.56x45mm NATO AR-15,M4,M16 60  — image not downloadable
-  + SB Tactical SBA4X Brace Only - $54.95 — 39210b 735x614 sha=239a2d170a1c
-  + Dirty Bird Enhanced NOLO AR-15 Complete Lower Re — 25380b 955x444 sha=030238f04f54
   x AR-15 5.4oz H3 Buffer - $39.95 — image not downloadable
-  + Toolcraft .223/5.56/300 BLK M16 Profile Bolt Car — 15382b 908x181 sha=4c89e8b5780a
   x Rattlesnake Tactical 34-Round 9mm Magazine Desig — image not downloadable
   x Dead Air Nomad TI XC 7.62mm Xeno Black 7"/9.7 oz — image not downloadable
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
@@ -32,8 +13,7 @@
   x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
   x TriStar Raptor ATAC 12 Gauge 20" 5 Rd Black Synt — image not downloadable
   x Heritage Settler 22 LR, 16.5" Barrel, Case Harde — image not downloadable
-  x Glock 43x/48 15rd Magazine 9mm Black Steel - $29 — image not downloadable
 
-fixed 22, failed 11  (66% success)
-distinct images: 22 across 22 deals
+fixed 2, failed 11  (15% success)
+distinct images: 2 across 2 deals
 PASS — no image shared between products
