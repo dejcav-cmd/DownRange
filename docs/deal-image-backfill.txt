@@ -1,41 +1,16 @@
-600 scanned, 44 need a real image, 9 coupon posts skipped
+600 scanned, 20 need a real image, 6 coupon posts skipped
 
-  + Century Arms OEM 9mm AP5 MP5-Clone 30-Round Maga — 21972b 800x800 sha=64b2304ba23a
-  + Beretta 92FS Compact 9mm 15-Round Magazine - $21 — 12452b 256x639 sha=87fdc5505311
-  + Howa Fence Line .300 Blackout 16 25" 5rd Rifle,  — 10130b 1000x165 sha=e874202de1f5
-  + Browning AB3 308 Win 22' 4rd Rifle, Mossy Oak Bo — 8172b 1000x153 sha=c8e597512f1d
-  + Brownells - BRN-15 5.56mm 13.7" BBL .750" Gas Bl — 79958b 795x356 sha=c4e19a49b9b4
-  + PSA Dagger Compact 9mm 3.9″ Bbl 15rd Pistol w/ E — 108222b 531x412 sha=243ec9027798
-  + Ruger Mini-Thirty 7.62 39mm 16.1" 20+1 Rds Semi  — 12389b 800x183 sha=e941110a59a1
-  + Glock G45 9mm 4" barrel 17 Rnds Black w/ACRO Opt — 60705b 960x800 sha=0213ee23734d
-  + H&R Harrington & Richardson Retro DOE 9mm 7.5" T — 177527b 1000x485 sha=3720e06d4180
-  + Ruger Mini-14 .223 Rem 16.15" Heavy Barrel 20rd  — 59930b 724x334 sha=7fb8d68fc656
-  + Sig Sauer P320 Pro RXP 9mm 4.7" 17rd Pistol w/ 6 — 108360b 571x410 sha=cf4806d009c5
-  + Noreen 2 0 ULR Scout 50 BMG 30" Barrel, Optic Re — 47800b 656x273 sha=169d03f1bd2f
-  + Andro Corp ACI-15 Stripped AR-15 Lower Receiver  — 117041b 1000x666 sha=7f8135a5344e
-  + Springfield Echelon 4.5F Comp Gear Pac 9mm 4.5"  — 37910b 676x440 sha=11274f42aa0e
-  + Walther P22Q Tungsten .22 LR 3.42" Barrel 10-Rds — 129202b 1500x1174 sha=a988f49a13c2
-  + Springfield XD-S Mod 2 OSP 9mm 3.3" Barrel 7/9 R — 178951b 730x500 sha=9b30bb29670d
-  + Sig Sauer P320 10mm Auto 5in Elite Concrete Cera — 68892b 1000x1000 sha=3b4f12d121a1
-  + Taurus TX22 Handgun 22 LR 16/22 Rds 4 6" Threade — 224219b 808x629 sha=6aa7eee35d4b
-  + Tisas 1911A1 US Army 5" 45 ACP 5" 7rd Pistol, WG — 188814b 697x504 sha=d2cc98c824b2
-  + Q Sugar Weasel .300 Blackout 13" Barrel Upper Bl — 58307b 834x223 sha=8123d3e6edd8
-  + Vortex Sport Cantilever Inch Mount - $79.99 — 129351b 652x435 sha=0b579f8188e1
-  + Kimber Mountain Ascent .308 Win 22" 4rd Rifle Ca — 84219b 1018x351 sha=4fe463a55802
-  + Keltec PR57 5.7x28mm 4.64" 20rd Pistol, Black -  — 42462b 1000x708 sha=2ea3a231d0ae
-  + Surplus FMK-3 SMG Parts Kit - $39.99 — 42789b 1000x499 sha=50e4041113ad
-  + PSA 10.5" Pistol Length 300AAC 1/8 Nitride 10.5" — 36745b 1200x246 sha=ddf58cebd61f
-  ... 25/44  ok=25 fail=0
-  + MIRA Safety Fire Escape Pro Kit - $396.51 — 150435b 561x407 sha=d533a2cf33f0
-  + Winchester 535742296 XPR Sporter 350 Legend 22"  — 10938b 1000x153 sha=4e8fa177e3a8
-  + Otter Creek Lithium Rifle Suppressor, 9mm, Threa — 25652b 1000x1000 sha=b649ab38cade
-  + Buck Knives 327 Nobleman Pocket Knife 2.625" Dro — 14595b 680x510 sha=9680c26c9f1f
-  + NEW! Ruger Mark IV in stock — 45950b 1000x666 sha=9974a8b3a0cd
-  + Taurus Raging Hunter - The Ultimate Choice for D — 118117b 1086x610 sha=7f57a4090fcc
-  + Federal Gold Medal Premium Multi Caliber 1000 Pe — 208253b 1000x666 sha=86d1bfd5f222
-  + MAC Cowboy Puncher Engraved 12 GA-3" 18.5" Barre — 78054b 791x290 sha=e399608349c8
-  + Vortex Sport Riflescope Rings 1 Inch Extra High  — 229670b 762x670 sha=e09c967b2b9f
-  + ZEV Core Elite Stainless Barrel, 223 Wylde, 14.5 — 84912b 655x364 sha=4112dda9be47
+  + Active Safety Designs Ambidextrous ARC-Fire Trig — 81210b 1125x1015 sha=d57de3703666
+  + Savage Axis II XP .308 Win 22" barrel 4rd Bolt R — 13541b 800x173 sha=0a8d85c0569d
+  + CZ Scorpion 3 Plus Micro 9mm 4.2" Barrel 20-Roun — 23689b 800x302 sha=7fffd2518c04
+  + Ruger RXM 9mm 4" Barrel 15-Rounds w/ Aimpoint CO — 43350b 787x656 sha=cd80fb45eff4
+  + Savage Axis 2 Compact Gray .300 AAC Blackout 16" — 9697b 800x127 sha=0cc4804f41fc
+  + Kimber KDS9C OR Black / Grey 9mm 4.09" Barrel 10 — 29892b 630x436 sha=5e51174fe3cf
+  x Springfield Armory 2020 WayPoint Ridgeline Camo  — rejected: too small (656x106)
+  + Ruger RXM Stealth Grey 9mm 4" Barrel 15-Rounds w — 45724b 683x571 sha=05ac11889df4
+  + Elite Tactical Systems Glock 22/23/27 Magazine S — 17726b 269x656 sha=7e2e6fb793a6
+  + Method Dynamics Plan B Jet Drive Dual Port Brake — 42475b 900x600 sha=51e80692b312
+  + HUXWRX Flash Hider-QD 5.56 1/2x28 - $105.57 (Add — 19796b 269x551 sha=e17bd77ebbaa
   x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
   x Magpul PMAG D-60 5.56x45mm NATO AR-15,M4,M16 60  — image not downloadable
   x AR-15 5.4oz H3 Buffer - $39.95 — image not downloadable
@@ -46,6 +21,6 @@
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
   x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
 
-fixed 35, failed 9  (79% success)
-distinct images: 35 across 35 deals
+fixed 10, failed 10  (50% success)
+distinct images: 10 across 10 deals
 PASS — no image shared between products
