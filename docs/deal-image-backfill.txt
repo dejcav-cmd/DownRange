@@ -1,16 +1,32 @@
-600 scanned, 20 need a real image, 6 coupon posts skipped
+600 scanned, 35 need a real image, 5 coupon posts skipped
 
-  + Active Safety Designs Ambidextrous ARC-Fire Trig — 81210b 1125x1015 sha=d57de3703666
-  + Savage Axis II XP .308 Win 22" barrel 4rd Bolt R — 13541b 800x173 sha=0a8d85c0569d
-  + CZ Scorpion 3 Plus Micro 9mm 4.2" Barrel 20-Roun — 23689b 800x302 sha=7fffd2518c04
-  + Ruger RXM 9mm 4" Barrel 15-Rounds w/ Aimpoint CO — 43350b 787x656 sha=cd80fb45eff4
-  + Savage Axis 2 Compact Gray .300 AAC Blackout 16" — 9697b 800x127 sha=0cc4804f41fc
-  + Kimber KDS9C OR Black / Grey 9mm 4.09" Barrel 10 — 29892b 630x436 sha=5e51174fe3cf
-  x Springfield Armory 2020 WayPoint Ridgeline Camo  — rejected: too small (656x106)
-  + Ruger RXM Stealth Grey 9mm 4" Barrel 15-Rounds w — 45724b 683x571 sha=05ac11889df4
-  + Elite Tactical Systems Glock 22/23/27 Magazine S — 17726b 269x656 sha=7e2e6fb793a6
-  + Method Dynamics Plan B Jet Drive Dual Port Brake — 42475b 900x600 sha=51e80692b312
-  + HUXWRX Flash Hider-QD 5.56 1/2x28 - $105.57 (Add — 19796b 269x551 sha=e17bd77ebbaa
+  + Advanced Armament 762 SDN 6 30 Cal Inconel Silen — 300661b 1164x900 sha=76748d08f534
+  + American Tactical Alpha Maxx, 5.56 NATO, 7.50" B — 32997b 1000x476 sha=387c0a290ca8
+  + SB Tactical SBM4 Pistol Stabilizing Brace - Blac — 12547b 555x370 sha=ba0e0c2b385f
+  + FN 509 Compact Tactical Vortex Viper 9mm Luger 4 — 518687b 1063x1001 sha=d97027437a7d
+  + Diamondback DB15 Sports South Exclusive 5.56mm N — 235272b 1212x457 sha=0b688c224587
+  + Ruger 77/44 .44 Mag 16.6" Blued Threaded Barrel  — 55490b 723x259 sha=5ad1be5a3d77
+  + Daniel Defense DDM4 V9 5.56 NATO 16.1" Bbl 10RD  — 289002b 1500x379 sha=622ab6808ead
+  + Winchester SXP Hybrid 12 GA 28" Bbl 4rd Pump Act — 36996b 735x235 sha=b4f5baefc074
+  + Cimarron 1885 .45-70 Gov 30" Octagonal Barrel Si — 47155b 749x287 sha=f1c65548791a
+  + ATI Nomad SGS 20 GA 18.5" Single Shot Shotgun -  — 21359b 1000x485 sha=8ea8c645ec6a
+  + Winchester Wildcat SR .22 LR Semi-Auto Rifle wit — 33081b 1302x256 sha=ddd4ab1ff6a2
+  + Blackhawk Omega Elite Phalanx Homeland Security  — 366677b 750x750 sha=621ca89dd2d4
+  + Dial 5.11: Tees,Ppolos, Buttondowns & More Up To — 76944b 600x600 sha=523990ce50b2
+  + Mossberg 940 Pro Thunder Ranch 12GA 18.5" 7RD Sh — 61871b 797x296 sha=cc153d71fa9b
+  + Benelli Super Nova 3 12 GA 18.5" 7RD Pump Action — 8405b 600x127 sha=1232c84eca02
+  + Odin Works Bolt Carrier Group, Stainless Steel F — 55254b 642x334 sha=0f46261f9fcb
+  + CMC Triggers Drop-In Single Stage Flat Trigger - — 156010b 652x572 sha=3ef45b72e48a
+  + HK MR556 A4 5.56 NATO 11" SBR, 30rd - $3599.99 ( — 94010b 793x332 sha=b3d2df82781a
+  + Smith & Wesson M&P Shield M 2.0 .40 S&W 3.1" 7rd — 236773b 835x697 sha=948b38827d05
+  + Orthos Arms Joker Elite 12 Gauge 11" Barrel 10rd — 317091b 1024x531 sha=fa56d8264a53
+  + McCoy 200A 12 Gauge 28" Smoothbore Barrel 2rd Br — 75114b 1200x342 sha=87b5e6243670
+  x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
+  + Franchi Affinity 3 Sport Trap 12ga 30"Bbl 4RD Bl — 36976b 992x278 sha=9ca2b4d56e4d
+  + Stoeger M3020 20 GA 3" Chamber 24" Barrel 4RD Sh — 113277b 936x292 sha=a01c2ba28998
+  + Benelli Ethos SuperSport 12 Gauge 28" Barrel 4rd — 91033b 900x675 sha=53f10c73cf7d
+  ... 25/35  ok=24 fail=1
+  + Accurate Mag AICS Rifle Magazine 30-06 Sprg 5rd  — 67476b 532x516 sha=5db435905a11
   x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
   x Magpul PMAG D-60 5.56x45mm NATO AR-15,M4,M16 60  — image not downloadable
   x AR-15 5.4oz H3 Buffer - $39.95 — image not downloadable
@@ -21,6 +37,6 @@
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
   x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
 
-fixed 10, failed 10  (50% success)
-distinct images: 10 across 10 deals
+fixed 25, failed 10  (71% success)
+distinct images: 25 across 25 deals
 PASS — no image shared between products
