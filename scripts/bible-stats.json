@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-10-11T07:00:21.808Z",
+  "generatedAt": "2026-10-18T07:00:21.447Z",
   "content": {
-    "newsArticles": 2699,
-    "blogPosts": 45,
-    "legislation": 410,
-    "firearmReleases": 34,
-    "videos": 809,
+    "newsArticles": 2845,
+    "blogPosts": 48,
+    "legislation": 415,
+    "firearmReleases": 35,
+    "videos": 845,
     "reviews": 3,
     "canadaArticles": 109,
-    "brazilArticles": 111
+    "brazilArticles": 116
   },
   "operations": {
-    "cronRuns": 3369,
+    "cronRuns": 3594,
     "outreachContacts": 221,
-    "socialPosts": 1093,
+    "socialPosts": 1220,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "Silencer Saturday #453: NFA Sea Change In Wake Of ATF Guidance Letter",
-    "newsDate": "2026-10-10T22:07:04.000Z",
+    "newsTitle": "Texas Smuggler Arrested With Four Pipe Bombs and an AR-Style Rifle",
+    "newsDate": "2026-10-18T02:05:22.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 4220
+  "totalContentDocs": 4416
 }
