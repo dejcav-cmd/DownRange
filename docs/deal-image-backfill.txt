@@ -1,23 +1,24 @@
-600 scanned, 28 need a real image, 5 coupon posts skipped
+600 scanned, 28 need a real image, 9 coupon posts skipped
 
-  x 16" 5.56 NATO 1:7 Carbine Lightweight Barrel - P — rejected: too small (1217x96)
-  + Anarchy Outdoors Titanium Full Port Muzzle Brake — 23847b 800x315 sha=97652331fb1a
+  + Spikes Tactical Buckwheat .22 Caliber Suppressor — 58242b 1439x823 sha=b3433738f71a
+  + NexGen Arms NG15 223 Wylde 16" 30-Rds Semi-Auto  — 31689b 1310x381 sha=751009ed0f88
+  + EOTech EFLX MRS Mini Reflex 3 MOA Red Dot Sight  — 116892b 1280x902 sha=1f5428949cd2
+  + Trijicon SRO Red Dot Sight 2.5 MOA, Adjustable L — 31035b 727x490 sha=d558df4a58d1
+  + Active Safety Designs Ambidextrous ARC-Fire Trig — 9739b 343x230 sha=23f872ad214b
+  + Bundle Deal* Partisan Triggers Disruptor AR-15 3 — 190800b 1000x666 sha=515aff0aa02e
+  + Century Arms Centurion 11 Chrome .45 ACP 5" Barr — 32691b 800x543 sha=819ea90f586d
+  + Fostech .30 Cal AR-15 Strake Brake - Black Nitri — 43631b 570x351 sha=2e974bfd4469
+  + Remington 270 Winchester Special Purpose 24" BBL — 19776b 893x268 sha=f53862ec78af
+  + Vortex Strike Eagle 1-10x24 FFP EBR-8 MRAD - LPV — 257267b 990x661 sha=36292109ec40
+  + Expo Arms Mil-Spec Enhanced AR-15 Lower Parts Ki — 169146b 1019x532 sha=2b88b8abef3e
+  + FAB Defense Handguard w/Rails For Remington Mode — 434956b 978x550 sha=3302c87634ac
+  + FAB Defense Handguard Accessory Rail System For  — 126093b 631x346 sha=544e92faa3f1
+  + FAB Defense Scorpus Double Magazine Pouch, Glock — 211991b 978x550 sha=3ece85c66309
+  + FAB Defense Scorpus Covert Polymer IWB Holster,  — 182391b 455x562 sha=0b43b3fc71fe
+  + FAB Defense Tactical Folding Grip, Desert Tan -  — 45672b 342x288 sha=e1b5aec6ed18
+  + Lake City M200 5.56x45mm NATO Blanks 1000 Round  — 206920b 1500x999 sha=28b959e64c67
+  + Colt M7 Bayonet, NO Scabbard - Good Condition, F — 37551b 527x536 sha=664aa6949d6f
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
-  + FN FNX-9 9mm 10-Round Stainless Steel Magazine - — 16918b 409x693 sha=c1b015ed648c
-  + Method Dynamics Plan B Jet Drive Dual Port Brake — 40086b 900x600 sha=5bcb5f20cd4f
-  + Magpul MS1 Two Point Sling - $23.79 (Add To Cart — 34137b 867x578 sha=4670977a7039
-  + Rearden MFG Atlas Bravo Nitride Suppressor Adapt — 41598b 822x526 sha=3186e3b19c1d
-  + Primary Weapons Systems BDE PUB-XL Mount HUB 1.3 — 15677b 317x361 sha=913953023f0d
-  + Rearden FHD 1/2x28 Square Shoulder - $57.84 w/co — 15826b 255x525 sha=45e233002ef3
-  + Caldwell 440-907 Rock BR Comp Front Rest - $145. — 19186b 423x429 sha=be203fd42b18
-  + Streamlight ProTac Rail Mount HP-X Pro 800 Lumen — 26770b 656x403 sha=239456cda91d
-  + Smith and Wesson 686 Plus Stainless .357 Mag/.38 — 26840b 800x428 sha=f410d2b0a39a
-  + North American Arms The Bad .22 Mag 1.125" Barre — 25274b 632x375 sha=c5e7401a429e
-  + Chiappa Rhino 200DS Revolver .357 Mag 2" barrel  — 68071b 1073x834 sha=16e2474c2c41
-  + American Tactical GSG-9 HGA 9mm Semi-Auto Pistol — 40460b 1000x666 sha=a65629800a2a
-  + Pietta Great Western II Engraved .357 Mag 4.75"  — 28553b 799x384 sha=3e8e5230d557
-  + Trijicon AccuPoint 1-4x24mm, Red Triangle Post R — 10661b 493x257 sha=3f4794202907
-  + Trijicon AccuPoint 2.5-10x56mm Green Mil-Dot Cro — 9028b 485x250 sha=b1eecb4a76a3
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
   x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
@@ -27,8 +28,7 @@
   x Dead Air Nomad TI XC 7.62mm Xeno Black 7"/9.7 oz — image not downloadable
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
   x Glock Compatible 9mm 10 Rd Capacity Steel Lined  — image not downloadable
-  x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
 
-fixed 16, failed 12  (57% success)
-distinct images: 16 across 16 deals
+fixed 18, failed 10  (64% success)
+distinct images: 18 across 18 deals
 PASS — no image shared between products
