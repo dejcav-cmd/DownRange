@@ -1,32 +1,25 @@
-600 scanned, 35 need a real image, 5 coupon posts skipped
+600 scanned, 28 need a real image, 5 coupon posts skipped
 
-  + Advanced Armament 762 SDN 6 30 Cal Inconel Silen — 300661b 1164x900 sha=76748d08f534
-  + American Tactical Alpha Maxx, 5.56 NATO, 7.50" B — 32997b 1000x476 sha=387c0a290ca8
-  + SB Tactical SBM4 Pistol Stabilizing Brace - Blac — 12547b 555x370 sha=ba0e0c2b385f
-  + FN 509 Compact Tactical Vortex Viper 9mm Luger 4 — 518687b 1063x1001 sha=d97027437a7d
-  + Diamondback DB15 Sports South Exclusive 5.56mm N — 235272b 1212x457 sha=0b688c224587
-  + Ruger 77/44 .44 Mag 16.6" Blued Threaded Barrel  — 55490b 723x259 sha=5ad1be5a3d77
-  + Daniel Defense DDM4 V9 5.56 NATO 16.1" Bbl 10RD  — 289002b 1500x379 sha=622ab6808ead
-  + Winchester SXP Hybrid 12 GA 28" Bbl 4rd Pump Act — 36996b 735x235 sha=b4f5baefc074
-  + Cimarron 1885 .45-70 Gov 30" Octagonal Barrel Si — 47155b 749x287 sha=f1c65548791a
-  + ATI Nomad SGS 20 GA 18.5" Single Shot Shotgun -  — 21359b 1000x485 sha=8ea8c645ec6a
-  + Winchester Wildcat SR .22 LR Semi-Auto Rifle wit — 33081b 1302x256 sha=ddd4ab1ff6a2
-  + Blackhawk Omega Elite Phalanx Homeland Security  — 366677b 750x750 sha=621ca89dd2d4
-  + Dial 5.11: Tees,Ppolos, Buttondowns & More Up To — 76944b 600x600 sha=523990ce50b2
-  + Mossberg 940 Pro Thunder Ranch 12GA 18.5" 7RD Sh — 61871b 797x296 sha=cc153d71fa9b
-  + Benelli Super Nova 3 12 GA 18.5" 7RD Pump Action — 8405b 600x127 sha=1232c84eca02
-  + Odin Works Bolt Carrier Group, Stainless Steel F — 55254b 642x334 sha=0f46261f9fcb
-  + CMC Triggers Drop-In Single Stage Flat Trigger - — 156010b 652x572 sha=3ef45b72e48a
-  + HK MR556 A4 5.56 NATO 11" SBR, 30rd - $3599.99 ( — 94010b 793x332 sha=b3d2df82781a
-  + Smith & Wesson M&P Shield M 2.0 .40 S&W 3.1" 7rd — 236773b 835x697 sha=948b38827d05
-  + Orthos Arms Joker Elite 12 Gauge 11" Barrel 10rd — 317091b 1024x531 sha=fa56d8264a53
-  + McCoy 200A 12 Gauge 28" Smoothbore Barrel 2rd Br — 75114b 1200x342 sha=87b5e6243670
+  x 16" 5.56 NATO 1:7 Carbine Lightweight Barrel - P — rejected: too small (1217x96)
+  + Anarchy Outdoors Titanium Full Port Muzzle Brake — 23847b 800x315 sha=97652331fb1a
+  x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
+  + FN FNX-9 9mm 10-Round Stainless Steel Magazine - — 16918b 409x693 sha=c1b015ed648c
+  + Method Dynamics Plan B Jet Drive Dual Port Brake — 40086b 900x600 sha=5bcb5f20cd4f
+  + Magpul MS1 Two Point Sling - $23.79 (Add To Cart — 34137b 867x578 sha=4670977a7039
+  + Rearden MFG Atlas Bravo Nitride Suppressor Adapt — 41598b 822x526 sha=3186e3b19c1d
+  + Primary Weapons Systems BDE PUB-XL Mount HUB 1.3 — 15677b 317x361 sha=913953023f0d
+  + Rearden FHD 1/2x28 Square Shoulder - $57.84 w/co — 15826b 255x525 sha=45e233002ef3
+  + Caldwell 440-907 Rock BR Comp Front Rest - $145. — 19186b 423x429 sha=be203fd42b18
+  + Streamlight ProTac Rail Mount HP-X Pro 800 Lumen — 26770b 656x403 sha=239456cda91d
+  + Smith and Wesson 686 Plus Stainless .357 Mag/.38 — 26840b 800x428 sha=f410d2b0a39a
+  + North American Arms The Bad .22 Mag 1.125" Barre — 25274b 632x375 sha=c5e7401a429e
+  + Chiappa Rhino 200DS Revolver .357 Mag 2" barrel  — 68071b 1073x834 sha=16e2474c2c41
+  + American Tactical GSG-9 HGA 9mm Semi-Auto Pistol — 40460b 1000x666 sha=a65629800a2a
+  + Pietta Great Western II Engraved .357 Mag 4.75"  — 28553b 799x384 sha=3e8e5230d557
+  + Trijicon AccuPoint 1-4x24mm, Red Triangle Post R — 10661b 493x257 sha=3f4794202907
+  + Trijicon AccuPoint 2.5-10x56mm Green Mil-Dot Cro — 9028b 485x250 sha=b1eecb4a76a3
+  x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
-  + Franchi Affinity 3 Sport Trap 12ga 30"Bbl 4RD Bl — 36976b 992x278 sha=9ca2b4d56e4d
-  + Stoeger M3020 20 GA 3" Chamber 24" Barrel 4RD Sh — 113277b 936x292 sha=a01c2ba28998
-  + Benelli Ethos SuperSport 12 Gauge 28" Barrel 4rd — 91033b 900x675 sha=53f10c73cf7d
-  ... 25/35  ok=24 fail=1
-  + Accurate Mag AICS Rifle Magazine 30-06 Sprg 5rd  — 67476b 532x516 sha=5db435905a11
   x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
   x Magpul PMAG D-60 5.56x45mm NATO AR-15,M4,M16 60  — image not downloadable
   x AR-15 5.4oz H3 Buffer - $39.95 — image not downloadable
@@ -35,8 +28,7 @@
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
   x Glock Compatible 9mm 10 Rd Capacity Steel Lined  — image not downloadable
   x HIPERFIRE XAKM2, Single Stage Trigger, Black Par — image not downloadable
-  x NexGen Arms NG-15 Pistol, .223 Wylde, 7.50" Barr — image not downloadable
 
-fixed 25, failed 10  (71% success)
-distinct images: 25 across 25 deals
+fixed 16, failed 12  (57% success)
+distinct images: 16 across 16 deals
 PASS — no image shared between products
