@@ -1,5 +1,1 @@
-{
-    "ok": true,
-    "summary": "0 duplicate/forced, 0 replaced",
-    "report": []
-}
+call failed
