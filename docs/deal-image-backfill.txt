@@ -1,17 +1,13 @@
-600 scanned, 22 need a real image, 9 coupon posts skipped
+600 scanned, 18 need a real image, 9 coupon posts skipped
 
-  + CMMG 12.5" .300 BLK 1:7 Pistol Length Multi-Role — 12688b 1000x182 sha=10d360afab68
-  + Geissele Roll Pin Starter Tool for Gas Block - $ — 35279b 1000x666 sha=4467d7e912f1
-  + Diamondback Carbon DB15 223 Wylde 18" barrel 30r — 49454b 1500x397 sha=d077fe66ef3e
-  + Taurus Expedition 6.5 Creedmoor 20" Barrel 5-Rou — 11945b 800x151 sha=e386d0ce19a0
-  + Diamondback Carbon DB10 OD Green .308 Win 16" Ba — 18380b 800x209 sha=7637310a638c
-  + Kimber Custom TLE II 1911 .45 ACP 5" barrel 7 Rn — 25990b 570x365 sha=674ac2ec71f0
-  + The Legacy 5.56 16'' Midgas FSB, Mil-Spec Furnit — 16783b 617x304 sha=4dfb473aaa7e
-  + Colt Firearms Classic Stainless Steel .38 Super  — 27959b 565x362 sha=f32fbfb09065
-  + Beretta 92Xi Combat BDU Camo 9mm 4.7" Barrel 18- — 42952b 603x656 sha=157bec326ee3
-  + ProMag Sig P320 9mm 50-Round Drum Magazine FDE - — 45680b 507x1171 sha=ce9df4708ec6
-  + Ruger M77 Hawkeye Compact 308 Win Bolt-Action Ri — 12108b 800x156 sha=1e5dbf08b3a1
-  + Leupold VX-Freedom Rimfire 3-9x40mm Matte Black  — 12515b 800x138 sha=a359a8ed957f
+  + SB Tactical HBPDW 5.56 Pistol Stabilizing Brace  — 42624b 1500x1000 sha=47cdbb68dcbb
+  + Hoffman Tactical Trigger Kicker - TK-15 - $37.95 — 14957b 945x630 sha=6cf09be78e0c
+  + Atrius Development 3 Position SIG MCX/MPX X-Seri — 11320b 945x630 sha=ecaea2a0e452
+  + Orthos Raider S4 1942 Elite 12 Gauge 18.5in Barr — 73887b 428x427 sha=0134f041bcff
+  + Silencer Central Banish Buck 30 .30 Cal Suppress — 28077b 900x900 sha=0265ac548397
+  + SilencerCo Velos 7.62mm Suppressor, Stainless St — 30978b 900x900 sha=631b6952c90b
+  + Smith & Wesson Sport III 5.56 Nato 16" 30rd Rifl — 21107b 794x352 sha=3ec64d4ded50
+  x CZ 1012 G2 All-Terrain 12GA 28″ Semi Auto Shotgu — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
@@ -23,6 +19,6 @@
   x Dead Air Nomad TI XC 7.62mm Xeno Black 7"/9.7 oz — image not downloadable
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
 
-fixed 12, failed 10  (54% success)
-distinct images: 12 across 12 deals
+fixed 7, failed 11  (38% success)
+distinct images: 7 across 7 deals
 PASS — no image shared between products
