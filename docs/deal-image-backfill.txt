@@ -1,23 +1,18 @@
-600 scanned, 28 need a real image, 9 coupon posts skipped
+600 scanned, 22 need a real image, 9 coupon posts skipped
 
-  + Spikes Tactical Buckwheat .22 Caliber Suppressor — 58242b 1439x823 sha=b3433738f71a
-  + NexGen Arms NG15 223 Wylde 16" 30-Rds Semi-Auto  — 31689b 1310x381 sha=751009ed0f88
-  + EOTech EFLX MRS Mini Reflex 3 MOA Red Dot Sight  — 116892b 1280x902 sha=1f5428949cd2
-  + Trijicon SRO Red Dot Sight 2.5 MOA, Adjustable L — 31035b 727x490 sha=d558df4a58d1
-  + Active Safety Designs Ambidextrous ARC-Fire Trig — 9739b 343x230 sha=23f872ad214b
-  + Bundle Deal* Partisan Triggers Disruptor AR-15 3 — 190800b 1000x666 sha=515aff0aa02e
-  + Century Arms Centurion 11 Chrome .45 ACP 5" Barr — 32691b 800x543 sha=819ea90f586d
-  + Fostech .30 Cal AR-15 Strake Brake - Black Nitri — 43631b 570x351 sha=2e974bfd4469
-  + Remington 270 Winchester Special Purpose 24" BBL — 19776b 893x268 sha=f53862ec78af
-  + Vortex Strike Eagle 1-10x24 FFP EBR-8 MRAD - LPV — 257267b 990x661 sha=36292109ec40
-  + Expo Arms Mil-Spec Enhanced AR-15 Lower Parts Ki — 169146b 1019x532 sha=2b88b8abef3e
-  + FAB Defense Handguard w/Rails For Remington Mode — 434956b 978x550 sha=3302c87634ac
-  + FAB Defense Handguard Accessory Rail System For  — 126093b 631x346 sha=544e92faa3f1
-  + FAB Defense Scorpus Double Magazine Pouch, Glock — 211991b 978x550 sha=3ece85c66309
-  + FAB Defense Scorpus Covert Polymer IWB Holster,  — 182391b 455x562 sha=0b43b3fc71fe
-  + FAB Defense Tactical Folding Grip, Desert Tan -  — 45672b 342x288 sha=e1b5aec6ed18
-  + Lake City M200 5.56x45mm NATO Blanks 1000 Round  — 206920b 1500x999 sha=28b959e64c67
-  + Colt M7 Bayonet, NO Scabbard - Good Condition, F — 37551b 527x536 sha=664aa6949d6f
+  + CMMG 12.5" .300 BLK 1:7 Pistol Length Multi-Role — 12688b 1000x182 sha=10d360afab68
+  + Geissele Roll Pin Starter Tool for Gas Block - $ — 35279b 1000x666 sha=4467d7e912f1
+  + Diamondback Carbon DB15 223 Wylde 18" barrel 30r — 49454b 1500x397 sha=d077fe66ef3e
+  + Taurus Expedition 6.5 Creedmoor 20" Barrel 5-Rou — 11945b 800x151 sha=e386d0ce19a0
+  + Diamondback Carbon DB10 OD Green .308 Win 16" Ba — 18380b 800x209 sha=7637310a638c
+  + Kimber Custom TLE II 1911 .45 ACP 5" barrel 7 Rn — 25990b 570x365 sha=674ac2ec71f0
+  + The Legacy 5.56 16'' Midgas FSB, Mil-Spec Furnit — 16783b 617x304 sha=4dfb473aaa7e
+  + Colt Firearms Classic Stainless Steel .38 Super  — 27959b 565x362 sha=f32fbfb09065
+  + Beretta 92Xi Combat BDU Camo 9mm 4.7" Barrel 18- — 42952b 603x656 sha=157bec326ee3
+  + ProMag Sig P320 9mm 50-Round Drum Magazine FDE - — 45680b 507x1171 sha=ce9df4708ec6
+  + Ruger M77 Hawkeye Compact 308 Win Bolt-Action Ri — 12108b 800x156 sha=1e5dbf08b3a1
+  + Leupold VX-Freedom Rimfire 3-9x40mm Matte Black  — 12515b 800x138 sha=a359a8ed957f
+  x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
@@ -27,8 +22,7 @@
   x Rattlesnake Tactical 34-Round 9mm Magazine Desig — image not downloadable
   x Dead Air Nomad TI XC 7.62mm Xeno Black 7"/9.7 oz — image not downloadable
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
-  x Glock Compatible 9mm 10 Rd Capacity Steel Lined  — image not downloadable
 
-fixed 18, failed 10  (64% success)
-distinct images: 18 across 18 deals
+fixed 12, failed 10  (54% success)
+distinct images: 12 across 12 deals
 PASS — no image shared between products
