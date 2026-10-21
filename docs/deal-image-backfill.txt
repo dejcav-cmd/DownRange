@@ -1,12 +1,15 @@
-600 scanned, 18 need a real image, 9 coupon posts skipped
+600 scanned, 21 need a real image, 9 coupon posts skipped
 
-  + SB Tactical HBPDW 5.56 Pistol Stabilizing Brace  — 42624b 1500x1000 sha=47cdbb68dcbb
-  + Hoffman Tactical Trigger Kicker - TK-15 - $37.95 — 14957b 945x630 sha=6cf09be78e0c
-  + Atrius Development 3 Position SIG MCX/MPX X-Seri — 11320b 945x630 sha=ecaea2a0e452
-  + Orthos Raider S4 1942 Elite 12 Gauge 18.5in Barr — 73887b 428x427 sha=0134f041bcff
-  + Silencer Central Banish Buck 30 .30 Cal Suppress — 28077b 900x900 sha=0265ac548397
-  + SilencerCo Velos 7.62mm Suppressor, Stainless St — 30978b 900x900 sha=631b6952c90b
-  + Smith & Wesson Sport III 5.56 Nato 16" 30rd Rifl — 21107b 794x352 sha=3ec64d4ded50
+  + ANECHOIC PipSqueak 22 Flat Dark Earth .22 Cal -  — 22770b 767x318 sha=2099b84a2f90
+  + Troy Folding M4 Front Battle Sight FDE - $99 — 17165b 411x454 sha=5291a3d66ecf
+  + Ruger American Hunter 6.5 Creedmoor 22" Blk 5+1  — 27195b 1419x224 sha=814e58abe138
+  + Century Arms Centurion A4 Tungsten 12 GA 20" Bar — 32469b 1500x344 sha=bb594d711ae4
+  + Chiappa Firearms Wildlands 86 .45-70 16.5" Threa — 16485b 780x192 sha=597fc665a0d5
+  + FN SCAR 17S DMR NRCH 6.5 Creedmoor 16.25" barrel — 35117b 1500x372 sha=279b56d6fa82
+  + Mec-Gar Browning Hi-Power 9mm 10-Round Magazine  — 13465b 350x666 sha=f23e91ca1598
+  + Tristar Raptor Synthetic Sport 12 Gauge Semi-Aut — 10062b 886x142 sha=123cc21179e2
+  + Staccato XC 9mm 5" Barrel 17+1/20+1 - $4299.99 — 34098b 1000x591 sha=dd153e0f939c
+  + Bushnell 4-12x40AO Sharpshooter Scope & Rings -  — 26770b 1129x541 sha=89ff0a1f96b3
   x CZ 1012 G2 All-Terrain 12GA 28″ Semi Auto Shotgu — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
@@ -19,6 +22,6 @@
   x Dead Air Nomad TI XC 7.62mm Xeno Black 7"/9.7 oz — image not downloadable
   x INSTOCK SALE Winchester Repeating Arms 535204139 — image not downloadable
 
-fixed 7, failed 11  (38% success)
-distinct images: 7 across 7 deals
+fixed 10, failed 11  (47% success)
+distinct images: 10 across 10 deals
 PASS — no image shared between products
