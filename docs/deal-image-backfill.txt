@@ -1,20 +1,23 @@
-600 scanned, 14 need a real image, 7 coupon posts skipped
+600 scanned, 17 need a real image, 8 coupon posts skipped
 
-  + Crossbreed Old Glory Custom Rogue IWB Right Hand — 44555b 900x600 sha=62421820d220
-  + Magpul DT-PR Carbine Stock OD Green Mil-Spec - $ — 23115b 621x480 sha=ccd336433b15
-  + Canik METE Pro Full-Size 9mm Optic Ready Pistol  — 53885b 800x568 sha=e860c6abfd3f
-  + Luth-AR MBA-1 Fixed Stock for AR-15 & AR-10 Rifl — 68868b 1280x854 sha=0f132153de72
-  + Sota Arms AR-10/LR-308 Rifle Lower Build Kit, Ad — 13882b 630x630 sha=2953358b68b7
+  + Winchester XPR Renegade Long Range SR Green / Bl — 9624b 800x141 sha=a48d54addeec
+  + Schmidt M1929 Swiss Ordnance Revolver w/ Various — 428300b 1490x1192 sha=695613f62866
+  + IWI Masada Slim Elite, 9mm, 3.4" Barrel, 13+1 Rd — 48272b 682x674 sha=9b345c1f8469
+  + HK VP9 / P30 9mm 15-Round Magazine Law Enforceme — 14319b 401x395 sha=a120603a44b7
+  + 7.5" Slick Side Billet 5.56 Nitride Pistol M-LOK — 12535b 465x248 sha=4edbd89eb923
+  x Beretta 688 Perf Trap 12GA 30″ 2 Rd - $3779 — image not downloadable
+  + Lancer L5AWM AR-15 .223/5.56 30 Round Magazine ( — 96735b 814x843 sha=b07fac46163f
+  + Battle Arms Development BAD WORKHORSE 9.5" MLOK  — 16170b 499x207 sha=2f6575b298e4
+  + Shadow Systems SS-2079 Warrior Poet DR920 Elite  — 9452b 307x240 sha=39e11b6a5035
+  x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
+  + Hi-Point YC380-NTB Compact Poly-Frame YC380 .380 — 12292b 320x271 sha=498fd743b8cd
   x CZ 1012 G2 All-Terrain 12GA 28″ Semi Auto Shotgu — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
   x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
-  x Magpul PMAG D-60 5.56x45mm NATO AR-15,M4,M16 60  — image not downloadable
-  x AR-15 5.4oz H3 Buffer - $39.95 — image not downloadable
-  x Rattlesnake Tactical 34-Round 9mm Magazine Desig — image not downloadable
 
-fixed 5, failed 9  (35% success)
-distinct images: 5 across 5 deals
+fixed 9, failed 8  (52% success)
+distinct images: 9 across 9 deals
 PASS — no image shared between products
