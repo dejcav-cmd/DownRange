@@ -1,23 +1,16 @@
-600 scanned, 17 need a real image, 8 coupon posts skipped
+600 scanned, 10 need a real image, 7 coupon posts skipped
 
-  + Winchester XPR Renegade Long Range SR Green / Bl — 9624b 800x141 sha=a48d54addeec
-  + Schmidt M1929 Swiss Ordnance Revolver w/ Various — 428300b 1490x1192 sha=695613f62866
-  + IWI Masada Slim Elite, 9mm, 3.4" Barrel, 13+1 Rd — 48272b 682x674 sha=9b345c1f8469
-  + HK VP9 / P30 9mm 15-Round Magazine Law Enforceme — 14319b 401x395 sha=a120603a44b7
-  + 7.5" Slick Side Billet 5.56 Nitride Pistol M-LOK — 12535b 465x248 sha=4edbd89eb923
+  + North American Arms Swing-Out 22 WMR Revolver, 1 — 25680b 758x442 sha=d9240f40e0b4
+  x PROOF Research Aero Precision Solus 26" .308 Win — image not downloadable
+  + Columbia River Knife PSD II Folding Knife - $40 — 11394b 600x129 sha=757f474eed4a
   x Beretta 688 Perf Trap 12GA 30″ 2 Rd - $3779 — image not downloadable
-  + Lancer L5AWM AR-15 .223/5.56 30 Round Magazine ( — 96735b 814x843 sha=b07fac46163f
-  + Battle Arms Development BAD WORKHORSE 9.5" MLOK  — 16170b 499x207 sha=2f6575b298e4
-  + Shadow Systems SS-2079 Warrior Poet DR920 Elite  — 9452b 307x240 sha=39e11b6a5035
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
-  + Hi-Point YC380-NTB Compact Poly-Frame YC380 .380 — 12292b 320x271 sha=498fd743b8cd
   x CZ 1012 G2 All-Terrain 12GA 28″ Semi Auto Shotgu — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
-  x B&T USA, Tiger 22 Ti, Suppressor, 22LR, Titanium — image not downloadable
 
-fixed 9, failed 8  (52% success)
-distinct images: 9 across 9 deals
+fixed 2, failed 8  (20% success)
+distinct images: 2 across 2 deals
 PASS — no image shared between products
