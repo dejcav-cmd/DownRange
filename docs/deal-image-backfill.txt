@@ -1,27 +1,14 @@
-600 scanned, 21 need a real image, 10 coupon posts skipped
+600 scanned, 8 need a real image, 10 coupon posts skipped
 
-  + Daniel Defense DD PCC 9mm 8.3" 35 Rd Pistol with — 34211b 1000x666 sha=bb6e15727347
-  + Kel-Tec KELTEC KSG TAC 12GA 13.5" 8RD - $739.98 — 9668b 450x281 sha=41c521e109a3
-  + The Triggered Company Disruptor AR-15 3 Position — 20785b 567x370 sha=7299d57bca3c
-  + Hornady Frontier 5.56mm, 55gr FMJ, Ammunition, 1 — 23828b 448x350 sha=cfe1a0de67be
-  + Federal Non-Duty Training Use HST 9mm, 147gr JHP — 52535b 918x523 sha=05c6ed7a4d26
-  + CobraTec Large FS-X Red Gen 2 Tanto Not Serrated — 14324b 475x496 sha=732c87192230
+  + Vortex AMG UH-1 Gen II Holographic Sight (Tan) - — 62717b 888x747 sha=3f7dc5c15702
+  + Spike's Tactical Multi-Cal PHU Spade Stripped Lo — 23416b 833x457 sha=babcc057a466
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
-  + Troy CQB SPC-A3 Rifle 5.56mm 30rd Magazine 16″ B — 15085b 670x291 sha=11d9549bbe21
-  + Ruger Precision Rimfire, Bolt Action, 22LR 18" 1 — 10474b 549x225 sha=335c7a23e877
-  + Sig Sauer P320 9mm 4.7 Black 17 Rd MS OR OFF DUT — 11809b 423x297 sha=37c58e6bd2fe
-  + Texas Triggers for Glock Gen 1-6 Forced Reset Tr — 46184b 944x720 sha=0dfa51dcd8b0
-  + Smith & Wesson M&P9 Shield Plus 9mm 3.1″ SS/Robi — 33315b 727x532 sha=3bf1d7afe6f1
-  + Ruger SR22 22LR 3.5″ Blk Titanium Red AS TB 2/10 — 47209b 744x590 sha=6a99bbd8f511
-  + Henry X Model 45-70GOVT 19.8" Threaded Barrel 4+ — 9888b 719x268 sha=5e3fe95ee7e9
-  + Hi Point Hush-Point 30Ti 30 Caliber Flow Through — 15421b 701x261 sha=5452cbd71d2b
-  + Mossberg Patriot 350 Legend Bolt-Action Rifle wi — 27959b 1273x267 sha=80903c6dff20
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
   x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
 
-fixed 15, failed 6  (71% success)
-distinct images: 15 across 15 deals
+fixed 2, failed 6  (25% success)
+distinct images: 2 across 2 deals
 PASS — no image shared between products
