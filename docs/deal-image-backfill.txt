@@ -1,7 +1,29 @@
-600 scanned, 8 need a real image, 10 coupon posts skipped
+600 scanned, 30 need a real image, 11 coupon posts skipped
 
-  + Vortex AMG UH-1 Gen II Holographic Sight (Tan) - — 62717b 888x747 sha=3f7dc5c15702
-  + Spike's Tactical Multi-Cal PHU Spade Stripped Lo — 23416b 833x457 sha=babcc057a466
+  + B&T Print-XH RBS SC, 5.56mm, Coyote Tan, Suppres — 22080b 333x1000 sha=50bc2ed1ee2a
+  + Sig Sauer P211-GT4 9mm 4.2" 17/21 Rds, 3 Mags, C — 262397b 824x620 sha=6eb10f0f8994
+  + Sig Sauer P211 9mm 4.4" Blk X-Ray 3 10rd w/ Rome — 249583b 813x731 sha=e023f3c767f4
+  + SW M&P9 M2.0 Compact OR 9MM 4 TS 10Rd *CA Legal  — 85180b 1000x1000 sha=feb3fd5a803c
+  + SigTac Grip Module Assembly 250/320 45 Compact S — 8234b 500x312 sha=e8bb2d70cb4a
+  + Vortex Defender-CCW 3 MOA Green Dot Sight - $204 — 101943b 1000x752 sha=f45316516b75
+  + Smith & Wesson M&P15 Sport II OR 223 Rem / 5.56x — 9686b 600x168 sha=c6ec16663251
+  x Savage 93 F 22 Mag 5+1 Rds 21" Barrel Black / Bl — image not downloadable
+  + Vortex Crossfire II 2 MOA Solar Green Dot Sight, — 112813b 929x1000 sha=13e4dfef8f73
+  + Colt BOA 357 Mag 4.25" Vent Rib Barrel 6rd Revol — 25964b 1000x594 sha=4b2f9d5937f6
+  + Under Armour Fleece & Jackets 50% Off — 48112b 600x600 sha=6aa5a7850c8f
+  + NBS 16" 5.56 NATO 1:7 Carbine Lightweight Barrel — 68884b 1314x410 sha=6174f932da27
+  + 1911 45 ACP Handguns Roundup — 693668b 1250x833 sha=5990661684e8
+  + AR-15 80percent Lower Receivers for Sale — 53037b 849x728 sha=a40a7237d2d7
+  + PSA Sabre-15 Forged 11.5" 5.56 30rd Pistol w/Rif — 335947b 1500x527 sha=45bd4a0746d1
+  + PSA Dagger Full Size S 9mm 3.9" 17rd Pistol With — 336548b 968x698 sha=b5bbf87db60a
+  + Colt 1911 Competition Series 70 9mm Double Actio — 825031b 1414x900 sha=a87edbf727d4
+  + Surplus Yugoslavian M57 TT Tokarev 7.62x25mm 4.6 — 35219b 724x582 sha=09724330e4c4
+  + Shadow Systems DR920 Elite 9mm 4.5" 17rd Pistol, — 122069b 493x367 sha=c380691c583c
+  + Howa Mini Action 6.5 Grendel 22" 5+1 Rds Black - — 57267b 827x293 sha=a59bee9fa652
+  + Leupold Mark 5HD 7-35x 56mm Obj 14.70-3.00 ft @  — 128047b 805x536 sha=1de6e8e7fa83
+  x Menke Industry MR-15A2 Lower Receiver Multi Gen  — image not downloadable
+  + Arkfeld Pro Flat EDC Flashlight with LED Light U — 264644b 1000x1000 sha=44ff72cacadc
+  + Taurus 856 38 Special 2″ BBL 6rd Revolver, VZ Gr — 53181b 337x254 sha=ff72c00a3278
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
@@ -9,6 +31,6 @@
   x FRIDAY sale only Winchester Repeating Arms 53520 — image not downloadable
   x Winchester SXP Waterfowl Hunter 12 Gauge 26" 4rd — image not downloadable
 
-fixed 2, failed 6  (25% success)
-distinct images: 2 across 2 deals
+fixed 22, failed 8  (73% success)
+distinct images: 22 across 22 deals
 PASS — no image shared between products
