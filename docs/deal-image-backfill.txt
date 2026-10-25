@@ -1,21 +1,29 @@
-600 scanned, 15 need a real image, 11 coupon posts skipped
+600 scanned, 23 need a real image, 9 coupon posts skipped
 
-  + Evolution Outdoor, Mesquite Series, Rifle Case,  — 18102b 786x196 sha=71d2f8a0934d
-  + Kahr Arms CT45 .45 ACP POLY/SS 4.04" barre 7 Rnd — 52493b 800x666 sha=0d56e9d18c89
-  + Qcute Tactical Backpack, Waterproof Military Cro — 105575b 679x1108 sha=4f40575c97c0
-  + Ruger LCP Rose Gold / Black .380 ACP 2.75" Barre — 37427b 625x458 sha=f2be9e04dc45
-  + Taylors & Co. Outlaw Legacy Nickel Engraved Revo — 69389b 1500x753 sha=a809a1722ab1
-  + Mossberg MVP Long Range Rifle Green / Black .308 — 10306b 734x132 sha=ed0077efdb75
-  + Walther WMP .22 WMR 4.9" barrel 15 Rnds Black -  — 113578b 1280x1277 sha=5e2e667ffea9
-  x PROOF Research Zermatt Arms TL3 / SR3 Short Acti — image not downloadable
-  + Vortex Razor HD Gen III 4-24x44mm Illuminated EV — 170046b 753x460 sha=92b3ed9c9245
+  + CZ Shadow 2 Carry, 9mm, 4" Barrel, 4- 15rd Magaz — 953885b 1185x581 sha=db3ab3ccc821
+  + Radical Defense LS5-FDE Rifle Suppressor 5.56, 1 — 58123b 432x433 sha=754025d12f5a
+  + BLACKHAWK Stingray EDC Pack Coyote Tan - $78.99 — 23903b 455x500 sha=f2c7f474315b
+  + Wheeler Pro Series Ultimate AR-15 Armorer's Kit  — 65404b 1000x666 sha=93e46e1f4da1
+  + Wheeler Delta Series 1/2" 8 Function XL Fat Torq — 68761b 1000x666 sha=1f1efe5c2f24
+  + CzechPoint VZ 61 .380 ACP Pistol w/ Threaded Chr — 31226b 372x278 sha=69955b660122
+  + Sylvan Arms Warthog SA30TI KIT Titanium Suppress — 96212b 432x433 sha=b0c3172cac66
+  + Marlin 1894 SBL Whitetail Rifle - 30-30 Win 19"  — 335107b 1500x313 sha=170326d36908
+  + ABCSportZ Polymer Paddle Holster for Glock G19 P — 58954b 1000x1000 sha=d32f968ca33a
+  + StatGear Surviv-All Fixed-Blade Bowie Knife with — 84202b 1338x1040 sha=319d76d49a84
+  + Holosun Gold Dot 2 MOA Open Emitter Solar Shake  — 177773b 846x553 sha=e7e3703abacb
+  + SB Tactical SBPDW AR-15 Pistol Brace - $179.99 — 51091b 547x355 sha=f195832b1839
+  + Sonicore Rekkr OB .223 Rem/5.56mm Direct Thread  — 8827b 380x198 sha=e46c691e5345
+  + VTOMAN Jump 1500X Portable Power Station with 11 — 36089b 500x500 sha=06818097e27f
+  + Apollo Tools 54-Piece Screwdriver & Nut Driver B — 28727b 500x500 sha=e2e134a58e65
+  + Colt Lightweight Commander 9mm 4 25" 9rds, Black — 259879b 970x686 sha=45faa0d91ccd
+  + Panzer Arms AR12 G5 Tactical 12 Gauge 18 5" 5rd  — 221124b 1500x392 sha=d3c1b5eb07f8
+  + LFA Apollo 11 9mm 5" 17+1 Rds RMSc Cut Stainless — 56477b 1000x716 sha=462af7c0186a
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
-  x Texas Weapon Systems Hob Knob Charging Handle BL — image not downloadable
 
-fixed 8, failed 7  (53% success)
-distinct images: 8 across 8 deals
+fixed 18, failed 5  (78% success)
+distinct images: 18 across 18 deals
 PASS — no image shared between products
