@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-10-18T07:00:21.447Z",
+  "generatedAt": "2026-10-25T07:00:21.619Z",
   "content": {
-    "newsArticles": 2845,
-    "blogPosts": 48,
-    "legislation": 415,
+    "newsArticles": 2986,
+    "blogPosts": 50,
+    "legislation": 427,
     "firearmReleases": 35,
-    "videos": 845,
+    "videos": 879,
     "reviews": 3,
     "canadaArticles": 109,
     "brazilArticles": 116
   },
   "operations": {
-    "cronRuns": 3594,
+    "cronRuns": 3722,
     "outreachContacts": 221,
-    "socialPosts": 1220,
+    "socialPosts": 1340,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "Texas Smuggler Arrested With Four Pipe Bombs and an AR-Style Rifle",
-    "newsDate": "2026-10-18T02:05:22.000Z",
+    "newsTitle": "Bend Dad's Legal 40-Cal Pistol Stopped a School Shooter in Three Minutes",
+    "newsDate": "2026-10-24T16:30:00.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 4416
+  "totalContentDocs": 4605
 }
