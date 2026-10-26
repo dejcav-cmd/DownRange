@@ -1,29 +1,23 @@
-600 scanned, 23 need a real image, 9 coupon posts skipped
+600 scanned, 17 need a real image, 8 coupon posts skipped
 
-  + CZ Shadow 2 Carry, 9mm, 4" Barrel, 4- 15rd Magaz — 953885b 1185x581 sha=db3ab3ccc821
-  + Radical Defense LS5-FDE Rifle Suppressor 5.56, 1 — 58123b 432x433 sha=754025d12f5a
-  + BLACKHAWK Stingray EDC Pack Coyote Tan - $78.99 — 23903b 455x500 sha=f2c7f474315b
-  + Wheeler Pro Series Ultimate AR-15 Armorer's Kit  — 65404b 1000x666 sha=93e46e1f4da1
-  + Wheeler Delta Series 1/2" 8 Function XL Fat Torq — 68761b 1000x666 sha=1f1efe5c2f24
-  + CzechPoint VZ 61 .380 ACP Pistol w/ Threaded Chr — 31226b 372x278 sha=69955b660122
-  + Sylvan Arms Warthog SA30TI KIT Titanium Suppress — 96212b 432x433 sha=b0c3172cac66
-  + Marlin 1894 SBL Whitetail Rifle - 30-30 Win 19"  — 335107b 1500x313 sha=170326d36908
-  + ABCSportZ Polymer Paddle Holster for Glock G19 P — 58954b 1000x1000 sha=d32f968ca33a
-  + StatGear Surviv-All Fixed-Blade Bowie Knife with — 84202b 1338x1040 sha=319d76d49a84
-  + Holosun Gold Dot 2 MOA Open Emitter Solar Shake  — 177773b 846x553 sha=e7e3703abacb
-  + SB Tactical SBPDW AR-15 Pistol Brace - $179.99 — 51091b 547x355 sha=f195832b1839
-  + Sonicore Rekkr OB .223 Rem/5.56mm Direct Thread  — 8827b 380x198 sha=e46c691e5345
-  + VTOMAN Jump 1500X Portable Power Station with 11 — 36089b 500x500 sha=06818097e27f
-  + Apollo Tools 54-Piece Screwdriver & Nut Driver B — 28727b 500x500 sha=e2e134a58e65
-  + Colt Lightweight Commander 9mm 4 25" 9rds, Black — 259879b 970x686 sha=45faa0d91ccd
-  + Panzer Arms AR12 G5 Tactical 12 Gauge 18 5" 5rd  — 221124b 1500x392 sha=d3c1b5eb07f8
-  + LFA Apollo 11 9mm 5" 17+1 Rds RMSc Cut Stainless — 56477b 1000x716 sha=462af7c0186a
+  + FN Scar 20S NRCH 7.62x51mm 20" barrel 10rd Black — 22437b 1000x196 sha=23862a1aaba4
+  + Ptr Industries Jack 12-Gauge Pump-Action AOW (FD — 41984b 1090x631 sha=ff91efa6b2ee
+  + CNC Firearms Kimber 1911 El Rey Rose Gold .38 Su — 40827b 800x526 sha=513b20a1e44f
+  + Daniel Defense V7 5.56mm Semi-Auto AR-15 Pistol  — 20640b 747x258 sha=702bf83debd6
+  + North American Arms Mini Shadow .22 Mag 1.125" B — 33132b 800x533 sha=698fa5ca63f0
+  + Amend2 MOD 3 SCAR 17 7.62x51 NATO 20-Round Magaz — 30445b 450x682 sha=d38223e52d07
+  + Smith & Wesson/Battenfeld Schrade Large Full Tan — 13211b 760x354 sha=5c13c56747a2
+  + Pointer Sport Tek 8 12 Gauge 28" Semi-Auto Youth — 11924b 871x152 sha=02ef7d270d6a
+  + Ruger SP101 Standard Stainless .357 Mag 2.25" Ba — 47619b 800x620 sha=65fe61273bc7
+  + Browning Ridgeline Flashlight AAA Batteries Bron — 27852b 681x339 sha=5a42f63f2754
+  + PSA 7.5" 300AAC Blackout Nitride 9" Lightweight  — 37810b 1500x329 sha=858f15a79978
+  + Remington Ammunition 28031 Premier Magnum Turkey — 21973b 389x232 sha=192cad38e519
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
   x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
 
-fixed 18, failed 5  (78% success)
-distinct images: 18 across 18 deals
+fixed 12, failed 5  (70% success)
+distinct images: 12 across 12 deals
 PASS — no image shared between products
