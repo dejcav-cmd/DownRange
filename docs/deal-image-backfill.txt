@@ -1,23 +1,29 @@
-600 scanned, 17 need a real image, 8 coupon posts skipped
+600 scanned, 23 need a real image, 7 coupon posts skipped
 
-  + FN Scar 20S NRCH 7.62x51mm 20" barrel 10rd Black — 22437b 1000x196 sha=23862a1aaba4
-  + Ptr Industries Jack 12-Gauge Pump-Action AOW (FD — 41984b 1090x631 sha=ff91efa6b2ee
-  + CNC Firearms Kimber 1911 El Rey Rose Gold .38 Su — 40827b 800x526 sha=513b20a1e44f
-  + Daniel Defense V7 5.56mm Semi-Auto AR-15 Pistol  — 20640b 747x258 sha=702bf83debd6
-  + North American Arms Mini Shadow .22 Mag 1.125" B — 33132b 800x533 sha=698fa5ca63f0
-  + Amend2 MOD 3 SCAR 17 7.62x51 NATO 20-Round Magaz — 30445b 450x682 sha=d38223e52d07
-  + Smith & Wesson/Battenfeld Schrade Large Full Tan — 13211b 760x354 sha=5c13c56747a2
-  + Pointer Sport Tek 8 12 Gauge 28" Semi-Auto Youth — 11924b 871x152 sha=02ef7d270d6a
-  + Ruger SP101 Standard Stainless .357 Mag 2.25" Ba — 47619b 800x620 sha=65fe61273bc7
-  + Browning Ridgeline Flashlight AAA Batteries Bron — 27852b 681x339 sha=5a42f63f2754
-  + PSA 7.5" 300AAC Blackout Nitride 9" Lightweight  — 37810b 1500x329 sha=858f15a79978
-  + Remington Ammunition 28031 Premier Magnum Turkey — 21973b 389x232 sha=192cad38e519
+  + Factory Blem B&T Tiger22 Ti Titanium 22 LR Suppr — 49488b 1000x666 sha=b6ecb8e24286
+  + Upbci Gun Rack, Rifle Rack Stand Vertical Foldin — 987034b 1500x1039 sha=0630403c46f4
+  + Griffin Armament Bushwacker 46 Modular Multi-Cal — 13608b 500x321 sha=de4513acc2ab
+  + Griffin Armament Bushwhacker 36 Modular Suppress — 13784b 608x405 sha=88c43f567469
+  + Smith & Wesson SW1911 PC PRO .45 ACP 3" Barrel 7 — 42806b 640x640 sha=57abf21ec486
+  + Kel Tec PR 3AT 2 85" .380 ACP (2)13rd Handgun, T — 395168b 858x667 sha=f1c2f88f1c33
+  + Colt Lightweight Officer 4.25" .45 ACP 7RD Stain — 613921b 1239x708 sha=b6457577a13d
+  + Nemo Arms .300WM 145gr FMJ Ammo 20rds - $14.99 — 430235b 666x537 sha=6ecbf4b1198e
+  + Tikka T3x Lite Synthetic 7mm PRC 22" 3rd - $749. — 16861b 976x378 sha=2e0f97b32175
+  + Hera Arms H3T GEN 2 Transparent Frame 30-Round P — 41005b 1000x666 sha=19e59e74faf6
+  + Precision Armament Hypertap Slim Muzzle Brake 9m — 14333b 313x568 sha=8c58abb00013
+  + Precision Armament HYPERTAP Slim 7.62 Muzzle Bra — 24449b 1000x666 sha=2bb67c5823c1
+  + Marlin 1894 38 Special/357 Magnum Mad Pig Custom — 46408b 1496x540 sha=5abb56cd97f9
+  + Precision Armament M11 Severe-Duty Muzzle Brake  — 117563b 654x461 sha=1246947929f1
+  + One Horse OH-15 Express APS01, 5.56 NATO, 10.5 i — 80936b 688x375 sha=f8a525f3ac31
+  + LEXIVON 10-80 in-lb Torque Screwdriver, 10 Bits  — 46960b 500x500 sha=8729dbfa8333
+  + PMC - Bronze - 223 Rem - 55 Grain - FMJ - 1000 R — 35040b 740x463 sha=5a0f3802e6c3
+  + North American Arms Mini-Revolver Stainless .22  — 42979b 1000x563 sha=d010f4f28733
+  + Sig Sauer Elite Performance 308 Win 150 gr Full  — 75528b 983x537 sha=7417d20d0dbe
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
-  x Vortex Viper HD 20-60x85 (Angled) 20-60x Magnifi — image not downloadable
 
-fixed 12, failed 5  (70% success)
-distinct images: 12 across 12 deals
+fixed 19, failed 4  (82% success)
+distinct images: 19 across 19 deals
 PASS — no image shared between products
