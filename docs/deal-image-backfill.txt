@@ -1,26 +1,31 @@
-600 scanned, 20 need a real image, 8 coupon posts skipped
+600 scanned, 25 need a real image, 9 coupon posts skipped
 
-  + SilencerCo Scythe-Ti 30cal Titanium Gray - $779. — 10070b 559x217 sha=a094f63da95e
-  + Wheeler Engineering XL FAT Wrench Includes (3) C — 24725b 629x310 sha=e400903ddb9e
-  + Toolcraft .223/5.56/300 BLK M16 Profile Bolt Car — 13157b 800x151 sha=bc09bfb4904b
-  + Battenfeld Technologies 156945 Wheeler AR Armore — 22161b 656x483 sha=96628a655d72
-  x Ballistic Advantage 18" 6mm ARC SPR Fluted Rifle — image not downloadable
-  + Faxon Firearms 18" Pencil .308 WIN Rifle-Length  — 11239b 668x304 sha=3b8865a803d2
-  + AB Suppressors Duty Can 7.62 QD Thread 5/8-24 -  — 14919b 800x222 sha=8c620c15f2e7
-  + Dead Air Armament Mojave-9 9mm Modular Suppresso — 17462b 528x342 sha=37e8e637dbf8
-  + Used Geissele Super Duty 556 Nato 14.5" Barrel M — 91689b 1500x325 sha=70d4b6e92922
-  + BOE Suppression IncoLite 9 9mm Suppressor Direct — 23458b 617x196 sha=f554355e23d8
-  + 30% off CVLIFE EagleTalon Multi Reticle Red/Gree — 24184b 500x500 sha=ed0ab541a711
-  + EZshoot 1600 Lumens 4-in-1 Ar Flashlight/IR Illu — 27637b 500x500 sha=aee5dcede8f6
-  + 40% off CVLIFE BearMight Multi-Reticle Red/Green — 19982b 500x500 sha=bb36d9a339d0
-  + 33% off MidTen Rechargeable Laser Bore Sight Kit — 40459b 500x500 sha=9d01b58c142a
-  + Heritage Manufacturing Inc. Rough Rider Patriot  — 17625b 673x297 sha=aa33fa0da697
-  + Taurus TX22 Competition, .22 LR, 5.25" Barrel, 3 — 34616b 787x484 sha=378d6039057c
+  + Metal Gun Rack Wall Mount Soft Padding 3 slot/ 6 — 129444b 841x1493 sha=e3a6ca61f015
+  + Beretta APX-A1 Tactical 9mm OR 4.8" 21rd with OD — 44102b 800x650 sha=0ff0daae9afd
+  + Magtech 9mm 124-Gr. FMJ 1000 Rounds - $263.24 wi — 27060b 707x390 sha=08b7142d489b
+  + Vortex Crossfire HD 4-12x44 Illuminated Dead-Hol — 8548b 386x386 sha=a22d06496715
+  + G-Force MKA 1919 12 Gauge 20-Round Drum Magazine — 290697b 653x671 sha=8b6d629ac41d
+  + Microbest C158 HPT/MPI 5.56 Bolt Carrier Group B — 23677b 1000x666 sha=e0c17d59589c
+  + MIMTAC Drastic AR-15 Drop-In Single Stage Trigge — 25877b 1000x604 sha=4aa507429353
+  + LED Motion Sensor Light, 2200mAh USB Rechargeabl — 66394b 1099x1500 sha=66ebfed14ae6
+  + Ultralight Flip Up Sight 45 Degree Offset Rapid  — 21827b 500x444 sha=174223211c77
+  + BAOFENG UV-32 Ham Radio Rechargeable Walkie Talk — 40369b 500x500 sha=76bf71d9cfa9
+  + Suppressor BOGO Deal - Buy a Select Silencer and — 157989b 715x981 sha=977c149cc2e3
+  + Q Firearms and Suppressors BLOWOUT Sale — 123414b 717x987 sha=25635ed73f5e
+  + Mossberg 590 12GA Police Trade-In Short Barrel S — 110893b 1000x666 sha=f8046f75b5da
+  + Triton Navigator Series 1-6x24 First Focal Plane — 19921b 630x630 sha=61973616390a
+  + Kimber Camp Guard Stainless / Black 10mm 5" Barr — 42584b 800x524 sha=187caa110569
+  + Griffin Armament MK2 Ambi Stripped AR-15 Lower R — 26441b 800x494 sha=03e7e19295aa
+  + Davidson Defense Glock 19 Gen 3 Compatible 9MM C — 11827b 630x630 sha=ad6f55869190
+  + Military Armament Corporation Cerberus, 9mm, 4.4 — 37658b 857x716 sha=713a15cdcd0a
+  + 1911 45ACP 5" R1S Slide, Match Barrel & Bushing  — 36407b 811x659 sha=397430ebee13
+  + Heckler & Koch SP5K PDW 9mm 5.83" 30 Rd Pistol – — 80819b 1066x820 sha=3cdf29360780
+  + Shadow Systems DR920L Elite + $200 Official Manu — 446533b 1442x920 sha=f06e02f53f38
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
 
-fixed 15, failed 5  (75% success)
-distinct images: 15 across 15 deals
+fixed 21, failed 4  (84% success)
+distinct images: 21 across 21 deals
 PASS — no image shared between products
