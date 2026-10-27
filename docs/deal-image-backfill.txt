@@ -1,29 +1,26 @@
-600 scanned, 23 need a real image, 7 coupon posts skipped
+600 scanned, 20 need a real image, 8 coupon posts skipped
 
-  + Factory Blem B&T Tiger22 Ti Titanium 22 LR Suppr — 49488b 1000x666 sha=b6ecb8e24286
-  + Upbci Gun Rack, Rifle Rack Stand Vertical Foldin — 987034b 1500x1039 sha=0630403c46f4
-  + Griffin Armament Bushwacker 46 Modular Multi-Cal — 13608b 500x321 sha=de4513acc2ab
-  + Griffin Armament Bushwhacker 36 Modular Suppress — 13784b 608x405 sha=88c43f567469
-  + Smith & Wesson SW1911 PC PRO .45 ACP 3" Barrel 7 — 42806b 640x640 sha=57abf21ec486
-  + Kel Tec PR 3AT 2 85" .380 ACP (2)13rd Handgun, T — 395168b 858x667 sha=f1c2f88f1c33
-  + Colt Lightweight Officer 4.25" .45 ACP 7RD Stain — 613921b 1239x708 sha=b6457577a13d
-  + Nemo Arms .300WM 145gr FMJ Ammo 20rds - $14.99 — 430235b 666x537 sha=6ecbf4b1198e
-  + Tikka T3x Lite Synthetic 7mm PRC 22" 3rd - $749. — 16861b 976x378 sha=2e0f97b32175
-  + Hera Arms H3T GEN 2 Transparent Frame 30-Round P — 41005b 1000x666 sha=19e59e74faf6
-  + Precision Armament Hypertap Slim Muzzle Brake 9m — 14333b 313x568 sha=8c58abb00013
-  + Precision Armament HYPERTAP Slim 7.62 Muzzle Bra — 24449b 1000x666 sha=2bb67c5823c1
-  + Marlin 1894 38 Special/357 Magnum Mad Pig Custom — 46408b 1496x540 sha=5abb56cd97f9
-  + Precision Armament M11 Severe-Duty Muzzle Brake  — 117563b 654x461 sha=1246947929f1
-  + One Horse OH-15 Express APS01, 5.56 NATO, 10.5 i — 80936b 688x375 sha=f8a525f3ac31
-  + LEXIVON 10-80 in-lb Torque Screwdriver, 10 Bits  — 46960b 500x500 sha=8729dbfa8333
-  + PMC - Bronze - 223 Rem - 55 Grain - FMJ - 1000 R — 35040b 740x463 sha=5a0f3802e6c3
-  + North American Arms Mini-Revolver Stainless .22  — 42979b 1000x563 sha=d010f4f28733
-  + Sig Sauer Elite Performance 308 Win 150 gr Full  — 75528b 983x537 sha=7417d20d0dbe
+  + SilencerCo Scythe-Ti 30cal Titanium Gray - $779. — 10070b 559x217 sha=a094f63da95e
+  + Wheeler Engineering XL FAT Wrench Includes (3) C — 24725b 629x310 sha=e400903ddb9e
+  + Toolcraft .223/5.56/300 BLK M16 Profile Bolt Car — 13157b 800x151 sha=bc09bfb4904b
+  + Battenfeld Technologies 156945 Wheeler AR Armore — 22161b 656x483 sha=96628a655d72
+  x Ballistic Advantage 18" 6mm ARC SPR Fluted Rifle — image not downloadable
+  + Faxon Firearms 18" Pencil .308 WIN Rifle-Length  — 11239b 668x304 sha=3b8865a803d2
+  + AB Suppressors Duty Can 7.62 QD Thread 5/8-24 -  — 14919b 800x222 sha=8c620c15f2e7
+  + Dead Air Armament Mojave-9 9mm Modular Suppresso — 17462b 528x342 sha=37e8e637dbf8
+  + Used Geissele Super Duty 556 Nato 14.5" Barrel M — 91689b 1500x325 sha=70d4b6e92922
+  + BOE Suppression IncoLite 9 9mm Suppressor Direct — 23458b 617x196 sha=f554355e23d8
+  + 30% off CVLIFE EagleTalon Multi Reticle Red/Gree — 24184b 500x500 sha=ed0ab541a711
+  + EZshoot 1600 Lumens 4-in-1 Ar Flashlight/IR Illu — 27637b 500x500 sha=aee5dcede8f6
+  + 40% off CVLIFE BearMight Multi-Reticle Red/Green — 19982b 500x500 sha=bb36d9a339d0
+  + 33% off MidTen Rechargeable Laser Bore Sight Kit — 40459b 500x500 sha=9d01b58c142a
+  + Heritage Manufacturing Inc. Rough Rider Patriot  — 17625b 673x297 sha=aa33fa0da697
+  + Taurus TX22 Competition, .22 LR, 5.25" Barrel, 3 — 34616b 787x484 sha=378d6039057c
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
 
-fixed 19, failed 4  (82% success)
-distinct images: 19 across 19 deals
+fixed 15, failed 5  (75% success)
+distinct images: 15 across 15 deals
 PASS — no image shared between products
