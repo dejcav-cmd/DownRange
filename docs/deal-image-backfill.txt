@@ -1,31 +1,22 @@
-600 scanned, 25 need a real image, 9 coupon posts skipped
+600 scanned, 16 need a real image, 9 coupon posts skipped
 
-  + Metal Gun Rack Wall Mount Soft Padding 3 slot/ 6 — 129444b 841x1493 sha=e3a6ca61f015
-  + Beretta APX-A1 Tactical 9mm OR 4.8" 21rd with OD — 44102b 800x650 sha=0ff0daae9afd
-  + Magtech 9mm 124-Gr. FMJ 1000 Rounds - $263.24 wi — 27060b 707x390 sha=08b7142d489b
-  + Vortex Crossfire HD 4-12x44 Illuminated Dead-Hol — 8548b 386x386 sha=a22d06496715
-  + G-Force MKA 1919 12 Gauge 20-Round Drum Magazine — 290697b 653x671 sha=8b6d629ac41d
-  + Microbest C158 HPT/MPI 5.56 Bolt Carrier Group B — 23677b 1000x666 sha=e0c17d59589c
-  + MIMTAC Drastic AR-15 Drop-In Single Stage Trigge — 25877b 1000x604 sha=4aa507429353
-  + LED Motion Sensor Light, 2200mAh USB Rechargeabl — 66394b 1099x1500 sha=66ebfed14ae6
-  + Ultralight Flip Up Sight 45 Degree Offset Rapid  — 21827b 500x444 sha=174223211c77
-  + BAOFENG UV-32 Ham Radio Rechargeable Walkie Talk — 40369b 500x500 sha=76bf71d9cfa9
-  + Suppressor BOGO Deal - Buy a Select Silencer and — 157989b 715x981 sha=977c149cc2e3
-  + Q Firearms and Suppressors BLOWOUT Sale — 123414b 717x987 sha=25635ed73f5e
-  + Mossberg 590 12GA Police Trade-In Short Barrel S — 110893b 1000x666 sha=f8046f75b5da
-  + Triton Navigator Series 1-6x24 First Focal Plane — 19921b 630x630 sha=61973616390a
-  + Kimber Camp Guard Stainless / Black 10mm 5" Barr — 42584b 800x524 sha=187caa110569
-  + Griffin Armament MK2 Ambi Stripped AR-15 Lower R — 26441b 800x494 sha=03e7e19295aa
-  + Davidson Defense Glock 19 Gen 3 Compatible 9MM C — 11827b 630x630 sha=ad6f55869190
-  + Military Armament Corporation Cerberus, 9mm, 4.4 — 37658b 857x716 sha=713a15cdcd0a
-  + 1911 45ACP 5" R1S Slide, Match Barrel & Bushing  — 36407b 811x659 sha=397430ebee13
-  + Heckler & Koch SP5K PDW 9mm 5.83" 30 Rd Pistol – — 80819b 1066x820 sha=3cdf29360780
-  + Shadow Systems DR920L Elite + $200 Official Manu — 446533b 1442x920 sha=f06e02f53f38
+  + DNT Optics Zulus HD 3-12x V2 Night Vision Rifles — 38150b 978x372 sha=5cea2011f67f
+  + Holosun 510C Circle Dot/Solar Panel/QD Mount Red — 18618b 405x313 sha=baf1e8a27efa
+  + JP Enterprises AR-10 Rifle Buffer Spring - $19.9 — 8236b 497x123 sha=b4bd33cc539f
+  + JP Enterprises AR-10 Carbine Buffer Spring - $19 — 15819b 800x192 sha=9592fcc9c2f0
+  + Heritage Barkeep .22 LR 2" barrel 6rd Revolver R — 10247b 408x247 sha=8e112496e5c4
+  + Heritage Barkeep 22 LR 2.68" Barrel Burnt Bronze — 72436b 1280x767 sha=fdc3d129f3de
+  + Heritage Barkeep .22 LR 2.68" Barrel Gold Cerako — 16805b 600x366 sha=68370544c675
+  + Crimson Trace CTS 1250 Red Led Open Reflex Sight — 25625b 600x600 sha=12b1729aabe0
+  + CCI 970 Small Game Quiet22 .22 LR 40-Gr. LRN 50  — 18075b 386x386 sha=f85ee8fea5e7
+  + 46% off EZshoot 2500 Lumens Ar Laser Light Combo — 21868b 500x500 sha=56f23aacde40
+  x Stainless for Glock 19 9mm Barrel 1:10 Twist - $ — image not downloadable
+  + PSAK-47 GF3-R Romanian Kit Build - $799.99 — 37953b 1500x451 sha=59f49112f4b5
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
   x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
 
-fixed 21, failed 4  (84% success)
-distinct images: 21 across 21 deals
+fixed 11, failed 5  (68% success)
+distinct images: 11 across 11 deals
 PASS — no image shared between products
