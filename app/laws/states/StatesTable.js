@@ -91,7 +91,7 @@ export default function StatesTable({ rows, verified }) {
             <tbody>
               {shown.map(p => (
                 <tr key={p.abbr}>
-                  <td><Link href={`/laws/${p.abbr.toLowerCase()}`} className="st-name">{p.name}</Link></td>
+                  <td><Link href={`/laws/${p.abbr.toUpperCase()}`} className="st-name">{p.name}</Link></td>
                   <td><span className={`st-pill st-${gradeTone(p.rating)}`}>{p.rating || '—'}</span></td>
                   <td><span className={`st-pill ${p.cc ? 'st-g' : 'st-n'}`}>{p.cc ? 'Permitless' : 'Permit'}</span></td>
                   <td><span className={`st-pill ${p.mag ? 'st-r' : 'st-g'}`}>{p.mag ? `${p.mag} rounds` : 'No limit'}</span></td>
@@ -107,7 +107,7 @@ export default function StatesTable({ rows, verified }) {
 
         <div className="st-cards">
           {shown.map(p => (
-            <Link key={p.abbr} href={`/laws/${p.abbr.toLowerCase()}`} className="st-card">
+            <Link key={p.abbr} href={`/laws/${p.abbr.toUpperCase()}`} className="st-card">
               <div className="st-card-h"><span className="st-name" style={{ fontSize: 20 }}>{p.name}</span><span className={`st-pill st-${gradeTone(p.rating)}`}>{p.rating || '—'}</span></div>
               <div className="st-card-g">
                 <div><span>Carry</span><b className={`st-pill ${p.cc ? 'st-g' : 'st-n'}`}>{p.cc ? 'Permitless' : 'Permit'}</b></div>

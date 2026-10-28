@@ -188,7 +188,7 @@ export default function MyStateClient({ profiles, profileMap, reciprocityMatrix,
               )}
 
               <div style={{ marginTop: 24, display: 'flex', gap: 8 }}>
-                <Link href={`/laws/${abbr.toLowerCase()}`} style={{ flex: 1, padding: '12px', background: '#C8922A', color: '#09090B', textAlign: 'center', fontFamily: S.mono, fontSize: 11, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.08em' }}>
+                <Link href={`/laws/${abbr.toUpperCase()}`} style={{ flex: 1, padding: '12px', background: '#C8922A', color: '#09090B', textAlign: 'center', fontFamily: S.mono, fontSize: 11, fontWeight: 700, textDecoration: 'none', letterSpacing: '0.08em' }}>
                   Full {abbr} Profile →
                 </Link>
               </div>
