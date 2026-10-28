@@ -1,22 +1,66 @@
-600 scanned, 16 need a real image, 9 coupon posts skipped
+600 scanned, 58 need a real image, 10 coupon posts skipped
 
-  + DNT Optics Zulus HD 3-12x V2 Night Vision Rifles — 38150b 978x372 sha=5cea2011f67f
-  + Holosun 510C Circle Dot/Solar Panel/QD Mount Red — 18618b 405x313 sha=baf1e8a27efa
-  + JP Enterprises AR-10 Rifle Buffer Spring - $19.9 — 8236b 497x123 sha=b4bd33cc539f
-  + JP Enterprises AR-10 Carbine Buffer Spring - $19 — 15819b 800x192 sha=9592fcc9c2f0
-  + Heritage Barkeep .22 LR 2" barrel 6rd Revolver R — 10247b 408x247 sha=8e112496e5c4
-  + Heritage Barkeep 22 LR 2.68" Barrel Burnt Bronze — 72436b 1280x767 sha=fdc3d129f3de
-  + Heritage Barkeep .22 LR 2.68" Barrel Gold Cerako — 16805b 600x366 sha=68370544c675
-  + Crimson Trace CTS 1250 Red Led Open Reflex Sight — 25625b 600x600 sha=12b1729aabe0
-  + CCI 970 Small Game Quiet22 .22 LR 40-Gr. LRN 50  — 18075b 386x386 sha=f85ee8fea5e7
-  + 46% off EZshoot 2500 Lumens Ar Laser Light Combo — 21868b 500x500 sha=56f23aacde40
+  + Ergo .750 Low Profile Adjustable Gas Block - $39 — 31218b 1000x914 sha=d35895b85cf9
+  + Toolcraft .223/5.56/300 BLK C158 M16 Profile Bol — 16519b 738x630 sha=6f2659a32134
+  + Microbest Mil-Spec C158 HPT/MPI 5.56 Bolt Carrie — 25899b 1000x666 sha=1d2ccd97bd1d
+  + Zaffiri Precision 9mm Threaded Barrel For Glock  — 371614b 666x378 sha=b272eb7eebb4
+  + ATI S60 Schmeisser 223 Rem,5.56x45mm NATO 60rd B — 22705b 611x825 sha=5bbe1f109702
+  + Browning A5 Upland 28" 20 Gauge Shotgun, Walnut/ — 158531b 1500x348 sha=f2f954a80c39
+  + Keltec PR57 5.7X28 4.64" 20RD Pistol, Green - $2 — 404610b 1316x900 sha=ada6fc638b9a
+  + Desert Tech SRSA2 Covert .308 Win 16" 6rd Rifle, — 98901b 936x412 sha=4fa0084b043e
+  + Warne 6106m Reddot Riser Aimpnt T1T2 SH 2.25 - $ — 42186b 1000x1000 sha=16cd3c01b21e
+  + Mesa Tactical 6-Shell Side Saddle, 12 gauge, Fit — 41135b 1000x1000 sha=4ddd1a5461d9
+  + B&T TIGER 22LR SUPPRESSOR BLK - $299.99 — 9591b 430x430 sha=29e6e901279a
+  + Geissele Freedom Weapon 223/5.56 8" SBR Black -  — 46803b 602x323 sha=c85baf01a446
+  + Geissele Automatics Super Duty Assembled AR-15 U — 209912b 849x606 sha=f2d0a1a10013
+  + Geissele Automatics Super Duty AR-15 Lower Recei — 133965b 990x661 sha=7066455be2e7
+  + Geissele Automatics Intermediate Cartridge 6mm A — 126346b 990x661 sha=9d5a7d0e6906
+  + Glock 43x/48 15rd Magazine 9mm Black Steel - $29 — 28688b 700x700 sha=51369b576bbf
+  + Faxon Match Series Firearms 24" GUNNER 6mm ARC R — 56304b 1000x666 sha=cb0f2071cfe4
+  + Atrius Development 3 Position Super Selector Saf — 46434b 1464x906 sha=0314c75ba82e
+  + CMC Triggers AR-15 .750 Adjustable Low Profile G — 16866b 945x630 sha=ad3660a83e4e
+  + SilencerCo Velos LBP 7.62 Suppressor w/ Muzzle B — 90096b 501x900 sha=bba62a5cfa2f
+  + Hi-Point Carbine 45 ACP 17.50" 9+1 Black All Wea — 290907b 1500x396 sha=120d32c6af39
+  + MIMTAC Valkyrie AR-15 Drop-In Single Stage Flat  — 267452b 986x885 sha=69df8ee28654
+  + Taurus TX22 Compact 22 LR 13rd 3.6" Barrel, Blac — 39796b 743x630 sha=3093ae0840ff
+  + Ruger LCP MAX 380 ACP 2.8" Barrel Stainless Stee — 139833b 573x458 sha=7a3a2df405c6
+  + Smith & Wesson PC M&P M2.0 10mm 5.6" 15rd BUND - — 774648b 1200x910 sha=4b1c3f558019
+  ... 25/58  ok=25 fail=0
+  + Sig Sauer P365-XL 9mm 3.1" 12/17 Rds Comp Rose,  — 1298182b 827x1039 sha=8e07aaa8e8e4
+  + Smith & Wesson M&P9 Carry and Range Kit 9mm 4.3" — 265190b 538x439 sha=af0ad4d832d2
+  x JK Armament 172 PRO-KOR 30 Ti Suppressor - $806. — rejected: too small (110x531)
+  + Winchester SXP Hybrid 12 Gauge 22" 5rd Pump Shot — 61695b 553x212 sha=ca460b4928ae
+  + Wheeler Delta Series 1/2" 8 Function XL Fat Torq — 126073b 1500x1000 sha=69fbdf74132e
+  + Canik Mete SFT Grey Bomber 9mm 4.46" Bbl 18/20 R — 145532b 544x430 sha=f72e557cb261
+  + Heritage Rough Rider 22 LR 6.5" 6rd Revolver, Co — 58864b 526x299 sha=df1f8e3f183f
+  + Billconch Smart Gun Safe for Multiple Pistols Au — 331463b 1146x1500 sha=9b040562f649
+  + Kimber 1911 Ultra Carry 9mm 3" 7rd Pistol, Two T — 123042b 519x367 sha=75fa45c56f32
+  + CZ Firearms Roundup @ Wikiarms — 331989b 1478x1584 sha=a6f63a64bf34
+  + AR-15 Lower Receivers Roundup — 44329b 700x394 sha=ee95019bf095
+  + KAER Biometric Gun Safe for Rifles and Pistols H — 34577b 500x500 sha=d8194b0ae115
+  + Winchester BioAmmo Lux Steel 12 Gauge 2.75 1 oz  — 36070b 700x700 sha=2f7b73e664a1
+  + Colt Anaconda .44 Rem Mag 6" barrel 6rd Stainles — 15309b 619x322 sha=e71f84fa1399
+  x Tristar LR94 410-Bore Lever-Action Shotgun w/ Ni — image not downloadable
+  + BLACK SHEEP .308 147 GRAIN FMJ 20RD BOX 27BX PER — 58446b 1178x630 sha=51cabeda64f1
+  x Barrett M82A1 50BMG 29" Barrel 10+1 - $7999 — image not downloadable
+  + BELOM BRASS CASE AMO 7.62X39 123GR FMJ 20RD (24  — 34666b 1000x482 sha=da88881bce6d
+  + Patriot Sports 7.62x39mm 124 Grain Full Metal Ja — 22571b 448x279 sha=7dd5e875b5c4
+  + WALKER'S Cloak Dual Mic Sound-Enhancing 23-25dB  — 21659b 500x346 sha=b30a17184e19
+  + Plano 1404 Protector Series Four Pistol Case, X- — 28719b 500x450 sha=5c146047c7a9
+  + Baofeng Radio UV-5R Mini Long Range Two Way NOAA — 37829b 500x500 sha=1569d39f1281
+  + MIMTAC Valkyrie AR-15 Drop-In Single Stage Flat  — 133881b 1000x666 sha=c19e58d92e97
+  + Tisas USA 1911 Raider 9mm Pistol 5" 9rds, Flat D — 56753b 1000x1000 sha=4df755715881
+  + Davidson Defense 7.5-inch .300 Blackout AR15 Pis — 63055b 1200x1200 sha=6addaa4bbc2b
+  ... 50/58  ok=47 fail=3
+  + Winchester 17 WSM 20 gr Varmint HV 50/Box - $20. — 99153b 900x585 sha=c82546e327c8
+  + Triton StarStrikeX 1-6x Rifle Digital Night Visi — 20153b 500x500 sha=2bacf5c1bbdb
+  x Triton Recon45 Ultra-Compact Digital NV 1-6x LPV — unreachable after retries
+  + JRA Gallant 5.56 NATO 18" Barrel W/ Compensator  — 21212b 918x367 sha=62656479d85e
   x Stainless for Glock 19 9mm Barrel 1:10 Twist - $ — image not downloadable
-  + PSAK-47 GF3-R Romanian Kit Build - $799.99 — 37953b 1500x451 sha=59f49112f4b5
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
   x ATI Mil-Sport RIA P3P 5.56x45mm 16″ 30+1 W/ 10″  — image not downloadable
-  x Thunder Beast Arms Corporation (TBAC) FLY 9 - $9 — image not downloadable
 
-fixed 11, failed 5  (68% success)
-distinct images: 11 across 11 deals
+fixed 50, failed 8  (86% success)
+distinct images: 50 across 50 deals
 PASS — no image shared between products
