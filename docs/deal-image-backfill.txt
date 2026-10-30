@@ -1,43 +1,23 @@
-600 scanned, 36 need a real image, 8 coupon posts skipped
+600 scanned, 17 need a real image, 7 coupon posts skipped
 
-  + Tisas 1911 Carry .45 ACP 4.25" 8rd - $429.99 — 71700b 1076x806 sha=a3cdd4131587
-  + Smith & Wesson Model 1854 .45 Long Colt 19.25" 9 — 33346b 1500x369 sha=aaf3edd2f0c2
-  + PMC Bronze 9mm 115gr FMJ 50rds - $11.99 — 21464b 600x238 sha=30a4e012b783
-  + OA Defense 2311 9mm 5" 21rd Semi Automatic Pisto — 22531b 615x428 sha=1fbdc0c60498
-  + PSA 570 12 Gauge Pump-Action 18.5-Inch Barrel Sh — 30778b 1500x362 sha=411824964e73
-  + Q FIX 8.6 Blackout 8" SBR Rifle - $3350.99 (pric — 21956b 1000x266 sha=29a3f133c36e
-  + Swiss P49 Pistol, Model P210-2, Original, 9mm Ca — 38223b 762x511 sha=91cdc8920408
-  + Ludex Universal Pistol Mag Speed Loader 9mm 10mm — 15223b 500x500 sha=b40bf4a85826
-  + Winchester 1885 Hunter 17 HMR 24" barrel 1 Rnd S — 10202b 762x132 sha=5ace431c10d1
-  + Freedom Munitions X-DEF Defense 357 Magnum Ammo- — 26312b 630x630 sha=06139b7cbddb
-  + PMC Bronze .357 Magnum 158gr Jacketed Soft Point — 36338b 944x630 sha=af9c4c371fcf
-  + PITBULL TACTICAL Gen 2 Universal Mag Carrier Amb — 14800b 500x500 sha=3fa28a2f0338
-  + Freedom Munitions 357 Magnum Ammo- 125 Gr Flat P — 26527b 630x630 sha=55da2efdb3a3
-  + Freedom Munitions Range 158 gr FP .357 Magnum Am — 28349b 944x630 sha=34ae0cf521e5
-  + CITYCHASE 4-Pack Tactical Ammo Bag, Ammo Pouch w — 25806b 500x500 sha=5e829471bcc4
-  x Geissele Automatics Maritime Bolt Catch - $24.99 — image not downloadable
-  + Benelli Lupo .243 Win 22" Bbl Granite Moss/Matte — 37848b 748x243 sha=cdd6d572df87
-  + Triton TitanVault USB-C Runtime Extender - $54 a — 94547b 1500x977 sha=e2dcb28a4cf2
-  + JP Enterprises Gen 2 Silent Capture Spring Build — 14712b 464x229 sha=a22991a387d5
-  + Toolcraft .223/5.56/300 BLK M16 Profile Bolt Car — 17225b 1000x197 sha=1af1bf7f21c3
-  + Lancer L5AWM GEN 2 AR-15 .223/5.56 30 Round Maga — 77019b 808x765 sha=4eab8bd691eb
-  + Cyelee Optics Wolf EDG 1x23x16mm Reflex Red Dot  — 39078b 639x438 sha=1f507ca91db2
-  + Cyelee Optics T10 X PRO 1x20mm Reflex Red Dot Si — 53479b 654x730 sha=687289c64948
+  + Fiocchi Field Dynamics Brass .223 Rem 40-Grain 5 — 50657b 638x411 sha=af73e0da2aad
+  + Quick Detach IFAK & medical supplies (free shipp — 45317b 560x560 sha=f1aee16a704c
+  + B5 Systems Modular Picatinny Folding Stock - $15 — 16388b 683x404 sha=9180b1fd05ff
+  + Ultradyne UD5 Chassis Tikka T3 Midnight Bronze - — 12824b 803x158 sha=9975155973ae
+  + Comstock Armory Recessed Micro 30 Cal Muzzle Bra — 21032b 498x600 sha=9f3d32b818ed
+  + Knights Armament Enhanced Compensator Kit 1/2-28 — 14817b 208x455 sha=470ad53360d2
+  + ProMag Archangel Low-Profile Commercial Polymer  — 25221b 611x459 sha=f81dc8ec7eb1
+  + Springfield XDS 40 S&W 6 Round Factory Magazine  — 21120b 270x600 sha=2b82e75880bb
+  + North American Arms PUG Custom "Dusk" Copper .22 — 23615b 613x383 sha=e51691bb0c47
+  + 16% off CVLIFE WolfCloak Motion Awake 2 & 32 MOA — 20603b 500x500 sha=e5a4c95051d8
+  + PMC 38G Bronze 38 Special 132 gr Full Metal Jack — 30599b 601x394 sha=5784136f532f
   x B&T Print-X Tiger Ti, .22lr, FDE Suppressor - $2 — rejected: too small (149x495)
-  + GForce Arms JAWBONE 9mm 33rd 5" Black Braced Pis — 31281b 914x481 sha=803f1b3760de
-  ... 25/36  ok=23 fail=2
-  + Winchester Target & Practice 9mm Luger 124gr FMJ — 57779b 916x378 sha=9ee751d2ba18
-  + Under Armour 50% Off Closeout Deals! All 50% Off — 60059b 575x588 sha=ee1894ee6050
-  + Beretta 92FS 9mm 5.1" TB 18 Rd ODG - $645.84 ($5 — 59312b 880x578 sha=eca83ade23b5
-  + Colt Series 70 Competition Government .45 ACP Pi — 41982b 784x547 sha=43bfe0847d7b
-  + CLEVER - Club Load 12 Gauge 2-3/4" 1oz #8 Shot 2 — 72575b 655x629 sha=611efa04a997
-  + Geissele Super Charging Handle Black - $79.99 — 24224b 1000x666 sha=bc780c800afd
   x Barrett M82A1 50BMG 29" Barrel 10+1 - $7999 — image not downloadable
   x Triton Recon45 Ultra-Compact Digital NV 1-6x LPV — unreachable after retries
   x Stainless for Glock 19 9mm Barrel 1:10 Twist - $ — image not downloadable
   x Colt Python .357 Magnum 6rd 5" Bead Blasted Stai — image not downloadable
   x Tippmann Arms ISS-12 22LR Suppressed Barrel - $4 — image not downloadable
 
-fixed 29, failed 7  (80% success)
-distinct images: 29 across 29 deals
+fixed 11, failed 6  (64% success)
+distinct images: 11 across 11 deals
 PASS — no image shared between products
