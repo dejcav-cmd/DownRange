@@ -1,67 +1,50 @@
-600 scanned, 59 need a real image, 8 coupon posts skipped
+600 scanned, 43 need a real image, 7 coupon posts skipped
 
-  + Pachmayr Diamond Pro S&W K&L Roundbutt Revolver  — 18884b 554x326 sha=3e55e9a7490e
+  + San Tan Tactical 1836 Series Ironclad 6mm ARC 12 — 15597b 489x191 sha=be81a670742a
+  + San Tan Tactical 6mm ARC 18” Rifle, Black Anodiz — 42826b 605x253 sha=162d76d1514f
+  + Sierra Defense 12 GA 20rd Polymer Drum Magazine, — 234624b 515x656 sha=a0e7baa56329
+  + Ruger Precision 308 Win 20" 10rd Rifle, 3 PMAGs, — 128494b 1252x272 sha=6720d0b3f1b5
+  + MIMTAC Drastic AR-15 9mm PCC Drop-In Single Stag — 122867b 1000x666 sha=39ce58abc818
+  + MIMTAC Drastic AR-15 9mm PCC Drop-In Single Stag — 99323b 1000x666 sha=38c0a6b76e92
+  + MIMTAC Drastic AR-15 9mm PCC Drop-In Single Stag — 101281b 1000x666 sha=1fffe8e7c049
+  + Taurus TX22 22 LR 4.6" 22+1 Rds Black Pistol w/  — 58381b 801x660 sha=1f66e7737617
+  + CVA Cascade XT 6.5 PRC 24" Fluted Threaded Barre — 49407b 807x245 sha=f340f2eaa942
+  + SureFire XT00 Tailcap Switch, Black, Compatible  — 525555b 763x628 sha=7346d192e425
+  + Off Grid Trident Ti Suppressor - $959.99 (Add To — 84986b 542x334 sha=0abeac6ba711
+  + Weatherby Element II Synthetic 20 Gauge 28" 2RD  — 46193b 428x427 sha=ac04c0ca8e99
+  + Magpul MOE Carbine Stock Mil-Spec - Black - $24. — 65422b 1200x862 sha=d703cd3f38bd
+  + Vortex Crossfire II 1-4x24mm SFP V-Brite MOA LPV — 378405b 1500x1000 sha=39e8f0565eda
+  + Glock 43X 9mm 3.6" 15rd Pistol, 2 Mags - $433.40 — 238305b 1000x634 sha=ebdaf333ac70
+  + Heckler & Koch Mark 23 .45 ACP 5.87" 12rd Pistol — 58458b 531x353 sha=d5c4115d1d2e
+  + Glock G43X 9mm 3.41" TB 10rd OR Pistol w/Accesso — 22724b 1000x740 sha=b5266cb1fccc
+  + PSA Dagger Complete RMR Slide Assembly with Thre — 63550b 1200x1200 sha=328c44979d64
+  + Panzer Arms HAN9 6 5" 9mm 30rd FDE Pistol & Panz — 189658b 932x745 sha=e8f5bfd38fb7
+  + ATI GSG-16 Carbine M Lok .22 LR 16" 110 Rd Rotar — 206684b 1336x618 sha=abc8bd192938
+  + SOG Mission Backpack 26l, Black - $19.99 — 341957b 900x900 sha=7de52ec67ffb
+  + Massive New Inventory Of AR-15 Rifles — 133954b 684x384 sha=c08b53bff4bc
+  + CZ SP-01 Tactical 50th Anniversary 4.6" 9mm 19rd — 315776b 918x718 sha=48629143dadc
+  + CVA Cascade .28 Nosler 26" Barrel 3 Rounds - $68 — 37186b 1500x235 sha=e894f632c9af
+  + Sig Sauer P320 Spectre Complete Barrel Assembly  — 67835b 615x277 sha=201a5d4b0293
+  ... 25/43  ok=25 fail=0
+  + Vortex Defender-ST Enclosed Solar Micro Red Dot  — 36305b 600x474 sha=e816b379abf4
+  + Badlands Bino XR Pro Binocular Case, Mud - $149. — 64941b 791x812 sha=be4bc0ae7b39
+  + Sig Sauer P320 Mod 9mm Comp 4" 21rd Pistol w/ Ro — 158122b 829x637 sha=96df048b5431
+  + ZEV OZ9 Grip Kit - $62 — 38751b 800x491 sha=b166bae49c4d
+  + Breda B3.5SM Waterfowl 12 Gauge 3.5" 28" Barrel  — 21134b 974x320 sha=238206434350
+  + Fieldline Matador Hunting Backpack, Original Bot — 131817b 1000x1000 sha=9c8f2e9751bf
+  + RNT Calls Quackhead Barbelly, Realistic Speckleb — 16360b 307x729 sha=217284777e29
+  + Tisas 1911 A1 Tanker Commander 9mm 4.25" 9rd Pis — 691883b 1194x839 sha=2e0cf2af4b0a
+  + Cole-TAC Varmint Wrangler Pistol Holder Ranger G — 475533b 867x616 sha=0f20afb21748
+  x Silencerco ASR Muzzle Brake 7.62mm 5/8x24 - $60. — image not downloadable
+  + Mossberg 590 Cruiser Tactical 12 GA-3" 18.5" Bar — 18009b 1000x223 sha=9efab3416a78
+  + Walker's FireMax Rechargeable Electronic Earmuff — 276883b 1464x1076 sha=dea487da6608
   x Criterion Barrels CORE .223 Wylde 13.9in 1-8 Tap — image not downloadable
-  + Smith and Wesson M&P40 Shield M2.0 .40 SW 3.1" B — 39962b 640x518 sha=03c6154348a3
-  + KE Arms AR-15 Forged Assembled Upper Receiver -  — 20915b 1000x666 sha=5d5b1b8dfaf9
-  + NBS Mil-Spec 6 Position Receiver Extension / Buf — 17138b 800x367 sha=0a9ff3f7d8ba
-  + Recover Tactical 2011 BASIC STOCK BLACK - $107.9 — 59234b 1500x706 sha=cc9ffbbade45
-  + ProMag Smith & Wesson Shield .40 S&W 6-Round Blu — 27580b 375x687 sha=7797dfa4c1d5
-  + Ruger SP101 357 Magnum Double Action Revolver -  — 62716b 1142x735 sha=c4f3502ac6bb
-  + 30% off CVLIFE Cantilever Scope Mount, Offset Du — 12559b 406x500 sha=84288688fd61
-  + 50% off EZshoot Sling Swivel 1.25 in Rifle Sling — 22149b 500x500 sha=099652f5c8fe
-  + 50% off CVLIFE 30% Carbon Fiber Bipod for M-Rail — 19102b 500x500 sha=fcabb2c5ad52
-  + 40% off EZshoot Sub-Compact Picatinny Laser Sigh — 21897b 500x500 sha=3280c5bc50a4
-  + 30% off CVLIFE BearMight Enclosed Red/Green Dot  — 20442b 500x500 sha=a6773c202dda
-  + 20% off CVLIFE BearMight Enclosed Shotgun Red Do — 14244b 500x500 sha=d42db834f5ef
-  + 45% off CVLIFE Rechargeable Green/Red Laser Bore — 41003b 500x500 sha=14fc37194eae
-  + 25% off CVLIFE JackalHowl 25MM Obj 3X Red Dot Ma — 29027b 500x500 sha=f3f9f7e8c89e
   x Winchester Model 70 Featherweight .308 Win 22" b — image not downloadable
-  + Holosun EPS CORE RD MRS, EPS CARRY Red 2 / Red 6 — 584873b 838x1048 sha=da4eb3712a18
-  + Smith and Wesson Response Carbine 9mm 16.5" Barr — 29521b 1000x358 sha=887151257881
-  + Ruger Hawkeye Hunter Stainless / Wood .308 Win 2 — 10298b 765x148 sha=271d60dcc041
-  + Halloween Flash Sale Get 31% OFF Select Items @  — 51063b 554x554 sha=dd48678b50fe
-  + Ruger Mini-14 Tactical Stainless / Walnut 5.56 / — 10668b 757x140 sha=9e5aadfc3a36
-  + Ruger Mark IV 22/45 250th Anniversary .22 LR 4.4 — 33969b 658x487 sha=1cded4f205b4
-  + SAVAGE ARMS AXIS II Precision 30-06 Springfield  — 13665b 850x293 sha=fc632f2763cd
-  + TISAS 1911 A1 Regulator Full Size 38 Super 5" 9r — 136460b 1500x956 sha=69d47122cc9d
-  ... 25/59  ok=23 fail=2
-  + Shadow Systems MR920 Elite Flat Dark Earth 9mm 4 — 19486b 546x384 sha=d9cadf787a57
-  + Soviet Arms 5.56 8.4" 30-Rds Krink Triangle Side — 26134b 1000x500 sha=c749b06d5056
-  + Atrius Development 3 Position Super Selector G-L — 62377b 1454x779 sha=0781813cbec2
-  + Elite Tactical Systems Glock 19/26/49 Gen1-5 9mm — 34753b 897x712 sha=9e7171000b00
-  + Geissele Ultra Duty Checkered Takedown Pin Set - — 15480b 919x429 sha=95dc36fb915d
-  + Partisan Triggers Disruptor AR-15 3 Position Dro — 174134b 1000x666 sha=a1b0ce115216
-  + FMK G3 9mm 3.87" Bbl 17rd Striker-Fired Semi-Aut — 108544b 544x413 sha=1f9ae30e160a
-  + Smith & Wesson M&P Shield Plus 9mm 13rd 3.1" 6-  — 64093b 746x656 sha=b84990b9a8ce
-  + UBERTI 1873 Competition 357 Mag 20" 10rd Lever R — 33315b 1500x333 sha=fae041012264
-  + Holosun Technologies DRS NV, Red Dot Optic with  — 36922b 800x629 sha=2f69aaacbedd
-  + Savage Arms Axis 2 XP 22" Bbl 7mm-08 Rem Hardwoo — 30775b 1000x1000 sha=b10ee932a384
-  + Geissele Super Duty Mod 1 5.56 NATO 11.5" SBR -  — 49264b 1500x573 sha=f8974d4101d9
-  + Winchester XPR Hunter 7mm-08 22" Barrel 3rd Rifl — 30112b 556x173 sha=6b545c5fffeb
-  + Savage Arms Axis 2 22"Bbl 7mm-08 Rem OD Green Ri — 27104b 1000x1000 sha=3c651ac3df7d
-  + Savage Arms Axis 2 XP 22" Bbl .270 Win FDE Rifle — 30764b 1000x1000 sha=8d575c389233
-  + BROWNING X-BOLT 2 HUNTER 270 WIN 22" AAA MAPLE/B — 11234b 800x142 sha=93e810ba27d6
-  + PSA Dagger Complete SW3 RMR Slide Assembly, Blac — 19508b 546x546 sha=89d0de5f28a7
-  + PSA Dagger Complete RMR Slide Assembly With Extr — 15372b 546x546 sha=a87d050955bc
-  + PSA Dagger Complete SW6 RMR Slide Assembly, Snip — 66841b 1200x1200 sha=eefcacb16675
-  + PSA Dagger Compact C-1 RMR Compensated Slide Ass — 45310b 1000x1000 sha=9a853a66c3f9
-  + CCI Blazer 10mm Auto 200gr Total Metal Jacket 50 — 26293b 600x268 sha=cd1391f17aef
-  + Magtech 10mm Auto 180 gr FMJ 50/Box - $18.58 — 68427b 1000x666 sha=b6c1355c3a04
-  + Bulk Freedom Munitions 10mm Auto Ammo- 180 Gr RN — 31534b 630x630 sha=694d34c2b98f
-  + Radical Firearms 16" 5.56 NATO AR15 Rifle w/ 16" — 173869b 1398x626 sha=6ff3e724c056
-  + Radical Firearms RF-15 5.56mm 16" 30+1 SHR Handg — 28039b 1000x666 sha=fc7a01601b7b
-  ... 50/59  ok=48 fail=2
-  + Radical Firearms FR16-5.56SOC AR-15 Rifle, 5.56  — 9091b 500x225 sha=29ed0ef1822b
-  + Panzer Han9 9mm Brace - $69.99 — 26002b 944x497 sha=443f5add4ae1
-  + FSY Defence Cerberus FSX1 9mm 4.4" Barrel 17rd P — 77646b 537x368 sha=fabe45d40da3
-  + Crimson Trace CTS-25 Compact, 4.0 MOA, Red Dot S — 27050b 800x821 sha=58d3233ad251
-  + Savage Axis II .22-250 REM 22" BBL 4 rd Bolt-Act — 59677b 746x265 sha=4960559d60c6
   x B&T Print-X Tiger Ti, .22lr, FDE Suppressor - $2 — rejected: too small (149x495)
   x Barrett M82A1 50BMG 29" Barrel 10+1 - $7999 — image not downloadable
   x Triton Recon45 Ultra-Compact Digital NV 1-6x LPV — unreachable after retries
   x Stainless for Glock 19 9mm Barrel 1:10 Twist - $ — image not downloadable
 
-fixed 53, failed 6  (89% success)
-distinct images: 53 across 53 deals
+fixed 36, failed 7  (83% success)
+distinct images: 36 across 36 deals
 PASS — no image shared between products
