@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-10-25T07:00:21.619Z",
+  "generatedAt": "2026-11-01T07:00:21.546Z",
   "content": {
-    "newsArticles": 2986,
-    "blogPosts": 50,
-    "legislation": 427,
+    "newsArticles": 3121,
+    "blogPosts": 52,
+    "legislation": 432,
     "firearmReleases": 35,
-    "videos": 879,
+    "videos": 915,
     "reviews": 3,
-    "canadaArticles": 109,
+    "canadaArticles": 113,
     "brazilArticles": 116
   },
   "operations": {
-    "cronRuns": 3722,
+    "cronRuns": 3836,
     "outreachContacts": 221,
-    "socialPosts": 1340,
+    "socialPosts": 1459,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "Bend Dad's Legal 40-Cal Pistol Stopped a School Shooter in Three Minutes",
-    "newsDate": "2026-10-24T16:30:00.000Z",
+    "newsTitle": "Houston Dad Shoots Costumed Man Who Forced Into His Apartment",
+    "newsDate": "2026-10-31T21:30:00.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 4605
+  "totalContentDocs": 4787
 }
