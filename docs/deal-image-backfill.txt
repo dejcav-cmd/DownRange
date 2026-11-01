@@ -1,60 +1,26 @@
-600 scanned, 59 need a real image, 8 coupon posts skipped
+600 scanned, 27 need a real image, 6 coupon posts skipped
 
-  + Glock 43X MOS8 9mm 3.4" Barrel 10-Rounds w/ Aimp — 47609b 603x656 sha=93b23aefb1f4
-  + Glock G48 MOS 9mm 4.17" Barrel 10-Rounds w/ Aimp — 141963b 1332x1070 sha=7bf43d3afbc1
-  + Anechoic AnechoX 223L Full-Length .223 Cal Titan — 10979b 668x139 sha=9374b9c9bb76
-  + Mantis MT-6003 BlackbeardX AR15 Red Laser - $229 — 24416b 446x333 sha=af28d0cd34e4
-  + MidwayUSA AR-15 Essential Bug Out Range Bag, Woo — 69829b 680x510 sha=3c36b73ed268
-  + TISAS Carry 9 DS Comp NJG Exclusive V2C 9mm SAO  — 50543b 1000x665 sha=686c823c9699
-  + Trijicon, RMR Type 2, 3.25 MOA Green Dot, Adjust — 37115b 905x547 sha=0bfb8773a062
-  + Panzer Arms ARP9 9mm Luger 33+1 6.50" Black Barr — 13768b 463x320 sha=495b1c8a3e97
-  + Rattlesnake Tactical 17-Rnd Glock 9mm Magazine D — 57064b 1343x1052 sha=db4202173075
-  + Sportsman's Select Remanufactured 223 Remington  — 31223b 403x390 sha=20ea07d5dd3d
-  + Rattlesnake Tactical 34-Round 9mm Magazine Desig — 56941b 1200x412 sha=ef35e05ac771
-  + Police Trade - Glock 45 Gen 5 MOS 9mm 3-Dot Nigh — 136448b 1500x1265 sha=d02f298eacf4
-  + LFA Apollo 11 V2 Compact 4.15" 9mm 18rd Pistol,  — 124782b 564x423 sha=ea320b1a525e
-  + TacFire Gen 2 AR-15 .45 ACP Bolt Carrier Group - — 22422b 1200x233 sha=bdcdc8011ac0
-  + Cold Steel Rondel Dagger Fixed Blade Knife 11.5" — 16794b 659x216 sha=b5f7cdf806ab
-  + Cold Steel Urban Edge Fixed Blade Knife - $18.74 — 21394b 673x339 sha=f7b5551fc8f8
-  + Winchester XPR 350 Legend Bolt-Action Rifle with — 22297b 1282x212 sha=5afb3eb507d5
-  + 50% off MidTen 7.5-9 Inches M-Rail Bipod Adjusta — 9515b 297x300 sha=4ee8e5232185
-  + 50% off CVLIFE Screws Pack for Red Dot Sight Opt — 27640b 500x500 sha=9c82c1c4bbe7
-  + 50% off CVLIFE Hexcore 6" Fixed Blade Knife with — 21884b 500x500 sha=eae53ece47bb
-  + 20% off CVLIFE JackalHowl 1-4x20 LPVO Rifle Scop — 9548b 300x177 sha=e019f91c24b2
-  + 40% off CVLIFE 800 Lumen Pistol Light Rechargeab — 27619b 500x500 sha=a7a988782498
-  + 45% off EZshoot Universal Chest Bag, Shoulder St — 13524b 500x500 sha=68d7b2f800df
-  + 50% off EZshoot Scope Level Scope Bubble Level A — 22001b 459x500 sha=35b13336f7e1
-  + Smith and Wesson 686 Plus Engraved Stainless .35 — 25729b 640x387 sha=1ca9876050b9
-  ... 25/59  ok=25 fail=0
-  + Sig Sauer MPX 9mm 6" Barrel 35-Rounds w/ PCB Fol — 14170b 628x271 sha=f7ad812e7aad
-  + Dan Wesson DWX Black / Red 9mm 5" Barrel 19-Roun — 40719b 779x542 sha=648cdedf2570
-  + Benelli 828U 20 Gauge 28" barrel 2rd Walnut - $2 — 32141b 1500x270 sha=fe6c56409d90
-  + Ruger Harrier 5.56 NATO 16.1" 30rd Rifle, Thread — 68335b 719x255 sha=1a08024a7def
-  + Tyrant CNC TWS Braced Chassis Fits Sig P365 FCU  — 158214b 1190x448 sha=57c25fb639cf
-  + Savage 110 Timberline Realtree Escape 7mm PRC 22 — 31003b 1500x281 sha=10be02454f4d
-  + Taylor's & Co Outlaw Legacy 45 LC 4.75" 6rd Revo — 79796b 1500x777 sha=cba34d4fc616
-  + RIA Rock Island Armory Single Shot 20 Ga 24" Bar — 38583b 1500x272 sha=d6442ce78194
+  + Taurus TUC22, Micro-Compact, 22 LR, 3.1" Threade — 288610b 861x680 sha=9e9e8c10ec10
+  + Browning X-Bolt 2 Speed SPR 308 WIN 18" TB 4rd,  — 9748b 960x145 sha=3f718915af03
+  + Volquartsen Mini Mamba, 22 LR, 3" Threaded Barre — 584806b 960x741 sha=31994237e024
+  + Ruger AR-556 5.56 NATO -- Law Enforcement Trade- — 171965b 1445x963 sha=f7e63f1397ee
+  + PMC Bronze 9mm Luger Ammo 115gr FMJ - $11.99 — 74531b 1200x796 sha=f9bce461c92c
+  + Beretta APX A1 Compact, 9MM, 3.70" Barrel, 15 Rd — 67373b 800x589 sha=1bae83abdd80
+  + Colt EPR II, 5.56 NATO, 11.5" Barrel, 30 Rds, Bl — 149839b 929x486 sha=e8ef7a4c824d
+  + Glock G43X MOS Apollo Custom, 9mm, 3.41" Barrel, — 451276b 960x771 sha=0234c3d15173
+  + Pioneer Arms Corp. Micro Hellpup Pro, 7.62x39mm  — 72800b 586x372 sha=f253ca5ccbf7
+  + Walker's Isolator Electronic Ear Plugs, FDE - $5 — 27642b 680x510 sha=c759930500ea
+  + Winchester XPR Hunter Bolt-Action Rifle w/ Vorte — 72426b 730x313 sha=791f326c367c
+  + Stevens by Savage 301 Turkey XP 20 GA 26" Single — 77045b 636x498 sha=0f089db48f7a
+  x Mossberg 590RM 12 Gauge 18.5 Inch Magazine Fed S — image not downloadable
+  + Remington UMC - 9mm - 115 Grain FMJ - 500 Rounds — 66729b 858x499 sha=51aa0c50ce1d
+  + RTB AR15 Lightweight Carrier - Black Nitride (ca — 15583b 605x454 sha=6c4b93a8c0e6
+  + Wokonl Gun Cleaning Kit for 9mm .38 .357 Handgun — 22974b 500x500 sha=dd0f6b27d824
+  + Vortex Dakota 3-9x40 Riflescope - $199.99 — 25969b 852x412 sha=f7e6688ccf8e
+  + Heckler and Koch USP9 V1 9mm 4.25" Barrel 15-Rou — 47327b 774x537 sha=71b5a7bebf96
+  + Taurus GX2 9mm 13+1 3.3" Barrel Black Pistol - $ — 723751b 1268x1020 sha=0779f4b841b5
   x Maxim Defense Industries Quantum 22K .22 LR Supp — image not downloadable
-  + Trijicon MRO SD 1x25 2 MOA Green Dot Reflex Sigh — 62176b 1434x956 sha=89ed3d1b5686
-  + Frontier Cartridge 7.62x51mm, 150gr FMJ, Ammunit — 52980b 545x509 sha=285f921c8946
   x NBS AR-15 Dust Cover / Port Door Kit - AR15-Dust — image not downloadable
-  + NBS AR-15 Stripped Forged Upper Receiver - T-Mar — 21072b 1000x666 sha=f5b772924132
-  + Primary Arms CLx 3x30mm Prismatic Red Dot Sight, — 126449b 1500x1065 sha=c252e4b87dfe
-  + Springfield Kuna Adjustable Folding Stock - $165 — 70619b 1200x851 sha=423e3aae7b0b
-  + Trijicon MRO Patrol 1x25 Red Dot Sight, 2.0 MOA  — 33982b 843x630 sha=003a7abf96a2
-  + Trijicon MRO SD 2 MOA Red Dot and 3x Magnifier,  — 61212b 1258x816 sha=4385d1a60afa
-  + Taurus TH10 10mm 4.25" Barrel 15+1 - $399.99 — 149571b 568x424 sha=68eb4604fde7
-  + KIMBER 1911 Custom LW Shadow Ghost .45 ACP 5" 8- — 82088b 1280x860 sha=1e048ed7899d
-  + NBS AR-15 Stripped Upper - AR15-Stripped-Upper-R — 31474b 800x800 sha=04fa63b5158c
-  + Geissele Super Charging Handle .223/5.56 - Black — 39011b 1200x1024 sha=3f490418a2ca
-  + US Cartridge 300 Blackout Nickel Plated 220 Gr S — 260232b 625x548 sha=e400a9227677
-  + SOG Flash I-Partially Serrated Black Tini Foldin — 170676b 780x779 sha=90deab11e332
-  + Bushnell Trophy XLT 4-12x40 - DOA Quick Ballisti — 88260b 657x439 sha=02faa42d4eab
-  + Heritage Rough Rider Small Bore .22LR 6.5" 6rd R — 24776b 1000x449 sha=832c6a6f8be8
-  ... 50/59  ok=48 fail=2
-  + San Tan Tactical 1836 Frontier .30 Cal Rifle Sup — 16710b 600x600 sha=f0ba6faeb20a
-  + Charles Daly 1911 Field Engraved .45 ACP 5" Barr — 698971b 1500x1040 sha=4cf9f44d7f40
-  x Silencerco ASR Muzzle Brake 7.62mm 5/8x24 - $60. — image not downloadable
   x Criterion Barrels CORE .223 Wylde 13.9in 1-8 Tap — image not downloadable
   x Winchester Model 70 Featherweight .308 Win 22" b — image not downloadable
   x B&T Print-X Tiger Ti, .22lr, FDE Suppressor - $2 — rejected: too small (149x495)
@@ -62,6 +28,6 @@
   x Triton Recon45 Ultra-Compact Digital NV 1-6x LPV — unreachable after retries
   x Stainless for Glock 19 9mm Barrel 1:10 Twist - $ — image not downloadable
 
-fixed 50, failed 9  (84% success)
-distinct images: 50 across 50 deals
+fixed 18, failed 9  (66% success)
+distinct images: 18 across 18 deals
 PASS — no image shared between products
