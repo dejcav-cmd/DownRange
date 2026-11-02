@@ -1,33 +1,32 @@
-600 scanned, 27 need a real image, 6 coupon posts skipped
+600 scanned, 26 need a real image, 9 coupon posts skipped
 
-  + Taurus TUC22, Micro-Compact, 22 LR, 3.1" Threade — 288610b 861x680 sha=9e9e8c10ec10
-  + Browning X-Bolt 2 Speed SPR 308 WIN 18" TB 4rd,  — 9748b 960x145 sha=3f718915af03
-  + Volquartsen Mini Mamba, 22 LR, 3" Threaded Barre — 584806b 960x741 sha=31994237e024
-  + Ruger AR-556 5.56 NATO -- Law Enforcement Trade- — 171965b 1445x963 sha=f7e63f1397ee
-  + PMC Bronze 9mm Luger Ammo 115gr FMJ - $11.99 — 74531b 1200x796 sha=f9bce461c92c
-  + Beretta APX A1 Compact, 9MM, 3.70" Barrel, 15 Rd — 67373b 800x589 sha=1bae83abdd80
-  + Colt EPR II, 5.56 NATO, 11.5" Barrel, 30 Rds, Bl — 149839b 929x486 sha=e8ef7a4c824d
-  + Glock G43X MOS Apollo Custom, 9mm, 3.41" Barrel, — 451276b 960x771 sha=0234c3d15173
-  + Pioneer Arms Corp. Micro Hellpup Pro, 7.62x39mm  — 72800b 586x372 sha=f253ca5ccbf7
-  + Walker's Isolator Electronic Ear Plugs, FDE - $5 — 27642b 680x510 sha=c759930500ea
-  + Winchester XPR Hunter Bolt-Action Rifle w/ Vorte — 72426b 730x313 sha=791f326c367c
-  + Stevens by Savage 301 Turkey XP 20 GA 26" Single — 77045b 636x498 sha=0f089db48f7a
-  x Mossberg 590RM 12 Gauge 18.5 Inch Magazine Fed S — image not downloadable
-  + Remington UMC - 9mm - 115 Grain FMJ - 500 Rounds — 66729b 858x499 sha=51aa0c50ce1d
-  + RTB AR15 Lightweight Carrier - Black Nitride (ca — 15583b 605x454 sha=6c4b93a8c0e6
-  + Wokonl Gun Cleaning Kit for 9mm .38 .357 Handgun — 22974b 500x500 sha=dd0f6b27d824
-  + Vortex Dakota 3-9x40 Riflescope - $199.99 — 25969b 852x412 sha=f7e6688ccf8e
-  + Heckler and Koch USP9 V1 9mm 4.25" Barrel 15-Rou — 47327b 774x537 sha=71b5a7bebf96
-  + Taurus GX2 9mm 13+1 3.3" Barrel Black Pistol - $ — 723751b 1268x1020 sha=0779f4b841b5
+  + Sig Sauer Freedom Series, Turning Point USA, 191 — 40519b 870x658 sha=3f21299f779b
+  + Buy a Leupold VX-4 HD Rifle Scope & Free pair of — 143822b 1187x1054 sha=677b9562d49a
+  + Buy Leupold VX-Freedom Scope & Get Free Rifleman — 71362b 1186x515 sha=81bc7f17b9ac
+  + Buy any BOG pack and receive a free Deadshot Bip — 141916b 1188x1066 sha=7e143b5016e1
+  + Safetyvital SV 200 Lumens Tactical LED Headlamp  — 19373b 576x329 sha=083c23f0b29d
+  + Faxon Firearms Match Series 9" 300 BLK Gunner Pr — 18440b 977x407 sha=59cd984f0ba8
+  + Surefire SOCOM 3 Prong Flash Hider 5.56 5/8x24 - — 10356b 510x404 sha=de71b04dd5c6
+  + Ruger Mark IV 22/45 Tact Silencer Shop Gray 22LR — 22780b 547x416 sha=7c549d09bc1b
+  + Smith & Wesson Performance Center M&P Shield X C — 73160b 988x729 sha=868e88c47642
+  + Micro Roni Gen 4X - Glock 17/19/19X/22/23/25/31/ — 19780b 790x380 sha=8d77c8caec8a
+  + Springfield Armory 1911 Operator Gear-Up Bundle, — 38840b 786x497 sha=1a86866153f0
+  + Maxim PDX SCW 556 5.5" 20 Rd BK BRACE - $1885 (A — 10181b 391x241 sha=a9fc55dc5414
+  + Irregular Design Group HESYCHIA 556UK Suppressor — 30517b 644x317 sha=ffef05e0a4df
+  + Ruger 3752 LCP DA/SA 380 ACP 2.75" 6+1 Black Che — 61368b 798x599 sha=4723a0061062
+  x JK Armament 9K Pro-Kor 9mm 1.72" Armor Black Tit — image not downloadable
+  + Jk Armament PRO-KOR 5.56mm Black Stainless Steel — 17057b 249x724 sha=a00568ffae61
+  + AR15 Custom Upper 20" 556 MLOK Handguard - $249. — 12224b 842x191 sha=439caa90da68
+  + Anderson AR308 15" M-LOK Free Float Handguard Fu — 10056b 466x130 sha=61920f3a800e
+  + Smith & Wesson M&P Shield X 9mm Bundle 4- Mags & — 55180b 601x547 sha=d79e16adc710
+  + SIG SAUER TANGO-MSR LPVO 1-10x28mm Rifle Scope,  — 36826b 826x347 sha=06cef94e01ad
   x Maxim Defense Industries Quantum 22K .22 LR Supp — image not downloadable
   x NBS AR-15 Dust Cover / Port Door Kit - AR15-Dust — image not downloadable
   x Criterion Barrels CORE .223 Wylde 13.9in 1-8 Tap — image not downloadable
-  x Winchester Model 70 Featherweight .308 Win 22" b — image not downloadable
   x B&T Print-X Tiger Ti, .22lr, FDE Suppressor - $2 — rejected: too small (149x495)
   x Barrett M82A1 50BMG 29" Barrel 10+1 - $7999 — image not downloadable
   x Triton Recon45 Ultra-Compact Digital NV 1-6x LPV — unreachable after retries
-  x Stainless for Glock 19 9mm Barrel 1:10 Twist - $ — image not downloadable
 
-fixed 18, failed 9  (66% success)
-distinct images: 18 across 18 deals
+fixed 19, failed 7  (73% success)
+distinct images: 19 across 19 deals
 PASS — no image shared between products
