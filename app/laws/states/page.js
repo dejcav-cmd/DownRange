@@ -50,6 +50,8 @@ export default async function StatesPage() {
         { '@context': 'https://schema.org', '@type': 'Dataset', name: 'Gun laws by state (all 50 states)',
           description: 'Constitutional carry, permit rules, magazine limits, assault weapon status, waiting periods, red flag laws and CCW reciprocity for every U.S. state.',
           url: 'https://www.downrangeco.com/laws/states', creator: { '@type': 'Organization', name: 'DownRange', url: 'https://www.downrangeco.com' },
+          publisher: { '@type': 'Organization', name: 'DownRange', url: 'https://www.downrangeco.com' },
+          license: 'https://www.downrangeco.com/terms',
           ...(verified ? { dateModified: verified } : {}), isAccessibleForFree: true },
         { '@context': 'https://schema.org', '@type': 'BreadcrumbList', itemListElement: [
           { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://www.downrangeco.com' },
