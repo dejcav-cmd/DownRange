@@ -7,6 +7,10 @@ on:
         description: 'Dry run (fetch image pages only, no Sanity writes)'
         required: false
         default: 'false'
+      only:
+        description: 'comma-separated slugs (blank = all)'
+        required: false
+        default: ''
       mode:
         description: 'publish or diag'
         required: false
@@ -30,6 +34,7 @@ jobs:
           SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
           DRY_RUN: ${{ inputs.dry_run }}
           MODE: ${{ inputs.mode }}
+          ONLY: ${{ inputs.only }}
         run: node scripts/$( [ "$MODE" = diag ] && echo diag-blog-images || echo publish-blog-2026-11-03 ).mjs > result.txt 2> err.txt || echo "script exited nonzero" >> err.txt
       - name: Read back result
         env:

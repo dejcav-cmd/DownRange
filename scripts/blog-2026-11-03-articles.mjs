@@ -312,8 +312,10 @@ const bolt = {
   excerpt: 'A bolt-action .300 Blackout pistol is a niche suppressor host. We break down how the Q Mini Fix is configured, its $3,600 price and the legal basics.',
   tags: ['300 Blackout', 'bolt action pistol', 'Q Mini Fix', 'suppressor host', 'NFA'],
   imagePages: [
-    'https://www.primaryarms.com/q-mini-fix-bolt-action-300-blackout-pistol-w-brace-8in-black',
-    'https://rainierarms.com/q-llc-mini-fix-300blk-bolt-action-pistol-w-brace-8',
+    'https://readygunner.com/q-mini-fix-300-blackout-bolt-action-pistol-8-threaded-barrel-folding-brace-gray/',
+    'https://cityarsenal.com/product/q-mini-fix-bolt-action-300-blackout-pistol-8-cherry-bomb-muzzle-brake-side-folding-q-pistol-brace-gray-minifix-300-8in-pstl',
+    'https://www.sportsmansoutdoorsuperstore.com/products2.cfm/ID/312324/minifix300blk8inpistol/q-mini-fix-300-blackout-bolt-action-pistol-with-sba3-brace',
+    'https://gritrsports.com/q-mini-fix-300-blackout-black-pistol-minifix300blk8pst',
   ],
   brand: 'Q',
   body: `

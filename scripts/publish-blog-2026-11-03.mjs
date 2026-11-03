@@ -14,7 +14,8 @@ const sanity = createClient({ projectId: 'vbnsqnkg', dataset: 'production', apiV
 const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36'
 
 const out = []
-for (const a of ARTICLES) {
+const ONLY = (process.env.ONLY || '').split(',').filter(Boolean)
+for (const a of ARTICLES.filter(x => !ONLY.length || ONLY.includes(x.slug))) {
   const r = { slug: a.slug, status: 'pending', tried: [] }
   try {
     let got = null
