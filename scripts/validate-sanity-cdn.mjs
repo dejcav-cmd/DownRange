@@ -28,11 +28,14 @@ for (const t of ['newsletterSubscriber','cronRun','subscriber','user','order']) 
     log('EXPOSURE', t.padEnd(22), `tokenless-visible=${n} actual=${real}`, n > 0 ? '<-- PUBLICLY READABLE' : '')
   } catch (e) { log('EXPOSURE', t.padEnd(22), 'blocked', e.statusCode || e.message) }
 }
-// content-type sanity: sample a real fetch through the CDN with the same GROQ the site uses
+// same GROQ the site uses, compared API vs CDN
 try {
-  const s = await cdn.fetch(`*[_type=="newsArticle" && status=="published"] | order(publishedAt desc)[0...3]{title,slug,publishedAt}`)
-  log(s.length === 3 ? 'PASS' : 'FAIL', 'latest-3 via CDN:', JSON.stringify(s.map(x => x.title)).slice(0, 200))
-} catch (e) { fail++; log('FAIL latest-3', e.message) }
+  const q = `*[_type=="newsArticle" && !(_id in path("drafts.**"))] | order(publishedAt desc)[0...5]{_id,title,publishedAt}`
+  const [a, c] = await Promise.all([api.fetch(q), cdn.fetch(q)])
+  const same = JSON.stringify(a) === JSON.stringify(c) && a.length === 5
+  if (!same) fail++
+  log(same ? 'PASS' : 'FAIL', 'latest-5 identical API vs CDN:', JSON.stringify(c.map(x => x.title)).slice(0, 160))
+} catch (e) { fail++; log('FAIL latest-5', e.message) }
 log(fail ? `RESULT: ${fail} FAILURE(S)` : 'RESULT: ALL PASS')
 console.log(out.join('\n'))
 process.exit(0)
