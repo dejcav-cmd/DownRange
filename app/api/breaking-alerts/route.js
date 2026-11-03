@@ -56,7 +56,7 @@ export async function GET() {
 
     if (dedicated.length >= 3) {
       return Response.json({ alerts: dedicated, source: 'breakingAlert' },
-        { headers: { 'Cache-Control': 'no-store' } })
+        { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' } })
     }
 
     // Source 2: high-urgency articles from last 48h
@@ -78,7 +78,7 @@ export async function GET() {
         source:     a.source,
         publishedAt: a.publishedAt,
       }))
-      return Response.json({ alerts, source: 'urgent-articles' })
+      return Response.json({ alerts, source: 'urgent-articles' }, { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' } })
     }
 
     // Source 3: latest articles regardless of urgency — always show something fresh
@@ -98,7 +98,7 @@ export async function GET() {
       publishedAt: a.publishedAt,
     }))
 
-    return Response.json({ alerts, source: 'latest-articles' })
+    return Response.json({ alerts, source: 'latest-articles' }, { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' } })
   } catch (err) {
     return Response.json({ alerts: [], error: err.message }, { status: 500 })
   }

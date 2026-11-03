@@ -22,7 +22,7 @@ export async function GET(req) {
       count: (data.articles || data).length,
       total: data.total,
       timestamp: new Date().toISOString(),
-    })
+    }, { headers: { 'Cache-Control': 'public, s-maxage=60, stale-while-revalidate=120' } })
   } catch (err) {
     return Response.json({ error: err.message, articles: [] }, { status: 500 })
   }

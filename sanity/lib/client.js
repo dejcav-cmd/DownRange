@@ -17,6 +17,24 @@ export const writeClient = createClient({
   token:     process.env.SANITY_API_TOKEN,
 })
 
+// Public reads go through Sanity's API CDN (1M requests/month included on Growth; the uncached API
+// includes only 250k and bills overage). No token: published content only. If a CDN read ever
+// fails, fall back to the token client so pages never break because of this optimisation.
+export const readClient = createClient({
+  projectId: process.env.NEXT_PUBLIC_SANITY_PROJECT_ID || 'vbnsqnkg',
+  dataset:   process.env.NEXT_PUBLIC_SANITY_DATASET   || 'production',
+  apiVersion: '2024-01-01',
+  useCdn:    true,
+})
+
+export async function rf(query, params = {}, options) {
+  try {
+    return await readClient.fetch(query, params, options)
+  } catch (err) {
+    return client.fetch(query, params, options)
+  }
+}
+
 const builder = imageUrlBuilder(client)
 export const urlFor = (source) => builder.image(source)
 
@@ -34,7 +52,7 @@ export function resolveImage(article) {
 
 export async function fetchArticles(limit = 20, category = null) {
   const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
-  return client.fetch(`
+  return rf(`
     *[_type == "newsArticle" && approved == true && defined(slug.current) ${filter}] | order(publishedAt desc, _createdAt desc) [0...${limit}] {
       _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
       author->{name, slug},
@@ -60,20 +78,20 @@ export async function fetchArticlesPaginated({ page = 1, perPage = 20, category 
     filters += ` && (title match "*${q}*" || summary match "*${q}*" || source match "*${q}*")`
   }
   const [articles, total] = await Promise.all([
-    client.fetch(`*[${filters}] | order(publishedAt desc, _createdAt desc) [${offset}...${offset + perPage}] {
+    rf(`*[${filters}] | order(publishedAt desc, _createdAt desc) [${offset}...${offset + perPage}] {
       _id, title, slug, excerpt, summary, category, urgencyScore, publishedAt,
       heroImage { asset->{url}, alt },
       imageUrl, imageAlt,
       source, externalUrl, tags
     }`),
-    client.fetch(`count(*[${filters}])`),
+    rf(`count(*[${filters}])`),
   ])
   return { articles, total, pages: Math.ceil(total / perPage), page, perPage }
 }
 
 // Look up article by Sanity _id — used to redirect old broken URLs
 export async function getArticleById(id) {
-  return client.fetch(
+  return rf(
     `*[_type == "newsArticle" && _id == $id][0] { _id, slug, title }`,
     { id }
   )
@@ -82,14 +100,14 @@ export async function getArticleById(id) {
 // Old links keep working after a title/slug change: slugs end in the first 6 hex chars of the article _id.
 export async function getArticleBySuffix(suffix) {
   if (!/^[a-f0-9]{6}$/.test(suffix || '')) return null
-  return client.fetch(
+  return rf(
     `*[_type == "newsArticle" && _id match $p && defined(slug.current)][0] { _id, slug }`,
     { p: 'news-' + suffix + '*' }
   )
 }
 
 export async function getArticleBySlug(slug) {
-  return client.fetch(`
+  return rf(`
     *[_type == "newsArticle" && slug.current == $slug][0] {
       _id, title, slug, excerpt, summary, body, category, urgencyScore, publishedAt,
       author->{name, slug, bio, photo{asset->{url}}},
@@ -101,7 +119,7 @@ export async function getArticleBySlug(slug) {
 }
 
 export async function getRecentArticles(limit = 6) {
-  return client.fetch(`
+  return rf(`
     *[_type == "newsArticle" && approved == true] | order(publishedAt desc, _createdAt desc) [0...${limit}] {
       _id, title, slug, category, urgencyScore, publishedAt,
       heroImage { asset->{url}, alt },
@@ -114,7 +132,7 @@ export async function getRecentArticles(limit = 6) {
 // ── BREAKING ─────────────────────────────────────────────────────────────────
 
 export async function fetchBreakingAlerts(limit = 10) {
-  return client.fetch(`
+  return rf(`
     *[_type == "breakingAlert" && active == true] | order(publishedAt desc) [0...${limit}] {
       _id, headline, summary, publishedAt, url, urgencyScore
     }
@@ -125,7 +143,7 @@ export async function fetchBreakingAlerts(limit = 10) {
 
 export async function fetchLegislation(limit = 20, level = null) {
   const filter = level ? `&& level == "${level}"` : ''
-  return client.fetch(`
+  return rf(`
     *[_type == "legislation" ${filter}] | order(lastActionDate desc) [0...${limit}] {
       _id, title, billNumber, status, level, state, summary, lastActionDate, url, impact
     }
@@ -136,7 +154,7 @@ export async function fetchLegislation(limit = 20, level = null) {
 
 export async function fetchReviews(limit = 12, category = null) {
   const filter = category ? `&& category == "${category}"` : '&& category != "deals"'
-  return client.fetch(`
+  return rf(`
     *[_type == "review" ${filter}] | order(publishedAt desc) [0...${limit}] {
       _id, title, slug, score, verdict, category, publishedAt, featured,
       brand, model, caliber, msrp, testRounds,
@@ -154,7 +172,7 @@ export async function fetchReviews(limit = 12, category = null) {
 // ── RELEASES ──────────────────────────────────────────────────────────────────
 
 export async function fetchReleases(limit = 200) {
-  return client.fetch(`
+  return rf(`
     *[_type == "firearmRelease" && approved == true] | order(publishedAt desc) [0...${limit}] {
       _id, title, brand, model, caliber, action, category, msrp, publishedAt, isJustDropped,
       slug, heroImage { asset->{url}, alt },
@@ -167,7 +185,7 @@ export async function fetchReleases(limit = 200) {
 // ── STATE HUB ─────────────────────────────────────────────────────────────────
 
 export async function fetchStateProfile(abbr) {
-  return client.fetch(`
+  return rf(`
     *[_type == "stateProfile" && abbr == $abbr][0] {
       _id, name, abbr, rating,
       constitutionalCarry, ccwPermit, redFlagLaw, magLimit, waitPeriod, lawsVerified,
@@ -179,7 +197,7 @@ export async function fetchStateProfile(abbr) {
 }
 
 export async function fetchAllStateProfiles() {
-  return client.fetch(`
+  return rf(`
     *[_type == "stateProfile"] | order(name asc) {
       _id, name, abbr, rating,
       constitutionalCarry, redFlagLaw, magLimit, awbStatus, waitPeriod, lawsVerified,
@@ -207,7 +225,7 @@ export async function fetchVideos(limit = 10, category = null) {
 // ── GLOBAL STATS ──────────────────────────────────────────────────────────────
 
 export async function fetchGlobalStats() {
-  return client.fetch(`*[_type == "globalStats"][0]`)
+  return rf(`*[_type == "globalStats"][0]`)
 }
 
 
@@ -215,7 +233,7 @@ export async function fetchGlobalStats() {
 
 export async function searchReviews(q, limit = 20) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
-  return client.fetch(
+  return rf(
     `*[_type=="review" && (title match $q || brand match $q || model match $q || summary match $q || caliber match $q)]
      | score(boost(brand match $q,10), boost(model match $q,8), boost(title match $q,5), boost(summary match $q,1))
      | order(_score desc) [0...$lim] {
@@ -232,7 +250,7 @@ export async function searchReviews(q, limit = 20) {
 
 export async function fetchBlogPosts(limit = 50, category = null) {
   const filter = category ? `&& category == "${category}"` : ''
-  return client.fetch(
+  return rf(
     `*[_type == "blogPost" && status == "published" ${filter}] | order(coalesce(publishedAt, _createdAt) desc) [0...$lim] {
        _id, title, slug, category, excerpt, body, imageUrl, author,
        status, publishedAt, readTime, _createdAt, tags
@@ -283,7 +301,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
     params = { offset, end: offset + perPage }
     if (category) params.cat = category.toUpperCase()
   }
-  const result = await client.fetch(query, params).catch((err) => {
+  const result = await rf(query, params).catch((err) => {
     console.error('[fetchBlogPostsPaginated] Sanity fetch failed, falling back to empty:', err?.message || err)
     return { posts: [], total: 0 }
   })
@@ -298,7 +316,7 @@ export async function fetchBlogPostsPaginated({ page = 1, perPage = 12, category
 // Get all blog post slugs for static generation (includes drafts so URLs don't 404)
 export async function fetchAllBlogSlugs() {
   try {
-    return await client.fetch(
+    return await rf(
       '*[_type == "blogPost" && defined(slug.current)] { "slug": slug.current }'
     )
   } catch {
@@ -308,7 +326,7 @@ export async function fetchAllBlogSlugs() {
 
 export async function fetchBlogPostBySlug(slug) {
   try {
-    return await client.fetch(
+    return await rf(
       '*[_type == "blogPost" && slug.current == $s][0] { _id, title, "slug": slug.current, category, excerpt, body, imageUrl, author, authorRole, authorImg, published, publishedAt, readTime, tags, status, _createdAt }',
       { s: slug }
     )
@@ -317,7 +335,7 @@ export async function fetchBlogPostBySlug(slug) {
 
 export async function searchBlogPosts(q, limit = 20) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
-  return client.fetch(
+  return rf(
     `*[_type=="blogPost" && (title match $q || summary match $q || body match $q || tags[]match $q)]
      | score(boost(title match $q,10), boost(summary match $q,3), boost(body match $q,1))
      | order(_score desc) [0...$lim] {
@@ -329,7 +347,7 @@ export async function searchBlogPosts(q, limit = 20) {
 
 export async function searchReleases(q, limit = 20) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
-  return client.fetch(
+  return rf(
     `*[_type=="firearmRelease" && (brand match $q || model match $q || caliber match $q || summary match $q)]
      | score(boost(brand match $q,10), boost(model match $q,8), boost(caliber match $q,5), boost(summary match $q,1))
      | order(_score desc, publishedAt desc) [0...$lim] {
@@ -341,7 +359,7 @@ export async function searchReleases(q, limit = 20) {
 
 export async function searchLegislation(q, limit = 30) {
   const safe = `*${q.replace(/['"\\]/g,'').slice(0,80)}*`
-  return client.fetch(
+  return rf(
     `*[_type=="legislation" && (title match $q || billNumber match $q || summary match $q || state match $q)]
      | score(boost(title match $q,10), boost(billNumber match $q,8), boost(state match $q,5), boost(summary match $q,1))
      | order(_score desc) [0...$lim] {
@@ -352,7 +370,7 @@ export async function searchLegislation(q, limit = 30) {
 
 // Aliases for pages that use these names
 export async function getReviewBySlug(slug) {
-  return client.fetch(`
+  return rf(`
     *[_type == "review" && slug.current == $slug][0] {
       _id, title, slug, score, verdict, category, publishedAt, featured,
       brand, model, caliber, msrp, testRounds,
@@ -371,7 +389,7 @@ export async function getStateProfile(abbr) {
 }
 
 export async function getRelatedArticles(category, excludeSlug, limit = 6) {
-  return client.fetch(`
+  return rf(`
     *[_type=="newsArticle"&&approved==true&&category==$cat&&slug.current!=$slug]|order(publishedAt desc)[0...$limit]{
       _id, title, slug, category, urgencyScore, publishedAt,
       heroImage{asset->{url},alt}, imageUrl, source
