@@ -1,120 +1,33 @@
 [
   {
     "slug": "300-blackout-bolt-action-pistol-guide-2026",
-    "status": "published",
+    "status": "skipped: no real image",
     "tried": [
       {
-        "page": "https://www.primaryarms.com/q-mini-fix-bolt-action-300-blackout-pistol-w-brace-8in-black",
+        "page": "https://readygunner.com/q-mini-fix-300-blackout-bolt-action-pistol-8-threaded-barrel-folding-brace-gray/",
         "http": 200,
-        "bytes": 79442,
-        "candidates": 4,
-        "rejected": [
-          "https://mediacdn.espssl.com/9223/Shared/GXP/Popup/bg-entry-mobile.png (size)"
-        ]
-      }
-    ],
-    "imageSource": "https://www.primaryarms.com/q-mini-fix-bolt-action-300-blackout-pistol-w-brace-8in-black",
-    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/b03157ac674a44ac8de6ea4d92a47386c7d3b9e5-889x875.webp",
-    "bodyImages": 2,
-    "url": "https://www.downrangeco.com/blog/300-blackout-bolt-action-pistol-guide-2026"
-  },
-  {
-    "slug": "extar-ep9-mdb-roller-delayed-what-we-know-2026",
-    "status": "published",
-    "tried": [
-      {
-        "page": "https://www.thefirearmblog.com/blog/modern-delayed-blowback-the-new-extar-ep9-mdb-44829253",
-        "http": 200,
-        "bytes": 197209,
-        "candidates": 1,
-        "rejected": []
-      },
-      {
-        "page": "https://www.rifleconfigurator.com/articles/extar-ep9-mdb-roller-delayed-launch",
-        "http": 200,
-        "bytes": 270561,
-        "candidates": 6,
-        "rejected": []
-      }
-    ],
-    "imageSource": "https://www.rifleconfigurator.com/articles/extar-ep9-mdb-roller-delayed-launch",
-    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/246b88126c671c35b5f470344c7424b5d6ad2ccc-1200x630.jpg",
-    "bodyImages": 2,
-    "url": "https://www.downrangeco.com/blog/extar-ep9-mdb-roller-delayed-what-we-know-2026"
-  },
-  {
-    "slug": "parish-optics-poths-thermal-scope-specs-price-2026",
-    "status": "published",
-    "tried": [
-      {
-        "page": "https://potnvg.com/product/nightvisionthermal/poths-parish-optics-hunting-scope/",
-        "http": 200,
-        "bytes": 196181,
-        "candidates": 9,
-        "rejected": []
-      }
-    ],
-    "imageSource": "https://potnvg.com/product/nightvisionthermal/poths-parish-optics-hunting-scope/",
-    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/421ae68df485490a65db18b8a4f84bc600d7f94a-1707x2560.jpg",
-    "bodyImages": 2,
-    "url": "https://www.downrangeco.com/blog/parish-optics-poths-thermal-scope-specs-price-2026"
-  },
-  {
-    "slug": "sig-mcx-ltaw-price-specs-release-2026",
-    "status": "published",
-    "tried": [
-      {
-        "page": "https://soldiersystems.net/2026/09/30/sig-sauer-ltaw/",
-        "http": 200,
-        "bytes": 63094,
-        "candidates": 1,
-        "rejected": []
-      },
-      {
-        "page": "https://www.pewpewtactical.com/new-product-highlight-sig-sauer-mxc-ltaw/",
-        "http": 200,
-        "bytes": 568140,
+        "bytes": 201958,
         "candidates": 3,
-        "rejected": []
-      }
-    ],
-    "imageSource": "https://www.pewpewtactical.com/new-product-highlight-sig-sauer-mxc-ltaw/",
-    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/f135cd9e27a0ffdb37cf421740f6048ae83c15e5-2048x1152.jpg",
-    "bodyImages": 2,
-    "url": "https://www.downrangeco.com/blog/sig-mcx-ltaw-price-specs-release-2026"
-  },
-  {
-    "slug": "suppressed-mp7-sbr-what-you-can-buy-2026",
-    "status": "published",
-    "tried": [
+        "rejected": [
+          "https://cdn11.bigcommerce.com/s-qjds8kwncc/products/400/images/1210/q-mini-fix-300-blackout-bolt-action-pistol-gray-outside__93957.1781738510.386.513.jpg?c=1 (size)",
+          "https://cdn11.bigcommerce.com/s-qjds8kwncc/images/stencil/1280x1280/products/400/1210/q-mini-fix-300-blackout-bolt-action-pistol-gray-outside__93957.1781738510.jpg?c=1 (qr/graphic)"
+        ]
+      },
       {
-        "page": "https://www.downrangeco.com/news/potd-the-civilian-mp7-has-arrived-meet-uo-arms-nt7-sbr-6f3b94",
-        "http": 200,
-        "bytes": 102484,
-        "candidates": 1,
-        "rejected": []
-      }
-    ],
-    "imageSource": "https://www.downrangeco.com/news/potd-the-civilian-mp7-has-arrived-meet-uo-arms-nt7-sbr-6f3b94",
-    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/daca7b5d6d108d5052d5faf22011f16dee0546d2-1200x628.jpg",
-    "bodyImages": 0,
-    "url": "https://www.downrangeco.com/blog/suppressed-mp7-sbr-what-you-can-buy-2026"
-  },
-  {
-    "slug": "election-day-2026-second-amendment-state-by-state",
-    "status": "published",
-    "tried": [
+        "page": "https://cityarsenal.com/product/q-mini-fix-bolt-action-300-blackout-pistol-8-cherry-bomb-muzzle-brake-side-folding-q-pistol-brace-gray-minifix-300-8in-pstl",
+        "http": 404,
+        "bytes": 195583
+      },
       {
-        "page": "https://en.wikipedia.org/wiki/File:Voters_in_Londonderry_during_the_2022_midterms.jpg",
-        "http": 200,
-        "bytes": 112616,
-        "candidates": 7,
-        "rejected": []
+        "page": "https://www.sportsmansoutdoorsuperstore.com/products2.cfm/ID/312324/minifix300blk8inpistol/q-mini-fix-300-blackout-bolt-action-pistol-with-sba3-brace",
+        "http": 403,
+        "bytes": 6221
+      },
+      {
+        "page": "https://gritrsports.com/q-mini-fix-300-blackout-black-pistol-minifix300blk8pst",
+        "http": 403,
+        "bytes": 5940
       }
-    ],
-    "imageSource": "https://en.wikipedia.org/wiki/File:Voters_in_Londonderry_during_the_2022_midterms.jpg",
-    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/1b0a23241622503e642412eb99f5c99a8fd2afaa-1280x960.jpg",
-    "bodyImages": 2,
-    "url": "https://www.downrangeco.com/blog/election-day-2026-second-amendment-state-by-state"
+    ]
   }
 ]
