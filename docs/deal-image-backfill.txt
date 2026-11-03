@@ -1,32 +1,60 @@
-600 scanned, 26 need a real image, 9 coupon posts skipped
+600 scanned, 53 need a real image, 9 coupon posts skipped
 
-  + Sig Sauer Freedom Series, Turning Point USA, 191 — 40519b 870x658 sha=3f21299f779b
-  + Buy a Leupold VX-4 HD Rifle Scope & Free pair of — 143822b 1187x1054 sha=677b9562d49a
-  + Buy Leupold VX-Freedom Scope & Get Free Rifleman — 71362b 1186x515 sha=81bc7f17b9ac
-  + Buy any BOG pack and receive a free Deadshot Bip — 141916b 1188x1066 sha=7e143b5016e1
-  + Safetyvital SV 200 Lumens Tactical LED Headlamp  — 19373b 576x329 sha=083c23f0b29d
-  + Faxon Firearms Match Series 9" 300 BLK Gunner Pr — 18440b 977x407 sha=59cd984f0ba8
-  + Surefire SOCOM 3 Prong Flash Hider 5.56 5/8x24 - — 10356b 510x404 sha=de71b04dd5c6
-  + Ruger Mark IV 22/45 Tact Silencer Shop Gray 22LR — 22780b 547x416 sha=7c549d09bc1b
-  + Smith & Wesson Performance Center M&P Shield X C — 73160b 988x729 sha=868e88c47642
-  + Micro Roni Gen 4X - Glock 17/19/19X/22/23/25/31/ — 19780b 790x380 sha=8d77c8caec8a
-  + Springfield Armory 1911 Operator Gear-Up Bundle, — 38840b 786x497 sha=1a86866153f0
-  + Maxim PDX SCW 556 5.5" 20 Rd BK BRACE - $1885 (A — 10181b 391x241 sha=a9fc55dc5414
-  + Irregular Design Group HESYCHIA 556UK Suppressor — 30517b 644x317 sha=ffef05e0a4df
-  + Ruger 3752 LCP DA/SA 380 ACP 2.75" 6+1 Black Che — 61368b 798x599 sha=4723a0061062
+  x Savage Arms Model 110 TRAILBLAZER LH 5.56x45 NAT — image not downloadable
+  + Savage Arms RENEGAUGE 12 Ga 28" 5 Rd Black - $78 — 13415b 1000x189 sha=b0c0b666cc59
+  + PTR 9CT MAGPUL 9mm 8.86" barrel Magpul Furniture — 53451b 1200x649 sha=5444674aa566
+  + Bond Arms Stinger Fireball 22 WMR Matte SS 3" B6 — 66156b 265x265 sha=22fd237a5824
+  + Walther PDP 9mm Luger 4.5in Black Pistol - 10+1  — 69419b 1000x1000 sha=2f1c3d29623f
+  + Daniel Defense DD4 V7 SLW 5.56mm Rifle W/ Soundg — 42382b 1215x534 sha=6a992c758cc8
+  + IWI US Tavor X95 5.56mm Bullpup 30rd Rifle, 16.5 — 63237b 1280x540 sha=b55775d4cc4f
+  + LFA Apollo 11 V2 Compact 4.15" 9mm 18rd Pistol - — 201116b 1000x594 sha=5d6740cfb655
+  + Swampfox Tomahawk 1-4x24 SFP LPVO, Red MOA - $14 — 47985b 1000x1000 sha=1917287c3a89
+  x Browning X-Bolt 2 Hunter Composite .30-06 Spring — image not downloadable
+  + Winchester USA 7.62 Nato 147g FMJ Ammunition 20r — 303653b 922x780 sha=7845748d9e72
+  + PSA Gen3 PA10 18" Mid-Length .308 WIN 1/10 Stain — 260716b 1500x348 sha=2f68e52619a2
+  + ATI GSG-16 Carbine .22LR 16" 110 RND Rotary Mag  — 10105b 490x253 sha=27d57e74e505
+  + Tikka T3x Ace Target 223 Rem 10+1 24" Threaded B — 32913b 1481x250 sha=4f3e436204ee
+  + GLOCK G43X Magazine 9mm 15rd - $23.43 — 14567b 585x600 sha=b4f877bd53e8
+  + Toolcraft .223/5.56/300BLK M16 Profile 9310 BCG  — 15312b 485x380 sha=c518260c2d0d
+  + OPMOD Atrius Ambidextrious Forced Reset Selector — 45127b 978x565 sha=e790c3996e39
+  + 2 Pack Balaclava Fleece Face Masks Cold Weather  — 26380b 500x500 sha=e37675c58063
+  + Centurion Arms AR-15 5.56 Chrome Bolt Carrier Gr — 111973b 1000x666 sha=120a9c4ecbdb
+  + Centurion Arms AR-15 5.56 Chrome BCG, Sand Rail  — 169055b 1000x666 sha=4309b860b3e4
+  + American Tactical Imports Alpha Max 5.56 7.5" Ba — 10846b 430x430 sha=0bfcb0fb9438
+  + Thompson Center Compass 6.5 Creedmoor 22" 5 Rds  — 148308b 1500x508 sha=ce0b325ee078
+  + Centurion Arms CM4 5.56 Forged AR-15 Lower Recei — 270622b 1000x666 sha=d99d5fcf29a1
+  + Centurion Arms V2 Enhanced Dual Ejector Chrome B — 150325b 1000x666 sha=29fe7e3fc524
+  + Centurion Arms AR-15 5.56 Chrome Carrier - Sand  — 133001b 1000x666 sha=751945d4fd12
+  ... 25/53  ok=23 fail=2
+  + GSG 16 .22 LR 22-Round Magazine 2-Pack - $39.99 — 64230b 1251x1165 sha=119fd3bdaa0f
+  + ATI AR-15 18" 6mm ARC 1:7.5 Black Nitride Barrel — 20551b 909x594 sha=1fdd44662bbc
+  + Beretta 500 Years Hoodie Camo Logo Black / White — 82909b 671x773 sha=38dc3d0f538f
+  + Sprinco M4 Blue Enhanced Power Buffer Spring - $ — 198401b 1001x327 sha=5eb050f94fc2
+  + Glock V-Series Model 19x Handgun 9mm 17rd 3 Mags — 17644b 797x605 sha=0f3ae20f5965
+  + Timber Creek Outdoors Enforcer Charging Handle O — 195597b 1081x736 sha=40708f43bba4
+  + Sig Sauer P365 Micro-Compact 9mm 3" 10rd Optic R — 90428b 470x358 sha=76963415eb93
+  + Kimber Mountain Ascent Mojave 300 Win Mag 26" 4r — 292520b 1500x433 sha=90f3de7a1d68
+  + Gforce Arms GF25 12 Gauge Semi-Auto 3" 5+1 20" F — 16576b 800x254 sha=54cbbf441e47
+  + Taurus TX9 TORO 9mm 45" 17rd Optic Ready Pistol, — 125691b 606x430 sha=630cad9a855c
+  + Beretta M9A1 9mm 4.9" Barrel 15 Rd Capacity - $6 — 123917b 573x388 sha=804b372f1ded
+  + Sauer & Sohn 100 6.5 PRC 24" 4+1 Rds Rifle, Dril — 46332b 731x232 sha=02f637f26d5f
+  + Sauer & Sohn Sauer 100 Pantera 308 Win 20" 5rd R — 48790b 640x133 sha=10683ba6f80b
+  + IWI 7.62 Direct Thread Suppressor - $579 — 87176b 652x435 sha=f6089502e4fa
+  + KelTec SUB-SDP 9mm 6" 27rd Black Pistol - $559.9 — 125116b 671x410 sha=b37776ee5e36
+  + MIMTAC Drastic AR-15 9mm PCC Drop-In Single Stag — 89790b 1000x666 sha=a54d60f4a4db
+  + Mimtac Drastic AR-15 9mm PCC Drop-In Single Stag — 113111b 1000x666 sha=890f5c2199c4
+  + Blackhawk Tac Gear Bargain Bin up to 90% off! @F — 73110b 591x565 sha=c67dff5dc10b
+  + Arken Optics SH4J 6-24X50 Rifle Scope FFP MIL VH — 18582b 500x500 sha=f95dd5031dc5
+  + Huxwrx Flow 45 M Multi-Caliber Suppressor W/ Boo — 142440b 780x779 sha=3d0ed2aa23f6
+  + Case Club 2 Rifle (or Shotgun) Case Waterproof,  — 36335b 500x432 sha=d3911e07012c
+  + Sig Sauer XSERIES .45 ACP 4.3" barrel 8rd Black  — 39898b 800x586 sha=7b74f6fc3dd3
+  + Staccato 2011 HD C4X Carry Comp Pistol OR 9mm 4" — 40648b 1000x750 sha=e0a13f9c050f
   x JK Armament 9K Pro-Kor 9mm 1.72" Armor Black Tit — image not downloadable
-  + Jk Armament PRO-KOR 5.56mm Black Stainless Steel — 17057b 249x724 sha=a00568ffae61
-  + AR15 Custom Upper 20" 556 MLOK Handguard - $249. — 12224b 842x191 sha=439caa90da68
-  + Anderson AR308 15" M-LOK Free Float Handguard Fu — 10056b 466x130 sha=61920f3a800e
-  + Smith & Wesson M&P Shield X 9mm Bundle 4- Mags & — 55180b 601x547 sha=d79e16adc710
-  + SIG SAUER TANGO-MSR LPVO 1-10x28mm Rifle Scope,  — 36826b 826x347 sha=06cef94e01ad
   x Maxim Defense Industries Quantum 22K .22 LR Supp — image not downloadable
   x NBS AR-15 Dust Cover / Port Door Kit - AR15-Dust — image not downloadable
   x Criterion Barrels CORE .223 Wylde 13.9in 1-8 Tap — image not downloadable
   x B&T Print-X Tiger Ti, .22lr, FDE Suppressor - $2 — rejected: too small (149x495)
-  x Barrett M82A1 50BMG 29" Barrel 10+1 - $7999 — image not downloadable
-  x Triton Recon45 Ultra-Compact Digital NV 1-6x LPV — unreachable after retries
 
-fixed 19, failed 7  (73% success)
-distinct images: 19 across 19 deals
+fixed 46, failed 7  (86% success)
+distinct images: 46 across 46 deals
 PASS — no image shared between products
