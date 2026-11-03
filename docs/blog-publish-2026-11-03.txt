@@ -4,30 +4,33 @@
     "status": "skipped: no real image",
     "tried": [
       {
-        "page": "https://readygunner.com/q-mini-fix-300-blackout-bolt-action-pistol-8-threaded-barrel-folding-brace-gray/",
+        "page": "https://www.gunmade.com/guns/rifles/q/mini-fix/",
+        "http": 429,
+        "bytes": 1952
+      },
+      {
+        "page": "https://www.classicfirearms.com/q-llc-minifix300blk8pst-mini-fix-301-8",
         "http": 200,
-        "bytes": 201958,
-        "candidates": 3,
-        "rejected": [
-          "https://cdn11.bigcommerce.com/s-qjds8kwncc/products/400/images/1210/q-mini-fix-300-blackout-bolt-action-pistol-gray-outside__93957.1781738510.386.513.jpg?c=1 (size)",
-          "https://cdn11.bigcommerce.com/s-qjds8kwncc/images/stencil/1280x1280/products/400/1210/q-mini-fix-300-blackout-bolt-action-pistol-gray-outside__93957.1781738510.jpg?c=1 (qr/graphic)"
-        ]
+        "bytes": 313163,
+        "candidates": 2,
+        "rejected": []
       },
       {
-        "page": "https://cityarsenal.com/product/q-mini-fix-bolt-action-300-blackout-pistol-8-cherry-bomb-muzzle-brake-side-folding-q-pistol-brace-gray-minifix-300-8in-pstl",
-        "http": 404,
-        "bytes": 195583
+        "page": "https://www.eurooptic.com/q-llc-mini-fix-300-blk-8-1-5-bbl-pistol-w-brace-minifix-300blk-8in-pistol",
+        "http": 429,
+        "bytes": 20768
       },
       {
-        "page": "https://www.sportsmansoutdoorsuperstore.com/products2.cfm/ID/312324/minifix300blk8inpistol/q-mini-fix-300-blackout-bolt-action-pistol-with-sba3-brace",
+        "page": "https://armsagora.com/q-llc-mini-fix-300-blackout-pistol-8-bolt-action-grey-850000857377",
         "http": 403,
-        "bytes": 6221
+        "bytes": 5975
       },
       {
-        "page": "https://gritrsports.com/q-mini-fix-300-blackout-black-pistol-minifix300blk8pst",
+        "page": "https://www.rainierarms.com/q-llc-mini-fix-300blk-bolt-action-pistol-8/",
         "http": 403,
-        "bytes": 5940
+        "bytes": 5911
       }
-    ]
+    ],
+    "pulledToDraft": true
   }
 ]
