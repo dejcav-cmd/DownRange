@@ -1,6 +1,9 @@
 name: Validate Sanity CDN
 
 on:
+  push:
+    branches: [perf/sanity-cdn-cache]
+    paths: ['scripts/validate-sanity-cdn.mjs', '.github/workflows/validate-sanity-cdn.yml']
   workflow_dispatch:
     inputs:
       tag:
@@ -28,7 +31,7 @@ jobs:
       - name: Read back result
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
-          TAG: ${{ inputs.tag }}
+          TAG: ${{ inputs.tag || github.run_id }}
         run: |
           cat err.txt >> result.txt
           python3 scripts/publish_result.py result.txt docs/sanity-cdn-validation-$TAG.txt
