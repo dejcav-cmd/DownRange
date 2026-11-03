@@ -1,36 +1,19 @@
 [
   {
     "slug": "300-blackout-bolt-action-pistol-guide-2026",
-    "status": "skipped: no real image",
+    "status": "published",
     "tried": [
       {
-        "page": "https://www.gunmade.com/guns/rifles/q/mini-fix/",
-        "http": 429,
-        "bytes": 1952
-      },
-      {
-        "page": "https://www.classicfirearms.com/q-llc-minifix300blk8pst-mini-fix-301-8",
+        "page": "https://liveqordie.com/mini-fix-pistol/",
         "http": 200,
-        "bytes": 313163,
+        "bytes": 400851,
         "candidates": 2,
         "rejected": []
-      },
-      {
-        "page": "https://www.eurooptic.com/q-llc-mini-fix-300-blk-8-1-5-bbl-pistol-w-brace-minifix-300blk-8in-pistol",
-        "http": 429,
-        "bytes": 20768
-      },
-      {
-        "page": "https://armsagora.com/q-llc-mini-fix-300-blackout-pistol-8-bolt-action-grey-850000857377",
-        "http": 403,
-        "bytes": 5975
-      },
-      {
-        "page": "https://www.rainierarms.com/q-llc-mini-fix-300blk-bolt-action-pistol-8/",
-        "http": 403,
-        "bytes": 5911
       }
     ],
-    "pulledToDraft": true
+    "imageSource": "https://liveqordie.com/mini-fix-pistol/",
+    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/dd530f9e6c2d69727986e8ccecda931a53207781-1920x1920.webp",
+    "bodyImages": 1,
+    "url": "https://www.downrangeco.com/blog/300-blackout-bolt-action-pistol-guide-2026"
   }
 ]
