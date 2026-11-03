@@ -4,7 +4,7 @@ import fs from 'fs'
 import { createClient } from '@sanity/client'
 
 fs.copyFileSync('lib/pressImages.js', 'scripts/.pressImages.mjs')
-const { collectImages, weaveImages } = await import('./.pressImages.mjs')
+const { collectImages, weaveImages, extractImageCandidates } = await import('./.pressImages.mjs')
 const { ARTICLES } = await import('./blog-2026-11-03-articles.mjs')
 
 const token = String(process.env.SANITY_API_TOKEN || '').replace(/^ST=/, '').trim()
@@ -25,7 +25,9 @@ for (const a of ARTICLES) {
         r.tried.push({ page, http: res.status, bytes: html.length })
         if (!res.ok) continue
         if (DRY) { got = { hero: { url: 'dry-run' }, body: [] }; break }
-        const img = await collectImages(sanity, html, page, { brand: a.brand, label: a.slug, max: 3, selfId: 'blog-' + a.slug })
+        const pg = { body: html, finalUrl: res.url || page, mode: 'html' }
+        r.tried[r.tried.length - 1].candidates = extractImageCandidates(pg, page).length
+        const img = await collectImages(sanity, pg, page, { brand: a.brand, label: a.slug, max: 3, selfId: 'blog-' + a.slug })
         r.tried[r.tried.length - 1].rejected = (img.rejected || []).slice(0, 6)
         if (img.hero) { got = img; r.imageSource = page; break }
       } catch (e) { r.tried.push({ page, error: String(e.message || e).slice(0, 120) }) }
