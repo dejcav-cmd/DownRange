@@ -1,0 +1,16 @@
+PASS newsArticle     api=3167 cdn=3167 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS blogPost        api=59 cdn=59 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS stateProfile    api=50 cdn=50 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS review          api=3 cdn=3 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS legislation     api=432 cdn=432 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS firearmRelease  api=35 cdn=35 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS video           api=927 cdn=927 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS globalStats     api=0 cdn=0 missingInCdn=0 extraInCdn=0 staleInCdn=0
+PASS breakingAlert   api=643 cdn=643 missingInCdn=0 extraInCdn=0 staleInCdn=0
+EXPOSURE newsletterSubscriber   tokenless-visible=3 actual=3 <-- PUBLICLY READABLE
+EXPOSURE cronRun                tokenless-visible=3862 actual=3862 <-- PUBLICLY READABLE
+EXPOSURE subscriber             tokenless-visible=0 actual=0 
+EXPOSURE user                   tokenless-visible=0 actual=0 
+EXPOSURE order                  tokenless-visible=0 actual=0 
+FAIL latest-3 via CDN: []
+RESULT: ALL PASS
