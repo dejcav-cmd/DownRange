@@ -33,7 +33,12 @@ for (const a of ARTICLES.filter(x => !ONLY.length || ONLY.includes(x.slug))) {
         if (img.hero) { got = img; r.imageSource = page; break }
       } catch (e) { r.tried.push({ page, error: String(e.message || e).slice(0, 120) }) }
     }
-    if (!got) { r.status = 'skipped: no real image'; out.push(r); continue }
+    if (!got) {
+      r.status = 'skipped: no real image'
+      // A previously published copy may carry a bad (promo/badge) hero: pull it back to draft until fixed.
+      if (!DRY) { try { await sanity.patch('blog-' + a.slug).set({ status: 'draft' }).commit(); r.pulledToDraft = true } catch {} }
+      out.push(r); continue
+    }
 
     // Body images from third-party pages proved unreliable (related-post promos, repeats): hero only.
     const body = DRY ? a.body : weaveImages(a.body, [], a.brand)
