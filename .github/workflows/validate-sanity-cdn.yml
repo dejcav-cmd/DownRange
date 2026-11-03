@@ -1,0 +1,37 @@
+name: Validate Sanity CDN
+
+on:
+  push:
+    branches: [perf/sanity-cdn-cache]
+    paths: ['scripts/validate-sanity-cdn.mjs', '.github/workflows/validate-sanity-cdn.yml']
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: 'label for the result file'
+        required: false
+        default: 'run1'
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Install client
+        run: npm install --no-save --legacy-peer-deps @sanity/client@^6.0.0
+      - name: Validate
+        env:
+          SANITY_API_TOKEN: ${{ secrets.SANITY_TOKEN }}
+        run: node scripts/validate-sanity-cdn.mjs > result.txt 2> err.txt || echo "script exited nonzero" >> err.txt
+      - name: Read back result
+        env:
+          GH_PAT: ${{ secrets.GH_PAT }}
+          TAG: ${{ inputs.tag || github.run_id }}
+        run: |
+          cat err.txt >> result.txt
+          python3 scripts/publish_result.py result.txt docs/sanity-cdn-validation-$TAG.txt
