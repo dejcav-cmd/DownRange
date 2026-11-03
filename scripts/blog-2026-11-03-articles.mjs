@@ -260,8 +260,11 @@ const extar = {
   excerpt: 'Extar revealed a roller-delayed EP9 MDB in 9mm and an EP45 MDB in .45 ACP. No price or ship date yet. Here is what is confirmed and what is not.',
   tags: ['Extar', 'EP9 MDB', 'EP45 MDB', 'roller-delayed', 'pistol caliber carbine', 'GunCon 2026'],
   imagePages: [
-    'https://www.downrangeco.com/news/modern-delayed-blowback-the-new-extar-ep9-mdb-25f5df',
+    'https://www.thefirearmblog.com/blog/modern-delayed-blowback-the-new-extar-ep9-mdb-44829253',
+    'https://www.rifleconfigurator.com/articles/extar-ep9-mdb-roller-delayed-launch',
+    'https://www.usa-gun-shop.com/extar-mdb-roller-delayed-ep9-ep45/',
     'https://gunsgearhq.com/extar-ep9-mdb-ep45-roller-delayed-launch/',
+    'https://www.downrangeco.com/news/modern-delayed-blowback-the-new-extar-ep9-mdb-25f5df',
   ],
   brand: 'Extar',
   body: `

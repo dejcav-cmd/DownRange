@@ -34,7 +34,8 @@ for (const a of ARTICLES) {
     }
     if (!got) { r.status = 'skipped: no real image'; out.push(r); continue }
 
-    const body = DRY ? a.body : weaveImages(a.body, got.body, a.brand)
+    // Body images from third-party pages proved unreliable (related-post promos, repeats): hero only.
+    const body = DRY ? a.body : weaveImages(a.body, [], a.brand)
     const doc = {
       _id: 'blog-' + a.slug,
       _type: 'blogPost',
