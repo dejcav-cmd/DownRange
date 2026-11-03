@@ -312,13 +312,13 @@ const bolt = {
   excerpt: 'A bolt-action .300 Blackout pistol is a niche suppressor host. We break down how the Q Mini Fix is configured, its $3,600 price and the legal basics.',
   tags: ['300 Blackout', 'bolt action pistol', 'Q Mini Fix', 'suppressor host', 'NFA'],
   imagePages: [
-    'https://www.gunmade.com/guns/rifles/q/mini-fix/',
-    'https://www.classicfirearms.com/q-llc-minifix300blk8pst-mini-fix-301-8',
-    'https://www.eurooptic.com/q-llc-mini-fix-300-blk-8-1-5-bbl-pistol-w-brace-minifix-300blk-8in-pistol',
-    'https://armsagora.com/q-llc-mini-fix-300-blackout-pistol-8-bolt-action-grey-850000857377',
-    'https://www.rainierarms.com/q-llc-mini-fix-300blk-bolt-action-pistol-8/',
+    'https://liveqordie.com/mini-fix-pistol/',
+    'https://www.alloutdoor.com/2021/02/17/q-mini-fix/',
+    'https://palmettostatearmory.com/q-llc-mini-fix-300-blackout-bolt-action-rifle-minifix300blk8pst.html',
+    'https://www.sportsmansoutdoorsuperstore.com/products2.cfm/ID/312324/minifix300blk8inpistol/q-mini-fix-300-blackout-bolt-action-pistol-with-sba3-brace',
+    'https://therangeaustin.com/shop1/q-llc-mini-fix-bolt-action-pistol-w-brace-8-300-blackout/',
   ],
-  brand: 'Q',
+  brand: 'Q LLC',
   body: `
 <p><strong>A bolt-action .300 Blackout pistol is a small, quiet, slow-firing handgun built around a suppressor.</strong> The best-known example is the Q Mini Fix. People search for it because it solves a narrow problem: a short, light, accurate platform that runs subsonic ammunition without gas-system noise.</p>
 
