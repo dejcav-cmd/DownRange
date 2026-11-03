@@ -20,23 +20,27 @@
   },
   {
     "slug": "extar-ep9-mdb-roller-delayed-what-we-know-2026",
-    "status": "skipped: no real image",
+    "status": "published",
     "tried": [
       {
-        "page": "https://www.downrangeco.com/news/modern-delayed-blowback-the-new-extar-ep9-mdb-25f5df",
+        "page": "https://www.thefirearmblog.com/blog/modern-delayed-blowback-the-new-extar-ep9-mdb-44829253",
         "http": 200,
-        "bytes": 103643,
+        "bytes": 197209,
         "candidates": 1,
         "rejected": []
       },
       {
-        "page": "https://gunsgearhq.com/extar-ep9-mdb-ep45-roller-delayed-launch/",
+        "page": "https://www.rifleconfigurator.com/articles/extar-ep9-mdb-roller-delayed-launch",
         "http": 200,
-        "bytes": 31668,
-        "candidates": 1,
+        "bytes": 270561,
+        "candidates": 6,
         "rejected": []
       }
-    ]
+    ],
+    "imageSource": "https://www.rifleconfigurator.com/articles/extar-ep9-mdb-roller-delayed-launch",
+    "hero": "https://cdn.sanity.io/images/vbnsqnkg/production/246b88126c671c35b5f470344c7424b5d6ad2ccc-1200x630.jpg",
+    "bodyImages": 2,
+    "url": "https://www.downrangeco.com/blog/extar-ep9-mdb-roller-delayed-what-we-know-2026"
   },
   {
     "slug": "parish-optics-poths-thermal-scope-specs-price-2026",
