@@ -1,103 +1,54 @@
-[
-  {
-    "slug": "300-blackout-bolt-action-pistol-guide-2026",
-    "status": "skipped: no real image",
-    "tried": [
-      {
-        "page": "https://www.primaryarms.com/q-mini-fix-bolt-action-300-blackout-pistol-w-brace-8in-black",
-        "http": 200,
-        "bytes": 9373,
-        "rejected": []
-      },
-      {
-        "page": "https://rainierarms.com/q-llc-mini-fix-300blk-bolt-action-pistol-w-brace-8",
-        "http": 403,
-        "bytes": 5928
-      }
-    ]
-  },
-  {
-    "slug": "extar-ep9-mdb-roller-delayed-what-we-know-2026",
-    "status": "skipped: no real image",
-    "tried": [
-      {
-        "page": "https://www.downrangeco.com/news/modern-delayed-blowback-the-new-extar-ep9-mdb-25f5df",
-        "http": 200,
-        "bytes": 103643,
-        "rejected": []
-      },
-      {
-        "page": "https://gunsgearhq.com/extar-ep9-mdb-ep45-roller-delayed-launch/",
-        "http": 200,
-        "bytes": 31668,
-        "rejected": []
-      }
-    ]
-  },
-  {
-    "slug": "parish-optics-poths-thermal-scope-specs-price-2026",
-    "status": "skipped: no real image",
-    "tried": [
-      {
-        "page": "https://potnvg.com/product/nightvisionthermal/poths-parish-optics-hunting-scope/",
-        "http": 202,
-        "bytes": 237,
-        "rejected": []
-      }
-    ]
-  },
-  {
-    "slug": "sig-mcx-ltaw-price-specs-release-2026",
-    "status": "skipped: no real image",
-    "tried": [
-      {
-        "page": "https://soldiersystems.net/2026/09/30/sig-sauer-ltaw/",
-        "http": 200,
-        "bytes": 63094,
-        "rejected": []
-      },
-      {
-        "page": "https://www.pewpewtactical.com/new-product-highlight-sig-sauer-mxc-ltaw/",
-        "http": 200,
-        "bytes": 568140,
-        "rejected": []
-      }
-    ]
-  },
-  {
-    "slug": "suppressed-mp7-sbr-what-you-can-buy-2026",
-    "status": "skipped: no real image",
-    "tried": [
-      {
-        "page": "https://www.downrangeco.com/news/potd-the-civilian-mp7-has-arrived-meet-uo-arms-nt7-sbr-6f3b94",
-        "http": 200,
-        "bytes": 102484,
-        "rejected": []
-      },
-      {
-        "page": "https://www.rifleconfigurator.com/articles/uo-arms-nt7-mp7-clone",
-        "http": 200,
-        "bytes": 270982,
-        "rejected": []
-      }
-    ]
-  },
-  {
-    "slug": "election-day-2026-second-amendment-state-by-state",
-    "status": "skipped: no real image",
-    "tried": [
-      {
-        "page": "https://en.wikipedia.org/wiki/File:Voters_in_Londonderry_during_the_2022_midterms.jpg",
-        "http": 200,
-        "bytes": 112616,
-        "rejected": []
-      },
-      {
-        "page": "https://en.wikipedia.org/wiki/File:Early_voting_at_New_Orleans_Arena,_October_2020_25.jpg",
-        "http": 200,
-        "bytes": 119061,
-        "rejected": []
-      }
-    ]
-  }
-]
+{
+  "tokenLength": 180,
+  "articles": [
+    {
+      "slug": "300-blackout-bolt-action-pistol-guide-2026",
+      "page": "https://www.primaryarms.com/q-mini-fix-bolt-action-300-blackout-pistol-w-brace-8in-black",
+      "http": 200,
+      "bytes": 79442,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    {
+      "slug": "extar-ep9-mdb-roller-delayed-what-we-know-2026",
+      "page": "https://www.downrangeco.com/news/modern-delayed-blowback-the-new-extar-ep9-mdb-25f5df",
+      "http": 200,
+      "bytes": 103643,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    {
+      "slug": "parish-optics-poths-thermal-scope-specs-price-2026",
+      "page": "https://potnvg.com/product/nightvisionthermal/poths-parish-optics-hunting-scope/",
+      "http": 200,
+      "bytes": 195915,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    {
+      "slug": "sig-mcx-ltaw-price-specs-release-2026",
+      "page": "https://soldiersystems.net/2026/09/30/sig-sauer-ltaw/",
+      "http": 200,
+      "bytes": 63094,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    {
+      "slug": "suppressed-mp7-sbr-what-you-can-buy-2026",
+      "page": "https://www.downrangeco.com/news/potd-the-civilian-mp7-has-arrived-meet-uo-arms-nt7-sbr-6f3b94",
+      "http": 200,
+      "bytes": 102484,
+      "candidateCount": 0,
+      "candidates": []
+    },
+    {
+      "slug": "election-day-2026-second-amendment-state-by-state",
+      "page": "https://en.wikipedia.org/wiki/File:Voters_in_Londonderry_during_the_2022_midterms.jpg",
+      "http": 200,
+      "bytes": 112616,
+      "candidateCount": 0,
+      "candidates": []
+    }
+  ],
+  "canQuery": 53
+}
