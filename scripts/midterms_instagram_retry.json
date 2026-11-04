@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "body": {
+    "ok": true,
+    "posted": 1,
+    "total": 1,
+    "results": [
+      {
+        "platform": "instagram",
+        "title": "2026 Midterms: What the Results Mean for Gun Owners, State by State",
+        "status": "posted",
+        "postUrl": "https://www.instagram.com/p/DfUsr3cjX6z/",
+        "hasImage": true,
+        "docId": "AlVcwo0KoBglbRM1laBhll"
+      }
+    ],
+    "dryRun": false
+  }
+}
