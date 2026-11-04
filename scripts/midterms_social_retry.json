@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "body": {
+    "ok": true,
+    "posted": 1,
+    "total": 1,
+    "results": [
+      {
+        "platform": "bluesky",
+        "title": "2026 Midterms: What the Results Mean for Gun Owners, State by State",
+        "status": "posted",
+        "postUrl": "https://bsky.app/profile/did:plc:foglakvv2bev6skq6uzecqrl/post/3mzilqtocto22",
+        "hasImage": false,
+        "docId": "AlVcwo0KoBglbRM1laCy6r"
+      }
+    ],
+    "dryRun": false
+  }
+}
