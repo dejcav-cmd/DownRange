@@ -1,47 +1,7 @@
-600 scanned, 47 need a real image, 9 coupon posts skipped
+600 scanned, 8 need a real image, 9 coupon posts skipped
 
-  + Rogers Super-Stoc Mil-Spec Lower Build Kit - $75 — 51190b 1000x666 sha=7c873d34971b
-  + Tisas 1911 Government .45 ACP 5" Barrel 7-Rds -  — 22011b 600x449 sha=844a7d667fa7
-  + Springfield Saint Edge 5.56mm 30rd SBR, 11.5" Ba — 108702b 960x360 sha=f9cfa9bb0592
-  + Bad Attitude Department Low-Key Pictogram AR-15  — 140526b 1000x666 sha=3c165a2ed4f1
-  + Aimpoint Acro P-2 3.5MOA Polymer Battery Cap - $ — 96791b 400x400 sha=7a4b43624ec5
-  + Bad Attitude Department M16A2 AR-15 Stripped Low — 143451b 1000x666 sha=69df1e12d643
-  + Bad Attitude Department Low-Key Text AR-15 Lower — 381268b 1000x666 sha=f499d5d7f8e4
-  + Sig Sauer MCX SBR, .300 Blackout, 9.00" Barrel - — 167260b 892x487 sha=20f6a2c0c707
-  + FAB Defense Top Mounted Deployable Front Sight,  — 133521b 499x401 sha=22afc1a0873a
-  + Trybe Defense Magnesium Alloy Go Fast Ultra Ligh — 258803b 880x495 sha=8a647960fbeb
-  + FAB Defense Top Mounted Deployable Rear Sight Bl — 168423b 880x495 sha=d0618cc64677
-  + Elite Tactical Systems Pistol Magazine, Smith &  — 173432b 880x495 sha=92fd3f37e64b
-  + FAB Defense Tactical Folding Grip, OD Green - $3 — 37267b 281x253 sha=e1bcd17933a8
-  + Bad Attitude Department AR-15 Ambi Widemouth Low — 111016b 1000x666 sha=ae4141077951
-  + NICGID Sling Bag Chest Shoulder Backpack Crossbo — 261793b 977x1500 sha=f250c9acbb8d
-  + 12.5" 5.56 M4 Profile Carbine Length AR 15 Barre — 42286b 1175x336 sha=ce693618febd
-  + Browning X- Bolt Max Long Range 300 Win Mag 26"  — 13313b 1000x163 sha=96f6ddec8345
-  + SureFire SF Ryder 22-S, .22LR/.17HMR/.22MAG, 5.4 — 104768b 620x384 sha=95fd75673b19
-  + FAB Defense 10 Position Adjustable Tactical Ligh — 213894b 554x465 sha=f2cfc6c9b4c1
-  + ATI Alpha Maxx 5.56 NATO 60+1rd 7.5" Barrel Blac — 29167b 1000x519 sha=bb9a326ab5bf
-  x Lyman Sonicore Paradox Modular Direct Thread, .2 — rejected: extreme portrait (212x758)
-  + FAB Defense Quick Release 3/4in Flashlight and L — 135078b 542x386 sha=a5685339bbe9
-  + Geissele Automatics Border Patrol Center Tab MK2 — 57325b 955x615 sha=3031b5a00791
-  + 24-Hour AMMO Flash Sale 10% Off Regular Prices — 276885b 967x921 sha=eb11c470c949
-  + Aero Precision Ultralight 1" Scope Mount SPR - A — 121354b 829x454 sha=06b3fcd91cfb
-  ... 25/47  ok=24 fail=1
-  + Ruger Vaquero 45 Colt (LC) 5.5" Bbl 6RD Revolver — 152270b 846x479 sha=df954e516d3d
-  + Glock 19 Gen6 9mm 15+1 Rds 4.02" Threaded Barrel — 28052b 1000x646 sha=9a21e8538d0e
-  + Glock 19X V 9mm 4.02" Barrel 17rd Pistol, 3 Maga — 108421b 546x398 sha=514cd69c7a35
-  + MNGARISTA 2-Pack Retractable Keychain, Heavy Dut — 26180b 500x500 sha=058679e7c0b3
-  + Glock 19 Gen 6 COA 9mm 4" 10rd Semi-Auto Pistol, — 189417b 718x554 sha=fe3dc6b85ed2
-  + Glock 45 G6 9mm COA FS 9mm 4" 17rd Pistol, Serra — 123416b 595x489 sha=071c2e35d7e8
-  + FAB Defense FX-GLCOREMAGT GL Core Mag Stock Tan  — 52154b 1000x776 sha=075663e96b63
-  + Glock 45 Gen 6 MOS 9mm 4.02" Barrel 17-Rounds -  — 55876b 746x656 sha=97b9f0faf823
-  + Glock 19 Gen 6 9mm 4.02" Barrel 15-Rounds w/Aimp — 43246b 656x535 sha=6d904e13a93e
-  + RETAY MASAI MARA 20 Gauge 3" 28" 4rd Semi-Auto S — 33688b 1500x315 sha=453ba3a3d006
-  + 1873 Cattleman 45 Colt Single-Action Revolver 6- — 22039b 871x448 sha=355f4ad979ab
-  + Speer LE - 223 Rem - 55 Grain Gold Dot SP - 500  — 38631b 867x515 sha=7a95aea15122
-  + Kel-Tec P17 22 LR 16+1 Rds 3.80" w/Optic & Holst — 52983b 1000x846 sha=6acd5b4c8549
-  + Heritage Firearms Roscoe Blued .38 SPL 2" Barrel — 22980b 521x359 sha=f299c5880ba0
-  + ProMag Canik TP9 Magazine 9mm 32-Rounds Blued St — 9905b 218x592 sha=417bb7338786
-  + Walther PDP Magazine 9mm 10-Rounds for Full-Size — 38240b 443x1000 sha=ed9a77b3c489
+  + Savage Arms Axis XP .308 Win 20" Barrel 4-Rounds — 13379b 783x180 sha=1767d0572479
+  + Federal American Eagle 9mm 124 Grain FMJ 1000 Rn — 475438b 1500x889 sha=5fe26071def6
   x Savage Arms Model 110 TRAILBLAZER LH 5.56x45 NAT — image not downloadable
   x Browning X-Bolt 2 Hunter Composite .30-06 Spring — image not downloadable
   x JK Armament 9K Pro-Kor 9mm 1.72" Armor Black Tit — image not downloadable
@@ -49,6 +9,6 @@
   x NBS AR-15 Dust Cover / Port Door Kit - AR15-Dust — image not downloadable
   x Criterion Barrels CORE .223 Wylde 13.9in 1-8 Tap — image not downloadable
 
-fixed 40, failed 7  (85% success)
-distinct images: 40 across 40 deals
+fixed 2, failed 6  (25% success)
+distinct images: 2 across 2 deals
 PASS — no image shared between products
