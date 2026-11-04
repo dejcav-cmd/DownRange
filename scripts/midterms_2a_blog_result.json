@@ -1,0 +1,49 @@
+{
+  "ok": true,
+  "steps": [
+    {
+      "hero": "File:US Capitol east side.JPG",
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/1870e0f68465ba17b2895ef46c6aa5f816a7a435-4515x2397.jpg",
+      "dims": [
+        4515,
+        2397
+      ],
+      "license": "CC BY-SA 3.0"
+    },
+    {
+      "body_images": [
+        "File:Example voting booth.jpg",
+        "File:Example voting booth from USA (Connecticut).jpg",
+        "File:UK Polling Booth 2011.JPG"
+      ]
+    },
+    {
+      "mutate": {
+        "transactionId": "AlVcwo0KoBglbRM1lZxwsP",
+        "results": [
+          {
+            "operation": "create"
+          }
+        ]
+      }
+    }
+  ],
+  "verify": {
+    "_id": "blog-midterms-2026-second-amendment",
+    "bodyImgs": 3,
+    "category": "LAW",
+    "heroAsset": "image-1870e0f68465ba17b2895ef46c6aa5f816a7a435-4515x2397-jpg",
+    "imageAlt": "U.S. Capitol east front, Washington, D.C.",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/1870e0f68465ba17b2895ef46c6aa5f816a7a435-4515x2397.jpg",
+    "publishedAt": "2026-11-04T14:20:22Z",
+    "readTime": 21,
+    "slug": "midterms-2a-outlook-by-state-2026",
+    "socialScheduleAt": "2026-11-04T14:32:22Z",
+    "socialScheduleDone": false,
+    "status": "published",
+    "title": "2026 Midterms: What the Results Mean for Gun Owners, State by State"
+  },
+  "blog_url": "https://www.downrangeco.com/blog/midterms-2a-outlook-by-state-2026",
+  "words": 4074,
+  "debug": []
+}
