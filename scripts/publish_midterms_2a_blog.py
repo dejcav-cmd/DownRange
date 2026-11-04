@@ -46,7 +46,9 @@ HERO_TITLES = ["File:US Capitol east side.JPG", "File:United States Capitol - we
 BODY_SEARCHES = ["polling place voters", "voting booth", "ballot box election", "voters line election day", "state capitol building"]
 BODY_OK = re.compile(r"poll|voting|voter|ballot|election|capitol", re.I)
 BODY_BAD = re.compile(r"logo|icon|diagram|drawing|svg|map|flag|poster|cartoon|protest|riot|rally|campaign|"
-                      r"portrait|official|trump|biden|harris|obama|clinton|candidate|crowd|police|shoot", re.I)
+                      r"portrait|official|trump|biden|harris|obama|clinton|candidate|crowd|police|shoot|"
+                      r"\bUK\b|britain|british|england|scotland|wales|london|german|france|french|canad|india|japan|russia|"
+                      r"australia|mexico|brazil|africa|korea|hong kong|taiwan|iraq|afghan|ukrain|example", re.I)
 
 SOCIAL_COPY = {
     "twitter": "Democrats won Congress and flipped TX & GA. Gun owners, here is all 50 states:",
