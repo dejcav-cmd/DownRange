@@ -1,0 +1,39 @@
+name: Retry Midterms Instagram
+
+on:
+  push:
+    paths:
+      - '.github/workflows/retry-midterms-instagram.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Retry Instagram post
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        working-directory: scripts
+        run: python3 retry_midterms_instagram.py > publish_output.log 2>&1 || true
+
+      - name: Show log
+        working-directory: scripts
+        run: cat publish_output.log
+
+      - name: Report result back via Contents API
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          RESULT_FILE: midterms_instagram_retry.json
+        working-directory: scripts
+        run: python3 report_midterms_2a_result.py
