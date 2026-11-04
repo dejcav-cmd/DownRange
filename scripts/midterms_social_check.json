@@ -1,0 +1,21 @@
+{
+  "post": {
+    "socialScheduleAt": "2026-11-04T14:35:04Z",
+    "socialScheduleDone": false,
+    "socialScheduleStartedAt": null,
+    "status": "published"
+  },
+  "social": [],
+  "live": {
+    "status": 200,
+    "has_title": true,
+    "has_canonical": true,
+    "has_jsonld": true,
+    "has_hero": true,
+    "len": 243463
+  },
+  "sitemap": {
+    "status": 200,
+    "contains_slug": true
+  }
+}
