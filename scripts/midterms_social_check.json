@@ -1,18 +1,37 @@
 {
   "post": {
     "socialScheduleAt": "2026-11-04T14:35:04Z",
-    "socialScheduleDone": false,
-    "socialScheduleStartedAt": null,
+    "socialScheduleDone": true,
+    "socialScheduleStartedAt": "2026-11-04T14:35:30.817Z",
     "status": "published"
   },
-  "social": [],
+  "social": [
+    {
+      "content": "Election results are in, and the Second Amendment map looks different this morning. Democrats won Congress and flipped governors in Texas, Georgia, Nevada, Ohio and Iowa. Massachusetts voters kept their 2024 gun law, while Arkansas approved a stronger arms-rights amendment with roughly 70%. We built a state-by-state outlook for all 50 states and D.C., with every uncalled race marked as uncalled and every source linked. Where does your state land?\n\nFull article: https://downrangeco.com/blog/midterms-2a-outlook-by-state-2026?utm_source=facebook&utm_medium=social&utm_campaign=blog_law\n#2A #SecondAmendment #DownRange #2ANews",
+      "error": null,
+      "hasImage": true,
+      "platform": "facebook",
+      "postUrl": "https://www.facebook.com/photo?fbid=122145430503341798",
+      "postedAt": "2026-11-04T14:35:37.436Z",
+      "status": "posted"
+    },
+    {
+      "content": "Congress flipped. Texas and Georgia got new governors. Two gun ballot measures passed with roughly 70% each, in opposite directions. Here is what the 2026 midterms mean for gun owners in all 50 states and D.C., with uncalled races marked and sources linked.\n\n\ud83d\udcd6 Full story \u2014 link in bio",
+      "error": null,
+      "hasImage": null,
+      "platform": "instagram",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "scheduled"
+    }
+  ],
   "live": {
     "status": 200,
     "has_title": true,
     "has_canonical": true,
     "has_jsonld": true,
     "has_hero": true,
-    "len": 243463
+    "len": 243419
   },
   "sitemap": {
     "status": 200,
