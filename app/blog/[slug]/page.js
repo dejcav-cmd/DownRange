@@ -222,19 +222,26 @@ export default async function BlogArticlePage({ params }) {
           font-size: 0.7rem;
           top: 0.6rem;
         }
+        @media (max-width: 640px) {
+          .blog-hero { min-height: 0 !important; }
+          .blog-hero-shade { background: linear-gradient(0deg, rgba(9,9,11,0.97) 0%, rgba(9,9,11,0.82) 55%, rgba(9,9,11,0.55) 100%) !important; }
+          .blog-hero-text > div { padding: 5rem 1.1rem 1.5rem !important; }
+          .blog-hero-text h1 { font-size: 1.9rem !important; margin-bottom: 12px !important; }
+          .blog-hero-sub, .blog-hero-tags { display: none !important; }
+        }
         .related-card:hover { border-color: var(--gold) !important; }
         .related-card { transition: border-color 0.2s; }
       ` }} />
 
       {/* ── HERO ── */}
-      <div style={{ width:'100%', height:'clamp(320px, 50vw, 580px)', position:'relative', overflow:'hidden' }}>
+      <div className="blog-hero" style={{ width:'100%', minHeight:'clamp(320px, 50vw, 580px)', position:'relative', overflow:'hidden', display:'flex', alignItems:'flex-end' }}>
         <img src={post.img} alt={post.imageAlt || post.title}
-          style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
-        <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(9,9,11,0.97) 0%, rgba(9,9,11,0.55) 50%, rgba(9,9,11,0.15) 100%)' }} />
+          style={{ position:'absolute', inset:0, width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
+        <div className="blog-hero-shade" style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(9,9,11,0.97) 0%, rgba(9,9,11,0.6) 50%, rgba(9,9,11,0.15) 100%)' }} />
 
         {/* Hero text overlay */}
-        <div style={{ position:'absolute', bottom:0, left:0, right:0 }}>
-          <div style={{ maxWidth:900, margin:'0 auto', padding:'0 1.5rem 3rem' }}>
+        <div className="blog-hero-text" style={{ position:'relative', width:'100%' }}>
+          <div style={{ maxWidth:900, margin:'0 auto', padding:'3rem 1.5rem' }}>
             <div style={{ display:'flex', gap:8, marginBottom:14, alignItems:'center' }}>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, fontWeight:700, color: post.catColor === '#C8922A' || post.catColor === '#22c55e' ? '#000' : '#fff', background:post.catColor, padding:'3px 12px', letterSpacing:'0.1em' }}>
                 {post.category}
@@ -246,7 +253,7 @@ export default async function BlogArticlePage({ params }) {
             <h1 style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'clamp(2rem, 5vw, 3.2rem)', lineHeight:1.0, color:'#F5F5F3', letterSpacing:'0.02em', marginBottom:14, maxWidth:800 }}>
               {post.title}
             </h1>
-            <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'rgba(203,213,225,0.8)', maxWidth:680, lineHeight:1.65, marginBottom:20 }}>
+            <p className="blog-hero-sub" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:12, color:'rgba(203,213,225,0.8)', maxWidth:680, lineHeight:1.65, marginBottom:20 }}>
               {post.subtitle}
             </p>
             {/* Author bar */}
@@ -262,7 +269,7 @@ export default async function BlogArticlePage({ params }) {
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'rgba(203,213,225,0.6)' }}>{post.date}</span>
               <span style={{ color:'rgba(255,255,255,0.2)' }}>|</span>
               <span style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A' }}>{post.readTime}</span>
-              <div style={{ display:'flex', gap:6, marginLeft:8, flexWrap:'wrap' }}>
+              <div className="blog-hero-tags" style={{ display:'flex', gap:6, marginLeft:8, flexWrap:'wrap' }}>
                 {(post.tags || []).map(t => (
                   <span key={t} style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:8, color:'rgba(203,213,225,0.45)', background:'rgba(255,255,255,0.07)', padding:'2px 7px', borderRadius:2 }}>
                     {t}
