@@ -1,0 +1,99 @@
+{
+  "query": "*[_type==\"socialPost\" && platform==\"bluesky\"] | order(_createdAt desc)[0...15]{status,error,_createdAt,articleSlug}",
+  "result": [
+    {
+      "_createdAt": "2026-11-04T14:39:14Z",
+      "articleSlug": "midterms-2a-outlook-by-state-2026",
+      "error": "Bluesky post failed: Token has expired",
+      "status": "failed"
+    },
+    {
+      "_createdAt": "2026-11-04T13:02:53Z",
+      "articleSlug": "election-day-2026-second-amendment-state-by-state",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-04T13:02:47Z",
+      "articleSlug": "300-blackout-bolt-action-pistol-guide-2026",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-04T13:02:39Z",
+      "articleSlug": "about-the-guy-reportedly-taking-over-from-robert-leider-at-atf-c4279d",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-03T13:02:52Z",
+      "articleSlug": "doj-investigates-pennsauken-gun-permit-delays-over-second-amendment-concerns-4f3713",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-03T13:02:45Z",
+      "articleSlug": "gun-owners-don-t-wake-up-wednesday-wishing-you-d-voted-945353",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-03T13:02:38Z",
+      "articleSlug": "california-gun-ammo-control-fails-to-prevent-fbi-agents-from-being-shot-at-cd67e0",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-02T13:02:56Z",
+      "articleSlug": "atf-chief-counsel-robert-leider-resigns-after-reform-push-68bc62",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-02T13:02:44Z",
+      "articleSlug": "nra-state-of-florida-agree-waiting-periods-unconstitutional-judge-refuses-to-iss-ac6f5a",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-02T13:02:38Z",
+      "articleSlug": "prosecutors-say-yes-to-restoring-gun-rights-then-realize-they-meant-no-4107ca",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-01T13:02:50Z",
+      "articleSlug": "a-doctor-s-signature-can-destroy-someone-s-gun-rights-indefinitely-in-pennsylvan-4f5311",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-01T13:02:45Z",
+      "articleSlug": "spirit-halloween-shooting-leaves-1-dead-6-wounded-as-police-search-for-suspect-d7e8b1",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-11-01T13:02:39Z",
+      "articleSlug": "texas-dad-defends-family-after-costumed-stranger-tries-to-force-his-way-inside-22d2fe",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-10-31T13:02:48Z",
+      "articleSlug": "mike-harris-of-goal-on-question-9-and-massachusetts-gun-rights-rapidfire-radio-e-6ef01b",
+      "error": null,
+      "status": "posted"
+    },
+    {
+      "_createdAt": "2026-10-31T13:02:43Z",
+      "articleSlug": "how-state-supreme-court-election-could-change-everything-in-anti-gun-washington-2fac2d",
+      "error": null,
+      "status": "posted"
+    }
+  ],
+  "syncTags": [
+    "s1:xScrQQ"
+  ],
+  "ms": 9
+}
