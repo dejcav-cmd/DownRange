@@ -327,7 +327,7 @@ export async function fetchAllBlogSlugs() {
 export async function fetchBlogPostBySlug(slug) {
   try {
     return await rf(
-      '*[_type == "blogPost" && slug.current == $s][0] { _id, title, "slug": slug.current, category, excerpt, body, imageUrl, author, authorRole, authorImg, published, publishedAt, readTime, tags, status, _createdAt }',
+      '*[_type == "blogPost" && slug.current == $s][0] { _id, title, "slug": slug.current, category, excerpt, body, imageUrl, imageAlt, author, authorRole, authorImg, published, publishedAt, readTime, tags, status, _createdAt }',
       { s: slug }
     )
   } catch { return null }

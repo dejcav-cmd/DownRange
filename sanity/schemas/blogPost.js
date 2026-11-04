@@ -10,6 +10,8 @@ export const blogPost = {
     { name: 'excerpt',     title: 'Excerpt',        type: 'text' },
     { name: 'body',        title: 'Body (HTML)',     type: 'text' },
     { name: 'imageUrl',    title: 'Image URL',      type: 'url' },
+    { name: 'imageAlt',   title: 'Image Alt Text', type: 'string' },
+    { name: 'socialCopy',  title: 'Social Copy (per platform)', type: 'object', fields: ['facebook','instagram','twitter','threads','bluesky','reddit'].map(n => ({ name: n, type: 'text' })) },
     { name: 'readTime',    title: 'Read Time (min)', type: 'number' },
     { name: 'status',      title: 'Status',         type: 'string', options: { list: ['draft','published'] } },
     { name: 'featured',    title: 'Featured',       type: 'boolean' },

@@ -101,6 +101,7 @@ export default async function BlogArticlePage({ params }) {
       catColor:   '#C8922A',
       featured:   false,
       img:        sanityPost.imageUrl || '/img/photos/rifle.jpg',
+      imageAlt:   sanityPost.imageAlt || '',
       excerpt:    sanityPost.excerpt || '',
       tags:       sanityPost.tags || [],
       body:       sanityPost.body || '',
@@ -195,6 +196,8 @@ export default async function BlogArticlePage({ params }) {
           font-family: 'IBM Plex Sans', Georgia, serif;
           text-align: justify;
         }
+        .blog-article-body a { color: #C8922A; text-decoration: underline; text-underline-offset: 2px; }
+        .blog-article-body a:hover { color: #E5A83A; }
         .blog-article-body strong { color: #F0EDE6; font-weight: 700; }
         .blog-article-body em { color: #C8922A; font-style: italic; }
         .blog-article-body ul {
@@ -225,7 +228,7 @@ export default async function BlogArticlePage({ params }) {
 
       {/* ── HERO ── */}
       <div style={{ width:'100%', height:'clamp(320px, 50vw, 580px)', position:'relative', overflow:'hidden' }}>
-        <img src={post.img} alt={post.title}
+        <img src={post.img} alt={post.imageAlt || post.title}
           style={{ width:'100%', height:'100%', objectFit:'cover', display:'block' }} />
         <div style={{ position:'absolute', inset:0, background:'linear-gradient(0deg, rgba(9,9,11,0.97) 0%, rgba(9,9,11,0.55) 50%, rgba(9,9,11,0.15) 100%)' }} />
 

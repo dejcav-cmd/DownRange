@@ -198,7 +198,9 @@ async function generateCopy(article, platform, contentType) {
 
   const instructions = PLATFORM_PROMPTS[platform] || PLATFORM_PROMPTS.twitter
 
-  const raw = await callAIText({
+  // Editor-written copy (blogPost.socialCopy.<platform>) wins over AI generation
+  const customCopy = (article.socialCopy && typeof article.socialCopy[platform] === 'string') ? article.socialCopy[platform].trim() : ''
+  const raw = customCopy || await callAIText({
     prompt: `You are the social media editor for DownRange Co — an independent Second Amendment intelligence portal run by DJ Cavalcanti, a daily carrier in Washington State. DownRange readers are gun owners who follow 2A case law, carry daily, and want real information — not fluff.
 
 ARTICLE TO PROMOTE:
@@ -688,7 +690,7 @@ export async function runSocialAgent({ platform, count = 2, dryRun = false, forc
 
   let articles
   if (forceArticleId) {
-    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id, _type, title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl,tags}`, { id: forceArticleId })
+    const a = await sanity.fetch(`*[(_type == "newsArticle" || _type == "blogPost") && _id == $id][0]{_id, _type, title,summary,excerpt,category,urgencyScore,"slug":slug.current,imageUrl,tags,socialCopy}`, { id: forceArticleId })
     // Normalize _type to the 'blog'/'news' string used everywhere else in this
     // file (fetchCandidates aliases it the same way) — using the raw _type
     // value here ("blogPost") instead of 'blog' made generateCopy's
