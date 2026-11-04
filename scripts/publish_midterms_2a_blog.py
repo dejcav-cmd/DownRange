@@ -210,52 +210,64 @@ def pick_hero(used):
     return None, steps
 
 
+BODY_CATS = ["Category:Voting in the United States", "Category:Polling places in the United States",
+             "Category:Election Day in the United States", "Category:Early voting in the United States",
+             "Category:Voting booths in the United States", "Category:Ballot boxes in the United States",
+             "Category:Voting machines in the United States"]
+LIC_OK = re.compile(r"public domain|cc0|^pd|cc[- ]by", re.I)
+LIC_BAD = re.compile(r"\bnc\b|\bnd\b|fair use|unknown", re.I)
+
+
+def cat_members(cat, mtype):
+    params = {"action": "query", "format": "json", "generator": "categorymembers", "gcmtitle": cat,
+              "gcmtype": mtype, "gcmlimit": "80", "prop": "imageinfo", "iiprop": "url|size|mime|extmetadata",
+              "iiurlwidth": "1600", "iiextmetadatafilter": "LicenseShortName|LicenseUrl|Artist|Credit|ImageDescription"}
+    try:
+        body, _ = get(COMMONS + "?" + urllib.parse.urlencode(params))
+        return list(((json.loads(body).get("query") or {}).get("pages") or {}).values())
+    except Exception as e:
+        DEBUG.append({"cat": cat, "error": str(e)[:120]})
+        return []
+
+
 def pick_body_images(used, want=3):
-    out, seen = [], set()
-    for q in BODY_SEARCHES:
+    out, seen, pages = [], set(), []
+    for cat in BODY_CATS:
+        pages += cat_members(cat, "file")
+        for sub in cat_members(cat, "subcat")[:6]:
+            pages += cat_members(sub.get("title"), "file")
+    pages.sort(key=lambda p: p.get("title", ""))
+    for p in pages:
         if len(out) >= want:
             break
-        params = {"action": "query", "format": "json", "generator": "search",
-                  "gsrsearch": f"filetype:bitmap {q}", "gsrnamespace": "6", "gsrlimit": "20", "prop": "imageinfo",
-                  "iiprop": "url|size|mime|extmetadata", "iiurlwidth": "1600",
-                  "iiextmetadatafilter": "LicenseShortName|LicenseUrl|Artist|Credit|ImageDescription"}
-        try:
-            body, _ = get(COMMONS + "?" + urllib.parse.urlencode(params))
-            pages = list(((json.loads(body).get("query") or {}).get("pages") or {}).values())
-        except Exception as e:
-            DEBUG.append({"search": q, "error": str(e)[:150]})
+        title = p.get("title", "")
+        if not title.startswith("File:") or title in seen:
             continue
-        for p in pages:
-            if len(out) >= want:
-                break
-            title = p.get("title", "")
-            if title in seen:
-                continue
-            seen.add(title)
-            ii = (p.get("imageinfo") or [{}])[0]
-            c = to_cand(p)
-            lic = c["license"]
-            if not (re.search(r"public domain|cc0|pd", lic, re.I) and not re.search(r"cc[- ]by|sa", lic, re.I)):
-                continue
-            if c["w"] < 1200 or c["h"] < 700 or c["mime"] not in ("image/jpeg", "image/png"):
-                continue
-            if not (0.45 <= c["w"] / c["h"] <= 3.3):
-                continue
-            blob = f"{title} {c['desc']}"
-            if not BODY_OK.search(title) or BODY_BAD.search(blob):
-                continue
-            try:
-                data, d = download_validate(ii.get("thumburl") or ii.get("url"))
-            except Exception as e:
-                DEBUG.append({"body": title, "error": str(e)[:120]})
-                continue
-            sha1 = hashlib.sha1(data).hexdigest()
-            if is_used(sha1, used):
-                continue
-            up = upload(data, f"midterms-2026-body-{len(out) + 1}.jpg")
-            used.add(up["cdn_url"])
-            c.update(up)
-            out.append(c)
+        seen.add(title)
+        ii = (p.get("imageinfo") or [{}])[0]
+        c = to_cand(p)
+        lic = c["license"]
+        if not LIC_OK.search(lic) or LIC_BAD.search(lic):
+            continue
+        if c["w"] < 1200 or c["h"] < 700 or c["mime"] not in ("image/jpeg", "image/png"):
+            continue
+        if not (0.45 <= c["w"] / c["h"] <= 3.3):
+            continue
+        blob = f"{title} {c['desc']}"
+        if BODY_BAD.search(blob):
+            continue
+        try:
+            data, d = download_validate(ii.get("thumburl") or ii.get("url"))
+        except Exception as e:
+            DEBUG.append({"body": title, "error": str(e)[:120]})
+            continue
+        sha1 = hashlib.sha1(data).hexdigest()
+        if is_used(sha1, used):
+            continue
+        up = upload(data, f"midterms-2026-body-{len(out) + 1}.jpg")
+        used.add(up["cdn_url"])
+        c.update(up)
+        out.append(c)
     return out
 
 
