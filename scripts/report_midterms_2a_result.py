@@ -7,7 +7,7 @@ import urllib.request
 import urllib.error
 
 REPO = "dejcav-cmd/DownRange"
-RESULT_FILE = "midterms_2a_blog_result.json"
+RESULT_FILE = os.environ.get("RESULT_FILE", "midterms_2a_blog_result.json")
 GH_TOKEN = os.environ["GH_TOKEN"]
 
 if not os.path.exists(RESULT_FILE):
