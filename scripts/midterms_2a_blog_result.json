@@ -12,14 +12,14 @@
     },
     {
       "body_images": [
-        "File:Polling station in Bulhac, Moldova.jpg",
-        "File:2023 Polish parliamentary election and referendum. October 2023. Ballot box in Tomasz\u00f3w Mazowiecki, Sikorskiego Street 6A.jpg",
-        "File:Election-troops, bringing in their accounts, to the pay table. (BM 1868,0808.5782).jpg"
+        "File:\"I Voted in Arlington\" Sticker (8162743802).jpg",
+        "File:\"I Voted\" sticker; 2026 New York State elections.jpg",
+        "File:\"I voted\" sticker (2261325851).jpg"
       ]
     },
     {
       "mutate": {
-        "transactionId": "4ft4gF5eTVjsvb8ekxv8Rh",
+        "transactionId": "AlVcwo0KoBglbRM1lZyXGD",
         "results": [
           {
             "operation": "update"
@@ -38,7 +38,7 @@
     "publishedAt": "2026-11-04T14:20:22Z",
     "readTime": 21,
     "slug": "midterms-2a-outlook-by-state-2026",
-    "socialScheduleAt": "2026-11-04T14:33:44Z",
+    "socialScheduleAt": "2026-11-04T14:35:04Z",
     "socialScheduleDone": false,
     "status": "published",
     "title": "2026 Midterms: What the Results Mean for Gun Owners, State by State"
