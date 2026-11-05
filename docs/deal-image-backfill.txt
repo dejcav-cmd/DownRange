@@ -1,42 +1,16 @@
-600 scanned, 35 need a real image, 7 coupon posts skipped
+600 scanned, 10 need a real image, 7 coupon posts skipped
 
-  + Panzer Han9 9mm 6.5" 30-Rds Grey Pistol & Panzer — 57403b 1227x897 sha=0028210e0c8d
-  + Streamlight SpeedLocker 12.40" x 8.20" x 2.78" P — 21999b 425x388 sha=fdc2bb6fa6b3
-  + Steiner DBAL-A3 Dual Beam Aiming Laser Green Las — 65287b 1048x663 sha=c405d037e757
-  + Glock 19 Gen4 9mm Police Trade-In Pistols with N — 129207b 945x630 sha=af1ce1a67f44
-  + Glock 19 Gen4 9mm Police Trade-In Pistols with N — 138824b 945x630 sha=ce9c12cbd8c4
-  + THOMPSON M1 Carbine Tommy Gun 45 ACP SBR 10.5" 3 — 46244b 1500x499 sha=e7ae60771811
-  + Tisas 1911 Carry Double Stack 4.25" 9mm 18rd Pis — 86646b 1500x1071 sha=0d3078bff8eb
-  + Henry Repeating Arms Big Boy Side Gate American  — 10370b 657x160 sha=8a1ee038ca8c
-  + Beretta APX A1 Full Size, 9MM, 4.25" Barrel, 17  — 111600b 564x404 sha=ff8262c7f3c6
-  + Combat Armory Match Grade Threaded Barrel to fit — 23416b 1000x1000 sha=8dc797b1edf1
-  + CZ P-07 Duty Flat Dark Earth 9mm 3.8" Barrel 15- — 33584b 680x484 sha=c29a64d67c39
-  + Retro AR-15 A2 Lower Build Kit - $94.95 — 95988b 1500x999 sha=59f38fe02acb
-  + 100 Pack 7" Reactive Splatter Targets GlowShot M — 1329330b 1500x1071 sha=8787e34bb08a
-  + Dirty Bird NOLO AR-15 Complete Lower Receiver -  — 20802b 1500x846 sha=3f4e82462fce
-  + Rost Martin RM1F Tactical 9mm 5.1" Barrel 15-Rou — 37749b 814x566 sha=a3ecf2064b30
-  + Mission First Tactical EXD Translucent 30 AR/M4  — 85284b 1000x1000 sha=807ce9e89a5a
-  + TriggerTech AR-10 Duty, Two-Stage, Traditional C — 19430b 398x501 sha=489172d8a2a1
-  + BHA Precision AR-15 5.56mm 16" Gov't Profile, Mi — 8508b 1000x147 sha=811724966f38
-  + Taurus 22 TUC US Flag Edition, .22lr, 2.5" Barre — 21816b 538x457 sha=211776fadfa9
-  + Beretta Tactical 12 Gauge 18.5" OD Green - $1799 — 20093b 670x608 sha=72570c180686
-  + KGM RF22 Direct Thread Suppressor - Sniper Gray  — 20272b 988x448 sha=de54c02e5223
-  + Tuna Cans 40 Cal/10mm Stainless Steel Silencer L — 17490b 223x737 sha=7c4c646fe6d1
-  + Triggertech AR15 Single-Stage Trigger - $129.95 — 59000b 734x815 sha=33a4129acc46
-  + Polite Society FORTITUDE 5.56HD Inconel Suppress — 34138b 929x399 sha=57aa06784534
-  + Polite Society VERDICT 7.62 HD Inconel Suppresso — 39638b 1025x362 sha=dd40b5bf021d
-  ... 25/35  ok=25 fail=0
-  + Polite Society TEMPERANCE 22 Titanium Rimfire Di — 43603b 1018x460 sha=3f15078d51c6
-  + Taurus 3TX22 22LR 4.6'' 16rd/22rd Threaded Rimfi — 30292b 1115x482 sha=dea5d30bd0e4
-  + Combat Armory Billet AR-9 Lower Receiver Strippe — 9503b 388x286 sha=bfe3fb3329c3
-  + Ruger MINI-14 Tactical 5.56 NATO 18.5" 20-RD Sem — 13633b 877x191 sha=ff3036df55e6
+  + FN 502 Tactical Flat Dark Earth .22 LR 4.6" Barr — 57634b 612x619 sha=57f58bdda618
+  + BACKPACK DEAL: Black Glock Multipurpose Backpack — 249209b 868x693 sha=9aa79f8f5b03
+  + Glock 48 Gen5 MOS8 9mm 4.17" Barrel 10-Rounds w/ — 49285b 686x656 sha=a2defe6eb72f
+  + SLR Rifleworks Lite M LOK Handguard - $283.99 — 39760b 1073x247 sha=ba888f0461d3
+  + Gunwerks Werkman, 7 PRC, 22" Barrel, Tan Fractur — 14507b 866x197 sha=d352b32590b9
   x Savage Arms Model 110 TRAILBLAZER LH 5.56x45 NAT — image not downloadable
   x Browning X-Bolt 2 Hunter Composite .30-06 Spring — image not downloadable
   x JK Armament 9K Pro-Kor 9mm 1.72" Armor Black Tit — image not downloadable
   x Maxim Defense Industries Quantum 22K .22 LR Supp — image not downloadable
   x NBS AR-15 Dust Cover / Port Door Kit - AR15-Dust — image not downloadable
-  x Criterion Barrels CORE .223 Wylde 13.9in 1-8 Tap — image not downloadable
 
-fixed 29, failed 6  (82% success)
-distinct images: 29 across 29 deals
+fixed 5, failed 5  (50% success)
+distinct images: 5 across 5 deals
 PASS — no image shared between products
