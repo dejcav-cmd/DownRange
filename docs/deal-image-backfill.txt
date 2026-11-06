@@ -1,75 +1,17 @@
-600 scanned, 67 need a real image, 8 coupon posts skipped
+600 scanned, 11 need a real image, 8 coupon posts skipped
 
-  + RIA USA PK-12 Pak-Out Short 12 Ga 4-Rd 14.25" Ba — 38311b 1500x433 sha=9a6c4def9b19
-  + Browning A-Bolt 3 Composite Stalker 30-06 22" 5- — 11140b 900x147 sha=ba4c62416b0f
+  + Ruger 10/22 Talo .22 Lr 20" Threaded Barrel 10 R — 12731b 853x170 sha=6419a647472e
+  + Sig Sauer Elite Performance 10mm 180GR FMJ 50Rds — 37974b 645x397 sha=9244e4770de5
+  + Sig Sauer P320 FCU Gold 9mm / .40 SW / .357 Mag  — 238806b 899x445 sha=d56f187144d1
+  + Taran Tactical TTI JW4 2011 Pit Viper 9mm W/ Tri — 42752b 842x722 sha=8bd84aacb34c
+  + Caldwell Velociradar Chronograph w/ Bluetooth -  — 15725b 321x469 sha=01c933dcb131
   x FAB Defense OMC Ultimag 10R Dual Magazine Couple — image not downloadable
-  + Bear Creek Arsenal M16 Profile 5.56 Black Nitrid — 40321b 1200x1024 sha=38260a40067e
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 39864b 945x630 sha=7b21024a879f
-  + Strike Industries Extended Latch Charging Handle — 36771b 1200x1024 sha=515d90e6c21b
-  + B&T USA TiGER 22 Ti Silencer - $345.99 (See Pric — 107441b 1500x464 sha=4acc720f9d75
-  + Crimson Trace Hardline Pro 4-16x50mm SFP Illumin — 84371b 690x434 sha=ddf942de2c33
-  + Highwild AR500 Steel Targets System 3/8 Inch Thi — 16942b 500x500 sha=312379e10187
-  + SAR USA ST9 Magazine 9mm 10-Rounds - Open Box -  — 23184b 291x644 sha=dd50d75772ad
-  + Springfield SAINT Victor V2 5.56 NATO Semi-Auto  — 68350b 1350x754 sha=380de4be53eb
-  + Radical Firearms RF-15 5.56mm 16" 30rd Semi-Auto — 47036b 1286x589 sha=a0ea891a4339
-  + Springfield Saint Victor 9mm 5.5" Pistol with SB — 49099b 1240x656 sha=57d1a3951a46
-  + FN FNX-9 Magazine 9mm 17-Round - $49.29 (Buy 4,  — 19289b 369x631 sha=e43cb1081d20
-  + Mossberg Patriot Super Bantam 350 Legend Bolt-Ac — 24255b 1000x666 sha=d8f53388b085
-  + CZ 75 B 50th Anniversary 9mm 10 Rd - $617.99 + F — 44762b 736x515 sha=eefee5389de5
-  + Vortex Viper HD 3-15x 44mm Rifle Scope, Dead-Hol — 48861b 475x234 sha=1e385082baf7
-  x Sig Sauer MCX-SPEAR LT IR Pistol 5.56mm 30rd Mag — image not downloadable
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
-  + Geissele Super Duty MOD 1 5.56 NATO 11.5" Desert — 124320b 988x651 sha=4b1da30ae45d
-  + One Horse OH-15 5.56 NATO Semi-Automatic Rifle w — 40196b 1350x633 sha=fd0df221a894
-  + NexGen Arms NG-10 308 Winchester 16" 10rd Semi-A — 45212b 1350x618 sha=a7d8065a8025
-  + NexGen Arms NG-10 308 Win 16" 10rd Semi-Auto Rif — 39715b 1350x525 sha=0706a4f7f821
-  + NexGen Arms NG-15 300 Blackout Semi-Auto Pistol  — 48564b 1350x900 sha=7c2cdfc82747
-  + Toros Arms Copolla TR12 - 12 Ga 18.5" 5-Rd Semi  — 26637b 805x313 sha=4280b34c3403
-  ... 25/67  ok=22 fail=3
-  + Speer LE 53921 38 Special 135 Gr Gold Dot Hollow — 23689b 613x350 sha=fa1d0d8888a6
-  + HK MR A4 5.56 NATO 11" 30rd Semi Automatic Pisto — 19832b 680x334 sha=5f35282c1f9d
-  + PSA 16" M4 Carbine 5.56 NATO 1:7 Nitride 13.5" M — 15004b 827x293 sha=304882e3e82c
-  + Winchester SXP Field 12 Ga 26" 4-Rd Pump-Action  — 26844b 1350x394 sha=9243bd243d7a
-  + SIG Sauer ROMEO7S Red Dot 1x22mm 2 MOA - SOR7500 — 89261b 1000x1000 sha=c3e2a66e70b0
-  + Glock 17 Gen 4 Semi-Auto Pistol 9mm 4.49" Barrel — 45288b 809x611 sha=68356dd5d90f
-  + Geissele Super Duty 5.56mm NATO 11.5" Bbl DDC Pi — 69172b 756x335 sha=649fe7bb6b39
-  + NexGen Arms NG-15 223 Wylde Semi-Auto Rifle w/ V — 37893b 1350x574 sha=d51a21687182
-  + Military Armament Corporation IX 9mm Direct Blow — 45796b 1000x666 sha=e1523f800781
-  + NexGen Arms NG15 223 Wylde Semi-Auto Rifle with  — 24705b 1000x299 sha=1a80f4bd9701
-  + Backorder - Daniel Defense DD5 SBR .308 Win 12.5 — 22641b 800x230 sha=99a25c194fe9
-  + Glock G48 Black 43X 9mm Luger Handgun Magazine - — 10728b 558x437 sha=960afcda4e2e
-  + Zastava Arms Usa ZR72762W ZPAP M72 RPK 7.62x39mm — 35620b 1201x454 sha=af9828d37747
-  + NcSTAR VMARMLCE 223/556 M-Lok Handguard/ Two Pie — 16012b 1000x1000 sha=fef302a0adea
-  + Taurus TTX22 22LR Silencer Black TX22 - $279.95 — 17654b 1000x432 sha=de6cb082007c
-  + GForce Blade6 9mm Semi-Auto PCC Handgun with FDE — 75944b 1350x900 sha=791031536cf2
-  + Great Lakes Firearms GL-15 .223 Wylde 7.5" 30-Rd — 31896b 1000x666 sha=c1236ccc537c
-  + Daniel Defense DDM4 Complete Lower Receiver - $4 — 29069b 818x410 sha=48b88de7ed46
-  + Diamondback DB-15 5.56 NATO Semi-Auto Pistol wit — 52645b 1350x654 sha=ee3cd11dbd45
-  + Black Rain Ordnance BRO20122801 Fallout15 Billet — 54436b 1500x467 sha=04db9a2d0ea5
-  + Daniel Defense DDM4 V7 5.56 NATO AR Pistol with  — 60816b 1350x640 sha=cdda7fa551f3
-  + Daniel Defense DDM4V7 Milspec Plus 5.56 NATO Sem — 73864b 1350x745 sha=26fbaa19c5cb
-  + Aguila - 223 Rem - 55 Grain - FMJ - 1000 Rd - $5 — 27726b 685x437 sha=dfae2e2207d8
-  + CZ Scorpion EVO 3 S1 C22LR 22LR Semi-Automatic C — 29476b 1000x666 sha=b102de025001
-  + Bear Creek Arsenal BC-15 5.56 NATO AR-15 Semi-Au — 42816b 1331x583 sha=5fc30b2bbe25
-  ... 50/67  ok=47 fail=3
-  + ATI Alpha Maxx 5.56 NATO Semi-Auto Rifle with M- — 36092b 1201x481 sha=8992c796defb
-  + 124-Piece Magnetic Screwdriver Set with Plastic  — 52651b 500x500 sha=3bb7360a0423
-  + CCI Blazer Brass 9mm 124 gr FMJ 1090 fps 1000 ro — 31331b 908x547 sha=eddb7765b3dd
-  + Stoeger STR-9 Mid Size 9mm 4.1" 15rd Semi Auto P — 38058b 763x575 sha=bbad38887339
-  + Trinity Force Breach Blade Pistol Lower Build Ki — 129565b 1122x751 sha=bfad55905559
-  + Rise Armament RA-100 Flat Two-Stage Trigger & RA — 130778b 1000x666 sha=234c78dd2376
-  + NBS AR-15 Assembled Upper Receiver - $59.95 — 32728b 1002x389 sha=cf41a4e087e8
-  + Rise Armament RA-100 Curved Two-Stage Trigger &  — 164396b 1000x666 sha=05f38fdd2f8d
-  + Plano Shot Shell Box 20 Gauge, Black, Plastic Am — 14247b 500x333 sha=4001e7514712
-  + REAT Fixed Blade Knife with Sheath, 1.1" Double  — 25197b 500x500 sha=96dfb8256093
-  + Rise Armament RA-100F Two-Stage Flat Trigger - $ — 51558b 1500x969 sha=44f588fd7669
-  + Taurus 942 Ultra-Lite 22 WMR 2" Bbl 8rd Revolver — 149041b 615x450 sha=dd59928eb16e
   x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
-  + Smith & Wesson Bodyguard 2.0 CC 380 Handgun - $4 — 33998b 639x516 sha=accc39641876
   x Savage Arms Model 110 TRAILBLAZER LH 5.56x45 NAT — image not downloadable
   x Browning X-Bolt 2 Hunter Composite .30-06 Spring — image not downloadable
   x JK Armament 9K Pro-Kor 9mm 1.72" Armor Black Tit — image not downloadable
 
-fixed 60, failed 7  (89% success)
-distinct images: 60 across 60 deals
+fixed 5, failed 6  (45% success)
+distinct images: 5 across 5 deals
 PASS — no image shared between products
