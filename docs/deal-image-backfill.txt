@@ -1,24 +1,14 @@
-600 scanned, 18 need a real image, 5 coupon posts skipped
+600 scanned, 8 need a real image, 5 coupon posts skipped
 
-  + CCI Blazer Brass .380 ACP 95 Grain 50-Rounds FMJ — 49323b 800x385 sha=919a57c9ec47
-  + Glock Gen5 Factory Magazine Coyote G17 G17L G19  — 9674b 364x573 sha=d59b229202f8
-  + Ruger Mark IV 22/45 Tactical .22 LR 4.4" Barrel  — 33098b 633x503 sha=1ab7ff51d5fd
-  + KAK Industry Plan B A2 Flash Hider - 1/2x28 - $5 — 26824b 683x468 sha=6849f1c7956c
-  + Beretta M9A4 Overlanding Lunar 9mm Pistol with L — 94904b 1192x765 sha=79a16cb4c46d
-  + Active Safety ARC-Fire V2 Trigger Kit 90-180 - $ — 24484b 609x572 sha=a2b40ef8aef7
-  + Mimtac F3X 45/90 AR-15 Ambidextrous Safety Selec — 30529b 742x471 sha=f6934684e75a
-  + TriggerTech AR-10 Black Diamond Trigger FLAT SIN — 19471b 397x487 sha=c348da9b26d2
-  + Griffin Armament Bushwacker 36 Multi Caliber Mod — 45228b 1266x569 sha=d9ae4ed03f7d
-  + VKTR Industries VK-1PW 5.56 / .223 Rem 16" Barre — 52913b 1432x542 sha=234090e3fce5
-  + Griffin Armament EXPLORR 300 30 Caliber Suppress — 40859b 1221x468 sha=691be23a2749
-  + Dead Air Wolfman MOD 9mm 7.5" Silencer / Suppres — 642424b 1466x794 sha=f7f6601b4fa9
-  + Retay Usa RXP22 22 LR 13-Rds Flat Dark Earth Sem — 40644b 1000x666 sha=39d5475716ac
+  + Glock G17C V 9mm 4.49" Barrel 17-Rounds Compensa — 28033b 637x472 sha=ad18242ee4eb
+  + Propper Men's Kinetic Combat Shirt, Olive, Mediu — 16785b 412x500 sha=175bc0b123da
+  + Cold Steel All Purpose Tactical Machete with She — 39768b 1378x703 sha=971a612377c2
   x FAB Defense OMC Ultimag 10R Dual Magazine Couple — image not downloadable
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
   x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
   x Savage Arms Model 110 TRAILBLAZER LH 5.56x45 NAT — image not downloadable
   x Browning X-Bolt 2 Hunter Composite .30-06 Spring — image not downloadable
 
-fixed 13, failed 5  (72% success)
-distinct images: 13 across 13 deals
+fixed 3, failed 5  (37% success)
+distinct images: 3 across 3 deals
 PASS — no image shared between products
