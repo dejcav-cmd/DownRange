@@ -1,30 +1,24 @@
-600 scanned, 24 need a real image, 8 coupon posts skipped
+600 scanned, 18 need a real image, 5 coupon posts skipped
 
-  + Springfield Prodigy Double Stack 1911 Bundle 5"  — 117122b 1189x749 sha=9cdaf225ea3a
-  + CZ 75 BD 9mm Pistol, 4.6" 16-Rd Blk - $599.99 — 58575b 1000x697 sha=229b595f631a
-  + Sig Sauer ROMEO5 GEN II 1x20MM Red Dot - $99.79  — 15557b 386x386 sha=0f25c685560b
-  + Jaguar Silencers CA Fatty 556 Titanium, 5.56mm,  — 19160b 284x630 sha=e96a860c6d4c
-  + Polite Society Temperance 22 Titanium Silencer - — 52243b 1200x639 sha=16e5d6890942
-  + Hornady 90226 Critical Duty 9mm+P 135 GR FlexLoc — 32252b 386x386 sha=07a2ae67a517
-  + TriggerTech Tango Competitive Trigger Group AR-1 — 74588b 651x491 sha=a9d32817512b
-  + Walker's Razor Slim Low Profile Electronic Earmu — 38860b 671x523 sha=5b5a37c49123
-  + SMITH & WESSON 327 WR Jerry Miculek World Record — 29434b 640x640 sha=40e0c5f23269
-  + Federal Champion .22 LR 36gr Copper-Plated Hollo — 99551b 1431x1009 sha=0dbd15ab3af5
-  + VZ Tactical Slants Gen2 - Beretta 92X Compact -  — 38123b 579x452 sha=505fd3b2a4db
-  + Heckler and Koch HK416, Semi-Auto Pistol, .22LR, — 40936b 749x469 sha=2c1b7b1dc76c
-  + Glock 22 Gen3 40S&W 4.49" Barrel 15-Rounds USED  — 30305b 721x503 sha=16cfefafe114
-  + Kimber R7 Mako FDE Liberty 9mm 13+1 OR - $415 — 31351b 624x445 sha=2560dbd374e4
-  + PSA 16" Midlength 5.56 NATO 1:7 Nitride B5 MLOK  — 29059b 1500x333 sha=27f87f660f8c
-  + Maxxtech - 9mm - 124 Grain - FMJ - 500 Rd - $149 — 29496b 697x347 sha=c0c2be39bd91
-  + Advantage Arms 1.50X2.5 Super Short .308 Stainle — 8684b 244x443 sha=8187dd1cb24c
-  + Vortex Crossfire II 2 MOA Red Dot - CF2-RD2 - $4 — 62742b 644x723 sha=e2d90aa61110
-  + Franklin Armory F22-V 22 LR FDE 18-Inch Suppress — 11771b 883x203 sha=cad843d608d6
+  + CCI Blazer Brass .380 ACP 95 Grain 50-Rounds FMJ — 49323b 800x385 sha=919a57c9ec47
+  + Glock Gen5 Factory Magazine Coyote G17 G17L G19  — 9674b 364x573 sha=d59b229202f8
+  + Ruger Mark IV 22/45 Tactical .22 LR 4.4" Barrel  — 33098b 633x503 sha=1ab7ff51d5fd
+  + KAK Industry Plan B A2 Flash Hider - 1/2x28 - $5 — 26824b 683x468 sha=6849f1c7956c
+  + Beretta M9A4 Overlanding Lunar 9mm Pistol with L — 94904b 1192x765 sha=79a16cb4c46d
+  + Active Safety ARC-Fire V2 Trigger Kit 90-180 - $ — 24484b 609x572 sha=a2b40ef8aef7
+  + Mimtac F3X 45/90 AR-15 Ambidextrous Safety Selec — 30529b 742x471 sha=f6934684e75a
+  + TriggerTech AR-10 Black Diamond Trigger FLAT SIN — 19471b 397x487 sha=c348da9b26d2
+  + Griffin Armament Bushwacker 36 Multi Caliber Mod — 45228b 1266x569 sha=d9ae4ed03f7d
+  + VKTR Industries VK-1PW 5.56 / .223 Rem 16" Barre — 52913b 1432x542 sha=234090e3fce5
+  + Griffin Armament EXPLORR 300 30 Caliber Suppress — 40859b 1221x468 sha=691be23a2749
+  + Dead Air Wolfman MOD 9mm 7.5" Silencer / Suppres — 642424b 1466x794 sha=f7f6601b4fa9
+  + Retay Usa RXP22 22 LR 13-Rds Flat Dark Earth Sem — 40644b 1000x666 sha=39d5475716ac
   x FAB Defense OMC Ultimag 10R Dual Magazine Couple — image not downloadable
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
   x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
   x Savage Arms Model 110 TRAILBLAZER LH 5.56x45 NAT — image not downloadable
   x Browning X-Bolt 2 Hunter Composite .30-06 Spring — image not downloadable
 
-fixed 19, failed 5  (79% success)
-distinct images: 19 across 19 deals
+fixed 13, failed 5  (72% success)
+distinct images: 13 across 13 deals
 PASS — no image shared between products
