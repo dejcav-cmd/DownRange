@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-11-01T07:00:21.546Z",
+  "generatedAt": "2026-11-08T07:00:21.410Z",
   "content": {
-    "newsArticles": 3121,
-    "blogPosts": 52,
-    "legislation": 432,
+    "newsArticles": 3259,
+    "blogPosts": 61,
+    "legislation": 439,
     "firearmReleases": 35,
-    "videos": 915,
+    "videos": 943,
     "reviews": 3,
     "canadaArticles": 113,
     "brazilArticles": 116
   },
   "operations": {
-    "cronRuns": 3836,
+    "cronRuns": 4205,
     "outreachContacts": 221,
-    "socialPosts": 1459,
+    "socialPosts": 1588,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "Houston Dad Shoots Costumed Man Who Forced Into His Apartment",
-    "newsDate": "2026-10-31T21:30:00.000Z",
+    "newsTitle": "Podcasters Who Laughed at Kirk Jokes Donate to Everytown",
+    "newsDate": "2026-11-07T23:13:13.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 4787
+  "totalContentDocs": 4969
 }
