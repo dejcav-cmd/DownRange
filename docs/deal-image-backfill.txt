@@ -1,14 +1,19 @@
-600 scanned, 8 need a real image, 5 coupon posts skipped
+600 scanned, 13 need a real image, 6 coupon posts skipped
 
-  + ZEV PRO MATCH THREADED BARREL FOR GLOCK 17 GEN 5 — 9890b 495x242 sha=e7280a013878
-  + Toolcraft 6.8SPC/.224 Valkyrie M16 Profile Bolt  — 25695b 976x188 sha=658cac403263
-  + Centurion Arms MK11 7.62 Billet Receiver Set - $ — 43401b 800x654 sha=b724752da1fe
-  + Mimtac F3X 45/90 AR-15 Ambidextrous Safety Selec — 25799b 848x508 sha=65a3014d3131
-  + Sig Sauer MCX SPEAR-LT 7.62x39 16" 1:9.5" Bbl Co — 24537b 1000x418 sha=bac48a5c856f
+  + Glock 19X V MOS 9mm 4.02" 17/19 Rd - $617.13 (em — 323442b 872x665 sha=ac3b23dca6b6
+  + Chiappa Rhino 30DS X 357 Mag 3" Barrel 6RD Stain — 141265b 591x459 sha=70d97b19432c
+  + Taurus TX22 Gen 2 TORO .22LR 4.6in Barrel 22rd B — 29149b 570x570 sha=a1200d181c67
+  + NcSTAR AARLAV2 AR-15/M4/M16 Magazine Speed Loade — 49170b 1000x1000 sha=83632c93eb71
+  + Winchester Ranger .223 Rem 64gr Power-Point LE T — 38455b 596x420 sha=86a75f3df654
+  + B5 Systems AR-15 Enhanced SOPMOD Lower Build Kit — 370928b 1500x1000 sha=c232f26474da
+  + NBS 16" 5.56 NATO Contour 1:7 Mid Length 416R Ba — 18949b 1000x666 sha=8410b8947c68
+  + NBS Mil-Spec M4 Carbine Stock - TBA04 - $10.95 — 15170b 510x433 sha=ca9a08b274c3
+  + Davidson Defense Meteor 8.5-inch Pistol-Gas 1:8  — 15124b 630x630 sha=304c435e8fcd
+  x Beretta 92XI Splinter Camo 9MM 18-Round Handgun  — image not downloadable
   x FAB Defense OMC Ultimag 10R Dual Magazine Couple — image not downloadable
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
   x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
 
-fixed 5, failed 3  (62% success)
-distinct images: 5 across 5 deals
+fixed 9, failed 4  (69% success)
+distinct images: 9 across 9 deals
 PASS — no image shared between products
