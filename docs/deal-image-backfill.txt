@@ -1,19 +1,29 @@
-600 scanned, 13 need a real image, 6 coupon posts skipped
+600 scanned, 23 need a real image, 5 coupon posts skipped
 
-  + Glock 19X V MOS 9mm 4.02" 17/19 Rd - $617.13 (em — 323442b 872x665 sha=ac3b23dca6b6
-  + Chiappa Rhino 30DS X 357 Mag 3" Barrel 6RD Stain — 141265b 591x459 sha=70d97b19432c
-  + Taurus TX22 Gen 2 TORO .22LR 4.6in Barrel 22rd B — 29149b 570x570 sha=a1200d181c67
-  + NcSTAR AARLAV2 AR-15/M4/M16 Magazine Speed Loade — 49170b 1000x1000 sha=83632c93eb71
-  + Winchester Ranger .223 Rem 64gr Power-Point LE T — 38455b 596x420 sha=86a75f3df654
-  + B5 Systems AR-15 Enhanced SOPMOD Lower Build Kit — 370928b 1500x1000 sha=c232f26474da
-  + NBS 16" 5.56 NATO Contour 1:7 Mid Length 416R Ba — 18949b 1000x666 sha=8410b8947c68
-  + NBS Mil-Spec M4 Carbine Stock - TBA04 - $10.95 — 15170b 510x433 sha=ca9a08b274c3
-  + Davidson Defense Meteor 8.5-inch Pistol-Gas 1:8  — 15124b 630x630 sha=304c435e8fcd
+  + YHM SRX Short Flash Hider QD 1/2x28 Thread - $64 — 16648b 298x600 sha=08984694e896
+  + 10.5" .300 Blackout Ar15 Upper, 9.7" Rugged mLok — 74677b 1500x1500 sha=99f19778efa3
+  + Leupold VX-5HD 4-20x52 CDS-ZL2 Side Focus Firedo — 29836b 925x580 sha=45e598f4470d
+  + Get 17.76% off SB Tactical brand with coupon cod — 157585b 1186x1115 sha=255d9ead1f7a
+  + 18" .308 CMV Barrel, Rifle Length (BLEM) - $187. — 18641b 1000x630 sha=284daffd3f83
+  + ZEV OPTIMIZED MATCH THREADED BARREL FOR GLOCK 34 — 12161b 516x258 sha=7d11e21ad6ec
+  + Beretta .22LR Cleaning Kit - $16.99 — 21236b 688x206 sha=0f88358c9c2a
+  + UTG AccuShot 4-16X 44 30MM 36-Color Mil-Dot Reti — 32445b 1000x1000 sha=8f1e784ce1c1
+  + Under $40: Hunting & Shooting Gear Blowout @ Fie — 27972b 336x336 sha=1cd66d0719fe
+  + Glock Factory Recoil Spring Assembly Dual 9mm Lu — 17784b 634x255 sha=2dbb6372bb38
+  + DMA Inc. AR-15 / AR-10 Lower Small Parts Kit - $ — 38964b 800x576 sha=a4e6c51bc07e
+  + Mimtac F3X 45/90 AR-15 Ambidextrous Safety Selec — 18196b 600x378 sha=a73dbd841092
+  + Traditions Shedhorn Muzzleloading Rifle Redi-Pak — 24641b 686x195 sha=32e76c2c1718
+  + Adamson Giray G-40 Marine 12 Gauge 18.5" barrel  — 12323b 1000x181 sha=c29e0a07be85
+  + Glock 43X MOS 9mm Optic Ready Pistol with Cerako — 31987b 674x557 sha=e1f101032d30
+  + Rugged Suppressors Oculus22 Suppressor OCU22 - $ — 13121b 248x603 sha=ac0800f57ac6
+  + Tisas USA Warlord DS Semi-automatic 1911 9mm 4.2 — 26995b 590x468 sha=bf99e97a739f
+  + Winchester Ranger 12 Gauge 2-3/4" 1 oz Segmentin — 16918b 326x340 sha=c693afda3eec
+  + PSA Sabre-15 Forged 8.5" .300 Blackout 1:5 SBR w — 12334b 509x228 sha=4a1bf72cf952
   x Beretta 92XI Splinter Camo 9MM 18-Round Handgun  — image not downloadable
   x FAB Defense OMC Ultimag 10R Dual Magazine Couple — image not downloadable
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
   x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
 
-fixed 9, failed 4  (69% success)
-distinct images: 9 across 9 deals
+fixed 19, failed 4  (82% success)
+distinct images: 19 across 19 deals
 PASS — no image shared between products
