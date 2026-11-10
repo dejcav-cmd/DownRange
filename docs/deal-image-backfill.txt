@@ -1,19 +1,26 @@
-600 scanned, 22 need a real image, 6 coupon posts skipped
+600 scanned, 29 need a real image, 6 coupon posts skipped
 
-  + Federal 20 Ga Field and Range 2 3/4 7/8oz 8 Shot — 85700b 793x751 sha=5096baeb38b5
-  + Flash Sale! 8.5” Pistol 300 Blackout Blem AR15 U — 2630081b 1288x1218 sha=1e94da7e8124
-  + Buck Knives 239 Infusion Assisted Folding Knife  — 19703b 609x620 sha=81a205043af8
-  + Glock 43X / 48 9mm Complete Frame with Rail - BL — 49078b 1000x1000 sha=4af1d93ca871
-  + Aero Precision .936 Low Profile Gas Block w/ No  — 32206b 1000x631 sha=9025f424fb97
-  + Savage 42 Takedown Black .22 LR / .410 GA 20" Ba — 10059b 761x140 sha=3dfe026de567
-  + PSA Gen3 PA10 20" Rifle-Length .308 WIN 1:10 Sta — 59976b 1410x874 sha=4de7b2d313a3
-  + Beretta APX Magazine .40 S&W 10 Rounds Unpackage — 11931b 237x497 sha=f858acf38de5
-  + ZEV OPTIMIZED MATCH THREADED BARREL FOR GLOCK 34 — 11833b 503x252 sha=7c5817146dd1
-  + SIG Sauer Off Duty P320 Pro X Carry 9mm Pistol W — 43578b 885x716 sha=39bfa7f4cc95
-  + GLOCK Blue Label G17 Gen 6 MOS Optic Ready 9mm P — 42874b 858x618 sha=157c3b463cee
-  + Sig Sauer 211CA9GT4COY P211 GT4 Carry 9mm Luger  — 11576b 396x300 sha=3e157b34690f
-  + Sig Sauer 365XCA9TCOMP P365 XMacro Compact 9mm L — 10183b 363x300 sha=08cbc7fb59a1
-  + Sig Sauer 320SXG59STAS P320 9mm Luger 21+1 5" Op — 13342b 394x300 sha=32c69129c535
+  + Uncle Mikes Inside Pocket Ambi Subcompact Holste — 38329b 700x700 sha=4476c055075b
+  + Savage Revel Tactical .22 LR 18" Threaded Barrel — 16045b 774x306 sha=e1c0075f7f17
+  + Federal American Eagle Suppressor 22LR Ammo 45 G — 619939b 1000x601 sha=4c0ee0da2c5a
+  + NBS AR-15 Assembled Upper Receiver - AR15-Assemb — 39400b 1200x800 sha=59fe517db307
+  + Atrius Development 3 Position Super Selector Saf — 46434b 1464x906 sha=0314c75ba82e
+  + Vortex Defender-ST Enclosed Solar 3 MOA Red Dot  — 35588b 945x630 sha=429bd6f31663
+  + Holosun HS507C-X2 Pistol Red Dot Sight ACSS Vulc — 52264b 1107x818 sha=a0b93605b051
+  + Remington Range Handgun Ammo 9mm Luger 115gr FMJ — 34808b 666x419 sha=5913dcc8a7bc
+  + Ruger LCP 380 ACP Pistol 2.75" Barrel Black Cher — 58164b 785x580 sha=3f38934e8c8d
+  + Used Surplus French MAC 50 M1950, 9MM Semi-Autom — 21502b 555x429 sha=4b51d6e51c9c
+  + Hungarian FEG AP 7.65 / .32 ACP Caliber Pistol,  — 47156b 799x541 sha=b19e61674366
+  + P-83 Polish Makarov Pistol 9x18mm, (1) 8rd Magaz — 45014b 798x598 sha=d49dfeb57b35
+  + Bulgarian Makarov Pistol, Semi-Auto, 9x18 Calibe — 28025b 544x527 sha=f3316b944c39
+  + Holosun HS407A3 PSA Exclusive BLK 3MOA Reflex Si — 12868b 384x299 sha=d3d478b1447a
+  + Retay GPS 12 Gauge Pump Action Shotgun, Black -  — 19481b 1131x248 sha=87f07cccf9df
+  + PSA 7.5" Pistol-Length 300AAC Nitride 6" Lightwe — 57279b 1500x614 sha=2e1806d75521
+  + PSA 16" 5.56 NATO 17" LSA Grunt Hex M-LOK Upper  — 34942b 1500x332 sha=3580d14d8bc4
+  + Springfield Prodigy 9mm W/ Viridian RFX25 Green  — 62557b 794x829 sha=72184fc92979
+  + Noveske Afghan Gen 4 556 Nato 14.5" Barrel Bazoo — 146145b 1500x404 sha=9acc3cc4a33e
+  + Tikka T3X Roughtech 7MM Rem Mag 24" Barrel - $96 — 27912b 1306x277 sha=c2bfcfa91a1d
+  + Beretta A400 Xplor Left Handed 12 Ga 28" Barrel  — 12316b 796x182 sha=4830d89697d3
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Winchester Repeating Arms 535204144 Model 70 Saf — image not downloadable
@@ -23,6 +30,6 @@
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
   x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
 
-fixed 14, failed 8  (63% success)
-distinct images: 14 across 14 deals
+fixed 21, failed 8  (72% success)
+distinct images: 21 across 21 deals
 PASS — no image shared between products
