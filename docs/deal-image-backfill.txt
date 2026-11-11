@@ -1,26 +1,11 @@
-600 scanned, 29 need a real image, 6 coupon posts skipped
+600 scanned, 13 need a real image, 7 coupon posts skipped
 
-  + Uncle Mikes Inside Pocket Ambi Subcompact Holste — 38329b 700x700 sha=4476c055075b
-  + Savage Revel Tactical .22 LR 18" Threaded Barrel — 16045b 774x306 sha=e1c0075f7f17
-  + Federal American Eagle Suppressor 22LR Ammo 45 G — 619939b 1000x601 sha=4c0ee0da2c5a
-  + NBS AR-15 Assembled Upper Receiver - AR15-Assemb — 39400b 1200x800 sha=59fe517db307
-  + Atrius Development 3 Position Super Selector Saf — 46434b 1464x906 sha=0314c75ba82e
-  + Vortex Defender-ST Enclosed Solar 3 MOA Red Dot  — 35588b 945x630 sha=429bd6f31663
-  + Holosun HS507C-X2 Pistol Red Dot Sight ACSS Vulc — 52264b 1107x818 sha=a0b93605b051
-  + Remington Range Handgun Ammo 9mm Luger 115gr FMJ — 34808b 666x419 sha=5913dcc8a7bc
-  + Ruger LCP 380 ACP Pistol 2.75" Barrel Black Cher — 58164b 785x580 sha=3f38934e8c8d
-  + Used Surplus French MAC 50 M1950, 9MM Semi-Autom — 21502b 555x429 sha=4b51d6e51c9c
-  + Hungarian FEG AP 7.65 / .32 ACP Caliber Pistol,  — 47156b 799x541 sha=b19e61674366
-  + P-83 Polish Makarov Pistol 9x18mm, (1) 8rd Magaz — 45014b 798x598 sha=d49dfeb57b35
-  + Bulgarian Makarov Pistol, Semi-Auto, 9x18 Calibe — 28025b 544x527 sha=f3316b944c39
-  + Holosun HS407A3 PSA Exclusive BLK 3MOA Reflex Si — 12868b 384x299 sha=d3d478b1447a
-  + Retay GPS 12 Gauge Pump Action Shotgun, Black -  — 19481b 1131x248 sha=87f07cccf9df
-  + PSA 7.5" Pistol-Length 300AAC Nitride 6" Lightwe — 57279b 1500x614 sha=2e1806d75521
-  + PSA 16" 5.56 NATO 17" LSA Grunt Hex M-LOK Upper  — 34942b 1500x332 sha=3580d14d8bc4
-  + Springfield Prodigy 9mm W/ Viridian RFX25 Green  — 62557b 794x829 sha=72184fc92979
-  + Noveske Afghan Gen 4 556 Nato 14.5" Barrel Bazoo — 146145b 1500x404 sha=9acc3cc4a33e
-  + Tikka T3X Roughtech 7MM Rem Mag 24" Barrel - $96 — 27912b 1306x277 sha=c2bfcfa91a1d
-  + Beretta A400 Xplor Left Handed 12 Ga 28" Barrel  — 12316b 796x182 sha=4830d89697d3
+  + Beretta APX Centurion Magazine .40 S&W 10 Rounds — 18665b 266x511 sha=c4535adc9af5
+  + Taurus TX22 Competition .22 LR 5.4" Barrel 16-Ro — 54187b 800x597 sha=895f1e478a55
+  + AAC 308 Winchester Ammo 168 Grain BTHP Match 20r — 55245b 1000x1000 sha=50da5ccffb09
+  + Spike's Tactical Pistol Buffer Assembly Kit - $9 — 17128b 500x329 sha=706fd8c5700a
+  + Champion & Butler Creek Blowout Up to 75% Off! @ — 27208b 336x336 sha=3c511fe7a512
+  + 1911 9mm 4" Stainless Conversion Kit with Novak  — 49987b 793x826 sha=f0613735e761
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Winchester Repeating Arms 535204144 Model 70 Saf — image not downloadable
@@ -28,8 +13,7 @@
   x Beretta 92XI Splinter Camo 9MM 18-Round Handgun  — image not downloadable
   x FAB Defense OMC Ultimag 10R Dual Magazine Couple — image not downloadable
   x Nightforce NX8 2.5-20x50 MOAR Like New Demo Rifl — image not downloadable
-  x Walther Arms 2836335 PPQ 9mm Luger PPQ M2 SF Pro — image not downloadable
 
-fixed 21, failed 8  (72% success)
-distinct images: 21 across 21 deals
+fixed 6, failed 7  (46% success)
+distinct images: 6 across 6 deals
 PASS — no image shared between products
