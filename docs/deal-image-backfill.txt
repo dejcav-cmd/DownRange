@@ -1,59 +1,33 @@
-600 scanned, 52 need a real image, 7 coupon posts skipped
+600 scanned, 27 need a real image, 14 coupon posts skipped
 
-  + Springfield Hellcat 9mm 1-11, 3-13rd Mags, 3" Ba — 78653b 1000x871 sha=c020bd818e52
-  + Daniel Defense PCC 9mm 30-Rds Pistol, 8.3" Barre — 20773b 316x179 sha=c6301129091c
-  + Ruger Glenfield Model A 52001 Rifle, .308 Win, 2 — 9087b 700x197 sha=a0d955802da2
-  + Ruger American Gen II Ranch 308 Win 16.1″ Thread — 18704b 1000x228 sha=4f0d1952b587
-  + Daniel Defense DDM4 V7 16" 5.56mm NATO Upper Rec — 28265b 978x371 sha=44ebe32935eb
-  + Daniel Defense DD5 V3 .260 Rem 18 M-LOK Complete — 55821b 1000x666 sha=ec47d9f8aeca
-  + PSA AR15 Complete Rifle Lower Receiver A2 - 5043 — 24398b 1000x551 sha=9122b7ca2432
-  + SAV 110 PRECISION MDT CHASSIS FDE 338LAP 24 - $1 — 11083b 550x550 sha=c1e7fcb6f575
-  + Savage Arms 110 Precision LH .338 Lapua Mag 24"  — 37908b 731x180 sha=571e69bc6ffa
-  x SAVAGE ARMS 110 Elite Precision 338 Lapua 30 In  — image not downloadable
-  + S&W M&P FPC 14170 5.7X28MM 16.25IN 10R BLK - $50 — 14079b 1000x220 sha=02d0b2684034
-  + KelTec SUB2K Gen3, 5.7x28mm, 16.1" Barrel, 20rd, — 59100b 635x198 sha=f37b22bfb95c
-  + DARK MOUNTAIN ARMS Stow Away 5.7x28mm Single Sho — 12960b 1000x245 sha=6901de93a176
-  + Ruger LC Carbine 5.7x28mm with Side Folding Stoc — 28990b 1000x518 sha=f7c83d8881f0
-  + Marlin 1894 SBL 44Mag Boar Engraving Lever Actio — 99754b 928x684 sha=582be85420fa
-  + Smith & Wesson Model 1854 Limited Edition .44 Ma — 38481b 1500x346 sha=346334b32b9c
-  + HENRY Side Gate 44Mag/44Spl All Weather 20" Chro — 19503b 1000x518 sha=51dee90cba32
-  + Ruger AR-556 5.56mm 16.1" Barrel 30rd Semi-Auto  — 177726b 1079x476 sha=069b181e3cf9
-  + Ruger American Ranch Yote Camo .204 RUG 16.3" Th — 29968b 1280x316 sha=6f0f81c1aafc
-  + PARD Ocelot Zoom Thermal Rifle Scope w/Laser Ran — 13858b 506x274 sha=81ef6cb7debd
-  + Pulsar Helion 2 XP50 Pro 2.5-20x Thermal Monocul — 26896b 688x493 sha=7cfced0ea027
-  + Walther PPK/S .32 ACP 3.3" Barrel 7rd Stainless  — 123804b 510x357 sha=53c582ccc3eb
-  + Smith and Wesson Model 19 Classic Blued / Walnut — 25326b 656x397 sha=107d9d901f03
-  + Smith & Wesson Model 686 .357 Magnum 4" Stainles — 49656b 457x280 sha=14f9297e5cd5
-  + Smith & Wesson Model 640 357Mag Revolver - $759. — 95816b 630x630 sha=98871c3e6614
-  ... 25/52  ok=24 fail=1
-  + Ruger American Rifle Gen II 6mm ARC 16.10" 10-Rd — 40604b 1350x463 sha=127991db3ea0
-  + Noveske N4 Gen 4 Rifle 6mm ARC 14.5" Pinned Barr — 214057b 1242x467 sha=bf8b785f8b82
-  + PSA AK-V 9mm 35-Rds 10.5" MOE ALG Triangle Side  — 31108b 1000x500 sha=dc23087ffb32
-  + BCA M16 Profile 5.56 NATO Complete Bolt Carrier  — 40321b 1200x1024 sha=38260a40067e
-  + Die Free Co Kung Fu AR-15 Pistol Grip - $13.95 — 40640b 945x630 sha=fd1eda9f20ae
-  + Heckler and Koch CC9 Dark Earth 9mm 3.3" Barrel  — 59102b 807x679 sha=575d9812a9b0
-  + Taurus TXM T.O.R.O 5.7x28mm Optic Ready Pistol w — 37702b 1000x666 sha=55a0e0bef2ff
-  + Tactical Pistol Magazine Storage Bag with 5 Mag  — 846463b 1500x1122 sha=759db641968e
-  + Breek Arms Warhammer AR-15 Charging Handle - $35 — 50951b 1280x853 sha=b8ded8af7551
+  + Sellier and Bellot Subsonic FMJ 150 Grain 9mm 50 — 51033b 800x503 sha=9d3c6bac336a
+  + WHEELER SAE/Metric Hex/Torx Screwdriver Set, 55  — 42059b 450x500 sha=db449354dc9d
+  + Beretta APX Magazine .40 S&W 18 Rounds Unpackage — 17313b 327x596 sha=16bf8af159d6
+  + Sellier and Bellot Tactical Ammunition Brass .30 — 42058b 568x528 sha=cf5c3a090318
+  + *BLEM* Right To Bear 16" Straight Profile Barrel — 49108b 1000x889 sha=4e843be1d07d
+  + ZEV PRO CURVED FACE TRIGGER UPGRADE BAR KIT FOR  — 28179b 747x415 sha=837749adec09
+  + Glock 19 / 23 / 25 / 32 Gen 3 Complete Factory O — 62893b 1000x1000 sha=0daa7658f0a3
+  + Winchester 9mm Luger 124 gr FMJ USA 50/Box - $12 — 73830b 1238x592 sha=e088114de700
+  + Federal Top Gun 12 Gauge 2-3/4" 1-1/8oz. #7.5 Sh — 102056b 988x618 sha=2354aed6c2d6
+  + Christensen Arms Mesa Left Hand 6.5 Creedmoor 22 — 11157b 900x133 sha=fda7cc6d268f
+  + Inland I-CAN .45 Caliber Suppressor .578x28 - $4 — 14849b 800x187 sha=1e743557f171
+  + CMMG Dissent MK47 7.62x39mm 14.3" barrel (Pinned — 27703b 967x300 sha=733d833b9c3e
+  + AK-47 75 Round Drum Magazine, Rear Load, Made In — 503658b 1318x1188 sha=801a3a5b066f
+  + Classic Firearms AR-15 30 Round Enhanced Magazin — 61601b 569x599 sha=20b22ea162db
+  + Hornady Critical Defense Nickel Plated Brass .45 — 94669b 675x656 sha=1df3ff713368
+  + Sig Sauer Foxtrot2R Flat Dark Earth 700 Lumen We — 18313b 565x279 sha=3fbf6694fbfc
+  + Arsenal 7.62x39mm Black Polymer 5 Round Magazine — 41632b 631x800 sha=6bdf95da15e2
+  + Glock 19 V Kavorka Flat Dark Earth 9mm 4" Ported — 35300b 656x486 sha=7082222fc8c6
+  + Sig Sauer P320 AXG Legion 9mm 3.9" 10rd w/ Romeo — 57503b 1000x776 sha=e150b2f236d7
+  + Heckler and Koch USP V7 LEM 9mm 4.25" Barrel 15- — 25742b 631x444 sha=21bd945ba4c9
+  + Pro Mag Industries Drum 9mm 50-Rounds Fits Tauru — 19977b 258x628 sha=7638aea1ae09
+  + Magtech 20 Gauge 2.75 in 13/16 Oz TTT F Shot 25/ — 77465b 929x819 sha=d9e7d47f7b72
   x Charles Daly 101 12GA 20 BLK SINGLE SHOT MC-1XXF — image not downloadable
-  + BROWNELLS - Remington Oversized Bolt Knob - $11. — 16168b 612x401 sha=cbef338b62c4
-  + Hornady Frontier .223rem, 55gr FMJ, 150rd Box -  — 61139b 695x759 sha=f4024b13454c
-  + Sonicore Paradox DT Direct Thread - $244.99 (Add — 8184b 316x230 sha=d74853247473
-  + Hornady Ready Defense Combo Pack 9mm, 115gr FMJ  — 51952b 936x465 sha=f33a43852e53
-  + AR15 Lower Build Kit with Magpul MOE Stock & Gri — 73324b 812x778 sha=8cd1767e95b6
-  + Geissele Automatics Super Duty MOD1 5.56 NATO AR — 24519b 1010x328 sha=9209a7b854e2
-  + Geissele Super Duty Assembled AR-15 Upper Receiv — 9918b 361x271 sha=3ef70b991c26
-  + Springfield 1911 Prodigy 4.25" 9mm 20rd / 17rd P — 16327b 424x277 sha=10ddc54ba63c
-  + Tisas 1911 Night Stalker 9mm 5" Grey - $599.95 — 8741b 360x255 sha=05c3364e42f2
-  + Glock 17 Handguns Roundup — 143854b 1170x844 sha=3f224372106d
-  + The Triggered Company Disruptor AR-15 FRT 3 Posi — 23681b 804x507 sha=755cd7a99a9f
-  + The Triggered Company LAT Match Grade AR-15 Ambi — 50929b 743x793 sha=7d43de2ab38d
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Winchester Repeating Arms 535204144 Model 70 Saf — image not downloadable
-  + G-Force Jawbone 5" 9mm 33rd Pistol, Black/Gray - — 36578b 1000x562 sha=ecf60fafc279
   x Beretta 92XI Splinter Camo 9MM 18-Round Handgun  — image not downloadable
 
-fixed 46, failed 6  (88% success)
-distinct images: 46 across 46 deals
+fixed 22, failed 5  (81% success)
+distinct images: 22 across 22 deals
 PASS — no image shared between products
