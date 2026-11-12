@@ -1,33 +1,37 @@
-600 scanned, 27 need a real image, 14 coupon posts skipped
+600 scanned, 30 need a real image, 14 coupon posts skipped
 
-  + Sellier and Bellot Subsonic FMJ 150 Grain 9mm 50 — 51033b 800x503 sha=9d3c6bac336a
-  + WHEELER SAE/Metric Hex/Torx Screwdriver Set, 55  — 42059b 450x500 sha=db449354dc9d
-  + Beretta APX Magazine .40 S&W 18 Rounds Unpackage — 17313b 327x596 sha=16bf8af159d6
-  + Sellier and Bellot Tactical Ammunition Brass .30 — 42058b 568x528 sha=cf5c3a090318
-  + *BLEM* Right To Bear 16" Straight Profile Barrel — 49108b 1000x889 sha=4e843be1d07d
-  + ZEV PRO CURVED FACE TRIGGER UPGRADE BAR KIT FOR  — 28179b 747x415 sha=837749adec09
-  + Glock 19 / 23 / 25 / 32 Gen 3 Complete Factory O — 62893b 1000x1000 sha=0daa7658f0a3
-  + Winchester 9mm Luger 124 gr FMJ USA 50/Box - $12 — 73830b 1238x592 sha=e088114de700
-  + Federal Top Gun 12 Gauge 2-3/4" 1-1/8oz. #7.5 Sh — 102056b 988x618 sha=2354aed6c2d6
-  + Christensen Arms Mesa Left Hand 6.5 Creedmoor 22 — 11157b 900x133 sha=fda7cc6d268f
-  + Inland I-CAN .45 Caliber Suppressor .578x28 - $4 — 14849b 800x187 sha=1e743557f171
-  + CMMG Dissent MK47 7.62x39mm 14.3" barrel (Pinned — 27703b 967x300 sha=733d833b9c3e
-  + AK-47 75 Round Drum Magazine, Rear Load, Made In — 503658b 1318x1188 sha=801a3a5b066f
-  + Classic Firearms AR-15 30 Round Enhanced Magazin — 61601b 569x599 sha=20b22ea162db
-  + Hornady Critical Defense Nickel Plated Brass .45 — 94669b 675x656 sha=1df3ff713368
-  + Sig Sauer Foxtrot2R Flat Dark Earth 700 Lumen We — 18313b 565x279 sha=3fbf6694fbfc
-  + Arsenal 7.62x39mm Black Polymer 5 Round Magazine — 41632b 631x800 sha=6bdf95da15e2
-  + Glock 19 V Kavorka Flat Dark Earth 9mm 4" Ported — 35300b 656x486 sha=7082222fc8c6
-  + Sig Sauer P320 AXG Legion 9mm 3.9" 10rd w/ Romeo — 57503b 1000x776 sha=e150b2f236d7
-  + Heckler and Koch USP V7 LEM 9mm 4.25" Barrel 15- — 25742b 631x444 sha=21bd945ba4c9
-  + Pro Mag Industries Drum 9mm 50-Rounds Fits Tauru — 19977b 258x628 sha=7638aea1ae09
-  + Magtech 20 Gauge 2.75 in 13/16 Oz TTT F Shot 25/ — 77465b 929x819 sha=d9e7d47f7b72
+  + OEM Mil-Spec AR-15 Lower Parts Kit - AR15-Lower- — 53927b 973x630 sha=6e4149a07262
+  + Kershaw Appa Folding Tactical Pocket Knife, Spee — 377010b 1500x993 sha=afcd8b93d3f3
+  + ATI Schmeisser 5.56 / .223 AR-15 60-Round Window — 391788b 1270x1092 sha=6f5a6d8a27c4
+  + Partisan Triggers Disruptor AR-15 3 Position Dro — 43392b 1500x1000 sha=0de5ddc3f724
+  + ArmaLite DEF15 M-15 Semi-Auto Rifle, 5.56X45mm/. — 9709b 588x178 sha=83d878a41e83
+  + B&T Impuls-45-M 45 ACP Modular Suppressor - $719 — 56662b 1350x676 sha=22e427ec1120
+  + Hera Arms H3T GEN 2 Transparent Frame 30-Round P — 62580b 1280x853 sha=a65056d84e7a
+  + AGM Voyage TB50-384 Thermal LRF Binoculars - $19 — 47451b 864x616 sha=24bbcbf3f629
+  + Semi auto PPS-43 fire control group - $198.99 — 39670b 750x1000 sha=02855f2712cf
+  + Heckler and Koch VP9CC 9mm 3.13" Barrel 10-Round — 79584b 1033x865 sha=cd379e9bdb05
+  + PIKE ARMS PPS-43 9MM luger Barrel - 10" SMG Leng — 18623b 500x400 sha=7f19025cf2cd
+  + Early Black Friday: Gear Deals That Don't Miss @ — 43709b 600x400 sha=711178070eef
+  + Holosun HS507COMP ELITE Red Dot Sight - Precisio — 44388b 1000x1000 sha=fa79a7f289d8
+  + Pre-Black Friday Deals: Save Up to 14% on Rifle  — 136544b 557x540 sha=45407188dbc4
+  + Early Black Friday Deals Are Live @ Classic Fire — 22346b 600x225 sha=4808e092fb63
+  + Bass Pro Shops/Cabela's Black Friday Countdown:  — 64693b 460x207 sha=dbbff3ca4fa0
+  + Taurus TX9 Full-Size 9mm 4.5" 17 Rd Optic Ready  — 30159b 605x466 sha=1eb2fc846069
+  + GLOCK G19M MOS 9mm Rebuilt Pistol – 15+1 Capacit — 38412b 675x480 sha=04807ca47fd3
+  + Colt EPR Gen II PRO 556 11.5 30 Rd SBR - $1340.7 — 12205b 562x355 sha=4a18517963e4
+  + Remington UMC Handgun Subsonic 9mm, 147gr FMJ, 5 — 73933b 922x498 sha=7f36a0bd84d0
+  + PSA Sabre-10A1 Forged 14.5" 6.5 Creedmoor Mid-Le — 40412b 1500x457 sha=a66644fb819e
+  + SG Batmaz PA 12 Gauge 20" 4rd Pump Action Shotgu — 28157b 1500x347 sha=37eb901e393d
+  x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
+  + Browning Wicked Wing XD 12-Ga. 3" 1-1/4 oz. Shot — 44465b 478x488 sha=4d521c288ac3
+  + Barska Huntmaster Rifle Scope with Rings - $65.9 — 11143b 492x179 sha=c8a4ef9af570
+  ... 25/30  ok=24 fail=1
   x Charles Daly 101 12GA 20 BLK SINGLE SHOT MC-1XXF — image not downloadable
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Winchester Repeating Arms 535204144 Model 70 Saf — image not downloadable
   x Beretta 92XI Splinter Camo 9MM 18-Round Handgun  — image not downloadable
 
-fixed 22, failed 5  (81% success)
-distinct images: 22 across 22 deals
+fixed 24, failed 6  (80% success)
+distinct images: 24 across 24 deals
 PASS — no image shared between products
