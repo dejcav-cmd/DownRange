@@ -1,37 +1,17 @@
-600 scanned, 30 need a real image, 14 coupon posts skipped
+600 scanned, 11 need a real image, 13 coupon posts skipped
 
-  + OEM Mil-Spec AR-15 Lower Parts Kit - AR15-Lower- — 53927b 973x630 sha=6e4149a07262
-  + Kershaw Appa Folding Tactical Pocket Knife, Spee — 377010b 1500x993 sha=afcd8b93d3f3
-  + ATI Schmeisser 5.56 / .223 AR-15 60-Round Window — 391788b 1270x1092 sha=6f5a6d8a27c4
-  + Partisan Triggers Disruptor AR-15 3 Position Dro — 43392b 1500x1000 sha=0de5ddc3f724
-  + ArmaLite DEF15 M-15 Semi-Auto Rifle, 5.56X45mm/. — 9709b 588x178 sha=83d878a41e83
-  + B&T Impuls-45-M 45 ACP Modular Suppressor - $719 — 56662b 1350x676 sha=22e427ec1120
-  + Hera Arms H3T GEN 2 Transparent Frame 30-Round P — 62580b 1280x853 sha=a65056d84e7a
-  + AGM Voyage TB50-384 Thermal LRF Binoculars - $19 — 47451b 864x616 sha=24bbcbf3f629
-  + Semi auto PPS-43 fire control group - $198.99 — 39670b 750x1000 sha=02855f2712cf
-  + Heckler and Koch VP9CC 9mm 3.13" Barrel 10-Round — 79584b 1033x865 sha=cd379e9bdb05
-  + PIKE ARMS PPS-43 9MM luger Barrel - 10" SMG Leng — 18623b 500x400 sha=7f19025cf2cd
-  + Early Black Friday: Gear Deals That Don't Miss @ — 43709b 600x400 sha=711178070eef
-  + Holosun HS507COMP ELITE Red Dot Sight - Precisio — 44388b 1000x1000 sha=fa79a7f289d8
-  + Pre-Black Friday Deals: Save Up to 14% on Rifle  — 136544b 557x540 sha=45407188dbc4
-  + Early Black Friday Deals Are Live @ Classic Fire — 22346b 600x225 sha=4808e092fb63
-  + Bass Pro Shops/Cabela's Black Friday Countdown:  — 64693b 460x207 sha=dbbff3ca4fa0
-  + Taurus TX9 Full-Size 9mm 4.5" 17 Rd Optic Ready  — 30159b 605x466 sha=1eb2fc846069
-  + GLOCK G19M MOS 9mm Rebuilt Pistol – 15+1 Capacit — 38412b 675x480 sha=04807ca47fd3
-  + Colt EPR Gen II PRO 556 11.5 30 Rd SBR - $1340.7 — 12205b 562x355 sha=4a18517963e4
-  + Remington UMC Handgun Subsonic 9mm, 147gr FMJ, 5 — 73933b 922x498 sha=7f36a0bd84d0
-  + PSA Sabre-10A1 Forged 14.5" 6.5 Creedmoor Mid-Le — 40412b 1500x457 sha=a66644fb819e
-  + SG Batmaz PA 12 Gauge 20" 4rd Pump Action Shotgu — 28157b 1500x347 sha=37eb901e393d
+  + Streamlight TLR-1 HL Weapon Light 1000 Lumens Ou — 42085b 1000x666 sha=e1517a13277a
+  + Geissele Automatics Super Duty Stripped AR-15 Lo — 34278b 1100x734 sha=b20e8b260266
+  + Walther PD380 .380 ACP 9-Round Pistol Magazine - — 12116b 216x665 sha=26200b541ff0
+  + RTB Dedicated .22LR Stainless Steel BCG CMMG Com — 23880b 880x587 sha=8855422564f5
+  x Winchester Model 94 Sporter 30-30, 24" Round/Oct — image not downloadable
+  x Chiappa Firearms 930.383 101 Full Size 28 Gauge  — image not downloadable
   x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
-  + Browning Wicked Wing XD 12-Ga. 3" 1-1/4 oz. Shot — 44465b 478x488 sha=4d521c288ac3
-  + Barska Huntmaster Rifle Scope with Rings - $65.9 — 11143b 492x179 sha=c8a4ef9af570
-  ... 25/30  ok=24 fail=1
   x Charles Daly 101 12GA 20 BLK SINGLE SHOT MC-1XXF — image not downloadable
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Winchester Repeating Arms 535204144 Model 70 Saf — image not downloadable
-  x Beretta 92XI Splinter Camo 9MM 18-Round Handgun  — image not downloadable
 
-fixed 24, failed 6  (80% success)
-distinct images: 24 across 24 deals
+fixed 4, failed 7  (36% success)
+distinct images: 4 across 4 deals
 PASS — no image shared between products
