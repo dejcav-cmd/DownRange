@@ -233,7 +233,18 @@ def main():
     except Exception as e:
         result["error"] = f"could not fetch source page: {e}"; return finish()
     cands = collect_image_urls(page_html)
-    cands = [u for u in cands if not BAD.search(u)]
+    # Unwrap Cloudflare image-resizing URLs to the original file, keep only the review's own photos
+    norm = []
+    for u in cands:
+        m = re.search(r"/(https://images\.hookandbarrel\.com/[^?]+)$", u)
+        o = m.group(1) if m else u
+        o = re.sub(r"-\d{2,4}x\d{2,4}(\.\w+)$", r"\1", o)
+        if (o.startswith("https://images.hookandbarrel.com/2026/0")
+                and re.search(r"/2026/0[78]/", o)
+                and not re.search(r"popup|cover|exclusive|avif", o, re.I)
+                and not BAD.search(o) and o not in norm):
+            norm.append(o)
+    cands = sorted(norm, key=lambda u: (0 if "LEAD" in u else 1))
     result["candidates"] = cands[:40]
     used_rows = sanity_query('*[_type=="blogPost" && _id != "%s"]{imageUrl}' % BLOG_ID) or []
     used = " ".join(r.get("imageUrl") or "" for r in used_rows)
@@ -243,6 +254,8 @@ def main():
         img = fetch_valid(u)
         if not img or img["sha1"] in seen: continue
         seen.add(img["sha1"])
+        if got and img["w"] / img["h"] < 1.2:
+            result["steps"].append({"skip_portrait_body": u}); continue
         if not got and img["sha1"] in used:
             result["steps"].append({"skip_hero_used": u}); continue
         up = upload(img, f"g45-gen6-{len(got) + 1}.{'png' if img['mime']=='image/png' else 'webp' if img['mime']=='image/webp' else 'jpg'}")
