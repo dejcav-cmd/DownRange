@@ -18,27 +18,33 @@
       ]
     },
     {
-      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/38c4067fac7b30ac5b60a1e6437a63590062a61a-1456x2071.webp",
-      "src": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D1036%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/",
+      "skip_portrait_body": "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6194.jpg"
+    },
+    {
+      "skip_portrait_body": "https://images.hookandbarrel.com/2026/07/G45-Gen6_Technical_R_45-Degree_20251014_134.jpg"
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/ee304edfd15e4fd568342e50d0b424e8d68a953a-1800x1200.jpg",
+      "src": "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6235.jpg",
       "dims": [
-        1456,
-        2071
+        1800,
+        1200
       ]
     },
     {
-      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/125bbdb06f5b139371fbb4b820c9f641029e173f-2513x3263.webp",
-      "src": "https://cdn.shopify.com/s/files/1/0812/4933/7601/files/CV1_H_B_11_12_new_Cover.jpg?v=1791900335",
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/5218ddfebdcc675a5e24695a5d7bc4523913ffd0-1800x1200.jpg",
+      "src": "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6242.jpg",
       "dims": [
-        2513,
-        3263
+        1800,
+        1200
       ]
     },
     {
       "mutate": {
-        "transactionId": "dCEclPjcksN7pCj4dz4uHD",
+        "transactionId": "LEC4NLH3Z6ZtqtcNHrbzDO",
         "results": [
           {
-            "operation": "create"
+            "operation": "update"
           }
         ]
       }
@@ -47,35 +53,13 @@
   "page_len": 151949,
   "candidates": [
     "https://images.hookandbarrel.com/2026/07/webcrop-LEAD-IMG_2521.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D800%2Ch%3D450%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-LEAD-IMG_2521.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D800%2Ch%3D600%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-LEAD-IMG_2521.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D800%2Ch%3D800%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-LEAD-IMG_2521.jpg",
     "https://images.hookandbarrel.com/2026/08/Glock-G45-Gen6.webp",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D1024%2Ch%3D683%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-LEAD-IMG_2521.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D420%2Ch%3D360%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/08/0hL1U5nv-Glock-G45-Gen6.webp",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D1036%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-IMG_6194.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D640%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/G45-Gen6_Technical_R_45-Degree_20251014_134.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D485%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-IMG_6235.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D485%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-IMG_6242.jpg",
     "https://images.hookandbarrel.com/2026/08/0hL1U5nv-Glock-G45-Gen6.webp",
-    "https://images.hookandbarrel.com/2026/08/Glock-G45-Gen6-2.avif",
-    "https://images.hookandbarrel.com/2026/08/Glock-G45-Gen6-3.avif",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D485%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/07/webcrop-IMG_6170.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D444%2Ch%3D296%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2025/12/Glock-Gen6-Close_9.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D444%2Ch%3D296%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/04/LEAD-1-6.jpg",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D444%2Ch%3D296%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2025/03/8.webp",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D200%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://cdn.shopify.com/s/files/1/0812/4933/7601/files/CV1_H_B_11_12_new_Cover.jpg?v=1791900335",
-    "https://images.hookandbarrel.com/cdn-cgi/image/w%3D512%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images.hookandbarrel.com/2026/10/u8BUeJw9-SomethingExclusivePopup.jpg",
-    "https://cdn.shopify.com/s/files/1/0812/4933/7601/files/CV1_H_B_11_12_new_Cover.jpg?v=1791900335",
-    "https://images.hookandbarrel.com/2026/10/u8BUeJw9-SomethingExclusivePopup.jpg",
-    "https://images.hookandbarrel.com/2025/12/Glock-Gen6-Close_9.jpg",
-    "https://images.hookandbarrel.com/2025/03/8.webp",
-    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6194-720x1024.jpg",
-    "https://images.hookandbarrel.com/2026/07/G45-Gen6_Technical_R_45-Degree_20251014_134-1024x901.jpg",
-    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6235-1024x683.jpg",
-    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6242-1024x683.jpg",
-    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6170-1024x683.jpg",
-    "https://images.hookandbarrel.com/2026/04/LEAD-1-6.jpg"
+    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6194.jpg",
+    "https://images.hookandbarrel.com/2026/07/G45-Gen6_Technical_R_45-Degree_20251014_134.jpg",
+    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6235.jpg",
+    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6242.jpg",
+    "https://images.hookandbarrel.com/2026/07/webcrop-IMG_6170.jpg"
   ],
   "verify": {
     "_id": "blog-glock-g45-gen6-hook-barrel-feature",
@@ -91,74 +75,5 @@
   },
   "blog_url": "https://www.downrangeco.com/blog/glock-g45-gen6-review-paul-rackley-hook-and-barrel",
   "words": 706,
-  "debug": [
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D800%2Ch%3D450%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqua",
-      "why": "size 129408 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D800%2Ch%3D600%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqua",
-      "why": "size 171870 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D800%2Ch%3D800%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqua",
-      "why": "size 171870 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D1024%2Ch%3D683%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqu",
-      "why": "size 195939 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D420%2Ch%3D360%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/http",
-      "why": "size 28336 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D640%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/http",
-      "why": "size 150152 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D485%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/http",
-      "why": "size 31112 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D485%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/http",
-      "why": "size 146378 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/2026/08/Glock-G45-Gen6-2.avif",
-      "why": "size 18855 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/2026/08/Glock-G45-Gen6-3.avif",
-      "why": "size 73900 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D728%2Ch%3D485%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/http",
-      "why": "size 58699 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D444%2Ch%3D296%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqua",
-      "why": "size 44175 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D444%2Ch%3D296%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqua",
-      "why": "size 36926 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D444%2Ch%3D296%2Cfit%3Dcrop%2Cgravity%3Dface%2Cdpr%3D2%2Cqua",
-      "why": "size 100539 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D200%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://cdn.sh",
-      "why": "size 50080 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D200%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://cdn.sh",
-      "why": "size 50080 kd None"
-    },
-    {
-      "reject": "https://images.hookandbarrel.com/cdn-cgi/image/w%3D512%2Cdpr%3D2%2Cquality%3D80%2Cformat%3Dauto/https://images",
-      "why": "size 106632 kd None"
-    }
-  ]
+  "debug": []
 }
