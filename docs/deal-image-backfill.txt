@@ -1,26 +1,12 @@
-600 scanned, 28 need a real image, 13 coupon posts skipped
+600 scanned, 14 need a real image, 12 coupon posts skipped
 
-  + SABRE RED Pepper Gel Spray for Runners Gel is Sa — 23889b 500x500 sha=34a4c885e366
-  + Glow in The Dark AMEND2 AR-15 Mod-2 .223 / 5.56  — 169267b 1258x832 sha=c0d12ca5d9e3
-  + Vortex Crossfire II 1-4x24mm SFP V-Brite MOA LPV — 378405b 1500x1000 sha=39e8f0565eda
-  + Tactical Belt Heavy-Duty & Quick Release Militar — 123073b 679x704 sha=d225c61e4328
-  + Ruger Glenfield Model A Moss Green Splatter 30-0 — 25014b 1200x396 sha=d1559b913a80
-  + Mora Arms MP5, SP89, HK94 9mm Luger 30-Round Mag — 20365b 700x700 sha=86850a86ef6f
-  + Sig Sauer ROMEO2 1x Red Dot - 3 MOA Dot - $449.7 — 87923b 1000x1000 sha=7a01710bda72
-  + Federal AE9AP American Eagle 9mm 124 GR FMJ 50 R — 18759b 386x386 sha=839448623a4a
-  + Mec-Gar Glock 19 9mm 18-Round Anti-Friction Maga — 26581b 717x700 sha=69da0dfb20b2
-  + Canik Prime Radian 9mm 3.8" 17 Rd BLK w/ ONXYc O — 51349b 806x731 sha=866ef19fbe91
-  + Beretta APX-A1 Tactical 9mm 4.8" 21rd Full Size  — 195730b 692x494 sha=671dc14c56a2
-  + Century Arms LFA Apollo 11 V2 Full Size 9mm 4.9" — 50421b 449x342 sha=bb55a968c37a
-  + Sig Sauer Tango-SPR 1-4x24mm, Hellfire FL-4 Illu — 30708b 879x442 sha=121a02af3b63
-  + Marlin 1894 MAD PIG 357MAG 16.1″ ODG - $2007.99 — 10752b 583x153 sha=2c89ee49c456
+  + Athlon Optics Midas TAC Gen2 HD 5-30x56mm FFP AP — 18900b 767x409 sha=4f9b3b3e1656
+  + Winchester 12Ga 2-3/4" Super-X Low Recoil 1oz Ri — 126895b 1200x850 sha=d9fb0aecbd79
+  + *Bundle* Magpul PMAG GEN 2 MOE AR-15 30 Round Ma — 56976b 850x811 sha=731fe9c7d8a9
+  + Norma Range & Training 5.56 55gr FMJ, 250rd - $1 — 35205b 487x320 sha=a1974eb6f962
+  + NBS AR-15/10 M-LOK Handstop - $9.95 — 18180b 439x353 sha=7c957a1fa04e
   x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
   x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
-  + Amend2 Mod 2 20rds 7.62x51mm/.308 Win Magazine - — 9374b 195x416 sha=07f6584d224b
-  + PSA 16" M4 Carbine 1:7 Nitride 13.5" Lightweight — 34661b 1500x293 sha=c1d487e4edc5
-  + Black Friday Early Access @Guns.com — 27214b 456x381 sha=9b11793bba70
-  + Wolfpack Armory AR45 Rifle Lower Build Kit w/ Mi — 14574b 623x358 sha=d9dc99796e9f
-  + HK Heckler & Koch MR762 308 Flecktarn Limited Ed — 53454b 1500x366 sha=3c9c7220b57e
   x Winchester Model 94 Sporter 30-30, 24" Round/Oct — image not downloadable
   x Chiappa Firearms 930.383 101 Full Size 28 Gauge  — image not downloadable
   x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
@@ -29,6 +15,6 @@
   x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
   x Winchester Repeating Arms 535204144 Model 70 Saf — image not downloadable
 
-fixed 19, failed 9  (67% success)
-distinct images: 19 across 19 deals
+fixed 5, failed 9  (35% success)
+distinct images: 5 across 5 deals
 PASS — no image shared between products
