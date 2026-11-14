@@ -41,7 +41,7 @@
     },
     {
       "mutate": {
-        "transactionId": "LEC4NLH3Z6ZtqtcNHrbzDO",
+        "transactionId": "dCEclPjcksN7pCj4dz8i0D",
         "results": [
           {
             "operation": "update"
@@ -74,6 +74,6 @@
     "title": "GLOCK G45 Gen6 Review: What Paul Rackley's Range Test Found"
   },
   "blog_url": "https://www.downrangeco.com/blog/glock-g45-gen6-review-paul-rackley-hook-and-barrel",
-  "words": 706,
+  "words": 699,
   "debug": []
 }
