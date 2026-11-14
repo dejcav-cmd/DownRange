@@ -213,7 +213,6 @@ def build_body(f1, f2, f3):
         f"<p>The complete test, including Rackley's drill notes and ammunition list, is on {hb}: {review}. "
         f"For more gun coverage, see {ilink('/releases', 'new releases')}, {ilink('/news', 'news')} and {ilink('/blog', 'the DownRange blog')}. "
         "Pricing and availability change; confirm local laws before you buy: " + ilink("/laws", "state gun laws") + ".</p>",
-        '<p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; DJ Cavalcanti</em><br/><strong>DJ Cavalcanti, DownRange Founder</strong></p>',
     ]
     return "\n".join(p for p in parts if p)
 

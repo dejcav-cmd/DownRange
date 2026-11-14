@@ -249,5 +249,4 @@ def build_body(hero_credit_html, img_one, img_two, img_three):
     parts.append("<h2>Sources</h2>")
     parts.append(sources())
     parts.append(f'<p style="font-size:.9rem;color:var(--text-dim);">More coverage: {news} and {blog}. This article is analysis, not legal advice. We will update it as outstanding races are called.</p>')
-    parts.append('<p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; DJ Cavalcanti</em><br/><strong>DJ Cavalcanti, DownRange Founder</strong></p>')
     return "\n".join(p for p in parts if p)
