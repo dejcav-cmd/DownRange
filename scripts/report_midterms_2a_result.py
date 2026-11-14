@@ -39,7 +39,7 @@ sha = None
 status, body = gh(api_url)
 if status == 200:
     sha = body.get("sha")
-payload = {"message": "chore: midterms 2A blog publish result", "content": content_b64}
+payload = {"message": os.environ.get("COMMIT_MSG", "chore: midterms 2A blog publish result"), "content": content_b64}
 if sha:
     payload["sha"] = sha
 status, body = gh(api_url, "PUT", payload)
