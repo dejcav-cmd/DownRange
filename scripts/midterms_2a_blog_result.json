@@ -13,13 +13,13 @@
     {
       "body_images": [
         "File:\"I Voted in Arlington\" Sticker (8162743802).jpg",
-        "File:\"I Voted\" sticker; 2026 New York State elections.jpg",
-        "File:\"I voted\" sticker (2261325851).jpg"
+        "File:\"I Voted\" Sticker from Palm Beach County during the 2026 Midterm Elections.jpg",
+        "File:\"I Voted\" sticker; 2026 New York State elections.jpg"
       ]
     },
     {
       "mutate": {
-        "transactionId": "AlVcwo0KoBglbRM1lZyXGD",
+        "transactionId": "LEC4NLH3Z6ZtqtcNHrefVO",
         "results": [
           {
             "operation": "update"
@@ -39,11 +39,11 @@
     "readTime": 21,
     "slug": "midterms-2a-outlook-by-state-2026",
     "socialScheduleAt": "2026-11-04T14:35:04Z",
-    "socialScheduleDone": false,
+    "socialScheduleDone": true,
     "status": "published",
     "title": "2026 Midterms: What the Results Mean for Gun Owners, State by State"
   },
   "blog_url": "https://www.downrangeco.com/blog/midterms-2a-outlook-by-state-2026",
-  "words": 4080,
+  "words": 4072,
   "debug": []
 }
