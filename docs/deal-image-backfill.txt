@@ -1,16 +1,23 @@
-600 scanned, 19 need a real image, 11 coupon posts skipped
+600 scanned, 26 need a real image, 11 coupon posts skipped
 
-  + Kimber PepperBlaster 3 Gray 2 Independent Charge — 15241b 500x393 sha=d3f0082e56e5
-  + Maxim Defense CQB G7 Standard Stock, FDE - $389. — 29203b 1000x666 sha=1dcfd26f8408
-  + Smith & Wesson Bodyguard 2.0 380 ACP Semi-Auto P — 92040b 1000x666 sha=83d91877f359
-  + Savior Equipment American Classic Shorty Double  — 22261b 509x275 sha=ac2d2a4d69cf
-  + Canik MC9L/MC9LS Magazine 9mm 17-Rounds - $37.47 — 22688b 451x800 sha=7d76683e9174
-  + Speer LAWMAN 40 S&W 165 Grain TMJ 1000 Rnds - $3 — 57040b 831x490 sha=50a643201950
-  + Browning X-Bolt Western Hunter LR 6.5 PRC 24" 3r — 11732b 800x117 sha=47fcfee76e13
-  + Rock River Arms Two-Stage Varmint Match Trigger  — 79446b 842x1000 sha=210e2ccff492
-  + Sierra Bullets 380 ACP 90 gr JHP Outdoor Master  — 70575b 828x804 sha=a6467ebbc16d
-  + Sig Sauer P320 X-Compact 9mm 3.6" Barrel 10-Roun — 42819b 653x505 sha=612f36aa1c28
-  + Trijicon 600483 Springfield XD 3-Dot Front & Rea — 12859b 484x322 sha=388a0805e1ef
+  + Swampfox Blade 1x25 Prism Sight, Red BRC - $119. — 119366b 811x640 sha=c1d2ac186c43
+  + PSA 16" Mid-Length 5.56 NATO 1/7 Nitride 13.5" 3 — 26725b 1000x500 sha=166cb2e25306
+  + BLEM PSA AK-47 GF3 Forged Classic Polymer Rifle, — 24902b 1000x500 sha=b3f864c35317
+  + Ruger SP101 22LR 4.2" Small Frame Stainless DA 8 — 379989b 1350x758 sha=377b25103238
+  + Rock Island Model 51261 M200 - 38 Special - $274 — 11422b 400x269 sha=cb3accabbdea
+  + Smith & Wesson MP40 Shield .40 S&W 3.1" barrel 7 — 62983b 843x583 sha=e8ce368db9da
+  + Hornady Frontier FR320 5.56 NATO 75 GR BTHP Matc — 17824b 386x386 sha=7debd7fc227c
+  + Dirty Bird AR-15 Anti-Walk Pin Set - Stainless S — 31907b 1000x853 sha=4f91d0973364
+  + 1/4 zip Woobie Hoodies in 4 color options - $45  — 333608b 1065x1500 sha=b04479e9f5d8
+  + Glock 19C V 9mm 4.02" 10rd Compensated, Black TA — 42118b 762x549 sha=f8493cfc9ed7
+  + Thunder Beast Arms Corp Magnus 30 Cal Suppressor — 175767b 951x511 sha=c05f07615c1d
+  + Charter Boomer 38 SPL 2" 6rd Revolver w/ Conceal — 156424b 586x473 sha=6aea43f889ff
+  + Canik Prime Radian 9mm 3.8" Compensated Barrel 1 — 470806b 928x744 sha=eb42bb4a53bf
+  + CMMG Resolute Aob 5.56nato 16.1in Barrel 30rd Bl — 13344b 641x172 sha=70941a9d972d
+  x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — image not downloadable
+  + Glock 43X "Kavorka" Black Handgun 9mm 3.41" 10rd — 22755b 630x630 sha=8d86a0c325ad
+  x Charles Daly 101 28GA 26" Single Shot Shotgun, C — image not downloadable
+  + Ruger 10/22 TALO 22 LR Semi-Auto Rifle 18.5" Sat — 11286b 587x243 sha=4c5055031090
   x Olight Arkfeld Pro Flat EDC Rechargeable Flashli — image not downloadable
   x Smith & Wesson Bodyguard 2.0, 380 ACP, 2.75" Bar — image not downloadable
   x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
@@ -20,6 +27,6 @@
   x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
   x Charles Daly 101 12GA 20 BLK SINGLE SHOT MC-1XXF — image not downloadable
 
-fixed 11, failed 8  (57% success)
-distinct images: 11 across 11 deals
+fixed 16, failed 10  (61% success)
+distinct images: 16 across 16 deals
 PASS — no image shared between products
