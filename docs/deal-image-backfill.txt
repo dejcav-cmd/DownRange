@@ -1,30 +1,25 @@
-600 scanned, 24 need a real image, 11 coupon posts skipped
+600 scanned, 19 need a real image, 11 coupon posts skipped
 
-  + 47222Savage Arms A22 Pro Varmint 22Mag 22in Barr — 11826b 1000x175 sha=4b6df69a0033
-  + TAYLOR'S & CO. 1911 A1, Straight Grip, 5" .45ACP — 18904b 600x350 sha=2ffad80d5aed
-  + HERITAGE FIREARMS ROUGH RIDER .22 LR 4.75" BARRE — 25625b 800x387 sha=d846c28a0d38
-  + Browning X-Bolt Stalker Long Range .308 Win 26"  — 11313b 1000x180 sha=648e2e71f4eb
-  + Heckler & Koch SP5L 9mm 30 Round Capacity 16" Ba — 38375b 1000x1000 sha=0241cb80d823
-  + Standard Manufacturing DP-12 Double Barrel Pump  — 21793b 550x550 sha=a32b17c4ee9b
-  + Desert Tech SRSA2 Covert .308 Win 6rd Bolt Actio — 39371b 1327x394 sha=f07a03347a09
-  + ATI Milsport RIA AR-15 5.56 NATO Rifle - $469.99 — 45164b 469x469 sha=024ad0cb9aa9
-  + ShootingTargets7 1/4" AR500 IPSC Bullseye Torso  — 129241b 1024x1024 sha=458cff6199c0
-  + Alex Pro Firearms Econo .223/5.56 7.5" Barrel 30 — 36157b 1000x625 sha=2b21d16ac9ea
-  + Rossi GALLERY 22 LR 18" 15 Rd Wood Stock Pump Ri — 22320b 1000x666 sha=674feb58db5c
+  + Kimber PepperBlaster 3 Gray 2 Independent Charge — 15241b 500x393 sha=d3f0082e56e5
+  + Maxim Defense CQB G7 Standard Stock, FDE - $389. — 29203b 1000x666 sha=1dcfd26f8408
+  + Smith & Wesson Bodyguard 2.0 380 ACP Semi-Auto P — 92040b 1000x666 sha=83d91877f359
+  + Savior Equipment American Classic Shorty Double  — 22261b 509x275 sha=ac2d2a4d69cf
+  + Canik MC9L/MC9LS Magazine 9mm 17-Rounds - $37.47 — 22688b 451x800 sha=7d76683e9174
+  + Speer LAWMAN 40 S&W 165 Grain TMJ 1000 Rnds - $3 — 57040b 831x490 sha=50a643201950
+  + Browning X-Bolt Western Hunter LR 6.5 PRC 24" 3r — 11732b 800x117 sha=47fcfee76e13
+  + Rock River Arms Two-Stage Varmint Match Trigger  — 79446b 842x1000 sha=210e2ccff492
+  + Sierra Bullets 380 ACP 90 gr JHP Outdoor Master  — 70575b 828x804 sha=a6467ebbc16d
+  + Sig Sauer P320 X-Compact 9mm 3.6" Barrel 10-Roun — 42819b 653x505 sha=612f36aa1c28
+  + Trijicon 600483 Springfield XD 3-Dot Front & Rea — 12859b 484x322 sha=388a0805e1ef
+  x Olight Arkfeld Pro Flat EDC Rechargeable Flashli — image not downloadable
   x Smith & Wesson Bodyguard 2.0, 380 ACP, 2.75" Bar — image not downloadable
-  + Nighthawk Delegate Commander 9mm - $4730 — 68881b 640x427 sha=1f145e0b97ba
-  + ATI RIA Milsport 450 Bushmaster 16" barrel 1:6 P — 36195b 1500x357 sha=21271633e942
-  + Northtac MVR Reflex Sight Dual Colors Red/Green  — 17395b 1000x500 sha=b557509e523d
-  + Beneli M2 Tactical 12 GA 18.5" 7+1 Rds LE w/ Ove — 15415b 1000x231 sha=7e2d80a99bbc
   x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
   x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
   x Winchester Model 94 Sporter 30-30, 24" Round/Oct — image not downloadable
   x Chiappa Firearms 930.383 101 Full Size 28 Gauge  — image not downloadable
   x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
   x Charles Daly 101 12GA 20 BLK SINGLE SHOT MC-1XXF — image not downloadable
-  x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
-  x Wera 7430 Micro Torque Screwdriver, 0.10-0.34 Nm — unreachable after retries
 
-fixed 15, failed 9  (62% success)
-distinct images: 15 across 15 deals
+fixed 11, failed 8  (57% success)
+distinct images: 11 across 11 deals
 PASS — no image shared between products
