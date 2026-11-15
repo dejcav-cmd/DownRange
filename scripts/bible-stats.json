@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-11-08T07:00:21.410Z",
+  "generatedAt": "2026-11-15T07:00:21.386Z",
   "content": {
-    "newsArticles": 3259,
-    "blogPosts": 61,
-    "legislation": 439,
+    "newsArticles": 3399,
+    "blogPosts": 64,
+    "legislation": 451,
     "firearmReleases": 35,
-    "videos": 943,
+    "videos": 982,
     "reviews": 3,
     "canadaArticles": 113,
     "brazilArticles": 116
   },
   "operations": {
-    "cronRuns": 4205,
+    "cronRuns": 4280,
     "outreachContacts": 221,
-    "socialPosts": 1588,
+    "socialPosts": 1707,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "Podcasters Who Laughed at Kirk Jokes Donate to Everytown",
-    "newsDate": "2026-11-07T23:13:13.000Z",
+    "newsTitle": "BOE's 4-Ounce IncoLite 9S Failed to Cycle a Glock 19",
+    "newsDate": "2026-11-14T22:58:37.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 4969
+  "totalContentDocs": 5163
 }
