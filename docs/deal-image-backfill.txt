@@ -1,32 +1,52 @@
-600 scanned, 37 need a real image, 10 coupon posts skipped
+600 scanned, 55 need a real image, 3 coupon posts skipped
 
-  + Heritage Rough Rider 22 LR 4.75" 6rd Revolver -  — 39346b 1000x488 sha=caa2aa011378
-  + Heritage Rough Rider 22 LR 6.5" 6rd Revolver - B — 12814b 600x250 sha=ee54af026700
-  + Taurus TXM 5.7 TORO 5'' TH 23rd Pistol, Black -  — 24997b 499x481 sha=7f7af743f0f6
-  + Select Wilson Combat items on SALE @ Brownells — 142550b 1191x1075 sha=f6dd791a5df6
-  + Select Tyrant CNC items on SALE @ Brownells — 149413b 1181x1118 sha=455da5576d40
-  + Select RCBS items on SALE @ Brownells — 127786b 1185x1007 sha=6ed497ab82cd
-  + Select Eotech items on SALE @ Brownells — 52072b 891x495 sha=0ced8141972e
-  + Select CMMG items on SALE @ Brownells — 139900b 1189x1057 sha=092d25c6cb2e
-  + Select Area 419 Items on SALE @ Brownells — 125597b 1183x1045 sha=6480ea778238
-  + Unorthodox Designs SLAP Loader for Sig Sauer P32 — 13944b 399x365 sha=c02fecd6943c
-  + Federal Premium Black Cloud FS Steel 2.75" 12 Ga — 66098b 694x416 sha=2a1da94f9225
-  + Savage Impulse Hog Hunter 6.5 Creedmoor Bolt Act — 11677b 800x143 sha=af9fb26e3d74
-  + North American Arms Mini-Revolver Stainless .22  — 35425b 708x526 sha=ecab0f18a0a7
-  + Glock 9mm 33rd Magazine. Steel Lined and Reinfor — 25338b 747x685 sha=0cc3c605cd89
-  + NcSTAR Keymod AR-15 Mid-length 8.5" Handguard -  — 13107b 450x254 sha=a92edc392cc4
+  + Sellier & Bellot .30-06 150GR FMJ Rifle Ammuniti — 27335b 500x435 sha=ff6e2077dca8
+  + Sig Sauer Venari .30-06 Springfield Ammo 165gr S — 45216b 799x443 sha=6a43cbef9e06
+  + Century Arms AK-47 Drum 7.62X39mm 75 Rounds - $8 — 49418b 900x900 sha=597af1c34399
+  + Rise Armament Combo Kit - RA-535 Black Trigger w — 61819b 1454x1016 sha=58464fef9d87
+  + Alps Outdoorz Bino Harness X Standard 1680D Ball — 125894b 566x493 sha=7c615e6eb269
+  x Precision One 44 Mag Ammunition PONE125 200 Grai — image not downloadable
+  + Winchester American Lever 44 Magnum 240gr JSP 50 — 83945b 524x921 sha=44c668f50af3
+  + Scorpion Ammo 44 Magnum 240gr FP Ammunition 50 r — 47901b 800x800 sha=061ab60c869c
+  + HSM 44M11N Cowboy Action .44 Rem Mag 200 gr RNFP — 105967b 1000x727 sha=976b6bd3b217
+  + Sellier & Bellot Handgun Ammo - .44 Remington Ma — 20481b 450x257 sha=cb9ea0d25e26
+  + Sig Sauer 1911 45 ACP 4.2in X-Series Coyote SAO, — 74287b 1200x928 sha=1319bfc88942
+  + Nano Roni, Glock 17/19/19X/22/23/25/31/32/45 - B — 81582b 760x529 sha=466c76d98ef7
+  + Gideon Granite RMR Competition Green Dot 6 Moa - — 15341b 344x343 sha=b92372517c44
+  + Winchester Supreme THSX 384 Thermal Hunting Sigh — 17592b 509x361 sha=3054b9a47193
+  + OA Defense 2311 9mm 5" 17rd Semi Automatic Pisto — 25832b 687x452 sha=870011ea235c
+  + Sig Sauer P211-GT5 9mm 5" Barrel (2) 21RD (1) 17 — 20472b 664x620 sha=20afc3256d31
+  + SIG P226 X-Series 9mm 3.8" Bbl (3)18RD Steel Mag — 31284b 1000x836 sha=f641c6b2ca2d
+  + Sig Sauer P365 XL Rose Comp 9mm 3.1" Rose Gold B — 394002b 1105x857 sha=d8c23a2b7c1c
+  + Sig Sauer P365 Flux RXSL 9mm 6", (2) 17rd & (1)  — 40312b 884x610 sha=98cc6af9eb49
+  + Trijicon ACOG 4x32 Scope Dual Illuminated .223 B — 51853b 1000x750 sha=3520179337a8
+  + Holosun ARO CORE 2 MOA Reflex Sight (Red Dot) -  — 39450b 875x685 sha=013f9334a1c8
+  + MOE EPT BTR Pistol Lower Build Kit, Black - $99. — 48942b 1000x533 sha=775d1e6bce90
+  + Alps OutdoorZ Vault Blind Bag, Realtree Timber C — 559802b 925x802 sha=10f74d034f7b
+  + OpticsPlanet Exclusive Rise Armament RA-240 Enha — 29552b 978x550 sha=2be4445fd331
+  + G-Force GFBP Bronze 12 GA 18.5" Barrel 5 Rounds  — 33751b 1000x349 sha=97c7b1f86b7a
+  ... 25/55  ok=24 fail=1
+  + Savior Eq Urban Takedown Rifle Backpack Survival — 16667b 500x500 sha=62c2a08b38b1
+  + SOG Multitool Pliers Pocket Knife PowerPint EDC  — 21583b 500x500 sha=0baf2314163c
+  + B&T Print-XH RBS SC (Ti) Grey 5.56 Suppressor -  — 61588b 497x255 sha=b01348bbeaa1
+  x Strike Industries Polymer FSA Lite Stock - $57.9 — image not downloadable
+  + Stoeger 3500 12 Gauge 3.5" 28" Barrel 4rd Shotgu — 8885b 600x211 sha=77d6a1f0add6
+  + Shadow Systems CR920 Elite 9mm 3.41" 13rd Optic  — 24495b 600x399 sha=cf1e06aa27e9
+  + TAURUS GX2 TORO 9mm 3.38" 13rd Black + Viridian  — 13482b 600x337 sha=99bc507c0b8d
+  + Federal American Eagle 40 S&W Ammo 165 Grain Ful — 64566b 823x593 sha=23d9eb016d56
+  + Presma Muzzle Brake 1/2x28 w/ Blast Forwarding D — 29987b 1000x810 sha=6d9de9c3628a
+  + Toolcraft 6.5 Grendel Bolt Carrier Group - Black — 22477b 1000x666 sha=75f3cb6a41c1
+  + Palmetto State Armory Magpul MOE Lower Build Kit — 54808b 1000x648 sha=196f9af147da
+  + ATI Alpha MX 5.56mm 7.5″ 60rd SBR, MLOK, FU Sigh — 30162b 630x630 sha=9af83d0e1bf0
+  + Streamlight TLR-7 HL-X USB Gun Light Black 69458 — 112194b 1280x1280 sha=dc35f96eeff4
+  + FN SCAR 15P Pistol Black 5.56 NATO 7.5" Bundle w — 95392b 561x452 sha=7d82720d3f79
+  + FN SCAR 15P Pistol FDE 5.56 NATO 7.5" Bundle wit — 1155079b 1036x772 sha=ab7217905ced
+  + SB Tactical SBA5 Brace Only - $84.95 — 64107b 1500x1000 sha=298672ffc802
+  + Ruger Mark IV 22/45 Lite, 22 LR, 4.4" Threaded B — 25551b 660x446 sha=9c6546331823
+  + - $129.99 Tactical Plate Carrier Commando (FREE  — 1333405b 1024x1024 sha=19cab4c6da2c
+  + - $199.99 Tactical Plate Carrier (FREE SHIPPING  — 1134658b 1024x1024 sha=d1fd57943b95
   x Ballistic Advantage Tactical Government Barrel 3 — image not downloadable
-  + RUGER 10/22 Bourbon Edition 22 LR 18.5" 10rd - T — 16911b 991x210 sha=25f3d1b1ca14
-  + Sig Sauer P365 XMacro 9mm, 3.1" Barrel, Glactic  — 27011b 527x436 sha=417e4d24ad33
-  + Bundle Deal * Taurus TX22 with Brace, 22 LR, 4.6 — 30256b 902x465 sha=da4dec6b1f37
-  + Tikka T3X Lite Roughtech Ember .270 Win 22.4" Ba — 8966b 737x165 sha=041177023939
-  + Ruger 10/22 22LR Rife 18.5" Mossy Oak Bottomland — 32615b 1497x310 sha=82269f5d02ec
-  + Smith & Wesson, M&P 15, SBR, Semi-auto Rifle, 22 — 18162b 706x263 sha=6bdbd746f861
-  + CZ-USA 75 D 50th Anniversary Compact Frame 9mm L — 26378b 586x434 sha=cbfc3fb119f9
-  + CZ USA Scorpion EVO 3 S1 .22 LR 16" 10/20 Rd - $ — 17663b 916x254 sha=3689c19deca5
   x SureFire SOCOM762 Ti2 Titanium Fast-Attach Sound — image not downloadable
-  + Cyelee Optics BULL X PRO 1x34.5x26mm Reflex Red  — 54979b 734x553 sha=8c3b623ade26
-  + ZeroTech Optics Trace 3-18x50mm 30mm Tube Rifle  — 27484b 736x550 sha=fc96e204f2e9
   x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — image not downloadable
   x Charles Daly 101 28GA 26" Single Shot Shotgun, C — image not downloadable
   x Olight Arkfeld Pro Flat EDC Rechargeable Flashli — image not downloadable
@@ -36,8 +56,7 @@
   x Winchester Model 94 Sporter 30-30, 24" Round/Oct — image not downloadable
   x Chiappa Firearms 930.383 101 Full Size 28 Gauge  — image not downloadable
   x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
-  x Charles Daly 101 12GA 20 BLK SINGLE SHOT MC-1XXF — image not downloadable
 
-fixed 25, failed 12  (67% success)
-distinct images: 25 across 25 deals
+fixed 42, failed 13  (76% success)
+distinct images: 42 across 42 deals
 PASS — no image shared between products
