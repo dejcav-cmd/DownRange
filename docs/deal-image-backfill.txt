@@ -1,50 +1,37 @@
-600 scanned, 55 need a real image, 3 coupon posts skipped
+600 scanned, 41 need a real image, 3 coupon posts skipped
 
-  + Sellier & Bellot .30-06 150GR FMJ Rifle Ammuniti — 27335b 500x435 sha=ff6e2077dca8
-  + Sig Sauer Venari .30-06 Springfield Ammo 165gr S — 45216b 799x443 sha=6a43cbef9e06
-  + Century Arms AK-47 Drum 7.62X39mm 75 Rounds - $8 — 49418b 900x900 sha=597af1c34399
-  + Rise Armament Combo Kit - RA-535 Black Trigger w — 61819b 1454x1016 sha=58464fef9d87
-  + Alps Outdoorz Bino Harness X Standard 1680D Ball — 125894b 566x493 sha=7c615e6eb269
+  + Beretta Gamekeeper EVO Zippered Cartridge Bag 25 — 494543b 1226x822 sha=0052e7194c43
+  + Daniel Defense CNCDDMCD DDM4 V7P 5.56 NATO 30+1  — 12937b 380x380 sha=a0612cb1c6d4
+  + WEARXI 13-in-1 7.7" Multitool Pocket Knife (Blac — 53654b 500x500 sha=4fedc889bed4
+  + Telguua Heated Gloves for Women Men Made with 3M — 23192b 500x500 sha=55ab40c35d91
+  + BENELLI M2-G1 922r 12ga 18.5" 7rd Gray Std. Stoc — 16831b 887x311 sha=9cdfe0cc57f9
+  + Streamlight TLR-6 SubCompact 100 Lumen Rail Moun — 8884b 555x370 sha=92e08666ad1c
+  + IWI Masada Optic Ready 9mm Pistol With Night Sig — 41192b 951x697 sha=d055a62ec7bd
+  + Winchester American Lever Range .357 Magnum 130g — 96756b 528x982 sha=74ff2701b5ae
+  + Carbon Fiber Rifle Bipod - $129.99 — 11300b 386x386 sha=b2a003c5d316
+  + Timber Creek Outdoors Expert Reactive 5" Self-Ad — 40058b 451x585 sha=858d6edd0160
+  + Kaw Valley Precision AR-15 Trigger Reduced Power — 43780b 1200x873 sha=e339688d7fbb
+  + Browning SA-11 Takedown 22LR Semi-Auto Rifle w/  — 27856b 1294x276 sha=1a506a86e6e8
+  + Uncharted First Aid Pro Black - $19.50 — 85215b 800x800 sha=f6d775b8d43f
+  + Reactive Target Oval 12.5 18.5 inch 5 Pack Black — 34830b 543x700 sha=2895404746e4
+  + Christensen Ridgeline FFT 6.5 Creedmoor 26" barr — 19013b 1000x156 sha=77fc52a64810
+  + SnapSafe Under Bed Safe XXL - $400 — 59880b 1208x622 sha=1b2f6e7dece2
+  + Thunder Beast Arms Fly45 Multi-Cal Suppressor -  — 10079b 584x131 sha=bf41caf8b6fb
+  + Taylors and Co Smoke Wagon Deluxe Case Hardened  — 29860b 800x391 sha=078b08e08146
+  + Sellier & Bellot SB556A Rifle 5.56x45mm NATO 55  — 26278b 504x377 sha=818ba1cb6403
+  + Savage Impulse Big Game Woodland 6.5 Creedmoor 2 — 11125b 757x127 sha=180de93efa90
+  + ZEV Pro Match Barrel For Glock 17 GEN 1-4 - $198 — 14938b 530x370 sha=55064010d62c
+  + Winchester 12 Gauge 2-3/4 Inch 1 Buck 12 Pellet  — 62696b 900x600 sha=8553f2f93fd2
+  + Expo Arms 7075 Stripped AR-15 Upper Receiver - $ — 42614b 1004x666 sha=781698c27346
+  + SureFire Suppressor Optimized 5.56 AR-15 Bolt Ca — 46451b 1019x505 sha=389b982fe9aa
+  + TruGlo PR1 1x25mm Prismatic Red Dot Sight TG-TG8 — 24409b 547x481 sha=f9c743486820
+  ... 25/41  ok=25 fail=0
+  + Sightmark Solitude 8x42 Binoculars SM12002, Colo — 27690b 514x414 sha=36d6d5c39576
+  + Mil-Spec 16" 5.56 NATO 30Rd Semi-Auto M-LOK Midl — 48042b 1126x693 sha=9084794cb220
+  + NBS OOPS! Kit - $6.15 with code NOVEMBER1226 — 34543b 691x756 sha=46e9fc5ff037
+  + Canik METE MC9 Prime Radian Pistol 9mm 3.8 in. B — 53234b 751x605 sha=4376a1ac8a84
+  + Amend2 AR-15 .223 / 5.56 30-Round MOD-C Magazine — 33152b 386x824 sha=8589bb67b2df
   x Precision One 44 Mag Ammunition PONE125 200 Grai — image not downloadable
-  + Winchester American Lever 44 Magnum 240gr JSP 50 — 83945b 524x921 sha=44c668f50af3
-  + Scorpion Ammo 44 Magnum 240gr FP Ammunition 50 r — 47901b 800x800 sha=061ab60c869c
-  + HSM 44M11N Cowboy Action .44 Rem Mag 200 gr RNFP — 105967b 1000x727 sha=976b6bd3b217
-  + Sellier & Bellot Handgun Ammo - .44 Remington Ma — 20481b 450x257 sha=cb9ea0d25e26
-  + Sig Sauer 1911 45 ACP 4.2in X-Series Coyote SAO, — 74287b 1200x928 sha=1319bfc88942
-  + Nano Roni, Glock 17/19/19X/22/23/25/31/32/45 - B — 81582b 760x529 sha=466c76d98ef7
-  + Gideon Granite RMR Competition Green Dot 6 Moa - — 15341b 344x343 sha=b92372517c44
-  + Winchester Supreme THSX 384 Thermal Hunting Sigh — 17592b 509x361 sha=3054b9a47193
-  + OA Defense 2311 9mm 5" 17rd Semi Automatic Pisto — 25832b 687x452 sha=870011ea235c
-  + Sig Sauer P211-GT5 9mm 5" Barrel (2) 21RD (1) 17 — 20472b 664x620 sha=20afc3256d31
-  + SIG P226 X-Series 9mm 3.8" Bbl (3)18RD Steel Mag — 31284b 1000x836 sha=f641c6b2ca2d
-  + Sig Sauer P365 XL Rose Comp 9mm 3.1" Rose Gold B — 394002b 1105x857 sha=d8c23a2b7c1c
-  + Sig Sauer P365 Flux RXSL 9mm 6", (2) 17rd & (1)  — 40312b 884x610 sha=98cc6af9eb49
-  + Trijicon ACOG 4x32 Scope Dual Illuminated .223 B — 51853b 1000x750 sha=3520179337a8
-  + Holosun ARO CORE 2 MOA Reflex Sight (Red Dot) -  — 39450b 875x685 sha=013f9334a1c8
-  + MOE EPT BTR Pistol Lower Build Kit, Black - $99. — 48942b 1000x533 sha=775d1e6bce90
-  + Alps OutdoorZ Vault Blind Bag, Realtree Timber C — 559802b 925x802 sha=10f74d034f7b
-  + OpticsPlanet Exclusive Rise Armament RA-240 Enha — 29552b 978x550 sha=2be4445fd331
-  + G-Force GFBP Bronze 12 GA 18.5" Barrel 5 Rounds  — 33751b 1000x349 sha=97c7b1f86b7a
-  ... 25/55  ok=24 fail=1
-  + Savior Eq Urban Takedown Rifle Backpack Survival — 16667b 500x500 sha=62c2a08b38b1
-  + SOG Multitool Pliers Pocket Knife PowerPint EDC  — 21583b 500x500 sha=0baf2314163c
-  + B&T Print-XH RBS SC (Ti) Grey 5.56 Suppressor -  — 61588b 497x255 sha=b01348bbeaa1
-  x Strike Industries Polymer FSA Lite Stock - $57.9 — image not downloadable
-  + Stoeger 3500 12 Gauge 3.5" 28" Barrel 4rd Shotgu — 8885b 600x211 sha=77d6a1f0add6
-  + Shadow Systems CR920 Elite 9mm 3.41" 13rd Optic  — 24495b 600x399 sha=cf1e06aa27e9
-  + TAURUS GX2 TORO 9mm 3.38" 13rd Black + Viridian  — 13482b 600x337 sha=99bc507c0b8d
-  + Federal American Eagle 40 S&W Ammo 165 Grain Ful — 64566b 823x593 sha=23d9eb016d56
-  + Presma Muzzle Brake 1/2x28 w/ Blast Forwarding D — 29987b 1000x810 sha=6d9de9c3628a
-  + Toolcraft 6.5 Grendel Bolt Carrier Group - Black — 22477b 1000x666 sha=75f3cb6a41c1
-  + Palmetto State Armory Magpul MOE Lower Build Kit — 54808b 1000x648 sha=196f9af147da
-  + ATI Alpha MX 5.56mm 7.5″ 60rd SBR, MLOK, FU Sigh — 30162b 630x630 sha=9af83d0e1bf0
-  + Streamlight TLR-7 HL-X USB Gun Light Black 69458 — 112194b 1280x1280 sha=dc35f96eeff4
-  + FN SCAR 15P Pistol Black 5.56 NATO 7.5" Bundle w — 95392b 561x452 sha=7d82720d3f79
-  + FN SCAR 15P Pistol FDE 5.56 NATO 7.5" Bundle wit — 1155079b 1036x772 sha=ab7217905ced
-  + SB Tactical SBA5 Brace Only - $84.95 — 64107b 1500x1000 sha=298672ffc802
-  + Ruger Mark IV 22/45 Lite, 22 LR, 4.4" Threaded B — 25551b 660x446 sha=9c6546331823
-  + - $129.99 Tactical Plate Carrier Commando (FREE  — 1333405b 1024x1024 sha=19cab4c6da2c
-  + - $199.99 Tactical Plate Carrier (FREE SHIPPING  — 1134658b 1024x1024 sha=d1fd57943b95
   x Ballistic Advantage Tactical Government Barrel 3 — image not downloadable
   x SureFire SOCOM762 Ti2 Titanium Fast-Attach Sound — image not downloadable
   x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — image not downloadable
@@ -55,8 +42,7 @@
   x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
   x Winchester Model 94 Sporter 30-30, 24" Round/Oct — image not downloadable
   x Chiappa Firearms 930.383 101 Full Size 28 Gauge  — image not downloadable
-  x Ruger SP101 38 Spec+P 2.25" FS - Stainless Black — image not downloadable
 
-fixed 42, failed 13  (76% success)
-distinct images: 42 across 42 deals
+fixed 30, failed 11  (73% success)
+distinct images: 30 across 30 deals
 PASS — no image shared between products
