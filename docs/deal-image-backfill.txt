@@ -1,73 +1,27 @@
-600 scanned, 65 need a real image, 3 coupon posts skipped
+600 scanned, 21 need a real image, 2 coupon posts skipped
 
-  + NBS Tactical AR Grip w/ Storage, Black - $5.95 — 44661b 1000x853 sha=5f6764175b92
-  + Arex Delta M OR 9mm 4" 15-Rd Pistol, Grey - $249 — 38082b 835x646 sha=1b61eb92e6e5
-  + Eotech Vudu X Rifle Scope 2-12x40mm - High-Perfo — 17977b 957x340 sha=35732280c064
-  + Spike's Tactical Stripped Lower/Upper Set - Gray — 48465b 1100x733 sha=109b868115d6
-  + SOLGW M4 L89, 5.56 NATO, 14.5" P&W, 30RD, HUXWRX — 66714b 789x286 sha=ba573e5c34a1
-  + Sonicore Skarv 22 .22LR Suppressor, Direct Threa — 38094b 1000x666 sha=3f24346b268c
-  + Ruger American Pistol Compact 9mm 3.55" 17-Rds w — 49883b 1000x666 sha=27af3ba1be98
-  + AR15 Magpul MOE-K2 Grip M4 Flat Dark Earth - $8. — 119849b 1408x1059 sha=d3d97224e88d
-  + The Triggered Company The Disruptor AR-15 FRT 3  — 201244b 837x540 sha=9a9af226bb88
-  + Sentry Hexmag Series 2 AR-15/M4/M16 Rifle Magazi — 14745b 500x500 sha=d9a2fd860000
-  + Smith & Wesson M&P Shield M2.0 9mm 3.1" 10rd Pis — 1398604b 1006x908 sha=17bdce0ee5b1
-  + Kaw Valley Precision AR-15 Trigger Reduced Power — 43780b 1200x873 sha=e339688d7fbb
-  + Browning X-Bolt Hells Canyon Max Long Range 6.5  — 20157b 900x275 sha=b3211f008941
-  + Ruger LC Charger 5.7x28mm Pistol with Threaded B — 31693b 1000x666 sha=b5d370b4777a
-  + SilencerCo Omega 36M 556NATO to 338 LM & 9mm Bla — 31350b 1200x900 sha=74bcbbccdfff
-  + Zev Technologies OZ9 Combat 9mm Pistol w/ 4.49"  — 35010b 900x506 sha=ca0fa1a2f81b
-  + Browning X-BOLT Target Pro Mcmillan 6.5 Creedmoo — 41679b 900x391 sha=5206f9146983
-  + American Furniture Classics Entryway Gun Conceal — 743034b 1500x908 sha=9ff84dc25b0e
-  + Sons of Liberty Gun Works MK1 Recce 5.56 14.5″ – — 15455b 600x600 sha=62dc4b46f620
-  + Global Ordnance 7.62x39 AK-47 30rd Steel Magazin — 15273b 945x630 sha=b3da21c71bba
-  + Advanced Armament Ti- Rant 9m- Hd 9mm Modular Su — 13351b 558x656 sha=57b2c4620b32
-  + Atflbox Silhouette Paper Target 23"X35" Paper fo — 29988b 500x500 sha=afbf4576de22
-  + Tactical Grip Tape, Goon Grip Tape for Magazines — 20553b 500x500 sha=288bec265eba
-  + NBS AR-15 Stripped Upper - AR15-Stripped-Upper-R — 31474b 800x800 sha=04fa63b5158c
-  + Energizer LED Tactical Flashlight, Water Resista — 776570b 1500x823 sha=a4451ed03e64
-  ... 25/65  ok=25 fail=0
-  + Ruger American Rifle Gen II 250th Anniversary 30 — 20336b 1200x208 sha=6c27627e8176
-  + Colt 1911 Defender 45 ACP 3" 7+1 Blued Carbon St — 33340b 1000x775 sha=4f6d5c02b29c
-  + BLUETTI Elite 100 mini Portable Power Station fo — 18796b 500x500 sha=76f21426cc10
-  + AOAORGG 71.2"H Garage Shelving 2500LBS Heavy Dut — 32961b 500x500 sha=6e3ceaa5b486
-  + Advanced Hearing Protection Caldwell E-Max Shado — 122185b 701x569 sha=55c2365d182b
-  + FAB Defense Quick Release 3/4in Flashlight and L — 130664b 563x404 sha=1782b8a211b8
-  + Mec-Gar 1911 .45 ACP 10-Round Match Magazine - $ — 17575b 700x700 sha=2bd939fb5d41
-  + PMC Bronze .380 ACP Ammo 90gr FMJ 50 Rounds - $1 — 47322b 700x700 sha=5263b7fcdc19
-  + RIO Wing & Target 20 Gauge 2-3/4" 8 Shot 7/8 oz  — 15776b 386x386 sha=9ca5270d4ebc
-  + Winchester Autobuck 12 Gauge 2-3/4" #1 Buck 12 P — 32499b 546x482 sha=eba9f5c114e8
-  + Sig Sauer P320 9mm 4.7" 17rd Full Size with Nigh — 319847b 1023x726 sha=f0f76e945bb9
-  + Sig Sauer P320C Compact 9mm 3.9" 15rd NS Pistol, — 333275b 1006x725 sha=d529ca910cad
-  + Sig Sauer P320 Carry 9mm 3.9" 17rd Pistol, Night — 385436b 1040x824 sha=bcc72a487998
-  + S&W Model 632 Ultimate Carry Lipsey's Exclusive  — 94647b 482x377 sha=076aa05240d0
-  + Weatherby Mark V Hunter 6.5 Weatherby RPM 24" 4+ — 28022b 1000x1000 sha=66eccb5a9a03
-  + Sig Sauer P320 X-Compact 9mm 3.6" Black Nitron S — 323548b 924x727 sha=068b9e707a9a
-  + FN 545 45 Auto (ACP) 4.1" Black Cerakote Pistol  — 440620b 925x782 sha=3ead48d9fd61
-  + CheyTac CT1065CM CT 10 6.5 CM AR PLATFORM 10RD - — 15668b 800x173 sha=a65e3ed61ff7
-  + Keltec PR57 5.7x28mm 4.64" 20rd Pistol, Tan - $2 — 44923b 1000x686 sha=64b90e4ef4b7
-  + Marlin Dark Series Model 1895 45-70 Government S — 125229b 1000x436 sha=15d5d3d12b90
-  + Panzer Arms RANCH12 Tactical 12 GA-3" 18.5" Barr — 11532b 597x293 sha=138517f39948
-  + GSG 1911 AD-OPS .22 LR Semi-Auto Pistol, 5" Barr — 457008b 1272x847 sha=9e68de4a0030
-  + Legacy Pointer Sport Tek8 12GA 30" 5rd Semi-Auto — 11730b 883x150 sha=38684907961a
-  + DPMS DR-10 Flat Dark Earth .308 Win / 7.62 13.7" — 197541b 1000x383 sha=f3421a10f1c6
-  + Sig Sauer P226X Legion Grey 9mm 4.4" Barrel 18-R — 36738b 741x533 sha=bbb28eb48c8b
-  ... 50/65  ok=50 fail=0
-  + Surefire Socom 762-MINI GEN2 7.62x39mm Quick Det — 63467b 400x250 sha=dc5cbdc6864c
-  + Apex Tactical Glock Gen3/4 Action Enhancement Ki — 12070b 425x319 sha=613d73850838
-  + Century Arms VSKA Tactical TRI Amgle Stock 16.5" — 13393b 945x630 sha=71b39243fd8e
-  + Purchase LMT Defense SPECWAR Pistol get the SOPM — 1703498b 1500x750 sha=afbae46b0a9f
-  + Davidson Defense AR-15 Ambidextrous Bolt Catch L — 54314b 1200x1200 sha=de33cceacd96
-  + AR-15 Charging Handles on Sale @ Wikiarms — 330027b 1200x800 sha=0622a9a25291
+  + Federal 9mm 147 gr FMJ Flat Point American Eagle — 96502b 1204x637 sha=4f75df45f0c3
+  + Fiocchi 12 Gauge 2-3/4 in 9 Pellet Defense Dynam — 94639b 773x818 sha=eb39dbd5e992
+  + Winchester 9mm Luger 115 gr JHP Jacketed Hollow  — 61688b 716x600 sha=c76a77c8f28a
+  + Ruger 10/22 250th Anniversary Stainless / Walnut — 15423b 722x154 sha=bb9513ee9bae
+  + Winchester USA Brass 9mm 147-Grain 50-Rounds JHP — 33178b 500x418 sha=87d3e7c3c004
+  + Birchwood Casey 12" Big Burst Sight-In Target 3- — 76097b 634x634 sha=ad01dbfcbbcd
+  + MIMTAC Drastic AR-15 Drop-In Single Stage Trigge — 28141b 546x667 sha=db277080420a
+  + Imperial Knives IMP22 Pocket Knife - $7.99 — 16656b 557x510 sha=56f20602760c
+  + Venom 9mm 115-Gr. FMJ 1000 Rnds - $275 — 88912b 866x525 sha=03407a8d2709
+  + Sport Ridge 8.0 BULLSEYE REACTIVE TGT 6PK - $7.1 — 113630b 1498x1500 sha=a4ca716b41f5
+  + Browning X- Bolt Hunter Lr 6.5 Creedmoor 22 " Ba — 23119b 1280x215 sha=6dd95735b736
+  + Sig Sauer P938 Rainbow Titanium 9mm 3" Barrel 7- — 22829b 495x381 sha=89f2c5110380
+  + JK Armament 105 RFX 22 Rimfire Suppressor, 1/2x2 — 20878b 845x160 sha=80bfcc35c0cf
+  + Colt ZO1070CCS 1911 Government Competition .45 A — 34005b 669x435 sha=87f893825071
+  + Sig Sauer P365 X-Series 9mm 3.7" 17 Rd OR - $629 — 22257b 534x439 sha=76214b78277a
   x Ballistic Advantage Tactical Government Barrel 3 — image not downloadable
   x SureFire SOCOM762 Ti2 Titanium Fast-Attach Sound — image not downloadable
   x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — image not downloadable
   x Charles Daly 101 28GA 26" Single Shot Shotgun, C — image not downloadable
   x Olight Arkfeld Pro Flat EDC Rechargeable Flashli — image not downloadable
   x Smith & Wesson Bodyguard 2.0, 380 ACP, 2.75" Bar — image not downloadable
-  x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
-  x Ar-15 Mod-2 5.56x45 Nato Rifle Magazine - Ar-15  — unreachable after retries
-  x Winchester Model 94 Sporter 30-30, 24" Round/Oct — image not downloadable
 
-fixed 56, failed 9  (86% success)
-distinct images: 56 across 56 deals
+fixed 15, failed 6  (71% success)
+distinct images: 15 across 15 deals
 PASS — no image shared between products
