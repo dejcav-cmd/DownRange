@@ -1,20 +1,22 @@
-600 scanned, 21 need a real image, 2 coupon posts skipped
+600 scanned, 23 need a real image, 2 coupon posts skipped
 
-  + Federal 9mm 147 gr FMJ Flat Point American Eagle — 96502b 1204x637 sha=4f75df45f0c3
-  + Fiocchi 12 Gauge 2-3/4 in 9 Pellet Defense Dynam — 94639b 773x818 sha=eb39dbd5e992
-  + Winchester 9mm Luger 115 gr JHP Jacketed Hollow  — 61688b 716x600 sha=c76a77c8f28a
-  + Ruger 10/22 250th Anniversary Stainless / Walnut — 15423b 722x154 sha=bb9513ee9bae
-  + Winchester USA Brass 9mm 147-Grain 50-Rounds JHP — 33178b 500x418 sha=87d3e7c3c004
-  + Birchwood Casey 12" Big Burst Sight-In Target 3- — 76097b 634x634 sha=ad01dbfcbbcd
-  + MIMTAC Drastic AR-15 Drop-In Single Stage Trigge — 28141b 546x667 sha=db277080420a
-  + Imperial Knives IMP22 Pocket Knife - $7.99 — 16656b 557x510 sha=56f20602760c
-  + Venom 9mm 115-Gr. FMJ 1000 Rnds - $275 — 88912b 866x525 sha=03407a8d2709
-  + Sport Ridge 8.0 BULLSEYE REACTIVE TGT 6PK - $7.1 — 113630b 1498x1500 sha=a4ca716b41f5
-  + Browning X- Bolt Hunter Lr 6.5 Creedmoor 22 " Ba — 23119b 1280x215 sha=6dd95735b736
-  + Sig Sauer P938 Rainbow Titanium 9mm 3" Barrel 7- — 22829b 495x381 sha=89f2c5110380
-  + JK Armament 105 RFX 22 Rimfire Suppressor, 1/2x2 — 20878b 845x160 sha=80bfcc35c0cf
-  + Colt ZO1070CCS 1911 Government Competition .45 A — 34005b 669x435 sha=87f893825071
-  + Sig Sauer P365 X-Series 9mm 3.7" 17 Rd OR - $629 — 22257b 534x439 sha=76214b78277a
+  + PSA Guardsman-15 Complete MOE Pistol Lower w/ HA — 79543b 1500x821 sha=46819e995d8f
+  + Primary Arms Glx 1x Microprism With Green Illumi — 464604b 1000x817 sha=9bf9f2511604
+  + Mossberg Patriot Synthetic 22-250 Rem 22" Bolt-A — 24750b 1350x528 sha=a0293b1d86f1
+  + Holosun Hm3x 3x Magnifier With Qd Flip- To- Side — 34397b 1000x666 sha=31866f2e3c14
+  + Canik Mete MC9 Prime 9mm 3.64" Blk 17+1 NC - $50 — 15980b 450x338 sha=4c938e753f5d
+  + B&T StarLite 7.62x51mm Direct Thread Suppressor  — 64367b 1343x697 sha=684c3bae62bc
+  + Taurus TX22 .22 LR 22-Round Magazine - $24.99 — 63606b 1412x1128 sha=9ad74cdffb65
+  + Partisan Triggers Disruptor AR-15 3 Position Dro — 33254b 945x630 sha=e47a7195fc3b
+  + NBS Tactical Grip - $5.95 — 54948b 1200x1024 sha=e1596680bf34
+  + Bosch 18V Brushless Cordless Drill/Driver & Impa — 22599b 500x500 sha=31e41ba93fff
+  + Burris RT-3 3x Red Dot Prism Sight - $154.79 wit — 25821b 421x503 sha=d0146bd37c16
+  + CZ Duty 4.0 Full-Size 9mm, 4" Barrel, 19rd, Blac — 21647b 521x484 sha=9e5b674b9846
+  + CZ 6138 Model 1020 Semi-Auto 20 GA Capacity 4 Sh — 11679b 1002x185 sha=f238f75c274c
+  + Arex Delta X OR 9mm 17rd Pistol, Black - $259.99 — 84879b 1023x804 sha=878cfa7e4e57
+  + Used Mossberg Firearms 935 12 Ga Semi Auto 28" B — 9985b 824x145 sha=4d5af319a502
+  + Tikka T3X Lite Veil Wideland 30-06 22.4" Barrel  — 37561b 1500x272 sha=6e2605f46183
+  + CCI Blazer 38 Special 125gr FMJ Case of 1000 Rou — 100732b 461x408 sha=7d277c2d0daf
   x Ballistic Advantage Tactical Government Barrel 3 — image not downloadable
   x SureFire SOCOM762 Ti2 Titanium Fast-Attach Sound — image not downloadable
   x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — image not downloadable
@@ -22,6 +24,6 @@
   x Olight Arkfeld Pro Flat EDC Rechargeable Flashli — image not downloadable
   x Smith & Wesson Bodyguard 2.0, 380 ACP, 2.75" Bar — image not downloadable
 
-fixed 15, failed 6  (71% success)
-distinct images: 15 across 15 deals
+fixed 17, failed 6  (73% success)
+distinct images: 17 across 17 deals
 PASS — no image shared between products
