@@ -1,19 +1,59 @@
-600 scanned, 13 need a real image, 2 coupon posts skipped
+600 scanned, 52 need a real image, 2 coupon posts skipped
 
-  + Rost Martin RM1F Tactical, 9mm Pistol, w/ 4x Mag — 43639b 779x484 sha=bcd773bfd158
-  + Springfield Armory Hellcat OSP Gear Pac .380 ACP — 130907b 1200x914 sha=ef22e27b6c64
-  x Hornady 300 Blackout 125 gr FMJ Frontier 20/Box  — unreachable after retries
-  + WALKER'S Razor Electronic Quad 4 Mics 23dB NRR H — 34681b 569x943 sha=9855635f03a2
-  x Kershaw Bel Air Pocket Knife, Bright Nickel, 3.1 — unreachable after retries
-  + LEATHERMAN Charge Plus TTI 19-in-1 Multi-Tool, E — 19717b 500x500 sha=bb06aa1b155c
-  x Bosch MS4041 41 pc. Drilling and Driving Mixed B — unreachable after retries
-  + Walther PPK/S Black / Silver .22 LR 3.3" Threade — 38240b 656x524 sha=2c76b4056dec
-  x PSA M4A1 Stripped Lower Receiver - $59.99 — unreachable after retries
-  x Ballistic Advantage Tactical Government Barrel 3 — unreachable after retries
-  x SureFire SOCOM762 Ti2 Titanium Fast-Attach Sound — unreachable after retries
-  x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — unreachable after retries
-  x Charles Daly 101 28GA 26" Single Shot Shotgun, C — unreachable after retries
+  + KNS Precision Adjustable Gas Piston System- AKM  — 35945b 1305x804 sha=b6c1e8c3f417
+  + PSA 11.5" Carbine 5.56 1/7 Nitride 10.5" Lightwe — 56507b 1500x611 sha=47efb31d6944
+  + Olight Osight 3 MOA Green Dot Sight, Black - $13 — 67666b 1200x1000 sha=8c960bfde11a
+  + Recover Tactical 20/20X Conversion Kit for Glock — 20262b 608x405 sha=e5e7c75391d2
+  + Zastava Yugo M70 3.5" .32 ACP 8rd Pistol, Black  — 643585b 1500x750 sha=1d9b67e63f91
+  x Dueling Tree Target 6x1/4 100% USA AR500 Zinc Pl — no og:image on page
+  x CZ 457 Varmint MTR 22 LR 5-Rd 20.5" Turkish Waln — image not downloadable
+  + Winchester SXP Super X Black Shadow 12 Ga 28" 4r — 43131b 770x273 sha=c0bea5085aab
+  + OSIGHT SE Enclosed Red/Green Dot, 2 & 32 MOA Mul — 42861b 904x632 sha=a71c57d38e0c
+  + Night Stand with Gun Drawer, Charging Station &  — 395940b 1500x1500 sha=94ae207cd330
+  + Farmhouse Night Stand with Gun Drawer, Bedside T — 346226b 1500x1500 sha=d55780bbe548
+  + OSIGHT SE Enclosed Red/Green Dot, 2 & 32 MOA Mul — 43182b 903x630 sha=8f96fb23f645
+  + OSIGHT S Enclosed Red Dot Sight, 2&32 MOA Multi- — 72131b 1437x1028 sha=51a7f0bd69a7
+  + Griffin Armament GP7 .30 Cal Direct Thread Suppr — 51411b 1500x1000 sha=c9601e93ec50
+  + UTG PRO AR-15 Super Slim M-LOK 15" Drop-in Car.  — 22052b 600x381 sha=bc0b451367b3
+  + Magpul Rifle Bipod Gun Rest for Hunting and Shoo — 15347b 500x500 sha=c88282af3144
+  + Sig Sauer P365-380 Pistol Manual Safety - $359.9 — 25578b 550x550 sha=26a307cf3c00
+  + Tuna Cans .22 Silencer (5 Baffle) - $169.95 — 8889b 335x229 sha=b7088e90f50c
+  + OSIGHT SE MOS Enclosed Red Dot Sight, 2 & 32 MOA — 69361b 1062x809 sha=7622f32e3376
+  + NexGen Arms NG15 AR Pistol w/ Vortex Triumph Red — 15447b 630x630 sha=106eb85747cd
+  + Toolcraft .223/5.56/300 BLK M16 Profile Bolt Car — 11626b 577x245 sha=0cc142a42140
+  + SB Tactical SBA4X Brace Only - $69.95 — 109123b 1500x969 sha=433c69ae5597
+  + Griffin Armament GP7 .30 Cal Direct Thread Suppr — 17175b 945x630 sha=54995fb7ade3
+  + Atrius Development 3 Position Super Selector Amb — 13716b 382x422 sha=ce9c528abf00
+  + Toolcraft .223/5.56/300 BLK M16 Profile Bolt Car — 12730b 579x276 sha=d6e155a6d501
+  ... 25/52  ok=23 fail=2
+  + Herrington Arms HC320XL SIG P320 Compensator 1/2 — 37069b 554x573 sha=f3f0078585ce
+  + MIMTAC Valkyrie AR-15 Drop-In Single Stage Flat  — 8809b 275x345 sha=dad5b541a923
+  + UTG ACCU-SYNC Spring-Loaded AR15 Flip-up Sight S — 31058b 1000x666 sha=31c3c329a1b1
+  + UTG PRO AR-15 Ops Ready S1 Mil-Spec Stock, Black — 30423b 600x381 sha=73bda162586e
+  + Springfield 1911 Operator AOS 45 ACP 5" 8+1 Gear — 37533b 600x447 sha=25fec646c50e
+  + Iwi Us Iws7ti Silencer 7.62mm Cal Black 7.4in Th — 20068b 290x553 sha=c0b340e33301
+  + Iwi 7tavor 7.62x51mm Nato 20 + 1 Capacity 16.50  — 24566b 547x305 sha=39b8b4454d66
+  + SentrySafe Water-Resistant Combination Safe, 2X- — 54260b 879x1000 sha=910f344ff71b
+  + Iwi Us Tavor 7 7.62x51mm Nato 20 + 1 Capacity 20 — 23461b 531x309 sha=8b0325ddd542
+  + Iwi Us Tavor 7 7.62x51mm Nato 20 + 1 Capacity 20 — 25189b 555x319 sha=eb537b5bfc0c
+  + Iwi Us 7 Tavor 7.62x51mm Nato 20 + 1 Capacity 16 — 24480b 558x308 sha=29c63fa06c26
+  + Iwi Tavor Sar 7.62 16.5 " Blk - $1349.99 — 21143b 550x297 sha=11372114be8d
+  + CMMG Bravo .22 LR AR Conversion Kit with 3 25 Ro — 13858b 387x334 sha=cd486767970f
+  + Alpha Foxtrot AFMG9 9mm Luger 20+1 7.50" Black Q — 12965b 552x208 sha=17748b15787b
+  + Century Arms Star Model 30M 9mm 4.25" Barrel 15r — 29097b 691x488 sha=6c9dce271021
+  + Arex Delta X OR 9mm 17rd Pistol, FDE - $269.99 — 53424b 908x732 sha=25af3917cd4c
+  + PSA Dagger Compact 9mm Extreme Carry Cuts RMR Sl — 66543b 1000x1000 sha=fabe853f68a1
+  + OA Defense 2311 Compact Pro 9mm 4.25" 15rd, Gray — 30181b 640x474 sha=1a588a66f2bb
+  + Kel-Tec SDP9BLK SUB SDP 9mm Luger 17+1 Threaded  — 26498b 808x308 sha=bd6d071802f7
+  + Ruger 10/22 Light Varmint Target, 22 LR, 20.00"  — 8257b 706x178 sha=2ef3a90465a8
+  + Colt Delta Elite Fenrir Edition, Engraved Slide, — 35035b 628x425 sha=b22c0cb78d46
+  + Sig Sauer P365X Typhoon 9mm PSTL 3.1" BBL 2-12 R — 55646b 770x633 sha=af470ddf9bbe
+  + UTG PRO Mil-Spec 6-Position Extension Tube Kit - — 17491b 520x341 sha=7dc5fe05588c
+  + PSA M4A1 Stripped Lower Receiver - $59.99 — 9496b 429x245 sha=e091d8c3b292
+  x Ballistic Advantage Tactical Government Barrel 3 — image not downloadable
+  x SureFire SOCOM762 Ti2 Titanium Fast-Attach Sound — image not downloadable
+  x Tikka T3X Lite 243 Win 20" Threaded Barrel 3rd R — image not downloadable
 
-fixed 5, failed 8  (38% success)
-distinct images: 5 across 5 deals
+fixed 47, failed 5  (90% success)
+distinct images: 47 across 47 deals
 PASS — no image shared between products
