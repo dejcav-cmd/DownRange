@@ -1,28 +1,44 @@
-600 scanned, 22 need a real image, 2 coupon posts skipped
+600 scanned, 37 need a real image, 1 coupon posts skipped
 
-  + XTech Tactical MAG17 EXT 9mm Luger 22-Round Exte — 17744b 191x625 sha=85daa718774d
-  + Alpha Foxtrot AF1911-ROMULUS 9mm Optic Ready Dou — 59564b 1053x790 sha=acabb3b17397
-  + North American Arms Pug 22mag Revolver with Hols — 37946b 800x683 sha=1fbb7e7ec306
-  + Federal LE 9mm Luger 147gr Hi-Shok JHP Subsonic  — 20026b 598x405 sha=1f42a5b53662
-  + Bersa OEM Magazine Detachable With Finger Rest . — 58462b 463x1500 sha=d5f93c83ff31
-  + Vortex Razor HD 13-39x56 Angled Spotting Scope,  — 325043b 981x727 sha=7a72e719de3a
-  + Vortex Shooting Magnifier With Flip Mount, VMX-3 — 104416b 1439x988 sha=0a23600adb69
-  + OSIGHT SE Enclosed Red Dot Sight, 2 MOA Dot & 32 — 35793b 679x489 sha=da396919bc85
-  + Vortex Crossfire HD 1.5-5.5x32 Scout 1" Tube - $ — 48098b 1280x775 sha=2eafe12dd6d0
-  + Vortex Defender-XL 5 MOA Micro Red Dot - Tan - $ — 270629b 1000x666 sha=d15a051a152c
-  + Vortex Crossfire II Crossbow Scope 2-7x 32mm XBR — 112005b 1500x1118 sha=7cc30903a38b
-  + 35% off CVLIFE Universal Gun Cleaning Kit for .1 — 40856b 500x500 sha=822c480f4891
-  + 26% off CVLIFE 4-16x44 AO Rifle Scope Red and Gr — 22549b 500x500 sha=8ade758da23c
-  + Vortex Diamondback Hd 20-60x85mm Spotting Scope  — 81676b 1280x1003 sha=95d42aa5c6fc
-  + Vortex Optics Diamondback Rimfire Rifle Scope 2- — 79068b 1495x1248 sha=c7f5681d1a8e
-  + Vortex Viper Shotgun Enclosed Green Dot Multi-Re — 170420b 953x551 sha=b467d3405d0f
-  + 36% off CVLIFE EagleTalon 25mm Obj Solar Multi-R — 25510b 500x500 sha=839df0ef9e9d
-  + 50% off EZshoot Two Point Sling with Wide Pad, R — 16925b 500x500 sha=69c47d92e56e
-  + Toolman Tactical AR-15 .223/5.56 32 Round Magazi — 12056b 251x600 sha=c2b217659f0d
-  + 20% off CVLIFE Half Gallon Water Bottle with Str — 32451b 500x500 sha=d1f48e409e9c
-  + Partisan Triggers The Disruptor Rifle Trigger Bl — 23657b 528x554 sha=7dae2c327117
+  + Aero Precision AR-15 Mil-Spec Lower Parts Kit -  — 23208b 738x630 sha=f519a350d723
+  + Savage Arms Axis XP .243 Winchester 20" 4rd Bolt — 27159b 1200x394 sha=72d8dd465707
+  + PSA 570-S 12 Ga 14.5" 5 Shot Pump-Action Pistol  — 38639b 1500x409 sha=b9d04f8560da
+  + Aimpoint Acro P-2 3.5MOA Polymer Battery Cap - 2 — 14306b 400x400 sha=e7844a59df74
+  + TriggerTech Duty AR-15 Single Stage Trigger, Fla — 22073b 632x510 sha=657f3d19574b
+  + Smith & Wesson M&P Shield Plus 9mm 6- Mag Bundle — 33580b 546x480 sha=a84b347e6daf
+  + Glock 9mm 24-Round Factory Magazine with Orange  — 28580b 1000x666 sha=830700c5171e
+  + SB Tactical SBM4 Pistol Stabilizing Brace + Pist — 32504b 699x614 sha=780f620d47c3
+  + Hawke Sport Optics Sidewinder 6-24x56mm Rifle Sc — 45941b 1120x630 sha=bc3e557374a0
+  + Open Box GLOCK G45 Gen5 9mm Pistol Black 4.02" 3 — 442543b 1500x1056 sha=480ee75607dd
+  + SIG Sauer ROMEO5 Gen II 1x20mm 2 MOA Red Dot - $ — 66093b 1000x1000 sha=39cb4c72ffc9
+  + Heckler and Koch VP9CC 9mm 3.13" Barrel 10-Round — 109962b 1450x1013 sha=aed0f814595a
+  + Pioneer Arms Corp Hellpup (Polish Red) 7.62x39mm — 266805b 1032x573 sha=643c4dc824ee
+  + FEDERAL AMMO Range Pack 22LR 40gr Lead Round Nos — 26937b 600x338 sha=6a7f668f3698
+  + Winchester Target & Practice 5.56 NATO 55gr M193 — 42696b 700x700 sha=9097e666b713
+  + Advantage Arms 1.75-.308 Stainless Steel 7.62mm  — 75947b 1500x1041 sha=b2a6b911c245
+  + AR 9 Billet Upper Receiver - 9mm/.45 - $49.95 — 82222b 608x608 sha=84a111b69257
+  + Savior Equipment Specialist Single Rifle Case -  — 55272b 1000x666 sha=d3ed3e9e64d9
+  + Aero Precision MOE SL Lower Parts Kit - Black -  — 61777b 1000x853 sha=38174366f290
+  + Osight S Enclosed Pistol Red Dot Sight with Magn — 26511b 672x570 sha=507a33d64a3f
+  + Aero Precision AR-15 MOE Lower Parts Kit - Black — 62390b 1000x853 sha=07ae41c0c9a2
+  + Aero Precision AR-15 Mil-Spec Lower Parts Kit -  — 40998b 1000x853 sha=416b122e13cb
+  + Osight X Pistol Red Dot Sight with Magnetic Char — 23870b 663x576 sha=4d736163f826
+  + NexGen Arms NG15 AR Pistol with Vortex Triumph - — 15054b 630x630 sha=4df8dd53c8a0
+  + Taurus TX22 Compact, .22 LR, 3.6" Threaded Barre — 29504b 893x472 sha=108b8d03c10b
+  ... 25/37  ok=25 fail=0
+  + Springfield Armory Saint Victor PDW Tungsten 9mm — 31197b 800x387 sha=871d4aa51209
+  + Just Right Carbines Gen3 9mm 17in Thrd Brl Tkdwn — 16063b 942x282 sha=54dbebbdc727
+  + Sig Sauer P211-GTO Equinox 9mm 4.4" 21 Rd - $230 — 35898b 770x630 sha=da6163502c61
+  + OA 2311 Compact Pro Elite 9mm 4.6" 21rd, Black / — 16690b 451x337 sha=09f39019b6bd
+  + Crimson Trace Resilient 3 MOA Red/Green Dot Sigh — 20074b 432x521 sha=0b2ef33ad537
+  + Vortex Defender-XL 1x25mm Reflex Red Dot Sight - — 59538b 882x550 sha=808618d6a697
+  + Nosler Whitetail Country .30-30 Winchester Ammo  — 31952b 700x463 sha=e7cac21fe70d
+  + Charles Daly 101 12 GA 28" Single Shot Shotgun,  — 19765b 562x139 sha=490bb9a43a3d
+  + FMK G3 9mm Semi-Auto Handgun - 3.87" Barrel, 10R — 8389b 299x231 sha=265c43b00d8a
+  + Glock 19XV MOS Coyote Brown 9mm 4.52" Threaded B — 45772b 800x574 sha=6bea93ec4f6c
+  + Century Arms VOID-762 .30 Caliber / 7.62 5/8x24  — 22157b 772x537 sha=cd7242bf7ad6
   x Dueling Tree Target 6x1/4 100% USA AR500 Zinc Pl — no og:image on page
 
-fixed 21, failed 1  (95% success)
-distinct images: 21 across 21 deals
+fixed 36, failed 1  (97% success)
+distinct images: 36 across 36 deals
 PASS — no image shared between products
