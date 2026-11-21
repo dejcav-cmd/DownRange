@@ -1,11 +1,79 @@
-600 scanned, 5 need a real image, 1 coupon posts skipped
+600 scanned, 71 need a real image, 3 coupon posts skipped
 
-  + Magpul MBUS Gen 3 Front & Rear AR-15 Back-Up Sig — 67085b 1500x1000 sha=ebfcec32fb75
-  + Ruger Vaquero 357/38 Spl 4 5/8" Stainless - $879 — 34909b 833x434 sha=fded5432deba
-  + Canik TP9, TP9SF, TP9SFX 9mm 18 Round Magazine - — 68030b 1500x1258 sha=dd1569730b5c
+  + Faxon Firearms Match Series Flame Fluted Threade — 33076b 1000x666 sha=3f38719ae3b2
+  + JTS M12AK T1 Black 12Ga 18.7" Barrel 3" Fixed St — 78013b 1200x628 sha=4ff733d79719
+  + Winchester Firearms SXP Extreme Deer 12 Ga 22" 4 — 10565b 863x154 sha=acc77be638c3
+  + Timber Creek Outdoors Sig Sauer P320 Extended Ma — 146662b 545x349 sha=0a2c556e1710
+  + Mechanix Wear: Utility Work Gloves with Secure F — 26933b 500x366 sha=e7a01918570e
+  + PWS MK111 MOD 1-M Forged Upper 7.62x39mm 11.85"  — 68727b 633x293 sha=956b978f815a
+  + Daniel Defense DDM4V7P 5.56 10.3" Barrel 30rd AR — 63151b 576x282 sha=cb1267bfddd5
+  + Arex Delta X OR 9mm 4" 17rd Pistol, Grey - $259. — 434127b 1173x872 sha=c7e3eea234b2
+  + Sig Sauer P238 .380 ACP 2.7" 6rd Pistol, Stainle — 450856b 689x549 sha=9c2c9d6dff57
+  + USED SIG Sauer P320 Full-Size 9mm 4.7" with SIG  — 528822b 980x645 sha=ca7ce6adf86b
+  + Sig Sauer P365 TacPac, 9MM, 3.10" Barrel, 12 RDs — 156731b 607x488 sha=5970d0596bc6
+  + Mossberg MC-2c 9mm Luger 3.9in Matte Stainless P — 280247b 861x607 sha=73ce8d381593
+  + Strike Industries Carbon Fiber Suppressor Alignm — 47346b 978x550 sha=93c140be7589
+  + Vortex Crossfire HD 2-7x32 V-Plex (MOA) Reticle  — 135166b 920x508 sha=4d0c032f82b0
+  x Savage Arms Axis 2 XP 308 Win 20" TB 4rd Rifle w — image not downloadable
+  + Heckler & Koch VP9F 9mm 4.09" 20rd Pistol, FDE - — 120669b 560x428 sha=d5d1efa90eaa
+  + Diamondback DB15 5 56 NATO 16" Rifle M-Lok Rail  — 154433b 1125x382 sha=db1e01ea4e2b
+  + Glock 43x/Dagger Micro Upper Starts at $149 — 20276b 1200x545 sha=1b792d9884a1
+  + Warrior Systems Legionary .22lr Suppressor - $12 — 13248b 1117x483 sha=00b02604d08e
+  + Bergara Bolt Action For B14R Trainer Rifle, 22 L — 39956b 598x219 sha=dd5f40ee5eeb
+  + Smith & Wesson Law Enforcement M&P 2.0 9mm 4.25" — 48512b 777x630 sha=d56c1297e1e8
+  + Chiappa 1892 357 MAG 16" 8rd Trapper Carbine, Le — 51308b 619x287 sha=247c8430e968
+  + GForce Arms S16 Filthy Pheasant Over/Under 12 GA — 36081b 598x259 sha=db573059480e
+  + Kimber Micro 9 Eclipse Stainless / Black 9mm 3.1 — 166767b 617x445 sha=6120f95318a4
+  + Prime Radian Micro-Compact Frame 9mm 3.8" 17rd P — 121132b 602x452 sha=4ca38957b164
+  ... 25/71  ok=24 fail=1
+  + Ruger SP101 Standard 38 Special 2.25" 5rd Black  — 139293b 809x515 sha=783b98a7aec0
+  + Savage Arms 110 Apex Hunter XP Youth 7mm-08 Rem  — 143699b 987x358 sha=2911bd052f30
+  + Radical Firearms RF-15 SOCOM 5.56 NATO 16" Barre — 90185b 894x385 sha=fd97e732a6f7
+  + Smith & Wesson M&P Shield EZ M2.0 9mm 3.675" Bar — 822850b 1182x900 sha=12cdd4ab58e1
+  + Yankee Hill YHM Victra-20 Modular Shotgun Suppre — 14726b 1000x570 sha=c49e62ad3b76
+  + Silencer Central Banish Speed K TI 5.56 Suppress — 10398b 700x700 sha=91e5d729d182
+  + Q LLC Erector 22 LR Suppressor, Aluminum / stain — 61894b 281x539 sha=59007dd32bf4
+  + Magnum Research Desert Eagle L6 .50 AE 6" 7rd Pi — 673033b 1336x829 sha=0273127b4866
+  + KGM Rogue-Ti R30 HUB Suppressor - Sniper Gray -  — 21989b 1000x750 sha=7665a795917f
+  + Seekins Precision PH3 300 PRC 22" TB 3rd Mountai — 171600b 1136x334 sha=222305663686
+  + FN High Power 9mm 4.7" 10rd Pistol w/ Black PVD  — 853191b 1437x982 sha=449385677ecc
+  + Chiappa M1-9 MBR 9mm 19" Barrel 9rd Rifle - $690 — 163927b 1200x297 sha=e793e486067d
+  + Ruger American Rimfire 17 HMR 9-rd 18" Go Wild C — 36452b 1350x418 sha=a9cc4a9b0347
+  + Retay RXP22 .22 LR 4" 10+1 Rds Pistol, Black - $ — 68323b 546x386 sha=e955a4c799f3
+  + Dead Air Wolfman 9mm Modular Suppressor for 1/2- — 36705b 1095x900 sha=764f5f236641
+  + Rock Island M1911 .45 ACP 5" barrel 8 Rnds Grey  — 25572b 570x358 sha=7aab46dc54d8
+  + Federal American Eagle 38 Special 158 Grain Lead — 1183395b 1500x891 sha=a3d1d1539450
+  + Davidson Defense Sentinel G43X FDE Slide, Thread — 14938b 630x630 sha=d0d34e5b4ce0
+  + Davidson Defense G43 Compatible 1/2x28 Threaded  — 12782b 630x630 sha=a936a62fd238
+  + ASSEMBLED 9mm Complete Slide Kit - Glock 19 Gen  — 12681b 630x630 sha=c5c12c4a5ed4
+  + AR-15 Build Kits Multiple Calibers & Sizes Save  — 530075b 838x1048 sha=e5244e06c719
+  + Magnum Research Desert Eagle Mark XIX 44 Mag 6"  — 264118b 1002x625 sha=edaf3b10a136
+  + Browning BLR Lightweight 81 .30-06 22" Barrel 4+ — 28402b 564x242 sha=fd33709f907d
+  + Benelli 828U 12 Gauge 28" Barrel 2rd Over/Under  — 208484b 1500x438 sha=a5438ef8c3bc
+  + Franchi Affinity 3 20GA 26" Brrel 3" Chamber 4rd — 241498b 1500x500 sha=505c821f3d38
+  ... 50/71  ok=49 fail=1
+  + Ruger K77/17VH 17WSM 18.5″ 6rd Rifle, Stainless, — 13974b 1000x183 sha=431e03f9f0d3
+  + MAC 2 Tactical Marine 12GA 18.5″ 4rd Shotgun, Ni — 194456b 1500x500 sha=c10bf77f4091
+  + Sig Sauer P320 XCarry 9mm 3.9" 17rd OR Pistol, S — 367247b 1087x792 sha=5d1f8cb8aee6
+  + Sig Sauer P320 XCarry 9mm 3.9" Bbl 17rd Pistol,  — 411902b 1069x857 sha=1a3e64c5dfa6
+  + Sig Sauer P320 Carry 9mm 3.9" 17rd Night Sights, — 374478b 1041x770 sha=c4b7828577c5
+  + Sig Sauer P320 XCarry 9mm 3.9" bbl 17rd Pistol - — 358398b 1019x783 sha=347735bc3f3c
+  + eufy Security eufyCam C37, 4K Solar Camera, 360° — 182346b 1254x1500 sha=775989935b9b
+  + eufy Security eufyCam C37, Solar Cameras Wireles — 237488b 1325x1500 sha=d363f278297f
+  x SilencerCo Spectre 9 Suppressor, Multi Caliber,  — image not downloadable
+  + Colt Python 357 Mag 6" Barrel 6rd Revolver Stain — 110684b 548x333 sha=564e7b1c4209
+  + Military Armament MAC 2 Tradesman 12 GA 18.5" 5r — 38707b 731x202 sha=2da1c3372f59
+  + PMC Bronze Rifle Ammunition .223 Rem 55 gr FMJ 2 — 327997b 682x552 sha=b26d08abc9dd
+  + CCI Quiet-22 Segmented HP .22 LR 40 Gr Rimfire A — 18063b 386x386 sha=ed129a827fa7
+  + Federal Champion 380 ACP 95gr FMJ 50rd - $14.79 — 15768b 400x250 sha=e2451d9e75a3
+  + Tokarev USA TTS-112 12 Gauge 18.5" Bbl 5rd Shotg — 42419b 848x350 sha=1f9f7875d834
+  + Radical Firearms Complete Upper Assembly 5.56 SO — 106657b 1000x135 sha=f26c9460cab9
+  x Global Ordnance AK-47 Magazine 7.62x39mm 30rd -  — image not downloadable
+  + Ruger American Rifle Gen2 Ranch 7.62x39mm 16.1"  — 20317b 1024x242 sha=226940eb43ac
+  + Mossberg Model 590M Shockwave 12 12GA 15: 10rd S — 15003b 1000x275 sha=6c1e7a55a58a
   x Glock 19 9mm 15 Round Gen 5 Magazine Black - $20 — image not downloadable
   x Dueling Tree Target 6x1/4 100% USA AR500 Zinc Pl — no og:image on page
 
-fixed 3, failed 2  (60% success)
-distinct images: 3 across 3 deals
+fixed 66, failed 5  (92% success)
+distinct images: 66 across 66 deals
 PASS — no image shared between products
