@@ -1,27 +1,27 @@
 {
-  "generatedAt": "2026-11-15T07:00:21.386Z",
+  "generatedAt": "2026-11-22T07:00:21.671Z",
   "content": {
-    "newsArticles": 3399,
-    "blogPosts": 64,
-    "legislation": 451,
+    "newsArticles": 3540,
+    "blogPosts": 66,
+    "legislation": 457,
     "firearmReleases": 35,
-    "videos": 982,
+    "videos": 1042,
     "reviews": 3,
     "canadaArticles": 113,
     "brazilArticles": 116
   },
   "operations": {
-    "cronRuns": 4280,
+    "cronRuns": 4318,
     "outreachContacts": 221,
-    "socialPosts": 1707,
+    "socialPosts": 1822,
     "briefings": 126
   },
   "latest": {
-    "newsTitle": "BOE's 4-Ounce IncoLite 9S Failed to Cycle a Glock 19",
-    "newsDate": "2026-11-14T22:58:37.000Z",
+    "newsTitle": "SCOTUS Turns Away 22 Gun Cases, Leaves Felon Bans Untouched",
+    "newsDate": "2026-11-21T22:30:00.000Z",
     "briefingDate": "2026-09-28",
     "briefingScore": 0,
     "briefingHeadline": "n/a"
   },
-  "totalContentDocs": 5163
+  "totalContentDocs": 5372
 }
