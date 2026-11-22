@@ -1,66 +1,63 @@
-600 scanned, 59 need a real image, 3 coupon posts skipped
+600 scanned, 56 need a real image, 3 coupon posts skipped
 
-  + Federal Gold Medal Match .308 Win 175Gr BTHP 20r — 15665b 431x287 sha=6a641435d587
-  + Great Lakes Firearms GL-15 350 Legend Semi-Auto  — 32877b 1263x282 sha=a5d41e29e827
-  + SLR Rifleworks Billet Upper SLR .308 - $287.99 — 23280b 800x250 sha=4ec0417ea19c
-  + Kaw Valley Precision AR-15 Gas Block Dimpling Ji — 23487b 540x474 sha=78206a409b3b
-  + Hornady American Whitetail 6.5 Creedmoor 129-Gr  — 48993b 832x467 sha=1b6fccb2f54f
-  + Silencerco SCO Piston 9mm 1/2x28 XL Extended Ada — 21606b 282x600 sha=85b31960ea89
-  + MidwayUSA Silicone-Treated Sherpa-Lined AR-15 or — 19775b 680x203 sha=2eb8d38999be
-  + DS Arms FN FAL SA58 Metric .308 Win / 7.62 NATO  — 20245b 397x676 sha=c3175d8a2de3
-  + DoubleTap Ammunition 65CM140M Longrange 6.5 Cree — 46606b 921x675 sha=919fb08ea003
-  + Browning X-Bolt Max Long Range 6.8 Western 26" b — 24191b 1500x239 sha=95286e455fdb
-  + SGM Tactical 10mm 30 Round Magazine for Glock 20 — 8264b 570x570 sha=807ad0e64aaa
-  + Christensen Arms Evoke Mossy Oak .270 Win 22" ba — 11620b 640x113 sha=ab9e1b8eff19
-  + ORTHOS Joker Firearm 12 Gauge 5rd/10rd FDE - $11 — 38313b 949x344 sha=d44bd659c944
-  + The Great Gun Case Blowout @ Field Supply — 61246b 600x600 sha=6dc0ff6f6fcf
-  + Leupold 119688 DeltaPoint Pro 1x 2.5 MOA Red Dot — 359395b 1000x675 sha=b450b6dea7d4
-  + Sig Sauer P365 AXG DH3 Coyote Tan 9mm 3.7" Barre — 28237b 636x470 sha=1982d8d84a73
-  + 30% off 2600 Lumens Rifle Laser Light Combo Comp — 25032b 500x500 sha=da4653ae92b1
-  + 35% off CVLIFE Laser Sight for Rifle, Red/IR/Gre — 25476b 500x500 sha=e567f6c679f2
-  + 41% off CVLIFE Screws Pack for Red Dot Sight Opt — 27640b 500x500 sha=9c82c1c4bbe7
-  + 18% off CVLIFE WildHawk X Pistol Red Dot for DPP — 21285b 500x500 sha=7947b802c64c
-  + 50% off MidTen 7.5-9 Inches Picatinny Bipod Quic — 16769b 500x500 sha=ad30d0a4c162
-  + Ammo Inc Signature Defense, 357 Magnum, 125gr, J — 49343b 800x655 sha=9a884fabdfd3
-  + 50% off CVLIFE Sling Stud Bipod Sling Swivel Stu — 17569b 500x500 sha=2de6246a8fd2
-  + SAR USA 17 Round 9mm SAR9 Detachable Magazine, B — 11598b 258x494 sha=07b50037f95e
-  + Citadel CITC45FUSAAC M1911 Flag 45 ACP 8+1, 5″ S — 32800b 538x419 sha=7dba8e3f77ab
-  ... 25/59  ok=25 fail=0
-  + Springfield XD 4" Full Size Model 9mm Defenders  — 96180b 928x708 sha=7c108c789ed6
-  + Federal American Eagle 9mm 124-Gr FMJ 100rd - $2 — 65831b 800x511 sha=6e6cdc5470c5
-  + FN High Power Flat Dark Earth 9mm 4.7" Barrel 17 — 42216b 718x518 sha=b2ff1dc8b859
+  + Stealth Additive Works Shiv 9 - Cosmetic Blem -  — 35015b 500x500 sha=958d337a4067
+  + Harvst Outdoors OmniView 270 See Through Ground  — 46031b 492x547 sha=71cefee958e5
+  + PSA AR-V 8" 9mm 1/10 7" M-Lok MOE EPT SBA3 Pisto — 11872b 477x293 sha=625e19a03da6
+  + Troy Industries TPR1 Patrol 5.56 AR-15 Rifle - 1 — 117590b 1140x470 sha=623b0f603bab
+  + GLOCK 43X MOS8 Optic Ready 9mm Pistol with Aimpo — 310722b 1100x734 sha=bc6c62b68c57
+  + Smith & Wesson M&P Shield M2.0 9mm 3.1" 8rd Pist — 194473b 538x423 sha=19ab8a6caf07
+  + Smith & Wesson M&P9 Shield M2.0 NTS 9mm No Thumb — 848753b 992x726 sha=2bd39bf780b3
+  + Glock 19 Gen5 9mm 4.020" Barrel Glock Night Sigh — 211928b 600x400 sha=f5f8f713afbf
+  + Sig Sauer P320 XFull 9mm 4.7" 17rd NS Romeo 1 Pr — 407042b 1040x832 sha=4fbf2b290ad1
+  + Sig Sauer P320 XFull 9mm 4.7" 17rd Long Rail Rom — 440254b 1062x804 sha=36480255ffd7
+  + IWI Zion AR Pistol 556 NATO 10.5" Barrel 30 Roun — 77373b 652x435 sha=6aeb6c390ff5
+  + CNC Firearms Colt 1911 Prohibition 45 ACP 5" 7rd — 311649b 792x526 sha=a104f8f72e0b
+  + Tisas Duty 9 DS 9mm 5" Barrel 18+1 Capacity FDE  — 92783b 444x336 sha=0c8071ab95dc
+  + Mossberg 590 12GA 20" Barrel 8rd Pump Shotgun Wo — 84113b 776x204 sha=adb5a4fe10db
+  + Burris AR-F3 FastFire III with Mount 1x 21x15mm  — 231817b 662x499 sha=9f74267cbf03
+  + Bergara B-14 Timber .30-06 Sprg 24" Bolt-Action  — 82308b 1011x410 sha=373eb61411a1
+  + S&W Model 627 Performance Center 357Mag 2.63" Ba — 162455b 605x489 sha=287c3017bd90
+  + Blem Oa Defense 2311 Full Size Pro Gray 5" 9mm 2 — 206503b 885x607 sha=79c85e4c97fa
+  + EOTech VuduX 1-6x24mm SFP Red BD1 Reticle - $486 — 161228b 1500x389 sha=6d495e3bea2b
+  + Savage Arms Axis XP 270 Winchester 20" 4rd Bolt  — 192769b 1266x504 sha=adb158f31902
+  + Gideon Granite RMR Competition Red Dot 6 MOA - $ — 114723b 606x443 sha=d609543684f6
+  + Primary Arms SLx Gen IV LPVO Scope 1-6X24MM 30mm — 70684b 543x301 sha=cccd55841fbc
+  + VKTR 5.56mm Rifle 16" Barrel 30rd Rifle, Magpul  — 63489b 625x231 sha=e16973df1f31
+  + Winchester 5.56 62Gr On Stripper Clips with Tool — 34631b 608x608 sha=2924055f03d8
+  + Walther Arms PPK/S 32 ACP 3.3" Threaded Barrel 7 — 241464b 809x564 sha=0af3dfecc7b7
+  ... 25/56  ok=25 fail=0
+  + FN 509C 9mm 3.7" Pistol FDE - 12 Round Capacity  — 148889b 603x449 sha=a95c6437c156
+  + Buff er Charging Handle Kit: Blind Box AR 15 Amb — 33966b 1000x500 sha=0586bb90c76a
+  + Typhoon Defense 12GA 10-Round Magazine - $29.99 — 17516b 550x550 sha=c745c8e0b9b0
+  + Exclusive TALO Glocks with Night Sights from $47 — 82951b 1000x627 sha=9b8c8e47b129
+  + wefuny Scope Leveling Kit with Universal Scope L — 15647b 500x500 sha=b538c79a2d76
+  + Canik METE MC9 Prime Ghost White 9mm 3.64" Porte — 22014b 497x402 sha=ac1f45eab918
+  + Tisas 1911 9mm 4.25" Barrel 18+1 Capacity Optic  — 50379b 1000x812 sha=8f9215fed3a7
+  x SilencerCo Omega 36M Suppressor - $799.95 — image not downloadable
+  + Phoenix Trinity H-Duty, 9mm, 4.78" Sight Block B — 448820b 1206x888 sha=c3f08a70df1e
+  + Colt 1911 M45A1 Government 45 ACP 5'' 7rd Pistol — 91036b 454x332 sha=fc4081695204
+  + Henry Big Boy Carbine 357 Mag 16.5" Octagon Barr — 10357b 657x160 sha=1b9c967433b9
+  + GunfightersINC Kenai Chest Holster For Glock 20/ — 25069b 640x523 sha=0ca89b60a63e
+  + Gurexl LED Nightstand with Gun Drawer Charging S — 1117671b 1500x1047 sha=05756b0e4832
+  + Head-Mounted Night Vision Monocular Goggles with — 36658b 500x500 sha=569ae72fbfc5
+  + OSIGHT K Micro Red Dot Sight, 6 MOA Open Reflex  — 77755b 1446x1031 sha=a2a7909e9dc0
+  + Pillxter Men's Stretch Tactical Pants Lightweigh — 18153b 375x500 sha=8d6ee13b7a6c
+  + Wynex Molle Visor Panel Organizer (Khaki, Army G — 450077b 1503x1022 sha=94b84e071ea5
+  + Dragon Creek Tactical Knife Kydex 8.85" Fixed Bl — 20942b 500x500 sha=a06fbaccf19a
+  + Maelstrom Tactical Backpack for Men, Water Resis — 26179b 500x500 sha=3e0ea073ecf2
+  + SilencerCo Hybrid 46M Suppressor + Range Tool MO — 74996b 720x480 sha=64c87b909bef
+  + Arken EP-5 GENII 7-35x56 FFP with illuminated VP — 74035b 630x630 sha=a9a92b4487f0
+  + GOSAFE Mobile Safe - Locking Mag Design for Gloc — 62054b 722x516 sha=aafe22f757e9
+  + 20% off CVLIFE 4-16x50 Rifle Scope Combo with Re — 22042b 500x500 sha=c8a5e9555fde
   x 16" 5.56 NATO Contour 1:7 Mid Length 416R Barrel — image not downloadable
-  + Blue Line ISSC M22 OMNI .22 LR 4.5" Barrel 10Rd  — 34027b 800x600 sha=4403e5d4089a
-  + CMMG Zeroed 46 K Suppressor - $500.99 — 51860b 1500x1210 sha=d6d7e5301235
-  + CMMG Zeroed 46 Suppressor - Black - $546.99 — 54382b 1500x1210 sha=7c9bb6f70bf3
-  + Kimber 2K11 Pro Comp 9mm 4.25" 19-Rds Optic Read — 126614b 1500x1145 sha=f818074f2e95
-  + EAA Corp Ultimate MC1911 .45 ACP 3.4" Barrel 6-R — 10917b 374x250 sha=91cea1071e84
-  + IWI Galil ACE Gen II 7.62x39 16" Rifle + IWI IWS — 39479b 380x214 sha=b43ae4d238c3
-  + B5 Systems P-Grip 23 - Black - $9.61 (Add to Car — 85382b 1135x790 sha=fc1307ee64f0
   x *Bundle* The Triggered Company Disruptor AR-15 F — rejected: too few pixels (150x132)
-  + Spikes Tactical M4 Flat Top Upper, Black, Anodiz — 54468b 1500x619 sha=bfdfb94e2f46
-  + Discount Mil-Spec Lower Build Kit - AR15-Lower-B — 75881b 1200x1024 sha=0c75e974e201
-  + Dirty Bird NOLO AR-15 Stripped Forged Lower Rece — 31759b 945x630 sha=dc6c56517b40
-  + JP Enterprises Gen 2 Silent Capture Spring - AR- — 34914b 1280x853 sha=b54a115957c2
-  + Holosun Aro Core RD2 Red Dot Shake Awake - $99.5 — 320440b 948x880 sha=f0dc752ddc03
-  + Streamlight TLR-7 X Sub Ultra-Compact LED Tactic — 114125b 1500x843 sha=12dfd3affa35
-  + Vortex Optics Viper PST Gen 2 Rifle Scope 5-25x  — 19092b 680x356 sha=0654829d811b
-  + Dan Wesson DWX Compact 9mm 15-Rd 4″ Barrel Pisto — 67699b 1000x727 sha=950a955a7e44
-  + BACKORDER - Osight X Pistol Red Dot Sight with M — 42105b 1183x807 sha=06827736f858
-  + Streamlight TLR-7 Hl-X USB Multi-Fuel Rail-mount — 109669b 1500x843 sha=775f0afc2e7b
-  + Q LLC Short Chop 8.6 Blk SS 1.75" OD X 7.2" Melo — 56079b 1500x1319 sha=e54f873411dc
-  + Winchester M855 5.56 Bulk Ammo 62 Gr FMJ Green T — 79370b 800x600 sha=b628e774a4d0
   x Integrally Suppressed 10" ISU-9 Foxtrot Mike Pro — image not downloadable
-  + PSA Dagger Compact 9mm 3.9" 15-Rd Pistol With Ex — 68821b 1253x700 sha=591ba1a30596
-  + Axil GS Extreme 2.0 Bluetooth Shooting Earbuds,  — 40797b 1238x1115 sha=ca4f19dcaa82
-  + PSA 10.5" Carbine-Length 5.56 NATO 30-Rds 1/7 Ni — 53643b 1500x645 sha=6efa308729ea
-  + LMT Defender-L 5.56, 5.56mm, 16" Barrel, 5x- 30r — 17745b 455x337 sha=67a2d085e800
   x Savage Arms Axis 2 XP 308 Win 20" TB 4rd Rifle w — image not downloadable
   x SilencerCo Spectre 9 Suppressor, Multi Caliber,  — image not downloadable
   x Global Ordnance AK-47 Magazine 7.62x39mm 30rd -  — image not downloadable
   x Glock 19 9mm 15 Round Gen 5 Magazine Black - $20 — image not downloadable
   x Dueling Tree Target 6x1/4 100% USA AR500 Zinc Pl — no og:image on page
 
-fixed 51, failed 8  (86% success)
-distinct images: 51 across 51 deals
+fixed 47, failed 9  (83% success)
+distinct images: 47 across 47 deals
 PASS — no image shared between products
