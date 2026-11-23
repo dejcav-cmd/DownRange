@@ -24,6 +24,7 @@ EXCERPT = ("A first look at Falcon Optic's thermal scopes and the Medusa M1V2.0-
            "1000-yard laser rangefinder, 5-year warranty and Black Friday pricing.")
 TAGS = ["Falcon Optic", "Medusa M1V2.0-650L", "Thermal Scope", "Thermal Optics", "Hunting Optics", "Black Friday",
         "Laser Rangefinder", "640x512", "Night Hunting"]
+HERO_URL = "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-laser-rangefinder-15_ca41f721-9160-4fa4-af47-778b28c1a41f.jpg?v=1786064796&width=3200"  # chosen by DJ
 SOCIAL_PLATFORMS = ["facebook", "instagram", "twitter", "bluesky"]  # Threads/Reddit are not configured on the site
 SOCIAL_COPY = {
     "twitter": "Falcon's Medusa M1V2.0-650L thermal: 640x512, 50mm, 1000yd LRF. First look:",
@@ -82,7 +83,7 @@ def build_body(f1, f2, f3):
              ["Start-up", "7 seconds (power-saver resume also 7s)"], ["Weight", "650g &plusmn;5g (no mount or battery)"], ["Dimensions", "224 &times; 75 &times; 91mm"],
              ["Operating temperature", "-20&deg;C to +50&deg;C"], ["Recoil resistance", "10,000J"], ["Waterproofing", "IP67"]], ["SPEC", "MANUFACTURER LISTING"])
     parts = [
-        '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:var(--text-dim);">Prices, promotions and specifications are as listed on Falcon Optic\'s US site on November 23, 2026. Specs are the manufacturer\'s claims; DownRange has not tested this scope yet.</p>',
+        '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:var(--text-dim);">Prices, promotions and specifications are as listed on Falcon Optic\'s US site on November 23, 2026. Specs are the manufacturer\'s claims; DownRange has not tested this scope yet. Header image: Falcon Optic (from the ' + L(PRODUCT, 'product page') + ').</p>',
         "<h2>The Short Version</h2>",
         f"<p>Falcon Optic's tagline is \"Sensor 640 for the Rest of Us,\" and the Medusa M1V2.0-650L is where that pitch lands. It is a thermal riflescope with a 640&times;512 sensor, a 50mm F1.0 objective, a built-in 1000-yard laser rangefinder, a ballistic calculator, Wi-Fi and an IP67 rating, listed at $2,199 on {HOME_LINK}. During the company's Black Friday sale, the product page shows 20% off applied automatically at checkout, which brings it to $1,759.20. "
         "This is a first look built from Falcon's published numbers. A hands-on review is coming, and we list the questions we plan to answer further down.</p>",
@@ -196,11 +197,17 @@ def main():
     def hero_ok(i):
         r = i["w"] / i["h"]
         return i["w"] >= 1000 and 1.0 <= r <= 1.9 and i["sha1"] not in used
-    heroes = [i for i in valid if hero_ok(i)] or [i for i in valid if i["sha1"] not in used]
-    if not heroes:
-        result["error"] = "All product images already used as heroes; nothing published."; return finish()
-    hero = heroes[0]
-    body_imgs = [i for i in valid if i is not hero and i["sha1"] != hero["sha1"] and i["w"] >= 800][:3]
+    hero = G.fetch_valid(HERO_URL)
+    if hero:
+        hero["src"] = HERO_URL
+        valid = [i for i in valid if i["sha1"] != hero["sha1"]]
+    else:
+        result["steps"].append({"hero_override_failed": HERO_URL[:100]})
+        heroes = [i for i in valid if hero_ok(i)] or [i for i in valid if i["sha1"] not in used]
+        if not heroes:
+            result["error"] = "No usable hero image; nothing published."; return finish()
+        hero = heroes[0]
+    body_imgs = [i for i in valid if i["sha1"] != hero["sha1"] and i["w"] >= 800][:3]
     got = []
     for n, img in enumerate([hero] + body_imgs, 1):
         ext = "png" if img["mime"] == "image/png" else "webp" if img["mime"] == "image/webp" else "jpg"
@@ -218,7 +225,7 @@ def main():
     doc = {
         "_id": BLOG_ID, "_type": "blogPost", "title": TITLE, "slug": {"_type": "slug", "current": SLUG},
         "author": "DJ Cavalcanti", "authorRole": "Founder, DownRange", "category": "HUNTING", "excerpt": EXCERPT, "body": body,
-        "imageUrl": hero["cdn_url"], "imageAlt": "Falcon Optic Medusa M1V2.0-650L thermal scope",
+        "imageUrl": hero["cdn_url"], "imageAlt": "Falcon Optic Medusa M1V2.0-650L thermal scope with built-in laser rangefinder",
         "heroImage": {"_type": "image", "asset": {"_type": "reference", "_ref": hero["asset_id"]}},
         "readTime": max(1, -(-words // 200)), "status": "published", "published": True, "featured": True,
         "publishedAt": existing.get("publishedAt") or (now.isoformat() + "Z"), "tags": TAGS,
