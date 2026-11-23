@@ -59,6 +59,7 @@ def fig(img, alt):
 
 
 def build_body(f1, f2, f3):
+    HOME_LINK = L(HOME, "Falcon Optic's US site")
     T = G.table
     glance = T([["Sensor", "640&times;512, 12&micro;m pixels"], ["Sensitivity (NETD)", "&le;15mK"], ["Objective", "50mm, F1.0"],
                 ["Field of view", "8.8&deg; &times; 6.6&deg;"], ["Optical magnification", "2.8x (digital 1x to 8x)"],
@@ -83,7 +84,7 @@ def build_body(f1, f2, f3):
     parts = [
         '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:var(--text-dim);">Prices, promotions and specifications are as listed on Falcon Optic\'s US site on November 23, 2026. Specs are the manufacturer\'s claims; DownRange has not tested this scope yet.</p>',
         "<h2>The Short Version</h2>",
-        f"<p>Falcon Optic's tagline is \"Sensor 640 for the Rest of Us,\" and the Medusa M1V2.0-650L is where that pitch lands. It is a thermal riflescope with a 640&times;512 sensor, a 50mm F1.0 objective, a built-in 1000-yard laser rangefinder, a ballistic calculator, Wi-Fi and an IP67 rating, listed at $2,199 on {L(HOME, 'Falcon Optic\'s US site')}. During the company's Black Friday sale, the product page shows 20% off applied automatically at checkout, which brings it to $1,759.20. "
+        f"<p>Falcon Optic's tagline is \"Sensor 640 for the Rest of Us,\" and the Medusa M1V2.0-650L is where that pitch lands. It is a thermal riflescope with a 640&times;512 sensor, a 50mm F1.0 objective, a built-in 1000-yard laser rangefinder, a ballistic calculator, Wi-Fi and an IP67 rating, listed at $2,199 on {HOME_LINK}. During the company's Black Friday sale, the product page shows 20% off applied automatically at checkout, which brings it to $1,759.20. "
         "This is a first look built from Falcon's published numbers. A hands-on review is coming, and we list the questions we plan to answer further down.</p>",
         f1,
         "<h2>At a Glance</h2>", glance,
