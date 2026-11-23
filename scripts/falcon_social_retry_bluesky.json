@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "body": {
+    "ok": true,
+    "posted": 1,
+    "total": 1,
+    "results": [
+      {
+        "platform": "bluesky",
+        "title": "Falcon Optic Thermal Lineup: A First Look at the Medusa M1V2.0-650L",
+        "status": "posted",
+        "postUrl": "https://bsky.app/profile/did:plc:foglakvv2bev6skq6uzecqrl/post/3n2ymgnkbn227",
+        "hasImage": true,
+        "docId": "gGJLKGDoss4t5dV1hUc6Fe"
+      }
+    ],
+    "dryRun": false
+  }
+}
