@@ -24,7 +24,7 @@ EXCERPT = ("A first look at Falcon Optic's thermal scopes and the Medusa M1V2.0-
            "1000-yard laser rangefinder, 5-year warranty and Black Friday pricing.")
 TAGS = ["Falcon Optic", "Medusa M1V2.0-650L", "Thermal Scope", "Thermal Optics", "Hunting Optics", "Black Friday",
         "Laser Rangefinder", "640x512", "Night Hunting"]
-HERO_URL = "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-laser-rangefinder-15_ca41f721-9160-4fa4-af47-778b28c1a41f.jpg?v=1786064796&width=3200"  # chosen by DJ
+HERO_URL = "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50mm-objective-3_2d14f24a-310e-4469-a697-ace29e971a6e.jpg?v=1786064797&width=3200"  # chosen by DJ
 SOCIAL_PLATFORMS = ["facebook", "instagram", "twitter", "bluesky"]  # Threads/Reddit are not configured on the site
 SOCIAL_COPY = {
     "twitter": "Falcon's Medusa M1V2.0-650L thermal: 640x512, 50mm, 1000yd LRF. First look:",
@@ -58,7 +58,6 @@ FEATURES = [
     # key, file path (+version), alt, caption
     ("gal1", "M1V2-2.jpg?v=1795252364&width=2048", "Falcon Optic Medusa M1V2.0-650L thermal scope", "The Medusa M1V2.0-650L, as pictured on Falcon's product page."),
     ("lens", "m1v2.0-thermal-scope-slogan-2_84059545-24e4-4c11-8036-c977789298d0.jpg?v=1786064795&width=2048", "Falcon lens and 640 sensor", "Falcon's graphic for the lens and 640 sensor pairing."),
-    ("obj", "m1v2.0-thermal-scope-50mm-objective-3_2d14f24a-310e-4469-a697-ace29e971a6e.jpg?v=1786064797&width=2048", "50mm objective lens on the Medusa M1V2.0-650L, aimed at hog, coyote and deer hunting", "The 50mm objective, which Falcon pitches for hog, coyote and deer."),
     ("core", "m1v2.0-thermal-scope-640-512-sensor-4_1.jpg?v=1789625092&width=2048", "Falcon 640x512 thermal core", "The 640x512 thermal core."),
     ("hz", "m1v2.0-thermal-scope-50hz-refresh-5_20e71942-1769-42a4-885d-09f5252fed8b.jpg?v=1786064795&width=2048", "60Hz refresh rate on the Falcon thermal scope", "Falcon's 60Hz refresh graphic."),
     ("oled", "m1v2.0-thermal-scope-1920-1080-oled-8_3c6447d8-6a60-414e-9720-e4b8594a51f8.jpg?v=1786064795&width=2048", "1920x1080 OLED display on the Medusa M1V2.0-650L", "The 1920x1080 OLED display."),
@@ -151,7 +150,6 @@ def build_body(F):
         "<p>The heart of the scope is a 640&times;512 core with 12&micro;m pixels and a listed sensitivity of &le;15mK NETD. NETD measures the smallest temperature difference the sensor can pick up; lower is better. Falcon says it tunes the core together with its own optics, image processing and firmware rather than dropping in a generic module.</p>",
         f("lens"),
         "<p>Up front sits a 50mm F1.0 objective. Falcon lists an 8.8&deg; &times; 6.6&deg; field of view and 2.8x optical magnification, with digital steps of 1.5x, 2x, 2.5x, 3x, 4x, 6x and 8x. Falcon pitches the 50mm glass for open fields and longer lanes, with hog, coyote and deer in mind.</p>",
-        f("obj"),
         "<p><strong>DownRange math.</strong> A 12&micro;m pixel behind a 50mm lens covers about 0.24 milliradians. At 100 yards, one pixel spans roughly 0.86 inches, and 640 pixels across at 0.24 mrad works out to about 8.8 degrees, matching Falcon's listed horizontal field of view. That is the detail budget: a 40-inch deer spans roughly 46 pixels across at 100 yards and about 15 at 300. Falcon lists detection range at more than 2,500 meters. That is a claim about spotting a heat source, not about identifying what it is.</p>",
         f("core"),
         "<h3>The display: 1080p OLED at 60Hz</h3>",
@@ -254,7 +252,7 @@ def main():
     doc = {
         "_id": BLOG_ID, "_type": "blogPost", "title": TITLE, "slug": {"_type": "slug", "current": SLUG},
         "author": "DJ Cavalcanti", "authorRole": "Founder, DownRange", "category": "HUNTING", "excerpt": EXCERPT, "body": body,
-        "imageUrl": hero["cdn_url"], "imageAlt": "Falcon Optic Medusa M1V2.0-650L thermal scope with built-in laser rangefinder",
+        "imageUrl": hero["cdn_url"], "imageAlt": "Falcon Optic Medusa M1V2.0-650L thermal scope with 50mm objective lens for hog, coyote and deer hunting",
         "heroImage": {"_type": "image", "asset": {"_type": "reference", "_ref": hero["asset_id"]}},
         "readTime": max(1, -(-words // 200)), "status": "published", "published": True, "featured": True,
         "publishedAt": existing.get("publishedAt") or (now.isoformat() + "Z"), "tags": TAGS,
