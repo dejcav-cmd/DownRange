@@ -53,78 +53,134 @@ def I(href, text):
     return G.ilink(href, text)
 
 
-def fig(img, alt):
-    return (f'<figure class="pr-fig" style="margin:20px 0;"><img src="{img["cdn_url"]}" alt="{html.escape(alt, quote=True)}" '
+FILES = "https://us.falconoptic.com/cdn/shop/files/"
+FEATURES = [
+    # key, file path (+version), alt, caption
+    ("gal1", "M1V2-2.jpg?v=1795252364&width=2048", "Falcon Optic Medusa M1V2.0-650L thermal scope", "The Medusa M1V2.0-650L, as pictured on Falcon's product page."),
+    ("lens", "m1v2.0-thermal-scope-slogan-2_84059545-24e4-4c11-8036-c977789298d0.jpg?v=1786064795&width=2048", "Falcon lens and 640 sensor", "Falcon's graphic for the lens and 640 sensor pairing."),
+    ("obj", "m1v2.0-thermal-scope-50mm-objective-3_2d14f24a-310e-4469-a697-ace29e971a6e.jpg?v=1786064797&width=2048", "50mm objective lens on the Medusa M1V2.0-650L, aimed at hog, coyote and deer hunting", "The 50mm objective, which Falcon pitches for hog, coyote and deer."),
+    ("core", "m1v2.0-thermal-scope-640-512-sensor-4_1.jpg?v=1789625092&width=2048", "Falcon 640x512 thermal core", "The 640x512 thermal core."),
+    ("hz", "m1v2.0-thermal-scope-50hz-refresh-5_20e71942-1769-42a4-885d-09f5252fed8b.jpg?v=1786064795&width=2048", "60Hz refresh rate on the Falcon thermal scope", "Falcon's 60Hz refresh graphic."),
+    ("oled", "m1v2.0-thermal-scope-1920-1080-oled-8_3c6447d8-6a60-414e-9720-e4b8594a51f8.jpg?v=1786064795&width=2048", "1920x1080 OLED display on the Medusa M1V2.0-650L", "The 1920x1080 OLED display."),
+    ("ball", "m1v2.0-thermal-scope-slogan-14_f1a88af4-f277-40d6-a66c-41e70a7f2abc.jpg?v=1786064795&width=2048", "Falcon thermal scope ballistic calculation", "\"Range it, hold with confidence,\" per Falcon."),
+    ("prof", "m1v2.0-thermal-scope-ballistics-16_948a85b7-d085-47df-a9bc-1ab8ab62833a.jpg?v=1786064795&width=2048", "Ten weapon profiles, five reticle colors and ten reticle styles", "Ten gun profiles, five reticle colors and ten reticle styles."),
+    ("auto", "m1v2.0-thermal-scope-auto-ballistic-calculation-17_0c1060c1-efc2-4283-90db-9f4e2c8ebdd2.jpg?v=1786064796&width=2048", "Automatic ballistic calculation on the thermal scope", "Automatic ballistic calculation."),
+    ("tough", "m1v2.0-thermal-scope-slogan-18_2437dadb-b5cb-4a0d-935a-db416351fa26.jpg?v=1786064795&width=2048", "Falcon Optic thermal scope durability testing", "Falcon lists impact, waterproof, temperature-cycling and aging tests."),
+    ("power", "m1v2.0-thermal-scope-power-24_66fc2a32-43ad-411f-b1e6-8714be35cf9d.jpg?v=1786064795&width=2048", "Quick-swap battery on the Medusa M1V2.0-650L", "The quick-swap battery design."),
+    ("hand", "m1v2.0-thermal-scope-slogan-25_5256ffbc-1185-4edf-bd8f-0304d274501a.jpg?v=1786064795&width=2048", "Medusa M1V2.0-650L thermal scope in hand", "Falcon's \"Easy to handhold\" graphic."),
+    ("c_lrf", "m1v2.0-thermal-scope-built-in-objective-rangefinder-26_a41b0763-230d-48c2-81bf-14e923466c19.jpg?v=1786064795&width=1500", "Built-in laser rangefinder", "Built-in laser rangefinder."),
+    ("c_cap", "m1v2.0-thermal-scope-magnetic-silent-lens-cap-27_439e3aba-4d91-4422-a948-aadb7cabd9a0.jpg?v=1786064795&width=1500", "Magnetic silent lens cap", "Magnetic silent lens cap."),
+    ("c_amb", "m1v2.0-thermal-scope-ambidextrous-controls-28_934270f0-4651-4824-883c-3f4434f0ff32.jpg?v=1786064795&width=1500", "Ambidextrous controls", "Ambidextrous controls."),
+    ("c_wifi", "m1v2.0-thermal-scope-built-in-wifi-29_db881793-af54-42be-8a98-fec5cd0de9c5.jpg?v=1786064795&width=1500", "Built-in Wi-Fi", "Built-in Wi-Fi."),
+    ("box", "Falcon_M1v2.0-650L_Thermal_Scope_Packing_List-PC-1.jpg?v=1794994334&width=2048", "Falcon M1V2.0-650L thermal scope packing list", "Falcon's packing-list graphic."),
+]
+
+
+def fig(img, alt, cap):
+    if not img:
+        return ""
+    return (f'<figure class="pr-fig" style="margin:22px 0;"><img src="{img["cdn_url"]}" alt="{html.escape(alt, quote=True)}" '
             f'style="width:100%;border-radius:6px;" loading="lazy" /><figcaption style="font-size:12px;color:var(--text-dim);margin-top:6px;">'
-            f'Image: Falcon Optic (from the {L(PRODUCT, "product page")})</figcaption></figure>')
+            f'{html.escape(cap)} Image: Falcon Optic (from the {L(PRODUCT, "product page")}).</figcaption></figure>')
 
 
-def build_body(f1, f2, f3):
+def grid(imgs):
+    imgs = [i for i in imgs if i]
+    if not imgs:
+        return ""
+    cells = "".join(
+        f'<figure style="margin:0;"><img src="{i[0]["cdn_url"]}" alt="{html.escape(i[1], quote=True)}" style="width:100%;border-radius:6px;" loading="lazy" />'
+        f'<figcaption style="font-size:12px;color:var(--text-dim);margin-top:4px;">{html.escape(i[2])}</figcaption></figure>' for i in imgs)
+    return (f'<div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:12px;margin:22px 0;">{cells}</div>'
+            f'<p style="font-size:12px;color:var(--text-dim);margin-top:-10px;">Images: Falcon Optic (from the {L(PRODUCT, "product page")}).</p>')
+
+
+def build_body(F):
+    def f(k):
+        e = next((x for x in FEATURES if x[0] == k), None)
+        return fig(F.get(k), e[2], e[3]) if e else ""
+    def g(keys):
+        out = []
+        for k in keys:
+            e = next(x for x in FEATURES if x[0] == k)
+            out.append((F.get(k), e[2], e[3]) if F.get(k) else None)
+        return grid(out)
     HOME_LINK = L(HOME, "Falcon Optic's US site")
     T = G.table
     glance = T([["Sensor", "640&times;512, 12&micro;m pixels"], ["Sensitivity (NETD)", "&le;15mK"], ["Objective", "50mm, F1.0"],
-                ["Field of view", "8.8&deg; &times; 6.6&deg;"], ["Optical magnification", "2.8x (digital 1x to 8x)"],
-                ["Laser rangefinder", "1000 yards"], ["Display", "1920&times;1080, 60Hz"], ["Weight", "650g without mount and battery"],
+                ["Field of view", "8.8&deg; &times; 6.6&deg;"], ["Optical magnification", "2.8x (digital up to 8x)"],
+                ["Laser rangefinder", "1000 yards"], ["Display", "1920&times;1080 OLED, 60Hz"], ["Weight", "650g without mount and battery"],
                 ["Protection", "IP67, 10,000J recoil rating"], ["Warranty", "5 years (3 standard + 2 free)"],
-                ["Price", "$2,199.00 listed; $1,759.20 after the automatic 20% Black Friday discount"]], ["SPEC", "MEDUSA M1V2.0-650L"])
+                ["Price", "$2,199.00 shown; $1,759.20 with the automatic 20% Black Friday discount"]], ["SPEC", "MEDUSA M1V2.0-650L"])
     lineup = T([
         ["<strong>Medusa M1V2.0-650L</strong>", "Scope", "640&times;512", "50mm", "&le;15mK", "1000yd LRF", "$2,199"],
         ["Medusa M3-635L", "Scope", "640&times;512", "35mm", "&le;18mK", "1000yd LRF", "$1,899"],
         ["Medusa M4V2.0-225L", "Scope", "256&times;192", "25mm", "&le;30mK", "1000yd LRF", "$889"],
         ["Medusa M5-650L", "Scope", "640&times;512", "50mm", "&le;18mK", "1000yd LRF", "$2,999"],
         ["Surtur S1 series", "Monocular", "640&times;512", "n/a listed", "&le;18mK", "1000yd LRF", "from $1,599"],
-        ["Titan T1-650L", "Multi-spectral scope", "640&times;512 thermal / 2K digital night vision", "50mm", "&le;18mK", "1000yd LRF", "$1,300 (list $1,999)"],
+        ["Titan T1-650L", "Multi-spectral scope", "640&times;512 thermal / 2K digital night vision", "50mm", "&le;18mK", "1000yd LRF", "$1,300 (regular $1,999)"],
         ["Ymir Y1LV2.0", "Digital night vision scope", "2592&times;1944", "70mm", "n/a", "n/a", "$699"]],
-        ["MODEL", "TYPE", "SENSOR", "LENS", "NETD", "RANGEFINDER", "LISTED PRICE"])
+        ["MODEL", "TYPE", "SENSOR", "LENS", "NETD", "RANGEFINDER", "PRICE SHOWN"])
     box = T([["Sensor", "640&times;512"], ["Pixel size", "12&micro;m"], ["NETD", "&le;15mK"], ["Objective", "50mm F1.0"], ["Field of view", "8.8&deg; &times; 6.6&deg;"],
-             ["Optical magnification", "2.8x"], ["Digital zoom steps", "1x, 1.5x, 2x, 2.5x, 3x, 4x, 6x, 8x"], ["Detection range (listed)", "&gt;2,500m"],
-             ["Laser rangefinder", "1000yd"], ["Display", "1920&times;1080, 60Hz (OLED per product text)"], ["Color modes", "White Hot, Black Hot, Red Hot, High Contrast, Low Light, Fusion"],
-             ["Reticles", "10 designs, 5 colors"], ["Gun profiles", "10"], ["Battery", "18650, 3500mAh, replaceable; 5 hours listed runtime; external power capable"],
-             ["Start-up", "7 seconds (power-saver resume also 7s)"], ["Weight", "650g &plusmn;5g (no mount or battery)"], ["Dimensions", "224 &times; 75 &times; 91mm"],
+             ["Optical magnification", "2.8x"], ["Digital zoom steps", "1x, 1.5x, 2x, 2.5x, 3x, 4x, 6x, 8x"], ["Detection range", "&gt;2,500m"],
+             ["Laser rangefinder", "1000yd"], ["Display", "1920&times;1080 OLED, 60Hz"], ["Color modes", "White Hot, Black Hot, Red Hot, High Contrast, Low Light, Fusion"],
+             ["Reticles", "10 designs, 5 colors"], ["Gun profiles", "10"], ["Battery", "18650, 3500mAh, replaceable; 5 hours expected; external power capable"],
+             ["Start-up", "7 seconds (power-saver mode also 7s)"], ["Weight", "650g &plusmn;5g (no mount or battery)"], ["Dimensions", "224 &times; 75 &times; 91mm"],
              ["Operating temperature", "-20&deg;C to +50&deg;C"], ["Recoil resistance", "10,000J"], ["Waterproofing", "IP67"]], ["SPEC", "MANUFACTURER LISTING"])
     parts = [
-        '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:var(--text-dim);">Prices, promotions and specifications are as listed on Falcon Optic\'s US site on November 23, 2026. Specs are the manufacturer\'s claims; DownRange has not tested this scope yet. Header image: Falcon Optic (from the ' + L(PRODUCT, 'product page') + ').</p>',
-        "<h2>The Short Version</h2>",
-        f"<p>Falcon Optic's tagline is \"Sensor 640 for the Rest of Us,\" and the Medusa M1V2.0-650L is where that pitch lands. It is a thermal riflescope with a 640&times;512 sensor, a 50mm F1.0 objective, a built-in 1000-yard laser rangefinder, a ballistic calculator, Wi-Fi and an IP67 rating, listed at $2,199 on {HOME_LINK}. During the company's Black Friday sale, the product page shows 20% off applied automatically at checkout, which brings it to $1,759.20. "
-        "This is a first look built from Falcon's published numbers. A hands-on review is coming, and we list the questions we plan to answer further down.</p>",
-        f1,
+        '<p style="font-family:\'IBM Plex Mono\',monospace;font-size:12px;color:var(--text-dim);">Prices, promotions and specifications are as shown on Falcon Optic\'s US site on November 23, 2026. Specs are the manufacturer\'s claims; DownRange has not tested this scope yet. Photos and graphics: Falcon Optic (from the ' + L(PRODUCT, 'product page') + ').</p>',
+        "<h2>Why Everyone Is Talking About Sub-$2,000 640 Thermal</h2>",
+        f"<p>For years, a thermal scope with a 640&times;512 sensor, a big objective and a built-in rangefinder meant a price tag that made most hunters shrug and keep their spotlight. Falcon Optic wants to change that. Its tagline is \"Sensor 640 for the Rest of Us,\" and the Medusa M1V2.0-650L is the scope that has to back it up: a 640&times;512 sensor at &le;15mK NETD, a 50mm F1.0 lens, a 1000-yard laser rangefinder, automatic ballistics, Wi-Fi and an IP67 rating, shown at $2,199 on {HOME_LINK}. "
+        "With Falcon's Black Friday sale running, the product page applies 20% off automatically, which brings it to <strong>$1,759.20</strong>.</p>",
+        "<p>Below: what the scope is, what each feature means for a hunter, how the rest of Falcon's lineup stacks up, and every Black Friday perk we found. This is a first look built from Falcon's own numbers and photos. A hands-on review is coming.</p>",
+        f("gal1") if False else f("gal1"),
         "<h2>At a Glance</h2>", glance,
         "<h2>Who Is Falcon Optic?</h2>",
-        f"<p>Falcon describes itself on its {L('https://us.falconoptic.com/pages/about-us', 'About page')} as a professional thermal imaging and night vision manufacturer, and says it develops the core thermal solution in-house: optical design, image processing, firmware, rangefinding, power management and housing. It also says, \"We are new here,\" which is useful context: this is not a decades-old thermal brand. "
+        f"<p>Falcon describes itself on its {L('https://us.falconoptic.com/pages/about-us', 'About page')} as a professional thermal imaging and night vision manufacturer, and says it develops the core thermal solution in-house: optical design, image processing, firmware, rangefinding, power management and housing. It also says, \"We are new here,\" which is honest context: this is not a decades-old thermal brand. "
         "The company claims it rejects any sensor above 18mK NETD and tests every unit for recoil, freezing, heat, continuous running and water exposure. Those are company statements, and we have not verified them. "
-        "The US store lists a US warehouse, free standard shipping within the contiguous United States (3 to 5 workdays), 30-day returns and a warranty described as three years standard plus two years free.</p>",
+        "The US store lists free shipping within the US, 30-day returns and a five-year warranty (three years standard plus two years free).</p>",
         "<h2>The Falcon Thermal Lineup</h2>",
-        f"<p>Falcon's thermal range splits into riflescopes and a portable monocular, with a multi-spectral scope and a digital night vision scope alongside. Browse the full range in the {L(SCOPES, 'thermal scope collection')} and the {L(MONOS, 'thermal monocular collection')}. Prices below are the sale prices shown on the site on November 23.</p>",
+        f"<p>Falcon's range splits into riflescopes and a portable monocular, with a multi-spectral scope and a digital night vision scope alongside. Browse the {L(SCOPES, 'thermal scope collection')} and the {L(MONOS, 'thermal monocular collection')}. Prices below are what the sale page showed on November 23.</p>",
         lineup,
-        "<ul><li><strong>Medusa series (scopes).</strong> The M1V2.0-650L is the headline model with the lowest listed NETD (&le;15mK). The M5-650L shares its 640&times;512 sensor and 50mm lens at a higher price and a listed &le;18mK. The M3-635L steps down to a 35mm lens, which trades magnification for a wider view at a lower price. The M4V2.0-225L is the budget entry with a 256&times;192 sensor.</li>"
+        "<ul><li><strong>Medusa series (scopes).</strong> The M1V2.0-650L is the headline model and has the lowest NETD Falcon lists across the Medusa scopes (&le;15mK). The M5-650L shares its 640&times;512 sensor and 50mm lens at a higher price and a listed &le;18mK. The M3-635L steps down to a 35mm lens for a wider view at a lower price. The M4V2.0-225L is the budget entry with a 256&times;192 sensor.</li>"
         "<li><strong>Surtur series (monocular).</strong> A handheld 640&times;512 thermal with a 1000-yard rangefinder for scouting, spotting and recovery, from $1,599.</li>"
-        "<li><strong>Titan T1-650L.</strong> A multi-spectral scope that pairs a 640&times;512 thermal sensor with 2K digital night vision for day-to-night use, listed at $1,300 against a $1,999 list price.</li>"
-        "<li><strong>Ymir Y1LV2.0.</strong> A digital night vision scope (2592&times;1944, 70mm) at $699, for hunters who want night capability without thermal.</li></ul>",
+        "<li><strong>Titan T1-650L.</strong> A multi-spectral scope pairing a 640&times;512 thermal sensor with 2K digital night vision for day-to-night use, shown at $1,300 against a $1,999 regular price (Falcon's page says 35% off).</li>"
+        "<li><strong>Ymir Y1LV2.0.</strong> A digital night vision scope (2592&times;1944, 70mm) at $699 for hunters who want night capability without thermal.</li></ul>",
         "<h2 id=\"m1\">Medusa M1V2.0-650L: The Detailed Look</h2>",
-        "<h3>Sensor and optics</h3>",
-        "<p>The M1V2.0-650L uses a 640&times;512 sensor with 12&micro;m pixels and a listed sensitivity of &le;15mK NETD. NETD is a measure of how small a temperature difference the sensor can pick up; lower is better, and &le;15mK is the lowest figure Falcon lists across its Medusa scopes. Behind a 50mm F1.0 objective, Falcon lists an 8.8&deg; &times; 6.6&deg; field of view and 2.8x optical magnification, with digital steps of 1.5x, 2x, 2.5x, 3x, 4x, 6x and 8x.</p>"
-        "<p><strong>DownRange math.</strong> A 12&micro;m pixel behind a 50mm lens covers about 0.24 milliradians. At 100 yards, one sensor pixel spans roughly 0.86 inches of the scene, and 640 pixels across at 0.24 mrad works out to about 8.8 degrees, which matches Falcon's listed field of view. In plain terms, that is the detail budget you are working with: a deer 40 inches long spans roughly 45 pixels across at 100 yards, and about 15 at 300 yards. Detection range is listed at more than 2,500 meters, which is a detection claim for a heat source, not a distance at which you can identify what it is.</p>",
-        f2,
-        "<h3>Display and image modes</h3>",
-        "<p>The display is listed at 1920&times;1080 with a 60Hz frame rate (the product text calls it OLED). Color modes are White Hot, Black Hot, Red Hot, High Contrast, Low Light and Fusion, and Falcon lists AI image enhancement. Ten reticle designs in five colors and ten saved gun profiles are included.</p>",
-        "<h3>Laser rangefinder and ballistics</h3>",
-        "<p>A built-in laser rangefinder with a 1000-yard listed range feeds a smart automatic ballistic calculator, so you can range a target and hold for the drop without a separate device. Falcon's page uses the line \"Range it, hold with confidence.\" How accurate that solution is in the field depends on your inputs, your ammunition data and the rangefinder's consistency on low-contrast targets, which is exactly what we plan to test.</p>",
+        "<h3>The sensor and glass: where the image comes from</h3>",
+        "<p>The heart of the scope is a 640&times;512 core with 12&micro;m pixels and a listed sensitivity of &le;15mK NETD. NETD measures the smallest temperature difference the sensor can pick up; lower is better. Falcon says it tunes the core together with its own optics, image processing and firmware rather than dropping in a generic module.</p>",
+        f("lens"),
+        "<p>Up front sits a 50mm F1.0 objective. Falcon lists an 8.8&deg; &times; 6.6&deg; field of view and 2.8x optical magnification, with digital steps of 1.5x, 2x, 2.5x, 3x, 4x, 6x and 8x. Falcon pitches the 50mm glass for open fields and longer lanes, with hog, coyote and deer in mind.</p>",
+        f("obj"),
+        "<p><strong>DownRange math.</strong> A 12&micro;m pixel behind a 50mm lens covers about 0.24 milliradians. At 100 yards, one pixel spans roughly 0.86 inches, and 640 pixels across at 0.24 mrad works out to about 8.8 degrees, matching Falcon's listed horizontal field of view. That is the detail budget: a 40-inch deer spans roughly 46 pixels across at 100 yards and about 15 at 300. Falcon lists detection range at more than 2,500 meters. That is a claim about spotting a heat source, not about identifying what it is.</p>",
+        f("core"),
+        "<h3>The display: 1080p OLED at 60Hz</h3>",
+        "<p>You look at a 1920&times;1080 OLED display refreshed at 60Hz. Falcon's pitch is \"No Lag, No Smear,\" meaning an easier time tracking a moving animal while you scan. Six color modes are on tap: White Hot, Black Hot, Red Hot, High Contrast, Low Light and Fusion, and Falcon lists AI image enhancement.</p>",
+        g(["hz", "oled"]),
+        "<h3>Range it, hold it: rangefinder and ballistics</h3>",
+        "<p>The built-in laser rangefinder is listed at 1000 yards and feeds an automatic ballistic calculator, so you range the target and hold for the drop without a second device. The scope stores ten gun profiles and offers ten reticle designs in five colors. Falcon's line: \"Range it, hold with confidence.\" Whether that confidence is earned depends on your ballistic inputs and how the rangefinder behaves on low-contrast targets, which is exactly what we plan to test. One buyer on the product page reports first-round hits at 331 yards after tuning, and another notes ballistic input is metric only. Those are customer comments, not our results.</p>",
+        g(["ball", "prof", "auto"]),
         "<h3>Recording, Wi-Fi and the app</h3>",
-        "<p>The scope records onboard photos and video and supports Wi-Fi image sharing and remote control from a phone through the Falcon Outdoor app, including live streaming. The listing describes recording as onboard photo and video, and does not list automatic or recoil-triggered recording.</p>",
-        "<h3>Power</h3>",
-        "<p>The M1V2.0-650L runs on a replaceable 18650 battery (3500mAh) with a listed runtime of 5 hours, and it can run from external power. The package includes two 18650 batteries and a 5V/2A adapter. Falcon's homepage banner reads \"Forget the battery. Hunt till dawn.\" Listed runtime is a manufacturer figure, and real-world hours depend on temperature, Wi-Fi use and rangefinder use.</p>",
-        "<h3>Build and durability</h3>",
-        "<p>Falcon lists IP67 waterproofing, a 10,000J recoil rating, an operating range of -20&deg;C to +50&deg;C and a weight of 650g (&plusmn;5g) without the mount and battery. The listing mentions impact, waterproof, temperature-cycling and aging tests. Controls are ambidextrous, and the scope has a magnetic silent lens cap. Dimensions are 224 &times; 75 &times; 91mm. Start-up takes about 7 seconds.</p>",
-        f3,
+        "<p>The scope records photos and video onboard, and built-in Wi-Fi handles image sharing and remote control from a phone through the Falcon Outdoor app, which also live-streams the scope view. Falcon's listing gives no recording resolution or storage size and does not list recoil-activated recording; one reviewer points that out.</p>",
+        "<h3>Power: quick-swap and external</h3>",
+        "<p>It runs on a replaceable 18650 battery (3500mAh) with an expected runtime of 5 hours, and it can run from external power. Two 18650 batteries ship in the box. Falcon's homepage banner reads \"Forget the battery. Hunt till dawn.\" Real runtime depends on cold, Wi-Fi and rangefinder use, and a few buyers say the battery drains fast. We will measure it.</p>",
+        g(["power", "hand"]),
+        "<h3>Built to take recoil</h3>",
+        "<p>Falcon lists IP67 waterproofing, a 10,000J recoil rating, an operating range of -20&deg;C to +50&deg;C and a weight of 650g (&plusmn;5g) without the mount and battery. Dimensions are 224 &times; 75 &times; 91mm, and start-up takes about 7 seconds. Falcon names impact, waterproof, temperature-cycling and aging tests on the page but gives no test details.</p>",
+        f("tough"),
+        "<h3>Controls that help in the field</h3>",
+        "<p>Falcon highlights four hunting-focused details: the built-in laser rangefinder, a magnetic silent lens cap, ambidextrous controls and built-in Wi-Fi.</p>",
+        g(["c_lrf", "c_cap", "c_amb", "c_wifi"]),
         "<h3>Full specifications (manufacturer-listed)</h3>", box,
         "<h3>What is in the box</h3>",
-        "<p>The scope, a user manual, a warranty card, a cleaning cloth, two 18650 batteries, a 5V/2A adapter, a Type-C data cable, an installation tool, a Picatinny mount and a shoulder strap.</p>",
+        "<p>The scope, a user manual, a warranty card, a cleaning cloth, two 18650 batteries, a 5V/2A adapter, a Type-C data cable, installation tool accessories, a Picatinny mount and a shoulder strap. A digital manual is available from Falcon's product page.</p>",
+        f("box"),
         "<h2>What Buyers on the Product Page Say</h2>",
-        f"<p>The {L(PRODUCT, 'product page')} shows a 4.6 star rating from 7 reviews: four 5-star and three 4-star. Some written reviews mention battery drain, gaps in the manual and trouble with the app, and Falcon replied to at least one app complaint. Seven reviews is a small sample, and these are customer comments on the seller's own site, not independent tests. We read them as a list of things to check.</p>",
+        f"<p>The {L(PRODUCT, 'product page')} shows a 4.6 star rating from 7 reviews: four 5-star and three 4-star. Reviewers praise image clarity, the 50mm lens and the rangefinder. On the other side, comments mention ballistics setup taking effort, a thin manual, fast battery drain and one app problem that Falcon replied to. Seven reviews is a small sample, and these are customer comments on the seller's own site, not independent tests. We treat them as a checklist.</p>",
         "<h2>What We Plan to Test</h2>",
         "<ul><li><strong>Identification range.</strong> How far can we tell a hog from a coyote, not just see a hot spot?</li>"
         "<li><strong>Real battery life.</strong> Hours against the listed 5, with Wi-Fi and the rangefinder in use and in cold weather.</li>"
-        "<li><strong>Rangefinder performance.</strong> Consistency on animals, brush and low-contrast targets, and how the ballistic solution compares with actual impacts.</li>"
+        "<li><strong>Rangefinder and ballistics.</strong> Consistency on animals, brush and low-contrast targets, and how the solution compares with actual impacts.</li>"
         "<li><strong>Zero retention.</strong> Whether the scope holds zero across repeated shots and remounts.</li>"
         "<li><strong>App stability.</strong> Whether Wi-Fi pairing, recording and live streaming work in the field.</li>"
         "<li><strong>Image comparison.</strong> A side-by-side with other 640-class scopes.</li></ul>",
@@ -133,13 +189,13 @@ def build_body(f1, f2, f3):
         "<h2>Before You Hunt With Thermal</h2>",
         "<p>Rules on using thermal and night-vision devices for hunting vary by state, species and season, and some states restrict them for certain game or hours. Check your state wildlife agency's current regulations before you buy or hunt, and see our " + I("/hunting", "hunting page") + " and " + I("/laws", "state gun laws hub") + " for state-level information.</p>",
         "<h2>Falcon Optic's Black Friday Sale</h2>",
-        f"<p>Falcon says its Black Friday sale runs from <strong>November 16 to November 30, 2026 (EST)</strong>. The sale page is {L(BF, 'here')}. As listed on November 23:</p>"
-        "<ul><li><strong>Up to 20% off.</strong> The sale page is headlined \"Up to 20% off,\" and the M1V2.0-650L product page shows 20% off applied automatically at checkout ($1,759.20). No promo code was needed on the pages we read.</li>"
+        f"<p>Falcon says its Black Friday sale runs from <strong>November 16 to November 30, 2026 (EST)</strong>. The sale page is {L(BF, 'here')}. As shown on November 23:</p>"
+        "<ul><li><strong>Up to 20% off.</strong> The sale page is headlined \"Up to 20% off,\" and the M1V2.0-650L product page shows 20% off applied automatically at checkout ($1,759.20). Not every item carries the same discount: the Titan T1-650L, for example, shows 35% off its regular price.</li>"
         "<li><strong>Free Battery Pack.</strong> Falcon says every eligible product purchase comes with one.</li>"
         "<li><strong>Combo bonus.</strong> Spend $1,900 or more on combo products and receive an additional free accessory pack (batteries, a charger, a Falcon hat and a patch).</li>"
-        "<li><strong>Lucky Spin Wheel.</strong> One free spin for entering an email, with prizes of discounts, free gifts or a grand prize valued up to $1,999. Falcon lists eligibility as US residents 18 or older, and the coupons are for non-accessory products and cannot be combined unless stated.</li>"
-        "<li><strong>Shipping and returns.</strong> The site lists free shipping on all orders and 30-day returns.</li></ul>"
-        f"<p>Promotions change and have terms, so confirm everything at checkout. Start at {L(HOME, 'us.falconoptic.com')}, or go straight to the {L(PRODUCT, 'Medusa M1V2.0-650L page')} or the {L(BF, 'Black Friday sale page')}.</p>",
+        "<li><strong>Lucky Spin Wheel.</strong> One free spin for entering an email (each successful friend referral adds a spin), with prizes of discounts, free gifts or a grand prize valued up to $1,999. Rewards must be claimed by November 30. Coupons apply to non-accessory products and cannot be combined with other offers unless stated, and eligibility is US residents 18 or older.</li>"
+        "<li><strong>Shipping and returns.</strong> The product page lists free shipping within the US and 30-day returns.</li></ul>"
+        f"<p>Promotions have terms and can change, so confirm everything at checkout. Start at {L(HOME, 'us.falconoptic.com')}, or go straight to the {L(PRODUCT, 'Medusa M1V2.0-650L page')} or the {L(BF, 'Black Friday sale page')}.</p>",
         "<div style=\"background:rgba(200,146,42,0.08);border-left:4px solid var(--gold);padding:1rem 1.25rem;margin:2rem 0;\"><p style=\"margin:0;\"><strong>Hands-on review coming soon.</strong> We will put the Medusa M1V2.0-650L through field testing and publish a full hands-on review here on DownRange. Check "
         + I("/blog", "the DownRange blog") + " and " + I("/deals", "our deals feed") + " for updates.</p></div>",
     ]
@@ -169,56 +225,29 @@ def main():
         result["page_len"] = len(page_html)
     except Exception as e:
         result["error"] = f"could not fetch product page: {e}"; return finish()
-    raw = G.collect_image_urls(page_html)
-    cands, seen_paths = [], set()
-    for u in raw:
-        pth = urllib.parse.urlparse(u)
-        if "/cdn/shop/files/" not in pth.path or G.BAD.search(u):
-            continue
-        name = pth.path.rsplit("/", 1)[-1]
-        if not re.search(r"m1v2", name, re.I) or re.search(r"footer|payment|review|banner", name, re.I):
-            continue
-        if pth.path in seen_paths:
-            continue
-        seen_paths.add(pth.path)
-        cands.append(to_full(u))
-    result["candidates"] = cands
-    used_rows = G.sanity_query('*[_type=="blogPost" && _id != "%s"]{imageUrl}' % BLOG_ID) or []
-    used = " ".join(r.get("imageUrl") or "" for r in used_rows)
-    valid, shas = [], set()
-    for u in cands:
-        img = G.fetch_valid(u)
-        if not img or img["sha1"] in shas:
-            continue
-        shas.add(img["sha1"]); img["src"] = u; valid.append(img)
-    if not valid:
-        result["error"] = "No valid real product image found; nothing published."; return finish()
-    # hero: wide enough, and a ratio Instagram accepts (0.8-1.91), never a hero used on another post
-    def hero_ok(i):
-        r = i["w"] / i["h"]
-        return i["w"] >= 1000 and 1.0 <= r <= 1.9 and i["sha1"] not in used
     hero = G.fetch_valid(HERO_URL)
-    if hero:
-        hero["src"] = HERO_URL
-        valid = [i for i in valid if i["sha1"] != hero["sha1"]]
-    else:
-        result["steps"].append({"hero_override_failed": HERO_URL[:100]})
-        heroes = [i for i in valid if hero_ok(i)] or [i for i in valid if i["sha1"] not in used]
-        if not heroes:
-            result["error"] = "No usable hero image; nothing published."; return finish()
-        hero = heroes[0]
-    body_imgs = [i for i in valid if i["sha1"] != hero["sha1"] and i["w"] >= 800][:3]
-    got = []
-    for n, img in enumerate([hero] + body_imgs, 1):
+    if not hero:
+        result["error"] = "Hero image could not be fetched; nothing published."; return finish()
+    hero["src"] = HERO_URL
+    seen = {hero["sha1"]}
+    ups = [hero]
+    F = {}
+    for n, (key, path, alt, cap) in enumerate(FEATURES, 1):
+        u = FILES + path
+        try:
+            img = G.fetch_valid(u)
+        except Exception as e:
+            img = None
+        if not img or img["sha1"] in seen:
+            result["steps"].append({"skipped": key}); continue
+        seen.add(img["sha1"]); img["src"] = u; ups.append(img); F[key] = img
+    for n, img in enumerate(ups, 1):
         ext = "png" if img["mime"] == "image/png" else "webp" if img["mime"] == "image/webp" else "jpg"
         up = G.upload(img, f"falcon-medusa-m1v2-650l-{n}.{ext}")
-        img.update(up); img.pop("body", None); got.append(img)
-        result["steps"].append({"uploaded": up["cdn_url"], "src": img["src"][:140], "dims": [img["w"], img["h"]]})
-    hero = got[0]
-    alts = ["Falcon Optic Medusa M1V2.0-650L thermal scope, side view", "Falcon Optic Medusa M1V2.0-650L thermal riflescope",
-            "Falcon Optic Medusa M1V2.0-650L thermal scope with 50mm objective"]
-    figs = [fig(got[i + 1], alts[i]) if i + 1 < len(got) else "" for i in range(3)]
-    body = build_body(*figs)
+        img.update(up); img.pop("body", None)
+        result["steps"].append({"uploaded": up["cdn_url"], "dims": [img["w"], img["h"]]})
+    hero = ups[0]
+    body = build_body(F)
     words = len(re.sub(r"<[^>]+>", " ", body).split())
     existing = G.sanity_query('*[_id=="%s"][0]{publishedAt,socialScheduleAt,socialScheduleDone}' % BLOG_ID) or {}
     now = datetime.datetime.utcnow().replace(microsecond=0)
