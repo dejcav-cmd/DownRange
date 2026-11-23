@@ -1,0 +1,40 @@
+{
+  "post": {
+    "socialScheduleAt": "2026-11-23T16:59:47Z",
+    "socialScheduleDone": true,
+    "socialScheduleStartedAt": null,
+    "status": "published"
+  },
+  "social": [
+    {
+      "content": "Thermal scope shoppers: we put together a first look at Falcon Optic's thermal lineup and its Medusa M1V2.0-650L. Manufacturer-listed specs include a 640x512 sensor, 50mm F1.0 lens, 1000-yard laser rangefinder, built-in ballistic calculator, Wi-Fi app and IP67 rating, plus a 5-year warranty. Falcon's Black Friday sale runs through Nov. 30 (EST). We have not tested it yet, and a hands-on review is coming soon. Are you running thermal on your hunting rifle?\n\nFull article: https://downrangeco.com/blog/falcon-medusa-m1v2-650l-thermal-scope?utm_source=facebook&utm_medium=social&utm_campaign=blog_hunting\n#2A #SecondAmendment #DownRange #Hunting",
+      "error": null,
+      "hasImage": true,
+      "platform": "facebook",
+      "postUrl": "https://www.facebook.com/photo?fbid=122148800499341798",
+      "postedAt": "2026-11-23T17:00:36.992Z",
+      "status": "posted"
+    },
+    {
+      "content": "Falcon Optic Medusa M1V2.0-650L thermal scope: first look. Manufacturer-listed specs: 640x512 sensor, 50mm F1.0 lens, 1000-yd laser rangefinder, ballistic calculator, Wi-Fi and IP67, with a 5-year warranty. Black Friday pricing runs through Nov. 30 (EST). Hands-on review coming soon.\n\n\ud83d\udcd6 Full story \u2014 link in bio",
+      "error": null,
+      "hasImage": null,
+      "platform": "instagram",
+      "postUrl": null,
+      "postedAt": null,
+      "status": "scheduled"
+    }
+  ],
+  "live": {
+    "status": 200,
+    "has_title": true,
+    "has_canonical": true,
+    "has_jsonld": true,
+    "has_hero": true,
+    "len": 151023
+  },
+  "sitemap": {
+    "status": 200,
+    "contains_slug": true
+  }
+}
