@@ -1,0 +1,66 @@
+name: Retry Falcon Social
+
+on:
+  push:
+    paths:
+      - '.github/workflows/retry-falcon-social.yml'
+  workflow_dispatch: {}
+
+permissions:
+  contents: write
+
+jobs:
+  run:
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Retry instagram
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          PLATFORM: instagram
+        working-directory: scripts
+        run: |
+          python3 retry_falcon_social.py > publish_output.log 2>&1 || true
+          cp falcon_social_retry.json falcon_social_retry_instagram.json
+      - name: Report instagram
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          RESULT_FILE: falcon_social_retry_instagram.json
+        working-directory: scripts
+        run: python3 report_midterms_2a_result.py
+
+      - name: Retry twitter
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          PLATFORM: twitter
+        working-directory: scripts
+        run: |
+          python3 retry_falcon_social.py > publish_output.log 2>&1 || true
+          cp falcon_social_retry.json falcon_social_retry_twitter.json
+      - name: Report twitter
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          RESULT_FILE: falcon_social_retry_twitter.json
+        working-directory: scripts
+        run: python3 report_midterms_2a_result.py
+
+      - name: Retry bluesky
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+          PLATFORM: bluesky
+        working-directory: scripts
+        run: |
+          python3 retry_falcon_social.py > publish_output.log 2>&1 || true
+          cp falcon_social_retry.json falcon_social_retry_bluesky.json
+      - name: Report bluesky
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+          RESULT_FILE: falcon_social_retry_bluesky.json
+        working-directory: scripts
+        run: python3 report_midterms_2a_result.py
