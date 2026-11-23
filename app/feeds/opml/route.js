@@ -13,8 +13,9 @@ export async function GET() {
     { title: 'DownRange — Canada',               url: 'https://www.downrangeco.com/feeds/canada' },
   ]
 
+  const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
   const outlines = feeds.map(f =>
-    `  <outline type="rss" text="${f.title}" title="${f.title}" xmlUrl="${f.url}" htmlUrl="https://www.downrangeco.com"/>`
+    `  <outline type="rss" text="${esc(f.title)}" title="${esc(f.title)}" xmlUrl="${esc(f.url)}" htmlUrl="https://www.downrangeco.com"/>`
   ).join('\n')
 
   const opml = `<?xml version="1.0" encoding="UTF-8"?>

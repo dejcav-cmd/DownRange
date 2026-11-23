@@ -387,8 +387,8 @@ export default async function HuntingPage({ searchParams }) {
                 <div style={{ flex:1, height:1, background:'var(--border)' }} />
               </div>
               <div style={{ display:'grid', gridTemplateColumns:'repeat(auto-fill, minmax(300px, 1fr))', gap:12 }}>
-                {huntingContent.slice(0,6).map(post => (
-                  <div key={post._id} style={{ background:'#111318', border:'1px solid var(--border)', padding:'18px' }}>
+                {huntingContent.slice(0,12).map(post => (
+                  <div key={post._id} id={post.slug?.current} style={{ background:'#111318', border:'1px solid var(--border)', padding:'18px' }}>
                     <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#22c55e', letterSpacing:'.08em', marginBottom:6 }}>{post.category?.toUpperCase()}</div>
                     <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'var(--text)', lineHeight:1.3, marginBottom:8 }}>{post.title}</div>
                     <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#4B5563' }}>{post.publishedAt ? new Date(post.publishedAt).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'}) : ''}</div>
