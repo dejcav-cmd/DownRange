@@ -106,7 +106,7 @@
     },
     {
       "mutate": {
-        "transactionId": "7S9KuqzG0zI3qQ1sSczlOY",
+        "transactionId": "gGJLKGDoss4t5dV1hUiexu",
         "results": [
           {
             "operation": "update"
@@ -115,11 +115,11 @@
       }
     }
   ],
-  "page_len": 912273,
+  "page_len": 912276,
   "verify": {
     "_id": "blog-falcon-optic-medusa-m1v2-650l-first-look",
     "bodyImgs": 12,
-    "category": "HUNTING",
+    "category": "ANALYSIS",
     "heroAsset": "image-085e8fb6e25fc18318d54c121af5570459809e94-3200x1800-jpg",
     "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/085e8fb6e25fc18318d54c121af5570459809e94-3200x1800.jpg",
     "publishedAt": "2026-11-23T16:53:47Z",
