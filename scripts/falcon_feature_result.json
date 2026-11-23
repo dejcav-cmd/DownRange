@@ -14,7 +14,7 @@
       "skipped": "hand"
     },
     {
-      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/5605a8f929a6d9cefc363f275a82a38269d5ed5e-3200x1800.webp",
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/085e8fb6e25fc18318d54c121af5570459809e94-3200x1800.jpg",
       "dims": [
         3200,
         1800
@@ -25,13 +25,6 @@
       "dims": [
         1600,
         1200
-      ]
-    },
-    {
-      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/e799237d517f12b4b0bbcbd1a719d633d4778e72-2048x1152.jpg",
-      "dims": [
-        2048,
-        1152
       ]
     },
     {
@@ -113,7 +106,7 @@
     },
     {
       "mutate": {
-        "transactionId": "7S9KuqzG0zI3qQ1sScyN3q",
+        "transactionId": "7S9KuqzG0zI3qQ1sSczlOY",
         "results": [
           {
             "operation": "update"
@@ -125,10 +118,10 @@
   "page_len": 912273,
   "verify": {
     "_id": "blog-falcon-optic-medusa-m1v2-650l-first-look",
-    "bodyImgs": 13,
+    "bodyImgs": 12,
     "category": "HUNTING",
-    "heroAsset": "image-5605a8f929a6d9cefc363f275a82a38269d5ed5e-3200x1800-webp",
-    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/5605a8f929a6d9cefc363f275a82a38269d5ed5e-3200x1800.webp",
+    "heroAsset": "image-085e8fb6e25fc18318d54c121af5570459809e94-3200x1800-jpg",
+    "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/085e8fb6e25fc18318d54c121af5570459809e94-3200x1800.jpg",
     "publishedAt": "2026-11-23T16:53:47Z",
     "readTime": 11,
     "slug": "falcon-medusa-m1v2-650l-thermal-scope",
@@ -138,7 +131,7 @@
     "title": "Falcon Optic Thermal Lineup: A First Look at the Medusa M1V2.0-650L"
   },
   "blog_url": "https://www.downrangeco.com/blog/falcon-medusa-m1v2-650l-thermal-scope",
-  "words": 2041,
+  "words": 2022,
   "debug": [
     {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_84059545-24e4-4c11-8036-c977789298d0.j",
