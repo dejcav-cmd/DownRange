@@ -1,0 +1,19 @@
+{
+  "status": 200,
+  "body": {
+    "ok": true,
+    "posted": 1,
+    "total": 1,
+    "results": [
+      {
+        "platform": "twitter",
+        "title": "Falcon Optic Thermal Lineup: A First Look at the Medusa M1V2.0-650L",
+        "status": "posted",
+        "postUrl": null,
+        "hasImage": true,
+        "docId": "c1aW2XCbhZTA24eLmbX8xU"
+      }
+    ],
+    "dryRun": false
+  }
+}
