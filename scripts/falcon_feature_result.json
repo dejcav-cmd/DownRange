@@ -2,8 +2,19 @@
   "ok": true,
   "steps": [
     {
+      "skipped": "lens"
+    },
+    {
+      "skipped": "ball"
+    },
+    {
+      "skipped": "tough"
+    },
+    {
+      "skipped": "hand"
+    },
+    {
       "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/5605a8f929a6d9cefc363f275a82a38269d5ed5e-3200x1800.webp",
-      "src": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-laser-rangefinder-15_ca41f721-9160-4fa4-af47-778b28c1a41f.jpg?v=1786064796&wi",
       "dims": [
         3200,
         1800
@@ -11,31 +22,98 @@
     },
     {
       "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/81835dec72812f732632603f885e78664bacc0d6-1600x1200.webp",
-      "src": "http://us.falconoptic.com/cdn/shop/files/M1V2-2.jpg?v=1795252364&width=2048",
       "dims": [
         1600,
         1200
       ]
     },
     {
-      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/c5004a1c1a928cf8be9031786ea075e9a4a00d6b-1600x1200.webp",
-      "src": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-5.jpg?v=1784275328&width=2048",
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/e799237d517f12b4b0bbcbd1a719d633d4778e72-2048x1152.jpg",
       "dims": [
-        1600,
-        1200
+        2048,
+        1152
       ]
     },
     {
-      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/db2287fd03077931062ccb85060693e1acab38c3-1600x1200.webp",
-      "src": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-1.jpg?v=1784275320&width=2048",
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/bacf51f67c1cd452d4348f63be5d957b47c063c1-2048x1152.webp",
       "dims": [
-        1600,
-        1200
+        2048,
+        1152
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/90f25e09a1354d5d09aac18119e44d42665f5d50-2048x1019.webp",
+      "dims": [
+        2048,
+        1019
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/bce32e0729a12644e10fa8b8fe5aab7fe9d46966-2048x1152.webp",
+      "dims": [
+        2048,
+        1152
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/19148fddf0cb7d576e138f8f4176372777559a18-2048x1152.webp",
+      "dims": [
+        2048,
+        1152
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/406b5defa98d778664c82ea770392f2073e0f8ae-2048x1152.webp",
+      "dims": [
+        2048,
+        1152
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/11eb6cb9f3b5a350650c5086f19f4d109875f5e8-2048x1152.webp",
+      "dims": [
+        2048,
+        1152
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/27be1dbb6b6060f818b387455d4b8c74a050eac4-1200x1064.webp",
+      "dims": [
+        1200,
+        1064
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/79c739c8b576b911835a5467455d985f7c4c05ee-1200x1064.webp",
+      "dims": [
+        1200,
+        1064
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/006f4032a2b6877be85382678590f81331c07825-1200x1064.webp",
+      "dims": [
+        1200,
+        1064
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/ce26976d5d07d9c43a29388422d668313c6710ce-1200x1064.webp",
+      "dims": [
+        1200,
+        1064
+      ]
+    },
+    {
+      "uploaded": "https://cdn.sanity.io/images/vbnsqnkg/production/a86246a3960b302ce8d69e8e9eb593cc5933b671-2048x1450.webp",
+      "dims": [
+        2048,
+        1450
       ]
     },
     {
       "mutate": {
-        "transactionId": "gGJLKGDoss4t5dV1hUamzy",
+        "transactionId": "7S9KuqzG0zI3qQ1sScyN3q",
         "results": [
           {
             "operation": "update"
@@ -45,66 +123,14 @@
     }
   ],
   "page_len": 912273,
-  "candidates": [
-    "http://us.falconoptic.com/cdn/shop/files/M1V2-2.jpg?v=1795252364&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-5.jpg?v=1784275328&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-1.jpg?v=1784275320&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-4.jpg?v=1784275311&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-3.jpg?v=1784275302&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-8.jpg?v=1784275311&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-6.jpg?v=1784275307&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-7.jpg?v=1784275322&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-2.jpg?v=1784275314&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-650l-thermal-scope-9.jpg?v=1784275326&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-1_1.jpg?v=1789625951&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-1_3_1.jpg?v=1789625062&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_556bcffa-2992-4b5e-944d-fe87fbe269bd.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_84059545-24e4-4c11-8036-c977789298d0.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50mm-objective-3_a7473944-de5b-4953-bba9-162f26988b16.jpg?v=1786065950&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50mm-objective-3_2d14f24a-310e-4469-a697-ace29e971a6e.jpg?v=1786064797&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-640-512-sensor-4_1_b34153a2-1ab3-4a05-bfeb-edfb30b62c76.jpg?v=1789625981&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-640-512-sensor-4_1.jpg?v=1789625092&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50hz-refresh-5_b5c18677-5ef9-4f2d-9fec-e6c0358c9615.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50hz-refresh-5_20e71942-1769-42a4-885d-09f5252fed8b.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50hz-refresh-6_842508ea-ad05-4180-880c-8dc02c876b59.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-50hz-refresh-6_b46bf359-a813-4aab-914a-c8faea291f2a.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-7_10f4b101-fd46-4bee-bdcc-541154e251ee.jpg?v=1786065947&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-7_22a8fb63-d495-4a69-b08a-6d2fa9722a03.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-1920-1080-oled-8_23b62177-30e4-4041-83a9-ca8d5a944cd9.jpg?v=1786065949&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-1920-1080-oled-8_3c6447d8-6a60-414e-9720-e4b8594a51f8.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-Red-Hot-14.webp?v=1795076263&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-Red-Hot-14_1.webp?v=1795076752&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-14_843304c3-a5a4-4142-9433-1111999341ad.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-14_f1a88af4-f277-40d6-a66c-41e70a7f2abc.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-laser-rangefinder-15_f21efe33-e306-4155-8262-8d5f7e9034ac.jpg?v=1786065950&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-laser-rangefinder-15_ca41f721-9160-4fa4-af47-778b28c1a41f.jpg?v=1786064796&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-ballistics-16_99baaaa5-2c45-494b-8d6a-0102536dbba6.jpg?v=1786065949&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-ballistics-16_948a85b7-d085-47df-a9bc-1ab8ab62833a.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-auto-ballistic-calculation-17_4031c481-35d4-4340-aa40-f54241899cfe.jpg?v=1786065949&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-auto-ballistic-calculation-17_0c1060c1-efc2-4283-90db-9f4e2c8ebdd2.jpg?v=1786064796&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/Falcon_M1v2.0-650L_Thermal_Scope_Packing_List-M-1.jpg?v=1794994333&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/Falcon_M1v2.0-650L_Thermal_Scope_Packing_List-PC-1.jpg?v=1794994334&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-18_f5613a96-618b-4b4d-87fe-c7df409c7822.jpg?v=1786065949&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-18_2437dadb-b5cb-4a0d-935a-db416351fa26.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-23_46d4f5e1-233a-4c3a-af63-0ce4c62b7841.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-23_5ec2deb9-4925-4b19-bcdb-d0bdf93a7287.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-power-24_b4a84759-e20f-4d77-b89d-f83694939faf.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-power-24_66fc2a32-43ad-411f-b1e6-8714be35cf9d.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-25_297c942d-c0e5-443e-89d5-8a52a91a8318.jpg?v=1786065948&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-25_5256ffbc-1185-4edf-bd8f-0304d274501a.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-built-in-objective-rangefinder-26_a41b0763-230d-48c2-81bf-14e923466c19.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-magnetic-silent-lens-cap-27_439e3aba-4d91-4422-a948-aadb7cabd9a0.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-ambidextrous-controls-28_934270f0-4651-4824-883c-3f4434f0ff32.jpg?v=1786064795&width=2048",
-    "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-built-in-wifi-29_db881793-af54-42be-8a98-fec5cd0de9c5.jpg?v=1786064795&width=2048"
-  ],
   "verify": {
     "_id": "blog-falcon-optic-medusa-m1v2-650l-first-look",
-    "bodyImgs": 3,
+    "bodyImgs": 13,
     "category": "HUNTING",
     "heroAsset": "image-5605a8f929a6d9cefc363f275a82a38269d5ed5e-3200x1800-webp",
     "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/5605a8f929a6d9cefc363f275a82a38269d5ed5e-3200x1800.webp",
     "publishedAt": "2026-11-23T16:53:47Z",
-    "readTime": 9,
+    "readTime": 11,
     "slug": "falcon-medusa-m1v2-650l-thermal-scope",
     "socialScheduleAt": "2026-11-23T16:59:47Z",
     "socialScheduleDone": true,
@@ -112,47 +138,15 @@
     "title": "Falcon Optic Thermal Lineup: A First Look at the Medusa M1V2.0-650L"
   },
   "blog_url": "https://www.downrangeco.com/blog/falcon-medusa-m1v2-650l-thermal-scope",
-  "words": 1769,
+  "words": 2041,
   "debug": [
     {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_556bcffa-2992-4b5e-944d-fe87fbe269bd.j",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_556bcffa-2992-4b5e-944d-fe87fbe269bd.j",
-      "why": "dims 2160x450"
-    },
-    {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_84059545-24e4-4c11-8036-c977789298d0.j",
       "why": "dims 2048x427"
     },
     {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-2_84059545-24e4-4c11-8036-c977789298d0.j",
       "why": "dims 3840x800"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-7_10f4b101-fd46-4bee-bdcc-541154e251ee.j",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-7_10f4b101-fd46-4bee-bdcc-541154e251ee.j",
-      "why": "dims 2160x450"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-7_22a8fb63-d495-4a69-b08a-6d2fa9722a03.j",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-7_22a8fb63-d495-4a69-b08a-6d2fa9722a03.j",
-      "why": "dims 3840x800"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-14_843304c3-a5a4-4142-9433-1111999341ad.",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-14_843304c3-a5a4-4142-9433-1111999341ad.",
-      "why": "dims 2160x450"
     },
     {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-14_f1a88af4-f277-40d6-a66c-41e70a7f2abc.",
@@ -163,44 +157,12 @@
       "why": "dims 3840x800"
     },
     {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-18_f5613a96-618b-4b4d-87fe-c7df409c7822.",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-18_f5613a96-618b-4b4d-87fe-c7df409c7822.",
-      "why": "dims 2160x450"
-    },
-    {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-18_2437dadb-b5cb-4a0d-935a-db416351fa26.",
       "why": "dims 2048x427"
     },
     {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-18_2437dadb-b5cb-4a0d-935a-db416351fa26.",
       "why": "dims 3840x800"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-23_46d4f5e1-233a-4c3a-af63-0ce4c62b7841.",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-23_46d4f5e1-233a-4c3a-af63-0ce4c62b7841.",
-      "why": "dims 2160x450"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-23_5ec2deb9-4925-4b19-bcdb-d0bdf93a7287.",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-23_5ec2deb9-4925-4b19-bcdb-d0bdf93a7287.",
-      "why": "dims 3840x800"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-25_297c942d-c0e5-443e-89d5-8a52a91a8318.",
-      "why": "dims 2048x427"
-    },
-    {
-      "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-25_297c942d-c0e5-443e-89d5-8a52a91a8318.",
-      "why": "dims 2160x450"
     },
     {
       "reject": "https://us.falconoptic.com/cdn/shop/files/m1v2.0-thermal-scope-slogan-25_5256ffbc-1185-4edf-bd8f-0304d274501a.",
