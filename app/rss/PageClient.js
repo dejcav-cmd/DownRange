@@ -46,7 +46,7 @@ const FEEDS = [
     emoji:  '✍',
     url:    '/feeds/blog',
     color:  '#22c55e',
-    desc:   'In-depth articles, gear guides, and firearms analysis written by DJ Cavalcanti and the DownRange team.',
+    desc:   'In-depth articles, gear guides, and firearms analysis written by the DownRange Co. Intel Desk.',
     badge:  null,
     count:  '30 items',
     update: 'Weekly',

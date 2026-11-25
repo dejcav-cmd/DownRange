@@ -8,7 +8,7 @@ const MAILBOXES = [
   { from: 'DownRange Feedback <feedback@downrangeco.com>',  to: 'dj@downrangeco.com',  subject: '[TEST] feedback@downrangeco.com',     desc: 'Feedback modal sender' },
   { from: 'DownRange <news@downrangeco.com>',               to: 'dj@downrangeco.com',  subject: '[TEST] news@downrangeco.com',          desc: 'Newsletter sender' },
   { from: 'DownRange Intelligence <intelligence@downrangeco.com>', to: 'dj@downrangeco.com', subject: '[TEST] intelligence@downrangeco.com', desc: 'Intelligence briefing sender' },
-  { from: 'DJ Cavalcanti — DownRange <dj@downrangeco.com>', to: 'dj@downrangeco.com',  subject: '[TEST] dj@downrangeco.com',             desc: 'Outreach sender' },
+  { from: 'DownRange Co. Intel Desk <dj@downrangeco.com>', to: 'dj@downrangeco.com',  subject: '[TEST] dj@downrangeco.com',             desc: 'Outreach sender' },
   { from: 'DownRange Outreach <outreach@downrangeco.com>',  to: 'dj@downrangeco.com',  subject: '[TEST] outreach@downrangeco.com',      desc: 'Outreach queue digest' },
 ]
 

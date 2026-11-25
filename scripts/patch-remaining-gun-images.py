@@ -86,7 +86,7 @@ with open("app/guns/[model]/page.js", "w") as f:
 
 # Git commit and push
 subprocess.run(["git", "config", "user.email", "dj@downrangeco.com"])
-subprocess.run(["git", "config", "user.name", "DJ Cavalcanti"])
+subprocess.run(["git", "config", "user.name", "DownRange Co. Intel Desk"])
 subprocess.run(["git", "add", "public/img/guns/", "app/guns/[model]/page.js"])
 res = subprocess.run(
     ["git", "commit", "-m", f"fix: {len(downloaded)} more gun images downloaded to /public/img/guns/"],

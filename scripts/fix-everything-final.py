@@ -534,7 +534,7 @@ print(f"Gun images downloaded: {len(downloaded_guns)}", flush=True)
 print(f"Learn images downloaded: {len(downloaded_learns)}", flush=True)
 
 subprocess.run(["git", "config", "user.email", "dj@downrangeco.com"])
-subprocess.run(["git", "config", "user.name", "DJ Cavalcanti"])
+subprocess.run(["git", "config", "user.name", "DownRange Co. Intel Desk"])
 subprocess.run(["git", "add",
     "public/img/guns/", "public/img/learn/",
     "app/guns/[model]/page.js", "app/guns/page.js",

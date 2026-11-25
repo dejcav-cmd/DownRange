@@ -331,7 +331,7 @@ def main():
         "_type": "blogPost",
         "title": TITLE,
         "slug": {"_type": "slug", "current": SLUG},
-        "author": "DJ Cavalcanti",
+        "author": "DownRange Co. Intel Desk",
         "authorRole": "Founder, DownRange",
         "category": "LAW",
         "excerpt": EXCERPT,

@@ -8,7 +8,7 @@ import { fetchAndUploadImage } from '@/lib/imageUpload.js'
 
 // DownRange Blog Writer — Tuesdays + Thursdays, 7:32 AM Pacific
 // Publishes exactly ONE article LIVE per run (no draft/review step — DJ wants
-// these live immediately). Each article carries DJ's byline, so quality gates
+// these live immediately). Each article carries the team byline, so quality gates
 // below are strict: banned-language check, minimum length, and a real
 // topic-relevant image downloaded and uploaded to the Sanity CDN (never a
 // generic hotlinked stock photo).
@@ -32,7 +32,7 @@ const sanity = createClient({
 
 // Use the flagship model first for this job specifically — every other
 // useCase in lib/aiClient.js defaults to Haiku-primary for cost reasons, but
-// this content carries DJ's signature and must be the best the site produces.
+// this content carries the DownRange byline and must be the best the site produces.
 const QUALITY_CHAIN = 'anthropic:claude-sonnet-5-5,anthropic:claude-haiku-5-5'
 
 const BANNED_PHRASES = [
@@ -156,17 +156,17 @@ async function generateArticleBody(topicData) {
   const today = new Date()
   const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })
 
-  const systemPrompt = `You are DJ Cavalcanti, founder of DownRange — a firearms media portal based in Washington State.
-You carry daily. You've been a gun owner for over 15 years. You're direct, opinionated, and don't pad your writing.
-You write for serious gun owners who are tired of fluffy content. This article is published under your real byline
-with no editorial review before it goes live — it must read as something you would actually put your name on.
+  const systemPrompt = `You are the DownRange Co. Intel Desk, the editorial team at DownRange — a firearms media portal based in Washington State.
+You are gun owners who follow 2A law and the industry closely. You're direct, opinionated, and don't pad your writing.
+You write for serious gun owners who are tired of fluffy content. This article is published under the DownRange Co. Intel Desk byline
+with no editorial review before it goes live — it must read as something the whole team would put its name on.
 
 VOICE RULES (non-negotiable):
-- Sound like a real person who carries, shoots, and follows 2A law closely
+- Sound like real gun owners who carry, shoot, and follow 2A law closely
 - Use specific product names, prices, and case names — never vague
 - No "comprehensive guides", "dive into", "robust", "seamlessly", "empower", "game-changer"
 - No AI filler phrases like "in today's landscape" or "it's worth noting"
-- Use "I", "you", "we" naturally — first person works
+- Use "you" and the collective "we" naturally — never a single personal "I" or personal anecdotes about one writer
 - Short punchy sentences when making a point
 - Longer sentences only when explaining something specific
 - Start with a real hook — something that happened, a number, a fact
@@ -198,7 +198,7 @@ Start directly with the first section h2 or a strong opening paragraph.`
 
   // Up to 2 attempts: if the first pass trips the banned-language check or is
   // too short, retry once with an explicit correction before giving up. This
-  // is worth the extra call — a bad article going live under DJ's name is a
+  // is worth the extra call — a bad article going live under the DownRange name is a
   // worse outcome than one skipped run.
   for (let attempt = 1; attempt <= 2; attempt++) {
     const prompt = attempt === 1
@@ -251,10 +251,10 @@ async function writeArticle(topicData) {
   const year = today.getUTCFullYear()
   const stamp = today.toISOString().slice(0, 10).replace(/-/g, '')
   const baseSlug = topicData.baseSlug || slugify(title)
-  let slug = `dj-${baseSlug}-${year}`
+  let slug = `dr-${baseSlug}-${year}`
   // Never overwrite an existing post: add the date if the slug is taken
   const taken = await sanity.fetch('count(*[_type=="blogPost" && slug.current==$s])', { s: slug }).catch(() => 0)
-  if (taken) slug = `dj-${baseSlug}-${stamp}`
+  if (taken) slug = `dr-${baseSlug}-${stamp}`
 
   // Real, topic-relevant image — searched and uploaded to the Sanity CDN, not
   // a generic hotlinked stock photo. If the search comes back empty, we skip
@@ -270,7 +270,7 @@ async function writeArticle(topicData) {
   const readTime = Math.max(1, Math.ceil(gen.wordCount / 200))
 
   return {
-    _id:         `blog-dj-${stamp}-${Math.random().toString(36).slice(2, 8)}`,
+    _id:         `blog-dr-${stamp}-${Math.random().toString(36).slice(2, 8)}`,
     topicSource: topicData.source || 'evergreen',
     sourceRefs:  topicData.sourceRefs || [],
     _type:       'blogPost',
@@ -279,9 +279,9 @@ async function writeArticle(topicData) {
     excerpt:     topicData.excerpt || (topicData.angle || '').replace(/\s*Link the relevant[^.]*\.?/i, '').trim(),
     body:        gen.body,
     imageUrl,
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
-    authorImg:   '/img/dj-avatar.png',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
+    authorImg:   '/img/logo.png',
     category:    topicData.category,
     tags:        topicData.tags,
     readTime,
@@ -358,7 +358,7 @@ async function buildReleasesTopic(used) {
   return {
     source: 'releases',
     topic: `new gun releases this week: ${names.join(', ')}`,
-    angle: 'A roundup of this week\'s new guns: who each one is for, what stands out, price where known, and which one DJ would actually buy. One h2 section per gun plus the bottom line. Note state legality issues (magazine limits, assault-weapon bans) where relevant.',
+    angle: 'A roundup of this week\'s new guns: who each one is for, what stands out, price where known, and which one the team would actually buy. One h2 section per gun plus the bottom line. Note state legality issues (magazine limits, assault-weapon bans) where relevant.',
     category: 'RELEASES',
     tags: ['New Releases', ...picks.map(r => r.brand)].slice(0, 6),
     imageUrl: picks.find(r => r.img)?.img || null,

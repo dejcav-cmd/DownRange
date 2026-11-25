@@ -18,7 +18,7 @@ export const outreachCampaign = defineType({
     defineField({ name: 'targetStates', title: 'Target States (filter)', type: 'array', of: [{ type: 'string' }] }),
     defineField({ name: 'scheduledAt', title: 'Scheduled Send Date', type: 'datetime' }),
     defineField({ name: 'sentAt',      title: 'Sent At', type: 'datetime' }),
-    defineField({ name: 'fromName',    title: 'From Name', type: 'string', initialValue: 'DJ Cavalcanti — DownRange' }),
+    defineField({ name: 'fromName',    title: 'From Name', type: 'string', initialValue: 'DownRange Co. Intel Desk' }),
     defineField({ name: 'fromEmail',   title: 'From Email', type: 'string', initialValue: 'dj@downrangeco.com' }),
     defineField({ name: 'replyTo',     title: 'Reply-To', type: 'string', initialValue: 'dj@downrangeco.com' }),
     defineField({ name: 'stats', title: 'Stats', type: 'object', fields: [

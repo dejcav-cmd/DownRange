@@ -41,7 +41,7 @@ export async function POST(req) {
       summary: body.summary, detail: body.detail, sourceUrl: body.sourceUrl,
       abbr: body.abbr, rating: body.rating, highlights: body.highlights,
       body: body.body, imageUrl: body.imageUrl, tag: body.tag,
-      readMins: body.readMins, author: body.author || 'DJ Cavalcanti',
+      readMins: body.readMins, author: body.author || 'DownRange Co. Intel Desk',
       brlPrice: body.brlPrice, usdEquiv: body.usdEquiv,
       availability: body.availability, trend: body.trend, note: body.note,
       value: body.value, color: body.color, order: body.order ?? 99,
@@ -63,7 +63,7 @@ export async function POST(req) {
 
   if (action === 'ai-write') {
     const { type: t, topic } = body
-    const langPrompt = 'ESCREVA EM PORTUGUÊS BRASILEIRO FLUENTE. Sem rodeios. Tom direto. Autor: DJ Cavalcanti.'
+    const langPrompt = 'ESCREVA EM PORTUGUÊS BRASILEIRO FLUENTE. Sem rodeios. Tom direto. Autor: DownRange Co. Intel Desk (equipe editorial).'
     const prompts = {
       artigo: `${langPrompt}\n\nEscreva um artigo de 900-1100 palavras sobre: ${topic}.\nContexto: mercado de armas e leis no Brasil. Formato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
       lei: `${langPrompt}\n\nEscreva um resumo detalhado (400-600 palavras) sobre esta lei/decreto de armas no Brasil: ${topic}.\nIncluir: status atual, impacto prático para atiradores, o que mudou.`,

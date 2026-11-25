@@ -136,7 +136,7 @@ export async function POST(req) {
     if (!content.trim()) return Response.json({ error: 'No content to rewrite' }, { status: 400 })
 
     const prompt = [
-      'Rewrite this firearms news article in the voice of DJ Cavalcanti — a gun owner and 2A advocate in Washington State.',
+      'Rewrite this firearms news article in the voice of the DownRange Co. Intel Desk — gun owners and 2A advocates in Washington State.',
       'Direct sentences. Specific facts. Active voice. First person where natural.',
       'BANNED WORDS: comprehensive, dive into, cutting-edge, robust, leverage, game-changer, seamlessly, unprecedented, stakeholder',
       '',

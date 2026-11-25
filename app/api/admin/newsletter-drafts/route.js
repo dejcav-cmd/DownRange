@@ -41,7 +41,7 @@ function buildFallbackNewsletter(articles) {
     </p>
     <h2 style="font-family:Arial,sans-serif;font-size:20px;color:#C8922A;border-bottom:2px solid #1F2428;padding-bottom:8px;margin-bottom:16px;">This Week's Top Stories</h2>
     ${storiesHtml}
-    <p style="font-size:13px;color:#6B7280;margin-top:24px;">— DJ Cavalcanti, DownRange</p>`
+    <p style="font-size:13px;color:#6B7280;margin-top:24px;">— The DownRange Co. Intel Desk</p>`
 
   return {
     subject,
@@ -56,9 +56,9 @@ async function generateWithAI(articles) {
   ).join('\n')
 
   const prompt = `Write a weekly firearms and Second Amendment newsletter email for DownRange.
-DownRange is run by DJ Cavalcanti, a gun owner and 2A advocate in Washington State.
+DownRange is run by the DownRange Co. team, gun owners and 2A advocates in Washington State.
 
-TONE: Write like a person, not a newsletter bot. Direct, informed, opinionated.
+TONE: Write like people, not a newsletter bot. Direct, informed, opinionated.
 BANNED words: comprehensive, dive into, game-changer, leverage, synergy, seamlessly, unprecedented.
 NO corporate-speak. Sound like a gun owner writing to other gun owners.
 
@@ -70,7 +70,7 @@ Write the newsletter body as HTML with these sections:
 - <h2>This Week's Top Stories</h2> (bullet each story, 1-2 sentence summary, be specific)
 - <h2>Quick Hits</h2> (3-4 one-liners on industry news)
 - <h2>Bottom Line</h2> (2-3 sentences editorial take, what should gun owners do?)
-- Signature: "— DJ Cavalcanti, DownRange"
+- Signature: "— The DownRange Co. Intel Desk"
 
 Return ONLY a JSON object, no markdown:
 {"subject":"punchy subject line under 60 chars","bodyHtml":"<p>...</p>","preview":"first 90 chars of body for email preview"}`
@@ -170,7 +170,7 @@ export async function POST(req) {
 
     if (action === 'test') {
       await getResend().emails.send({
-        from: 'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
+        from: 'DownRange Co. Intel Desk <dj@downrangeco.com>',
         to: [body.testEmail || 'dj@downrangeco.com'],
         subject: '[TEST] ' + draft.subject,
         html,
@@ -189,7 +189,7 @@ export async function POST(req) {
     for (let i = 0; i < emails.length; i += 50) {
       const batch = emails.slice(i, i+50)
       await getResend().emails.send({
-        from: 'DJ Cavalcanti — DownRange <dj@downrangeco.com>',
+        from: 'DownRange Co. Intel Desk <dj@downrangeco.com>',
         to: batch,
         subject: draft.subject,
         html,

@@ -51,7 +51,7 @@ BODY = """
 <p><strong>DownRange Bottom Line:</strong> The new option is real, but it depends on a policy that can be withdrawn. Before you choose, check your state law, ask the manufacturer about warranty, and decide how much legal uncertainty you are willing to hold. If you are unsure, a Form 4 is the more conservative choice.</p>
 <p>Source: <a href="https://www.capitolarmory.com/4473-only-vs-form-4-risks" target="_blank" rel="noopener">Capitol Armory, &ldquo;4473 Suppressor vs. Form 4&rdquo;</a>, with ATF's <a href="https://www.atf.gov/firearms/update-to-nfa-transfer-guidance" target="_blank" rel="noopener">Update to NFA Transfer Guidance FAQ</a>. Summarized and analyzed in my own words; the retailer's page is undated and reflects policy as of October 2026.</p>
 {HERO_CREDIT}
-<p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; DJ Cavalcanti</em><br/><strong>DJ Cavalcanti, DownRange Founder</strong></p>
+<p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; The DownRange Co. Intel Desk</em></p>
 """.strip()
 
 
@@ -92,7 +92,7 @@ def main():
         "_id": BLOG_ID, "_type": "blogPost",
         "title": "4473-Only vs. Form 4: Which Suppressor Purchase Holds Up After the NFA Change?",
         "slug": {"_type": "slug", "current": SLUG},
-        "author": "DJ Cavalcanti", "authorRole": "Founder, DownRange", "category": "LAW",
+        "author": "DownRange Co. Intel Desk", "authorRole": "Editorial Team, DownRange Co.", "category": "LAW",
         "excerpt": ("ATF's new policy lets some buyers pick up a suppressor with just a Form 4473. A suppressor retailer argues "
                     "the Form 4 is still the safer buy. Here is how the two routes compare, and who has a stake in the answer."),
         "body": body, "imageUrl": hero["cdn_url"],

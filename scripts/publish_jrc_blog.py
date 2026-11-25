@@ -122,7 +122,7 @@ def main():
         "_type": "blogPost",
         "title": "JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps",
         "slug": {"_type": "slug", "current": "jrc-guns-glock-frame-weight-2026"},
-        "author": "DJ Cavalcanti",
+        "author": "DownRange Co. Intel Desk",
         "authorRole": "Founder, DownRange",
         "category": "GEAR",
         "excerpt": "JRC Guns just launched a USA-made frame weight that adds 6 ounces to the front of your Glock without touching the slide. Here's why non-reciprocating mass is the whole point.",

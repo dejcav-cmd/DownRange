@@ -153,7 +153,7 @@ export async function POST(req) {
     log.push({ step:'RESEND_INIT', ts:ts(), ok:true })
 
     const { data, error } = await resend.emails.send({
-      from:    'DJ Cavalcanti <dj@downrangeco.com>',
+      from:    'DownRange Co. Intel Desk <dj@downrangeco.com>',
       to:      [toEmail],
       replyTo: 'dj@downrangeco.com',
       subject: entry?.subject || '[DownRange debug]',

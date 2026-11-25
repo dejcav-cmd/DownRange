@@ -97,7 +97,7 @@ try:
     req3 = urllib.request.Request("https://api.github.com/repos/dejcav-cmd/DownRange/contents/STATUS.txt?ref=status-output", headers=GH_HDRS)
     with urllib.request.urlopen(req3) as r: file_sha = json.loads(r.read())["sha"]
 except: pass
-payload = {"message":"chore: virginia result","content":base64.b64encode(output.encode()).decode(),"branch":"status-output","author":{"name":"DJ Cavalcanti","email":"dj@downrangeco.com"}}
+payload = {"message":"chore: virginia result","content":base64.b64encode(output.encode()).decode(),"branch":"status-output","author":{"name":"DownRange Co. Intel Desk","email":"dj@downrangeco.com"}}
 if file_sha: payload["sha"] = file_sha
 urllib.request.urlopen(urllib.request.Request("https://api.github.com/repos/dejcav-cmd/DownRange/contents/STATUS.txt",
     data=json.dumps(payload).encode(), headers=GH_HDRS, method="PUT"), timeout=10)

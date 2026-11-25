@@ -102,7 +102,7 @@ export async function POST(req) {
   try {
     const unsubUrl = `https://www.downrangeco.com/api/outreach/unsubscribe?email=${encodeURIComponent(toEmail)}`
     const { data, error } = await getResend().emails.send({
-      from:    'DJ Cavalcanti <dj@downrangeco.com>',
+      from:    'DownRange Co. Intel Desk <dj@downrangeco.com>',
       to:      [toEmail],
       replyTo: 'dj@downrangeco.com',
       subject,

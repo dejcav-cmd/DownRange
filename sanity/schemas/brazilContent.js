@@ -26,7 +26,7 @@ export const brazilContent = defineType({
     defineField({ name: 'imageUrl', title: 'URL da Imagem', type: 'url' }),
     defineField({ name: 'tag', title: 'Tag (LEI/GUIA/POLÍTICA/CAC)', type: 'string' }),
     defineField({ name: 'readMins', title: 'Tempo de Leitura', type: 'string' }),
-    defineField({ name: 'author', title: 'Autor', type: 'string', initialValue: 'DJ Cavalcanti' }),
+    defineField({ name: 'author', title: 'Autor', type: 'string', initialValue: 'DownRange Co. Intel Desk' }),
     defineField({ name: 'brlPrice', title: 'Preço em BRL (ex: R$2,50/rd)', type: 'string' }),
     defineField({ name: 'usdEquiv', title: 'Equivalente USD', type: 'string' }),
     defineField({ name: 'availability', title: 'Disponibilidade', type: 'string',

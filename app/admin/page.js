@@ -1827,7 +1827,7 @@ function ContentHub({ adminKey, setPanel, setSection }) {
       label:    'Blog Posts',
       icon:     '✍',
       color:    '#22c55e',
-      desc:     'Opinion · Analysis · Guides · First-person DJ voice',
+      desc:     'Opinion · Analysis · Guides · Team voice (DownRange Co. Intel Desk)',
       seedType: 'blog',
       aiAction: { label: 'Generate Posts', path: 'write-blog-articles' },
     },

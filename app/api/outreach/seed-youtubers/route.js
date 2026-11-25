@@ -332,7 +332,7 @@ const NEW_YOUTUBERS = [
     youtubeUrl: 'https://youtube.com/@WashingtonGunLaw',
     subscribers: 390000,
     city: 'Bellevue', state: 'WA',
-    notes: 'Real name: William Kirk. 2A law attorney based in WA. State and national legal analysis. 390K subs. Same state as DJ.',
+    notes: 'Real name: William Kirk. 2A law attorney based in WA. State and national legal analysis. 390K subs. Same state as the DownRange team.',
   },
   {
     name: 'Guns & Gadgets 2nd Amendment News',

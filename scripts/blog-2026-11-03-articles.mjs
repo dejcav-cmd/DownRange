@@ -5,7 +5,7 @@ const L = (href, text) =>
   `<a href="${href}" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">${text}</a>`
 const X = (href, text) =>
   `<a href="${href}" target="_blank" rel="noopener noreferrer" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px">${text}</a>`
-const SIGN = `<p><strong>— DJ Cavalcanti, DownRange Founder</strong></p>`
+const SIGN = `<p><strong>— The DownRange Co. Intel Desk</strong></p>`
 
 // ─────────────────────────────────────────────────────────────────────────────
 const election = {

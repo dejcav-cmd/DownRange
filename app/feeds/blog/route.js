@@ -1,5 +1,6 @@
 export const dynamic = 'force-dynamic'
 import { buildFeed, sanity } from '@/lib/feedHelper'
+import { displayAuthor } from '@/lib/author'
 
 export async function GET() {
   const articles = await sanity.fetch(
@@ -13,13 +14,13 @@ export async function GET() {
       description: a.excerpt || '',
       date:        a.publishedAt,
       category:    a.category,
-      author:      a.author || 'DJ Cavalcanti',
+      author:      displayAuthor(a.author),
       image:       a.imageUrl,
     }))
 
   return buildFeed({
     title:       'DownRange — Blog',
-    description: 'In-depth firearms articles, guides, and analysis from DJ Cavalcanti.',
+    description: 'In-depth firearms articles, guides, and analysis from the DownRange Co. Intel Desk.',
     feedUrl:     'https://www.downrangeco.com/feeds/blog',
     items,
   })

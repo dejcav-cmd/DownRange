@@ -58,7 +58,7 @@ export async function POST(req) {
       imageUrl:    body.imageUrl,
       tag:         body.tag,
       readMins:    body.readMins,
-      author:      body.author || 'DJ Cavalcanti',
+      author:      body.author || 'DownRange Co. Intel Desk',
       cadPrice:    body.cadPrice,
       usdEquiv:    body.usdEquiv,
       availability:body.availability,
@@ -91,7 +91,7 @@ export async function POST(req) {
 
     const prompt = [
       `Write a Canadian firearms ${contentType === 'article' ? 'analysis article' : 'summary'} about: ${topic}`,
-      'You are DJ Cavalcanti — a gun owner and 2A advocate based in Washington State who also covers Canadian firearms law.',
+      'You are the DownRange Co. Intel Desk — gun owners and 2A advocates based in Washington State who also cover Canadian firearms law.',
       '',
       'VOICE: Direct, informed, written for gun owners — not a legal brief. Explain the real-world impact.',
       'BANNED: comprehensive, game-changer, cutting-edge, seamlessly, unprecedented',

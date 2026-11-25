@@ -251,7 +251,7 @@ def main():
     now = datetime.datetime.utcnow().replace(microsecond=0)
     doc = {
         "_id": BLOG_ID, "_type": "blogPost", "title": TITLE, "slug": {"_type": "slug", "current": SLUG},
-        "author": "DJ Cavalcanti", "authorRole": "Founder, DownRange", "category": "ANALYSIS", "excerpt": EXCERPT, "body": body,
+        "author": "DownRange Co. Intel Desk", "authorRole": "Editorial Team, DownRange Co.", "category": "ANALYSIS", "excerpt": EXCERPT, "body": body,
         "imageUrl": hero["cdn_url"], "imageAlt": "Falcon Optic Medusa M1V2.0-650L thermal scope with 50mm objective lens for hog, coyote and deer hunting",
         "heroImage": {"_type": "image", "asset": {"_type": "reference", "_ref": hero["asset_id"]}},
         "readTime": max(1, -(-words // 200)), "status": "published", "published": True, "featured": True,

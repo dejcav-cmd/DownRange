@@ -13,7 +13,7 @@ export async function POST(req) {
 
     await getResend().emails.send({
       from: 'DownRange Contact <noreply@downrangeco.com>',
-      to: [process.env.CONTACT_EMAIL || 'dejalma.cavalcanti@icloud.com'],
+      to: [process.env.CONTACT_EMAIL || 'dj@downrangeco.com'],
       replyTo: email,
       subject: `[DownRange Contact] ${subject || 'New message from ' + name}`,
       html: `

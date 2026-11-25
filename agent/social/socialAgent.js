@@ -201,7 +201,7 @@ async function generateCopy(article, platform, contentType) {
   // Editor-written copy (blogPost.socialCopy.<platform>) wins over AI generation
   const customCopy = (article.socialCopy && typeof article.socialCopy[platform] === 'string') ? article.socialCopy[platform].trim() : ''
   const raw = customCopy || await callAIText({
-    prompt: `You are the social media editor for DownRange Co — an independent Second Amendment intelligence portal run by DJ Cavalcanti, a daily carrier in Washington State. DownRange readers are gun owners who follow 2A case law, carry daily, and want real information — not fluff.
+    prompt: `You are the social media editor for DownRange Co — an independent Second Amendment intelligence portal run by the DownRange Co. team, daily carriers in Washington State. DownRange readers are gun owners who follow 2A case law, carry daily, and want real information — not fluff.
 
 ARTICLE TO PROMOTE:
 ${brief}

@@ -34,13 +34,6 @@ const ABOUT_SCHEMA = {
       'ATF Regulations', 'Gun Deals', 'New Firearm Releases',
       'National Firearms Act', '2A Legislation', 'SCOTUS Cases',
     ],
-    founder: {
-      '@type': 'Person',
-      name: 'DJ Cavalcanti',
-      url: 'https://www.downrangeco.com/about',
-      jobTitle: 'Founder & Editor',
-      knowsAbout: ['Second Amendment', 'Firearms', 'CCW', '2A Law'],
-    },
     sameAs: [
       'https://twitter.com/downrangeco',
       'https://bsky.app/profile/downrangeco.com',
@@ -218,7 +211,7 @@ export default function AboutPage() {
                 fontSize: '12px', color: '#C8922A',
                 letterSpacing: '0.1em',
               }}>
-                — DJ CAVALCANTI, FOUNDER
+                — THE DOWNRANGE CO. INTEL DESK
               </div>
             </div>
           </div>

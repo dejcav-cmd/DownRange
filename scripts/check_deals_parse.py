@@ -70,7 +70,7 @@ except: pass
 
 payload = {"message": "chore: deal check result [skip ci]",
            "content": base64.b64encode(content.encode()).decode(),
-           "committer": {"name": "DJ Cavalcanti", "email": "dj@downrangeco.com"}}
+           "committer": {"name": "DownRange Co. Intel Desk", "email": "dj@downrangeco.com"}}
 if sha: payload["sha"] = sha
 
 req2 = urllib.request.Request(

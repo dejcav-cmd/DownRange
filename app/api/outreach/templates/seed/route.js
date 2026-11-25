@@ -12,12 +12,12 @@ function auth(req) { return req.headers.get('x-admin-key') === process.env.ADMIN
 // ── BRAND SHELL ────────────────────────────────────────────────────────────
 const G='#C8922A',BG='#09090B',CARD='#0d0e10',TEXT='#e5e7eb',MUT='#9ca3af',BOR='#1f2428',DRK='#0A0B0C'
 const LOGO='https://downrangeco.com/img/logo-banner.png'
-const AV  ='https://downrangeco.com/img/dj-avatar.png'
+const AV  ='https://downrangeco.com/img/logo.png'
 
 // shell() — single-arg, output identical to buildEmailHTML in OutreachCRM.js
 // body string includes p(), cta(), hr(), hl() helpers inline — sig appended automatically
 function shell(body) {
-  const sigHtml = `<table cellpadding="0" cellspacing="0" style="margin-top:16px;border-top:1px solid #1f2428;padding-top:16px;"><tr><td style="vertical-align:middle;padding-right:14px;"><img src="${AV}" alt="DJ Cavalcanti" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:cover;border:2px solid ${G};"></td><td style="vertical-align:middle;"><div style="font-size:14px;font-weight:700;color:#e5e7eb;margin-bottom:2px;">DJ Cavalcanti</div><div style="font-size:12px;color:#6b7280;margin-bottom:4px;">Founder, DownRange</div><a href="https://downrangeco.com" style="font-size:12px;color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a></td></tr></table>`
+  const sigHtml = `<table cellpadding="0" cellspacing="0" style="margin-top:16px;border-top:1px solid #1f2428;padding-top:16px;"><tr><td style="vertical-align:middle;padding-right:14px;"><img src="${AV}" alt="DownRange Co. Intel Desk" width="48" height="48" style="display:block;width:48px;height:48px;border-radius:50%;object-fit:contain;background:#0a0a0a;border:2px solid ${G};"></td><td style="vertical-align:middle;"><div style="font-size:14px;font-weight:700;color:#e5e7eb;margin-bottom:2px;">DownRange Co. Intel Desk</div><div style="font-size:12px;color:#6b7280;margin-bottom:4px;">Editorial Team, DownRange Co.</div><a href="https://downrangeco.com" style="font-size:12px;color:${G};text-decoration:none;font-weight:600;">downrangeco.com</a></td></tr></table>`
   return `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>DownRange</title></head><body style="margin:0;padding:0;background:#09090B;font-family:Arial,Helvetica,sans-serif;"><table width="100%" cellpadding="0" cellspacing="0" style="background:#09090B;padding:32px 16px;"><tr><td align="center"><table width="600" cellpadding="0" cellspacing="0" style="background:#0A0B0C;border:1px solid #1f2428;max-width:600px;width:100%;"><tr><td style="background:#0d0e10;border-bottom:3px solid ${G};padding:20px 36px;"><img src="${LOGO}" alt="DownRange" width="480" height="auto" style="display:block;height:auto;max-height:58px;width:auto;max-width:100%;"></td></tr><tr><td style="padding:32px 36px 24px;">${body}<div style="margin-top:32px;padding-top:20px;border-top:1px solid #1f2428;">${sigHtml}</div></td></tr><tr><td style="padding:0 36px;"><div style="height:1px;background:linear-gradient(90deg,${G}22,${G},${G}22);"></div></td></tr><tr><td style="padding:16px 36px 24px;background:#050506;"><table width="100%" cellpadding="0" cellspacing="0"><tr><td style="font-size:10px;color:#374151;line-height:1.7;">DownRange Media LLC &middot; America&#39;s Firearms Intelligence Hub<br><a href="https://downrangeco.com" style="color:#4b5563;text-decoration:none;">downrangeco.com</a></td><td align="right" style="vertical-align:bottom;"><a href="{{unsubscribeUrl}}" style="color:#374151;text-decoration:none;font-size:9px;letter-spacing:.08em;">Unsubscribe</a></td></tr></table></td></tr></table></td></tr></table></body></html>`
 }
 
@@ -35,7 +35,7 @@ const ul = items => `<ul style="margin:0 0 18px;padding-left:22px;">${items.map(
 const YOUTUBER_INTRO = {
   name: 'YouTuber — Introduction & Embed Permission (Primary)',
   type: 'youtuber',
-  subject: 'DJ from DownRange — wanted to tell you directly',
+  subject: 'The DownRange team — wanted to tell you directly',
   previewText: 'Built something for the 2A community. Your content is already part of it.',
   body: shell(`
 <div style="text-align:center;padding:8px 0 32px;">
@@ -43,10 +43,10 @@ const YOUTUBER_INTRO = {
   <div style="height:1px;background:${G};width:80px;margin:20px auto 0;opacity:0.6;"></div>
 </div>
 ${p(`Hey {{firstName}},`)}
-${p(`My name is DJ Cavalcanti, founder of DownRange — a free Second Amendment intelligence portal built for gun owners who want real information: breaking 2A news updated every 15 minutes, all 50 states’ gun laws and CCW reciprocity, live ammo prices, NFA wait times, manufacturer releases, and NICS data. No ads, no manufacturer funding, no pay-to-play. Free for the community, always.`)}
-${p(`I’m reaching out because <strong style="color:#C8922A;">{{channelName}} is already featured on DownRange</strong> through a dedicated creator profile and inclusion in our Video Hub, helping firearms enthusiasts discover your content alongside the news, resources, and tools they already use on the platform. I wanted you to hear about it directly rather than stumble across it later.`)}
-${hl(`If you’d prefer not to have your content featured on DownRange, just let me know and I’ll respect that decision completely.`)}
-${p(`That said, I’m also hoping this becomes the start of something more useful for both sides. A few things that could benefit us both:`)}
+${p(`We’re the DownRange Co. Intel Desk, the team behind DownRange — a free Second Amendment intelligence portal built for gun owners who want real information: breaking 2A news updated every 15 minutes, all 50 states’ gun laws and CCW reciprocity, live ammo prices, NFA wait times, manufacturer releases, and NICS data. No ads, no manufacturer funding, no pay-to-play. Free for the community, always.`)}
+${p(`We’re reaching out because <strong style="color:#C8922A;">{{channelName}} is already featured on DownRange</strong> through a dedicated creator profile and inclusion in our Video Hub, helping firearms enthusiasts discover your content alongside the news, resources, and tools they already use on the platform. We wanted you to hear about it directly rather than stumble across it later.`)}
+${hl(`If you’d prefer not to have your content featured on DownRange, just let us know and we’ll respect that decision completely.`)}
+${p(`That said, we’re also hoping this becomes the start of something more useful for both sides. A few things that could benefit us both:`)}
 <div style="background:#111316;border-top:3px solid ${G};padding:20px 24px;margin:24px 0;">
   ${ul([
     `A dedicated creator profile on DownRange linking directly to your channel — helping firearms-focused users discover your content`,
@@ -55,10 +55,10 @@ ${p(`That said, I’m also hoping this becomes the start of something more usefu
     `Sharing or referencing DownRange content when it aligns with topics you cover — we publish original 2A news, industry analysis, and legislative updates daily`,
   ])}
 </div>
-${p(`This is not a sponsorship request. I’m not asking you to promote something you don’t believe in. The audience that follows {{channelName}} is exactly who DownRange was built to serve — connecting them with quality creators and useful resources is the whole point.`)}
+${p(`This is not a sponsorship request. We’re not asking you to promote something you don’t believe in. The audience that follows {{channelName}} is exactly who DownRange was built to serve — connecting them with quality creators and useful resources is the whole point.`)}
 ${cta('https://www.downrangeco.com','Visit DownRange')}
 ${hr()}
-${p(`If you’d like to explore working together, I’d love to hear from you. Thank you for your time, and for everything you do for the firearms community.`)}
+${p(`If you’d like to explore working together, we’d love to hear from you. Thank you for your time, and for everything you do for the firearms community.`)}
 `),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
@@ -71,9 +71,9 @@ const YOUTUBER_FOLLOWUP = {
 ${p(`Hey {{firstName}},`)}
 ${p(`Sent you a note a couple weeks back about DownRange — just making sure it didn't get buried.`)}
 ${p(`{{channelName}} is still on the site at ${a('https://www.downrangeco.com/video','downrangeco.com/video')}. Gun owners who use the platform find your content there without fighting the algorithm.`)}
-${hl(`No pressure, no pitch. If you've been meaning to look and haven't had a chance — totally fine. I build things I'd want to exist and this is one of them.`)}
+${hl(`No pressure, no pitch. If you've been meaning to look and haven't had a chance — totally fine. We build things we'd want to exist and this is one of them.`)}
 ${p(`If you have questions or want to talk about the project: ${a('mailto:dj@downrangeco.com','dj@downrangeco.com')}`)}
-${p(`— DJ`)}
+${p(`— The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
@@ -85,8 +85,8 @@ const YOUTUBER_COLLAB = {
   previewText: "Not a sponsorship. Something actually worth your time.",
   body: shell(`
 ${p(`Hey {{firstName}},`)}
-${p(`I've been building ${a('https://www.downrangeco.com','DownRange')} for the past several months — a free firearms and Second Amendment portal — and I've been following {{channelName}} for a while. Your content is exactly what I want more of on the platform.`)}
-${p(`I'm not going to pitch you a sponsorship or ask you to read an ad. What I actually want to know is whether there's a real collaboration here — something useful for both of us and for the community.`)}
+${p(`We've been building ${a('https://www.downrangeco.com','DownRange')} for the past several months — a free firearms and Second Amendment portal — and we've been following {{channelName}} for a while. Your content is exactly what we want more of on the platform.`)}
+${p(`We're not going to pitch you a sponsorship or ask you to read an ad. What we actually want to know is whether there's a real collaboration here — something useful for both of us and for the community.`)}
 ${p(`A few ideas, none of them mandatory:`)}
 ${ul([
   'A dedicated creator page on DownRange — your channel, bio, and latest content in one place',
@@ -96,7 +96,7 @@ ${ul([
 ])}
 ${hl(`DownRange covers news, laws, releases, ammo prices, CCW info, and NFA data. The people reading it are the same people who watch {{channelName}}.`)}
 ${cta('https://www.downrangeco.com','Take a look')}
-${p(`Or just reply. Either works.<br><br>DJ`)}
+${p(`Or just reply. Either works.<br><br>The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{channelName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
@@ -112,7 +112,7 @@ const MANUFACTURER_INTRO = {
   previewText: "Independent firearms portal. No manufacturer funding. Editorial merit only.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
-${p(`My name is DJ Cavalcanti. I'm the founder of ${a('https://www.downrangeco.com','DownRange')} — an independent Second Amendment portal built for the firearms community.`)}
+${p(`We’re the DownRange Co. Intel Desk, the team behind ${a('https://www.downrangeco.com','DownRange')} — an independent Second Amendment portal built for the firearms community.`)}
 ${p(`DownRange is not funded by manufacturers, distributors, or advertisers. It's independently built and free to use. Editorial coverage is earned, not bought.`)}
 ${hr()}
 ${p(`What we cover:`)}
@@ -125,7 +125,7 @@ ${ul([
 ${hl(`We track every public announcement and cover the ones that matter to our readers — active gun owners, instructors, dealers, and 2A advocates. {{businessName}} belongs in that coverage.`)}
 ${p(`If you have new products launching, press releases, or changes to existing lines:`)}
 ${hr()}
-${p(`DJ Cavalcanti`)}
+${p(`The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
 }
@@ -137,13 +137,13 @@ const ORGANIZATION_INTRO = {
   previewText: "Independent. No political funding. Editorial coverage of 2A advocacy.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
-${p(`I wanted to reach out personally about ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal I built for gun owners, dealers, and instructors who want one place for news, laws, releases, and market data.`)}
+${p(`We wanted to reach out personally about ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal we built for gun owners, dealers, and instructors who want one place for news, laws, releases, and market data.`)}
 ${p(`DownRange takes no manufacturer money and no political funding. The platform is independent — built to serve the community, not represent anyone's interests.`)}
 ${hl(`We cover 2A legislation, court cases including Bruen and post-Bruen decisions, state-by-state law changes, and the full news cycle — automatically updated throughout the day.`)}
-${p(`{{businessName}} is doing important work in this space. I'd like to cover your news, legislative alerts, and advocacy efforts for our readers.`)}
+${p(`{{businessName}} is doing important work in this space. We'd like to cover your news, legislative alerts, and advocacy efforts for our readers.`)}
 ${p(`If you have press releases, campaigns, or legislative updates worth distributing to a firearms-engaged audience:`)}
 ${cta('https://www.downrangeco.com/press','DownRange Press & Partners')}
-${p(`DJ`)}
+${p(`The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
 }
@@ -155,12 +155,12 @@ const SHOP_INTRO = {
   previewText: "Free resource for FFLs and gun shops — nothing to sign up for.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
-${p(`My name is DJ Cavalcanti. I'm a gun owner based in Washington state and I built ${a('https://www.downrangeco.com','DownRange')} — a free firearms intelligence portal for the gun community.`)}
+${p(`We’re the DownRange Co. Intel Desk, gun owners based in Washington state, and we built ${a('https://www.downrangeco.com','DownRange')} — a free firearms intelligence portal for the gun community.`)}
 ${p(`The platform covers real-time ammo prices, new manufacturer releases, a 50-state gun law tracker, CCW information, and breaking 2A news. It's completely free and always will be.`)}
 ${hl(`The people browsing DownRange are active buyers — researching calibers, comparing prices, looking up their state's laws before they walk into a shop. They're your customers.`)}
-${p(`DownRange has an FFL Finder built in — licensed dealers can be listed there for free. If you want to be included, or if there's any way the platform can be more useful for {{businessName}}, I'm genuinely interested in the feedback.`)}
+${p(`DownRange has an FFL Finder built in — licensed dealers can be listed there for free. If you want to be included, or if there's any way the platform can be more useful for {{businessName}}, we're genuinely interested in the feedback.`)}
 ${cta('https://www.downrangeco.com','Take a look')}
-${p(`DJ Cavalcanti`)}
+${p(`The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
@@ -172,8 +172,8 @@ const INSTRUCTOR_INTRO = {
   previewText: "Free 2A resource. State law tools. Open invitation to contribute.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
-${p(`I'm DJ, and I built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal covering news, state gun laws, CCW information, NFA data, and manufacturer releases.`)}
-${p(`I'm reaching out to instructors specifically because I want the platform to be genuinely useful in the classroom and at the range — not just for enthusiasts browsing at home.`)}
+${p(`We’re the DownRange Co. Intel Desk, and we built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal covering news, state gun laws, CCW information, NFA data, and manufacturer releases.`)}
+${p(`We're reaching out to instructors specifically because we want the platform to be genuinely useful in the classroom and at the range — not just for enthusiasts browsing at home.`)}
 ${ul([
   '50-state law tracker with CCW reciprocity and permit requirements',
   'NFA wait time data updated daily',
@@ -181,9 +181,9 @@ ${ul([
   'Breaking 2A news updated throughout the day',
 ])}
 ${hl(`If you recommend your students keep up with local firearms laws, DownRange is the fastest way to do it. Our state law pages give them everything by state in one place.`)}
-${p(`I'd also like to feature qualified instructors on the platform's Training section. If you offer training and want to be listed — I'd be glad to include you, no charge.`)}
+${p(`We'd also like to feature qualified instructors on the platform's Training section. If you offer training and want to be listed — we'd be glad to include you, no charge.`)}
 ${cta('https://www.downrangeco.com/training','See the Training Section')}
-${p(`DJ`)}
+${p(`The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
@@ -195,9 +195,9 @@ const HOLSTER_INTRO = {
   previewText: "Dedicated CCW section. Active carry audience. Editorial coverage.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
-${p(`My name is DJ. I run ${a('https://www.downrangeco.com','DownRange')} — an independent firearms portal with a dedicated CCW section covering all 50 states.`)}
+${p(`We’re the DownRange Co. Intel Desk. We run ${a('https://www.downrangeco.com','DownRange')} — an independent firearms portal with a dedicated CCW section covering all 50 states.`)}
 ${p(`The readers in that section are actively carrying or actively getting their permit. They're researching holsters right now.`)}
-${hl(`{{businessName}} makes exactly the kind of gear this audience is looking for. I'd like to feature your products and releases on the platform — no cost, no strings, editorial merit only.`)}
+${hl(`{{businessName}} makes exactly the kind of gear this audience is looking for. We'd like to feature your products and releases on the platform — no cost, no strings, editorial merit only.`)}
 ${p(`What editorial coverage includes:`)}
 ${ul([
   'New product releases covered in the Releases section',
@@ -206,7 +206,7 @@ ${ul([
   'Press release distribution to our audience',
 ])}
 ${cta('https://www.downrangeco.com/laws/my-state','See the CCW Section')}
-${p(`Press info: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>DJ`)}
+${p(`Press info: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
 }
@@ -218,8 +218,8 @@ const DEALER_INTRO = {
   previewText: "Free portal with FFL directory. Your customers are already here.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
-${p(`I built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal that gun owners use daily for news, laws, ammo prices, and new releases.`)}
-${p(`I'm reaching out because DownRange has an FFL Finder where licensed retailers can be listed — free, no paid tier, no catch.`)}
+${p(`We built ${a('https://www.downrangeco.com','DownRange')} — a free Second Amendment portal that gun owners use daily for news, laws, ammo prices, and new releases.`)}
+${p(`We're reaching out because DownRange has an FFL Finder where licensed retailers can be listed — free, no paid tier, no catch.`)}
 ${hl(`Your customers are using this site to research before they walk through your door. A listing puts {{businessName}} in front of them at exactly the right moment.`)}
 ${ul([
   'Real-time ammo price comparison',
@@ -228,7 +228,7 @@ ${ul([
   'NFA wait time data updated daily',
 ])}
 ${cta('https://www.downrangeco.com/ffl-finder','FFL Finder')}
-${p(`For a listing or editorial coverage: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>DJ Cavalcanti`)}
+${p(`For a listing or editorial coverage: ${a('https://www.downrangeco.com/press','downrangeco.com/press')}<br><br>The DownRange Co. Intel Desk`)}
 `),
   variables: ['{{firstName}}','{{businessName}}','{{portalUrl}}','{{pressUrl}}','{{unsubscribeUrl}}'],
 }
@@ -236,14 +236,14 @@ ${p(`For a listing or editorial coverage: ${a('https://www.downrangeco.com/press
 const GENERIC_FOLLOWUP = {
   name: 'All — Follow-Up (14 Days)',
   type: 'all',
-  subject: 'Following up — DJ from DownRange',
+  subject: 'Following up — The DownRange team',
   previewText: "Short one — sent you something two weeks ago.",
   body: shell(`
 ${p(`Hi {{firstName}},`)}
 ${p(`Sent you a note a couple weeks back about DownRange — wanted to make sure it found you.`)}
 ${p(`Quick version: ${a('https://www.downrangeco.com','DownRange')} is a free Second Amendment portal covering news, laws, ammo prices, manufacturer releases, and CCW information for all 50 states. Built independently, no manufacturer money.`)}
-${p(`If there's a way I can make it useful for you or your audience, I'm listening. If the timing is off — no worries at all.`)}
-${p(`— DJ<br><br>${a('https://www.downrangeco.com','downrangeco.com')}`)}
+${p(`If there's a way we can make it useful for you or your audience, we're listening. If the timing is off — no worries at all.`)}
+${p(`— The DownRange Co. Intel Desk<br><br>${a('https://www.downrangeco.com','downrangeco.com')}`)}
 `),
   variables: ['{{firstName}}','{{portalUrl}}','{{unsubscribeUrl}}'],
 }
@@ -283,7 +283,7 @@ const YOUTUBER_LIST = [
   { name:'InRange TV',             firstName:'Karl',    youtubeUrl:'https://youtube.com/@InRangeTV',               subscribers:500000,  notes:'Real name: Karl Kasarda.' },
   { name:'Backfire',               firstName:'Justin',  youtubeUrl:'https://youtube.com/@Backfire',                subscribers:500000,  notes:'Real name: Justin.' },
   { name:'VSO Gun Channel',        firstName:'Frank',   youtubeUrl:'https://youtube.com/@VSO_GUN_Channel',         subscribers:400000,  notes:'Real name: Frank.' },
-  { name:'Washington Gun Law',     firstName:'William', youtubeUrl:'https://youtube.com/@WashingtonGunLaw',        subscribers:390000,  notes:'Real name: William Kirk. 2A attorney in WA state (same as DJ).' },
+  { name:'Washington Gun Law',     firstName:'William', youtubeUrl:'https://youtube.com/@WashingtonGunLaw',        subscribers:390000,  notes:'Real name: William Kirk. 2A attorney in WA state (same state as the DownRange team).' },
   { name:'TheGunCollective',       firstName:'Jon',     youtubeUrl:'https://youtube.com/@TheGunCollective',        subscribers:430000,  notes:'Real name: Jon Patton.' },
   { name:'Tactical Hyve',          firstName:'Mike',    youtubeUrl:'https://youtube.com/@TacticalHyve',            subscribers:360000,  notes:'Real name: Mike.' },
   { name:'Gun Talk Media',         firstName:'Tom',     youtubeUrl:'https://youtube.com/@GunTalkMedia',            subscribers:320000,  notes:'Real name: Tom Gresham.' },

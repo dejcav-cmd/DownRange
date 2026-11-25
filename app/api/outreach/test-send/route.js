@@ -20,7 +20,7 @@ export async function POST(req) {
   try {
     const resend = new Resend(apiKey)
     const { data, error } = await resend.emails.send({
-      from:    'DJ Cavalcanti <dj@downrangeco.com>',
+      from:    'DownRange Co. Intel Desk <dj@downrangeco.com>',
       to:      ['dj@downrangeco.com'],
       subject: '[DownRange] Outreach test — ' + new Date().toISOString(),
       html:    '<p style="font-family:sans-serif">Test send from DownRange outreach system. Resend is reachable.</p>',

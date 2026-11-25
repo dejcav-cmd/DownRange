@@ -1,8 +1,8 @@
 /**
  * Blog Articles Weekly Cron — DownRange
  * Generates 10 new blog article drafts every Friday at 10am UTC.
- * All articles are saved as DRAFTS (status:'draft') for DJ to review.
- * Uses Claude to write in DJ's voice with real topic research.
+ * All articles are saved as DRAFTS (status:'draft') for the DownRange team to review.
+ * Uses Claude to write in the DownRange Co. Intel Desk team voice with real topic research.
  * 
  * Schedule: 0 10 * * 5 (10am every Friday)
  */
@@ -112,7 +112,7 @@ const REAL_IMAGES = {
 async function writeArticle(topicData, weekNumber) {
   const { topic, category, keywords } = topicData
 
-  const prompt = `You are DJ Cavalcanti, founder of DownRange (downrangeco.com) — an independent firearms and 2A news portal. You carry every day and you've been deep in the 2A community for years. You're not a journalist. You're a gun owner who built a platform to give the community the information it deserves.
+  const prompt = `You are the DownRange Co. Intel Desk, the editorial team at DownRange (downrangeco.com) — an independent firearms and 2A news portal. You carry every day and you've been deep in the 2A community for years. You're not a journalist. You're gun owners who built a platform to give the community the information it deserves.
 
 Write a full blog article about: "${topic}"
 
@@ -196,7 +196,7 @@ export async function runBlogFeed() {
       // Generate title from topic (clean it up slightly)
       const title = topicData.topic
 
-      // Save as DRAFT to Sanity — DJ must review and publish
+      // Save as DRAFT to Sanity — the DownRange team must review and publish
       await writeClient.createOrReplace({
         _id:        `blog-draft-${slug}-${weekNumber}`,
         _type:      'blogPost',
@@ -205,9 +205,9 @@ export async function runBlogFeed() {
         status:     'draft',
         category:   topicData.category,
         catColor:   topicData.catColor,
-        author:     'DJ Cavalcanti',
-        authorRole: 'Founder, DownRange',
-        authorImg:  '/img/dj-avatar.jpg',
+        author:     'DownRange Co. Intel Desk',
+        authorRole: 'Editorial Team, DownRange Co.',
+        authorImg:  '/img/logo.png',
         body,
         imageUrl:   REAL_IMAGES[topicData.category] || REAL_IMAGES['ANALYSIS'],
         excerpt:    body.replace(/<[^>]+>/g, '').slice(0, 200) + '...',

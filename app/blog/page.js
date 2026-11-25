@@ -4,10 +4,11 @@ import PageHero from '../../components/home/PageHero'
 import Link        from 'next/link'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated } from '../../sanity/lib/client'
 import JsonLd, { breadcrumb, collectionPage } from '../../components/seo/JsonLd'
+import { displayAuthor } from '../../lib/author'
 
 export const metadata = {
   title: 'The Range Report — DownRange Blog',
-  description: 'Expert analysis, industry commentary, and field intelligence from DJ Cavalcanti and the DownRange editorial team.',
+  description: 'Expert analysis, industry commentary, and field intelligence from the DownRange Co. Intel Desk.',
   alternates: { canonical: 'https://www.downrangeco.com/blog' },
 }
 // Reduced from 300s: after fixing category normalization + featured-post ordering
@@ -22,8 +23,8 @@ export const BLOG_POSTS = [
     slug:        'suppressor-revolution-2026',
     title:       'The Suppressor Revolution Is Here — and Most Gun Owners Are Missing It',
     subtitle:    'The $200 NFA tax is gone. Here is exactly what that means for your next purchase, your range routine, and the industry at large.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'May 20, 2026',
     readTime:    '11 min read',
     category:    'OPINION',
@@ -71,8 +72,8 @@ export const BLOG_POSTS = [
     slug:        'micro-compact-pistol-market-2026',
     title:       'Why the Micro-Compact 9mm Is the Most Important Category in Firearms Right Now',
     subtitle:    'The P365 wave is not slowing down. Here is the definitive breakdown of the micro-compact market, who is winning, and what to actually buy.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'May 14, 2026',
     readTime:    '13 min read',
     category:    'ANALYSIS',
@@ -118,8 +119,8 @@ export const BLOG_POSTS = [
     slug:        'gun-prices-tariffs-2026',
     title:       'The Tariff Tax on Your Next Gun Purchase — What\'s Coming and How to Buy Smart',
     subtitle:    'Persistent inflation, steel tariffs, and import restrictions are creating the first real price surge in the firearms market since 2020. Here is what to buy before it gets worse.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'May 8, 2026',
     readTime:    '10 min read',
     category:    'MARKET',
@@ -161,8 +162,8 @@ export const BLOG_POSTS = [
     slug:        'bruen-standard-state-battles-2026',
     title:       'The Bruen Battles of 2026 — Every Court Fight That Will Determine Your Rights',
     subtitle:    'Four years after NYSRPA v. Bruen, lower courts are still fighting about what it means. Here are the cases that matter most right now.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'April 30, 2026',
     readTime:    '14 min read',
     category:    'LAW',
@@ -203,8 +204,8 @@ export const BLOG_POSTS = [
     slug:        'red-dot-carry-guide-2026',
     title:       'How to Actually Run a Red Dot on Your Carry Gun — The No-BS Guide',
     subtitle:    'Everyone is mounting optics on carry guns now. Most people are doing it wrong. Here is the complete framework for making it work.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'April 22, 2026',
     readTime:    '12 min read',
     category:    'TRAINING',
@@ -252,8 +253,8 @@ export const BLOG_POSTS = [
     slug:        'atf-pistol-brace-rule-two-years',
     title:       'The ATF Pistol Brace Rule: Two Years Later',
     subtitle:    'Where the legal battles actually stand and what it means for brace owners today.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'March 15, 2026',
     readTime:    '8 min read',
     category:    'LAW',
@@ -284,8 +285,8 @@ export const BLOG_POSTS = [
     slug:        'home-defense-basics',
     title:       'Home Defense Basics: The Setup That Actually Works',
     subtitle:    'The gun is the easy part. The plan, the lighting, and the communication are what determine the outcome.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'April 2, 2026',
     readTime:    '9 min read',
     category:    'TRAINING',
@@ -318,8 +319,8 @@ export const BLOG_POSTS = [
     slug:        'owb-to-aiwb-carry-switch',
     title:       'OWB to AIWB: What Nobody Tells You About the Switch',
     subtitle:    'I made the switch after four years of OWB carry. It took three months before AIWB felt natural.',
-    author:      'DJ Cavalcanti',
-    authorRole:  'Founder, DownRange',
+    author:      'DownRange Co. Intel Desk',
+    authorRole:  'Editorial Team, DownRange Co.',
     date:        'May 10, 2026',
     readTime:    '7 min read',
     category:    'TRAINING',
@@ -396,7 +397,7 @@ function normalizeSanityPost(p) {
     slug:       p.slug?.current || p.slug || '',
     title:      p.title || '',
     subtitle:   p.excerpt || '',
-    author:     p.author || 'DJ Cavalcanti',
+    author:     displayAuthor(p.author),
     authorRole: 'DownRange Editorial',
     date:       p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : (p._createdAt ? new Date(p._createdAt).toLocaleDateString('en-US', { month:'long', day:'numeric', year:'numeric' }) : ''),
     iso:        p.publishedAt || p._createdAt || null,
@@ -488,7 +489,7 @@ export default async function BlogPage({ searchParams }) {
       {/* ── HERO ── */}
       <PageHero img="/img/blog-hero.jpg" imgSm="/img/blog-hero-sm.jpg" pos="70% 28%" posSm="70% top"
         eyebrow="The Range Report · Expert analysis"
-        title={<>DownRange blog <span>by DJ Cavalcanti.</span></>}
+        title={<>DownRange blog <span>by the DownRange Co. Intel Desk.</span></>}
         sub={<>{totalDisplay > 0 ? totalDisplay : BLOG_POSTS.length} articles · Firearms industry analysis, legal intelligence, and buyer guidance</>} />
 
       {/* ── STICKY NAV BAR — matches News pattern ── */}
@@ -580,7 +581,7 @@ export default async function BlogPage({ searchParams }) {
                       </p>
                       <div style={{ display:'flex', alignItems:'center', gap:16, flexWrap:'wrap' }}>
                         <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                          <div style={{ width:32, height:32, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:14, color:'#000' }}>DJ</div>
+                          <div style={{ width:32, height:32, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:14, color:'#000' }}>DR</div>
                           <div>
                             <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:13, fontWeight:700, color:'var(--foreground)' }}>{featured.author}</div>
                             <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569' }}>{featured.authorRole}</div>
@@ -635,7 +636,7 @@ export default async function BlogPage({ searchParams }) {
                           {(post.excerpt || post.subtitle || '').slice(0, 140)}…
                         </p>
                         <div style={{ display:'flex', alignItems:'center', gap:8, paddingTop:12, borderTop:'1px solid rgba(30,41,59,0.5)' }}>
-                          <div style={{ width:24, height:24, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:10, color:'#000', flexShrink:0 }}>DJ</div>
+                          <div style={{ width:24, height:24, borderRadius:'50%', background:'var(--gold)', display:'flex', alignItems:'center', justifyContent:'center', fontFamily:"'Bebas Neue',cursive", fontSize:10, color:'#000', flexShrink:0 }}>DR</div>
                           <div style={{ flex:1, minWidth:0 }}>
                             <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:12, fontWeight:700, color:'var(--foreground)' }}>{post.author}</div>
                           </div>

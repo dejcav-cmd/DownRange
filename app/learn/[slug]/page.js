@@ -5,7 +5,7 @@ import Footer from '../../../components/layout/Footer'
 import Link from 'next/link'
 
 
-const AUTHOR = { name: 'DJ Cavalcanti', title: 'Founder, DownRange' }
+const AUTHOR = { name: 'DownRange Co. Intel Desk', title: 'Editorial Team, DownRange Co.' }
 
 const ARTICLES = {
   'buying-your-first-gun': {
@@ -253,7 +253,7 @@ export async function generateMetadata({ params }) {
 
 export const revalidate = 3600
 export default async function ArticlePage({ params }) {
-  const DEFAULT_BIO = "DJ Cavalcanti is the founder of DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
+  const DEFAULT_BIO = "The DownRange Co. Intel Desk is the editorial team behind DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
   let authorBio = DEFAULT_BIO
   try {
     const m = await import('../../../lib/authorBio')
@@ -335,10 +335,10 @@ export default async function ArticlePage({ params }) {
         <div className="container" style={{ maxWidth:900 }}>
           <div style={{ display:'flex', alignItems:'center', justifyContent:'space-between', flexWrap:'wrap', gap:'12px' }}>
             <div style={{ display:'flex', alignItems:'center', gap:'12px' }}>
-              <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="40" height="40" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
+              <img src="/img/logo.png" alt="DownRange Co. Intel Desk" width="40" height="40" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'contain', background:'#0a0a0a', flexShrink:0 }} />
               <div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>DJ Cavalcanti</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>DownRange Founder · {article.date}</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'12px', fontWeight:700, color:'var(--text)' }}>DownRange Co. Intel Desk</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--text-dim)' }}>DownRange Co. Editorial · {article.date}</div>
               </div>
             </div>
             <div style={{ display:'flex', gap:'6px' }}>
@@ -467,9 +467,9 @@ export default async function ArticlePage({ params }) {
 
               {/* ── AUTHOR BIO ── */}
               <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', padding:'24px', margin:'40px 0', display:'flex', gap:'20px', alignItems:'flex-start' }}>
-                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="56" height="56" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
+                <img src="/img/logo.png" alt="DownRange Co. Intel Desk" width="56" height="56" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'contain', background:'#0a0a0a', flexShrink:0 }} />
                 <div style={{ flex:1 }}>
-                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'var(--text)', letterSpacing:'0.05em' }}>DJ Cavalcanti</div>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', color:'var(--text)', letterSpacing:'0.05em' }}>DownRange Co. Intel Desk</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'var(--gold)', marginBottom:'10px', letterSpacing:'0.08em' }}>DOWNRANGE FOUNDER</div>
                   <p style={{ fontFamily:"'IBM Plex Sans',sans-serif", fontSize:'13px', color:'var(--text-dim)', lineHeight:1.7 }}>
                     {authorBio}

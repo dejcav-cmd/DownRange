@@ -28,7 +28,7 @@ export const canadaContent = defineType({
     defineField({ name: 'imageUrl', title: 'Image URL', type: 'url' }),
     defineField({ name: 'tag', title: 'Tag (LAW/GUIDE/POLICY)', type: 'string' }),
     defineField({ name: 'readMins', title: 'Read Time (e.g. 7 min)', type: 'string' }),
-    defineField({ name: 'author', title: 'Author', type: 'string', initialValue: 'DJ Cavalcanti' }),
+    defineField({ name: 'author', title: 'Author', type: 'string', initialValue: 'DownRange Co. Intel Desk' }),
     // Ammo fields
     defineField({ name: 'cadPrice', title: 'CAD Price (e.g. C$0.42/rd)', type: 'string' }),
     defineField({ name: 'usdEquiv', title: 'USD Equivalent', type: 'string' }),

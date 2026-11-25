@@ -377,7 +377,7 @@ BODY = """
 <p><strong>DownRange Bottom Line:</strong> The federal permission slip for suppressors and short-barreled guns is gone for now. The rest of the legal framework is not, and the guidance can be pulled back. Read ATF's FAQ before you buy, build or ship anything.</p>
 <p>Source: <a href="https://www.atf.gov/news/press-releases/atf-issues-guidance-national-firearms-act-transfers-short-barreled-rifles-short-barreled-shotguns-suppressors-and-certain-other-firearms" target="_blank" rel="noopener">ATF press release</a> and <a href="https://www.atf.gov/firearms/update-to-nfa-transfer-guidance" target="_blank" rel="noopener">Update to NFA Transfer Guidance FAQ</a>, October 9, 2026.</p>
 {HERO_CREDIT}
-<p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; DJ Cavalcanti</em><br/><strong>DJ Cavalcanti, DownRange Founder</strong></p>
+<p style="margin-top:2rem;border-top:1px solid var(--border);padding-top:1rem;"><em>&mdash; The DownRange Co. Intel Desk</em></p>
 """.strip()
 
 
@@ -485,7 +485,7 @@ def main():
         "_type": "blogPost",
         "title": "The NFA Just Lost Its Teeth: ATF Stops Enforcing the Registry on Suppressors and Short-Barreled Guns",
         "slug": {"_type": "slug", "current": SLUG},
-        "author": "DJ Cavalcanti",
+        "author": "DownRange Co. Intel Desk",
         "authorRole": "Founder, DownRange",
         "category": "LAW",
         "excerpt": ("ATF will no longer enforce NFA approval, registration or tax-stamp requirements for suppressors, "

@@ -37,16 +37,16 @@ function buildEmail(contact) {
     html: `
 <div style="font-family:'IBM Plex Mono',monospace;max-width:560px;color:#1a1a1a;line-height:1.7;">
   <p>Hi ${firstName},</p>
-  <p>I'm DJ Cavalcanti, founder of <strong>DownRange Co.</strong> — an independent 2A intelligence portal at <a href="https://downrangeco.com">downrangeco.com</a>. Daily carry, Washington State, pro-Second Amendment.</p>
-  <p>I built DownRange to give gun owners a single place for breaking 2A law news, 50-state CCW reciprocity data, ATF updates, and legislative tracking — without the paywall or political noise you get from mainstream outlets.</p>
-  <p>I currently feature your channel in our <a href="https://downrangeco.com/video">Video Intelligence</a> section because your content is exactly what our readers need. I wanted to reach out directly about a simple partnership:</p>
+  <p>We’re the <strong>DownRange Co. Intel Desk</strong>, the team behind <strong>DownRange Co.</strong> — an independent 2A intelligence portal at <a href="https://downrangeco.com">downrangeco.com</a>. Daily carry, Washington State, pro-Second Amendment.</p>
+  <p>We built DownRange to give gun owners a single place for breaking 2A law news, 50-state CCW reciprocity data, ATF updates, and legislative tracking — without the paywall or political noise you get from mainstream outlets.</p>
+  <p>We currently feature your channel in our <a href="https://downrangeco.com/video">Video Intelligence</a> section because your content is exactly what our readers need. We wanted to reach out directly about a simple partnership:</p>
   <p><strong>If any of your videos cover CCW laws, state legislation, ATF rules, or 2A court cases — dropping a link to the relevant DownRange page in your description helps your viewers go deeper.</strong> No sponsorship fees, no commitments — just two pro-2A resources pointing readers to each other.</p>
-  <p>As a gesture of good faith, I also write up summaries of landmark 2A cases and state law changes that you're welcome to reference or share with your audience.</p>
-  <p>If this sounds useful, just reply — I'll send over the specific pages that match your content focus. Takes 30 seconds to add a link, and your viewers get real value from it.</p>
+  <p>As a gesture of good faith, we also write up summaries of landmark 2A cases and state law changes that you're welcome to reference or share with your audience.</p>
+  <p>If this sounds useful, just reply — we'll send over the specific pages that match your content focus. Takes 30 seconds to add a link, and your viewers get real value from it.</p>
   <p>Either way, keep doing what you're doing. We need more voices like yours.</p>
   <p>Stay armed,<br/>
-  <strong>DJ Cavalcanti</strong><br/>
-  Founder, DownRange Co.<br/>
+  <strong>The DownRange Co. Intel Desk</strong><br/>
+  DownRange Co.<br/>
   <a href="https://downrangeco.com">downrangeco.com</a> · dj@downrangeco.com</p>
   <hr style="border:none;border-top:1px solid #eee;margin:20px 0;"/>
   <p style="font-size:11px;color:#888;">You received this because your channel covers Second Amendment topics we cover at DownRange. Reply to unsubscribe from future outreach.</p>
@@ -93,7 +93,7 @@ export async function POST(req) {
     try {
       const emailContent = buildEmail(contact)
       await resend().emails.send({
-        from:    'DJ Cavalcanti <dj@downrangeco.com>',
+        from:    'DownRange Co. Intel Desk <dj@downrangeco.com>',
         to:      contact.email,
         subject: emailContent.subject,
         html:    emailContent.html,

@@ -197,10 +197,9 @@ export default async function ArticlePage({ params }) {
           datePublished: article.publishedAt,
           dateModified:  article._updatedAt || article.publishedAt,
           author: [{
-            '@type': 'Person',
-            name:    'DJ Cavalcanti',
+            '@type': 'Organization',
+            name:    'DownRange Co. Intel Desk',
             url:     'https://www.downrangeco.com/about',
-            jobTitle:'Editor, DownRange',
           }],
           publisher: {
             '@type': 'Organization',

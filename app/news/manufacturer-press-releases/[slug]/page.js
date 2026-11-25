@@ -52,7 +52,7 @@ export default async function PressArticlePage({ params }) {
       headline: r.title, description: (r.summary || r.title).slice(0, 160),
       image: [img],
       datePublished: r.publishedAt, dateModified: r._updatedAt || r.publishedAt,
-      author: [{ '@type': 'Person', name: 'DJ Cavalcanti', url: SITE + '/about', jobTitle: 'DownRange Founder' }],
+      author: [{ '@type': 'Organization', name: 'DownRange Co. Intel Desk', url: SITE + '/about' }],
       publisher: { '@type': 'Organization', '@id': SITE + '/#organization', name: 'DownRange', url: SITE,
         logo: { '@type': 'ImageObject', url: SITE + '/img/logo.png' } },
       mainEntityOfPage: { '@type': 'WebPage', '@id': url },
@@ -94,7 +94,7 @@ export default async function PressArticlePage({ params }) {
           <h1 className="pr-art-title">{r.title}</h1>
           {r.summary && <p className="pr-art-lede">{r.summary}</p>}
           <div className="pr-art-meta">
-            <span>By DJ Cavalcanti, DownRange Founder</span>
+            <span>By the DownRange Co. Intel Desk</span>
             <span>{fmtDate(r.publishedAt)}</span>
             {r.readTime ? <span>{r.readTime} min read</span> : null}
           </div>

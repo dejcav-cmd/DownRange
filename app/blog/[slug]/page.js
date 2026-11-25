@@ -4,6 +4,7 @@ import Footer          from '../../../components/layout/Footer'
 import BreakingTicker  from '../../../components/layout/BreakingTicker'
 import Link            from 'next/link'
 import { BLOG_POSTS }  from '../page'
+import { displayAuthor, displayRole } from '../../../lib/author'
 import { fetchBreakingAlerts, fetchBlogPostsPaginated, fetchBlogPostBySlug } from '../../../sanity/lib/client'
 
 export const revalidate = 60
@@ -18,8 +19,8 @@ async function getAllPosts() {
       slug:       p.slug?.current || p.slug,
       title:      p.title || '',
       subtitle:   p.excerpt || '',
-      author:     p.author || 'DJ Cavalcanti',
-      authorRole: 'Founder, DownRange',
+      author:     displayAuthor(p.author),
+      authorRole: 'Editorial Team, DownRange Co.',
       date:       p.publishedAt ? new Date(p.publishedAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '',
       readTime:   p.readTime || '8 min read',
       category:   (p.category || 'general').toUpperCase(),
@@ -93,8 +94,8 @@ export default async function BlogArticlePage({ params }) {
       slug:       sanityPost.slug || params.slug,
       title:      sanityPost.title || '',
       subtitle:   sanityPost.excerpt || '',
-      author:     sanityPost.author || 'DJ Cavalcanti',
-      authorRole: sanityPost.authorRole || 'Founder, DownRange',
+      author:     displayAuthor(sanityPost.author),
+      authorRole: displayRole(sanityPost.authorRole, sanityPost.author),
       date:       sanityPost.publishedAt ? new Date(sanityPost.publishedAt).toLocaleDateString('en-US',{month:'long',day:'numeric',year:'numeric'}) : '',
       readTime:   sanityPost.readTime ? sanityPost.readTime + ' min read' : '8 min read',
       category:   (sanityPost.category || 'general').toUpperCase(),
@@ -115,7 +116,7 @@ export default async function BlogArticlePage({ params }) {
   if (!post) notFound()
 
   const alerts      = await fetchBreakingAlerts(3).catch(() => [])
-  const DEFAULT_BIO = "DJ Cavalcanti is the founder of DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
+  const DEFAULT_BIO = "The DownRange Co. Intel Desk is the editorial team behind DownRange — built to give every American gun owner one place for the news, laws, market data, and practical knowledge they actually need. No algorithms, no paywalls, no corporate backing."
   let authorBio = DEFAULT_BIO
   try {
     const m = await import('../../../lib/authorBio')
@@ -144,10 +145,9 @@ export default async function BlogArticlePage({ params }) {
           datePublished: post.date,
           dateModified:  post.date,
           author: [{
-            '@type':   'Person',
-            name:      post.author || 'DJ Cavalcanti',
+            '@type':   'Organization',
+            name:      displayAuthor(post.author),
             url:       'https://www.downrangeco.com/about',
-            jobTitle:  'Founder, DownRange',
           }],
           publisher: {
             '@type': 'Organization',
@@ -259,7 +259,7 @@ export default async function BlogArticlePage({ params }) {
             {/* Author bar */}
             <div style={{ display:'flex', alignItems:'center', gap:14, flexWrap:'wrap' }}>
               <div style={{ display:'flex', alignItems:'center', gap:8 }}>
-                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="38" height="38" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'cover', flexShrink:0 }} />
+                <img src="/img/logo.png" alt="DownRange Co. Intel Desk" width="38" height="38" style={{ borderRadius:'50%', border:'2px solid #C8922A', objectFit:'contain', background:'#0a0a0a', flexShrink:0 }} />
                 <div>
                   <div style={{ fontFamily:"'Barlow Condensed',sans-serif", fontSize:15, fontWeight:700, color:'#F0EDE6' }}>{post.author}</div>
                   <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'rgba(203,213,225,0.6)' }}>{post.authorRole}</div>
@@ -318,10 +318,10 @@ export default async function BlogArticlePage({ params }) {
 
               {/* Author card */}
               <div style={{ marginTop:'2.5rem', padding:'1.5rem 1.75rem', background:'var(--bg2)', border:'1px solid var(--border)', borderRadius:4, display:'flex', gap:16, alignItems:'flex-start' }}>
-                <img src="/img/dj-avatar.png" alt="DJ Cavalcanti" width="72" height="72" style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'cover', flexShrink:0, boxShadow:'0 0 0 3px rgba(200,146,42,.15)' }} />
+                <img src="/img/logo.png" alt="DownRange Co. Intel Desk" width="72" height="72" style={{ borderRadius:'50%', border:'3px solid #C8922A', objectFit:'contain', background:'#0a0a0a', flexShrink:0, boxShadow:'0 0 0 3px rgba(200,146,42,.15)' }} />
                 <div>
-                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.04em', color:'var(--foreground)', marginBottom:4 }}>DJ Cavalcanti</div>
-                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:8 }}>Founder, DownRange · Washington State</div>
+                  <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1.2rem', letterSpacing:'0.04em', color:'var(--foreground)', marginBottom:4 }}>DownRange Co. Intel Desk</div>
+                  <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'var(--gold)', marginBottom:8 }}>Editorial Team · DownRange Co.</div>
                   <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#64748b', lineHeight:1.65, margin:0 }}>
                     {authorBio}
                   </p>
@@ -348,7 +348,7 @@ export default async function BlogArticlePage({ params }) {
             {/* Sidebar */}
             <aside className="dr-article-aside" style={{ position:'sticky', top:80 }}>
               <div style={{ marginBottom:24 }}>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', letterSpacing:'0.1em', marginBottom:12 }}>MORE FROM DJ</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', letterSpacing:'0.1em', marginBottom:12 }}>MORE FROM THE INTEL DESK</div>
                 <div style={{ display:'flex', flexDirection:'column', gap:10 }}>
                   {relatedPosts.map(rp => (
                     <Link key={rp.slug} href={`/blog/${rp.slug}`} style={{ textDecoration:'none' }} className="related-card">
@@ -370,7 +370,7 @@ export default async function BlogArticlePage({ params }) {
               <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderRadius:4, padding:'16px' }}>
                 <div style={{ fontFamily:"'Bebas Neue',cursive", fontSize:'1rem', letterSpacing:'0.05em', color:'var(--foreground)', marginBottom:8 }}>THE RANGE REPORT</div>
                 <p style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:9, color:'#475569', lineHeight:1.6, marginBottom:12 }}>
-                  Expert analysis on firearms, 2A law, and industry intelligence from DJ Cavalcanti and the DownRange team.
+                  Expert analysis on firearms, 2A law, and industry intelligence from the DownRange Co. Intel Desk.
                 </p>
                 <Link href="/blog" style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:10, color:'#C8922A', textDecoration:'none', display:'block', textAlign:'center', background:'rgba(200,146,42,0.1)', border:'1px solid rgba(200,146,42,0.3)', padding:'8px', borderRadius:3 }}>
                   All Articles →

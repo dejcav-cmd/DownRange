@@ -115,7 +115,7 @@ downloaded = sorted(os.listdir("public/img/learn"))
 print(f"\nTotal downloaded: {len(downloaded)} images", flush=True)
 
 subprocess.run(["git", "config", "user.email", "dj@downrangeco.com"])
-subprocess.run(["git", "config", "user.name", "DJ Cavalcanti"])
+subprocess.run(["git", "config", "user.name", "DownRange Co. Intel Desk"])
 subprocess.run(["git", "add", "public/img/learn/", "app/learn/[slug]/page.js"])
 res = subprocess.run(["git", "commit", "-m", f"fix: {len(downloaded)} images downloaded to /public/img/learn/ (no hotlinking), fix all learn article hero + section images"], capture_output=True, text=True)
 print(res.stdout or res.stderr, flush=True)

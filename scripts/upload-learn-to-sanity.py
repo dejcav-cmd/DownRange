@@ -140,7 +140,7 @@ with open("app/learn/page.js", "w") as f:
 
 # Commit + push
 subprocess.run(["git", "config", "user.email", "dj@downrangeco.com"])
-subprocess.run(["git", "config", "user.name", "DJ Cavalcanti"])
+subprocess.run(["git", "config", "user.name", "DownRange Co. Intel Desk"])
 subprocess.run(["git", "add", "app/learn/[slug]/page.js", "app/learn/page.js"])
 
 successful = sum(1 for v in hero_cdn.values() if v)

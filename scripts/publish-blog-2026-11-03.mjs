@@ -47,7 +47,7 @@ for (const a of ARTICLES.filter(x => !ONLY.length || ONLY.includes(x.slug))) {
       _type: 'blogPost',
       title: a.title,
       slug: { _type: 'slug', current: a.slug },
-      author: 'DJ Cavalcanti',
+      author: 'DownRange Co. Intel Desk',
       category: a.category,
       excerpt: a.excerpt,
       body,

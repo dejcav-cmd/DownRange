@@ -180,4 +180,4 @@ Configure in Sanity project settings → API → Webhooks:
 
 ## License
 
-Proprietary — DownRange / DJ — 2026
+Proprietary — DownRange Co. — 2026

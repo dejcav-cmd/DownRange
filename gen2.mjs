@@ -25,7 +25,7 @@ async function gen(meta) {
       content: `You are writing for DownRange, a US firearms intelligence hub. Write a practical beginner guide.
 
 Title: "${meta.title}"
-Author: DJ Cavalcanti, DownRange Founder
+Author: DownRange Co. Intel Desk
 Audience: American adults new to firearms. Practical, no lecturing.
 Tone: Direct, authoritative, like talking to an intelligent adult. 2026 current info.
 

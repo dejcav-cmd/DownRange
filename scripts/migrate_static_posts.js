@@ -154,7 +154,7 @@ async function main() {
       _type: 'blogPost',
       title: post.title,
       slug: { _type: 'slug', current: slug },
-      author: post.author || 'DJ Cavalcanti',
+      author: post.author || 'DownRange Co. Intel Desk',
       authorRole: post.authorRole || 'Founder, DownRange',
       category: (post.category || 'OPINION').toUpperCase(),
       excerpt: post.subtitle || post.excerpt || '',

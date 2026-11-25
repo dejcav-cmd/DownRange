@@ -114,12 +114,12 @@ export default function PressPage() {
               </p>
             </div>
             <div>
-              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', marginBottom:'12px' }}>ABOUT THE FOUNDER</div>
+              <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.15em', marginBottom:'12px' }}>ABOUT THE TEAM</div>
               <div style={{ background:'var(--bg2)', border:'1px solid var(--border)', borderLeft:'3px solid #C8922A', padding:'24px' }}>
-                <div style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.6rem', color:'var(--foreground)', letterSpacing:'0.04em', lineHeight:1, marginBottom:'4px' }}>DJ CAVALCANTI</div>
-                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.1em', marginBottom:'16px' }}>FOUNDER & PUBLISHER · DOWNRANGE</div>
+                <div style={{ fontFamily:"'Bebas Neue', cursive", fontSize:'1.6rem', color:'var(--foreground)', letterSpacing:'0.04em', lineHeight:1, marginBottom:'4px' }}>DOWNRANGE CO. INTEL DESK</div>
+                <div style={{ fontFamily:"'IBM Plex Mono',monospace", fontSize:'10px', color:'#C8922A', letterSpacing:'0.1em', marginBottom:'16px' }}>EDITORIAL TEAM · DOWNRANGE CO.</div>
                 <p style={{ fontSize:'14px', color:'var(--text-muted)', lineHeight:1.8, marginBottom:'12px' }}>
-                  DJ Cavalcanti is a Second Amendment advocate, firearms enthusiast, and entrepreneur based in Washington State. He founded DownRange in 2026 with the conviction that the gun community deserves better media — more intelligent, more honest, and more useful than what existed.
+                  The DownRange Co. Intel Desk is the editorial team behind DownRange: Second Amendment advocates and firearms enthusiasts based in Washington State. We founded DownRange in 2026 with the conviction that the gun community deserves better media — more intelligent, more honest, and more useful than what existed.
                 </p>
                 <p style={{ fontSize:'14px', color:'var(--text-muted)', lineHeight:1.8 }}>
                   Washington State is one of the most challenging legal environments for gun owners in the country. That context shapes DownRange's editorial focus: real intelligence that helps you navigate your rights, understand what's changing, and stay ahead of legislation that affects you.
@@ -253,7 +253,7 @@ export default function PressPage() {
               { role:'Press & Media',           email:'press@downrangeco.com',        desc:'Interview requests, fact-checking, embargoed announcements, source inquiries. Response within 24 hours.' },
               { role:'Manufacturer PR',          email:'releases@downrangeco.com',     desc:'Product launches, press releases, spec sheets, and manufacturer announcements for editorial consideration.' },
               { role:'Partnerships',             email:'partnerships@downrangeco.com', desc:'Dealer partnerships, content collaborations, creator partnerships, and co-promotion inquiries.' },
-              { role:'Founder (Direct)',         email:'dj@downrangeco.com',           desc:'Direct line to DJ Cavalcanti for significant partnership or media inquiries.' },
+              { role:'Editorial Desk (Direct)',    email:'dj@downrangeco.com',           desc:'Direct line to the DownRange Co. Intel Desk for significant partnership or media inquiries.' },
               { role:'Legal & Corrections',      email:'legal@downrangeco.com',        desc:'DMCA notices, factual corrections, legal inquiries.' },
               { role:'Advertising',             email:'ads@downrangeco.com',           desc:'Contextual placements, sponsorships, and direct advertising relationships.' },
             ].map(c=>(

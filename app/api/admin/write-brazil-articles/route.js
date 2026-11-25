@@ -20,7 +20,7 @@ async function fetchImage(query) {
 
 const VOICE_BR = `REGRAS OBRIGATÓRIAS — ESTILO DOWNRANGE BRASIL:
 - Escreva EM PORTUGUÊS BRASILEIRO fluente e natural
-- Autor: DJ Cavalcanti — fundador do DownRange
+- Autor: DownRange Co. Intel Desk — equipe editorial do DownRange
 - Tom direto, sem rodeios, como quem conhece a lei de armas de cor
 - PROIBIDO: "abrangente", "mergulhar em", "robusto", "alavancar", "empoderar", "game-changer", "sinergias"
 - Comece com o fato mais importante, sem introdução vaga
@@ -36,61 +36,61 @@ const BRAZIL_TOPICS = [
     baseSlug: 'estatuto-desarmamento-atirador-precisa-saber',
     title: 'Estatuto do Desarmamento: O Que o Atirador Precisa Saber',
     tag: 'LEI', readMins: '8 min', imageQuery: 'Brazil law justice firearms regulation',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Estatuto do Desarmamento (Lei 10.826/2003). Cubra: o que é proibido vs permitido para civis, categorias de uso permitido vs restrito, penalidades, como o Estatuto mudou desde 2003, impacto real no atirador legal.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Estatuto do Desarmamento (Lei 10.826/2003). Cubra: o que é proibido vs permitido para civis, categorias de uso permitido vs restrito, penalidades, como o Estatuto mudou desde 2003, impacto real no atirador legal.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'como-se-tornar-cac-guia-completo',
     title: 'Como Virar CAC: Guia Completo para Atirador Desportivo',
     tag: 'GUIA', readMins: '10 min', imageQuery: 'shooting range sport pistol competition Brazil',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Como se tornar Atirador Desportivo CAC no Brasil em 2025. Cubra: documentação necessária, custo real total, laudo psicológico, clube homologado pelo Exército, processo SIGMA, quanto tempo demora, erros comuns que atrasam o processo.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Como se tornar Atirador Desportivo CAC no Brasil em 2025. Cubra: documentação necessária, custo real total, laudo psicológico, clube homologado pelo Exército, processo SIGMA, quanto tempo demora, erros comuns que atrasam o processo.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'decreto-lula-cac-o-que-mudou',
     title: 'Decreto Lula e o CAC: O Que Realmente Mudou — e O Que Permanece',
     tag: 'POLÍTICA', readMins: '9 min', imageQuery: 'Brazil government congress law politics',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Decreto 11.366/2023 do governo Lula sobre armas. Cubra: o que foi revogado dos decretos Bolsonaro, limites atuais de armas por categoria CAC, situação das liminares judiciais, o que o atirador deve fazer agora, perspectivas para 2025-2026.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Decreto 11.366/2023 do governo Lula sobre armas. Cubra: o que foi revogado dos decretos Bolsonaro, limites atuais de armas por categoria CAC, situação das liminares judiciais, o que o atirador deve fazer agora, perspectivas para 2025-2026.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'armas-uso-permitido-vs-restrito',
     title: 'Uso Permitido vs. Uso Restrito no Brasil: Entenda de Uma Vez Por Todas',
     tag: 'LEI', readMins: '8 min', imageQuery: 'handgun pistol firearm law Brazil police',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Diferença entre armas de uso permitido e restrito no Brasil. Cubra: quais calibres/modelos pertencem a cada categoria, quem pode ter o quê, como o CAC muda o acesso, calibres .40 e .45, armas semiautomáticas, penalidades por porte de uso restrito sem autorização.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Diferença entre armas de uso permitido e restrito no Brasil. Cubra: quais calibres/modelos pertencem a cada categoria, quem pode ter o quê, como o CAC muda o acesso, calibres .40 e .45, armas semiautomáticas, penalidades por porte de uso restrito sem autorização.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'municao-precos-onde-comprar',
     title: 'Munição no Brasil: Preços Reais, Onde Comprar e Por Que É Tão Cara',
     tag: 'GUIA', readMins: '7 min', imageQuery: 'ammunition bullets 9mm firearm Brazil',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Mercado de munição no Brasil em 2025. Cubra: preços atuais em reais (9mm, .38, .40, .22LR, 12 gauge), por que a munição é cara (CBC monopólio, tributos), limites legais de estoque, compra online, melhores distribuidores, perspectiva de preços.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Mercado de munição no Brasil em 2025. Cubra: preços atuais em reais (9mm, .38, .40, .22LR, 12 gauge), por que a munição é cara (CBC monopólio, tributos), limites legais de estoque, compra online, melhores distribuidores, perspectiva de preços.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'porte-civil-brasil-possivel-ou-impossivel',
     title: 'Porte Civil no Brasil: É Possível ou É Impossível na Prática?',
     tag: 'LEI', readMins: '8 min', imageQuery: 'concealed carry holster firearm law enforcement',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Porte de arma civil no Brasil. Cubra: quem tem direito ao porte (rural, risco comprovado, etc.), processo real na Polícia Federal, taxa de concessão, renovação anual, o que acontece numa abordagem policial, comparação com outros países da América do Sul.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Porte de arma civil no Brasil. Cubra: quem tem direito ao porte (rural, risco comprovado, etc.), processo real na Polícia Federal, taxa de concessão, renovação anual, o que acontece numa abordagem policial, comparação com outros países da América do Sul.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'sigma-exercito-brasileiro-registro-armas',
     title: 'SIGMA: O Sistema do Exército que Controla Cada Arma CAC no Brasil',
     tag: 'GUIA', readMins: '7 min', imageQuery: 'military army Brazil Exército registration system',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Sistema SIGMA do Exército Brasileiro. Cubra: o que é o SIGMA, como funciona o registro, transferência e desfazimento, fiscalização domiciliar de colecionadores, mínimo de competições para atiradores, o que acontece se perder o prazo, como acessar o portal online.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Sistema SIGMA do Exército Brasileiro. Cubra: o que é o SIGMA, como funciona o registro, transferência e desfazimento, fiscalização domiciliar de colecionadores, mínimo de competições para atiradores, o que acontece se perder o prazo, como acessar o portal online.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'legitima-defesa-arma-brasil-lei',
     title: 'Legítima Defesa com Arma no Brasil: O Que a Lei Diz — e o Que Não Diz',
     tag: 'LEI', readMins: '9 min', imageQuery: 'home defense self defense law firearm protection',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Legítima defesa com arma de fogo no Brasil. Cubra: o que o Código Penal diz sobre legítima defesa, casos reais julgados pelo STJ/STF, como atirar em intruso em casa pode resultar em processo, o que fazer após disparar em legítima defesa, diferença entre excesso doloso e culposo.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Legítima defesa com arma de fogo no Brasil. Cubra: o que o Código Penal diz sobre legítima defesa, casos reais julgados pelo STJ/STF, como atirar em intruso em casa pode resultar em processo, o que fazer após disparar em legítima defesa, diferença entre excesso doloso e culposo.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'cbc-imbel-industria-armas-brasileira',
     title: 'CBC e IMBEL: A Indústria de Armas Brasileira Que Poucos Conhecem',
     tag: 'SETOR', readMins: '8 min', imageQuery: 'ammunition factory manufacturing firearms Brazil',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Indústria nacional de armas e munição no Brasil — CBC e IMBEL. Cubra: história, capacidade produtiva, exportações, por que o monopólio mantém preços altos, produtos mais vendidos, perspectivas de concorrência.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Indústria nacional de armas e munição no Brasil — CBC e IMBEL. Cubra: história, capacidade produtiva, exportações, por que o monopólio mantém preços altos, produtos mais vendidos, perspectivas de concorrência.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'estados-mais-amigaveis-atiradores',
     title: 'Os Estados Mais (e Menos) Amigáveis para Atiradores no Brasil',
     tag: 'GUIA', readMins: '9 min', imageQuery: 'Brazil map states flag gun rights',
-    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DJ Cavalcanti.\nTópico: Análise por estado para atiradores desportivos no Brasil. Classifique e analise: Rio Grande do Sul (melhor), Mato Grosso, Minas Gerais, Paraná vs São Paulo, Rio de Janeiro (piores). Cubra: postura da PF local, burocracia, clubes ativos, pressão política.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
+    prompt: `${VOICE_BR}\n\nEscreva um artigo de 900-1100 palavras para DownRange Brasil, byline DownRange Co. Intel Desk.\nTópico: Análise por estado para atiradores desportivos no Brasil. Classifique e analise: Rio Grande do Sul (melhor), Mato Grosso, Minas Gerais, Paraná vs São Paulo, Rio de Janeiro (piores). Cubra: postura da PF local, burocracia, clubes ativos, pressão política.\nFormato: HTML com h2/p/ul/li/strong, style="text-align:justify" em todos os p. Sem h1.`,
   },
   {
     baseSlug: 'novas-pistolas-mercado-brasileiro-cac',
@@ -235,7 +235,7 @@ export async function POST(req) {
         imageUrl,
         body,
         summary,
-        author:          'DJ Cavalcanti',
+        author:          'DownRange Co. Intel Desk',
         publishedAt:     now.toISOString(),
         qualityReviewed: false,
         active:          true,

@@ -192,7 +192,7 @@ def main():
         "_type": "blogPost",
         "title": "Fierce Firearms' New Wingman SBR Is a 5.4-Pound Argument for Buying an SBR Right Now",
         "slug": {"_type": "slug", "current": "fierce-firearms-wingman-sbr-2026"},
-        "author": "DJ Cavalcanti",
+        "author": "DownRange Co. Intel Desk",
         "authorRole": "Founder, DownRange",
         "category": "GEAR",
         "excerpt": "Fierce Firearms just launched a 5.4-pound titanium SBR in three Creedmoor chamberings, landing exactly as the $200 NFA tax disappears. Here's why the timing, not just the rifle, is the story.",

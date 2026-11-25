@@ -271,7 +271,7 @@ def main():
     now = datetime.datetime.utcnow().replace(microsecond=0).isoformat() + "Z"
     doc = {
         "_id": BLOG_ID, "_type": "blogPost", "title": TITLE, "slug": {"_type": "slug", "current": SLUG},
-        "author": "DJ Cavalcanti", "authorRole": "Founder, DownRange", "category": "REVIEW", "excerpt": EXCERPT, "body": body,
+        "author": "DownRange Co. Intel Desk", "authorRole": "Editorial Team, DownRange Co.", "category": "REVIEW", "excerpt": EXCERPT, "body": body,
         "imageUrl": hero["cdn_url"], "imageAlt": "GLOCK G45 Gen6 pistol from the Hook & Barrel review",
         "heroImage": {"_type": "image", "asset": {"_type": "reference", "_ref": hero["asset_id"]}},
         "readTime": max(1, -(-words // 200)), "status": "published", "published": True, "featured": False,
