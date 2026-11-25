@@ -23,7 +23,7 @@ export async function GET(req) {
     )
     return Response.json({
       ok: true,
-      authorBio: config?.authorBio || DEFAULT_BIO,
+      authorBio: (config?.authorBio && !/cavalcanti|\bDJ\b/i.test(config.authorBio)) ? config.authorBio : DEFAULT_BIO,
       authorBioUpdatedAt: config?.authorBioUpdatedAt || null,
       breakingUrgencyThreshold: config?.breakingUrgencyThreshold || 8,
     })
