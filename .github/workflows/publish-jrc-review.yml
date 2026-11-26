@@ -26,3 +26,4 @@ jobs:
           git add scripts/jrc_review_result.json || true
           git commit -m "chore: JRC review publish results" || true
           git pull --rebase -q || true; git push || true
+# rerun: removed two improvement bullets
