@@ -619,6 +619,11 @@ async function postReddit(content, imageUrl, category) {
 }
 
 // ── Dispatcher ────────────────────────────────────────────────────────────────
+// Post pre-written copy (used by /api/admin/social-custom for hand-written posts)
+export async function postCustom(platform, content, imageUrl, article) {
+  return dispatch(platform, content, imageUrl, 'GEAR', [], article)
+}
+
 async function dispatch(platform, content, imageUrl, category, hashtags, article) {
   switch (platform) {
     case 'bluesky':  return postBluesky(content, imageUrl, article)
