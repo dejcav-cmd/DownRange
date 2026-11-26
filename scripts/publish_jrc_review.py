@@ -14,7 +14,7 @@ MUTATE = f"https://{PID}.api.sanity.io/v2024-01-01/data/mutate/{DS}"
 HERO = "https://cdn.sanity.io/images/vbnsqnkg/production/ce7527a81608b48cdd18e7816486282f864c9766-1448x1086.webp"
 FW2 = "https://cdn.sanity.io/images/vbnsqnkg/production/089a976e1ed6b7dd4f86ab43e6993fbbd5eb5b84-1448x1086.jpg"
 BASE = "https://jrcguns.com/airo-assets/images/products/"
-MAG_C = ["jrc-heavy-weight-magwell", "jrc-heavy-weight-magwell-2", "jrc-glock-heavy-weight-magwell"]
+MAG_C = ["jrc-heavy-weight-magwell-armor-black", "jrc-heavy-weight-magwell-fde"]
 TR_C = ["jrc-thumb-rest-gen3", "jrc-thumb-rest-gen3-2", "jrc-thumb-rest", "jrc-glock-thumb-rest"]
 UA = {"User-Agent": "Mozilla/5.0"}
 

@@ -20,13 +20,9 @@ jobs:
           NEXT_PUBLIC_SANITY_PROJECT_ID: vbnsqnkg
         working-directory: scripts
         run: python3 publish_jrc_review.py
-      - name: Post to social
-        env:
-          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
-        run: python3 scripts/post_jrc_review_social.py || true
       - name: Commit results
         run: |
           git config user.name "dr-bot"; git config user.email "bot@downrangeco.com"
-          git add scripts/jrc_review_result.json scripts/jrc_review_social_result.json || true
+          git add scripts/jrc_review_result.json || true
           git commit -m "chore: JRC review publish results" || true
           git pull --rebase -q || true; git push || true
