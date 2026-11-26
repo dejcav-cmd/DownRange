@@ -1,4 +1,38 @@
 {
-  "ok": false,
-  "error": "HTTP Error 404: Not Found"
+  "ok": true,
+  "results": [
+    {
+      "platform": "bluesky",
+      "ok": true,
+      "postId": "at://did:plc:foglakvv2bev6skq6uzecqrl/app.bsky.feed.post/3n3aemxp3ph2d",
+      "postUrl": "https://bsky.app/profile/did:plc:foglakvv2bev6skq6uzecqrl/post/3n3aemxp3ph2d",
+      "hasImage": true
+    },
+    {
+      "platform": "threads",
+      "ok": false,
+      "error": "Missing THREADS_ACCESS_TOKEN or THREADS_USER_ID."
+    },
+    {
+      "platform": "facebook",
+      "ok": true,
+      "postId": "122149444005341798",
+      "postUrl": "https://www.facebook.com/photo?fbid=122149444005341798",
+      "hasImage": true
+    },
+    {
+      "platform": "instagram",
+      "ok": true,
+      "postId": "18003611823040881",
+      "postUrl": "https://www.instagram.com/p/DgN0Xr4jXhm/",
+      "hasImage": true
+    },
+    {
+      "platform": "twitter",
+      "ok": true,
+      "postId": "6b0883616cd6d75215d532ef",
+      "postUrl": null,
+      "hasImage": true
+    }
+  ]
 }
