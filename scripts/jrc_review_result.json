@@ -3,16 +3,19 @@
   "slug": "jrc-guns-heavy-weight-magwell-frame-weight-thumb-rest-2026",
   "blog_url": "https://www.downrangeco.com/blog/jrc-guns-heavy-weight-magwell-frame-weight-thumb-rest-2026",
   "imageUrl": "https://cdn.sanity.io/images/vbnsqnkg/production/ce7527a81608b48cdd18e7816486282f864c9766-1448x1086.webp",
-  "magwell_img": null,
+  "magwell_img": {
+    "url": "https://cdn.sanity.io/images/vbnsqnkg/production/a32605d28555c48e3c7139a6788cee0908d78d61-1086x1448.png",
+    "source": "https://jrcguns.com/airo-assets/images/products/jrc-heavy-weight-magwell-armor-black"
+  },
   "thumbrest_img": {
     "url": "https://cdn.sanity.io/images/vbnsqnkg/production/ec2e8a9ed767b592fdce6ca82a8e9339f1133b9c-1448x1086.webp",
     "source": "https://jrcguns.com/airo-assets/images/products/jrc-thumb-rest-gen3"
   },
   "mutate": {
-    "transactionId": "EWX8hMb5Cd3ojd5FJsDAVa",
+    "transactionId": "OEgy1yZreeNi7TvZnQ71dh",
     "results": [
       {
-        "operation": "create"
+        "operation": "update"
       }
     ]
   }
