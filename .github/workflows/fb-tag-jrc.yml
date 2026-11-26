@@ -1,0 +1,28 @@
+name: Facebook Tag JRC
+on:
+  push:
+    paths:
+      - '.github/workflows/fb-tag-jrc.yml'
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Wait for deploy
+        run: sleep 90
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Edit post
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: python3 scripts/fb_tag_jrc.py
+      - name: Commit
+        if: always()
+        run: |
+          git config user.name "dr-bot"; git config user.email "bot@downrangeco.com"
+          git add scripts/fb_tag_result.json || true
+          git commit -m "chore: fb tag result" || true
+          git pull --rebase -q || true; git push || true

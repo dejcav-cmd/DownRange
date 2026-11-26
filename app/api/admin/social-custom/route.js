@@ -12,6 +12,22 @@ function auth(req) {
 export async function POST(req) {
   if (!auth(req)) return Response.json({ error: 'Unauthorized' }, { status: 401 })
   const body = await req.json().catch(() => ({}))
+
+  // Edit an existing Facebook post to add a real page tag; revert if the tag doesn't register
+  if (body.facebookEdit) {
+    const { postId, message, original } = body.facebookEdit
+    const token = process.env.FACEBOOK_PAGE_ACCESS_TOKEN
+    const set = async (m) => fetch(`https://graph.facebook.com/v20.0/${postId}`, {
+      method: 'POST', headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams({ message: m, name: m, access_token: token }),
+    }).then(r => r.json())
+    const upd = await set(message)
+    const chk = await fetch(`https://graph.facebook.com/v20.0/${postId}?fields=message,name,message_tags&access_token=${token}`).then(r => r.json())
+    const tagged = !!(chk.message_tags && Object.keys(chk.message_tags).length)
+    let reverted = null
+    if (!tagged && original) reverted = await set(original)
+    return Response.json({ ok: true, update: upd, check: chk, tagged, reverted })
+  }
   const posts = Array.isArray(body.posts) ? body.posts : []
   const results = []
   for (const p of posts) {
