@@ -45,16 +45,16 @@ BODY = """
 {fig_setup}
 <h2>At a Glance</h2>
 <table style="width:100%;border-collapse:collapse"><tr><th align="left">Part</th><th align="left">Price</th><th align="left">Fits</th><th align="left">Finish</th></tr>
-<tr><td>Heavy Weight Magwell</td><td>$179.95</td><td>Glock Gen 1&ndash;4 (not Gen 5/6)</td><td>Armor Black or FDE</td></tr>
-<tr><td>Frame Weight System</td><td>$149.99</td><td>Gen 1&ndash;5: G17, G22, G23, G20, G21, G31, G34, G35</td><td>Armor Black or FDE</td></tr>
+<tr><td>Heavy Weight Magwell</td><td>$179.95</td><td>Glock Gen 1&ndash;4 (not Gen 5/6)</td><td>Armor Black</td></tr>
+<tr><td>Frame Weight System</td><td>$149.99</td><td>Gen 1&ndash;5: G17, G22, G23, G20, G21, G31, G34, G35</td><td>Armor Black</td></tr>
 <tr><td>Thumb Rest</td><td>$39.95</td><td>Mounts to the JRC Frame Weight</td><td>Machined aluminum</td></tr></table>
 <p>Frame weight plus thumb rest is <strong>$189.94</strong>; add the magwell and the full setup is <strong>$369.89</strong>. JRC lists these as separate items, so you can build up in stages.</p>
 <h2>Craftsmanship: This Is Where JRC Shines</h2>
-<p>Let's start with the part that surprised us most. Pull these out of the box and the build quality is the first thing you notice. The craftsmanship is amazing, and we mean that plainly. The parts feel like they were made by people who shoot Glocks for a living, not by a shop chasing a trend. The Armor Black and FDE finishes are consistent across all three pieces, so the setup looks like one system instead of a pile of mismatched accessories, and the weight you feel in your hand is exactly what a product sold on mass should deliver.</p>
+<p>Let's start with the part that surprised us most. Pull these out of the box and the build quality is the first thing you notice. The craftsmanship is amazing, and we mean that plainly. The parts feel like they were made by people who shoot Glocks for a living, not by a shop chasing a trend. The Armor Black finish is consistent across all three pieces, so the setup looks like one system instead of a pile of mismatched accessories, and the weight you feel in your hand is exactly what a product sold on mass should deliver.</p>
 <p>That fits JRC's story: made in the USA, by a licensed FFL manufacturer, in a small Georgia shop. Parts like this live or die on fit and finish, and JRC clears that bar with room to spare. We're genuinely impressed, and it's a big reason we're excited to get them on the range.</p>
 <h2>The Heavy Weight Magwell: Weight Where Your Hand Lives</h2>
 <p>A magwell does two jobs. The flared opening gives a loaded magazine a bigger target on a reload, and the extra mass at the base of the grip shifts the gun's balance back toward your hand. Other heavy options have a following: S&amp;J Custom sells a brass Glock magwell on the basis of being about 3.5 times heavier than its aluminum ones, at 8.7 ounces. JRC is clearly after that same shooter.</p>
-<p>It ships with a magwell plug at no extra cost (choose the Gen 1&ndash;3 or Gen 4 version at checkout, since they differ), and it matches the frame weight finish-for-finish.</p>
+<p>It ships with a magwell plug at no extra cost (choose the Gen 1&ndash;3 or Gen 4 version at checkout, since they differ), and its Armor Black finish matches the frame weight.</p>
 {fig_mag}
 <h2>The Frame Weight: About Six Ounces Where Recoil Starts</h2>
 <p>JRC's frame weight adds about 6 ounces to the front of the frame and is aimed at reducing muzzle rise and felt recoil <em>without adding mass to the slide</em>. That's the smart part: slide weight has to start and stop with every shot, while frame weight just sits there resisting muzzle lift. We covered this part earlier in <a href="/blog/jrc-guns-glock-frame-weight-2026">JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps</a>; here we're looking at it as part of a system. JRC also says it fits CR-Speed World Shoot II holsters, with minor fitting possible.</p>
@@ -65,7 +65,7 @@ BODY = """
 <h2>Why the Combo Makes Sense</h2>
 <p>At $189.94 for the pair you get a forward-balanced gun and a fixed thumb position in one move, and the two parts are designed around each other. For anyone new to upgrades, that's a low-guesswork way to start.</p>
 <h2>What We Like</h2>
-<ul><li>Outstanding craftsmanship and consistent finishes across all three parts</li><li>Weight on the frame, not the slide</li><li>Made in the USA by a licensed FFL manufacturer</li><li>No permanent changes to the Glock frame for the weight and thumb rest</li><li>Magwell plug included, chosen per generation</li><li>Buy in stages: the thumb rest is only $39.95</li><li>Tracked UPS shipping from Georgia</li></ul>
+<ul><li>Outstanding craftsmanship and a consistent Armor Black finish across all three parts</li><li>Weight on the frame, not the slide</li><li>Made in the USA by a licensed FFL manufacturer</li><li>No permanent changes to the Glock frame for the weight and thumb rest</li><li>Magwell plug included, chosen per generation</li><li>Buy in stages: the thumb rest is only $39.95</li><li>Tracked UPS shipping from Georgia</li></ul>
 <h2>Where JRC Could Improve</h2>
 <ul><li>The magwell is Gen 1&ndash;4 only; JRC lists a Gen 5/6 version as in development.</li><li>Weights and materials aren't listed for the magwell, and the frame weight page doesn't name its material. For parts sold on mass, an ounce count would help.</li><li>Compatibility details differ in places (the thumb rest page cites Gen 1&ndash;5 in one spot and Gen 3&ndash;5 in another).</li><li>The thumb rest mounts on the left side; JRC doesn't say whether a left-handed option exists.</li></ul>
 <p>None of these are deal breakers; most are product-page fixes a small shop can make quickly.</p>
