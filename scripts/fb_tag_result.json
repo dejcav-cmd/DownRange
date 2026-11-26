@@ -1,0 +1,28 @@
+{
+  "ok": true,
+  "update": {
+    "error": {
+      "message": "(#10) Application does not have permission for this action",
+      "type": "OAuthException",
+      "code": 10,
+      "fbtrace_id": "An8TFbutNcs8Y4rog84GWVB"
+    }
+  },
+  "check": {
+    "error": {
+      "message": "(#100) Tried accessing nonexisting field (message)",
+      "type": "OAuthException",
+      "code": 100,
+      "fbtrace_id": "A28alEAa_8JlQ7Xazg0_Rnp"
+    }
+  },
+  "tagged": false,
+  "reverted": {
+    "error": {
+      "message": "(#10) Application does not have permission for this action",
+      "type": "OAuthException",
+      "code": 10,
+      "fbtrace_id": "AawugWzx0MPoWzxgo8mQlZ4"
+    }
+  }
+}
