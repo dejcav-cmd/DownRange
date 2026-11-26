@@ -45,8 +45,8 @@ BODY = """
 {fig_setup}
 <h2>At a Glance</h2>
 <table style="width:100%;border-collapse:collapse"><tr><th align="left">Part</th><th align="left">Price</th><th align="left">Fits</th><th align="left">Finish</th></tr>
-<tr><td>Heavy Weight Magwell</td><td>$179.95</td><td>Glock Gen 1&ndash;4 (not Gen 5/6)</td><td>Armor Black</td></tr>
-<tr><td>Frame Weight System</td><td>$149.99</td><td>Gen 1&ndash;5: G17, G22, G23, G20, G21, G31, G34, G35</td><td>Armor Black</td></tr>
+<tr><td>Heavy Weight Magwell</td><td>$179.95</td><td>Glock Gen 1&ndash;4 (not Gen 5/6)</td><td>Armor Black (FDE also offered)</td></tr>
+<tr><td>Frame Weight System</td><td>$149.99</td><td>Gen 1&ndash;5: G17, G22, G23, G20, G21, G31, G34, G35</td><td>Armor Black (FDE also offered)</td></tr>
 <tr><td>Thumb Rest</td><td>$39.95</td><td>Mounts to the JRC Frame Weight</td><td>Machined aluminum</td></tr></table>
 <p>Frame weight plus thumb rest is <strong>$189.94</strong>; add the magwell and the full setup is <strong>$369.89</strong>. JRC lists these as separate items, so you can build up in stages.</p>
 <h2>Craftsmanship: This Is Where JRC Shines</h2>
@@ -57,7 +57,7 @@ BODY = """
 <p>It ships with a magwell plug at no extra cost (choose the Gen 1&ndash;3 or Gen 4 version at checkout, since they differ), and its Armor Black finish matches the frame weight.</p>
 {fig_mag}
 <h2>The Frame Weight: About Six Ounces Where Recoil Starts</h2>
-<p>JRC's frame weight adds about 6 ounces to the front of the frame and is aimed at reducing muzzle rise and felt recoil <em>without adding mass to the slide</em>. That's the smart part: slide weight has to start and stop with every shot, while frame weight just sits there resisting muzzle lift. We covered this part earlier in <a href="/blog/jrc-guns-glock-frame-weight-2026">JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps</a>; here we're looking at it as part of a system. JRC also says it fits CR-Speed World Shoot II holsters, with minor fitting possible.</p>
+<p>JRC's frame weight adds about 6 ounces to the front of the frame and is aimed at reducing muzzle rise and felt recoil <em>without adding mass to the slide</em>. That's the smart part: slide weight has to start and stop with every shot, while frame weight just sits there resisting muzzle lift. We covered this part earlier in <a href="/blog/jrc-guns-glock-frame-weight-2026">JRC Guns' New Glock Frame Weight Adds 6 Ounces Where It Actually Helps</a>; here we're looking at it as part of a system. Ours is the Armor Black version (JRC also offers FDE), and JRC says it fits CR-Speed World Shoot II holsters, with minor fitting possible.</p>
 {fig_fw}
 <h2>The Thumb Rest: A Consistent Place for Your Support Thumb</h2>
 <p>Thumb rests started on competition guns and have been moving onto everyday pistols because they give the support thumb the same landing spot every time and something to push against as the muzzle rises. JRC's is precision-machined aluminum, mounts to the left side of the frame weight with four 1/4-inch screws (bring your own Allen wrench), and doesn't attach to the Glock frame itself, so there's no permanent change to your pistol.</p>

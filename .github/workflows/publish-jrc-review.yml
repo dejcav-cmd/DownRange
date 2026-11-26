@@ -28,3 +28,4 @@ jobs:
           git pull --rebase -q || true; git push || true
 # rerun: removed two improvement bullets
 # rerun: black finish only
+# rerun: note FDE option
