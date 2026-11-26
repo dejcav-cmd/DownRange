@@ -1,29 +1,31 @@
-600 scanned, 23 need a real image, 6 coupon posts skipped
+600 scanned, 25 need a real image, 7 coupon posts skipped
 
-  + SureFire SOCOM RC2 5.56 Sound Suppressor - Flat  — 22281b 967x580 sha=90a4c7e2d0d7
-  + TriggerTech AR-15 Single Stage Drop In Trigger - — 41563b 1032x734 sha=576ba3bcdf9f
-  + Superlative Arms Adjustable Bleed Off Gas Block  — 17072b 662x395 sha=ef2b484a9986
-  + Vortex Optics Defender CCW Micro Red Dot Sight,  — 50743b 680x510 sha=d56d29a5f6d3
-  + Ergo MSR Handguard Lightweight Polymer M-LOK (Bl — 240413b 1202x642 sha=3c114e4c07b5
-  + Dead Air Mask22 22LR Rimfire Suppressor - $399.9 — 39711b 1000x666 sha=0cf88f211979
-  + Wolf Performance Mil-Spec Steel Case 7.62x39mm A — 107210b 765x819 sha=76c9594bbce1
-  + Beretta Model 1934, Semi-Auto Pistol, .380 ACP ( — 42860b 699x585 sha=d8968448bc61
-  + Bernardelli Model 60, Semi-Auto Pistol, .380 ACP — 44929b 742x569 sha=6ba73c1a7d56
-  + ATN ThOR4 1.25-5x Smart Thermal Rifle Scope Buil — 15709b 677x415 sha=b18f0c91bef0
-  + Panzer Arms AK12 12 GA 18.5" Barrel 5-Rounds - $ — 41504b 575x249 sha=c1633e9f9244
-  + Vortex Optics Defender-ST Enclosed Solar Micro R — 335157b 666x509 sha=7eaefb3d22fc
-  + RISE Armament RAVE 140 w/ AR-15 Lower Parts Kit, — 25975b 412x532 sha=904b68e51600
-  + Vortex Defender-ST Enclosed Solar 1x32mm 24mm Re — 16365b 345x246 sha=32cebc506d45
-  + Otus Arms SMX-20 Bottomland DC 20 Gauge 26" 4rd  — 28775b 1500x328 sha=0bf55db55220
-  + ATI Alpha Maxx AR-15 - Semi-Auto Rifle, 5.56/.22 — 14820b 677x320 sha=da62ec0db87d
-  + Black Friday Deals! @Beretta — 46707b 450x583 sha=b43f1fb93bb6
+  + Black Friday Sale! @KyGunCo — 32293b 504x299 sha=aca9027fb859
+  + Black Friday Sale! @ True Shot Ammo — 67189b 300x250 sha=7c1ef79c2322
+  + Streamlight ProTac Rail Mount HP-X Pro USB - 800 — 50163b 1100x734 sha=5f93e4399d10
+  + HK MP5, SP5, MP5K, SP5K Magazine - 30 Round - 9m — 42178b 1280x1163 sha=4a0782e29acb
+  + HK MP5K Vertical Foregrip - 3 Slot Rail Section  — 111973b 1280x1280 sha=4297a432e93e
+  + HK UMP Magazine - .45 ACP - 25 Round - $28.79 — 16302b 608x608 sha=fd90dfe34ab0
+  + Plano Diverge 49″ Rifle Case Tan - $119.99 — 22307b 839x296 sha=cacc334ef558
+  + Radical Firearms FR-16 5.56 NATO 16" SOCOM Barre — 8825b 500x225 sha=30022999dde5
+  + Federal Champion Training FMJ 9mm 115 Grain 50 R — 20484b 500x334 sha=88bf55aa3f8a
+  + Holosun LE117 Laser - Red - $199.99 — 14613b 428x272 sha=1088a00eba85
+  + Faxon Firearms Forged AR-15 Stripped Upper Recei — 42748b 1100x734 sha=1efb2445c4c8
+  + Springfield 1911 TRP .45 ACP 5" barrel 8+1 Black — 62218b 1104x716 sha=2e46f3941628
+  x Tuna Cans FAT9 9mm Silencer 6 Baffle - $239.99 — image not downloadable
+  + Taurus TX 9 Compact TORO Black 9mm 4" Barrel 15- — 50131b 800x577 sha=6f1b36d11f68
+  + 2-Pack Banral 1000-Lumen Rechargeable LED Tactic — 39287b 500x500 sha=5bff04044873
+  + Lancer L5 AR-15 .300 Blackout 30-Round Advanced  — 106489b 526x503 sha=22e9d7c6450b
+  + Mendoza Firearms RM22-6000 .22 LR 21.26" 17rd Se — 24967b 1188x223 sha=7554748550e6
+  + Winchester USA White Box Brass .380 ACP 95 Grain — 76942b 800x574 sha=76a1961441d3
+  + Daniel Defense DDM4 V7 Black 5.56X45 16" 32 Rd - — 12305b 549x240 sha=c9d237070b80
+  + Girsan MC1911S Untouchable 45 ACP 5" 8-Rds Semi- — 40437b 1000x666 sha=92d6a8bec1d1
   x Weather-Ready Onyx Gear: 70% Off @ Field Supply — unreachable after retries
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD Cop — image not downloadable
   x SilencerCo Hybrid 46M Multi Caliber Suppressor - — image not downloadable
   x Henry X Model Lever 45/70 – 19.8″ TB Blued Black — image not downloadable
   x REMINGTON - 223 Rem 24" BBL Action No-Thrd 1-8 T — image not downloadable
-  x SilencerCo Omega 36M Suppressor - $799.95 — image not downloadable
 
-fixed 17, failed 6  (73% success)
-distinct images: 17 across 17 deals
+fixed 19, failed 6  (76% success)
+distinct images: 19 across 19 deals
 PASS — no image shared between products
