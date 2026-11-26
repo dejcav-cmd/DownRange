@@ -1,0 +1,31 @@
+name: Post JRC Review Social
+on:
+  push:
+    paths:
+      - '.github/workflows/post-jrc-review-social.yml'
+permissions:
+  contents: write
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - name: Diagnostics
+        run: |
+          curl -s -o /dev/null -w "social-custom unauth: %{http_code}\n" -X POST -H 'content-type: application/json' -d '{}' https://www.downrangeco.com/api/admin/social-custom
+          curl -s https://www.downrangeco.com/blog/jrc-guns-heavy-weight-magwell-frame-weight-thumb-rest-2026 | grep -o "<title>[^<]*</title>" | head -1
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Post to social
+        env:
+          ADMIN_KEY: ${{ secrets.ADMIN_KEY }}
+        run: python3 scripts/post_jrc_review_social.py
+      - name: Commit results
+        if: always()
+        run: |
+          git config user.name "dr-bot"; git config user.email "bot@downrangeco.com"
+          git add scripts/jrc_review_social_result.json || true
+          git commit -m "chore: JRC review social results" || true
+          git pull --rebase -q || true; git push || true
