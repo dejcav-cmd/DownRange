@@ -55,7 +55,15 @@ export async function generateStaticParams() {
 
 export async function generateMetadata({ params }) {
   const allPosts = await getAllPosts().catch(() => BLOG_POSTS)
-  const post = allPosts.find(p => p.slug === params.slug)
+  let post = allPosts.find(p => p.slug === params.slug)
+  if (!post) {
+    // Fall back to a direct fetch so brand-new posts get correct metadata before list caches refresh
+    const sp = await fetchBlogPostBySlug(params.slug).catch(() => null)
+    if (sp) post = {
+      title: sp.title || '', excerpt: sp.excerpt || '', author: displayAuthor(sp.author),
+      date: sp.publishedAt || '', tags: sp.tags || [], img: sp.imageUrl || '',
+    }
+  }
   if (!post) return { title: 'Article Not Found' }
   const url = `https://www.downrangeco.com/blog/${params.slug}`
   return {
