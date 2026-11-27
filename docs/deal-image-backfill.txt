@@ -1,31 +1,80 @@
-600 scanned, 25 need a real image, 7 coupon posts skipped
+600 scanned, 72 need a real image, 5 coupon posts skipped
 
-  + Black Friday Sale! @KyGunCo — 32293b 504x299 sha=aca9027fb859
-  + Black Friday Sale! @ True Shot Ammo — 67189b 300x250 sha=7c1ef79c2322
-  + Streamlight ProTac Rail Mount HP-X Pro USB - 800 — 50163b 1100x734 sha=5f93e4399d10
-  + HK MP5, SP5, MP5K, SP5K Magazine - 30 Round - 9m — 42178b 1280x1163 sha=4a0782e29acb
-  + HK MP5K Vertical Foregrip - 3 Slot Rail Section  — 111973b 1280x1280 sha=4297a432e93e
-  + HK UMP Magazine - .45 ACP - 25 Round - $28.79 — 16302b 608x608 sha=fd90dfe34ab0
-  + Plano Diverge 49″ Rifle Case Tan - $119.99 — 22307b 839x296 sha=cacc334ef558
-  + Radical Firearms FR-16 5.56 NATO 16" SOCOM Barre — 8825b 500x225 sha=30022999dde5
-  + Federal Champion Training FMJ 9mm 115 Grain 50 R — 20484b 500x334 sha=88bf55aa3f8a
-  + Holosun LE117 Laser - Red - $199.99 — 14613b 428x272 sha=1088a00eba85
-  + Faxon Firearms Forged AR-15 Stripped Upper Recei — 42748b 1100x734 sha=1efb2445c4c8
-  + Springfield 1911 TRP .45 ACP 5" barrel 8+1 Black — 62218b 1104x716 sha=2e46f3941628
+  + Eberlestock Bandit Pack - 14L Hunting & Everyday — 15966b 500x500 sha=10bb41d616f2
+  + NOCRY Clear Safety Glasses for Men and Women wit — 30875b 500x500 sha=8d14a7bfa0f0
+  + Garmin Instinct 3 Tactical, Solar, 45mm, Black O — 22640b 500x500 sha=4ef4534e3c1c
+  + SPYPOINT Flex-M Twin, Cellular Trail Camera, Nig — 35461b 400x500 sha=357deb144843
+  + Streamlight 88061 ProTac 1L-1AA Tactical Flashli — 20666b 500x320 sha=6c8c17972913
+  + Backorder - Tuna Cans 5.56 Stainless Steel Silen — 58388b 1455x1131 sha=a9cce49c6592
+  + CMC Triggers Wedge Lock AR-15 Free-Float M-LOK 1 — 16922b 708x322 sha=87839610370d
+  + Federal 9mm 147 gr FMJ Flat Point American Eagle — 96899b 1201x642 sha=7edc3beb15ea
+  + Fortis Enhanced Detent & Spring Kit - Stainless  — 46926b 1018x670 sha=9f21bbd03d64
+  + Stealth Cam QS 22 Trail Camera 22 MP Combo - $19 — 30138b 430x511 sha=baf5333608aa
+  + Panzer Arms LEVER12 Tactical Nickel / Black 12 G — 25314b 710x681 sha=93281eb61a25
+  + Black Friday Sale - Up To 55% OFF - $29.95 — 99757b 1024x1024 sha=f2a983e26ca6
+  + Griffin Armament MK2 Ambi Warhawk Green BLEM Str — 68496b 1500x1019 sha=f14d823562dc
+  + Faxon Firearms 9mm AR9 Barrel - Tapered - 16" -  — 19067b 981x588 sha=d53b0f420c00
+  + Smith and Wesson M&P Shield EZ 9mm 3.67" Barrel  — 104202b 1500x995 sha=fc3260f9fe69
+  + Strike Industries Extended Bolt Catch - $10.95 — 46284b 1200x1024 sha=422056ae1340
+  + GForce Arms GF99 Deluxe 12 GA-3" 20" Barrel 5-Ro — 74679b 600x206 sha=91303a27052d
+  + Vortex Sonora 3-9x50 SFP Rifle Scope - Dead Hold — 146738b 1000x666 sha=babc6a617c54
+  + Anderson OOPS! Kit - $4.95 — 65531b 1000x1000 sha=de34d28318d7
+  + AGM Global Vision PVS-7 3AW1 Professional Night  — 13405b 500x333 sha=ecd0d0fcadd9
+  + Walker's Game Ear Razor Passive - Yellow - Black — 17396b 500x500 sha=9bd39ad3838d
+  x G-Force Refuge Turkish Walnut 12 GA-3" 28" Barre — image not downloadable
+  + Dead Air Sierra 5 Suppressor 5.56mm w/ KeyMo Ada — 60442b 1216x900 sha=32701e23e462
+  + Faxon Firearms 16″ GUNNER 350 Legend Carbine 415 — 15400b 1500x689 sha=4d270ab744ca
+  + Mechanix Wear: M-Pact Tactical Gloves with Secur — 36503b 500x382 sha=6601f90262cb
+  ... 25/72  ok=24 fail=1
+  + HANDLANDY Fingerless Framer Work Gloves Utility  — 38297b 500x500 sha=c4d6571677d9
+  + Rise Armament RA-535 Advanced Performance Drop-I — 26740b 516x600 sha=930258a785d3
+  + DURAMAG Stainless Steel 9mm Luger Colt Style Mag — 10895b 273x649 sha=3f6aaac6fe56
+  + HK 81000470 MP5 22 LR Caliber with 8.50" Barrel, — 10474b 380x231 sha=aa422bdc08a6
+  + 7.5" Slick Side Billet AR-15 Pistol Kit - $319.9 — 59870b 608x608 sha=4bd01d71cce2
+  + Presma AR-10 Ambidextrous Charging Handle - Blac — 11971b 608x425 sha=fdd24aeffd87
+  + 2-position 2Faux9 Super Safety for Beltfed AR15s — 211888b 1500x1473 sha=d21651a7bb6c
+  + 7" 300BLK Pistol 1:7 Parkerized M-LOK SBR Kit -  — 232807b 1000x666 sha=ad5340e6c4e8
+  + 6" 5.56 NATO Heavy Pistol 1:7 Parkerized M-LOK S — 227795b 1000x666 sha=2e7b783e948a
+  + Tuna Cans SLIM9 9mm Silencer (5 Baffle) - - $159 — 33508b 761x395 sha=3c2ca1dc2186
+  + CMMG Zeroed 22 MUTE-ISH 22LR Suppressor - - $169 — 10755b 343x546 sha=ec140a42867f
+  + Dirty Bird AR-10 DPMS Complete Lower Parts Kit - — 22888b 945x630 sha=4d68bec5788f
+  + Dirty Bird AR-15 True Mil-Spec Carbine Receiver  — 333694b 1000x670 sha=3f27a92937c5
+  + Dirty Bird 11.5" 5.56 M4 Carbine Phosphate/Chrom — 12639b 720x344 sha=1728ca6afb90
+  + Dirty Bird 16″ Govt Mid 556 M-LOK Complete Upper — 24207b 1000x665 sha=75ee9243c99d
+  + Dirty Bird Industries AR-15 Trigger Reduced Powe — 18325b 1000x666 sha=eb6eb10121ef
+  x Dirty Bird 16" 5.56 M4 Carbine Phosphate/Chrome- — image not downloadable
+  + Dirty Bird AR-15 SMRS Handguard – Slim M-LOK Rai — 45096b 1000x666 sha=b39e66297c5e
+  + Dirty Bird AR-15 Lower Parts Kit Minus FCG & Pis — 33842b 1000x666 sha=4b1df6b6db03
+  + Speer Lawman 9mm 147 Grain FMJ 1000 Rds - $300 w — 34471b 729x428 sha=a0383a883789
+  + Geissele Automatics SSA-E X Trigger with Lightni — 78033b 1500x1000 sha=4a3d10e14d1e
+  + Geissele Automatics G2S Two Stage AR-15 Trigger  — 60748b 1500x1000 sha=fb6dd19406a1
+  + Trijicon MRO SD Patrol Combo, 1x25mm, 2.0 MOA Re — 9149b 295x241 sha=dd0983ad5b35
+  + Trijicon MRO SD 1x25 2 MOA Green Dot Reflex Sigh — 18126b 453x426 sha=8d12be0c3a30
+  + SureFire Muzzle Brake - Suppressor Adapter - 1/2 — 14566b 684x418 sha=3883b3b90869
+  ... 50/72  ok=48 fail=2
+  + VLTOR AR-15 H3 Buffer - A5 - $92.99 — 39732b 1100x734 sha=4891f443b291
+  + Federal LE 9mm Luger +P+ 115gr Hi-Shok JHP 9BPLE — 10578b 317x251 sha=7c29d476abe2
+  + VEVOR Weatherproof Hard Case, Heavy Duty Protect — 48374b 1135x586 sha=023d897d488f
+  + Vortex Optics Venom 1-6x 24mm Bundle Rifle Scope — 27408b 679x473 sha=7f9540d9786a
+  + Radian Weapon Systems Talon AR-15 45/90º Ambidex — 33146b 790x440 sha=23d69ac6578d
+  + Surefire Waterproof Switch Assembly for ScoutLig — 100069b 1500x843 sha=28d8306dc88c
+  + Burris Fastfire III with Picatinny Mount 8 MOA S — 79753b 1453x1244 sha=46e3c4fcc103
+  + Winchester Silvertip 223 Remington Ammo 64 Grain — 60904b 1000x714 sha=61905177fbb9
+  + Panzer Arms MAG12 Tactical 12 Ga 3" 19.75" 5rd - — 39063b 1500x697 sha=8429540a678d
+  + Arex Delta L OR 4.5" 9mm 17rd Pistol, Black - $2 — 461949b 1500x973 sha=d066cb11e9ae
+  x SIPAX B66 Ecko Pump Action Shotgun 18" Barrel 12 — image not downloadable
+  + DEALSGIVING: The Biggest Clearance Feast of the  — 41823b 467x462 sha=1e3b73566099
+  + ATI Alpha Maxx AR-15, Semi Automatic Pistol, 5.5 — 37050b 1000x524 sha=320a6b2a83ac
+  + Black Friday Event! @Cyelee Optics — 51097b 738x821 sha=3b6f18eb22e6
+  + Monstrum Banshee 1-6x24 LPVO Rifle Scope with Of — 13143b 500x258 sha=04d7434dcc54
+  + Geissele Automatics SSA X Trigger with Lightning — 74134b 999x1500 sha=26b32079e268
   x Tuna Cans FAT9 9mm Silencer 6 Baffle - $239.99 — image not downloadable
-  + Taurus TX 9 Compact TORO Black 9mm 4" Barrel 15- — 50131b 800x577 sha=6f1b36d11f68
-  + 2-Pack Banral 1000-Lumen Rechargeable LED Tactic — 39287b 500x500 sha=5bff04044873
-  + Lancer L5 AR-15 .300 Blackout 30-Round Advanced  — 106489b 526x503 sha=22e9d7c6450b
-  + Mendoza Firearms RM22-6000 .22 LR 21.26" 17rd Se — 24967b 1188x223 sha=7554748550e6
-  + Winchester USA White Box Brass .380 ACP 95 Grain — 76942b 800x574 sha=76a1961441d3
-  + Daniel Defense DDM4 V7 Black 5.56X45 16" 32 Rd - — 12305b 549x240 sha=c9d237070b80
-  + Girsan MC1911S Untouchable 45 ACP 5" 8-Rds Semi- — 40437b 1000x666 sha=92d6a8bec1d1
   x Weather-Ready Onyx Gear: 70% Off @ Field Supply — unreachable after retries
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD Cop — image not downloadable
   x SilencerCo Hybrid 46M Multi Caliber Suppressor - — image not downloadable
   x Henry X Model Lever 45/70 – 19.8″ TB Blued Black — image not downloadable
   x REMINGTON - 223 Rem 24" BBL Action No-Thrd 1-8 T — image not downloadable
 
-fixed 19, failed 6  (76% success)
-distinct images: 19 across 19 deals
+fixed 63, failed 9  (87% success)
+distinct images: 63 across 63 deals
 PASS — no image shared between products
