@@ -1,31 +1,161 @@
-600 scanned, 25 need a real image, 3 coupon posts skipped
+600 scanned, 151 need a real image, 3 coupon posts skipped
 
-  + Glock 17, 19, 26, 34 Gen 4/5 9mm 33-Round Factor — 20949b 700x700 sha=0122f5135c13
-  + Taurus TX22 Compact, .22 LR, 3.6", Pistol w/ Vir — 16374b 510x466 sha=f7b7bc533a56
-  + Black Friday Sale @Blade HQ - Free Civivi Gojiro — 134315b 1500x632 sha=7ac428da29cb
-  + Savior Equipment Specialist Double Pistol Case O — 128839b 881x709 sha=70201a7dbdab
-  + Caldwell Flash Bang, Target Hit Indicator with I — 63672b 500x500 sha=06bdf5d55c80
+  + Heckler and Koch VP9A1 F OR 9mm 4.5" Barrel 17/2 — 66042b 959x662 sha=7cd938c7884e
+  + AS Designs Arc-Fire V2 Ambi Kit - $199.99 — 28451b 978x551 sha=ea778cc09333
+  + Ruger Precision Rimfire Rifle .22 LR 18" Barrel  — 18195b 997x231 sha=bbf38bf38b11
+  + S&W M&P 15T II 2nd Amendment Edition 5.56 NATO 1 — 30377b 1000x319 sha=617f6dc5677b
+  + Expo Arms AR-15 Upper Receiver Parts Kit - $13.9 — 28335b 963x659 sha=2b0efdfd1e54
+  + Strike Industries Folding Stock Adaptor FSA Chee — 22143b 680x407 sha=618824beded1
+  + Glock Gen 5 Glock 19 9mm 15-Round Factory Magazi — 14349b 700x700 sha=1baac614849a
+  + Omega Mfg. AR-15 Rear Beavertail Grip, Rubberize — 161415b 1200x1200 sha=c77a9be00a9d
+  + Hoffman Tactical Trigger Kicker - TK-15 - $34.95 — 14957b 945x630 sha=6cf09be78e0c
+  + POF-USA P-15 Base 16.5" 30 Rd 5.56 NATO Rifle -  — 29517b 900x363 sha=f6d88dbbc6c3
+  + Vortex Crossfire HD 10x50 Binocular, Green/Black — 9931b 259x339 sha=3e43033ea378
+  + Breek Arms Warhammer AR-15 Charging Handle - Bla — 24756b 630x630 sha=219c37be8492
+  + FN 509 Tactical 9mm 4.5" 17/24 Rd Striker-Fired  — 120110b 1500x1500 sha=c1574ec34cde
+  + Strike Industries Enhanced Bolt Catch Black - $1 — 65980b 1000x853 sha=5d3463b6eb52
+  + Strike Industries King Comp Compensator for .223 — 34672b 1000x853 sha=ddd9a79b6d81
+  + IWI Tavor 7 .308 Win/7.62 16.5" 20-Rds Semi-Auto — 126430b 1500x780 sha=9144b7028a7d
+  + Hera Arms H3T GEN 2 Transparent Frame 30-Round P — 62580b 1280x853 sha=a65056d84e7a
+  + One Horse AR-15 Complete - Lower Parts Kit - $37 — 51374b 1100x606 sha=0faa4d95bc6d
+  + Citadel Firearms Baby Citadel USA Flag .380 ACP  — 20006b 471x340 sha=3a932a685185
+  + Sig Sauer P320 XCompact Spectre 9mm 3.9" BBL OR  — 18383b 482x355 sha=dc73fe9f58cf
+  + VECTRONIX SHOOTING SOLUTIONS Radical X 8x42mm Bi — 26187b 1120x630 sha=7b050d2c8669
+  + Red Rock Outdoor Gear 5-Piece Ghillie Suit, Snow — 37533b 1120x630 sha=2a69f3fc04dc
+  + American Defense Manufacturing Dual Ring Scope M — 39636b 1120x630 sha=cd17d5c7e59e
+  + Sig Sauer Whiskey6 3-18x44mm Riflescope 30mm Tub — 9055b 450x181 sha=73d769567dd0
+  + Franklin Armory 22 Plinkster Edition BFSIII 22-C — 680070b 1500x931 sha=03ad9a0395c4
+  ... 25/151  ok=25 fail=0
+  + Swampfox Optics Kraken 3 MOA Green Dot Sight - $ — 30760b 978x550 sha=d8804e82b21c
+  + Springfield Saint Victor 5.56mm 30-Rds 16" Gear  — 64545b 1350x783 sha=cd7b9851b427
+  + Rise Armament RA-535 Advanced Performance Drop-I — 27904b 1200x1024 sha=cd037f2a99c0
+  + Hawke Sport Optics Airmax 30 Rifle Scope, 4-16x5 — 43218b 1120x630 sha=ba684bdbff54
+  + Nikon Prostaff 5 12x50 Binocular 7573 - $172.46 — 13145b 1120x630 sha=76d087802109
+  + ATN Thor 5 XD 3-30x 1280x1024 12 Micron Smart HD — 29439b 1200x602 sha=d1bae469395a
+  + Timber Creek Sig Sauer P365 X-Macro Grip Module, — 19997b 1120x630 sha=66d8372ed8ca
+  + Federal Syntech Range TSJ Flat Nose 9mm 124 Grai — 21831b 500x341 sha=b3d99a348acb
+  + Rise Armament Combo Kit - RA-434 Trigger w/ 6423 — 62785b 1500x1120 sha=d77782a617d4
+  + Athlon Forerunner 6-24x50 FFP, Direct Dial Eleva — 18537b 730x467 sha=fe9698f527af
+  + RCBS Chargemaster Supreme Powder Dispenser - Blu — 48266b 800x800 sha=2fae19662ba9
+  + Kimber KDS9c 9mm 4.09" 18-Rds Semi-Auto Pistol B — 31720b 688x510 sha=e53ccb123847
+  + Black Friday Deals - Savings UP TO 94% OFF — 380999b 1500x1500 sha=3b5d5f7f4df1
+  + NBS Upper Parts Kit For Glock 19 - 9531 - $29.95 — 51683b 1000x886 sha=2bdee2f9bf5c
+  + Glock Gen 5 Glock 19 9mm 15-Round Factory Magazi — 14375b 700x700 sha=8081d76ff858
+  + KAER 15-16 Biometric Gun Safe for Rifles Fits Sc — 32368b 500x500 sha=8d47aa559f5c
+  + KAER Ammo Cabinet Gun Cabinet Ammo Safe for Home — 29867b 500x500 sha=3e1b0f61c0b4
+  + Hornady E-Lock Ammo Cabinet - $219.98 — 10899b 630x630 sha=6876b5af7e58
+  + Browning American Deluxe 42-Gun Safe E-Lock 12 G — 1203284b 1230x1217 sha=21600c1877eb
+  + Sons of Liberty Gun Works MK1 5.56 ARP + FREE EO — 80450b 1200x1200 sha=33cae8d32b8c
+  + US Cartridge 9mm 147 Grain FMJ Ammo (Subsonic) - — 113975b 1500x1125 sha=a685fdb61f08
+  + Alex Pro Firearms P107 9mm Luger AR-9 6" Barrel  — 185662b 1450x764 sha=c8d39556a95c
+  + Mossberg MC2sc 9mm Optic Ready Subcompact Pistol — 142521b 1350x900 sha=a32347a0b78d
+  + Timber Creek Enforcer Ambidextrous Charging Hand — 26117b 1000x666 sha=1ebfa870505a
+  + C-more Systems STS2 6 MOA Micro Red Dot Sight -  — 10051b 380x275 sha=ae85b06921c0
+  ... 50/151  ok=50 fail=0
+  + Plano Molding AW2 36 Inch Rifle/Shotgun Case - $ — 56689b 900x600 sha=ae9cbff8a30f
+  + Barrett Firearms M82A1 .50 BMG 29" 10-rds Semi-A — 36432b 1490x438 sha=95766f5b8a03
+  + TruGlo AR-15 Armorer's Wrench, Black Steel - $19 — 14054b 660x240 sha=a77577a9ac91
+  + Kfi Usa Llc Impala Plus 12 Gauge Shotgun with Ur — 30241b 1000x518 sha=408ea026d29a
+  + Uncle Henry Limited Edition Belt Buckle Knife, 2 — 36397b 387x490 sha=08fc141d6e82
+  + Tisas 1911 Government .45 ACP 5" Barrel 7+1 Capa — 509759b 1500x1039 sha=30c766840d7b
+  + Vortex Micro 3x22mm Magnifier Finish: Matte Blac — 30716b 615x602 sha=a36977776f97
+  + Glock 17 Gen 6 MOS 9mm 4.49" Barrel 17-Rounds -  — 120782b 1500x1063 sha=c3b2ad279942
+  + Swampfox Kingslayer 1x22 Micro Reflex Sight Red  — 27736b 700x700 sha=bdc29203e4ca
+  + Fostech .30 Cal AR-15 Strake Brake - Titanium -  — 32020b 882x630 sha=8bf3306fca65
+  + Hodgdon Extreme Varget Rifle Powder 1 lbs - $47. — 82582b 900x900 sha=7f52e4afaf78
+  + 1911 .45 ACP 15rd Magazine - Black - $9.99 — 14713b 550x550 sha=a45f5d88c92a
+  + Black Friday Sale! @ZEV Technologies — 74178b 593x634 sha=ab70ca09fc12
+  x BREDA B3 5SM 12ga MOBL 3.5" 26" - $1802.99 — image not downloadable
+  + ROCK ISLAND OEM 45ACP Blued Detachable 13rd for  — 21544b 656x656 sha=b8280212f53e
+  + Nighthawk Custom VIP Agent 2 Gov. 9mm 5" 10rd Pi — 445682b 1114x769 sha=b3e94a3572f7
+  + KAK AR-15 Complete Lower Parts Kit - $37.99 — 26374b 1000x666 sha=f2a4b999e080
+  + ETS .40 S&W 16 Round Magazine for Glock 22 Pisto — 10582b 570x570 sha=ca8ae29d3eca
+  + KAER 10-12 Long Gun Safe for Rifles & Pistols wi — 34745b 500x500 sha=6904c2590528
+  + Magpul Patrol Glove 2.0 Padded Knuckle Shooting  — 31035b 500x390 sha=db89fcc0368d
+  + KAK Industry DBC AR-15 5.56/.223/300BLK Bolt Car — 26061b 730x723 sha=392cfe70357c
+  + Vortex Strike Eagle 1-8x24mm 30mm EBR-8 FFP Rifl — 44434b 978x550 sha=a3a7cf818fb4
+  + Vortex Viper SG Shotgun Enclosed Red Dot - 3 MOA — 20070b 747x442 sha=96395a5aec71
+  + Luth-AR M16A2 Stripped Upper Receiver - UR-A2-S  — 30289b 1000x666 sha=273f230eeb1f
+  + Garmin fēnix 8 Pro, 51mm, Sapphire, Titanium, Gr — 24860b 500x500 sha=85f22d2b61b9
+  ... 75/151  ok=74 fail=1
+  + Dueling Tree Target 6x3/8 100% USA AR500 Zinc Pl — 9476b 630x630 sha=6266596aa656
+  + Q LLC Erector 9mm Suppressor - $621.99 + Free Sh — 50748b 1200x634 sha=4006ec8108ee
+  + Ruger Wrangler 2016 22 LR 3.75 In 6 Rd Birdshead — 37508b 1000x622 sha=621b9a65fd53
+  + Tuna Cans FAT9 L 9mm Silencer (9 Baffle) - $349. — 28135b 815x655 sha=84f5e2add62a
+  + RCBS Chargemaster Link Powder Measuring with Blu — 23502b 411x550 sha=d73d8054ae8c
+  + CULVER TECH LLC SM22 .22 Suppressor Black 3.2oz  — 68770b 1500x843 sha=3f8e32b5c937
+  x FRANCHI Affinity 3 Upland Elite 20Ga 26" 4rd - W — image not downloadable
+  + WEATHERBY Vanguard Cub 243 Win 20" - $672.99 — 54323b 593x276 sha=f2a13f4258a0
+  + Mendoza RM22-1000 22LR 21.26" Barrel 17rd Rifle, — 240953b 1500x334 sha=b87b8834693c
+  + Thor 4 1.5-15x 640x480 Thermal Scope - 1.5-15x T — 21152b 400x400 sha=18c6ea0bf09b
+  + JP Enterprises .223/5.56/300 BLK Bolt Completion — 30060b 1000x666 sha=1521e925cbc9
+  + ATN Corporation, ThOR 4 HD Thermal Rifle Scope,  — 32750b 978x550 sha=c6760bb1a2ed
+  + Korea RWB Glock Compatible 9mm 50 Round Drum Mag — 17786b 800x600 sha=89f9567f849d
+  + EOTech G-Series G33 3x Magnifier - Tan - $455.99 — 27440b 945x630 sha=490941cb29f9
+  + BROWNELLS - Windowed Slide Assembly for Glock 19 — 34196b 1000x1000 sha=24cf043bd574
+  + Law Tactical Gen S AR Folding Stock Adapter - $2 — 156677b 703x504 sha=3e4a60aed0ea
+  + SIG SAUER TANGO MSR Compact 1-6x24mm 30mm Tube R — 39853b 1000x482 sha=2d80ae9e2b92
+  + Rise Armament Special Edition 1776 AR Trigger, S — 47811b 828x828 sha=8cec7b6700bc
+  + HOWA M1500 6.5 PRC Carbon Fiber Barreled Action  — 8720b 587x323 sha=a622e5f3d9ae
+  + Sionyx Aurora Night Vision Monocular - $599.99 ( — 186312b 703x419 sha=1f41082cf44c
+  + Winchester .223 Rem 55 Grain FMJ 20rd - $10.49 ( — 79159b 1000x666 sha=b889f43d1c2b
+  x Fluted Match Grade Barrels For Glock(R) - Brn Pi — image not downloadable
+  x Fluted Match Grade Barrels For Glock(R) - Brn Pi — image not downloadable
+  + Nightforce NX8 1-8x24mm F1 FFP FC-DMx MOA Reticl — 18628b 640x620 sha=cec360736e40
+  + Nightforce NX6 1-6x24mm F1 FFP FC-DMx Reticle Ca — 17301b 640x620 sha=ab94cce8e067
+  ... 100/151  ok=96 fail=4
+  + SAVE UP TO $100 – HS507HUNT-MO, HS507C-X3-RD-MRS — 776918b 1200x1500 sha=2624a31edeb0
+  + Glock G19 Unthreaded Barrel + Slide Parts Kit +  — 19035b 1000x477 sha=ff0cbe707227
+  + SOG F06P-N FastHawk Tactical Tomahawk w/Nylon Sh — 181867b 1467x1500 sha=34e5ef3b9c14
+  + Cold Steel Kukri Trainer Fixed Blade Knife 12" K — 10499b 684x160 sha=a9658e73d08c
+  + Vortex Optics Viper HS Rifle Scope 2.5-10x44mm D — 12654b 500x268 sha=f4a2d0b8a466
+  + MDT Competitor LSS Gen 3 Chassis System - 418144 — 26919b 1000x750 sha=1c5cf2f8ff8e
+  + Smith & Wesson Essential AR Oops Kit - $5.99 — 16244b 546x546 sha=c3279e0d64f4
+  + Swenson T-Series Pistol Kit with Complete Upper  — 25393b 880x660 sha=314de5b86096
+  + Aimpoint ACRO P2 Enclosed Pistol Red Dot Sight - — 49388b 1100x734 sha=d6a17852b31f
+  + Winchester White Box USA .45 ACP 230-Gr. FMJ 500 — 39845b 680x354 sha=42b1af2a66ef
+  + Sig Sauer P365X/P365XL Steel 10 Rounds Magazine  — 78986b 1140x1072 sha=6be8fb4d4a22
+  + Microbest C158 HPT/MPI 5.56 Bolt Carrier Group - — 28377b 1000x666 sha=3edcf3c3e9c2
+  + Lantac Dragon Muzzle Brake 9x19mm for Sig Sauer  — 30953b 398x270 sha=dac4f9c70894
+  + HK VP9A1 X Optics Ready 9mm 4.09" 17rd Pistol -  — 56452b 960x714 sha=9fccb9a53bb9
+  + KGM CORE-556 Direct Thread Suppressor - FDE - $3 — 120773b 1000x666 sha=a154099d0686
+  + Taurus TXM 5.7 5" 23 RD T.O.R.O Threaded - Black — 220034b 1000x666 sha=a9809aa0edda
+  + NBS Lower Parts Kit For Glock 17 - Billet Trigge — 24185b 1000x677 sha=a8feed35f579
+  + NBS Upper Parts Kit For Glock 17 - 9530 - $29.95 — 33688b 1000x666 sha=ca4a76393a60
+  + Rise Armament RA-535 Advanced Performance Drop-I — 60584b 1500x1000 sha=6b3a1a38c04d
+  + Derya DY9Z.BS.TR DY9Z 9mm 3.5 15R BLK/SIL - $204 — 1210093b 1323x1036 sha=efb011c0b158
+  x Derya DY9Z.BS.TR DY9Z 9mm 3.5 15R BLK/SIL - $204 — unreachable after retries
+  + Advantage Arms 1.75-.308 Stainless Steel 7.62mm  — 181209b 1000x666 sha=1792e4fc6178
+  + Vortex Venom 1-6-24 SFP 30mm AR-BDC3 LPVO w/ 2"  — 47650b 818x488 sha=96a7f7b5104f
+  + JP Enterprises Gen 2 Silent Capture Spring AR-15 — 45538b 1500x999 sha=f72e237eb705
+  x PSA AR15 Premium MilSpec Diameter Buffer Tube -  — image not downloadable
+  + Holosun HS407A3 PSA Exclusive 3MOA Reflex Sight, — 13831b 466x417 sha=0f820170ec21
+  + Maglite Solitaire Spectrum 33 lm LED Water-Resis — 50113b 1000x607 sha=8d33d8dabed6
+  + SOG Knives Altair XR Folding Knife Drop Point, S — 43758b 1000x1000 sha=9b4d724ed230
+  + Gerber Tri Tip Mini Cleaver Knife, Green - 31-00 — 18679b 600x600 sha=025dc312eba3
+  + BLACKHAWK Sportster Adjustable Bi-Pod, 6"- 9" -  — 23188b 552x608 sha=dcf37161a469
+  + Pointer Field Tek 3 12 GA 28" BBL 3rd Semi-Auto  — 58797b 604x522 sha=fb0f45d0fa2a
+  + Marlin Dark Series 336 .30-30 Winchester 16.1" 5 — 225688b 1500x513 sha=f09ce42ded73
+  + Pulsar Thermion Duo DXP55 Rifle Scope 4-32x35mm  — 49083b 1000x1000 sha=0b0e94958985
+  + Dan Wesson Pistol DWX 9mm Black / Red Grip OR Ra — 52590b 1000x666 sha=01c6822a59d5
+  + Sons of Liberty Gun Works Liberty Fighting Trigg — 22649b 1000x666 sha=ea5d19dcc401
+  + Zev Tech Black Friday Bundle Deals! — 135883b 1500x596 sha=f008bdf1af3d
+  + Noveske AR-15 Chainsaw Barreled Upper Receiver 5 — 17202b 680x345 sha=17fbe915fe26
+  + Beretta APX-A1 Carry 9mm 3" 8rd - $249.99 ($174. — 129355b 1358x1500 sha=22a1987be318
+  + Vortex CF2-GD2-SLR Crossfire II Solar 2 MOA Gree — 26877b 444x500 sha=c11757fd1086
+  + WORKPRO LED Pen Light Set with High Lumens, 8AAA — 170108b 1394x1500 sha=bbfa597a9b25
+  + Frontier Cartridge FR2015 Rifle 5.56x45mm NATO 5 — 31172b 454x497 sha=eae5b699e401
+  + Winchester Ammunition, Service Grade, 9MM, 115Gr — 57151b 1000x772 sha=b2d4e965f2f6
   x Amend2 AR-15 Mod A 5.56/.223 30rd Magazine, Coyo — image not downloadable
   x Amend2 AR-15 Mod A 5.56/.223 30rd Magazine, Blac — image not downloadable
-  + whox Men's Cargo Tactical Pants Work Hiking Trou — 76453b 679x1286 sha=590f658726e9
-  + Hornady Frontier 223 Remington Rifle Ammunition  — 61131b 695x759 sha=511199066f40
-  + ATI Alpha Maxx 5.56 16" 60RD, Black, AR-15 Rifle — 28308b 880x390 sha=3bc168dc7ea9
-  + Springfield 1911 DS Prodigy AOS Gear-Up Bundle,  — 53969b 915x611 sha=31568a850662
-  + Heckler & Koch VP9CC Optic Ready 9mm Luger 3.13" — 15602b 481x357 sha=c8abbfa4c9ba
-  + Shadow Systems CR920 Elite 9mm Luger 15+1 3.41"  — 101459b 1000x758 sha=81e24589e906
-  + CMC Triggers Single Stage Tactical Trigger 2-2.5 — 148954b 532x454 sha=fd4902796a7d
   x ATN X-Sight 5 Ultra HD 4K+ 3-15x Smart Day/Night — image not downloadable
-  + North American Arms Mini-Revolver Stainless .22  — 31791b 800x485 sha=2b39a7d21937
-  + Bundle* Tippmann Arms M4-22 Pro TS20 .22LR 25rd  — 22677b 892x375 sha=5839693c40b7
   x G-Force Refuge Turkish Walnut 12 GA-3" 28" Barre — image not downloadable
   x Dirty Bird 16" 5.56 M4 Carbine Phosphate/Chrome- — image not downloadable
   x SIPAX B66 Ecko Pump Action Shotgun 18" Barrel 12 — image not downloadable
   x Tuna Cans FAT9 9mm Silencer 6 Baffle - $239.99 — image not downloadable
   x Weather-Ready Onyx Gear: 70% Off @ Field Supply — unreachable after retries
   x Ballistic Advantage 9mm Glock 19 Gen 3-5 PVD Cop — image not downloadable
-  x SilencerCo Hybrid 46M Multi Caliber Suppressor - — image not downloadable
-  x Henry X Model Lever 45/70 – 19.8″ TB Blued Black — image not downloadable
 
-fixed 14, failed 11  (56% success)
-distinct images: 14 across 14 deals
+fixed 136, failed 15  (90% success)
+distinct images: 136 across 136 deals
 PASS — no image shared between products
